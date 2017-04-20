@@ -1,0 +1,27 @@
+<div ng-cloak>
+    <div class="headerAsk comGroupHead">
+        <h2>{{model.followType}}
+            <i class="badge groupbadge">{{model.followType == 'followers' ? model.followers.totalItems : model.following.totalItems}}</i>
+        </h2>
+    </div>
+
+    <div class="addGroupContainer col-md-12 noPad padTop">
+        <div class="col-md-12 noPad padTop padBottom" ng-repeat="member in (model.followType == 'followers' ? model.followers.items : model.following.items)">
+            <img ng-src="{{member.image ? member.image.url:'/img/default.png'}}" class="img-rounded media-object pull-left" width="32" height="32">
+            <div ng-community-user user-id="member.preferredUsername" user-name="member.displayName" css-class="'pull-left marginLeft10 marginTop10 groupMemberName'" context="model.followType"></div>
+            <a href="javascript:void(0)" style="margin-left: 10px; top: 10px; position: relative" ng-click="follow(member.id)" ng-show="!following(member.preferredUsername)">
+                <i class="glyph12 fa fa-users" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Follow User"></i>
+            </a>
+            <a href="javascript:void(0)" style="margin-left: 10px; top: 10px; position: relative" ng-click="unfollow(member.id)" ng-show="following(member.preferredUsername)">
+                <i class="glyph12 fa fa-user" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="UnFollow User"></i>
+            </a>
+        </div>
+        <div class="alert alert-info col-md-12 marginTop10" ng-if="model.followType == 'followers' && model.followers.totalItems == 0">
+            You have no followers!!
+        </div>
+        <div class="alert alert-info col-md-12 marginTop10" ng-if="model.followType == 'following' && model.following.totalItems == 0">
+            You are not following any person!!
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>

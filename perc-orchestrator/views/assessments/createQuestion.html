@@ -1,0 +1,194 @@
+<div class="List_view ng-cloak" ng-cloak>
+	<div id="conformMessage" class="alert  hide" ></div>
+    <div class=" askquestionHeader">
+    <div class="headerAsk">
+        <h2>{{question.operationType}} Question</h2>
+        <span class="backBtnCont">
+	        <a href="javascript:void(0);" ng-click="question.backToList();" class="marginTop10 commonBackToList"><i class="fa fa-chevron-left"></i> Back to list</a>
+        </span>
+    </div>
+
+    <div class="textEditor AskQEdit marginTop20">
+    	<div class="row" style="margin-bottom: 15px;">
+    		<div id="saveQAlert" class="col-md-12 alert hide" role="alert">Question Saved.</div>
+		    <div class="col-md-6">
+		        <div>Question Type*</div>
+		        <select ng-model="question.data.questionType" class="form-control" ng-options="questiontype as questiontype.name for questiontype in question.inputfilter.types" ng-change="question.setSubType(question.data.questionType)">
+		            <option value="">Select Question Type</option>
+		         </select>
+		    </div>
+		    <div class="col-md-6">
+		        <div>Question Subtype*</div>
+		        <select ng-model="question.data.questionSubType" class="form-control" ng-options="subtype.name for subtype in question.inputfilter.subTypes" ng-change="question.updateQuestionSubType(subtype.name)">
+		            <option value="">Select Question Subtype</option>
+		         </select>
+		    </div>
+		</div>
+
+    	<div class="row" style="margin-bottom: 15px;">
+		    <div class="col-md-6">
+		        <div>Purpose*</div>
+		        <select ng-model="question.data.purpose" class="form-control" ng-options="item.name for item in question.inputfilter.purpose" ng-change="question.setSubpurpose(question.data.purpose)">
+		            <option value="">Select Purpose</option>
+		         </select>
+		    </div>
+		    <div class="col-md-6">
+		        <div>Subpurpose</div>
+		        <select ng-model="question.data.subPurpose" class="form-control" ng-options="item.name for item in question.inputfilter.subPurpose">
+		            <option value="">Select Subpurpose</option>
+		         </select>
+		    </div>
+		</div>
+
+		<div class="row" style="margin-bottom: 15px;">
+			<div class="col-md-12">
+				<div>Question for*</div>
+				<select ng-il-multiselect='{"placeholder":"Select Lecture...", "selectedDisable": true}' multiple="true" ng-model="question.data.learningElements" ng-options="lob.label for lob in question.inputfilter.learningElements" style="width: 100%;"></select>
+			</div>
+		</div>
+
+		<div class="row" style="margin-bottom: 15px;">
+		    <div class="col-md-12">
+		        <div>Concepts</div>
+		        <select ng-il-multiselect='{"placeholder":"Select Concepts..."}' multiple="true" ng-model="question.data.concepts" ng-options="object.name for object in getQuestionConceptList(conceptTitleMap)" style="width: 100%;"></select>
+		        <!-- <input type="text" ng-model="selectedConceptforQuestion" class="form-control qa-concept-select" typeahead="object as object.name for object in getQuestionConceptList(conceptTitleMap, $viewValue) | filter:{name:$viewValue}" typeahead-on-select="addQuestionConcepts($item, $model, $label);selectedConceptforQuestion = '';">
+
+		        <div class="form-group" ng-repeat="concept in question.data.concepts">
+		            <div class="col-sm-12 noPad">
+		              <div class="checkbox" style="margin-bottom: 0px">
+		                <label>
+		                    <input type="checkbox" checked="" ng-click="removeQuestionConcepts(concept)" style="margin-top: 1px"> {{concept.name}}
+		                </label>
+		              </div>
+		            </div>
+		        </div> -->
+		    </div>
+		</div>
+		<div class="row" style="margin-bottom: 15px;">
+		    <div class="col-md-6">
+		        <div>Difficulty level*</div>
+		        <select ng-model="question.data.difficultylevel" class="form-control" ng-options="level.name for level in question.inputfilter.difficultyLevels">
+		            <option value="">Select Difficulty Level</option>
+		         </select>
+		    </div>
+		    <div class="col-md-6">
+		        <div>Outcome</div>
+		        <select ng-model="question.data.outcome" class="form-control" ng-options="outcome.name for outcome in question.inputfilter.outcomes">
+		            <option value="">Select Outcome</option>
+		         </select>		        
+		    </div>
+		</div>
+		<div class="row" style="margin-bottom: 15px;">
+		    <div class="col-md-6">
+		        <div>Used in</div>
+		        <select ng-model="question.data.testUsage" class="form-control" ng-options="testType for testType in question.inputfilter.usedIn">
+		            <option value="">Select Used In</option>
+		         </select>
+		    </div>
+		    <div class="col-md-6">
+		    </div>
+		</div>
+
+		<div class="row" style="margin-bottom: 15px;" ng-show="question.data.questionSubType.name">
+		    <div class="col-md-12">
+		        <div>Question Body*</div>
+		        <textarea ng-il-pagedown preview="true" placeholder="Write your Question Body ..." style="width: 100%; min-height: 100px;" ng-model="question.data.body"></textarea>
+		    </div>
+		</div>
+		<div class="row" style="margin-bottom: 15px;" ng-show="question.data.questionSubType.name">
+		    <div class="col-md-12">
+		        <div>Question Feedback</div>
+		        <textarea ng-il-pagedown editorheight="100" preview="false" placeholder="Write your Question Feedback ..." style="width: 100%; min-height: 100px;" ng-model="question.data.questionFeedback"></textarea>
+		    </div>
+		</div>
+    </div>
+    <!-- MCQ, MMCQ BLOCK START -->
+    <div class="textEditor AskQEdit" ng-show="['MCQ', 'MMCQ'].indexOf(question.data.questionSubType.code) > -1">
+    	<div class="row" style="margin-bottom: 15px;" ng-repeat="option in question.data.options">
+		    <div class="col-md-12" style="margin-bottom: 15px;">
+		    	<div class="row">
+		    		<div class="col-md-8">
+		        		<div>Option {{$index+1}}*</div>
+		    		</div>
+		    		<div ng-class="{'col-md-2': $index > 0, 'col-md-4': $index == 0 }">
+		    			<div ng-class="{'pull-right': $index == 0 }">
+				    		<span style="margin-right:10px;">Correct</span>
+				    		<input name="correctOption" ng-show="question.data.questionSubType.code=='MCQ'" type="radio" ng-model="question.data.correctAnswer" ng-value="$index" />
+				    		<input name="correctOption" ng-show="question.data.questionSubType.code=='MMCQ'" type="checkbox" ng-model="option.answer" value="true" />
+				    	</div>
+				    </div>
+				    <div class="col-md-2" ng-hide="$index == 0" style="margin-bottom:5px;">
+				    	<button class="btn btn-default btn-sm pull-right" ng-click="question.removeOption(option)">remove option</button>
+				    </div>
+		    	</div>
+		    	<textarea ng-il-pagedown editorheight="100" preview="false" placeholder="Write your Question Option {{$index+1}} ..." style="width: 100%;" ng-model="option.description"></textarea>
+		    </div>
+		    <div class="col-md-12" style="margin-bottom: 15px;">
+		        <div>Feedback for Option {{$index+1}}</div>
+		        <textarea ng-il-pagedown editorheight="100" preview="false" placeholder="Write your Question Option {{$index+1}} ..." style="width: 100%; " ng-model="option.feedback"></textarea>
+		    </div>
+		</div>
+    </div>
+    <div class="textEditor AskQEdit marginBottom20" ng-show="['MCQ', 'MMCQ'].indexOf(question.data.questionSubType.code) > -1">
+    	<div class="col-md-8 checkbox" ng-show="question.data.questionSubType.code=='MMCQ'">
+	        <div><input name="correctOption" type="checkbox" ng-model="question.data.isPartial" value="true" />Is partial</div>
+	    </div>
+    	<div class="save_btn" ng-show="question.data.questionSubType.name && question.data.options.length < 6">
+    		<button class="btn btn-default btn-sm" ng-click="question.addOption()">Add Option</button>
+    	</div>
+    	<div class="clearfix"></div>
+    </div>
+    <!-- MCQ, MMCQ BLOCK END -->
+    <!-- PROGRAMINIDE BLOCK START -->
+    <div class="textEditor AskQEdit" ng-show="question.data.questionSubType.code == 'Program in IDE'">
+    	<div class="row" style="margin-bottom: 15px;">
+    		<div class="col-md-12">
+    			<div>Repo URL*</div>
+    			<input type="text" class="form-control" ng-model="question.data.ide.repoURL" />
+    		</div>
+    	</div>
+    	<div class="row" style="margin-bottom: 15px;">
+    		<div class="col-md-12">
+    			<div>Repo Tag*</div>
+    			<input type="text" class="form-control" ng-model="question.data.ide.repoTag" />
+    		</div>
+    	</div>
+    	<div class="row" style="margin-bottom: 15px;">
+    		<div class="col-md-12">
+    			<div>Solution Repo URL*</div>
+    			<input type="text" class="form-control" ng-model="question.data.ide.solutionRepoURL" />
+    		</div>
+    	</div>
+    	<div class="row" style="margin-bottom: 15px;">
+    		<div class="col-md-12">
+    			<div>Solution Repo Tag*</div>
+    			<input type="text" class="form-control" ng-model="question.data.ide.solutionRepoTag" />
+    		</div>
+    	</div>
+    </div>
+    <!-- PROGRAMINIDE BLOCK END -->
+    <!-- EMBEDDEDPROGRAM BLOCK START -->
+    <div class="textEditor AskQEdit" ng-show="question.data.questionSubType.code == 'EMBEDDEDPROGRAM'">
+    	<div class="row" style="margin-bottom: 15px;">
+    		<div class="col-md-12">
+    			<div>Program Template*</div>
+    			<textarea ng-il-pagedown preview="true" placeholder="Write your Question Body ..." style="width: 100%; min-height: 100px;" ng-model="question.data.embedded.programTemplate"></textarea>
+    		</div>
+    	</div>
+    	<div class="row" style="margin-bottom: 15px;">
+    		<div class="col-md-12">
+    			<div>Program Answer*</div>
+    			<textarea ng-il-pagedown preview="true" placeholder="Write your Question Body ..." style="width: 100%; min-height: 100px;" ng-model="question.data.embedded.programAnswer"></textarea>
+    		</div>
+    	</div>
+    </div>
+    <!-- EMBEDDEDPROGRAM BLOCK END -->
+    <div class="textEditor AskQEdit">
+    	<div class="save_btn">
+    		<button class="btn btn-default" ng-hide="question.data.identifier" ng-click="question.clear()">Clear</button>
+    		<button id="saveQuestion" class="btn btn-primary" ng-disabled="question.data.questionSubType.code == 'EMBEDDEDPROGRAM'" ng-click="question.saveQuestion()">Save</button>
+    	</div>
+    	<div class="clearfix"></div>
+    </div>
+	</div>
+</div>

@@ -1,0 +1,103 @@
+<div id="mainNavMenu" class="NavLeftContainer">
+<ul>
+	<li class="dropdown courseTab active common_box">
+		<div class="dropdown dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown">
+			<i class="courseImg"></i>
+			<span class="lefttab"> course</span>
+		</div>
+		<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+			<li role="presentation"><a href="javascript:void(0);" ng-click="courseIntroduction()">Introduction</a></li>
+			<li role="presentation"><a href="javascript:void(0);" ng-click="tocView();">Course Schedule</a></li>
+			<li role="presentation"><a href="javascript:void(0);" ng-click="showLectureView()">Lecture View</a></li>
+			<li role="presentation"><a href="javascript:void(0);" ng-click="notesView()">Notebook</a></li>
+			<li role="presentation"><a href="#courseWall" onclick="selectLeftMenuTab('courseTab')">Announcements</a></li>
+			<% if(user.roles.indexOf('admin') > -1 || user.roles.indexOf('tutor') > -1|| user.roles.indexOf('faculty') > -1 || user.roles.indexOf('faculty_observer') > -1) { %>
+			<li role="presentation"><a href="javascript:void(0);" ng-click="listQuestions()">Questions</a></li>
+			<li role="presentation"><a href="javascript:void(0);" ng-click="listQuestionSets()">Question Sets</a></li>
+			<li role="presentation"><a href="javascript:void(0);" ng-click="listQuestionPapers()">Question Papers</a></li>
+			<li role="presentation"><a href="javascript:void(0);" ng-click="coachDashboard()">Dashboard</a></li>
+			<li role="presentation"><a href="javascript:void(0);" ng-click="courseGradebook()">Gradebook</a></li>
+			<% } %>
+			<% if(user.roles.indexOf('student') > -1) { %>
+			<li role="presentation"><a href="javascript:void(0);" ng-click="studentSummary()">My Dashboard</a></li>
+			<% } %>
+			<li role="presentation"><a href="javascript:void(0);" ng-click="leaderboard()">Leaderboard</a></li>
+		</ul>
+	</li>
+
+
+	<li class="dropdown exploreTab common_box" ng-click="exploreView()">
+		<div class="dropdown dropdown-toggle">
+			<i class="exploreImg"></i>
+			<span class="lefttab"> explore</span>
+		</div>
+	</li><!-- -->
+
+
+	<li class="dropdown forumsTab common_box">
+		<div class="dropdown dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown">
+			<i class="forumsImg"></i>
+			<span class="lefttab">forums</span>
+		</div>
+		<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+			<li role="presentation"><a href="javascript:void(0);" ng-click="interactionsView();">Course Q&A</a></li>
+			<li role="presentation" class="hide"><a href="#/interactionSets" onclick="selectLeftMenuTab('forumsTab')">Q&A Sets</a></li>
+			<li role="presentation" class="hide"><a href="javascript:void(0);" ng-click="admininteractionsView();">Admin Q&A</a></li>
+			<% if(user.roles.indexOf('faculty') == -1 && user.roles.indexOf('faculty_observer') == -1) { %>
+			<li role="presentation"><a href="javascript:void(0);" ng-click="coachQAView();">Coach Q&A</a></li>
+			<% } %>
+		</ul>
+	</li>
+
+	<li class="dropdown coachingTab common_box">
+		<div class="dropdown dropdown-toggle" id="dropdownMenu5" data-toggle="dropdown">
+			<i class="coachingImg"></i>
+			<span class="lefttab">coaching</span>
+		</div>
+		<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+		<% if(user.roles.indexOf('student') > -1) { %>
+		<li role="presentation"><a href="javascript:void(0);" ng-click="classRoomView()">Coaching Sessions</a></li>
+		<% } %>
+		<% if(user.roles.indexOf('tutor') > -1 || user.roles.indexOf('faculty') > -1) { %>
+			<li role="presentation"><a href="javascript:void(0);" ng-click="contentSearchView()">Study Material</a></li>
+			<li role="presentation"><a href="javascript:void(0);" ng-click="manageCoachingView()">Coaching Sessions</a></li>
+		<% } %>
+		<% if(user.roles.indexOf('tutor') > -1 || user.roles.indexOf('faculty') > -1 || user.roles.indexOf('faculty_observer') > -1) { %>
+			<li role="presentation"><a href="javascript:void(0);" ng-click="listPracticeTests()">Practice Exercise</a></li>
+			<li role="presentation"><a href="javascript:void(0);" ng-click="listExams()">Examinations</a></li>
+			<li role="presentation"><a href="javascript:void(0);" ng-click="manageInterceptionPoints()">Interception Points</a></li>
+		<% } %>
+		</ul>
+	</li>
+
+
+	<li class="dropdown communityTab common_box">
+
+		<div class="dropdown dropdown-toggle" id="dropdownMenu6" data-toggle="dropdown">
+			<i class="communityImg"></i>
+			<span class="lefttab">community</span>
+		</div>
+
+
+		<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+			<li role="presentation"><a href="#wall" onclick="selectLeftMenuTab('communityTab')">Activity Stream</a></li>
+			<li role="presentation"><a href="#courseWall" onclick="selectLeftMenuTab('communityTab')">Course Wall</a></li>
+			<% if(user.roles.indexOf('tutor') > -1 || user.roles.indexOf('faculty') > -1 || user.roles.indexOf('faculty_observer') > -1) { %>
+			<li role="presentation"><a href="#myLists" onclick="selectLeftMenuTab('communityTab')">Communities</a></li>
+			<% } %>
+			<li role="presentation"><a href="#community/people" onclick="selectLeftMenuTab('communityTab')">People</a></li>
+			<li role="presentation" ng-show="showMyCompanyLink"><a href="#companyWall" onclick="selectLeftMenuTab('communityTab')">My Company</a></li>
+		</ul>
+
+	</li>
+</ul>
+</div>
+
+<script type="text/javascript">
+
+function selectLeftMenuTab(tab) {
+	$('#mainNavMenu ul li.common_box').removeClass("active");
+	$('#mainNavMenu ul li.' + tab).addClass("active");
+}
+
+</script>

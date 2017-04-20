@@ -1,0 +1,68 @@
+<h4 class="modal-title">Enhance {{currentContent.name}}</h4>
+<hr/>
+<div class="form-horizontal well" style="height: 400px; overflow:auto; border-left: 1px solid #ddd">
+	<div class="form-group">
+		<label for="inputEmail3" class="col-sm-3 control-label">Media</label>
+	    <div class="col-sm-5">
+	      	<select class="form-control" ng-model="interception.contentMedia" ng-options="contentMedia as contentMedia.title for contentMedia in currentContent.media" ng-change="showInterceptions(interception.contentMedia,'incpMedia')" >
+                <option value="">Select Media</option>
+            </select>
+	    </div>
+	</div>
+	<div ng-show="interception.contentMedia.mediaType == 'video' || interception.contentMedia.mediaType == 'slides'">
+		<div id="incpMedia" style="width: 60%; margin: auto;"></div>
+		<div id="interceptionDiv" style="width: 60%; margin: auto;"></div>
+
+		<div class="row padTop" ng-show="interception.action == 'VIEW'">
+			<div class="pull-left padLeft padRight padTop" style="max-width:180px; text-align:center; cursor:pointer">
+	            <div ng-switch on="interception.contentMedia.mediaType" ng-click="selectMedia(interception.contentMedia, 'incpMedia')">
+	                <img src="/img/video_blue_icon.png" ng-switch-when="video"/>
+	                <img src="/img/reading_blue_icon.png" ng-switch-when="text"/>
+	                <img src="/img/slides_blue_icon.png" ng-switch-when="slides"/>
+	                <img src="/img/question_blue_icon.png" ng-switch-when="mcq"/>
+	                <img src="/img/question_blue_icon.png" ng-switch-when="test"/>
+	                <img src="/img/video_blue_icon.png" ng-switch-default/>
+	            </div>
+	            <br>
+	            <span class="all_media">{{interception.contentMedia.title}}</span><br/>
+	        </div>
+			<div class="pull-left padLeft padRight padTop" style="max-width:180px; text-align:center; cursor:pointer">&raquo;</div>
+	        <div class="pull-left padLeft padRight padTop" style="max-width:180px; text-align:center; cursor:pointer" ng-repeat="item in currentContent.interceptions | filter : interception.contentMedia.mediaId">
+	            <div ng-switch on="item.mediaType" ng-click="selectMedia(item, 'incpMedia')">
+	                <img src="/img/video_blue_icon.png" ng-switch-when="video"/>
+	                <img src="/img/reading_blue_icon.png" ng-switch-when="text"/>
+	                <img src="/img/slides_blue_icon.png" ng-switch-when="slides"/>
+	                <img src="/img/question_blue_icon.png" ng-switch-when="mcq"/>
+	                <img src="/img/question_blue_icon.png" ng-switch-when="test"/>
+	                <img src="/img/video_blue_icon.png" ng-switch-default/>
+	            </div>
+	            <br>
+	            <span class="all_media" id="{{item.mediaId | transformId}}">{{item.name}}</span><br/>
+	        </div>
+	        <button type="button" class="btn btn-default btn-lg pull-right" ng-click="showAddInterception()">
+				<span class="glyphicon glyphicon-plus"></span>
+			</button>
+	    </div>
+	    <div ng-show="interception.action == 'NEW'" class="padTop" style="margin-bottom: 20px;">
+	    	<div class="col-md-3"></div>
+	    	<div class="col-md-6 inline">                    
+                <div style="float:left;" class="padLeft">
+                    <input type="text" style="width:100px" ng-model="interception.interceptionPoint" placeholder="Point" class="form-control padLeft">
+                </div>
+                <div style="float:left;" class="padLeft">
+                    <button ng-click="showInterceptionMediaSelect()" class="btn btn-sm btn_green" type="button">Next</button>
+                </div>
+                <div style="float:left;" class="padLeft">
+                    <button ng-click="showInterceptions(interception.contentMedia,'incpMedia')" class="btn btn-sm btn-default" type="button">Close</button>
+                </div>
+	    	</div>
+	    </div>
+	</div>
+	<div style="width: 100%;margin: auto;min-height: 200px;text-align: center;font-weight: bold;padding-top: 95px;border: 2px solid;" ng-show="interception.contentMedia && interception.contentMedia.mediaType != 'video' && interception.contentMedia.mediaType != 'slides'">
+		Interceptions not supported for this Media Type.
+	</div>	
+</div>	
+<div class="row col-md-12">
+    <button type="button" class="btn btn-sm btn-default pull-right" onclick="hideActionSlider()">Close</button>
+    <button id="uploadEnhanceFiles" type="button" class="btn btn-sm btn_green" ng-click="uploadEnhanceFiles()" style="display:none;">Save</button>
+</div>

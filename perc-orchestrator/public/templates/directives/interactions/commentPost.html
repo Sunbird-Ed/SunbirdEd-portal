@@ -1,0 +1,11 @@
+<div ng-if="enabled">
+    <a href="javascript:void(0)" style="text-decoration: underline" class="content_name dropdown-toggle" data-toggle="dropdown">
+        add comment
+    </a>
+    <ul class="dropdown-menu" style="width: 400px" role="menu">
+        <li>
+            <textarea rows="3" class="form-control" ng-model="post._comment" style="width: 400px"></textarea>
+            <button class="btn btn-sm btn-primary pull-right" style="margin: 2px" ng-click="commentInteraction(post._comment, post)">Save</button>
+        </li>
+    </ul>
+</div>

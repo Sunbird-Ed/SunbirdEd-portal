@@ -1,0 +1,195 @@
+<div class="headerAsk">
+    <h2>Admin Q&A</h2>
+    <a data-original-title="Search Questions" title="" data-placement="bottom" data-toggle="tooltip" class="pull-right marginLeft10" href="javascript:void(0);" ng-click="showSearchForm();"><i id="searchIcon"  class="writeBlackOne fa fa-search"></i></a>
+    <a data-original-title="Ask Questions" title="" data-placement="bottom" data-toggle="tooltip" class="pull-right" href="javascript:void(0);" ng-click="askQuestion();"><i id="writeIcon"  class="writeBlackOne fa fa-edit"></i></a>
+</div>
+<div class="text-center" ng-show="loadingInteraction" style="margin-top: 50px">
+    Loading <img src="/img/loading.gif"/>
+</div>
+<div class="interactions marginTop20" ng-cloak style="margin-top:20px;">
+    <div id="listFilters" style="display:none;">
+        <div class="col-md-12 noPad" ng-hide="showAddQuestion" style="padding-right: 12px; padding-left: 35px;">
+            <div class="form-group col-md-12 noPad">
+                <div class="col-sm-12 noPad">
+                    <input type="search" ng-model="interactionsSearch.query" class="form-control" placeHolder="Enter search text..." ng-enter="searchInteractions()" />
+                </div>
+            </div>
+            <div class="col-md-12 noPad">
+                <!-- Date Filter -->
+                <div class="form-group col-md-12 noPad">
+                    <div class="col-sm-6 noPad">
+                        <label>From Date</label>
+                        <input type="text" class="form-control" ng-model="interactionFilters.fromDate" placeholder="From Date" datepicker-popup="dd/MM/yyyy" is-open="datepicker.fromOpened" ng-click="open($event, 'from')" ng-keydown="disableKeyDown($event)" ng-keypress="disableKeyDown($event)" datepicker-options="datepicker.dateOptions" />
+                    </div>
+                    <div class="col-sm-6">
+                        <label>To Date</label>
+                        <input type="text" class="form-control" ng-model="interactionFilters.toDate" placeholder="To Date" datepicker-popup="dd/MM/yyyy" is-open="datepicker.toOpened" ng-click="open($event, 'to')" ng-keydown="disableKeyDown($event)" ng-keypress="disableKeyDown($event)" datepicker-options="datepicker.dateOptions" />
+                    </div>
+                </div>
+                <!-- Exclude Filter 
+                <div class="form-inline col-md-12 noPad">
+                    <label>Exclude Questions: </label>
+                    <div class="checkbox marginLeft10">
+                        <input type="checkbox" ng-model="interactionFilters.excludeNotAns" style="margin-top: 1px">&nbsp;Not Answered</input>
+                    </div>
+                    <div class="checkbox marginLeft10">
+                        <input type="checkbox" ng-model="interactionFilters.excludeNotRel" style="margin-top: 1px">&nbsp;Not relevant</input>
+                    </div>
+                    <div class="checkbox marginLeft10">
+                        <input type="checkbox" ng-model="interactionFilters.excludeSpam" style="margin-top: 1px">&nbsp;Spam</input>
+                    </div>
+                </div>
+                -->
+            </div>
+            <div class="form-group col-md-12 noPad borderBottom padBottom-20px">
+                <div class="col-sm-12">
+                    <button class="btn btn-primary pull-right marginLeft10" id="searchInteractions" ng-click="searchInteractions();" style="float:left;margin-left:10px">Search</button>
+                    <button class="btn btn-default pull-right" id="searchInteractions" ng-if="!interactionFilters.selectedSet" ng-click="clearAllFilters();">Clear</button>
+                    <button class="btn btn-default pull-right" id="searchInteractions" ng-if="interactionFilters.selectedSet" ng-click="getSet(interactionFilters.selectedSet);">Cancel</button>
+                </div>
+            </div>
+        </div>
+        <hr ng-hide="showAddQuestion" />
+    </div>
+    <div id="askQuestion" class="textEditor AskQEdit" style="display:none;">
+        <!--<h2 class="borderBottom marginTop0 marginBottom30">Ask a question</h2> -->
+        <div class="alert alert-danger hide" id="validateMessage" role="alert"></div>
+        <input type="text" id="askQuestionTxt" placeholder="Add question title here..." class="form-control" ng-model="interactionTitle" />
+        <div class="uploadBtnContainer pull-right hide" file-model ng-model="interactionPost"></div>
+        <br/>
+        <!-- <text-angular ta-toolbar="[['h2','h3','h4','p','bold','italics','underline','ul','ol','insertLink']]" ng-model="interactionPost" ta-toolbar-button-class="btn btn-default btn-sm" placeholder="Add your qestion here"></text-angular> -->
+        <textarea id="askQuestionTxtArea" ng-il-pagedown ng-model="interactionPost" style="width:100%"></textarea>
+        <!-- Preview uploaded files -->
+        <div class="uploadFilePreview" ng-show="filePreview">
+            <ul>
+                <li ng-repeat="preview in attachments">
+                    <span ng-click="deleteFile($event)" class="cursorPointer" customAttr="{{preview.path}}"><i class="glyphicon glyphicon-trash"></i></span>
+                    <span class="previewFileName"><a href="{{preview.url}}" target="_blank">{{preview.displayName}}</a></span>
+                </li>
+            </ul>
+        </div>
+        <!-- Preview uploaded files -->
+        <!--    <div class="pull-right padTop">
+            <button class="btn btn-primary" id="saveInteractions" ng-click="saveInteraction()">Post Question</button>
+            <button class="btn btn-default marginLeft5" ng-click="showAddQuestion = false; interactionPost = ''" onclick="$('.setTitle').show();" data-action="Cancel" il-capture-click>Cancel</button>
+        </div> -->
+        <div class="save_text">
+            <!-- <div class="input-group">
+              <input type="text" id="askQuestionTxt" placeholder="Add title" class="form-control" ng-model="interactionTitle">
+            </div> -->
+
+            <div class="save_btn">
+                <button class="btn btn-default" ng-click="interactionPost = ''; interactionTitle = ''" data-action="Cancel" il-capture-click>Clear</button>
+                <button class="btn btn-primary marginLeft10" id="saveInteractions" ng-click="saveInteraction()">Save</button>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <!--
+    <div ng-hide="showAddQuestion" class="int-tags" style="margin-left:35px">
+        <label>Filters Applied: </label>
+        <span class="label label-default" ng-show="appliedFilters.searchQuery.name != '---- Quick Filter ----'">Quick Filter: {{appliedFilters.searchQuery.name}}
+            <a href="" ng-click="clearFilters('quickfilter','');">
+                <span>x</span>
+        </a>
+        </span>
+        <span class="label label-default" ng-repeat="concept in appliedFilters.addedToSelectedConcepts">Concept: {{concept.concept}}
+        <a href="" ng-click="clearFilters('concept',concept);">
+            <span>x</span>
+        </a>
+        </span>
+        <span ng-show="appliedFilters.fromDate && !appliedFilters.toDate " class="label label-default">Asked after: {{appliedFilters.fromDate | date:'dd/MM/yyyy'}}
+        <a href="" ng-click="clearFilters('fromdate', '')" >
+            <span>x</span>
+        </a>
+        </span>
+        <span class="label label-default" ng-show="appliedFilters.toDate && !appliedFilters.fromDate">Asked before: {{appliedFilters.toDate | date:'dd/MM/yyyy'}}
+        <a href="" ng-click="clearFilters('todate', '')">
+            <span>x</span>
+        </a>
+        </span>
+        <span class="label label-default" ng-show="appliedFilters.toDate && appliedFilters.fromDate">Asked between: {{appliedFilters.fromDate | date:'dd/MM/yyyy'}} and {{appliedFilters.toDate | date:'dd/MM/yyyy'}}
+        <a href="" ng-click="clearFilters('daterange', '')" >
+            <span>x</span>
+        </a>
+        </span>
+        <span class="label label-default" ng-show="appliedFilters.excludeNotAns">Exclude: Not Answered
+        <a href="" ng-click="clearFilters('excludeNotAns','')" >
+            <span>x</span>
+        </a>
+        </span>
+        <span class="label label-default" ng-show="appliedFilters.excludeNotRel">Exclude: Not relevant
+        <a href="" ng-click="clearFilters('excludeNotRel','')">
+            <span>x</span>
+        </a>
+        </span>
+        <span class="label label-default" ng-show="appliedFilters.excludeSpam">Exclude: Spam
+        <a href="" ng-click="clearFilters('excludeSpam','')">
+            <span>x</span>
+        </a>
+        </span>
+    </div>
+    -->
+    <div class="col-md-12 int-list-container" ng-hide="showAddQuestion" style="display:none">
+        <a href="javascript:void(0)" ng-click="askQuestion('adminqanda');" class="btn-link ask-question-link" data-action="New" il-capture-click ng-hide="interactionFilters.selectedSet">Have a Question? Ask Now</a>
+    </div>
+</div>
+<div class="listviewContainer" ng-show="interactions.length > 0">
+    <div class="QACol" ng-repeat="interaction in interactions | filter:customInteractionFilter">
+        <div class="row" ng-show="$index==0">
+            <div class="listButton col-md-12">
+                <div class="btn-group pull-right" role="group" aria-label="...">
+                    <button type="button" class="btn btn-default" ng-class="{'active' : (interactionsSearch.order == sort.value), 'int-sort-filter': true}" ng-class="{'btnTop' : $index!=3}" ng-click="sort.trigger()" ng-repeat="sort in sortOptions">{{sort.value != 'bestAnswers' ? sort.name : 'Best Replies'}}</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 QAcontent">
+                <h5>
+                    <a class="ac-links il-Link-clr" href="javascript:void(0);" ng-click="interactionURL(interaction.interactionId)">{{interaction.title}}</a>
+                </h5>
+                <div style="text-overflow: ellipsis;white-space: nowrap">
+                    <ul class="metadata">
+                        <li><span>by&nbsp;</span>
+                            <div style="display: inline" ng-community-user user-id="interaction.from" user-name="interaction.userName" context="'QA Forum'"></div> ,
+                            <span data-livestamp="{{interaction.createdDate/1000}}"></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="clearfix"></div>
+                <div class="QAtags">
+                    <span class="badge" ng-click="selectConcept(concept);" ng-repeat="concept in interaction.conceptNames track by $index" ng-if="concept.concept">{{concept.concept}}
+                            </span>
+                </div>
+                <div class="padTop" ng-if="interaction.markAsAnswered">
+                    <span class="label label-success community-event-status"><i class="fa fa-check"></i> Answered</span>
+                </div>
+            </div>
+            <div class="col-md-4 QAStatus">
+                <ul class="pull-right">
+                    <li class="secondary">
+                        <span class="number">{{interaction.commentsCount || 0}}</span> <span>Replies.</span>
+                    </li>
+                    <li class="secondary">
+                        <span class="number">{{interaction.viewCount || 0}}</span> <span>Views</span>
+                    </li>
+                    <li class="secondary">
+                        <span class="number votes">{{interaction.rating || 0}}</span> <span>Votes</span>
+                    </li>
+                    <li class="secondary">
+                        <span class="number fav">{{interaction.followCount || 0}}</span> <span>Fav.</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <hr/>
+    </div>
+    <a href="javascript:void(0)" class="col-md-12 text-center show-more" ng-if="hasMore" ng-click="showMore()">
+        <span ng-if="!showMoreLoading">Show More</span>
+        <span ng-if="showMoreLoading">Loading <img src="/img/loading.gif"/></span>
+    </a>
+</div>
+<div class="alert alert-info fade in" role="alert" ng-if="pageLoadComplete && interactions.length == 0" style="margin: 10px">
+    <p>There are no questions matching your search, <a href="javascript:void(0)" ng-click="askQuestion()" class="btn-link" data-action="New" il-capture-click>would you like to ask one?</a>
+    </p>
+</div>

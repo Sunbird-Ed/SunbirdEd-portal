@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="studioApp">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SunBird</title>
+
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/common.css" rel="stylesheet">
+    <link href="/css/quiz.css" rel="stylesheet">
+    <link href="/css/learningobjects.css" rel="stylesheet">
+    <link href="/css/video-js.css" rel="stylesheet">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/angular.min.js"></script>
+    <script src="//code.angularjs.org/1.2.15/angular-route.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.min.js"></script>
+    <script src="/js/app.js"></script>
+	<script src="/js/controllers/lobResourcesController.js"></script>
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<script type="text/ng-template"  id="lob_structure.html">
+	<span>
+		<i class="icon-minus  exp-col-tree-act" id="icon-{{data.identifier}}" ng-click="treeIconClick($event)"></i>
+		<span class="title-txt" id="{{data.identifier}}" ng-show="learningObjectId != data.identifier" ng-click="selectLOB(data)">{{data.name}}</span>
+        <span class="title-txt list-active" id="{{data.identifier}}" ng-show="learningObjectId == data.identifier" ng-click="selectLOB(data)">{{data.name}}</span>
+	</span>
+    <ul ng-show="data.children.length > 0">
+        <li ng-repeat="data in data.children | filter:searchText" ng-include="'lob_structure.html'" class="parent_li"></li>
+    </ul>
+</script>
+<script type="text/ng-template"  id="quiz_template.html">
+    <div ng-repeat="question in sampleQuiz.questions" ng-show="quizIndex == $index" class="table-responsive">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th style="padding:20px;padding-bottom: 10px;">{{question.question}}</th>
+                </tr>
+                <tr ng-repeat="option in question.options">
+                    <td style="padding-left: 20px;"><input type = "radio"> {{option}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div style="padding-bottom: 30px;">
+        <div class="pull-right">
+            <a ng-click="incrementQuizIndex()" ng-show="(quizIndex + 1) < sampleQuiz.questions.length" class="btn btn-sm btn_green">Next</a>
+            <a ng-show="(quizIndex + 1) == sampleQuiz.questions.length" class="btn btn-sm btn_green">Finish</a>
+        </div>
+    </div>
+</script>
+<body ng-controller="LearningObjectCtrl">
+    <% include ../includes/header %>
+    <% include ../includes/courseNav %>
+	<input type="hidden" id="courseId" value="<%=courseId %>"/>
+    <section class="accordion_container">
+        <div class="parent_container">
+            <div class="collapse_direction showRightPanel">
+                <i class="glyphicon glyphicon-chevron-left"></i>
+            </div>
+            <div class="col-md-2 left-nav-ct left-accrodian" ng-show="addContent != 'show'">
+                <div class="search_box">
+                    <input type="search" class="form-control search" placeholder="Search" ng-model="searchText"/>
+                </div>
+                <div class="panel-group" id="accordion">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="acc_title" id="toc">
+                                    <img class="pull-left" src="/img/prerequisite_icon.png">
+                                    <span>Table of Contents</span>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div class="tree">
+                                    <ul class="list-unstyled">
+                                        <li ng-repeat="data in courseStructure.children | filter:searchText" ng-include="'lob_structure.html'" class="parent_li"></li>
+                                    </ul>
+                                </div>
+                                <!-- end tree -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-10 main_container">
+                <div class="main">
+                    <div class="player-container-">
+                        <div class="title">
+                            <span>{{selectedTitle}}</span>
+                        </div>
+                        <div ng-show="selectedResource && learningResourceView != 'addInterceptions'">
+                            <div class="sub_title">
+                                <span>Name:</span>&nbsp;<span class="desc">{{selectedResource.title}}</span>
+                            </div>
+                            <div class="video" ng-show="showVideo">
+                                <video id="my_video_1" class="video-js vjs-default-skin vjs-big-play-centered"></video>
+                            </div>
+                            <section ng-include="'quiz_template.html'" ng-show="showQuiz"></section>
+                            <div class="sub_title">
+                                <span>Description:</span>
+                            </div>
+                            <p class="desc">
+                                <span>{{selectedResource.description}}</span>
+                            </p>
+                        </div>
+                        <div ng-show="selectedResource && learningResourceView == 'addInterceptions'">
+                            <div class="sub_title">
+                                <span>Name:</span>&nbsp;<span class="desc">{{selectedResource.title}}</span>
+                            </div>
+                            <div class="video">
+                                <video id="video_interception" class="video-js vjs-default-skin vjs-big-play-centered"></video>
+                            </div>
+                            <div class="form-horizontal" role="form" style="margin-top: 20px">
+                                <div class="row">
+                                    <div class="form-group col-xs-6">
+                                        <label class="col-sm-6 control-label">Start Time {{selectedResource.start}}</label>
+                                        <div class="col-sm-6">
+                                            <input class="form-control" ng-model="interception['start']">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-6">
+                                        <label class="col-sm-4 control-label">End Time</label>
+                                        <div class="col-sm-6">
+                                            <input class="form-control" ng-model="interception['end']">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Concept Title</label>
+                                        <div class="col-sm-8">
+                                            <input class="form-control" ng-model="interception.title">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Concept Description</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" ng-model="interception.description">
+                                    </div>
+                                </div>
+                                </div>
+                                <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label"></label>
+                                    <div class="col-sm-8">
+                                        <button type="button" ng-click="addPreReq()" class="btn btn-sm btn_green">Add Interception</button>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-0 actions">
+                <div class="actions_ct" id="actionList">
+                    <ul class="selectable">
+                         <li>
+                            <a href="#"><i class="glyphicon glyphicon-plus-sign"></i> <span>Add</span></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="glyphicon glyphicon-list-alt"></i> <span>Describe</span></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="glyphicon glyphicon-export"></i> <span>Enhance</span></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="glyphicon glyphicon-globe"></i> <span>Enrich</span></a>
+                        </li>
+                        <li >
+                            <a href="#"><i class="glyphicon glyphicon-signal"></i> <span>Sequence</span></a>
+                        </li>
+                    </ul>
+                    <div class="action-icon-div-ct">
+                        <div class="content">
+                                <div class="pull-right"><a href="javascript:void(0);" class="pop-close-btn"><img class="btn_cross" src="../img/btn_cross.png"></a></div>
+                            <div class="common_heading">Header Title</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer percept_footer navbar-fixed-bottom">
+        <div class="row">
+            <div class="col-md-10 sequence-panel-ct">
+                <div class="sequences pull-left" style="display:none">
+                    <div class="seq">
+                        <a href="javascript:void(0);"><span>Classes, Abstra..</span></a>
+                        <img src="../img/move_tool.png" class="move_tool" style="display:none"/>
+                    </div>
+                    <div class="seq seq_item" >
+                        <a href="javascript:void(0);"><span>Case Study</span></a>
+                        <img src="../img/move_tool.png" class="move_tool" style="display:none"/>
+                    </div>
+                    <div class="seq">
+                        <a href="javascript:void(0);"><span>Class Model for...</span></a>
+                        <img src="../img/move_tool.png" class="move_tool" style="display:none"/>
+                    </div>
+                    <div class="seq">
+                        <a href="javascript:void(0);"><span>Tutoring (Video) 1</span></a>
+                        <img src="../img/move_tool.png" class="move_tool" style="display:none"/>
+                    </div>
+                    <div class="vert_div">
+                        &nbsp;
+                    </div>
+                    <div class="seq">
+                        <a href="javascript:void(0);"><span>Thread Local St..</span></a>
+                        <img src="../img/move_tool.png" class="move_tool" style="display:none"/>
+                    </div>
+                    <div class="seq">
+                        <a href="javascript:void(0);"><span>Starting Threads</span></a>
+                        <img src="../img/move_tool.png" class="move_tool" style="display:none"/>
+                    </div>
+                    <div class="seq">
+                        <a href="javascript:void(0);"><span>Tutoring (Video) 1</span></a>
+                        <img src="../img/move_tool.png" class="move_tool" style="display:none"/>
+                    </div>
+                    <div class="seq">
+                        <a href="javascript:void(0);"><span>Tutoring (Video) 1</span></a>
+                        <img src="../img/move_tool.png" class="move_tool" style="display:none"/>
+                    </div>
+                    <div class="seq">
+                        <a href="javascript:void(0);"><span>Tutoring (Video) 1</span></a>
+                        <img src="../img/move_tool.png" class="move_tool" style="display:none"/>
+                    </div>
+                    <div class="seq">
+                        <a href="javascript:void(0);"><span>Tutoring (Video) 1</span></a>
+                        <img src="../img/move_tool.png" class="move_tool" style="display:none"/>
+                    </div>
+                    <div class="seq">
+                        <a href="javascript:void(0);"><span>Tutoring (Video) 1</span></a>
+                        <img src="../img/move_tool.png" class="move_tool" style="display:none"/>
+                    </div>
+                    <div class="seq">
+                        <a href="javascript:void(0);"><span>Tutoring (Video) 1</span></a>
+                        <img src="../img/move_tool.png" class="move_tool" style="display:none"/>
+                    </div>
+                    <div class="seq">
+                        <a href="javascript:void(0);"><span>Tutoring (Video) 1</span></a>
+                        <img src="../img/move_tool.png" class="move_tool" style="display:none"/>
+                    </div>
+                    <div class="seq">
+                        <a href="javascript:void(0);"><span>Tutoring (Video) 1</span></a>
+                        <img src="../img/move_tool.png" class="move_tool" style="display:none"/>
+                    </div>
+                    <div class="seq">
+                        <a href="javascript:void(0);"><span>Tutoring (Video) 1</span></a>
+                        <img src="../img/move_tool.png" class="move_tool" style="display:none"/>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 sequence-panel-actn-ctrl">
+                <div class="pull-right"><a href="javascript:void(0);" class="btn btn-sm btn_green disabled">Save</a>
+                            <a href="javascript:void(0);" class="btn btn-sm btn-default disabled">Reset</a></div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/custom.js"></script>
+    <script src="/js/bootstrap-checkbox-tree.js"></script>
+    <script src="/js/video.min.js"></script>
+    <script src="/js/vjs.vimeo.js"></script>
+    <script src="/js/vjs.youtube.js"></script>
+    <link href="/css/rangeslider.min.css" rel="stylesheet">
+    <script src="/js/rangeslider.min.js"></script>
+    <!-- for collapsible tree items -->
+    <script type="text/javascript">
+
+    $('.add_content').click(function() {
+        $('#collapseTwo').removeClass('in');
+        $('#collapseOne').addClass('in');
+    });
+    $('.add_item').click(function() {
+        $('.sequences').show();
+        $('#collapseTwo').addClass('in');
+        $('#collapseOne').removeClass('in');
+        $('.added_contents').show();
+    });
+    $('.reset_item').click(function() {
+        $('.sequences').hide();
+        $('.added_contents').hide();
+    });
+    $('.seq_item').click(function() {
+        $('.add_content').hide();
+        $('.media_content').show();
+    });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,143 @@
+<div class="headerAsk">
+    <h2>Coach Q&A
+        <a data-original-title="Ask your coach" title="" data-placement="bottom" data-toggle="tooltip" class="" href="javascript:void(0);" ng-if="loggedInUserRole == 'student'" id="coachqaPageAskQuestion" ng-click="askQuestion();"><i id="writeIcon" class="writeBlackOne fa fa-edit"></i></a>
+    </h2>
+    <a data-original-title="Advanced Search" title="" data-placement="bottom" data-toggle="tooltip" class="pull-right" ng-class="{marginTop20: loggedInUserRole == 'student', marginTop10: loggedInUserRole != 'student'}" href="javascript:void(0);" ng-click="showSearchForm();">
+        <i id="advancedSearchIcon" class="advancedSearchIcon fa fa-toggle-down"></i>
+    </a>
+    <input type="search" ng-model="interactionsSearch.query" class="pull-right form-control" ng-class="{marginTop20: loggedInUserRole == 'student', marginTop10: loggedInUserRole != 'student'}" style="width: 45%" placeHolder="Enter search text..." ng-enter="searchInteractions()" />
+</div>
+<div class="col-md-12 alert alert-info fade in marginTop10" role="alert" ng-if="myCoach" ng-show="loggedInUserRole == 'student'">
+    <p>This forum contains all the private messages between you and your coach - {{myCoachName}}</p>
+</div>
+<div class="text-center" ng-show="loadingInteraction" style="margin-top: 50px">
+    Loading <img src="/img/loading.gif"/>
+</div>
+<div class="interactions" ng-cloak>
+    <div id="listFilters" class="marginTop20" style="display:none;">
+        <div class="col-md-12 noPad" ng-hide="showAddQuestion">
+            <div class="col-md-6 noPad searchFormLeftDiv">
+                <div class="form-group col-md-12 noPad">
+                    <select ng-il-multiselect='{"placeholder":"Select Concepts..."}' multiple="true" ng-model="interactionFilters.selectedConcepts" ng-options="object.concept for object in conceptsList" class="selectBox" id="selectedConceptsSB">
+                        <option></option>
+                    </select>
+                </div>
+                <div class="form-group col-md-12 noPad">
+                    <div class="col-md-6 noPad padR2">
+                        <input type="text" class="form-control" ng-model="interactionFilters.fromDate" placeholder="From Date" datepicker-popup="dd/MM/yyyy" is-open="datepicker.fromOpened" ng-click="open($event, 'from')" ng-keydown="disableKeyDown($event)" ng-keypress="disableKeyDown($event)" datepicker-options="datepicker.dateOptions" />
+                    </div>
+                    <div class="col-md-6 noPad padL2">
+                        <input type="text" class="form-control" ng-model="interactionFilters.toDate" placeholder="To Date" datepicker-popup="dd/MM/yyyy" is-open="datepicker.toOpened" ng-click="open($event, 'to')" ng-keydown="disableKeyDown($event)" ng-keypress="disableKeyDown($event)" datepicker-options="datepicker.dateOptions" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 noPad searchFormRightDiv">
+                <div class="form-group col-md-12 noPad">
+                    <select ng-model="interactionFilters.context" ng-options="lecture.label for lecture in allLectures" id="lectureSelect" style="width: 100%;">
+                    </select>
+                </div>
+                <div class="form-group col-md-12 noPad">
+                    <button class="btn btn-large btn-default searchFormButton" id="searchInteractions" ng-click="searchInteractions();">Search</button>
+                </div>
+            </div>
+        </div>
+        <hr ng-hide="showAddQuestion" />
+    </div>
+    <div id="askQuestion" class="textEditor marginTop20" style="display:none;">
+        <!--<h2 class="borderBottom marginTop0 marginBottom30">Ask a question</h2> -->
+        <div class="alert alert-danger hide" id="validateMessage" role="alert"></div>
+
+        <div class="col-sm-12 noPad form-group">
+            <div>Ask your coach: {{$root.myCoachName}}</div>
+        </div>
+        <div class="col-sm-12 noPad form-group">
+            <div class="col-md-6 noPad searchFormLeftDiv">
+                <select ng-model="selectedLecture" ng-options="lecture.label for lecture in allLectures" class="selectBox" id="selectedLecture">
+                    <option></option>
+                </select>
+            </div>
+            <div class="col-md-6 noPad searchFormRightDiv">
+                <input type="text" id="askQuestionTxt" placeholder="Add question title here..." class="form-control" ng-model="interactionTitle" />
+            </div>
+        </div>
+        <div class="col-sm-12 noPad form-group">
+            <textarea id="askQuestionTxtArea" ng-il-pagedown ng-model="interactionPost" style="width:100%"></textarea>
+        </div>
+        <div class="save_text">
+            <div class="save_btn">
+                <button class="btn btn-default" ng-click="interactionPost = ''; interactionTitle = ''" data-action="Cancel" il-capture-click>Clear</button>
+                <button class="btn btn-primary marginLeft10" id="saveInteractions" ng-click="saveInteraction()">Save</button>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div ng-hide="showAddQuestion" class="marginTop20" ng-if="filterApplied">
+        <span>Filters Applied: </span>
+        <span class="QAtags">
+        <span class="badge" ng-show="appliedFilters.context" ng-if="appliedFilters.context.id">Context: {{appliedFilters.context.name}}
+            <a href="javascript:void(0)" ng-click="clearFilters('context','');">x</a>
+        </span>
+        <span class="badge" ng-repeat="concept in appliedFilters.selectedConcepts">Concept: {{concept.concept}}
+            <a href="" ng-click="clearFilters('concept',concept);">x</a>
+        </span>
+        <span ng-if="appliedFilters.fromDate && !appliedFilters.toDate " class="badge">Asked after: {{appliedFilters.fromDate | date:'dd/MM/yyyy'}}
+            <a href="" ng-click="clearFilters('fromdate', '')">x</a>
+        </span>
+        <span class="badge" ng-if="appliedFilters.toDate && !appliedFilters.fromDate">Asked before: {{appliedFilters.toDate | date:'dd/MM/yyyy'}}
+            <a href="" ng-click="clearFilters('todate', '')">x</a>
+        </span>
+        <span class="badge" ng-if="appliedFilters.toDate && appliedFilters.fromDate">Asked between: {{appliedFilters.fromDate | date:'dd/MM/yyyy'}} and {{appliedFilters.toDate | date:'dd/MM/yyyy'}}
+            <a href="" ng-click="clearFilters('daterange', '')">x</a>
+        </span>
+        </span>
+    </div>
+</div>
+<div class="marginTop20" ng-show="interactions.length > 0">
+    <div class="QACol" ng-repeat="interaction in interactions | filter:customInteractionFilter">
+        <div class="row">
+            <div class="col-md-10 QAcontent">
+                <h5>
+                    <a class="ac-links il-Link-clr" href="javascript:void(0);" ng-click="interactionURL(interaction.interactionId)" ng-bind-html="renderHtml(interaction.title)"></a>
+                </h5>
+                <div style="text-overflow: ellipsis;white-space: nowrap">
+                    <ul class="metadata">
+                        <li><span>by&nbsp;</span>
+                            <div style="display: inline" ng-community-user user-id="interaction.from" user-name="interaction.userName" context="'Coach QA Forum'"></div> ,
+                            <span data-livestamp="{{interaction.createdDate/1000}}"></span>
+                        </li>
+                        <li class="list-dash" ng-if="interaction.elementName">|</li>
+                        <li ng-if="interaction.elementName"><span>Asked in : </span><a href="#" ng-click="selectElement(interaction.learningElementId);" class="btn-link" title="{{interaction.elementName}}">{{interaction.elementName}}</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="clearfix"></div>
+                <div class="QAtags">
+                    <span class="badge" style="cursor:pointer" ng-click="selectConcept(concept.id);" ng-repeat="concept in interaction.conceptNames track by $index" ng-if="concept.concept">{{concept.concept}}
+                            </span>
+                </div>
+                <div class="padTop" ng-if="interaction.markAsAnswered">
+                    <span class="label label-success community-event-status"><i class="fa fa-check"></i> Answered</span>
+                </div>
+            </div>
+            <div class="col-md-2 QAStatus">
+                <ul class="pull-right">
+                    <li class="secondary">
+                        <span class="number">{{interaction.commentsCount || 0}}</span> <span>Replies</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <hr class="hrMarginBottom5"/>
+    </div>
+    <a href="javascript:void(0)" class="col-md-12 text-center show-more" ng-if="hasMore" ng-click="showMore()">
+        <span ng-if="!showMoreLoading">Show More</span>
+        <span ng-if="showMoreLoading">Loading <img src="/img/loading.gif"/></span>
+    </a>
+</div>
+<div class="col-md-12 alert alert-info fade in marginTop10" role="alert" ng-if="pageLoadComplete && interactions.length == 0" ng-show="loggedInUserRole == 'student'">
+    <p>There are no questions matching your search, <a href="javascript:void(0)" ng-click="askQuestion()" class="btn-link" data-action="New" il-capture-click>would you like to ask one?</a>
+    </p>
+</div>
+<div class="col-md-12 alert alert-info fade in marginTop10" role="alert" ng-if="pageLoadComplete && interactions.length == 0" ng-show="loggedInUserRole != 'student'">
+    <p>There are no pending questions to be answered (matching the search criteria)</p>
+</div>

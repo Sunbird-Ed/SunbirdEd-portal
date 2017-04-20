@@ -1,0 +1,41 @@
+<div class="dash-heading-border">
+    <h2 style="margin-top: 11px; margin-bottom: 11px">All Courses</h2>
+</div>
+<div class="QACol" ng-repeat="course in allCourses">
+    <div class="row">
+        <div class="col-md-8 QAcontent">
+            <h5>
+                {{course.name}}
+            </h5>
+            <div class="clearfix"></div>
+            <div class="QAtags">
+                <a class="btn-link disabled" href="javascript:void(0);">View Dashboard</a>
+                &emsp;
+                <a class="btn-link" href="javascript:void(0);" ng-click="selectCourse(course)">Balance Coaches</a>
+                &emsp;
+                <a class="btn-link" href="javascript:void(0);" ng-click="courseSettings(course)">Course Settings</a>
+            </div>
+        </div>
+        <div class="col-md-4 QAStatus">
+            <ul class="pull-right">
+                <li class="secondary">
+                    <span class="number">{{course.facultyCount || 0}}</span> <span>Faculty</span>
+                </li>
+                <li class="secondary">
+                    <span class="number">{{course.coachCount || 0}}</span> <span>Coaches</span>
+                </li>
+                <li class="secondary">
+                    <span class="number votes">{{course.studentCount || 0}}</span> <span>Students</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <hr/>
+</div>
+<div class="QACol" ng-if="allCourses.length == 0">
+    <div class="row">
+        <div class="alert alert-info">
+            There are no courses configud. Please use the import functionality to import courses.
+        </div>
+    </div>
+</div>

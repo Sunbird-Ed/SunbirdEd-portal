@@ -1,0 +1,33 @@
+#editor { 
+    margin: 0;
+    margin-top:20px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.ace_editor {
+  position: relative !important;
+  margin: auto;
+  height: 400px;
+  width: 700px;
+}
+
+.editor_btn_gap {
+  padding-top: 20px;
+}
+
+.error {
+  color : red;
+}
+
+.success {
+  color: green;
+}
+
+.gap {
+  margin-top: 20px;
+  margin-bottom: 20px; 
+}

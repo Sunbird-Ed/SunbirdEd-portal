@@ -1,0 +1,19 @@
+<div class="col-md-12 padTop padBottom">
+    <input type="text" ng-model="tocSearch" class="form-control" placeholder="search lessons..."/>
+</div>
+<ul class="navgoco" id="accordion-left-m2">
+    <li><a href="javascript:void(0)">{{toc.name}}</a></li>
+    <li ng-repeat="module in toc.modules | filter:tocSearch" ng-class="{'active':(module.id == currentItem.id)}">
+        <a href="javascript:void(0)" ng-click="setTOCHref(module.id)"><span class="glyph16 icon icon-moduel pull-left padRight"></span> {{module.name}}</a>
+        <ul id="{{module.id | filterId}}">
+            <li ng-repeat="lesson in module.lessons | filter:tocSearch" ng-class="{'active':(lesson.id == currentItem.id)}">
+                <a href="javascript:void(0)" ng-click="setTOCHref(lesson.id)"><span class="glyph16 icon icon-lessons pull-left padRight"></span> {{lesson.name}}</a>
+                <ul id="{{lesson.id | filterId}}">
+                    <li ng-repeat="lecture in lesson.lectures | filter:tocSearch" ng-class="{'active':(lecture.id == currentItem.id)}">
+                        <a href="javascript:void(0)" ng-click="setTOCHref(lecture.id)"> <span class="glyph16 icon icon-ref-material pull-left padRight"></span> {{lecture.name}}</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+</ul>

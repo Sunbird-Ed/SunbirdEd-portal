@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="courseBrowserApp">
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+  	<meta name="apple-touch-fullscreen" content="yes">
+  	<meta id="extViewportMeta" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <link rel="shortcut icon" href="images/favicon.png">
+	<title>SunBird</title>
+
+	<script type="text/javascript" src="https://fast.fonts.net/jsapi/6bb78b32-9b12-4a14-9179-8de98470e4b1.js"></script>
+
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/app.css" />
+    <link rel="stylesheet" href="/css/common.css" type="text/css"/>
+    <link rel="stylesheet" href="/css/custom.css" type="text/css"/>
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"/>
+
+	<link rel="stylesheet" href="/css/dndTree.css" type="text/css"/>
+	<link rel="stylesheet" href="/css/jquery-ui.css" />
+
+	<!-- <link type="text/css" href="/jit/css/base.css" rel="stylesheet" />
+	<link type="text/css" href="/jit/css/Hypertree.css" rel="stylesheet" /> -->
+
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body id="courseBrowserBody" class="module-body" ng-controller="CourseCtrl" ng-cloak class="ng-cloak">
+<div class="wrapper">
+<input type="hidden" id="courseId" value="<%=courseId%>"/>
+<% include ../includes/header %>
+<section class="wrap push container-section">
+	<div class="container">
+		<div class="row">
+			<div class="animatedDiv cb-content-column pull-left">
+				<div ui-view="contentSection" ng-cloak></div>
+				<div class="row">
+			        <div class="col-md-12 content-loaded">
+			        	<% include ../../public/templates/player/repositoryBrowser.html %>
+			        </div>
+			    </div>
+			</div>
+			<div id="courseBrowserFooter" class="cb-footer">
+                <% include ../includes/courseBrowserFooter %>
+            </div>
+		</div>
+	</div>
+</section>
+</div>
+</body>
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/d3.min.js"></script>
+<script src="/js/underscore.js"></script>
+<script src="/js/angular.min.js"></script>
+<script src="/js/angular-route.min.js"></script>
+<script src="/js/controllers/courseBrowser.js"></script>
+<script src="/js/controllers/contentPlayer.js"></script>
+<script src="/js/controllers/mediaPlayer.js"></script>
+<script src="/js/controllers/loginController.js"></script>
+<script src="/js/controllers/learnerListController.js"></script>
+
+<script src="/js/custom_old.js"></script>
+<script src="/js/modernizr.custom.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/bootstrap.file-input.js"></script>
+<script src="/js/application/courseBrowserScripts.js"></script>
+<script src="/js/angular-ui-router.min.js"></script>
+<script src="/js/jquery-ui.min.js"></script>
+<script src="/js/ng-grid-flexible-height.js"></script>
+<script src="/js/sunburst-services.js"></script>
+<script src="/js/sunburst-directives.js"></script>
+<script src="/js/sunburst-min.js"></script>
+<script src="/js/modernizr.custom.js"></script>
+<script src="/js/video.js"></script>
+<script src="/js/ilimi.youtube.js"></script>
+<script src="/js/videojs.cuepoints.js"></script>
+<script src="/js/videojs.markers.js"></script>
+<script src="/js/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="/js/ui-ace.js"></script>
+<script src='/js/scribd_api.js' type="text/javascript"></script>
+<script src="/js/URI.min.js"></script>
+<script src="/js/dndTree-min.js"></script>
+<script src="/js/ui-bootstrap-tpls-0.11.0.js"></script>
+<script src="/js/jquery.watermarkinput.js"></script>
+<script src="/js/textAngular-sanitize.min.js"></script>
+<script src="/js/textAngular.min.js"></script>
+<script src="/js/application/courseBrowserScripts.js"></script>
+<script src="/js/application/learnerSearchScript.js"></script>
+<script src="/js/jquery.navgoco.min.js"></script>
+<script src="/js/angular-ui-router.min.js"></script>
+<script src="/js/jquery-ui.min.js"></script>
+<script src="/js/jquery.ui.timeselect.js"></script>
+<script src="/js/lodash.js"></script>
+<script src="/js/angularjs-dropdown-multiselect.js"></script>
+<script src="/js/application/contentSearchScript.js"></script>
+<script src="/js/angular-file-upload.min.js"></script>
+<script src="/js/truncate.js"></script>
+<% include courseBrowserTemplates.ejs %>
+</html>

@@ -1,0 +1,85 @@
+
+<div class="row marginTB20" style="padding-bottom: 10px; border-bottom:1px dotted #777;">
+    <div class="col-md-10">
+        <!-- <img ng-src="{{instructor.image}}" /> -->
+        <div class="il-contact-pic-instructor nopad">
+            <img alt="User" ng-src="{{instructor.image}}" class="large_pic" />
+        </div>
+        <div class="pull-left">
+            <h1>{{instructor.name}}</h1>
+            <ul class="social-icons dash-social-icons social-links">
+                <li ng-show="!student.social_info.linkedin" class="">
+                    <a href="javascript:void(0);"><i class="fa fa-linkedin-square social_icons" data-original-title="" title=""></i><span>LinkedIn</span></a>
+                </li>
+                <li class="social_icon_active ng-hide" ng-show="student.social_info.linkedin">
+                    <a target="_blank" href="http://linkedin.com/in/"><i class="fa fa-linkedin-square social_icons" data-original-title="" title=""></i><span>LinkedIn</span></a>
+                </li>
+                <li ng-show="!student.social_info.facebook" class="ng-hide">
+                    <a href="javascript:void(0);"><i class="fa fa-facebook-square social_icons" data-original-title="" title=""></i><span>Facebook</span></a>
+                </li>
+                <li class="social_icon_active" ng-show="student.social_info.facebook">
+                    <a target="_blank" href="http://facebook.com/mahesh"><i class="fa fa-facebook-square social_icons" data-original-title="" title=""></i><span>Facebook</span></a>
+                </li>
+                <li ng-show="!student.social_info.twitter" class="">
+                    <a href="javascript:void(0);"><i class="fa fa-twitter-square social_icons" data-original-title="" title=""></i><span>Twitter</span></a>
+                </li>
+                <li class="social_icon_active ng-hide" ng-show="student.social_info.twitter">
+                    <a target="_blank" href="http://twitter.com/"><i class="fa fa-twitter-square social_icons" data-original-title="" title=""></i><span>Twitter</span></a>
+                </li>
+                <li ng-show="!student.social_info.googleplus" class="">
+                    <a href="javascript:void(0);"><i class="fa fa-google-plus-square social_icons" data-original-title="" title=""></i><span>Google+</span></a>
+                </li>
+                <li class="social_icon_active ng-hide" ng-show="student.social_info.googleplus">
+                    <a target="_blank" href="http://plus.google.com/"><i class="fa fa-google-plus-square social_icons" data-original-title="" title=""></i><span>Google+</span></a>
+                </li>
+                <li ng-show="!student.social_info.github" class="">
+                    <a href="javascript:void(0);"><i class="fa fa-github-square social_icons" data-original-title="" title=""></i><span>Github</span></a>
+                </li>
+                <li class="social_icon_active ng-hide" ng-show="student.social_info.github">
+                    <a target="_blank" href="http://github.com/"><i class="fa fa-github-square social_icons" data-original-title="" title=""></i><span>Github</span></a>
+                </li>
+            </ul>
+            <!-- <div>
+                <button class="btn btn-default btn-ins">Send Message</button>
+                <button class="btn btn-default btn-ins">Request Session</button>
+            </div> -->
+        </div>
+    </div>
+    <div class="col-md-2">
+        <img ng-src="{{instructor.organizationImage}}" ng-show="instructor.organizationImage" class="instructor-org-img"/>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8 main_description">
+        <p class="marginTB20" ng-bind-html="renderHtml(instructor.description)"></p>
+    </div>
+    <div class="col-md-1">&nbsp;</div>
+    <div class="col-md-3 ins-details marTop20">
+        <div class="pull-right">
+        <div class="course_section_heading">Courses by {{instructor.name}}</div>
+        <div class="padBottom20">
+            <div class="row" ng-repeat="course in instructor.courses">
+            <a href="/course/{{removeFedoraPrefix(course.identifier)}}" class="col-md-2 course-tmb">
+                <div style="position: absolute; color: rgb(255, 255, 255); font-weight: bold; padding: 4px; background: none repeat scroll 0% 0% maroon;" ng-if="course.status == 'upcoming'">Upcoming</div>
+                <div class="course-box">
+                    <img class="course-box-img" ng-src="{{course.image}}" alt="course book"  title="{{course.name}}"/>
+                    <div class="course-box-name">{{course.name}}</div>
+                </div>
+            </a>
+
+            <!-- <div href="/course/{{removeFedoraPrefix(course.identifier)}}" class="col-md-2 course-tmb" ng-if="course.status == 'upcoming'">
+                <div style="position: absolute; color: rgb(255, 255, 255); font-weight: bold; padding: 4px; background: none repeat scroll 0% 0% maroon;">Upcoming</div>
+                <div class="course-box">
+                    <img class="course-box-img" ng-src="{{course.image}}" alt="course book"  title="{{course.name}}"/>
+                    <div class="course-box-name">{{course.name}}</div>
+                </div>
+            </div> -->
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+<hr>
+<div class="main_description">
+<button class="btn btn-default" ng-click="goBack()" ng-if="showBackButton"><i class="fa fa-chevron-left"></i>&nbsp;Back to lecture</button>
+</div>

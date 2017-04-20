@@ -1,0 +1,67 @@
+<html ng-app="exploreApp">
+	<head>
+		<link href="/css/bootstrap.min.css" rel="stylesheet"/>
+		<link href="/css/custom.css" rel="stylesheet"/>
+		<link href="/css/ilimi.css" rel="stylesheet"/>
+	</head>
+	<body ng-controller="exploreController">
+		<section class="mid-container-full">
+	        <div class="mid-container">
+	            <div class="col-sm-1 NavContentz leftbarshadow">
+	            </div>
+	            <div class="middleContainer">
+	                <div class="mid-area scrollstyle">
+	                    <div class="col-md-12 noPad padTop">
+						    <div class="col-md-12 treeContainer" id="viz_panel_2">
+						        <div id="treeLayout" class="treeLayout"></div>
+						    </div>
+						</div>
+	                </div>
+	            </div>
+	            <div class="RightSideBar">
+	            </div>
+	        </div>
+	    </section>
+	</body>
+	<script src="/js/jquery.min.js"></script>
+	<script src="/js/d3.min.js"></script>
+	<script src="/js/dndTree-min.js"></script>
+	<script type="text/javascript">
+	var app = angular.module('exploreApp', []);
+
+	app.controller('exploreController', function($scope, $http, $rootScope, $timeout) {
+
+		$rootScope.courseId = 'info:fedora/learning:7924';
+	    $scope.loadConceptMap = function() {
+	        if (typeof $rootScope.repositoryBrowserMap == 'undefined') {
+	            $http.get('/private/v1/course/fetchConceptMap/' + encodeURIComponent($rootScope.courseId))
+	            .success(function(data, status, headers, config) {
+	                if(data && data.length > 0) {
+	                    $rootScope.repositoryBrowserMap = data[0];
+	                    if(data.length > 1) {
+	                        $rootScope.contentCounts = data[1];
+	                    }
+	                    $scope.buildConceptTree();
+	                }
+	            })
+	            .error(function(data, status, headers, config) {
+	                console.log("Error loading data!" + status);
+	            });
+	        } else {
+	            $scope.buildConceptTree();
+	        }
+	    }
+
+	    $scope.buildConceptTree = function() {
+	        $timeout(function() {
+	            showDNDTree($rootScope.repositoryBrowserMap, 'treeLayout', {}, $scope, null);
+	        }, 100);
+	    }
+
+	    $scope.selectConcept = function(d) {
+	    }
+	    $scope.loadConceptMap();
+	});
+	</script>
+
+</html>

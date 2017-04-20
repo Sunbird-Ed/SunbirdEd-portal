@@ -1,0 +1,178 @@
+<link rel="stylesheet" href="/css/toc.css" />
+<div class="text-center" ng-show="loadingTOC" style="margin-top: 50px">
+    Loading <img src="/img/loading.gif"/>
+</div>
+<div ng-hide="loadingTOC">
+  <div class="tocContainer" ng-cloak>
+      <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+          <div class="panel panel-default" ng-repeat="tocUnits in tocByTime.units" ng-init="outerIndex = $index">
+              <div class="panel-heading tocweek" role="tab" id="WeekOne">
+                  <div class="weekdetailHead">
+                      <h4 class="panel-title tocweekHeader weekHeader{{$index}}"> <a data-toggle="collapse" data-parent="#accordion" href="#week{{$index}}" aria-expanded="true" aria-controls="week{{$index}}">
+                   {{tocByTime.timeUnit}} {{$index + 1}} <span ng-show="tocUnits.learningTime" style="font-size: 20px;">({{secondsToStr(tocUnits.learningTime)}})</span></a>
+                              <div class=" weekDetails pull-right marginTop10">
+                                      <ul class="list-inline">
+                                        <li ng-if="tocUnits.elements_count.learningresource">
+                                          <i class="glyph16 icon icon-ref-material marRight5" data-toggle="tooltip" data-placement="top" title="" data-original-title="Lectures"></i>{{tocUnits.elements_count.learningresource}}
+                                        </li>
+                                        <li ng-if="tocUnits.elements_count.learningactivity && !tocUnits.elements_count.Exam">
+                                          <i class="glyph16 icon icon-richtext-html marRight5" data-toggle="tooltip" data-placement="top" title="" data-original-title="Exams"></i>{{tocUnits.elements_count.learningactivity}}
+                                        </li>
+                                        <li ng-if="tocUnits.elements_count.Exam && !tocUnits.elements_count.learningactivity">
+                                          <i class="glyph16 icon icon-richtext-html marRight5" data-toggle="tooltip" data-placement="top" title="" data-original-title="Exams"></i>{{tocUnits.elements_count.Exam}}
+                                        </li>
+                                        <li ng-if="tocUnits.elements_count.practiceTest">
+                                          <i class="glyph16 icon icon-quiz marRight5" data-toggle="tooltip" data-placement="top" title="" data-original-title="Practice Tests"></i>{{tocUnits.elements_count.practiceTest}}
+                                        </li>
+                                      </ul>
+                              </div>
+                     </h4>
+                  </div>
+                  <div id="week{{$index}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                      <div class="panel-body" ng-repeat="module in tocUnits.children" ng-init="moduleIndex = $index">
+                          <div class="panel panel-default">
+                              <div class="panel-heading" role="tab" id="BookOne">
+                                  <div class="panel_leftR">
+                                      <div class="panel-title courseHead" ng-show="module.elementType == 'module' || module.elementType == 'lesson'">
+                                          <a data-toggle="collapse" data-parent="#accordion1" href="#collapse{{$parent.$index}}_{{$index}}" aria-expanded="true" aria-controls="collapse{{$parent.$index}}_{{$index}}">
+                                              <i class="badge currentModuleBadge{{$parent.$index}}_{{$index}}" ng-show="module.elementType == 'module'">M</i>
+                                              <i class="badge custombadge currentModuleBadge{{$parent.$index}}_{{$index}}" ng-show="module.elementType == 'lesson'">L</i> {{module.name}}
+                                              <span class="tocSpanNoMargin" ng-if="module.learningTime">
+                                              ({{secondsToStr(module.learningTime)}})
+                                            </span>
+                                          </a>
+                                          <span ng-if="module.shortdesciption">{{module.shortdesciption}}</span>
+                                      </div>
+                                      <div class="panel-title courseHead tocElementDiv" ng-show="module.elementType != 'module' && module.elementType != 'lesson'">
+                                          <span ng-if="module.identifier == tocByTime.currentElement" ng-init="expandCurrentElement(outerIndex, moduleIndex, lessonIndex)"></span>
+                                          <i class="fa fa-hand-o-right tocCurrentElementIcon" ng-if="module.identifier == tocByTime.currentElement"></i>
+                                          <a href="javascript:void(0)" ng-if="module.name" ng-click="playLecture(module.identifier)" ng-class="{'tocCurrentElement' : (module.identifier == tocByTime.currentElement)}">
+                                              <i class="com-full tocVAlignMiddle" ng-if="module.state == 2"></i>
+                                              <i class="com-half tocVAlignMiddle" ng-if="module.state == 1"></i>
+                                              <i class="com-null tocVAlignMiddle" ng-if="module.state == 0 || !module.state"></i> {{module.name}}
+                                          </a>
+                                          <span class="tocSpanNoMargin" ng-if="module.learningTime">
+                                              ({{secondsToStr(module.learningTime)}})
+                                          </span>
+                                          <span ng-init="tocItem = module" ng-include="'course_schedule_icons_template.html'"></span>
+                                      </div>
+                                  </div>
+                                  <div id="collapse{{$parent.$index}}_{{$index}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                                      <div class="panel-body" ng-repeat="lesson in module.children" ng-init="lessonIndex = $index">
+                                          <div class="panel panel-default">
+                                              <div class="panel-heading" role="tab" id="courseOne">
+                                                  <div class="panel_leftL">
+                                                      <div class="panel-title CourselistHead" ng-show="lesson.elementType == 'lesson'">
+                                                          <a data-toggle="collapse" data-parent="#accordion2" href="#course{{outerIndex}}_{{$parent.$index}}_{{$index}}" aria-expanded="true" aria-controls="course{{outerIndex}}_{{$parent.$index}}_{{$index}}">
+                                                              <i class="badge custombadge currentLessonBadge{{outerIndex}}_{{$parent.$index}}_{{$index}}">L</i> {{lesson.name}} <span ng-if="lesson.learningTime">({{secondsToStr(lesson.learningTime)}})</span>
+                                                          </a>
+                                                      </div>
+                                                      <div class="panel-title CourselistHead tocElementDiv" ng-show="lesson.elementType != 'lesson'">
+                                                          <span ng-if="lesson.identifier == tocByTime.currentElement" ng-init="expandCurrentElement(outerIndex, moduleIndex, lessonIndex)"></span>
+                                                          <i class="fa fa-hand-o-right" ng-if="lesson.identifier == tocByTime.currentElement"></i>
+                                                          <a href="javascript:void(0)" ng-if="lesson.name" ng-click="playLecture(lesson.identifier)" ng-class="{'tocCurrentElement' : (lesson.identifier == tocByTime.currentElement)}">
+                                                              <i class="com-full tocVAlignMiddle" ng-if="lesson.state == 2"></i>
+                                                              <i class="com-half tocVAlignMiddle" ng-if="lesson.state == 1"></i>
+                                                              <i class="com-null tocVAlignMiddle" ng-if="lesson.state == 0 || !lesson.state"></i> {{lesson.name}}
+                                                          </a>
+                                                          <span class="tocSpanNoMargin" ng-if="lesson.learningTime">
+                                                                ({{secondsToStr(lesson.learningTime)}})
+                                                          </span>
+                                                          <span ng-init="tocItem = lesson" ng-include="'course_schedule_icons_template.html'"></span>
+                                                      </div>
+
+                                                      <div id="course{{outerIndex}}_{{$parent.$index}}_{{$index}}" class="panel-collapse collapse courseFullist" role="tabpanel" aria-labelledby="headingOne">
+                                                          <div class="panel-body">
+                                                              <ul>
+                                                                  <li ng-repeat="lecture in lesson.children" ng-if="lecture">
+                                                                      <span ng-if="lecture.identifier == tocByTime.currentElement" ng-init="expandCurrentElement(outerIndex, moduleIndex, lessonIndex)"></span>
+                                                                      <i class="fa fa-hand-o-right tocHandIcon" ng-if="lecture.identifier == tocByTime.currentElement"></i>
+                                                                      <i class="com-full" ng-if="lecture.state == 2"></i>
+                                                                      <i class="com-half" ng-if="lecture.state == 1"></i>
+                                                                      <i class="com-null" ng-if="lecture.state == 0 || !lecture.state"></i>
+
+                                                                      <a href="javascript:void(0)" ng-if="lecture.name" ng-click="playLecture(lecture.identifier)" ng-class="{'tocCurrentElement' : (lecture.identifier == tocByTime.currentElement)}"> {{lecture.name}}</a>
+                                                                      <span ng-if="lecture.learningTime"> ({{secondsToStr(lecture.learningTime)}})</span>
+                                                                      
+                                                                      <span ng-init="tocItem = lecture" ng-include="'course_schedule_icons_template.html'"></span>
+                                                                  </li>
+                                                              </ul>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <div id="eventsContainer" class="tocContainer" ng-if="(tocByTime.currentEvents && tocByTime.currentEvents.length > 0) || (tocByTime.upComingEvents && tocByTime.upComingEvents.length > 0) || (tocByTime.completedEvents && tocByTime.completedEvents.length > 0)">
+      <div class="il-sc-containerz">
+          <div class="il-sc-header">
+              <h2>EVENTS</h2>
+          </div>
+          <div>
+              <table class="table">
+                  <tbody>
+                      <tr ng-repeat="currentEvent in tocByTime.currentEvents" style="border-bottom: 1px solid #ccc">
+                          <td>
+                              <i ng-if="currentEvent.event.action == 'accepted' || currentEvent.event.action == 'invited'" class="exam_com" data-toggle="tooltip" data-placement="top" title="" data-original-title="In Progress"></i>
+                              <i ng-if="currentEvent.event.action == 'declined'" class="exam_alert" data-toggle="tooltip" data-placement="top" title="" data-original-title="Declined"></i>
+                          </td>
+                          <td>
+                              <i class="glyph16 icon icon-tutionclass marRight5" data-toggle="tooltip" data-placement="top" title="" data-original-title="Coaching Session" ng-if="currentEvent.elementType == 'coachingSession'"></i>
+                              <i class="glyph16 icon icon-quiz marRight5" data-toggle="tooltip" data-placement="top" title="" data-original-title="Practice Test" ng-if="currentEvent.elementType == 'practiceTest'"></i>
+                              <i class="glyph16 icon icon-richtext-html marRight5" data-toggle="tooltip" data-placement="top" title="" data-original-title="Exam" ng-if="currentEvent.elementType == 'Exam'"></i>
+                              <span ng-if="currentEvent.identifier == tocByTime.currentElement" ng-init="slideToEvents()"></span>
+                              <a href="javascript:void(0)" class="tocEvent" ng-click="playLecture(currentEvent.identifier)" ng-class="{'tocCurrentElement' : (currentEvent.identifier == tocByTime.currentElement)}">{{currentEvent.name}}</a>
+                          </td>
+                          <td class="pull-right">
+                              {{ currentEvent.startDate |  date:"MMM d, y h:mm a"}} <span ng-show="currentEvent.duration">({{ currentEvent.duration | readableTime}})</span>
+                          </td>
+                      </tr>
+                      <tr ng-repeat="upcomingEvent in tocByTime.upComingEvents" style="border-bottom: 1px solid #ccc">
+                          <td>
+                              <i ng-if="upcomingEvent.event.action == 'accepted'" class="exam_com" data-toggle="tooltip" data-placement="top" title="" data-original-title="Accepted"></i>
+                              <i ng-if="upcomingEvent.event.action == 'declined'" class="exam_alert" data-toggle="tooltip" data-placement="top" title="" data-original-title="Declined"></i>
+                              <i ng-if="upcomingEvent.event.action == 'invited'" class="exam_noti" data-toggle="tooltip" data-placement="top" title="" data-original-title="Pending"></i>
+                          </td>
+                          <td>
+                              <i class="glyph16 icon icon-tutionclass marRight5" data-toggle="tooltip" data-placement="top" title="" data-original-title="Coaching Session" ng-if="upcomingEvent.elementType == 'coachingSession'"></i>
+                              <i class="glyph16 icon icon-quiz marRight5" data-toggle="tooltip" data-placement="top" title="" data-original-title="Practice Test" ng-if="upcomingEvent.elementType == 'practiceTest'"></i>
+                              <i class="glyph16 icon icon-richtext-html marRight5" data-toggle="tooltip" data-placement="top" title="" data-original-title="Exam" ng-if="upcomingEvent.elementType == 'Exam'"></i>
+                              <span ng-if="upcomingEvent.identifier == tocByTime.currentElement" ng-init="slideToEvents()"></span>
+                              <a href="javascript:void(0)" class="tocEvent" ng-click="playLecture(upcomingEvent.identifier)" ng-class="{'tocCurrentElement' : (upcomingEvent.identifier == tocByTime.currentElement)}">{{upcomingEvent.name}}</a>
+                          </td>
+                          <td class="pull-right">
+                              {{ upcomingEvent.startDate |  date:"MMM d, y h:mm a"}} <span ng-show="upcomingEvent.duration">({{ upcomingEvent.duration | readableTime}})</span>
+                          </td>
+                      </tr>
+                      <tr ng-repeat="completedEvent in tocByTime.completedEvents" style="border-bottom: 1px solid #ccc">
+                          <td>
+                              <i ng-if="completedEvent.event.action == 'accepted' || completedEvent.event.action == 'invited'" class="exam_com" data-toggle="tooltip" data-placement="top" title="" data-original-title="Completed"></i>
+                              <i ng-if="completedEvent.event.action == 'declined'" class="exam_alert" data-toggle="tooltip" data-placement="top" title="" data-original-title="Declined"></i>
+                          </td>
+                          <td>
+                              <i class="glyph16 icon icon-tutionclass marRight5" data-toggle="tooltip" data-placement="top" title="" data-original-title="Coaching Session" ng-if="completedEvent.elementType == 'coachingSession'"></i>
+                              <i class="glyph16 icon icon-quiz marRight5" data-toggle="tooltip" data-placement="top" title="" data-original-title="Practice Test" ng-if="completedEvent.elementType == 'practiceTest'"></i>
+                              <i class="glyph16 icon icon-richtext-html marRight5" data-toggle="tooltip" data-placement="top" title="" data-original-title="Exam" ng-if="completedEvent.elementType == 'Exam'"></i>
+                              <span ng-if="completedEvent.identifier == tocByTime.currentElement" ng-init="slideToEvents()"></span>
+                              <a href="javascript:void(0)" class="tocEvent" ng-click="playLecture(completedEvent.identifier)" ng-class="{'tocCurrentElement' : (completedEvent.identifier == tocByTime.currentElement)}">{{completedEvent.name}}</a>
+                          </td>
+                          <td class="pull-right">
+                              {{ completedEvent.startDate |  date:"MMM d, y h:mm a"}} <span ng-show="completedEvent.duration">({{ completedEvent.duration | readableTime}})</span>
+                          </td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
+      </div>
+  </div>
+</div>

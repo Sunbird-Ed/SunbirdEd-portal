@@ -1,0 +1,136 @@
+.lscontextselect{
+    height : 35px !important;
+}
+.ls-context-container{
+   background: none repeat scroll 0 0 #fff;
+    border: 1px solid #999;
+    height: 300px;
+    margin-top: -1px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    position: fixed;
+    width: 400px;
+    z-index: 10000 !important;
+    display: none;
+}
+
+ .ls-context-container-hover {
+    display: inline;
+    height: 300px;
+    width: 400px;
+}
+
+.ls-lesson-pad{
+    padding-left: 15px !important;
+}
+.ls-lecture-pad{
+    padding-left: 25px !important;  
+}
+.lsPadTop{
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 15px;
+    padding-top: 15px
+}
+
+.ls-filters {
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.ls-error {
+    border: 1px solid red;
+}
+
+.ls-selected-context{
+    color: #0099cc;
+}
+.ls-filter-lectures{
+    font-family: arial !important;
+    font-size: 16px !important;
+    padding : 1px;
+}
+
+.ls-filter-lessons{
+    font-family: arial !important;
+    font-size: 17px !important;
+}
+.ls-filter-modules{
+    font-family: arial !important;
+    font-size: 18px !important;
+}
+.ls-filter-tocname{
+    font-family: arial !important;
+    font-size: 19px !important;
+}
+
+ul.lsmoduleslist{
+    line-height: 1.6;
+    padding-left: 12px;
+    padding-top: 16px;
+    background: #fbfbfb;
+}
+
+.learner-block-view {    
+border: 5px solid #fff;
+margin-right: 20px;
+line-height: 12px;
+margin-bottom: 10px;
+display: inline-block;
+border-radius: 5px;
+background: #e5e5e5;
+color:#000;
+}
+
+.learner-block-view:hover {
+border: 5px solid #A4A4A4;    
+margin-right: 20px;
+line-height: 12px;
+margin-bottom: 10px;
+display: inline-block;
+border-radius: 5px;
+cursor:pointer;
+color:#000;
+}
+
+.selected {
+    background: #0099cc;
+    color: #fff;
+    border: 5px solid #A4A4A4!important; 
+    border-radius: 5px;   
+}
+
+.styled-dropdown {
+display: block;
+clear: both;
+font-weight: 400;
+line-height: 1.42857143;
+color: #333;
+white-space: nowrap;
+padding: 5px 10px !important;
+font-size: 14px;
+cursor: pointer;
+}
+
+.styled-dropdown:hover {
+background: #e5e5e5;
+}    
+
+.btn-search {
+    background: none repeat scroll 0 0 #555;
+    margin-top: 20px;
+}
+
+.page-link {
+    color: #0099cc;
+    cursor: pointer;
+}
+
+.wrap-content {
+    word-break:break-all;
+    word-wrap: break-word;
+}
+
+.message-text {
+    font-family: "Frutiger Serif LT W01";
+    font-size: 18px;
+}

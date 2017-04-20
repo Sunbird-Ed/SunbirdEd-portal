@@ -1,0 +1,45 @@
+<div class="content_row" style="padding-bottom: 20px; padding-top: 10px; border-bottom:1px solid #ddd;">
+    <!-- <img ng-src="{{instructor.image}}" /> -->
+    <div class="il-student-pic nopad">
+        <img alt="User" ng-src="{{user.metadata.image}}" class="large_pic" />
+    </div>
+    <div class="col-md-8 pull-left">
+        <h1 style="margin-top: 0px">{{user.displayName}}
+        <button class="btn btn-default btn-sm pull-right marginTop5" onclick="$('#editProfileModal').modal();" title="Edit My Profile"><i class="icon-edit"></i> Edit Profile</button>
+        </h1>
+        <div class="studentMiniProfile" style="padding: 0px">
+            <span ng-show="student.educationQualification && (userCan('student_read'))"><i class="icon-master"></i> {{student.educationQualification}}</span>
+            <span ng-show="student.company  && (userCan('student_read'))"><i class="glyphicon glyphicon-tag"></i> {{student.jobTitle != '' ? student.jobTitle + ', ' : ''}}{{student.companyName}}</span>
+            <span ng-show="user.email"><i class="icon-mail"></i> {{user.email}}</span>
+            <span ng-show="student.website  && (userCan('student_read'))"><i class="icon-url"></i> <a href="http://{{student.website}}" target="_blank">{{student.website}}</a></span>
+        </div>
+        <div class="content_row">
+            <ul class="social-icons dash-social-icons social-links" style="padding-top: 20px">
+                <li class="social_icon_active ng-hide" ng-show="user.social_info.linkedin">
+                    <a target="_blank" href="http://linkedin.com/in/"><i class="fa fa-linkedin-square social_icons" data-original-title="" title=""></i><span>LinkedIn</span></a>
+                </li>
+                <li class="social_icon_active" ng-show="user.social_info.facebook">
+                    <a href="http://facebook.com/{{user.social_info.facebook}}" target="_blank"><i class="fa fa-facebook-square social_icons"></i><span>Facebook</span></a>
+                </li>
+                <li class="social_icon_active ng-hide" ng-show="user.social_info.twitter">
+                    <a target="_blank" href="http://twitter.com/"><i class="fa fa-twitter-square social_icons" data-original-title="" title=""></i><span>Twitter</span></a>
+                </li>
+                <li class="social_icon_active ng-hide" ng-show="user.social_info.googleplus">
+                    <a target="_blank" href="http://plus.google.com/"><i class="fa fa-google-plus-square social_icons" data-original-title="" title=""></i><span>Google+</span></a>
+                </li>
+                <li class="social_icon_active ng-hide" ng-show="user.social_info.github">
+                    <a target="_blank" href="http://github.com/"><i class="fa fa-github-square social_icons" data-original-title="" title=""></i><span>Github</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<!---
+<div class="block-border-bottom" ng-show="!evernoteAccess">
+    <h4>evernote access</h4>
+    <i class="evernote-icon"></i>
+    <button class="btn btn-success" type="button" onClick="location.href='/private/v1/everNote/oauth?enote=auth'" >Provide Evernote Access</button>
+</div>
+-->

@@ -1,0 +1,249 @@
+
+<div class="List_view ng-cloak" ng-cloak ng-show="workFlowStep == 1">
+    <div class=" askquestionHeader">
+    <div class="headerAsk">
+        <h2>{{operationType}} Question Set</h2>
+        <span class="backBtnCont">
+	        <a href="javascript:void(0);" ng-click="backToList();" class="marginTop10 commonBackToList"><i class="fa fa-chevron-left"></i> Back to list</a>
+		</span>
+    </div>
+
+    <div class="textEditor AskQEdit marginTop20">
+    	<div class="row" style="margin-bottom: 15px;">
+    		<div id="qsSearchQAlert" class="col-md-12 alert alert-danger hide" role="alert">Please fill all required fields.</div>
+			<div class="col-md-12">
+				<div>Question set for*</div>
+				<select ng-il-multiselect='{"placeholder":"Select Lecture...", "selectedDisable": true}' multiple="true" ng-model="listQuestionSetFilters.learningElements" ng-options="lecture.label for lecture in questionSearch.learningElements" style="width: 100%;"></select>
+			</div>
+		</div>
+		<div class="row" style="margin-bottom: 15px;">
+		    <div class="col-md-12">
+		        <div>Concepts</div>
+		        <select ng-il-multiselect='{"placeholder":"Select Concepts..."}' multiple="true" ng-model="listQuestionSetFilters.selectedConcepts" ng-options="object.name for object in getQuestionSetConceptList(conceptTitleMap)" style="width: 100%;"></select>
+		    </div>
+		</div>
+		<div class="row" style="margin-bottom: 15px;">
+		    <div class="col-md-6">
+		        <div>Purpose*</div>
+		        <select ng-model="listQuestionSetFilters.purpose" class="form-control" ng-options="item.name for item in purpose" ng-change="setSubpurpose(listQuestionSetFilters.purpose)">
+		            <option value="">Select Purpose</option>
+		         </select>
+		    </div>
+		    <div class="col-md-6">
+		        <div>Subpurpose</div>
+		        <div ng-dropdown-multiselect="" options="subPurpose" selected-model="listQuestionSetFilters.selectedSubPurpose" extra-settings="{displayProp: 'name', externalIdProp: ''}"></div>
+		    </div>
+		</div>
+		<div class="row" style="margin-bottom: 15px;">
+		    <div class="col-md-6">
+		        <div>Question Type</div>
+		        <select ng-model="listQuestionSetFilters.selectedQuestionType" class="form-control" ng-options="questiontype for questiontype in questionTypes">
+		            <option value="">Select Question Type</option>
+		         </select>
+		    </div>
+		    <div class="col-md-6">
+		        <div>Question Subtype</div>
+		        <div ng-dropdown-multiselect="" options="questionSubTypes" selected-model="listQuestionSetFilters.selectedQuestionSubType" extra-settings="{displayProp: 'name', externalIdProp: ''}"></div>
+		    </div>
+		</div>
+		<div class="row" style="margin-bottom: 15px;">
+			<div class="col-md-6">
+		        <div>Outcome</div>
+		        <div ng-dropdown-multiselect="" options="courseOutcomes" selected-model="listQuestionSetFilters.selectedOutcome" extra-settings="{displayProp: 'name', externalIdProp: ''}"></div>
+		    </div>
+		    <div class="col-md-6">
+		        <div>Difficulty level*</div>
+		        <div ng-dropdown-multiselect="" options="difficultyLevels" selected-model="listQuestionSetFilters.selectedDifficultyLevel" extra-settings="{displayProp: 'name', externalIdProp: ''}"></div>
+		    </div>
+		</div>
+		<div class="row" style="margin-bottom: 15px;">
+		    <div class="col-md-6">
+		        <div>Used in</div>
+		        <select ng-model="listQuestionSetFilters.testUsage" class="form-control" ng-options="testType for testType in questionSetUsedIn">
+		            <option value="">Select Used In</option>
+		         </select>
+		    </div>
+		    <div class="col-md-6">
+		    </div>
+		</div>
+    </div>
+
+    <div class="textEditor AskQEdit">
+    	<div class="save_btn">
+    		<button class="btn btn-default" ng-click="clearSearch()">Clear</button>
+    		<button id="searchQuestions" class="btn btn-primary" ng-click="searchQuestions()">Search</button>
+    		<button class="btn btn-primary" ng-click="previewSearchCriteria()" ng-show="showSearchResult && searchResultCount > 0">Next</button>
+    	</div>
+    	<div class="clearfix" style="border-bottom: 1px solid #ededed; padding-bottom: 15px;"></div>
+    </div>
+
+    <div class="listviewContainer" ng-show="showSearchResult">
+		<div class="QACol">
+            <div ng-show="searchResult.length == 0">
+                <div class="alert alert-info fade in" role="alert">
+                    <p>There are no questions with given search criteria.</p>
+                </div>
+            </div>
+
+            <div class="row" ng-repeat="question in searchResult | limitTo:resultLimit">
+                <div ng-include="'questions_list_item.html'"></div>
+            </div>
+        	<div class="row" ng-hide="resultLimit >= searchResult.length">
+    			<div class="col-md-12"><a class="pull-right" ng-click="updateResultLimit()">show more</a></div>
+    		</div>
+
+		</div>
+	</div>
+	</div>
+</div>
+
+<div class="List_view ng-cloak" ng-cloak ng-show="workFlowStep == 2">
+	<div id="conformMessage" class="alert  hide" ></div>
+    <div class=" askquestionHeader">
+        <div class="headerAsk">
+            <h2>{{operationType}} Question Set</h2>
+            <span class="backBtnCont">
+		        <a href="javascript:void(0);" ng-click="backToList();" class="marginTop10 commonBackToList"><i class="fa fa-chevron-left"></i> Back to list</a>
+			</span>
+        </div>
+    </div>
+    <div class="textEditor AskQEdit">
+    	<div class="row noMargin padTop15">
+    		<div id="saveQSAlert" class="col-md-12 alert hide" role="alert"></div>
+			<div class="col-md-12">
+				<div>Title*</div>
+				<input type="text" class="form-control" ng-model="listQuestionSetFilters.questionSetName" />
+			</div>
+		</div>
+    </div>
+
+    <div class="textEditor AskQEdit">
+    	<div class="row noMargin padTop15">
+	    	<div class="col-md-3">
+				<div>Used for:*</div>
+				<select ng-model="listQuestionSetFilters.usedIn" class="form-control" ng-options="item for item in questionSetUsedIn"></select>
+			</div>
+		</div>
+    </div>
+
+    <div class="textEditor AskQEdit">
+	    <div class="row noMargin padTop15">
+			<div class="col-md-12">
+				<div>Description</div>
+				<textarea class="form-control" rows="5" ng-model="listQuestionSetFilters.questionSetDescription"></textarea>
+			</div>
+		</div>
+	</div>
+
+	<div class="textEditor AskQEdit">
+	    <div class="row noMargin padTop15">
+			<div class="col-md-12">
+				<div>Questions in</div>
+				<div ng-bind-html="previewList(listQuestionSetFilters.learningElements)"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="textEditor AskQEdit">
+	    <div class="row noMargin padTop15">
+			<div class="col-md-12">
+				<div>Concepts</div>
+				<div ng-bind-html="previewList(listQuestionSetFilters.selectedConcepts)"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="textEditor AskQEdit">
+	    <div class="row noMargin padTop15">
+			<div class="col-md-12">
+				<div>Purpose</div>
+				<div>{{(listQuestionSetFilters.purpose)?listQuestionSetFilters.purpose.name:"None"}}</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="textEditor AskQEdit">
+	    <div class="row noMargin padTop15">
+			<div class="col-md-12">
+				<div>Subpurpose</div>
+				<div ng-bind-html="previewList(listQuestionSetFilters.selectedSubPurpose)"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="textEditor AskQEdit">
+	    <div class="row noMargin padTop15">
+			<div class="col-md-12">
+				<div>Difficulty level</div>
+				<div ng-bind-html="previewList(listQuestionSetFilters.selectedDifficultyLevel)"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="textEditor AskQEdit">
+	    <div class="row noMargin padTop15">
+			<div class="col-md-12">
+				<div>Question Type</div>
+				<div>{{(listQuestionSetFilters.selectedQuestionType)?listQuestionSetFilters.selectedQuestionType:"None"}}</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="textEditor AskQEdit">
+	    <div class="row noMargin padTop15">
+			<div class="col-md-12">
+				<div>Question Subtype</div>
+				<div ng-bind-html="previewList(listQuestionSetFilters.selectedQuestionSubType)"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="textEditor AskQEdit">
+	    <div class="row noMargin padTop15">
+			<div class="col-md-12">
+				<div>Outcome</div>
+				<div ng-bind-html="previewList(listQuestionSetFilters.selectedOutcome)"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="textEditor AskQEdit">
+	    <div class="row noMargin padTop15">
+			<div class="col-md-12">
+				<div>Question Set for</div>
+				<div>{{listQuestionSetFilters.usedIn}}</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="textEditor AskQEdit">
+    	<div class="save_btn">
+    		<button class="btn btn-default" ng-click="workFlowStep=1;">Back</button>
+    		<button id="saveQuestionSet" class="btn btn-primary" ng-show="listQuestionSetFilters.questionSetName" ng-click="saveQuestionSet()">Save</button>
+    	</div>
+    	<div class="clearfix"></div>
+    </div>
+
+</div>
+
+<!--popup start-->
+        <!-- popup Modal -->
+        <div class="modal fade" id="questionPreviewModal" tabindex="-1" role="dialog" aria-labelledby="question-popup-box" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                	<span aria-hidden="true">&times;</span>
+                	<span class="sr-only">Close</span>
+                </button>
+                <br/>
+              </div>
+              <div class="modal-body" style="display:flex;">
+                  <div id="popupQuestionContainer">
+                      <div id="popupPreviewQuestion" class="col-md-12 row-fluid"></div>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  <!--popup ends-->

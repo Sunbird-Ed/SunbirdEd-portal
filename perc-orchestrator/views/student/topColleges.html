@@ -1,0 +1,46 @@
+<link rel="stylesheet" href="/css/courseDashboard.css" type="text/css"/>
+<div>
+    <div class="headerAsk comGroupHead">
+        <h2>Top {{currentLeaderboard}}
+            <span class="dropdown">
+                <a href="javascript:void(0);" title="Sort" class="dropdown-toggle" aria-expanded="false"> 
+                    <i class="writeBlackOne fa fa-list tooltip-class" data-toggle="tooltip" data-placement="bottom" title="Leaderboards"></i></a>
+                <ul class="dropdown-menu" role="menu">
+                    <li class="sortMenuItem" ng-repeat="item in leaderboardModel.options" ng-class="{'active' : (item == currentLeaderboard), 'int-sort-filter': true}">
+                        <a href="javascript:void(0);" ng-click="selectLeaderBoard(item)"><span class="ilauthr tooltip-class">{{item}}</span></a>
+                    </li>
+                </ul>
+            </span>  
+        </h2>
+    </div>
+
+    <div class="addGroupContainer col-md-12 noPad padTop padBottom">
+        <div class="col-md-12 noPad padTop">
+            <div class="col-md-12 noPad padTop padBottom borderBottom" ng-repeat="std in leaderboardItems" ng-if="std.name">
+                <div class="pull-left col-md-8 noPad">
+                    <span class="full-width gradeCardName pull-left">
+                        {{std.name}}
+                    </span>
+                </div>
+                <div class="pull-right">
+                <span ng-if="std.grade > 90" class="badge gradeBookBadge greenBackground leaderBoardGrade">A</span>
+                <span ng-if="std.grade > 80 && std.grade <= 90" class="badge gradeBookBadge greenBackground leaderBoardGrade">B</span>
+                <span ng-if="std.grade > 70 && std.grade <= 80" class="badge gradeBookBadge orangeBackground leaderBoardGrade">C</span>
+                <span ng-if="std.grade > 60 && std.grade <= 70" class="badge gradeBookBadge orangeBackground leaderBoardGrade">D</span>
+                <span ng-if="std.grade >= 50 && std.grade <= 60" class="badge gradeBookBadge orangeBackground leaderBoardGrade">E</span>
+                <span ng-if="std.grade < 50" class="badge gradeBookBadge redBackground leaderBoardGrade">F</span>
+                <div class="leaderBoardGradeTxt">Grade</div>
+                </div>
+
+                <div class="pull-right QAStatus marRight15" style="padding-top: 0px !important">
+                    <ul>
+                        <li class="secondary">
+                            <span class="number" style="margin-left:5px">{{std.count}}</span> <span class="marginLeft5">Students</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>

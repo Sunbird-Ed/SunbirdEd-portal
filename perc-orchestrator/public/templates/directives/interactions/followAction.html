@@ -1,0 +1,4 @@
+<span class="int-block int-icon" ng-if="enabled" ng-click="follow(interaction, true)" title="Click to follow this question"><i class="fa fa-star-o"></i></span>
+<span class="int-block int-icon disabled" ng-if="disabled"><i class="fa fa-star"></i></span>
+<span class="int-block int-icon following" ng-if="editable" ng-click="follow(interaction, false)" title="You are following this question. Click to unfollow"><i class="fa fa-star"></i></span>
+<span class="int-block int-follow" ng-if="!hidden">{{(interaction.summaries.followCount)? interaction.summaries.followCount : '0 '}}</span>

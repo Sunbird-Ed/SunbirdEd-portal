@@ -1,0 +1,92 @@
+<div class="List_view" ng-if="!showBinderDetail">
+    <div class=" askquestionHeader">
+        <div class="headerAsk col-md-12 noPad">
+            <h2>Study Material
+                <a href="javascript:void(0);" class="" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Create Study Material" ng-click="showCreateBinderForm()"><i class="writeBlackOne createBinderBtn fa fa-edit" id="writeIcon"></i></a> 
+            </h2>
+        </div>  
+        <div id="binderForm" class="col-md-12 noPad" style="display:none;">
+           <div ng-show="showCreateBinder" class="">
+                <div ng-show="createSetErrorMsg" class="alert-danger">Server Error</div>
+                <div id="contentSearchQAlert" ng-show="showErrorMsg" class="col-md-12 alert alert-danger" role="alert">Please fill all required fields.</div>
+                <div  class="form col-md-12 noPad" >
+                    <div class="row" style="margin-bottom: 15px;margin-top: 15px;">
+                        <div class="col-md-12">
+                            <div>Name*</div>
+                            <input type="text" class=" form-control" placeholder="Enter study material name" ng-model="binder.title" id="binderName" ng-blur="onBlurValidate();">
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 15px;">
+                        <div class="col-md-12">
+                            <div>Description</div>
+                            <textarea class="form-control" placeholder="Enter study material description" ng-model="binder.description"></textarea>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 15px;">
+                        <div class="col-md-12">
+                            <div>Learning Object*</div>
+                            <select ng-model="binder.parent" ng-options="lecture.label for lecture in allLectures" ng-change="setBinderParent(binder.parent)" id="binderLOSelect" style="width: 100%;">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 15px;">
+                        <div class="col-md-12">
+                            <div>Concepts*</div>
+                            <select ng-il-multiselect='{"placeholder":"Select Concepts..."}' multiple="true" ng-model="contentSearchFilters.addedToSelectedConcepts" ng-options="object.concept for object in getCSConceptTitleList(conceptTitleMap)" style="width: 100%;">
+                            </select>
+
+                            <!-- <input type="text" ng-model="selectedConcept" class="form-control cs-concept-select" typeahead="object as object.concept for object in getCSConceptTitleList(conceptTitleMap, $viewValue) | filter:{concept:$viewValue}" typeahead-on-select="addCSToSelectedConcepts($item, $model, $label); selectedConcept = '';">
+                            <div class="col-md-10" ng-repeat="concept in contentSearchFilters.addedToSelectedConcepts">
+                                <div class="checkbox" style="margin-bottom: 0px">
+                                    <label>
+                                        <input type="checkbox" checked="" ng-click="removeCSSelectedConcepts(concept)" style="margin-top: 1px"> {{concept.concept}}
+                                    </label>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-12 noPad" style="margin-top:10px;">
+                        <button class="btn btn-primary pull-right" ng-click="createBinder()" id="createBinderBtn">Create</button>
+                    </div>
+                </div>
+            </div>                          
+        </div>
+        <div class="col-md-12 noPad commonCreateMsg" ng-show="createNewBinderMsg">
+            <div class="alert alert-info fade in col-md-12" >
+                <p>There are no Study Material. <a href="javascript:void(0)" ng-click="showCreateBinderForm()" class="btn-link">Click here to create a new Study Material</a></p>
+            </div>
+        </div>
+        <div class="col-md-12 noPad">
+            <div id="conformMessage" class="alert  hide" ></div>
+        </div>
+        <div class="col-md-12 noPad" ng-show="binderContentList && binderContentList.length > 0">
+            <div class="QACol" ng-repeat="binderList in binderContentList | orderBy:'createdDate'">
+                <div class="row">
+                    <div class="col-md-8 noPad QAcontent">
+                        <div class="col-md-12">
+                            <h5><a href="javascript:void(0);" class="ac-links il-Link-clr" ng-click="showDetailedView(binderList.binder.identifier)" onclick="$('html,body').scrollTop(0);">{{binderList.binder.name}}</a></h5>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="ac-contents viewCtn noMarginLeftRight">
+                                <p ng-show="binderList.binder.description" class="common_content col-md-12 noPad ">{{binderList.binder.description | limitTo:250 }}</p>
+                            </p>
+                            <div class="QAtags">
+                                <span class="badge" ng-repeat="binderConcept in binderList.binder.concepts">{{binderConcept.conceptTitle}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 noPad QAStatus">
+                        <ul class="pull-right">
+                            <li class="secondary">
+                                <span class="number">{{binderList.binderContents.sequence.length}}</span> <span>Contents</span>
+                            </li>
+                        </ul>            
+                    </div>
+                </div>
+                <hr/>
+            </div>
+        </div>      
+
+    </div>
+</div>

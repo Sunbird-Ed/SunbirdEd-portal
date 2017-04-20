@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="studioApp">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>SunBird</title>
+
+		<!-- Bootstrap -->
+		<link href="/css/bootstrap.min.css" rel="stylesheet">
+		<link href="/css/common.css" rel="stylesheet">
+		<link href="/css/createcourse.css" rel="stylesheet">
+		<script src="/js/angular.min.js"></script>
+		<script src="//code.angularjs.org/1.2.15/angular-route.min.js"></script>
+		<script src="/js/angular-route.min.js"></script>
+    	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+    	<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.min.js"></script>
+		<script src="/js/app.js"></script>
+		<script src="/js/controllers/courseController.js"></script>
+		<!--[if lt IE 9]>
+	  		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	  		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+	</head>
+  	<body ng-controller="CreateCourseCtrl">
+    <% include ../includes/commonHeader %>
+
+	<section>
+		<div class="create_course_container container">
+			<div class="row">
+				<div class="col-md-4">
+					  <div class="form-group">
+						<label>Title</label>
+						<input class="form-control" placeholder="Title" ng-model="name">
+					  </div>
+					  <div class="form-group">
+						<label>Learning Objectives</label>
+						<input class="form-control" placeholder="Outcome" ng-model="learningObjectives">
+					  </div>
+				</div>
+				<div class="col-md-8">
+					<div class="form-group">
+						<label>Description</label>
+						<textarea class="form-control desc_area" ng-model="description" placeholder="Description"></textarea>
+					 </div>
+				</div>
+			</div>
+			<div class="row" id="pedagogy_container">
+				<div class="pedagogy_title">
+					<label>Select Pedagogy</label>
+				</div>
+				<div class="col-md-4" ng-repeat="pedagogy in pedagogies">
+					<div class="pedagogy">
+						<div class="title">
+							<label>{{pedagogy.name}}</label>
+						</div>
+						<div class="pedagogy_conatiner">
+							<img src="/img/dynamic_learning_diagram.jpg"/>
+						</div>
+						<div class="clearfix"></div>
+						<div class="actions">
+							<a href="javascript:void(0);" class="btn btn-default pull-left select_pedagogy" ng-click="selectPedagogy(pedagogy.identifier, pedagogy.rootNodeTaxonomy)">Select</a>
+							<a href="javascript:void(0);" class="pull-right more">More Info</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="pedagogy">
+						<div class="title">
+							<label>Custom Pedagogy</label>
+						</div>
+						<div class="pedagogy_conatiner para_container">
+							<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+							<p>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+							<p>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+						</div>
+						<div class="clearfix"></div>
+						<div class="actions custom_actions">
+							<a href="javascript:void(0);" class="btn btn_grey pull-left disabled">Create Pedagogy</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<footer>
+		<div class="percept_footer navbar-fixed-bottom">
+			<a href="javascript:void(0)" class="btn btn_green btn-sm" ng-click="createCourse()">Create Course</a>
+		</div>
+	</footer>
+
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+	<script>
+		$('#pedagogy_container').find('.select_pedagogy').on("click",function(){
+			$('.select_pedagogy').removeClass('btn_green');
+			$(this).addClass('btn_green');
+		});
+	</script>
+  </body>
+</html>

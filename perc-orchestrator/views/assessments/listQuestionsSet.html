@@ -1,0 +1,62 @@
+<div class="List_view ng-cloak" ng-cloak>
+    <div class=" askquestionHeader">
+        <div class="headerAsk">
+            <h2>Question Sets
+                <a href="javascript:void(0);" class="tool-tip" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Create QuestionSet" ng-if="canWriteQuestionSet"><i ng-click="createQuestionSet()" class="writeBlackOne fa fa-edit" id="writeIcon"></i></a>
+                <a href="javascript:void(0);" class="tool-tip" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Search Question Sets"><i ng-click="showSearchForm()" class="writeBlackOne  fa fa-search" id="questionsetSearchButton"></i></a>
+            </h2>
+        </div>
+
+        <div id="questionsetSearchForm" class="col-md-12 noPad marginTop20" style="display:none;">
+            <div class="col-md-6 noPad searchFormLeftDiv">
+                <div class="form-group col-md-12 noPad">
+                    <select ng-il-multiselect='{"placeholder":"Select Lecture...", "selectedDisable": true}' multiple="true" ng-model="questionSetListFilters.learningElements" ng-options="lob.label for lob in learningElements" style="width: 100%;"></select>
+                </div>
+            </div>
+            <div class="col-md-6 noPad searchFormRightDiv">
+                <div class="form-group col-md-12 noPad">
+                    <select id="questionSetTypeList" ng-model="questionSetListFilters.questionSetFor" class="form-control" ng-options="item for item in QuestionSetListSearchFor" ng-change="showResult=false;">
+                    </select>
+                </div>
+                <div class="form-group col-md-12 noPad">
+                    <button class="btn btn-large btn-default searchFormButton" id="searchQuestions" ng-click="autoSearch=false;searchQuestionSets()">Search</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center" ng-if="!showResult && isSearching" style="margin-top: 50px">
+            Loading <img src="/img/loading.gif"/>
+        </div>
+        <div class="col-md-12 noPad" ng-show="showResult">
+            <div class="QACol">
+                <div class="row" ng-hide="questionSet.isDeleted" ng-repeat="questionSet in searchResult | limitTo:resultLimit" style="border-bottom: 1px solid #ededed;">
+                    <div ng-init="questionSet.editable=canWriteQuestionSet" class="noPad col-md-12" ng-include="'questionset_list_item.html'"></div>
+                </div>
+                <a href="javascript:void(0)" class="col-md-12 text-center show-more" ng-hide="resultLimit >= searchResult.length" ng-click="updateResultLimit()">
+                    <span ng-if="!showMoreLoading">Show More</span>
+                    <span ng-if="showMoreLoading">Loading <img src="/img/loading.gif"/></span>
+                </a>
+            </div>
+            <div class="alert alert-info fade in marginTop10" role="alert" ng-show="searchResult.length == 0">
+                <p>There are no question sets, <a href="javascript:void(0)" ng-click="createQuestionSet()" class="btn-link">would you like to create one?</a></p>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modal fade" id="questionSetDeleteModal">
+    <div class="modal-dialog modal-dialog-center">
+        <div class="modal-content" style="margin-top: 25%">
+            <div class="alert fade in" role="alert" style="margin-bottom: 0px">
+                <h4>Warning!!</h4>
+                <p>Are you sure you want to delete this question set?</p>
+                <div class="modalActionContainer">
+                    <p style="padding-top: 10px; display: inline-block;" class="pull-right">                        
+                        <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="button" data-dismiss="modal" ng-click="questionSet.isDeleted = true;deleteQuestionSet()" class="btn btn-sm btn-primary marginLeft10">Delete</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

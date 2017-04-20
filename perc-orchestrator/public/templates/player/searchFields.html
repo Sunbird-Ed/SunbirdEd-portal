@@ -1,0 +1,10 @@
+<div class="" ng-switch on="field.type">
+	<input class="form-control" ng-model="model.searchLearners.filters[field.name]" ng-switch-when="text" placeholder="{{field.label}}"/>
+	<input type="text" class="form-control" ng-model="model.searchLearners.filters[field.name]" datepicker-popup="dd/MM/yyyy" is-open="datepicker.opened" ng-click="open($event, 'from')" ng-keydown="disableKeyDown($event)" ng-keypress="disableKeyDown($event)" datepicker-options="datepicker.dateOptions" ng-switch-when="date" placeholder="{{field.label}}"/>
+	<select ng-model="model.searchLearners.filters[field.name]" ng-options="item.name for item in field.values" class="selectBox singleSelect" style="width: 100%;" ng-switch-when="select" placeholder="{{field.label}}">
+	    <option></option>
+	</select>
+	<select ng-model="model.searchLearners.filters[field.name]" ng-options="item.name for item in field.values" class="selectBox" style="width: 100%;" multiple="true" ng-switch-when="multiselect" placeholder="{{field.label}}">
+	    <option></option>
+	</select>
+</div>

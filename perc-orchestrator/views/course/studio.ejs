@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="studioApp">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SunBird</title>
+
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/common.css" rel="stylesheet">
+    <link href="/css/studio.css" rel="stylesheet">
+    <link href="/css/video-js.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+    .col-md-3 {
+        width: 22% !important;
+    }
+    .col-md-9 {
+        width: 78% !important;
+    }
+    </style>
+</head>
+<body ng-controller="MainController" class="addedCustModel">
+    <header ng-include="'/templates/includes/header.html'"></header>
+    <section class="perceptron-links-section" ng-include="'/templates/includes/subNav.html'"></section>
+    <input type="hidden" id="courseId" value="<%=courseId %>"/>
+    <div ng-view></div>
+</body>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/angular.min.js"></script>
+<script src="/js/angular-route.min.js"></script>
+<script src="/js/jquery-ui.min.js"></script>
+<script src="/js/angular-ui.min.js"></script>
+<script src="/js/app.js"></script>
+<script src="/js/controllers/courseController.js"></script>
+<script src="/js/controllers/lobResourcesController.js"></script>
+<script src="/js/bootstrap-checkbox-tree.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/video.js"></script>
+<script src="/js/vjs.vimeo.js"></script>
+<script src="/js/vjs.youtube.js"></script>
+<script src='/js/scribd_api.js'></script>
+<script src="/js/custom.js"></script>
+
+</html>

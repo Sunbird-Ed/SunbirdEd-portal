@@ -1,0 +1,75 @@
+<div class="main-popular-div">
+    <div>
+        <h4 class="popular-course-flag">Popular Courses</h4>
+    </div>
+
+    <div class="row border-bottom" ng-repeat="popular in courses.popular">
+        <div class="col-md-5">
+            <div class="popular-content clear-both">
+                <div class="popular-content-div" ng-class="{'left-border-gradient': $index==0}">
+                    <div class="popular-header">
+                        <a ng-href="/course/{{popular.shortId}}">
+                            <h1>{{popular.name}}</h1>
+                        </a>
+                        <span>By</span> <a href="/instructor/{{popular.faculty.shortId}}">{{popular.faculty.name}}</a>
+                    </div>
+                    <p class="popular-content">{{popular.homeDescription}}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7 no-padd-col">
+            <div class="popular-video-container">
+                <div class="il-vd-container">
+
+                    <!--                     <iframe src="//player.vimeo.com/video/37182785" width="500" height="320" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> -->
+
+                    <div width="500" height="320" id="videoDiv_{{$index}}"></div>
+                </div>
+            </div>
+
+            <div class="certification-blockainer">
+                <div class="row">
+                    <div class="col-md-10">
+                        <ul class="feature-list-glanceitems ul-style">
+                            <li ng-show="popular.noOfModules">
+                                <h3>{{popular.noOfModules}}</h3>
+                                <span>Modules</span>
+                            </li>
+                            <li ng-show="popular.weeksDuration">
+                                <h3>{{popular.weeksDuration}}</h3>
+                                <span>Weeks</span>
+                            </li>
+                            <li ng-show="popular.hoursPerWeek">
+                                <h3>{{popular.hoursPerWeek}}
+                                    <span>hrs</span>
+                                </h3>
+                                <span>per week</span>
+                            </li>
+                            <li ng-show="popular.hoursOfVideo">
+                                <h3>{{popular.hoursOfVideo}}
+                                    <span>hrs</span>
+                                </h3>
+                                <span>Video</span>
+
+                            </li>
+                            <!-- <li>
+                                <h3>220</h3>
+                                <span>Concepts</span>
+
+                            </li> -->
+                        </ul>
+                    </div>
+                    <div class="col-md-2 start-btn">
+                        <a ng-href="/course/{{popular.shortId}}" class="btn btn-primary btn-lg">Start Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="pull-right hide">
+        <img src="img/webimages/ajax-loader.gif" alt="loading" title="loading" />
+    </div>
+</div>

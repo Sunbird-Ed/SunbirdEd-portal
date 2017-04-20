@@ -1,0 +1,84 @@
+/*create course section styles begin*/
+body
+{
+	background:#f3f3f3;
+}
+.create_course_container
+{
+	background:#f3f3f3;
+	padding-top: 20px;
+	padding-left: 40px;
+	padding-right: 40px;
+}
+.desc_area
+{
+	height:109px !important;
+}
+.pedagogy_title
+{
+	color:#4cc0da;	
+	margin-left: 20px;
+}
+.pedagogy
+{
+	border:1px solid #cccccc;
+	background:#fff;
+	box-shadow:1px 1px 8px 0px #cccccc;
+	overflow:auto;
+}
+.pedagogy .title
+{
+	border-bottom:1px solid #cccccc;
+	padding: 10px 20px 5px 20px;
+	color:#333;
+	font-size: 14px;
+}
+.pedagogy_conatiner
+{
+	text-align:center;
+	height: 350px;
+}
+.para_container
+{
+	text-align:left !important;
+	margin:20px;
+	height: 310px !important;
+}
+.actions
+{
+	padding: 20px;
+	margin-bottom: 30px;
+}
+.actions a:focus
+{
+	background:#999999;
+}
+.actions .more
+{
+	color:#4cc0da;
+}
+.custom_actions
+{
+	text-align:center;
+}
+.btn_grey, .btn_grey:hover
+{
+	background:#999999;
+	color:#fff;
+}
+/*create course section styles end*/
+
+
+/*Media queries begin*/
+@media (max-width:1024px)
+{
+.create_course_container
+{
+	padding-bottom:100px;
+}
+.pedagogy_conatiner img
+{
+	width:270px;
+}
+}
+/*media queries end*/

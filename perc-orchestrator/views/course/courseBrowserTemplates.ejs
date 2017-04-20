@@ -1,0 +1,470 @@
+<script type="text/ng-template"  id="toc_template.html">
+	<div class="unit {{lob.id == currentItem.id ? 'unit'+selectedContentCategory+'ActiveRow'+' unit'+selectedContentCategory+'Active' : ''}} {{lob.id == tocParentId ? 'unitParent' : ''}}" ng-show="lob.level == 0 || (lob.level == 1 && lob.parentId == selectedModule) || (lob.level == 2 && (lob.parentId == selectedLesson || (lob.moduleId == selectedModule && currentItem.level == 0)))" ng-click="setTOCHref(lob.id)" onclick="select(this)" ng-class="{ 'dotted-brd-btm':(lob.isLast && !lob.category)}">
+		<div class="row toc_row">
+			<span ng-include="'level0_icons_template.html'" class="col-md-1 noPad"></span>
+			<span class="col-md-10 noPad toc-lob-name">{{lob.name}}</span>
+		</div>
+	</div>
+</script>
+
+<script type="text/ng-template"  id="level0_icons_template.html">
+	<span class="knob" readonly data-progress="{{lob.progress}}">
+	<span ng-switch ng-if="lob.category">
+		<img style="margin-left: -3px;margin-top: -3px;width:25px;" src="/img/bookmark.png" />
+	</span>
+	<span ng-switch on="lob.type" ng-if="!lob.category">
+		<span class="glyph16 icon icon-moduel" ng-switch-when="module"></span>
+		<span class="glyph16 icon icon-lessons" ng-switch-when="lesson"></span>
+		<span class="glyph16 icon icon-unorderedlist" ng-switch-when="binder"></span>
+		<span class="glyph16 icon icon-Assignment" ng-switch-when="learningactivity"></span>
+		<span class="glyph16 icon icon-tutor" ng-switch-when="Tutoring"></span>
+		<span class="glyph16 icon icon-tutionclass" ng-switch-when="Classroom"></span>
+		<span class="glyph16 icon icon-ref-material" ng-switch-default></span>
+	</span>
+	</span>
+</script>
+
+<script type="text/ng-template"  id="child_list_template.html">
+	<div class="panel-heading">
+		<div class="panel-icon-cont" style="width: 6%; margin-top: -5px;">
+			<span class="knob knobrhs" readonly data-progress="{{child.progress}}">
+			<span ng-switch on="child.elementType">
+				<span class="glyph16 icon icon-moduel"  ng-switch-when="module"></span>
+				<span class="glyph16 icon icon-lessons"  ng-switch-when="lesson"></span>
+				<span class="glyph16 icon icon-unorderedlist" ng-switch-when="binder"></span>
+				<span class="glyph16 icon icon-Assignment"  ng-switch-when="learningactivity"></span>
+				<span class="glyph16 icon-tutor"  ng-switch-when="Tutoring"></span>
+				<span class="glyph16 icon icon-tutionclass"  ng-switch-when="Classroom"></span>
+				<span class="glyph16 icon icon-ref-material" ng-switch-default></span>
+			</span>
+			</span>
+		</div>
+		<div class="panel-header-content">
+			<h3 class="panel-title content_title">
+				<a ui-sref="cb({lobId:child.identifier})" ng-if="child.elementType == 'module' || child.elementType == 'lesson' || child.elementType == 'binder'" ng-click="scrollTop()">{{child.name}}</a>
+				<a ui-sref="cbLecture({lobId:child.parentId, elementId:child.identifier})" ng-if="child.elementType != 'module' && child.elementType != 'lesson' && child.elementType != 'binder'" ng-click="scrollTop()">{{child.name}}</a>
+			</h3>
+			<div class="video-view-details">
+			<span ng-repeat="count in child.elements_count">
+				<span ng-switch on="count.elementType">
+					<span class="glyph16 icon icon-ref-material"  ng-switch-when="Lectures"></span>
+					<span class="glyph16 icon icon-exercise-content"  ng-switch-when="Exercises"></span>
+					<span class="glyph16 icon icon-Assignment"  ng-switch-when="Assignments"></span>
+					<span class="glyph16 icon-tutor"  ng-switch-when="Tutoring"></span>
+					<span class="glyph16 icon icon-tutionclass"  ng-switch-when="Classroom"></span>
+					<span class="glyph16 icon icon-tutor" ng-switch-default></span>
+				</span>{{count.total}}&emsp;
+			</span>
+			</div>
+			<div ng-show="child.category" class="pull-right">
+				<span class="label label-warning background-{{child.category}}">{{child.category}}</span>&emsp;&emsp;
+				<a href="javascript:void(0)" class="btn btn-default btn-xs action_box" ng-click="removeAdditionalMaterial(currentObject.identifier, child)" ng-show="child.category">
+					<span class="glyphicon glyphicon-trash"></span>
+				</a>
+			</div>
+			<p class="common_content">
+				{{child.description | limitTo : 250}}
+				<span ng-if="child.description.length > 250">...</span>
+			</p>
+		</div>
+		<a class="collapse-link {{lessonCollapsed ? 'collapsed' : ''}}" ng-show="child.subChildren && child.subChildren.length > 0" ng-click="lessonCollapsed=!lessonCollapsed">
+        	<i class="il-collapse"></i>
+        </a>
+	</div>
+	<div collapse="lessonCollapsed" class="panel-collapse collapse">
+		<div class="panel-body lectures-container">
+			<ul class="ul-style">
+				<li ng-repeat="subChild in child.subChildren">
+					<span class="knob knobchildrhs" readonly 
+					data-progress="{{((subChild.status=='Complete')?'100':(subChild.status=='In Progress')?'50':'0')}}">
+					<span ng-switch ng-if="subChild.category">
+						<img style="margin-left: -3px;margin-top: -3px;width:25px;" src="/img/bookmark.png" />
+					</span>
+					<span ng-switch on="subChild.elementType" ng-if="!subChild.category">
+						<span class="glyph16 icon icon-moduel"  ng-switch-when="module"></span>
+						<span class="glyph16 icon icon-lessons"  ng-switch-when="lesson"></span>
+						<span class="glyph16 icon icon-unorderedlist" ng-switch-when="binder"></span>
+						<span class="glyph16 icon icon-Assignment"  ng-switch-when="learningactivity"></span>
+						<span class="glyph16 icon-tutor"  ng-switch-when="Tutoring"></span>
+						<span class="glyph16 icon icon-tutionclass"  ng-switch-when="Classroom"></span>
+						<span class="glyph16 icon icon-ref-material" ng-switch-default></span>
+					</span>
+					</span>
+					<div class="child_links">
+						<a class="lecture-title" ui-sref="cb({lobId:subChild.identifier})" ng-if="subChild.elementType == 'module' || subChild.elementType == 'lesson' || subChild.elementType == 'binder'" ng-click="scrollTop()">{{subChild.name}}</a>
+						<a class="lecture-title" ui-sref="cbLecture({lobId:child.identifier, elementId:subChild.identifier})" ng-if="subChild.elementType != 'module' && subChild.elementType != 'lesson' && subChild.elementType != 'binder'" ng-click="scrollTop()">{{subChild.name}}</a>&emsp;
+						<span class="lecture-time" ng-show="subChild.duration" ng-bind-html="renderHtml(subChild.duration)"></span>
+						<div class="pull-right" ng-show="subChild.category">
+							<span class="label label-warning background-{{subChild.category}}" style="font-size:10px;">{{subChild.category}}</span>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+</script>
+
+<script type="text/ng-template"  id="added_by_me_template.html">
+	<div class="panel-heading" style="padding: 5px 15px 15px 15px;">
+		<div class="panel-icon-cont" style="width: 5%; margin-top: -4px;">
+			<span class="knob knobrhs" readonly data-progress="{{child.progress}}">
+			<span ng-switch on="child.elementType">
+				<span class="glyph16 icon icon-moduel"  ng-switch-when="module"></span>
+				<span class="glyph16 icon icon-lessons"  ng-switch-when="lesson"></span>
+				<span class="glyph16 icon icon-unorderedlist" ng-switch-when="binder"></span>
+				<span class="glyph16 icon icon-Assignment"  ng-switch-when="learningactivity"></span>
+				<span class="glyph16 icon-tutor"  ng-switch-when="Tutoring"></span>
+				<span class="glyph16 icon icon-ref-material" ng-switch-default></span>
+			</span>
+			</span>
+		</div>
+		<div class="panel-header-content" style="width:94% !important;">
+			<div class="">
+			<h3 class="panel-title content_name" style="margin-bottom:0px;">
+				<a ui-sref="cb({lobId:child.identifier})" ng-if="child.elementType == 'module' || child.elementType == 'lesson' || child.elementType == 'binder'" style="color:#0099cc;font-family: 'FrutigerNeueLTW01-CnLt';">{{child.name}}</a>
+				<a ui-sref="cbLecture({lobId:child.parentId, elementId:child.identifier})" ng-if="child.elementType != 'module' && child.elementType != 'lesson' && child.elementType != 'binder'" style="color:#0099cc; font-family: 'FrutigerNeueLTW01-CnLt';">{{child.name}}</a>
+			</h3>
+			<div class="video-view-details">
+			<span ng-repeat="count in child.elements_count">
+				<span ng-switch on="count.elementType">
+					<span class="glyph16 icon icon-ref-material"  ng-switch-when="Lectures"></span>
+					<span class="glyph16 icon icon-exercise-content"  ng-switch-when="Exercises"></span>
+					<span class="glyph16 icon icon-Assignment"  ng-switch-when="Assignments"></span>
+					<span class="glyph16 icon-tutor"  ng-switch-when="Tutoring"></span>
+					<span class="glyph16 icon icon-tutionclass"  ng-switch-when="Classroom"></span>
+					<span class="glyph16 icon icon-tutor" ng-switch-default></span>
+				</span>{{count.total}}&emsp;
+			</span>
+			</div>
+			<div ng-show="child.category" class="pull-right">
+				<span class="label label-warning background-{{child.category}}" style="font-size:80%;">{{child.category}}</span>
+				<a href="javascript:void(0)" class="btn btn-default btn-xs action_box" style="border:none;" ng-click="removeAdditionalMaterial(currentObject.identifier, child)" ng-show="child.category">
+					<span class="glyphicon glyphicon-trash"></span>
+				</a>
+			</div>
+			</div>
+			<div style="padding-top: 10px; border-bottom: 1px solid #e7e7e7;"></div>
+			<p class="common_content child_description" style="margin-top:5px;">
+				{{child.description | limitTo : 250}}
+				<span ng-if="child.description.length > 250">...</span>
+			</p>
+		</div>
+		<div style="width:100% !important;">
+			<div style="border-bottom: 1px solid #e7e7e7; width:96.5%; margin-left:20px;"></div>
+		</div>
+		<a class="collapse-link {{lessonCollapsed ? 'collapsed' : ''}}" ng-show="child.subChildren && child.subChildren.length > 0" ng-click="lessonCollapsed=!lessonCollapsed">
+        	<i class="il-collapse"></i>
+        </a>
+	</div>
+	<div collapse="lessonCollapsed" class="panel-collapse collapse">
+		<div class="panel-body lectures-container">
+			<ul class="ul-style">
+				<li ng-repeat="subChild in child.subChildren">
+					<span class="knob knobrhs" readonly
+					data-progress="{{((subChild.status=='Complete')?'100':(subChild.status=='In Progress')?'50':'0')}}">
+					<span ng-switch on="subChild.elementType">
+						<span class="glyph16 icon icon-moduel"  ng-switch-when="module"></span>
+						<span class="glyph16 icon icon-lessons"  ng-switch-when="lesson"></span>
+						<span class="glyph16 icon icon-unorderedlist" ng-switch-when="binder"></span>
+						<span class="glyph16 icon icon-Assignment"  ng-switch-when="learningactivity"></span>
+						<span class="glyph16 icon-tutor"  ng-switch-when="Tutoring"></span>
+						<span class="glyph16 icon icon-ref-material" ng-switch-default></span>
+					</span>
+					</span>
+					<div class="child_links">
+						<a class="lecture-title" ui-sref="cb({lobId:subChild.identifier})" ng-if="subChild.elementType == 'module' || subChild.elementType == 'lesson' || subChild.elementType == 'binder'">{{subChild.name}}</a>
+						<a class="lecture-title" ui-sref="cbLecture({lobId:child.identifier, elementId:subChild.identifier})" ng-if="subChild.elementType != 'module' && subChild.elementType != 'lesson' && subChild.elementType != 'binder'">{{subChild.name}}</a>&emsp;
+						<span class="lecture-time" ng-show="subChild.duration" ng-bind-html="renderHtml(subChild.duration)"></span>
+						<div class="pull-right" ng-show="subChild.category">
+							<span class="label label-warning background-{{subChild.category}}" style="font-size:10px;">{{subChild.category}}</span>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+</script>
+
+
+<script type="text/ng-template" id="questions_list_item.html">
+    <div class="col-md-12 QAcontent">
+        <div class="row">
+        	<h5 ng-hide="question.editable" class="col-md-12" style="min-height: 25px">
+        		<a href="javascript:void(0);" data-toggle="modal" data-target="#questionPreviewModal" ng-click="getDataForQuestionPreview(question.identifier, 'popupPreviewQuestion')" ng-bind-html="getQuestionTitle(question.body)"></a>
+        	</h5>
+	        <h5 ng-show="question.editable" class="col-md-10" style="min-height: 25px">
+	        	<a href="javascript:void(0);" class="ac-links il-Link-clr questionTitle" ng-bind-html="getQuestionTitle(question.body)" ng-click="editQuestion(question.identifier)"></a>
+	        </h5>
+	        <div class="col-md-2">
+	        	<a href="javascript:void(0);" class="previewIcon marginLeft10 pull-right" ng-click="confirmQuestionToDelete(question)" ng-show="question.editable">
+		        	<i class="glyph16 icon icon-delete-round moveDown5" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Delete question"></i>
+		        </a>
+		        <a href="javascript:void(0);" class="previewIcon marginLeft10 pull-right" data-toggle="modal" data-target="#questionPreviewModal" ng-click="getDataForQuestionPreview(question.identifier, 'popupPreviewQuestion')" ng-show="question.editable">
+	        		<i class="glyph16 fa fa-eye moveDown5" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Preview question"></i>
+	        	</a>
+	        </div>
+	    </div>
+        <div class="detailsQuestion moveTop10">
+            <ul class="metadata">
+                <li><span>{{question.questionSubtype}}</span></li>
+                <li class="list-dash"><span>|</span></li>
+                <li><span>{{question.difficultyLevel}}</span></li>
+                <li class="list-dash" ng-show="question.testUsage"><span>|</span></li>
+                <li  ng-show="question.testUsage"><span>{{question.testUsage}}</span>
+                <li class="list-dash" ng-show="question.duration"><span>|</span></li>
+                <li  ng-show="question.duration"><span>{{ question.duration | readableTime }}</span>
+                </li>
+                <li class="list-dash" ng-show="question.learningElements && question.learningElements.length > 0"><span>|</span></li>
+                <li ng-show="question.learningElements && question.learningElements.length > 0"><span>In : {{getContentTitleOfItem(question.learningElements);}}</span></li>
+            </ul>
+        </div>
+        <p class="ac-contents" ng-bind-html="question.body"></p>
+        <div class="QAtags" ng-show="question.concepts">
+            <span class="badge" ng-repeat="concept in question.concepts">{{concept}}</span>
+        </div>
+        <hr/>
+    </div>
+</script>
+
+<script type="text/ng-template" id="int_questions_list_item.html">
+    <div class="col-md-12 QAcontent">
+        <div class="row">
+        	<h5 ng-hide="question.editable" class="col-md-12">
+        		<a href="javascript:void(0);" data-toggle="modal" data-target="#questionPreviewModal" ng-click="getDataForQuestionPreview(question.identifier, 'popupPreviewQuestion')" ng-bind-html="question.body"></a>
+        	</h5>
+	        <h5 ng-show="question.editable" class="col-md-11">
+	        	<a href="javascript:void(0);" class="ac-links il-Link-clr" ng-bind-html="question.body" ng-click="editQuestion(question.identifier)"></a>
+	        	<a href="javascript:void(0);" class="previewIcon marginLeft10" data-toggle="modal" data-target="#questionPreviewModal" ng-click="getDataForQuestionPreview(question.identifier, 'popupPreviewQuestion')">
+	        		<i class="glyph16 fa fa-eye marginTop5" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Preview question"></i>
+	        	</a>
+	        </h5>
+	    </div>
+        <div class="detailsQuestion moveTop5">
+            <ul class="metadata">
+                <li><span>{{question.questionSubtype}}</span></li>
+                <li class="list-dash"><span>|</span></li>
+                <li><span>{{question.difficultyLevel}}</span></li>
+                <li class="list-dash"><span>|</span></li>
+                <li><span>{{ question.duration | readableTime }}</span>
+                </li>
+                <li class="list-dash"><span>|</span></li>
+                <li><span>In : {{getContentTitleOfItem(question.learningElements);}}</span></li>
+            </ul>
+        </div>
+        <p class="ac-contents" ng-bind-html="question.body"></p>
+        <div class="QAtags" ng-show="question.concepts">
+            <span class="badge" ng-repeat="concept in question.concepts">{{concept}}</span>
+        </div>
+    </div>
+</script>
+
+
+<script type="text/ng-template" id="questionset_list_item.html">
+    <div class="col-md-10 QAcontent">
+        <h5>
+        	<a href="javascript:void(0);" class="ac-links il-Link-clr" ng-click="editQuestionSet(questionSet.identifier)" ng-if="questionSet.editable">{{questionSet.label}}</a>
+        	<a href="javascript:void(0);" class="previewIcon marginLeft5" ng-click="confirmQuestionSetToDelete(questionSet)" ng-init="questionSet.hideTrashIcon=false;" ng-show="questionSet.editable" ng-hide="questionSet.qpList && questionSet.qpList.length > 0">
+	        	<i class="glyph16 icon icon-delete-round marginTop5" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Delete question set"></i>
+		    </a>
+        	<div href="javascript:void(0);" class="ac-links il-Link-clr" ng-if="!questionSet.editable">{{questionSet.label}}</div>
+        </h5>
+        <div class="detailsQuestion moveTop5">
+            <ul class="metadata">
+                <li><span ng-repeat="level in questionSet.difficultyLevels">{{level}}&nbsp;</span></li>
+                <li class="list-dash"><span>|</span></li>
+                <li><span ng-repeat="purpose in questionSet.purposes">{{purpose}}</span></li>
+                <li class="list-dash"><span>|</span></li>
+                <li><span>covers: {{getContentTitleOfItem(questionSet.learningElement);}}</span></li>
+                <li class="list-dash"><span>|</span></li>
+                <li><span>Used in Paper: {{getQuestionPaperTitle(questionSet.qpList);}}</span></li>
+            </ul>
+        </div>
+        <p class="ac-contents" ng-bind-html="questionSet.description"></p>
+    </div>
+    <div class="col-md-2 QAStatus">
+		<ul class="pull-right">
+		    <li class="secondary">
+		        <span class="number">{{questionSet.numQuestions}}</span>
+		        <span>Questions</span>
+		    </li>
+		</ul>
+	</div>
+</script>
+
+
+<script type="text/ng-template" id="questionset_list_item_for_paper.html">
+    <div class="col-md-10 QAcontent">
+        <h5>
+        	<a href="javascript:void(0);" class="ac-links il-Link-clr" ng-click="editQuestionSet(questionSet.identifier)" >{{questionSet.label}}</a>
+        	<a href="javascript:void(0);" style="cursor:pointer;" ng-click="removeQuestionSet(questionSet)">
+				<i class="glyph16 icon icon-delete-round marginTop5"></i>
+			</a>
+        </h5>
+        <div class="detailsQuestion moveTop5">
+        	<ul>
+        		<li><span>covers: {{getContentTitleOfItem(questionSet.learningElement);}}&nbsp;</span></li>
+        		<li class="list-dash"><span>|</span></li>
+                <li><span ng-repeat="level in questionSet.difficultyLevels">{{level}}&nbsp;</span></li>
+                <li class="list-dash"><span>|</span></li>
+                <li><span ng-repeat="purpose in questionSet.purposes">{{purpose}}</span></li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-2 QAStatus">
+		<ul class="pull-right">
+		    <li class="secondary">
+		        <span class="number">{{questionSet.numQuestions}}</span>
+		        <span>Questions</span>
+		    </li>
+		</ul>
+	</div>
+</script>
+
+
+<script type="text/ng-template" id="questionpaper_list_item.html">
+    <div class="col-md-9 QAcontent">
+        <h5><a href="javascript:void(0);" class="ac-links il-Link-clr" ng-click="editQuestionPaper(questionPaper.identifier)" ng-if="questionPaper.editable">{{questionPaper.title}}</a>
+        	<div href="javascript:void(0);" class="ac-links il-Link-clr" ng-if="!questionPaper.editable">{{questionPaper.title}}</div>
+        	<a href="javascript:void(0);" class="previewIcon marginLeft5" ng-click="confirmQuestionPaperToDelete(questionPaper)" ng-if="questionPaper.editable">
+	        	<i class="glyph16 icon icon-delete-round marginTop5" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Delete question paper"></i>
+		    </a>
+        </h5>
+        <div class="detailsQuestion">
+            <ul>
+                <li ng-show="questionPaper.createdBy"><span>by &nbsp;</span><div style="display: inline" ng-community-user user-id="questionPaper.createdBy" user-name="questionPaper.createdByDisplayName || questionPaper.createdBy" context="'Question Papers'"></div>, <span data-livestamp="{{questionPaper.updatedOn/1000}}"></span></li>
+                <li ng-show="questionPaper.createdBy" class="list-dash">|</li>
+                <li><span>for : {{getLearningElementName(questionPaper.context);}}</span></li>
+                <li class="list-dash">|</li>
+                <li><span>id : {{questionPaper.identifier}}</span></li>
+            </ul>
+        </div>
+        <p class="ac-contents viewCtn" ng-bind-html="questionPaper.description"></p>
+    </div>
+    <div class="col-md-3 QAStatus">
+        <ul class="pull-right">
+            <li class="secondary" ng-show="questionPaper.totalQuestions">
+                <span class="number">{{questionPaper.totalQuestions}}</span>
+                <span>Ques.</span>
+            </li>
+            <li class="secondary" ng-show="questionPaper.maxMarks">
+                <span class="number">{{questionPaper.maxMarks}}</span>
+                <span>Marks</span>
+            </li>
+            <li class="secondary" ng-show="questionPaper.numConcretePapers">
+                <span class="number">{{questionPaper.numConcretePapers}}</span>
+                <span>Papers</span>
+            </li>
+        </ul>
+    </div>
+</script>
+
+<script type="text/ng-template" id="exam_list_item.html">
+    <div class="col-md-12 QAcontent noPad">
+        <h5><a href="javascript:void(0);" class="ac-links il-Link-clr" ng-click="releaseExam(exam)">{{exam.name}}</a></h5>
+        <div class="clearfix"></div>
+        <p class="ac-contents viewCtn" ng-bind-html="exam.metadata.description"></p>
+    </div>
+</script>
+
+<script type="text/ng-template" id="questionpaper_details.html">
+	<div class="row marginBottom15" style="border-bottom: 1px solid #ededed;">
+        		<div class="col-md-8 QAcontent">
+			        <h5>{{questionPaper.title}}</h5>
+			        <div class="detailsQuestion">
+			            <ul>
+			                <li ng-show="questionPaper.createdBy"><span>{{questionPaper.testType}} by &nbsp;</span><span>{{questionPaper.createdBy}}</span>, <span data-livestamp="{{questionPaper.updatedOn/1000}}"></span></li>
+			            </ul>
+			        </div>
+			        <div class="clearfix"></div>
+			        <p class="ac-contents viewCtn" ng-bind-html="questionPaper.description"></p>
+			    </div>
+			    <div class="col-md-4 QAStatus">
+			        <ul class="pull-right">
+			            <li class="secondary" ng-show="questionPaper.totalQuestions">
+			                <span class="number">{{questionPaper.totalQuestions}}</span>
+			                <span>Ques.</span>
+			            </li>
+			            <li class="secondary" ng-show="questionPaper.maxMarks">
+			                <span class="number">{{questionPaper.maxMarks}}</span>
+			                <span>Marks</span>
+			            </li>
+			            <li class="secondary" ng-show="questionPaper.numConcretePapers">
+			                <span class="number">{{questionPaper.numConcretePapers}}</span>
+			                <span>Papers</span>
+			            </li>
+			        </ul>
+			    </div>
+        	</div>
+        	<div class="row marginBottom15" style="border-bottom: 1px solid #ededed; padding-bottom: 10px;">
+			    <div class="col-md-6 noPad">
+			    	<div class="col-md-6"><label>Concepts</label></div>
+			    	<div class="col-md-6" ng-repeat="concept in exam.metadata.concepts" ng-if="exam.metadata.concepts.length > 0">
+			        	<span>{{concept}}</span><br/>
+			        </div>
+			        <div class="col-md-6" ng-if="exam.metadata.concepts.length == 0">None</div>
+			    </div>	
+			    <div class="col-md-6 noPad">
+			        <div class="col-md-6"><label>Difficulty Level</label></div>
+			        <div class="col-md-6">{{exam.difficultyLevel.value}}</div>
+			        <div ng-if="exam.concepts.length == 0">None</div>
+			    </div>
+			</div>
+</script>
+
+
+<script type="text/ng-template" id="gradebook_report_details.html">
+	<div class="row marginBottom15">
+		<div class="col-md-8 QAcontent">
+	        <h5 ng-if="report.status=='PROCESSING'">Course Gradebook - New</h5>
+	        <h5 ng-if="report.status!='PROCESSING'">Course Gradebook</h5>
+	        <div class="detailsQuestion">
+	            <ul>
+	                <li ng-show="report.createdBy"><span>created by &nbsp;</span><span ng-community-user user-id="report.createdBy" user-name="report.createdName"></span>, <span data-livestamp="{{report.createdDate}}"></span></li>
+	                <li ></li>
+	            </ul>
+	        </div>
+	        <div class="clearfix"></div>
+	    </div>
+	    <div class="col-md-4 QAStatus">
+	        <ul class="pull-right">
+	            <li class="secondary" ng-show="report.reportInfo.examsCount">
+	                <span class="number">{{report.reportInfo.examsCount}}</span>
+	                <span>Exams</span>
+	            </li>
+	            <li class="secondary" ng-show="report.reportInfo.studentsCount">
+	                <span class="number">{{report.reportInfo.studentsCount}}</span>
+	                <span>Students</span>
+	            </li>
+	        </ul>
+	        <div class="pull-right" style="margin-top: 5px;margin-right: 10px;" ng-switch="report.status">
+		    	<div ng-switch-when="COMPLETE"><a href="{{report.reportURL}}" style="font-size: 25px;"><i class="fa fa-download"></i></a></div>
+		    	<div ng-switch-when="PROCESSING" style="margin-top: 8px;">Processing...</div>
+		    	<div ng-switch-when="NO_DATA" style="margin-top: 8px;">No data available</div>
+		    	<div ng-switch-when="FAIL" style="margin-top: 8px;">Gradebook generation failed.</div>
+		    </div>
+	    </div>
+    	<div class="col-md-12"><hr style="margin:0px;"/></div>
+    </div>
+
+</script>
+
+
+<script type="text/ng-template"  id="course_schedule_icons_template.html">
+<span ng-switch on="tocItem.mediaType" class="spanImage tocIcon pull-right" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{tocItem.mediaType}}">
+    <span class="glyph16 icon icon-video-file" ng-switch-when="video"></span>
+    <span class="glyph16 icon icon-audio" ng-switch-when="audio"></span>
+    <span class="glyph16 icon icon-images" ng-switch-when="image"></span>
+    <span class="glyph16 icon icon-transcript" ng-switch-when="text"></span>
+    <span class="glyph16 icon icon-transcript" ng-switch-when="richtext"></span>
+    <span class="glyph16 icon icon-slideshow1" ng-switch-when="slides"></span>
+    <span class="glyph16 icon icon-pdf" ng-switch-when="document"></span>
+    <span class="glyph16 icon icon-richtext-html" ng-switch-when="learningactivity"></span>
+    <span class="glyph16 icon icon-richtext-html" ng-switch-when="Exam"></span>
+    <span class="glyph16 icon icon-quiz" ng-switch-when="practiceTest"></span>
+    <span class="glyph16 icon icon-url" ng-switch-when="url"></span>
+    <span class="glyph16 icon icon-lecture-note" ng-switch-when="binder"></span>
+    <span class="glyph16 icon icon-tutionclass" ng-switch-when="coachingSession"></span>
+    <span class="glyph16 icon icon-ref-material" ng-switch-default></span>
+</span>
+</script>
+

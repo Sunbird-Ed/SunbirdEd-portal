@@ -1,0 +1,147 @@
+<div class="MywallActivity">
+	<div class=" wallActivityHeader">
+		<div class="editContent">
+			<div class="headerAsk" id="activityStream">
+				<h2>Activity Stream
+					<a href="javascript:void(0);" class="tool-tip" data-toggle="tooltip" data-placement="bottom" title="Post new activity"  data-original-title="Post new activity"><!--<img src="img/write-Black.png" class="writeBlack" id="writeIcon">-->
+					<i class="writeBlackOne fa fa-edit" id="writeIcon" onclick="openPostArea(this, 'fa-edit');"></i></a>
+				</h2>
+				
+			</div>
+			<div class="textEditor marginTop20" id="il-Txt-Editor" style="display:none;">
+				<div class="form-group" ng-if="model.loggedUserRole != 'student'">
+				  	<select ng-model="model.post.type" class="form-control" ng-options="type.label for type in model.postTypes" ng-change="getObjects()" ng-disabled="model.post.typeReadonly"></select>
+				</div>
+				<div class="alert alert-danger" ng-show="model.checkForObjects && model.objects.length == 1">
+					There are no {{model.post.type.label}}s created by you in this course. Please create one before posting an activity.
+				</div>
+				<div class="alert alert-danger" ng-show="model.errors.length != 0">
+					Error posting an activity. Following are the failed validations
+					<ul style="padding-left: 25px;list-style:disc outside none">
+						<li ng-repeat="error in model.errors">{{error}}</li>
+					</ul>
+				</div>
+				<div class="form-group col-md-12 noPad" ng-show="model.post.type.value == 'coachingSession' || model.post.type.value == 'exam' || model.post.type.value == 'practiceTest'">
+					<div class="input-group col-md-5 pull-left">
+					  	<select class="form-control" ng-model="model.post.objectId" placeholder="Select {{model.post.type.label}}.." ng-options="object.name for object in model.objects" ng-change="selectObject()" ng-disabled="model.post.objectReadonly">
+					  	</select>
+					</div>
+					<div class="input-group col-md-4 pull-left" style="padding-left: 10px">
+					  	<input type="text" class="form-control" ng-model="model.post.scheduledDate" placeholder="Scheduled Date" datepicker-popup="dd/MM/yyyy" is-open="model.post.opened" min-date="model.post.minDate" ng-click="open($event)" ng-keydown="disableKeyDown($event)" ng-keypress="disableKeyDown($event)" datepicker-options="model.post.dateOptions" id="scheduledDate"/>
+					</div>
+					<div class="input-group col-md-1-5 pull-left" style="padding-left: 10px">
+					  	<input type="text" class="form-control timePicker" ng-model="model.post.startTime" placeholder="Start Time" id="startTime"/>
+					</div>
+					<div class="input-group col-md-1-5 pull-left" style="padding-left: 10px">
+					  	<input type="text" class="form-control timePicker" ng-model="model.post.endTime" placeholder="End Time" id="endTime"/>
+					</div>
+					<div class="input-group col-md-12 pull-left" style="padding-top: 15px" ng-if="model.post.type.value != 'practiceTest'">
+					  	<input type="text" class="form-control" ng-model="model.post.location" placeholder="Location: {{model.post.type.value == 'exam' ? 'Concrete Paper Id' : 'Webex meeting url'}}" ng-readonly="model.post.locationReadonly"/>
+					</div>
+				</div>
+				<div class="form-group" ng-show="model.post.type.value == 'binder'">
+				  	<select class="form-control" ng-model="model.post.objectId" placeholder="Select {{model.post.type.label}}.." ng-options="object.name for object in model.objects" ng-change="selectObject()" ng-disabled="model.post.objectReadonly">
+				  	</select>
+				</div>
+				<div class="form-group col-md-12 noPad">
+					<select ng-model="model.post.to" ng-options="sender.name group by sender.group for sender in model.senders" multiple="true" id="senderMultiSelect" style="width: 100%"></select>
+				</div>
+				<div class="form-group col-md-12 noPad">
+				  <input type="text" class="form-control" ng-model="model.post.title" placeholder="Add title">
+				</div>
+				<textarea class="textarea form-control" placeholder="Write your post message here ..." style="width: 100%; min-height: 100px;" id="postActivityBox"></textarea>
+				<div class="save_text">
+					<div class="save_btn">
+						<button class="btn btn-default" ng-click="cancelPost()" ng-if="model.showCancel">Cancel</button>&nbsp;&nbsp;
+						<button class="btn btn-default" ng-click="clearPost()" ng-if="!model.showCancel">Clear</button>&nbsp;&nbsp;
+						<button class="btn btn-primary" ng-if="(model.checkForObjects && model.objects.length > 1) || !model.checkForObjects" ng-click="initiatePostActivity()" id="postActivityBtn" data-loading-text="Posting...">Post</button>
+						<button class="btn btn-primary" disabled="disabled" ng-if="model.checkForObjects && model.objects.length == 1">Post</button>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+			</div>
+		</div>
+		<div class="questionContainer padTop" id="questionContainer" >
+			<div class="row il-innr-Contnr">
+				<div class="col-md-12 QAcontent ActivityStreamContent" ng-repeat="activity in model.activities">
+					<div ng-switch on="activity.object.objectType">
+						<div ng-community-event activity="activity" index="$index" ng-switch-when="coachingSession"></div>
+						<div ng-community-event activity="activity" index="$index" ng-switch-when="exam"></div>
+						<div ng-community-event activity="activity" index="$index" ng-switch-when="practiceTest"></div>
+						<div ng-community-binder activity="activity" index="$index" ng-switch-when="binder"></div>
+						<div ng-community-notification activity="activity" index="$index" ng-switch-when="notification"></div>
+						<div ng-community-default activity="activity" index="$index" ng-switch-default></div>
+					</div>
+					<div class="textEditor AskQEdit comment-editor" ng-show="model.commentObjectIndex == $index">
+						<textarea class="textarea form-control" placeholder="Write your comment ..." style="width: 100%; min-height: 150px;" id="communityTextArea{{$index}}"></textarea>
+						<div class="save_text">
+							<div class="save_btn">
+								<button class="btn btn-default" ng-click="cancelComment($index)">Cancel</button>&nbsp;&nbsp;
+								<button class="btn btn-primary" ng-click="comment()">Comment</button>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+					<div class="community-replies" ng-show="activity.object.replies.items">
+						<div class="community-reply" ng-repeat="reply in activity.object.replies.items">
+						  	<a href="#" class="pull-left">
+						    	<img width="32" height="32" class="img-rounded media-object" ng-src="{{reply.author.image.url || '/img/default.png'}}">
+						  	</a>
+						  	<div class="reply-body">
+							  	<div class="user">
+									<div ng-community-user user-id="reply.author.preferredUsername" user-name="reply.author.displayName" context="'Wall'" css-class="'il-Link-clr ac-contents'" class="display-inline"></div> 
+									<div>
+										<span class="timeDur moveTop10" data-livestamp="{{reply.published}}"></span>
+										<span class="timeDur moveTop10">|</span>
+										<span class="timeDur moveTop10">{{reply.likes.totalItems}} likes</span>
+										<span class="timeDur moveTop10" ng-if="reply.liked">|</span>
+										<span class="timeDur moveTop10" ng-if="reply.liked">You liked this</span>
+									</div> 
+									
+								</div>
+						    	<div class="wallText" ng-bind-html="renderHtml(reply.content)"></div>
+						    	<div class="SocialNet">
+									<ul>
+										<li> <a href="#" class="il-Link-clr" ng-click="like(reply, !reply.liked)">{{reply.liked ? 'Unlike' : 'Like'}}
+										<i class="fa fa-thumbs-o-up" ng-if="!reply.liked"></i><i class="fa fa-thumbs-o-down" ng-if="reply.liked"></i>
+										</a></li>
+									</ul>
+								</div>
+						  	</div>
+						</div>
+					</div>
+					<div class="tutorImg"><img ng-src="{{activity.actor.image ? activity.actor.image.url:'/img/default.png'}}" class="headwallImg"></div>
+				</div>
+				<a href="javascript:void(0)" class="col-md-12 text-center show-more" ng-if="model.scrollWall" ng-click="scrollWall()">
+					<span ng-if="!model.showMoreLoading">Show More</span>
+					<span ng-if="model.showMoreLoading">Loading <img src="/img/loading.gif"/></span>
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="postActivityConfModal">
+    <div class="modal-dialog modal-dialog-center">
+        <div class="modal-content" style="width: 650px;">
+            <div class="modal-header">
+            	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            	<h3>Confirm - post a {{model.post.type.label}}</h3>
+            </div>
+            <div class="modal-body">
+            	<div class="alert alert-warning">
+            		Please validate the below details and confirm to post the activity.
+            	</div>
+            	<dl class="dl-horizontal confirm-post">
+            		<dt>To</dt><dd><span ng-repeat="to in model.post.to">&nbsp;{{to.name}}{{$index != (model.post.to.length - 1) ? ',' : ''}}</span></dd>
+				  	<dt>Title</dt><dd>{{model.post.title}}</dd>
+				  	<dt>Message</dt><dd><span ng-bind-html="renderHtmlTrim(model.post.content, 300)"></span></dd>
+				  	<dt>Schedule</dt><dd>{{model.post.scheduledDate | date:'EEEE, MMMM dd'}}, {{model.post.startTime}} to {{model.post.endTime}}</dd>
+				  	<dt ng-if="model.post.location">Location</dt><dd ng-if="model.post.location">{{model.post.location}}</dd>
+				</dl>
+            </div>
+            <div class="modal-footer">
+            	<button class="btn btn-primary" ng-click="postActivity()">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>

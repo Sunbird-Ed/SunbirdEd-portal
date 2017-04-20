@@ -1,0 +1,49 @@
+<div>
+    <div class="headerAsk col-md-12 noPad">
+        <h2>People</h2>
+        <a data-original-title="Advanced Search" title="" data-placement="bottom" data-toggle="tooltip" class="pull-right marginTop10" href="javascript:void(0);" ng-click="showSearchForm();">
+            <i id="advancedSearchIcon" class="advancedSearchIcon fa fa-toggle-down"></i>
+        </a>
+        <input type="search" ng-model="model.searchLearners.filters['name']" class="pull-right marginTop10 form-control" style="width: 45%" placeHolder="{{model.nameFieldPlaceHolder}}" ng-enter="search()" />
+    </div>
+    <div id="peopleSearchForm" class="col-md-12 noPad marginTop20" style="display:none;">
+        <div class="col-md-6 noPad searchFormLeftDiv">
+            <div class="form-group col-md-12 noPad" ng-repeat="field in model.searchConfig.searchFields | slice:0:leftColSearchFields" ng-if="field.name != 'name'">
+                <div ng-include="'/templates/player/searchFields.html'"></div>
+            </div>
+        </div>
+
+        <div class="col-md-6 noPad searchFormRightDiv">
+            <div class="form-group col-md-12 noPad" ng-repeat="field in model.searchConfig.searchFields | slice:leftColSearchFields:totalSearchFields" ng-if="field.name != 'name'">
+                <div ng-include="'/templates/player/searchFields.html'"></div>
+            </div>
+            <div class="form-group col-md-12 noPad">
+                <button class="btn btn-large btn-default searchFormButton" id="searchInteractions" id="searchNoteBtn" ng-click="search();">Search</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 noPad padTop">
+        All the people in this course. Use the search on the right side bar to further filter the people.
+    </div>
+
+    <div class="addGroupContainer col-md-12 noPad padTop padBottom">
+        <div class="col-md-12 noPad padTop">
+            <div class="col-md-12 noPad padTop padBottom {{$index == (model.people.items.length-1) ? '' : 'borderBottom'}}" ng-repeat="member in model.people.items">
+                <img ng-src="{{member.image ? member.image:'/img/default.png'}}" class="img-rounded media-object pull-left" width="32" height="32">
+                <div class="pull-left col-md-8 noPad">
+                    <div ng-community-user user-id="member.ResourceURI" user-name="(member.name || member.ResourceURI)" css-class="'pull-left marginLeft10'" context="'Community Groups'"></div>
+                    <div ng-if="member.type">, <span class="user-type">{{member.type}}</span></div>
+                    <span ng-if="member.stream || member.college" class="full-width user-prof-span ng-scope ng-binding pull-left marginLeft10">{{member.stream}}, {{member.college}}</span>
+                </div>
+            </div>
+            <div class="alert alert-info col-md-12 marginTop10" ng-if="model.people.totalItemsCount == 0">
+                No students found in the given course for the matching search criteria.
+            </div>
+            <a href="javascript:void(0)" class="col-md-12 text-center show-more" ng-if="model.people.showMore" ng-click="searchPeople()">
+                <span ng-if="!model.people.showMoreLoading">Show More</span>
+                <span ng-if="model.people.showMoreLoading">Loading <img src="/img/loading.gif"/></span>
+            </a>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>

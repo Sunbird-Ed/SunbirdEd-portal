@@ -1,0 +1,108 @@
+.notePageHeading {
+    font-family:'FrutigerNeueLTW01-CnLt';
+    font-size: 30px;
+    display:inline-block;
+}
+
+.noteCategory {
+	text-transform: capitalize;
+	font-family:'FrutigerNeueLTW01-CnBol 774330';
+}
+
+.noteTitle {
+	font-family:'FrutigerNeueLTW01-CnBol 774330';
+    font-size: 20px;
+    display:inline-block;
+    width: 100%;
+    color: #428BCA;
+}
+
+.noteTitle input {
+    font-size: 16px;
+    width: 80%;
+    color: #000;
+}
+
+.noteTitleBar {
+	padding-bottom: 5px;
+}
+
+.noteTitleBar span {
+
+}
+
+.noteContainer {
+	background: #fff;
+	border-bottom: 1px solid #777;
+	padding: 10px;
+	margin-bottom: 10px;
+}
+
+.noteDescription {
+	padding-bottom: 10px;
+	font-family:'Frutiger Serif LT W01';
+	font-size: 16px;
+}
+
+.noteLocation {
+	font-family: 'FrutigerNeueLTW01-CnBol 774333';
+	font-size: 16px;	
+	padding-top: 10px;
+	padding-bottom: 5px;
+	width: 100%;
+}
+
+.noteLocation span {
+	font-family: 'FrutigerNeueLTW01-CnBol 774333';
+}
+
+.noteLocation small {
+	font-size: 14px;
+	float: right;
+}
+
+.noteFooter {
+	height: 50px;
+	text-align : bottom;
+}
+
+.noteFooter button {
+	font-family:'Frutiger Serif LT W01';
+	font-size: 14px !important;
+	margin-right: 10px;
+}
+
+
+.noteSearch {
+	font-family:'Frutiger Serif LT W01';
+	font-size: 18px !important;
+	width: 100%;
+	margin-top: 10px;
+	padding: 10px;
+	border-top: 1px dotted #777;
+	border-bottom: 1px dotted #777;
+}
+
+.noteSearch .searchBox {
+	font-size: 16px !important;
+	margin-left: 10px !important;
+	width: 80% !important;
+}
+
+.addNoteBtn {
+	font-family:'Frutiger Serif LT W01';
+	font-size: 16px !important;
+}
+
+.rotateNote{
+	padding: 50px;
+    position: absolute;
+    border: 1px solid black;
+    -ms-transform: rotate(270deg); /* IE 9 */
+    -ms-transform-origin: 0% 50%; /* IE 9 */
+    -webkit-transform: rotate(270deg); /* Chrome, Safari, Opera */
+    -webkit-transform-origin:0% 50%; /* Chrome, Safari, Opera */
+    transform: rotate(270deg);
+    transform-origin: 0% 50% ;
+
+}

@@ -1,0 +1,392 @@
+<div class="MywallActivity">
+	<div class="wallActivityHeader">
+		<div class="editContent">
+			<div class="headerAsk" id="activityStream">
+				<h2>User Profile
+				<a href="javascript:void(0);" class="pull-right tool-tip padL10 moveTop10" data-toggle="tooltip" data-placement="left" title="Edit your profile" data-original-title="Edit your profile" ng-if="model.user.profile.identifier == model.loggedUserId">
+					<i class="writeBlackOne fa fa-edit" id="writeIcon" onclick="openProfilePostArea(this, 'fa-edit');"></i>
+				</a>
+				<a href="javascript:void(0);" class="pull-right tool-tip padL10 moveTop10" data-toggle="tooltip" data-placement="left" title="" data-original-title="Change password" ng-if="model.user.profile.identifier == model.loggedUserId">
+					<i class="writeBlackOne fa fa-key" id="keyIcon" onclick="openProfileResetPassword();"></i>
+		        </a>
+				<a href="javascript:void(0);" class="pull-right tool-tip hide moveTop10" data-toggle="tooltip" data-placement="bottom" data-original-title="Search users">
+					<i class="writeBlackOne fa fa-search"></i>
+				</a>
+		        </h2>
+		        <a class="pull-right" ng-click="goBack();" ng-if="backToContextName" style="margin: 21px 7px 0 0">
+		            <i class="fa fa-chevron-left"></i> Back To {{backToContextName}}
+		        </a>
+			</div>
+		</div>
+		<div id="conformMessage" class="alert hide" ></div>
+		<div class="textEditor AskQEdit" id="il-Rset-Pwd" style="display:none;">
+			<div id="changePwdAlert" class="col-md-12 alert hide" role="alert"></div>
+			<div class="form-group col-md-12 noPad">
+				<div>Current password*</div>
+				<input type="password" class="form-control" ng-model="model.userPassword.currentPassword" />
+			</div>
+			<div class="form-group col-md-12 noPad">
+				<div>New password*</div>
+				<input type="password" class="form-control" ng-model="model.userPassword.newPassword" />
+			</div>
+			<div class="form-group col-md-12 noPad">
+				<div>Confirm new password*</div>
+				<input type="password" class="form-control" ng-model="model.userPassword.confirmNewPassword" />
+			</div>
+			<div class="form-group col-md-12 noPad">
+				<div>
+					Note: Password should contain at least 6 characters, 1 number, 1 lowercase character (a-z), 1 uppercase character (A-Z) and 1 special character. New and Current Passwords should not be same.
+				</div>
+			</div>
+			<div class="save_text">
+				<div class="save_btn">
+					<button id="changePwd" class="btn btn-primary" ng-click="changePassword()">Change Password</button>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+		<div class="textEditor AskQEdit profileEdit" id="updateUserProfile" style="display:none;">
+			<div class="form-group col-md-12 noPad">
+				<div class="form-group col-md-4 noPad">
+					<div>Gender</div>
+					<div style="font-family: 'FrutigerSerifLTW01-Medi 722257'; font-size: 14px">
+						<input name="gender" type="radio" style="margin-right:10px;" ng-model="model.userMetadata.gender" value="M" />Male</i>&nbsp;&nbsp;&nbsp;&nbsp;
+						<input name="gender" type="radio" style="margin-right:10px;" ng-model="model.userMetadata.gender" value="F" />Female</i>
+					</div>
+				</div>
+				<div class="form-group col-md-4 noPad" style="padding-left: 10px">
+					<div>Year of graduation</div>
+					<input type="number" class="form-control" ng-model="model.userMetadata.yearOfGraduation" min="2015" max="2100"/>
+				</div>
+				<div class="form-group col-md-4 noPad" style="padding-left: 10px">
+					<div>Work experience</div>
+					<input type="number" class="form-control" ng-model="model.userMetadata.workExperience"/>
+				</div>
+			</div>
+			<div class="form-group col-md-12 noPad">
+			  	<div class="form-group col-md-4 noPad">
+			  		<div>Degree</div>
+				  	<input type="text" class="form-control" ng-model="model.userMetadata.degree" placeholder="Degree"/>
+				</div>
+				<div class="form-group col-md-4 noPad" style="padding-left: 10px">
+				  	<div>Stream</div>
+				  	<input type="text" class="form-control" ng-model="model.userMetadata.stream" placeholder="Stream"/>
+				</div>
+				<div class="form-group col-md-4 noPad" style="padding-left: 10px">
+					<div>College</div>
+				  	<input type="text" class="form-control" ng-model="model.userMetadata.college" placeholder="College"/>
+				</div>
+			</div>
+			<div class="form-group col-md-12 noPad">
+				<div class="col-md-12 noPad">
+					<div>Programming Tools Used</div>&nbsp;&nbsp;<a href="javascript:void(0);" ng-click="model.userMetadata.programmingToolsUsed.push({label:'',value:''})"><i class="fa fa-plus"></i></a>
+					<div style="font-style: italic; color: #999; font-size: 12px; margin-top: -5px; margin-bottom: 5px;">Note: Rating value is from 1(poor)-10(good).</div>
+					<div class="col-md-12 noPad" ng-repeat="tool in model.userMetadata.programmingToolsUsed">
+						<div class="form-group col-md-4 noPad">
+						  	<input type="text" class="form-control" ng-model="tool.label" placeholder="Tool Name"/>
+						</div>
+						<div class="form-group col-md-4 noPad" style="padding-left: 10px">
+						  	<input type="text" class="form-control number" ng-model="tool.value" maxlength="2" min="0" max="10" placeholder="Rating"/>
+						</div>
+						<div class="form-group col-md-4 noPad" style="padding-left: 10px">
+							<div style="padding-top:7px;"><i ng-click="removeRating(model.userMetadata.programmingToolsUsed, tool)" class="fa fa-trash-o"></i></div>
+						</div>
+					</div>
+					<div class="col-md-12 noPad" ng-show="model.userMetadata.programmingToolsUsed.length == 0">
+						click <a href="javascript:void(0);" ng-click="model.userMetadata.programmingToolsUsed.push({label:'',value:''})">here</a> to add.
+					</div>
+				</div>
+			</div>
+			<div class="form-group col-md-12 noPad">
+				<div class="col-md-12 noPad">
+					<div>Computer Science Specializations</div>&nbsp;&nbsp;<a href="javascript:void(0);" ng-click="model.userMetadata.computerScienceSpecializations.push({label:'',value:''})"><i class="fa fa-plus"></i></a>
+					<div style="font-style: italic; color: #999; font-size: 12px; margin-top: -5px; margin-bottom: 5px;">Note: Rating value is from 1(poor)-10(good).</div>
+					<div class="col-md-12 noPad" ng-repeat="specialization in model.userMetadata.computerScienceSpecializations">
+						<div class="form-group col-md-4 noPad">
+						  	<input type="text" class="form-control" ng-model="specialization.label" placeholder="Tool Name"/>
+						</div>
+						<div class="form-group col-md-4 noPad" style="padding-left: 10px">
+						  	<input type="text" class="form-control number" ng-model="specialization.value" maxlength="2" min="0" max="10" placeholder="Rating"/>
+						</div>
+						<div class="form-group col-md-4 noPad" style="padding-left: 10px">
+							<div style="padding-top:7px;"><i ng-click="removeRating(model.userMetadata.computerScienceSpecializations, specialization)" class="fa fa-trash-o"></i></div>
+						</div>
+					</div>
+					<div class="col-md-12 noPad" ng-show="model.userMetadata.programmingToolsUsed.length == 0">
+						click <a href="javascript:void(0);" ng-click="model.userMetadata.computerScienceSpecializations.push({label:'',value:''})">here</a> to add.
+					</div>
+				</div>
+			</div>
+
+
+			<div class="form-group col-md-12 noPad">
+				<div class="col-md-12 noPad">
+					<div>Skills</div>&nbsp;&nbsp;<a href="javascript:void(0);" ng-click="model.userMetadata.skills.push({label:'',value:''})"><i class="fa fa-plus"></i></a>
+					<div style="font-style: italic; color: #999; font-size: 12px; margin-top: -5px; margin-bottom: 5px;">Note: Rating value is from 1(poor)-10(good).</div>
+					<div class="col-md-12 noPad" ng-repeat="skill in model.userMetadata.skills">
+						<div class="form-group col-md-4 noPad">
+						  	<input type="text" class="form-control" ng-model="skill.label" placeholder="Skill Name"/>
+						</div>
+						<div class="form-group col-md-4 noPad" style="padding-left: 10px">
+						  	<input type="text" class="form-control number" ng-model="skill.value" maxlength="2" min="0" max="10" placeholder="Rating"/>
+						</div>
+						<div class="form-group col-md-4 noPad" style="padding-left: 10px">
+							<div style="padding-top:7px;"><i ng-click="removeRating(model.userMetadata.skills, skill)" class="fa fa-trash-o"></i></div>
+						</div>
+					</div>
+					<div class="col-md-12 noPad" ng-show="model.userMetadata.skills.length == 0">
+						click <a href="javascript:void(0);" ng-click="model.userMetadata.skills.push({label:'',value:''})">here</a> to add.
+					</div>
+				</div>
+			</div>
+			<div class="form-group col-md-12 noPad">
+				<div class="col-md-12 noPad">
+					<div>Speaking Languages</div>&nbsp;&nbsp;<a href="javascript:void(0);" ng-click="model.userMetadata.speakingLanguages.push({label:'',value:''})"><i class="fa fa-plus"></i></a>
+					<div style="font-style: italic; color: #999; font-size: 12px; margin-top: -5px; margin-bottom: 5px;">Note: Rating value is from 1(poor)-10(good).</div>
+					<div class="col-md-12 noPad" ng-repeat="language in model.userMetadata.speakingLanguages">
+						<div class="form-group col-md-4 noPad">
+						  	<input type="text" class="form-control" ng-model="language.label" placeholder="Language"/>
+						</div>
+						<div class="form-group col-md-4 noPad" style="padding-left: 10px">
+						  	<input type="text" class="form-control number" ng-model="language.value" maxlength="2" min="0" max="10" placeholder="Rating"/>
+						</div>
+						<div class="form-group col-md-4 noPad" style="padding-left: 10px">
+							<div style="padding-top:7px;"><i ng-click="removeRating(model.userMetadata.speakingLanguages, language)" class="fa fa-trash-o"></i></div>
+						</div>
+					</div>
+					<div class="col-md-12 noPad" ng-show="model.userMetadata.speakingLanguages.length == 0">
+						click <a href="javascript:void(0);" ng-click="model.userMetadata.speakingLanguages.push({label:'',value:''})">here</a> to add.
+					</div>
+				</div>
+			</div>
+			<div class="form-group col-md-12 noPad">
+				<div>Programming Proficiency</div>
+			  	<input type="text" class="form-control" min="0" max="10" maxlength="2" ng-model="model.userMetadata.programmingProficiency" placeholder="Programming Proficiency">
+			</div>
+			<div class="form-group col-md-12 noPad">
+				<div class="input-group" style="width:100%;">
+			      	<div class="input-group-addon" style="width: 26px; font-size: 14px; padding: 6px 12px; text-align: center; border-radius: 4px 0px 0px 4px ! important; border: 1px solid rgb(204, 204, 204); background-color: rgb(238, 238, 238); border-right:0px;">@</div>
+			      	<input type="text" class="form-control" ng-model="model.userMetadata.alternateEmailId" placeholder="Your Alternative Email">
+			    </div>
+			</div>
+			<div class="form-group col-md-12 noPad">
+				<div class="input-group" style="width:100%;">
+			      	<div class="input-group-addon" style="width: 26px; font-size: 14px; padding: 6px 12px; text-align: center; border-radius: 4px 0px 0px 4px ! important; border: 1px solid rgb(204, 204, 204); background-color: rgb(238, 238, 238); border-right:0px;"><i class="fa fa-share-alt-square"></i></div>
+			      	<input type="text" class="form-control" ng-model="model.userMetadata.website" placeholder="Your Website URL">
+			    </div>
+			</div>
+			<div class="form-group col-md-12 noPad">
+				<div class="input-group" style="width:100%;">
+			      	<div class="input-group-addon" style="width: 26px; font-size: 14px; padding: 6px 12px; text-align: center; border-radius: 4px 0px 0px 4px ! important; border: 1px solid rgb(204, 204, 204); background-color: rgb(238, 238, 238); border-right:0px;"><i class="fa fa-facebook-square"></i></div>
+			      	<input type="text" class="form-control" ng-model="model.userMetadata.facebook" placeholder="Your Facebook URL">
+			    </div>
+			</div>
+			<div class="form-group col-md-12 noPad">
+			  	<div class="input-group" style="width:100%;">
+			      	<div class="input-group-addon" style="width: 26px; font-size: 14px; padding: 6px 12px; text-align: center; border-radius: 4px 0px 0px 4px ! important; border: 1px solid rgb(204, 204, 204); background-color: rgb(238, 238, 238); border-right:0px;"><i class="fa fa-linkedin-square"></i></div>
+			      	<input type="text" class="form-control" ng-model="model.userMetadata.linkedin" placeholder="Your LinkedIn URL">
+			    </div>
+			</div>
+			<div class="form-group col-md-12 noPad">
+				<div class="input-group" style="width:100%;">
+			      	<div class="input-group-addon" style="width: 26px; font-size: 14px; padding: 6px 12px; text-align: center; border-radius: 4px 0px 0px 4px ! important; border: 1px solid rgb(204, 204, 204); background-color: rgb(238, 238, 238); border-right:0px;"><i class="fa fa-twitter-square"></i></div>
+			      	<input type="text" class="form-control" ng-model="model.userMetadata.twitter" placeholder="Your Twitter URL">
+			    </div>
+			</div>
+			<div class="form-group col-md-12 noPad">
+				<div class="input-group" style="width:100%;">
+			      	<div class="input-group-addon" style="width: 26px; font-size: 14px; padding: 6px 12px; text-align: center; border-radius: 4px 0px 0px 4px ! important; border: 1px solid rgb(204, 204, 204); background-color: rgb(238, 238, 238); border-right:0px;"><i class="fa fa-google-plus-square"></i></div>
+			      	<input type="text" class="form-control" ng-model="model.userMetadata.googleplus" placeholder="Your Googleplus URL">
+			    </div>
+			</div>
+			<div class="form-group col-md-12 noPad">
+				<div class="input-group" style="width:100%;">
+			      	<div class="input-group-addon" style="width: 26px; font-size: 14px; padding: 6px 12px; text-align: center; border-radius: 4px 0px 0px 4px ! important; border: 1px solid rgb(204, 204, 204); background-color: rgb(238, 238, 238); border-right:0px;"><i class="fa fa-git-square"></i></div>
+			      	<input type="text" class="form-control" ng-model="model.userMetadata.github" placeholder="Your Github URL">
+			    </div>
+			</div>
+			<div class="form-group col-md-12 noPad">
+				<div>Address</div>
+			  	<input type="text" class="form-control" ng-model="model.userMetadata.address" placeholder="Address">
+			</div>
+			<div class="form-group col-md-12 noPad">
+				<div class="col-md-6 noPad" style="padding-right: 5px;">
+					<div>Location</div>
+			  		<input type="text" class="form-control" ng-model="model.userMetadata.location" placeholder="Location">
+				</div>
+				<div class="col-md-6 noPad" style="padding-left: 5px;">
+					<div>Contact Number</div>
+			  		<input type="text" class="form-control" ng-model="model.userMetadata.contactNumber" placeholder="Contact Number">
+				</div>
+			</div>
+			<div class="form-group col-md-12 noPad">
+				<div>Description</div>
+				<textarea class="textarea form-control" placeholder="Write description..." style="width: 100%; min-height: 100px;" ng-model="model.userMetadata.description"></textarea>
+			</div>
+			<div class="save_text">
+				<div class="save_btn">
+					<button class="btn btn-primary" ng-click="saveUserProfile()">Save</button>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+		<div class="questionContainer col-md-12 noPad marginTop10 marginBottom25" style="padding: 0 0px 5px;">
+			<div id="imageUploadAlert" class="col-md-12 alert hide" role="alert"></div>
+			<div class="col-md-3 noPad">
+		        <img alt="{{model.user.profile.displayName}}" ng-src="{{model.user.profile.metadata.image || '/img/default.png'}}" class="large_pic" />
+		        <div class="col-md-12 noPad" style="font-size: 10px; padding: 2px 0px 2px 18px; color: #999;">(150X150px | Max 2MB)</div>
+		        <div class="col-md-12 noPad" ng-if="model.user.profile.identifier == model.loggedUserId">
+		        	<input id="userImageUpload" type="file" ng-file-select="onUserImageSelect($files)" accept="image/*">
+		        </div>
+		    </div>
+		    <div class="col-md-9 noPad pull-left">
+		        <div class="">
+				    <span class="il-Link-clr ac-contents">{{model.user.profile.displayName}}</span>
+				    <span class="user-prof-span">{{model.user.profile.roles.indexOf('student') != -1 ? ', Student' : ', Coach'}}</span>&nbsp;
+				    <!-- <span class="user-prof-span tool-tip" data-toggle="tooltip" data-placement="top" title="" data-original-title="Male" ng-if="model.user.profile.metadata.gender == 'M'"><i class="fa fa-male"></i>&emsp;</span>
+				    <span class="user-prof-span tool-tip" data-toggle="tooltip" data-placement="top" title="" data-original-title="Female"  ng-if="model.user.profile.metadata.gender == 'F'"><i class="fa fa-female"></i>&emsp;</span> -->
+				    <a href="{{model.user.profile.metadata.linkedin}}" target="_blank" class="user-prof-span" ng-if="model.user.profile.metadata.linkedin"><i class="glyph12 fa fa-linkedin-square"></i>&nbsp;</a>
+				    <a href="{{model.user.profile.metadata.facebook}}" target="_blank" class="user-prof-span" ng-if="model.user.profile.metadata.facebook"><i class="glyph12 fa fa-facebook-square"></i>&nbsp;</a>
+				    <a href="{{model.user.profile.metadata.github}}" target="_blank" class="user-prof-span" ng-if="model.user.profile.metadata.github"><i class="glyph12 fa fa-git-square"></i>&nbsp;</a>
+				    <a href="{{model.user.profile.metadata.twitter}}" target="_blank" class="user-prof-span" ng-if="model.user.profile.metadata.twitter"><i class="glyph12 fa fa-twitter-square"></i>&nbsp;</a>
+				    <a href="{{model.user.profile.metadata.googleplus}}" target="_blank" class="user-prof-span" ng-if="model.user.profile.metadata.googleplus"><i class="glyph12 fa fa-google-plus-square"></i>&nbsp;</a>
+				    <a href="{{model.user.profile.metadata.website}}" target="_blank" class="user-prof-span" ng-if="model.user.profile.metadata.website"><i class="glyph12 fa fa-share-alt-square"></i>&nbsp;</a>
+
+				    <span class="" ng-if="model.user.profile.identifier != model.loggedUserId">
+			        	<button class="btn btn-primary pull-right" ng-if="!model.user.communityProfile.profile.pump_io.followed" ng-click="follow(model.user.communityProfile.profile.id);getCommunityProfile();">Follow</button>
+			    		<button class="btn btn-default pull-right" ng-if="model.user.communityProfile.profile.pump_io.followed" ng-click="unfollow(model.user.communityProfile.profile.id);getCommunityProfile();">Stop Following</button>
+			        </span>
+
+				    <span class="full-width user-prof-span" ng-if="model.user.profile.metadata.degree || model.user.profile.metadata.stream || model.user.profile.metadata.college"><i class="glyph12 fa fa-graduation-cap"></i>&nbsp;&nbsp;{{model.user.profile.metadata.degree}}<span ng-if="model.user.profile.metadata.yearOfGraduation"> - {{model.user.profile.metadata.yearOfGraduation}}</span>, {{model.user.profile.metadata.stream}}, {{model.user.profile.metadata.college}}</span>
+				    <span class="full-width user-prof-span" ng-if="model.user.profile.metadata.email || model.user.profile.metadata.alternateEmailId || model.user.profile.metadata.contactNumber">
+				    	<span class="user-prof-span marRight5" ng-if="model.user.profile.metadata.email"><i class="glyph12 fa fa-envelope"></i>&nbsp;&nbsp;{{model.user.profile.metadata.email}}</span>
+				    	<span class="user-prof-span marRight5" ng-if="model.user.profile.metadata.alternateEmailId"><i class="glyph12 fa fa-envelope-o"></i>&nbsp;&nbsp;{{model.user.profile.metadata.alternateEmailId}}</span>
+				    	<span class="user-prof-span" ng-if="model.user.profile.metadata.contactNumber && model.user.profile.identifier == model.loggedUserId"><i class="glyph12 fa fa-phone"></i>&nbsp;&nbsp;{{model.user.profile.metadata.contactNumber}}</span>
+				    </span>
+				    <span class="full-width user-prof-span" ng-if="model.user.profile.metadata.address || model.user.profile.metadata.location"><i class="glyph12 fa fa-location-arrow" style="padding-left: 2px"></i>&nbsp;&nbsp;<span ng-if="model.user.profile.metadata.address && model.user.profile.identifier == model.loggedUserId">{{model.user.profile.metadata.address}}</span><span ng-if="model.user.profile.metadata.address && model.user.profile.metadata.location && model.user.profile.identifier == model.loggedUserId">,&nbsp;&nbsp;</span><span ng-if="model.user.profile.metadata.location">{{model.user.profile.metadata.location}}</span></span>
+				    <span class="full-width user-prof-span" ng-if="model.user.profile.metadata.joiningDate"><i class="glyph12 fa fa-calendar"></i>&nbsp;&nbsp;<span ng-bind="model.user.profile.metadata.joiningDate | date:'MMM d, y'"></span></span>
+				    <span class="full-width user-prof-span" ng-if="model.user.profile.metadata.organization"><i class="glyph12 fa fa-university"></i>&nbsp;&nbsp;{{model.user.profile.metadata.organization}}&nbsp;&nbsp;<span ng-if="model.user.profile.metadata.workExperience">, {{model.user.profile.metadata.workExperience}} Years</span>
+				    </span>
+				    <span class="full-width padTop user-prof-span" ng-bind-html="renderHtml(model.user.profile.metadata.description)"></span>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<div ng-if="model.user.profile.metadata.registrationNumber && model.user.profile.identifier == model.loggedUserId">
+							<div>Registration No</div>
+							{{model.user.profile.metadata.registrationNumber}}
+						</div>
+					</div>
+					<div class="col-md-4" >
+						<div ng-if="model.user.profile.metadata.batch">
+							<div>Batch</div>
+							{{model.user.profile.metadata.batch}}
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div ng-if="model.user.profile.metadata.programStream">
+							<div>Program Stream</div>
+							{{model.user.profile.metadata.programStream}}
+						</div>
+					</div>
+				</div>
+				<div class="tutorMsg padTop" ng-if="model.user.profile.identifier == model.loggedUserId && model.user.profile.metadata.programmingProficiency">
+					<div>Programming Proficiency</div>
+					<div class="QAtags">
+						<span class="badge ng-scope">{{model.user.profile.metadata.programmingProficiency}}</span>
+					</div>
+				</div>
+				<div class="tutorMsg padTop" ng-if="model.user.profile.identifier == model.loggedUserId && model.user.profile.metadata.programmingToolsUsed">
+					<div>Programming Tools Used</div>
+					<div class="QAtags">
+						<span class="badge ng-scope" ng-repeat="item in model.user.profile.metadata.programmingToolsUsed">{{item.label}}: {{item.value}}</span>
+					</div>
+				</div>
+				<div class="tutorMsg padTop" ng-if="model.user.profile.identifier == model.loggedUserId && model.user.profile.metadata.computerScienceSpecializations">
+					<div>Computer Science Specializations</div>
+					<div class="QAtags">
+						<span class="badge ng-scope" ng-repeat="item in model.user.profile.metadata.computerScienceSpecializations">{{item.label}}: {{item.value}}</span>
+					</div>
+				</div>
+				<div class="tutorMsg padTop" ng-if="model.user.profile.identifier == model.loggedUserId && model.user.profile.metadata.skills">
+					<div>Skills</div>
+					<div class="QAtags">
+						<span class="badge ng-scope" ng-repeat="item in model.user.profile.metadata.skills">{{item.label}}: {{item.value}}</span>
+					</div>
+				</div>
+				<div class="tutorMsg padTop" ng-if="model.user.profile.identifier == model.loggedUserId && model.user.profile.metadata.speakingLanguages">
+					<div>Speaking Languages</div>
+					<div class="QAtags">
+						<span class="badge ng-scope" ng-repeat="item in model.user.profile.metadata.speakingLanguages">{{item.label}}: {{item.value}}</span>
+					</div>
+				</div>
+		    </div>
+		</div>
+		
+		<div class="row"> 
+		<div class="col-md-12 noPad">
+		<div class="col-md-3"></div>
+
+		<div class="col-md-9 noPad">
+			<p class="textEditor AskQEdit" style="font-size: 16px;">
+			<a href="javascript:void(0)" class="profile-anchor" ng-class="{'active': model.user.activeMenu == 'activities'}" ng-click="getUserMajorFeed()">Recent Activity</a>&emsp;
+			<a href="javascript:void(0)" class="profile-anchor" ng-class="{'active': model.user.activeMenu == 'following'}" ng-click="getUserFollowing()">Following</a>&emsp;
+			<a href="javascript:void(0)" class="profile-anchor" ng-class="{'active': model.user.activeMenu == 'followers'}" ng-click="getUserFollowers()">Followers</a>&emsp;
+			</p>
+			<div class="questionContainer borderTop" ng-if="model.user.activeMenu == 'activities'">
+				<div class="row" style="margin: 0px">
+					<div class="col-md-12 noPad marginTop10 ActivityStreamContent" ng-repeat="activity in model.user.majorFeed.items">
+						<div class="pull-left"><img ng-src="{{activity.actor.image ? activity.actor.image.url:'/img/default.png'}}" class="headwallImg"></div>
+						<div class="pull-left marginLeft5">
+							<div class="tutorMsg">
+								<span class="ac-contents">{{activity.actor.displayName}}</span>
+								<span class="timeDur" data-livestamp="{{activity.published}}"></span>
+							</div>
+							<h5><p class="ac-links">{{activity.object.displayName}}</p></h5>
+							<p class="ac-contents"><div ng-bind-html="renderHtml(activity.object.content)"></div></p>
+						</div>
+					</div>
+					<div class="alert alert-info marginTop10" ng-if="model.user.majorFeed.items.length == 0">
+						No recent activity found for {{model.user.profile.displayName}}
+					</div>
+				</div>
+			</div>
+			<div class="questionContainer borderTop" ng-if="model.user.activeMenu == 'following'">
+				<div class="col-md-12 noPad marginTop10 padBottom {{$index == (model.user.following.totalItems-1) ? '' : 'borderBottom'}}" ng-repeat="member in model.user.following.items">
+		            <img ng-src="{{member.image ? member.image.url:'/img/default.png'}}" class="img-rounded media-object pull-left" width="32" height="32">
+		            <a class="pull-left marginLeft10 groupMemberName marginTop10" href="javascript:void(0)" ng-click="userProfile(model.user.profile.displayName + ' Profile', member.preferredUsername)">{{member.displayName}} </a>
+		            <a href="javascript:void(0)" class="marginLeft10" style="top: 10px; position: relative" ng-click="follow(member.id)" ng-show="!following(member.preferredUsername) && member.preferredUsername != model.loggedUserId">
+		            	<i class="glyph12 fa fa-users" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Follow User"></i>
+		            </a>
+		            <a href="javascript:void(0)" class="marginLeft10" style="top: 10px; position: relative" ng-click="unfollow(member.id)" ng-if="following(member.preferredUsername) && member.preferredUsername != model.loggedUserId">
+		            	<i class="glyph12 fa fa-user" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="UnFollow User"></i>
+		            </a>
+		        </div>
+		        <div class="alert alert-info col-md-12 marginTop10" ng-if="model.user.following.totalItems == 0">
+		            {{model.user.profile.displayName}} is not following any person!!
+		        </div>
+		        <div class="clearfix"></div>
+			</div>
+			<div class="questionContainer borderTop" ng-if="model.user.activeMenu == 'followers'">
+				<div class="col-md-12 noPad marginTop10 padBottom {{$index == (model.user.followers.totalItems-1) ? '' : 'borderBottom'}}" ng-repeat="member in model.user.followers.items">
+		            <img ng-src="{{member.image ? member.image.url:'/img/default.png'}}" class="img-rounded media-object pull-left" width="32" height="32">
+		            <a class="pull-left marginLeft10 marginTop10" href="javascript:void(0)" ng-click="userProfile(model.user.profile.displayName + ' Profile', member.preferredUsername)">{{member.displayName}} </a>
+		            <a href="javascript:void(0)" class="marginLeft10" style="top: 10px; position: relative" ng-click="follow(member.id)" ng-show="!following(member.preferredUsername) && member.preferredUsername != model.loggedUserId">
+		            	<i class="glyph12 fa fa-users" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Follow User"></i>
+		            </a>
+		            <a href="javascript:void(0)" class="marginLeft10" style="top: 10px; position: relative" ng-click="unfollow(member.id)" ng-if="following(member.preferredUsername) && member.preferredUsername != model.loggedUserId">
+		            	<i class="glyph12 fa fa-user" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="UnFollow User"></i>
+		            </a>
+		        </div>
+		        <div class="alert alert-info col-md-12 marginTop10" ng-if="model.user.followers.totalItems == 0">
+		            {{model.user.profile.displayName}} has no followers!!
+		        </div>
+		        <div class="clearfix"></div>
+			</div>
+
+		</div>
+
+		</div>
+		</div>
+		
+	</div>
+</div>

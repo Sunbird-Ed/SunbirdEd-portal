@@ -1,0 +1,43 @@
+<div class="row">
+    <div class="col-md-12 noPad headerAsk">
+        <h2 class="col-md-8 noPad">{{selectedContent.name}}</h2>
+        
+        <div class="col-md-4 noPad">           
+            <a href="javascript:void(0);" ng-click="backToList();" class="marginTop20 pull-right commonBackToList"><i class="fa fa-chevron-left"></i> Back to list</a>
+        </div>
+    </div>
+</div>
+
+<div class="content_row marginTop5">
+    <p class="common_content col-md-12" ng-bind-html="renderHtml(selectedContent.metadata.description)"></p>
+</div>
+<div ng-include="'/templates/player/mediaPlayer.html'" class="col-md-12 noPad"></div>
+
+<div class="content_row" ng-if="selectedContent.media.length > 0">
+    <div class="il-sc-container col-md-12 noPad">
+        <div class="il-sc-header">
+            <h2>Media</h2>
+        </div>
+        <div class="row col-md-12">
+            <div class="pull-left padLeft marginLeft10" style="max-width: 180px; text-align: center;" ng-repeat="media in selectedContent.media">
+                <a href="javascript:void(0)" ng-click="playMedia(media.mediaId)">
+                    <div ng-switch on="media.mediaType">
+                        <span class="glyph32 icon icon-video-file" ng-switch-when="video"></span>
+                        <span class="glyph32 icon icon-audio" ng-switch-when="audio"></span>
+                        <span class="glyph32 icon icon-images" ng-switch-when="image"></span>
+                        <span class="glyph32 icon icon-preview" ng-switch-when="text"></span>
+                        <span class="glyph32 icon icon-richtext-html" ng-switch-when="richtext"></span>
+                        <span class="glyph32 icon icon-slideshow1" ng-switch-when="slides"></span>
+                        <span class="glyph32 icon icon-pdf" ng-switch-when="document"></span>
+                        <span class="glyph32 icon icon-url" ng-switch-when="url"></span>
+                        <span class="glyph32 icon icon-mcq" ng-switch-when="mcq"></span>
+                        <span class="glyph32 icon icon-video-file" ng-switch-default></span>
+                    </div>
+                    {{media.title}}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+

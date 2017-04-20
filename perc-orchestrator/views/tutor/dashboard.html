@@ -1,0 +1,104 @@
+<link rel="stylesheet" href="/css/courseDashboard.css" type="text/css"/>
+<div class="text-center" ng-show="loadingDashboardData" style="margin-top: 50px">
+    Loading <img src="/img/loading.gif"/>
+</div>
+<div class="col-md-12 noPad" ng-show="!loadingDashboardData">
+<div class="List_view" ng-show="!showStudentSummary && !showStudentGradebook">
+	<div class="col-md-12 noPad headerAsk">
+		<h2>Class Dashboard
+            <a href="/private/v1/course/dashboard/export/{{encodedCourseId}}" class=""><i class="writeBlackOne  fa fa-download"></i></a>
+            <a href="javascript:void(0);" class="" ng-click="refreshDashboard()"><i class="writeBlackOne createBinderBtn fa fa-refresh"></i></a> 
+        </h2>
+        <a data-original-title="Advanced Search" title="" data-placement="bottom" data-toggle="tooltip" class="pull-right marginTop20" href="javascript:void(0);" ng-click="showSearchForm();">
+            <i id="advancedSearchIcon" class="advancedSearchIcon fa fa-toggle-down"></i>
+        </a>
+        <input type="search" ng-model="model.searchLearners.filters['name']" class="pull-right marginTop20 form-control" style="width: 45%" placeHolder="{{model.nameFieldPlaceHolder}}" ng-enter="search()" />
+    </div>
+    <div id="dashboardSearchForm" class="col-md-12 noPad marginTop20" style="display:none;">
+        <div class="col-md-6 noPad searchFormLeftDiv">
+            <div class="form-group col-md-12 noPad" ng-repeat="field in model.searchConfig.searchFields | slice:0:leftColSearchFields" ng-if="field.name != 'name'">
+                <div ng-include="'/templates/player/searchFields.html'"></div>
+            </div>
+        </div>
+
+        <div class="col-md-6 noPad searchFormRightDiv">
+            <div class="form-group col-md-12 noPad" ng-repeat="field in model.searchConfig.searchFields | slice:leftColSearchFields:totalSearchFields" ng-if="field.name != 'name'">
+                <div ng-include="'/templates/player/searchFields.html'"></div>
+            </div>
+            <div class="form-group col-md-12 noPad">
+                <button class="btn btn-large btn-default searchFormButton" id="searchInteractions" id="searchNoteBtn" ng-click="search();">Search</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12 noPad marginBottom25 border-bottom-1px">
+    	<div id="chart_div" style="float: left; width: 33%"></div>
+    	<div id="chart_div2" style="float: left; width: 33%"></div>
+    	<div id="chart_div3" style="float: left; width: 33%"></div>
+    </div>	
+    <div class="col-md-12 noPad marginBottom50" style="height: 100%">
+    	<div ng-include="'grid_legend_template.html'"></div>
+    	<div class="row marginTop10">
+            <div class="col-md-12">
+                <a href="javascript:void(0)" class="lastLoginText" ng-show="studentDetailsView" ng-click="toggleStudentDetails()">Hide Student Details</a>
+                <a href="javascript:void(0)" class="lastLoginText" ng-show="!studentDetailsView" ng-click="toggleStudentDetails()">Show Student Details</a>
+                <a id="dashboardViewEnggDetailsLink" ng-show="!studentDetailsView" href="javascript:void(0)" class="lastLoginText pull-right" ng-click="viewEngagementDetails()">View Engagement Details >></a>
+                <a id="dashboardHideEnggDetailsLink" ng-show="!studentDetailsView" href="javascript:void(0)" class="lastLoginText pull-right" ng-click="hideEngagementDetails()"><< Hide Engagement Details</a>
+            </div>
+            
+    	</div>
+    	<div id="dashboardGrid" class="gridStyle" ng-grid="gridOptions"></div>
+    </div>	
+</div>
+<div class="List_view" ng-show="showStudentSummary">
+	<div class="col-md-12 noPad headerAsk marginBottom15">
+		<h2>{{course.studentName}}'s Progress
+            <a href="/private/v1/student/dashboard/export/{{encodedCourseId}}/{{selectedStudentId}}" class=""><i class="writeBlackOne  fa fa-download" id="writeIcon"></i></a> 
+            <a href="javascript:void(0);" class="padL2" ng-click="refreshSummary()"><i class="writeBlackOne createBinderBtn fa fa-refresh" id="writeIcon"></i></a>
+        </h2>
+		
+		<span class="backBtnCont" style="padding-top: 20px">
+            <a href="javascript:void(0);" ng-click="backToSummary();" class="pull-right commonBackToList"><i class="fa fa-chevron-left"></i> Back to summary</a>
+        </span>
+    </div>
+    <div class="col-md-12 noPad marginBottom15 border-bottom-1px">
+    	<div class="col-md-12 noPad">
+    		<div ng-include="'/templates/player/studentCourseSummary.html'"></div>
+    	</div>
+        <h5 ng-if="course.studentGrade" >
+            <a href="javascript: void(0)" ng-click="showStudentGradebookData()" class="ac-links il-Link-clr">View Gradebook</a>
+        </h5>
+    </div>
+    <div class="col-md-12 noPad marginBottom50" style="height: 100%">
+    	<div ng-include="'grid_legend_template.html'"></div>
+    	<div class="row">
+    	&nbsp;<a id="summaryViewEnggDetailsLink" href="javascript:void(0)" class="lastLoginText pull-right" ng-click="viewEngagementDetails()">View Engagement Details >></a>
+        <a id="summaryHideEnggDetailsLink" href="javascript:void(0)" class="lastLoginText pull-right" ng-click="hideEngagementDetails()"><< Hide Engagement Details</a>
+    	</div>
+    	<div id="summaryGrid" class="gridStyle" ng-grid="summaryGridOptions"></div>
+    </div>	
+</div>
+<div class="List_view" ng-show="showStudentGradebook">
+    <div class="col-md-12 noPad headerAsk marginBottom15">
+        <h2>{{course.studentName}}'s Gradebook
+            <a href="javascript:void(0);" class="" ng-click="refreshGradebook()"><i class="writeBlackOne createBinderBtn fa fa-refresh" id="writeIcon"></i></a> 
+        </h2>
+        <span class="backBtnCont" style="padding-top: 20px; margin-right: 5px;">
+            <a href="javascript:void(0);" ng-click="showStudentSummaryData();" class="pull-right commonBackToList"><i class="fa fa-chevron-left"></i> Back</a>
+        </span>
+    </div>
+    <div class="col-md-12 noPad marginBottom25">
+        <span>
+            <span ng-if="studentGrade > 90" class="badge gradeBadge greenBackground">A</span>
+            <span ng-if="studentGrade > 80 && studentGrade <= 90" class="badge gradeBadge greenBackground">B</span>
+            <span ng-if="studentGrade > 70 && studentGrade <= 80" class="badge gradeBadge orangeBackground">C</span>
+            <span ng-if="studentGrade > 60 && studentGrade <= 70" class="badge gradeBadge orangeBackground">D</span>
+            <span ng-if="studentGrade >= 50 && studentGrade <= 60" class="badge gradeBadge orangeBackground">E</span>
+            <span ng-if="studentGrade < 50" class="badge gradeBadge redBackground">F</span>
+        </span>
+    </div>
+    <div class="col-md-12 noPad marginBottom50" style="height: 100%">
+        <div id="stdGradebookGrid" class="gridStyle" ng-grid="gradebookGridOptions"></div>
+    </div>  
+</div>
+</div>

@@ -1,0 +1,27 @@
+<div>
+    <h4 class="feature-principle-head upcoming-color">Upcoming Courses</h4>
+</div>
+<div class="row border-bottom" ng-repeat="upcoming in courses.upcoming">
+    <div class="col-md-6">
+        <div class="feature-course-principle clear-both">
+            <div class="upcoming-left-border feature-content-div">
+                <div class="popular-header">
+                    <a ng-href="/course/{{upcoming.shortId}}">
+                        <h1>{{upcoming.name}}</h1>
+                    </a>
+                    <span>By</span> <a href="/instructor/{{upcoming.faculty.shortId}}">{{upcoming.faculty.name}}</a>
+                </div>
+                <p class="feature-content">{{upcoming.homeDescription}}</p>
+                <div style="padding-top: 20px; color: #555555; display: inline-table; margin-top: 20px">
+                    <div class="col-md-3" style="padding-left: 0px"><img ng-src="{{upcoming.faculty.image}}" style="max-width: 110px"></div>
+                    <div class="col-md-9" style="padding-right: 0px;"><p style="text-align: justify; margin-top: 0px"> {{upcoming.faculty.description}}</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <img ng-src="{{upcoming.location}}" style="max-width: 450px; max-height: 450px;" ng-show="upcoming.location" />
+    </div>
+</div>
+

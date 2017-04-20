@@ -1,0 +1,43 @@
+<div ng-show="$root.showDashboardData">
+  <div class="col-md-12" ng-show="userCan('learnerstate_read')">
+      <div ng-include="'/student/dashboardCurrentCourses.html'"></div>
+  </div>
+  <div class="col-md-12" ng-show="userCan('faculty_observer_read')">
+      <div ng-include="'/tutor/dashboardAssignedCourses.html'"></div>
+  </div>
+  <div class="col-md-12" ng-show="userCan('student_read')">
+      <div ng-if="(upcomingEvents && upcomingEvents.length > 0)"> 
+        <div class="il-sc-containerz"> 
+          <div class="dash-heading-border">
+              <h2 style="margin-top: 11px; margin-bottom: 11px">Upcoming Events</h2>
+          </div>
+          <div> 
+            <table class="table">
+              <tbody>
+                <tr ng-repeat="currentEvent in upcomingEvents" style="border-bottom: 1px solid #ccc">
+                  <td>
+                      <i class="tocclass" data-toggle="tooltip" data-placement="top" title="" data-original-title="Coaching Session" ng-if="currentEvent.objectType == 'coachingSession'"></i>
+                      <i class="tocchecked" data-toggle="tooltip" data-placement="top" title="" data-original-title="Practice Tes" ng-if="currentEvent.objectType == 'practiceTest'"></i>
+                      <i class="tocchecked" data-toggle="tooltip" data-placement="top" title="" data-original-title="Practice Tes" ng-if="currentEvent.objectType == 'Exam'"></i>
+                      <a href="javascript:void(0)" class="tocEvent" ng-click="playElement(currentEvent.courseId, currentEvent.objectId)">
+                          <span ng-if="currentEvent.name">{{currentEvent.name}}</span>
+                          <span ng-if="!currentEvent.name">Event {{$index + 1}}</span>
+                      </a>
+                  </td>
+                  <td class="pull-right">
+                    {{ currentEvent.startDate | date:"MMM d, y h:mm a"}} <span ng-show="currentEvent.duration">({{ currentEvent.duration | readableTime}})</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+  </div>
+  <div class="col-md-12 hide" ng-show="userCan('learnerstate_read')">
+      <div ng-include="'/student/dashboardSuggested.html'"></div>
+  </div>
+  <div class="col-md-12" ng-show="userCan('instructor_read')">
+      <div ng-include="'/tutor/dashboardAssignedCourses.html'"></div>
+  </div>
+</div>

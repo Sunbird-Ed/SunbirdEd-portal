@@ -1,0 +1,93 @@
+<div id="pageHeader" ng-controller="LoginCtrl">
+    <header class="navbar navbar-static-top bs-docs-nav" id="top" role="banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 ">
+                    <div class="navbar-header">
+                       <a href="/home" class="navbar-brand">
+                            <img src="/img/logo.png" alt="logo" />
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-9 nopad">
+                    <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+                        <ul class="nav navbar-nav top-nav-bar header_menu">
+                        
+                        </ul>
+
+                        <% if(typeof user=='undefined' ) { %>
+                            <ul class="nav navbar-nav top-nav-bar pull-right">
+                                <li>
+                                    <a href="javascript:void(0);" class="btn btn-default btn-sm marTop20 signIn login_orange" data-toggle="modal" ng-click="cleanUp()" data-target="#signInModal">SIGN IN</a>
+                                </li>
+                            </ul>
+                        <% } else { %>
+                            <input type="hidden" id="userId" value="<%=user.identifier%>"/>
+                            <ul class="nav navbar-nav navbar-right marTop20 noMarRight">
+                                <li class="dropdown">
+                                    <div class="user-dropdown-box">
+                                    <!-- <a href="/private/player/dashboard" class="user-profile noMarRight header-user-name"><%= user.displayName %></a> -->
+                                    <div class="il-userImg" data-toggle="dropdown">
+                                        <% if(typeof user.image=='undefined' ) { %>
+                                            <img id="userImage" style="width:40px; height:40px;" ng-src="/img/default_user.png" />
+                                        <% } else { %>
+                                            <img id="userImage" style="width:40px; height:40px;" ng-src="<%=user.image %>" />
+                                        <% } %>
+                                    </div>
+                                    <span class="dropdown-toggle verAlign" data-toggle="dropdown"><b class="caret"></b></span>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="/private/player/dashboard">My Courses</a></li>
+                                        <li><a href="/private/player/notebook/">My Notes</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="/private/v1/logout">Logout</a></li>
+                                    </ul>
+                                    </div>
+                                </li>
+                                <li style="min-width:10px;"></li>
+                            </ul>
+
+                        <% } %>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sign In Modal -->
+    <div class="modal fade " id="signInModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header il-modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h2 class="modal-title" id="myModalLabel">Sign In</h2>
+                </div>
+                <form action="/private/v1/login" method="post" class="form-horizontal modal-body" role="form" name="userForm" novalidate>
+                    <div id="signInMessage" class="alert alert-danger" ng-show='success == 0'>User Id or Password incorrect</div>
+                    <div class="login-body">
+                        <label for="inputEmail3" class="col-md-4 control-label signInLabel">Username</label>
+                        <div class="form-group" ng-class="{ 'has-error' : userForm.email.$invalid && !userForm.email.$pristine }">
+                            <div class="col-md-6">
+                                <input type="text" id="loginUserName" autofocus class="form-control" placeholder="Username" ng-model="userName" autofocus ng-enter="signIn()">
+                                <span style="margin-bottom: -5px;" class="help-block" ng-show="userForm.email.$error.required" class="help-block">Please enter a user name.</span>
+                            </div>
+                            <div class="col-md-2 hidden-xs"></div>
+                        </div>
+                        <label for="inputPassword3" class="col-md-4 control-label signInLabel">Password</label>
+                        <div class="form-group" ng-class="{ 'has-error' : userForm.password.$invalid }">
+                            <div class="col-md-6">
+                                <input type="password" class="form-control" placeholder="Password" ng-model="passWord" ng-enter="signIn()">
+                                <span style="margin-bottom: -5px;" class="help-block" ng-show="userForm.password.$error.required">Please enter a password.</span>
+                            </div>
+                            <div class="col-md-2 hidden-xs"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="javascript:void(0);" class="btn btn-default btn-sm signUp signIn login_orange pull-right" ng-click="signIn()">Sign In</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- end of Sign In Modal -->
+</div>

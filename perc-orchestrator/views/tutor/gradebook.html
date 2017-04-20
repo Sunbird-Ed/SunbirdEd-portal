@@ -1,0 +1,20 @@
+<link rel="stylesheet" href="/css/courseDashboard.css" type="text/css"/>
+<div class="text-center" ng-show="loadingDashboardData" style="margin-top: 50px">
+    Loading <img src="/img/loading.gif"/>
+</div>
+<div class="col-md-12" ng-show="!loadingDashboardData">
+<div class="List_view">
+	<div class="col-md-12 noPad headerAsk">
+		<h2>Gradebook</h2>
+        <a href="javascript:void(0);" class="pull-right padL10" ng-click="getGradebookDetails()"><i class="writeBlackOne createBinderBtn fa fa-refresh" id="writeIcon"></i></a>
+        <a ng-if="showGenerateNow" href="javascript:void(0);" class=" btn btn-sm btn-primary pull-right padL10" style="margin-top:10px;" ng-click="generateCourseGradebook()">Generate now</a> 
+    </div>
+    <div class="listviewContainer">
+        <div class="QACol">
+            <div class="row" ng-repeat="report in gradebook">
+                <div  class="col-md-12" ng-include="'gradebook_report_details.html'"></div>
+            </div>
+        </div>
+    </div>	
+</div>
+</div>

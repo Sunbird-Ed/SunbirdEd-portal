@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="courseApp">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SunBird</title>
+
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/common.css" rel="stylesheet">
+    <link href="/css/studio.css" rel="stylesheet">
+    <link href="/css/video-js.css" rel="stylesheet">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/angular.min.js"></script>
+    <script src="/js/angular-sanitize.min.js"></script>
+    <script src="/js/ui-bootstrap-tpls-0.11.0.js"></script>
+    <script src="/js/checklist-model.js"></script>
+    <script src="/js/controllers/contentController.js"></script>
+    <link href="/css/uploadfile.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/lib	s/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+    .col-md-3 {
+        width: 22% !important;
+    }
+    .col-md-9 {
+        width: 78% !important;
+    }
+    </style>
+</head>
+
+<body id="contentBody" ng-controller="EditContentCtrl" class="addedCustModel">
+    <header ng-include="'/templates/includes/header.html'"></header>
+    <section class="perceptron-links-section" ng-include="'/templates/includes/subNav.html'"></section>
+	<input type="hidden" id="courseId" value="<%=courseId%>"/>
+    <section class="accordion_container">
+        <div class="parent_container">
+            <div class="col-md-lhs left-nav-ct left-accrodian">
+                <div class="form-horizontal">
+                    <div class="search_box col-sm-10">
+                        <input type="search" class="form-control search" placeholder="Search" ng-model="searchQuery" />
+                    </div>
+                    <div class="search_box col-sm-2" style="padding:0px;">
+                        <button type="button" class="btn btn-default " ng-click="showAddNewContent()">
+                          <span class="glyphicon glyphicon-plus"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="tree">
+                    <ul class="list-unstyled lecture-ul">
+                        <li class="lecturename-li parent_li">
+                            <span class="level2 lecturename-title green"><i class="icon-minus exp-col-tree-act"></i>
+                                <span><i class="icon-level3">&nbsp;</i>
+                                    <span class="title-txt">LECTURE</span>
+                                </span>
+                            </span>
+                            <ul class="Itemslecture-ul">
+                                <li class="Itemslecture-li parent_li" ng-repeat="content in mcMediaItems | filter:searchQuery" ng-click="selectContent(content.identifier)">
+                                    <span class="Itemslecture-title">
+                                        <span><i class="icon-video">&nbsp;</i>
+                                            <span class="title-txt">{{content.name}}</span>
+                                        </span>
+                                    </span>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="lecturename-li parent_li">
+                            <span class="level2 lecturename-title green"><i class="icon-minus exp-col-tree-act"></i>
+                                <span><i class="icon-level3">&nbsp;</i>
+                                    <span class="title-txt">LEARNING ACTIVITIES</span>
+                                </span>
+                            </span>
+                            <ul class="Itemslecture-ul">
+                                <li class="Itemslecture-li parent_li" ng-repeat="content in mcActivityItems | filter:searchQuery" ng-click="selectContent(content.identifier)">
+                                    <span class="Itemslecture-title">
+                                        <span><i class="icon-video">&nbsp;</i>
+                                            <span class="title-txt">{{content.name}}</span>
+                                        </span>
+                                    </span>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <!-- end tree -->
+            </div>
+            <div class="col-md-center main_container">
+                <div class="main">
+                    <div class="media_content" ng-show="pageScope=='NEW'">
+                        <h4 class="modal-title">Add New Content</h4>
+                        <hr>
+                        <div ng-include="'/templates/content/createContentForm.html'"></div>
+                        
+                        <!-- Form Page 1 End -->
+
+                        <!-- Form Page 2 - Start -->
+                        <div ng-show="content.formPage==2">
+                            <div class="row">
+                                <div ng-include="'/templates/content/mediaSelect.html'"></div>
+                                <div class="navbar navbar-fixed-bottom">
+                                    <div class="col-md-lhs"></div>
+                                    <div class="col-md-center">
+                                        <div class="padLeft">
+                                            <button type="button" class="btn btn-sm btn-default pull-left padLeft" ng-show="content.formPage==2" ng-click="content.formPage=1">Back</button>
+                                        </div>
+                                        <div class="padRight">
+                                            <button type="button" class="btn btn-sm btn-default pull-right" ng-click="pageScope = 'VIEW'">Cancel</button>
+                                        </div>
+                                        <div class="padRight">
+                                            <button id="createNewContent" type="button" class="btn btn-sm btn-default btn_green pull-right" ng-show="content.from=='FILE'" ng-click="createNewContent()"><span>Save</span></button>
+                                        </div>
+                                        <div class="padRight">
+                                            <button type="button" class="btn btn-sm btn-default btn_green pull-right" ng-show="content.from=='URL' && content.mediaType.length > 0" ng-click="createContentFromURL()"><span>Save</span></button>
+                                        </div>    
+                                        <div class="padRight">    
+                                            <button type="button" class="btn btn-sm btn-default btn_green pull-right" ng-show="content.from=='REPO' && repoSelectedItems.length > 0" ng-click="createContentFromRepo()"><span>Save</span></button>
+                                         </div>   
+                                    </div>
+                                </div> 
+                            </div>
+                              
+                        </div>
+                        <!-- Form Page 2 - End -->
+
+                    </div>
+
+                    <div class="media_content col-md-11" ng-show="pageScope=='VIEW'">
+                        <div ng-include="'/templates/content/contentView.html'"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-0 actions" ng-include="'/templates/common/actions.html'" ng-show="pageScope=='VIEW' && currentContent"></div>
+        </div>
+    </section>
+
+    <div class="modal fade" id="addConcept">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Add Concept</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <div>
+                            <input type="text" class="form-control" ng-model="conceptName" typeahead="concept for concept in concepts | filter:$viewValue | limitTo:8">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-sm btn_green" ng-click="addConcept()">Save</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+</body>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/bootstrap-checkbox-tree.js"></script>
+<script src="/js/custom.js"></script>
+<script src="/js/jquery.form.js"></script>
+<script src="/js/jquery.uploadfile.js"></script>
+<script src="/js/typeahead.js"></script>
+<script src="/js/video.min.js"></script>
+<script src="/js/vjs.vimeo.js"></script>
+<script src="/js/vjs.youtube.js"></script>
+<script type="text/javascript" src='/js/scribd_api.js'></script>
+<script src="/js/URI.min.js"></script>
+
+<script type="text/javascript">
+var actionSmoothIn = function(opt) {
+    var listId = opt.listId;
+    var backCtCls = opt.backCtCls;
+    $("#" + listId + " li").on("click", function() {
+        var propCt = $(this).attr("data-propContainer");
+        $(this).parents(".actions_ct").eq(0).slideToggle("slow");
+        $("#" + propCt).slideToggle("slow");
+    });
+    $('.' + backCtCls).on('click', function() {
+        var listCt = $(this).attr("data-listContainer");
+        $(this).parents(".actions_ct_hidden").eq(0).slideToggle("slow");
+        $("#" + listCt).slideToggle("slow");
+    });
+};
+
+videojs.options.flash.swf = "../../js/video-js.swf";
+
+$(document).ready(function() {
+    actionSmoothIn({
+        listId: "contentActionsList",
+        backCtCls: "contentBackContainer"
+    });
+});
+
+</script>
+</html>

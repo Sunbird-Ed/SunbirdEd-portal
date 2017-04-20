@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="homePageApp">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta id="extViewportMeta" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+	<title>SunBird</title>
+
+    <script type="text/javascript" src="https://fast.fonts.net/jsapi/6bb78b32-9b12-4a14-9179-8de98470e4b1.js"></script>
+
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/common.css" type="text/css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="/css/web.css" />
+    <link rel="stylesheet" href="/css/font-style.css" />
+    <link rel="stylesheet" href="/css/animate.css" />
+    <link rel="stylesheet" href="/css/video-js.css" type="text/css">
+    <link rel="stylesheet" href="/css/bootstrap-social.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css"/>
+    
+
+    <!-- <link rel="stylesheet" href="/css/student.css" type="text/css"> -->
+    <!-- <link rel="stylesheet" href="/css/font-awesome.min.css"> -->
+
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        .word.w0 {
+            font-family: 'BebasNeue';
+            text-transform: capitalize;
+            font-size: 20px;
+        }
+        .word.w1, .word.w2 {
+            font-family: 'Frutiger Serif LT W01';
+            font-size: 15px;
+        }
+        .word.w3 {
+            font-family: 'Frutiger Serif LT W01';
+            font-size: 15px;
+        }
+        .wordsDiv {
+            text-align: center;
+            height: 100%;
+            display: block;
+        }
+    </style>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/angular.min.js"></script>
+    <script src="/js/angular-route.min.js"></script>
+
+</head>
+
+<body class="home-body" id="home-body" ng-controller="HomePageCtrl">
+    <div class="wrapper">
+
+        <header class="nav-down">
+            <% include ../includes/header %>
+        </header>
+            <section class="banner-container container-section sectionNextToHeader">
+                <div class="container">
+                    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                        <!-- Wrapper for slides -->
+                        <div class="carousel-inner">
+                            <div class="item active">
+				
+                                <div class="carousel-caption">
+                                    <h1 class="bannerTitle">Develop Expertise</h1>
+                                    <p class="banDescription">Reskill with goal oriented courses designed by top practitioners. Enjoy a new paradigm of personalised learning!</p>
+                                </div>
+                                <div class="image-cont">
+                                    <img src="/img/webimages/slider2.png" alt="...">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="feature-container">
+                <!-- <% include ../web/articles %>
+                <% include ../web/announcements %>
+                <% include ../web/events %> -->
+                <% include ../web/ourCourses %>
+                <% include ../web/featuredContent %>
+
+            </section>
+    </div>
+    <% include ../web/commonModal %>
+</body>
+
+<script src="/js/underscore.js"></script>
+<script src="/js/video.js"></script>
+<script src="/js/vjs.youtube.js"></script>
+<script src="/js/angular-d3-min.js"></script>
+<script src="/js/d3.min.js"></script>
+<script src="/js/controllers/homePageController.js"></script>
+<script src="/js/controllers/loginController.js"></script>
+<script src="/js/sunburst-services.js"></script>
+<script src="/js/sunburst-directives.js"></script>
+<script src="/js/sunburst-min.js"></script>
+<script src="/js/application/dashboardData.js"></script>
+<script>
+    var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
+    if(is_chrome) 
+        $('.chromefix').css({ 'width' : '101%'});
+        
+      function scrollToCourses() {
+        $('html, body').animate({
+            scrollTop: $("#feature-section").offset().top - 20
+        }, 1000);
+    }
+    
+</script>
+
+<% include ../includes/footer %>
+
+
+</html>

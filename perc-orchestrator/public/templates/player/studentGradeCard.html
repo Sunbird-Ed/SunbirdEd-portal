@@ -1,0 +1,52 @@
+<div class="col-md-12 noPad pad10 gradeCardBox" ng-if="topStudent">
+    <div class="col-md-6 noPad" ng-if="grade">
+        <img ng-src="{{student.image}}" class="img-rounded pull-left marRight5" width="84" height="84">
+        <div ng-community-user user-id='studentId' user-name='student.name' css-class="'gradeCardName studentName'" context="context"></div>
+        <div class="full-width user-prof-span">
+            <span class="gradeCardMetadata" ng-if="student.stream">{{student.stream | characters:16 :true}}, </span><span class="gradeCardMetadata">{{student.college | characters:15 :true}}</span>&nbsp;
+        </div>
+        <div class="marginBottom10 marginTop15 moveTop5">
+            <div class="pull-left marRight15">
+                <span ng-if="grade > 90" class="badge gradeBookBadge greenBackground leaderBoardGrade">A</span>
+                <span ng-if="grade > 80 && grade <= 90" class="badge gradeBookBadge greenBackground leaderBoardGrade">B</span>
+                <span ng-if="grade > 70 && grade <= 80" class="badge gradeBookBadge orangeBackground leaderBoardGrade">C</span>
+                <span ng-if="grade > 60 && grade <= 70" class="badge gradeBookBadge orangeBackground leaderBoardGrade">D</span>
+                <span ng-if="grade >= 50 && grade <= 60" class="badge gradeBookBadge orangeBackground leaderBoardGrade">E</span>
+                <span ng-if="grade < 50" class="badge gradeBookBadge redBackground leaderBoardGrade">F</span>
+            </div>
+            <div class="pull-left noPad QAStatus" style="padding-top: 0px !important" ng-if="totalCount">
+                <ul>
+                    <li style="margin-left: 0px !important">
+                        <span class="number">{{completeCount || 0}}/{{totalCount || 0}}</span>
+                    </li>
+                </ul>
+            </div> 
+        </div>
+    </div>
+    <div class="col-md-6 noPad" ng-if="topStudent">
+        <img ng-src="{{topStudent.image}}" class="img-rounded pull-left marRight5" width="84" height="84">
+        <span ng-community-user user-id='topStudent.studentId' user-name='topStudent.name' css-class="'gradeCardName marRight5 studentName'" context="context"></span>
+        <i class="fa fa-star"></i>&nbsp;<span class="gradeCardLabel">Topper</span>
+        <div class="full-width user-prof-span">
+            <span class="gradeCardMetadata" ng-if="topStudent.stream">{{topStudent.stream | characters:16 :true}}, </span><span class="gradeCardMetadata">{{topStudent.college | characters:15 :true}}</span>
+        </div>
+        <div class="marginBottom10 marginTop15 moveTop5">
+            <div class="pull-left marRight15">
+                <span ng-if="topStudent.grade > 90" class="badge gradeBookBadge greenBackground leaderBoardGrade">A</span>
+                <span ng-if="topStudent.grade > 80 && topStudent.grade <= 90" class="badge gradeBookBadge greenBackground leaderBoardGrade">B</span>
+                <span ng-if="topStudent.grade > 70 && topStudent.grade <= 80" class="badge gradeBookBadge orangeBackground leaderBoardGrade">C</span>
+                <span ng-if="topStudent.grade > 60 && topStudent.grade <= 70" class="badge gradeBookBadge orangeBackground leaderBoardGrade">D</span>
+                <span ng-if="topStudent.grade >= 50 && topStudent.grade <= 60" class="badge gradeBookBadge orangeBackground leaderBoardGrade">E</span>
+                <span ng-if="topStudent.grade < 50" class="badge gradeBookBadge redBackground leaderBoardGrade">F</span>
+            </div>
+            <div class="pull-left noPad QAStatus" style="padding-top: 0px !important" ng-if="topStudent.totalLectures">
+                <ul>
+                    <li style="margin-left: 0px !important">
+                        <span class="number">{{topStudent.completedLectures || 0}}/{{topStudent.totalLectures || 0}}</span>
+                    </li>
+                </ul>
+            </div> 
+        </div>
+    </div>
+</div>
+

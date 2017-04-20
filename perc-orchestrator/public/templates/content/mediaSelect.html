@@ -1,0 +1,45 @@
+<div class="col-md-12 form-horizontal" style="overflow:auto;">
+    <ul class="nav nav-tabs">
+        <li class="active"><a ng-click="content.from='FILE'" data-toggle="tab">Browse</a></li>
+        <li><a ng-click="content.from='REPO'" data-toggle="tab">Repository</a></li>
+        <li><a ng-click="content.from='URL'" data-toggle="tab">URL</a></li>
+        <li ng-show="false"><a data-toggle="tab" >Rich Text</a></li>
+    </ul>
+    <div class="tab-content padTop" ng-show="content.from == 'FILE'"> <!-- Form for FileSystme -->
+        <br/>
+        <div id="{{mediaUploaderId}}">Select Files To Upload</div>
+        <div id="{{mediaUploaderFileList}}" class="browse_files row"></div>
+    </div> <!-- End of Form for FileSystme -->
+    <!-- Form for Create Using URL -->
+    <div class="tab-pane padTop" ng-show="content.from=='URL'">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Media Type</label>
+            <div class="col-sm-6">
+                <select class="form-control" ng-model="content.mediaType" ng-options="mediatype.value as mediatype.name for mediatype in mediatypes">
+                    <option value="">Select Media Type</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">URL</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" ng-model="content.url">
+            </div>
+        </div>
+    </div> <!-- End of Form for Create Using URL -->
+    <div class="tab-pane padTop" ng-show="content.from=='REPO'">
+        <div class="browse_files row">
+            <div class="ajax-file-upload-statusbar" ng-repeat="item in mediaItems">
+                <div class="ajax-file-upload-filename">
+                    <input type="checkbox" checklist-model="repoSelectedItems" checklist-value="item">
+                    <span ng-switch on="item.mediaType">
+                        <span class="glyphicon glyphicon-facetime-video" ng-switch-when="VIDEO"></span>
+                        <span class="glyphicon glyphicon-picture" ng-switch-when="IMAGE"></span>
+                        <span class="glyphicon glyphicon-file" ng-switch-default></span>
+                    </span> {{item.title}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+

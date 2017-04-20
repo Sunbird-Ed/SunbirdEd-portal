@@ -1,0 +1,17 @@
+db = db.getSiblingDB('percp_scope_1');
+db.user.ensureIndex({uniqueId: 1, 'local.email': 1, is_deleted: 1, identifier: 1});
+db.user.ensureIndex({uniqueId: 1, identifier: 1});
+db.user.ensureIndex({uniqueId: 1});
+db.note.ensureIndex({learnerId: 1, courseId: 1});
+db.note.ensureIndex({learnerId: 1, courseId: 1, elementId: 1});
+db.note.ensureIndex({elementId: 1});
+db.learner_state.ensureIndex({student_id: 1, courseId: 1});
+db.enrolled_courses.ensureIndex({student_id: 1, course_id: 1});
+db.learning_object.ensureIndex({courseId: 1});
+db.learning_object.ensureIndex({courseId: 1, identifier: 1});
+db.learning_resources.ensureIndex({courseId: 1});
+db.learning_resources.ensureIndex({courseId: 1, identifier: 1});
+db.learning_object_elements.ensureIndex({courseId: 1});
+db.learning_object_elements.ensureIndex({courseId: 1, lobId: 1});
+db.learning_activities.ensureIndex({courseId: 1});
+db.learning_activities.ensureIndex({courseId: 1, identifier: 1});

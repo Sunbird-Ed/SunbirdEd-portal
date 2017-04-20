@@ -1,0 +1,16 @@
+<div class="container-fluid cards-section cards-section">
+    <h2>Announcements</h2>
+    <div class="ui link cards" ng-cloak>
+        <div class="ui card" ng-repeat="announcement in announcementData" ng-click="showModelBox(announcement)">
+            <div class="content">
+                <div class="header">{{announcement.title}}</div>
+                <div class="meta">
+                    <span>{{announcement.date}}</span>
+                </div>
+                <p>
+                    {{announcement.discription}}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

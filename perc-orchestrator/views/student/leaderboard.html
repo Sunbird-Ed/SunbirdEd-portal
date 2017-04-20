@@ -1,0 +1,95 @@
+<link rel="stylesheet" href="/css/courseDashboard.css" type="text/css"/>
+<div>
+    <div class="headerAsk comGroupHead">
+        <h2>Top Students
+            <span class="dropdown">
+                <a href="javascript:void(0);" title="Sort" class="dropdown-toggle" aria-expanded="false"> 
+                    <i class="writeBlackOne fa fa-list tooltip-class" data-toggle="tooltip" data-placement="bottom" title="Leaderboards"></i></a>
+                <ul class="dropdown-menu" role="menu">
+                    <li class="sortMenuItem" ng-repeat="item in leaderboardModel.options" ng-class="{'active' : (item == currentLeaderboard), 'int-sort-filter': true}">
+                        <a href="javascript:void(0);" ng-click="selectLeaderBoard(item)"><span class="ilauthr tooltip-class">{{item}}</span></a>
+                    </li>
+                </ul>
+            </span>  
+            <span class="dropdown">
+                <a href="javascript:void(0);" title="Sort" class="dropdown-toggle" aria-expanded="false"> 
+                    <i class="writeBlackOne fa fa-sort-amount-asc tooltip-class" data-toggle="tooltip" data-placement="bottom" title="Sort"></i></a>
+                <ul class="dropdown-menu" role="menu">
+                    <li class="sortMenuItem" ng-class="{'active' : (sortFilter == 'grade')}">
+                        <a href="javascript:void(0);" ng-click="sortLeaderboard('grade')"><span class="ilauthr tooltip-class">Grade</span></a>
+                    </li>
+                    <li class="sortMenuItem" ng-class="{'active' : (sortFilter == 'name')}">
+                        <a href="javascript:void(0);" ng-click="sortLeaderboard('name')"><span class="ilauthr tooltip-class">Name</span></a>
+                    </li>
+                    <li class="sortMenuItem" ng-class="{'active' : (sortFilter == 'stream')}">
+                        <a href="javascript:void(0);" ng-click="sortLeaderboard('stream')"><span class="ilauthr tooltip-class">Stream</span></a>
+                    </li>
+                    <li class="sortMenuItem" ng-class="{'active' : (sortFilter == 'college')}">
+                        <a href="javascript:void(0);" ng-click="sortLeaderboard('college')"><span class="ilauthr tooltip-class">College</span></a>
+                    </li>
+                    <li class="sortMenuItem" ng-class="{'active' : (sortFilter == 'completedLectures')}">
+                        <a href="javascript:void(0);" ng-click="sortLeaderboard('completedLectures')"><span class="ilauthr tooltip-class">Progress</span></a>
+                    </li>
+                </ul>
+            </span>
+        </h2>
+        <a data-original-title="Advanced Search" title="" data-placement="bottom" data-toggle="tooltip" class="pull-right marginTop20" href="javascript:void(0);" ng-click="showSearchForm();">
+            <i id="advancedSearchIcon" class="advancedSearchIcon fa fa-toggle-down"></i>
+        </a>
+        <input type="search" ng-model="model.searchLearners.filters['name']" class="pull-right marginTop20 form-control" style="width: 45%" placeHolder="{{model.nameFieldPlaceHolder}}" ng-enter="search()" />
+    </div>
+    <div id="leaderboardSearchForm" class="col-md-12 noPad marginTop20" style="display:none;">
+        <div class="col-md-6 noPad searchFormLeftDiv">
+            <div class="form-group col-md-12 noPad" ng-repeat="field in model.searchConfig.searchFields | slice:0:leftColSearchFields" ng-if="field.name != 'name'">
+                <div ng-include="'/templates/player/searchFields.html'"></div>
+            </div>
+        </div>
+
+        <div class="col-md-6 noPad searchFormRightDiv">
+            <div class="form-group col-md-12 noPad" ng-repeat="field in model.searchConfig.searchFields | slice:leftColSearchFields:totalSearchFields" ng-if="field.name != 'name'">
+                <div ng-include="'/templates/player/searchFields.html'"></div>
+            </div>
+            <div class="form-group col-md-12 noPad">
+                <button class="btn btn-large btn-default searchFormButton" id="searchInteractions" id="searchNoteBtn" ng-click="search();">Search</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="addGroupContainer col-md-12 noPad padTop padBottom">
+        <div il-student-grade-card student-id='loggedUserId' course-id='courseLobId' context="'Top Students'"></div>
+        <div class="col-md-12 noPad padTop">
+            <div class="col-md-12 noPad padTop padBottom borderBottom" ng-repeat="std in model.topStudents" ng-hide="std.grade <= 70 && leaderboardModel.currentLeaderBoard == 'Students'
+">
+                <img ng-src="{{std.image}}" class="img-rounded media-object pull-left" width="32" height="32">
+                <div class="pull-left col-md-8 noPad">
+                    <div ng-community-user user-id='std.studentId' user-name='std.name' css-class="'pull-left marginLeft10 studentName'" context="'Top Students'"></div>
+                    <span ng-if="std.registrationNumber" class="full-width user-prof-span pull-left marginLeft10 gradeCardMetadata">{{std.registrationNumber}}</span>
+                    <span ng-if="std.stream || std.college" class="full-width user-prof-span ng-scope ng-binding pull-left marginLeft10 gradeCardMetadata" style="top: -8px !important">
+                        {{std.stream}}, {{std.college}}
+                    </span>
+                </div>
+                <div class="pull-right">
+                <span ng-if="std.grade > 90" class="badge gradeBookBadge greenBackground leaderBoardGrade">A</span>
+                <span ng-if="std.grade > 80 && std.grade <= 90" class="badge gradeBookBadge greenBackground leaderBoardGrade">B</span>
+                <span ng-if="std.grade > 70 && std.grade <= 80" class="badge gradeBookBadge orangeBackground leaderBoardGrade">C</span>
+                <span ng-if="std.grade > 60 && std.grade <= 70" class="badge gradeBookBadge orangeBackground leaderBoardGrade">D</span>
+                <span ng-if="std.grade >= 50 && std.grade <= 60" class="badge gradeBookBadge orangeBackground leaderBoardGrade">E</span>
+                <span ng-if="std.grade < 50" class="badge gradeBookBadge redBackground leaderBoardGrade">F</span>
+                <div class="leaderBoardGradeTxt">Grade</div>
+                </div>
+
+                <div class="pull-right QAStatus marRight15" style="padding-top: 0px !important">
+                    <ul>
+                        <li class="secondary">
+                            <span class="number marginLeft5">{{std.completedLectures || 0}}/{{std.totalLectures || 0}}</span> <span class="marginLeft5">Progress</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="alert alert-info col-md-12 marginTop10" ng-if="!model.topStudents || model.topStudents.length <= 0">
+                No Students in the LeaderBoard
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>

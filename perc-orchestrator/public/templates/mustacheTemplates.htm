@@ -1,0 +1,177 @@
+<!-- Dashboard -->
+<script id="dashboard_mycourse" type="text/html">
+	<div class="live-tile course-tile" id="flip_mycourse_{{course_instance_id}}" data-direction="horizontal">
+		<div class="course-box">
+			<div class="mask">
+				<span class="course-thumb img steel"><img src="{{image}}"></span>
+				<span class="title"><a href="course_structure.php">{{title}}</a></span>
+				<span class="author"><img class="tutor_pic" src="{{faculty.image}}"> by {{faculty.name}}</span>
+				<span class="details2">
+					<span class="price-col"><span class="graytext">Units&nbsp;{{units}}</span></span>
+					<span class="reviews-col"><span class="graytext">{{{dotSpan}}}&nbsp;<b>{{percent_complete}}%</b></span></span>
+					<span class="users-col"><span class="graytext"><i class="glyphicon glyphicon-time" data-toggle="tooltip" title="" data-original-title="Time Spent"></i>&nbsp;{{time_spent}}</span></span> 
+				</span> 
+				<span class="tutor"><span class="graytext"><b>Tutor</b> {{tutor.name}}</span><a href="javascript: void(0);"><i class="icon-refresh icon-large pull-right flip_course_click" title="Flip"></i></a></span>
+			</div>
+		</div>
+		<div class="course-box">
+			<div class="mask">
+				<div class="author">
+					<b>Objective</b><a href="javascript: void(0);"><i class="icon-refresh icon-large pull-right flip_course_click" title="Flip"></i></a><br>
+					<small>{{#objectives}}{{.}}{{/objectives}}</small>
+				</div>
+				<div class="author">
+					<div class="pull-left" style="width: 30%">
+						<img class="tutor_pic_back pull-left" src="{{faculty.image}}">
+						{{#faculty.linkedin-link}}
+							<a href="{{faculty.linkedin-link}}" target="_blank"><i class="icon-linkedin-sign"></i></a>
+						{{/faculty.linkedin-link}}
+						{{#faculty.fb-link}}
+							<a href="{{faculty.fb-link}}" target="_blank"><i class="icon-facebook-sign"></i></a>
+						{{/faculty.fb-link}}
+						{{#faculty.twitter-link}}
+							<a href="{{faculty.twitter-link}}" target="_blank"><i class="icon-twitter-sign"></i></a>
+						{{/faculty.twitter-link}}
+						{{#faculty.gplus-link}}
+							<a href="{{faculty.gplus-link}}" target="_blank"><i class="icon-google-plus-sign"></i></a>
+						{{/faculty.gplus-link}}
+						{{#faculty.website}}
+							<a href="{{faculty.website}}" target="_blank"><i class="icon-external-link-sign"></i></a>
+						{{/faculty.website}}
+					</div>
+					<div class="pull-right" style="width: 70%">
+						<a href="#"><b>{{faculty.name}}</b></a><br>
+						<small>{{faculty.mini-profile}}</small>
+					</div>
+				</div>
+				<div class="author">
+					<div class="pull-left" style="width: 30%">
+						<img class="tutor_pic_back pull-left" src="{{tutor.image}}">
+						{{#tutor.linkedin-link}}
+							<a href="{{tutor.linkedin-link}}" target="_blank"><i class="icon-linkedin-sign" title="LinkedIn"></i></a>
+						{{/tutor.linkedin-link}}
+						{{#tutor.fb-link}}
+							<a href="{{tutor.fb-link}}" target="_blank"><i class="icon-facebook-sign" title="Facebook"></i></a>
+						{{/tutor.fb-link}}
+						{{#tutor.twitter-link}}
+							<a href="{{tutor.twitter-link}}" target="_blank"><i class="icon-twitter-sign" title="Twitter"></i></a>
+						{{/tutor.twitter-link}}
+						{{#tutor.gplus-link}}
+							<a href="{{tutor.gplus-link}}" target="_blank"><i class="icon-google-plus-sign" title="Google plus"></i></a>
+						{{/tutor.gplus-link}}
+						{{#tutor.website}}
+							<a href="{{tutor.website}}" target="_blank"><i class="icon-external-link-sign" title="Website"></i></a>
+						{{/tutor.website}}
+					</div>
+					<div class="pull-right" style="width: 70%">
+						<a href="#"><b>{{tutor.name}}</b></a><br>
+						<small>{{tutor.mini-profile}}</small>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script id="dotSpan" type="text/html">
+	<span class="{{dot1}}">&#9679;</span><span class="{{dot2}}">&#9679;</span><span class="{{dot3}}">&#9679;</span><span class="{{dot4}}">&#9679;</span><span class="{{dot5}}">&#9679;</span>
+</script>
+
+
+<!-- New Course Timeline page -->
+
+<script id="course_timeline_unit" type="text/html">
+	<a class="list-group-item unitListItem unitLink{{index}}" href="javascript:void(0);" onclick="select(this);">
+		<b>Unit {{index}} - {{title}}</b><small class="pull-right">{{duration}}</small>
+	</a>
+</script>
+
+<script id="course_timeline_lesson" type="text/html">
+	<a class="list-group-item lessonListItem lessonLink{{index}}" href="javascript:void(0);" onclick="select(this);" data-target="#lesson{{index}}">
+		<div class="progress-border"><span class="progress-circle" style="width: {{progress}}%"></span></div>
+		&emsp;&emsp;{{index}}. {{title}} <small class="pull-right">{{duration}}</small>
+	</a>
+</script>
+
+<script id="course_timeline_content" type="text/html">
+	<a class="list-group-item lessonContentItem" href="javascript:void(0);" onclick="selectLessonCont(this);">
+		<div class="progress-border-content"><span class="progress-circle" style="width: {{progress}}%"></span></div>
+		&emsp;&emsp;&emsp;{{title}}&emsp;<i class="{{icon_type}} icon-large"></i>
+		<small class="pull-right">{{duration}}</small>
+	</a>
+</script>
+
+<!-- /Course timeline page -->
+
+
+
+<script id="assignment_timeline_course" type="text/html">
+	<a class="list-group-item unitListItem unitLink{{index}}" href="javascript:void(0);" onclick="select(this);">
+		<div class="unit_lessson_st"><b>Course </b>&emsp;&emsp;&nbsp;<span class="icon-stack"><i class="icon-circle-blank icon-stack-base"></i>{{#completed}}<i class="icon-ok"></i>{{/completed}}</span></div>
+		<div class="title_lessson_dy">{{title}} <i class="icon-chevron-sign-right pull-right" data-toggle="collapse" data-target="#course_{{index}}" style="color: #000;"></i> <small class="pull-right">{{duration}}</small></div>
+	</a>
+	<div id="course_{{index}}" class="collapse in">
+		{{#lessons}}
+		<a class="list-group-item lessonListItem lessonLink{{index}}" href="javascript:void(0);" onclick="select(this);" data-target="#lesson{{index}}">
+			<div class="title_lessson_st"> &emsp;<span class="icon-stack"><i class="icon-circle-blank icon-stack-base"></i>{{#completed}}<i class="icon-ok"></i>{{/completed}}</span></div>
+			<div class="title_lessson_dy">{{title}} <small class="pull-right">{{duration}}</small></div>
+		</a>
+		{{/lessons}}
+	<div>
+</script>
+
+<script id="assignment_timeline_ps" type="text/html">
+	
+</script>
+
+<script id="annotation_list_item" type="text/html">
+	<a class="list-group-item noteListItem" href="javascript:void(0);" onclick="AP.selectNote({{id}}, this);">
+		<h4 class="list-group-item-heading">{{title}} <i class="pull-right {{icon_type}}"></i></h4>
+    	<p class="list-group-item-text"><small>{{last_updated}}</small><small class="pull-right"> {{course}}</small></p>
+	</a>
+</script>
+
+<script id="annotations_list_item" type="text/html">
+	<li><a href="#" onclick="AP.filter({{id}});">{{title}}</a></li>
+</script>
+
+<script id="annotation" type="text/html">
+    <div class="blockDiv">
+	<div class="blockDiv" style="font-size: 1.5em;"> 
+		<i class="{{icon_type}}"></i>&emsp;{{title}} 
+		<a href="#" class="pull-right" style="font-size:0.7em;" onclick="editNote();"></a>
+	</div>
+	<br/>
+	<small class="pull-left">Course - {{course}}</small>
+	{{#tag}}<small class="pull-right">Topic - <a href="player.php?index=4" class="text-link">{{tag}}</a></small>{{/tag}}
+	</div>
+	<hr>
+    <div style="padding-top: 10px" id="viewNotesDiv">
+    	<p>{{{annotation}}}</p>
+    </div>
+	
+	<div class="dropup pull-right btn-group">
+		<button type="button" class="btn btn-primary btn-sm">
+			<i class="icon-copy"></i> Copy to <span id="ddbtn_addnote">Default Notebook</span>
+		</button>
+		<button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown" style="margin: auto">
+			<span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" id="addNoteUL">
+			<li><a href="javascript:void(0);" onclick="$('#ddbtn_addnote').html('Default Notebook');">Copy to Default Notebook</a></li>
+			<li><a href="javascript:void(0);" onclick="$('#ddbtn_addnote').html('Algorithms Course Notebook');">Copy to Algorithms Course Notebook</a></li>
+			<li><a href="javascript:void(0);" onclick="$('#ddbtn_addnote').html('Scala Programming Notebook');">Copy to Scala Programming</a></li>
+		</ul>
+	</div>
+</script>
+
+<script id="question_list_item" type="text/html">
+	<a class="list-group-item noteListItem" href="javascript:void(0);">
+		<h4 class="list-group-item-heading"><div style="width:90%" class="pull-left">{{title}}</div><div style="width: 7%" class="pull-right">{{replies}} <i class="glyphicon glyphicon-comment"></i></div></h4>
+    	<p class="list-group-item-text"><small>{{last_updated}}</small><small class="pull-right"> {{course}}</small></p>
+	</a>
+</script>
+
+<script id="ques_course_list_item" type="text/html">
+	<li><a href="#">{{title}}</a></li>
+</script>

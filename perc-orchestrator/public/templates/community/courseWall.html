@@ -1,0 +1,46 @@
+<div class="MywallActivity">
+	<div class="wallActivityHeader">
+		<div class="editContent">
+			<div class="headerAsk" id="activityStream">
+				<h2>Course Wall
+					<a href="javascript:void(0);" class="tool-tip" data-toggle="tooltip" data-placement="bottom" title="Post new announcement" ng-if="model.canPostAnnouncement" data-original-title="Post new announcement">
+						<i class="writeBlackOne fa fa-edit" id="writeIcon" onclick="openPostArea(this, 'fa-edit');"></i>
+					</a>
+				</h2>
+			</div>
+			<div class="textEditor AskQEdit" id="il-Txt-Editor" style="display:none;">
+				<div class="alert alert-danger" ng-show="model.errors.length != 0">
+					Error posting an announcement. Following are the failed validations
+					<ul style="padding-left: 25px;list-style:disc outside none">
+						<li ng-repeat="error in model.errors">{{error}}</li>
+					</ul>
+				</div>
+				<div class="form-group">
+				  	<input type="text" class="form-control" ng-model="model.post.title" placeholder="Add title">
+				</div>
+				<textarea class="textarea form-control" placeholder="Write your notes ..." style="width: 100%; min-height: 200px !important;" id="postActivityBox"></textarea>
+				<div class="save_text">
+					<div class="save_btn">
+						<button class="btn btn-default" ng-click="clearPost()">Clear</button>
+						<button class="btn btn-primary marginLeft10" ng-click="initiatePostActivity()">Post</button>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+			</div>
+		</div>
+		<div class="questionContainer" id="questionContainer" >
+			<div class="row il-innr-Contnr padTop">
+				<div class="col-md-12 QAcontent ActivityStreamContent" ng-repeat="activity in model.activities" ng-if="activity.object.objectType == 'announcement'">
+					<div class="tutorMsg">
+						<a href="javascript:void(0);" class="il-Link-clr ac-contents">{{activity.actor.displayName}}</a>,
+						<span>Announcement</span>
+						<span class="timeDur" data-livestamp="{{activity.published}}"></span>
+					</div>
+					<h5><p class="ac-links il-Link-clr">{{activity.object.displayName}}</p></h5>
+					<p class="ac-contents"><div ng-bind-html="renderHtml(activity.object.content)"></div></p>
+					<div class="tutorImg"><img src="/img/default.png" class="headwallImg"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

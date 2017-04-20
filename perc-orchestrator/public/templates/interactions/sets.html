@@ -1,0 +1,34 @@
+<div class="headerAsk">
+    <h2>Q&amp;A Sets</h2>
+    <a data-original-title="Create new set" title="" data-placement="bottom" data-toggle="tooltip" class="pull-right" href="javascript:void(0);" ng-if="model.canCreateSet" ng-click="askQuestion();"><i id="writeIcon"  class="writeBlackOne fa fa-edit"></i></a>
+</div>
+
+<div class="listviewContainer" ng-show="model.sets.length > 0">
+    <div class="QACol borderBottom" ng-repeat="set in model.sets">
+        <div class="row">
+            <div class="col-md-10 QAcontent">
+                <h5>
+                    <a class="ac-links il-Link-clr" href="#/interactionSet/{{set.id}}">{{set.label}}</a>
+                </h5>
+                <div style="text-overflow: ellipsis;white-space: nowrap">
+                    <ul class="metadata">
+                        <li><span>by&nbsp;</span>
+                            <div style="display: inline" ng-community-user user-id="set.metadata.createdBy" user-name="set.metadata.createdUserName" context="'Q&A Sets'"></div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="col-md-2 QAStatus">
+                <ul class="pull-right">
+                    <li class="secondary">
+                        <span class="number">{{set.metadata.membersCount}}</span> <span>Ques.</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="alert alert-info fade in" role="alert" ng-if="model.sets.length == 0" style="margin: 10px">
+    <p>There are no sets created.</p>
+</div>

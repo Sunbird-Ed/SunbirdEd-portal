@@ -1,0 +1,50 @@
+{
+  "title": "Quiz 1",
+  "identifier": "quiz_1",
+  "noOfQuestions": "4",
+  "marksPerQust": 5,
+  "hasNegMarking": true,
+  "negMarksPerQust": 3,
+  "questions": [
+    {
+      "questId": "question_1",
+      "question": "<br/>Look at the following tables<br/>CREATE TABLE `customer` (<br/>&nbsp;&nbsp;&nbsp; `customer_id` BIGINT(10) NOT NULL AUTO_INCREMENT,<br/>&nbsp;&nbsp;&nbsp; `firstname` VARCHAR(50) NULL DEFAULT NULL,<br/>&nbsp;&nbsp;&nbsp; `lastname` VARCHAR(50) NULL DEFAULT NULL,<br/>&nbsp;&nbsp;&nbsp; PRIMARY KEY (`customer_id`)<p >)</p><p ><br >&nbsp;<br/>// Extension table<br/>CREATE TABLE `customer_detail` (<br/>&nbsp;&nbsp;&nbsp; `customer_id` BIGINT(20) NOT NULL,<br/>&nbsp;&nbsp;&nbsp; `street` VARCHAR(50) NULL DEFAULT NULL,<br/>&nbsp;&nbsp;&nbsp; `city` VARCHAR(50) NULL DEFAULT NULL,<br/>&nbsp;&nbsp;&nbsp; `state` VARCHAR(50) NULL DEFAULT NULL,<br/>&nbsp;&nbsp;&nbsp; `country` VARCHAR(50) NULL DEFAULT NULL,<br/>&nbsp;&nbsp;&nbsp; PRIMARY KEY (`customer_id`),<br/>&nbsp;&nbsp;&nbsp; CONSTRAINT `CUST_FK` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`)<br/>)<br/><br/>Which Hibernate association would you choose to represent relation between Entities Customer, CustomerDetail representing the above tables?<br/></p>",
+      "options": {
+        "1": "Call the run() method",
+        "2": "Call the start() method",
+        "3": "Do nothing--threads start automatically upon creation"
+      },
+      "answer": "2"
+    },
+    {
+      "questId": "question_2",
+      "question": "What method in the Thread class do you call to make the current thread cease executing for a specified amount of time?",
+      "options": {
+        "1": "sleep()",
+        "2": "pause()",
+        "3": "stop()"
+      },
+      "answer": "1"
+    },
+    {
+      "questId": "question_3",
+      "question": "You designate a method as being synchronized by:",
+      "options": {
+        "1": "Using the synchronized keyword",
+        "2": "Placing a synchronized section of code within it",
+        "3": "Naming the method synchronize"
+      },
+      "answer": "1"
+    },
+    {
+      "questId": "question_4",
+      "question": "What is the primary drawback to using synchronized methods?",
+      "options": {
+        "1": "They take longer to compile than unsynchronized methods.",
+        "2": "They compile into larger executable bytecode than unsynchronized methods.",
+        "3": "They are less efficient than unsynchronized methods."
+      },
+      "answer": "3"
+    }
+  ]
+}

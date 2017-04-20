@@ -1,0 +1,313 @@
+<div class="text-center" ng-if="!showPage" style="margin-top: 50px">
+    Loading <img src="/img/loading.gif"/>
+</div>
+<div class="List_view" ng-cloak ng-if="showPage">
+    <div id="conformMessage" class="alert hide" ></div>
+    <div class=" askquestionHeader" ng-if="operationType=='Create' && canWriteExam">
+        <div class="headerAsk">
+            <h2>Create {{ (questionPaper.testType == 'Exam')? "Exam":(questionPaper.testType == 'Practice')?"Practice Exercise":"Exam"}}</h2>
+            <span class="backBtnCont">
+                <a href="javascript:void(0);" ng-click="backToTest();" class="marginTop10 commonBackToList"><i class="fa fa-chevron-left"></i> Back to list</a>
+            </span>
+        </div>
+
+        <div class="textEditor AskQEdit" ng-if="canUpdatePaper && noQuestionPapers">
+            <div class="row marginBottom15">
+                <div class="col-md-12">
+                    <div class="alert alert-info fade in" role="alert">
+                        <p>There are no Question Papers.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="textEditor AskQEdit" ng-hide="noQuestionPapers">
+            <div class="row marginBottom15" ng-if="canUpdatePaper">
+                <div class="col-md-12">
+                    <label>Question Paper*</label>
+                    <select ng-il-multiselect='{"placeholder":"Select Question Paper..."}' ng-model="selectedPaper" ng-options="qp.title for qp in questionPapers" style="width: 100%;" ng-change="changeQuestionPaper(selectedPaper)"></select>
+                </div>
+            </div>
+            <div ng-include="'questionpaper_details.html'"></div>
+            <div class="row marginBottom15">
+                <div id="saveExamAlert" class="col-md-12 alert hide" role="alert"></div>
+                <div class="col-md-12">
+                    <label>Name*</label>
+                    <input type="text" ng-model="exam.metadata.name" class="form-control" />
+                </div>
+            </div>
+            <div class="row marginBottom15">
+                <div class="col-md-12">
+                    <label>Description*</label>
+                    <textarea rows="5" class="form-control" ng-model="exam.metadata.description"></textarea>
+                </div>
+            </div>
+            <div class="row marginBottom15">
+                <div class="col-md-12">
+                    <label>Study Material</label>
+                    <select ng-if="binders.length > 0" ng-il-multiselect='{"placeholder":"Select Study Material..."}' ng-model="exam.binder" ng-options="binder.name for binder in binders" style="width: 100%;"></select>
+                    <div class="alert alert-info fade in" role="alert" ng-if="binders.length == 0">
+                        <p>There are no binders in this context.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row marginBottom15" ng-show="exam.binder">
+                <div class="col-md-12">
+                    <label>Content of the Study Material</label>
+                    <div ng-repeat="element in exam.binder.elements">
+                        <div class="padBottom-5px">{{($index+1)}}. {{element.name}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row marginBottom15">
+                <div class="col-md-12">
+                    <label>Select Lecture/Lesson</label>
+                    <select ng-il-multiselect='{"placeholder":"Select Lecture..."}' ng-model="exam.parentNode" ng-options="lecture.label for lecture in learningElements" style="width: 100%;"></select>
+                </div>
+            </div>
+            <div class="row marginBottom15">
+                <div class="col-md-12">
+                    <label>Proficiency Weightage</label>
+                    <input type="number" class="form-control" min="1" ng-model="exam.metadata.proficiencyWeightage">
+                </div>
+            </div>
+            <div class="row marginBottom15">
+                <div class="col-md-12">
+                    <label>Number of Attempts</label>
+                    <input type="number" class="form-control" ng-model="exam.media.mediaUrl.numAttempts">
+                </div>
+            </div>
+        </div>
+        
+        <div class="textEditor AskQEdit la-btn-block" ng-hide="noQuestionPapers" >
+            <div class="save_btn">
+                <button class="btn btn-default" ng-click="backToTest()">Cancel</button>
+                <button id="saveExam" class="btn btn-primary" ng-click="saveExam()">Save</button>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+
+    <div class=" askquestionHeader" ng-show="operationType=='Release' && !previewEvent">
+        <div class="col-md-12 noPad headerAsk">
+            <h2 class="col-md-10 noPad">{{learningActivity.name || questionPaper.title}}
+                <a href="javascript:void(0);" class="" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Edit Learning Activity" ng-click="showEditLA()" ng-if="canWriteExam"><i class="writeBlackOne createBinderBtn fa fa-edit" id="writeIcon"></i></a>
+            </h2>
+            <div class="col-md-2 noPad">
+                <a href="javascript:void(0);" ng-click="backToTest();" class="marginTop20 commonBackToList pull-right"><i class="fa fa-chevron-left"></i> Back to list</a>
+        	</div>
+        </div>
+        <div class="textEditor AskQEdit" ng-if="laEditable && canWriteExam">
+            <div class="row">
+                <div id="updateLAErrAlert" class="col-md-12 marginTop10 alert hide" style="margin-bottom:0px;" role="alert"></div>
+                <div class="col-md-12 marginTop10">
+                    <div>Name*</div>
+                    <input type="text" ng-model="editLA.name" class="form-control" />
+                </div>
+            </div>
+        </div>
+        <div class="textEditor AskQEdit" ng-if="laEditable">
+            <div class="row">
+                <div class="col-md-12">
+                    <div>Description*</div>
+                    <textarea rows="5" class="form-control" ng-model="editLA.metadata.description"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="textEditor AskQEdit" ng-show="learningActivity.metadata.description && !laEditable">
+        	<div class="row">
+        		<div class="col-md-12">
+        			<p class="ac-contents viewCtn noMarginLeftRight">
+        				<span>{{learningActivity.metadata.description}}</span>
+        			</p>
+        		</div>
+        	</div>
+        </div>
+        <div class="textEditor AskQEdit">
+        	<div ng-include="'questionpaper_details.html'"></div>
+			<div class="row marginBottom15" ng-show="exam.supplementaryContent && exam.supplementaryContent.length > 0">
+				<div class="col-md-12">
+			        <div>Reading Content for Exam</div>
+			        <div ng-repeat="element in exam.supplementaryContent">
+			        	<div class="padBottom-5px">{{($index+1)}}. {{element.name}}</div>
+			        </div>
+			    </div>
+			</div>
+			<div class="row marginBottom15" ng-show="questionPaper.concretePapers">
+				<div class="col-md-6">
+			        <div>Concrete Paper*</div>
+			        <select ng-model="exam.concretePaper" ng-options="concretePaper for concretePaper in questionPaper.concretePapers" class="form-control"></select>
+			    </div>
+			</div>
+			<div class="col-md-12 noPad">
+                <div id="saveLA" ng-show="showSaveSuccessAlert" class="col-md-12 alert alert-success" role="alert">Learning Activity saved successfully.</div>
+                <div id="addToTOCAlert" class="col-md-12 alert hide" role="alert"></div>
+                <div class="col-md-12 alert alert-info" role="alert" ng-if="learningActivity.lobName && !addedToTOC">Learning Activity will be added to <b>"{{learningActivity.lobName}}"</b></div>
+                <div class="col-md-12 alert alert-info" role="alert" ng-if="learningActivity.lobName && addedToTOC">Learning Activity added to <b>"{{learningActivity.lobName}}"</b></div>
+                <div id="addToTOCAlert" class="col-md-12 alert hide" role="alert"></div>
+
+            </div>
+		</div>
+		
+		<div class="textEditor AskQEdit marginBottom10" ng-if="canWriteExam">
+	    	<div class="save_btn">
+                <button id="addToTOC" class="btn btn-primary" ng-if="laEditable" ng-click="updateLA()">Save</button>
+                <button id="addToTOC" class="btn btn-primary" ng-if="!addedToTOC && questionPaperEvents.length == 0" ng-click="updateTOC('ADD')">Add to TOC</button>
+                <button id="removeFromTOC" class="btn btn-primary hide" ng-if="addedToTOC && questionPaperEvents.length == 0" ng-click="updateTOC('REMOVE')">Remove from TOC</button>
+	    		<button  class="btn btn-primary" ng-if="questionPaper.testType == 'Exam' && !addedToTOC" ng-click="release(exam)">Release Exam</button>
+       			<button  class="btn btn-primary" ng-if="questionPaper.testType == 'Practice' && !addedToTOC" ng-click="release(exam)">Release Practice Exercise</button>
+	    	</div>
+	    	<div class="clearfix"></div>
+	    </div>
+	    <div ng-show="questionPaperEvents.length > 0 && !addedToTOC" style="">
+            <div class="textEditor AskQEdit" ng-repeat="events in questionPaperEvents">
+                <div class="row">
+                    <div class="col-md-12 QAcontent">
+                        <h5>
+                            <a href="" class="ac-links il-Link-clr" onclick="$('html,body').scrollTop(0);" ng-click="showPreviewEvent(events)" ng-if="events.name">{{events.name}}</a>
+                            <a href="" class="ac-links il-Link-clr" onclick="$('html,body').scrollTop(0);" ng-click="showPreviewEvent(events)" ng-if="!events.name">Event {{$index + 1}}</a>
+                        </h5>
+                        <div class="col-md-12 noPad detailsQuestion">
+                            <ul>
+                                <li>
+                                    <span>Session Start : {{events.startDate |date:'medium'}}</span>
+                                </li>
+                                <li class="list-dash">|</li>
+                                <li>
+                                    <span>Session End : {{events.endDate | date:'medium'}} </span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="detailsQuestion">
+                            <ul>
+                                <li>
+                                    <span>Invited : {{events.invited.length}}</span>
+                                </li>
+                                <li class="list-dash">|</li>
+                                <li>
+                                    <span>Accepted : {{events.accepted.length}} </span>
+                                </li>
+                                <li class="list-dash">|</li>
+                                <li>
+                                    <span>Declined : {{events.declined.length}} </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="ac-contents viewCtn noMarginLeftRight">
+                            <span ng-show="events.releaseMsg" ng-bind-html="renderHtmlTrim(events.releaseMsg, 250)">
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <hr/>
+            </div>
+        </div>
+        <div class="alert alert-info fade in col-md-12" ng-show="questionPaperEvents.length == 0 && !addedToTOC">
+            <p> No events are added to this test.</p>
+        </div>
+    </div>
+    <div ng-if="previewEvent && !addedToTOC" class="">
+        <div class=" askquestionHeader">
+            <div class="headerAsk">
+                <span ng-if="selectedEvent.name"><h2>{{selectedEvent.name}}</h2></span>
+                <span ng-if="!selectedEvent.name"><h2>Event</h2></span>
+                <button class="btn btn-default btn-sm back-to-list pull-right margin-top15" ng-click="backToList();">
+                    <i class="fa fa-chevron-left"></i> back to list
+                </button>
+            </div>
+        </div>
+
+        <div class="listviewContainer">
+            <div class="col-md-12 noPad QAcontent">
+                <div class="col-md-12 noPad detailsQuestion">
+                    <ul>
+                        <li>
+                            <span>Session Start : {{selectedEvent.startDate |date:'medium'}}</span>
+                        </li>
+                        <li class="list-dash">|</li>
+                        <li>
+                            <span>Session End : {{selectedEvent.endDate | date:'medium'}} </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="content_row marginTop5">
+                <p class="common_content col-md-12 noPad" ng-bind-html="renderHtml(selectedEvent.releaseMsg)"></p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 noPad">
+                    <div class="il-sc-container">
+                        <div>
+                            <div class="il-sc-header">
+                                <h2><a href="javascript:void(0)" ng-click="collapsedInvited=!collapsedInvited">Invited : {{selectedEvent.invited.length}}</a></h2>
+                            </div>
+                            
+                            <div ng-show="collapsedInvited">
+                                <table class="table">
+                                    <tbody>
+                                        <tr ng-repeat="user in getDisplayName(selectedEvent.invited)" style="border-bottom: 1px solid #ccc">
+                                            <td>{{user}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="il-sc-container">
+                        <div>
+                            <div class="il-sc-header il-dd-header">
+                                <h2><a href="javascript:void(0)" ng-click="collapsedAccepted=!collapsedAccepted"> Accepted : {{selectedEvent.accepted.length}}</a></h2>
+                            </div>
+
+                            <div ng-show="collapsedAccepted">
+                                <table class="table">
+                                    <tbody>
+                                        <tr ng-repeat="user in getActonsDisplayName(selectedEvent.actions) | filter:{action: 'accepted'}" style="border-bottom: 1px solid #ccc">
+                                            <td>{{user.name}}</td>
+                                            <td>
+                                                <span>At </span>{{ user.actionDate | date:'medium'}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="il-sc-container">
+                        <div>
+                            <div class="il-sc-header il-ct-header">
+                                <h2><a href="javascript:void(0)" ng-click="collapsedDeclined=!collapsedDeclined">Declined : {{selectedEvent.declined.length}}</a></h2>
+                            </div>
+
+                            <div ng-show="collapsedDeclined">
+                                <table class="table">
+                                    <tbody>
+                                        <tr ng-repeat="user in getActonsDisplayName(selectedEvent.actions) | filter:{action: 'declined'}" style="border-bottom: 1px solid #ccc">
+                                            <td>{{user.name}}</td>
+                                            <td>
+                                                <span>At </span>{{ user.actionDate | date:'medium'}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>     
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

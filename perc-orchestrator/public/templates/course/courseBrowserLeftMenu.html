@@ -1,0 +1,57 @@
+<div id="tocColumn" class="left-column-ct no-pad-right animatedDiv browserLeftColumn" >
+	<div id="tocFloatMenu" ng-show="contentLoaded" class="content-loaded">
+		<div id="leftBarHeader" class="il-leftnav">
+		  	<ul class="ul-style">
+			    <li class="borderRight">
+			    	<a class="tab_heading pull-left active"><span>Course</span></a>
+			    </li>
+			    <li>
+			    	<a class="tab_heading pull-left" ng-if="conceptMapLoaded || discoverContentURL" ng-click="loadDiscoverContent()">
+			        	<span>Discover</span>
+			    	</a>
+			    </li>
+		   	</ul>
+		</div>
+		<div style="border: 1px solid #ddd; border-right: 0px; border-bottom: 0px;">
+			<div id="tocParentDiv" class="parent_name">
+				<a href="javascript:void(0)" ng-show="currentItem.parent && currentItem.parent.id" ng-click="setTOCHref(currentItem.parent.id)">
+					<div style="width: 10%; float:left"><span ng-switch on="currentItem.parent.type">
+						<span class="glyph24 icon icon-course" ng-switch-when="course"></span>
+						<span class="glyph24 icon icon-moduel" ng-switch-when="module"></span>
+						<span class="glyph24 icon icon-lessons" ng-switch-when="lesson"></span>
+						</span>
+					</div>
+					<div style="width: 90%">{{currentItem.parent.name}}</a></div>
+				<div ng-show="!currentItem.parent || !currentItem.parent.id">
+					<div style="width: 10%; float:left"><span class="glyph24 icon icon-course"></span></div>
+					<div style="width: 90%"><span>{{course.name}}</span></div>
+				</div>
+			</div>
+			<div class="jcarousel tocCarousel" >
+				<ul class="ul-style">
+					<li id="carousel0" class="il-left-content">
+						<div ng-repeat="lob in modules" class="modules">
+							<div ng-include="'toc_template.html'"></div>
+						</div>
+					</li>
+					<li id="carousel1" class="il-left-content">
+						<div ng-repeat="lob in lessons" class="lessons">
+							<div ng-include="'toc_template.html'"></div>
+						</div>
+					</li>
+					<li id="carousel2" class="il-left-content">
+						<div ng-repeat="lob in lectures" class="lectures">
+							<div ng-include="'toc_template.html'"></div>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div id="paginationBtns" class="jcarousel-pagination tocPagination">
+				<a id="slide0" href="javascript:void(0)" data-toggle="popover" data-content="Modules" ng-click="showLevel0 ? scrollSlide(0) : void(0)" ng-class="{'disabled' : !showLevel0}"></a>&emsp;
+				<a id="slide1" href="javascript:void(0)" data-toggle="popover" data-content="Lessons" ng-click="showLevel1 ? scrollSlide(1) : void(0)" ng-class="{'disabled' : !showLevel1}"></a>&emsp;
+				<a id="slide2" href="javascript:void(0)" data-toggle="popover" data-content="Lectures" ng-click="showLevel2 ? scrollSlide(2) : void(0)" ng-class="{'disabled' : !showLevel2}"></a>
+
+			</div>
+		</div>
+	</div>
+</div>

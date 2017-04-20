@@ -1,0 +1,103 @@
+.content_row {
+	width: 100%;
+	float: left;
+	display: block;
+}
+.large_pic {
+    width: 175px;
+    height: 175px
+}
+.il-student-pic {
+	border-radius: 175px;
+	height: 175px;
+	margin-right: 25px;
+	overflow: hidden;
+	width: 175px;
+	border: 1px solid #333;
+	float: left;
+}
+.live-tile.badge-tile {
+	margin: 0 10px 10px 0;
+	float: left;
+}
+.course-box .mask {
+	border-radius: 3px;
+	color: #fff;
+	display: block;
+	height: 100%;
+	overflow: hidden;
+	transition: box-shadow 0.2s ease 0s;
+	width: 150px;
+	background-color: #09c;
+}
+.dashboardBadgeText, .dashboardBadgeText span {
+	text-align: center !important; 
+	margin-top: 20px; 
+	font-size: 64px; 
+	margin-bottom: 15px; 
+	font-family: 'Frutiger Neue W01 UltLt';
+	display: block;
+	width: 100%;
+}
+.course-thumb {
+	background: linear-gradient(to bottom, #4F85BB 0%, #36567F 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+	color: #FFFFFF;
+	display: block;
+	font-size: 2.4em;
+	height: 150px;
+	line-height: 1.1em;
+	padding: 20px;
+	text-decoration: none;
+	width: 100%;
+}
+.course-thumb.img {
+	padding: 0;
+}
+.course-box .mask .title {
+	display: block;
+	font-size: 16px;
+	line-height: 1;
+	min-height: 30px;
+	overflow: hidden;
+	padding: 10px;
+	border-top: #ccc 1px solid;
+}
+.course-box .mask .author {
+	border-top: 1px solid #eee;
+	display: block;
+	font-size: 14px;
+	overflow: hidden;
+	padding: 10px;
+}
+.tutor_pic, .tutor_pic_back {
+	width: 40px;
+	height: 40px;
+}
+.course-box .mask .tutor {
+	border-top: 1px solid #EEEEEE;
+	display: block;
+	font-size: 14px;
+	margin: 0 10px;
+	overflow: hidden;
+	padding: 10px 0;
+}
+.right-column-ct {
+	padding-right: 0px;
+	padding: 20px 20px 20px 20px;
+	position: relative;
+	background: #fff;
+	font-family: 'FrutigerNeueLTW01-CnLt' !important;
+	border-right: 1px solid #ddd;
+	border-left: 1px solid #ddd;
+}
+.module-body{
+	margin-top: 0;
+}
+
+footer{
+	top : 0px;
+}
+
+.footer-bar {
+ margin-top: 0px; 
+}

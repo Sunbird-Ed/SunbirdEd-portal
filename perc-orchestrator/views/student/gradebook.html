@@ -1,0 +1,22 @@
+<link rel="stylesheet" href="/css/courseDashboard.css" type="text/css"/>
+
+<div class="List_view">
+    <div class="col-md-12 noPad headerAsk marginBottom10">
+        <h2 style="margin-top: 0px;">Your Gradebook
+            <a href="javascript:void(0);" ng-click="refreshGradebook()" class=""><i class="writeBlackOne createBinderBtn fa fa-refresh" id="writeIcon"></i></a> 
+        </h2>
+    </div>
+    <div class="text-center" ng-show="loadingGradebook" style="margin-top: 50px">
+        Loading <img src="/img/loading.gif"/>
+    </div>
+    <div class="col-md-12 noPad marginBottom15" ng-show="!loadingGradebook">
+        <div il-student-grade-card student-id='loggedUserId' course-id='courseLobId' context="'Gradebook'"></div>
+    </div>
+    <h5>
+        <a href="javascript: void(0)" ng-click="backToDashboard()" class="ac-links il-Link-clr">View Dashboard</a>
+    </h5>
+    <div class="col-md-12 noPad marginBottom50" style="height: 100%" ng-show="!loadingGradebook">
+        <div id="gradebookGrid" class="gridStyle" ng-grid="gradebookGridOptions"></div>
+    </div>  
+</div>
+

@@ -1,0 +1,71 @@
+<div id="carousel-example-generic" class="carousel slide mainsuggest-slider-container row col-md-12" ng-show="suggestedCourses.length > 0">
+    <div class="dash-heading-border col-md-12">
+        <div class="row drilling-display">
+            <h1 class="disp-inline-blk">Suggested courses</h1>
+            <!-- <a href="javascript:void(0);" class="activity-viewall">View All</a> -->
+        </div>
+        <div id="myCourses drilling-display">
+            <div class="live-tile course-tile" id="flip_mycourse_{{$index}}" data-direction="horizontal" ng-repeat="course in suggestedCourses">
+                <div class="course-box">
+                    <div class="mask">
+                        <span class="course-thumb img steel" ng-if="course.image">
+                            <img ng-src="{{course.image}}">
+                        </span>
+                        <span class="title"><a href="/course/{{course.course_id}}">{{course.name}}</a>
+                        </span>
+                        <span class="author">
+                            <img class="tutor_pic" ng-src="{{course.faculty.image}}"> by {{course.faculty.name}}</span>
+                        <span class="tutor">
+                            <span class="graytext"><b>Tutor(s): </b>
+                                <span ng-repeat="tutor in course.tutors">&nbsp;{{tutor.name}}
+                                    <span ng-if="$index < course.tutors.length - 1">,</span>
+                                </span>
+                            </span>
+                            <a href="javascript: void(0);"><i class="icon-redo icon-large pull-right flip_course_click" title="Flip"></i></a>
+                        </span>
+                    </div>
+                </div>
+                <div class="course-box">
+                    <div class="mask">
+                        <div class="author">
+                            <b>Objective</b><a href="javascript: void(0);"><i class="icon-undo icon-large pull-right flip_course_click" title="Flip"></i></a>
+                            <br>
+                            <small ng-bind-html="renderHtmlTrim(course.description,150)"></small>
+                        </div>
+                        <div class="author">
+                            <div class="pull-left" style="width: 20%">
+                                <img class="tutor_pic_back pull-left" ng-src="{{course.faculty.image}}">
+                                <a href="{{course.faculty.linkedin_link}}" ng-if="course.faculty.linkedin_link" target="_blank"><i class="icon-linkedin-sign"></i></a>
+                                <a href="{{course.faculty.fb_link}}" ng-if="course.faculty.fb_link" target="_blank"><i class="icon-facebook-sign"></i></a>
+                                <a href="{{course.faculty.twitter_link}}" ng-if="course.faculty.twitter_link" target="_blank"><i class="icon-twitter-sign"></i></a>
+                                <a href="{{course.faculty.gplus_link}}" ng-if="course.faculty.gplus_link" target="_blank"><i class="icon-google-plus-sign"></i></a>
+                                <a href="{{course.faculty.website}}" ng-if="course.faculty.website" target="_blank"><i class="icon-external-link-sign"></i></a>
+                            </div>
+                            <div class="pull-right" style="width: 80%">
+                                <a href="#"><b>{{course.faculty.name}}</b></a>
+                                <br>
+                                <small>{{course.faculty.description | limitTo : 100}}<span ng-if="course.faculty.description.length > 100">...</span></small>
+                            </div>
+                        </div>
+                        <div class="author" ng-repeat="tutor in course.tutors">
+                            <div class="pull-left" style="width: 20%">
+                                <img class="tutor_pic_back pull-left" ng-src="{{tutor.image}}" ng-if="tutor.image">
+                                <img class="tutor_pic_back pull-left" ng-src="/img/default_user.png" ng-if="!tutor.image">
+                                <a href="{{tutor.linkedin_link}}" ng-if="tutor.linkedin_link" target="_blank"><i class="icon-linkedin-sign" title="LinkedIn"></i></a>
+                                <a href="{{tutor.fb_link}}" ng-if="tutor.fb_link" target="_blank"><i class="icon-facebook-sign" title="Facebook"></i></a>
+                                <a href="{{tutor.twitter_link}}" ng-if="tutor.twitter_link" target="_blank"><i class="icon-twitter-sign" title="Twitter"></i></a>
+                                <a href="{{tutor.gplus_link}}" ng-if="tutor.gplus_link" target="_blank"><i class="icon-google-plus-sign" title="Google plus"></i></a>
+                                <a href="{{tutor.website}}" ng-if="tutor.website" target="_blank"><i class="icon-external-link-sign" title="Website"></i></a>
+                            </div>
+                            <div class="pull-right" style="width: 80%">
+                                <a href="#"><b>{{tutor.name}}</b></a>
+                                <br>
+                                <small>{{tutor.description | limitTo : 100}}<span ng-if="tutor.description.length > 100">...</span></small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

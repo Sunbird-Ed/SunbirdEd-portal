@@ -1,0 +1,44 @@
+<div class="actions_ct" id="actionList">
+    <ul class="selectable">
+        <li id="addActionLi">
+            <a href="javascript:void(0)" ng-click="selectAction('Add', 'addActionLi')"><i class="glyphicon glyphicon-plus-sign"></i> <span>Add</span></a>
+        </li>
+        <li id="descActionLi">
+            <a href="javascript:void(0)" ng-click="selectAction('Describe', 'descActionLi')"><i class="glyphicon glyphicon-list-alt"></i> <span>Describe</span></a>
+        </li>
+        <li id="enhanceActionLi">
+            <a href="javascript:void(0)" ng-click="selectAction('Enhance', 'enhanceActionLi')"><i class="glyphicon glyphicon-export"></i> <span>Enhance</span></a>
+        </li>
+        <li id="interceptionActionLi">
+            <a href="javascript:void(0)" ng-click="selectAction('Interception', 'interceptionActionLi')"><i class="glyphicon glyphicon-export"></i> <span>Interception</span></a>
+        </li>
+        <li id="enrichActionLi">
+            <a href="javascript:void(0)" ng-click="selectAction('Enrich', 'enrichActionLi')"><i class="glyphicon glyphicon-globe"></i> <span>Enrich</span></a>
+        </li>
+        <li id="seqActionLi">
+            <a href="javascript:void(0)" ng-click="selectAction('Sequence', 'seqActionLi')"><i class="glyphicon glyphicon-signal"></i> <span>Sequence</span></a>
+        </li>
+    </ul>
+    <div class="action-icon-div-ct">{{action.selectedAction()}}
+        <div class="content">
+            <div class="pull-right"><a href="javascript:void(0);" class="pop-close-btn" onclick="hideActionSlider()">
+                <img class="btn_cross" src="/img/btn_cross.png"></a>
+            </div>
+            <div ng-include="'/templates/common/addAction.html'" ng-show="action.selectedAction() == 'Add'"></div>
+            <div ng-include="'/templates/common/describeAction.html'" ng-show="action.selectedAction() == 'Describe'"></div>
+            
+            <div ng-show="action.selectedAction() == 'Enhance'">
+                <div ng-include="'/templates/common/enhanceAction.html'" ng-show="enhanceTab =='transcripts' || enhanceTab == 'subtitles' || enhanceTab == ''"></div>
+            </div>
+            <div ng-show="action.selectedAction() == 'Interception'">
+                <div ng-include="'/templates/common/interceptions.html'" ng-show="interception.action!='ADDMEDIA'"></div>
+                <div ng-include="'/templates/common/interceptionMediaSelect.html'" ng-show="interception.action=='ADDMEDIA'"></div>
+            </div>    
+
+            <div ng-include="'/templates/common/enrichAction.html'" ng-show="action.selectedAction() == 'Enrich'"></div>
+            <div ng-include="'/templates/common/sequenceAction.html'" ng-show="action.selectedAction() == 'Sequence'"></div>
+        </div>
+    </div>
+</div>
+
+

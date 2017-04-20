@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="courseApp">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SunBird</title>
+
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/common.css" rel="stylesheet">
+    <link href="/css/selectcourse.css" rel="stylesheet">
+    <script src="/js/angular.min.js"></script>
+    <script src="/js/controllers/courseController.js"></script>
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body ng-controller="ViewCourseCtrl">
+    <% include ../includes/commonHeader %>
+        <input type="hidden" id="courseId" value="<%=courseId %>" />
+
+        <section>
+            <div class="select_course_container container">
+                <div class="row">
+                    <div class="subject_details">
+                        <div class="col-md-3">
+                            <span class="title_header">Title</span>
+                            <span class="advn_header">{{courseTitle}}</span>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="title_header">Description</span>
+                            <span class="advn_header ellipsis">{{courseDescription}}</span>
+                        </div>
+                        <div class="col-md-3">
+                            <span class="title_header">Pedagogy</span>
+                            <span class="advn_header">{{pedagogyName}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <!--BEGIN OF 1ST COLUMN-->
+                    <div class="col-md-3">
+                        <div class="border_full">
+                            <div class="border_bottom_first">
+                                <span class="div_header_style">CREATE COURSE STRUCTURE</span>
+                            </div>
+                            <!--begin of 1st div-->
+                            <div class="div_border_begin">
+                                <ul class="list-unstyled create_padding20">
+                                    <li>
+                                        <a href="#" class="text_decor">
+                                            <i class="glyphicon glyphicon-cog"></i>
+                                            <span class="list_style15">Create Modules</span>
+                                        </a>
+                                    </li>
+                                    <li class="lecture_margin_top">
+                                        <a href="#" class="text_decor">
+                                        </a>
+                                    </li>
+                                    <li class="topic_margin">
+                                        <a href="#" class="text_decor">
+                                        </a>
+                                    </li>
+                                    <li class="topic_margin">
+                                        <a href="#" class="text_decor">
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--begin of 2nd div-->
+                            <div class="div_border_begin">
+                                <ul class="list-unstyled create_padding20">
+                                    <li>
+                                        <a href="#" class="text_decor">
+                                            <i class="glyphicon glyphicon-book"></i>
+                                            <span class="list_style15">Interconnect Topics</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--begin of 3rd div-->
+                            <div class="div_border_begin">
+                                <ul class="list-unstyled create_padding20">
+                                    <li>
+                                        <a href="#" class="text_decor">
+                                            <i class="glyphicon glyphicon-plus"></i>
+                                            <span class="list_style15">Add Metadata, Tags</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--begin of 4th div-->
+                            <div class="div_border_begin">
+                                <ul class="list-unstyled create_padding20">
+                                    <li>
+                                        <a href="#" class="text_decor">
+                                            <i class="glyphicon glyphicon-bookmark"></i>
+                                            <span class="list_style15">Create Sets, Sequence,
+                                                <span class="sub_margin">Subgraphs</span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--begin of 5th div-->
+                            <div class="div_border_begin">
+                                <ul class="list-unstyled create_padding20">
+                                    <li>
+                                        <a href="#" class="text_decor">
+                                            <i class="glyphicon glyphicon-book"></i>
+                                            <span class="list_style15">Create Learning Path</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--begin of 6th div-->
+                            <div class="btn_start_padding_first">
+                                <a href="/studio/course/courseStructure/<%=encodeURIComponent(courseId)%>" class="btn btn_start_green btn_first">Start</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--BEGIN OF 2ND COLUMN-->
+                    <div class="col-md-3 column2_margin_top">
+                        <div class="border_full">
+                            <div class="border_bottom_first">
+                                <span class="div_header_style">ADD/ATTACH LEARNING MATERIAL</span>
+                            </div>
+                            <!--begin of 1st div-->
+                            <div class="div_border_begin">
+                                <ul class="list-unstyled create_padding20">
+                                    <li>
+                                        <a href="#" class="text_decor">
+                                            <i class="glyphicon glyphicon-cloud-upload"></i>
+                                            <span class="list_style15">Upload Videos/Media</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--begin of 2nd div-->
+                            <div class="div_border_begin">
+                                <ul class="list-unstyled create_padding20">
+                                    <li>
+                                        <a href="#" class="text_decor">
+                                            <i class="glyphicon glyphicon-book"></i>
+                                            <span class="list_style15">Add Media Metadata</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--begin of 3rd div-->
+                            <div class="div_border_begin">
+                                <ul class="list-unstyled create_padding20">
+                                    <li>
+                                        <a href="#" class="text_decor">
+                                            <i class="glyphicon glyphicon-facetime-video"></i>
+                                            <span class="list_style15">Attach video to topic</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--begin of 4th div-->
+                            <div class="div_border_begin">
+                                <ul class="list-unstyled create_padding20">
+                                    <li>
+                                        <a href="#" class="text_decor">
+                                            <i class="glyphicon glyphicon-book"></i>
+                                            <span class="list_style15">Create Learning Activities</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--begin of 5th div-->
+                            <div class="div_border_begin">
+                                <ul class="list-unstyled create_padding20">
+                                    <li>
+                                        <a href="#" class="text_decor">
+                                            <i class="glyphicon glyphicon-book"></i>
+                                            <span class="list_style15">Link Learning Activities
+                                                <span class="sub_margin">to topic</span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--begin of 6th div-->
+                            <div class="div_border_begin">
+                                <ul class="list-unstyled create_padding20">
+                                    <li>
+                                        <a href="#" class="text_decor">
+                                            <i class="glyphicon glyphicon-tasks"></i>
+                                            <span class="list_style15">Define tutoring needs for
+                                                <span class="sub_margin">Learning Activities</span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--begin of 6th div-->
+                            <div class="btn_start_padding_2">
+                                <a href="/view/course/learningObjects/<%=encodeURIComponent(courseId)%>" class="btn btn_start_green btn_secnd">Start</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--BEGIN OF 3RD COLUMN-->
+                    <div class="col-md-3 column2_margin_top">
+                        <div class="border_full">
+                            <div class="border_bottom_first">
+                                <span class="div_header_style">MAKE LEARNING OBJECTS</span>
+                            </div>
+                            <!--begin of 1st div-->
+                            <div class="div_border_begin">
+                                <ul class="list-unstyled create_padding20">
+                                    <li>
+                                        <a href="#" class="text_decor">
+                                            <i class="glyphicon glyphicon-book"></i>
+                                            <span class="list_style15">Create/Attach tutoring
+                                                <span class="sub_margin">material</span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--begin of 2nd div-->
+                            <div class="div_border_begin">
+                                <ul class="list-unstyled create_padding20">
+                                    <li>
+                                        <a href="#" class="text_decor">
+                                            <i class="glyphicon glyphicon-book"></i>
+                                            <span class="list_style15">Connect tutoring material
+                                                <span class="sub_margin">to connect</span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--begin of 3rd div-->
+                            <div class="div_border_begin">
+                                <ul class="list-unstyled create_padding20">
+                                    <li>
+                                        <a href="#" class="text_decor">
+                                            <i class="glyphicon glyphicon-tasks"></i>
+                                            <span class="list_style15">Define Interaction Sequence</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--begin of 4th div-->
+                            <div class="div_border_begin">
+                                <ul class="list-unstyled create_padding20">
+                                    <li>
+                                        <a href="#" class="text_decor">
+                                            <i class="glyphicon glyphicon-book"></i>
+                                            <span class="list_style15">Attach Interaction Scripts</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!--begin of 5th div-->
+                            <div class="div_border_begin">
+                                <ul class="list-unstyled create_padding20">
+                                    <li>
+                                        <a href="#" class="text_decor">
+                                            <i class="glyphicon glyphicon-facetime-video"></i>
+                                            <span class="list_style15">Add player studio backend
+                                                <span class="sub_margin">script to the topics</span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!--begin of 6th div-->
+                            <div class="div_border_begin">
+                                <ul class="list-unstyled create_padding20">
+                                    <li>
+                                        <a href="#" class="text_decor">
+                                            <i class="glyphicon glyphicon-plus"></i>
+                                            <span class="list_style15">Add Analytics & Review
+                                                <span class="sub_margin">points to each node</span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!--begin of 7th div-->
+                            <div class="btn_start_padding_3">
+                                <a href="/studio/course/learningObjects/<%=encodeURIComponent(courseId)%>" class="btn btn_start_green btn_third">Start</a>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!--BEGIN OF 4TH COLUMN-->
+                    <div class="col-md-3 column2_margin_top">
+                        <div class="border_full">
+                            <div class="border_bottom_first">
+                                <span class="div_header_style">UPLOAD AND PUBLISH</span>
+                            </div>
+
+                            <!--begin of 1st div-->
+                            <div class="div_border_begin">
+                                <ul class="list-unstyled create_padding20">
+                                    <li>
+                                        <a href="#" class="text_decor">
+                                            <i class="glyphicon glyphicon-cloud-upload"></i>
+                                            <span class="list_style15">Upload content to Media
+                                                <span class="sub_margin">server</span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!--begin of 2nd div-->
+                            <div class="div_border_begin">
+                                <ul class="list-unstyled create_padding20">
+                                    <li>
+                                        <a href="#" class="text_decor">
+                                            <i class="glyphicon glyphicon-book"></i>
+                                            <span class="list_style15">Review LOB, Course Plan,
+                                                <span class="sub_margin">Description etc.,</span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!--begin of 3rd div-->
+                            <div class="div_border_begin">
+                                <ul class="list-unstyled create_padding20">
+                                    <li>
+                                        <a href="#" class="text_decor">
+                                            <i class="glyphicon glyphicon-book"></i>
+                                            <span class="list_style15">Choose/Assign tutor
+                                                <span class="sub_margin">categories to LOBs</span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!--begin of 4th div-->
+                            <div class="div_border_begin">
+                                <ul class="list-unstyled create_padding20">
+                                    <li>
+                                        <a href="#" class="text_decor">
+                                            <i class="glyphicon glyphicon-bullhorn"></i>
+                                            <span class="list_style15">Announce the Course</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!--begin of 5th div-->
+                            <div class="btn_start_padding_4">
+                                <a href="javascript:void(0);" class="btn disabled btn_start_green btn_last">Start</a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
+</body>
+
+</html>

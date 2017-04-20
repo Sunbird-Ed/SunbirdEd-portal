@@ -1,0 +1,132 @@
+<div class="List_view">
+	<div class=" askquestionHeader">
+		<div class="headerAsk">
+			<h2>Coaching Sessions</h2>
+		</div>	
+		<div class="listviewContainer" ng-if="currentClassRooms.length == 0 && upcomingClassRooms.length == 0 && completedClassRooms.length == 0">
+			<div class="alert alert-info fade in " role="alert">
+            	<p>There are no Coaching Sessions.</p>
+        	</div>
+		</div>
+		<div class="listviewContainer">
+			<div ng-if="currentClassRooms.length > 0">
+				<div class="QACol" ng-repeat="currentSession in currentClassRooms">
+					<div class="row">
+						<div class="col-md-12 QAcontent">
+							<h5><a href="{{getClassRoomUrl(currentSession);}}" class="ac-links il-Link-clr">{{currentSession.name}}</a></h5>
+							<div class="detailsQuestion">
+								<ul>
+									<li ng-if="currentSession.createrName">
+										<span>Offered By : {{currentSession.createrName}}</span>
+									</li>
+									<li class="list-dash">|</li>
+									<li ng-if="currentSession.status">
+										<span>Status : {{currentSession.status}}</span>
+									</li>
+									<li class="list-dash">|</li>
+									<li ng-if="currentSession.startDate && currentSession.endDate">
+										<span>
+											When : <span>{{ currentSession.startDate | date:"dd MMM h:mma"}}</span> to <span>{{ currentSession.endDate | date:"dd MMM h:mma"}}</span>
+										</span>
+									</li>
+								</ul>
+							</div>					
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="QAtags">
+								<span class="badge" ng-repeat="currentconcept in currentSession.concepts">{{currentconcept.conceptTitle}}</span>
+							</div>
+						</div>
+					</div>
+					<hr/>
+				</div>
+			</div>		
+		
+			<div ng-if="upcomingClassRooms.length > 0">
+				<div class="QACol" ng-repeat="upcomingSession in upcomingClassRooms">
+					<div class="row">
+						<div class="col-md-12 QAcontent">
+							<h5><a href="{{getClassRoomUrl(upcomingSession);}}" class="ac-links il-Link-clr">{{upcomingSession.name}}</a></h5>
+							<div class="detailsQuestion classroomDiv">
+								<ul>
+									<li ng-if="upcomingSession.createrName">
+										<span>Offered By : {{upcomingSession.createrName}}</span>
+									</li>
+									<li class="list-dash">|</li>
+									<li ng-if="upcomingSession.status">
+										<span>Status : {{upcomingSession.status}}</span>
+									</li>
+									<li class="list-dash">|</li>
+									<li ng-if="upcomingSession.startDate && upcomingSession.endDate">
+										<span>
+											When : <span>{{ upcomingSession.startDate | date:"dd MMM h:mma"}}</span> to <span>{{ upcomingSession.endDate | date:"dd MMM h:mma"}}</span>
+										</span>
+									</li>
+								</ul>
+							</div>
+							<div ng-if="!upcomingSession.metadata.isMandatory">
+								<div ng-show="upcomingSession.event.action == 'accepted' || upcomingSession.event.action == 'declined'">
+									<div class="alert alert-info classroomAlert" style="padding: 6px !important">
+				                        You have <b>{{upcomingSession.event.action}}</b> this event on {{ upcomingSession.event.lastUpdated | date:"MM/dd/yyyy 'at' h:mma"}}.
+				                    </div>
+								</div>
+								<div ng-show="upcomingSession.event.action != 'accepted' && upcomingSession.event.action != 'declined'">
+									<div class="alert alert-info classroomAlert" style="padding: 6px !important">
+			                            You are <b>{{upcomingSession.event.action}}</b> to this event on {{ upcomingSession.event.lastUpdated | date:"MM/dd/yyyy 'at' h:mma"}}.
+			                        </div>
+			                        <button class="btn btn-default pull-right" ng-click="setEventStatus(false, upcomingSession.identifier)">Decline</button>
+			                        <button class="btn btn-primary pull-right marRight5" ng-click="setEventStatus(true, upcomingSession.identifier)">Accept</button>
+								</div>				
+							</div>				
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="QAtags">
+								<span class="badge" ng-repeat="upcomingconcept in upcomingSession.concepts">{{upcomingconcept.conceptTitle}}</span>
+							</div>
+						</div>
+					</div>
+					<hr/>
+				</div>
+			</div>	
+
+			<div ng-if="completedClassRooms.length > 0">
+				<div class="QACol" ng-repeat="completedSession in completedClassRooms">
+					<div class="row">
+						<div class="col-md-12 QAcontent">
+							<h5><a href="{{getClassRoomUrl(completedSession);}}" class="ac-links il-Link-clr">{{completedSession.name}}</a></h5>
+							<div class="detailsQuestion">
+								<ul>
+									<li ng-if="completedSession.createrName">
+										<span>Offered By : {{completedSession.createrName}}</span>
+									</li>
+									<li class="list-dash">|</li>
+									<li ng-if="completedSession.status">
+										<span>Status : {{completedSession.status}}</span>
+									</li>
+									<li class="list-dash">|</li>
+									<li ng-if="completedSession.startDate && completedSession.endDate">
+										<span>
+											When : <span>{{ completedSession.startDate | date:"dd MMM h:mma"}}</span> to <span>{{ completedSession.endDate | date:"dd MMM h:mma"}}</span>
+										</span>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="QAtags">
+								<span class="badge" ng-repeat="completedconcept in completedSession.concepts">{{completedconcept.conceptTitle}}</span>
+							</div>
+						</div>
+					</div>
+					<hr/>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

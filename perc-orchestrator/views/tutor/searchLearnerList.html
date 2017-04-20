@@ -1,0 +1,22 @@
+<div class="" style="margin:20px;">
+    <div class="col-md-12 noPad">
+        <div class="autoLoadContainer" ng-show="showSearchGrid">
+        	<div class="message-text">{{totalLearnerText}}</div>
+        	<div class="noPad learner-block-view" ng-repeat="data in myData" style="">
+        		<div class="noPad" style="border: 1px solid #e5e5e5; width:255px;" id="{{data.username}}" ng-click="selectedLearners(data.username, data);">
+	        		<div class="noPad" style="border-right:1px solid #e5e5e5; width:80px; height:80px; display:inline-block;">
+	        			<img src="{{data.image}}" alt="..." class="" style="width:80px; height:80px;">
+	        		</div>
+					<div class="" style="padding:5px; width:160px; height:77px; display:inline-block;" >
+						<div class="wrap-content" style="padding:0px 5px 10px 0px;">{{data.name}}</div>
+						<div class="wrap-content" style="padding:0px 5px 10px 0px;">{{data.email}}</div>
+					</div>
+				</div>        		
+        	</div>
+        	<div class="page-link" ng-click="triggerAjaxCall();" ng-show="showNextLink">Next Page</div>
+        </div>
+        <div class="message-text" ng-hide="showSearchGrid">
+        	{{showMessage}}
+        </div>    
+    </div>
+</div>

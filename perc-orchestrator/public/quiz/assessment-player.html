@@ -1,0 +1,166 @@
+<link href="/quiz/style/quizPlayer.css" rel="stylesheet">
+<!-- <script src="/quiz/js/assessment-player.js"></script> -->
+
+
+<div id="assessment-error-msg" class="alert alert-danger hide col-md-6 text-center" role="alert">Server error.</div>
+<div id="assessment-landingpage-container">
+    <div id="assessment-instructions-container" class="hide">
+        <h4>Instructions :</h4>
+        <p id="assessment-instructions" class="common_content"></p>
+    </div>
+
+
+    <div class="assessment-attempt-container col-md-12" style="padding-left: 0px;">
+
+        <div id="attempt-again-btn-container" class="col-md-8 text-center assessment-play hide" style="padding-left: 0px;">
+            <a href="" id="attempt-again-btn">
+                <img src="/img/start.png" style="float: left; width: 80%; height: 80%;"/>
+            </a>
+        </div>
+        <div id="assessment-attempts-completed" class="col-md-8 text-center assessment-play hide">
+            <h3 id="attempts-completed-message"></h3>
+        </div>
+        <div id="assessment-previous-list" class="col-md-4 assessment-previous-attempts">
+            <h4>Previous Attempts</h4>
+            <div class="assessment-table-container">
+                <table id="assessment-previous-completed" class="table"></table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div id="qtiPlayerContainer" class="hide">
+    <!-- qtiPlayerContainer starts -->
+
+    <section class="playerDefaultElem">
+        <div id="player-main">
+            <div class="row-fluid">
+                <div class="header-title bg-blue col-md-12">
+                    <div class="row-fluid">
+                        <!-- <div class="quiz-title col-md-10">
+	                    <h3 id="playerHeaderLogo">Header</h3>
+	                </div> -->
+                        <div class="col-md-12 quizTimerContainer">
+                            <div id="quizTimer" class="countdowntime pull-right">
+                                <i class="icon-time icon-white"></i>
+                                <span id="quizMinutes" class="quizMinutes"></span>
+                                <span>:</span>
+                                <span id="quizSeconds" class="quizSeconds"></span>
+                                <span id="pauseTimer">
+                                    <span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row-fluid">
+                <div id="assessment-messgeges-Container" class="assessment-messgeges-Container row-fluid col-md-12">
+                    <div id="assessment-messgeges" class="assessment-messgeges alert text-center">
+                        <span id="message-wrapper" class="message-wrapper"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row-fluid">
+                <div id="quizContainer" class="quiz-body col-md-12 quizContainer">
+                    <div id="" class=" quizContainer">
+                        <div id="playerContainer" class="playerContainer">
+                            <div id="player" class="col-md-12 player row-fluid col-md-12"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="assessment-feedback-container" class="row-fluid span12 assessment-feedback-container ">
+            <div class="status-parent-container">
+                <span id="starttime-container" class="starttime-container">
+                    <span id="starttime-label" class="starttime-label">Start time :</span>
+                    <span id="startTime" class="startTime"></span>
+                </span>
+
+                <span id="endtime-container">
+                    <span id="endtime-label" class="endtime-label">End time :</span>
+                    <span id="endTime" class="endTime"></span>
+                </span>
+                <span id="status-container" class="status-container pull-right">
+                    <span id="status" class="status"></span>
+                </span>
+            </div>
+            <div id="responses" class="responses"></div>
+            <button id="quiz-back-btn" type="button" style="margin-right: 20px; margin-bottom: 10px" class="btn btn-primary pull-right hide"  title="Back to Quiz">Back to Quiz</button>
+
+        </div>
+
+    </section>
+    <div class="customQuizFooter">
+        <div class="row-fluid">
+            <div class="bg-blue footerNav col-md-12">
+                <div class="row-fluid">
+                    <div class="col-md-6">
+                        <a href="javascript:void(0)" id="showQuestionIndex" data-toggle="popover" data-placement="" data-content="" role="button" class="btn pull-right">
+                            <span id="currentQuestionNo" class="currentQuestionNo"></span>
+                            <span>/</span>
+                            <span id="totalQuestionNo" class="totalQuestionNo"></span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul id="question-navigation-list"></ul>
+                    </div>
+                    <div class="col-md-6">
+                        <div id="assessment-player-navigation" class="assessment-player-navigation row-fluid span12">
+                            <div id="NavUpdate" class="NavUpdate visited">
+                                <button id="visitedUpdate" class="btn btn-default navButton commonNavButton">Answer</button>
+                            </div>
+                            <div id="NavGoBack" class="NavGoBack visited">
+                                <button id="visitedSkip" class="btn btn-default navButton commonNavButton">Skip</button>
+                            </div>
+                            <div id="NavFinish" class="NavFinish unVisited">
+                                <button id="finishBtn" class="btn btn-default finishNav navButton commonNavButton">Finish</button>
+                            </div>
+                            <div id="NavSkipFinish" class="NavSkipFinish unVisited">
+                                <button id="skipFinishBtn" class="btn btn-default finishNav navButton commonNavButton">Skip & Finish</button>
+                            </div>
+                            <div id="NavRight" class="NavRight unVisited">
+                                <button id="nextBtn" class="btn btn-default navButton commonNavButton">Next</button>
+                            </div>
+                            <div id="NavSkip" class="NavSkip unVisited">
+                                <button id="skipBtn" class="btn btn-default navButton commonNavButton">Skip</button>
+                            </div>
+                            <div id="NavRefresh" class="NavRight unVisited" style="display:none;">
+                                <button id="refreshBtn" class="btn btn-default navButton commonNavButton">Refresh</button>
+                            </div>
+                            <button id="ideBtn" class="navButton btn btn-large btn-primary pull-right" style="color:white;display:none">OPEN IDE</button>
+                            <div id="dialog-confirm"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+
+    var questionPopOverOptions = {
+        placement: 'top',
+        html: 'true',
+        content: function() {
+            return '<ul id="question-navigation-list-container">' + $('#question-navigation-list').html() + '</ul>';
+        },
+    }
+
+    $('#showQuestionIndex').popover(questionPopOverOptions);
+
+    $('body').on('click', function(e) {
+        $('[data-toggle="popover"]').each(function() {
+            //the 'is' for buttons that trigger popups
+            //the 'has' for icons within a button that triggers a popup
+            if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                $(this).popover('hide');
+            }
+        });
+    });
+
+    </script>
+
+</div>
+<!-- qtiPlayerContainer Ends -->
+<!-- <button id="quiz-back-btn" type="button" style="bottom:10px;position:fixed;right:5px;" class="btn btn-primary pull-right hide"  title="Back to Quiz" onclick="backToQuiz()">Back to Quiz</button> -->

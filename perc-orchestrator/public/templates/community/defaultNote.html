@@ -1,0 +1,24 @@
+<div class="tutorMsg">
+    <div ng-community-user user-id="activity.actor.preferredUsername" user-name="activity.actor.displayName" context="'Wall'" css-class="'il-Link-clr ac-contents'" class="display-inline"></div>
+    <span ng-if="$parent.model.loggedUserId == activity.actor.preferredUsername"> to<span ng-repeat="to in activity.to">&nbsp;{{to.displayName}}{{$index != (activity.to.length - 1) ? ',' : ''}}</span>
+    <span ng-if="activity.to.length == 0">self</span>
+    </span>
+</div>
+<h5 style="margin-top: 0px;"><p class="ac-links" style="font-family: 'FrutigerNeueW01-Regular'">{{activity.object.displayName}}</p></h5>
+    <span class="timeDur moveTop18" data-livestamp="{{activity.published}}"></span>
+    <span class="timeDur moveTop18">|</span>
+    <span class="timeDur moveTop18">{{activity.object.replies.totalItems}} comments</span>
+    <span class="timeDur moveTop18">|</span>
+    <span class="timeDur moveTop18">{{activity.object.likes.totalItems}} likes</span>
+    <span class="timeDur moveTop18" ng-if="activity.object.liked">|</span>
+    <span class="timeDur moveTop18" ng-if="activity.object.liked"> You liked this</span>
+    <div class="wallText" ng-bind-html="renderHtml(activity.object.content)"></div>
+<div class="SocialNet">
+    <ul>
+        <li><a href="javascript:void(0)" class="il-Link-clr" ng-click="like(activity.object, !activity.object.liked)">{{activity.object.liked ? 'Unlike' : 'Like'}} <i class="fa fa-thumbs-o-up" ng-if="!activity.object.liked"></i><i class="fa fa-thumbs-o-down" ng-if="activity.object.liked"></i></a>
+        </li>
+        <li class="list-dash">|</li>
+        <li><a href="javascript:void(0)" class="il-Link-clr" ng-click="activateComment(activity.object, index)">Comment</a>
+        </li>
+    </ul>
+</div>

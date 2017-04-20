@@ -1,0 +1,27 @@
+<section class="perceptron-links-section">
+    <div class="percept_section">
+        <div class="pull-left learning_title col-md-3" ng-show="currentView == 'LOB'">
+            <span>Learning Objectives</span>
+        </div>
+        <ul class="nav navbar-nav navbar-right nav_links ul-style">
+            <li ng-class="{active: currentView == 'CourseStructure'}">
+                <a href="javascript:void(0)" onclick="navigateTo('/studio/course/courseStructure/','<%=courseId%>')">Course Structure</a>
+            </li>
+            <li ng-class="{active: currentView == 'Media'}">
+                <a href="javascript:void(0)" onclick="navigateTo('/studio/content/','<%=courseId%>')">Media</a>
+            </li>
+            <li ng-class="{active: currentView == 'LOB'}">
+                <a href="javascript:void(0)" onclick="navigateTo('/studio/course/learningObjects/','<%=courseId%>')">Learning Objects</a>
+            </li>
+            <li>
+                <a href="tutoring.html">Tutoring Content</a>
+            </li>
+            <li>
+                <a href="preview.html">Preview</a>
+            </li>
+            <li>
+                <a href="javascript:void(0);">Publish</a>
+            </li>
+        </ul>
+    </div>
+</section>

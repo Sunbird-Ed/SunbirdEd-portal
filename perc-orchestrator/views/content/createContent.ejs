@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="courseApp">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SunBird</title>
+
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+	<link href="/css/common.css" rel="stylesheet">
+	<link href="/css/learningobjects.css" rel="stylesheet">
+	<link href="/css/uploadfile.css" rel="stylesheet">
+	<script src="/js/angular.min.js"></script>
+    <!-- <script src="/js/angular-strap.min.js"></script>
+    <script src="/js/angular-strap.tpl.min.js"></script> -->
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>    
+    <script src="/js/angular-sanitize.min.js"></script>
+	<script src="/js/controllers/contentController.js"></script>
+
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body id="createContentBody" ng-controller="CreateContentCtrl">
+   	<header ng-include="'/templates/includes/header.html'"></header>
+	<input type="hidden" id="courseId" value="<%=courseId %>"/>
+
+	<section class="accordion_container">
+		<div class="parent_container">
+		<div class="collapse_direction showRightPanel">
+						<i class="glyphicon glyphicon-chevron-left"></i>
+					</div>
+			<div class="col-md-3 left-nav-ct left-accrodian">
+				<div class="panel-group" id="accordion">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="acc_title" id="toc">
+									<img class="pull-left" src="/img/prerequisite_icon.png">
+									<span>System Files</span>
+								</a>
+							</h4>
+						</div>
+						<div id="collapseTwo" class="panel-collapse">
+							<div id="fileuploader">Select Files To Upload</div>
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="out acc_title" id="media">
+									<img class="pull-left" src="/img/prerequisite_icon.png">
+									<span>Repository</span>
+								</a>
+							</h4>
+						</div>
+						<div id="collapseOne" class="panel-collapse collapse">
+							<div class="search_box" style="margin-bottom:10px;">
+								<input type="search" class="form-control search" placeholder="Search" ng-model="searchQuery"/>
+							</div>
+							<div class="panel-body">
+								<div class="checkbox-tree tree yscroll2">
+									<ul class="list-unstyled lecture-ul">
+										   <li class="lecturename-li">
+											<span class="level2 lecturename-title green"><i class="icon-minus exp-col-tree-act"></i><span><i class="icon-level3">&nbsp;</i><span class="title-txt">MEDIA LIST</span></span></span>
+											<ul id="mediaItems" class="Itemslecture-ul">
+												<li class="Itemslecture-li" ng-repeat="media in mediaItems | filter:searchQuery">
+												<span class="Itemslecture-title"><span><i class="icon-video">&nbsp;</i>
+													<input type="checkbox" id="{{media.identifier}}"/>
+													<span class="title-txt">{{media.title}}</span></span></span>
+												</li>
+											</ul>
+										</li>
+										<li class="lecturename-li">
+											<span class="level2 lecturename-title green"><i class="icon-minus exp-col-tree-act"></i><span><i class="icon-level3">&nbsp;</i><span class="title-txt">LEARNING ACTIVITIES</span></span></span>
+											<ul id="activityItems" class="Itemslecture-ul">
+												<li class="Itemslecture-li" ng-repeat="media in activityItems">
+												<span class="Itemslecture-title"><span><i class="icon-video">&nbsp;</i><input type="checkbox"/><span class="title-txt">{{media.title}}</span></span></span>
+												</li>
+											</ul>
+										</li>
+									</ul>
+									<div class="add_reset">
+										<a href="javascript:void(0);" ng-click="addRepositoryItems()" class="btn btn_green add_item">Add</a>
+									</div>
+								</div><!-- end tree -->
+
+							</div><!-- end panel body -->
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<div class="col-md-9 main_container">
+				<div class="main">
+					<div>
+						<div id="fileList" class="browse_files row">
+						</div>
+						<div class="browse_files row" ng-if="selectedItems">
+							<div class="ajax-file-upload-statusbar" ng-repeat="item in selectedItems">
+								<div class="ajax-file-upload-filename">
+									<b>{{item.contentType}}</b><br>
+									<span ng-switch on="item.mediaType">
+										<i class="glyphicon glyphicon-facetime-video" ng-switch-when="VIDEO"></i>
+										<i class="glyphicon glyphicon-picture" ng-switch-when="IMAGE"></i>
+										<i class="glyphicon glyphicon-folder-open" ng-switch-default></i>
+									</span>
+									<br>{{item.title}}
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="bottomright">
+						<a id="importMedia" href="javascript:void(0);" class="btn btn-sm btn_green" style="display:none;">Import</a>
+						<a id="importRepositoryFiles" href="javascript:void(0);" class="btn btn-sm btn_green" ng-if="selectedItems" ng-click="createContent()">Import</a>
+						<a href="javascript:onCancel();" class="btn btn-sm btn-default">Cancel</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+	<script src="/js/custom.js"></script>
+    <script src="/js/bootstrap-checkbox-tree.js"></script>
+    <script src="/js/custom.js"></script>
+    <script src="/js/jquery.form.js"></script>
+	<script src="/js/jquery.uploadfile.js"></script>
+	<!-- for collapsible tree items -->
+	<script type="text/javascript">
+		$(function () {
+
+			$('.checkbox-tree').on('checkboxTicked', function(e) {
+		      var checkedCbs = $(e.currentTarget).find("input[type='checkbox']:checked");
+		      console.log('checkbox tick', checkedCbs.length);
+		    });
+		    $('.checkbox-tree').checkboxTree({
+	            checkChildren : true
+	          });
+		});
+
+		var fileCounter = 0;
+
+		var uploadObj = $("#fileuploader").uploadFile({
+			url:"/private/v1/content/createMedia/" + encodeURIComponent($('#courseId').val()),
+			formData : {"from" : "FILE"},
+			fileName:"mediafile",
+			autoSubmit:false,
+			multiple:true,
+			maxFileCount:1,
+			allowedTypes:"image,video,pdf,text,word,excel,powerpoint",
+			showStatusAfterSuccess:false,
+			showCancel:false,
+			showAbort:false,
+			showProgress:true,
+			dragDropStr: "<br><span><b>(or) Drag & Drop files here</b></span>",
+			statusBarDiv: 'fileList',
+			onSelect : onFilesSelect,
+			onSuccess: onUploadSuccess
+		});
+
+		$("#importMedia").click(function() {
+			uploadObj.startUpload();
+		});
+
+		function onFilesSelect() {
+			var scope = angular.element($("#createContentBody")).scope();
+			scope.$apply(function(scope){
+  				scope.selectedItems = new Array();
+  				$('#importMedia').show();
+			});
+			return true;
+		}
+
+		function onUploadSuccess(files, response, xhr) {
+			fileCounter++;
+			if (fileCounter == (uploadObj.fileCounter-1)) {
+				alert("No.of Files:"+fileCounter);
+				document.location.href = '/studio/content/' + encodeURIComponent($('#courseId').val());
+			}
+		}
+
+		function onCancel() {
+			document.location.href = '/studio/content/' + encodeURIComponent($('#courseId').val());
+		}
+	</script>
+  </body>
+</html>

@@ -1,0 +1,53 @@
+.FileDetails.tocchecked{
+background-image: url("images/toc_checked.png");
+display: inline-block;
+width: 18px;
+height: 13px;
+background-repeat: no-repeat;
+margin-right: 10px;
+vertical-align: middle;
+opacity: 0.5;
+margin-top: 5px;
+}
+.FileDetails.tocclass{
+background-image: url("images/toc_class.png");
+display: inline-block;
+width: 18px;
+height: 13px;
+background-repeat: no-repeat;
+margin-right: 10px;
+vertical-align: middle;
+opacity: 0.5;
+margin-top: 5px;
+}
+.tocCurrentElement{
+	color: #ff0033 !important;
+}
+.tocHandIcon{
+	position: relative;
+	right: 20px;
+	margin-right: -19px;
+}
+.tocSpanNoMargin {
+	display: inline !important;
+	padding-left: 2px !important;
+}
+.tocVAlignMiddle {
+	vertical-align: middle !important;
+}
+.tocCurrentElementIcon {
+	position: relative;
+	top: -3px;
+}
+.tocElementDiv {
+	width: 100% !important;
+}
+.tocElementDiv span.FileDetails {
+	margin-top: 5px !important;
+}
+.tocIcon span {
+	font-family: 'iconFont' !important;
+	color: #333 !important;
+	vertical-align: bottom !important;
+}
+

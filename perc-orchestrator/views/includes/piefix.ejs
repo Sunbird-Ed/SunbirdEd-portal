@@ -1,0 +1,67 @@
+<div class="white_overlay "></div>
+<!-- side button -->
+
+
+
+<div id='outer_container' class="outer_container" >
+<a class="menu_button" href="javascript:void(0);" title="Toggle"><span>Menu Toggle</span></a>
+<ul class="menu_option">
+    <li>
+        <a href="javascript:void(0);" data-toggle="tooltip" data-placement="left" title="Write a Program">
+            <span onclick="loadIde();" class="icon_prog"></span>
+        </a>
+    </li>
+    <li>
+        <a href="javascript:void(0);" ng-click="notesViewFromPie()" onclick="closeActionMenuOverlay()" data-toggle="tooltip" data-placement="left" title="Write a Note">
+            <span class="icon_note"></span>
+        </a>
+    </li>
+    <li>
+        <a href="javascript:void(0);" ng-click="showLectureView()" onclick="closeActionMenuOverlay()" data-toggle="tooltip" data-placement="left" title="Resume Lecture">
+            <span class="icon_resumelect"></span>
+        </a>
+    </li>
+    <li>
+        <a href="javascript:void(0);" data-toggle="tooltip" data-placement="left" title="Ask a Coach" ng-click="interactionsViewFromPie('coachqa')" onclick="closeActionMenuOverlay()" >
+            <span class="icon_coach"></span>
+        </a>
+    </li>
+    <li>
+        <a href="javascript:void(0);" ng-click="interactionsViewFromPie('courseqa')" onclick="closeActionMenuOverlay()" data-toggle="tooltip" data-placement="left" title="Ask a Question">
+            <span class="icon_question"></span>
+        </a>
+    </li>
+</ul>
+</div>
+
+<script>
+
+function closeActionMenuOverlay() {
+	$('.white_overlay').hide();
+	$(".menu_button").removeClass("btn-rotate");
+    $("#outer_container").removeClass('active');
+    $(".menu_option li").css({
+        left: "0px",            top: "0px"
+    });
+}
+
+function loadIde(){
+  var url = "https://" + document.location.host + "/private/v1/player/getUserInfo/";
+  // var action = "launchAssessmentItemIDE";
+  var action = "practice";
+  var language = "JAVA";
+  $.ajax({
+    url : url, 
+    type : "GET",
+    async : false,
+    success : function(data) {
+      var role = data.userRoles[0];
+      if(role == "tutor") role = "faculty";
+      var url_ide = assessmentsConfig.programmingEnvironmentBaseUrl + "?uname=" + data.identifier + "&userrole=" + role + "&REMOTE_USER=" + data.identifier + "&action=" + action + "&stack=" + language + "&ud=" + data.displayName + "&ui="+data.image;
+      //console.log(url_ide);
+      window.open(url_ide);
+    }
+  });
+}
+
+</script>

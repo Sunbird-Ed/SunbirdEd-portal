@@ -1,0 +1,24 @@
+/*media learning styles begin*/
+.drag_drop
+{
+	font-size:12px;
+	font-weight:normal;
+	margin-left:5px;
+}
+.orange
+{
+	color:#ff9900 !important;
+}
+.purple
+{
+	color:#955ba5 !important;
+}
+.icon-list-book, .icon-video
+{
+	top:0px;
+}
+.green
+{
+	color:#34af38;
+}
+/*media learning styles end*/

@@ -1,0 +1,120 @@
+::-webkit-scrollbar {
+	width: 0px !important;
+}
+
+.jcarousel {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+.jcarousel ul {
+    width: 20000em;
+    position: relative;
+    list-style: none;
+    margin: 0;
+	padding: 0;
+}
+
+.jcarousel li {
+	float: left;
+}
+
+.jcarousel-pagination {
+    -webkit-transform: translate(-50%, 0);
+    -ms-transform: translate(-50%, 0);
+    transform: translate(-50%, 0);
+    width: 100%;
+    margin-left: 50%;
+    background: #555;
+    text-align: center;
+    height: 45px;
+    padding: 15px;
+}
+
+.jcarousel-pagination a {
+    text-decoration: none;
+    display: inline-block;
+
+    font-size: 11px;
+    height: 13px;
+    width: 13px;
+    line-height: 15px;
+
+    background: #fff;
+    color: #4E443C;
+    border-radius: 13px;
+    text-indent: -9999px;
+    margin-right: 7px;
+    -webkit-box-shadow: 0 0 2px #4E443C;
+    -moz-box-shadow: 0 0 2px #4E443C;
+    box-shadow: 0 0 2px #4E443C;
+}
+
+.jcarousel-pagination a.active {
+    background: #428bca;
+    color: #fff;
+    opacity: 1;
+    -webkit-box-shadow: 0 0 2px #F0EFE7;
+    -moz-box-shadow: 0 0 2px #F0EFE7;
+    box-shadow: 0 0 2px #F0EFE7;
+}
+
+.jcarousel-pagination .disabled{
+	background: #999;
+    cursor: not-allowed;
+    opacity: 0.65;
+    text-decoration: none;
+}
+
+.selectedMedia {
+	border: 2px solid #428bca;
+	padding: 4px 2px 0px 2px;
+}
+
+.container-section {
+    /*border-top: 3px solid #0099cc;*/
+}
+
+.container-section-101, .container-section-explore, .container-section-references, .container-section-drilldown, .container-section-pre-requisites, .container-section-challenge, .container-section-tutorials {
+    /*border-top: 3px solid #f39c12 !important;*/
+}
+
+.tab-heading-101 {
+    color: #FC0046 !important;
+}
+
+.tab-heading-explore {
+    color: #FC0046 !important;
+}
+
+.tab-heading-references {
+    color: #982ECD !important;
+}
+
+.tab-heading-drilldown {
+    color: #019967 !important;
+}
+
+.tab-heading-pre-requisites {
+    color: #0099CC !important;
+}
+
+.tab-heading-challenge {
+    color: #FF6600 !important;
+}
+
+.tab-heading-tutorials {
+    color: #ff6600 !important;
+}
+
+.discover-dd {
+    margin-top: 6px;
+    padding-left: 0px !important;
+}
+
+.discover-dd span {
+    font-size: 14px !important;
+    font-family: 'Frutiger Serif LT W01' !important;
+    text-transform: capitalize;
+}

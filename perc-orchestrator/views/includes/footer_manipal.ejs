@@ -1,0 +1,24 @@
+<footer>
+<div class="container-full" class="footer">
+<div class="footerAbs">
+    <div class="copyright-cont pull-left">
+    <div>
+        <a href="/">Home</a>
+    <span class="divider">&nbsp;</span>
+    <a href="/about/us">About Us</a>
+    <span class="divider">&nbsp;</span>
+    <a href="/terms">Terms of Use</a>
+    <span class="divider">&nbsp;</span>
+    <a href="/privacy">Privacy Policy</a>
+    <% if(typeof user!='undefined' && user.metadata && user.metadata.registrationNumber ) { %>
+    <span class="divider">&nbsp;</span>
+    <a href="http://helpdesksso.smude.edu.in/ILIMISSO.aspx?rollno=<%=user.metadata.registrationNumber %>" target="_blank">Help</a>
+    <% } %>
+    </div>
+        <div class="pull-left">
+        Powered by SunBird.
+        </div>
+    </div>
+    </div>
+</div>
+</footer>
