@@ -1,0 +1,10 @@
+/nbproject/private/
+/node_modules
+/dist
+/.tmp
+/.sass-cache
+/bower_components
+/semantic
+semantic.json
+/app/thirdparty
+/coverage

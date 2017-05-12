@@ -26,7 +26,7 @@ angular.module('playerApp')
                     }
                 }
 
-                contentService.getSearchContent(req).then(function (res) {
+                contentService.search(req).then(function (res) {
                     console.log(res);
                     if (res.responseCode === "OK") {
                         content.data = res.result;
