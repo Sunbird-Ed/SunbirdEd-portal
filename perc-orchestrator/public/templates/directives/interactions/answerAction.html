@@ -1,9 +1,0 @@
-<span class="int-block int-icon" ng-show="post.metadata.markAsAnswered && !editable">
-    <span class="glyphicon glyphicon-ok" style="color:green"></span>
-</span>
-<span class="int-block int-icon" ng-show="post.metadata.markAsAnswered && editable">
-    <span class="glyphicon glyphicon-ok" style="color:green" ng-click="markAnswered(post, interaction, false);"></span>
-</span>
-<span class="int-block int-icon int-answer" ng-show="!interaction.metadata.markAsAnswered && enabled">
-    <span class="glyphicon glyphicon-ok" ng-click="markAnswered(post, interaction, true);"></span>
-</span>

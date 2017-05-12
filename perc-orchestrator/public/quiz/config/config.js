@@ -1,1 +1,0 @@
-var ASSESSMENT_TEST_PERC_API_URL	   = 'deliverAssessment';
