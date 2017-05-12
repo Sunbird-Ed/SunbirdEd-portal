@@ -1,0 +1,74 @@
+
+<div id="search-results">
+
+    <div class="ui items" ng-if="content.data.count > 0">
+
+
+        <div class="item ui segment border-bottom" ng-repeat="item in content.data.content track by $index" ng-init="$last && content.loadRating()">
+
+            <div class="ui small image">
+                <img ng-src="{{(item.appIcon != undefined) ? item.appIcon:'../images/sunbird_logo.png'}}">
+            </div>
+            <div class="content">
+
+                <div class="ui equal width left aligned padded grid">
+
+                    <div class="row">
+                        <div class="column">
+                            <div class="left aligned bolder">{{item.name}}</div>
+                            <div class="meta">
+                                <span ng-if="item.gradeLevel.length > 1"> 
+                                    <div class="ui compact menu">
+                                        <div class="ui simple dropdown item">
+                                            {{item.gradeLevel[0]}}
+                                            <i class="ellipsis vertical icon"></i>
+                                            <div class="menu">
+                                                <div class="item" ng-repeat="grade in item.gradeLevel">{{grade}}</div>                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </span>
+
+                                <span ng-if="item.gradeLevel.length == 1">{{item.gradeLevel[0]}}&nbsp; | &nbsp;</span>
+                                <span ng-if="item.language.length > 0">{{item.language.join(',')}}&nbsp; | &nbsp;</span>
+                                <span ng-if="item.ageGroup.length > 0">{{item.ageGroup.join(',')}}&nbsp; | &nbsp;</span>
+                                <span ng-if="item.contentType">{{item.contentType}}&nbsp; | &nbsp;</span>
+                                <span ng-if="item.status">{{item.status}}</span></div>
+                        </div>
+                        <div class="right aligned column">
+
+                            <div class="meta">
+
+                                <div><span>{{item.owner}}</span></div>
+                                <div><span>&nbsp;</span></div>
+                                <div class="ui rating" data-rating={{content.me_averageRating}}></div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="column"></div>
+
+                </div> 
+                <div class="row">
+                    <div class="column">
+                        <div class="description">
+                            <p> <span class="bold">Description</span></p>
+
+                            <p> {{ item.description | limitTo: 100 }} {{(item.description.length < 100|| !item.description) ? '' : '...'}}</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+
+

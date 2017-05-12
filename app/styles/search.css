@@ -1,0 +1,9 @@
+.content-result-img{height:240px !important}
+.content-result-card-description{
+    height : 74px !important;
+    overflow: hidden;
+    padding-top: 19px;
+}
+.border-bottom{
+    border-bottom: 1px solid #E6E7E8 !important;
+}

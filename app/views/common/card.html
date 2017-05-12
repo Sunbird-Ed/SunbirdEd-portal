@@ -1,0 +1,33 @@
+<div class=" ui stackable four column grid">
+    <div class="column" ng-repeat=" content in contentList track by $index" ng-init="$last && loadRating()">
+        <div class="ui card  raised link">
+            <div class="content">
+                <span> {{content.name}} </span>
+                </br>
+                <span>{{content.contentType}}<span>
+                   <span>|</span>
+                <span> {{content.status}}</span>
+                <div class="ui fluid image">
+                    <img ng-src="{{content.appIcon ? content.appIcon : '../images/sunbird_logo.png'}}">
+                </div>
+                <div class="extra ">
+                    <div><span>{{content.language| arrayToString}}</span><div>
+                    <div class="ui star rating" data-rating={{content.me_averageRating}}></div>
+                </div>
+                <div class="description">
+                    {{content.description}}
+                </div>
+                <div class="ui inverted divider"></div>
+                <div class="">
+                    Last Updated On: {{content.lastUpdatedOn | date}}</br>
+                    {{content.owner}}
+                </div>
+            </div>
+        </div>
+        <div class="ui huge info message activity-browser-center ng-hide" ng-show="showNoContentFound">
+            <p>No Content found.</p>
+        </div>
+     </div>
+    <div class="ui huge info message activity-browser-center ng-hide" ng-show="showNoContentFound">
+        <p>No Content found.</p>
+    </div>
