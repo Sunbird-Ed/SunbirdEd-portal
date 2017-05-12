@@ -18,7 +18,7 @@
                             <div class="left aligned bolder">{{item.name}}</div>
                             <div class="meta">
                                 <span ng-if="item.gradeLevel.length > 1"> 
-                                    <div class="ui compact menu">
+                                    <div class="ui compact menu no-border">
                                         <div class="ui simple dropdown item">
                                             {{item.gradeLevel[0]}}
                                             <i class="ellipsis vertical icon"></i>
@@ -27,11 +27,40 @@
                                             </div>
                                         </div>
                                     </div>
+                                    &nbsp; | &nbsp;
                                 </span>
 
                                 <span ng-if="item.gradeLevel.length == 1">{{item.gradeLevel[0]}}&nbsp; | &nbsp;</span>
-                                <span ng-if="item.language.length > 0">{{item.language.join(',')}}&nbsp; | &nbsp;</span>
-                                <span ng-if="item.ageGroup.length > 0">{{item.ageGroup.join(',')}}&nbsp; | &nbsp;</span>
+
+                                <span ng-if="item.language.length > 1"> 
+                                    <div class="ui compact menu no-border">
+                                        <div class="ui simple dropdown item">
+                                            {{item.language[0]}}
+                                            <i class="ellipsis vertical icon"></i>
+                                            <div class="menu">
+                                                <div class="item" ng-repeat="language in item.language">{{language}}</div>                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                    &nbsp; | &nbsp;
+                                </span>
+
+                                <span ng-if="item.language.length == 1">{{item.language[0]}}&nbsp; | &nbsp;</span>
+
+                                <span ng-if="item.ageGroup.length > 1"> 
+                                    <div class="ui compact menu no-border">
+                                        <div class="ui simple dropdown item">
+                                            {{item.ageGroup[0]}}
+                                            <i class="ellipsis vertical icon"></i>
+                                            <div class="menu">
+                                                <div class="item" ng-repeat="agegroup in item.ageGroup">{{agegroup}}</div>                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                    &nbsp; | &nbsp;
+                                </span>
+
+                                <span ng-if="item.ageGroup.length == 1">{{item.ageGroup[0]}}&nbsp; | &nbsp;</span>
                                 <span ng-if="item.contentType">{{item.contentType}}&nbsp; | &nbsp;</span>
                                 <span ng-if="item.status">{{item.status}}</span></div>
                         </div>
@@ -47,18 +76,23 @@
                         </div>
 
                     </div>
-                    <div class="column"></div>
 
-                </div> 
-                <div class="row">
-                    <div class="column">
-                        <div class="description">
-                            <p> <span class="bold">Description</span></p>
+                    <div class="row">
+                        <div class="column">
+                            <div class="description">
+                                <p> <span class="bold">Description</span></p>
 
-                            <p> {{ item.description | limitTo: 100 }} {{(item.description.length < 100|| !item.description) ? '' : '...'}}</p>
+                                <p ng-if="item.description.length>0 && item.description.length <= 100">{{item.description}}</p>
+                               
+                                <div ng-if="item.description.length > 100" class="ui icon popup-button" data-content="{{item.description}}">
+                                    {{item.description| limitTo:100}} <i>...</i>
+                                </div>
+                              
+                            </div>
                         </div>
                     </div>
-                </div>
+                </div> 
+
 
             </div>
 
@@ -68,7 +102,7 @@
 
 </div>
 
-</div>
+
 
 
 

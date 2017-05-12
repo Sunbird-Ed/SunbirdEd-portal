@@ -15,11 +15,8 @@ angular.module('playerApp')
             content.listView = false;
             content.searchContent = function () {
                 var req = {
-                    "request": {
-                        "query": content.keyword,
-                        "filters": {
-
-                        }
+                    "query": content.keyword,
+                    "filters": {
                     },
                     "params": {
                         "cid": "12"
@@ -48,6 +45,8 @@ angular.module('playerApp')
                             maxRating: 5
 
                         }).rating("disable", true);
+
+                $('.popup-button').popup({inline: true});
             };
             content.searchContent();
 
