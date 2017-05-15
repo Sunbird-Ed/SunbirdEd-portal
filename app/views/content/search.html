@@ -1,25 +1,31 @@
 <div ng-controller="ContentCtrl">
     <div ng-include="'views/content/searchHeader.html'"></div>
-
     <div class="ui grid">
         <div class="sixteen wide column">
             <div class="three wide column"></div>
-            <div class="six wide column">  
+            <div class="six wide column">
 
                 <div class="ui one column stackable aligned page grid top padded">
                     <div class="ui column fourteen wide bordered padded">
-                        <div class="row">
-                            <div class="ui stackable two column grid">
-                                <div class="column"></div>
-                                <div class="right aligned column">
-                                    <button class="ui left attached button" ng-click="content.toggleView(false)"><i class="block layout icon"></i></button>
-                                    <button class="right attached ui button" ng-click="content.toggleView(true)"><i class="list layout icon"></i></button>
-                                </div>
-                            </div>
+                        <div ng-include="'views/content/searchFilters.html'"></div>
+                        <div class="ui segment">
+                            <div class="row">
+                                <div class="ui stackable two column grid ">
+                                    <div class="column"></div>
+                                    <div class="right aligned column">
+                                        <button class="ui icon button" ng-click="content.toggleView(false)">
+  <i class="block layout icon"></i>
+</button>
 
+
+                                        <button class="ui icon button" ng-click="content.toggleView(true)"><i class="list layout icon"></i></button>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div ng-if="content.listView" ng-include="'views/content/searchList.html'"></div>
+                            <div ng-if="!content.listView" ng-include="'views/content/searchCard.html'"></div>
                         </div>
-                        <div ng-if="content.listView" ng-include="'views/content/searchList.html'"></div>
-                        <div ng-if="!content.listView" ng-include="'views/content/searchCard.html'"></div>
                     </div>
                 </div>
 

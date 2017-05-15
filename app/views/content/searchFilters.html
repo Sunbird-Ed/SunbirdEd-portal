@@ -1,0 +1,29 @@
+<div class="ui  accordion segment ">
+    <div class="active title">
+        <i class="dropdown icon"></i> Advanced Filters
+    </div>
+    <div class=" content">
+        <div class=" ui stackable three column grid  ">
+            <div class="column">
+                <div class="ui  label large margin-bottom">Languages</div>
+                <select name="language" class="ui selection dropdown" multiple="" id="multi-select" ng-value="option.value" ng-options=" language for language in content.languages" ng-model="content.selectedLanguage">
+         </select>
+            </div>
+            <div class="column">
+                <div class="ui label large margin-bottom">Lesson Type</div>
+                <select name="Lesson Type" class="ui selection dropdown" multiple="" id="multi-select" ng-value="option.value" ng-options=" contentType for contentType in content.contentTypes" ng-model="content.selectedContentType">
+         </select>
+            </div>
+            <div class=" column">
+                <div class="ui label large margin-bottom">Status</div>
+                <select name="Status" class="ui selection dropdown" multiple="" id="multi-select" ng-value="option.value" ng-options=" status for status in content.statuses" ng-model="content.selectedStatus">
+         </select>
+            </div>
+        </div>
+        <div class="ui stackable one column grid centered ">
+            <button class="ui primary basic button" ng-click="content.resetFilter()">Reset Filter</button>
+            <button class="ui blue button" ng-click="content.applyFilter()">Apply Filter</button>
+        </div>
+
+    </div>
+</div>
