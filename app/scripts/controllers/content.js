@@ -25,10 +25,12 @@ angular.module('playerApp')
         content.selectedLanguage = '';
         content.selectedContentType = '';
         content.selectedStatus = '';
-
+        content.data = [];
+        content.autosuggest_data = [];
         content.listView = false;
-        content.searchContent = function() {
 
+        content.searchContent = function($event) {
+            content.enableLoader(true);
             var req = {
                 "query": content.keyword,
                 "filters": content.filters,
@@ -36,34 +38,27 @@ angular.module('playerApp')
                     "cid": "12"
                 }
             }
-
             contentService.search(req).then(function(res) {
+                    content.enableLoader(false);
+
                     console.log(res);
                     if (res.responseCode === "OK") {
-                        content.data = res.result;
-
+                        //if $event is passed then search is to get only autosuggest else to get the content
+                        if ($event !== undefined && content.keyword !== '') {
+                            content.autosuggest_data = res.result;
+                        } else {
+                            content.data = res.result;
+                            content.autosuggest_data = [];
+                        }
                     }
                 }),
                 function(errorMessage) {
                     $log.warn(errorMessage);
                 };
+
         };
 
-        content.toggleView = function(isList) {
-            content.listView = isList;
-        }
-        content.loadRating = function() {
-            $('.ui.rating')
-                .rating({
 
-                    maxRating: 5
-
-                }).rating("disable", true);
-
-            $('.popup-button').popup({ inline: true });
-        };
-
-        content.searchContent();
 
 
         function initSemanticUi() {
@@ -85,7 +80,9 @@ angular.module('playerApp')
         content.applyFilter = function() {
             if (content.selectedLanguage) {
                 content.filters['language'] = content.selectedLanguage;
+
             };
+
             if (content.selectedLessonType) {
                 content.filters['contentType'] = content.selectedContentType;
             }
@@ -96,10 +93,40 @@ angular.module('playerApp')
 
         };
         content.resetFilter = function() {
-            content.filters = {};
-            content.searchContent();
-            $('.dropdown').dropdown('clear');
+                content.filters = {};
+                content.searchContent();
 
+                $('.dropdown').dropdown('clear');
+
+
+
+            }
+            //to show/hide in-search loading bar
+        content.enableLoader = function(isEnabled) {
+                if (isEnabled) {
+                    $('#search-input-container').addClass('loading');
+                } else {
+                    $('#search-input-container').removeClass('loading');
+                }
+            }
+            //toggle between grid and listview
+        content.toggleView = function(isList) {
+                content.listView = isList;
+            }
+            // to apply star rating and more.. popup once content is ready
+        content.loadRating = function() {
+            $('.ui.rating')
+                .rating({
+                    maxRating: 5
+                }).rating("disable", true);
+            $('.popup-button').popup();
+
+        };
+        //if any item is selected from autosuggest search then set that as keyword
+        content.setSearchText = function(text) {
+            content.keyword = text;
+            content.searchContent();
         }
+        content.searchContent();
 
     });

@@ -82,12 +82,14 @@
                             <div class="description">
                                 <p> <span class="bold">Description</span></p>
 
-                                <p ng-if="item.description.length>0 && item.description.length <= 100">{{item.description}}</p>
-                               
-                                <div ng-if="item.description.length > 100" class="ui icon popup-button" data-content="{{item.description}}">
-                                    {{item.description| limitTo:100}} <i>...</i>
+                                <p ng-if="item.description.length > 0 && item.description.length <= 100">{{item.description}}</p>
+
+                                <!--                                <div ng-if="item.description.length > 100" class="ui icon popup-button" data-content="{{item.description}}" data-variation="wide">
+                                                                    {{item.description| limitTo:100}} <i class="ellipsis horizontal icon"></i>
+                                                                </div>-->
+                                <div ng-show="item.description.length > 100"> <div> {{item.description| limitTo:100}}</div>
+                                    <i  class="ellipsis horizontal icon link popup-button" data-content="{{item.description}}" data-variation="wide"></i>
                                 </div>
-                              
                             </div>
                         </div>
                     </div>
