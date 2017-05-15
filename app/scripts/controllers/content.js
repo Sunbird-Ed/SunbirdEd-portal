@@ -29,6 +29,7 @@ angular.module('playerApp')
                     content.enableLoader(false);
                     console.log(res);
                     if (res.responseCode === "OK") {
+                        //if $event is passed then search is to get only autosuggest else to get the content
                         if ($event != undefined && content.keyword != '')
                         {
                             content.autosuggest_data = res.result;
@@ -42,6 +43,7 @@ angular.module('playerApp')
                     $log.warn(errorMessage);
                 };
             };
+            //to show/hide in-search loading bar
             content.enableLoader = function (isEnabled) {
                 if (isEnabled) {
                     $('#search-input-container').addClass('loading');
@@ -50,10 +52,12 @@ angular.module('playerApp')
                     $('#search-input-container').removeClass('loading');
                 }
             }
+            //toggle between grid and listview
             content.toggleView = function (isList)
             {
                 content.listView = isList;
             }
+            // to apply star rating and more.. popup once content is ready
             content.loadRating = function () {
                 $('.ui.rating')
                         .rating({
@@ -62,6 +66,7 @@ angular.module('playerApp')
                 $('.popup-button').popup();
             };
             content.searchContent();
+            //if any item is selected from autosuggest search then set that as keyword
             content.setSearchText = function (text)
             {
                 content.keyword = text;
