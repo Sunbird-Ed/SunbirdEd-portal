@@ -1,9 +1,17 @@
 <div class="ui one column stackable aligned page grid">
     <div class="ui column fourteen wide stacked segment">
-        <div class="ui fluid icon input">
-            <input type="text" id="keyword" name="filter_search" ng-model="content.keyword" placeholder="Search for keyword" value="" title="Search" autocomplete="off" spellcheck="false" dir="auto" />
-            <i class="circular search link icon" ng-click="content.searchContent()"></i>
-        </div>
+        <div class="ui fluid category search">
+            <div class="ui fluid icon input" id="search-input-container">
+                <input type="text" id="keyword" name="filter_search" ng-model="content.keyword"  ng-change="content.searchContent('$event')"
+                       ng-model-options="{debounce: 750}" placeholder="Search for keyword"  title="Search" autocomplete="off" spellcheck="false" dir="auto" />
+                <i class="circular search link icon"  ng-click="content.searchContent()"></i>
+
+            </div>
+            <div id="search-suggestions" ng-if="content.autosuggest_data.content.length > 0" class="results transition visible" style="display: block !important;">
+                <div >                    
+                    <a class="result" ng-repeat="item in content.autosuggest_data.content" ng-click='content.setSearchText(item.name)'><div class="content"><div class="title">{{item.name}}</div></div></a>
+                </div>
+            </div>
+        </div>        
     </div>
 </div>
-
