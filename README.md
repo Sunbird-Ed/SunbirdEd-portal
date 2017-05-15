@@ -1,5 +1,5 @@
 # player
-to setup player follow below instructions:
+To setup player follow below instructions:
 
 
 1. install node js
