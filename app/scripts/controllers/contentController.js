@@ -71,7 +71,7 @@ angular.module('playerApp')
             });
 
         }
-        window.onload = initSemanticUi;
+        window.onload =setTimeout(function(){ initSemanticUi()},50);
         content.applyFilter = function() {
             if (content.selectedLanguage) {
                 content.filters['language'] = content.selectedLanguage;
