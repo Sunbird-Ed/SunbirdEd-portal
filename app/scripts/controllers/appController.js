@@ -8,7 +8,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('AppCtrl', function($rootScope, $state) {
+    .controller('AppCtrl', function($rootScope) {
 
         $rootScope.initilizwDropDown = function() {
             alert('init');
