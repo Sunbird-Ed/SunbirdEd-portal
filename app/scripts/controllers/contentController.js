@@ -13,14 +13,14 @@ angular.module('playerApp')
         content.keyword = '';
         content.filters = {};
         content.languages = [
-            "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Marathi", "Punjabi", "Tamil", "Telugu"
+            'Bengali', 'English', 'Gujarati', 'Hindi', 'Kannada', 'Marathi', 'Punjabi', 'Tamil', 'Telugu'
         ];
         content.contentTypes = [
-            "Story", "Worksheet", "Collections", "Game", "Plugin", "Template"
-        ]
+            'Story', 'Worksheet', 'Collections', 'Game', 'Plugin', 'Template'
+        ];
         content.statuses = [
-            "Draft", "Live", "Review", "Flagged", "Flag Draft", "Flag Review"
-        ]
+            'Draft', 'Live', 'Review', 'Flagged', 'Flag Draft', 'Flag Review'
+        ];
 
         content.selectedLanguage = '';
         content.selectedContentType = '';
@@ -32,17 +32,15 @@ angular.module('playerApp')
         content.searchContent = function($event) {
             content.enableLoader(true);
             var req = {
-                "query": content.keyword,
-                "filters": content.filters,
-                "params": {
-                    "cid": "12"
+                'query': content.keyword,
+                'filters': content.filters,
+                'params': {
+                    'cid': '12'
                 }
-            }
+            };
             contentService.search(req).then(function(res) {
                     content.enableLoader(false);
-
-                    console.log(res);
-                    if (res.responseCode === "OK") {
+                    if (res.responseCode === 'OK') {
                         //if $event is passed then search is to get only autosuggest else to get the content
                         if ($event !== undefined && content.keyword !== '') {
                             content.autosuggest_data = res.result;
@@ -57,9 +55,6 @@ angular.module('playerApp')
                 };
 
         };
-
-
-
 
         function initSemanticUi() {
             $('.ui.accordion')
@@ -80,9 +75,7 @@ angular.module('playerApp')
         content.applyFilter = function() {
             if (content.selectedLanguage) {
                 content.filters['language'] = content.selectedLanguage;
-
-            };
-
+            }
             if (content.selectedLessonType) {
                 content.filters['contentType'] = content.selectedContentType;
             }
@@ -93,32 +86,29 @@ angular.module('playerApp')
 
         };
         content.resetFilter = function() {
-                content.filters = {};
-                content.searchContent();
+            content.filters = {};
+            content.searchContent();
 
-                $('.dropdown').dropdown('clear');
-
-
-
-            }
-            //to show/hide in-search loading bar
+            $('.dropdown').dropdown('clear');
+        };
+        //to show/hide in-search loading bar
         content.enableLoader = function(isEnabled) {
-                if (isEnabled) {
-                    $('#search-input-container').addClass('loading');
-                } else {
-                    $('#search-input-container').removeClass('loading');
-                }
+            if (isEnabled) {
+                $('#search-input-container').addClass('loading');
+            } else {
+                $('#search-input-container').removeClass('loading');
             }
-            //toggle between grid and listview
+        };
+        //toggle between grid and listview
         content.toggleView = function(isList) {
-                content.listView = isList;
-            }
-            // to apply star rating and more.. popup once content is ready
+            content.listView = isList;
+        };
+        // to apply star rating and more.. popup once content is ready
         content.loadRating = function() {
             $('.ui.rating')
                 .rating({
                     maxRating: 5
-                }).rating("disable", true);
+                }).rating('disable', true);
             $('.popup-button').popup();
 
         };
@@ -126,7 +116,7 @@ angular.module('playerApp')
         content.setSearchText = function(text) {
             content.keyword = text;
             content.searchContent();
-        }
+        };
         content.searchContent();
 
     });
