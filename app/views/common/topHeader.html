@@ -1,0 +1,23 @@
+<div class="ui grid header header-container" ng-init="initilizwDropDown()">
+    <div class="row container">
+        <div class="two wide column">
+            <a ui-sref="course">
+                <img class="ui tiny circular image" src="/images/sunbird_logo.png">
+            </a>
+        </div>
+        <div class="twelve wide column"><p class="center"></p></div>
+        <div class="one wide column floated right padding-20  ">
+            <div class="ui floating dropdown right top pointing header-user-container" id="userDropdown">
+                <div class="text">
+                    <i class="ui circular icon user header-user-icon"></i>
+                    <i class="dropdown icon"></i>
+                </div>
+                <div class="menu">
+                    <a class="item" ui-sref="course"> My Courses</a>
+                    <div class="item" data-value="female">Logout</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

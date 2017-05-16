@@ -1,83 +1,74 @@
-.browsehappy {
-  margin: 0.2em 0;
-  background: #ccc;
-  color: #000;
-  padding: 0.2em 0;
+.header-container{
+  margin-left: 1px !important;
+  border-bottom: 5px solid #0099CC !important;
+}
+.toc-tree-container{
+    border-right: 1px solid #DDD;
+    margin-top: 15px;
+    padding: 10px 50px 50px 50px !important;
+}
+.toc-tree-header{
+  margin-left: -15px !important;
+}
+.course-browser-container{
+    margin: 10px !important;
+}
+.course-cards{
+    margin-top: 10px !important;
 }
 
-body {
-  padding: 0;
+.header-border {
+    border-bottom: 2px solid #ddd !important;
 }
 
-/* Everything but the jumbotron gets side spacing for mobile first views */
-.header,
-.marketing,
-.footer {
-  padding-left: 15px;
-  padding-right: 15px;
+.padding-10 {
+    padding: 10px 10px 21px 20px !important;
 }
 
-/* Custom page header */
-.header {
-  border-bottom: 1px solid #e5e5e5;
-  margin-bottom: 10px;
-}
-/* Make the masthead heading the same height as the navigation */
-.header h3 {
-  margin-top: 0;
-  margin-bottom: 0;
-  line-height: 40px;
-  padding-bottom: 19px;
+.padding-20 {
+    padding: 10px !important;
 }
 
-/* Custom page footer */
-.footer {
-  padding-top: 19px;
-  color: #777;
-  border-top: 1px solid #e5e5e5;
+.verticalLine {
+  border-left: thin solid #ddd;
+}
+.angular-ui-tree-nodes .angular-ui-tree-nodes{
+  margin-left: 25px !important;
 }
 
-.container-narrow > hr {
-  margin: 30px 0;
+.mouse-pointer {
+    cursor: pointer;
 }
 
-/* Main marketing message and sign up button */
-.jumbotron {
-  text-align: center;
-  border-bottom: 1px solid #e5e5e5;
-}
-.jumbotron .btn {
-  font-size: 21px;
-  padding: 14px 24px;
+.margin-auto {
+    margin: auto;
 }
 
-/* Supporting marketing content */
-.marketing {
-  margin: 40px 0;
-}
-.marketing p + h4 {
-  margin-top: 28px;
+
+.margin-top-20 {
+    margin-top: 20px;
 }
 
-/* Responsive: Portrait tablets and up */
-@media screen and (min-width: 768px) {
-  .container {
-    max-width: 730px;
-  }
+.header-user-container{
+  float: right !important;
+}
 
-  /* Remove the padding we set earlier */
-  .header,
-  .marketing,
-  .footer {
-    padding-left: 0;
-    padding-right: 0;
-  }
-  /* Space out the masthead */
-  .header {
-    margin-bottom: 30px;
-  }
-  /* Remove the bottom border on the jumbotron for visual effect */
-  .jumbotron {
-    border-bottom: 0;
-  }
+.header-user-icon {
+  margin-right: 0px !important;
+}
+.course-item{
+  cursor: initial !important;
+  margin-left: 10px !important;
+}
+.course-item-meta{
+    width: 50%;
+    margin: 0 auto;
+    text-align: center;
+}
+.course-item-meta .meta{
+  font-size: 14px;
+}
+
+.create-course-form{
+  margin: 35px !important;
 }
