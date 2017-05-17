@@ -21,6 +21,12 @@ module.exports = function(config) {
         files: [
             // bower:js
             // endbower
+            'app/thirdparty/bower_components/angular/angular.js',
+            'app/thirdparty/bower_components/angular-mocks/angular-mocks.js',
+            'app/thirdparty/bower_components/angular-resource/angular-resource.js',
+            'app/thirdparty/bower_components/angular-cookies/angular-cookies.js',
+            'app/thirdparty/bower_components/angular-sanitize/angular-sanitize.js',
+            'app/thirdparty/bower_components/angular-route/angular-route.js',
             'app/scripts/**/*.js',
             'test/mock/**/*.js',
             'test/spec/**/*.js'
@@ -58,7 +64,7 @@ module.exports = function(config) {
         },
 
         reporters: ['dots', 'coverage'],
-        
+
         // Continuous Integration mode
         // if true, it capture browsers, run tests and exit
         singleRun: false,

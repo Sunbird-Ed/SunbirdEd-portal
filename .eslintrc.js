@@ -18,5 +18,6 @@ module.exports = {
         ],
         "no-undef": ["off"],
         "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 0, "maxBOF": 0 }],
+        "space-infix-ops": ["error"]
     }
 };

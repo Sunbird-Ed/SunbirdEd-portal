@@ -21,6 +21,7 @@ var paths = {
     styles: [player.app + '/styles/**/*.css'],
     test: ['test/spec/**/*.js'],
     testRequire: [
+        player.app + '/thirdparty/bower_components/jquery/dist/jquery.js',
         player.app + '/thirdparty/bower_components/angular/angular.js',
         player.app + '/thirdparty/bower_components/angular-mocks/angular-mocks.js',
         player.app + '/thirdparty/bower_components/angular-resource/angular-resource.js',

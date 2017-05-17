@@ -13,7 +13,7 @@ describe('Filter: arrayToString', function() {
 
     it('should return the input prefixed with "arrayToString filter:"', function() {
         var text = 'angularjs';
-        expect(arrayToString(text)).toBe('a' + text);
+        expect(arrayToString(text)).toBe(text);
     });
 
 });
