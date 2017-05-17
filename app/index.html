@@ -23,18 +23,20 @@
     <!--[if lte IE 8]>
           <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-
     <div ng-include="'views/common/topHeader.html'"></div>
     <div class="ui padded grid">
         <div class="row">
             <div class="one wide column"></div>
-            <div class="fourteen wide column">
+            <div class="ten wide column">
                 <!-- Add your site or application content here -->
                 <div ng-view></div>
             </div>
             <div class="one wide column"></div>
-
         </div>
+        <div class="one wide column"></div>
+
+    </div>
+
     </div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -49,7 +51,6 @@
         ga('create', 'UA-XXXXX-X');
         ga('send', 'pageview');
     </script>
-
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
     <script src="thirdparty/bower_components/jquery/dist/jquery.js"></script>
@@ -58,19 +59,18 @@
     <script src="thirdparty/bower_components/angular-route/angular-route.js"></script>
     <script src="thirdparty/semantic/semantic.min.js"></script>
     <!-- endbower -->
-
-
     <!-- endbuild -->
-
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>
     <script src="scripts/services/httpService.js"></script>
-    <script src="scripts/services/playerConstants.js"></script>
     <script src="scripts/services/contentService.js"></script>
     <script src="scripts/controllers/contentController.js"></script>
     <script src="scripts/filters/arraytostring.js"></script>
-    <script src="scripts/directives/errorMessage.js"></script>
+    <script src="scripts/playerAppConfig.js"></script>
+    <script src="scripts/controllers/usercontent.js"></script>
+    <script src="scripts/directives/includeReplace.js"></script>
 
 </body>
+
 
 </html>

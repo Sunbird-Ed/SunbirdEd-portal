@@ -10,7 +10,7 @@ var lazypipe = require('lazypipe');
 var rimraf = require('rimraf');
 var wiredep = require('wiredep').stream;
 var runSequence = require('run-sequence');
-
+var gulpNgConfig = require('gulp-ng-config');
 var player = {
     app: require('./bower.json').appPath || 'app',
     dist: 'dist'
@@ -213,3 +213,9 @@ gulp.task('build', ['clean:dist'], function() {
 });
 
 gulp.task('default', ['build']);
+
+gulp.task('config', function () {
+  gulp.src('app/config/playerAppConfig.json')
+  .pipe(gulpNgConfig('playerApp.config'))
+  .pipe(gulp.dest('app/scripts'))
+});

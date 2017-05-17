@@ -8,10 +8,10 @@
  * Service in the playerApp.
  */
 angular.module('playerApp')
-        .service('contentService', function (httpService, playerConstants) {
+        .service('contentService', function (httpService,config) {
             
             function search(req){
-                var url = playerConstants.URL.BASE + playerConstants.URL.CONTENT.SEARCH;
+                var url = config.URL.BASE + config.URL.CONTENT.SEARCH;
                 return httpService.postOperation(url, req);
             }
             

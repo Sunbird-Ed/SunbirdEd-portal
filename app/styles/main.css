@@ -16,43 +16,33 @@
 .course-cards{
     margin-top: 10px !important;
 }
-
 .header-border {
     border-bottom: 2px solid #ddd !important;
 }
-
 .padding-10 {
     padding: 10px 10px 21px 20px !important;
 }
-
 .padding-20 {
     padding: 10px !important;
 }
-
 .verticalLine {
   border-left: thin solid #ddd;
 }
 .angular-ui-tree-nodes .angular-ui-tree-nodes{
   margin-left: 25px !important;
 }
-
 .mouse-pointer {
     cursor: pointer;
 }
-
 .margin-auto {
     margin: auto;
 }
-
-
 .margin-top-20 {
     margin-top: 20px;
 }
-
 .header-user-container{
   float: right !important;
 }
-
 .header-user-icon {
   margin-right: 0px !important;
 }
@@ -68,7 +58,11 @@
 .course-item-meta .meta{
   font-size: 14px;
 }
-
 .create-course-form{
   margin: 35px !important;
+}
+.content-card-meta{
+  background: rgba(0, 0, 0, 0.5) !important;
+  color: #FFFFFF !important;
+  padding:5px !important;
 }

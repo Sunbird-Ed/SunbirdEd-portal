@@ -11,7 +11,8 @@
 angular
     .module('playerApp', [
         'ngCookies',
-        'ngRoute'
+        'ngRoute',
+        'playerApp.config'
     ])
     .config(function($routeProvider) {
         $routeProvider
@@ -19,6 +20,11 @@ angular
                 templateUrl: 'views/content/search.html',
                 controller: 'ContentCtrl',
                 controllerAs: 'content'
+            })
+            .when('/userContent', {
+              templateUrl: 'views/usercontent.html',
+              controller: 'UsercontentCtrl',
+              controllerAs: 'userContent'
             })
             .otherwise({
                 redirectTo: '/'
