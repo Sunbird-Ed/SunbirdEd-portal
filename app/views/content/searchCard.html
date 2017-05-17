@@ -1,9 +1,8 @@
-
-<div class="ui stackable four column grid">
-    <div class="column" ng-repeat="item in content.data.content track by $index" ng-init="$last && content.loadRating()">
+<div class="ui stackable grid">
+    <div class="ui five wide stackable column" ng-repeat="item in content.data.content track by $index" ng-init="$last && content.loadRating()">
         <div class="ui card  raised link">
             <div class="content">
-                <div class="header"> <p> {{ item.name | limitTo: 20 }}&nbsp;<i ng-show="item.name.length>20" class="ellipsis horizontal icon popup-button" data-content="{{item.name}}" data-variation="wide"></i></p></div>
+                <div class="header"> <p> {{ item.name | limitTo: 20 }}&nbsp;<i ng-show="item.name.length > 20" class="ellipsis horizontal icon popup-button" data-content="{{item.name}}" data-variation="wide"></i></p></div>
                 </br>
                 <span>{{item.contentType}}<span>
                         <span>|</span>
@@ -27,7 +26,7 @@
                             <div class="ui rating" data-rating={{content.me_averageRating}}></div>
                         </div>
                         <div class="description content-result-card-description">
-                            <p> {{ item.description | limitTo: 80 }}&nbsp;<i ng-show="item.description.length>=80" class="ellipsis horizontal icon popup-button" data-content="{{item.description}}" data-variation="wide"></i></p>
+                            <p> {{ item.description | limitTo: 80 }}&nbsp;<i ng-show="item.description.length >= 80" class="ellipsis horizontal icon popup-button" data-content="{{item.description}}" data-variation="wide"></i></p>
                         </div>
                         <div class="ui inverted divider"></div>
                         <div class="">
@@ -35,9 +34,6 @@
                             {{item.owner}}
                         </div>
                         </div>
-                        </div>
-                        <div class="ui huge info message activity-browser-center ng-hide" ng-show="showNoContentFound">
-                            <p>No Content found.</p>
                         </div>
                         </div>
                         <div class="ui huge info message activity-browser-center ng-hide" ng-show="showNoContentFound">
