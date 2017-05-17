@@ -11,7 +11,8 @@
 angular
     .module('playerApp', [
         'ngCookies',
-        'ngRoute'
+        'ngRoute',
+        'playerApp.config'
     ])
     .config(function($routeProvider) {
         $routeProvider
