@@ -21,6 +21,11 @@ angular
                 controller: 'ContentCtrl',
                 controllerAs: 'content'
             })
+            .when('/userContent', {
+              templateUrl: 'views/usercontent.html',
+              controller: 'UsercontentCtrl',
+              controllerAs: 'userContent'
+            })
             .otherwise({
                 redirectTo: '/'
             });

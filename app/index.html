@@ -25,24 +25,13 @@
         <div class="ui padded grid">
             <div class="row">
                 <div class="one wide column"></div>
-                <div class="fourteen wide column">
+                <div class="ten wide column">
                     <!-- Add your site or application content here -->
                     <div ng-view></div>
                 </div>
                  <div class="one wide column"></div>
             </div>
         </div>
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
-        <script>
-            !function (A, n, g, u, l, a, r) {
-                A.GoogleAnalyticsObject = l, A[l] = A[l] || function () {
-                    (A[l].q = A[l].q || []).push(arguments)
-                }, A[l].l = +new Date, a = n.createElement(g),
-                        r = n.getElementsByTagName(g)[0], a.src = u, r.parentNode.insertBefore(a, r)
-            }(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
-            ga('create', 'UA-XXXXX-X');
-            ga('send', 'pageview');
-        </script>
         <!-- build:js(.) scripts/vendor.js -->
         <!-- bower:js -->
         <script src="thirdparty/bower_components/jquery/dist/jquery.js"></script>
@@ -59,5 +48,8 @@
         <script src="scripts/controllers/contentController.js"></script>
         <script src="scripts/filters/arraytostring.js"></script>
         <script src="scripts/playerAppConfig.js"></script>
+        <script src="scripts/controllers/usercontent.js"></script>
+        <script src="scripts/directives/includeReplace.js"></script>
+
     </body>
 </html>

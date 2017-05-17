@@ -61,3 +61,8 @@
 .create-course-form{
   margin: 35px !important;
 }
+.content-card-meta{
+  background: rgba(0, 0, 0, 0.5) !important;
+  color: #FFFFFF !important;
+  padding:5px !important;
+}
