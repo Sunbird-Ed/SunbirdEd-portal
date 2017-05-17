@@ -1,0 +1,31 @@
+'use strict';
+
+/**
+ * @ngdoc directive
+ * @name playerApp.directive:errorMessage
+ * @description
+ * # errorMessage
+ */
+angular.module('playerApp')
+    .directive('errorMessage', function() {
+        return {
+            template: '<div class="ui {{errorClass}} message" ng-if="message">{{message}}</div>',
+            restrict: 'E',
+            link: function postLink(scope, element, attrs) {
+                attrs.data = attrs.data ? JSON.parse(attrs.data) : undefined;
+                if (attrs.data && attrs.data.responseCode === 'CLIENT_ERROR') {
+                    scope.message = 'Something wrong try in sometime :(';
+                    scope.errorClass = 'orange';
+                } else if (attrs.data && attrs.data.responseCode === 'RESOURCE_NOT_FOUND') {
+                    scope.message = 'No result found :(';
+                    scope.errorClass = 'violet';
+                } else if (attrs.data && attrs.data.responseCode === 'SERVER_ERROR') {
+                    scope.message = 'Server Error :(';
+                    scope.errorClass = 'red';
+                } else {
+                    scope.message = 'connection error';
+                    scope.errorClass = 'yellow';
+                }
+            }
+        };
+    });

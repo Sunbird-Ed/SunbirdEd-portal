@@ -8,7 +8,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('ContentCtrl', function(contentService, $log) {
+    .controller('ContentCtrl', function(contentService) {
         var content = this;
         content.keyword = '';
         content.filters = {};
@@ -38,20 +38,31 @@ angular.module('playerApp')
                     'cid': '12'
                 }
             };
+
             contentService.search(req).then(function(res) {
                     content.enableLoader(false);
-                    if (res.responseCode === 'OK') {
-                        //if $event is passed then search is to get only autosuggest else to get the content
-                        if ($event !== undefined && content.keyword !== '') {
-                            content.autosuggest_data = res.result;
+                    if (res != null && res.responseCode === 'OK') {
+                        if (res.result.count > 0) {
+                            content.toggle = true;
+                            //if $event is passed then search is to get only autosuggest else to get the content
+                            if ($event !== undefined && content.keyword !== '') {
+                                content.autosuggest_data = res.result;
+                            } else {
+                                content.data = res.result;
+                                content.autosuggest_data = [];
+                            }
                         } else {
-                            content.data = res.result;
-                            content.autosuggest_data = [];
+                            content.isError = true;
+                            res.responseCode = 'RESOURCE_NOT_FOUND';
+                            content.data = res;
                         }
+                    } else {
+                        content.isError = true;
+                        content.data = res;
                     }
                 }),
-                function(errorMessage) {
-                    $log.warn(errorMessage);
+                function(error) {
+                    content.data = error;
                 };
 
         };
@@ -71,7 +82,7 @@ angular.module('playerApp')
             });
 
         }
-        window.onload =setTimeout(function(){ initSemanticUi();},50);
+        window.onload = setTimeout(function() { initSemanticUi(); }, 50);
         content.applyFilter = function() {
             if (content.selectedLanguage) {
                 content.filters['language'] = content.selectedLanguage;
