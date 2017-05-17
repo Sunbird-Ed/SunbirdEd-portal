@@ -1,6 +1,5 @@
 <!doctype html>
 <html>
-
     <head>
         <meta charset="utf-8">
         <title></title>
@@ -18,12 +17,10 @@
         <link rel="stylesheet" href="thirdparty/semantic/styles/semantic.min.css">
         <!-- endbuild -->
     </head>
-
     <body ng-app="playerApp">
         <!--[if lte IE 8]>
           <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-
         <div ng-include="'views/common/topHeader.html'"></div>
         <div class="ui padded grid">
             <div class="row">
@@ -33,10 +30,8 @@
                     <div ng-view></div>
                 </div>
                  <div class="one wide column"></div>
-                
             </div>
         </div>
-
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
         <script>
             !function (A, n, g, u, l, a, r) {
@@ -45,11 +40,9 @@
                 }, A[l].l = +new Date, a = n.createElement(g),
                         r = n.getElementsByTagName(g)[0], a.src = u, r.parentNode.insertBefore(a, r)
             }(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
-
             ga('create', 'UA-XXXXX-X');
             ga('send', 'pageview');
         </script>
-
         <!-- build:js(.) scripts/vendor.js -->
         <!-- bower:js -->
         <script src="thirdparty/bower_components/jquery/dist/jquery.js"></script>
@@ -59,7 +52,6 @@
         <script src="thirdparty/semantic/semantic.min.js"></script>
         <!-- endbower -->
         <!-- endbuild -->
-
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
         <script src="scripts/services/httpService.js"></script>
@@ -67,7 +59,5 @@
         <script src="scripts/services/contentService.js"></script>
         <script src="scripts/controllers/contentController.js"></script>
         <script src="scripts/filters/arraytostring.js"></script>
-
     </body>
-
 </html>

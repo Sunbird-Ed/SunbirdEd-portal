@@ -13,23 +13,19 @@
                         </div>
                         <div class="extra " style="background: rgba(0, 0, 0, 0.5);;color: #FFFFFF; padding:5px;">
                             <div class="item" ng-if="item.language.length == 1">{{item.language[0]}}</div>
-
-                            <div class="item" ng-if="item.language.length > 1"> 
+                            <div class="item" ng-if="item.language.length > 1">
                                 <div class="ui compact menu no-border">
                                     <div class="ui simple dropdown item">
                                         {{item.language[0]}}
                                         <i class="ellipsis vertical icon"></i>
                                         <div class="menu">
-                                            <div class="item" ng-repeat="language in item.language">{{language}}</div>                                                
+                                            <div class="item" ng-repeat="language in item.language">{{language}}</div>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                             <div class="ui rating" data-rating={{content.me_averageRating}}></div>
                         </div>
-
-
                         <div class="description content-result-card-description">
                             <p> {{ item.description | limitTo: 80 }}&nbsp;<i ng-show="item.description.length>=80" class="ellipsis horizontal icon popup-button" data-content="{{item.description}}" data-variation="wide"></i></p>
                         </div>
