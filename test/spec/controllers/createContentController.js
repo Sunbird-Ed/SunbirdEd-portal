@@ -1,23 +1,23 @@
 'use strict';
 
-describe('Controller: UsercontentCtrl', function () {
+describe('Controller: CreatecontentCtrl', function () {
 
   // load the controller's module
   beforeEach(module('playerApp'));
 
-  var UsercontentCtrl,
+  var CreatecontentCtrl,
     scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    UsercontentCtrl = $controller('UsercontentCtrl', {
+    CreatecontentCtrl = $controller('CreatecontentCtrl', {
       $scope: scope
       // place here mocked dependencies
     });
   }));
 
   xit('should attach a list of awesomeThings to the scope', function () {
-    expect(UsercontentCtrl.awesomeThings.length).toBe(3);
+    expect(CreatecontentCtrl.awesomeThings.length).toBe(3);
   });
 });

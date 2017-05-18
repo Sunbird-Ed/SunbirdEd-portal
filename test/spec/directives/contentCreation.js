@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Directive: errorMessage.js', function () {
+describe('Directive: contentCreation', function () {
 
   // load the directive's module
   beforeEach(module('playerApp'));
@@ -13,8 +13,8 @@ describe('Directive: errorMessage.js', function () {
   }));
 
   xit('should make hidden element visible', inject(function ($compile) {
-    element = angular.element('<error-message.js></error-message.js>');
+    element = angular.element('<content-creation></content-creation>');
     element = $compile(element)(scope);
-    expect(element.text()).toBe('this is the errorMessage.js directive');
+    expect(element.text()).toBe('this is the contentCreation directive');
   }));
 });

@@ -8,11 +8,7 @@ describe('Controller: ContentCtrl', function() {
 
     var ContentCtrl,
         scope,
-        contentService,
-        httpBackend;
-    beforeEach(inject(function($httpBackend) {
-        httpBackend = $httpBackend;
-    }));
+        contentService;
 
     beforeEach(inject(function($controller, $rootScope, _contentService_) {
         scope = $rootScope.$new();
@@ -25,7 +21,7 @@ describe('Controller: ContentCtrl', function() {
         contentService = _contentService_;
     }));
 
-    xit('should get content', inject(function($httpBackend) {
+    it('should get content', inject(function($httpBackend) {
         var request = {
             'query': 'my country',
             'filters': {
@@ -40,17 +36,12 @@ describe('Controller: ContentCtrl', function() {
         spyOn(ContentCtrl, 'searchContent').and.callThrough();
         spyOn(contentService, 'search').and.callThrough();
 
-        $httpBackend.expectPOST('http://localhost:5000/api/sb/v1/content/search', request)
-            .respond(function() { return searchContentSucessData; });
+        $httpBackend.whenPOST('http://localhost:5000/api/sb/v1/content/search', request)
+            .respond(searchContentSucessData);
         ContentCtrl.searchContent('data');
-        httpBackend.flush();
         expect(ContentCtrl.searchContent).toHaveBeenCalled();
         expect(contentService.search).toHaveBeenCalled();
-        // done();
+        
 
     }));
-
-    xit('should attach a list of awesomeThings to the scope', function() {
-        expect(ContentCtrl.awesomeThings.length).toBe(3);
-    });
 });
