@@ -8,14 +8,17 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('UsercontentCtrl', function(contentService) {
+    .controller('UsercontentCtrl', function(contentService, $rootScope) {
         var userContent = this;
+        userContent.contentItem = undefined;
+        userContent.hideUserContent = false;
 
         userContent.getPublishedContent = function() {
             var req = {
                 "filters": {
-                    "createdBy": "123456",
-                    "status": ["live"]
+                    "createdBy": "12345678",
+                    "status": ["live"],
+                    "contentType": ["application/pdf", "video/youtube", "video/mp4", "application/vnd.ekstep.ecml-archive","application/vnd.ekstep.html-archive"]
                 },
                 "params": {
                     "cid": "12"
@@ -36,7 +39,7 @@ angular.module('playerApp')
         userContent.getDraftContent = function() {
             var req = {
                 "filters": {
-                    "createdBy": "123456",
+                    "createdBy": "12345678",
                     "status": ["draft"]
                 },
                 "params": {
@@ -63,4 +66,15 @@ angular.module('playerApp')
             $('.popup-button').popup();
 
         };
+
+        userContent.editContent = function(content){
+            userContent.hideUserContent = true;
+            $rootScope.$emit("editContentEnable", content);
+        }
+
+        $rootScope.$on("editContentDisable",function (e,c) {
+            userContent.hideUserContent = false;
+            userContent.getDraftContent();
+            userContent.getPublishedContent();
+        })
     });
