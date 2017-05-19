@@ -8,7 +8,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('ContentCtrl', function(contentService) {
+    .controller('ContentCtrl', function(contentService, $scope) {
         var content = this;
         content.keyword = '';
         content.filters = {};
@@ -38,24 +38,28 @@ angular.module('playerApp')
                     'cid': '12'
                 }
             };
+            content.handleSucessResponse = function(sucessResponse, $event) {
+                if (sucessResponse.result.count > 0) {
+                    //if $event is passed then search is to get only autosuggest else to get the content
+                    if ($event !== undefined && content.keyword !== '') {
+                        content.autosuggest_data = sucessResponse.result;
+                    } else {
+                        content.data = sucessResponse.result;
+                        content.autosuggest_data = [];
+                    }
+                } else {
+                    content.isError = true;
+                    res.responseCode = 'RESOURCE_NOT_FOUND';
+                    content.data = sucessResponse;
+                }
+            };
 
             contentService.search(req).then(function(res) {
                     content.enableLoader(false);
+                    $scope.autosuggest_data = res;
+
                     if (res != null && res.responseCode === 'OK') {
-                        if (res.result.count > 0) {
-                            content.toggle = true;
-                            //if $event is passed then search is to get only autosuggest else to get the content
-                            if ($event !== undefined && content.keyword !== '') {
-                                content.autosuggest_data = res.result;
-                            } else {
-                                content.data = res.result;
-                                content.autosuggest_data = [];
-                            }
-                        } else {
-                            content.isError = true;
-                            res.responseCode = 'RESOURCE_NOT_FOUND';
-                            content.data = res;
-                        }
+                        content.handleSucessResponse(res, $event);
                     } else {
                         content.isError = true;
                         content.data = res;
