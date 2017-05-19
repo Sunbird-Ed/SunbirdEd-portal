@@ -1,4 +1,4 @@
-<div class="ui  accordion ">
+<div apply-script class="ui accordion" id='content-search-filter-accordion'>
     <div class="title">
         <i class="dropdown icon"></i> Advanced Filters
     </div>
@@ -7,17 +7,17 @@
             <div class="three fields">
                 <div class="field">
                     <label>Languages</label>
-                    <select name="language" class="ui selection dropdown" multiple="" id="multi-select" ng-value="option.value" ng-options=" language for language in content.languages" ng-model="content.selectedLanguage">
+                    <select name="language" class="ui selection content-search-filter dropdown" multiple="" id="multi-select" ng-value="option.value" ng-options=" language for language in content.languages" ng-model="content.selectedLanguage">
                     </select>
                 </div>
                 <div class="field">
                     <label>Lesson Type</label>
-                    <select name="Lesson Type" class="ui selection dropdown" multiple="" id="multi-select" ng-value="option.value" ng-options=" contentType for contentType in content.contentTypes" ng-model="content.selectedContentType">
+                    <select name="Lesson Type" class="ui selection content-search-filter dropdown" multiple="" id="multi-select" ng-value="option.value" ng-options=" contentType for contentType in content.contentTypes" ng-model="content.selectedContentType">
                     </select>
                 </div>
                 <div class="field">
                     <label>Status</label>
-                    <select name="Status" class="ui selection dropdown" multiple="" id="multi-select" ng-value="option.value" ng-options=" status for status in content.statuses" ng-model="content.selectedStatus">
+                    <select name="Status" class="ui selection content-search-filter dropdown" multiple="" id="multi-select" ng-value="option.value" ng-options=" status for status in content.statuses" ng-model="content.selectedStatus">
                     </select>
                 </div>
             </div>
