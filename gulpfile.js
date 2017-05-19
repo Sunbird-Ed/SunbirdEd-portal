@@ -11,6 +11,9 @@ var rimraf = require('rimraf');
 var wiredep = require('wiredep').stream;
 var runSequence = require('run-sequence');
 var gulpNgConfig = require('gulp-ng-config');
+var less = require('gulp-less');
+var path = require('path');
+
 var player = {
     app: require('./bower.json').appPath || 'app',
     dist: 'dist'
@@ -54,8 +57,16 @@ var styles = lazypipe()
 // Tasks //
 ///////////
 
-gulp.task('styles', function() {
-    return gulp.src(paths.styles)
+// gulp.task('build-css', function() {
+//     return gulp.src(paths.styles)
+//         .pipe(styles());
+// });
+
+gulp.task('build-css', function() {
+    return gulp.src('app/styles/**/main.less')
+        .pipe(less({
+            paths: [path.join(__dirname, 'less', 'includes')]
+        }))
         .pipe(styles());
 });
 
@@ -68,7 +79,7 @@ gulp.task('clean:tmp', function(cb) {
     rimraf('./.tmp', cb);
 });
 
-gulp.task('start:client', ['start:server', 'styles'], function() {
+gulp.task('start:client', ['build-css', 'start:server'], function() {
     openURL('http://localhost:9000');
 });
 
@@ -150,7 +161,7 @@ gulp.task('clean:dist', function(cb) {
     rimraf('./dist', cb);
 });
 
-gulp.task('client:build', ['html', 'styles'], function() {
+gulp.task('client:build', ['html', 'build-css'], function() {
     var jsFilter = $.filter('**/*.js');
     var cssFilter = $.filter('**/*.css');
 
@@ -214,8 +225,8 @@ gulp.task('build', ['clean:dist'], function() {
 
 gulp.task('default', ['build']);
 
-gulp.task('config', function () {
-  gulp.src('app/config/playerAppConfig.json')
-  .pipe(gulpNgConfig('playerApp.config'))
-  .pipe(gulp.dest('app/scripts'))
+gulp.task('config', function() {
+    gulp.src('app/config/playerAppConfig.json')
+        .pipe(gulpNgConfig('playerApp.config'))
+        .pipe(gulp.dest('app/scripts'));
 });

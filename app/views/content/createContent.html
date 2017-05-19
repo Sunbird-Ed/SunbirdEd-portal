@@ -1,0 +1,119 @@
+<div ng-controller="createContentCtrl">
+    <div ng-if="showContentEditor">
+        <div class="meta-form" ng-if="formStep == 0;">
+            <div class="ui segment">
+                <div class="ui  grid">
+                    <div class="ui twelve wide column">
+                        <form class="ui big form">
+                            <h1 class="ui dividing header">Create Content</h1>
+                            <div class="field">
+                                <label>Name
+                                    <i class="ui tiny star red icon"></i>
+                                </label>
+                                <input type="text" name="name" placeholder="Name" ng-model="meta.name">
+                            </div>
+                            <div class="field">
+                                <label>Description
+                                    <i class="ui tiny star red icon"></i>
+                                </label>
+                                <textarea rows="2" ng-model="meta.description"></textarea>
+                            </div>
+                            <div class="field">
+                                <label>Type<i class="ui tiny star red icon"></i></label>
+                                <select class="ui dropdown" ng-model="meta.type" id="contenttype" ng-class="contentId ? 'disabled':''">
+                                    <option value="application/vnd.ekstep.ecml-archive">ECML</option>
+                                    <option value="application/vnd.ekstep.html-archive">HTML</option>
+                                    <option value="video/youtube">youtube</option>
+                                    <option value="video/mp4">mp4</option>
+                                    <option value="application/pdf">PDF</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label>
+                                    Icon
+                                </label>
+                                <div class="ui basic massive icon button" ng-click="openImageBrowser()" ng-if="!iconImage">
+                                    <i class="ui image icon"></i>
+                                </div>
+                                <input type="file" accept="image/x-png,image/gif,image/jpeg" style="display: none;" id="iconImageInput" onchange="angular.element(this).scope().updateIcon(this.files);" required="" />
+                                <img ng-if="iconImage" class="ui small link image height-150" ng-src="{{iconImage}}" id="image" alt="icon" ng-click="openImageBrowser()" tabindex="3">
+                            </div>
+                            <div class="ui big right floated button" tabindex="0" ng-click="closeEditor();">Skip</div>
+                            <div class="ui big right floated primary button" tabindex="0" ng-class="
+                    !(meta.name && meta.description) ? 'disabled':''" ng-click="saveMetaContent(0)">Save</div>
+                            <div class="ui big right floated primary button" tabindex="0" ng-class="
+                    !(meta.name && meta.description) ? 'disabled':''" ng-click="saveMetaContent(1)">Save &#38; Next</div>
+                        </form>
+                        <div class="ui dimmer inverted" ng-class="showDimmer ? 'active':''">
+                            <div class="content">
+                                <span ng-if="showMetaLoader">
+                                <div class="ui text loader">
+                                    <div class="ui mini header" ng-if="message">{{message}}</div>
+                                </div>
+                            </span>
+                                <div class="center">
+                                    <h2 class="ui header {{messageClass}}">
+                                  {{message}}
+                                </h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content-form" ng-if="formStep == 1;">
+            <h1 class="ui dividing header">Create Content</h1>
+            <div class="ui huge segment">
+                <div ng-switch on="meta.type">
+                    <div ng-switch-when="ecml">
+                    </div>
+                    <div ng-switch-when="html"></div>
+                    <div ng-switch-when="video/youtube">
+                        <form class="ui big form">
+                            <div class="field">
+                                <label>Youtube Url</label>
+                                <input type="text" placeholder="url" />
+                            </div>
+                        </form>
+                    </div>
+                    <div ng-switch-when="video/mp4">
+                        <form class="ui big form">
+                            <div class="field">
+                                <label>Video Url</label>
+                                <input type="text" placeholder="url" />
+                            </div>
+                            <h4 class="ui horizontal divider header">OR</h4>
+                            <div class="field">
+                                <label>Video File</label>
+                                <input type="file" accept="video/mp4">
+                            </div>
+                        </form>
+                    </div>
+                    <div ng-switch-when="application/pdf">
+                        <form class="ui big form">
+                            <div class="field">
+                                <label>PDF Url</label>
+                                <input type="text" placeholder="url" />
+                            </div>
+                            <h4 class="ui horizontal divider header">OR</h4>
+                            <div class="field">
+                                <label>PDF File</label>
+                                <input type="file" accept="video/mp4">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <form class="ui big form">
+                    <div class="ui big right floated button" tabindex="0" ng-click="closeEditor();">Skip</div>
+                    <div class="ui big right floated primary button" tabindex="0">Save</div>
+                    <div class="ui big right floated primary button" tabindex="0">Save & Next</div>
+                </form>
+            </div>
+        </div>
+        <div class="content-form" ng-if="formStep == 2;">
+            <h1 class="ui dividing header">Create Content</h1>
+            <div class="ui big right floated primary button" tabindex="0">Send for Review</div>
+        </div>
+    </div>
+</div>

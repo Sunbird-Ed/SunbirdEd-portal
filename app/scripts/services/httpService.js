@@ -30,6 +30,22 @@ angular.module('playerApp')
             return (request.then(handleSuccess, handleError));
         }
 
+        function patchOperation(url, data, headers) {
+            var request = httpCall(url, data, 'PATCH', headers);
+            return (request.then(handleSuccess, handleError));
+        }
+
+        function upload(url, data, headers) {
+
+            var request = $http.post(url, data, {
+                headers: {
+                    'Content-Type': undefined,
+                    'cid': 'sunbird'
+                }
+            });
+            return (request.then(handleSuccess, handleError));
+        }
+
         function handleSuccess(response) {
             return (response.data);
         }
@@ -63,6 +79,8 @@ angular.module('playerApp')
             getOperation: getOperation,
             postOperation: postOperation,
             putOperation: putOperation,
-            deleteOperation: deleteOperation
+            deleteOperation: deleteOperation,
+            patchOperation: patchOperation,
+            upload: upload
         });
     });
