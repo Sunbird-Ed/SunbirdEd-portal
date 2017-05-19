@@ -27,6 +27,6 @@ angular
               controllerAs: 'userContent'
             })
             .otherwise({
-                redirectTo: '/'
+                redirectTo: '/userContent'
             });
     });

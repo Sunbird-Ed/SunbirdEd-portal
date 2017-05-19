@@ -1,4 +1,4 @@
-<div class="ui link raised card">
+<div class="ui link raised card" ng-click="userContent.editContent(item);">
     <div class="content">
         <div class="header">
             <p> {{ item.name | limitTo: 20 }}&nbsp;<i ng-show="item.name.length>20" class="ellipsis horizontal icon popup-button" data-content="{{item.name}}" data-variation="wide"></i></p>

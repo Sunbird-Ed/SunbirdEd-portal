@@ -10,7 +10,8 @@
                 "PUBLISH": "course/publish",
                 "GET": "course/get",
                 "GET_MY_COURSE": "course/get/mycourse",
-                "HIERARCHY": "course/hierarchy"
+                "HIERARCHY": "course/hierarchy",
+                "UPLOAD_MEDIA": "upload/media"
             },
             "CONTENT": {
                 "SEARCH": "content/search",
@@ -20,7 +21,8 @@
                 "PUBLISH": "content/publish",
                 "GET": "content/get",
                 "GET_MY_COURSE": "content/get/mycontent",
-                "UPLOAD": "content/upload"
+                "UPLOAD": "content/upload",
+                "UPLOAD_MEDIA": "upload/media"
             }
         },
         "MESSAGES": {}

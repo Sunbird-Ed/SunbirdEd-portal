@@ -1,20 +1,25 @@
 <div class="ui fluid container">
-    <div class="ui grid">
-        <div class="ui eight wide column left floated">
-            <h1 class="ui header">Contents</h1>
+    <div ng-include="'views/content/createContent.html'"></div>
+    <div ng-if="!userContent.hideUserContent">
+        <div class="ui grid">
+            <div class="ui eight wide column left floated">
+                <h1 class="ui header">Contents</h1>
+            </div>
+            <div class="ui four wide column right floated right aligned">
+                <div class="ui circular basic black icon grey button" ng-click="userContent.editContent();">
+                    <i class="ui add icon large black link"></i>
+                </div>
+            </div>
         </div>
-        <div class="ui four wide column right floated right aligned">
-            <i class="ui add icon big black link"></i>
+        <div class="ui clearing divider"></div>
+        <h3 class="ui header">Published Contents</h3>
+        <div class="ui cards">
+            <div ng-include src="'views/content/contentCard.html'" ng-repeat="item in userContent.publishedContent track by $index" ng-init="$last && content.loadRating()" include-replace></div>
         </div>
-    </div>
-    <div class="ui clearing divider"></div>
-    <h3 class="ui header">Published Contents</h3>
-    <div class="ui cards">
-        <div ng-include src="'views/common/contentCard.html'" ng-repeat="item in userContent.publishedContent track by $index" ng-init="$last && content.loadRating()" include-replace></div>
-    </div>
-    <div class="ui clearing divider"></div>
-    <h3 class="ui header">Draft Contents</h3>
-    <div class="ui cards">
-        <span ng-include src="'views/common/contentCard.html'" ng-repeat="item in userContent.draftContent track by $index" ng-init="$last && content.loadRating()" include-replace></span>
+        <div class="ui clearing divider"></div>
+        <h3 class="ui header">Draft Contents</h3>
+        <div class="ui cards">
+            <span ng-include src="'views/content/contentCard.html'" ng-repeat="item in userContent.draftContent track by $index" ng-init="$last && content.loadRating()" include-replace></span>
+        </div>
     </div>
 </div>
