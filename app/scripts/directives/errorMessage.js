@@ -22,7 +22,7 @@ angular.module('playerApp')
                 } else if (attrs.data && attrs.data.responseCode === 'SERVER_ERROR') {
                     scope.message = 'Server Error :(';
                     scope.errorClass = 'red';
-                } else {
+                } else if (attrs.data && attrs.data.responseCode === undefined) {
                     scope.message = 'connection error';
                     scope.errorClass = 'yellow';
                 }
