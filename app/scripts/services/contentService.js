@@ -25,6 +25,12 @@ angular.module('playerApp')
             return httpService.patchOperation(url, req);
         }
 
+        function review(req,id) {
+            var url = config.URL.BASE + config.URL.CONTENT.REVIEW+"/"+id;
+            return httpService.postOperation(url, req);
+        }
+        
+
         function uploadMedia(req) {
             var url = config.URL.BASE + config.URL.CONTENT.UPLOAD_MEDIA;
             return httpService.upload(url, req);
@@ -34,7 +40,8 @@ angular.module('playerApp')
             search: search,
             create: create,
             uploadMedia: uploadMedia,
-            update: update
+            update: update,
+            review: review
         };
 
     });
