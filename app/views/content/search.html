@@ -21,13 +21,11 @@
                     <div ng-if="content.isError">
                         <error-message data={{content.data}}></error-message>
                     </div>
-                    <div class="ui info" ng-hide="content.data.count > 0">
-                        <div>No Content found.</div>
-                    </div>
+                    
 
                 </div>
             </div>
         </div>
     </div>
 </div>
-<div  ng-include="'views/contentplayer/player.html'" ng-if="content.isContentPlayerEnabled"></div>
+<div ng-include="'views/contentplayer/player.html'" ng-if="content.isContentPlayerEnabled"></div>

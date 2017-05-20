@@ -11,6 +11,7 @@
                debug: true,
                performance: true,
            });
-
+           $('.ui.modal')
+               .modal('show');
        }
        window.onload = initSemanticUi;
