@@ -1,16 +1,59 @@
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<html>
-    <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
-</html>
+<div class="center aligned header"><h3>Content Details</h3></div>
+<div class="content-meta">
+    <div class="ui grid padded content">
+        <div class="ui medium image"><img src="{{contentData.appIcon?contentData.appIcon:'../images/sunbird_logo.png'}}" /></div>
+    </div>
+    <div class="bold"> <h4 >{{contentData.name}}</h4></div>
+    <div class="content">
+        <table class="ui table no-border">
+            <thead>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="meta">Author</span></td>
+                    <td><span class="meta">{{contentData.owner}}</span></td>
+                </tr>
+                <tr>
+                    <td><span class="meta">Description</span></td>
+                    <td><div class="description">{{contentData.description}}</div></td>
+                </tr>
+                <tr>
+                    <td><span class="meta">Status</span></td>
+                    <td><div class="description">{{contentData.status}}</div></td>
+                </tr>
+                <tr>
+                    <td><span class="meta">Lesson ID</span></td>
+                    <td><div class="description">{{contentData.identifier}}</div></td>
+                </tr>
+                <tr>
+                    <td><span class="meta">Type</span></td>
+                    <td><div class="description">{{contentData.contentType}}</div></td>
+                </tr>
+                <tr>
+                    <td><span class="meta">Language</span></td>
+                    <td><div class="description">{{contentData.language.toString()}}</div></td>
+                </tr>
+                <tr>
+                    <td><span class="meta">Grades</span></td>
+                    <td><div class="description">{{contentData.gradeLevel.toString()}}</div></td>
+                </tr>
+                <tr>
+                    <td><span class="meta">Age Groups</span></td>
+                    <td><div class="description">{{contentData.ageGroup.toString()}}</div></td>
+                </tr>
+                <tr>
+                    <td><span class="meta">Subject</span></td>
+                    <td><div class="description">{{contentData.subject}}</div></td>
+                </tr>
+                <tr>
+                    <td><span class="meta">Keywords</span></td>
+                    <td><div class="description">{{contentData.keywords.toString()}}</div></td>
+                </tr>
+                <tr>
+                    <td><span class="meta">Created On</span></td>
+                    <td><div class="description">{{contentData.createdOn}}</div></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

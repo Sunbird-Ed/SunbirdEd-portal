@@ -48,8 +48,7 @@ angular.module('playerApp')
                             content.autosuggest_data = [];
                         }
                     } else {
-                        content.isError = true;
-                        res.responseCode = 'RESOURCE_NOT_FOUND';
+                        content.isError = true;                        
                         content.data = sucessResponse;
                     }
                 };
@@ -120,9 +119,10 @@ angular.module('playerApp')
                 console.log(content_data);
                 $rootScope.contentData = content_data;
                 content.isContentPlayerEnabled = true;
-            }
+               
+            };
             content.closePlayer = function () {
                 $rootScope.contentData = {};
-                content.isContentPlayerEnabled = false;
+                content.isContentPlayerEnabled = false;                
             }
         });

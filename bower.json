@@ -5,11 +5,16 @@
     "angular": "^1.6.0",
     "angular-cookies": "^1.6.0",
     "angular-route": "^1.6.0",
-    "jquery": "^3.2.1"
+    "jquery": "^3.2.1",
+    "video.js": "^6.1.0",
+    "videojs-youtube": "^2.4.0"
   },
   "devDependencies": {
     "angular-mocks": "^1.6.0"
   },
   "appPath": "app",
-  "moduleName": "playerApp"
+  "moduleName": "playerApp",
+  "resolutions": {
+    "video.js": "^5.0.0"
+  }
 }

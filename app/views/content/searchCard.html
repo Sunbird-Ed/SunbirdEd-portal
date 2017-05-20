@@ -1,5 +1,5 @@
 <div class="ui stackable four column grid">
-    <div class="column" ng-repeat="item in content.data.content track by $index" ng-init="$last && content.loadRating()">
+    <div ng-if="content.data.content.length > 0" class="column" ng-repeat="item in content.data.content track by $index" ng-init="$last && content.loadRating()">
         <div class="ui card link  raised">
             <div class="content" ng-click="content.playContent(item)">
                 <div class="header">
@@ -37,11 +37,5 @@
                 </div>
             </div>
         </div>
-        <div class="ui huge info message activity-browser-center ng-hide" ng-show="showNoContentFound">
-            <p>No Content found.</p>
-        </div>
-    </div>
-    <div class="ui huge info message activity-browser-center ng-hide" ng-show="showNoContentFound">
-        <p>No Content found.</p>
     </div>
 </div>

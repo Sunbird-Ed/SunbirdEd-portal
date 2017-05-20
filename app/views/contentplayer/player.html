@@ -14,62 +14,27 @@
 
             <div class="eight wide column">
                 <div class="content-player">
-                    <iframe ng-if="contentData.mimeType == 'application/vnd.ekstep.ecml-archive'" id="contentViewerIframe" src="https://qa.ekstep.in/assets/public/preview/preview.html?webview=true&id=do_21224855541924659215" width="100%" height="600px"></iframe>
-                    
+                    <iframe ng-if="(contentData.mimeType == 'application/vnd.ekstep.ecml-archive' || contentData.mimeType == 'application/vnd.ekstep.html-archive')" id="contentViewerIframe" src="https://qa.ekstep.in/assets/public/preview/preview.html?webview=true&id=do_21224855541924659215" width="100%" height="600px"></iframe>
+                    <video ng-if="contentData.mimeType != 'video/youtube' && contentData.mimeType.indexOf('video') > -1" id="content-video-player" class="video-js vjs-default-skin player-video"
+                           controls preload="auto" autoplay="true"
+                           data-setup='{"controls":true}'>
+                        <source src="{{contentData.artifactUrl}}" type='{{contentData.mimeType}}' />
+
+                    </video>
+                    <div ng-if="contentData.mimeType == 'video/youtube'" apply-script id="content-video-player-youtube-holder" videosrc="{{contentData.artifactUrl}}">
+
+                        <video
+                            id="content-video-player-youtube"
+                            class="video-js vjs-default-skin player-video"
+                            controls
+                            data-setup='{ "techOrder": ["youtube"], "sources": [{ "type": "video/youtube", "src": ""}] }'
+                            ></video>
+                    </div>
+
                 </div>
             </div>
             <div class="four wide column">
-                <div class="center aligned header"><h3>Content Details</h3></div>
-                <div class="content-meta">
-                    <div class="ui grid padded content">
-                        <div class="ui medium image"><img src="{{contentData.appIcon?contentData.appIcon:'../images/sunbird_logo.png'}}" /></div>
-                    </div>
-                    <div class="bold"> <h4 >{{contentData.name}}</h4></div>
-                    <div class="content">
-                        <table class="ui padded table no-border">
-                            <thead>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><span class="meta">Author</span></td>
-                                    <td><span class="meta">{{contentData.owner}}</span></td>
-                                </tr>
-                                <tr>
-                                    <td><span class="meta">Description</span></td>
-                                    <td><div class="description">{{contentData.description}}</div></td>
-                                </tr>
-                                <tr>
-                                    <td><span class="meta">Status</span></td>
-                                    <td><div class="description">{{contentData.status}}</div></td>
-                                </tr>
-                                <tr>
-                                    <td><span class="meta">Lesson ID</span></td>
-                                    <td><div class="description">{{contentData.identifier}}</div></td>
-                                </tr>
-                                <tr>
-                                    <td><span class="meta">Type</span></td>
-                                    <td><div class="description">{{contentData.contentType}}</div></td>
-                                </tr>
-                                <tr>
-                                    <td><span class="meta">Language</span></td>
-                                    <td><div class="description">{{contentData.language.toString()}}</div></td>
-                                </tr>
-                                <tr>
-                                    <td><span class="meta">Grades</span></td>
-                                    <td><div class="description">{{contentData.gradeLevel.toString()}}</div></td>
-                                </tr>
-                                <tr>
-                                    <td><span class="meta">Age Groups</span></td>
-                                    <td><div class="description">{{contentData.ageGroup.toString()}}</div></td>
-                                </tr>
-                                <tr>
-                                    <td><span class="meta">Subject</span></td>
-                                    <td><div class="description">{{contentData.subject}}</div></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                <div ng-include="'views/contentplayer/contentMeta.html'"></div>
             </div>
         </div>
     </div>

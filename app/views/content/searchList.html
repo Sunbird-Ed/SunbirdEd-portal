@@ -1,8 +1,8 @@
 
 <div id="search-results" class="">
     <div class="ui relaxed list" ng-if="content.data.count > 0">
-        <div class="item border-bottom" ng-repeat="item in content.data.content track by $index" ng-init="$last && content.loadRating()">
-            <div class="ui stackable twelve column grid">
+        <div class="ui item border-bottom" ng-repeat="item in content.data.content track by $index" ng-init="$last && content.loadRating()">
+            <div class="ui stackable twelve column grid cursor-pointer" ng-click="content.playContent(item)">
                 <div class="two wide center aligned column">
                     <img class="ui small image" ng-src="{{(item.appIcon != undefined) ? item.appIcon:'../images/sunbird_logo.png'}}">
                 </div>
