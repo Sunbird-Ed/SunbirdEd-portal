@@ -1,0 +1,76 @@
+<div class='content-player-container'>
+
+    <div class='ui segment padded menu row content-player-header no-border'>
+        <div class="left menu column">
+            {{contentData.name}}
+        </div>
+        <div class="right menu column">
+            <button ng-click="content.closePlayer()"><i class="remove icon"></i></button>
+        </div>
+    </div>
+
+    <div class='content-player-body'>
+        <div class="ui stackable twelve column grid">
+
+            <div class="eight wide column">
+                <div class="content-player">
+                    <iframe ng-if="contentData.mimeType == 'application/vnd.ekstep.ecml-archive'" id="contentViewerIframe" src="https://qa.ekstep.in/assets/public/preview/preview.html?webview=true&id=do_21224855541924659215" width="100%" height="600px"></iframe>
+                    
+                </div>
+            </div>
+            <div class="four wide column">
+                <div class="center aligned header"><h3>Content Details</h3></div>
+                <div class="content-meta">
+                    <div class="ui grid padded content">
+                        <div class="ui medium image"><img src="{{contentData.appIcon?contentData.appIcon:'../images/sunbird_logo.png'}}" /></div>
+                    </div>
+                    <div class="bold"> <h4 >{{contentData.name}}</h4></div>
+                    <div class="content">
+                        <table class="ui padded table no-border">
+                            <thead>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="meta">Author</span></td>
+                                    <td><span class="meta">{{contentData.owner}}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="meta">Description</span></td>
+                                    <td><div class="description">{{contentData.description}}</div></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="meta">Status</span></td>
+                                    <td><div class="description">{{contentData.status}}</div></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="meta">Lesson ID</span></td>
+                                    <td><div class="description">{{contentData.identifier}}</div></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="meta">Type</span></td>
+                                    <td><div class="description">{{contentData.contentType}}</div></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="meta">Language</span></td>
+                                    <td><div class="description">{{contentData.language.toString()}}</div></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="meta">Grades</span></td>
+                                    <td><div class="description">{{contentData.gradeLevel.toString()}}</div></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="meta">Age Groups</span></td>
+                                    <td><div class="description">{{contentData.ageGroup.toString()}}</div></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="meta">Subject</span></td>
+                                    <td><div class="description">{{contentData.subject}}</div></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

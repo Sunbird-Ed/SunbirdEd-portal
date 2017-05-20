@@ -8,7 +8,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-        .controller('ContentCtrl', function (contentService, $scope, $timeout) {
+        .controller('ContentCtrl', function (contentService, $scope, $timeout, $rootScope) {
             var content = this;
             content.keyword = '';
             content.filters = {};
@@ -28,7 +28,7 @@ angular.module('playerApp')
             content.data = [];
             content.autosuggest_data = [];
             content.listView = false;
-
+            content.isContentPlayerEnabled = false;
             content.searchContent = function ($event) {
                 content.enableLoader(true);
                 var req = {
@@ -116,5 +116,13 @@ angular.module('playerApp')
                 content.searchContent();
             };
             content.searchContent();
-
+            content.playContent = function (content_data) {
+                console.log(content_data);
+                $rootScope.contentData = content_data;
+                content.isContentPlayerEnabled = true;
+            }
+            content.closePlayer = function () {
+                $rootScope.contentData = {};
+                content.isContentPlayerEnabled = false;
+            }
         });
