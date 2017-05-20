@@ -18,11 +18,10 @@ describe('Controller: ContentCtrl', function() {
         contentService = _contentService_;
         spyOn(contentService, 'search').and.returnValue(deferred.promise);
         ContentCtrl = $controller('ContentCtrl', { $scope: content });
-
+        spyOn(ContentCtrl, 'searchContent').and.callThrough();
     }));
 
     it('should get content', (function(done) {
-        spyOn(ContentCtrl, 'searchContent').and.callThrough();
         deferred.resolve(JSON.stringify(searchContentSucessData));
         content.$apply();
         ContentCtrl.searchContent();
@@ -30,13 +29,38 @@ describe('Controller: ContentCtrl', function() {
         expect(ContentCtrl.searchContent).toHaveBeenCalled();
         expect(contentService.search).toHaveBeenCalled();
         done();
-
     }));
-    xit('should handle sucess response ', (function(done) {
-        content.keyword === 'data';
-        ContentCtrl.handleSucessResponse(searchContentSucessData, undefined);
 
+    it('should handle success response with auto suggest data ', (function(done) {
+        ContentCtrl.keyword = 'data';
+        ContentCtrl.handleSucessResponse(searchContentSucessData, 'event');
+        expect(ContentCtrl.autosuggest_data).not.toBeUndefined();
         done();
     }));
 
+    it('should handle success response with no auto suggest data ', (function(done) {
+        ContentCtrl.keyword = '';
+        ContentCtrl.handleSucessResponse(searchContentSucessData, undefined);
+        expect(ContentCtrl.data).not.toBeUndefined();
+        expect(ContentCtrl.autosuggest_data).toEqual([]);
+        done();
+    }));
+
+    it('should handle resource not found ', (function(done) {
+        var resourseNotFound = {
+            result: {
+                count: 0
+            }
+        };
+        ContentCtrl.handleSucessResponse(resourseNotFound, undefined);
+        expect(ContentCtrl.isError).toEqual(true);
+        done();
+    }));
+
+    it('should set search text', (function(done) {
+        ContentCtrl.setSearchText('data');
+        expect(ContentCtrl.keyword).toBe('data');
+        expect(ContentCtrl.searchContent).toHaveBeenCalled();
+        done();
+    }));
 });
