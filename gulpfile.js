@@ -100,6 +100,7 @@ gulp.task('start:server:test', function() {
 });
 
 gulp.task('watch', function() {
+    gulp.watch('app/styles/**/main.less', ['build-css']);
     $.watch(paths.styles)
         .pipe($.plumber())
         .pipe(styles())

@@ -21,12 +21,17 @@ angular
                 controller: 'ContentCtrl',
                 controllerAs: 'content'
             })
+            .when('/', {
+                templateUrl: 'views/home/landingPage.html',
+                controller: 'LoginCtrl',
+                controllerAs: 'login'
+            })
             .when('/userContent', {
-              templateUrl: 'views/usercontent.html',
-              controller: 'UsercontentCtrl',
-              controllerAs: 'userContent'
+                templateUrl: 'views/usercontent.html',
+                controller: 'UsercontentCtrl',
+                controllerAs: 'userContent'
             })
             .otherwise({
-                redirectTo: '/userContent'
+                redirectTo: '/'
             });
     });
