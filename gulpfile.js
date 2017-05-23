@@ -13,6 +13,7 @@ var runSequence = require('run-sequence');
 var gulpNgConfig = require('gulp-ng-config');
 var less = require('gulp-less');
 var path = require('path');
+var historyApiFallback = require('connect-history-api-fallback');
 
 var player = {
     app: require('./bower.json').appPath || 'app',
@@ -57,11 +58,6 @@ var styles = lazypipe()
 // Tasks //
 ///////////
 
-// gulp.task('build-css', function() {
-//     return gulp.src(paths.styles)
-//         .pipe(styles());
-// });
-
 gulp.task('build-css', function() {
     return gulp.src('app/styles/**/main.less')
         .pipe(less({
@@ -88,7 +84,10 @@ gulp.task('start:server', function() {
         root: [player.app, '.tmp'],
         livereload: true,
         // Change this to '0.0.0.0' to access the server from outside.
-        port: 9000
+        port: 9000,
+        middleware: function(connect, opt) {
+            return [historyApiFallback({})];
+        }
     });
 });
 gulp.task('start:server:test', function() {

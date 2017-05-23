@@ -14,7 +14,10 @@ angular
         'ngRoute',
         'playerApp.config'
     ])
-    .config(function($routeProvider) {
+    .config(function($routeProvider, $locationProvider) {
+        $locationProvider.html5Mode(true);
+        $locationProvider.hashPrefix = '!';
+
         $routeProvider
             .when('/search', {
                 templateUrl: 'views/content/search.html',
