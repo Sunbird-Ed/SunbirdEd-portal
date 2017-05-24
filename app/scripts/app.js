@@ -12,29 +12,35 @@ angular
     .module('playerApp', [
         'ngCookies',
         'ngRoute',
-        'playerApp.config'
+        'playerApp.config',
+        'angularMoment'
     ])
     .config(function($routeProvider, $locationProvider) {
         $locationProvider.html5Mode(true);
-        $locationProvider.hashPrefix = '!';
+        // $locationProvider.hashPrefix = '!';
 
         $routeProvider
             .when('/search', {
                 templateUrl: 'views/content/search.html',
                 controller: 'ContentCtrl',
-                controllerAs: 'content'
+                controllerAs: 'content',
+                activeTab: 'search',
             })
             .when('/', {
                 templateUrl: 'views/home/landingPage.html',
-                controller: 'LoginCtrl',
-                controllerAs: 'login'
+                controller: 'UserCtrl',
+                controllerAs: 'user'
             })
             .when('/userContent', {
                 templateUrl: 'views/usercontent.html',
                 controller: 'UsercontentCtrl',
-                controllerAs: 'userContent'
+                controllerAs: 'userContent',
+                activeTab: 'userContent',
             })
             .otherwise({
-                redirectTo: '/'
+                redirectTo: '/',
+                activeTab: '',
             });
+    }).run(function($rootScope, $route) {
+        $rootScope.$route = $route;
     });

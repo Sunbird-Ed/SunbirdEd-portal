@@ -1,73 +1,23 @@
-<!--<div class="ui menu row header-container">
-    <div class="left menu column">
-        <a href="search">
-            <img class="ui tiny circular image" src="/images/sunbird_logo.png">
-        </a>
-    </div>
-    <div class="column">
-        <p class="center"></p>
-    </div>
-    <div class="right menu">
-        <div class="ui simple dropdown padding-20" align="right">
-            <i class="ui circular icon user header-user-icon"></i> <i class="dropdown icon"></i>
-            <div class="menu">
-                <a class="item" ui-sref="course"> My Courses</a>
-                <div class="item" data-value="female">Logout</div>
-            </div>
-        </div>
-    </div>
-</div>-->
 <div class="ui secondary pointing menu">
     <div class="left menu ">
-        <a href="search">
+        <a href="/">
             <img class="ui tiny circular image" src="/images/sunbird_logo.png">
         </a>
     </div>
-    <a class="active item">
+    <a class="item " ng-class="{'active': $route.current.activeTab === 'search'}" href=" search ">
     Home
   </a>
-    <a class="item">
+    <a class="item " ng-class="{'active': $route.current.activeTab === 'userContent'}" href="userContent">
     Learn
   </a>
-    <a class="item">
+    <a class="item" href="#">
    Resources
   </a>
-    <a class="item">
+    <a class="item" href="#">
    Community
   </a>
-    <a class="item">
+    <a class="item" href="#">
    Assess
   </a>
-    <div class="right menu" ng-controller="LoginCtrl as login">
-        <button class="ui item" ng-click="login.openLoginModal()">
-      Sign In
-    </button>
-        <div class="ui small modal">
-            <i class="close icon"></i>
-            <div class="ui very padded text container segment">
-                <form class="ui form login-form">
-                    <h4 class="ui header">
-
-                        <div class="content">
-                            Sign in to your account!
-                        </div>
-                    </h4>
-                    <div class="ui  divider"></div>
-
-                    <div class=" inline field">
-                        <label>LOGIN ID</label>
-                        <input type="text" name="first-name" placeholder="Username or Email" ng-model="login.userName" required>
-                    </div>
-                    <div class="inline field">
-                        <label>PASSWORD</label>
-                        <input type="text" name="last-name" placeholder="Password" ng-model="login.password" required>
-                    </div>
-                    <div>
-                        <p align="right"><a>Forgot your password?</a></p>
-                        <button class="ui right floated button blue" type="submit">Submit</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+    <div class="right menu" ng-controller="UserCtrl as user" ng-include="'views/common/headerRightMenu.html '"></div>
 </div>
