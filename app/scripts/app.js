@@ -35,6 +35,4 @@ angular
                 templateUrl: '/views/usercontent.html',
                 controller: 'UsercontentCtrl as userContent'
             });
-    }).run(function($rootScope, $route) {
-        $rootScope.$route = $route;
     });
