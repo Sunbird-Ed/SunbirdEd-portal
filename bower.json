@@ -16,6 +16,6 @@
   "appPath": "app",
   "moduleName": "playerApp",
   "resolutions": {
-    "video.js": "^5.0.0"
+    "video.js": "^5.0.0",
   }
 }

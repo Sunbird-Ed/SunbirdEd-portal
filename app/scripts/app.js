@@ -13,7 +13,7 @@ angular
         'ngCookies',
         'ngRoute',
         'playerApp.config',
-        'ui.router'
+        'ui.router',       
     ])
     .config(function($stateProvider, $urlRouterProvider, $locationProvider) {
         $locationProvider.html5Mode(true);
