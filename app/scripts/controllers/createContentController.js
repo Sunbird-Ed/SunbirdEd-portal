@@ -8,12 +8,13 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('createContentCtrl', function($scope, contentService, $timeout, $rootScope, $window) {
+    .controller('createContentCtrl', function($scope, contentService, $timeout, $rootScope, $window, $sce) {
         $scope.showContentEditor = false;
         $scope.iconUpdate = false;
         $scope.formStep = 0;
         $scope.meta = $scope.meta || {};
         $scope.content = $scope.content || {};
+        $scope.ekURL = undefined;
         $scope.initMeta = function() {
             $scope.meta.name = "";
             $scope.meta.description = "";
@@ -24,6 +25,15 @@ angular.module('playerApp')
             $scope.iconUpdate = false;
         }
         $scope.initMeta();
+
+        $scope.showError = function (message) {
+            $scope.messageClass = "red";
+            $scope.showMetaLoader = false;
+            $scope.message = message;
+            $timeout(function() {
+                $scope.showDimmer = false;
+            }, 2000);
+        }
 
         $scope.applySemantic = function() {
             $timeout(function() {
@@ -96,10 +106,10 @@ angular.module('playerApp')
                     }
 
                 } else {
-                    $scope.showContentCreationError();
+                    $scope.showError("Unable to create " + $scope.meta.name + " content.");
                 }
             }, function(err) {
-                $scope.showContentCreationError();
+                $scope.showError("Unable to create " + $scope.meta.name + " content.");
             });
         }
         $scope.createContent = function(requestBody, nextFlag) {
@@ -113,14 +123,14 @@ angular.module('playerApp')
                         $scope.formStep = 1;
                     }
                 } else {
-                    $scope.showContentCreationError();
+                    $scope.showError("Unable to create " + $scope.meta.name + " content.");
                 }
                 $scope.showMetaLoader = false;
                 $timeout(function() {
                     $scope.showDimmer = false;
                 }, 2000);
             }, function(error) {
-                $scope.showContentCreationError();
+                $scope.showError("Unable to create " + $scope.meta.name + " content.");
             });
         }
 
@@ -136,33 +146,15 @@ angular.module('playerApp')
                         $scope.initStepOne();
                     }
                 } else {
-                    $scope.showContentUpdateError();
+                    $scope.showError("Unable to update " + $scope.meta.name + " content.");
                 }
                 $scope.showMetaLoader = false;
                 $timeout(function() {
                     $scope.showDimmer = false;
                 }, 2000);
             }, function(error) {
-                $scope.showContentUpdateError();
+                $scope.showError("Unable to update " + $scope.meta.name + " content.");
             });
-        }
-
-        $scope.showContentCreationError = function() {
-            $scope.messageClass = "red";
-            $scope.showMetaLoader = false;
-            $scope.message = "Unable to create " + $scope.meta.name + " content.";
-            $timeout(function() {
-                $scope.showDimmer = false;
-            }, 2000);
-        }
-
-        $scope.showContentUpdateError = function() {
-            $scope.messageClass = "red";
-            $scope.showMetaLoader = false;
-            $scope.message = "Unable to update " + $scope.meta.name + " content.";
-            $timeout(function() {
-                $scope.showDimmer = false;
-            }, 2000);
         }
 
         $rootScope.$on("editContentEnable", function(e, content) {
@@ -209,11 +201,11 @@ angular.module('playerApp')
                         "baseURL": "https://dev.ekstep.in/",
                         "editMetaLink": "/component/ekcontent/contentform/do_10097535?Itemid=0"
                     };
-                $timeout(function() {
-                    $("#EKContentEditor").attr("src", "/thirdparty/content-editor/index.html");
-                }, 1000)
+                $scope.ekURL = $sce.trustAsResourceUrl("/thirdparty/content-editor/index.html")
             }
         }
+
+
 
         $scope.updateUrl = function(req, nextFlag) {
             req.content.versionKey = $scope.versionKey;
@@ -228,14 +220,14 @@ angular.module('playerApp')
                         $scope.formStep = 2;
                     }
                 } else {
-                    $scope.showContentUpdateError();
+                    $scope.showError("Unable to update " + $scope.meta.name + " content.");
                 }
                 $scope.showMetaLoader = false;
                 $timeout(function() {
                     $scope.showDimmer = false;
                 }, 2000);
             }, function(error) {
-                $scope.showContentUpdateError();
+                $scope.showError("Unable to update " + $scope.meta.name + " content.");
             });
         }
 
@@ -247,10 +239,10 @@ angular.module('playerApp')
                     $scope.content.url = res.result.url;
                     $scope.updateUrl(req, nextFlag)
                 } else {
-                    $scope.showContentCreationError();
+                    $scope.showError("Unable to create " + $scope.meta.name + " content.");
                 }
             }, function(err) {
-                $scope.showContentCreationError();
+                $scope.showError("Unable to create " + $scope.meta.name + " content.");
             });
         }
 
@@ -287,24 +279,15 @@ angular.module('playerApp')
                     $scope.formStep = -1;
                     $scope.closeEditor();
                 } else {
-                    $scope.showContentReviewError();
+                    $scope.showError("Unable to send for review " + $scope.meta.name + " content.");
                 }
                 $scope.showMetaLoader = false;
                 $timeout(function() {
                     $scope.showDimmer = false;
                 }, 2000);
             }, function(error) {
-                $scope.showContentReviewError();
+                $scope.showError("Unable to send for review " + $scope.meta.name + " content.");
             });
-        }
-
-        $scope.showContentReviewError = function() {
-            $scope.messageClass = "red";
-            $scope.showMetaLoader = false;
-            $scope.message = "Unable to send for review " + $scope.meta.name + " content.";
-            $timeout(function() {
-                $scope.showDimmer = false;
-            }, 2000);
         }
 
     });

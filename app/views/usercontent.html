@@ -11,13 +11,13 @@
                 </div>
             </div>
         </div>
-        <div class="ui clearing divider"></div>
-        <h3 class="ui header">Published Contents</h3>
+        <div class="ui clearing divider" ng-if="userContent.publishedContent.length"></div>
+        <h3 class="ui header" ng-if="userContent.publishedContent.length">Published Contents</h3>
         <div class="ui cards">
             <div ng-include src="'views/content/contentCard.html'" ng-repeat="item in userContent.publishedContent track by $index" ng-init="$last && content.loadRating()" include-replace></div>
         </div>
-        <div class="ui clearing divider"></div>
-        <h3 class="ui header">Draft Contents</h3>
+        <div class="ui clearing divider" ng-if="userContent.draftContent.length"></div>
+        <h3 class="ui header" ng-if="userContent.draftContent.length">Draft Contents</h3>
         <div class="ui cards">
             <span ng-include src="'views/content/contentCard.html'" ng-repeat="item in userContent.draftContent track by $index" ng-init="$last && content.loadRating()" include-replace></span>
         </div>
