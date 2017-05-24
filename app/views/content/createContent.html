@@ -49,20 +49,6 @@
                             <div class="ui big right floated primary button" tabindex="0" ng-class="
                     !(meta.name && meta.description) ? 'disabled':''" ng-click="saveMetaContent(1)">Save &#38; Next</div>
                         </form>
-                        <div class="ui dimmer inverted" ng-class="showDimmer ? 'active':''">
-                            <div class="content">
-                                <span ng-if="showMetaLoader">
-                                <div class="ui text loader">
-                                    <div class="ui mini header" ng-if="message">{{message}}</div>
-                                </div>
-                            </span>
-                                <div class="center">
-                                    <h2 class="ui header {{messageClass}}" ng-if="!showMetaLoader">
-                                  {{message}}
-                                </h2>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -74,13 +60,12 @@
                     <div class="ui twelve wide column">
                         <div ng-switch on="meta.type">
                             <div ng-switch-when="application/vnd.ekstep.ecml-archive">
-                                
-                                <iframe src="/thirdparty/content-editor/index.html" style="width: 100%; height: 500px;" id="EKContentEditor"></iframe>
+                                <iframe ng-if="ekURL" ng-src="{{ekURL}}" style="width: 100%; height: 500px;" id="EKContentEditor" ></iframe>
                                 <form class="ui form big">
                                     <div class="field">
                                         <div class="ui big right floated button" tabindex="0" ng-click="closeEditor();">Skip</div>
-        <div class="ui big right floated primary button" tabindex="0" ng-click="updateMediaContent(0)">Save</div>
-        <div class="ui big right floated primary button" tabindex="0" ng-click="updateMediaContent(1)">Save &#38; Next</div>
+                                        <div class="ui big right floated primary button" tabindex="0" ng-click="updateMediaContent(0)">Save</div>
+                                        <div class="ui big right floated primary button" tabindex="0" ng-click="updateMediaContent(1)">Save &#38; Next</div>
                                     </div>
                                 </form>
                             </div>
@@ -132,25 +117,25 @@
                     </div>
                 </div>
             </div>
-            <div class="ui dimmer inverted" ng-class="showDimmer ? 'active':''">
-                <div class="content">
-                    <span ng-if="showMetaLoader">
-                                <div class="ui text loader">
-                                    <div class="ui mini header" ng-if="message">{{message}}</div>
-                                </div>
-                            </span>
-                    <div class="center">
-                        <h2 class="ui header {{messageClass}}" ng-if="!showMetaLoader">
-                                  {{message}}
-                                </h2>
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="content-form" ng-if="formStep == 2;">
             <h1 class="ui dividing header">Create Content</h1>
             <div class="ui big right floated button" tabindex="0" ng-click="closeEditor();">Skip</div>
             <div class="ui big right floated primary button" tabindex="0" ng-click="reviewContent();">Send for Review</div>
+        </div>
+    </div>
+    <div class="ui dimmer inverted" ng-class="showDimmer ? 'active':''">
+        <div class="content">
+            <span ng-if="showMetaLoader">
+                                <div class="ui text loader">
+                                    <div class="ui mini header" ng-if="message">{{message}}</div>
+                                </div>
+                            </span>
+            <div class="center">
+                <h2 class="ui header {{messageClass}}" ng-if="!showMetaLoader">
+                                  {{message}}
+                                </h2>
+            </div>
         </div>
     </div>
 </div>

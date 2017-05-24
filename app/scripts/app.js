@@ -13,33 +13,27 @@ angular
         'ngCookies',
         'ngRoute',
         'playerApp.config',
-        'angularMoment'
+        'angularMoment',
+        'ui.router'
     ])
-    .config(function($routeProvider, $locationProvider) {
+    .config(function($stateProvider, $urlRouterProvider, $locationProvider) {
         $locationProvider.html5Mode(true);
-        // $locationProvider.hashPrefix = '!';
-
-        $routeProvider
-            .when('/search', {
-                templateUrl: 'views/content/search.html',
-                controller: 'ContentCtrl',
-                controllerAs: 'content',
-                activeTab: 'search',
+        $urlRouterProvider.otherwise('/');
+        $stateProvider
+            .state('Search', {
+                url: '/search',
+                templateUrl: '/views/content/search.html',
+                controller: 'ContentCtrl as content'
             })
-            .when('/', {
-                templateUrl: 'views/home/landingPage.html',
-                controller: 'UserCtrl',
-                controllerAs: 'user'
+            .state('Home', {
+                url: '/',
+                templateUrl: '/views/home/landingPage.html',
+                controller: 'UserCtrl as user'
             })
-            .when('/userContent', {
-                templateUrl: 'views/usercontent.html',
-                controller: 'UsercontentCtrl',
-                controllerAs: 'userContent',
-                activeTab: 'userContent',
-            })
-            .otherwise({
-                redirectTo: '/',
-                activeTab: '',
+            .state('UserContent', {
+                url: '/content',
+                templateUrl: '/views/usercontent.html',
+                controller: 'UsercontentCtrl as userContent'
             });
     }).run(function($rootScope, $route) {
         $rootScope.$route = $route;
