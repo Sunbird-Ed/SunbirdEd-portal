@@ -23,6 +23,9 @@
                 "GET_MY_COURSE": "content/get/mycontent",
                 "UPLOAD": "content/upload",
                 "UPLOAD_MEDIA": "upload/media"
+            },
+            "USER": {
+                "REGISTER": "user/create"
             }
         },
         "MESSAGES": {}

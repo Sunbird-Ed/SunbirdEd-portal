@@ -100,10 +100,10 @@ gulp.task('start:server:test', function() {
 
 gulp.task('watch', function() {
     gulp.watch('app/styles/**/main.less', ['build-css']);
-    $.watch(paths.styles)
-        .pipe($.plumber())
-        .pipe(styles())
-        .pipe($.connect.reload());
+    // $.watch(paths.styles)
+    //     .pipe($.plumber())
+    //     .pipe(styles())
+    //     .pipe($.connect.reload());
 
     $.watch(paths.views.files)
         .pipe($.plumber())
@@ -122,7 +122,7 @@ gulp.task('watch', function() {
 });
 
 gulp.task('serve', function(cb) {
-    runSequence('clean:tmp', ['lint:scripts'], ['start:client'],
+    runSequence('clean:tmp', ['lint:scripts'], ['start:client'], ['build-css'],
         'watch', cb);
 });
 
@@ -219,7 +219,7 @@ gulp.task('semantic', function() {
         }));
 });
 
-gulp.task('build', ['clean:dist'], function() {
+gulp.task('build', ['clean:dist', 'build-css'], function() {
     runSequence(['images', 'copy:extras', 'copy:fonts']);
 });
 

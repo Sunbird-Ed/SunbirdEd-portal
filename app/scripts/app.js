@@ -13,11 +13,12 @@ angular
         'ngCookies',
         'ngRoute',
         'playerApp.config',
-        'ui.router',       
+        'angularMoment',
+        'ui.router'
     ])
     .config(function($stateProvider, $urlRouterProvider, $locationProvider) {
         $locationProvider.html5Mode(true);
-        $urlRouterProvider.otherwise("/");
+        $urlRouterProvider.otherwise('/');
         $stateProvider
             .state('Search', {
                 url: '/search',
@@ -25,14 +26,13 @@ angular
                 controller: 'ContentCtrl as content'
             })
             .state('Home', {
-                url:'/',
+                url: '/',
                 templateUrl: '/views/home/landingPage.html',
-                controller: 'LoginCtrl as login'
+                controller: 'UserCtrl as user'
             })
             .state('UserContent', {
-                url:'/content',
+                url: '/content',
                 templateUrl: '/views/usercontent.html',
                 controller: 'UsercontentCtrl as userContent'
             });
-            
     });

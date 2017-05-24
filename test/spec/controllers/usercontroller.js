@@ -1,16 +1,16 @@
 'use strict';
 
-describe('Controller: LoginCtrl', function() {
+describe('Controller:UserCtrl', function() {
     // load the controller's module
     beforeEach(module('playerApp'));
 
-    var LoginCtrl,
+    var UserCtrl,
         scope;
 
     // Initialize the controller and a mock scope
     beforeEach(inject(function($controller, $rootScope) {
         scope = $rootScope.$new();
-        LogincontrollerCtrl = $controller('LoginCtrl', {
+        UserCtrl = $controller('UserCtrl', {
             $scope: scope
                 // place here mocked dependencies
         });

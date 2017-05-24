@@ -21,7 +21,6 @@ module.exports = {
         "space-infix-ops": ["error"],
         "padded-blocks": ["error", "never"],
         // "space-before-function-paren": ["error", { "anonymous": "always", "named": "never", "asyncArrow": "always" }],
-        "object-curly-spacing": ["error", "always"],
-        "eol-last": ["error", "always"]
+        "object-curly-spacing": ["error", "always"]
     }
 };

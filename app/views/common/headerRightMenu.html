@@ -1,0 +1,114 @@
+<button class="ui item" ng-click="user.openSignUpModal()">SIGN UP</button>
+<button class="ui item" ng-click="user.openLoginModal()"> LOGIN</button>
+<button class="ui item" ng-click="user.openLoginModal()">LOG OUT</button>
+<div class="ui small modal">
+    <i class="close icon"></i>
+    <div class="ui very padded text container segment">
+        <form class="ui form login-form">
+            <h4 class="ui header">
+
+                <div class="content">
+                    Sign in to your account!
+                </div>
+            </h4>
+            <div class="ui  divider"></div>
+
+            <div class=" inline field">
+                <label>LOGIN ID</label>
+                <input type="text" name="first-name" placeholder="Username or Email" ng-model="login.userName" required>
+            </div>
+            <div class="inline field">
+                <label>PASSWORD</label>
+                <input type="text" name="last-name" placeholder="Password" ng-model="login.password" required>
+            </div>
+            <div>
+                <p align="right"><a>Forgot your password?</a></p>
+                <button class="ui right floated button blue" type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--sign up-->
+<div class="ui modal signUp">
+    <i class="close icon"></i>
+    <div class="ui  padded text container segment">
+        <form class="ui form signUpForm">
+            <h4 class="ui dividing header">Sign Up</h4>
+            <div class="field">
+                <div class="two fields">
+                    <div class="field">
+                        <label>First Name</label>
+                        <input type="text" id="firstName" name="firstName" placeholder="First Name" ng-model="user.firstName">
+                    </div>
+                    <div class="field">
+                        <label>Last Name</label>
+                        <input type="text" name="lastName" placeholder="Last Name" ng-model="lastName">
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <label for="Email">Email</label>
+                <input id="Email" placeholder="Email" type="text" ng-model="email">
+            </div>
+            <div class="field">
+                <label for="Phone">Phone</label>
+                <input id="Phone" placeholder="Phone" type="text" ng-model="phone">
+            </div>
+            <div class="field">
+                <label for="Password">Password</label>
+                <input id="Password" type="password" ng-model="password">
+            </div>
+
+
+            <div class="field">
+                <div class="two fields">
+                    <div class="field">
+                        <label> &nbsp;</label>
+                        <select name="gender">
+                            <option value="">Gender</option>
+                            <option value="1">Male</option>
+                            <option value="0">Female</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>Language</label>
+                        <input type="text" name="first-name" placeholder="First Name">
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <div class="two fields">
+                    <div class="field">
+                        <label>State</label>
+                        <input type="text" name="last-name" placeholder="State" ng-model="state">
+                    </div>
+                    <div class="field">
+                        <label>City</label>
+                        <input type="text" name="first-name" placeholder="City" ng-model="city">
+                    </div>
+
+                </div>
+            </div>
+            <div class="field">
+                <div class="two fields">
+                    <div class="field">
+                        <label>Zip code</label>
+                        <input type="text" name="Zip code" placeholder="Zip code">
+                    </div>
+                </div>
+            </div>
+            <button class="ui blue button" ng-click="user.register()" tabindex="0">Submit</button>
+        </form>
+    </div>
+</div>
+<div class="ui modal forgotPassword">
+    <i class="close icon"></i>
+    <div class="ui very padded text container segment">
+        <h4 class="ui header">
+
+            <div class="content">
+                Sign up to your account!
+            </div>
+        </h4>
+    </div>
+</div>
