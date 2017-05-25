@@ -1,0 +1,18 @@
+<form class="ui form login-form">
+    <h4 class="ui dividing header">Login to your account!</h4>
+    <div class="  field">
+        <label>LOGIN ID</label>
+        <input type="text" name="first-name" placeholder="Username or Email" ng-model="auth.userName">
+    </div>
+    <div class=" field">
+        <label>PASSWORD</label>
+        <input type="text" name="last-name" placeholder="Password" ng-model="auth.password">
+    </div>
+    <div>
+        <p align="right"><a>Forgot your password?</a></p>
+        <button class="ui right floated button blue" type="submit" ng-click="auth.login()">Submit</button>
+    </div>
+</form>
+<div ng-if="error.showError" id="showError">
+    <help-message data="error"></help-message>
+</div>

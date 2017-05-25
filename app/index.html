@@ -58,22 +58,27 @@
     <script src="thirdparty/bower_components/angular/angular.js"></script>
     <script src="thirdparty/bower_components/angular-cookies/angular-cookies.js"></script>
     <script src="thirdparty/bower_components/angular-route/angular-route.js"></script>
-       <script src="thirdparty/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="thirdparty/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script src="thirdparty/semantic/semantic.min.js"></script>
     <script src="thirdparty/bower_components/video.js/dist/video.js"></script>
     <script src="thirdparty/bower_components/videojs-youtube/dist/Youtube.js"></script>
     <script src="thirdparty/bower_components/moment/moment.js"></script>
     <script src="thirdparty/bower_components/angular-moment/angular-moment.js"></script>
+    <script src="thirdparty/bower_components/ngstorage/ngStorage.js"></script>
     <!-- endbower -->
 
 
     <!-- endbuild -->
+    <script src="scripts/playerAppConfig.js"></script>
+
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>
+    <script src="scripts/services/playerAppConstants.js"></script>
     <script src="scripts/services/httpService.js"></script>
     <script src="scripts/services/contentService.js"></script>
-    <script src="scripts/services/userService.js"></script>
-    <script src="scripts/controllers/userController.js"></script>
+    <script src="scripts/services/authService.js"></script>
+    <script src="scripts/services/authService.js"></script>
+    <script src="scripts/controllers/authController.js"></script>
     <script src="scripts/controllers/contentController.js"></script>
     <script src="scripts/controllers/createContentController.js"></script>
     <script src="scripts/filters/arraytostring.js"></script>
@@ -83,6 +88,7 @@
     <script src="scripts/directives/includeReplace.js"></script>
     <script src="scripts/directives/applyScript.js"></script>
 
+    <script src="scripts/directives/helpMessage.js"></script>
     <script src="scripts/directives/errorMessage.js"></script>
     <script src="scripts/directives/fileRead.js"></script>
 

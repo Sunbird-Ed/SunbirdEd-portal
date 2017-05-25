@@ -14,7 +14,8 @@ angular
         'ngRoute',
         'playerApp.config',
         'angularMoment',
-        'ui.router'
+        'ui.router',
+        'ngStorage'
     ])
     .config(function($stateProvider, $urlRouterProvider, $locationProvider) {
         $locationProvider.html5Mode(true);
@@ -23,12 +24,17 @@ angular
             .state('Search', {
                 url: '/search',
                 templateUrl: '/views/content/search.html',
-                controller: 'ContentCtrl as content'
+                controller: 'ContentCtrl as content',
+                resolve: {
+                    isLoggedIn: function(authService) {
+                        authService.validUser();
+                    }
+                }
             })
             .state('Home', {
                 url: '/',
                 templateUrl: '/views/home/landingPage.html',
-                controller: 'UserCtrl as user'
+                controller: 'AuthCtrl as auth'
             })
             .state('UserContent', {
                 url: '/content',

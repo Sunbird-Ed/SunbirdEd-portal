@@ -1,0 +1,14 @@
+<div class="ui active dimmer inverted">
+    <div class="content">
+        <span ng-if="showMetaLoader">
+            <div class="ui text loader">
+                <div class="ui mini header" ng-if="message">{{message}}</div>
+            </div>
+        </span>
+        <div class="center">
+            <h2 class="ui header {{messageClass}}" ng-if="!showMetaLoader">
+                {{message}}
+            </h2>
+        </div>
+    </div>
+</div>
