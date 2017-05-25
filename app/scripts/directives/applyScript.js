@@ -23,7 +23,7 @@ angular.module('playerApp')
                         debug: false,
                         performance: true,
                     });
-                    
+
                     if (attrs.id == 'content-video-player-youtube-holder') {
                         var oldPlayer = document.getElementById('content-video-player-youtube');
                         videojs(oldPlayer).dispose();
@@ -32,7 +32,7 @@ angular.module('playerApp')
                             var newPlayer = this;
                             newPlayer.src({type: 'video/youtube', src: attrs.videosrc});
                         });
-                    }
+                    }                
 
                 }
             };

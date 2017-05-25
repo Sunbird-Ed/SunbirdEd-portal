@@ -25,7 +25,7 @@ angular.module('playerApp')
             content.selectedContentType = '';
             content.selectedStatus = '';
             content.data = [];
-            content.autosuggest_data = [];
+            content.autosuggest_data = {content: []};
             content.listView = false;
             content.isContentPlayerEnabled = false;
             $rootScope.showIFrameContent = false;
@@ -44,10 +44,11 @@ angular.module('playerApp')
                         if ($event !== undefined && content.keyword !== '') {
                             content.autosuggest_data = sucessResponse.result;
                         } else {
+                            content.isError = false;
                             content.data = sucessResponse.result;
-                            content.autosuggest_data = [];
+                            content.autosuggest_data = {content: []};
                         }
-                    } else {
+                    } else if ($event == undefined) {
                         content.isError = true;
                         sucessResponse.responseCode = 'RESOURCE_NOT_FOUND';
                         content.data = sucessResponse;
@@ -56,7 +57,7 @@ angular.module('playerApp')
 
                 contentService.search(req).then(function (res) {
                     content.enableLoader(false);
-                    $scope.autosuggest_data = res;
+
 
                     if (res != null && res.responseCode === 'OK') {
                         content.handleSucessResponse(res, $event);
@@ -74,7 +75,7 @@ angular.module('playerApp')
                 if (content.selectedLanguage) {
                     content.filters['language'] = content.selectedLanguage;
                 }
-                if (content.selectedLessonType) {
+                if (content.selectedContentType) {
                     content.filters['contentType'] = content.selectedContentType;
                 }
                 if (content.selectedStatus) {
@@ -92,6 +93,7 @@ angular.module('playerApp')
             content.enableLoader = function (isEnabled) {
                 if (isEnabled) {
                     $('#search-input-container').addClass('loading');
+                    content.autosuggest_data = {content: []};
                 } else {
                     $('#search-input-container').removeClass('loading');
                 }
