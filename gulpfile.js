@@ -21,7 +21,7 @@ var player = {
 };
 
 var paths = {
-    scripts: [player.app + '/scripts/**/*.js'],
+    scripts: [player.app + '/scripts/*.js', player.app + '/scripts/**/*.js'],
     styles: [player.app + '/styles/**/*.css'],
     test: ['test/spec/**/*.js'],
     testRequire: [
@@ -32,8 +32,10 @@ var paths = {
         player.app + '/thirdparty/bower_components/angular-cookies/angular-cookies.js',
         player.app + '/thirdparty/bower_components/angular-sanitize/angular-sanitize.js',
         player.app + '/thirdparty/bower_components/angular-route/angular-route.js',
-        'test/mock/**/*.js',
-        'test/spec/**/*.js'
+        player.app + '/thirdparty/bower_components/moment/moment.js',
+        player.app + '/thirdparty/bower_components/angular-moment/angular-moment.js',        
+        player.app + '/thirdparty/bower_components/angular-ui-router/release/angular-ui-router.js',
+        player.app + '/thirdparty/bower_components/ngstorage/ngStorage.js'
     ],
     karma: 'karma.conf.js',
     views: {
