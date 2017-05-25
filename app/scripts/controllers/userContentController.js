@@ -8,12 +8,11 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('UsercontentCtrl', function(contentService, $rootScope) {
-        var userContent = this;
-        userContent.contentItem = undefined;
-        userContent.hideUserContent = false;
+    .controller('userContentCtrl', ['$scope', 'contentService', '$rootScope', '$timeout', function($scope, contentService, $rootScope, $timeout) {
+        $scope.contentItem = undefined;
+        $scope.hideUserContent = false;
 
-        userContent.getPublishedContent = function() {
+        $scope.getPublishedContent = function() {
             var req = {
                 'filters': {
                     'createdBy': '12345678',
@@ -25,17 +24,17 @@ angular.module('playerApp')
                 }
             };
             contentService.search(req).then(function(res) {
-                    userContent.content = undefined;
+                    $scope.content = undefined;
                     if (res.responseCode === 'OK' && res.result.count > 0) {
-                        userContent.publishedContent = res.result.content;
+                        $scope.publishedContent = res.result.content;
                     }
                 }),
                 function(errorMessage) {
                     $log.warn(errorMessage);
                 };
         };
-        userContent.getPublishedContent();
-        userContent.getDraftContent = function() {
+        $scope.getPublishedContent();
+        $scope.getDraftContent = function() {
             var req = {
                 'filters': {
                     'createdBy': '12345678',
@@ -46,32 +45,33 @@ angular.module('playerApp')
                 }
             };
             contentService.search(req).then(function(res) {
-                    userContent.content = undefined;
+                    $scope.content = undefined;
                     if (res.responseCode === 'OK' && res.result.count > 0) {
-                        userContent.draftContent = res.result.content;
+                        $scope.draftContent = res.result.content;
                     }
                 }),
                 function(errorMessage) {
                     $log.warn(errorMessage);
                 };
         };
-        userContent.getDraftContent();
-        userContent.loadRating = function() {
-            $('.ui.rating')
-                .rating({
-                    maxRating: 5
-                }).rating('disable', true);
-            $('.popup-button').popup();
+        $scope.getDraftContent();
+        $scope.loadRating = function() {
+            $timeout(function() {
+                $('.ui.rating')
+                    .rating({
+                        maxRating: 5
+                    }).rating('disable', true);
+            }, 1000)
         };
 
-        userContent.editContent = function(content) {
-            userContent.hideUserContent = true;
+        $scope.editContent = function(content) {
+            $scope.hideUserContent = true;
             $rootScope.$emit('editContentEnable', content);
         };
 
         $rootScope.$on('editContentDisable', function(e, c) {
-            userContent.hideUserContent = false;
-            userContent.getDraftContent();
-            userContent.getPublishedContent();
+            $scope.hideUserContent = false;
+            $scope.getDraftContent();
+            $scope.getPublishedContent();
         });
-    });
+    }]);

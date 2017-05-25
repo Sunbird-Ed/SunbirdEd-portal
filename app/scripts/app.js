@@ -38,7 +38,7 @@ angular
             })
             .state('UserContent', {
                 url: '/content',
-                templateUrl: '/views/usercontent.html',
-                controller: 'UsercontentCtrl as userContent'
+                templateUrl: '/views/content/usercontent.html',
+                controller: 'userContentCtrl as userContent'
             });
     });

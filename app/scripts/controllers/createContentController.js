@@ -26,7 +26,7 @@ angular.module('playerApp')
         }
         $scope.initMeta();
 
-        $scope.showError = function (message) {
+        $scope.showError = function(message) {
             $scope.messageClass = "red";
             $scope.showMetaLoader = false;
             $scope.message = message;
@@ -189,18 +189,18 @@ angular.module('playerApp')
             $scope.content.file = undefined;
             if ($scope.meta.type == "application/vnd.ekstep.ecml-archive" || $scope.meta.type == "application/vnd.ekstep.html-archive") {
                 window.context = {
-                        "content_id": "do_11224848119413145617",
-                        "sid": "rctrs9r0748iidtuhh79ust993",
-                        "user": {
-                            "id": "390",
-                            "name": "Chetan Sachdev",
-                            "email": "chetan.sachdev@tarento.com",
-                            "avtar": "https://dev.ekstep.in/media/com_easysocial/defaults/avatars/user/medium.png",
-                            "logout": "https://dev.ekstep.in/index.php?option=com_easysocial&view=login&layout=logout"
-                        },
-                        "baseURL": "https://dev.ekstep.in/",
-                        "editMetaLink": "/component/ekcontent/contentform/do_10097535?Itemid=0"
-                    };
+                    "content_id": "do_11224848119413145617",
+                    "sid": "rctrs9r0748iidtuhh79ust993",
+                    "user": {
+                        "id": "390",
+                        "name": "Chetan Sachdev",
+                        "email": "chetan.sachdev@tarento.com",
+                        "avtar": "https://dev.ekstep.in/media/com_easysocial/defaults/avatars/user/medium.png",
+                        "logout": "https://dev.ekstep.in/index.php?option=com_easysocial&view=login&layout=logout"
+                    },
+                    "baseURL": "https://dev.ekstep.in/",
+                    "editMetaLink": "/component/ekcontent/contentform/do_10097535?Itemid=0"
+                };
                 $scope.ekURL = $sce.trustAsResourceUrl("/thirdparty/content-editor/index.html")
             }
         }
