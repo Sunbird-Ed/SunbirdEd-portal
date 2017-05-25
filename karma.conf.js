@@ -20,13 +20,15 @@ module.exports = function(config) {
         // list of files / patterns to load in the browser
         files: [
             // bower:js
-            // endbower
+            
             'app/thirdparty/bower_components/angular/angular.js',
             'app/thirdparty/bower_components/angular-mocks/angular-mocks.js',
             'app/thirdparty/bower_components/angular-resource/angular-resource.js',
             'app/thirdparty/bower_components/angular-cookies/angular-cookies.js',
             'app/thirdparty/bower_components/angular-sanitize/angular-sanitize.js',
             'app/thirdparty/bower_components/angular-route/angular-route.js',
+            // endbower
+            'app/scripts/app.js',
             'app/scripts/**/*.js',
             'test/mock/**/*.js',
             'test/spec/**/*.js'

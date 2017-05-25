@@ -1,23 +1,20 @@
 'use strict';
 
-describe('Controller: UsercontentCtrl', function() {
-    // load the controller's module
-    beforeEach(module('playerApp'));
+describe('Controller: userContentCtrl', function() {
+    beforeEach(function () {
+     module('playerApp');
+    });
 
-    var UsercontentCtrl,
-        scope;
-
-    // Initialize the controller and a mock scope
-    beforeEach(inject(function($controller, $rootScope) {
+    var scope, controller, contentService;
+    beforeEach(inject(function($rootScope, $controller,_contentService_) {
         scope = $rootScope.$new();
-        UsercontentCtrl = $controller('userContentCtrl', {
-            $scope: scope
-        });
+        contentService = _contentService_;
+        controller = $controller('userContentCtrl', { $scope: scope });
     }));
 
-    xit('should get the published content', function() {
-        spyOn(scope,"getPublishedContent").and.callThrough();
-        scope.getPublishedContent();
-        scope.$digest();
+    it('should get the published content', function() {
+        spyOn(scope, "getPublishedContent").and.callThrough();
+        expect(scope.contentItem).toBeUndefined();
     });
+
 });
