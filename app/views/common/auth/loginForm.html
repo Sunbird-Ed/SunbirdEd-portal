@@ -1,16 +1,16 @@
-<form class="ui form login-form">
+<form class="ui form loginForm " name="loginForm">
     <h4 class="ui dividing header">Login to your account!</h4>
     <div class="  field">
-        <label>LOGIN ID</label>
-        <input type="text" name="first-name" placeholder="Username or Email" ng-model="auth.userName">
+        <label for='Username'>LOGIN ID</label>
+        <input type="text" id="Username" placeholder="Username or Email" ng-model="auth.userName" required>
     </div>
     <div class=" field">
-        <label>PASSWORD</label>
-        <input type="text" name="last-name" placeholder="Password" ng-model="auth.password">
+        <label for="Password">PASSWORD</label>
+        <input type="text" id="Password" name="Password" placeholder="Password" ng-model="auth.password" required>
     </div>
     <div>
         <p align="right"><a>Forgot your password?</a></p>
-        <button class="ui right floated button blue" type="submit" ng-click="auth.login()">Submit</button>
+        <button class="ui right floated button blue" type="submit" ng-click="auth.login()" ng-disabled="loginForm.$invalid">Submit</button>
     </div>
 </form>
 <div ng-if="error.showError" id="showError">

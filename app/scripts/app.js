@@ -13,7 +13,6 @@ angular
         'ngCookies',
         'ngRoute',
         'playerApp.config',
-        'angularMoment',
         'ui.router',
         'ngStorage'
     ])

@@ -26,7 +26,8 @@ angular.module('playerApp.config', [])
             },
             'AUTH': {
                 'REGISTER': 'user/create',
-                'LOGIN': 'user/login'
+                'LOGIN': 'user/login',
+                'LOGOUT': 'user/logout'
             },
         },
         'RESPONSE_CODE': {

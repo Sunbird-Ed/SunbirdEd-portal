@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('playerApp')
-    .controller('AuthCtrl', function(authService, playerConstant, moment, $log, $scope, $rootScope, $timeout, $state,
+    .controller('AuthCtrl', function(authService, playerConstant, $log, $scope, $rootScope, $timeout, $state,
         $sessionStorage) {
         var auth = this;
-        auth.authName = '';
+        auth.userName = '';
         auth.password = '';
 
         auth.openAuthModal = function() {
@@ -15,38 +15,6 @@ angular.module('playerApp')
             $('.auth')
                 .modal('hide');
         };
-        $('.signUpForm').form({
-            firstName: {
-                identifier: 'firstName',
-                rules: [{
-                    type: 'empty',
-                    prompt: 'Please enter your first name'
-                }]
-            },
-            email: {
-                identifier: 'Email',
-                rules: [{
-                    type: 'empty',
-                    prompt: 'Please enter your email'
-                }, {
-                    type: 'email',
-                    prompt: 'Please enter a valid email'
-                }]
-            },
-            password: {
-                identifier: 'Password',
-                rules: [{
-                    type: 'empty',
-                    prompt: 'Please enter a password'
-                }, {
-                    type: 'length[6]',
-                    prompt: 'Password needs to be atleast 6 characters long'
-                }]
-            },
-        }, {
-            on: 'blur',
-            inline: 'true'
-        });
 
         /**
          * This function helps to show loader or any error message at the time of api call.
@@ -78,10 +46,10 @@ angular.module('playerApp')
         auth.login = function() {
             var existingUser = {
                 'id': 'sunbird.login',
-                'ts': '2017-05-136 10:49:58:600+0530',
+                'ts': new Date(),
                 'params': {
                     'did': 'device UUID from which API is called',
-                    'msgid': '8e27 cbf5 - e299 - 43 b0 - bca7 - 8347 f7e5abcf',
+                    'msgid': Math.random(),
                     'cid': 'consumer id'
                 },
                 'request': {
@@ -107,6 +75,41 @@ angular.module('playerApp')
                         }, 2000);
                     } else {
                         handleFailedResponse(playerConstant.MESSAGES.AUTH.LOGIN.FAILED);
+                    }
+                }),
+                function(error) {
+                    $log.error(error);
+                };
+        };
+
+        auth.logOut = function() {
+            var logOutReq = {
+                'id': 'unique API ID',
+                'ts': '2013/10/15 16:16:39',
+                'params': {
+                    'did': 'device UUID from which API is called',
+                    'key': 'API key (dynamic)',
+                    'cid': 'consumer id',
+                    'uid': 'user auth token'
+                },
+                'request': {}
+            };
+            showLoaderWithMessage(true, '', playerConstant.MESSAGES.AUTH.LOGOUT.START);
+            authService.logout(logOutReq).then(function(successResponse) {
+                    if (successResponse && successResponse.responseCode === 'OK') {
+                        showLoaderWithMessage(false, 'green', playerConstant.MESSAGES.AUTH.LOGOUT.SUCCESS);
+                        $timeout(function() {
+                            $scope.error = {};
+
+                            $rootScope.isLoggedIn = false;
+                            $scope.token = '';
+                            $sessionStorage.firstName = '';
+                            $sessionStorage.isLoggedIn = $rootScope.isLoggedIn;
+                            $sessionStorage.token = $scope.token;
+                            $state.go('Home');
+                        }, 2000);
+                    } else {
+                        handleFailedResponse(playerConstant.MESSAGES.AUTH.LOGOUT.FAILED);
                     }
                 }),
                 function(error) {

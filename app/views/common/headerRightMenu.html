@@ -1,7 +1,11 @@
 <!--<button class="ui item" ng-if="!isLoggedIn" ng-click="auth.openAuthModal('registerForm')">SIGN UP</button>-->
 <button class="ui item" ng-if="!isLoggedIn" ng-click="auth.openAuthModal()"> LOGIN</button>
-<button class="ui item" ng-if="isLoggedIn">LOG OUT</button>
+<button class="ui item" ng-if="isLoggedIn" ng-click="auth.logOut()">LOG OUT</button>
 <div class="ui  modal auth">
     <i class="close icon"></i>
-    <div class="ui  very padded text container segment" ng-include="'views/common/auth/loginForm.html'"></div>
+    <div class="ui  very padded text container segment" ng-include="'views/common/auth/loginForm.html'">
+    </div>
+</div>
+<div ng-if="error.showError" id="showError">
+    <help-message data="error"></help-message>
 </div>

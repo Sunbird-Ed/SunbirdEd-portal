@@ -21,6 +21,11 @@ angular.module('playerApp')
                     'FAILED': 'Login failed, please try again later...',
                     'SUCCESS': 'Login successfully...'
                 },
+                'LOGOUT': {
+                    'START': 'Logout in process, please wait...',
+                    'FAILED': 'Logout failed, please try again later...',
+                    'SUCCESS': 'Logout successfully...'
+                },
             },
         }
     });
