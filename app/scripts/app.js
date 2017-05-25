@@ -33,6 +33,6 @@ angular
             .state('UserContent', {
                 url: '/content',
                 templateUrl: '/views/content/usercontent.html',
-                controller: 'UsercontentCtrl as userContent'
+                controller: 'userContentCtrl as userContent'
             });
     });
