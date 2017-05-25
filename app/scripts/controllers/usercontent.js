@@ -8,7 +8,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('UsercontentCtrl', function(contentService, $rootScope) {
+    .controller('UsercontentCtrl', function(contentService, $rootScope, $timeout) {
         var userContent = this;
         userContent.contentItem = undefined;
         userContent.hideUserContent = false;
@@ -57,11 +57,12 @@ angular.module('playerApp')
         };
         userContent.getDraftContent();
         userContent.loadRating = function() {
-            $('.ui.rating')
-                .rating({
-                    maxRating: 5
-                }).rating('disable', true);
-            $('.popup-button').popup();
+            $timeout(function() {
+                $('.ui.rating')
+                    .rating({
+                        maxRating: 5
+                    }).rating('disable', true);
+            }, 1000)
         };
 
         userContent.editContent = function(content) {
