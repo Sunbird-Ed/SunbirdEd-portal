@@ -26,6 +26,8 @@ var paths = {
     test: ['test/spec/**/*.js'],
     testRequire: [
         player.app + '/thirdparty/bower_components/jquery/dist/jquery.js',
+        player.app + '/thirdparty/bower_components/jasmine-jquery/lib/jasmine-jquery.js',
+        player.app + '/thirdparty/semantic/semantic.min.js',
         player.app + '/thirdparty/bower_components/angular/angular.js',
         player.app + '/thirdparty/bower_components/angular-mocks/angular-mocks.js',
         player.app + '/thirdparty/bower_components/angular-resource/angular-resource.js',
@@ -33,7 +35,7 @@ var paths = {
         player.app + '/thirdparty/bower_components/angular-sanitize/angular-sanitize.js',
         player.app + '/thirdparty/bower_components/angular-route/angular-route.js',
         player.app + '/thirdparty/bower_components/moment/moment.js',
-        player.app + '/thirdparty/bower_components/angular-moment/angular-moment.js',        
+        player.app + '/thirdparty/bower_components/angular-moment/angular-moment.js',
         player.app + '/thirdparty/bower_components/angular-ui-router/release/angular-ui-router.js',
         player.app + '/thirdparty/bower_components/ngstorage/ngStorage.js'
     ],
