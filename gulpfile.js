@@ -222,7 +222,7 @@ gulp.task('semantic', function() {
 });
 
 gulp.task('build', ['clean:dist', 'build-css'], function() {
-    runSequence(['images', 'copy:extras', 'copy:fonts']);
+    runSequence(['images', 'copy:extras', 'copy:fonts','semantic']);
 });
 
 gulp.task('default', ['build']);
