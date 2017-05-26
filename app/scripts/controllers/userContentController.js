@@ -17,7 +17,7 @@ angular.module('playerApp')
                 'filters': {
                     'createdBy': '12345678',
                     'status': ['live'],
-                    'contentType': ['application/pdf', 'video/youtube', 'video/mp4', 'application/vnd.ekstep.ecml-archive', 'application/vnd.ekstep.html-archive']
+                    'mimeType': ['application/pdf', 'video/youtube', 'video/mp4', 'application/vnd.ekstep.ecml-archive', 'application/vnd.ekstep.html-archive']
                 },
                 'params': {
                     'cid': '12'
