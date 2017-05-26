@@ -21,17 +21,20 @@ angular.module('playerApp')
                 },
                 'params': {
                     'cid': '12'
+                },
+                'sort_by': {
+                    "lastUpdatedOn": "desc"
                 }
             };
+            $scope.publishedContent = [];
             contentService.search(req).then(function(res) {
-                    $scope.content = undefined;
                     if (res.responseCode === 'OK' && res.result.count > 0) {
                         $scope.publishedContent = res.result.content;
                     }
-                }),
+                },
                 function(errorMessage) {
-                    $log.warn(errorMessage);
-                };
+
+                });
         };
         $scope.getPublishedContent();
         $scope.getDraftContent = function() {
@@ -42,17 +45,18 @@ angular.module('playerApp')
                 },
                 'params': {
                     'cid': '12'
+                },
+                'sort_by': {
+                    "lastUpdatedOn": "desc"
                 }
             };
             contentService.search(req).then(function(res) {
                     $scope.content = undefined;
                     if (res.responseCode === 'OK' && res.result.count > 0) {
-                        $scope.draftContent = res.result.content;
+                        $scope.draftContent = res;
                     }
-                }),
-                function(errorMessage) {
-                    $log.warn(errorMessage);
-                };
+                },
+                function(errorMessage) {});
         };
         $scope.getDraftContent();
         $scope.loadRating = function() {

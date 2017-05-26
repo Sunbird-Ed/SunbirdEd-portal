@@ -17,11 +17,12 @@
             <div class="ui link raised card" ng-include="'views/content/contentCard.html'" ng-repeat="item in publishedContent track by $index" ng-init="$last && loadRating()">
             </div>
         </div>
-        <div class="ui clearing divider" ng-if="draftContent.length"></div>
-        <h3 class="ui header" ng-if="draftContent.length">Draft Contents</h3>
+        <div class="ui clearing divider"></div>
+        <h3 class="ui header">Draft Contents</h3>
         <div class="ui cards">
-            <div class="ui link raised card" ng-click="editContent(item);" ng-include="'views/content/contentCard.html'" ng-repeat="item in draftContent track by $index" ng-init="$last && loadRating()">
+            <div class="ui link raised card" ng-click="editContent(item);" ng-include="'views/content/contentCard.html'" ng-repeat="item in draftContent.result.content track by $index" ng-init="$last && loadRating()">
             </div>
+           
         </div>
     </div>
 </div>
