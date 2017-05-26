@@ -276,8 +276,6 @@ angular.module('playerApp')
                     $scope.versionKey = res.result.versionKey;
                     $scope.messageClass = "green";
                     $scope.message = $scope.meta.name + " content sent for review successfully.";
-                    $scope.formStep = -1;
-                    $scope.closeEditor();
                 } else {
                     $scope.showError("Unable to send for review " + $scope.meta.name + " content.");
                 }
@@ -287,6 +285,31 @@ angular.module('playerApp')
                 }, 2000);
             }, function(error) {
                 $scope.showError("Unable to send for review " + $scope.meta.name + " content.");
+            });
+        }
+
+        $scope.publishContent = function() {
+            $scope.showMetaLoader = $scope.showDimmer = true;
+            $scope.messageType = "";
+            $scope.message = "Publishing " + $scope.meta.name + " content, Please wait...";
+            var req = undefined;
+            contentService.publish(req, $scope.contentId).then(function(res) {
+                if (res && res.responseCode === "OK") {
+                    $scope.contentId = res.result.content_id;
+                    $scope.versionKey = res.result.versionKey;
+                    $scope.messageClass = "green";
+                    $scope.message = $scope.meta.name + " content published successfully.";
+                    $scope.formStep = -1;
+                    $scope.closeEditor();
+                } else {
+                    $scope.showError("Unable to publish " + $scope.meta.name + " content.");
+                }
+                $scope.showMetaLoader = false;
+                $timeout(function() {
+                    $scope.showDimmer = false;
+                }, 2000);
+            }, function(error) {
+                $scope.showError("Unable to publish" + $scope.meta.name + " content.");
             });
         }
 

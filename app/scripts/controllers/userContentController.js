@@ -17,21 +17,24 @@ angular.module('playerApp')
                 'filters': {
                     'createdBy': '12345678',
                     'status': ['live'],
-                    'contentType': ['application/pdf', 'video/youtube', 'video/mp4', 'application/vnd.ekstep.ecml-archive', 'application/vnd.ekstep.html-archive']
+                    'mimeType': ['application/pdf', 'video/youtube', 'video/mp4', 'application/vnd.ekstep.ecml-archive', 'application/vnd.ekstep.html-archive']
                 },
                 'params': {
                     'cid': '12'
+                },
+                'sort_by': {
+                    "lastUpdatedOn": "desc"
                 }
             };
+            $scope.publishedContent = [];
             contentService.search(req).then(function(res) {
-                    $scope.content = undefined;
                     if (res.responseCode === 'OK' && res.result.count > 0) {
                         $scope.publishedContent = res.result.content;
                     }
-                }),
+                },
                 function(errorMessage) {
-                    $log.warn(errorMessage);
-                };
+
+                });
         };
         $scope.getPublishedContent();
         $scope.getDraftContent = function() {
@@ -42,17 +45,18 @@ angular.module('playerApp')
                 },
                 'params': {
                     'cid': '12'
+                },
+                'sort_by': {
+                    "lastUpdatedOn": "desc"
                 }
             };
             contentService.search(req).then(function(res) {
                     $scope.content = undefined;
                     if (res.responseCode === 'OK' && res.result.count > 0) {
-                        $scope.draftContent = res.result.content;
+                        $scope.draftContent = res;
                     }
-                }),
-                function(errorMessage) {
-                    $log.warn(errorMessage);
-                };
+                },
+                function(errorMessage) {});
         };
         $scope.getDraftContent();
         $scope.loadRating = function() {

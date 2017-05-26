@@ -29,7 +29,11 @@ angular.module('playerApp')
             var url = config.URL.BASE + config.URL.CONTENT.REVIEW+"/"+id;
             return httpService.postOperation(url, req);
         }
-        
+
+        function publish(req,id) {
+            var url = config.URL.BASE + config.URL.CONTENT.PUBLISH+"/"+id;
+            return httpService.getOperation(url, req);
+        }
 
         function uploadMedia(req) {
             var url = config.URL.BASE + config.URL.CONTENT.UPLOAD_MEDIA;
@@ -41,7 +45,8 @@ angular.module('playerApp')
             create: create,
             uploadMedia: uploadMedia,
             update: update,
-            review: review
+            review: review,
+            publish: publish
         };
 
     });
