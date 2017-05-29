@@ -7,12 +7,13 @@ var chug = require('gulp-chug');
 var clean = require('gulp-clean');
 var openURL = require('open');
 var lazypipe = require('lazypipe');
+var autoprefixer = require('gulp-autoprefixer');
+var plumber = require('gulp-plumber');
 var rimraf = require('rimraf');
 var wiredep = require('wiredep').stream;
 var runSequence = require('run-sequence');
 var gulpNgConfig = require('gulp-ng-config');
 var less = require('gulp-less');
-var path = require('path');
 var historyApiFallback = require('connect-history-api-fallback');
 
 var player = {
@@ -63,10 +64,17 @@ var styles = lazypipe()
 ///////////
 
 gulp.task('build-css', function() {
+    // return gulp.src('app/styles/**/main.less')
+    //     .pipe(less({
+    //         paths: [path.join(__dirname, 'less', 'includes')]
+    //     }))
+    //     .pipe(styles());
+
     return gulp.src('app/styles/**/main.less')
-        .pipe(less({
-            paths: [path.join(__dirname, 'less', 'includes')]
-        }))
+        .pipe(plumber())
+        .pipe(less())
+        .pipe(autoprefixer())
+        // .pipe(gulpif(production, cssmin()))
         .pipe(styles());
 });
 
@@ -104,10 +112,6 @@ gulp.task('start:server:test', function() {
 
 gulp.task('watch', function() {
     gulp.watch('app/styles/**/main.less', ['build-css']);
-    // $.watch(paths.styles)
-    //     .pipe($.plumber())
-    //     .pipe(styles())
-    //     .pipe($.connect.reload());
 
     $.watch(paths.views.files)
         .pipe($.plumber())
@@ -224,7 +228,7 @@ gulp.task('semantic', function() {
 });
 
 gulp.task('build', ['clean:dist', 'build-css'], function() {
-    runSequence(['images', 'copy:extras', 'copy:fonts','semantic']);
+    runSequence(['images', 'copy:extras', 'copy:fonts', 'semantic']);
 });
 
 gulp.task('default', ['build']);
