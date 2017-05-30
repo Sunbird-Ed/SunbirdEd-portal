@@ -10,7 +10,7 @@
 angular.module('playerApp')
         .controller('AppCtrl', function ($rootScope) {
             
-            $('body').click(function (e) {
+            /*$('body').click(function (e) {
                 
                 if ($(e.target).closest('div.dropdown-menu-list').prop('id') == 'search-suggestions')
                 {                    
@@ -20,6 +20,12 @@ angular.module('playerApp')
                     $('body').find('.dropdown-menu-list').removeClass('visible').addClass('hidden');
                 }
 
-            });
+            });*/
+            $rootScope.initilizwDropDown = function() {
+            $('#dropdown-menu-list')
+                .dropdown({
+                    action: 'combo'
+                });
+            };
 
         });

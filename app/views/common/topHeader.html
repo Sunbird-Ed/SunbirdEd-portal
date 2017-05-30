@@ -1,23 +1,58 @@
-<div class="ui secondary pointing menu">
-    <div class="left menu ">
-        <a href="/">
+  <div class="ui grid" ng-init="initilizwDropDown()">
+      <div class="center aligned twelve column row padding-top-2rem">
+        <div class="two wide column">
+          <a href="/">
             <img class="ui tiny circular image" src="/images/sunbird_logo.png">
-        </a>
-    </div>
-    <a class="item " ui-sref-active="active" ui-sref="Search" href="search">
-    Home
-  </a>
+          </a>    
+        </div>
+        <div class="five wide column padding-top-1rem">
+          <div class="ui fluid action input">
+            <input type="text" placeholder="Search">
+              <button class="ui icon button">
+                <i class="search icon"></i>
+              </button>
+          </div>
+        </div>
+        <div class="one wide column padding-top-1rem">
+          <i class="home icon font-size-header-icon"></i>
+        </div>
+        <div class="one wide column padding-top-1rem">
+          <i class="alarm icon font-size-header-icon"></i>
+        </div>
+        <div class="one wide column padding-top-1rem">
+          <i class="mail icon font-size-header-icon"></i>
+        </div>
+        <div class="one wide column padding-top-1rem">
+          <i class="setting icon font-size-header-icon"></i>
+        </div>
+        <div class="one wide column">
+          <div class="ui floating dropdown right top pointing 
+               header-user-container padding-top-circular-human-icon" id="dropdown-menu-list">
+              <button class="circular huge ui icon button">
+                <i class="user icon"></i>
+              </button>
+              <div class="menu">
+                <a class="item">Profile</a>
+                <div class="item">Logout</div>
+              </div>
+          </div>
+        </div>
+      </div>
+  </div>   
+<div class="ui secondary pointing menu">
+    <a class="item margin-left-52" ui-sref-active="active" ui-sref="Search" href="search">
+      Home
+    </a>
     <a class="item " ui-sref-active="active" ui-sref="UserContent" href="userContent">
-    Learn
-  </a>
+      Learn
+    </a>
     <a class="item" href="#">
-   Resources
-  </a>
+      Resources
+    </a>
     <a class="item" href="#">
-   Community
-  </a>
+      Community
+    </a>
     <a class="item" href="#">
-   Assess
-  </a>
-    <div class="right menu" ng-controller="AuthCtrl as auth" ng-include="'views/common/headerRightMenu.html '"></div>
+      Assess
+    </a>
 </div>
