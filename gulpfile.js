@@ -7,12 +7,13 @@ var chug = require('gulp-chug');
 var clean = require('gulp-clean');
 var openURL = require('open');
 var lazypipe = require('lazypipe');
+var autoprefixer = require('gulp-autoprefixer');
+var plumber = require('gulp-plumber');
 var rimraf = require('rimraf');
 var wiredep = require('wiredep').stream;
 var runSequence = require('run-sequence');
 var gulpNgConfig = require('gulp-ng-config');
 var less = require('gulp-less');
-var path = require('path');
 var historyApiFallback = require('connect-history-api-fallback');
 
 var player = {
@@ -26,6 +27,8 @@ var paths = {
     test: ['test/spec/**/*.js'],
     testRequire: [
         player.app + '/thirdparty/bower_components/jquery/dist/jquery.js',
+        player.app + '/thirdparty/bower_components/jasmine-jquery/lib/jasmine-jquery.js',
+        player.app + '/thirdparty/semantic/semantic.min.js',
         player.app + '/thirdparty/bower_components/angular/angular.js',
         player.app + '/thirdparty/bower_components/angular-mocks/angular-mocks.js',
         player.app + '/thirdparty/bower_components/angular-resource/angular-resource.js',
@@ -33,7 +36,7 @@ var paths = {
         player.app + '/thirdparty/bower_components/angular-sanitize/angular-sanitize.js',
         player.app + '/thirdparty/bower_components/angular-route/angular-route.js',
         player.app + '/thirdparty/bower_components/moment/moment.js',
-        player.app + '/thirdparty/bower_components/angular-moment/angular-moment.js',        
+        player.app + '/thirdparty/bower_components/angular-moment/angular-moment.js',
         player.app + '/thirdparty/bower_components/angular-ui-router/release/angular-ui-router.js',
         player.app + '/thirdparty/bower_components/ngstorage/ngStorage.js'
     ],
@@ -61,10 +64,17 @@ var styles = lazypipe()
 ///////////
 
 gulp.task('build-css', function() {
+    // return gulp.src('app/styles/**/main.less')
+    //     .pipe(less({
+    //         paths: [path.join(__dirname, 'less', 'includes')]
+    //     }))
+    //     .pipe(styles());
+
     return gulp.src('app/styles/**/main.less')
-        .pipe(less({
-            paths: [path.join(__dirname, 'less', 'includes')]
-        }))
+        .pipe(plumber())
+        .pipe(less())
+        .pipe(autoprefixer())
+        // .pipe(gulpif(production, cssmin()))
         .pipe(styles());
 });
 
@@ -102,10 +112,6 @@ gulp.task('start:server:test', function() {
 
 gulp.task('watch', function() {
     gulp.watch('app/styles/**/main.less', ['build-css']);
-    // $.watch(paths.styles)
-    //     .pipe($.plumber())
-    //     .pipe(styles())
-    //     .pipe($.connect.reload());
 
     $.watch(paths.views.files)
         .pipe($.plumber())
@@ -222,7 +228,7 @@ gulp.task('semantic', function() {
 });
 
 gulp.task('build', ['clean:dist', 'build-css'], function() {
-    runSequence(['images', 'copy:extras', 'copy:fonts']);
+    runSequence(['images', 'copy:extras', 'copy:fonts', 'semantic']);
 });
 
 gulp.task('default', ['build']);

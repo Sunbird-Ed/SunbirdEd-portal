@@ -20,7 +20,9 @@ module.exports = function(config) {
         // list of files / patterns to load in the browser
         files: [
             // bower:js
-            
+            'app/thirdparty/bower_components/jquery/dist/jquery.js',
+            'app/thirdparty/bower_components/jasmine-jquery/lib/jasmine-jquery.js',
+            'app/thirdparty/semantic/semantic.min.js',
             'app/thirdparty/bower_components/angular/angular.js',
             'app/thirdparty/bower_components/angular-mocks/angular-mocks.js',
             'app/thirdparty/bower_components/angular-resource/angular-resource.js',

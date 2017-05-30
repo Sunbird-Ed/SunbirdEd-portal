@@ -10,7 +10,8 @@
                 <div class="ui  grid">
                     <div class="ui twelve wide column">
                         <form class="ui big form">
-                            <h1 class="ui dividing header">Create Content</h1>
+                            <h1 class="ui dividing header" ng-if="!contentId">Create Content</h1>
+                            <h1 class="ui dividing header" ng-if="contentId">Edit Content</h1>
                             <div class="field">
                                 <label>Name
                                     <i class="ui tiny star red icon"></i>
@@ -54,7 +55,7 @@
             </div>
         </div>
         <div class="content-form" ng-if="formStep == 1;">
-            <h1 class="ui dividing header">Create Content</h1>
+            <h1 class="ui dividing header">Edit Content</h1>
             <div class="ui huge segment">
                 <div class="ui grid">
                     <div class="ui twelve wide column">
@@ -119,9 +120,11 @@
             </div>
         </div>
         <div class="content-form" ng-if="formStep == 2;">
-            <h1 class="ui dividing header">Create Content</h1>
+            <h1 class="ui dividing header">Preview Content</h1>
             <div class="ui big right floated button" tabindex="0" ng-click="closeEditor();">Skip</div>
+            <div class="ui big right floated primary button" tabindex="0" ng-click="publishContent();">Publish</div>
             <div class="ui big right floated primary button" tabindex="0" ng-click="reviewContent();">Send for Review</div>
+
         </div>
     </div>
     <div class="ui dimmer inverted" ng-class="showDimmer ? 'active':''">

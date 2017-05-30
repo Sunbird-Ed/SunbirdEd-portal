@@ -6,13 +6,16 @@ angular.module('playerApp')
         var auth = this;
         auth.userName = '';
         auth.password = '';
-
+        auth.resetForm = function() {
+            auth.userName = '';
+            auth.password = '';
+        };
         auth.openAuthModal = function() {
-            $('.auth')
+            $('#auth')
                 .modal('show');
         };
         auth.closeAuthModal = function() {
-            $('.auth')
+            $('#auth')
                 .modal('hide');
         };
 
@@ -58,32 +61,27 @@ angular.module('playerApp')
                     'source': 'portal'
                 }
             };
-            showLoaderWithMessage(true, '', playerConstant.MESSAGES.AUTH.LOGIN.START);
             authService.login(existingUser).then(function(successResponse) {
                     if (successResponse && successResponse.responseCode === 'OK') {
-                        showLoaderWithMessage(false, 'green', playerConstant.MESSAGES.AUTH.LOGIN.SUCCESS);
-                        $timeout(function() {
-                            $scope.error = {};
-                            auth.closeAuthModal();
-                            $rootScope.isLoggedIn = true;
-                            $scope.token = successResponse.result.authToken;
-
-                            $sessionStorage.firstName = successResponse.result.firstName;
-                            $sessionStorage.isLoggedIn = $rootScope.isLoggedIn;
-                            $sessionStorage.token = $scope.token;
-                            $state.go('Search');
-                        }, 2000);
+                        auth.closeAuthModal();
+                        $rootScope.isLoggedIn = true;
+                        $scope.token = successResponse.result.authToken;
+                        $sessionStorage.firstName = successResponse.result.firstName;
+                        $sessionStorage.isLoggedIn = $rootScope.isLoggedIn;
+                        $sessionStorage.token = $scope.token;
+                        $state.go('Search');
                     } else {
                         handleFailedResponse(playerConstant.MESSAGES.AUTH.LOGIN.FAILED);
                     }
-                }),
-                function(error) {
+                })
+                .catch(function(error) {
                     $log.error(error);
-                };
+                    handleFailedResponse(playerConstant.MESSAGES.AUTH.LOGIN.FAILED);
+                });
         };
 
-        auth.logOut = function() {
-            var logOutReq = {
+        auth.logout = function() {
+            var logoutReq = {
                 'id': 'unique API ID',
                 'ts': '2013/10/15 16:16:39',
                 'params': {
@@ -94,27 +92,23 @@ angular.module('playerApp')
                 },
                 'request': {}
             };
-            showLoaderWithMessage(true, '', playerConstant.MESSAGES.AUTH.LOGOUT.START);
-            authService.logout(logOutReq).then(function(successResponse) {
+            authService.logout(logoutReq).then(function(successResponse) {
                     if (successResponse && successResponse.responseCode === 'OK') {
-                        showLoaderWithMessage(false, 'green', playerConstant.MESSAGES.AUTH.LOGOUT.SUCCESS);
-                        $timeout(function() {
-                            $scope.error = {};
-
-                            $rootScope.isLoggedIn = false;
-                            $scope.token = '';
-                            $sessionStorage.firstName = '';
-                            $sessionStorage.isLoggedIn = $rootScope.isLoggedIn;
-                            $sessionStorage.token = $scope.token;
-                            $state.go('Home');
-                        }, 2000);
+                        $scope.error = {};
+                        $rootScope.isLoggedIn = false;
+                        $scope.token = '';
+                        $sessionStorage.firstName = '';
+                        $sessionStorage.isLoggedIn = $rootScope.isLoggedIn;
+                        $sessionStorage.token = $scope.token;
+                        $state.go('Home');
+                        auth.resetForm();
                     } else {
                         handleFailedResponse(playerConstant.MESSAGES.AUTH.LOGOUT.FAILED);
                     }
-                }),
-                function(error) {
-                    $log.error(error);
-                };
+                })
+                .catch(function() {
+                    handleFailedResponse(playerConstant.MESSAGES.AUTH.LOGOUT.FAILED);
+                });
         };
     });
 
