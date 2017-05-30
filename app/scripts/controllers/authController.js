@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('playerApp')
-    .controller('AuthCtrl', function(authService, playerConstant, $log, $scope, $rootScope, $timeout, $state,
+    .controller('AuthCtrl', function(authService, config, $log, $scope, $rootScope, $timeout, $state,
         $sessionStorage) {
         var auth = this;
         auth.userName = '';
@@ -71,12 +71,12 @@ angular.module('playerApp')
                         $sessionStorage.token = $scope.token;
                         $state.go('Search');
                     } else {
-                        handleFailedResponse(playerConstant.MESSAGES.AUTH.LOGIN.FAILED);
+                        handleFailedResponse(config.MESSAGES.AUTH.LOGIN.FAILED);
                     }
                 })
                 .catch(function(error) {
                     $log.error(error);
-                    handleFailedResponse(playerConstant.MESSAGES.AUTH.LOGIN.FAILED);
+                    handleFailedResponse(config.MESSAGES.AUTH.LOGIN.FAILED);
                 });
         };
 
@@ -103,11 +103,11 @@ angular.module('playerApp')
                         $state.go('Home');
                         auth.resetForm();
                     } else {
-                        handleFailedResponse(playerConstant.MESSAGES.AUTH.LOGOUT.FAILED);
+                        handleFailedResponse(config.MESSAGES.AUTH.LOGOUT.FAILED);
                     }
                 })
                 .catch(function() {
-                    handleFailedResponse(playerConstant.MESSAGES.AUTH.LOGOUT.FAILED);
+                    handleFailedResponse(config.MESSAGES.AUTH.LOGOUT.FAILED);
                 });
         };
     });
@@ -146,17 +146,17 @@ angular.module('playerApp')
 //         }
 //     };
 
-//     showLoaderWithMessage(true, '', playerConstant.MESSAGES.auth.REGISTER.START);
+//     showLoaderWithMessage(true, '', config.MESSAGES.auth.REGISTER.START);
 //     authService.register(newauth).then(function(successResponse) {
 //             if (successResponse && successResponse.responseCode === 'OK') {
 //                 $log.info('successResponse', successResponse.responseCode);
-//                 showLoaderWithMessage(false, 'green', playerConstant.MESSAGES.auth.REGISTER.SUCCESS);
+//                 showLoaderWithMessage(false, 'green', config.MESSAGES.auth.REGISTER.SUCCESS);
 //                 $timeout(function() {
 //                     $scope.error = {};
 //                     auth.currentForm = 'loginForm';
 //                 }, 2000);
 //             } else {
-//                 handleFailedResponse(playerConstant.MESSAGES.auth.REGISTER.FAILED);
+//                 handleFailedResponse(config.MESSAGES.auth.REGISTER.FAILED);
 //             }
 //         }),
 //         function(error) {
