@@ -78,12 +78,8 @@ var lintScripts = lazypipe()
 
 gulp.task('index-html', function() {
     gulp.src(player.app + '/index.html')
-        .pipe(htmlreplace({
-            // 'css': 'styles/site-svcc-relative.min.css',
-            // 'js': ['https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0/angular.min.js',
-            //     'main.min.js']
-        }))
-        .pipe(gulp.dest('dist/'));
+
+    .pipe(gulp.dest('dist/'));
 });
 
 gulp.task('images', function() {
