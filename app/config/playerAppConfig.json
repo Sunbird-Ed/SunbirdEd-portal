@@ -2,6 +2,7 @@
     "config": {
         "URL": {
             "BASE": "http://localhost:5000/api/sb/v1/",
+            "USER_BASE": "http://10.0.1.75:9000/v1/",
             "COURSE": {
                 "SEARCH": "course/search",
                 "CREATE": "course/create",
@@ -24,10 +25,20 @@
                 "UPLOAD": "content/upload",
                 "UPLOAD_MEDIA": "upload/media"
             },
-            "USER": {
-                "REGISTER": "user/create"
+            "AUTH": {
+                "LOGIN": "user/login",
+                "LOGOUT": "user/logout"
             }
         },
-        "MESSAGES": {}
+        "MESSAGES": {
+            "AUTH": {
+                "LOGIN": {
+                    "FAILED": "invalid username and password"
+                },
+                "LOGOUT": {
+                    "FAILED": "Logout failed"
+                }
+            }
+        }
     }
 }

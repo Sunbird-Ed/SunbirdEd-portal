@@ -9,7 +9,6 @@
  */
 angular.module('playerApp')
     .service('httpService', function($http) {
-
         function post(url, data, headers) {
             var request = httpCall(url, data, "POST", headers);
             return (request.then(handleSuccess, handleError));
@@ -36,7 +35,6 @@ angular.module('playerApp')
         }
 
         function upload(url, data, headers) {
-
             var request = $http.post(url, data, {
                 //                    transformRequest: angular.identity,
                 headers: {
@@ -49,7 +47,7 @@ angular.module('playerApp')
 
         function handleSuccess(response) {
             return (response.data);
-            }
+        }
 
         function handleError(response) {
             return (response.data);
@@ -58,19 +56,32 @@ angular.module('playerApp')
         function getHeader() {
             var headers = {
                 'Content-Type': 'application/json',
-                'cid': 'sunbird'
+                'cid': 'sunbird',
+                'Accept': 'application/json',
+                'id': 'id',
+                'X-Consumer-ID': 'X-Consumer-ID',
+                'X-Device-ID': 'X-Device-ID',
+                'X-msgId': '8e27cbf5-e299-43b0-bca7-8347f7e5abcf',
+                'ts': '2017-05-25 10:18:56:578+0530'
+                    // 'ts': 'aasasdfsd',
+                    // 'X-Consumer-ID': 'ffsdfsdf',
+                    // 'X-Device-ID': 'ffsdfsdf',
+                    // 'X-msgid': 'messageId'
             };
+            headers.Accept = 'text/html,application/xhtml+xml,application/xml,application/json;q=0.9,image/webp,*/*;q=0.8';
             return headers;
         }
 
         function httpCall(url, data, method, headers) {
+
             var headers = headers || getHeader();
 
             return $http({
                 method: method,
                 url: url,
                 headers: headers,
-                data: { request: data }
+                // data: { request: data },
+                data: data
             });
         }
 

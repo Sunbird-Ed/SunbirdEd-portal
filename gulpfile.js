@@ -27,6 +27,8 @@ var paths = {
     styles: [player.app + 'app/styles/**/main.less'],
     images: player.app + '/images/*.*',
     test: ['test/spec/**/*.js'],
+    thirdparty: [player.app + '/thirdparty/**/*.js', player.app + '/thirdparty/**/**/**/*.css', player.app + '/thirdparty/**/**/**/**/*.*'],
+
     testRequire: [
         player.app + '/thirdparty/bower_components/jquery/dist/jquery.js',
         player.app + '/thirdparty/bower_components/jasmine-jquery/lib/jasmine-jquery.js',
@@ -54,13 +56,6 @@ var paths = {
         files: [player.app + '/views/**/*.html']
     }
 };
-
-// var config = {
-//     scripts: [player.app + '/scripts/*.js', player.app + '/scripts/**/*.js'],
-//     images: player.app + '/images/*.*',
-//     fonts: player.app + '/fonts/*.*',
-//     html: player.app + '/views/*.html',
-// };
 
 var dist = {
     path: 'dist/',
@@ -109,6 +104,13 @@ gulp.task('build-css', function() {
         .pipe(less())
         .pipe(autoprefixer())
         .pipe(gulp.dest(dist.path + dist.styles));
+});
+
+// inject bower components
+gulp.task('bower', function() {
+    return gulp.src(paths.thirdparty)
+
+    .pipe(gulp.dest(dist.path + '/thirdparty'));
 });
 
 gulp.task('start:client', ['build-css', 'start:server'], function() {
@@ -181,13 +183,6 @@ gulp.task('test', ['start:server:test'], function() {
         }));
 });
 
-// inject bower components
-gulp.task('bower', function() {
-    return gulp.src(player.app + '/thirdparty/**/*.js')
-
-    .pipe(gulp.dest(dist.path + dist.scripts + '/thirdparty'));
-});
-
 ///////////
 // Build //
 ///////////
@@ -236,7 +231,7 @@ gulp.task('semantic', function() {
 });
 
 gulp.task('build', ['clean:dist'], function() {
-    runSequence(['index-html', 'images', 'bower', 'build-css', 'build-js', 'html']);
+    runSequence(['index-html', 'images', 'bower', 'config', 'build-css', 'build-js', 'html']);
 });
 
 gulp.task('default', ['build']);
@@ -244,5 +239,6 @@ gulp.task('default', ['build']);
 gulp.task('config', function() {
     gulp.src('app/config/playerAppConfig.json')
         .pipe(gulpNgConfig('playerApp.config'))
-        .pipe(gulp.dest('app/scripts'));
+        .pipe(gulp.dest('app/scripts'))
+        .pipe(gulp.dest(dist.path + dist.scripts));
 });
