@@ -60,7 +60,7 @@ var dist = {
     path: 'dist/',
     images: 'images/',
     scripts: 'scripts/',
-    css: 'css',
+    styles: 'styles',
     views: 'views'
 };
 
@@ -103,7 +103,7 @@ gulp.task('build-css', function() {
         .pipe(plumber())
         .pipe(less())
         .pipe(autoprefixer())
-        .pipe(gulp.dest(dist.path + dist.css));
+        .pipe(gulp.dest(dist.path + dist.styles));
 });
 
 gulp.task('start:client', ['build-css', 'start:server'], function() {
@@ -112,7 +112,7 @@ gulp.task('start:client', ['build-css', 'start:server'], function() {
 
 gulp.task('start:server', function() {
     $.connect.server({
-        root: [player.app, '.tmp'],
+        root: [player.app, 'dist'],
         livereload: true,
         // Change this to '0.0.0.0' to access the server from outside.
         port: 9000,
@@ -123,7 +123,7 @@ gulp.task('start:server', function() {
 });
 gulp.task('start:server:test', function() {
     $.connect.server({
-        root: ['test', player.app, '.tmp'],
+        root: ['test', player.app, 'dist'],
         livereload: true,
         port: 9001
     });
@@ -153,12 +153,18 @@ gulp.task('serve', function(cb) {
         'watch', cb);
 });
 
-gulp.task('serve:prod', function() {
+gulp.task('serve:prod', function(cb) {
+    runSequence('clean:dist', ['build-css'],
+        'watch', cb);
     $.connect.server({
-        root: [player.dist],
+        root: [player.app, 'dist'],
         livereload: true,
-        port: 9000
+        port: 9000,
+        middleware: function(connect, opt) {
+            return [historyApiFallback({})];
+        }
     });
+    openURL('http://localhost:9000');
 });
 
 gulp.task('test', ['start:server:test'], function() {
