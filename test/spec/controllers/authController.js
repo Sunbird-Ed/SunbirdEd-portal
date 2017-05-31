@@ -44,7 +44,6 @@ describe('Controller:AuthCtrl', function() {
 
         }
     };
-    var handleFailedResponse = function() {};
 
     // beforeEach(function() {
     //     form = $('<form>');
@@ -85,7 +84,6 @@ describe('Controller:AuthCtrl', function() {
         deferred.resolve('');
         AuthCtrl.login();
         authService.login();
-        handleFailedResponse('msg');
         timeout.flush(2000);
         scope.$apply();
         expect(AuthCtrl.login).toHaveBeenCalled();
@@ -96,7 +94,7 @@ describe('Controller:AuthCtrl', function() {
         deferred.reject();
         AuthCtrl.login();
         authService.login();
-        handleFailedResponse('msg');
+
         timeout.flush(2000);
         scope.$apply();
         expect(AuthCtrl.login).toHaveBeenCalled();
@@ -118,7 +116,7 @@ describe('Controller:AuthCtrl', function() {
         deferred.resolve('');
         AuthCtrl.logout();
         authService.logout();
-        handleFailedResponse('msg');
+
         timeout.flush(2000);
         scope.$apply();
         expect(AuthCtrl.logout).toHaveBeenCalled();
@@ -129,7 +127,7 @@ describe('Controller:AuthCtrl', function() {
         deferred.reject();
         AuthCtrl.logout();
         authService.logout();
-        handleFailedResponse('msg');
+
         timeout.flush(2000);
         scope.$apply();
         expect(AuthCtrl.logout).toHaveBeenCalled();
