@@ -29,6 +29,13 @@ angular.module('playerApp.config', [])
                 'LOGIN': 'user/login',
                 'LOGOUT': 'user/logout'
             },
+            "NOTES": {
+                "SEARCH": "notes/search",
+                "CREATE": "notes/create",
+                "UPDATE": "notes/update",
+                "GET": "notes/get",
+                "DELETE": "notes/delete"
+            }
         },
         'RESPONSE_CODE': {
             CLIENT_ERROR: 'CLIENT_ERROR',
@@ -36,5 +43,33 @@ angular.module('playerApp.config', [])
             SUCCESS: 'OK',
             RESOURSE_NOT_FOUND: 'RESOURCE_NOT_FOUND'
         },
-        'MESSAGES': {}
+        'MESSAGES': {
+            "NOTES": {
+                "CREATE": {
+                    "START": "Creating note, please wait...",
+                    "FAILED": "Creating note is failed, please try again later...",
+                    "SUCCESS": "Note created successfully..."
+                },
+                "GET": {
+                    "START": "Fetching note detail, please wait...",
+                    "FAILED": "Fetching note detail is failed, please try again later...",
+                    "SUCCESS": "Note detail fetched successfully..."
+                },
+                "REMOVE": {
+                    "START": "Deleting note, please wait...",
+                    "FAILED": "Deleting note is failed, please try again later...",
+                    "SUCCESS": "Note deleted successfully..."
+                },
+                "SEARCH": {
+                    "START": "Searching notes, please wait...",
+                    "FAILED": "Searching note is failed, please try again later...",
+                    "SUCCESS": "Note detail fetched successfully..."
+                },
+                "UPDATE": {
+                    "START": "Updating note, please wait...",
+                    "FAILED": "Updating note is failed, please try again later...",
+                    "SUCCESS": "Note updated successfully..."
+                }
+            }
+        }
     });

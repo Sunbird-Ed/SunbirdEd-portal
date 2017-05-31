@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: userContentCtrl', function() {
+xdescribe('Controller: userContentCtrl', function() {
     beforeEach(function () {
      module('playerApp');
     });

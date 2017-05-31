@@ -3,7 +3,7 @@ angular.module('playerApp')
     .service('authService', function(httpService, config, $q, $sessionStorage, $rootScope, $state) {
         function register(req) {
             var url = config.URL.BASE + config.URL.AUTH.REGISTER;
-            // return httpService.postOperation(url, req);
+            // return httpService.post(url, req);
             var deferred = $q.defer();
             deferred.resolve({
                 id: '7 c27cbf5 - e299 - 43 b0 - bca7 - 8347 f7e5abcf ',
@@ -24,7 +24,7 @@ angular.module('playerApp')
 
         function login(req) {
             var url = config.URL.BASE + config.URL.AUTH.LOGIN;
-            // return httpService.postOperation(url, req);
+            // return httpService.post(url, req);
             var deferred = $q.defer();
             deferred.resolve({
                 id: 'sunbird.login',
@@ -48,7 +48,7 @@ angular.module('playerApp')
 
         function logout(req) {
             var url = config.URL.BASE + config.URL.AUTH.LOGOUT;
-            // return httpService.postOperation(url, req);
+            // return httpService.post(url, req);
             var deferred = $q.defer();
             deferred.resolve({
                 'id': '7c27cbf5-e299-43b0-bca7-8347f7e5abcf',

@@ -10,34 +10,35 @@
 angular.module('playerApp')
     .service('httpService', function($http) {
 
-        function postOperation(url, data, headers) {
-            var request = httpCall(url, data, 'POST', headers);
+        function post(url, data, headers) {
+            var request = httpCall(url, data, "POST", headers);
             return (request.then(handleSuccess, handleError));
         }
 
-        function getOperation(url, data, headers) {
-            var request = httpCall(url, data, 'GET', headers);
+        function get(url, data, headers) {
+            var request = httpCall(url, data, "GET", headers);
             return (request.then(handleSuccess, handleError));
         }
 
-        function deleteOperation(url, data, headers) {
-            var request = httpCall(url, data, 'DELETE', headers);
+        function remove(url, data, headers) {
+            var request = httpCall(url, data, "DELETE", headers);
             return (request.then(handleSuccess, handleError));
         }
 
-        function putOperation(url, data, headers) {
-            var request = httpCall(url, data, 'PUT', headers);
+        function put(url, data, headers) {
+            var request = httpCall(url, data, "PUT", headers);
             return (request.then(handleSuccess, handleError));
         }
 
-        function patchOperation(url, data, headers) {
-            var request = httpCall(url, data, 'PATCH', headers);
+        function patch(url, data, headers) {
+            var request = httpCall(url, data, "PATCH", headers);
             return (request.then(handleSuccess, handleError));
         }
 
         function upload(url, data, headers) {
 
             var request = $http.post(url, data, {
+                //                    transformRequest: angular.identity,
                 headers: {
                     'Content-Type': undefined,
                     'cid': 'sunbird'
@@ -48,7 +49,7 @@ angular.module('playerApp')
 
         function handleSuccess(response) {
             return (response.data);
-        }
+            }
 
         function handleError(response) {
             return (response.data);
@@ -63,7 +64,6 @@ angular.module('playerApp')
         }
 
         function httpCall(url, data, method, headers) {
-            /*eslint-disable no-redeclare */
             var headers = headers || getHeader();
 
             return $http({
@@ -71,16 +71,15 @@ angular.module('playerApp')
                 url: url,
                 headers: headers,
                 data: { request: data }
-                // data: data
             });
         }
 
         return ({
-            getOperation: getOperation,
-            postOperation: postOperation,
-            putOperation: putOperation,
-            deleteOperation: deleteOperation,
-            patchOperation: patchOperation,
+            get: get,
+            post: post,
+            put: put,
+            remove: remove,
+            patch: patch,
             upload: upload
         });
     });

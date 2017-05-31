@@ -12,27 +12,27 @@ angular.module('playerApp')
 
         function search(req) {
             var url = config.URL.BASE + config.URL.CONTENT.SEARCH;
-            return httpService.postOperation(url, req);
+            return httpService.post(url, req);
         }
 
         function create(req) {
             var url = config.URL.BASE + config.URL.CONTENT.CREATE;
-            return httpService.postOperation(url, req);
+            return httpService.post(url, req);
         }
 
         function update(req,id) {
             var url = config.URL.BASE + config.URL.CONTENT.UPDATE+"/"+id;
-            return httpService.patchOperation(url, req);
+            return httpService.patch(url, req);
         }
 
         function review(req,id) {
             var url = config.URL.BASE + config.URL.CONTENT.REVIEW+"/"+id;
-            return httpService.postOperation(url, req);
+            return httpService.post(url, req);
         }
 
         function publish(req,id) {
             var url = config.URL.BASE + config.URL.CONTENT.PUBLISH+"/"+id;
-            return httpService.getOperation(url, req);
+            return httpService.get(url, req);
         }
 
         function uploadMedia(req) {

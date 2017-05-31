@@ -38,7 +38,13 @@ var paths = {
         player.app + '/thirdparty/bower_components/moment/moment.js',
         player.app + '/thirdparty/bower_components/angular-moment/angular-moment.js',
         player.app + '/thirdparty/bower_components/angular-ui-router/release/angular-ui-router.js',
-        player.app + '/thirdparty/bower_components/ngstorage/ngStorage.js'
+        player.app + '/thirdparty/bower_components/ngstorage/ngStorage.js',
+        player.app + '/thirdparty/bower_components/moment/min/moment-with-locales.min.js',
+        player.app + '/thirdparty/bower_components/angular-pagedown/angular-pagedown.min.js',
+        player.app + '/thirdparty/bower_components/pagedown/Markdown.Converter.js',
+        player.app + '/thirdparty/bower_components/pagedown/Markdown.Sanitizer.js',
+        player.app + '/thirdparty/bower_components/pagedown/Markdown.Extra.js',
+        player.app + '/thirdparty/bower_components/pagedown/Markdown.Editor.js',
     ],
     karma: 'karma.conf.js',
     views: {
