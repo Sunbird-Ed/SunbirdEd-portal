@@ -48,6 +48,7 @@
   },
   "dependencies": {
     "eslint": "^3.19.0",
+    "express": "^4.15.3",
     "gulp-ng-config": "^1.4.0"
   }
 }
