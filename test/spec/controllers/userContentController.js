@@ -1,6 +1,10 @@
 'use strict';
 
+<<<<<<< Updated upstream
 describe('Controller: userContentCtrl', function() {
+=======
+xdescribe('Controller: userContentCtrl', function() {
+>>>>>>> Stashed changes
     beforeEach(function() {
         module('playerApp');
     });
