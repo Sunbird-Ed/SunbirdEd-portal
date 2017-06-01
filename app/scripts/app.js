@@ -42,6 +42,11 @@ angular
                 templateUrl: '/views/content/usercontent.html',
                 controller: 'userContentCtrl as userContent'
             })
+            .state('Learn', {
+                url: '/learn',
+                templateUrl: '/views/learn/learn.html',
+                controller: 'LearnCtrl as learn'
+            })
             .state('note', {
                 url: '/note',
                 templateUrl: 'views/note/noteList.html',

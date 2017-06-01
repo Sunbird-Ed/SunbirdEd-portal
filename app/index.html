@@ -27,17 +27,17 @@
     <!--[if lte IE 8]>
                   <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
                 <![endif]-->
-    <div ng-include="'views/common/topHeader.html'"></div> 
-       <div class="ui top attached container fluid" style="overflow: auto;">
+    <div ng-include="'views/common/topHeader.html'"></div>
+    <div class="ui top attached container fluid" style="overflow: auto;">
         <div class="ui left vertical visible inverted sidebar menu" style="top: inherit;">
             <div class="item">
                 <ol class="ui list">
-                <!--dont remove value -->
+                    <!--dont remove value -->
                     <li value="">Signing Up</li>
                     <li value="">User</li>
                     <li value="">User Types
                         <ol>
-                            <li value="">Admin</li>      
+                            <li value="">Admin</li>
                             <li value="">Regular User</li>
                         </ol>
                     </li>
@@ -46,7 +46,7 @@
             </div>
         </div>
         <div class="pusher" style="height: 700px; width: calc(100% - 10%);">
-            <div class="ui padded grid">    
+            <div class="ui padded grid">
                 <div class="row">
                     <div class="ten wide column">
                         <!-- Add your site or application content here -->
@@ -58,7 +58,7 @@
                 </div>
                 <div class="one wide column"></div>
             </div>
-        </div>   
+        </div>
     </div>
     <div ng-include="'views/common/footer.html'"></div>
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -106,12 +106,14 @@
     <script src="scripts/services/contentService.js"></script>
     <script src="scripts/services/authService.js"></script>
     <script src="scripts/services/noteService.js"></script>
+    <script src="scripts/services/learnService.js"></script>
     <script src="scripts/controllers/authController.js"></script>
     <script src="scripts/controllers/contentController.js"></script>
     <script src="scripts/controllers/createContentController.js"></script>
     <script src="scripts/controllers/userContentController.js"></script>
     <script src="scripts/controllers/appController.js"></script>
     <script src="scripts/controllers/note/noteController.js"></script>
+    <script src="scripts/controllers/learnController.js"></script>
     <script src="scripts/filters/arraytostring.js"></script>
     <script src="scripts/filters/dateFilter.js"></script>
     <script src="scripts/playerAppConfig.js"></script>
