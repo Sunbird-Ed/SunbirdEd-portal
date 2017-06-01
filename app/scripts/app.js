@@ -9,15 +9,16 @@
  * Main module of the application.
  */
 angular
-        .module('playerApp', [
+    .module('playerApp', [
             'ngCookies',
             'ngRoute',
             'playerApp.config',
             'ui.router',
             'ngStorage',
-            'ui.pagedown'
+            'ui.pagedown',
+            'slick'
         ])
-        .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
+    .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
             $locationProvider.html5Mode(true);
             $urlRouterProvider.otherwise('/');
             $stateProvider
@@ -46,4 +47,4 @@ angular
                         templateUrl: 'views/note/noteList.html',
                         controller: 'NoteCtrl'
                     });
-        });
+    });
