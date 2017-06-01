@@ -27,7 +27,13 @@ angular.module('playerApp')
             content.data = [];
             content.autosuggest_data = {content: []};
             content.listView = false;
-            content.isContentPlayerEnabled = false;
+            //Object for content player directive
+            $scope.contentPlayer = {
+                isContentPlayerEnabled : false,
+                contentItemForPlay : {},
+                contentIdForPlay : '',
+                isShowMetaView : true
+            };
             $rootScope.showIFrameContent = false;
             content.searchContent = function ($event) {
                 content.enableLoader(true);
@@ -117,25 +123,6 @@ angular.module('playerApp')
             };
             content.searchContent();
 
-            content.playContent = function (content_data) {
-                console.log(content_data);
-                $rootScope.contentData = content_data;
-                if ($rootScope.contentData.mimeType == 'application/vnd.ekstep.ecml-archive' || $rootScope.contentData.mimeType == 'application/vnd.ekstep.html-archive')
-                {
-                    $rootScope.showIFrameContent = true;
-                    $rootScope.iFrameSrc = "https://dev.ekstep.in/assets/public/preview/preview.html?webview=true&id=" + $rootScope.contentData.identifier;
-
-                }
-
-                content.isContentPlayerEnabled = true;
-            };
-            content.closePlayer = function () {
-                $rootScope.contentData = {};
-                content.isContentPlayerEnabled = false;
-            };
-            content.trustSrc = function (src) {
-                return $sce.trustAsResourceUrl(src);
-            };
 
                 
        $scope.responsiveSliderOptions = [

@@ -15,22 +15,25 @@ angular
         'playerApp.config',
         'ui.router',
         'ngStorage',
-        'ui.pagedown',
-        'slick'
+        'ui.pagedown'
     ])
     .config(function($stateProvider, $urlRouterProvider, $locationProvider) {
-        $locationProvider.html5Mode(true);
+        $locationProvider.html5Mode({
+            enabled: false,
+            requireBase: true,
+            rewriteLinks: true
+        }).hashPrefix('');
         $urlRouterProvider.otherwise('/');
         $stateProvider
             .state('Search', {
                 url: '/search',
                 templateUrl: '/views/content/search.html',
                 controller: 'ContentCtrl as content',
-                // resolve: {
-                //     isLoggedIn: function(authService) {
-                //         authService.validUser();
-                //     }
-                // }
+                resolve: {
+                    isLoggedIn: function(authService) {
+                        authService.validUser();
+                    }
+                }
             })
             .state('Home', {
                 url: '/',
@@ -42,8 +45,13 @@ angular
                 templateUrl: '/views/content/usercontent.html',
                 controller: 'userContentCtrl as userContent'
             })
+            .state('Learn', {
+                url: '/learn',
+                templateUrl: '/views/learn/learn.html',
+                controller: 'LearnCtrl as learn'
+            })
             .state('note', {
-                url: '/note',
+                url: "/note",
                 templateUrl: 'views/note/noteList.html',
                 controller: 'NoteCtrl'
             }) .state('course', {

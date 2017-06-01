@@ -1,0 +1,15 @@
+<div ng-controller="LearnCtrl as learn">
+    <div>
+        <h2>Enrolled Courses</h2>
+    </div>
+
+
+    <li ng-repeat="enrolledCourse in learn.enrolledCourses">
+        <div>date : {{enrolledCourse.enrolledDate}}</div>
+        <div>name :{{enrolledCourse.courseName}}</div>
+        <div>{{enrolledCourse.grade}}</div>
+        <div>{{enrolledCourse.status}}</div>
+
+        <!--data:{{learn.enrolledCourses}}-->
+    </li>
+</div>

@@ -39,6 +39,11 @@ angular.module('playerApp')
             var url = config.URL.BASE + config.URL.CONTENT.UPLOAD_MEDIA;
             return httpService.upload(url, req);
         }
+        
+        function getById(req) {
+            var url = config.URL.BASE + config.URL.CONTENT.GET + '/' + req.contentId;
+            return httpService.get(url, req);
+        }
 
         return {
             search: search,
@@ -46,7 +51,8 @@ angular.module('playerApp')
             uploadMedia: uploadMedia,
             update: update,
             review: review,
-            publish: publish
+            publish: publish,
+            getById: getById
         };
 
     });

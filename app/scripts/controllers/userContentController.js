@@ -61,7 +61,7 @@ angular.module('playerApp')
         $scope.getDraftContent();
         $scope.loadRating = function() {
             $timeout(function() {
-                $('.ui.rating')
+                $('.ui.rating.content-rating')
                     .rating({
                         maxRating: 5
                     }).rating('disable', true);
