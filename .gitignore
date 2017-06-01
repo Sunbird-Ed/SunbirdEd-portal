@@ -6,7 +6,8 @@
 /bower_components
 /semantic
 semantic.json
-/app/thirdparty
+/app/thirdparty/semantic
+/app/thirdparty/bower_components
 /app/scripts/playerAppConfig.js
 /app/styles/main.css
 /coverage
