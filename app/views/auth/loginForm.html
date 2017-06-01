@@ -11,7 +11,11 @@
     <!--<p align="right"><a>Forgot your password?</a></p>-->
     <button class="ui right floated button blue" type=" submit " ng-click="auth.login() " ng-disabled="loginForm.$invalid ">Submit</button>
 </form>
-<div class="ui segement "></div>
-<div ng-if="error.showError " id="showError ">
+
+
+<!--<div ng-if="error.showError " id="showError ">
     <help-message data="error "></help-message>
+</div>-->
+<div ng-if="auth.error.isError">
+    <error-message data={{auth.error}}></error-message>
 </div>
