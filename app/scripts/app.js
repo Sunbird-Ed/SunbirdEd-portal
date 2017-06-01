@@ -15,7 +15,8 @@ angular
         'playerApp.config',
         'ui.router',
         'ngStorage',
-        'ui.pagedown'
+        'ui.pagedown',
+        'slick'
     ])
     .config(function($stateProvider, $urlRouterProvider, $locationProvider) {
         $locationProvider.html5Mode(true);
@@ -26,7 +27,7 @@ angular
                 templateUrl: '/views/content/search.html',
                 controller: 'ContentCtrl as content',
                 // resolve: {
-                //     isLoggedIn: function (authService) {
+                //     isLoggedIn: function(authService) {
                 //         authService.validUser();
                 //     }
                 // }
@@ -42,7 +43,7 @@ angular
                 controller: 'userContentCtrl as userContent'
             })
             .state('note', {
-                url: "/note",
+                url: '/note',
                 templateUrl: 'views/note/noteList.html',
                 controller: 'NoteCtrl'
             });

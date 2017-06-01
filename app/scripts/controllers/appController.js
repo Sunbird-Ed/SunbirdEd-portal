@@ -23,4 +23,8 @@ angular.module('playerApp')
                     action: 'combo'
                 });
         };
+
+        $('sidebar')
+        .sidebar({context:$('.sidebar-context')})
+
     });
