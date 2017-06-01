@@ -1,7 +1,7 @@
 <div class="ui stackable four column grid">
     <div ng-if="content.data.content.length > 0" class="column" ng-repeat="item in content.data.content track by $index" ng-init="$last && content.loadRating()">
         <div class="ui card link  raised">
-            <div class="content" ng-click="content.playContent(item)">
+            <div class="content" ng-click="contentPlayer.contentItemForPlay =item; contentPlayer.isContentPlayerEnabled = true;">
                 <div class="header">
                     <p> {{ item.name | limitTo: 20 }}&nbsp;<i ng-show="item.name.length>20" class="ellipsis horizontal icon popup-button" data-content="{{item.name}}" data-variation="wide"></i></p>
                 </div>

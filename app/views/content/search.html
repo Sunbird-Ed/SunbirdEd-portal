@@ -1,31 +1,35 @@
-<div ng-controller="ContentCtrl" ng-show="!content.isContentPlayerEnabled">
-    <div ng-include="'views/content/searchHeader.html'"></div>
-    <div class="ui segment">
-        <div class="ui padded grid">
-            <div class="ui row">
-                <div class="ui column">
-                    <div class="ui menu no-border" ng-if="content.data.count > 0">
-                        <div class="right menu">
-                            <button class="ui icon button" ng-click="content.toggleView(false)">
-                                <i class="block layout icon"></i>
-                            </button>
-                            <button class="ui icon button" ng-click="content.toggleView(true)"><i class="list layout icon"></i></button>
+<div ng-controller="ContentCtrl">
+    <div ng-show="!contentPlayer.isContentPlayerEnabled">
+        <div ng-include="'views/content/searchHeader.html'"></div>
+        <div class="ui segment">
+            <div class="ui padded grid">
+                <div class="ui row">
+                    <div class="ui column">
+                        <div class="ui menu no-border" ng-if="content.data.count > 0">
+                            <div class="right menu">
+                                <button class="ui icon button" ng-click="content.toggleView(false)">
+                                    <i class="block layout icon"></i>
+                                </button>
+                                <button class="ui icon button" ng-click="content.toggleView(true)"><i class="list layout icon"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="one stackable wide column">
+                        <div ng-if="content.listView" ng-include="'views/content/searchList.html'"></div>
+                        <div ng-if="!content.listView" ng-include="'views/content/searchCard.html'"></div>
+                        <div ng-if="content.isError">
+                            <help-message data="content.data"></help-message>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="one stackable wide column">
-                    <div ng-if="content.listView" ng-include="'views/content/searchList.html'"></div>
-                    <div ng-if="!content.listView" ng-include="'views/content/searchCard.html'"></div>
-                    <div ng-if="content.isError">
-                        <error-message data={{content.data}}></error-message>
-                    </div>
-                    
-
-                </div>
-            </div>
         </div>
     </div>
+    <div ng-if="contentPlayer.isContentPlayerEnabled">
+        <content-player visibility="contentPlayer.isContentPlayerEnabled" id="contentPlayer.contentIdForPlay"
+                        isshowmetaview="true" body="contentPlayer.contentItemForPlay"></content-player>
+    </div>
 </div>
-<div ng-include="'views/contentplayer/player.html'" ng-if="content.isContentPlayerEnabled"></div>
+

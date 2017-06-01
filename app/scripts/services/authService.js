@@ -41,7 +41,7 @@ angular.module('playerApp')
                 result: {
                     'authToken': 'token123',
                     'firstName': 'firstname'
-                }
+        }
             });
             return deferred.promise;
         }

@@ -5,7 +5,7 @@
             {{contentData.name}}
         </div>
         <div class="right menu column">
-            <button ng-click="content.closePlayer()" class='ui basic circular icon button'><i class="remove icon"></i></button>
+            <button ng-click="close()" class='ui basic circular icon button'><i class="remove icon"></i></button>
         </div>
     </div>
 
@@ -14,11 +14,10 @@
 
             <div class="eight wide column">
 
-
-                    <div class="content-player" ng-if="(contentData.mimeType == 'application/vnd.ekstep.ecml-archive' || contentData.mimeType == 'application/vnd.ekstep.html-archive')">
-                        <iframe  id="contentViewerIframe" ng-src="{{content.trustSrc(iFrameSrc)}}" height='100%' width='100%'></iframe>
-                    </div>
-                    <div class="content-player" ng-if="contentData.mimeType != 'video/youtube' && contentData.mimeType.indexOf('video') > -1">
+    <div class="content-player" ng-if="(contentData.mimeType === 'application/vnd.ekstep.ecml-archive' || contentData.mimeType === 'application/vnd.ekstep.html-archive')">
+        <iframe  id="contentViewerIframe" ng-src="{{trustSrc(iFrameSrc)}}" height='100%' width='100%'></iframe>
+    </div>
+                    <div class="content-player" ng-if="contentData.mimeType !== 'video/youtube' && contentData.mimeType.indexOf('video') > -1">
                         <video height='100%' width='100%'  id="content-video-player" class="video-js vjs-default-skin player-video"
                                controls preload="auto" autoplay="true"
                                data-setup='{"controls":true}'>
@@ -26,7 +25,7 @@
 
                         </video>
                     </div>
-                    <div class="content-player" ng-if="contentData.mimeType == 'video/youtube'" apply-script id="content-video-player-youtube-holder" videosrc="{{contentData.artifactUrl}}">
+                    <div class="content-player" ng-if="contentData.mimeType === 'video/youtube'" apply-script id="content-video-player-youtube-holder" videosrc="{{contentData.artifactUrl}}">
 
                         <video height='100%' width='100%'
                                id="content-video-player-youtube"
@@ -35,16 +34,28 @@
                                data-setup='{ "techOrder": ["youtube"], "sources": [{ "type": "video/youtube", "src": ""}] }'
                                ></video>
                     </div>
-                    <div class="content-player" ng-if="contentData.mimeType == 'application/pdf'">
+                    <div class="content-player" ng-if="contentData.mimeType === 'application/pdf'">
                         <iframe height='100%' width='100%' src='https://docs.google.com/gview?url=www.pdf995.com/samples/pdf.pdf&embedded=true'></iframe>
                     </div>
-                    <div class="content-player" ng-if="{{contentData.mimeType.indexOf('image') > -1}}" >
+                    <div class="content-player" ng-if="contentData.mimeType.indexOf('image') > -1" >
                         <img height='100%' width='100%' ng-src="{{contentData.artifactUrl}}" />
                     </div>
 
             </div>
-            <div class="four wide column">
+            <div class="four wide column" ng-if="showMetaData">
                 <div ng-include="'views/contentplayer/contentMeta.html'"></div>
+            </div>
+        </div>
+    <div ng-if="errorObject.showError">
+        <div class="ui active dimmer inverted">
+            <div class="content">
+                <div class="center" ng-if="!errorObject.showMetaLoader">
+                    <h2 class="ui header {{errorObject.messageClass}}">
+                        {{errorObject.message}}
+                    </h2>
+                    <span ng-if="errorObject.showTryAgainButton"><button class="ui button" ng-click="tryAgain()">Try Again</button></span>
+                    <span ng-if="errorObject.showCloseButton"><button class="ui red button" ng-click="close()">Close</button></span>
+                </div>
             </div>
         </div>
     </div>
