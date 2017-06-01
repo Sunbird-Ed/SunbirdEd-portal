@@ -246,6 +246,6 @@ gulp.task('default', ['build']);
 gulp.task('config', function() {
     gulp.src('app/config/playerAppConfig.json')
         .pipe(gulpNgConfig('playerApp.config'))
-        .pipe(gulp.dest(player.app + 'scripts'))
+        .pipe(gulp.dest('app/scripts'))
         .pipe(gulp.dest(dist.path + dist.scripts));
 });
