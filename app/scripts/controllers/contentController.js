@@ -123,5 +123,44 @@ angular.module('playerApp')
             };
             content.searchContent();
 
+
+                
+       $scope.responsiveSliderOptions = [
+
+           {
+               breakpoint: 1400,
+               settings: {
+                   arrows: true,
+                   slidesToShow: 4,
+                   slidesToScroll: 4
+               }
+           },
+
+           {
+               breakpoint: 959,
+               settings: {
+                   arrows: true,
+                   slidesToShow: 4,
+                   slidesToScroll: 4
+               }
+           },
+           {
+               breakpoint: 600,
+                settings: {
+                   arrows: true,        
+                   slidesToShow: 2,
+                   slidesToScroll: 2
+               }
+           },
+           {
+               breakpoint: 480,
+               settings: {
+                   slidesToShow: 2,
+                   slidesToScroll: 2
+               }
+           }
+       ];
+
         });
+ 
 

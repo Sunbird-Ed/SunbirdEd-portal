@@ -1,41 +1,45 @@
 <div class="ui stackable four column grid">
-    <div ng-if="content.data.content.length > 0" class="column" ng-repeat="item in content.data.content track by $index" ng-init="$last && content.loadRating()">
-        <div class="ui card link  raised">
-            <div class="content" ng-click="contentPlayer.contentItemForPlay =item; contentPlayer.isContentPlayerEnabled = true;">
-                <div class="header">
-                    <p> {{ item.name | limitTo: 20 }}&nbsp;<i ng-show="item.name.length>20" class="ellipsis horizontal icon popup-button" data-content="{{item.name}}" data-variation="wide"></i></p>
-                </div>
-                </br>
-                <span>{{item.contentType}}<span>
-                        <span>|</span>
-                <span> {{item.status}}</span>
-                <div class="ui fluid image">
-                    <img class="content-result-img" ng-src="{{item.appIcon ? item.appIcon : '../images/sunbird_logo.png'}}">
-                </div>
-                <div class="extra " style="background: rgba(0, 0, 0, 0.5);;color: #FFFFFF; padding:5px;">
-                    <div class="item" ng-if="item.language.length == 1">{{item.language[0]}}</div>
-                    <div class="item" ng-if="item.language.length > 1">
-                        <div class="ui compact menu no-border">
-                            <div class="ui simple dropdown item">
-                                {{item.language[0]}}
-                                <i class="ellipsis vertical icon"></i>
-                                <div class="menu">
-                                    <div class="item" ng-repeat="language in item.language">{{language}}</div>
+    <slick infinite=true slides-to-show=4 init-onload=true slides-to-scroll=4 data="content.data.content"  prev-arrow="slick-prev" next-arrow="slick-next">
+        <button type="button" class="slick-prev"></button>
+        <button type="button" class="slick-next"></button>
+        <div ng-if="content.data.content.length > 0" class="column" ng-repeat="item in content.data.content track by $index" ng-init="$last && content.loadRating()">
+            <div class="ui card link  raised">
+                <div class="content" ng-click="contentPlayer.contentItemForPlay =item; contentPlayer.isContentPlayerEnabled = true;">
+                    <div class="header">
+                        <p> {{ item.name | limitTo: 20 }}&nbsp;<i ng-show="item.name.length>20" class="ellipsis horizontal icon popup-button" data-content="{{item.name}}" data-variation="wide"></i></p>
+                    </div>
+                    </br>
+                    <span>{{item.contentType}}<span>
+                            <span>|</span>
+                    <span> {{item.status}}</span>
+                    <div class="ui fluid image">
+                        <img class="content-result-img" ng-src="{{item.appIcon ? item.appIcon : '../images/sunbird_logo.png'}}">
+                    </div>
+                    <div class="extra " style="background: rgba(0, 0, 0, 0.5);;color: #FFFFFF; padding:5px;">
+                        <div class="item" ng-if="item.language.length == 1">{{item.language[0]}}</div>
+                        <div class="item" ng-if="item.language.length > 1">
+                            <div class="ui compact menu no-border">
+                                <div class="ui simple dropdown item">
+                                    {{item.language[0]}}
+                                    <i class="ellipsis vertical icon"></i>
+                                    <div class="menu">
+                                        <div class="item" ng-repeat="language in item.language">{{language}}</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="ui rating" data-rating={{content.me_averageRating}}></div>
                     </div>
-                    <div class="ui rating" data-rating={{content.me_averageRating}}></div>
-                </div>
-                <div class="description content-result-card-description">
-                    <p> {{ item.description | limitTo: 80 }}&nbsp;<i ng-show="item.description.length>=80" class="ellipsis horizontal icon popup-button" data-content="{{item.description}}" data-variation="wide"></i></p>
-                </div>
-                <div class="ui inverted divider"></div>
-                <div class="">
-                    Last Updated On: {{item.lastUpdatedOn| date}}</br>
-                    {{item.owner}}
+                    <div class="description content-result-card-description">
+                        <p> {{ item.description | limitTo: 80 }}&nbsp;<i ng-show="item.description.length>=80" class="ellipsis horizontal icon popup-button" data-content="{{item.description}}" data-variation="wide"></i></p>
+                    </div>
+                    <div class="ui inverted divider"></div>
+                    <div class="">
+                        Last Updated On: {{item.lastUpdatedOn| date}}</br>
+                        {{item.owner}}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </slick>
 </div>

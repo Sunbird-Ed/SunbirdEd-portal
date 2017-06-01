@@ -50,18 +50,23 @@ angular.module('playerApp')
             var existingUser = {
                 'id': 'sunbird.login',
                 'ts': new Date(),
-                'params': {
-                    'did': 'device UUID from which API is called',
-                    'msgid': Math.random(),
-                    'cid': 'consumer id'
-                },
+                // 'params': {
+                //     // 'did': 'device UUID from which API is called',
+                //     // 'msgid': Math.random(),
+                //     // 'cid': 'consumer id'
+                // },
+                // 'params': {
+
+                // },
                 'request': {
-                    'authName': auth.userName,
+                    'userName': auth.userName,
                     'password': auth.password,
                     'source': 'portal'
                 }
             };
+
             authService.login(existingUser).then(function(successResponse) {
+                    console.log('successResponse', successResponse);
                     if (successResponse && successResponse.responseCode === 'OK') {
                         auth.closeAuthModal();
                         $rootScope.isLoggedIn = true;

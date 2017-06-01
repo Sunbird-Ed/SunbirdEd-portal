@@ -8,7 +8,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('createContentCtrl', function($scope, contentService, $timeout, $rootScope, $window, $sce) {
+    .controller('createContentCtrl', function($scope, contentService, $timeout, $rootScope, $window, $sce, config) {
         $scope.showContentEditor = false;
         $scope.iconUpdate = false;
         $scope.formStep = 0;
@@ -188,24 +188,12 @@ angular.module('playerApp')
             $scope.content.url = $scope.content.url || undefined;
             $scope.content.file = undefined;
             if ($scope.meta.type == "application/vnd.ekstep.ecml-archive" || $scope.meta.type == "application/vnd.ekstep.html-archive") {
-                window.context = {
-                    "content_id": "do_11224848119413145617",
-                    "sid": "rctrs9r0748iidtuhh79ust993",
-                    "user": {
-                        "id": "390",
-                        "name": "Chetan Sachdev",
-                        "email": "chetan.sachdev@tarento.com",
-                        "avtar": "https://dev.ekstep.in/media/com_easysocial/defaults/avatars/user/medium.png",
-                        "logout": "https://dev.ekstep.in/index.php?option=com_easysocial&view=login&layout=logout"
-                    },
-                    "baseURL": "https://dev.ekstep.in/",
-                    "editMetaLink": "/component/ekcontent/contentform/do_10097535?Itemid=0"
-                };
-                $scope.ekURL = $sce.trustAsResourceUrl("/thirdparty/content-editor/index.html")
+                window.context = config.ekstep_CE_config.context;
+                window.context.content_id = $scope.contentId;
+                window.config = config.ekstep_CE_config.config;
+                $scope.ekURL = $sce.trustAsResourceUrl("http://localhost:7000/ekContentEditor?contentId="+$scope.contentId)
             }
         }
-
-
 
         $scope.updateUrl = function(req, nextFlag) {
             req.content.versionKey = $scope.versionKey;
