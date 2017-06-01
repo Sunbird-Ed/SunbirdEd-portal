@@ -34,9 +34,10 @@
                            data-setup='{ "techOrder": ["youtube"], "sources": [{ "type": "video/youtube", "src": ""}] }'
                            ></video>
                 </div>
-                <div class="content-player" ng-if="contentData.mimeType === 'application/pdf'">
-                        <iframe height='100%' width='100%' src='https://docs.google.com/gview?url=www.pdf995.com/samples/pdf.pdf&embedded=true'></iframe>
-                    </div>
+                <div ng-if="contentData.mimeType === 'application/pdf'" class="pdf-editor content-player">
+                        <pdf-viewer  url="contentData.artifactUrl"
+                            scale="1" show-toolbar="true"></pdf-viewer>
+                </div>
                 <div class="content-player" ng-if="contentData.mimeType.indexOf('image') > -1" >
                     <img height='100%' width='100%' ng-src="{{contentData.artifactUrl}}" />
                 </div>
