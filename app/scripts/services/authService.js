@@ -2,6 +2,7 @@
 angular.module('playerApp')
     .service('authService', function(httpServiceJava, config, $q, $sessionStorage, $rootScope, $state) {
         function login(req) {
+
             var url = config.URL.USER_BASE + config.URL.AUTH.LOGIN;
             return httpServiceJava.post(url, req);
             // var deferred = $q.defer();

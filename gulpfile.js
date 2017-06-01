@@ -94,7 +94,7 @@ gulp.task('images', function() {
 
 gulp.task('build-js', function() {
     return gulp.src(paths.scripts)
-        .pipe(useref())
+        // .pipe(useref())
         .pipe(gulp.dest(dist.path + dist.scripts));
 });
 
@@ -105,6 +105,13 @@ gulp.task('build-css', function() {
         .pipe(autoprefixer())
         .pipe(gulp.dest(dist.path + dist.styles));
 });
+gulp.task('build-css-dev', function() {
+    return gulp.src('app/styles/**/main.less')
+        .pipe(plumber())
+        .pipe(less())
+        .pipe(autoprefixer())
+        .pipe(gulp.dest('app/styles'));
+});
 
 // inject bower components
 gulp.task('bower', function() {
@@ -113,13 +120,18 @@ gulp.task('bower', function() {
     .pipe(gulp.dest(dist.path + '/thirdparty'));
 });
 
+gulp.task('html', function() {
+    return gulp.src(player.app + '/views/**/*')
+        .pipe(gulp.dest(dist.path + dist.views));
+});
+
 gulp.task('start:client', ['build-css', 'start:server'], function() {
     openURL('http://localhost:9000');
 });
 
 gulp.task('start:server', function() {
     $.connect.server({
-        root: [player.app, 'dist'],
+        root: [player.app, '.tmp'],
         livereload: true,
         // Change this to '0.0.0.0' to access the server from outside.
         port: 9000,
@@ -130,7 +142,7 @@ gulp.task('start:server', function() {
 });
 gulp.task('start:server:test', function() {
     $.connect.server({
-        root: ['test', player.app, 'dist'],
+        root: ['test', player.app, '.tmp'],
         livereload: true,
         port: 9001
     });
@@ -156,7 +168,7 @@ gulp.task('watch', function() {
 });
 
 gulp.task('serve', function(cb) {
-    runSequence('clean:dist', ['start:client'], ['build-css'],
+    runSequence('clean:dist', ['start:client'], ['build-css-dev'],
         'watch', cb);
 });
 
@@ -209,11 +221,6 @@ gulp.task('client:build', ['html', 'build-css'], function() {
         .pipe(gulp.dest(player.dist));
 });
 
-gulp.task('html', function() {
-    return gulp.src(player.app + '/views/**/*')
-        .pipe(gulp.dest(dist.path + dist.views));
-});
-
 gulp.task('semantic', function() {
     gulp.src('semantic/dist', {
         read: false
@@ -231,7 +238,7 @@ gulp.task('semantic', function() {
 });
 
 gulp.task('build', ['clean:dist'], function() {
-    runSequence(['index-html', 'images', 'bower', 'config', 'build-css', 'build-js', 'html']);
+    runSequence(['index-html', 'images', 'bower', 'config', 'build-css', 'build-css-dev', 'build-js', 'html']);
 });
 
 gulp.task('default', ['build']);
@@ -239,6 +246,6 @@ gulp.task('default', ['build']);
 gulp.task('config', function() {
     gulp.src('app/config/playerAppConfig.json')
         .pipe(gulpNgConfig('playerApp.config'))
-        .pipe(gulp.dest('app/scripts'))
+        .pipe(gulp.dest(player.app + 'scripts'))
         .pipe(gulp.dest(dist.path + dist.scripts));
 });
