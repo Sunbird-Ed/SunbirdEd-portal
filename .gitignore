@@ -8,6 +8,7 @@
 semantic.json
 /app/thirdparty
 /app/scripts/playerAppConfig.js
+/app/styles/main.css
 /coverage
 /npm-debug.log
 nbproject/

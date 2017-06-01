@@ -94,7 +94,7 @@ gulp.task('images', function() {
 
 gulp.task('build-js', function() {
     return gulp.src(paths.scripts)
-        .pipe(useref())
+        // .pipe(useref())
         .pipe(gulp.dest(dist.path + dist.scripts));
 });
 
@@ -131,7 +131,7 @@ gulp.task('start:client', ['build-css', 'start:server'], function() {
 
 gulp.task('start:server', function() {
     $.connect.server({
-        root: [player.app, 'dist'],
+        root: [player.app, '.tmp'],
         livereload: true,
         // Change this to '0.0.0.0' to access the server from outside.
         port: 9000,
@@ -142,7 +142,7 @@ gulp.task('start:server', function() {
 });
 gulp.task('start:server:test', function() {
     $.connect.server({
-        root: ['test', player.app, 'dist'],
+        root: ['test', player.app, '.tmp'],
         livereload: true,
         port: 9001
     });

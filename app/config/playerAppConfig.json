@@ -12,7 +12,10 @@
                 "GET": "course/get",
                 "GET_MY_COURSE": "course/get/mycourse",
                 "HIERARCHY": "course/hierarchy",
-                "UPLOAD_MEDIA": "upload/media"
+                "UPLOAD_MEDIA": "upload/media",
+                "USER_COURSE_SCHEDULE":"user/courses",
+                "USER_CONTENT_STATE":"user/content/state",
+                "GET_ENROLLED_COURSES": "user/courses/enroll"
             },
             "CONTENT": {
                 "SEARCH": "content/search",
