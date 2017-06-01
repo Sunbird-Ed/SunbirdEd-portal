@@ -205,7 +205,7 @@ angular.module('playerApp')
                     $scope.messageClass = "green";
                     $scope.message = $scope.meta.name + " content updated Successfully.";
                     if (nextFlag) {
-                        $scope.formStep = 2;
+                        $scope.showContentFinalView();
                     }
                 } else {
                     $scope.showError("Unable to update " + $scope.meta.name + " content.");
@@ -299,6 +299,14 @@ angular.module('playerApp')
             }, function(error) {
                 $scope.showError("Unable to publish" + $scope.meta.name + " content.");
             });
+        }
+
+        $scope.showContentFinalView = function () {
+            $scope.formStep = 2;
+            $scope.contentPlayer = {
+                isContentPlayerEnabled : true,
+                contentId : $scope.contentId
+            };
         }
 
     });

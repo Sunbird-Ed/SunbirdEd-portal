@@ -65,7 +65,7 @@
                                 <form class="ui form big">
                                     <div class="field">
                                         <div class="ui big right floated button" tabindex="0" ng-click="closeEditor();">Skip</div>
-                                        <div class="ui big right floated primary button" tabindex="0" ng-click="updateMediaContent(1)">Next</div>
+                                        <div class="ui big right floated primary button" tabindex="0" ng-click="showContentFinalView()">Next</div>
                                     </div>
                                 </form>
                             </div>
@@ -74,7 +74,7 @@
                                 <form class="ui form big">
                                     <div class="field">
                                         <div class="ui big right floated button" tabindex="0" ng-click="closeEditor();">Skip</div>
-                                        <div class="ui big right floated primary button" tabindex="0" ng-click="updateMediaContent(1)">Next</div>
+                                        <div class="ui big right floated primary button" tabindex="0" ng-click="showContentFinalView()">Next</div>
                                     </div>
                                 </form>
                             </div>
@@ -128,6 +128,8 @@
         </div>
         <div class="content-form" ng-if="formStep == 2;">
             <h1 class="ui dividing header">Preview Content</h1>
+            <content-player visibility="contentPlayer.isContentPlayerEnabled" id="contentPlayer.contentId" isshowmetaview="true"></content-player>
+
             <div class="ui big right floated button" tabindex="0" ng-click="closeEditor();">Skip</div>
             <div class="ui big right floated primary button" tabindex="0" ng-click="publishContent();">Publish</div>
             <div class="ui big right floated primary button" tabindex="0" ng-click="reviewContent();">Send for Review</div>

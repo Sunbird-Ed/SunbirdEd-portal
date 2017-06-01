@@ -6,9 +6,7 @@
  * @description
  * # contentPlayer
  */
-var app = angular.module('playerApp');
-
-app.directive('contentPlayer', function () {
+angular.module('playerApp').directive('contentPlayer', function () {
 
     return {
         templateUrl: '/views/contentplayer/player.html',
@@ -20,18 +18,15 @@ app.directive('contentPlayer', function () {
             isshowmetaview: '='
         },
         link: function (scope, element, attrs) {
-
-            if(scope.visibility === false) {
                 scope.$watch('visibility', function () {
                     scope.updateDataOnWatch(scope);
                 });
-            }
         },
         controller: 'contentPlayerCtrl'
     };
 });
 
-app.controller('contentPlayerCtrl', function ($scope, $sce, contentService) {
+angular.module('playerApp').controller('contentPlayerCtrl', function ($scope, $sce, contentService) {
     
     $scope.updateDataOnWatch = function (scope) {
         if (scope.body) {
