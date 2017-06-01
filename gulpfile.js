@@ -105,12 +105,24 @@ gulp.task('build-css', function() {
         .pipe(autoprefixer())
         .pipe(gulp.dest(dist.path + dist.styles));
 });
+gulp.task('build-css-dev', function() {
+    return gulp.src('app/styles/**/main.less')
+        .pipe(plumber())
+        .pipe(less())
+        .pipe(autoprefixer())
+        .pipe(gulp.dest('app/styles'));
+});
 
 // inject bower components
 gulp.task('bower', function() {
     return gulp.src(paths.thirdparty)
 
     .pipe(gulp.dest(dist.path + '/thirdparty'));
+});
+
+gulp.task('html', function() {
+    return gulp.src(player.app + '/views/**/*')
+        .pipe(gulp.dest(dist.path + dist.views));
 });
 
 gulp.task('start:client', ['build-css', 'start:server'], function() {
@@ -156,7 +168,7 @@ gulp.task('watch', function() {
 });
 
 gulp.task('serve', function(cb) {
-    runSequence('clean:dist', ['start:client'], ['build-css'],
+    runSequence('clean:dist', ['start:client'], ['build-css-dev'],
         'watch', cb);
 });
 
@@ -209,11 +221,6 @@ gulp.task('client:build', ['html', 'build-css'], function() {
         .pipe(gulp.dest(player.dist));
 });
 
-gulp.task('html', function() {
-    return gulp.src(player.app + '/views/**/*')
-        .pipe(gulp.dest(dist.path + dist.views));
-});
-
 gulp.task('semantic', function() {
     gulp.src('semantic/dist', {
         read: false
@@ -231,7 +238,7 @@ gulp.task('semantic', function() {
 });
 
 gulp.task('build', ['clean:dist'], function() {
-    runSequence(['index-html', 'images', 'bower', 'config', 'build-css', 'build-js', 'html']);
+    runSequence(['index-html', 'images', 'bower', 'config', 'build-css', 'build-css-dev', 'build-js', 'html']);
 });
 
 gulp.task('default', ['build']);
