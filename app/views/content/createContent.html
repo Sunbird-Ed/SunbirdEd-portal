@@ -29,8 +29,8 @@
                                 <select class="ui dropdown" ng-model="meta.type" id="contenttype" ng-class="contentId ? 'disabled':''">
                                     <option value="application/vnd.ekstep.ecml-archive">ECML</option>
                                     <option value="application/vnd.ekstep.html-archive">HTML</option>
-                                    <option value="video/youtube">youtube</option>
-                                    <option value="video/mp4">mp4</option>
+                                    <option value="video/youtube">Youtube</option>
+                                    <option value="video/mp4">MP4</option>
                                     <option value="application/pdf">PDF</option>
                                 </select>
                             </div>
@@ -61,16 +61,23 @@
                     <div class="ui twelve wide column">
                         <div ng-switch on="meta.type">
                             <div ng-switch-when="application/vnd.ekstep.ecml-archive">
-                                <iframe ng-if="ekURL" ng-src="{{ekURL}}" style="width: 100%; height: 500px;" id="EKContentEditor" ></iframe>
+                                <iframe ng-if="ekURL" ng-src="{{ekURL}}" style="width: 100%; height: 700px;"></iframe>
                                 <form class="ui form big">
                                     <div class="field">
                                         <div class="ui big right floated button" tabindex="0" ng-click="closeEditor();">Skip</div>
-                                        <div class="ui big right floated primary button" tabindex="0" ng-click="updateMediaContent(0)">Save</div>
-                                        <div class="ui big right floated primary button" tabindex="0" ng-click="updateMediaContent(1)">Save &#38; Next</div>
+                                        <div class="ui big right floated primary button" tabindex="0" ng-click="updateMediaContent(1)">Next</div>
                                     </div>
                                 </form>
                             </div>
-                            <div ng-switch-when="html"></div>
+                            <div ng-switch-when="html">
+                                <iframe ng-if="ekURL" ng-src="{{ekURL}}" style="width: 100%; height: 700px;"></iframe>
+                                <form class="ui form big">
+                                    <div class="field">
+                                        <div class="ui big right floated button" tabindex="0" ng-click="closeEditor();">Skip</div>
+                                        <div class="ui big right floated primary button" tabindex="0" ng-click="updateMediaContent(1)">Next</div>
+                                    </div>
+                                </form>
+                            </div>
                             <div ng-switch-when="video/youtube">
                                 <form class="ui big form">
                                     <div class="field">

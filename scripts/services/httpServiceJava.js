@@ -8,36 +8,35 @@
  * Service in the playerApp.
  */
 angular.module('playerApp')
-    .service('httpService', function($http) {
-
-        function postOperation(url, data, headers) {
+    .service('httpServiceJava', function($http) {
+        function post(url, data, headers) {
             var request = httpCall(url, data, 'POST', headers);
             return (request.then(handleSuccess, handleError));
         }
 
-        function getOperation(url, data, headers) {
+        function get(url, data, headers) {
             var request = httpCall(url, data, 'GET', headers);
             return (request.then(handleSuccess, handleError));
         }
 
-        function deleteOperation(url, data, headers) {
+        function remove(url, data, headers) {
             var request = httpCall(url, data, 'DELETE', headers);
             return (request.then(handleSuccess, handleError));
         }
 
-        function putOperation(url, data, headers) {
+        function put(url, data, headers) {
             var request = httpCall(url, data, 'PUT', headers);
             return (request.then(handleSuccess, handleError));
         }
 
-        function patchOperation(url, data, headers) {
+        function patch(url, data, headers) {
             var request = httpCall(url, data, 'PATCH', headers);
             return (request.then(handleSuccess, handleError));
         }
 
         function upload(url, data, headers) {
-
             var request = $http.post(url, data, {
+                //                    transformRequest: angular.identity,
                 headers: {
                     'Content-Type': undefined,
                     'cid': 'sunbird'
@@ -57,30 +56,36 @@ angular.module('playerApp')
         function getHeader() {
             var headers = {
                 'Content-Type': 'application/json',
-                'cid': 'sunbird'
+                'Accept': 'application/json',
+                'id': 'id',
+                'X-Consumer-ID': 'X-Consumer-ID',
+                'X-Device-ID': 'X-Device-ID',
+                'X-msgId': '8e27cbf5-e299-43b0-bca7-8347f7e5abcf',
+                'ts': '2017-05-25 10:18:56:578+0530'
+
             };
+            headers.Accept = 'text/html,application/xhtml+xml,application/xml,application/json;q=0.9,image/webp,*/*;q=0.8';
             return headers;
         }
 
         function httpCall(url, data, method, headers) {
-            /*eslint-disable no-redeclare */
             var headers = headers || getHeader();
 
             return $http({
                 method: method,
                 url: url,
                 headers: headers,
-                data: { request: data }
-                // data: data
+                // data: { request: data },
+                data: data
             });
         }
 
         return ({
-            getOperation: getOperation,
-            postOperation: postOperation,
-            putOperation: putOperation,
-            deleteOperation: deleteOperation,
-            patchOperation: patchOperation,
+            get: get,
+            post: post,
+            put: put,
+            remove: remove,
+            patch: patch,
             upload: upload
         });
     });

@@ -17,30 +17,62 @@
     <link rel="stylesheet" href="thirdparty/semantic/styles/semantic.min.css">
     <link rel="stylesheet" href="thirdparty/bower_components/video.js/dist/video-js.min.css">
     <link rel="stylesheet" href="thirdparty/bower_components/angular-pagedown/angular-pagedown.min.css">
+    <link rel="stylesheet" href="thirdparty/bower_components/slick-carousel/slick/slick.css">
+    <link rel="stylesheet" href="thirdparty/bower_components/slick-carousel/slick/slick-theme.css">
     <base href="/">
     <!-- endbuild -->
 </head>
 
-<body ng-app="playerApp" ng-controller="AppCtrl">
+<body ng-app="playerApp" ng-controller="AppCtrl" style="overflow: hidden;">
     <!--[if lte IE 8]>
                   <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
                 <![endif]-->
-    <div ng-include="'views/common/topHeader.html'"></div>
-    <div class="ui padded grid">
-        <div class="row">
-            <div class="one wide column"></div>
-            <div class="ten wide column">
-                <!-- Add your site or application content here -->
-                <main>
-                    <div ui-view></div>
-                </main>
+    <div ng-include="'views/common/topHeader.html'"></div> 
+       <div class="ui top attached container fluid" style="overflow: auto;">
+        <div class="ui left vertical visible inverted sidebar menu" style="top: inherit;">
+            <div class="item">
+                <ol class="ui list">
+                <!--dont remove value -->
+                    <li value="">Signing Up</li>
+                    <li value="">User</li>
+                    <li value="">User Types
+                        <ol>
+                            <li value="">Admin</li>      
+                            <li value="">Regular User</li>
+                        </ol>
+                    </li>
+                    <li value="">Account</li>
+                </ol>
             </div>
-            <div class="one wide column"></div>
         </div>
-        <div class="one wide column"></div>
-
+        <div class="pusher" style="height: 700px; width: calc(100% - 10%);">
+            <div class="ui padded grid">    
+                <div class="row">
+                    <div class="ten wide column">
+                        <!-- Add your site or application content here -->
+                        <main>
+                            <div ui-view></div>
+                        </main>
+                    </div>
+                    <div class="one wide column"></div>
+                </div>
+                <div class="one wide column"></div>
+            </div>
+        </div>   
     </div>
+    <div ng-include="'views/common/footer.html'"></div>
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+    <script>
+        ! function(A, n, g, u, l, a, r) {
+            A.GoogleAnalyticsObject = l, A[l] = A[l] || function() {
+                    (A[l].q = A[l].q || []).push(arguments)
+                }, A[l].l = +new Date, a = n.createElement(g),
+                r = n.getElementsByTagName(g)[0], a.src = u, r.parentNode.insertBefore(a, r)
+        }(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
+        ga('create', 'UA-XXXXX-X');
+        ga('send', 'pageview');
+    </script>
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
     <script src="thirdparty/bower_components/jquery/dist/jquery.js"></script>
@@ -58,6 +90,8 @@
     <script src="thirdparty/bower_components/pagedown/Markdown.Sanitizer.js"></script>
     <script src="thirdparty/bower_components/pagedown/Markdown.Extra.js"></script>
     <script src="thirdparty/bower_components/pagedown/Markdown.Editor.js"></script>
+    <script src="thirdparty/bower_components/angular-slick/dist/slick.js"></script>
+    <script src="thirdparty/bower_components/slick-carousel/slick/slick.js"></script>
     <!-- endbower -->
 
 
@@ -68,6 +102,7 @@
     <script src="scripts/app.js"></script>
     <script src="scripts/services/playerAppConstants.js"></script>
     <script src="scripts/services/httpService.js"></script>
+    <script src="scripts/services/httpServiceJava.js"></script>
     <script src="scripts/services/contentService.js"></script>
     <script src="scripts/services/authService.js"></script>
     <script src="scripts/services/noteService.js"></script>
