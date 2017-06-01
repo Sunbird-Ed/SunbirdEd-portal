@@ -22,7 +22,7 @@
                 </div>
             </div>
         </div>
-        <div class="ui rating" data-rating="{{content.me_averageRating}}"></div>
+        <div class="ui rating content-rating" data-rating="{{content.me_averageRating}}"></div>
     </div>
     <div class="description content-result-card-description">
         <p> {{ item.description | limitTo: 80 }}&nbsp;<i ng-show="item.description.length>=80" class="ellipsis horizontal icon popup-button" data-content="{{item.description}}" data-variation="wide"></i></p>
