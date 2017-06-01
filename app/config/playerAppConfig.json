@@ -12,7 +12,8 @@
                 "GET": "course/get",
                 "GET_MY_COURSE": "course/get/mycourse",
                 "HIERARCHY": "course/hierarchy",
-                "UPLOAD_MEDIA": "upload/media"
+                "UPLOAD_MEDIA": "upload/media",
+                "GET_ENROLLED_COURSES": "user/courses/enroll"
             },
             "CONTENT": {
                 "SEARCH": "content/search",
