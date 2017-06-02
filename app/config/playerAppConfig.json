@@ -3,6 +3,7 @@
         "URL": {
             "BASE": "http://localhost:5000/api/sb/v1/",
             "USER_BASE": "http://10.0.1.75:9000/v1/",
+            "MOCK_API_BASE": "http://13.71.127.158:9000/v1/",
             "COURSE": {
                 "SEARCH": "course/search",
                 "CREATE": "course/create",
@@ -13,9 +14,9 @@
                 "GET_MY_COURSE": "course/get/mycourse",
                 "HIERARCHY": "course/hierarchy",
                 "UPLOAD_MEDIA": "upload/media",
-                "USER_COURSE_SCHEDULE":"user/courses",
-                "USER_CONTENT_STATE":"user/content/state",
-                "GET_ENROLLED_COURSES": "user/courses/enroll"
+                "USER_COURSE_SCHEDULE": "user/courses",
+                "USER_CONTENT_STATE": "user/content/state",
+                "GET_ENROLLED_COURSES": "user/courses"
             },
             "CONTENT": {
                 "SEARCH": "content/search",

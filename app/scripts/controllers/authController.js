@@ -19,8 +19,7 @@ angular.module('playerApp')
                 .modal('hide');
         };
 
-
-        function handleFail(errorResponse) {
+        function handleFailedResponse(errorResponse) {
             var error = {};
             error.isError = true;
             error.message = errorResponse.responseCode === 'CLIENT_ERROR' ? 'invalid username or password' : '';
@@ -32,7 +31,6 @@ angular.module('playerApp')
             }, 2000);
         }
 
-        // this function called for register a new auth
         auth.login = function() {
             var existingUser = {
                 'id': 'sunbird.login',
@@ -53,21 +51,23 @@ angular.module('playerApp')
             };
 
             authService.login(existingUser).then(function(successResponse) {
-                    console.log('successResponse', successResponse);
                     if (successResponse && successResponse.responseCode === 'OK') {
+                        var loginResponse = successResponse.result.response;
                         auth.closeAuthModal();
                         $rootScope.isLoggedIn = true;
-                        $scope.token = successResponse.result.authToken;
-                        $sessionStorage.firstName = successResponse.result.firstName;
+                        $scope.token = loginResponse.token;
+                        $scope.userId = loginResponse.userId;
+                        $sessionStorage.firstName = loginResponse.firstName;
                         $sessionStorage.isLoggedIn = $rootScope.isLoggedIn;
                         $sessionStorage.token = $scope.token;
+                        $sessionStorage.userId = $scope.userId;
                         $state.go('Search');
                     } else {
-                        handleFail(successResponse);
+                        handleFailedResponse(successResponse);
                     }
                 })
                 .catch(function(error) {
-                    handleFail(error);
+                    handleFailedResponse(error);
                 });
         };
 
@@ -88,17 +88,19 @@ angular.module('playerApp')
                         $scope.error = {};
                         $rootScope.isLoggedIn = false;
                         $scope.token = '';
+                        $scope.userId = '';
                         $sessionStorage.firstName = '';
                         $sessionStorage.isLoggedIn = $rootScope.isLoggedIn;
                         $sessionStorage.token = $scope.token;
+                        $sessionStorage.userId = '';
                         $state.go('Home');
                         auth.resetForm();
                     } else {
-                        handleFailedResponse(config.MESSAGES.AUTH.LOGOUT.FAILED);
+                        handleFailedResponse(successResponse);
                     }
                 })
-                .catch(function() {
-                    handleFailedResponse(config.MESSAGES.AUTH.LOGOUT.FAILED);
+                .catch(function(error) {
+                    handleFailedResponse(error);
                 });
         };
     });

@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="thirdparty/semantic/styles/semantic.min.css">
     <link rel="stylesheet" href="thirdparty/bower_components/video.js/dist/video-js.min.css">
     <link rel="stylesheet" href="thirdparty/bower_components/angular-pagedown/angular-pagedown.min.css">
-    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css" />
     <link rel="stylesheet" href="thirdparty/bower_components/slick-carousel/slick/slick.css">
     <link rel="stylesheet" href="thirdparty/bower_components/slick-carousel/slick/slick-theme.css">
     <link rel="stylesheet" href="styles/MetroJs.lt.css">
@@ -25,13 +25,13 @@
     <!-- endbuild -->
 </head>
 
-<body ng-app="playerApp" ng-controller="AppCtrl" style="overflow: hidden;">
+<body ng-app="playerApp" ng-controller="AppCtrl" class="overflowHidden">
     <!--[if lte IE 8]>
                   <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
                 <![endif]-->
     <div ng-include="'views/common/topHeader.html'"></div>
-    <div class="ui top attached container fluid" style="overflow: auto;">
-        <div class="ui left vertical visible inverted sidebar menu" style="top: inherit;">
+    <div class="ui top attached container fluid overflowAuto">
+        <div class="ui left vertical visible inverted sidebar menu top-inherit" ng-if="isLoggedIn ">
             <div class="item">
                 <ol class="ui list">
                     <!--dont remove value -->
@@ -47,8 +47,8 @@
                 </ol>
             </div>
         </div>
-        <div class="pusher" style="height:700px;">
-            <div class="ui padded grid">    
+        <div class="pusher pusher-fix-height">
+            <div class="ui padded grid">
                 <div class="row">
                     <div class="ten wide column">
                         <!-- Add your site or application content here -->
@@ -62,7 +62,7 @@
             </div>
         </div>
     </div>
-    <div ng-include="'views/common/footer.html'"></div>
+    <!-- <div ng-include="'views/common/footer.html'"></div> -->
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <script>
@@ -102,11 +102,11 @@
 
     <!-- endbuild -->
     <script src="scripts/playerAppConfig.js"></script>
-    
+
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>
-  
+    <!--services-->
     <script src="scripts/services/playerAppConstants.js"></script>
     <script src="scripts/services/httpService.js"></script>
     <script src="scripts/services/httpServiceJava.js"></script>
@@ -114,6 +114,8 @@
     <script src="scripts/services/authService.js"></script>
     <script src="scripts/services/noteService.js"></script>
     <script src="scripts/services/courseService.js"></script>
+    <script src="scripts/services/learnService.js"></script>
+    <!--controller-->
     <script src="scripts/controllers/authController.js"></script>
     <script src="scripts/controllers/contentController.js"></script>
     <script src="scripts/controllers/createContentController.js"></script>
@@ -122,14 +124,19 @@
     <script src="scripts/controllers/note/noteController.js"></script>
     <script src="scripts/controllers/userCourseController.js"></script>
     <script src="scripts/controllers/courseScheduleController.js"></script>
+    <script src="scripts/controllers/learnController.js"></script>
+    <!--filter-->
     <script src="scripts/filters/arraytostring.js"></script>
     <script src="scripts/filters/dateFilter.js"></script>
-    <script src="scripts/playerAppConfig.js"></script>
+    <!--<script src="scripts/playerAppConfig.js"></script>-->
+    <!--directive-->
     <script src="scripts/directives/applyScript.js"></script>
+    <script src="scripts/directives/onFinishRender.js"></script>
     <script src="scripts/directives/helpMessage.js"></script>
     <script src="scripts/directives/errorMessage.js"></script>
     <script src="scripts/directives/fileRead.js"></script>
     <script src="scripts/directives/contentPlayer.js"></script>
 
 </body>
+
 </html>
