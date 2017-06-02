@@ -9,7 +9,7 @@
  * Filter in the studioApp.
  */
 angular.module('playerApp')
-    .filter('dateFilter', function() {
+    .filter('dateFilterWithMDY', function() {
         return function(date) {
             return moment(date).format("MMMM Do YYYY");
         };
