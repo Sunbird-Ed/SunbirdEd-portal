@@ -253,6 +253,10 @@
 .font-size-small {
   font-size: small !important;
 }
+.pdf-editor {
+  float: left !important;
+  overflow: scroll !important;
+}
 .pdf-editor a {
   background-color: #2185d0 !important;
   border: none !important;
@@ -264,6 +268,12 @@
   font-size: 12px !important;
   margin: 4px 2px !important;
   border-radius: .28571429rem !important;
+}
+.pdf-toolbar-padding {
+  padding: 5px 5px 5px 20px !important;
+}
+.width-25p {
+  width: 25% !important;
 }
 .header-container {
   margin-left: 1px !important;
