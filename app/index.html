@@ -25,13 +25,13 @@
     <!-- endbuild -->
 </head>
 
-<body ng-app="playerApp" ng-controller="AppCtrl" style="overflow: hidden;">
+<body ng-app="playerApp" ng-controller="AppCtrl" class="overflowHidden">
     <!--[if lte IE 8]>
                   <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
                 <![endif]-->
     <div ng-include="'views/common/topHeader.html'"></div>
-    <div class="ui top attached container fluid" style="overflow: auto;">
-        <div class="ui left vertical visible inverted sidebar menu" style="top: inherit;">
+    <div class="ui top attached container fluid overflowAuto">
+        <div class="ui left vertical visible inverted sidebar menu top-inherit" >
             <div class="item">
                 <ol class="ui list">
                     <!--dont remove value -->
@@ -47,7 +47,7 @@
                 </ol>
             </div>
         </div>
-        <div class="pusher" style="height:700px;">
+        <div class="pusher pusher-fix-height">
             <div class="ui padded grid">    
                 <div class="row">
                     <div class="ten wide column">
