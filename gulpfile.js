@@ -80,6 +80,8 @@ var lintScripts = lazypipe()
 gulp.task('index-html', function() {
     gulp.src(player.app + '/index.html')
         .pipe(gulp.dest('dist/'));
+    gulp.src(player.app + '/server.js')
+        .pipe(gulp.dest('dist/'));
 });
 
 gulp.task('images', function() {
