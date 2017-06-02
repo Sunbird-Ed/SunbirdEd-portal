@@ -4,7 +4,7 @@
         <div class="left menu column">
             {{contentData.name}}
         </div>
-        <div class="right menu column">
+        <div class="right menu column" ng-if="isClose">
             <button ng-click="close()" class='ui basic circular icon button'><i class="remove icon"></i></button>
         </div>
     </div>
@@ -12,8 +12,7 @@
     <div class='content-player-body'>
         <div class="ui stackable twelve column grid">
 
-            <div class="eight wide column">
-
+            <div class="eight wide column" >
                 <div class="content-player" ng-if="(contentData.mimeType === 'application/vnd.ekstep.ecml-archive' || contentData.mimeType === 'application/vnd.ekstep.html-archive')">
                     <iframe  id="contentViewerIframe" ng-src="{{trustSrc(iFrameSrc)}}" height='100%' width='100%'></iframe>
                 </div>
@@ -35,8 +34,9 @@
                            ></video>
                 </div>
                 <div ng-if="contentData.mimeType === 'application/pdf'" class="pdf-editor content-player">
-                        <pdf-viewer  url="contentData.artifactUrl"
-                            scale="1" show-toolbar="true"></pdf-viewer>
+                    <div ng-include="'views/contentplayer/pdfToolBar.html'"></div>
+                        <pdf-viewer delegate-handle="content-player"  url="contentData.artifactUrl"
+                            scale="1.5" show-toolbar="false"></pdf-viewer>
                 </div>
                 <div class="content-player" ng-if="contentData.mimeType.indexOf('image') > -1" >
                     <img height='100%' width='100%' ng-src="{{contentData.artifactUrl}}" />

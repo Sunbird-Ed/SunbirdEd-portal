@@ -129,8 +129,8 @@ angular.module('playerApp')
                     slidesToScroll: 3
                 });
              });
-
-
+             
+             
         });
  
 
