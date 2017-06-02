@@ -23,6 +23,9 @@ angular.module('playerApp')
                     action: 'combo'
                 });
         };
+        $('.small.modal')
+            .modal('show')
+        ;
 
         
 

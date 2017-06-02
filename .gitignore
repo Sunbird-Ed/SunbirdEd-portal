@@ -9,7 +9,6 @@ semantic.json
 /app/thirdparty/semantic
 /app/thirdparty/bower_components
 /app/scripts/playerAppConfig.js
-/app/styles/main.css
 /coverage
 /npm-debug.log
 nbproject/

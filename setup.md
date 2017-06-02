@@ -17,7 +17,9 @@
 * Run `npm install`
 * Run `bower install`
 * Run `gulp semantic`
-* Run `gulp serve:prod`
+* Run `gulp`
+* Change to dist
+* Run `node server.js`
 
 
 
