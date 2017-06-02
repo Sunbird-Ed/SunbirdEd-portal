@@ -24,7 +24,6 @@ angular.module('playerApp')
                 });
         };
 
-        $('sidebar')
-        .sidebar({context:$('.sidebar-context')})
+        
 
     });

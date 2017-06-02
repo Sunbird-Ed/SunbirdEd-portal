@@ -422,3 +422,32 @@ html {
 .sidebar {
   position: fixed !important;
 }
+.margin-right-10 {
+  margin-right: 10px !important;
+}
+.slick-prev,
+.slick-next {
+  font-size: 0;
+  line-height: 0;
+  position: absolute;
+  top: 50%;
+  display: block;
+  width: 20px;
+  height: 20px;
+  margin-top: -10px;
+  padding: 0;
+  cursor: pointer;
+  color: #7a7a7e;
+  border: none;
+  outline: none;
+  background: #808085 !important;
+}
+.slider {
+  width: 850px;
+  margin: 0 auto;
+}
+img {
+  width: 100px;
+  height: 100px;
+  padding: 5px;
+}
