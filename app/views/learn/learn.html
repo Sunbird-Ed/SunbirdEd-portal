@@ -1,15 +1,29 @@
-<div ng-controller="LearnCtrl as learn">
+<div class="ui segment" ng-controller="LearnCtrl as learn">
     <div>
-        <h2>Enrolled Courses</h2>
+        <h3 style=" margin-left: 90px;">Enrolled Courses</h2>
+    </div>
+    <div class="regular slider">
+        <div class="ui card margin-left-right-10 margin-top-15" ng-repeat=" enrolledCourse in learn.enrolledCourses " on-finish-render="ngRepeatFinished">
+
+            <div class=" image ">
+                <img src="../images/sunbird_logo.png ">
+            </div>
+            <div class="content ">
+                <a class="header ">{{enrolledCourse.courseName}}</a>
+
+                <div class="description ">
+                    {{enrolledCourse.description}}
+                </div>
+            </div>
+
+        </div>
     </div>
 
-
-    <li ng-repeat="enrolledCourse in learn.enrolledCourses">
-        <div>date : {{enrolledCourse.enrolledDate}}</div>
-        <div>name :{{enrolledCourse.courseName}}</div>
-        <div>{{enrolledCourse.grade}}</div>
-        <div>{{enrolledCourse.status}}</div>
-
-        <!--data:{{learn.enrolledCourses}}-->
-    </li>
+    <div ng-if="learn.error.isError">
+        <error-message data={{learn.error}}></error-message>
+    </div>
+    <!--recommended-->
+    <!--<div>
+        <h3 style=" margin-left: 90px;">Recommended</h2>
+    </div>-->
 </div>
