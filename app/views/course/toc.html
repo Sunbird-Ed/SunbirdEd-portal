@@ -1,17 +1,15 @@
 <div ng-controller="courseScheduleCtrl">
+    {{contentPlayer.isContentPlayerEnabled}}
+    <div ng-if="!contentPlayer.isContentPlayerEnabled">
+        <div class="padded dash-heading-border"> <h4  class="header">{{toc.courseHierachy.name}}</h4></div>
+        <ol class="ui list page-sidebar-menu">
+            <li value="" ng-repeat="item in  toc.courseHierachy.children track by $index" class="toc-list" >
+                <div class="ui two column padded grid block-border-bottom" ng-click="toc.expandMe($event, item)"><div class="column"> <h5 class="header toc-content-header" >{{item.name}}</h5></div><div class="right aligned column"><i ng-if="toc.getContentIcon(item.mimeType) != undefined" ng-class="toc.getContentIcon(item.mimeType)"></i><span class="meta" >{{ (toc.getAllChildrenCount($index) > 0)?toc.getAllChildrenCount($index):'&nbsp;&nbsp;&nbsp;'}}</span></div></div>
+                <ol ng-if="item.children && item.children.length > 0" class="toc-list-sub-menu">
 
-        <ul class="page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" ng-class="{'page-sidebar-menu-closed': settings.layout.pageSidebarClosed}">
-            <li ng-repeat="item in  toc.courseHierachy.children" class="toc-list block-border-bottom" ng-click="toc.expandMe($event)">
+                    <li value="" ng-repeat="item in item.children" class="toc-list" >
+                        <div class="ui two column padded grid block-border-bottom" ng-click="toc.expandMe($event, item)"><div class="column"> <div class="header toc-content-child-header" >{{item.name}}</div></div><div class="right aligned column"><i ng-if="toc.getContentIcon(item.mimeType) != undefined" ng-class="toc.getContentIcon(item.mimeType)"></i></div></div>
 
-                <a  ng-class="{'nav-link nav-toggle': item.children && item.children.length > 0}">
-                    <span class="title">{{item.name}}</span>
-                </a>
-                <ul ng-if="item.children && item.children.length > 0" class="toc-list-sub-menu">
-
-                    <li ng-repeat="item in item.children" class="toc-list block-border-bottom" ng-click="toc.expandMe($event)">
-                        <a ng-class="{'nav-link nav-toggle': item.children && item.children.length > 0}">
-                            <span class="title">{{item.name}}</span>
-                        </a>
 
                         <div ng-switch on="item.children.length > 0">
                             <div ng-switch-when="true">
@@ -20,8 +18,12 @@
                         </div>
 
                     </li>
-                </ul>
+                </ol>
             </li>
-        </ul>
-   
+        </ol>
+    </div>
+    <div ng-if="contentPlayer.isContentPlayerEnabled">
+        <content-player visibility="contentPlayer.isContentPlayerEnabled" id="contentPlayer.contentId"
+                        isshowmetaview="true" body="contentPlayer.contentData" isclose="true"></content-player>
+    </div>
 </div>
