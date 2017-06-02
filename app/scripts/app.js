@@ -54,9 +54,13 @@ angular
                 url: "/note",
                 templateUrl: 'views/note/noteList.html',
                 controller: 'NoteCtrl'
-            }) .state('course', {
+            }) .state('Course', {
                 url: '/course',
                 templateUrl: 'views/course/courses.html',
                 controller: 'CourseCtrl as courses'
+            }).state('Toc', {
+                url: '/toc',
+                templateUrl: 'views/course/toc.html',
+                controller: 'courseScheduleCtrl as toc'
             });
     });
