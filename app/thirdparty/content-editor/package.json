@@ -1,0 +1,21 @@
+{
+  "name": "deploy",
+  "version": "1.0.0",
+  "description": "It is used to update files in deployment job",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kartheek Palla",
+  "license": "ISC",
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "gulp-cachebust": "0.0.6",
+    "gulp-inject": "^4.2.0",
+    "merge-stream": "1.0.1"
+  },
+  "devDependencies": {
+    "any-promise": "^1.3.0",
+    "bluebird": "^3.5.0"
+  }
+}

@@ -29,10 +29,7 @@ angular.module('playerApp')
             content.listView = false;
             //Object for content player directive
             $scope.contentPlayer = {
-                isContentPlayerEnabled : false,
-                contentItemForPlay : {},
-                contentIdForPlay : '',
-                isShowMetaView : true
+                isContentPlayerEnabled : false
             };
             $rootScope.showIFrameContent = false;
             content.searchContent = function ($event) {
