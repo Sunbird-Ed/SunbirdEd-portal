@@ -10,9 +10,13 @@ angular.module('playerApp')
         .directive('applyScript', function () {
             return {
                 restrict: 'A',
-                link: function (scope, element, attrs) {
+                link: function (scope, element, attrs) { 
 
-
+                    $(".regular").slick({
+                        infinite: true,
+                        slidesToShow: 4,
+                        slidesToScroll: 4
+                   });
                     $('#content-search-filter-accordion').accordion();
                     $('.dropdown.content-search-filter').dropdown({
                         useLabels: false,

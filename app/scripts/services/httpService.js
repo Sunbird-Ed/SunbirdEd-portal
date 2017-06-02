@@ -57,7 +57,6 @@ angular.module('playerApp')
             var headers = {
                 'Content-Type': 'application/json',
                 'cid': 'sunbird',
-
             };
             headers.Accept = 'text/html,application/xhtml+xml,application/xml,application/json;q=0.9,image/webp,*/*;q=0.8';
             return headers;

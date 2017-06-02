@@ -16,6 +16,7 @@ angular
         'ui.router',
         'ngStorage',
         'ui.pagedown',
+        'slick',
         'pdf'
     ])
     .config(function($stateProvider, $urlRouterProvider, $locationProvider) {
