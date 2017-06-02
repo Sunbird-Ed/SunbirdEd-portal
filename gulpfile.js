@@ -80,6 +80,8 @@ var lintScripts = lazypipe()
 gulp.task('index-html', function() {
     gulp.src(player.app + '/index.html')
         .pipe(gulp.dest('dist/'));
+    gulp.src(player.app + '/server.js')
+        .pipe(gulp.dest('dist/'));
 });
 
 gulp.task('images', function() {
@@ -116,8 +118,7 @@ gulp.task('build-css-dev', function() {
 // inject bower components
 gulp.task('bower', function() {
     return gulp.src(paths.thirdparty)
-
-    .pipe(gulp.dest(dist.path + '/thirdparty'));
+        .pipe(gulp.dest(dist.path + '/thirdparty'));
 });
 
 gulp.task('html', function() {
@@ -173,11 +174,10 @@ gulp.task('serve', function(cb) {
 });
 
 gulp.task('serve:prod', function(cb) {
-    runSequence('clean:dist', ['build-css'],
-        'watch', cb);
+    runSequence('clean:dist', ['build'], cb);
     $.connect.server({
         root: [player.app, 'dist'],
-        livereload: true,
+        livereload: false,
         port: 9000,
         middleware: function(connect, opt) {
             return [historyApiFallback({})];

@@ -1,0 +1,13 @@
+<div class="ui segment margin-auto pdf-toolbar-padding" ng-init="getTotalPage();">
+    <span class="ui six wide column">
+        
+        <i class="large arrow left icon link" ng-click="previous()"></i>
+        <i class="large arrow right icon link" ng-click="next()"></i>
+        <i class="large plus icon link" ng-click="zoomIn()"></i>
+        <i class="large minus icon link" ng-click="zoomOut()"></i>
+        <i class="large repeat icon link" ng-click="rotate()"></i>
+    </span>
+    <span class="right-float">
+        Page <input type="number" ng-value="getCurrentPage" ng-model="inputPageNumber" class="ui input width-25p" ng-change="goToPage(inputPageNumber)"> Of {{totalPageNumber}}
+    </span>
+</div>

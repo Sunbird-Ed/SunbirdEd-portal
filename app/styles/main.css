@@ -253,6 +253,10 @@
 .font-size-small {
   font-size: small !important;
 }
+.pdf-editor {
+  float: left !important;
+  overflow: scroll !important;
+}
 .pdf-editor a {
   background-color: #2185d0 !important;
   border: none !important;
@@ -264,6 +268,12 @@
   font-size: 12px !important;
   margin: 4px 2px !important;
   border-radius: .28571429rem !important;
+}
+.pdf-toolbar-padding {
+  padding: 5px 5px 5px 20px !important;
+}
+.width-25p {
+  width: 25% !important;
 }
 .header-container {
   margin-left: 1px !important;
@@ -435,22 +445,34 @@ html {
 .margin-right-10 {
   margin-right: 10px !important;
 }
+.margin-right-8rem {
+  margin-right: 8rem !important;
+}
 .slick-prev,
 .slick-next {
-  font-size: 0;
+  right: -20px !important;
+  top: 27% !important;
+  border-top-left-radius: 2px !important;
+  border-bottom-left-radius: 2px !important;
+  position: absolute !important;
+  font-size: 24px !important;
+  z-index: 3 !important;
+  transition: .3s !important;
+  height: auto !important;
+  width: 46px !important;
+  padding: 30px 10px !important;
+  border-radius: 0 !important;
+  background: #958f8f !important;
+  box-shadow: -2px 0 3px -1px rgba(0, 0, 0, 0.2) !important;
+  top: 80px;
+  opacity: .8;
   line-height: 0;
-  position: absolute;
-  top: 50%;
   display: block;
-  width: 20px;
-  height: 20px;
   margin-top: -10px;
-  padding: 0;
   cursor: pointer;
   color: #7a7a7e;
   border: none;
   outline: none;
-  background: #808085 !important;
 }
 .slider {
   width: 850px;
@@ -460,4 +482,31 @@ img {
   width: 100px;
   height: 100px;
   padding: 5px;
+}
+.login-modal-text-align {
+  text-align: center;
+  -ms-flex-item-align: center;
+      align-self: center;
+}
+.login-modal-title {
+  color: #333 !important;
+  font-size: 24px !important;
+  font-family: "FrutigerSerifLTW01-Medi 722257" !important;
+}
+.login-modal-label-title {
+  color: #333 !important;
+  font-size: 18px !important;
+  font-family: "FrutigerSerifLTW01-Medi 722257" !important;
+}
+.overflowAuto {
+  overflow: auto !important;
+}
+.overflowHidden {
+  overflow: hidden !important;
+}
+.top-inherit {
+  top: inherit !important;
+}
+.pusher-fix-height {
+  height: 1200px !important;
 }
