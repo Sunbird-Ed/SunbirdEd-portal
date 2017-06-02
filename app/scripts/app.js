@@ -15,7 +15,8 @@ angular
         'playerApp.config',
         'ui.router',
         'ngStorage',
-        'ui.pagedown'
+        'ui.pagedown',
+        'pdf'
     ])
     .config(function($stateProvider, $urlRouterProvider, $locationProvider) {
         $locationProvider.html5Mode({

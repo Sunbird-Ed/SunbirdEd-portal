@@ -1,0 +1,35 @@
+<style type="text/css">
+.card #closeAudio {
+    visibility: hidden;
+}
+
+.card:hover #closeAudio {
+    visibility: visible;
+    cursor: pointer;
+}
+.playAudio {
+    cursor: pointer;
+}
+.audioDiv{
+    overflow-y: auto;
+    height: 110px;
+    margin-top: -5px !important;
+}
+</style>
+<div class="ui four cards audioDiv" ng-show="stageAttachments.audio.show">
+    <div class="ui card" ng-repeat="item in stageAttachments.audio.items">
+        <div class="content">
+            <i class="right floated close icon" id="closeAudio" ng-click="fireEvent({'id':'org.ekstep.audio:removeAudio', 'data':item});" ng-hide="item.showClose"></i>
+            <span class="playAudio" ng-click="fireEvent({'id':'org.ekstep.audio:jplayerInit', 'data':{'url': item.url, 'id': item.id}});" >
+                <i class="music icon"></i>{{item.title | limitTo:9 }}<span ng-if="item.title.length > 9">....</span>
+            </span>
+            <div id="{{item.id}}"></div>
+        </div>
+        <div class="extra content">
+            <div class="ui toggle checkbox">
+                <input type="checkbox" name="Autoplay" ng-model="item.autoplay" ng-click="fireEvent({'id':'org.ekstep.audio:toggleAudio', 'data': item});">
+                <label>Autoplay</label>
+            </div>
+        </div>
+    </div>
+</div>

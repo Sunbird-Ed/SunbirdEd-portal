@@ -253,6 +253,18 @@
 .font-size-small {
   font-size: small !important;
 }
+.pdf-editor a {
+  background-color: #2185d0 !important;
+  border: none !important;
+  color: #fff !important;
+  padding: 5px 5px !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  display: inline-block !important;
+  font-size: 12px !important;
+  margin: 4px 2px !important;
+  border-radius: .28571429rem !important;
+}
 .header-container {
   margin-left: 1px !important;
   border-bottom: 5px solid #0099CC !important;
