@@ -384,6 +384,13 @@
   display: block;
   width: 100%;
 }
+.toc-list-sub-menu {
+  display: none;
+  padding: 5px;
+}
+.toc-list {
+  cursor: pointer;
+}
 body {
   position: relative !important;
   margin: 0 !important;

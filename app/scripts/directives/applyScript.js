@@ -32,7 +32,8 @@ angular.module('playerApp')
                             var newPlayer = this;
                             newPlayer.src({type: 'video/youtube', src: attrs.videosrc});
                         });
-                    }                
+                    }
+                   
 
                 }
             };
