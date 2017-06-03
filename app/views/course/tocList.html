@@ -2,7 +2,7 @@
 
             <li value="" ng-repeat="item in item.children" class="toc-list">
 
-		           <div class="ui two column padded grid block-border-bottom" ng-click="toc.expandMe($event,item)"><div class="column"> <div class="header toc-content-child-header" >{{item.name}}</div></div><div class="right aligned column"><i ng-if="toc.getContentIcon(item.mimeType)!=undefined" ng-class="toc.getContentIcon(item.mimeType)"></i></div></div>
+		           <div ng-init="toc.checkAndAddToPlaylist(item)" class="ui two column padded grid block-border-bottom" ng-click="toc.expandMe($event,item)"><div class="column"> <div class="header toc-content-child-header" >{{item.name}}</div></div><div class="right aligned column"><i ng-if="toc.getContentIcon(item.mimeType)!=undefined" ng-class="toc.getContentIcon(item.mimeType)"></i></div></div>
 
 
 			     <div ng-switch on="item.children.length > 0">

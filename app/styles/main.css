@@ -35,6 +35,9 @@
   height: 99%;
   width: 99%;
 }
+.content-player iframe {
+  min-height: 500px;
+}
 .player-video {
   width: 100% !important;
   height: 100% !important;
