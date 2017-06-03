@@ -16,9 +16,16 @@ angular.module('playerApp').directive('contentPlayer', function () {
             body: '=',
             visibility: '=',
             isshowmetaview: '=',
-            isclose: '='
+            isclose: '=',
+            isheader: '=',
+            height: '=',
+            width: '='
         },
         link: function (scope, element, attrs) {
+            
+            $('#contentPlayer').css('height', scope.height + 'px');
+            $('#contentPlayer').css('width', scope.width + 'px');
+            
             scope.$watch('visibility', function () {
                 scope.updateDataOnWatch(scope);
             });
@@ -30,7 +37,8 @@ angular.module('playerApp').directive('contentPlayer', function () {
 angular.module('playerApp').controller('contentPlayerCtrl', function ($scope, $sce, contentService, pdfDelegate, $timeout) {
     
     $scope.isClose = $scope.isclose;
-
+    $scope.isHeader = $scope.isheader;
+    
     $scope.updateDataOnWatch = function (scope) {
         if (scope.body) {
             showPlayer(scope.body);
@@ -130,7 +138,7 @@ angular.module('playerApp').controller('contentPlayerCtrl', function ($scope, $s
         $timeout(function () {
             $scope.totalPageNumber = pdfDelegate.$getByHandle('content-player').getPageCount();
             $scope.getCurrentPage = pdfDelegate.$getByHandle('content-player').getCurrentPage();
-        }, 1000);
+        }, 2000);
     };
 
 });
