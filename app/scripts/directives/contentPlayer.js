@@ -26,9 +26,13 @@ angular.module('playerApp').directive('contentPlayer', function () {
             $('#contentPlayer').css('height', scope.height + 'px');
             $('#contentPlayer').css('width', scope.width + 'px');
             
-            scope.$watch('visibility', function () {
+            scope.$watch('body', function () {
                 scope.updateDataOnWatch(scope);
             });
+            scope.$watch('id', function () {
+                scope.updateDataOnWatch(scope);
+            });
+            
         },
         controller: 'contentPlayerCtrl'
     };
