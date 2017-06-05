@@ -11,8 +11,8 @@
     "angular-ui-router": "^1.0.3",
     "moment": "^2.18.1",
     "angular-pagedown": "^0.4.4",
-    "angular-slick": "^0.2.1",
-    "angular-pdf-viewer": "^0.2.13"
+    "angular-pdf-viewer": "^0.2.13",
+    "slick-carousel": "^1.6.0"
   },
   "devDependencies": {
     "angular-mocks": "^1.6.0",
@@ -34,6 +34,6 @@
   "moduleName": "playerApp",
   "resolutions": {
     "video.js": "^5.0.0",
-    "angular": "1.6.4"
+    "angular": "1.6.0"
   }
 }
