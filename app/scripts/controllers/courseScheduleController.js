@@ -3,7 +3,7 @@ angular.module('playerApp')
             var toc = this;
             toc.playList = [];
             toc.playListContent = [];
-
+toc.loading=false;
             $scope.contentPlayer = {
                 isContentPlayerEnabled: false,
 
@@ -11,7 +11,9 @@ angular.module('playerApp')
             //$scope.contentPlayer.contentData=};
             toc.getCourseToc = function () {
                 toc.courseId = $stateParams.courseId;
+                toc.loading=true;
                 courseService.courseHierarchy(toc.courseId).then(function (res) {
+                    toc.loading=false;
                     toc.courseHierachy = res.result.content;
                 });
             }
