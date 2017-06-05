@@ -32,23 +32,29 @@ var paths = {
     testRequire: [
         player.app + '/thirdparty/bower_components/jquery/dist/jquery.js',
         player.app + '/thirdparty/bower_components/jasmine-jquery/lib/jasmine-jquery.js',
-        player.app + '/thirdparty/semantic/semantic.min.js',
+
         player.app + '/thirdparty/bower_components/angular/angular.js',
         player.app + '/thirdparty/bower_components/angular-mocks/angular-mocks.js',
-        player.app + '/thirdparty/bower_components/angular-resource/angular-resource.js',
         player.app + '/thirdparty/bower_components/angular-cookies/angular-cookies.js',
-        player.app + '/thirdparty/bower_components/angular-sanitize/angular-sanitize.js',
         player.app + '/thirdparty/bower_components/angular-route/angular-route.js',
-        player.app + '/thirdparty/bower_components/moment/moment.js',
-        player.app + '/thirdparty/bower_components/angular-moment/angular-moment.js',
-        player.app + '/thirdparty/bower_components/angular-ui-router/release/angular-ui-router.js',
+        player.app + '/thirdparty/bower_components/angular-ui-router/release/angular-ui-router.min.js',
+
+        player.app + '/thirdparty/semantic/semantic.min.js',
+        player.app + '/thirdparty/bower_components/video.js/dist/video.js',
+        player.app + '/thirdparty/bower_components/videojs-youtube/dist/Youtube.js',
         player.app + '/thirdparty/bower_components/ngstorage/ngStorage.js',
         player.app + '/thirdparty/bower_components/moment/min/moment-with-locales.min.js',
+
         player.app + '/thirdparty/bower_components/angular-pagedown/angular-pagedown.min.js',
         player.app + '/thirdparty/bower_components/pagedown/Markdown.Converter.js',
         player.app + '/thirdparty/bower_components/pagedown/Markdown.Sanitizer.js',
         player.app + '/thirdparty/bower_components/pagedown/Markdown.Extra.js',
         player.app + '/thirdparty/bower_components/pagedown/Markdown.Editor.js',
+        player.app + '/thirdparty/bower_components/angular-slick/dist/slick.js',
+        player.app + '/thirdparty/bower_components/slick-carousel/slick/slick.js',
+        player.app + '/thirdparty/bower_components/pdfjs-dist/build/pdf.js',
+        player.app + '/thirdparty/bower_components/angular-pdf-viewer/dist/angular-pdf-viewer.min.js',
+
     ],
     karma: 'karma.conf.js',
     views: {
