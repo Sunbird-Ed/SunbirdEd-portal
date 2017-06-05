@@ -38,6 +38,13 @@ describe('Controller: NoteCtrl', function() {
         timeout.flush(1000);
         scope.$apply();
     });
+    
+    it("Shouls called search service", function() {
+
+        spyOn(noteService, 'search').and.callThrough();
+        noteService.search();
+        expect(noteService.search).toBeDefined();
+    });
 
     it("Shouls not search success user notes", function() {
 
@@ -70,6 +77,17 @@ describe('Controller: NoteCtrl', function() {
         scope.ngInit();
         timeout.flush(2000);
         scope.$apply();
+    });
+    
+    it("Shouls called create service", function() {
+         var note = {
+            title: "test title",
+            note: "test note"
+        };
+
+        spyOn(noteService, 'create').and.callThrough();
+        noteService.create(note);
+        expect(noteService.create).toBeDefined();
     });
 
     it("Should create note", function() {
@@ -117,6 +135,13 @@ describe('Controller: NoteCtrl', function() {
         timeout.flush(2000);
         scope.$apply();
     });
+    
+    it("Shouls called remove notes service", function() {
+
+        spyOn(noteService, 'remove').and.callThrough();
+        noteService.remove("592ab407693f230bbd2e287b");
+        expect(noteService.remove).toBeDefined();
+    });
 
     it("Should remove user note", function() {
         //        scope.noteList = userNotesSuccessData.result.note;
@@ -154,6 +179,13 @@ describe('Controller: NoteCtrl', function() {
         scope.removeNote("592ab407693f230bbd2e287b");
         timeout.flush(2000);
         scope.$apply();
+    });
+    
+    it("Shouls called update service", function() {
+
+        spyOn(noteService, 'update').and.callThrough();
+        noteService.update("592ab407693f230bbd2e287b");
+        expect(noteService.update).toBeDefined();
     });
 
     it("Should update user note", function() {
@@ -203,5 +235,12 @@ describe('Controller: NoteCtrl', function() {
         var response = noteService.search().$$state.value;
         scope.noteList = response.result.note;
         expect(response).not.toBe(undefined);
+    });
+    
+    it("Shouls called get note service", function() {
+
+        spyOn(noteService, 'get').and.callThrough();
+        noteService.get("592ab407693f230bbd2e287b");
+        expect(noteService.get).toBeDefined();
     });
 });
