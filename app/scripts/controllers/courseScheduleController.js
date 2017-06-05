@@ -1,7 +1,9 @@
 angular.module('playerApp')
         .controller('courseScheduleCtrl', function (courseService, $timeout, $scope, $sce, $sessionStorage, $stateParams) {
             var toc = this;
-            toc.playList = {};
+            toc.playList = [];
+            toc.playListContent = [];
+
             $scope.contentPlayer = {
                 isContentPlayerEnabled: false,
 
@@ -27,30 +29,39 @@ angular.module('playerApp')
                     }
                 } else
                 {
+                    var itemIndex = $($event.target).closest('.playlist-content').index('.playlist-content');
 
-                    toc.playPlaylistContent(item.identifier);
+                    toc.playPlaylistContent(itemIndex);
 
                 }
             };
 
             toc.checkAndAddToPlaylist = function (item) {
-                if (item.mimeType != "application/vnd.ekstep.content-collection" && toc.playList[item.identifier] == undefined)
+                if (item.mimeType != "application/vnd.ekstep.content-collection")
                 {
-                    toc.playList[item.identifier] = item;
+                    // console.log($scope.counter);
+                    toc.playList.push(item.identifier);
+                    toc.playListContent.push(item);
+                    $scope.counter = toc.playList.length - 1;
+
+
                 }
             }
 
-            toc.playPlaylistContent = function (itemId) {
-                
-                    $scope.contentPlayer.isContentPlayerEnabled =false;
-                    $scope.contentPlayer.contentData =undefined;
-                    $timeout(function () {
-                    var playlistKeysArr = Object.keys(toc.playList);
-                    var curItemIndex = playlistKeysArr.indexOf(itemId);
-                    toc.nextPlaylistItem = ((curItemIndex + 1) < playlistKeysArr.length ? playlistKeysArr[curItemIndex + 1] : '');
-                    toc.prevPlaylistItem = ((curItemIndex - 1) >= 0 ? playlistKeysArr[curItemIndex - 1] : '');
-                    $scope.contentPlayer.isContentPlayerEnabled = true;
-                    $scope.contentPlayer.contentData = toc.playList[itemId];                   
+
+
+            toc.playPlaylistContent = function (itemIndex) {
+                var curItemIndex = itemIndex;
+                toc.prevPlaylistItem = ((curItemIndex - 1) >= 0 ? curItemIndex - 1 : -1);
+                console.log(toc.prevPlaylistItem);
+                toc.nextPlaylistItem = ((curItemIndex + 1) < toc.playList.length ? curItemIndex + 1 : -1);
+                $scope.contentPlayer.contentData = toc.playListContent[curItemIndex];
+                $scope.contentPlayer.isContentPlayerEnabled = true;
+
+
+                $timeout(function () {
+//                    $scope.contentPlayer.isContentPlayerEnabled = true;
+
                 }, 0);
             }
 
@@ -75,6 +86,16 @@ angular.module('playerApp')
                 return cnt;
 
             }
+
+            toc.getContentClass = function (contentMimeType) {
+                if (contentMimeType == 'application/vnd.ekstep.content-collection') {
+                    return 'ui two column padded grid block-border-bottom';
+                } else
+                {
+                    return 'ui two column padded grid block-border-bottom playlist-content';
+                }
+            }
+
             toc.getContentIcon = function (contentMimeType) {
                 var contentIcons = {
                     "application/pdf": "file pdf outline icon",

@@ -1,14 +1,14 @@
 <div ng-controller="courseScheduleCtrl as toc">
 
-    <div ng-if="!contentPlayer.isContentPlayerEnabled">
+    <div id="course-toc-list" ng-if="!contentPlayer.isContentPlayerEnabled" ng-init="toc.playList=[]">
         <div class="padded dash-heading-border"> <h4  class="header">{{toc.courseHierachy.name}}</h4></div>
         <ol class="ui list page-sidebar-menu">
-            <li value="" ng-repeat="item in  toc.courseHierachy.children track by $index" class="toc-list"  >
-                <div class="ui two column padded grid block-border-bottom" ng-init="toc.checkAndAddToPlaylist(item)" ng-click="toc.expandMe($event, item)"><div class="column"> <h5 class="header toc-content-header" >{{item.name}}</h5></div><div class="right aligned column"><i ng-if="toc.getContentIcon(item.mimeType) != undefined" ng-class="toc.getContentIcon(item.mimeType)"></i><span class="meta" >{{ (toc.getAllChildrenCount($index) > 0)?toc.getAllChildrenCount($index):'&nbsp;&nbsp;&nbsp;'}}</span></div></div>
+            <li value="" ng-repeat="item in  toc.courseHierachy.children track by $index" class="toc-list"   >
+                <div   ng-init="toc.checkAndAddToPlaylist(item)"  ng-click="toc.expandMe($event,item)" ng-class="toc.getContentClass(item.mimeType)"><div class="column"> <h5 class="header toc-content-header" >{{item.name}}</h5></div><div class="right aligned column"><i ng-if="toc.getContentIcon(item.mimeType) != undefined" ng-class="toc.getContentIcon(item.mimeType)"></i><span class="meta" >{{ (toc.getAllChildrenCount($index) > 0)?toc.getAllChildrenCount($index):'&nbsp;&nbsp;&nbsp;'}}</span></div></div>
                 <ol ng-if="item.children && item.children.length > 0" class="toc-list-sub-menu">
 
                     <li value="" ng-repeat="item in item.children" class="toc-list" >
-                        <div ng-init="toc.checkAndAddToPlaylist(item)" class="ui two column padded grid block-border-bottom" ng-click="toc.expandMe($event, item)"><div class="column"> <div class="header toc-content-child-header" >{{item.name}}</div></div><div class="right aligned column"><i ng-if="toc.getContentIcon(item.mimeType) != undefined" ng-class="toc.getContentIcon(item.mimeType)"></i></div></div>
+                        <div ng-init="toc.checkAndAddToPlaylist(item)"   ng-click="toc.expandMe($event,item)" ng-class="toc.getContentClass(item.mimeType)"><div class="column"> <div class="header toc-content-child-header" >{{item.name}}</div></div><div class="right aligned column"><i ng-if="toc.getContentIcon(item.mimeType) != undefined" ng-class="toc.getContentIcon(item.mimeType)"></i></div></div>
 
 
                         <div ng-switch on="item.children.length > 0">
@@ -25,13 +25,13 @@
     </div>
     <div ng-if="contentPlayer.isContentPlayerEnabled">
         <div class="ui grid">
-            <div class="one wide middle aligned column"><button class="ui center aligned button" ng-click="toc.playPlaylistContent(toc.prevPlaylistItem)" ng-disabled="(toc.prevPlaylistItem=='')"><i class="ui large chevron circle left icon"></i></button></div>
-            <div class="ten wide column">
+            <div class="one wide middle aligned column"><button class="ui center aligned button" ng-click="toc.playPlaylistContent(toc.prevPlaylistItem)" ng-disabled="(toc.prevPlaylistItem<0)"><i class="ui large chevron circle left icon"></i></button></div>
+            <div class="ten wide column" align="center">
                 <content-player visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData"
-                            isshowmetaview="false" isheader="true" isclose="true" height="600" width="1000"></content-player>
+                            isshowmetaview="false" isheader="true" isclose="true" height="700" width="1000"></content-player>
 
             </div>
-            <div class="one wide middle aligned column"><button class="ui center aligned button" ng-click="toc.playPlaylistContent(toc.nextPlaylistItem)" ng-disabled="(toc.nextPlaylistItem=='')"><i class="ui large chevron circle right icon"></i></button></div>
+            <div class="one wide middle aligned column"><button class="ui center aligned button" ng-click="toc.playPlaylistContent(toc.nextPlaylistItem)" ng-disabled="(toc.nextPlaylistItem<0)"><i class="ui large chevron circle right icon"></i></button></div>
         </div>
         <div class="ui left aligned padded grid">
             <div class="top padded column">
