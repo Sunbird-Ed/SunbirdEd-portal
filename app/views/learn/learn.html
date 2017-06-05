@@ -1,8 +1,10 @@
 <div class="ui segment" ng-controller="LearnCtrl as learn">
     <div>
-        <h3 style=" margin-left: 90px;">Enrolled Courses</h2>
+        <h3>Enrolled Courses</h2>
     </div>
-    <div class="regular slider">
+    <div class="regular slider" style="
+    margin-left: 10px;
+">
         <div class="ui card margin-left-right-10 margin-top-15" ng-repeat=" enrolledCourse in learn.enrolledCourses " on-finish-render="ngRepeatFinished">
 
             <div class=" image ">

@@ -25,16 +25,19 @@ angular.module('playerApp')
             }, 2000);
         }
 
-        learn.enrolledCourses = learnService.enrolledCourses(uid).then(function(successResponse) {
-                if (successResponse && successResponse.responseCode === 'OK') {
-                    learn.enrolledCourses = successResponse.result.courses;
-                } else {
-                    $log.warn('enrolledCourses', successResponse);
-                    handleFailedResponse(successResponse);
-                }
-            })
-            .catch(function(error) {
-                $log.warn(error);
-                handleFailedResponse('enrolledCourses', error);
-            });
+        learn.courses = function() {
+            learnService.enrolledCourses(uid).then(function(successResponse) {
+                    if (successResponse && successResponse.responseCode === 'OK') {
+                        learn.enrolledCourses = successResponse.result.courses;
+                    } else {
+                        $log.warn('enrolledCourses', successResponse);
+                        handleFailedResponse(successResponse);
+                    }
+                })
+                .catch(function(error) {
+                    $log.warn(error);
+                    handleFailedResponse('enrolledCourses', error);
+                });
+        };
+        learn.courses();
     });
