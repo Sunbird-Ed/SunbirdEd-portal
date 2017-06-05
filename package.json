@@ -12,7 +12,7 @@
     "gulp-filter": "^2.0.2",
     "gulp-imagemin": "^2.3.0",
     "gulp-jshint": "^1.11.1",
-    "gulp-karma": "0.0.5",
+    "gulp-karma": "0.12",
     "gulp-less": "^3.3.0",
     "gulp-load-plugins": "^0.10.0",
     "gulp-minify-css": "^1.2.0",
