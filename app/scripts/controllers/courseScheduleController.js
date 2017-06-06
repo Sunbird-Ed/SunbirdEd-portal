@@ -51,13 +51,13 @@ angular.module('playerApp')
             toc.playPlaylistContent = function (contentId, trigger) {
 
                 var curItemIndex = toc.playList.indexOf(contentId);
-                toc.prevPlaylistItem = (toc.itemIndex - 1) > 0 ? $('.playlist-content:eq(' + (toc.itemIndex - 1) + ')').attr('name') : -1;
-                toc.nextPlaylistItem = (toc.itemIndex + 1) <= toc.playList.length ? $('.playlist-content:eq(' + (toc.itemIndex + 1) + ')').attr('name') : -1;
                 if (trigger == 'prev') {
                     toc.itemIndex -= 1;
                 } else if (trigger == 'next') {
                     toc.itemIndex += 1;
-                }               
+                }
+                toc.prevPlaylistItem = (toc.itemIndex - 1) > -1 ? $('.playlist-content:eq(' + (toc.itemIndex - 1) + ')').attr('name') : -1;
+                toc.nextPlaylistItem = (toc.itemIndex + 1) <= toc.playList.length ? $('.playlist-content:eq(' + (toc.itemIndex + 1) + ')').attr('name') : -1;
                 $scope.contentPlayer.contentData = toc.playListContent[curItemIndex];
                 $scope.contentPlayer.isContentPlayerEnabled = true;
             }
