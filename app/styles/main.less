@@ -1,9 +1,13 @@
 @white: #FFFFFF;
 @blue:#0099CC;
 @border-color:#E6E7E8;
+@import 'reUseable';
 @import 'common';
 @import 'header';
 @import 'card';
+@import 'footer';
+@import 'normalize';
+@import 'slickerSearch';
 
 body {
     position: relative !important;
@@ -16,51 +20,8 @@ html {
     height: 100% !important;
     box-sizing: border-box !important;
 }
-.footer1 { 
-    position: fixed !important;
-    bottom: 0 !important;
-    width: 100% !important;  
-}
 .sidebar {
     position: fixed !important;
-}
-.margin-right-10 {
-    margin-right:10px !important;
-}
-.margin-right-8rem {
-    margin-right:8rem !important;
-}
-
-.slick-prev, .slick-next {
-    right: -20px !important;
-    top: 27% !important;
-    border-top-left-radius: 2px !important;
-    border-bottom-left-radius: 2px !important;
-    position: absolute !important;
-    font-size: 24px !important;
-    z-index: 3 !important;
-    transition: .3s !important;
-    height: auto !important;
-    width: 46px !important;
-    padding: 30px 10px !important;
-    border-radius: 0 !important;
-    background: #958f8f !important;
-    box-shadow: -2px 0 3px -1px rgba(0,0,0,.2) !important;
-    top: 80px;
-    opacity: .8;  
-    line-height: 0;    
-    display: block;
-    margin-top: -10px;
-    cursor: pointer;
-    color: rgb(122, 122, 126); 
-    border: none;
-    outline: none;  
-}
-
-
-.slider {
-    width: 850px;
-    margin: 0 auto;
 }
 
 img {
@@ -83,15 +44,7 @@ img {
     font-size: 18px !important;
     font-family: "FrutigerSerifLTW01-Medi 722257" !important;
 } 
-.overflowAuto {
-    overflow: auto !important;
-}
-.overflowHidden {
-    overflow: hidden !important;
-}
-.top-inherit {
-    top: inherit !important;
-}
+
 .pusher-fix-height{
     height: 1200px !important;
 }
