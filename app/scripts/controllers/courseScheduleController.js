@@ -3,7 +3,7 @@ angular.module('playerApp')
             var toc = this;
             toc.playList = [];
             toc.playListContent = [];
-
+            toc.loading = false;
             $scope.contentPlayer = {
                 isContentPlayerEnabled: false,
 
@@ -11,7 +11,9 @@ angular.module('playerApp')
             //$scope.contentPlayer.contentData=};
             toc.getCourseToc = function () {
                 toc.courseId = $stateParams.courseId;
+                toc.loading = true;
                 courseService.courseHierarchy(toc.courseId).then(function (res) {
+                    toc.loading = false;
                     toc.courseHierachy = res.result.content;
                 });
             }
@@ -22,47 +24,42 @@ angular.module('playerApp')
                 {
                     if (!$($event.target).closest("li").find('.toc-list-sub-menu').first().hasClass('active'))
                     {
-                        $($event.target).closest("li").find('.toc-list-sub-menu').first().show(300).addClass('active');
+                        $($event.target).closest("li").find('.toc-list-sub-menu').first().show(200).addClass('active');
                     } else
                     {
-                        $($event.target).closest("li").find('.toc-list-sub-menu').first().hide(300).removeClass('active');
+                        $($event.target).closest("li").find('.toc-list-sub-menu').first().hide(200).removeClass('active');
                     }
                 } else
                 {
-                    var itemIndex = $($event.target).closest('.playlist-content').index('.playlist-content');
-
-                    toc.playPlaylistContent(itemIndex);
+                    toc.itemIndex = $($event.target).closest('.playlist-content').index('.playlist-content');
+                    toc.playPlaylistContent($($event.target).closest('.playlist-content').attr('name'), '');
 
                 }
             };
 
             toc.checkAndAddToPlaylist = function (item) {
-                if (item.mimeType != "application/vnd.ekstep.content-collection")
+                if (item.mimeType != "application/vnd.ekstep.content-collection" && toc.playList.indexOf(item.identifier) == -1)
                 {
                     // console.log($scope.counter);
                     toc.playList.push(item.identifier);
                     toc.playListContent.push(item);
-                    $scope.counter = toc.playList.length - 1;
-
-
                 }
             }
 
 
 
-            toc.playPlaylistContent = function (itemIndex) {
-                var curItemIndex = itemIndex;
-                toc.prevPlaylistItem = ((curItemIndex - 1) >= 0 ? curItemIndex - 1 : -1);
-                console.log(toc.prevPlaylistItem);
-                toc.nextPlaylistItem = ((curItemIndex + 1) < toc.playList.length ? curItemIndex + 1 : -1);
+            toc.playPlaylistContent = function (contentId, trigger) {
+
+                var curItemIndex = toc.playList.indexOf(contentId);
+                if (trigger == 'prev') {
+                    toc.itemIndex -= 1;
+                } else if (trigger == 'next') {
+                    toc.itemIndex += 1;
+                }
+                toc.prevPlaylistItem = (toc.itemIndex - 1) > -1 ? $('.playlist-content:eq(' + (toc.itemIndex - 1) + ')').attr('name') : -1;
+                toc.nextPlaylistItem = (toc.itemIndex + 1) <= toc.playList.length ? $('.playlist-content:eq(' + (toc.itemIndex + 1) + ')').attr('name') : -1;
                 $scope.contentPlayer.contentData = toc.playListContent[curItemIndex];
                 $scope.contentPlayer.isContentPlayerEnabled = true;
-
-
-                $timeout(function () {
-//                    $scope.contentPlayer.isContentPlayerEnabled = true;
-
-                }, 0);
             }
 
             toc.getAllChildrenCount = function (index) {
@@ -98,16 +95,16 @@ angular.module('playerApp')
 
             toc.getContentIcon = function (contentMimeType) {
                 var contentIcons = {
-                    "application/pdf": "file pdf outline icon",
-                    "image/jpeg": "file image outline icon",
-                    "image/jpg": "file image outline icon",
-                    "image/png": "file image outline icon",
-                    "video/mp4": "file video outline icon",
-                    "video/ogg": "file video outline icon",
-                    "video/youtube": "youtube square icon",
-                    "application/vnd.ekstep.html-archive": "html5 icon",
-                    "application/vnd.ekstep.ecml-archive": "file archive outline icon",
-                    "application/vnd.ekstep.content-collection": "ui large book icon"
+                    "application/pdf": "large file pdf outline icon",
+                    "image/jpeg": "large file image outline icon",
+                    "image/jpg": "large file image outline icon",
+                    "image/png": "large file image outline icon",
+                    "video/mp4": "large file video outline icon",
+                    "video/ogg": "large file video outline icon",
+                    "video/youtube": "large youtube square icon",
+                    "application/vnd.ekstep.html-archive": "large html5 icon",
+                    "application/vnd.ekstep.ecml-archive": "large file archive outline icon",
+                    "application/vnd.ekstep.content-collection": "big book icon"
 
 
                 };

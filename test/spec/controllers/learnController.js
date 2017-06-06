@@ -7,28 +7,48 @@ describe('Controller:LearnCtrl', function() {
     var LearnCtrl,
         scope,
         learnService,
+        $timeout,
         $q,
         deferred;
 
-    beforeEach(inject(function($controller, $rootScope, _$q_, _learnService_) {
+    beforeEach(inject(function($controller, $rootScope, _$q_, _learnService_, _$timeout_) {
         scope = $rootScope.$new();
         $q = _$q_;
         deferred = $q.defer();
         learnService = _learnService_;
+        $timeout = _$timeout_;
         spyOn(learnService, 'enrolledCourses').and.returnValue(deferred.promise);
-        AuthCtrl = $controller('LearnCtrl', {
+        LearnCtrl = $controller('LearnCtrl', {
             $scope: scope
         });
         spyOn(LearnCtrl, 'enrolledCourses').and.callThrough();
     }));
+
     it('should return enrolled courses', (function(done) {
         deferred.resolve(enrolledCoursesSuccessResponse);
-
-        LearnCtrl.enrolledCourses();
+        LearnCtrl.courses();
         learnService.enrolledCourses();
         scope.$apply();
         expect(LearnCtrl.enrolledCourses).toHaveBeenCalled();
         expect(learnService.enrolledCourses).toHaveBeenCalled();
+        done();
+    }));
+    it('should handle failure when response code is not ok', (function(done) {
+        deferred.resolve('enrolledCoursesSuccessResponse');
+        LearnCtrl.courses();
+        learnService.enrolledCourses();
+        scope.$apply();
+        expect(LearnCtrl.enrolledCourses).toHaveBeenCalled();
+        expect(learnService.enrolledCourses).toHaveBeenCalled();
+        done();
+    }));
+    it('should handle api failure ', (function(done) {
+        deferred.reject();
+        LearnCtrl.courses();
+        $timeout.flush(2000);
+        scope.$apply();
+
+        expect(LearnCtrl.enrolledCourses).toHaveBeenCalled();
         done();
     }));
 });

@@ -9,7 +9,7 @@
 angular.module('playerApp').directive('contentPlayer', function () {
 
     return {
-        templateUrl: '/views/contentplayer/player.html',
+        templateUrl: 'views/contentplayer/player.html',
         restrict: 'E',
         scope: {
             id: '=',
@@ -58,7 +58,7 @@ angular.module('playerApp').controller('contentPlayerCtrl', function ($scope, $s
         if ($scope.contentData.mimeType === 'application/vnd.ekstep.ecml-archive' || $scope.contentData.mimeType === 'application/vnd.ekstep.html-archive')
         {
             $scope.showIFrameContent = true;
-            $scope.iFrameSrc = "https://dev.ekstep.in/assets/public/preview/preview.html?webview=true&id=" + $scope.contentData.identifier;
+            $scope.iFrameSrc = $sce.trustAsResourceUrl("https://dev.ekstep.in/assets/public/preview/preview.html?webview=true&id=" + $scope.contentData.identifier);
         }
     }
     ;
@@ -100,10 +100,6 @@ angular.module('playerApp').controller('contentPlayerCtrl', function ($scope, $s
     $scope.close = function () {
         $scope.errorObject = {};
         $scope.visibility = false;
-    };
-
-    $scope.trustSrc = function (src) {
-        return $sce.trustAsResourceUrl(src);
     };
 
     $scope.tryAgain = function () {

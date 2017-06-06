@@ -105,7 +105,6 @@ describe('Controller:AuthCtrl', function() {
         deferred.resolve(successLogoutResponse);
         AuthCtrl.logout();
         authService.logout();
-        timeout.flush(2000);
         scope.$apply();
         expect(AuthCtrl.logout).toHaveBeenCalled();
         expect(authService.logout).toHaveBeenCalled();

@@ -1,15 +1,10 @@
 <ol ng-if="item.children && item.children.length > 0" class="toc-list-sub-menu">
-
-            <li value="" ng-repeat="item in item.children" class="toc-list">
-
-		           <div ng-init="toc.checkAndAddToPlaylist(item)"   ng-click="toc.expandMe($event,item)" ng-class="toc.getContentClass(item.mimeType)"><div class="column"> <div class="header toc-content-child-header" >{{item.name}}</div></div><div class="right aligned column"><i ng-if="toc.getContentIcon(item.mimeType)!=undefined" ng-class="toc.getContentIcon(item.mimeType)"></i></div></div>
-
-
-			     <div ng-switch on="item.children.length > 0">
-			        <div ng-switch-when="true">
-			          <div ng-init="subItems = item.children;" ng-include="'views/course/tocList.html'"></div>
-			        </div>
-		      	</div>
-
-            </li>
-  </ol>
+    <li value="" ng-repeat="item in item.children" class="toc-list">
+        <div name="{{item.identifier}}"  ng-init="toc.checkAndAddToPlaylist(item)"   ng-click="toc.expandMe($event, item)" ng-class="toc.getContentClass(item.mimeType)"><div class="column"> <div class="header toc-content-child-header" >{{item.name}}</div></div><div class="right aligned column"><i ng-if="toc.getContentIcon(item.mimeType) != undefined" ng-class="toc.getContentIcon(item.mimeType)"></i></div></div>
+        <div ng-switch on="item.children.length > 0">
+            <div ng-switch-when="true">
+                <div ng-init="subItems = item.children;" ng-include="'views/course/tocList.html'"></div>
+            </div>
+        </div>
+    </li>
+</ol>
