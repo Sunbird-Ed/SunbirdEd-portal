@@ -8,7 +8,7 @@ describe('Controller:AuthCtrl', function() {
         scope,
         authService,
         $q,
-        deferred, timeout;
+        deferred, timeout, $state;
 
     var successLoginResponse = {
         'id': 'sunbird.login',
@@ -55,12 +55,13 @@ describe('Controller:AuthCtrl', function() {
     // });
 
     // Initialize the controller and a mock scope
-    beforeEach(inject(function($controller, $rootScope, _$q_, _authService_, _$timeout_) {
+    beforeEach(inject(function($controller, $rootScope, _$q_, _authService_, _$timeout_, _$state_) {
         scope = $rootScope.$new();
         $q = _$q_;
         deferred = $q.defer();
         authService = _authService_;
         timeout = _$timeout_;
+        $state = _$state_;
         spyOn(authService, 'login').and.returnValue(deferred.promise);
         spyOn(authService, 'logout').and.returnValue(deferred.promise);
         AuthCtrl = $controller('AuthCtrl', {
@@ -78,6 +79,7 @@ describe('Controller:AuthCtrl', function() {
         scope.$apply();
         expect(AuthCtrl.login).toHaveBeenCalled();
         expect(authService.login).toHaveBeenCalled();
+        // expect($state.go).toHaveBeenCalledWith('Search');
         done();
     }));
     it('should fail login user', (function(done) {
@@ -90,8 +92,8 @@ describe('Controller:AuthCtrl', function() {
         expect(authService.login).toHaveBeenCalled();
         done();
     }));
-    it('should handle api logout user error ', (function(done) {
-        deferred.reject();
+    it('should handle api login user error ', (function(done) {
+        deferred.reject('');
         AuthCtrl.login();
         authService.login();
 
@@ -123,7 +125,7 @@ describe('Controller:AuthCtrl', function() {
         done();
     }));
     it('should handle api logout user error ', (function(done) {
-        deferred.reject();
+        deferred.reject('');
         AuthCtrl.logout();
         authService.logout();
 
