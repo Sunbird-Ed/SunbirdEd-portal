@@ -3,7 +3,7 @@ angular.module('playerApp')
             var toc = this;
             toc.playList = [];
             toc.playListContent = [];
-toc.loading=false;
+            toc.loading = false;
             $scope.contentPlayer = {
                 isContentPlayerEnabled: false,
 
@@ -11,9 +11,9 @@ toc.loading=false;
             //$scope.contentPlayer.contentData=};
             toc.getCourseToc = function () {
                 toc.courseId = $stateParams.courseId;
-                toc.loading=true;
+                toc.loading = true;
                 courseService.courseHierarchy(toc.courseId).then(function (res) {
-                    toc.loading=false;
+                    toc.loading = false;
                     toc.courseHierachy = res.result.content;
                 });
             }
@@ -24,10 +24,10 @@ toc.loading=false;
                 {
                     if (!$($event.target).closest("li").find('.toc-list-sub-menu').first().hasClass('active'))
                     {
-                        $($event.target).closest("li").find('.toc-list-sub-menu').first().show(300).addClass('active');
+                        $($event.target).closest("li").find('.toc-list-sub-menu').first().show(200).addClass('active');
                     } else
                     {
-                        $($event.target).closest("li").find('.toc-list-sub-menu').first().hide(300).removeClass('active');
+                        $($event.target).closest("li").find('.toc-list-sub-menu').first().hide(200).removeClass('active');
                     }
                 } else
                 {
@@ -100,16 +100,16 @@ toc.loading=false;
 
             toc.getContentIcon = function (contentMimeType) {
                 var contentIcons = {
-                    "application/pdf": "file pdf outline icon",
-                    "image/jpeg": "file image outline icon",
-                    "image/jpg": "file image outline icon",
-                    "image/png": "file image outline icon",
-                    "video/mp4": "file video outline icon",
-                    "video/ogg": "file video outline icon",
-                    "video/youtube": "youtube square icon",
-                    "application/vnd.ekstep.html-archive": "html5 icon",
-                    "application/vnd.ekstep.ecml-archive": "file archive outline icon",
-                    "application/vnd.ekstep.content-collection": "ui large book icon"
+                    "application/pdf": "large file pdf outline icon",
+                    "image/jpeg": "large file image outline icon",
+                    "image/jpg": "large file image outline icon",
+                    "image/png": "large file image outline icon",
+                    "video/mp4": "large file video outline icon",
+                    "video/ogg": "large file video outline icon",
+                    "video/youtube": "large youtube square icon",
+                    "application/vnd.ekstep.html-archive": "large html5 icon",
+                    "application/vnd.ekstep.ecml-archive": "large file archive outline icon",
+                    "application/vnd.ekstep.content-collection": "big book icon"
 
 
                 };
