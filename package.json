@@ -12,7 +12,7 @@
     "gulp-filter": "^2.0.2",
     "gulp-imagemin": "^2.3.0",
     "gulp-jshint": "^1.11.1",
-    "gulp-karma": "0.0.4",
+    "gulp-karma": "0.0.5",
     "gulp-less": "^3.3.0",
     "gulp-load-plugins": "^0.10.0",
     "gulp-minify-css": "^1.2.0",
@@ -26,7 +26,7 @@
     "gulp-watch": "^4.2.4",
     "jasmine-core": "^2.6.1",
     "jshint-stylish": "^1.0.0",
-    "karma": "^1.7.0",
+    "karma": "0.12",
     "karma-coverage": "^1.1.1",
     "karma-jasmine": "^1.1.0",
     "karma-phantomjs-launcher": "^1.0.4",
@@ -36,7 +36,6 @@
     "phantomjs-prebuilt": "^2.1.14",
     "rimraf": "^2.4.0",
     "run-sequence": "^1.1.1",
-    "semantic-ui": "^2.2.10",
     "wiredep": "^2.2.2"
   },
   "engines": {

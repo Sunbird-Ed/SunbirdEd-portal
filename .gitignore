@@ -4,9 +4,6 @@
 /.tmp
 /.sass-cache
 /bower_components
-/semantic
-semantic.json
-/app/thirdparty/semantic
 /app/thirdparty/bower_components
 /coverage
 /npm-debug.log
