@@ -21,7 +21,7 @@ describe('Controller:LearnCtrl', function() {
         LearnCtrl = $controller('LearnCtrl', {
             $scope: scope
         });
-        spyOn(LearnCtrl, 'enrolledCourses').and.callThrough();
+        spyOn(LearnCtrl, 'courses').and.callThrough();
     }));
 
     it('should return enrolled courses', (function(done) {
@@ -29,7 +29,7 @@ describe('Controller:LearnCtrl', function() {
         LearnCtrl.courses();
         learnService.enrolledCourses();
         scope.$apply();
-        expect(LearnCtrl.enrolledCourses).toHaveBeenCalled();
+        expect(LearnCtrl.courses).toHaveBeenCalled();
         expect(learnService.enrolledCourses).toHaveBeenCalled();
         done();
     }));
@@ -38,7 +38,7 @@ describe('Controller:LearnCtrl', function() {
         LearnCtrl.courses();
         learnService.enrolledCourses();
         scope.$apply();
-        expect(LearnCtrl.enrolledCourses).toHaveBeenCalled();
+        expect(LearnCtrl.courses).toHaveBeenCalled();
         expect(learnService.enrolledCourses).toHaveBeenCalled();
         done();
     }));
@@ -48,7 +48,7 @@ describe('Controller:LearnCtrl', function() {
         $timeout.flush(2000);
         scope.$apply();
 
-        expect(LearnCtrl.enrolledCourses).toHaveBeenCalled();
+        expect(LearnCtrl.courses).toHaveBeenCalled();
         done();
     }));
 });
