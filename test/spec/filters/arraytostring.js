@@ -11,7 +11,7 @@ describe('Filter: arrayToString', function() {
         arrayToString = $filter('arrayToString');
     }));
 
-    xit('should return the input prefixed with "arrayToString filter:"', function() {
+    it('should return the input prefixed with "arrayToString filter:"', function() {
         var text = 'angularjs';
         expect(arrayToString(text)).toBe(text);
     });
