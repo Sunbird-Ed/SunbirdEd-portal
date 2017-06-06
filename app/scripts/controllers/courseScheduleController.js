@@ -31,40 +31,35 @@ angular.module('playerApp')
                     }
                 } else
                 {
-                    var itemIndex = $($event.target).closest('.playlist-content').index('.playlist-content');
-
-                    toc.playPlaylistContent(itemIndex);
+                    toc.itemIndex = $($event.target).closest('.playlist-content').index('.playlist-content');
+                    toc.playPlaylistContent($($event.target).closest('.playlist-content').attr('name'), '');
 
                 }
             };
 
             toc.checkAndAddToPlaylist = function (item) {
-                if (item.mimeType != "application/vnd.ekstep.content-collection")
+                if (item.mimeType != "application/vnd.ekstep.content-collection" && toc.playList.indexOf(item.identifier) == -1)
                 {
                     // console.log($scope.counter);
                     toc.playList.push(item.identifier);
                     toc.playListContent.push(item);
-                    $scope.counter = toc.playList.length - 1;
-
-
                 }
             }
 
 
 
-            toc.playPlaylistContent = function (itemIndex) {
-                var curItemIndex = itemIndex;
-                toc.prevPlaylistItem = ((curItemIndex - 1) >= 0 ? curItemIndex - 1 : -1);
-                console.log(toc.prevPlaylistItem);
-                toc.nextPlaylistItem = ((curItemIndex + 1) < toc.playList.length ? curItemIndex + 1 : -1);
+            toc.playPlaylistContent = function (contentId, trigger) {
+
+                var curItemIndex = toc.playList.indexOf(contentId);
+                toc.prevPlaylistItem = (toc.itemIndex - 1) > 0 ? $('.playlist-content:eq(' + (toc.itemIndex - 1) + ')').attr('name') : -1;
+                toc.nextPlaylistItem = (toc.itemIndex + 1) <= toc.playList.length ? $('.playlist-content:eq(' + (toc.itemIndex + 1) + ')').attr('name') : -1;
+                if (trigger == 'prev') {
+                    toc.itemIndex -= 1;
+                } else if (trigger == 'next') {
+                    toc.itemIndex += 1;
+                }               
                 $scope.contentPlayer.contentData = toc.playListContent[curItemIndex];
                 $scope.contentPlayer.isContentPlayerEnabled = true;
-
-
-                $timeout(function () {
-//                    $scope.contentPlayer.isContentPlayerEnabled = true;
-
-                }, 0);
             }
 
             toc.getAllChildrenCount = function (index) {
