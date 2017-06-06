@@ -8,13 +8,38 @@ angular.module('playerApp')
                 isContentPlayerEnabled: false,
 
             };
+
+            toc.showError = function (message) {
+             
+                toc.messageClass = "red";
+                toc.showMetaLoader = false;
+                toc.message = message;
+                $timeout(function () {
+                    toc.showDimmer = false;
+                }, 2000);
+            }
+
+
             //$scope.contentPlayer.contentData=};
             toc.getCourseToc = function () {
                 toc.courseId = $stateParams.courseId;
-                toc.loading = true;
+                toc.showMetaLoader = toc.showDimmer = true;
+                toc.messageType = "";
+                toc.message = "Loading Course schedule, Please wait...";
                 courseService.courseHierarchy(toc.courseId).then(function (res) {
-                    toc.loading = false;
-                    toc.courseHierachy = res.result.content;
+                    if (res && res.responseCode === "OK") {
+                        toc.courseHierachy = res.result.content;
+                    } else {
+                        toc.showError("Unable to get course schedule details.");
+                    }
+                    
+                    $timeout(function () {
+                        toc.showMetaLoader = false;
+                        toc.showDimmer = false;
+                    }, 2000);
+
+                }, function (err) {
+                    toc.showError("Unable to get course schedule details.");
                 });
             }
             toc.getCourseToc();
