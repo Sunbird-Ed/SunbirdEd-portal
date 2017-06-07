@@ -31,24 +31,8 @@
                 <![endif]-->
     <div ng-include="'views/common/topHeader.html'"></div>
     <div class="ui top attached fluid container overflowAuto">
-        <div class="ui left vertical visible inverted sidebar menu top-inherit" ng-if="isLoggedIn ">
-            <div class="item">
-                <ol class="ui list">
-                    <!--dont remove value -->
-                    <li value="">Signing Up</li>
-                    <li value="">User</li>
-                    <li value="">User Types
-                        <ol>
-                            <li value="">Admin</li>
-                            <li value="">Regular User</li>
-                        </ol>
-                    </li>
-                    <li value="">Account</li>
-                    <li value=""><a href="/course"> Courses</a></li>
-                </ol>
-            </div>
-        </div>
-        <div class="pusher pusher-fix-height">
+        <div ng-include="'views/common/sideMenu.html'"></div>
+        <div class="pusher">
             <div class="ui padded grid">
                 <div class="row">
                     <div class="ten wide column">
@@ -59,7 +43,7 @@
                     </div>
                     <div class="one wide column"></div>
                 </div>
-                <div class="one wide column"></div>
+            
             </div>
         </div>
     </div>
@@ -95,6 +79,7 @@
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>
     <!--services-->
+    <script src="scripts/services/playerAppConstants.js"></script>
     <script src="scripts/services/httpService.js"></script>
     <script src="scripts/services/httpServiceJava.js"></script>
     <script src="scripts/services/contentService.js"></script>
