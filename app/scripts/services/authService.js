@@ -1,6 +1,6 @@
 'use strict';
 angular.module('playerApp')
-    .service('authService', function(httpServiceJava, config, $q, $sessionStorage, $rootScope, $state) {
+    .service('authService', function(httpServiceJava, config, $q, $sessionStorage, $rootScope, $state, $cookies, $window) {
         function login(req) {
             var url = config.URL.USER_BASE + config.URL.AUTH.LOGIN;
             // return httpServiceJava.post(url, req);
@@ -52,9 +52,57 @@ angular.module('playerApp')
             return deferred.promise;
         }
 
+        function getUserProfile(uId) {
+            console.log('uIduIduIduIduId', uId);
+            var url = config.URL.USER_BASE + config.URL.AUTH.PROFILE + '/:' + uId;
+            // return httpServiceJava.post(url, req);
+            var res = {
+                'id': '8e27cbf5-e299-43b0-bca7-8347f7e5abcf',
+                'ver': 'v1',
+                'ts': '2017-06-07 03:18:08:239+0530',
+                'params': {
+                    'resmsgid': null,
+                    'msgid': '8e27cbf5-e299-43b0-bca7-8347f7e5abcf',
+                    'err': null,
+                    'status': 'success',
+                    'errmsg': null
+                },
+                'responseCode': 'OK',
+                'result': {
+                    'response': {
+                        'lastName': null,
+                        'aadhaarNo': null,
+                        'gender': null,
+                        'city': null,
+                        'language': 'English',
+                        // 'avatar': null,
+                        'avatar': 'http://via.placeholder.com/350x150',
+                        'updatedDate': null,
+                        'userName': 'amit.kumar@tarento.com',
+                        'userId': 'e9280b815c0e41972bf754e9409b66d778b8e11bb91844892869a1e828d7d2f2',
+                        'zipcode': null,
+                        'firstName': 'Amit',
+                        'lastLoginTime': null,
+                        'createdDate': '2017-06-07 10:35:50:558+0530',
+                        'phone': null,
+                        'state': null,
+                        'email': 'amit.kumar@tarento.com',
+                        'status': 1
+                    }
+                }
+            };
+            var deferred = $q.defer();
+            deferred.resolve(res);
+            return deferred.promise;
+        }
+
         function validUser() {
-            if (!$sessionStorage.isLoggedIn) {
+            var isLoggedIn = $window.localStorage.getItem('isLoggedIn');
+            console.log('user', isLoggedIn);
+
+            if (!isLoggedIn) {
                 $state.go('Home');
+                $rootScope.isLoggedIn = false;
                 return false;
             } else {
                 $rootScope.isLoggedIn = true;
@@ -62,9 +110,9 @@ angular.module('playerApp')
         }
 
         return {
-
             login: login,
             logout: logout,
+            getUserProfile: getUserProfile,
             validUser: validUser
         };
     });
