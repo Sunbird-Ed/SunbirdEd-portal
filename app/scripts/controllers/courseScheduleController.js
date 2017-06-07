@@ -1,16 +1,38 @@
 angular.module('playerApp')
-        .controller('courseScheduleCtrl', function (courseService, $timeout, $scope, $sce, $sessionStorage, $stateParams) {
+        .controller('courseScheduleCtrl', function (courseService, $timeout, $scope, $sce, $rootScope, $sessionStorage, $stateParams) {
             var toc = this;
             toc.playList = [];
             toc.playListContent = [];
             toc.loading = false;
+            toc.lectureView = $stateParams.lectureView;
+            toc.courseId ='do_11225144311893196816';// $stateParams.courseId;
+            $scope.enableCloseButton = (toc.lectureView == 'yes') ? 'false' : 'true';
+            $rootScope.sideMenuData = [{
+                    "icon": "",
+                    "name": "COURSE SCHEDULE",
+                    "children": [],
+                    "link": "/toc/" + toc.courseId + "/no"
+                },
+                {
+                    "icon": "",
+                    "name": "LECTURE VIEW",
+                    "children": [],
+                    "link": "/toc/" + toc.courseId + "/yes"
+                },
+                {
+                    "icon": "",
+                    "name": "NOTES",
+                    "children": [],
+                    "link": "#"
+                }
+            ];
             $scope.contentPlayer = {
                 isContentPlayerEnabled: false,
 
             };
 
             toc.showError = function (message) {
-             
+
                 toc.messageClass = "red";
                 toc.showMetaLoader = false;
                 toc.message = message;
@@ -22,7 +44,7 @@ angular.module('playerApp')
 
             //$scope.contentPlayer.contentData=};
             toc.getCourseToc = function () {
-                toc.courseId = $stateParams.courseId;
+
                 toc.showMetaLoader = toc.showDimmer = true;
                 toc.messageType = "";
                 toc.message = "Loading Course schedule, Please wait...";
@@ -33,7 +55,7 @@ angular.module('playerApp')
                     } else {
                         toc.showError("Unable to get course schedule details.");
                     }
-                    
+
                     $timeout(function () {
                         toc.showMetaLoader = false;
                         toc.showDimmer = false;
@@ -46,7 +68,7 @@ angular.module('playerApp')
             toc.getCourseToc();
             toc.expandMe = function ($event, item) {
                 if (item.mimeType != "application/vnd.ekstep.content-collection")
-                {                    
+                {
                     toc.itemIndex = $($event.target).closest('.playlist-content').index('.playlist-content');
                     toc.playPlaylistContent($($event.target).closest('.playlist-content').attr('name'), '');
 
@@ -126,16 +148,20 @@ angular.module('playerApp')
                 };
                 return contentIcons[contentMimeType];
             }
-            toc.applyAccordion=function(){
-               $timeout(function(){
-                  
-                 $('.ui.accordion')
-                                .accordion({
-                                    selector: {
-                                        trigger: '.title'
-                                    }
-                                });
-                            },100);
+            toc.applyAccordion = function () {
+                $timeout(function () {
+                    //if lecture view enabled play first content by default
+                    if (toc.lectureView == 'yes' && toc.playList.length > 0) {
+                        toc.itemIndex = 0;
+                        toc.playPlaylistContent(toc.playList[toc.itemIndex], '');
+                    }
+                    $('.ui.accordion')
+                            .accordion({
+                                selector: {
+                                    trigger: '.title'
+                                }
+                            });
+                }, 0);
             }
 
 

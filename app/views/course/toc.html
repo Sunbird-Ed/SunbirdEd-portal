@@ -1,6 +1,6 @@
 <div ng-controller="courseScheduleCtrl as toc">
 
-    <div  id="course-toc-list" ng-show="!contentPlayer.isContentPlayerEnabled && toc.courseHierachy && !toc.showDimmer" ng-init="toc.playList = []">
+    <div  id="course-toc-list" ng-show="!contentPlayer.isContentPlayerEnabled && toc.courseHierachy && !toc.showDimmer && toc.lectureView=='no'" ng-init="toc.playList = []">
         <div class="padded dash-heading-border">
             <h4 class="header">{{toc.courseHierachy.name}}</h4>
         </div>
@@ -48,13 +48,14 @@
             </ol>
         </div>
     </div>
-    <div ng-show="contentPlayer.isContentPlayerEnabled">
+    <div ng-show="(contentPlayer.isContentPlayerEnabled || toc.lectureView=='yes')&& !toc.showDimmer">
         <div class="ui grid">
             <div class="one wide middle aligned column">
                 <button class="ui basic icon big button" ng-click="toc.playPlaylistContent(toc.prevPlaylistItem, 'prev')" ng-disabled="(toc.prevPlaylistItem < 0)"><i class="ui big chevron left icon"></i></button>
             </div>
             <div class="ten wide column" align="center">
-                <content-player visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="true" height="700" width="1000"></content-player>
+                <content-player ng-if="toc.lectureView=='no'" visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="true" height="700" width="1000"></content-player>
+                 <content-player ng-if="toc.lectureView=='yes'" visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="false" height="700" width="1000"></content-player>
             </div>
             <div class="one wide middle aligned column">
                 <button class="ui basic icon big button" ng-click="toc.playPlaylistContent(toc.nextPlaylistItem, 'next')" ng-disabled="(toc.nextPlaylistItem < 0)"><i class="ui big chevron right icon"></i></button>
