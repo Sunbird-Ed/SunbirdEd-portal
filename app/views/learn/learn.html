@@ -1,7 +1,7 @@
 <div class="ui segment" ng-controller="LearnCtrl as learn">
-    <div class="marginLeft-36 margin-top-15">
-        <h3>Enrolled Courses</h2>
-    </div>
+    <span class="margin-top-15">
+        <h3 class="margin-left-3Per">Enrolled Courses</h2>
+    </span>
     <div class="regular slider">
         <div ng-click="learn.openCourseView(enrolledCourse.courseId)" class="ui card margin-left-right-10 margin-top-15" ng-repeat=" enrolledCourse in learn.enrolledCourses" on-finish-render="ngRepeatFinished">
 
