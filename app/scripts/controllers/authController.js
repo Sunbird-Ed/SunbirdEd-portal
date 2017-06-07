@@ -1,22 +1,31 @@
 'use strict';
 
 angular.module('playerApp')
-    .controller('AuthCtrl', function(authService, config, $log, $scope, $rootScope, $timeout, $state,
-        $sessionStorage) {
+    .controller('AuthCtrl', function(authService, config, $log, $scope, $rootScope, $timeout, $state, $localStorage, $sessionStorage, $window) {
         var auth = this;
         auth.userName = '';
         auth.password = '';
+        $rootScope.isUserProfilePic = $window.localStorage.getItem('userPic') === 'null' ? false : true;
+        $rootScope.isLoggedIn = $window.localStorage.getItem('isLoggedIn') === null ? false : true;
+        $rootScope.getUserProfileImage = function() {
+            $rootScope.userProfilePic = $window.localStorage.getItem('userPic');
+        };
         auth.resetForm = function() {
             auth.userName = '';
             auth.password = '';
         };
         auth.openAuthModal = function() {
-            $('#auth')
+            $('#authLogin')
                 .modal('show');
         };
         auth.closeAuthModal = function() {
-            $('#auth')
+            auth.resetForm();
+            $('#authLogin')
                 .modal('hide');
+            $('#authLogin')
+                .modal('hide others');
+            $('#authLogin')
+                .modal('hide dimmer');
         };
 
         function handleFailedResponse(errorResponse) {
@@ -30,6 +39,36 @@ angular.module('playerApp')
                 $scope.error = {};
             }, 2000);
         }
+        auth.userProfile = function(userProfile) {
+            if (userProfile && userProfile.responseCode === 'OK') {
+                $rootScope.userProfilePic = userProfile.result.response.avatar;
+                auth.user.profilePic = userProfile.result.response.avatar;
+                $window.localStorage.setItem('userPic', $rootScope.userProfilePic);
+                $state.go('Search');
+            } else {
+                throw new Error(userProfile);
+            }
+        };
+
+        auth.processUserLogin = function(loginResponse) {
+            if (loginResponse && loginResponse.responseCode === 'OK') {
+                var user = loginResponse.result.response;
+                auth.closeAuthModal();
+                $rootScope.isLoggedIn = true;
+                $rootScope.token = user.token;
+                $rootScope.userId = user.userId;
+                auth.userId = user.userId;
+                auth.user = {
+                    isLoggedIn: true,
+                    token: $rootScope.token,
+                    userId: $rootScope.userId
+                };
+                $window.localStorage.setItem('user', auth.user);
+                $window.localStorage.setItem('isLoggedIn', true);
+            } else {
+                throw new Error(loginResponse);
+            }
+        };
 
         auth.login = function() {
             var existingUser = {
@@ -50,21 +89,15 @@ angular.module('playerApp')
                 }
             };
 
-            authService.login(existingUser).then(function(successResponse) {
-                    if (successResponse && successResponse.responseCode === 'OK') {
-                        var loginResponse = successResponse.result.response;
-                        auth.closeAuthModal();
-                        $rootScope.isLoggedIn = true;
-                        $scope.token = loginResponse.token;
-                        $scope.userId = loginResponse.userId;
-                        $sessionStorage.firstName = loginResponse.firstName;
-                        $sessionStorage.isLoggedIn = $rootScope.isLoggedIn;
-                        $sessionStorage.token = $scope.token;
-                        $sessionStorage.userId = $scope.userId;
-                        $state.go('Search');
-                    } else {
-                        handleFailedResponse(successResponse);
-                    }
+            authService.login(existingUser)
+                .then(function(successResponse) {
+                    auth.processUserLogin(successResponse);
+                    authService.getUserProfile(auth.userId)
+                        .then(function(successResponse) {
+                            auth.userProfile(successResponse);
+                        }).catch(function(error) {
+                            handleFailedResponse(error);
+                        });
                 })
                 .catch(function(error) {
                     handleFailedResponse(error);
@@ -87,14 +120,11 @@ angular.module('playerApp')
                     if (successResponse && successResponse.responseCode === 'OK') {
                         $scope.error = {};
                         $rootScope.isLoggedIn = false;
-                        $scope.token = '';
-                        $scope.userId = '';
-                        $sessionStorage.firstName = '';
-                        $sessionStorage.isLoggedIn = $rootScope.isLoggedIn;
-                        $sessionStorage.token = $scope.token;
-                        $sessionStorage.userId = '';
-                        $state.go('Home');
+                        $rootScope.token = '';
+                        $rootScope.userId = '';
+                        $window.localStorage.clear();
                         auth.resetForm();
+                        $state.go('Home');
                     } else {
                         handleFailedResponse(successResponse);
                     }
