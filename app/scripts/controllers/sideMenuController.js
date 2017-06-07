@@ -1,29 +1,29 @@
 'use strict';
 
 angular.module('playerApp')
-        .controller('sideMenuCtrl', function ($scope,$rootScope) {
+        .controller('sideMenuCtrl', function ($scope, $rootScope) {
             var sideMenu = this;
 
             $rootScope.sideMenuData = [{
-                    "icon":"large add circle icon",
+                    "icon": "large add circle icon",
                     "name": "Add Course",
                     "children": [],
-                    "link":"#"
+                    "link": "#"
                 },
                 {
-                    "icon":"large bookmark icon",
+                    "icon": "large bookmark icon",
                     "name": "My Bookmarks",
                     "children": [],
-                    "link":"#"
+                    "link": "#"
                 },
                 {
-                    "icon":"large search icon",
+                    "icon": "large search icon",
                     "name": "Explore",
                     "children": [],
-                    "link":"#"
+                    "link": "#"
                 }
             ];
-
+           
 
 
         });
