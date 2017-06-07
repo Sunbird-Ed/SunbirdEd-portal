@@ -3,7 +3,7 @@
         <h3>Enrolled Courses</h2>
     </div>
     <div class="regular slider">
-        <div class="ui card margin-left-right-10 margin-top-15" ng-repeat=" enrolledCourse in learn.enrolledCourses " on-finish-render="ngRepeatFinished">
+        <div ng-click="learn.openCourseView(enrolledCourse.courseId)" class="ui card margin-left-right-10 margin-top-15" ng-repeat=" enrolledCourse in learn.enrolledCourses" on-finish-render="ngRepeatFinished">
 
             <div class=" image ">
                 <img src="../images/sunbird_logo.png ">
