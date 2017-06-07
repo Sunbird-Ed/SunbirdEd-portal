@@ -6,14 +6,14 @@
         </div>
 
         <div class="content">
-            <ol class="ui styled full-width accordion">
+            <ol class="ui styled full-width accordion" style="width:100% !important;">
                 <li value="" ng-repeat="item in  toc.courseHierachy.children track by $index" class="toc-list" >
 
                     <div class="title" ng-if="item.children && item.children.length > 0"    ng-class="toc.getContentClass(item.mimeType)">
                         <div class="column">
                             <h5 class="header toc-content-header"><i class="dropdown icon"></i>{{item.name}}</h5>
                         </div>
-                        <div class="right aligned column"><i ng-if="toc.getContentIcon(item.mimeType) != undefined" ng-class="toc.getContentIcon(item.mimeType)"></i><span class="meta">{{ (toc.getAllChildrenCount($index) > 0)?toc.getAllChildrenCount($index):'&nbsp;&nbsp;&nbsp;'}}</span></div>
+                        <div class="right aligned column"><i ng-if="toc.getContentIcon(item.mimeType) != undefined" ng-class="toc.getContentIcon(item.mimeType)"></i><span class="meta">{{ (toc.getAllChildrenCount($index) > 0)?toc.getAllChildrenCount($index):''}}</span></div>
                     </div>
 
                     <div class="title" ng-if="!item.children || item.children.length == 0" name="{{item.identifier}}" ng-init="toc.checkAndAddToPlaylist(item)"  ng-click="toc.expandMe($event, item)" ng-class="toc.getContentClass(item.mimeType)">
@@ -28,7 +28,7 @@
                                     <div class="column">
                                         <h5 class="header toc-content-header"><i class="dropdown icon"></i>{{item.name}}</h5>
                                     </div>
-                                    <div class="right aligned column"><i ng-if="toc.getContentIcon(item.mimeType) != undefined" ng-class="toc.getContentIcon(item.mimeType)"></i><span class="meta">{{ (toc.getAllChildrenCount($index) > 0)?toc.getAllChildrenCount($index):'&nbsp;&nbsp;&nbsp;'}}</span></div>
+                                    <div class="right aligned column"><i ng-if="toc.getContentIcon(item.mimeType) != undefined" ng-class="toc.getContentIcon(item.mimeType)"></i><span class="meta">{{ (toc.getAllChildrenCount($index) > 0)?toc.getAllChildrenCount($index):''}}</span></div>
                                 </div>
 
                                 <div ng-if="!item.children || item.children.length == 0" name="{{item.identifier}}" ng-init="toc.checkAndAddToPlaylist(item)"  ng-click="toc.expandMe($event, item)" ng-class="toc.getContentClass(item.mimeType)">
