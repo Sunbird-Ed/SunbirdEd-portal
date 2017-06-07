@@ -1,0 +1,39 @@
+<div class="left menu ">
+    <a href="/">
+        <img class="ui tiny circular image" src="/images/sunbird_logo.png">
+    </a>
+</div>
+<a class="item " ui-sref-active="active" ui-sref="Search" href="search">
+    Home
+  </a>
+<a class="item " ui-sref-active="active" ui-sref="UserContent" href="userContent">
+    Learn
+  </a>
+<a class="item" href="#">
+   Resources
+  </a>
+<a class="item" href="#">
+   Community
+  </a>
+<a class="item" href="#">
+   Assess
+  </a>
+<div class="right menu">
+    <button class="ui item" ng-if="!isLoggedIn" ng-click="auth.openAuthModal()"> LOGIN</button>
+
+    <div class="ui small modal" id="authLogin">
+        <div class="ui grid">
+            <div class="eleven wide column">
+                <div class="ui text container segment" ng-include="'views/header/loginForm.html'">
+                </div>
+            </div>
+            <div class="one wide column">
+                <div class="actions">
+                    <div class="ui black deny ">
+                        <i class="close black icon link"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

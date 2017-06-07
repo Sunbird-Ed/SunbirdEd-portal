@@ -23,8 +23,10 @@ describe('Controller:AuthCtrl', function() {
         },
         responseCode: 'OK',
         result: {
-            'authToken': 'token123',
-            'firstName': 'firstname'
+            'source': 'android',
+            'firstName': 'user1',
+            'token': '4eb30018-d781-3b82-b87a-7fc09cb86b1f',
+            'userId': 'user1'
         }
     };
 
@@ -45,6 +47,42 @@ describe('Controller:AuthCtrl', function() {
         }
     };
 
+    var sucessUserProfileResponse = {
+        'id': '8e27cbf5-e299-43b0-bca7-8347f7e5abcf',
+        'ver': 'v1',
+        'ts': '2017-06-07 03:18:08:239+0530',
+        'params': {
+            'resmsgid': null,
+            'msgid': '8e27cbf5-e299-43b0-bca7-8347f7e5abcf',
+            'err': null,
+            'status': 'success',
+            'errmsg': null
+        },
+        'responseCode': 'OK',
+        'result': {
+            'response': {
+                'lastName': null,
+                'aadhaarNo': null,
+                'gender': null,
+                'city': null,
+                'language': 'English',
+                // 'avatar': null,
+                'avatar': 'http://via.placeholder.com/350x150',
+                'updatedDate': null,
+                'userName': 'amit.kumar@tarento.com',
+                'userId': 'e9280b815c0e41972bf754e9409b66d778b8e11bb91844892869a1e828d7d2f2',
+                'zipcode': null,
+                'firstName': 'Amit',
+                'lastLoginTime': null,
+                'createdDate': '2017-06-07 10:35:50:558+0530',
+                'phone': null,
+                'state': null,
+                'email': 'amit.kumar@tarento.com',
+                'status': 1
+            }
+        }
+    };
+
     // beforeEach(function() {
     //     form = $('<form>');
     //     $(document.body).append(form);
@@ -62,20 +100,27 @@ describe('Controller:AuthCtrl', function() {
         authService = _authService_;
         timeout = _$timeout_;
         $state = _$state_;
-        spyOn(authService, 'login').and.returnValue(deferred.promise);
-        spyOn(authService, 'logout').and.returnValue(deferred.promise);
+
         AuthCtrl = $controller('AuthCtrl', {
             $scope: scope
         });
+        spyOn(authService, 'login').and.returnValue(deferred.promise);
+        spyOn(authService, 'logout').and.returnValue(deferred.promise);
+        spyOn(authService, 'getUserProfile').and.returnValue(deferred.promise);
         spyOn(AuthCtrl, 'login').and.callThrough();
+        spyOn(AuthCtrl, 'userProfile').and.callThrough();
+        spyOn(AuthCtrl, 'processUserLogin').and.callThrough();
         spyOn(AuthCtrl, 'logout').and.callThrough();
     }));
 
     it('should login user', (function(done) {
         deferred.resolve(successLoginResponse);
+        deferred.resolve(successUserProfileResponse);
         spyOn(AuthCtrl, 'closeAuthModal').and.callThrough();
         AuthCtrl.login();
         authService.login();
+        AuthCtrl.processUserLogin(successLoginResponse);
+        authService.getUserProfile('123');
         scope.$apply();
         expect(AuthCtrl.login).toHaveBeenCalled();
         expect(authService.login).toHaveBeenCalled();
