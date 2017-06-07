@@ -32,16 +32,16 @@
     <div ng-include="'views/common/topHeader.html'"></div>
     <div class="ui top attached fluid container overflowAuto">
         <div ng-include="'views/common/sideMenu.html'"></div>
-        <div class="pusher">
+        <div class="pusher-fix-height">
             <div class="ui padded grid">
                 <div class="row">
+                    <div class="two wide column"></div>
                     <div class="ten wide column">
                         <!-- Add your site or application content here -->
                         <main>
                             <div ui-view></div>
                         </main>
                     </div>
-                    <div class="one wide column"></div>
                 </div>
             
             </div>
