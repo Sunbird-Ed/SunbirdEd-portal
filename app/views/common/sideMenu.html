@@ -1,17 +1,25 @@
-<div class="ui visible left vertical inverted sticky thin sidebar menu top-inherit" ng-if="isLoggedIn ">
-    <div class="item">
-        <ol class="ui list">
-            <!--dont remove value -->
-            <li value="">Signing Up</li>
-            <li value="">User</li>
-            <li value="">User Types
-                <ol>
-                    <li value="">Admin</li>
-                    <li value="">Regular User</li>
-                </ol>
-            </li>
-            <li value="">Account</li>
-               <li value=""><a href="/course"> Courses</a></li>
-        </ol>
+<div class="ui visible left vertical inverted sticky thin sidebar menu top-inherit" style="padding-top:50px; padding-left:20px;" ng-if="isLoggedIn " ng-controller="sideMenuCtrl as sideMenu">
+    <div class="ui list" ng-repeat="dataset in sideMenuData" >
+        <div class="item">
+            <div class="content">
+                <a class="header">{{dataset.name}}</a>
+            </div>
+            <div class="ui list" ng-repeat="dataset1 in dataset.children" ng-if="dataset.children.length>0">
+                <div class="item">
+                    <div class="content">
+                        <a class="header">{{dataset1.name}}</a>
+                    </div>
+                    <div class="ui list" ng-repeat="dataset2 in 
+                        dataset1.children"   
+                            ng-if="dataset1.children.length>0">
+                        <div class="item">
+                            <div class="content">
+                                <a class="header">{{dataset2.name}}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>           
+        </div>
     </div>
 </div>
