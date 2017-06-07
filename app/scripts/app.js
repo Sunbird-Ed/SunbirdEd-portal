@@ -67,7 +67,7 @@ angular
                 templateUrl: 'views/note/noteList.html',
                 controller: 'NoteCtrl',
             }).state('Course', {
-                url: '/course',
+                url: '/course/:courseId',
                 templateUrl: 'views/course/courses.html',
                 controller: 'CourseCtrl as courses'
             }).state('Toc', {

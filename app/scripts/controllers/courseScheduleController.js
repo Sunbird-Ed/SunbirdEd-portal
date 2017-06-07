@@ -29,6 +29,7 @@ angular.module('playerApp')
                 courseService.courseHierarchy(toc.courseId).then(function (res) {
                     if (res && res.responseCode === "OK") {
                         toc.courseHierachy = res.result.content;
+                        toc.applyAccordion();
                     } else {
                         toc.showError("Unable to get course schedule details.");
                     }
@@ -44,18 +45,8 @@ angular.module('playerApp')
             }
             toc.getCourseToc();
             toc.expandMe = function ($event, item) {
-
-                if (item.mimeType == "application/vnd.ekstep.content-collection")
-                {
-                    if (!$($event.target).closest("li").find('.toc-list-sub-menu').first().hasClass('active'))
-                    {
-                        $($event.target).closest("li").find('.toc-list-sub-menu').first().show(200).addClass('active');
-                    } else
-                    {
-                        $($event.target).closest("li").find('.toc-list-sub-menu').first().hide(200).removeClass('active');
-                    }
-                } else
-                {
+                if (item.mimeType != "application/vnd.ekstep.content-collection")
+                {                    
                     toc.itemIndex = $($event.target).closest('.playlist-content').index('.playlist-content');
                     toc.playPlaylistContent($($event.target).closest('.playlist-content').attr('name'), '');
 
@@ -111,10 +102,10 @@ angular.module('playerApp')
 
             toc.getContentClass = function (contentMimeType) {
                 if (contentMimeType == 'application/vnd.ekstep.content-collection') {
-                    return 'ui two column padded grid block-border-bottom';
+                    return 'ui two column padded grid';
                 } else
                 {
-                    return 'ui two column padded grid block-border-bottom playlist-content';
+                    return 'ui two column padded grid playlist-content';
                 }
             }
 
@@ -134,6 +125,17 @@ angular.module('playerApp')
 
                 };
                 return contentIcons[contentMimeType];
+            }
+            toc.applyAccordion=function(){
+               $timeout(function(){
+                  
+                 $('.ui.accordion')
+                                .accordion({
+                                    selector: {
+                                        trigger: '.title'
+                                    }
+                                });
+                            },100);
             }
 
 
