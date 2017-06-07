@@ -8,7 +8,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('AppCtrl', function($rootScope) {
+    .controller('AppCtrl', function() {
         $('body').click(function(e) {
             if ($(e.target).closest('div.dropdown-menu-list').prop('id') == 'search-suggestions') {
                 return false;
@@ -17,16 +17,13 @@ angular.module('playerApp')
             }
         });
 
-        $rootScope.initilizwDropDown = function() {
-            $('#dropdown-menu-list')
-                .dropdown({
-                    action: 'combo'
-                });
-        };
-        $('.small.modal')
-            .modal('show')
-        ;
-
-        
-
+        // $scope.initilizwDropDown = function() {
+        //     $('#dropdown-menu-list')
+        //         .dropdown({
+        //             action: 'combo'
+        //         });
+        // };
+        // $('.small.modal')
+        //     .modal('show')
+        // ;
     });

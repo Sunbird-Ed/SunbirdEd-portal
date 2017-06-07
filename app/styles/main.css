@@ -1,3 +1,6 @@
+.margin-top-10 {
+  margin-top: 0.625rem;
+}
 .border-bottom {
   border-bottom: 1px solid #E6E7E8 !important;
 }
@@ -275,6 +278,21 @@
 .font-size-175em {
   font-size: 1.75em !important;
 }
+.margin-right-10 {
+  margin-right: 10px !important;
+}
+.margin-right-8rem {
+  margin-right: 8rem !important;
+}
+.overflowAuto {
+  overflow: auto !important;
+}
+.overflowHidden {
+  overflow: hidden !important;
+}
+.top-inherit {
+  top: inherit !important;
+}
 .header-container {
   margin-left: 1px !important;
   border-bottom: 5px solid #0099CC !important;
@@ -423,30 +441,189 @@
   font-size: 15px !important;
   color: #444;
 }
-body {
-  position: relative !important;
-  margin: 0 !important;
-  min-height: 100% !important;
-  min-width: 100% !important;
-  font-family: "Helvetica Neue", Arial, sans-serif;
-}
-html {
-  height: 100% !important;
-  box-sizing: border-box !important;
-}
 .footer1 {
   position: fixed !important;
   bottom: 0 !important;
   width: 100% !important;
 }
-.sidebar {
-  position: fixed !important;
+/*! normalize.css v3.0.1 | MIT License | git.io/normalize */
+html {
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
 }
-.margin-right-10 {
-  margin-right: 10px !important;
+body {
+  margin: 0;
 }
-.margin-right-8rem {
-  margin-right: 8rem !important;
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+nav,
+section,
+summary {
+  display: block;
+}
+audio,
+canvas,
+progress,
+video {
+  display: inline-block;
+  vertical-align: baseline;
+}
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+[hidden],
+template {
+  display: none;
+}
+a {
+  background: transparent;
+}
+a:active,
+a:hover {
+  outline: 0;
+}
+abbr[title] {
+  border-bottom: 1px dotted;
+}
+b,
+strong {
+  font-weight: bold;
+}
+dfn {
+  font-style: italic;
+}
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+mark {
+  background: #ff0;
+  color: #000;
+}
+small {
+  font-size: 80%;
+}
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+sup {
+  top: -0.5em;
+}
+sub {
+  bottom: -0.25em;
+}
+img {
+  border: 0;
+}
+svg:not(:root) {
+  overflow: hidden;
+}
+figure {
+  margin: 1em 40px;
+}
+hr {
+  box-sizing: content-box;
+  height: 0;
+}
+pre {
+  overflow: auto;
+}
+code,
+kbd,
+pre,
+samp {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+button,
+input,
+optgroup,
+select,
+textarea {
+  color: inherit;
+  font: inherit;
+  margin: 0;
+}
+button {
+  overflow: visible;
+}
+button,
+select {
+  text-transform: none;
+}
+button,
+html input[type="button"] {
+  -webkit-appearance: button;
+  cursor: pointer;
+}
+button[disabled],
+html input[disabled] {
+  cursor: default;
+}
+button input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+input {
+  line-height: normal;
+}
+input[type="reset"],
+input[type="submit"] {
+  -webkit-appearance: button;
+  cursor: pointer;
+}
+input[type="checkbox"],
+input[type="radio"] {
+  box-sizing: border-box;
+  padding: 0;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  height: auto;
+}
+input[type="search"] {
+  -webkit-appearance: textfield;
+  box-sizing: content-box;
+}
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+fieldset {
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em;
+}
+legend {
+  border: 0;
+  padding: 0;
+}
+textarea {
+  overflow: auto;
+}
+optgroup {
+  font-weight: bold;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+td,
+th {
+  padding: 0;
 }
 .slick-prev,
 .slick-next {
@@ -478,6 +655,20 @@ html {
   width: 850px;
   margin: 0 auto;
 }
+body {
+  position: relative !important;
+  margin: 0 !important;
+  min-height: 100% !important;
+  min-width: 100% !important;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+}
+html {
+  height: 100% !important;
+  box-sizing: border-box !important;
+}
+.sidebar {
+  position: fixed !important;
+}
 img {
   width: 100px;
   height: 100px;
@@ -498,15 +689,17 @@ img {
   font-size: 18px !important;
   font-family: "FrutigerSerifLTW01-Medi 722257" !important;
 }
-.overflowAuto {
-  overflow: auto !important;
-}
-.overflowHidden {
-  overflow: hidden !important;
-}
-.top-inherit {
-  top: inherit !important;
-}
 .pusher-fix-height {
   height: 1200px !important;
+}
+.logged-in-user {
+  width: 50px !important;
+  height: 50px !important;
+  border-radius: 50% !important;
+  -webkit-border-radius: 50% !important;
+  -moz-border-radius: 50% !important;
+  -ms-border-radius: 50% !important;
+  -o-border-radius: 50% !important;
+  display: inline-block !important;
+  vertical-align: middle !important;
 }

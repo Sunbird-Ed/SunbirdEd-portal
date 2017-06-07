@@ -1,83 +1,8 @@
-<div class="ui secondary pointing menu" ng-if="!isLoggedIn">
-    <div class="left menu ">
-        <a href="/">
-            <img class="ui tiny circular image" src="/images/sunbird_logo.png">
-        </a>
-    </div>
-    <a class="item " ui-sref-active="active" ui-sref="Search" href="search">
-    Home
-  </a>
-    <a class="item " ui-sref-active="active" ui-sref="UserContent" href="userContent">
-    Learn
-  </a>
-    <a class="item" href="#">
-   Resources
-  </a>
-    <a class="item" href="#">
-   Community
-  </a>
-    <a class="item" href="#">
-   Assess
-  </a>
-    <div class="right menu" ng-controller="AuthCtrl as auth" ng-include="'views/auth/headerRightMenu.html '"></div>
+<div class="ui secondary pointing menu" ng-controller="AuthCtrl as auth" ng-if="!isLoggedIn" ng-include="'views/header/beforeLoginHeader.html'">
 </div>
+<div apply-script class="ui grid" ng-if="isLoggedIn" ng-controller="AuthCtrl as auth" ng-init="getUserProfileImage()" ng-include="'views/header/afterLoginHeader1.html'">
 
-<div class="ui grid" ng-init="initilizwDropDown()" ng-if="isLoggedIn" ng-controller="AuthCtrl as auth">
-    <div class="center aligned twelve column row padding-top-2rem">
-        <div class="two wide column">
-            <a href="/">
-                <img class="ui tiny circular image" src="/images/sunbird_logo.png">
-            </a>
-        </div>
-        <div class="five wide column padding-top-1rem">
-            <div class="ui fluid action input">
-                <input type="text" placeholder="Search">
-                <button class="ui icon button">
-                <i class="search icon"></i>
-              </button>
-            </div>
-        </div>
-        <div class="one wide column padding-top-1rem padding-top-header-large-icons">
-            <i class="home icon large"></i>
-        </div>
-        <div class="one wide column padding-top-1rem padding-top-header-large-icons">
-            <i class="alarm icon large"></i>
-        </div>
-        <div class="one wide column padding-top-1rem padding-top-header-large-icons">
-            <i class="mail icon large"></i>
-        </div>
-        <div class="one wide column padding-top-1rem padding-top-header-large-icons">
-            <i class="setting icon large"></i>
-        </div>
-        <div class="one wide column">
-            <div class="ui floating dropdown right top pointing 
-               header-user-container padding-top-circular-human-icon" id="dropdown-menu-list">
-                <button class="circular huge ui icon button">
-                <i class="user icon"></i>
-              </button>
-                <div class="menu">
-                    <a class="item">Profile</a>
-                    <a class="item" ng-click=" auth.logout() ">Logout</a>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
-<div class="ui secondary pointing menu" ng-if="isLoggedIn ">
-    <a class="item margin-left-52" ui-sref-active="active" ui-sref="Search" href="search">
-      Home
-    </a>
-    <a class="item " ui-sref-active="active" ui-sref="Learn" href="learn">
-      Learn
-    </a>
-    <a class="item" ui-sref-active="active" ui-sref="UserContent" href="userContent">
-      Resources
-    </a>
-    <a class="item" href="#">
-      Community
-    </a>
-    <a class="item" href="#">
-      Assess
-    </a>
-    </a>
+<div class="ui secondary pointing menu" ng-if="isLoggedIn " ng-include="'views/header/afterLoginHeader2.html'">
+
 </div>
