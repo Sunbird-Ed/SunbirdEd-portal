@@ -25,6 +25,7 @@ angular.module('playerApp')
                 }, 2000);
             }
             learn.openCourseView = function (courseId) {
+                courseId='do_11225144311893196816';
                 $location.path('/course/' + courseId);
             }
             learn.courses = function () {

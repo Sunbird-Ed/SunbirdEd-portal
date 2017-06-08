@@ -5,27 +5,8 @@ angular.module('playerApp')
             toc.playListContent = [];
             toc.loading = false;
             toc.lectureView = $stateParams.lectureView;
-            toc.courseId ='do_11225144311893196816';// $stateParams.courseId;
+            toc.courseId =$stateParams.courseId;
             $scope.enableCloseButton = (toc.lectureView == 'yes') ? 'false' : 'true';
-            $rootScope.sideMenuData = [{
-                    "icon": "",
-                    "name": "COURSE SCHEDULE",
-                    "children": [],
-                    "link": "/toc/" + toc.courseId + "/no"
-                },
-                {
-                    "icon": "",
-                    "name": "LECTURE VIEW",
-                    "children": [],
-                    "link": "/toc/" + toc.courseId + "/yes"
-                },
-                {
-                    "icon": "",
-                    "name": "NOTES",
-                    "children": [],
-                    "link": "#"
-                }
-            ];
             $scope.contentPlayer = {
                 isContentPlayerEnabled: false,
 
