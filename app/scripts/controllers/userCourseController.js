@@ -2,27 +2,8 @@ angular.module('playerApp')
         .controller('CourseCtrl', function (courseService, $timeout, $rootScope, $sce, $sessionStorage, $location, $stateParams) {
             //$sessionStorage.token="b089688ff791ed98e791d698bd20fd91637fe72eb0842598e3ffeeb8a08a6627";
             var courses = this;
-            courses.courseId =$stateParams.courseId;
-            
-            $rootScope.sideMenuData = [{
-                    "icon":"",
-                    "name": "COURSE SCHEDULE",
-                    "children": [],
-                    "link":"/toc/"+courses.courseId+"/no" 
-                },
-                {
-                    "icon":"",
-                    "name": "LECTURE VIEW",
-                    "children": [],
-                    "link":"/toc/"+courses.courseId+"/yes"
-                },
-                {
-                    "icon":"",
-                    "name": "NOTES",
-                    "children": [],
-                    "link":"/note"
-                }
-            ];
+            courses.courseId =$stateParams.courseId;          
+     
             
             courses.content_res = {
                 "id": "8e27cbf5-e299-43b0-bca7-8347f7e5abcf",
