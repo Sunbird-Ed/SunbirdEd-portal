@@ -1,0 +1,22 @@
+#Dockerfile for the player setup
+FROM ubuntu:16.04
+MAINTAINER "Manojvv" "manojrpms@gmail.com"
+RUN apt-get update && apt-get install -y git \
+  unzip \
+  zip \
+  build-essential \
+  curl
+RUN apt-get update \
+    && mkdir -p /opt/player
+WORKDIR /opt/player
+COPY sunbird-player.zip  /opt/player/
+RUN unzip /opt/player/sunbird-player.zip \
+    && curl --silent --location https://deb.nodesource.com/setup_6.x | bash - \
+    && apt-get install --yes nodejs \
+    && npm install -g bower \
+    && npm install -g gulp
+WORKDIR /opt/player/sunbird-player
+RUN npm install \
+    && echo '{ "allow_root": true }' > /opt/player/sunbird-player/.bowerrc \
+    && bower install /opt/player/sunbird-player/bower.json \
+    && gulp
