@@ -6,7 +6,9 @@ RUN apt-get update \
 WORKDIR /opt/player
 COPY * /opt/player/
 RUN apt-get install -y curl \
-    && apt-get install -y zip
+    && apt-get install -y zip \
+    && apt-get install -y git \
+    && apt-get install bzip2
 RUN curl --silent --location https://deb.nodesource.com/setup_6.x | bash - \
     && apt-get install --yes nodejs \
     && npm install -g bower \
