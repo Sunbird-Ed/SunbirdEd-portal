@@ -15,7 +15,7 @@ WORKDIR /opt/player/
 RUN npm install \
     && echo '{ "allow_root": true }' > /opt/player/.bowerrc \
     && bower install /opt/player/bower.json \
-    && gulp
+    && gulp \
     && gulp test
 WORKDIR /opt/
 RUN zip -r sunbird-player.zip player
