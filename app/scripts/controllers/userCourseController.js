@@ -2,7 +2,7 @@ angular.module('playerApp')
         .controller('CourseCtrl', function (courseService, $timeout, $rootScope, $sce, $sessionStorage, $location, $stateParams) {
             //$sessionStorage.token="b089688ff791ed98e791d698bd20fd91637fe72eb0842598e3ffeeb8a08a6627";
             var courses = this;
-            courses.courseId ='do_11225144311893196816';// $stateParams.courseId;
+            courses.courseId =$stateParams.courseId;
             
             $rootScope.sideMenuData = [{
                     "icon":"",
@@ -20,7 +20,7 @@ angular.module('playerApp')
                     "icon":"",
                     "name": "NOTES",
                     "children": [],
-                    "link":"#"
+                    "link":"/note"
                 }
             ];
             
