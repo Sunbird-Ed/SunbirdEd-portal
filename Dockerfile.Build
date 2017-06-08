@@ -5,7 +5,8 @@ RUN apt-get update \
     && mkdir -p /opt/player
 WORKDIR /opt/player
 COPY * /opt/player/
-RUN apt-get install -y curl
+RUN apt-get install -y curl \
+    && apt-get install -y zip
 RUN curl --silent --location https://deb.nodesource.com/setup_6.x | bash - \
     && apt-get install --yes nodejs \
     && npm install -g bower \
@@ -15,3 +16,6 @@ RUN npm install \
     && echo '{ "allow_root": true }' > /opt/player/.bowerrc \
     && bower install /opt/player/bower.json \
     && gulp
+    && gulp test
+WORKDIR /opt/
+RUN zip -r sunbird-player.zip player
