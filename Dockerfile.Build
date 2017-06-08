@@ -1,1 +1,17 @@
 #Dockerfile for the player setup
+FROM ubuntu:16.04
+MAINTAINER "Manojvv" "manojv@ilimi.in"
+RUN apt-get update \
+    && mkdir -p /opt/player
+WORKDIR /opt/player
+COPY * /opt/player/
+RUN apt-get install -y curl
+RUN curl --silent --location https://deb.nodesource.com/setup_6.x | bash - \
+    && apt-get install --yes nodejs \
+    && npm install -g bower \
+    && npm install -g gulp
+WORKDIR /opt/player/
+RUN npm install \
+    && echo '{ "allow_root": true }' > /opt/player/.bowerrc \
+    && bower install /opt/player/bower.json \
+    && gulp
