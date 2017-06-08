@@ -1,10 +1,9 @@
 <div class="ui segment" ng-controller="LearnCtrl as learn">
     <span class="margin-top-15">
-        <h3 class="margin-left-3Per">Enrolled Courses</h2>
+        <h3 class="margin-left-3Per">Enrolled Courses</h3>
     </span>
-    <div class="regular slider">
-        <div ng-click="learn.openCourseView(enrolledCourse.courseId)" class="ui card margin-left-right-10 margin-top-15" ng-repeat=" enrolledCourse in learn.enrolledCourses" on-finish-render="ngRepeatFinished">
-
+    <div class="regular slider" ng-if="learn.enrolledCourses.length > 0">
+        <div ng-click="learn.openCourseView(enrolledCourse.courseId)" class="ui card margin-left-right-10 margin-top-15" ng-repeat=" enrolledCourse in learn.enrolledCourses track by $index" ng-init="$last && learn.loadCarousel()">
             <div class=" image ">
                 <img src="../images/sunbird_logo.png ">
             </div>
@@ -19,11 +18,13 @@
         </div>
     </div>
 
-    <div ng-if="learn.error.isError">
-        <error-message data={{learn.error}}></error-message>
-    </div>
-    <!--recommended-->
-    <!--<div>
+</div>
+
+
+<div ng-if="learn.error.isError">
+    <error-message data={{learn.error}}></error-message>
+</div>
+<!--recommended-->
+<!--<div>
         <h3 style=" margin-left: 90px;">Recommended</h2>
     </div>-->
-</div>

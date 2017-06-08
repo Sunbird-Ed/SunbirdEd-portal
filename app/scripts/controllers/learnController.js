@@ -5,16 +5,13 @@ angular.module('playerApp')
         var learn = this;
         var uid = $sessionStorage.userId;
 
-        $scope.$on('ngRepeatFinished', function() {
+        learn.loadCarousel = function() {
             $('.regular').not('.slick-initialized').slick({
                 infinite: true,
-                refresh: true,
                 slidesToShow: 4,
                 slidesToScroll: 4
             });
-        });
-
-
+        };
 
         function handleFailedResponse(errorResponse) {
             var error = {};
