@@ -1,11 +1,14 @@
 {
     "config": {
+        "SITE": {
+            "DEFAULT_LANGUAGE": "en"
+        },
         "URL": {
             "BASE": "http://localhost:5000/api/sb/v1/",
             "USER_BASE": "http://10.0.1.75:9000/v1/",
             "MOCK_API_BASE": "http://13.71.127.158:9000/v1/",
-            "CONFIG_BASE":"http://localhost:4000/api/sb/v1/",
-            "USER": {
+            "CONFIG_BASE": "http://localhost:4000/api/sb/v1/",
+            "USER": {               
                 "RESOURCE_BUNDLE": "resourcebundle"
             }, 
             "COURSE": {
@@ -53,7 +56,6 @@
                     "LOGOUT": {
                         "FAILED": "Logout failed"
                     }
-
                 },
                 "NOTES": {
                     "CREATE": {
