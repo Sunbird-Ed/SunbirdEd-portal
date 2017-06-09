@@ -16,15 +16,30 @@ angular
             'ui.router',
             'ngStorage',
             'ui.pagedown',
-            'pdf'
+            'pdf',
+            'pascalprecht.translate'
         ])
-        .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
+        .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $translateProvider, $provide) {
             // $locationProvider.html5Mode({
             //     enabled: false,
             //     requireBase: true,
             //     rewriteLinks: true
             // }).hashPrefix('');
+
+            $provide.provider('resourceBundle', function () {
+                this.$get = function () {
+                    return function (language,resourceBundle) {
+                        $translateProvider.translations(language,resourceBundle);
+                        $translateProvider.preferredLanguage(language);
+                        return true;
+                    };
+                };
+            });
+
+
+
             $locationProvider.html5Mode(true);
+
             $urlRouterProvider.otherwise('/');
             $stateProvider
                     .state('Search', {
@@ -75,4 +90,4 @@ angular
                 templateUrl: 'views/course/toc.html',
                 controller: 'courseScheduleCtrl as toc'
             });
-    });
+        });

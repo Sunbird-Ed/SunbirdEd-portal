@@ -8,7 +8,18 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-        .controller('AppCtrl', function ($scope, $state, $stateParams, $rootScope) {
+        .controller('AppCtrl', function ($scope, $state, $stateParams, $rootScope, resourceBundle, $translate, userService) {
+            $rootScope.language = $rootScope.userLanguage || 'ta';
+            $rootScope.loadLabelBundle = function () {
+                userService.resourceBundle($rootScope.language, 'label').then(function (res) {
+                    if (res.responseCode == "OK" && res.result) {
+                        if (resourceBundle($rootScope.language, res.result[$rootScope.language])) {
+                            $translate.use($rootScope.language);
+                        }
+                    }
+                });
+            };
+            $rootScope.loadLabelBundle();
             $('body').click(function (e) {
                 if ($(e.target).closest('div.dropdown-menu-list').prop('id') == 'search-suggestions') {
                     return false;
