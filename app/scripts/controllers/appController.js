@@ -65,6 +65,7 @@ angular.module('playerApp')
                 return $state.$current.name;
             }, function (newState, oldState) {
                 if (newState.toLowerCase() === 'course' || newState.toLowerCase() === 'toc') {
+                    $rootScope.displayCourseHeader=true;
                     $scope.courseId = $stateParams.courseId;
                     $rootScope.sideMenuData = [{
                             'icon': '',
@@ -86,6 +87,7 @@ angular.module('playerApp')
                         }
                     ];
                 } else {
+                    $rootScope.displayCourseHeader=false;
                     $rootScope.sideMenuData = [{
                             'icon': 'large add circle icon',
                             'name': 'Add Course',

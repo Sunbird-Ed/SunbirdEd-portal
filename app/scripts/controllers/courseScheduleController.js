@@ -7,11 +7,19 @@ angular.module('playerApp')
             toc.lectureView = $stateParams.lectureView;
             toc.courseId = $stateParams.courseId;
             $scope.enableCloseButton = (toc.lectureView == 'yes') ? 'false' : 'true';
+            console.log($rootScope.contentDetails);
             $scope.contentPlayer = {
                 isContentPlayerEnabled: false,
 
             };
-
+            toc.getContentStatus = function (contentId) {
+                if ($rootScope.contentDetails[contentId] && $rootScope.contentDetails[contentId]['status'] == 1) {
+                    return 'green';
+                } else
+                {
+                    return '';
+                }
+            }
             toc.showError = function (message) {
 
                 toc.messageClass = "red";
@@ -32,6 +40,7 @@ angular.module('playerApp')
                 courseService.courseHierarchy(toc.courseId).then(function (res) {
                     if (res && res.responseCode === "OK") {
                         toc.courseHierachy = res.result.content;
+                        $rootScope.courseName=toc.courseHierachy.name;
                         toc.applyAccordion();
                     } else {
                         toc.showError("Unable to get course schedule details.");

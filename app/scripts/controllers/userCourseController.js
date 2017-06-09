@@ -21,7 +21,7 @@ angular.module('playerApp')
                     "contentList": [{
                             "dateTime": 1495886160595,
                             "lastAccessTime": "2017-01-01 10:58:07:509+0530",
-                            "contentId": "ek step cont-284",
+                            "contentId": "LP_FT_5887573.img",
                             "viewPosition": "pos101",
                             "completedCount": 0,
                             "userId": "e9280b815c0e41972bf754e9409b66d778b8e11bb91844892869a1e828d7d2f2",
@@ -90,6 +90,7 @@ angular.module('playerApp')
 
 
                     courses.enrolledCourseContents = courses.fetchObjectAttributeAsArrayOrObject(courses.content_res.result.contentList, 'courseId', true);
+                    $rootScope.contentDetails = courses.fetchObjectAttributeAsArrayOrObject(courses.content_res.result.contentList, 'contentId', true);
 
                 }
             };
