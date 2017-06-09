@@ -8,8 +8,8 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-        .controller('AppCtrl', function ($scope, $state, $stateParams, $rootScope, setResourceBundle, $translate, userService, $q) {
-            $rootScope.language = $rootScope.userLanguage || 'hi';
+        .controller('AppCtrl', function ($scope, $state, $stateParams, $rootScope, setResourceBundle, $translate, userService, $q,config) {
+            $rootScope.language = $rootScope.userLanguage || config.SITE.DEFAULT_LANGUAGE;
             $rootScope.translationBundle = {};
             $rootScope.loadBundle = function (bundleType) {
                 var promises = [];
