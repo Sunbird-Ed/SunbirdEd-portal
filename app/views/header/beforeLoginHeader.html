@@ -3,20 +3,20 @@
         <img class="ui tiny circular image" src="/images/sunbird_logo.png">
     </a>
 </div>
-<a class="item " ui-sref-active="active" ui-sref="Search" href="search">
-    {{ 'home'| lowercase | translate }}
+<a class="item " ui-sref-active="active" ui-sref="Search" href="search" translate="home" translate-default="Home">
+
   </a>
-<a class="item " ui-sref-active="active" ui-sref="UserContent" href="userContent">
-     {{ 'learn'| lowercase | translate }}
+<a class="item " ui-sref-active="active" ui-sref="UserContent" href="userContent" translate="learn" translate-default="Learn">
+
   </a>
-<a class="item" href="#">
-   {{ 'resources'| lowercase | translate }}
+<a class="item" href="#" translate="resources" translate-default="Resources">
+
   </a>
-<a class="item" href="#">
-   {{ 'community'| lowercase | translate }}
+<a class="item" href="#" translate="community" translate-default="Community">
+
   </a>
-<a class="item" href="#">
-   {{ 'assess'| lowercase | translate }}
+<a class="item" href="#" translate="assets" translate-default="Assets">
+
   </a>
 <div class="right menu">
     <button class="ui item" ng-if="!isLoggedIn" ng-click="auth.openAuthModal()"> LOGIN</button>
