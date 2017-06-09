@@ -11,7 +11,7 @@ angular.module('playerApp')
         .controller('AppCtrl', function ($scope, $state, $stateParams, $rootScope, setResourceBundle, $translate, userService, $q,config) {
             $rootScope.language = $rootScope.userLanguage || config.SITE.DEFAULT_LANGUAGE;
             $rootScope.translationBundle = {};
-            $rootScope.loadBundle = function (bundleType) {
+            $rootScope.loadBundle = function () {
                 var promises = [];
                 promises.push(userService.resourceBundle($rootScope.language, 'label'));
                 promises.push(userService.resourceBundle($rootScope.language, 'error'));
