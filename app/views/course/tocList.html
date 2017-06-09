@@ -1,4 +1,14 @@
-<ol class="accordion" ng-if="item.children && item.children.length > 0" class="toc-list-sub-menu">
+<ul class="subList-padding" ng-if="item.children && item.children.length > 0" class="toc-list-sub-menu">
+    <li class="subStr toc-list" name="{{item.identifier}}" ng-repeat="item in item.children" ng-click="toc.expandMe($event, item)" ng-init="toc.checkAndAddToPlaylist(item)" ng-class="toc.getContentClass(item.mimeType)"><span class="text">{{item.name}}</span>
+        <div class="content" ng-switch on="item.children.length > 0">
+            <div ng-switch-when="true">
+                <div ng-init="subItems = item.children;" ng-include="'views/course/tocList.html'"></div>
+            </div>
+        </div>
+    </li>
+
+</ul>
+<!--<ol class="accordion" ng-if="item.children && item.children.length > 0" class="toc-list-sub-menu">
     <li value="" ng-repeat="item in item.children" class="toc-list">
         <div class="title" ng-if="item.children && item.children.length > 0"    ng-class="toc.getContentClass(item.mimeType)">
             <div class="column">
@@ -18,4 +28,4 @@
             </div>
         </div>
     </li>
-</ol>
+</ol>-->
