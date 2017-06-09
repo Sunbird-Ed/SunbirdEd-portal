@@ -1,5 +1,5 @@
-<div class="ui visible left vertical inverted sticky thin sidebar menu top-inherit" style="padding-top:50px; padding-left:20px;" ng-if="isLoggedIn " ng-controller="sideMenuCtrl as sideMenu">
-    <div class="ui list" ng-repeat="dataset in sideMenuData" >
+<div class="ui visible left vertical inverted sticky thin sidebar menu top-inherit" style="padding-top:50px; padding-left:20px;" ng-show="currentPath !== '/' " ng-controller="sideMenuCtrl as sideMenu">
+    <div class="ui list" ng-repeat="dataset in sideMenuData">
         <div class="item">
             <div class="content">
                 <a class="link" href="{{dataset.link}}" class="header"><i class="{{dataset.icon}}"></i>{{dataset.name}}</a>
@@ -10,8 +10,7 @@
                         <a class="header">{{dataset1.name}}</a>
                     </div>
                     <div class="ui list" ng-repeat="dataset2 in
-                        dataset1.children"
-                            ng-if="dataset1.children.length>0">
+                        dataset1.children" ng-if="dataset1.children.length>0">
                         <div class="item">
                             <div class="content">
                                 <a class="header">{{dataset2.name}}</a>

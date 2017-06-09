@@ -85,7 +85,8 @@ angular
                 url: '/course/:courseId',
                 templateUrl: 'views/course/courses.html',
                 controller: 'CourseCtrl as courses'
-            }).state('Toc', {
+            })
+            .state('Toc', {
                 url: '/toc/:courseId/:lectureView',
                 templateUrl: 'views/course/toc.html',
                 controller: 'courseScheduleCtrl as toc'
