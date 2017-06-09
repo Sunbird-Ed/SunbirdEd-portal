@@ -742,6 +742,14 @@ ul.subList-padding {
   padding-top: 7% !important;
   padding-left: 8% !important;
 }
+.courseStructureHeader {
+  padding: 40px 20px !important;
+  background-color: #eaeaea!important;
+}
+.courseStructureHeaderText {
+  font-size: 14px;
+  font-weight: bold;
+}
 body {
   position: relative !important;
   margin: 0 !important;
