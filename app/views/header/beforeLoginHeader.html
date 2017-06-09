@@ -4,19 +4,19 @@
     </a>
 </div>
 <a class="item " ui-sref-active="active" ui-sref="Search" href="search">
-    Home
+    {{ 'home'| lowercase | translate }}
   </a>
 <a class="item " ui-sref-active="active" ui-sref="UserContent" href="userContent">
-    Learn
+     {{ 'learn'| lowercase | translate }}
   </a>
 <a class="item" href="#">
-   Resources
+   {{ 'resources'| lowercase | translate }}
   </a>
 <a class="item" href="#">
-   Community
+   {{ 'community'| lowercase | translate }}
   </a>
 <a class="item" href="#">
-   Assess
+   {{ 'assess'| lowercase | translate }}
   </a>
 <div class="right menu">
     <button class="ui item" ng-if="!isLoggedIn" ng-click="auth.openAuthModal()"> LOGIN</button>
