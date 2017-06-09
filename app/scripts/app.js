@@ -17,7 +17,8 @@ angular
             'ngStorage',
             'ui.pagedown',
             'pdf',
-            'pascalprecht.translate'
+            'pascalprecht.translate',
+            'ngSanitize'
         ])
         .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $translateProvider, $provide) {
             // $locationProvider.html5Mode({
@@ -26,11 +27,12 @@ angular
             //     rewriteLinks: true
             // }).hashPrefix('');
 
-            $provide.provider('resourceBundle', function () {
+            $provide.provider('setResourceBundle', function () {
                 this.$get = function () {
                     return function (language,resourceBundle) {
                         $translateProvider.translations(language,resourceBundle);
-                        $translateProvider.preferredLanguage(language);
+                        $translateProvider.preferredLanguage(language);     
+                        $translateProvider.useSanitizeValueStrategy('sanitize');
                         return true;
                     };
                 };

@@ -13,7 +13,8 @@
     "angular-pagedown": "^0.4.4",
     "angular-pdf-viewer": "^0.2.13",
     "slick-carousel": "^1.6.0",
-    "angular-translate": "^2.15.1"
+    "angular-translate": "^2.15.1",
+    "angular-sanitize": "^1.6.4"
   },
   "devDependencies": {
     "angular-mocks": "1.6.0",
@@ -35,6 +36,6 @@
   "moduleName": "playerApp",
   "resolutions": {
     "video.js": "^5.0.0",
-    "angular": "1.6.0"
+    "angular": ">=1.2.26 <1.7"
   }
 }
