@@ -18,6 +18,7 @@ angular.module('playerApp')
                 });
 
                 $('#content-search-filter-accordion').accordion();
+                $('.ui.accordion').accordion({exclusive: false});
                 $('.dropdown.content-search-filter').dropdown({
                     useLabels: false,
                     forceSelection: false,
