@@ -5,7 +5,7 @@ angular.module('playerApp')
             toc.playListContent = [];
             toc.loading = false;
             toc.lectureView = $stateParams.lectureView;
-            toc.courseId =$stateParams.courseId;
+            toc.courseId = $stateParams.courseId;
             $scope.enableCloseButton = (toc.lectureView == 'yes') ? 'false' : 'true';
             $scope.contentPlayer = {
                 isContentPlayerEnabled: false,
@@ -105,10 +105,10 @@ angular.module('playerApp')
 
             toc.getContentClass = function (contentMimeType) {
                 if (contentMimeType == 'application/vnd.ekstep.content-collection') {
-                    return 'ui two column padded grid';
+                    return '';
                 } else
                 {
-                    return 'ui two column padded grid playlist-content';
+                    return 'playlist-content';
                 }
             }
 
@@ -136,12 +136,7 @@ angular.module('playerApp')
                         toc.itemIndex = 0;
                         toc.playPlaylistContent(toc.playList[toc.itemIndex], '');
                     }
-                    $('.ui.accordion')
-                            .accordion({
-                                selector: {
-                                    trigger: '.title'
-                                }
-                            });
+                    $('.ui.accordion').accordion({exclusive: false});
                 }, 0);
             }
 
