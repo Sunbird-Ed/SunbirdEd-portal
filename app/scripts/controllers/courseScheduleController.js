@@ -154,9 +154,18 @@ angular.module('playerApp')
                 }, 0);
             }
 
-            toc.openAuthModal = function () {
-                $('#noteModal')
-                        .modal('show');
+            toc.showAddNoteModel = function () {
+                $timeout(function () {
+                    $('.ui.modal.create').modal({
+                        onHide: function () {
+
+                        },
+                    }).modal('show');
+                }, 100);
+            };
+
+            toc.closeAddNoteModel = function () {
+                $('.create').modal('hide');
             };
 
 
