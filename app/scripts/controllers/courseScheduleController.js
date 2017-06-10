@@ -8,6 +8,7 @@ angular.module('playerApp')
             toc.courseId = $stateParams.courseId;
             $scope.enableCloseButton = (toc.lectureView == 'yes') ? 'false' : 'true';
             console.log($rootScope.contentDetails);
+            toc.nightMode = true;
             $scope.contentPlayer = {
                 isContentPlayerEnabled: false,
 
@@ -40,16 +41,18 @@ angular.module('playerApp')
                 courseService.courseHierarchy(toc.courseId).then(function (res) {
                     if (res && res.responseCode === "OK") {
                         toc.courseHierachy = res.result.content;
-                        $rootScope.courseName=toc.courseHierachy.name;
+                        $rootScope.courseName = toc.courseHierachy.name;
                         toc.applyAccordion();
+                        toc.showMetaLoader = false;
+                        toc.showDimmer = false;
                     } else {
                         toc.showError("Unable to get course schedule details.");
                     }
 
-                    $timeout(function () {
-                        toc.showMetaLoader = false;
-                        toc.showDimmer = false;
-                    }, 2000);
+//                    $timeout(function () {
+//                        toc.showMetaLoader = false;
+//                        toc.showDimmer = false;
+//                    }, 2000);
 
                 }, function (err) {
                     toc.showError("Unable to get course schedule details.");
@@ -77,7 +80,7 @@ angular.module('playerApp')
 
 
             toc.playPlaylistContent = function (contentId, trigger) {
-                
+
                 var curItemIndex = toc.playList.indexOf(contentId);
                 if (trigger == 'prev') {
                     toc.itemIndex -= 1;
@@ -86,8 +89,8 @@ angular.module('playerApp')
                 }
                 toc.prevPlaylistItem = (toc.itemIndex - 1) > -1 ? $('.playlist-content:eq(' + (toc.itemIndex - 1) + ')').attr('name') : -1;
                 toc.nextPlaylistItem = (toc.itemIndex + 1) <= toc.playList.length ? $('.playlist-content:eq(' + (toc.itemIndex + 1) + ')').attr('name') : -1;
-                toc.previousPlayListName = (toc.itemIndex - 1) > -1 ? toc.playListContent[toc.itemIndex - 1].name : "No content to play"; 
-                toc.nextPlayListName = (toc.itemIndex + 1) <= toc.playList.length ? toc.playListContent[toc.itemIndex + 1].name : "No content to play"; 
+                toc.previousPlayListName = (toc.itemIndex - 1) > -1 ? toc.playListContent[toc.itemIndex - 1].name : "No content to play";
+                toc.nextPlayListName = (toc.itemIndex + 1) <= toc.playList.length ? toc.playListContent[toc.itemIndex + 1].name : "No content to play";
                 $scope.contentPlayer.contentData = toc.playListContent[curItemIndex];
                 $scope.contentPlayer.isContentPlayerEnabled = true;
             }
@@ -150,6 +153,11 @@ angular.module('playerApp')
                     $('.ui.accordion').accordion({exclusive: false});
                 }, 0);
             }
+
+            toc.openAuthModal = function () {
+                $('#noteModal')
+                        .modal('show');
+            };
 
 
         });

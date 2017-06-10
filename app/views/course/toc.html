@@ -1,6 +1,5 @@
 <div ng-controller="courseScheduleCtrl as toc">
-
-    <div  id="course-toc-list" ng-show="!contentPlayer.isContentPlayerEnabled && toc.courseHierachy && !toc.showDimmer && toc.lectureView == 'yes'" ng-init="toc.playList = []">
+    <div  id="course-toc-list" ng-if="!contentPlayer.isContentPlayerEnabled && toc.courseHierachy && !toc.showDimmer && toc.lectureView == 'no'" ng-init="toc.playList = []">
         <div class="content">
             <div class='ui grid'>
                 <div class='eight wide column'>
@@ -121,11 +120,11 @@
             </div>
         </div>
     </div>
-    <div ng-if="(contentPlayer.isContentPlayerEnabled || toc.lectureView == 'yes') && !toc.showDimmer">
+    <div ng-if="(contentPlayer.isContentPlayerEnabled) && !toc.showDimmer">
         <div class="ui grid">
             <div class="row">
                 <div class="twelve wide column">
-                    <content-player ng-if="toc.lectureView == 'no'" visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="true" height="600" width="1900"></content-player>
+                    <content-player ng-if="toc.lectureView == 'no'" visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="true" height="600" width="1500"></content-player>
                     <content-player ng-if="toc.lectureView == 'yes'" visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="false" height="600" width="1900"></content-player>
                 </div>
             </div>
@@ -139,7 +138,34 @@
                     </button>
                 </div>
 
-                <div class="seven wide column"></div>
+                <div class="three wide column"></div>
+                <div class="one wide column">
+                    <h2 class="ui center aligned icon tiny header" ng-if="toc.nightMode" 
+                        ng-init="toc.showNoteModal = false" ng-click="toc.showNoteModal = !toc.showNoteModal; toc.openAuthModal()">
+                        <i class=" file text outline icon font-dark-blue"></i>
+                        <u class="ui font-dark-blue mouse-pointer">Take Note</u>{{toc.showNoteModal}}
+
+                        <!--                        <note-modal create='toc.showNoteModal' width='750px' height='60%'>
+                                                </note-modal>-->
+                    </h2>
+    <!--                    <div ng-if="toc.showNoteModal" class="ui active modal" id="noteModal">
+            <div class="ui grid">
+                <div class="one wide column">Hello</div>
+                <div class="ten wide column">
+                    <div class="ui text container segment" ng-include="'views/header/loginForm.html'">
+                    </div>
+                </div>
+                <div class="one wide column">
+                    <div class="actions">
+                        <div class="ui black deny ">
+                            <i class="close black icon link"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+                </div>
+                <div class="three wide column"></div>
                 <div class="two wide column ">
                     <button class="ui dark-blue-color huge button" ng-click="toc.playPlaylistContent(toc.nextPlaylistItem, 'next')"  
                             ng-disabled="(toc.nextPlaylistItem < 0)" 
