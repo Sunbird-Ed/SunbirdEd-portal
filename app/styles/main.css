@@ -58,7 +58,7 @@
 }
 .player-video {
   width: 100% !important;
-  height: 100% !important;
+  height: 500px !important;
   position: relative;
 }
 @media only screen and (min-width: 600px) {
@@ -277,7 +277,7 @@
 .pdf-editor {
   float: left !important;
   overflow: scroll !important;
-  height: 600px !important;
+  height: 500px !important;
 }
 .pdf-toolbar-padding {
   padding: 5px 5px 5px 20px !important;
@@ -307,6 +307,12 @@
 }
 .top-inherit {
   top: inherit !important;
+}
+.dark-blue-color {
+  background-color: #006cff !important;
+}
+.font-white {
+  color: #FFFFFF !important;
 }
 .header-container {
   margin-left: 1px !important;

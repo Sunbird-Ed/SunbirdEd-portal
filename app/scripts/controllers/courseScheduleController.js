@@ -13,12 +13,12 @@ angular.module('playerApp')
 
             };
             toc.getContentStatus = function (contentId) {
-                if ($rootScope.contentDetails[contentId] && $rootScope.contentDetails[contentId]['status'] == 1) {
-                    return 'green';
-                } else
-                {
-                    return '';
-                }
+//                if ($rootScope.contentDetails[contentId] && $rootScope.contentDetails[contentId]['status'] == 1) {
+//                    return 'green';
+//                } else
+//                {
+//                    return '';
+//                }
             }
             toc.showError = function (message) {
 
@@ -77,7 +77,7 @@ angular.module('playerApp')
 
 
             toc.playPlaylistContent = function (contentId, trigger) {
-
+                
                 var curItemIndex = toc.playList.indexOf(contentId);
                 if (trigger == 'prev') {
                     toc.itemIndex -= 1;
@@ -86,6 +86,8 @@ angular.module('playerApp')
                 }
                 toc.prevPlaylistItem = (toc.itemIndex - 1) > -1 ? $('.playlist-content:eq(' + (toc.itemIndex - 1) + ')').attr('name') : -1;
                 toc.nextPlaylistItem = (toc.itemIndex + 1) <= toc.playList.length ? $('.playlist-content:eq(' + (toc.itemIndex + 1) + ')').attr('name') : -1;
+                toc.previousPlayListName = (toc.itemIndex - 1) > -1 ? toc.playListContent[toc.itemIndex - 1].name : "No content to play"; 
+                toc.nextPlayListName = (toc.itemIndex + 1) <= toc.playList.length ? toc.playListContent[toc.itemIndex + 1].name : "No content to play"; 
                 $scope.contentPlayer.contentData = toc.playListContent[curItemIndex];
                 $scope.contentPlayer.isContentPlayerEnabled = true;
             }

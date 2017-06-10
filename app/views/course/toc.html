@@ -1,7 +1,7 @@
 <div ng-controller="courseScheduleCtrl as toc">
 
-    <div  id="course-toc-list" ng-show="!contentPlayer.isContentPlayerEnabled && toc.courseHierachy && !toc.showDimmer && toc.lectureView == 'no'" ng-init="toc.playList = []">
-           <div class="content">
+    <div  id="course-toc-list" ng-show="!contentPlayer.isContentPlayerEnabled && toc.courseHierachy && !toc.showDimmer && toc.lectureView == 'yes'" ng-init="toc.playList = []">
+        <div class="content">
             <div class='ui grid'>
                 <div class='eight wide column'>
                     <div class="ui styled accordion margin-top-10 " ng-repeat="item in  toc.courseHierachy.children track by $index" style='width:100% !important;'>
@@ -121,43 +121,50 @@
             </div>
         </div>
     </div>
-        <div ng-show="(contentPlayer.isContentPlayerEnabled || toc.lectureView == 'yes') && !toc.showDimmer">
-            <div class="ui grid">
-                <div class="one wide middle aligned column">
-                    <button class="ui basic icon big button" ng-click="toc.playPlaylistContent(toc.prevPlaylistItem, 'prev')" ng-disabled="(toc.prevPlaylistItem < 0)"><i class="ui big chevron left icon"></i></button>
-                </div>
-                <div class="ten wide column" align="center">
-                    <content-player ng-if="toc.lectureView == 'no'" visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="true" height="700" width="1000"></content-player>
-                    <content-player ng-if="toc.lectureView == 'yes'" visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="false" height="700" width="1000"></content-player>
-                </div>
-                <div class="one wide middle aligned column">
-                    <button class="ui basic icon big button" ng-click="toc.playPlaylistContent(toc.nextPlaylistItem, 'next')" ng-disabled="(toc.nextPlaylistItem < 0)"><i class="ui big chevron right icon"></i></button>
+    <div ng-if="(contentPlayer.isContentPlayerEnabled || toc.lectureView == 'yes') && !toc.showDimmer">
+        <div class="ui grid">
+            <div class="row">
+                <div class="twelve wide column">
+                    <content-player ng-if="toc.lectureView == 'no'" visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="true" height="600" width="1900"></content-player>
+                    <content-player ng-if="toc.lectureView == 'yes'" visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="false" height="600" width="1900"></content-player>
                 </div>
             </div>
-            <div class="ui left aligned padded grid">
-                <div class="top padded column">
-                    <h5>Description</h5>
-                    <hr />
-                    <div class="padded content description">
-                        {{contentPlayer.contentData.description}}
-                    </div>
+            <div class="row margin-top-15">
+                <div class="two wide column">
+                    <button class="ui dark-blue-color huge button" ng-click="toc.playPlaylistContent(toc.prevPlaylistItem, 'prev')"  
+                            ng-disabled="(toc.prevPlaylistItem < 0)" 
+                            style="height: 100px; width: 350px;">
+                        <h4 class=" font-white"> << Previous </h4>
+                        <p class=" font-white">{{toc.previousPlayListName}}</p>
+                    </button>
                 </div>
-            </div>
-        </div>
 
-        <div class="ui dimmer inverted" ng-class="toc.showDimmer ? 'active' : ''">
-            <div class="content">
-                <span ng-if="toc.showMetaLoader">
-                    <div class="ui text loader">
-                        <div class="ui mini header" ng-if="toc.message">{{toc.message}}</div>
-                    </div>
-                </span>
-                <div class="center">
-                    <h2 class="ui header {{toc.messageClass}}" ng-if="!toc.showMetaLoader">
-                        {{toc.message}}
-                    </h2>
+                <div class="seven wide column"></div>
+                <div class="two wide column ">
+                    <button class="ui dark-blue-color huge button" ng-click="toc.playPlaylistContent(toc.nextPlaylistItem, 'next')"  
+                            ng-disabled="(toc.nextPlaylistItem < 0)" 
+                            style="height: 100px; width: 350px;">
+                        <h4 class=" font-white"> Next >> </h4>
+                        <p class=" font-white">{{toc.nextPlayListName}}</p>
+                    </button>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="ui dimmer inverted" ng-class="toc.showDimmer ? 'active' : ''">
+        <div class="content">
+            <span ng-if="toc.showMetaLoader">
+                <div class="ui text loader">
+                    <div class="ui mini header" ng-if="toc.message">{{toc.message}}</div>
+                </div>
+            </span>
+            <div class="center">
+                <h2 class="ui header {{toc.messageClass}}" ng-if="!toc.showMetaLoader">
+                    {{toc.message}}
+                </h2>
+            </div>
+        </div>
+    </div>
+</div>
 
