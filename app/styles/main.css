@@ -278,6 +278,7 @@
   float: left !important;
   overflow: scroll !important;
   height: 500px !important;
+  width: 100% !important;
 }
 .pdf-toolbar-padding {
   padding: 5px 5px 5px 20px !important;
@@ -313,6 +314,9 @@
 }
 .font-white {
   color: #FFFFFF !important;
+}
+.font-dark-blue {
+  color: #006cff !important;
 }
 .header-container {
   margin-left: 1px !important;

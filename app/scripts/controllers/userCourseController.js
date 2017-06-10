@@ -118,7 +118,7 @@ angular.module('playerApp')
 
 
             courses.showToc = function (course_id) {
-                $location.path('/toc/do_11225144311893196816/yes');
+                $location.path('/toc/do_11225144311893196816/no');
             };
 
 
