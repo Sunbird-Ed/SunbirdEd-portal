@@ -243,4 +243,20 @@ describe('Controller: NoteCtrl', function() {
         noteService.get("592ab407693f230bbd2e287b");
         expect(noteService.get).toBeDefined();
     });
+    
+    it("Shouls called open add modal", function() {
+
+        spyOn(scope, 'showAddNoteModal').and.callThrough();
+        scope.showAddNoteModal();
+        timeout.flush(100);
+        expect(scope.showAddNoteModal).toBeDefined();
+    });
+    
+    it("Shouls called open update modal", function() {
+
+        spyOn(scope, 'showUpdateNoteModal').and.callThrough();
+        scope.showUpdateNoteModal();
+        timeout.flush(100);
+        expect(scope.showUpdateNoteModal).toBeDefined();
+    });
 });
