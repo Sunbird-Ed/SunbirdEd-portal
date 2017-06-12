@@ -1,4 +1,3 @@
-#Dockerfile for the player setup
 FROM ubuntu:16.04
 MAINTAINER "Manojvv" "manojrpms@gmail.com"
 RUN apt-get update && apt-get install -y git \
@@ -6,8 +5,11 @@ RUN apt-get update && apt-get install -y git \
   zip \
   build-essential \
   curl
+RUN curl --silent --location https://deb.nodesource.com/setup_6.x | bash - \
+    && apt-get install --yes nodejs 
 WORKDIR /opt/
-COPY sunbird-player.zip  /opt/
-RUN unzip /opt/sunbird-player.zip 
+COPY player.zip  /opt/
+RUN unzip /opt/player.zip 
 WORKDIR /opt/player/dist
-RUN node server.js
+EXPOSE 7000
+CMD ["node", "server.js", "&"]
