@@ -38,6 +38,8 @@ angular.module('playerApp')
                     performance: true,
                 });
 
+                $('#headerSearchdd').dropdown();
+
                 if (attrs.id === 'content-video-player-youtube-holder') {
                     var oldPlayer = document.getElementById('content-video-player-youtube');
                     videojs(oldPlayer).dispose();
