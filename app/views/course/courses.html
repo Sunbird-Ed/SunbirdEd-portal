@@ -1,4 +1,4 @@
-<div ng-controller="CourseCtrl" >
+<div ng-controller="CourseCtrl">
     <div class="mid-area scrollstyle">
         <div class="dash-heading-border ng-scope" ng-if="courses.enrolledCourses.length > 0">
             <h2 style="margin-top: 11px; margin-bottom: 5px">your progress</h2>
@@ -7,41 +7,32 @@
             <div class="overflow-auto">
                 <div style="display: inline-block;">
                     <div class="currentcourse-block-desc">
-                       
                         <h3 class="course-intro-big"><span class="course-intro-small ng-binding" ng-click="courses.showToc(course.identifier)">{{course.courseName}}</span></h3>
                     </div>
                 </div>
                 <div class="ui cards">
-
                     <div class="tiny card">
                         <div class="content">
                             <span class="dashboardBadgeText">{{course.progress}}%</span>
                             <div class="content" style="text-align: center">PROGRESS</div>
                         </div>
-
                     </div>
                     <div class="card">
                         <div class="content">
-
                             <span class="dashboardBadgeText">{{courses.enrolledCourseContents[course.id]['grade']}}</span>
                             <div class="bold" style="text-align: center">GRADE</div>
-
                         </div>
                     </div>
                     <div class="card">
                         <div class="content">
-
                             <span class="dashboardBadgeText">{{courses.enrolledCourseContents[course.id]['completedCount']}}</span>
                             <div class="bold" style="text-align: center">COMPLETION</div>
-
                         </div>
                     </div>
                     <div class="card">
                         <div class="content">
-
                             <span class="dashboardBadgeText">{{courses.enrolledCourseContents[course.id]['target']!=undefined?courses.enrolledCourseContents[course.id]['target']:'N/A'}}</span>
                             <div class="bold" style="text-align: center">TARGET</div>
-
                         </div>
                     </div>
                     <!--
