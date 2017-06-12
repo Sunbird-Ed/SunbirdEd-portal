@@ -1,96 +1,97 @@
-<div ng-controller="courseScheduleCtrl as toc">
+
+<div class="eight wide column" ng-controller="courseScheduleCtrl as toc">
     <div  id="course-toc-list" ng-if="!contentPlayer.isContentPlayerEnabled && toc.courseHierachy && !toc.showDimmer && toc.lectureView == 'no'" ng-init="toc.playList = []">
         <div class="content">
             <div class='ui grid'>
-                <div class='eight wide column'>
-                    <div class="ui styled accordion margin-top-10 " ng-repeat="item in  toc.courseHierachy.children track by $index" style='width:100% !important;'>
-                        <div class="title title-padding-left" name="{{item.identifier}}" ng-click="toc.expandMe($event, item)" ng-init="toc.checkAndAddToPlaylist(item)" ng-class="toc.getContentClass(item.mimeType)">
-                            {{item.name}}
-                            <i ng-if='item.children && item.children.length > 0' class="angle down icon down-arrow-accordion"></i>
+                <div class="row">
+                    <div class="two wide column"></div>
+                    <div class='six wide column'>
+                        <div class="ui header">
+                            <b class="content">
+                                About the course
+                            </b>
+                            <div class="margin-top-10 " ng-init="toc.readMore = false">
+                                <span> {{ toc.courseHierachy.description | limitTo: 200 }}&nbsp;
+                                    <span class="ui link font-dark-blue" ng-if="toc.courseHierachy.description.length > 200 && toc.readMore === false"
+                                          ng-click="toc.readMore = !toc.readMore;">Read More ...</span> 
+                                </span>
+                                <span ng-if="toc.readMore"> {{ toc.courseHierachy.description}}&nbsp;
+                                    <span class="ui link font-dark-blue" ng-click="toc.readMore = false;">Read Less ...</span>
+                                </span>
+                            </div>
                         </div>
-                        <div class="content" ng-if='item.children && item.children.length > 0'>
-                            <ul class="courseStr">
-                                <li ng-repeat="item in item.children">
-                                    <div name="{{item.identifier}}"  ng-click="toc.expandMe($event, item)" ng-init="toc.checkAndAddToPlaylist(item)" ng-class="toc.getContentClass(item.mimeType)">
-                                        <span>
-                                            <i class="large video play outline icon" ng-class="toc.getContentStatus(item.identifier)"></i>
-                                        </span>
-                                        <span class="text">{{item.name}}</span>
-                                        <div class="verticalLine" ng-if="!$last"></div>
-                                    </div>
-                                    <div  ng-switch on="item.children.length > 0">
-                                        <div ng-switch-when="true">
-                                            <div ng-init="subItems = item.children;" ng-include="'views/course/tocList.html'"></div>
+                        <div class="ui styled accordion margin-top-10 " ng-repeat="item in  toc.courseHierachy.children track by $index" style='width:100% !important;'>
+                            <div class="title title-padding-left" name="{{item.identifier}}" ng-click="toc.expandMe($event, item)" ng-init="toc.checkAndAddToPlaylist(item)" ng-class="toc.getContentClass(item.mimeType)">
+                                {{item.name}}
+                                <i ng-if='item.children && item.children.length > 0' class="angle down icon down-arrow-accordion"></i>
+                            </div>
+                            <div class="content" ng-if='item.children && item.children.length > 0'>
+                                <ul class="courseStr">
+                                    <li ng-repeat="item in item.children">
+                                        <div name="{{item.identifier}}"  ng-click="toc.expandMe($event, item)" ng-init="toc.checkAndAddToPlaylist(item)" ng-class="toc.getContentClass(item.mimeType)">
+                                            <span>
+                                                <i class="large video play outline icon" ng-class="toc.getContentStatus(item.identifier)"></i>
+                                            </span>
+                                            <span class="text">{{item.name}}</span>
+                                            <div class="verticalLine" ng-if="!$last"></div>
                                         </div>
-                                    </div>
+                                        <div  ng-switch on="item.children.length > 0">
+                                            <div ng-switch-when="true">
+                                                <div ng-init="subItems = item.children;" ng-include="'views/course/tocList.html'"></div>
+                                            </div>
+                                        </div>
 
 
-                                </li>
-                            </ul>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class='four wide column'>
-                    <div class="ui card">
-                        <div class="content">
-                            <div class="header">faculty</div>
-                            <div class="description">
-                                <div class="ui middle aligned selection list">
-                                    <div class="item">
-                                        <img class="ui avatar image" src="/images/avatar/small/helen.jpg">
-                                        <div class="content">
-                                            <div class="header">Helen</div>
+                    <div class='four wide column'>
+                        <note-card isadd="false"></note-card>
+                        <div class="ui card">
+                            <div class="content">
+                                <div class="header">faculty</div>
+                                <div class="description">
+                                    <div class="ui middle aligned selection list">
+                                        <div class="item">
+                                            <img class="ui avatar image" src="/images/user_logo.png">
+                                            <div class="content">
+                                                <div class="header">Helen</div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="item">
-                                        <img class="ui avatar image" src="/images/avatar/small/christian.jpg">
-                                        <div class="content">
-                                            <div class="header">Christian</div>
+                                        <div class="item">
+                                            <img class="ui avatar image" src="/images/user_logo.png">
+                                            <div class="content">
+                                                <div class="header">Christian</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="ui card">
-                        <div class="content">
-                            <div class="header">Top Rankers</div>
-                            <div class="description">
-                                <div class="ui very relaxed list">
-                                    <div class="item">
-                                        <img class="ui avatar image" src="/images/avatar/small/daniel.jpg">
-                                        <div class="content">
-                                            <a class="header">Daniel Louise</a>
-                                            <div class="description">Last seen</div>
+                        <div class="ui card">
+                            <div class="content">
+                                <div class="header">Top Rankers</div>
+                                <div class="description">
+                                    <div class="ui very relaxed list">
+                                        <div class="item">
+                                            <img class="ui avatar image" src="/images/user_logo.png">
+                                            <div class="content">
+                                                <a class="header">Daniel Louise</a>
+                                                <div class="description">Last seen</div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="item">
-                                        <img class="ui avatar image" src="/images/avatar/small/stevie.jpg">
-                                        <div class="content">
-                                            <a class="header">Stevie Feliciano</a>
-                                            <div class="description">Last seen </div>
+                                        <div class="item">
+                                            <img class="ui avatar image" src="/images/user_logo.png">
+                                            <div class="content">
+                                                <a class="header">Stevie Feliciano</a>
+                                                <div class="description">Last seen </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="ui card">
-                        <div class="content">
-                            <div class="header">Course Progress</div>
-                            <div class="description">
-                                <p>Your progress</p>
-                                <div class="ui tiny progress">
-                                    <div class="bar"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <note-card isadd="false"></note-card>
-                    <div apply-script class="ui styled accordion">
-                        <div class="title title-padding-left">
-                            Have any doubt?
-                            <i class="angle down icon down-arrow-accordion"></i>
                         </div>
                     </div>
                 </div>
@@ -99,51 +100,23 @@
     </div>
     <div ng-if="(contentPlayer.isContentPlayerEnabled) && !toc.showDimmer">
         <div class="ui grid">
-            <div class="row">
-                <div class="twelve wide column">
-                    <content-player ng-if="toc.lectureView == 'no'" visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="true" height="600" width="1500"></content-player>
-                    <content-player ng-if="toc.lectureView == 'yes'" visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="false" height="600" width="1900"></content-player>
-                </div>
-            </div>
-            <div class="row margin-top-15">
-                <div class="three wide column">
-                    <button class="ui dark-blue-color huge button" ng-click="toc.playPlaylistContent(toc.prevPlaylistItem, 'prev')"  
-                            ng-disabled="(toc.prevPlaylistItem < 0)" 
-                            style="height: 100px; width: 350px;">
-                        <h4 class=" font-white"> << Previous </h4>
-                        <p class=" font-white">{{toc.previousPlayListName}}</p>
-                    </button>
-                </div>
-                <div class=" six wide column center aligned" >
-                    <h2 class="ui center aligned icon tiny header" ng-if="toc.nightMode" 
-                        ng-init="toc.showNoteModal = false">
-                        <i class=" file text outline icon font-dark-blue"></i>
-                        <u class="ui font-dark-blue mouse-pointer" ng-click="toc.showNoteModal = !toc.showNoteModal; toc.showAddNoteModel()">Take Note</u>
-                    </h2>
-                    <div ng-if="toc.showNoteModal">
-                        <div class="ui modal create" ng-controller="NoteCtrl">
-                            <div  class="ui segment">
-                                <div class="ui fluid icon input">
-                                    <input type="text" placeholder="Title" name="title" ng-model="metaData.title" />
-                                </div>
-                                <div class="editor">
-                                    <pagedown-editor content="metaData.note" show-preview="false"></pagedown-editor>
-                                </div>
-                                <button class="ui primary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="createNote(metaData)" ng-disabled="!metaData.title || !metaData.note" tabindex="4">Save</button>
-                                <button class="ui secondary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="metaData.title = ''; metaData.note = '';">Clear</button>
-                            </div>
+            <div class="two wide column"></div>
+            <div class="eight wide column">
+                <div class="ui grid">
+                    <div class="row">
+                        <div class="twelve wide column">
+                            <content-player ng-if="toc.lectureView == 'no'" visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="true" height="600" width="100" ispercentage="true"></content-player>
+                            <content-player ng-if="toc.lectureView == 'yes'" visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="false" height="600" width="100" ispercentage="true"></content-player>
                         </div>
                     </div>
+
+
+                    
+
                 </div>
-                <div class="three wide column ">
-                    <button class="ui dark-blue-color huge button" ng-click="toc.playPlaylistContent(toc.nextPlaylistItem, 'next')"  
-                            ng-disabled="(toc.nextPlaylistItem < 0)" 
-                            style="height: 100px; width: 350px;">
-                        <h4 class=" font-white"> Next >> </h4>
-                        <p class=" font-white">{{toc.nextPlayListName}}</p>
-                    </button>
-                </div>
+
             </div>
+            <div class="two wide column"></div>
         </div>
     </div>
 
@@ -162,4 +135,3 @@
         </div>
     </div>
 </div>
-

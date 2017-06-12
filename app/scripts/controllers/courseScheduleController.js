@@ -7,7 +7,6 @@ angular.module('playerApp')
             toc.lectureView = $stateParams.lectureView;
             toc.courseId = $stateParams.courseId;
             $scope.enableCloseButton = (toc.lectureView == 'yes') ? 'false' : 'true';
-            console.log($rootScope.contentDetails);
             toc.nightMode = true;
             $scope.contentPlayer = {
                 isContentPlayerEnabled: false,
@@ -90,7 +89,7 @@ angular.module('playerApp')
                 toc.prevPlaylistItem = (toc.itemIndex - 1) > -1 ? $('.playlist-content:eq(' + (toc.itemIndex - 1) + ')').attr('name') : -1;
                 toc.nextPlaylistItem = (toc.itemIndex + 1) <= toc.playList.length ? $('.playlist-content:eq(' + (toc.itemIndex + 1) + ')').attr('name') : -1;
                 toc.previousPlayListName = (toc.itemIndex - 1) > -1 ? toc.playListContent[toc.itemIndex - 1].name : "No content to play";
-                toc.nextPlayListName = (toc.itemIndex + 1) <= toc.playList.length ? toc.playListContent[toc.itemIndex + 1].name : "No content to play";
+                toc.nextPlayListName = (toc.itemIndex + 1) < toc.playList.length ? toc.playListContent[toc.itemIndex + 1].name : "No content to play";
                 $scope.contentPlayer.contentData = toc.playListContent[curItemIndex];
                 $scope.contentPlayer.isContentPlayerEnabled = true;
             }

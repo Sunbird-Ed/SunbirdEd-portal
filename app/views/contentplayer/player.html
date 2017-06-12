@@ -1,23 +1,23 @@
 <div id="contentPlayer">
-<div class='content-player-container' ng-if="visibility">
+    <div class='ui segment' ng-if="visibility">
 
-    <div class='content-player-body'>
-        <div class="ui clearing segment content-player-header" ng-if="isHeader || isClose">
-            <h1 class="ui huge left floated header margin-auto" ng-if="isHeader">
-              {{contentData.name}}
-            </h1>
-            <h5 class="ui right floated basic icon circular button" ng-if="isClose" ng-click="close()">
-              <i class="ui remove icon"></i>
-            </h5>
-          </div>
+        <div class='content-player-body'>
+            <div class="ui clearing segment content-player-header" ng-if="isHeader || isClose">
+                <h1 class="ui huge left floated header margin-auto" ng-if="isHeader">
+                    {{contentData.name}}
+                </h1>
+                <h5 class="ui right floated basic icon circular button" ng-if="isClose" ng-click="close()">
+                    <i class="ui remove icon"></i>
+                </h5>
+            </div>
 
-        <div class="ui stackable twelve column grid">
+            <div class="ui stackable twelve column grid">
 
-            <div class="eight wide column" ng-if="showMetaData">
-                <div class="content-player" ng-if="(contentData.mimeType === 'application/vnd.ekstep.ecml-archive' || contentData.mimeType === 'application/vnd.ekstep.html-archive')">
-                    <iframe  id="contentViewerIframe" ng-src="{{iFrameSrc}}" height='100%' width='100%'></iframe>
-                </div>
-                <div class="content-player" ng-if="contentData.mimeType !== 'video/youtube' && contentData.mimeType.indexOf('video') > -1">
+                <div class="eight wide column" ng-if="showMetaData">
+                    <div class="content-player" ng-if="(contentData.mimeType === 'application/vnd.ekstep.ecml-archive' || contentData.mimeType === 'application/vnd.ekstep.html-archive')">
+                        <iframe  id="contentViewerIframe" ng-src="{{iFrameSrc}}" height='100%' width='100%'></iframe>
+                    </div>
+                    <div class="content-player" ng-if="contentData.mimeType !== 'video/youtube' && contentData.mimeType.indexOf('video') > -1">
                         <video height='100%' width='100%'  id="content-video-player" class="video-js vjs-default-skin player-video"
                                controls preload="auto" autoplay="true"
                                data-setup='{"controls":true}'>
@@ -78,6 +78,45 @@
                 <div class="four wide column" ng-if="showMetaData">
                     <div ng-include="'views/contentplayer/contentMeta.html'"></div>
                 </div>
+            <!--</div>-->
+            <div class="ui row" ng-controller="courseScheduleCtrl as toc">
+                        <div class="three wide column ">
+                            <button class="ui dark-blue-color huge button width-290 margin-auto" ng-click="toc.playPlaylistContent(toc.prevPlaylistItem, 'prev')"  
+                                    ng-disabled="(toc.prevPlaylistItem < 0)">
+                                <h4 class=" font-white"> << Previous </h4>
+                                <p class=" font-white">{{toc.previousPlayListName}}</p>
+                            </button>
+                        </div>
+                        <div class="six wide column center aligned" >
+                            <h2 class="ui center aligned icon tiny header" ng-if="toc.nightMode" 
+                                ng-init="toc.showNoteModal = false">
+                                <i class=" file text outline icon font-dark-blue"></i>
+                                <u class="ui font-dark-blue mouse-pointer" ng-click="toc.showNoteModal = !toc.showNoteModal; toc.showAddNoteModel()">Take Note</u>
+                            </h2>
+                            <div ng-if="toc.showNoteModal">
+                                <div class="ui modal create" ng-controller="NoteCtrl">
+                                    <div  class="ui segment">
+                                        <div class="ui fluid icon input">
+                                            <input type="text" placeholder="Title" name="title" ng-model="metaData.title" />
+                                        </div>
+                                        <div class="editor">
+                                            <pagedown-editor content="metaData.note" show-preview="false"></pagedown-editor>
+                                        </div>
+                                        <button class="ui primary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="createNote(metaData)" ng-disabled="!metaData.title || !metaData.note" tabindex="4">Save</button>
+                                        <button class="ui secondary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="metaData.title = ''; metaData.note = '';">Clear</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="three wide column ">
+                            <button class="ui dark-blue-color huge button right floated width-290 margin-auto" ng-click="toc.playPlaylistContent(toc.nextPlaylistItem, 'next')"  
+                                    ng-disabled="(toc.nextPlaylistItem < 0)" >
+                                <h4 class=" font-white"> Next >> </h4>
+                                <p class=" font-white">{{toc.nextPlayListName}}</p>
+                            </button>
+                        </div>
+                    </div>
             </div>
             <div ng-if="errorObject.showError">
                 <div class="ui active dimmer inverted">
