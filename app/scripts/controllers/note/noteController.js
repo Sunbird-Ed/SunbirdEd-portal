@@ -121,6 +121,7 @@ angular.module('playerApp')
                         $scope.notesList = $scope.notesList ? $scope.notesList : [];
                         $scope.notesList.push(response.result.note);
                         $scope.add.showCreateNote = false;
+                        $scope.add = {};
                         $scope.closeAddNoteModal();
                     } else {
                         handleFailedResponse(config.MESSAGES.NOTES.CREATE.FAILED);
@@ -204,34 +205,14 @@ angular.module('playerApp')
                 search(request);
             };
 
-            $scope.showAddNoteModal = function () {
-                $timeout(function () {
-                    $('.ui.modal.create').modal({
-                        onHide: function () {
-                            
-                        },
-                    }).modal('show');
-                }, 100);
-            };
-
-            $scope.closeAddNoteModal = function () {
-                $('.create').modal('hide all');
-            };
-
             $scope.showUpdateNoteModal = function () {
                 $timeout(function () {
-                    $('.ui.modal.update').modal({
+                    $('#updateModal').modal({
                         onHide: function () {
                             $scope.update = {};
-
-                        },
+                        }
                     }).modal('show');
                 }, 100);
-            };
-
-            $scope.closeUpdateNoteModal = function () {
-                $('.update').modal('hide');
-                $scope.update.metaData = {};
             };
 
         });
