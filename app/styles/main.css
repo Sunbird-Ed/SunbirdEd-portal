@@ -851,6 +851,24 @@ ul.subList-padding {
 .text-cencapitalize {
   text-transform: capitalize;
 }
+.card-extraContent-padding {
+  padding: 10px 0px !important;
+}
+.accordian-right {
+  width: 70% !important;
+}
+.accordian-right-text {
+  font-size: 16px !important;
+  color: black !important;
+}
+.accordian-left-bottomMargin {
+  margin-bottom: 16px !important;
+}
+.accordian-left-text {
+  padding: 2% !important;
+  font-size: 16px !important;
+  color: black !important;
+}
 body {
   position: relative !important;
   margin: 0 !important;
@@ -901,4 +919,8 @@ img {
   -o-border-radius: 50% !important;
   display: inline-block !important;
   vertical-align: middle !important;
+}
+.courseHeader-rating .active {
+  color: #0099CC !important;
+  text-shadow: none  !important;
 }
