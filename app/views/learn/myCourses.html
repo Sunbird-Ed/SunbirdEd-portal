@@ -1,8 +1,7 @@
 <div class="ui segment dynamic-section-card margin-top-20 " ng-if="learn.enrolledCourses.length > 0">
     <h3>My Courses<a class="ui red tiny circular label">{{learn.enrolledCourses.length }}</a></h3>
-    </span>
     <div class="regular slider " ng-if="learn.enrolledCourses.length > 0">
-        <div class="ui card margin-left-right-10 margin-top-15" ng-click="learn.openCourseView(enrolledCourse.courseId)" ng-repeat=" enrolledCourse in learn.enrolledCourses track by $index" ng-init="$last && learn.loadProgress()">
+        <div class="ui card margin-left-right-10 margin-top-15" ng-click="learn.openCourseView(enrolledCourse.courseId, 'ENROLLED_COURSE')" ng-repeat=" enrolledCourse in learn.enrolledCourses track by $index" ng-init="$last && learn.loadProgress()">
             <div class="image ">
                 <div class="ui tiny  progress course-progress" data-value="{{enrolledCourse.progress}}" data-total="{{enrolledCourse.noOfLecture}}" ng-class="{orange:(enrolledCourse.noOfLecture-enrolledCourse.progress)<(enrolledCourse.noOfLecture/2),red:(enrolledCourse.noOfLecture-enrolledCourse.progress)>(enrolledCourse.noOfLecture/2)}">
                     <div class="bar"></div>
@@ -33,5 +32,4 @@
 <div class="ui inverted dimmer margin-top-20 " ng-class="{true: 'active', false: 'disabled'}[loading] ">
     <div class="ui text loader ">Featching enrolled contents
     </div>
-</div>
 </div>

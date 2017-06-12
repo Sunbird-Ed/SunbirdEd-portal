@@ -2,7 +2,8 @@
     <h3>{{section.display.title.en}}
         <a class="ui red tiny circular label">{{section.count}}</a></h3>
     <div class="regular slider " ng-if="section.course.length> 0">
-        <div class="ui card margin-left-right-10 margin-top-15" ng-repeat=" course in section.course track by $index" ng-init="$last && learn.loadCarousel()">
+        <div class="ui card margin-left-right-10 margin-top-15" ng-click="learn.openCourseView(enrolledCourse.courseId, 'OTHER_COURSE')"
+             ng-repeat=" course in section.course track by $index" ng-init="$last && learn.loadCarousel()">
             <div class="image ">
                 <img ng-src="{{course.appIcon}}">
                 <a class="header center aligned ">
@@ -26,3 +27,4 @@
             <div class="ui text loader ">Featching enrolled courses</div>
         </div>
     </div>
+</div>

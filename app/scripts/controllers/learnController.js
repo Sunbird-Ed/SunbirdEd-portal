@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('playerApp')
-    .controller('LearnCtrl', function(learnService, $log, $scope, $sessionStorage, $timeout, $location) {
+    .controller('LearnCtrl', function(learnService, $log, $scope, $sessionStorage, $timeout, $state) {
         var learn = this;
         var uid = $sessionStorage.userId;
 
@@ -32,12 +32,15 @@ angular.module('playerApp')
             $timeout(function() {
                 $scope.error = {};
             }, 2000);
-        }
-        learn.openCourseView = function(courseId) {
+        };
+        
+        learn.openCourseView = function(courseId, courseType) {
             courseId = 'do_11225144311893196816';
             var showLectureView = 'no';
-            $location.path('/toc/' + courseId + '/' + showLectureView);
+            var params = {courseType: courseType, courseId: courseId, lectureView : showLectureView};
+            $state.go('Toc', params);
         };
+        
         learn.courses = function() {
             $scope.loading = true;
 
