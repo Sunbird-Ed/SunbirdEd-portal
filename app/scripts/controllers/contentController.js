@@ -12,6 +12,7 @@ angular.module('playerApp')
         var content = this;
         content.keyword = '';
         content.filters = {};
+        content.searchKey = '';
         content.languages = [
             'Bengali', 'English', 'Gujarati', 'Hindi', 'Kannada', 'Marathi', 'Punjabi', 'Tamil', 'Telugu'
         ];
@@ -24,7 +25,7 @@ angular.module('playerApp')
         content.selectedLanguage = '';
         content.selectedContentType = '';
         content.selectedStatus = '';
-        content.data = [];
+
         content.autosuggest_data = { content: [] };
         content.listView = false;
         //Object for content player directive
@@ -32,6 +33,8 @@ angular.module('playerApp')
             isContentPlayerEnabled: false
         };
         $rootScope.showIFrameContent = false;
+        $rootScope.searchKey = content.searchKey;
+        console.log('$rootScope.searchKey', $rootScope.searchKey);
         content.searchContent = function($event) {
             content.enableLoader(true);
             var req = {
@@ -41,6 +44,10 @@ angular.module('playerApp')
                     'cid': '12'
                 }
             };
+            //             if (content.searchKey === 'Courses') {
+            // getCourseSearchResult()
+            //             }
+
             content.handleSucessResponse = function(sucessResponse, $event) {
                 if (sucessResponse.result.count > 0) {
                     //if $event is passed then search is to get only autosuggest else to get the content
@@ -48,8 +55,13 @@ angular.module('playerApp')
                         content.autosuggest_data = sucessResponse.result;
                     } else {
                         content.isError = false;
-                        content.data = sucessResponse.result;
+                        console.log('content.searchKey', content.searchKey);
+                        $rootScope.searchResult = sucessResponse.result;
+                        $rootScope.searchKeyword = content.keyword;
+                        $rootScope.searchKey = content.searchKey;
+                        // $scope.data = sucessResponse.result;
                         content.autosuggest_data = { content: [] };
+                        // $scope.$apply();
                     }
                 } else if ($event === undefined) {
                     content.isError = true;
