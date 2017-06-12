@@ -1,11 +1,9 @@
-
-<div class="eight wide column" ng-controller="courseScheduleCtrl as toc">
+<div ng-controller="courseScheduleCtrl as toc">
     <div  id="course-toc-list" ng-if="!contentPlayer.isContentPlayerEnabled && toc.courseHierachy && !toc.showDimmer && toc.lectureView == 'no'" ng-init="toc.playList = []">
         <div class="content">
             <div class='ui grid'>
                 <div class="row">
-                    <div class="one wide column"></div>
-                    <div class='seven wide column'>
+                    <div class='eight wide column'>
                         <div class="ui header">
                             <b class="content">
                                 About the course
@@ -48,12 +46,6 @@
                         </div>
                     </div>
                     <div class='four wide column'>
-                        <div class="ui styled accordion margin-top-10 accordian-right margin-bottom-15">
-                            <div class="title title-padding-left accordian-right-text" >
-                                  Course Information
-                                <i class="angle down icon down-arrow-accordion"></i>
-                            </div>                    
-                        </div>
                         <note-card isadd="false"></note-card>
                     </div>
                 </div>
