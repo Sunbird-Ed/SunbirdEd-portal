@@ -157,18 +157,14 @@ angular.module('playerApp')
                 }, 0);
             }
 
-            toc.showAddNoteModel = function () {
+            toc.showAddNoteModal = function () {
                 $timeout(function () {
-                    $('.ui.modal.create').modal({
+                    $('#addNoteModalInLectureView').modal({
                         onHide: function () {
-
-                        },
+                            toc.showNoteModal = false;
+                        }
                     }).modal('show');
                 }, 100);
-            };
-
-            toc.closeAddNoteModel = function () {
-                $('.create').modal('hide');
             };
 
 
