@@ -1,9 +1,9 @@
-<div class="ui segment dynamic-section-card margin-top-20 " ng-if="learn.enrolledCourses.length > 0">
-    <h3>My Courses<a class="ui red tiny circular label">{{learn.enrolledCourses.length }}</a></h3>
+<div class="dynamic-section-card margin-top-20" ng-if="learn.enrolledCourses.length > 0"> 
+    <h4 class="ui header">My Courses<a class="ui red circular inline label">{{learn.enrolledCourses.length}}</a></h4> 
     <div class="regular slider " ng-if="learn.enrolledCourses.length > 0">
         <div class="ui link card margin-left-right-10 margin-top-15" ng-click="learn.openCourseView(enrolledCourse.courseId, 'ENROLLED_COURSE')" ng-repeat=" enrolledCourse in learn.enrolledCourses track by $index" ng-init="$last && learn.loadProgress()">
-            <div class="image ">
-                <div class="ui tiny  progress course-progress" data-value="{{enrolledCourse.progress}}" data-total="{{enrolledCourse.noOfLecture}}" ng-class="{orange:(enrolledCourse.noOfLecture-enrolledCourse.progress)<(enrolledCourse.noOfLecture/2),red:(enrolledCourse.noOfLecture-enrolledCourse.progress)>(enrolledCourse.noOfLecture/2)}">
+            <div class="ui image rounded"> 
+                <div class="ui tiny  progress course-progress" data-value="{{enrolledCourse.progress}}" data-total="{{enrolledCourse.noOfLecture}}" ng-class="{orange:(enrolledCourse.noOfLecture - enrolledCourse.progress) < (enrolledCourse.noOfLecture / 2),red:(enrolledCourse.noOfLecture - enrolledCourse.progress) > (enrolledCourse.noOfLecture / 2)}">
                     <div class="bar"></div>
                 </div>
                 <img ng-src="../images/sunbird_logo.png ">
@@ -13,20 +13,22 @@
                     <span class="text-cencapitalize ">{{enrolledCourse.grade}}</span>
                 </div>
             </div>
-            {{ enrolledCourse.description}}
+            <div class="card-content-description"> 
+                {{enrolledCourse.description}}     
+            </div> 
             <div class="extra content card-extraContent-padding">
                 <span class="right floated">
-       <button class="ui blue basic button">RESUME</button>
-      </span>
+                    <button class="ui blue basic button">RESUME</button>
+                </span>
                 <span>
-       
-      {{(enrolledCourse.progress/enrolledCourse.noOfLecture)*100}} % complete <br/> 2 hrs remaining
-      </span>
+
+                    {{(enrolledCourse.progress/enrolledCourse.noOfLecture)*100}}% complete <br/> 2hrs remaining 
+                </span>
             </div>
         </div>
     </div>
 </div>
-<div ng-if="resource.error.isError ">
+<div ng-if="resource.error.isError">
     <error-message data={{resource.error}}></error-message>
 </div>
 <div class="ui inverted dimmer margin-top-20 " ng-class="{true: 'active', false: 'disabled'}[loading] ">
