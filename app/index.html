@@ -25,26 +25,23 @@
     <!-- endbuild -->
 </head>
 
-<body ng-app="playerApp" ng-controller="AppCtrl" class="overflowHidden">
+<body ng-app="playerApp" ng-controller="AppCtrl">
     <!--[if lte IE 8]>
                   <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
                 <![endif]-->
     <div ng-include="'views/common/topHeader.html'"></div>
     <div ng-include="'views/course/courseHeader.html'" ng-if='displayCourseHeader'></div>
-    <div class="ui top attached fluid container overflowAuto">
+    <div class="ui top attached fluid container">
 <!--        <div ng-include="'views/common/sideMenu.html'"></div>-->
-        <div class="pusher-fix-height">
-            <div class="ui padded grid">
-                <div class="row">
-                    <div class="two wide column"></div>
-                    <div class="ten wide column">
-                        <!-- Add your site or application content here -->
-                        <main>
-                            <div ui-view></div>
-                        </main>
-                    </div>
+        <div class="ui padded grid">
+            <div class="row">
+                <div class="two wide column"></div>
+                <div class="ten wide column">
+                    <!-- Add your site or application content here -->
+                    <main>
+                        <div ui-view></div>
+                    </main>
                 </div>
-
             </div>
         </div>
     </div>
