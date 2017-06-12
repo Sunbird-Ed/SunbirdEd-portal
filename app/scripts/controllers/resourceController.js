@@ -20,10 +20,6 @@ angular.module('playerApp')
                     prevArrow: false,
                 });
                 $('.popup-button').popup();
-
-                $('.ui .progress').progress();
-
-
             };
             resourceService.resources(req).then(function(successResponse) {
                 if (successResponse && successResponse.responseCode === 'OK') {
