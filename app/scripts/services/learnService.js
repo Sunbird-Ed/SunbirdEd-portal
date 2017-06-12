@@ -118,6 +118,7 @@ angular.module('playerApp')
             var url = config.URL.MOCK_API_BASE + config.URL.COURSE.GET_LEARN_OTHER_SECTION;
             return httpServiceJava.post(url, req);
         }
+        
         return {
             enrolledCourses: enrolledCourses,
             otherSections: otherSections

@@ -93,8 +93,9 @@ angular
             //                controller: 'CourseCtrl as courses'
             //            })
             .state('Toc', {
-                url: '/toc/:courseId/:lectureView',
+                url: '/toc',
                 templateUrl: 'views/course/toc.html',
+                params:{courseType: null, courseId: null, lectureView : null},
                 controller: 'courseScheduleCtrl as toc'
             });
     });

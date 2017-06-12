@@ -12,11 +12,11 @@ angular.module('playerApp').directive('noteCard', function () {
         templateUrl: 'views/note/noteCard.html',
         restrict: 'E',
         scope: {
-            isadd: '='
+            shownotecard: '='
         },
         link: function (scope, element, attrs) {
             
-                scope.showAddNoteButton = scope.isadd;            
+                scope.showNoteCard = scope.shownotecard;            
             
         },
         controller: 'NoteCtrl'

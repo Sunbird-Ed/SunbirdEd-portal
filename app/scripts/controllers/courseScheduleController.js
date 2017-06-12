@@ -6,20 +6,24 @@ angular.module('playerApp')
             toc.loading = false;
             toc.lectureView = $stateParams.lectureView;
             toc.courseId = $stateParams.courseId;
-            $scope.enableCloseButton = (toc.lectureView == 'yes') ? 'false' : 'true';
+            toc.courseType = $stateParams.courseType;
+            $scope.enableCloseButton = (toc.lectureView === 'yes') ? 'false' : 'true';
+            console.log($rootScope.contentDetails);
             toc.nightMode = true;
             $scope.contentPlayer = {
-                isContentPlayerEnabled: false,
+                isContentPlayerEnabled: false
 
             };
+            
             toc.getContentStatus = function (contentId) {
-//                if ($rootScope.contentDetails[contentId] && $rootScope.contentDetails[contentId]['status'] == 1) {
-//                    return 'green';
-//                } else
-//                {
-//                    return '';
-//                }
-            }
+                if ($rootScope.contentDetails[contentId] && $rootScope.contentDetails[contentId]['status'] === 1) {
+                    return 'green';
+                } else
+                {
+                    return '';
+                }
+            };
+            
             toc.showError = function (message) {
 
                 toc.messageClass = "red";
@@ -28,8 +32,7 @@ angular.module('playerApp')
                 $timeout(function () {
                     toc.showDimmer = false;
                 }, 2000);
-            }
-
+            };
 
             //$scope.contentPlayer.contentData=};
             toc.getCourseToc = function () {
@@ -40,7 +43,7 @@ angular.module('playerApp')
                 courseService.courseHierarchy(toc.courseId).then(function (res) {
                     if (res && res.responseCode === "OK") {
                         toc.courseHierachy = res.result.content;
-                        $rootScope.courseName = toc.courseHierachy.name;
+                        $rootScope.courseName=toc.courseHierachy.name;
                         toc.applyAccordion();
                         toc.showMetaLoader = false;
                         toc.showDimmer = false;
@@ -48,18 +51,19 @@ angular.module('playerApp')
                         toc.showError("Unable to get course schedule details.");
                     }
 
-//                    $timeout(function () {
-//                        toc.showMetaLoader = false;
-//                        toc.showDimmer = false;
-//                    }, 2000);
+                    $timeout(function () {
+                        toc.showMetaLoader = false;
+                        toc.showDimmer = false;
+                    }, 2000);
 
                 }, function (err) {
                     toc.showError("Unable to get course schedule details.");
                 });
-            }
+            };
+            
             toc.getCourseToc();
             toc.expandMe = function ($event, item) {
-                if (item.mimeType != "application/vnd.ekstep.content-collection")
+                if (item.mimeType !== "application/vnd.ekstep.content-collection")
                 {
                     toc.itemIndex = $($event.target).closest('.playlist-content').index('.playlist-content');
                     toc.playPlaylistContent($($event.target).closest('.playlist-content').attr('name'), '');
@@ -68,31 +72,31 @@ angular.module('playerApp')
             };
 
             toc.checkAndAddToPlaylist = function (item) {
-                if (item.mimeType != "application/vnd.ekstep.content-collection" && toc.playList.indexOf(item.identifier) == -1)
+                if (item.mimeType !== "application/vnd.ekstep.content-collection" && toc.playList.indexOf(item.identifier) === -1)
                 {
                     // console.log($scope.counter);
                     toc.playList.push(item.identifier);
                     toc.playListContent.push(item);
                 }
-            }
-
-
-
+            };
+            
             toc.playPlaylistContent = function (contentId, trigger) {
 
                 var curItemIndex = toc.playList.indexOf(contentId);
-                if (trigger == 'prev') {
+                if (trigger === 'prev') {
                     toc.itemIndex -= 1;
-                } else if (trigger == 'next') {
+                } else if (trigger === 'next') {
                     toc.itemIndex += 1;
                 }
                 toc.prevPlaylistItem = (toc.itemIndex - 1) > -1 ? $('.playlist-content:eq(' + (toc.itemIndex - 1) + ')').attr('name') : -1;
                 toc.nextPlaylistItem = (toc.itemIndex + 1) <= toc.playList.length ? $('.playlist-content:eq(' + (toc.itemIndex + 1) + ')').attr('name') : -1;
                 toc.previousPlayListName = (toc.itemIndex - 1) > -1 ? toc.playListContent[toc.itemIndex - 1].name : "No content to play";
                 toc.nextPlayListName = (toc.itemIndex + 1) < toc.playList.length ? toc.playListContent[toc.itemIndex + 1].name : "No content to play";
-                $scope.contentPlayer.contentData = toc.playListContent[curItemIndex];
-                $scope.contentPlayer.isContentPlayerEnabled = true;
-            }
+                if (toc.courseType === "ENROLLED_COURSE") {
+                    $scope.contentPlayer.contentData = toc.playListContent[curItemIndex];
+                    $scope.contentPlayer.isContentPlayerEnabled = true;
+                }
+            };
 
             toc.getAllChildrenCount = function (index) {
                 var childCount = toc.getChildNodeCount(toc.courseHierachy.children[index], 0);

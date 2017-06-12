@@ -317,8 +317,10 @@
 .font-dark-blue {
   color: #006cff !important;
 }
-.width-290 {
+.next-previous-button {
   width: 290px !important;
+  height: 80px !important;
+  padding: 0px !important;
 }
 .width-100 {
   width: 100% !important;
