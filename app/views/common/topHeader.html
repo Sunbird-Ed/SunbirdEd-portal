@@ -1,8 +1,6 @@
 <div class="ui secondary pointing menu" ng-controller="AuthCtrl as auth" ng-if="!isLoggedIn" ng-include="'views/header/beforeLoginHeader.html'">
 </div>
 <div apply-script class="ui grid" ng-if="isLoggedIn" ng-controller="AuthCtrl as auth" ng-init="getUserProfileImage()" ng-include="'views/header/afterLoginHeader1.html'">
-
 </div>
 <div class="ui secondary pointing menu" ng-if="isLoggedIn " ng-include="'views/header/afterLoginHeader2.html'">
-
 </div>

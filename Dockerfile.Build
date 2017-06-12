@@ -14,10 +14,9 @@ RUN curl --silent --location https://deb.nodesource.com/setup_6.x | bash - \
     && npm install -g bower \
     && npm install -g gulp
 WORKDIR /opt/player/
-RUN npm install \
-    && echo '{ "allow_root": true }' > /opt/player/.bowerrc \
-    && bower install /opt/player/bower.json \
-    && gulp \
-    && gulp test
+RUN npm install 
+RUN echo '{ "allow_root": true }' > /opt/player/.bowerrc
+RUN bower install /opt/player/bower.json 
+RUN gulp 
 WORKDIR /opt/
-RUN zip -r sunbird-player.zip player
+CMD ["zip", "-r", "player.zip",  "player"]

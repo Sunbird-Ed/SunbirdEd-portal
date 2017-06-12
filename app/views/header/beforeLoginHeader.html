@@ -6,8 +6,8 @@
 <a class="item " ui-sref-active="active" ui-sref="Search" href="search" translate="home">
 Home
   </a>
-<a class="item " ui-sref-active="active" ui-sref="UserContent" href="userContent" translate="learn" >
-    Learn
+<a class="item " ui-sref-active="active" ui-sref="UserContent" href="userContent" translate="courses">
+    Courses
   </a>
 <a class="item" href="#" translate="resources">
     Resources
@@ -17,12 +17,11 @@ Home
     Community
 
   </a>
-<a class="item" href="#" translate="assets" >
+<a class="item" href="#" translate="assets">
 Assets
   </a>
 <div class="right menu">
     <button class="ui item" ng-if="!isLoggedIn" ng-click="auth.openAuthModal()" translate="login" translate-default="LOGIN"> LOGIN</button>
-
     <div class="ui small modal" id="authLogin">
         <div class="ui grid">
             <div class="eleven wide column">
