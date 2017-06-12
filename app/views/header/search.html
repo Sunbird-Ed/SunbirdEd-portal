@@ -1,0 +1,24 @@
+<div ng-controller="ContentCtrl as content">
+    <div class="ui fluid icon input left action" id="search-input-container">
+
+
+        <select class="ui compact selection dropdown" id="headerSearchdd" ng-value="option.value" ng-model="content.searchKey" apply-script>
+                <option value="all">All</option>
+                <option selected="" value="Courses">Courses</option>
+                <option value="products">Products</option>
+            </select>
+        <input type="text" id="keyword" name="filter_search" ng-model="content.keyword" ng-change="content.searchContent('$event')" ng-keypress="($event.which === 13)?content.searchContent():0" ng-model-options="{debounce: 1000}" placeholder="What are you looking for?"
+            title="Search" autocomplete="off" spellcheck="false" dir="auto" />
+        <!--<input type="text" placeholder="What are you looking for?">-->
+        <i class="search link icon" ng-click="content.searchContent()"></i>
+    </div>
+    <div id="search-suggestions" ng-if="content.autosuggest_data.content.length > 0" class="ui fluid results transition visible dropdown-menu-list">
+        <div>
+            <a class="result" ng-repeat="item in content.autosuggest_data.content" ng-click='content.setSearchText(item.name)'>
+                <div class="content">
+                    <div class="title">{{item.name}}</div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>

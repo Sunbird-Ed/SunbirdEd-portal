@@ -1,0 +1,19 @@
+<div apply-script class="ui card  margin-left-right-10 margin-top-15 link">
+    <div class="image ">
+        <img ng-src=" {{item.appIcon ? item.appIcon : '../images/sunbird_logo.png'}} ">
+        <div class="header center aligned ">
+            <span class="text-cencapitalize ">
+                     {{item.name}}</span> for
+            <span class="text-cencapitalize " ng-repeat="grade in item.gradeLevel ">{{grade}}&nbsp;</span>
+        </div>
+    </div>
+    <div class="content ">
+        <div class="description ">
+            {{ item.description | limitTo: 80 }}&nbsp;<i ng-show="content.description.length>=80" class="ellipsis horizontal icon popup-button link" data-content="{{item.description}}" data-variation="wide"></i>
+        </div>
+    </div>
+    <div class="extra rating-container">
+        <div class="ui mini  star rating card-rating " data-rating=4></div>
+    </div>
+
+</div>
