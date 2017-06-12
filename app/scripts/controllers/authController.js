@@ -47,7 +47,8 @@ angular.module('playerApp')
                 auth.user.profilePic = userProfile.result.response.avatar;
                 $window.localStorage.setItem('userPic', $rootScope.userProfilePic);
                 $window.localStorage.setItem('preferredLanguage', userProfile.result.response.language);
-                $state.go('Search');
+
+                $state.go('Learn');
             } else {
                 throw new Error(userProfile);
             }

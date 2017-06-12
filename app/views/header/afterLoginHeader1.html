@@ -4,25 +4,19 @@
             <img class="ui tiny circular image" src="/images/sunbird_logo.png">
         </a>
     </div>
-    <div class="five wide column padding-top-1rem">
-        <div class="ui fluid action input">
-            <input type="text" placeholder="Search">
-            <button class="ui icon button">
-                <i class="search icon"></i>
-              </button>
+    <div class="eight wide column padding-top-1rem"> 
+        <div class="ui fluid icon input left action">
+            <select class="ui compact selection dropdown" id="headerSearchdd" apply-script>
+                <option value="all">All</option>
+                <option selected="" value="articles">Courses</option>
+                <option value="products">Products</option>
+            </select>
+            <input type="text" placeholder="What are you looking for?"> 
+            <i class="circular search link icon"></i>
         </div>
     </div>
     <div class="one wide column padding-top-1rem padding-top-header-large-icons">
-        <i class="home icon large"></i>
-    </div>
-    <div class="one wide column padding-top-1rem padding-top-header-large-icons">
         <i class="alarm icon large"></i>
-    </div>
-    <div class="one wide column padding-top-1rem padding-top-header-large-icons">
-        <i class="mail icon large"></i>
-    </div>
-    <div class="one wide column padding-top-1rem padding-top-header-large-icons">
-        <i class="setting icon large"></i>
     </div>
     <div class="one wide column">
         <div class="ui floating dropdown right top pointing 
@@ -31,10 +25,9 @@
                   <img ng-src="{{userProfilePic}}" class="ui circular image logged-in-user ">
                 </span>
             <button class="circular huge ui icon button" ng-if="!isUserProfilePic">
-                  <i class="user icon"></i>
-                </button>
+                <i class="user icon"></i>
+            </button>
             <div class="menu">
-
                 <a class="item">Profile</a>
                 <a class="item" ng-click=" auth.logout() ">Logout</a>
             </div>
