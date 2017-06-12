@@ -21,11 +21,6 @@ angular
         'ngSanitize'
     ])
     .config(function($stateProvider, $urlRouterProvider, $locationProvider, $translateProvider, $provide) {
-        // $locationProvider.html5Mode({
-        //     enabled: false,
-        //     requireBase: true,
-        //     rewriteLinks: true
-        // }).hashPrefix('');
 
         $provide.provider('setResourceBundle', function() {
             this.$get = function() {

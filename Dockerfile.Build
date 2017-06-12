@@ -18,5 +18,5 @@ RUN npm install
 RUN echo '{ "allow_root": true }' > /opt/player/.bowerrc
 RUN bower install /opt/player/bower.json 
 RUN gulp 
-WORKDIR /opt/
-CMD ["zip", "-r", "player.zip",  "player"]
+WORKDIR /opt/player
+CMD ["zip", "-r", "player-dist.zip",  "dist"]
