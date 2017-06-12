@@ -19,6 +19,11 @@ angular.module('playerApp')
                     slidesToScroll: 4,
                     prevArrow: false,
                 });
+                $('.ui.rating')
+                    .rating({
+                        maxRating: 5
+                    }).rating('disable', true);
+
                 $('.popup-button').popup();
             };
             resourceService.resources(req).then(function(successResponse) {
