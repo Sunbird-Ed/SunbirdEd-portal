@@ -854,6 +854,9 @@ ul.subList-padding {
 .card-extraContent-padding {
   padding: 10px 0px !important;
 }
+.card-content-description {
+  padding-top: 10px !important;
+}
 .accordian-right {
   width: 70% !important;
 }
