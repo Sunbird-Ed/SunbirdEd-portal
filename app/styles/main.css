@@ -317,6 +317,9 @@
 .font-dark-blue {
   color: #006cff !important;
 }
+.width-290 {
+  width: 290px !important;
+}
 .header-container {
   margin-left: 1px !important;
   border-bottom: 5px solid #0099CC !important;

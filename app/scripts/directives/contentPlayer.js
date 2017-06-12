@@ -19,12 +19,18 @@ angular.module('playerApp').directive('contentPlayer', function () {
             isclose: '=',
             isheader: '=',
             height: '=',
-            width: '='
+            width: '=',
+            ispercentage: '='
         },
         link: function (scope, element, attrs) {
             
-            $('#contentPlayer').css('height', scope.height + 'px');
-            $('#contentPlayer').css('width', scope.width + 'px');
+            if(scope.ispercentage) {
+                $('#contentPlayer').css('height', scope.height + '%');
+                $('#contentPlayer').css('width', scope.width + '%');
+            } else {
+                $('#contentPlayer').css('height', scope.height + 'px');
+                $('#contentPlayer').css('width', scope.width + 'px');
+            }
             
             scope.$watch('body', function () {
                 scope.updateDataOnWatch(scope);
