@@ -4,8 +4,8 @@
         <div class="content">
             <div class='ui grid'>
                 <div class="row">
-                    <div class="two wide column"></div>
-                    <div class='six wide column'>
+                    <div class="one wide column"></div>
+                    <div class='seven wide column'>
                         <div class="ui header">
                             <b class="content">
                                 About the course
@@ -20,8 +20,8 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="ui styled accordion margin-top-10 " ng-repeat="item in  toc.courseHierachy.children track by $index" style='width:100% !important;'>
-                            <div class="title title-padding-left" name="{{item.identifier}}" ng-click="toc.expandMe($event, item)" ng-init="toc.checkAndAddToPlaylist(item)" ng-class="toc.getContentClass(item.mimeType)">
+                        <div class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100" ng-repeat="item in  toc.courseHierachy.children track by $index">
+                            <div class="title title-padding-left accordian-left-text" name="{{item.identifier}}" ng-click="toc.expandMe($event, item)" ng-init="toc.checkAndAddToPlaylist(item)" ng-class="toc.getContentClass(item.mimeType)">
                                 {{item.name}}
                                 <i ng-if='item.children && item.children.length > 0' class="angle down icon down-arrow-accordion"></i>
                             </div>
@@ -48,51 +48,13 @@
                         </div>
                     </div>
                     <div class='four wide column'>
+                        <div class="ui styled accordion margin-top-10 accordian-right margin-bottom-15">
+                            <div class="title title-padding-left accordian-right-text" >
+                                  Course Information
+                                <i class="angle down icon down-arrow-accordion"></i>
+                            </div>                    
+                        </div>
                         <note-card isadd="false"></note-card>
-                        <div class="ui card">
-                            <div class="content">
-                                <div class="header">faculty</div>
-                                <div class="description">
-                                    <div class="ui middle aligned selection list">
-                                        <div class="item">
-                                            <img class="ui avatar image" src="/images/user_logo.png">
-                                            <div class="content">
-                                                <div class="header">Helen</div>
-                                            </div>
-                                        </div>
-                                        <div class="item">
-                                            <img class="ui avatar image" src="/images/user_logo.png">
-                                            <div class="content">
-                                                <div class="header">Christian</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ui card">
-                            <div class="content">
-                                <div class="header">Top Rankers</div>
-                                <div class="description">
-                                    <div class="ui very relaxed list">
-                                        <div class="item">
-                                            <img class="ui avatar image" src="/images/user_logo.png">
-                                            <div class="content">
-                                                <a class="header">Daniel Louise</a>
-                                                <div class="description">Last seen</div>
-                                            </div>
-                                        </div>
-                                        <div class="item">
-                                            <img class="ui avatar image" src="/images/user_logo.png">
-                                            <div class="content">
-                                                <a class="header">Stevie Feliciano</a>
-                                                <div class="description">Last seen </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
