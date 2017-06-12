@@ -19,6 +19,9 @@ angular.module('playerApp')
                 $('.ui .progress').progress();
                 $('#content-search-filter-accordion').accordion();
                 $('.ui.accordion').accordion({ exclusive: false });
+                $('.ui.rating')
+                    .rating('disable')
+                ;
                 $('.dropdown.content-search-filter').dropdown({
                     useLabels: false,
                     forceSelection: false,
