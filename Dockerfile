@@ -8,8 +8,8 @@ RUN apt-get update && apt-get install -y git \
 RUN curl --silent --location https://deb.nodesource.com/setup_6.x | bash - \
     && apt-get install --yes nodejs 
 WORKDIR /opt/
-COPY player.zip  /opt/
-RUN unzip /opt/player.zip 
-WORKDIR /opt/player/dist
+COPY player-dist.zip  /opt/
+RUN unzip /opt/player-dist.zip 
+WORKDIR /opt/dist
 EXPOSE 7000
 CMD ["node", "server.js", "&"]
