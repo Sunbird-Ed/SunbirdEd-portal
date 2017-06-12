@@ -12,7 +12,7 @@ angular.module('playerApp')
             restrict: 'A',
             link: function(scope, element, attrs) {
                 $('.regular').slick({
-                    infinite: true,
+                    infinite: false,
                     slidesToShow: 4,
                     slidesToScroll: 4
                 });
