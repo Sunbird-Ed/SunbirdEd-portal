@@ -53,7 +53,7 @@ angular.module('playerApp')
         }
 
         function getUserProfile(uId) {
-            console.log('uIduIduIduIduId', uId);
+
             var url = config.URL.USER_BASE + config.URL.AUTH.PROFILE + '/:' + uId;
             // return httpServiceJava.post(url, req);
             var res = {

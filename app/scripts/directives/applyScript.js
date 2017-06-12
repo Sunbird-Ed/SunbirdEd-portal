@@ -16,9 +16,9 @@ angular.module('playerApp')
                     slidesToShow: 4,
                     slidesToScroll: 4
                 });
-
+                $('.ui .progress').progress();
                 $('#content-search-filter-accordion').accordion();
-                $('.ui.accordion').accordion({exclusive: false});
+                $('.ui.accordion').accordion({ exclusive: false });
                 $('.dropdown.content-search-filter').dropdown({
                     useLabels: false,
                     forceSelection: false,

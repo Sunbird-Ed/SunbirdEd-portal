@@ -9,8 +9,7 @@ angular.module('playerApp')
             $('.regular').not('.slick-initialized').slick({
                 infinite: true,
                 slidesToShow: 4,
-                slidesToScroll: 4,
-                prevArrow: false,
+                slidesToScroll: 4
             });
 
             // $('.ui .progress').progress();
