@@ -6,17 +6,8 @@
         </a>
     </div>
     <div class="one wide column"></div>
-    <div class="five wide column padding-top-1rem">
-        <div class="ui fluid icon input left action">
-            <select class="ui compact selection dropdown" id="headerSearchdd" apply-script>
-                <option value="all">All</option>
-                <option selected="" value="articles">Courses</option>
-                <option value="products">Products</option>
-            </select>
-            <input type="text" placeholder="What are you looking for?">
-            <i class="search link icon"></i>
-        </div>
-    </div>
+
+    <div class="six wide column padding-top-1rem" ng-include="'views/header/search.html'"></div>
     <div class="one wide column"></div>
     <div class="one wide column padding-top-1rem padding-top-header-large-icons">
         <i class="alarm icon large"></i>
