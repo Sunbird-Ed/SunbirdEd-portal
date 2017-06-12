@@ -697,7 +697,7 @@ th {
 .slick-prev,
 .slick-next {
   right: -20px !important;
-  top: 27% !important;
+  top: 37% !important;
   border-top-left-radius: 2px !important;
   border-bottom-left-radius: 2px !important;
   position: absolute !important;
@@ -708,7 +708,7 @@ th {
   width: 46px !important;
   padding: 30px 10px !important;
   border-radius: 0 !important;
-  background: #958f8f !important;
+  background: rgba(255, 255, 255, 0.9) !important;
   box-shadow: -2px 0 3px -1px rgba(0, 0, 0, 0.2) !important;
   top: 80px;
   opacity: .8;
@@ -719,6 +719,26 @@ th {
   color: #7a7a7e;
   border: none;
   outline: none;
+}
+slick-prev:before,
+.slick-next:before {
+  font-family: 'slick';
+  font-size: 20px;
+  line-height: 1;
+  opacity: 1 !important;
+  color: #2185d0 !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.slick-prev:before,
+.slick-next:before {
+  font-family: 'slick';
+  font-size: 20px;
+  line-height: 1;
+  opacity: 1 !important;
+  color: #2185d0 !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 .slider {
   width: calc(95%);
