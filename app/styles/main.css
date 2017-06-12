@@ -465,6 +465,37 @@
   font-size: 15px !important;
   color: #444;
 }
+.dynamic-section-card .slider .card {
+  position: relative
+            !important ;
+  background-color: transparent!important;
+  box-shadow: none;
+}
+.dynamic-section-card .slider .card .image img {
+  padding: 0 !important;
+  height: 150px;
+}
+.dynamic-section-card .slider .card .image .header {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  color: #fff;
+  width: 100%;
+  margin: 0;
+  padding: -30px !important;
+  max-height: 70px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-align: center;
+}
+.dynamic-section-card .slider .card .content {
+  height: 80px;
+  background-color: transparent!important;
+}
+.dynamic-section-card .slider .card .extra {
+  border-top: transparent !important;
+}
 .footer1 {
   position: fixed !important;
   bottom: 0 !important;
@@ -758,6 +789,32 @@ ul.subList-padding {
 .courseStructureHeaderText {
   font-size: 14px;
   font-weight: bold;
+}
+.course-list {
+  padding: 0 !important;
+}
+.course-list .item {
+  background: white !important;
+  border: 1px solid rgba(34, 36, 38, 0.15) !important;
+  box-shadow: 0 1px 2px 0 rgba(34, 36, 38, 0.15) !important;
+  border-radius: .28571429rem!important;
+  cursor: pointer;
+}
+.course-list .item .image img {
+  padding: 0 !important;
+  height: 100% !important;
+}
+.course-list .item .content {
+  padding: 20px !important;
+}
+.course-list .item .resume-link {
+  padding: 20px !important;
+}
+.course-list .item .resume-link .floated {
+  padding-right: 30px !important;
+}
+.text-cencapitalize {
+  text-transform: capitalize;
 }
 body {
   position: relative !important;

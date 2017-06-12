@@ -1,0 +1,31 @@
+<div class="ui  dynamic-section-card  margin-top-20 " ng-repeat=" section in learn.page ">
+    <span class=" margin-top-15 ">
+        <h3 class="margin-left-3Per "><span>{{section.display.title.en}}</span>
+    <span><a class="ui red tiny circular label">{{section.count}}</a></span></h3>
+
+    </span>
+    <div class="regular slider " ng-if="section.course.length> 0">
+
+        <div class="ui card margin-left-right-10 margin-top-15" ng-repeat=" course in section.course track by $index" ng-init="$last && learn.loadCarousel()">
+            <div class="image ">
+                <img ng-src="{{course.appIcon}}">
+                <a class="header center aligned "><span class ="text-cencapitalize
+            ">{{course.name}}</span> for <span class ="text-cencapitalize " ng-repeat="grade in course.gradeLevel">{{grade}}</span></a>
+            </div>
+            <div class="content ">
+                <div class="description ">
+                    {{course.description}}
+                </div>
+            </div>
+            <div class="extra ">
+                <div class="ui mini  star rating " data-rating=4></div>
+            </div>
+        </div>
+    </div>
+    <div ng-if="learn.error.isError ">
+        <error-message data={{learn.error}}></error-message>
+    </div>
+    <div class="ui inverted dimmer margin-top-20 " ng-class="{true: 'active', false: 'disabled'}[loading] ">
+        <div class="ui text loader ">Featching enrolled courses</div>
+    </div>
+</div>
