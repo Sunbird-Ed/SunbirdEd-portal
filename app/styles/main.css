@@ -496,11 +496,15 @@
   text-align: center;
 }
 .dynamic-section-card .slider .card .content {
-  height: 80px;
+  height: 70px;
   background-color: transparent!important;
 }
 .dynamic-section-card .slider .card .extra {
   border-top: transparent !important;
+}
+.dynamic-section-card .slider .card .extra .card-rating .active {
+  color: #0099CC !important;
+  text-shadow: none  !important;
 }
 .footer1 {
   position: fixed !important;

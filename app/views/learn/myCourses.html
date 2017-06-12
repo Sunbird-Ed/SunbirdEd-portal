@@ -1,14 +1,11 @@
 <div class="ui segment dynamic-section-card margin-top-20 " ng-if="learn.enrolledCourses.length > 0">
-    <span class=" margin-top-15 ">
-        <h3 class="margin-left-3Per "><span>My Courses</span>
-    <span><a class="ui red tiny circular label">{{learn.enrolledCourses.length }}</a></span></h3>
+    <h3>My Courses<a class="ui red tiny circular label">{{learn.enrolledCourses.length }}</a></h3>
     </span>
     <div class="regular slider " ng-if="learn.enrolledCourses.length > 0">
         <div class="ui card margin-left-right-10 margin-top-15" ng-click="learn.openCourseView(enrolledCourse.courseId)" ng-repeat=" enrolledCourse in learn.enrolledCourses track by $index" ng-init="$last && learn.loadProgress()">
             <div class="image ">
                 <div class="ui tiny  progress course-progress" data-value="{{enrolledCourse.progress}}" data-total="{{enrolledCourse.noOfLecture}}" ng-class="{orange:(enrolledCourse.noOfLecture-enrolledCourse.progress)<(enrolledCourse.noOfLecture/2),red:(enrolledCourse.noOfLecture-enrolledCourse.progress)>(enrolledCourse.noOfLecture/2)}">
                     <div class="bar"></div>
-
                 </div>
                 <img ng-src="../images/sunbird_logo.png ">
                 <div class="header center aligned ">
@@ -17,15 +14,10 @@
                     <span class="text-cencapitalize ">{{enrolledCourse.grade}}</span>
                 </div>
             </div>
-            <div class="content ">
-                <div class="description ">
-                    {{ enrolledCourse.description}}
-                </div>
-            </div>
-
+            {{ enrolledCourse.description}}
             <div class="extra content">
                 <span class="right floated">
-       <button class="ui blue basic button" style="    padding: .78571429em 0.5em .78571429em;">RESUME</button>
+       <button class="ui blue basic button">RESUME</button>
       </span>
                 <span>
        
