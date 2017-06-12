@@ -508,6 +508,7 @@
 .dynamic-section-card .slider .card .extra .card-rating .active {
   color: #0099CC !important;
   text-shadow: none  !important;
+  padding-top: 0!important;
 }
 .footer1 {
   position: fixed !important;

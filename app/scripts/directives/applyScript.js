@@ -20,8 +20,9 @@ angular.module('playerApp')
                 $('#content-search-filter-accordion').accordion();
                 $('.ui.accordion').accordion({ exclusive: false });
                 $('.ui.rating')
-                    .rating('disable')
-                ;
+                    .rating({
+                        maxRating: 5
+                    }).rating('disable', true);
                 $('.dropdown.content-search-filter').dropdown({
                     useLabels: false,
                     forceSelection: false,
