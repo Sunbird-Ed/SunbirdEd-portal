@@ -35,7 +35,7 @@ angular.module('playerApp')
         }
         learn.openCourseView = function(courseId) {
             courseId = 'do_11225144311893196816';
-            $location.path('/course/' + courseId);
+            $location.path('/toc/' + courseId+'/no');
         };
         learn.courses = function() {
             $scope.loading = true;
