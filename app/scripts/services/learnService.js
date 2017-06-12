@@ -72,6 +72,42 @@ angular.module('playerApp')
                         'courseId': '0122542310741688321',
                         'status': 0,
                         'noOfLecture': 100
+                    }, {
+                        'dateTime': 1495886160605,
+                        'lastReadContentStatus': 1,
+                        'enrolledDate': '2017-05-27 05:24:29:079+0530',
+                        'addedby': 'e9280b815c0e41972bf754e9409b66d778b8e11bb91844892869a1e828d7d2f2',
+                        'delta': 'delta',
+                        'active': true,
+                        'description': 'course description',
+                        'userId': 'e9280b815c0e41972bf754e9409b66d778b8e11bb91844892869a1e828d7d2f2',
+                        'courseName': 'course name 2',
+                        'grade': 'null',
+                        'progress': 20,
+                        'id': '642f1dfa59249f23797ba070bdebbce1c27e0d756699dcd24dba669f86fbad88',
+                        'lastReadContentId': 'ek step cont-284',
+                        'tocUrl': null,
+                        'courseId': '0122542310741688321',
+                        'status': 0,
+                        'noOfLecture': 100
+                    }, , {
+                        'dateTime': 1495886160605,
+                        'lastReadContentStatus': 1,
+                        'enrolledDate': '2017-05-27 05:24:29:079+0530',
+                        'addedby': 'e9280b815c0e41972bf754e9409b66d778b8e11bb91844892869a1e828d7d2f2',
+                        'delta': 'delta',
+                        'active': true,
+                        'description': 'course description',
+                        'userId': 'e9280b815c0e41972bf754e9409b66d778b8e11bb91844892869a1e828d7d2f2',
+                        'courseName': 'course name 2',
+                        'grade': 'null',
+                        'progress': 20,
+                        'id': '642f1dfa59249f23797ba070bdebbce1c27e0d756699dcd24dba669f86fbad88',
+                        'lastReadContentId': 'ek step cont-284',
+                        'tocUrl': null,
+                        'courseId': '0122542310741688321',
+                        'status': 0,
+                        'noOfLecture': 100
                     }]
                 }
             });
