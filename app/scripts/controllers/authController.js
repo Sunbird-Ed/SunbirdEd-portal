@@ -42,8 +42,11 @@ angular.module('playerApp')
         auth.userProfile = function(userProfile) {
             if (userProfile && userProfile.responseCode === 'OK') {
                 $rootScope.userProfilePic = userProfile.result.response.avatar;
+                $rootScope.preferredLanguage = userProfile.result.response.language;
+
                 auth.user.profilePic = userProfile.result.response.avatar;
                 $window.localStorage.setItem('userPic', $rootScope.userProfilePic);
+                $window.localStorage.setItem('preferredLanguage', userProfile.result.response.language);
                 $state.go('Search');
             } else {
                 throw new Error(userProfile);
