@@ -44,7 +44,7 @@ angular.module('playerApp')
                 $rootScope.userProfilePic = userProfile.result.response.avatar;
                 auth.user.profilePic = userProfile.result.response.avatar;
                 $window.localStorage.setItem('userPic', $rootScope.userProfilePic);
-                $state.go('Search');
+                $state.go('Learn');
             } else {
                 throw new Error(userProfile);
             }
