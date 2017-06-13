@@ -11,11 +11,6 @@ angular.module('playerApp')
         return {
             restrict: 'A',
             link: function(scope, element, attrs) {
-                $('.regular').slick({
-                    infinite: false,
-                    slidesToShow: 4,
-                    slidesToScroll: 4
-                });
                 $('.ui .progress').progress();
                 $('#content-search-filter-accordion').accordion();
                 $('.ui.accordion').accordion({ exclusive: false });
