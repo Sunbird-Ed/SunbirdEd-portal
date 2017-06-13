@@ -403,6 +403,13 @@
 #search-suggestions {
   height: 200px;
   overflow-y: auto;
+  z-index: 10;
+  position: absolute;
+  background: white;
+  text-align: left;
+  padding-left: 20px;
+  width: 87%;
+  margin-left: 58px;
 }
 .dash-heading-border {
   border-bottom: 1px dashed #333;
