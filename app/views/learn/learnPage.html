@@ -1,6 +1,6 @@
-<div apply-script class="ui  dynamic-section-card  margin-top-20 " ng-repeat=" section in learn.page ">
-    <h3>{{section.display.title.en}}
-        <a class="ui red tiny circular label">{{section.count}}</a></h3>
+<div apply-script class="ui  dynamic-section-card  margin-top-20" ng-repeat=" section in learn.page ">
+    <h4 class="ui header">{{section.display.title.en}}
+        <a class="ui red circular inline label">{{section.count}}</a></h4>
     <div class="regular slider " ng-if="section.course.length> 0">
         <div class="ui link card margin-left-right-10 margin-top-15" ng-click="learn.openCourseView(enrolledCourse.courseId, 'OTHER_COURSE')"
              ng-repeat=" course in section.course track by $index" ng-init="$last && learn.loadCarousel()">
@@ -10,15 +10,12 @@
                     <span class="text-cencapitalize">{{course.name}}</span> for
                     <span class="text-cencapitalize " ng-repeat="grade in course.gradeLevel">{{grade}}</span></a>
             </div>
-            <div class="content ">
-                <div class="description ">
-                    {{ course.description| limitTo: 80 }}&nbsp;<i ng-show="course.description.length>=80" class="ellipsis horizontal icon popup-button link" data-content="{{course.description}}" data-variation="wide"></i>
-                </div>
-            </div>
-
-            <div class="extra rating-container">
-                <div class="ui mini  star rating card-rating" data-rating=4></div>
-            </div>
+            <div class="card-content-description">
+                {{ course.description| limitTo: 80 }}&nbsp;<i ng-show="course.description.length>=80" class="ellipsis horizontal icon popup-button link" data-content="{{course.description}}" data-variation="wide"></i>
+            </div><br>
+            <span class="extra rating-container">
+                <div class="extra rating-container left floated ui mini  star rating card-rating" data-rating=4></div>
+            </span>
         </div>
         <div ng-if="learn.error.isError ">
             <error-message data={{learn.error}}></error-message>
