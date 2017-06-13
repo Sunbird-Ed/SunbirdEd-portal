@@ -43,12 +43,12 @@
                                                 <div ng-init="subItems = item.children;" ng-include="'views/course/tocList.html'"></div>
                                             </div>
                                         </div>
-
-
                                     </li>
                                 </ul>
                             </div>
                         </div>
+                        <div class="ui fitted divider margin-bottom-10 margin-top-10"></div>
+                        <div ng-include="'views/course/courseDiscussions.html'"></div>
                     </div>
                     <div class='four wide column'>
                         <note-card shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false"></note-card>
