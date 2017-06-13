@@ -96,8 +96,7 @@ angular.module('playerApp')
         }
 
         function validUser() {
-            var isLoggedIn = $window.localStorage.getItem('isLoggedIn');
-            console.log('user', isLoggedIn);
+            var isLoggedIn = $window.localStorage.getItem('isLoggedIn') || $rootScope.isLoggedIn;
 
             if (!isLoggedIn) {
                 $state.go('Home');
