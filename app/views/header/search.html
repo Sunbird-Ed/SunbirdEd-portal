@@ -2,7 +2,8 @@
     <div class="ui fluid icon input left action" id="search-input-container">
         <select class="ui compact selection header-select dropdown">
  <option ng-repeat="key in content.searchSelectionKeys" ng-selected ="key.id == selectedSearchKey" value="{{key.id}}">{{key.name}}</option>
-</select>
+        </select>
+
         <input type="text" id="keyword" name="filter_search" ng-model="content.keyword" ng-change="content.searchContent('$event')" ng-keypress="($event.which === 13)?content.searchContent():0" ng-model-options="{debounce: 1000}" placeholder="What are you looking for?"
             title="Search" autocomplete="off" spellcheck="false" dir="auto" />
         <i class="search link icon" ng-click="content.searchContent()"></i>

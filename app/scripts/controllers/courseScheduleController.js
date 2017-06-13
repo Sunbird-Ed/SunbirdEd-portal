@@ -157,17 +157,6 @@ angular.module('playerApp')
             }, 0);
         }
 
-        toc.showAddNoteModal = function() {
-            $timeout(function() {
-                $('#addNoteModalInLectureView').modal({
-                    onHide: function() {
-                        toc.showNoteModal = false;
-                    }
-                }).modal('show');
-            }, 100);
-        };
-
-
         //We need to discuss
         toc.content_res = {
             "id": "8e27cbf5-e299-43b0-bca7-8347f7e5abcf",

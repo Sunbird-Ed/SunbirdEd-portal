@@ -43,7 +43,7 @@
                         <div class="one wide column actions"> 
                             <h5 class="ui basic icon circular button deny" ng-click="update.showUpdateNote = false;"> 
                                 <i class="ui remove icon"></i> 
-                            </h5> 
+                            </h5>
                         </div> 
                     </div> 
                 </div>
@@ -54,9 +54,13 @@
                     <pagedown-editor content="update.metaData.note" show-preview="false"></pagedown-editor>
                 </div>
                 <div class="actions"> 
-                    <button class="ui primary right floated button margin-bottom-15 margin-top-10 deny" type="submit" ng-click="updateNote(update.metaData)"  
-                            ng-disabled="!update.metaData.title || !update.metaData.note" tabindex="4">Update</button> 
+                    <button class="ui primary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="updateNote(update.metaData)"  
+                            ng-disabled="!update.metaData.title || !update.metaData.note" tabindex="4"
+                            ng-class="!showModalError ? 'deny' : ''">Update</button> 
                 </div> 
+                <div ng-if="showModalError">
+                    <span class="ui header red">{{error.message}}</span>
+                </div>
             </div>
         </div>
     </div>

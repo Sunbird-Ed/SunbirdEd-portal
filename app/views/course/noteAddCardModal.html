@@ -1,4 +1,4 @@
-<div ng-controller="NoteCtrl" >
+<div ng-init="add = {}" ng-controller="NoteCtrl">
     <div class="ui modal" id="addNoteModalInLectureView">
         <div class=" ui segment margin-top-10">
             <div class=" margin-bottom-15">
@@ -22,9 +22,13 @@
                 </div>
             </div>
             <div class="actions"> 
-                <button class="ui primary right floated button margin-bottom-15 margin-top-10 deny" type="submit" ng-click="createNote(add)" ng-disabled="!add.title || !add.note" tabindex="4">Save</button>
-                <button class="ui secondary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="add.title = ''; add.note = '';">Clear</button>
-            </div> 
+                <button class="ui primary right floated button margin-bottom-15 margin-top-10" ng-class="!add.showModalError ? 'deny' : ''"
+                        type="submit" ng-click="createNote(add)" ng-disabled="!add.title || !add.note" tabindex="4">Save</button>
+                <button class="ui secondary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="add= {};add.title = ''; add.note = '';">Clear</button>
+            </div>
+            <div ng-if="add.showModalError">
+                <span class="ui header red">{{error.message}}</span>
+            </div>
         </div>
     </div>
 </div>
