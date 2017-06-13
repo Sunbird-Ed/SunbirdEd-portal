@@ -81,7 +81,7 @@
                         <div class="six wide column center aligned">
                             <h2 class="ui center aligned icon tiny header toc-note" ng-if="toc.nightMode" ng-init="toc.showNoteModal = false">
                                 <i class=" file text outline icon font-dark-blue"></i>
-                                <u class="ui font-dark-blue mouse-pointer" ng-click="toc.showNoteModal = !toc.showNoteModal; toc.showAddNoteModal()">Take Note</u>
+                                <u class="ui font-dark-blue mouse-pointer" ng-controller="NoteCtrl" ng-click="toc.showNoteModal = !toc.showNoteModal; showAddNoteModal(); add= {}">Take Note</u>
                             </h2>
                             <div ng-if="toc.showNoteModal">
                                 <div ng-include=" 'views/course/noteAddCardModal.html'"></div>
