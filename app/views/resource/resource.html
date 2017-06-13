@@ -1,11 +1,9 @@
 <div class="ui dynamic-section-card margin-top-20 " ng-repeat=" section in resource.page ">
-    <span class=" margin-top-15 ">
-        <h3 class="margin-left-3Per "><span>{{section.display.title.en}}</span>
-    <span><a class="ui red tiny circular label">{{section.count}}</a></span></h3>
-    </span>
-    <div class="regular slider " ng-if="section.content.length> 0">
-        <div class="ui card common-card margin-left-right-10 margin-top-15" ng-repeat=" 
-        content in section.content track by $index" ng-init="$last && resource.loadCarousel()">
+    <h4 class="ui header">{{section.display.title.en}}
+        <a class="ui red circular inline label">{{section.count}}</a></h4>
+    <div class="regular slider" ng-if="section.content.length> 0">
+        <div class="ui card common-card margin-left-right-10 margin-top-15" ng-repeat="   content in section.content track by $index" ng-init="$last &&  
+            resource.loadCarousel()">
             <div class="image ">
                 <img ng-src="{{ content.appIcon}}">
                 <div class="header center aligned ">
@@ -14,15 +12,12 @@
                     <span class="text-cencapitalize " ng-repeat="grade in content.gradeLevel">{{grade}}</span>
                 </div>
             </div>
-            <div class="content ">
-                <div class="description ">
-                    {{ content.description | limitTo: 80 }}&nbsp;<i ng-show="content.description.length>=80" class="ellipsis horizontal icon popup-button link" data-content="{{content.description}}" data-variation="wide"></i>
-                </div>
-            </div>
-            <div class="extra ">
-                <div class="ui mini  star rating card-rating " data-rating=4></div>
-            </div>
-
+            <div class="card-content-description">
+                {{ content.description | limitTo: 80 }}&nbsp;<i ng-show="content.description.length>=80" class="ellipsis horizontal icon popup-button link" data-content="{{content.description}}" data-variation="wide"></i>
+            </div><br>
+            <span class="extra rating-container">
+                <div class="extra rating-container left floated ui mini  star rating card-rating" data-rating=4></div>
+            </span>
         </div>
     </div>
 </div>
