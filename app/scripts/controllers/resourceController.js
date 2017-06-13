@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('playerApp')
-    .controller('resourceCtrl', function(resourceService, $log, $scope, $sessionStorage, $timeout, $location) {
+    .controller('resourceCtrl', function(resourceService, $log, $scope, $rootScope, $sessionStorage, $timeout, $location) {
         var resource = this;
         $scope.contentPlayer = {
             isContentPlayerEnabled: false
         };
+        $rootScope.searchResult = [];
         resource.sections = function() {
             var req = {
                 'request': {

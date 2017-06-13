@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('playerApp')
-    .controller('LearnCtrl', function(learnService, $log, $scope, $sessionStorage, $timeout, $state) {
+    .controller('LearnCtrl', function(learnService, $log, $scope, $sessionStorage, $timeout, $state, $rootScope) {
         var learn = this;
         var uid = $sessionStorage.userId;
-
+        $rootScope.searchResult = [];
         learn.loadCarousel = function() {
             $('.regular').not('.slick-initialized').slick({
                 infinite: true,
@@ -32,15 +32,15 @@ angular.module('playerApp')
             $timeout(function() {
                 $scope.error = {};
             }, 2000);
-        };
-        
+        }
+
         learn.openCourseView = function(courseId, courseType) {
             courseId = 'do_112265805439688704113';
             var showLectureView = 'no';
-            var params = {courseType: courseType, courseId: courseId, lectureView : showLectureView};
+            var params = { courseType: courseType, courseId: courseId, lectureView: showLectureView };
             $state.go('Toc', params);
         };
-        
+
         learn.courses = function() {
             $scope.loading = true;
 
