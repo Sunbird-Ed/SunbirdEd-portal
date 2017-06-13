@@ -21,7 +21,6 @@ angular
         'ngSanitize'
     ])
     .config(function($stateProvider, $urlRouterProvider, $locationProvider, $translateProvider, $provide) {
-
         $provide.provider('setResourceBundle', function() {
             this.$get = function() {
                 return function(language, resourceBundle) {
@@ -37,16 +36,7 @@ angular
 
         $urlRouterProvider.otherwise('/');
         $stateProvider
-            .state('Search', {
-                url: '/search',
-                templateUrl: '/views/search/searchResult.html',
-                controller: 'ContentCtrl as content',
-                resolve: {
-                    isLoggedIn: function(authService) {
-                        authService.validUser();
-                    }
-                }
-            })
+
             .state('Home', {
                 url: '/',
                 templateUrl: '/views/home/landingPage.html',
@@ -95,7 +85,7 @@ angular
             .state('Toc', {
                 url: '/toc',
                 templateUrl: 'views/course/toc.html',
-                params:{courseType: null, courseId: null, lectureView : null},
+                params: { courseType: null, courseId: null, lectureView: null },
                 controller: 'courseScheduleCtrl as toc'
             });
     });
