@@ -1,5 +1,5 @@
 angular.module('playerApp')
-    .controller('courseScheduleCtrl', function(courseService, $timeout, $scope, $sce, $rootScope, $sessionStorage, $stateParams) {
+    .controller('courseScheduleCtrl', function(courseService, $timeout, $scope, $sce, $rootScope, $sessionStorage, $stateParams, $location, $anchorScroll) {
         var toc = this;
         toc.playList = [];
         toc.playListContent = [];
@@ -67,7 +67,8 @@ angular.module('playerApp')
 
                 toc.itemIndex = $($event.target).closest('.playlist-content').index('.playlist-content');
                 toc.playPlaylistContent($($event.target).closest('.playlist-content').attr('name'), '');
-
+                $location.hash('tocPlayer');
+                $anchorScroll();
             }
         };
 
