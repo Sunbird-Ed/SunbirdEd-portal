@@ -98,8 +98,18 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> 
         <div class="two wide column"></div>
+        <div class="ui grid">
+            <div class="row">            
+                <div class="eight wide column">
+                    <div ng-include="'views/course/courseDiscussions.html'"></div>
+                </div>
+                <div class="four wide column">
+                    <div ng-include="'views/note/noteCard.html'"></div>
+                </div>
+            </div>
+        </div> 
     </div>
 </div>
 <div class="ui dimmer inverted" ng-class="toc.showDimmer ? 'active' : ''">
