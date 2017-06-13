@@ -35,7 +35,7 @@ angular.module('playerApp')
         };
         
         learn.openCourseView = function(courseId, courseType) {
-            courseId = 'do_11225144311893196816';
+            courseId = 'do_112265805439688704113';
             var showLectureView = 'no';
             var params = {courseType: courseType, courseId: courseId, lectureView : showLectureView};
             $state.go('Toc', params);

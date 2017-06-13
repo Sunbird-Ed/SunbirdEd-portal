@@ -11,7 +11,7 @@ angular.module('playerApp')
     .controller('ContentCtrl', function(contentService, courseService, $scope, $timeout, $rootScope, $state, $location) {
         var content = this;
         content.keyword = '';
-        content.filters = {};
+        content.filters = {"status": ["Live"], "contentType": ["Story", "Worksheet", "Game", "Collection", "TextBook"]};
         content.searchKey = '';
         content.languages = [
             'Bengali', 'English', 'Gujarati', 'Hindi', 'Kannada', 'Marathi', 'Punjabi', 'Tamil', 'Telugu'
