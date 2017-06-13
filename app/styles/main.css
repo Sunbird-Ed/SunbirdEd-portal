@@ -915,6 +915,24 @@ ul.subList-padding {
   font-size: 16px !important;
   color: black !important;
 }
+.toc-left-nav-btn-content {
+  text-align: left;
+  margin-left: 16px;
+}
+.toc-left-nav-btn-content > h4 {
+  margin-bottom: 2px;
+}
+.toc-right-nav-btn-content {
+  text-align: right;
+  margin-right: 16px;
+}
+.toc-right-nav-btn-content > h4 {
+  margin-bottom: 2px;
+}
+.toc-note {
+  font-size: 10px !important;
+  margin: 15px !important;
+}
 body {
   position: relative !important;
   margin: 0 !important;
