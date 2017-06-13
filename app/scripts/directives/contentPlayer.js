@@ -23,32 +23,31 @@ angular.module('playerApp').directive('contentPlayer', function () {
             ispercentage: '='
         },
         link: function (scope, element, attrs) {
-            
-            if(scope.ispercentage) {
+
+            if (scope.ispercentage) {
                 $('#contentPlayer').css('height', scope.height + '%');
                 $('#contentPlayer').css('width', scope.width + '%');
             } else {
                 $('#contentPlayer').css('height', scope.height + 'px');
                 $('#contentPlayer').css('width', scope.width + 'px');
             }
-            
+
             scope.$watch('body', function () {
                 scope.updateDataOnWatch(scope);
             });
             scope.$watch('id', function () {
                 scope.updateDataOnWatch(scope);
             });
-            
+
         },
         controller: 'contentPlayerCtrl'
     };
 });
 
-angular.module('playerApp').controller('contentPlayerCtrl', function ($scope, $sce, contentService, pdfDelegate, $timeout) {
-    
+angular.module('playerApp').controller('contentPlayerCtrl', function ($scope, $sce, contentService, pdfDelegate, $timeout, config) {
+
     $scope.isClose = $scope.isclose;
     $scope.isHeader = $scope.isheader;
-    
     $scope.updateDataOnWatch = function (scope) {
         if (scope.body) {
             showPlayer(scope.body);
@@ -56,19 +55,28 @@ angular.module('playerApp').controller('contentPlayerCtrl', function ($scope, $s
             getContent(scope.id);
         }
     };
-
     function showPlayer(data) {
         $scope.contentData = data;
-
         $scope.showMetaData = $scope.isshowmetaview;
         if ($scope.contentData.mimeType === 'application/vnd.ekstep.ecml-archive' || $scope.contentData.mimeType === 'application/vnd.ekstep.html-archive')
         {
             $scope.showIFrameContent = true;
-            $scope.iFrameSrc = $sce.trustAsResourceUrl("https://dev.ekstep.in/assets/public/preview/preview.html?webview=true&id=" + $scope.contentData.identifier);
+            var iFrameSrc = config.ekstep_CE_config.baseURL;
+            $timeout(function () {
+                var previewContentIframe = $('#contentViewerIframe')[0];
+                previewContentIframe.src = iFrameSrc;
+                previewContentIframe.onload = function () {
+                    var configuration = {};
+                    configuration.context = config.ekstep_CE_config.context;
+                    configuration.context.contentId = $scope.contentData.identifier;
+                    configuration.config = config.ekstep_CE_config.config;
+                    previewContentIframe.contentWindow.initializePreview(configuration);
+                };
+            }, 1000);
+        } else {
+            $scope.showIFrameContent = false;
         }
     }
-    ;
-
     /**
      * This function helps to show loader or any error message at the time of api call.
      * @param {Boolean} showMetaLoader
@@ -88,7 +96,6 @@ angular.module('playerApp').controller('contentPlayerCtrl', function ($scope, $s
 
     function getContent(contentId) {
         var req = {contentId: contentId};
-
         contentService.getById(req).then(function (response) {
             if (response && response.responseCode === 'OK') {
                 $scope.errorObject = {};
@@ -107,44 +114,35 @@ angular.module('playerApp').controller('contentPlayerCtrl', function ($scope, $s
         $scope.errorObject = {};
         $scope.visibility = false;
     };
-
     $scope.tryAgain = function () {
         $scope.errorObject = {};
         getContent($scope.id);
     };
-
     $scope.zoomIn = function () {
         pdfDelegate.$getByHandle('content-player').zoomIn();
     };
-
     $scope.zoomOut = function () {
         pdfDelegate.$getByHandle('content-player').zoomOut();
     };
-
     $scope.previous = function () {
         pdfDelegate.$getByHandle('content-player').prev();
         $scope.getCurrentPage = $scope.getCurrentPage > 1 ? $scope.getCurrentPage - 1 : $scope.getCurrentPage;
     };
-
     $scope.next = function () {
         pdfDelegate.$getByHandle('content-player').next();
         $scope.getCurrentPage = $scope.getCurrentPage < $scope.totalPageNumber ? $scope.getCurrentPage + 1 : $scope.getCurrentPage;
     };
-
     $scope.rotate = function () {
         pdfDelegate.$getByHandle('content-player').rotate();
     };
-
     $scope.goToPage = function (pageNumber) {
         pdfDelegate.$getByHandle('content-player').goToPage(pageNumber);
         $scope.getCurrentPage = pageNumber;
     };
-
     $scope.getTotalPage = function () {
         $timeout(function () {
             $scope.totalPageNumber = pdfDelegate.$getByHandle('content-player').getPageCount();
             $scope.getCurrentPage = pdfDelegate.$getByHandle('content-player').getCurrentPage();
         }, 2000);
     };
-
 });
