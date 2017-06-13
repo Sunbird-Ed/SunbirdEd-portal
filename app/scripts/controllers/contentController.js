@@ -8,15 +8,14 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('ContentCtrl', function(contentService, courseService, $scope, $timeout, $rootScope) {
+    .controller('ContentCtrl', function(contentService, courseService, $scope, $timeout, $rootScope, $stateParams) {
         var content = this;
         content.keyword = '';
         content.filters = { 'status': ['Live'], 'contentType': ['Story', 'Worksheet', 'Game', 'Collection', 'TextBook'] };
-        $scope.selectedSearchKey = $rootScope.searchKey;
-        // $scope.selectedSearchKey = $stateParams.searchKey;
-        $scope.$watch('searchKey', function() {
-            $scope.selectedSearchKey = $rootScope.searchKey;
-        });
+        $scope.selectedSearchKey = $stateParams.searchKey;
+        $timeout(function () {
+            $('#headerSearchdd').dropdown('set selected', $scope.selectedSearchKey);    
+        })
         $scope.contentPlayer = {
             isContentPlayerEnabled: false
         };
