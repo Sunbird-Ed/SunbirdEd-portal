@@ -5,7 +5,10 @@
   margin-top: 50px !important;
 }
 .margin-top-10 {
-  margin-top: 0.625rem;
+  margin-top: 0.625rem !important;
+}
+.margin-bottom-10 {
+  margin-bottom: 0.625rem !important;
 }
 .margin-left-20 {
   margin-left: 1.25rem !important;
@@ -15,6 +18,9 @@
 }
 .margin-left-3Per {
   margin-left: 3%;
+}
+.text-align-right {
+  text-align: right !important;
 }
 .border-bottom {
   border-bottom: 1px solid #E6E7E8 !important;
@@ -908,6 +914,24 @@ ul.subList-padding {
   padding: 2% !important;
   font-size: 16px !important;
   color: black !important;
+}
+.toc-left-nav-btn-content {
+  text-align: left;
+  margin-left: 16px;
+}
+.toc-left-nav-btn-content > h4 {
+  margin-bottom: 2px;
+}
+.toc-right-nav-btn-content {
+  text-align: right;
+  margin-right: 16px;
+}
+.toc-right-nav-btn-content > h4 {
+  margin-bottom: 2px;
+}
+.toc-note {
+  font-size: 10px !important;
+  margin: 15px !important;
 }
 body {
   position: relative !important;

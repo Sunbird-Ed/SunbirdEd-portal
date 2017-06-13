@@ -1,10 +1,9 @@
-<div ng-controller="ContentCtrl as content">
-
-    <p>Showing all the result of "{{searchKeyword? searchKeyword:'All'}}" in"Courses"</p>
+<div apply-script ng-controller="ContentCtrl as content" ng-if="searchResult">
+    <p>Showing all the result of "{{searchKeyword? searchKeyword:'All'}}" in"{{content.searchKey }}"</p>
     <div class="ui stackable four column grid dynamic-section-card">
-        <div class="column" ng-repeat="item in searchResult.content track by $index" ng-init="$last && loadRating()">
-
+        <div class="column" ng-repeat="item in searchResult track by $index" ng-init="$last && content.loadRating()">
             <div class="slider link" ng-include="'views/common/card.html'" ng-click="contentPlayer.contentData = item; contentPlayer.isContentPlayerEnabled = true;"></div>
         </div>
+
     </div>
 </div>

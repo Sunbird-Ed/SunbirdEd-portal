@@ -8,7 +8,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('ContentCtrl', function(contentService, $scope, $timeout, $rootScope) {
+    .controller('ContentCtrl', function(contentService, courseService, $scope, $timeout, $rootScope, $state, $location) {
         var content = this;
         content.keyword = '';
         content.filters = {};
@@ -22,21 +22,31 @@ angular.module('playerApp')
         content.statuses = [
             'Draft', 'Live', 'Review', 'Flagged', 'Flag Draft', 'Flag Review'
         ];
+        content.searchSelectionKeys = [{ id: 'Course', name: 'Course' }, { id: 'Resources', name: 'Resources' }];
         content.selectedLanguage = '';
         content.selectedContentType = '';
         content.selectedStatus = '';
+        $scope.$on('$locationChangeSuccess', function() {
+            $scope.currentPath = $location.path();
+        });
+        $scope.currentPath = $location.path();
+        if ($scope.currentPath === '/learn') {
+            content.searchKey = 'Course';
+        } else if ($scope.currentPath === '/resources') {
+            content.searchKey = 'Resources';
+        }
 
         content.autosuggest_data = { content: [] };
         content.listView = false;
-        //Object for content player directive
+
         $scope.contentPlayer = {
             isContentPlayerEnabled: false
         };
         $rootScope.showIFrameContent = false;
-        $rootScope.searchKey = content.searchKey;
-        console.log('$rootScope.searchKey', $rootScope.searchKey);
+
         content.searchContent = function($event) {
             content.enableLoader(true);
+
             var req = {
                 'query': content.keyword,
                 'filters': content.filters,
@@ -44,24 +54,27 @@ angular.module('playerApp')
                     'cid': '12'
                 }
             };
-            //             if (content.searchKey === 'Courses') {
-            // getCourseSearchResult()
-            //             }
 
             content.handleSucessResponse = function(sucessResponse, $event) {
                 if (sucessResponse.result.count > 0) {
                     //if $event is passed then search is to get only autosuggest else to get the content
                     if ($event !== undefined && content.keyword !== '') {
-                        content.autosuggest_data = sucessResponse.result;
+                        content.autosuggest_data = content.searchKey === 'Course' ?
+                            sucessResponse.result.course :
+                            sucessResponse.result.content;
                     } else {
                         content.isError = false;
-                        console.log('content.searchKey', content.searchKey);
-                        $rootScope.searchResult = sucessResponse.result;
+                        if (content.searchKey === 'Course') {
+                            $rootScope.searchResult = sucessResponse.result.course;
+                        } else if (content.searchKey === 'Resources') {
+                            $rootScope.searchResult = sucessResponse.result.content;
+                        }
+                        console.log('$rootScope.searchResult ', $rootScope.searchResult);
+
                         $rootScope.searchKeyword = content.keyword;
                         $rootScope.searchKey = content.searchKey;
-                        // $scope.data = sucessResponse.result;
-                        content.autosuggest_data = { content: [] };
-                        // $scope.$apply();
+                        content.autosuggest_data = [];
+                        // content.autosuggest_data = { content: [] };
                     }
                 } else if ($event === undefined) {
                     content.isError = true;
@@ -70,7 +83,8 @@ angular.module('playerApp')
                 }
             };
 
-            contentService.search(req).then(function(res) {
+            if (content.searchKey === 'Resources') {
+                contentService.search(req).then(function(res) {
                     content.enableLoader(false);
 
                     if (res != null && res.responseCode === 'OK') {
@@ -79,11 +93,24 @@ angular.module('playerApp')
                         content.isError = true;
                         content.data = res;
                     }
-                }),
-                function(error) {
+                }).catch(function(error) {
                     content.data = error;
-                };
+                });
+            } else if (content.searchKey === 'Course') {
+                courseService.search(req).then(function(res) {
+                    content.enableLoader(false);
+                    if (res != null && res.responseCode === 'OK') {
+                        content.handleSucessResponse(res, $event);
+                    } else {
+                        content.isError = true;
+                        content.data = res;
+                    }
+                }).catch(function(error) {
+                    content.data = error;
+                });
+            }
         };
+
         content.applyFilter = function() {
             if (content.selectedLanguage) {
                 content.filters['language'] = content.selectedLanguage;
@@ -128,7 +155,6 @@ angular.module('playerApp')
             content.keyword = text;
             content.searchContent();
         };
-        content.searchContent();
 
         $(document).on('ready', function() {
             $('.regular').slick({

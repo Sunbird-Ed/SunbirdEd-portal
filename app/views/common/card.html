@@ -7,9 +7,10 @@
             <span class="text-cencapitalize " ng-repeat="grade in item.gradeLevel ">{{grade}}&nbsp;</span>
         </div>
     </div>
+
     <div class="content ">
         <div class="description ">
-            {{ item.description | limitTo: 80 }}&nbsp;<i ng-show="content.description.length>=80" class="ellipsis horizontal icon popup-button link" data-content="{{item.description}}" data-variation="wide"></i>
+            {{ item.description | limitTo: 80 }}&nbsp;<i ng-show="item.description.length>=80" class="ellipsis horizontal icon popup-button link" data-content="{{item.description}}" data-variation="wide"></i>
         </div>
     </div>
     <div class="extra rating-container">

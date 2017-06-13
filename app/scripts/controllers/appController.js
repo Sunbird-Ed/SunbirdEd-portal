@@ -8,7 +8,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('AppCtrl', function($scope, $state, $stateParams, $rootScope, setResourceBundle, $translate, userService, $q, config) {
+    .controller('AppCtrl', function($scope, $state, $stateParams, $rootScope, setResourceBundle, $translate, userService, $q, config, $location) {
         $rootScope.language = $rootScope.userLanguage || config.SITE.DEFAULT_LANGUAGE;
         $rootScope.translationBundle = {};
         $rootScope.loadCarousel = function() {
@@ -25,6 +25,11 @@ angular.module('playerApp')
 
             $('.popup-button').popup();
         };
+        $rootScope.searchKey = '';
+        $scope.$on('$locationChangeSuccess', function() {
+            $rootScope.currentPath = $location.path();
+        });
+        $rootScope.currentPath = $location.path();
 
         $rootScope.loadBundle = function() {
             var promises = [];
