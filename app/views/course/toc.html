@@ -23,7 +23,7 @@
                                 Course Structure
                             </b>
                         </div>
-                        <div class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100" ng-repeat="item in  toc.courseHierachy.children track by $index">
+                        <div class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100" ng-repeat="item in  toc.courseHierachy.children track by $index" apply-script>
                             <div class="title title-padding-left accordian-left-text" name="{{item.identifier}}" ng-click="toc.expandMe($event, item)" ng-init="toc.checkAndAddToPlaylist(item)" ng-class="toc.getContentClass(item.mimeType)">
                                 {{item.name}}
                                 <i ng-if='item.children && item.children.length > 0' class="angle down icon down-arrow-accordion"></i>
