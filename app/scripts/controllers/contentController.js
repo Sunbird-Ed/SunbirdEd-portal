@@ -20,6 +20,9 @@ angular.module('playerApp')
         $scope.contentPlayer = {
             isContentPlayerEnabled: false
         };
+        $scope.close = function() {
+            $rootScope.searchResult = [];
+        };
 
         console.log('$scope.selectedSearchKey', $scope.selectedSearchKey);
 

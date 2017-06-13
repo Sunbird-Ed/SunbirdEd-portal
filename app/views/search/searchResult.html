@@ -1,6 +1,15 @@
 <div apply-script ng-controller="ContentCtrl as content">
     <div ng-if="searchResult.length && !contentPlayer.isContentPlayerEnabled">
-        <p>Showing all the result of "{{searchKeyword? searchKeyword:'All'}}" in"{{searchKey }}"</p>
+        <div class="ui clearing segment content-player-header" style="    background: transparent;
+    box-shadow: none;">
+            <div class="ui  left floated header margin-auto">
+                <p style="color:rgb(113, 113, 113);">Showing all the result of "{{searchKeyword? searchKeyword:'All'}}" in"{{searchKey }}"</p>
+            </div>
+            <h5 class="ui right floated basic icon circular button" ng-click="close()">
+                <i class="ui remove icon"></i>
+            </h5>
+        </div>
+
         <div class="ui stackable four column grid dynamic-section-card">
             <div class="column" ng-repeat="item in searchResult track by $index" ng-init="$last && content.loadRating()">
                 <div class="slider link" ng-include="'views/common/card.html'" ng-click="contentPlayer.isContentPlayerEnabled =
