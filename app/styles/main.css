@@ -325,6 +325,9 @@
 .width-100 {
   width: 100% !important;
 }
+.height-100 {
+  height: 100% !important;
+}
 .header-container {
   margin-left: 1px !important;
   border-bottom: 5px solid #0099CC !important;
