@@ -56,21 +56,31 @@ angular
                 url: '/learn',
                 templateUrl: '/views/learn/learn.html',
                 controller: 'LearnCtrl as learn',
+                onEnter: function($rootScope) {
+                    $rootScope.searchKey = 'Course';
+                    console.log('$rootScope.key', $rootScope.searchKey);
+                },
                 resolve: {
                     isLoggedIn: function(authService) {
                         authService.validUser();
                     }
-                }
+                },
+                params: { searchKey: 'Course' }
             })
             .state('Resource', {
                 url: '/resources',
                 templateUrl: '/views/resource/resource.html',
                 controller: 'resourceCtrl as resource',
+                onEnter: function($rootScope) {
+                    $rootScope.searchKey = 'Resources';
+                    console.log('$rootScope.key', $rootScope.searchKey);
+                },
                 resolve: {
                     isLoggedIn: function(authService) {
                         authService.validUser();
                     }
-                }
+                },
+                params: { searchKey: 'Resources' }
             })
             .state('note', {
                 url: '/note',
