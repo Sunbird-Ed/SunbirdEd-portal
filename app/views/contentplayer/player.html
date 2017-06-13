@@ -15,7 +15,7 @@
 
                 <div class="eight wide column" ng-if="showMetaData">
                     <div class="content-player" ng-if="(contentData.mimeType === 'application/vnd.ekstep.ecml-archive' || contentData.mimeType === 'application/vnd.ekstep.html-archive') && showIFrameContent">
-                        <iframe  id="contentViewerIframe" height='100%' width='100%'></iframe>
+                        <iframe  id="contentViewerIframe" width='100%'></iframe>
                     </div>
                     <div class="content-player" ng-if="contentData.mimeType !== 'video/youtube' && contentData.mimeType.indexOf('video') > -1">
                         <video height='100%' width='100%'  id="content-video-player" class="video-js vjs-default-skin player-video"
