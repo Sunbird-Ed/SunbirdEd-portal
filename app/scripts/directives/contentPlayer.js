@@ -112,6 +112,7 @@ angular.module('playerApp').controller('contentPlayerCtrl', function ($scope, $s
 
     $scope.close = function () {
         $scope.errorObject = {};
+        $scope.id = '';
         $scope.visibility = false;
     };
     $scope.tryAgain = function () {

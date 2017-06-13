@@ -3,6 +3,9 @@
 angular.module('playerApp')
     .controller('resourceCtrl', function(resourceService, $log, $scope, $sessionStorage, $timeout, $location) {
         var resource = this;
+        $scope.contentPlayer = {
+            isContentPlayerEnabled: false
+        };
         resource.sections = function() {
             var req = {
                 'request': {
