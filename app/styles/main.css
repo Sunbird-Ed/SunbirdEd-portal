@@ -22,6 +22,9 @@
 .text-align-right {
   text-align: right !important;
 }
+.text-decoration-underline {
+  text-decoration: underline !important;
+}
 .border-bottom {
   border-bottom: 1px solid #E6E7E8 !important;
 }
