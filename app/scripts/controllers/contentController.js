@@ -58,6 +58,7 @@ angular.module('playerApp')
                     'cid': '12'
                 }
             };
+            req.limit = 20;
 
             content.handleSucessResponse = function(sucessResponse, $event) {
                 console.log('$scope.selectedSearchKey124215', $scope.selectedSearchKey);
