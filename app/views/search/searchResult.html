@@ -1,9 +1,13 @@
-<div apply-script ng-controller="ContentCtrl as content" ng-if="searchResult.length">
-    <p>Showing all the result of "{{searchKeyword? searchKeyword:'All'}}" in"{{searchKey }}"</p>
-    <div class="ui stackable four column grid dynamic-section-card">
-        <div class="column" ng-repeat="item in searchResult track by $index" ng-init="$last && content.loadRating()">
-            <div class="slider link" ng-include="'views/common/card.html'" ng-click="contentPlayer.contentData = item; contentPlayer.isContentPlayerEnabled = true;"></div>
+<div apply-script ng-controller="ContentCtrl as content">
+    <div ng-if="searchResult.length && !contentPlayer.isContentPlayerEnabled">
+        <p>Showing all the result of "{{searchKeyword? searchKeyword:'All'}}" in"{{searchKey }}"</p>
+        <div class="ui stackable four column grid dynamic-section-card">
+            <div class="column" ng-repeat="item in searchResult track by $index" ng-init="$last && content.loadRating()">
+                <div class="slider link" ng-include="'views/common/card.html'" ng-click="contentPlayer.isContentPlayerEnabled =
+         !contentPlayer.isContentPlayerEnabled; 
+          contentPlayer.contentData = item"></div>
+            </div>
         </div>
-
     </div>
+    <content-player visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="true" isheader="true" isclose="true" height="10" width="100" ispercentage="true"></content-player>
 </div>

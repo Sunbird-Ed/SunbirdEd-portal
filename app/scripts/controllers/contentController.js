@@ -17,6 +17,9 @@ angular.module('playerApp')
         $scope.$watch('searchKey', function() {
             $scope.selectedSearchKey = $rootScope.searchKey;
         });
+        $scope.contentPlayer = {
+            isContentPlayerEnabled: false
+        };
 
         console.log('$scope.selectedSearchKey', $scope.selectedSearchKey);
 
