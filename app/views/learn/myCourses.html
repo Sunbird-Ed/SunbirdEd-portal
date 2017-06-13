@@ -14,15 +14,14 @@
                 </div>
             </div>
             <div class="card-content-description"> 
-                {{enrolledCourse.description}}     
+                {{enrolledCourse.description|| 'No Description'}}     
             </div> 
             <div class="extra content card-extraContent-padding">
                 <span class="right floated">
                     <button class="ui blue basic button">RESUME</button>
                 </span>
                 <span>
-
-                    {{(enrolledCourse.progress/enrolledCourse.noOfLecture)*100}}% complete <br/> 2hrs remaining 
+                    {{(enrolledCourse.progress/enrolledCourse.noOfLecture)*100 || 0}}% complete <br/> 2hrs remaining 
                 </span>
             </div>
         </div>
