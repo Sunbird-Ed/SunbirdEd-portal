@@ -11,5 +11,7 @@ WORKDIR /opt/
 COPY player-dist.zip  /opt/
 RUN unzip /opt/player-dist.zip 
 WORKDIR /opt/dist
+RUN npm install express --save
+RUN npm install request --save
 EXPOSE 7000
 CMD ["node", "server.js", "&"]
