@@ -3,7 +3,7 @@
         <img ng-src=" {{item.appIcon ? item.appIcon : '../images/sunbird_logo.png'}} ">
         <div class="header center aligned ">
             <span class="text-cencapitalize ">
-                     {{item.name}}</span> for
+                     {{item.name}}</span> <span ng-if="item.gradeLevel "> for</span>
             <span class="text-cencapitalize " ng-repeat="grade in item.gradeLevel ">{{grade}}&nbsp;</span>
         </div>
     </div>
