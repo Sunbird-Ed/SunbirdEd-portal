@@ -128,7 +128,7 @@ angular.module('playerApp')
                         $rootScope.userId = '';
                         $window.localStorage.clear();
                         auth.resetForm();
-                        $state.go('Home');
+                        $state.go('LandingPage');
                     } else {
                         handleFailedResponse(successResponse);
                     }
