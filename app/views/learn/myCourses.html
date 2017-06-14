@@ -6,7 +6,7 @@
                 <div class="ui tiny  progress course-progress" data-value="{{enrolledCourse.progress}}" data-total="{{enrolledCourse.total}}" ng-class="{orange:(enrolledCourse.total - enrolledCourse.progress) <= (enrolledCourse.total / 2),red:(enrolledCourse.total - enrolledCourse.progress) > (enrolledCourse.total / 2)}">
                     <div class="bar"></div>
                 </div>
-                <img ng-src="../images/sunbird_logo.png ">
+                <img ng-src="{{enrolledCourse.appIcon ? enrolledCourse.appIcon : '../images/sunbird_logo.png'}}">
                 <div class="header center aligned ">
                     <span class="text-cencapitalize">
                         {{enrolledCourse.name}}</span> for Std

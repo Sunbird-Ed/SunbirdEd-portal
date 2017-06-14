@@ -8,8 +8,9 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('ContentCtrl', function(contentService, courseService, $scope, $timeout, $rootScope, $stateParams) {
+    .controller('ContentCtrl', function(contentService, courseService, $scope, $timeout, $rootScope, $stateParams, $state) {
         var content = this;
+
         content.keyword = '';
         content.filters = { 'status': ['Live'], 'contentType': ['Story', 'Worksheet', 'Game', 'Collection', 'TextBook'] };
         $scope.selectedSearchKey = $stateParams.searchKey;
@@ -53,7 +54,11 @@ angular.module('playerApp')
         };
         $rootScope.showIFrameContent = false;
         $rootScope.content = content;
-
+        content.openCourseView = function(courseId, courseType) {
+            var showLectureView = 'no';
+            var params = { courseType: courseType, courseId: courseId, lectureView: showLectureView };
+            $state.go('Toc', params);
+        };
         content.searchContent = function($event) {
             content.enableLoader(true);
 
@@ -67,7 +72,6 @@ angular.module('playerApp')
             req.limit = 20;
 
             content.handleSucessResponse = function(sucessResponse, $event) {
-                console.log('$scope.selectedSearchKey124215', $scope.selectedSearchKey);
                 if (sucessResponse.result.count > 0) {
                     //if $event is passed then search is to get only autosuggest else to get the content
                     if ($event !== undefined && content.keyword !== '') {
