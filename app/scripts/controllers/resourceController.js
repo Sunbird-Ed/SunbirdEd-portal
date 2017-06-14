@@ -18,10 +18,10 @@ angular.module('playerApp')
 
             resource.loadCarousel = function() {
                 $('.regular').not('.slick-initialized').slick({
-                    infinite: true,
+                    infinite: false,
                     slidesToShow: 4,
-                    slidesToScroll: 4,
-                    prevArrow: false,
+                    slidesToScroll: 4
+//                    prevArrow: false,
                 });
                 $('.ui.rating')
                     .rating({

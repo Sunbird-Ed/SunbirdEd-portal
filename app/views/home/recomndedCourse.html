@@ -1,0 +1,16 @@
+<div apply-script class="ui dynamic-section-card margin-top-20" ng-if="homeCtrl.recommendedCourse.length > 0">
+    <h4 class="ui header ">Recommended<a class="ui red circular inline label ">{{homeCtrl.recommendedCourse.length}}</a></h4>
+    <div class="regular slider ">
+        <div ng-repeat=" item in homeCtrl.recommendedCourse track by $index" ng-init="$last && homeCtrl.loadCarousel()" ng-click="homeCtrl.openCourseView(toDoCourse.courseId, 'OTHER_COURSE')">
+
+            <div ng-include=" 'views/common/ratingCard.html'"></div>
+        </div>
+    </div>
+</div>
+<div ng-if="homeCtrl.error.isError">
+    <error-message data={{resource.error}}></error-message>
+</div>
+<div class="ui inverted dimmer margin-top-20 " ng-class="{true: 'active', false: 'disabled'}[loading] ">
+    <div class="ui text loader ">Featching enrolled contents
+    </div>
+</div>
