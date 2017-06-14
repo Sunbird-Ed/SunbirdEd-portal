@@ -28,7 +28,7 @@ angular.module('playerApp')
             };
             homeCtrl.loadFeaturedCarousel = function () {
                 
-                $('.regular').not('.slick-initialized').slick({
+                $('.featured3').not('.slick-initialized').slick({
                     infinite: false,
                     slidesToShow: 3,
                     slidesToScroll: 3
