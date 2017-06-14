@@ -22,7 +22,6 @@ angular.module('playerApp').directive('contentPlayer', function() {
             ispercentage: '='
         },
         link: function(scope, element, attrs) {
-            console.log('inside dis');
             if (scope.ispercentage) {
                 $('#contentPlayer').css('height', scope.height + '%');
                 $('#contentPlayer').css('width', scope.width + '%');
