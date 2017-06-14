@@ -21,8 +21,7 @@ angular.module('playerApp')
                 .rating({
                     maxRating: 5
                 }).rating('disable', true);
-        };
-        learn.loadProgress = function() {
+                
             $('course-progress').progress();
         };
 
