@@ -108,5 +108,10 @@ angular
                 templateUrl: 'views/course/toc.html',
                 params: { courseType: null, courseId: null, lectureView: null },
                 controller: 'courseScheduleCtrl as toc'
+            })
+            .state('Community', {
+                url: '/community',
+                templateUrl: 'views/community/communityList.html',
+                controller: 'CommunityController as commCtrl'
             });
     });
