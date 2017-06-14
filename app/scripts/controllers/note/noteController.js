@@ -8,7 +8,7 @@
  * Controller of the studioApp
  */
 angular.module('playerApp')
-    .controller('NoteCtrl', function($timeout, $scope, noteService, config) {
+    .controller('NoteCtrl', function($timeout, $scope, noteService, config, $rootScope) {
 
         var userId = "1234567";
         var courseId = "do_11225192024707891216";
@@ -233,6 +233,16 @@ angular.module('playerApp')
                     }
                 }).modal('show');
             }, 100);
+        };
+        
+        $scope.showAllNoteList = function () {
+            $scope.showNoteList = true;
+            $rootScope.$emit('showAllNoteList', true);
+        };
+        
+        $scope.closeNoteList = function() {
+             $scope.showNoteList = false;
+            $rootScope.$emit('showAllNoteList', false);
         };
         
     });
