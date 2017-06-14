@@ -34,13 +34,17 @@ angular.module('playerApp')
         content.contentTypes = [
             'Story', 'Worksheet', 'Collections', 'Game', 'Plugin', 'Template'
         ];
-        content.statuses = [
-            'Draft', 'Live', 'Review', 'Flagged', 'Flag Draft', 'Flag Review'
+        content.subjects = [
+            'Maths', 'English', 'Hindi', 'Assamese', 'Bengali', 'Gujarati', 'Kannada', 'Malayalam', 'Marathi', 'Nepali', 'Oriya', 'Punjabi', 'Tamil', 'Telugu', 'Urdu'
+        ];
+        content.boards = [
+            'NCERT', 'CBSE', 'ICSE', 'MSCERT'
         ];
         content.searchSelectionKeys = [{ id: 'Course', name: 'Course' }, { id: 'Resources', name: 'Resources' }];
         content.selectedLanguage = '';
         content.selectedContentType = '';
-        content.selectedStatus = '';
+        content.selectedSubject = '';
+        content.selectedBoard = '';
         content.autosuggest_data = { content: [] };
         content.listView = false;
 
@@ -126,7 +130,10 @@ angular.module('playerApp')
                 content.filters['contentType'] = content.selectedContentType;
             }
             if (content.selectedStatus) {
-                content.filters['status'] = content.selectedStatus;
+                content.filters['subject'] = content.selectedSubject;
+            }
+            if (content.selectedStatus) {
+                content.filters['board'] = content.selectedBoard;
             }
             content.searchContent();
         };
