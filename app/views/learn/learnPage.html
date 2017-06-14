@@ -4,7 +4,7 @@
     <div class="regular slider " ng-if="section.course.length> 0">
         <div class="ui link card margin-left-right-10 margin-top-15" ng-click="learn.openCourseView(course.identifier, 'OTHER_COURSE')" ng-repeat=" course in section.course track by $index" ng-init="$last && learn.loadCarousel()">
             <div class="image ">
-                <img ng-src="{{course.appIcon}}">
+                <img ng-src="{{course.appIcon ? course.appIcon : '../images/sunbird_logo.png'}}">
                 <a class="header center aligned ">
                     <span class="text-cencapitalize">{{course.name}}</span> for
                     <span class="text-cencapitalize " ng-repeat="grade in course.gradeLevel">{{grade}}</span></a>
