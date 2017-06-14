@@ -1066,6 +1066,9 @@ ul.subList-padding {
   padding-bottom: 10% !important;
   padding-left: 4% !important;
 }
+.card-Content-HeadingFont {
+  font-size: 20px !important;
+}
 body {
   position: relative !important;
   margin: 0 !important;
