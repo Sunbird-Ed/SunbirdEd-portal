@@ -48,7 +48,7 @@ angular.module('playerApp')
                 $window.localStorage.setItem('userPic', $rootScope.userProfilePic);
                 $window.localStorage.setItem('preferredLanguage', userProfile.result.response.language);
 
-                $state.go('Learn');
+                $state.go('LandingPage');
             } else {
                 throw new Error(userProfile);
             }
