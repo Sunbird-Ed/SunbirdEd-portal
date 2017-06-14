@@ -407,6 +407,14 @@
   padding-top: 1.5rem !important;
   margin: auto !important;
 }
+.header-search-filters-divider {
+  margin-top: 0px !important;
+  border-color: transparent;
+  border-width: 0px !important;
+}
+.header-filter-container {
+  background-color: #ffffff;
+}
 .content-result-img {
   height: 240px !important;
 }
