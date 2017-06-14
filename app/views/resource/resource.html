@@ -5,7 +5,7 @@
     <div class="regular slider" ng-if="section.content.length > 0">
         <div class="ui card common-card margin-left-right-10 margin-top-15 link"
              ng-repeat="content in section.content track by $index" ng-init="$last && resource.loadCarousel()"
-             ng-click="contentPlayer.isContentPlayerEnabled = !contentPlayer.isContentPlayerEnabled; contentPlayer.contentId = ''; contentPlayer.contentId = 'do_112263345871675392182'">
+             ng-click="contentPlayer.isContentPlayerEnabled = !contentPlayer.isContentPlayerEnabled; contentPlayer.contentData = ''; contentPlayer.contentData = content">
             <div class="image ">
                 <img ng-src="{{ content.appIcon}}">
                 <div class="header center aligned ">
@@ -23,7 +23,7 @@
         </div>
     </div>
 </div>
-<content-player visibility="contentPlayer.isContentPlayerEnabled" id="contentPlayer.contentId" isshowmetaview="true" isheader="true" isclose="true" height="10" width="100" ispercentage="true"></content-player>
+<content-player visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="true" isheader="true" isclose="true" height="10" width="100" ispercentage="true"></content-player>
 <div ng-if="resource.error.isError">
     <error-message data={{resource.error}}></error-message>
 </div>
