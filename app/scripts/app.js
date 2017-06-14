@@ -36,7 +36,6 @@ angular
 
         $urlRouterProvider.otherwise('/');
         $stateProvider
-
             .state('LandingPage', {
                 url: '/',
                 templateUrl: '/views/home/landingPage.html',
@@ -62,7 +61,11 @@ angular
                 controller: 'LearnCtrl as learn',
                 onEnter: function($rootScope) {
                     $rootScope.searchKey = 'Course';
-                    console.log('$rootScope.key', $rootScope.searchKey);
+                    $rootScope.isLearnPage = true;
+
+                },
+                onExit: function($rootScope) {
+                    $rootScope.isLearnPage = false;
                 },
                 resolve: {
                     isLoggedIn: function(authService) {
@@ -77,7 +80,11 @@ angular
                 controller: 'resourceCtrl as resource',
                 onEnter: function($rootScope) {
                     $rootScope.searchKey = 'Resources';
-                    console.log('$rootScope.key', $rootScope.searchKey);
+                    $rootScope.isResourcesPage = true;
+
+                },
+                onExit: function($rootScope) {
+                    $rootScope.isResourcesPage = false;
                 },
                 resolve: {
                     isLoggedIn: function(authService) {
