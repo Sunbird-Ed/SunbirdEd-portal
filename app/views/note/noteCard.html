@@ -2,7 +2,7 @@
     <div class="content">
         <div class="header">
             <span>My Notebook</span>
-            <a class="ui right floated font-dark-blue" ui-sref="note">View All</a>
+            <a class="ui right floated font-dark-blue" ng-click="showAllNoteList()">View All</a>
         </div>
         <div class="description">
             <div class="ui list"  ng-repeat="note in notesList| orderBy : '-lastUpdatedOn'  | limitTo: quantityOfNotes  track by $index">
