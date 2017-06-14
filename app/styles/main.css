@@ -437,9 +437,18 @@
   position: absolute;
   background: white;
   text-align: left;
-  padding-left: 20px;
-  width: 87%;
-  margin-left: 58px;
+  width: 436px;
+  margin-left: 82px;
+}
+#search-suggestions .result .content .title {
+  font-size: 15px;
+  padding: 2px;
+  color: #717171;
+  cursor: pointer;
+}
+#search-suggestions .result .content .title:hover {
+  color: black;
+  background: #d9d9d9;
 }
 .dash-heading-border {
   border-bottom: 1px dashed #333;
@@ -1028,6 +1037,34 @@ ul.subList-padding {
   transition: box-shadow 0.1s ease, -webkit-transform 0.1s ease;
   transition: box-shadow 0.1s ease, transform 0.1s ease;
   z-index: '';
+}
+.landingPageCards.ui.card {
+  max-width: 100%;
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 48% !important;
+  min-height: 0;
+  background: #fff;
+  padding: 0;
+  border: none;
+  border-radius: .28571429rem;
+  box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
+  transition: box-shadow 0.1s ease, -webkit-transform 0.1s ease;
+  transition: box-shadow 0.1s ease, transform 0.1s ease;
+  z-index: '';
+}
+.opacity-cardContent {
+  opacity: 0.2 !important;
+}
+.card-Content-Heading {
+  padding-bottom: 10% !important;
+  padding-left: 4% !important;
 }
 body {
   position: relative !important;
