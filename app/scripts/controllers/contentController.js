@@ -12,13 +12,16 @@ angular.module('playerApp')
         var content = this;
 
         content.keyword = '';
-        content.filters = { 'status': ['Live'], 'contentType': ['Story', 'Worksheet', 'Game', 'Collection', 'TextBook'] };
+        content.filters = {};
+        // content.filters = { 'status': ['Live'], 'contentType': ['Story', 'Worksheet', 'Game', 'Collection', 'TextBook'] };
         $scope.selectedSearchKey = $stateParams.searchKey;
         $timeout(function() {
             $('#headerSearchdd').dropdown('set selected', $scope.selectedSearchKey);
         });
         $scope.$watch('searchKey', function() {
             $scope.selectedSearchKey = $rootScope.searchKey;
+            content.filters = {};
+            content.keyword = '';
         });
         $scope.contentPlayer = {
             isContentPlayerEnabled: false
@@ -59,6 +62,7 @@ angular.module('playerApp')
             var params = { courseType: courseType, courseId: courseId, lectureView: showLectureView };
             $state.go('Toc', params);
         };
+
         content.searchContent = function($event) {
             content.enableLoader(true);
 
@@ -86,7 +90,7 @@ angular.module('playerApp')
                             $rootScope.searchResult = sucessResponse.result.content;
                         }
                         $rootScope.searchKeyword = content.keyword;
-                        content.keyword = '';
+                        // content.keyword = '';
                         $rootScope.searchKey = $scope.selectedSearchKey;
                         content.autosuggest_data = [];
                         // content.autosuggest_data = { content: [] };
@@ -173,13 +177,4 @@ angular.module('playerApp')
             content.keyword = text;
             content.searchContent();
         };
-
-        $(document).on('ready', function() {
-            $('.regular').slick({
-                dots: true,
-                infinite: true,
-                slidesToShow: 3,
-                slidesToScroll: 3
-            });
-        });
     });
