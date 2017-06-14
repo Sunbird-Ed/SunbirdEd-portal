@@ -61,11 +61,11 @@ angular
                 controller: 'LearnCtrl as learn',
                 onEnter: function($rootScope) {
                     $rootScope.searchKey = 'Course';
-                    $rootScope.isLearnPage =true;
-                    console.log('$rootScope.key', $rootScope.searchKey);
+                    $rootScope.isLearnPage = true;
+
                 },
-                onExit: function ($rootScope) {
-                    $rootScope.isLearnPage =false;
+                onExit: function($rootScope) {
+                    $rootScope.isLearnPage = false;
                 },
                 resolve: {
                     isLoggedIn: function(authService) {
@@ -80,11 +80,11 @@ angular
                 controller: 'resourceCtrl as resource',
                 onEnter: function($rootScope) {
                     $rootScope.searchKey = 'Resources';
-                    $rootScope.isResourcesPage =true;
-                    console.log('$rootScope.key', $rootScope.searchKey);
+                    $rootScope.isResourcesPage = true;
+
                 },
-                onExit: function ($rootScope) {
-                    $rootScope.isResourcesPage =false;
+                onExit: function($rootScope) {
+                    $rootScope.isResourcesPage = false;
                 },
                 resolve: {
                     isLoggedIn: function(authService) {
