@@ -59,7 +59,7 @@
             </div>
         </div>
     </div>
-    <div ng-if="(contentPlayer.isContentPlayerEnabled) && !toc.showDimmer">
+    <div ng-if="(contentPlayer.isContentPlayerEnabled) && !toc.showDimmer && !toc.showAllNoteList ">
         <div class="ui grid" id="tocPlayer">
             <div class="twelve wide column">
                 <div class="ui grid">
@@ -106,7 +106,7 @@
                     <div ng-include="'views/course/courseDiscussions.html'"></div>
                 </div>
                 <div class="four wide column">
-                    <div ng-include="'views/note/noteCard.html'"></div>
+                    <note-card shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false"></note-card>
                 </div>
             </div>
         </div> 
