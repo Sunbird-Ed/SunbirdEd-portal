@@ -1,5 +1,5 @@
 <div ng-controller="courseScheduleCtrl as toc">
-    <div id="course-toc-list" ng-if="!contentPlayer.isContentPlayerEnabled && toc.courseHierachy && !toc.showDimmer && toc.lectureView == 'no'" ng-init="toc.playList = []">
+    <div id="course-toc-list" ng-if="!contentPlayer.isContentPlayerEnabled && toc.courseHierachy && !toc.showDimmer && toc.lectureView == 'no' && !toc.showAllNoteList" ng-init="toc.playList = []">
         <div class="content">
             <div class='ui grid'>
                 <div class="row">
@@ -111,6 +111,7 @@
             </div>
         </div> 
     </div>
+    <div ng-if="toc.showAllNoteList" ng-include="'views/note/noteList.html'"></div>
 </div>
 <div class="ui dimmer inverted" ng-class="toc.showDimmer ? 'active' : ''">
     <div class="content">
@@ -125,5 +126,4 @@
             </h2>
         </div>
     </div>
-</div>
 </div>
