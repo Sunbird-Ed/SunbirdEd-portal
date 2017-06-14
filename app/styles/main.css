@@ -612,6 +612,9 @@
   padding-bottom: 10px;
   text-align: center;
 }
+.rightSideSectionCards.ui.card {
+  width: 100% !important;
+}
 .footer1 {
   position: fixed !important;
   bottom: 0 !important;
