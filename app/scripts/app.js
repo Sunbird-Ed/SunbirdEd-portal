@@ -43,7 +43,8 @@ angular
             })
             .state('Home', {
                 url: '/home',
-                templateUrl: '/views/home/home.html'
+                templateUrl: '/views/home/home.html',
+                controller: 'HomeController as homeCtrl'
             })
             .state('UserContent', {
                 url: '/content',
