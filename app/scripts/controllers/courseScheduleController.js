@@ -9,6 +9,7 @@ angular.module('playerApp')
         toc.courseType = $stateParams.courseType;
         $scope.enableCloseButton = (toc.lectureView === 'yes') ? 'false' : 'true';
         console.log($rootScope.contentDetails);
+        toc.showAllNoteList = false;
         toc.nightMode = true;
         $scope.contentPlayer = {
             isContentPlayerEnabled: false
@@ -285,6 +286,9 @@ angular.module('playerApp')
         };
 
         toc.getUserCourses();
-
+        
+        $rootScope.$on("showAllNoteList", function(e, noteListStatus) {
+            toc.showAllNoteList = noteListStatus;
+        });
 
     });

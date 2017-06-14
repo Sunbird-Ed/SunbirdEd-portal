@@ -16,7 +16,7 @@ angular.module('playerApp').directive('noteCard', function () {
         },
         link: function (scope, element, attrs) {
             
-                scope.showNoteCard = scope.shownotecard;            
+                scope.showNoteCard = scope.shownotecard; 
             
         },
         controller: 'NoteCtrl'
