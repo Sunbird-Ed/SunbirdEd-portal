@@ -415,6 +415,12 @@
 .header-filter-container {
   background-color: #ffffff;
 }
+.header-filter-label {
+  width: 55px;
+  color: #aba7a7;
+  margin-top: 9px;
+  font-weight: 400;
+}
 .content-result-img {
   height: 240px !important;
 }

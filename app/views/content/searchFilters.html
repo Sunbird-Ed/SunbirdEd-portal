@@ -1,17 +1,19 @@
 <div class="ui divider header-search-filters-divider"></div>
 <div class="ui grid">
+
     <div class="one wide column"></div>
     <div class="ten wide column">
         <div apply-script class="ui accordion" id='content-search-filter-accordion'>
             <div class="title">
                 <i class="icon filter"></i>
-                Show Filters 
+                Show Filters
                 <i class="dropdown icon"></i>
             </div>
             <div class="content">
-            <div class="meta">Filter by:</div>
+            
                 <form class="ui tiny form">
                     <div class="five fields">
+                        <span class="header-filter-label">Filter by:</span>
                         <div class="field">
                             <select name="language" class="ui selection content-search-filter dropdown" multiple="" id="multi-select" ng-value="option.value" ng-options=" language for language in content.languages" ng-model="content.selectedLanguage">
                             <option value="">All</option>
