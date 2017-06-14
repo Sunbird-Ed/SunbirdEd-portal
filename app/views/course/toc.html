@@ -1,5 +1,5 @@
 <div ng-controller="courseScheduleCtrl as toc">
-    <div id="course-toc-list" ng-if="!contentPlayer.isContentPlayerEnabled && toc.courseHierachy && !toc.showDimmer && toc.lectureView == 'no'" ng-init="toc.playList = []">
+    <div id="course-toc-list" ng-if="!contentPlayer.isContentPlayerEnabled && toc.courseHierachy && !toc.showDimmer && toc.lectureView == 'no' && !toc.showAllNoteList" ng-init="toc.playList = []">
         <div class="content">
             <div class='ui grid'>
                 <div class="row">
@@ -10,11 +10,11 @@
                             </b>
                             <div class="margin-top-10 " ng-init="toc.readMore = false">
                                 <span> {{ toc.courseHierachy.description | limitTo: 200 }}&nbsp;
-                                    <span class="ui link font-dark-blue" ng-if="toc.courseHierachy.description.length > 200 && toc.readMore === false"
+                                    <span class="ui font-dark-blue mouse-pointer" ng-if="toc.courseHierachy.description.length > 200 && toc.readMore === false"
                                           ng-click="toc.readMore = !toc.readMore;">Read More ...</span>
                                 </span>
                                 <span ng-if="toc.readMore"> {{ toc.courseHierachy.description}}&nbsp;
-                                    <span class="ui link font-dark-blue" ng-click="toc.readMore = false;">Read Less ...</span>
+                                    <span class="ui font-dark-blue mouse-pointer" ng-click="toc.readMore = false;">Read Less ...</span>
                                 </span>
                             </div>
                         </div>
@@ -111,6 +111,7 @@
             </div>
         </div> 
     </div>
+    <div ng-if="toc.showAllNoteList" ng-include="'views/note/noteList.html'"></div>
 </div>
 <div class="ui dimmer inverted" ng-class="toc.showDimmer ? 'active' : ''">
     <div class="content">
@@ -125,5 +126,4 @@
             </h2>
         </div>
     </div>
-</div>
 </div>

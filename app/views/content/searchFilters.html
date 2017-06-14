@@ -1,32 +1,43 @@
-<div apply-script class="ui accordion" id='content-search-filter-accordion'>
-    <div class="title">
-        <i class="dropdown icon"></i> Advanced Filters
-    </div>
-    <div class="content">
-        <form class="ui form">
-            <div class="three fields">
-                <div class="field">
-                    <label>Languages</label>
-                    <select name="language" class="ui selection content-search-filter dropdown" multiple="" id="multi-select" ng-value="option.value" ng-options=" language for language in content.languages" ng-model="content.selectedLanguage">
-                    </select>
-                </div>
-                <div class="field">
-                    <label>Lesson Type</label>
-                    <select name="Lesson Type" class="ui selection content-search-filter dropdown" multiple="" id="multi-select" ng-value="option.value" ng-options=" contentType for contentType in content.contentTypes" ng-model="content.selectedContentType">
-                    </select>
-                </div>
-                <div class="field">
-                    <label>Status</label>
-                    <select name="Status" class="ui selection content-search-filter dropdown" multiple="" id="multi-select" ng-value="option.value" ng-options=" status for status in content.statuses" ng-model="content.selectedStatus">
-                    </select>
-                </div>
+<div class="ui divider header-search-filters-divider"></div>
+<div class="ui grid">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+        <div apply-script class="ui accordion" id='content-search-filter-accordion'>
+            <div class="title">
+                <i class="icon filter"></i>
+                Show Filters 
+                <i class="dropdown icon"></i>
             </div>
-            <div class="one fields">
-                <div class="field">
-                <button class="ui primary basic button" ng-click="content.resetFilter()">Reset Filter</button>
-                <button class="ui blue button" ng-click="content.applyFilter()">Apply Filter</button>
-                </div>
+            <div class="content">
+            <div class="meta">Sort by:</div>
+                <form class="ui tiny form">
+                    <div class="five fields">
+                        <div class="field">
+                            <select name="language" class="ui selection content-search-filter dropdown" multiple="" id="multi-select" ng-value="option.value" ng-options=" language for language in content.languages" ng-model="content.selectedLanguage">
+                            <option value="">All</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <select name="Lesson Type" class="ui selection content-search-filter dropdown" multiple="" id="multi-select" ng-value="option.value" ng-options=" contentType for contentType in content.contentTypes" ng-model="content.selectedContentType">
+                            <option value="">All</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <select name="Status" class="ui selection content-search-filter dropdown" multiple="" id="multi-select" ng-value="option.value" ng-options=" status for status in content.statuses" ng-model="content.selectedStatus">
+                            <option value="">All</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                        </div>
+                        <div class="field">
+                            <button class="ui blue mini  button" ng-click="content.applyFilter()">Apply Filter</button>
+                            <button class="ui primary mini basic button" ng-click="content.resetFilter()">Reset Filter</button>
+                        </div>
+                    </div>
+                </form>
             </div>
-        </form>
+        </div>
     </div>
+    <div class="one wide column"></div>
 </div>
+<div class="ui divider"></div>
