@@ -1,6 +1,6 @@
 <div ng-controller="ContentCtrl as content">
     <div class="ui fluid icon input left action" id="search-input-container">
-        <select class="ui compact selection header-select dropdown">
+        <select class="ui compact selection header-select dropdown" apply-script id="headerSearchdd">
  <option ng-repeat="key in content.searchSelectionKeys" ng-selected ="key.id == selectedSearchKey" value="{{key.id}}">{{key.name}}</option>
         </select>
 
