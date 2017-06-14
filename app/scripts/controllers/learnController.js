@@ -5,6 +5,9 @@ angular.module('playerApp')
         var learn = this;
         var uid = $sessionStorage.userId;
         $rootScope.searchResult = [];
+        $scope.contentPlayer = {
+            isContentPlayerEnabled: false
+        };
         learn.loadCarousel = function() {
             $('.regular').not('.slick-initialized').slick({
                 infinite: true,
