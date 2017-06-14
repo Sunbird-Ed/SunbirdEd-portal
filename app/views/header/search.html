@@ -8,7 +8,7 @@
             title="Search" autocomplete="off" spellcheck="false" dir="auto" />
         <i class="search link icon" ng-click="content.searchContent()"></i>
     </div>
-    <div id="search-suggestions" ng-if="content.autosuggest_data.length > 0" class="ui fluid results transition visible dropdown-menu-list">
+    <div id="search-suggestions" ng-if="content.autosuggest_data.length >1" class="ui fluid results transition visible dropdown-menu-list">
         <div>
             <a class="result" ng-repeat="item in content.autosuggest_data" ng-click='content.setSearchText(item.name)'>
                 <div class="content">

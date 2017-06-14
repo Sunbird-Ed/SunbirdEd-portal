@@ -13,9 +13,12 @@ angular.module('playerApp')
         content.keyword = '';
         content.filters = { 'status': ['Live'], 'contentType': ['Story', 'Worksheet', 'Game', 'Collection', 'TextBook'] };
         $scope.selectedSearchKey = $stateParams.searchKey;
-        $timeout(function () {
-            $('#headerSearchdd').dropdown('set selected', $scope.selectedSearchKey);    
-        })
+        $timeout(function() {
+            $('#headerSearchdd').dropdown('set selected', $scope.selectedSearchKey);
+        });
+        $scope.$watch('searchKey', function() {
+            $scope.selectedSearchKey = $rootScope.searchKey;
+        });
         $scope.contentPlayer = {
             isContentPlayerEnabled: false
         };
