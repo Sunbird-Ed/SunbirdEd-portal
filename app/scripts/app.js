@@ -37,10 +37,14 @@ angular
         $urlRouterProvider.otherwise('/');
         $stateProvider
 
-            .state('Home', {
+            .state('LandingPage', {
                 url: '/',
                 templateUrl: '/views/home/landingPage.html',
                 controller: 'AuthCtrl as auth'
+            })
+            .state('Home', {
+                url: '/home',
+                templateUrl: '/views/home/home.html'
             })
             .state('UserContent', {
                 url: '/content',
