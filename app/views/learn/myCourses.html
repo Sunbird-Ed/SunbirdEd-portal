@@ -23,12 +23,14 @@
                     <button class="ui blue basic button">RESUME</button>
                 </span>
                 <span>
+
                     {{(enrolledCourse.progress/enrolledCourse.total)*100| number: 2 || 0}}% complete <br/> 2hrs remaining 
                 </span>
             </div>
         </div>
     </div>
 </div>
+<content-player visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="true" isheader="true" isclose="true" height="10" width="100" ispercentage="true"></content-player>
 <div ng-if="resource.error.isError">
     <error-message data={{resource.error}}></error-message>
 </div>
