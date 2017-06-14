@@ -1,61 +1,88 @@
-<div class="ui container ">
-<!--    <div > <h3 >{{contentData.name}}</h3></div>
-    <div class="ui tiny image"><img ng-src="{{contentData.appIcon?contentData.appIcon:'../images/sunbird_logo.png'}}" /></div>-->
 <h2 class="ui header">
-  <img ng-src="{{contentData.appIcon?contentData.appIcon:'../images/sunbird_logo.png'}}" class="ui image">
-  {{contentData.name}}
+    {{contentData.description}}
 </h2>
+<div class="ui clearing divider"></div>
+<div class="ui grid margin-top-15">
+    <div class="row">
+        <div class="three wide column">
+            <div class="ui list">
+                <a class="item">
+                    <div class="content">
+                        <div class="header">Author</div>
+                        <div class="description padding-top-1rem">{{contentData.owner}}</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="three wide column">
+            <div class="ui list">
+                <a class="item">
+                    <div class="content">
+                        <div class="header">Language</div>
+                        <div class="description padding-top-1rem">{{contentData.language.toString()}}</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="three wide column">
+            <div class="ui list">
+                <a class="item">
+                    <div class="content">
+                        <div class="header">Grades</div>
+                        <div class="description padding-top-1rem">{{contentData.gradeLevel.toString()}}</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="three wide column">
+            <div class="ui list">
+                <a class="item">
+                    <div class="content">
+                        <div class="header">Keywords</div>
+                        <div class="description padding-top-1rem">{{contentData.keywords.toString()}}</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="three wide column">
+            <div class="ui list">
+                <a class="item">
+                    <div class="content">
+                        <div class="header">Subject</div>
+                        <div class="description padding-top-1rem">{{contentData.subject}}</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="three wide column">
+            <div class="ui list">
+                <a class="item">
+                    <div class="content">
+                        <div class="header">Last update</div>
+                        <div class="description padding-top-1rem">{{contentData.lastUpdatedOn| dateFilterWithMDY}}</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="three wide column">
+            <div class="ui list">
+                <a class="item">
+                    <div class="content">
+                        <div class="header">Created On</div>
+                        <div class="description padding-top-1rem">{{contentData.createdOn| dateFilterWithMDY}}</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
-<div class="ui container">
-    <table class="ui very basic padded large table">
-        <thead>
-        </thead>
-        <tbody>
-            <tr>
-                <td><span class="meta">Author</span></td>
-                <td><span class="meta">{{contentData.owner}}</span></td>
-            </tr>
-            <tr>
-                <td><span class="meta">Description</span></td>
-                <td><div class="description">{{contentData.description}}</div></td>
-            </tr>
-            <tr>
-                <td><span class="meta">Status</span></td>
-                <td><div class="description">{{contentData.status}}</div></td>
-            </tr>
-            <tr>
-                <td><span class="meta">Lesson ID</span></td>
-                <td><div class="description">{{contentData.identifier}}</div></td>
-            </tr>
-            <tr>
-                <td><span class="meta">Type</span></td>
-                <td><div class="description">{{contentData.contentType}}</div></td>
-            </tr>
-            <tr>
-                <td><span class="meta">Language</span></td>
-                <td><div class="description">{{contentData.language.toString()}}</div></td>
-            </tr>
-            <tr>
-                <td><span class="meta">Grades</span></td>
-                <td><div class="description">{{contentData.gradeLevel.toString()}}</div></td>
-            </tr>
-            <tr>
-                <td><span class="meta">Age Groups</span></td>
-                <td><div class="description">{{contentData.ageGroup.toString()}}</div></td>
-            </tr>
-            <tr>
-                <td><span class="meta">Subject</span></td>
-                <td><div class="description">{{contentData.subject}}</div></td>
-            </tr>
-            <tr>
-                <td><span class="meta">Keywords</span></td>
-                <td><div class="description">{{contentData.keywords.toString()}}</div></td>
-            </tr>
-            <tr>
-                <td><span class="meta">Created On</span></td>
-                <td><div class="description">{{contentData.createdOn | dateFilterWithMDY}}</div></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+<div class="ui grid">
+    <div class="row">            
+        <div class="twelve wide column">
+            <div ng-include="'views/course/courseDiscussions.html'"></div>
+        </div>
+    </div>
 </div>

@@ -10,11 +10,11 @@
                             </b>
                             <div class="margin-top-10 " ng-init="toc.readMore = false">
                                 <span> {{ toc.courseHierachy.description | limitTo: 200 }}&nbsp;
-                                    <span class="ui link font-dark-blue" ng-if="toc.courseHierachy.description.length > 200 && toc.readMore === false"
+                                    <span class="ui font-dark-blue mouse-pointer" ng-if="toc.courseHierachy.description.length > 200 && toc.readMore === false"
                                           ng-click="toc.readMore = !toc.readMore;">Read More ...</span>
                                 </span>
                                 <span ng-if="toc.readMore"> {{ toc.courseHierachy.description}}&nbsp;
-                                    <span class="ui link font-dark-blue" ng-click="toc.readMore = false;">Read Less ...</span>
+                                    <span class="ui font-dark-blue mouse-pointer" ng-click="toc.readMore = false;">Read Less ...</span>
                                 </span>
                             </div>
                         </div>
