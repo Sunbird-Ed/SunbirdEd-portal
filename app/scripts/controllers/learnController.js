@@ -50,6 +50,11 @@ angular.module('playerApp')
                     $scope.loading = false;
                     if (successResponse && successResponse.responseCode === 'OK') {
                         learn.enrolledCourses = successResponse.result.courses;
+                        $rootScope.enrolledCourseIds = [];
+
+                        var isEnrolled = learn.enrolledCourses.forEach(function(course) {
+                            $rootScope.enrolledCourseIds.push(course.courseId);
+                        });
                     } else {
                         $log.warn('enrolledCourses', successResponse);
                         handleFailedResponse(successResponse);
