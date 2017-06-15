@@ -137,10 +137,10 @@ angular.module('playerApp')
             if (content.selectedContentType) {
                 content.filters['contentType'] = content.selectedContentType;
             }
-            if (content.selectedStatus) {
+            if (content.selectedSubject) {
                 content.filters['subject'] = content.selectedSubject;
             }
-            if (content.selectedStatus) {
+            if (content.selectedBoard) {
                 content.filters['board'] = content.selectedBoard;
             }
             content.keyword = $rootScope.searchKeyword;
