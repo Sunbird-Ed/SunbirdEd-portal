@@ -63,51 +63,50 @@ angular.module('playerApp')
             $state.go('Toc', params);
         };
 
+        content.handleSuccessResponse = function(successResponse, $event) {
+            if (successResponse.result.count > 0) {
+                //if $event is passed then search is to get only autosuggest else to get the content
+                if ($event !== undefined && content.keyword !== '') {
+                    content.autosuggest_data = $scope.selectedSearchKey === 'Course' ?
+                        successResponse.result.course :
+                        successResponse.result.content;
+                } else {
+                    content.isError = false;
+                    // $rootScope.searchKeyword = content.keyword;
+                    $rootScope.searchKey = $scope.selectedSearchKey;
+                    content.autosuggest_data = [];
+                    $rootScope.searchResult = $scope.selectedSearchKey === 'Course' ?
+                        successResponse.result.course :
+                        successResponse.result.content;
+                    console.log(' $rootScope.searchResult', $rootScope.searchResult);
+                }
+            } else if ($event === undefined) {
+                content.isError = true;
+                successResponse.responseCode = 'RESOURCE_NOT_FOUND';
+                content.data = successResponse;
+            }
+        };
         content.searchContent = function($event) {
             content.enableLoader(true);
+            console.log(' content.keyword', content.keyword);
+            console.log(' content.filters', content.filters);
 
             var req = {
                 'query': content.keyword,
                 'filters': content.filters,
                 'params': {
                     'cid': '12'
-                }
+                },
+                'limit': 20
             };
-            req.limit = 20;
-
-            content.handleSucessResponse = function(sucessResponse, $event) {
-                if (sucessResponse.result.count > 0) {
-                    //if $event is passed then search is to get only autosuggest else to get the content
-                    if ($event !== undefined && content.keyword !== '') {
-                        content.autosuggest_data = $scope.selectedSearchKey === 'Course' ?
-                            sucessResponse.result.course :
-                            sucessResponse.result.content;
-                    } else {
-                        content.isError = false;
-                        if ($scope.selectedSearchKey === 'Course') {
-                            $rootScope.searchResult = sucessResponse.result.course;
-                        } else if ($scope.selectedSearchKey === 'Resources') {
-                            $rootScope.searchResult = sucessResponse.result.content;
-                        }
-                        $rootScope.searchKeyword = content.keyword;
-                        // content.keyword = '';
-                        $rootScope.searchKey = $scope.selectedSearchKey;
-                        content.autosuggest_data = [];
-                        // content.autosuggest_data = { content: [] };
-                    }
-                } else if ($event === undefined) {
-                    content.isError = true;
-                    sucessResponse.responseCode = 'RESOURCE_NOT_FOUND';
-                    content.data = sucessResponse;
-                }
-            };
-
+            // req.limit = 20;
+            $rootScope.searchKeyword = content.keyword;
             if ($scope.selectedSearchKey === 'Resources') {
                 contentService.search(req).then(function(res) {
                     content.enableLoader(false);
 
                     if (res != null && res.responseCode === 'OK') {
-                        content.handleSucessResponse(res, $event);
+                        content.handleSuccessResponse(res, $event);
                     } else {
                         content.isError = true;
                         content.data = res;
@@ -119,7 +118,7 @@ angular.module('playerApp')
                 courseService.search(req).then(function(res) {
                     content.enableLoader(false);
                     if (res != null && res.responseCode === 'OK') {
-                        content.handleSucessResponse(res, $event);
+                        content.handleSuccessResponse(res, $event);
                     } else {
                         content.isError = true;
                         content.data = res;
@@ -131,6 +130,7 @@ angular.module('playerApp')
         };
 
         content.applyFilter = function() {
+            console.log('csdsfadsa', $rootScope.searchKeyword);
             if (content.selectedLanguage) {
                 content.filters['language'] = content.selectedLanguage;
             }
@@ -143,26 +143,23 @@ angular.module('playerApp')
             if (content.selectedStatus) {
                 content.filters['board'] = content.selectedBoard;
             }
+            content.keyword = $rootScope.searchKeyword;
             content.searchContent();
         };
         content.resetFilter = function() {
-            content.filters = {};
-            content.searchContent();
-
             $('.dropdown').dropdown('clear');
+            content.filters = {};
+            content.keyword = $rootScope.searchKeyword;
+            content.searchContent();
         };
         //to show/hide in-search loading bar
         content.enableLoader = function(isEnabled) {
             if (isEnabled) {
                 $('#search-input-container').addClass('loading');
-                content.autosuggest_data = { content: [] };
+                content.autosuggest_data = [];
             } else {
                 $('#search-input-container').removeClass('loading');
             }
-        };
-        //toggle between grid and listview
-        content.toggleView = function(isList) {
-            content.listView = isList;
         };
         // to apply star rating and more.. popup once content is ready
         content.loadRating = function() {
