@@ -63,8 +63,8 @@ angular
                 controller: 'LearnCtrl as learn',
                 onEnter: function($rootScope) {
                     $rootScope.searchKey = 'Course';
+                    $rootScope.searchKeyword = '';
                     $rootScope.isLearnPage = true;
-
                 },
                 onExit: function($rootScope) {
                     $rootScope.isLearnPage = false;
@@ -83,7 +83,7 @@ angular
                 onEnter: function($rootScope) {
                     $rootScope.searchKey = 'Resources';
                     $rootScope.isResourcesPage = true;
-
+                    $rootScope.searchKeyword = '';
                 },
                 onExit: function($rootScope) {
                     $rootScope.isResourcesPage = false;
