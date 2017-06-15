@@ -69,7 +69,8 @@ angular.module('playerApp')
             $rootScope.isSearchError = isSearchError;
             // $scope.$apply();
             $timeout(function() {
-                $scope.isSearchError = {};
+                $rootScope.isSearchError = {};
+                isSearchError.isError = false;
             }, 2000);
         }
         content.handleSuccessResponse = function(successResponse, $event) {
