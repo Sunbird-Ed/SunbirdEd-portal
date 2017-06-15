@@ -18,7 +18,8 @@ angular
         'ui.pagedown',
         'pdf',
         'pascalprecht.translate',
-        'ngSanitize'
+        'ngSanitize',
+        'Scope.safeApply'
     ])
     .config(function($stateProvider, $urlRouterProvider, $locationProvider, $translateProvider, $provide) {
         $provide.provider('setResourceBundle', function() {
