@@ -43,6 +43,13 @@ app.get('/ekContentEditor', function (req, res) {
         }
     }));
 
+    app.use('/content/preview/*', proxy(ekstep, {
+
+        proxyReqPathResolver: function (req) {
+            return require('url').parse(ekstep + req.originalUrl).path;
+        }
+    }));
+
     app.use('/action/*', proxy(ekstep, {
 
         proxyReqPathResolver: function (req) {
@@ -53,5 +60,5 @@ app.get('/ekContentEditor', function (req, res) {
 app.get('/*', function(req, res) {
     res.sendFile(__dirname+'/index.html');
 });
-app.listen(7000);
-console.log('app running on port 7000');
+app.listen(80);
+console.log('app running on port 80');
