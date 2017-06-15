@@ -7,6 +7,7 @@ angular.module('playerApp')
         toc.lectureView = $stateParams.lectureView;
         toc.courseId = $stateParams.courseId;
         toc.courseType = $stateParams.courseType;
+        $rootScope.courseId = $stateParams.courseId;
         $scope.enableCloseButton = (toc.lectureView === 'yes') ? 'false' : 'true';
         console.log($rootScope.contentDetails);
         toc.showAllNoteList = false;
@@ -95,6 +96,7 @@ angular.module('playerApp')
             toc.previousPlayListName = (toc.itemIndex - 1) > -1 ? toc.playListContent[toc.itemIndex - 1].name : "No content to play";
             toc.nextPlayListName = (toc.itemIndex + 1) < toc.playList.length ? toc.playListContent[toc.itemIndex + 1].name : "No content to play";
             if (toc.courseType === "ENROLLED_COURSE") {
+                $rootScope.contentId = contentId;
                 $scope.contentPlayer.contentData = toc.playListContent[toc.itemIndex];
                 $scope.contentPlayer.isContentPlayerEnabled = true;
             }
