@@ -1023,6 +1023,9 @@ ul.subList-padding {
   font-size: 10px !important;
   margin: 15px !important;
 }
+.toc-note-content {
+  margin-top: 46px !important;
+}
 .homeCard.ui.card {
   max-width: 100%;
   position: relative;
