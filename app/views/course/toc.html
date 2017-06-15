@@ -48,7 +48,7 @@
                             </div>
                         </div>
                         <div class="ui fitted divider margin-bottom-10 margin-top-10"></div>
-                        <div ng-include="'views/course/courseDiscussions.html'"></div>
+                        <course-discussions  showaskquestion="true"></course-discussions>
                     </div>
                     <div class='four wide column'>
                         <note-card shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false"></note-card>
@@ -98,12 +98,12 @@
                     </div>
                 </div>
             </div>
-        </div> 
+        </div>
         <div class="two wide column"></div>
         <div class="ui grid">
             <div class="row">            
                 <div class="eight wide column">
-                    <div ng-include="'views/course/courseDiscussions.html'"></div>
+                    <course-discussions  showaskquestion="false"></course-discussions>
                 </div>
                 <div class="four wide column">
                     <note-card shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false"></note-card>

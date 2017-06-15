@@ -57,6 +57,7 @@
     "lint": "eslint --ignore-path .gitignore ."
   },
   "dependencies": {
+    "angularjs-scope.safeapply": "0.0.1",
     "eslint": "^3.19.0",
     "express": "^4.15.3",
     "express-http-proxy": "^1.0.3",
