@@ -25,6 +25,9 @@
 .text-decoration-underline {
   text-decoration: underline !important;
 }
+.float-ContentLeft {
+  float: left !important;
+}
 .border-bottom {
   border-bottom: 1px solid #E6E7E8 !important;
 }
@@ -390,7 +393,7 @@
   padding-top: 1.5rem;
 }
 .padding-top-circular-human-icon {
-  padding-top: 5% !important;
+  padding-top: 0.9rem !important;
 }
 .font-size-header-icon {
   font-size: 2em !important;
