@@ -10,7 +10,7 @@
 angular.module('playerApp')
     .controller('ContentCtrl', function(contentService, courseService, $scope, $timeout, $rootScope, $stateParams, $state) {
         var content = this;
-
+        $rootScope.isSearchError = false;
         content.keyword = '';
         content.filters = {};
         // content.filters = { 'status': ['Live'], 'contentType': ['Story', 'Worksheet', 'Game', 'Collection', 'TextBook'] };
@@ -20,6 +20,7 @@ angular.module('playerApp')
         });
         $scope.$watch('searchKey', function() {
             $scope.selectedSearchKey = $rootScope.searchKey;
+            $rootScope.isSearchError = false;
             content.filters = {};
             content.keyword = '';
         });
@@ -29,8 +30,6 @@ angular.module('playerApp')
         $scope.close = function() {
             $rootScope.searchResult = [];
         };
-
-        console.log('$scope.selectedSearchKey', $scope.selectedSearchKey);
 
         content.languages = [
             'Bengali', 'English', 'Gujarati', 'Hindi', 'Kannada', 'Marathi', 'Punjabi', 'Tamil', 'Telugu'
@@ -63,6 +62,17 @@ angular.module('playerApp')
             $state.go('Toc', params);
         };
 
+        function handleFailedResponse(errorResponse) {
+            var isSearchError = {};
+            isSearchError.isError = true;
+            isSearchError.message = '';
+            isSearchError.responseCode = errorResponse.responseCode;
+            $rootScope.isSearchError = isSearchError;
+            // $scope.$apply();
+            $timeout(function() {
+                $scope.isSearchError = {};
+            }, 2000);
+        }
         content.handleSuccessResponse = function(successResponse, $event) {
             if (successResponse.result.count > 0) {
                 //if $event is passed then search is to get only autosuggest else to get the content
@@ -71,25 +81,24 @@ angular.module('playerApp')
                         successResponse.result.course :
                         successResponse.result.content;
                 } else {
-                    content.isError = false;
+                    // content.isError = false;
                     // $rootScope.searchKeyword = content.keyword;
                     $rootScope.searchKey = $scope.selectedSearchKey;
                     content.autosuggest_data = [];
                     $rootScope.searchResult = $scope.selectedSearchKey === 'Course' ?
                         successResponse.result.course :
                         successResponse.result.content;
-                    console.log(' $rootScope.searchResult', $rootScope.searchResult);
                 }
-            } else if ($event === undefined) {
-                content.isError = true;
+            } else {
+                $rootScope.searchResult = [];
+
                 successResponse.responseCode = 'RESOURCE_NOT_FOUND';
-                content.data = successResponse;
+                handleFailedResponse(successResponse);
             }
         };
+
         content.searchContent = function($event) {
             content.enableLoader(true);
-            console.log(' content.keyword', content.keyword);
-            console.log(' content.filters', content.filters);
 
             var req = {
                 'query': content.keyword,
@@ -104,15 +113,13 @@ angular.module('playerApp')
             if ($scope.selectedSearchKey === 'Resources') {
                 contentService.search(req).then(function(res) {
                     content.enableLoader(false);
-
                     if (res != null && res.responseCode === 'OK') {
                         content.handleSuccessResponse(res, $event);
                     } else {
-                        content.isError = true;
-                        content.data = res;
+                        handleFailedResponse(res);
                     }
                 }).catch(function(error) {
-                    content.data = error;
+                    handleFailedResponse(error);
                 });
             } else if ($scope.selectedSearchKey === 'Course') {
                 courseService.search(req).then(function(res) {
@@ -120,17 +127,15 @@ angular.module('playerApp')
                     if (res != null && res.responseCode === 'OK') {
                         content.handleSuccessResponse(res, $event);
                     } else {
-                        content.isError = true;
-                        content.data = res;
+                        handleFailedResponse(res);
                     }
                 }).catch(function(error) {
-                    content.data = error;
+                    handleFailedResponse(error);
                 });
             }
         };
 
         content.applyFilter = function() {
-            console.log('csdsfadsa', $rootScope.searchKeyword);
             if (content.selectedLanguage) {
                 content.filters['language'] = content.selectedLanguage;
             }
@@ -149,6 +154,10 @@ angular.module('playerApp')
         content.resetFilter = function() {
             $('.dropdown').dropdown('clear');
             content.filters = {};
+            content.selectedLanguage = '';
+            content.selectedContentType = '';
+            content.selectedSubject = '';
+            content.selectedBoard = '';
             content.keyword = $rootScope.searchKeyword;
             content.searchContent();
         };
