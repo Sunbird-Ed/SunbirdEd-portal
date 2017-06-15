@@ -1,5 +1,5 @@
 <div apply-script class="ui dynamic-section-card margin-top-20" ng-if="homeCtrl.recommendedCourse.length > 0">
-    <h4 class="ui header ">Recommended<a class="ui red circular inline label ">{{homeCtrl.recommendedCourse.length}}</a></h4>
+    <h4 class="ui header ">Recommended</h4>
     <div class="regular slider ">
         <div ng-repeat=" item in homeCtrl.recommendedCourse track by $index" ng-init="$last && homeCtrl.loadCarousel()" ng-click="homeCtrl.openCourseView(toDoCourse.courseId, 'OTHER_COURSE')">
 
