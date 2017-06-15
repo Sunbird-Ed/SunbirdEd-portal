@@ -248,7 +248,7 @@
                 "host": "https://dev.ekstep.in",
                 "apislug": "/api"
             },
-            "baseURL": "http://localhost:7000/assets/public/preview/preview.html?webview=true"
+            "baseURL": "/content/preview/preview.html?webview=true"
         }
     }
 }
