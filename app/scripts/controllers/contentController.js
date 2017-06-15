@@ -10,7 +10,7 @@
 angular.module('playerApp')
     .controller('ContentCtrl', function(contentService, courseService, $scope, $timeout, $rootScope, $stateParams, $state) {
         var content = this;
-        $rootScope.isSearchError = false;
+
         content.keyword = '';
         content.filters = {};
         // content.filters = { 'status': ['Live'], 'contentType': ['Story', 'Worksheet', 'Game', 'Collection', 'TextBook'] };
@@ -20,7 +20,6 @@ angular.module('playerApp')
         });
         $scope.$watch('searchKey', function() {
             $scope.selectedSearchKey = $rootScope.searchKey;
-            $rootScope.isSearchError = false;
             content.filters = {};
             content.keyword = '';
         });
@@ -81,13 +80,12 @@ angular.module('playerApp')
                         successResponse.result.course :
                         successResponse.result.content;
                 } else {
-                    // content.isError = false;
-                    // $rootScope.searchKeyword = content.keyword;
                     $rootScope.searchKey = $scope.selectedSearchKey;
                     content.autosuggest_data = [];
                     $rootScope.searchResult = $scope.selectedSearchKey === 'Course' ?
                         successResponse.result.course :
                         successResponse.result.content;
+                    console.log('$rootScope.searchResult', JSON.stringify($rootScope.searchResult, null, 2));
                 }
             } else {
                 $rootScope.searchResult = [];
