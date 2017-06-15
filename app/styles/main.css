@@ -340,6 +340,10 @@
 .height-100 {
   height: 100% !important;
 }
+.margin-left-right-20 {
+  margin-left: 20px !important;
+  margin-right: 20px !important;
+}
 .header-container {
   margin-left: 1px !important;
   border-bottom: 5px solid #0099CC !important;
@@ -1108,7 +1112,8 @@ ul.subList-padding {
 .landing-grid {
   background-color: #fff;
   padding: 50px;
-  border-bottom: 1px solid #cec5c5;
+  border-bottom: 1px solid rgba(206, 197, 197, 0.79);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.075);
 }
 .image-grid {
   margin: 40px 0 40px 0;
