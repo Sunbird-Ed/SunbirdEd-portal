@@ -115,5 +115,10 @@ angular
                 url: '/community',
                 templateUrl: 'views/community/communityList.html',
                 controller: 'CommunityController as commCtrl'
+            })
+            .state('Profile', {
+                url: '/profile',
+                templateUrl: 'views/profile/profile.html',
+                controller: 'ProfileController as profileCtrl'
             });
     });
