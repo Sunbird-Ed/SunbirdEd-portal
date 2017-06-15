@@ -23,14 +23,14 @@
                             </span>
                         </div>
                     </div>
-                    <div ng-if="showAddNoteButton || $index < quantityOfNotes - 1" class="ui clearing divider"></div>
+                    <div ng-if="($index < quantityOfNotes - 1) && notesList.length > 1" class="ui clearing divider"></div>
                 </div>
             </div>
             <div class="ui top attached button font-dark-blue" tabindex="0" ng-if="showAddNoteButton"
                  ng-click="add.showCreateNote = !add.showCreateNote;  showAddNoteModal()">
-                ADD A NOTE
-            </div>
+                            ADD A NOTE
         </div>
+    </div>
     </div>
     <div ng-if="update.showUpdateNote">
         <div class="ui modal" id="updateModal">
@@ -48,10 +48,10 @@
                     </div> 
                 </div>
                 <div class="ui fluid icon input">
-                    <input type="text" placeholder="Title" name="title" ng-model="update.metaData.title" />
+                    <input type="text" placeholder="Title" name="title" ng-model="update.metaData.title" tabindex="1"/>
                 </div>
                 <div class="content editor"> 
-                    <pagedown-editor content="update.metaData.note" show-preview="false"></pagedown-editor>
+                    <pagedown-editor content="update.metaData.note" show-preview="false" tabindex="2"></pagedown-editor>
                 </div>
                 <div class="actions"> 
                     <button class="ui primary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="updateNote(update.metaData)"  
@@ -63,5 +63,5 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    </div> 
+</div> 

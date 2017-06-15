@@ -8,33 +8,16 @@
  * Controller of the studioApp
  */
 angular.module('playerApp')
-    .controller('NoteCtrl', function($timeout, $scope, noteService, config, $rootScope) {
+    .controller('NoteCtrl', function($timeout, $scope, noteService, config, $rootScope, $window) {
 
-        var userId = "1234567";
-        var courseId = "do_11225192024707891216";
+        var userId = $window.localStorage.getItem('user') ? JSON.parse($window.localStorage.getItem('user')).userId : $rootScope.userId;
         $scope.update = {};
         $scope.add = {};
         $scope.update.showUpdateNote = false;
+        $scope.add.showCreateNote = false;
         $scope.notesList = [];
         $scope.quantityOfNotes = 2;
-
-        $scope.initializeUIComponent = function() {
-//            $('#notesList').css({ 'height': ($(document).height()) + 'px' });
-            //                $timeout(function () {
-            //                    $('#searchFilterAccordian')
-            //                            .accordion();
-            //
-            //                    $('.dropdown').dropdown({
-            //                        useLabels: false,
-            //                        forceSelection: false,
-            //                        label: {
-            //                            duration: 0
-            //                        },
-            //                        debug: true,
-            //                        performance: true
-            //                    });
-            //                }, 1000);
-        };
+        var contentId = $scope.$parent.$parent.$parent.contentPlayer.isContentPlayerEnabled ? $scope.$root.contentId : '';
 
         /**
          * This function call search api and bind data
@@ -47,6 +30,7 @@ angular.module('playerApp')
                     if (response && response.responseCode === "OK") {
                         $scope.error = {};
                         $scope.notesList = response.result.note;
+                        $scope.$safeApply();
                     } else {
                         handleFailedResponse(config.MESSAGES.NOTES.SEARCH.FAILED);
                     }
@@ -64,7 +48,9 @@ angular.module('playerApp')
             showLoaderWithMessage(true, "", config.MESSAGES.NOTES.SEARCH.START);
             var request = {
                 filters: {
-                    userId: userId
+                    userId: userId,
+                    courseId: $scope.$root.courseId,
+                    contentId: contentId
                 },
                 sort_by: {
                     "lastUpdatedOn": "desc"
@@ -110,7 +96,8 @@ angular.module('playerApp')
                     note: noteData.note,
                     userId: userId,
                     title: noteData.title,
-                    courseId: courseId
+                    courseId: $scope.$root.courseId,
+                    contentId: contentId
                 }
             };
 
@@ -118,8 +105,7 @@ angular.module('playerApp')
             noteService.create(requestData).then(function(response) {
                 if (response && response.responseCode === "OK") {
                     $scope.error = {};
-                    $scope.notesList = $scope.notesList ? $scope.notesList : [];
-                    $scope.notesList.push(response.result.note);
+                    $scope.ngInit();
                     $scope.add.showCreateNote = false;
                     $scope.add = {};
                     $scope.add.showModalError = false;
@@ -199,7 +185,9 @@ angular.module('playerApp')
             var request = {
                 query: searchText,
                 filters: {
-                    userId: userId
+                    userId: userId,
+                    courseId: $scope.$root.courseId,
+                    contentId: contentId
                 },
                 sort_by: {
                     "lastUpdatedOn": "desc"
@@ -226,11 +214,11 @@ angular.module('playerApp')
                 $('#addNoteModalInLectureView').modal({
                     onHide: function() {
                         $scope.add = {};
-                    },
+		},
                     onShow: function() {
                         $scope.add.title = '';
                         $scope.add.note = '';
-                    }
+			}
                 }).modal('show');
             }, 100);
         };
