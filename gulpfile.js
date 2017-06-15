@@ -56,7 +56,7 @@ var paths = {
         player.app + '/thirdparty/bower_components/angular-pdf-viewer/dist/angular-pdf-viewer.min.js',
         player.app + '/thirdparty/bower_components/angular-translate/angular-translate.js',
         player.app + '/thirdparty/bower_components/angular-sanitize/angular-sanitize.js',
-
+        player.app + '/thirdparty/bower_components/ngSafeApply/index.js'
     ],
     karma: 'karma.conf.js',
     views: {
