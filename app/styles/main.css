@@ -619,6 +619,10 @@
 .rightSideSectionCards.ui.card {
   width: 100% !important;
 }
+.imageInCardsResponsive {
+  overflow: hidden !important;
+  height: 150px !important;
+}
 .footer1 {
   position: fixed !important;
   bottom: 0 !important;
@@ -1092,11 +1096,6 @@ html {
 }
 .sidebar {
   position: fixed !important;
-}
-img {
-  width: 100px;
-  height: 100px;
-  padding: 5px;
 }
 .login-modal-text-align {
   text-align: center;
