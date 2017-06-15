@@ -1,24 +1,30 @@
-<div apply-script ng-controller="ContentCtrl as content">
-    <div ng-if="searchResult.length > 0  && !contentPlayer.isContentPlayerEnabled">
-        <div class="ui clearing segment content-player-header" style="    background: transparent;
-    box-shadow: none;">
-            <div class="ui  left floated header margin-auto">
-                <p style="color:rgb(113, 113, 113);">Showing all the result of "{{searchKeyword? searchKeyword:'All'}}" in"{{searchKey }}"</p>
-            </div>
-            <h5 class="ui right floated basic icon circular button" ng-click="close()">
-                <i class="ui remove icon"></i>
-            </h5>
-        </div>
+<div class="ui grid">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+        <div apply-script ng-controller="ContentCtrl as content">
+            <div ng-if="searchResult.length > 0  && !contentPlayer.isContentPlayerEnabled">
+                <div class="ui clearing segment content-player-header" style="    background: transparent;
+            box-shadow: none;">
+                    <div class="ui  left floated header margin-auto">
+                        <p style="color:rgb(113, 113, 113);">Showing all the result of "{{searchKeyword? searchKeyword:'All'}}" in"{{searchKey }}"</p>
+                    </div>
+                    <h5 class="ui right floated basic icon circular button" ng-click="close()">
+                        <i class="ui remove icon"></i>
+                    </h5>
+                </div>
 
-        <div class=" ui stackable four column grid dynamic-section-card ">
-            <div class="column " ng-repeat="item in searchResult track by $index " ng-init="$last && content.loadRating() ">
-                <div class="slider link " ng-include=" 'views/common/card.html' " ng-click="contentPlayer.isContentPlayerEnabled=! contentPlayer.isContentPlayerEnabled; contentPlayer.contentData=item "></div>
+                <div class=" ui stackable four column grid dynamic-section-card ">
+                    <div class="column " ng-repeat="item in searchResult track by $index " ng-init="$last && content.loadRating() ">
+                        <div class="slider link " ng-include=" 'views/common/card.html' " ng-click="contentPlayer.isContentPlayerEnabled=! contentPlayer.isContentPlayerEnabled; contentPlayer.contentData=item "></div>
+                    </div>
+                </div>
+            </div>
+            <content-player visibility="contentPlayer.isContentPlayerEnabled " body="contentPlayer.contentData " isshowmetaview="true " isheader="true " isclose="true " height="10 " width="100 " ispercentage="true "></content-player>
+
+            <div ng-if="isSearchError.isError">
+                <error-message data={{isSearchError}}></error-message>
             </div>
         </div>
     </div>
-    <content-player visibility="contentPlayer.isContentPlayerEnabled " body="contentPlayer.contentData " isshowmetaview="true " isheader="true " isclose="true " height="10 " width="100 " ispercentage="true "></content-player>
-
-    <div ng-if="isSearchError.isError">
-        <error-message data={{isSearchError}}></error-message>
-    </div>
+    <div class="one wide column"></div>
 </div>
