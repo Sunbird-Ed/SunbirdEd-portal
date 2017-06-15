@@ -40,7 +40,7 @@ angular.module('playerApp')
             promises.push(userService.resourceBundle($rootScope.language, 'error'));
             $q.all(promises).then(function(results) {
                 results.forEach(function(res) {
-                    if (res.responseCode == 'OK' && res.result) {
+                    if (res && res.responseCode == 'OK' && res.result) {
                         $rootScope.translationBundle = $rootScope.mergeObjects($rootScope.translationBundle, res.result[$rootScope.language]);
                         $rootScope.addTranslation($rootScope.language, $rootScope.translationBundle);
                     }
@@ -81,52 +81,52 @@ angular.module('playerApp')
         // $('.small.modal')
         //     .modal('show')
         // ;
-        $scope.$watch(function() {
-            return $state.$current.name;
-        }, function(newState, oldState) {
-            if (newState.toLowerCase() === 'course' || newState.toLowerCase() === 'toc') {
-                $rootScope.displayCourseHeader = true;
-                $scope.courseId = $stateParams.courseId;
-                $rootScope.sideMenuData = [{
-                        'icon': '',
-                        'name': 'COURSE SCHEDULE',
-                        'children': [],
-                        'link': '/toc/' + $scope.courseId + '/no'
-                    },
-                    {
-                        'icon': '',
-                        'name': 'LECTURE VIEW',
-                        'children': [],
-                        'link': '/toc/' + $scope.courseId + '/yes'
-                    },
-                    {
-                        'icon': '',
-                        'name': 'NOTES',
-                        'children': [],
-                        'link': '/note'
-                    }
-                ];
-            } else {
-                $rootScope.displayCourseHeader = false;
-                $rootScope.sideMenuData = [{
-                        'icon': 'large add circle icon',
-                        'name': 'Add Course',
-                        'children': [],
-                        'link': '#'
-                    },
-                    {
-                        'icon': 'large bookmark icon',
-                        'name': 'My Bookmarks',
-                        'children': [],
-                        'link': '#'
-                    },
-                    {
-                        'icon': 'large search icon',
-                        'name': 'Explore',
-                        'children': [],
-                        'link': '#'
-                    }
-                ];
-            }
-        });
+//        $scope.$watch(function() {
+//            return $state.$current.name;
+//        }, function(newState, oldState) {
+//            if (newState.toLowerCase() === 'course' || newState.toLowerCase() === 'toc') {
+//                $rootScope.displayCourseHeader = true;
+//                $scope.courseId = $stateParams.courseId;
+//                $rootScope.sideMenuData = [{
+//                        'icon': '',
+//                        'name': 'COURSE SCHEDULE',
+//                        'children': [],
+//                        'link': '/toc/' + $scope.courseId + '/no'
+//                    },
+//                    {
+//                        'icon': '',
+//                        'name': 'LECTURE VIEW',
+//                        'children': [],
+//                        'link': '/toc/' + $scope.courseId + '/yes'
+//                    },
+//                    {
+//                        'icon': '',
+//                        'name': 'NOTES',
+//                        'children': [],
+//                        'link': '/note'
+//                    }
+//                ];
+//            } else {
+//                $rootScope.displayCourseHeader = false;
+//                $rootScope.sideMenuData = [{
+//                        'icon': 'large add circle icon',
+//                        'name': 'Add Course',
+//                        'children': [],
+//                        'link': '#'
+//                    },
+//                    {
+//                        'icon': 'large bookmark icon',
+//                        'name': 'My Bookmarks',
+//                        'children': [],
+//                        'link': '#'
+//                    },
+//                    {
+//                        'icon': 'large search icon',
+//                        'name': 'Explore',
+//                        'children': [],
+//                        'link': '#'
+//                    }
+//                ];
+//            }
+//        });
     });
