@@ -22,7 +22,7 @@ angular.module('playerApp')
                     maxRating: 5
                 }).rating('disable', true);
 
-            $('course-progress').progress();
+            //$('course-progress').progress();
         };
 
         function handleFailedResponse(errorResponse) {
