@@ -1077,9 +1077,18 @@ ul.subList-padding {
   transition: background .1s ease,color .1s ease;
 }
 .accordian-HomeLeft-text {
-  font-size: 16px !important;
+  font-size: 14px !important;
   color: black !important;
-  float: right !important;
+  padding-left: 77% !important;
+}
+.accordian-homeIcon {
+  color: black !important;
+}
+.ui.styled.accordion .active.title .angle.down.icon {
+  background: 0 0;
+  color: rgba(0, 0, 0, 0.95);
+  -webkit-transform: rotate(270deg);
+  transform: rotate(270deg);
 }
 .landingPageCards.ui.card {
   max-width: 100%;
