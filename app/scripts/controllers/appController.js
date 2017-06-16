@@ -29,6 +29,9 @@ angular.module('playerApp')
                 $('.popup-button').popup();
             };
             $rootScope.searchKey = '';
+            $rootScope.roundOffNumber=function(number){
+                return parseInt(Math.round(number));
+            }
             $scope.$on('$locationChangeSuccess', function () {
                 $rootScope.currentPath = $location.path();
             });

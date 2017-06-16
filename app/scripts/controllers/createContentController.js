@@ -8,7 +8,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('createContentCtrl', function($scope, contentService, $timeout, $rootScope, $window, $sce, config) {
+    .controller('createContentCtrl', function($scope, contentService, $timeout, $rootScope, $window, $sce, config, $location) {
         $scope.showContentEditor = false;
         $scope.iconUpdate = false;
         $scope.formStep = 0;
@@ -191,7 +191,8 @@ angular.module('playerApp')
                 window.context = config.ekstep_CE_config.context;
                 window.context.content_id = $scope.contentId;
                 window.config = config.ekstep_CE_config.config;
-                $scope.ekURL = $sce.trustAsResourceUrl("http://localhost:7000/ekContentEditor?contentId="+$scope.contentId)
+                var baseURL = $location.protocol() + '://' + $location.host() + ':' + $location.port();
+                $scope.ekURL = $sce.trustAsResourceUrl(baseURL+"/ekContentEditor?contentId="+$scope.contentId)
             }
         }
 

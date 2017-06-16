@@ -150,15 +150,15 @@ angular.module('playerApp').controller('contentPlayerCtrl', function(noteService
         $scope.showMetaData = $scope.isshowmetaview;
         if ($scope.contentData.mimeType === 'application/vnd.ekstep.ecml-archive' || $scope.contentData.mimeType === 'application/vnd.ekstep.html-archive') {
             $scope.showIFrameContent = true;
-            var iFrameSrc = config.ekstep_CE_config.baseURL;
+            var iFrameSrc = config.ekstep_CP_config.baseURL;
             $timeout(function() {
                 var previewContentIframe = $('#contentViewerIframe')[0];
                 previewContentIframe.src = iFrameSrc;
                 previewContentIframe.onload = function() {
                     var configuration = {};
-                    configuration.context = config.ekstep_CE_config.context;
+                    configuration.context = config.ekstep_CP_config.context;
                     configuration.context.contentId = $scope.contentData.identifier;
-                    configuration.config = config.ekstep_CE_config.config;
+                    configuration.config = config.ekstep_CP_config.config;
                     previewContentIframe.contentWindow.initializePreview(configuration);
                 };
             }, 1000);
