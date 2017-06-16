@@ -4,6 +4,9 @@
 .padding-top-50 {
   margin-top: 50px !important;
 }
+.padding-top-10 {
+  padding-top: 0.625rem !important;
+}
 .margin-top-10 {
   margin-top: 0.625rem !important;
 }
@@ -27,6 +30,12 @@
 }
 .float-ContentLeft {
   float: left !important;
+}
+.float-ContentRight {
+  float: right !important;
+}
+.margin-top-30 {
+  margin-top: 30px !important;
 }
 .border-bottom {
   border-bottom: 1px solid #E6E7E8 !important;
@@ -1055,6 +1064,22 @@ ul.subList-padding {
   transition: box-shadow 0.1s ease, -webkit-transform 0.1s ease;
   transition: box-shadow 0.1s ease, transform 0.1s ease;
   z-index: '';
+}
+.homeHeaderPadding {
+  padding: 1em !important;
+}
+.ui.styled.accordion .removeline.title {
+  margin: 0;
+  padding: 5px 0px 0px 0px !important;
+  color: rgba(0, 0, 0, 0.4);
+  font-weight: 700;
+  border-top: none !important;
+  transition: background .1s ease,color .1s ease;
+}
+.accordian-HomeLeft-text {
+  font-size: 16px !important;
+  color: black !important;
+  float: right !important;
 }
 .landingPageCards.ui.card {
   max-width: 100%;
