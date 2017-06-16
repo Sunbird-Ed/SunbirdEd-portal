@@ -8,7 +8,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-        .controller('AppCtrl', function ($scope, $state, $stateParams, $rootScope, setResourceBundle, $translate, userService, $q, config, $location) {
+        .controller('AppCtrl', function ($scope, $state, $stateParams, $rootScope, setResourceBundle, $translate, userService, $q, config, $location,$timeout) {
             $rootScope.language = $rootScope.userLanguage || config.SITE.DEFAULT_LANGUAGE;
             $rootScope.translationBundle = {};
             $rootScope.$on('$viewContentLoaded', function () {
@@ -29,6 +29,11 @@ angular.module('playerApp')
                 $('.popup-button').popup();
             };
             $rootScope.searchKey = '';
+            $rootScope.loadProgress=function(){
+                $timeout(function(){       
+                     $('.course-progress').progress();
+                },500);               
+            }
             $rootScope.roundOffNumber=function(number){
                 return parseInt(Math.round(number));
             }

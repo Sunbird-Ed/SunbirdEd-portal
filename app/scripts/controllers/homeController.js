@@ -104,10 +104,10 @@ angular.module('playerApp')
         };
         homeCtrl.otherSection();
 
-        homeCtrl.openCourseView = function(courseId, courseType) {
+        homeCtrl.openCourseView = function(courseId, courseType,courseProgress,courseTotal) {
             // courseId = 'do_112265805439688704113';
             var showLectureView = 'no';
-            var params = { courseType: courseType, courseId: courseId, lectureView: showLectureView };
+            var params = { courseType: courseType, courseId: courseId, lectureView: showLectureView,progress:courseProgress,total:courseTotal };
             $state.go('Toc', params);
         };
 

@@ -11,7 +11,7 @@
                     <span> 1,870 Learners</span> | <div apply-script class="courseHeader-rating ui mini star rating" data-rating="3"></div>
                 </div>
                 <div class="four wide column" ng-if="toc.courseType === 'ENROLLED_COURSE'">
-                    <div><p class="text-align-center">Your Progress {{roundOffNumber((courseProgress*100)/courseTotal)}}%</p></div>
+                    <div><p class="text-align-center">Your Progress {{roundOffNumber((courseProgress*100)/courseTotal)| number: 0 || 0}}%</p></div>
                     <button class="fluid blue right floated  ui button courseHeaderButton">
                         RESUME COURSE  <i class="caret right icon"></i>
                     </button>
@@ -24,8 +24,8 @@
         <div class="one wide column"></div>
     </div>
 </div>
-<div apply-script>
-    <div  class="ui tiny progress course-progress" data-value="{{courseProgress}}" data-percent="50" data-total="{{courseTotal}}" ng-class="{orange:(courseTotal - courseProgress) <= (courseTotal / 2),red:(courseTotal - courseProgress) > (courseTotal / 2)}">
+<div ng-init="loadProgress()" ng-if="courseProgress">
+    <div  class="ui tiny progress course-progress" data-total="{{courseTotal}}" data-value="{{courseProgress}}" ng-class="{orange:(courseTotal - courseProgress) <= (courseTotal / 2),red:(courseTotal - courseProgress) > (courseTotal / 2)}">
         <div class="bar"></div>
     </div>
 </div>

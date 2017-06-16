@@ -28,6 +28,9 @@ angular.module('playerApp')
             var url = config.URL.BASE + config.URL.COURSE.HIERARCHY + "/" + courseId;
             return httpService.get(url);
         }
+        function enrollUserToCourse(req){
+            
+        }
 
         return {
             courseSchedule: getUserCourseSchedule,
