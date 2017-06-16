@@ -68,6 +68,7 @@ angular
                 },
                 onExit: function($rootScope) {
                     $rootScope.isLearnPage = false;
+                    $("#content-search-filter-accordion").accordion('close',0);
                 },
                 resolve: {
                     isLoggedIn: function(authService) {
@@ -87,6 +88,7 @@ angular
                 },
                 onExit: function($rootScope) {
                     $rootScope.isResourcesPage = false;
+                    $("#content-search-filter-accordion").accordion('close',0);
                 },
                 resolve: {
                     isLoggedIn: function(authService) {
