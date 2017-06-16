@@ -60,5 +60,5 @@ app.get('/ekContentEditor', function (req, res) {
 app.get('/*', function(req, res) {
     res.sendFile(__dirname+'/index.html');
 });
-app.listen(80);
-console.log('app running on port 80');
+app.listen(8080);
+console.log('app running on port 8080');
