@@ -108,7 +108,7 @@ angular
             .state('Toc', {
                 url: '/toc',
                 templateUrl: 'views/course/toc.html',
-                params: { courseType: null, courseId: null, lectureView: null },
+                params: { courseType: null, courseId: null, lectureView: null,progress:null,total:null },
                 controller: 'courseScheduleCtrl as toc'
             })
             .state('Community', {

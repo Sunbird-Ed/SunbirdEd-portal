@@ -12,6 +12,7 @@ angular.module('playerApp')
             restrict: 'A',
             link: function(scope, element, attrs) {
                 $('.ui .progress').progress();
+                $('.course-progress').progress();
                 $('.popup-button').popup();
                 $('#content-search-filter-accordion').accordion();
                 $('.ui.accordion').accordion({ exclusive: false });
