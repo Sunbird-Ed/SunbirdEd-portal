@@ -237,7 +237,7 @@
                 "enableCorePlugin": false
             }
         },
-        "ekstep_CE_config": {
+        "ekstep_CP_config": {
             "context": {
                 "authToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI1OWFiMmE2MDc1YzI0ODU2YjhiYjIzMjg4ZDdhZGNmNSJ9.RLouNX7RQ0VkVv2BYqNtH12D0IzKnBJ_I46xEORwHsU",
                 "mode": "preview"

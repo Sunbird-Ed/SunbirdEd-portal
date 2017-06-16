@@ -18,7 +18,7 @@ angular.module('playerApp')
                 slidesToShow: 4,
                 slidesToScroll: 4
             });
-            $('.course-progress').progress();
+            $('.ui .progress .course-progress').progress();
             $('.ui.rating')
                 .rating({
                     maxRating: 5
