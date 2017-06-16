@@ -41,7 +41,7 @@ angular.module('playerApp').directive('contentPlayer', function() {
     };
 });
 
-angular.module('playerApp').controller('contentPlayerCtrl', function(noteService, $scope, $sce, contentService, pdfDelegate, $timeout, config) {
+angular.module('playerApp').controller('contentPlayerCtrl', function(noteService, $rootScope, $scope, $sce, contentService, pdfDelegate, $timeout, config) {
     var player = this;
     $scope.isClose = $scope.isclose;
     $scope.isHeader = $scope.isheader;
@@ -66,6 +66,30 @@ angular.module('playerApp').controller('contentPlayerCtrl', function(noteService
             }).modal('show');
         }, 100);
     };
+    /* This function helps to show loader or any error message at the time of api call.
+     * @param {Boolean} showMetaLoader
+     * @param {String} messageClass
+     * @param {String} message
+     */
+    function showLoaderWithMessage(showMetaLoader, messageClass, message) {
+        var error = {};
+        error.showError = true;
+        error.showMetaLoader = showMetaLoader;
+        error.messageClass = messageClass;
+        error.message = message;
+        $scope.error = error;
+    }
+
+    /**
+     * This function called when api failed, and its show failed response for 2 sec.
+     * @param {String} message
+     */
+    function handleFailedResponse(message) {
+        showLoaderWithMessage(false, 'red', message);
+        $timeout(function() {
+            $scope.error = {};
+        }, 2000);
+    }
 
     /**
      * This function call search api and bind data
@@ -73,18 +97,17 @@ angular.module('playerApp').controller('contentPlayerCtrl', function(noteService
      * @returns {undefined}
      */
     function search(request) {
-        console.log('inside');
         noteService.search(request).then(function(response) {
                 if (response && response.responseCode === 'OK') {
                     $scope.error = {};
                     $scope.notesList = response.result.note;
                     $scope.$safeApply();
                 } else {
-                    handleFailedResponse(config.MESSAGES.NOTES.SEARCH.FAILED);
+                    // handleFailedResponse(config.MESSAGES.NOTES.SEARCH.FAILED);
                 }
             })
             .catch(function(error) {
-                handleFailedResponse(config.MESSAGES.NOTES.SEARCH.FAILED);
+                // handleFailedResponse(config.MESSAGES.NOTES.SEARCH.FAILED);
             });
     }
     $scope.createNote = function(noteData) {
@@ -100,7 +123,6 @@ angular.module('playerApp').controller('contentPlayerCtrl', function(noteService
 
         showLoaderWithMessage(true, '', config.MESSAGES.NOTES.CREATE.START);
         noteService.create(requestData).then(function(response) {
-            console.log('fghjkjhgfhjkljhgfhjk', JSON.stringify(response, null, 2));
             if (response && response.responseCode === 'OK') {
                 $scope.error = {};
                 $scope.ngInit();
@@ -128,12 +150,35 @@ angular.module('playerApp').controller('contentPlayerCtrl', function(noteService
                 'lastUpdatedOn': 'desc'
             }
         };
-        console.log('inside init');
+
         search(request);
+    };
+    $scope.removeNote = function(noteId) {
+        console.log('note id', noteId);
+        var requestData = { noteId: noteId };
+
+        showLoaderWithMessage(true, '', config.MESSAGES.NOTES.REMOVE.START);
+        noteService.remove(requestData).then(function(response) {
+                if (response && response.responseCode === 'OK') {
+                    $scope.notesList = $scope.notesList.filter(function(note) {
+                        return note.identifier !== noteId;
+                    });
+                    $scope.error = {};
+                } else {
+                    handleFailedResponse(config.MESSAGES.NOTES.REMOVE.FAILED);
+                }
+            })
+            .catch(function(error) {
+                handleFailedResponse(config.MESSAGES.NOTES.REMOVE.FAILED);
+            });
     };
     $scope.showAllNoteList = function() {
         $scope.showNoteList = true;
-        $rootScope.$emit('showAllNoteList', true);
+        // $rootScope.$emit('showAllNoteList', true);
+    };
+    $scope.closeNoteList = function() {
+        $scope.showNoteList = false;
+        // $rootScope.$emit('showAllNoteList', false);
     };
 
     // end notes
