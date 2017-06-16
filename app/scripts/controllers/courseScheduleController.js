@@ -8,8 +8,11 @@ angular.module('playerApp')
         toc.courseId = $stateParams.courseId;
         toc.courseType = $stateParams.courseType;
         $rootScope.courseId = $stateParams.courseId;
+        $rootScope.courseProgress=$stateParams.progress;
+        $rootScope.courseTotal=$stateParams.total;
+        console.log($stateParams);
         $scope.enableCloseButton = (toc.lectureView === 'yes') ? 'false' : 'true';
-        console.log($rootScope.contentDetails);
+        //console.log($rootScope.contentDetails);
         toc.showAllNoteList = false;
         toc.nightMode = true;
         $scope.contentPlayer = {
