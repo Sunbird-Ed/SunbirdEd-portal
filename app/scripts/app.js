@@ -62,20 +62,20 @@ angular
                 templateUrl: '/views/learn/learn.html',
                 controller: 'LearnCtrl as learn',
                 onEnter: function($rootScope) {
-                    $rootScope.searchKey = 'Course';
+                    $rootScope.searchKey = 'Courses';
                     $rootScope.searchKeyword = '';
                     $rootScope.isLearnPage = true;
                 },
                 onExit: function($rootScope) {
                     $rootScope.isLearnPage = false;
-                    $("#content-search-filter-accordion").accordion('close',0);
+                    $("#content-search-filter-accordion").accordion('close', 0);
                 },
                 resolve: {
                     isLoggedIn: function(authService) {
                         authService.validUser();
                     }
                 },
-                params: { searchKey: 'Course' }
+                params: { searchKey: 'Courses' }
             })
             .state('Resource', {
                 url: '/resources',
@@ -88,7 +88,7 @@ angular
                 },
                 onExit: function($rootScope) {
                     $rootScope.isResourcesPage = false;
-                    $("#content-search-filter-accordion").accordion('close',0);
+                    $("#content-search-filter-accordion").accordion('close', 0);
                 },
                 resolve: {
                     isLoggedIn: function(authService) {
@@ -110,7 +110,7 @@ angular
             .state('Toc', {
                 url: '/toc',
                 templateUrl: 'views/course/toc.html',
-                params: { courseType: null, courseId: null, lectureView: null,progress:null,total:null },
+                params: { courseType: null, courseId: null, lectureView: null, progress: null, total: null },
                 controller: 'courseScheduleCtrl as toc'
             })
             .state('Community', {
