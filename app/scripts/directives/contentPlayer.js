@@ -41,9 +41,102 @@ angular.module('playerApp').directive('contentPlayer', function() {
     };
 });
 
-angular.module('playerApp').controller('contentPlayerCtrl', function($scope, $sce, contentService, pdfDelegate, $timeout, config) {
+angular.module('playerApp').controller('contentPlayerCtrl', function(noteService, $scope, $sce, contentService, pdfDelegate, $timeout, config) {
+    var player = this;
     $scope.isClose = $scope.isclose;
     $scope.isHeader = $scope.isheader;
+    player.nightMode = true;
+    $scope.add = {};
+    // notes code
+    player.showAddNoteModal = function() {
+        // console.log('trying thus too opjk');
+        // $('#modalcontentNotes')
+        //     .modal('show');
+        $scope.add.title = '';
+        $scope.add.note = '';
+        $timeout(function() {
+            $('#modalcontentNotes').modal({
+                onHide: function() {
+                    $scope.add = {};
+                },
+                onShow: function() {
+                    $scope.add.title = '';
+                    $scope.add.note = '';
+                }
+            }).modal('show');
+        }, 100);
+    };
+
+    /**
+     * This function call search api and bind data
+     * @param {type} request
+     * @returns {undefined}
+     */
+    function search(request) {
+        console.log('inside');
+        noteService.search(request).then(function(response) {
+                if (response && response.responseCode === 'OK') {
+                    $scope.error = {};
+                    $scope.notesList = response.result.note;
+                    $scope.$safeApply();
+                } else {
+                    handleFailedResponse(config.MESSAGES.NOTES.SEARCH.FAILED);
+                }
+            })
+            .catch(function(error) {
+                handleFailedResponse(config.MESSAGES.NOTES.SEARCH.FAILED);
+            });
+    }
+    $scope.createNote = function(noteData) {
+        var requestData = {
+            note: {
+                note: noteData.note,
+                userId: 'user1',
+                title: noteData.title,
+                // courseId: $scope.$root.courseId,
+                contentId: $scope.contentData.identifier,
+            }
+        };
+
+        showLoaderWithMessage(true, '', config.MESSAGES.NOTES.CREATE.START);
+        noteService.create(requestData).then(function(response) {
+            console.log('fghjkjhgfhjkljhgfhjk', JSON.stringify(response, null, 2));
+            if (response && response.responseCode === 'OK') {
+                $scope.error = {};
+                $scope.ngInit();
+                $scope.add.showCreateNote = false;
+                $scope.add = {};
+                $scope.add.showModalError = false;
+            } else {
+                $scope.add.showModalError = true;
+                handleFailedResponse(config.MESSAGES.NOTES.CREATE.FAILED);
+            }
+        }).catch(function(error) {
+            $scope.add.showModalError = true;
+            handleFailedResponse(config.MESSAGES.NOTES.CREATE.FAILED);
+        });
+    };
+    $scope.ngInit = function() {
+        // showLoaderWithMessage(true, '', config.MESSAGES.NOTES.SEARCH.START);
+        var request = {
+            filters: {
+                userId: 'user1',
+                // courseId: $scope.$root.courseId,
+                contentId: $scope.contentData.identifier
+            },
+            sort_by: {
+                'lastUpdatedOn': 'desc'
+            }
+        };
+        console.log('inside init');
+        search(request);
+    };
+    $scope.showAllNoteList = function() {
+        $scope.showNoteList = true;
+        $rootScope.$emit('showAllNoteList', true);
+    };
+
+    // end notes
     $scope.updateDataOnWatch = function(scope) {
         if (scope.body) {
             showPlayer(scope.body);
@@ -108,13 +201,13 @@ angular.module('playerApp').controller('contentPlayerCtrl', function($scope, $sc
 
     $scope.close = function() {
         $scope.errorObject = {};
-        if($scope.id) {
+        if ($scope.id) {
             $scope.id = '';
         }
-        if($scope.body) {
+        if ($scope.body) {
             $scope.body = {};
         }
-        
+
         $scope.visibility = false;
     };
     $scope.tryAgain = function() {
