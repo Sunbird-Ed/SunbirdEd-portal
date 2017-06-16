@@ -42,7 +42,7 @@ angular.module('playerApp')
         content.boards = [
             'NCERT', 'CBSE', 'ICSE', 'MSCERT'
         ];
-        content.searchSelectionKeys = [{ id: 'Course', name: 'Course' }, { id: 'Resources', name: 'Resources' }];
+        content.searchSelectionKeys = [{ id: 'Courses', name: 'Courses' }, { id: 'Resources', name: 'Resources' }];
         content.selectedLanguage = '';
         content.selectedContentType = '';
         content.selectedSubject = '';
@@ -85,13 +85,13 @@ angular.module('playerApp')
             if (successResponse.result.count > 0) {
                 //if $event is passed then search is to get only autosuggest else to get the content
                 if ($event !== undefined && content.keyword !== '') {
-                    content.autosuggest_data = $scope.selectedSearchKey === 'Course' ?
+                    content.autosuggest_data = $scope.selectedSearchKey === 'Courses' ?
                         successResponse.result.course :
                         successResponse.result.content;
                 } else {
                     $rootScope.searchKey = $scope.selectedSearchKey;
                     content.autosuggest_data = [];
-                    $rootScope.searchResult = $scope.selectedSearchKey === 'Course' ?
+                    $rootScope.searchResult = $scope.selectedSearchKey === 'Courses' ?
                         successResponse.result.course :
                         successResponse.result.content;
                 }
@@ -127,7 +127,7 @@ angular.module('playerApp')
                 }).catch(function(error) {
                     handleFailedResponse(error);
                 });
-            } else if ($scope.selectedSearchKey === 'Course') {
+            } else if ($scope.selectedSearchKey === 'Courses') {
                 courseService.search(req).then(function(res) {
                     content.enableLoader(false);
                     if (res != null && res.responseCode === 'OK') {

@@ -353,6 +353,9 @@
   margin-left: 20px !important;
   margin-right: 20px !important;
 }
+.lower-case {
+  text-transform: lowercase !important;
+}
 .header-container {
   margin-left: 1px !important;
   border-bottom: 5px solid #0099CC !important;
@@ -608,6 +611,7 @@
   transition: box-shadow 0.1s ease, -webkit-transform 0.1s ease;
   transition: box-shadow 0.1s ease, transform 0.1s ease;
   z-index: '';
+  height: 240px;
 }
 .sliderCards.ui.card:hover {
   box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5 !important;
@@ -635,6 +639,9 @@
 .imageInCardsResponsive {
   overflow: hidden !important;
   height: 150px !important;
+}
+.ui.cards {
+  padding: 20px;
 }
 .footer1 {
   position: fixed !important;
@@ -1136,7 +1143,6 @@ ul.subList-padding {
 .landing-text p {
   margin: 0;
   font-size: 14px;
-  padding: 6px;
 }
 .card-view {
   font-size: 17px;
