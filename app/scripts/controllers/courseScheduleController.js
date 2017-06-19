@@ -32,10 +32,6 @@ angular.module('playerApp')
                     if (successResponse && successResponse.responseCode === 'OK') {
                         //temporary change it later
                         toc.courseType = "ENROLLED_COURSE";
-                        toc.itemIndex = 0;
-                        toc.playPlaylistContent(toc.playList[toc.itemIndex], '');
-                        $location.hash('tocPlayer');
-                        $anchorScroll();
                     } else {
                         toc.showError('Cannot enroll user to course');
                     }
@@ -43,6 +39,16 @@ angular.module('playerApp')
                     toc.showError('Error occured.Try again');
                 });
             }
+
+            toc.resumeCourse = function () {
+                //once last played index is given assign it for now zero
+                $('#course-toc').find('.content').first().addClass('active');
+                toc.itemIndex = 0;
+                toc.playPlaylistContent(toc.playList[toc.itemIndex], '');
+                $location.hash('tocPlayer');
+                $anchorScroll();
+            }
+
             toc.getContentStatus = function (contentId) {
                 if ($rootScope.contentDetails[contentId] && $rootScope.contentDetails[contentId]['status'] === 1) {
                     return 'green';
@@ -73,7 +79,7 @@ angular.module('playerApp')
                         $rootScope.courseName = toc.courseHierachy.name;
                         toc.applyAccordion();
                         toc.showMetaLoader = false;
-                        toc.showDimmer = false;
+                        toc.showDimmer = false;                       
                     } else {
                         toc.showError("Unable to get course schedule details.");
                     }
@@ -179,8 +185,12 @@ angular.module('playerApp')
                         toc.itemIndex = 0;
                         toc.playPlaylistContent(toc.playList[toc.itemIndex], '');
                     }
-                    $('.ui.accordion').accordion({exclusive: false});
-                }, 0);
+                    else
+                    {
+                         //play my current content
+                        toc.resumeCourse(); 
+                    }
+                    $('.ui.accordion').accordion({exclusive: false});}, 0);
             }
 
             //We need to discuss
