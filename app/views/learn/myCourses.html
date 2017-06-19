@@ -3,14 +3,14 @@
     <div class="ten wide column">
         <h4 class="ui header ">My Courses<a class="ui red circular inline label ">{{learn.enrolledCourses.length}}</a></h4>
         <div class="regular slider " ng-if="learn.enrolledCourses.length> 0">
-            <div  ng-repeat=" enrolledCourse in learn.enrolledCourses track by $index" ng-init="$last && learn.loadCarousel()" ng-click="learn.openCourseView(enrolledCourse.courseId, 'ENROLLED_COURSE')">
+            <div  ng-repeat="enrolledCourse in learn.enrolledCourses track by $index" ng-init="$last && learn.loadCarousel()" ng-click="learn.openCourseView(enrolledCourse.courseId, 'ENROLLED_COURSE',enrolledCourse.progress,enrolledCourse.total)">
                 <div apply-script class="sliderCards ui link card margin-left-right-20 margin-top-15 link" ng-if="learn.enrolledCourses.length > 0">
                     <div class="image imageInCardsResponsive">
-                        <div class="ui tiny  progress course-progress" data-value="{{enrolledCourse.progress}}" data-total="{{enrolledCourse.total}}" ng-class="{orange:(enrolledCourse.total - enrolledCourse.progress) <= (enrolledCourse.total / 2),red:(enrolledCourse.total - enrolledCourse.progress) > (enrolledCourse.total / 2)}">
+                        <div  ng-init="loadProgress()" ng-if="enrolledCourse.progress" class="ui tiny  progress course-progress" data-value="{{enrolledCourse.progress}}" data-total="{{enrolledCourse.total}}" ng-class="{orange:(enrolledCourse.total - enrolledCourse.progress) <= (enrolledCourse.total / 2),red:(enrolledCourse.total - enrolledCourse.progress) > (enrolledCourse.total / 2)}">
                             <div class="bar"></div>
                         </div>
                         <img ng-src="{{enrolledCourse.appIcon ? enrolledCourse.appIcon : '../images/sunbird_logo.png'}}">
-                        <div class="cardImageText center aligned "> 
+                        <div class="cardImageText center aligned ">
                             <span class="text-cencapitalize">{{enrolledCourse.name}}</span>for Std
                                 <span class="text-cencapitalize ">{{enrolledCourse.grade}}</span>
                         </div>
@@ -23,9 +23,9 @@
                     <div class="sliderCards content">
                         <button class="ui blue basic right floated button">RESUME</button>
                         <span class="description">
-                           {{(enrolledCourse.progress/enrolledCourse.total)*100| number: 2 || 0}}% complete <br/> 2hrs remaining 
+                           {{(enrolledCourse.progress/enrolledCourse.total)*100| number: 2 || 0}}% complete <br/> 2hrs remaining
                         </span>
-                    </div>     
+                    </div>
                 </div>
             </div>
         </div>
