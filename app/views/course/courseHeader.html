@@ -1,4 +1,4 @@
-<div  class="ui padded segment courseStructureHeader marginTop" ng-controller="courseScheduleCtrl as toc">
+<div  class="ui padded segment courseStructureHeader marginTop">
     <div class="ui grid">
         <div class="one wide column"></div>
         <div class="ten wide column">
@@ -17,7 +17,7 @@
                     </button>
                 </div>
                 <div class="four wide column" ng-if="toc.courseType === 'OTHER_COURSE'">
-                    <button class="fluid blue right floated  ui button courseHeaderButton"> ENROLL TO COURSE</button>
+                    <button class="fluid blue right floated  ui button courseHeaderButton" ng-click="toc.enrollUserToCourse(toc.courseId)"> ENROLL TO COURSE</button>
                 </div>
             </div>
         </div>
