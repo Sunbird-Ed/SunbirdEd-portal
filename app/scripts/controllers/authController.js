@@ -1,15 +1,12 @@
 'use strict';
 
 angular.module('playerApp')
-    .controller('AuthCtrl', function(authService, config, $log, $scope, $rootScope, $timeout, $state, $localStorage, $sessionStorage, $window) {
+    .controller('AuthCtrl', function($log, $rootScope, $timeout, $state, $localStorage, $sessionStorage, $window, authService, config) {
         var auth = this;
         auth.userName = '';
         auth.password = '';
-        $rootScope.isUserProfilePic = $window.localStorage.getItem('userPic') === 'null' ? false : true;
         $rootScope.isLoggedIn = $window.localStorage.getItem('isLoggedIn') === null ? false : true;
-        $rootScope.getUserProfileImage = function() {
-            $rootScope.userProfilePic = $window.localStorage.getItem('userPic');
-        };
+        $rootScope.userProfilePic = $window.localStorage.getItem('userPic');
         auth.resetForm = function() {
             auth.userName = '';
             auth.password = '';
@@ -34,10 +31,6 @@ angular.module('playerApp')
             error.message = errorResponse.responseCode === 'CLIENT_ERROR' ? 'invalid username or password' : '';
             error.responseCode = errorResponse.responseCode;
             auth.error = error;
-
-            $timeout(function() {
-                $scope.error = {};
-            }, 2000);
         }
         auth.userProfile = function(userProfile) {
             if (userProfile && userProfile.responseCode === 'OK') {
@@ -47,7 +40,6 @@ angular.module('playerApp')
                 auth.user.profilePic = userProfile.result.response.avatar;
                 $window.localStorage.setItem('userPic', $rootScope.userProfilePic);
                 $window.localStorage.setItem('preferredLanguage', userProfile.result.response.language);
-
                 $state.go('Home');
             } else {
                 throw new Error(userProfile);
@@ -122,7 +114,6 @@ angular.module('playerApp')
             };
             authService.logout(logoutReq).then(function(successResponse) {
                     if (successResponse && successResponse.responseCode === 'OK') {
-                        $scope.error = {};
                         $rootScope.isLoggedIn = false;
                         $rootScope.token = '';
                         $rootScope.userId = '';
