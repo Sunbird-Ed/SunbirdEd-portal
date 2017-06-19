@@ -1267,3 +1267,7 @@ html {
 .slick-slider {
   margin-bottom: 0px !important;
 }
+/* margin removed for progress bar*/
+.progressBar-margin {
+  margin: 0px !important;
+}
