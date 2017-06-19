@@ -1259,3 +1259,7 @@ html {
   color: #0099CC !important;
   text-shadow: none  !important;
 }
+/*slick slider margin bottom removed*/
+.slick-slider {
+  margin-bottom: 0px !important;
+}
