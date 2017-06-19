@@ -1242,15 +1242,10 @@ html {
   font-size: 18px !important;
   font-family: "FrutigerSerifLTW01-Medi 722257" !important;
 }
-.pusher-fix-height {
-  height: 1200px !important;
-}
-.pusher {
-  width: calc(90%);
-}
 .logged-in-user {
-  width: 50px !important;
-  height: 50px !important;
+  width: 30px !important;
+  height: 30px !important;
+  margin-top: 2px !important;
   border-radius: 50% !important;
   -webkit-border-radius: 50% !important;
   -moz-border-radius: 50% !important;
@@ -1266,4 +1261,8 @@ html {
 /*slick slider margin bottom removed*/
 .slick-slider {
   margin-bottom: 0px !important;
+}
+/* margin removed for progress bar*/
+.progressBar-margin {
+  margin: 0px !important;
 }
