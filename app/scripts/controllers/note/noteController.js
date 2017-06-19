@@ -25,7 +25,6 @@ angular.module('playerApp')
              * @returns {undefined}
              */
             function search(request) {
-
                 noteService.search(request).then(function (response) {
                     if (response && response.responseCode === "OK") {
                         $scope.error = {};
