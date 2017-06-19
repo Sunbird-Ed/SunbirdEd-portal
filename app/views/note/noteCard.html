@@ -11,7 +11,7 @@
                         <span class="ui tiny header font-size-small">
                             <span class="font-dark-blue mouse-pointer " ng-click="update.showUpdateNote = !update.showUpdateNote; update.metaData = {};update.metaData = note; showUpdateNoteModal()"> {{ note.title | limitTo: 15 }}&nbsp;
                                 <i ng-show="note.title.length > 15" class="ellipsis horizontal icon popup-button" data-content="{{note.note}}"
-                                   data-variation="wide"></i> 
+                                   data-variation="wide"></i>
 
                             </span>
                             <span class="ui time right floated">{{note.lastUpdatedOn| dateFilterXTimeAgo}}</span>
@@ -19,7 +19,7 @@
                         <div class="description">
                             <span> {{ note.note | limitTo: 70 }}&nbsp;
                                 <i ng-show="note.note.length > 70" class="ellipsis horizontal icon popup-button" data-content="{{note.note}}"
-                                   data-variation="wide"></i> 
+                                   data-variation="wide"></i>
                             </span>
                         </div>
                     </div>
@@ -36,32 +36,32 @@
         <div class="ui modal" id="updateModal">
             <div class=" ui segment margin-top-10">
                 <div class=" margin-bottom-15">
-                    <div class="ui grid"> 
-                        <div class="eleven wide column"> 
-                            <span class="ui header">{{update.metaData.title}}</span> 
-                        </div> 
-                        <div class="one wide column actions"> 
-                            <h5 class="ui basic icon circular button deny" ng-click="update.showUpdateNote = false;"> 
-                                <i class="ui remove icon"></i> 
+                    <div class="ui grid">
+                        <div class="eleven wide column">
+                            <span class="ui header">{{update.metaData.title}}</span>
+                        </div>
+                        <div class="one wide column actions">
+                            <h5 class="ui basic icon circular button deny" ng-click="update.showUpdateNote = false;">
+                                <i class="ui remove icon"></i>
                             </h5>
-                        </div> 
-                    </div> 
+                        </div>
+                    </div>
                 </div>
                 <div class="ui fluid icon input">
                     <input type="text" placeholder="Title" name="title" ng-model="update.metaData.title" tabindex="1"/>
                 </div>
-                <div class="content editor"> 
+                <div class="content editor">
                     <pagedown-editor content="update.metaData.note" show-preview="false" tabindex="2"></pagedown-editor>
                 </div>
-                <div class="actions"> 
-                    <button class="ui primary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="updateNote(update.metaData)"  
+                <div class="actions">
+                    <button class="ui primary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="updateNote(update.metaData)"
                             ng-disabled="!update.metaData.title || !update.metaData.note" tabindex="4"
-                            ng-class="!showModalError ? 'deny' : ''">Update</button> 
-                </div> 
+                            ng-class="!showModalError ? 'deny' : ''">Update</button>
+                </div>
                 <div ng-if="showModalError">
                     <span class="ui header red">{{error.message}}</span>
                 </div>
             </div>
         </div>
-    </div> 
-</div> 
+    </div>
+</div>
