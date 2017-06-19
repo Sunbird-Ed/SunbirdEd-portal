@@ -1014,8 +1014,8 @@ ul.subList-padding {
 .popular-section {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 0 8px 6px -8px #d9d4d4;
-  padding-top: 30px;
-  padding-bottom: 30px;
+  padding-top: 1em;
+  padding-bottom: 1em;
 }
 .popular-page .ui.cards ~ .ui.cards {
   margin-top: 1.875em;
@@ -1031,6 +1031,10 @@ ul.subList-padding {
 }
 .popular-section > .card-section-header {
   font-weight: bold;
+}
+.courses-slider {
+  padding-bottom: 1em;
+  padding-top: 1em;
 }
 .accordian-right {
   width: 70% !important;
