@@ -1011,6 +1011,27 @@ ul.subList-padding {
 .card-content-description {
   padding-top: 10px !important;
 }
+.popular-section {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 6px -8px #d9d4d4;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+.popular-page .ui.cards ~ .ui.cards {
+  margin-top: 1.875em;
+}
+.course-rating .ui.mini.rating {
+  font-size: .78571429rem;
+  padding-top: 12px;
+}
+.course-rating > .description {
+  clear: both;
+  color: rgba(16, 16, 16, 0.88) !important;
+  line-height: 1.5;
+}
+.popular-section > .card-section-header {
+  font-weight: bold;
+}
 .accordian-right {
   width: 70% !important;
 }
