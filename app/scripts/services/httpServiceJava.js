@@ -9,32 +9,32 @@
  */
 angular.module('playerApp')
     .service('httpServiceJava', function($http, $sessionStorage) {
-        function post(url, data, headers) {
+        this.post = function(url, data, headers) {
             var request = httpCall(url, data, 'POST', headers);
             return (request.then(handleSuccess, handleError));
         }
 
-        function get(url, data, headers) {
+        this.get = function(url, data, headers) {
             var request = httpCall(url, data, 'GET', headers);
             return (request.then(handleSuccess, handleError));
         }
 
-        function remove(url, data, headers) {
+        this.remove = function(url, data, headers) {
             var request = httpCall(url, data, 'DELETE', headers);
             return (request.then(handleSuccess, handleError));
         }
 
-        function put(url, data, headers) {
+        this.put = function(url, data, headers) {
             var request = httpCall(url, data, 'PUT', headers);
             return (request.then(handleSuccess, handleError));
         }
 
-        function patch(url, data, headers) {
+        this.patch = function(url, data, headers) {
             var request = httpCall(url, data, 'PATCH', headers);
             return (request.then(handleSuccess, handleError));
         }
 
-        function upload(url, data, headers) {
+        this.upload = function(url, data, headers) {
             var request = $http.post(url, data, {
                 //                    transformRequest: angular.identity,
                 headers: {
@@ -79,13 +79,4 @@ angular.module('playerApp')
                 data: data
             });
         }
-
-        return ({
-            get: get,
-            post: post,
-            put: put,
-            remove: remove,
-            patch: patch,
-            upload: upload
-        });
     });

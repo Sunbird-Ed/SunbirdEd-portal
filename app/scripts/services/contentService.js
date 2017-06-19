@@ -10,49 +10,38 @@
 angular.module('playerApp')
     .service('contentService', function(httpService, config) {
 
-        function search(req) {
+        this.search = function(req) {
             var url = config.URL.BASE + config.URL.CONTENT.SEARCH;
             return httpService.post(url, req);
         }
 
-        function create(req) {
+        this.create = function(req) {
             var url = config.URL.BASE + config.URL.CONTENT.CREATE;
             return httpService.post(url, req);
         }
 
-        function update(req,id) {
-            var url = config.URL.BASE + config.URL.CONTENT.UPDATE+"/"+id;
+        this.update = function(req, id) {
+            var url = config.URL.BASE + config.URL.CONTENT.UPDATE + "/" + id;
             return httpService.patch(url, req);
         }
 
-        function review(req,id) {
-            var url = config.URL.BASE + config.URL.CONTENT.REVIEW+"/"+id;
+        this.review = function(req, id) {
+            var url = config.URL.BASE + config.URL.CONTENT.REVIEW + "/" + id;
             return httpService.post(url, req);
         }
 
-        function publish(req,id) {
-            var url = config.URL.BASE + config.URL.CONTENT.PUBLISH+"/"+id;
+        this.publish = function(req, id) {
+            var url = config.URL.BASE + config.URL.CONTENT.PUBLISH + "/" + id;
             return httpService.get(url, req);
         }
 
-        function uploadMedia(req) {
+        this.uploadMedia = function(req) {
             var url = config.URL.BASE + config.URL.CONTENT.UPLOAD_MEDIA;
             return httpService.upload(url, req);
         }
-        
-        function getById(req) {
+
+        this.getById = function(req) {
             var url = config.URL.BASE + config.URL.CONTENT.GET + '/' + req.contentId;
             return httpService.get(url, req);
         }
-
-        return {
-            search: search,
-            create: create,
-            uploadMedia: uploadMedia,
-            update: update,
-            review: review,
-            publish: publish,
-            getById: getById
-        };
-
     });

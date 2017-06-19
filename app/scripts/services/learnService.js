@@ -1,7 +1,7 @@
 'use strict';
 angular.module('playerApp')
     .service('learnService', function(httpServiceJava, config, $sessionStorage, $q) {
-        function enrolledCourses(uid) {
+        this.enrolledCourses = function(uid) {
             var url = config.URL.MOCK_API_BASE + config.URL.COURSE.GET_ENROLLED_COURSES + '/' + uid;
             return httpServiceJava.get(url);
             // var deferred = $q.defer();
@@ -114,14 +114,8 @@ angular.module('playerApp')
             // return deferred.promise;
         }
 
-        function otherSections(req) {
+        this.otherSections = function(req) {
             var url = config.URL.MOCK_API_BASE + config.URL.COURSE.GET_LEARN_OTHER_SECTION;
             return httpServiceJava.post(url, req);
         }
-
-        return {
-            enrolledCourses: enrolledCourses,
-            otherSections: otherSections
-
-        };
     });
