@@ -5,28 +5,9 @@
             <h4 class="ui header card-section-header ">{{section.display.title.en}}
                 <a class="ui red circular inline label">{{section.count}}</a></h4>
                 <div class="regular slider " ng-if="section.course.length> 0">
-                <!-- <div class="ui link card margin-left-right-10 margin-top-15" ng-click="learn.openCourseView(course.identifier, 'OTHER_COURSE')" ng-repeat=" course in section.course track by $index" ng-init="$last && learn.loadCarousel()">
-                    <div class="image ">
-                        <img ng-src="{{course.appIcon ? course.appIcon : '../images/sunbird_logo.png'}}">
-                        <a class="header center aligned ">
-                            <span class="text-cencapitalize">{{course.name}}</span> for
-                            <span class="text-cencapitalize " ng-repeat="grade in course.gradeLevel">{{grade}}</span></a>
-                    </div>
-                    <div class="card-content-description">
-                        {{ course.description| limitTo: 80 }}&nbsp;<i ng-show="course.description.length>=80" class="ellipsis horizontal icon popup-button link" data-content="{{course.description}}" data-variation="wide"></i>
-                    </div><br>
-                    <span class="extra rating-container">
-                        <div class="extra rating-container left floated ui mini  star rating card-rating" data-rating=4></div>
-                    </span>
-                </div> -->
-
-                
-                    <div apply-script class="sliderCards ui card margin-left-right-20 margin-top-15" ng-click="learn.openCourseView(course.identifier, 'OTHER_COURSE')" ng-repeat=" course in section.course track by $index" ng-init="$last && learn.loadCarousel()">
+                 <div apply-script class="sliderCards ui card margin-left-right-20 margin-top-15" ng-click="learn.openCourseView(course.identifier, 'OTHER_COURSE')" ng-repeat=" course in section.course track by $index" ng-init="$last && learn.loadCarousel()">
                        <div class="image imageInCardsResponsive">
-                    <!--        <div class="ui tiny  progress course-progress" data-value="{{item.progress}}" data-total="{{item.noOfLecture}}" ng-class="{orange:(item.noOfLecture - item.progress) < (item.noOfLecture / 2),red:(item.noOfLecture - item.progress) > (item.noOfLecture / 2)}">
-                                <div class="bar"></div>
-                            </div>-->
-                            <img ng-src="{{course.appIcon ? course.appIcon : '../images/sunbird_logo.png'}}">
+                        <img ng-src="{{course.appIcon ? course.appIcon : '../images/sunbird_logo.png'}}">
                             <div class="cardImageText center aligned "> 
                                 <span class="text-cencapitalize">{{course.name}}</span> for
                                 <span class="text-cencapitalize " ng-repeat="grade in course.gradeLevel">{{grade}}</span>
