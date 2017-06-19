@@ -11,9 +11,6 @@ angular.module('playerApp')
         .controller('AppCtrl', function ($scope, $state, $stateParams, $rootScope, setResourceBundle, $translate, userService, $q, config, $location,$timeout) {
             $rootScope.language = $rootScope.userLanguage || config.SITE.DEFAULT_LANGUAGE;
             $rootScope.translationBundle = {};
-            $rootScope.$on('$viewContentLoaded', function () {
-                $('#headerSearchdd').dropdown();
-            });
             $rootScope.loadCarousel = function () {
                 $('.regular').not('.slick-initialized').slick({
                     infinite: true,
