@@ -11,7 +11,7 @@ angular.module('playerApp')
             $rootScope.courseProgress = $stateParams.progress;
             $rootScope.courseTotal = $stateParams.total;
             toc.uid = $sessionStorage.userId;
-            console.log($stateParams);
+            //console.log($stateParams);
             $scope.enableCloseButton = (toc.lectureView === 'yes') ? 'false' : 'true';
             //console.log($rootScope.contentDetails);
             toc.showAllNoteList = false;
@@ -107,7 +107,6 @@ angular.module('playerApp')
 
             toc.checkAndAddToPlaylist = function (item) {
                 if (item.mimeType !== "application/vnd.ekstep.content-collection" && toc.playList.indexOf(item.identifier) === -1) {
-                    // console.log($scope.counter);
                     toc.playList.push(item.identifier);
                     toc.playListContent.push(item);
                 }
