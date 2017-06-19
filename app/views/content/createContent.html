@@ -41,7 +41,7 @@
                                 <div class="ui basic massive icon button" ng-click="openImageBrowser()" ng-if="!iconImage">
                                     <i class="ui image icon"></i>
                                 </div>
-                                <input type="file" accept="image/x-png,image/gif,image/jpeg" style="display: none;" id="iconImageInput" onchange="angular.element(this).scope().updateIcon(this.files);" required="" />
+                                <input type="file" accept="image/x-png,image/gif,image/jpeg" class="content-input" id="iconImageInput" onchange="angular.element(this).scope().updateIcon(this.files);" required="" />
                                 <img ng-if="iconImage" class="ui small link image height-150" ng-src="{{iconImage}}" id="image" alt="icon" ng-click="openImageBrowser()" tabindex="3">
                             </div>
                             <div class="ui big right floated button" tabindex="0" ng-click="closeEditor();">Skip</div>
@@ -61,7 +61,7 @@
                     <div class="ui twelve wide column">
                         <div ng-switch on="meta.type">
                             <div ng-switch-when="application/vnd.ekstep.ecml-archive">
-                                <iframe ng-if="ekURL" ng-src="{{ekURL}}" style="width: 100%; height: 700px;"></iframe>
+                                <iframe ng-if="ekURL" ng-src="{{ekURL}}" class="content-iframe"></iframe>
                                 <form class="ui form big">
                                     <div class="field">
                                         <div class="ui big right floated button" tabindex="0" ng-click="closeEditor();">Skip</div>
@@ -70,7 +70,7 @@
                                 </form>
                             </div>
                             <div ng-switch-when="html">
-                                <iframe ng-if="ekURL" ng-src="{{ekURL}}" style="width: 100%; height: 700px;"></iframe>
+                                <iframe ng-if="ekURL" ng-src="{{ekURL}}" class="content-iframe"></iframe>
                                 <form class="ui form big">
                                     <div class="field">
                                         <div class="ui big right floated button" tabindex="0" ng-click="closeEditor();">Skip</div>
