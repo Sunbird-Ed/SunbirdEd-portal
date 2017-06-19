@@ -25,7 +25,8 @@
                 "USER_COURSE_SCHEDULE": "user/courses",
                 "USER_CONTENT_STATE": "user/content/state",
                 "GET_ENROLLED_COURSES": "user/courses",
-                "GET_LEARN_OTHER_SECTION": "page/assemble/learn.explore/org.sunbird.mobile"
+                "GET_LEARN_OTHER_SECTION": "page/assemble/learn.explore/org.sunbird.mobile",
+                "ENROLL_USER_COURSE":"user/courses/enroll"
             },
             "CONTENT": {
                 "SEARCH": "content/search",
