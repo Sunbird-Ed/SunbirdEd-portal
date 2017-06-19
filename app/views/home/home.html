@@ -4,12 +4,12 @@
         <div class="row">
             <div class="twelve wide column">
                 <div class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100 homeHeaderPadding"  apply-script>
-                    <span class="ui header">To Do<a class="ui red circular inline label">{{homeCtrl.enrolledCourses.length}}</a>
+                    <span class="ui header">To Do
                     </span>
                     <span class="removeline title title-padding-left accordian-HomeLeft-text active">
                         <i class="angle down icon down-arrow-accordion float-ContentRight"></i>
                     </span>
-                    <div class="ui active" ng-if="homeCtrl.enrolledCourses.length > 0">
+                    <div class="ui active homePage" ng-if="homeCtrl.enrolledCourses.length > 0">
                         <div class="regular slider padding-top-10">
                             <div ng-repeat="item in homeCtrl.enrolledCourses track by $index"  ng-init="$last && homeCtrl.loadCarousel()" ng-click="homeCtrl.openCourseView(item.courseId, 'OTHER_COURSE',item.progress,item.total)">
                                 <div ng-include=" 'views/common/actionCard.html'"></div>
@@ -25,7 +25,7 @@
                     <span class="ui header">Recommended</span>
                     <span class="removeline title title-padding-left active"><i class="angle down icon down-arrow-accordion accordian-homeIcon float-ContentRight"></i>
                     </span>
-                    <div class="ui active">
+                    <div class="ui active homePage">
                         <div class="regular slider padding-top-10">
                             <div ng-repeat=" item in homeCtrl.recommendedCourse track by $index" ng-init="$last && homeCtrl.loadCarousel()" ng-click="homeCtrl.openCourseView(toDoCourse.courseId, 'OTHER_COURSE')">
                                 <div ng-include=" 'views/common/ratingCard.html'"></div>
