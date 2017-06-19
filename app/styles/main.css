@@ -640,9 +640,6 @@
   overflow: hidden !important;
   height: 150px !important;
 }
-.ui.cards {
-  padding: 20px;
-}
 .footer1 {
   position: fixed !important;
   bottom: 0 !important;
