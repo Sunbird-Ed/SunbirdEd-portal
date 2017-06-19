@@ -15,8 +15,7 @@ RUN curl --silent --location https://deb.nodesource.com/setup_6.x | bash - \
     && apt-get install --yes nodejs \
     && npm install -g bower \
     && npm install -g gulp \
-    && npm install gulp --save-dev
-
+    && npm install gulp --save-dev 
 WORKDIR /opt/player/
 RUN npm install
 RUN npm install express-http-proxy --save
