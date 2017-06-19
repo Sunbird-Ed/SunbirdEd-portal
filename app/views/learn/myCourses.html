@@ -8,7 +8,7 @@
              <div class="ui link cards">
                 <div apply-script class="sliderCards ui link card margin-left-right-20 margin-top-15 link" ng-if="learn.enrolledCourses.length > 0">
                     <div class="image imageInCardsResponsive">
-                        <div  ng-init="loadProgress()" ng-if="enrolledCourse.progress" class="ui tiny  progress course-progress" data-value="{{enrolledCourse.progress}}" data-total="{{enrolledCourse.total}}" ng-class="{orange:(enrolledCourse.total - enrolledCourse.progress) <= (enrolledCourse.total / 2),red:(enrolledCourse.total - enrolledCourse.progress) > (enrolledCourse.total / 2)}">
+                        <div  ng-init="loadProgress()" ng-if="enrolledCourse.progress" class="ui tiny  progress course-progress progressBar-margin" data-value="{{enrolledCourse.progress}}" data-total="{{enrolledCourse.total}}" ng-class="{orange:(enrolledCourse.total - enrolledCourse.progress) <= (enrolledCourse.total / 2),red:(enrolledCourse.total - enrolledCourse.progress) > (enrolledCourse.total / 2)}">
                             <div class="bar"></div>
                         </div>
                         <img ng-src="{{enrolledCourse.appIcon ? enrolledCourse.appIcon : '../images/sunbird_logo.png'}}">

@@ -14,5 +14,5 @@ WORKDIR /opt/dist
 RUN npm install express-http-proxy --save
 RUN npm install express --save
 RUN npm install request --save
-EXPOSE 7000
+EXPOSE 80
 CMD ["node", "server.js", "&"]
