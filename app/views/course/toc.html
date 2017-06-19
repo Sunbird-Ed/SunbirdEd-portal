@@ -3,8 +3,8 @@
     <div class="ui grid">
         <div class="one wide column"></div>
         <div class="ten wide column">
-            <div>
-                <div id="course-toc-list" ng-if="!contentPlayer.isContentPlayerEnabled && toc.courseHierachy && !toc.showDimmer && toc.lectureView == 'no' && !toc.showAllNoteList" ng-init="toc.playList = []">
+            <div ng-if="toc.courseHierachy && !toc.showDimmer && toc.lectureView == 'no' && !toc.showAllNoteList" ng-init="toc.playList = []">
+                <div id="course-toc-list" ng-show="!contentPlayer.isContentPlayerEnabled">
                     <div class="content">
                         <div class='ui grid'>
                             <div class="row">
@@ -28,12 +28,12 @@
                                             Course Structure
                                         </b>
                                     </div>
-                                    <div class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100" ng-repeat="item in  toc.courseHierachy.children track by $index" apply-script>
+                                    <div id="course-toc" class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100" ng-repeat="item in  toc.courseHierachy.children track by $index" apply-script>
                                         <div class="title title-padding-left accordian-left-text" name="{{item.identifier}}" ng-click="toc.expandMe($event, item)" ng-init="toc.checkAndAddToPlaylist(item)" ng-class="toc.getContentClass(item.mimeType)">
                                             {{item.name}}
                                             <i ng-if='item.children && item.children.length > 0' class="angle down icon down-arrow-accordion"></i>
                                         </div>
-                                        <div class="content" ng-if='item.children && item.children.length > 0'>
+                                        <div  ng-if='item.children && item.children.length > 0' class="content">
                                             <ul class="courseStr">
                                                 <li ng-repeat="item in item.children">
                                                     <div name="{{item.identifier}}" ng-click="toc.expandMe($event, item)" ng-init="toc.checkAndAddToPlaylist(item)" ng-class="toc.getContentClass(item.mimeType)">

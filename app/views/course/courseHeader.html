@@ -12,7 +12,7 @@
                 </div>
                 <div class="four wide column" ng-if="toc.courseType === 'ENROLLED_COURSE'">
                     <div><p class="text-align-center">Your Progress {{(courseProgress * 100 / courseTotal)| number: 0 || 0}}%</p></div>
-                    <button class="fluid blue right floated  ui button courseHeaderButton">
+                    <button class="fluid blue right floated  ui button courseHeaderButton" ng-click="toc.resumeCourse()">
                         RESUME COURSE  <i class="caret right icon"></i>
                     </button>
                 </div>
