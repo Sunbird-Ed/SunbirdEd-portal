@@ -1,13 +1,13 @@
 <div class="ui link cards">
     <div class="sliderCards ui card margin-left-right-20 margin-top-15">
         <div class="image imageInCardsResponsive">
-            <div class="ui tiny  progress course-progress" data-value="{{enrolledCourse.progress}}" data-total="{{enrolledCourse.noOfLecture}}" ng-class="{orange:(enrolledCourse.noOfLecture - enrolledCourse.progress) < (enrolledCourse.noOfLecture / 2),red:(enrolledCourse.noOfLecture - enrolledCourse.progress) > (enrolledCourse.noOfLecture / 2)}">
+            <div ng-init="loadProgress()" ng-if="item.progress" class="ui tiny  progress course-progress" data-value="{{item.progress}}" data-total="{{item.total}}" ng-class="{orange:(item.noOfLecture - item.progress) < (item.noOfLecture / 2),red:(item.noOfLecture - item.progress) > (item.noOfLecture / 2)}">
                 <div class="bar"></div>
             </div>
             <img ng-src=" {{item.appIcon ? item.appIcon : '../images/sunbird_logo.png'}} ">
                 <a class="ui black right ribbon label">Course</a>
                 </a>
-            <div class="cardImageText center aligned "> 
+            <div class="cardImageText center aligned ">
                 <span class="text-cencapitalize">
                     {{item.name}}
                 </span>
@@ -16,8 +16,8 @@
         <div class="sliderCards content">
             <button class="ui blue basic right floated button">ACTION</button>
             <span class="description">
-                {{(item.progress/item.total)*100| number: 2 || 0}}% complete <br/> 2hrs remaining 
+                {{(item.progress/item.total)*100| number: 2 || 0}}% complete <br/> 2hrs remaining
             </span>
-        </div>     
+        </div>
     </div>
 </div>
