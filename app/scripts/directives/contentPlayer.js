@@ -49,21 +49,8 @@ angular.module('playerApp').controller('contentPlayerCtrl', function(noteService
     $scope.add = {};
     // notes code
     player.showAddNoteModal = function() {
-        // console.log('trying thus too opjk');
-        // $('#modalcontentNotes')
-        //     .modal('show');
-        $scope.add.title = '';
-        $scope.add.note = '';
         $timeout(function() {
-            $('#modalcontentNotes').modal({
-                onHide: function() {
-                    $scope.add = {};
-                },
-                onShow: function() {
-                    $scope.add.title = '';
-                    $scope.add.note = '';
-                }
-            }).modal('show');
+            $('#modalcontentNotes').modal('show');
         }, 100);
     };
     /* This function helps to show loader or any error message at the time of api call.
@@ -99,9 +86,15 @@ angular.module('playerApp').controller('contentPlayerCtrl', function(noteService
     function search(request) {
         noteService.search(request).then(function(response) {
                 if (response && response.responseCode === 'OK') {
-                    $scope.error = {};
+                    player.error = {};
                     $scope.notesList = response.result.note;
-                    $scope.$safeApply();
+                    player.notesCount = response.result.count;
+                    if (response.result.count !== 0) {
+                        player.contentNotes = response.result.note[0];
+                        $scope.add.title = player.contentNotes.title;
+                        $scope.add.note = player.contentNotes.note;
+                        player.noteIdentifier = player.contentNotes.identifier;
+                    }
                 } else {
                     // handleFailedResponse(config.MESSAGES.NOTES.SEARCH.FAILED);
                 }
@@ -127,7 +120,7 @@ angular.module('playerApp').controller('contentPlayerCtrl', function(noteService
                 $scope.error = {};
                 $scope.ngInit();
                 $scope.add.showCreateNote = false;
-                $scope.add = {};
+                // $scope.add = {};
                 $scope.add.showModalError = false;
             } else {
                 $scope.add.showModalError = true;
@@ -154,7 +147,6 @@ angular.module('playerApp').controller('contentPlayerCtrl', function(noteService
         search(request);
     };
     $scope.removeNote = function(noteId) {
-        console.log('note id', noteId);
         var requestData = { noteId: noteId };
 
         showLoaderWithMessage(true, '', config.MESSAGES.NOTES.REMOVE.START);
@@ -179,6 +171,35 @@ angular.module('playerApp').controller('contentPlayerCtrl', function(noteService
     $scope.closeNoteList = function() {
         $scope.showNoteList = false;
         // $rootScope.$emit('showAllNoteList', false);
+    };
+    player.updateNote = function(noteData) {
+        var requestData = {
+            noteId: player.noteIdentifier,
+            note: noteData
+        };
+
+        delete requestData.note['identifier'];
+
+        showLoaderWithMessage(true, '', config.MESSAGES.NOTES.UPDATE.START);
+        noteService.update(requestData).then(function(response) {
+                if (response && response.responseCode === 'OK') {
+                    $scope.notesList = $scope.notesList.filter(function(note) {
+                        return note.identifier !== noteData.identifier;
+                    });
+                    $scope.notesList.push(response.result.note);
+                    $scope.ngInit();
+                    $scope.error = {};
+                    $scope.update.showUpdateNote = false;
+                    $scope.showModalError = false;
+                } else {
+                    $scope.showModalError = true;
+                    handleFailedResponse(config.MESSAGES.NOTES.UPDATE.FAILED);
+                }
+            })
+            .catch(function(error) {
+                $scope.showModalError = true;
+                handleFailedResponse(config.MESSAGES.NOTES.UPDATE.FAILED);
+            });
     };
 
     // end notes
