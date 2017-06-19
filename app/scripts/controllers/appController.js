@@ -34,9 +34,6 @@ angular.module('playerApp')
                      $('.course-progress').progress();
                 },500);               
             }
-            $rootScope.roundOffNumber=function(number){
-                return parseInt(Math.round(number));
-            }
             $scope.$on('$locationChangeSuccess', function () {
                 $rootScope.currentPath = $location.path();
             });
