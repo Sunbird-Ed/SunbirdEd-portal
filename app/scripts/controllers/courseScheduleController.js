@@ -126,8 +126,7 @@ angular.module('playerApp')
 
         }
 
-        toc.getContentClass = function(contentMimeType) {
-            console.log("contentMimeType", contentMimeType);
+        toc.getContentClass = function(contentMimeType) {          
             if (contentMimeType == 'application/vnd.ekstep.content-collection') {
                 return '';
             } else {
