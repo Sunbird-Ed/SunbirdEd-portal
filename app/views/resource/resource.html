@@ -6,7 +6,7 @@
             <h4 class="ui header card-section-header ">{{section.display.title.en}}
                 <a class="ui red circular inline label">{{section.count}}</a></h4>
                 <div class="regular slider " ng-if="section.content.length> 0">
-                     <div apply-script class="sliderCards ui card margin-left-right-20 margin-top-15" ng-repeat="content in section.content track by $index" ng-init="$last && resource.loadCarousel()" ng-click="contentPlayer.isContentPlayerEnabled = !contentPlayer.isContentPlayerEnabled; contentPlayer.contentData = ''; contentPlayer.contentData = content">
+                     <div apply-script class="sliderCards ui card margin-left-right-10 margin-top-15" ng-repeat="content in section.content track by $index" ng-init="$last && resource.loadCarousel()" ng-click="contentPlayer.isContentPlayerEnabled = !contentPlayer.isContentPlayerEnabled; contentPlayer.contentData = ''; contentPlayer.contentData = content">
                            <div class="image imageInCardsResponsive">
                              <img ng-src="{{content.appIcon ? content.appIcon : '../images/sunbird_logo.png'}}">
                                 <div class="cardImageText center aligned "> 
