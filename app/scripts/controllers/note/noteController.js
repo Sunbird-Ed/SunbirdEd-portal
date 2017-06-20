@@ -29,6 +29,8 @@ angular.module('playerApp')
                     if (response && response.responseCode === "OK") {
                         $scope.error = {};
                         $scope.notesList = response.result.note;
+                        $scope.add.title = $scope.notesList[0].title;
+                        $scope.add.note = $scope.notesList[0].note;
                         $scope.$safeApply();
                     } else {
                         handleFailedResponse(config.MESSAGES.NOTES.SEARCH.FAILED);
@@ -107,7 +109,7 @@ angular.module('playerApp')
                         $scope.ngInit();
                         $scope.add.showCreateNote = false;
                         $scope.add = {};
-                        $scope.add.showModalError = false;  
+                        $scope.add.showModalError = false;
                     } else {
                         $scope.add.showModalError = true;
                         handleFailedResponse(config.MESSAGES.NOTES.CREATE.FAILED);
