@@ -1236,6 +1236,9 @@ ul.subList-padding {
   background: transparent;
   box-shadow: none;
 }
+.dropdown-content {
+  padding: .5em 0;
+}
 body {
   position: relative !important;
   margin: 0 !important;
