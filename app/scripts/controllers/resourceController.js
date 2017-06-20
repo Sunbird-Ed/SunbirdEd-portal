@@ -7,6 +7,14 @@ angular.module('playerApp')
             isContentPlayerEnabled: false
         };
         $rootScope.searchResult = [];
+
+        function handleFailedResponse(errorResponse) {
+            var error = {};
+            error.isError = true;
+            error.message = errorResponse.responseCode === 'CLIENT_ERROR' ? 'invalid username or password' : '';
+            error.responseCode = errorResponse.responseCode;
+            auth.error = error;
+        }
         resource.sections = function() {
             var req = {
                 'request': {
@@ -15,27 +23,11 @@ angular.module('playerApp')
                     }
                 }
             };
-
-            resource.loadCarousel = function() {
-                $('.regular').not('.slick-initialized').slick({
-                    infinite: false,
-                    slidesToShow: 4,
-                    slidesToScroll: 4
-//                    prevArrow: false,
-                });
-                $('.ui.rating')
-                    .rating({
-                        maxRating: 5
-                    }).rating('disable', true);
-
-                $('.popup-button').popup();
-            };
             resourceService.resources(req).then(function(successResponse) {
                 if (successResponse && successResponse.responseCode === 'OK') {
                     resource.page = successResponse.result.page.sections;
-                    console.log(resource.page);
+
                 } else {
-                    $log.warn('enrolledCourses', successResponse);
                     handleFailedResponse(successResponse);
                 }
             }).catch(function(error) {
