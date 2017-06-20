@@ -11,31 +11,7 @@ angular.module('playerApp')
         .controller('AppCtrl', function ($scope, $state, $stateParams, $rootScope, setResourceBundle, $translate, userService, $q, config, $location,$timeout) {
             $rootScope.language = $rootScope.userLanguage || config.SITE.DEFAULT_LANGUAGE;
             $rootScope.translationBundle = {};
-            $rootScope.loadCarousel = function () {
-                $('.regular').not('.slick-initialized').slick({
-                    infinite: true,
-                    slidesToShow: 4,
-                    slidesToScroll: 4,
-                    prevArrow: false,
-                });
-                $('.ui.rating')
-                        .rating({
-                            maxRating: 5
-                        }).rating('disable', true);
-
-                $('.popup-button').popup();
-            };
             $rootScope.searchKey = '';
-            $rootScope.loadProgress=function(){
-                $timeout(function(){       
-                     $('.course-progress').progress();
-                },500);               
-            }
-            $scope.$on('$locationChangeSuccess', function () {
-                $rootScope.currentPath = $location.path();
-            });
-            $rootScope.currentPath = $location.path();
-
             $rootScope.loadBundle = function () {
                 var promises = [];
                 promises.push(userService.resourceBundle($rootScope.language, 'label'));
@@ -71,16 +47,6 @@ angular.module('playerApp')
                     return false;
                 } else {
                     $('body').find('.dropdown-menu-list').removeClass('visible').addClass('hidden');
-                }
-            });
-            $scope.$watch(function () {
-                return $state.$current.name;
-            }, function (newState, oldState) {
-                if (newState.toLowerCase() === 'course' || newState.toLowerCase() === 'toc') {
-                    $rootScope.displayCourseHeader = true;
-                } else
-                {
-                    $rootScope.displayCourseHeader = false;
                 }
             });
             
