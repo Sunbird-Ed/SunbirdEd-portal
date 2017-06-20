@@ -56,7 +56,7 @@
                                     <course-discussions  showaskquestion="true"></course-discussions>
                                 </div>
                                 <div class='four wide column'>
-                                    <div class="cursor-pointer margin-bottom-15" ng-controller="NoteCtrl" ng-click="toc.showNoteModal = !toc.showNoteModal; showAddNoteModal(); add = {}"> <i class="circular icon margin-left-right-10 link plus" ></i>&nbsp;ADD NOTE</div>
+                                    <div class="cursor-pointer margin-bottom-15" ng-controller="NoteCtrl" ng-click="toc.showNoteModal = !toc.showNoteModal; showAddNoteModal();"> <i class="circular icon margin-left-right-10 link plus" ></i>&nbsp;ADD NOTE</div>
                                     <note-card shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false"></note-card>
                                     <div ng-include=" 'views/course/facultyCard.html'" class="margin-bottom-15"></div>
                                     <div ng-include=" 'views/course/carriculumCard.html'"></div><br>
@@ -92,7 +92,7 @@
                                     <div class="six wide column center aligned">
                                         <h2 class="ui center aligned icon tiny header toc-note" ng-if="toc.nightMode" ng-init="toc.showNoteModal = false">
                                             <i class=" file text outline icon font-dark-blue"></i>
-                                            <u class="ui font-dark-blue mouse-pointer" ng-controller="NoteCtrl" ng-click="toc.showNoteModal = !toc.showNoteModal; showAddNoteModal(); add = {}">Take Note</u>
+                                            <u class="ui font-dark-blue mouse-pointer" ng-controller="NoteCtrl" ng-click="toc.showNoteModal = !toc.showNoteModal; showAddNoteModal(toc.courseId);">Take Note</u>
                                         </h2>
                                         <div ng-if="toc.showNoteModal">
                                             <div ng-include=" 'views/course/noteAddCardModal.html'"></div>
