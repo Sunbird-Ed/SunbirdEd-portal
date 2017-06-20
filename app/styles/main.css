@@ -1,6 +1,9 @@
 .padding-left-20 {
   margin-left: 20px !important;
 }
+.padding-none {
+  padding: 0px !important;
+}
 .padding-top-50 {
   margin-top: 50px !important;
 }
@@ -12,6 +15,9 @@
 }
 .margin-bottom-10 {
   margin-bottom: 0.625rem !important;
+}
+.margin-bottom-20 {
+  margin-bottom: 1.25rem !important;
 }
 .margin-left-20 {
   margin-left: 1.25rem !important;
@@ -960,6 +966,8 @@ ul.subList-padding {
 }
 .courseStructureHeader {
   background-color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  border-bottom: 2px solid rgba(34, 36, 38, 0.15) !important;
 }
 .courseStructureHeaderText {
   padding-top: 2% !important;
