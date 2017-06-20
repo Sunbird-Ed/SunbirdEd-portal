@@ -23,6 +23,7 @@ var player = {
 };
 
 var paths = {
+    data: [player.app+'/data/*.*'],
     scripts: [player.app + '/scripts/*.js', player.app + '/scripts/**/*.js'],
     styles: [player.app + 'app/styles/**/main.less'],
     images: player.app + '/images/*.*',
@@ -245,8 +246,13 @@ gulp.task('semantic', function() {
         }));
 });
 
+gulp.task('mockdata', function () {
+    return gulp.src(paths.data)
+        .pipe(gulp.dest(dist.path + '/data'));
+})
+
 gulp.task('build', ['clean:dist'], function() {
-    runSequence(['index-html', 'images', 'bower', 'config', 'build-css', 'build-css-dev', 'build-js', 'html']);
+    runSequence(['index-html', 'images', 'bower', 'config', 'build-css', 'build-css-dev', 'build-js', 'html','mockdata']);
 });
 
 gulp.task('default', ['build']);
