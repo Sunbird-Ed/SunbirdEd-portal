@@ -639,6 +639,15 @@
   overflow: hidden !important;
   height: 150px !important;
 }
+.sliderCards .ui.mini.rating {
+  font-size: .78571429rem;
+  padding-top: 12px;
+}
+.sliderCards > .description {
+  clear: both;
+  color: rgba(16, 16, 16, 0.88) !important;
+  line-height: 1.5;
+}
 .footer1 {
   position: fixed !important;
   bottom: 0 !important;
