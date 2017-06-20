@@ -200,5 +200,5 @@ angular.module('playerApp')
                 content.keyword = text;
                 content.searchContent();
             };
-            $('.ui.dropdown').dropdown();
+            $('.search-dropdown').dropdown();
         });
