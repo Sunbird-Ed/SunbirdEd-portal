@@ -2,29 +2,29 @@
     <div class="ui modal" id="addNoteModalInLectureView">
         <div class=" ui segment margin-top-10">
             <div class=" margin-bottom-15">
-                <div class="ui grid"> 
-                    <div class="eleven wide column"> 
-                        <span class="ui header">Take a note</span> 
-                    </div> 
-                    <div class="one wide column actions"> 
-                        <h5 class="ui basic icon circular button deny" ng-click="add = {}; toc.showNoteModal = !toc.showNoteModal;"> 
-                            <i class="ui remove icon"></i> 
-                        </h5> 
-                    </div> 
-                </div> 
+                <div class="ui grid">
+                    <div class="eleven wide column">
+                        <span class="ui header">Take a note</span>
+                    </div>
+                    <div class="one wide column actions">
+                        <h5 class="ui basic icon circular button deny" ng-click="add = {}; toc.showNoteModal = !toc.showNoteModal;">
+                            <i class="ui remove icon"></i>
+                        </h5>
+                    </div>
+                </div>
             </div>
-            <div class="content"> 
+            <div class="content">
                 <div class="ui fluid icon input">
                     <input type="text" placeholder="Title" name="title" ng-model="add.title" />
                 </div>
-                <div class="editor"> 
+                <div class="editor">
                     <pagedown-editor content="add.note" show-preview="false"></pagedown-editor>
                 </div>
             </div>
-            <div class="actions"> 
+            <div class="actions">
                 <button class="ui primary right floated button margin-bottom-15 margin-top-10" ng-class="!add.showModalError ? 'deny' : ''"
-                        type="submit" ng-click="createNote(add)" ng-disabled="!add.title || !add.note" tabindex="4">Save</button>
-                <button class="ui secondary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="add= {};add.title = ''; add.note = '';">Clear</button>
+                        type="submit" ng-click="createNote(add);toc.showNoteModal = !toc.showNoteModal;" ng-disabled="!add.title || !add.note" tabindex="4">Save</button>
+                <button class="ui secondary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="add= {};add.title = ''; add.note = '';toc.showNoteModal = !toc.showNoteModal;">Clear</button>
             </div>
             <div ng-if="add.showModalError">
                 <span class="ui header red">{{error.message}}</span>

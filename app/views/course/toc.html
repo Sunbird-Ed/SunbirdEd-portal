@@ -122,8 +122,9 @@
                         </div>
                     </div>
                 </div>
-                <div ng-if="toc.showAllNoteList" ng-include="'views/note/noteList.html'"></div>
+
             </div>
+            <div ng-if="toc.showAllNoteList" ng-include="'views/note/noteList.html'"></div>
             <div class="ui dimmer inverted" ng-class="toc.showDimmer ? 'active' : ''">
                 <div class="content">
                     <span ng-if="toc.showMetaLoader">
