@@ -5,15 +5,15 @@
         <div class="ten wide column">
             <div apply-script class="ui accordion" id='content-search-filter-accordion'>
                 <div class="ui twelve column grid">
-                    <div class="nine wide column">
+                    <div class="ten wide column">
                         <div class="title">
                             <i class="icon filter"></i> Show Filters
                             <i class="dropdown icon"></i>
                         </div>
                         <div class="content">
-                            <form class="ui tiny form">
+                            <form class="ui form">
                                 <div class="inline fields">
-                                    <div class="three wide field header-filter-label">Filter by:</div>
+                                    <label>Filter by:</label>
                                     <div class="three wide field">
                                         <select name="language" class="ui selection content-search-filter dropdown" multiple="" id="multi-select" ng-value="option.value" ng-options=" language for language in content.languages" ng-model="content.selectedLanguage">
                                             <option value="">Languages</option>
@@ -42,7 +42,7 @@
                             </form>
                         </div>
                     </div>
-                    <div class="three wide column">
+                    <div class="two wide column">
                         <!--  <div class="field">
                             <span class="header">Sort by:&nbsp;</span>
                             <select ng-change="content.searchContent()" ng-model="content.selectedOrder" name="SortBy" class="ui selection dropdown"  id="multi-select-sort" >
