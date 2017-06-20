@@ -19,7 +19,6 @@ RUN curl --silent --location https://deb.nodesource.com/setup_6.x | bash - \
 WORKDIR /opt/player/
 RUN npm install
 RUN npm install express-http-proxy --save
-RUN echo '{ "allow_root": true }' >> /opt/player/.bowerrc
 RUN bower install /opt/player/bower.json
 RUN gulp
 WORKDIR /opt/player
