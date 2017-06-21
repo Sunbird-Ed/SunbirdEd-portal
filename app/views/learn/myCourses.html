@@ -3,8 +3,8 @@
     <div class="ten wide column popular-section">
         <h4 class="ui header card-section-header">My Courses<a class="ui red circular inline label ">{{learn.enrolledCourses.length}}</a></h4>
        
-        <div class="regular slider  courses-slider" ng-if="learn.enrolledCourses.length> 0">
-            <div  ng-repeat="enrolledCourse in learn.enrolledCourses track by $index" ng-init="$last && learn.loadCarousel()" ng-click="learn.openCourseView(enrolledCourse.courseId, 'ENROLLED_COURSE',enrolledCourse.progress,enrolledCourse.total)">
+        <div class="regular slider  courses-slider" ng-if="learn.enrolledCourses.length> 0" add-slick>
+            <div  ng-repeat="enrolledCourse in learn.enrolledCourses track by $index" ng-click="learn.openCourseView(enrolledCourse.courseId, 'ENROLLED_COURSE',enrolledCourse.progress,enrolledCourse.total)">
              <div class="ui link cards">
                 <div apply-script class="sliderCards ui link card margin-left-right-20 margin-top-15 link" ng-if="learn.enrolledCourses.length > 0">
                     <div class="image imageInCardsResponsive">
