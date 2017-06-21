@@ -1,26 +1,39 @@
 angular.module('playerApp')
-        .controller('courseScheduleCtrl', function (courseService, $timeout, $scope, $sce, $rootScope, $sessionStorage, $stateParams, $location, $anchorScroll) {
+        .controller('courseScheduleCtrl', function (courseService, sessionService, $stateParams, $timeout, $scope, $sce, $rootScope, $sessionStorage, $location, $anchorScroll) {
             var toc = this;
             toc.playList = [];
             toc.playListContent = [];
             toc.loading = false;
-            toc.lectureView = $stateParams.lectureView;
-            toc.courseId = $stateParams.courseId;
-            toc.courseType = $stateParams.courseType;
-            $rootScope.courseId = $stateParams.courseId;
-            $rootScope.courseProgress = $stateParams.progress;
-            $rootScope.courseTotal = $stateParams.total;
-            toc.uid = $sessionStorage.userId;
-            //console.log($stateParams);
-            $scope.enableCloseButton = (toc.lectureView === 'yes') ? 'false' : 'true';
-            //console.log($rootScope.contentDetails);
-            toc.showAllNoteList = false;
-            toc.nightMode = true;
-            $scope.contentPlayer = {
-                isContentPlayerEnabled: false
+            toc.courseParams = sessionService.getSessionData('COURSE_PARAMS');
+            if (toc.courseParams.courseId != $stateParams.courseId) {
+                var req = {
+                    "request": {
+                        "filters": {
+                            identifier: $stateParams.courseId
+                        }
+                    },
+                    "params": {
+                        "cid": "12"
+                    }
+                };
+                courseService.search(req).then(function (res) {
+                    if (res && res.responseCode === "OK") {
+                        toc.courseParams = {lectureView: toc.courseParams.lectureView, courseId: $stateParams.courseId, };
+                    } else {
+                        toc.showError("Unable to get course details.");
+                    }
+                    $timeout(function () {
+                        toc.showMetaLoader = false;
+                        toc.showDimmer = false;
+                    }, 2000);
 
-            };
-            toc.playItemIndex = undefined;
+                }, function (err) {
+                    toc.showError("Unable to get course details.");
+                });
+            } else
+            {
+                toc.init();
+            }
             toc.enrollUserToCourse = function (courseId) {
                 var req = {
                     courseId: courseId,
@@ -79,7 +92,7 @@ angular.module('playerApp')
                         $rootScope.courseName = toc.courseHierachy.name;
                         toc.applyAccordion();
                         toc.showMetaLoader = false;
-                        toc.showDimmer = false;                       
+                        toc.showDimmer = false;
                     } else {
                         toc.showError("Unable to get course schedule details.");
                     }
@@ -94,7 +107,7 @@ angular.module('playerApp')
                 });
             };
 
-            toc.getCourseToc();
+
             toc.expandMe = function ($event, item) {
                 if (item.mimeType !== "application/vnd.ekstep.content-collection") {
 
@@ -183,127 +196,14 @@ angular.module('playerApp')
                     if (toc.lectureView == 'yes' && toc.playList.length > 0) {
                         toc.itemIndex = 0;
                         toc.playPlaylistContent(toc.playList[toc.itemIndex], '');
-                    }
-                    else
+                    } else
                     {
-                         //play my current content
-                        toc.resumeCourse(); 
+                        //play my current content
+                        toc.resumeCourse();
                     }
-                    $('.ui.accordion').accordion({exclusive: false});}, 0);
+                    $('.ui.accordion').accordion({exclusive: false});
+                }, 0);
             }
-
-            //We need to discuss
-            toc.content_res = {
-                "id": "8e27cbf5-e299-43b0-bca7-8347f7e5abcf",
-                "ver": "v1",
-                "ts": "2017-05-27 05:38:13:629+0530",
-                "params": {
-                    "resmsgid": null,
-                    "msgid": "8e27cbf5-e299-43b0-bca7-8347f7e5abcf",
-                    "err": null,
-                    "status": "success",
-                    "errmsg": null
-                },
-                "responseCode": "OK",
-                "result": {
-                    "contentList": [{
-                            "dateTime": 1495886160595,
-                            "lastAccessTime": "2017-01-01 10:58:07:509+0530",
-                            "contentId": "LP_FT_5887573.img",
-                            "viewPosition": "pos101",
-                            "completedCount": 0,
-                            "userId": "e9280b815c0e41972bf754e9409b66d778b8e11bb91844892869a1e828d7d2f2",
-                            "result": "pass",
-                            "score": "10",
-                            "grade": "B",
-                            "lastUpdatedTime": "2017-01-01 05:10:12:507+0530",
-                            "id": "ece12e8cf9b6a82e7ff981709685600e47f2af1aa5beb5d98afd63c6e3b1b10a",
-                            "viewCount": 4,
-                            "contentVersion": null,
-                            "courseId": "642f1dfa59249f23797ba070bdebbce1c27e0d756699dcd24dba669f86fbad88",
-                            "lastCompletedTime": null,
-                            "status": 1
-                        }]
-                }
-            };
-            toc.res = {
-                "id": "8e27cbf5-e299-43b0-bca7-8347f7e5abcf",
-                "ver": "v1",
-                "ts": "2017-05-27 06:22:29:972+0530",
-                "params": {
-                    "resmsgid": null,
-                    "msgid": "8e27cbf5-e299-43b0-bca7-8347f7e5abcf",
-                    "err": null,
-                    "status": "success",
-                    "errmsg": null
-                },
-                "responseCode": "OK",
-                "result": {
-                    "courses": [{
-                            "dateTime": 1495886160605,
-                            "lastReadContentStatus": 1,
-                            "enrolledDate": "2017-05-27 05:24:29:079+0530",
-                            "addedby": "e9280b815c0e41972bf754e9409b66d778b8e11bb91844892869a1e828d7d2f2",
-                            "delta": "delta",
-                            "active": true,
-                            "description": "course description",
-                            "userId": "e9280b815c0e41972bf754e9409b66d778b8e11bb91844892869a1e828d7d2f2",
-                            "courseName": "course name 2",
-                            "grade": null,
-                            "progress": 0,
-                            "id": "642f1dfa59249f23797ba070bdebbce1c27e0d756699dcd24dba669f86fbad88",
-                            "lastReadContentId": "ek step cont-284",
-                            "tocUrl": null,
-                            "courseId": "0122542310741688321",
-                            "status": 0
-                        }]
-                }
-            };
-
-            toc.getUserCourses = function () {
-
-                if (toc.res != null && toc.res.responseCode === 'OK') {
-                    toc.enrolledCourses = toc.res.result.courses;
-                    var courseIds = toc.fetchObjectAttributeAsArrayOrObject(toc.enrolledCourses, 'id', false);
-                    var req = {
-                        "id": "unique API ID",
-                        "ts": "2013/10/15 16:16:39",
-                        "params": {
-
-                        },
-                        "request": {
-                            "userId": $sessionStorage.token,
-                            "courseIds": courseIds
-                        }
-                    };
-
-
-                    toc.enrolledCourseContents = toc.fetchObjectAttributeAsArrayOrObject(toc.content_res.result.contentList, 'courseId', true);
-                    $rootScope.contentDetails = toc.fetchObjectAttributeAsArrayOrObject(toc.content_res.result.contentList, 'contentId', true);
-
-                }
-            };
-            //                courseService.courseSchedule({}).then(function (res){
-            //                   var res = {"id": "8e27cbf5-e299-43b0-bca7-8347f7e5abcf", "ver": "v1", "ts": "2017-05-27 06:22:29:972+0530", "params": {"resmsgid": null, "msgid": "8e27cbf5-e299-43b0-bca7-8347f7e5abcf", "err": null, "status": "success", "errmsg": null}, "responseCode": "OK", "result": {"courses": [{"dateTime": 1495886160605, "lastReadContentStatus": 1, "enrolledDate": "2017-05-27 05:24:29:079+0530", "addedby": "e9280b815c0e41972bf754e9409b66d778b8e11bb91844892869a1e828d7d2f2", "delta": "delta", "active": true, "description": "course description", "userId": "e9280b815c0e41972bf754e9409b66d778b8e11bb91844892869a1e828d7d2f2", "courseName": "course name 2", "grade": null, "progress": 0, "id": "642f1dfa59249f23797ba070bdebbce1c27e0d756699dcd24dba669f86fbad88", "lastReadContentId": "ek step cont-284", "tocUrl": null, "courseId": "0122542310741688321", "status": 0}]}};
-            //                    if (res != null && res.responseCode === 'OK') {
-            //                        toc.enrolledCourses = res.result.courses;
-            //                        var courseIds = toc.fetchObjectAttributeAsArrayOrObject(toc.enrolledCourses, 'id', false);
-            //                        var req = {
-            //                            "id": "unique API ID",
-            //                            "ts": "2013/10/15 16:16:39",
-            //                            "params": {
-            //
-            //                            },
-            //                            "request": {"userId": $sessionStorage.token,
-            //                                "courseIds": courseIds
-            //                            }
-            //                        };
-            //                        courseService.courseContentState(req).then(function (content_res) {
-            //                                var content_res = {"id": "8e27cbf5-e299-43b0-bca7-8347f7e5abcf", "ver": "v1", "ts": "2017-05-27 05:38:13:629+0530", "params": {"resmsgid": null, "msgid": "8e27cbf5-e299-43b0-bca7-8347f7e5abcf", "err": null, "status": "success", "errmsg": null}, "responseCode": "OK", "result": {"contentList": [{"dateTime": 1495886160595, "lastAccessTime": "2017-01-01 10:58:07:509+0530", "contentId": "ek step cont-284", "viewPosition": "pos101", "completedCount": 0, "userId": "e9280b815c0e41972bf754e9409b66d778b8e11bb91844892869a1e828d7d2f2", "result": "pass", "score": "10", "grade": "B", "lastUpdatedTime": "2017-01-01 05:10:12:507+0530", "id": "ece12e8cf9b6a82e7ff981709685600e47f2af1aa5beb5d98afd63c6e3b1b10a", "viewCount": 4, "contentVersion": null, "courseId": "642f1dfa59249f23797ba070bdebbce1c27e0d756699dcd24dba669f86fbad88", "lastCompletedTime": null, "status": 1}]}};
-            //                            toc.enrolledCourseContents = toc.fetchObjectAttributeAsArrayOrObject(content_res.result.contentList, 'courseId', true);                    
-            //                        });
-            //                    }                       
-            //                });
 
 
             toc.fetchObjectAttributeAsArrayOrObject = function (objArray, objKey, isKeyBasedObj) {
@@ -318,11 +218,27 @@ angular.module('playerApp')
                 }
                 return attributeArr;
             };
-
-            toc.getUserCourses();
-
             $rootScope.$on("showAllNoteList", function (e, noteListStatus) {
                 toc.showAllNoteList = noteListStatus;
             });
+            toc.init = function () {
+                toc.lectureView = toc.courseParams.lectureView;
+                toc.courseId = toc.courseParams.courseId;
+                toc.courseType = toc.courseParams.courseType;
+                toc.courseProgress = toc.courseParams.progress;
+                toc.courseTotal = toc.courseParams.total;
+                toc.uid = $sessionStorage.userId;
+                //console.log($stateParams);
+                $scope.enableCloseButton = (toc.lectureView === 'yes') ? 'false' : 'true';
+                //console.log($rootScope.contentDetails);
+                toc.showAllNoteList = false;
+                toc.nightMode = true;
+                $scope.contentPlayer = {
+                    isContentPlayerEnabled: false
 
+                };
+                toc.playItemIndex = undefined;
+                toc.getCourseToc();
+            }
+            toc.init();
         });

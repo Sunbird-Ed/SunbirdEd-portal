@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('playerApp')
-    .controller('LearnCtrl', function(learnService, $log, $scope, $sessionStorage, $timeout, $state, $rootScope) {
+    .controller('LearnCtrl', function(learnService, $log, $scope, $sessionStorage, $timeout, $state, $rootScope,sessionService,$location) {
         var learn = this;
         var uid = $sessionStorage.userId;
         $rootScope.searchResult = [];
@@ -24,7 +24,9 @@ angular.module('playerApp')
             // courseId = 'do_112265805439688704113';
             var showLectureView = 'no';
             var params = { courseType: courseType, courseId: courseId, lectureView: showLectureView, progress: courseProgress, total: courseTotal };
-            $state.go('Toc', params);
+            sessionService.setSessionData('COURSE_PARAMS',params);
+            //$state.go('Toc');
+             $location.path('/toc/'+courseId+"/"+showLectureView);
         };
 
         learn.courses = function() {
