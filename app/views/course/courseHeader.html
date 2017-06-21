@@ -1,5 +1,5 @@
-<div  class="ui padded segment courseStructureHeader marginTop">
-    <div class="ui grid">
+<div  class="ui">
+    <div class="ui grid courseStructureHeader">
         <div class="one wide column"></div>
         <div class="ten wide column">
             <div class="ui grid">
@@ -24,9 +24,15 @@
         <div class="one wide column"></div>
     </div>
 </div>
-<div ng-init="loadProgress()" ng-if="courseProgress">
-    <div  class="ui tiny progress course-progress" data-total="{{courseTotal}}" data-value="{{courseProgress}}" ng-class="{orange:(courseTotal - courseProgress) <= (courseTotal / 2),red:(courseTotal - courseProgress) > (courseTotal / 2)}">
-        <div class="bar"></div>
+<div class="ui grid margin-bottom-20">
+    <div class="row">
+        <div class="twelve wide column padding-none">
+            <div ng-init="loadProgress()" ng-if="courseProgress">
+                <div  class="ui tiny progress course-progress" data-total="{{courseTotal}}" data-value="{{courseProgress}}" ng-class="{orange:(courseTotal - courseProgress) <= (courseTotal / 2),red:(courseTotal - courseProgress) > (courseTotal / 2)}">
+                    <div class="bar"></div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
