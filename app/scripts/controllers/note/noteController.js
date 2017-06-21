@@ -233,8 +233,7 @@ angular.module('playerApp')
                 $scope.showNoteList = false;
                 $rootScope.$emit('showAllNoteList', false);
             };
-             $rootScope.$on("updateNotesListData", function(e, content) {
-                 console.log(content);
+             $rootScope.$on("updateNotesListData", function(e, content) {                 
                  $scope.notesList=content;
              });
 

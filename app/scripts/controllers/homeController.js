@@ -8,7 +8,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('HomeController', function($scope, learnService, $sessionStorage, $log, $timeout, $rootScope, $state) {
+    .controller('HomeController', function($scope, learnService, $sessionStorage, $log, $timeout, $rootScope, $location,sessionService) {
 
         var homeCtrl = this;
         var uid = $sessionStorage.userId;
@@ -89,7 +89,9 @@ angular.module('playerApp')
             // courseId = 'do_112265805439688704113';
             var showLectureView = 'no';
             var params = { courseType: courseType, courseId: courseId, lectureView: showLectureView, progress: courseProgress, total: courseTotal };
-            $state.go('Toc', params);
+            sessionService.setSessionData('COURSE_PARAMS',params);
+            //$state.go('Toc');
+             $location.path('/toc/'+courseId+"/"+showLectureView);
         };
 
     });
