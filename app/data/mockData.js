@@ -36,8 +36,9 @@ var app_mock_data = {
             'responseCode': 'OK',
             'result': {
                 'response': 'SUCCESS'
-            },
-            'profile': {
+            }
+        },
+        'profile': {
                 'id': '8e27cbf5e29943b0bca78347f7e5abcf',
                 'ver': 'v1',
                 'ts': '20170607 03:18:08:239+0530',
@@ -71,9 +72,6 @@ var app_mock_data = {
                     }
                 }
             }
-
-
-        }
     }
 
 }
