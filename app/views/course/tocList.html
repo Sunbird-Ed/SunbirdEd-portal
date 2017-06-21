@@ -1,6 +1,6 @@
 <ul class="subList-padding" ng-if="item.children && item.children.length > 0" class="toc-list-sub-menu">
     <li class="subStr" name="{{item.identifier}}" ng-repeat="item in item.children track by $index" ng-click="toc.expandMe($event, item)" ng-init="toc.checkAndAddToPlaylist(item)" ng-class="toc.getContentClass(item.mimeType)">
-        <span class="text">{{item.name}}</span>
+        <span class="courseAccordianSubDesc text">{{item.name}}</span>
 
         <div class="content" ng-switch on="item.children.length > 0">
             <div ng-switch-when="true">

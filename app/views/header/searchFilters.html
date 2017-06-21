@@ -82,12 +82,9 @@
                                 <div class="ui inline dropdown search-dropdown" id="multi-select-sort">
                                     <div class="text"></div>
                                     <i class="dropdown icon"></i>
-                                    <div class="menu">
-                                        <div class="item" ng-repeat="key in search.sortBy" ng-click="search.searchContent()" data-text="{{key.name}}">{{key.name}}
-                                        </div>
-                                    </div>
+                                    <select ng-options="sortingOption as sortingOption.name for sortingOption in search.sortingOptions " ng-model="search.sortByOption" ng-change="search.applySorting()"></select>
                                 </div>
-                                <i ng-class="{'sort content ascending icon':(search.sortIcon==true),'sort content descending icon':(search.sortIcon==false)}" ng-click="search.sortIcon=!search.sortIcon;search.searchContent()"></i>
+                                <i class="link" ng-class="{'sort content ascending icon':(search.sortIcon==true),'sort content descending icon':(search.sortIcon==false)}" ng-click="search.sortIcon=!search.sortIcon;search.applySorting()"></i>
                             </div>
                         </div>
                     </div>
