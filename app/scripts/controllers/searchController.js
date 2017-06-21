@@ -49,7 +49,6 @@ angular.module('playerApp')
         search.selectedSubject = '';
         search.selectedBoard = '';
         search.selectedOrder = '';
-        search.selectedSortingType = '';
         search.orderBy = {};
         search.autosuggest_data = { content: [] };
         search.listView = false;
