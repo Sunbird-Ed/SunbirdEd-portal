@@ -84,8 +84,6 @@ angular.module('playerApp')
 
                     toc.itemIndex = $($event.target).closest('.playlist-content').index('.playlist-content');
                     toc.playPlaylistContent($($event.target).closest('.playlist-content').attr('name'), '');
-                    $location.hash('tocPlayer');
-                    $anchorScroll();
                 }
             };
 
@@ -113,6 +111,8 @@ angular.module('playerApp')
                     $scope.contentPlayer.contentData = toc.playListContent[toc.itemIndex];
                     $scope.contentPlayer.isContentPlayerEnabled = true;
                 }
+                $location.hash('tocPlayer/' + contentId);
+                $anchorScroll();
             };
 
             toc.getAllChildrenCount = function (index) {
@@ -211,34 +211,13 @@ angular.module('playerApp')
                 toc.playItemIndex = undefined;
                 toc.getCourseToc();
             }
-            if (toc.courseParams.courseId != $stateParams.courseId) {
-                var req = {
-                    "request": {
-                        "filters": {
-                            identifier: $stateParams.courseId
-                        }
-                    },
-                    "params": {
-                        "cid": "12"
-                    }
-                };
-                courseService.search(req).then(function (res) {
-                    if (res && res.responseCode === "OK") {
-                        toc.courseParams = {lectureView: toc.courseParams.lectureView, courseId: $stateParams.courseId, };
-                    } else {
-                        toc.showError("Unable to get course details.");
-                    }
-                    $timeout(function () {
-                        toc.showMetaLoader = false;
-                        toc.showDimmer = false;
-                    }, 2000);
-
-                }, function (err) {
-                    toc.showError("Unable to get course details.");
-                });
-            } else
-            {
-                toc.init();
+            toc.loadData = function () {
+                if (toc.courseParams.courseId != $stateParams.courseId) {
+//if both courseIds are different call to get course by id API and update data(to be implemented with progress and status params in API side)
+                } else
+                {
+                    toc.init();
+                }
             }
-
+            toc.loadData();
         });
