@@ -1,11 +1,11 @@
 <form class="ui form loginForm " name="loginForm">
-    <h4 class="ui dividing header login-modal-title">Sign in to your account!</h4>
+    <h4 class="ui dividing header login-modal-title" translate="signinto">Sign in to your account!</h4>
     <div class="field">
         <div class="ten wide field">
             <div class="ui grid">
                 <div class="one wide column"></div>
                 <div class="three wide column login-modal-text-align">
-                    <label for='Username' class="login-modal-label-title">Login ID</label>
+                    <label for='Username' class="login-modal-label-title" translate="Loginid">Login ID</label>
                 </div>
                 <div class="eight wide column">
                     <input type="text" id="Username" placeholder="Username or Email" ng-model="auth.userName" required>
@@ -18,7 +18,7 @@
             <div class="ui grid">
                 <div class="one wide column"></div>
                 <div class="three wide column login-modal-text-align">
-                    <label for="Password" class="login-modal-label-title">Password</label>
+                    <label for="Password" class="login-modal-label-title" translate="password">Password</label>
                 </div>
                 <div class="eight wide column">
                     <input type="password" id="Password" name="Password" placeholder="Password" ng-model="auth.password" required>
@@ -27,7 +27,7 @@
         </div>
     </div>
 
-    <button class="ui right floated button blue margin-right-8rem" type=" submit " ng-click="auth.login()" ng-disabled="loginForm.$invalid ">Submit</button>
+    <button class="ui right floated button blue margin-right-8rem" type=" submit " ng-click="auth.login()" ng-disabled="loginForm.$invalid " translate="submit">Submit</button>
 </form>
 <!--<div ng-if="error.showError " id="showError ">
     <help-message data="error "></help-message>

@@ -1,7 +1,7 @@
 <div class="ui grid">
     <div class="one wide column"></div>
     <div class="ten wide column popular-section">
-        <h4 class="ui header card-section-header">My Courses<a class="ui red circular inline label ">{{learn.enrolledCourses.length}}</a></h4>
+        <h4 class="ui header card-section-header" ><span translate="mycourses">My Courses</span><a class="ui red circular inline label ">{{learn.enrolledCourses.length}}</a></h4>
        
         <div class="regular slider  courses-slider" ng-if="learn.enrolledCourses.length> 0" add-slick>
             <div  ng-repeat="enrolledCourse in learn.enrolledCourses track by $index" ng-click="learn.openCourseView(enrolledCourse.courseId, 'ENROLLED_COURSE',enrolledCourse.progress,enrolledCourse.total)">
@@ -23,7 +23,7 @@
                        <!--  </div> -->
                     </div>
                     <div class="sliderCards content">
-                        <button class="ui blue basic right floated button">RESUME</button>
+                        <button class="ui blue basic right floated button" translate="resume">RESUME</button>
                         <span class="description">
                            {{(enrolledCourse.progress/enrolledCourse.total)*100| number: 0 || 0}}% complete <br/> 2hrs remaining
                         </span>

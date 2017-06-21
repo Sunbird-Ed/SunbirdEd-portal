@@ -9,7 +9,7 @@
                         <div class="twelve wide column title">
                             <div class="ui grid">
                                 <div class="ten wide column">
-                                    <i class="icon filter"></i> Show Filters
+                                    <i class="icon filter"></i> <span translate="showfilter">Show Filters</span>
                                     <i class="dropdown icon"></i>
                                 </div>
                             </div>
@@ -17,68 +17,39 @@
                         <div class="twelve wide column content">
                             <div class="ui grid">
                                 <div class="one wide column filter-text">
-                                    <span>Filter by:</span>
+                                    <span translate="filterby">Filter by:</span>
                                 </div>
                                 <div class="two wide column">
                                     <select name="language" class="filtersearch ui selection content-search-filter dropdown" multiple="" id="multi-select" ng-value="option.value" ng-options=" language for language in content.languages" ng-model="content.selectedLanguage">
-                                        <option value="">Languages</option>
+                                        <option value="" translate="languages">Languages</option>
                                     </select>
                                 </div>
                                 <div class="two wide column">
                                     <select name="Lesson Type" class="filtersearch ui selection content-search-filter dropdown" multiple="" id="multi-select" ng-value="option.value" ng-options=" contentType for contentType in content.contentTypes" ng-model="content.selectedContentType">
-                                        <option value="">Types</option>
+                                        <option value="" translate="types">Types</option>
                                     </select>
                                 </div>
                                 <div class="two wide column">
                                     <select name="Subject" class="filtersearch ui selection content-search-filter dropdown" multiple="" id="multi-select" ng-value="option.value" ng-options=" subject for subject in content.subjects" ng-model="content.selectedSubject">
-                                        <option value="">Subjects</option>
+                                        <option value="" translate="subjects">Subjects</option>
                                     </select>
                                 </div>
                                 <div class="two wide column">
                                     <select name="Board" class="filtersearch ui selection content-search-filter dropdown" multiple="" id="multi-select" ng-value="option.value" ng-options="board for board in content.boards" ng-model="content.selectedBoard">
-                                        <option value="">Boards</option>
+                                        <option value="" translate="boards">Boards</option>
                                     </select>
                                 </div>
                                 <div class="three wide column filter-button">
-                                    <button class="ui blue tiny  button" ng-click="content.applyFilter()">APPLY</button>
-                                    <button class="ui primary tiny basic button" ng-click="content.resetFilter()">RESET</button>
+                                    <button class="ui blue tiny  button" ng-click="content.applyFilter()" translate="apply">APPLY</button>
+                                    <button class="ui primary tiny basic button" ng-click="content.resetFilter()" translate="reset">RESET</button>
                                 </div>
                             </div>
-                            <!-- <form class="ui form">
-                                <div class="inline fields">
-                                    <label>Filter by:</label>
-                                    <div class="three wide field">
-                                        <select name="language" class="ui selection content-search-filter dropdown" multiple="" id="multi-select" ng-value="option.value" ng-options=" language for language in content.languages" ng-model="content.selectedLanguage">
-                                            <option value="">Languages</option>
-                                        </select>
-                                    </div>
-                                    <div class="three wide field">
-                                        <select name="Lesson Type" class="ui selection content-search-filter dropdown" multiple="" id="multi-select" ng-value="option.value" ng-options=" contentType for contentType in content.contentTypes" ng-model="content.selectedContentType">
-                                            <option value="">Types</option>
-                                        </select>
-                                    </div>
-                                    <div class="three wide field">
-                                        <select name="Subject" class="ui selection content-search-filter dropdown" multiple="" id="multi-select" ng-value="option.value" ng-options=" subject for subject in content.subjects" ng-model="content.selectedSubject">
-                                            <option value="">Subjects</option>
-                                        </select>
-                                    </div>
-                                    <div class="three wide field">
-                                        <select name="Board" class="ui selection content-search-filter dropdown" multiple="" id="multi-select" ng-value="option.value" ng-options="board for board in content.boards" ng-model="content.selectedBoard">
-                                            <option value="">Boards</option>
-                                        </select>
-                                    </div>
-                                    <div class="three wide field">
-                                        <button class="ui blue tiny  button" ng-click="content.applyFilter()">APPLY</button>
-                                        <button class="ui primary tiny basic button" ng-click="content.resetFilter()">RESET</button>
-                                    </div>
-                                </div>
-                            </form> -->
                         </div>
                     </div>
                     <div class="two wide column">
                         <div class="field">
                             <div class="content dropdown-content">
-                                Sort by:&nbsp;
+                                <span translate="sortby"> Sort by:&nbsp;</span>
                                 <div class="ui inline dropdown search-dropdown" id="multi-select-sort">
                                     <div class="text"></div>
                                     <i class="dropdown icon"></i>
