@@ -293,6 +293,7 @@
 }
 .editor textarea {
   background-color: white;
+  height: 180px !important;
 }
 .margin-top--5 {
   margin-top: -0.3124em !important;
@@ -423,7 +424,8 @@
 .loginForm {
   padding-bottom: 40px;
 }
-.ui.modal .actions {
+/*close button css in sign in page */
+.signInPopUp {
   background: #FFFFFF !important;
   border: none;
   padding: 1rem 1rem 0 0 !important;
@@ -1263,7 +1265,7 @@ ul.subList-padding {
 }
 /*sunbird Bold font*/
 @font-face {
-  font-family: 'sunbirdboldfont';
+  font-family: 'sunbirdboldfont7';
   src: url('../fonts/Roboto-Bold.ttf') format('truetype');
 }
 body {
