@@ -17,8 +17,8 @@
             <img ng-src="{{userProfilePic || 'images/user_logo.png'}}" class="ui circular image logged-in-user"/>
             
             <div class="menu">
-                <a class="item" href="#" ui-sref-active="active" ui-sref="Profile">Profile</a>
-                <a class="item" ng-click="auth.logout()">Logout</a>
+                <a class="item" href="#" ui-sref-active="active" ui-sref="Profile" translate="profile" >Profile</a>
+                <a class="item" ng-click="auth.logout()" translate="logout">Logout</a>
             </div>
         </div>
     </div>
