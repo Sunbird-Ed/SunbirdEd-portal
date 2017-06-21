@@ -108,9 +108,8 @@ angular
             //                controller: 'CourseCtrl as courses'
             //            })
             .state('Toc', {
-                url: '/toc',
+                url: '/toc/:courseId/:lectureView',
                 templateUrl: 'views/course/toc.html',
-                params: { courseType: null, courseId: null, lectureView: null, progress: null, total: null },
                 controller: 'courseScheduleCtrl as toc'
             })
             .state('Community', {
