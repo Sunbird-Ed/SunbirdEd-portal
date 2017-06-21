@@ -5,35 +5,6 @@ angular.module('playerApp')
             toc.playListContent = [];
             toc.loading = false;
             toc.courseParams = sessionService.getSessionData('COURSE_PARAMS');
-            if (toc.courseParams.courseId != $stateParams.courseId) {
-                var req = {
-                    "request": {
-                        "filters": {
-                            identifier: $stateParams.courseId
-                        }
-                    },
-                    "params": {
-                        "cid": "12"
-                    }
-                };
-                courseService.search(req).then(function (res) {
-                    if (res && res.responseCode === "OK") {
-                        toc.courseParams = {lectureView: toc.courseParams.lectureView, courseId: $stateParams.courseId, };
-                    } else {
-                        toc.showError("Unable to get course details.");
-                    }
-                    $timeout(function () {
-                        toc.showMetaLoader = false;
-                        toc.showDimmer = false;
-                    }, 2000);
-
-                }, function (err) {
-                    toc.showError("Unable to get course details.");
-                });
-            } else
-            {
-                toc.init();
-            }
             toc.enrollUserToCourse = function (courseId) {
                 var req = {
                     courseId: courseId,
@@ -240,5 +211,34 @@ angular.module('playerApp')
                 toc.playItemIndex = undefined;
                 toc.getCourseToc();
             }
-            toc.init();
+            if (toc.courseParams.courseId != $stateParams.courseId) {
+                var req = {
+                    "request": {
+                        "filters": {
+                            identifier: $stateParams.courseId
+                        }
+                    },
+                    "params": {
+                        "cid": "12"
+                    }
+                };
+                courseService.search(req).then(function (res) {
+                    if (res && res.responseCode === "OK") {
+                        toc.courseParams = {lectureView: toc.courseParams.lectureView, courseId: $stateParams.courseId, };
+                    } else {
+                        toc.showError("Unable to get course details.");
+                    }
+                    $timeout(function () {
+                        toc.showMetaLoader = false;
+                        toc.showDimmer = false;
+                    }, 2000);
+
+                }, function (err) {
+                    toc.showError("Unable to get course details.");
+                });
+            } else
+            {
+                toc.init();
+            }
+
         });
