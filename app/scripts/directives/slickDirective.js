@@ -14,7 +14,8 @@ angular.module('playerApp').directive('addSlick', function($timeout) {
                 $(element).not('.slick-initialized').slick({
                     infinite: false,
                     slidesToShow: 4,
-                    slidesToScroll: 4
+                    slidesToScroll: 4,
+                    speed: 2000
                 });
             })
         }
