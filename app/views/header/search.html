@@ -1,10 +1,11 @@
-<div ng-controller="ContentCtrl as content">
+<div ng-controller="SearchCtrl as search">
     <div class="ui fluid icon input left action" id="search-input-container">
+
         <div class="ui basic floating dropdown button" apply-script id="headerSearchdd">
             <div class="text"></div>
             <i class="dropdown icon"></i>
             <div class="menu">
-              <div class="item" ng-repeat="key in content.searchSelectionKeys" ng-selected ="key.id == selectedSearchKey" value="{{key.id}}">{{key.name}}</div>
+              <div class="item" ng-repeat="key in search.searchSelectionKeys" ng-selected ="key.id == selectedSearchKey" value="{{key.id}}">{{key.name}}</div>
             </div>
         </div>
         <!-- <select class="ui compact selection header-select dropdown" apply-script id="headerSearchdd">
@@ -12,17 +13,19 @@
         </select> -->
         <div class="searchfilterinput ui search">
           <div class=" ui icon input ">
-          <input type="text" id="keyword" name="filter_search" ng-model="content.keyword" ng-change="content.searchContent('$event')" ng-keypress="($event.which === 13)?content.searchContent():0" ng-model-options="{debounce: 1000}" placeholder="What are you looking for?"
+          <input type="text" id="keyword" name="filter_search" ng-model="search.keyword" ng-change="search.searchContent('$event')" ng-keypress="($event.which === 13)?search.searchContent():0" ng-model-options="{debounce: 1000}" placeholder="What are you looking for?"
             title="Search" autocomplete="off" spellcheck="false" dir="auto" size="70" />
-            <i class="search icon" ng-click="content.searchContent()"></i>
+            <i class="search icon" ng-click="search.searchContent()"></i>
           </div>
-            <div id="search-suggestions" ng-if="content.autosuggest_data.length >1" class="ui fluid results transition visible dropdown-menu-list">
+            <div id="search-suggestions" ng-if="search.autosuggest_data.length >1" class="ui fluid results transition visible dropdown-menu-list">
                 <div>
-                    <a class="result" ng-repeat="item in content.autosuggest_data" ng-click='content.setSearchText(item.name)'>
-                        <div class="content">
-                            <div class="title">{{item.name}}</div>
+                    <a class="result" ng-repeat="item in search.autosuggest_data" ng-click='search.setSearchText(item.name)'>
+                <div class="content">
+                    <div class="title">{{item.name}}</div>
                         </div>
                     </a>
+
+        
                 </div>
             </div>
         </div>

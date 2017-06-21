@@ -8,7 +8,7 @@
  * Controller of the studioApp
  */
 angular.module('playerApp')
-        .controller('NoteCtrl', function ($timeout, $scope, noteService, config, $rootScope, $window) {
+        .controller('NoteCtrl', function ($timeout, $scope, noteService, config, $rootScope, $window, $stateParams) {
 
             var userId = $window.localStorage.getItem('user') ? JSON.parse($window.localStorage.getItem('user')).userId : $rootScope.userId;
             $scope.update = {};
@@ -17,6 +17,7 @@ angular.module('playerApp')
             $scope.add.showCreateNote = false;
             $scope.notesList = [];
             $scope.quantityOfNotes = 2;
+            $scope.courseId = $stateParams.courseId;
             var contentId = $scope.$parent.$parent.$parent.contentPlayer.isContentPlayerEnabled ? $scope.$root.contentId : '';
 
             /**
@@ -28,9 +29,8 @@ angular.module('playerApp')
                 noteService.search(request).then(function (response) {
                     if (response && response.responseCode === "OK") {
                         $scope.error = {};
-                        $rootScope.$emit("updateNotesListData",response.result.note);
-                        $scope.add.title = $scope.notesList[0].title;
-                        $scope.add.note = $scope.notesList[0].note;                        
+                        $scope.notesList = response.result.note;                       
+                        $rootScope.$emit("updateNotesListData", response.result.note);
                         $scope.$safeApply();
                     } else {
                         handleFailedResponse(config.MESSAGES.NOTES.SEARCH.FAILED);
@@ -97,7 +97,7 @@ angular.module('playerApp')
                         note: noteData.note,
                         userId: userId,
                         title: noteData.title,
-                        courseId: $scope.$root.courseId,
+                        courseId: $scope.courseId,
                         contentId: contentId
                     }
                 };
@@ -106,7 +106,7 @@ angular.module('playerApp')
                 noteService.create(requestData).then(function (response) {
                     if (response && response.responseCode === "OK") {
                         $scope.error = {};
-                        $scope.ngInit();                        
+                        $scope.ngInit();
                         $scope.add.showCreateNote = false;
                         $scope.add = {};
                         $scope.add.showModalError = false;
@@ -164,6 +164,7 @@ angular.module('playerApp')
                             return note.identifier !== noteData.identifier;
                         });
                         $scope.notesList.push(response.result.note);
+                        $scope.ngInit();
                         $scope.error = {};
                         $scope.update.showUpdateNote = false;
                         $scope.showModalError = false;
@@ -187,7 +188,7 @@ angular.module('playerApp')
                     query: searchText,
                     filters: {
                         userId: userId,
-                        courseId: $scope.$root.courseId,
+                        courseId: $scope.courseId,
                         contentId: contentId
                     },
                     sort_by: {
@@ -233,9 +234,8 @@ angular.module('playerApp')
                 $scope.showNoteList = false;
                 $rootScope.$emit('showAllNoteList', false);
             };
-             $rootScope.$on("updateNotesListData", function(e, content) {
-                 console.log(content);
-                 $scope.notesList=content;
-             });
+            $rootScope.$on("updateNotesListData", function (e, content) {
+                $scope.notesList = content;
+            });
 
         });

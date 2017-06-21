@@ -1,11 +1,11 @@
 <div class="ui grid">
     <div class="one wide column"></div>
     <div class="ten wide column">
-        <div apply-script ng-controller="ContentCtrl as content">
+        <div apply-script ng-controller="SearchCtrl as search">
             <div ng-if="searchResult.length > 0 ">
                 <div class=" ui clearing segment content-player-header search-content-header">
                     <div class="ui left floated header margin-auto ">
-                        <p class= "serch-allresult">Showing all the results for <span class="lower-case">"{{searchKeyword? searchKeyword: 'All'}} " in "{{searchKey }} "</span></p>
+                        <p class="serch-allresult">Showing all the results for <span class="lower-case">"{{searchKeyword? searchKeyword: 'All'}} " in "{{searchKey }} "</span></p>
                     </div>
                     <h5 class="ui right floated basic icon circular button " ng-click="close() ">
                         <i class="ui remove icon "></i>
@@ -13,9 +13,9 @@
                 </div>
 
                 <div class="ui stackable four column grid dynamic-section-card ">
-                    <div class="column " ng-repeat="item in searchResult track by $index " ng-init="$last && content.loadRating() ">
+                    <div class="column " ng-repeat="item in searchResult track by $index " ng-init="$last && search.loadRating() ">
 
-                        <div class="slider link " ng-include=" 'views/common/card.html' " ng-click="content.openCourseView(item.IL_UNIQUE_ID) ">
+                        <div class="slider link " ng-include=" 'views/common/ratingCard.html' " ng-click="search.openCourseView(item.IL_UNIQUE_ID) ">
 
                         </div>
                     </div>
