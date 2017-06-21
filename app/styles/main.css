@@ -43,6 +43,9 @@
 .margin-top-30 {
   margin-top: 30px !important;
 }
+.margin-right-10 {
+  margin-top: 10px !important;
+}
 .border-bottom {
   border-bottom: 1px solid #E6E7E8 !important;
 }
@@ -466,10 +469,9 @@
   background: white;
   text-align: left;
   width: 512px;
-  margin-left: 103px;
 }
 #search-suggestions .result .content .title {
-  font-size: 15px;
+  font-size: 13px;
   padding: 2px;
   color: #717171;
   cursor: pointer;
@@ -1204,7 +1206,7 @@ ul.subList-padding {
   padding: 10px;
 }
 .ann-header {
-  padding: 15px;
+  padding: 0.4em;
 }
 .ui.segment {
   position: relative;
@@ -1216,7 +1218,7 @@ ul.subList-padding {
   border: 1px solid #d8dee2;
 }
 .ann-description {
-  padding: 15px;
+  padding: 0.4em;
 }
 .exam-date-ann {
   font-size: 17px;
@@ -1364,6 +1366,9 @@ ul.subList-padding {
 }
 .filter-button {
   white-space: nowrap;
+}
+.searchfilterinput.ui.search .prompt {
+  border-radius: 0;
 }
 body {
   position: relative !important;
