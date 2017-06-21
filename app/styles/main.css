@@ -1265,8 +1265,24 @@ ul.subList-padding {
 }
 /*sunbird Bold font*/
 @font-face {
-  font-family: 'sunbirdboldfont7';
+  font-family: 'sunbirdboldfont';
   src: url('../fonts/Roboto-Bold.ttf') format('truetype');
+}
+.filtersearch.ui.selection.dropdown {
+  min-width: 100%;
+}
+.dropdown-content {
+  text-align: right;
+  white-space: nowrap;
+}
+.filter-text {
+  text-align: left;
+  vertical-align: middle;
+  line-height: 2.1;
+  white-space: nowrap;
+}
+.filter-button {
+  white-space: nowrap;
 }
 body {
   position: relative !important;
