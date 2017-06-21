@@ -28,7 +28,9 @@ angular.module('playerApp')
                 noteService.search(request).then(function (response) {
                     if (response && response.responseCode === "OK") {
                         $scope.error = {};
-                        $scope.notesList = response.result.note;
+                        $rootScope.$emit("updateNotesListData",response.result.note);
+                        $scope.add.title = $scope.notesList[0].title;
+                        $scope.add.note = $scope.notesList[0].note;                        
                         $scope.$safeApply();
                     } else {
                         handleFailedResponse(config.MESSAGES.NOTES.SEARCH.FAILED);
@@ -48,7 +50,7 @@ angular.module('playerApp')
                 var request = {
                     filters: {
                         userId: userId,
-                        courseId: $scope.$root.courseId,
+                        courseId: $scope.courseId,
                         contentId: contentId
                     },
                     sort_by: {
@@ -104,10 +106,10 @@ angular.module('playerApp')
                 noteService.create(requestData).then(function (response) {
                     if (response && response.responseCode === "OK") {
                         $scope.error = {};
-                        $scope.ngInit();
+                        $scope.ngInit();                        
                         $scope.add.showCreateNote = false;
                         $scope.add = {};
-                        $scope.add.showModalError = false;  
+                        $scope.add.showModalError = false;
                     } else {
                         $scope.add.showModalError = true;
                         handleFailedResponse(config.MESSAGES.NOTES.CREATE.FAILED);
@@ -231,5 +233,9 @@ angular.module('playerApp')
                 $scope.showNoteList = false;
                 $rootScope.$emit('showAllNoteList', false);
             };
+             $rootScope.$on("updateNotesListData", function(e, content) {
+                 console.log(content);
+                 $scope.notesList=content;
+             });
 
         });
