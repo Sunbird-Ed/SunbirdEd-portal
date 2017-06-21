@@ -8,22 +8,6 @@ angular.module('playerApp')
         $scope.contentPlayer = {
             isContentPlayerEnabled: false
         };
-        learn.loadCarousel = function() {
-            $('.regular').not('.slick-initialized').slick({
-                infinite: true,
-                slidesToShow: 4,
-                slidesToScroll: 4
-            });
-
-            // $('.ui .progress').progress();
-
-            $('.ui.rating')
-                .rating({
-                    maxRating: 5
-                }).rating('disable', true);
-
-            $('course-progress').progress();
-        };
 
         function handleFailedResponse(errorResponse) {
             var error = {};

@@ -13,11 +13,6 @@ angular.module('playerApp')
         var homeCtrl = this;
         var uid = $sessionStorage.userId;
         homeCtrl.loadCarousel = function() {
-            $('.regular').not('.slick-initialized').slick({
-                infinite: false,
-                slidesToShow: 4,
-                slidesToScroll: 4
-            });
             $('.ui .progress .course-progress').progress();
             $('.ui.rating')
                 .rating({
@@ -25,23 +20,10 @@ angular.module('playerApp')
                 }).rating('disable', true);
         };
         homeCtrl.loadFeaturedCarousel = function() {
-
-            $('.featured3').not('.slick-initialized').slick({
-                infinite: false,
-                slidesToShow: 4,
-                slidesToScroll: 4
-            });
-
-            // $('.ui .progress').progress();
-
             $('.ui.rating')
                 .rating({
                     maxRating: 5
                 }).rating('disable', true);
-        };
-
-        homeCtrl.loadProgress = function() {
-            $('course-progress').progress();
         };
 
         function handleFailedResponse(errorResponse) {
@@ -94,7 +76,6 @@ angular.module('playerApp')
                     homeCtrl.recommendedCourse = successResponse.result.page.sections[1].course;
                     console.log(homeCtrl.recommendedCourse);
                 } else {
-                    $log.warn('enrolledCourses', successResponse);
                     handleFailedResponse(successResponse);
                 }
             }).catch(function(error) {
@@ -104,10 +85,10 @@ angular.module('playerApp')
         };
         homeCtrl.otherSection();
 
-        homeCtrl.openCourseView = function(courseId, courseType,courseProgress,courseTotal) {
+        homeCtrl.openCourseView = function(courseId, courseType, courseProgress, courseTotal) {
             // courseId = 'do_112265805439688704113';
             var showLectureView = 'no';
-            var params = { courseType: courseType, courseId: courseId, lectureView: showLectureView,progress:courseProgress,total:courseTotal };
+            var params = { courseType: courseType, courseId: courseId, lectureView: showLectureView, progress: courseProgress, total: courseTotal };
             $state.go('Toc', params);
         };
 

@@ -10,7 +10,7 @@
                         <i class="angle down icon down-arrow-accordion float-ContentRight" ></i>
                     </span>
                     <div class="ui active homePage" ng-if="homeCtrl.enrolledCourses.length > 0">
-                        <div class="regular slider padding-top-10">
+                        <div class="regular slider padding-top-10" add-slick>
                             <div ng-repeat="item in homeCtrl.enrolledCourses track by $index"  ng-init="$last && homeCtrl.loadCarousel()" ng-click="homeCtrl.openCourseView(item.courseId, 'OTHER_COURSE',item.progress,item.total)">
                                 <div ng-include=" 'views/common/actionCard.html'"></div>
                             </div>
@@ -26,7 +26,7 @@
                     <span class="removeline title title-padding-left active float-ContentRight" data-tooltip="Collapse" data-inverted=""><i class="angle down icon down-arrow-accordion accordian-homeIcon float-ContentRight" ></i>
                     </span>
                     <div class="ui active homePage">
-                        <div class="regular slider padding-top-10">
+                        <div class="regular slider padding-top-10" add-slick>
                             <div ng-repeat=" item in homeCtrl.recommendedCourse track by $index" ng-init="$last && homeCtrl.loadCarousel()" ng-click="homeCtrl.openCourseView(toDoCourse.courseId, 'OTHER_COURSE')">
                                 <div ng-include=" 'views/common/ratingCard.html'"></div>
                             </div>
