@@ -12,6 +12,7 @@ angular.module('playerApp')
         var search = this;
         search.keyword = '';
         search.filters = {};
+        search.sortBy = {};
         $scope.selectedSearchKey = $stateParams.searchKey;
         $timeout(function() {
             $('#headerSearchdd').dropdown('set selected', $scope.selectedSearchKey);
@@ -19,6 +20,7 @@ angular.module('playerApp')
         $scope.$watch('searchKey', function() {
             $scope.selectedSearchKey = $rootScope.searchKey;
             search.keyword = '';
+            search.filters = {};
         });
         $scope.contentPlayer = {
             isContentPlayerEnabled: false
@@ -39,10 +41,7 @@ angular.module('playerApp')
         search.boards = [
             'NCERT', 'CBSE', 'ICSE', 'MSCERT'
         ];
-        search.sortBy = [
-            { field: 'lastUpdatedOn', name: 'Updated On' },
-            { field: 'createdOn', name: 'Created On' }
-        ];
+        search.sortingOptions = [{ field: 'lastUpdatedOn', name: 'Updated On' }, { field: 'createdOn', name: 'Created On' }];
 
         search.searchSelectionKeys = [{ id: 'Courses', name: 'Courses' }, { id: 'Resources', name: 'Resources' }];
         search.selectedLanguage = '';
@@ -109,9 +108,6 @@ angular.module('playerApp')
 
         search.searchContent = function($event) {
             search.enableLoader(true);
-            if (search.selectedOrder != '') {
-                search.orderBy[search.selectedOrder] = search.sortIcon ? 'asc' : 'desc';
-            }
             var req = {
                 'query': search.keyword,
                 'filters': search.filters,
@@ -119,10 +115,11 @@ angular.module('playerApp')
                     'cid': '12'
                 },
                 'limit': 20,
-                sort_by: search.orderBy
+                'sort_by': search.sortBy
             };
             // req.limit = 20;
             $rootScope.searchKeyword = search.keyword;
+            $rootScope.searchFilters = search.filters;
             if ($scope.selectedSearchKey === 'Resources') {
                 contentService.search(req).then(function(res) {
                     search.enableLoader(false);
@@ -161,7 +158,17 @@ angular.module('playerApp')
             if (search.selectedBoard) {
                 search.filters['board'] = search.selectedBoard;
             }
+
             search.keyword = $rootScope.searchKeyword;
+            search.searchContent();
+        };
+
+        search.applySorting = function() {
+            search.keyword = $rootScope.searchKeyword;
+            search.filters = $rootScope.searchFilters;
+            var sortByField = search.sortByOption.field;
+
+            search.sortBy[sortByField] = (search.sortIcon === true) ? 'asc' : 'desc';
             search.searchContent();
         };
         search.resetFilter = function() {
