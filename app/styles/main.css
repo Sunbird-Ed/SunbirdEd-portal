@@ -478,7 +478,6 @@
 }
 #search-suggestions .result .content .title:hover {
   color: black;
-  background: #d9d9d9;
 }
 .dash-heading-border {
   border-bottom: 1px dashed #333;
@@ -1366,9 +1365,6 @@ ul.subList-padding {
 }
 .filter-button {
   white-space: nowrap;
-}
-.searchfilterinput.ui.search .prompt {
-  border-radius: 0;
 }
 body {
   position: relative !important;
