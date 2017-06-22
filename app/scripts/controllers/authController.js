@@ -28,7 +28,7 @@ angular.module('playerApp')
         function handleFailedResponse(errorResponse) {
             var error = {};
             error.isError = true;
-            error.message = errorResponse.responseCode === 'CLIENT_ERROR' ? 'invalid username or password' : '';
+            error.message = errorResponse.message ? errorResponse.message : errorResponse.responseCode === 'CLIENT_ERROR' ? 'invalid username or password' : '';
             error.responseCode = errorResponse.responseCode;
             auth.error = error;
         }
@@ -47,6 +47,7 @@ angular.module('playerApp')
         };
 
         auth.processUserLogin = function(loginResponse) {
+            console.log('login response', JSON.stringify(loginResponse, null, 2));
             if (loginResponse && loginResponse.responseCode === 'OK') {
                 var user = loginResponse.result.response;
                 auth.closeAuthModal();
@@ -62,7 +63,11 @@ angular.module('playerApp')
                 $window.localStorage.setItem('user', JSON.stringify(auth.user));
                 $window.localStorage.setItem('isLoggedIn', true);
             } else {
-                throw new Error(loginResponse);
+                if (loginResponse !== null && loginResponse.responseCode === 'CLIENT_ERROR') {
+                    throw new Error('Invalid user name and password');
+                } else {
+                    throw new Error('Connection Error');
+                }
             }
         };
 
@@ -70,14 +75,6 @@ angular.module('playerApp')
             var existingUser = {
                 'id': 'sunbird.login',
                 'ts': new Date(),
-                // 'params': {
-                //     // 'did': 'device UUID from which API is called',
-                //     // 'msgid': Math.random(),
-                //     // 'cid': 'consumer id'
-                // },
-                // 'params': {
-
-                // },
                 'request': {
                     'userName': auth.userName,
                     'password': auth.password,
@@ -95,24 +92,30 @@ angular.module('playerApp')
                             handleFailedResponse(error);
                         });
                 })
-                .catch(function(error) {
+                .catch(function(e) {
+                    var error = {
+                        message: e.message,
+                        responseCode: 'CLIENT_ERROR'
+                    };
                     handleFailedResponse(error);
                 });
         };
 
         auth.logout = function() {
             var logoutReq = {
-                'id': 'unique API ID',
-                'ts': '2013/10/15 16:16:39',
+                'id': 'sunbird portal',
+                'ts': new Date(),
                 'params': {
-                    'did': 'device UUID from which API is called',
-                    'key': 'API key (dynamic)',
-                    'cid': 'consumer id',
-                    'uid': 'user auth token'
+                    // 'did': 'device UUID from which API is called',
+                    // 'key': 'API key (dynamic)',
+                    // 'cid': 'consumer id',
+                    'uid': $rootScope.token
                 },
+
                 'request': {}
             };
             authService.logout(logoutReq).then(function(successResponse) {
+                    console.log('logoutResponse', JSON.stringify(successResponse, null, 2));
                     if (successResponse && successResponse.responseCode === 'OK') {
                         $rootScope.isLoggedIn = false;
                         $rootScope.token = '';
