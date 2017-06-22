@@ -1,26 +1,12 @@
 <div class="ui grid">
     <div class="one wide column"></div>
     <div class="ten wide column popular-page">
-        <div class="ui link cards popular-section" ng-repeat=" section in learn.page " >
+        <div class="ui link cards popular-section" ng-repeat=" section in learn.page ">
             <h4 class="ui header card-section-header ">{{section.display.title.en}}
                 <a class="ui red circular inline label">{{section.count}}</a></h4>
-                <div class="regular slider " ng-if="section.course.length> 0" add-slick>
-                 <div apply-script class="sliderCards ui card margin-left-right-10 margin-top-15" ng-click="learn.openCourseView(course.identifier, 'OTHER_COURSE')" ng-repeat=" course in section.course track by $index">
-                       <div class="image imageInCardsResponsive">
-                        <img ng-src="{{course.appIcon ? course.appIcon : '../images/sunbird_logo.png'}}">
-                            <div class="cardImageText center aligned ">
-                                <span class="text-cencapitalize">{{course.name}}</span> for
-                                <span class="text-cencapitalize " ng-repeat="grade in course.gradeLevel">{{grade}}</span>
-
-                            </div>
-                        </div>
-                        <div class="sliderCards content course-rating">
-                            <div class="description">
-                               {{ course.description| limitTo: 60 }}&nbsp;<i ng-show="course.description.length>=80" class="ellipsis horizontal icon popup-button link" data-content="{{course.description}}" data-variation="wide"></i>
-                            </div>
-                            <div apply-script class="courseHeader-rating ui mini star rating" data-rating="3"></div>
-                        </div>
-                    </div>
+            <div class="regular slider " ng-if="section.course.length> 0" add-slick>
+                <div apply-script ng-click="learn.openCourseView(course.identifier, 'OTHER_COURSE')" ng-repeat=" item in section.course track by $index">
+                    <div ng-include=" 'views/common/ratingCard.html' "></div>
 
                 </div>
 
