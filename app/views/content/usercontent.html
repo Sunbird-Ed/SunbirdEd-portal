@@ -14,9 +14,9 @@
         <div class="ui clearing divider" ng-if="publishedContent.length"></div>
         <div class="dynamic-section-card margin-top-20" ng-if="publishedContent.length > 0"> 
             <h4 class="ui header">Published Content<a class="ui red circular inline label">{{publishedContent.length}}</a></h4> 
-            <div class="regular slider " ng-if="publishedContent.length > 0" add-slick>
+            <div class="regular slider " ng-if="publishedContent.length > 0" >
                 <div class="ui link card margin-left-right-10 margin-top-15" ng-repeat=" item in publishedContent track by $index"
-                     ng-init="$last && loadRating()">
+                     ng-init="$last && loadRating()" add-slick>
                     <div class="ui image rounded"> 
                         <img ng-src="{{item.appIcon ? item.appIcon : '../images/sunbird_logo.png'}}">
                         <div class="header center aligned ">
@@ -38,9 +38,9 @@
 
         <div class="dynamic-section-card margin-top-20" ng-if="draftContent.result.content.length > 0"> 
             <h4 class="ui header">Draft Content<a class="ui red circular inline label">{{draftContent.result.content.length}}</a></h4> 
-            <div class="regular slider " ng-if="draftContent.result.content.length > 0"add-slick>
+            <div class="regular slider " ng-if="draftContent.result.content.length > 0">
                 <div class="ui link card margin-left-right-10 margin-top-15" ng-click="editContent(item);"
-                     ng-repeat=" item in draftContent.result.content track by $index" ng-init="$last && loadRating()">
+                     ng-repeat=" item in draftContent.result.content track by $index" ng-init="$last && loadRating()" add-slick>
                     <div class="ui image rounded"> 
                         <img ng-src="{{item.appIcon ? item.appIcon : '../images/sunbird_logo.png'}}">
                         <div class="header center aligned ">
