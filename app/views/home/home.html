@@ -26,7 +26,7 @@
                     </span>
                     <div class="ui active homePage">
                         <div class="regular slider padding-top-10" >
-                            <div ng-repeat=" item in homeCtrl.recommendedCourse track by $index" ng-init="$last && homeCtrl.loadCarousel()" ng-click="homeCtrl.openCourseView(toDoCourse.courseId, 'OTHER_COURSE')" add-slick>
+                            <div ng-repeat=" item in homeCtrl.recommendedCourse track by $index" ng-init="$last && homeCtrl.loadCarousel()" ng-click="homeCtrl.openCourseView(item.courseId, 'OTHER_COURSE')" add-slick>
                                 <div ng-include=" 'views/common/ratingCard.html'"></div>
                             </div>
                         </div>
