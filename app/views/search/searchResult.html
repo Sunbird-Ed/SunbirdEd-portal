@@ -5,7 +5,7 @@
             <div ng-if="searchResult.length > 0  && !contentPlayer.isContentPlayerEnabled">
                 <div class="ui clearing segment content-player-header search-content-header">
                     <div class="ui  left floated header margin-auto">
-                        <p class="serch-allresult">Showing all the results for <span class="lower-case">"{{searchKeyword? searchKeyword:'All'}}" in "{{searchKey }}"</span></p>
+                        <p class="serch-allresult">Showing results {{searchKeyword ? 'for ': ''}}<span class="lower-case">{{searchKeyword? '"'+searchKeyword+'"': ''}}  in "{{searchKey }}"</span></p>
                     </div>
                     <h5 class="ui right floated basic icon circular button" ng-click="close()">
                         <i class="ui remove icon"></i>
