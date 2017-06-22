@@ -5,6 +5,7 @@ angular.module('playerApp')
             toc.playListContent = [];
             toc.loading = false;
             toc.courseParams = sessionService.getSessionData('COURSE_PARAMS');
+            toc.contentList=[];
             toc.enrollUserToCourse = function (courseId) {
                 var req = {
                     courseId: courseId,
@@ -60,6 +61,8 @@ angular.module('playerApp')
                 courseService.courseHierarchy(toc.courseId).then(function (res) {
                     if (res && res.responseCode === "OK") {
                         toc.courseHierachy = res.result.content;
+                        console.log(toc.getAllContentsFromCourse(toc.courseHierachy));
+                        debugger;
                         $rootScope.courseName = toc.courseHierachy.name;
                         toc.applyAccordion();
                         toc.showMetaLoader = false;
@@ -135,6 +138,19 @@ angular.module('playerApp')
                 return cnt;
 
             }
+            toc.getAllContentsFromCourse=function(contentData){
+                if(contentData.mimeType!='application/vnd.ekstep.content-collection'){
+                    toc.contentList.push(contentData.identifier);
+                }
+                else
+                {
+                    for(var item in contentData.children){
+                        toc.getAllContentsFromCourse(contentData.children[item]);
+                    }
+                }
+                return toc.contentList;
+            }
+            
 
             toc.getContentClass = function (contentMimeType) {
                 if (contentMimeType == 'application/vnd.ekstep.content-collection') {
