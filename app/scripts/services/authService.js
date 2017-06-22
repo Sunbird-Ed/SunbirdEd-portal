@@ -10,7 +10,7 @@ angular.module('playerApp')
 
         }
 
-        this.logout =  function(req) {
+        this.logout = function(req) {
             var url = config.URL.USER_BASE + config.URL.AUTH.LOGOUT;
             // return httpServiceJava.post(url, req);
             var deferred = $q.defer();
@@ -30,7 +30,7 @@ angular.module('playerApp')
             var isLoggedIn = $window.localStorage.getItem('isLoggedIn') || $rootScope.isLoggedIn;
 
             if (!isLoggedIn) {
-                $state.go('Home');
+                $state.go('LandingPage');
                 $rootScope.isLoggedIn = false;
                 return false;
             } else {

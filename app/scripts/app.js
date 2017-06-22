@@ -45,7 +45,12 @@ angular
             .state('Home', {
                 url: '/home',
                 templateUrl: '/views/home/home.html',
-                controller: 'HomeController as homeCtrl'
+                controller: 'HomeController as homeCtrl',
+                resolve: {
+                    isLoggedIn: function(authService) {
+                        authService.validUser();
+                    }
+                }
             })
             .state('UserContent', {
                 url: '/content',
@@ -68,14 +73,14 @@ angular
                 },
                 onExit: function($rootScope) {
                     $rootScope.isLearnPage = false;
-                    $("#content-search-filter-accordion").accordion('close', 0);
+                    $('#content-search-filter-accordion').accordion('close', 0);
                 },
+                params: { searchKey: 'Courses' },
                 resolve: {
                     isLoggedIn: function(authService) {
                         authService.validUser();
                     }
-                },
-                params: { searchKey: 'Courses' }
+                }
             })
             .state('Resource', {
                 url: '/resources',
@@ -88,7 +93,7 @@ angular
                 },
                 onExit: function($rootScope) {
                     $rootScope.isResourcesPage = false;
-                    $("#content-search-filter-accordion").accordion('close', 0);
+                    $('#content-search-filter-accordion').accordion('close', 0);
                 },
                 resolve: {
                     isLoggedIn: function(authService) {
@@ -102,24 +107,34 @@ angular
                 templateUrl: 'views/note/noteList.html',
                 controller: 'NoteCtrl',
             })
-            //            .state('Course', {
-            //                url: '/course/:courseId',
-            //                templateUrl: 'views/course/courses.html',
-            //                controller: 'CourseCtrl as courses'
-            //            })
             .state('Toc', {
                 url: '/toc/:courseId/:lectureView',
                 templateUrl: 'views/course/toc.html',
-                controller: 'courseScheduleCtrl as toc'
+                controller: 'courseScheduleCtrl as toc',
+                resolve: {
+                    isLoggedIn: function(authService) {
+                        authService.validUser();
+                    }
+                }
             })
             .state('Community', {
                 url: '/community',
                 templateUrl: 'views/community/communityList.html',
-                controller: 'CommunityController as commCtrl'
+                controller: 'CommunityController as commCtrl',
+                resolve: {
+                    isLoggedIn: function(authService) {
+                        authService.validUser();
+                    }
+                }
             })
             .state('Profile', {
                 url: '/profile',
                 templateUrl: 'views/profile/profile.html',
-                controller: 'ProfileController as profileCtrl'
+                controller: 'ProfileController as profileCtrl',
+                resolve: {
+                    isLoggedIn: function(authService) {
+                        authService.validUser();
+                    }
+                }
             });
     });
