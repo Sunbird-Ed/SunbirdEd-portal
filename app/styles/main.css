@@ -1357,6 +1357,12 @@ ul.subList-padding {
     width: 405px;
   }
 }
+.searchicon.ui.icon.input input {
+  padding-right: 6px!important;
+}
+.searchicon.ui.icon.input i {
+  cursor: pointer;
+}
 body {
   position: relative !important;
   margin: 0 !important;

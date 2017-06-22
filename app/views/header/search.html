@@ -12,10 +12,10 @@
         <option ng-repeat="key in content.searchSelectionKeys" ng-selected ="key.id == selectedSearchKey" value="{{key.id}}">{{key.name}}</option>
         </select> -->
         <div class="searchfilterinput ui search">
-          <div class=" ui icon input ">
+          <div class="searchicon ui icon input ">
           <input type="text" id="keyword" name="filter_search" ng-model="search.keyword" ng-change="search.searchContent('$event')" ng-keypress="($event.which === 13)?search.searchContent():0" ng-model-options="{debounce: 1000}" placeholder="What are you looking for?"
             title="Search" autocomplete="off" spellcheck="false" dir="auto" class="searchinput" />
-            <i class="search icon" ng-click="search.searchContent()"></i>
+            <i class="circular search link icon" ng-click="search.searchContent()"></i>
           </div>
             <div id="search-suggestions" ng-if="search.autosuggest_data.length >1" class="ui fluid results transition visible dropdown-menu-list">
                 <div>
