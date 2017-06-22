@@ -29,7 +29,7 @@ angular.module('playerApp')
                 noteService.search(request).then(function (response) {
                     if (response && response.responseCode === "OK") {
                         $scope.error = {};
-                        $scope.notesList = response.result.note;                       
+                        $scope.notesList = response.result.note;
                         $rootScope.$emit("updateNotesListData", response.result.note);
                         $scope.$safeApply();
                     } else {
@@ -224,7 +224,11 @@ angular.module('playerApp')
                     }).modal('show');
                 }, 100);
             };
-
+            $scope.clearNote = function () {
+                $scope.add = {};
+                $scope.add.title = '';
+                $scope.add.note = '';
+            }
             $scope.showAllNoteList = function () {
                 $scope.showNoteList = true;
                 $rootScope.$emit('showAllNoteList', true);
