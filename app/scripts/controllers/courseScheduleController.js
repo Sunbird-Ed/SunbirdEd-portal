@@ -62,7 +62,6 @@ angular.module('playerApp')
                     if (res && res.responseCode === "OK") {
                         toc.courseHierachy = res.result.content;
                         console.log(toc.getAllContentsFromCourse(toc.courseHierachy));
-                        debugger;
                         $rootScope.courseName = toc.courseHierachy.name;
                         toc.applyAccordion();
                         toc.showMetaLoader = false;
