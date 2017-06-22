@@ -5,7 +5,7 @@
             <h4 class="ui header card-section-header ">{{section.display.title.en}}
                 <a class="ui red circular inline label">{{section.count}}</a></h4>
             <div class="regular slider " ng-if="section.course.length> 0" add-slick>
-                <div apply-script ng-click="learn.openCourseView(course.identifier, 'OTHER_COURSE')" ng-repeat=" item in section.course track by $index">
+                <div apply-script ng-click="learn.openCourseView(item.identifier, 'OTHER_COURSE')" ng-repeat=" item in section.course track by $index">
                     <div ng-include=" 'views/common/ratingCard.html' "></div>
 
                 </div>
