@@ -14,7 +14,7 @@
         <div class="searchfilterinput ui search">
           <div class=" ui icon input ">
           <input type="text" id="keyword" name="filter_search" ng-model="search.keyword" ng-change="search.searchContent('$event')" ng-keypress="($event.which === 13)?search.searchContent():0" ng-model-options="{debounce: 1000}" placeholder="What are you looking for?"
-            title="Search" autocomplete="off" spellcheck="false" dir="auto" size="70" />
+            title="Search" autocomplete="off" spellcheck="false" dir="auto" class="searchinput" />
             <i class="search icon" ng-click="search.searchContent()"></i>
           </div>
             <div id="search-suggestions" ng-if="search.autosuggest_data.length >1" class="ui fluid results transition visible dropdown-menu-list">
