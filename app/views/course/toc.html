@@ -3,8 +3,8 @@
     <div class="ui grid">
         <div class="one wide column"></div>
         <div class="ten wide column">
-            <div ng-if="toc.courseHierachy && !toc.showDimmer && toc.lectureView == 'no' && !toc.showAllNoteList" ng-init="toc.playList = []">
-                <div id="course-toc-list" ng-show="!contentPlayer.isContentPlayerEnabled">
+            <div ng-if="toc.courseHierachy && !toc.showDimmer && toc.lectureView == 'no'" ng-init="toc.playList = []">
+                <div id="course-toc-list" ng-show="!contentPlayer.isContentPlayerEnabled && !toc.showAllNoteList">
                     <div class="content">
                         <div class='ui grid'>
                             <div class="row">
@@ -40,7 +40,7 @@
                                                         <span>
                                                             <i class="large video play outline icon" ></i>
                                                         </span>
-                                                        <span class="text courseAccordianDesc">{{item.name}}</span>
+                                                        <span class="text courseAccordianDesc cursor-pointer">{{item.name}}</span>
                                                         <div class="verticalLine" ng-if="!$last"></div>
                                                     </div>
                                                     <div ng-switch on="item.children.length > 0">
