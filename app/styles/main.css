@@ -468,7 +468,7 @@
   position: absolute;
   background: white;
   text-align: left;
-  width: 512px;
+  width: 600px;
 }
 #search-suggestions .result .content .title {
   font-size: 13px;
@@ -478,6 +478,16 @@
 }
 #search-suggestions .result .content .title:hover {
   color: black;
+}
+@media only screen and (max-width: 1400px) {
+  #search-suggestions {
+    width: 500px;
+  }
+}
+@media only screen and (max-width: 1097px) {
+  #search-suggestions {
+    width: 405px;
+  }
 }
 .dash-heading-border {
   border-bottom: 1px dashed #333;
@@ -1072,14 +1082,12 @@ ul.subList-padding {
 }
 .toc-left-nav-btn-content {
   text-align: left;
-  margin-left: 16px;
 }
 .toc-left-nav-btn-content > h4 {
   margin-bottom: 2px;
 }
 .toc-right-nav-btn-content {
   text-align: right;
-  margin-right: 16px;
 }
 .toc-right-nav-btn-content > h4 {
   margin-bottom: 2px;
@@ -1090,6 +1098,9 @@ ul.subList-padding {
 }
 .toc-note-content {
   margin-top: 46px !important;
+}
+.tocbutton {
+  white-space: nowrap;
 }
 .homeCard.ui.card {
   max-width: 100%;
@@ -1329,6 +1340,22 @@ ul.subList-padding {
 }
 .filter-button {
   white-space: nowrap;
+}
+.searchfilterinput.ui.search .prompt {
+  border-radius: 0;
+}
+.searchinput {
+  width: 600px;
+}
+@media only screen and (max-width: 1400px) {
+  .searchinput {
+    width: 500px;
+  }
+}
+@media only screen and (max-width: 1097px) {
+  .searchinput {
+    width: 405px;
+  }
 }
 body {
   position: relative !important;
