@@ -13,7 +13,7 @@ angular.module('playerApp')
             error.isError = true;
             error.message = errorResponse.responseCode === 'CLIENT_ERROR' ? 'invalid username or password' : '';
             error.responseCode = errorResponse.responseCode;
-            auth.error = error;
+            error.error = error;
         }
         resource.sections = function() {
             var req = {
