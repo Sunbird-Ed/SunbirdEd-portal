@@ -12,6 +12,18 @@ angular.module('playerApp')
             $rootScope.language = $rootScope.userLanguage || config.SITE.DEFAULT_LANGUAGE;
             $rootScope.translationBundle = {};
             $rootScope.searchKey = '';
+            $scope.$watch(function () {
+                return $state.$current.name;
+            }, function (newState, oldState) {
+                if ( newState.toLowerCase() === 'toc' || newState.toLowerCase() === 'learn') {
+                    $scope.courseActive = 'active';
+                }
+                else
+                {
+                    $scope.courseActive = '';
+                }
+                
+            });
             $rootScope.loadBundle = function () {
                 var promises = [];
                 promises.push(userService.resourceBundle($rootScope.language, 'label'));
