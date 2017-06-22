@@ -10,7 +10,7 @@
                     </span>
                     <div class="ui active homePage" ng-if="homeCtrl.enrolledCourses.length > 0">
                         <div class="regular slider padding-top-10" add-slick>
-                            <div ng-repeat="item in homeCtrl.enrolledCourses track by $index"  ng-init="$last && homeCtrl.loadCarousel()" ng-click="homeCtrl.openCourseView(item.courseId, 'OTHER_COURSE',item.progress,item.total)">
+                            <div ng-repeat="item in homeCtrl.enrolledCourses track by $index"  ng-init="$last && homeCtrl.loadCarousel()" ng-click="homeCtrl.openCourseView(item.courseId, 'ENROLLED_COURSE',item.progress,item.total)">
                                 <div ng-include=" 'views/common/actionCard.html'"></div>
                             </div>
                         </div>
