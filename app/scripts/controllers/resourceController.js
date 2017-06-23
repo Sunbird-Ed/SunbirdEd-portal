@@ -24,9 +24,9 @@ angular.module('playerApp')
                 }
             };
             resourceService.resources(req).then(function(successResponse) {
+                console.log('resourse', successResponse);
                 if (successResponse && successResponse.responseCode === 'OK') {
                     resource.page = successResponse.result.page.sections;
-
                 } else {
                     handleFailedResponse(successResponse);
                 }
@@ -36,4 +36,8 @@ angular.module('playerApp')
             });
         };
         resource.sections();
+
+        $rootScope.$on('showAllNoteList', function(e, noteListStatus) {
+            resource.showAllNoteList = noteListStatus;
+        });
     });

@@ -11,7 +11,7 @@
                     <span> 1,870 Learners</span> | <div apply-script class="courseHeader-rating ui mini star rating" data-rating="3"></div>
                 </div>
                 <div class="four wide column" ng-if="toc.courseType === 'ENROLLED_COURSE'">
-                    <div><p class="text-align-center">Your Progress {{(toc.courseProgress * 100 / toc.courseTotal)| number: 0 || 0}}%</p></div>
+                    <div ng-if="toc.courseProgress"><p class="text-align-center">Your Progress {{(toc.courseProgress * 100 / toc.courseTotal)| number: 0 || 0}}%</p></div>
                     <button class="fluid blue right floated  ui button courseHeaderButton" ng-click="toc.resumeCourse()">
                         RESUME COURSE  <i class="caret right icon"></i>
                     </button>
