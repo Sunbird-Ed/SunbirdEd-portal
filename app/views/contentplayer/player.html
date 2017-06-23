@@ -6,7 +6,7 @@
                 <h1 class="ui huge left floated header margin-auto" ng-if="isHeader">
                     {{contentData.name}}
                 </h1>
-                <h5 ng-if="!showNoteList" class="ui right floated basic icon circular button" ng-if="isClose" ng-click="close()">
+                <h5 class="ui right floated basic icon circular button" ng-if="isClose" ng-click="close()">
                     <i class="ui remove icon"></i>
                 </h5>
             </div>
@@ -40,8 +40,6 @@
                     <div ng-include="'views/contentplayer/contentMeta.html'"></div>
                 </div>
             </div>
-            <div ng-if="showNoteList" ng-include="'views/contentplayer/notesList.html'"></div>
-
             <div ng-if="errorObject.showError">
                 <div class="ui active dimmer inverted">
                     <div class="content">
