@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('playerApp')
-    .controller('LearnCtrl', function(learnService, $log, $scope, $sessionStorage, $timeout, $state, $rootScope,sessionService,$location) {
+    .controller('LearnCtrl', function(learnService, $log, $scope, $sessionStorage, $timeout, $state, $rootScope, sessionService, $location, $window) {
         var learn = this;
-        var uid = $sessionStorage.userId;
+        var uid = $rootScope.userId ? $rootScope.userId : $window.localStorage.getItem('userId');
         $rootScope.searchResult = [];
         $scope.contentPlayer = {
             isContentPlayerEnabled: false
@@ -24,8 +24,8 @@ angular.module('playerApp')
             // courseId = 'do_112265805439688704113';
             var showLectureView = 'no';
             var params = { courseType: courseType, courseId: courseId, lectureView: showLectureView, progress: courseProgress, total: courseTotal };
-            sessionService.setSessionData('COURSE_PARAMS',params);
-            $state.go('Toc',params);
+            sessionService.setSessionData('COURSE_PARAMS', params);
+            $state.go('Toc', params);
         };
 
         learn.courses = function() {
