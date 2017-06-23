@@ -59,9 +59,12 @@ angular.module('playerApp')
         $rootScope.showIFrameContent = false;
         $rootScope.search = search;
         search.openCourseView = function(courseId) {
-            var isEnrolledCourse = $rootScope.enrolledCourseIds.some(function(id) {
-                return id === courseId;
-            });
+            var isEnrolledCourse = false;
+            if ($rootScope.enrolledCourseIds) {
+                isEnrolledCourse = $rootScope.enrolledCourseIds.some(function(id) {
+                    return id === courseId;
+                });
+            }
             var courseType = isEnrolledCourse === true ? 'ENROLLED_COURSE' : 'OTHER_COURSE';
             var showLectureView = 'no';
             var params = { courseType: courseType, courseId: courseId, lectureView: showLectureView, progress: 0, total: 0 };
@@ -93,6 +96,7 @@ angular.module('playerApp')
                     search.autosuggest_data = [];
                     $rootScope.searchResult = contents.result.content;
                 }
+                console.log('$rootScope.searchResult', $rootScope.searchResult);
             } else {
                 $rootScope.searchResult = [];
 
