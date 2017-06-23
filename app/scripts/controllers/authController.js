@@ -33,16 +33,40 @@ angular.module('playerApp')
             auth.error = error;
         }
         auth.userProfile = function(userProfile) {
-            if (userProfile && userProfile.responseCode === 'OK') {
-                $rootScope.userProfilePic = userProfile.result.response.avatar;
-                $rootScope.preferredLanguage = userProfile.result.response.language;
+            console.log('user profile', JSON.stringify(userProfile, null, 2));
 
-                auth.user.profilePic = userProfile.result.response.avatar;
-                $window.localStorage.setItem('userPic', $rootScope.userProfilePic);
-                $window.localStorage.setItem('preferredLanguage', userProfile.result.response.language);
+            if (userProfile && userProfile.responseCode === 'OK') {
+                // userProfile.result.response = [{
+                //     'lastName': null,
+                //     'aadhaarNo': null,
+                //     'gender': null,
+                //     'city': null,
+                //     'language': 'English',
+                //     'avatar': 'https://placeholdit.co//i/300x150',
+                //     'updatedDate': null,
+                //     'userName': 'amit.kumar@tarento.com',
+                //     'userId': 'e9280b815c0e41972bf754e9409b66d778b8e11bb91844892869a1e828d7d2f2',
+                //     'zipcode': null,
+                //     'firstName': 'Amit',
+                //     'lastLoginTime': '2017-06-23 04:32:44:782+0000',
+                //     'createdDate': '2017-06-22 07:20:12:246+0000',
+                //     'phone': null,
+                //     'state': null,
+                //     'email': 'amit.kumar@tarento.com',
+                //     'status': 1
+                // }];
+
+                if (userProfile.result.response.length) {
+                    var profileData = userProfile.result.response[0];
+                    $rootScope.userProfilePic = profileData.avatar;
+                    $rootScope.preferredLanguage = profileData.language;
+                    auth.user.profilePic = profileData.avatar;
+                    $window.localStorage.setItem('userPic', profileData.avatar);
+                    $window.localStorage.setItem('preferredLanguage', profileData.language);
+                }
                 $state.go('Home');
             } else {
-                throw new Error(userProfile);
+                throw new Error('failed to fetch user profile details');
             }
         };
 
@@ -62,6 +86,7 @@ angular.module('playerApp')
                 };
                 $window.localStorage.setItem('user', JSON.stringify(auth.user));
                 $window.localStorage.setItem('isLoggedIn', true);
+                $window.sessionStorage.setItem('isLoggedIn', true);
             } else {
                 if (loginResponse !== null && loginResponse.responseCode === 'CLIENT_ERROR') {
                     throw new Error('Invalid user name and password');
@@ -88,8 +113,8 @@ angular.module('playerApp')
                     authService.getUserProfile(auth.userId)
                         .then(function(successResponse) {
                             auth.userProfile(successResponse);
-                        }).catch(function(error) {
-                            handleFailedResponse(error);
+                        }).catch(function(e) {
+                            throw new Error(e.message);
                         });
                 })
                 .catch(function(e) {
