@@ -86,6 +86,7 @@ angular.module('playerApp')
                 };
                 $window.localStorage.setItem('user', JSON.stringify(auth.user));
                 $window.localStorage.setItem('isLoggedIn', true);
+                $window.localStorage.setItem('userId', user.userId);
                 $window.sessionStorage.setItem('isLoggedIn', true);
             } else {
                 if (loginResponse !== null && loginResponse.responseCode === 'CLIENT_ERROR') {
