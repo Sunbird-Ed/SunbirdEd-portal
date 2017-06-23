@@ -36,4 +36,8 @@ angular.module('playerApp')
             });
         };
         resource.sections();
+        
+        $rootScope.$on("showAllNoteList", function (e, noteListStatus) {
+            resource.showAllNoteList = noteListStatus;
+        });
     });
