@@ -59,6 +59,8 @@ angular.module('playerApp')
                     token: $rootScope.token,
                     userId: $rootScope.userId
                 };
+                $sessionStorage.userId=$rootScope.userId;
+                $sessionStorage.token=$rootScope.token;
                 $window.localStorage.setItem('user', JSON.stringify(auth.user));
                 $window.localStorage.setItem('isLoggedIn', true);
             } else {

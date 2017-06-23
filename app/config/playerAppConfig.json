@@ -9,6 +9,7 @@
             "USER_BASE": "http://10.0.1.75:9000/v1/",
             "MOCK_API_BASE": "http://13.71.127.158:9000/v1/",
             "CONFIG_BASE": "http://localhost:4000/api/sb/v1/",
+            "DEV_API_BASE":"http://52.172.36.121:9000/v1/",
             "USER": {
                 "RESOURCE_BUNDLE": "resourcebundle"
             },
@@ -25,7 +26,7 @@
                 "USER_COURSE_SCHEDULE": "user/courses",
                 "USER_CONTENT_STATE": "user/content/state",
                 "GET_ENROLLED_COURSES": "user/courses",
-                "GET_LEARN_OTHER_SECTION": "page/assemble/learn.explore/org.sunbird.mobile",
+                "GET_LEARN_OTHER_SECTION": "page/assemble/Course",
                 "ENROLL_USER_COURSE":"user/courses/enroll"
             },
             "CONTENT": {
