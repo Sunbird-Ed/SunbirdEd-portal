@@ -38,12 +38,6 @@ angular.module('playerApp')
 
         function httpCall(url, data, method, header) {
             var headers = header || getHeader();
-            console.log({
-                method: method,
-                url: url,
-                headers: headers,
-                data: data
-            });
             return $http({
                 method: method,
                 url: url,

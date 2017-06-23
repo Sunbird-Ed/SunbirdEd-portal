@@ -8,7 +8,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('SearchCtrl', function(searchService, $scope, $timeout, $rootScope, $stateParams, $state) {
+    .controller('SearchCtrl', function(sessionService, searchService, $scope, $timeout, $rootScope, $stateParams, $state) {
         var search = this;
         search.keyword = '';
         search.filters = {};
@@ -64,11 +64,8 @@ angular.module('playerApp')
             });
             var courseType = isEnrolledCourse === true ? 'ENROLLED_COURSE' : 'OTHER_COURSE';
             var showLectureView = 'no';
-            var params = {
-                courseType: courseType,
-                courseId: courseId,
-                lectureView: showLectureView
-            };
+            var params = { courseType: courseType, courseId: courseId, lectureView: showLectureView, progress: 0, total: 0 };
+            sessionService.setSessionData('COURSE_PARAMS', params);
             $state.go('Toc', params);
         };
 
@@ -84,25 +81,42 @@ angular.module('playerApp')
                 isSearchError.isError = false;
             }, 2000);
         }
-        search.handleSuccessResponse = function(successResponse, $event) {
-            if (successResponse.result.count > 0) {
+        search.handleContentSearch = function(contents, $event) {
+            console.log('contents', contents);
+            if (contents.result.count > 0) {
                 //if $event is passed then search is to get only autosuggest else to get the content
                 if ($event !== undefined && search.keyword !== '') {
-                    search.autosuggest_data = $scope.selectedSearchKey === 'Courses' ?
-                        successResponse.result.course :
-                        successResponse.result.content;
+                    search.autosuggest_data =
+                        contents.result.content;
                 } else {
                     $rootScope.searchKey = $scope.selectedSearchKey;
                     search.autosuggest_data = [];
-                    $rootScope.searchResult = $scope.selectedSearchKey === 'Courses' ?
-                        successResponse.result.course :
-                        successResponse.result.content;
+                    $rootScope.searchResult = contents.result.content;
                 }
             } else {
                 $rootScope.searchResult = [];
 
-                successResponse.responseCode = 'RESOURCE_NOT_FOUND';
-                handleFailedResponse(successResponse);
+                contents.responseCode = 'RESOURCE_NOT_FOUND';
+                handleFailedResponse(contents);
+            }
+        };
+        search.handleCourseSearch = function(courses, $event) {
+            console.log('inside success handler', courses.result.response.length);
+            if (courses.result.response.length) {
+                console.log('successResponse.result.response', courses.result.response);
+                //if $event is passed then search is to get only autosuggest else to get the content
+                if ($event !== undefined && search.keyword !== '') {
+                    search.autosuggest_data = courses.result.response;
+                } else {
+                    $rootScope.searchKey = $scope.selectedSearchKey;
+                    search.autosuggest_data = [];
+                    $rootScope.searchResult = courses.result.response;
+                }
+            } else {
+                $rootScope.searchResult = [];
+
+                courses.responseCode = 'RESOURCE_NOT_FOUND';
+                handleFailedResponse(courses);
             }
         };
 
@@ -118,13 +132,15 @@ angular.module('playerApp')
                 'sort_by': search.sortBy
             };
             // req.limit = 20;
+            console.log('req in search', req);
+            console.log('$scope.selectedSearchKey', $scope.selectedSearchKey);
             $rootScope.searchKeyword = search.keyword;
             $rootScope.searchFilters = search.filters;
             if ($scope.selectedSearchKey === 'Resources') {
                 searchService.contentSearch(req).then(function(res) {
                     search.enableLoader(false);
                     if (res != null && res.responseCode === 'OK') {
-                        search.handleSuccessResponse(res, $event);
+                        search.handleContentSearch(res, $event);
                     } else {
                         handleFailedResponse(res);
                     }
@@ -135,7 +151,7 @@ angular.module('playerApp')
                 searchService.courseSearch(req).then(function(res) {
                     search.enableLoader(false);
                     if (res != null && res.responseCode === 'OK') {
-                        search.handleSuccessResponse(res, $event);
+                        search.handleCourseSearch(res, $event);
                     } else {
                         handleFailedResponse(res);
                     }
