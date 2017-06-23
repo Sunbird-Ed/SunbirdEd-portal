@@ -8,7 +8,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('SearchCtrl', function(contentService, courseService, $scope, $timeout, $rootScope, $stateParams, $state) {
+    .controller('SearchCtrl', function(searchService, $scope, $timeout, $rootScope, $stateParams, $state) {
         var search = this;
         search.keyword = '';
         search.filters = {};
@@ -121,7 +121,7 @@ angular.module('playerApp')
             $rootScope.searchKeyword = search.keyword;
             $rootScope.searchFilters = search.filters;
             if ($scope.selectedSearchKey === 'Resources') {
-                contentService.search(req).then(function(res) {
+                searchService.contentSearch(req).then(function(res) {
                     search.enableLoader(false);
                     if (res != null && res.responseCode === 'OK') {
                         search.handleSuccessResponse(res, $event);
@@ -132,7 +132,7 @@ angular.module('playerApp')
                     handleFailedResponse(error);
                 });
             } else if ($scope.selectedSearchKey === 'Courses') {
-                courseService.search(req).then(function(res) {
+                searchService.courseSearch(req).then(function(res) {
                     search.enableLoader(false);
                     if (res != null && res.responseCode === 'OK') {
                         search.handleSuccessResponse(res, $event);

@@ -18,14 +18,15 @@ angular.module('playerApp')
         };
 
         this.getUserProfile = function(uId) {
-            var url = config.URL.USER_BASE + config.URL.AUTH.PROFILE + '/:' + uId;
-            var deferred = $q.defer();
-            deferred.resolve(app_mock_data.auth.profile);
-            return deferred.promise;
+            var url = config.URL.JAVA_BASE + config.URL.AUTH.PROFILE + '/:' + uId;
+            return javaService.get(url);
+            // var deferred = $q.defer();
+            // deferred.resolve(app_mock_data.auth.profile);
+            // return deferred.promise;
         };
 
         this.validUser = function() {
-            var isLoggedIn = $window.localStorage.getItem('isLoggedIn') || $rootScope.isLoggedIn;
+            var isLoggedIn = $window.localStorage.getItem('isLoggedIn') || $rootScope.isLoggedIn || $window.sessionStorage.setItem('isLoggedIn');
 
             if (!isLoggedIn) {
                 $state.go('LandingPage');
