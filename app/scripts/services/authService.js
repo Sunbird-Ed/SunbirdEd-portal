@@ -2,11 +2,11 @@
 angular.module('playerApp')
     .service('authService', function(httpServiceJava, config, $q, $sessionStorage, $rootScope, $state, $cookies, $window) {
         this.login = function(req) {
-            var url = config.URL.USER_BASE + config.URL.AUTH.LOGIN;
-            // return httpServiceJava.post(url, req);
-            var deferred = $q.defer();
-            deferred.resolve(app_mock_data.auth.login)
-            return deferred.promise;
+            var url = config.URL.DEV_API_BASE + config.URL.AUTH.LOGIN;
+             return httpServiceJava.post(url, req);
+//            var deferred = $q.defer();
+//            deferred.resolve(app_mock_data.auth.login)
+//            return deferred.promise;
 
         }
 

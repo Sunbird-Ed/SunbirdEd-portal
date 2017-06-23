@@ -4,7 +4,7 @@
         <h4 class="ui header card-section-header"><span translate="mycourses">My Courses</span><a class="ui red circular inline label ">{{learn.enrolledCourses.length}}</a></h4>
 
         <div class="regular slider  courses-slider" ng-if="learn.enrolledCourses.length> 0">
-            <div ng-repeat="item in learn.enrolledCourses track by $index" ng-click="learn.openCourseView(item.courseId, 'ENROLLED_COURSE',item.progress,item.total)" add-slick>
+            <div ng-repeat="item in learn.enrolledCourses track by $index" ng-click="learn.openCourseView(item.contentId, 'ENROLLED_COURSE',item.progress,item.total)" add-slick>
 
                 <div ng-include=" 'views/common/resumeCard.html' "></div>
             </div>

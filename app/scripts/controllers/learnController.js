@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('playerApp')
-    .controller('LearnCtrl', function(learnService, $log, $scope, $sessionStorage, $timeout, $state, $rootScope,sessionService,$location) {
+    .controller('LearnCtrl', function(learnService, $log, $scope, $sessionStorage, $timeout, $state, $rootScope,sessionService,$window,$location) {
         var learn = this;
         var uid = $sessionStorage.userId;
         $rootScope.searchResult = [];
@@ -33,12 +33,12 @@ angular.module('playerApp')
 
             learnService.enrolledCourses(uid).then(function(successResponse) {
                     $scope.loading = false;
-                    if (successResponse && successResponse.responseCode === 'OK') {
+                    if (successResponse && successResponse.responseCode === 'OK') {                      
                         learn.enrolledCourses = successResponse.result.courses;
                         $rootScope.enrolledCourseIds = [];
 
                         var isEnrolled = learn.enrolledCourses.forEach(function(course) {
-                            $rootScope.enrolledCourseIds.push(course.courseId);
+                            $rootScope.enrolledCourseIds.push(course.contentId);
                         });
                     } else {
                         $log.warn('enrolledCourses', successResponse);
@@ -61,10 +61,10 @@ angular.module('playerApp')
                 }
             };
             learnService.otherSections(req).then(function(successResponse) {
-                if (successResponse && successResponse.responseCode === 'OK') {
+                if (successResponse && successResponse.responseCode === 'OK' && successResponse.result.page) {
                     learn.page = successResponse.result.page.sections;
                 } else {
-                    $log.warn('enrolledCourses', successResponse);
+                    $log.warn('otherCourses', successResponse);
                     handleFailedResponse(successResponse);
                 }
             }).catch(function(error) {

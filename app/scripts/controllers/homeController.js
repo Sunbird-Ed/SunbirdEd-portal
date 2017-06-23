@@ -47,7 +47,7 @@ angular.module('playerApp')
                         $rootScope.enrolledCourseIds = [];
 
                         var isEnrolled = homeCtrl.enrolledCourses.forEach(function(course) {
-                            $rootScope.enrolledCourseIds.push(course.courseId);
+                            $rootScope.enrolledCourseIds.push(course.contentId);
                         });
                     } else {
                         $log.warn('enrolledCourses', successResponse);
