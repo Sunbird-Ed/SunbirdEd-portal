@@ -56,8 +56,10 @@
                                     <course-discussions  showaskquestion="true"></course-discussions>
                                 </div>
                                 <div class='four wide column'>
-                                    <div ng-if="toc.courseType === 'ENROLLED_COURSE'" class="cursor-pointer margin-bottom-15" ng-controller="NoteCtrl" ng-click="toc.showNoteModal = !toc.showNoteModal; showAddNoteModal();"> <i class="circular icon margin-right-10 link plus" ></i>&nbsp;ADD NOTE</div>
-                                    <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false"></note-card>
+                                    <div ng-if="toc.courseType === 'ENROLLED_COURSE'" class="cursor-pointer margin-bottom-15">
+                                         <add-note shownoteincourse="true" courseid="toc.courseParams.courseId"></add-note>
+                                    </div> 
+                                    <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false" courseid="toc.courseParams.courseId"></note-card>
                                     <div ng-include=" 'views/course/facultyCard.html'" class="margin-bottom-15"></div>
                                     <div ng-include=" 'views/course/carriculumCard.html'"></div><br>
                                     <b>Course created on: 15 jun 2017</b><br>
@@ -89,14 +91,11 @@
                                             </div>
                                         </button>
                                     </div>
-                                    <div class="six wide column center aligned">
-                                        <h2 class="ui center aligned icon tiny header toc-note" ng-if="toc.nightMode" ng-init="toc.showNoteModal = false">
-                                            <i class=" file text outline icon font-dark-blue"></i>
-                                            <u class="ui font-dark-blue mouse-pointer" ng-controller="NoteCtrl" ng-click="toc.showNoteModal = !toc.showNoteModal; showAddNoteModal(toc.courseId);">Take Note</u>
+                                    <div class="six wide column center aligned" ng-if="toc.showNoteInLecture">
+                                        <h2 class="ui center aligned icon tiny header toc-note">
+                                            <add-note shownoteinlecture="true" visibility="toc.showNoteInLecture"
+                                                       courseid="toc.courseParams.courseId" contentid="contentPlayer.contentData.identifier"></add-note>
                                         </h2>
-                                        <div ng-if="toc.showNoteModal">
-                                            <div ng-include=" 'views/course/noteAddCardModal.html'"></div>
-                                        </div>
                                     </div>
                                     <div class="three wide column ">
                                         <button class="ui blue button right floated  fluid" ng-click="toc.playPlaylistContent(toc.nextPlaylistItem, 'next')" ng-disabled="(toc.nextPlaylistItem < 0)">
@@ -117,14 +116,17 @@
                                 <course-discussions  showaskquestion="false"></course-discussions>
                             </div>
                             <div class="four wide column toc-note-content">
-                                <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false"></note-card>
+                                <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false"
+                                           courseid="toc.courseParams.courseId" contentid="contentPlayer.contentData.identifier"></note-card>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
-            <div ng-if="toc.showAllNoteList" ng-include="'views/note/noteList.html'"></div>
+            <div ng-if="toc.showAllNoteList">
+                <note-list shownotelist="toc.showAllNoteList"
+                           courseid="toc.courseParams.courseId" contentid="contentPlayer.contentData.identifier"></note-list>
+            </div>
             <div class="ui dimmer inverted" ng-class="toc.showDimmer ? 'active' : ''">
                 <div class="content">
                     <span ng-if="toc.showMetaLoader">

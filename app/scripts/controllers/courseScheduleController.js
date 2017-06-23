@@ -5,6 +5,9 @@ angular.module('playerApp')
             toc.playListContent = [];
             toc.loading = false;
             toc.courseParams = sessionService.getSessionData('COURSE_PARAMS');
+            toc.contentList = [];
+            toc.showNoteInLecture = true;
+
             toc.enrollUserToCourse = function (courseId) {
                 var req = {
                     courseId: courseId,
@@ -25,12 +28,20 @@ angular.module('playerApp')
             }
 
             toc.resumeCourse = function () {
-                //once last played index is given assign it for now zero
-                $('#course-toc').find('.content').first().addClass('active');
-                toc.itemIndex = 0;
-                toc.playPlaylistContent(toc.playList[toc.itemIndex], '');
-                $location.hash('tocPlayer');
-                $anchorScroll();
+                if ($location.hash().indexOf('tocPlayer') < 0)
+                {
+                    //once last played index is given assign it for now zero
+                    $('#course-toc').find('.content').first().addClass('active');
+                    toc.itemIndex = 0;
+                    toc.playPlaylistContent(toc.playList[toc.itemIndex], '');                   
+                }
+                else
+                {
+                    var currentHash=$location.hash().toString().split("/");
+                     toc.itemIndex =parseInt(currentHash[2]);
+                    toc.playPlaylistContent(currentHash[1], '');
+                    
+                }
             }
 
             toc.getContentStatus = function (contentId) {
@@ -112,7 +123,7 @@ angular.module('playerApp')
                     $scope.contentPlayer.contentData = toc.playListContent[toc.itemIndex];
                     $scope.contentPlayer.isContentPlayerEnabled = true;
                 }
-                $location.hash('tocPlayer/' + contentId);
+                $location.hash('tocPlayer/' + contentId+'/'+toc.itemIndex);
                 $anchorScroll();
             };
 
@@ -136,20 +147,19 @@ angular.module('playerApp')
                 return cnt;
 
             }
-            toc.getAllContentsFromCourse=function(contentData){
-                if(contentData.mimeType!='application/vnd.ekstep.content-collection'){
-                    toc.playList.push(contentData.name);
-                    toc.playListContent.push(contentData); 
-                }
-                else
+            toc.getAllContentsFromCourse = function (contentData) {
+                if (contentData.mimeType != 'application/vnd.ekstep.content-collection') {
+                    toc.playList.push(contentData.identifier);
+                    toc.playListContent.push(contentData);
+                } else
                 {
-                    for(var item in contentData.children){
+                    for (var item in contentData.children) {
                         toc.getAllContentsFromCourse(contentData.children[item]);
                     }
                 }
                 return toc.playList;
             }
-            
+
 
             toc.getContentClass = function (contentMimeType) {
                 if (contentMimeType == 'application/vnd.ekstep.content-collection') {
@@ -235,4 +245,9 @@ angular.module('playerApp')
                 }
             }
             toc.loadData();
+
+            toc.showAddNoteModal = function () {
+                $rootScope.$emit("ShowAddNoteModal");
+            };
+
         });
