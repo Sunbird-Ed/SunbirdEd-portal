@@ -172,7 +172,7 @@ angular.module('playerApp')
             search.searchContent();
         };
         search.resetFilter = function() {
-            $('.dropdown').dropdown('clear');
+            $('.content-search-filter').dropdown('clear');
             search.filters = {};
             search.selectedLanguage = '';
             search.selectedContentType = '';
