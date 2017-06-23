@@ -16,17 +16,11 @@ angular.module('playerApp')
             error.error = error;
         }
         resource.sections = function() {
-            var req = {
-                'request': {
-                    'context': {
-                        'userId': 'user1'
-                    }
-                }
-            };
-            resourceService.resources(req).then(function(successResponse) {
-                console.log('resourse', successResponse);
+            resourceService.resources().then(function(successResponse) {
+                console.log('successResponse', successResponse.result);
                 if (successResponse && successResponse.responseCode === 'OK') {
-                    resource.page = successResponse.result.page.sections;
+                    resource.page = successResponse.result.response.sections;
+                    console.log('page', resource.page);
                 } else {
                     handleFailedResponse(successResponse);
                 }

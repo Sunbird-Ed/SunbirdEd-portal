@@ -88,8 +88,10 @@ angular.module('playerApp')
                 $sessionStorage.token = $rootScope.token;
                 $window.localStorage.setItem('user', JSON.stringify(auth.user));
                 $window.localStorage.setItem('isLoggedIn', true);
+                $window.localStorage.setItem('token', user.token);
                 $window.localStorage.setItem('userId', user.userId);
                 $window.sessionStorage.setItem('isLoggedIn', true);
+                $window.sessionStorage.setItem('token', user.token);
             } else {
                 if (loginResponse !== null && loginResponse.responseCode === 'CLIENT_ERROR') {
                     throw new Error('Invalid user name and password');

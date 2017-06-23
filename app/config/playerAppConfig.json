@@ -54,7 +54,7 @@
                 "DELETE": "notes/delete"
             },
             "RESOURCE": {
-                "GET": "page/assemble/resources.explore/org.sunbird.mobile"
+                "GET": "page/assemble/Resources"
             }
         },
         "MESSAGES": {
