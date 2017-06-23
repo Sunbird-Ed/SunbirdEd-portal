@@ -70,7 +70,7 @@ angular.module('playerApp').directive('addNote', function () {
     };
 });
 
-angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $scope, noteService, config, $window, $timeout) {
+angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $scope, noteService, config, $window, $timeout, $state) {
 
     var noteCard = this;
     var userId = $window.localStorage.getItem('user') ? JSON.parse($window.localStorage.getItem('user')).userId : $rootScope.userId;
@@ -330,8 +330,7 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $sc
     });
 
     noteCard.showAllNoteList = function () {
-        noteCard.showNoteList = true;
-        $rootScope.$emit('showAllNoteList', true);
+        $state.go('');
     };
 
     noteCard.closeNoteList = function () {
