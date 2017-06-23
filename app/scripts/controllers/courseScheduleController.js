@@ -6,6 +6,8 @@ angular.module('playerApp')
             toc.loading = false;
             toc.courseParams = sessionService.getSessionData('COURSE_PARAMS');
             toc.contentList=[];
+            toc.showNoteInLecture = true;
+            
             toc.enrollUserToCourse = function (courseId) {
                 var req = {
                     courseId: courseId,
@@ -236,4 +238,9 @@ angular.module('playerApp')
                 }
             }
             toc.loadData();
+            
+            toc.showAddNoteModal = function() {
+                $rootScope.$emit("ShowAddNoteModal");
+            };
+            
         });
