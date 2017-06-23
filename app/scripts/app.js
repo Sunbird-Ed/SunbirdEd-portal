@@ -102,8 +102,8 @@ angular
                 },
                 params: { searchKey: 'Resources' }
             })
-            .state('note', {
-                url: '/note',
+            .state('Note', {
+                url: '/note/:courseId/:contentId',
                 templateUrl: 'views/note/noteList.html',
                 controller: 'NoteCtrl',
             })
