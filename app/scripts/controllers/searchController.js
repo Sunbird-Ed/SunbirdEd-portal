@@ -164,8 +164,8 @@ angular.module('playerApp')
         };
 
         search.applySorting = function() {
-            search.keyword = $rootScope.searchKeyword;
-            search.filters = $rootScope.searchFilters;
+            search.keyword = $rootScope.searchKeyword ? $rootScope.searchKeyword : '';
+            search.filters = $rootScope.searchFilters ? $rootScope.searchFilters : {};
             var sortByField = search.sortByOption.field;
 
             search.sortBy[sortByField] = (search.sortIcon === true) ? 'asc' : 'desc';
