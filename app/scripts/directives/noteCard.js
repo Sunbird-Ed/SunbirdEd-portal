@@ -26,27 +26,6 @@ angular.module('playerApp').directive('noteCard', function () {
     };
 });
 
-angular.module('playerApp').directive('noteList', function () {
-
-    return {
-        templateUrl: 'views/note/noteList.html',
-        restrict: 'E',
-        scope: {
-            shownotelist: '=',
-            courseid: '=',
-            contentid: '='
-        },
-        link: function (scope, element, attrs) {
-            scope.$watch('contentid', function () {
-
-                scope.updateDataOnWatch(scope.contentid);
-            });
-
-        },
-        controller: 'NoteCardCtrl as noteCard'
-    };
-});
-
 angular.module('playerApp').directive('addNote', function () {
 
     return {
@@ -70,23 +49,22 @@ angular.module('playerApp').directive('addNote', function () {
     };
 });
 
-angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $scope, noteService, config, $window, $timeout, $state) {
+angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $scope, noteService, config, $window, $timeout, $location, $stateParams) {
 
     var noteCard = this;
-    var userId = $window.localStorage.getItem('user') ? JSON.parse($window.localStorage.getItem('user')).userId : $rootScope.userId;
+    noteCard.userId = $window.localStorage.getItem('user') ? JSON.parse($window.localStorage.getItem('user')).userId : $rootScope.userId;
     noteCard.showNoteCard = $scope.shownotecard;
     noteCard.showNoteList = $scope.shownotelist;
     noteCard.showModalInLectureView = $scope.shownoteinlecture;
     noteCard.showModalInCourseView = $scope.shownoteincourse;
     noteCard.quantityOfNotes = 2;
-    noteCard.courseId = $scope.courseid;
-    noteCard.contentId = $scope.contentid;
+    noteCard.courseId = $scope.courseid || $stateParams.courseId;
+    noteCard.contentId = $scope.contentid || $stateParams.contentId;
     noteCard.add = {};
     noteCard.update = {};
-    noteCard.update.showUpdateNote = false;
-    noteCard.add.showCreateNote = false;
     noteCard.denyModalClass = '';
-    noteCard.showNoteModal = false;
+    noteCard.showCreateNote = false;
+    noteCard.showUpdateNote = false;
     noteCard.visibility = $scope.visibility;
 
     /**
@@ -118,7 +96,7 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $sc
         showLoaderWithMessage(true, "", config.MESSAGES.NOTES.SEARCH.START);
         var request = {
             filters: {
-                userId: userId,
+                userId: noteCard.userId,
                 courseId: noteCard.courseId,
                 contentId: noteCard.contentId
             },
@@ -137,7 +115,7 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $sc
         showLoaderWithMessage(true, "", config.MESSAGES.NOTES.SEARCH.START);
         var request = {
             filters: {
-                userId: userId,
+                userId: noteCard.userId,
                 courseId: noteCard.courseId,
                 contentId: contentId
             },
@@ -157,7 +135,7 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $sc
         var requestData = {
             note: {
                 note: noteData.note,
-                userId: userId,
+                userId: noteCard.userId,
                 title: noteData.title,
                 courseId: noteCard.courseId,
                 contentId: noteCard.contentId
@@ -182,29 +160,7 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $sc
         });
     };
 
-    /**
-     * This function helps to create note
-     * @param {Object} noteId
-     */
-    noteCard.removeNote = function (noteId) {
 
-        var requestData = {noteId: noteId};
-
-        showLoaderWithMessage(true, "", config.MESSAGES.NOTES.REMOVE.START);
-        noteService.remove(requestData).then(function (response) {
-            if (response && response.responseCode === "OK") {
-                noteCard.notesList = noteCard.notesList.filter(function (note) {
-                    return note.identifier !== noteId;
-                });
-                noteCard.error = {};
-            } else {
-                handleFailedResponse(config.MESSAGES.NOTES.REMOVE.FAILED);
-            }
-        })
-                .catch(function (error) {
-                    handleFailedResponse(config.MESSAGES.NOTES.REMOVE.FAILED);
-                });
-    };
 
     /**
      * This function helps to update note
@@ -241,59 +197,60 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $sc
                 });
     };
 
-    /**
-     * This function helps to search note
-     * @param {String} searchText
-     */
-    noteCard.searchNote = function (searchText) {
-        var request = {
-            query: searchText,
-            filters: {
-                userId: userId,
-                courseId: noteCard.courseId,
-                contentId: noteCard.contentId
-            },
-            sort_by: {
-                "lastUpdatedOn": "desc"
-            }
-        };
-        search(request);
+    noteCard.clearUpdateNoteData = function () {
+        noteCard.update.metaData.title = '';
+        noteCard.update.metaData.note = '';
+    };
+
+    noteCard.closeUpdateNoteModal = function () {
+        $timeout(function () {
+            noteCard.denyModalClass = 'deny';
+            noteCard.showUpdateNote = false;
+        }, 0);
     };
 
     noteCard.showUpdateNoteModal = function (note) {
-        noteCard.update.metaData = note;
-        $('#updateNoteModal').modal('refresh').modal('show');
-    };
 
-    noteCard.showAddNoteModal = function () {
-
+        noteCard.showUpdateNote = true;
         $timeout(function () {
-            $('#addNoteModal').modal({
+            $('#updateNoteModal').modal({
                 onShow: function () {
-                    noteCard.add.title = '';
-                    noteCard.add.note = '';
+                    noteCard.update.metaData = angular.copy(note);
                 },
                 onHide: function () {
-                    noteCard.add.title = '';
-                    noteCard.add.note = '';
-                    noteCard.visibility = false;
-                    $('#addNoteForm')[0].reset();
-                },
-                onDeny: function () {
-                    noteCard.add.title = '';
-                    noteCard.add.note = '';
+                    noteCard.closeUpdateNoteModal();
                     return true;
                 }
             }).modal('show');
         }, 100);
     };
 
-    noteCard.clearNote = function () {
-        noteCard.add = {};
+    noteCard.clearAddNoteData = function () {
         noteCard.add.title = '';
         noteCard.add.note = '';
-        $('#addNoteForm')[0].reset();
-        noteCard.showNoteModal = false;
+    };
+
+    noteCard.closeAddNoteModal = function () {
+        $timeout(function () {
+            noteCard.denyModalClass = 'deny';
+            noteCard.showCreateNote = false;
+        }, 0);
+    };
+
+    noteCard.showAddNoteModal = function () {
+        noteCard.showCreateNote = true;
+        $timeout(function () {
+            $('#addNoteModal').modal({
+                onShow: function () {
+                    noteCard.clearAddNoteData();
+                },
+                onHide: function () {
+                    noteCard.clearAddNoteData();
+                    noteCard.closeAddNoteModal();
+                    return true;
+                }
+            }).modal('show');
+        }, 100);
     };
 
     /**
@@ -325,20 +282,11 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $sc
     $rootScope.$on("updateNotesListData", function (e, content) {
         noteCard.denyModalClass = 'deny';
         noteCard.notesList = content;
-        noteCard.add.title = '';
-        noteCard.add.note = '';
     });
 
     noteCard.showAllNoteList = function () {
-        $state.go('');
+        var courseId = noteCard.courseId ? noteCard.courseId : 0;
+        var contentId = noteCard.contentId ? noteCard.contentId : 0;
+        $location.path('/note/' + courseId + '/' + contentId);
     };
-
-    noteCard.closeNoteList = function () {
-        noteCard.showNoteList = false;
-        $rootScope.$emit('showAllNoteList', false);
-    };
-
-    $rootScope.$on("showAddNoteModal", function () {
-        noteCard.showAddNoteModal();
-    });
 });

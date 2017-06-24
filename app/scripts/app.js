@@ -105,7 +105,7 @@ angular
             .state('Note', {
                 url: '/note/:courseId/:contentId',
                 templateUrl: 'views/note/noteList.html',
-                controller: 'NoteCtrl',
+                controller: 'NoteListCtrl as noteList',
             })
             .state('Toc', {
                 url: '/toc/:courseId/:lectureView',
