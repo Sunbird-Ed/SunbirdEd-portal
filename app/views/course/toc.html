@@ -56,9 +56,9 @@
                                     <course-discussions  showaskquestion="true"></course-discussions>
                                 </div>
                                 <div class='four wide column'>
-                                    <div ng-if="toc.courseType === 'ENROLLED_COURSE'" class="cursor-pointer margin-bottom-15">
-                                         <add-note shownoteincourse="true" courseid="toc.courseParams.courseId"></add-note>
-                                    </div> 
+                                <div ng-if="toc.courseType === 'ENROLLED_COURSE'" class="cursor-pointer margin-bottom-15">
+                                        <add-note shownoteincourse="true" courseid="toc.courseParams.courseId"></add-note>
+                                   </div>
                                     <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false" courseid="toc.courseParams.courseId"></note-card>
                                     <div ng-include=" 'views/course/facultyCard.html'" class="margin-bottom-15"></div>
                                     <div ng-include=" 'views/course/carriculumCard.html'"></div><br>
