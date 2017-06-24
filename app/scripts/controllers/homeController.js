@@ -71,7 +71,7 @@ angular.module('playerApp')
             };
             learnService.otherSections(req).then(function(successResponse) {
                 if (successResponse && successResponse.responseCode === 'OK') {
-                    homeCtrl.recommendedCourse = successResponse.result.page.sections[1].course;
+                    homeCtrl.recommendedCourse = successResponse.result.response.sections;
                     console.log(homeCtrl.recommendedCourse);
                 } else {
                     handleFailedResponse(successResponse);

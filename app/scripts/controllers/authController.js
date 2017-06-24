@@ -108,7 +108,7 @@ angular.module('playerApp')
                 'request': {
                     'userName': auth.userName,
                     'password': auth.password,
-                    'source': 'portal'
+                    'source': 'web'
                 }
             };
 
