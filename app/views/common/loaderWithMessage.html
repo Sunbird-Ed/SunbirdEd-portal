@@ -1,14 +1,9 @@
-<div class="ui active dimmer inverted">
+<div class="ui icon message">
+    <i class="notched circle loading icon"></i>
     <div class="content">
-        <span ng-if="showMetaLoader">
-            <div class="ui text loader">
-                <div class="ui mini header" ng-if="message">{{message}}</div>
-            </div>
-        </span>
-        <div class="center">
-            <h2 class="ui header {{messageClass}}" ng-if="!showMetaLoader">
-                {{message}}
-            </h2>
+        <div class="header">
+            {{headerMessage}}
         </div>
+        <p>{{loaderMessage}}</p>
     </div>
 </div>

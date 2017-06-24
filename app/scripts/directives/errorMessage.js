@@ -9,23 +9,31 @@
 angular.module('playerApp')
     .directive('errorMessage', function() {
         return {
-            template: '<div class="ui {{errorClass}} message" ng-if="message">{{message}}</div>',
+            template: '<div class="ui {{errorClass}} message" ng-if="message"><i class="close icon" ng-click="closeErrorMessage"></i><span translate="messageType">{{message}}</span></div>',
             restrict: 'E',
+            scope: {
+                visibility: '='
+            },
             link: function postLink(scope, element, attrs) {
                 attrs.data = attrs.data ? JSON.parse(attrs.data) : undefined;
-                if (attrs.data && attrs.data.responseCode === 'CLIENT_ERROR') {
-                    scope.message = attrs.data.message.length ? attrs.data.message : 'Something wrong try in sometime :(';
-                    scope.errorClass = 'orange';
-                } else if (attrs.data && attrs.data.responseCode === 'RESOURCE_NOT_FOUND') {
-                    scope.message = attrs.data.message.length ? attrs.data.message : 'No result found :(';
-                    scope.errorClass = 'violet';
-                } else if (attrs.data && attrs.data.responseCode === 'SERVER_ERROR') {
-                    scope.message = attrs.data.message.length ? attrs.data.message : 'Server Error :(';
-                    scope.errorClass = 'red';
-                } else if (attrs.data && attrs.data.responseCode === undefined) {
-                    scope.message = attrs.data.message.length ? attrs.data.message : 'connection error';
-                    scope.errorClass = 'yellow';
+                if (attrs.data && attrs.data.messageType === 'info') {
+                    scope.message = attrs.data.message.length ? attrs.data.message : 'Something wrong try in sometime.';
+                    scope.errorClass = 'info';
+
+               } else if (attrs.data && attrs.data.messageType === 'warning') {
+                    scope.message = attrs.data.message.length ? attrs.data.message : 'Something wrong try in sometime.';
+                    scope.errorClass = 'warning';
+                } else if (attrs.data && attrs.data.messageType === 'error') {
+                    scope.message = attrs.data.message.length ? attrs.data.message : 'Something wrong try in sometime.';
+                    scope.errorClass = 'error';
+                } else if (attrs.data && attrs.data.messageType === 'success') {
+                    scope.message = attrs.data.message.length ? attrs.data.message : 'Success.';
+                    scope.errorClass = 'success';
                 }
+                
+                scope.closeErrorMessage = function () {
+                    scope.visibility = false;
+                };
             }
         };
     });
