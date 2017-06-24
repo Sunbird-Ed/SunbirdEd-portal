@@ -1,5 +1,5 @@
 <div class="ui grid landing-grid">
-	<div class="one wide column"></div>
+    <div class="one wide column"></div>
     <div class="five wide column image-grid ">
         <img class="ui fluid image landing-image" src="/images/landingPage.jpg" />
     </div>
@@ -7,25 +7,27 @@
         <div class="ui left aligned container">
             <p translate="homeparagraph">In 2000, ten years later, the international community met again at the World Education Forum in Dakar, Senegal, an event which drew 1100 participants.</p>
             <p>The forum took stock of the fact that many countries were far from having reached the goals established at the World Conference on Education for All in 1990.</p><br/>
-            <p>The participants agreed on the Dakar Framework for Action which re-affirmed their commitment to achieving Education for All by the year 2015, and identified six key measurable education goals which aim to meet the learning needs of all children, youth and adults by 2015.</p><br/>
-            <a class="cardsKnowMore">Read More > </a>     
+            <p>The participants agreed on the Dakar Framework for Action which re-affirmed their commitment to achieving Education for All by the year 2015, and identified six key measurable education goals which aim to meet the learning needs of all children,
+                youth and adults by 2015.</p><br/>
+            <a class="cardsKnowMore">Read More > </a>
         </div>
     </div>
     <div class="one wide column"></div>
 </div>
 <div class="ui grid ann-grid">
-	<div class="one wide column"></div>
+    <div class="one wide column"></div>
     <div class="seven wide column ">
         <div class="ui segment">
             <div class="header feature-header">
                 <span class="cardsHeading" translate="fraturedarticales">Featured Articles</span>
-                <a class="cardsKnowMore ui right-float font-dark-blue" translate="viewall" >View All</a>
+                <a class="cardsKnowMore ui right-float font-dark-blue" translate="viewall">View All</a>
             </div><br>
             <div class="ui two stackable cards">
                 <div class="ui card">
-                    <div class="content opacity-cardContent">				    
+                    <div class="content opacity-cardContent">
                         <div class="description">
-                            <p>Enrollment info for life skill training Enrollment info for life skill training Enrollment info for life skill training Enrollment info for life skill training Enrollment info for life skill training Enrollment info for life skill training</p>
+                            <p>Enrollment info for life skill training Enrollment info for life skill training Enrollment info for life skill training Enrollment info for life skill training Enrollment info for life skill training Enrollment info for life
+                                skill training</p>
                         </div>
                     </div>
                     <h4 class="cardsHeading card-Content-HeadingFont">Enrollment info for life skill training</h4>
@@ -64,11 +66,20 @@
     <div class="one wide column"></div>
 </div>
 <div class="ui grid">
-	<div class="one wide column"></div>
-	    <div class="ten wide column ">
-            <div class="ui segment">
-	           <div ng-include="'views/home/featureCourse.html'" ng-controller="HomeController as homeCtrl"></div>
+    <div class="one wide column"></div>
+    <div class="ten wide column ">
+        <div class="ui segment">
+            <div ng-controller="landingCtrl as landing">
+                <div class="ui dynamic-section-card margin-top-20" ng-if="landing.courses.length > 0">
+                    <h4 class="ui header" translate="featuredcourses">Featured Courses</h4>
+                    <div class="regular slider featured3">
+                        <div ng-repeat=" item in landing.courses track by $index" add-slick>
+                            <div ng-include=" 'views/common/ratingCard.html'"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
-	    </div>
+        </div>
+    </div>
     <div class="one wide column"></div>
 </div>
