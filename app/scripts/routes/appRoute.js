@@ -85,7 +85,7 @@ angular
                 params: { searchKey: 'Resources' }
             })
             .state('CourseNote', {
-                url: '/note/:courseId',
+                url: '/course/note/:tocId/:courseId',
                 templateUrl: 'views/note/noteList.html',
                 controller: 'NoteListCtrl as noteList',
                 onEnter: function($rootScope) {
@@ -106,7 +106,7 @@ angular
                 }
             })
             .state('ContentNote', {
-                url: '/note/:contentId',
+                url: '/resourse/note/:contentId',
                 templateUrl: 'views/note/noteList.html',
                 controller: 'NoteListCtrl as noteList',
                 onEnter: function($rootScope) {
@@ -127,7 +127,7 @@ angular
                 }
             })
             .state('CourseContentNote', {
-                url: '/note/:courseId/:contentId',
+                url: '/note/:tocId/:courseId/:contentId',
                 templateUrl: 'views/note/noteList.html',
                 controller: 'NoteListCtrl as noteList',
                 onEnter: function($rootScope) {

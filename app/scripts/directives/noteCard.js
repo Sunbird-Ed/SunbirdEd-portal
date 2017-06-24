@@ -60,6 +60,7 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
     noteCard.quantityOfNotes = 2;
     noteCard.courseId = $scope.courseid || $stateParams.courseId;
     noteCard.contentId = $scope.contentid || $stateParams.contentId;
+    noteCard.tocId = $stateParams.tocId;
     noteCard.add = {};
     noteCard.update = {};
     noteCard.denyModalClass = '';
@@ -176,10 +177,6 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
         showLoaderWithMessage(true, "", config.MESSAGES.NOTES.UPDATE.START);
         noteService.update(requestData).then(function(response) {
                 if (response && response.responseCode === "OK") {
-//                    noteCard.notesList = noteCard.notesList.filter(function(note) {
-//                        return note.identifier !== noteData.identifier;
-//                    });
-//                    noteCard.notesList.push(response.result.note);
                     noteCard.ngInit();
                     noteCard.error = {};
                     noteCard.update.showUpdateNote = false;
@@ -283,14 +280,17 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
     });
 
     noteCard.showAllNoteList = function() {
-        if(noteCard.courseId && noteCard.contentId) {
-            var params = {courseId: noteCard.courseId, contentId: noteCard.contentId};
-            $state.go('CourseContentNote',params);
+        if(noteCard.courseId && $scope.contentid && noteCard.tocId) {
+            console.log("Note data with content and course", noteCard.courseId , $scope.contentid , noteCard.tocId);
+            var params = {courseId: noteCard.courseId, contentId: $scope.contentid, tocId : noteCard.tocId};
+            $state.go('CourseContentNote', params);
         } else if (noteCard.courseId) {
-            var params = {courseId: noteCard.courseId};
-            $state.go('CourseNote',params);
+            console.log("Note data  course", noteCard.courseId , $scope.contentid, noteCard.tocId);
+            var params = {courseId: noteCard.courseId, tocId : noteCard.tocId};
+            $state.go('CourseNote', params);
         } else if (noteCard.contentId) {
-            var params = {contentId: noteCard.contentId};
+            console.log("Note data with content", noteCard.courseId , $scope.contentid , noteCard.tocId);
+            var params = {contentId: $scope.contentid};
             $state.go('ContentNote',params);
         }
     };
