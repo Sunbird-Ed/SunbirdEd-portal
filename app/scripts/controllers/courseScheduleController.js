@@ -243,9 +243,4 @@ angular.module('playerApp')
                 }
             }
             toc.loadData();
-
-            toc.showAddNoteModal = function () {
-                $rootScope.$emit("ShowAddNoteModal");
-            };
-
         });
