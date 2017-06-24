@@ -17,7 +17,14 @@
                     </button>
                 </div>
                 <div class="four wide column" ng-if="toc.courseType === 'OTHER_COURSE'">
-                    <button class="fluid blue right floated  ui button courseHeaderButton" ng-click="toc.enrollUserToCourse(toc.courseId)"> ENROLL TO COURSE</button>
+                    <button ng-if="!toc.enrollingCourse && toc.enrollErrorMessage == ''" class="fluid blue right floated  ui button courseHeaderButton" ng-click="toc.enrollUserToCourse(toc.tocId)"> ENROLL TO COURSE</button>
+                    <div ng-if="toc.enorllingCourse" class="ui active inverted mini dimmer">
+                        <div class="ui text loader" >Enrolling....</div>
+                    </div>
+
+                    <div ng-if="toc.enrollErrorMessage!=''" class="ui error large message">
+                        {{toc.enrollErrorMessage}}
+                    </div>
                 </div>
             </div>
         </div>

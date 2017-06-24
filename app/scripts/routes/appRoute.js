@@ -49,10 +49,12 @@ angular
                     $rootScope.searchKey = 'Courses';
                     $rootScope.searchKeyword = '';
                     $rootScope.isLearnPage = true;
+                    $rootScope.courseActive='active';
                 },
                 onExit: function($rootScope) {
                     $rootScope.isLearnPage = false;
                     $('#content-search-filter-accordion').accordion('close', 0);
+                    $rootScope.courseActive='';
                 },
                 params: { searchKey: 'Courses' },
                 resolve: {
@@ -112,9 +114,15 @@ angular
                 }
             })
             .state('Toc', {
-                url: '/toc/:courseId/:lectureView',
+                url: '/toc/:tocId/:courseId/:lectureView',
                 templateUrl: 'views/course/toc.html',
                 controller: 'courseScheduleCtrl as toc',
+                onEnter: function($rootScope) {
+                    $rootScope.courseActive='active';
+                },
+                onExit: function($rootScope) {                    
+                    $rootScope.courseActive='';
+                },
                 resolve: {
                     isLoggedIn: function(authService) {
                         authService.validUser();

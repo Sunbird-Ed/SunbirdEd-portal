@@ -29,7 +29,7 @@ angular.module('playerApp')
             return httpService.get(url);
         }
         this.enrollUserToCourse = function(req) {
-            var url = config.URL.MOCK_API_BASE + config.URL.COURSE.ENROLL_USER_COURSE;
+            var url = config.URL.DEV_API_BASE + config.URL.COURSE.ENROLL_USER_COURSE;
             return httpServiceJava.post(url, req);
         }
 

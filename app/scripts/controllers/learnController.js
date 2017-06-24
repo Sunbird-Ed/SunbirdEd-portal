@@ -21,9 +21,9 @@ angular.module('playerApp')
         }, 2000);
     }
 
-    learn.openCourseView = function(courseId, courseType, courseProgress, courseTotal) {
+    learn.openCourseView = function(course, courseType) {
         var showLectureView = 'no';
-        var params = { courseType: courseType, courseId: courseId, lectureView: showLectureView, progress: courseProgress, total: courseTotal };
+        var params = { courseType: courseType, courseId: course.contentId,tocId:course.courseId, lectureView: showLectureView, progress: course.progress, total: course.total };
         sessionService.setSessionData('COURSE_PARAMS', params);
         $state.go('Toc', params);
     };
@@ -61,8 +61,8 @@ angular.module('playerApp')
             }
         };
         learnService.otherSections(req).then(function(successResponse) {
-            if (successResponse && successResponse.responseCode === 'OK' && successResponse.result.page) {
-                learn.page = successResponse.result.page.sections;
+            if (successResponse && successResponse.responseCode === 'OK' && successResponse.result.response) {
+                learn.page = successResponse.result.response.sections;
             } else {
                 $log.warn('otherCourses', successResponse);
                 handleFailedResponse(successResponse);

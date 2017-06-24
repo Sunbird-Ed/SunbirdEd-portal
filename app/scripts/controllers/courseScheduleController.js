@@ -7,24 +7,30 @@ angular.module('playerApp')
             toc.courseParams = sessionService.getSessionData('COURSE_PARAMS');
             toc.contentList = [];
             toc.showNoteInLecture = true;
-
+            toc.enrollErrorMessage = '';
             toc.enrollUserToCourse = function (courseId) {
                 var req = {
-                    courseId: courseId,
-                    userId: toc.uid
+                    request: {
+                        courseId: courseId,
+                        userId: toc.uid
+                    }
                 };
-                $scope.loading = true;
+                toc.enorllingCourse = true;
                 courseService.enrollUserToCourse(req).then(function (successResponse) {
-                    $scope.loading = false;
+                    toc.enorllingCourse = false;
                     if (successResponse && successResponse.responseCode === 'OK') {
                         //temporary change it later
                         toc.courseType = "ENROLLED_COURSE";
                     } else {
-                        toc.showError('Cannot enroll user to course');
+                        toc.enrollErrorMessage = 'Cannot enroll user to course';
+                        $timeout(function () {
+                            toc.enrollErrorMessage = '';
+                        }, 3000);
                     }
                 }).catch(function (error) {
-                    toc.showError('Error occured.Try again');
+                    toc.enrollErrorMessage = 'Cannot enroll user to course';
                 });
+
             }
 
             toc.resumeCourse = function () {
@@ -33,14 +39,13 @@ angular.module('playerApp')
                     //once last played index is given assign it for now zero
                     $('#course-toc').find('.content').first().addClass('active');
                     toc.itemIndex = 0;
-                    toc.playPlaylistContent(toc.playList[toc.itemIndex], '');                   
-                }
-                else
+                    toc.playPlaylistContent(toc.playList[toc.itemIndex], '');
+                } else
                 {
-                    var currentHash=$location.hash().toString().split("/");
-                     toc.itemIndex =parseInt(currentHash[2]);
+                    var currentHash = $location.hash().toString().split("/");
+                    toc.itemIndex = parseInt(currentHash[2]);
                     toc.playPlaylistContent(currentHash[1], '');
-                    
+
                 }
             }
 
@@ -123,7 +128,7 @@ angular.module('playerApp')
                     $scope.contentPlayer.contentData = toc.playListContent[toc.itemIndex];
                     $scope.contentPlayer.isContentPlayerEnabled = true;
                 }
-                $location.hash('tocPlayer/' + contentId+'/'+toc.itemIndex);
+                $location.hash('tocPlayer/' + contentId + '/' + toc.itemIndex);
                 $anchorScroll();
             };
 
@@ -214,13 +219,14 @@ angular.module('playerApp')
                 }
                 return attributeArr;
             };
-            
+
             toc.init = function () {
                 toc.lectureView = toc.courseParams.lectureView;
                 toc.courseId = toc.courseParams.courseId;
                 toc.courseType = toc.courseParams.courseType;
                 toc.courseProgress = toc.courseParams.progress;
                 toc.courseTotal = toc.courseParams.total;
+                toc.tocId = toc.courseParams.tocId;
                 toc.uid = $sessionStorage.userId;
                 //console.log($stateParams);
                 $scope.enableCloseButton = (toc.lectureView === 'yes') ? 'false' : 'true';
@@ -233,7 +239,7 @@ angular.module('playerApp')
                 toc.playItemIndex = undefined;
                 toc.getCourseToc();
             }
-            
+
             toc.loadData = function () {
                 if (toc.courseParams.courseId != $stateParams.courseId) {
 //if both courseIds are different call to get course by id API and update data(to be implemented with progress and status params in API side)
