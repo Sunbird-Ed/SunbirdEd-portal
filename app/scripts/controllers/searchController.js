@@ -21,14 +21,78 @@ angular.module('playerApp')
                 var params = {content: item};
                 $state.go('Player', params);
             }
+            var courseType = isEnrolledCourse === true ? 'ENROLLED_COURSE' : 'OTHER_COURSE';
+            var showLectureView = 'no';
+            var params = { courseType: courseType, courseId: courseId, lectureView: showLectureView, progress: 0, total: 0 };
+            sessionService.setSessionData('COURSE_PARAMS', params);
+            $rootScope.isPlayerOpen = true;
+            $state.go('Toc', params);
+        };
 
-            $scope.$watch('searchKey', function () {
-                $scope.selectedSearchKey = $rootScope.searchKey;
-                search.keyword = '';
-                search.filters = {};
-            });
-            search.contentPlayer = {
-                isContentPlayerEnabled: false
+        function handleFailedResponse(errorResponse) {
+            var isSearchError = {};
+            isSearchError.isError = true;
+            isSearchError.message = '';
+            isSearchError.responseCode = errorResponse.responseCode;
+            $rootScope.isSearchError = isSearchError;
+            // $scope.$apply();
+            $timeout(function() {
+                $rootScope.isSearchError = {};
+                isSearchError.isError = false;
+            }, 2000);
+        }
+        search.handleContentSearch = function(contents, $event) {
+            console.log('contents', contents);
+            if (contents.result.count > 0) {
+                //if $event is passed then search is to get only autosuggest else to get the content
+                if ($event !== undefined && search.keyword !== '') {
+                    search.autosuggest_data =
+                        contents.result.content;
+                } else {
+                    $rootScope.searchKey = $scope.selectedSearchKey;
+                    search.autosuggest_data = [];
+                    $rootScope.isPlayerOpen = false;
+                    $rootScope.searchResult = contents.result.content;
+                }
+                console.log('$rootScope.searchResult', $rootScope.searchResult);
+            } else {
+                $rootScope.searchResult = [];
+
+                contents.responseCode = 'RESOURCE_NOT_FOUND';
+                handleFailedResponse(contents);
+            }
+        };
+        search.handleCourseSearch = function(courses, $event) {
+            console.log('inside success handler', courses.result.response.length);
+            if (courses.result.response.length) {
+                console.log('successResponse.result.response', courses.result.response);
+                //if $event is passed then search is to get only autosuggest else to get the content
+                if ($event !== undefined && search.keyword !== '') {
+                    search.autosuggest_data = courses.result.response;
+                } else {
+                    $rootScope.searchKey = $scope.selectedSearchKey;
+                    search.autosuggest_data = [];
+                    $rootScope.isPlayerOpen = false;
+                    $rootScope.searchResult = courses.result.response;
+                }
+            } else {
+                $rootScope.searchResult = [];
+
+                courses.responseCode = 'RESOURCE_NOT_FOUND';
+                handleFailedResponse(courses);
+            }
+        };
+
+        search.searchContent = function($event) {
+            search.enableLoader(true);
+            var req = {
+                'query': search.keyword,
+                'filters': search.filters,
+                'params': {
+                    'cid': '12'
+                },
+                'limit': 20,
+                'sort_by': search.sortBy
             };
             $scope.close = function () {
                 $rootScope.searchResult = [];
