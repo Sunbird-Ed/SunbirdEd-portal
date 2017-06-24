@@ -1048,6 +1048,7 @@ ul.subList-padding {
   box-shadow: 0 8px 6px -8px #d9d4d4;
   padding-top: 1em;
   padding-bottom: 1em;
+  padding-left: 0.3em;
 }
 .popular-page .ui.cards ~ .ui.cards {
   margin-top: 1.875em;
@@ -1344,7 +1345,7 @@ ul.subList-padding {
   color: #8b8b8c !important;
 }
 .filtersearch.ui.selection.dropdown {
-  min-width: 100%;
+  min-width: 108%;
 }
 .dropdown-content {
   text-align: right;
@@ -1374,6 +1375,24 @@ ul.subList-padding {
   .searchinput {
     width: 405px;
   }
+}
+.searchicon.ui.icon.input input {
+  padding-right: 6px!important;
+}
+.searchicon.ui.icon.input i {
+  cursor: pointer;
+}
+.ui.multiple.dropdown > .text {
+  white-space: nowrap;
+}
+.filtercolumn.ui.grid > .column:not(.row) {
+  padding-left: 1.7em;
+}
+.filtercolmntext.ui.grid > .column:not(.row) {
+  padding-left: 1.39em;
+}
+.searchfilterbutton.ui.tiny.button {
+  font-size: 1em;
 }
 body {
   position: relative !important;
