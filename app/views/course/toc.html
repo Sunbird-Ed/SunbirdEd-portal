@@ -4,7 +4,7 @@
         <div class="one wide column"></div>
         <div class="ten wide column">
             <div ng-if="toc.courseHierachy && !toc.showDimmer && toc.lectureView == 'no'" ng-init="toc.playList = []">
-                <div id="course-toc-list" ng-show="!contentPlayer.isContentPlayerEnabled && !toc.showAllNoteList">
+                <div id="course-toc-list" ng-show="!contentPlayer.isContentPlayerEnabled">
                     <div class="content">
                         <div class='ui grid'>
                             <div class="row">
@@ -72,7 +72,7 @@
                         </div>
                     </div>
                 </div>
-                <div ng-if="(contentPlayer.isContentPlayerEnabled) && !toc.showDimmer && !toc.showAllNoteList">
+                <div ng-if="(contentPlayer.isContentPlayerEnabled) && !toc.showDimmer">
                     <div class="ui grid" id="tocPlayer">
                         <div class="twelve wide column">
                             <div class="ui grid">
@@ -122,10 +122,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div ng-if="toc.showAllNoteList">
-                <note-list shownotelist="toc.showAllNoteList"
-                           courseid="toc.courseParams.courseId" contentid="contentPlayer.contentData.identifier"></note-list>
             </div>
             <div class="ui dimmer inverted" ng-class="toc.showDimmer ? 'active' : ''">
                 <div class="content">

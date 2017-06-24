@@ -1,7 +1,7 @@
 <div ng-include="'views/search/searchResult.html'"></div>
 <div class="ui grid">
     <div class="one wide column"></div>
-    <div class="ten wide column popular-page" ng-if="!resource.showAllNoteList">
+    <div class="ten wide column popular-page">
         <div class="ui link cards popular-section" ng-repeat=" section in resource.page " ng-if="!contentPlayer.isContentPlayerEnabled">
             <h4 class="ui header card-section-header ">{{section.display.title.en}}
                 <a class="ui red circular inline label">{{section.count}}</a></h4>
@@ -22,9 +22,6 @@
             <div class="ui text loader ">Featching enrolled contents
             </div>
         </div>
-    </div>
-    <div class="ten wide column popular-page" ng-if="resource.showAllNoteList">
-        <note-list shownotelist="resource.showAllNoteList" contentid="contentPlayer.contentData.identifier"></note-list>
     </div>
     <div class="one wide column"></div>
 </div>

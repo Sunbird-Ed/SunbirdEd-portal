@@ -1,49 +1,47 @@
 <div>
     <div ng-if="noteCard.showModalInLectureView" class="ui center aligned icon tiny header toc-note mouse-pointer" >
-        <div class="ui font-dark-blue mouse-pointer" ng-click="noteCard.clearNote(); noteCard.showAddNoteModal();">
+        <div class="ui font-dark-blue mouse-pointer" ng-click="noteCard.showAddNoteModal();">
             <i class=" file text outline icon font-dark-blue"></i> Take Note
         </div>
     </div>
     <div ng-if="noteCard.showModalInCourseView">
-        <div ng-click="noteCard.clearNote(); noteCard.showAddNoteModal();">
+        <div ng-click="noteCard.showAddNoteModal();">
             <i class="circular icon margin-right-10 link plus" ></i>&nbsp;ADD NOTE</div>
     </div>
 </div>
-<div>
+<div  ng-if="noteCard.showCreateNote">
     <div class="ui modal" id="addNoteModal">
-        <div class=" ui segment margin-top-10" ng-init="noteCard.clearNote()">
-            <form name="addNoteForm" id="addNoteForm">
-                <div class=" margin-bottom-15">
-                    <div class="ui grid">
-                        <div class="eleven wide column">
-                            <span class="ui header">Take a note</span>
-                        </div>
-                        <div class="one wide column actions">
-                            <h5 class="ui basic icon circular button deny" ng-click=" noteCard.showNoteModal = !noteCard.showNoteModal; noteCard.clearNote()">
-                                <i class="ui remove icon"></i>
-                            </h5>
-                        </div>
+        <div class=" ui segment margin-top-10">
+            <div class=" margin-bottom-15">
+                <div class="ui grid">
+                    <div class="eleven wide column">
+                        <span class="ui header">Take a note</span>
+                    </div>
+                    <div class="one wide column actions">
+                        <h5 class="ui basic icon circular button deny">
+                            <i class="ui remove icon"></i>
+                        </h5>
                     </div>
                 </div>
-                <div class="content">
-                    <div class="ui fluid icon input">
-                        <input type="text" placeholder="Title" name="title" ng-model="noteCard.add.title" />
-                    </div>
-                    <div class="editor">
-                        <pagedown-editor content="noteCard.add.note" show-preview="false"></pagedown-editor>
-                    </div>
+            </div>
+            <div class="content">
+                <div class="ui fluid icon input">
+                    <input type="text" placeholder="Title" name="title" ng-model="noteCard.add.title" />
                 </div>
-                <div class="actions">
+                <div class="editor">
+                    <pagedown-editor content="noteCard.add.note" show-preview="false"></pagedown-editor>
+                </div>
+            </div>
+            <div class="actions">
 
-                    <button class="ui primary right floated button margin-bottom-15 margin-top-10 " type="submit" ng-class="noteCard.denyModalClass"
-                            ng-disabled="!noteCard.add.title || !noteCard.add.note" tabindex="4"
-                            ng-click="noteCard.createNote(noteCard.add)">Save</button>
-                    <button class="ui secondary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="noteCard.clearNote()">Clear</button>
-                </div>
-                <div ng-if="noteCard.add.showModalError">
-                    <span class="ui header red">{{noteCard.error.message}}</span>
-                </div>
-            </form>
+                <button class="ui primary right floated button margin-bottom-15 margin-top-10 " type="submit" ng-class="noteCard.denyModalClass"
+                        ng-disabled="!noteCard.add.title || !noteCard.add.note" tabindex="4"
+                        ng-click="noteCard.createNote(noteCard.add)">Save</button>
+                <button class="ui secondary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="noteCard.clearAddNoteData()">Clear</button>
+            </div>
+            <div ng-if="noteCard.add.showModalError">
+                <span class="ui header red">{{noteCard.error.message}}</span>
+            </div>
         </div>
     </div>
 </div>

@@ -1,15 +1,15 @@
 <div class="margin-auto margin-top-10">
     <div class=" margin-bottom-15">
-        <span class="ui header">{{noteCard.update.metaData.title}}</span>
-        <span  class="ui right floated secondary button" ng-click="noteCard.update.showUpdateNote = !noteCard.update.showUpdateNote">Back to list
+        <span class="ui header">{{noteList.update.metaData.title}}</span>{{noteList.update.metaData.identifier}}
+        <span  class="ui right floated secondary button" ng-click="noteList.update.showUpdateNote = !noteList.update.showUpdateNote">Back to list
         </span>
     </div>
     <div class="ui fluid icon input" id="search-input-container">
-        <input type="text" placeholder="Title" name="title" ng-model="noteCard.update.metaData.title" />
+        <input type="text" placeholder="Title" name="title" ng-model="noteList.update.metaData.title" />
     </div>
     <div class="editor">
-        <pagedown-editor content="noteCard.update.metaData.note" show-preview="false"></pagedown-editor>
+        <pagedown-editor content="noteList.update.metaData.note" show-preview="false"></pagedown-editor>
     </div>
-        <button class="ui primary right floated button" type="submit" ng-click="noteCard.updateNote(noteCard.update.metaData)" 
-                ng-disabled="!noteCard.update.metaData.title || !noteCard.update.metaData.note" tabindex="4">Update</button>
-    </div>
+    <button class="ui primary right floated button" type="submit" ng-click="noteList.updateNote(noteList.update.metaData)" 
+            ng-disabled="!noteList.update.metaData.title || !noteList.update.metaData.note" tabindex="4">Update</button>
+</div>
