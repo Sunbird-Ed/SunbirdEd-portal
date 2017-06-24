@@ -21,129 +21,16 @@ angular.module('playerApp')
                 var params = {content: item};
                 $state.go('Player', params);
             }
-            var courseType = isEnrolledCourse === true ? 'ENROLLED_COURSE' : 'OTHER_COURSE';
-            var showLectureView = 'no';
-            var params = { courseType: courseType, courseId: courseId, lectureView: showLectureView, progress: 0, total: 0 };
-            sessionService.setSessionData('COURSE_PARAMS', params);
-            $rootScope.isPlayerOpen = true;
-            $state.go('Toc', params);
-        };
 
-        function handleFailedResponse(errorResponse) {
-            var isSearchError = {};
-            isSearchError.isError = true;
-            isSearchError.message = '';
-            isSearchError.responseCode = errorResponse.responseCode;
-            $rootScope.isSearchError = isSearchError;
-            // $scope.$apply();
-            $timeout(function() {
-                $rootScope.isSearchError = {};
-                isSearchError.isError = false;
-            }, 2000);
-        }
-        search.handleContentSearch = function(contents, $event) {
-            console.log('contents', contents);
-            if (contents.result.count > 0) {
-                //if $event is passed then search is to get only autosuggest else to get the content
-                if ($event !== undefined && search.keyword !== '') {
-                    search.autosuggest_data =
-                        contents.result.content;
-                } else {
-                    $rootScope.searchKey = $scope.selectedSearchKey;
-                    search.autosuggest_data = [];
-                    $rootScope.isPlayerOpen = false;
-                    $rootScope.searchResult = contents.result.content;
-                }
-                console.log('$rootScope.searchResult', $rootScope.searchResult);
-            } else {
-                $rootScope.searchResult = [];
-
-                contents.responseCode = 'RESOURCE_NOT_FOUND';
-                handleFailedResponse(contents);
-            }
-        };
-        search.handleCourseSearch = function(courses, $event) {
-            console.log('inside success handler', courses.result.response.length);
-            if (courses.result.response.length) {
-                console.log('successResponse.result.response', courses.result.response);
-                //if $event is passed then search is to get only autosuggest else to get the content
-                if ($event !== undefined && search.keyword !== '') {
-                    search.autosuggest_data = courses.result.response;
-                } else {
-                    $rootScope.searchKey = $scope.selectedSearchKey;
-                    search.autosuggest_data = [];
-                    $rootScope.isPlayerOpen = false;
-                    $rootScope.searchResult = courses.result.response;
-                }
-            } else {
-                $rootScope.searchResult = [];
-
-                courses.responseCode = 'RESOURCE_NOT_FOUND';
-                handleFailedResponse(courses);
-            }
-        };
-
-        search.searchContent = function($event) {
-            search.enableLoader(true);
-            var req = {
-                'query': search.keyword,
-                'filters': search.filters,
-                'params': {
-                    'cid': '12'
-                },
-                'limit': 20,
-                'sort_by': search.sortBy
-            };
-            $scope.close = function () {
-                $rootScope.searchResult = [];
-            };
-            if ($location.hash() != '') {
-                search.contentPlayer.isContentPlayerEnabled = true;
-                search.contentPlayer.contentId = $location.hash();
-            }
-            search.languages = [
-                'Bengali', 'English', 'Gujarati', 'Hindi', 'Kannada', 'Marathi', 'Punjabi', 'Tamil', 'Telugu'
-            ];
-            search.contentTypes = [
-                'Story', 'Worksheet', 'Collections', 'Game', 'Plugin', 'Template'
-            ];
-            search.subjects = [
-                'Maths', 'English', 'Hindi', 'Assamese', 'Bengali', 'Gujarati', 'Kannada', 'Malayalam', 'Marathi', 'Nepali', 'Oriya', 'Punjabi', 'Tamil', 'Telugu', 'Urdu'
-            ];
-            search.boards = [
-                'NCERT', 'CBSE', 'ICSE', 'MSCERT'
-            ];
-            search.sortingOptions = [{field: 'lastUpdatedOn', name: 'Updated On'}, {field: 'createdOn', name: 'Created On'}];
-
-            search.searchSelectionKeys = [{id: 'Courses', name: 'Courses'}, {id: 'Resources', name: 'Resources'}];
-            search.selectedLanguage = '';
-            search.selectedContentType = '';
-            search.selectedSubject = '';
-            search.selectedBoard = '';
-            search.selectedOrder = '';
-            search.orderBy = {};
-            search.autosuggest_data = {content: []};
-            search.listView = false;
-            search.sortIcon = true;
-            $scope.contentPlayer = {
+            $scope.$watch('searchKey', function () {
+                $scope.selectedSearchKey = $rootScope.searchKey;
+                search.keyword = '';
+                search.filters = {};
+            });
+            search.contentPlayer = {
                 isContentPlayerEnabled: false
-            };
-            $rootScope.showIFrameContent = false;
-            $rootScope.search = search;
-            search.openCourseView = function (courseId) {
-                var isEnrolledCourse = false;
-                if ($rootScope.enrolledCourseIds) {
-                    isEnrolledCourse = $rootScope.enrolledCourseIds.some(function (id) {
-                        return id === courseId;
-                    });
-                }
-                var courseType = isEnrolledCourse === true ? 'ENROLLED_COURSE' : 'OTHER_COURSE';
-                var showLectureView = 'no';
-                var params = {courseType: courseType, courseId: courseId, lectureView: showLectureView, progress: 0, total: 0};
-                sessionService.setSessionData('COURSE_PARAMS', params);
-                $state.go('Toc', params);
-            };
-
+            }
+            
             function handleFailedResponse(errorResponse) {
                 var isSearchError = {};
                 isSearchError.isError = true;
@@ -298,10 +185,10 @@ angular.module('playerApp')
             $('.search-dropdown').dropdown();
 
             search.ngInit = function () {
-              
-                    search.keyword = $('#keyword').val();
-                    search.searchContent();
-                
+
+                search.keyword = $('#keyword').val();
+                search.searchContent();
+
             }
-            
+
         });
