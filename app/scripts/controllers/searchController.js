@@ -30,7 +30,7 @@ angular.module('playerApp')
             search.contentPlayer = {
                 isContentPlayerEnabled: false
             }
-            
+
             function handleFailedResponse(errorResponse) {
                 var isSearchError = {};
                 isSearchError.isError = true;
@@ -187,8 +187,8 @@ angular.module('playerApp')
             search.ngInit = function () {
 
                 search.keyword = $('#keyword').val();
-                search.searchContent();
-
-            }
-
+                if (search.keyword) {
+                    search.searchContent();
+                }
+            };
         });
