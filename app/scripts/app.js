@@ -118,10 +118,16 @@ angular
                         authService.validUser();
                     }
                 },
-                onEnter: function ($rootScope) {
+                onEnter: function($rootScope) {
                     $rootScope.courseActive = 'active';
+                    $rootScope.searchKey = 'Courses';
+                    $rootScope.searchKeyword = '';
+                    $rootScope.isLearnPage = true;
                 },
-                onExit: function ($rootScope) {
+                onExit: function($rootScope) {
+                    $rootScope.courseActive = '';
+                    $rootScope.isLearnPage = false;
+                    $('#content-search-filter-accordion').accordion('close', 0);
                     $rootScope.courseActive = '';
                 }
             })

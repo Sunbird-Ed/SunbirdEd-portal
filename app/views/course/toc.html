@@ -1,4 +1,5 @@
-<div ng-controller="courseScheduleCtrl as toc">
+<div ng-include="'views/search/seachResultCourse.html'" ng-if="!isPlayerOpen"></div>
+<div ng-controller="courseScheduleCtrl as toc" ng-if="isPlayerOpen">
     <div ng-include="'views/course/courseHeader.html'"></div>
     <div class="ui grid">
         <div class="one wide column"></div>
@@ -15,8 +16,7 @@
                                         </span>
                                         <div class="margin-top-10 " ng-init="toc.readMore = false">
                                             <p class="courseStructureDesc"> {{ toc.courseHierachy.description | limitTo: 200 }}&nbsp;
-                                                <span class="ui font-dark-blue mouse-pointer" ng-if="toc.courseHierachy.description.length > 200 && toc.readMore === false"
-                                                      ng-click="toc.readMore = !toc.readMore;">Read More ...</span>
+                                                <span class="ui font-dark-blue mouse-pointer" ng-if="toc.courseHierachy.description.length > 200 && toc.readMore === false" ng-click="toc.readMore = !toc.readMore;">Read More ...</span>
                                             </p>
                                             <p ng-if="toc.readMore" class="courseStructureDesc"> {{ toc.courseHierachy.description}}&nbsp;
                                                 <span class="ui font-dark-blue mouse-pointer" ng-click="toc.readMore = false;">Read Less ...</span>
@@ -33,7 +33,7 @@
                                             {{item.name}}
                                             <i ng-if='item.children && item.children.length > 0' class="angle down icon down-arrow-accordion"></i>
                                         </div>
-                                        <div  ng-if='item.children && item.children.length > 0' class="content">
+                                        <div ng-if='item.children && item.children.length > 0' class="content">
                                             <ul class="courseStr">
                                                 <li ng-repeat="item in item.children">
                                                     <div name="{{item.identifier}}" ng-click="toc.expandMe($event, item)" ng-class="toc.getContentClass(item.mimeType)">
@@ -53,12 +53,12 @@
                                         </div>
                                     </div>
                                     <div class="ui fitted divider margin-bottom-20 margin-top-30"></div>
-                                    <course-discussions  showaskquestion="true"></course-discussions>
+                                    <course-discussions showaskquestion="true"></course-discussions>
                                 </div>
                                 <div class='four wide column'>
-                                <div ng-if="toc.courseType === 'ENROLLED_COURSE'" class="cursor-pointer margin-bottom-15">
+                                    <div ng-if="toc.courseType === 'ENROLLED_COURSE'" class="cursor-pointer margin-bottom-15">
                                         <add-note shownoteincourse="true" courseid="toc.courseParams.courseId"></add-note>
-                                   </div>
+                                    </div>
                                     <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false" courseid="toc.courseParams.courseId"></note-card>
                                     <div ng-include=" 'views/course/facultyCard.html'" class="margin-bottom-15"></div>
                                     <div ng-include=" 'views/course/carriculumCard.html'"></div><br>
@@ -93,8 +93,7 @@
                                     </div>
                                     <div class="six wide column center aligned" ng-if="toc.showNoteInLecture">
                                         <h2 class="ui center aligned icon tiny header toc-note">
-                                            <add-note shownoteinlecture="true" visibility="toc.showNoteInLecture"
-                                                       courseid="toc.courseParams.courseId" contentid="contentPlayer.contentData.identifier"></add-note>
+                                            <add-note shownoteinlecture="true" visibility="toc.showNoteInLecture" courseid="toc.courseParams.courseId" contentid="contentPlayer.contentData.identifier"></add-note>
                                         </h2>
                                     </div>
                                     <div class="three wide column ">
@@ -113,11 +112,10 @@
                     <div class="ui grid">
                         <div class="row">
                             <div class="eight wide column">
-                                <course-discussions  showaskquestion="false"></course-discussions>
+                                <course-discussions showaskquestion="false"></course-discussions>
                             </div>
                             <div class="four wide column toc-note-content">
-                                <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false"
-                                           courseid="toc.courseParams.courseId" contentid="contentPlayer.contentData.identifier"></note-card>
+                                <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false" courseid="toc.courseParams.courseId" contentid="contentPlayer.contentData.identifier"></note-card>
                             </div>
                         </div>
                     </div>
