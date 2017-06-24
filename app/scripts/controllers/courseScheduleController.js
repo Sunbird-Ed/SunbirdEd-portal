@@ -214,9 +214,7 @@ angular.module('playerApp')
                 }
                 return attributeArr;
             };
-            $rootScope.$on("showAllNoteList", function (e, noteListStatus) {
-                toc.showAllNoteList = noteListStatus;
-            });
+            
             toc.init = function () {
                 toc.lectureView = toc.courseParams.lectureView;
                 toc.courseId = toc.courseParams.courseId;
@@ -227,7 +225,6 @@ angular.module('playerApp')
                 //console.log($stateParams);
                 $scope.enableCloseButton = (toc.lectureView === 'yes') ? 'false' : 'true';
                 //console.log($rootScope.contentDetails);
-                toc.showAllNoteList = false;
                 toc.nightMode = true;
                 $scope.contentPlayer = {
                     isContentPlayerEnabled: false
@@ -236,6 +233,7 @@ angular.module('playerApp')
                 toc.playItemIndex = undefined;
                 toc.getCourseToc();
             }
+            
             toc.loadData = function () {
                 if (toc.courseParams.courseId != $stateParams.courseId) {
 //if both courseIds are different call to get course by id API and update data(to be implemented with progress and status params in API side)
