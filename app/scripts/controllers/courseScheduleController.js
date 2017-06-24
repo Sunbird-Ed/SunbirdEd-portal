@@ -56,7 +56,12 @@ angular.module('playerApp')
                     return '';
                 }
             };
-
+            toc.scrollToPlayer = function () {
+                $location.hash(toc.hashId);
+                $timeout(function () {
+                    $anchorScroll();
+                }, 500);
+            }
             toc.showError = function (message) {
 
                 toc.messageClass = "red";
@@ -128,8 +133,8 @@ angular.module('playerApp')
                     $scope.contentPlayer.contentData = toc.playListContent[toc.itemIndex];
                     $scope.contentPlayer.isContentPlayerEnabled = true;
                 }
-                $location.hash('tocPlayer/' + contentId + '/' + toc.itemIndex);
-                $anchorScroll();
+                toc.hashId=('tocPlayer/' + contentId + '/' + toc.itemIndex);
+                toc.scrollToPlayer();
             };
 
             toc.getAllChildrenCount = function (index) {
@@ -249,9 +254,4 @@ angular.module('playerApp')
                 }
             }
             toc.loadData();
-
-            toc.showAddNoteModal = function () {
-                $rootScope.$emit("ShowAddNoteModal");
-            };
-
         });

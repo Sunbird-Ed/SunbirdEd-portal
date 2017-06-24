@@ -176,11 +176,11 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
         showLoaderWithMessage(true, "", config.MESSAGES.NOTES.UPDATE.START);
         noteService.update(requestData).then(function(response) {
                 if (response && response.responseCode === "OK") {
-                    noteCard.notesList = noteCard.notesList.filter(function(note) {
-                        return note.identifier !== noteData.identifier;
-                    });
-                    noteCard.notesList.push(response.result.note);
-                    //                noteCard.ngInit();
+//                    noteCard.notesList = noteCard.notesList.filter(function(note) {
+//                        return note.identifier !== noteData.identifier;
+//                    });
+//                    noteCard.notesList.push(response.result.note);
+                    noteCard.ngInit();
                     noteCard.error = {};
                     noteCard.update.showUpdateNote = false;
                     noteCard.showModalError = false;

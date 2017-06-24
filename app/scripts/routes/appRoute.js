@@ -49,12 +49,12 @@ angular
                     $rootScope.searchKey = 'Courses';
                     $rootScope.searchKeyword = '';
                     $rootScope.isLearnPage = true;
-                    $rootScope.courseActive='active';
+                    $rootScope.courseActive = 'active';
                 },
                 onExit: function($rootScope) {
                     $rootScope.isLearnPage = false;
                     $('#content-search-filter-accordion').accordion('close', 0);
-                    $rootScope.courseActive='';
+                    $rootScope.courseActive = '';
                 },
                 params: { searchKey: 'Courses' },
                 resolve: {
@@ -66,14 +66,15 @@ angular
             .state('Resource', {
                 url: '/resources',
                 templateUrl: '/views/resource/resource.html',
-                controller: 'resourceCtrl as resource',
                 onEnter: function($rootScope) {
                     $rootScope.searchKey = 'Resources';
                     $rootScope.isResourcesPage = true;
                     $rootScope.searchKeyword = '';
+                    $rootScope.resourcesActive = 'active';
                 },
                 onExit: function($rootScope) {
                     $rootScope.isResourcesPage = false;
+                    $rootScope.resourcesActive = '';
                     $('#content-search-filter-accordion').accordion('close', 0);
                 },
                 resolve: {
@@ -87,6 +88,17 @@ angular
                 url: '/note/:courseId',
                 templateUrl: 'views/note/noteList.html',
                 controller: 'NoteListCtrl as noteList',
+                onEnter: function($rootScope) {
+                    $rootScope.searchKey = 'Courses';
+                    $rootScope.searchKeyword = '';
+                    $rootScope.isNotePage = true;
+                    $rootScope.courseActive = 'active';
+                },
+                onExit: function($rootScope) {
+                    $rootScope.isNotePage = false;
+                    $('#content-search-filter-accordion').accordion('close', 0);
+                    $rootScope.courseActive = '';
+                },
                 resolve: {
                     isLoggedIn: function(authService) {
                         authService.validUser();
@@ -97,6 +109,17 @@ angular
                 url: '/note/:contentId',
                 templateUrl: 'views/note/noteList.html',
                 controller: 'NoteListCtrl as noteList',
+                onEnter: function($rootScope) {
+                    $rootScope.searchKey = 'Resources';
+                    $rootScope.isNotePage = true;
+                    $rootScope.searchKeyword = '';
+                    $rootScope.resourcesActive = 'active';
+                },
+                onExit: function($rootScope) {
+                    $rootScope.isNotePage = false;
+                    $('#content-search-filter-accordion').accordion('close', 0);
+                    $rootScope.resourcesActive = '';
+                },
                 resolve: {
                     isLoggedIn: function(authService) {
                         authService.validUser();
@@ -107,6 +130,17 @@ angular
                 url: '/note/:courseId/:contentId',
                 templateUrl: 'views/note/noteList.html',
                 controller: 'NoteListCtrl as noteList',
+                onEnter: function($rootScope) {
+                    $rootScope.searchKey = 'Courses';
+                    $rootScope.searchKeyword = '';
+                    $rootScope.isNotePage = true;
+                    $rootScope.courseActive = 'active';
+                },
+                onExit: function($rootScope) {
+                    $rootScope.isNotePage = false;
+                    $('#content-search-filter-accordion').accordion('close', 0);
+                    $rootScope.courseActive = '';
+                },
                 resolve: {
                     isLoggedIn: function(authService) {
                         authService.validUser();
@@ -118,10 +152,15 @@ angular
                 templateUrl: 'views/course/toc.html',
                 controller: 'courseScheduleCtrl as toc',
                 onEnter: function($rootScope) {
-                    $rootScope.courseActive='active';
+                    $rootScope.searchKey = 'Courses';
+                    $rootScope.searchKeyword = '';
+                    $rootScope.isTocPage = true;
+                    $rootScope.courseActive = 'active';
                 },
-                onExit: function($rootScope) {                    
-                    $rootScope.courseActive='';
+                onExit: function($rootScope) {
+                    $rootScope.isTocPage = false;
+                    $('#content-search-filter-accordion').accordion('close', 0);
+                    $rootScope.courseActive = '';
                 },
                 resolve: {
                     isLoggedIn: function(authService) {
@@ -148,5 +187,11 @@ angular
                         authService.validUser();
                     }
                 }
-            });
+            })
+            .state('Player',{
+                 url: '/player',
+                templateUrl: 'views/common/player.html',
+                controller: 'playerCtrl as player',
+                params:{content:null}
+            })
     });

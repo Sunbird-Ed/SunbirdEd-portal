@@ -6,7 +6,7 @@
  * @description
  * # contentPlayer
  */
-angular.module('playerApp').directive('contentPlayer', function() {
+angular.module('playerApp').directive('contentPlayer', function () {
     return {
         templateUrl: 'views/contentplayer/player.html',
         restrict: 'E',
@@ -19,9 +19,10 @@ angular.module('playerApp').directive('contentPlayer', function() {
             isheader: '=',
             height: '=',
             width: '=',
-            ispercentage: '='
+            ispercentage: '=',
+            closeurl: '='
         },
-        link: function(scope, element, attrs) {
+        link: function (scope, element, attrs) {
             if (scope.ispercentage) {
                 $('#contentPlayer').css('height', scope.height + '%');
                 $('#contentPlayer').css('width', scope.width + '%');
@@ -30,10 +31,10 @@ angular.module('playerApp').directive('contentPlayer', function() {
                 $('#contentPlayer').css('width', scope.width + 'px');
             }
 
-            scope.$watch('body', function() {
+            scope.$watch('body', function () {
                 scope.updateDataOnWatch(scope);
             });
-            scope.$watch('id', function() {
+            scope.$watch('id', function () {
                 scope.updateDataOnWatch(scope);
             });
         },
@@ -41,13 +42,13 @@ angular.module('playerApp').directive('contentPlayer', function() {
     };
 });
 
-angular.module('playerApp').controller('contentPlayerCtrl', function(noteService, $rootScope, $scope, $sce, contentService, pdfDelegate, $timeout, config) {
+angular.module('playerApp').controller('contentPlayerCtrl', function (noteService, $state, $scope, $sce, contentService, pdfDelegate, $timeout, config) {
     var player = this;
     $scope.isClose = $scope.isclose;
     $scope.isHeader = $scope.isheader;
     $scope.showModalInLectureView = true;
 
-    $scope.updateDataOnWatch = function(scope) {
+    $scope.updateDataOnWatch = function (scope) {
         if (scope.body) {
             showPlayer(scope.body);
         } else if (scope.id) {
@@ -61,10 +62,10 @@ angular.module('playerApp').controller('contentPlayerCtrl', function(noteService
         if ($scope.contentData.mimeType === 'application/vnd.ekstep.ecml-archive' || $scope.contentData.mimeType === 'application/vnd.ekstep.html-archive') {
             $scope.showIFrameContent = true;
             var iFrameSrc = config.ekstep_CP_config.baseURL;
-            $timeout(function() {
+            $timeout(function () {
                 var previewContentIframe = $('#contentViewerIframe')[0];
                 previewContentIframe.src = iFrameSrc;
-                previewContentIframe.onload = function() {
+                previewContentIframe.onload = function () {
                     var configuration = {};
                     configuration.context = config.ekstep_CP_config.context;
                     configuration.context.contentId = $scope.contentData.identifier;
@@ -94,8 +95,8 @@ angular.module('playerApp').controller('contentPlayerCtrl', function(noteService
     }
 
     function getContent(contentId) {
-        var req = { contentId: contentId };
-        contentService.getById(req).then(function(response) {
+        var req = {contentId: contentId};
+        contentService.getById(req).then(function (response) {
             if (response && response.responseCode === 'OK') {
                 $scope.errorObject = {};
                 showPlayer(response.result.content);
@@ -103,13 +104,17 @@ angular.module('playerApp').controller('contentPlayerCtrl', function(noteService
                 var message = 'Unable to play, please try Again or close.';
                 showLoaderWithMessage(false, 'red', message, true, true);
             }
-        }).catch(function(error) {
+        }).catch(function (error) {
             var message = 'Unable to play, please try Again or close.';
             showLoaderWithMessage(false, 'red', message, true, true);
         });
     }
 
-    $scope.close = function() {
+    $scope.close = function () {
+        if ($scope.closeurl)
+        {
+            $state.go($scope.closeurl);
+        }
         $scope.errorObject = {};
         if ($scope.id) {
             $scope.id = '';
@@ -119,34 +124,35 @@ angular.module('playerApp').controller('contentPlayerCtrl', function(noteService
         }
 
         $scope.visibility = false;
+
     };
-    $scope.tryAgain = function() {
+    $scope.tryAgain = function () {
         $scope.errorObject = {};
         getContent($scope.id);
     };
-    $scope.zoomIn = function() {
+    $scope.zoomIn = function () {
         pdfDelegate.$getByHandle('content-player').zoomIn();
     };
-    $scope.zoomOut = function() {
+    $scope.zoomOut = function () {
         pdfDelegate.$getByHandle('content-player').zoomOut();
     };
-    $scope.previous = function() {
+    $scope.previous = function () {
         pdfDelegate.$getByHandle('content-player').prev();
         $scope.getCurrentPage = $scope.getCurrentPage > 1 ? $scope.getCurrentPage - 1 : $scope.getCurrentPage;
     };
-    $scope.next = function() {
+    $scope.next = function () {
         pdfDelegate.$getByHandle('content-player').next();
         $scope.getCurrentPage = $scope.getCurrentPage < $scope.totalPageNumber ? $scope.getCurrentPage + 1 : $scope.getCurrentPage;
     };
-    $scope.rotate = function() {
+    $scope.rotate = function () {
         pdfDelegate.$getByHandle('content-player').rotate();
     };
-    $scope.goToPage = function(pageNumber) {
+    $scope.goToPage = function (pageNumber) {
         pdfDelegate.$getByHandle('content-player').goToPage(pageNumber);
         $scope.getCurrentPage = pageNumber;
     };
-    $scope.getTotalPage = function() {
-        $timeout(function() {
+    $scope.getTotalPage = function () {
+        $timeout(function () {
             $scope.totalPageNumber = pdfDelegate.$getByHandle('content-player').getPageCount();
             $scope.getCurrentPage = pdfDelegate.$getByHandle('content-player').getCurrentPage();
         }, 2000);
