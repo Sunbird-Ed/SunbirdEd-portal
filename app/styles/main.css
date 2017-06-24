@@ -46,6 +46,9 @@
 .margin-right-10 {
   margin-top: 10px !important;
 }
+.margin-right-20 {
+  margin-right: 20px !important;
+}
 .border-bottom {
   border-bottom: 1px solid #E6E7E8 !important;
 }
@@ -897,7 +900,7 @@ slick-prev:before,
   -moz-osx-font-smoothing: grayscale;
 }
 .slider {
-  width: calc(95%);
+  width: 100%;
   margin: 0 auto;
 }
 .marginLeft-36 {
@@ -974,8 +977,8 @@ li.subStr::after {
   background: #d4d4d5;
 }
 ul.subList-padding {
-  padding-top: 7% !important;
-  padding-left: 8% !important;
+  padding-top: 5% !important;
+  padding-left: 6% !important;
 }
 .courseStructureHeader {
   background-color: #ffffff !important;
@@ -1124,7 +1127,7 @@ ul.subList-padding {
   z-index: '';
 }
 .homeHeaderPadding {
-  padding: 0.5em !important;
+  padding: 1em !important;
 }
 .ui.styled.accordion .removeline.title {
   margin: 0;
@@ -1324,6 +1327,21 @@ ul.subList-padding {
 .HomeAccordianHeading {
   font-family: 'sunbirdboldfont' !important;
   font-size: 18px !important;
+}
+/*section heading fonts*/
+.sectionHeading {
+  font-family: 'sunbirdboldfont' !important;
+  font-size: 19px !important;
+}
+/*show filter fonts*/
+.ShowFilterTitle {
+  font-family: 'sunbirdboldfont' !important;
+  font-size: 12px !important;
+}
+.ShowFilterSubTitle {
+  font-family: 'sunbirdregularfont' !important;
+  font-size: 12px !important;
+  color: #8b8b8c !important;
 }
 .filtersearch.ui.selection.dropdown {
   min-width: 100%;
