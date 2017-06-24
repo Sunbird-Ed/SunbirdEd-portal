@@ -8,10 +8,9 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('HomeController', function($scope,$state, learnService, $sessionStorage, $log, $timeout, $rootScope,sessionService) {
-
+    .controller('HomeController', function($scope, $state, learnService, $sessionStorage, $log, $timeout, $rootScope, sessionService, $window) {
         var homeCtrl = this;
-        var uid = $sessionStorage.userId;
+        var uid = $rootScope.userId ? $rootScope.userId : $window.localStorage.getItem('userId');
         homeCtrl.loadCarousel = function() {
             $('.ui .progress .course-progress').progress();
             $('.ui.rating')
@@ -72,7 +71,6 @@ angular.module('playerApp')
             };
             learnService.otherSections(req).then(function(successResponse) {
                 if (successResponse && successResponse.responseCode === 'OK') {
-
                     homeCtrl.recommendedCourse = successResponse.result.page.sections[1].course;
                     console.log(homeCtrl.recommendedCourse);
                 } else {
@@ -89,8 +87,7 @@ angular.module('playerApp')
             // courseId = 'do_112265805439688704113';
             var showLectureView = 'no';
             var params = { courseType: courseType, courseId: courseId, lectureView: showLectureView, progress: courseProgress, total: courseTotal };
-            sessionService.setSessionData('COURSE_PARAMS',params);
-            $state.go('Toc',params);
+            sessionService.setSessionData('COURSE_PARAMS', params);
+            $state.go('Toc', params);
         };
-
     });
