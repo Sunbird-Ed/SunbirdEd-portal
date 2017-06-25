@@ -10,31 +10,34 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
     noteList.update.showUpdateNote = false;
     noteList.add.showCreateNote = false;
     noteList.notesList = [];
+    noteList.loader = {
+        showLoader: false
+    };
 
     /**
-     * This function helps to show loader or any error message at the time of api call.
-     * @param {Boolean} showMetaLoader
-     * @param {String} messageClass
-     * @param {String} message
+     * This function helps to show loader with message.
+     * @param {String} headerMessage
+     * @param {String} loaderMessage
      */
-    function showLoaderWithMessage(showMetaLoader, messageClass, message) {
-        var error = {};
-        error.showError = true;
-        error.showMetaLoader = showMetaLoader;
-        error.messageClass = messageClass;
-        error.message = message;
-        noteList.error = error;
+    function showLoaderWithMessage(headerMessage, loaderMessage) {
+        var loader = {};
+        loader.showLoader = true;
+        loader.headerMessage = headerMessage;
+        loader.loaderMessage = loaderMessage;
+        noteList.loader = loader;
     }
 
     /**
      * This function called when api failed, and its show failed response for 2 sec.
      * @param {String} message
      */
-    function handleFailedResponse(message) {
-        showLoaderWithMessage(false, "red", message);
-        $timeout(function () {
-            noteList.error = {};
-        }, 2000);
+    function showErrorMessage(isClose, message, messageType) {
+        var error = {};
+        error.showError = true;
+        error.isClose = isClose;
+        error.message = message;
+        error.messageType = messageType;
+        noteList.error = error;
     }
 
     /**
@@ -43,17 +46,23 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
      * @returns {undefined}
      */
     function search(request) {
+        
+        showLoaderWithMessage("", config.MESSAGES.NOTES.SEARCH.START);
+        
         noteService.search(request).then(function (response) {
             if (response && response.responseCode === "OK") {
+                noteList.loader.showLoader = false;
                 noteList.error = {};
                 noteList.notesList = response.result.note || [];
             } else {
-                handleFailedResponse(config.MESSAGES.NOTES.SEARCH.FAILED);
+                noteList.loader.showLoader = false;
+                showErrorMessage(true, config.MESSAGES.NOTES.SEARCH.FAILED, config.MESSAGES.COMMON.ERROR);
             }
         })
-                .catch(function (error) {
-                    handleFailedResponse(config.MESSAGES.NOTES.SEARCH.FAILED);
-                });
+        .catch(function (error) {
+            noteList.loader.showLoader = false;
+            showErrorMessage(true, config.MESSAGES.NOTES.SEARCH.FAILED, config.MESSAGES.COMMON.ERROR);
+        });
     }
 
     /**
@@ -61,7 +70,7 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
      * This function help to fetch the user notes.
      */
     noteList.ngInit = function () {
-        showLoaderWithMessage(true, "", config.MESSAGES.NOTES.SEARCH.START);
+
         var request = {
             filters: {
                 userId: noteList.userId,
@@ -182,10 +191,10 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
     noteList.closeNoteList = function () {
 
         if (noteList.courseId && noteList.contentId) {
-            var params = {tocId : noteList.tocId, courseId: noteList.courseId, contentId: noteList.contentId, lectureView: 'yes'};
+            var params = {tocId: noteList.tocId, courseId: noteList.courseId, contentId: noteList.contentId, lectureView: 'yes'};
             $state.go('Toc', params);
         } else if (noteList.courseId) {
-            var params = {tocId : noteList.tocId, courseId: noteList.courseId, lectureView: 'no'};
+            var params = {tocId: noteList.tocId, courseId: noteList.courseId, lectureView: 'no'};
             $state.go('Toc', params);
         } else if (noteList.contentId) {
             var params = {contentId: noteList.contentId};
