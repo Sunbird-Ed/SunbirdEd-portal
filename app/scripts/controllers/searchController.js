@@ -14,6 +14,7 @@ angular.module('playerApp')
             search.filters = {};
             search.sortBy = {};
             $scope.selectedSearchKey = $stateParams.searchKey;
+            search.searchSelectionKeys = [{ id: 'Courses', name: 'Courses' }, { id: 'Resources', name: 'Resources' }];
             $timeout(function () {
                 $('#headerSearchdd').dropdown('set selected', $scope.selectedSearchKey);
             });
