@@ -192,6 +192,6 @@ angular
                  url: '/player',
                 templateUrl: 'views/common/player.html',
                 controller: 'playerCtrl as player',
-                params:{content:null}
+                params:{content:null, contentId: null}
             })
     });

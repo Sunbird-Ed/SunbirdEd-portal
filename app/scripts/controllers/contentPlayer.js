@@ -16,6 +16,10 @@ angular.module('playerApp')
                     player.contentPlayer.isContentPlayerEnabled = true;
                     player.hashId = $location.hash();
                     player.contentPlayer.contentId = player.hashId.replace("content/", "");
+                } else if ($stateParams.contentId) {
+                    player.contentPlayer.isContentPlayerEnabled = true;
+                    player.contentPlayer.contentId = $stateParams.contentId;
+                    player.hashId = "content/" + $stateParams.contentId;
                 }
                 player.scrollToPlayer();
             }
