@@ -9,13 +9,15 @@
 angular.module('playerApp')
     .directive('errorMessage', function() {
         return {
-            template: '<div class="ui {{errorClass}} message" ng-if="message"><i class="close icon" ng-click="closeErrorMessage"></i><span translate="messageType">{{message}}</span></div>',
+            template: '<div class="ui huge {{errorClass}} message" ng-if="message"><i ng-if="isClose" class="close icon" ng-click="closeErrorMessage()"></i><span translate="messageType">{{message}}</span></div>',
             restrict: 'E',
             scope: {
                 visibility: '='
             },
             link: function postLink(scope, element, attrs) {
+                
                 attrs.data = attrs.data ? JSON.parse(attrs.data) : undefined;
+                scope.isClose = attrs.data && attrs.data.isClose ? attrs.data.isClose : true;
                 if (attrs.data && attrs.data.messageType === 'info') {
                     scope.message = attrs.data.message.length ? attrs.data.message : 'Something wrong try in sometime.';
                     scope.errorClass = 'info';
