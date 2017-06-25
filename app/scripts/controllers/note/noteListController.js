@@ -198,7 +198,7 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
             $state.go('Toc', params);
         } else if (noteList.contentId) {
             var params = {contentId: noteList.contentId};
-            $state.go('Resource', params);
+            $state.go('Player', params);
         }
 
     };
