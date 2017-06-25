@@ -1,6 +1,7 @@
-<div ng-include="'views/search/seachResultCourse.html'" ng-if="!isPlayerOpen"></div>
-<div ng-controller="courseScheduleCtrl as toc" ng-if="isPlayerOpen">
+<div ng-controller="courseScheduleCtrl as toc">
+    <div ng-include="'views/search/seachResultCourse.html'"></div>
     <div ng-include="'views/course/courseHeader.html'"></div>
+
     <div class="ui grid">
         <div class="one wide column"></div>
         <div class="ten wide column">
