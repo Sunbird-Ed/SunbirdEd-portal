@@ -2,7 +2,7 @@
 <div ng-include="'views/search/searchResult.html'"></div>
 <div class="ui grid">
     <div class="one wide column"></div>
-    <div class="ten wide column popular-page">
+    <div class="ten wide column popular-page" ng-if="!resource.loader.showLoader">
         <div class="ui link cards popular-section" ng-repeat=" section in resource.page " ng-show="!resource.contentPlayer.isContentPlayerEnabled">
             <h4 class="ui header card-section-header ">{{section.name}}
                 <a class="ui red circular inline label">{{section.contents.length}}</a></h4>
@@ -20,6 +20,9 @@
             <div class="ui text loader ">Featching enrolled contents
             </div>
         </div>
+    </div>
+    <div class="ten wide column popular-page" ng-if="resource.loader.showLoader">
+        <app-loader data="{{resource.loader}}"></app-loader>
     </div>
     <div class="one wide column"></div>
 </div>
