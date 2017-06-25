@@ -83,7 +83,7 @@
                     "SUCCESS": "Note deleted successfully..."
                 },
                 "SEARCH": {
-                    "START": "Searching notes, please wait...",
+                    "START": "We are fetching notes...",
                     "FAILED": "Searching note is failed, please try again later...",
                     "SUCCESS": "Note detail fetched successfully..."
                 },
@@ -91,6 +91,22 @@
                     "START": "Updating note, please wait...",
                     "FAILED": "Updating note is failed, please try again later...",
                     "SUCCESS": "Note updated successfully..."
+                }
+            },
+            "COMMON": {
+                "ERROR": "error",
+                "INFO": "info",
+                "WARNING": "warning",
+                "SUCCESS": "success"
+            },
+            "RESOURCE": {
+                "PAGE": {
+                    "START": "We are fetching content..." 
+                }
+            },
+            "COURSE": {
+                "ENROLLED": {
+                    "START": "We are fetching enrolled courses..." 
                 }
             }
         },

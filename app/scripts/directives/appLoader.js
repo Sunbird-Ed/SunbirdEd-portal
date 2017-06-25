@@ -9,7 +9,7 @@ angular.module('playerApp')
             link: function postLink(scope, element, attrs) {
                 attrs.data = attrs.data ? JSON.parse(attrs.data) : undefined;
                 scope.headerMessage = attrs.data && attrs.data.headerMessage ? attrs.data.headerMessage : 'Please wait.';
-                scope.loaderMessage = attrs.data && attrs.data.loaderMeassage ? attrs.data.loaderMeassage : 'We are fetching details';
+                scope.loaderMessage = attrs.data && attrs.data.loaderMessage ? attrs.data.loaderMessage : 'We are fetching details';
             }
         };
     });
