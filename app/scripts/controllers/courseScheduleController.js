@@ -133,7 +133,7 @@ angular.module('playerApp')
                     $scope.contentPlayer.contentData = toc.playListContent[toc.itemIndex];
                     $scope.contentPlayer.isContentPlayerEnabled = true;
                 }
-                toc.hashId=('tocPlayer/' + contentId + '/' + toc.itemIndex);
+                toc.hashId = ('tocPlayer/' + contentId + '/' + toc.itemIndex);
                 toc.scrollToPlayer();
             };
 
@@ -224,7 +224,12 @@ angular.module('playerApp')
                 }
                 return attributeArr;
             };
-
+            $scope.$watch('contentPlayer.isContentPlayerEnabled', function (newValue, oldValue) {
+                if (oldValue==true && newValue==false) {
+                    toc.hashId='';
+                    $location.hash(toc.hashId);
+                }
+            });
             toc.init = function () {
                 toc.lectureView = toc.courseParams.lectureView;
                 toc.courseId = toc.courseParams.courseId;
