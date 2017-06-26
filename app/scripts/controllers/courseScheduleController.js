@@ -208,6 +208,12 @@ angular.module('playerApp')
                         toc.resumeCourse();
                     }
                     $('.ui.accordion').accordion({exclusive: false});
+                    $(function () {
+                        $(".tree").fancytree({
+                            icons: false,
+                        });
+                        $(".fancytree-container").addClass("fancytree-connectors");
+                    });
                 }, 0);
             }
 
@@ -225,8 +231,8 @@ angular.module('playerApp')
                 return attributeArr;
             };
             $scope.$watch('contentPlayer.isContentPlayerEnabled', function (newValue, oldValue) {
-                if (oldValue==true && newValue==false) {
-                    toc.hashId='';
+                if (oldValue == true && newValue == false) {
+                    toc.hashId = '';
                     $location.hash(toc.hashId);
                 }
             });
