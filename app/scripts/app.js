@@ -19,7 +19,8 @@ angular
         'pdf',
         'pascalprecht.translate',
         'ngSanitize',
-        'Scope.safeApply'
+        'Scope.safeApply',
+        'angular-fancytree'
     ])
     .config(function($translateProvider, $provide) {
         $provide.provider('setResourceBundle', function() {

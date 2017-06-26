@@ -17,7 +17,8 @@
     "angular-sanitize": "^1.6.4",
     "ngSafeApply": "./node_modules/angularjs-scope.safeapply/src/Scope.SafeApply.js",
     "jquery.fancytree": "fancytree#^2.23.0",
-    "jquery-ui": "^1.12.1"
+    "jquery-ui": "^1.12.1",
+    "angular-fancytree": "^1.0.2"
   },
   "devDependencies": {
     "angular-mocks": "1.6.0",
@@ -39,6 +40,9 @@
   "moduleName": "playerApp",
   "resolutions": {
     "video.js": "^5.0.0",
-    "angular": "1.6.4"
+    "angular": "1.6.4",
+    "jquery": ">=1.7",
+    "jquery.fancytree": "~2.13.0",
+    "jquery-ui": "~1.11.4"
   }
 }

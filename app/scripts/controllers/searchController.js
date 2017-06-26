@@ -14,7 +14,34 @@ angular.module('playerApp')
             search.filters = {};
             search.sortBy = {};
             $scope.selectedSearchKey = $stateParams.searchKey;
-            search.searchSelectionKeys = [{ id: 'Courses', name: 'Courses' }, { id: 'Resources', name: 'Resources' }];
+            search.searchSelectionKeys = [{id: 'Courses', name: 'Courses'}, {id: 'Resources', name: 'Resources'}];
+            search.languages = [
+                'Bengali', 'English', 'Gujarati', 'Hindi', 'Kannada', 'Marathi', 'Punjabi', 'Tamil', 'Telugu'
+            ];
+            search.contentTypes = [
+                'Story', 'Worksheet', 'Collections', 'Game', 'Plugin', 'Template'
+            ];
+            search.subjects = [
+                'Maths', 'English', 'Hindi', 'Assamese', 'Bengali', 'Gujarati', 'Kannada', 'Malayalam', 'Marathi', 'Nepali', 'Oriya', 'Punjabi', 'Tamil', 'Telugu', 'Urdu'
+            ];
+            search.boards = [
+                'NCERT', 'CBSE', 'ICSE', 'MSCERT'
+            ];
+            search.sortingOptions = [{field: 'lastUpdatedOn', name: 'Updated On'}, {field: 'createdOn', name: 'Created On'}];
+
+
+            search.selectedLanguage = '';
+            search.selectedContentType = '';
+            search.selectedSubject = '';
+            search.selectedBoard = '';
+            search.selectedOrder = '';
+            search.orderBy = {};
+            search.autosuggest_data = {content: []};
+            search.listView = false;
+            search.sortIcon = true;
+
+            $rootScope.showIFrameContent = false;
+            $rootScope.search = search;
             $timeout(function () {
                 $('#headerSearchdd').dropdown('set selected', $scope.selectedSearchKey);
             });
@@ -198,7 +225,7 @@ angular.module('playerApp')
                 sessionService.setSessionData('COURSE_PARAMS', params);
                 $state.go('Toc', params);
             };
-            $scope.close=function(){
+            $scope.close = function () {
                 $rootScope.searchResult = [];
             }
         });

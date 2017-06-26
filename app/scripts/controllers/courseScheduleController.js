@@ -1,5 +1,5 @@
 angular.module('playerApp')
-        .controller('courseScheduleCtrl', function (courseService, sessionService, $stateParams, $timeout, $scope, $sce, $rootScope, $sessionStorage, $location, $anchorScroll) {
+        .controller('courseScheduleCtrl', function (courseService, fancytreeFactory, sessionService, $stateParams, $timeout, $scope, $sce, $rootScope, $sessionStorage, $location, $anchorScroll) {
             var toc = this;
             toc.playList = [];
             toc.playListContent = [];
@@ -8,6 +8,7 @@ angular.module('playerApp')
             toc.contentList = [];
             toc.showNoteInLecture = true;
             toc.enrollErrorMessage = '';
+            toc.fancyTree = [];
             toc.enrollUserToCourse = function (courseId) {
                 var req = {
                     request: {
@@ -170,6 +171,24 @@ angular.module('playerApp')
                 return toc.playList;
             }
 
+            toc.getTreeData = function (contentData) {
+                var index = toc.fancyTree.length - 1;
+                if (contentData.mimeType != 'application/vnd.ekstep.content-collection') {
+
+                    toc.fancyTree[index]['children'].push({title: contentData.name, key: toc.treeKey});
+                    toc.treeKey += 1;
+
+                } else
+                {
+                    toc.fancyTree.push({title: contentData.name, key: toc.treeKey, children: []})
+                    toc.treeKey += 1;
+                    for (var item in contentData.children) {
+                        toc.getTreeData(contentData.children[item]);
+                    }
+                }
+                return toc.fancyTree;
+            }
+
 
             toc.getContentClass = function (contentMimeType) {
                 if (contentMimeType == 'application/vnd.ekstep.content-collection') {
@@ -208,16 +227,25 @@ angular.module('playerApp')
                         toc.resumeCourse();
                     }
                     $('.ui.accordion').accordion({exclusive: false});
-                    $(function () {
-                        $(".tree").fancytree({
-                            icons: false,
-                        });
-                        $(".fancytree-container").addClass("fancytree-connectors");
-                    });
+                    fancytreeFactory.setData([
+                        {title: "Node 1", key: "1"},
+                        {title: "Folder 2", key: "2", folder: true, children: [
+                                {title: "Node 2.1", key: "3", myOwnAttr: "abc"},
+                                {title: "Node 2.2", key: "4", folder: true, children: [{title: "Node 2.2.1", key: "5"}]}
+                            ]}
+                    ], 'exampleFancytree');
+
                 }, 0);
+                $timeout(function () {
+                    $(".fancytree-container").addClass("fancytree-connectors");
+                }, 1000);
             }
 
-
+            toc.constructTree = function (pos, tocData) {
+                toc.fancyTree = [];
+                toc.treeKey = 0;
+                toc.fancyTree = toc.getTreeData(tocData);
+            }
             toc.fetchObjectAttributeAsArrayOrObject = function (objArray, objKey, isKeyBasedObj) {
                 var attributeArr = (isKeyBasedObj == true) ? {} : [];
 
