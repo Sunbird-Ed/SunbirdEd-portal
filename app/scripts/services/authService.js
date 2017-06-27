@@ -2,7 +2,7 @@
 angular.module('playerApp')
     .service('authService', function(javaService, config, $q, $sessionStorage, $rootScope, $state, $cookies, $window) {
         this.login = function(req) {
-            var url = config.URL.JAVA_BASE + config.URL.AUTH.LOGIN;
+            var url = config.URL.DEV_API_BASE + config.URL.AUTH.LOGIN;
             return javaService.post(url, req);
             // var deferred = $q.defer();
             // deferred.resolve(app_mock_data.auth.login)
@@ -10,7 +10,7 @@ angular.module('playerApp')
         };
 
         this.logout = function(req) {
-            var url = config.URL.JAVA_BASE + config.URL.AUTH.LOGOUT;
+            var url = config.URL.DEV_API_BASE + config.URL.AUTH.LOGOUT;
             return javaService.post(url, req);
             // var deferred = $q.defer();
             // deferred.resolve(app_mock_data.auth.logout);
@@ -18,7 +18,7 @@ angular.module('playerApp')
         };
 
         this.getUserProfile = function(uId) {
-            var url = config.URL.JAVA_BASE + config.URL.AUTH.PROFILE + '/:' + uId;
+            var url = config.URL.DEV_API_BASE + config.URL.AUTH.PROFILE + '/:' + uId;
             return javaService.get(url);
             // var deferred = $q.defer();
             // deferred.resolve(app_mock_data.auth.profile);
