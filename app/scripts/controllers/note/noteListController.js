@@ -128,7 +128,7 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
      */
     noteList.removeNote = function (noteId) {
 
-        var requestData = {noteId1: noteId};
+        var requestData = {noteId: noteId};
         var api = 'searchApi';
         showLoaderWithMessage(api,"", config.MESSAGES.NOTES.REMOVE.START);
 
