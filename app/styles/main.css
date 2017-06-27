@@ -1231,6 +1231,9 @@ ul.subList-padding {
   width: 100%;
   height: 700px;
 }
+.content-video-player-youtube-dimensions.vjs-fluid {
+  padding-top: 500px;
+}
 .serch-allresult {
   color: #717171;
 }
