@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, noteService, config, $window, $timeout, $state, $stateParams) {
 
     var noteList = this;
@@ -10,34 +12,33 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
     noteList.update.showUpdateNote = false;
     noteList.add.showCreateNote = false;
     noteList.notesList = [];
-    noteList.loader = {
-        showLoader: false
-    };
 
     /**
      * This function helps to show loader with message.
      * @param {String} headerMessage
      * @param {String} loaderMessage
      */
-    function showLoaderWithMessage(headerMessage, loaderMessage) {
+    function showLoaderWithMessage(object, headerMessage, loaderMessage) {
         var loader = {};
+        noteList[object] = {};
         loader.showLoader = true;
         loader.headerMessage = headerMessage;
         loader.loaderMessage = loaderMessage;
-        noteList.loader = loader;
+        noteList[object].loader = loader;
     }
 
     /**
      * This function called when api failed, and its show failed response for 2 sec.
      * @param {String} message
      */
-    function showErrorMessage(isClose, message, messageType) {
+    function showErrorMessage(object, isClose, message, messageType) {
         var error = {};
+        noteList[object] = {};
         error.showError = true;
         error.isClose = isClose;
         error.message = message;
         error.messageType = messageType;
-        noteList.error = error;
+        noteList[object].error = error;
     }
 
     /**
@@ -47,21 +48,21 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
      */
     function search(request) {
         
-        showLoaderWithMessage("", config.MESSAGES.NOTES.SEARCH.START);
+        var api = 'searchApi';
+        showLoaderWithMessage(api,"", config.MESSAGES.NOTES.SEARCH.START);
         
         noteService.search(request).then(function (response) {
             if (response && response.responseCode === "OK") {
-                noteList.loader.showLoader = false;
-                noteList.error = {};
+                noteList[api].loader.showLoader = false;
                 noteList.notesList = response.result.note || [];
             } else {
-                noteList.loader.showLoader = false;
-                showErrorMessage(true, config.MESSAGES.NOTES.SEARCH.FAILED, config.MESSAGES.COMMON.ERROR);
+                noteList[api].loader.showLoader = false;
+                showErrorMessage(api, true, config.MESSAGES.NOTES.SEARCH.FAILED, config.MESSAGES.COMMON.ERROR);
             }
         })
         .catch(function (error) {
-            noteList.loader.showLoader = false;
-            showErrorMessage(true, config.MESSAGES.NOTES.SEARCH.FAILED, config.MESSAGES.COMMON.ERROR);
+            noteList[api].loader.showLoader = false;
+            showErrorMessage(api, true, config.MESSAGES.NOTES.SEARCH.FAILED, config.MESSAGES.COMMON.ERROR);
         });
     }
 
@@ -70,7 +71,7 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
      * This function help to fetch the user notes.
      */
     noteList.ngInit = function () {
-
+        showLoaderWithMessage(true, "", config.MESSAGES.NOTES.SEARCH.START);
         var request = {
             filters: {
                 userId: noteList.userId,
@@ -89,6 +90,8 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
      * @param {Object} noteData
      */
     noteList.createNote = function (noteData) {
+        
+        var api = 'createApi';
 
         var requestData = {
             note: {
@@ -100,18 +103,22 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
             }
         };
 
-        showLoaderWithMessage(true, "", config.MESSAGES.NOTES.CREATE.START);
+        showLoaderWithMessage(api, "", config.MESSAGES.NOTES.CREATE.START);
         noteService.create(requestData).then(function (response) {
             if (response && response.responseCode === "OK") {
                 noteList.notesList.push(response.result.note);
                 noteList.add.showCreateNote = false;
-                noteList.error = {};
+                noteList[api].loader.showLoader = false;
                 noteList.add = {};
             } else {
-                handleFailedResponse(config.MESSAGES.NOTES.CREATE.FAILED);
+                noteList[api].loader.showLoader = false;
+                showErrorMessage(api, true, config.MESSAGES.NOTES.CREATE.FAILED, config.MESSAGES.COMMON.ERROR);
+//                handleFailedResponse(config.MESSAGES.NOTES.CREATE.FAILED);
             }
         }).catch(function (error) {
-            handleFailedResponse(config.MESSAGES.NOTES.CREATE.FAILED);
+            noteList[api].loader.showLoader = false;
+            showErrorMessage(api, true, config.MESSAGES.NOTES.CREATE.FAILED, config.MESSAGES.COMMON.ERROR);
+//            handleFailedResponse(config.MESSAGES.NOTES.CREATE.FAILED);
         });
     };
 
@@ -122,21 +129,27 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
     noteList.removeNote = function (noteId) {
 
         var requestData = {noteId: noteId};
+        var api = 'searchApi';
+        showLoaderWithMessage(api,"", config.MESSAGES.NOTES.REMOVE.START);
 
-        showLoaderWithMessage(true, "", config.MESSAGES.NOTES.REMOVE.START);
         noteService.remove(requestData).then(function (response) {
             if (response && response.responseCode === "OK") {
                 noteList.notesList = noteList.notesList.filter(function (note) {
                     return note.identifier !== noteId;
                 });
-                noteList.error = {};
+                noteList[api].loader.showLoader = false;
+                
             } else {
-                handleFailedResponse(config.MESSAGES.NOTES.REMOVE.FAILED);
+                noteList[api].loader.showLoader = false;
+                showErrorMessage(api, true, config.MESSAGES.NOTES.REMOVE.FAILED, config.MESSAGES.COMMON.ERROR);
+//                handleFailedResponse(config.MESSAGES.NOTES.REMOVE.FAILED);
             }
         })
-                .catch(function (error) {
-                    handleFailedResponse(config.MESSAGES.NOTES.REMOVE.FAILED);
-                });
+        .catch(function (error) {
+            noteList[api].loader.showLoader = false;
+            showErrorMessage(api, true, config.MESSAGES.NOTES.REMOVE.FAILED, config.MESSAGES.COMMON.ERROR);
+//            handleFailedResponse(config.MESSAGES.NOTES.REMOVE.FAILED);
+        });
     };
 
     /**
@@ -151,25 +164,27 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
         };
 
         delete requestData.note['identifier'];
-
-        showLoaderWithMessage(true, "", config.MESSAGES.NOTES.UPDATE.START);
+        
+        var api = 'updateApi';
+        showLoaderWithMessage(api, "", config.MESSAGES.NOTES.UPDATE.START);
         noteService.update(requestData).then(function (response) {
             if (response && response.responseCode === "OK") {
                 noteList.notesList = noteList.notesList.filter(function (note) {
                     return note.identifier !== noteData.identifier;
                 });
                 noteList.notesList.push(response.result.note);
+                noteList[api].loader.showLoader = false;
                 noteList.update = {};
-                noteList.error = {};
             } else {
-                noteList.showModalError = true;
-                handleFailedResponse(config.MESSAGES.NOTES.UPDATE.FAILED);
+                noteList[api].loader.showLoader = false;
+                showErrorMessage(api, true, config.MESSAGES.NOTES.UPDATE.FAILED, config.MESSAGES.COMMON.ERROR);
+//                handleFailedResponse(config.MESSAGES.NOTES.UPDATE.FAILED);
             }
         })
-                .catch(function (error) {
-                    noteList.showModalError = true;
-                    handleFailedResponse(config.MESSAGES.NOTES.UPDATE.FAILED);
-                });
+        .catch(function (error) {
+            noteList[api].loader.showLoader = false;
+            showErrorMessage(api, true, config.MESSAGES.NOTES.UPDATE.FAILED, config.MESSAGES.COMMON.ERROR);
+        });
     };
 
     /**
