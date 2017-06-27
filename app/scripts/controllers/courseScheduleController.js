@@ -175,12 +175,12 @@ angular.module('playerApp')
             toc.getTreeData = function (contentData, parent) {
 
                 if (contentData.mimeType != 'application/vnd.ekstep.content-collection') {
-                    parent.push({title: contentData.name, key: toc.treeKey, data: contentData});
+                    parent.push({title: "<span class='header'><i class='"+toc.getContentIcon(contentData.mimeType)+"'></i>"+contentData.name+"</span>", key: toc.treeKey, data: contentData,icon:false});
                     toc.treeKey += 1;
 
                 } else
                 {
-                    parent.push({title: contentData.name, key: -1, children: []})
+                    parent.push({title: "<i class='"+toc.getContentIcon(contentData.mimeType)+"'></i>"+contentData.name, key: -1, children: [],icon:false})
                     for (var item in contentData.children) {
                         toc.getTreeData(contentData.children[item], parent[parent.length - 1]['children']);
                     }
@@ -208,7 +208,7 @@ angular.module('playerApp')
                     "video/youtube": "large youtube square icon",
                     "application/vnd.ekstep.html-archive": "large html5 icon",
                     "application/vnd.ekstep.ecml-archive": "large file archive outline icon",
-                    "application/vnd.ekstep.content-collection": "big book icon"
+                    "application/vnd.ekstep.content-collection": "video play icon"
 
 
                 };
