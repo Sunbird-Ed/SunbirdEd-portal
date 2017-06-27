@@ -14,15 +14,24 @@ angular.module('playerApp')
                 var req = {
                     request: {
                         courseId: courseId,
-                        userId: toc.uid
+                        userId: toc.uid,
+                        courseName:toc.courseHierachy.name,
+                        description:toc.courseHierachy.description
+                        
+                        
                     }
                 };
+                
                 toc.enorllingCourse = true;
                 courseService.enrollUserToCourse(req).then(function (successResponse) {
                     toc.enorllingCourse = false;
                     if (successResponse && successResponse.responseCode === 'OK') {
                         //temporary change it later
+                        
                         toc.courseType = "ENROLLED_COURSE";
+                        toc.courseParams.courseType=toc.courseType;
+                        sessionService.setSessionData('COURSE_PARAMS',toc.courseParams);
+                        
                     } else {
                         toc.enrollErrorMessage = 'Cannot enroll user to course';
                         $timeout(function () {
@@ -109,6 +118,10 @@ angular.module('playerApp')
                     toc.itemIndex = parseInt(index);
                     toc.playPlaylistContent(item.identifier, '');
                 }
+                else
+                {
+                    $(index.target).find('i').attr('class','minus icon');
+                }
             };
 
             toc.checkAndAddToPlaylist = function (item) {
@@ -175,12 +188,12 @@ angular.module('playerApp')
             toc.getTreeData = function (contentData, parent) {
 
                 if (contentData.mimeType != 'application/vnd.ekstep.content-collection') {
-                    parent.push({title: "<span class='header'><i class='"+toc.getContentIcon(contentData.mimeType)+"'></i>"+contentData.name+"</span>", key: toc.treeKey, data: contentData,icon:false});
+                    parent.push({title: "<span class='courseAccordianSubDesc'><i class='" + toc.getContentIcon(contentData.mimeType) + "'></i>" + contentData.name + "</span>", key: toc.treeKey, data: contentData, icon: false});
                     toc.treeKey += 1;
 
                 } else
                 {
-                    parent.push({title: "<i class='"+toc.getContentIcon(contentData.mimeType)+"'></i>"+contentData.name, key: -1, children: [],icon:false})
+                    parent.push({title: "<span class='courseAccordianDesc'><i class='" + toc.getContentIcon(contentData.mimeType) + "'></i>" + contentData.name+"</span>", key: -1, children: [], icon: false})
                     for (var item in contentData.children) {
                         toc.getTreeData(contentData.children[item], parent[parent.length - 1]['children']);
                     }
@@ -223,7 +236,7 @@ angular.module('playerApp')
                     } else
                     {
                         //play my current content
-                         toc.resumeCourse();
+                        toc.resumeCourse();
                     }
                     $('.ui.accordion').accordion({exclusive: false});
 
@@ -281,7 +294,7 @@ angular.module('playerApp')
             toc.init = function () {
                 toc.lectureView = toc.courseParams.lectureView;
                 toc.courseId = toc.courseParams.courseId;
-                toc.courseType = toc.courseParams.courseType;
+                toc.courseType = ($rootScope.enrolledCourseIds&&$rootScope.enrolledCourseIds.indexOf(toc.courseId)>=0) ?'ENROLLED_COURSE':toc.courseParams.courseType;
                 toc.courseProgress = toc.courseParams.progress;
                 toc.courseTotal = toc.courseParams.total;
                 toc.tocId = toc.courseParams.tocId;

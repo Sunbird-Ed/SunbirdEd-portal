@@ -27,10 +27,23 @@ ul li span.text {
   top:23px;
 }
 
-ul li span:first-child {
-  padding: 5px 4px;
+/* fancytree-container border remove */
+ul.fancytree-container {  
+   border: none !important;
+        li {
+            padding-bottom: 1em !important;
+        }
 }
-
+.fancytree-lastsib {
+    ul{
+        li {            
+            padding-bottom: 1em !important;
+        }
+    }
+}
+.fancytree-treefocus{
+     outline:none !important;   
+}
 .title-padding-left {	
 	padding-left:8%;
 }
@@ -114,8 +127,4 @@ ul.subList-padding {
 .courseHeaderButton {
     margin-top: 3% !important;
     padding: 5% !important;
-}
-
-
-
- 
+} 
