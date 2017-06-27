@@ -6,11 +6,13 @@ var router = express.Router();
 var request = require('request');
 var proxy = require('express-http-proxy');
 
+const port = process.env.port ? process.env.port : 80;
+
 app.use(express.static('./'));
-app.use('/ekContentEditor', express.static('./thirdparty/content-editor'))
+app.use('/ekContentEditor', express.static('./thirdparty/content-editor'));
 app.get('/ekContentEditor', function (req, res) {
     res.sendFile(__dirname+"/thirdparty/content-editor/index.html");
-})
+});
 
  var ekstep = "https://dev.ekstep.in";
 
@@ -60,5 +62,6 @@ app.get('/ekContentEditor', function (req, res) {
 app.get('/*', function(req, res) {
     res.sendFile(__dirname+'/index.html');
 });
-app.listen(80);
-console.log('app running on port 80');
+
+app.listen(port);
+console.log('app running on port ', port);

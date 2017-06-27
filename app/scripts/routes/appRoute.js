@@ -192,6 +192,22 @@ angular
                  url: '/player',
                 templateUrl: 'views/common/player.html',
                 controller: 'playerCtrl as player',
-                params:{content:null, contentId: null}
+                params:{content:null, contentId: null},
+                onEnter: function($rootScope) {
+                    $rootScope.searchKey = 'Resources';
+                    $rootScope.isPlayerPage = true;
+                    $rootScope.searchKeyword = '';
+                    $rootScope.resourcesActive = 'active';
+                },
+                onExit: function($rootScope) {
+                    $rootScope.isPlayerPage = false;
+                    $('#content-search-filter-accordion').accordion('close', 0);
+                    $rootScope.resourcesActive = '';
+                },
+                resolve: {
+                    isLoggedIn: function(authService) {
+                        authService.validUser();
+                    }
+                }
             })
     });
