@@ -1,12 +1,12 @@
 <div class="ui grid">
     <div class="one wide column"></div>
     <div class="ten wide column popular-page">
-        <div class="ui link cards popular-section" ng-repeat=" section in learn.page ">
-            <h4 class="ui header sectionHeading">{{section.display.title.en}}
-                <a class="ui red circular inline label">{{section.count}}</a></h4>
+        <div class="ui link cards popular-section" ng-repeat="section in learn.page "  ng-if="section.contents.response.length> 0">
+            <h4 class="ui header sectionHeading">{{section.name}}
+                <a class="ui red circular inline label">{{section.contents.response.length || 0}}</a></h4>
 
-            <div class="regular slider " ng-if="section.course.length> 0">
-                <div apply-script ng-click="learn.openCourseView(item.identifier, 'OTHER_COURSE')" ng-repeat=" item in section.course track by $index" add-slick>
+            <div class="regular slider " ng-if="section.contents.response.length> 0">
+                <div apply-script ng-click="learn.openCourseView(item, 'OTHER_COURSE')" ng-repeat=" item in section.contents.response track by $index" add-slick>
                     <div ng-include=" 'views/common/ratingCard.html' "></div>
 
                 </div>

@@ -6,6 +6,7 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
     noteList.userId = $window.localStorage.getItem('user') ? JSON.parse($window.localStorage.getItem('user')).userId : $rootScope.userId;
     noteList.courseId = $stateParams.courseId;
     noteList.contentId = $stateParams.contentId;
+    noteList.tocId = $stateParams.tocId;
     noteList.add = {};
     noteList.update = {};
     noteList.update.showUpdateNote = false;
@@ -13,10 +14,9 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
     noteList.notesList = [];
 
     /**
-     * This function helps to show loader or any error message at the time of api call.
-     * @param {Boolean} showMetaLoader
-     * @param {String} messageClass
-     * @param {String} message
+     * This function helps to show loader with message.
+     * @param {String} headerMessage
+     * @param {String} loaderMessage
      */
     function showLoaderWithMessage(object, headerMessage, loaderMessage) {
         var loader = {};
@@ -206,14 +206,14 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
     noteList.closeNoteList = function () {
 
         if (noteList.courseId && noteList.contentId) {
-            var params = {courseId: noteList.courseId, contentId: noteList.contentId, lectureView: 'yes'};
+            var params = {tocId: noteList.tocId, courseId: noteList.courseId, contentId: noteList.contentId, lectureView: 'yes'};
             $state.go('Toc', params);
         } else if (noteList.courseId) {
-            var params = {courseId: noteList.courseId, lectureView: 'no'};
+            var params = {tocId: noteList.tocId, courseId: noteList.courseId, lectureView: 'no'};
             $state.go('Toc', params);
         } else if (noteList.contentId) {
             var params = {contentId: noteList.contentId};
-            $state.go('Resource', params);
+            $state.go('Player', params);
         }
 
     };
