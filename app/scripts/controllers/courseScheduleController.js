@@ -120,7 +120,8 @@ angular.module('playerApp')
                 }
                 else
                 {
-                    $(index.target).find('i').attr('class','minus icon');
+                    var accIcon=$(index.target).closest('.title').find('i');
+                    $(accIcon).hasClass('plus')?$(accIcon).addClass('minus').removeClass('plus'):$(accIcon).addClass('plus').removeClass('minus');
                 }
             };
 
