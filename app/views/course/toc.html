@@ -32,7 +32,7 @@
                                     <div id="course-toc" class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100"  ng-repeat="item in  toc.courseHierachy.children track by $index" ng-click="toc.expandMe($event, item)" apply-script>
                                         <div class="courseAccordianHeading title title-padding-left accordian-left-text" name="{{item.identifier}}"  ng-class="toc.getContentClass(item.mimeType)">
                                             {{item.name}}
-                                            <i ng-if='item.children && item.children.length > 0' class="angle down icon down-arrow-accordion"></i>
+                                            <i ng-if='item.children && item.children.length > 0' class="plus icon down-arrow-accordion"></i>
                                         </div>
                                         <div ng-if='item.children && item.children.length > 0' class="content">
                                             <div id="FT_{{$index}}"  ng-init="toc.constructTree($index,item.children)"></div>
