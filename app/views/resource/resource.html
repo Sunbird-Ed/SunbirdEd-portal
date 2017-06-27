@@ -1,6 +1,6 @@
 <div ng-controller="resourceCtrl as resource">
 <div ng-include="'views/search/searchResult.html'"></div>
-<div class="ui grid">
+<div class="resource-padding ui grid">
     <div class="one wide column"></div>
     <div class="ten wide column popular-page" ng-if="!resource.loader.showLoader">
         <div class="ui link cards popular-section" ng-repeat=" section in resource.page " ng-show="!resource.contentPlayer.isContentPlayerEnabled">
