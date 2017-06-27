@@ -1,29 +1,28 @@
 <div ng-controller="resourceCtrl as resource">
-<div ng-include="'views/search/searchResult.html'"></div>
-<div class="ui grid">
-    <div class="one wide column"></div>
-    <div class="ten wide column popular-page" ng-if="!resource.loader.showLoader">
-        <div class="ui link cards popular-section" ng-repeat=" section in resource.page " ng-show="!resource.contentPlayer.isContentPlayerEnabled">
-            <h4 class="ui header card-section-header ">{{section.name}}
-                <a class="ui red circular inline label">{{section.contents.length}}</a></h4>
-            <div class="regular slider " ng-if="section.contents.length> 0">
-                <div ng-repeat="item in section.contents track by $index" add-slick>
-                    <div ng-include=" 'views/common/ratingCard.html' " ng-click="resource.playContent(item)"></div>
+    <div ng-include="'views/search/searchResult.html'"></div>
+    <div class="ui grid">
+        <div class="one wide column"></div>
+        <div class="ten wide column popular-page" ng-if="!resource.loader.showLoader">
+            <div class="ui link cards popular-section" ng-repeat=" section in resource.page" ng-show="!resource.contentPlayer.isContentPlayerEnabled">
+                <h4 class="ui header card-section-header ">{{section.name}}
+                    <a class="ui red circular inline label">{{section.contents.length}}</a></h4>
+                <div class="regular slider " ng-if="section.contents.length > 0">
+                    <div ng-repeat="item in section.contents track by $index" add-slick>
+                        <div ng-include=" 'views/common/ratingCard.html'" ng-click="resource.playContent(item)"></div>
+                    </div>
+                </div>
+            </div>
+            <div ng-if="resource.error.isError">
+                <error-message data={{resource.error}}></error-message>
+            </div>
+            <div class="ui inverted dimmer margin-top-20 " ng-class="{true: 'active', false: 'disabled'}[loading] ">
+                <div class="ui text loader ">Featching enrolled contents
                 </div>
             </div>
         </div>
-        <content-player visibility="resource.contentPlayer.isContentPlayerEnabled" body="resource.contentPlayer.contentData" isshowmetaview="true" isheader="true" isclose="true" height="10" width="100" ispercentage="true"></content-player>
-        <div ng-if="resource.error.isError">
-            <error-message data={{resource.error}}></error-message>
+        <div class="ten wide column popular-page" ng-if="resource.loader.showLoader">
+            <app-loader data="{{resource.loader}}"></app-loader>
         </div>
-        <div class="ui inverted dimmer margin-top-20 " ng-class="{true: 'active', false: 'disabled'}[loading] ">
-            <div class="ui text loader ">Featching enrolled contents
-            </div>
-        </div>
+        <div class="one wide column"></div>
     </div>
-    <div class="ten wide column popular-page" ng-if="resource.loader.showLoader">
-        <app-loader data="{{resource.loader}}"></app-loader>
-    </div>
-    <div class="one wide column"></div>
-</div>
 </div>
