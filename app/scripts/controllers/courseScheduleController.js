@@ -7,24 +7,32 @@ angular.module('playerApp')
             toc.courseParams = sessionService.getSessionData('COURSE_PARAMS');
             toc.contentList = [];
             toc.showNoteInLecture = true;
-
+            toc.enrollErrorMessage = '';
+            toc.fancyTree = [];
+            toc.treeKey = 0;
             toc.enrollUserToCourse = function (courseId) {
                 var req = {
-                    courseId: courseId,
-                    userId: toc.uid
+                    request: {
+                        courseId: courseId,
+                        userId: toc.uid
+                    }
                 };
-                $scope.loading = true;
+                toc.enorllingCourse = true;
                 courseService.enrollUserToCourse(req).then(function (successResponse) {
-                    $scope.loading = false;
+                    toc.enorllingCourse = false;
                     if (successResponse && successResponse.responseCode === 'OK') {
                         //temporary change it later
                         toc.courseType = "ENROLLED_COURSE";
                     } else {
-                        toc.showError('Cannot enroll user to course');
+                        toc.enrollErrorMessage = 'Cannot enroll user to course';
+                        $timeout(function () {
+                            toc.enrollErrorMessage = '';
+                        }, 3000);
                     }
                 }).catch(function (error) {
-                    toc.showError('Error occured.Try again');
+                    toc.enrollErrorMessage = 'Cannot enroll user to course';
                 });
+
             }
 
             toc.resumeCourse = function () {
@@ -33,14 +41,13 @@ angular.module('playerApp')
                     //once last played index is given assign it for now zero
                     $('#course-toc').find('.content').first().addClass('active');
                     toc.itemIndex = 0;
-                    toc.playPlaylistContent(toc.playList[toc.itemIndex], '');                   
-                }
-                else
+                    toc.playPlaylistContent(toc.playList[toc.itemIndex], '');
+                } else
                 {
-                    var currentHash=$location.hash().toString().split("/");
-                     toc.itemIndex =parseInt(currentHash[2]);
+                    var currentHash = $location.hash().toString().split("/");
+                    toc.itemIndex = parseInt(currentHash[2]);
                     toc.playPlaylistContent(currentHash[1], '');
-                    
+
                 }
             }
 
@@ -51,7 +58,12 @@ angular.module('playerApp')
                     return '';
                 }
             };
-
+            toc.scrollToPlayer = function () {
+                $location.hash(toc.hashId);
+                $timeout(function () {
+                    $anchorScroll();
+                }, 500);
+            }
             toc.showError = function (message) {
 
                 toc.messageClass = "red";
@@ -91,11 +103,11 @@ angular.module('playerApp')
             };
 
 
-            toc.expandMe = function ($event, item) {
+            toc.expandMe = function (index, item) {
                 if (item.mimeType !== "application/vnd.ekstep.content-collection") {
 
-                    toc.itemIndex = $($event.target).closest('.playlist-content').index('.playlist-content');
-                    toc.playPlaylistContent($($event.target).closest('.playlist-content').attr('name'), '');
+                    toc.itemIndex = parseInt(index);
+                    toc.playPlaylistContent(item.identifier, '');
                 }
             };
 
@@ -116,15 +128,15 @@ angular.module('playerApp')
                 }
                 toc.prevPlaylistItem = (toc.itemIndex - 1) > -1 ? toc.playList[toc.itemIndex - 1] : -1;
                 toc.nextPlaylistItem = (toc.itemIndex + 1) <= toc.playList.length ? toc.playList[toc.itemIndex + 1] : -1;
-                toc.previousPlayListName = (toc.itemIndex - 1) > -1 ? toc.playListContent[toc.itemIndex - 1].name : "No content to play";
-                toc.nextPlayListName = (toc.itemIndex + 1) < toc.playList.length ? toc.playListContent[toc.itemIndex + 1].name : "No content to play";
+                toc.previousPlayListName = (toc.itemIndex - 1) > -1 ? toc.playListContent[toc.itemIndex - 1]['name'] : "No content to play";
+                toc.nextPlayListName = (toc.itemIndex + 1) < toc.playList.length ? toc.playListContent[toc.itemIndex + 1]['name'] : "No content to play";
                 if (toc.courseType === "ENROLLED_COURSE") {
                     $rootScope.contentId = contentId;
                     $scope.contentPlayer.contentData = toc.playListContent[toc.itemIndex];
                     $scope.contentPlayer.isContentPlayerEnabled = true;
                 }
-                $location.hash('tocPlayer/' + contentId+'/'+toc.itemIndex);
-                $anchorScroll();
+                toc.hashId = ('tocPlayer/' + contentId + '/' + toc.itemIndex);
+                toc.scrollToPlayer();
             };
 
             toc.getAllChildrenCount = function (index) {
@@ -158,6 +170,22 @@ angular.module('playerApp')
                     }
                 }
                 return toc.playList;
+            }
+
+            toc.getTreeData = function (contentData, parent) {
+
+                if (contentData.mimeType != 'application/vnd.ekstep.content-collection') {
+                    parent.push({title: contentData.name, key: toc.treeKey, data: contentData});
+                    toc.treeKey += 1;
+
+                } else
+                {
+                    parent.push({title: contentData.name, key: -1, children: []})
+                    for (var item in contentData.children) {
+                        toc.getTreeData(contentData.children[item], parent[parent.length - 1]['children']);
+                    }
+                }
+                return toc.fancyTree;
             }
 
 
@@ -195,13 +223,43 @@ angular.module('playerApp')
                     } else
                     {
                         //play my current content
-                        toc.resumeCourse();
+                         toc.resumeCourse();
                     }
                     $('.ui.accordion').accordion({exclusive: false});
+
                 }, 0);
+
+
             }
 
+            toc.constructTree = function (pos, tocData) {
+                toc.fancyTree = [];
+                for (var child in tocData) {
+                    toc.getTreeData(tocData[child], toc.fancyTree);
+                }
+                toc.initializeFancyTree("#FT_" + pos, toc.fancyTree);
+            }
+            toc.initializeFancyTree = function (id, src) {
+                $timeout(function () {
+                    $(id).fancytree({
+                        checkbox: false,
+                        source: src,
+                        activate: function (event, data) {
+                            var nodeData = data.node;
+                            if (nodeData.key != -1)
+                            {
+                                toc.expandMe(nodeData.key, nodeData.data);
+                            }
+                        },
+                        select: function (event, data) {
+                            console.log(data);
+                        }});
+                    $(".fancytree-container").addClass("fancytree-connectors");
+                }, 0);
 
+
+
+            }
             toc.fetchObjectAttributeAsArrayOrObject = function (objArray, objKey, isKeyBasedObj) {
                 var attributeArr = (isKeyBasedObj == true) ? {} : [];
 
@@ -214,13 +272,19 @@ angular.module('playerApp')
                 }
                 return attributeArr;
             };
-            
+            $scope.$watch('contentPlayer.isContentPlayerEnabled', function (newValue, oldValue) {
+                if (oldValue == true && newValue == false) {
+                    toc.hashId = '';
+                    $location.hash(toc.hashId);
+                }
+            });
             toc.init = function () {
                 toc.lectureView = toc.courseParams.lectureView;
                 toc.courseId = toc.courseParams.courseId;
                 toc.courseType = toc.courseParams.courseType;
                 toc.courseProgress = toc.courseParams.progress;
                 toc.courseTotal = toc.courseParams.total;
+                toc.tocId = toc.courseParams.tocId;
                 toc.uid = $sessionStorage.userId;
                 //console.log($stateParams);
                 $scope.enableCloseButton = (toc.lectureView === 'yes') ? 'false' : 'true';
@@ -233,7 +297,7 @@ angular.module('playerApp')
                 toc.playItemIndex = undefined;
                 toc.getCourseToc();
             }
-            
+
             toc.loadData = function () {
                 if (toc.courseParams.courseId != $stateParams.courseId) {
 //if both courseIds are different call to get course by id API and update data(to be implemented with progress and status params in API side)

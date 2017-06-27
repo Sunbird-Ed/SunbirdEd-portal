@@ -66,7 +66,6 @@ angular
             .state('Resource', {
                 url: '/resources',
                 templateUrl: '/views/resource/resource.html',
-                controller: 'resourceCtrl as resource',
                 onEnter: function($rootScope) {
                     $rootScope.searchKey = 'Resources';
                     $rootScope.isResourcesPage = true;
@@ -86,7 +85,7 @@ angular
                 params: { searchKey: 'Resources' }
             })
             .state('CourseNote', {
-                url: '/note/:courseId',
+                url: '/course/note/:tocId/:courseId',
                 templateUrl: 'views/note/noteList.html',
                 controller: 'NoteListCtrl as noteList',
                 onEnter: function($rootScope) {
@@ -107,7 +106,7 @@ angular
                 }
             })
             .state('ContentNote', {
-                url: '/note/:contentId',
+                url: '/resourse/note/:contentId',
                 templateUrl: 'views/note/noteList.html',
                 controller: 'NoteListCtrl as noteList',
                 onEnter: function($rootScope) {
@@ -128,7 +127,7 @@ angular
                 }
             })
             .state('CourseContentNote', {
-                url: '/note/:courseId/:contentId',
+                url: '/note/:tocId/:courseId/:contentId',
                 templateUrl: 'views/note/noteList.html',
                 controller: 'NoteListCtrl as noteList',
                 onEnter: function($rootScope) {
@@ -149,7 +148,7 @@ angular
                 }
             })
             .state('Toc', {
-                url: '/toc/:courseId/:lectureView',
+                url: '/toc/:tocId/:courseId/:lectureView',
                 templateUrl: 'views/course/toc.html',
                 controller: 'courseScheduleCtrl as toc',
                 onEnter: function($rootScope) {
@@ -188,5 +187,11 @@ angular
                         authService.validUser();
                     }
                 }
-            });
+            })
+            .state('Player',{
+                 url: '/player',
+                templateUrl: 'views/common/player.html',
+                controller: 'playerCtrl as player',
+                params:{content:null, contentId: null}
+            })
     });
