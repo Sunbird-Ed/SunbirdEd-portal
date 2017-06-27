@@ -1,5 +1,5 @@
 angular.module('playerApp')
-        .controller('courseScheduleCtrl', function (courseService, fancytreeFactory, sessionService, $stateParams, $timeout, $scope, $sce, $rootScope, $sessionStorage, $location, $anchorScroll) {
+        .controller('courseScheduleCtrl', function (courseService, sessionService, $stateParams, $timeout, $scope, $sce, $rootScope, $sessionStorage, $location, $anchorScroll) {
             var toc = this;
             toc.playList = [];
             toc.playListContent = [];
@@ -9,6 +9,7 @@ angular.module('playerApp')
             toc.showNoteInLecture = true;
             toc.enrollErrorMessage = '';
             toc.fancyTree = [];
+            toc.treeKey = 0;
             toc.enrollUserToCourse = function (courseId) {
                 var req = {
                     request: {
@@ -102,11 +103,11 @@ angular.module('playerApp')
             };
 
 
-            toc.expandMe = function ($event, item) {
+            toc.expandMe = function (index, item) {
                 if (item.mimeType !== "application/vnd.ekstep.content-collection") {
 
-                    toc.itemIndex = $($event.target).closest('.playlist-content').index('.playlist-content');
-                    toc.playPlaylistContent($($event.target).closest('.playlist-content').attr('name'), '');
+                    toc.itemIndex = parseInt(index);
+                    toc.playPlaylistContent(item.identifier, '');
                 }
             };
 
@@ -127,8 +128,8 @@ angular.module('playerApp')
                 }
                 toc.prevPlaylistItem = (toc.itemIndex - 1) > -1 ? toc.playList[toc.itemIndex - 1] : -1;
                 toc.nextPlaylistItem = (toc.itemIndex + 1) <= toc.playList.length ? toc.playList[toc.itemIndex + 1] : -1;
-                toc.previousPlayListName = (toc.itemIndex - 1) > -1 ? toc.playListContent[toc.itemIndex - 1].name : "No content to play";
-                toc.nextPlayListName = (toc.itemIndex + 1) < toc.playList.length ? toc.playListContent[toc.itemIndex + 1].name : "No content to play";
+                toc.previousPlayListName = (toc.itemIndex - 1) > -1 ? toc.playListContent[toc.itemIndex - 1]['name'] : "No content to play";
+                toc.nextPlayListName = (toc.itemIndex + 1) < toc.playList.length ? toc.playListContent[toc.itemIndex + 1]['name'] : "No content to play";
                 if (toc.courseType === "ENROLLED_COURSE") {
                     $rootScope.contentId = contentId;
                     $scope.contentPlayer.contentData = toc.playListContent[toc.itemIndex];
@@ -171,19 +172,17 @@ angular.module('playerApp')
                 return toc.playList;
             }
 
-            toc.getTreeData = function (contentData) {
-                var index = toc.fancyTree.length - 1;
-                if (contentData.mimeType != 'application/vnd.ekstep.content-collection') {
+            toc.getTreeData = function (contentData, parent) {
 
-                    toc.fancyTree[index]['children'].push({title: contentData.name, key: toc.treeKey});
+                if (contentData.mimeType != 'application/vnd.ekstep.content-collection') {
+                    parent.push({title: contentData.name, key: toc.treeKey, data: contentData});
                     toc.treeKey += 1;
 
                 } else
                 {
-                    toc.fancyTree.push({title: contentData.name, key: toc.treeKey, children: []})
-                    toc.treeKey += 1;
+                    parent.push({title: contentData.name, key: -1, children: []})
                     for (var item in contentData.children) {
-                        toc.getTreeData(contentData.children[item]);
+                        toc.getTreeData(contentData.children[item], parent[parent.length - 1]['children']);
                     }
                 }
                 return toc.fancyTree;
@@ -224,27 +223,42 @@ angular.module('playerApp')
                     } else
                     {
                         //play my current content
-                        toc.resumeCourse();
+                         toc.resumeCourse();
                     }
                     $('.ui.accordion').accordion({exclusive: false});
-                    fancytreeFactory.setData([
-                        {title: "Node 1", key: "1"},
-                        {title: "Folder 2", key: "2", folder: true, children: [
-                                {title: "Node 2.1", key: "3", myOwnAttr: "abc"},
-                                {title: "Node 2.2", key: "4", folder: true, children: [{title: "Node 2.2.1", key: "5"}]}
-                            ]}
-                    ], 'exampleFancytree');
 
                 }, 0);
-                $timeout(function () {
-                    $(".fancytree-container").addClass("fancytree-connectors");
-                }, 1000);
+
+
             }
 
             toc.constructTree = function (pos, tocData) {
                 toc.fancyTree = [];
-                toc.treeKey = 0;
-                toc.fancyTree = toc.getTreeData(tocData);
+                for (var child in tocData) {
+                    toc.getTreeData(tocData[child], toc.fancyTree);
+                }
+                toc.initializeFancyTree("#FT_" + pos, toc.fancyTree);
+            }
+            toc.initializeFancyTree = function (id, src) {
+                $timeout(function () {
+                    $(id).fancytree({
+                        checkbox: false,
+                        source: src,
+                        activate: function (event, data) {
+                            var nodeData = data.node;
+                            if (nodeData.key != -1)
+                            {
+                                toc.expandMe(nodeData.key, nodeData.data);
+                            }
+                        },
+                        select: function (event, data) {
+                            console.log(data);
+                        }});
+                    $(".fancytree-container").addClass("fancytree-connectors");
+                }, 0);
+
+
+
             }
             toc.fetchObjectAttributeAsArrayOrObject = function (objArray, objKey, isKeyBasedObj) {
                 var attributeArr = (isKeyBasedObj == true) ? {} : [];

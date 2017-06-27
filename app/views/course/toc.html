@@ -35,7 +35,7 @@
                                             <i ng-if='item.children && item.children.length > 0' class="angle down icon down-arrow-accordion"></i>
                                         </div>
                                         <div ng-if='item.children && item.children.length > 0' class="content">
-                                            <fancytree id="FT_{{$index}}" debuglevel="0"  checkbox="false" disabled="false" ng-init="toc.constructTree($index,item.children)"></fancytree>
+                                            <div id="FT_{{$index}}"  ng-init="toc.constructTree($index,item.children)"></div>
                                         </div>
 <!--                                        <div ng-if='item.children && item.children.length > 0' class="content">
                                             <ul class="courseStr">
