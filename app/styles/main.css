@@ -933,8 +933,18 @@ ul li span.text {
   left: 15px;
   top: 23px;
 }
-ul li span:first-child {
-  padding: 5px 4px;
+/* fancytree-container border remove */
+ul.fancytree-container {
+  border: none !important;
+}
+ul.fancytree-container li {
+  padding-bottom: 1em !important;
+}
+.fancytree-lastsib ul li {
+  padding-bottom: 1em !important;
+}
+.fancytree-treefocus {
+  outline: none !important;
 }
 .title-padding-left {
   padding-left: 8%;
