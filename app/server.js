@@ -5,8 +5,20 @@ var app = express();
 var router = express.Router();
 var request = require('request');
 var proxy = require('express-http-proxy');
-
+var jsonfile = require('jsonfile')
 const port = process.env.port ? process.env.port : 80;
+
+//set urls from environment variables
+var configJsonFile = 'config/playerAppConfig.json';
+let configObj = jsonfile.readFileSync(configJsonFile);
+if (configObj.config && configObj.config.URL && configObj.config.URL && configObj.config.URL.BASE) {
+    configObj.config.URL.BASE = process.env.sunbird_content_player_url || configObj.config.URL.BASE;
+}
+if (configObj.config && configObj.config.URL && configObj.config.URL && configObj.config.URL.DEV_API_BASE) {
+    configObj.config.URL.DEV_API_BASE = process.env.sunbird_learner_player_url || configObj.config.URL.DEV_API_BASE;
+}
+jsonfile.spaces = 4
+jsonfile.writeFileSync(configJsonFile, configObj);
 
 app.use(express.static('./'));
 app.use('/ekContentEditor', express.static('./thirdparty/content-editor'));
