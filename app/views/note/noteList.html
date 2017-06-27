@@ -5,7 +5,7 @@
     <div class="one wide column"></div>
     <div class="ten wide column">
         <div class="ui segment margin-auto padding-left-right-0 padding-top-bottom-0 " ng-init="noteList.ngInit()">
-            <div class="ui grid margin-top-0 margin-left-right-0 margin-bottom-0 height-100" id="notesList">
+            <div class="ui grid margin-top-0 margin-left-right-0 margin-bottom-0 height-100" id="notesList" ng-if="!noteList.searchApi.loader.showLoader && !noteList.searchApi.error.showError">
                 <div class="twelve wide column" ng-if="!noteList.update.showUpdateNote">
                     <div class="ui container padding-bottom-15 container-with-button padding-left-right-0">
                         <span class="ui header">My Notes</span>
@@ -55,9 +55,12 @@
                     <div ng-include="'views/note/updateNote.html'"></div>
                 </div>
             </div>
-            <!--            <div ng-if="noteList.error.showError && !noteList.showSearchTemplate">
-                <help-message data="error"></help-message>
-            </div>-->
+        </div>
+        <div ng-if="noteList.searchApi.loader.showLoader">
+            <app-loader data="{{noteList.searchApi.loader}}"></app-loader>
+        </div>
+        <div ng-if="noteList.searchApi.error.showError">
+            <error-message data="{{noteList.searchApi.error}}" visibility="noteList.searchApi.error.showError"></error-message>
         </div>
     </div>
     <div class="one wide column"></div>
