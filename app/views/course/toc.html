@@ -77,7 +77,7 @@
                     </div>
                 </div>
                 <div ng-if="(contentPlayer.isContentPlayerEnabled) && !toc.showDimmer">
-                    <div class="ui grid" id="{{toc.hashId}}">
+                    <div class="tocplayer  ui grid" id="{{toc.hashId}}">
                         <div class="twelve wide column">
                             <div class="ui grid">
                                 <div class="row">
@@ -125,6 +125,7 @@
                     </div>
                 </div>
             </div>
+            <div>
             <div class="ui dimmer inverted" ng-class="toc.showDimmer ? 'active' : ''">
                 <div class="content">
                     <span ng-if="toc.showMetaLoader">
