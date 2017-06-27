@@ -1,6 +1,7 @@
 <div ng-controller="resourceCtrl as resource">
+
     <div ng-include="'views/search/searchResult.html'"></div>
-    <div class="ui grid">
+    <div class="resource-padding ui grid">
         <div class="one wide column"></div>
         <div class="ten wide column popular-page" ng-if="!resource.loader.showLoader">
             <div class="ui link cards popular-section" ng-repeat=" section in resource.page" ng-show="!resource.contentPlayer.isContentPlayerEnabled">
@@ -11,18 +12,18 @@
                         <div ng-include=" 'views/common/ratingCard.html'" ng-click="resource.playContent(item)"></div>
                     </div>
                 </div>
-            </div>
-            <div ng-if="resource.error.isError">
-                <error-message data={{resource.error}}></error-message>
-            </div>
-            <div class="ui inverted dimmer margin-top-20 " ng-class="{true: 'active', false: 'disabled'}[loading] ">
-                <div class="ui text loader ">Featching enrolled contents
+                <div ng-if="resource.error.isError">
+                    <error-message data={{resource.error}}></error-message>
+                </div>
+                <div class="ui inverted dimmer margin-top-20 " ng-class="{true: 'active', false: 'disabled'}[loading] ">
+                    <div class="ui text loader ">Featching enrolled contents
+                    </div>
                 </div>
             </div>
+            <div class="ten wide column popular-page" ng-if="resource.loader.showLoader">
+                <app-loader data="{{resource.loader}}"></app-loader>
+            </div>
+            <div class="one wide column"></div>
         </div>
-        <div class="ten wide column popular-page" ng-if="resource.loader.showLoader">
-            <app-loader data="{{resource.loader}}"></app-loader>
-        </div>
-        <div class="one wide column"></div>
     </div>
 </div>
