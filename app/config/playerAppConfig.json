@@ -6,7 +6,6 @@
         "URL": {
 
             "BASE": "http://localhost:5000/api/sb/v1/",
-            "JAVA_BASE": "http://52.172.36.121:9000/v1/",
             "MOCK_API_BASE": "http://13.71.127.158:9000/v1/",
             "CONFIG_BASE": "http://localhost:4000/api/sb/v1/",
             "DEV_API_BASE": "http://52.172.36.121:9000/v1/",
@@ -68,7 +67,7 @@
             },
             "NOTES": {
                 "CREATE": {
-                    "START": "Creating note, please wait...",
+                    "START": "We are creating note...",
                     "FAILED": "Creating note is failed, please try again later...",
                     "SUCCESS": "Note created successfully..."
                 },
@@ -78,7 +77,7 @@
                     "SUCCESS": "Note detail fetched successfully..."
                 },
                 "REMOVE": {
-                    "START": "Deleting note, please wait...",
+                    "START": "We are removing note...",
                     "FAILED": "Deleting note is failed, please try again later...",
                     "SUCCESS": "Note deleted successfully..."
                 },
@@ -88,7 +87,7 @@
                     "SUCCESS": "Note detail fetched successfully..."
                 },
                 "UPDATE": {
-                    "START": "Updating note, please wait...",
+                    "START": "We are updating note...",
                     "FAILED": "Updating note is failed, please try again later...",
                     "SUCCESS": "Note updated successfully..."
                 }

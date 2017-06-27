@@ -5,7 +5,7 @@
     <div class="one wide column"></div>
     <div class="ten wide column">
         <div class="ui segment margin-auto padding-left-right-0 padding-top-bottom-0 " ng-init="noteList.ngInit()">
-            <div class="ui grid margin-top-0 margin-left-right-0 margin-bottom-0 height-100" id="notesList" ng-if="!noteList.loader.showLoader && !noteList.error.showError">
+            <div class="ui grid margin-top-0 margin-left-right-0 margin-bottom-0 height-100" id="notesList" ng-if="!noteList.searchApi.loader.showLoader && !noteList.searchApi.error.showError">
                 <div class="twelve wide column" ng-if="!noteList.update.showUpdateNote">
                     <div class="ui container padding-bottom-15 container-with-button padding-left-right-0">
                         <span class="ui header">My Notes</span>
@@ -25,10 +25,10 @@
                                             <input type="text" ng-model="noteList.searchData.text" ng-change="noteList.searchNote(noteList.searchData.text)" placeholder="Search for notes or title" title="Search" />
                                             <i class="circular search link icon" ng-click="noteList.searchNote(noteList.searchData.text)"></i>
                                         </div>-->
-                    <div class="ui huge info message" ng-if="!noteList.notesList.length > 0">
-                        <p>You have 0 notes, please create a note.</p>
+                    <div class="ui huge info message" ng-if="!noteList.notesList.length > 0 && !noteList.error.showError">
+                        <p>No note found.</p>
                     </div>
-                    <div class="ui items" ng-repeat="note in noteList.notesList| orderBy : '-lastUpdatedOn' | filter: {title : noteList.searchData.text, note :  noteList.searchData.text}">
+                    <div class="ui items" ng-repeat="note in noteList.notesList| orderBy : '-lastUpdatedOn' | noteListFilter:noteList.searchData.text ">
                         <div class="ui clearing divider"></div>
                         <div class="item">
                             <div class="content">
@@ -56,11 +56,11 @@
                 </div>
             </div>
         </div>
-        <div ng-if="noteList.loader.showLoader">
-            <app-loader data="{{noteList.loader}}"></app-loader>
+        <div ng-if="noteList.searchApi.loader.showLoader">
+            <app-loader data="{{noteList.searchApi.loader}}"></app-loader>
         </div>
-        <div ng-if="noteList.error.showError">
-            <error-message data="{{noteList.error}}" visibility="noteList.error.showError"></error-message>
+        <div ng-if="noteList.searchApi.error.showError">
+            <error-message data="{{noteList.searchApi.error}}" visibility="noteList.searchApi.error.showError"></error-message>
         </div>
     </div>
     <div class="one wide column"></div>
