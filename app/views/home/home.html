@@ -25,8 +25,8 @@
                     <span class="removeline title title-padding-left active float-ContentRight" data-tooltip="Collapse" data-inverted=""><i class="angle down icon down-arrow-accordion accordian-homeIcon float-ContentRight" ></i>
                     </span>
                     <div class="ui active homePage">
-                        <div class="regular slider padding-top-10">
-                            <div ng-repeat="item in homeCtrl.recommendedCourse track by $index" ng-init="$last && homeCtrl.loadCarousel()" ng-click="homeCtrl.openCourseView(item, 'OTHER_COURSE')" add-slick>
+                        <div class="regular slider padding-top-10" ng-init="recommended=true">
+                            <div  ng-repeat="item in homeCtrl.recommendedCourse track by $index" ng-init="$last && homeCtrl.loadCarousel()" ng-click="homeCtrl.openCourseView(item, 'OTHER_COURSE')" add-slick>
                                 <div ng-include=" 'views/common/ratingCard.html'"></div>
                             </div>
                         </div>

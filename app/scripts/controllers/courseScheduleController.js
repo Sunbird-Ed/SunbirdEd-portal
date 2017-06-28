@@ -33,13 +33,13 @@ angular.module('playerApp')
                         sessionService.setSessionData('COURSE_PARAMS',toc.courseParams);
                         
                     } else {
-                        toc.enrollErrorMessage = 'Cannot enroll user to course';
+                        toc.enrollErrorMessage = 'Cannot enroll now.Try again later';
                         $timeout(function () {
                             toc.enrollErrorMessage = '';
                         }, 3000);
                     }
                 }).catch(function (error) {
-                    toc.enrollErrorMessage = 'Cannot enroll user to course';
+                    toc.enrollErrorMessage = 'Cannot enroll now.Try again later';
                 });
 
             }
