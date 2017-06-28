@@ -8,9 +8,7 @@ RUN apk update \
     && mkdir -p /opt/player
 WORKDIR /opt/player
 COPY * /opt/player/
-RUN apk add -y curl \
-    && apk add zip \
-    && apk add -y  git \
+RUN apk add zip \
     && apk add -y  bzip2 \
     && npm install -g bower \
     && npm install -g gulp \
