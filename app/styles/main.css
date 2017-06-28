@@ -78,7 +78,7 @@
   background-color: #fff;
 }
 .content-player-body {
-  padding: 1%;
+  padding: 0;
 }
 .content-player {
   position: relative;
@@ -321,7 +321,6 @@
 }
 .content-player-header {
   padding: 5px 5px 5px 5px !important;
-  font-size: 0.75em !important;
   border: gray !important;
 }
 .font-size-175em {
@@ -1075,9 +1074,9 @@ ul.subList-padding {
 .popular-section > .card-section-header {
   font-weight: bold;
 }
-.courses-slider {
-  padding-bottom: 1em;
-  padding-top: 1em;
+.mycourses-padding.ui.grid > .column:not(.row) {
+  padding-top: 0;
+  margin-bottom: 1em;
 }
 .accordian-right {
   width: 70% !important;
@@ -1115,6 +1114,22 @@ ul.subList-padding {
 }
 .tocbutton {
   white-space: nowrap;
+}
+.videosegment.ui.segment {
+  position: relative;
+  background: #fff;
+  box-shadow: 0 0 0;
+  margin: 1rem 0;
+  padding: 0;
+  border-radius: 0;
+  border: 0;
+}
+.tocplayer.ui.grid {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 6px -8px #d9d4d4;
+  padding-top: 0;
+  margin-bottom: 1em;
+  padding-bottom: 20px;
 }
 .homeCard.ui.card {
   max-width: 100%;
@@ -1164,6 +1179,9 @@ ul.subList-padding {
 }
 .homePage .slick-slider {
   margin-bottom: 0px !important;
+}
+.todolabel.ui.label {
+  margin-left: 0.5em;
 }
 .opacity-cardContent {
   opacity: 0.2 !important;
@@ -1222,6 +1240,9 @@ ul.subList-padding {
 .content-iframe {
   width: 100%;
   height: 700px;
+}
+.content-video-player-youtube-dimensions.vjs-fluid {
+  padding-top: 500px;
 }
 .serch-allresult {
   color: #717171;
@@ -1403,6 +1424,10 @@ ul.subList-padding {
 }
 .searchfilterbutton.ui.tiny.button {
   font-size: 1em;
+}
+.resource-padding.ui.grid > .column:not(.row) {
+  padding-top: 0;
+  margin-bottom: 1em;
 }
 body {
   position: relative !important;

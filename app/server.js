@@ -5,8 +5,7 @@ var app = express();
 var router = express.Router();
 var request = require('request');
 var proxy = require('express-http-proxy');
-
-const port = process.env.port ? process.env.port : 80;
+const port = process.env.port ? process.env.port : 7000;
 
 app.use(express.static('./'));
 app.use('/ekContentEditor', express.static('./thirdparty/content-editor'));
