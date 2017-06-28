@@ -1017,41 +1017,14 @@ ul.subList-padding {
   margin-top: 3% !important;
   padding: 5% !important;
 }
-.course-list {
-  padding: 0 !important;
-}
-.course-list .item {
-  background: white !important;
-  border: 1px solid rgba(34, 36, 38, 0.15) !important;
-  box-shadow: 0 1px 2px 0 rgba(34, 36, 38, 0.15) !important;
-  border-radius: .28571429rem!important;
-  cursor: pointer;
-}
-.course-list .item .image img {
-  padding: 0 !important;
-  height: 100% !important;
-}
-.course-list .item .content {
-  padding: 20px !important;
-}
-.course-list .item .resume-link {
-  padding: 20px !important;
-}
-.course-list .item .resume-link .floated {
-  padding-right: 30px !important;
-}
 .text-cencapitalize {
   text-transform: capitalize;
-}
-.card-extraContent-padding {
-  padding: 10px 0px !important;
 }
 .card-content-description {
   padding-top: 10px !important;
 }
 .popular-section {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  /* box-shadow: 0 8px 6px -8px #d9d4d4;*/
   padding-top: 1em;
   padding-bottom: 1em;
   padding-left: 0.3em;
@@ -1059,28 +1032,12 @@ ul.subList-padding {
 .popular-page .ui.cards ~ .ui.cards {
   margin-top: 1.875em;
 }
-.course-rating .ui.mini.rating {
-  font-size: .78571429rem;
-  padding-top: 12px;
-}
-.course-rating > .description {
-  clear: both;
-  color: rgba(16, 16, 16, 0.88) !important;
-  line-height: 1.5;
-}
 .popular-section > .card-section-header {
   font-weight: bold;
 }
 .mycourses-padding.ui.grid > .column:not(.row) {
   padding-top: 0;
   margin-bottom: 1em;
-}
-.accordian-right {
-  width: 70% !important;
-}
-.accordian-right-text {
-  font-size: 16px !important;
-  color: black !important;
 }
 .accordian-left-bottomMargin {
   margin-bottom: 16px !important;
@@ -1247,9 +1204,6 @@ ul.subList-padding {
   background: transparent;
   box-shadow: none;
 }
-.dropdown-content {
-  padding: .5em 0;
-}
 /*sunbird light font*/
 @font-face {
   font-family: 'sunbirdlightfont';
@@ -1377,6 +1331,7 @@ ul.subList-padding {
 .dropdown-content {
   text-align: right;
   white-space: nowrap;
+  padding: .5em 0;
 }
 .filter-text {
   text-align: left;
