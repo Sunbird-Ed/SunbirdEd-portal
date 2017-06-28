@@ -22,6 +22,10 @@
 18 px   1.125 em
 19 px   1.1875 em
 20 px   1.25 em
+21 px   1.313em
+22 px   1.375em
+23 px   1.438em
+24 px   1.500em
 25 px   1.5625 em
 30 px   1.875 em 
 40 px   2.5 em
@@ -454,15 +458,6 @@
   color: #aba7a7;
   margin-top: 9px;
   font-weight: 400;
-}
-.content-result-img {
-  height: 240px !important;
-}
-.content-result-card-description {
-  height: 74px !important;
-  overflow: visible;
-  padding-top: 19px;
-  padding-bottom: 15px;
 }
 #search-suggestions {
   box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
@@ -1269,15 +1264,15 @@ ul.subList-padding {
 /*cards fonts*/
 .cardsHeading {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 1.1875em;
+  font-size: 1.25em;
 }
 .cardsSubHeading {
   font-family: 'sunbirdregularfont' !important;
-  font-size: 0.9375em;
+  font-size: 1.125em;
 }
 .cardsDescription {
   font-family: 'sunbirdregularfont' !important;
-  font-size: 0.875em;
+  font-size: 1.0625em;
   font-weight: 400;
   line-height: 1.4;
   color: black !important;
@@ -1285,86 +1280,86 @@ ul.subList-padding {
 /* font used for view all and read more*/
 .cardsKnowMore {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 0.875em !important;
+  font-size: 1em !important;
 }
 /* cards used in slider fonts*/
 .sliderCardHeading {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 1em !important;
+  font-size: 1.1875em !important;
 }
 .sliderCardDesc {
   font-family: 'sunbirdregularfont' !important;
-  font-size: 0.8125em !important;
+  font-size: 1em !important;
   color: #8b8b8c !important;
 }
 .sliderCardSubDesc {
   font-family: 'sunbirdregularfont' !important;
-  font-size: 0.6875em !important;
+  font-size: 0.875em !important;
   color: grey !important;
 }
 /* segment card fonts*/
 .segmentCardHeading {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 1.125em !important;
+  font-size: 1.313em !important;
 }
 .segmentAvatarDesc {
   font-family: 'sunbirdregularfont' !important;
-  font-size: 0.875em !important;
+  font-size: 1.0625em !important;
   color: rgba(0, 0, 0, 0.85) !important;
 }
 .segmentAvatarSubDesc {
   font-family: 'sunbirdregularfont' !important;
-  font-size: 0.75em !important;
+  font-size: 0.9375em !important;
   color: #7c7b7b !important;
 }
 .segmentCardSubDesc {
   font-family: 'sunbirdregularfont' !important;
-  font-size: 0.875em !important;
+  font-size: 1.0625em !important;
 }
 /*course structure page fonts*/
 .courseStructureHeading {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 1.125em !important;
+  font-size: 1.313em !important;
 }
 .courseStructureDesc {
   font-family: 'sunbirdregularfont' !important;
-  font-size: 0.9375em !important;
+  font-size: 1.125em !important;
 }
 /*course structure accordian fonts*/
 .courseAccordianHeading {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 1em !important;
+  font-size: 1.1875 !important;
 }
 .courseAccordianDesc {
   font-family: 'sunbirdregularfont' !important;
-  font-size: 0.9375em !important;
+  font-size: 1.125em !important;
 }
 .courseAccordianSubDesc {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 0.75em !important;
+  font-size: 0.9375em !important;
 }
 .segmentCardHeading {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 1.25em !important;
+  font-size: 1.438em !important;
 }
 /*home page fonts*/
 .HomeAccordianHeading {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 1.125em !important;
+  font-size: 1.375em !important;
 }
 /*section heading fonts*/
 .sectionHeading {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 1.1875em !important;
+  font-size: 1.375em !important;
 }
 /*show filter fonts*/
 .ShowFilterTitle {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 0.75em !important;
+  font-size: 0.9375em !important;
 }
 .ShowFilterSubTitle {
   font-family: 'sunbirdregularfont' !important;
-  font-size: 0.75em !important;
+  font-size: 0.9375em !important;
   color: #8b8b8c !important;
 }
 .filtersearch.ui.selection.dropdown {
