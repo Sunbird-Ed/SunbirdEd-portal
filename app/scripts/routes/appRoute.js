@@ -11,7 +11,6 @@
 angular
     .module('playerApp')
     .config(function($stateProvider, $urlRouterProvider, $locationProvider) {
-        
         $locationProvider.html5Mode(true);
 
         $urlRouterProvider.otherwise('/');
@@ -55,6 +54,7 @@ angular
                     $rootScope.isLearnPage = false;
                     $('#content-search-filter-accordion').accordion('close', 0);
                     $rootScope.courseActive = '';
+                    $rootScope.searchKey = '';
                 },
                 params: { searchKey: 'Courses' },
                 resolve: {
@@ -75,6 +75,7 @@ angular
                 onExit: function($rootScope) {
                     $rootScope.isResourcesPage = false;
                     $rootScope.resourcesActive = '';
+                    $rootScope.searchKey = '';
                     $('#content-search-filter-accordion').accordion('close', 0);
                 },
                 resolve: {
@@ -188,11 +189,22 @@ angular
                     }
                 }
             })
-            .state('Player',{
-                 url: '/player',
+            .state('Search', {
+                url: '/:searchType/search/:query',
+                templateUrl: 'views/search/search.html',
+                controller: 'SearchCtrl as search',
+                params: { searchType: null, query: null },
+                resolve: {
+                    isLoggedIn: function(authService) {
+                        authService.validUser();
+                    }
+                }
+            })
+            .state('Player', {
+                url: '/player',
                 templateUrl: 'views/common/player.html',
                 controller: 'playerCtrl as player',
-                params:{content:null, contentId: null},
+                params: { content: null, contentId: null },
                 onEnter: function($rootScope) {
                     $rootScope.searchKey = 'Resources';
                     $rootScope.isPlayerPage = true;
@@ -209,5 +221,5 @@ angular
                         authService.validUser();
                     }
                 }
-            })
+            });
     });
