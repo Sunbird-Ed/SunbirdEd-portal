@@ -1,18 +1,17 @@
 #Dockerfile for the player setup
-FROM ubuntu:16.04
+FROM mhart/alpine-node:6
 MAINTAINER "Manojvv" "manojv@ilimi.in"
-RUN apt-get update
-RUN apt-get install -y python python-dev python-pip python-virtualenv
-RUN apt-get update \
+RUN apk update \
+    && apk add -y python \
+    && apk add -y python-dev \
+    && update \
     && mkdir -p /opt/player
 WORKDIR /opt/player
 COPY * /opt/player/
-RUN apt-get install -y curl \
-    && apt-get install -y zip \
-    && apt-get install -y git \
-    && apt-get install bzip2
-RUN curl --silent --location https://deb.nodesource.com/setup_6.x | bash - \
-    && apt-get install --yes nodejs \
+RUN apk add -y curl \
+    && apk add zip \
+    && apk add -y  git \
+    && apk add -y  bzip2 \
     && npm install -g bower \
     && npm install -g gulp \
     && npm install gulp --save-dev 
