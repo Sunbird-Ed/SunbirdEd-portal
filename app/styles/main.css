@@ -99,30 +99,6 @@
   box-shadow: none !important;
   border: none!important;
 }
-.content-player-container {
-  position: relative;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  background-color: #fff;
-}
-.content-player-body {
-  padding: 0;
-}
-.content-player {
-  position: relative;
-  height: 99%;
-  width: 99%;
-}
-.content-player iframe {
-  min-height: 500px;
-}
-.player-video {
-  width: 100% !important;
-  height: 500px !important;
-  position: relative;
-}
 @media only screen and (min-width: 600px) {
   .col-s-1 {
     width: 8.33%;
@@ -348,10 +324,6 @@
 }
 .width-25p {
   width: 25% !important;
-}
-.content-player-header {
-  padding: 5px 5px 5px 5px !important;
-  border: gray !important;
 }
 .font-size-175em {
   font-size: 1.75em !important;
@@ -1084,7 +1056,7 @@ ul.subList-padding {
 }
 .popular-section {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 8px 6px -8px #d9d4d4;
+  /* box-shadow: 0 8px 6px -8px #d9d4d4;*/
   padding-top: 1em;
   padding-bottom: 1em;
   padding-left: 0.3em;
@@ -1264,16 +1236,6 @@ ul.subList-padding {
 .annannouncement-description {
   padding: 1.3em 0.6em;
 }
-.content-input {
-  display: none;
-}
-.content-iframe {
-  width: 100%;
-  height: 700px;
-}
-.content-video-player-youtube-dimensions.vjs-fluid {
-  padding-top: 500px;
-}
 .serch-allresult {
   color: #717171;
 }
@@ -1307,15 +1269,15 @@ ul.subList-padding {
 /*cards fonts*/
 .cardsHeading {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 19px;
+  font-size: 1.1875em;
 }
 .cardsSubHeading {
   font-family: 'sunbirdregularfont' !important;
-  font-size: 15px;
+  font-size: 0.9375em;
 }
 .cardsDescription {
   font-family: 'sunbirdregularfont' !important;
-  font-size: 14px;
+  font-size: 0.875em;
   font-weight: 400;
   line-height: 1.4;
   color: black !important;
@@ -1323,86 +1285,86 @@ ul.subList-padding {
 /* font used for view all and read more*/
 .cardsKnowMore {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 14px !important;
+  font-size: 0.875em !important;
 }
 /* cards used in slider fonts*/
 .sliderCardHeading {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 16px !important;
+  font-size: 1em !important;
 }
 .sliderCardDesc {
   font-family: 'sunbirdregularfont' !important;
-  font-size: 13px !important;
+  font-size: 0.8125em !important;
   color: #8b8b8c !important;
 }
 .sliderCardSubDesc {
   font-family: 'sunbirdregularfont' !important;
-  font-size: 11px !important;
+  font-size: 0.6875em !important;
   color: grey !important;
 }
 /* segment card fonts*/
 .segmentCardHeading {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 18px !important;
+  font-size: 1.125em !important;
 }
 .segmentAvatarDesc {
   font-family: 'sunbirdregularfont' !important;
-  font-size: 14px !important;
+  font-size: 0.875em !important;
   color: rgba(0, 0, 0, 0.85) !important;
 }
 .segmentAvatarSubDesc {
   font-family: 'sunbirdregularfont' !important;
-  font-size: 12px !important;
+  font-size: 0.75em !important;
   color: #7c7b7b !important;
 }
 .segmentCardSubDesc {
   font-family: 'sunbirdregularfont' !important;
-  font-size: 14px !important;
+  font-size: 0.875em !important;
 }
 /*course structure page fonts*/
 .courseStructureHeading {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 18px !important;
+  font-size: 1.125em !important;
 }
 .courseStructureDesc {
   font-family: 'sunbirdregularfont' !important;
-  font-size: 15px !important;
+  font-size: 0.9375em !important;
 }
 /*course structure accordian fonts*/
 .courseAccordianHeading {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 16px !important;
+  font-size: 1em !important;
 }
 .courseAccordianDesc {
   font-family: 'sunbirdregularfont' !important;
-  font-size: 15px !important;
+  font-size: 0.9375em !important;
 }
 .courseAccordianSubDesc {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 12px !important;
+  font-size: 0.75em !important;
 }
 .segmentCardHeading {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 20px !important;
+  font-size: 1.25em !important;
 }
 /*home page fonts*/
 .HomeAccordianHeading {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 18px !important;
+  font-size: 1.125em !important;
 }
 /*section heading fonts*/
 .sectionHeading {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 19px !important;
+  font-size: 1.1875em !important;
 }
 /*show filter fonts*/
 .ShowFilterTitle {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 12px !important;
+  font-size: 0.75em !important;
 }
 .ShowFilterSubTitle {
   font-family: 'sunbirdregularfont' !important;
-  font-size: 12px !important;
+  font-size: 0.75em !important;
   color: #8b8b8c !important;
 }
 .filtersearch.ui.selection.dropdown {
@@ -1458,6 +1420,44 @@ ul.subList-padding {
 .resource-padding.ui.grid > .column:not(.row) {
   padding-top: 0;
   margin-bottom: 1em;
+}
+.content-input {
+  display: none;
+}
+.content-iframe {
+  width: 100%;
+  height: 700px;
+}
+.content-video-player-youtube-dimensions.vjs-fluid {
+  padding-top: 500px;
+}
+.content-player-container {
+  position: relative;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #fff;
+}
+.content-player-body {
+  padding: 0;
+}
+.content-player {
+  position: relative;
+  height: 99%;
+  width: 99.8%;
+}
+.content-player iframe {
+  min-height: 500px;
+}
+.player-video {
+  width: 100% !important;
+  height: 500px !important;
+  position: relative;
+}
+.content-player-header {
+  padding: 5px 5px 5px 5px !important;
+  border: gray !important;
 }
 body {
   position: relative !important;
