@@ -29,32 +29,14 @@
                                             Course Structure
                                         </b>
                                     </div>
-                                    <div id="course-toc" class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100"  ng-repeat="item in  toc.courseHierachy.children track by $index" ng-click="toc.expandMe($event, item)">
-                                        <div class="courseAccordianHeading title title-padding-left accordian-left-text" name="{{item.identifier}}"  ng-class="toc.getContentClass(item.mimeType)">
+                                    <div id="course-toc" class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100" ng-repeat="item in  toc.courseHierachy.children track by $index" ng-click="toc.expandMe($event, item)">
+                                        <div class="courseAccordianHeading title title-padding-left accordian-left-text" name="{{item.identifier}}" ng-class="toc.getContentClass(item.mimeType)">
                                             {{item.name}}
                                             <i ng-if='item.children && item.children.length > 0' class="plus icon down-arrow-accordion"></i>
                                         </div>
                                         <div ng-if='item.children && item.children.length > 0' class="content">
                                             <div id="FT_{{$index}}"  ng-init="toc.constructTree($index, item.children)"></div>
                                         </div>
-                                        <!--                                        <div ng-if='item.children && item.children.length > 0' class="content">
-                                                                                    <ul class="courseStr">
-                                                                                        <li ng-repeat="item in item.children">
-                                                                                            <div name="{{item.identifier}}" ng-click="toc.expandMe($event, item)" ng-class="toc.getContentClass(item.mimeType)">
-                                                                                                <span>
-                                                                                                    <i class="large video play outline icon" ></i>
-                                                                                                </span>
-                                                                                                <span class="text courseAccordianDesc cursor-pointer">{{item.name}}</span>
-                                                                                                <div class="verticalLine" ng-if="!$last"></div>
-                                                                                            </div>
-                                                                                            <div ng-switch on="item.children.length > 0">
-                                                                                                <div ng-switch-when="true">
-                                                                                                    <div ng-init="subItems = item.children;" ng-include="'views/course/tocList.html'"></div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </li>
-                                                                                    </ul>
-                                                                                </div>-->
                                     </div>
                                     <div class="ui fitted divider margin-bottom-20 margin-top-30"></div>
                                     <course-discussions showaskquestion="true"></course-discussions>
@@ -134,3 +116,4 @@
             <div class="one wide column"></div>
         </div>
     </div>
+</div>
