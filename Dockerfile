@@ -1,12 +1,10 @@
-FROM ubuntu:16.04
+FROM mhart/alpine-node:6
 MAINTAINER "Manojvv" "manojrpms@gmail.com"
-RUN apt-get update && apt-get install -y git \
+RUN apk update && apk add -y git \
   unzip \
   zip \
   build-essential \
   curl
-RUN curl --silent --location https://deb.nodesource.com/setup_6.x | bash - \
-    && apt-get install --yes nodejs 
 WORKDIR /opt/
 COPY player-dist.zip  /opt/
 RUN unzip /opt/player-dist.zip 
