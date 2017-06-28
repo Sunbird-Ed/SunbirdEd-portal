@@ -14,16 +14,18 @@ var runSequence = require('run-sequence');
 var gulpNgConfig = require('gulp-ng-config');
 var less = require('gulp-less');
 var historyApiFallback = require('connect-history-api-fallback');
+var jeditor = require("gulp-json-editor");
 
 var useref = require('gulp-useref');
 
 var player = {
-    app: require('./bower.json').appPath || 'app',
+    app: 'app',
     dist: 'dist'
 };
 
 var paths = {
-    data: [player.app+'/data/*.*'],
+    gulpfile: ['gulpfile.js'],
+    data: [player.app + '/data/*.*'],
     scripts: [player.app + '/scripts/*.js', player.app + '/scripts/**/*.js'],
     styles: [player.app + 'app/styles/**/main.less'],
     images: player.app + '/images/*.*',
@@ -71,7 +73,8 @@ var dist = {
     images: 'images/',
     scripts: 'scripts/',
     styles: 'styles',
-    views: 'views'
+    views: 'views',
+    config: 'config/'
 };
 
 ////////////////////////
@@ -246,13 +249,18 @@ gulp.task('semantic', function() {
         }));
 });
 
-gulp.task('mockdata', function () {
+gulp.task('mockdata', function() {
     return gulp.src(paths.data)
         .pipe(gulp.dest(dist.path + '/data'));
 })
 
+gulp.task('gulpfile', function() {
+    return gulp.src(paths.gulpfile)
+        .pipe(gulp.dest(dist.path));
+})
+
 gulp.task('build', ['clean:dist'], function() {
-    runSequence(['index-html', 'images', 'bower', 'config', 'build-css', 'build-css-dev', 'build-js', 'html','mockdata']);
+    runSequence(['index-html', 'images', 'bower', 'config', 'build-css', 'build-css-dev', 'build-js', 'html', 'mockdata', 'gulpfile']);
 });
 
 gulp.task('default', ['build']);
@@ -262,4 +270,29 @@ gulp.task('config', function() {
         .pipe(gulpNgConfig('playerApp.config'))
         .pipe(gulp.dest('app/scripts'))
         .pipe(gulp.dest(dist.path + dist.scripts));
+    gulp.src('app/config/playerAppConfig.json')
+        .pipe(gulp.dest(dist.path + dist.config));
+
 });
+
+gulp.task('env', function() {
+    runSequence(['envJson', 'envJs']);
+});
+gulp.task('envJson', function() {
+    gulp.src(dist.config + 'playerAppConfig.json')
+        .pipe(jeditor(function(configObj) {
+            if (configObj.config && configObj.config.URL && configObj.config.URL && configObj.config.URL.BASE) {
+                configObj.config.URL.BASE = process.env.sunbird_content_player_url || configObj.config.URL.BASE;
+            }
+            if (configObj.config && configObj.config.URL && configObj.config.URL && configObj.config.URL.DEV_API_BASE) {
+                configObj.config.URL.DEV_API_BASE = process.env.sunbird_learner_player_url || configObj.config.URL.DEV_API_BASE;
+            }
+            return configObj; // must return JSON object. 
+        }))
+        .pipe(gulp.dest(dist.config));
+});
+gulp.task('envJs', function() {
+    gulp.src(dist.config + 'playerAppConfig.json')
+        .pipe(gulpNgConfig('playerApp.config'))
+        .pipe(gulp.dest(dist.scripts));
+})
