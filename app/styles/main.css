@@ -1128,6 +1128,15 @@ ul.subList-padding {
   margin-bottom: 1em;
   padding-bottom: 20px;
 }
+.courseupdate {
+  color: #a5a5ad;
+  line-height: 1.6;
+  padding-left: 15px;
+  font-size: 1.1em;
+}
+.courseupdate b {
+  font-weight: 400;
+}
 .homeCard.ui.card {
   max-width: 100%;
   position: relative;

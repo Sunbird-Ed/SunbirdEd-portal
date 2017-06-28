@@ -66,8 +66,10 @@
                                     <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false" courseid="toc.courseParams.courseId"></note-card>
                                     <div ng-include=" 'views/course/facultyCard.html'" class="margin-bottom-15"></div>
                                     <div ng-include=" 'views/course/carriculumCard.html'"></div><br>
-                                    <b>Course created on: 15 jun 2017</b><br>
-                                    <b>Updated on: 16 jun 2017</b>
+                                    <div class="courseupdate">
+                                        <b>Course created on: 15 jun 2017</b><br>
+                                        <b>Updated on: 16 jun 2017</b>
+                                    </div>
                                 </div>
                                 <div ng-if="toc.showNoteModal">
                                     <div ng-include=" 'views/course/noteAddCardModal.html'"></div>
