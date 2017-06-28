@@ -4,7 +4,7 @@ MAINTAINER "Manojvv" "manojv@ilimi.in"
 RUN apk update \
     && apk add -y python \
     && apk add -y python-dev \
-    && update \
+    && apk update \
     && mkdir -p /opt/player
 WORKDIR /opt/player
 COPY * /opt/player/
