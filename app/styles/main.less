@@ -34,25 +34,50 @@
 
 */
 
+// ----------------------------------------------------------------------
+  // Base
+// ---
+
+@import 'base/normalize';
+@import 'base/fonts';
+@import 'base/variables';
+
+
+
+// ----------------------------------------------------------------------
+  // reUseable
+// ----------------------------------------------------------------------
 
 @import 'reuseable/reUseable';
 @import 'common/common';
+
+
+
+// ----------------------------------------------------------------------
+  // Modules
+// ----------------------------------------------------------------------
+
 @import 'modules/header';
 @import 'modules/card';
-@import 'modules/footer';
-@import 'base/normalize';
+@import 'modules/contentplayer';
 @import 'modules/slickerSearch';
+@import 'modules/footer';
+
+
+
+// ----------------------------------------------------------------------
+  // views
+// ----------------------------------------------------------------------
+
 @import 'views/courseStructure';
 @import 'views/learn';
 @import 'views/toc';
 @import 'views/home';
 @import 'views/landingPage';
 @import 'views/searchResult';
-@import 'base/fonts';
 @import 'views/filter';
 @import 'views/resource';
-@import 'base/variables';
-@import 'modules/contentplayer';
+
 
 
 body {
