@@ -49,7 +49,7 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
         var request = {
             filters: {
                 userId: noteCard.userId,
-                courseId: noteCard.courseId,
+                courseId: noteCard.tocId,
                 contentId: noteCard.contentId
             },
             sort_by: {
@@ -68,7 +68,7 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
         var request = {
             filters: {
                 userId: noteCard.userId,
-                courseId: noteCard.courseId,
+                courseId: noteCard.tocId,
                 contentId: contentId
             },
             sort_by: {
@@ -89,7 +89,7 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
                 note: noteData.note,
                 userId: noteCard.userId,
                 title: noteData.title,
-                courseId: noteCard.courseId,
+                courseId: noteCard.tocId,
                 contentId: noteCard.contentId
             }
         };
