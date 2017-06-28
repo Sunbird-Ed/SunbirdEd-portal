@@ -75,7 +75,7 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
         var request = {
             filters: {
                 userId: noteList.userId,
-                courseId: noteList.courseId,
+                courseId: noteList.tocId,
                 contentId: noteList.contentId
             },
             sort_by: {
@@ -98,7 +98,7 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
                 note: noteData.note,
                 userId: noteList.userId,
                 title: noteData.title,
-                courseId: noteList.courseId,
+                courseId: noteList.tocId,
                 contentId: noteList.contentId
             }
         };
@@ -113,12 +113,10 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
             } else {
                 noteList[api].loader.showLoader = false;
                 showErrorMessage(api, true, config.MESSAGES.NOTES.CREATE.FAILED, config.MESSAGES.COMMON.ERROR);
-//                handleFailedResponse(config.MESSAGES.NOTES.CREATE.FAILED);
             }
         }).catch(function (error) {
             noteList[api].loader.showLoader = false;
             showErrorMessage(api, true, config.MESSAGES.NOTES.CREATE.FAILED, config.MESSAGES.COMMON.ERROR);
-//            handleFailedResponse(config.MESSAGES.NOTES.CREATE.FAILED);
         });
     };
 
@@ -142,13 +140,11 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
             } else {
                 noteList[api].loader.showLoader = false;
                 showErrorMessage(api, true, config.MESSAGES.NOTES.REMOVE.FAILED, config.MESSAGES.COMMON.ERROR);
-//                handleFailedResponse(config.MESSAGES.NOTES.REMOVE.FAILED);
             }
         })
         .catch(function (error) {
             noteList[api].loader.showLoader = false;
             showErrorMessage(api, true, config.MESSAGES.NOTES.REMOVE.FAILED, config.MESSAGES.COMMON.ERROR);
-//            handleFailedResponse(config.MESSAGES.NOTES.REMOVE.FAILED);
         });
     };
 
@@ -178,7 +174,6 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
             } else {
                 noteList[api].loader.showLoader = false;
                 showErrorMessage(api, true, config.MESSAGES.NOTES.UPDATE.FAILED, config.MESSAGES.COMMON.ERROR);
-//                handleFailedResponse(config.MESSAGES.NOTES.UPDATE.FAILED);
             }
         })
         .catch(function (error) {
