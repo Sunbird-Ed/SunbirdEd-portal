@@ -1,5 +1,5 @@
 angular.module('playerApp')
-        .controller('courseScheduleCtrl', function (courseService, sessionService, $stateParams, $timeout, $scope, $sce, $rootScope, $sessionStorage, $location, $anchorScroll) {
+        .controller('courseScheduleCtrl', function (config, courseService, sessionService, $stateParams, $timeout, $scope, $sce, $rootScope, $sessionStorage, $location, $anchorScroll) {
             var toc = this;
             toc.playList = [];
             toc.playListContent = [];
@@ -15,31 +15,34 @@ angular.module('playerApp')
                     request: {
                         courseId: courseId,
                         userId: toc.uid,
-                        courseName:toc.courseHierachy.name,
-                        description:toc.courseHierachy.description
-                        
-                        
+                        courseName: toc.courseHierachy.name,
+                        description: toc.courseHierachy.description
+
+
                     }
                 };
-                
-                toc.enorllingCourse = true;
+
+                toc.loader.enrollLoader = true;
+                toc.loader.loaderMessage = config.MESSAGES.COURSE.ENROLL.START;
                 courseService.enrollUserToCourse(req).then(function (successResponse) {
-                    toc.enorllingCourse = false;
+                    toc.loader.enrollLoader = false;
                     if (successResponse && successResponse.responseCode === 'OK') {
                         //temporary change it later
-                        
+
                         toc.courseType = "ENROLLED_COURSE";
-                        toc.courseParams.courseType=toc.courseType;
-                        sessionService.setSessionData('COURSE_PARAMS',toc.courseParams);
-                        
+                        toc.courseParams.courseType = toc.courseType;
+                        sessionService.setSessionData('COURSE_PARAMS', toc.courseParams);
+
                     } else {
-                        toc.enrollErrorMessage = 'Cannot enroll now.Try again later';
+                        toc.error.showEnrollError = true;
+                        toc.error.message = config.MESSAGES.COURSE.ENROLL.ERROR;
                         $timeout(function () {
-                            toc.enrollErrorMessage = '';
+                            toc.error.showEnrollError = false;
                         }, 3000);
                     }
                 }).catch(function (error) {
-                    toc.enrollErrorMessage = 'Cannot enroll now.Try again later';
+                    toc.error.showEnrollError = true;
+                    toc.error.message = config.MESSAGES.COURSE.ENROLL.ERROR;                    
                 });
 
             }
@@ -74,40 +77,28 @@ angular.module('playerApp')
                 }, 500);
             }
             toc.showError = function (message) {
-
-                toc.messageClass = "red";
-                toc.showMetaLoader = false;
-                toc.message = message;
-                $timeout(function () {
-                    toc.showDimmer = false;
-                }, 2000);
+                toc.loader.showLoader = false;
+                toc.error.showError = true;
+                toc.error.message = message;
             };
 
             //$scope.contentPlayer.contentData=};
             toc.getCourseToc = function () {
 
-                toc.showMetaLoader = toc.showDimmer = true;
-                toc.messageType = "";
-                toc.message = "Loading Course schedule, Please wait...";
+                toc.loader.showLoader = true;
+                toc.loader.loaderMessage = config.MESSAGES.COURSE.TOC.START;
                 courseService.courseHierarchy(toc.courseId).then(function (res) {
                     if (res && res.responseCode === "OK") {
                         toc.courseHierachy = res.result.content;
+                        toc.loader.showLoader = false;
                         toc.getAllContentsFromCourse(toc.courseHierachy);
                         $rootScope.courseName = toc.courseHierachy.name;
                         toc.applyAccordion();
-                        toc.showMetaLoader = false;
-                        toc.showDimmer = false;
                     } else {
-                        toc.showError("Unable to get course schedule details.");
+                        toc.showError(config.MESSAGES.COURSE.TOC.ERROR);
                     }
-
-                    $timeout(function () {
-                        toc.showMetaLoader = false;
-                        toc.showDimmer = false;
-                    }, 2000);
-
                 }, function (err) {
-                    toc.showError("Unable to get course schedule details.");
+                    toc.showError(config.MESSAGES.COURSE.TOC.ERROR);
                 });
             };
 
@@ -117,11 +108,10 @@ angular.module('playerApp')
 
                     toc.itemIndex = parseInt(index);
                     toc.playPlaylistContent(item.identifier, '');
-                }
-                else
+                } else
                 {
-                    var accIcon=$(index.target).closest('.title').find('i');
-                    $(accIcon).hasClass('plus')?$(accIcon).addClass('minus').removeClass('plus'):$(accIcon).addClass('plus').removeClass('minus');
+                    var accIcon = $(index.target).closest('.title').find('i');
+                    $(accIcon).hasClass('plus') ? $(accIcon).addClass('minus').removeClass('plus') : $(accIcon).addClass('plus').removeClass('minus');
                 }
             };
 
@@ -194,7 +184,7 @@ angular.module('playerApp')
 
                 } else
                 {
-                    parent.push({title: "<span class='courseAccordianDesc'><i class='" + toc.getContentIcon(contentData.mimeType) + "'></i>" + contentData.name+"</span>", key: -1, children: [], icon: false})
+                    parent.push({title: "<span class='courseAccordianDesc'><i class='" + toc.getContentIcon(contentData.mimeType) + "'></i>" + contentData.name + "</span>", key: -1, children: [], icon: false})
                     for (var item in contentData.children) {
                         toc.getTreeData(contentData.children[item], parent[parent.length - 1]['children']);
                     }
@@ -295,7 +285,7 @@ angular.module('playerApp')
             toc.init = function () {
                 toc.lectureView = toc.courseParams.lectureView;
                 toc.courseId = toc.courseParams.courseId;
-                toc.courseType = ($rootScope.enrolledCourseIds&&$rootScope.enrolledCourseIds.indexOf(toc.courseId)>=0) ?'ENROLLED_COURSE':toc.courseParams.courseType;
+                toc.courseType = ($rootScope.enrolledCourseIds && $rootScope.enrolledCourseIds.indexOf(toc.courseId) >= 0) ? 'ENROLLED_COURSE' : toc.courseParams.courseType;
                 toc.courseProgress = toc.courseParams.progress;
                 toc.courseTotal = toc.courseParams.total;
                 toc.tocId = toc.courseParams.tocId;
@@ -308,6 +298,8 @@ angular.module('playerApp')
                     isContentPlayerEnabled: false
 
                 };
+                toc.loader = {showLoader: false, loaderMessage: '', enrollLoader: false};
+                toc.error = {showError: false, message: '', messageType: 'error', isClose: false, showEnrollError: false};
                 toc.playItemIndex = undefined;
                 toc.getCourseToc();
             }

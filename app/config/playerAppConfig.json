@@ -106,6 +106,14 @@
             "COURSE": {
                 "ENROLLED": {
                     "START": "We are fetching enrolled courses..." 
+                },
+                "TOC":{
+                    "START":"We are fetching course details...",
+                    "ERROR":"Unable to get course schedule details."
+                },
+                "ENROLL":{
+                    "START":"Enrolling....",
+                    "ERROR":"Cannot enroll now.Try again later"
                 }
             }
         },

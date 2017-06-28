@@ -35,26 +35,26 @@
                                             <i ng-if='item.children && item.children.length > 0' class="plus icon down-arrow-accordion"></i>
                                         </div>
                                         <div ng-if='item.children && item.children.length > 0' class="content">
-                                            <div id="FT_{{$index}}"  ng-init="toc.constructTree($index,item.children)"></div>
+                                            <div id="FT_{{$index}}"  ng-init="toc.constructTree($index, item.children)"></div>
                                         </div>
-<!--                                        <div ng-if='item.children && item.children.length > 0' class="content">
-                                            <ul class="courseStr">
-                                                <li ng-repeat="item in item.children">
-                                                    <div name="{{item.identifier}}" ng-click="toc.expandMe($event, item)" ng-class="toc.getContentClass(item.mimeType)">
-                                                        <span>
-                                                            <i class="large video play outline icon" ></i>
-                                                        </span>
-                                                        <span class="text courseAccordianDesc cursor-pointer">{{item.name}}</span>
-                                                        <div class="verticalLine" ng-if="!$last"></div>
-                                                    </div>
-                                                    <div ng-switch on="item.children.length > 0">
-                                                        <div ng-switch-when="true">
-                                                            <div ng-init="subItems = item.children;" ng-include="'views/course/tocList.html'"></div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>-->
+                                        <!--                                        <div ng-if='item.children && item.children.length > 0' class="content">
+                                                                                    <ul class="courseStr">
+                                                                                        <li ng-repeat="item in item.children">
+                                                                                            <div name="{{item.identifier}}" ng-click="toc.expandMe($event, item)" ng-class="toc.getContentClass(item.mimeType)">
+                                                                                                <span>
+                                                                                                    <i class="large video play outline icon" ></i>
+                                                                                                </span>
+                                                                                                <span class="text courseAccordianDesc cursor-pointer">{{item.name}}</span>
+                                                                                                <div class="verticalLine" ng-if="!$last"></div>
+                                                                                            </div>
+                                                                                            <div ng-switch on="item.children.length > 0">
+                                                                                                <div ng-switch-when="true">
+                                                                                                    <div ng-init="subItems = item.children;" ng-include="'views/course/tocList.html'"></div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </li>
+                                                                                    </ul>
+                                                                                </div>-->
                                     </div>
                                     <div class="ui fitted divider margin-bottom-20 margin-top-30"></div>
                                     <course-discussions showaskquestion="true"></course-discussions>
@@ -125,22 +125,12 @@
                     </div>
                 </div>
             </div>
-            <div>
-            <div class="ui dimmer inverted" ng-class="toc.showDimmer ? 'active' : ''">
-                <div class="content">
-                    <span ng-if="toc.showMetaLoader">
-                        <div class="ui text loader">
-                            <div class="ui mini header" ng-if="toc.message">{{toc.message}}</div>
-                        </div>
-                    </span>
-                    <div class="center">
-                        <h2 class="ui header {{toc.messageClass}}" ng-if="!toc.showMetaLoader">
-                            {{toc.message}}
-                        </h2>
-                    </div>
-                </div>
+            <div ng-if="toc.loader.showLoader">
+                <app-loader data="{{toc.loader}}"></app-loader>
             </div>
+            <div ng-if="toc.error.showError">
+                <error-message data="{{toc.error}}" visibility="toc.error.showError"></error-message>
+            </div>
+            <div class="one wide column"></div>
         </div>
-        <div class="one wide column"></div>
     </div>
-</div>
