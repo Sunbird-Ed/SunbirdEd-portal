@@ -25,7 +25,7 @@
                                             <input type="text" ng-model="noteList.searchData.text" ng-change="noteList.searchNote(noteList.searchData.text)" placeholder="Search for notes or title" title="Search" />
                                             <i class="circular search link icon" ng-click="noteList.searchNote(noteList.searchData.text)"></i>
                                         </div>-->
-                    <div class="ui huge info message" ng-if="!noteList.notesList.length > 0 && !noteList.error.showError">
+                    <div class="ui huge info message" ng-if="noteList.notesList.length === 0">
                         <p>You don't have any note. please create...</p>
                     </div>
                     <div class="ui items" ng-repeat="note in noteList.notesList| orderBy : '-lastUpdatedOn' | noteListFilter:noteList.searchData.text ">

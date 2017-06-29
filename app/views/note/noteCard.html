@@ -26,7 +26,7 @@
                     <div ng-if="($index < noteCard.quantityOfNotes - 1) && noteCard.notesList.length > 1" class="ui clearing divider"></div>
                 </div>
             </div>
-            <div class="ui huge info message" ng-if="!noteCard.notesList.length">
+            <div class="ui huge info message" ng-if="noteCard.notesList.length === 0">
                 <p>You don't have any note. please create note...</p>
             </div>
         </div>
