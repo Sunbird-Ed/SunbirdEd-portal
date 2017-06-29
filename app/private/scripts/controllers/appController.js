@@ -8,7 +8,9 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-        .controller('AppCtrl', function ($scope, $state, $stateParams, $rootScope, setResourceBundle, $translate, userService, $q, config, $location,$timeout) {
+        .controller('AppCtrl', function ($scope, $state, $stateParams, $rootScope, setResourceBundle, $translate, userService, $q, config, $location,$timeout) {            
+            $rootScope.userId = $("#userId").attr("value");
+            console.log('$rootScope.userId', $rootScope.userId)
             $rootScope.language = $rootScope.userLanguage || config.SITE.DEFAULT_LANGUAGE;
             $rootScope.translationBundle = {};
             $rootScope.searchKey = '';
