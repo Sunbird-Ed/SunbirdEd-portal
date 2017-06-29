@@ -120,7 +120,7 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
     noteCard.createNote = function(noteData) {
 
         var requestData = {
-            note1: {
+            note: {
                 note: noteData.note,
                 userId: noteCard.userId,
                 title: noteData.title,
@@ -128,22 +128,24 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
                 contentId: noteCard.contentId
             }
         };
-
-        showLoaderWithMessage(true, "", config.MESSAGES.NOTES.CREATE.START);
+        
+        var api = 'createApi';
+        noteCard[api] = {};
+        noteCard[api].loader = showLoaderWithMessage("", config.MESSAGES.NOTES.CREATE.START);
+        
         noteService.create(requestData).then(function(response) {
             if (response && response.responseCode === "OK") {
+                noteCard[api].loader.showLoader = false;
+                noteCard.hideAddModal();
                 noteCard.ngInit();
-                noteCard.error = {};
-                noteCard.add = {};
-                noteCard.add.showCreateNote = false;
-                noteCard.add.showModalError = false;
             } else {
-                noteCard.add.showModalError = true;
-                handleFailedResponse(config.MESSAGES.NOTES.CREATE.FAILED);
+                noteCard[api].loader.showLoader = false;
+                noteCard[api].error = showErrorMessage(true, config.MESSAGES.NOTES.CREATE.FAILED, config.MESSAGES.COMMON.ERROR);
             }
-        }).catch(function(error) {
-            noteCard.add.showModalError = true;
-            handleFailedResponse(config.MESSAGES.NOTES.CREATE.FAILED);
+        })
+        .catch(function (error) {
+            noteCard[api].loader.showLoader = false;
+            noteCard[api].error = showErrorMessage(true, config.MESSAGES.NOTES.CREATE.FAILED, config.MESSAGES.COMMON.ERROR);
         });
     };
 
@@ -164,7 +166,7 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
         
         noteService.update(requestData).then(function(response) {
                 if (response && response.responseCode === "OK") {
-                    noteCard.closeAuthModal();
+                    noteCard.hideUpdateModal();
                     noteCard[api].loader.showLoader = false;
                     noteCard.notesList = noteCard.notesList.filter(function (note) {
                         return note.identifier !== noteData.identifier;
@@ -182,12 +184,21 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
         });
     };
     
-    noteCard.closeAuthModal = function() { 
+    noteCard.hideUpdateModal = function() { 
         $('#updateNoteModal') 
             .modal('hide'); 
         $('#updateNoteModal') 
             .modal('hide others'); 
         $('#updateNoteModal') 
+            .modal('hide dimmer'); 
+    };
+    
+    noteCard.hideAddModal = function() { 
+        $('#addNoteModal') 
+            .modal('hide'); 
+        $('#addNoteModal') 
+            .modal('hide others'); 
+        $('#addNoteModal') 
             .modal('hide dimmer'); 
     };
 
