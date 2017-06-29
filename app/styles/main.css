@@ -250,7 +250,8 @@ th {
 /* font used for view all and read more*/
 .cardsKnowMore {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 1em !important;
+  font-size: 1em;
+  color: #0099CC;
 }
 /* cards used in slider fonts*/
 .sliderCardHeading {
@@ -332,8 +333,13 @@ th {
   font-size: 0.9375em !important;
   color: #8b8b8c !important;
 }
+/*note card font*/
 .font-dark-blue {
   color: #0099CC;
+}
+.note-card-timeStamp {
+  font-family: 'sunbirdregularfont' !important;
+  font-size: 0.625em !important;
 }
 .padding-left-20 {
   margin-left: 20px !important;
