@@ -61,9 +61,7 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
         noteService.search(request).then(function(response) {
                 if (response && response.responseCode === "OK") {
                     noteCard[api].loader.showLoader = false;
-                    noteCard.error = {};
-                    noteCard.notesList = response.result.note;
-                    $rootScope.$emit("updateNotesListData", response.result.note);
+                    noteCard.notesList = response.result.note || [];
                 } else {
                 noteCard[api].loader.showLoader = false;
                 noteCard[api].error = showErrorMessage(false, config.MESSAGES.NOTES.SEARCH.FAILED, config.MESSAGES.COMMON.ERROR);
@@ -137,7 +135,7 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
             if (response && response.responseCode === "OK") {
                 noteCard[api].loader.showLoader = false;
                 noteCard.hideAddModal();
-                noteCard.ngInit();
+                $rootScope.$emit("updateNotesListData", response.result.note);
             } else {
                 noteCard[api].loader.showLoader = false;
                 noteCard[api].error = showErrorMessage(true, config.MESSAGES.NOTES.CREATE.FAILED, config.MESSAGES.COMMON.ERROR);
@@ -226,10 +224,6 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
                 onHide: function() {
                     noteCard.closeUpdateNoteModal();
                     return true;
-                },
-                onDeny: function() {
-                    console.log(noteCard.updateApi.error.showError)
-                    return  !noteCard.updateApi.error.showError;
                 }
             }).modal('show');
         }, 100);
@@ -265,8 +259,7 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
 
 
     $rootScope.$on("updateNotesListData", function(e, content) {
-        noteCard.denyModalClass = 'deny';
-        noteCard.notesList = content;
+        noteCard.notesList.push(content);
     });
 
     noteCard.showAllNoteList = function() {
