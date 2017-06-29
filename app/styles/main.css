@@ -22,6 +22,10 @@
 18 px   1.125 em
 19 px   1.1875 em
 20 px   1.25 em
+21 px   1.313em
+22 px   1.375em
+23 px   1.438em
+24 px   1.500em
 25 px   1.5625 em
 30 px   1.875 em 
 40 px   2.5 em
@@ -98,30 +102,6 @@
 .modal .ui.segment {
   box-shadow: none !important;
   border: none!important;
-}
-.content-player-container {
-  position: relative;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  background-color: #fff;
-}
-.content-player-body {
-  padding: 0;
-}
-.content-player {
-  position: relative;
-  height: 99%;
-  width: 99%;
-}
-.content-player iframe {
-  min-height: 500px;
-}
-.player-video {
-  width: 100% !important;
-  height: 500px !important;
-  position: relative;
 }
 @media only screen and (min-width: 600px) {
   .col-s-1 {
@@ -349,10 +329,6 @@
 .width-25p {
   width: 25% !important;
 }
-.content-player-header {
-  padding: 5px 5px 5px 5px !important;
-  border: gray !important;
-}
 .font-size-175em {
   font-size: 1.75em !important;
 }
@@ -482,15 +458,6 @@
   color: #aba7a7;
   margin-top: 9px;
   font-weight: 400;
-}
-.content-result-img {
-  height: 240px !important;
-}
-.content-result-card-description {
-  height: 74px !important;
-  overflow: visible;
-  padding-top: 19px;
-  padding-bottom: 15px;
 }
 #search-suggestions {
   box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
@@ -1050,41 +1017,14 @@ ul.subList-padding {
   margin-top: 3% !important;
   padding: 5% !important;
 }
-.course-list {
-  padding: 0 !important;
-}
-.course-list .item {
-  background: white !important;
-  border: 1px solid rgba(34, 36, 38, 0.15) !important;
-  box-shadow: 0 1px 2px 0 rgba(34, 36, 38, 0.15) !important;
-  border-radius: .28571429rem!important;
-  cursor: pointer;
-}
-.course-list .item .image img {
-  padding: 0 !important;
-  height: 100% !important;
-}
-.course-list .item .content {
-  padding: 20px !important;
-}
-.course-list .item .resume-link {
-  padding: 20px !important;
-}
-.course-list .item .resume-link .floated {
-  padding-right: 30px !important;
-}
 .text-cencapitalize {
   text-transform: capitalize;
-}
-.card-extraContent-padding {
-  padding: 10px 0px !important;
 }
 .card-content-description {
   padding-top: 10px !important;
 }
 .popular-section {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 8px 6px -8px #d9d4d4;
   padding-top: 1em;
   padding-bottom: 1em;
   padding-left: 0.3em;
@@ -1092,28 +1032,12 @@ ul.subList-padding {
 .popular-page .ui.cards ~ .ui.cards {
   margin-top: 1.875em;
 }
-.course-rating .ui.mini.rating {
-  font-size: .78571429rem;
-  padding-top: 12px;
-}
-.course-rating > .description {
-  clear: both;
-  color: rgba(16, 16, 16, 0.88) !important;
-  line-height: 1.5;
-}
 .popular-section > .card-section-header {
   font-weight: bold;
 }
 .mycourses-padding.ui.grid > .column:not(.row) {
   padding-top: 0;
   margin-bottom: 1em;
-}
-.accordian-right {
-  width: 70% !important;
-}
-.accordian-right-text {
-  font-size: 16px !important;
-  color: black !important;
 }
 .accordian-left-bottomMargin {
   margin-bottom: 16px !important;
@@ -1160,6 +1084,15 @@ ul.subList-padding {
   padding-top: 0;
   margin-bottom: 1em;
   padding-bottom: 20px;
+}
+.courseupdate {
+  color: #a5a5ad;
+  line-height: 1.6;
+  padding-left: 15px;
+  font-size: 1.1em;
+}
+.courseupdate b {
+  font-weight: 400;
 }
 .homeCard.ui.card {
   max-width: 100%;
@@ -1264,25 +1197,12 @@ ul.subList-padding {
 .annannouncement-description {
   padding: 1.3em 0.6em;
 }
-.content-input {
-  display: none;
-}
-.content-iframe {
-  width: 100%;
-  height: 700px;
-}
-.content-video-player-youtube-dimensions.vjs-fluid {
-  padding-top: 500px;
-}
 .serch-allresult {
   color: #717171;
 }
 .search-content-header {
   background: transparent;
   box-shadow: none;
-}
-.dropdown-content {
-  padding: .5em 0;
 }
 /*sunbird light font*/
 @font-face {
@@ -1307,15 +1227,15 @@ ul.subList-padding {
 /*cards fonts*/
 .cardsHeading {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 19px;
+  font-size: 1.25em;
 }
 .cardsSubHeading {
   font-family: 'sunbirdregularfont' !important;
-  font-size: 15px;
+  font-size: 1.125em;
 }
 .cardsDescription {
   font-family: 'sunbirdregularfont' !important;
-  font-size: 14px;
+  font-size: 1.0625em;
   font-weight: 400;
   line-height: 1.4;
   color: black !important;
@@ -1323,86 +1243,86 @@ ul.subList-padding {
 /* font used for view all and read more*/
 .cardsKnowMore {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 14px !important;
+  font-size: 1em !important;
 }
 /* cards used in slider fonts*/
 .sliderCardHeading {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 16px !important;
+  font-size: 1.1875em !important;
 }
 .sliderCardDesc {
   font-family: 'sunbirdregularfont' !important;
-  font-size: 13px !important;
+  font-size: 1em !important;
   color: #8b8b8c !important;
 }
 .sliderCardSubDesc {
   font-family: 'sunbirdregularfont' !important;
-  font-size: 11px !important;
+  font-size: 0.875em !important;
   color: grey !important;
 }
 /* segment card fonts*/
 .segmentCardHeading {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 18px !important;
+  font-size: 1.313em !important;
 }
 .segmentAvatarDesc {
   font-family: 'sunbirdregularfont' !important;
-  font-size: 14px !important;
+  font-size: 1.0625em !important;
   color: rgba(0, 0, 0, 0.85) !important;
 }
 .segmentAvatarSubDesc {
   font-family: 'sunbirdregularfont' !important;
-  font-size: 12px !important;
+  font-size: 0.9375em !important;
   color: #7c7b7b !important;
 }
 .segmentCardSubDesc {
   font-family: 'sunbirdregularfont' !important;
-  font-size: 14px !important;
+  font-size: 1.0625em !important;
 }
 /*course structure page fonts*/
 .courseStructureHeading {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 18px !important;
+  font-size: 1.0625em !important;
 }
 .courseStructureDesc {
   font-family: 'sunbirdregularfont' !important;
-  font-size: 15px !important;
+  font-size: 0.75em !important;
 }
 /*course structure accordian fonts*/
 .courseAccordianHeading {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 16px !important;
+  font-size: 1.1875 !important;
 }
 .courseAccordianDesc {
   font-family: 'sunbirdregularfont' !important;
-  font-size: 15px !important;
+  font-size: 1.125em !important;
 }
 .courseAccordianSubDesc {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 12px !important;
+  font-size: 0.9375em !important;
 }
 .segmentCardHeading {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 20px !important;
+  font-size: 1.438em !important;
 }
 /*home page fonts*/
 .HomeAccordianHeading {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 18px !important;
+  font-size: 1.375em !important;
 }
 /*section heading fonts*/
 .sectionHeading {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 19px !important;
+  font-size: 1.375em !important;
 }
 /*show filter fonts*/
 .ShowFilterTitle {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 12px !important;
+  font-size: 0.9375em !important;
 }
 .ShowFilterSubTitle {
   font-family: 'sunbirdregularfont' !important;
-  font-size: 12px !important;
+  font-size: 0.9375em !important;
   color: #8b8b8c !important;
 }
 .filtersearch.ui.selection.dropdown {
@@ -1411,6 +1331,7 @@ ul.subList-padding {
 .dropdown-content {
   text-align: right;
   white-space: nowrap;
+  padding: .5em 0;
 }
 .filter-text {
   text-align: left;
@@ -1458,6 +1379,44 @@ ul.subList-padding {
 .resource-padding.ui.grid > .column:not(.row) {
   padding-top: 0;
   margin-bottom: 1em;
+}
+.content-input {
+  display: none;
+}
+.content-iframe {
+  width: 100%;
+  height: 700px;
+}
+.content-video-player-youtube-dimensions.vjs-fluid {
+  padding-top: 500px;
+}
+.content-player-container {
+  position: relative;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #fff;
+}
+.content-player-body {
+  padding: 0;
+}
+.content-player {
+  position: relative;
+  height: 99%;
+  width: 99.8%;
+}
+.content-player iframe {
+  min-height: 500px;
+}
+.player-video {
+  width: 100% !important;
+  height: 500px !important;
+  position: relative;
+}
+.content-player-header {
+  padding: 5px 5px 5px 5px !important;
+  border: gray !important;
 }
 body {
   position: relative !important;
