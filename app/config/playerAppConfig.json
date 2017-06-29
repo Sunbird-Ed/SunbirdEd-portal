@@ -78,12 +78,12 @@
                 },
                 "REMOVE": {
                     "START": "We are removing note...",
-                    "FAILED": "Deleting note is failed, please try again later...",
+                    "FAILED": "Removing note is failed, please try again later...",
                     "SUCCESS": "Note deleted successfully..."
                 },
                 "SEARCH": {
                     "START": "We are fetching notes...",
-                    "FAILED": "Searching note is failed, please try again later...",
+                    "FAILED": "Fetching note is failed, please try again later...",
                     "SUCCESS": "Note detail fetched successfully..."
                 },
                 "UPDATE": {
@@ -106,6 +106,14 @@
             "COURSE": {
                 "ENROLLED": {
                     "START": "We are fetching enrolled courses..." 
+                },
+                "TOC":{
+                    "START":"We are fetching course details...",
+                    "ERROR":"Unable to get course schedule details."
+                },
+                "ENROLL":{
+                    "START":"Enrolling....",
+                    "ERROR":"Cannot enroll now.Try again later"
                 }
             }
         },

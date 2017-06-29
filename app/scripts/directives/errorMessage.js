@@ -17,7 +17,7 @@ angular.module('playerApp')
             link: function postLink(scope, element, attrs) {
                 
                 attrs.data = attrs.data ? JSON.parse(attrs.data) : undefined;
-                scope.isClose = attrs.data && attrs.data.isClose ? attrs.data.isClose : true;
+                scope.isClose = attrs.data && attrs.data.isClose ? attrs.data.isClose : false;
                 if (attrs.data && attrs.data.messageType === 'info') {
                     scope.message = attrs.data.message.length ? attrs.data.message : 'Something wrong try in sometime.';
                     scope.errorClass = 'info';
