@@ -7,7 +7,7 @@
     margin-right: 0px !important;
 }
 
-.content-card-meta {
+.content-card-meta { 
     background: rgba(0, 0, 0, 0.5) !important;
     color: @white !important;
     padding: 5px !important;
@@ -30,8 +30,8 @@
     margin-bottom: 1rem;
     margin-left: 0px;
     font-family: HelveticaNeueLTStd-Lt, Helvetica, Arial, sans-serif;
-    background: #ffffff -webkit-linear-gradient(rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.05));
-    background: #ffffff linear-gradient(rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.05));
+    background: @white -webkit-linear-gradient(rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.05));
+    background: @white linear-gradient(rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.05));
     font-weight: 400;
     border: 1px solid rgba(0, 0, 0, 0.13);
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.13);
@@ -40,49 +40,13 @@
     justify-content: center !important;
 }
 
-.margin-right-8 {
-    margin-right: 8% !important;
-}
-
-.margin-left-small {
-    margin-left: 3% !important;
-}
-
-.margin-left-52 {
-    margin-left: 58% !important;
-}
-
-.padding-top-1rem {
-    padding-top: 1rem;
-}
-
-.padding-top-2rem {
-    padding-top: 2rem;
-}
-
-.padding-top-header-large-icons {
-    padding-top: 1.5rem;
-}
-
 .padding-top-circular-human-icon {
     padding-top: 0.9rem !important;
-}
-
-.font-size-header-icon {
-    font-size: 2em !important;
 }
 
 .loginForm {
     padding-bottom: 40px;
 }
-
-/*close button css in sign in page */
-.signInPopUp{    
-    background: @white !important;
-    border: none;
-    padding: 1rem 1rem 0 0 !important;  
-}
-
 
 .alarm-icon-header {
     padding-top: 1.5rem !important;
@@ -96,16 +60,8 @@
 }
 
 .header-filter-container {
-    background-color: #ffffff;
+    background-color: @white;
 }
-
-.header-filter-label {
-    width: 55px;
-    color: #aba7a7;
-    margin-top: 9px;
-    font-weight: 400;
-}
-
 
 /*loged in user icon*/
 
@@ -128,14 +84,16 @@
     text-align: center;
     align-self: center;
 }
+
 .login-modal-title {
-    color: #333 !important;
-    font-size: 24px !important;
+    color: @dark-grey !important;
+    font-size: 1.5625em !important;
     font-family: "FrutigerSerifLTW01-Medi 722257" !important;
 } 
+
 .login-modal-label-title {
-    color: #333 !important;
-    font-size: 18px !important;
+    color: @dark-grey !important;
+    font-size: 1.25em !important;
     font-family: "FrutigerSerifLTW01-Medi 722257" !important;
 } 
 
@@ -145,3 +103,19 @@
 .header-user-container {
     float: right !important;
 }
+
+/*close button css in sign in page */
+.signInPopUp{    
+    background: @white !important;
+    border: none;
+    padding: 1rem 1rem 0 0 !important;  
+}
+
+.padding-top-header-large-icons {
+    padding-top: 1.5rem;
+}
+
+.padding-top-1rem {
+    padding-top:1rem !important;     
+}
+
