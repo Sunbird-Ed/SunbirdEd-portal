@@ -1,5 +1,5 @@
 angular.module('playerApp')
-        .controller('courseScheduleCtrl', function (config, courseService, sessionService, $stateParams, $timeout, $scope, $sce, $rootScope, $window, $location, $anchorScroll) {
+        .controller('courseScheduleCtrl', function (config, courseService, sessionService, $stateParams, $state,$timeout, $scope, $sce, $rootScope, $window, $location, $anchorScroll) {
             var toc = this;
             toc.playList = [];
             toc.playListContent = [];
@@ -49,18 +49,26 @@ angular.module('playerApp')
             }
 
             toc.resumeCourse = function () {
-                if ($location.hash().indexOf('tocPlayer') < 0)
-                {
-                    //once last played index is given assign it for now zero
-                    $('#course-toc').find('.content').first().addClass('active');
-                    toc.itemIndex = 0;
-                    toc.playPlaylistContent(toc.playList[toc.itemIndex], '');
+                if ($rootScope.isTocPage) {
+                    if ($location.hash().indexOf('tocPlayer') < 0)
+                    {
+                        //once last played index is given assign it for now zero
+                        $('#course-toc').find('.content').first().addClass('active');
+                        toc.itemIndex = 0;
+                        toc.playPlaylistContent(toc.playList[toc.itemIndex], '');
+                    } else
+                    {
+                        var currentHash = $location.hash().toString().split("/");
+                        toc.itemIndex = parseInt(currentHash[2]);
+                        toc.playPlaylistContent(currentHash[1], '');
+
+                    }
                 } else
                 {
-                    var currentHash = $location.hash().toString().split("/");
-                    toc.itemIndex = parseInt(currentHash[2]);
-                    toc.playPlaylistContent(currentHash[1], '');
-
+                    var params = sessionService.getSessionData('COURSE_PARAMS');
+                    sessionService.setSessionData('COURSE_PARAMS', params);
+                    $rootScope.isPlayerOpen = true;
+                    $state.go('Toc', params);
                 }
             }
 
@@ -107,14 +115,14 @@ angular.module('playerApp')
                                     toc.contentStatusList = toc.fetchObjectAttributeAsArrayOrObject(content_res.result.contentList, "contentId", "status", true);
                                     toc.courseHierachy = res.result.content;
                                     $rootScope.courseName = toc.courseHierachy.name;
-                                    toc.applyAccordion();
+                                    $rootScope.isTocPage?toc.applyAccordion():false;
                                 }
                             });
                         } else
                         {
                             toc.courseHierachy = res.result.content;
                             $rootScope.courseName = toc.courseHierachy.name;
-                            toc.applyAccordion();
+                            $rootScope.isTocPage?toc.applyAccordion():false;
                         }
 
                     } else {
@@ -200,7 +208,7 @@ angular.module('playerApp')
             toc.getTreeData = function (contentData, parent) {
 
                 if (contentData.mimeType != 'application/vnd.ekstep.content-collection') {
-                    parent.push({title: "<span class='padded courseAccordianSubDesc'><i class='" + toc.getContentIcon(contentData.mimeType) +" "+toc.getContentClass(contentData.identifier)+ "'></i>" + contentData.name + "</span>", key: toc.treeKey, data: contentData, icon: false});
+                    parent.push({title: "<span class='padded courseAccordianSubDesc'><i class='" + toc.getContentIcon(contentData.mimeType) + " " + toc.getContentClass(contentData.identifier) + "'></i>" + contentData.name + "</span>", key: toc.treeKey, data: contentData, icon: false});
                     toc.treeKey += 1;
 
                 } else
@@ -215,9 +223,8 @@ angular.module('playerApp')
 
 
             toc.getContentClass = function (contentId) {
-                toc.contentStatusList[contentId]=2;
-                var statusClass={0:'grey',1:'blue',2:'green'};
-               return statusClass[toc.contentStatusList[contentId]||0];
+                var statusClass = {0: 'grey', 1: 'blue', 2: 'green'};
+                return statusClass[toc.contentStatusList[contentId] || 0];
             }
 
             toc.getContentIcon = function (contentMimeType) {
