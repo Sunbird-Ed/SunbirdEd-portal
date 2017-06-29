@@ -5,6 +5,7 @@ RUN apk update \
     && apk add -y python \
     && apk add -y python-dev \
     && apk update \
+    && apk add git \
     && mkdir -p /opt/player
 WORKDIR /opt/player
 COPY * /opt/player/
