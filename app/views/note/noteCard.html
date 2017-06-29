@@ -1,10 +1,10 @@
 <div class="rightSideSectionCards ui card margin-bottom-15" ng-init="noteCard.ngInit();" ng-if="noteCard.showNoteCard">
-    <div class="content">
+    <div class="content" ng-if="!noteCard.searchApi.loader.showLoader && !noteCard.searchApi.error.showError">
         <div class="header">
             <span>My Notebook</span>
             <a class="ui right floated font-dark-blue" ng-click="noteCard.showAllNoteList()">View All</a>
         </div>
-        <div class="description">
+        <div class="description" >
             <div class="ui list" ng-repeat="note in noteCard.notesList| orderBy : '-lastUpdatedOn' | limitTo: noteCard.quantityOfNotes track by $index">
                 <div class="item">
                     <div class="content">
@@ -14,7 +14,7 @@
                                    data-variation="wide"></i>
 
                             </span>
-                        <span class="ui time right floated">{{note.lastUpdatedOn| dateFilterXTimeAgo}}</span>
+                            <span class="ui time right floated">{{note.lastUpdatedOn| dateFilterXTimeAgo}}</span>
                         </span>
                         <div class="description">
                             <span> {{ note.note | limitTo: 70 }}&nbsp;
@@ -28,16 +28,24 @@
             </div>
         </div>
     </div>
+    <div class="description">
+        <div class="ui list" ng-if="noteCard.searchApi.loader.showLoader">
+            <app-loader data="{{noteCard.searchApi.loader}}"></app-loader>
+        </div>
+        <div class="ui list" ng-if="noteCard.searchApi.error.showError">
+            <error-message data="{{noteCard.searchApi.error}}" visibility="noteCard.searchApi.error.showError"></error-message>
+        </div>
+    </div>
     <div ng-if="noteCard.showUpdateNote">
         <div class="ui modal" id="updateNoteModal">
-            <div class=" ui segment margin-top-10">
+            <div class=" ui segment margin-top-10"  ng-if="!noteCard.updateApi.loader.showLoader && !noteCard.updateApi.error.showError">
                 <div class=" margin-bottom-15">
                     <div class="ui grid">
                         <div class="eleven wide column">
                             <span class="ui header">{{noteCard.update.metaData.title}}</span>
                         </div>
                         <div class="one wide column actions">
-                            <h5 class="ui basic icon circular button deny">
+                            <h5 class="ui basic icon circular button deny" ng-click="noteCard.updateApi.error.showError = false;">
                                 <i class="ui remove icon"></i>
                             </h5>
                         </div>
@@ -50,11 +58,15 @@
                     <pagedown-editor content="noteCard.update.metaData.note" show-preview="false" tabindex="2"></pagedown-editor>
                 </div>
                 <div class="actions">
-                    <button class="ui primary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="noteCard.updateNote(noteCard.update.metaData)" ng-disabled="!noteCard.update.metaData.title || !noteCard.update.metaData.note" tabindex="4" ng-class="noteCard.denyModalClass">Update</button>
+                    <button class="ui primary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="noteCard.updateNote(noteCard.update.metaData)" ng-disabled="!noteCard.update.metaData.title || !noteCard.update.metaData.note" tabindex="4"
+                            ng-class="noteCard.denyModalClass">Update</button>
                 </div>
-                <div ng-if="noteCard.showModalError">
-                    <span class="ui header red">{{noteCard.error.message}}</span>
-                </div>
+            </div>
+            <div class=" ui segment margin-top-10" ng-if="noteCard.updateApi.loader.showLoader">
+                <app-loader data="{{noteCard.updateApi.loader}}"></app-loader>
+            </div>
+            <div class=" ui segment margin-top-10" ng-if="noteCard.updateApi.error.showError">
+                <error-message data="{{noteCard.updateApi.error}}" visibility="noteCard.updateApi.error.showError"></error-message>
             </div>
         </div>
     </div>

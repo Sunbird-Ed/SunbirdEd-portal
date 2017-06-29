@@ -18,6 +18,34 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
     noteCard.showCreateNote = false;
     noteCard.showUpdateNote = false;
     noteCard.visibility = $scope.visibility;
+    noteCard.showModalError = false;
+    noteCard.notesList = [];
+    
+        /**
+     * This function helps to show loader with message.
+     * @param {String} headerMessage
+     * @param {String} loaderMessage
+     */
+    function showLoaderWithMessage(headerMessage, loaderMessage) {
+        var loader = {};
+        loader.showLoader = true;
+        loader.headerMessage = headerMessage;
+        loader.loaderMessage = loaderMessage;
+        return loader;
+    }
+
+    /**
+     * This function called when api failed, and its show failed response for 2 sec.
+     * @param {String} message
+     */
+    function showErrorMessage(isClose, message, messageType) {
+        var error = {};
+        error.showError = true;
+        error.isClose = isClose;
+        error.message = message;
+        error.messageType = messageType;
+        return error;
+    }
 
     /**
      * This function call search api and bind data
@@ -25,19 +53,26 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
      * @returns {undefined}
      */
     function search(request) {
-        noteCard.notesList = [];
+        
+        var api = 'searchApi';
+        noteCard[api] = {};
+        noteCard[api].loader = showLoaderWithMessage("", config.MESSAGES.NOTES.SEARCH.START);
+        
         noteService.search(request).then(function(response) {
                 if (response && response.responseCode === "OK") {
+                    noteCard[api].loader.showLoader = false;
                     noteCard.error = {};
                     noteCard.notesList = response.result.note;
                     $rootScope.$emit("updateNotesListData", response.result.note);
                 } else {
-                    handleFailedResponse(config.MESSAGES.NOTES.SEARCH.FAILED);
-                }
-            })
-            .catch(function(error) {
-                handleFailedResponse(config.MESSAGES.NOTES.SEARCH.FAILED);
-            });
+                noteCard[api].loader.showLoader = false;
+                noteCard[api].error = showErrorMessage(false, config.MESSAGES.NOTES.SEARCH.FAILED, config.MESSAGES.COMMON.ERROR);
+            }
+        })
+        .catch(function (error) {
+            noteCard[api].loader.showLoader = false;
+            noteCard[api].error = showErrorMessage(false, config.MESSAGES.NOTES.SEARCH.FAILED, config.MESSAGES.COMMON.ERROR);
+        });
     }
 
     /**
@@ -85,7 +120,7 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
     noteCard.createNote = function(noteData) {
 
         var requestData = {
-            note: {
+            note1: {
                 note: noteData.note,
                 userId: noteCard.userId,
                 title: noteData.title,
@@ -123,24 +158,37 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
             note: noteData
         };
 
-        delete requestData.note['identifier'];
-
-        showLoaderWithMessage(true, "", config.MESSAGES.NOTES.UPDATE.START);
+        var api = 'updateApi';
+        noteCard[api] = {};
+        noteCard[api].loader = showLoaderWithMessage("", config.MESSAGES.NOTES.UPDATE.START);
+        
         noteService.update(requestData).then(function(response) {
                 if (response && response.responseCode === "OK") {
-                    noteCard.ngInit();
-                    noteCard.error = {};
-                    noteCard.update.showUpdateNote = false;
-                    noteCard.showModalError = false;
+                    noteCard.closeAuthModal();
+                    noteCard[api].loader.showLoader = false;
+                    noteCard.notesList = noteCard.notesList.filter(function (note) {
+                        return note.identifier !== noteData.identifier;
+                    });
+                    noteCard.notesList.push(response.result.note);
+//                    noteCard.ngInit();
                 } else {
-                    noteCard.showModalError = true;
-                    handleFailedResponse(config.MESSAGES.NOTES.UPDATE.FAILED);
-                }
-            })
-            .catch(function(error) {
-                noteCard.showModalError = true;
-                handleFailedResponse(config.MESSAGES.NOTES.UPDATE.FAILED);
-            });
+                noteCard[api].loader.showLoader = false;
+                noteCard[api].error = showErrorMessage(true, config.MESSAGES.NOTES.UPDATE.FAILED, config.MESSAGES.COMMON.ERROR);
+            }
+        })
+        .catch(function (error) {
+            noteCard[api].loader.showLoader = false;
+            noteCard[api].error = showErrorMessage(true, config.MESSAGES.NOTES.UPDATE.FAILED, config.MESSAGES.COMMON.ERROR);
+        });
+    };
+    
+    noteCard.closeAuthModal = function() { 
+        $('#updateNoteModal') 
+            .modal('hide'); 
+        $('#updateNoteModal') 
+            .modal('hide others'); 
+        $('#updateNoteModal') 
+            .modal('hide dimmer'); 
     };
 
     noteCard.clearUpdateNoteData = function() {
@@ -158,6 +206,7 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
     noteCard.showUpdateNoteModal = function(note) {
 
         noteCard.showUpdateNote = true;
+        noteCard.denyModalClass = '';
         $timeout(function() {
             $('#updateNoteModal').modal({
                 onShow: function() {
@@ -166,6 +215,10 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
                 onHide: function() {
                     noteCard.closeUpdateNoteModal();
                     return true;
+                },
+                onDeny: function() {
+                    console.log(noteCard.updateApi.error.showError)
+                    return  !noteCard.updateApi.error.showError;
                 }
             }).modal('show');
         }, 100);
@@ -199,31 +252,6 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
         }, 100);
     };
 
-    /**
-     * This function helps to show loader or any error message at the time of api call.
-     * @param {Boolean} showMetaLoader
-     * @param {String} messageClass
-     * @param {String} message
-     */
-    function showLoaderWithMessage(showMetaLoader, messageClass, message) {
-        var error = {};
-        error.showError = true;
-        error.showMetaLoader = showMetaLoader;
-        error.messageClass = messageClass;
-        error.message = message;
-        noteCard.error = error;
-    }
-
-    /**
-     * This function called when api failed, and its show failed response for 2 sec.
-     * @param {String} message
-     */
-    function handleFailedResponse(message) {
-        showLoaderWithMessage(false, "red", message);
-        $timeout(function() {
-            noteCard.error = {};
-        }, 2000);
-    }
 
     $rootScope.$on("updateNotesListData", function(e, content) {
         noteCard.denyModalClass = 'deny';
