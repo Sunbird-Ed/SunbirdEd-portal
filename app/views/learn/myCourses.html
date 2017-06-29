@@ -1,23 +1,22 @@
 <div class="mycourses-padding ui grid">
     <div class="one wide column"></div>
-    <div class="ten wide column popular-section" ng-if="learn.enrolledCourses.length> 0">
-        <h4 class="ui header sectionHeading"><span translate="mycourses">My Courses</span><a class="ui red circular inline label ">{{learn.enrolledCourses.length}}</a></h4>
+    <div class="ten wide column popular-section" ng-if="!learn.enrollCourseApi.loader.showLoader">
+        <div ng-if="learn.enrolledCourses.length > 0">
+            <h4 class="ui header sectionHeading"><span translate="mycourses">My Courses</span><a class="ui red circular inline label ">{{learn.enrolledCourses.length}}</a></h4>
 
-        <div class="regular slider  courses-slider" ng-if="learn.enrolledCourses.length> 0">
-            <div ng-repeat="item in learn.enrolledCourses track by $index" ng-click="learn.openCourseView(item, 'ENROLLED_COURSE')" add-slick>
+            <div class="regular slider  courses-slider" ng-if="learn.enrolledCourses.length > 0">
+                <div ng-repeat="item in learn.enrolledCourses track by $index" ng-click="learn.openCourseView(item, 'ENROLLED_COURSE')" add-slick>
 
-                <div ng-include=" 'views/common/resumeCard.html' "></div>
+                    <div ng-include=" 'views/common/resumeCard.html'"></div>
+                </div>
             </div>
-        </div>
-    </div>
-    <content-player visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="true" isheader="true" isclose="true" height="10" width="100" ispercentage="true"></content-player>
-    <div ng-if="resource.error.isError">
-        <error-message data={{resource.error}}></error-message>
-    </div>
-    <div class="ui inverted dimmer margin-top-20 " ng-class="{true: 'active', false: 'disabled'}[loading] ">
-        <div class="ui text loader ">Featching enrolled contents
-        </div>
-    </div>
-</div>
 
-</div><br><br>
+            <content-player visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="true" isheader="true" isclose="true" height="10" width="100" ispercentage="true"></content-player>
+        </div>
+    </div>
+    <div class="ten wide column" ng-if="learn.enrollCourseApi.loader.showLoader">
+        <app-loader data="{{learn.enrollCourseApi.loader}}"></app-loader>
+    </div>
+    <div class="one wide column"></div>
+</div>
+<br><br>
