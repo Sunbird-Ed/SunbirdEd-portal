@@ -32,6 +32,306 @@
 50 px   3.125 em
 
 */
+/*! normalize.css v3.0.1 | MIT License | git.io/normalize */
+html {
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+}
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+nav,
+section,
+summary {
+  display: block;
+}
+audio,
+canvas,
+progress,
+video {
+  display: inline-block;
+  vertical-align: baseline;
+}
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+[hidden],
+template {
+  display: none;
+}
+a {
+  background: transparent;
+}
+a:active,
+a:hover {
+  outline: 0;
+}
+abbr[title] {
+  border-bottom: 1px dotted;
+}
+b,
+strong {
+  font-weight: bold;
+}
+dfn {
+  font-style: italic;
+}
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+mark {
+  background: #ff0;
+  color: #000;
+}
+small {
+  font-size: 80%;
+}
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+sup {
+  top: -0.5em;
+}
+sub {
+  bottom: -0.25em;
+}
+img {
+  border: 0;
+}
+svg:not(:root) {
+  overflow: hidden;
+}
+figure {
+  margin: 1em 40px;
+}
+hr {
+  box-sizing: content-box;
+  height: 0;
+}
+pre {
+  overflow: auto;
+}
+code,
+kbd,
+pre,
+samp {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+button,
+input,
+optgroup,
+select,
+textarea {
+  color: inherit;
+  font: inherit;
+  margin: 0;
+}
+button {
+  overflow: visible;
+}
+button,
+select {
+  text-transform: none;
+}
+button,
+html input[type="button"] {
+  -webkit-appearance: button;
+  cursor: pointer;
+}
+button[disabled],
+html input[disabled] {
+  cursor: default;
+}
+button input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+input {
+  line-height: normal;
+}
+input[type="reset"],
+input[type="submit"] {
+  -webkit-appearance: button;
+  cursor: pointer;
+}
+input[type="checkbox"],
+input[type="radio"] {
+  box-sizing: border-box;
+  padding: 0;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  height: auto;
+}
+input[type="search"] {
+  -webkit-appearance: textfield;
+  box-sizing: content-box;
+}
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+fieldset {
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em;
+}
+legend {
+  border: 0;
+  padding: 0;
+}
+textarea {
+  overflow: auto;
+}
+optgroup {
+  font-weight: bold;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+td,
+th {
+  padding: 0;
+}
+/*sunbird light font*/
+@font-face {
+  font-family: 'sunbirdlightfont';
+  src: url('../fonts/Roboto-Light.ttf') format('truetype');
+}
+/*sunbird Regular font*/
+@font-face {
+  font-family: 'sunbirdregularfont';
+  src: url('../fonts/Roboto-Regular.ttf') format('truetype');
+}
+/*sunbird Medium font*/
+@font-face {
+  font-family: 'sunbirdmediumfont';
+  src: url('../fonts/Roboto-Medium.ttf') format('truetype');
+}
+/*sunbird Bold font*/
+@font-face {
+  font-family: 'sunbirdboldfont';
+  src: url('../fonts/Roboto-Bold.ttf') format('truetype');
+}
+/*cards fonts*/
+.cardsHeading {
+  font-family: 'sunbirdboldfont' !important;
+  font-size: 1.25em;
+}
+.cardsSubHeading {
+  font-family: 'sunbirdregularfont' !important;
+  font-size: 1.125em;
+}
+.cardsDescription {
+  font-family: 'sunbirdregularfont' !important;
+  font-size: 1.0625em;
+  font-weight: 400;
+  line-height: 1.4;
+  color: black !important;
+}
+/* font used for view all and read more*/
+.cardsKnowMore {
+  font-family: 'sunbirdboldfont' !important;
+  font-size: 1em !important;
+}
+/* cards used in slider fonts*/
+.sliderCardHeading {
+  font-family: 'sunbirdboldfont' !important;
+  font-size: 1.1875em !important;
+}
+.sliderCardDesc {
+  font-family: 'sunbirdregularfont' !important;
+  font-size: 1em !important;
+  color: #8b8b8c !important;
+}
+.sliderCardSubDesc {
+  font-family: 'sunbirdregularfont' !important;
+  font-size: 0.875em !important;
+  color: grey !important;
+}
+/* segment card fonts*/
+.segmentCardHeading {
+  font-family: 'sunbirdboldfont' !important;
+  font-size: 1.313em !important;
+}
+.segmentAvatarDesc {
+  font-family: 'sunbirdregularfont' !important;
+  font-size: 1.0625em !important;
+  color: rgba(0, 0, 0, 0.85) !important;
+}
+.segmentAvatarSubDesc {
+  font-family: 'sunbirdregularfont' !important;
+  font-size: 0.9375em !important;
+  color: #7c7b7b !important;
+}
+.segmentCardSubDesc {
+  font-family: 'sunbirdregularfont' !important;
+  font-size: 1.0625em !important;
+}
+/*course structure page fonts*/
+.courseStructureHeading {
+  font-family: 'sunbirdboldfont' !important;
+  font-size: 1.0625em !important;
+}
+.courseStructureDesc {
+  font-family: 'sunbirdregularfont' !important;
+  font-size: 0.75em !important;
+}
+/*course structure accordian fonts*/
+.courseAccordianHeading {
+  font-family: 'sunbirdboldfont' !important;
+  font-size: 1.1875 !important;
+}
+.courseAccordianDesc {
+  font-family: 'sunbirdregularfont' !important;
+  font-size: 1.125em !important;
+}
+.courseAccordianSubDesc {
+  font-family: 'sunbirdboldfont' !important;
+  font-size: 0.9375em !important;
+}
+.segmentCardHeading {
+  font-family: 'sunbirdboldfont' !important;
+  font-size: 1.438em !important;
+}
+/*home page fonts*/
+.HomeAccordianHeading {
+  font-family: 'sunbirdboldfont' !important;
+  font-size: 1.375em !important;
+}
+/*section heading fonts*/
+.sectionHeading {
+  font-family: 'sunbirdboldfont' !important;
+  font-size: 1.375em !important;
+}
+/*show filter fonts*/
+.ShowFilterTitle {
+  font-family: 'sunbirdboldfont' !important;
+  font-size: 0.9375em !important;
+}
+.ShowFilterSubTitle {
+  font-family: 'sunbirdregularfont' !important;
+  font-size: 0.9375em !important;
+  color: #8b8b8c !important;
+}
 .padding-left-20 {
   margin-left: 20px !important;
 }
@@ -459,6 +759,35 @@
   margin-top: 9px;
   font-weight: 400;
 }
+/*loged in user icon*/
+.logged-in-user {
+  width: 30px !important;
+  height: 30px !important;
+  margin-top: 2px !important;
+  border-radius: 50% !important;
+  -webkit-border-radius: 50% !important;
+  -moz-border-radius: 50% !important;
+  -ms-border-radius: 50% !important;
+  -o-border-radius: 50% !important;
+  display: inline-block !important;
+  vertical-align: middle !important;
+}
+/*login form */
+.login-modal-text-align {
+  text-align: center;
+  -ms-flex-item-align: center;
+      align-self: center;
+}
+.login-modal-title {
+  color: #333 !important;
+  font-size: 24px !important;
+  font-family: "FrutigerSerifLTW01-Medi 722257" !important;
+}
+.login-modal-label-title {
+  color: #333 !important;
+  font-size: 18px !important;
+  font-family: "FrutigerSerifLTW01-Medi 722257" !important;
+}
 #search-suggestions {
   box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
   height: 200px;
@@ -665,189 +994,43 @@
   color: rgba(16, 16, 16, 0.88) !important;
   line-height: 1.5;
 }
-.footer1 {
-  position: fixed !important;
-  bottom: 0 !important;
-  width: 100% !important;
-}
-/*! normalize.css v3.0.1 | MIT License | git.io/normalize */
-html {
-  font-family: sans-serif;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-}
-body {
-  margin: 0;
-}
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-main,
-nav,
-section,
-summary {
-  display: block;
-}
-audio,
-canvas,
-progress,
-video {
-  display: inline-block;
-  vertical-align: baseline;
-}
-audio:not([controls]) {
-  display: none;
-  height: 0;
-}
-[hidden],
-template {
+.content-input {
   display: none;
 }
-a {
-  background: transparent;
+.content-iframe {
+  width: 100%;
+  height: 700px;
 }
-a:active,
-a:hover {
-  outline: 0;
+.content-video-player-youtube-dimensions.vjs-fluid {
+  padding-top: 500px;
 }
-abbr[title] {
-  border-bottom: 1px dotted;
-}
-b,
-strong {
-  font-weight: bold;
-}
-dfn {
-  font-style: italic;
-}
-h1 {
-  font-size: 2em;
-  margin: 0.67em 0;
-}
-mark {
-  background: #ff0;
-  color: #000;
-}
-small {
-  font-size: 80%;
-}
-sub,
-sup {
-  font-size: 75%;
-  line-height: 0;
+.content-player-container {
   position: relative;
-  vertical-align: baseline;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #fff;
 }
-sup {
-  top: -0.5em;
-}
-sub {
-  bottom: -0.25em;
-}
-img {
-  border: 0;
-}
-svg:not(:root) {
-  overflow: hidden;
-}
-figure {
-  margin: 1em 40px;
-}
-hr {
-  box-sizing: content-box;
-  height: 0;
-}
-pre {
-  overflow: auto;
-}
-code,
-kbd,
-pre,
-samp {
-  font-family: monospace, monospace;
-  font-size: 1em;
-}
-button,
-input,
-optgroup,
-select,
-textarea {
-  color: inherit;
-  font: inherit;
-  margin: 0;
-}
-button {
-  overflow: visible;
-}
-button,
-select {
-  text-transform: none;
-}
-button,
-html input[type="button"] {
-  -webkit-appearance: button;
-  cursor: pointer;
-}
-button[disabled],
-html input[disabled] {
-  cursor: default;
-}
-button input::-moz-focus-inner {
-  border: 0;
+.content-player-body {
   padding: 0;
 }
-input {
-  line-height: normal;
+.content-player {
+  position: relative;
+  height: 99%;
+  width: 99.8%;
 }
-input[type="reset"],
-input[type="submit"] {
-  -webkit-appearance: button;
-  cursor: pointer;
+.content-player iframe {
+  min-height: 500px;
 }
-input[type="checkbox"],
-input[type="radio"] {
-  box-sizing: border-box;
-  padding: 0;
+.player-video {
+  width: 100% !important;
+  height: 500px !important;
+  position: relative;
 }
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  height: auto;
-}
-input[type="search"] {
-  -webkit-appearance: textfield;
-  box-sizing: content-box;
-}
-input[type="search"]::-webkit-search-cancel-button,
-input[type="search"]::-webkit-search-decoration {
-  -webkit-appearance: none;
-}
-fieldset {
-  border: 1px solid #c0c0c0;
-  margin: 0 2px;
-  padding: 0.35em 0.625em 0.75em;
-}
-legend {
-  border: 0;
-  padding: 0;
-}
-textarea {
-  overflow: auto;
-}
-optgroup {
-  font-weight: bold;
-}
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-td,
-th {
-  padding: 0;
+.content-player-header {
+  padding: 5px 5px 5px 5px !important;
+  border: gray !important;
 }
 .slick-prev,
 .slick-next {
@@ -906,6 +1089,15 @@ slick-prev:before,
   background: 0 0!important;
   color: #2185d0 !important;
   text-shadow: none !important;
+}
+/*slick slider margin bottom removed*/
+.slick-slider {
+  margin-bottom: 0px !important;
+}
+.footer1 {
+  position: fixed !important;
+  bottom: 0 !important;
+  width: 100% !important;
 }
 .down-arrow-accordion {
   float: right !important;
@@ -1017,6 +1209,10 @@ ul.subList-padding {
   margin-top: 3% !important;
   padding: 5% !important;
 }
+/* margin removed for progress bar*/
+.progressBar-margin {
+  margin: 0px !important;
+}
 .text-cencapitalize {
   text-transform: capitalize;
 }
@@ -1025,6 +1221,7 @@ ul.subList-padding {
 }
 .popular-section {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 8px 6px -8px #d9d4d4;*/
   padding-top: 1em;
   padding-bottom: 1em;
   padding-left: 0.3em;
@@ -1204,127 +1401,6 @@ ul.subList-padding {
   background: transparent;
   box-shadow: none;
 }
-/*sunbird light font*/
-@font-face {
-  font-family: 'sunbirdlightfont';
-  src: url('../fonts/Roboto-Light.ttf') format('truetype');
-}
-/*sunbird Regular font*/
-@font-face {
-  font-family: 'sunbirdregularfont';
-  src: url('../fonts/Roboto-Regular.ttf') format('truetype');
-}
-/*sunbird Medium font*/
-@font-face {
-  font-family: 'sunbirdmediumfont';
-  src: url('../fonts/Roboto-Medium.ttf') format('truetype');
-}
-/*sunbird Bold font*/
-@font-face {
-  font-family: 'sunbirdboldfont';
-  src: url('../fonts/Roboto-Bold.ttf') format('truetype');
-}
-/*cards fonts*/
-.cardsHeading {
-  font-family: 'sunbirdboldfont' !important;
-  font-size: 1.25em;
-}
-.cardsSubHeading {
-  font-family: 'sunbirdregularfont' !important;
-  font-size: 1.125em;
-}
-.cardsDescription {
-  font-family: 'sunbirdregularfont' !important;
-  font-size: 1.0625em;
-  font-weight: 400;
-  line-height: 1.4;
-  color: black !important;
-}
-/* font used for view all and read more*/
-.cardsKnowMore {
-  font-family: 'sunbirdboldfont' !important;
-  font-size: 1em !important;
-}
-/* cards used in slider fonts*/
-.sliderCardHeading {
-  font-family: 'sunbirdboldfont' !important;
-  font-size: 1.1875em !important;
-}
-.sliderCardDesc {
-  font-family: 'sunbirdregularfont' !important;
-  font-size: 1em !important;
-  color: #8b8b8c !important;
-}
-.sliderCardSubDesc {
-  font-family: 'sunbirdregularfont' !important;
-  font-size: 0.875em !important;
-  color: grey !important;
-}
-/* segment card fonts*/
-.segmentCardHeading {
-  font-family: 'sunbirdboldfont' !important;
-  font-size: 1.313em !important;
-}
-.segmentAvatarDesc {
-  font-family: 'sunbirdregularfont' !important;
-  font-size: 1.0625em !important;
-  color: rgba(0, 0, 0, 0.85) !important;
-}
-.segmentAvatarSubDesc {
-  font-family: 'sunbirdregularfont' !important;
-  font-size: 0.9375em !important;
-  color: #7c7b7b !important;
-}
-.segmentCardSubDesc {
-  font-family: 'sunbirdregularfont' !important;
-  font-size: 1.0625em !important;
-}
-/*course structure page fonts*/
-.courseStructureHeading {
-  font-family: 'sunbirdboldfont' !important;
-  font-size: 1.0625em !important;
-}
-.courseStructureDesc {
-  font-family: 'sunbirdregularfont' !important;
-  font-size: 0.75em !important;
-}
-/*course structure accordian fonts*/
-.courseAccordianHeading {
-  font-family: 'sunbirdboldfont' !important;
-  font-size: 1.1875 !important;
-}
-.courseAccordianDesc {
-  font-family: 'sunbirdregularfont' !important;
-  font-size: 1.125em !important;
-}
-.courseAccordianSubDesc {
-  font-family: 'sunbirdboldfont' !important;
-  font-size: 0.9375em !important;
-}
-.segmentCardHeading {
-  font-family: 'sunbirdboldfont' !important;
-  font-size: 1.438em !important;
-}
-/*home page fonts*/
-.HomeAccordianHeading {
-  font-family: 'sunbirdboldfont' !important;
-  font-size: 1.375em !important;
-}
-/*section heading fonts*/
-.sectionHeading {
-  font-family: 'sunbirdboldfont' !important;
-  font-size: 1.375em !important;
-}
-/*show filter fonts*/
-.ShowFilterTitle {
-  font-family: 'sunbirdboldfont' !important;
-  font-size: 0.9375em !important;
-}
-.ShowFilterSubTitle {
-  font-family: 'sunbirdregularfont' !important;
-  font-size: 0.9375em !important;
-  color: #8b8b8c !important;
-}
 .filtersearch.ui.selection.dropdown {
   min-width: 108%;
 }
@@ -1380,95 +1456,13 @@ ul.subList-padding {
   padding-top: 0;
   margin-bottom: 1em;
 }
-.content-input {
-  display: none;
-}
-.content-iframe {
-  width: 100%;
-  height: 700px;
-}
-.content-video-player-youtube-dimensions.vjs-fluid {
-  padding-top: 500px;
-}
-.content-player-container {
-  position: relative;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  background-color: #fff;
-}
-.content-player-body {
-  padding: 0;
-}
-.content-player {
-  position: relative;
-  height: 99%;
-  width: 99.8%;
-}
-.content-player iframe {
-  min-height: 500px;
-}
-.player-video {
-  width: 100% !important;
-  height: 500px !important;
-  position: relative;
-}
-.content-player-header {
-  padding: 5px 5px 5px 5px !important;
-  border: gray !important;
-}
 body {
   position: relative !important;
-  margin: 0 !important;
   min-height: 100% !important;
   min-width: 100% !important;
   background: #fdfdfd !important;
-  font-family: "Helvetica Neue", Arial, sans-serif;
 }
 html {
   height: 100% !important;
   box-sizing: border-box !important;
-}
-.sidebar {
-  position: fixed !important;
-}
-.login-modal-text-align {
-  text-align: center;
-  -ms-flex-item-align: center;
-      align-self: center;
-}
-.login-modal-title {
-  color: #333 !important;
-  font-size: 24px !important;
-  font-family: "FrutigerSerifLTW01-Medi 722257" !important;
-}
-.login-modal-label-title {
-  color: #333 !important;
-  font-size: 18px !important;
-  font-family: "FrutigerSerifLTW01-Medi 722257" !important;
-}
-.logged-in-user {
-  width: 30px !important;
-  height: 30px !important;
-  margin-top: 2px !important;
-  border-radius: 50% !important;
-  -webkit-border-radius: 50% !important;
-  -moz-border-radius: 50% !important;
-  -ms-border-radius: 50% !important;
-  -o-border-radius: 50% !important;
-  display: inline-block !important;
-  vertical-align: middle !important;
-}
-.courseHeader-rating .active {
-  color: #0099CC !important;
-  text-shadow: none  !important;
-}
-/*slick slider margin bottom removed*/
-.slick-slider {
-  margin-bottom: 0px !important;
-}
-/* margin removed for progress bar*/
-.progressBar-margin {
-  margin: 0px !important;
 }
