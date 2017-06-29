@@ -332,6 +332,9 @@ th {
   font-size: 0.9375em !important;
   color: #8b8b8c !important;
 }
+.font-dark-blue {
+  color: #0099CC;
+}
 .padding-left-20 {
   margin-left: 20px !important;
 }
@@ -992,6 +995,9 @@ ul.subList-padding {
 /* margin removed for progress bar*/
 .progressBar-margin {
   margin: 0px !important;
+}
+span.fancytree-title {
+  margin: 0px 0px 10px 0px!important;
 }
 .text-cencapitalize {
   text-transform: capitalize;
