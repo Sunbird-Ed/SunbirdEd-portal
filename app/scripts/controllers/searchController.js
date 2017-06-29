@@ -13,12 +13,14 @@ angular.module('playerApp')
         search.initSearch = function() {
             search.query = $stateParams.query;
             search.searchType = $stateParams.searchType;
+            // search.searchContent();
         };
+        var currentState = $state.current.name;
 
         search.keyword = '';
         search.filters = {};
         search.sortBy = {};
-        search.searchSelectionKeys = [{ id: 'Courses', name: 'Courses' }, { id: 'Resources', name: 'Resources' }];
+        search.searchSelectionKeys = [{ id: 'Courses', name: 'Courses' }, { id: 'Resources', name: 'Resources' }, { id: 'All', name: 'All' }];
         search.languages = [
             'Bengali', 'English', 'Gujarati', 'Hindi', 'Kannada', 'Marathi', 'Punjabi', 'Tamil', 'Telugu'
         ];
@@ -44,18 +46,20 @@ angular.module('playerApp')
 
         $rootScope.showIFrameContent = false;
         $rootScope.search = search;
-        $timeout(function() {
-            $('#headerSearchdd').dropdown('set selected', $scope.selectedSearchKey.length ? $scope.selectedSearchKey : 'All');
-        });
+        // $timeout(function() {
+        //     $('#headerSearchdd').dropdown('set selected', $scope.selectedSearchKey.length ? $scope.selectedSearchKey : 'All');
+        // });
         search.playContent = function(item) {
             var params = { content: item };
             $state.go('Player', params);
         };
 
         $scope.$watch('searchKey', function() {
+            console.log('$rootScope.searchKey ', $rootScope.searchKey, 'current State', currentState);
             $scope.selectedSearchKey = $rootScope.searchKey;
             search.keyword = '';
             search.filters = {};
+            $('#headerSearch').dropdown('set selected', $rootScope.searchKey ? $rootScope.searchKey : 'All');
         });
         search.contentPlayer = {
             isContentPlayerEnabled: false
@@ -74,6 +78,7 @@ angular.module('playerApp')
             }, 2000);
         }
         search.handleContentSearch = function(contents, $event) {
+            var params = { searchType: 'resources', query: search.searchQuery, searchKey: 'Resources' };
             if (contents.result.count > 0) {
                 //if $event is passed then search is to get only autosuggest else to get the content
                 if ($event !== undefined && search.keyword !== '') {
@@ -82,7 +87,7 @@ angular.module('playerApp')
                 } else {
                     $rootScope.searchKey = $scope.selectedSearchKey;
                     search.autosuggest_data = [];
-                    var params = { searchType: 'resources', query: 'query' };
+
                     $state.go('Search', params);
 
                     $rootScope.searchResult = contents.result.content;
@@ -116,9 +121,10 @@ angular.module('playerApp')
         };
 
         search.searchContent = function($event) {
+            search.searchQuery = search.keyword ? search.keyword : search.query;
             search.enableLoader(true);
             var req = {
-                'query': search.keyword,
+                'query': search.searchQuery,
                 'filters': search.filters,
                 'params': {
                     'cid': '12'

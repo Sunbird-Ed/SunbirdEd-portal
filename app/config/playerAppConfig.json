@@ -56,6 +56,22 @@
                 "GET": "page/assemble/Resources"
             }
         },
+        "FILTER": {
+            "RESOURCES": {
+                "languages": [
+                    "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Marathi", "Punjabi", "Tamil", "Telugu"
+                ],
+                "contentTypes": [
+                    "Story", "Worksheet", "Collections", "Game", "Plugin", "Template"
+                ],
+                "subjects": [
+                    "Maths", "English", "Hindi", "Assamese", "Bengali", "Gujarati", "Kannada", "Malayalam", "Marathi", "Nepali", "Oriya", "Punjabi", "Tamil", "Telugu", "Urdu"
+                ],
+                "boards": [
+                    "NCERT", "CBSE", "ICSE", "MSCERT"
+                ]
+            }
+        },
         "MESSAGES": {
             "AUTH": {
                 "LOGIN": {
@@ -100,20 +116,20 @@
             },
             "RESOURCE": {
                 "PAGE": {
-                    "START": "We are fetching content..." 
+                    "START": "We are fetching content..."
                 }
             },
             "COURSE": {
                 "ENROLLED": {
-                    "START": "We are fetching enrolled courses..." 
+                    "START": "We are fetching enrolled courses..."
                 },
-                "TOC":{
-                    "START":"We are fetching course details...",
-                    "ERROR":"Unable to get course schedule details."
+                "TOC": {
+                    "START": "We are fetching course details...",
+                    "ERROR": "Unable to get course schedule details."
                 },
-                "ENROLL":{
-                    "START":"Enrolling....",
-                    "ERROR":"Cannot enroll now.Try again later"
+                "ENROLL": {
+                    "START": "Enrolling....",
+                    "ERROR": "Cannot enroll now.Try again later"
                 }
             }
         },
