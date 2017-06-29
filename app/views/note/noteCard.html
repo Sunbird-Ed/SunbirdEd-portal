@@ -8,13 +8,12 @@
             <div class="ui list" ng-repeat="note in noteCard.notesList| orderBy : '-lastUpdatedOn' | limitTo: noteCard.quantityOfNotes track by $index">
                 <div class="item">
                     <div class="content">
-                        <span class="ui tiny header font-size-small">
-                            <span class="font-dark-blue mouse-pointer" ng-click="noteCard.showUpdateNoteModal(note)"> {{ note.title | limitTo: 15 }}&nbsp;
+                        <span class="ui tiny header">
+                            <span class="cardsKnowMore mouse-pointer" ng-click="noteCard.showUpdateNoteModal(note)"> {{ note.title | limitTo: 15 }}&nbsp;
                                 <i ng-show="note.title.length > 15" class="ellipsis horizontal icon popup-button" data-content="{{note.note}}"
                                    data-variation="wide"></i>
-
                             </span>
-                            <span class="ui time right floated">{{note.lastUpdatedOn| dateFilterXTimeAgo}}</span>
+                            <span class="note-card-timeStamp right floated">{{note.lastUpdatedOn| dateFilterXTimeAgo}}</span>
                         </span>
                         <div class="description">
                             <span> {{ note.note | limitTo: 70 }}&nbsp;
