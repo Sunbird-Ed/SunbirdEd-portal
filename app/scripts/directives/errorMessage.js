@@ -19,17 +19,17 @@ angular.module('playerApp')
                 attrs.data = attrs.data ? JSON.parse(attrs.data) : undefined;
                 scope.isClose = attrs.data && attrs.data.isClose ? attrs.data.isClose : false;
                 if (attrs.data && attrs.data.messageType === 'info') {
-                    scope.message = attrs.data.message.length ? attrs.data.message : 'Something wrong try in sometime.';
+                    scope.message = attrs.data.message ? attrs.data.message : 'Something wrong try in sometime.';
                     scope.errorClass = 'info';
 
                } else if (attrs.data && attrs.data.messageType === 'warning') {
-                    scope.message = attrs.data.message.length ? attrs.data.message : 'Something wrong try in sometime.';
+                    scope.message = attrs.data.message ? attrs.data.message : 'Something wrong try in sometime.';
                     scope.errorClass = 'warning';
                 } else if (attrs.data && attrs.data.messageType === 'error') {
-                    scope.message = attrs.data.message.length ? attrs.data.message : 'Something wrong try in sometime.';
+                    scope.message = attrs.data.message ? attrs.data.message : 'Something wrong try in sometime.';
                     scope.errorClass = 'error';
                 } else if (attrs.data && attrs.data.messageType === 'success') {
-                    scope.message = attrs.data.message.length ? attrs.data.message : 'Success.';
+                    scope.message = attrs.data.message ? attrs.data.message : 'Success.';
                     scope.errorClass = 'success';
                 }
                 

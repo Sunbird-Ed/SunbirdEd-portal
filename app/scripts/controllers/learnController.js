@@ -2,7 +2,7 @@
 
 angular.module('playerApp')
 
-.controller('LearnCtrl', function(learnService, $log, $scope, $sessionStorage, $timeout, $state, $rootScope, sessionService, $location, $window) {
+.controller('LearnCtrl', function(learnService, $log, $scope, $sessionStorage, $timeout, $state, $rootScope, sessionService, $location, $window, config) {
     var learn = this;
     var uid = $rootScope.userId ? $rootScope.userId : $window.localStorage.getItem('userId');
     $rootScope.searchResult = [];
@@ -10,15 +10,30 @@ angular.module('playerApp')
         isContentPlayerEnabled: false
     };
 
-    function handleFailedResponse(errorResponse) {
+        /**
+     * This function helps to show loader with message.
+     * @param {String} headerMessage
+     * @param {String} loaderMessage
+     */
+    function showLoaderWithMessage(headerMessage, loaderMessage) {
+        var loader = {};
+        loader.showLoader = true;
+        loader.headerMessage = headerMessage;
+        loader.loaderMessage = loaderMessage;
+        return loader;
+    }
+
+    /**
+     * This function called when api failed, and its show failed response for 2 sec.
+     * @param {String} message
+     */
+    function showErrorMessage(isClose, message, messageType) {
         var error = {};
-        error.isError = true;
-        error.message = '';
-        error.responseCode = errorResponse.responseCode;
-        learn.error = error;
-        $timeout(function() {
-            $scope.error = {};
-        }, 2000);
+        error.showError = true;
+        error.isClose = isClose;
+        error.message = message;
+        error.messageType = messageType;
+        return error;
     }
 
     learn.openCourseView = function(course, courseType) {
@@ -30,11 +45,14 @@ angular.module('playerApp')
     };
 
     learn.courses = function() {
-        $scope.loading = true;
+        
+        var api = 'enrollCourseApi';
+        learn[api] = {};
+        learn[api].loader = showLoaderWithMessage("", config.MESSAGES.COURSE.ENROLLED.START);
 
         learnService.enrolledCourses(uid).then(function(successResponse) {
-                $scope.loading = false;
                 if (successResponse && successResponse.responseCode === 'OK') {
+                    learn[api].loader.showLoader = false;
                     learn.enrolledCourses = successResponse.result.courses;
                     $rootScope.enrolledCourseIds = [];
 
@@ -42,35 +60,38 @@ angular.module('playerApp')
                         $rootScope.enrolledCourseIds.push(course.courseId);
                     });
                 } else {
-                    $log.warn('enrolledCourses', successResponse);
-                    handleFailedResponse(successResponse);
-                }
-            })
-            .catch(function(error) {
-                $log.warn(error);
-
-                handleFailedResponse(error);
-            });
+                learn[api].loader.showLoader = false;
+            }
+        })
+        .catch(function (error) {
+            learn[api].loader.showLoader = false;
+        });
     };
+    
     learn.courses();
+    
     learn.otherSection = function() {
         var req = {
             'request': {
                 'context': {
-                    'userId': 'user1'
+                    'userId': uid
                 }
             }
         };
+        var api = 'pageApi';
+        learn[api] = {};
+        learn[api].loader = showLoaderWithMessage("", config.MESSAGES.COURSE.PAGE_API.START);
+        
         learnService.otherSections(req).then(function(successResponse) {
             if (successResponse && successResponse.responseCode === 'OK' && successResponse.result.response) {
+                learn[api].loader.showLoader = false;
                 learn.page = successResponse.result.response.sections;
             } else {
-                $log.warn('otherCourses', successResponse);
-                handleFailedResponse(successResponse);
+                learn[api].loader.showLoader = false;
             }
-        }).catch(function(error) {
-            $log.warn(error);
-            handleFailedResponse(error);
+        })
+        .catch(function (error) {
+            learn[api].loader.showLoader = false;
         });
     };
     learn.otherSection();
