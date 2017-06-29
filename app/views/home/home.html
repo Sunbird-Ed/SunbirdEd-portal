@@ -2,7 +2,7 @@
     <div class="one wide column"></div>
     <div class="ten wide column">
         <div class="row">
-            <div class="twelve wide column">
+            <div class="twelve wide column" ng-if="!homeCtrl.enrollCourseApi.loader.showLoader && !homeCtrl.enrollCourseApi.error.showError">
                 <div ng-if="homeCtrl.enrolledCourses.length" class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100 homeHeaderPadding" apply-script>
                     <span class="ui header HomeAccordianHeading" translate="todo">To Do</span><a class="todolabel ui red circular inline label ">{{homeCtrl.enrolledCourses.length}}</a>
                     <span class="removeline title title-padding-left accordian-HomeLeft-text active float-ContentRight" data-tooltip="Collapse" data-inverted="">
@@ -17,9 +17,15 @@
                     </div>
                 </div>
             </div>
+            <div class="twelve wide column" ng-if="homeCtrl.enrollCourseApi.loader.showLoader">
+                <app-loader data="{{homeCtrl.enrollCourseApi.loader}}"></app-loader>
+            </div>
+            <div class="twelve wide column" ng-if="homeCtrl.enrollCourseApi.error.showError">
+                <error-message data="{{homeCtrl.enrollCourseApi.error}}" visibility="homeCtrl.enrollCourseApi.error.showError"></error-message>
+            </div>
         </div><br>
         <div class="row">
-            <div class="twelve wide column">
+            <div class="twelve wide column" ng-if="!homeCtrl.pageApi.loader.showLoader && !homeCtrl.pageApi.error.showError">
                 <div class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100 homeHeaderPadding" apply-script ng-if="homeCtrl.recommendedCourse.length > 0">
                     <span class="ui header  HomeAccordianHeading" translate="recommended">Recommended</span>
                     <span class="removeline title title-padding-left active float-ContentRight" data-tooltip="Collapse" data-inverted=""><i class="angle down icon down-arrow-accordion accordian-homeIcon float-ContentRight" ></i>
@@ -32,6 +38,12 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="twelve wide column" ng-if="homeCtrl.pageApi.loader.showLoader">
+                <app-loader data="{{homeCtrl.pageApi.loader}}"></app-loader>
+            </div>
+            <div class="twelve wide column" ng-if="homeCtrl.pageApi.error.showError">
+                <error-message data="{{homeCtrl.pageApi.error}}" visibility="homeCtrl.pageApi.error.showError"></error-message>
             </div>
         </div><br><br>
         <div class="ui grid">

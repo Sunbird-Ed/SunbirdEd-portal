@@ -23,6 +23,10 @@
 18 px   1.125 em
 19 px   1.1875 em
 20 px   1.25 em
+21 px   1.313em
+22 px   1.375em
+23 px   1.438em
+24 px   1.500em
 25 px   1.5625 em
 30 px   1.875 em 
 40 px   2.5 em
@@ -30,91 +34,68 @@
 
 */
 
+// ----------------------------------------------------------------------
+  // Base
+// ---
+
+@import 'base/normalize';
+@import 'base/fonts';
+@import 'base/variables';
+
+
+
+// ----------------------------------------------------------------------
+  // reUseable
+// ----------------------------------------------------------------------
 
 @import 'reuseable/reUseable';
-@import 'common/common';
+
+
+
+// ----------------------------------------------------------------------
+  // Modules
+// ----------------------------------------------------------------------
+
 @import 'modules/header';
 @import 'modules/card';
-@import 'modules/footer';
-@import 'base/normalize';
+@import 'modules/contentplayer';
 @import 'modules/slickerSearch';
+@import 'modules/footer';
+
+
+
+// ----------------------------------------------------------------------
+  // views
+// ----------------------------------------------------------------------
+
 @import 'views/courseStructure';
 @import 'views/learn';
 @import 'views/toc';
 @import 'views/home';
 @import 'views/landingPage';
-@import 'content';
 @import 'views/searchResult';
-@import 'base/fonts';
 @import 'views/filter';
 @import 'views/resource';
-@import 'base/variables';
 
 body {
     position: relative !important;
-    margin: 0 !important;
     min-height: 100% !important;
     min-width: 100% !important;
-    background: #fdfdfd !important;
-    font-family: "Helvetica Neue", Arial, sans-serif;
+    background: @websiteBody-color !important;
 }
 
 html {
     height: 100% !important;
     box-sizing: border-box !important;
 }
-.sidebar {
-    position: fixed !important;
-}
-
-.login-modal-text-align {
-    text-align: center;
-    align-self: center;
-}
-.login-modal-title {
-    color: #333 !important;
-    font-size: 24px !important;
-    font-family: "FrutigerSerifLTW01-Medi 722257" !important;
-} 
-.login-modal-label-title {
-    color: #333 !important;
-    font-size: 18px !important;
-    font-family: "FrutigerSerifLTW01-Medi 722257" !important;
-} 
 
 
-.logged-in-user {
-    width: 30px !important;
-    height: 30px !important;
-    margin-top: 2px !important;
-    border-radius: 50% !important;
-    -webkit-border-radius: 50% !important;
-    -moz-border-radius: 50% !important;
-    -ms-border-radius: 50% !important;
-    -o-border-radius: 50% !important;
-    display: inline-block !important;
-    vertical-align: middle !important;
-}
-
-.courseHeader-rating {
-   .active{
-        color: @blue  !important;
-        text-shadow: none  !important;
-   }    
-}
 
 
-/*slick slider margin bottom removed*/
 
-.slick-slider {
-    margin-bottom: 0px !important;
-}
 
-/* margin removed for progress bar*/
 
-.progressBar-margin {
-    margin: 0px !important;
-}
+
 
 
 

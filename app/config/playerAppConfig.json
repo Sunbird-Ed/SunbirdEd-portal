@@ -105,7 +105,12 @@
             },
             "COURSE": {
                 "ENROLLED": {
-                    "START": "We are fetching enrolled courses..." 
+                    "START": "We are fetching enrolled courses...",
+                    "FAILED": "Fetching enrolled courses failed, please try again later..."
+                },
+                "PAGE_API": {
+                    "START": "We are fetching data...",
+                    "FAILED": "Fetching other courses failed, please try again later..."
                 },
                 "TOC":{
                     "START":"We are fetching course details...",
@@ -114,6 +119,16 @@
                 "ENROLL":{
                     "START":"Enrolling....",
                     "ERROR":"Cannot enroll now.Try again later"
+                }
+            },
+            "HOME": {
+                "ENROLLED": {
+                    "START": "We are fetching enrolled courses...",
+                    "FAILED": "Fetching enrolled courses failed, please try again later..."
+                },
+                "PAGE_API": {
+                    "START": "We are fetching data...",
+                    "FAILED": "Fetching other courses failed, please try again later..."
                 }
             }
         },
