@@ -2,7 +2,7 @@ FROM mhart/alpine-node:6
 MAINTAINER "Manojvv" "manojrpms@gmail.com"
 RUN apk update \
     && apk add unzip
-RUN useradd -ms sunbird
+RUN adduser -u 1001 -h /home/sunbird/ -D sunbird
 USER sunbird
 WORKDIR /home/sunbird
 COPY player-dist.zip  /home/sunbird/
