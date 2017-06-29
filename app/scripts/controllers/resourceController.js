@@ -7,12 +7,17 @@ angular.module('playerApp')
                 isContentPlayerEnabled: false
             };
             $rootScope.searchResult = [];
-            function handleFailedResponse(errorResponse) {
+            /**
+             * This function called when api failed, and its show failed response for 2 sec.
+             * @param {String} message
+             */
+            function showErrorMessage(isClose, message, messageType) {
                 var error = {};
-                error.isError = true;
-                error.message = errorResponse.responseCode === 'CLIENT_ERROR' ? 'invalid username or password' : '';
-                error.responseCode = errorResponse.responseCode;
-                error.error = error;
+                error.showError = true;
+                error.isClose = isClose;
+                error.message = message;
+                error.messageType = messageType;
+                return error;
             }
             
             /**
@@ -25,29 +30,28 @@ angular.module('playerApp')
                 loader.showLoader = true;
                 loader.headerMessage = headerMessage;
                 loader.loaderMessage = loaderMessage;
-                resource.loader = loader;
+                return loader;
             }
             
             resource.playContent = function (item) {
                 var params = {content: item};
                 $state.go('Player', params);
-            }
+            };
+            
             resource.sections = function () {
-                showLoaderWithMessage("", config.MESSAGES.RESOURCE.PAGE.START)
+                resource.loader = showLoaderWithMessage("", config.MESSAGES.RESOURCE.PAGE.START);
+                
                 resourceService.resources().then(function (successResponse) {
-                    console.log('successResponse', successResponse.result);
                     if (successResponse && successResponse.responseCode === 'OK') {
                         resource.loader.showLoader = false;
                         resource.page = successResponse.result.response.sections;
-                        console.log('page', resource.page);
                     } else {
                         resource.loader.showLoader = false;
-                        handleFailedResponse(successResponse);
+                        resource.error = showErrorMessage(true, config.MESSAGES.RESOURCE.PAGE.FAILED, config.MESSAGES.COMMON.ERROR);
                     }
                 }).catch(function (error) {
                     resource.loader.showLoader = false;
-                    $log.warn(error);
-                    handleFailedResponse(error);
+                    resource.error = showErrorMessage(true, config.MESSAGES.RESOURCE.PAGE.FAILED, config.MESSAGES.COMMON.ERROR);
                 });
             };
             resource.sections();
