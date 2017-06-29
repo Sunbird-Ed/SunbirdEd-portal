@@ -788,6 +788,12 @@ th {
   font-size: 18px !important;
   font-family: "FrutigerSerifLTW01-Medi 722257" !important;
 }
+.beforelogin.ui.secondary.pointing.menu {
+  border-bottom: 0;
+}
+.header-user-container {
+  float: right !important;
+}
 #search-suggestions {
   box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
   height: 200px;
