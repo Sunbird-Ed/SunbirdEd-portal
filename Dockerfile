@@ -2,10 +2,12 @@ FROM mhart/alpine-node:6
 MAINTAINER "Manojvv" "manojrpms@gmail.com"
 RUN apk update \
     && apk add unzip
-WORKDIR /opt/
-COPY player-dist.zip  /opt/
-RUN unzip /opt/player-dist.zip 
-WORKDIR /opt/dist
+RUN useradd -ms /bin/bash sunbird
+USER sunbird
+WORKDIR /home/sunbird
+COPY player-dist.zip  /home/sunbird/
+RUN unzip /home/sunbird/player-dist.zip 
+WORKDIR /home/sunbird/dist
 RUN npm install express-http-proxy --save \
     && npm install express --save \
     && npm install request --save
