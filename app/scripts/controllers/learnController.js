@@ -23,7 +23,7 @@ angular.module('playerApp')
 
     learn.openCourseView = function(course, courseType) {
         var showLectureView = 'no';
-        var params = { courseType: courseType, courseId: course.contentId,tocId:course.courseId, lectureView: showLectureView, progress: course.progress, total: course.total };
+        var params = { courseType: courseType, courseId: course.contentId,tocId:course.courseId, lectureView: showLectureView, progress: course.progress, total: course.total,courseRecordId:course.id };
         sessionService.setSessionData('COURSE_PARAMS', params);
         $rootScope.isPlayerOpen = true;
         $state.go('Toc', params);
