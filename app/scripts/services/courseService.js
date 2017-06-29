@@ -20,7 +20,7 @@ angular.module('playerApp')
         }
 
         this.courseContentState = function(req) {
-            var url = config.URL.USER_BASE + config.URL.COURSE.USER_CONTENT_STATE;
+            var url = config.URL.DEV_API_BASE + config.URL.COURSE.USER_CONTENT_STATE;
             return httpServiceJava.post(url, req);
         }
 
