@@ -78,12 +78,12 @@
                 },
                 "REMOVE": {
                     "START": "We are removing note...",
-                    "FAILED": "Deleting note is failed, please try again later...",
+                    "FAILED": "Removing note is failed, please try again later...",
                     "SUCCESS": "Note deleted successfully..."
                 },
                 "SEARCH": {
                     "START": "We are fetching notes...",
-                    "FAILED": "Searching note is failed, please try again later...",
+                    "FAILED": "Fetching note is failed, please try again later...",
                     "SUCCESS": "Note detail fetched successfully..."
                 },
                 "UPDATE": {
