@@ -1,7 +1,7 @@
 <div ng-controller="resourceCtrl as resource">
     <div class="resource-padding ui grid">
         <div class="one wide column"></div>
-        <div class="ten wide column popular-page" ng-if="!resource.loader.showLoader">
+        <div class="ten wide column popular-page" ng-if="!resource.loader.showLoader && !resource.error.showError">
             <div class="ui link cards popular-section" ng-repeat=" section in resource.page" ng-show="!resource.contentPlayer.isContentPlayerEnabled">
                 <h4 class="ui header card-section-header ">{{section.name}}
                     <a class="ui red circular inline label">{{section.contents.length}}</a></h4>
@@ -10,17 +10,13 @@
                         <div ng-include=" 'views/common/ratingCard.html'" ng-click="resource.playContent(item)"></div>
                     </div>
                 </div>
-                <div ng-if="resource.error.isError">
-                    <error-message data={{resource.error}}></error-message>
-                </div>
-                <div class="ui inverted dimmer margin-top-20 " ng-class="{true: 'active', false: 'disabled'}[loading] ">
-                    <div class="ui text loader ">Featching enrolled contents
-                    </div>
-                </div>
             </div>
         </div>
-        <div class="ten wide column popular-page" ng-if="resource.loader.showLoader">
+        <div class="ten wide column" ng-if="resource.loader.showLoader">
             <app-loader data="{{resource.loader}}"></app-loader>
+        </div>
+        <div class="ten wide column" ng-if="resource.error.showError">
+            <error-message data="{{resource.error}}" visibility="resource.error.showError"></error-message>
         </div>
         <div class="one wide column"></div>
     </div>

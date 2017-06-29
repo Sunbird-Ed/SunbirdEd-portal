@@ -100,7 +100,8 @@
             },
             "RESOURCE": {
                 "PAGE": {
-                    "START": "We are fetching content..." 
+                    "START": "We are fetching content...",
+                    "FAILED": "Fetching content failed, please try again later..."
                 }
             },
             "COURSE": {
