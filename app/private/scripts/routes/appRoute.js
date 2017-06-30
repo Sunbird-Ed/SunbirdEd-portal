@@ -224,8 +224,12 @@ angular
             })
             .state('SearchCourse', {
                 url: '/:searchType/search/:query/',
-                templateUrl: 'views/search/search.html',
-                controller: 'SearchCourseCtrl as search',
+                views: {
+                    'contentView': {
+                        templateUrl: 'views/search/search.html',
+                        controller: 'SearchCourseCtrl as search',
+                    }
+                },
                 params: { searchType: null, query: null, searchKey: null, event: null },
                 onEnter: function($rootScope) {
                     $rootScope.isSearchPage = true;
@@ -239,8 +243,12 @@ angular
             })
             .state('SearchResource', {
                 url: '/resources/search/:query/:searchType/',
-                templateUrl: 'views/search/search.html',
-                controller: 'SearchResourcesCtrl as search',
+                views: {
+                    'contentView': {
+                        templateUrl: 'views/search/search.html',
+                        controller: 'SearchResourcesCtrl as search'
+                    }
+                },
                 params: { searchType: null, query: null, event: null },
                 onEnter: function($rootScope) {
                     $rootScope.isSearchPage = true;
