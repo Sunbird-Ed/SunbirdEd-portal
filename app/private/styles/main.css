@@ -538,142 +538,6 @@ th {
   box-shadow: none !important;
   border: none!important;
 }
-#search-suggestions {
-  box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
-  height: 200px;
-  overflow-y: auto;
-  z-index: 10;
-  position: absolute;
-  background: white;
-  text-align: left;
-  width: 600px;
-}
-#search-suggestions .result .content .title {
-  font-size: 13px;
-  padding: 2px;
-  color: #717171;
-  cursor: pointer;
-}
-#search-suggestions .result .content .title:hover {
-  color: black;
-}
-@media only screen and (max-width: 1400px) {
-  #search-suggestions {
-    width: 500px;
-  }
-}
-@media only screen and (max-width: 1097px) {
-  #search-suggestions {
-    width: 405px;
-  }
-}
-.dash-heading-border {
-  border-bottom: 1px dashed #333;
-  overflow: auto;
-}
-.marginBottom10 {
-  margin-bottom: 10px;
-}
-.block-border-bottom {
-  border-bottom: 1px solid #ddd;
-  padding: 0px 0px 10px 0px;
-}
-.noPad {
-  padding-left: 0;
-  padding-right: 0;
-}
-.currentcourse-block-desc {
-  line-height: 22px;
-  padding-top: 10px;
-  padding-left: 20px;
-}
-.course-intro-big {
-  margin-top: 0px;
-  line-height: 1;
-  display: block;
-  padding-bottom: 5px;
-}
-.course-intro-big span,
-.course-intro-small span {
-  font-family: 'FrutigerNeueW01-Regular';
-  font-size: 20px;
-}
-.course-intro-small {
-  font-size: 14px;
-  cursor: pointer;
-  color: #428bca;
-}
-.empty-div {
-  height: 50px;
-}
-.currentcourse-block-header {
-  font-size: 3em;
-  font-weight: 600;
-  line-height: 6.1;
-  margin: 2em 0 0.1em 0;
-}
-.dashboardBadgeText,
-.dashboardBadgeText span {
-  text-align: center !important;
-  margin-top: 20px;
-  font-size: 64px;
-  margin-bottom: 15px;
-  font-family: 'Frutiger Neue W01 UltLt';
-  display: block;
-  width: 100%;
-}
-.toc-list-sub-menu {
-  display: none;
-  padding: 5px;
-}
-.toc-list {
-  list-style: none !important;
-  cursor: pointer;
-  margin-left: 5px;
-}
-.toc-content-header {
-  font-size: 17px !important;
-  color: #333;
-}
-.toc-content-child-header {
-  font-size: 15px !important;
-  color: #444;
-}
-.dynamic-section-card .slider .card {
-  position: relative
-            !important ;
-  background-color: transparent!important;
-  box-shadow: none;
-}
-.dynamic-section-card .slider .card .image img {
-  padding: 0 !important;
-  height: 150px;
-}
-.dynamic-section-card .slider .card .image .header {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.2);
-  color: #fff;
-  width: 100%;
-  margin: 0;
-  padding: -30px !important;
-  max-height: 70px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  text-align: center;
-}
-.dynamic-section-card .slider .card .content {
-  background-color: transparent!important;
-}
-.dynamic-section-card .slider .card .extra {
-  border-top: transparent !important;
-}
-.dynamic-section-card .slider .card .extra .card-rating .active {
-  color: #0099CC !important;
-  text-shadow: none  !important;
-  padding-top: 0!important;
-}
 .ui.card > .sliderCards.content {
   -webkit-box-flex: 1;
   -ms-flex-positive: 1;
@@ -720,7 +584,7 @@ th {
   bottom: 0;
   left: 0;
   background-color: rgba(0, 0, 0, 0.2);
-  color: #fff;
+  color: #FFFFFF;
   width: 100%;
   margin: 0;
   max-height: 70px;
@@ -736,7 +600,7 @@ th {
   height: 150px !important;
 }
 .sliderCards .ui.mini.rating {
-  font-size: .78571429rem;
+  font-size: 0.78571429em;
   padding-top: 12px;
 }
 .sliderCards > .description {
@@ -760,7 +624,7 @@ th {
   left: 0;
   height: 100%;
   width: 100%;
-  background-color: #fff;
+  background-color: #FFFFFF;
 }
 .content-player-body {
   padding: 0;
@@ -788,7 +652,7 @@ th {
   background-color: #FFFFFF;
 }
 .editor textarea {
-  background-color: white;
+  background-color: #FFFFFF;
   height: 180px !important;
 }
 .pdf-editor {
@@ -1066,6 +930,11 @@ span.fancytree-title {
   width: 100% !important;
   padding-right: 0px !important;
 }
+.toc-list {
+  list-style: none !important;
+  cursor: pointer;
+  margin-left: 5px;
+}
 .homeCard.ui.card {
   max-width: 100%;
   position: relative;
@@ -1176,6 +1045,35 @@ span.fancytree-title {
   background: transparent;
   box-shadow: none;
 }
+#search-suggestions {
+  box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
+  height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+  position: absolute;
+  background: white;
+  text-align: left;
+  width: 600px;
+}
+#search-suggestions .result .content .title {
+  font-size: 13px;
+  padding: 2px;
+  color: #717171;
+  cursor: pointer;
+}
+#search-suggestions .result .content .title:hover {
+  color: black;
+}
+@media only screen and (max-width: 1400px) {
+  #search-suggestions {
+    width: 500px;
+  }
+}
+@media only screen and (max-width: 1097px) {
+  #search-suggestions {
+    width: 405px;
+  }
+}
 .filtersearch.ui.selection.dropdown {
   min-width: 108%;
 }
@@ -1211,9 +1109,8 @@ span.fancytree-title {
 }
 .searchicon.ui.icon.input input {
   padding-right: 6px!important;
-  border: 1px solid #333333;
+  border: 1px solid rgba(51, 51, 51, 0.33);
   border-radius: 0 .28571429rem .28571429rem 0;
-  opacity: 0.33;
 }
 .searchicon.ui.icon.input i {
   cursor: pointer;
@@ -1236,6 +1133,79 @@ span.fancytree-title {
 .resource-padding.ui.grid > .column:not(.row) {
   padding-top: 0;
   margin-bottom: 1em;
+}
+.dash-heading-border {
+  border-bottom: 1px dashed #333333;
+  overflow: auto;
+}
+.block-border-bottom {
+  border-bottom: 1px solid #ddd;
+  padding: 0px 0px 10px 0px;
+}
+.currentcourse-block-desc {
+  line-height: 22px;
+  padding-top: 10px;
+  padding-left: 20px;
+}
+.course-intro-big {
+  margin-top: 0px;
+  line-height: 1;
+  display: block;
+  padding-bottom: 5px;
+}
+.course-intro-big span,
+.course-intro-small span {
+  font-family: 'FrutigerNeueW01-Regular';
+  font-size: 1.25em;
+}
+.course-intro-small {
+  font-size: 0.9325em;
+  cursor: pointer;
+  color: #428bca;
+}
+.dashboardBadgeText,
+.dashboardBadgeText span {
+  text-align: center !important;
+  margin-top: 20px;
+  font-size: 64px;
+  margin-bottom: 15px;
+  font-family: 'Frutiger Neue W01 UltLt';
+  display: block;
+  width: 100%;
+}
+.dynamic-section-card .slider .card {
+  position: relative !important;
+  background-color: transparent!important;
+  box-shadow: none;
+}
+.dynamic-section-card .slider .card .image img {
+  padding: 0 !important;
+  height: 150px;
+}
+.dynamic-section-card .slider .card .image .header {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  color: #fff;
+  width: 100%;
+  margin: 0;
+  padding: -30px !important;
+  max-height: 70px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-align: center;
+}
+.dynamic-section-card .slider .card .content {
+  background-color: transparent!important;
+}
+.dynamic-section-card .slider .card .extra {
+  border-top: transparent !important;
+}
+.dynamic-section-card .slider .card .extra .card-rating .active {
+  color: #0099CC !important;
+  text-shadow: none !important;
+  padding-top: 0!important;
 }
 body {
   position: relative !important;
