@@ -29,6 +29,7 @@ angular.module('playerApp')
                     debug: false,
                     performance: true,
                 });
+                $('#multi-select-sort').dropdown();
                 $('#dropdown-menu-list-header').dropdown({
                     useLabels: false,
                     forceSelection: false,
