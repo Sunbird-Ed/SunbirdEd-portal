@@ -14,6 +14,7 @@ var runSequence = require('run-sequence');
 var gulpNgConfig = require('gulp-ng-config');
 var less = require('gulp-less');
 var historyApiFallback = require('connect-history-api-fallback');
+var jeditor = require("gulp-json-editor");
 
 var useref = require('gulp-useref');
 
@@ -23,7 +24,6 @@ var player = {
 };
 
 var paths = {
-    data: [player.app+'/data/*.*'],
     scripts: [player.app + '/scripts/*.js', player.app + '/scripts/**/*.js'],
     styles: [player.app + 'app/styles/**/main.less'],
     images: player.app + '/images/*.*',
@@ -71,7 +71,8 @@ var dist = {
     images: 'images/',
     scripts: 'scripts/',
     styles: 'styles',
-    views: 'views'
+    views: 'views',
+    config: 'config/'
 };
 
 ////////////////////////
@@ -246,13 +247,8 @@ gulp.task('semantic', function() {
         }));
 });
 
-gulp.task('mockdata', function () {
-    return gulp.src(paths.data)
-        .pipe(gulp.dest(dist.path + '/data'));
-})
-
 gulp.task('build', ['clean:dist'], function() {
-    runSequence(['index-html', 'images', 'bower', 'config', 'build-css', 'build-css-dev', 'build-js', 'html','mockdata']);
+    runSequence(['index-html', 'images', 'bower', 'config', 'build-css', 'build-css-dev', 'build-js', 'html']);
 });
 
 gulp.task('default', ['build']);

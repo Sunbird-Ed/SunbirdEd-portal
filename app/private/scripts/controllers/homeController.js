@@ -8,89 +8,108 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('HomeController', function($scope,$state, learnService, $sessionStorage, $log, $timeout, $rootScope,sessionService) {
+        .controller('HomeController', function ($scope, $state, learnService, $sessionStorage, $log, $timeout, $rootScope, sessionService, $window, config) {
+            var homeCtrl = this;
+            var uid = $rootScope.userId ? $rootScope.userId : $window.localStorage.getItem('userId');
+            homeCtrl.loadCarousel = function () {
+                $('.ui .progress .course-progress').progress();
+                $('.ui.rating')
+                        .rating({
+                            maxRating: 5
+                        }).rating('disable', true);
+            };
+            homeCtrl.loadFeaturedCarousel = function () {
+                $('.ui.rating')
+                        .rating({
+                            maxRating: 5
+                        }).rating('disable', true);
+            };
 
-        var homeCtrl = this;
-        var uid = $sessionStorage.userId;
-        homeCtrl.loadCarousel = function() {
-            $('.ui .progress .course-progress').progress();
-            $('.ui.rating')
-                .rating({
-                    maxRating: 5
-                }).rating('disable', true);
-        };
-        homeCtrl.loadFeaturedCarousel = function() {
-            $('.ui.rating')
-                .rating({
-                    maxRating: 5
-                }).rating('disable', true);
-        };
+            /**
+             * This function helps to show loader with message.
+             * @param {String} headerMessage
+             * @param {String} loaderMessage
+             */
+            function showLoaderWithMessage(headerMessage, loaderMessage) {
+                var loader = {};
+                loader.showLoader = true;
+                loader.headerMessage = headerMessage;
+                loader.loaderMessage = loaderMessage;
+                return loader;
+            }
 
-        function handleFailedResponse(errorResponse) {
-            var error = {};
-            error.isError = true;
-            error.message = '';
-            error.responseCode = errorResponse.responseCode;
-            homeCtrl.error = error;
-            $timeout(function() {
-                $scope.error = {};
-            }, 2000);
-        }
+            /**
+             * This function called when api failed, and its show failed response for 2 sec.
+             * @param {String} message
+             */
+            function showErrorMessage(isClose, message, messageType) {
+                var error = {};
+                error.showError = true;
+                error.isClose = isClose;
+                error.message = message;
+                error.messageType = messageType;
+                return error;
+            }
 
-        homeCtrl.courses = function() {
-            $scope.loading = true;
+            homeCtrl.courses = function () {
+                var api = 'enrollCourseApi';
+                homeCtrl[api] = {};
+                homeCtrl[api].loader = showLoaderWithMessage("", config.MESSAGES.HOME.ENROLLED.START);
 
-            learnService.enrolledCourses(uid).then(function(successResponse) {
-                    $scope.loading = false;
+                learnService.enrolledCourses(uid).then(function (successResponse) {
+
                     if (successResponse && successResponse.responseCode === 'OK') {
+                        homeCtrl[api].loader.showLoader = false;
                         homeCtrl.enrolledCourses = successResponse.result.courses;
                         $rootScope.enrolledCourseIds = [];
 
-                        var isEnrolled = homeCtrl.enrolledCourses.forEach(function(course) {
+                        var isEnrolled = homeCtrl.enrolledCourses.forEach(function (course) {
                             $rootScope.enrolledCourseIds.push(course.courseId);
                         });
                     } else {
-                        $log.warn('enrolledCourses', successResponse);
-                        handleFailedResponse(successResponse);
+                        homeCtrl[api].loader.showLoader = false;
+                        homeCtrl[api].error = showErrorMessage(true, config.MESSAGES.HOME.ENROLLED.FAILED, config.MESSAGES.COMMON.ERROR);
                     }
                 })
-                .catch(function(error) {
-                    $log.warn(error);
-
-                    handleFailedResponse(error);
+                .catch(function (error) {
+                    homeCtrl[api].loader.showLoader = false;
+                    homeCtrl[api].error = showErrorMessage(true, config.MESSAGES.HOME.ENROLLED.FAILED, config.MESSAGES.COMMON.ERROR);
                 });
-        };
-        homeCtrl.courses();
-
-        homeCtrl.otherSection = function() {
-            var req = {
-                'request': {
-                    'context': {
-                        'userId': 'user1'
-                    }
-                }
             };
-            learnService.otherSections(req).then(function(successResponse) {
-                if (successResponse && successResponse.responseCode === 'OK') {
+            homeCtrl.courses();
 
-                    homeCtrl.recommendedCourse = successResponse.result.page.sections[1].course;
-                    console.log(homeCtrl.recommendedCourse);
-                } else {
-                    handleFailedResponse(successResponse);
-                }
-            }).catch(function(error) {
-                $log.warn(error);
-                handleFailedResponse(error);
-            });
-        };
-        homeCtrl.otherSection();
+            homeCtrl.otherSection = function () {
+                var req = {
+                    'request': {
+                        'context': {
+                            'userId': uid
+                        }
+                    }
+                };
+                var api = 'pageApi';
+                homeCtrl[api] = {};
+                homeCtrl[api].loader = showLoaderWithMessage("", config.MESSAGES.HOME.PAGE_API.START);
+                learnService.otherSections(req).then(function (successResponse) {
+                    if (successResponse && successResponse.responseCode === 'OK') {
+                        homeCtrl.recommendedCourse = successResponse.result.response.sections[0].contents.response;
+                        homeCtrl[api].loader.showLoader = false;
+                    } else {
+                        homeCtrl[api].loader.showLoader = false;
+                        homeCtrl[api].error = showErrorMessage(true, config.MESSAGES.HOME.PAGE_API.FAILED, config.MESSAGES.COMMON.ERROR);
+                    }
+                })
+                .catch(function (error) {
+                    homeCtrl[api].loader.showLoader = false;
+                    homeCtrl[api].error = showErrorMessage(true, config.MESSAGES.HOME.PAGE_API.FAILED, config.MESSAGES.COMMON.ERROR);
+                });
+            };
+            homeCtrl.otherSection();
 
-        homeCtrl.openCourseView = function(courseId, courseType, courseProgress, courseTotal) {
-            // courseId = 'do_112265805439688704113';
-            var showLectureView = 'no';
-            var params = { courseType: courseType, courseId: courseId, lectureView: showLectureView, progress: courseProgress, total: courseTotal };
-            sessionService.setSessionData('COURSE_PARAMS',params);
-            $state.go('Toc',params);
-        };
-
-    });
+            homeCtrl.openCourseView = function (course, courseType) {
+                // courseId = 'do_112265805439688704113';
+                var showLectureView = 'no';
+                var params = {courseType: courseType, courseId: course.contentId, tocId: course.courseId, lectureView: showLectureView, progress: course.progress, total: course.total,courseRecordId:course.id};
+                sessionService.setSessionData('COURSE_PARAMS', params);
+                $state.go('Toc', params);
+            };
+        });

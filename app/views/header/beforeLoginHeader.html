@@ -1,0 +1,50 @@
+<div class="center aligned twelve column row padding-top-2rem ">
+    <div class="one wide column"></div>
+    <div class="one wide column">
+        <a ui-sref="LandingPage">
+            <img class="ui tiny circular image centered" src="/images/sunbird_logo.png">
+        </a>
+    </div>
+    <div class="one wide column"></div>
+    <div class="six wide column">
+        <div class="beforelogin ui secondary pointing menu padding-top-1rem">
+            <a class="item " href="#" translate="home">
+            Home
+              </a>
+            <a class="item " href="#" translate="courses">
+                Courses
+              </a>
+            <a class="item" href="#" translate="resources">
+                Resources
+            </a>
+            <a class="item" href="#" translate="community">
+                Community
+            </a>
+            <a class="item" href="#" translate="profile">
+                Profile
+            </a>
+        </div>
+    </div>
+    <div class="one wide column"></div>
+    <div class="one wide column">
+        <div class="beforelogin ui secondary pointing menu padding-top-1rem">
+            <button class="ui item" ng-if="!isLoggedIn" ng-click="auth.openAuthModal()" translate="login" translate-default="LOGIN"> LOGIN</button>
+            <div class="ui small modal" id="authLogin">
+            <div class="ui grid">
+            <div class="eleven wide column">
+                <div class="ui text container segment" ng-include="'views/header/loginForm.html'">
+                </div>
+            </div>
+            <div class="one wide column">
+                <div class="signInPopUp actions">
+                    <div class="ui black deny ">
+                        <i class="close black icon link"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+ <div class="one wide column"></div>
+</div>

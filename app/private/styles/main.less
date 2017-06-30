@@ -1,90 +1,102 @@
-@white: #FFFFFF;
-@blue:#0099CC;
-@border-color:#E6E7E8;
-@blue-dark:#006cff; 
-@import 'reUseable';
-@import 'common';
-@import 'header';
-@import 'card';
-@import 'footer';
-@import 'normalize';
-@import 'slickerSearch';
-@import 'courseStructure';
-@import 'learn';
-@import 'toc';
-@import 'home';
-@import 'landingPage';
-@import 'content';
-@import 'searchResult';
-@import 'fonts';
-@import 'filter';
-@import 'variable';
+/*use percentage for images*/
+/*use em for fonts*/
+/*pixel to em conversition*/
+
+/*
+1 px    0.0625 em
+2 px    0.125 em
+3 px    0.1875 em
+4 px    0.25 em
+5 px    0.3125 em
+6 px    0.375 em
+7 px    0.4375 em
+8 px    0.5 em
+9 px    0.5625 em
+10 px   0.625 em
+11 px   0.6875 em
+12 px   0.75 em
+13 px   0.8125 em
+14 px   0.875 em
+15 px   0.9375 em
+16 px   1 em
+17 px   1.0625 em
+18 px   1.125 em
+19 px   1.1875 em
+20 px   1.25 em
+21 px   1.313em
+22 px   1.375em
+23 px   1.438em
+24 px   1.500em
+25 px   1.5625 em
+30 px   1.875 em 
+40 px   2.5 em
+50 px   3.125 em
+
+*/
+
+// ----------------------------------------------------------------------
+  // Base
+// ---
+
+@import 'base/normalize';
+@import 'base/fonts';
+@import 'base/variables';
+
+
+
+// ----------------------------------------------------------------------
+  // reUseable
+// ----------------------------------------------------------------------
+
+@import 'reuseable/reUseable';
+
+
+
+// ----------------------------------------------------------------------
+  // Modules
+// ----------------------------------------------------------------------
+
+@import 'modules/header';
+@import 'modules/card';
+@import 'modules/contentplayer';
+@import 'modules/slickerSearch';
+@import 'modules/footer';
+
+
+
+// ----------------------------------------------------------------------
+  // views
+// ----------------------------------------------------------------------
+
+@import 'views/courseStructure';
+@import 'views/learn';
+@import 'views/toc';
+@import 'views/home';
+@import 'views/landingPage';
+@import 'views/searchResult';
+@import 'views/filter';
+@import 'views/resource';
+@import 'views/courses';
 
 body {
     position: relative !important;
-    margin: 0 !important;
     min-height: 100% !important;
     min-width: 100% !important;
-    background: #fdfdfd !important;
-    font-family: "Helvetica Neue", Arial, sans-serif;
+    background: @websiteBody-color !important;
 }
 
 html {
     height: 100% !important;
     box-sizing: border-box !important;
 }
-.sidebar {
-    position: fixed !important;
-}
-
-.login-modal-text-align {
-    text-align: center;
-    align-self: center;
-}
-.login-modal-title {
-    color: #333 !important;
-    font-size: 24px !important;
-    font-family: "FrutigerSerifLTW01-Medi 722257" !important;
-} 
-.login-modal-label-title {
-    color: #333 !important;
-    font-size: 18px !important;
-    font-family: "FrutigerSerifLTW01-Medi 722257" !important;
-} 
 
 
-.logged-in-user {
-    width: 30px !important;
-    height: 30px !important;
-    margin-top: 2px !important;
-    border-radius: 50% !important;
-    -webkit-border-radius: 50% !important;
-    -moz-border-radius: 50% !important;
-    -ms-border-radius: 50% !important;
-    -o-border-radius: 50% !important;
-    display: inline-block !important;
-    vertical-align: middle !important;
-}
-
-.courseHeader-rating {
-   .active{
-        color: @blue  !important;
-        text-shadow: none  !important;
-   }    
-}
 
 
-/*slick slider margin bottom removed*/
 
-.slick-slider {
-    margin-bottom: 0px !important;
-}
 
-/* margin removed for progress bar*/
 
-.progressBar-margin {
-    margin: 0px !important;
-}
+
 
 
 

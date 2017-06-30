@@ -15,7 +15,9 @@
     "slick-carousel": "^1.6.0",
     "angular-translate": "^2.15.1",
     "angular-sanitize": "^1.6.4",
-    "ngSafeApply": "./node_modules/angularjs-scope.safeapply/src/Scope.SafeApply.js"
+    "ngSafeApply": "./node_modules/angularjs-scope.safeapply/src/Scope.SafeApply.js",
+    "jquery-ui": "^1.12.1",
+    "jquery.fancytree": "fancytree#^2.23.0"
   },
   "devDependencies": {
     "angular-mocks": "1.6.0",
@@ -37,6 +39,9 @@
   "moduleName": "playerApp",
   "resolutions": {
     "video.js": "^5.0.0",
-    "angular": "1.6.4"
+    "angular": "1.6.4",
+    "jquery": ">=1.7",
+    "jquery.fancytree": "^2.23.0",
+    "jquery-ui": ">=1.8.6"
   }
 }

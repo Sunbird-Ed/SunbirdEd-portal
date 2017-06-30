@@ -14,14 +14,13 @@
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css" />
     <link rel="stylesheet" href="/thirdparty/bower_components/slick-carousel/slick/slick.css">
     <link rel="stylesheet" href="/thirdparty/bower_components/slick-carousel/slick/slick-theme.css">
-    <link rel="stylesheet" href="/styles/MetroJs.lt.css">
+    <link rel="stylesheet" href="/thirdparty/bower_components/jquery.fancytree/dist/skin-win8/ui.fancytree.css">
     <base href="/">
 </head>
 
 <body ng-app="playerApp" ng-controller="AppCtrl">
     <input type="hidden" id="userId" value="<%=userId%>"/>
     <div ng-include="'views/common/topHeader.html'"></div>
-
     <div class="ui top attached fluid container">
         <div class="ui padded grid">
             <div class="row">
@@ -35,9 +34,11 @@
     </div>
 
     <script src="/thirdparty/bower_components/jquery/dist/jquery.js"></script>
+    <script src="/thirdparty/bower_components/jquery-ui/jquery-ui.min.js"></script>
     <script src="/thirdparty/bower_components/angular/angular.js"></script>
     <script src="/thirdparty/bower_components/angular-cookies/angular-cookies.js"></script>
     <script src="/thirdparty/bower_components/angular-route/angular-route.js"></script>
+
     <script src="/thirdparty/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script src="/thirdparty/semantic/semantic.min.js"></script>
     <script src="/thirdparty/bower_components/video.js/dist/video.js"></script>
@@ -54,6 +55,7 @@
     <script src="/thirdparty/bower_components/angular-pdf-viewer/dist/angular-pdf-viewer.min.js"></script>
     <script src="/thirdparty/bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="/thirdparty/bower_components/ngSafeApply/index.js"></script>
+    <script src="/thirdparty/bower_components/jquery.fancytree/dist/jquery.fancytree.min.js"></script>
     <!-- endbower -->
 
 
@@ -69,6 +71,7 @@
     <!--services-->
     <script src="scripts/services/httpService.js"></script>
     <script src="scripts/services/httpServiceJava.js"></script>
+    <script src="scripts/services/javaService.js"></script>
     <script src="scripts/services/contentService.js"></script>
     <script src="scripts/services/authService.js"></script>
     <script src="scripts/services/noteService.js"></script>
@@ -76,14 +79,18 @@
     <script src="scripts/services/learnService.js"></script>
     <script src="scripts/services/userService.js"></script>
     <script src="scripts/services/resourceService.js"></script>
+    <script src="scripts/services/searchService.js"></script>
     <!--controller-->
+    <script src="scripts/controllers/searchCourseController.js"></script>
+    <script src="scripts/controllers/searchResourcesController.js"></script>
+    <script src="scripts/controllers/searchQueryController.js"></script>
     <script src="scripts/controllers/authController.js"></script>
     <script src="scripts/controllers/sideMenuController.js"></script>
     <script src="scripts/controllers/searchController.js"></script>
     <script src="scripts/controllers/createContentController.js"></script>
     <script src="scripts/controllers/userContentController.js"></script>
     <script src="scripts/controllers/appController.js"></script>
-    <script src="scripts/controllers/note/noteController.js"></script>
+    <script src="scripts/controllers/note/noteListController.js"></script>
     <script src="scripts/controllers/userCourseController.js"></script>
     <script src="scripts/controllers/courseScheduleController.js"></script>
     <script src="scripts/controllers/learnController.js"></script>
@@ -91,20 +98,27 @@
     <script src="scripts/controllers/communityController.js"></script>
     <script src="scripts/controllers/homeController.js"></script>
     <script src="scripts/controllers/profileController.js"></script>
+    <script src="scripts/controllers/landingController.js"></script>
+    <script src="scripts/controllers/contentPlayer.js"></script>
+    <script src="scripts/controllers/note/noteCardController.js"></script>
+    <script src="scripts/controllers/contentPlayerController.js"></script>
     <!--filter-->
     <script src="scripts/filters/dateFilter.js"></script>
+
+    <script src="scripts/filters/noteListFilter.js"></script>
     <!--directive-->
     <script src="scripts/directives/applyScript.js"></script>
-    <script src="scripts/directives/helpMessage.js"></script>
+    <script src="scripts/directives/appLoader.js"></script>
     <script src="scripts/directives/errorMessage.js"></script>
     <script src="scripts/directives/fileRead.js"></script>
     <script src="scripts/directives/contentPlayer.js"></script>
     <script src="scripts/directives/angular-translate.js"></script>
-    <script src="scripts/directives/noteCard.js"></script>
+    <script src="scripts/directives/noteCardDirective.js"></script>
     <script src="scripts/directives/courseDiscussions.js"></script>
     <script src="scripts/directives/slickDirective.js"></script>
-    <script src="data/mockData.js"></script>
-
+    <script src="scripts/directives/addNoteDirective.js"></script>
+    <!--routes-->
+    <script src="scripts/routes/appRoute.js"></script>
 </body>
 
 </html>
