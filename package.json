@@ -47,6 +47,7 @@
     "open": "0.0.5",
     "path": "^0.12.7",
     "phantomjs-prebuilt": "^2.1.14",
+    "request": "^2.81.0",
     "require-dot-file": "^0.4.0",
     "rimraf": "^2.4.0",
     "run-sequence": "^1.1.1",

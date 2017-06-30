@@ -4,7 +4,9 @@
             "DEFAULT_LANGUAGE": "en"
         },
         "URL": {
-
+            "BASE_PREFIX": "service/",
+            "LEARNER_PREFIX": "v1/learner/",
+            "CONTENT_PREFIX": "v1/content/",
             "BASE": "http://localhost:5000/api/sb/v1/",
             "USER_BASE": "http://10.0.1.75:9000/v1/",
             "MOCK_API_BASE": "http://13.71.127.158:9000/v1/",

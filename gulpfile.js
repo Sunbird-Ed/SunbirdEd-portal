@@ -18,7 +18,7 @@ var historyApiFallback = require('connect-history-api-fallback');
 var useref = require('gulp-useref');
 
 var player = {
-    app: require('./bower.json').appPath || 'app',
+    app: 'app/private/',
     dist: 'dist'
 };
 
@@ -258,8 +258,8 @@ gulp.task('build', ['clean:dist'], function() {
 gulp.task('default', ['build']);
 
 gulp.task('config', function() {
-    gulp.src('app/config/playerAppConfig.json')
+    gulp.src(player.app+'config/playerAppConfig.json')
         .pipe(gulpNgConfig('playerApp.config'))
-        .pipe(gulp.dest('app/scripts'))
+        .pipe(gulp.dest(player.app+'scripts'))
         .pipe(gulp.dest(dist.path + dist.scripts));
 });

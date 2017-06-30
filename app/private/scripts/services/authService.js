@@ -2,7 +2,7 @@
 angular.module('playerApp')
     .service('authService', function(httpServiceJava, config, $q, $sessionStorage, $rootScope, $state, $cookies, $window) {
         this.login = function(req) {
-            var url = config.URL.USER_BASE + config.URL.AUTH.LOGIN;
+            var url = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX  + config.URL.AUTH.LOGIN;
             // return httpServiceJava.post(url, req);
             var deferred = $q.defer();
             deferred.resolve(app_mock_data.auth.login)
@@ -11,7 +11,7 @@ angular.module('playerApp')
         }
 
         this.logout = function(req) {
-            var url = config.URL.USER_BASE + config.URL.AUTH.LOGOUT;
+            var url = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX  + config.URL.AUTH.LOGOUT;
             // return httpServiceJava.post(url, req);
             var deferred = $q.defer();
             deferred.resolve(app_mock_data.auth.logout)
@@ -20,7 +20,7 @@ angular.module('playerApp')
 
         this.getUserProfile = function(uId) {
 
-            var url = config.URL.USER_BASE + config.URL.AUTH.PROFILE + '/:' + uId;
+            var url = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX  + config.URL.AUTH.PROFILE + '/:' + uId;
             var deferred = $q.defer();
             deferred.resolve(app_mock_data.auth.profile)
             return deferred.promise;
