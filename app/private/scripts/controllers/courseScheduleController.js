@@ -1,5 +1,5 @@
 angular.module('playerApp')
-        .controller('courseScheduleCtrl', function (config, courseService, sessionService, $stateParams, $state,$timeout, $scope, $sce, $rootScope, $window, $location, $anchorScroll) {
+        .controller('courseScheduleCtrl', function (config, courseService, sessionService, $stateParams, $state,$timeout, $scope, $rootScope, $location, $anchorScroll) {
             var toc = this;
             toc.playList = [];
             toc.playListContent = [];
@@ -10,7 +10,7 @@ angular.module('playerApp')
             toc.enrollErrorMessage = '';
             toc.fancyTree = [];
             toc.treeKey = 0;
-            toc.uid = $rootScope.userId ? $rootScope.userId : $window.localStorage.getItem('userId');
+            toc.uid = $rootScope.userId;
             toc.enrollUserToCourse = function (courseId) {
                 var req = {
                     request: {

@@ -1,9 +1,9 @@
 'use strict'
 
-angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $scope, noteService, config, $window, $timeout, $state, $stateParams) {
+angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $scope, noteService, config, $timeout, $state, $stateParams) {
 
     var noteCard = this;
-    noteCard.userId = $window.localStorage.getItem('user') ? JSON.parse($window.localStorage.getItem('user')).userId : $rootScope.userId;
+    noteCard.userId = $rootScope.userId;
     noteCard.showNoteCard = $scope.shownotecard;
     noteCard.showNoteList = $scope.shownotelist;
     noteCard.showModalInLectureView = $scope.shownoteinlecture;

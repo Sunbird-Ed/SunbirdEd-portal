@@ -1,21 +1,8 @@
 'use strict';
 angular.module('playerApp')
-    .service('resourceService', function(javaService, config, $rootScope, $window) {
+    .service('resourceService', function(javaService, config) {
         this.resources = function(req) {
             var url = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + config.URL.RESOURCE.GET;
-            var headers = {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'X-Consumer-ID': 'X-Consumer-ID',
-                'X-Device-ID': 'X-Device-ID',
-                'X-msgid': '8e27cbf5-e299-43b0-bca7-8347f7e5abcf',
-                'ts': '2017-05-25 10:18:56:578+0530',
-                'X-Authenticated-Userid': $rootScope.token ?
-                    $rootScope.token : $window.localStorage.getItem('token') ||
-                    $window.sessionStorage.getItem('token')
-
-            };
-            return javaService.get(url, {}, headers);
-            // return httpServiceJava.post(url, req);
+                       return javaService.get(url);
         };
     });

@@ -8,9 +8,9 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-        .controller('HomeController', function ($scope, $state, learnService, $sessionStorage, $log, $timeout, $rootScope, sessionService, $window, config) {
+        .controller('HomeController', function ($state, learnService, $rootScope, sessionService, config) {
             var homeCtrl = this;
-            var uid = $rootScope.userId ? $rootScope.userId : $window.localStorage.getItem('userId');
+            var uid = $rootScope.userId;
             homeCtrl.loadCarousel = function () {
                 $('.ui .progress .course-progress').progress();
                 $('.ui.rating')

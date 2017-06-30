@@ -1,10 +1,8 @@
 'use strict';
 
-angular.module('playerApp')
-
-        .controller('LearnCtrl', function (learnService, $log, $scope, $sessionStorage, $timeout, $state, $rootScope, sessionService, $location, $window, config) {
+angular.module('playerApp').controller('LearnCtrl', function (learnService, $scope,$state, $rootScope, sessionService, config) {
             var learn = this;
-            var uid = $rootScope.userId ? $rootScope.userId : $window.localStorage.getItem('userId');
+            var uid = $rootScope.userId;
             $rootScope.searchResult = [];
             $scope.contentPlayer = {
                 isContentPlayerEnabled: false

@@ -8,7 +8,7 @@
  * Service in the playerApp.
  */
 angular.module('playerApp')
-    .service('httpServiceJava', function($http, $window,$rootScope) {
+    .service('httpServiceJava', function($http,$rootScope) {
         this.post = function(url, data, headers) {
             var request = httpCall(url, data, 'POST', headers);
             return (request.then(handleSuccess, handleError));
@@ -61,7 +61,7 @@ angular.module('playerApp')
                   'X-Device-ID': 'X-Device-ID',
                   'X-msgid': '8e27cbf5-e299-43b0-bca7-8347f7e5abcf',
                   'ts': '2017-05-25 10:18:56:578+0530',
-                 'X-Authenticated-Userid': $rootScope.userId ? $rootScope.userId : $window.localStorage.getItem('userId')
+                 'X-Authenticated-Userid': $rootScope.userId
 
             };
             headers.Accept = 'text/html,application/xhtml+xml,application/xml,application/json;q=0.9,image/webp,*/*;q=0.8';

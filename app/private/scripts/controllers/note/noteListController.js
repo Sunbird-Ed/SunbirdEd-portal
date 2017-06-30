@@ -1,9 +1,9 @@
 'use strict';
 
-angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, noteService, config, $window, $timeout, $state, $stateParams) {
+angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, noteService, config, $state, $stateParams) {
 
     var noteList = this;
-    noteList.userId = $window.localStorage.getItem('user') ? JSON.parse($window.localStorage.getItem('user')).userId : $rootScope.userId;
+    noteList.userId = $rootScope.userId;
     noteList.courseId = $stateParams.courseId;
     noteList.contentId = $stateParams.contentId;
     noteList.tocId = $stateParams.tocId;
