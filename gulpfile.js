@@ -20,6 +20,7 @@ var useref = require('gulp-useref');
 
 var player = {
     app: 'app/private/',
+    public: 'app/public/',
     dist: 'dist'
 };
 
@@ -111,18 +112,20 @@ gulp.task('build-js', function() {
 });
 
 gulp.task('build-css', function() {
-    return gulp.src(player.app+'styles/**/main.less')
+    return gulp.src(player.app+'styles/main.less')
         .pipe(plumber())
         .pipe(less())
         .pipe(autoprefixer())
         .pipe(gulp.dest(dist.path + dist.styles));
 });
 gulp.task('build-css-dev', function() {
-    return gulp.src(player.app+'styles/**/main.less')
+    return gulp.src(player.app+'styles/main.less')
         .pipe(plumber())
         .pipe(less())
         .pipe(autoprefixer())
-        .pipe(gulp.dest(player.app+'styles'));
+        .pipe(gulp.dest(player.app+'styles'))
+        .pipe(gulp.dest(player.public+'styles'));
+        
 });
 
 // inject bower components
