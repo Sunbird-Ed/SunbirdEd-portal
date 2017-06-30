@@ -2,12 +2,12 @@
 angular.module('playerApp')
     .service('learnService', function(httpServiceJava, config, $rootScope) {
         this.enrolledCourses = function(uid) {
-            var url = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + config.URL.COURSE.GET_ENROLLED_COURSES + '/' + uid;
+            var url =  config.URL.LEARNER_PREFIX + config.URL.COURSE.GET_ENROLLED_COURSES + '/' + uid;
             return httpServiceJava.get(url);
         };
 
         this.otherSections = function(req) {
-            var url = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + config.URL.COURSE.GET_LEARN_OTHER_SECTION;
+            var url =  config.URL.LEARNER_PREFIX + config.URL.COURSE.GET_LEARN_OTHER_SECTION;
             var headers = {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',

@@ -8,7 +8,7 @@
  * Service in the playerApp.
  */
 angular.module('playerApp')
-    .service('javaService', function($http, $rootScope, $window) {
+    .service('javaService', function($http, $rootScope, $window, config) {
         var user = $rootScope.userId;
 
         function handleSuccess(response) {
@@ -38,9 +38,10 @@ angular.module('playerApp')
 
         function httpCall(url, data, method, header) {
             var headers = header || getHeader();
+            var URL = config.URL.BASE_PREFIX + url; 
             return $http({
                 method: method,
-                url: url,
+                url: URL,
                 headers: headers,
                 data: data
             });
@@ -72,7 +73,7 @@ angular.module('playerApp')
         };
 
         this.upload = function(url, data, headers) {
-            var request = $http.post(url, data, {
+            var request = $http.post(config.URL.BASE_PREFIX + url, data, {
 
                 headers: {
                     'Content-Type': undefined,
