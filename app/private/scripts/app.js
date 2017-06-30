@@ -8,8 +8,7 @@
  *
  * Main module of the application.
  */
-angular
-    .module('playerApp', [
+angular.module('playerApp', [
         'ngCookies',
         'ngRoute',
         'playerApp.config',
@@ -21,7 +20,7 @@ angular
         'ngSanitize',
         'Scope.safeApply'
     ])
-    .config(function($stateProvider, $urlRouterProvider, $locationProvider, $translateProvider, $provide) {
+    .config(function($translateProvider, $provide) {
         $provide.provider('setResourceBundle', function() {
             this.$get = function() {
                 return function(language, resourceBundle) {

@@ -201,4 +201,34 @@ angular
                     $rootScope.resourcesActive = '';
                 }
             })
+            .state('SearchResource', {
+                url: '/:searchType/search/:query/',
+                templateUrl: 'views/search/search.html',
+                controller: 'SearchResourcesCtrl as search',
+                params: { searchType: null, query: null, event: null },
+                onEnter: function($rootScope) {
+                    $rootScope.isSearchPage = true;
+                    $rootScope.searchKey = 'Resources';
+                    $rootScope.resourcesActive = 'active';
+                },
+                onExit: function($rootScope) {
+                    $rootScope.isSearchPage = false;
+                    $rootScope.resourcesActive = '';
+                }
+            })
+            .state('SearchCourse', {
+                url: '/:searchType/search/:query/',
+                templateUrl: 'views/search/search.html',
+                controller: 'SearchCourseCtrl as search',
+                params: { searchType: null, query: null, searchKey: null, event: null },
+                onEnter: function($rootScope) {
+                    $rootScope.isSearchPage = true;
+                    $rootScope.searchKey = 'Courses';
+                    $rootScope.courseActive = 'active';
+                },
+                onExit: function($rootScope) {
+                    $rootScope.isSearchPage = false;
+                    $rootScope.courseActive = '';
+                }
+            })
     });
