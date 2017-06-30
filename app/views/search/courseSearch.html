@@ -1,0 +1,23 @@
+<div ng-if="search.searchResult.length > 0 ">
+    <div class=" ui clearing segment content-player-header search-content-header">
+        <div class="ui left floated header margin-auto ">
+            <p class="serch-allresult">Showing results {{search.searchQuery? 'for ': ''}}<span class="lower-case">{{search.searchQuery? '"'+search.searchQuery+'"': ''}}  in "{{search.searchType }} "</span></p>
+        </div>
+        <h5 class="ui right floated basic icon circular button " ng-click="close() ">
+            <i class="ui remove icon "></i>
+        </h5>
+    </div>
+
+    <div class="ui stackable four column grid dynamic-section-card ">
+        <div class="column " ng-repeat="item in search.searchResult track by $index " ng-init="$last && search.loadRating() ">
+
+            <div class="slider link " ng-include=" 'views/common/ratingCard.html' " ng-click="search.openCourseView(item,(enrolledCourseIds.indexOf(item.courseId)<0)?'OTHER_COURSE': 'ENROLLED_COURSE')">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div ng-if="isSearchError.isError">
+    <error-message data={{isSearchError}}></error-message>
+</div>
