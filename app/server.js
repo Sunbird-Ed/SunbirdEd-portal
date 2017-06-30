@@ -6,8 +6,7 @@ const express = require('express'),
     proxy = require('express-http-proxy'),
     Keycloak = require('keycloak-connect'),
     session = require('express-session'),
-    path = require('path'),
-    apiSericeHelper = require('./helpers/apiServiceHelper'),
+    path = require('path'),    
     env = process.env,
     port = env.port || 8080;
 
