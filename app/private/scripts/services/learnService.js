@@ -1,6 +1,6 @@
 'use strict';
 angular.module('playerApp')
-    .service('learnService', function(httpServiceJava, javaService, config, $sessionStorage, $q) {
+    .service('learnService', function(httpServiceJava, config, $rootScope) {
         this.enrolledCourses = function(uid) {
             var url = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + config.URL.COURSE.GET_ENROLLED_COURSES + '/' + uid;
             return httpServiceJava.get(url);
@@ -15,7 +15,7 @@ angular.module('playerApp')
                 'X-Device-ID': 'X-Device-ID',
                 'X-msgid': '8e27cbf5-e299-43b0-bca7-8347f7e5abcf',
                 'ts': '2017-05-25 10:18:56:578+0530',
-                'X-Authenticated-Userid': $sessionStorage.token
+                'X-Authenticated-Userid': $rootScope.userId 
 
             };
             return httpServiceJava.get(url, {}, headers);

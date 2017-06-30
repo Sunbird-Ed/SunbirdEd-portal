@@ -49,7 +49,7 @@ app.all('/service/v1/content/*', keycloak.protect(), proxy(contentURL, {
 }))
 
 app.all('/private/*', keycloak.protect(), function(req, res) {
-    res.locals.userId = req.kauth.grant.access_token.content.sub;
+    res.locals.userId = 'e9280b815c0e41972bf754e9409b66d778b8e11bb91844892869a1e828d7d2f2';//req.kauth.grant.access_token.content.sub;
     res.render(__dirname + '/private/index.ejs');
 });
 
