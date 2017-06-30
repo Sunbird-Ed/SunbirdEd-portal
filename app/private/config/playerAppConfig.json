@@ -7,10 +7,7 @@
             "BASE_PREFIX": "service/",
             "LEARNER_PREFIX": "v1/learner/",
             "CONTENT_PREFIX": "v1/content/",
-            "BASE": "http://localhost:5000/api/sb/v1/",
-            "MOCK_API_BASE": "http://13.71.127.158:9000/v1/",
             "CONFIG_BASE": "http://localhost:4000/api/sb/v1/",
-            "DEV_API_BASE": "http://52.172.36.121:9000/v1/",
             "USER": {
                 "RESOURCE_BUNDLE": "resourcebundle"
             },

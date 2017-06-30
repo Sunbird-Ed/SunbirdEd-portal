@@ -2,7 +2,7 @@
 angular.module('playerApp')
     .service('resourceService', function(javaService, config, $rootScope, $window) {
         this.resources = function(req) {
-            var url = config.URL.DEV_API_BASE + config.URL.RESOURCE.GET;
+            var url = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + config.URL.RESOURCE.GET;
             var headers = {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
