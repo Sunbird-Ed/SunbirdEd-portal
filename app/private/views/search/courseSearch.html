@@ -1,13 +1,12 @@
-<div ng-if="search.searchResult.length > 0 ">
+<div ng-if="!search.loader.showLoader && !search.error.showError">
     <div class=" ui clearing segment content-player-header search-content-header">
         <div class="ui left floated header margin-auto ">
             <p class="serch-allresult">Showing results {{search.searchQuery? 'for ': ''}}<span class="lower-case">{{search.searchQuery? '"'+search.searchQuery+'"': ''}}  in "{{search.searchType }} "</span></p>
         </div>
-        <h5 class="ui right floated basic icon circular button " ng-click="close() ">
+        <h5 class="ui right floated basic icon circular button " ng-click="search.close() ">
             <i class="ui remove icon "></i>
         </h5>
     </div>
-
     <div class="ui stackable four column grid dynamic-section-card ">
         <div class="column " ng-repeat="item in search.searchResult track by $index " ng-init="$last && search.loadRating() ">
 
@@ -17,7 +16,12 @@
         </div>
     </div>
 </div>
-
-<div ng-if="isSearchError.isError">
-    <error-message data={{isSearchError}}></error-message>
+<!--<div class="ui huge info message" ng-if="noteList.notesList.length === 0">
+    <p>You don't have any note. please create...</p>
+</div>-->
+<div ng-if="search.loader.showLoader">
+    <app-loader data="{{search.loader}}"></app-loader>
+</div>
+<div ng-if="search.error.showError">
+    <error-message data="{{search.error}}" visibility="search.error.showError"></error-message>
 </div>
