@@ -1,4 +1,4 @@
-<div  class="ui">
+<div  class="ui" ng-if="toc.courseHierachy">
     <div class="ui grid courseStructureHeader">
         <div class="one wide column"></div>
         <div class="ten wide column">
@@ -7,17 +7,23 @@
                     <div class="ui breadcrumb">
                         <a class="section" ui-sref="Learn">My Courses</a>
                     </div>
-                    <div class="courseStructureHeaderText"><h2>{{toc.courseHierachy.name}} </h2></div> <br>
+                    <div class="courseStructureHeaderText sectionHeading"><h2>{{toc.courseHierachy.name}} </h2></div> <br>
                     <span> 1,870 Learners</span> | <div apply-script class="courseHeader-rating ui mini star rating" data-rating="3"></div>
                 </div>
                 <div class="four wide column" ng-if="toc.courseType === 'ENROLLED_COURSE'">
-                    <div><p class="text-align-center">Your Progress {{(toc.courseProgress * 100 / toc.courseTotal)| number: 0 || 0}}%</p></div>
+                    <div ng-if="toc.courseProgress"><p class="text-align-center">Your Progress {{(toc.courseProgress * 100 / toc.courseTotal)| number: 0 || 0}}%</p></div>
                     <button class="fluid blue right floated  ui button courseHeaderButton" ng-click="toc.resumeCourse()">
                         RESUME COURSE  <i class="caret right icon"></i>
                     </button>
                 </div>
                 <div class="four wide column" ng-if="toc.courseType === 'OTHER_COURSE'">
-                    <button class="fluid blue right floated  ui button courseHeaderButton" ng-click="toc.enrollUserToCourse(toc.courseId)"> ENROLL TO COURSE</button>
+                    <button ng-if="!toc.loader.enrollLoader" class="fluid blue right floated  ui button courseHeaderButton" ng-click="toc.enrollUserToCourse(toc.tocId)"> ENROLL TO COURSE</button>
+                    <div ng-if="toc.loader.enrollLoader">
+                        <app-loader data="{{toc.loader}}"></app-loader>
+                    </div>
+                    <div ng-if="toc.error.showEnrollError">
+                        <error-message data="{{toc.error}}" visibility="toc.error.showEnrollError"></error-message>
+                    </div>
                 </div>
             </div>
         </div>

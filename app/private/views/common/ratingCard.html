@@ -1,19 +1,21 @@
 <div class="ui link cards">
-    <div apply-script class="sliderCards ui card margin-left-right-20 margin-top-15">
+    <div class="sliderCards ui card margin-right-20 margin-top-15">
         <div class="image imageInCardsResponsive">
             <!--        <div class="ui tiny  progress course-progress" data-value="{{item.progress}}" data-total="{{item.noOfLecture}}" ng-class="{orange:(item.noOfLecture - item.progress) < (item.noOfLecture / 2),red:(item.noOfLecture - item.progress) > (item.noOfLecture / 2)}">
                 <div class="bar"></div>
             </div>-->
             <img ng-src=" {{item.appIcon ? item.appIcon : '../images/sunbird_logo.png'}} ">
             <div class="cardImageText center aligned ">
-                <span class="text-cencapitalize">{{item.name}}</span>
+                <span class="sliderCardHeading text-cencapitalize">{{item.name}}</span>
             </div>
         </div>
         <div class="sliderCards content">
-            <div apply-script class="description">
-                {{ item.description | limitTo: 55 }}&nbsp;<i ng-show="item.description.length>=55" class="ellipsis horizontal icon popup-button link" data-content="{{item.description}}" data-variation="wide"></i>
+            <div  class="sliderCardDesc">
+                {{ item.description | limitTo: 55 }}&nbsp;<i ng-show="item.description.length >= 55" class="ellipsis horizontal icon popup-button link" data-content="{{item.description}}" data-variation="wide"></i>
             </div>
-            <div apply-script class="courseHeader-rating ui mini star rating" data-rating="3"></div>
+
+            <button ng-if="!recommended && enrolledCourseIds && enrolledCourseIds.indexOf(item.courseId) >= 0" class="ui blue basic right floated button">RESUME</button>
+            <div  class="courseHeader-rating ui mini star rating" data-rating="3"></div>
         </div>
     </div>
 </div>

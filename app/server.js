@@ -12,9 +12,9 @@ const express = require('express'),
     port = env.port || 8080;
 
 // Create a new session store in-memory
-var memoryStore = new session.MemoryStore();
+let memoryStore = new session.MemoryStore();
 // Setup keycloak to use the in-memory store
-var keycloak = new Keycloak({ store: memoryStore });
+let keycloak = new Keycloak({ store: memoryStore });
 
 app.use(session({
     secret: 'mySecret',

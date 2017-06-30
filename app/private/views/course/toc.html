@@ -1,9 +1,11 @@
 <div ng-controller="courseScheduleCtrl as toc">
+    <!--<div ng-include="'views/search/seachResultCourse.html'"></div>-->
     <div ng-include="'views/course/courseHeader.html'"></div>
+
     <div class="ui grid">
         <div class="one wide column"></div>
         <div class="ten wide column">
-            <div ng-if="toc.courseHierachy && !toc.showDimmer && toc.lectureView == 'no'">
+            <div ng-if="toc.courseHierachy  && toc.lectureView == 'no'">
                 <div id="course-toc-list" ng-show="!contentPlayer.isContentPlayerEnabled && !toc.showAllNoteList">
                     <div class="content">
                         <div class='ui grid'>
@@ -14,12 +16,11 @@
                                             About the course
                                         </span>
                                         <div class="margin-top-10 " ng-init="toc.readMore = false">
-                                            <p class="courseStructureDesc"> {{ toc.courseHierachy.description | limitTo: 200 }}&nbsp;
-                                                <span class="ui font-dark-blue mouse-pointer" ng-if="toc.courseHierachy.description.length > 200 && toc.readMore === false"
-                                                      ng-click="toc.readMore = !toc.readMore;">Read More ...</span>
+                                            <p ng-if="!toc.readMore" class="courseStructureDesc"> {{ toc.courseHierachy.description | limitTo: 200 }}&nbsp;
+                                                <span class="ui font-dark-blue mouse-pointer" ng-if="toc.courseHierachy.description.length > 200 && toc.readMore === false" ng-click="toc.readMore = !toc.readMore;">Read More ...</span>
                                             </p>
                                             <p ng-if="toc.readMore" class="courseStructureDesc"> {{ toc.courseHierachy.description}}&nbsp;
-                                                <span class="ui font-dark-blue mouse-pointer" ng-click="toc.readMore = false;">Read Less ...</span>
+                                                <span class="ui cardsKnowMore mouse-pointer" ng-click="toc.readMore = false;">Read Less ...</span>
                                             </p>
                                         </div>
                                     </div>
@@ -28,40 +29,29 @@
                                             Course Structure
                                         </b>
                                     </div>
-                                    <div id="course-toc" class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100" ng-repeat="item in  toc.courseHierachy.children track by $index" apply-script>
-                                        <div class="courseAccordianHeading title title-padding-left accordian-left-text" name="{{item.identifier}}" ng-click="toc.expandMe($event, item)" ng-class="toc.getContentClass(item.mimeType)">
+                                    <div id="course-toc" class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100" ng-repeat="item in  toc.courseHierachy.children track by $index" ng-click="toc.expandMe($event, item)">
+                                        <div class="courseAccordianHeading title title-padding-left accordian-left-text" name="{{item.identifier}}">
                                             {{item.name}}
-                                            <i ng-if='item.children && item.children.length > 0' class="angle down icon down-arrow-accordion"></i>
+                                            <i ng-if='item.children && item.children.length > 0' class="plus icon down-arrow-accordion"></i>
                                         </div>
-                                        <div  ng-if='item.children && item.children.length > 0' class="content">
-                                            <ul class="courseStr">
-                                                <li ng-repeat="item in item.children">
-                                                    <div name="{{item.identifier}}" ng-click="toc.expandMe($event, item)" ng-class="toc.getContentClass(item.mimeType)">
-                                                        <span>
-                                                            <i class="large video play outline icon" ></i>
-                                                        </span>
-                                                        <span class="text courseAccordianDesc cursor-pointer">{{item.name}}</span>
-                                                        <div class="verticalLine" ng-if="!$last"></div>
-                                                    </div>
-                                                    <div ng-switch on="item.children.length > 0">
-                                                        <div ng-switch-when="true">
-                                                            <div ng-init="subItems = item.children;" ng-include="'views/course/tocList.html'"></div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
+                                        <div ng-if='item.children && item.children.length > 0' class="content">
+                                            <div id="FT_{{$index}}" ng-init="toc.constructTree($index, item.children)"></div>
                                         </div>
                                     </div>
                                     <div class="ui fitted divider margin-bottom-20 margin-top-30"></div>
-                                    <course-discussions  showaskquestion="true"></course-discussions>
+                                    <course-discussions showaskquestion="true"></course-discussions>
                                 </div>
                                 <div class='four wide column'>
-                                    <div ng-if="toc.courseType === 'ENROLLED_COURSE'" class="cursor-pointer margin-bottom-15" ng-controller="NoteCtrl" ng-click="toc.showNoteModal = !toc.showNoteModal; showAddNoteModal();"> <i class="circular icon margin-right-10 link plus" ></i>&nbsp;ADD NOTE</div>
-                                    <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false"></note-card>
+                                    <div ng-if="toc.courseType === 'ENROLLED_COURSE'" class="cursor-pointer margin-bottom-15">
+                                        <add-note shownoteincourse="true" courseid="toc.courseParams.courseId"></add-note>
+                                    </div>
+                                    <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false" courseid="toc.courseParams.courseId"></note-card>
                                     <div ng-include=" 'views/course/facultyCard.html'" class="margin-bottom-15"></div>
                                     <div ng-include=" 'views/course/carriculumCard.html'"></div><br>
-                                    <b>Course created on: 15 jun 2017</b><br>
-                                    <b>Updated on: 16 jun 2017</b>
+                                    <div class="courseupdate">
+                                        <b>Course created on: 15 jun 2017</b><br>
+                                        <b>Updated on: 16 jun 2017</b>
+                                    </div>
                                 </div>
                                 <div ng-if="toc.showNoteModal">
                                     <div ng-include=" 'views/course/noteAddCardModal.html'"></div>
@@ -70,8 +60,8 @@
                         </div>
                     </div>
                 </div>
-                <div ng-if="(contentPlayer.isContentPlayerEnabled) && !toc.showDimmer && !toc.showAllNoteList">
-                    <div class="ui grid" id="tocPlayer">
+                <div ng-if="(contentPlayer.isContentPlayerEnabled) && !toc.showDimmer">
+                    <div class="ui grid" id="{{toc.hashId}}">
                         <div class="twelve wide column">
                             <div class="ui grid">
                                 <div class="row">
@@ -89,14 +79,10 @@
                                             </div>
                                         </button>
                                     </div>
-                                    <div class="six wide column center aligned">
-                                        <h2 class="ui center aligned icon tiny header toc-note" ng-if="toc.nightMode" ng-init="toc.showNoteModal = false">
-                                            <i class=" file text outline icon font-dark-blue"></i>
-                                            <u class="ui font-dark-blue mouse-pointer" ng-controller="NoteCtrl" ng-click="toc.showNoteModal = !toc.showNoteModal; showAddNoteModal(toc.courseId);">Take Note</u>
+                                    <div class="six wide column center aligned" ng-if="toc.showNoteInLecture">
+                                        <h2 class="ui center aligned icon tiny header toc-note">
+                                            <add-note shownoteinlecture="true" visibility="toc.showNoteInLecture" courseid="toc.courseParams.courseId" contentid="contentPlayer.contentData.identifier"></add-note>
                                         </h2>
-                                        <div ng-if="toc.showNoteModal">
-                                            <div ng-include=" 'views/course/noteAddCardModal.html'"></div>
-                                        </div>
                                     </div>
                                     <div class="three wide column ">
                                         <button class="ui blue button right floated  fluid" ng-click="toc.playPlaylistContent(toc.nextPlaylistItem, 'next')" ng-disabled="(toc.nextPlaylistItem < 0)">
@@ -110,36 +96,27 @@
                             </div>
                         </div>
                     </div>
+                    <div class="ui section divider"></div>
                     <div class="two wide column"></div>
                     <div class="ui grid">
                         <div class="row">
                             <div class="eight wide column">
-                                <course-discussions  showaskquestion="false"></course-discussions>
+                                <course-discussions showaskquestion="false"></course-discussions>
                             </div>
                             <div class="four wide column toc-note-content">
-                                <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false"></note-card>
+                                <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false" courseid="toc.courseParams.courseId" contentid="contentPlayer.contentData.identifier"></note-card>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
-            <div ng-if="toc.showAllNoteList" ng-include="'views/note/noteList.html'"></div>
-            <div class="ui dimmer inverted" ng-class="toc.showDimmer ? 'active' : ''">
-                <div class="content">
-                    <span ng-if="toc.showMetaLoader">
-                        <div class="ui text loader">
-                            <div class="ui mini header" ng-if="toc.message">{{toc.message}}</div>
-                        </div>
-                    </span>
-                    <div class="center">
-                        <h2 class="ui header {{toc.messageClass}}" ng-if="!toc.showMetaLoader">
-                            {{toc.message}}
-                        </h2>
-                    </div>
-                </div>
+            <div ng-if="toc.loader.showLoader">
+                <app-loader data="{{toc.loader}}"></app-loader>
             </div>
+            <div ng-if="toc.error.showError">
+                <error-message data="{{toc.error}}" visibility="toc.error.showError"></error-message>
+            </div>
+            <div class="one wide column"></div>
         </div>
-        <div class="one wide column"></div>
     </div>
 </div>

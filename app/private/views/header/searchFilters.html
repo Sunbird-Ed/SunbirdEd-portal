@@ -1,23 +1,23 @@
 <div>
     <div class="ui divider header-search-filters-divider"></div>
-    <div class="ui grid">
+    <div class="filtercolumn ui grid">
         <div class="one wide column"></div>
-        <div class="ten wide column">
+        <div class=" ten wide column ">
             <div apply-script class="ui accordion" id='content-search-filter-accordion'>
                 <div class="ui twelve column grid">
                     <div class="ten wide column">
                         <div class="twelve wide column title">
                             <div class="ui grid">
                                 <div class="ten wide column">
-                                    <i class="icon filter"></i> <span translate="showfilter">Show Filters</span>
+                                    <i class="icon filter"></i> <span class="ShowFilterTitle" translate="showfilter">Show Filters</span>
                                     <i class="dropdown icon"></i>
                                 </div>
                             </div>
                         </div>
                         <div class="twelve wide column content">
-                            <div class="ui grid">
+                            <div class="filtercolmntext ui grid">
                                 <div class="one wide column filter-text">
-                                    <span translate="filterby">Filter by:</span>
+                                    <span class="ShowFilterSubTitle" translate="filterby">Filter by:</span>
                                 </div>
                                 <div class="two wide column">
                                    <select name="language" class="filtersearch ui selection content-search-filter dropdown" multiple="" id="multi-select" ng-value="option.value" ng-options=" language for language in search.languages" ng-model="search.selectedLanguage">
@@ -40,8 +40,8 @@
                                     </select>
                                 </div>
                                 <div class="three wide column filter-button">
-                                    <button class="ui blue tiny  button" ng-click="search.applyFilter()" translate="apply">APPLY</button>
-                                    <button class="ui primary tiny basic button" ng-click="search.resetFilter()" translate="reset">RESET</button>
+                                    <button class="searchfilterbutton ui blue tiny  button" ng-click="search.applyFilter()" translate="apply">APPLY</button>
+                                    <button class="searchfilterbutton ui primary tiny basic button" ng-click="search.resetFilter()" translate="reset">RESET</button>
                                 </div>
                             </div>
                         </div>
@@ -49,7 +49,7 @@
                     <div class="two wide column">
                         <div class="field">
                             <div class="content dropdown-content">
-                                <span translate="sortby"> Sort by:&nbsp;</span>
+                                <span class="ShowFilterSubTitle" translate="sortby"> Sort by:&nbsp;</span>
                                 <div class="ui inline dropdown search-dropdown" id="multi-select-sort">
                                     <div class="text"></div>
                                     <i class="dropdown icon"></i>
@@ -63,7 +63,7 @@
 
             </div>
         </div>
-        <div class="one wide column"></div>
+        <!-- <div class="one wide column"></div> -->
     </div>
     <div class="ui divider"></div>
 </div>

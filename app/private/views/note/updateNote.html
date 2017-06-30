@@ -1,15 +1,20 @@
-<div class="margin-auto margin-top-10">
+<div class="margin-auto margin-top-10" ng-if="!noteList.updateApi.loader.showLoader && !noteList.updateApi.error.showError">
     <div class=" margin-bottom-15">
-        <span class="ui header">{{update.metaData.title}}</span>
-        <span  class="ui right floated secondary button" ng-click="update.showUpdateNote = !update.showUpdateNote">Back to list
+        <span class="ui header">{{noteList.update.metaData.title}}</span>
+        <span class="ui right floated secondary button" ng-click="noteList.update.showUpdateNote = !noteList.update.showUpdateNote">Back to list
         </span>
     </div>
     <div class="ui fluid icon input" id="search-input-container">
-        <input type="text" placeholder="Title" name="title" ng-model="update.metaData.title" />
+        <input type="text" placeholder="Title" name="title" ng-model="noteList.update.metaData.title" />
     </div>
     <div class="editor">
-        <pagedown-editor content="update.metaData.note" show-preview="false"></pagedown-editor>
+        <pagedown-editor content="noteList.update.metaData.note" show-preview="false"></pagedown-editor>
     </div>
-        <button class="ui primary right floated button" type="submit" ng-click="updateNote(update.metaData)" 
-                ng-disabled="!update.metaData.title || !update.metaData.note" tabindex="4">Update</button>
-    </div>
+    <button class="ui primary right floated button" type="submit" ng-click="noteList.updateNote(noteList.update.metaData)" ng-disabled="!noteList.update.metaData.title || !noteList.update.metaData.note" tabindex="4">Update</button>
+</div>
+<div ng-if="noteList.updateApi.loader.showLoader">
+    <app-loader data="{{noteList.updateApi.loader}}"></app-loader>
+</div>
+<div ng-if="noteList.updateApi.error.showError">
+    <error-message data="{{noteList.updateApi.error}}" visibility="noteList.updateApi.error.showError"></error-message>
+</div>
