@@ -948,7 +948,7 @@ span.fancytree-title {
   width: 100% !important;
   min-height: 0;
   background: #fff;
-  padding: 0;
+  padding: 14px 16px 16px 16px;
   border: none;
   border-radius: .28571429rem;
   box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
@@ -957,7 +957,7 @@ span.fancytree-title {
   z-index: '';
 }
 .homeHeaderPadding {
-  padding: 1em !important;
+  padding: 14px 16px 16px 16px;
 }
 .ui.styled.accordion .removeline.title {
   margin: 0;
@@ -986,6 +986,19 @@ span.fancytree-title {
 }
 .todolabel.ui.label {
   margin-left: 0.5em;
+}
+.homefeedcard.ui.segment {
+  padding: 16px 16px 16px 16px;
+}
+.homefeeddescription p {
+  opacity: 0.67;
+  color: #333333;
+}
+.connanswer {
+  color: #979797;
+  font-family: "Open Sans";
+  font-size: 10px;
+  line-height: 14px;
 }
 .opacity-cardContent {
   opacity: 0.2 !important;
@@ -1024,7 +1037,7 @@ span.fancytree-title {
   padding: 10px;
 }
 .announcementCard-header {
-  padding: 0.4em 0em 0em 0.4em;
+  padding: 0;
 }
 .ui.segment {
   position: relative;
@@ -1036,7 +1049,13 @@ span.fancytree-title {
   border: 1px solid #d8dee2;
 }
 .annannouncement-description {
-  padding: 1.3em 0.6em;
+  margin-top: 11px;
+}
+.homeCard.ui.card > .content {
+  padding: 0;
+}
+.homeCard.ui.card > .content > .header + .description {
+  margin-top: 11px;
 }
 .serch-allresult {
   color: #717171;
