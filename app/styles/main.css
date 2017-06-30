@@ -1211,6 +1211,9 @@ span.fancytree-title {
 }
 .searchicon.ui.icon.input input {
   padding-right: 6px!important;
+  border: 1px solid #333333;
+  border-radius: 0 .28571429rem .28571429rem 0;
+  opacity: 0.33;
 }
 .searchicon.ui.icon.input i {
   cursor: pointer;
@@ -1226,6 +1229,9 @@ span.fancytree-title {
 }
 .searchfilterbutton.ui.tiny.button {
   font-size: 1em;
+}
+.searchdropdown.ui.basic.button {
+  box-shadow: 0 0 0 1px rgba(51, 51, 51, 0.33) inset;
 }
 .resource-padding.ui.grid > .column:not(.row) {
   padding-top: 0;
