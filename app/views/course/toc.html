@@ -1,5 +1,5 @@
 <div ng-controller="courseScheduleCtrl as toc">
-    <div ng-include="'views/search/seachResultCourse.html'"></div>
+    <!--<div ng-include="'views/search/seachResultCourse.html'"></div>-->
     <div ng-include="'views/course/courseHeader.html'"></div>
 
     <div class="ui grid">
@@ -35,7 +35,7 @@
                                             <i ng-if='item.children && item.children.length > 0' class="plus icon down-arrow-accordion"></i>
                                         </div>
                                         <div ng-if='item.children && item.children.length > 0' class="content">
-                                            <div id="FT_{{$index}}"  ng-init="toc.constructTree($index, item.children)"></div>
+                                            <div id="FT_{{$index}}" ng-init="toc.constructTree($index, item.children)"></div>
                                         </div>
                                     </div>
                                     <div class="ui fitted divider margin-bottom-20 margin-top-30"></div>
