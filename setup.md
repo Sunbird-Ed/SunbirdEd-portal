@@ -25,7 +25,6 @@
 * RUN `gulp semantic`
 * RUN `gulp`
 * Change to dist
-* RUN `gulp env`
 * Run `node server.js`
 
 
