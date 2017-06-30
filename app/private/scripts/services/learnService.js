@@ -2,7 +2,7 @@
 angular.module('playerApp')
     .service('learnService', function(httpServiceJava, config, $sessionStorage, $q) {
         this.enrolledCourses = function(uid) {
-            var url = config.URL.MOCK_API_BASE + config.URL.COURSE.GET_ENROLLED_COURSES + '/' + uid;
+            var url = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX  + config.URL.COURSE.GET_ENROLLED_COURSES + '/' + uid;
             return httpServiceJava.get(url);
             // var deferred = $q.defer();
             // deferred.resolve({
@@ -115,7 +115,7 @@ angular.module('playerApp')
         }
 
         this.otherSections = function(req) {
-            var url = config.URL.MOCK_API_BASE + config.URL.COURSE.GET_LEARN_OTHER_SECTION;
+            var url = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX  + config.URL.COURSE.GET_LEARN_OTHER_SECTION;
             return httpServiceJava.post(url, req);
         }
     });

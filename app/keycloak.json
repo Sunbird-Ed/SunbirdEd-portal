@@ -1,7 +1,7 @@
 {
-  "realm": "ntp-test",
-  "auth-server-url": "https://keycloakidp-coacher.rhcloud.com/auth",
+  "realm": "master",
+  "auth-server-url": "http://10.0.1.75:8080/auth",
   "ssl-required": "external",
-  "resource": "portal",
+  "resource": "admin-cli",
   "public-client": true
 }
