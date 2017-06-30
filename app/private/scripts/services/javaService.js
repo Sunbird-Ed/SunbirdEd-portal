@@ -8,8 +8,8 @@
  * Service in the playerApp.
  */
 angular.module('playerApp')
-    .service('javaService', function($http, $sessionStorage, $rootScope, $window) {
-        var user = JSON.parse($window.localStorage.getItem('user'));
+    .service('javaService', function($http, $rootScope, $window) {
+        var user = $rootScope.userId;
 
         function handleSuccess(response) {
             return (response.data);
