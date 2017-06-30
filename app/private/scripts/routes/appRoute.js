@@ -10,7 +10,17 @@
  */
 angular
     .module('playerApp')
-    .config(function($stateProvider, $urlRouterProvider) {
+    .config(function($stateProvider, $urlRouterProvider, $translateProvider, $provide) {
+        $provide.provider('setResourceBundle', function() {
+            this.$get = function() {
+                return function(language, resourceBundle) {
+                    $translateProvider.translations(language, resourceBundle);
+                    $translateProvider.preferredLanguage(language);
+                    $translateProvider.useSanitizeValueStrategy('sanitize');
+                    return true;
+                };
+            };
+        });
 
         $urlRouterProvider.otherwise('/home');
         $stateProvider
