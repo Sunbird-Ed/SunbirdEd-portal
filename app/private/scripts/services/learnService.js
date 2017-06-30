@@ -7,17 +7,7 @@ angular.module('playerApp')
         };
 
         this.otherSections = function(req) {
-            var url = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + config.URL.COURSE.GET_LEARN_OTHER_SECTION;
-            var headers = {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'X-Consumer-ID': 'X-Consumer-ID',
-                'X-Device-ID': 'X-Device-ID',
-                'X-msgid': '8e27cbf5-e299-43b0-bca7-8347f7e5abcf',
-                'ts': '2017-05-25 10:18:56:578+0530',
-                'X-Authenticated-Userid': $rootScope.userId 
-
-            };
-            return httpServiceJava.get(url, {}, headers);
+            var url = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + config.URL.COURSE.GET_LEARN_OTHER_SECTION;           
+            return httpServiceJava.get(url);
         };
     });
