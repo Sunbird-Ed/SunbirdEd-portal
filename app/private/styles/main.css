@@ -1235,6 +1235,39 @@ span.fancytree-title {
   text-shadow: none !important;
   padding-top: 0!important;
 }
+.workspaceicon.ui.header > .icon {
+  padding-top: 0;
+  float: left;
+}
+.workspaceicon.ui.header:first-child {
+  margin-top: 20px;
+}
+.publicmenusection.ui.vertical.menu {
+  padding: 15px 0 0 4px;
+}
+.publicmenusection.ui.secondary.vertical.menu > .item {
+  color: #979797;
+}
+.publicmenusection.ui.secondary.menu .active.item {
+  background: linear-gradient(270deg, rgba(218, 218, 218, 0) 0%, #F1F1F1 100%);
+  border-radius: 0!important;
+  color: rgba(0, 0, 0, 0.95);
+}
+.publicmenusection.ui.secondary.menu a.item:hover {
+  background: linear-gradient(270deg, rgba(218, 218, 218, 0) 0%, #F1F1F1 100%);
+  border-radius: 0!important;
+  color: rgba(0, 0, 0, 0.95);
+}
+.workspacesegment {
+  margin-top: 73px;
+}
+.workspacetitle.ui.steps .step .title {
+  color: #333333;
+  font-family: "Open Sans";
+  font-size: 14px;
+  line-height: 17px;
+  font-weight: 400;
+}
 body {
   position: relative !important;
   min-height: 100% !important;
