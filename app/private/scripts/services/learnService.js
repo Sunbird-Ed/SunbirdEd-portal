@@ -7,7 +7,7 @@ angular.module('playerApp')
         };
 
         this.otherSections = function(req) {
-            var url = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + config.URL.COURSE.GET_LEARN_OTHER_SECTION;           
+            var url =  config.URL.LEARNER_PREFIX + config.URL.COURSE.GET_LEARN_OTHER_SECTION;           
             return httpServiceJava.get(url);
         };
     });
