@@ -1,4 +1,4 @@
-<div class="ui grid courseStructureHeader">
+<div class="ui grid courseStructureHeader" ng-if="!profileCtrl.loader.showLoader && !profileCtrl.error.showError">
     <div class="one wide column"></div>
     <div class="ten wide column">
         <div class="ui grid">
@@ -35,4 +35,11 @@
         </div>
         <div class="one wide column"></div>
     </div>
+</div>
+
+<div ng-if="profileCtrl.loader.showLoader">
+    <app-loader data="{{profileCtrl.loader}}"></app-loader>
+</div>
+<div ng-if="profileCtrl.error.showError">
+    <error-message data="{{profileCtrl.error}}" visibility="search.error.showError"></error-message>
 </div>

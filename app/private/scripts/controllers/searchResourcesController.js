@@ -47,26 +47,24 @@ angular.module('playerApp')
                 search.searchResult = contents.result.content;
                 console.log('search.searchResult', search.searchResult);
             } else {
-                search.error = showErrorMessage(true, 'no result found', config.MESSAGES.COMMON.INFO);
+                search.error = showErrorMessage(true, config.MESSAGES.SEARCH.RESOURCE.NO_RESULT, config.MESSAGES.COMMON.INFO);
             }
         };
         // corseSearch
 
         // mainSearch
         search.search = function() {
-            console.log('trying seaarch');
             search.initSearch();
             var req = search.searchRequest;
-            search.loader = showLoaderWithMessage('', 'loading results');
+            search.loader = showLoaderWithMessage('', config.MESSAGES.SEARCH.RESOURCE.START);
             searchService.contentSearch(req).then(function(res) {
-
                 search.loader.showLoader = false;
                 if (res != null && res.responseCode === 'OK') {
                     search.handleContentSearch(res);
                 } else search.loader.showLoader = false;
             }).catch(function() {
                 search.loader.showLoader = false;
-                search.error = showErrorMessage(true, 'something went wrong', config.MESSAGES.COMMON.ERROR);
+                search.error = showErrorMessage(true, config.MESSAGES.SEARCH.RESOURCE.FAILED, config.MESSAGES.COMMON.ERROR);
             });
         };
         // /close
