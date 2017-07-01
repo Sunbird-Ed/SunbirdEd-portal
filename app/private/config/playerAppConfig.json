@@ -52,7 +52,7 @@
                 "DELETE": "notes/delete"
             },
             "RESOURCE": {
-                "GET": "page/assemble/Resources"
+                "GET": "page/assemble/Resource"
             }
         },
         "FILTER": {
