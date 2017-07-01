@@ -6,7 +6,7 @@
                 <div class="eight wide column">
                   <div class="ui link items">
                   <div class="item">
-					    <div class="ui small circular image">
+					    <div class="ui tiny circular image">
 					      <img src="../images/user_logo.png">
 					    </div>
 					    <div class="content">
@@ -21,7 +21,7 @@
 					      </div>
 					    </div>
                   </div>
-                    
+                  </div> 
                 </div>
                 <div class="four wide column" ng-if="toc.courseType === 'ENROLLED_COURSE'">
                     
@@ -40,73 +40,10 @@
     	
     	<div class="ui grid">
     		<div class="three wide column">
-    		<h4 class="workspaceicon ui header sectionHeading margin-top-20"><i class="database icon"></i><span translate="workspace">My Workspace</span></h4>
-				<div class="publicmenusection ui secondary vertical menu">
-				  <a class="active item">
-				    START CREATING
-				  </a>
-				  <a class="item">
-				    DRAFTS
-				  </a>
-				   <a class="item">
-				    IN REVIEW
-				  </a>
-				   <a class="item">
-				    PUBLISHED
-				  </a>
-				   <a class="item">
-				    ALL UPLOADS
-				  </a>
-				</div>
+    			<div ng-include="'views/profile/profileSidebar.html'"></div>
 			</div>
 			<div class="workspacesegment nine wide column">
-			<div class="ui grid">
-			 
-				    <div class="three wide column">
-				    	<div class="workspacetitle ui steps">
-						  <div class="step">
-						    <i class="file outline icon"></i>
-						    <div class="content">
-						      <div class="title">TEXTBOOK</div>
-						     
-						    </div>
-						  </div>
-						</div>
-				    </div>
-				    <div class="three wide column">
-				    <div class="workspacetitle ui steps">
-					  <div class="step">
-					   <i class="file outline icon"></i>
-					    <div class="content">
-					      <div class="title">COURSE</div>
-					    
-					    </div>
-					  </div>
-					</div>
-					</div>
-				    <div class="three wide column">
-				    <div class="workspacetitle ui steps">
-					  <div class="step">
-					    <i class="file outline icon"></i>
-					    <div class="content">
-					      <div class="title">SLIDESHOW</div>
-					     
-					    </div>
-					  </div>
-					</div>
-				    </div>
-				    <div class="three wide column">
-				    	<div class="workspacetitle ui steps">
-					  <div class="step">
-					     <i class="folder outline icon"></i>
-					    <div class="content">
-					      <div class="title">COLLECTION</div>
-		
-					    </div>
-					  </div>
-					</div>
-				    </div>
-  				</div>
+				<div ng-include="'views/profile/profileStartCreate.html'"></div>
 			</div>
 		</div>
 	</div>
