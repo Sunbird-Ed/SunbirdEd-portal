@@ -1261,12 +1261,64 @@ span.fancytree-title {
 .workspacesegment {
   margin-top: 73px;
 }
-.workspacetitle.ui.steps .step .title {
+.workspacecontent {
+  text-align: center;
   color: #333333;
   font-family: "Open Sans";
   font-size: 14px;
   line-height: 17px;
   font-weight: 400;
+}
+.workspacetitle.title {
+  color: #333333;
+  font-family: "Open Sans";
+  font-size: 14px;
+  line-height: 17px;
+  font-weight: 400;
+}
+.profilesettings {
+  text-align: right;
+}
+.profilesttingheader.ui.header {
+  color: #979797;
+  font-family: "Open Sans";
+  font-size: 13px;
+  line-height: 17px;
+}
+.profileheader.ui.items > .item > .content > .header:not(.ui) {
+  font-size: 1.6em;
+}
+.profileheader.ui.items > .item .meta:last-child {
+  color: #979797;
+}
+.profileheaderpadding.ui.grid > .column:not(.row) {
+  padding: 20px 0 20px 0;
+}
+.workspaceinstuction {
+  text-align: center;
+  color: #979797;
+  font-size: 12px;
+}
+.workspacedownload.ui.segment {
+  box-sizing: border-box;
+  border: 2px solid #979797;
+  border-radius: 4px;
+  border-style: dashed;
+  text-align: center;
+}
+.uploadicon i.icon {
+  font-size: 3em;
+  color: #979797;
+}
+.uploadicon p {
+  color: #979797;
+  font-family: "Open Sans";
+  font-size: 13px;
+}
+.uploador p {
+  color: #979797;
+  font-family: "Open Sans";
+  font-size: 10px;
 }
 body {
   position: relative !important;
