@@ -158,8 +158,6 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
             noteId: noteData.identifier,
             note: noteData
         };
-
-        delete requestData.note['identifier'];
         
         var api = 'updateApi';
         showLoaderWithMessage(api, "", config.MESSAGES.NOTES.UPDATE.START);
