@@ -146,6 +146,25 @@
                     "START": "We are fetching data...",
                     "FAILED": "Fetching other courses failed, please try again later..."
                 }
+            },
+            "PROFILE": {
+                "HEADER": {
+                    "START": "We are fetching profile...",
+                    "FAILED": "Fetching profile failed, please try again later..."
+                }
+            },
+            "SEARCH": {
+                "COURSE": {
+                    "START": "We are fetching profile...",
+                    "FAILED": "Fetching courses failed, please try again later...",
+                    "NO_RESULT": "No result found "
+                },
+                "RESOURCE": {
+                    "START": "We are fetching profile...",
+                    "FAILED": "Fetching resources failed, please try again later...",
+                    "NO_RESULT": "No result found "
+                }
+
             }
         },
         "ekstep_CE_config": {
