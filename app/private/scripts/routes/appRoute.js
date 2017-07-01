@@ -40,6 +40,9 @@ angular
                         templateUrl: '/views/home/home.html',
                         controller: 'HomeController as homeCtrl'
                     }
+                },
+                onEnter: function($rootScope) {
+                    $rootScope.searchKey = 'Home';
                 }
             })
             .state('UserContent', {
@@ -51,7 +54,7 @@ angular
                     }
                 }
             })
-            .state('Learn', {
+            .state('Courses', {
                 url: '/learn',
                 views: {
                     'contentView': {
@@ -64,6 +67,7 @@ angular
                     $rootScope.searchKeyword = '';
                     $rootScope.isLearnPage = true;
                     $rootScope.courseActive = 'active';
+                    $('.content-search-filter').dropdown('clear');
                 },
                 onExit: function($rootScope) {
                     $rootScope.isLearnPage = false;
@@ -72,7 +76,7 @@ angular
                 },
                 params: { searchKey: 'Courses' }
             })
-            .state('Resource', {
+            .state('Resources', {
                 url: '/resources',
                 views: {
                     'contentView': {
@@ -84,6 +88,7 @@ angular
                     $rootScope.isResourcesPage = true;
                     $rootScope.searchKeyword = '';
                     $rootScope.resourcesActive = 'active';
+                    $('.content-search-filter').dropdown('clear');
                 },
                 onExit: function($rootScope) {
                     $rootScope.isResourcesPage = false;
@@ -179,6 +184,9 @@ angular
                         templateUrl: 'views/community/communityList.html',
                         controller: 'CommunityController as commCtrl'
                     }
+                },
+                onEnter: function($rootScope) {
+                    $rootScope.searchKey = 'Community';
                 }
             })
             .state('Profile', {
@@ -188,6 +196,9 @@ angular
                         templateUrl: 'views/profile/profile.html',
                         controller: 'ProfileController as profileCtrl'
                     }
+                },
+                onEnter: function($rootScope) {
+                    $rootScope.searchKey = 'Profile';
                 }
             })
             .state('Player', {
@@ -211,25 +222,14 @@ angular
                     $rootScope.resourcesActive = '';
                 }
             })
-            .state('SearchResource', {
-                url: '/:searchType/search/:query/',
-                templateUrl: 'views/search/search.html',
-                controller: 'SearchResourcesCtrl as search',
-                params: { searchType: null, query: null, event: null },
-                onEnter: function($rootScope) {
-                    $rootScope.isSearchPage = true;
-                    $rootScope.searchKey = 'Resources';
-                    $rootScope.resourcesActive = 'active';
-                },
-                onExit: function($rootScope) {
-                    $rootScope.isSearchPage = false;
-                    $rootScope.resourcesActive = '';
-                }
-            })
             .state('SearchCourse', {
                 url: '/:searchType/search/:query/',
-                templateUrl: 'views/search/search.html',
-                controller: 'SearchCourseCtrl as search',
+                views: {
+                    'contentView': {
+                        templateUrl: 'views/search/search.html',
+                        controller: 'SearchCourseCtrl as search',
+                    }
+                },
                 params: { searchType: null, query: null, searchKey: null, event: null },
                 onEnter: function($rootScope) {
                     $rootScope.isSearchPage = true;
@@ -241,4 +241,23 @@ angular
                     $rootScope.courseActive = '';
                 }
             })
+            .state('SearchResource', {
+                url: '/resources/search/:query/:searchType/',
+                views: {
+                    'contentView': {
+                        templateUrl: 'views/search/search.html',
+                        controller: 'SearchResourcesCtrl as search'
+                    }
+                },
+                params: { searchType: null, query: null, event: null },
+                onEnter: function($rootScope) {
+                    $rootScope.isSearchPage = true;
+                    $rootScope.searchKey = 'Resources';
+                    $rootScope.resourcesActive = 'active';
+                },
+                onExit: function($rootScope) {
+                    $rootScope.isSearchPage = false;
+                    $rootScope.resourcesActive = '';
+                }
+            });
     });

@@ -11,21 +11,43 @@ angular.module('playerApp')
         searchQuery.subjects = config.FILTER.RESOURCES.subjects;
         searchQuery.boards = config.FILTER.RESOURCES.boards;
         searchQuery.searchTypeKeys = ['Courses', 'Resources'];
+        searchQuery.sortingOptions = [{ field: 'lastUpdatedOn', name: 'Updated On' }, { field: 'createdOn', name: 'Created On' }];
+        searchQuery.searchSelectionKeys = [{ id: 'Courses', name: 'Courses' }, { id: 'Resources', name: 'Resources' }, { id: 'All', name: 'All' }];
+        searchQuery.sortIcon = true;
+        // search select dropdown changes
         $scope.$watch('$root.searchKey', function() {
+            searchQuery.keyword = '';
             searchQuery.selectedSearchKey = $rootScope.searchKey;
-            console.log('searchQuery.selectedSearchKey ', searchQuery.selectedSearchKey);
             searchQuery.isSearchTypeKey = searchQuery.searchTypeKeys.includes(searchQuery.selectedSearchKey);
-            console.log(' searchQuery.jdhsakdjbhkdl;asdghjdskl;fjfdls;fkjg', searchQuery.isSearchTypeKey);
-            $('#headerSearch').dropdown('set selected', searchQuery.isSearchTypeKey ? searchQuery.selectedSearchKey : 'All');
+            $('#headerSearch').dropdown('set selected', searchQuery.isSearchTypeKey === true ? searchQuery.selectedSearchKey : 'All');
+            $('.content-search-filter').dropdown('clear');
+            searchQuery.currentLocationParams = $location.path();
+            searchQuery.currentResourceLocation = searchQuery.currentLocationParams.includes('/resources');
+            searchQuery.currentCourseLocation = searchQuery.currentLocationParams.includes('/courses');
         });
 
-        searchQuery.searchSelectionKeys = [{ id: 'Courses', name: 'Courses' }, { id: 'Resources', name: 'Resources' }, { id: 'All', name: 'All' }];
-
+        searchQuery.selectedSearchKey = $rootScope.searchKey;
+        searchQuery.isSearchTypeKey = searchQuery.searchTypeKeys.includes(searchQuery.selectedSearchKey);
+        $timeout(function() {
+            $('#headerSearch').dropdown('set selected', searchQuery.isSearchTypeKey === true ? searchQuery.selectedSearchKey : 'All');
+        });
         searchQuery.currentStateInit = function() {
             searchQuery.currentState = $state.current.name;
             searchQuery.currentLocationParams = $location.path();
-            searchQuery.currentResourceLocation = searchQuery.currentLocationParams.includes('resource/');
-            searchQuery.currentCourseLocation = searchQuery.currentLocationParams.includes('course/');
+            searchQuery.currentResourceLocation = searchQuery.currentLocationParams.includes('/resources');
+            searchQuery.currentCourseLocation = searchQuery.currentLocationParams.includes('/courses');
+        };
+
+        searchQuery.req = function() {
+            return {
+                'query': searchQuery.keyword,
+                'filters': searchQuery.filters,
+                'params': {
+                    'cid': '12'
+                },
+                'limit': 20,
+                'sort_by': searchQuery.sortBy
+            };
         };
 
         searchQuery.setSearchText = function(text) {
@@ -44,7 +66,7 @@ angular.module('playerApp')
             } else {
                 searchQuery.autosuggest_data = [];
                 var searchReq = searchQuery.req();
-                var params = { query: JSON.stringify(searchReq), searchType: 'resource' };
+                var params = { query: JSON.stringify(searchReq), searchType: 'resources' };
                 $state.go('SearchResource', params);
             }
         };
@@ -60,25 +82,15 @@ angular.module('playerApp')
             } else {
                 searchQuery.autosuggest_data = [];
                 var searchReq = searchQuery.req();
-                var params = { query: JSON.stringify(searchReq), searchType: 'course' };
+                var params = { query: JSON.stringify(searchReq), searchType: 'courses' };
+
                 $state.go('SearchCourse', params);
             }
         };
-        searchQuery.req = function() {
-            return {
-                'query': searchQuery.keyword,
-                'filters': searchQuery.filters,
-                'params': {
-                    'cid': '12'
-                },
-                'limit': 20,
-                'sort_by': searchQuery.sortBy
-            };
-        };
+
         searchQuery.searchRequest = function($event) {
             searchQuery.currentStateInit();
             if (searchQuery.selectedSearchKey === 'Resources' || searchQuery.currentResourceLocation) {
-                console.log('inside course');
                 searchQuery.resourceSearch($event);
             } else if (searchQuery.selectedSearchKey === 'Courses' || searchQuery.currentCourseLocation) {
                 searchQuery.courseSearch($event);
@@ -103,6 +115,17 @@ angular.module('playerApp')
             searchQuery.filters = {};
             var query = $stateParams.query ? JSON.parse($stateParams.query) : '';
             searchQuery.keyword = query ? query.query : '';
+            searchQuery.searchRequest();
+        };
+        searchQuery.applySorting = function() {
+            var query = $stateParams.query ? JSON.parse($stateParams.query) : '';
+            searchQuery.keyword = query ? query.query : '';
+            searchQuery.filters = query ? query.filters : {};
+
+            var sortByField = searchQuery.sortByOption.field;
+
+            searchQuery.sortBy[sortByField] = (searchQuery.sortIcon === true) ? 'asc' : 'desc';
+            console.log('sort option', searchQuery.sortBy[sortByField]);
             searchQuery.searchRequest();
         };
     });
