@@ -7,9 +7,9 @@
         <div class="ui segment margin-auto padding-left-right-0 padding-top-bottom-0 " ng-init="noteList.ngInit()">
             <div class="ui grid margin-top-0 margin-left-right-0 margin-bottom-0 height-100" id="notesList" ng-if="!noteList.searchApi.loader.showLoader && !noteList.searchApi.error.showError">
                 <div class="twelve wide column" ng-if="!noteList.update.showUpdateNote">
-                    <div class="ui container padding-bottom-15 container-with-button padding-left-right-0">
+                    <div class="addnotes ui container padding-bottom-15 container-with-button padding-left-right-0">
                         <span class="ui header">My Notes</span>
-                        <i class="circular icon margin-left-right-10 link" ng-class="!noteList.add.showCreateNote ? 'plus' : 'remove'" ng-click="noteList.add.showCreateNote = !noteList.add.showCreateNote;"></i>
+                        <i class=" circular icon margin-left-right-10 link" ng-class="!noteList.add.showCreateNote ? 'plus' : 'remove'" ng-click="noteList.add.showCreateNote = !noteList.add.showCreateNote;"></i>
                         <h5 class="ui right floated basic icon circular button" ng-click="noteList.closeNoteList()">
                             <i class="ui remove icon"></i>
                         </h5>
@@ -36,7 +36,7 @@
                                     <span class="ui small header mouse-pointer" ng-click="noteList.update.showUpdateNote = !noteList.update.showUpdateNote; noteList.update.metaData = note;"> {{ note.title | limitTo: 40 }}&nbsp;
                                         <i ng-show="note.title.length > 40"  data-tooltip={{note.title}}></i>
                                     </span>
-                                    <span><i class="large remove circle icon margin-top--5 margin-bottom-0 link"  ng-click="noteList.removeNote(note.identifier)"></i></span>
+                                    <span class="circleicon"><i class=" large remove circle icon margin-bottom-0 link"  ng-click="noteList.removeNote(note.identifier)"></i></span>
                                 </div>
                                 <div class="meta">
                                     <span class="time font-size-small">{{note.lastUpdatedOn| dateFilterXTimeAgo}}</span>

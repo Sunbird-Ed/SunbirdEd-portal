@@ -214,22 +214,22 @@ th {
 /*sunbird light font*/
 @font-face {
   font-family: 'sunbirdlightfont';
-  src: url('../fonts/Roboto-Light.ttf') format('truetype');
+  src: url('../fonts/OpenSans -Light.ttf') format('truetype');
 }
 /*sunbird Regular font*/
 @font-face {
   font-family: 'sunbirdregularfont';
-  src: url('../fonts/Roboto-Regular.ttf') format('truetype');
+  src: url('../fonts/OpenSans-Regular.ttf') format('truetype');
 }
 /*sunbird Medium font*/
 @font-face {
   font-family: 'sunbirdmediumfont';
-  src: url('../fonts/Roboto-Medium.ttf') format('truetype');
+  src: url('../fonts/OpenSans-SemiBold.ttf') format('truetype');
 }
 /*sunbird Bold font*/
 @font-face {
   font-family: 'sunbirdboldfont';
-  src: url('../fonts/Roboto-Bold.ttf') format('truetype');
+  src: url('../fonts/OpenSans-Bold.ttf') format('truetype');
 }
 /*cards fonts*/
 .cardsHeading {
@@ -934,6 +934,15 @@ span.fancytree-title {
   list-style: none !important;
   cursor: pointer;
   margin-left: 5px;
+}
+.addnotes i.circular.icon {
+  padding: .6em .6em!important;
+  position: absolute;
+  margin-top: 4px;
+}
+.circleicon i.link.icon {
+  position: absolute;
+  margin-top: 6px;
 }
 .homeCard.ui.card {
   max-width: 100%;
