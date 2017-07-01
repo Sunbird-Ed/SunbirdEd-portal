@@ -10,8 +10,6 @@
 angular.module('playerApp')
         .controller('AppCtrl', function ($scope, $state, $stateParams, $rootScope, setResourceBundle, $translate, userService, $q, config, $location, $timeout) {
             $rootScope.userId = $("#userId").attr("value");
-            //remove token code later and its references in service headers
-            $rootScope.token = 'fcc60ad1-ae6b-3473-9c11-a7e1eef9b489';
             $rootScope.language = $rootScope.userLanguage || config.SITE.DEFAULT_LANGUAGE;
             $rootScope.translationBundle = {};
             $rootScope.searchKey = '';
