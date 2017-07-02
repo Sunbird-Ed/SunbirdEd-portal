@@ -1,5 +1,5 @@
-<div class="rightSideSectionCards ui card margin-bottom-15" ng-init="noteCard.ngInit();" ng-if="noteCard.showNoteCard">
-    <div class="content" ng-if="!noteCard.searchApi.loader.showLoader && !noteCard.searchApi.error.showError">
+<div class="rightSideSectionCards ui card margin-bottom-15" ng-if="noteCard.showNoteCard">
+    <div class="content" ng-if="!noteCard.searchApi.loader.showLoader && (!noteCard.searchApi.error.showError || noteCard.notesList.length === 0)">
         <div class="header">
             <span>My Notebook</span>
             <a class="ui right floated font-dark-blue" ng-click="noteCard.showAllNoteList()">View All</a>
@@ -25,16 +25,13 @@
                     <div ng-if="($index < noteCard.quantityOfNotes - 1) && noteCard.notesList.length > 1" class="ui clearing divider"></div>
                 </div>
             </div>
-            <div class="ui huge info message" ng-if="noteCard.notesList.length === 0">
-                <p>You don't have any note. please create note...</p>
-            </div>
         </div>
     </div>
     <div class="description">
         <div class="ui list" ng-if="noteCard.searchApi.loader.showLoader">
             <app-loader data="{{noteCard.searchApi.loader}}"></app-loader>
         </div>
-        <div class="ui list" ng-if="noteCard.searchApi.error.showError">
+        <div class="ui list" ng-if="noteCard.searchApi.error.showError  && noteCard.notesList.length === 0">
             <error-message data="{{noteCard.searchApi.error}}" visibility="noteCard.searchApi.error.showError"></error-message>
         </div>
     </div>

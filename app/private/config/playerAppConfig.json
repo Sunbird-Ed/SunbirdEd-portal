@@ -99,7 +99,8 @@
                 "SEARCH": {
                     "START": "We are fetching notes...",
                     "FAILED": "Fetching note is failed, please try again later...",
-                    "SUCCESS": "Note detail fetched successfully..."
+                    "SUCCESS": "Note detail fetched successfully...",
+                    "NO_RESULT": "You don't have any note, please create note..."
                 },
                 "UPDATE": {
                     "START": "We are updating note...",
