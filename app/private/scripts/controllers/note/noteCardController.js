@@ -14,7 +14,6 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
     noteCard.tocId = $stateParams.tocId;
     noteCard.add = {};
     noteCard.update = {};
-    noteCard.denyModalClass = '';
     noteCard.showCreateNote = false;
     noteCard.showUpdateNote = false;
     noteCard.visibility = $scope.visibility;
@@ -62,6 +61,9 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
                 if (response && response.responseCode === "OK") {
                     noteCard[api].loader.showLoader = false;
                     noteCard.notesList = response.result.note || [];
+                    if(noteCard.notesList.length === 0) {
+                        noteCard[api].error = showErrorMessage(false, config.MESSAGES.NOTES.SEARCH.NO_RESULT, config.MESSAGES.COMMON.INFO);
+                    }
                 } else {
                 noteCard[api].loader.showLoader = false;
                 noteCard[api].error = showErrorMessage(false, config.MESSAGES.NOTES.SEARCH.FAILED, config.MESSAGES.COMMON.ERROR);
@@ -170,7 +172,6 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
                         return note.identifier !== noteData.identifier;
                     });
                     noteCard.notesList.push(response.result.note);
-//                    noteCard.ngInit();
                 } else {
                 noteCard[api].loader.showLoader = false;
                 noteCard[api].error = showErrorMessage(true, config.MESSAGES.NOTES.UPDATE.FAILED, config.MESSAGES.COMMON.ERROR);
@@ -207,7 +208,6 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
 
     noteCard.closeUpdateNoteModal = function() {
         $timeout(function() {
-            noteCard.denyModalClass = 'deny';
             noteCard.showUpdateNote = false;
         }, 0);
     };
@@ -215,13 +215,13 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
     noteCard.showUpdateNoteModal = function(note) {
 
         noteCard.showUpdateNote = true;
-        noteCard.denyModalClass = '';
         $timeout(function() {
             $('#updateNoteModal').modal({
                 onShow: function() {
                     noteCard.update.metaData = angular.copy(note);
                 },
                 onHide: function() {
+                    noteCard.clearUpdateNoteData();
                     noteCard.closeUpdateNoteModal();
                     return true;
                 }
@@ -236,7 +236,6 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
 
     noteCard.closeAddNoteModal = function() {
         $timeout(function() {
-            noteCard.denyModalClass = 'deny';
             noteCard.showCreateNote = false;
         }, 0);
     };
