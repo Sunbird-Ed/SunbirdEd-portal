@@ -17,7 +17,9 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (noteServic
     function showPlayer(data) {
         $scope.contentData = data;
         $scope.showMetaData = $scope.isshowmetaview;
-        org.sunbird.portal.eventManager.addEventListener('renderer:telemetry:end',this.getPlayerEndTelemetry,this);
+        window.addEventListener('renderer:telemetryevent:end',function(event, data){
+            console.info('OE_END event:',event.detail.telemetryData);
+        })
         if ($scope.contentData.mimeType === 'application/vnd.ekstep.ecml-archive' || $scope.contentData.mimeType === 'application/vnd.ekstep.html-archive') {
             $scope.showIFrameContent = true;
             var iFrameSrc = config.ekstep_CP_config.baseURL;
@@ -28,7 +30,7 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (noteServic
                     var configuration = {};
                     configuration.context = config.ekstep_CP_config.context;
                     configuration.context.contentId = $scope.contentData.identifier;
-                    // sid,uid,channel need to be hanle
+                    // TODO: sid,uid,channel 
                     configuration.context.sid =  'Sunbird_sid';
                     configuration.context.uid ='Sunbird_uid';
                     configuration.context.channel='Sunbird_channel',
@@ -121,7 +123,8 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (noteServic
             $scope.getCurrentPage = pdfDelegate.$getByHandle('content-player').getCurrentPage();
         }, 2000);
     };
-    getPlayerEndTelemetry:function(evt,data){
+
+    $scope.getPlayerEndTelemetry = function(evt,data){
         console.info('Renderer EndTelemetry is:',data);
         console.info('Renderer EndTelemetry event',evt);
     }
