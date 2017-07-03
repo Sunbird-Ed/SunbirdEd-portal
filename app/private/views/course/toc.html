@@ -84,7 +84,7 @@
                                         </h2>
                                     </div>
                                     <div class="three wide column ">
-                                        <button class="ui blue button right floated  fluid" ng-click="toc.playPlaylistContent(toc.nextPlaylistItem, 'next')" ng-disabled="(toc.nextPlaylistItem < 0)">
+                                        <button class="ui blue button right floated  fluid" ng-click="toc.playPlaylistContent(toc.nextPlaylistItem, 'next')" ng-disabled="(!toc.nextPlaylistItem)">
                                             <div class="toc-right-nav-btn-content">
                                                 <h4 class=" font-white">NEXT >></h4>
                                                 <p class=" font-white">{{toc.nextPlayListName}}</p>

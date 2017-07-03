@@ -1,5 +1,5 @@
 <div class="rightSideSectionCards ui card margin-bottom-15" ng-if="noteCard.showNoteCard">
-    <div class="content" ng-if="!noteCard.searchApi.loader.showLoader && (!noteCard.searchApi.error.showError || noteCard.notesList.length === 0)">
+    <div class="content" ng-if="!noteCard.searchApi.loader.showLoader && (!noteCard.searchApi.error.showError || noteCard.notesList.length > 0)">
         <div class="header">
             <span>My Notebook</span>
             <a class="ui right floated font-dark-blue" ng-click="noteCard.showAllNoteList()">View All</a>
