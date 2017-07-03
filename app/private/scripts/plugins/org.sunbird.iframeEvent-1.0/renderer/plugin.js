@@ -18,12 +18,12 @@ Plugin.extend({
             if (evt.target) {
                 var parsedData = JSON.parse(evt.target);
                 if (parsedData.eid === 'OE_END') {
-                    var custTelemetryEvent = new new CustomEvent("renderer:telemety:end");
-                    window.parent.dispatchEvent(custTelemetryEvent, {
+                    var custTelemetryEvent = new CustomEvent('renderer:telemetryevent:end', {
                         "detail": {
                             "telemetryData": parsedData
                         }
                     });
+                    window.parent.dispatchEvent(custTelemetryEvent);
                     console.info('OE_END Event is sending..');
                 }
             }
