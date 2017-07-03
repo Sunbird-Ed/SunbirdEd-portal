@@ -26,7 +26,8 @@ angular.module('playerApp')
                         'phone': '9900032121',
                         'gender': 'male',
                         'rootOrgId': '32iu0e41972be9280f754e94',
-                        'avatar': 'https://placeholdit.co//i/555x500',
+                        // 'avatar': 'https://placeholdit.co//i/555x500',
+                        'avatar': null,
                         'thumbnail': null,
                         'dob': '1992-10-12',
                         'address': [{

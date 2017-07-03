@@ -12,7 +12,7 @@
 
         <div class="searchfilterinput ui search">
             <div class="searchicon ui icon input ">
-                <input type="text" id="keyword" name="filter_search" ng-model="searchQuery.keyword" ng-change=" searchQuery.searchRequest('$event')" ng-keypress="($event.which === 13)? searchQuery.searchRequest():0" ng-model-options="{debounce: 2000}" placeholder="What are you looking for?"
+                <input type="text" id="keyword" name="filter_search" ng-model="searchQuery.keyword" ng-change="searchQuery.checkTyping()" ng-keyup="searchQuery.stoppedTyping()" ng-keypress="($event.which === 13)? searchQuery.searchRequest():0" placeholder="What are you looking for?"
                     title="Search" autocomplete="off" spellcheck="false" dir="auto" class="searchinput" />
                 <i class="circular search link icon" ng-click=" searchQuery.searchRequest()"></i>
             </div>
