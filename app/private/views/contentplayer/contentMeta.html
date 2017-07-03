@@ -1,0 +1,108 @@
+<!--notes start-->
+<div class="ui row">
+
+    <div class="three wide column ">
+    </div>
+    <div class="six wide column center aligned" ng-if="showModalInLectureView">
+        <h2 class="ui center aligned icon tiny header toc-note">
+            <add-note shownoteinlecture="true" contentid="contentData.identifier" visibility="showModalInLectureView"></add-note>
+        </h2>
+    </div>
+    <div class="three wide column ">
+    </div>
+    <div class="twelve wide column ">
+        <div class="ui divider"></div>
+    </div>
+</div>
+<!--notes End-->
+<h2 class="ui header">
+    {{contentData.description}}
+</h2>
+<div class="ui clearing divider"></div>
+<div class="ui grid margin-top-15">
+    <div class="row">
+        <div class="three wide column">
+            <div class="ui list">
+                <a class="item">
+                    <div class="content">
+                        <div class="header">Author</div>
+                        <div class="description padding-top-1rem">{{contentData.owner}}</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="three wide column">
+            <div class="ui list">
+                <a class="item">
+                    <div class="content">
+                        <div class="header">Language</div>
+                        <div class="description padding-top-1rem">{{contentData.language.toString()}}</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="three wide column">
+            <div class="ui list">
+                <a class="item">
+                    <div class="content">
+                        <div class="header">Grades</div>
+                        <div class="description padding-top-1rem">{{contentData.gradeLevel.toString()}}</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="three wide column">
+            <div class="ui list">
+                <a class="item">
+                    <div class="content">
+                        <div class="header">Keywords</div>
+                        <div class="description padding-top-1rem">{{contentData.keywords.toString()}}</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="three wide column">
+            <div class="ui list">
+                <a class="item">
+                    <div class="content">
+                        <div class="header">Subject</div>
+                        <div class="description padding-top-1rem">{{contentData.subject}}</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="three wide column">
+            <div class="ui list">
+                <a class="item">
+                    <div class="content">
+                        <div class="header">Last update</div>
+                        <div class="description padding-top-1rem">{{contentData.lastUpdatedOn| dateFilterWithMDY}}</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="three wide column">
+            <div class="ui list">
+                <a class="item">
+                    <div class="content">
+                        <div class="header">Created On</div>
+                        <div class="description padding-top-1rem">{{contentData.createdOn| dateFilterWithMDY}}</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="ui grid">
+    <div class="row">
+        <div class="eight wide column">
+            <course-discussions  showaskquestion="false"></course-discussions>
+        </div>
+        <div class="four wide column toc-note-content">
+            <note-card shownotecard="true" contentid="contentData.identifier"></note-card>
+        </div>
+    </div>
+</div>

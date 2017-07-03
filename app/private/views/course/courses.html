@@ -1,0 +1,84 @@
+<div ng-controller="CourseCtrl">
+    <div class="mid-area scrollstyle">
+        <div class="dash-heading-border ng-scope" ng-if="courses.enrolledCourses.length > 0">
+            <h2 style="margin-top: 11px; margin-bottom: 5px">your progress</h2>
+        </div>
+        <div class="block-border-bottom margin-bottom-15" style="padding: 2px 2px 8px" ng-repeat="course in courses.enrolledCourses">
+            <div class="overflow-auto">
+                <div style="display: inline-block;">
+                    <div class="currentcourse-block-desc">
+                        <h3 class="course-intro-big"><span class="course-intro-small ng-binding" ng-click="courses.showToc(course.identifier)">{{course.courseName}}</span></h3>
+                    </div>
+                </div>
+                <div class="ui cards">
+                    <div class="tiny card">
+                        <div class="content">
+                            <span class="dashboardBadgeText">{{course.progress}}%</span>
+                            <div class="content" style="text-align: center">PROGRESS</div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="content">
+                            <span class="dashboardBadgeText">{{courses.enrolledCourseContents[course.id]['grade']}}</span>
+                            <div class="bold" style="text-align: center">GRADE</div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="content">
+                            <span class="dashboardBadgeText">{{courses.enrolledCourseContents[course.id]['completedCount']}}</span>
+                            <div class="bold" style="text-align: center">COMPLETION</div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="content">
+                            <span class="dashboardBadgeText">{{courses.enrolledCourseContents[course.id]['target']!=undefined?courses.enrolledCourseContents[course.id]['target']:'N/A'}}</span>
+                            <div class="bold" style="text-align: center">TARGET</div>
+                        </div>
+                    </div>
+                    <!--
+                                       <div class="live-tile badge-tile ng-scope" ng-if="!course.grade">
+                                            <div class="course-box">
+                                                <div class="mask disabledBadge">
+                                                    <span class="dashboardBadgeText">{{(course.grade==?}}</span>
+                                                    <div style="text-align: center">Grade</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="live-tile badge-tile">
+                                            <div class="course-box">
+                                                <div class="mask orangeBadge" ng-class="{greenBadge: course.completeCount >= (course.expectedCount - 5), orangeBadge: course.completeCount >= (course.expectedCount - 15), redBadge: course.completeCount < (course.expectedCount - 15)}">
+                                                    <span class="dashboardBadgeText ng-binding">19</span>
+                                                    <div style="text-align: center">Completion</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="live-tile badge-tile">
+                                            <div class="course-box">
+                                                <div class="mask greenBadge">
+                                                    <span class="dashboardBadgeText ng-binding">27</span>
+                                                    <div style="text-align: center">Target</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 noPad">
+                                        <div class="dashboardLinks">
+                                            <span class="marRight15" style="font-size: 14px;">
+                                                View :
+                                                <span>
+                                                    <a href="javascript:void(0)" ng-click="showStudentSummary(course.nodeId || course.course_id)">Activity</a>&nbsp;&nbsp;|&nbsp;
+                                                </span>
+
+                                                <a href="javascript:void(0)" ng-click="showCoursePeople(course.nodeId || course.course_id)" style="color: #428bca">Community</a>
+                                            </span>
+                                            <span class="ng-scope" ng-if="course.currentElement & amp; & amp; course.currentElement.name" style="font-size: 14px;">
+                                                You are at: <span class="course-intro-small ng-binding" ng-click="showCoursePage(course.nodeId || course.course_id)">Introduction to Geogebra</span>
+                                            </span>
+
+                                        </div>
+                    -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

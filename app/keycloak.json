@@ -1,0 +1,7 @@
+{
+  "realm": "shailesh",
+  "auth-server-url": "https://keycloakidp-coacher.rhcloud.com/auth",
+  "ssl-required": "external",
+  "resource": "portal",
+  "public-client": true
+}

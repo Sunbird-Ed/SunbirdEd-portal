@@ -1,0 +1,122 @@
+<div ng-controller="courseScheduleCtrl as toc">
+    <!--<div ng-include="'views/search/seachResultCourse.html'"></div>-->
+    <div ng-include="'views/course/courseHeader.html'"></div>
+
+    <div class="ui grid">
+        <div class="one wide column"></div>
+        <div class="ten wide column">
+            <div ng-if="toc.courseHierachy  && toc.lectureView == 'no'">
+                <div id="course-toc-list" ng-show="!contentPlayer.isContentPlayerEnabled && !toc.showAllNoteList">
+                    <div class="content">
+                        <div class='ui grid'>
+                            <div class="row">
+                                <div class='eight wide column'>
+                                    <div class="ui header">
+                                        <span class="content courseStructureHeading">
+                                            About the course
+                                        </span>
+                                        <div class="margin-top-10 " ng-init="toc.readMore = false">
+                                            <p ng-if="!toc.readMore" class="courseStructureDesc"> {{ toc.courseHierachy.description | limitTo: 200 }}&nbsp;
+                                                <span class="ui font-dark-blue mouse-pointer" ng-if="toc.courseHierachy.description.length > 200 && toc.readMore === false" ng-click="toc.readMore = !toc.readMore;">Read More ...</span>
+                                            </p>
+                                            <p ng-if="toc.readMore" class="courseStructureDesc"> {{ toc.courseHierachy.description}}&nbsp;
+                                                <span class="ui cardsKnowMore mouse-pointer" ng-click="toc.readMore = false;">Read Less ...</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="ui header">
+                                        <b class="content courseStructureHeading">
+                                            Course Structure
+                                        </b>
+                                    </div>
+                                    <div id="course-toc" class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100" ng-repeat="item in  toc.courseHierachy.children track by $index" ng-click="toc.expandMe($event, item)">
+                                        <div class="courseAccordianHeading title title-padding-left accordian-left-text" name="{{item.identifier}}">
+                                            {{item.name}}
+                                            <i ng-if='item.children && item.children.length > 0' class="plus icon down-arrow-accordion"></i>
+                                        </div>
+                                        <div ng-if='item.children && item.children.length > 0' class="content">
+                                            <div id="FT_{{$index}}" ng-init="toc.constructTree($index, item.children)"></div>
+                                        </div>
+                                    </div>
+                                    <div class="ui fitted divider margin-bottom-20 margin-top-30"></div>
+                                    <course-discussions showaskquestion="true"></course-discussions>
+                                </div>
+                                <div class='four wide column'>
+                                    <div ng-if="toc.courseType === 'ENROLLED_COURSE'" class="cursor-pointer margin-bottom-15">
+                                        <add-note shownoteincourse="true" courseid="toc.courseParams.courseId"></add-note>
+                                    </div>
+                                    <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false" courseid="toc.courseParams.courseId"></note-card>
+                                    <div ng-include=" 'views/course/facultyCard.html'" class="margin-bottom-15"></div>
+                                    <div ng-include=" 'views/course/carriculumCard.html'"></div><br>
+                                    <div class="courseupdate">
+                                        <b>Course created on: 15 jun 2017</b><br>
+                                        <b>Updated on: 16 jun 2017</b>
+                                    </div>
+                                </div>
+                                <div ng-if="toc.showNoteModal">
+                                    <div ng-include=" 'views/course/noteAddCardModal.html'"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="(contentPlayer.isContentPlayerEnabled) && !toc.showDimmer">
+                    <div class="ui grid" id="{{toc.hashId}}">
+                        <div class="twelve wide column">
+                            <div class="ui grid">
+                                <div class="row">
+                                    <div class="twelve wide column">
+                                        <content-player ng-if="toc.lectureView == 'no'" visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="true" height="10" width="100" ispercentage="true"></content-player>
+                                        <content-player ng-if="toc.lectureView == 'yes'" visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="false" height="10" width="100" ispercentage="true"></content-player>
+                                    </div>
+                                </div>
+                                <div class="ui row">
+                                    <div class="three wide column ">
+                                        <button class="ui blue button left floated  fluid  tocbutton" ng-click="toc.playPlaylistContent(toc.prevPlaylistItem, 'prev')" ng-disabled="(toc.prevPlaylistItem < 0)">
+                                            <div class="toc-left-nav-btn-content">
+                                                <h4 class=" font-white"><< PREVIOUS</h4>
+                                                <p class=" font-white">{{toc.previousPlayListName}}</p>
+                                            </div>
+                                        </button>
+                                    </div>
+                                    <div class="six wide column center aligned" ng-if="toc.showNoteInLecture">
+                                        <h2 class="ui center aligned icon tiny header toc-note">
+                                            <add-note shownoteinlecture="true" visibility="toc.showNoteInLecture" courseid="toc.courseParams.courseId" contentid="contentPlayer.contentData.identifier"></add-note>
+                                        </h2>
+                                    </div>
+                                    <div class="three wide column ">
+                                        <button class="ui blue button right floated  fluid" ng-click="toc.playPlaylistContent(toc.nextPlaylistItem, 'next')" ng-disabled="(toc.nextPlaylistItem < 0)">
+                                            <div class="toc-right-nav-btn-content">
+                                                <h4 class=" font-white">NEXT >></h4>
+                                                <p class=" font-white">{{toc.nextPlayListName}}</p>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui section divider"></div>
+                    <div class="two wide column"></div>
+                    <div class="ui grid">
+                        <div class="row">
+                            <div class="eight wide column">
+                                <course-discussions showaskquestion="false"></course-discussions>
+                            </div>
+                            <div class="four wide column toc-note-content">
+                                <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false" courseid="toc.courseParams.courseId" contentid="contentPlayer.contentData.identifier"></note-card>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-if="toc.loader.showLoader">
+                <app-loader data="{{toc.loader}}"></app-loader>
+            </div>
+            <div ng-if="toc.error.showError">
+                <error-message data="{{toc.error}}" visibility="toc.error.showError"></error-message>
+            </div>
+            <div class="one wide column"></div>
+        </div>
+    </div>
+</div>
