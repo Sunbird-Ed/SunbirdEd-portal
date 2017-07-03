@@ -1,0 +1,17 @@
+<div ng-show="!noteList.createApi.loader.showLoader && !noteList.createApi.error.showError">
+    <div class="ui fluid icon input">
+        <input type="text" placeholder="Title" name="title" ng-model="metaData.title" />
+    </div>
+    <div class="editor">
+        <pagedown-editor content="metaData.note" show-preview="false"></pagedown-editor>
+    </div>
+    <button class="ui primary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="noteList.createNote(metaData)" ng-disabled="!metaData.title || !metaData.note" tabindex="4">Save</button>
+    <button class="ui secondary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="metaData.title = ''; metaData.note = '';">Clear</button>
+</div>
+<div ng-if="noteList.createApi.loader.showLoader">
+    <app-loader data="{{noteList.createApi.loader}}"></app-loader>
+</div>
+<div ng-if="noteList.createApi.error.showError">
+    <error-message data="{{noteList.createApi.error}}" visibility="noteList.createApi.error.showError"></error-message>
+</div>
+<div class="ui clearing divider"></div>

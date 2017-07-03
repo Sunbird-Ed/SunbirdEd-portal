@@ -1,0 +1,22 @@
+[{
+    "propertyName": "autoplay",
+    "title": "Auto play",
+    "description": "Set the element's playability",
+    "dataType": "boolean",
+    "required": true,
+    "defaultValue": false
+}, {
+    "propertyName": "visible",
+    "title": "Visible",
+    "description": "Set the element's Visibility",
+    "dataType": "boolean",
+    "required": true,
+    "defaultValue": true
+}, {
+    "propertyName": "stroke",
+    "title": "Border Color",
+    "description": "Set the border color for element",
+    "dataType": "colorpicker",
+    "required": true,
+    "defaultValue": "rgba(255, 255, 255, 0)"
+}]
