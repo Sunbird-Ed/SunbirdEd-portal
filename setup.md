@@ -1,13 +1,13 @@
-#Player  Setup
+# Player  Setup
 
 
-##Environment Variables
-1. port
+## Environment Variables
+1. sunbird_port
 2. sunbird_content_player_url
 3. sunbird_learner_player_url
 
 
-##Pre Requirements
+## Pre Requirements
 
 1. Node
 2. gulp (npm install -g gulp)
@@ -15,7 +15,7 @@
 
 
 
-##Setup Instructions
+## Setup Instructions
 
 
 * Clone the project.
