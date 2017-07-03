@@ -3,8 +3,8 @@
 
 ## Environment Variables
 1. sunbird_port
-2. sunbird_content_player_url
-3. sunbird_learner_player_url
+2. sunbird_content_player_url=http://{{content_service_ip}}:5000/api/sb/v1/
+3. sunbird_learner_player_url=http://{{learner_service_ip}}:9000/v1/
 
 
 ## Pre Requirements
