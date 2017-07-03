@@ -17,9 +17,12 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (noteServic
     function showPlayer(data) {
         $scope.contentData = data;
         $scope.showMetaData = $scope.isshowmetaview;
+        
         window.addEventListener('renderer:telemetryevent:end',function(event, data){
             console.info('OE_END event:',event.detail.telemetryData);
-        })
+            org.subird.portal.eventManager.dispatchEvent('subird:portal:telemetryend',event.detail.telemetryData);
+        });
+
         if ($scope.contentData.mimeType === 'application/vnd.ekstep.ecml-archive' || $scope.contentData.mimeType === 'application/vnd.ekstep.html-archive') {
             $scope.showIFrameContent = true;
             var iFrameSrc = config.ekstep_CP_config.baseURL;
@@ -34,8 +37,12 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (noteServic
                     configuration.context.sid =  'Sunbird_sid';
                     configuration.context.uid ='Sunbird_uid';
                     configuration.context.channel='Sunbird_channel',
+                    configuration.context.dimension = 'Sunbird_dimension',
+                    configuration.context.appid = 'Sunbird_appId',
                     configuration.config = config.ekstep_CP_config.config;
-                    configuration.plugins = config.ekstep_CP_config.plugins;
+                    configuration.plugins = config.ekstep_CP_config.config.plugins;
+                    configuration.repos = config.ekstep_CP_config.config.repos;
+
                     previewContentIframe.contentWindow.initializePreview(configuration);
                 };
             }, 1000);
@@ -124,9 +131,5 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (noteServic
         }, 2000);
     };
 
-    $scope.getPlayerEndTelemetry = function(evt,data){
-        console.info('Renderer EndTelemetry is:',data);
-        console.info('Renderer EndTelemetry event',evt);
-    }
    
 });
