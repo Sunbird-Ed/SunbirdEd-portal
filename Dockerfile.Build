@@ -1,10 +1,11 @@
 #Dockerfile for the player setup
-FROM mhart/alpine-node:6
+FROM node:6-alpine
 MAINTAINER "Manojvv" "manojv@ilimi.in"
 RUN apk update \
     && apk add -y python \
     && apk add -y python-dev \
     && apk update \
+    && apk add git \
     && mkdir -p /opt/player
 WORKDIR /opt/player
 COPY * /opt/player/
@@ -14,9 +15,9 @@ RUN apk add zip \
     && npm install -g gulp \
     && npm install gulp --save-dev 
 WORKDIR /opt/player/
-RUN npm install
-RUN npm install express-http-proxy --save
-RUN bower install /opt/player/bower.json
-RUN gulp
+RUN npm install \
+    && npm install express-http-proxy --save \
+    && bower install /opt/player/bower.json \
+    && gulp
 WORKDIR /opt/player
 CMD ["zip", "-r", "player-dist.zip",  "dist"]
