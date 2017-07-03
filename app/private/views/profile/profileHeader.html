@@ -5,21 +5,25 @@
             <div class="eight wide column">
                 <div class="profileheader ui link items">
                     <div class="item">
-                        <div class="ui tiny circular image">
-                            <img src="{{profileCtrl.profilePic || 'images/user_logo.png'}}">
-                        </div>
-                        <div class="content padding-top-10 ">
-                            <div class="header">{{profileCtrl.firstName}} &nbsp;{{profileCtrl.lastName}}</div>
-                            <div class="meta">
-                                <span class="cinema">{{profileCtrl.organizationName}},{{profileCtrl.city}}</span>
+                        <div class="ui grid">
+                            <div class="two wide column">
+                                <img class="ui small circular image" src="{{profileCtrl.profilePic || 'images/user_logo.png'}}">
                             </div>
-                            <div class="description" ng-init="profileCtrl.readMore = false">
-                                <p ng-if="!profileCtrl.readMore"> {{profileCtrl.summary | limitTo: 120 }}&nbsp;
-                                    <span class="ui cardsKnowMore mouse-pointer" ng-if="profileCtrl.summary.length > 120 && profileCtrl.readMore === false" ng-click="profileCtrl.readMore = !profileCtrl.readMore;"> ... Read More</span>
-                                </p>
-                                <p ng-if="profileCtrl.readMore" class="courseStructureDesc"> {{profileCtrl.summary}}&nbsp;
-                                    <span class="ui cardsKnowMore mouse-pointer" ng-click="profileCtrl.readMore = false;">Read Less ...</span>
-                                </p>
+                            <div class="ten wide column">
+                                <div class="content padding-top-10 ">
+                                    <div class="sectionHeading header">{{profileCtrl.firstName}} &nbsp;{{profileCtrl.lastName}}</div>
+                                    <div class="meta">
+                                        <span class="cinema">{{profileCtrl.organizationName}},{{profileCtrl.city}}</span>
+                                    </div>
+                                    <div class="description" ng-init="profileCtrl.readMore = false">
+                                        <p ng-if="!profileCtrl.readMore"> {{profileCtrl.summary | limitTo: 120 }}&nbsp;
+                                            <span class="ui cardsKnowMore mouse-pointer" ng-if="profileCtrl.summary.length > 120 && profileCtrl.readMore === false" ng-click="profileCtrl.readMore = !profileCtrl.readMore;"> ... Read More</span>
+                                        </p>
+                                        <p ng-if="profileCtrl.readMore"> {{profileCtrl.summary}}&nbsp;
+                                            <span class="ui cardsKnowMore mouse-pointer" ng-click="profileCtrl.readMore = false;">Read Less ...</span>
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -51,8 +55,6 @@
     </div>
     <div class="one wide column"></div>
 </div>
-
-
 <div ng-if="profileCtrl.loader.showLoader">
     <app-loader data="{{profileCtrl.loader}}"></app-loader>
 </div>
