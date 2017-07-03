@@ -14,6 +14,8 @@ angular.module('playerApp')
         searchQuery.sortingOptions = [{ field: 'lastUpdatedOn', name: 'Updated On' }, { field: 'createdOn', name: 'Created On' }];
         searchQuery.searchSelectionKeys = [{ id: 'Courses', name: 'Courses' }, { id: 'Resources', name: 'Resources' }, { id: 'All', name: 'All' }];
         searchQuery.sortIcon = true;
+        var timoutPromise = null;
+
         // search select dropdown changes
         $scope.$watch('$root.searchKey', function() {
             searchQuery.keyword = '';
@@ -38,6 +40,21 @@ angular.module('playerApp')
             searchQuery.currentCourseLocation = searchQuery.currentLocationParams.includes('/courses');
         };
 
+        searchQuery.checkTyping = function() {
+            if (timoutPromise) {
+                $timeout.cancel(timoutPromise);
+            }
+        };
+
+        searchQuery.stoppedTyping = function() {
+            timoutPromise = $timeout(function() {
+                $scope.searchRequest = $stateParams.query ? JSON.parse($stateParams.query).query : null;
+                if ($scope.searchRequest !== searchQuery.keyword) {
+                    searchQuery.searchRequest('$event');
+                }
+            }, 2000);
+        };
+
         searchQuery.req = function() {
             return {
                 'query': searchQuery.keyword,
@@ -47,6 +64,7 @@ angular.module('playerApp')
                 },
                 'limit': 20,
                 'sort_by': searchQuery.sortBy
+
             };
         };
 
@@ -71,8 +89,9 @@ angular.module('playerApp')
             }
         };
         searchQuery.courseSearch = function($event) {
+            var courseReq = searchQuery.req();
             if ($event && searchQuery.keyword.length) {
-                var autoSuggestReq = searchQuery.req();
+                var autoSuggestReq = { 'request': courseReq };
                 searchService.courseSearch(autoSuggestReq).then(function(autoSuggest) {
                     if (autoSuggest != null && autoSuggest.responseCode === 'OK') {
                         searchQuery.autosuggest_data =

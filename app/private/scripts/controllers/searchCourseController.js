@@ -2,11 +2,8 @@
 
 angular.module('playerApp')
     .controller('SearchCourseCtrl', function(config, sessionService, searchService, $scope, $timeout, $rootScope, $stateParams, $state) {
-
-
         var search = this;
         search.searchResult = [];
-
         search.initSearch = function() {
             search.searchRequest = JSON.parse($stateParams.query);
             search.searchType = $stateParams.searchType;
@@ -58,7 +55,7 @@ angular.module('playerApp')
         // mainSearch
         search.search = function() {
             search.initSearch();
-            var req = search.searchRequest;
+            var req = { 'request': search.searchRequest };
             search.loader = showLoaderWithMessage('', config.MESSAGES.SEARCH.COURSE.START);
             searchService.courseSearch(req).then(function(res) {
                 search.loader.showLoader = false;
