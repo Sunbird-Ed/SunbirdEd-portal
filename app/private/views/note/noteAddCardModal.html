@@ -1,14 +1,13 @@
-<div>
-    <div ng-if="noteCard.showModalInLectureView" class="ui center aligned icon tiny header toc-note">
-        <div class="ui cardsKnowMore mouse-pointer" ng-click="noteCard.showAddNoteModal();">
-            <i class=" file text outline icon font-dark-blue"></i> Take Note
-        </div>
-    </div>
-    <div ng-if="noteCard.showModalInCourseView">
-        <div ng-click="noteCard.showAddNoteModal();">
-            <i class="circular icon margin-right-10 link plus"></i>&nbsp;ADD NOTE</div>
-    </div>
-</div>
+<span ng-if="noteCard.showModalInLectureView" class="ui center aligned icon tiny header toc-note">
+    <span class="ui cardsKnowMore cursor-pointer" ng-click="noteCard.showAddNoteModal();">
+        <i class="file text outline icon font-dark-blue"></i> Take Note
+    </span>
+</span>
+<span ng-if="noteCard.showModalInCourseView">
+    <span ng-click="noteCard.showAddNoteModal(); " class="cursor-pointer">
+        <i class="circular icon margin-right-10 plus"></i>&nbsp;ADD NOTE
+    </span>
+</span>
 <div ng-if="noteCard.showCreateNote">
     <div class="ui modal" id="addNoteModal">
         <div class=" ui segment margin-top-10" ng-if="!noteCard.createApi.loader.showLoader && !noteCard.createApi.error.showError">
@@ -38,10 +37,10 @@
             </div>
         </div>
         <div class=" ui segment margin-top-10" ng-if="noteCard.createApi.loader.showLoader">
-                <app-loader data="{{noteCard.createApi.loader}}"></app-loader>
-            </div>
-            <div class=" ui segment margin-top-10" ng-if="noteCard.createApi.error.showError">
-                <error-message data="{{noteCard.createApi.error}}" visibility="noteCard.createApi.error.showError"></error-message>
-            </div>
+            <app-loader data="{{noteCard.createApi.loader}}"></app-loader>
+        </div>
+        <div class=" ui segment margin-top-10" ng-if="noteCard.createApi.error.showError">
+            <error-message data="{{noteCard.createApi.error}}" visibility="noteCard.createApi.error.showError"></error-message>
+        </div>
     </div>
 </div>
