@@ -41,7 +41,7 @@
                                     <course-discussions showaskquestion="true"></course-discussions>
                                 </div>
                                 <div class='four wide column'>
-                                    <div ng-if="toc.courseType === 'ENROLLED_COURSE'" class="cursor-pointer margin-bottom-15">
+                                    <div ng-if="toc.courseType === 'ENROLLED_COURSE'" class="margin-bottom-15">
                                         <add-note shownoteincourse="true" courseid="toc.courseParams.courseId"></add-note>
                                     </div>
                                     <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false" courseid="toc.courseParams.courseId"></note-card>
@@ -78,11 +78,13 @@
                                             </div>
                                         </button>
                                     </div>
-                                    <div class="six wide column center aligned" ng-if="toc.showNoteInLecture">
+                                    <div class="two wide column "></div>
+                                    <div class="two wide column center aligned" ng-if="toc.showNoteInLecture">
                                         <h2 class="ui center aligned icon tiny header toc-note">
                                             <add-note shownoteinlecture="true" visibility="toc.showNoteInLecture" courseid="toc.courseParams.courseId" contentid="contentPlayer.contentData.identifier"></add-note>
                                         </h2>
                                     </div>
+                                    <div class="two wide column "></div>
                                     <div class="three wide column ">
                                         <button class="ui blue button right floated  fluid" ng-click="toc.playPlaylistContent(toc.nextPlaylistItem, 'next')" ng-disabled="(!toc.nextPlaylistItem)">
                                             <div class="toc-right-nav-btn-content">
