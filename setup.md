@@ -2,9 +2,9 @@
 
 
 ##Environment Variables
-
-1. sunbird_content_player_url
-2. sunbird_learner_player_url
+1. port
+2. sunbird_content_player_url
+3. sunbird_learner_player_url
 
 
 ##Pre Requirements
