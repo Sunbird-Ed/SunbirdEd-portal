@@ -1,0 +1,146 @@
+<div class="ui grid" ng-init="createSlideShow.initilizeView()">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+        <div class="ui grid" ng-if="!createSlideShow.ekURL">
+
+            <div class="two wide column">
+                <img class="ui small left floated image" src="/images/wireframe/text-image.png">
+            </div>
+            <div class="ten wide column">
+                <form class="ui form" novalidate="" ng-init="createSlideShow.data = {}">
+                    <div class="field">
+                        <label>Title</label>
+                        <div class="field">
+                            <input type="text" name="title" placeholder="Name this lesson" ng-model="createSlideShow.data.name" required="">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label>Write short description of your lesson</label>
+                        <textarea rows="2" name="description" placeholder="Description for the lesson" ng-model="createSlideShow.data.description" required=""></textarea>
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <label>Lesson type</label>
+                            <select  class="ui fluid dropdown singleSelectDropDown"
+                                     ng-options=" lesson for lesson in createSlideShow.lessonTypes" ng-model="createSlideShow.data.contentType">
+                                <option value="">Choose lesson type</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>Audience</label>
+                            <select name="audience" class="ui fluid dropdown singleSelectDropDown"
+                                    ng-options=" audience for audience in createSlideShow.audiences" ng-model="createSlideShow.data.audience">
+                                <option value="" translate="languages">Choose audience</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <label>Language</label>
+                            <select name="language" class="ui fluid dropdown singleSelectDropDown"
+                                    ng-options=" language for language in createSlideShow.languages" ng-model="createSlideShow.data.language">
+                                <option value="" translate="languages">Choose language</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>Domain</label>
+                            <select class="ui fluid dropdown">
+                                <option value="">Numeracy</option>
+                                <option value="AL">Alabama</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <label>Grade</label>
+                            <select name="grades" multiple="" class="ui fluid dropdown multiSelectDropDown" 
+                                    ng-options=" grade for grade in createSlideShow.grades" ng-model="createSlideShow.data.gradeLevel"s>
+                                <option value="">Choose grades</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>Age Group</label>
+                            <select name="ageGroup" multiple="" class="ui fluid dropdown multiSelectDropDown"  
+                                    ng-options=" ageGroup for ageGroup in createSlideShow.ageGroup" ng-model="createSlideShow.data.ageGroup">
+                                <option value="" translate="agegroup">Choose age Group</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <label>Medium</label>
+                            <select name="medium" multiple="" class="ui fluid dropdown multiSelectDropDown" 
+                                    ng-options=" medium for medium in createSlideShow.medium" ng-model="createSlideShow.data.medium">
+                                <option value="" medium="medium">Choose medium</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>Subject</label>
+                            <select name="subject" multiple="" class="ui fluid dropdown multiSelectDropDown"
+                                    ng-options=" subject for subject in createSlideShow.subjects" ng-model="createSlideShow.data.subject">
+                                <option value="" translate="ageGroup">Choose subject</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="two fields">
+                            <div class="field">
+                                <label>Author</label>
+                                <input type="text" name="author" placeholder="author" ng-model="createSlideShow.data.author" required="">
+                            </div>
+                            <div class="field">
+                                <label>Methods</label>
+                                <div class="ui fluid multiple search selection dropdown">
+                                    <input type="hidden" name="receipt">
+                                    <i class="dropdown icon"></i>
+                                    <div class="default text">Type and select methods here</div>
+                                    <div class="menu">
+                                        <div class="item" data-value="justen" data-text="Justen">
+                                            rusten Kit
+                                        </div>
+                                        <div class="item" data-value="justen" data-text="Justen">
+                                            Justen Kitsune
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="ui grid">
+                    <div class="three wide column">
+                        <div class="workspacecontent ui card">
+                            <div class="content">
+                                <i class="plus icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="three wide column">
+                        <div class="workspacecontent ui card">
+                            <div class="content">
+                                <div class="workspacetitle title">add more..</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui grid">
+                    <div class="six wide column"></div>
+                    <div class="two wide column">
+                        <button class="ui primary basic button" ng-click="createSlideShow.saveMetaData(createSlideShow.data)">Save</button>
+                    </div>
+                    <div class="two wide column">
+                        <button class="ui secondary basic button" ng-click="createSlideShow.initEKStepCE('do_112281215764824064130')">Open Editor</button>
+                    </div>
+                    <div class="two wide column">
+                        <button class="ui positive basic button">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui grid" ng-if="createSlideShow.ekURL">
+            <iframe ng-if="createSlideShow.ekURL" ng-src="{{createSlideShow.ekURL}}" class="content-iframe"></iframe>
+        </div>
+
+    </div>
+    <div class="one wide column"></div>
+</div>

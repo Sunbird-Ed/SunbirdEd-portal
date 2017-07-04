@@ -1,8 +1,8 @@
 <div class="ui grid">
     <div class="three wide column">
-       <div class="workspacecontent ui card">
+        <div class="workspacecontent ui card">
             <div class="content">
-              <div class="textcontent">
+                <div class="textcontent">
                     <i class='my-icon file text icon '></i>
                     <span class="my-text">TEXTBOOK</span>
                 </div>
@@ -19,10 +19,10 @@
                 </div>
             </div>
         </div>
-        <p class="workspaceinstuction">You can create book with the strutured section </p>
+        <p class="workspaceinstuction">You will be taken to an editor to create a course with assessments/quizes. </p> 
     </div>
     <div class="three wide column">
-        <div class="workspacecontent ui card">
+        <div class="workspacecontent ui link card" ui-sref="CreateSlideShow">
             <div class="content">
                 <div class="textcontent">
                     <i class='my-icon file text icon'></i>
@@ -30,7 +30,7 @@
                 </div>
             </div>
         </div>
-        <p class="workspaceinstuction">You can create book with the strutured section </p>
+        <p class="workspaceinstuction">You can create stuff here. You must try it, it's magical!</p> 
     </div>
     <div class="three wide column">
         <div class="workspacecontent ui card">
@@ -41,25 +41,26 @@
                 </div>
             </div>
         </div>
-        <p class="workspaceinstuction">You can create book with the strutured section </p>
+        <p class="workspaceinstuction">Collections are folders/bundles of lessons or resources.</p> 
     </div>
-	
+
 </div>
 <div class="filedivider ui divider"></div>
-<div class="ui grid">
-	<div class="tewlve wide column">
-	<div class="workspacedownload ui raised segment">
-		<div class="uploadicon twelve wide column ">
-	       <i class="upload icon padding-top-10"></i>
-	       <p class="padding-top-10">DROP FILE HERE TO UPLOAD</p>
-	    </div>
-	    <div class="uploador twelve wide column ">
-	       <p class="padding-top-10">-or-</p>
-	    </div>
-	   <div class="twelve wide column ">
-	        <button class="fileupload ui primary basic button margin-bottom-20">SELECT FILE TO UPLOAD</button>
-	    </div>
-	</div>
-	</div>
-</div>
+<!--<div class="ui grid">
+        <div class="tewlve wide column">
+        <div class="workspacedownload ui raised segment">
+                <div class="uploadicon twelve wide column ">
+               <i class="upload icon padding-top-10"></i>
+               <p class="padding-top-10">DROP FILE HERE TO UPLOAD</p>
+            </div>
+            <div class="uploador twelve wide column ">
+               <p class="padding-top-10">-or-</p>
+            </div>
+           <div class="twelve wide column ">
+                <button class="fileupload ui primary basic button margin-bottom-20">SELECT FILE TO UPLOAD</button>
+            </div>
+        </div>
+        </div>
+</div>-->
 
+<div ng-include=" 'views/common/fileUploader.html'"></div>

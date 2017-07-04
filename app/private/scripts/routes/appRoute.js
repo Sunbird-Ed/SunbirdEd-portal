@@ -306,7 +306,15 @@ angular
                     $('#content-search-filter-accordion').accordion('close', 0);
                     $rootScope.courseActive = '';
                 }
-            })
+            }).state('CreateSlideShow', {
+                        url: '/create/slideShow',
+                        views: {
+                            'contentView': {
+                                templateUrl: '/views/slideShow/createSlideShow.html',
+                                controller: 'CreateSlideShowController as createSlideShow'
+                            }
+                        }
+            });
     })
     .run(function($urlRouter, $http, $state, permissionsService) {
         // Example ajax call
