@@ -17,7 +17,7 @@ org.sunbird.portal.eventManager = {};
 
 /**
  * Register an event listener callback function for the events raised by the framework.
- * @param type {string} name of the event (e.g. actionNavigateSkip).
+ * @param type {string} name of the event (e.g. sunbird:controller:init).
  * @param callback {function} callback function
  * @param scope {object} the scope of the callback (use this)
  * @memberof org.sunbird.portal
@@ -30,7 +30,7 @@ org.sunbird.portal.eventManager.addEventListener = function(type, callback, scop
 /**
  * Fires an event to the framework, allowing other plugins who may have registered to receive the callback notification. All
  * communication between the framework and other plugins is via the events.
- * @param type {string} name of the event to fire (e.g. actionNavigateSkip)
+ * @param type {string} name of the event to fire (e.g. sunbird:controller:init)
  * @param data {object} event data to carry along with the notification
  * @param target {object} the scope of the event (use this)
  * @memberof org.sunbird.portal
@@ -42,7 +42,7 @@ org.sunbird.portal.eventManager.dispatchEvent = function(type, data, target) {
 
 /**
  * Remove an event listener to an event. Plugins should cleanup when they are removed.
- * @param type {string} name of the event registered with (e.g. actionNavigateSkip)
+ * @param type {string} name of the event registered with (e.g. sunbird:controller:init)
  * @param callback {function} remove the callback function
  * @param scope {object} the scope of the event (use this)
  * @memberof org.sunbird.portal
