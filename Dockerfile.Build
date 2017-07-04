@@ -15,7 +15,7 @@ RUN apk add zip \
     && npm install -g gulp \
     && npm install gulp --save-dev 
 WORKDIR /opt/player/
-RUN npm install \
+RUN npm install --unsafe-perm \
     && npm install express-http-proxy --save \
     && bower install /opt/player/bower.json \
     && gulp
