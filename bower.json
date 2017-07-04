@@ -16,7 +16,8 @@
     "angular-translate": "^2.15.1",
     "angular-sanitize": "1.6.0",
     "jquery-ui": "^1.12.1",
-    "jquery.fancytree": "fancytree#^2.23.0"
+    "jquery.fancytree": "fancytree#^2.23.0",
+    "file-upload" : "./node_modules/fine-uploader/"
   },
   "devDependencies": {
     "angular-mocks": "1.6.0",
