@@ -67,12 +67,14 @@ angular
                     $rootScope.searchKeyword = '';
                     $rootScope.isLearnPage = true;
                     $rootScope.courseActive = 'active';
+                    $rootScope.breadCrumbsData=[{name:'Home',link:'home'},{'name':'My Courses','link':'learn'}];
                     $('.content-search-filter').dropdown('clear');
                 },
                 onExit: function($rootScope) {
                     $rootScope.isLearnPage = false;
                     $('#content-search-filter-accordion').accordion('close', 0);
                     $rootScope.courseActive = '';
+                     $rootScope.breadCrumbsData=null;
                 },
                 params: { searchKey: 'Courses' }
             })
@@ -84,6 +86,7 @@ angular
                     }
                 },
                 onEnter: function($rootScope) {
+                    $rootScope.breadCrumbsData=[{name:'Home',link:'home'},{'name':'Resources','link':'resources'}];
                     $rootScope.searchKey = 'Resources';
                     $rootScope.isResourcesPage = true;
                     $rootScope.searchKeyword = '';
@@ -94,6 +97,7 @@ angular
                     $rootScope.isResourcesPage = false;
                     $rootScope.resourcesActive = '';
                     $('#content-search-filter-accordion').accordion('close', 0);
+                       $rootScope.breadCrumbsData=null;
                 },
                 params: { searchKey: 'Resources' }
             })
@@ -165,13 +169,16 @@ angular
                         controller: 'courseScheduleCtrl as toc',
                     }
                 },
-                onEnter: function($rootScope) {
+                onEnter: function($rootScope,sessionService) {
+                    var courseParams=sessionService.getSessionData('COURSE_PARAMS');
+                    $rootScope.breadCrumbsData=[{name:'Home',link:'home'},{name:'My Courses',link:'learn'},{'name':courseParams.courseName,'link':''}];
                     $rootScope.searchKey = 'Courses';
                     $rootScope.searchKeyword = '';
                     $rootScope.isTocPage = true;
                     $rootScope.courseActive = 'active';
                 },
                 onExit: function($rootScope) {
+                       $rootScope.breadCrumbsData=null;
                     $rootScope.isTocPage = false;
                     $('#content-search-filter-accordion').accordion('close', 0);
                     $rootScope.courseActive = '';
