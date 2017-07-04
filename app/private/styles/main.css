@@ -214,7 +214,7 @@ th {
 /*sunbird light font*/
 @font-face {
   font-family: 'sunbirdlightfont';
-  src: url('../fonts/OpenSans -Light.ttf') format('truetype');
+  src: url('../fonts/OpenSans-Light.ttf') format('truetype');
 }
 /*sunbird Regular font*/
 @font-face {
@@ -338,6 +338,19 @@ th {
   font-family: 'sunbirdregularfont' !important;
   font-size: 0.625em !important;
 }
+/*
+
+heading including cards---#333333   (dark grey)
+
+shade ---- #979797 (lightest grey )
+
+for links------#0076FE (light blue)
+
+for view all ----#007AFF (dark blue)
+
+card description in resume card--- #434343 
+
+*/
 .padding-none {
   padding: 0px !important;
 }
@@ -1347,6 +1360,10 @@ span.fancytree-title {
 }
 .my-icon {
   vertical-align: middle;
+}
+.header-image-profile {
+  height: 100px !important;
+  width: 100px !important;
 }
 body {
   position: relative !important;
