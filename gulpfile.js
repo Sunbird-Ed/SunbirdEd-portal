@@ -257,6 +257,8 @@ gulp.task('build', ['clean:dist'], function() {
 gulp.task('production', ['clean:dist'], function () {
     gulp.src(['app/**/*'])
     .pipe(gulp.dest(player.dist));
+    gulp.src(['node_modules/**/*'])
+    .pipe(gulp.dest(player.dist+'/node_modules'))
 })
 gulp.task('default', ['production']);
 
