@@ -1,0 +1,60 @@
+<!-- sign up page example -->
+<form class="ui form">
+    <h4 class="ui dividing header">Basic Information</h4>
+    <div class="field">
+        <label>Name</label>
+        <div class="two fields">
+            <div class="field">
+                <input type="text" name="shipping[first-name]" placeholder="First Name">
+            </div>
+            <div class="field">
+                <input type="text" name="shipping[last-name]" placeholder="Last Name">
+            </div>
+        </div>
+    </div>
+    <div class="fields">
+        <label>Phone number</label>
+
+        <div class="field">
+            <input type="text" name="Phone number" placeholder="Phone number">
+        </div>
+
+        <label>Email</label>
+        <div class="field">
+            <input type="text" name="Email" placeholder="Email">
+        </div>
+
+    </div>
+    <div class="field">
+        <label>Address</label>
+        <div class="fields">
+            <div class="twelve wide field">
+                <input type="text" name="Apt #" placeholder="Apt #">
+            </div>
+            <div class="four wide field">
+                <input type="text" name="Street Address" placeholder="Apt #">
+            </div>
+        </div>
+    </div>
+    <div class="two fields">
+        <div class="field">
+            <label>State</label>
+            <select class="ui fluid dropdown">
+        <option value="">State</option>
+    	<option value="AL">Alabama</option>
+     </select>
+        </div>
+        <div class="field">
+            <label>Country</label>
+            <div class="ui fluid search selection dropdown">
+                <input type="hidden" name="country">
+                <i class="dropdown icon"></i>
+                <div class="default text">Select Country</div>
+                <div class="menu">
+                    <div class="item" data-value="af"><i class="af flag"></i>India</div>
+                    <div class="item" data-value="ax"><i class="ax flag"></i>Aland Islands</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
