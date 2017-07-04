@@ -214,7 +214,7 @@ th {
 /*sunbird light font*/
 @font-face {
   font-family: 'sunbirdlightfont';
-  src: url('../fonts/OpenSans -Light.ttf') format('truetype');
+  src: url('../fonts/OpenSans-Light.ttf') format('truetype');
 }
 /*sunbird Regular font*/
 @font-face {
@@ -537,6 +537,11 @@ th {
 .modal .ui.segment {
   box-shadow: none !important;
   border: none!important;
+}
+.breadcrumppadding.ui.breadcrumb,
+.breadcrumppadding.ui.breadcrumb:last-child,
+.breadcrumppadding.ui.breadcrumb:first-child {
+  margin: 10px;
 }
 .ui.card > .sliderCards.content {
   -webkit-box-flex: 1;
@@ -1347,6 +1352,10 @@ span.fancytree-title {
 }
 .my-icon {
   vertical-align: middle;
+}
+.header-image-profile {
+  height: 100px !important;
+  width: 100px !important;
 }
 body {
   position: relative !important;
