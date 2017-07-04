@@ -6,7 +6,8 @@ RUN apk update \
     && apk add -y python-dev \
     && apk update \
     && apk add git \
-    && mkdir -p /opt/player
+    && mkdir -p /opt/player \
+    && apk add autoreconf
 WORKDIR /opt/player
 COPY * /opt/player/
 RUN apk add zip \
