@@ -9,7 +9,8 @@ RUN apk update \
     && mkdir -p /opt/player \
     && apk add autoconf \
     && apk add g++ \
-    && apk add make
+    && apk add make \
+    && apk add nasm
 WORKDIR /opt/player
 COPY * /opt/player/
 RUN apk add zip \
