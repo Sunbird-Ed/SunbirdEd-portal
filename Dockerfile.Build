@@ -16,7 +16,9 @@ RUN apk add zip \
     && npm install -g gulp \
     && npm install gulp --save-dev 
 WORKDIR /opt/player/
-RUN npm install --unsafe-perm 
+RUN npm install --unsafe-perm
+RUN npm install express-session --save
+RUN npm install keycloak-connect --save
 RUN npm install express-http-proxy --save 
 RUN bower install /opt/player/bower.json 
 RUN gulp
