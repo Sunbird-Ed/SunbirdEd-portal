@@ -7,7 +7,9 @@ RUN apk update \
     && apk update \
     && apk add git \
     && mkdir -p /opt/player \
-    && apk add autoconf
+    && apk add autoconf \
+    && apk add g++ \
+    && apk add make
 WORKDIR /opt/player
 COPY * /opt/player/
 RUN apk add zip \
