@@ -34,7 +34,7 @@ angular.module('playerApp')
             }
             
             resource.playContent = function (item) {
-                var params = {content: item};
+                var params = {content: item,contentName:item.name,contentId:item.identifier};
                 $state.go('Player', params);
             };
             

@@ -9,16 +9,15 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
     noteCard.showModalInLectureView = $scope.shownoteinlecture;
     noteCard.showModalInCourseView = $scope.shownoteincourse;
     noteCard.quantityOfNotes = 2;
-    noteCard.courseId = $scope.courseid || $stateParams.courseId;
-    noteCard.contentId = $scope.contentid || $stateParams.contentId;
+    noteCard.courseId = $stateParams.courseId;
+    noteCard.contentId = $stateParams.contentId;
+    noteCard.contentName=$stateParams.contentName;
     noteCard.tocId = $stateParams.tocId;
     noteCard.add = {};
     noteCard.update = {};
-    noteCard.denyModalClass = '';
     noteCard.showCreateNote = false;
     noteCard.showUpdateNote = false;
     noteCard.visibility = $scope.visibility;
-    noteCard.showModalError = false;
     noteCard.notesList = [];
     
         /**
@@ -62,6 +61,9 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
                 if (response && response.responseCode === "OK") {
                     noteCard[api].loader.showLoader = false;
                     noteCard.notesList = response.result.note || [];
+                    if(noteCard.notesList.length === 0) {
+                        noteCard[api].error = showErrorMessage(false, config.MESSAGES.NOTES.SEARCH.NO_RESULT, config.MESSAGES.COMMON.INFO);
+                    }
                 } else {
                 noteCard[api].loader.showLoader = false;
                 noteCard[api].error = showErrorMessage(false, config.MESSAGES.NOTES.SEARCH.FAILED, config.MESSAGES.COMMON.ERROR);
@@ -170,7 +172,6 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
                         return note.identifier !== noteData.identifier;
                     });
                     noteCard.notesList.push(response.result.note);
-//                    noteCard.ngInit();
                 } else {
                 noteCard[api].loader.showLoader = false;
                 noteCard[api].error = showErrorMessage(true, config.MESSAGES.NOTES.UPDATE.FAILED, config.MESSAGES.COMMON.ERROR);
@@ -207,7 +208,6 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
 
     noteCard.closeUpdateNoteModal = function() {
         $timeout(function() {
-            noteCard.denyModalClass = 'deny';
             noteCard.showUpdateNote = false;
         }, 0);
     };
@@ -215,18 +215,18 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
     noteCard.showUpdateNoteModal = function(note) {
 
         noteCard.showUpdateNote = true;
-        noteCard.denyModalClass = '';
         $timeout(function() {
             $('#updateNoteModal').modal({
                 onShow: function() {
                     noteCard.update.metaData = angular.copy(note);
                 },
                 onHide: function() {
+                    noteCard.clearUpdateNoteData();
                     noteCard.closeUpdateNoteModal();
                     return true;
                 }
             }).modal('show');
-        }, 100);
+        }, 10);
     };
 
     noteCard.clearAddNoteData = function() {
@@ -236,7 +236,6 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
 
     noteCard.closeAddNoteModal = function() {
         $timeout(function() {
-            noteCard.denyModalClass = 'deny';
             noteCard.showCreateNote = false;
         }, 0);
     };
@@ -254,26 +253,23 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
                     return true;
                 }
             }).modal('show');
-        }, 100);
+        }, 10);
     };
 
-
     $rootScope.$on("updateNotesListData", function(e, content) {
+        noteCard.notesList = noteCard.notesList ? noteCard.notesList : [];
         noteCard.notesList.push(content);
     });
 
     noteCard.showAllNoteList = function() {
         if(noteCard.courseId && $scope.contentid && noteCard.tocId) {
-            console.log("Note data with content and course", noteCard.courseId , $scope.contentid , noteCard.tocId);
             var params = {courseId: noteCard.courseId, contentId: $scope.contentid, tocId : noteCard.tocId};
             $state.go('CourseContentNote', params);
         } else if (noteCard.courseId) {
-            console.log("Note data  course", noteCard.courseId , $scope.contentid, noteCard.tocId);
             var params = {courseId: noteCard.courseId, tocId : noteCard.tocId};
             $state.go('CourseNote', params);
         } else if (noteCard.contentId) {
-            console.log("Note data with content", noteCard.courseId , $scope.contentid , noteCard.tocId);
-            var params = {contentId: $scope.contentid};
+            var params = {contentId: noteCard.contentId,contentName:noteCard.contentName};
             $state.go('ContentNote',params);
         }
     };

@@ -2,11 +2,8 @@
 
 angular.module('playerApp')
     .controller('SearchCourseCtrl', function(config, sessionService, searchService, $scope, $timeout, $rootScope, $stateParams, $state) {
-
-
         var search = this;
         search.searchResult = [];
-
         search.initSearch = function() {
             search.searchRequest = JSON.parse($stateParams.query);
             search.searchType = $stateParams.searchType;
@@ -52,14 +49,14 @@ angular.module('playerApp')
             if (courses.result.response.length) {
                 search.searchResult = courses.result.response;
             } else {
-                search.error = showErrorMessage(true, 'no result found', config.MESSAGES.COMMON.INFO);
+                search.error = showErrorMessage(true, config.MESSAGES.SEARCH.COURSE.NO_RESULT, config.MESSAGES.COMMON.INFO);
             }
         };
         // mainSearch
         search.search = function() {
             search.initSearch();
-            var req = search.searchRequest;
-            search.loader = showLoaderWithMessage('', 'loading results');
+            var req = { 'request': search.searchRequest };
+            search.loader = showLoaderWithMessage('', config.MESSAGES.SEARCH.COURSE.START);
             searchService.courseSearch(req).then(function(res) {
                 search.loader.showLoader = false;
                 if (res != null && res.responseCode === 'OK') {
@@ -67,7 +64,7 @@ angular.module('playerApp')
                 } else throw new Error('');
             }).catch(function() {
                 search.loader.showLoader = false;
-                search.error = showErrorMessage(true, 'something went wrong', config.MESSAGES.COMMON.ERROR);
+                search.error = showErrorMessage(true, config.MESSAGES.SEARCH.COURSE.FAILED, config.MESSAGES.COMMON.ERROR);
             });
         };
         // /close
