@@ -50,7 +50,48 @@ angular.module('playerApp')
                         var newPlayer = this;
                         newPlayer.src({ type: 'video/youtube', src: attrs.videosrc });
                     });
-                }
+                };
+                $('.ui.radio.checkbox')
+                    .checkbox();
+                $('#example2').calendar({
+                    type: 'date',
+                    formatter: {
+                        date: function(date, settings) {
+                            if (!date) return '';
+                            var day = date.getDate();
+                            var month = date.getMonth() + 1;
+                            var year = date.getFullYear();
+                            return day + '/' + month + '/' + year;
+                        }
+                    }
+                });
+                $('#rangestart').calendar({
+                    type: 'date',
+                    endCalendar: $('#rangeend'),
+                    formatter: {
+                        date: function(date, settings) {
+                            if (!date) return '';
+                            var day = date.getDate();
+                            var month = date.getMonth() + 1;
+                            var year = date.getFullYear();
+                            return day + '/' + month + '/' + year;
+                        }
+                    }
+                });
+                $('#rangeend').calendar({
+                    type: 'date',
+                    startCalendar: $('#rangestart'),
+                    formatter: {
+                        date: function(date, settings) {
+                            if (!date) return '';
+                            var day = date.getDate();
+                            var month = date.getMonth() + 1;
+                            var year = date.getFullYear();
+                            return day + '/' + month + '/' + year;
+                        }
+                    }
+                });
+
             }
         };
     });
