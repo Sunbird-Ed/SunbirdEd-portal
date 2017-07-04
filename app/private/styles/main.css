@@ -338,19 +338,6 @@ th {
   font-family: 'sunbirdregularfont' !important;
   font-size: 0.625em !important;
 }
-/*
-
-heading including cards---#333333   (dark grey)
-
-shade ---- #979797 (lightest grey )
-
-for links------#0076FE (light blue)
-
-for view all ----#007AFF (dark blue)
-
-card description in resume card--- #434343 
-
-*/
 .padding-none {
   padding: 0px !important;
 }
@@ -550,6 +537,11 @@ card description in resume card--- #434343
 .modal .ui.segment {
   box-shadow: none !important;
   border: none!important;
+}
+.breadcrumppadding.ui.breadcrumb,
+.breadcrumppadding.ui.breadcrumb:last-child,
+.breadcrumppadding.ui.breadcrumb:first-child {
+  margin: 10px;
 }
 .ui.card > .sliderCards.content {
   -webkit-box-flex: 1;
