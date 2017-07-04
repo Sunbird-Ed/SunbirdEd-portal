@@ -6,7 +6,8 @@ RUN apk update \
     && apk add -y python-dev \
     && apk update \
     && apk add git \
-    && mkdir -p /opt/player
+    && mkdir -p /opt/player \
+    && apk add autoconf
 WORKDIR /opt/player
 COPY * /opt/player/
 RUN apk add zip \
@@ -15,9 +16,11 @@ RUN apk add zip \
     && npm install -g gulp \
     && npm install gulp --save-dev 
 WORKDIR /opt/player/
-RUN npm install --unsafe-perm \
-    && npm install express-http-proxy --save \
-    && bower install /opt/player/bower.json \
-    && gulp
+RUN npm install --unsafe-perm
+RUN npm install express-session --save
+RUN npm install keycloak-connect --save
+RUN npm install express-http-proxy --save 
+RUN bower install /opt/player/bower.json 
+RUN gulp
 WORKDIR /opt/player
 CMD ["zip", "-r", "player-dist.zip",  "dist"]
