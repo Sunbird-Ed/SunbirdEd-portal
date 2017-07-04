@@ -26,7 +26,9 @@ angular.module('playerApp')
                 'X-Consumer-ID': 'X-Consumer-ID',
                 'X-Device-ID': 'X-Device-ID',
                 'X-msgid': '8e27cbf5-e299-43b0-bca7-8347f7e5abcf',
-                'ts': '2017-05-25 10:18:56:578+0530'
+                'X-Source':'web',
+                'ts': '2017-05-25 10:18:56:578+0530',
+                'X-Org-code':'AP'
 
             };
             if (user || $rootScope.userId) {

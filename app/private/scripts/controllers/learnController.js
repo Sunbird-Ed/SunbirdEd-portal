@@ -36,7 +36,7 @@ angular.module('playerApp').controller('LearnCtrl', function (learnService, $sco
 
             learn.openCourseView = function (course, courseType) {
                 var showLectureView = 'no';
-                var params = {courseType: courseType, courseId: course.contentId, tocId: course.courseId, lectureView: showLectureView, progress: course.progress, total: course.total};
+                var params = {courseType: courseType, courseId: course.contentId, tocId: course.courseId, lectureView: showLectureView, progress: course.progress, total: course.total,courseName:course.courseName};
                 sessionService.setSessionData('COURSE_PARAMS', params);
                 $rootScope.isPlayerOpen = true;
                 $state.go('Toc', params);
@@ -88,12 +88,12 @@ angular.module('playerApp').controller('LearnCtrl', function (learnService, $sco
                         learn.page = successResponse.result.response.sections;
                     } else {
                         learn[api].loader.showLoader = false;
-                        learn[api].error = showErrorMessage(true, config.MESSAGES.HOME.PAGE_API.FAILED, config.MESSAGES.COMMON.ERROR);
+                        learn.pageApi.error = showErrorMessage(true, config.MESSAGES.HOME.PAGE_API.FAILED, config.MESSAGES.COMMON.ERROR);
                     }
                 })
                 .catch(function (error) {
                     learn[api].loader.showLoader = false;
-                    learn[api].error = showErrorMessage(true, config.MESSAGES.HOME.PAGE_API.FAILED, config.MESSAGES.COMMON.ERROR);
+                    learn.pageApi.error = showErrorMessage(true, config.MESSAGES.HOME.PAGE_API.FAILED, config.MESSAGES.COMMON.ERROR);
                 });
             };
             learn.otherSection();

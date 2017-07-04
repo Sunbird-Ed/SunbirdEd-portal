@@ -13,6 +13,9 @@ angular.module('playerApp')
             $rootScope.language = $rootScope.userLanguage || config.SITE.DEFAULT_LANGUAGE;
             $rootScope.translationBundle = {};
             $rootScope.searchKey = '';
+            $rootScope.openLink=function(url){
+                $location.path(url);
+            }
             $rootScope.loadBundle = function () {
                 var promises = [];
                 promises.push(userService.resourceBundle($rootScope.language, 'label'));
