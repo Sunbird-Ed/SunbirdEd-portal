@@ -14,8 +14,13 @@ angular.module('playerApp')
                 $('.ui .progress').progress();
                 $('.course-progress').progress();
                 $('.popup-button').popup();
+                $('#address-accordion').accordion();
+                $('#experience-accordion').accordion();
+                $('#education-accordion').accordion();
                 $('#content-search-filter-accordion').accordion();
                 $('.ui.accordion').accordion({ exclusive: false });
+                $('.ui.radio.checkbox')
+                    .checkbox();
                 $('.ui.rating')
                     .rating({
                         maxRating: 5
@@ -50,9 +55,7 @@ angular.module('playerApp')
                         var newPlayer = this;
                         newPlayer.src({ type: 'video/youtube', src: attrs.videosrc });
                     });
-                };
-                $('.ui.radio.checkbox')
-                    .checkbox();
+                }
                 $('#example2').calendar({
                     type: 'date',
                     formatter: {
@@ -91,7 +94,6 @@ angular.module('playerApp')
                         }
                     }
                 });
-
             }
         };
     });
