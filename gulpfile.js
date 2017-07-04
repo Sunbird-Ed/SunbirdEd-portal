@@ -254,7 +254,11 @@ gulp.task('build', ['clean:dist'], function() {
     runSequence(['index-html', 'images', 'bower', 'config', 'build-css', 'build-css-dev', 'build-js', 'html']);
 });
 
-gulp.task('default', ['build']);
+gulp.task('production', ['clean:dist'], function () {
+    gulp.src(['app/**/*'])
+    .pipe(gulp.dest(player.dist));
+})
+gulp.task('default', ['production']);
 
 gulp.task('config', function() {
     gulp.src(player.app+'config/playerAppConfig.json')
