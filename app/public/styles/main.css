@@ -391,7 +391,7 @@ th {
   margin: auto !important;
 }
 .margin-right-10 {
-  margin-top: 10px !important;
+  margin-right: 10px !important;
 }
 .margin-right-20 {
   margin-right: 20px !important;
@@ -1269,6 +1269,9 @@ span.fancytree-title {
   line-height: 17px;
   font-weight: 400;
 }
+.workspacecontent.ui.card {
+  box-shadow: 0 1px 3px 0 #000000, 0 0 0 1px #171718;
+}
 .workspacetitle.title {
   color: #333333;
   font-family: "Open Sans";
@@ -1319,6 +1322,31 @@ span.fancytree-title {
   color: #979797;
   font-family: "Open Sans";
   font-size: 10px;
+}
+.fileupload.ui.primary.basic.button {
+  margin-top: 20px;
+}
+.filedivider.ui.divider {
+  margin: 40px;
+}
+.iwt {
+  display: block;
+}
+.textcontent {
+  display: inline-block;
+  margin: 8px;
+  padding: 0px;
+  font-size: 1em;
+  white-space: nowrap;
+}
+.textcontent i.icon {
+  font-size: 2em;
+}
+.my-text {
+  font-size: 1.2em;
+}
+.my-icon {
+  vertical-align: middle;
 }
 body {
   position: relative !important;
