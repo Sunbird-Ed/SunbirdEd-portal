@@ -1,0 +1,13 @@
+<div class="ui top padded grid" ng-if='breadCrumbsData'>
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+        <div class="ui large breadcrumb">
+            <span ng-repeat='item in breadCrumbsData'>
+                <a ng-if='!$last' href='{{item.link}}' class="section">{{item.name}}</a>
+                <i ng-hide='$last' class="right chevron icon divider"></i>
+                <div ng-if='$last' class="active section">{{item.name}}</div>
+            </span>
+        </div>
+    </div>
+    <div class="one wide column"></div>
+</div>
