@@ -18,7 +18,7 @@ RUN apk add zip \
 WORKDIR /opt/player/
 RUN npm install --unsafe-perm 
 RUN npm install express-http-proxy --save 
-RUN bower install /opt/player/bower.json \
+RUN bower install /opt/player/bower.json 
 RUN gulp
 WORKDIR /opt/player
 CMD ["zip", "-r", "player-dist.zip",  "dist"]
