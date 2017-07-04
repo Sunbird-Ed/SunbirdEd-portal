@@ -7,6 +7,7 @@
 
 Plugin.extend({
     initialize: function(){
+        console.info('Sunbird Telemetry get plugin is initialized..');
         EventBus.addEventListener('telemetryEvent',this.sendTelemetry,this);
     },
     isPreviewInIframe: function(){
