@@ -142,67 +142,185 @@
         </div>
         <div class="one wide column"></div>
     </div>
-
-
-
-
     <!-- sign up page example -->
     <form class="ui form">
-  <h4 class="ui dividing header">Basic Information</h4>
-  <div class="field">
-    <label>Name</label>
+        <h4 class="ui dividing header">Basic Information</h4>
+        <div class="field">
+            <label>Name</label>
+            <div class="two fields">
+                <div class="field">
+                    <input type="text" name="shipping[first-name]" placeholder="First Name">
+                </div>
+                <div class="field">
+                    <input type="text" name="shipping[last-name]" placeholder="Last Name">
+                </div>
+            </div>
+        </div>
+        <div class="fields">
+            <label>Phone number</label>
+            <div class="field">
+                <input type="text" name="Phone number" placeholder="Phone number">
+            </div>
+            <label>Email</label>
+            <div class="field">
+                <input type="text" name="Email" placeholder="Email">
+            </div>
+        </div>
+        <h4 class="ui dividing header">Basic Information</h4>
+        <div class="field">
+            <label>Address</label>
+            <div class="fields">
+                <div class="twelve wide field">
+                    <input type="text" name="Apt #" placeholder="Apt #">
+                </div>
+                <div class="four wide field">
+                    <input type="text" name="Street Address" placeholder="Apt #">
+                </div>
+            </div>
+        </div>
+        <div class="two fields">
+            <div class="field">
+                <label>State</label>
+                <select class="ui fluid dropdown">
+                    <option value="">State</option>
+                    <option value="AL">Alabama</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>Country</label>
+                <div class="ui fluid search selection dropdown">
+                    <input type="hidden" name="country">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Select Country</div>
+                    <div class="menu">
+                        <div class="item" data-value="af"><i class="af flag"></i>India</div>
+                        <div class="item" data-value="ax"><i class="ax flag"></i>Aland Islands</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+
+
+
+ <!-- date picker example-->
+
+
+ <!--bower install --save semantic-ui-calendar -->
+
+
+
+  <div class="ui container">
+  <h1>Calendar examples</h1>
+  
+
+  <br/>
+    
+  <h3>Range</h3>
+  <div class="ui form">
     <div class="two fields">
       <div class="field">
-        <input type="text" name="shipping[first-name]" placeholder="First Name">
+        <label>Start date</label>
+        <div class="ui calendar" id="rangestart">
+          <div class="ui input left icon">
+            <i class="calendar icon"></i>
+            <input type="text" placeholder="Start">
+          </div>
+        </div>
       </div>
       <div class="field">
-        <input type="text" name="shipping[last-name]" placeholder="Last Name">
+        <label>End date</label>
+        <div class="ui calendar" id="rangeend">
+          <div class="ui input left icon">
+            <i class="calendar icon"></i>
+            <input type="text" placeholder="End">
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  <div class="fields">
-    <label>Phone number</label>
-    
-      <div class="field">
-        <input type="text" name="Phone number" placeholder="Phone number">
-      </div>
+  <br/>
 
-       <label>Email</label>
-      <div class="field">
-        <input type="text" name="Email" placeholder="Email">
-      </div>
-   
-  </div>
-  <div class="field">
-    <label>Address</label>
-    <div class="fields">
-      <div class="twelve wide field">
-        <input type="text" name="Apt #" placeholder="Apt #">
-      </div>
-      <div class="four wide field">
-        <input type="text" name="Street Address" placeholder="Apt #">
-      </div>
+    
+
+
+    
+  <h3>Month and year</h3>
+  <div class="ui calendar" id="example7">
+    <div class="ui input left icon">
+      <i class="time icon"></i>
+      <input type="text" placeholder="Time">
     </div>
   </div>
-  <div class="two fields">
-    <div class="field">
-      <label>State</label>
-      <select class="ui fluid dropdown">
-        <option value="">State</option>
-    	<option value="AL">Alabama</option>
-     </select>
-    </div>
-    <div class="field">
-      <label>Country</label>
-     	 <div class="ui fluid search selection dropdown">
-	        <input type="hidden" name="country">
-	        <i class="dropdown icon"></i>
-	        <div class="default text">Select Country</div>
-	        <div class="menu">
-			    <div class="item" data-value="af"><i class="af flag"></i>India</div>
-			    <div class="item" data-value="ax"><i class="ax flag"></i>Aland Islands</div>
-			</div>
-       </div>
+  <br/>
+    
+  <h3>Year only</h3>
+  <div class="ui calendar" id="example8">
+    <div class="ui input left icon">
+      <i class="time icon"></i>
+      <input type="text" placeholder="Time">
     </div>
   </div>
-</form>
+  <br/>
+  
+ <h3>Custom format</h3>
+  <div class="ui calendar" id="example13">
+    <div class="ui input">
+      <input type="text" placeholder="Date">
+    </div>
+  </div>
+  <br/>
+  
+
+    
+  </div>
+
+<script>
+  $('#rangestart').calendar({
+  type: 'date',
+  endCalendar: $('#rangeend'),
+  formatter: {
+    date: function (date, settings) {
+      if (!date) return '';
+      var month = date.getMonth() + 1;
+      var year = date.getFullYear();
+      return  month + '/' + year;
+    }
+  }
+});
+$('#rangeend').calendar({
+  type: 'date',
+  startCalendar: $('#rangestart'),
+    formatter: {
+    date: function (date, settings) {
+      if (!date) return '';
+      var month = date.getMonth() + 1;
+      var year = date.getFullYear();
+      return  month + '/' + year;
+    }
+  }
+});
+
+$('#example7').calendar({
+  type: 'month',
+    formatter: {
+    date: function (date, settings) {
+      if (!date) return '';
+      var month = date.getMonth() + 1;
+      var year = date.getFullYear();
+      return  month + '/' + year;
+    }
+  }
+});
+$('#example8').calendar({
+  type: 'year'
+});
+
+</script>
+
+
+
+
+
