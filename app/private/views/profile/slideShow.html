@@ -1,3 +1,24 @@
+
+<!--form validation example
+
+https://semantic-ui.com/behaviors/form.html#/usage -->
+
+<!--$('.ui.form')
+  .form({
+    fields: {
+      name     : 'empty',
+      gender   : 'empty',
+      username : 'empty',
+      password : ['minLength[6]', 'empty'],
+      skills   : ['minCount[2]', 'empty'],
+      terms    : 'checked'
+    }
+  })
+;-->
+
+
+
+
 <div class="ui grid">
     <div class="one wide column"></div>
     <div class="ten wide column">
@@ -318,6 +339,37 @@ $('#example8').calendar({
   type: 'year'
 });
 
+</script>
+
+
+
+
+
+<!-- radio button component -->
+
+
+ <div class="inline fields">
+    <label for="address">Select your Address</label>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" name="address" checked="" tabindex="0" class="hidden">
+        <label>pernament</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" name="address" tabindex="0" class="hidden">
+        <label>pernament 1</label>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- radio button component initialization -->
+<script>
+	 $('.ui.radio.checkbox')
+	  .checkbox()
+	;
 </script>
 
 
