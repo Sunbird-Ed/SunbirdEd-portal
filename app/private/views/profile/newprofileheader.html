@@ -1,68 +1,61 @@
-<div class="ui">
-    <div class="profileheaderpadding ui grid courseStructureHeader">
-        <div class="one wide column"></div>
-        <div class=" ten wide column">
-            <div class="ui grid">
-                <div class="eight wide column">
-                    <div class="profileheader ui link items">
-                        <div class="item">
-                            <div class="ui tiny circular image">
-                                <img src="../images/user_logo.png">
-                            </div>
-                            <div class="content padding-top-10 ">
-                                <div class="header">Stevie Feliciano</div>
-                                <div class="meta">
-                                    <span class="cinema">Union Square 14</span>
-                                </div>
-                                <div class="description">
-                                    <p>
-                                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="profilesettings four wide column">
-                    <div class="ui grid">
-                        <div class="twelve wide column ">
-                            <h4 class="profilesttingheader ui header">
-						  	<div class="content">
-						    	Profile settings
-						    	<i class="setting icon"></i>
-						    	<div class="ui inline dropdown">
-						      	<div class="text"></div>
-						      	<i class="dropdown icon"></i>
-						      	<div class="menu">
-						        
-						      	</div>
-						    	</div>
-						  </div>
-						</h4>
-                        </div>
-                        <div class="twelve wide column ">
-                            <button class="ui primary basic button">EDIT PROFILE</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="one wide column"></div>
-    </div>
-</div>
-<div class="ui grid">
+<div class="profileheaderpadding ui grid courseStructureHeader" ng-if="!profileCtrl.loader.showLoader && !profileCtrl.error.showError">
     <div class="one wide column"></div>
-    <div class="ten wide column">
+    <div class=" ten wide column">
         <div class="ui grid">
-            <div class="three wide column">
-                <div ng-include="'views/profile/profileSidebar.html'"></div>
+            <div class="eight wide column">
+                <div class="profileheader ui link items">
+                    <div class="item">
+                        <div class="ui tiny circular image">
+                            <img src="{{profileCtrl.profilePic || 'images/user_logo.png'}}">
+                        </div>
+                        <div class="content padding-top-10 ">
+                            <div class="header">{{profileCtrl.firstName}} &nbsp;{{profileCtrl.lastName}}</div>
+                            <div class="meta">
+                                <span class="cinema">{{profileCtrl.organizationName}},{{profileCtrl.city}}</span>
+                            </div>
+                            <div class="description" ng-init="profileCtrl.readMore = false">
+                                <p ng-if="!profileCtrl.readMore"> {{profileCtrl.summary | limitTo: 120 }}&nbsp;
+                                    <span class="ui cardsKnowMore mouse-pointer" ng-if="profileCtrl.summary.length > 120 && profileCtrl.readMore === false" ng-click="profileCtrl.readMore = !profileCtrl.readMore;"> ... Read More</span>
+                                </p>
+                                <p ng-if="profileCtrl.readMore" class="courseStructureDesc"> {{profileCtrl.summary}}&nbsp;
+                                    <span class="ui cardsKnowMore mouse-pointer" ng-click="profileCtrl.readMore = false;">Read Less ...</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="workspacesegment nine wide column">
-                <div ng-include="'views/profile/profileStartCreate.html'"></div>
-            </div>
+            <div class="profilesettings four wide column">
+                <div class="ui grid">
+                    <div class="twelve wide column ">
+                        <h4 class="profilesttingheader ui header">
+                            <div class="content">
+                                Profile settings
+                                <i class="setting icon"></i>
+                                <div class="ui inline dropdown">
+                                    <div class="text"></div>
+                                    <i class="dropdown icon"></i>
+                                    <div class="menu">
 
+                                    </div>
+                                </div>
+                            </div>
+                        </h4>
+                    </div>
+                    <div class="twelve wide column ">
+                        <button class="ui primary basic button">EDIT PROFILE</button>
+                    </div>
+                </div>
+            </div>
         </div>
-        
     </div>
     <div class="one wide column"></div>
+</div>
+
+
+<div ng-if="profileCtrl.loader.showLoader">
+    <app-loader data="{{profileCtrl.loader}}"></app-loader>
+</div>
+<div ng-if="profileCtrl.error.showError">
+    <error-message data="{{profileCtrl.error}}" visibility="search.error.showError"></error-message>
 </div>
