@@ -1,20 +1,20 @@
 #Dockerfile for the player setup
-FROM node:6-alpine
+FROM node:6.11.0
 MAINTAINER "Manojvv" "manojv@ilimi.in"
-RUN apk update \
-    && apk add -y python \
-    && apk add -y python-dev \
-    && apk update \
-    && apk add git \
+RUN apt update \
+    && apt-get install -y python \
+    && apt-get install -y python-dev \
+    && apt-get update \
+    && apt-get install git \
     && mkdir -p /opt/player \
-    && apk add autoconf \
-    && apk add g++ \
-    && apk add make \
-    && apk add nasm
+    && apt-get install autoconf \
+    && apt-get install g++ \
+    && apt-get install make \
+    && apt-get install nasm
 WORKDIR /opt/player
 COPY * /opt/player/
-RUN apk add zip \
-    && apk add -y  bzip2 \
+RUN apt-get install zip \
+    && apt-get install -y  bzip2 \
     && npm install -g bower \
     && npm install -g gulp \
     && npm install gulp --save-dev 
