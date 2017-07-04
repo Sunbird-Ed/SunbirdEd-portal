@@ -11,6 +11,7 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
     noteCard.quantityOfNotes = 2;
     noteCard.courseId = $stateParams.courseId;
     noteCard.contentId = $stateParams.contentId;
+    noteCard.contentName=$stateParams.contentName;
     noteCard.tocId = $stateParams.tocId;
     noteCard.add = {};
     noteCard.update = {};
@@ -268,7 +269,7 @@ angular.module('playerApp').controller('NoteCardCtrl', function($rootScope, $sco
             var params = {courseId: noteCard.courseId, tocId : noteCard.tocId};
             $state.go('CourseNote', params);
         } else if (noteCard.contentId) {
-            var params = {contentId: $scope.contentid};
+            var params = {contentId: noteCard.contentId,contentName:noteCard.contentName};
             $state.go('ContentNote',params);
         }
     };

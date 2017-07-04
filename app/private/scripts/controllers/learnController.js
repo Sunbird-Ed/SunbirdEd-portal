@@ -88,12 +88,12 @@ angular.module('playerApp').controller('LearnCtrl', function (learnService, $sco
                         learn.page = successResponse.result.response.sections;
                     } else {
                         learn[api].loader.showLoader = false;
-                        learn[api].error = showErrorMessage(true, config.MESSAGES.HOME.PAGE_API.FAILED, config.MESSAGES.COMMON.ERROR);
+                        learn.pageApi.error = showErrorMessage(true, config.MESSAGES.HOME.PAGE_API.FAILED, config.MESSAGES.COMMON.ERROR);
                     }
                 })
                 .catch(function (error) {
                     learn[api].loader.showLoader = false;
-                    learn[api].error = showErrorMessage(true, config.MESSAGES.HOME.PAGE_API.FAILED, config.MESSAGES.COMMON.ERROR);
+                    learn.pageApi.error = showErrorMessage(true, config.MESSAGES.HOME.PAGE_API.FAILED, config.MESSAGES.COMMON.ERROR);
                 });
             };
             learn.otherSection();
