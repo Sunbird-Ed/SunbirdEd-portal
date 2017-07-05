@@ -310,8 +310,7 @@ angular
                         url: '/create/slideShow',
                         views: {
                             'contentView': {
-                                templateUrl: '/views/slideShow/createSlideShow.html',
-                                controller: 'CreateSlideShowController as createSlideShow'
+                                templateUrl: '/views/slideShow/createSlideShow.html'
                             }
                         }
             });

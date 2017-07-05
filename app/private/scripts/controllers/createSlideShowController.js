@@ -9,7 +9,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('CreateSlideShowController', function ($scope, contentService, $timeout, $sce, $window, config, $location) {
+    .controller('CreateSlideShowController', function ($scope, contentService, $timeout, $sce, $state, config, $location, $rootScope) {
 
 
         var createSlideShow = this;      
@@ -20,6 +20,8 @@ angular.module('playerApp')
         createSlideShow.ageGroup = config.DROPDOWN.COMMON.ageGroup;
         createSlideShow.medium = config.DROPDOWN.COMMON.medium;
         createSlideShow.subjects = config.DROPDOWN.COMMON.subjects;
+        createSlideShow.showCreateSlideShowModal = true;
+        createSlideShow.iconImage = false;
         
         function initilizeDropDown() {
             $timeout(function () {
@@ -27,8 +29,30 @@ angular.module('playerApp')
                         .dropdown();
                 $('.singleSelectDropDown')
                         .dropdown();
+                
+                $('#createSlideShowModal').modal({
+                    onShow: function() {
+                        createSlideShow.iconImage = false;
+                    },
+                    onHide: function() {
+                        createSlideShow.clearCreateSlideShowData();
+                        if(!createSlideShow.slideShowCreated) {
+                            $state.go("Profile");
+                        }
+                    }
+                    
+                }).modal('show');
             }, 0);
-        }
+        };
+        
+        createSlideShow.hideCreateSlideShowModal = function() { 
+            $('#createSlideShowModal') 
+                .modal('hide'); 
+            $('#createSlideShowModal') 
+                .modal('hide others'); 
+            $('#createSlideShowModal') 
+                .modal('hide dimmer'); 
+        };
 
         createSlideShow.initilizeView = function () {
             initilizeDropDown();
@@ -60,32 +84,67 @@ angular.module('playerApp')
             return loader;
         }
         
-        createSlideShow.saveMetaData = function(requestData) {
+        createSlideShow.createContent = function(requestData, api) {
             
-            requestData.mimeType =  "application/vnd.ekstep.ecml-archive";
-            var api = 'createSlideShow'
+            contentService.create(requestData).then(function(res) {
+                if (res && res.responseCode === "OK") {
+                    createSlideShow.slideShowCreated = true;
+                    createSlideShow.showCreateSlideShowModal = false;
+                    createSlideShow[api].loader.showLoader = false;
+                    createSlideShow.hideCreateSlideShowModal();
+                    createSlideShow.initEKStepCE(res.result.content_id);
+                    
+                } else {
+                    createSlideShow[api].loader.showLoader = false;
+                    createSlideShow[api].error = showErrorMessage(false, "Create slideshow failed, please try again later", config.MESSAGES.COMMON.ERROR);
+                }
+            }, function(error) {
+                createSlideShow[api].loader.showLoader = false;
+                createSlideShow[api].error = showErrorMessage(false, "Create slideshow failed, please try again later", config.MESSAGES.COMMON.ERROR);
+            });
+        };
+        
+        createSlideShow.saveMetaData = function(requestBody) {
+            
+            var api = 'createSlideShow';
+            createSlideShow[api] = {};
+            createSlideShow[api].loader = showLoaderWithMessage("", config.MESSAGES.RESOURCE.PAGE.START);
+            
+            requestBody.mimeType =  "application/vnd.ekstep.ecml-archive";
             
             var requestBody = {
-                "content": requestData,
+                "content": requestBody,
                 "params": {
                     "cid": "new",
                     "sid": "12345"
                 }
-            }
-//            createSlideShow[api].loader = showLoaderWithMessage("", config.MESSAGES.RESOURCE.PAGE.START);
-            contentService.create(requestBody).then(function(res) {
-                if (res && res.responseCode === "OK") {
-                    console.log("responseCode", res);
-//                    createSlideShow[api].loader.showLoader = false;
-                    createSlideShow.initEKStepCE(res.result.content_id);
-                    
-                } else {
-//                    createSlideShow[api].loader.showLoader = false;
-                }
-            }, function(error) {
-//                createSlideShow[api].loader.showLoader = false;
-            });
+            };
+            createSlideShow.createContent(requestBody, api);
+
+//            contentService.uploadMedia(createSlideShow.icon).then(function(res) {
+//                if (res && res.responseCode === "OK") {
+//                    requestBody.content.appIcon = res.result.url;
+//                    createSlideShow.createContent(requestBody);
+//                    
+//                } else {
+//                    createSlideShow[api].error = showErrorMessage(false, "Create slideshow failed, please try again later", config.MESSAGES.COMMON.ERROR);
+//                }
+//            }, function(err) {
+//                createSlideShow[api].error = showErrorMessage(false, "Create slideshow failed, please try again later", config.MESSAGES.COMMON.ERROR);
+//            });
+        }
+        
+        createSlideShow.clearCreateSlideShowData = function() {
+            createSlideShow.iconImage = '';
+            createSlideShow.iconUpdate = false;
+            createSlideShow.data = {};
+            createSlideShow.showCreateSlideShowModal = false;
         };
+        
+        createSlideShow.openImageBrowser = function() {
+            createSlideShow.iconImage = false;
+            $('#SlideShowIconInput').click();
+        }
         
         createSlideShow.initEKStepCE = function(contentId) {
             window.context = config.ekstep_CE_config.context;
@@ -95,6 +154,31 @@ angular.module('playerApp')
             createSlideShow.ekURL = $sce.trustAsResourceUrl(baseURL+"/ekContentEditor?contentId="+contentId)
         };
         
+        $scope.updateIcon = function(files) {
+            if (files) {
+                var fd = new FormData();
+                if (files.length) {
+                    fd.append("file", files[0]);
+
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        createSlideShow.iconImage = e.target.result;
+                        createSlideShow.icon = fd;
+                        $rootScope.$emit("updateImageIcon", e.target.result, fd);
+
+                    };
+                    reader.readAsDataURL(files[0]);
+                }
+            }
+        };
         
+        $rootScope.$on("updateImageIcon", function(e, imageData, fd) {
+            createSlideShow.iconImage = imageData;
+            createSlideShow.icon = fd;
+            $scope.$apply();
+        });
         
+        createSlideShow.closeContentEditor = function() {
+            $state.go("Profile");
+        };
     });

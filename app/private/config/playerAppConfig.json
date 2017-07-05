@@ -321,13 +321,15 @@
         "ekstep_CP_config": {
             "context": {
                 "authToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI1OWFiMmE2MDc1YzI0ODU2YjhiYjIzMjg4ZDdhZGNmNSJ9.RLouNX7RQ0VkVv2BYqNtH12D0IzKnBJ_I46xEORwHsU",
-                "mode": "preview"
+                "mode": "play"
             },
             "config": {
                 "showEndPage": true,
                 "showStartPage": true,
                 "host": "https://dev.ekstep.in",
-                "apislug": "/api"
+                "apislug": "/api",
+                "repos":["/scripts/plugins"],
+                "plugins":[{"id": "org.sunbird.iframeEvent","ver": 1.0,"type": "plugin"}]
             },
             "baseURL": "/content/preview/preview.html?webview=true"
         },
