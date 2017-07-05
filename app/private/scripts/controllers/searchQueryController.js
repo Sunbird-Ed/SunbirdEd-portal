@@ -83,8 +83,6 @@ angular.module('playerApp')
                             res.result.content;
                     }
                 });
-                searchQuery.keyword = '';
-                // } else {
             } else if (searchQuery.keyword.length) {
                 searchQuery.autosuggest_data = [];
                 var searchReq = searchQuery.req();
@@ -103,7 +101,6 @@ angular.module('playerApp')
                             searchQuery.autosuggest_data = autoSuggest.result.response;
                     }
                 });
-                // } else {
             } else if (searchQuery.keyword.length) {
                 searchQuery.autosuggest_data = [];
                 var searchReq = searchQuery.req();
