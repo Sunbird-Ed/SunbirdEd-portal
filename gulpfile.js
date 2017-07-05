@@ -57,7 +57,8 @@ var paths = {
         player.app + '/thirdparty/bower_components/pdfjs-dist/build/pdf.js',
         player.app + '/thirdparty/bower_components/angular-pdf-viewer/dist/angular-pdf-viewer.min.js',
         player.app + '/thirdparty/bower_components/angular-translate/angular-translate.js',
-        player.app + '/thirdparty/bower_components/angular-sanitize/angular-sanitize.js'
+        player.app + '/thirdparty/bower_components/angular-sanitize/angular-sanitize.js',
+        player.app + '/thirdparty/bower_components/file-upload/fine-uploader/fine-uploader.js'
     ],
     karma: 'karma.conf.js',
     views: {
@@ -253,7 +254,11 @@ gulp.task('build', ['clean:dist'], function() {
     runSequence(['index-html', 'images', 'bower', 'config', 'build-css', 'build-css-dev', 'build-js', 'html']);
 });
 
-gulp.task('default', ['build']);
+gulp.task('production', ['clean:dist'], function () {
+    gulp.src(['app/**/*'])
+    .pipe(gulp.dest(player.dist));
+})
+gulp.task('default', ['production']);
 
 gulp.task('config', function() {
     gulp.src(player.app+'config/playerAppConfig.json')

@@ -9,7 +9,10 @@
             "CONTENT_PREFIX": "v1/content/",
             "CONFIG_BASE": "http://localhost:4000/api/sb/v1/",
             "USER": {
-                "RESOURCE_BUNDLE": "resourcebundle"
+                "RESOURCE_BUNDLE": "resourcebundle",
+                "SIGNUP": "user/create",
+                "UPDATE_USER_PROFILE": "user/update",
+                "GET_PROFILE": "user/getProfile"
             },
             "COURSE": {
                 "SEARCH": "course/search",
@@ -41,8 +44,8 @@
             },
             "AUTH": {
                 "LOGIN": "user/login",
-                "LOGOUT": "user/logout",
-                "PROFILE": "user/getProfile"
+                "LOGOUT": "user/logout"
+
             },
             "NOTES": {
                 "SEARCH": "notes/search",
@@ -151,7 +154,8 @@
             "PROFILE": {
                 "HEADER": {
                     "START": "We are fetching profile...",
-                    "FAILED": "Fetching profile failed, please try again later..."
+                    "FAILED": "Fetching profile failed, please try again later...",
+                    "UPDATE": "Updating user profile failed,please try again later..."
                 }
             },
             "SEARCH": {
@@ -326,6 +330,44 @@
                 "apislug": "/api"
             },
             "baseURL": "/content/preview/preview.html?webview=true"
+        },
+        "DROPDOWN": {
+            "COMMON": {
+                "languages": [
+                    "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Marathi", "Punjabi", "Tamil", "Telugu"
+                ],
+                "lessonTypes": [
+                    "Story", "Worksheet", "Game", "Plugin", "Template"
+                ],
+                "subjects": [
+                    "Maths", "English", "Hindi", "Assamese", "Bengali", "Gujarati", "Kannada", "Malayalam", "Marathi", "Nepali", "Oriya", "Punjabi", "Tamil", "Telugu", "Urdu"
+                ],
+                "grades": [
+                    "Kindergarten",
+                    "Grade 1",
+                    "Grade 2",
+                    "Grade 3",
+                    "Grade 4",
+                    "Grade 5",
+                    "Grade 6",
+                    "Grade 7",
+                    "Grade 8",
+                    "Grade 9",
+                    "Grade 10",
+                    "Grade 11",
+                    "Grade 12",
+                    "Other"
+                ],
+                "audiences": [
+                    "Learner", "Instructor"
+                ],
+                "ageGroup": [
+                    "<5", "5-6", "6-7", "7-8", "9-10", ">10", "Other"
+                ],
+                "medium": [
+                    "English", "Hindi", "Assamese", "Bengali", "Gujarati", "Kannada", "Malayalam", "Marathi", "Nepali", "Oriya", "Punjabi", "Tamil", "Telugu", "Urdu", "Other"
+                ]
+            }
         }
     }
 }

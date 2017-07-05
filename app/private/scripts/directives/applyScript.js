@@ -14,8 +14,13 @@ angular.module('playerApp')
                 $('.ui .progress').progress();
                 $('.course-progress').progress();
                 $('.popup-button').popup();
+                $('#address-accordion').accordion();
+                $('#experience-accordion').accordion();
+                $('#education-accordion').accordion();
                 $('#content-search-filter-accordion').accordion();
                 $('.ui.accordion').accordion({ exclusive: false });
+                $('.ui.radio.checkbox')
+                    .checkbox();
                 $('.ui.rating')
                     .rating({
                         maxRating: 5
@@ -51,6 +56,44 @@ angular.module('playerApp')
                         newPlayer.src({ type: 'video/youtube', src: attrs.videosrc });
                     });
                 }
+                $('#example2').calendar({
+                    type: 'date',
+                    formatter: {
+                        date: function(date, settings) {
+                            if (!date) return '';
+                            var day = date.getDate();
+                            var month = date.getMonth() + 1;
+                            var year = date.getFullYear();
+                            return day + '/' + month + '/' + year;
+                        }
+                    }
+                });
+                $('#rangestart').calendar({
+                    type: 'date',
+                    endCalendar: $('#rangeend'),
+                    formatter: {
+                        date: function(date, settings) {
+                            if (!date) return '';
+                            var day = date.getDate();
+                            var month = date.getMonth() + 1;
+                            var year = date.getFullYear();
+                            return day + '/' + month + '/' + year;
+                        }
+                    }
+                });
+                $('#rangeend').calendar({
+                    type: 'date',
+                    startCalendar: $('#rangestart'),
+                    formatter: {
+                        date: function(date, settings) {
+                            if (!date) return '';
+                            var day = date.getDate();
+                            var month = date.getMonth() + 1;
+                            var year = date.getFullYear();
+                            return day + '/' + month + '/' + year;
+                        }
+                    }
+                });
             }
         };
     });
