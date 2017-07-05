@@ -19,7 +19,7 @@ angular.module('playerApp')
                 error.messageType = messageType;
                 return error;
             }
-            
+
             /**
              * This function helps to show loader with message.
              * @param {String} headerMessage
@@ -32,25 +32,27 @@ angular.module('playerApp')
                 loader.loaderMessage = loaderMessage;
                 return loader;
             }
-            
+
             resource.playContent = function (item) {
-                var params = {content: item,contentName:item.name,contentId:item.identifier};
+                var params = {content: item, contentName: item.name, contentId: item.identifier};
                 $state.go('Player', params);
             };
-            
+
             resource.sections = function () {
                 resource.loader = showLoaderWithMessage("", config.MESSAGES.RESOURCE.PAGE.START);
-                
+
                 resourceService.resources().then(function (successResponse) {
                     if (successResponse && successResponse.responseCode === 'OK') {
-                        var resourceRes=successResponse.result.response.sections;                        
-                        resource.page=[];
-                        for(var i in resourceRes){
-                            var sectionArr={};
-                            sectionArr=resourceRes[i];
-                            sectionArr.contents={response:[]};
-                            for(var subsec in sectionArr.subSections){
-                              Array.prototype.push.apply(sectionArr.content.response,sectionArr.subSections[subsec].contents.response);
+                        var resourceRes = successResponse.result.response.sections;
+                        resource.page = [];
+                        for (var i in resourceRes) {
+                            var sectionArr = {};
+                            sectionArr = resourceRes[i];
+                            sectionArr.contents =  [];
+                            for (var subsec in sectionArr.subSections) {
+                                if (sectionArr.subSections[subsec].contents) {
+                                    Array.prototype.push.apply(sectionArr.contents, sectionArr.subSections[subsec].contents);
+                                }
                             }
                             resource.page.push(sectionArr);
                         }
