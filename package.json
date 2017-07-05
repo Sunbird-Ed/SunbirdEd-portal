@@ -66,7 +66,7 @@
     "express": "^4.15.3",
     "express-http-proxy": "^1.0.3",
     "gulp-ng-config": "^1.4.0",
-    "keycloak-connect": "^3.1.0",
+    "keycloak-connect": "https://github.com/project-sunbird/keycloak-nodejs-connect.git",
     "express-session": "^1.15.3"
   }
 }
