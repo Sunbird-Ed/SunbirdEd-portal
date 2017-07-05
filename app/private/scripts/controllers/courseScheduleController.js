@@ -228,12 +228,17 @@ angular.module('playerApp')
 
 
             toc.getContentClass = function (contentId) {
+
                 var statusClass = {
                     0: 'grey',
                     1: 'blue',
                     2: 'green'
                 };
-                return statusClass[toc.contentStatusList[contentId] || 0];
+                if (toc.courseType == 'ENROLLED_COURSE') {
+                    return statusClass[toc.contentStatusList[contentId] || 0];
+                }
+                return 0;
+
             }
 
             toc.getContentIcon = function (contentMimeType) {
@@ -271,7 +276,7 @@ angular.module('playerApp')
                 } else {
                     //play my current content
                     toc.resumeCourse();
-                }            
+                }
             }
             toc.constructTree = function (pos, tocData) {
                 toc.fancyTree = [];
