@@ -324,7 +324,7 @@ angular
                 var permissions = res.data;
                 if (res && res.data) {
                     permissionsService.setRolesAndPermissions(res.data);
-                    permissionsService.setCurrentUserRoles(["ADMIN"])
+                    permissionsService.setCurrentUserRoles(["CONTENT_REVIEWER"])
                 }
             })
             .then(function() {
