@@ -7,7 +7,7 @@
                     <div class="item">
                         <div class="ui grid">
                             <div class="two wide column">
-                                <img class="ui small circular image header-image-profile" src="{{profileCtrl.profilePic || 'images/user_logo.png'}}">
+                                <img class="ui small circular image" src="{{profileCtrl.profilePic || 'images/user_logo.png'}}">
                             </div>
                             <div class="ten wide column">
                                 <div class="content padding-top-10 ">
@@ -47,14 +47,18 @@
                         </h4>
                     </div>
                     <div class="twelve wide column ">
-                        <button class="ui primary basic button">EDIT PROFILE</button>
+                        <button apply-script class="ui primary basic button" id="openTreeModal">EDIT PROFILE</button>
+                        
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="one wide column"></div>
+
 </div>
+
+
 <div ng-if="profileCtrl.loader.showLoader">
     <app-loader data="{{profileCtrl.loader}}"></app-loader>
 </div>
