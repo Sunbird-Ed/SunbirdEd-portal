@@ -47,14 +47,18 @@
                         </h4>
                     </div>
                     <div class="twelve wide column ">
-                        <button class="ui primary basic button">EDIT PROFILE</button>
+                        <button apply-script class="ui primary basic button" id="openTreeModal">EDIT PROFILE</button>
+                        
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="one wide column"></div>
+
 </div>
+
+
 <div ng-if="profileCtrl.loader.showLoader">
     <app-loader data="{{profileCtrl.loader}}"></app-loader>
 </div>
