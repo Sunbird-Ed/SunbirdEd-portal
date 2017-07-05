@@ -27,7 +27,7 @@ angular
             .state('LandingPage', {
                 url: '/',
                 views: {
-                    'contentView': {
+                    'mainView': {
                         templateUrl: '/views/home/landingPage.html',
                         controller: 'AuthCtrl as auth'
                     }
@@ -36,7 +36,7 @@ angular
             .state('Home', {
                 url: '/home',
                 views: {
-                    'contentView': {
+                    'mainView': {
                         templateUrl: '/views/home/home.html',
                         controller: 'HomeController as homeCtrl'
                     }
@@ -49,7 +49,7 @@ angular
             .state('UserContent', {
                 url: '/content',
                 views: {
-                    'contentView': {
+                    'mainView': {
                         templateUrl: '/views/content/usercontent.html',
                         controller: 'userContentCtrl as userContent',
                     }
@@ -58,7 +58,7 @@ angular
             .state('Courses', {
                 url: '/learn',
                 views: {
-                    'contentView': {
+                    'mainView': {
                         templateUrl: '/views/learn/learn.html',
                         controller: 'LearnCtrl as learn',
                     }
@@ -82,7 +82,7 @@ angular
             .state('Resources', {
                 url: '/resources',
                 views: {
-                    'contentView': {
+                    'mainView': {
                         templateUrl: '/views/resource/resource.html',
                     }
                 },
@@ -105,7 +105,7 @@ angular
             .state('CourseNote', {
                 url: '/course/note/:tocId/:courseId',
                 views: {
-                    'contentView': {
+                    'mainView': {
                         templateUrl: 'views/note/noteList.html',
                         controller: 'NoteListCtrl as noteList',
                     }
@@ -128,7 +128,7 @@ angular
             .state('ContentNote', {
                 url: '/resourse/note/:contentId/:contentName',
                 views: {
-                    'contentView': {
+                    'mainView': {
                         templateUrl: 'views/note/noteList.html',
                         controller: 'NoteListCtrl as noteList',
                     }
@@ -150,7 +150,7 @@ angular
             .state('CourseContentNote', {
                 url: '/note/:tocId/:courseId/:contentId',
                 views: {
-                    'contentView': {
+                    'mainView': {
                         templateUrl: 'views/note/noteList.html',
                         controller: 'NoteListCtrl as noteList',
                     }
@@ -176,7 +176,7 @@ angular
             .state('Toc', {
                 url: '/toc/:tocId/:courseId/:lectureView',
                 views: {
-                    'contentView': {
+                    'mainView': {
                         templateUrl: 'views/course/toc.html',
                         controller: 'courseScheduleCtrl as toc',
                     }
@@ -199,7 +199,7 @@ angular
             .state('Community', {
                 url: '/community',
                 views: {
-                    'contentView': {
+                    'mainView': {
                         templateUrl: 'views/community/communityList.html',
                         controller: 'CommunityController as commCtrl'
                     }
@@ -211,7 +211,7 @@ angular
             .state('Profile', {
                 url: '/profile',
                 views: {
-                    'contentView': {
+                    'mainView': {
                         templateUrl: 'views/profile/profile.html',
                         controller: 'ProfileController as profileCtrl'
                     }
@@ -223,7 +223,7 @@ angular
             .state('Player', {
                 url: '/player/:contentId/:contentName',
                 views: {
-                    'contentView': {
+                    'mainView': {
                         templateUrl: 'views/common/player.html',
                         controller: 'playerCtrl as player'
                     }
@@ -246,7 +246,7 @@ angular
             .state('SearchCourse', {
                 url: '/:searchType/search/:query/',
                 views: {
-                    'contentView': {
+                    'mainView': {
                         templateUrl: 'views/search/search.html',
                         controller: 'SearchCourseCtrl as search',
                     }
@@ -267,7 +267,7 @@ angular
             .state('SearchResource', {
                 url: '/resources/search/:query/:searchType/',
                 views: {
-                    'contentView': {
+                    'mainView': {
                         templateUrl: 'views/search/search.html',
                         controller: 'SearchResourcesCtrl as search'
                     }
@@ -287,7 +287,7 @@ angular
             }).state('TocPlayer', {
                 url: '/toc/:tocId/:courseId/:lectureView/:contentId/:contentIndex',
                 views: {
-                    'contentView': {
+                    'mainView': {
                         templateUrl: 'views/course/toc.html',
                         controller: 'courseScheduleCtrl as toc',
                     }
@@ -309,7 +309,7 @@ angular
             }).state('CreateSlideShow', {
                         url: '/create/slideShow',
                         views: {
-                            'contentView': {
+                            'mainView': {
                                 templateUrl: '/views/slideShow/createSlideShow.html'
                             }
                         }
