@@ -15,11 +15,17 @@
     <link rel="stylesheet" href="/thirdparty/bower_components/slick-carousel/slick/slick.css">
     <link rel="stylesheet" href="/thirdparty/bower_components/slick-carousel/slick/slick-theme.css">
     <link rel="stylesheet" href="/thirdparty/bower_components/jquery.fancytree/dist/skin-win8/ui.fancytree.css">
+
+    <link rel="stylesheet" href="/thirdparty/bower_components/file-upload/fine-uploader/fine-uploader-new.css">
+
+    <link rel="stylesheet" href="/thirdparty/semantic-tree-picker/semantic-ui-tree-picker.css">
+
     <base href="/">
+    <link rel="stylesheet" href="/thirdparty/bower_components/semantic-ui-calendar/dist/calendar.min.css" />
 </head>
 
 <body ng-app="playerApp" ng-controller="AppCtrl">
-    <input type="hidden" id="userId" value="<%=userId%>"/>
+    <input type="hidden" id="userId" value="<%=userId%>" />
     <div ng-include="'views/common/topHeader.html'"></div>
     <div class="ui top attached fluid container">
         <div class="ui padded grid">
@@ -33,11 +39,15 @@
         </div>
     </div>
 
+    <!-- libs -->
+    <script src="/thirdparty/libs/eventbus.min.js"></script>
     <script src="/thirdparty/bower_components/jquery/dist/jquery.js"></script>
     <script src="/thirdparty/bower_components/jquery-ui/jquery-ui.min.js"></script>
     <script src="/thirdparty/bower_components/angular/angular.js"></script>
     <script src="/thirdparty/bower_components/angular-cookies/angular-cookies.js"></script>
     <script src="/thirdparty/bower_components/angular-route/angular-route.js"></script>
+    <script type="text/javascript" src="/thirdparty/bower_components/semantic-ui-calendar/dist/calendar.min.js"></script>
+
 
     <script src="/thirdparty/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script src="/thirdparty/semantic/semantic.min.js"></script>
@@ -54,15 +64,21 @@
     <script src="/thirdparty/bower_components/pdfjs-dist/build/pdf.js"></script>
     <script src="/thirdparty/bower_components/angular-pdf-viewer/dist/angular-pdf-viewer.min.js"></script>
     <script src="/thirdparty/bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="/thirdparty/bower_components/ngSafeApply/index.js"></script>
-    <script src="/thirdparty/bower_components/jquery.fancytree/dist/jquery.fancytree.min.js"></script>
-    <!-- endbower -->
 
+    <script src="/thirdparty/bower_components/jquery.fancytree/dist/jquery.fancytree.min.js"></script>
+    <script src="/thirdparty/bower_components/lodash/lodash.js"></script>
+    <script src="/thirdparty/bower_components/file-upload/fine-uploader/fine-uploader.js"></script>
+
+    <script src="/thirdparty/jquery.fancytree/dist/jquery.fancytree.min.js"></script>
+     <script src="/thirdparty/semantic-tree-picker/semantic-ui-tree-picker.js"></script>
+
+    <!-- endbower -->
 
     <!-- endbuild -->
     <script src="scripts/playerAppConfig.js"></script>
 
-
+    <!-- managers -->
+    <script src="/scripts/managers/eventManager.js"></script>
     
     <script src="scripts/app.js"></script>
     <script src="scripts/routes/appRoute.js"></script>
@@ -80,6 +96,8 @@
     <script src="scripts/services/userService.js"></script>
     <script src="scripts/services/resourceService.js"></script>
     <script src="scripts/services/searchService.js"></script>
+    <script src="scripts/services/profileService.js"></script>
+    <script src="scripts/services/permissionsService.js"></script>
     <!--controller-->
     <script src="scripts/controllers/searchCourseController.js"></script>
     <script src="scripts/controllers/searchResourcesController.js"></script>
@@ -100,6 +118,9 @@
     <script src="scripts/controllers/contentPlayer.js"></script>
     <script src="scripts/controllers/note/noteCardController.js"></script>
     <script src="scripts/controllers/contentPlayerController.js"></script>
+    <script src="scripts/controllers/signupController.js"></script>
+    <script src="scripts/controllers/createSlideShowController.js"></script>
+
     <!--filter-->
     <script src="scripts/filters/dateFilter.js"></script>
 
@@ -115,6 +136,7 @@
     <script src="scripts/directives/courseDiscussions.js"></script>
     <script src="scripts/directives/slickDirective.js"></script>
     <script src="scripts/directives/addNoteDirective.js"></script>
+    <script src="scripts/directives/permissionsDirective.js"></script>
     <!--routes-->
 </body>
 
