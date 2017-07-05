@@ -348,7 +348,7 @@ angular.module('playerApp')
 
             //this logic is for breadcrumbs in this page only.dont use for other pages breadcrumbs instead use state route breadcrumbs logic
             toc.updateBreadCrumbs = function () {
-                $rootScope.breadCrumbsData = [{name: 'Home', link: 'home'}, {name: 'My Courses', link: 'learn'}, {'name': toc.courseName, 'link': '/toc/' + toc.tocId + '/' + toc.courseId + '/' + toc.lectureView}];
+                $rootScope.breadCrumbsData = [{name: 'Home', link: 'home'}, {name: 'Courses', link: 'learn'}, {'name': toc.courseName, 'link': '/toc/' + toc.tocId + '/' + toc.courseId + '/' + toc.lectureView}];
                 if ($scope.contentPlayer.isContentPlayerEnabled) {
                     var curContentName = toc.playListContent[toc.itemIndex].name;
                     toc.courseParams.contentName = curContentName;

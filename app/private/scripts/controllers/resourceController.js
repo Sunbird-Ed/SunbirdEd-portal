@@ -43,8 +43,19 @@ angular.module('playerApp')
                 
                 resourceService.resources().then(function (successResponse) {
                     if (successResponse && successResponse.responseCode === 'OK') {
+                        var resourceRes=successResponse.result.response.sections;                        
+                        resource.page=[];
+                        for(var i in resourceRes){
+                            var sectionArr={};
+                            sectionArr=resourceRes[i];
+                            sectionArr.contents={response:[]};
+                            for(var subsec in sectionArr.subSections){
+                              Array.prototype.push.apply(sectionArr.content.response,sectionArr.subSections[subsec].contents.response);
+                            }
+                            resource.page.push(sectionArr);
+                        }
                         resource.loader.showLoader = false;
-                        resource.page = successResponse.result.response.sections;
+                        //resource.page = successResponse.result.response.sections[1].subSections;
                     } else {
                         resource.loader.showLoader = false;
                         resource.error = showErrorMessage(true, config.MESSAGES.RESOURCE.PAGE.FAILED, config.MESSAGES.COMMON.ERROR);
