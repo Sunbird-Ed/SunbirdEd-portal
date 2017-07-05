@@ -6,9 +6,10 @@ const express = require('express'),
     proxy = require('express-http-proxy'),
     Keycloak = require('keycloak-connect'),
     session = require('express-session'),
-    path = require('path'),    
+    path = require('path'),  
+    fs = require('fs'),  
     env = process.env,
-    port = env.port || 8080;
+    port = env.sunbird_port || 8080;
 
 // Create a new session store in-memory
 let memoryStore = new session.MemoryStore();
@@ -16,17 +17,24 @@ let memoryStore = new session.MemoryStore();
 let keycloak = new Keycloak({ store: memoryStore });
 
 app.use(session({
-    secret: 'mySecret',
+    secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
     resave: false,
     saveUninitialized: true,
     store: memoryStore
 }));
-app.use(keycloak.middleware({ admin: '/' }));
+app.use(keycloak.middleware({ admin: '/callback' }));
 
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, '/')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'private')));
+
+// implemented to use for permissions dummy data
+
+app.get('/permissions', function (req, res) {
+    var json = fs.readFileSync('data/permissions.json')
+    res.send(json);
+})
 
 app.use('/ekContentEditor', express.static('./thirdparty/content-editor'))
 app.get('/ekContentEditor', function(req, res) {

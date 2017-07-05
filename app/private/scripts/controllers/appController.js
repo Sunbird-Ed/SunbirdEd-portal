@@ -53,5 +53,8 @@ angular.module('playerApp')
                     $('body').find('.dropdown-menu-list').removeClass('visible').addClass('hidden');
                 }
             });
+            $scope.logout = function () {
+                window.document.location.href = '/logout';
+            }
 
         });
