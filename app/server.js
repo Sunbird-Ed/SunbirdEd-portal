@@ -8,7 +8,7 @@ const express = require('express'),
     session = require('express-session'),
     path = require('path'),    
     env = process.env,
-    port = env.port || 8080;
+    port = env['sunbird_port'] || 3000;
 
 // Create a new session store in-memory
 let memoryStore = new session.MemoryStore();
