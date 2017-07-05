@@ -1353,9 +1353,11 @@ span.fancytree-title {
 .my-icon {
   vertical-align: middle;
 }
-.header-image-profile {
-  height: 100px !important;
-  width: 100px !important;
+.ui.tree-picker.modal .search {
+  display: none;
+}
+.ui.tree-picker.modal .header .menu {
+  display: none;
 }
 body {
   position: relative !important;
