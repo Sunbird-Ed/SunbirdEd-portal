@@ -1,5 +1,5 @@
 {
-  "realm": "Sunbird",
+  "realm": "sunbird",
   "auth-server-url": "https://keycloakidp-coacher.rhcloud.com/auth",
   "ssl-required": "external",
   "resource": "portal",
