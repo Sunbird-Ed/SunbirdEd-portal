@@ -1,7 +1,7 @@
 <div ng-controller="CreateSlideShowController as createSlideShow" ng-init="createSlideShow.initilizeView()">
 
     <div ng-show="createSlideShow.showCreateSlideShowModal">
-        <div class="ui long modal" id="createSlideShowModal">
+        <div class="ui long modal scrolling" id="createSlideShowModal">
             <div class=" ui segment margin-top-10" ng-if="!createSlideShow.createApi.loader.showLoader && !createSlideShow.createApi.error.showError">
                 <div class=" margin-bottom-15">
                     <div class="ui grid">
@@ -102,24 +102,36 @@
                                     </div>
                                 </div>
                                 <div class="field">
-                                    <div class="two fields">
-                                        <div class="field">
-                                            <label>Author</label>
-                                            <input type="text" name="author" placeholder="author" ng-model="createSlideShow.data.author" required="">
-                                        </div>
-                                        <div class="field">
-                                            <label>Methods</label>
-                                            <div class="ui fluid multiple search selection dropdown">
-                                                <input type="hidden" name="receipt">
-                                                <i class="dropdown icon"></i>
-                                                <div class="default text">Type and select methods here</div>
-                                                <div class="menu">
-                                                    <div class="item" data-value="justen" data-text="Justen">
-                                                        rusten Kit
-                                                    </div>
-                                                    <div class="item" data-value="justen" data-text="Justen">
-                                                        Justen Kitsune
-                                                    </div>
+                                    <label>Medium</label>
+                                    <select name="medium" multiple="" class="ui fluid dropdown multiSelectDropDown" 
+                                            ng-options=" medium for medium in createSlideShow.medium" ng-model="createSlideShow.data.medium">
+                                        <option value="" medium="medium">Choose medium</option>
+                                    </select>
+                                </div>
+                                <div class="field">
+                                    <label>Subject</label>
+                                    <select name="subject" multiple="" class="ui fluid dropdown multiSelectDropDown"
+                                            ng-options=" subject for subject in createSlideShow.subjects" ng-model="createSlideShow.data.subject">
+                                        <option value="" translate="ageGroup">Choose subject</option>
+                                    </select>
+                                </div>
+                                <div class="two fields">
+                                    <div class="field">
+                                        <label>Author</label>
+                                        <input type="text" name="author" placeholder="author" ng-model="createSlideShow.data.author" required="">
+                                    </div>
+                                    <div class="field">
+                                        <label>Methods</label>
+                                        <div class="ui fluid multiple search selection dropdown">
+                                            <input type="hidden" name="receipt">
+                                            <i class="dropdown icon"></i>
+                                            <div class="default text">Type and select methods here</div>
+                                            <div class="menu">
+                                                <div class="item" data-value="justen" data-text="Justen">
+                                                    rusten Kit
+                                                </div>
+                                                <div class="item" data-value="justen" data-text="Justen">
+                                                    Justen Kitsune
                                                 </div>
                                             </div>
                                         </div>
@@ -129,29 +141,30 @@
                         </div>
                     </div>
                 </div>
-                <div class="actions">
-                    <button class="ui primary right floated button margin-bottom-15 margin-top-10 " type="submit" ng-click="createSlideShow.saveMetaData(createSlideShow.data)">Save</button>
-                    <button class="ui secondary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="createSlideShow.clearCreateSlideShowData()">Clear</button>
-                </div>
             </div>
-            <div class=" ui segment margin-top-10" ng-if="createSlideShow.createApi.loader.showLoader">
-                <app-loader data="{{createSlideShow.createApi.loader}}"></app-loader>
-            </div>
-            <div class=" ui segment margin-top-10" ng-if="createSlideShow.createApi.error.showError">
-                <error-message data="{{createSlideShow.createApi.error}}" visibility="createSlideShow.createApi.error.showError"></error-message>
+            <div class="actions">
+                <button class="ui primary right floated button margin-bottom-15 margin-top-10 " type="submit" ng-click="createSlideShow.saveMetaData(createSlideShow.data)">Save</button>
+                <button class="ui secondary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="createSlideShow.clearCreateSlideShowData()">Clear</button>
             </div>
         </div>
-    </div>
-    <div class="ui grid" ng-if="createSlideShow.ekURL">
-        <div class="one wide column"></div>
-        <div class="ten wide column">
-            <div class='content-player-body videosegment  ui clearing segment'>
-                <h5 class="ui right floated basic icon circular button" ng-click="createSlideShow.closeContentEditor()">
-                    <i class="ui remove icon"></i>
-                </h5>
-            </div>
-            <iframe ng-if="createSlideShow.ekURL" ng-src="{{createSlideShow.ekURL}}" class="content-iframe"></iframe>
+        <div class=" ui segment margin-top-10" ng-if="createSlideShow.createApi.loader.showLoader">
+            <app-loader data="{{createSlideShow.createApi.loader}}"></app-loader>
         </div>
-        <div class="one wide column"></div>
+        <div class=" ui segment margin-top-10" ng-if="createSlideShow.createApi.error.showError">
+            <error-message data="{{createSlideShow.createApi.error}}" visibility="createSlideShow.createApi.error.showError"></error-message>
+        </div>
     </div>
+</div>
+<div class="ui grid" ng-if="createSlideShow.ekURL">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+        <div class='content-player-body videosegment  ui clearing segment'>
+            <h5 class="ui right floated basic icon circular button" ng-click="createSlideShow.closeContentEditor()">
+                <i class="ui remove icon"></i>
+            </h5>
+        </div>
+        <iframe ng-if="createSlideShow.ekURL" ng-src="{{createSlideShow.ekURL}}" class="content-iframe"></iframe>
+    </div>
+    <div class="one wide column"></div>
+</div>
 </div>
