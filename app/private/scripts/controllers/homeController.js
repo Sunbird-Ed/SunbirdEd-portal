@@ -91,7 +91,19 @@ angular.module('playerApp')
                 homeCtrl[api].loader = showLoaderWithMessage("", config.MESSAGES.HOME.PAGE_API.START);
                 learnService.otherSections(req).then(function (successResponse) {
                     if (successResponse && successResponse.responseCode === 'OK') {
-                        homeCtrl.recommendedCourse = successResponse.result.response.sections[0].contents.response;
+                       
+                        var learnRes=successResponse.result.response.sections;                       
+                        homeCtrl.page=[];
+                        for(var i in learnRes){
+                            var sectionArr={};
+                            sectionArr=learnRes[i];
+                            sectionArr.contents={response:[]};
+                            for(var subsec in sectionArr.subSections){
+                               Array.prototype.push.apply(sectionArr.contents.response,sectionArr.subSections[subsec].contents.response);
+                            }
+                             homeCtrl.page.push(sectionArr);
+                        }
+                        homeCtrl.recommendedCourse =homeCtrl.page[0].contents.response;
                         homeCtrl[api].loader.showLoader = false;
                     } else {
                         homeCtrl[api].loader.showLoader = false;
