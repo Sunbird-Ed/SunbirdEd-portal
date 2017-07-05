@@ -8,7 +8,7 @@
     <div class="ui grid">
         <div class="one wide column"></div>
         <div class="ten wide column">
-            <div class="ui padded breadcrumb">
+            <div class="breadcrumppadding ui padded breadcrumb">
                 <span ng-repeat="item in breadCrumbsData">
                     <a ng-click="openLink(item.link)" ng-if="!$last" class="section">{{item.name}}</a>
                     <i ng-if="!$last" class="right chevron icon divider"></i>

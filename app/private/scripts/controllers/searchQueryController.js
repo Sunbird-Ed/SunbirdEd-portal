@@ -75,17 +75,20 @@ angular.module('playerApp')
         searchQuery.resourceSearch = function($event) {
             if ($event && searchQuery.keyword.length) {
                 var req = searchQuery.req();
+
+                console.error('i am a error reqreqreqreqreqreqreqreqreqreqreqreqreq', req);
                 searchService.contentSearch(req).then(function(res) {
                     if (res != null && res.responseCode === 'OK') {
                         searchQuery.autosuggest_data =
                             res.result.content;
                     }
                 });
-            } else {
+            } else if (searchQuery.keyword.length) {
                 searchQuery.autosuggest_data = [];
                 var searchReq = searchQuery.req();
                 var params = { query: JSON.stringify(searchReq), searchType: 'resources' };
                 $state.go('SearchResource', params);
+                searchQuery.keyword = '';
             }
         };
         searchQuery.courseSearch = function($event) {
@@ -98,12 +101,13 @@ angular.module('playerApp')
                             searchQuery.autosuggest_data = autoSuggest.result.response;
                     }
                 });
-            } else {
+            } else if (searchQuery.keyword.length) {
                 searchQuery.autosuggest_data = [];
                 var searchReq = searchQuery.req();
                 var params = { query: JSON.stringify(searchReq), searchType: 'courses' };
 
                 $state.go('SearchCourse', params);
+                searchQuery.keyword = '';
             }
         };
 

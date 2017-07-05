@@ -1,0 +1,4 @@
+<div class="field link" ng-init="profileCtrl.iconImage=false">
+    <img class="ui small circular image " src="{{profileCtrl.profilePic || 'images/user_logo.png'}}" ng-click="profileCtrl.openImageBrowser();">
+    <input type="file" accept="image/x-png,image/gif,image/jpeg" class="content-input" id="iconImageInput" onchange="angular.element(this).scope().profileCtrl.updateIcon(this.files);" required="" />
+</div>
