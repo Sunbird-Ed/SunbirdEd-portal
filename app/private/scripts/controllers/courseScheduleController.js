@@ -105,7 +105,7 @@ angular.module('playerApp')
                                 "contentIds": toc.playList
                             }
                         };
-                        if (toc.courseType = "ENROLLED_COURSE") {
+                        if (toc.courseType == "ENROLLED_COURSE") {
                             courseService.courseContentState(req).then(function (content_res) {
                                 if (content_res && content_res.responseCode === "OK") {
                                     toc.contentStatusList = toc.fetchObjectAttributeAsArrayOrObject(content_res.result.contentList, "contentId", "status", true);
