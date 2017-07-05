@@ -214,22 +214,22 @@ th {
 /*sunbird light font*/
 @font-face {
   font-family: 'sunbirdlightfont';
-  src: url('../fonts/Roboto-Light.ttf') format('truetype');
+  src: url('../fonts/OpenSans-Light.ttf') format('truetype');
 }
 /*sunbird Regular font*/
 @font-face {
   font-family: 'sunbirdregularfont';
-  src: url('../fonts/Roboto-Regular.ttf') format('truetype');
+  src: url('../fonts/OpenSans-Regular.ttf') format('truetype');
 }
 /*sunbird Medium font*/
 @font-face {
   font-family: 'sunbirdmediumfont';
-  src: url('../fonts/Roboto-Medium.ttf') format('truetype');
+  src: url('../fonts/OpenSans-SemiBold.ttf') format('truetype');
 }
 /*sunbird Bold font*/
 @font-face {
   font-family: 'sunbirdboldfont';
-  src: url('../fonts/Roboto-Bold.ttf') format('truetype');
+  src: url('../fonts/OpenSans-Bold.ttf') format('truetype');
 }
 /*cards fonts*/
 .cardsHeading {
@@ -391,7 +391,7 @@ th {
   margin: auto !important;
 }
 .margin-right-10 {
-  margin-top: 10px !important;
+  margin-right: 10px !important;
 }
 .margin-right-20 {
   margin-right: 20px !important;
@@ -537,6 +537,11 @@ th {
 .modal .ui.segment {
   box-shadow: none !important;
   border: none!important;
+}
+.breadcrumppadding.ui.breadcrumb,
+.breadcrumppadding.ui.breadcrumb:last-child,
+.breadcrumppadding.ui.breadcrumb:first-child {
+  margin: 10px;
 }
 .ui.card > .sliderCards.content {
   -webkit-box-flex: 1;
@@ -935,6 +940,15 @@ span.fancytree-title {
   cursor: pointer;
   margin-left: 5px;
 }
+.addnotes i.circular.icon {
+  padding: .6em .6em!important;
+  position: absolute;
+  margin-top: 4px;
+}
+.circleicon i.link.icon {
+  position: absolute;
+  margin-top: 6px;
+}
 .homeCard.ui.card {
   max-width: 100%;
   position: relative;
@@ -1225,6 +1239,125 @@ span.fancytree-title {
   color: #0099CC !important;
   text-shadow: none !important;
   padding-top: 0!important;
+}
+.workspaceicon.ui.header > .icon {
+  padding-top: 0;
+  float: left;
+}
+.workspaceicon.ui.header:first-child {
+  margin-top: 20px;
+}
+.publicmenusection.ui.vertical.menu {
+  padding: 15px 0 0 4px;
+}
+.publicmenusection.ui.secondary.vertical.menu > .item {
+  color: #979797;
+}
+.publicmenusection.ui.secondary.menu .active.item {
+  background: linear-gradient(270deg, rgba(218, 218, 218, 0) 0%, #F1F1F1 100%);
+  border-radius: 0!important;
+  color: rgba(0, 0, 0, 0.95);
+}
+.publicmenusection.ui.secondary.menu a.item:hover {
+  background: linear-gradient(270deg, rgba(218, 218, 218, 0) 0%, #F1F1F1 100%);
+  border-radius: 0!important;
+  color: rgba(0, 0, 0, 0.95);
+}
+.workspacesegment {
+  margin-top: 73px;
+}
+.workspacecontent {
+  text-align: center;
+  color: #333333;
+  font-family: "Open Sans";
+  font-size: 14px;
+  line-height: 17px;
+  font-weight: 400;
+}
+.workspacecontent.ui.card {
+  box-shadow: 0 1px 3px 0 #000000, 0 0 0 1px #171718;
+}
+.workspacetitle.title {
+  color: #333333;
+  font-family: "Open Sans";
+  font-size: 14px;
+  line-height: 17px;
+  font-weight: 400;
+}
+.profilesettings {
+  text-align: right;
+}
+.profilesttingheader.ui.header {
+  color: #979797;
+  font-family: "Open Sans";
+  font-size: 13px;
+  line-height: 17px;
+}
+.profileheader.ui.items > .item > .content > .header:not(.ui) {
+  font-size: 1.6em;
+}
+.profileheader.ui.items > .item .meta:last-child {
+  color: #979797;
+}
+.profileheaderpadding.ui.grid > .column:not(.row) {
+  padding: 20px 0 20px 0;
+}
+.workspaceinstuction {
+  text-align: center;
+  color: #979797;
+  font-size: 12px;
+}
+.workspacedownload.ui.segment {
+  box-sizing: border-box;
+  border: 2px solid #979797;
+  border-radius: 4px;
+  border-style: dashed;
+  text-align: center;
+}
+.uploadicon i.icon {
+  font-size: 3em;
+  color: #979797;
+}
+.uploadicon p {
+  color: #979797;
+  font-family: "Open Sans";
+  font-size: 13px;
+}
+.uploador p {
+  color: #979797;
+  font-family: "Open Sans";
+  font-size: 10px;
+}
+.fileupload.ui.primary.basic.button {
+  margin-top: 20px;
+}
+.filedivider.ui.divider {
+  margin: 40px;
+}
+.iwt {
+  display: block;
+}
+.textcontent {
+  display: inline-block;
+  margin: 8px;
+  padding: 0px;
+  font-size: 1em;
+  white-space: nowrap;
+}
+.textcontent i.icon {
+  font-size: 2em;
+}
+.my-text {
+  font-size: 1.2em;
+}
+.my-icon {
+  vertical-align: middle;
+}
+.ui.tree-picker.modal .search {
+  display: none;
+}
+.ui.tree-picker.modal .header .menu {
+  display: none;
 }
 body {
   position: relative !important;

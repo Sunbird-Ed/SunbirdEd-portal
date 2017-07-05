@@ -17,6 +17,17 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (noteServic
     function showPlayer(data) {
         $scope.contentData = data;
         $scope.showMetaData = $scope.isshowmetaview;
+        /**
+         * @event 'sunbird:portal:telemetryend' 
+         * Listen for this event to get the telemetry OE_END event from renderer
+         * Player controller dispatching the event subird 
+         */
+        window.addEventListener('renderer:telemetryevent:end',function(event, data){
+            console.info('OE_END event:',event.detail.telemetryData);
+            org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:telemetryend',event.detail.telemetryData);
+        });
+
+
         if ($scope.contentData.mimeType === 'application/vnd.ekstep.ecml-archive' || $scope.contentData.mimeType === 'application/vnd.ekstep.html-archive') {
             $scope.showIFrameContent = true;
             var iFrameSrc = config.ekstep_CP_config.baseURL;
@@ -27,7 +38,15 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (noteServic
                     var configuration = {};
                     configuration.context = config.ekstep_CP_config.context;
                     configuration.context.contentId = $scope.contentData.identifier;
+                    // TODO: sid,uid,channel 
+                    configuration.context.sid =  'Sunbird_sid';
+                    configuration.context.uid ='Sunbird_uid';
+                    configuration.context.channel='Sunbird_channel',
+                    configuration.context.dimension = 'Sunbird_dimension',
+                    configuration.context.appid = 'Sunbird_appId',
                     configuration.config = config.ekstep_CP_config.config;
+                    configuration.plugins = config.ekstep_CP_config.config.plugins;
+                    configuration.repos = config.ekstep_CP_config.config.repos;
                     previewContentIframe.contentWindow.initializePreview(configuration);
                 };
             }, 1000);
@@ -115,4 +134,6 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (noteServic
             $scope.getCurrentPage = pdfDelegate.$getByHandle('content-player').getCurrentPage();
         }, 2000);
     };
+
+   
 });

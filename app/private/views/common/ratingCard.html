@@ -14,7 +14,7 @@
                 {{ item.description | limitTo: 55 }}&nbsp;<i ng-show="item.description.length >= 55" class="ellipsis horizontal icon popup-button link" data-content="{{item.description}}" data-variation="wide"></i>
             </div>
 
-            <button ng-if="!recommended && enrolledCourseIds && enrolledCourseIds.indexOf(item.courseId) >= 0" class="ui blue basic right floated button">RESUME</button>
+            <button ng-if="enrolledCourseIds && enrolledCourseIds.indexOf(item.courseId) >= 0" class="ui blue basic right floated button">RESUME</button>
             <div  class="courseHeader-rating ui mini star rating" data-rating="3"></div>
         </div>
     </div>

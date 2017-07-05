@@ -8,11 +8,14 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-        .controller('AppCtrl', function ($scope, $state, $stateParams, $rootScope, setResourceBundle, $translate, userService, $q, config, $location,$timeout) {            
-            $rootScope.userId = 'e9280b815c0e41972bf754e9409b66d778b8e11bb91844892869a1e828d7d2f2';//$("#userId").attr("value");
+        .controller('AppCtrl', function ($scope, $state, $stateParams, $rootScope, setResourceBundle, $translate, userService, $q, config, $location, $timeout) {
+            $rootScope.userId = $("#userId").attr("value");
             $rootScope.language = $rootScope.userLanguage || config.SITE.DEFAULT_LANGUAGE;
             $rootScope.translationBundle = {};
             $rootScope.searchKey = '';
+            $rootScope.openLink=function(url){
+                $location.path(url);
+            }
             $rootScope.loadBundle = function () {
                 var promises = [];
                 promises.push(userService.resourceBundle($rootScope.language, 'label'));
@@ -50,5 +53,8 @@ angular.module('playerApp')
                     $('body').find('.dropdown-menu-list').removeClass('visible').addClass('hidden');
                 }
             });
-            
+            $scope.logout = function () {
+                window.document.location.href = '/logout';
+            }
+
         });
