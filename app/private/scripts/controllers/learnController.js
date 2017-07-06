@@ -69,43 +69,5 @@ angular.module('playerApp').controller('LearnCtrl', function (learnService, $sco
             };
 
             learn.courses();
-
-            learn.otherSection = function () {
-                var req = {
-                    'request': {
-                        'context': {
-                            'userId': uid
-                        }
-                    }
-                };
-                var api = 'pageApi';
-                learn[api] = {};
-                learn[api].loader = showLoaderWithMessage("", config.MESSAGES.COURSE.PAGE_API.START);
-
-                learnService.otherSections(req).then(function (successResponse) {
-                    if (successResponse && successResponse.responseCode === 'OK' && successResponse.result.response) {                       
-                        //learn.page = successResponse.result.response.sections;
-                        var learnRes=successResponse.result.response.sections;                       
-                        learn.page=[];
-                        for(var i in learnRes){
-                            var sectionArr={};
-                            sectionArr=learnRes[i];
-                            sectionArr.contents={response:[]};
-                            for(var subsec in sectionArr.subSections){
-                               Array.prototype.push.apply(sectionArr.contents.response,sectionArr.subSections[subsec].contents.response);
-                            }
-                             learn.page.push(sectionArr);
-                        }
-                        learn[api].loader.showLoader = false;
-                    } else {
-                        learn[api].loader.showLoader = false;
-                        learn[api].error = showErrorMessage(true, config.MESSAGES.HOME.PAGE_API.FAILED, config.MESSAGES.COMMON.ERROR);
-                    }
-                })
-                .catch(function (error) {
-                    learn[api].loader.showLoader = false;
-                    learn[api].error = showErrorMessage(true, config.MESSAGES.HOME.PAGE_API.FAILED, config.MESSAGES.COMMON.ERROR);
-                });
-            };
-            learn.otherSection();
+            
         });

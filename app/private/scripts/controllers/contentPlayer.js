@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('playerApp')
-        .controller('playerCtrl', function (resourceService, $stateParams, $log, $scope, $rootScope, $sessionStorage, $timeout, $location, $anchorScroll) {
+        .controller('playerCtrl', function ($stateParams, $log, $scope, $rootScope, $sessionStorage, $timeout, $location, $anchorScroll) {
             var player = this;
             player.contentPlayer = {
                 isContentPlayerEnabled: false

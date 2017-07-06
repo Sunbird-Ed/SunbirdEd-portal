@@ -78,44 +78,6 @@ angular.module('playerApp')
             };
             homeCtrl.courses();
 
-            homeCtrl.otherSection = function () {
-                var req = {
-                    'request': {
-                        'context': {
-                            'userId': uid
-                        }
-                    }
-                };
-                var api = 'pageApi';
-                homeCtrl[api] = {};
-                homeCtrl[api].loader = showLoaderWithMessage("", config.MESSAGES.HOME.PAGE_API.START);
-                learnService.otherSections(req).then(function (successResponse) {
-                    if (successResponse && successResponse.responseCode === 'OK') {
-                       
-                        var learnRes=successResponse.result.response.sections;                       
-                        homeCtrl.page=[];
-                        for(var i in learnRes){
-                            var sectionArr={};
-                            sectionArr=learnRes[i];
-                            sectionArr.contents={response:[]};
-                            for(var subsec in sectionArr.subSections){
-                               Array.prototype.push.apply(sectionArr.contents.response,sectionArr.subSections[subsec].contents.response);
-                            }
-                             homeCtrl.page.push(sectionArr);
-                        }
-                        homeCtrl.recommendedCourse =homeCtrl.page[0].contents.response;
-                        homeCtrl[api].loader.showLoader = false;
-                    } else {
-                        homeCtrl[api].loader.showLoader = false;
-                        homeCtrl[api].error = showErrorMessage(true, config.MESSAGES.HOME.PAGE_API.FAILED, config.MESSAGES.COMMON.ERROR);
-                    }
-                })
-                .catch(function (error) {
-                    homeCtrl[api].loader.showLoader = false;
-                    homeCtrl[api].error = showErrorMessage(true, config.MESSAGES.HOME.PAGE_API.FAILED, config.MESSAGES.COMMON.ERROR);
-                });
-            };
-            homeCtrl.otherSection();
 
             homeCtrl.openCourseView = function (course, courseType) {
                 // courseId = 'do_112265805439688704113';

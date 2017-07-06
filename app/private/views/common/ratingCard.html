@@ -6,7 +6,7 @@
             </div>-->
             <img ng-src=" {{item.appIcon ? item.appIcon : '../images/sunbird_logo.png'}} ">
             <div class="cardImageText center aligned ">
-                <span class="sliderCardHeading text-cencapitalize">{{item.name}}</span>
+                <span class="sliderCardHeading text-cencapitalize">{{item.name||item.courseName}}</span>
             </div>
         </div>
         <div class="sliderCards content">
