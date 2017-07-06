@@ -178,7 +178,7 @@ angular
                 views: {
                     'mainView': {
                         templateUrl: 'views/course/toc.html',
-                        controller: 'courseScheduleCtrl as toc',
+                        controller: 'courseScheduleCtrl as toc'
                     }
                 },
                 onEnter: function($rootScope, sessionService) {
@@ -307,15 +307,78 @@ angular
                     $rootScope.courseActive = '';
                 }
             }).state('CreateSlideShow', {
-                        url: '/create/slideShow',
+                url: '/create/slideShow',
+                views: {
+                    'mainView': {
+                        templateUrl: '/views/slideShow/createSlideShow.html'
+                    }
+                }
+            }).state('Profile.ContentCreation', {
+                url: '/content/create',
+                views: {
+                    'contentView': {
+                        templateUrl: 'views/workSpace/createContent.html'
+                    }
+                }
+            }).state('Profile.DraftContent', {
+                url: '/content/draft',
+                views: {
+                    'contentView': {
+                        templateUrl: 'views/workSpace/draftContent.html',
+                        controller: 'DraftContentController as draftContent'
+                    }
+                }
+            }).state('Profile.ReviewContent', {
+                url: '/content/review',
+                views: {
+                    'contentView': {
+                        templateUrl: 'views/workSpace/reviewContent.html',
+                        controller: 'ReviewContentController as reviewContent'
+                    }
+                }
+            }).state('Profile.PublishedContent', {
+                url: '/content/published',
+                views: {
+                    'contentView': {
+                        templateUrl: 'views/workSpace/publishedContent.html',
+                        controller: 'PublishedContentController as publishedContent'
+                    }
+                }
+            }).state('Profile.AllUploadedContent', {
+                url: '/content/uploaded',
+                views: {
+                    'contentView': {
+                        templateUrl: 'views/workSpace/allUploadedContent.html',
+                        controller: 'AllUploadedContentController as allUploadedContent'
+                    }
+                }
+            }).state('ContentEditor', {
+                url: '/content/editor/:contentId',
+                views: {
+                    'mainView': {
+                        templateUrl: 'views/common/contentEditor.html',
+                        controller: 'ContentEditorController as contentEditor'
+                    }
+                },
+                params: {contentId: null}
+            }).state('EditSlideShow', {
+                url: '/slideshow/edit',
+                views: {
+                    'mainView': {
+                        templateUrl: '/views/slideShow/editSlideShow.html'
+                    }
+                }
+
+            }).state('profileStartCreate', {
+                        url: '/create/workspace',
                         views: {
                             'mainView': {
-                                templateUrl: '/views/slideShow/createSlideShow.html'
+                                templateUrl: '/views/workSpace/createContent.html'
                             }
                         }
             });
     })
-    .run(function($urlRouter, $http, $state, permissionsService) {
+    .run(function($urlRouter, $http, $state, permissionsService, $rootScope, $location) {
         // Example ajax call
         $http
             .get('/permissions')
@@ -330,4 +393,22 @@ angular
                 $urlRouter.sync();
                 $urlRouter.listen();
             });
+
+        $rootScope.$on('$stateChangeStart',
+            function(event, toState, toParams, fromState, fromParams) {
+
+                switch (toState.name) {
+                    case "Profile.ContentCreation":
+                        if (!permissionsService.checkRolesPermissions(['CONTENT_CREATER', 'CONTENT_REVIEW', 'CONTENT_CREATION'], false)) {
+                            $rootScope.accessDenied = "You are not authorized to access this resource";
+                            event.preventDefault();
+                            $state.go('Home');
+                        }
+                        break;
+                    default:
+                        // statements_def
+                        break;
+                }
+            });
+
     });
