@@ -331,7 +331,7 @@ th {
 .ShowFilterSubTitle {
   font-family: 'sunbirdregularfont' !important;
   font-size: 0.9375em !important;
-  color: #8b8b8c !important;
+  color: #979797 !important;
 }
 /*note card font*/
 .note-card-timeStamp {
@@ -1347,6 +1347,11 @@ span.fancytree-title {
   font-size: 1em;
   white-space: nowrap;
 }
+@media only screen and (max-width: 1200px) {
+  .textcontent {
+    white-space: pre-line;
+  }
+}
 .textcontent i.icon {
   font-size: 2em;
 }
@@ -1361,6 +1366,72 @@ span.fancytree-title {
 }
 .ui.tree-picker.modal .header .menu {
   display: none;
+}
+.profilesegmentmargin.ui.segment:first-child {
+  margin-top: 20px;
+}
+.experienceheader.ui.list > .item a.header,
+.experienceheader.ui.list > .item a.header:hover {
+  font-family: "Open Sans";
+  font-size: 1em;
+  font-weight: 600;
+  line-height: 20px;
+  color: #333333 !important;
+}
+.experienceheader.ui.items > .item > .content > a.header,
+.experienceheader.ui.items > .item > .content > a.header:hover {
+  font-family: "Open Sans";
+  font-size: 1em;
+  font-weight: 600;
+  line-height: 20px;
+  color: #333333 !important;
+}
+.experienceheader.ui.list > .item .description {
+  color: #979797;
+  font-family: "Open Sans";
+  font-size: 0.89em;
+  line-height: 17px;
+}
+.experienceheader .item .metadata .date {
+  color: #979797;
+  font-family: "Open Sans";
+  font-size: 0.89em;
+  line-height: 14px;
+}
+.editexperiance {
+  float: right;
+  margin: 0 0 0 1em;
+}
+.experienceheader.ui.relaxed.list:not(.horizontal) > .item:not(:last-child) {
+  padding: 10px 0 15px 0;
+}
+.experienceheader.ui.relaxed.list:not(.horizontal) > .item:not(:first-child) {
+  padding: 10px 0 15px 0;
+}
+.workspacebuttongrid.ui.grid > .column:not(.row),
+.ui.grid > .row > .column {
+  padding-left: 0;
+  padding-right: 0;
+}
+.workspacebutton.ui.card {
+  width: inherit;
+}
+.workspacebutton.ui.card:first-child {
+  margin-top: 20px;
+}
+.experienceheader .ui.avatar.image {
+  width: 4em;
+  height: 4em;
+  border-radius: 0;
+}
+.experienceheader.ui.items > .item .avatar img,
+.ui.items > .item img.avatar {
+  width: 4em;
+  height: 4em;
+  border-radius: 0;
+}
+.iniformationcontent {
+  color: #979797;
 }
 body {
   position: relative !important;

@@ -368,6 +368,14 @@ angular
                         templateUrl: '/views/slideShow/editSlideShow.html'
                     }
                 }
+
+            }).state('profileStartCreate', {
+                        url: '/create/workspace',
+                        views: {
+                            'mainView': {
+                                templateUrl: '/views/workSpace/createContent.html'
+                            }
+                        }
             });
     })
     .run(function($urlRouter, $http, $state, permissionsService, $rootScope, $location) {
