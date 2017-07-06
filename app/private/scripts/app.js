@@ -17,5 +17,6 @@ angular.module('playerApp', [
         'ui.pagedown',
         'pdf',
         'pascalprecht.translate',
-        'ngSanitize'
+        'ngSanitize',
+        'ui.router.state.events'
     ]);

@@ -1,0 +1,32 @@
+
+<div ng-init="draftContent.initializeData()" >
+    <div ng-if="!draftContent.draftApi.loader.showLoader && !draftContent.draftApi.error.showError">
+
+        <div class="ui three stackable cards">
+            <div class="link card" ng-repeat="item in draftContent.draftContentData track by $index" ng-click="draftContent.openContentEditor(item.identifier)">
+                <div class="image imageInCardsResponsive">
+                    <div class="ui fluid image">
+                        <a class="ui black right ribbon label">{{item.contentType}}</a>
+                        <img ng-src=" {{item.appIcon ? item.appIcon : '../images/sunbird_logo.png'}} ">
+                    </div>
+                    <div class="cardImageText center aligned ">
+                        <span class="sliderCardHeading text-cencapitalize">
+                            {{item.name| limitTo:14}}
+                        </span>
+                    </div>
+                </div>
+                <div class="sliderCards content">
+                    <span class="sliderCardSubDesc">
+                        <span>{{item.description| limitTo:14}}</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="twelve wide column" ng-if="draftContent.draftApi.loader.showLoader">
+        <app-loader data="{{draftContent.draftApi.loader}}"></app-loader>
+    </div>
+    <div class="twelve wide column" ng-if="draftContent.draftApi.error.showError">
+        <error-message data="{{draftContent.draftApi.error}}" visibility="draftContent.draftApi.error.showError"></error-message>
+    </div>
+</div>

@@ -1,6 +1,11 @@
 <div class="ui grid">
     <div class="one wide column"></div>
     <div class="ten wide column">
+        <div class="row" ng-init="accessDenied = ''" ng-if="homeCtrl.roleAccessError.error.showError">
+            <div class="twelve wide column">
+                <error-message data="{{homeCtrl.roleAccessError.error}}" visibility="homeCtrl.roleAccessError.error.showError"></error-message>
+            </div>
+        </div>
         <div class="row">
             <div class="twelve wide column" ng-if="!homeCtrl.enrollCourseApi.loader.showLoader && !homeCtrl.enrollCourseApi.error.showError">
                 <div ng-if="homeCtrl.enrolledCourses.length" class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100 homeHeaderPadding" apply-script>
