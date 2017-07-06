@@ -14,7 +14,7 @@ angular.module('playerApp')
             var url =  config.URL.CONTENT_PREFIX + config.URL.CONTENT.SEARCH;
             return httpService.post(url, req);
         }
-
+        
         this.create = function(req) {
             var url =  config.URL.CONTENT_PREFIX + config.URL.CONTENT.CREATE;
             return httpService.post(url, req);

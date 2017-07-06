@@ -5,13 +5,12 @@
 <div class="ui grid">
     <div class="one wide column"></div>
     <div class="ten wide column">
-
         <div class="ui grid">
             <div class="three wide column">
                 <div ng-include="'views/profile/profileSidebar.html'"></div>
             </div>
             <div class="workspacesegment nine wide column">
-                <div ng-include="'views/profile/profileStartCreate.html'"></div>
+                <div ui-view="contentView"></div>
             </div>
         </div>
     </div>

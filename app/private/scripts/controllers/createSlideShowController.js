@@ -18,10 +18,13 @@ angular.module('playerApp')
         createSlideShow.languages = config.DROPDOWN.COMMON.languages;
         createSlideShow.grades = config.DROPDOWN.COMMON.grades;
         createSlideShow.ageGroup = config.DROPDOWN.COMMON.ageGroup;
-        createSlideShow.medium = config.DROPDOWN.COMMON.medium;
+        createSlideShow.mediums = config.DROPDOWN.COMMON.medium;
         createSlideShow.subjects = config.DROPDOWN.COMMON.subjects;
+        createSlideShow.boards = config.DROPDOWN.COMMON.boards;
         createSlideShow.showCreateSlideShowModal = true;
         createSlideShow.iconImage = false;
+        createSlideShow.userId = $rootScope.userId;
+        createSlideShow.accept = false;
         
         function initilizeDropDown() {
             $timeout(function () {
@@ -30,14 +33,14 @@ angular.module('playerApp')
                 $('.singleSelectDropDown')
                         .dropdown();
                 
-                $('#createSlideShowModal').modal({
+                $('.createSlideShowModal').modal({
                     onShow: function() {
                         createSlideShow.iconImage = false;
                     },
                     onHide: function() {
                         createSlideShow.clearCreateSlideShowData();
                         if(!createSlideShow.slideShowCreated) {
-                            $state.go("Profile");
+                            $state.go("Profile.ContentCreation");
                         }
                     }
                     
@@ -46,11 +49,11 @@ angular.module('playerApp')
         };
         
         createSlideShow.hideCreateSlideShowModal = function() { 
-            $('#createSlideShowModal') 
+            $('.createSlideShowModal') 
                 .modal('hide'); 
-            $('#createSlideShowModal') 
+            $('.createSlideShowModal') 
                 .modal('hide others'); 
-            $('#createSlideShowModal') 
+            $('.createSlideShowModal') 
                 .modal('hide dimmer'); 
         };
 
@@ -96,30 +99,35 @@ angular.module('playerApp')
                     
                 } else {
                     createSlideShow[api].loader.showLoader = false;
-                    createSlideShow[api].error = showErrorMessage(false, "Create slideshow failed, please try again later", config.MESSAGES.COMMON.ERROR);
+                    createSlideShow[api].error = showErrorMessage(false, config.MESSAGES.WORKSPACE.CREATE_SLIDESHOW.FAILED, config.MESSAGES.COMMON.ERROR);
                 }
             }, function(error) {
                 createSlideShow[api].loader.showLoader = false;
-                createSlideShow[api].error = showErrorMessage(false, "Create slideshow failed, please try again later", config.MESSAGES.COMMON.ERROR);
+                createSlideShow[api].error = showErrorMessage(false, config.MESSAGES.WORKSPACE.CREATE_SLIDESHOW.FAILED, config.MESSAGES.COMMON.ERROR);
             });
         };
         
         createSlideShow.saveMetaData = function(requestBody) {
             
-            var api = 'createSlideShow';
+            var api = 'createApi';
             createSlideShow[api] = {};
-            createSlideShow[api].loader = showLoaderWithMessage("", config.MESSAGES.RESOURCE.PAGE.START);
+            createSlideShow[api].loader = showLoaderWithMessage("", config.MESSAGES.WORKSPACE.CREATE_SLIDESHOW.START);
             
             requestBody.mimeType =  "application/vnd.ekstep.ecml-archive";
+            requestBody.createdBy = createSlideShow.userId;
             
-            var requestBody = {
+            requestBody.name = requestBody.name ? requestBody.name : "Default title";
+            requestBody.description = requestBody.description ? requestBody.description : "Default description";
+            requestBody.contentType = requestBody.contentType ? requestBody.contentType : "Story";
+            
+            var requestdata = {
                 "content": requestBody,
                 "params": {
                     "cid": "new",
                     "sid": "12345"
                 }
             };
-            createSlideShow.createContent(requestBody, api);
+            createSlideShow.createContent(requestdata, api);
 
 //            contentService.uploadMedia(createSlideShow.icon).then(function(res) {
 //                if (res && res.responseCode === "OK") {
@@ -147,11 +155,8 @@ angular.module('playerApp')
         }
         
         createSlideShow.initEKStepCE = function(contentId) {
-            window.context = config.ekstep_CE_config.context;
-            window.context.content_id = contentId;
-            window.config = config.ekstep_CE_config.config;
-            var baseURL = $location.protocol() + '://' + $location.host() + ':' + $location.port();
-            createSlideShow.ekURL = $sce.trustAsResourceUrl(baseURL+"/ekContentEditor?contentId="+contentId)
+            var params = {contentId : contentId}
+            $state.go("ContentEditor", params);
         };
         
         $scope.updateIcon = function(files) {
@@ -178,7 +183,4 @@ angular.module('playerApp')
             $scope.$apply();
         });
         
-        createSlideShow.closeContentEditor = function() {
-            $state.go("Profile");
-        };
     });

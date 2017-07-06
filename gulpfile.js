@@ -60,7 +60,9 @@ var paths = {
         player.app + '/thirdparty/bower_components/angular-sanitize/angular-sanitize.js',
 
         player.app + '/thirdparty/bower_components/file-upload/fine-uploader/fine-uploader.js',
-        player.app + '/thirdparty/bower_components/semantic-tree-picker/semantic-ui-tree-picker.js'
+        player.app + '/thirdparty/bower_components/semantic-tree-picker/semantic-ui-tree-picker.js',
+        player.app + '/thirdparty/bower_components/angular-ui-router/release/stateEvents.min.jss'
+        
     ],
     karma: 'karma.conf.js',
     views: {

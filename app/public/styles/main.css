@@ -429,6 +429,9 @@ th {
 .mouse-pointer {
   cursor: pointer;
 }
+.text-align-center {
+  text-align: center !important;
+}
 .header-container {
   margin-left: 1px !important;
   border-bottom: 5px solid #0099CC !important;
