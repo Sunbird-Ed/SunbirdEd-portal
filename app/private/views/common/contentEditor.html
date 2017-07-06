@@ -1,0 +1,15 @@
+<div class="ui grid" ng-if="contentEditor.ekURL">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+        <div class='content-player-body videosegment  ui clearing segment'>
+            <h5 class="ui right floated basic icon circular button" ng-click="contentEditor.closeContentEditor()">
+                <i class="ui remove icon"></i>
+            </h5>
+            <h5 class="ui left floated basic icon circular button" ng-click="contentEditor.openEditContentForm()">
+                <i class="ui edit icon"></i>
+            </h5>
+        </div>
+        <iframe ng-if="contentEditor.ekURL" ng-src="{{contentEditor.ekURL}}" class="content-iframe"></iframe>
+    </div>
+    <div class="one wide column"></div>
+</div>

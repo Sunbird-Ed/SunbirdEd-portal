@@ -8,7 +8,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('ProfileController', function($scope, $rootScope, profileService, config, $timeout) {
+    .controller('ProfileController', function($scope, $rootScope, userService, config, $timeout) {
         var profile = this;
         // profile.userId = $rootScope.userId;
         profile.summary = 'Dedicated, ambitious and goal-driven educator with 3 year progressive experience in high school settings. Documented success in providing activities and materials that engage and develop the students intellectually. Thorough understanding of implementing the use of information technology in lesson preparation.';
@@ -88,7 +88,7 @@ angular.module('playerApp')
                 // profile.summary = profileData.summary;
                 profile.preferredLanguage = profileData.language;
                 // profile.organizationName = profileData.organisations[0].name;
-                profile.city = profileData.address[0].city;
+                // profile.city = profileData.address[0].city;
                 profile.user = profileData;
             } else {
                 console.log('jfhdsf gere');
@@ -98,7 +98,7 @@ angular.module('playerApp')
         // Get user profile
         profile.getProfile = function() {
             profile.loader = showLoaderWithMessage('', config.MESSAGES.PROFILE.HEADER.START);
-            profileService.getUserProfile(profile.userId)
+            userService.getUserProfile(profile.userId)
                 .then(function(successResponse) {
                     profile.userProfile(successResponse);
                 }).catch(function(error) {
@@ -110,11 +110,37 @@ angular.module('playerApp')
         profile.getProfile();
         // update user profile
         profile.updateProfile = function() {
-            profile.updateProfileRequest = {};
+            delete profile.user.userName;
+            delete profile.user.status;
+            delete profile.user.jobProfile;
+            delete profile.user.email;
+            console.log('profile.user.dob', profile.user.dob);
+            console.log('profile.user.username', profile.user.userName);
+            // profile.user.id = profile.user.userId;
+            profile.updateProfileRequest = {
+                'id': 'unique API ID',
+                'ts': '2013/10/15 16:16:39',
+                'params': {
+
+                },
+                'request': profile.user
+                    // 'request': {
+                    //     'firstName': 'Amit 1',
+                    //     'language': [
+                    //         'English',
+                    //         'Hindi'
+                    //     ],
+                    //     'userId': '01e1db99-c67e-4bde-a1c0-38b16696780d',
+
+                //     'lastName': 'Sukumar'
+                // }
+            };
+            delete profile.updateProfileRequest.request.username;
             profile.loader = showLoaderWithMessage('', config.MESSAGES.PROFILE.HEADER.START);
             userService.updateUserProfile(profile.updateProfileRequest)
                 .then(function(successResponse) {
-                    profile.userProfile(successResponse);
+                    console.log('successResponse on udate', successResponse);
+                    // profile.userProfileUpdated(successResponse);
                 }).catch(function() {
                     profile.loader.showLoader = false;
                     profile.error = showErrorMessage(true, config.MESSAGES.PROFILE.UPDATE.FAILED, config.MESSAGES.COMMON.ERROR);
@@ -131,10 +157,14 @@ angular.module('playerApp')
             console.log('item', newAddress);
         };
         profile.addEducation = function(newEducation) {
+            profile.user.education.push(newEducation);
+            profile.updateProfile();
             console.log('newEducation', newEducation);
         };
 
         profile.addExperience = function(newExperience) {
+            profile.user.jobProfile.push(newAddress);
+
             console.log('newExperience', newExperience);
         };
     });

@@ -170,6 +170,16 @@
                     "NO_RESULT": "No result found "
                 }
 
+            },
+            "WORKSPACE" : {
+                "DRAFT" : {
+                    "START": "We are fetching draft content...",
+                    "FAILED": "Fetching draft content failed, please try again later..."
+                },
+                "CREATE_SLIDESHOW" : {
+                    "START": "We are creating lesson...",
+                    "FAILED": "Creating lesson failed, please try again later..."
+                }
             }
         },
         "ekstep_CE_config": {
@@ -180,10 +190,10 @@
                     "id": "390",
                     "name": "Harish kumar Gangula",
                     "email": "harishg@ilimi.com",
-                    "avtar": "https://localhost:3000/images/sunbird_logo.png",
-                    "logout": "https://localhost:3000/logout"
+                    "avtar": "https://localhost:8080/images/sunbird_logo.png",
+                    "logout": "https://localhost:8080/logout"
                 },
-                "baseURL": "https://localhost:3000/",
+                "baseURL": "https://localhost:8080/",
                 "editMetaLink": ""
             },
             "config": {
@@ -368,6 +378,9 @@
                 ],
                 "medium": [
                     "English", "Hindi", "Assamese", "Bengali", "Gujarati", "Kannada", "Malayalam", "Marathi", "Nepali", "Oriya", "Punjabi", "Tamil", "Telugu", "Urdu", "Other"
+                ],
+                "boards": [
+                    "NCERT", "CBSE", "ICSE", "MSCERT"
                 ]
             }
         }

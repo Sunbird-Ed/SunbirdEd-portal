@@ -8,9 +8,19 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-        .controller('HomeController', function ($state, learnService, $rootScope, sessionService, config) {
+        .controller('HomeController', function ($state, learnService, $rootScope, sessionService, config, $scope) {
             var homeCtrl = this;
             var uid = $rootScope.userId;
+            
+            if($rootScope.accessDenied) {
+                homeCtrl.roleAccessError = {};
+                homeCtrl.roleAccessError.error = showErrorMessage(true, $rootScope.accessDenied, config.MESSAGES.COMMON.ERROR);
+            }
+            
+            $scope.$watch("homeCtrl.roleAccessError.error.showError", function() {
+                $rootScope.accessDenied = null;
+            });
+            
             homeCtrl.loadCarousel = function () {
                 $('.ui .progress .course-progress').progress();
                 $('.ui.rating')
