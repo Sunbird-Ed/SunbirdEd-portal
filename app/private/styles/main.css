@@ -1367,6 +1367,38 @@ span.fancytree-title {
 .ui.tree-picker.modal .header .menu {
   display: none;
 }
+/* user avatar on hover effects in profile edit page*/
+.userAvtarWrap {
+  position: relative;
+  height: 150px;
+  width: 150px;
+}
+.img-description-layer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  color: #FFFFFF;
+  visibility: hidden;
+  opacity: 0.1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  font-size: 2em !important;
+  border-radius: 50%;
+  background: rgba(34, 36, 38, 0.1);
+}
+.userAvtarWrap:hover .img-description-layer {
+  visibility: visible;
+  opacity: 1;
+}
 .profilesegmentmargin.ui.segment:first-child {
   margin-top: 20px;
 }
