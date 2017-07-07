@@ -179,6 +179,18 @@
                 "CREATE_SLIDESHOW" : {
                     "START": "We are creating lesson...",
                     "FAILED": "Creating lesson failed, please try again later..."
+                },
+                "REVIEW" : {
+                    "START": "We are fetching review content...",
+                    "FAILED": "Fetching review content failed, please try again later..."
+                },
+                "PUBLISHED" : {
+                    "START": "We are fetching published content...",
+                    "FAILED": "Fetching published content failed, please try again later..."
+                },
+                "ALL_UPLOADED" : {
+                    "START": "We are fetching uploaded content...",
+                    "FAILED": "Fetching uploaded content failed, please try again later..."
                 }
             }
         },

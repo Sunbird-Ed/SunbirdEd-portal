@@ -1,0 +1,19 @@
+<h4 class="workspaceicon ui header sectionHeading margin-top-20"><i class="database icon"></i><span translate="workspace">My Workspace</span></h4>
+<div class="publicmenusection ui secondary vertical menu">
+    <a class="item" ui-sref="WorkSpace.ContentCreation" ui-sref-active="active" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER">
+        START CREATING
+    </a>
+    <a class="item" ui-sref="WorkSpace.DraftContent" ui-sref-active="active" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER">
+        DRAFTS
+    </a>
+    <a class="item" ui-sref="WorkSpace.ReviewContent" ui-sref-active="active" sb-permissions permission-only="CONTENT_REVIEWER,CONTENT_REVIEW">
+        IN REVIEW
+    </a>
+    <a class="item" ui-sref="WorkSpace.PublishedContent" ui-sref-active="active" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER">
+        PUBLISHED
+    </a>
+    <a class="item" ui-sref="WorkSpace.AllUploadedContent" ui-sref-active="active" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER">
+        ALL UPLOADS
+    </a>
+</div>
+

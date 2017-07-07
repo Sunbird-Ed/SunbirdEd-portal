@@ -1,12 +1,26 @@
-<div ng-controller="CreateSlideShowController as createSlideShow" ng-init="createSlideShow.initilizeView()">
-    <div ng-show="createSlideShow.showCreateSlideShowModal">
-        <div class="ui modal createSlideShowModal">
-            <i class="close icon"></i>
-            <div class="header" ng-if="!createSlideShow.createApi.loader.showLoader && !createSlideShow.createApi.error.showError">
-                Create New Lesson
+<div ng-init="createSlideShow.initilizeView()">
+    <div class="ui modal" id="createSlideShowModal" ng-if="createSlideShow.showCreateSlideShowModal">
+        <div class=" ui segment margin-top-10" ng-show="!createSlideShow.createApi.loader.showLoader && !createSlideShow.createApi.error.showError">
+            <div class=" margin-bottom-15">
+                <div class="ui grid">
+                    <div class="eleven wide column">
+                        <span class="ui header">Create New Lesson</span>
+                    </div>
+                    <div class="one wide column actions">
+                        <h5 class="ui basic icon circular button deny" ng-click="createSlideShow.hideCreateSlideShowModal();">
+                            <i class="ui remove icon"></i>
+                        </h5>
+                    </div>
+                </div>
             </div>
-            <div class="content" ng-if="!createSlideShow.createApi.loader.showLoader && !createSlideShow.createApi.error.showError">
+            <div class="content">
                 <form class="ui form" ng-init="createSlideShow.data = {}">
+                    <div class="field">
+                        <label>Title</label>
+                        <div class="field">
+                            <input type="text" name="title" placeholder="Lesson Title" ng-model="createSlideShow.data.name">
+                        </div>
+                    </div>
                     <div class="two fields">
                         <div class="field">
                             <label>Board</label>
@@ -37,22 +51,22 @@
                     </div>
                 </form>
             </div>
-            <div class="actions" ng-if="!createSlideShow.createApi.loader.showLoader && !createSlideShow.createApi.error.showError">
+            <div class="actions">
+                <p class="text-align-center">
+                    <button class="ui primary text-align-center icon button" ng-click="createSlideShow.saveMetaData(createSlideShow.data)">
+                        Start Creating
+                    </button></p>
                 <h4 class="text-align-center">You can fill in this details later</h4>
-                <div class="ui checkbox">
-                    <input type="checkbox" name="example" ng-model="createSlideShow.accept">
+                <div>
                     <label><p class="text-align-center">By proceeding you agreed to make all lessons created through authoring tool or uploaded on the Ek Step platform to be available under licence CC-BY 4.0</p></label>
                 </div>
-                <button class="ui primary right icon button" ng-disabled="!createSlideShow.accept" ng-click="createSlideShow.saveMetaData(createSlideShow.data)">
-                    Save
-                </button>
             </div>
-            <div class=" ui segment margin-top-10" ng-if="createSlideShow.createApi.loader.showLoader">
-                <app-loader data="{{createSlideShow.createApi.loader}}"></app-loader>
-            </div>
-            <div class=" ui segment margin-top-10" ng-if="createSlideShow.createApi.error.showError">
-                <error-message data="{{createSlideShow.createApi.error}}" visibility="createSlideShow.createApi.error.showError"></error-message>
-            </div>
+        </div>
+        <div class=" ui segment margin-top-10" ng-if="createSlideShow.createApi.loader.showLoader">
+            <app-loader data="{{createSlideShow.createApi.loader}}"></app-loader>
+        </div>
+        <div class=" ui segment margin-top-10" ng-if="createSlideShow.createApi.error.showError">
+            <error-message data="{{createSlideShow.createApi.error}}" visibility="createSlideShow.createApi.error.showError"></error-message>
         </div>
     </div>
 </div>

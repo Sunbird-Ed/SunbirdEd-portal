@@ -23,7 +23,7 @@ angular.module('playerApp')
         };
         
         contentEditor.closeContentEditor = function() {
-            $state.go("Profile.DraftContent");
+            $state.go("WorkSpace.DraftContent");
         };
         
         contentEditor.openEditContentForm = function() {
