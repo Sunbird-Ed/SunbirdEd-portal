@@ -218,6 +218,10 @@ angular
                         },
                         onEnter: function ($rootScope) {
                             $rootScope.searchKey = 'Profile';
+                            $rootScope.profileActive = 'active';
+                        },
+                        onExit: function ($rootScope) {
+                            $rootScope.profileActive = '';
                         }
                     })
                     .state('Player', {
