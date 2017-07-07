@@ -1,45 +1,37 @@
-<h4>({{$index +1}})</h4>
-<div class="two fields">
+<form class="ui form ">
+    <h4>({{$index +1}})</h4>
+    <div class="two fields">
+        <div class=" field">
+            <label>Position</label>
+            <input type="text" name="" ng-model="experience.role">
+        </div>
+        <div class="  field">
+            <label>Organization</label>
+            <input type="text" name="" ng-model="experience.name">
+        </div>
+    </div>
     <div class=" field">
-        <label>Position</label>
-        <input type="text" name="" ng-model="experience.role">
+        <label>Job Description</label>
+        <input type="text" name="" ng-model="experience.description">
     </div>
-    <div class="  field">
-        <label>Organization</label>
-        <input type="text" name="" ng-model="experience.name">
-    </div>
-</div>
-<div class=" field">
-    <label>Job Description</label>
-    <input type="text" name="" ng-model="experience.description">
-</div>
-<div class="two fields">
-    <div class=" field">
-        <label>Start Date</label>
-        <input type="text" name="" ng-model="experience.startDate">
-    </div>
-    <div class="  field">
-        <label>End Date</label>
-        <input type="text" name="" ng-model="experience.endDate">
-    </div>
-</div>
-<div apply-script class="two fields">
-    <div class="field">
-        <label>Start date</label>
-        <div class="ui calendar" id="rangestart">
-            <div class="ui input left icon">
-                <i class="calendar icon"></i>
-                <input type="text" ng-model="experience.startDate">
+    <div apply-script class="two fields">
+        <div class="field">
+            <label>Start date</label>
+            <div class="ui calendar" id="rangestart">
+                <div class="ui input left icon">
+                    <i class="calendar icon"></i>
+                    <input type="text" ng-model="experience.startDate">
+                </div>
+            </div>
+        </div>
+        <div class="field">
+            <label>End date</label>
+            <div class="ui calendar" id="rangeend">
+                <div class="ui input left icon">
+                    <i class="calendar icon"></i>
+                    <input type="text" ng-model="experience.endDate">
+                </div>
             </div>
         </div>
     </div>
-    <div class="field">
-        <label>End date</label>
-        <div class="ui calendar" id="rangeend">
-            <div class="ui input left icon">
-                <i class="calendar icon"></i>
-                <input type="text" ng-model="experience.endDate">
-            </div>
-        </div>
-    </div>
-</div>
+</form>

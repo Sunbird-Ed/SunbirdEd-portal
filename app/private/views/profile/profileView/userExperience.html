@@ -1,0 +1,29 @@
+<div class="profilesegmentmargin ui raised segment">
+    <div class="header announcementCard-header">
+        <span class="header cardsHeading" translate="experiance">Experience</span>
+        <a class="editexperiance" translate="edit" ng-click="profileCtrl.experienceForm=true">Edit</a>
+    </div>
+    <div ng-if="!profileCtrl.experienceForm" class="experienceheader ui relaxed divided list">
+        <div class="item" ng-repeat="experience in profileCtrl.user.jobProfile">
+            <div class="right floated content">
+                <div class="metadata">
+                    <span class="date">Yesterday at 12:30AM</span>
+                </div>
+            </div>
+            <img class="ui avatar image" src="/images/user_logo.png">
+            <div class="content">
+
+                <a class=" header">{{experience.role}}</a>
+                <div class="description"> {{experience.orgName}}, {{experience.address.city}}</div>
+            </div>
+        </div>
+    </div>
+    <div ng-if="profileCtrl.experienceForm" class="experienceheader ui relaxed divided list">
+        <div class=" ui " ng-repeat="experience in profileCtrl.user.jobProfile track by $index " ng-include=" 'views/profile/editProfile/experience.html' "></div>
+        <div class="ui button " ng-if="!profileCtrl.newExperience " ng-click="profileCtrl.newExperience=true ;profileCtrl.experience={} ">Add experience</div>
+        <div class="ui " ng-if="profileCtrl.newExperience " ng-include=" 'views/profile/editProfile/addExperience.html' "></div>
+        <div class="ui button margin-top-15" ng-click="profileCtrl.EditBasicProfile()" ;>Save profile</div>
+        <div class="ui button " ng-if="profileCtrl.newExperience " ng-click="profileCtrl.addExperience(profileCtrl.experience) ;">Save experience</div>
+
+    </div>
+</div>

@@ -1,45 +1,47 @@
-<div class="ui dividing header margin-top-15 "></div>
-<div class="two fields">
+<form class="ui form ">
+    <div class="ui dividing header margin-top-15 "></div>
+    <div class="two fields">
+        <div class=" field">
+            <label>Position</label>
+            <input type="text" name="" ng-model="profileCtrl.experience.role">
+        </div>
+        <div class="  field">
+            <label>Organization</label>
+            <input type="text" name="" ng-model="profileCtrl.experience.name">
+        </div>
+    </div>
     <div class=" field">
-        <label>Position</label>
-        <input type="text" name="" ng-model="profileCtrl.experience.role">
+        <label>Job Description</label>
+        <input type="text" name="" ng-model="profileCtrl.experience.description">
     </div>
-    <div class="  field">
-        <label>Organization</label>
-        <input type="text" name="" ng-model="profileCtrl.experience.name">
+    <div class="two fields">
+        <div class=" field">
+            <label>Start Date</label>
+            <input type="text" name="" ng-model="profileCtrl.experience.startDate">
+        </div>
+        <div class="  field">
+            <label>End Date</label>
+            <input type="text" name="" ng-model="profileCtrl.experience.endDate">
+        </div>
     </div>
-</div>
-<div class=" field">
-    <label>Job Description</label>
-    <input type="text" name="" ng-model="profileCtrl.experience.description">
-</div>
-<div class="two fields">
-    <div class=" field">
-        <label>Start Date</label>
-        <input type="text" name="" ng-model="profileCtrl.experience.startDate">
-    </div>
-    <div class="  field">
-        <label>End Date</label>
-        <input type="text" name="" ng-model="profileCtrl.experience.endDate">
-    </div>
-</div>
-<div apply-script class="two fields">
-    <div class="field">
-        <label>Start date</label>
-        <div class="ui calendar" id="rangestart">
-            <div class="ui input left icon">
-                <i class="calendar icon"></i>
-                <input type="text" placeholder="Start">
+    <div class="two fields">
+        <div class="field">
+            <label>Start date</label>
+            <div class="ui calendar" id="rangestart">
+                <div class="ui input left icon">
+                    <i class="calendar icon"></i>
+                    <input type="text" placeholder="Start">
+                </div>
+            </div>
+        </div>
+        <div class="field">
+            <label>End date</label>
+            <div class="ui calendar" id="rangeend">
+                <div class="ui input left icon">
+                    <i class="calendar icon"></i>
+                    <input type="text" placeholder="End">
+                </div>
             </div>
         </div>
     </div>
-    <div class="field">
-        <label>End date</label>
-        <div class="ui calendar" id="rangeend">
-            <div class="ui input left icon">
-                <i class="calendar icon"></i>
-                <input type="text" placeholder="End">
-            </div>
-        </div>
-    </div>
-</div>
+</form>

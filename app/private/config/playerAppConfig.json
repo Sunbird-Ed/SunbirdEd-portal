@@ -12,7 +12,7 @@
                 "RESOURCE_BUNDLE": "resourcebundle",
                 "SIGNUP": "user/create",
                 "UPDATE_USER_PROFILE": "user/update",
-                "GET_PROFILE": "user/getProfile"
+                "GET_PROFILE": "user/getprofile"
             },
             "COURSE": {
                 "SEARCH": "course/search",
@@ -171,24 +171,24 @@
                 }
 
             },
-            "WORKSPACE" : {
-                "DRAFT" : {
+            "WORKSPACE": {
+                "DRAFT": {
                     "START": "We are fetching draft content...",
                     "FAILED": "Fetching draft content failed, please try again later..."
                 },
-                "CREATE_SLIDESHOW" : {
+                "CREATE_SLIDESHOW": {
                     "START": "We are creating lesson...",
                     "FAILED": "Creating lesson failed, please try again later..."
                 },
-                "REVIEW" : {
+                "REVIEW": {
                     "START": "We are fetching review content...",
                     "FAILED": "Fetching review content failed, please try again later..."
                 },
-                "PUBLISHED" : {
+                "PUBLISHED": {
                     "START": "We are fetching published content...",
                     "FAILED": "Fetching published content failed, please try again later..."
                 },
-                "ALL_UPLOADED" : {
+                "ALL_UPLOADED": {
                     "START": "We are fetching uploaded content...",
                     "FAILED": "Fetching uploaded content failed, please try again later..."
                 }
@@ -350,8 +350,8 @@
                 "showStartPage": true,
                 "host": "https://qa.ekstep.in",
                 "apislug": "/api",
-                "repos":["/scripts/plugins"],
-                "plugins":[{"id": "org.sunbird.iframeEvent","ver": 1.0,"type": "plugin"}]
+                "repos": ["/scripts/plugins"],
+                "plugins": [{ "id": "org.sunbird.iframeEvent", "ver": 1.0, "type": "plugin" }]
             },
             "baseURL": "/content/preview/preview.html?webview=true"
         },

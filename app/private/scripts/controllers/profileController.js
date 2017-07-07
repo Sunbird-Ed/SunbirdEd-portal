@@ -12,12 +12,33 @@ angular.module('playerApp')
         var profile = this;
         // profile.userId = $rootScope.userId;
         profile.summary = 'Dedicated, ambitious and goal-driven educator with 3 year progressive experience in high school settings. Documented success in providing activities and materials that engage and develop the students intellectually. Thorough understanding of implementing the use of information technology in lesson preparation.';
-
-        profile.userId = '01e1db99-c67e-4bde-a1c0-38b16696780d';
+        profile.experienceForm = false;
+        // profile.userId = '44f76ae4-1850-48d2-97e1-2408c5a6d9fc';
+        profile.userId = '5ac2edd3-8d2e-49a4-ac86-9ed5c2e10f3e';
         console.log('$rootScope.userId', $rootScope.userId);
         // update profile image
         profile.openImageBrowser = function() {
+            console.log('trying to change');
             $('#iconImageInput').click();
+        };
+        profile.open = function() {
+            $timeout(function() {
+                console.log('trying to open');
+                $('#example2').calendar({
+                    type: 'date',
+                    formatter: {
+                        date: function(date, settings) {
+                            if (!date) return '';
+                            var day = date.getDate();
+                            var month = date.getMonth() + 1;
+                            var year = date.getFullYear();
+                            var selectedDate = day + '/' + month + '/' + year;
+                            profile.user.dob = selectedDate;
+                            return selectedDate;
+                        }
+                    }
+                });
+            }, 1500);
         };
 
         profile.updateIcon = function(files) {
@@ -63,33 +84,15 @@ angular.module('playerApp')
             loader.loaderMessage = loaderMessage;
             return loader;
         }
-        profile.validate = function() {
-            $('#profileEdit')
-                .form({
-                    fields: {
-                        name: 'empty',
-                        gender: 'empty',
-                        username: 'empty',
-                        password: ['minLength[6]', 'empty'],
-                        skills: ['minCount[2]', 'empty'],
-                        terms: 'checked'
-                    }
-                });
-        };
+
         profile.userProfile = function(userProfile) {
             profile.loader.showLoader = false;
             if (userProfile && userProfile.responseCode === 'OK') {
-                var profileData = userProfile.result.response[0];
-
-                console.log('userProfile', JSON.stringify(profileData.lastName, null, 2));
-                profile.profilePic = profileData.avatar;
-                profile.firstName = profileData.firstName;
-                profile.lastName = profileData.lastName;
-                // profile.summary = profileData.summary;
-                profile.preferredLanguage = profileData.language;
-                // profile.organizationName = profileData.organisations[0].name;
-                // profile.city = profileData.address[0].city;
+                console.log('sdfghjkljgfcvjkhgfhjkgfhjkl', userProfile.result.response.jobProfile.length, 'data', JSON.stringify(userProfile.result.response.jobProfile, null, 2));
+                var profileData = userProfile.result.response;
                 profile.user = profileData;
+                profile.user.organizationName = profileData.jobProfile[0].orgName;
+                profile.user.city = profileData.address[0].city;
             } else {
                 console.log('jfhdsf gere');
                 throw new Error('');
@@ -112,10 +115,8 @@ angular.module('playerApp')
         profile.updateProfile = function() {
             delete profile.user.userName;
             delete profile.user.status;
-            delete profile.user.jobProfile;
-            delete profile.user.email;
-            console.log('profile.user.dob', profile.user.dob);
-            console.log('profile.user.username', profile.user.userName);
+            delete profile.user.identifier;
+            // delete profile.user.email;
             // profile.user.id = profile.user.userId;
             profile.updateProfileRequest = {
                 'id': 'unique API ID',
@@ -124,23 +125,15 @@ angular.module('playerApp')
 
                 },
                 'request': profile.user
-                    // 'request': {
-                    //     'firstName': 'Amit 1',
-                    //     'language': [
-                    //         'English',
-                    //         'Hindi'
-                    //     ],
-                    //     'userId': '01e1db99-c67e-4bde-a1c0-38b16696780d',
-
-                //     'lastName': 'Sukumar'
-                // }
             };
-            delete profile.updateProfileRequest.request.username;
             profile.loader = showLoaderWithMessage('', config.MESSAGES.PROFILE.HEADER.START);
+            console.log('profile.user.jobprofile121342533647', profile.user.dob);
             userService.updateUserProfile(profile.updateProfileRequest)
                 .then(function(successResponse) {
                     console.log('successResponse on udate', successResponse);
-                    // profile.userProfileUpdated(successResponse);
+                    profile.experienceForm = false;
+                    profile.basicProfileForm = false;
+                    profile.getProfile();
                 }).catch(function() {
                     profile.loader.showLoader = false;
                     profile.error = showErrorMessage(true, config.MESSAGES.PROFILE.UPDATE.FAILED, config.MESSAGES.COMMON.ERROR);
@@ -149,7 +142,7 @@ angular.module('playerApp')
         //profile newAddress
 
         profile.EditBasicProfile = function() {
-            console.log('item', JSON.stringify(profile.user, null, 2));
+            console.log('item', JSON.stringify(profile.user.dob, null, 2));
             profile.updateProfile();
         };
         profile.addNew = function(newAddress) {
@@ -163,8 +156,8 @@ angular.module('playerApp')
         };
 
         profile.addExperience = function(newExperience) {
-            profile.user.jobProfile.push(newAddress);
-
+            profile.user.jobProfile.push(newExperience);
+            profile.updateProfile();
             console.log('newExperience', newExperience);
         };
     });
