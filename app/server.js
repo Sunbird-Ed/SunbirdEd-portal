@@ -6,8 +6,8 @@ const express = require('express'),
     proxy = require('express-http-proxy'),
     Keycloak = require('keycloak-connect'),
     session = require('express-session'),
-    path = require('path'),  
-    fs = require('fs'),  
+    path = require('path'),
+    fs = require('fs'),
     env = process.env,
     port = env.sunbird_port || 8080;
 
@@ -31,7 +31,7 @@ app.use(express.static(path.join(__dirname, 'private')));
 
 // implemented to use for permissions dummy data
 
-app.get('/permissions', function (req, res) {
+app.get('/permissions', function(req, res) {
     var json = fs.readFileSync('data/permissions.json')
     res.send(json);
 })
@@ -42,6 +42,12 @@ app.get('/ekContentEditor', function(req, res) {
 });
 
 const learnerURL = env.sunbird_learner_player_url || 'http://52.172.36.121:9000/v1/';
+app.all('/public/service/v1/*', proxy(learnerURL, {
+    proxyReqPathResolver: function(req) {
+        let urlParam = req.params["0"];
+        return require('url').parse(learnerURL + urlParam).path;
+    }
+}))
 app.all('/service/v1/learner/*', keycloak.protect(), proxy(learnerURL, {
     proxyReqPathResolver: function(req) {
         let urlParam = req.params["0"];
