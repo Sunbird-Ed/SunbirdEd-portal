@@ -1,95 +1,96 @@
 <div id="signupModal" class="ui modal">
-
-    <form ng-init="newUser.formInit();" id="signUpForm" class="ui form" style="margin:30px;" ng-if="!newUser.loader.showLoader && !newUser.error.showError ">
-
-        <div class="  field">
-            <div class=" two fields">
-
-                <div class="required field ">
-                    <label>User Name</label>
-                    <input type="text" name="userName" placeholder="User Name" ng-model="newUser.userName">
-                </div>
-                <div class="field">
-                    <label>Password</label>
-                    <input type="password" name="password" placeholder="password" ng-model="newUser.password">
-                </div>
-            </div>
-        </div>
-        <div class="  field">
-            <div class=" two fields">
-                <div class=" required field">
-                    <label>Name</label>
-                    <input type="text" name="firstName" placeholder="First Name" ng-model="newUser.firstName">
-                </div>
-                <div class="field">
-                    <label>&nbsp;  </label>
-                    <input type="text" name="" placeholder="Last Name" ng-model="newUser.lastName">
-                </div>
-            </div>
-        </div>
-
-        <div class="two fields">
-            <div class="required field">
-                <label>Phone number</label>
-                <input type="text" name="phone" ng-model="newUser.phone">
-            </div>
-            <div class=" required field">
-                <label>Email</label>
-                <input type="text" name="email" ng-model="newUser.email">
-            </div>
-        </div>
-        <div class="two fields">
-            <div class="field">
-                <label>Gender</label>
-
-                <select class="ui fluid dropdown" ng-model="newUser.gender">
-                        <option value="Female">Female</option>
-                        <option value="Male">Male</option>
-                     </select>
-            </div>
-            <div class=" required field" ng-init="newUser.formInit() ">
-                <label>Language</label>
-                <select name=language class="ui fluid dropdown signupMultiple" multiple="" ng-model="newUser.language">
-                        <option value="English">English</option>
-                        <option value="Hindi">Hindi</option>
-                     </select>
-            </div>
-        </div>
-        <div class="two fields">
-            <div class="field">
-                <label>Aadhar no</label>
-                <input type="text" name="" ng-model="newUser.aadhaarNo">
-            </div>
-            <div class="field">
-                <label>Date of birth </label>
-                <div class="ui calendar" id="dobCalendar">
-                    <div class="ui input left icon">
-                        <i class="calendar icon"></i>
-                        <input type="text" placeholder="Date" ng-model="newUser.dob">
+    <i class="close icon"></i>
+    <div class="header">
+        Sign Up
+    </div>
+    <div class="content">
+        <form ng-init="newUser.formInit();" id="signUpForm" class="ui form" ng-if="!newUser.loader.showLoader && !newUser.error.showError ">
+            <div class="  field">
+                <div class=" two fields">
+                    <div class="required field ">
+                        <label>User Name</label>
+                        <input type="text" name="userName" placeholder="User Name" ng-model="newUser.userName">
+                    </div>
+                    <div class="field">
+                        <label>Password</label>
+                        <input type="password" name="password" placeholder="password" ng-model="newUser.password">
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="field">
-            <label>Subjects</label>
-            <div class="field">
-                <select class="ui fluid dropdown signupMultiple" multiple="" ng-model="newUser.subjet">
+            <div class="  field">
+                <div class=" two fields">
+                    <div class=" required field">
+                        <label>Name</label>
+                        <input type="text" name="firstName" placeholder="First Name" ng-model="newUser.firstName">
+                    </div>
+                    <div class="field">
+                        <label>&nbsp; </label>
+                        <input type="text" name="" placeholder="Last Name" ng-model="newUser.lastName">
+                    </div>
+                </div>
+            </div>
+            <div class="two fields">
+                <div class="required field">
+                    <label>Phone number</label>
+                    <input type="text" name="phone" ng-model="newUser.phone">
+                </div>
+                <div class=" required field">
+                    <label>Email</label>
+                    <input type="text" name="email" ng-model="newUser.email">
+                </div>
+            </div>
+            <div class="two fields">
+                <div class="field">
+                    <label>Gender</label>
+                    <select class="ui fluid dropdown" ng-model="newUser.gender">
+                        <option value="Female">Female</option>
+                        <option value="Male">Male</option>
+                    </select>
+                </div>
+                <div class=" required field" ng-init="newUser.formInit() ">
+                    <label>Language</label>
+                    <select name=language class="ui fluid dropdown signupMultiple" multiple="" ng-model="newUser.language">
                         <option value="English">English</option>
                         <option value="Hindi">Hindi</option>
-                         <option value="Math">Math</option>
-                     </select>
+                    </select>
+                </div>
             </div>
-
-        </div>
-        <div class="ui button margin-top-15" ng-click="newUser.submitForm()" ;>Save profile</div>
-        <div class="ui error message">
-        </div>
-    </form>
+            <div class="two fields">
+                <div class="field">
+                    <label>Aadhar no</label>
+                    <input type="text" name="" ng-model="newUser.aadhaarNo">
+                </div>
+                <div class="field">
+                    <label>Date of birth </label>
+                    <div class="ui calendar" id="dobCalendar">
+                        <div class="ui input left icon">
+                            <i class="calendar icon"></i>
+                            <input type="text" placeholder="Date" ng-model="newUser.dob">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <label>Subjects</label>
+                <div class="field">
+                    <select class="ui fluid dropdown signupMultiple" multiple="" ng-model="newUser.subjet">
+                        <option value="English">English</option>
+                        <option value="Hindi">Hindi</option>
+                        <option value="Math">Math</option>
+                    </select>
+                </div>
+            </div>
+            <div class="ui error message">
+            </div>
+        </form>
+    </div>
+    <div class="actions">
+        <div class="ui primary button" ng-click="newUser.submitForm()" ;>Save profile</div>
+    </div>
     <div ng-if="newUser.loader.showLoader">
         <app-loader data="{{newUser.loader}}"></app-loader>
     </div>
     <div ng-if="newUser.error.showError">
         <error-message data="{{newUser.error}}" visibility="newUser.error.showError"></error-message>
     </div>
-
 </div>
