@@ -62,50 +62,65 @@
     </div>
 </script>
 
-    <style>
-        #trigger-upload {
-            color: white;
-            background-color: #00ABC7;
-            font-size: 14px;
-            padding: 7px 20px;
-            background-image: none;
-        }
+<style>
+    #trigger-upload {
+        color: white;
+        background-color: #00ABC7;
+        font-size: 14px;
+        padding: 7px 20px;
+        background-image: none;
+    }
 
-        #fine-uploader-manual-trigger .qq-upload-button {
-            margin-right: 15px;
-        }
+    #fine-uploader-manual-trigger .qq-upload-button {
+        margin-right: 15px;
+    }
 
-        #fine-uploader-manual-trigger .buttons {
-            width: 36%;
-        }
+    #fine-uploader-manual-trigger .buttons {
+        width: 36%;
+    }
 
-        #fine-uploader-manual-trigger .qq-uploader .qq-total-progress-bar-container {
-            width: 60%;
-        }
-    </style>
-    
-    <div id="fine-uploader-manual-trigger"></div>
+    #fine-uploader-manual-trigger .qq-uploader .qq-total-progress-bar-container {
+        width: 60%;
+    }
+</style>
 
-    <!-- Your code to create an instance of Fine Uploader and bind to the DOM/template
-    ====================================================================== -->
-    <script>
-        var manualUploader = new qq.FineUploader({
-            element: document.getElementById('fine-uploader-manual-trigger'),
-            template: 'qq-template-manual-trigger',
-            request: {
-                endpoint: '/server/uploads'
+<div id="fine-uploader-manual-trigger"></div>
+
+<!-- Your code to create an instance of Fine Uploader and bind to the DOM/template
+====================================================================== -->
+<script>
+    var manualUploader = new qq.FineUploader({
+        element: document.getElementById('fine-uploader-manual-trigger'),
+        template: 'qq-template-manual-trigger',
+
+        request: {
+            customHeaders: {
+                cid: "sunbird"
             },
-            thumbnails: {
-                placeholders: {
-                    waitingPath: '/source/placeholders/waiting-generic.png',
-                    notAvailablePath: '/source/placeholders/not_available-generic.png'
-                }
+            endpoint: 'http://localhost:5000/api/sb/v1/upload/media'
+        },
+        thumbnails: {
+            placeholders: {
+                waitingPath: '/source/placeholders/waiting-generic.png',
+                notAvailablePath: '/source/placeholders/not_available-generic.png'
+            }
+        },
+        autoUpload: false,
+        debug: true,
+        callbacks: {
+            onComplete: function (id, name, responseJSON) {
+                console.log("onComplete:", id, name, responseJSON);
             },
-            autoUpload: false,
-            debug: true
-        });
+            onSubmitted: function (id, name) {
+                console.log("onSubmitted:", id, name);
+            },
+            onError: function (id, name, error) {
+                console.log("onError:", id, name, error);
+            }
+        }
+    });
 
-        qq(document.getElementById("trigger-upload")).attach("click", function() {
-            manualUploader.uploadStoredFiles();
-        });
-    </script>
+    qq(document.getElementById("trigger-upload")).attach("click", function () {
+        manualUploader.uploadStoredFiles();
+    });
+</script>

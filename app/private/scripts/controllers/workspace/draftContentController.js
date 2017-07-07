@@ -8,16 +8,16 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('DraftContentController', function(contentService, config, $rootScope, $location, $sce, $state) {
-        
+    .controller('DraftContentController', function(contentService, config, $rootScope, $state) {
+
         var draftContent = this;
         draftContent.userId = $rootScope.userId;
-        
+
         /**
-        * This function helps to show loader with message.
-        * @param {String} headerMessage
-        * @param {String} loaderMessage
-        */
+         * This function helps to show loader with message.
+         * @param {String} headerMessage
+         * @param {String} loaderMessage
+         */
         function showLoaderWithMessage(headerMessage, loaderMessage) {
             var loader = {};
             loader.showLoader = true;
@@ -40,15 +40,15 @@ angular.module('playerApp')
         }
 
 
-        function getAllDraftContent() {
-            
+        function getDraftContent() {
+
             var api = "draftApi";
             draftContent[api] = {};
             draftContent[api].loader = showLoaderWithMessage("", config.MESSAGES.WORKSPACE.DRAFT.START);
-            
+
             var request = {
                 filters: {
-                    status : ["Draft"],
+                    status: ["Draft"],
                     createdBy: draftContent.userId,
                     mimeType: ['application/vnd.ekstep.ecml-archive']
                 },
@@ -64,29 +64,27 @@ angular.module('playerApp')
                     if (res && res.responseCode === 'OK') {
                         draftContent[api].loader.showLoader = false;
                         draftContent.draftContentData = res.result.content;
-                } else {
+                    } else {
                         draftContent[api].loader.showLoader = false;
                         draftContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.DRAFT.FAILED, config.MESSAGES.COMMON.ERROR);
                     }
                 })
-                .catch(function (error) {
+                .catch(function(error) {
                     draftContent[api].loader.showLoader = false;
                     draftContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.DRAFT.FAILED, config.MESSAGES.COMMON.ERROR);
                 });
         };
-        
+
         draftContent.initializeData = function() {
-            
-            getAllDraftContent();
-            
+
+            getDraftContent();
+
         };
-        
+
         draftContent.openContentEditor = function(contentId) {
-            
-           var params = {contentId : contentId}
+
+            var params = { contentId: contentId }
             $state.go("ContentEditor", params);
-            
+
         };
-        
-        
-});
+    });
