@@ -54,7 +54,7 @@ app.all('/service/v1/learner/*', keycloak.protect(), proxy(learnerURL, {
         return require('url').parse(learnerURL + urlParam).path;
     }
 }))
-const contentURL = env.sunbird_content_player_url || 'http://localhost:5000/api/sb/v1/';
+const contentURL = env.sunbird_content_player_url || 'http://localhost:5000/v1/';
 app.all('/service/v1/content/*', keycloak.protect(), proxy(contentURL, {
     proxyReqPathResolver: function(req) {
         let urlParam = req.params["0"]
