@@ -64,7 +64,7 @@
                     "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Marathi", "Punjabi", "Tamil", "Telugu"
                 ],
                 "contentTypes": [
-                    "Story", "Worksheet", "Collections", "Game", "Plugin", "Template"
+                    "Story", "Worksheet"
                 ],
                 "subjects": [
                     "Maths", "English", "Hindi", "Assamese", "Bengali", "Gujarati", "Kannada", "Malayalam", "Marathi", "Nepali", "Oriya", "Punjabi", "Tamil", "Telugu", "Urdu"
@@ -348,7 +348,7 @@
             "config": {
                 "showEndPage": true,
                 "showStartPage": true,
-                "host": "https://dev.ekstep.in",
+                "host": "https://qa.ekstep.in",
                 "apislug": "/api",
                 "repos":["/scripts/plugins"],
                 "plugins":[{"id": "org.sunbird.iframeEvent","ver": 1.0,"type": "plugin"}]
