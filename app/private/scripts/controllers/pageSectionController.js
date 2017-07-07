@@ -45,7 +45,7 @@ angular.module('playerApp')
             section.openCourseView = function (course) {
                 var courseType = ($rootScope.enrolledCourseIds && $rootScope.enrolledCourseIds.indexOf(course.courseId) >= 0) ? 'ENROLLED_COURSE' : 'OTHER_COURSE';
                 var showLectureView = 'no';
-                var params = {courseType: courseType, courseId: course.contentId, tocId: course.courseId, lectureView: showLectureView, progress: course.progress, total: course.total, courseRecordId: course.id, courseName: course.courseName};
+                var params = {courseType: courseType, courseId: course.courseId || course.identifier, tocId: course.courseId || course.identifier, lectureView: showLectureView, progress: course.progress, total: course.total, courseRecordId: course.id, courseName: course.courseName};
                 sessionService.setSessionData('COURSE_PARAMS', params);
                 $state.go('Toc', params);
             };
@@ -55,7 +55,7 @@ angular.module('playerApp')
 
                 pageSectionService.getPageData(section.pageTypeUrls[$scope.type]).then(function (successResponse) {
                     if (successResponse && successResponse.responseCode === 'OK') {
-                        successResponse = section.respones[$scope.type];
+                        //successResponse = section.respones[$scope.type];
                         var resourceRes = successResponse.result.response.sections;
                         section.page = [];
                         //first group the data based on group field 
@@ -91,7 +91,7 @@ angular.module('playerApp')
             section.openCourseView = function (course, courseType) {
                 // courseId = 'do_112265805439688704113';
                 var showLectureView = 'no';
-                var params = {courseType: courseType, courseId: course.contentId, tocId: course.courseId, lectureView: showLectureView, progress: course.progress, total: course.total, courseRecordId: course.id, courseName: course.courseName};
+                var params = {courseType: courseType, courseId: course.courseId || course.identifier, tocId: course.courseId || course.identifier, lectureView: showLectureView, progress: course.progress, total: course.total, courseRecordId: course.id, courseName: course.courseName};
                 sessionService.setSessionData('COURSE_PARAMS', params);
                 $state.go('Toc', params);
             };

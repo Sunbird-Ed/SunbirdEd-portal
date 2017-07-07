@@ -39,7 +39,7 @@ angular.module('playerApp')
         //play course
         search.openCourseView = function(course, courseType) {
             var showLectureView = 'no';
-            var params = { courseType: courseType, courseId: course.identifier, tocId: course.identifier, lectureView: showLectureView, progress: course.progress, total: course.total };
+            var params = { courseType: courseType, courseId: course.courseId || course.identifier, tocId: course.courseId || course.identifier, lectureView: showLectureView, progress: course.progress, total: course.total };
             sessionService.setSessionData('COURSE_PARAMS', params);
             $state.go('Toc', params);
         };
