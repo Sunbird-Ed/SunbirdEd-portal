@@ -26,7 +26,6 @@ TelemetryEvent = Class.extend({
     flush: function(apiName) {
         var instance = this;
         if (this.event) {
-            var telemetryData = _.isString(data) ? data : JSON.stringify(data);
             if ("undefined" != typeof telemetry) {
                 telemetry.send(JSON.stringify(this.event), apiName).then(function() {
                     return JSON.stringify(this.event);
