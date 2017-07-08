@@ -54,6 +54,7 @@ angular.module('playerApp')
         }
 
         function getHeader() {
+            $rootScope.userId = $rootScope.userId || $("#userId").attr('value');
             var headers = {
                   'Content-Type': 'application/json',
                   'Accept': 'application/json',
