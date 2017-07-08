@@ -1,9 +1,9 @@
 <div class="profilesegmentmargin ui raised segment">
     <div class="header announcementCard-header">
         <span class="header cardsHeading" translate="experiance">Experience</span>
-        <a class="editexperiance" ng-if="!profileCtrl.experienceForm" translate="edit" ng-click="profileCtrl.experienceForm=true ;profileCtrl.newExperience=false ">Edit</a>
-        <a class="editexperiance" ng-if="!profileCtrl.experienceForm  " ng-click="profileCtrl.experienceForm=true ; profileCtrl.newExperience=true ;profileCtrl.experience={} " translate="add ">Add</a>
-        <a class="editexperiance" ng-if="profileCtrl.experienceForm" translate="edit" ng-click="profileCtrl.experienceForm=false">close</a>
+        <a class="addeditprofile" ng-if="!profileCtrl.experienceForm" translate="edit" ng-click="profileCtrl.experienceForm=true ;profileCtrl.newExperience=false ">Edit</a>
+        <a class="addeditprofile" ng-if="!profileCtrl.experienceForm  " ng-click="profileCtrl.experienceForm=true ; profileCtrl.newExperience=true ;profileCtrl.experience={} " translate="add ">Add</a>
+        <a class="addeditprofile" ng-if="profileCtrl.experienceForm" translate="edit" ng-click="profileCtrl.experienceForm=false">close</a>
 
     </div>
     <div ng-if="profileCtrl.loader.showLoader">
