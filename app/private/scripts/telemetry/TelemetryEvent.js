@@ -27,8 +27,7 @@ TelemetryEvent = Class.extend({
         var instance = this;
         if (this.event) {
             var telemetryData = _.isString(data) ? data : JSON.stringify(data);
-            org.sunbird.portal.eventManager.dispatchEvent('sunbird:telemetry:storagestatus');
-            /*if ("undefined" != typeof telemetry) {
+            if ("undefined" != typeof telemetry) {
                 telemetry.send(JSON.stringify(this.event), apiName).then(function() {
                     return JSON.stringify(this.event);
                 }).catch(function(err) {
@@ -40,7 +39,7 @@ TelemetryEvent = Class.extend({
                 });
             } else {
                 console.log(JSON.stringify(this.event));
-            }*/
+            }
         }
     },
     ext: function(ext) {
