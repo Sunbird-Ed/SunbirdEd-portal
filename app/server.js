@@ -7,7 +7,6 @@ const express = require('express'),
     Keycloak = require('keycloak-connect'),
     session = require('express-session'),
     path = require('path'),
-    fs = require('fs'),
     env = process.env,
     trampolineServiceHelper = require('./helpers/trampolineServiceHelper.js'),
     port = env['sunbird_port'] || 3000;
@@ -30,13 +29,6 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, '/')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'private')));
-
-// implemented to use for permissions dummy data
-
-app.get('/permissions', function(req, res) {
-    var json = fs.readFileSync('data/permissions.json')
-    res.send(json);
-})
 
 app.use('/ekContentEditor', express.static('./thirdparty/content-editor'))
 app.get('/ekContentEditor', function(req, res) {

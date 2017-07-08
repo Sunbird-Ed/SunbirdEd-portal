@@ -422,14 +422,15 @@ angular
             });
         })
         .run(function ($urlRouter, $http, $state, permissionsService, $rootScope, $location) {
-            // Example ajax call
-            $http
-                    .get('/permissions')
+            
+            permissionsService.getPermissionsData('/permissions')
                     .then(function (res) {
                         var permissions = res.data;
-                        if (res && res.data) {
-                            permissionsService.setRolesAndPermissions(res.data);
+                        if (res && res.responseCode === 'OK') {
+                            permissionsService.setRolesAndPermissions(res.result);
                             permissionsService.setCurrentUserRoles(["CONTENT_REVIEWER"])
+                        } else{
+                            //TODO: allow only public permissions
                         }
                     })
                     .then(function () {

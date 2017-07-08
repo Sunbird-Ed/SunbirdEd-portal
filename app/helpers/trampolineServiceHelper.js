@@ -29,7 +29,7 @@ module.exports = {
                         "rejectUnauthorized": false,
                         headers: {
                             'cache-control': 'no-cache',
-                            authorization: 'Bearer  eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIyNjEyNjNjZC0zYTBlLTRhZWUtOGZhZi02ZDlkOWViMTRiYjEiLCJpc3MiOiJzdW5iaXJkLWludGVncmF0b3ItdGVzdC5vcmciLCJzdWIiOiJ0ZXN0cG9ydGFsIiwiYXVkIjoiaHR0cHM6Ly93d3cubnRwLmluIiwiaWF0IjoxNDk5NDA1MDI5LCJleHAiOjE1OTk0MDUwMjksIm5hbWUiOiJIYXJpc2gga3VtYXIgR2FuZ3VsYSIsImVtYWlsIjoiaGFyaXNoa3VtYXIuZ2FuZ3VsYUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicGhvbmVfbnVtYmVyIjoiODg4NDkzMDg2NCIsInBob25lX251bWJlcl92ZXJpZmllZCI6dHJ1ZSwiZ3JvdXBfaWQiOlsxMjMsNzEyLDUzMl19.tzj2aBP_4L_ked9v91knx0LsPJJSTT7wMTVvitf60h2YdEZbAeRbv1Ro-L6WChWExbDzq8DHoc4VlsAgLVsDb-5aST3P8XnnLpSNd0OGo0_ACrQ6bdJ3731fhadA6FWIbazxysVOWZMc3H6FRTpFh1_b3P0TWXB5e8ICaPCO-ByoXEWU8fWp6dwZUrimFIacWHTkbsNQnDNAPjz6WR82fqZp2USt-HKBQEaT3xuxdNbXP2dQDlMq8rxxK9B1flDkvq4Aagfca7tlDxYm0eW3qH31c9LQDLjpOjyj00bDesMAskUYsm8eVEYD9UPbXiGRBKJJDvBycXLkJXL2XLXw4g'
+                            authorization: 'Bearer '+req.query['token']
                         }
                     };
                     request(options, function(error, response, body) {
