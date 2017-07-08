@@ -8,7 +8,7 @@
                 </div>
             </div>
         </div>
-        <p class="workspaceinstuction">You can create book with the strutured section </p>
+        <p class="workspaceinstuction">You can create book with the structured section </p>
     </div>
     <div class="three wide column">
         <div class="workspacecontent ui card">
@@ -22,7 +22,7 @@
         <p class="workspaceinstuction">You will be taken to an editor to create a course with assessments/quizes. </p>
     </div>
     <div class="three wide column">
-        <div class="workspacecontent ui link card" ui-sref="CreateSlideShow">
+        <div class="workspacecontent ui link card" ui-sref="ContentCreation">
             <div class="content">
                 <div class="textcontent">
                     <i class='my-icon file text icon'></i>
@@ -44,22 +44,88 @@
         <p class="workspaceinstuction">Collections are folders/bundles of lessons or resources.</p>
     </div>
 </div>
-<div class="filedivider ui divider"></div>
-<!--<div class="ui grid">
-<div class="tewlve wide column">
-<div class="workspacedownload ui raised segment">
-<div class="uploadicon twelve wide column ">
-<i class="upload icon padding-top-10"></i>
-<p class="padding-top-10">DROP FILE HERE TO UPLOAD</p>
-</div>
-<div class="uploador twelve wide column ">
-<p class="padding-top-10">-or-</p>
-</div>
-<div class="twelve wide column ">
-<button class="fileupload ui primary basic button margin-bottom-20">SELECT FILE TO UPLOAD</button>
-</div>
-</div>
-</div>
-</div>-->
-<div ng-include=" 'views/common/fileUploader.html'"></div>
+<!--<div class="filedivider ui divider"></div>-->
 
+<div class="ui grid">
+    <div class="tewlve wide column">
+        <div class="ui segment">
+            <div fine-uploader></div>
+<!--            <div class="uploadicon twelve wide column ">
+                <i class="upload icon padding-top-10"></i>
+                <p class="padding-top-10">DROP FILE HERE TO UPLOAD</p>
+            </div>
+            <div class="uploador twelve wide column ">
+                <p class="padding-top-10">-or-</p>
+            </div>
+            <div class="twelve wide column ">
+                <button class="fileupload ui primary basic button margin-bottom-20">SELECT FILE TO UPLOAD</button>
+            </div>-->
+        </div>
+    </div>
+</div>
+
+<div ng-show="contentCreation.showContentCreationModal"> 
+        <div class="ui modal" id="contentCreationModal">
+        <div class=" ui segment margin-top-10" ng-if="!contentCreation.createApi.loader.showLoader && !contentCreation.createApi.error.showError">
+            <div class=" margin-bottom-15">
+                <div class="ui grid">
+                    <div class="eleven wide column">
+                        <span class="ui header">Enter Detail</span>
+                    </div>
+                    <div class="one wide column actions">
+                        <h5 class="ui basic icon circular button deny" ng-click="contentCreation.closeContentCreationModal();">
+                            <i class="ui remove icon"></i>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                <form class="ui form" name="Create">
+                    <div class="field">
+                        <label>Title</label>
+                        <div class="field">
+                            <input type="text" name="title" placeholder="Lesson Title" ng-model="contentCreation.data.name">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label>Description</label>
+                        <div class="field">
+                            <input type="text" name="title" placeholder="Lesson Title" ng-model="contentCreation.data.description">
+                        </div>
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <label>Lesson Type</label>
+                            <select name="lassonType" class="ui fluid dropdown singleSelectDropDown" 
+                                    ng-options=" lesson for lesson in contentCreation.lessonTypes" ng-model="contentCreation.data.contentType">
+                                <option value="" translate="lassonType">Lesson Type</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>Mime Type</label>
+                            <select name="mimeType" class="ui fluid dropdown singleSelectDropDown"
+                                    ng-options=" mimeType for mimeType in contentCreation.mimeType" ng-model="contentCreation.data.mimeType"> 
+                                <option value="" translate="mimeType">Mime Type</option> 
+                            </select> 
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="actions">
+                <p class="text-align-center">
+                    <button class="ui primary text-align-center icon button" ng-click="contentCreation.saveMetaData(contentCreation.data)"
+                        ng-disabled="!contentCreation.data.name || !contentCreation.data.description ||
+                                    !contentCreation.data.contentType || !contentCreation.data.mimeType" >
+                        Start Creating
+                    </button>
+                </p>
+            </div>
+        </div>
+        <div class=" ui segment margin-top-10" ng-if="contentCreation.createApi.loader.showLoader">
+            <app-loader data="{{contentCreation.createApi.loader}}"></app-loader>
+        </div>
+        <div class=" ui segment margin-top-10" ng-if="contentCreation.createApi.error.showError">
+            <error-message data="{{contentCreation.createApi.error}}" visibility="contentCreation.createApi.error.showError"></error-message>
+        </div>
+    </div>
+</div>

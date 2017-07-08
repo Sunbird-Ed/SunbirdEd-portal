@@ -333,7 +333,8 @@ angular
                 url: '/content/create',
                 views: {
                     'contentView': {
-                        templateUrl: 'views/workSpace/createContent.html'
+                        templateUrl: 'views/workSpace/createContent.html',
+                        controller: 'ContentCreationController as contentCreation'
                     }
                 }
             }).state('WorkSpace.DraftContent', {
