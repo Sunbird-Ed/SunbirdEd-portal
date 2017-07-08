@@ -91,8 +91,7 @@ angular.module('playerApp')
             if (userProfile && userProfile.responseCode === 'OK') {
                 console.log('sdfghjkljgfcvjkhgfhjkgfhjkl', 'data', JSON.stringify(userProfile.result.response, null, 2));
                 var profileData = userProfile.result.response;
-                profileData.jobProfile = [];
-                profileData.address = [];
+
                 profile.user = profileData;
                 // profile.user.organizationName = profileData.jobProfile[0].orgName;
                 // profile.user.city = profileData.address[0].city;
@@ -137,8 +136,9 @@ angular.module('playerApp')
                     if (userProfile && userProfile.responseCode === 'OK') {
                         profile.experienceForm = false;
                         profile.basicProfileForm = false;
+                        profile.addressForm = false;
+                        profile.educationForm = false;
                         console.log('successResponse on udate', successResponse);
-
                         profile.getProfile();
                     } else throw new error;
                 }).catch(function() {
@@ -151,25 +151,45 @@ angular.module('playerApp')
         //profile newAddress
 
         profile.EditBasicProfile = function() {
-            console.log('item', JSON.stringify(profile.user.dob, null, 2));
+            console.log('valuesof input', $('#endDateInput').val());
+
             profile.updateProfile();
         };
         profile.addAddress = function(newAddress) {
             profile.user.address.push(newAddress);
             profile.updateProfile();
-            console.log('item', newAddress);
         };
         profile.addEducation = function(newEducation) {
             profile.user.education.push(newEducation);
-            profile.updateProfile();
             console.log('newEducation', newEducation);
+            profile.updateProfile();
         };
 
         profile.addExperience = function(newExperience) {
-            var dteval = $('#rangestart').calendar('get date');
-            console.log('dteval', dteval);
+            var startDate = $('#rangestartAdd').calendar('get date');
+            var endDate = $('#rangestartAdd').calendar('get date');
+
+            newExperience.endDate = endDate;
+            newExperience.startDate = startDate;
             profile.user.jobProfile.push(newExperience);
             profile.updateProfile();
             console.log('newExperience', newExperience);
+        };
+        profile.editExperience = function() {
+            var endDate = $('#end').calendar('get date');
+
+            profile.date = endDate;
+            console.log('profile.date', profile.date);
+        };
+
+        profile.setDate = function(date) {
+            $('#end').calendar('set startDate', date);
+            $('#endDateInput').val(date);
+            console.log('trying to set end date');
+            console.log('valuesof input', $('#endDateInput').val(date));
+        };
+        profile.getDate = function() {
+            $('#end').calendar('get date');
+            console.log('trying to get end date');
         };
     });
