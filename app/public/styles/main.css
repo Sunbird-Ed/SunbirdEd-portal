@@ -396,6 +396,12 @@ th {
 .margin-right-20 {
   margin-right: 20px !important;
 }
+.margin-left-20 {
+  margin-left: 20px !important;
+}
+.margin-left-25 {
+  margin-left: 25px !important;
+}
 .margin-top-30 {
   margin-top: 30px !important;
 }
@@ -1398,6 +1404,10 @@ span.fancytree-title {
 .userAvtarWrap:hover .img-description-layer {
   visibility: visible;
   opacity: 1;
+}
+/* file upload border */
+.qq-uploader {
+  border: 2px dashed #CCCCCC !important;
 }
 .profilesegmentmargin.ui.segment:first-child {
   margin-top: 20px;
