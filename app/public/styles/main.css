@@ -355,6 +355,9 @@ th {
 .padding-top-10 {
   padding-top: 10px !important;
 }
+.padding-right-4Per {
+  padding-right: 4% !important;
+}
 .margin-top-0 {
   margin-top: 0px !important;
 }
@@ -401,6 +404,9 @@ th {
 }
 .margin-left-25 {
   margin-left: 25px !important;
+}
+.margin-left-30 {
+  margin-left: 30px !important;
 }
 .margin-top-30 {
   margin-top: 30px !important;
