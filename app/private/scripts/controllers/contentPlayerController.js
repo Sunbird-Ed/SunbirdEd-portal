@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('playerApp').controller('contentPlayerCtrl', function (noteService, $state, $scope, $sce, contentService, pdfDelegate, $timeout, config) {
+angular.module('playerApp').controller('contentPlayerCtrl', function (playerTelemetryUtilsService, $state, $scope, $sce, contentService, pdfDelegate, $timeout, config) {
     var player = this;
     $scope.isClose = $scope.isclose;
     $scope.isHeader = $scope.isheader;
@@ -27,7 +27,6 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (noteServic
             org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:telemetryend', event.detail.telemetryData);
         });
 
-
         if ($scope.contentData.mimeType === 'application/vnd.ekstep.ecml-archive' || $scope.contentData.mimeType === 'application/vnd.ekstep.html-archive') {
             $scope.showIFrameContent = true;
             var iFrameSrc = config.ekstep_CP_config.baseURL;
@@ -51,30 +50,39 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (noteServic
                 };
             }, 1000);
         } else {
-            $scope.showIFrameContent = false;
+            $scope.showIFrameContent = false;            
+         playerTelemetryUtilsService.init($scope.contentData);
         }
     }
 
 
     $scope.initVideoEvents = function (video) {
-
         video.on('play', function () {
-           
+            var _instance = {
+                id: "contetId",
+                ver: "pkgVersion",
+                data: {
+                    mode: "play"
+                }
+            }
+            
+          org.sunbird.portal.eventManager.dispatchEvent("sunbird:telemetry:start",_instance);
+
         });
         video.on('pause', function () {
-           
+
         });
         video.on('timeupdate', function () {
-           
+
         });
         video.on('ended', function () {
-           
+
         });
         video.on('volumechange', function () {
-           console.log('vol');
+            console.log('vol');
         });
-        video.on('fullscreenchange',function () {
-           console.log('full screen');
+        video.on('fullscreenchange', function () {
+            console.log('full screen');
         });
     }
 
