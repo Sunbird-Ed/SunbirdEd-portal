@@ -9,7 +9,9 @@ const express = require('express'),
     path = require('path'),
     fs = require('fs'),
     env = process.env,
-    port = env.sunbird_port || 8080;
+    trampolineServiceHelper = require('./helpers/trampolineServiceHelper.js'),
+    port = env['sunbird_port'] || 3000;
+
 
 // Create a new session store in-memory
 let memoryStore = new session.MemoryStore();
@@ -61,6 +63,10 @@ app.all('/service/v1/content/*', keycloak.protect(), proxy(contentURL, {
         return require('url').parse(contentURL + urlParam).path;
     }
 }))
+
+app.all('/v1/user/session/create',function (req, res) {
+    trampolineServiceHelper.handleRequest(req, res, keycloak);
+})
 
 app.all('/private/*', keycloak.protect(), function(req, res) {
     res.locals.userId = req.kauth.grant.access_token.content.sub;
