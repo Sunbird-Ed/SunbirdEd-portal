@@ -22,9 +22,9 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (noteServic
          * Listen for this event to get the telemetry OE_END event from renderer
          * Player controller dispatching the event subird 
          */
-        window.addEventListener('renderer:telemetryevent:end',function(event, data){
-            console.info('OE_END event:',event.detail.telemetryData);
-            org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:telemetryend',event.detail.telemetryData);
+        window.addEventListener('renderer:telemetryevent:end', function (event, data) {
+            console.info('OE_END event:', event.detail.telemetryData);
+            org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:telemetryend', event.detail.telemetryData);
         });
 
 
@@ -39,12 +39,12 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (noteServic
                     configuration.context = config.ekstep_CP_config.context;
                     configuration.context.contentId = $scope.contentData.identifier;
                     // TODO: sid,uid,channel 
-                    configuration.context.sid =  'Sunbird_sid';
-                    configuration.context.uid ='Sunbird_uid';
-                    configuration.context.channel='Sunbird_channel',
-                    configuration.context.dimension = 'Sunbird_dimension',
-                    configuration.context.appid = 'Sunbird_appId',
-                    configuration.config = config.ekstep_CP_config.config;
+                    configuration.context.sid = 'Sunbird_sid';
+                    configuration.context.uid = 'Sunbird_uid';
+                    configuration.context.channel = 'Sunbird_channel',
+                            configuration.context.dimension = 'Sunbird_dimension',
+                            configuration.context.appid = 'Sunbird_appId',
+                            configuration.config = config.ekstep_CP_config.config;
                     configuration.plugins = config.ekstep_CP_config.config.plugins;
                     configuration.repos = config.ekstep_CP_config.config.repos;
                     previewContentIframe.contentWindow.initializePreview(configuration);
@@ -54,6 +54,30 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (noteServic
             $scope.showIFrameContent = false;
         }
     }
+
+
+    $scope.initVideoEvents = function (video) {
+
+        video.on('play', function () {
+           
+        });
+        video.on('pause', function () {
+           
+        });
+        video.on('timeupdate', function () {
+           
+        });
+        video.on('ended', function () {
+           
+        });
+        video.on('volumechange', function () {
+           console.log('vol');
+        });
+        video.on('fullscreenchange',function () {
+           console.log('full screen');
+        });
+    }
+
     /**
      * This function helps to show loader or any error message at the time of api call.
      * @param {Boolean} showMetaLoader
@@ -135,5 +159,5 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (noteServic
         }, 2000);
     };
 
-   
+
 });
