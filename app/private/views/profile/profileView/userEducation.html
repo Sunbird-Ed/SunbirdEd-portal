@@ -3,7 +3,8 @@
     <div class="header announcementCard-header">
         <span class="header cardsHeading" translate="experiance">education</span>
         <a class="editEducation" ng-if="!profileCtrl.educationForm" translate="edit" ng-click="profileCtrl.educationForm=true ;profileCtrl.neweducation=false ">Edit</a>
-        <a class="editEducation" ng-if="profileCtrl.educationForm && !profileCtrl.neweducation " ng-click="profileCtrl.neweducation=true ;profileCtrl.education={} " translate="add ">Add</a>
+        <a class="editEducation" ng-if="!profileCtrl.educationForm " ng-click="profileCtrl.educationForm=true ;profileCtrl.neweducation=true ;profileCtrl.education={} " translate="add ">Add</a>
+
         <a class="editEducation" ng-if="profileCtrl.educationForm" translate="edit" ng-click="profileCtrl.educationForm=false">close</a>
     </div>
 
