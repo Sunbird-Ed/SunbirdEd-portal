@@ -55,7 +55,7 @@ angular.module('playerApp')
 
                 pageSectionService.getPageData(section.pageTypeUrls[$scope.type]).then(function (successResponse) {
                     if (successResponse && successResponse.responseCode === 'OK') {
-                        successResponse = section.respones[$scope.type];
+                      //  successResponse = section.respones[$scope.type];
                         var resourceRes = successResponse.result.response.sections;
                         section.page = [];
                         //first group the data based on group field 
