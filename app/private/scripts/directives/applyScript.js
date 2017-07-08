@@ -69,9 +69,9 @@ angular.module('playerApp')
                 //         }
                 //     }
                 // });
-                $('#rangestart').calendar({
+                $('#start').calendar({
                     type: 'date',
-                    endCalendar: $('#rangeend'),
+                    endCalendar: $('#start'),
                     formatter: {
                         date: function(date, settings) {
                             if (!date) return '';
@@ -82,9 +82,9 @@ angular.module('playerApp')
                         }
                     }
                 });
-                $('#rangeend').calendar({
+                $('#end').calendar({
                     type: 'date',
-                    startCalendar: $('#rangestart'),
+                    startCalendar: $('#end'),
                     formatter: {
                         date: function(date, settings) {
                             if (!date) return '';
@@ -93,7 +93,11 @@ angular.module('playerApp')
                             var year = date.getFullYear();
                             return day + '/' + month + '/' + year;
                         }
-                    }
+                    },
+                    onChange: function(date, text) {
+                        angular.element($('#endDateInput').val(text)).triggerHandler('input');
+                        // $('#endDateInput').val(text);
+                    },
                 });
                 $('#rangestartAdd').calendar({
                     type: 'date',

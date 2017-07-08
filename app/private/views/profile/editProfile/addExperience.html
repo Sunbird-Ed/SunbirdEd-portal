@@ -14,10 +14,10 @@
         <label>Job Description</label>
         <input type="text" name="" ng-model="profileCtrl.experience.description">
     </div>
-    <div apply-script class="two fields">
+    <div apply-script class="two fields" ng-init="profileCtrl.getDate()">
         <div class="field">
             <label>Start date</label>
-            <div class="ui calendar" id="rangestartAdd">
+            <div ng-init="profileCtrl.setDtae(experience.startDate);" class="ui calendar" id="rangestartAdd">
                 <div class="ui input left icon">
                     <i class="calendar icon"></i>
                     <input type="text" ng-model="experience.startDate">
@@ -26,7 +26,7 @@
         </div>
         <div class="field">
             <label>End date</label>
-            <div class="ui calendar" id="rangeendAdd">
+            <div ng-init="profileCtrl.setDtae(experience.endDate);" class="ui calendar" id="rangeendAdd">
                 <div class="ui input left icon">
                     <i class="calendar icon"></i>
                     <input type="text" ng-model="experience.endDate">
