@@ -10,12 +10,11 @@
 angular.module('playerApp')
     .controller('ProfileController', function($scope, $rootScope, userService, config, $timeout) {
         var profile = this;
-        // profile.userId = $rootScope.userId;
+        profile.userId = $rootScope.userId;
         // profile.summary = 'Dedicated, ambitious and goal-driven educator with 3 year progressive experience in high school settings. Documented success in providing activities and materials that engage and develop the students intellectually. Thorough understanding of implementing the use of information technology in lesson preparation.';
         profile.experienceForm = false;
         // profile.userId = '44f76ae4-1850-48d2-97e1-2408c5a6d9fc';
-        profile.userId = '5ac2edd3-8d2e-49a4-ac86-9ed5c2e10f3e';
-        console.log('$rootScope.userId', $rootScope.userId);
+        // profile.userId = '5ac2edd3-8d2e-49a4-ac86-9ed5c2e10f3e';
         // update profile image
         profile.openImageBrowser = function() {
             console.log('trying to change');
@@ -52,7 +51,9 @@ angular.module('playerApp')
                 var reader = new FileReader();
                 reader.onload = function(e) {
                     profile.profilePic = e.target.result;
+                    profile.user.avatar = e.target.result;
                     $scope.$apply();
+                    profile.updateProfile();
                 };
                 reader.readAsDataURL(files[0]);
                 profile.icon = fd;
@@ -88,11 +89,13 @@ angular.module('playerApp')
         profile.userProfile = function(userProfile) {
             profile.loader.showLoader = false;
             if (userProfile && userProfile.responseCode === 'OK') {
-                console.log('sdfghjkljgfcvjkhgfhjkgfhjkl', userProfile.result.response.jobProfile.length, 'data', JSON.stringify(userProfile.result.response.jobProfile, null, 2));
+                console.log('sdfghjkljgfcvjkhgfhjkgfhjkl', 'data', JSON.stringify(userProfile.result.response, null, 2));
                 var profileData = userProfile.result.response;
+                profileData.jobProfile = [];
+                profileData.address = [];
                 profile.user = profileData;
-                profile.user.organizationName = profileData.jobProfile[0].orgName;
-                profile.user.city = profileData.address[0].city;
+                // profile.user.organizationName = profileData.jobProfile[0].orgName;
+                // profile.user.city = profileData.address[0].city;
             } else {
                 console.log('jfhdsf gere');
                 throw new Error('');
@@ -116,6 +119,7 @@ angular.module('playerApp')
             delete profile.user.userName;
             delete profile.user.status;
             delete profile.user.identifier;
+            console.error('user request on update', profile.user);
             // delete profile.user.email;
             // profile.user.id = profile.user.userId;
             profile.updateProfileRequest = {
@@ -127,7 +131,7 @@ angular.module('playerApp')
                 'request': profile.user
             };
             profile.loader = showLoaderWithMessage('', config.MESSAGES.PROFILE.HEADER.START);
-            console.log('profile.user.jobprofile121342533647', profile.user.dob);
+            // console.log('profile.user.jobprofile121342533647', profile.user.dob);
             userService.updateUserProfile(profile.updateProfileRequest)
                 .then(function(successResponse) {
                     if (userProfile && userProfile.responseCode === 'OK') {
