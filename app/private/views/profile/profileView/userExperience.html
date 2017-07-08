@@ -12,7 +12,7 @@
     <div ng-if="profileCtrl.error.showError">
         <error-message data="{{profileCtrl.error}}" visibility="search.error.showError"></error-message>
     </div>
-    <div ng-if="!profileCtrl.experienceForm" class="experienceheader ui relaxed divided list">
+    <div ng-if="!profileCtrl.experienceForm" class="profileitems ui relaxed divided list">
         <div class="item" ng-repeat="experience in profileCtrl.user.jobProfile">
             <div class="right floated content">
                 <div class="metadata">
@@ -27,7 +27,7 @@
             </div>
         </div>
     </div>
-    <div ng-if="profileCtrl.experienceForm" class="experienceheader ui relaxed divided list">
+    <div ng-if="profileCtrl.experienceForm" class="profileitems ui relaxed divided list">
         <div class="edit-experience-form" ng-if="!profileCtrl.newExperience ">
             <div class=" ui " ng-repeat="experience in profileCtrl.user.jobProfile track by $index " ng-include=" 'views/profile/editProfile/experience.html' "></div>
             <div class="ui button margin-top-15" ng-click="profileCtrl.EditBasicProfile()" ;>Save profile</div>
