@@ -32,6 +32,8 @@ angular.module('playerApp')
                 $('.signupMultiple').dropdown({
                     useLabels: false,
                 });
+                $('.ui.radio.checkbox')
+                    .checkbox();
                 $('#multi-select-sort').dropdown();
                 $('#dropdown-menu-list-header').dropdown({
                     useLabels: false,
@@ -81,6 +83,32 @@ angular.module('playerApp')
                     }
                 });
                 $('#rangeend').calendar({
+                    type: 'date',
+                    startCalendar: $('#rangestart'),
+                    formatter: {
+                        date: function(date, settings) {
+                            if (!date) return '';
+                            var day = date.getDate();
+                            var month = date.getMonth() + 1;
+                            var year = date.getFullYear();
+                            return day + '/' + month + '/' + year;
+                        }
+                    }
+                });
+                $('#rangestartAdd').calendar({
+                    type: 'date',
+                    endCalendar: $('#rangeend'),
+                    formatter: {
+                        date: function(date, settings) {
+                            if (!date) return '';
+                            var day = date.getDate();
+                            var month = date.getMonth() + 1;
+                            var year = date.getFullYear();
+                            return day + '/' + month + '/' + year;
+                        }
+                    }
+                });
+                $('#rangeendAdd').calendar({
                     type: 'date',
                     startCalendar: $('#rangestart'),
                     formatter: {

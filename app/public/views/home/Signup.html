@@ -83,14 +83,15 @@
             <div class="ui error message">
             </div>
         </form>
+        <div ng-if="newUser.loader.showLoader">
+            <app-loader data="{{newUser.loader}}"></app-loader>
+        </div>
+        <div ng-if="newUser.error.showError">
+            <error-message data="{{newUser.error}}" visibility="newUser.error.showError"></error-message>
+        </div>
     </div>
     <div class="actions">
         <div class="ui primary button" ng-click="newUser.submitForm()" ;>Save profile</div>
     </div>
-    <div ng-if="newUser.loader.showLoader">
-        <app-loader data="{{newUser.loader}}"></app-loader>
-    </div>
-    <div ng-if="newUser.error.showError">
-        <error-message data="{{newUser.error}}" visibility="newUser.error.showError"></error-message>
-    </div>
+
 </div>

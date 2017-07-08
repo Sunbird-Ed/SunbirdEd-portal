@@ -11,7 +11,7 @@ angular.module('playerApp')
     .controller('ProfileController', function($scope, $rootScope, userService, config, $timeout) {
         var profile = this;
         // profile.userId = $rootScope.userId;
-        profile.summary = 'Dedicated, ambitious and goal-driven educator with 3 year progressive experience in high school settings. Documented success in providing activities and materials that engage and develop the students intellectually. Thorough understanding of implementing the use of information technology in lesson preparation.';
+        // profile.summary = 'Dedicated, ambitious and goal-driven educator with 3 year progressive experience in high school settings. Documented success in providing activities and materials that engage and develop the students intellectually. Thorough understanding of implementing the use of information technology in lesson preparation.';
         profile.experienceForm = false;
         // profile.userId = '44f76ae4-1850-48d2-97e1-2408c5a6d9fc';
         profile.userId = '5ac2edd3-8d2e-49a4-ac86-9ed5c2e10f3e';
@@ -130,11 +130,16 @@ angular.module('playerApp')
             console.log('profile.user.jobprofile121342533647', profile.user.dob);
             userService.updateUserProfile(profile.updateProfileRequest)
                 .then(function(successResponse) {
-                    console.log('successResponse on udate', successResponse);
+                    if (userProfile && userProfile.responseCode === 'OK') {
+                        profile.experienceForm = false;
+                        profile.basicProfileForm = false;
+                        console.log('successResponse on udate', successResponse);
+
+                        profile.getProfile();
+                    } else throw new error;
+                }).catch(function() {
                     profile.experienceForm = false;
                     profile.basicProfileForm = false;
-                    profile.getProfile();
-                }).catch(function() {
                     profile.loader.showLoader = false;
                     profile.error = showErrorMessage(true, config.MESSAGES.PROFILE.UPDATE.FAILED, config.MESSAGES.COMMON.ERROR);
                 });
@@ -145,8 +150,9 @@ angular.module('playerApp')
             console.log('item', JSON.stringify(profile.user.dob, null, 2));
             profile.updateProfile();
         };
-        profile.addNew = function(newAddress) {
+        profile.addAddress = function(newAddress) {
             profile.user.address.push(newAddress);
+            profile.updateProfile();
             console.log('item', newAddress);
         };
         profile.addEducation = function(newEducation) {
@@ -156,6 +162,8 @@ angular.module('playerApp')
         };
 
         profile.addExperience = function(newExperience) {
+            var dteval = $('#rangestart').calendar('get date');
+            console.log('dteval', dteval);
             profile.user.jobProfile.push(newExperience);
             profile.updateProfile();
             console.log('newExperience', newExperience);

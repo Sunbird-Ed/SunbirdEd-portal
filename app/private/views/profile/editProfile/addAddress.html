@@ -1,47 +1,49 @@
-<div class="ui dividing header margin-top-15 "></div>
-<div class="inline fields">
-    <label for="address">Select your Address</label>
-    <div class="field">
-        <div class="ui radio checkbox">
-            <input type="radio" name="address" value="permanent" ng-model="profileCtrl.item.addType" checked="" tabindex="0" class="hidden">
-            <label>pernament</label>
+<form class="ui form ">
+    <div class="ui dividing header margin-top-15 "></div>
+    <div apply-script class="inline fields">
+        <label for="address">Select Address Type</label>
+        <div class="field">
+            <div class="ui radio checkbox">
+                <input type="radio" name="radio" ng-checked="address.addType==='permanent'" ng-model="address.addType">
+                <label>permanent</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui radio checkbox">
+                <input type="radio" name="radio" ng-checked="address.addType==='permanent1'" ng-model="address.addType">
+                <label>temparory</label>
+            </div>
         </div>
     </div>
-    <div class="field">
-        <div class="ui radio checkbox">
-            <input type="radio" name="address2" value="permanent 1" ng-model="profileCtrl.item.addType" tabindex="0" class="hidden">
-            <label>pernament 1</label>
-        </div>
-    </div>
-</div>
 
-<div class="two fields">
-    <div class=" field">
-        <label>Address Line 1</label>
-        <input type="text" name="" ng-model="profileCtrl.item.addressLine1">
+    <div class="two fields">
+        <div class=" field">
+            <label>Address Line 1</label>
+            <input type="text" name="" ng-model="profileCtrl.address.addressLine1">
+        </div>
+        <div class="  field">
+            <label>Address Line 2</label>
+            <input type="text" name="" ng-model="profileCtrl.address.addressLine2">
+        </div>
     </div>
-    <div class="  field">
-        <label>Address Line 2</label>
-        <input type="text" name="" ng-model="profileCtrl.item.addressLine2">
+    <div class="two fields">
+        <div class=" field">
+            <label>City</label>
+            <input type="text" name="" ng-model="profileCtrl.address.city">
+        </div>
+        <div class="  field">
+            <label>State</label>
+            <input type="text" name="" ng-model="profileCtrl.address.state">
+        </div>
     </div>
-</div>
-<div class="two fields">
-    <div class=" field">
-        <label>City</label>
-        <input type="text" name="" ng-model="profileCtrl.item.city">
+    <div class="two fields">
+        <div class=" field">
+            <label>Country</label>
+            <input type="text" name="" ng-model="profileCtrl.address.country">
+        </div>
+        <div class="  field">
+            <label>Pin Code</label>
+            <input type="text" name="" ng-model="profileCtrl.address.zipCode">
+        </div>
     </div>
-    <div class="  field">
-        <label>State</label>
-        <input type="text" name="" ng-model="profileCtrl.item.state">
-    </div>
-</div>
-<div class="two fields">
-    <div class=" field">
-        <label>Country</label>
-        <input type="text" name="" ng-model="profileCtrl.item.country">
-    </div>
-    <div class="  field">
-        <label>Pin Code</label>
-        <input type="text" name="" ng-model="profileCtrl.item.zipCode">
-    </div>
-</div>
+</form>
