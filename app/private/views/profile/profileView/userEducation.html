@@ -1,7 +1,7 @@
 <div class="profilesegmentmargin ui raised segment">
 
     <div class="header announcementCard-header">
-        <span class="header cardsHeading" translate="experiance">education</span>
+        <span class="header cardsHeading" translate="experiance">Education</span>
         <a class="addeditprofile" ng-if="!profileCtrl.educationForm" translate="edit" ng-click="profileCtrl.educationForm=true ;profileCtrl.neweducation=false ">Edit</a>
         <a class="addeditprofile" ng-if="!profileCtrl.educationForm " ng-click="profileCtrl.educationForm=true ;profileCtrl.neweducation=true ;profileCtrl.education={} " translate="add ">Add</a>
 
@@ -15,7 +15,7 @@
         <error-message data="{{profileCtrl.error}}" visibility="search.error.showError"></error-message>
     </div>
 
-    <div ng-if="!profileCtrl.educationForm" class="educationheader ui relaxed divided list">
+    <div ng-if="!profileCtrl.educationForm" class="profileitems ui relaxed divided list">
         <div class="item" ng-repeat="education in profileCtrl.user.education">
             <div class="right floated content">
                 <div class="metadata">
@@ -32,7 +32,7 @@
             </div>
         </div>
     </div>
-    <div ng-if="profileCtrl.educationForm" class="educationheader ui relaxed divided list">
+    <div ng-if="profileCtrl.educationForm" class="profileitems ui relaxed divided list">
         <div class="edit-education-form" ng-if="!profileCtrl.neweducation ">
             <div class=" ui " ng-repeat="education in profileCtrl.user.education track by $index " ng-include=" 'views/profile/editProfile/education.html' "></div>
             <div class="ui button margin-top-15" ng-click="profileCtrl.EditBasicProfile()" ;>Save profile</div>

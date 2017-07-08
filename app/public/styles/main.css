@@ -1418,29 +1418,29 @@ span.fancytree-title {
 .profilesegmentmargin.ui.segment:first-child {
   margin-top: 20px;
 }
-.experienceheader.ui.list > .item a.header,
-.experienceheader.ui.list > .item a.header:hover {
+.profileitems.ui.list > .item a.header,
+.profileitems.ui.list > .item a.header:hover {
   font-family: "Open Sans";
   font-size: 1em;
   font-weight: 600;
   line-height: 20px;
   color: #333333 !important;
 }
-.experienceheader.ui.items > .item > .content > a.header,
-.experienceheader.ui.items > .item > .content > a.header:hover {
+.profileitems.ui.items > .item > .content > a.header,
+.profileitems.ui.items > .item > .content > a.header:hover {
   font-family: "Open Sans";
   font-size: 1em;
   font-weight: 600;
   line-height: 20px;
   color: #333333 !important;
 }
-.experienceheader.ui.list > .item .description {
+.profileitems.ui.list > .item .description {
   color: #979797;
   font-family: "Open Sans";
   font-size: 0.89em;
   line-height: 17px;
 }
-.experienceheader .item .metadata .date {
+.profileitems .item .metadata .date {
   color: #979797;
   font-family: "Open Sans";
   font-size: 0.89em;
@@ -1450,10 +1450,10 @@ span.fancytree-title {
   float: right;
   margin: 0 0 0 1em;
 }
-.experienceheader.ui.relaxed.list:not(.horizontal) > .item:not(:last-child) {
+.profileitems.ui.relaxed.list:not(.horizontal) > .item:not(:last-child) {
   padding: 10px 0 15px 0;
 }
-.experienceheader.ui.relaxed.list:not(.horizontal) > .item:not(:first-child) {
+.profileitems.ui.relaxed.list:not(.horizontal) > .item:not(:first-child) {
   padding: 10px 0 15px 0;
 }
 .workspacebuttongrid.ui.grid > .column:not(.row),
@@ -1467,12 +1467,12 @@ span.fancytree-title {
 .workspacebutton.ui.card:first-child {
   margin-top: 20px;
 }
-.experienceheader .ui.avatar.image {
+.profileitems .ui.avatar.image {
   width: 4em;
   height: 4em;
   border-radius: 0;
 }
-.experienceheader.ui.items > .item .avatar img,
+.profileitems.ui.items > .item .avatar img,
 .ui.items > .item img.avatar {
   width: 4em;
   height: 4em;
@@ -1480,6 +1480,11 @@ span.fancytree-title {
 }
 .iniformationcontent {
   color: #979797;
+}
+.educationform {
+  border-bottom: 1px dashed #979797;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 body {
   position: relative !important;
