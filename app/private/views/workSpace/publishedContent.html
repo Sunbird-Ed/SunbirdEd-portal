@@ -1,7 +1,5 @@
-
-<div ng-init="publishedContent.initializeData()" >
+<div ng-init="publishedContent.initializeData()">
     <div ng-if="!publishedContent.publishedApi.loader.showLoader && !publishedContent.publishedApi.error.showError">
-
         <div class="ui three stackable cards">
             <div class="link card" ng-repeat="item in publishedContent.publishedContentData track by $index" ng-click="publishedContent.openContentEditor(item.identifier)">
                 <div class="image imageInCardsResponsive">

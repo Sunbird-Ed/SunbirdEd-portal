@@ -1,0 +1,120 @@
+<div class="ui grid" ng-init="editContent.initializeData()">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+        <div class="ui grid">
+            <div class="one wide column"></div>
+            <div class="ten wide column" ng-if="!editContent.editApi.loader.showLoader && !editContent.editApi.error.showError">
+                <h2 class="ui center aligned header">
+                    Lesson Detail
+                </h2>
+                <form class="ui form" novalidate="">
+                    <div class="field">
+                        <div class="ui grid">
+                            <div class="two wide column">
+                                <div class="field">
+                                    <label>
+                                        Icon
+                                    </label>
+                                    <div class="ui basic massive icon button" ng-click="editContent.openImageBrowser()" ng-if="!editContent.iconImage">
+                                        <i class="ui image icon"></i>
+                                    </div>
+                                    <input type="file" accept="image/x-png,image/gif,image/jpeg" class="content-input" id="iconImageInput" onchange="angular.element(this).scope().updateIcon(this.files);" required="" />
+                                    <img ng-if="editContent.iconImage" class="ui small link image height-150" ng-src="{{editContent.iconImage}}" id="image" alt="icon" ng-click="editContent.openImageBrowser()" tabindex="3">
+                                </div>
+                            </div>
+                            <div class="ten wide column">
+                                <div class="row">
+                                    <div class="field">
+                                        <label>Title</label>
+                                        <input type="text" name="title" placeholder="Name this lesson" ng-model="editContent.data.name" required="">
+                                    </div>
+                                </div>
+                                <div class="row margin-top-10">
+                                    <div class="field">
+                                        <label>Write short description of your lesson</label>
+                                        <textarea rows="2" name="description" placeholder="Description for the lesson" ng-model="editContent.data.description" required=""></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <label>Lesson type</label>
+                            <select class="ui fluid dropdown singleSelectDropDown" id="contentTypeDropDown" ng-options=" lesson for lesson in editContent.lessonTypes" ng-model="editContent.data.contentType">
+                                <option value="">Choose lesson type</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>Audience</label>
+                            <select name="audience" class="ui fluid dropdown multiSelectDropDown" multiple="" id="audienceDropDown" ng-options=" audience for audience in editContent.audiences" ng-model="editContent.data.audience">
+                                <option value="" translate="languages">Choose audience</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <label>Language</label>
+                            <select name="language" class="ui fluid dropdown multiSelectDropDown" multiple="" id="languageDropDown" ng-options=" language for language in editContent.languages" ng-model="editContent.data.language">
+                                <option value="" translate="languages">Choose language</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>Domain</label>
+                            <select class="ui fluid dropdown">
+                                <option value="">Numeracy</option>
+                                <option value="AL">Alabama</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <label>Grade</label>
+                            <select name="grades" multiple="" class="ui fluid dropdown multiSelectDropDown" id="gradesDropDown" ng-options=" grade for grade in editContent.grades" ng-model="editContent.data.gradeLevel" s>
+                                <option value="">Choose grades</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>Age Group</label>
+                            <select name="ageGroup" multiple="" class="ui fluid dropdown multiSelectDropDown" id="ageGroupDropDown" ng-options=" ageGroup for ageGroup in editContent.ageGroup" ng-model="editContent.data.ageGroup">
+                                <option value="" translate="agegroup">Choose age Group</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <label>Medium</label>
+                            <select name="medium" class="ui fluid dropdown singleSelectDropDown" id="mediumDropDown" ng-options=" medium for medium in editContent.mediums" ng-model="editContent.data.medium">
+                                <option value="" medium="medium">Choose medium</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>Subject</label>
+                            <select name="subject" class="ui fluid dropdown singleSelectDropDown" id="subjectDropDown" ng-options=" subject for subject in editContent.subjects" ng-model="editContent.data.subject">
+                                <option value="" translate="ageGroup">Choose subject</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="two fields">
+                            <div class="field">
+                                <label>Author</label>
+                                <input type="text" name="author" placeholder="author" ng-model="editContent.data.author" required="">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <button class="ui primary basic button" ng-click="editContent.saveMetaContent(editContent.data)">Save</button>
+                <button class="ui positive basic button" ng-click=" editContent.allUploadContent(editContent.data)">Close</button>
+            </div>
+            <div class="ten wide column" ng-if="editContent.editApi.loader.showLoader">
+                <app-loader data="{{editContent.editApi.loader}}"></app-loader>
+            </div>
+            <div class="ten wide column" ng-if="editContent.editApi.error.showError">
+                <error-message data="{{editContent.editApi.error}}" visibility="editContent.editApi.error.showError"></error-message>
+            </div>
+            <div class="one wide column"></div>
+        </div>
+    </div>
+    <div class="one wide column"></div>
+</div>

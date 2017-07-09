@@ -39,7 +39,6 @@ angular.module('playerApp')
             return error;
         }
 
-
         function getDraftContent() {
 
             var api = "draftApi";
@@ -76,15 +75,11 @@ angular.module('playerApp')
         };
 
         draftContent.initializeData = function() {
-
             getDraftContent();
-
         };
 
         draftContent.openContentEditor = function(contentId) {
-
             var params = { contentId: contentId }
             $state.go("ContentEditor", params);
-
         };
     });
