@@ -1,9 +1,8 @@
 <div class="ui grid">
     <div class="one wide column"></div>
     <div class="ten wide column">
-        <div ng-init="allUploadedContent.initializeData()" >
+        <div ng-init="allUploadedContent.initializeData()">
             <div ng-if="!allUploadedContent.allUploadedApi.loader.showLoader && !allUploadedContent.allUploadedApi.error.showError">
-
                 <div class="ui three stackable cards">
                     <div class="link card" ng-repeat="item in allUploadedContent.allUploadedContentData track by $index">
                         <div class="image imageInCardsResponsive">

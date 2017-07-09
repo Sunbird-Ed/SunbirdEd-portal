@@ -38,7 +38,7 @@
                 "UPDATE": "content/update",
                 "REVIEW": "content/review",
                 "PUBLISH": "content/publish",
-                "GET": "content/get",
+                "GET": "content/read",
                 "GET_MY_COURSE": "content/get/mycontent",
                 "UPLOAD": "content/upload",
                 "UPLOAD_MEDIA": "upload/media"
@@ -49,11 +49,11 @@
 
             },
             "NOTES": {
-                "SEARCH": "notes/search",
-                "CREATE": "notes/create",
-                "UPDATE": "notes/update",
-                "GET": "notes/get",
-                "DELETE": "notes/delete"
+                "SEARCH": "note/search",
+                "CREATE": "note/create",
+                "UPDATE": "note/update",
+                "GET": "note/read",
+                "DELETE": "note/delete"
             },
             "RESOURCE": {
                 "GET": "page/assemble/Resource"
@@ -192,6 +192,18 @@
                 "ALL_UPLOADED": {
                     "START": "We are fetching uploaded content...",
                     "FAILED": "Fetching uploaded content failed, please try again later..."
+                },
+                "GET": {
+                    "START": "We are fetching content detail...",
+                    "FAILED": "Fetching content detail failed, please try again later..."
+                },
+                "UPLOAD_ICON": {
+                    "START": "We are updating icon...",
+                    "FAILED": "Updating icon failed, please try again later..."
+                },
+                "UPDATE": {
+                    "START": "We are updating content detail...",
+                    "FAILED": "Updating content detail failed, please try again later..."
                 }
             }
         },
@@ -203,15 +215,15 @@
                     "id": "390",
                     "name": "Harish kumar Gangula",
                     "email": "harishg@ilimi.com",
-                    "avtar": "https://localhost:8080/images/sunbird_logo.png",
-                    "logout": "https://localhost:8080/logout"
+                    "avtar": "https://localhost:3000/images/sunbird_logo.png",
+                    "logout": "https://localhost:3000/logout"
                 },
-                "baseURL": "https://localhost:8080/",
+                "baseURL": "https://localhost:3000/",
                 "editMetaLink": ""
             },
             "config": {
-                "baseURL": "http://localhost:5000",
-                "pluginRepo": "http://localhost:5000/content-plugins",
+                "baseURL": "",
+                "pluginRepo": "/content-plugins",
                 "plugins": [{
                         "id": "org.ekstep.telemetry",
                         "ver": "1.0",

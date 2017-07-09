@@ -5,7 +5,6 @@ angular.module('playerApp').directive('fineUploader', function() {
     require: '?ngModel',
     scope: {},
     link: function($scope, element, attributes, ngModel) {
-      
-    },
+    }
   };
 });
