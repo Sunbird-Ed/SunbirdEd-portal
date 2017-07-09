@@ -27,7 +27,8 @@ angular.module('playerApp')
         };
         
         contentEditor.openEditContentForm = function() {
-            $state.go("EditSlideShow");
+            var params = {contentId : contentEditor.contentId};
+            $state.go("EditContent", params);
         };
         
         contentEditor.openContentEditor($stateParams.contentId);
