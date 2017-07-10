@@ -188,7 +188,7 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
      * @param {String} searchText
      */
     noteList.searchNote = function (searchText) {
-        var copyNoteList = angular.copy(noteList.notesList)
+        var copyNoteList = angular.copy(noteList.notesList);
         noteList.notesList = searchText ? copyNoteList.filter(noteList.createSearchNoteFilter(searchText)) : noteList.notesList;
     };
 
@@ -211,7 +211,10 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
             var params = {contentId: noteList.contentId};
             $state.go('Player', params);
         }
-
+    };
+    
+    noteList.updateNote = function (note) {
+        noteList.update.metaData = angular.copy(note);
     };
 
 });
