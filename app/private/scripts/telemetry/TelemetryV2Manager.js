@@ -1,32 +1,41 @@
-TelemetryV2Manager = Class.extend({
-    _end: new Array(),
-    _start: new Array(),
-     init: function() {
-        console.info("TelemetryService Version 2 initialized..");
-    },
-    exitWithError: function(error) {
+TelemetryV2Manager = function() {
+    this._end = new Array();
+    this._start = new Array();
+    this.init = function() {
+        console.info("Telemetryservice 2 is initialized")
+    };
+    this.exitWithError = function() {
         var message = '';
         if (error) message += ' Error: ' + JSON.stringify(error);
-        TelemetryServiceV2.exitApp();
-    },
-    createEvent: function(eventName, body) {
-        return new TelemetryEvent(eventName, TelemetryService._version, body, TelemetryService._user, TelemetryService._gameData, TelemetryService._correlationData);
-    },
-    start: function(id, ver, data) {
-        TelemetryService._gameData = {id: id , ver : ver};
+        this.exitApp();
+    };
+    this.createEvent = function(eventName, body) {
+        var event = new TelemetryEvent();
+        event.init(eventName, TelemetryService._version, body, TelemetryService._user, TelemetryService._gameData, TelemetryService._correlationData);
+        ;return event
+    };
+    this.start = function(id, ver, data) {
+        TelemetryService._gameData = {
+            id: id,
+            ver: ver
+        };
         this._end.push(this.createEvent("OE_END", {}).start());
-        this._start.push({id: id , ver : ver});
+        this._start.push({
+            id: id,
+            ver: ver
+        });
         return this.createEvent("OE_START", data);
-    },
-    end: function(gameId) {
+    };
+    this.end = function(gameId) {
         if (!_.isEmpty(this._start)) {
             this._start.pop();
             return this._end.pop().end();
         } else {
             console.warn("Telemetry service end is already logged Please log start telemetry again");
         }
-    },
-    interact: function(type, id, extype, eks) {
+    };
+
+    this.interact = function(type, id, extype, eks) {
         if (eks.optionTag)
             TelemetryService.flushEvent(this.itemResponse(eks), TelemetryService.apis.telemetry);
         if (type != "DRAG") {
@@ -43,8 +52,9 @@ TelemetryV2Manager = Class.extend({
             };
             return this.createEvent("OE_INTERACT", eks);
         }
-    },
-    assess: function(qid, subj, qlevel, data) {
+    };
+
+    this.assess = function(qid, subj, qlevel, data) {
         var maxscore;
         subj = subj ? subj : "";
         if (data) {
@@ -54,7 +64,7 @@ TelemetryV2Manager = Class.extend({
         if (qid) {
             var eks = {
                 qid: qid,
-                maxscore: maxscore ,
+                maxscore: maxscore,
                 params: []
             };
             return this.createEvent("OE_ASSESS", eks).start();
@@ -64,12 +74,24 @@ TelemetryV2Manager = Class.extend({
             return new InActiveEvent();
         }
 
-    },
-    error: function(data) {
-        var data = {env: data.env || '', type: data.type || '', stageid: data.stageId || '', objecttype: data.objectType || '', objectid: data.objectId || '', err: data.err || '', action: data.action || '', data: data.data || '', severity: data.severity || ''}
+    };
+
+    this.error = function(data) {
+        var data = {
+            env: data.env || '',
+            type: data.type || '',
+            stageid: data.stageId || '',
+            objecttype: data.objectType || '',
+            objectid: data.objectId || '',
+            err: data.err || '',
+            action: data.action || '',
+            data: data.data || '',
+            severity: data.severity || ''
+        }
         return this.createEvent("OE_ERROR", data);
-    },
-    assessEnd: function(eventObj, data) {
+    };
+
+    this.assessEnd = function(eventObj, data) {
         if (eventObj) {
 
             if (!eventObj._isStarted) {
@@ -78,17 +100,19 @@ TelemetryV2Manager = Class.extend({
 
             eventObj.event.edata.eks.score = data.score || 0;
             eventObj.event.edata.eks.pass = data.pass ? 'Yes' : 'No';
-            eventObj.event.edata.eks.resvalues = _.isEmpty(data.res)? [] : data.res;
+            eventObj.event.edata.eks.resvalues = _.isEmpty(data.res) ? [] : data.res;
             eventObj.event.edata.eks.uri = data.uri || "";
             eventObj.event.edata.eks.qindex = data.qindex || 0;
             eventObj.event.edata.eks.exlength = 0;
             eventObj.event.edata.eks.qtitle = data.qtitle;
-            eventObj.event.edata.eks.qdesc = data.qdesc.substr(0,140);
+            eventObj.event.edata.eks.qdesc = data.qdesc.substr(0, 140);
             eventObj.event.edata.eks.mmc = data.mmc;
             eventObj.event.edata.eks.mc = data.mc;
             if (_.isArray(eventObj.event.edata.eks.resvalues)) {
                 eventObj.event.edata.eks.resvalues = _.map(eventObj.event.edata.eks.resvalues, function(val) {
-                    val = _.isObject(val) ? val :{"0" : val};
+                    val = _.isObject(val) ? val : {
+                        "0": val
+                    };
                     return val;
                 });
             } else {
@@ -98,21 +122,24 @@ TelemetryV2Manager = Class.extend({
             eventObj.end();
             return eventObj;
         }
-    },
-    interrupt: function(type, id) {
-            var eventStr = TelemetryService._config.events["OE_INTERRUPT"];
-            var eks = {
-                "type": type,
-                "stageid": id || ''
-            };
-            return this.createEvent("OE_INTERRUPT", eks);
-    },
-    exitApp: function() {
+    };
+
+    this.interrupt = function(type, id) {
+        var eventStr = TelemetryService._config.events["OE_INTERRUPT"];
+        var eks = {
+            "type": type,
+            "stageid": id || ''
+        };
+        return this.createEvent("OE_INTERRUPT", eks);
+    };
+
+    this.exitApp = function() {
         setTimeout(function() {
             navigator.app.exitApp();
         }, 5000);
-    },
-    navigate: function(stageid, stageto) {
+    };
+
+    this.navigate = function(stageid, stageto) {
         if (stageto != undefined && stageid != undefined && stageto != stageid) {
             var eks = {
                 stageid: stageid ? stageid : "",
@@ -122,18 +149,20 @@ TelemetryV2Manager = Class.extend({
             };
             return this.createEvent("OE_NAVIGATE", eks);
         }
-    },
-    itemResponse: function(data) {
+    };
+
+    this.itemResponse = function(data) {
         var type = data.optionTag == "MCQ" ? "CHOOSE" : "MATCH";
         var eks = {
-                "qid": data.itemId ? data.itemId : "",
-                "type": type ? type : "",
-                "state": data.state ? data.state : "",
-                "resvalues": _.isEmpty(data.res) ? [] : data.res
-            };
+            "qid": data.itemId ? data.itemId : "",
+            "type": type ? type : "",
+            "state": data.state ? data.state : "",
+            "resvalues": _.isEmpty(data.res) ? [] : data.res
+        };
         return this.createEvent("OE_ITEM_RESPONSE", eks);
-    },
-    sendFeedback: function(eks) {
+    };
+
+    this.sendFeedback = function(eks) {
         return this.createEvent("", eks);
     }
-})
+};
