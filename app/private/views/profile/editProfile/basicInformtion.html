@@ -5,11 +5,11 @@
         <div class=" two fields">
             <div class=" required field">
                 <label>Name</label>
-                <input type="text" name="" placeholder="First Name" ng-model="profileCtrl.user.firstName">
+                <input type="text" name="" placeholder="First Name" ng-model="profileCtrl.basicProfile.firstName">
             </div>
             <div class="field">
                 <label>&nbsp;  </label>
-                <input type="text" name="" placeholder="Last Name" ng-model="profileCtrl.user.lastName">
+                <input type="text" name="" placeholder="Last Name" ng-model="profileCtrl.basicProfile.lastName">
             </div>
         </div>
     </div>
@@ -17,11 +17,11 @@
     <div class="two fields">
         <div class="required field">
             <label>Phone number</label>
-            <input type="text" name="" ng-model="profileCtrl.user.phone">
+            <input type="text" name="" ng-model="profileCtrl.basicProfile.phone">
         </div>
         <div class=" required field">
             <label>Email</label>
-            <input type="text" name="" ng-model="profileCtrl.user.email">
+            <input type="text" name="" ng-model="profileCtrl.basicProfile.email">
         </div>
     </div>
     <div class="two fields">
@@ -34,7 +34,7 @@
         </div>
         <div class="field">
             <label>Language</label>
-            <select apply-script name="language" ng-selected="true" class="ui fluid dropdown signupMultiple" multiple="" ng-value="option.value" ng-options=" language for language in ::profileCtrl.languages" ng-model="profileCtrl.user.language">
+            <select apply-script name="language" ng-selected="true" class="ui fluid dropdown signupMultiple" multiple="" ng-value="option.value" ng-options=" language for language in ::profileCtrl.languages" ng-model="profileCtrl.basicProfile.language">
                                         <option value="" translate="languages">Languages</option>
                                     </select>
         </div>
@@ -42,14 +42,14 @@
     <div class="two fields">
         <div class="field">
             <label>Aadhar no</label>
-            <input type="text" name="" ng-model="profileCtrl.user.aadhar">
+            <input type="text" name="" ng-model="profileCtrl.basicProfile.aadhar">
         </div>
         <div class="field">
             <label>Date of birth </label>
-            <div class="ui calendar" id="example2">
-                <div ng-init="profileCtrl.open();" class="ui input left icon">
+            <div apply-script ng-init="profileCtrl.setDob();" class="ui calendar" id="editDob">
+                <div class="ui input left icon">
                     <i class="calendar icon"></i>
-                    <input type="text" placeholder="Date" ng-model="profileCtrl.user.dob">
+                    <input type="text" placeholder="Date" ng-model="profileCtrl.basicProfile.dob">
                 </div>
             </div>
         </div>
@@ -57,7 +57,7 @@
     <div class="field">
         <label>Subjects</label>
         <div class="field">
-            <select class="ui fluid dropdown signupMultiple" multiple="" ng-model="profileCtrl.user.subject">
+            <select class="ui fluid dropdown signupMultiple" multiple="" ng-model="profileCtrl.basicProfile.subject">
                         <option value="English">English</option>
                         <option value="Hindi">Hindi</option>
                          <option value="Math">Math</option>
@@ -65,4 +65,6 @@
         </div>
 
     </div>
+    <div class="ui button margin-top-15" ng-click="profileCtrl.EditBasicProfile()" ;>Save profile</div>
+
 </form>
