@@ -137,7 +137,7 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (playerTele
         }
 
         $scope.visibility = false;
-
+        playerTelemetryUtilsService.endTelemetry();
     };
     $scope.tryAgain = function () {
         $scope.errorObject = {};
@@ -145,29 +145,46 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (playerTele
     };
     $scope.zoomIn = function () {
         pdfDelegate.$getByHandle('content-player').zoomIn();
+        var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "ZOOM", subtype: "", "data": {}};
+        playerTelemetryUtilsService.updateTelemetry(telemetryData);
     };
     $scope.zoomOut = function () {
         pdfDelegate.$getByHandle('content-player').zoomOut();
+        var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "ZOOM", subtype: "", "data": {}};
+        playerTelemetryUtilsService.updateTelemetry(telemetryData);
     };
     $scope.previous = function () {
         pdfDelegate.$getByHandle('content-player').prev();
         $scope.getCurrentPage = $scope.getCurrentPage > 1 ? $scope.getCurrentPage - 1 : $scope.getCurrentPage;
+        var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "OTHER", subtype: "", "data": {}};
+        playerTelemetryUtilsService.updateTelemetry(telemetryData);
     };
     $scope.next = function () {
         pdfDelegate.$getByHandle('content-player').next();
         $scope.getCurrentPage = $scope.getCurrentPage < $scope.totalPageNumber ? $scope.getCurrentPage + 1 : $scope.getCurrentPage;
+        var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "OTHER", subtype: "", "data": {}};
+        playerTelemetryUtilsService.updateTelemetry(telemetryData);
+        if ($scope.getCurrentPage == $scope.totalPageNumber) {
+            playerTelemetryUtilsService.endTelemetry();
+        }
     };
     $scope.rotate = function () {
         pdfDelegate.$getByHandle('content-player').rotate();
+        var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "ROTATE", subtype: "", "data": {}};
+        playerTelemetryUtilsService.updateTelemetry(telemetryData);
     };
     $scope.goToPage = function (pageNumber) {
         pdfDelegate.$getByHandle('content-player').goToPage(pageNumber);
         $scope.getCurrentPage = pageNumber;
+        var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "OTHER", subtype: "", "data": {}};
+        playerTelemetryUtilsService.updateTelemetry(telemetryData);
     };
     $scope.getTotalPage = function () {
         $timeout(function () {
             $scope.totalPageNumber = pdfDelegate.$getByHandle('content-player').getPageCount();
             $scope.getCurrentPage = pdfDelegate.$getByHandle('content-player').getCurrentPage();
+            var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, "data": {"mode": "play"}};
+            playerTelemetryUtilsService.startTelemetry(telemetryData);
         }, 2000);
     };
 
