@@ -16,6 +16,7 @@ angular.module('playerApp')
         // profile.userId = '44f76ae4-1850-48d2-97e1-2408c5a6d9fc';
         // profile.userId = '5ac2edd3-8d2e-49a4-ac86-9ed5c2e10f3e';
         // update profile image
+        profile.languages = config.FILTER.RESOURCES.languages;
         profile.openImageBrowser = function() {
             console.log('trying to change');
             $('#iconImageInput').click();
