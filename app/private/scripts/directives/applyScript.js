@@ -30,7 +30,7 @@ angular.module('playerApp')
                     performance: true,
                 });
                 $('.signupMultiple').dropdown({
-                    useLabels: false,
+                    // useLabels: false,
                 });
                 $('.ui.radio.checkbox')
                     .checkbox();
