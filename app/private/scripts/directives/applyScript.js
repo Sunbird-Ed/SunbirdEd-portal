@@ -45,18 +45,71 @@ angular.module('playerApp')
                     performance: true,
                 });
 
-                $('#headerSearch').dropdown();
+                    $('#headerSearch').dropdown();
 
-                if (attrs.id === 'content-video-player-youtube-holder') {
-                    var oldPlayer = document.getElementById('content-video-player-youtube');
-                    videojs(oldPlayer).dispose();
-                    $(element).append('<video id=\'content-video-player-youtube\' height=\'100%\' width=\'100%\' class=\'video-js player-video\' controls  data-setup=\'{ "fluid": true,"techOrder": ["youtube"], "sources": [{ "type": "video/youtube", "src": ""}] }\'></video>');
-                    videojs('content-video-player-youtube').ready(function() {
-                        var newPlayer = this;
-                        newPlayer.src({ type: 'video/youtube', src: attrs.videosrc });
+                    if (attrs.id == 'content-video-player-youtube-holder') {
+                        var oldPlayer = document.getElementById('content-video-player-youtube');
+                        videojs(oldPlayer).dispose();
+                        $(element).append('<video id=\'content-video-player-youtube\' height=\'100%\' width=\'100%\' class=\'video-js player-video\' controls  data-setup=\'{ "fluid": true,"techOrder": ["youtube"], "sources": [{ "type": "video/youtube", "src": ""}] }\'></video>');
+                        videojs('content-video-player-youtube').ready(function () {
+                            var newPlayer = this;
+                            newPlayer.src({type: 'video/youtube', src: attrs.videosrc});
+                            scope.initVideoEvents(this);
+                        });
+                    } else if (attrs.id == 'content-video-player-holder') {
+                         var oldPlayer = document.getElementById('content-video-player');
+                        videojs(oldPlayer).dispose();
+                        $(element).append('<video id=\'content-video-player\' height=\'100%\' width=\'100%\' class=\'video-js player-video\' controls  data-setup=\'{ "controls": true}\'></video>');
+                        videojs('content-video-player').ready(function () {
+                            var newPlayer = this;
+                            newPlayer.src({type: attrs.videotype, src: attrs.videosrc});
+                            scope.initVideoEvents(this);
+                        });
+                    }
+
+                    $('#example2').calendar({
+                        type: 'date',
+                        formatter: {
+                            date: function (date, settings) {
+                                if (!date)
+                                    return '';
+                                var day = date.getDate();
+                                var month = date.getMonth() + 1;
+                                var year = date.getFullYear();
+                                return day + '/' + month + '/' + year;
+                            }
+                        }
                     });
-                }
-                console.log('trying to open');
+                    $('#rangestart').calendar({
+                        type: 'date',
+                        endCalendar: $('#rangeend'),
+                        formatter: {
+                            date: function (date, settings) {
+                                if (!date)
+                                    return '';
+                                var day = date.getDate();
+                                var month = date.getMonth() + 1;
+                                var year = date.getFullYear();
+                                return day + '/' + month + '/' + year;
+                            }
+                        }
+                    });
+                    $('#rangeend').calendar({
+                        type: 'date',
+                        startCalendar: $('#rangestart'),
+                        formatter: {
+                            date: function (date, settings) {
+                                if (!date)
+                                    return '';
+                                var day = date.getDate();
+                                var month = date.getMonth() + 1;
+                                var year = date.getFullYear();
+                                return day + '/' + month + '/' + year;
+                            }
+                        }
+                    });
+
+                   
                 // $('#example2').calendar({
                 //     type: 'date',
                 //     formatter: {
@@ -189,6 +242,6 @@ angular.module('playerApp')
                     }
 
                 });
-            }
-        };
+            }}
     });
+       
