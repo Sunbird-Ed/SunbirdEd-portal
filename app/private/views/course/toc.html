@@ -1,3 +1,8 @@
+<style>
+    .fancytree-title{
+        width:100% !important;
+    }
+</style>
 <div ng-controller="courseScheduleCtrl as toc">
     <div ng-include="'views/course/courseHeader.html'"></div>
 
@@ -30,7 +35,7 @@
                                     </div>
                                     <div id="course-toc{{$index}}" class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100" ng-repeat="item in  toc.courseHierachy.children track by $index" ng-click="toc.expandMe($event, item)">
                                         <div class="courseAccordianHeading title title-padding-left accordian-left-text" name="{{item.identifier}}">
-                                            {{item.name}}
+                                            <i ng-class="toc.getContentIcon(item.mimeType)" ng-class="toc.getContentClass(item.identifier)"></i> {{item.name}}
                                             <i ng-if='item.children && item.children.length > 0' class="plus icon down-arrow-accordion"></i>
                                         </div>
                                         <div ng-if='item.children && item.children.length > 0' class="content">
