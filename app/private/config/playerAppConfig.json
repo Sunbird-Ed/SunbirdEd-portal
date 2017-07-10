@@ -12,7 +12,8 @@
                 "RESOURCE_BUNDLE": "resourcebundle",
                 "SIGNUP": "user/create",
                 "UPDATE_USER_PROFILE": "user/update",
-                "GET_PROFILE": "user/getProfile"
+                "GET_PROFILE": "user/getprofile",
+                "PERMISSIONS":"permission/data"
             },
             "COURSE": {
                 "SEARCH": "course/search",
@@ -37,7 +38,7 @@
                 "UPDATE": "content/update",
                 "REVIEW": "content/review",
                 "PUBLISH": "content/publish",
-                "GET": "content/get",
+                "GET": "content/read",
                 "GET_MY_COURSE": "content/get/mycontent",
                 "UPLOAD": "content/upload",
                 "UPLOAD_MEDIA": "upload/media"
@@ -48,11 +49,11 @@
 
             },
             "NOTES": {
-                "SEARCH": "notes/search",
-                "CREATE": "notes/create",
-                "UPDATE": "notes/update",
-                "GET": "notes/get",
-                "DELETE": "notes/delete"
+                "SEARCH": "note/search",
+                "CREATE": "note/create",
+                "UPDATE": "note/update",
+                "GET": "note/read",
+                "DELETE": "note/delete"
             },
             "RESOURCE": {
                 "GET": "page/assemble/Resource"
@@ -171,26 +172,38 @@
                 }
 
             },
-            "WORKSPACE" : {
-                "DRAFT" : {
+            "WORKSPACE": {
+                "DRAFT": {
                     "START": "We are fetching draft content...",
                     "FAILED": "Fetching draft content failed, please try again later..."
                 },
-                "CREATE_SLIDESHOW" : {
+                "CREATE_SLIDESHOW": {
                     "START": "We are creating lesson...",
                     "FAILED": "Creating lesson failed, please try again later..."
                 },
-                "REVIEW" : {
+                "REVIEW": {
                     "START": "We are fetching review content...",
                     "FAILED": "Fetching review content failed, please try again later..."
                 },
-                "PUBLISHED" : {
+                "PUBLISHED": {
                     "START": "We are fetching published content...",
                     "FAILED": "Fetching published content failed, please try again later..."
                 },
-                "ALL_UPLOADED" : {
+                "ALL_UPLOADED": {
                     "START": "We are fetching uploaded content...",
                     "FAILED": "Fetching uploaded content failed, please try again later..."
+                },
+                "GET": {
+                    "START": "We are fetching content detail...",
+                    "FAILED": "Fetching content detail failed, please try again later..."
+                },
+                "UPLOAD_ICON": {
+                    "START": "We are updating icon...",
+                    "FAILED": "Updating icon failed, please try again later..."
+                },
+                "UPDATE": {
+                    "START": "We are updating content detail...",
+                    "FAILED": "Updating content detail failed, please try again later..."
                 }
             }
         },
@@ -205,6 +218,7 @@
                 "channel":"sunbird_channel",
                 "dimension":"sunbird_dims",
                 "etags":"etags"
+
             },
             "config": {
                 "baseURL": "",
@@ -350,6 +364,7 @@
                 "apislug": "/api",
                 "repos":["/content-plugins/renderer"],
                 "plugins":[{"id": "org.sunbird.iframeEvent","ver": 1.0,"type": "plugin"}]
+
             },
             "baseURL": "/content/preview/preview.html?webview=true"
         },
