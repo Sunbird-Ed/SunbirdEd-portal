@@ -49,10 +49,10 @@
                 </div>
                 <div class=" required field" ng-init="newUser.formInit() ">
                     <label>Language</label>
-                    <select name=language class="ui fluid dropdown signupMultiple" multiple="" ng-model="newUser.language">
-                        <option value="English">English</option>
-                        <option value="Hindi">Hindi</option>
-                    </select>
+
+                    <select name="language" ng-selected="true" class="ui fluid dropdown signupMultiple" multiple="" ng-value="option.value" ng-options=" language for language in newUser.languages" ng-model="newUser.language">
+                                        <option value="" translate="languages">Languages</option>
+                                    </select>
                 </div>
             </div>
             <div class="two fields">
@@ -73,11 +73,12 @@
             <div class="field">
                 <label>Subjects</label>
                 <div class="field">
-                    <select class="ui fluid dropdown signupMultiple" multiple="" ng-model="newUser.subjet">
+                    <select class="ui fluid dropdown signupMultiple" multiple="" ng-model="newUser.subject">
                         <option value="English">English</option>
                         <option value="Hindi">Hindi</option>
                         <option value="Math">Math</option>
                     </select>
+
                 </div>
             </div>
             <div class="ui error message">
