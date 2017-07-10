@@ -10,6 +10,9 @@ angular.module('playerApp')
             this.endTelemetry=function(){
                  org.sunbird.portal.eventManager.dispatchEvent("sunbird:telemetry:end");
             };
+             this.navigateTelemetry =function (data) {
+                org.sunbird.portal.eventManager.dispatchEvent("sunbird:telemetry:navigate", data);
+            };  
             this.init = function (data) {
                 var _instance = {
                     correlationData: [{"id": $stateParams.tocId || data.contentId, "type": "ContentSession"}],
