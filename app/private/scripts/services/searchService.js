@@ -8,7 +8,7 @@ angular.module('playerApp')
         };
 
         this.courseSearch = function(req) {
-            var url =  config.URL.LEARNER_PREFIX + config.URL.COURSE.SEARCH;
-            return httpServiceJava.post(url, req);
+            var url =  config.URL.CONTENT_PREFIX + config.URL.COURSE.SEARCH;
+            return httpService.post(url, req);
         };
     });
