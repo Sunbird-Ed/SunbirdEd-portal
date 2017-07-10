@@ -1,5 +1,4 @@
 <form class="ui form formdivider">
-    <h4> ({{$index +1}})</h4>
     <div class="two fields">
         <div class=" field">
             <label>Position</label>
@@ -17,16 +16,16 @@
     <div apply-script class="two fields">
         <div class="field">
             <label>Start date</label>
-            <div class="ui calendar" id="rangestart">
-                <div class="ui input left icon">
+            <div ng-init="profileCtrl.setEditStart(experience.startDate)" class="ui calendar" id="rangeStart">
+                <div class="ui input left icon" ng-click="profileCtrl.getEditStart();">
                     <i class="calendar icon"></i>
-                    <input type="text" ng-model="experience.startDate">
+                    <input type="text" value="profileCtrl.getEditStart();" ng-model="experience.startDate">
                 </div>
             </div>
         </div>
         <div class="field">
             <label>End date</label>
-            <div class="ui calendar" id="rangeend">
+            <div ng-init="profileCtrl.setEditEnd(experience.endDate)" class="ui calendar" id="rangEend" ng-model="experience.endDate">
                 <div class="ui input left icon">
                     <i class="calendar icon"></i>
                     <input type="text" ng-model="experience.endDate">
@@ -34,4 +33,6 @@
             </div>
         </div>
     </div>
+    <div class="ui button margin-top-15" ng-click="profileCtrl.editExperience (profileCtrl.experience)" ;>Save profile</div>
+
 </form>

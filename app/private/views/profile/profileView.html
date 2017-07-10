@@ -1,6 +1,16 @@
 <div class="ui grid">
     <div class="nine wide column">
         <div class="ui grid">
+            <div class="twelve wide column">
+
+                <div class="ui raised segment " ng-if="profileCtrl.loader.showLoader">
+                    <app-loader data="{{profileCtrl.loader}}"></app-loader>
+                </div>
+                <div class="ui raised segment " ng-if="profileCtrl.error.showError">
+                    <error-message data="{{profileCtrl.error}}" visibility="search.error.showError"></error-message>
+                </div>
+
+            </div>
             <div class="twelve wide column" ng-include=" 'views/profile/profileView/userExperience.html' ">
 
             </div>
