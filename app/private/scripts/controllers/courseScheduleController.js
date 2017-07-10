@@ -129,8 +129,7 @@ angular.module('playerApp')
             };
             toc.expandMe = function (index, item) {
                 if (item && item.mimeType !== "application/vnd.ekstep.content-collection") {
-
-                    toc.itemIndex = parseInt(index);
+                    toc.itemIndex = toc.playList.indexOf(item.identifier);
                     toc.playPlaylistContent(item.identifier, '');
                 } else {
                     var accIcon = $(index.target).closest('.title').find('i');
@@ -194,9 +193,9 @@ angular.module('playerApp')
                     toc.playList.push(contentData.identifier);
                     toc.playListContent.push(contentData);
                 } else {
-                    for (var item in contentData.children) {
+                    angular.forEach(contentData.children, function (child, item) {
                         toc.getAllContentsFromCourse(contentData.children[item]);
-                    }
+                    });
                 }
                 return toc.playList;
             }
@@ -219,9 +218,9 @@ angular.module('playerApp')
                         children: [],
                         icon: false
                     })
-                    for (var item in contentData.children) {
+                    angular.forEach(contentData.children, function (child, item) {
                         toc.getTreeData(contentData.children[item], parent[parent.length - 1]['children']);
-                    }
+                    });
                 }
                 return toc.fancyTree;
             }
@@ -280,9 +279,9 @@ angular.module('playerApp')
             }
             toc.constructTree = function (pos, tocData) {
                 toc.fancyTree = [];
-                for (var child in tocData) {
-                    toc.getTreeData(tocData[child], toc.fancyTree);
-                }
+                angular.forEach(tocData, function (item, child) {
+                    toc.getTreeData(item, toc.fancyTree);
+                });
                 toc.initializeFancyTree("#FT_" + pos, toc.fancyTree);
             }
             toc.initializeFancyTree = function (id, src) {
@@ -332,11 +331,11 @@ angular.module('playerApp')
                                     if (!$('#' + treeId).closest(".accordion").find('.title').hasClass('active')) {
                                         $('#' + treeId).closest(".accordion").find('.title').trigger('click');
                                     }
-                                    node.setExpanded(true);
-                                    node.setActive(false);
-                                    node.setFocus(true);
-                                }, 0);
 
+                                }, 0);
+                                node.setExpanded(true);
+                                node.setActive(false);
+                                node.setFocus(false);
 
                             } else
                             {
