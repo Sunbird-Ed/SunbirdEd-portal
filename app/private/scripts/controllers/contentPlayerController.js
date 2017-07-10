@@ -68,12 +68,12 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (playerTele
                 var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, "data": {"mode": "play"}};
                 playerTelemetryUtilsService.startTelemetry(telemetryData);
             } else {
-                var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "TOUCH", subtype: "RESUME", "data": {}};
+                var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "TOUCH", "data": { subtype: "RESUME"}};
                 playerTelemetryUtilsService.updateTelemetry(telemetryData);
             }
         });
         video.on('pause', function () {
-            var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "TOUCH", subtype: "PAUSE", "data": {}};
+            var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "TOUCH",  "data": {subtype: "PAUSE"}};
             playerTelemetryUtilsService.updateTelemetry(telemetryData);
         });
 
@@ -81,11 +81,11 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (playerTele
             playerTelemetryUtilsService.endTelemetry();
         });
         video.on('volumechange', function () {
-            var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "TOUCH", subtype: "VOLUME", "data": {}};
+            var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "TOUCH",  "data": {subtype: "VOLUME"}};
             playerTelemetryUtilsService.updateTelemetry(telemetryData);
         });
         video.on('fullscreenchange', function () {
-            var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "TOUCH", subtype: "FULLSCREEN", "data": {}};
+            var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "TOUCH", "data": { subtype: "FULLSCREEN"}};
             playerTelemetryUtilsService.updateTelemetry(telemetryData);
         });
     }
@@ -145,45 +145,51 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (playerTele
     };
     $scope.zoomIn = function () {
         pdfDelegate.$getByHandle('content-player').zoomIn();
-        var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "ZOOM", subtype: "", "data": {}};
+        var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "ZOOM", subtype: "", "data": {"stageId": $scope.getCurrentPage}};
         playerTelemetryUtilsService.updateTelemetry(telemetryData);
     };
     $scope.zoomOut = function () {
         pdfDelegate.$getByHandle('content-player').zoomOut();
-        var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "ZOOM", subtype: "", "data": {}};
+        var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "ZOOM", subtype: "", "data": {"stageId": $scope.getCurrentPage}};
         playerTelemetryUtilsService.updateTelemetry(telemetryData);
     };
     $scope.previous = function () {
         pdfDelegate.$getByHandle('content-player').prev();
         $scope.getCurrentPage = $scope.getCurrentPage > 1 ? $scope.getCurrentPage - 1 : $scope.getCurrentPage;
-        var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "OTHER", subtype: "", "data": {}};
+        var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "TOUCH", subtype: "", "data": {"stageId": $scope.getCurrentPage}};
         playerTelemetryUtilsService.updateTelemetry(telemetryData);
+        var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, "stageid": $scope.getCurrentPage + 1, "stageto": $scope.getCurrentPage, "data": {}};
+        playerTelemetryUtilsService.navigateTelemetry(telemetryData);
     };
     $scope.next = function () {
         pdfDelegate.$getByHandle('content-player').next();
         $scope.getCurrentPage = $scope.getCurrentPage < $scope.totalPageNumber ? $scope.getCurrentPage + 1 : $scope.getCurrentPage;
-        var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "OTHER", subtype: "", "data": {}};
+        var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "TOUCH", subtype: "", "data": {"stageId": $scope.getCurrentPage}};
         playerTelemetryUtilsService.updateTelemetry(telemetryData);
+        var telemetryNavData = {"id": $scope._instance.id, "ver": $scope._instance.ver, "stageid": $scope.getCurrentPage - 1, "stageto": $scope.getCurrentPage, "data": {}};
+        playerTelemetryUtilsService.navigateTelemetry(telemetryNavData);
         if ($scope.getCurrentPage == $scope.totalPageNumber) {
             playerTelemetryUtilsService.endTelemetry();
         }
     };
     $scope.rotate = function () {
         pdfDelegate.$getByHandle('content-player').rotate();
-        var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "ROTATE", subtype: "", "data": {}};
+        var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "ROTATE", subtype: "", "data": {"stageId": $scope.getCurrentPage}};
         playerTelemetryUtilsService.updateTelemetry(telemetryData);
     };
     $scope.goToPage = function (pageNumber) {
+        var telemetryNavData = {"id": $scope._instance.id, "ver": $scope._instance.ver, "stageid": $scope.getCurrentPage, "stageto": pageNumber, "data": {}};
         pdfDelegate.$getByHandle('content-player').goToPage(pageNumber);
         $scope.getCurrentPage = pageNumber;
-        var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "OTHER", subtype: "", "data": {}};
+        var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "TOUCH", subtype: "", "data": {"stageId": $scope.getCurrentPage}};
         playerTelemetryUtilsService.updateTelemetry(telemetryData);
+        playerTelemetryUtilsService.navigateTelemetry(telemetryNavData);
     };
     $scope.getTotalPage = function () {
         $timeout(function () {
             $scope.totalPageNumber = pdfDelegate.$getByHandle('content-player').getPageCount();
             $scope.getCurrentPage = pdfDelegate.$getByHandle('content-player').getCurrentPage();
-            var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, "data": {"mode": "play"}};
+            var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, "data": {"mode": "play", "stageid": 1}};
             playerTelemetryUtilsService.startTelemetry(telemetryData);
         }, 2000);
     };
