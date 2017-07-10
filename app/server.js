@@ -77,6 +77,11 @@ app.all('/', function(req, res) {
 var ekstep = "https://qa.ekstep.in";
 
 app.use('/api/*', proxy(ekstep, {
+    proxyReqOptDecorator: function(proxyReqOpts, srcReq) {
+    // you can update headers 
+    proxyReqOpts.headers['Authorization'] = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI2MzExMTYwNTMzOGY0Zjc5YTgwZTM3YjcyZjVjMmUwZiJ9.azmj_AHmndeJz0h6yIkOJz1XjeZR6Gzd-OrZzR66I0A';
+    return proxyReqOpts;
+  },
     proxyReqPathResolver: function(req) {
         return require('url').parse(ekstep + req.originalUrl).path;
     }
