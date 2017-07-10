@@ -1,7 +1,5 @@
-
-<div ng-init="draftContent.initializeData()" >
+<div ng-init="draftContent.initializeData()">
     <div ng-if="!draftContent.draftApi.loader.showLoader && !draftContent.draftApi.error.showError">
-
         <div class="ui three stackable cards">
             <div class="link card" ng-repeat="item in draftContent.draftContentData track by $index" ng-click="draftContent.openContentEditor(item.identifier)">
                 <div class="image imageInCardsResponsive">

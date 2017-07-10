@@ -7,13 +7,13 @@
                     <div class="item">
                         <div class="ui grid">
                             <div class="two wide column">
-                                <img class="ui small circular image" src="{{profileCtrl.profilePic || 'images/user_logo.png'}}">
+                                <img class="ui small circular image" src="{{profileCtrl.user.profilePic || 'images/user_logo.png'}}">
                             </div>
                             <div class="ten wide column">
                                 <div class="content padding-top-10 ">
-                                    <div class="sectionHeading header">{{profileCtrl.firstName}} &nbsp;{{profileCtrl.lastName}}</div>
+                                    <div class="sectionHeading header">{{profileCtrl.user.firstName}} &nbsp;{{profileCtrl.user.lastName}}</div>
                                     <div class="meta">
-                                        <span class="cinema">{{profileCtrl.organizationName}},{{profileCtrl.city}}</span>
+                                        <span class="cinema">{{profileCtrl.user.organizationName}},{{profileCtrl.user.city}}</span>
                                     </div>
                                     <div class="description" ng-init="profileCtrl.readMore = false">
                                         <p ng-if="!profileCtrl.readMore"> {{profileCtrl.summary | limitTo: 120 }}&nbsp;
@@ -48,7 +48,7 @@
                     </div>
                     <div class="twelve wide column ">
                         <button apply-script class="ui primary basic button" id="openTreeModal">EDIT PROFILE</button>
-                        
+
                     </div>
                 </div>
             </div>
