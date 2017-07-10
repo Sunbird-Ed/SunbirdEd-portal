@@ -62,8 +62,8 @@ angular.module('playerApp')
             return headers;
         }
 
-        function httpCall(url, data, method, headers) {
-            var headers = headers || getHeader();
+        function httpCall(url, data, method, header) {
+            var headers = header || getHeader();
             var URL = config.URL.BASE_PREFIX + url;
             return $http({
                 method: method,
