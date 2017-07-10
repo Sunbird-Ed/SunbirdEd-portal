@@ -48,7 +48,7 @@ app.all('/service/v1/learner/*', keycloak.protect(), proxy(learnerURL, {
         return require('url').parse(learnerURL + urlParam).path;
     }
 }))
-const contentURL = env.sunbird_content_player_url || 'http://52.172.36.121:5000/v1/';
+const contentURL = env.sunbird_content_player_url || 'http://localhost:5000/v1/';
 app.all('/service/v1/content/*', keycloak.protect(), proxy(contentURL, {
     proxyReqPathResolver: function(req) {
         let urlParam = req.params["0"]
@@ -74,7 +74,7 @@ app.all('/', function(req, res) {
 
 //proxy urls
 
-var ekstep = "https://dev.ekstep.in";
+var ekstep = "https://qa.ekstep.in";
 
 app.use('/api/*', proxy(ekstep, {
     proxyReqPathResolver: function(req) {
