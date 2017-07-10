@@ -114,11 +114,7 @@ angular.module('playerApp')
             requestBody.contentType = requestBody.contentType ? requestBody.contentType : "Story";
 
             var requestdata = {
-                "content": requestBody,
-                "params": {
-                    "cid": "new",
-                    "sid": "12345"
-                }
+                "content": requestBody
             };
             contentLesson.createContent(requestdata, api);
         };

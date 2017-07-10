@@ -22,13 +22,15 @@ org.sunbird.portal.init = function() {
  * To add the any window unload events
  */
 org.sunbird.portal.addUnloadEvent = function() {
+    
     window.onbeforeunload = function(e) {
         console.info("window unload is calling..")
         e = e || window.event;
         var y = e.pageY || e.clientY;
-        !y && org.sunbird.portal.eventmanager.dispatchEvent("sunbird:telemetry:sync", {
+        !y && org.sunbird.portal.eventManager.dispatchEvent("sunbird:telemetry:sync", {
             TelemetryData: TelemetryService._data
         });
+         org.sunbird.portal.eventManager.dispatchEvent("sunbird:telemetry:end");
     };
 };
 
