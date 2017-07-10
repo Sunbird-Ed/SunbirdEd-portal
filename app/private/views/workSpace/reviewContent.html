@@ -1,7 +1,5 @@
-
-<div ng-init="reviewContent.initializeData()" >
+<div ng-init="reviewContent.initializeData()">
     <div ng-if="!reviewContent.reviewApi.loader.showLoader && !reviewContent.reviewApi.error.showError">
-
         <div class="ui three stackable cards">
             <div class="link card" ng-repeat="item in reviewContent.reviewContentData track by $index">
                 <div class="image imageInCardsResponsive">
@@ -29,4 +27,4 @@
     <div class="twelve wide column" ng-if="reviewContent.reviewApi.error.showError">
         <error-message data="{{reviewContent.reviewApi.error}}" visibility="reviewContent.reviewApi.error.showError"></error-message>
     </div>
-</div> 
+</div>
