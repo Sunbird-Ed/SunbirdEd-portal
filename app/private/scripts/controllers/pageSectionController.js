@@ -43,9 +43,10 @@ angular.module('playerApp')
 
 
             section.openCourseView = function (course) {
-                var courseType = ($rootScope.enrolledCourseIds && $rootScope.enrolledCourseIds.indexOf(course.courseId) >= 0) ? 'ENROLLED_COURSE' : 'OTHER_COURSE';
+            	var courseId = course.courseId || course.identifier;
+                var courseType = ($rootScope.enrolledCourseIds && $rootScope.enrolledCourseIds.indexOf(courseId) >= 0) ? 'ENROLLED_COURSE' : 'OTHER_COURSE';
                 var showLectureView = 'no';
-                var params = {courseType: courseType, courseId: course.contentId, tocId: course.courseId, lectureView: showLectureView, progress: course.progress, total: course.total, courseRecordId: course.id, courseName: course.courseName};
+                var params = {courseType: courseType, courseId: course.courseId || course.identifier, tocId: course.courseId || course.identifier, lectureView: showLectureView, progress: course.progress, total: course.total, courseRecordId: course.id, courseName: course.courseName};
                 sessionService.setSessionData('COURSE_PARAMS', params);
                 $state.go('Toc', params);
             };
@@ -62,8 +63,10 @@ angular.module('playerApp')
                         var pageData = {};
                         for (var i in resourceRes) {
                             var sectionArr = resourceRes[i];
-                            pageData[sectionArr.group] ? pageData[sectionArr.group] : pageData[sectionArr.group] = {};
-                            pageData[sectionArr.group][sectionArr.index] = sectionArr;
+                            if (sectionArr.contents && sectionArr.contents.length > 0) {
+                            	pageData[sectionArr.group] ? pageData[sectionArr.group] : pageData[sectionArr.group] = {};
+                            	pageData[sectionArr.group][sectionArr.index] = sectionArr;
+                            }
                         }
                         //Now merge all contents of  other indexes in each group to its first index contents
                         Object.keys(pageData).forEach(function (key) {
@@ -88,11 +91,11 @@ angular.module('playerApp')
                 });
             };
             section.sections();
-            section.openCourseView = function (course, courseType) {
-                // courseId = 'do_112265805439688704113';
-                var showLectureView = 'no';
-                var params = {courseType: courseType, courseId: course.contentId, tocId: course.courseId, lectureView: showLectureView, progress: course.progress, total: course.total, courseRecordId: course.id, courseName: course.courseName};
-                sessionService.setSessionData('COURSE_PARAMS', params);
-                $state.go('Toc', params);
-            };
+            // section.openCourseView = function (course, courseType) {
+            //     // courseId = 'do_112265805439688704113';
+            //     var showLectureView = 'no';
+            //     var params = {courseType: courseType, courseId: course.courseId || course.identifier, tocId: course.courseId || course.identifier, lectureView: showLectureView, progress: course.progress, total: course.total, courseRecordId: course.id, courseName: course.courseName};
+            //     sessionService.setSessionData('COURSE_PARAMS', params);
+            //     $state.go('Toc', params);
+            // };
         });

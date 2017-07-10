@@ -8,7 +8,7 @@
  * Service in the playerApp.
  */
 angular.module('playerApp')
-    .service('userService', function(config, httpService, httpServiceJava) {
+    .service('userService', function(config, httpService, httpServiceJava, $q) {
         this.resourceBundle = function(language, type) {
             var url = config.URL.CONFIG_BASE + config.URL.USER.RESOURCE_BUNDLE + '/' + type + '/' + language;
             return httpService.get(url);
@@ -18,6 +18,7 @@ angular.module('playerApp')
             var url = config.URL.LEARNER_PREFIX + config.URL.USER.GET_PROFILE + '/' + uId;
             return httpServiceJava.get(url);
         };
+
         this.updateUserProfile = function(req) {
             var url = config.URL.LEARNER_PREFIX + config.URL.USER.UPDATE_USER_PROFILE;
             return httpServiceJava.patch(url, req);

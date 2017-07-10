@@ -55,7 +55,7 @@ angular.module('loginApp')
             newUser.phone = '';
             newUser.gender = '';
             newUser.avatar = '';
-            newUser.dob = '';
+            newUser.dob = null;
             newUser.aadhaarNo = '';
             newUser.language = '';
             $timeout(function() {

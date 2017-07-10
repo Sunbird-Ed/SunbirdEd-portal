@@ -6,7 +6,7 @@
  * @description
  * # contentPlayer
  */
-angular.module('playerApp').directive('contentPlayer', function () {
+angular.module('playerApp').directive('contentPlayer', function() {
     return {
         templateUrl: 'views/contentplayer/player.html',
         restrict: 'E',
@@ -22,7 +22,7 @@ angular.module('playerApp').directive('contentPlayer', function () {
             ispercentage: '=',
             closeurl: '='
         },
-        link: function (scope, element, attrs) {
+        link: function(scope, element, attrs) {
             if (scope.ispercentage) {
                 $('#contentPlayer').css('height', scope.height + '%');
                 $('#contentPlayer').css('width', scope.width + '%');
@@ -31,10 +31,10 @@ angular.module('playerApp').directive('contentPlayer', function () {
                 $('#contentPlayer').css('width', scope.width + 'px');
             }
 
-            scope.$watch('body', function () {
+            scope.$watch('body', function() {
                 scope.updateDataOnWatch(scope);
             });
-            scope.$watch('id', function () {
+            scope.$watch('id', function() {
                 scope.updateDataOnWatch(scope);
             });
         },

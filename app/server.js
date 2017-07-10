@@ -6,10 +6,11 @@ const express = require('express'),
     proxy = require('express-http-proxy'),
     Keycloak = require('keycloak-connect'),
     session = require('express-session'),
-    path = require('path'),  
-    fs = require('fs'),  
+    path = require('path'),
     env = process.env,
-    port = env.sunbird_port || 8080;
+    trampolineServiceHelper = require('./helpers/trampolineServiceHelper.js'),
+    port = env['sunbird_port'] || 3000;
+
 
 // Create a new session store in-memory
 let memoryStore = new session.MemoryStore();
@@ -29,32 +30,35 @@ app.use(express.static(path.join(__dirname, '/')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'private')));
 
-// implemented to use for permissions dummy data
-
-app.get('/permissions', function (req, res) {
-    var json = fs.readFileSync('data/permissions.json')
-    res.send(json);
-})
-
 app.use('/ekContentEditor', express.static('./thirdparty/content-editor'))
 app.get('/ekContentEditor', function(req, res) {
     res.sendFile(__dirname + "/thirdparty/content-editor/index.html");
 });
 
 const learnerURL = env.sunbird_learner_player_url || 'http://52.172.36.121:9000/v1/';
+app.all('/public/service/v1/*', proxy(learnerURL, {
+    proxyReqPathResolver: function(req) {
+        let urlParam = req.params["0"];
+        return require('url').parse(learnerURL + urlParam).path;
+    }
+}))
 app.all('/service/v1/learner/*', keycloak.protect(), proxy(learnerURL, {
     proxyReqPathResolver: function(req) {
         let urlParam = req.params["0"];
         return require('url').parse(learnerURL + urlParam).path;
     }
 }))
-const contentURL = env.sunbird_content_player_url || 'http://localhost:5000/api/sb/v1/';
+const contentURL = env.sunbird_content_player_url || 'http://localhost:5000/v1/';
 app.all('/service/v1/content/*', keycloak.protect(), proxy(contentURL, {
     proxyReqPathResolver: function(req) {
         let urlParam = req.params["0"]
         return require('url').parse(contentURL + urlParam).path;
     }
 }))
+
+app.all('/v1/user/session/create',function (req, res) {
+    trampolineServiceHelper.handleRequest(req, res, keycloak);
+})
 
 app.all('/private/*', keycloak.protect(), function(req, res) {
     res.locals.userId = req.kauth.grant.access_token.content.sub;

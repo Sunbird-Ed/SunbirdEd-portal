@@ -39,7 +39,6 @@ angular.module('playerApp')
             return error;
         }
 
-
         function getPublishedContent() {
 
             var api = "publishedApi";
@@ -76,15 +75,11 @@ angular.module('playerApp')
         };
 
         publishedContent.initializeData = function() {
-
             getPublishedContent();
-
         };
 
         publishedContent.openContentEditor = function(contentId) {
-
             var params = { contentId: contentId }
             $state.go("ContentEditor", params);
-
         };
     });
