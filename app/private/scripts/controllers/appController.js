@@ -13,7 +13,7 @@ angular.module('playerApp')
             $rootScope.language = $rootScope.userLanguage || config.SITE.DEFAULT_LANGUAGE;
             $rootScope.translationBundle = {};
             $rootScope.searchKey = '';
-            TelemetryService.registerEvents();
+            org.sunbird.portal.init();
             $rootScope.openLink=function(url){
                 $location.path(url);
             }
