@@ -1160,6 +1160,10 @@ span.fancytree-title {
   padding-right: 6px!important;
   border: 1px solid rgba(51, 51, 51, 0.33);
   border-radius: 0 .28571429rem .28571429rem 0;
+  padding-top: 0.85em;
+}
+.searchinput.ui.icon.input > i.circular.icon {
+  top: 0.45em;
 }
 .searchicon.ui.icon.input i {
   cursor: pointer;
