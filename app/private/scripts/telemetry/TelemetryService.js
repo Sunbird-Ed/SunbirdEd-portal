@@ -261,9 +261,3 @@ Array.prototype.cleanUndefined = function() {
     return this;
 };
 
-window.onbeforeunload = function(e) {
-    console.info("window unload is calling..")
-    e = e || window.event;
-    var y = e.pageY || e.clientY;
-    !y && org.sunbird.portal.eventmanager.dispatchEvent("sunbird:telemetry:sync", TelemetryService._data);
-}
