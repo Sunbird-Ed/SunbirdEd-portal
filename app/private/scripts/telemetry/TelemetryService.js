@@ -67,6 +67,9 @@ TelemetryService = {
                 if (obj.correlationData && !_.isEmpty(obj.correlationData)) {
                     TelemetryService._correlationData = obj.correlationData;
                 };
+                if(obj.otherData && !_.isEmpty(obj.otherData)){
+                    TelemetryService._otherData = obj.otherData;
+                };
                 resolve(true);
             } else {
                 resolve(true)
@@ -133,11 +136,11 @@ TelemetryService = {
                 return TelemetryService.flushEvent(TelemetryService.instance.start(obj.id, obj.ver, obj.data), TelemetryService.apis.telemetry);
         }
     },
-    end: function() {
+    end: function(evt, obj) {
         if (!TelemetryService.isActive) {
             return new InActiveEvent();
         }
-        return this.flushEvent(TelemetryService.instance.end(), TelemetryService.apis.telemetry);
+        return this.flushEvent(TelemetryService.instance.end(obj.progress), TelemetryService.apis.telemetry);
     },
     interact: function(evt, obj) {
         if (!TelemetryService.isActive) {
