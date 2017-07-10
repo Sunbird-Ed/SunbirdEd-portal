@@ -1,0 +1,44 @@
+<div class="profilesegmentmargin ui raised segment">
+
+    <div class="header announcementCard-header">
+        <span class="header cardsHeading" translate="experiance">Address</span>
+        <a class="addeditprofile" ng-if="!profileCtrl.addressForm" translate="edit" ng-click="profileCtrl.addressForm=true ;profileCtrl.newAddress=false ">Edit</a>
+        <a class="addeditprofile" ng-if="!profileCtrl.addressForm " ng-click="profileCtrl.addressForm=true ;profileCtrl.newAddress=true ;profileCtrl.address={} " translate="add ">Add</a>
+        <a class="addeditprofile" ng-if="profileCtrl.addressForm" translate="edit" ng-click="profileCtrl.addressForm=false">close</a>
+    </div>
+
+    <div ng-if="profileCtrl.loader.showLoader">
+        <app-loader data="{{profileCtrl.loader}}"></app-loader>
+    </div>
+    <div ng-if="profileCtrl.error.showError">
+        <error-message data="{{profileCtrl.error}}" visibility="search.error.showError"></error-message>
+    </div>
+
+    <div ng-if="!profileCtrl.addressForm" class="addressheader ui relaxed divided list">
+        <div class="item" ng-repeat="address in profileCtrl.user.address">
+            <div class="right floated content">
+                <div class="metadata">
+                    <span class="date">{{address.updatedDate|date: "dd/MM/yyyy"  }}</span>
+                </div>
+            </div>
+            <img class="ui avatar image" src="/images/user_logo.png">
+            <div class="content">
+
+                <a class=" header">{{address.addType}}</a>
+                <div class="description"> {{address.addressLine1}}, {{address.addressLine2}}<br/>
+                    <p>{{address.city}},{{address.state}},{{address.country}},{{address.zipcode}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-if="profileCtrl.addressForm" class="addressheader ui relaxed divided list">
+        <div class="edit-address-form" ng-if="!profileCtrl.newAddress ">
+            <div class=" ui " ng-repeat="address in profileCtrl.user.address track by $index " ng-include=" 'views/profile/editProfile/address.html' "></div>
+            <div class="ui button margin-top-15" ng-click="profileCtrl.EditBasicProfile()" ;>Save profile</div>
+        </div>
+        <div class="add-address-form" ng-if="profileCtrl.newAddress ">
+            <div class="ui " ng-include=" 'views/profile/editProfile/addAddress.html' "></div>
+            <div class="ui button " ng-click="profileCtrl.addAddress(profileCtrl.address) ;">Save address</div>
+        </div>
+    </div>
+</div>

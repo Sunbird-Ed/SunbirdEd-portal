@@ -5,6 +5,8 @@
 
 1. sunbird_content_player_url
 2. sunbird_learner_player_url
+3. sunbird_port
+4. sunbird_echo_api_url
 
 
 ##Pre Requirements

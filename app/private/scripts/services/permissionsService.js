@@ -8,7 +8,7 @@
  * Service in the playerApp.
  */
 angular.module('playerApp')
-    .service('permissionsService', function() {
+    .service('permissionsService', function(httpServiceJava, config) {
         var rolesAndPermissions = [];
         var currentUserRoles = [];
         var currentRoleActions = [];
@@ -64,5 +64,9 @@ angular.module('playerApp')
                 return ((_.intersection(data, currentRoleActions).length > 0) && flag)
             }
             return false;
+        }
+
+         this.getPermissionsData = function () {
+              return httpServiceJava.get(config.URL.LEARNER_PREFIX+config.URL.USER.PERMISSIONS);
         }
     })
