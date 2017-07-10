@@ -314,7 +314,7 @@ angular.module("playerApp.config", [])
             "config": {
                 "showEndPage": true,
                 "showStartPage": true,
-                "host": "https://qa.ekstep.in",
+                "host": "https://dev.ekstep.in",
                 "apislug": "/api",
                 "repos": ["/content-plugins/renderer"],
                 "plugins": [{

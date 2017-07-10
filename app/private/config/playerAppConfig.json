@@ -199,7 +199,12 @@
                 "content_id": "",
                 "sid": "rctrs9r0748iidtuhh79ust993",
                 "baseURL": "",
-                "editMetaLink": ""
+                "editMetaLink": "",
+                "sid":"sunbird_sid",
+                "uid":"sunbird_uid",
+                "channel":"sunbird_channel",
+                "dimension":"sunbird_dims",
+                "etags":"etags"
             },
             "config": {
                 "baseURL": "",
@@ -341,7 +346,7 @@
             "config": {
                 "showEndPage": true,
                 "showStartPage": true,
-                "host": "https://qa.ekstep.in",
+                "host": "https://dev.ekstep.in",
                 "apislug": "/api",
                 "repos":["/content-plugins/renderer"],
                 "plugins":[{"id": "org.sunbird.iframeEvent","ver": 1.0,"type": "plugin"}]
