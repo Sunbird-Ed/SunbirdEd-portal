@@ -120,19 +120,15 @@ angular.module('playerApp')
             newData.createdBy = editContent.userId;
 
             var requestBody = {
-                "content": newData,
-                "params": {
-                    "cid": "new",
-                    "sid": "12345"
-                }
-            }
+                "content": newData
+            };
 
             if (editContent.iconUpdate) {
-                editContent.uploadOrUpdateAppIcon(requestBody)
+                editContent.uploadOrUpdateAppIcon(requestBody);
             } else {
                 editContent.updateContent(requestBody);
             }
-        }
+        };
 
         editContent.uploadOrUpdateAppIcon = function(requestBody) {
             var api = 'editApi';

@@ -51,9 +51,6 @@ angular.module('playerApp')
                     createdBy: draftContent.userId,
                     mimeType: ['application/vnd.ekstep.ecml-archive']
                 },
-                'params': {
-                    'cid': '12'
-                },
                 'sort_by': {
                     "lastUpdatedOn": "desc"
                 }
