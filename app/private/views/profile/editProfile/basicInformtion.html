@@ -34,10 +34,9 @@
         </div>
         <div class="field">
             <label>Language</label>
-            <select apply-script class="ui fluid dropdown signupMultiple" multiple="" ng-model="profileCtrl.user.language">
-                        <option value="English">English</option>
-                        <option value="Hindi">Hindi</option>
-                     </select>
+            <select apply-script name="language" ng-selected="true" class="ui fluid dropdown signupMultiple" multiple="" ng-value="option.value" ng-options=" language for language in ::profileCtrl.languages" ng-model="profileCtrl.user.language">
+                                        <option value="" translate="languages">Languages</option>
+                                    </select>
         </div>
     </div>
     <div class="two fields">
