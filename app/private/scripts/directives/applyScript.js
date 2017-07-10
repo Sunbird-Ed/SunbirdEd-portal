@@ -29,6 +29,11 @@ angular.module('playerApp')
                     debug: false,
                     performance: true,
                 });
+                $('.signupMultiple').dropdown({
+                    // useLabels: false,
+                });
+                $('.ui.radio.checkbox')
+                    .checkbox();
                 $('#multi-select-sort').dropdown();
                 $('#dropdown-menu-list-header').dropdown({
                     useLabels: false,
@@ -51,9 +56,22 @@ angular.module('playerApp')
                         newPlayer.src({ type: 'video/youtube', src: attrs.videosrc });
                     });
                 }
-
-                $('#example2').calendar({
+                console.log('trying to open');
+                // $('#example2').calendar({
+                //     type: 'date',
+                //     formatter: {
+                //         date: function(date, settings) {
+                //             if (!date) return '';
+                //             var day = date.getDate();
+                //             var month = date.getMonth() + 1;
+                //             var year = date.getFullYear();
+                //             return day + '/' + month + '/' + year;
+                //         }
+                //     }
+                // });
+                $('#start').calendar({
                     type: 'date',
+                    endCalendar: $('#start'),
                     formatter: {
                         date: function(date, settings) {
                             if (!date) return '';
@@ -64,7 +82,24 @@ angular.module('playerApp')
                         }
                     }
                 });
-                $('#rangestart').calendar({
+                $('#end').calendar({
+                    type: 'date',
+                    startCalendar: $('#end'),
+                    formatter: {
+                        date: function(date, settings) {
+                            if (!date) return '';
+                            var day = date.getDate();
+                            var month = date.getMonth() + 1;
+                            var year = date.getFullYear();
+                            return day + '/' + month + '/' + year;
+                        }
+                    },
+                    onChange: function(date, text) {
+                        angular.element($('#endDateInput').val(text)).triggerHandler('input');
+                        // $('#endDateInput').val(text);
+                    },
+                });
+                $('#rangestartAdd').calendar({
                     type: 'date',
                     endCalendar: $('#rangeend'),
                     formatter: {
@@ -77,7 +112,7 @@ angular.module('playerApp')
                         }
                     }
                 });
-                $('#rangeend').calendar({
+                $('#rangeendAdd').calendar({
                     type: 'date',
                     startCalendar: $('#rangestart'),
                     formatter: {
@@ -91,61 +126,68 @@ angular.module('playerApp')
                     }
                 });
 
-                var sampleData = [
-                    {
-                      "id": 1,
-                      "name": "Appetizers",
-                      "nodes": [
-                        {"id": 110, "name": "Jalapenos Nachos"},
-                        {"id": 120, "name": "Quesadilla", "nodes": [
-                          {"id": 121, "name": "with Cheese"},
-                          {"id": 122, "name": "with Beef"},
-                          {"id": 123, "name": "with Chiclen"}
-                          ]},
-                        {"id": 130, "name": "Toquitos Chicken or Beef"},
-                        {"id": 140, "name": "Chips", "nodes": [
-                          {"id": 141, "name": "with Cheese"},
-                          {"id": 142, "name": "with Cheese & Beans"}
-                        ]}
-                      ]
+                var sampleData = [{
+                        'id': 1,
+                        'name': 'Appetizers',
+                        'nodes': [
+                            { 'id': 110, 'name': 'Jalapenos Nachos' },
+                            {
+                                'id': 120,
+                                'name': 'Quesadilla',
+                                'nodes': [
+                                    { 'id': 121, 'name': 'with Cheese' },
+                                    { 'id': 122, 'name': 'with Beef' },
+                                    { 'id': 123, 'name': 'with Chiclen' }
+                                ]
+                            },
+                            { 'id': 130, 'name': 'Toquitos Chicken or Beef' },
+                            {
+                                'id': 140,
+                                'name': 'Chips',
+                                'nodes': [
+                                    { 'id': 141, 'name': 'with Cheese' },
+                                    { 'id': 142, 'name': 'with Cheese & Beans' }
+                                ]
+                            }
+                        ]
                     },
 
                     {
-                      "id": 2,
-                      "name": "Tacos",
-                      "nodes": [
-                        {"id": 210, "name": "Carnitas", nodes: []},
-                        {"id": 220, "name": "Carne Asada"},
-                        {"id": 230, "name": "Chicken", nodes: []},
-                        {"id": 240, "name": "Shredded Beef"},
-                        {"id": 250, "name": "Al Pastor"},
-                        {"id": 260, "name": "Crispy Potato"}
-                      ]
+                        'id': 2,
+                        'name': 'Tacos',
+                        'nodes': [
+                            { 'id': 210, 'name': 'Carnitas', nodes: [] },
+                            { 'id': 220, 'name': 'Carne Asada' },
+                            { 'id': 230, 'name': 'Chicken', nodes: [] },
+                            { 'id': 240, 'name': 'Shredded Beef' },
+                            { 'id': 250, 'name': 'Al Pastor' },
+                            { 'id': 260, 'name': 'Crispy Potato' }
+                        ]
                     },
 
                     {
-                      "id": 3,
-                      "name": "Breakfast",
-                      "nodes": [
-                        {"id": 310, "name": "Huevos Rancheros"},
-                        {"id": 320, "name": "Machaca Plate"},
-                        {"id": 330, "name": "Hievos a la Mexicana"},
-                        {"id": 340, "name": "Chile Verde Omelette"}
-                      ]
+                        'id': 3,
+                        'name': 'Breakfast',
+                        'nodes': [
+                            { 'id': 310, 'name': 'Huevos Rancheros' },
+                            { 'id': 320, 'name': 'Machaca Plate' },
+                            { 'id': 330, 'name': 'Hievos a la Mexicana' },
+                            { 'id': 340, 'name': 'Chile Verde Omelette' }
+                        ]
                     }
-                  ];
+                ];
                 $('#openTreeModal').treePicker({
                     data: sampleData,
                     name: 'EDIT PROFILE',
-                    singlePick:true,
+                    singlePick: true,
                     onSubmit: function(nodes) {
-                      console.log(nodes);
+                        console.log(nodes);
                     },
                     displayFormat: function() {
                         $('.ui.blue.button.accept').html('Done');
                         $('.ui.button.close').html('Close');
                     }
-                   
+
                 });
             }
         };

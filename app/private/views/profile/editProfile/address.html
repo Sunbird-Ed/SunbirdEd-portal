@@ -1,46 +1,49 @@
-<div class="inline fields">
-    <label for="address">Select your Address</label>
-    <div class="field">
-        <div class="ui radio ">
-            <input type="radio" name="address" value="permanent" ng-model="item.addType" tabindex="0" class="hidden" ng-change="profileCtrl.newValue(item.addType)">
-            <label>pernament</label>
+<form class="ui form ">
+    <div apply-script class="inline fields">
+        <label for="address">Address Type</label>
+        <div class="field">
+            <div class="ui radio checkbox">
+                <input type="radio" name="radio" ng-checked="address.addType==='permanent'" ng-model="address.addType">
+                <label>permanent</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui radio checkbox">
+                <input type="radio" name="radio" ng-checked="address.addType==='permanent1'" ng-model="address.addType">
+                <label>temparory</label>
+            </div>
         </div>
     </div>
-    <div class="field">
-        <div class="ui radio ">
-            <input type="radio" name="address" value="permanent 1" ng-model="item.addType" tabindex="0" class="hidden" ng-change="profileCtrl.newValue(item.addType)">
-            <label>pernament 1</label>
-        </div>
-    </div>
-</div>
 
-<div class="two fields">
-    <div class=" field">
-        <label>Address Line 1</label>
-        <input type="text" name="" ng-model="item.addressLine1">
+
+    <div class="two fields">
+        <div class=" field">
+            <label>Address Line 1</label>
+            <input type="text" name="" ng-model="address.addressLine1">
+        </div>
+        <div class="  field">
+            <label>Address Line 2</label>
+            <input type="text" name="" ng-model="address.addressLine2">
+        </div>
     </div>
-    <div class="  field">
-        <label>Address Line 2</label>
-        <input type="text" name="" ng-model="item.addressLine1">
+    <div class="two fields">
+        <div class=" field">
+            <label>City</label>
+            <input type="text" name="" ng-model="address.city">
+        </div>
+        <div class="  field">
+            <label>State</label>
+            <input type="text" name="" ng-model="address.state">
+        </div>
     </div>
-</div>
-<div class="two fields">
-    <div class=" field">
-        <label>City</label>
-        <input type="text" name="" ng-model="item.city">
+    <div class="two fields">
+        <div class=" field">
+            <label>Country</label>
+            <input type="text" name="" ng-model="address.country">
+        </div>
+        <div class="  field">
+            <label>Pin Code</label>
+            <input type="text" name="" ng-model="address.zipcode">
+        </div>
     </div>
-    <div class="  field">
-        <label>State</label>
-        <input type="text" name="" ng-model="item.state">
-    </div>
-</div>
-<div class="two fields">
-    <div class=" field">
-        <label>Country</label>
-        <input type="text" name="" ng-model="item.country">
-    </div>
-    <div class="  field">
-        <label>Pin Code</label>
-        <input type="text" name="" ng-model="item.zipCode">
-    </div>
-</div>
+</form>
