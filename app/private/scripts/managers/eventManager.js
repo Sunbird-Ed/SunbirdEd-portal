@@ -2,13 +2,6 @@
  * @author Manjunath Davanam <manjunathd@ilimi.in>
  */
 
-/**
- * Namespace for the sunbird portal
- */
-var content_portal = function(){};
-window.org = {sunbird:{}};
-
-org.sunbird.portal = new content_portal();
 
 /**
  * EventManger to log or capature any sunbird portal events 
