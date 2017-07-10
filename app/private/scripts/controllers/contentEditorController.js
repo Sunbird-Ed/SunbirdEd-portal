@@ -33,7 +33,8 @@ angular.module('playerApp')
 
         contentEditor.init = function() {
             org.sunbird.portal.eventManager.addEventListener("sunbird:portal:editmetadata", function() {
-                $state.go("EditSlideShow");
+                var params = {contentId : contentEditor.contentId}
+                $state.go("EditContent", params);
             });
             
             window.addEventListener('editor:metadata:edit', function(event, data) {
