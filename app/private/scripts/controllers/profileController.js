@@ -8,7 +8,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('ProfileController', function($scope, $rootScope, userService, config, $timeout) {
+    .controller('ProfileController', function($scope, $rootScope, userService, config, $timeout, $filter) {
         var profile = this;
         profile.userId = $rootScope.userId;
         // profile.summary = 'Dedicated, ambitious and goal-driven educator with 3 year progressive experience in high school settings. Documented success in providing activities and materials that engage and develop the students intellectually. Thorough understanding of implementing the use of information technology in lesson preparation.';
@@ -20,25 +20,6 @@ angular.module('playerApp')
         profile.openImageBrowser = function() {
             console.log('trying to change');
             $('#iconImageInput').click();
-        };
-        profile.open = function() {
-            $timeout(function() {
-                console.log('trying to open');
-                $('#example2').calendar({
-                    type: 'date',
-                    formatter: {
-                        date: function(date, settings) {
-                            if (!date) return '';
-                            var day = date.getDate();
-                            var month = date.getMonth() + 1;
-                            var year = date.getFullYear();
-                            var selectedDate = day + '/' + month + '/' + year;
-                            profile.user.dob = selectedDate;
-                            return selectedDate;
-                        }
-                    }
-                });
-            }, 1500);
         };
 
         profile.updateIcon = function(files) {
@@ -90,10 +71,32 @@ angular.module('playerApp')
         profile.userProfile = function(userProfile) {
             profile.loader.showLoader = false;
             if (userProfile && userProfile.responseCode === 'OK') {
-                console.log('sdfghjkljgfcvjkhgfhjkgfhjkl', 'data', JSON.stringify(userProfile.result.response, null, 2));
+                // console.log('sdfghjkljgfcvjkhgfhjkgfhjkl', 'data', JSON.stringify(userProfile.result.response, null, 2));
                 var profileData = userProfile.result.response;
 
                 profile.user = profileData;
+
+                profile.basicProfile = profile.user;
+                profile.address = profileData.address;
+                profileData.jobProfile.forEach(function(element) {
+                    if (profileData.address.length) {
+                        element.updatedDate = new Date(element.updatedDate);
+                    }
+                }, this);
+                profileData.address.forEach(function(element) {
+                    if (profileData.address.length) {
+                        element.updatedDate = new Date(element.updatedDate);
+                    }
+                }, this);
+                profileData.education.forEach(function(element) {
+                    if (profileData.address.length) {
+                        element.updatedDate = new Date(element.updatedDate);
+                    }
+                }, this);
+                profile.education = profileData.education;
+                profile.experience = profileData.jobProfile;
+                console.log('profileData.jobProfile;', $filter('date')(new Date(profileData.jobProfile[0].updatedDate), 'yyyy-MM-dd'));
+                // console.log('profile.addres', profile.address);
                 // profile.user.organizationName = profileData.jobProfile[0].orgName;
                 // profile.user.city = profileData.address[0].city;
             } else {
@@ -115,33 +118,28 @@ angular.module('playerApp')
         };
         profile.getProfile();
         // update user profile
-        profile.updateProfile = function() {
-            delete profile.user.userName;
-            delete profile.user.status;
-            delete profile.user.identifier;
-            console.error('user request on update', profile.user);
-            // delete profile.user.email;
-            // profile.user.id = profile.user.userId;
+        profile.updateProfile = function(updateReq) {
             profile.updateProfileRequest = {
                 'id': 'unique API ID',
                 'ts': '2013/10/15 16:16:39',
                 'params': {
 
                 },
-                'request': profile.user
+                'request': updateReq
             };
             profile.loader = showLoaderWithMessage('', config.MESSAGES.PROFILE.HEADER.START);
-            // console.log('profile.user.jobprofile121342533647', profile.user.dob);
+
             userService.updateUserProfile(profile.updateProfileRequest)
                 .then(function(successResponse) {
-                    if (userProfile && userProfile.responseCode === 'OK') {
+                    console.log('userProfile.responseCode', successResponse.responseCode);
+                    if (successResponse && successResponse.responseCode === 'OK') {
+                        profile.getProfile();
                         profile.experienceForm = false;
                         profile.basicProfileForm = false;
                         profile.addressForm = false;
                         profile.educationForm = false;
                         console.log('successResponse on udate', successResponse);
-                        profile.getProfile();
-                    } else throw new error;
+                    } else { console.log('failsed'); throw new Error(''); }
                 }).catch(function() {
                     profile.experienceForm = false;
                     profile.basicProfileForm = false;
@@ -150,47 +148,74 @@ angular.module('playerApp')
                 });
         };
         //profile newAddress
-
+        // update basic info
         profile.EditBasicProfile = function() {
-            console.log('valuesof input', $('#endDateInput').val());
-
-            profile.updateProfile();
+            delete profile.basicProfile.education;
+            delete profile.basicProfile.jobProfile;
+            delete profile.basicProfile.address;
+            delete profile.basicProfile.userName;
+            delete profile.basicProfile.status;
+            delete profile.basicProfile.identifier;
+            var dob = $('#editDob').calendar('get date');
+            profile.basicProfile.dob = $filter('date')(dob, 'yyyy-MM-dd');
+            profile.updateProfile(profile.basicProfile);
         };
+        // edit address
         profile.addAddress = function(newAddress) {
-            profile.user.address.push(newAddress);
-            profile.updateProfile();
+            profile.address.push(newAddress);
+            profile.editAddress(profile.address);
         };
+        profile.editAddress = function(address) {
+            var req = { address: address };
+            req.userId = $rootScope.userId;
+            profile.updateProfile(req);
+        };
+        // edit education
         profile.addEducation = function(newEducation) {
-            profile.user.education.push(newEducation);
+            profile.education.push(newEducation);
             console.log('newEducation', newEducation);
-            profile.updateProfile();
+            profile.editEducation(profile.education);
         };
-
+        profile.editEducation = function(education) {
+            console.log('education', education);
+            var req = { education: education };
+            req.userId = $rootScope.userId;
+            console.log('req', req);
+            profile.updateProfile(req);
+        };
+        // edit experience
         profile.addExperience = function(newExperience) {
             var startDate = $('#rangestartAdd').calendar('get date');
             var endDate = $('#rangestartAdd').calendar('get date');
 
-            newExperience.endDate = endDate;
-            newExperience.startDate = startDate;
-            profile.user.jobProfile.push(newExperience);
-            profile.updateProfile();
+            newExperience.endDate = $filter('date')(endDate, 'yyyy-MM-dd');
+            newExperience.startDate = $filter('date')(startDate, 'yyyy-MM-dd');
+            profile.experience.push(newExperience);
+            profile.editExperience(profile.jobProfile);
             console.log('newExperience', newExperience);
         };
-        profile.editExperience = function() {
-            var endDate = $('#end').calendar('get date');
-
-            profile.date = endDate;
-            console.log('profile.date', profile.date);
+        profile.editExperience = function(experiences) {
+            // var startDate = $('#rangestartAdd').calendar('get date');
+            // var endDate = $('#rangestartAdd').calendar('get date');
+            // experiences.endDate = $filter('date')(endDate, 'yyyy-MM-dd');
+            // experiences.startDate = $filter('date')(startDate, 'yyyy-MM-dd');
+            var req = { jobProfile: experiences };
+            req.userId = $rootScope.userId;
+            console.log('req experience', req);
+            profile.updateProfile(req);
         };
 
-        profile.setDate = function(date) {
-            $('#end').calendar('set startDate', date);
-            $('#endDateInput').val(date);
-            console.log('trying to set end date');
-            console.log('valuesof input', $('#endDateInput').val(date));
+        profile.setEditStart = function(date) {
+            $('#rangeStart').calendar('set startDate', date);
         };
-        profile.getDate = function() {
-            $('#end').calendar('get date');
-            console.log('trying to get end date');
+        profile.setEditEnd = function(date) {
+            $('#rangeEnd').calendar('set endDate', date);
+        };
+        profile.setDob = function() {
+            $('#editDob').calendar('set date', profile.user.dob);
+        };
+        profile.getEditStart = function() {
+            console.log('tryingot der valur')
+            return ($('#rangeStart').calendar('get date'));
         };
     });

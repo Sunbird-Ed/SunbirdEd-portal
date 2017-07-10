@@ -3,35 +3,37 @@
     <div class="two fields">
         <div class=" field">
             <label>Position</label>
-            <input type="text" name="" ng-model="profileCtrl.experience.role">
+            <input type="text" name="" ng-model="profileCtrl.newExperience.role">
         </div>
         <div class="  field">
             <label>Organization</label>
-            <input type="text" name="" ng-model="profileCtrl.experience.name">
+            <input type="text" name="" ng-model="profileCtrl.newExperience.name">
         </div>
     </div>
     <div class=" field">
         <label>Job Description</label>
-        <input type="text" name="" ng-model="profileCtrl.experience.description">
+        <input type="text" name="" ng-model="profileCtrl.newExperience.description">
     </div>
     <div apply-script class="two fields" ng-init="profileCtrl.getDate()">
         <div class="field">
             <label>Start date</label>
-            <div ng-init="profileCtrl.setDtae(experience.startDate);" class="ui calendar" id="rangestartAdd">
+            <div class="ui calendar" id="rangestartAdd">
                 <div class="ui input left icon">
                     <i class="calendar icon"></i>
-                    <input type="text" ng-model="experience.startDate">
+                    <input type="text" ng-model="newExperience.startDate">
                 </div>
             </div>
         </div>
         <div class="field">
             <label>End date</label>
-            <div ng-init="profileCtrl.setDtae(experience.endDate);" class="ui calendar" id="rangeendAdd">
+            <div class="ui calendar" id="rangeendAdd">
                 <div class="ui input left icon">
                     <i class="calendar icon"></i>
-                    <input type="text" ng-model="experience.endDate">
+                    <input type="text" ng-model="newExperience.endDate">
                 </div>
             </div>
         </div>
     </div>
+    <div class="ui button " ng-click="profileCtrl.addExperience(profileCtrl.newExperience) ;">Save experience</div>
+
 </form>
