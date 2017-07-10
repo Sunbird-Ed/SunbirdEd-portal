@@ -1,0 +1,11 @@
+<div style="padding: 20px;">
+    <h5 class="ui header"><i class="warning sign yellow icon"></i>Did you verify changes in the lesson?</h5>
+    <div class="ui divider"></div>
+    <p style="padding: 10px 10px 16px 2px;margin: 0;text-align: center">
+        You are about to save a lesson that was migrated for editing. Please verify everything in the lesson preview before saving. <b>Any changes saved cannot be undone</b>.
+    </p>
+    <div style="margin-left: 30px;">
+        <button class="ui secondary button" ng-click="saveContent();closeThisDialog();firetelemetry({id: 'confirmSavingButton'}, 'confirmSavingButton')">Confirm saving</button>
+        <button class="ui primary button" ng-click="closeThisDialog(); enableSaveBtn();firetelemetry({id: 'discardChangesButton'}, 'discardChangesButton')">Discard changes</button>
+    </div>
+</div>
