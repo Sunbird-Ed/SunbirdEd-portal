@@ -22,7 +22,12 @@ TelemetryService = {
         pressup: 'DRAG'
     },
 
-
+     /**
+     * Telemetry service init should happen before calling any telemetry action
+     * @param  {obj} event name of the event which has been calling by using sunbird eventmanager
+     * @param  {obj} obj   object whihc should have mandtory fileds to instantiate the
+     */
+    
     registerEvents: function() {
         org.sunbird.portal.eventManager.addEventListener("sunbird:telemetry:init", this.init, this);
         org.sunbird.portal.eventManager.addEventListener("sunbird:telemetry:start", this.start, this);
@@ -40,7 +45,8 @@ TelemetryService = {
         return new Promise(function(resolve, reject) {
             if (!TelemetryService.instance) {
                 TelemetryService._user = obj.user;
-                TelemetryService.instance = (TelemetryService._version == "1.0") ? new TelemetryV1Manager() : new TelemetryV2Manager();
+                TelemetryService.instance = new TelemetryV2Manager();
+                TelemetryService.instance.init();
                 if (obj.gameData) {
                     if (obj.gameData.id && obj.gameData.ver) {
                         TelemetryService._parentGameData = obj.gameData;
@@ -109,7 +115,6 @@ TelemetryService = {
         TelemetryService.instance.exitApp();
     },
     flushEvent: function(event, apiName) {
-        TelemetryService._data.push(event);
         if (event)
             event.flush(apiName);
         return event;
@@ -255,3 +260,4 @@ Array.prototype.cleanUndefined = function() {
     }
     return this;
 };
+
