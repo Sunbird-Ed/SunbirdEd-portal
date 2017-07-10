@@ -48,11 +48,8 @@ angular.module('playerApp')
             var request = {
                 filters: {
                     status: ["Draft"],
-                    createdBy: "263",
-                    mimeType: ["application/vnd.ekstep.html-archive", "video/youtube", "video/mp4", "application/pdf", ]
-                },
-                'params': {
-                    'cid': '12'
+                    createdBy: allUploadedContent.userId,
+                    mimeType: ["application/vnd.ekstep.html-archive", "video/youtube", "video/mp4", "application/pdf"]
                 },
                 'sort_by': {
                     "lastUpdatedOn": "desc"

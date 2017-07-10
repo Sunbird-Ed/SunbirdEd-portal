@@ -48,12 +48,10 @@ angular.module('playerApp')
             var request = {
                 filters: {
                     status: ["Live"],
-                    createdBy: "263",
+                    createdBy: publishedContent.userId,
                     mimeType: ['application/vnd.ekstep.ecml-archive']
                 },
-                'params': {
-                    'cid': '12'
-                },
+                
                 'sort_by': {
                     "lastUpdatedOn": "desc"
                 }
