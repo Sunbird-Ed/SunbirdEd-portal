@@ -129,16 +129,15 @@ angular.module('playerApp')
             };
             toc.expandMe = function (index, item) {
                 if (item && item.mimeType !== "application/vnd.ekstep.content-collection") {
-
-                    toc.itemIndex = parseInt(index);
+                    toc.itemIndex = toc.playList.indexOf(item.identifier);
                     toc.playPlaylistContent(item.identifier, '');
                 } else {
                     var accIcon = $(index.target).closest('.title').find('i');
-                    toc.updateIcon(accIcon);
+                    toc.updateIcon(accIcon, !$(accIcon).hasClass('plus'));
                 }
             };
-            toc.updateIcon = function (icon) {
-                $(icon).hasClass('plus') ? $(icon).addClass('minus').removeClass('plus') : $(icon).addClass('plus').removeClass('minus');
+            toc.updateIcon = function (icon, isPlus) {
+                isPlus ? $(icon).addClass('plus').removeClass('minus') : $(icon).addClass('minus').removeClass('plus');
             }
             toc.checkAndAddToPlaylist = function (item) {
                 if (item.mimeType !== "application/vnd.ekstep.content-collection" && toc.playList.indexOf(item.identifier) === -1) {
@@ -194,9 +193,9 @@ angular.module('playerApp')
                     toc.playList.push(contentData.identifier);
                     toc.playListContent.push(contentData);
                 } else {
-                    for (var item in contentData.children) {
+                    angular.forEach(contentData.children, function (child, item) {
                         toc.getAllContentsFromCourse(contentData.children[item]);
-                    }
+                    });
                 }
                 return toc.playList;
             }
@@ -219,9 +218,9 @@ angular.module('playerApp')
                         children: [],
                         icon: false
                     })
-                    for (var item in contentData.children) {
+                    angular.forEach(contentData.children, function (child, item) {
                         toc.getTreeData(contentData.children[item], parent[parent.length - 1]['children']);
-                    }
+                    });
                 }
                 return toc.fancyTree;
             }
@@ -280,9 +279,9 @@ angular.module('playerApp')
             }
             toc.constructTree = function (pos, tocData) {
                 toc.fancyTree = [];
-                for (var child in tocData) {
-                    toc.getTreeData(tocData[child], toc.fancyTree);
-                }
+                angular.forEach(tocData, function (item, child) {
+                    toc.getTreeData(item, toc.fancyTree);
+                });
                 toc.initializeFancyTree("#FT_" + pos, toc.fancyTree);
             }
             toc.initializeFancyTree = function (id, src) {
@@ -328,14 +327,15 @@ angular.module('playerApp')
                         var treeId = this.id;
                         $(this).fancytree("getTree").visit(function (node) {
                             if (node.key == toc.itemIndex) {
-                                toc.updateIcon($('#' + treeId).parents(".accordion").find('.title').find('i'));
                                 $timeout(function () {
-                                    $('#' + treeId).parents(".accordion").find('.content').addClass('active');
-                                    $('#' + treeId).parents(".accordion").find('.title').addClass('active');
+                                    if (!$('#' + treeId).closest(".accordion").find('.title').hasClass('active')) {
+                                        $('#' + treeId).closest(".accordion").find('.title').trigger('click');
+                                    }
+
                                 }, 0);
                                 node.setExpanded(true);
                                 node.setActive(false);
-                                node.setFocus(true);
+                                node.setFocus(false);
 
                             } else
                             {

@@ -10,4 +10,8 @@ angular.module('playerApp')
             var url =  config.URL.LEARNER_PREFIX + config.URL.COURSE.GET_LEARN_OTHER_SECTION;           
             return httpServiceJava.get(url);
         };
+        this.recommendedCourses=function(req) {
+            var url =  config.URL.LEARNER_PREFIX + config.URL.COURSE.RECOMMENDED_COURSE;           
+            return httpServiceJava.post(url,req);
+        };
     });

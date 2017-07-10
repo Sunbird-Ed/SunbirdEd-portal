@@ -91,15 +91,13 @@ angular.module('playerApp')
             homeCtrl.otherSection = function () {
                 var req = {
                     'request': {
-                        'context': {
-                            'userId': uid
-                        }
+                         "recommendType":"course"
                     }
                 };
                 var api = 'pageApi';
                 homeCtrl[api] = {};
                 homeCtrl[api].loader = showLoaderWithMessage("", config.MESSAGES.HOME.PAGE_API.START);
-                learnService.otherSections(req).then(function (successResponse) {
+                learnService.recommendedCourses(req).then(function (successResponse) {
                     if (successResponse && successResponse.responseCode === 'OK') {
                        
                         var learnRes=successResponse.result.response.sections;                       
