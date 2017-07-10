@@ -1,13 +1,15 @@
-<div class="breadcrumppadding ui top padded grid" ng-if='breadCrumbsData'>
-    <div class="one wide column"></div>
-    <div class="ten wide column">
-        <div class="ui large breadcrumb">
-            <span ng-repeat='item in breadCrumbsData'>
-                <a ng-if='!$last' href='{{item.link}}' class="section">{{item.name}}</a>
-                <i ng-hide='$last' class="right chevron icon divider"></i>
-                <div ng-if='$last' class="active section">{{item.name}}</div>
-            </span>
+<div class="ui margin-bottom-15 margin-top-20" ng-if="breadCrumbsData">
+    <div class="ui grid">
+        <div class="one wide column"></div>
+        <div class="ten wide column">
+            <div class="breadcrumppadding ui padded breadcrumb">
+                <span ng-repeat="item in breadCrumbsData">
+                    <a ng-click="openLink(item.link)" ng-if="!$last" class="breadcrumb-fontColor section">{{item.name}}</a>
+                    <i ng-if="!$last" class="right chevron icon divider"></i>
+                    <span ng-if="$last" class="breadcrumb-fontColor active section">{{item.name}}</span>
+                </span>
+            </div>
         </div>
+        <div class="one wide column"></div>
     </div>
-    <div class="one wide column"></div>
 </div>
