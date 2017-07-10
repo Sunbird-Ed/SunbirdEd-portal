@@ -4,7 +4,7 @@
         <div class="ten wide column popular-page" ng-if="!section.loader.showLoader && !section.error.showError">
             <div class="ui link cards popular-section" ng-repeat="pageSection in section.page">
                 <h4 class="ui header card-section-header sectionHeading" ng-if="pageSection.contents && pageSection.contents.length > 0">{{pageSection.name}}
-                    <a class="ui red circular inline label">{{pageSection.contents.length}}</a></h4>
+                    <span class="ui red circular inline label">{{pageSection.contents.length}}</span></h4>
                 <div class="regular slider " ng-if="pageSection.contents.length > 0">
                     <div ng-repeat="item in pageSection.contents track by $index" add-slick>
                         <div ng-if="pageSection.sectionDataType=='content'" ng-include=" 'views/common/ratingCard.html'" ng-click="section.playContent(item)"></div>
