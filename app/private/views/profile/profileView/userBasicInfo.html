@@ -1,10 +1,5 @@
 <div class="ui raised segment " ng-if="!profileCtrl.basicProfileForm">
-    <div ng-if="profileCtrl.loader.showLoader">
-        <app-loader data="{{profileCtrl.loader}}"></app-loader>
-    </div>
-    <div ng-if="profileCtrl.error.showError">
-        <error-message data="{{profileCtrl.error}}" visibility="search.error.showError"></error-message>
-    </div>
+
     <div class="header announcementCard-header ">
         <span class="header cardsHeading " translate="experiance ">Additional Information</span>
         <a class="addeditprofile " translate="edit " ng-click="profileCtrl.basicProfileForm=true">Edit</a>
@@ -12,7 +7,7 @@
     <div class="profileitems ui relaxed aligned list ">
         <div class="item ">
             <div class="right floated content ">
-                <span translate="edit "><span ng-repeat="lan in ::profileCtrl.user.language">{{::lan}}&nbsp;</span> </span>
+                <span translate="edit "><span ng-repeat="lan in ::profileCtrl.basicProfile.language">{{::lan}}&nbsp;</span> </span>
             </div>
             <div class="iniformationcontent content ">
                 Language
@@ -20,7 +15,7 @@
         </div>
         <div class="item ">
             <div class="right floated content ">
-                <span translate="edit ">{{::profileCtrl.user.email}}</span>
+                <span translate="edit ">{{::profileCtrl.basicProfile.email}}</span>
             </div>
             <div class="iniformationcontent content ">
                 E-MAIL
@@ -28,7 +23,7 @@
         </div>
         <div class="item ">
             <div class="right floated content ">
-                <span translate="edit ">{{::profileCtrl.user.phone}}</span>
+                <span translate="edit ">{{::profileCtrl.basicProfile.phone}}</span>
             </div>
             <div class="iniformationcontent content ">
                 PHONE
@@ -36,7 +31,7 @@
         </div>
         <div class="item ">
             <div class="right floated content ">
-                <span translate="edit ">{{::profileCtrl.user.email}}</span>
+                <span translate="edit ">{{::profileCtrl.basicProfile.email}}</span>
             </div>
             <div class="iniformationcontent content ">
                 CURRENT LOCATION
@@ -46,6 +41,5 @@
 </div>
 <div class="ui raised segment " ng-if="profileCtrl.basicProfileForm">
     <div class="ui" ng-include=" 'views/profile/editProfile/basicInformtion.html' "></div>
-    <div class="ui button margin-top-15" ng-click="profileCtrl.EditBasicProfile()" ;>Save profile</div>
 
 </div>

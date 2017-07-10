@@ -4,13 +4,13 @@
         <label for="address">Select Address Type</label>
         <div class="field">
             <div class="ui radio checkbox">
-                <input type="radio" name="radio" ng-checked="address.addType==='permanent'" ng-model="address.addType">
+                <input type="radio" name="radio" ng-checked="newAddress.addType==='permanent'" ng-model="newAddress.addType">
                 <label>permanent</label>
             </div>
         </div>
         <div class="field">
             <div class="ui radio checkbox">
-                <input type="radio" name="radio" ng-checked="address.addType==='permanent1'" ng-model="address.addType">
+                <input type="radio" name="radio" ng-checked="newAddress.addType==='permanent1'" ng-model="newAddress.addType">
                 <label>temparory</label>
             </div>
         </div>
@@ -19,31 +19,33 @@
     <div class="two fields">
         <div class=" field">
             <label>Address Line 1</label>
-            <input type="text" name="" ng-model="profileCtrl.address.addressLine1">
+            <input type="text" name="" ng-model="profileCtrl.newAddress.addressLine1">
         </div>
         <div class="  field">
             <label>Address Line 2</label>
-            <input type="text" name="" ng-model="profileCtrl.address.addressLine2">
+            <input type="text" name="" ng-model="profileCtrl.newAddress.addressLine2">
         </div>
     </div>
     <div class="two fields">
         <div class=" field">
             <label>City</label>
-            <input type="text" name="" ng-model="profileCtrl.address.city">
+            <input type="text" name="" ng-model="profileCtrl.newAddress.city">
         </div>
         <div class="  field">
             <label>State</label>
-            <input type="text" name="" ng-model="profileCtrl.address.state">
+            <input type="text" name="" ng-model="profileCtrl.newAddress.state">
         </div>
     </div>
     <div class="two fields">
         <div class=" field">
             <label>Country</label>
-            <input type="text" name="" ng-model="profileCtrl.address.country">
+            <input type="text" name="" ng-model="profileCtrl.newAddress.country">
         </div>
         <div class="  field">
             <label>Pin Code</label>
-            <input type="text" name="" ng-model="profileCtrl.address.zipCode">
+            <input type="text" name="" ng-model="profileCtrl.newAddress.zipCode">
         </div>
     </div>
+    <div class="ui button " ng-click="profileCtrl.addAddress(profileCtrl.newAddress) ;">Save address</div>
+
 </form>

@@ -20,7 +20,16 @@ angular.module('playerApp')
                     .rating({
                         maxRating: 5
                     }).rating('disable', true);
-                $('.dropdown.content-search-filter').dropdown({
+                $('.dropdown.resource-search-filter').dropdown({
+                    useLabels: false,
+                    forceSelection: false,
+                    label: {
+                        duration: 0,
+                    },
+                    debug: false,
+                    performance: true,
+                });
+                $('.dropdown.course-search-filter').dropdown({
                     useLabels: false,
                     forceSelection: false,
                     label: {
@@ -178,7 +187,47 @@ angular.module('playerApp')
                         }
                     }
                 });
+                $('#rangeStart').calendar({
+                    type: 'date',
+                    endCalendar: $('#rangEend'),
+                    formatter: {
+                        date: function(date, settings) {
+                            if (!date) return '';
+                            var day = date.getDate();
+                            var month = date.getMonth() + 1;
+                            var year = date.getFullYear();
+                            return day + '/' + month + '/' + year;
+                        }
+                    }
+                });
+                $('#rangEend').calendar({
+                    type: 'date',
+                    startCalendar: $('#rangeStart'),
+                    formatter: {
+                        date: function(date, settings) {
+                            if (!date) return '';
+                            var day = date.getDate();
+                            var month = date.getMonth() + 1;
+                            var year = date.getFullYear();
+                            return day + '/' + month + '/' + year;
+                        }
+                    }
+                });
 
+                $('#editDob').calendar({
+                    type: 'date',
+                    formatter: {
+                        date: function(date, settings) {
+                            if (!date) return '';
+                            var day = date.getDate();
+                            var month = date.getMonth() + 1;
+                            var year = date.getFullYear();
+                            var selectedDate = day + '/' + month + '/' + year;
+                            // profile.user.dob = selectedDate;
+                            return selectedDate;
+                        }
+                    }
+                });
                 var sampleData = [{
                         'id': 1,
                         'name': 'Appetizers',
