@@ -39,7 +39,6 @@ angular.module('playerApp')
             return error;
         }
 
-
         function getUploadedContent() {
 
             var api = "allUploadedApi";
@@ -76,15 +75,11 @@ angular.module('playerApp')
         };
 
         allUploadedContent.initializeData = function() {
-
             getUploadedContent();
-
         };
 
         allUploadedContent.openContentEditor = function(contentId) {
-
             var params = { contentId: contentId }
             $state.go("ContentEditor", params);
-
         };
     });

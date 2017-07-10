@@ -76,15 +76,11 @@ angular.module('playerApp')
         };
 
         reviewContent.initializeData = function() {
-
             getReviewContent();
-
         };
 
         reviewContent.openContentEditor = function(contentId) {
-
             var params = { contentId: contentId }
             $state.go("ContentEditor", params);
-
         };
     });
