@@ -16,6 +16,10 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (playerTele
 
     function showPlayer(data) {
         $scope.contentData = data;
+        $scope._instance = {
+            id: $scope.contentData.identifier,
+            ver: $scope.contentData.pkgVersion
+        };
         $scope.showMetaData = $scope.isshowmetaview;
         /**
          * @event 'sunbird:portal:telemetryend' 
@@ -50,39 +54,39 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (playerTele
                 };
             }, 1000);
         } else {
-            $scope.showIFrameContent = false;            
-         playerTelemetryUtilsService.init($scope.contentData);
+            $scope.showIFrameContent = false;
+            var telemetryInitData = {contentId: $scope.contentData.identifier}
+            playerTelemetryUtilsService.init(telemetryInitData);
         }
     }
 
 
     $scope.initVideoEvents = function (video) {
-        video.on('play', function () {
-            var _instance = {
-                id: "contetId",
-                ver: "pkgVersion",
-                data: {
-                    mode: "play"
-                }
-            }
-            
-          org.sunbird.portal.eventManager.dispatchEvent("sunbird:telemetry:start",_instance);
 
+        video.on('play', function () {
+            if (parseInt(this.currentTime()) == 0) {
+                var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, "data": {"mode": "play"}};
+                playerTelemetryUtilsService.startTelemetry(telemetryData);
+            } else {
+                var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "TOUCH", subtype: "RESUME", "data": {}};
+                playerTelemetryUtilsService.updateTelemetry(telemetryData);
+            }
         });
         video.on('pause', function () {
-
+            var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "TOUCH", subtype: "PAUSE", "data": {}};
+            playerTelemetryUtilsService.updateTelemetry(telemetryData);
         });
-        video.on('timeupdate', function () {
 
-        });
         video.on('ended', function () {
-
+            playerTelemetryUtilsService.endTelemetry();
         });
         video.on('volumechange', function () {
-            console.log('vol');
+            var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "TOUCH", subtype: "VOLUME", "data": {}};
+            playerTelemetryUtilsService.updateTelemetry(telemetryData);
         });
         video.on('fullscreenchange', function () {
-            console.log('full screen');
+            var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "TOUCH", subtype: "FULLSCREEN", "data": {}};
+            playerTelemetryUtilsService.updateTelemetry(telemetryData);
         });
     }
 
