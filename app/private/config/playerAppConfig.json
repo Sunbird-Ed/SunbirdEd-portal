@@ -29,7 +29,9 @@
                 "USER_CONTENT_STATE": "user/content/state",
                 "GET_ENROLLED_COURSES": "user/courses",
                 "GET_LEARN_OTHER_SECTION": "page/assemble/Course",
-                "ENROLL_USER_COURSE": "user/courses/enroll"
+                "ENROLL_USER_COURSE": "user/courses/enroll",
+                "RECOMMENDED_COURSE":"course/recommended/courses"
+                
 
             },
             "CONTENT": {
@@ -223,7 +225,6 @@
                     "name" : "",
                     "email" : ""
                 }
-
             },
             "config": {
                 "baseURL": "",
@@ -374,7 +375,6 @@
                 "apislug": "/api",
                 "repos":["/content-plugins/renderer"],
                 "plugins":[{"id": "org.sunbird.iframeEvent","ver": 1.0,"type": "plugin"}]
-
             },
             "baseURL": "/content/preview/preview.html?webview=true"
         },
