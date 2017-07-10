@@ -4,18 +4,6 @@
 </div>
 <div ng-if="isSearchPage" ng-controller="SearchQueryCtrl as search" class="header-filter-container" ng-include="'views/header/filter.html'">
 </div>
-<div class="ui margin-bottom-15" ng-if="breadCrumbsData">
-    <div class="ui grid">
-        <div class="one wide column"></div>
-        <div class="ten wide column">
-            <div class="breadcrumppadding ui padded breadcrumb">
-                <span ng-repeat="item in breadCrumbsData">
-                    <a ng-click="openLink(item.link)" ng-if="!$last" class="section">{{item.name}}</a>
-                    <i ng-if="!$last" class="right chevron icon divider"></i>
-                    <span ng-if="$last" class="active section">{{item.name}}</span>
-                </span>
-            </div>
-        </div>
-        <div class="one wide column"></div>
-    </div>
+<div ng-include="'views/header/breadCrumbs.html'">
 </div>
+
