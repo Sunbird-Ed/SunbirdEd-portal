@@ -217,7 +217,12 @@
                 "uid":"sunbird_uid",
                 "channel":"sunbird_channel",
                 "dimension":"sunbird_dims",
-                "etags":"etags"
+                "etags":"etags",
+                "user" : {
+                    "id" : "",
+                    "name" : "",
+                    "email" : ""
+                }
 
             },
             "config": {
@@ -227,6 +232,11 @@
                         "id": "org.ekstep.telemetry",
                         "ver": "1.0",
                         "type": "plugin"
+                    },
+                    {
+                    "id": "org.sunbird.header",
+                    "ver": "1.0",
+                    "type": "plugin"
                     },
                     {
                         "id": "org.ekstep.config",
@@ -354,13 +364,13 @@
         },
         "ekstep_CP_config": {
             "context": {
-                "authToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI1OWFiMmE2MDc1YzI0ODU2YjhiYjIzMjg4ZDdhZGNmNSJ9.RLouNX7RQ0VkVv2BYqNtH12D0IzKnBJ_I46xEORwHsU",
+                "authToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI2MzExMTYwNTMzOGY0Zjc5YTgwZTM3YjcyZjVjMmUwZiJ9.azmj_AHmndeJz0h6yIkOJz1XjeZR6Gzd-OrZzR66I0A",
                 "mode": "play"
             },
             "config": {
                 "showEndPage": true,
                 "showStartPage": true,
-                "host": "https://dev.ekstep.in",
+                "host": "https://qa.ekstep.in",
                 "apislug": "/api",
                 "repos":["/content-plugins/renderer"],
                 "plugins":[{"id": "org.sunbird.iframeEvent","ver": 1.0,"type": "plugin"}]
