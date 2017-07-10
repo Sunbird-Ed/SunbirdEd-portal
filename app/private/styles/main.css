@@ -674,6 +674,7 @@ th {
 .editor textarea {
   background-color: #FFFFFF;
   height: 180px !important;
+  resize: none;
 }
 .pdf-editor {
   float: left !important;
