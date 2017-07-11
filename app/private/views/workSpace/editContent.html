@@ -4,9 +4,17 @@
         <div class="ui grid">
             <div class="one wide column"></div>
             <div class="ten wide column" ng-show="!editContent.editApi.loader.showLoader && !editContent.editApi.error.showError">
-                <h2 class="ui center aligned header">
-                    Lesson Detail
-                </h2>
+<!--                <h2 class="ui center aligned header">
+                    {{editContent.data.name}}
+                </h2>-->
+                <div class="videosegment  ui clearing segment">
+                    <h1 class="ui HomeAccordianHeading left floated header margin-auto">
+                        {{editContent.data.name}}
+                    </h1>
+                    <h5 class="ui right floated basic icon circular button"ng-click="editContent.closeEditForm(editContent.data)">
+                        <i class="ui remove icon"></i>
+                    </h5>
+                </div>
                 <form class="ui form" novalidate="">
                     <div class="field">
                         <div class="ui grid">
@@ -112,8 +120,7 @@
                 </form>
                 <button class="ui primary basic button" ng-click="editContent.previewContent(editContent.data)">Preview</button>
                 <button class="ui primary basic button" ng-click="editContent.saveMetaContent(editContent.data)">Save</button>
-                <button class="ui primary basic button" ng-click="editContent.submitForReview(editContent.data)">Submit For Review</button>
-                <button class="ui positive basic button" ng-click=" editContent.closeEditForm(editContent.data)">Close</button>
+                <!--<button class="ui primary basic button" ng-click="editContent.submitForReview(editContent.data)">Submit For Review</button>-->
             </div>
             <div class="ten wide column" ng-if="editContent.editApi.loader.showLoader">
                 <app-loader data="{{editContent.editApi.loader}}"></app-loader>
