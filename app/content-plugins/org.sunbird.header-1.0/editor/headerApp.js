@@ -156,7 +156,15 @@ angular.module('org.sunbird.header:headerApp', []).controller('mainController', 
         var editMetadata = new CustomEvent('editor:metadata:edit')
         window.parent.dispatchEvent(editMetadata);
 
-    }
+    };
+    $scope.closeEditor = function(){
+         /**
+         * Dispatching custom event to parent;
+         */
+        var closeEditor = new CustomEvent('editor:window:close')
+        window.parent.dispatchEvent(closeEditor);
+
+    };
 
     $scope.previewContent = function(fromBeginning) {
         var currentStage = _.isUndefined(fromBeginning) ? true : false;
