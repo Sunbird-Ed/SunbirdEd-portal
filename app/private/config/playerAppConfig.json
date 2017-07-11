@@ -181,7 +181,7 @@
                     "START": "We are fetching draft content...",
                     "FAILED": "Fetching draft content failed, please try again later..."
                 },
-                "CREATE_SLIDESHOW": {
+                "CREATE_LESSON": {
                     "START": "We are creating lesson...",
                     "FAILED": "Creating lesson failed, please try again later..."
                 },

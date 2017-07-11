@@ -46,7 +46,7 @@ angular.module('playerApp')
                 autoUpload: false,
                 debug: true,
                 validation: {
-                    acceptFiles: 'application/pdf, video/mp4, application/vnd.ekstep.ecml-archive, application/vnd.ekstep.html-archive'
+                    acceptFiles: 'application/pdf, video/mp4, application/vnd.ekstep.html-archive'
                 },
                 callbacks: {
                     onValidate: function(data) {
@@ -159,11 +159,11 @@ angular.module('playerApp')
                     contentCreation.uploadContent(res.result.content_id);
                 } else {
                     contentCreation[api].loader.showLoader = false;
-                    contentCreation[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.CREATE_SLIDESHOW.FAILED, config.MESSAGES.COMMON.ERROR);
+                    contentCreation[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.CREATE_LESSON.FAILED, config.MESSAGES.COMMON.ERROR);
                 }
-            }, function(error) {
+            }).catch(function (error)  {
                 contentCreation[api].loader.showLoader = false;
-                contentCreation[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.CREATE_SLIDESHOW.FAILED, config.MESSAGES.COMMON.ERROR);
+                contentCreation[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.CREATE_LESSON.FAILED, config.MESSAGES.COMMON.ERROR);
             });
         };
 
@@ -171,7 +171,7 @@ angular.module('playerApp')
 
             var api = 'createApi';
             contentCreation[api] = {};
-            contentCreation[api].loader = showLoaderWithMessage("", config.MESSAGES.WORKSPACE.CREATE_SLIDESHOW.START);
+            contentCreation[api].loader = showLoaderWithMessage("", config.MESSAGES.WORKSPACE.CREATE_LESSON.START);
 
             var requestBody = angular.copy(data);
 
