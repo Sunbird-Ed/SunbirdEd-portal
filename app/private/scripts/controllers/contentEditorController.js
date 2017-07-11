@@ -45,7 +45,7 @@ angular.module('playerApp')
         contentEditor.init();
         contentEditor.openContentEditor($stateParams.contentId);
         
-                
         
-
+        
+        
     });

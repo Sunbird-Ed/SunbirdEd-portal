@@ -23,6 +23,7 @@ angular.module('playerApp')
         editContent.showCreateSlideShowModal = true;
         editContent.userId = $rootScope.userId;
         editContent.accept = false;
+        $scope.contentPlayer = {isContentPlayerEnabled : false};
 
         editContent.initilizeView = function() {
             editContent.showCreateSlideShowModal = true;
@@ -69,8 +70,9 @@ angular.module('playerApp')
             editContent.initilizeView();
 
             var req = { contentId: editContent.contentId };
+            var qs = {mode: "edit",fields:'name,description,appIcon,contentType,mimeType,versionKey,audience,language,gradeLevel,ageGroup,subject,medium,author,domain'}
 
-            contentService.getById(req).then(function(response) {
+            contentService.getById(req, qs).then(function(response) {
                 if (response && response.responseCode === 'OK') {
                     editContent.data = angular.copy(response.result.content);
                     editContent.iconImage = editContent.data.appIcon;
@@ -82,13 +84,13 @@ angular.module('playerApp')
                         $('#ageGroupDropDown').dropdown('set selected', response.result.content.ageGroup);
                         $('#subjectDropDown').dropdown('set selected', response.result.content.subject);
                         $('#mediumDropDown').dropdown('set selected', response.result.content.medium);
-                    }, 10);
+                    }, 100);
                     editContent[api].loader.showLoader = false;
                 } else {
                     editContent[api].loader.showLoader = false;
                     editContent[api].error = showErrorMessage(false, config.MESSAGES.WORKSPACE.GET.FAILED, config.MESSAGES.COMMON.ERROR);
                 }
-            }, function(error) {
+            }).catch(function (error) {
                 editContent[api].loader.showLoader = false;
                 editContent[api].error = showErrorMessage(false, config.MESSAGES.WORKSPACE.GET.FAILED, config.MESSAGES.COMMON.ERROR);
             });
@@ -144,8 +146,7 @@ angular.module('playerApp')
                     editContent[api].loader.showLoader = false;
                     editContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.UPLOAD_ICON.FAILED, config.MESSAGES.COMMON.ERROR);
                 }
-            }, function(error) {
-                editContent[api].loader.showLoader = false;
+            }).catch(function(error){ editContent[api].loader.showLoader = false;
                 editContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.UPLOAD_ICON.FAILED, config.MESSAGES.COMMON.ERROR);
             });
         };
@@ -158,19 +159,33 @@ angular.module('playerApp')
 
             contentService.update(requestBody, editContent.contentId).then(function(res) {
                 if (res && res.responseCode === "OK") {
-                    editContent.allUploadContent();
+                    editContent.closeEditForm(requestBody.content);
                 } else {
                     editContent[api].loader.showLoader = false;
                     editContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.UPDATE.FAILED, config.MESSAGES.COMMON.ERROR);
                 }
-            }, function(error) {
+            }).catch(function (error)  {
                 editContent[api].loader.showLoader = false;
                 editContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.UPDATE.FAILED, config.MESSAGES.COMMON.ERROR);
             });
         };
 
-        editContent.allUploadContent = function() {
+        editContent.submitForReview = function() {
             $state.go("WorkSpace.AllUploadedContent");
+        };
+        
+        editContent.previewContent = function(requestData) {
+            console.log("requestData", requestData);
+            $scope.contentPlayer.contentData = requestData;
+            $scope.contentPlayer.isContentPlayerEnabled = true;
+        };
+        
+        editContent.closeEditForm = function(requestData) {
+            if(requestData.mimeType === "application/vnd.ekstep.ecml-archive") {
+                $state.go("WorkSpace.DraftContent");
+            } else {
+                $state.go("WorkSpace.AllUploadedContent");
+            }
         };
 
 

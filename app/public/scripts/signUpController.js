@@ -61,7 +61,7 @@ angular.module('loginApp')
             newUser.avatar = '';
             newUser.dob = null;
             newUser.aadhaarNo = '';
-            newUser.language = '';
+            newUser.language = [];
 
             $timeout(function() {
                 $('.dropdown').dropdown('clear');
@@ -141,6 +141,15 @@ angular.module('loginApp')
             console.log('isValidForm', isValid);
             if (isValid === true) { newUser.signUp(); } else return false;
         };
+        newUser.getErrorMsg = function(errorKey) {
+            var errorMessage = '';
+            if (errorKey === 'USER_ALREADY_EXIST') {
+                errorMessage = 'user name already exist';
+            } else if (errorKey === 'USERNAME_EMAIL_IN_USE') {
+                errorMessage = 'email already exist';
+            } else errorMessage = errorKey;
+            return errorMessage;
+        };
         newUser.signUp = function() {
             newUser.request = {
                 'params': {},
@@ -176,7 +185,8 @@ angular.module('loginApp')
                     }, 2000);
                 } else {
                     newUser.loader.showLoader = false;
-                    newUser.error = showErrorMessage(true, successResponse.params.err, 'error');
+                    var errorMessage = newUser.getErrorMsg(successResponse.params.err);
+                    newUser.error = showErrorMessage(true, errorMessage, 'error');
                 }
             }).catch(function(error) {
                 newUser.loader.showLoader = false;
