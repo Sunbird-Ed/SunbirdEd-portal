@@ -101,7 +101,7 @@ angular.module('playerApp')
                         var req = {
                             "request": {
                                 "userId": toc.uid,
-                                "courseIds": [toc.courseRecordId || ''],
+                                "courseIds": [toc.courseId],
                                 "contentIds": toc.playList
                             }
                         };
@@ -373,7 +373,6 @@ angular.module('playerApp')
                 toc.courseProgress = toc.courseParams.progress;
                 toc.courseTotal = toc.courseParams.total;
                 toc.tocId = toc.courseParams.tocId;
-                toc.courseRecordId = toc.courseParams.courseRecordId;
                 toc.courseName = toc.courseParams.courseName;
                 //console.log($stateParams);
                 $scope.enableCloseButton = (toc.lectureView === 'yes') ? 'false' : 'true';
