@@ -2,10 +2,11 @@
 
 
 ## Environment Variables
-1. sunbird_port
-2. sunbird_content_player_url=http://{{content_service_ip}}:5000/api/sb/v1/
-3. sunbird_learner_player_url=http://{{learner_service_ip}}:9000/v1/
-
+1. sunbird_content_player_url=http://{{content_service_ip}}:5000/v1/
+2. sunbird_learner_player_url=http://{{learner_service_ip}}:9000/v1/
+3. sunbird_port
+4. sunbird_echo_api_url
+5. sunbird_autocreate_trampoline_user eg: true (boolean value, default to true)
 
 ## Pre Requirements
 

@@ -1,0 +1,31 @@
+<div class="margin-top-20 ui raised segment">
+    <div class="header announcementCard-header">
+        <span class="header cardsHeading" translate="experiance">Experience</span>
+        <a href="" class="addeditprofile" ng-if="!profileCtrl.experienceForm" translate="edit" ng-click="profileCtrl.experienceForm=true ;profileCtrl.isNewExperience=false ">Edit</a>
+        <a href="" class="addeditprofile" ng-if="!profileCtrl.experienceForm  " ng-click="profileCtrl.experienceForm=true ; profileCtrl.isNewExperience=true ;profileCtrl.newExperience={} " translate="add ">Add</a>
+        <a href=""class="addeditprofile" ng-if="profileCtrl.experienceForm" translate="edit" ng-click="profileCtrl.experienceForm=false">close</a>
+    </div>
+    <div ng-if="!profileCtrl.experienceForm && !profileCtrl.loader.showLoader &&!profileCtrl.error.showError" class="profileitems ui relaxed divided list">
+        <div class="item" ng-repeat="experience in ::profileCtrl.experience">
+            <div class="right floated content">
+                <div class="metadata">
+                    <span class="date">{{::experience.updatedDate|date: "dd/MM/yyyy"  }}</span>
+                </div>
+            </div>
+            <img class="ui avatar image" src="/images/user_logo.png">
+            <div class="content">
+
+                <a class=" header">{{::experience.role}}</a>
+                <div class="description"> {{::experience.orgName}}, {{::experience.address.city}}</div>
+            </div>
+        </div>
+    </div>
+    <div ng-if="profileCtrl.experienceForm  &&!profileCtrl.loader.showLoader &&!profileCtrl.error.showError " class="profileitems ui relaxed divided list ">
+        <div class="edit-experience-form " ng-if="!profileCtrl.isNewExperience ">
+            <div class=" ui " ng-repeat="experience in profileCtrl.user.jobProfile track by $index " ng-include=" 'views/profile/editProfile/experience.html' "></div>
+        </div>
+        <div class="add-experience-form " ng-if="profileCtrl.isNewExperience ">
+            <div class="ui " ng-include=" 'views/profile/editProfile/addExperience.html' "></div>
+        </div>
+    </div>
+</div>

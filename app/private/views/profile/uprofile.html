@@ -21,19 +21,22 @@
                     <div class="ui button " ng-if="profileCtrl.user.address.length < 2 &&!profileCtrl.addNewAddress " ng-click="profileCtrl.addNewAddress=true ">Add Address</div>
                     <div class="ui " ng-if="profileCtrl.addNewAddress " ng-init="profileCtrl.item={}" ng-include=" 'views/profile/editProfile/addAddress.html' "></div>
                     <div class="ui button " ng-if="profileCtrl.addNewAddress " ng-click="profileCtrl.addAddress(profileCtrl.item)" ;>Save Address</div>
+                    <div class="ui button margin-top-15" ng-click="profileCtrl.EditBasicProfile()" ;>Save profile</div>
+
                 </div>
             </div>
 
             <!--Education-->
-            <div ng-init="profileCtrl.newEducation=false " class="ui accordion" id='education-accordion'>
+            <div class="ui accordion" id='education-accordion'>
                 <div class="ui dividing header margin-top-15 "></div>
                 <div class=" title">
                     <i class="icon "></i> <span class="ui medium header">Education</span>
                     <i class="dropdown icon"></i>
                 </div>
-                <div class=" content">
+                <div class=" content" ng-init="profileCtrl.newEducation=false ">
                     <div class="ui " ng-repeat="education in profileCtrl.user.education track by $index  " ng-include=" 'views/profile/editProfile/education.html' "></div>
                     <div class="ui button " ng-if="!profileCtrl.newEducation " ng-click="profileCtrl.newEducation=true ;profileCtrl.education={}">Add Education</div>
+                    <div class="ui button margin-top-15" ng-click="profileCtrl.EditBasicProfile()" ;>Save profile</div>
                     <div class="ui " ng-if="profileCtrl.newEducation " ng-include=" 'views/profile/editProfile/addEducation.html' "></div>
                     <div class="ui button " ng-if="profileCtrl.newEducation " ng-click="profileCtrl.addEducation(profileCtrl.education)" ;>Save Education</div>
                 </div>

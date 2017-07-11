@@ -10,6 +10,7 @@
     <!-- inject:css -->
     <link rel="stylesheet" href="styles/external.min.css">
     <link rel="stylesheet" href="styles/style.min.css">
+    <script src="https://use.fontawesome.com/b247c24c3d.js"></script>
     <!-- endinject -->
 </head>
 
@@ -48,82 +49,10 @@
                     </div>
                 </div>
             </div>
-            <div class="ui masthead vertical segment content-masterhead">
-                <div class="ui grid">
-                    <div class="one column" style="width:auto;padding-right: 6px;">
-                        <img class="ui mini image content-logo" ng-src="{{contentDetails.contentImage}}">
-                    </div>
-                    <div class="five wide column" style="padding-left: 0px">
-                        <div class="ui canvas" style="margin-top: 6px; ">
-                            <label class="content-title" title="{{contentDetails.contentTitle}}">{{contentDetails.contentTitle | limitTo:30}}
-                                <span ng-if="contentDetails.contentTitle.length > 30">...</span></label>
-                            <label class="content-type-label">{{contentDetails.contentType}}</label>
-                            <div ng-include="'templates/editContentMetaDialog.html'" style="display: inline-block; "></div>
-                            <a class="btn at-btn at-btn-ok" ng-click="editContentMeta(); fireToolbarTelemetry({id: 'editMeta'}, 'editMetaButton')">
-                                <i class="edit icon link"></i>
-                            </a>
-                        </div>
-                        <div class="row">
-                            <label class="content-concept-label">{{contentDetails.contentConcepts}}</label>
-                        </div>
-                    </div>
-                    <div class="right floated four wide column bottom aligned" style="padding-right: 20px;">
-                        <div id="userprofile" ng-show="userDetails.id" class="usercontext">
-                            <div class="browse item at username">
-                                {{userDetails.name}}
-                                <i class="dropdown icon"></i>
-                            </div>
-                            <div class="ui fluid popup bottom right transition hidden user-details-container">
-                                <div class="ui divided items">
-                                    <div class="item">
-                                        <div class="ui tiny circular image user-avtar">
-                                            <img src="{{userDetails.avtar}}">
-                                        </div>
-                                        <div class="middle aligned content" style="text-align: left;">
-                                            <span class="header">{{userDetails.name}}</span>
-                                            <div class="meta">
-                                                <span>{{userDetails.email}}</span>
-                                            </div>
-                                            <div class="extra" ng-init="disableRedirectBtn = false">
-                                                <a ng-class="disableRedirectBtn ? 'ui tiny button disabled': 'ui tiny button'" ng-href="{{cancelLink}}" ng-click="disableRedirectBtn = true; fireToolbarTelemetry({id: 'close'}, 'closeButton')" target="_self">close</a>
-                                                <a ng-class="disableRedirectBtn ? 'ui tiny button disabled': 'ui tiny button'" ng-href="{{userDetails.logout}}" ng-click="disableRedirectBtn = true; fireToolbarTelemetry({id: 'logout'}, 'logoutButton')" target="_self">logout</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- <button class="ui tiny icon button disabled right floated">
-                            <i class="icon-close icon"></i> Close
-                        </button> -->
-                        <div ng-include="'templates/saveSuccessMessage.html'"></div>
-                        <div ng-include="'templates/saveErrorMessage.html'"></div>
-                        <div ng-include="'templates/conflictDialog.html'"></div>
-                        <div ng-include="'templates/migratedContentSaveMsg.html'"></div>
-                        <button ng-class="saveBtnEnabled ? 'ui compact icon button right floated ce-button' : 'ui compact icon button right floated disabled'" ng-click="saveContent(); fireToolbarTelemetry({id: 'save'}, 'saveButton')" ng-disabled="!contentId" style="margin-left: 5px;">
-                            <i class="icon-save icon"></i> Save
-                        </button>
-                        <div class="ui compact buttons right floated ce-button">
-                            <div class="ui button" ng-click="previewContent(); fireToolbarTelemetry({id: 'preview'}, 'previewButton');">
-                                <i class="icon-preview icon"></i> Preview</div>
-                            <div class="ui floating dropdown icon button">
-                                <i class="dropdown icon"></i>
-                                <div class="menu">
-                                    <div class="item" ng-click="previewContent('start'); fireToolbarTelemetry({id: 'preview'}, 'previewButton')">preview from beginning</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="download-collaborator-icon">
-                            <i class="large add user link icon" ng-click="fireEvent({id: 'collaborator:add'});" title="Add Collaborator"></i>
-                            <i class="large download link icon" ng-click="fireEvent({id: 'download:content'});" title="Download" style="line-height: 26px;"></i>
-                            <i class="large send link icon" title="Send For Review" ng-click="fireEvent({id: 'org.ekstep.review:review'});"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="ui grid">
+            <div ng-repeat="header in headers" ng-include="header.templateURL"></div>
+            <div class="ui grid toolbar">
                 <div class="ui nine wide column">
-                    <div class="ui icon menu" style="margin-bottom: 0; margin-top: 0;margin-left: 30px; border:none; box-shadow: none;">
+                    <div class="ui icon menu">
                         <span ng-repeat="menu in menus" ng-include="'templates/toolbar.html'"></span>
                         <span ng-repeat="menu in contextMenus" ng-if="menu.state === 'SHOW'" ng-include="'templates/toolbar.html'" class="at-context-menu"></span>
                     </div>
@@ -135,55 +64,66 @@
                 </div>
             </div>
             <div ng-include="'templates/deleteStageDialog.html'"></div>
-            <div id="mainContainerGrid" class="ui grid bottom attached celled" style="margin: 0;background: #EEEEEE;">
-                <div class="row">
-                    <div class="ui two wide column scrollable-slides">
-                        <div ng-repeat="stage in stages track by $index" class="thumbnail-container" style="margin-bottom: 20px">
-                            <div class="ui centered raised card segment thumbnail">
-                                <span class="stage-number">{{$index+1}}</span>
-                                <div class="ui fluid image">
-                                    <div class="ui blue ribbon label thumbnail-ribbon" ng-if="stage.isSelected">
-                                        <i class="trash outline icon link" ng-click="fireEvent(stage.ondelete)"></i> <i class="clone icon link" ng-click="fireEvent(stage.duplicate)"></i>
-                                    </div>
-                                    <img data-id="{{stage.id}}" src="{{stage.thumbnail}}" x-lvl-draggable="true" x-lvl-drop-target="true" x-on-drop="onStageDragDrop(dragEl, dropEl)" ng-click="fireEvent(stage.getOnClick())" />
+            <div id="mainContainerGrid" class="ui grid container fluid">
+                <div class="ui two wide left floated column scrollable-slides">
+                    <div ng-repeat="stage in stages track by $index" class="thumbnail-container">
+                        <div class="ui centered raised card segment thumbnail">
+                            <span class="stage-number">{{$index+1}}</span>
+                            <div class="ui fluid image">
+                                <div class="ui blue ribbon label thumbnail-ribbon" ng-if="stage.isSelected">
+                                    <i class="trash outline icon link" ng-click="fireEvent(stage.ondelete)"></i> <i class="clone icon link" ng-click="fireEvent(stage.duplicate)"></i>
                                 </div>
+                                <img data-id="{{stage.id}}" src="{{stage.thumbnail}}" x-lvl-draggable="true" x-lvl-drop-target="true" x-on-drop="onStageDragDrop(dragEl, dropEl)" ng-click="fireEvent(stage.getOnClick())" />
                             </div>
                         </div>
                     </div>
-                    <div class="ui seven wide column">
-                        <div id="canvas-wrapper">
-                            <canvas id="canvas" class="ui card centered raised" width="720px" height="405px" style="margin: 0; border-radius: 0px; background: none"></canvas>
-                        </div>
-                        <div id="geniecontrols" ng-if="showGenieControls">
-                            <img id="geniecontrolsimage" class="ui card centered raised" src="images/geniecontrols.png">
-                        </div>
-                        <div class="row" style="margin-top: 10px">
-                            <div ng-include="'templates/attachmentHolder.html'"></div>
-                        </div>
-                        <!-- <div class="row">
-                            <div class="ui form">
-                                <textarea class="content-teacher-comments" rows="2" placeholder="Teacher Instructions..."></textarea>
-                            </div>
-                        </div>
-                        -->
+                </div>
+                <div class="ui seven wide column">
+                    <div id="canvas-wrapper">
+                        <canvas id="canvas" class="ui card centered raised" width="720px" height="405px" style="margin: 0; border-radius: 0px; background: none"></canvas>
                     </div>
-                    <div class="ui three wide column" style="background-color: #EEEEEE; padding: 0px !important;">
-                        <div class="sidebar-holder">
-                            <div ng-repeat="sidebar in registeredCategories">
-                                <div ng-show="(configCategory.selected == sidebar.id && sidebar.state == 'SHOW')">
-                                    <div ng-include="sidebar.templateURL"></div>
-                                </div>
+                    <div id="geniecontrols" ng-if="showGenieControls">
+                    </div>
+                    <div class="row" style="margin-top: 10px">
+                        <div ng-include="'templates/attachmentHolder.html'"></div>
+                    </div>
+                </div>
+                <div class="ui three wide right floated column">
+                    <div class="sidebar-holder">
+                        <div ng-repeat="sidebar in registeredCategories">
+                            <div ng-show="(configCategory.selected == sidebar.id && sidebar.state == 'SHOW')">
+                                <div ng-include="sidebar.templateURL"></div>
                             </div>
                         </div>
-                        <div class="sidebar-reportissue " style="position: fixed; right: 0; bottom: 0;width: 100%;margin-bottom: 10px; ">
-                            <a class="ui basic small button " ng-click="fireSidebarTelemetry({id: 'reportIssue'}, 'reportIssueButton') " ng-href="{{reportIssueLink}} " target="_blank " style="position: absolute; bottom:0; right: 30px "><i class="help circle medium icon "></i>Help</a>
-                        </div>
+                    </div>
+                    <div class="sidebar-reportissue">
+                        <a class="ui basic small button " ng-click="fireSidebarTelemetry({id: 'reportIssue'}, 'reportIssueButton') " ng-href="{{reportIssueLink}} " target="_blank "><i class="help circle medium icon "></i>Help</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <div id="objectPointer" style="display: none;border: 1px dashed black;"></div>
+    <!-- message for unsupported screen start -->
+    <div class="unsupported-resolution">
+        <div class="message-container">
+            <div class="ui icon negative message">
+                <i class="fa fa-exclamation-triangle"></i>
+                <div class="content">
+                    <div class="header">
+                        Unsupported resolution
+                    </div>
+                    <p id="ngdialog1-aria-describedby" tabindex="-1">
+                        Resolution below 1024px is not supported, please switch to a higher resolution display.
+                        <!-- <div class="ui primary button">
+                            Save
+                        </div> -->
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- message for unsupported screen end -->
     <!-- inject:js -->
     <script src="scripts/contenteditor.min.js"></script>
     <script src="scripts/coreplugins.js"></script>

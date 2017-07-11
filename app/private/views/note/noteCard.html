@@ -9,17 +9,17 @@
                 <div class="item">
                     <div class="content">
                         <span class="ui tiny header">
-                            <span class="cardsKnowMore mouse-pointer" ng-click="noteCard.showUpdateNoteModal(note)"> {{ note.title | limitTo: 15 }}&nbsp;
-                                <i ng-show="note.title.length > 15" class="ellipsis horizontal icon popup-button" data-content="{{note.note}}"
+                            <span class="cardsKnowMore mouse-pointer" ng-click="noteCard.showUpdateNoteModal(note)"> {{ note.title | limitTo: 15 }}
+                                <i ng-show="note.title.length > 15" class="ellipsis horizontal icon popup-button" data-content="{{note.titles}}"
                                    data-variation="wide"></i>
                             </span>
                             <span class="note-card-timeStamp right floated">{{note.lastUpdatedOn| dateFilterXTimeAgo}}</span>
                         </span>
-                        <div class="description">
-                            <span> {{ note.note | limitTo: 70 }}&nbsp;
-                                <i ng-show="note.note.length > 70" class="ellipsis horizontal icon popup-button" data-content="{{note.note}}"
-                                   data-variation="wide"></i>
-                            </span>
+                        <div class="description" ng-init="noteData = note.note.length > 70 ? note.note.substring(0,70) : note.note">
+                            <pagedown-viewer content="noteData"></pagedown-viewer>
+                            <i ng-if="note.note.length > 70" class="ellipsis horizontal icon popup-button" data-content="{{note.note}}"
+                               data-variation="wide">
+                            </i> 
                         </div>
                     </div>
                     <div ng-if="($index < noteCard.quantityOfNotes - 1) && noteCard.notesList.length > 1" class="ui clearing divider"></div>
@@ -31,7 +31,7 @@
         <div class="ui list" ng-if="noteCard.searchApi.loader.showLoader">
             <app-loader data="{{noteCard.searchApi.loader}}"></app-loader>
         </div>
-        <div class="ui list" ng-if="noteCard.searchApi.error.showError  && noteCard.notesList.length === 0">
+        <div class="ui list" ng-if="noteCard.searchApi.error.showError && noteCard.notesList.length === 0">
             <error-message data="{{noteCard.searchApi.error}}" visibility="noteCard.searchApi.error.showError"></error-message>
         </div>
     </div>

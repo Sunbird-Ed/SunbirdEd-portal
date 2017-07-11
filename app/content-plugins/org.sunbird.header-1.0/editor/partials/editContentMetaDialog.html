@@ -1,0 +1,12 @@
+<div class="ui container" style="margin: 0px;">
+    <div style="margin: 30px 10px 25px 0px;">
+        <div style=" display: inline;"><i class="huge warning sign yellow icon"></i></div>
+        <div style="text-align: center;margin: 10px;font-size: 17px;color: #5f5c5c; display: inline;" class="meta">
+            Navigating to content details page
+        </div>
+    </div>
+    <div style="margin-left: 90px; display: inline-block;">
+        <button class="ui  compact primary button" ng-click="routeToContentMeta(true); fireTelemetry({subtype: 'save', target: 'saveAndProceedButton', id: 'saveAndProceedButton' })">Save & proceed</button>
+        <button class="ui compact secondary button" ng-click="routeToContentMeta(false); fireTelemetry({subtype: 'save', target: 'proceedWithoutSaveButton', id: 'proceedWithoutSaveButton' })">proceed without save</button>
+    </div>
+</div>

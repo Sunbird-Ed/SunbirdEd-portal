@@ -32,7 +32,7 @@
             <div class="row">
                 <div class="twelve wide column">
                     <main>
-                        <div ui-view="contentView"></div>
+                        <div ui-view="mainView"></div>
                     </main>
                 </div>
             </div>
@@ -47,9 +47,8 @@
     <script src="/thirdparty/bower_components/angular-cookies/angular-cookies.js"></script>
     <script src="/thirdparty/bower_components/angular-route/angular-route.js"></script>
     <script type="text/javascript" src="/thirdparty/bower_components/semantic-ui-calendar/dist/calendar.min.js"></script>
-
-
     <script src="/thirdparty/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="/thirdparty/bower_components/angular-ui-router/release/stateEvents.min.js"></script>
     <script src="/thirdparty/semantic/semantic.min.js"></script>
     <script src="/thirdparty/bower_components/video.js/dist/video.js"></script>
     <script src="/thirdparty/bower_components/videojs-youtube/dist/Youtube.js"></script>
@@ -68,9 +67,19 @@
     <script src="/thirdparty/bower_components/jquery.fancytree/dist/jquery.fancytree.min.js"></script>
     <script src="/thirdparty/bower_components/lodash/lodash.js"></script>
     <script src="/thirdparty/bower_components/file-upload/fine-uploader/fine-uploader.js"></script>
+    <script src="/thirdparty/bower_components/angular-uuid4/angular-uuid4.min.js"></script>
 
     <script src="/thirdparty/jquery.fancytree/dist/jquery.fancytree.min.js"></script>
-     <script src="/thirdparty/semantic-tree-picker/semantic-ui-tree-picker.js"></script>
+    <script src="/thirdparty/semantic-tree-picker/semantic-ui-tree-picker.js"></script>
+    <!-- utils -->
+    <script src="/scripts/utils/util.js"></script>
+
+    <!-- Telemetry service -->
+    <script src="/scripts/telemetry/TelemetryEvent.js"></script>
+    <script src="/scripts/telemetry/TelemetryService.js"></script>
+    <script src="/scripts/telemetry/TelemetryV2Manager.js"></script>
+    <script src="/scripts/telemetry/TelemetryServiceUtil.js"></script>
+    <script src="/scripts/telemetry/InActiveEvent.js"></script>
 
     <!-- endbower -->
 
@@ -79,7 +88,7 @@
 
     <!-- managers -->
     <script src="/scripts/managers/eventManager.js"></script>
-    
+
     <script src="scripts/app.js"></script>
     <script src="scripts/routes/appRoute.js"></script>
     <!--factories-->
@@ -94,10 +103,12 @@
     <script src="scripts/services/courseService.js"></script>
     <script src="scripts/services/learnService.js"></script>
     <script src="scripts/services/userService.js"></script>
-    <script src="scripts/services/resourceService.js"></script>
+    <script src="scripts/services/pageSectionService.js"></script>
     <script src="scripts/services/searchService.js"></script>
     <script src="scripts/services/profileService.js"></script>
     <script src="scripts/services/permissionsService.js"></script>
+    <script src="scripts/services/playerTelemetryUtilsService.js"></script>
+    <script src="scripts/services/contentStateService.js"></script>
     <!--controller-->
     <script src="scripts/controllers/searchCourseController.js"></script>
     <script src="scripts/controllers/searchResourcesController.js"></script>
@@ -118,9 +129,16 @@
     <script src="scripts/controllers/contentPlayer.js"></script>
     <script src="scripts/controllers/note/noteCardController.js"></script>
     <script src="scripts/controllers/contentPlayerController.js"></script>
-    <script src="scripts/controllers/signupController.js"></script>
-    <script src="scripts/controllers/createSlideShowController.js"></script>
+    <script src="scripts/controllers/workspace/createLessonController.js"></script>
+    <script src="scripts/controllers/workspace/draftContentController.js"></script>
+    <script src="scripts/controllers/workspace/reviewContentController.js"></script>
+    <script src="scripts/controllers/workspace/publishedContentController.js"></script>
+    <script src="scripts/controllers/workspace/allUploadedContentController.js"></script>
+    <script src="scripts/controllers/workspace/contentCreationController.js"></script>
+    <script src="scripts/controllers/workspace/editContentController.js"></script>
+    <script src="scripts/controllers/contentEditorController.js"></script>
 
+    <script src="scripts/controllers/pageSectionController.js"></script>
     <!--filter-->
     <script src="scripts/filters/dateFilter.js"></script>
 
@@ -137,6 +155,8 @@
     <script src="scripts/directives/slickDirective.js"></script>
     <script src="scripts/directives/addNoteDirective.js"></script>
     <script src="scripts/directives/permissionsDirective.js"></script>
+    <script src="scripts/directives/pageSectionDirective.js"></script>
+    <script src="scripts/directives/fileUpload.js"></script>
     <!--routes-->
 </body>
 
