@@ -7,6 +7,7 @@
 2. sunbird_learner_player_url
 3. sunbird_port
 4. sunbird_echo_api_url
+5. sunbird_autocreate_trampoline_user eg: true (boolean value, default to true)
 
 
 ##Pre Requirements
