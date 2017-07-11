@@ -1,6 +1,6 @@
 <div class="ui grid" ng-init="editContent.initializeData()">
     <div class="one wide column"></div>
-    <div class="ten wide column">
+    <div class="ten wide column" ng-show="!contentPlayer.isContentPlayerEnabled">
         <div class="ui grid">
             <div class="one wide column"></div>
             <div class="ten wide column" ng-show="!editContent.editApi.loader.showLoader && !editContent.editApi.error.showError">
@@ -15,11 +15,17 @@
                                     <label>
                                         Icon
                                     </label>
-                                    <div class="ui basic massive icon button" ng-click="editContent.openImageBrowser()" ng-if="!editContent.iconImage">
-                                        <i class="ui image icon"></i>
+                                    <div class="ui card userProfilePic" ng-click="editContent.openImageBrowser()" ng-if="!editContent.iconImage">
+                                        <div class="image iconProfilePic">
+                                            <i class="add to calendar icon"></i>
+                                        </div>
+                                    </div>
+                                    <div class="ui card userProfilePic" ng-if="editContent.iconImage" ng-click="editContent.openImageBrowser()" >
+                                        <div class="image landscapeImgUser">
+                                            <img ng-src="{{editContent.iconImage}}">
+                                        </div>
                                     </div>
                                     <input type="file" accept="image/x-png,image/gif,image/jpeg" class="content-input" id="iconImageInput" onchange="angular.element(this).scope().updateIcon(this.files);" required="" />
-                                    <img ng-if="editContent.iconImage" class="ui small link image height-150" ng-src="{{editContent.iconImage}}" id="image" alt="icon" ng-click="editContent.openImageBrowser()" tabindex="3">
                                 </div>
                             </div>
                             <div class="ten wide column">
@@ -104,8 +110,10 @@
                         </div>
                     </div>
                 </form>
+                <button class="ui primary basic button" ng-click="editContent.previewContent(editContent.data)">Preview</button>
                 <button class="ui primary basic button" ng-click="editContent.saveMetaContent(editContent.data)">Save</button>
-                <button class="ui positive basic button" ng-click=" editContent.allUploadContent(editContent.data)">Close</button>
+                <button class="ui primary basic button" ng-click="editContent.submitForReview(editContent.data)">Submit For Review</button>
+                <button class="ui positive basic button" ng-click=" editContent.closeEditForm(editContent.data)">Close</button>
             </div>
             <div class="ten wide column" ng-if="editContent.editApi.loader.showLoader">
                 <app-loader data="{{editContent.editApi.loader}}"></app-loader>
@@ -116,5 +124,9 @@
             <div class="one wide column"></div>
         </div>
     </div>
+    <div class="ten wide column" ng-if="contentPlayer.isContentPlayerEnabled">
+        <content-player visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="true" height="10" width="100" ispercentage="true"></content-player>
+    </div>
+
     <div class="one wide column"></div>
 </div>
