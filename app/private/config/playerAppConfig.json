@@ -12,8 +12,7 @@
                 "RESOURCE_BUNDLE": "resourcebundle",
                 "SIGNUP": "user/create",
                 "UPDATE_USER_PROFILE": "user/update",
-                "GET_PROFILE": "user/getprofile",
-                "PERMISSIONS":"permission/data"
+                "GET_PROFILE": "user/getprofile"
             },
             "COURSE": {
                 "SEARCH": "course/search",
@@ -59,6 +58,9 @@
             },
             "RESOURCE": {
                 "GET": "page/assemble/Resource"
+            },
+            "ROLES":{
+                "READ":"role/read"
             }
         },
         "FILTER": {
