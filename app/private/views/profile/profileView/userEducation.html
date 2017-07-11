@@ -1,9 +1,9 @@
 <div class="ui raised segment">
     <div class="header announcementCard-header">
         <span class="header cardsHeading" translate="experiance">Education</span>
-        <a class="addeditprofile" ng-if="!profileCtrl.educationForm" translate="edit" ng-click="profileCtrl.educationForm=true ;profileCtrl.isNewEducation=false ">Edit</a>
-        <a class="addeditprofile" ng-if="!profileCtrl.educationForm " ng-click="profileCtrl.educationForm=true ;profileCtrl.isNewEducation=true ;profileCtrl.newEducation={} " translate="add ">Add</a>
-        <a class="addeditprofile" ng-if="profileCtrl.educationForm" translate="edit" ng-click="profileCtrl.educationForm=false">close</a>
+        <a href=""class="addeditprofile" ng-if="!profileCtrl.educationForm" translate="edit" ng-click="profileCtrl.educationForm=true ;profileCtrl.isNewEducation=false ">Edit</a>
+        <a href=""href="" class="addeditprofile" ng-if="!profileCtrl.educationForm " ng-click="profileCtrl.educationForm=true ;profileCtrl.isNewEducation=true ;profileCtrl.newEducation={} " translate="add ">Add</a>
+        <a  href="" class="addeditprofile" ng-if="profileCtrl.educationForm" translate="edit" ng-click="profileCtrl.educationForm=false">close</a>
     </div>
     <div ng-if="!profileCtrl.educationForm" class="profileitems ui relaxed divided list">
         <div class="item" ng-repeat="education in profileCtrl.user.education">
