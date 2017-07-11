@@ -368,6 +368,9 @@ th {
 .padding-left-25 {
   padding-left: 25px !important;
 }
+.margin-none {
+  margin: 0em !important;
+}
 .margin-top-0 {
   margin-top: 0px !important;
 }
@@ -776,12 +779,12 @@ slick-prev:before,
 }
 .userProfilePic .image {
   background: white !important;
-  width: 200px;
-  height: 200px;
+  width: 100% !important;
+  height: 140px !important;
 }
 .userProfilePic .image.iconProfilePic {
   text-align: center;
-  line-height: 200px;
+  line-height: 140px;
 }
 .userProfilePic .image.iconProfilePic i {
   vertical-align: middle;
@@ -792,8 +795,8 @@ slick-prev:before,
   top: 0;
   bottom: 0;
   margin: auto;
-  width: 200px;
-  height: 150px;
+  width: 100% !important;
+  height: 120px !important;
 }
 .down-arrow-accordion {
   float: right !important;
