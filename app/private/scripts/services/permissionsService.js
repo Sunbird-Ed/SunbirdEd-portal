@@ -67,6 +67,6 @@ angular.module('playerApp')
         }
 
          this.getPermissionsData = function () {
-              return httpServiceJava.get(config.URL.LEARNER_PREFIX+config.URL.USER.PERMISSIONS);
+              return httpServiceJava.get(config.URL.LEARNER_PREFIX+config.URL.ROLES.READ);
         }
     })
