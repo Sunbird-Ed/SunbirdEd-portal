@@ -17,7 +17,8 @@
     "angular-sanitize": "1.6.0",
     "jquery-ui": "^1.12.1",
     "jquery.fancytree": "fancytree#^2.23.0",
-    "file-upload" : "./node_modules/fine-uploader/"
+    "file-upload": "./node_modules/fine-uploader/",
+    "angular-uuid4": "^0.3.1"
   },
   "devDependencies": {
     "angular-mocks": "1.6.0",

@@ -1,5 +1,5 @@
 angular.module('playerApp')
-        .controller('courseScheduleCtrl', function (config, courseService, sessionService, $stateParams, $state, $timeout, $scope, $rootScope, $location, $anchorScroll) {
+        .controller('courseScheduleCtrl', function (config, courseService, sessionService, $stateParams, $state, $timeout, $scope, $rootScope, $location, $anchorScroll, contentStateService) {
             var toc = this;
             toc.playList = [];
             toc.playListContent = [];
@@ -106,13 +106,12 @@ angular.module('playerApp')
                             }
                         };
                         if (toc.courseType == "ENROLLED_COURSE") {
-                            courseService.courseContentState(req).then(function (content_res) {
-                                if (content_res && content_res.responseCode === "OK") {
-                                    toc.contentStatusList = toc.fetchObjectAttributeAsArrayOrObject(content_res.result.contentList, "contentId", "status", true);
+                            contentStateService.getContentsState(req, function (content_res) {
+                                console.log('content_res',content_res)
+                                    toc.contentStatusList = toc.fetchObjectAttributeAsArrayOrObject(content_res, "contentId", "status", true);
                                     toc.courseHierachy = res.result.content;
                                     $rootScope.courseName = toc.courseHierachy.name;
                                     $rootScope.isTocPage ? toc.applyAccordion() : false;
-                                }
                             });
                         } else {
                             toc.courseHierachy = res.result.content;
@@ -396,6 +395,7 @@ angular.module('playerApp')
                 };
                 toc.playItemIndex = undefined;
                 toc.getCourseToc();
+                contentStateService.init();
             }
 
             toc.loadData = function () {

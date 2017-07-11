@@ -18,5 +18,6 @@ angular.module('playerApp', [
         'pdf',
         'pascalprecht.translate',
         'ngSanitize',
-        'ui.router.state.events'
+        'ui.router.state.events',
+        'uuid4'
     ]);

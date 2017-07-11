@@ -28,7 +28,7 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (playerTele
          */
         window.addEventListener('renderer:telemetryevent:end', function (event, data) {
             console.info('OE_END event:', event.detail.telemetryData);
-            org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:telemetryend', event.detail.telemetryData);
+        org.sunbird.portal.eventManager.dispatchEvent('sunbird:player:telemetry', event.detail.telemetryData);
         });
         window.onbeforeunload = function (e) {
             playerTelemetryUtilsService.endTelemetry({progress: $scope.contentProgress});
