@@ -1,3 +1,12 @@
+<style type="text/css">
+ .IframeShadow {
+        box-shadow:-1px -1px 9px 6px rgba(0, 0, 0, 0.41);
+        width: 77%;
+        margin-left: 11%;
+        border-radius: 1%;
+    }
+ </style>  
+
 <div id="contentPlayer">
     <div class='videosegment ui segment' ng-if="visibility">
 
@@ -15,7 +24,7 @@
 
                 <div class="twelve wide column">
                     <div class="content-player" ng-if="(contentData.mimeType === 'application/vnd.ekstep.ecml-archive' || contentData.mimeType === 'application/vnd.ekstep.html-archive') && showIFrameContent">
-                        <iframe id="contentViewerIframe" height='100%' width='100%'></iframe>
+                        <iframe id="contentViewerIframe" class="IframeShadow" height='100%' width='100%'></iframe>
                     </div>
                     <div apply-script id="content-video-player-holder" class="content-player" videosrc="{{contentData.artifactUrl}}" videotype="{{contentData.mimeType}}" ng-if="contentData.mimeType !== 'video/youtube' && contentData.mimeType.indexOf('video') > -1">
                         <video height='100%' width='100%' id="content-video-player" class="video-js vjs-default-skin player-video" controls preload="auto" data-setup='{"controls":true}'>
