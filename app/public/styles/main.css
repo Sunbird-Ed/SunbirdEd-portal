@@ -362,6 +362,9 @@ th {
 .padding-top-10 {
   padding-top: 10px !important;
 }
+.padding-topBottom-10 {
+  padding: 10px 0px!important;
+}
 .padding-left-25 {
   padding-left: 25px !important;
 }
@@ -1353,9 +1356,6 @@ span.fancytree-title {
 .profileheader.ui.items > .item .meta:last-child {
   color: #979797;
 }
-.profileheaderpadding.ui.grid > .column:not(.row) {
-  padding: 20px 0 20px 0;
-}
 .workspaceinstuction {
   text-align: center;
   color: #979797;
@@ -1457,6 +1457,11 @@ span.fancytree-title {
 /* file upload border */
 .qq-uploader {
   border: 2px dashed #CCCCCC !important;
+}
+/*profile image header css*/
+.header-image-profile {
+  height: 100px !important;
+  width: 100px !important;
 }
 .profilesegmentmargin.ui.segment:first-child {
   margin-top: 20px;
