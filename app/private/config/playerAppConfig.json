@@ -213,15 +213,18 @@
             "context": {
                 "content_id": "",
                 "sid": "rctrs9r0748iidtuhh79ust993",
-                "user": {
-                    "id": "390",
-                    "name": "Harish kumar Gangula",
-                    "email": "harishg@ilimi.com",
-                    "avtar": "https://localhost:3000/images/sunbird_logo.png",
-                    "logout": "https://localhost:3000/logout"
-                },
-                "baseURL": "https://localhost:3000/",
-                "editMetaLink": ""
+                "baseURL": "",
+                "editMetaLink": "",
+                "sid":"sunbird_sid",
+                "uid":"sunbird_uid",
+                "channel":"sunbird_channel",
+                "dimension":"sunbird_dims",
+                "etags":"etags",
+                "user" : {
+                    "id" : "",
+                    "name" : "",
+                    "email" : ""
+                }
             },
             "config": {
                 "baseURL": "",
@@ -230,6 +233,11 @@
                         "id": "org.ekstep.telemetry",
                         "ver": "1.0",
                         "type": "plugin"
+                    },
+                    {
+                    "id": "org.sunbird.header",
+                    "ver": "1.0",
+                    "type": "plugin"
                     },
                     {
                         "id": "org.ekstep.config",
@@ -357,7 +365,7 @@
         },
         "ekstep_CP_config": {
             "context": {
-                "authToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI1OWFiMmE2MDc1YzI0ODU2YjhiYjIzMjg4ZDdhZGNmNSJ9.RLouNX7RQ0VkVv2BYqNtH12D0IzKnBJ_I46xEORwHsU",
+                "authToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI2MzExMTYwNTMzOGY0Zjc5YTgwZTM3YjcyZjVjMmUwZiJ9.azmj_AHmndeJz0h6yIkOJz1XjeZR6Gzd-OrZzR66I0A",
                 "mode": "play"
             },
             "config": {
@@ -365,8 +373,8 @@
                 "showStartPage": true,
                 "host": "https://qa.ekstep.in",
                 "apislug": "/api",
-                "repos": ["/scripts/plugins"],
-                "plugins": [{ "id": "org.sunbird.iframeEvent", "ver": 1.0, "type": "plugin" }]
+                "repos":["/content-plugins/renderer"],
+                "plugins":[{"id": "org.sunbird.iframeEvent","ver": 1.0,"type": "plugin"}]
             },
             "baseURL": "/content/preview/preview.html?webview=true"
         },
