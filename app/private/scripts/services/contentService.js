@@ -40,8 +40,8 @@ angular.module('playerApp')
             return httpService.upload(url, req);
         }
 
-        this.getById = function(req) {
-            var url =  config.URL.CONTENT_PREFIX + config.URL.CONTENT.GET + '/' + req.contentId;
-            return httpService.get(url, req);
+        this.getById = function(req, qs) {
+            var url =  config.URL.CONTENT_PREFIX + config.URL.CONTENT.GET + '/' + req.contentId ;
+            return httpService.get(url, req, null, qs);
         }
     });

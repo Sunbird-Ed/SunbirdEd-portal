@@ -51,10 +51,15 @@ app.all('/service/v1/learner/*', keycloak.protect(), proxy(learnerURL, {
 const contentURL = env.sunbird_content_player_url || 'http://localhost:5000/v1/';
 app.all('/service/v1/content/*', keycloak.protect(), proxy(contentURL, {
     proxyReqPathResolver: function(req) {
-        let urlParam = req.params["0"]
-        return require('url').parse(contentURL + urlParam).path;
+        let urlParam = req.params["0"];
+        let query = require('url').parse(req.url).query;
+        if(query) {
+            return require('url').parse(contentURL + urlParam + '?' + query).path;
+        } else {
+            return require('url').parse(contentURL + urlParam).path;
+        }
     }
-}))
+}));
 
 app.all('/v1/user/session/create',function (req, res) {
     trampolineServiceHelper.handleRequest(req, res, keycloak);
