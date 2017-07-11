@@ -18,7 +18,7 @@ Plugin.extend({
         if (instance.isPreviewInIframe()) {
             if (evt.target) {
                 var parsedData = JSON.parse(evt.target);
-                    var custTelemetryEvent = new CustomEvent('renderer:telemetryevent:end', {
+                    var custTelemetryEvent = new CustomEvent('renderer:telemetry:event', {
                         "detail": {
                             "telemetryData": parsedData
                         }
