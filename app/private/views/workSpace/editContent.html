@@ -4,9 +4,17 @@
         <div class="ui grid">
             <div class="one wide column"></div>
             <div class="ten wide column" ng-show="!editContent.editApi.loader.showLoader && !editContent.editApi.error.showError">
-                <h2 class="ui center aligned header">
-                    Lesson Detail
-                </h2>
+                <!--                <h2 class="ui center aligned header">
+                                    {{editContent.data.name}}
+                                </h2>-->
+                <div class="videosegment  ui clearing segment">
+                    <h1 class="ui HomeAccordianHeading left floated header margin-auto">
+                        {{editContent.data.name}}
+                    </h1>
+                    <h5 class="ui right floated basic icon circular button"ng-click="editContent.closeEditForm(editContent.data)">
+                        <i class="ui remove icon"></i>
+                    </h5>
+                </div>
                 <form class="ui form" novalidate="">
                     <div class="field">
                         <div class="ui grid">
@@ -66,10 +74,9 @@
                             </select>
                         </div>
                         <div class="field">
-                            <label>Domain</label>
-                            <select class="ui fluid dropdown">
-                                <option value="">Numeracy</option>
-                                <option value="AL">Alabama</option>
+                            <label>Subject</label>
+                            <select name="subject" class="ui fluid dropdown singleSelectDropDown" id="subjectDropDown" ng-options=" subject for subject in editContent.subjects" ng-model="editContent.data.subject">
+                                <option value="" translate="ageGroup">Choose subject</option>
                             </select>
                         </div>
                     </div>
@@ -95,25 +102,26 @@
                             </select>
                         </div>
                         <div class="field">
-                            <label>Subject</label>
-                            <select name="subject" class="ui fluid dropdown singleSelectDropDown" id="subjectDropDown" ng-options=" subject for subject in editContent.subjects" ng-model="editContent.data.subject">
-                                <option value="" translate="ageGroup">Choose subject</option>
-                            </select>
+                            <label>Author</label>
+                            <input type="text" name="author" placeholder="author" ng-model="editContent.data.author" required="">
                         </div>
+
                     </div>
-                    <div class="field">
+<!--                    <div class="field">
                         <div class="two fields">
                             <div class="field">
-                                <label>Author</label>
-                                <input type="text" name="author" placeholder="author" ng-model="editContent.data.author" required="">
+                                <label>Domain</label>
+                                <select class="ui fluid dropdown singleSelectDropDown">
+                                    <option value="">Numeracy</option>
+                                    <option value="AL">Alabama</option>
+                                </select>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                 </form>
                 <button class="ui primary basic button" ng-click="editContent.previewContent(editContent.data)">Preview</button>
                 <button class="ui primary basic button" ng-click="editContent.saveMetaContent(editContent.data)">Save</button>
-                <button class="ui primary basic button" ng-click="editContent.submitForReview(editContent.data)">Submit For Review</button>
-                <button class="ui positive basic button" ng-click=" editContent.closeEditForm(editContent.data)">Close</button>
+                <!--<button class="ui primary basic button" ng-click="editContent.submitForReview(editContent.data)">Submit For Review</button>-->
             </div>
             <div class="ten wide column" ng-if="editContent.editApi.loader.showLoader">
                 <app-loader data="{{editContent.editApi.loader}}"></app-loader>
