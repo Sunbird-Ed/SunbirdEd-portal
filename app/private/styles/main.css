@@ -1318,7 +1318,7 @@ span.fancytree-title {
   color: rgba(0, 0, 0, 0.95);
 }
 .workspacesegment {
-  margin-top: 73px;
+  margin-top: 33px;
 }
 .workspacecontent {
   text-align: center;
@@ -1411,6 +1411,10 @@ span.fancytree-title {
 }
 .my-icon {
   vertical-align: middle;
+}
+.backtoprofile {
+  float: right;
+  font-size: 1.1em;
 }
 .ui.tree-picker.modal .search {
   display: none;
