@@ -78,27 +78,24 @@ angular.module('playerApp')
 
                 profile.basicProfile = profile.user;
                 profile.address = profileData.address;
-                profileData.jobProfile.forEach(function(element) {
-                    if (profileData.address.length) {
-                        element.updatedDate = new Date(element.updatedDate);
-                    }
-                }, this);
-                profileData.address.forEach(function(element) {
-                    if (profileData.address.length) {
-                        element.updatedDate = new Date(element.updatedDate);
-                    }
-                }, this);
-                profileData.education.forEach(function(element) {
-                    if (profileData.address.length) {
-                        element.updatedDate = new Date(element.updatedDate);
-                    }
-                }, this);
+                // profileData.jobProfile.forEach(function(element) {
+                //     if (profileData.address.length) {
+                //         element.updatedDate = new Date(element.updatedDate);
+                //     }
+                // }, this);
+                // profileData.address.forEach(function(element) {
+                //     if (profileData.address.length) {
+                //         element.updatedDate = new Date(element.updatedDate);
+                //     }
+                // }, this);
+                // profileData.education.forEach(function(element) {
+                //     if (profileData.address.length) {
+                //         element.updatedDate = new Date(element.updatedDate);
+                //     }
+                // }, this);
                 profile.education = profileData.education;
                 profile.experience = profileData.jobProfile;
-                console.log('profileData.jobProfile;', $filter('date')(new Date(profileData.jobProfile[0].updatedDate), 'yyyy-MM-dd'));
-                // console.log('profile.addres', profile.address);
-                // profile.user.organizationName = profileData.jobProfile[0].orgName;
-                // profile.user.city = profileData.address[0].city;
+                // console.log('profileData.jobProfile;', $filter('date')(new Date(profileData.jobProfile[0].updatedDate), 'yyyy-MM-dd'));
             } else {
                 console.log('jfhdsf gere');
                 throw new Error('');
@@ -215,7 +212,7 @@ angular.module('playerApp')
             $('#editDob').calendar('set date', profile.user.dob);
         };
         profile.getEditStart = function() {
-            console.log('tryingot der valur')
+            console.log('tryingot der valur');
             return ($('#rangeStart').calendar('get date'));
         };
     });
