@@ -5,7 +5,7 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (playerTele
     $scope.isClose = $scope.isclose;
     $scope.isHeader = $scope.isheader;
     $scope.showModalInLectureView = true;
-
+    $scope.contentProgress = 0;
     $scope.updateDataOnWatch = function (scope) {
         if (scope.body) {
             showPlayer(scope.body);
@@ -68,24 +68,27 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (playerTele
                 var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, "data": {"mode": "play"}};
                 playerTelemetryUtilsService.startTelemetry(telemetryData);
             } else {
-                var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "TOUCH", "data": { subtype: "RESUME"}};
+                var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "TOUCH", "data": {subtype: "RESUME"}};
                 playerTelemetryUtilsService.updateTelemetry(telemetryData);
             }
         });
         video.on('pause', function () {
-            var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "TOUCH",  "data": {subtype: "PAUSE"}};
+            var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "TOUCH", "data": {subtype: "PAUSE"}};
             playerTelemetryUtilsService.updateTelemetry(telemetryData);
         });
-
+        video.on('timeupdate', function () {
+            $scope.contentProgress = parseInt(this.currentTime() * 100 / this.duration());
+        });
         video.on('ended', function () {
-            playerTelemetryUtilsService.endTelemetry();
+            $scope.contentProgress = 100;
+            playerTelemetryUtilsService.endTelemetry({progress:$scope.contentProgress });
         });
         video.on('volumechange', function () {
-            var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "TOUCH",  "data": {subtype: "VOLUME"}};
+            var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "TOUCH", "data": {subtype: "VOLUME"}};
             playerTelemetryUtilsService.updateTelemetry(telemetryData);
         });
         video.on('fullscreenchange', function () {
-            var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "TOUCH", "data": { subtype: "FULLSCREEN"}};
+            var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "TOUCH", "data": {subtype: "FULLSCREEN"}};
             playerTelemetryUtilsService.updateTelemetry(telemetryData);
         });
     }
