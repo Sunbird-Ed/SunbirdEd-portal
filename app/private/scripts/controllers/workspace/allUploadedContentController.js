@@ -76,7 +76,12 @@ angular.module('playerApp')
         };
 
         allUploadedContent.openContentEditor = function(contentId) {
-            var params = { contentId: contentId }
+            var params = { contentId: contentId };
             $state.go("ContentEditor", params);
+        };
+        
+        allUploadedContent.openEditForm = function(contentId) {
+            var params = {contentId : contentId};
+            $state.go("EditContent", params);
         };
     });
