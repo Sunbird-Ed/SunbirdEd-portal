@@ -1,5 +1,5 @@
 <div class="userAvtarWrap field link" ng-init="profileCtrl.iconImage=false">
-    <img class="ui small circular image " src="{{profileCtrl.profilePic || 'images/user_logo.png'}}" ng-click="profileCtrl.openImageBrowser();">
+    <img class="ui small circular image " src="{{profileCtrl.user.avatar || 'images/user_logo.png'}}" ng-click="profileCtrl.openImageBrowser();">
     <div class="img-description-layer">
         <i class="edit icon" ng-click="profileCtrl.openImageBrowser();"></i>
     </div>
