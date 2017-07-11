@@ -8,7 +8,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('ContentEditorController', function(config, $stateParams, $location, $sce, $state) {
+    .controller('ContentEditorController', function(config, $stateParams, $location, $sce, $state, $rootScope) {
 
         var contentEditor = this;
         contentEditor.contentId = $stateParams.contentId;
@@ -32,6 +32,11 @@ angular.module('playerApp')
         };
 
         contentEditor.init = function() {
+            org.sunbird.portal.eventManager.addEventListener("sunbird:portal:editmetadata", function() {
+                var params = {contentId : contentEditor.contentId}
+                $state.go("EditContent", params);
+            });
+            
             window.addEventListener('editor:metadata:edit', function(event, data) {
                 console.info('Sunbird edit metadata is calling');
                 org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:editmetadata');
@@ -39,5 +44,8 @@ angular.module('playerApp')
         };
         contentEditor.init();
         contentEditor.openContentEditor($stateParams.contentId);
+        
+                
+        
 
     });
