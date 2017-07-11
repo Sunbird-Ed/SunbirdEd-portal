@@ -1,5 +1,5 @@
 angular.module('playerApp')
-        .controller('courseScheduleCtrl', function (config, courseService, sessionService, $stateParams, $state, $timeout, $scope, $rootScope, $location, $anchorScroll) {
+        .controller('courseScheduleCtrl', function (config, courseService, sessionService, $stateParams, $state, $timeout, $scope, $rootScope, $location, $anchorScroll, contentStateService) {
             var toc = this;
             toc.playList = [];
             toc.playListContent = [];
@@ -101,18 +101,17 @@ angular.module('playerApp')
                         var req = {
                             "request": {
                                 "userId": toc.uid,
-                                "courseIds": [toc.courseRecordId || ''],
+                                "courseIds": [toc.courseId],
                                 "contentIds": toc.playList
                             }
                         };
                         if (toc.courseType == "ENROLLED_COURSE") {
-                            courseService.courseContentState(req).then(function (content_res) {
-                                if (content_res && content_res.responseCode === "OK") {
-                                    toc.contentStatusList = toc.fetchObjectAttributeAsArrayOrObject(content_res.result.contentList, "contentId", "status", true);
+                            contentStateService.getContentsState(req, function (content_res) {
+                                console.log('content_res',content_res)
+                                    toc.contentStatusList = toc.fetchObjectAttributeAsArrayOrObject(content_res, "contentId", "status", true);
                                     toc.courseHierachy = res.result.content;
                                     $rootScope.courseName = toc.courseHierachy.name;
                                     $rootScope.isTocPage ? toc.applyAccordion() : false;
-                                }
                             });
                         } else {
                             toc.courseHierachy = res.result.content;
@@ -129,16 +128,15 @@ angular.module('playerApp')
             };
             toc.expandMe = function (index, item) {
                 if (item && item.mimeType !== "application/vnd.ekstep.content-collection") {
-
-                    toc.itemIndex = parseInt(index);
+                    toc.itemIndex = toc.playList.indexOf(item.identifier);
                     toc.playPlaylistContent(item.identifier, '');
                 } else {
                     var accIcon = $(index.target).closest('.title').find('i');
-                    toc.updateIcon(accIcon);
+                    toc.updateIcon(accIcon, !$(accIcon).hasClass('plus'));
                 }
             };
-            toc.updateIcon = function (icon) {
-                $(icon).hasClass('plus') ? $(icon).addClass('minus').removeClass('plus') : $(icon).addClass('plus').removeClass('minus');
+            toc.updateIcon = function (icon, isPlus) {
+                isPlus ? $(icon).addClass('plus').removeClass('minus') : $(icon).addClass('minus').removeClass('plus');
             }
             toc.checkAndAddToPlaylist = function (item) {
                 if (item.mimeType !== "application/vnd.ekstep.content-collection" && toc.playList.indexOf(item.identifier) === -1) {
@@ -194,9 +192,9 @@ angular.module('playerApp')
                     toc.playList.push(contentData.identifier);
                     toc.playListContent.push(contentData);
                 } else {
-                    for (var item in contentData.children) {
+                    angular.forEach(contentData.children, function (child, item) {
                         toc.getAllContentsFromCourse(contentData.children[item]);
-                    }
+                    });
                 }
                 return toc.playList;
             }
@@ -219,21 +217,26 @@ angular.module('playerApp')
                         children: [],
                         icon: false
                     })
-                    for (var item in contentData.children) {
+                    angular.forEach(contentData.children, function (child, item) {
                         toc.getTreeData(contentData.children[item], parent[parent.length - 1]['children']);
-                    }
+                    });
                 }
                 return toc.fancyTree;
             }
 
 
             toc.getContentClass = function (contentId) {
+
                 var statusClass = {
                     0: 'grey',
                     1: 'blue',
                     2: 'green'
                 };
-                return statusClass[toc.contentStatusList[contentId] || 0];
+                if (toc.courseType == 'ENROLLED_COURSE') {
+                    return statusClass[toc.contentStatusList[contentId] || 0];
+                }
+                return 0;
+
             }
 
             toc.getContentIcon = function (contentMimeType) {
@@ -271,13 +274,13 @@ angular.module('playerApp')
                 } else {
                     //play my current content
                     toc.resumeCourse();
-                }            
+                }
             }
             toc.constructTree = function (pos, tocData) {
                 toc.fancyTree = [];
-                for (var child in tocData) {
-                    toc.getTreeData(tocData[child], toc.fancyTree);
-                }
+                angular.forEach(tocData, function (item, child) {
+                    toc.getTreeData(item, toc.fancyTree);
+                });
                 toc.initializeFancyTree("#FT_" + pos, toc.fancyTree);
             }
             toc.initializeFancyTree = function (id, src) {
@@ -323,14 +326,15 @@ angular.module('playerApp')
                         var treeId = this.id;
                         $(this).fancytree("getTree").visit(function (node) {
                             if (node.key == toc.itemIndex) {
-                                toc.updateIcon($('#' + treeId).parents(".accordion").find('.title').find('i'));
                                 $timeout(function () {
-                                    $('#' + treeId).parents(".accordion").find('.content').addClass('active');
-                                    $('#' + treeId).parents(".accordion").find('.title').addClass('active');
+                                    if (!$('#' + treeId).closest(".accordion").find('.title').hasClass('active')) {
+                                        $('#' + treeId).closest(".accordion").find('.title').trigger('click');
+                                    }
+
                                 }, 0);
                                 node.setExpanded(true);
                                 node.setActive(false);
-                                node.setFocus(true);
+                                node.setFocus(false);
 
                             } else
                             {
@@ -368,7 +372,6 @@ angular.module('playerApp')
                 toc.courseProgress = toc.courseParams.progress;
                 toc.courseTotal = toc.courseParams.total;
                 toc.tocId = toc.courseParams.tocId;
-                toc.courseRecordId = toc.courseParams.courseRecordId;
                 toc.courseName = toc.courseParams.courseName;
                 //console.log($stateParams);
                 $scope.enableCloseButton = (toc.lectureView === 'yes') ? 'false' : 'true';
@@ -392,6 +395,7 @@ angular.module('playerApp')
                 };
                 toc.playItemIndex = undefined;
                 toc.getCourseToc();
+                contentStateService.init();
             }
 
             toc.loadData = function () {

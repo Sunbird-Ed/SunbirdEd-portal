@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('playerApp')
-        .controller('resourceCtrl', function (resourceService, $log, $scope, $state, $rootScope, $sessionStorage, $timeout, config) {
+        .controller('resourceCtrl', function ($log, $scope, $state, $rootScope, $sessionStorage, $timeout, config,sessionService) {
             var resource = this;
             resource.contentPlayer = {
                 isContentPlayerEnabled: false
@@ -38,34 +38,13 @@ angular.module('playerApp')
                 $state.go('Player', params);
             };
 
-            resource.sections = function () {
-                resource.loader = showLoaderWithMessage("", config.MESSAGES.RESOURCE.PAGE.START);
-
-                resourceService.resources().then(function (successResponse) {
-                    if (successResponse && successResponse.responseCode === 'OK') {
-                        var resourceRes = successResponse.result.response.sections;
-                        resource.page = [];
-                        for (var i in resourceRes) {
-                            var sectionArr = {};
-                            sectionArr = resourceRes[i];
-                            sectionArr.contents =  [];
-                            for (var subsec in sectionArr.subSections) {
-                                if (sectionArr.subSections[subsec].contents) {
-                                    Array.prototype.push.apply(sectionArr.contents, sectionArr.subSections[subsec].contents);
-                                }
-                            }
-                            resource.page.push(sectionArr);
-                        }
-                        resource.loader.showLoader = false;
-                        //resource.page = successResponse.result.response.sections[1].subSections;
-                    } else {
-                        resource.loader.showLoader = false;
-                        resource.error = showErrorMessage(true, config.MESSAGES.RESOURCE.PAGE.FAILED, config.MESSAGES.COMMON.ERROR);
-                    }
-                }).catch(function (error) {
-                    resource.loader.showLoader = false;
-                    resource.error = showErrorMessage(true, config.MESSAGES.RESOURCE.PAGE.FAILED, config.MESSAGES.COMMON.ERROR);
-                });
+          
+            
+            resource.openCourseView = function (course, courseType) {
+                // courseId = 'do_112265805439688704113';
+                var showLectureView = 'no';
+                var params = {courseType: courseType, courseId: course.courseId || course.identifier, tocId: course.courseId || course.identifier, lectureView: showLectureView, progress: course.progress, total: course.total,courseRecordId:course.id,courseName:course.courseName};
+                sessionService.setSessionData('COURSE_PARAMS', params);
+                $state.go('Toc', params);
             };
-            resource.sections();
         });

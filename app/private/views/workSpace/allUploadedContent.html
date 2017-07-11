@@ -1,0 +1,32 @@
+
+<div ng-init="allUploadedContent.initializeData()">
+    <div ng-if="!allUploadedContent.allUploadedApi.loader.showLoader && !allUploadedContent.allUploadedApi.error.showError">
+        <div class="ui three stackable cards">
+            <div class="link card mouse-pointer" ng-repeat="item in allUploadedContent.allUploadedContentData track by $index"
+                 ng-click="allUploadedContent.openEditForm(item.identifier)">
+                <div class="image imageInCardsResponsive">
+                    <div class="ui fluid image">
+                        <a class="ui black right ribbon label">{{item.contentType}}</a>
+                        <img ng-src=" {{item.appIcon ? item.appIcon : '../images/sunbird_logo.png'}} ">
+                    </div>
+                    <div class="cardImageText center aligned ">
+                        <span class="sliderCardHeading text-cencapitalize">
+                            {{item.name| limitTo:14}}
+                        </span>
+                    </div>
+                </div>
+                <div class="sliderCards content">
+                    <span class="sliderCardSubDesc">
+                        <span>{{item.description| limitTo:14}}</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="twelve wide column" ng-if="allUploadedContent.allUploadedApi.loader.showLoader">
+        <app-loader data="{{allUploadedContent.allUploadedApi.loader}}"></app-loader>
+    </div>
+    <div class="twelve wide column" ng-if="allUploadedContent.allUploadedApi.error.showError">
+        <error-message data="{{allUploadedContent.allUploadedApi.error}}" visibility="allUploadedContent.allUploadedApi.error.showError"></error-message>
+    </div>
+</div>

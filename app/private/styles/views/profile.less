@@ -28,7 +28,7 @@
 }
 
 .workspacesegment {
-    margin-top: 73px;
+    margin-top: 33px;
 }
 
 .workspacecontent {
@@ -69,10 +69,6 @@
 
 .profileheader.ui.items>.item .meta:last-child {
     color: #979797;
-}
-
-.profileheaderpadding.ui.grid>.column:not(.row) {
-    padding: 20px 0 20px 0;
 }
 
 .workspaceinstuction {
@@ -122,6 +118,10 @@
     padding: 0px;
     font-size: 1em;
     white-space: nowrap;
+    @media only screen and (max-width: 1200px) { 
+      white-space: pre-line;
+    }
+
 }
 .textcontent i.icon{
     font-size: 2em;
@@ -134,6 +134,12 @@
 .my-icon {
     vertical-align: middle;
 }
+
+.backtoprofile{
+    float:right;
+    font-size: 1.1em;
+}
+
 // Tree Picker
 
 .ui.tree-picker.modal .search{
@@ -142,3 +148,45 @@
 .ui.tree-picker.modal .header .menu{
      display:none;
 }
+
+/* user avatar on hover effects in profile edit page*/
+
+.userAvtarWrap {
+    position: relative;
+    height: 150px;
+    width: 150px;
+}
+
+.img-description-layer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    color: @white;
+    visibility: hidden;
+    opacity: 0.1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2em !important;
+    border-radius: 50%;
+    background: rgba(34,36,38,.1);
+}
+
+.userAvtarWrap:hover .img-description-layer {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* file upload border */
+.qq-uploader {
+    border: 2px dashed #CCCCCC !important;
+}
+
+/*profile image header css*/
+.header-image-profile {
+    height:100px !important;
+    width:100px !important;
+}
+

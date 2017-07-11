@@ -39,15 +39,15 @@ angular.module('playerApp')
         //play course
         search.openCourseView = function(course, courseType) {
             var showLectureView = 'no';
-            var params = { courseType: courseType, courseId: course.contentId, tocId: course.courseId, lectureView: showLectureView, progress: course.progress, total: course.total };
+            var params = { courseType: courseType, courseId: course.courseId || course.identifier, tocId: course.courseId || course.identifier, lectureView: showLectureView, progress: course.progress, total: course.total };
             sessionService.setSessionData('COURSE_PARAMS', params);
             $state.go('Toc', params);
         };
 
         // corseSearch
         search.handleCourseSearch = function(courses) {
-            if (courses.result.response.length) {
-                search.searchResult = courses.result.response;
+            if (courses.result.course && courses.result.course.length) {
+                search.searchResult = courses.result.course;
             } else {
                 search.error = showErrorMessage(true, config.MESSAGES.SEARCH.COURSE.NO_RESULT, config.MESSAGES.COMMON.INFO);
             }
@@ -55,7 +55,7 @@ angular.module('playerApp')
         // mainSearch
         search.search = function() {
             search.initSearch();
-            var req = { 'request': search.searchRequest };
+            var req = search.searchRequest;
             search.loader = showLoaderWithMessage('', config.MESSAGES.SEARCH.COURSE.START);
             searchService.courseSearch(req).then(function(res) {
                 search.loader.showLoader = false;

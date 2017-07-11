@@ -6,7 +6,7 @@
             </div>-->
             <img ng-src=" {{item.appIcon ? item.appIcon : '../images/sunbird_logo.png'}} ">
             <div class="cardImageText center aligned ">
-                <span class="sliderCardHeading text-cencapitalize">{{item.name}}</span>
+                <span class="sliderCardHeading text-cencapitalize">{{item.name||item.courseName}}</span>
             </div>
         </div>
         <div class="sliderCards content">
@@ -14,7 +14,7 @@
                 {{ item.description | limitTo: 55 }}&nbsp;<i ng-show="item.description.length >= 55" class="ellipsis horizontal icon popup-button link" data-content="{{item.description}}" data-variation="wide"></i>
             </div>
 
-            <button ng-if="enrolledCourseIds && enrolledCourseIds.indexOf(item.courseId) >= 0" class="ui blue basic right floated button">RESUME</button>
+            <button ng-if="enrolledCourseIds && enrolledCourseIds.indexOf(item.identifier) >= 0" class="ui blue basic right floated button">RESUME</button>
             <div  class="courseHeader-rating ui mini star rating" data-rating="3"></div>
         </div>
     </div>
