@@ -11,8 +11,8 @@ TelemetryV2Manager = function() {
     };
     this.createEvent = function(eventName, body) {
         var event = new TelemetryEvent();
-        event.init(eventName, TelemetryService._version, body, TelemetryService._user, TelemetryService._gameData, TelemetryService._correlationData);
-        ;return event
+        event.init(eventName, TelemetryService._version, body, TelemetryService._user, TelemetryService._gameData, TelemetryService._correlationData, TelemetryService._otherData);
+        return event
     };
     this.start = function(id, ver, data) {
         TelemetryService._gameData = {
@@ -26,15 +26,14 @@ TelemetryV2Manager = function() {
         });
         return this.createEvent("OE_START", data);
     };
-    this.end = function(gameId) {
+    this.end = function(progress) {
         if (!_.isEmpty(this._start)) {
             this._start.pop();
-            return this._end.pop().end();
+            return this._end.pop().end(progress);
         } else {
             console.warn("Telemetry service end is already logged Please log start telemetry again");
         }
     };
-
     this.interact = function(type, id, extype, eks) {
         if (eks.optionTag)
             TelemetryService.flushEvent(this.itemResponse(eks), TelemetryService.apis.telemetry);
