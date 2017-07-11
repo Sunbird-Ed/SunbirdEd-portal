@@ -12,7 +12,7 @@
                 "RESOURCE_BUNDLE": "resourcebundle",
                 "SIGNUP": "user/create",
                 "UPDATE_USER_PROFILE": "user/update",
-                "GET_PROFILE": "user/getProfile"
+                "GET_PROFILE": "user/getprofile"
             },
             "COURSE": {
                 "SEARCH": "course/search",
@@ -28,7 +28,9 @@
                 "USER_CONTENT_STATE": "user/content/state",
                 "GET_ENROLLED_COURSES": "user/courses",
                 "GET_LEARN_OTHER_SECTION": "page/assemble/Course",
-                "ENROLL_USER_COURSE": "user/courses/enroll"
+                "ENROLL_USER_COURSE": "user/courses/enroll",
+                "RECOMMENDED_COURSE":"course/recommended/courses"
+                
 
             },
             "CONTENT": {
@@ -37,7 +39,7 @@
                 "UPDATE": "content/update",
                 "REVIEW": "content/review",
                 "PUBLISH": "content/publish",
-                "GET": "content/get",
+                "GET": "content/read",
                 "GET_MY_COURSE": "content/get/mycontent",
                 "UPLOAD": "content/upload",
                 "UPLOAD_MEDIA": "upload/media"
@@ -48,14 +50,17 @@
 
             },
             "NOTES": {
-                "SEARCH": "notes/search",
-                "CREATE": "notes/create",
-                "UPDATE": "notes/update",
-                "GET": "notes/get",
-                "DELETE": "notes/delete"
+                "SEARCH": "note/search",
+                "CREATE": "note/create",
+                "UPDATE": "note/update",
+                "GET": "note/read",
+                "DELETE": "note/delete"
             },
             "RESOURCE": {
                 "GET": "page/assemble/Resource"
+            },
+            "ROLES":{
+                "READ":"role/read"
             }
         },
         "FILTER": {
@@ -64,7 +69,7 @@
                     "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Marathi", "Punjabi", "Tamil", "Telugu"
                 ],
                 "contentTypes": [
-                    "Story", "Worksheet", "Collections", "Game", "Plugin", "Template"
+                    "Story", "Worksheet"
                 ],
                 "subjects": [
                     "Maths", "English", "Hindi", "Assamese", "Bengali", "Gujarati", "Kannada", "Malayalam", "Marathi", "Nepali", "Oriya", "Punjabi", "Tamil", "Telugu", "Urdu"
@@ -170,29 +175,71 @@
                     "NO_RESULT": "No result found "
                 }
 
+            },
+            "WORKSPACE": {
+                "DRAFT": {
+                    "START": "We are fetching draft content...",
+                    "FAILED": "Fetching draft content failed, please try again later..."
+                },
+                "CREATE_LESSON": {
+                    "START": "We are creating lesson...",
+                    "FAILED": "Creating lesson failed, please try again later..."
+                },
+                "REVIEW": {
+                    "START": "We are fetching review content...",
+                    "FAILED": "Fetching review content failed, please try again later..."
+                },
+                "PUBLISHED": {
+                    "START": "We are fetching published content...",
+                    "FAILED": "Fetching published content failed, please try again later..."
+                },
+                "ALL_UPLOADED": {
+                    "START": "We are fetching uploaded content...",
+                    "FAILED": "Fetching uploaded content failed, please try again later..."
+                },
+                "GET": {
+                    "START": "We are fetching content detail...",
+                    "FAILED": "Fetching content detail failed, please try again later..."
+                },
+                "UPLOAD_ICON": {
+                    "START": "We are updating icon...",
+                    "FAILED": "Updating icon failed, please try again later..."
+                },
+                "UPDATE": {
+                    "START": "We are updating content detail...",
+                    "FAILED": "Updating content detail failed, please try again later..."
+                }
             }
         },
         "ekstep_CE_config": {
             "context": {
                 "content_id": "",
                 "sid": "rctrs9r0748iidtuhh79ust993",
-                "user": {
-                    "id": "390",
-                    "name": "Harish kumar Gangula",
-                    "email": "harishg@ilimi.com",
-                    "avtar": "https://localhost:3000/images/sunbird_logo.png",
-                    "logout": "https://localhost:3000/logout"
-                },
-                "baseURL": "https://localhost:3000/",
-                "editMetaLink": ""
+                "baseURL": "",
+                "editMetaLink": "",
+                "sid":"sunbird_sid",
+                "uid":"sunbird_uid",
+                "channel":"sunbird_channel",
+                "dimension":"sunbird_dims",
+                "etags":"etags",
+                "user" : {
+                    "id" : "",
+                    "name" : "",
+                    "email" : ""
+                }
             },
             "config": {
-                "baseURL": "http://localhost:5000",
-                "pluginRepo": "http://localhost:5000/content-plugins",
+                "baseURL": "",
+                "pluginRepo": "/content-plugins",
                 "plugins": [{
                         "id": "org.ekstep.telemetry",
                         "ver": "1.0",
                         "type": "plugin"
+                    },
+                    {
+                    "id": "org.sunbird.header",
+                    "ver": "1.0",
+                    "type": "plugin"
                     },
                     {
                         "id": "org.ekstep.config",
@@ -320,15 +367,15 @@
         },
         "ekstep_CP_config": {
             "context": {
-                "authToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI1OWFiMmE2MDc1YzI0ODU2YjhiYjIzMjg4ZDdhZGNmNSJ9.RLouNX7RQ0VkVv2BYqNtH12D0IzKnBJ_I46xEORwHsU",
+                "authToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI2MzExMTYwNTMzOGY0Zjc5YTgwZTM3YjcyZjVjMmUwZiJ9.azmj_AHmndeJz0h6yIkOJz1XjeZR6Gzd-OrZzR66I0A",
                 "mode": "play"
             },
             "config": {
                 "showEndPage": true,
                 "showStartPage": true,
-                "host": "https://dev.ekstep.in",
+                "host": "https://qa.ekstep.in",
                 "apislug": "/api",
-                "repos":["/scripts/plugins"],
+                "repos":["/content-plugins/renderer"],
                 "plugins":[{"id": "org.sunbird.iframeEvent","ver": 1.0,"type": "plugin"}]
             },
             "baseURL": "/content/preview/preview.html?webview=true"
@@ -368,6 +415,9 @@
                 ],
                 "medium": [
                     "English", "Hindi", "Assamese", "Bengali", "Gujarati", "Kannada", "Malayalam", "Marathi", "Nepali", "Oriya", "Punjabi", "Tamil", "Telugu", "Urdu", "Other"
+                ],
+                "boards": [
+                    "NCERT", "CBSE", "ICSE", "MSCERT"
                 ]
             }
         }

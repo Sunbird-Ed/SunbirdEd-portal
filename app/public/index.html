@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="/styles/main.css">
     <link rel="stylesheet" href="/thirdparty/semantic/styles/semantic.min.css">
     <base href="/">
+    <link rel="stylesheet" href="/thirdparty/bower_components/semantic-ui-calendar/dist/calendar.min.css" />
+
 </head>
 
 <body ng-app="loginApp" ng-controller="loginCtrl">
@@ -26,13 +28,36 @@
         </div>
     </div>
     <script src="../thirdparty/libs/eventbus.min.js"></script>
+    <!-- utils -->
+    <script src="./private/scripts/utils/util.js"></script>
+
     <script src="./private/scripts/managers/eventManager.js"></script>
+
+    <!-- Telemetry service -->
+    <script src="/scripts/telemetry/TelemetryEvent.js"></script>
+    <script src="/scripts/telemetry/TelemetryService.js"></script>
+    <script src="/scripts/telemetry/TelemetryV2Manager.js"></script>
+    <script src="/scripts/telemetry/TelemetryServiceUtil.js"></script>
+    <script src="/scripts/telemetry/InActiveEvent.js"></script>
+
+
+    <script src="/thirdparty/bower_components/jquery/dist/jquery.js"></script>
+    <script src="/thirdparty/bower_components/jquery-ui/jquery-ui.min.js"></script>
     <script src="/thirdparty/bower_components/angular/angular.js"></script>
     <script src="/thirdparty/bower_components/angular-cookies/angular-cookies.js"></script>
     <script src="/thirdparty/bower_components/angular-route/angular-route.js"></script>
     <script src="/thirdparty/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script src="/thirdparty/semantic/semantic.min.js"></script>
+    <script type="text/javascript" src="/thirdparty/bower_components/semantic-ui-calendar/dist/calendar.min.js"></script>
+
     <script src="scripts/application.js"></script>
+    <script src="scripts/directive/applyScript.js"></script>
+    <script src="scripts/service/httpService.js"></script>
+    <script src="scripts/signUpController.js"></script>
+    <script src="scripts/service/signUpService.js"></script>
+    <script src="scripts/directive/error.js"></script>
+    <script src="scripts/directive/loader.js"></script>
+
 </body>
 
 </html>

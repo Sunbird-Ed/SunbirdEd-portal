@@ -331,12 +331,19 @@ th {
 .ShowFilterSubTitle {
   font-family: 'sunbirdregularfont' !important;
   font-size: 0.9375em !important;
-  color: #8b8b8c !important;
+  color: #979797 !important;
 }
 /*note card font*/
 .note-card-timeStamp {
   font-family: 'sunbirdregularfont' !important;
   font-size: 0.625em !important;
+}
+/* breadcrumb font*/
+.breadcrumb-fontColor {
+  color: #007AFF !important;
+  font-family: 'sunbirdboldfont' !important;
+  font-size: 0.9375em !important;
+  line-height: 17px;
 }
 .padding-none {
   padding: 0px !important;
@@ -354,6 +361,15 @@ th {
 }
 .padding-top-10 {
   padding-top: 10px !important;
+}
+.padding-topBottom-10 {
+  padding: 10px 0px!important;
+}
+.padding-left-25 {
+  padding-left: 25px !important;
+}
+.margin-none {
+  margin: 0em !important;
 }
 .margin-top-0 {
   margin-top: 0px !important;
@@ -385,7 +401,7 @@ th {
   margin-bottom: 20px !important;
 }
 .margin-top-20 {
-  margin-top: 20px;
+  margin-top: 20px !important;
 }
 .margin-auto {
   margin: auto !important;
@@ -395,6 +411,15 @@ th {
 }
 .margin-right-20 {
   margin-right: 20px !important;
+}
+.margin-left-20 {
+  margin-left: 20px !important;
+}
+.margin-left-25 {
+  margin-left: 25px !important;
+}
+.margin-left-30 {
+  margin-left: 30px !important;
 }
 .margin-top-30 {
   margin-top: 30px !important;
@@ -428,6 +453,9 @@ th {
 }
 .mouse-pointer {
   cursor: pointer;
+}
+.text-align-center {
+  text-align: center !important;
 }
 .header-container {
   margin-left: 1px !important;
@@ -532,7 +560,7 @@ th {
   border-color: #0099CC !important;
 }
 .ui.secondary.pointing.menu {
-  background: #FFFFFF !important;
+  background: #fdfdfd !important;
 }
 .modal .ui.segment {
   box-shadow: none !important;
@@ -542,6 +570,9 @@ th {
 .breadcrumppadding.ui.breadcrumb:last-child,
 .breadcrumppadding.ui.breadcrumb:first-child {
   margin: 10px;
+}
+.ui.breadcrumb .divider {
+  color: #007AFF !important;
 }
 .ui.card > .sliderCards.content {
   -webkit-box-flex: 1;
@@ -659,6 +690,7 @@ th {
 .editor textarea {
   background-color: #FFFFFF;
   height: 180px !important;
+  resize: none !important;
 }
 .pdf-editor {
   float: left !important;
@@ -668,6 +700,15 @@ th {
 }
 .width-25p {
   width: 25% !important;
+}
+.editroIframe {
+  box-shadow: -1px -1px 9px 6px rgba(0, 0, 0, 0.41);
+}
+.contentViewerIframeShadow {
+  box-shadow: -1px -1px 9px 6px rgba(0, 0, 0, 0.41);
+  width: 77%;
+  margin-left: 11%;
+  border-radius: 1%;
 }
 .slick-prev,
 .slick-next {
@@ -732,6 +773,30 @@ slick-prev:before,
   position: fixed !important;
   bottom: 0 !important;
   width: 100% !important;
+}
+.userProfilePic {
+  width: 200px !important;
+}
+.userProfilePic .image {
+  background: white !important;
+  width: 100% !important;
+  height: 140px !important;
+}
+.userProfilePic .image.iconProfilePic {
+  text-align: center;
+  line-height: 140px;
+}
+.userProfilePic .image.iconProfilePic i {
+  vertical-align: middle;
+}
+.userProfilePic .image.landscapeImgUser img {
+  border-radius: 0 !important;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: 100% !important;
+  height: 120px !important;
 }
 .down-arrow-accordion {
   float: right !important;
@@ -905,7 +970,7 @@ span.fancytree-title {
 }
 .videosegment.ui.segment {
   position: relative;
-  background: #fff;
+  background: #fdfdfd !important;
   box-shadow: 0 0 0;
   margin: 1rem 0;
   padding: 0;
@@ -1144,6 +1209,10 @@ span.fancytree-title {
   padding-right: 6px!important;
   border: 1px solid rgba(51, 51, 51, 0.33);
   border-radius: 0 .28571429rem .28571429rem 0;
+  padding-top: 0.85em;
+}
+.searchinput.ui.icon.input > i.circular.icon {
+  top: 0.45em;
 }
 .searchicon.ui.icon.input i {
   cursor: pointer;
@@ -1264,7 +1333,7 @@ span.fancytree-title {
   color: rgba(0, 0, 0, 0.95);
 }
 .workspacesegment {
-  margin-top: 73px;
+  margin-top: 33px;
 }
 .workspacecontent {
   text-align: center;
@@ -1298,9 +1367,6 @@ span.fancytree-title {
 }
 .profileheader.ui.items > .item .meta:last-child {
   color: #979797;
-}
-.profileheaderpadding.ui.grid > .column:not(.row) {
-  padding: 20px 0 20px 0;
 }
 .workspaceinstuction {
   text-align: center;
@@ -1344,6 +1410,11 @@ span.fancytree-title {
   font-size: 1em;
   white-space: nowrap;
 }
+@media only screen and (max-width: 1200px) {
+  .textcontent {
+    white-space: pre-line;
+  }
+}
 .textcontent i.icon {
   font-size: 2em;
 }
@@ -1353,11 +1424,127 @@ span.fancytree-title {
 .my-icon {
   vertical-align: middle;
 }
+.backtoprofile {
+  float: right;
+  font-size: 1.1em;
+}
 .ui.tree-picker.modal .search {
   display: none;
 }
 .ui.tree-picker.modal .header .menu {
   display: none;
+}
+/* user avatar on hover effects in profile edit page*/
+.userAvtarWrap {
+  position: relative;
+  height: 150px;
+  width: 150px;
+}
+.img-description-layer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  color: #FFFFFF;
+  visibility: hidden;
+  opacity: 0.1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  font-size: 2em !important;
+  border-radius: 50%;
+  background: rgba(34, 36, 38, 0.1);
+}
+.userAvtarWrap:hover .img-description-layer {
+  visibility: visible;
+  opacity: 1;
+}
+/* file upload border */
+.qq-uploader {
+  border: 2px dashed #CCCCCC !important;
+}
+/*profile image header css*/
+.header-image-profile {
+  height: 100px !important;
+  width: 100px !important;
+}
+.profilesegmentmargin.ui.segment:first-child {
+  margin-top: 20px;
+}
+.profileitems.ui.list > .item a.header,
+.profileitems.ui.list > .item a.header:hover {
+  font-family: "Open Sans";
+  font-size: 1em;
+  font-weight: 600;
+  line-height: 20px;
+  color: #333333 !important;
+}
+.profileitems.ui.items > .item > .content > a.header,
+.profileitems.ui.items > .item > .content > a.header:hover {
+  font-family: "Open Sans";
+  font-size: 1em;
+  font-weight: 600;
+  line-height: 20px;
+  color: #333333 !important;
+}
+.profileitems.ui.list > .item .description {
+  color: #979797;
+  font-family: "Open Sans";
+  font-size: 0.89em;
+  line-height: 17px;
+}
+.profileitems .item .metadata .date {
+  color: #979797;
+  font-family: "Open Sans";
+  font-size: 0.89em;
+  line-height: 14px;
+}
+.addeditprofile {
+  float: right;
+  margin: 0 0 0 1em;
+}
+.profileitems.ui.relaxed.list:not(.horizontal) > .item:not(:last-child) {
+  padding: 10px 0 15px 0;
+}
+.profileitems.ui.relaxed.list:not(.horizontal) > .item:not(:first-child) {
+  padding: 10px 0 15px 0;
+}
+.workspacebuttongrid.ui.grid > .column:not(.row),
+.ui.grid > .row > .column {
+  padding-left: 0;
+  padding-right: 0;
+}
+.workspacebutton.ui.card {
+  width: inherit;
+}
+.workspacebutton.ui.card:first-child {
+  margin-top: 20px;
+}
+.profileitems .ui.avatar.image {
+  width: 4em;
+  height: 4em;
+  border-radius: 0;
+}
+.profileitems.ui.items > .item .avatar img,
+.ui.items > .item img.avatar {
+  width: 4em;
+  height: 4em;
+  border-radius: 0;
+}
+.iniformationcontent {
+  color: #979797;
+}
+.formdivider {
+  border-bottom: 1px dashed #979797;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 body {
   position: relative !important;

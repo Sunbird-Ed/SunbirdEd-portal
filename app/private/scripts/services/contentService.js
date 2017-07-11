@@ -14,7 +14,7 @@ angular.module('playerApp')
             var url =  config.URL.CONTENT_PREFIX + config.URL.CONTENT.SEARCH;
             return httpService.post(url, req);
         }
-
+        
         this.create = function(req) {
             var url =  config.URL.CONTENT_PREFIX + config.URL.CONTENT.CREATE;
             return httpService.post(url, req);
@@ -40,8 +40,8 @@ angular.module('playerApp')
             return httpService.upload(url, req);
         }
 
-        this.getById = function(req) {
-            var url =  config.URL.CONTENT_PREFIX + config.URL.CONTENT.GET + '/' + req.contentId;
-            return httpService.get(url, req);
+        this.getById = function(req, qs) {
+            var url =  config.URL.CONTENT_PREFIX + config.URL.CONTENT.GET + '/' + req.contentId ;
+            return httpService.get(url, req, null, qs);
         }
     });

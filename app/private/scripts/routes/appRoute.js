@@ -27,7 +27,7 @@ angular
             .state('LandingPage', {
                 url: '/',
                 views: {
-                    'contentView': {
+                    'mainView': {
                         templateUrl: '/views/home/landingPage.html',
                         controller: 'AuthCtrl as auth'
                     }
@@ -36,7 +36,7 @@ angular
             .state('Home', {
                 url: '/home',
                 views: {
-                    'contentView': {
+                    'mainView': {
                         templateUrl: '/views/home/home.html',
                         controller: 'HomeController as homeCtrl'
                     }
@@ -49,7 +49,7 @@ angular
             .state('UserContent', {
                 url: '/content',
                 views: {
-                    'contentView': {
+                    'mainView': {
                         templateUrl: '/views/content/usercontent.html',
                         controller: 'userContentCtrl as userContent',
                     }
@@ -58,7 +58,7 @@ angular
             .state('Courses', {
                 url: '/learn',
                 views: {
-                    'contentView': {
+                    'mainView': {
                         templateUrl: '/views/learn/learn.html',
                         controller: 'LearnCtrl as learn',
                     }
@@ -82,7 +82,7 @@ angular
             .state('Resources', {
                 url: '/resources',
                 views: {
-                    'contentView': {
+                    'mainView': {
                         templateUrl: '/views/resource/resource.html',
                     }
                 },
@@ -105,7 +105,7 @@ angular
             .state('CourseNote', {
                 url: '/course/note/:tocId/:courseId',
                 views: {
-                    'contentView': {
+                    'mainView': {
                         templateUrl: 'views/note/noteList.html',
                         controller: 'NoteListCtrl as noteList',
                     }
@@ -128,7 +128,7 @@ angular
             .state('ContentNote', {
                 url: '/resourse/note/:contentId/:contentName',
                 views: {
-                    'contentView': {
+                    'mainView': {
                         templateUrl: 'views/note/noteList.html',
                         controller: 'NoteListCtrl as noteList',
                     }
@@ -150,7 +150,7 @@ angular
             .state('CourseContentNote', {
                 url: '/note/:tocId/:courseId/:contentId',
                 views: {
-                    'contentView': {
+                    'mainView': {
                         templateUrl: 'views/note/noteList.html',
                         controller: 'NoteListCtrl as noteList',
                     }
@@ -176,9 +176,9 @@ angular
             .state('Toc', {
                 url: '/toc/:tocId/:courseId/:lectureView',
                 views: {
-                    'contentView': {
+                    'mainView': {
                         templateUrl: 'views/course/toc.html',
-                        controller: 'courseScheduleCtrl as toc',
+                        controller: 'courseScheduleCtrl as toc'
                     }
                 },
                 onEnter: function($rootScope, sessionService) {
@@ -199,7 +199,7 @@ angular
             .state('Community', {
                 url: '/community',
                 views: {
-                    'contentView': {
+                    'mainView': {
                         templateUrl: 'views/community/communityList.html',
                         controller: 'CommunityController as commCtrl'
                     }
@@ -211,19 +211,23 @@ angular
             .state('Profile', {
                 url: '/profile',
                 views: {
-                    'contentView': {
+                    'mainView': {
                         templateUrl: 'views/profile/profile.html',
                         controller: 'ProfileController as profileCtrl'
                     }
                 },
                 onEnter: function($rootScope) {
                     $rootScope.searchKey = 'Profile';
+                    $rootScope.profileActive = 'active';
+                },
+                onExit: function($rootScope) {
+                    $rootScope.profileActive = '';
                 }
             })
             .state('Player', {
                 url: '/player/:contentId/:contentName',
                 views: {
-                    'contentView': {
+                    'mainView': {
                         templateUrl: 'views/common/player.html',
                         controller: 'playerCtrl as player'
                     }
@@ -246,7 +250,7 @@ angular
             .state('SearchCourse', {
                 url: '/:searchType/search/:query/',
                 views: {
-                    'contentView': {
+                    'mainView': {
                         templateUrl: 'views/search/search.html',
                         controller: 'SearchCourseCtrl as search',
                     }
@@ -267,7 +271,7 @@ angular
             .state('SearchResource', {
                 url: '/resources/search/:query/:searchType/',
                 views: {
-                    'contentView': {
+                    'mainView': {
                         templateUrl: 'views/search/search.html',
                         controller: 'SearchResourcesCtrl as search'
                     }
@@ -287,7 +291,7 @@ angular
             }).state('TocPlayer', {
                 url: '/toc/:tocId/:courseId/:lectureView/:contentId/:contentIndex',
                 views: {
-                    'contentView': {
+                    'mainView': {
                         templateUrl: 'views/course/toc.html',
                         controller: 'courseScheduleCtrl as toc',
                     }
@@ -306,28 +310,151 @@ angular
                     $('#content-search-filter-accordion').accordion('close', 0);
                     $rootScope.courseActive = '';
                 }
-            }).state('CreateSlideShow', {
-                        url: '/create/slideShow',
-                        views: {
-                            'contentView': {
-                                templateUrl: '/views/slideShow/createSlideShow.html'
+            }).state('WorkSpace', {
+                url: '/workspace',
+                views: {
+                    'mainView': {
+                        templateUrl: '/views/workSpace/workSpace.html',
+                        controller: function($state, $rootScope) {
+                            $rootScope.profileActive = 'active';
+                            if ($state.current.name === "WorkSpace") {
+                                $state.go('WorkSpace.ContentCreation');
                             }
                         }
+                    }
+                },
+                onEnter: function($rootScope) {
+                    $rootScope.profileActive = 'active';
+                },
+                onExit: function($rootScope) {
+                    $rootScope.profileActive = '';
+                }
+            }).state('WorkSpace.ContentCreation', {
+                url: '/content/create',
+                views: {
+                    'contentView': {
+                        templateUrl: 'views/workSpace/createContent.html',
+                        controller: 'ContentCreationController as contentCreation'
+                    }
+                }
+            }).state('WorkSpace.DraftContent', {
+                url: '/content/draft',
+                views: {
+                    'contentView': {
+                        templateUrl: 'views/workSpace/draftContent.html',
+                        controller: 'DraftContentController as draftContent'
+                    }
+                }
+            }).state('WorkSpace.ReviewContent', {
+                url: '/content/review',
+                views: {
+                    'contentView': {
+                        templateUrl: 'views/workSpace/reviewContent.html',
+                        controller: 'ReviewContentController as reviewContent'
+                    }
+                }
+            }).state('WorkSpace.PublishedContent', {
+                url: '/content/published',
+                views: {
+                    'contentView': {
+                        templateUrl: 'views/workSpace/publishedContent.html',
+                        controller: 'PublishedContentController as publishedContent'
+                    }
+                }
+            }).state('WorkSpace.AllUploadedContent', {
+                url: '/content/uploaded',
+                views: {
+                    'contentView': {
+                        templateUrl: 'views/workSpace/allUploadedContent.html',
+                        controller: 'AllUploadedContentController as allUploadedContent'
+                    }
+                }
+            }).state('CreateLesson', {
+                url: '/create/lesson',
+                views: {
+                    'mainView': {
+                        templateUrl: '/views/workSpace/createLesson.html',
+                        controller: 'ContentLessonController as contentLesson'
+                    }
+                },
+                onEnter: function($rootScope) {
+                    $rootScope.profileActive = 'active';
+                },
+                onExit: function($rootScope) {
+                    $rootScope.profileActive = '';
+                }
+            }).state('ContentEditor', {
+                url: '/content/editor/:contentId',
+                views: {
+                    'mainView': {
+                        templateUrl: 'views/common/contentEditor.html',
+                        controller: 'ContentEditorController as contentEditor'
+                    }
+                },
+                params: { contentId: null },
+                onEnter: function($rootScope) {
+                    $rootScope.profileActive = 'active';
+                },
+                onExit: function($rootScope) {
+                    $rootScope.profileActive = '';
+                }
+            }).state('EditContent', {
+                url: '/content/edit/:contentId',
+                views: {
+                    'mainView': {
+                        templateUrl: '/views/workSpace/editContent.html',
+                        controller: 'EditContentController as editContent'
+                    }
+                },
+                params: { contentId: null },
+                onEnter: function($rootScope) {
+                    $rootScope.profileActive = 'active';
+                },
+                onExit: function($rootScope) {
+                    $rootScope.profileActive = '';
+                }
+
+            }).state('profileStartCreate', {
+                url: '/create/workspace',
+                views: {
+                    'mainView': {
+                        templateUrl: '/views/workSpace/createContent.html'
+                    }
+                }
             });
     })
-    .run(function($urlRouter, $http, $state, permissionsService) {
-        // Example ajax call
-        $http
-            .get('/permissions')
+    .run(function($urlRouter, $http, $state, permissionsService, $rootScope, $location) {
+
+        permissionsService.getPermissionsData('/permissions')
             .then(function(res) {
                 var permissions = res.data;
-                if (res && res.data) {
-                    permissionsService.setRolesAndPermissions(res.data);
+                if (res && res.responseCode === 'OK') {
+                    permissionsService.setRolesAndPermissions(res.result);
                     permissionsService.setCurrentUserRoles(["CONTENT_REVIEWER"])
+                } else {
+                    //TODO: allow only public permissions
                 }
             })
             .then(function() {
                 $urlRouter.sync();
                 $urlRouter.listen();
             });
+
+        $rootScope.$on('$stateChangeStart',
+            function(event, toState, toParams, fromState, fromParams) {
+
+                switch (toState.name) {
+                    case "WorkSpace.ContentCreation":
+                        if (!permissionsService.checkRolesPermissions(['CONTENT_CREATER', 'CONTENT_REVIEW', 'CONTENT_CREATION'], false)) {
+                            $rootScope.accessDenied = "You are not authorized to access this resource";
+                            event.preventDefault();
+                            $state.go('Home');
+                        }
+                        break;
+                    default:
+                        // statements_def
+                        break;
+                }
+            });
+
     });

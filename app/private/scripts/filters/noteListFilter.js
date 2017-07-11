@@ -14,7 +14,7 @@ angular.module('playerApp')
             if (searchText) {
                 var lowerCaseQuery = angular.lowercase(searchText);
                 return noteList.filter(function(list) {
-                    return list.title.includes(lowerCaseQuery) || list.note.includes(lowerCaseQuery);
+                    return angular.lowercase(list.title).includes(lowerCaseQuery) || angular.lowercase(list.note).includes(lowerCaseQuery);
                 });
             } else {
                 return noteList;

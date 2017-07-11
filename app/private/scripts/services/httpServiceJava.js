@@ -8,7 +8,7 @@
  * Service in the playerApp.
  */
 angular.module('playerApp')
-    .service('httpServiceJava', function($http, $rootScope, config) {
+    .service('httpServiceJava', function($http, $rootScope, $filter, config, uuid4) {
         this.post = function(url, data, headers) {
             var request = httpCall(url, data, 'POST', headers);
             return (request.then(handleSuccess, handleError));
@@ -54,13 +54,14 @@ angular.module('playerApp')
         }
 
         function getHeader() {
+            $rootScope.userId = $rootScope.userId || $("#userId").attr('value');
             var headers = {
                   'Content-Type': 'application/json',
                   'Accept': 'application/json',
                   'X-Consumer-ID': 'X-Consumer-ID',
                   'X-Device-ID': 'X-Device-ID',
-                  'X-msgid': '8e27cbf5-e299-43b0-bca7-8347f7e5abcf',
-                  'ts': '2017-05-25 10:18:56:578+0530',
+                  'X-msgid': uuid4.generate(),
+                  'ts': $filter('date')(new Date(), 'yyyy-MM-dd HH:mm:ss:sssZ'),
                  'X-Authenticated-Userid': $rootScope.userId,
                  'X-Source':'web',
                  'X-Org-code':'AP'
