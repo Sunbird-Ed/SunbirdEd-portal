@@ -35,7 +35,7 @@ angular.module('playerApp')
                     profile.profilePic = e.target.result;
                     profile.user.avatar = e.target.result;
                     $scope.$apply();
-                    profile.updateProfile();
+                    profile.EditBasicProfile();
                 };
                 reader.readAsDataURL(files[0]);
                 profile.icon = fd;
@@ -71,31 +71,35 @@ angular.module('playerApp')
         profile.userProfile = function(userProfile) {
             profile.loader.showLoader = false;
             if (userProfile && userProfile.responseCode === 'OK') {
-                // console.log('sdfghjkljgfcvjkhgfhjkgfhjkl', 'data', JSON.stringify(userProfile.result.response, null, 2));
                 var profileData = userProfile.result.response;
 
                 profile.user = profileData;
 
                 profile.basicProfile = profile.user;
                 profile.address = profileData.address;
-                // profileData.jobProfile.forEach(function(element) {
-                //     if (profileData.address.length) {
-                //         element.updatedDate = new Date(element.updatedDate);
-                //     }
-                // }, this);
-                // profileData.address.forEach(function(element) {
-                //     if (profileData.address.length) {
-                //         element.updatedDate = new Date(element.updatedDate);
-                //     }
-                // }, this);
-                // profileData.education.forEach(function(element) {
-                //     if (profileData.address.length) {
-                //         element.updatedDate = new Date(element.updatedDate);
-                //     }
-                // }, this);
+                if (profileData.jobProfile.length) {
+                    profileData.jobProfile.forEach(function(element) {
+                        if (element.updatedDate) {
+                            element.updatedDate = new Date(element.updatedDate);
+                        }
+                    }, this);
+                }
+                if (profileData.address.length) {
+                    profileData.address.forEach(function(element) {
+                        if (element.updatedDate) {
+                            element.updatedDate = new Date(element.updatedDate);
+                        }
+                    }, this);
+                }
+                if (profileData.education.length) {
+                    profileData.education.forEach(function(element) {
+                        if (element.updatedDate) {
+                            element.updatedDate = new Date(element.updatedDate);
+                        }
+                    }, this);
+                }
                 profile.education = profileData.education;
                 profile.experience = profileData.jobProfile;
-                // console.log('profileData.jobProfile;', $filter('date')(new Date(profileData.jobProfile[0].updatedDate), 'yyyy-MM-dd'));
             } else {
                 console.log('jfhdsf gere');
                 throw new Error('');
@@ -169,6 +173,9 @@ angular.module('playerApp')
         };
         // edit education
         profile.addEducation = function(newEducation) {
+            newEducation.percentage = newEducation.percentage ? parseFloat(newEducation.percentage) : null;
+            newEducation.yearOfPassing = newEducation.yearOfPassing ? parseInt(newEducation.yearOfPassing) : null;
+
             profile.education.push(newEducation);
             console.log('newEducation', newEducation);
             profile.editEducation(profile.education);

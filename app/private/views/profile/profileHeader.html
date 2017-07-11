@@ -7,13 +7,14 @@
                     <div class="item">
                         <div class="ui grid">
                             <div class="two wide column">
+                                <!--<div ng-include="'views/profile/editProfile/userAvtar.html'"></div>-->
                                 <img class="ui small circular image" src="{{::profileCtrl.user.profilePic || 'images/user_logo.png'}}">
                             </div>
                             <div class="ten wide column">
                                 <div class="content padding-top-10 ">
                                     <div class="sectionHeading header">{{::profileCtrl.user.firstName}} &nbsp;{{::profileCtrl.user.lastName}}</div>
                                     <div class="meta">
-                                        <span class="cinema">{{::profileCtrl.user.organizationName}},{{::profileCtrl.user.city}}</span>
+                                        <span class="cinema">{{::profileCtrl.user.organizationName}}{{::profileCtrl.user.city}}</span>
                                     </div>
                                     <div class="description" ng-init="profileCtrl.readMore = false">
                                         <p ng-if="!profileCtrl.readMore"> {{::profileCtrl.summary | limitTo: 120 }}&nbsp;
