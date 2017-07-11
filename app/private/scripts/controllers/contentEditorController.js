@@ -22,30 +22,27 @@ angular.module('playerApp')
             contentEditor.ekURL = $sce.trustAsResourceUrl(baseURL + "/ekContentEditor?contentId=" + contentId);
         };
 
-        contentEditor.closeContentEditor = function() {
-            $state.go("WorkSpace.DraftContent");
-        };
-
-        contentEditor.openEditContentForm = function() {
-            var params = {contentId : contentEditor.contentId};
-            $state.go("EditContent", params);
-        };
-
         contentEditor.init = function() {
-            org.sunbird.portal.eventManager.addEventListener("sunbird:portal:editmetadata", function() {
+            org.sunbird.portal.eventManager.addEventListener("sunbird:portal:editor:editmeta", function() {
                 var params = {contentId : contentEditor.contentId}
                 $state.go("EditContent", params);
             });
             
+            org.sunbird.portal.eventManager.addEventListener("sunbird:portal:editor:close", function() {
+                $state.go("WorkSpace.DraftContent");
+            });
+            
             window.addEventListener('editor:metadata:edit', function(event, data) {
                 console.info('Sunbird edit metadata is calling');
-                org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:editmetadata');
+                org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:editor:editmeta');
+            });
+            
+             window.addEventListener('editor:window:close', function(event, data) {
+                console.info('Sunbird editor is closing');
+                org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:editor:close');
             });
         };
+        
         contentEditor.init();
         contentEditor.openContentEditor($stateParams.contentId);
-        
-        
-        
-        
     });
