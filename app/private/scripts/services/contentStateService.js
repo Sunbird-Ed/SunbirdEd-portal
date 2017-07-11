@@ -42,19 +42,19 @@ angular.module('playerApp')
         }
 
         this.getContentsState = function(req, callback) {
-                //accepts only one course id and multiple contentids
-                if (_.isEmpty(localContentState) || !localContentState[req.request.courseIds[0]]['contents']) {
-                    localContentState = {};
-                    localContentState[req.request.courseIds[0]] = {};
-                    localContentState[req.request.courseIds[0]]['contents'] = []
+                    //accepts only one course id and multiple contentids
+
+                if (_.isEmpty(localContentState) || !localContentState[req.request.courseIds[0]]) {
+                    var courseId = req.request.courseIds[0];
+                    localContentState[courseId] = {};
+                    localContentState[courseId]['contents'] = []
                     this.getContentsStateFromAPI(req).then(function(res) {
-                        console.log('res', res)
                         if (res && res.responseCode === "OK") {
-                            localContentState[req.request.courseIds[0]]['contents'] = res.result.contentList;
+                            localContentState[courseId]['contents'] = res.result.contentList;
                         }
-                        callback(localContentState[req.request.courseIds[0]]['contents']);
+                        callback(localContentState[courseId]['contents']);
                     }, function() {
-                        callback(localContentState[req.request.courseIds[0]]['contents']);
+                        callback(localContentState[courseId]['contents']);
                     })
                 } else {
                     callback(localContentState[req.request.courseIds[0]]['contents']);
@@ -71,13 +71,15 @@ angular.module('playerApp')
                 if (localContentState[content['courseId']] && localContentState[content['courseId']]['contents'] && content['progress']) {
                     var obj = _.find(localContentState[content['courseId']]['contents'], { 'contentId': content['contentId'], 'courseId': content['courseId'] })
                     var i = _.findIndex(localContentState[content['courseId']]['contents'], { 'contentId': content['contentId'], 'courseId': content['courseId'] })
-                    if (obj && obj['progress'] && parseInt(obj['progress']) < content['progress']) {
-                        localContentState[content['courseId']]['contents'][i]['progress'] = content['progress'];
-                    } else {
+                    if (obj) {
+                        localContentState[content['courseId']]['contents'][i]['progress'] = (obj['progress'] && parseInt(obj['progress']) < content['progress']) ? content['progress'] : localContentState[content['courseId']]['contents'][i]['progress'];
+                        localContentState[content['courseId']]['contents'][i]['lastAccessTime'] = content['lastAccessTime'];
+                        localContentState[content['courseId']]['contents'][i]['status'] = content['status'];
+                    } else if (i === -1) {
                         localContentState[content['courseId']]['contents'].push(content);
                     }
                 }
-
+                localContentState[content['courseId']]['currentContent'] = content['contentId'];
                 //update in API
                 var req = {
                         "id": uuid4.generate(),
