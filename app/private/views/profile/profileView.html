@@ -1,70 +1,26 @@
+<div class="twelve wide column">
+    <div class="ui raised segment " ng-if="profileCtrl.loader.showLoader">
+        <app-loader data="{{profileCtrl.loader}}"></app-loader>
+    </div>
+    <div class="ui raised segment " ng-if="profileCtrl.error.showError">
+        <error-message data="{{profileCtrl.error}}" visibility="search.error.showError"></error-message>
+    </div>
+</div>
 <div class="ui grid">
-    <div class="nine wide column">
+    <div class="eight wide column">
         <div class="ui grid">
-            <div class="twelve wide column">
-
-                <div class="ui raised segment " ng-if="profileCtrl.loader.showLoader">
-                    <app-loader data="{{profileCtrl.loader}}"></app-loader>
-                </div>
-                <div class="ui raised segment " ng-if="profileCtrl.error.showError">
-                    <error-message data="{{profileCtrl.error}}" visibility="search.error.showError"></error-message>
-                </div>
-
-            </div>
             <div class="twelve wide column" ng-include=" 'views/profile/profileView/userExperience.html' ">
-
             </div>
             <div class="twelve wide column" ng-include=" 'views/profile/profileView/userAddress.html' ">
-
             </div>
             <div class="twelve wide column" ng-include=" 'views/profile/profileView/userEducation.html' ">
-
             </div>
-            <!--<div class="twelve wide column ">
-                <div class="ui raised segment ">
-                    <div class="header announcementCard-header ">
-                        <span class="header cardsHeading " translate="experiance ">Accomplishements + Badges</span>
-                        <a class="editexperiance " translate="edit ">Add</a>
-                    </div>
-                    <div class="experienceheader ui relaxed aligned list ">
-                        <div class="item ">
-                            <div class="right floated content ">
-                                <span class="description " translate="edit ">June 2016</span>
-                            </div>
-                            <div class="content ">
-                                Teachers of the year
-                            </div>
-                        </div>
-                        <div class="item ">
-                            <div class="right floated content ">
-                                <span class="description " translate="edit ">March 2008</span>
-                            </div>
-                            <div class="content ">
-                                Best even organizer - Team Blue
-                            </div>
-                        </div>
-                        <div class="item ">
-                            <i class="student icon "></i>
-                            <div class="content ">
-                                First winner in 4 courses
-                            </div>
-                        </div>
-                        <div class="item ">
-                            <i class="student icon "></i>
-                            <div class="content ">
-                                Created 5 courses
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>-->
             <div class="twelve wide column " ng-init="profileCtrl.basicProfileForm=false" ng-include=" 'views/profile/profileView/userBasicInfo.html' ">
-
             </div>
         </div>
     </div>
-    <div class=" three wide column ">
-        <div class="workspacebuttongrid ui grid ">
+    <div class=" four wide column ">
+        <div class="ui grid ">
             <div class="twelve wide column ">
                 <div class="workspacebutton workspacecontent ui link card " ui-sref="WorkSpace ">
                     <div class="content ">
@@ -101,7 +57,6 @@
                                 <div class="meta ">
                                     <span class="cinema ">(250 Members)</span>
                                 </div>
-
                             </div>
                         </div>
                         <div class="item ">
@@ -172,7 +127,6 @@
                                 <div class="meta ">
                                     <span class="cinema "><div class="courseHeader-rating ui mini star rating " data-rating="3 "></div>(2,345)</span>
                                 </div>
-
                             </div>
                         </div>
                         <div class="item ">
