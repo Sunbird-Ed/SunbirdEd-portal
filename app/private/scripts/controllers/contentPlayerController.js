@@ -30,6 +30,10 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (playerTele
             console.info('OE_END event:', event.detail.telemetryData);
             org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:telemetryend', event.detail.telemetryData);
         });
+        window.onbeforeunload = function (e) {
+            playerTelemetryUtilsService.endTelemetry({progress: $scope.contentProgress});
+        }
+
 
         if ($scope.contentData.mimeType === 'application/vnd.ekstep.ecml-archive' || $scope.contentData.mimeType === 'application/vnd.ekstep.html-archive') {
             $scope.showIFrameContent = true;
@@ -81,7 +85,7 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (playerTele
         });
         video.on('ended', function () {
             $scope.contentProgress = 100;
-            playerTelemetryUtilsService.endTelemetry({progress:$scope.contentProgress });
+            playerTelemetryUtilsService.endTelemetry({progress: $scope.contentProgress});
         });
         video.on('volumechange', function () {
             var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "TOUCH", "data": {subtype: "VOLUME"}};
@@ -140,7 +144,7 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (playerTele
         }
 
         $scope.visibility = false;
-        playerTelemetryUtilsService.endTelemetry();
+        playerTelemetryUtilsService.endTelemetry({progress: $scope.contentProgress});
     };
     $scope.tryAgain = function () {
         $scope.errorObject = {};
@@ -171,8 +175,9 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (playerTele
         playerTelemetryUtilsService.updateTelemetry(telemetryData);
         var telemetryNavData = {"id": $scope._instance.id, "ver": $scope._instance.ver, "stageid": $scope.getCurrentPage - 1, "stageto": $scope.getCurrentPage, "data": {}};
         playerTelemetryUtilsService.navigateTelemetry(telemetryNavData);
+        $scope.contentProgress = $scope.getCurrentPage * 100 / $scope.totalPageNumber;
         if ($scope.getCurrentPage == $scope.totalPageNumber) {
-            playerTelemetryUtilsService.endTelemetry();
+            playerTelemetryUtilsService.endTelemetry({progress: $scope.contentProgress});
         }
     };
     $scope.rotate = function () {
@@ -181,6 +186,9 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (playerTele
         playerTelemetryUtilsService.updateTelemetry(telemetryData);
     };
     $scope.goToPage = function (pageNumber) {
+        if (pageNumber > $scope.getCurrentPage) {
+            $scope.contentProgress = $scope.getCurrentPage * 100 / $scope.totalPageNumber;
+        }
         var telemetryNavData = {"id": $scope._instance.id, "ver": $scope._instance.ver, "stageid": $scope.getCurrentPage, "stageto": pageNumber, "data": {}};
         pdfDelegate.$getByHandle('content-player').goToPage(pageNumber);
         $scope.getCurrentPage = pageNumber;

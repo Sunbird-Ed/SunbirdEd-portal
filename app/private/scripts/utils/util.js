@@ -29,8 +29,7 @@ org.sunbird.portal.addUnloadEvent = function() {
         var y = e.pageY || e.clientY;
         !y && org.sunbird.portal.eventManager.dispatchEvent("sunbird:telemetry:sync", {
             TelemetryData: TelemetryService._data
-        });
-         org.sunbird.portal.eventManager.dispatchEvent("sunbird:telemetry:end");
+        });        
     };
 };
 
