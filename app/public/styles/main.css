@@ -560,7 +560,7 @@ th {
   border-color: #0099CC !important;
 }
 .ui.secondary.pointing.menu {
-  background: #FFFFFF !important;
+  background: #fdfdfd !important;
 }
 .modal .ui.segment {
   box-shadow: none !important;
@@ -970,7 +970,7 @@ span.fancytree-title {
 }
 .videosegment.ui.segment {
   position: relative;
-  background: #fff;
+  background: #fdfdfd !important;
   box-shadow: 0 0 0;
   margin: 1rem 0;
   padding: 0;
