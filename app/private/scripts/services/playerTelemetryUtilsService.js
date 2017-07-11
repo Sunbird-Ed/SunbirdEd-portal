@@ -7,8 +7,8 @@ angular.module('playerApp')
             this.updateTelemetry = function (data) {
                 org.sunbird.portal.eventManager.dispatchEvent("sunbird:telemetry:intreact", data);
             };
-            this.endTelemetry = function () {
-                org.sunbird.portal.eventManager.dispatchEvent("sunbird:telemetry:end");
+            this.endTelemetry = function (data) {
+                org.sunbird.portal.eventManager.dispatchEvent("sunbird:telemetry:end",data);
                 org.sunbird.portal.eventManager.dispatchEvent("sunbird:telemetry:sync", {
                     TelemetryData: TelemetryService._data
                 });
