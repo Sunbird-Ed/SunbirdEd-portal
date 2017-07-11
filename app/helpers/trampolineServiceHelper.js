@@ -3,11 +3,11 @@ async = require('async')
 request = require('request'),
     Keycloak = require('keycloak-connect'),
     session = require('express-session'),
-    uuidv1 = require('uuid/v1');
-dateFormat = require('dateformat')
-echoAPI = process.env['sunbird_echo_api_url'] || "https://sunbird-1b.centralindia.cloudapp.azure.com/api/echo/",
-    createUserFlag = process.env['sunbird_autocreate_trampoline_user'] || true
-learnerURL = process.env.sunbird_learner_player_url || 'http://52.172.36.121:9000/v1/';
+    uuidv1 = require('uuid/v1'),
+    dateFormat = require('dateformat'),
+    echoAPI = process.env['sunbird_echo_api_url'] || "https://sunbird-1b.centralindia.cloudapp.azure.com/api/echo/",
+    createUserFlag = process.env['sunbird_autocreate_trampoline_user'] || true,
+    learnerURL = process.env.sunbird_learner_player_url || 'http://52.172.36.121:9000/v1/';
 let memoryStore = new session.MemoryStore();
 var keycloak = new Keycloak({ store: memoryStore }, {
     clientId: 'trampoline',
@@ -82,7 +82,7 @@ module.exports = {
                                         return;
                                     }
                                 })
-                            } else{
+                            } else {
                                 callback('user not found', null)
                             }
 
