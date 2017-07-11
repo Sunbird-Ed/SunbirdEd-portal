@@ -1,3 +1,11 @@
+<style type="text/css">
+ #editroIframe {
+        box-shadow:-1px -1px 9px 6px rgba(0, 0, 0, 0.41);
+    }
+ </style>   
+
+
+
 <div class="ui grid" ng-if="contentEditor.ekURL">
     <div class="one wide column"></div>
     <div class="ten wide column">
@@ -9,7 +17,7 @@
                 <i class="ui edit icon"></i>
             </h5>
         </div>
-        <iframe ng-if="contentEditor.ekURL" ng-src="{{contentEditor.ekURL}}" class="content-iframe"></iframe>
+        <iframe ng-if="contentEditor.ekURL" id="editroIframe" ng-src="{{contentEditor.ekURL}}" class="content-iframe"></iframe>
     </div>
     <div class="one wide column"></div>
 </div>
