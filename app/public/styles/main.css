@@ -684,7 +684,7 @@ th {
 .editor textarea {
   background-color: #FFFFFF;
   height: 180px !important;
-  resize: none;
+  resize: none !important;
 }
 .pdf-editor {
   float: left !important;
@@ -758,6 +758,30 @@ slick-prev:before,
   position: fixed !important;
   bottom: 0 !important;
   width: 100% !important;
+}
+.userProfilePic {
+  width: 200px !important;
+}
+.userProfilePic .image {
+  background: white !important;
+  width: 200px;
+  height: 200px;
+}
+.userProfilePic .image.iconProfilePic {
+  text-align: center;
+  line-height: 200px;
+}
+.userProfilePic .image.iconProfilePic i {
+  vertical-align: middle;
+}
+.userProfilePic .image.landscapeImgUser img {
+  border-radius: 0 !important;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: 200px;
+  height: 150px;
 }
 .down-arrow-accordion {
   float: right !important;
