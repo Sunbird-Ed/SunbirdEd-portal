@@ -14,6 +14,21 @@
         <label>Job Description</label>
         <input type="text" name="" ng-model="profileCtrl.newExperience.description">
     </div>
+    <div class="inline fields">
+        <label for="address">Is this your current job?</label>
+        <div class="field">
+            <div class="ui radio checkbox iscurrentCheckbox">
+                <input type="radio" name="radio" value=true ng-model="profileCtrl.newExperience.isCurrentJob" ng-change="profileCtrl.setRadio()">
+                <label>yes</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui radio checkbox iscurrentCheckbox">
+                <input type="radio" name="radio" value=false ng-model="profileCtrl.newExperience.isCurrentJob">
+                <label>no</label>
+            </div>
+        </div>
+    </div>
     <div apply-script class="two fields" ng-init="profileCtrl.getDate()">
         <div class="field">
             <label>Start date</label>
@@ -24,7 +39,8 @@
                 </div>
             </div>
         </div>
-        <div class="field">
+
+        <div class="field" ng-hide="profileCtrl.newExperience.isCurrentJob==='true'">
             <label>End date</label>
             <div class="ui calendar" id="rangeendAdd">
                 <div class="ui input left icon">

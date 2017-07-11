@@ -191,18 +191,23 @@ angular.module('playerApp')
         profile.addExperience = function(newExperience) {
             var startDate = $('#rangestartAdd').calendar('get date');
             var endDate = $('#rangestartAdd').calendar('get date');
-
+            console.log('startDate', $filter('date')(endDate, 'yyyy-MM-dd'));
             newExperience.endDate = $filter('date')(endDate, 'yyyy-MM-dd');
             newExperience.startDate = $filter('date')(startDate, 'yyyy-MM-dd');
             profile.experience.push(newExperience);
-            profile.editExperience(profile.jobProfile);
-            console.log('newExperience', newExperience);
+            console.log('newExperience', profile.experience);
+            var req = { jobProfile: profile.experience };
+            req.userId = $rootScope.userId;
+            console.log('req experience', req);
+            profile.updateProfile(req);
         };
         profile.editExperience = function(experiences) {
-            // var startDate = $('#rangestartAdd').calendar('get date');
-            // var endDate = $('#rangestartAdd').calendar('get date');
-            // experiences.endDate = $filter('date')(endDate, 'yyyy-MM-dd');
-            // experiences.startDate = $filter('date')(startDate, 'yyyy-MM-dd');
+            experiences.forEach(function(element) {
+                var startDate = $('#rangeStart').calendar('get date');
+                var endDate = $('#rangeEnd').calendar('get date');
+                element.startDate = startDate ? $filter('date')(startDate, 'yyyy-MM-dd') : element.startDate;
+                element.endDate = endDate ? $filter('date')(endDate, 'yyyy-MM-dd') : element.startDate;
+            }, this);
             var req = { jobProfile: experiences };
             req.userId = $rootScope.userId;
             console.log('req experience', req);
@@ -211,15 +216,25 @@ angular.module('playerApp')
 
         profile.setEditStart = function(date) {
             $('#rangeStart').calendar('set startDate', date);
+            console.log('trying to ser strtt');
         };
         profile.setEditEnd = function(date) {
             $('#rangeEnd').calendar('set endDate', date);
+            console.log('trying to ser end');
         };
         profile.setDob = function() {
             $('#editDob').calendar('set date', profile.user.dob);
         };
         profile.getEditStart = function() {
-            console.log('tryingot der valur');
             return ($('#rangeStart').calendar('get date'));
         };
+
+        $timeout(function() {
+            $('.ui.radio.checkbox')
+                .checkbox('attach events', '.toggle.button').checkbox({
+                    onChange: function() {
+                        console.log('Value changed');
+                    }
+                });
+        }, 100);
     });
