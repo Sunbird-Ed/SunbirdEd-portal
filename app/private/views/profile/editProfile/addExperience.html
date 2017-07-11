@@ -1,45 +1,55 @@
-<div class="ui dividing header margin-top-15 "></div>
-<div class="two fields">
+<form class="ui form ">
+    <div class="ui dividing header margin-top-15 "></div>
+    <div class="two fields">
+        <div class=" field">
+            <label>Position</label>
+            <input type="text" name="" ng-model="profileCtrl.newExperience.role">
+        </div>
+        <div class="  field">
+            <label>Organization</label>
+            <input type="text" name="" ng-model="profileCtrl.newExperience.name">
+        </div>
+    </div>
     <div class=" field">
-        <label>Position</label>
-        <input type="text" name="" ng-model="profileCtrl.experience.role">
+        <label>Job Description</label>
+        <input type="text" name="" ng-model="profileCtrl.newExperience.description">
     </div>
-    <div class="  field">
-        <label>Organization</label>
-        <input type="text" name="" ng-model="profileCtrl.experience.name">
-    </div>
-</div>
-<div class=" field">
-    <label>Job Description</label>
-    <input type="text" name="" ng-model="profileCtrl.experience.description">
-</div>
-<div class="two fields">
-    <div class=" field">
-        <label>Start Date</label>
-        <input type="text" name="" ng-model="profileCtrl.experience.startDate">
-    </div>
-    <div class="  field">
-        <label>End Date</label>
-        <input type="text" name="" ng-model="profileCtrl.experience.endDate">
-    </div>
-</div>
-<div apply-script class="two fields">
-    <div class="field">
-        <label>Start date</label>
-        <div class="ui calendar" id="rangestart">
-            <div class="ui input left icon">
-                <i class="calendar icon"></i>
-                <input type="text" placeholder="Start">
+    <div class="inline fields">
+        <label for="address">Is this your current job?</label>
+        <div class="field">
+            <div class="ui radio checkbox iscurrentCheckbox">
+                <input type="radio" name="radio" value=true ng-model="profileCtrl.newExperience.isCurrentJob" ng-change="profileCtrl.setRadio()">
+                <label>yes</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui radio checkbox iscurrentCheckbox">
+                <input type="radio" name="radio" value=false ng-model="profileCtrl.newExperience.isCurrentJob">
+                <label>no</label>
             </div>
         </div>
     </div>
-    <div class="field">
-        <label>End date</label>
-        <div class="ui calendar" id="rangeend">
-            <div class="ui input left icon">
-                <i class="calendar icon"></i>
-                <input type="text" placeholder="End">
+    <div apply-script class="two fields" ng-init="profileCtrl.getDate()">
+        <div class="field">
+            <label>Start date</label>
+            <div class="ui calendar" id="rangestartAdd">
+                <div class="ui input left icon">
+                    <i class="calendar icon"></i>
+                    <input type="text" ng-model="newExperience.startDate">
+                </div>
+            </div>
+        </div>
+
+        <div class="field" ng-hide="profileCtrl.newExperience.isCurrentJob==='true'">
+            <label>End date</label>
+            <div class="ui calendar" id="rangeendAdd">
+                <div class="ui input left icon">
+                    <i class="calendar icon"></i>
+                    <input type="text" ng-model="newExperience.endDate">
+                </div>
             </div>
         </div>
     </div>
-</div>
+    <div class="ui button " ng-click="profileCtrl.addExperience(profileCtrl.newExperience) ;">Save experience</div>
+
+</form>

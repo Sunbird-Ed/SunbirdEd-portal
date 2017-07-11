@@ -1,0 +1,30 @@
+<div ng-init="reviewContent.initializeData()">
+    <div ng-if="!reviewContent.reviewApi.loader.showLoader && !reviewContent.reviewApi.error.showError">
+        <div class="ui three stackable cards">
+            <div class="link card mouse-pointer" ng-repeat="item in reviewContent.reviewContentData track by $index">
+                <div class="image imageInCardsResponsive">
+                    <div class="ui fluid image">
+                        <a class="ui black right ribbon label">{{item.contentType}}</a>
+                        <img ng-src=" {{item.appIcon ? item.appIcon : '../images/sunbird_logo.png'}} ">
+                    </div>
+                    <div class="cardImageText center aligned ">
+                        <span class="sliderCardHeading text-cencapitalize">
+                            {{item.name| limitTo:14}}
+                        </span>
+                    </div>
+                </div>
+                <div class="sliderCards content">
+                    <span class="sliderCardSubDesc">
+                        <span>{{item.description| limitTo:14}}</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="twelve wide column" ng-if="reviewContent.reviewApi.loader.showLoader">
+        <app-loader data="{{reviewContent.reviewApi.loader}}"></app-loader>
+    </div>
+    <div class="twelve wide column" ng-if="reviewContent.reviewApi.error.showError">
+        <error-message data="{{reviewContent.reviewApi.error}}" visibility="reviewContent.reviewApi.error.showError"></error-message>
+    </div>
+</div>

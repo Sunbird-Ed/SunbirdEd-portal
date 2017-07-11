@@ -31,19 +31,23 @@
                         <div class="item">
                             <div class="content">
                                 <div class="ui row margin-left-right-0">
-                                    <span class="ui small header mouse-pointer" ng-click="noteList.update.showUpdateNote = !noteList.update.showUpdateNote; noteList.update.metaData = note;"> {{ note.title | limitTo: 40 }}&nbsp;
-                                        <i ng-show="note.title.length > 40"  data-tooltip={{note.title}}></i>
+                                    <span class="ui small header mouse-pointer" ng-click="noteList.update.showUpdateNote = !noteList.update.showUpdateNote; noteList.updateNote(note);"> {{ note.title | limitTo: 40 }}
                                     </span>
+                                    <i ng-show="note.title.length > 15" class="ellipsis horizontal icon popup-button" data-content="{{note.titles}}"
+                                       data-variation="wide">
+                                    </i>
                                     <span class="circleicon"><i class=" large remove circle icon margin-bottom-0 link"  ng-click="noteList.removeNote(note.identifier)"></i></span>
                                 </div>
                                 <div class="meta">
                                     <span class="time font-size-small">{{note.lastUpdatedOn| dateFilterXTimeAgo}}</span>
                                 </div>
                                 <div class="description">
-                                    <span> {{ note.note | limitTo: 80 }}&nbsp;
-                                        <i ng-show="note.note.length > 80" class="ellipsis horizontal icon popup-button" data-content="{{note.note}}"
-                                           data-variation="wide"></i> 
-                                    </span>
+                                    <div class="description" ng-init="noteData = note.note.length > 70 ? note.note.substring(-1,70) : note.note">
+                                        <pagedown-viewer content="noteData"></pagedown-viewer>
+                                        <i ng-if="note.note.length > 70" class="ellipsis horizontal icon popup-button" data-content="{{note.note}}"
+                                           data-variation="wide">
+                                        </i> 
+                                    </div>
                                 </div>
                             </div>
                         </div>
