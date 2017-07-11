@@ -698,6 +698,15 @@ th {
 .width-25p {
   width: 25% !important;
 }
+.editroIframe {
+  box-shadow: -1px -1px 9px 6px rgba(0, 0, 0, 0.41);
+}
+.contentViewerIframeShadow {
+  box-shadow: -1px -1px 9px 6px rgba(0, 0, 0, 0.41);
+  width: 77%;
+  margin-left: 11%;
+  border-radius: 1%;
+}
 .slick-prev,
 .slick-next {
   right: -20px !important;
