@@ -70,7 +70,7 @@ angular.module('playerApp')
             editContent.initilizeView();
 
             var req = { contentId: editContent.contentId };
-            var qs = {mode: "edit",fields:'name,description,appIcon,contentType,mimeType,versionKey,audience,language,gradeLevel,ageGroup,subject,medium,author,domain'}
+            var qs = {mode: "edit",fields:'name,description,appIcon,contentType,mimeType,artifactUrl,versionKey,audience,language,gradeLevel,ageGroup,subject,medium,author,domain'}
 
             contentService.getById(req, qs).then(function(response) {
                 if (response && response.responseCode === 'OK') {
