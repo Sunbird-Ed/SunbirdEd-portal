@@ -33,12 +33,6 @@ node('docker') {
          sh 'ARTIFACT_LABEL=bronze ./player/dockerPushToRepo.sh'
 
        }
-
-       stage('Deploy to Dev'){
-
-         sh 'ARTIFACT_LABEL=bronze ENV=dev ./player/deploy.sh'
-
-       }
     }
     catch (err) {
         currentBuild.result = "FAILURE"
