@@ -1475,6 +1475,10 @@ span.fancytree-title {
   height: 100px !important;
   width: 100px !important;
 }
+/*trashIcon in address css*/
+.trashIcon-fontSize {
+  font-size: 1.5em !important;
+}
 .profilesegmentmargin.ui.segment:first-child {
   margin-top: 20px;
 }
