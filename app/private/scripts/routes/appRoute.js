@@ -421,10 +421,52 @@ angular
                         templateUrl: '/views/workSpace/createContent.html'
                     }
                 }
+            }).state('CreateTextbook', {
+                url: '/create/textbook',
+                views: {
+                    'mainView': {
+                        templateUrl: '/views/workSpace/createTextBook.html',
+                        controller: 'TextBookController as textbook'
+                    }
+                },
+                onEnter: function($rootScope) {
+                    $rootScope.profileActive = 'active';
+                },
+                onExit: function($rootScope) {
+                    $rootScope.profileActive = '';
+                }
+            }).state('CreateCollection', {
+                url: '/create/collection',
+                views: {
+                    'mainView': {
+                        templateUrl: '/views/workSpace/createCollection.html',
+                        controller: 'CollectionController as collection'
+                    }
+                },
+                onEnter: function($rootScope) {
+                    $rootScope.profileActive = 'active';
+                },
+                onExit: function($rootScope) {
+                    $rootScope.profileActive = '';
+                }
+            }).state('CollectionEditor', {
+                url: '/collection/editor/',
+                views: {
+                    'mainView': {
+                        templateUrl: 'views/common/collectionEditor.html',
+                        controller: 'CollectionEditorController as collectionEditor'
+                    }
+                },
+                params: { contentId: null , type: null},
+                onEnter: function($rootScope) {
+                    $rootScope.profileActive = 'active';
+                },
+                onExit: function($rootScope) {
+                    $rootScope.profileActive = '';
+                }
             });
     })
     .run(function($urlRouter, $http, $state, permissionsService, $rootScope, $location) {
-
         permissionsService.getPermissionsData('/permissions')
             .then(function(res) {
                 var permissions = res.data;
