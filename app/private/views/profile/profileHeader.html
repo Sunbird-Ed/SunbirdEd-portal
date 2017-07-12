@@ -1,4 +1,4 @@
-<div class="ui grid padding-topBottom-10 courseStructureHeader" ng-if="!profileCtrl.loader.showLoader && !profileCtrl.error.showError">
+<div class="ui grid padding-topBottom-10 courseStructureHeader">
     <div class="one wide column"></div>
     <div class=" ten wide column">
         <div class="ui grid">
@@ -12,7 +12,9 @@
                             <div class="content padding-top-10 ">
                                 <div class="sectionHeading header">{{::profileCtrl.user.firstName}} &nbsp;{{::profileCtrl.user.lastName}}</div>
                                 <div class="meta">
-                                    <span class="cinema">{{::profileCtrl.user.organizationName}} <span ng-if="profileCtrl.currentAddressLocation">{{::profileCtrl.currentAddressLocation.city}}</span>
+                                    <span class="cinema">
+                                        <span ng-if="profileCtrl.currentJobLocation">{{::profileCtrl.currentJobLocation.orgName}}</span>
+                                    <span ng-if="profileCtrl.currentAddressLocation">{{::profileCtrl.currentAddressLocation.city}}</span>
                                 </div>
                                 <div class="description" ng-init="profileCtrl.readMore = false">
                                     <p ng-if="!profileCtrl.readMore"> {{::profileCtrl.user.profileSummary | limitTo: 120 }}&nbsp;

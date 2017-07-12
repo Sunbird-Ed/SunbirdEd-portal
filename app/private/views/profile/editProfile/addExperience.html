@@ -13,24 +13,22 @@
     <div class=" field">
         <label>Subjects</label>
         <div class="field">
-            <select apply-script class="ui fluid dropdown signupMultiple" multiple="" ng-model="profileCtrl.newExperience.subject">
-                        <option value="English">English</option>
-                        <option value="Hindi">Hindi</option>
-                         <option value="Math">Math</option>
-                     </select>
+
+            <select apply-script class="ui fluid dropdown signupMultiple" multiple="" ng-model="profileCtrl.newExperience.subject" ng-value="option.value" ng-options=" subject for subject in ::profileCtrl.subjects">
+                                            </select>
         </div>
     </div>
     <div class="inline fields">
         <label for="address">Is this your current job?</label>
         <div class="field">
-            <div class="ui radio checkbox iscurrentCheckbox">
-                <input type="radio" name="radio" value=true ng-model="profileCtrl.newExperience.isCurrentJob" ng-change="profileCtrl.setRadio()">
+            <div class="ui radio checkbox ">
+                <input type="radio" name="radio" value='true' ng-model="profileCtrl.newExperience.isCurrentJob" ng-change="profileCtrl.setRadio()">
                 <label>yes</label>
             </div>
         </div>
         <div class="field">
-            <div class="ui radio checkbox iscurrentCheckbox">
-                <input type="radio" name="radio" value=false ng-model="profileCtrl.newExperience.isCurrentJob">
+            <div class="ui radio checkbox ">
+                <input type="radio" name="radio" value='false' ng-model="profileCtrl.newExperience.isCurrentJob">
                 <label>no</label>
             </div>
         </div>

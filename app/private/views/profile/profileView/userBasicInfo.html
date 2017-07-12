@@ -1,11 +1,11 @@
-<div class="ui raised segment ">
+<div class="ui raised segment " ng-init="profileCtrl.basicProfileForm=false">
     <div class="header announcementCard-header ">
         <span class="header cardsHeading " translate="experiance ">Additional Information</span>
         <a href="" class="addeditprofile " ng-if="!profileCtrl.basicProfileForm" translate="edit " ng-click="profileCtrl.basicProfileForm=true">Edit</a>
         <a href="" class="addeditprofile" ng-if="profileCtrl.basicProfileForm" translate="close" ng-click="profileCtrl.basicProfileForm=false">close</a>
 
     </div>
-    <div class="profileitems ui relaxed aligned list " ng-if="!profileCtrl.basicProfileForm">
+    <div class="profileitems ui relaxed aligned list " ng-if="!profileCtrl.basicProfileForm && profileCtrl.basicProfile">
 
         <div class="item ">
             <div class="right floated content ">
@@ -65,7 +65,7 @@
         </div>
         <div class="item ">
             <div class="right floated content ">
-                <span translate="edit ">{{::profileCtrl.basicProfile.location}}</span>
+                <span ng-if="profileCtrl.currentAddressLocation">{{::profileCtrl.currentAddressLocation.city}}</span>
             </div>
             <div class="iniformationcontent content ">
                 CURRENT LOCATION
