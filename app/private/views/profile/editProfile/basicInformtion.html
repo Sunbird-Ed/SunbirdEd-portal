@@ -30,9 +30,9 @@
                         <option value="">Male</option>
                      </select>
         </div>
-        <div class="field">
+        <div class="field" ng-init=" profileCtrl.setDropdownValue()">
             <label>Language</label>
-            <select name="language" id=languageSelect ng-selected="true" class="ui fluid dropdown" multiple="" ng-value="option.value" ng-options=" language for language in ::profileCtrl.languages" ng-model="profileCtrl.basicProfile.language">
+            <select name="language" id=languageSelect class="ui fluid dropdown" multiple="" ng-value="option.value" ng-options=" language for language in ::profileCtrl.languages" ng-model="profileCtrl.basicProfile.language">
                                         <option value="" translate="languages">Languages</option>
                                     </select>
         </div>
@@ -52,16 +52,12 @@
             </div>
         </div>
     </div>
-    <div class="field" ng-init=" profileCtrl.setDropdownValue()">
+    <div class="field">
         <label>Subjects</label>
-        <div class="field">
-            <select id="languageSelect" class="ui fluid dropdown signupMultiple" multiple="" ng-model="profileCtrl.basicProfile.subject">
-                        <option value="English">English</option>
-                        <option value="Hindi">Hindi</option>
-                         <option value="Math">Math</option>
-                     </select>
+        <div class="field" ng-init=" profileCtrl.setSubject()">
+            <select id="setSubjects" class="ui fluid dropdown " multiple="" ng-model="profileCtrl.basicProfile.subject" ng-value="option.value" ng-options=" subject for subject in ::profileCtrl.subjects">
+                                           </select>
         </div>
-
     </div>
     <div class="field">
         <label>summary</label>
