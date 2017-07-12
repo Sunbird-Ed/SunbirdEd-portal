@@ -106,12 +106,12 @@ angular.module('playerApp')
 
             var requestBody = angular.copy(data);
 
-            requestBody.mimeType = "application/vnd.ekstep.ecml-archive";
+            requestBody.mimeType = "application/vnd.ekstep.content-collection";
             requestBody.createdBy = textbook.userId;
 
             requestBody.name = requestBody.name ? requestBody.name : "Default title";
             requestBody.description = requestBody.description ? requestBody.description : "Default description";
-            requestBody.contentType = requestBody.contentType ? requestBody.contentType : "Story";
+            requestBody.contentType = requestBody.contentType ? requestBody.contentType : "Textbook";
 
             var requestdata = {
                 "content": requestBody
