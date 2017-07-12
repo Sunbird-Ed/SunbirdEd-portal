@@ -13,7 +13,7 @@ node('docker') {
 
        stage('Pre-Build'){
 
-         sh('./installDeps.sh')
+         sh('./player/installDeps.sh')
 
        }
 
@@ -22,7 +22,7 @@ node('docker') {
          env.NODE_ENV = "build"
 
          print "Environment will be : ${env.NODE_ENV}"
-         sh('./build.sh')
+         sh('./player/build.sh')
 
        }
 
@@ -30,13 +30,13 @@ node('docker') {
 
          echo 'Push to Repo'
          sh 'ls -al ~/'
-         sh 'ARTIFACT_LABEL=bronze ./dockerPushToRepo.sh'
+         sh 'ARTIFACT_LABEL=bronze ./player/dockerPushToRepo.sh'
 
        }
 
        stage('Deploy to Dev'){
 
-         sh 'ARTIFACT_LABEL=bronze ENV=dev ./deploy.sh'
+         sh 'ARTIFACT_LABEL=bronze ENV=dev ./player/deploy.sh'
 
        }
     }
