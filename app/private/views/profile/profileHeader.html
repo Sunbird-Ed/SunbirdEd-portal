@@ -12,13 +12,13 @@
                             <div class="content padding-top-10 ">
                                 <div class="sectionHeading header">{{::profileCtrl.user.firstName}} &nbsp;{{::profileCtrl.user.lastName}}</div>
                                 <div class="meta">
-                                    <span class="cinema">{{::profileCtrl.user.organizationName}}{{::profileCtrl.user.city}}</span>
+                                    <span class="cinema">{{::profileCtrl.user.organizationName}} <span ng-if="profileCtrl.currentAddressLocation">{{::profileCtrl.currentAddressLocation.city}}</span>
                                 </div>
                                 <div class="description" ng-init="profileCtrl.readMore = false">
-                                    <p ng-if="!profileCtrl.readMore"> {{::profileCtrl.summary | limitTo: 120 }}&nbsp;
+                                    <p ng-if="!profileCtrl.readMore"> {{::profileCtrl.user.profileSummary | limitTo: 120 }}&nbsp;
                                         <span class="ui cardsKnowMore mouse-pointer" ng-if="profileCtrl.summary.length > 120 && profileCtrl.readMore === false" ng-click="profileCtrl.readMore = !profileCtrl.readMore;"> ... Read More</span>
                                     </p>
-                                    <p ng-if="profileCtrl.readMore"> {{::profileCtrl.summary}}&nbsp;
+                                    <p ng-if="profileCtrl.readMore"> {{::profileCtrl.user.profileSummary}}&nbsp;
                                         <span class="ui cardsKnowMore mouse-pointer" ng-click="profileCtrl.readMore = false;">Read Less ...</span>
                                     </p>
                                 </div>
