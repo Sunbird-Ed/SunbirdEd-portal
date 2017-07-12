@@ -16,6 +16,7 @@ angular.module('playerApp')
         // profile.userId = '44f76ae4-1850-48d2-97e1-2408c5a6d9fc';
         // profile.userId = '5ac2edd3-8d2e-49a4-ac86-9ed5c2e10f3e';
         // update profile image
+        profile.profileSummary = '';
         profile.languages = config.FILTER.RESOURCES.languages;
         profile.openImageBrowser = function() {
             console.log('trying to change');
@@ -90,6 +91,9 @@ angular.module('playerApp')
                             element.updatedDate = new Date(element.updatedDate);
                         }
                     }, this);
+                    profile.currentAddressLocation = profileData.address.find(function(userAddress) {
+                        return (userAddress.addType === 'current');
+                    });
                 }
                 if (profileData.education.length) {
                     profileData.education.forEach(function(element) {
@@ -158,6 +162,8 @@ angular.module('playerApp')
             delete profile.basicProfile.status;
             delete profile.basicProfile.identifier;
             var dob = $('#editDob').calendar('get date');
+            console.log('profile.profileSummary', profile.profileSummary);
+            profile.basicProfile.profileSummary = profile.profileSummary;
             profile.basicProfile.dob = $filter('date')(dob, 'yyyy-MM-dd');
             profile.updateProfile(profile.basicProfile);
         };
@@ -178,6 +184,7 @@ angular.module('playerApp')
 
             profile.education.push(newEducation);
             console.log('newEducation', newEducation);
+
             profile.editEducation(profile.education);
         };
         profile.editEducation = function(education) {
@@ -194,6 +201,8 @@ angular.module('playerApp')
             console.log('startDate', $filter('date')(endDate, 'yyyy-MM-dd'));
             newExperience.endDate = $filter('date')(endDate, 'yyyy-MM-dd');
             newExperience.joiningDate = $filter('date')(startDate, 'yyyy-MM-dd');
+            newExperience.userId = $rootScope.userId;
+            delete newExperience.isCurrentJob;
             profile.experience.push(newExperience);
             console.log('newExperience', profile.experience);
             var req = { jobProfile: profile.experience };
