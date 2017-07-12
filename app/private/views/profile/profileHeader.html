@@ -6,8 +6,7 @@
                 <div class="profileheader ui link items">
                     <div class="ui grid">
                         <div class="two wide column">
-                            <!--<div ng-include="'views/profile/editProfile/userAvtar.html'"></div>-->
-                            <img class="ui small circular image header-image-profile" src="{{::profileCtrl.user.profilePic || 'images/user_logo.png'}}">
+                            <div ng-include="'views/profile/editProfile/userAvtar.html'"></div>
                         </div>
                         <div class="ten wide column">
                             <div class="content padding-top-10 ">
@@ -46,17 +45,11 @@
                         </h4>
                     </div>
                     <div class="twelve wide column ">
-                        <button apply-script class="ui primary basic button" id="openTreeModal">EDIT PROFILE</button>
+                        <!--<button apply-script class="ui primary basic button" id="openTreeModal">EDIT PROFILE</button>-->
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="one wide column"></div>
-</div>
-<div ng-if="profileCtrl.loader.showLoader">
-    <app-loader data="{{profileCtrl.loader}}"></app-loader>
-</div>
-<div ng-if="profileCtrl.error.showError">
-    <error-message data="{{profileCtrl.error}}" visibility="search.error.showError"></error-message>
 </div>
