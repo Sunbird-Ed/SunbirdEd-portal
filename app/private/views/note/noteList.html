@@ -31,7 +31,7 @@
                         <div class="item">
                             <div class="content">
                                 <div class="ui row margin-left-right-0">
-                                    <span class="ui small header mouse-pointer" ng-click="noteList.update.showUpdateNote = !noteList.update.showUpdateNote; noteList.updateNote(note);"> {{ note.title | limitTo: 40 }}
+                                    <span class="ui small header mouse-pointer" ng-click="noteList.update.showUpdateNote = !noteList.update.showUpdateNote; noteList.updateNoteData(note);"> {{ note.title | limitTo: 40 }}
                                     </span>
                                     <i ng-show="note.title.length > 15" class="ellipsis horizontal icon popup-button" data-content="{{note.titles}}"
                                        data-variation="wide">
