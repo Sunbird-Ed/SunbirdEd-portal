@@ -213,7 +213,7 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
         }
     };
     
-    noteList.updateNote = function (note) {
+    noteList.updateNoteData = function (note) {
         noteList.update.metaData = angular.copy(note);
     };
 
