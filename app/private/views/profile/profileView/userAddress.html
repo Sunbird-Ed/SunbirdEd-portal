@@ -1,7 +1,7 @@
 <div class="ui raised segment">
     <div class="header announcementCard-header">
         <span class="header cardsHeading" translate="experiance">Address</span>
-        <a href="" class="addeditprofile" ng-if="!profileCtrl.addressForm" translate="edit" ng-click="profileCtrl.addressForm=true ;profileCtrl.isNewAddress=false ">Edit</a>
+        <a href="" class="addeditprofile" ng-if="!profileCtrl.addressForm && profileCtrl.address.length" translate="edit" ng-click="profileCtrl.addressForm=true ;profileCtrl.isNewAddress=false ">Edit</a>
         <a href="" class="addeditprofile" ng-if="!profileCtrl.addressForm " ng-click="profileCtrl.addressForm=true ;profileCtrl.isNewAddress=true ;profileCtrl.newAddress={} " translate="add ">Add</a>
         <a href="" class="addeditprofile" ng-if="profileCtrl.addressForm" translate="edit" ng-click="profileCtrl.addressForm=false">close</a>
     </div>
@@ -15,9 +15,11 @@
             <img class="ui avatar image" src="/images/user_logo.png">
             <div class="content">
                 <a class=" header">{{address.addType}}</a>
-                <div class="description"> {{address.addressLine1}}, {{address.addressLine2}}
+                <div class="description"> {{address.addressLine1}}<span ng-if="address.addressLine2">,</span>{{address.addressLine2}}
                     <br/>
-                    <p>{{address.city}},{{address.state}},{{address.country}},{{address.zipcode}}</p>
+                    <p>{{address.city}}<span ng-if="address.state">,</span>{{address.state}}
+                        <span ng-if="address.country">,</span>{{address.country}}
+                        <span ng-if="address.zipcode">,</span>{{address.zipcode}}</p>
                 </div>
             </div>
         </div>
