@@ -1,5 +1,7 @@
 {
   "name": "player",
+  "author": "sunbird",
+  "version": "0.0.1",
   "private": true,
   "devDependencies": {
     "better-console": "^1.0.0",
@@ -42,7 +44,7 @@
     "karma-coverage": "^1.1.1",
     "karma-jasmine": "^1.1.0",
     "karma-phantomjs-launcher": "^1.0.4",
-    
+
     "lazypipe": "^0.2.4",
     "open": "0.0.5",
     "path": "^0.12.7",
