@@ -255,4 +255,18 @@ angular.module('playerApp')
                 $('#languageSelect').dropdown('set selected', profile.basicProfile.language);
             }, 100);
         };
+        profile.setSubject = function(subjects) {
+            console.log('truing to put', subjects);
+            $timeout(function() {
+                $('#setSub').dropdown();
+                $('#setSub').dropdown('refresh');
+                $('#setSub').dropdown('set selected', subjects);
+            }, 100);
+        };
+        profile.deleteAddress = function(address) {
+            console.log('trying to delete address', address);
+            var req = { address: address };
+            req.userId = $rootScope.userId;
+            profile.updateProfile(req);
+        };
     });

@@ -11,8 +11,14 @@
         </div>
     </div>
     <div class=" field">
-        <label>Job Description</label>
-        <!--<input type="text" name="" ng-model="profileCtrl.newExperience.description">-->
+        <label>Subjects</label>
+        <div class="field">
+            <select apply-script class="ui fluid dropdown signupMultiple" multiple="" ng-model="profileCtrl.newExperience.subject">
+                        <option value="English">English</option>
+                        <option value="Hindi">Hindi</option>
+                         <option value="Math">Math</option>
+                     </select>
+        </div>
     </div>
     <div class="inline fields">
         <label for="address">Is this your current job?</label>
