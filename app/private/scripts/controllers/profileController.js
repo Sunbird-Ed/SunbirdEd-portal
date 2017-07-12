@@ -198,6 +198,8 @@ angular.module('playerApp')
             console.log('newExperience', profile.experience);
             var req = { jobProfile: profile.experience };
             req.userId = $rootScope.userId;
+            req.email = profile.user.email;
+
             console.log('req experience', req);
             profile.updateProfile(req);
         };
@@ -230,8 +232,6 @@ angular.module('playerApp')
         };
 
         $timeout(function() {
-            console.log('profile.basicProfile.language', profile.basicProfile.language);
-
             $('.ui.radio.checkbox')
                 .checkbox('attach events', '.toggle.button').checkbox({
                     onChange: function() {
@@ -240,11 +240,10 @@ angular.module('playerApp')
                 });
         }, 1000);
         profile.setDropdownValue = function() {
-            console.log('trying this to st');
             $timeout(function() {
                 $('#languageSelect').dropdown();
                 $('#languageSelect').dropdown('refresh');
-                $('#languageSelect').dropdown('set selected', ['Bengali', 'English']);
+                $('#languageSelect').dropdown('set selected', profile.basicProfile.language);
             }, 100);
         };
     });
