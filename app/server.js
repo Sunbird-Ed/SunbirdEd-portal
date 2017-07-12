@@ -7,6 +7,7 @@ const express = require('express'),
     Keycloak = require('keycloak-connect'),
     session = require('express-session'),
     path = require('path'),
+    request = require('request'),
     env = process.env,
     trampolineServiceHelper = require('./helpers/trampolineServiceHelper.js'),
     port = env['sunbird_port'] || 3000;
@@ -34,6 +35,9 @@ app.use('/ekContentEditor', express.static('./thirdparty/content-editor'))
 app.get('/ekContentEditor', function(req, res) {
     res.sendFile(__dirname + "/thirdparty/content-editor/index.html");
 });
+app.get('/ekContentEditor/image/get/:url', function(req, res) {
+    request.get(req.params.url).pipe(res);
+});
 
 const learnerURL = env.sunbird_learner_player_url || 'http://52.172.36.121:9000/v1/';
 app.all('/public/service/v1/*', proxy(learnerURL, {
@@ -53,7 +57,7 @@ app.all('/service/v1/content/*', keycloak.protect(), proxy(contentURL, {
     proxyReqPathResolver: function(req) {
         let urlParam = req.params["0"];
         let query = require('url').parse(req.url).query;
-        if(query) {
+        if (query) {
             return require('url').parse(contentURL + urlParam + '?' + query).path;
         } else {
             return require('url').parse(contentURL + urlParam).path;
@@ -61,7 +65,7 @@ app.all('/service/v1/content/*', keycloak.protect(), proxy(contentURL, {
     }
 }));
 
-app.all('/v1/user/session/create',function (req, res) {
+app.all('/v1/user/session/create', function(req, res) {
     trampolineServiceHelper.handleRequest(req, res, keycloak);
 })
 
@@ -83,10 +87,10 @@ var ekstep = "https://qa.ekstep.in";
 
 app.use('/api/*', proxy(ekstep, {
     proxyReqOptDecorator: function(proxyReqOpts, srcReq) {
-    // you can update headers 
-    proxyReqOpts.headers['Authorization'] = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI2MzExMTYwNTMzOGY0Zjc5YTgwZTM3YjcyZjVjMmUwZiJ9.azmj_AHmndeJz0h6yIkOJz1XjeZR6Gzd-OrZzR66I0A';
-    return proxyReqOpts;
-  },
+        // you can update headers 
+        proxyReqOpts.headers['Authorization'] = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI2MzExMTYwNTMzOGY0Zjc5YTgwZTM3YjcyZjVjMmUwZiJ9.azmj_AHmndeJz0h6yIkOJz1XjeZR6Gzd-OrZzR66I0A';
+        return proxyReqOpts;
+    },
     proxyReqPathResolver: function(req) {
         return require('url').parse(ekstep + req.originalUrl).path;
     }
