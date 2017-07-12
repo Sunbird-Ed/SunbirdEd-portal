@@ -103,9 +103,9 @@ app.use('/api/*', proxy(ekstep, {
     }
 }));
 
-app.use('/content-plugins/*', proxy(ekstep, {
+app.use('/content-plugins/*', proxy(dev, {
     proxyReqPathResolver: function(req) {
-        return require('url').parse(ekstep + req.originalUrl).path;
+        return require('url').parse(dev + req.originalUrl).path;
     }
 }));
 
