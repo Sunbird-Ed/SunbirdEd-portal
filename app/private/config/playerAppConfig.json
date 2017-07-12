@@ -29,8 +29,8 @@
                 "GET_ENROLLED_COURSES": "user/courses",
                 "GET_LEARN_OTHER_SECTION": "page/assemble/Course",
                 "ENROLL_USER_COURSE": "user/courses/enroll",
-                "RECOMMENDED_COURSE":"course/recommended/courses"
-                
+                "RECOMMENDED_COURSE": "course/recommended/courses"
+
 
             },
             "CONTENT": {
@@ -59,8 +59,8 @@
             "RESOURCE": {
                 "GET": "page/assemble/Resource"
             },
-            "ROLES":{
-                "READ":"role/read"
+            "ROLES": {
+                "READ": "role/read"
             }
         },
         "FILTER": {
@@ -217,146 +217,121 @@
                 "sid": "rctrs9r0748iidtuhh79ust993",
                 "baseURL": "",
                 "editMetaLink": "",
-                "sid":"sunbird_sid",
-                "uid":"sunbird_uid",
-                "channel":"sunbird_channel",
-                "dimension":"sunbird_dims",
-                "etags":"etags",
-                "user" : {
-                    "id" : "",
-                    "name" : "",
-                    "email" : ""
+                "sid": "sunbird_sid",
+                "uid": "sunbird_uid",
+                "channel": "sunbird_channel",
+                "dimension": "sunbird_dims",
+                "etags": "etags",
+                "user": {
+                    "id": "",
+                    "name": "",
+                    "email": ""
                 }
             },
             "config": {
                 "baseURL": "",
                 "pluginRepo": "/content-plugins",
                 "plugins": [{
-                        "id": "org.ekstep.telemetry",
-                        "ver": "1.0",
-                        "type": "plugin"
-                    },
-                    {
+                    "id": "org.ekstep.telemetry",
+                    "ver": "1.0",
+                    "type": "plugin"
+                }, {
                     "id": "org.sunbird.header",
                     "ver": "1.0",
                     "type": "plugin"
-                    },
-                    {
-                        "id": "org.ekstep.config",
-                        "ver": "1.0",
-                        "type": "plugin"
-                    },
-                    {
-                        "id": "org.ekstep.stage",
-                        "ver": "1.0",
-                        "type": "plugin"
-                    },
-                    {
-                        "id": "org.ekstep.text",
-                        "ver": "1.0",
-                        "type": "plugin"
-                    },
-                    {
-                        "id": "org.ekstep.shape",
-                        "ver": "1.0",
-                        "type": "plugin"
-                    },
-                    {
-                        "id": "org.ekstep.image",
-                        "ver": "1.0",
-                        "type": "plugin"
-                    },
-                    {
-                        "id": "org.ekstep.audio",
-                        "ver": "1.0",
-                        "type": "plugin"
-                    },
-                    {
-                        "id": "org.ekstep.hotspot",
-                        "ver": "1.0",
-                        "type": "plugin"
-                    },
-                    {
-                        "id": "org.ekstep.scribblepad",
-                        "ver": "1.0",
-                        "type": "plugin"
-                    },
-                    {
-                        "id": "org.ekstep.assessmentbrowser",
-                        "ver": "1.0",
-                        "type": "plugin"
-                    },
-                    {
-                        "id": "org.ekstep.quiz",
-                        "ver": "1.0",
-                        "type": "plugin"
-                    },
-                    {
-                        "id": "org.ekstep.preview",
-                        "ver": "1.0",
-                        "type": "plugin"
-                    },
-                    {
-                        "id": "org.ekstep.assetbrowser",
-                        "ver": "1.0",
-                        "type": "plugin"
-                    },
-                    {
-                        "id": "org.ekstep.colorpicker",
-                        "ver": "1.0",
-                        "type": "plugin"
-                    },
-                    {
-                        "id": "org.ekstep.stageconfig",
-                        "ver": "1.0",
-                        "type": "plugin"
-                    },
-                    {
-                        "id": "org.ekstep.unsupported",
-                        "ver": "1.0",
-                        "type": "plugin"
-                    },
-                    {
-                        "id": "org.ekstep.viewecml",
-                        "ver": "1.0",
-                        "type": "plugin"
-                    },
-                    {
-                        "id": "org.ekstep.activitybrowser",
-                        "ver": "1.0",
-                        "type": "plugin"
-                    },
-                    {
-                        "id": "org.ekstep.download",
-                        "ver": "1.0",
-                        "type": "plugin"
-                    },
-                    {
-                        "id": "org.ekstep.collaborator",
-                        "ver": "1.0",
-                        "type": "plugin"
-                    },
-                    {
-                        "id": "org.ekstep.readalongbrowser",
-                        "ver": "1.0",
-                        "type": "plugin"
-                    },
-                    {
-                        "id": "org.ekstep.wordinfobrowser",
-                        "ver": "1.0",
-                        "type": "plugin"
-                    },
-                    {
-                        "id": "org.ekstep.utils",
-                        "ver": "1.0",
-                        "type": "plugin"
-                    },
-                    {
-                        "id": "org.ekstep.help",
-                        "ver": "1.0",
-                        "type": "plugin"
-                    }
-                ],
+                }, {
+                    "id": "org.ekstep.config",
+                    "ver": "1.0",
+                    "type": "plugin"
+                }, {
+                    "id": "org.ekstep.stage",
+                    "ver": "1.0",
+                    "type": "plugin"
+                }, {
+                    "id": "org.ekstep.text",
+                    "ver": "1.0",
+                    "type": "plugin"
+                }, {
+                    "id": "org.ekstep.shape",
+                    "ver": "1.0",
+                    "type": "plugin"
+                }, {
+                    "id": "org.ekstep.image",
+                    "ver": "1.0",
+                    "type": "plugin"
+                }, {
+                    "id": "org.ekstep.audio",
+                    "ver": "1.0",
+                    "type": "plugin"
+                }, {
+                    "id": "org.ekstep.hotspot",
+                    "ver": "1.0",
+                    "type": "plugin"
+                }, {
+                    "id": "org.ekstep.scribblepad",
+                    "ver": "1.0",
+                    "type": "plugin"
+                }, {
+                    "id": "org.ekstep.assessmentbrowser",
+                    "ver": "1.0",
+                    "type": "plugin"
+                }, {
+                    "id": "org.ekstep.quiz",
+                    "ver": "1.0",
+                    "type": "plugin"
+                }, {
+                    "id": "org.ekstep.preview",
+                    "ver": "1.0",
+                    "type": "plugin"
+                }, {
+                    "id": "org.ekstep.assetbrowser",
+                    "ver": "1.0",
+                    "type": "plugin"
+                }, {
+                    "id": "org.ekstep.colorpicker",
+                    "ver": "1.0",
+                    "type": "plugin"
+                }, {
+                    "id": "org.ekstep.stageconfig",
+                    "ver": "1.0",
+                    "type": "plugin"
+                }, {
+                    "id": "org.ekstep.unsupported",
+                    "ver": "1.0",
+                    "type": "plugin"
+                }, {
+                    "id": "org.ekstep.viewecml",
+                    "ver": "1.0",
+                    "type": "plugin"
+                }, {
+                    "id": "org.ekstep.activitybrowser",
+                    "ver": "1.0",
+                    "type": "plugin"
+                }, {
+                    "id": "org.ekstep.download",
+                    "ver": "1.0",
+                    "type": "plugin"
+                }, {
+                    "id": "org.ekstep.collaborator",
+                    "ver": "1.0",
+                    "type": "plugin"
+                }, {
+                    "id": "org.ekstep.readalongbrowser",
+                    "ver": "1.0",
+                    "type": "plugin"
+                }, {
+                    "id": "org.ekstep.wordinfobrowser",
+                    "ver": "1.0",
+                    "type": "plugin"
+                }, {
+                    "id": "org.ekstep.utils",
+                    "ver": "1.0",
+                    "type": "plugin"
+                }, {
+                    "id": "org.ekstep.help",
+                    "ver": "1.0",
+                    "type": "plugin"
+                }],
                 "enableCorePlugin": false
             }
         },
@@ -370,8 +345,8 @@
                 "showStartPage": true,
                 "host": "https://qa.ekstep.in",
                 "apislug": "/api",
-                "repos":["/content-plugins/renderer"],
-                "plugins":[{"id": "org.sunbird.iframeEvent","ver": 1.0,"type": "plugin"}]
+                "repos": ["/content-plugins/renderer"],
+                "plugins": [{ "id": "org.sunbird.iframeEvent", "ver": 1.0, "type": "plugin" }]
             },
             "baseURL": "/content/preview/preview.html?webview=true"
         },
@@ -414,6 +389,143 @@
                 "boards": [
                     "NCERT", "CBSE", "ICSE", "MSCERT"
                 ]
+            }
+        },
+        "collection_Editor_Config": {
+            "TextBook": {
+                "context": {
+                    "uid": "",
+                    "contentId": "",
+                    "sid": "0d5b94c87052869b58e47ec692f467cd",
+                    "channel": "ntp/ap",
+                    "pdata": {
+                        "id": "SunbirdPortal",
+                        "ver": "1.0"
+                    },
+                    "dims": [
+                        "b27e743b51a22b4eed737c6a72cd4266"
+                    ]
+                },
+                "mode": "Edit",
+                "rules": {
+                    "levels": 3,
+                    "objectTypes": [{
+                        "type": "TextBook",
+                        "label": "Textbook",
+                        "isRoot": true,
+                        "editable": true,
+                        "childrenTypes": [
+                            "TextBookUnit"
+                        ],
+                        "addType": "Editor",
+                        "iconClass": "fa fa-book fa-2"
+                    }, {
+                        "type": "TextBookUnit",
+                        "label": "Textbook Unit",
+                        "isRoot": false,
+                        "editable": true,
+                        "childrenTypes": [
+                            "TextBookUnit",
+                            "Collection",
+                            "Story",
+                            "Game",
+                            "Worksheet"
+                        ],
+                        "addType": "Editor",
+                        "iconClass": "fa fa-folder fa-2"
+                    }, {
+                        "type": "Collection",
+                        "label": "Collection",
+                        "isRoot": false,
+                        "editable": false,
+                        "childrenTypes": [],
+                        "addType": "Browser",
+                        "iconClass": "fa fa-file fa-2"
+                    }, {
+                        "type": "Story",
+                        "label": "Story",
+                        "isRoot": false,
+                        "editable": false,
+                        "childrenTypes": [],
+                        "addType": "Browser",
+                        "iconClass": "fa fa-file fa-2"
+                    }, {
+                        "type": "Worksheet",
+                        "label": "Worksheet",
+                        "isRoot": false,
+                        "editable": false,
+                        "childrenTypes": [],
+                        "addType": "Browser",
+                        "iconClass": "fa fa-file fa-2"
+                    }, {
+                        "type": "Game",
+                        "label": "Game",
+                        "isRoot": false,
+                        "editable": false,
+                        "childrenTypes": [],
+                        "addType": "Browser",
+                        "iconClass": "fa fa-file fa-2"
+                    }]
+                },
+                "defaultTemplate": {}
+            },
+            "Collection": {
+                "context": {
+                    "uid": "",
+                    "contentId": "",
+                    "sid": "0d5b94c87052869b58e47ec692f467cd",
+                    "channel": "ntp/ap",
+                    "pdata": {
+                        "id": "SunbirdPortal",
+                        "ver": "1.0"
+                    },
+                    "dims": [
+                        "b27e743b51a22b4eed737c6a72cd4266"
+                    ]
+                },
+                "mode": "Edit",
+                "rules": {
+                    "levels": 3,
+                    "objectTypes": [{
+                        "type": "Collection",
+                        "label": "Collection",
+                        "isRoot": true,
+                        "editable": false,
+                        "childrenTypes": ["Collection",
+                            "Story",
+                            "Game",
+                            "Worksheet"
+                        ],
+                        "addType": "Browser",
+                        "iconClass": "fa fa-file fa-2"
+                    }, {
+                        "type": "Story",
+                        "label": "Story",
+                        "isRoot": false,
+                        "editable": false,
+                        "childrenTypes": [],
+                        "addType": "Browser",
+                        "iconClass": "fa fa-file fa-2"
+                    }, {
+                        "type": "Worksheet",
+                        "label": "Worksheet",
+                        "isRoot": false,
+                        "editable": false,
+                        "childrenTypes": [],
+                        "addType": "Browser",
+                        "iconClass": "fa fa-file fa-2"
+                    }, {
+                        "type": "Game",
+                        "label": "Game",
+                        "isRoot": false,
+                        "editable": false,
+                        "childrenTypes": [],
+                        "addType": "Browser",
+                        "iconClass": "fa fa-file fa-2"
+                    }]
+                },
+                "defaultTemplate": {}
+
             }
         }
     }
