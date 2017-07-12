@@ -111,7 +111,7 @@ angular.module('playerApp')
 
             requestBody.name = requestBody.name ? requestBody.name : "Default title";
             requestBody.description = requestBody.description ? requestBody.description : "Default description";
-            requestBody.contentType = requestBody.contentType ? requestBody.contentType : "Textbook";
+            requestBody.contentType =  "TextBook";
 
             var requestdata = {
                 "content": requestBody
