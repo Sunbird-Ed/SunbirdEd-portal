@@ -3,7 +3,7 @@
         <span class="header cardsHeading" translate="experiance">Experience</span>
         <a href="" class="addeditprofile" ng-if="!profileCtrl.experienceForm" translate="edit" ng-click="profileCtrl.experienceForm=true ;profileCtrl.isNewExperience=false ">Edit</a>
         <a href="" class="addeditprofile" ng-if="!profileCtrl.experienceForm  " ng-click="profileCtrl.experienceForm=true ; profileCtrl.isNewExperience=true ;profileCtrl.newExperience={} " translate="add ">Add</a>
-        <a href=""class="addeditprofile" ng-if="profileCtrl.experienceForm" translate="edit" ng-click="profileCtrl.experienceForm=false">close</a>
+        <a href="" class="addeditprofile" ng-if="profileCtrl.experienceForm" translate="edit" ng-click="profileCtrl.experienceForm=false">close</a>
     </div>
     <div ng-if="!profileCtrl.experienceForm && !profileCtrl.loader.showLoader &&!profileCtrl.error.showError" class="profileitems ui relaxed divided list">
         <div class="item" ng-repeat="experience in ::profileCtrl.experience">
@@ -16,7 +16,7 @@
             <div class="content">
 
                 <a class=" header">{{::experience.role}}</a>
-                <div class="description"> {{::experience.orgName}}, {{::experience.address.city}}</div>
+                <div class="description"> {{::experience.orgName}}</div>
             </div>
         </div>
     </div>

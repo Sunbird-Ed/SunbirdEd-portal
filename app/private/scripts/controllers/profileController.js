@@ -193,7 +193,7 @@ angular.module('playerApp')
             var endDate = $('#rangestartAdd').calendar('get date');
             console.log('startDate', $filter('date')(endDate, 'yyyy-MM-dd'));
             newExperience.endDate = $filter('date')(endDate, 'yyyy-MM-dd');
-            newExperience.startDate = $filter('date')(startDate, 'yyyy-MM-dd');
+            newExperience.joiningDate = $filter('date')(startDate, 'yyyy-MM-dd');
             profile.experience.push(newExperience);
             console.log('newExperience', profile.experience);
             var req = { jobProfile: profile.experience };
@@ -230,11 +230,21 @@ angular.module('playerApp')
         };
 
         $timeout(function() {
+            console.log('profile.basicProfile.language', profile.basicProfile.language);
+
             $('.ui.radio.checkbox')
                 .checkbox('attach events', '.toggle.button').checkbox({
                     onChange: function() {
                         console.log('Value changed');
                     }
                 });
-        }, 100);
+        }, 1000);
+        profile.setDropdownValue = function() {
+            console.log('trying this to st');
+            $timeout(function() {
+                $('#languageSelect').dropdown();
+                $('#languageSelect').dropdown('refresh');
+                $('#languageSelect').dropdown('set selected', ['Bengali', 'English']);
+            }, 100);
+        };
     });
