@@ -39,6 +39,11 @@ app.get('/ekContentEditor/image/get/:url', function(req, res) {
     request.get(req.params.url).pipe(res);
 });
 
+app.use('/collectionEditor', express.static('./thirdparty/collection-editor'))
+app.get('/collectionEditor', function(req, res) {
+    res.sendFile(__dirname + "/thirdparty/collection-editor/index.html");
+});
+
 const learnerURL = env.sunbird_learner_player_url || 'http://52.172.36.121:9000/v1/';
 app.all('/public/service/v1/*', proxy(learnerURL, {
     proxyReqPathResolver: function(req) {
@@ -84,6 +89,8 @@ app.all('/', function(req, res) {
 //proxy urls
 
 var ekstep = "https://qa.ekstep.in";
+//need to remove 
+var dev = "https://dev.ekstep.in";
 
 app.use('/api/*', proxy(ekstep, {
     proxyReqOptDecorator: function(proxyReqOpts, srcReq) {
@@ -96,15 +103,16 @@ app.use('/api/*', proxy(ekstep, {
     }
 }));
 
-app.use('/content-plugins/*', proxy(ekstep, {
+app.use('/content-plugins/*', proxy(dev, {
     proxyReqPathResolver: function(req) {
-        return require('url').parse(ekstep + req.originalUrl).path;
+        return require('url').parse(dev + req.originalUrl).path;
     }
 }));
 
-app.use('/plugins/*', proxy(ekstep, {
+app.use('/plugins/*', proxy(dev, {
     proxyReqPathResolver: function(req) {
-        return require('url').parse(ekstep + req.originalUrl).path;
+        console.log('req',req.originalUrl)
+        return require('url').parse(dev + req.originalUrl).path;
     }
 }));
 
