@@ -12,12 +12,9 @@
     </div>
     <div class=" field">
         <label>Subjects</label>
-        <div class="field" ng-init="profileCtrl.setSubject(profileCtrl.subject)">
-            <select class="ui fluid dropdown experienceMultiSel" multiple="" id="setSub" ng-model="profileCtrl.subject">
-                        <option value="English">English</option>
-                        <option value="Hindi">Hindi</option>
-                         <option value="Math">Math</option>
-                     </select>
+        <div class="field" ng-init="profileCtrl.setEditSubject(experience.subject)">
+            <select class="ui fluid dropdown editSubjects" multiple="" id="editSubjects" ng-selected=true ng-model="experience.subject" ng-value="option.value" ng-options=" subject for subject in ::profileCtrl.subjects">
+                                            </select>
         </div>
 
     </div>
