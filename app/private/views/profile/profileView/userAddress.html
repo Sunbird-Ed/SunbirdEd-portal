@@ -9,8 +9,7 @@
         <div class="item" ng-repeat="address in profileCtrl.address">
             <div class="right floated content">
                 <div class="metadata">
-                    <span class="date">{{address.updatedDate|date: "dd/MM/yyyy"  }}</span>
-                    <button class="ui circular google plus icon button" type="submit" ng-click="address.isDeleted=true;profileCtrl.deleteAddress(profileCtrl.address)"><i class="remove  icon"></i></button>
+                     <a href="" ng-click="address.isDeleted=true;profileCtrl.deleteAddress(profileCtrl.address)"> <i class="trash outline icon trashIcon-fontSize"></i></a>
                 </div>
             </div>
             <img class="ui avatar image" src="/images/user_logo.png">
