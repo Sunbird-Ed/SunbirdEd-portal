@@ -1,0 +1,75 @@
+<div ng-init="textbook.initilizeView()">
+    <div class="ui modal" id="createSlideShowModal" ng-if="textbook.showCreateSlideShowModal">
+        <div class=" ui segment margin-top-10" ng-show="!textbook.createApi.loader.showLoader && !textbook.createApi.error.showError">
+            <div class=" margin-bottom-15">
+                <div class="ui grid">
+                    <div class="eleven wide column">
+                        <span class="ui header">Create New TextBook</span>
+                    </div>
+                    <div class="one wide column actions">
+                        <h5 class="ui basic icon circular button deny" ng-click="textbook.hideCreateSlideShowModal();">
+                            <i class="ui remove icon"></i>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                <form class="ui form" ng-init="textbook.data = {}">
+                    <div class="field">
+                        <label>Title</label>
+                        <div class="field">
+                            <input type="text" name="title" placeholder="TextBook Title" ng-model="textbook.data.name">
+                        </div>
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <label>Board</label>
+                            <select name="board" class="ui fluid dropdown singleSelectDropDown" ng-options=" board for board in textbook.boards" ng-model="textbook.data.board">
+                                <option value="" translate="board">Board</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>Medium</label>
+                            <select name="medium" class="ui fluid dropdown singleSelectDropDown" ng-options=" audience for audience in textbook.mediums" ng-model="textbook.data.medium">
+                                <option value="" translate="medium">Medium</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <label>Subject</label>
+                            <select name="subject" class="ui fluid dropdown singleSelectDropDown" ng-options=" subject for subject in textbook.subjects" ng-model="textbook.data.subject">
+                                <option value="" translate="subject">Subject</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>Grade</label>
+                            <select name="grades" multiple="" class="ui fluid dropdown multiSelectDropDown" ng-options=" grade for grade in textbook.grades" ng-model="textbook.data.gradeLevel" s>
+                                <option value="" translate="grades">Grades</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="actions">
+                <p class="text-align-center">
+                    <button class="ui primary text-align-center icon button" ng-click="textbook.saveMetaData(textbook.data)">
+                        Start Creating
+                    </button>
+                </p>
+                <h4 class="text-align-center">You can fill in this details later</h4>
+                <div>
+                    <label>
+                        <p class="text-align-center">By proceeding you agreed to make all textbooks created through authoring tool or uploaded on the Ek Step platform to be available under licence CC-BY 4.0</p>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class=" ui segment margin-top-10" ng-if="textbook.createApi.loader.showLoader">
+            <app-loader data="{{textbook.createApi.loader}}"></app-loader>
+        </div>
+        <div class=" ui segment margin-top-10" ng-if="textbook.createApi.error.showError">
+            <error-message data="{{textbook.createApi.error}}" visibility="textbook.createApi.error.showError"></error-message>
+        </div>
+    </div>
+</div>
