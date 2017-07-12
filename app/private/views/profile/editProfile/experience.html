@@ -11,8 +11,15 @@
         </div>
     </div>
     <div class=" field">
-        <label>Job Description</label>
-        <input type="text" name="" ng-model="experience.description">
+        <label>Subjects</label>
+        <div class="field" ng-init="profileCtrl.setSubject(profileCtrl.subject)">
+            <select class="ui fluid dropdown experienceMultiSel" multiple="" id="setSub" ng-model="profileCtrl.subject">
+                        <option value="English">English</option>
+                        <option value="Hindi">Hindi</option>
+                         <option value="Math">Math</option>
+                     </select>
+        </div>
+
     </div>
     <div apply-script class="two fields">
         <div class="field">
