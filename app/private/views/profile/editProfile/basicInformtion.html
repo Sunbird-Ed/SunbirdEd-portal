@@ -34,7 +34,7 @@
         </div>
         <div class="field">
             <label>Language</label>
-            <select apply-script name="language" ng-selected="true" class="ui fluid dropdown signupMultiple" multiple="" ng-value="option.value" ng-options=" language for language in ::profileCtrl.languages" ng-model="profileCtrl.basicProfile.language">
+            <select name="language" id=languageSelect ng-selected="true" class="ui fluid dropdown" multiple="" ng-value="option.value" ng-options=" language for language in ::profileCtrl.languages" ng-model="profileCtrl.basicProfile.language">
                                         <option value="" translate="languages">Languages</option>
                                     </select>
         </div>
@@ -54,7 +54,7 @@
             </div>
         </div>
     </div>
-    <div class="field">
+    <div class="field" ng-init=" profileCtrl.setDropdownValue()">
         <label>Subjects</label>
         <div class="field">
             <select class="ui fluid dropdown signupMultiple" multiple="" ng-model="profileCtrl.basicProfile.subject">
