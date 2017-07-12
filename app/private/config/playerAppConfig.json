@@ -307,11 +307,6 @@
                         "type": "plugin"
                     },
                     {
-                        "id": "org.ekstep.todo",
-                        "ver": "1.0",
-                        "type": "plugin"
-                    },
-                    {
                         "id": "org.ekstep.stageconfig",
                         "ver": "1.0",
                         "type": "plugin"
