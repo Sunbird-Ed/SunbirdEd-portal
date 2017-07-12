@@ -147,7 +147,7 @@ angular.module('loginApp')
                 errorMessage = 'user name already exist';
             } else if (errorKey === 'USERNAME_EMAIL_IN_USE') {
                 errorMessage = 'email already exist';
-            } else errorMessage = errorKey;
+            } else errorMessage = 'something went wrong, please try later ';
             return errorMessage;
         };
         newUser.signUp = function() {

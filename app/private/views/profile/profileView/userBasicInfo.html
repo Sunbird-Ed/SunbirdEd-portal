@@ -1,9 +1,11 @@
-<div class="ui raised segment " ng-if="!profileCtrl.basicProfileForm">
+<div class="ui raised segment ">
     <div class="header announcementCard-header ">
         <span class="header cardsHeading " translate="experiance ">Additional Information</span>
-        <a href="" class="addeditprofile " translate="edit " ng-click="profileCtrl.basicProfileForm=true">Edit</a>
+        <a href="" class="addeditprofile " ng-if="!profileCtrl.basicProfileForm" translate="edit " ng-click="profileCtrl.basicProfileForm=true">Edit</a>
+        <a href="" class="addeditprofile" ng-if="profileCtrl.basicProfileForm" translate="close" ng-click="profileCtrl.basicProfileForm=false">close</a>
+
     </div>
-    <div class="profileitems ui relaxed aligned list ">
+    <div class="profileitems ui relaxed aligned list " ng-if="!profileCtrl.basicProfileForm">
 
         <div class="item ">
             <div class="right floated content ">
@@ -55,6 +57,14 @@
         </div>
         <div class="item ">
             <div class="right floated content ">
+                <span translate="edit "><span ng-repeat="sub in ::profileCtrl.basicProfile.subject">{{::sub}}&nbsp;</span> </span>
+            </div>
+            <div class="iniformationcontent content ">
+                SUBJECTS
+            </div>
+        </div>
+        <div class="item ">
+            <div class="right floated content ">
                 <span translate="edit ">{{::profileCtrl.basicProfile.location}}</span>
             </div>
             <div class="iniformationcontent content ">
@@ -62,7 +72,5 @@
             </div>
         </div>
     </div>
-</div>
-<div class="ui raised segment " ng-if="profileCtrl.basicProfileForm">
-    <div class="ui" ng-include=" 'views/profile/editProfile/basicInformtion.html' "></div>
+    <div class="ui" ng-if="profileCtrl.basicProfileForm" ng-include=" 'views/profile/editProfile/basicInformtion.html' "></div>
 </div>
