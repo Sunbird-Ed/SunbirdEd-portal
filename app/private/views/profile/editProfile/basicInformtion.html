@@ -1,10 +1,10 @@
-<form class="ui form ">
-<div class="ui dividing header margin-top-15 "></div>
+<form class="ui form basicInfoForm">
+    <div class="ui dividing header margin-top-15 "></div>
     <div class="  field">
         <div class=" two fields">
             <div class=" required field">
                 <label>Name</label>
-                <input type="text" name="" placeholder="First Name" ng-model="profileCtrl.basicProfile.firstName">
+                <input type="text" name="firstName" placeholder="First Name" ng-model="profileCtrl.basicProfile.firstName">
             </div>
             <div class="field">
                 <label>&nbsp;  </label>
@@ -16,11 +16,11 @@
     <div class="two fields">
         <div class="required field">
             <label>Phone number</label>
-            <input type="text" name="" ng-model="profileCtrl.basicProfile.phone">
+            <input type="text" name="phone" ng-model="profileCtrl.basicProfile.phone">
         </div>
         <div class=" required field">
             <label>Email</label>
-            <input type="text" name="" ng-model="profileCtrl.basicProfile.email">
+            <input type="email" name="email" ng-model="profileCtrl.basicProfile.email">
         </div>
     </div>
     <div class="two fields">
@@ -67,6 +67,8 @@
         </div>
 
     </div>
-    <div class="ui button margin-top-15" ng-click="profileCtrl.EditBasicProfile();profileCtrl.basicProfileForm=false" ;>Save profile</div>
+    <div class="ui error message">
+    </div>
+    <div class="ui button margin-top-15" ng-click="profileCtrl.EditBasicProfile();">Save profile</div>
 
 </form>
