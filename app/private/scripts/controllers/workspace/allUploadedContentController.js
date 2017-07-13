@@ -60,6 +60,10 @@ angular.module('playerApp')
                     if (res && res.responseCode === 'OK') {
                         allUploadedContent[api].loader.showLoader = false;
                         allUploadedContent.allUploadedContentData = res.result.content;
+                        if(res.result.count === 0) {
+                            allUploadedContent[api].error = showErrorMessage(false, config.MESSAGES.WORKSPACE.ALL_UPLOADED.NO_CONTENT, config.MESSAGES.COMMON.SUCCESS);
+                            allUploadedContent[api].error.success = true;
+                        }
                     } else {
                         allUploadedContent[api].loader.showLoader = false;
                         allUploadedContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.ALL_UPLOADED.FAILED, config.MESSAGES.COMMON.ERROR);
