@@ -12,7 +12,8 @@ angular.module('loginApp')
                     fields: {
                         userName: {
                             rules: [{
-                                type: 'empty'
+                                type: 'regExp[^[-\\w\.\\$@\*\\!]{5,256}$]',
+                                prompt: 'please enter a valid user name, must have minimum 5 character'
                             }]
                         },
                         password: {
@@ -22,12 +23,14 @@ angular.module('loginApp')
                         },
                         firstName: {
                             rules: [{
-                                type: 'empty',
+                                type: 'regExp[^[a-zA-Z -]+$]',
+                                prompt: 'please enter a valid first name'
                             }]
                         },
                         phone: {
                             rules: [{
-                                type: 'empty',
+                                type: 'regExp[^(?:(?:\\+|0{0,2})91(\\s*[\\-]\\s*)?|[0]?)?[789]\\d{9}$]',
+                                prompt: 'Please enter a valid mobile number'
                             }]
                         },
                         email: {
@@ -64,6 +67,11 @@ angular.module('loginApp')
             newUser.language = [];
 
             $timeout(function() {
+                //Resets form input fields from data values
+                $('.ui.form').trigger('reset');
+                //Resets form error messages and field styles
+                $('.ui.form .field.error').removeClass('error');
+                $('.ui.form.error').removeClass('error');
                 $('.dropdown').dropdown('clear');
                 $('.ui .modal').modal('show');
             });
@@ -139,7 +147,10 @@ angular.module('loginApp')
             newUser.formValidation();
             var isValid = $('.ui.form').form('validate form');
             console.log('isValidForm', isValid);
-            if (isValid === true) { newUser.signUp(); } else return false;
+            if (isValid === true) { newUser.signUp(); } else {
+                $('.ui .modal').modal('refresh');
+                return false;
+            }
         };
         newUser.getErrorMsg = function(errorKey) {
             var errorMessage = '';
@@ -158,7 +169,7 @@ angular.module('loginApp')
                     'lastName': newUser.lastName,
                     'password': newUser.password,
                     'email': newUser.email,
-                    'userName': newUser.userName,
+                    'userName': newUser.userName.trim(),
                     'phone': newUser.phone,
                     'gender': newUser.gender,
                     'avatar': newUser.avatar,
