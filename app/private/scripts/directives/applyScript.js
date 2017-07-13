@@ -179,9 +179,9 @@ angular.module('playerApp')
                     }
                 });
 
-                $('#rangeStart').calendar({
+                $('.rangeStart').calendar({
                     type: 'date',
-                    endCalendar: $('#rangeEnd'),
+                    endCalendar: $('.rangeEnd'),
                     formatter: {
                         date: function(date, settings) {
                             if (!date) return '';
@@ -192,9 +192,9 @@ angular.module('playerApp')
                         }
                     }
                 });
-                $('#rangeEnd').calendar({
+                $('.rangeEnd').calendar({
                     type: 'date',
-                    startCalendar: $('#rangeStart'),
+                    startCalendar: $('.rangeStart'),
                     formatter: {
                         date: function(date, settings) {
                             if (!date) return '';

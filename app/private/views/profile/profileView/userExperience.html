@@ -9,7 +9,7 @@
         <div class="item" ng-repeat="experience in ::profileCtrl.experience">
             <div class="right floated content">
                 <div class="metadata">
-                    <span class="date">{{::experience.updatedDate|date: "dd/MM/yyyy"  }}</span>
+                    <a href="" ng-click="experience.isDeleted=true;profileCtrl.deleteExperience(profileCtrl.experience)"> <i class="trash outline icon trashIcon-fontSize"></i></a>
                 </div>
             </div>
             <img class="ui avatar image" src="/images/user_logo.png">
