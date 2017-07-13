@@ -29,8 +29,12 @@ node('docker') {
        stage('Publish'){
 
          echo 'Push to Repo'
-         sh 'ls -al ~/'
-         sh 'ARTIFACT_LABEL=bronze ./player/dockerPushToRepo.sh'
+         dir('./player') {
+          sh 'ARTIFACT_LABEL=bronze ./dockerPushToRepo.sh'
+          sh './app/metadata.sh > metadata.json'
+          sh 'cat metadata.json'
+          archive includes: "metadata.json"
+         }
 
        }
     }
