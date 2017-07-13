@@ -49,7 +49,8 @@ angular.module('playerApp')
                 filters: {
                     status: ["Draft"],
                     createdBy: draftContent.userId,
-                    mimeType: ['application/vnd.ekstep.ecml-archive']
+                    mimeType: ['application/vnd.ekstep.ecml-archive', 'application/vnd.ekstep.content-collection'],
+                    
                 },
                 'sort_by': {
                     "lastUpdatedOn": "desc"
@@ -60,6 +61,9 @@ angular.module('playerApp')
                     if (res && res.responseCode === 'OK') {
                         draftContent[api].loader.showLoader = false;
                         draftContent.draftContentData = res.result.content;
+                        if(res.result.count === 0) {
+                            draftContent[api].error = showErrorMessage(false, config.MESSAGES.WORKSPACE.DRAFT.NO_CONTENT, config.MESSAGES.COMMON.SUCCESS);
+                        }
                     } else {
                         draftContent[api].loader.showLoader = false;
                         draftContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.DRAFT.FAILED, config.MESSAGES.COMMON.ERROR);
