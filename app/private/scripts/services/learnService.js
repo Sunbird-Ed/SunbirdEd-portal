@@ -12,6 +12,6 @@ angular.module('playerApp')
         };
         this.recommendedCourses=function(req) {
             var url =  config.URL.LEARNER_PREFIX + config.URL.COURSE.RECOMMENDED_COURSE;           
-            return httpServiceJava.post(url,req);
+            return httpServiceJava.get(url);
         };
     });
