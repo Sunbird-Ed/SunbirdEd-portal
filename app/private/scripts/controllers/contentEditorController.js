@@ -54,7 +54,7 @@ angular.module('playerApp')
             contentEditor[api] = {};
             contentEditor[api].loader = showLoaderWithMessage("", config.MESSAGES.WORKSPACE.REVIEW_CONTENT.START);
             var req = {content: {}};
-
+            
             contentService.review(req, contentId).then(function (res) {
                 if (res && res.responseCode === "OK") {
                     contentEditor[api].loader.showLoader = false;
