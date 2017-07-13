@@ -61,6 +61,9 @@ angular.module('playerApp')
                     if (res && res.responseCode === 'OK') {
                         publishedContent[api].loader.showLoader = false;
                         publishedContent.publishedContentData = res.result.content;
+                        if(res.result.count === 0) {
+                            publishedContent[api].error = showErrorMessage(false, config.MESSAGES.WORKSPACE.PUBLISHED.NO_CONTENT, config.MESSAGES.COMMON.SUCCESS);
+                        }
                     } else {
                         publishedContent[api].loader.showLoader = false;
                         publishedContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.PUBLISHED.FAILED, config.MESSAGES.COMMON.ERROR);
@@ -76,8 +79,8 @@ angular.module('playerApp')
             getPublishedContent();
         };
 
-        publishedContent.openContentEditor = function(contentId) {
-            var params = { contentId: contentId }
-            $state.go("ContentEditor", params);
+        publishedContent.openContentPlayer = function (requestData) {
+            var params = {contentId: requestData.identifier, backState: $state.current.name};
+            $state.go("PreviewContent", params);
         };
     });
