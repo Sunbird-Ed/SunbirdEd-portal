@@ -9,10 +9,15 @@ TelemetryV2Manager = function() {
         if (error) message += ' Error: ' + JSON.stringify(error);
         this.exitApp();
     };
-    this.createEvent = function(eventName, body) {
+    this.createEvent = function(eventName, body, consumer) {
         var event = new TelemetryEvent();
-        event.init(eventName, TelemetryService._version, body, TelemetryService._user, TelemetryService._gameData, TelemetryService._correlationData, TelemetryService._otherData);
-        return event
+        if (consumer == 'PORTAL') {
+            event.portalInit(eventName, TelemetryService._version, body, TelemetryService._user, TelemetryService._correlationData, TelemetryService._otherData)
+            return event
+        } else {
+            event.init(eventName, TelemetryService._version, body, TelemetryService._user, TelemetryService._gameData, TelemetryService._correlationData, TelemetryService._otherData);
+            return event
+        }
     };
     this.start = function(id, ver, data) {
         TelemetryService._gameData = {
@@ -165,19 +170,19 @@ TelemetryV2Manager = function() {
         return this.createEvent("", eks);
     };
     this.impression = function(data){
-        return this.createEvent("CP_IMPRESSION", data)
+        return this.createEvent("CP_IMPRESSION", data,"PORTAL")
     };
     this.sessionStart = function(data){
-        return this.createEvent("CP_IMPRESSION", data)
+        return this.createEvent("CP_IMPRESSION", data,"PORTAL")
     };
     this.sessionEnd = function(data){
-        return this.createEvent("CP_IMPRESSION", data)
+        return this.createEvent("CP_IMPRESSION", data,"PORTAL")
     };
     this.profileUpdate = function(data){
-        return this.createEvent("CP_UPDATE_PROFILE", data)
+        return this.createEvent("CP_UPDATE_PROFILE", data,"PORTAL")
     };
     this.portalIntreact = function(data){
-        return this.createEvent("CP_INTERACT", data)
+        return this.createEvent("CP_INTERACT", data,"PORTAL")
     };
 
 
