@@ -159,9 +159,10 @@
             },
             "PROFILE": {
                 "HEADER": {
-                    "START": "We are fetching profile...",
+                    "START": "processing...",
                     "FAILED": "Fetching profile failed, please try again later...",
-                    "UPDATE": "Updating user profile failed,please try again later..."
+                    "UPDATE": "Updating user profile failed,please try again later...",
+                    "UPDATE_SUCCESS": "successfully updated profile "
                 }
             },
             "SEARCH": {

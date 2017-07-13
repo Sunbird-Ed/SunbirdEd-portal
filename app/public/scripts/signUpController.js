@@ -73,6 +73,8 @@ angular.module('loginApp')
                 $('.ui.form .field.error').removeClass('error');
                 $('.ui.form.error').removeClass('error');
                 $('.dropdown').dropdown('clear');
+                $('ui.fluid.dropdown.signupMultiple')
+                    .dropdown({ placeholder: 'Languages' });
                 $('.ui .modal').modal('show');
             });
             $timeout(function() {
@@ -95,9 +97,7 @@ angular.module('loginApp')
         newUser.formInit = function() {
             $timeout(function() {
                 $('.signupMultiple')
-                    .dropdown({
-                        // useLabels: false,
-                    });
+                    .dropdown();
                 $('#dobCalendar').calendar({
                     type: 'date',
                     formatter: {
