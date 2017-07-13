@@ -30,7 +30,7 @@
         <div class="one wide column">
             <div class="beforelogin ui secondary pointing menu padding-top-1rem" ng-controller="SignUpCtrl as newUser">
                 <button class="ui item" ng-if="!isLoggedIn" ng-click="newUser.showModal();" translate="signup" translate-default="Sign up"> SIGN UP</button>
-                <a class="ui item" ng-if="!isLoggedIn" href="/private/index" translate="login" translate-default="LOGIN"> LOGIN</a>
+                <a href="/private/index" class="sunblogin"> <button class="ui item " ng-if="!isLoggedIn" translate="login" translate-default="LOGIN">LOGIN</button></a>
                 <div ng-include="'views/home/Signup.html'"></div>
             </div>
 
