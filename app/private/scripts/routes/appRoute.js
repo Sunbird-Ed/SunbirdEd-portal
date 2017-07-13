@@ -464,6 +464,21 @@ angular
                 onExit: function($rootScope) {
                     $rootScope.profileActive = '';
                 }
+            }).state('PreviewContent', {
+                url: '/preview/content/:contentId/:backState',
+                views: {
+                    'mainView': {
+                        templateUrl: 'views/workSpace/previewContent.html',
+                        controller: 'PreviewContentController as previewContent'
+                    }
+                },
+                params: { contentId: null, backState: null },
+                onEnter: function($rootScope) {
+                    $rootScope.profileActive = 'active';
+                },
+                onExit: function($rootScope) {
+                    $rootScope.profileActive = '';
+                }
             });
     })
     .run(function($urlRouter, $http, $state, permissionsService, $rootScope, $location) {
