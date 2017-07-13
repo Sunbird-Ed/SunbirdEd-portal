@@ -1108,6 +1108,9 @@ span.fancytree-title {
   font-size: 10px;
   line-height: 14px;
 }
+.sunblogin a {
+  color: #212121!important;
+}
 .opacity-cardContent {
   opacity: 0.2 !important;
 }
