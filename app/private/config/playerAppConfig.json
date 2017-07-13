@@ -8,6 +8,7 @@
             "LEARNER_PREFIX": "v1/learner/",
             "CONTENT_PREFIX": "v1/content/",
             "CONFIG_BASE": "http://localhost:4000/api/sb/v1/",
+            "PAGE_PREFIX":"page/assemble",
             "USER": {
                 "RESOURCE_BUNDLE": "resourcebundle",
                 "SIGNUP": "user/create",
@@ -27,7 +28,7 @@
                 "USER_COURSE_SCHEDULE": "user/courses",
                 "USER_CONTENT_STATE": "user/content/state",
                 "GET_ENROLLED_COURSES": "user/courses",
-                "GET_LEARN_OTHER_SECTION": "page/assemble/Course",
+                "GET_LEARN_OTHER_SECTION": "Course",
                 "ENROLL_USER_COURSE": "user/courses/enroll",
                 "RECOMMENDED_COURSE": "course/recommended/courses"
 
@@ -57,7 +58,7 @@
                 "DELETE": "note/delete"
             },
             "RESOURCE": {
-                "GET": "page/assemble/Resource"
+                "GET": "Resource"
             },
             "ROLES": {
                 "READ": "role/read"
