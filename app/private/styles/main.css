@@ -430,6 +430,9 @@ th {
 .margin-top-30 {
   margin-top: 30px !important;
 }
+.margin-top-3rem {
+  margin-top: -3rem !important;
+}
 .text-align-right {
   text-align: right !important;
 }
