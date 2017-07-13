@@ -213,8 +213,19 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
         }
     };
     
+
     noteList.updateNoteData = function (note) {
+
         noteList.update.metaData = angular.copy(note);
     };
+
+    noteList.showNoteList =function(note, index){
+        console.log("showNoteList calling");
+        noteList.selectedIndex = index;
+        noteList.selectedNoteData = note;
+
+
+
+    }
 
 });
