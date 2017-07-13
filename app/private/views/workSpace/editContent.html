@@ -4,6 +4,16 @@
         <div class="ui grid">
             <div class="one wide column"></div>
             <div class="ten wide column">
+                <div class="row margin-bottom-15" ng-if="editContent.requiredFieldsMessage.length > 0">
+                    <div class="ui error message">
+                        <div class="header">
+                          There were some fields that are required
+                        </div>
+                        <ul class="list" ng-repeat="message in editContent.requiredFieldsMessage">
+                          <li>{{message}}.</li>
+                        </ul>
+                    </div>
+                </div>
                 <div class="row" ng-if="editContent.editApi.loader.showLoader">
                     <app-loader data="{{editContent.editApi.loader}}"></app-loader>
                 </div>
@@ -129,8 +139,8 @@
                     <button class="ui primary basic button" ng-if="!contentPlayer.isContentPlayerEnabled"ng-click="editContent.previewContent(editContent.data)">Preview</button>
                     <button class="ui primary basic button" ng-if="contentPlayer.isContentPlayerEnabled" ng-click="contentPlayer.isContentPlayerEnabled = !contentPlayer.isContentPlayerEnabled">Close Preview</button>
                     <button class="ui primary basic button" ng-click="editContent.saveMetaContent(editContent.data)">Save</button>
-                    <button class="ui primary basic button" ng-click="editContent.submitForReview(editContent.data.identifier)">Submit For Review</button>
-                    <button class="ui primary basic button" ng-if="editContent.data.mimeType='application/vnd.ekstep.ecml-archive'" ng-click="editContent.openContentEditor(editContent.data.identifier)">Launch Editor</button>
+                    <button class="ui primary basic button" ng-click="editContent.submitForReview(editContent.data)">Submit For Review</button>
+                    <button class="ui primary basic button" ng-if="editContent.data.mimeType = 'application/vnd.ekstep.ecml-archive'" ng-click="editContent.openContentEditor(editContent.data.identifier)">Launch Editor</button>
                 </div>
                 <div class="row margin-top-10" ng-if="contentPlayer.isContentPlayerEnabled">
                     <content-player visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="false" height="8" width="100" ispercentage="true"></content-player>
