@@ -40,7 +40,7 @@
     <div class="two fields">
         <div class="field">
             <label>Aadhar no</label>
-            <input type="text" name="" ng-model="profileCtrl.basicProfile.aadhar">
+            <input type="text" name="" ng-model="profileCtrl.basicProfile.aadhaarNo">
         </div>
         <div class="field">
             <label>Date of birth </label>
@@ -66,6 +66,6 @@
         </div>
 
     </div>
-    <div class="ui button margin-top-15" ng-click="profileCtrl.EditBasicProfile()" ;>Save profile</div>
+    <div class="ui button margin-top-15" ng-click="profileCtrl.EditBasicProfile();profileCtrl.basicProfileForm=false" ;>Save profile</div>
 
 </form>
