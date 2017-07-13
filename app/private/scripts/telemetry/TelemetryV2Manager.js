@@ -163,5 +163,22 @@ TelemetryV2Manager = function() {
 
     this.sendFeedback = function(eks) {
         return this.createEvent("", eks);
-    }
+    };
+    this.impression = function(data){
+        return this.createEvent("CP_IMPRESSION", data)
+    };
+    this.sessionStart = function(data){
+        return this.createEvent("CP_IMPRESSION", data)
+    };
+    this.sessionEnd = function(data){
+        return this.createEvent("CP_IMPRESSION", data)
+    };
+    this.profileUpdate = function(data){
+        return this.createEvent("CP_UPDATE_PROFILE", data)
+    };
+    this.portalIntreact = function(data){
+        return this.createEvent("CP_INTERACT", data)
+    };
+
+
 };

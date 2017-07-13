@@ -29,11 +29,28 @@ TelemetryService = {
      */
     
     registerEvents: function() {
+
+        /**
+         * player events are being registred
+         */
+        
         org.sunbird.portal.eventManager.addEventListener("sunbird:telemetry:init", this.init, this);
         org.sunbird.portal.eventManager.addEventListener("sunbird:telemetry:start", this.start, this);
         org.sunbird.portal.eventManager.addEventListener("sunbird:telemetry:end", this.end, this);
         org.sunbird.portal.eventManager.addEventListener("sunbird:telemetry:intreact", this.interact, this);
         org.sunbird.portal.eventManager.addEventListener("sunbird:telemetry:navigate",this.navigate,this);
+
+        /**
+         * portal events are being registred
+         */
+        org.sunbird.portal.eventManager.addEventListener("sunbird:telemetery:portal:impression",this.impression,this);
+        org.sunbird.portal.eventManager.addEventListener("sunbird:telemetry:portal:sessionStart", this.sessionStart,this);
+        org.sunbird.portal.eventManager.addEventListener("sunbird:telemetry:portal:sessionEnd", this.sessionEnd,this);
+        org.sunbird.portal.eventManager.addEventListener("sunbird:telemetry:portal:profileupdate", this.profileUpdate,this);
+        org.sunbird.portal.eventManager.addEventListener("sunbird:telemetry:portal:intreact", this.portalIntreact,this);
+
+        
+
     },
 
     /**
@@ -250,8 +267,40 @@ TelemetryService = {
         } else {
             console.log("No events to print.");
         }
+    },
+    impression:function(eventName, obj){
+        if(!TelemetryService.isActive){
+            return InActiveEvent();
+        }
+        return TelemetryService.flushEvent(TelemetryService.instance.impression(obj), TelemetryService.apis.telemetry);
+    },
+    sessionStart:function(eventName, obj){
+        if(!TelemetryService.isActive){
+            return InActiveEvent();
+        }
+        return TelemetryService.flushEvent(TelemetryService.instance.sessionStart(obj), TelemetryService.apis.telemetry);
+    },
+    sessionEnd:function(eventName, obj){
+        if(!TelemetryService.isActive){
+            return InActiveEvent();
+        }
+        return TelemetryService.flushEvent(TelemetryService.instance.sessionEnd(obj), TelemetryService.apis.telemetry);
+ 
+    },
+    profileUpdate:function(eventName, obj){
+        if(!TelemetryService.isActive){
+            return InActiveEvent();
+        }
+        return TelemetryService.flushEvent(TelemetryService.instance.profileUpdate(obj), TelemetryService.apis.telemetry);
+ 
+    },
+    portalIntreact:function(eventName, obj){
+        if(!TelemetryService.isActive){
+            return InActiveEvent();
+        }
+        return TelemetryService.flushEvent(TelemetryService.instance.profileUpdate(obj), TelemetryService.apis.telemetry);
+ 
     }
-
 }
 
 Array.prototype.cleanUndefined = function() {
