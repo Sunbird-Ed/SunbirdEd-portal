@@ -1,0 +1,160 @@
+<div class="ui grid">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+        <div class="row">
+            <div class='videosegment ui segment'>
+                <div class='content-player-body'>
+                    <div class="videosegment  ui clearing segment">
+                        <h1 class="ui HomeAccordianHeading left floated header margin-auto">
+                            {{previewContent.contentData.name}}
+                        </h1>
+                        <h5 class="ui right floated basic icon circular button" ng-click="previewContent.closePreview()">
+                            <i class="ui remove icon"></i>
+                        </h5>
+                    </div>
+                    <div class="ui stackable twelve column grid">
+                        <div class="twelve wide column">
+                            <div class="content-player" ng-if="(previewContent.contentData.mimeType === 'application/vnd.ekstep.ecml-archive' || previewContent.contentData.mimeType === 'application/vnd.ekstep.html-archive') && previewContent.showIFrameContent">
+                                <iframe id="contentViewerIframe" class="contentViewerIframeShadow" height='100%' width='100%'></iframe>
+                            </div>
+                            <div apply-script id="content-video-player-holder" class="content-player" videosrc="{{previewContent.contentData.artifactUrl}}" videotype="{{previewContent.contentData.mimeType}}" ng-if="previewContent.contentData.mimeType !== 'video/youtube' && previewContent.contentData.mimeType.indexOf('video') > -1">
+                                <video height='100%' width='100%' id="content-video-player" class="video-js vjs-default-skin player-video" controls preload="auto" data-setup='{"controls":true}'>
+                                    <source src="{{previewContent.contentData.artifactUrl}}" type='{{previewContent.contentData.mimeType}}' />
+
+                                </video>
+                            </div>
+                            <div class="content-player" ng-if="previewContent.contentData.mimeType === 'video/youtube'" apply-script id="content-video-player-youtube-holder" videosrc="{{previewContent.contentData.artifactUrl}}">
+
+                                <video height='100%' width='100%' id="content-video-player-youtube" class="video-js vjs-default-skin player-video" controls data-setup='{ "techOrder": ["youtube"], "sources": [{ "type": "video/youtube", "src": ""}] }'></video>
+                            </div>
+                            <div ng-if="previewContent.contentData.mimeType === 'application/pdf'" class="pdf-editor content-player">
+                                <div class="ui segment margin-auto pdf-toolbar-padding" ng-init="previewContent.getTotalPage();">
+                                    <span class="ui six wide column">
+
+                                        <i class="large arrow left icon link" ng-click="previewContent.previous()"></i>
+                                        <i class="large arrow right icon link" ng-click="previewContent.next()"></i>
+                                        <i class="large plus icon link" ng-click="previewContent.zoomIn()"></i>
+                                        <i class="large minus icon link" ng-click="previewContent.zoomOut()"></i>
+                                        <i class="large repeat icon link" ng-click="previewContent.rotate()"></i>
+                                    </span>
+                                    <span class="right-float">
+                                        Page <input type="number" min="1" max="{{previewContent.totalPageNumber}}" ng-value="previewContent.getCurrentPage" ng-model="previewContent.inputPageNumber" class="ui input" ng-change="previewContent.goToPage(inputPageNumber)"> Of {{previewContent.totalPageNumber}}
+                                    </span>
+                                </div>
+                                <pdf-viewer delegate-handle="content-player" url="previewContent.contentData.artifactUrl" scale="1.5" show-toolbar="false"></pdf-viewer>
+                            </div>
+                            <div class="content-player" ng-if="previewContent.contentData.mimeType.indexOf('image') > -1">
+                                <img height='100%' width='100%' ng-src="{{previewContent.contentData.artifactUrl}}" />
+                            </div>
+                            <div class="videosegment  ui clearing segment margin-bottom-15" ng-if="previewContent.contentData.status === 'Review'" >
+                                <h5 class="ui right floated primary button mouse-pointer" ng-click="previewContent.publishContent()">
+                                    Publish
+                                </h5>
+                                <h5 class="ui right floated primary button mouse-pointer" ng-click="previewContent.retireContent()">
+                                    Retire
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="previewContent.errorObject.showError">
+                        <div class="ui active dimmer inverted">
+                            <div class="content">
+                                <div class="center" ng-if="!previewContent.errorObject.showMetaLoader">
+                                    <h2 class="ui header {{previewContent.errorObject.messageClass}}">
+                                        {{previewContent.errorObject.message}}
+                                    </h2>
+                                    <span ng-if="previewContent.errorObject.showTryAgainButton"><button class="ui button" ng-click="tryAgain()">Try Again</button></span>
+                                    <span ng-if="previewContent.errorObject.showCloseButton"><button class="ui red button" ng-click="close()">Close</button></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+        <div class="row margin-top-40">
+            <h2 class="ui header">
+                {{previewContent.contentData.description}}
+            </h2>
+            <div class="ui clearing divider"></div>
+            <div class="ui grid margin-top-15">
+                <div class="row">
+                    <div class="three wide column">
+                        <div class="ui list">
+                            <div class="item">
+                                <div class="content">
+                                    <div class="header">Author</div>
+                                    <div class="description padding-top-1rem">{{previewContent.contentData.owner}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="three wide column">
+                        <div class="ui list">
+                            <div class="item">
+                                <div class="content">
+                                    <div class="header">Language</div>
+                                    <div class="description padding-top-1rem">{{previewContent.contentData.language.toString()}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="three wide column">
+                        <div class="ui list">
+                            <div class="item">
+                                <div class="content">
+                                    <div class="header">Grades</div>
+                                    <div class="description padding-top-1rem">{{previewContent.contentData.gradeLevel.toString()}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="three wide column">
+                        <div class="ui list">
+                            <div class="item">
+                                <div class="content">
+                                    <div class="header">Keywords</div>
+                                    <div class="description padding-top-1rem">{{previewContent.contentData.keywords.toString()}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="three wide column">
+                        <div class="ui list">
+                            <div class="item">
+                                <div class="content">
+                                    <div class="header">Subject</div>
+                                    <div class="description padding-top-1rem">{{previewContent.contentData.subject}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="three wide column">
+                        <div class="ui list">
+                            <div class="item">
+                                <div class="content">
+                                    <div class="header">Last update</div>
+                                    <div class="description padding-top-1rem">{{previewContent.contentData.lastUpdatedOn| dateFilterWithMDY}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="three wide column">
+                        <div class="ui list">
+                            <div class="item">
+                                <div class="content">
+                                    <div class="header">Created On</div>
+                                    <div class="description padding-top-1rem">{{previewContent.contentData.createdOn| dateFilterWithMDY}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="one wide column"></div>
+</div>
