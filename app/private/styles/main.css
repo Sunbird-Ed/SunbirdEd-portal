@@ -1349,7 +1349,7 @@ span.fancytree-title {
   float: left;
 }
 .workspaceicon.ui.header:first-child {
-  margin-top: 20px;
+  margin-top: 21px;
 }
 .publicmenusection.ui.vertical.menu {
   padding: 15px 0 0 4px;
@@ -1371,15 +1371,11 @@ span.fancytree-title {
   margin-top: 33px;
 }
 .workspacecontent {
-  text-align: center;
-  color: #333333;
-  font-family: "Open Sans";
-  font-size: 14px;
-  line-height: 17px;
-  font-weight: 400;
+  line-height: 45px;
 }
 .workspacecontent.ui.card {
-  box-shadow: 0 1px 3px 0 #000000, 0 0 0 1px #171718;
+  border: 1px solid #333333;
+  box-shadow: 0 1px 0px 0 #d4d4d5, 0 0 0 1px #d4d4d5 !important;
 }
 .workspacetitle.title {
   color: #333333;
@@ -1440,9 +1436,7 @@ span.fancytree-title {
 }
 .textcontent {
   display: inline-block;
-  margin: 8px;
-  padding: 0px;
-  font-size: 1em;
+  margin: 5px;
   white-space: nowrap;
 }
 @media only screen and (max-width: 1200px) {
@@ -1451,10 +1445,13 @@ span.fancytree-title {
   }
 }
 .textcontent i.icon {
-  font-size: 2em;
+  font-size: 3.5em;
 }
 .my-text {
-  font-size: 1.2em;
+  font-size: 1.063em;
+  font-family: 'sunbirdregularfont';
+  color: #333333;
+  vertical-align: middle;
 }
 .my-icon {
   vertical-align: middle;
@@ -1500,6 +1497,31 @@ span.fancytree-title {
 .userAvtarWrap:hover .img-description-layer {
   visibility: visible;
   opacity: 1;
+}
+.workspacecontentProfile {
+  line-height: 22px;
+}
+.workspacecontentProfile.ui.card {
+  border: 1px solid #333333;
+  box-shadow: 0 1px 0px 0 #d4d4d5, 0 0 0 1px #d4d4d5 !important;
+}
+.WorkSpaceTextContent {
+  display: inline-block;
+  margin: 16px;
+  white-space: nowrap;
+}
+@media only screen and (max-width: 1200px) {
+  .WorkSpaceTextContent {
+    white-space: pre-line;
+  }
+}
+.WorkSpaceTextContent i.icon {
+  font-size: 2em;
+  padding-right: 10px;
+}
+.WorkSpaceTextContent .my-text {
+  font-size: 1.3em;
+  font-family: 'sunbirdboldfont';
 }
 /* file upload border */
 .qq-uploader {
