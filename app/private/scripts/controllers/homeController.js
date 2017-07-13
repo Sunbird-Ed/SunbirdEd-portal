@@ -99,19 +99,7 @@ angular.module('playerApp')
                 homeCtrl[api].loader = showLoaderWithMessage("", config.MESSAGES.HOME.PAGE_API.START);
                 learnService.recommendedCourses(req).then(function (successResponse) {
                     if (successResponse && successResponse.responseCode === 'OK') {
-                       
-                        var learnRes=successResponse.result.response.sections;                       
-                        homeCtrl.page=[];
-                        for(var i in learnRes){
-                            var sectionArr={};
-                            sectionArr=learnRes[i];
-                            sectionArr.contents={response:[]};
-                            for(var subsec in sectionArr.subSections){
-                               Array.prototype.push.apply(sectionArr.contents.response,sectionArr.subSections[subsec].contents.response);
-                            }
-                             homeCtrl.page.push(sectionArr);
-                        }
-                        homeCtrl.recommendedCourse =homeCtrl.page[0].contents.response;
+                        homeCtrl.recommendedCourse =successResponse.result.response;      
                         homeCtrl[api].loader.showLoader = false;
                     } else {
                         homeCtrl[api].loader.showLoader = false;
@@ -128,7 +116,7 @@ angular.module('playerApp')
             homeCtrl.openCourseView = function (course, courseType) {
                 // courseId = 'do_112265805439688704113';
                 var showLectureView = 'no';
-                var params = {courseType: courseType, courseId: course.courseId || course.identifier, tocId: course.courseId || course.identifier, lectureView: showLectureView, progress: course.progress, total: course.total,courseRecordId:course.id,courseName:course.courseName};
+                var params = {courseType: courseType, courseId: course.courseId || course.identifier, tocId: course.courseId || course.identifier, lectureView: showLectureView, progress: course.progress, total: course.total,courseRecordId:course.id,courseName:course.courseName,lastReadContentId:course.lastReadContentId};
                 sessionService.setSessionData('COURSE_PARAMS', params);
                 $state.go('Toc', params);
             };

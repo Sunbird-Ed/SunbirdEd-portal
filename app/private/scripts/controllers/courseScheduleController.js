@@ -58,7 +58,6 @@ angular.module('playerApp')
                     if ($location.hash().indexOf('tocPlayer') < 0) {
                         //once last played index is given assign it for now zero
                         $('#course-toc').find('.content').first().addClass('active');
-                        toc.itemIndex = $stateParams.contentIndex || 0;
                         toc.playPlaylistContent(toc.playList[toc.itemIndex], '');
                     } else {
                         var currentHash = $location.hash().toString().split("/");
@@ -103,7 +102,7 @@ angular.module('playerApp')
 
                         toc.loader.showLoader = false;
                         toc.getAllContentsFromCourse(res.result.content);
-
+                        toc.courseParams.lastReadContentId ? toc.itemIndex = toc.playList.indexOf(toc.courseParams.lastReadContentId) : 0;
                         if (toc.courseType == "ENROLLED_COURSE") {
                             toc.courseHierachy = res.result.content;
                             $rootScope.courseName = toc.courseHierachy.name;
@@ -218,7 +217,7 @@ angular.module('playerApp')
 
                 if (contentData.mimeType != 'application/vnd.ekstep.content-collection') {
                     parent.push({
-                        title: "<span id='node" + toc.treeKey + "' class='padded courseAccordianSubDesc'><i class='" + toc.getContentIcon(contentData.mimeType) + " " + toc.contentStatusList[contentData.identifier] + "'></i>" + contentData.name + "</span><button id='resume-button-" + toc.treeKey + "' class='toc-resume-button contentVisibility-hidden blue right floated ui button'>RESUME</button",
+                        title: "<span id='node" + toc.treeKey + "' class='padded'><i class='" + toc.getContentIcon(contentData.mimeType) + " " + (toc.contentStatusList[contentData.identifier] ? toc.contentStatusList[contentData.identifier] : 'grey') + "'></i>" + contentData.name + "</span><button id='resume-button-" + toc.treeKey + "' class='toc-resume-button contentVisibility-hidden blue right floated ui button'>RESUME</button",
                         key: toc.treeKey,
                         data: contentData,
                         icon: false
@@ -265,7 +264,7 @@ angular.module('playerApp')
                     "video/youtube": "large youtube square icon",
                     "application/vnd.ekstep.html-archive": "large html5 icon",
                     "application/vnd.ekstep.ecml-archive": "large file archive outline icon",
-                    "application/vnd.ekstep.content-collection": "large video play grey icon"
+                    "application/vnd.ekstep.content-collection": "large folder open outline icon grey icon"
 
 
                 };
@@ -277,20 +276,10 @@ angular.module('playerApp')
                         exclusive: false
                     });
                     if (toc.courseType == "ENROLLED_COURSE") {
-                        toc.startPlayer();
+                        toc.resumeCourse();
                     }
 
                 }, 100);
-            }
-            toc.startPlayer = function () {
-                //if lecture view enabled play first content by default
-                if (toc.lectureView == 'yes' && toc.playList.length > 0) {
-                    toc.itemIndex = 0;
-                    toc.playPlaylistContent(toc.playList[toc.itemIndex], '');
-                } else {
-                    //play my current content
-                    toc.resumeCourse();
-                }
             }
             toc.constructTree = function (pos, tocData) {
                 toc.fancyTree = [];
@@ -338,7 +327,7 @@ angular.module('playerApp')
                     toc.hashId = '';
                     $location.hash(toc.hashId);
                     toc.getContentState();
-                    $('.toc-resume-button').css('visibility', 'hidden');                    
+                    $('.toc-resume-button').css('visibility', 'hidden');
                     $('.fancy-tree-container').each(function () {
                         var treeId = this.id;
                         $(this).fancytree("getTree").visit(function (node) {
@@ -347,10 +336,11 @@ angular.module('playerApp')
                                     if (!$('#' + treeId).closest(".accordion").find('.title').hasClass('active')) {
                                         $('#' + treeId).closest(".accordion").find('.title').trigger('click');
                                     }
-                                }, 0);
+                                    node.setActive(false);
+                                }, 10);
                                 node.setExpanded(true);
                                 node.setActive(true);
-                                node.setFocus(true);
+                                node.setFocus(false);
                                 $('#resume-button-' + toc.itemIndex).css('visibility', 'visible');
                             } else
                             {
@@ -381,8 +371,7 @@ angular.module('playerApp')
             }
 
 
-            toc.init = function () {
-                toc.itemIndex = -1;
+            toc.init = function () {                
                 toc.lectureView = toc.courseParams.lectureView;
                 toc.courseId = toc.courseParams.courseId;
                 toc.courseType = ($rootScope.enrolledCourseIds && $rootScope.enrolledCourseIds.indexOf(toc.courseId) >= 0) ? 'ENROLLED_COURSE' : toc.courseParams.courseType;
@@ -390,10 +379,12 @@ angular.module('playerApp')
                 toc.courseTotal = toc.courseParams.total;
                 toc.tocId = toc.courseParams.tocId;
                 toc.courseName = toc.courseParams.courseName;
+                toc.contentStatusList = {};
                 //console.log($stateParams);
                 $scope.enableCloseButton = (toc.lectureView === 'yes') ? 'false' : 'true';
                 //console.log($rootScope.contentDetails);
                 toc.nightMode = true;
+                toc.itemIndex = parseInt($stateParams.contentIndex) || 0;
                 $scope.contentPlayer = {
                     isContentPlayerEnabled: false
 
