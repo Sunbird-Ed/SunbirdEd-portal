@@ -463,6 +463,9 @@ th {
 .text-align-center {
   text-align: center !important;
 }
+.contentVisibility-hidden {
+  visibility: hidden;
+}
 .header-container {
   margin-left: 1px !important;
   border-bottom: 5px solid #0099CC !important;
