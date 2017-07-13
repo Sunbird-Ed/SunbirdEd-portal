@@ -12,6 +12,7 @@ angular.module('playerApp')
         var profile = this;
         profile.userId = $rootScope.userId;
         profile.experienceForm = false;
+        profile.currentJobLocation = null;
         // profile.userId = '5ac2edd3-8d2e-49a4-ac86-9ed5c2e10f3e';
 
         profile.profileSummary = '';
@@ -86,6 +87,7 @@ angular.module('playerApp')
                         return (userJob.isCurrentJob === true);
                     });
                 }
+
                 if (profileData.address.length) {
                     profileData.address.forEach(function(element) {
                         if (element.updatedDate) {
@@ -200,11 +202,10 @@ angular.module('playerApp')
         profile.addExperience = function(newExperience) {
             var startDate = $('#rangestartAdd').calendar('get date');
             var endDate = $('#rangestartAdd').calendar('get date');
-            newExperience.isCurrentJob = new Boolean(newExperience.isCurrentJob);
+            newExperience.isCurrentJob = newExperience.isCurrentJob ? newExperience.isCurrentJob === 'true' : null;
             newExperience.endDate = startDate instanceof Date ? $filter('date')(endDate, 'yyyy-MM-dd') : null;
             newExperience.joiningDate = endDate instanceof Date ? $filter('date')(startDate, 'yyyy-MM-dd') : null;
             newExperience.userId = $rootScope.userId;
-
             profile.experience.push(newExperience);
             var req = { jobProfile: profile.experience };
             req.userId = $rootScope.userId;
@@ -213,8 +214,8 @@ angular.module('playerApp')
         };
         profile.editExperience = function(experiences) {
             experiences.forEach(function(element) {
-                var startDate = $('#rangeStart').calendar('get date');
-                var endDate = $('#rangeEnd').calendar('get date');
+                var startDate = $('.rangeStart').calendar('get date');
+                var endDate = $('.rangeEnd').calendar('get date');
                 element.startDate = startDate ? $filter('date')(startDate, 'yyyy-MM-dd') : element.startDate;
                 element.endDate = endDate ? $filter('date')(endDate, 'yyyy-MM-dd') : element.startDate;
             }, this);
@@ -224,16 +225,13 @@ angular.module('playerApp')
         };
 
         profile.setEditStart = function(date) {
-            $('#rangeStart').calendar('set startDate', date);
+            $('.rangeStart').calendar('set startDate', date);
         };
         profile.setEditEnd = function(date) {
-            $('#rangeEnd').calendar('set endDate', date);
+            $('.rangeEnd').calendar('set endDate', date);
         };
         profile.setDob = function() {
             $('#editDob').calendar('set date', profile.user.dob);
-        };
-        profile.getEditStart = function() {
-            return ($('#rangeStart').calendar('get date'));
         };
 
         $timeout(function() {
@@ -265,6 +263,16 @@ angular.module('playerApp')
         };
         profile.deleteAddress = function(address) {
             var req = { address: address };
+            req.userId = $rootScope.userId;
+            profile.updateProfile(req);
+        };
+        profile.deleteExperience = function(experiences) {
+            var req = { jobProfile: experiences };
+            req.userId = $rootScope.userId;
+            profile.updateProfile(req);
+        };
+        profile.deleteEducation = function(education) {
+            var req = { education: education };
             req.userId = $rootScope.userId;
             profile.updateProfile(req);
         };
