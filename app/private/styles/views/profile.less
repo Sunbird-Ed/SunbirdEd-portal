@@ -4,7 +4,7 @@
 }
 
 .workspaceicon.ui.header:first-child {
-    margin-top: 20px;
+    margin-top: 21px;
 }
 
 .publicmenusection.ui.vertical.menu {
@@ -31,17 +31,13 @@
     margin-top: 33px;
 }
 
-.workspacecontent {
-    text-align: center;
-    color: #333333;
-    font-family: "Open Sans";
-    font-size: 14px;
-    line-height: 17px;
-    font-weight: 400;
+.workspacecontent {   
+    line-height: 45px;
 }
 
 .workspacecontent.ui.card{
-    box-shadow: 0 1px 3px 0 #000000, 0 0 0 1px #171718;
+    border: 1px solid @dark-grey;
+    box-shadow: 0 1px 0px 0 #d4d4d5, 0 0 0 1px #d4d4d5 !important;
 }
 
 .workspacetitle.title {
@@ -114,9 +110,7 @@
 }
 .textcontent {
     display: inline-block;
-    margin: 8px;
-    padding: 0px;
-    font-size: 1em;
+    margin: 5px;
     white-space: nowrap;
     @media only screen and (max-width: 1200px) { 
       white-space: pre-line;
@@ -124,11 +118,14 @@
 
 }
 .textcontent i.icon{
-    font-size: 2em;
+    font-size: 3.5em;
 }
 
 .my-text {
-   font-size: 1.2em;
+   font-size: 1.063em;
+   font-family: 'sunbirdregularfont'; 
+   color:@dark-grey;
+   vertical-align: middle;
 }
 
 .my-icon {
@@ -178,6 +175,36 @@
     visibility: visible;
     opacity: 1;
 }
+
+.workspacecontentProfile {   
+    line-height: 22px;
+}
+
+.workspacecontentProfile.ui.card{
+    border: 1px solid @dark-grey;
+    box-shadow: 0 1px 0px 0 #d4d4d5, 0 0 0 1px #d4d4d5 !important;
+}
+
+
+.WorkSpaceTextContent {
+    display: inline-block;
+    margin: 16px;
+    white-space: nowrap;
+    @media only screen and (max-width: 1200px) { 
+      white-space: pre-line;
+    }
+
+}
+.WorkSpaceTextContent i.icon{
+    font-size: 2em;
+    padding-right: 10px;
+}
+
+.WorkSpaceTextContent .my-text{
+    font-size: 1.3em;
+    font-family: 'sunbirdboldfont';    
+}
+
 
 /* file upload border */
 .qq-uploader {
