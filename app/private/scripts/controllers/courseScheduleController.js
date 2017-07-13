@@ -218,7 +218,7 @@ angular.module('playerApp')
 
                 if (contentData.mimeType != 'application/vnd.ekstep.content-collection') {
                     parent.push({
-                        title: "<span id='node" + toc.treeKey + "' class='padded courseAccordianSubDesc'><i class='" + toc.getContentIcon(contentData.mimeType) + " " + toc.contentStatusList[contentData.identifier] + "'></i>" + contentData.name + "</span><button class='small blue right floated ui button'>RESUME</button",
+                        title: "<span id='node" + toc.treeKey + "' class='padded courseAccordianSubDesc'><i class='" + toc.getContentIcon(contentData.mimeType) + " " + toc.contentStatusList[contentData.identifier] + "'></i>" + contentData.name + "</span><button id='resume-button-" + toc.treeKey + "' class='toc-resume-button contentVisibility-hidden blue right floated ui button'>RESUME</button",
                         key: toc.treeKey,
                         data: contentData,
                         icon: false
@@ -338,19 +338,20 @@ angular.module('playerApp')
                     toc.hashId = '';
                     $location.hash(toc.hashId);
                     toc.getContentState();
+                    $('.toc-resume-button').css('visibility', 'hidden');
+                    $('#resume-button-' + toc.itemIndex).css('visibility', 'visible');
                     $('.fancy-tree-container').each(function () {
                         var treeId = this.id;
                         $(this).fancytree("getTree").visit(function (node) {
                             if (node.key == toc.itemIndex) {
-                                $timeout(function(){
-                                   if (!$('#' + treeId).closest(".accordion").find('.title').hasClass('active')) {
-                                    $('#' + treeId).closest(".accordion").find('.title').trigger('click');
-                                } 
-                                },0);                                
+                                $timeout(function () {
+                                    if (!$('#' + treeId).closest(".accordion").find('.title').hasClass('active')) {
+                                        $('#' + treeId).closest(".accordion").find('.title').trigger('click');
+                                    }
+                                }, 0);
                                 node.setExpanded(true);
                                 node.setActive(true);
                                 node.setFocus(true);
-
                             } else
                             {
                                 node.setActive(false);
