@@ -218,7 +218,7 @@ angular.module('playerApp')
 
                 if (contentData.mimeType != 'application/vnd.ekstep.content-collection') {
                     parent.push({
-                        title: "<span id='node" + toc.treeKey + "' class='padded courseAccordianSubDesc'><i class='" + toc.getContentIcon(contentData.mimeType) + " " + toc.contentStatusList[contentData.identifier] + "'></i>" + contentData.name + "</span><button id='resume-button-" + toc.treeKey + "' class='toc-resume-button contentVisibility-hidden blue right floated ui button'>RESUME</button",
+                        title: "<span id='node" + toc.treeKey + "' class='padded'><i class='" + toc.getContentIcon(contentData.mimeType) + " " + (toc.contentStatusList[contentData.identifier]? toc.contentStatusList[contentData.identifier] : 'grey') + "'></i>" + contentData.name + "</span><button id='resume-button-" + toc.treeKey + "' class='toc-resume-button contentVisibility-hidden blue right floated ui button'>RESUME</button",
                         key: toc.treeKey,
                         data: contentData,
                         icon: false
@@ -265,7 +265,7 @@ angular.module('playerApp')
                     "video/youtube": "large youtube square icon",
                     "application/vnd.ekstep.html-archive": "large html5 icon",
                     "application/vnd.ekstep.ecml-archive": "large file archive outline icon",
-                    "application/vnd.ekstep.content-collection": "large video play grey icon"
+                    "application/vnd.ekstep.content-collection": "large folder open outline icon grey icon"
 
 
                 };
@@ -347,10 +347,11 @@ angular.module('playerApp')
                                     if (!$('#' + treeId).closest(".accordion").find('.title').hasClass('active')) {
                                         $('#' + treeId).closest(".accordion").find('.title').trigger('click');
                                     }
-                                }, 0);
+                                    node.setActive(false);
+                                }, 10);
                                 node.setExpanded(true);
                                 node.setActive(true);
-                                node.setFocus(true);
+                                node.setFocus(false);
                                 $('#resume-button-' + toc.itemIndex).css('visibility', 'visible');
                             } else
                             {
@@ -390,6 +391,7 @@ angular.module('playerApp')
                 toc.courseTotal = toc.courseParams.total;
                 toc.tocId = toc.courseParams.tocId;
                 toc.courseName = toc.courseParams.courseName;
+                toc.contentStatusList ={};
                 //console.log($stateParams);
                 $scope.enableCloseButton = (toc.lectureView === 'yes') ? 'false' : 'true';
                 //console.log($rootScope.contentDetails);
