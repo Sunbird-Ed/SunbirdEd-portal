@@ -9,7 +9,8 @@
         <div class="item" ng-repeat="education in profileCtrl.education">
             <div class="right floated content">
                 <div class="metadata">
-                    <span class="date">{{education.updatedDate|date: "dd/MM/yyyy"  }}</span>
+                    <a href="" ng-click="education.isDeleted=true;profileCtrl.deleteEducation(profileCtrl.education)"> <i class="trash outline icon trashIcon-fontSize"></i></a>
+                    <!--<span class="date">{{education.updatedDate|date: "dd/MM/yyyy"  }}</span>-->
                 </div>
             </div>
             <img class="ui avatar image" src="/images/user_logo.png">
