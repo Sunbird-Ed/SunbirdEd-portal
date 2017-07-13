@@ -169,20 +169,46 @@ TelemetryV2Manager = function() {
     this.sendFeedback = function(eks) {
         return this.createEvent("", eks);
     };
-    this.impression = function(data){
-        return this.createEvent("CP_IMPRESSION", data,"PORTAL")
+    this.impression = function(data) {
+        var obj = {
+            env: data.env || '',
+            type: data.type || '',
+            pageid: data.pageid || '',
+            id: data.id || '',
+            name: data.name || '',
+            url: data.url || ''
+        };
+        return this.createEvent("CP_IMPRESSION", obj, "PORTAL")
     };
-    this.sessionStart = function(data){
-        return this.createEvent("CP_IMPRESSION", data,"PORTAL")
+    this.sessionStart = function(data) {
+        return this.createEvent("CP_SESSION_START", data, "PORTAL")
     };
-    this.sessionEnd = function(data){
-        return this.createEvent("CP_IMPRESSION", data,"PORTAL")
+    this.sessionEnd = function(data) {
+        return this.createEvent("CP_SESSION_END", data, "PORTAL")
     };
-    this.profileUpdate = function(data){
-        return this.createEvent("CP_UPDATE_PROFILE", data,"PORTAL")
+    this.profileUpdate = function(data) {
+        var obj = {
+            "name": data.name || '',
+            "email": data.email || "",
+            "access": data.access || [],
+            "partners": data.partners || [],
+            "profile": data.profile || [],
+        }
+        return this.createEvent("CP_UPDATE_PROFILE", data, "PORTAL")
     };
-    this.portalIntreact = function(data){
-        return this.createEvent("CP_INTERACT", data,"PORTAL")
+    this.portalIntreact = function(data) {
+        var obj = {
+            "env": data.env || '',
+            "context": data.context || '',
+            "type": data.type || '',
+            "target": data.target || '',
+            "targetid": data.targetid || '',
+            "subtype": data.subtype || '',
+            "values": data.values || []
+        }
+
+
+        return this.createEvent("CP_INTERACT", data, "PORTAL")
     };
 
 
