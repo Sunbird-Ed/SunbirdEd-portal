@@ -36,7 +36,7 @@ angular.module('playerApp').controller('LearnCtrl', function (learnService, $sco
 
             learn.openCourseView = function (course, courseType) {
                 var showLectureView = 'no';
-                var params = {courseType: courseType, courseId: course.courseId || course.identifier, tocId: course.courseId || course.identifier, lectureView: showLectureView, progress: course.progress, total: course.total,courseName:course.courseName};
+                var params = {courseType: courseType, courseId: course.courseId || course.identifier, tocId: course.courseId || course.identifier, lectureView: showLectureView, progress: course.progress, total: course.total,courseName:course.courseName,lastReadContentId:course.lastReadContentId};
                 sessionService.setSessionData('COURSE_PARAMS', params);
                 $rootScope.isPlayerOpen = true;
                 $state.go('Toc', params);
