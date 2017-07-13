@@ -7,7 +7,7 @@
         <div class="row" ng-if="contentEditor.reviewApi.error.showError">
             <error-message data="{{contentEditor.editApi.error}}" visibility="contentEditor.reviewApi.error.showError"></error-message>
         </div>
-        <div class="row" ng-show="!contentEditor.editApi.loader.showLoader && !contentEditor.editApi.error.showError">
+        <div class="row" ng-show="!contentEditor.reviewApi.loader.showLoader && !contentEditor.reviewApi.error.showError">
             <iframe ng-if="contentEditor.ekURL" ng-src="{{contentEditor.ekURL}}" class="content-iframe editroIframe"></iframe>
         </div>
     </div>
