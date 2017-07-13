@@ -3,7 +3,7 @@
         <span class="header cardsHeading" translate="experiance">Experience</span>
         <a href="" class="addeditprofile" ng-if="!profileCtrl.experienceForm && profileCtrl.experience.length" translate="edit" ng-click="profileCtrl.experienceForm=true ;profileCtrl.isNewExperience=false ">Edit</a>
         <a href="" class="addeditprofile" ng-if="!profileCtrl.experienceForm  " ng-click="profileCtrl.experienceForm=true ; profileCtrl.isNewExperience=true ;profileCtrl.newExperience={} " translate="add ">Add</a>
-        <a href="" class="addeditprofile" ng-if="profileCtrl.experienceForm" translate="edit" ng-click="profileCtrl.experienceForm=false">close</a>
+        <a href="" class="addeditprofile" ng-if="profileCtrl.experienceForm" translate="edit" ng-click="profileCtrl.experienceForm=false;profileCtrl.isCurrentJobExist=false;">close</a>
     </div>
     <div ng-if="!profileCtrl.experienceForm && !profileCtrl.loader.showLoader &&!profileCtrl.error.showError" class="profileitems ui relaxed divided list">
         <div class="item" ng-repeat="experience in ::profileCtrl.experience">
@@ -17,7 +17,7 @@
 
                 <a class=" header">{{::experience.role}}</a>
                 <div class="description"> {{::experience.orgName}}
-                    <p ng-if="experience.subject">subjects: <span><span ng-repeat="sub in ::experience.subject">{{::sub}}&nbsp;</span> </span>
+                    <p ng-if="experience.subject.length">subjects: <span><span ng-repeat="sub in ::experience.subject">{{::sub}}&nbsp;</span> </span>
                     </p>
                 </div>
             </div>
@@ -26,6 +26,12 @@
     <div ng-if="profileCtrl.experienceForm  &&!profileCtrl.loader.showLoader &&!profileCtrl.error.showError " class="profileitems ui relaxed divided list ">
         <div class="edit-experience-form " ng-if="!profileCtrl.isNewExperience ">
             <div class=" ui " ng-repeat="experience in profileCtrl.user.jobProfile track by $index " ng-include=" 'views/profile/editProfile/experience.html' "></div>
+            <div class="ui warning message" ng-if="profileCtrl.isCurrentJobExist">
+                <i class="close icon"></i>
+                <p>You already have a current job, please change that to not a current job</p>
+            </div>
+            <button ng-hide="profileCtrl.isCurrentJobExist" class="ui button margin-top-15" ng-click="profileCtrl.editExperience(profileCtrl.experience)" ;>Save profile</button>
+
         </div>
         <div class="add-experience-form " ng-if="profileCtrl.isNewExperience ">
             <div class="ui " ng-include=" 'views/profile/editProfile/addExperience.html' "></div>
