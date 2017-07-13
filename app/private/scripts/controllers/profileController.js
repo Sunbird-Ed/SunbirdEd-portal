@@ -13,11 +13,75 @@ angular.module('playerApp')
         profile.userId = $rootScope.userId;
         profile.experienceForm = false;
         profile.currentJobLocation = null;
-        // profile.userId = '5ac2edd3-8d2e-49a4-ac86-9ed5c2e10f3e';
-
+        profile.isCurrentJobExist = false;
         profile.profileSummary = '';
         profile.languages = config.DROPDOWN.COMMON.languages;
         profile.subjects = config.DROPDOWN.COMMON.subjects;
+        //forms validation
+        profile.formValidation = function() {
+            $('.addressEditForm').form({
+                fields: {
+                    radio: {
+                        rules: [{
+                            type: 'checked',
+                            prompt: 'please select address type'
+                        }]
+                    },
+                    addLine1: {
+                        rules: [{
+                            type: 'empty',
+                        }]
+                    },
+                    city: {
+                        rules: [{
+                            type: 'empty',
+                        }]
+                    }
+
+                },
+                onSuccess: function() {
+                    return true;
+                },
+                onFailure: function() {
+                    return false;
+                }
+            });
+        };
+        profile.BasicInfoFormValidation = function() {
+            $('.basicInfoForm').form({
+                fields: {
+                    firstName: {
+                        rules: [{
+                            type: 'regExp[^[a-zA-Z -]+$]',
+                            prompt: 'please enter a valid first name'
+                        }]
+                    },
+                    phone: {
+                        rules: [{
+                            type: 'regExp[^(?:(?:\\+|0{0,2})91(\\s*[\\-]\\s*)?|[0]?)?[789]\\d{9}$]',
+                            prompt: 'Please enter a valid mobile number'
+                        }]
+                    },
+                    email: {
+                        rules: [{
+                            type: 'empty',
+                        }]
+                    },
+                    language: {
+                        rules: [{
+                            type: 'empty',
+                        }]
+                    }
+                },
+                onSuccess: function() {
+                    return true;
+                },
+                onFailure: function() {
+                    return false;
+                }
+            });
+        };
+
         profile.openImageBrowser = function() {
             $('#iconImageInput').click();
         };
@@ -139,17 +203,22 @@ angular.module('playerApp')
             userService.updateUserProfile(profile.updateProfileRequest)
                 .then(function(successResponse) {
                     if (successResponse && successResponse.responseCode === 'OK') {
-                        profile.getProfile();
                         profile.experienceForm = false;
                         profile.basicProfileForm = false;
                         profile.addressForm = false;
                         profile.educationForm = false;
+                        profile.loader.showLoader = false;
+                        profile.error = showErrorMessage(true, config.MESSAGES.PROFILE.HEADER.UPDATE_SUCCESS, config.MESSAGES.COMMON.SUCCESS);
+                        profile.getProfile();
+                        $timeout(function() {
+                            profile.error.showError = false;
+                        }, 2000);
                     } else {
                         profile.loader.showLoader = false;
                         profile.error = showErrorMessage(true, config.MESSAGES.PROFILE.HEADER.UPDATE, config.MESSAGES.COMMON.ERROR);
                         $timeout(function() {
                             profile.error.showError = false;
-                        }, 4000);
+                        }, 2000);
                     }
                 }).catch(function(error) {
                     profile.experienceForm = false;
@@ -164,24 +233,40 @@ angular.module('playerApp')
         //profile newAddress
         // update basic info
         profile.EditBasicProfile = function() {
-            delete profile.basicProfile.education;
-            delete profile.basicProfile.jobProfile;
-            delete profile.basicProfile.address;
-            delete profile.basicProfile.userName;
-            delete profile.basicProfile.status;
-            delete profile.basicProfile.identifier;
-            var dob = $('#editDob').calendar('get date');
-            profile.basicProfile.profileSummary = profile.profileSummary;
-
-            profile.basicProfile.dob = dob instanceof Date ? $filter('date')(dob, 'yyyy-MM-dd') : null;
-            profile.updateProfile(profile.basicProfile);
+            profile.BasicInfoFormValidation();
+            var isValid = $('.basicInfoForm').form('validate form');
+            console.log('isvalif in basic', isValid);
+            if (isValid === true) {
+                delete profile.basicProfile.education;
+                delete profile.basicProfile.jobProfile;
+                delete profile.basicProfile.address;
+                delete profile.basicProfile.userName;
+                delete profile.basicProfile.status;
+                delete profile.basicProfile.identifier;
+                var dob = $('#editDob').calendar('get date');
+                profile.basicProfile.profileSummary = profile.profileSummary;
+                profile.basicProfile.dob = dob instanceof Date ? $filter('date')(dob, 'yyyy-MM-dd') : null;
+                profile.updateProfile(profile.basicProfile);
+            } else {
+                return false;
+            }
         };
         // edit address
         profile.addAddress = function(newAddress) {
-            profile.address.push(newAddress);
-            profile.editAddress(profile.address);
+            profile.formValidation();
+            var isValid = $('.addressEditForm').form('validate form');
+            console.log('isValidForm', isValid);
+            if (isValid === true) {
+                profile.address.push(newAddress);
+                profile.editAddress(profile.address);
+            } else {
+                return false;
+            }
         };
         profile.editAddress = function(address) {
+            profile.formValidation();
+            var isValid = $('.addressEditForm').form('validate form');
+            console.log('isValidForm', isValid);
             var req = { address: address };
             req.userId = $rootScope.userId;
             profile.updateProfile(req);
@@ -213,12 +298,14 @@ angular.module('playerApp')
             profile.updateProfile(req);
         };
         profile.editExperience = function(experiences) {
-            experiences.forEach(function(element) {
-                var startDate = $('.rangeStart').calendar('get date');
-                var endDate = $('.rangeEnd').calendar('get date');
-                element.startDate = startDate ? $filter('date')(startDate, 'yyyy-MM-dd') : element.startDate;
-                element.endDate = endDate ? $filter('date')(endDate, 'yyyy-MM-dd') : element.startDate;
-            }, this);
+            if (experiences.length) {
+                experiences.forEach(function(element) {
+                    var startDate = $('.rangeStart').calendar('get date');
+                    var endDate = $('.rangeEnd').calendar('get date');
+                    element.startDate = startDate ? $filter('date')(startDate, 'yyyy-MM-dd') : element.startDate;
+                    element.endDate = endDate ? $filter('date')(endDate, 'yyyy-MM-dd') : element.startDate;
+                }, this);
+            }
             var req = { jobProfile: experiences };
             req.userId = $rootScope.userId;
             profile.updateProfile(req);
@@ -275,5 +362,11 @@ angular.module('playerApp')
             var req = { education: education };
             req.userId = $rootScope.userId;
             profile.updateProfile(req);
+        };
+        profile.checkCurrentJob = function(experience) {
+            if (profile.currentJobLocation) {
+                profile.isCurrentJobExist = profile.currentJobLocation.id !== experience.id && profile.currentJobLocation.isCurrentJob === true && experience.isCurrentJob === 'true' ? true : false;
+                console.log('profile.isCurrentJobExist', profile.isCurrentJobExist, profile.currentJobLocation.isCurrentJob, experience.isCurrentJob);
+            }
         };
     });
