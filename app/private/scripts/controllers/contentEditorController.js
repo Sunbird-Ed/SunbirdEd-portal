@@ -49,26 +49,26 @@ angular.module('playerApp')
         };
         
         contentEditor.submitForReview = function (contentId) {
+        
+            var api = 'reviewApi';
+            contentEditor[api] = {};
+            contentEditor[api].loader = showLoaderWithMessage("", config.MESSAGES.WORKSPACE.REVIEW_CONTENT.START);
+            var req = {content: {}};
 
-                var api = 'reviewApi';
-                contentEditor[api] = {};
-                contentEditor[api].loader = showLoaderWithMessage("", config.MESSAGES.WORKSPACE.REVIEW_CONTENT.START);
-                var req = {content: {}};
+            contentService.review(req, contentId).then(function (res) {
+                if (res && res.responseCode === "OK") {
+                    contentEditor[api].loader.showLoader = false;
+                    $state.go("WorkSpace.ReviewContent");
 
-                contentService.review(req, contentId).then(function (res) {
-                    if (res && res.responseCode === "OK") {
-                        contentEditor[api].loader.showLoader = false;
-                        $state.go("WorkSpace.ReviewContent");
-
-                    } else {
-                        contentEditor[api].loader.showLoader = false;
-                        contentEditor[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.REVIEW_CONTENT.FAILED, config.MESSAGES.COMMON.ERROR);
-                    }
-                }).catch(function (error) {
+                } else {
                     contentEditor[api].loader.showLoader = false;
                     contentEditor[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.REVIEW_CONTENT.FAILED, config.MESSAGES.COMMON.ERROR);
-                });
-            };
+                }
+            }).catch(function (error) {
+                contentEditor[api].loader.showLoader = false;
+                contentEditor[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.REVIEW_CONTENT.FAILED, config.MESSAGES.COMMON.ERROR);
+            });
+        };
 
         contentEditor.init = function() {
             org.sunbird.portal.eventManager.addEventListener("sunbird:portal:editor:editmeta", function() {

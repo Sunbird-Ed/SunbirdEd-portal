@@ -117,6 +117,7 @@ angular.module('playerApp')
             };
 
             editContent.saveMetaContent = function (data) {
+                editContent.requiredFieldsMessage = [];
                 var newData = angular.copy(data);
                 newData.createdBy = editContent.userId;
 
@@ -172,8 +173,40 @@ angular.module('playerApp')
                 });
             };
 
-            editContent.submitForReview = function (contentId) {
+            function checkAllRequiredField(contentData) {
 
+                var requiredFieldsMessage = [];
+                if(!contentData.name) {
+                    requiredFieldsMessage.push("Title is missing");
+                } 
+                if(!contentData.contentType) {
+                    requiredFieldsMessage.push("Lesson type is missing");
+                } 
+                if(contentData.audience && !contentData.audience.length > 0) {
+                    requiredFieldsMessage.push("Audience is missing");
+                } 
+                if(!contentData.subject) {
+                    requiredFieldsMessage.push("Subject is missing");
+                }
+                if(!contentData.gradeLevel || contentData.gradeLevel && !contentData.gradeLevel.length > 0) {
+                    requiredFieldsMessage.push("Grade is missing");
+                } 
+                return requiredFieldsMessage;
+            }
+
+            editContent.submitForReview = function (contentData) {
+
+                editContent.requiredFieldsMessage = checkAllRequiredField(contentData);
+                
+                if(editContent.requiredFieldsMessage.length > 0) {
+                    return;
+                } else {
+                    editContent.callReviewApi(contentData);
+                }
+            };
+            
+            editContent.callReviewApi = function(contentData) {
+                var contentId = contentData.identifier;
                 var api = 'editApi';
                 editContent[api] = {};
                 editContent[api].loader = showLoaderWithMessage("", config.MESSAGES.WORKSPACE.REVIEW_CONTENT.START);
@@ -192,7 +225,7 @@ angular.module('playerApp')
                     editContent[api].loader.showLoader = false;
                     editContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.REVIEW_CONTENT.FAILED, config.MESSAGES.COMMON.ERROR);
                 });
-            };
+            }
 
             editContent.previewContent = function (requestData) {
                 $scope.contentPlayer.contentData = requestData;
