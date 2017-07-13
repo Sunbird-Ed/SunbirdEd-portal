@@ -338,8 +338,7 @@ angular.module('playerApp')
                     toc.hashId = '';
                     $location.hash(toc.hashId);
                     toc.getContentState();
-                    $('.toc-resume-button').css('visibility', 'hidden');
-                    $('#resume-button-' + toc.itemIndex).css('visibility', 'visible');
+                    $('.toc-resume-button').css('visibility', 'hidden');                    
                     $('.fancy-tree-container').each(function () {
                         var treeId = this.id;
                         $(this).fancytree("getTree").visit(function (node) {
@@ -352,6 +351,7 @@ angular.module('playerApp')
                                 node.setExpanded(true);
                                 node.setActive(true);
                                 node.setFocus(true);
+                                $('#resume-button-' + toc.itemIndex).css('visibility', 'visible');
                             } else
                             {
                                 node.setActive(false);
