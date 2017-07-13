@@ -68,14 +68,14 @@ TelemetryService = {
                 } else {
                     reject('Invalid game data.');
                 }
-                TelemetryServiceUtil.getConfig().then(function(config) {
-                    TelemetryService._config = config;
-                    if (TelemetryService._config.isActive) TelemetryService.isActive = TelemetryService._config.isActive;
-                    resolve(true);
-                }).catch(function(err) {
-                    reject(err);
-                });
             }
+            TelemetryServiceUtil.getConfig().then(function(config) {
+                TelemetryService._config = config;
+                if (TelemetryService._config.isActive) TelemetryService.isActive = TelemetryService._config.isActive;
+                resolve(true);
+            }).catch(function(err) {
+                reject(err);
+            });
             if (obj.correlationData && !_.isEmpty(obj.correlationData)) {
                 TelemetryService._correlationData = obj.correlationData;
             };
