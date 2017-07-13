@@ -13,7 +13,7 @@
                     </div>
                     <div class="required field">
                         <label>Password</label>
-                        <input type="password" name="password" placeholder="password" ng-model="newUser.password">
+                        <input type="password" name="password" placeholder="Password" ng-model="newUser.password">
                     </div>
                 </div>
             </div>
@@ -32,11 +32,11 @@
             <div class="two fields">
                 <div class="required field">
                     <label>Phone number</label>
-                    <input type="text" name="phone" ng-model="newUser.phone">
+                    <input type="text" name="phone" placeholder="+91" ng-model="newUser.phone">
                 </div>
                 <div class=" required field">
                     <label>Email</label>
-                    <input type="text" name="email" ng-model="newUser.email">
+                    <input type="text" name="email" placeholder="User@example.com" ng-model="newUser.email">
                 </div>
             </div>
             <div class="two fields">
@@ -49,14 +49,11 @@
                 </div>
                 <div class=" required field" ng-init="newUser.formInit() ">
                     <label>Language</label>
-
                     <select name="language" ng-selected="true" class="ui fluid dropdown signupMultiple" multiple="" ng-value="option.value" ng-options=" language for language in newUser.languages" ng-model="newUser.language">
-                                        <option value="" translate="languages">Languages</option>
-                                    </select>
+                        <option value="" translate="languages">Languages</option>
+                    </select>
                 </div>
             </div>
-
-
             <div class="field">
                 <label>Date of birth </label>
                 <div class="ui calendar" id="dobCalendar">
@@ -66,8 +63,6 @@
                     </div>
                 </div>
             </div>
-
-
             <div class="ui error message">
             </div>
         </form>
@@ -81,5 +76,4 @@
     <div class="actions">
         <div class="ui primary button" ng-click="newUser.submitForm()" ;>Save profile</div>
     </div>
-
 </div>
