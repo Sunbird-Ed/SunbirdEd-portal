@@ -7,27 +7,28 @@
  * # AppCtrl
  * Controller of the playerApp
  */
-angular.module('playerApp')
-    .controller('AppCtrl', function($scope, $state, $stateParams, $rootScope, setResourceBundle, $translate, userService, $q, config, $location, $timeout) {
-        $rootScope.userId = $('#userId').attr('value');
-        $rootScope.language = $rootScope.userLanguage || config.SITE.DEFAULT_LANGUAGE;
-        $rootScope.translationBundle = {};
-        $rootScope.searchKey = '';
-        org.sunbird.portal.init();
-        $rootScope.openLink = function(url) {
-            $location.path(url);
-        };
-        $rootScope.loadBundle = function() {
-            var promises = [];
-            promises.push(userService.resourceBundle($rootScope.language, 'label'));
-            promises.push(userService.resourceBundle($rootScope.language, 'error'));
-            $q.all(promises).then(function(results) {
-                results.forEach(function(res) {
-                    if (res && res.responseCode == 'OK' && res.result) {
-                        $rootScope.translationBundle = $rootScope.mergeObjects($rootScope.translationBundle, res.result[$rootScope.language]);
-                        $rootScope.addTranslation($rootScope.language, $rootScope.translationBundle);
-                    }
-                });
+angular.module('playerApp').controller('AppCtrl', function ($scope, $state, $stateParams, $rootScope, setResourceBundle, $translate, userService, $q, config, $location, $timeout,errorMessages,labels) {
+            $rootScope.userId = $("#userId").attr("value");
+            $rootScope.language = $rootScope.userLanguage || config.SITE.DEFAULT_LANGUAGE;
+            $rootScope.errorMessages=errorMessages;
+            $rootScope.labels=labels;          
+            $rootScope.translationBundle = {};
+            $rootScope.searchKey = '';
+            org.sunbird.portal.init();
+            $rootScope.openLink = function (url) {
+                $location.path(url);
+            }
+            $rootScope.loadBundle = function () {
+                var promises = [];
+                promises.push(userService.resourceBundle($rootScope.language, 'label'));
+                promises.push(userService.resourceBundle($rootScope.language, 'error'));
+                $q.all(promises).then(function (results) {
+                    results.forEach(function (res) {
+                        if (res && res.responseCode == 'OK' && res.result) {
+                            $rootScope.translationBundle = $rootScope.mergeObjects($rootScope.translationBundle, res.result[$rootScope.language]);
+                            $rootScope.addTranslation($rootScope.language, $rootScope.translationBundle);
+                        }
+                    });
             });
         };
         $rootScope.addTranslation = function(language, translationBundle) {
