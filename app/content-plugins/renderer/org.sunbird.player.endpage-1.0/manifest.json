@@ -7,9 +7,6 @@
     "publishedDate": "",
     "renderer": {
         "main": "renderer/plugin.js"
-    },
-    "dependencies": [
-        {"plugin": "org.ekstep.genie", "ver": "1.0", "scope": "renderer" }
-    ]   
+    } 
 
 }
