@@ -109,8 +109,7 @@ angular.module('playerApp')
             requestBody.mimeType = "application/vnd.ekstep.content-collection";
             requestBody.createdBy = textbook.userId;
 
-            requestBody.name = requestBody.name ? requestBody.name : "Default title";
-            requestBody.description = requestBody.description ? requestBody.description : "Default description";
+            requestBody.name = requestBody.name ? requestBody.name : "Untitled textbook";
             requestBody.contentType =  "TextBook";
 
             var requestdata = {
