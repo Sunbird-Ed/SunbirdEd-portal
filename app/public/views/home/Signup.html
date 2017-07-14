@@ -1,18 +1,18 @@
 <div id="signupModal" class="ui modal">
     <i class="close icon"></i>
     <div class="header">
-        Sign Up
+        {{labels.Headers.signUp}}
     </div>
     <div class="content">
         <form ng-init="newUser.formInit();" id="signUpForm" class="ui form" ng-if="!newUser.loader.showLoader && !newUser.error.showError ">
             <div class="  field">
                 <div class=" two fields">
                     <div class="required field ">
-                        <label>User Name</label>
+                        <label>{{labels.SignUp.userName}}</label>
                         <input type="text" autocomplete="false" name="userName" placeholder="eg:user.name , min 5 character required" ng-model="newUser.userName">
                     </div>
                     <div class="required field">
-                        <label>Password</label>
+                        <label>{{labels.SignUp.password}}</label>
                         <input type="password" autocomplete="false" name="password" placeholder="Password" ng-model="newUser.password">
                     </div>
                 </div>
@@ -20,7 +20,7 @@
             <div class="  field">
                 <div class=" two fields">
                     <div class=" required field">
-                        <label>Name</label>
+                        <label>{{labels.SignUp.name}}</label>
                         <input type="text" autocomplete="false" name="firstName" placeholder="First Name" ng-model="newUser.firstName">
                     </div>
                     <div class="field">
@@ -31,24 +31,24 @@
             </div>
             <div class="two fields">
                 <div class="required field">
-                    <label>Phone number</label>
+                    <label>{{labels.SignUp.phoneNumber}}</label>
                     <input type="text" name="phone" autocomplete="false" placeholder="eg:+91XXXXXXXXXX or XXXXXXXXXX" ng-model="newUser.phone">
                 </div>
                 <div class=" required field">
-                    <label>Email</label>
+                    <label>{{labels.SignUp.email}}</label>
                     <input type="text" name="email" autocomplete="false" placeholder="User@example.com" ng-model="newUser.email">
                 </div>
             </div>
             <div class="two fields">
                 <div class="field">
-                    <label>Gender</label>
+                    <label>{{labels.SignUp.gender}}</label>
                     <select class="ui fluid dropdown" ng-model="newUser.gender">
                         <option value="Female">Female</option>
                         <option value="Male">Male</option>
                     </select>
                 </div>
                 <div class="field">
-                    <label>Date of birth </label>
+                    <label>{{labels.SignUp.dob}}</label>
                     <div class="ui calendar" id="dobCalendar">
                         <div class="ui input left icon">
                             <i class="calendar icon"></i>
@@ -58,7 +58,7 @@
                 </div>
             </div>
             <div class=" required field" ng-init="newUser.formInit() ">
-                <label>Language</label>
+                <label>{{labels.SignUp.language}}</label>
                 <select name="language" ng-selected="true" placeholder="Languages" class="ui fluid dropdown signupMultiple" multiple="" ng-value="option.value" ng-options=" language for language in newUser.languages" ng-model="newUser.language">
                         <option value="" translate="languages">Languages</option>
                     </select>
@@ -67,7 +67,7 @@
             <div class="ui error message">
             </div>
             <div class="actions">
-                <div class="ui primary button" ng-click="newUser.submitForm()" ;>SIGN UP</div>
+                <div class="ui primary button" ng-click="newUser.submitForm()" ;>{{labels.Button.signUp}}</div>
             </div>
         </form>
         <div ng-if="newUser.loader.showLoader">

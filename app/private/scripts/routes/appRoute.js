@@ -432,7 +432,7 @@ angular
                             $rootScope.profileActive = 'active';
                             if ($state.current.name === "WorkSpace") {
                                 $state.go('WorkSpace.ContentCreation');
-                            }
+                    }
                         }
                     }
                 },
@@ -540,6 +540,24 @@ angular
                         "url": "/private/index#!/content/uploaded"
                     });
                 }
+            }).state('WorkSpace.UpForReviewContent', {
+                url: '/content/upForReview',
+                views: {
+                    'contentView': {
+                        templateUrl: 'views/workSpace/upForReviewContent.html',
+                        controller: 'UpForReviewContentController as upForReviewContent'
+                    }
+                },
+                onEnter: function(portalTelemetryService) {
+                    portalTelemetryService.fireImpressions({
+                        "env": "content",
+                        "type": "list",
+                        "pageid": "WorkSpace.UpForReviewContent",
+                        "id": "",
+                        "name": "",
+                        "url": "/private/index#!/content/upForReview"
+                    });
+                }
             }).state('CreateLesson', {
                 url: '/create/lesson',
                 views: {
@@ -593,7 +611,7 @@ angular
                         controller: 'EditContentController as editContent'
                     }
                 },
-                params: { contentId: null },
+                params: { contentId: null, backState: null },
                 onEnter: function($rootScope, portalTelemetryService) {
                     $rootScope.profileActive = 'active';
                     portalTelemetryService.fireImpressions({
@@ -739,7 +757,7 @@ angular
 
         $rootScope.$on('$stateChangeStart',
             function(event, toState, toParams, fromState, fromParams) {
-
+                
                 switch (toState.name) {
                     case "WorkSpace.ContentCreation":
                         if (!permissionsService.checkRolesPermissions(['CONTENT_CREATER', 'CONTENT_REVIEW', 'CONTENT_CREATION'], false)) {

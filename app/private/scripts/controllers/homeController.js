@@ -116,7 +116,7 @@ angular.module('playerApp')
             homeCtrl.openCourseView = function (course, courseType) {
                 // courseId = 'do_112265805439688704113';
                 var showLectureView = 'no';
-                var params = {courseType: courseType, courseId: course.courseId || course.identifier, tocId: course.courseId || course.identifier, lectureView: showLectureView, progress: course.progress, total: course.total,courseRecordId:course.id,courseName:course.courseName,lastReadContentId:course.lastReadContentId};
+                var params = {courseType: courseType, courseId: course.courseId || course.identifier, tocId: course.courseId || course.identifier, lectureView: showLectureView, progress: course.progress, total: course.total,courseRecordId:course.id,courseName:course.courseName||course.name,lastReadContentId:course.lastReadContentId};
                 sessionService.setSessionData('COURSE_PARAMS', params);
                 $state.go('Toc', params);
             };

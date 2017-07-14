@@ -8,7 +8,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('ProfileController', function($scope, $rootScope, userService, config, $timeout, $filter) {
+    .controller('ProfileController', function($scope, $rootScope, contentService, userService, config, $timeout, $filter) {
         var profile = this;
         profile.userId = $rootScope.userId;
         profile.experienceForm = false;
@@ -35,6 +35,12 @@ angular.module('playerApp')
                     city: {
                         rules: [{
                             type: 'empty',
+                        }]
+                    },
+                    pinCode: {
+                        rules: [{
+                            type: 'regExp[^[0-9]*$]',
+                            prompt: 'please enter a valid pin code'
                         }]
                     }
 
@@ -64,7 +70,8 @@ angular.module('playerApp')
                     },
                     email: {
                         rules: [{
-                            type: 'empty',
+                            type: 'email',
+                            prompt: 'Please enter a valid email'
                         }]
                     },
                     language: {
@@ -96,15 +103,30 @@ angular.module('playerApp')
 
                 var reader = new FileReader();
                 reader.onload = function(e) {
-                    profile.profilePic = e.target.result;
                     profile.user.avatar = e.target.result;
                     $scope.$apply();
-                    profile.EditBasicProfile();
+                    profile.uploadOrUpdateAppIcon();
                 };
                 reader.readAsDataURL(files[0]);
                 profile.icon = fd;
                 profile.iconUpdate = true;
             }
+        };
+
+        profile.uploadOrUpdateAppIcon = function() {
+            contentService.uploadMedia(profile.icon).then(function(res) {
+                if (res && res.responseCode === 'OK') {
+                    profile.basicProfile.avatar = res.result.url;
+                    console.log('user pic', profile.basicProfile.avatar);
+                    profile.EditAvatar();
+                } else {
+                    profile.loader.showLoader = false;
+                    profile.error = showErrorMessage(true, config.MESSAGES.PROFILE.HEADER.UPDATE, config.MESSAGES.COMMON.ERROR);
+                }
+            }).catch(function(error) {
+                profile.loader.showLoader = false;
+                profile.error = showErrorMessage(true, config.MESSAGES.PROFILE.HEADER.UPDATE, config.MESSAGES.COMMON.ERROR);
+            });
         };
         /**
          * This function called when api failed, and its show failed response for 2 sec.
@@ -235,6 +257,15 @@ angular.module('playerApp')
         };
         //profile newAddress
         // update basic info
+        profile.EditAvatar = function() {
+            delete profile.basicProfile.education;
+            delete profile.basicProfile.jobProfile;
+            delete profile.basicProfile.address;
+            delete profile.basicProfile.userName;
+            delete profile.basicProfile.status;
+            delete profile.basicProfile.identifier;
+            profile.updateProfile(profile.basicProfile);
+        };
         profile.EditBasicProfile = function() {
             profile.BasicInfoFormValidation();
             var isValid = $('.basicInfoForm').form('validate form');
@@ -249,6 +280,7 @@ angular.module('playerApp')
                 var dob = $('#editDob').calendar('get date');
                 profile.basicProfile.profileSummary = profile.profileSummary;
                 profile.basicProfile.dob = dob instanceof Date ? $filter('date')(dob, 'yyyy-MM-dd') : null;
+                console.log(' profile.basicProfile.dob ', profile.basicProfile.dob);
                 profile.updateProfile(profile.basicProfile);
             } else {
                 return false;
@@ -269,10 +301,14 @@ angular.module('playerApp')
         profile.editAddress = function(address) {
             profile.formValidation();
             var isValid = $('.addressEditForm').form('validate form');
-            console.log('isValidForm', isValid);
-            var req = { address: address };
-            req.userId = $rootScope.userId;
-            profile.updateProfile(req);
+
+            if (!isValid.includes(false)) {
+                var req = { address: address };
+                req.userId = $rootScope.userId;
+                profile.updateProfile(req);
+            } else {
+                return false;
+            }
         };
         // edit education
         profile.addEducation = function(newEducation) {
@@ -305,7 +341,7 @@ angular.module('playerApp')
                 experiences.forEach(function(element) {
                     var startDate = $('.rangeStart').calendar('get date');
                     var endDate = $('.rangeEnd').calendar('get date');
-                    element.startDate = startDate ? $filter('date')(startDate, 'yyyy-MM-dd') : element.startDate;
+                    element.joiningDate = startDate ? $filter('date')(startDate, 'yyyy-MM-dd') : element.joiningDate;
                     element.endDate = endDate ? $filter('date')(endDate, 'yyyy-MM-dd') : element.startDate;
                 }, this);
             }
@@ -315,10 +351,10 @@ angular.module('playerApp')
         };
 
         profile.setEditStart = function(date) {
-            $('.rangeStart').calendar('set startDate', date);
+            $('.rangeStart').calendar('set date', date);
         };
         profile.setEditEnd = function(date) {
-            $('.rangeEnd').calendar('set endDate', date);
+            $('.rangeEnd').calendar('set date', date);
         };
         profile.setDob = function() {
             $('#editDob').calendar('set date', profile.user.dob);
@@ -369,7 +405,12 @@ angular.module('playerApp')
         profile.checkCurrentJob = function(experience) {
             if (profile.currentJobLocation) {
                 profile.isCurrentJobExist = profile.currentJobLocation.id !== experience.id && profile.currentJobLocation.isCurrentJob === true && experience.isCurrentJob === 'true' ? true : false;
+
                 console.log('profile.isCurrentJobExist', profile.isCurrentJobExist, profile.currentJobLocation.isCurrentJob, experience.isCurrentJob);
             }
+        };
+        profile.setJobProfileCheckbox = function(experience, value) {
+            console.log('value', value);
+            experience.isCurrentJob = value;
         };
     });

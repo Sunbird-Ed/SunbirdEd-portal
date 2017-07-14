@@ -25,7 +25,7 @@
                     </div>
                     <div class="content-player" ng-if="contentData.mimeType === 'video/youtube'" apply-script id="content-video-player-youtube-holder" videosrc="{{contentData.artifactUrl}}">
 
-                        <video height='100%' width='100%' id="content-video-player-youtube" class="video-js vjs-default-skin player-video" controls data-setup='{ "techOrder": ["youtube"], "sources": [{ "type": "video/youtube", "src": ""}] }'></video>
+                        <video height='100%' width='100%' id="content-video-player-youtube"></video>
                     </div>
                     <div ng-if="contentData.mimeType === 'application/pdf'" class="pdf-editor content-player">
                         <div ng-include="'views/contentplayer/pdfToolBar.html'"></div>
