@@ -37,7 +37,7 @@
                             <div class="notelistscroll">
                                 <div class="profileitems ui relaxed divided items ">
                                     <div class="item padding-topBottomNone notelistfocus"  ng-repeat="note in noteList.notesList| orderBy : '-lastUpdatedOn' | noteListFilter:noteList.searchData.text">
-                                        <div class="content padding-all-10 contentnotelist" id="notelistcontent{{$index}}" ng-class="{'notelistborder': $index == noteList.selectedIndex || $index == 0 }" ng-click="noteList.showNoteList(note, $index)" ng-init="noteList.selectedNoteData = noteList.notesList[0]">
+                                        <div class="content padding-all-10 contentnotelist" id="notelistcontent{{$index}}" ng-class="{'notelistborder': $index == noteList.selectedIndex || $index == 0 }" ng-click="noteList.showNoteList(note, $index)">
                                             <a class="header ">{{ note.title | limitTo: 20 }}</a>
                                             <div class="description margin-top-0" ng-init="noteData = note.note.length > 20 ? note.note.substring(-1,20) : note.note">
                                         
@@ -57,7 +57,8 @@
                                 <div class="item">
                                     <div class="content">
                                         <div class="ui row margin-right-15">
-                                            <i class="ui right floated edit icon cursor-pointer" ng-click="noteList.update.showUpdateNote = !noteList.update.showUpdateNote; noteList.updateNoteData(noteList.selectedNoteData);"></i>
+                                            <i class="ui right floated large edit icon cursor-pointer" ng-click="noteList.update.showUpdateNote = !noteList.update.showUpdateNote; noteList.updateNoteData(noteList.selectedNoteData);"></i>
+                                            <i class="ui right floated large remove circle icon cursor-pointer" ng-click="noteList.removeNote(noteList.selectedNoteData.identifier);"></i>
                                             <span class="ui small header notedecheader mouse-pointer"> {{ noteList.selectedNoteData.title}}
                                             </span>
                                             <div class="description padding-top-10">
