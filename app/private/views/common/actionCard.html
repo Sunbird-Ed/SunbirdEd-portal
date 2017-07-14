@@ -7,7 +7,7 @@
             <div class="ui fluid image">
                 <a class="ui black right ribbon label" translate="courses">Course</a>
                 </a>
-                 <img ng-src=" {{item.appIcon ? item.appIcon : '../images/sunbird_logo.png'}} ">
+                 <img ng-src="{{item.appIcon || item.courseLogoUrl || '../images/sunbird_logo.png'}}">
             </div>
             <div class="cardImageText center aligned ">
                 <span class="sliderCardHeading text-cencapitalize">
