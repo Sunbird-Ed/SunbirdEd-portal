@@ -48,7 +48,7 @@ angular.module('playerApp').controller('LearnCtrl', function (learnService, $sco
                 learn[api] = {};
                 learn[api].loader = showLoaderWithMessage("", $rootScope.errorMessages.Courses.ENROLLED.START);
 
-                learnService.enrolledCourses("").then(function (successResponse) {
+                learnService.enrolledCourses(uid).then(function (successResponse) {
                     if (successResponse && successResponse.responseCode === 'OK') {
                         learn[api].loader.showLoader = false;
                         learn.enrolledCourses = successResponse.result.courses;
