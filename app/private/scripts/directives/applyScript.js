@@ -75,9 +75,10 @@ angular.module('playerApp')
                         scope.initVideoEvents(this);
                     });
                 }
-
+                var today = new Date();
                 $('#example2').calendar({
                     type: 'date',
+                    maxDate: today,
                     formatter: {
                         date: function(date, settings) {
                             if (!date)
@@ -91,6 +92,7 @@ angular.module('playerApp')
                 });
                 $('#rangestart').calendar({
                     type: 'date',
+                    maxDate: today,
                     endCalendar: $('#rangeend'),
                     formatter: {
                         date: function(date, settings) {
@@ -105,6 +107,7 @@ angular.module('playerApp')
                 });
                 $('#rangeend').calendar({
                     type: 'date',
+                    maxDate: today,
                     startCalendar: $('#rangestart'),
                     formatter: {
                         date: function(date, settings) {
@@ -120,6 +123,7 @@ angular.module('playerApp')
 
                 $('#start').calendar({
                     type: 'date',
+                    maxDate: today,
                     endCalendar: $('#start'),
                     formatter: {
                         date: function(date, settings) {
@@ -133,6 +137,7 @@ angular.module('playerApp')
                 });
                 $('#end').calendar({
                     type: 'date',
+                    maxDate: today,
                     startCalendar: $('#end'),
                     formatter: {
                         date: function(date, settings) {
@@ -150,6 +155,7 @@ angular.module('playerApp')
                 });
                 $('#rangestartAdd').calendar({
                     type: 'date',
+                    maxDate: today,
                     endCalendar: $('#rangeendAdd'),
                     formatter: {
                         date: function(date, settings) {
@@ -165,6 +171,7 @@ angular.module('playerApp')
                 });
                 $('#rangeendAdd').calendar({
                     type: 'date',
+                    maxDate: today,
                     startCalendar: $('#rangestartAdd'),
                     formatter: {
                         date: function(date, settings) {
@@ -181,6 +188,7 @@ angular.module('playerApp')
 
                 $('.rangeStart').calendar({
                     type: 'date',
+                    maxDate: today,
                     endCalendar: $('.rangeEnd'),
                     formatter: {
                         date: function(date, settings) {
@@ -194,6 +202,7 @@ angular.module('playerApp')
                 });
                 $('.rangeEnd').calendar({
                     type: 'date',
+                    maxDate: today,
                     startCalendar: $('.rangeStart'),
                     formatter: {
                         date: function(date, settings) {
@@ -208,6 +217,7 @@ angular.module('playerApp')
 
                 $('#editDob').calendar({
                     type: 'date',
+                    maxDate: today,
                     formatter: {
                         date: function(date, settings) {
                             if (!date) return '';
