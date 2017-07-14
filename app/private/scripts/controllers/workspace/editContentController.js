@@ -179,6 +179,9 @@ angular.module('playerApp')
                 if(!contentData.name) {
                     requiredFieldsMessage.push("Title is missing");
                 } 
+                if(!contentData.description) {
+                    requiredFieldsMessage.push("Description is missing");
+                } 
                 if(!contentData.contentType) {
                     requiredFieldsMessage.push("Lesson type is missing");
                 } 
@@ -190,6 +193,9 @@ angular.module('playerApp')
                 }
                 if(!contentData.gradeLevel || contentData.gradeLevel && !contentData.gradeLevel.length > 0) {
                     requiredFieldsMessage.push("Grade is missing");
+                } 
+                if(!contentData.medium || contentData.medium && !contentData.medium.length > 0) {
+                    requiredFieldsMessage.push("Medium is missing");
                 } 
                 return requiredFieldsMessage;
             }
