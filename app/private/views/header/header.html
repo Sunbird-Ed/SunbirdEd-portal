@@ -14,9 +14,12 @@
         <i class="float-ContentLeft alarm-icon-header alarm icon large"></i>
         <div class="ui floating dropdown right top pointing 
                header-user-container padding-top-circular-human-icon" id="dropdown-menu-list-header">
-            <img ng-src="{{userProfilePic || 'images/user_logo.png'}}" class="ui circular image logged-in-user" />
+            <img ng-src="{{ avatar || 'images/user_logo.png'}}" class="ui circular image logged-in-user" />
 
             <div class="menu">
+                <div class="item" ng-if="firstName">{{firstName}} &nbsp; {{lastName}}</div>
+                <div ng-if="firstName" class="ui divider"></div>
+
                 <a class="item" href="#" ui-sref-active="active" ui-sref="Profile" translate="profile">Profile</a>
                 <a class="item" href="#" ui-sref-active="active" ui-sref="WorkSpace" translate="profile">WorkSpace</a>
                 <a class="item" ng-click="logout();" translate="logout">Logout</a>

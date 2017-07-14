@@ -328,6 +328,8 @@ angular.module('playerApp')
                     $location.hash(toc.hashId);
                     toc.getContentState();
                     $('.toc-resume-button').css('visibility', 'hidden');
+                    $('.toc-resume-button').css('font-size', '10px');
+                    $('.toc-resume-button').css('margin-right', '15px');
                     $('.fancy-tree-container').each(function () {
                         var treeId = this.id;
                         $(this).fancytree("getTree").visit(function (node) {
