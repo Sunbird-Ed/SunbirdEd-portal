@@ -319,7 +319,7 @@ angular
                             $rootScope.profileActive = 'active';
                             if ($state.current.name === "WorkSpace") {
                                 $state.go('WorkSpace.ContentCreation');
-                            }
+                    }
                         }
                     }
                 },
@@ -369,6 +369,14 @@ angular
                         controller: 'AllUploadedContentController as allUploadedContent'
                     }
                 }
+            }).state('WorkSpace.UpForReviewContent', {
+                url: '/content/upForReview',
+                views: {
+                    'contentView': {
+                        templateUrl: 'views/workSpace/upForReviewContent.html',
+                        controller: 'UpForReviewContentController as upForReviewContent'
+                    }
+                }
             }).state('CreateLesson', {
                 url: '/create/lesson',
                 views: {
@@ -406,7 +414,7 @@ angular
                         controller: 'EditContentController as editContent'
                     }
                 },
-                params: { contentId: null },
+                params: { contentId: null, backState: null },
                 onEnter: function($rootScope) {
                     $rootScope.profileActive = 'active';
                 },
@@ -499,7 +507,7 @@ angular
 
         $rootScope.$on('$stateChangeStart',
             function(event, toState, toParams, fromState, fromParams) {
-
+                
                 switch (toState.name) {
                     case "WorkSpace.ContentCreation":
                         if (!permissionsService.checkRolesPermissions(['CONTENT_CREATER', 'CONTENT_REVIEW', 'CONTENT_CREATION'], false)) {

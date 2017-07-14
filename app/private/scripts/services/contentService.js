@@ -39,6 +39,11 @@ angular.module('playerApp')
             var url =  config.URL.CONTENT_PREFIX + config.URL.CONTENT.RETIRE + "/" + id;
             return httpService.remove(url);
         };
+        
+        this.reject = function(data, id) {
+            var url =  config.URL.CONTENT_PREFIX + config.URL.CONTENT.REJECT + "/" + id;
+            return httpService.post(url, data);
+        };
 
         this.uploadMedia = function(req) {
             var url =  config.URL.CONTENT_PREFIX + config.URL.CONTENT.UPLOAD_MEDIA;
