@@ -41,9 +41,17 @@ angular
                         controller: 'HomeController as homeCtrl'
                     }
                 },
-                onEnter: function($rootScope) {
+                onEnter: function($rootScope, portalTelemetryService) {
                     $rootScope.searchKey = 'Home';
                     $rootScope.breadCrumbsData = null;
+                    portalTelemetryService.fireImpressions({
+                        "env": "home",
+                        "type": "default",
+                        "pageid": "Home",
+                        "id": "",
+                        "name": "",
+                        "url": "/private/index#!/home"
+                    });
                 }
             })
             .state('UserContent', {
@@ -53,6 +61,16 @@ angular
                         templateUrl: '/views/content/usercontent.html',
                         controller: 'userContentCtrl as userContent',
                     }
+                },
+                onEnter: function(portalTelemetryService) {
+                    portalTelemetryService.fireImpressions({
+                        "env": "content",
+                        "type": "list",
+                        "pageid": "UserContent",
+                        "id": "",
+                        "name": "",
+                        "url": "/private/index#!/content"
+                    });
                 }
             })
             .state('Courses', {
@@ -63,13 +81,21 @@ angular
                         controller: 'LearnCtrl as learn',
                     }
                 },
-                onEnter: function($rootScope) {
+                onEnter: function($rootScope, portalTelemetryService) {
                     $rootScope.searchKey = 'Courses';
                     $rootScope.searchKeyword = '';
                     $rootScope.isLearnPage = true;
                     $rootScope.courseActive = 'active';
                     $rootScope.breadCrumbsData = [{ name: 'Home', link: 'home' }, { 'name': 'Courses', 'link': 'learn' }];
                     $('.content-search-filter').dropdown('clear');
+                    portalTelemetryService.fireImpressions({
+                        "env": "course",
+                        "type": "list",
+                        "pageid": "Courses",
+                        "id": "",
+                        "name": "",
+                        "url": "/private/index#!/learn"
+                    });
                 },
                 onExit: function($rootScope) {
                     $rootScope.isLearnPage = false;
@@ -86,13 +112,21 @@ angular
                         templateUrl: '/views/resource/resource.html',
                     }
                 },
-                onEnter: function($rootScope) {
+                onEnter: function($rootScope, portalTelemetryService) {
                     $rootScope.breadCrumbsData = [{ name: 'Home', link: 'home' }, { 'name': 'Resources', 'link': 'resources' }];
                     $rootScope.searchKey = 'Resources';
                     $rootScope.isResourcesPage = true;
                     $rootScope.searchKeyword = '';
                     $rootScope.resourcesActive = 'active';
                     $('.content-search-filter').dropdown('clear');
+                    portalTelemetryService.fireImpressions({
+                        "env": "content",
+                        "type": "list",
+                        "pageid": "Resources",
+                        "id": "",
+                        "name": "",
+                        "url": "/private/index#!/resources"
+                    });
                 },
                 onExit: function($rootScope) {
                     $rootScope.isResourcesPage = false;
@@ -110,13 +144,21 @@ angular
                         controller: 'NoteListCtrl as noteList',
                     }
                 },
-                onEnter: function($rootScope, sessionService) {
+                onEnter: function($state, $rootScope, sessionService, portalTelemetryService) {
                     $rootScope.searchKey = 'Courses';
                     $rootScope.searchKeyword = '';
                     $rootScope.isNotePage = true;
                     $rootScope.courseActive = 'active';
                     var courseParams = sessionService.getSessionData('COURSE_PARAMS');
                     $rootScope.breadCrumbsData = [{ name: 'Courses', link: 'learn' }, { 'name': courseParams.courseName, 'link': '/toc/' + courseParams.tocId + '/' + courseParams.courseId + '/' + courseParams.lectureView }, { name: 'Notes', link: '' }];
+                    portalTelemetryService.fireImpressions({
+                        "env": "notes",
+                        "type": "detail",
+                        "pageid": "CourseNote",
+                        "id": "",
+                        "name": "",
+                        "url": "/private/index#!/course/note/"+$state.params["tocId"]+"/"+$state.params["courseId"]
+                    });
                 },
                 onExit: function($rootScope) {
                     $rootScope.breadCrumbsData = null;
@@ -133,12 +175,20 @@ angular
                         controller: 'NoteListCtrl as noteList',
                     }
                 },
-                onEnter: function($rootScope, $stateParams) {
+                onEnter: function($state, $rootScope, $stateParams, portalTelemetryService) {
                     $rootScope.breadCrumbsData = [{ 'name': 'Resources', 'link': 'resources' }, { 'name': $stateParams.contentName, link: 'player/' + $stateParams.contentId + '/' + $stateParams.contentName }, { name: 'Notes', link: '' }];
                     $rootScope.searchKey = 'Resources';
                     $rootScope.isNotePage = true;
                     $rootScope.searchKeyword = '';
                     $rootScope.resourcesActive = 'active';
+                    portalTelemetryService.fireImpressions({
+                        "env": "notes",
+                        "type": "detail",
+                        "pageid": "ContentNote",
+                        "id": $state.params["contentId"],
+                        "name": $state.params["contentName"],
+                        "url": "/private/index#!/resourse/note/"+$state.params["contentId"]+"/"+$state.params["contentName"]
+                    });
                 },
                 onExit: function($rootScope) {
                     $rootScope.isNotePage = false;
@@ -155,16 +205,23 @@ angular
                         controller: 'NoteListCtrl as noteList',
                     }
                 },
-                onEnter: function($rootScope, sessionService) {
+                onEnter: function($rootScope, sessionService, portalTelemetryService) {
                     var courseParams = sessionService.getSessionData('COURSE_PARAMS');
                     var courseLink = '/toc/' + courseParams.tocId + '/' + courseParams.courseId + '/' + courseParams.lectureView;
                     var contentLink = courseLink + '/' + courseParams.contentId + '/' + courseParams.contentIndex;
                     $rootScope.breadCrumbsData = [{ 'name': courseParams.courseName, 'link': courseLink }, { name: courseParams.contentName, link: contentLink }, { name: 'Notes', link: '' }];
-                    console.log($rootScope.breadCrumbsData);
                     $rootScope.searchKey = 'Courses';
                     $rootScope.searchKeyword = '';
                     $rootScope.isNotePage = true;
                     $rootScope.courseActive = 'active';
+                    portalTelemetryService.fireImpressions({
+                        "env": "notes",
+                        "type": "default",
+                        "pageid": "CourseContentNote",
+                        "id": $state.params["contentId"],
+                        "name": "",
+                        "url": "/private/index#!/note/"+$state.params["tocId"]+"/"+$state.params["courseId"]+"/"+$state.params["contentId"]
+                    });
                 },
                 onExit: function($rootScope) {
                     $rootScope.isNotePage = false;
@@ -181,13 +238,21 @@ angular
                         controller: 'courseScheduleCtrl as toc'
                     }
                 },
-                onEnter: function($rootScope, sessionService) {
+                onEnter: function($state, $rootScope, sessionService, portalTelemetryService) {
                     var courseParams = sessionService.getSessionData('COURSE_PARAMS');
                     $rootScope.breadCrumbsData = [{ name: 'Home', link: 'home' }, { name: 'Courses', link: 'learn' }, { 'name': courseParams.courseName, 'link': '' }];
                     $rootScope.searchKey = 'Courses';
                     $rootScope.searchKeyword = '';
                     $rootScope.isTocPage = true;
                     $rootScope.courseActive = 'active';
+                    portalTelemetryService.fireImpressions({
+                        "env": "course",
+                        "type": "detail",
+                        "pageid": "Toc",
+                        "id": "",
+                        "name": "",
+                        "url": "/private/index#!/toc/"+$state.params["tocId"]+"/"+$state.params["courseId"]+"/"+$state.params["lectureView"]
+                    });
                 },
                 onExit: function($rootScope) {
                     $rootScope.breadCrumbsData = null;
@@ -204,8 +269,16 @@ angular
                         controller: 'CommunityController as commCtrl'
                     }
                 },
-                onEnter: function($rootScope) {
+                onEnter: function($rootScope, portalTelemetryService) {
                     $rootScope.searchKey = 'Community';
+                    portalTelemetryService.fireImpressions({
+                        "env": "community",
+                        "type": "default",
+                        "pageid": "Community",
+                        "id": "",
+                        "name": "",
+                        "url": "/private/index#!/community"
+                    });
                 }
             })
             .state('Profile', {
@@ -216,9 +289,17 @@ angular
                         controller: 'ProfileController as profileCtrl'
                     }
                 },
-                onEnter: function($rootScope) {
+                onEnter: function($rootScope, portalTelemetryService) {
                     $rootScope.searchKey = 'Profile';
                     $rootScope.profileActive = 'active';
+                    portalTelemetryService.fireImpressions({
+                        "env": "profile",
+                        "type": "default",
+                        "pageid": "Profile",
+                        "id": "",
+                        "name": "",
+                        "url": "/private/index#!/profile"
+                    });
                 },
                 onExit: function($rootScope) {
                     $rootScope.profileActive = '';
@@ -232,13 +313,21 @@ angular
                         controller: 'playerCtrl as player'
                     }
                 },
-                params: { content: null, contentId: null, contentName: null },
-                onEnter: function($rootScope, $stateParams) {
+                params: { content: null, contentId: null, contentName: null, },
+                onEnter: function($state, $rootScope, $stateParams, portalTelemetryService) {
                     $rootScope.breadCrumbsData = [{ name: 'Home', link: 'home' }, { 'name': 'Resources', 'link': 'resources' }, { 'name': $stateParams.contentName, link: '' }];
                     $rootScope.searchKey = 'Resources';
                     $rootScope.isPlayerPage = true;
                     $rootScope.searchKeyword = '';
                     $rootScope.resourcesActive = 'active';
+                    portalTelemetryService.fireImpressions({
+                        "env": "player",
+                        "type": "default",
+                        "pageid": "Player",
+                        "id": $state.params["contentId"],
+                        "name": $state.params["contentName"],
+                        "url": "/private/index#!/player/"+$state.params["contentId"]+"/"+$state.params["contentName"]
+                    });
                 },
                 onExit: function($rootScope) {
                     $rootScope.isPlayerPage = false;
@@ -256,11 +345,19 @@ angular
                     }
                 },
                 params: { searchType: null, query: null, searchKey: null, event: null },
-                onEnter: function($rootScope) {
+                onEnter: function($state, $rootScope, portalTelemetryService) {
                     $rootScope.breadCrumbsData = [{ name: 'Home', link: 'home' }, { 'name': 'Courses', 'link': 'learn' }, { name: 'Search', link: '' }];
                     $rootScope.isSearchPage = true;
                     $rootScope.searchKey = 'Courses';
                     $rootScope.courseActive = 'active';
+                    portalTelemetryService.fireImpressions({
+                        "env": "course",
+                        "type": "search",
+                        "pageid": "SearchCourse",
+                        "id": "",
+                        "name": "",
+                        "url": "/private/index#!/"+$state.params["searchType"]+"/search/"+$state.params["query"]+"/"
+                    });
                 },
                 onExit: function($rootScope) {
                     $rootScope.isSearchPage = false;
@@ -277,11 +374,19 @@ angular
                     }
                 },
                 params: { searchType: null, query: null, event: null },
-                onEnter: function($rootScope) {
+                onEnter: function($rootScope, portalTelemetryService) {
                     $rootScope.breadCrumbsData = [{ name: 'Home', link: 'home' }, { 'name': 'Resources', 'link': 'resources' }, { name: 'Search', link: '' }];
                     $rootScope.isSearchPage = true;
                     $rootScope.searchKey = 'Resources';
                     $rootScope.resourcesActive = 'active';
+                    portalTelemetryService.fireImpressions({
+                        "env": "content",
+                        "type": "search",
+                        "pageid": "SearchResource",
+                        "id": "",
+                        "name": "",
+                        "url": "/private/index#!/resources/search/"+$state.params["query"]+"/"+$state.params["searchType"]+"/"
+                    });
                 },
                 onExit: function($rootScope) {
                     $rootScope.isSearchPage = false;
@@ -296,13 +401,21 @@ angular
                         controller: 'courseScheduleCtrl as toc',
                     }
                 },
-                onEnter: function($rootScope, sessionService) {
+                onEnter: function($state, $rootScope, sessionService, portalTelemetryService) {
                     var courseParams = sessionService.getSessionData('COURSE_PARAMS');
                     $rootScope.breadCrumbsData = [{ name: 'Home', link: 'home' }, { name: 'Courses', link: 'learn' }, { 'name': courseParams.courseName, 'link': '' }];
                     $rootScope.searchKey = 'Courses';
                     $rootScope.searchKeyword = '';
                     $rootScope.isTocPage = true;
                     $rootScope.courseActive = 'active';
+                    portalTelemetryService.fireImpressions({
+                        "env": "player",
+                        "type": "detail",
+                        "pageid": "TocPlayer",
+                        "id": "",
+                        "name": "",
+                        "url": "/private/index#!/toc/"+$state.params["tocId"]+"/"+$state.params["courseId"]+"/"+$state.params["lectureView"]+"/"+$state.params["contentId"]+"/"+$state.params["contentIndex"]
+                    });
                 },
                 onExit: function($rootScope) {
                     $rootScope.breadCrumbsData = null;
@@ -323,8 +436,16 @@ angular
                         }
                     }
                 },
-                onEnter: function($rootScope) {
+                onEnter: function($rootScope, portalTelemetryService) {
                     $rootScope.profileActive = 'active';
+                    portalTelemetryService.fireImpressions({
+                        "env": "workspace",
+                        "type": "default",
+                        "pageid": "WorkSpace",
+                        "id": "",
+                        "name": "",
+                        "url": "/private/index#!/workspace"
+                    });
                 },
                 onExit: function($rootScope) {
                     $rootScope.profileActive = '';
@@ -336,6 +457,16 @@ angular
                         templateUrl: 'views/workSpace/createContent.html',
                         controller: 'ContentCreationController as contentCreation'
                     }
+                },
+                onEnter: function(portalTelemetryService) {
+                    portalTelemetryService.fireImpressions({
+                        "env": "content",
+                        "type": "creation",
+                        "pageid": "WorkSpace.ContentCreation",
+                        "id": "",
+                        "name": "",
+                        "url": "/private/index#!/content/create"
+                    });
                 }
             }).state('WorkSpace.DraftContent', {
                 url: '/content/draft',
@@ -344,6 +475,16 @@ angular
                         templateUrl: 'views/workSpace/draftContent.html',
                         controller: 'DraftContentController as draftContent'
                     }
+                },
+                onEnter: function(portalTelemetryService) {
+                    portalTelemetryService.fireImpressions({
+                        "env": "content",
+                        "type": "list",
+                        "pageid": "WorkSpace.DraftContent",
+                        "id": "",
+                        "name": "",
+                        "url": "/private/index#!/content/draft"
+                    });
                 }
             }).state('WorkSpace.ReviewContent', {
                 url: '/content/review',
@@ -352,6 +493,16 @@ angular
                         templateUrl: 'views/workSpace/reviewContent.html',
                         controller: 'ReviewContentController as reviewContent'
                     }
+                },
+                onEnter: function(portalTelemetryService) {
+                    portalTelemetryService.fireImpressions({
+                        "env": "content",
+                        "type": "list",
+                        "pageid": "WorkSpace.ReviewContent",
+                        "id": "",
+                        "name": "",
+                        "url": "/private/index#!/content/review"
+                    });
                 }
             }).state('WorkSpace.PublishedContent', {
                 url: '/content/published',
@@ -360,6 +511,16 @@ angular
                         templateUrl: 'views/workSpace/publishedContent.html',
                         controller: 'PublishedContentController as publishedContent'
                     }
+                },
+                onEnter: function(portalTelemetryService) {
+                    portalTelemetryService.fireImpressions({
+                        "env": "content",
+                        "type": "list",
+                        "pageid": "WorkSpace.PublishedContent",
+                        "id": "",
+                        "name": "",
+                        "url": "/private/index#!/content/published"
+                    });
                 }
             }).state('WorkSpace.AllUploadedContent', {
                 url: '/content/uploaded',
@@ -368,6 +529,16 @@ angular
                         templateUrl: 'views/workSpace/allUploadedContent.html',
                         controller: 'AllUploadedContentController as allUploadedContent'
                     }
+                },
+                onEnter: function(portalTelemetryService) {
+                    portalTelemetryService.fireImpressions({
+                        "env": "content",
+                        "type": "list",
+                        "pageid": "WorkSpace.AllUploadedContent",
+                        "id": "",
+                        "name": "",
+                        "url": "/private/index#!/content/uploaded"
+                    });
                 }
             }).state('CreateLesson', {
                 url: '/create/lesson',
@@ -377,8 +548,16 @@ angular
                         controller: 'ContentLessonController as contentLesson'
                     }
                 },
-                onEnter: function($rootScope) {
+                onEnter: function($rootScope, portalTelemetryService) {
                     $rootScope.profileActive = 'active';
+                    portalTelemetryService.fireImpressions({
+                        "env": "content",
+                        "type": "creation",
+                        "pageid": "CreateLesson",
+                        "id": "",
+                        "name": "",
+                        "url": "/private/index#!/create/lesson"
+                    });
                 },
                 onExit: function($rootScope) {
                     $rootScope.profileActive = '';
@@ -392,8 +571,16 @@ angular
                     }
                 },
                 params: { contentId: null },
-                onEnter: function($rootScope) {
+                onEnter: function($state, $rootScope, portalTelemetryService) {
                     $rootScope.profileActive = 'active';
+                    portalTelemetryService.fireImpressions({
+                        "env": "content",
+                        "type": "creation",
+                        "pageid": "ContentEditor",
+                        "id": $state.params["contentId"],
+                        "name": "",
+                        "url": "/private/index#!/content/editor/"+$state.params["contentId"]
+                    });
                 },
                 onExit: function($rootScope) {
                     $rootScope.profileActive = '';
@@ -407,8 +594,16 @@ angular
                     }
                 },
                 params: { contentId: null },
-                onEnter: function($rootScope) {
+                onEnter: function($rootScope, portalTelemetryService) {
                     $rootScope.profileActive = 'active';
+                    portalTelemetryService.fireImpressions({
+                        "env": "content",
+                        "type": "edit",
+                        "pageid": "EditContent",
+                        "id": $state.params["contentId"],
+                        "name": "",
+                        "url": "/private/index#!/content/edit/"+$state.params["contentId"]
+                    });
                 },
                 onExit: function($rootScope) {
                     $rootScope.profileActive = '';
@@ -420,6 +615,16 @@ angular
                     'mainView': {
                         templateUrl: '/views/workSpace/createContent.html'
                     }
+                },
+                onEnter: function (portalTelemetryService) {
+                    portalTelemetryService.fireImpressions({
+                        "env": "content",
+                        "type": "creation",
+                        "pageid": "profileStartCreate",
+                        "id": "",
+                        "name": "",
+                        "url": "/private/index#!/create/workspace"
+                    });
                 }
             }).state('CreateTextbook', {
                 url: '/create/textbook',
@@ -429,8 +634,16 @@ angular
                         controller: 'TextBookController as textbook'
                     }
                 },
-                onEnter: function($rootScope) {
+                onEnter: function($rootScope, portalTelemetryService) {
                     $rootScope.profileActive = 'active';
+                    portalTelemetryService.fireImpressions({
+                        "env": "textbook",
+                        "type": "creation",
+                        "pageid": "CreateTextbook",
+                        "id": "",
+                        "name": "",
+                        "url": "/private/index#!/create/textbook"
+                    });
                 },
                 onExit: function($rootScope) {
                     $rootScope.profileActive = '';
@@ -443,8 +656,16 @@ angular
                         controller: 'CollectionController as collection'
                     }
                 },
-                onEnter: function($rootScope) {
+                onEnter: function($rootScope, portalTelemetryService) {
                     $rootScope.profileActive = 'active';
+                    portalTelemetryService.fireImpressions({
+                        "env": "collection",
+                        "type": "creation",
+                        "pageid": "CreateCollection",
+                        "id": "",
+                        "name": "",
+                        "url": "/private/index#!/create/collection"
+                    });
                 },
                 onExit: function($rootScope) {
                     $rootScope.profileActive = '';
@@ -457,9 +678,17 @@ angular
                         controller: 'CollectionEditorController as collectionEditor'
                     }
                 },
-                params: { contentId: null , type: null},
-                onEnter: function($rootScope) {
+                params: { contentId: null, type: null },
+                onEnter: function($rootScope, portalTelemetryService) {
                     $rootScope.profileActive = 'active';
+                    portalTelemetryService.fireImpressions({
+                        "env": "collectioneditor",
+                        "type": "edit",
+                        "pageid": "CollectionEditor",
+                        "id": "",
+                        "name": "",
+                        "url": "/private/index#!/collection/editor/"
+                    });
                 },
                 onExit: function($rootScope) {
                     $rootScope.profileActive = '';
@@ -473,8 +702,16 @@ angular
                     }
                 },
                 params: { contentId: null, backState: null },
-                onEnter: function($rootScope) {
+                onEnter: function($state, $rootScope, portalTelemetryService) {
                     $rootScope.profileActive = 'active';
+                    portalTelemetryService.fireImpressions({
+                        "env": "content",
+                        "type": "preview",
+                        "pageid": "PreviewContent",
+                        "id": $state.params["contentId"],
+                        "name": "",
+                        "url": "/private/index#!/preview/content/"+$state.params["contentId"]+"/"+$state.params["backState"]
+                    });
                 },
                 onExit: function($rootScope) {
                     $rootScope.profileActive = '';
@@ -482,6 +719,9 @@ angular
             });
     })
     .run(function($urlRouter, $http, $state, permissionsService, $rootScope, $location) {
+
+
+
         permissionsService.getPermissionsData('/permissions')
             .then(function(res) {
                 var permissions = res.data;
