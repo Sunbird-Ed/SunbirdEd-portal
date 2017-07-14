@@ -44,8 +44,7 @@ angular.module('playerApp').service('portalTelemetryService', function($http, $f
             "processData": false,
             "data": JSON.stringify(request)
         }).done(function(response) {
-            console.log('response', response)
-            if (response.params.status === "successful") {
+            if (response && response.params && response.params.status &&response.params.status === "successful") {
                 telemetryEvents = [];
             }
         });
