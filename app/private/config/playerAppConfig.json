@@ -44,7 +44,8 @@
                 "GET_MY_COURSE": "content/get/mycontent",
                 "UPLOAD": "content/upload",
                 "UPLOAD_MEDIA": "upload/media",
-                "RETIRE": "content/retire"
+                "RETIRE": "content/retire",
+                "REJECT": "content/reject"
             },
             "AUTH": {
                 "LOGIN": "user/login",
@@ -224,7 +225,7 @@
                     "START": "We are sending content for publish...",
                     "FAILED": "Sending content for publish failed, please try again later..."
                 },
-                "RETIRE_CONTENT": {
+                "REJECT_CONTENT": {
                     "START": "We are sending content for retire...",
                     "FAILED": "Sending content for retire failed, please try again later..."
                 }

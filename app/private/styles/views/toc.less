@@ -102,11 +102,15 @@
 }
 
 .notelistborder {
-    background-color: #ededed!important;
-    box-shadow: 0px 2px 3px #888888!important;
+    border: 2px solid #d9d9d9!important;
+   
     padding: 10px!important;
 }
 
+.contentnotelist:hover{
+    background-color: #d8d7d7!important;
+    box-shadow: 0px 2px 3px #888888!important;
+}
 .noteellipsis {
     overflow: hidden;
     overflow-wrap: break-word;
@@ -114,6 +118,19 @@
     white-space: nowrap;
 }
 
-.notedecheader{
-  font-weight: 600!important;
+.notedecheader {
+    font-weight: 600!important;
 }
+
+.fancytree-plain span.fancytree-node:hover span.fancytree-title {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+.fancytree-plain span.fancytree-node:hover span.fancytree-title .padded i.icon{
+      margin: 0px 0.3em 0.24em 0!important;
+}
+
+.noteListSegment.ui.segment{
+    padding: 14px 0px;
+    background: #fff!important;
+} 

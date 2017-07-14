@@ -14,7 +14,7 @@ var runSequence = require('run-sequence');
 var gulpNgConfig = require('gulp-ng-config');
 var less = require('gulp-less');
 var historyApiFallback = require('connect-history-api-fallback');
-var jeditor = require("gulp-json-editor");
+var jeditor = require('gulp-json-editor');
 
 var useref = require('gulp-useref');
 
@@ -62,7 +62,7 @@ var paths = {
         player.app + '/thirdparty/bower_components/file-upload/fine-uploader/fine-uploader.js',
         player.app + '/thirdparty/bower_components/semantic-tree-picker/semantic-ui-tree-picker.js',
         player.app + '/thirdparty/bower_components/angular-ui-router/release/stateEvents.min.jss'
-        
+
     ],
     karma: 'karma.conf.js',
     views: {
@@ -79,6 +79,17 @@ var dist = {
     views: 'views',
     config: 'config/'
 };
+
+var jsonConfigArr = [
+    { name: 'config', path: 'config/playerAppConfig.json' },
+    { name: 'labels', path: 'config/privateLabels.json' },
+    { name: 'errorMessages', path: 'config/privateErrorMessages.json' }
+];
+
+var jsonConfigPublic = [
+    { name: 'labels', path: 'config/publicLabels.json' },
+    { name: 'errorMessages', path: 'config/publicErrorMessages.json' }
+];
 
 ////////////////////////
 // Reusable pipelines //
@@ -116,20 +127,19 @@ gulp.task('build-js', function() {
 });
 
 gulp.task('build-css', function() {
-    return gulp.src(player.app+'styles/main.less')
+    return gulp.src(player.app + 'styles/main.less')
         .pipe(plumber())
         .pipe(less())
         .pipe(autoprefixer())
         .pipe(gulp.dest(dist.path + dist.styles));
 });
 gulp.task('build-css-dev', function() {
-    return gulp.src(player.app+'styles/main.less')
+    return gulp.src(player.app + 'styles/main.less')
         .pipe(plumber())
         .pipe(less())
         .pipe(autoprefixer())
-        .pipe(gulp.dest(player.app+'styles'))
-        .pipe(gulp.dest(player.public+'styles'));
-        
+        .pipe(gulp.dest(player.app + 'styles'))
+        .pipe(gulp.dest(player.public + 'styles'));
 });
 
 // inject bower components
@@ -255,20 +265,30 @@ gulp.task('semantic', function() {
 });
 
 gulp.task('build', ['clean:dist'], function() {
-    runSequence(['index-html', 'images', 'bower', 'config', 'build-css', 'build-css-dev', 'build-js', 'html']);
+    runSequence(['index-html', 'images', 'bower', 'config', 'build-css', 'build-css-dev', 'build-js', 'html', 'config-public-const']);
 });
 
-gulp.task('production', ['clean:dist'], function () {
+gulp.task('production', ['clean:dist'], function() {
     gulp.src(['app/**/*'])
-    .pipe(gulp.dest(player.dist));
+        .pipe(gulp.dest(player.dist));
     gulp.src(['node_modules/**/*'])
-    .pipe(gulp.dest(player.dist+'/node_modules'))
-})
+        .pipe(gulp.dest(player.dist + '/node_modules'));
+});
 gulp.task('default', ['production']);
 
 gulp.task('config', function() {
-    gulp.src(player.app+'config/playerAppConfig.json')
-        .pipe(gulpNgConfig('playerApp.config'))
-        .pipe(gulp.dest(player.app+'scripts'))
-        .pipe(gulp.dest(dist.path + dist.scripts));
+    jsonConfigArr.forEach(function(item, index) {
+        gulp.src(player.app + item.path)
+            .pipe(gulpNgConfig('playerApp.' + item.name))
+            .pipe(gulp.dest(player.app + 'scripts'))
+            .pipe(gulp.dest(dist.path + dist.scripts));
+    });
+});
+gulp.task('config-public-const', function() {
+    jsonConfigPublic.forEach(function(item, index) {
+        gulp.src(player.public + item.path)
+            .pipe(gulpNgConfig('loginApp.' + item.name))
+            .pipe(gulp.dest(player.public + 'scripts'))
+            .pipe(gulp.dest(dist.path + dist.scripts));
+    });
 });

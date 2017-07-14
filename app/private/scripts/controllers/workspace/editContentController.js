@@ -8,7 +8,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-        .controller('EditContentController', function (contentService, config, $scope, $state, $timeout, $rootScope, $stateParams) {
+        .controller('EditContentController', function (contentService, config, $scope, $state, $timeout, $rootScope, $stateParams, $location, $anchorScroll) {
 
             var editContent = this;
             editContent.contentId = $stateParams.contentId;
@@ -61,7 +61,7 @@ angular.module('playerApp')
                 return loader;
             }
 
-            editContent.initializeData = function () {
+            editContent.initializeData = function (isReview) {
 
                 var api = 'editApi';
                 editContent[api] = {};
@@ -74,8 +74,9 @@ angular.module('playerApp')
 
                 contentService.getById(req, qs).then(function (response) {
                     if (response && response.responseCode === 'OK') {
-                        editContent.data = angular.copy(response.result.content);
-                        editContent.iconImage = editContent.data.appIcon;
+                        editContent.contentData = {};
+                        editContent.contentData = response.result.content;
+                        editContent.iconImage = editContent.contentData.appIcon;
                         $timeout(function () {
                             $('#contentTypeDropDown').dropdown('set selected', response.result.content.contentType);
                             $('#audienceDropDown').dropdown('set selected', response.result.content.audience);
@@ -86,6 +87,9 @@ angular.module('playerApp')
                             $('#mediumDropDown').dropdown('set selected', response.result.content.medium);
                         }, 100);
                         editContent[api].loader.showLoader = false;
+                        if (isReview) {
+                            editContent.submitForReview(editContent.contentData)
+                        }
                     } else {
                         editContent[api].loader.showLoader = false;
                         editContent[api].error = showErrorMessage(false, config.MESSAGES.WORKSPACE.GET.FAILED, config.MESSAGES.COMMON.ERROR);
@@ -116,7 +120,8 @@ angular.module('playerApp')
                 }
             };
 
-            editContent.saveMetaContent = function (data) {
+            editContent.saveMetaContent = function (data, isReviewContent) {
+                editContent.requiredFieldsMessage = [];
                 var newData = angular.copy(data);
                 newData.createdBy = editContent.userId;
 
@@ -125,13 +130,13 @@ angular.module('playerApp')
                 };
 
                 if (editContent.iconUpdate) {
-                    editContent.uploadOrUpdateAppIcon(requestBody);
+                    editContent.uploadOrUpdateAppIcon(requestBody, isReviewContent);
                 } else {
-                    editContent.updateContent(requestBody);
+                    editContent.updateContent(requestBody, isReviewContent);
                 }
             };
 
-            editContent.uploadOrUpdateAppIcon = function (requestBody) {
+            editContent.uploadOrUpdateAppIcon = function (requestBody, isReviewContent) {
                 var api = 'editApi';
                 editContent[api] = {};
                 editContent[api].loader = showLoaderWithMessage("", config.MESSAGES.WORKSPACE.UPLOAD_ICON.START);
@@ -140,7 +145,7 @@ angular.module('playerApp')
                     if (res && res.responseCode === "OK") {
                         requestBody.content.appIcon = res.result.url;
                         editContent[api].loader.showLoader = false;
-                        editContent.updateContent(requestBody);
+                        editContent.updateContent(requestBody, isReviewContent);
                     } else {
                         editContent[api].loader.showLoader = false;
                         editContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.UPLOAD_ICON.FAILED, config.MESSAGES.COMMON.ERROR);
@@ -151,7 +156,7 @@ angular.module('playerApp')
                 });
             };
 
-            editContent.updateContent = function (requestBody) {
+            editContent.updateContent = function (requestBody, isReviewContent) {
 
                 var api = 'editApi';
                 editContent[api] = {};
@@ -160,8 +165,11 @@ angular.module('playerApp')
                 contentService.update(requestBody, editContent.contentId).then(function (res) {
                     if (res && res.responseCode === "OK") {
                         editContent[api].loader.showLoader = false;
-                        editContent[api].error = showErrorMessage(true, requestBody.content.name + " updated Successfully", config.MESSAGES.COMMON.SUCCESS);
+                        editContent[api].error = showErrorMessage(true, "Saved Successfully", config.MESSAGES.COMMON.SUCCESS);
                         editContent[api].error.success = true;
+                        if (isReviewContent) {
+                            editContent.callReviewApi();
+                        }
                     } else {
                         editContent[api].loader.showLoader = false;
                         editContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.UPDATE.FAILED, config.MESSAGES.COMMON.ERROR);
@@ -172,14 +180,52 @@ angular.module('playerApp')
                 });
             };
 
-            editContent.submitForReview = function (contentId) {
+            function checkAllRequiredField(contentData) {
 
+                var requiredFieldsMessage = [];
+                if (!contentData.name) {
+                    requiredFieldsMessage.push("Title is missing");
+                }
+                if (!contentData.description) {
+                    requiredFieldsMessage.push("Description is missing");
+                }
+                if (!contentData.contentType) {
+                    requiredFieldsMessage.push("Lesson type is missing");
+                }
+                if (contentData.audience && !contentData.audience.length > 0) {
+                    requiredFieldsMessage.push("Audience is missing");
+                }
+                if (!contentData.subject) {
+                    requiredFieldsMessage.push("Subject is missing");
+                }
+                if (!contentData.gradeLevel || contentData.gradeLevel && !contentData.gradeLevel.length > 0) {
+                    requiredFieldsMessage.push("Grade is missing");
+                }
+                if (!contentData.medium || contentData.medium && !contentData.medium.length > 0) {
+                    requiredFieldsMessage.push("Medium is missing");
+                }
+                return requiredFieldsMessage;
+            }
+
+            editContent.submitForReview = function (contentData) {
+
+                editContent.requiredFieldsMessage = checkAllRequiredField(contentData);
+
+                if (editContent.requiredFieldsMessage.length > 0) {
+                    return;
+                } else {
+                    var isReviewContent = true;
+                    editContent.saveMetaContent(contentData, isReviewContent)
+                }
+            };
+
+            editContent.callReviewApi = function () {
                 var api = 'editApi';
                 editContent[api] = {};
                 editContent[api].loader = showLoaderWithMessage("", config.MESSAGES.WORKSPACE.REVIEW_CONTENT.START);
                 var req = {content: {}};
 
-                contentService.review(req, contentId).then(function (res) {
+                contentService.review(req, editContent.contentId).then(function (res) {
                     if (res && res.responseCode === "OK") {
                         editContent[api].loader.showLoader = false;
                         $state.go("WorkSpace.ReviewContent");
@@ -192,11 +238,18 @@ angular.module('playerApp')
                     editContent[api].loader.showLoader = false;
                     editContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.REVIEW_CONTENT.FAILED, config.MESSAGES.COMMON.ERROR);
                 });
-            };
+            }
 
             editContent.previewContent = function (requestData) {
+                
                 $scope.contentPlayer.contentData = requestData;
                 $scope.contentPlayer.isContentPlayerEnabled = true;
+                $timeout(function () {
+                    $location.hash('content-player-bottom-edit');
+
+                    // call $anchorScroll()
+                    $anchorScroll();
+                }, 100);
             };
 
             editContent.closeEditForm = function (requestData) {
@@ -211,5 +264,11 @@ angular.module('playerApp')
                 var params = {contentId: contentId};
                 $state.go("ContentEditor", params);
             };
+
+            if ($stateParams.backState === "ContentEditor") {
+                editContent.initializeData(true);
+            } else {
+                editContent.initializeData(false);
+            }
 
         });

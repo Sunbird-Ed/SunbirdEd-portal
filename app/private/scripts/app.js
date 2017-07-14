@@ -12,6 +12,8 @@ angular.module('playerApp', [
         'ngCookies',
         'ngRoute',
         'playerApp.config',
+        'playerApp.errorMessages',
+        'playerApp.labels',
         'ui.router',
         'ngStorage',
         'ui.pagedown',
