@@ -3,6 +3,7 @@
 angular.module('loginApp')
     .controller('SignUpCtrl', function(signUpService, $timeout, $filter, $location) {
         var newUser = this;
+        var today = new Date();
 
         newUser.languages = [
                 'Bengali', 'English', 'Gujarati', 'Hindi', 'Kannada', 'Marathi', 'Punjabi', 'Tamil', 'Telugu'
@@ -78,9 +79,11 @@ angular.module('loginApp')
                     .dropdown({ placeholder: 'Languages' });
                 $('.ui .modal').modal('show');
             });
+
             $timeout(function() {
                 $('#dobCalendar').calendar({
                     type: 'date',
+                    maxDate: today,
                     formatter: {
                         date: function(date, settings) {
                             if (!date) return '';
@@ -101,6 +104,7 @@ angular.module('loginApp')
                     .dropdown();
                 $('#dobCalendar').calendar({
                     type: 'date',
+                    maxDate: today,
                     formatter: {
                         date: function(date, settings) {
                             if (!date) return '';
