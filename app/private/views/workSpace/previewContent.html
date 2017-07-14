@@ -1,6 +1,12 @@
 <div class="ui grid">
     <div class="one wide column"></div>
     <div class="ten wide column">
+        <div class="row" ng-if="contentEditor.previewContentApi.loader.showLoader">
+            <app-loader data="{{contentEditor.previewContentApi.loader}}"></app-loader>
+        </div>
+        <div class="row" ng-if="contentEditor.previewContentApi.error.showError">
+            <error-message data="{{contentEditor.previewContentApi.error}}" visibility="contentEditor.previewContentApi.error.showError"></error-message>
+        </div>
         <div class="row">
             <div class='videosegment ui segment'>
                 <div class='content-player-body'>
@@ -47,12 +53,12 @@
                                 <img height='100%' width='100%' ng-src="{{previewContent.contentData.artifactUrl}}" />
                             </div>
                             <div class="videosegment  ui clearing segment margin-bottom-15" ng-if="previewContent.contentData.status === 'Review'" >
-                                <h5 class="ui right floated primary button mouse-pointer" ng-click="previewContent.publishContent()">
+                                <h5 sb-permissions permission-only="CONTENT_REVIEWER" ng-if="previewContent.isShowPublishRejectButton" class="ui right floated primary button mouse-pointer" ng-click="previewContent.publishContent()">
                                     Publish
                                 </h5>
-                                <!-- <h5 class="ui right floated primary button mouse-pointer" ng-click="previewContent.retireContent()">
-                                    Retire
-                                </h5> -->
+                                 <h5 sb-permissions permission-only="CONTENT_REVIEWER" ng-if="previewContent.isShowPublishRejectButton" class="ui right floated primary button mouse-pointer" ng-click="previewContent.rejectContent()">
+                                    Reject
+                                </h5> 
                             </div>
                         </div>
                     </div>
@@ -148,6 +154,16 @@
                                 <div class="content">
                                     <div class="header">Created On</div>
                                     <div class="description padding-top-1rem">{{previewContent.contentData.createdOn| dateFilterWithMDY}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="three wide column">
+                        <div class="ui list">
+                            <div class="item">
+                                <div class="content">
+                                    <div class="header">Status</div>
+                                    <div class="description padding-top-1rem">{{previewContent.contentData.status}}</div>
                                 </div>
                             </div>
                         </div>

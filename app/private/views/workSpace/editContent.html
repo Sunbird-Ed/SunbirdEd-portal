@@ -1,4 +1,4 @@
-<div class="ui grid" ng-init="editContent.initializeData()">
+<div class="ui grid">
     <div class="one wide column"></div>
     <div class="ten wide column">
         <div class="ui grid">
@@ -20,34 +20,34 @@
                 <div class="row margin-bottom-15" ng-if="editContent.editApi.error.showError">
                     <error-message data="{{editContent.editApi.error}}" visibility="editContent.editApi.error.showError"></error-message>
                 </div>
-                <div class="row" ng-show="!editContent.editApi.loader.showLoader && !editContent.editApi.error.showError || editContent.editApi.error.success">
+                <div class="row">
                     <!--                <h2 class="ui center aligned header">
-                                        {{editContent.data.name}}
+                                        {{editContent.contentData.name}}
                                     </h2>-->
                     <div class="videosegment  ui clearing segment">
                         <h1 class="ui HomeAccordianHeading left floated header margin-auto">
-                            {{editContent.data.name}}
+                            {{editContent.contentData.name}}
                         </h1>
-                        <h5 class="ui right floated basic icon circular button"ng-click="editContent.closeEditForm(editContent.data)">
-                            <i class="ui remove icon"></i>
-                        </h5>
+<h5 class="ui right floated basic icon circular button"ng-click="editContent.closeEditForm(editContent.contentData)">
+    <i class="ui remove icon"></i>
+</h5>
+</div>
+<form class="ui form" novalidate="">
+    <div class="field">
+        <div class="ui grid">
+            <div class="two wide column">
+                <div class="field">
+                    <label>
+                        Icon
+                    </label>
+                    <div class="ui link card userProfilePic margin-none" ng-click="editContent.openImageBrowser()" ng-if="!editContent.iconImage">
+                        <div class="image iconProfilePic">
+                            <i class="image icon"></i>
+                        </div>
                     </div>
-                    <form class="ui form" novalidate="">
-                        <div class="field">
-                            <div class="ui grid">
-                                <div class="two wide column">
-                                    <div class="field">
-                                        <label>
-                                            Icon
-                                        </label>
-                                        <div class="ui link card userProfilePic margin-none" ng-click="editContent.openImageBrowser()" ng-if="!editContent.iconImage">
-                                            <div class="image iconProfilePic">
-                                                <i class="image icon"></i>
-                                            </div>
-                                        </div>
-                                        <div class="ui link card userProfilePic margin-none" ng-if="editContent.iconImage" ng-click="editContent.openImageBrowser()" >
-                                            <div class="image landscapeImgUser">
-                                                <img ng-src="{{editContent.iconImage}}">
+                    <div class="ui link card userProfilePic margin-none" ng-if="editContent.iconImage" ng-click="editContent.openImageBrowser()" >
+                        <div class="image landscapeImgUser">
+                            <img ng-src="{{editContent.iconImage}}">
                                             </div>
                                         </div>
                                         <input type="file" accept="image/x-png,image/gif,image/jpeg" class="content-input" id="iconImageInput" onchange="angular.element(this).scope().updateIcon(this.files);" required="" />
@@ -57,13 +57,13 @@
                                     <div class="row">
                                         <div class="required field">
                                             <label>Title</label>
-                                            <input type="text" name="title" placeholder="Name this lesson" ng-model="editContent.data.name" required="">
+                                            <input type="text" name="title" placeholder="Name this lesson" ng-model="editContent.contentData.name" required="">
                                         </div>
                                     </div>
                                     <div class="row margin-top-10">
                                         <div class="required field">
-                                            <label>Write short description of your lesson</label>
-                                            <textarea rows="2" name="description" placeholder="Description for the lesson" ng-model="editContent.data.description" required=""></textarea>
+                                            <label>Description</label>
+                                            <textarea rows="2" name="description" placeholder="Description for the lesson" ng-model="editContent.contentData.description" required=""></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -72,13 +72,13 @@
                         <div class="two fields">
                             <div class="required field">
                                 <label>Lesson type</label>
-                                <select class="ui fluid dropdown singleSelectDropDown" id="contentTypeDropDown" ng-options=" lesson for lesson in editContent.lessonTypes" ng-model="editContent.data.contentType">
+                                <select class="ui fluid dropdown singleSelectDropDown" id="contentTypeDropDown" ng-options=" lesson for lesson in editContent.lessonTypes" ng-model="editContent.contentData.contentType">
                                     <option value="">Choose lesson type</option>
                                 </select>
                             </div>
                             <div class="required field">
                                 <label>Audience</label>
-                                <select name="audience" class="ui fluid dropdown multiSelectDropDown" multiple="" id="audienceDropDown" ng-options=" audience for audience in editContent.audiences" ng-model="editContent.data.audience">
+                                <select name="audience" class="ui fluid dropdown multiSelectDropDown" multiple="" id="audienceDropDown" ng-options=" audience for audience in editContent.audiences" ng-model="editContent.contentData.audience">
                                     <option value="" translate="languages">Choose audience</option>
                                 </select>
                             </div>
@@ -86,13 +86,13 @@
                         <div class="two fields">
                             <div class="field">
                                 <label>Language</label>
-                                <select name="language" class="ui fluid dropdown multiSelectDropDown" multiple="" id="languageDropDown" ng-options=" language for language in editContent.languages" ng-model="editContent.data.language">
+                                <select name="language" class="ui fluid dropdown multiSelectDropDown" multiple="" id="languageDropDown" ng-options=" language for language in editContent.languages" ng-model="editContent.contentData.language">
                                     <option value="" translate="languages">Choose language</option>
                                 </select>
                             </div>
                             <div class="required field">
                                 <label>Subject</label>
-                                <select name="subject" class="ui fluid dropdown singleSelectDropDown" id="subjectDropDown" ng-options=" subject for subject in editContent.subjects" ng-model="editContent.data.subject">
+                                <select name="subject" class="ui fluid dropdown singleSelectDropDown" id="subjectDropDown" ng-options=" subject for subject in editContent.subjects" ng-model="editContent.contentData.subject">
                                     <option value="" translate="ageGroup">Choose subject</option>
                                 </select>
                             </div>
@@ -100,13 +100,13 @@
                         <div class="two fields">
                             <div class="required field">
                                 <label>Grade</label>
-                                <select name="grades" multiple="" class="ui fluid dropdown multiSelectDropDown" id="gradesDropDown" ng-options=" grade for grade in editContent.grades" ng-model="editContent.data.gradeLevel" s>
+                                <select name="grades" multiple="" class="ui fluid dropdown multiSelectDropDown" id="gradesDropDown" ng-options=" grade for grade in editContent.grades" ng-model="editContent.contentData.gradeLevel" s>
                                     <option value="">Choose grades</option>
                                 </select>
                             </div>
                             <div class="field">
                                 <label>Age Group</label>
-                                <select name="ageGroup" multiple="" class="ui fluid dropdown multiSelectDropDown" id="ageGroupDropDown" ng-options=" ageGroup for ageGroup in editContent.ageGroup" ng-model="editContent.data.ageGroup">
+                                <select name="ageGroup" multiple="" class="ui fluid dropdown multiSelectDropDown" id="ageGroupDropDown" ng-options=" ageGroup for ageGroup in editContent.ageGroup" ng-model="editContent.contentData.ageGroup">
                                     <option value="" translate="agegroup">Choose age Group</option>
                                 </select>
                             </div>
@@ -114,13 +114,13 @@
                         <div class="two fields">
                             <div class="required field">
                                 <label>Medium</label>
-                                <select name="medium" class="ui fluid dropdown singleSelectDropDown" id="mediumDropDown" ng-options=" medium for medium in editContent.mediums" ng-model="editContent.data.medium">
+                                <select name="medium" class="ui fluid dropdown singleSelectDropDown" id="mediumDropDown" ng-options=" medium for medium in editContent.mediums" ng-model="editContent.contentData.medium">
                                     <option value="" medium="medium">Choose medium</option>
                                 </select>
                             </div>
                             <div class="field">
                                 <label>Author</label>
-                                <input type="text" name="author" placeholder="author" ng-model="editContent.data.author" required="">
+                                <input type="text" name="author" placeholder="author" ng-model="editContent.contentData.author" required="">
                             </div>
 
                         </div>
@@ -136,14 +136,16 @@
                                                 </div>
                                             </div>-->
                     </form>
-                    <button class="ui primary basic button" ng-if="!contentPlayer.isContentPlayerEnabled"ng-click="editContent.previewContent(editContent.data)">Preview</button>
-                    <button class="ui primary basic button" ng-if="contentPlayer.isContentPlayerEnabled" ng-click="contentPlayer.isContentPlayerEnabled = !contentPlayer.isContentPlayerEnabled">Close Preview</button>
-                    <button class="ui primary basic button" ng-click="editContent.saveMetaContent(editContent.data)">Save</button>
-                    <button class="ui primary basic button" ng-click="editContent.submitForReview(editContent.data)">Submit For Review</button>
-                    <button class="ui primary basic button" ng-if="editContent.data.mimeType = 'application/vnd.ekstep.ecml-archive'" ng-click="editContent.openContentEditor(editContent.data.identifier)">Launch Editor</button>
                 </div>
-                <div class="row margin-top-10" ng-if="contentPlayer.isContentPlayerEnabled">
+                <div class="row margin-top-10 margin-bottom-15" ng-if="contentPlayer.isContentPlayerEnabled">
                     <content-player visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="false" height="8" width="100" ispercentage="true"></content-player>
+                </div>
+                <div class="row margin-top-10" id="content-player-bottom-edit">
+                    <button class="ui primary basic button" ng-if="!contentPlayer.isContentPlayerEnabled"ng-click="editContent.previewContent(editContent.contentData)">Preview</button>
+                    <button class="ui primary basic button" ng-if="contentPlayer.isContentPlayerEnabled" ng-click="contentPlayer.isContentPlayerEnabled = !contentPlayer.isContentPlayerEnabled">Close Preview</button>
+                    <button class="ui primary basic button" ng-click="editContent.saveMetaContent(editContent.contentData)"ng-disabled="editContent.editApi.loader.showLoader">Save</button>
+                    <button class="ui primary basic button" ng-click="editContent.submitForReview(editContent.contentData)" ng-disabled="editContent.editApi.loader.showLoader">Submit For Review</button>
+                    <button class="ui primary basic button" ng-if="editContent.contentData.mimeType === 'application/vnd.ekstep.ecml-archive'" ng-click="editContent.openContentEditor(editContent.contentData.identifier)">Launch Editor</button>
                 </div>
             </div>
             <div class="one wide column"></div>
