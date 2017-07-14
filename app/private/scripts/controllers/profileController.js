@@ -36,6 +36,12 @@ angular.module('playerApp')
                         rules: [{
                             type: 'empty',
                         }]
+                    },
+                    pinCode: {
+                        rules: [{
+                            type: 'regExp[^[0-9]*$]',
+                            prompt: 'please enter a valid pin code'
+                        }]
                     }
 
                 },
@@ -292,10 +298,14 @@ angular.module('playerApp')
         profile.editAddress = function(address) {
             profile.formValidation();
             var isValid = $('.addressEditForm').form('validate form');
-            console.log('isValidForm', isValid);
-            var req = { address: address };
-            req.userId = $rootScope.userId;
-            profile.updateProfile(req);
+
+            if (!isValid.includes(false)) {
+                var req = { address: address };
+                req.userId = $rootScope.userId;
+                profile.updateProfile(req);
+            } else {
+                return false;
+            }
         };
         // edit education
         profile.addEducation = function(newEducation) {

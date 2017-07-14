@@ -3,14 +3,14 @@
         <label for="address">Address Type</label>
         <div class="field">
             <div class="ui radio checkbox">
-                <input type="radio" name="radio" ng-checked="address.addType==='permanent'" ng-model="address.addType">
-                <label>permanent</label>
+                <input type="radio" name="radio" value='Permanent' ng-checked="address.addType==='permanent'" ng-model="address.addType">
+                <label>Permanent</label>
             </div>
         </div>
         <div class="field">
             <div class="ui radio checkbox">
-                <input type="radio" name="radio" ng-checked="address.addType==='current'" ng-model="address.addType">
-                <label>temporary</label>
+                <input type="radio" name="radio" value='Current' ng-checked="address.addType==='current'" ng-model="address.addType">
+                <label>Current</label>
             </div>
         </div>
     </div>
@@ -43,8 +43,9 @@
         </div>
         <div class="  field">
             <label>Pin Code</label>
-            <input type="text" name="" ng-model="address.zipcode">
+            <input type="text" name="pinCode" ng-model="address.zipcode">
         </div>
     </div>
-
+    <div class="ui error message">
+    </div>
 </form>
