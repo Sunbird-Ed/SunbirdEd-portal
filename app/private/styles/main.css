@@ -288,9 +288,13 @@ th {
   font-size: 1.0625em !important;
 }
 /*course structure page fonts*/
+.courseStructureSectionHeading {
+  font-family: 'sunbirdboldfont' !important;
+  font-size: 1.9em !important;
+}
 .courseStructureHeading {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 1.0625em !important;
+  font-size: 0.955em !important;
 }
 .courseStructureDesc {
   font-family: 'sunbirdregularfont' !important;
