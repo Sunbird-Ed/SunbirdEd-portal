@@ -4,10 +4,11 @@
 <div class="ui grid">
     <div class="one wide column"></div>
     <div class="ten wide column">
+    <div class="ui segments">
         <div class="ui segment margin-auto padding-left-right-0 padding-top-bottom-0 " ng-init="noteList.ngInit()">
             <div class="ui grid margin-top-0 margin-left-right-0 margin-bottom-0 height-100" id="notesList" ng-if="(!noteList.searchApi.loader.showLoader && !noteList.searchApi.error.showError) || noteList.notesList.length > 0">
                 <div class="twelve wide column" ng-if="!noteList.update.showUpdateNote">
-                    <div class="addnotes ui container padding-bottom-15 container-with-button padding-left-right-0">
+                    <div class="addnotes ui container container-with-button padding-left-right-0">
                         <span class="ui header">My Notes</span>
                         <i class=" circular icon margin-left-right-10 link" ng-class="!noteList.add.showCreateNote ? 'plus' : 'remove'" ng-click="noteList.add.showCreateNote = !noteList.add.showCreateNote;"></i>
                         <div class="notesearch" style="float:right">
@@ -20,20 +21,25 @@
                         </h5>
                         </div>
                     </div>
-                    <div ng-if="noteList.add.showCreateNote">
+                    <div class="twelve wide column padding-top-20" ng-if="noteList.add.showCreateNote">
                         <div ng-include="'views/note/createNote.html'"></div>
                     </div>
                 </div>
-                <div class="twelve wide column" ng-if="!noteList.update.showUpdateNote">
-                    <div class="ui clearing divider"></div>
+                 <div class="twelve wide column" ng-if="noteList.update.showUpdateNote">
+                    <div ng-include="'views/note/updateNote.html'"></div>
+                </div>
+            </div>
+        </div>
+         <div class="noteListSegment ui secondary segment">
+            <div class="twelve wide column" ng-if="!noteList.update.showUpdateNote">
                     <div class="ui grid">
-                        <div class="four wide column padding-topNone">
-                            <div class="ui raised segment notelistscroll">
+                        <div class="four wide column padding-topBottomNone">
+                            <div class="notelistscroll">
                                 <div class="profileitems ui relaxed divided items ">
-                                    <div class="item padding-topBottom-35 notelistfocus"  ng-repeat="note in noteList.notesList| orderBy : '-lastUpdatedOn' | noteListFilter:noteList.searchData.text">
-                                        <div class="content" ng-class="{'notelistborder': $index == noteList.selectedIndex }" ng-click="noteList.showNoteList(note, $index)" ng-init="noteList.selectedNoteData = noteList.notesList[0]">
+                                    <div class="item padding-topBottomNone notelistfocus"  ng-repeat="note in noteList.notesList| orderBy : '-lastUpdatedOn' | noteListFilter:noteList.searchData.text">
+                                        <div class="content padding-all-10 contentnotelist" id="notelistcontent{{$index}}" ng-class="{'notelistborder': $index == noteList.selectedIndex || $index == 0 }" ng-click="noteList.showNoteList(note, $index)" ng-init="noteList.selectedNoteData = noteList.notesList[0]">
                                             <a class="header ">{{ note.title | limitTo: 20 }}</a>
-                                            <div class="description" ng-init="noteData = note.note.length > 20 ? note.note.substring(-1,20) : note.note">
+                                            <div class="description margin-top-0" ng-init="noteData = note.note.length > 20 ? note.note.substring(-1,20) : note.note">
                                         
                                                 <pagedown-viewer content="noteData"></pagedown-viewer>
                                             </div>
@@ -50,8 +56,8 @@
                             <div class="ui items">
                                 <div class="item">
                                     <div class="content">
-                                        <div class="ui row margin-left-right-0">
-                                            <i class="ui right floated edit icon" ng-click="noteList.update.showUpdateNote = !noteList.update.showUpdateNote; noteList.updateNoteData(noteList.selectedNoteData);"></i>
+                                        <div class="ui row margin-right-15">
+                                            <i class="ui right floated edit icon cursor-pointer" ng-click="noteList.update.showUpdateNote = !noteList.update.showUpdateNote; noteList.updateNoteData(noteList.selectedNoteData);"></i>
                                             <span class="ui small header notedecheader mouse-pointer"> {{ noteList.selectedNoteData.title}}
                                             </span>
                                             <div class="description padding-top-10">
@@ -64,39 +70,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="twelve wide column" ng-if="noteList.update.showUpdateNote">
-                    <div ng-include="'views/note/updateNote.html'"></div>
-                </div>
-            </div>
+          </div>
         </div>
-        <!--  <div class="ui grid">
-            <div class="four wide column">
-             <div class="ui raised segment ">
-                <div class="ui list" ng-repeat="note in noteCard.notesList| orderBy : '-lastUpdatedOn' | limitTo: noteCard.quantityOfNotes track by $index">
-                <div class="item">
-                    <div class="content">
-                        <span class="ui tiny header">
-                            <span class="cardsKnowMore mouse-pointer" ng-click="noteCard.showUpdateNoteModal(note)"> {{ note.title | limitTo: 15 }}
-                                <i ng-show="note.title.length > 15" class="ellipsis horizontal icon popup-button" data-content="{{note.titles}}"
-                                   data-variation="wide"></i>
-                            </span>
-                            <span class="note-card-timeStamp right floated">{{note.lastUpdatedOn| dateFilterXTimeAgo}}</span>
-                        </span>
-                        <div class="description" ng-init="noteData = note.note.length > 70 ? note.note.substring(0,70) : note.note">
-                            <pagedown-viewer content="noteData"></pagedown-viewer>
-                            <i ng-if="note.note.length > 70" class="ellipsis horizontal icon popup-button" data-content="{{note.note}}"
-                               data-variation="wide">
-                            </i> 
-                        </div>
-                    </div>
-                    <div ng-if="($index < noteCard.quantityOfNotes - 1) && noteCard.notesList.length > 1" class="ui clearing divider"></div>
-                </div>
-            </div>
-            </div>
-            </div>
-            <div class=" eight wide column ">
-            </div>
-        </div> -->
+        
+                
+               
         <div ng-if="noteList.searchApi.loader.showLoader">
             <app-loader data="{{noteList.searchApi.loader}}"></app-loader>
         </div>
