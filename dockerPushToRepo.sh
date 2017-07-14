@@ -4,7 +4,7 @@
 e () {
     echo $( echo ${1} | jq ".${2}" | sed 's/\"//g')
 }
-m=$(./player/app/metadata.sh)
+m=$(./app/metadata.sh)
 
 org=$(e "${m}" "org")
 hubuser=$(e "${m}" "hubuser")
