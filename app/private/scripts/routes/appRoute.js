@@ -70,12 +70,14 @@ angular
                     $rootScope.courseActive = 'active';
                     $rootScope.breadCrumbsData = [{ name: 'Home', link: 'home' }, { 'name': 'Courses', 'link': 'learn' }];
                     $('.content-search-filter').dropdown('clear');
+                    $rootScope.isSearchPage = true;
                 },
                 onExit: function($rootScope) {
                     $rootScope.isLearnPage = false;
                     $('#content-search-filter-accordion').accordion('close', 0);
                     $rootScope.courseActive = '';
                     $rootScope.breadCrumbsData = null;
+                    $rootScope.isSearchPage = false;
                 },
                 params: { searchKey: 'Courses' }
             })
@@ -93,12 +95,14 @@ angular
                     $rootScope.searchKeyword = '';
                     $rootScope.resourcesActive = 'active';
                     $('.content-search-filter').dropdown('clear');
+                    $rootScope.isSearchPage = true;
                 },
                 onExit: function($rootScope) {
                     $rootScope.isResourcesPage = false;
                     $rootScope.resourcesActive = '';
                     $('#content-search-filter-accordion').accordion('close', 0);
                     $rootScope.breadCrumbsData = null;
+                    $rootScope.isSearchPage = false;
                 },
                 params: { searchKey: 'Resources' }
             })
