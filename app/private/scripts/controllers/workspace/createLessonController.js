@@ -109,8 +109,7 @@ angular.module('playerApp')
             requestBody.mimeType = "application/vnd.ekstep.ecml-archive";
             requestBody.createdBy = contentLesson.userId;
 
-            requestBody.name = requestBody.name ? requestBody.name : "Default title";
-            requestBody.description = requestBody.description ? requestBody.description : "Default description";
+            requestBody.name = requestBody.name ? requestBody.name : "Untitled lesson";
             requestBody.contentType = requestBody.contentType ? requestBody.contentType : "Story";
 
             var requestdata = {
