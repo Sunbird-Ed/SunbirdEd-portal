@@ -1056,6 +1056,13 @@ span.fancytree-title {
 .notedecheader {
   font-weight: 600!important;
 }
+.fancytree-plain span.fancytree-node:hover span.fancytree-title {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+.fancytree-plain span.fancytree-node:hover span.fancytree-title .padded i.icon {
+  margin: 0px 0.3em 0.24em 0!important;
+}
 .homeCard.ui.card {
   max-width: 100%;
   position: relative;
@@ -1423,6 +1430,11 @@ span.fancytree-title {
   color: #979797;
   font-size: 12px;
 }
+.dropfile {
+  text-align: center;
+  color: #979797;
+  font-size: 12px;
+}
 .workspacedownload.ui.segment {
   box-sizing: border-box;
   border: 2px solid #979797;
@@ -1546,6 +1558,9 @@ span.fancytree-title {
 .qq-uploader {
   border: 2px dashed #CCCCCC !important;
 }
+.selectuploadfile .ui.button {
+  margin: 32px 0 0 0;
+}
 /*profile image header css*/
 .header-image-profile {
   height: 100px !important;
@@ -1554,6 +1569,20 @@ span.fancytree-title {
 /*trashIcon in address css*/
 .trashIcon-fontSize {
   font-size: 1.5em !important;
+}
+.youtubeupload.ui.form .inline.fields .field > label {
+  text-align: center;
+  color: #979797;
+  font-size: 13px;
+  font-weight: 400;
+  white-space: nowrap;
+  font-family: "Open Sans";
+}
+.orinstuction {
+  text-align: center;
+  color: #979797;
+  font-size: 12px;
+  padding-top: 40px;
 }
 .profilesegmentmargin.ui.segment:first-child {
   margin-top: 20px;
