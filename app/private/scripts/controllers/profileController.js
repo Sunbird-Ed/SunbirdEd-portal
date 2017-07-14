@@ -137,7 +137,10 @@ angular.module('playerApp')
             if (userProfile && userProfile.responseCode === 'OK') {
                 var profileData = userProfile.result.response;
 
+                profile.fullName = profileData['firstName'] +" "+ profileData['lastName'];
+                profile.email = profileData["email"]
                 profile.user = profileData;
+
 
                 profile.basicProfile = profile.user;
                 profile.address = profileData.address;
@@ -200,7 +203,7 @@ angular.module('playerApp')
             };
             profile.loader = showLoaderWithMessage('', config.MESSAGES.PROFILE.HEADER.START);
 
-            userService.updateUserProfile(profile.updateProfileRequest)
+            userService.updateUserProfile(profile.updateProfileRequest, profile.fullName, profile.email)
                 .then(function(successResponse) {
                     if (successResponse && successResponse.responseCode === 'OK') {
                         profile.experienceForm = false;

@@ -55,7 +55,7 @@ function TelemetryEvent() {
         var instance = this;
         TelemetryService._data.push(this.event);
         if (this.event) {
-            org.sunbird.portal.eventManager.dispatchEvent('sunbird:player:telemetry', this.event);
+            org.sunbird.portal.eventManager.dispatchEvent('sunbird:telemetry:flush', this.event);
             if ("undefined" != typeof telemetry) {
                 telemetry.send(JSON.stringify(this.event), apiName).then(function() {
                     return JSON.stringify(this.event);
