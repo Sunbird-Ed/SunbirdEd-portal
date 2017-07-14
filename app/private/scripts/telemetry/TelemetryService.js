@@ -9,6 +9,7 @@ TelemetryService = {
     _gameData: undefined,
     _correlationData: undefined,
     _data: [],
+    _batchEvents:[],
     _gameIds: [],
     _user: {},
     apis: {
