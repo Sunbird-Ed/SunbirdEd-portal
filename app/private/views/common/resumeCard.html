@@ -4,7 +4,7 @@
             <div ng-if="item.progress" ng-init="loadProgress()" class="ui tiny  progress course-progress progressBar-margin" data-value="{{item.progress}}" data-total="{{item.total}}" ng-class="{orange:(item.total - item.progress) <= (item.total / 2),red:(item.total - item.progress) > (item.total / 2)}">
                 <div class="bar"></div>
             </div>
-            <img ng-src=" {{item.appIcon ? item.appIcon : '../images/sunbird_logo.png'}} ">
+            <img ng-src="{{item.appIcon || item.courseLogoUrl || '../images/sunbird_logo.png'}}">
             <div class="cardImageText center aligned ">
                 <span class="sliderCardHeading text-cencapitalize">{{item.courseName | limitTo:14}}
                     &nbsp;<i ng-show="item.name.length >= 14" class="ellipsis horizontal icon popup-button link" data-content="{{item.courseName}}" data-variation="wide">
