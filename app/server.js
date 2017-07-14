@@ -10,6 +10,7 @@ const express = require('express'),
     request = require('request'),
     env = process.env,
     trampolineServiceHelper = require('./helpers/trampolineServiceHelper.js'),
+    telemetryHelper = require('./helpers/telemetryHelper.js'),
     port = env['sunbird_port'] || 3000;
 
 
@@ -141,5 +142,11 @@ app.all('*', function(req, res) {
     res.redirect('/');
 });
 
+//callback after authentication
+
+
+keycloak.authenticated = function (request) {
+    telemetryHelper.logSessionStart(request)
+}
 app.listen(port);
 console.log('app running on port ' + port);

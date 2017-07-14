@@ -12,7 +12,7 @@ angular.module('playerApp')
         var localContentState = localContentState || {};
         var self = this;
         this.init = function() {
-                org.sunbird.portal.eventManager.addEventListener('sunbird:player:telemetry', self.updateContentState);
+                org.sunbird.portal.eventManager.addEventListener('sunbird:telemetry:flush', self.updateContentState);
             }
             //getContentState
 
