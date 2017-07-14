@@ -3,7 +3,7 @@
         <app-loader data="{{profileCtrl.loader}}"></app-loader>
     </div>
     <div class="ui raised segment " ng-if="profileCtrl.error.showError">
-        <error-message data="{{profileCtrl.error}}" visibility="search.error.showError"></error-message>
+        <error-message data="{{profileCtrl.error}}" visibility="profileCtrl.error.showError"></error-message>
     </div>
 </div>
 <div class="ui grid">
