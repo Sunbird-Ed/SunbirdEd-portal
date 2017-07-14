@@ -65,10 +65,11 @@
         <div class="ui form youtubeupload">
           <div class="inline fields">
             <div class="eight wide field">
-              <input type="text">
+                <input type="text" ng-model="contentCreation.youtubeFileLink">
             </div>
             <div class="two wide field">
-              <button class="ui primary basic button text-align-center padding-left-25 qq-upload-button-selector">UPLOAD</button>
+              <button class="ui primary basic button text-align-center padding-left-25 qq-upload-button-selector"
+                      ng-click="contentCreation.uploadYoutubeFile()" ng-disabled="!contentCreation.youtubeFileLink">UPLOAD</button>
             </div>
             <!-- d -->
           </div>
@@ -131,9 +132,10 @@
                 <option value="" translate="lassonType">Lesson Type</option>
               </select>
             </div>
-            <div class="field">
+            <div class="required field">
               <label>Mime Type</label>
-              <select name="mimeType" class="ui fluid dropdown singleSelectDropDown" ng-options=" mimeType.name for mimeType in contentCreation.mimeType" ng-model="contentCreation.data.mimeType">
+              <select name="mimeType" class="ui fluid dropdown singleSelectDropDown" id="mimeTypeDropDown"
+                      ng-options=" mimeType.name for mimeType in contentCreation.mimeType" ng-model="contentCreation.data.mimeType">
                 <option value="" translate="mimeType">Mime Type</option>
               </select>
             </div>
@@ -142,7 +144,7 @@
       </div>
       <div class="actions">
         <p class="text-align-center">
-          <button class="ui primary text-align-center icon button" ng-click="contentCreation.saveMetaData(contentCreation.data)" ng-disabled="!contentCreation.data.mimeType">
+          <button class="ui primary text-align-center icon button" ng-click="contentCreation.saveMetaData(contentCreation.data)" ng-disabled="!contentCreation.data.mimeType && !contentCreation.youtubeFileLink">
             Upload
           </button>
         </p>

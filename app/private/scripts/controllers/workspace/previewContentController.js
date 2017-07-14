@@ -6,6 +6,7 @@ angular.module('playerApp').controller('PreviewContentController', function (pla
     previewContent.contentProgress = 0;
     previewContent.contentId = $stateParams.contentId;
     previewContent.userId = $rootScope.userId;
+    previewContent.isShowPublishRejectButton = $stateParams.backState === "WorkSpace.UpForReviewContent" ? true : false;
 
     function showPlayer(data) {
         previewContent.contentData = data;
@@ -233,14 +234,14 @@ angular.module('playerApp').controller('PreviewContentController', function (pla
             }
         };
 
-        var api = "publishApi";
+        var api = "previewContentApi";
         previewContent[api] = {};
         previewContent[api].loader = showLoader("", config.MESSAGES.WORKSPACE.PUBLISH_CONTENT.START);
 
         contentService.publish(request, previewContent.contentId).then(function (res) {
             if (res && res.responseCode === 'OK') {
                 previewContent[api].loader.showLoader = false;
-                $state.go("WorkSpace.PublishedContent")
+                $state.go("WorkSpace.UpForReviewContent")
             } else {
                 previewContent[api].loader.showLoader = false;
                 previewContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.PUBLISH_CONTENT.FAILED, config.MESSAGES.COMMON.ERROR);
@@ -251,23 +252,25 @@ angular.module('playerApp').controller('PreviewContentController', function (pla
         });
     };
 
-    previewContent.retireContent = function () {
+    previewContent.rejectContent = function () {
         
-        var api = "retireApi";
+        var api = "previewContentApi";
         previewContent[api] = {};
-        previewContent[api].loader = showLoader("", config.MESSAGES.WORKSPACE.RETIRE_CONTENT.START);
+        previewContent[api].loader = showLoader("", config.MESSAGES.WORKSPACE.REJECT_CONTENT.START);
+        
+        var request = {};
 
-        contentService.retire(previewContent.contentId).then(function (res) {
+        contentService.reject(request, previewContent.contentId).then(function (res) {
             if (res && res.responseCode === 'OK') {
                 previewContent[api].loader.showLoader = false;
-                $state.go("WorkSpace.DraftContent");
+                $state.go("WorkSpace.UpForReviewContent");
             } else {
                 previewContent[api].loader.showLoader = false;
-                previewContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.RETIRE_CONTENT.FAILED, config.MESSAGES.COMMON.ERROR);
+                previewContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.REJECT_CONTENT.FAILED, config.MESSAGES.COMMON.ERROR);
             }
         }).catch(function (error) {
             previewContent[api].loader.showLoader = false;
-            previewContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.RETIRE_CONTENT.FAILED, config.MESSAGES.COMMON.ERROR);
+            previewContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.REJECT_CONTENT.FAILED, config.MESSAGES.COMMON.ERROR);
         });
     };
 

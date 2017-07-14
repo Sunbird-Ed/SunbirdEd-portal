@@ -12,32 +12,6 @@ angular.module('playerApp')
 
         var contentEditor = this;
         contentEditor.contentId = $stateParams.contentId;
-        
-        /**
-         * This function helps to show loader with message.
-         * @param {String} headerMessage
-         * @param {String} loaderMessage
-         */
-        function showLoaderWithMessage(headerMessage, loaderMessage) {
-            var loader = {};
-            loader.showLoader = true;
-            loader.headerMessage = headerMessage;
-            loader.loaderMessage = loaderMessage;
-            return loader;
-        }
-
-        /**
-         * This function called when api failed, and its show failed response for 2 sec.
-         * @param {String} message
-         */
-        function showErrorMessage(isClose, message, messageType) {
-            var error = {};
-            error.showError = true;
-            error.isClose = isClose;
-            error.message = message;
-            error.messageType = messageType;
-            return error;
-        }
 
         contentEditor.openContentEditor = function(contentId) {
 
@@ -46,28 +20,6 @@ angular.module('playerApp')
             window.config = config.ekstep_CE_config.config;
             var baseURL = $location.protocol() + '://' + $location.host() + ':' + $location.port();
             contentEditor.ekURL = $sce.trustAsResourceUrl(baseURL + "/ekContentEditor?contentId=" + contentId);
-        };
-        
-        contentEditor.submitForReview = function (contentId) {
-        
-            var api = 'reviewApi';
-            contentEditor[api] = {};
-            contentEditor[api].loader = showLoaderWithMessage("", config.MESSAGES.WORKSPACE.REVIEW_CONTENT.START);
-            var req = {content: {}};
-            
-            contentService.review(req, contentId).then(function (res) {
-                if (res && res.responseCode === "OK") {
-                    contentEditor[api].loader.showLoader = false;
-                    $state.go("WorkSpace.ReviewContent");
-
-                } else {
-                    contentEditor[api].loader.showLoader = false;
-                    contentEditor[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.REVIEW_CONTENT.FAILED, config.MESSAGES.COMMON.ERROR);
-                }
-            }).catch(function (error) {
-                contentEditor[api].loader.showLoader = false;
-                contentEditor[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.REVIEW_CONTENT.FAILED, config.MESSAGES.COMMON.ERROR);
-            });
         };
 
         contentEditor.init = function() {
@@ -82,7 +34,8 @@ angular.module('playerApp')
             
             org.sunbird.portal.eventManager.addEventListener("sunbird:portal:content:review", function (event, data) {
                 console.log("sunbird:portal:content:review event fired")
-                contentEditor.submitForReview(data);
+                var params = {contentId : contentEditor.contentId, backState : $state.current.name}
+                $state.go("EditContent", params);
             });
             
             window.addEventListener('editor:metadata:edit', function(event, data) {
