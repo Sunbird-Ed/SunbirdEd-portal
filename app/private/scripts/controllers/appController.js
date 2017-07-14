@@ -8,14 +8,26 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-        .controller('AppCtrl', function ($scope, $state, $stateParams, $rootScope, setResourceBundle, $translate, userService, $q, config, $location, $timeout) {
+        .controller('AppCtrl', function ($scope, $state, $stateParams, $rootScope, setResourceBundle, $translate, userService, $q, config, $location, $timeout,errorMessages,labels) {
             $rootScope.userId = $("#userId").attr("value");
             $rootScope.language = $rootScope.userLanguage || config.SITE.DEFAULT_LANGUAGE;
+            $rootScope.errorMessages=errorMessages;
+            $rootScope.labels=labels;          
             $rootScope.translationBundle = {};
             $rootScope.searchKey = '';
             org.sunbird.portal.init();
-            $rootScope.openLink=function(url){
+            $rootScope.openLink = function (url) {
                 $location.path(url);
+            }
+            $rootScope.loadLabelsAndMessageBundles = function () {
+                var promises = [];
+                promises.push(userService.getJsonBundle('labels'));
+                promises.push(userService.getJsonBundle('errorMessages'));
+                $q.all(promises).then(function (results) {
+                    results.forEach(function (res) {
+                        $rootScope.bundles[res.name] = res.data;
+                    });
+                });
             }
             $rootScope.loadBundle = function () {
                 var promises = [];
@@ -46,7 +58,6 @@ angular.module('playerApp')
                 }
                 return objMerge;
             };
-            $rootScope.loadBundle('label');
             $('body').click(function (e) {
                 if ($(e.target).closest('div.dropdown-menu-list').prop('id') == 'search-suggestions') {
                     return false;
