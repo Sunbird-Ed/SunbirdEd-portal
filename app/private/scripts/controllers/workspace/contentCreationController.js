@@ -177,8 +177,8 @@ angular.module('playerApp')
 
             requestBody.createdBy = contentCreation.userId;
 
-            requestBody.name = requestBody.name ? requestBody.name : "Default title";
-            requestBody.description = requestBody.description ? requestBody.description : "Default description";
+            requestBody.name = requestBody.name ? requestBody.name : "Title";
+            requestBody.description = requestBody.description ? requestBody.description : "Description";
             requestBody.contentType = requestBody.contentType ? requestBody.contentType : "Story";
             requestBody.mimeType = requestBody.mimeType.value;
 

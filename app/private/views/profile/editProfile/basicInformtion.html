@@ -43,9 +43,9 @@
             <label>Aadhar number</label>
             <input type="text" name="" ng-model="profileCtrl.basicProfile.aadhaarNo">
         </div>
-        <div class="field">
+        <div class="field" apply-script>
             <label>Date of birth </label>
-            <div apply-script ng-init="profileCtrl.setDob();" class="ui calendar" id="editDob">
+            <div ng-init="profileCtrl.setDob();" class="ui calendar" id="editDob">
                 <div class="ui input left icon">
                     <i class="calendar icon"></i>
                     <input type="text" placeholder="Date" ng-model="profileCtrl.basicProfile.dob">
