@@ -7,7 +7,7 @@
                 <div class="row margin-bottom-15" ng-if="editContent.requiredFieldsMessage.length > 0">
                     <div class="ui error message">
                         <div class="header">
-                          There were some fields that are required
+                          There were some fields that are empty.
                         </div>
                         <ul class="list" ng-repeat="message in editContent.requiredFieldsMessage">
                           <li>{{message}}.</li>
@@ -55,13 +55,13 @@
                                 </div>
                                 <div class="ten wide column">
                                     <div class="row">
-                                        <div class="field">
+                                        <div class="required field">
                                             <label>Title</label>
                                             <input type="text" name="title" placeholder="Name this lesson" ng-model="editContent.data.name" required="">
                                         </div>
                                     </div>
                                     <div class="row margin-top-10">
-                                        <div class="field">
+                                        <div class="required field">
                                             <label>Write short description of your lesson</label>
                                             <textarea rows="2" name="description" placeholder="Description for the lesson" ng-model="editContent.data.description" required=""></textarea>
                                         </div>
@@ -70,13 +70,13 @@
                             </div>
                         </div>
                         <div class="two fields">
-                            <div class="field">
+                            <div class="required field">
                                 <label>Lesson type</label>
                                 <select class="ui fluid dropdown singleSelectDropDown" id="contentTypeDropDown" ng-options=" lesson for lesson in editContent.lessonTypes" ng-model="editContent.data.contentType">
                                     <option value="">Choose lesson type</option>
                                 </select>
                             </div>
-                            <div class="field">
+                            <div class="required field">
                                 <label>Audience</label>
                                 <select name="audience" class="ui fluid dropdown multiSelectDropDown" multiple="" id="audienceDropDown" ng-options=" audience for audience in editContent.audiences" ng-model="editContent.data.audience">
                                     <option value="" translate="languages">Choose audience</option>
@@ -90,7 +90,7 @@
                                     <option value="" translate="languages">Choose language</option>
                                 </select>
                             </div>
-                            <div class="field">
+                            <div class="required field">
                                 <label>Subject</label>
                                 <select name="subject" class="ui fluid dropdown singleSelectDropDown" id="subjectDropDown" ng-options=" subject for subject in editContent.subjects" ng-model="editContent.data.subject">
                                     <option value="" translate="ageGroup">Choose subject</option>
@@ -98,7 +98,7 @@
                             </div>
                         </div>
                         <div class="two fields">
-                            <div class="field">
+                            <div class="required field">
                                 <label>Grade</label>
                                 <select name="grades" multiple="" class="ui fluid dropdown multiSelectDropDown" id="gradesDropDown" ng-options=" grade for grade in editContent.grades" ng-model="editContent.data.gradeLevel" s>
                                     <option value="">Choose grades</option>
@@ -112,7 +112,7 @@
                             </div>
                         </div>
                         <div class="two fields">
-                            <div class="field">
+                            <div class="required field">
                                 <label>Medium</label>
                                 <select name="medium" class="ui fluid dropdown singleSelectDropDown" id="mediumDropDown" ng-options=" medium for medium in editContent.mediums" ng-model="editContent.data.medium">
                                     <option value="" medium="medium">Choose medium</option>
