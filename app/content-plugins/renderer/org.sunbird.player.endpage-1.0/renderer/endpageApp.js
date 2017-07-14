@@ -3,12 +3,14 @@ endPage.controller("endPageController", function($scope, $rootScope, $state,$ele
     var globalConfig = EkstepRendererAPI.getGlobalConfig();
     $scope.showEndPage = false;
     $rootScope.pageId = "sunbird-player-Endpage";
-    $scope.imageBasePath = globalConfig.assetbase;
+    $scope.genieIcon;
+    $scope.endpageBackground;
+    $scope.replayIcon;
     $scope.arrayToString = function(array) {
         return (_.isString(array)) ? array : (!_.isEmpty(array) && _.isArray(array)) ? array.join(", ") : "";
     };
     $scope.setLicense = function(){
-        $scope.licenseAttribute = $scope.content.license || 'Licensed under CC By 4.0 license'
+        $scope.licenseAttribute = $scope.playerMetadata.license || 'Licensed under CC By 4.0 license'
     };
     
     $scope.replayContent = function() {
@@ -34,18 +36,13 @@ endPage.controller("endPageController", function($scope, $rootScope, $state,$ele
             $scope.showFeedbackArea = false;
         }
     }
+    $scope.openGenie = function(){
+        EkstepRendererAPI.dispatchEvent('renderer:genie:click');
+    }
     
     $scope.handleEndpage = function() {
-        if (_.isUndefined($rootScope.content)) {
-            localStorageGC.update();
-            content = localStorageGC.getItem('content');
-            $rootScope.content = content;
-        }
         $scope.setLicense();
-        localStorageGC.setItem('content_old', $rootScope.content)
         if (_(TelemetryService.instance).isUndefined()) {
-            var tsObj = localStorageGC.getItem('telemetryService');
-            var correlationData = [];
             var otherData = GlobalContext.config.otherData;
             !_.isUndefined(otherData.cdata) ? correlationData.push(otherData.cdata) : correlationData.push({"id": CryptoJS.MD5(Math.random().toString()).toString(),"type": "ContentSession"});
             TelemetryService.init(tsObj._gameData, tsObj._user, correlationData, otherData);
@@ -63,15 +60,15 @@ endPage.controller("endPageController", function($scope, $rootScope, $state,$ele
         $scope.setTotalTimeSpent();
     }
     $scope.initEndpage = function() {
+        $scope.playerMetadata = content.localData.localData;
+        $scope.genieIcon = EkstepRendererAPI.resolvePluginResource("org.sunbird.player.endpage", "1.0", "renderer/assets/home.png");
+        $scope.replayIcon = EkstepRendererAPI.resolvePluginResource("org.sunbird.player.endpage", "1.0", "renderer/assets/icn_replay.png");
+        $scope.endpageBackground = EkstepRendererAPI.resolvePluginResource("org.sunbird.player.endpage", "1.0", "renderer/assets/endpageBackground.png");
+
+
         $scope.handleEndpage();
-        if (_.isUndefined($rootScope.content)) {
-            localStorageGC.update();
-            content = localStorageGC.getItem('content');
-            $rootScope.content = content;
-        }
     };
     EkstepRendererAPI.addEventListener('renderer:content:end', function() {
-            $scope.showEndPage = true;
             $scope.initEndpage();
             $scope.safeApply();
     });
