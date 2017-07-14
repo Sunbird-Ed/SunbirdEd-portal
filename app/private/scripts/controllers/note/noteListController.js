@@ -220,8 +220,13 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
     };
 
     noteList.showNoteList =function(note, index){
-        console.log("showNoteList calling");
+       
         noteList.selectedIndex = index;
+        if(noteList.selectedIndex != '0'){
+            $("#notelistcontent0").removeClass('notelistborder');
+        }else{
+            $("#notelistcontent0").addClass('notelistborder');
+        }
         noteList.selectedNoteData = note;
 
 

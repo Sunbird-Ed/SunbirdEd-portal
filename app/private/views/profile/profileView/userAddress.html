@@ -3,7 +3,7 @@
         <span class="header cardsHeading" translate="experiance">Address</span>
         <a href="" class="addeditprofile" ng-if="!profileCtrl.addressForm && profileCtrl.address.length" translate="edit" ng-click="profileCtrl.addressForm=true ;profileCtrl.isNewAddress=false ">Edit</a>
         <a href="" class="addeditprofile" ng-if="!profileCtrl.addressForm " ng-click="profileCtrl.addressForm=true ;profileCtrl.isNewAddress=true ;profileCtrl.newAddress={} " translate="add ">Add</a>
-        <a href="" class="addeditprofile" ng-if="profileCtrl.addressForm" translate="edit" ng-click="profileCtrl.addressForm=false">close</a>
+        <a href="" class="addeditprofile" ng-if="profileCtrl.addressForm" translate="edit" ng-click="profileCtrl.addressForm=false">Close</a>
     </div>
     <div ng-if="!profileCtrl.addressForm" class="addressheader ui relaxed divided list">
         <div class="item" ng-repeat="address in profileCtrl.address">
