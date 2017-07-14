@@ -58,6 +58,7 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
                 if (noteList.notesList.length === 0) {
                     noteList[api].error = showErrorMessage(api, true, config.MESSAGES.NOTES.SEARCH.NO_RESULT, config.MESSAGES.COMMON.INFO);
                 }
+                noteList.selectedNoteData = noteList.notesList[0];
             } else {
                 noteList[api].loader.showLoader = false;
                 showErrorMessage(api, true, config.MESSAGES.NOTES.SEARCH.FAILED, config.MESSAGES.COMMON.ERROR);
@@ -113,6 +114,7 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
                 noteList.add.showCreateNote = false;
                 noteList[api].loader.showLoader = false;
                 noteList.add = {};
+                noteList.showNoteList(response.result.note);
             } else {
                 noteList[api].loader.showLoader = false;
                 showErrorMessage(api, true, config.MESSAGES.NOTES.CREATE.FAILED, config.MESSAGES.COMMON.ERROR);
@@ -139,7 +141,7 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
                     return note.identifier !== noteId;
                 });
                 noteList[api].loader.showLoader = false;
-
+                noteList.showNoteList(noteList.notesList[noteList.notesList.length-1], 0);
             } else {
                 noteList[api].loader.showLoader = false;
                 showErrorMessage(api, true, config.MESSAGES.NOTES.REMOVE.FAILED, config.MESSAGES.COMMON.ERROR);
@@ -172,6 +174,7 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
                 noteList.notesList.push(response.result.note);
                 noteList[api].loader.showLoader = false;
                 noteList.update = {};
+                noteList.showNoteList(response.result.note);
             } else {
                 noteList[api].loader.showLoader = false;
                 showErrorMessage(api, true, config.MESSAGES.NOTES.UPDATE.FAILED, config.MESSAGES.COMMON.ERROR);
@@ -228,9 +231,6 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
             $("#notelistcontent0").addClass('notelistborder');
         }
         noteList.selectedNoteData = note;
-
-
-
     }
 
 });
