@@ -13,7 +13,7 @@ angular.module('loginApp')
                         userName: {
                             rules: [{
                                 type: 'regExp[^[-\\w\.\\$@\*\\!]{5,256}$]',
-                                prompt: 'please enter a valid user name, must have minimum 5 character'
+                                prompt: 'Please enter a valid User Name, must have minimum 5 character'
                             }]
                         },
                         password: {
@@ -24,18 +24,19 @@ angular.module('loginApp')
                         firstName: {
                             rules: [{
                                 type: 'regExp[^[a-zA-Z -]+$]',
-                                prompt: 'please enter a valid first name'
+                                prompt: 'Please enter a valid First Name'
                             }]
                         },
                         phone: {
                             rules: [{
                                 type: 'regExp[^(?:(?:\\+|0{0,2})91(\\s*[\\-]\\s*)?|[0]?)?[789]\\d{9}$]',
-                                prompt: 'Please enter a valid mobile number'
+                                prompt: 'Please enter a valid Phone Number'
                             }]
                         },
                         email: {
                             rules: [{
-                                type: 'empty',
+                                type: 'email',
+                                prompt: 'Please enter a valid Email'
                             }]
                         },
                         language: {

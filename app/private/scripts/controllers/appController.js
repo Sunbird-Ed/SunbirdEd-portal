@@ -7,8 +7,7 @@
  * # AppCtrl
  * Controller of the playerApp
  */
-angular.module('playerApp')
-        .controller('AppCtrl', function ($scope, $state, $stateParams, $rootScope, setResourceBundle, $translate, userService, $q, config, $location, $timeout,errorMessages,labels) {
+angular.module('playerApp').controller('AppCtrl', function ($scope, $state, $stateParams, $rootScope, setResourceBundle, $translate, userService, $q, config, $location, $timeout,errorMessages,labels) {
             $rootScope.userId = $("#userId").attr("value");
             $rootScope.language = $rootScope.userLanguage || config.SITE.DEFAULT_LANGUAGE;
             $rootScope.errorMessages=errorMessages;
@@ -18,16 +17,6 @@ angular.module('playerApp')
             org.sunbird.portal.init();
             $rootScope.openLink = function (url) {
                 $location.path(url);
-            }
-            $rootScope.loadLabelsAndMessageBundles = function () {
-                var promises = [];
-                promises.push(userService.getJsonBundle('labels'));
-                promises.push(userService.getJsonBundle('errorMessages'));
-                $q.all(promises).then(function (results) {
-                    results.forEach(function (res) {
-                        $rootScope.bundles[res.name] = res.data;
-                    });
-                });
             }
             $rootScope.loadBundle = function () {
                 var promises = [];
@@ -40,33 +29,56 @@ angular.module('playerApp')
                             $rootScope.addTranslation($rootScope.language, $rootScope.translationBundle);
                         }
                     });
-                });
-            };
-            $rootScope.addTranslation = function (language, translationBundle) {
-                if (setResourceBundle(language, translationBundle)) {
-                    $translate.use(language);
-                }
-            };
-            $rootScope.mergeObjects = function (obj1, obj2) {
-                var objMerge = '';
-                if (Object.keys(obj1).length > 0) {
-                    objMerge = JSON.stringify(obj1) + JSON.stringify(obj2);
-                    objMerge = objMerge.replace(/\}\{/, ',');
-                    objMerge = JSON.parse(objMerge);
-                } else {
-                    objMerge = obj2;
-                }
-                return objMerge;
-            };
-            $('body').click(function (e) {
-                if ($(e.target).closest('div.dropdown-menu-list').prop('id') == 'search-suggestions') {
-                    return false;
-                } else {
-                    $('body').find('.dropdown-menu-list').removeClass('visible').addClass('hidden');
-                }
             });
-            $scope.logout = function () {
-                window.document.location.href = '/logout';
+        };
+        $rootScope.addTranslation = function(language, translationBundle) {
+            if (setResourceBundle(language, translationBundle)) {
+                $translate.use(language);
             }
-
+        };
+        $rootScope.mergeObjects = function(obj1, obj2) {
+            var objMerge = '';
+            if (Object.keys(obj1).length > 0) {
+                objMerge = JSON.stringify(obj1) + JSON.stringify(obj2);
+                objMerge = objMerge.replace(/\}\{/, ',');
+                objMerge = JSON.parse(objMerge);
+            } else {
+                objMerge = obj2;
+            }
+            return objMerge;
+        };
+        $rootScope.loadBundle('label');
+        $('body').click(function(e) {
+            if ($(e.target).closest('div.dropdown-menu-list').prop('id') == 'search-suggestions') {
+                return false;
+            } else {
+                $('body').find('.dropdown-menu-list').removeClass('visible').addClass('hidden');
+            }
         });
+        $scope.logout = function() {
+            window.document.location.href = '/logout';
+        };
+        //get user profile
+        $scope.userProfile = function(userProfile) {
+            if (userProfile && userProfile.responseCode === 'OK') {
+                var profileData = userProfile.result.response;
+                $rootScope.avatar = profileData.avatar;
+                $rootScope.firstName = profileData.firstName;
+                $rootScope.lastName = profileData.lastName;
+            } else {
+                console.error('fetching profile failed');
+                //error handler
+            }
+        };
+        $scope.getProfile = function() {
+            userService.getUserProfile($rootScope.userId)
+                .then(function(successResponse) {
+                    $scope.userProfile(successResponse);
+                }).catch(function(error) {
+                    console.error('api fetching profile  failed');
+                    //error handler
+                });
+        };
+        $scope.getProfile();
+        //end of get user profile
+    });
