@@ -62,7 +62,7 @@ var paths = {
         player.app + '/thirdparty/bower_components/file-upload/fine-uploader/fine-uploader.js',
         player.app + '/thirdparty/bower_components/semantic-tree-picker/semantic-ui-tree-picker.js',
         player.app + '/thirdparty/bower_components/angular-ui-router/release/stateEvents.min.jss'
-        
+
     ],
     karma: 'karma.conf.js',
     views: {
@@ -80,85 +80,91 @@ var dist = {
     config: 'config/'
 };
 
+var jsonConfigArr = [
+    {name: "config", path: "config/playerAppConfig.json"},
+    {name: "labels", path: "config/labels.json"},
+    {name: "errorMessages", path: "config/errorMessages.json"}
+];
+
 ////////////////////////
 // Reusable pipelines //
 ////////////////////////
 
 var lintScripts = lazypipe()
-    .pipe($.jshint, '.jshintrc')
-    .pipe($.jshint.reporter, 'jshint-stylish');
+        .pipe($.jshint, '.jshintrc')
+        .pipe($.jshint.reporter, 'jshint-stylish');
 
 ///////////
 // Tasks //
 ///////////
 
-gulp.task('index-html', function() {
+gulp.task('index-html', function () {
     gulp.src(player.app + '/index.html')
-        .pipe(gulp.dest('dist/'));
+            .pipe(gulp.dest('dist/'));
     gulp.src(player.app + '/server.js')
-        .pipe(gulp.dest('dist/'));
+            .pipe(gulp.dest('dist/'));
 });
 
-gulp.task('images', function() {
+gulp.task('images', function () {
     return gulp.src([paths.images])
-        .pipe($.cache($.imagemin({
-            optimizationLevel: 5,
-            progressive: true,
-            interlaced: true
-        })))
-        .pipe(gulp.dest(dist.path + dist.images));
+            .pipe($.cache($.imagemin({
+                optimizationLevel: 5,
+                progressive: true,
+                interlaced: true
+            })))
+            .pipe(gulp.dest(dist.path + dist.images));
 });
 
-gulp.task('build-js', function() {
+gulp.task('build-js', function () {
     return gulp.src(paths.scripts)
-        // .pipe(useref())
-        .pipe(gulp.dest(dist.path + dist.scripts));
+            // .pipe(useref())
+            .pipe(gulp.dest(dist.path + dist.scripts));
 });
 
-gulp.task('build-css', function() {
-    return gulp.src(player.app+'styles/main.less')
-        .pipe(plumber())
-        .pipe(less())
-        .pipe(autoprefixer())
-        .pipe(gulp.dest(dist.path + dist.styles));
+gulp.task('build-css', function () {
+    return gulp.src(player.app + 'styles/main.less')
+            .pipe(plumber())
+            .pipe(less())
+            .pipe(autoprefixer())
+            .pipe(gulp.dest(dist.path + dist.styles));
 });
-gulp.task('build-css-dev', function() {
-    return gulp.src(player.app+'styles/main.less')
-        .pipe(plumber())
-        .pipe(less())
-        .pipe(autoprefixer())
-        .pipe(gulp.dest(player.app+'styles'))
-        .pipe(gulp.dest(player.public+'styles'));
-        
+gulp.task('build-css-dev', function () {
+    return gulp.src(player.app + 'styles/main.less')
+            .pipe(plumber())
+            .pipe(less())
+            .pipe(autoprefixer())
+            .pipe(gulp.dest(player.app + 'styles'))
+            .pipe(gulp.dest(player.public + 'styles'));
+
 });
 
 // inject bower components
-gulp.task('bower', function() {
+gulp.task('bower', function () {
     return gulp.src(paths.thirdparty)
-        .pipe(gulp.dest(dist.path + '/thirdparty'));
+            .pipe(gulp.dest(dist.path + '/thirdparty'));
 });
 
-gulp.task('html', function() {
+gulp.task('html', function () {
     return gulp.src(player.app + '/views/**/*')
-        .pipe(gulp.dest(dist.path + dist.views));
+            .pipe(gulp.dest(dist.path + dist.views));
 });
 
-gulp.task('start:client', ['build-css', 'start:server'], function() {
+gulp.task('start:client', ['build-css', 'start:server'], function () {
     openURL('http://localhost:9000');
 });
 
-gulp.task('start:server', function() {
+gulp.task('start:server', function () {
     $.connect.server({
         root: [player.app, '.tmp'],
         livereload: true,
         // Change this to '0.0.0.0' to access the server from outside.
         port: 9000,
-        middleware: function(connect, opt) {
+        middleware: function (connect, opt) {
             return [historyApiFallback({})];
         }
     });
 });
-gulp.task('start:server:test', function() {
+gulp.task('start:server:test', function () {
     $.connect.server({
         root: ['test', player.app, '.tmp'],
         livereload: true,
@@ -166,109 +172,111 @@ gulp.task('start:server:test', function() {
     });
 });
 
-gulp.task('watch', function() {
+gulp.task('watch', function () {
     gulp.watch('app/styles/**/main.less', ['build-css']);
 
     $.watch(paths.views.files)
-        .pipe($.plumber())
-        .pipe($.connect.reload());
+            .pipe($.plumber())
+            .pipe($.connect.reload());
 
     $.watch(paths.scripts)
-        .pipe($.plumber())
-        .pipe(lintScripts())
-        .pipe($.connect.reload());
+            .pipe($.plumber())
+            .pipe(lintScripts())
+            .pipe($.connect.reload());
 
     $.watch(paths.test)
-        .pipe($.plumber())
-        .pipe(lintScripts());
+            .pipe($.plumber())
+            .pipe(lintScripts());
 
     gulp.watch('bower.json', ['bower']);
 });
 
-gulp.task('serve', function(cb) {
+gulp.task('serve', function (cb) {
     runSequence('clean:dist', ['start:client'], ['build-css-dev'],
-        'watch', cb);
+            'watch', cb);
 });
 
-gulp.task('serve:prod', function(cb) {
+gulp.task('serve:prod', function (cb) {
     runSequence('clean:dist', ['build'], cb);
     $.connect.server({
         root: [player.app, 'dist'],
         livereload: false,
         port: 9000,
-        middleware: function(connect, opt) {
+        middleware: function (connect, opt) {
             return [historyApiFallback({})];
         }
     });
     openURL('http://localhost:9000');
 });
 
-gulp.task('test', ['start:server:test'], function() {
+gulp.task('test', ['start:server:test'], function () {
     var testToFiles = paths.testRequire.concat(paths.scripts, paths.test);
     return gulp.src(testToFiles)
-        .pipe($.karma({
-            configFile: paths.karma,
-            action: 'watch'
-        }));
+            .pipe($.karma({
+                configFile: paths.karma,
+                action: 'watch'
+            }));
 });
 
 ///////////
 // Build //
 ///////////
 
-gulp.task('clean:dist', function(cb) {
+gulp.task('clean:dist', function (cb) {
     rimraf(dist.path, cb);
 });
 
-gulp.task('client:build', ['html', 'build-css'], function() {
+gulp.task('client:build', ['html', 'build-css'], function () {
     var jsFilter = $.filter('**/*.js');
     var cssFilter = $.filter('**/*.css');
 
     return gulp.src(paths.views.main)
-        .pipe($.useref({ searchPath: [player.app, '.tmp'] }))
-        .pipe(jsFilter)
-        .pipe($.ngAnnotate())
-        .pipe($.uglify())
-        .pipe(jsFilter.restore())
-        .pipe(cssFilter)
-        .pipe($.minifyCss({ cache: true }))
-        .pipe(cssFilter.restore())
-        .pipe($.rev())
-        .pipe($.revReplace())
-        .pipe(gulp.dest(player.dist));
+            .pipe($.useref({searchPath: [player.app, '.tmp']}))
+            .pipe(jsFilter)
+            .pipe($.ngAnnotate())
+            .pipe($.uglify())
+            .pipe(jsFilter.restore())
+            .pipe(cssFilter)
+            .pipe($.minifyCss({cache: true}))
+            .pipe(cssFilter.restore())
+            .pipe($.rev())
+            .pipe($.revReplace())
+            .pipe(gulp.dest(player.dist));
 });
 
-gulp.task('semantic', function() {
+gulp.task('semantic', function () {
     gulp.src('semantic/dist', {
         read: false
     }).pipe(clean());
     gulp.src(['app/config/semantic/theme.config']).pipe(gulp.dest('semantic/src/'));
     gulp.src(['app/config/semantic/site.variables']).pipe(gulp.dest('semantic/src/site/globals/'));
     gulp.src('semantic/gulpfile.js')
-        .pipe(chug({
-            tasks: ['build']
-        }, function() {
-            gulp.src(['semantic/dist/semantic.min.css']).pipe(gulp.dest('app/thirdparty/semantic/styles/'));
-            gulp.src(['semantic/dist/themes/**/*']).pipe(gulp.dest('app/thirdparty/semantic/styles/themes'));
-            gulp.src(['semantic/dist/semantic.min.js']).pipe(gulp.dest('app/thirdparty/semantic'));
-        }));
+            .pipe(chug({
+                tasks: ['build']
+            }, function () {
+                gulp.src(['semantic/dist/semantic.min.css']).pipe(gulp.dest('app/thirdparty/semantic/styles/'));
+                gulp.src(['semantic/dist/themes/**/*']).pipe(gulp.dest('app/thirdparty/semantic/styles/themes'));
+                gulp.src(['semantic/dist/semantic.min.js']).pipe(gulp.dest('app/thirdparty/semantic'));
+            }));
 });
 
-gulp.task('build', ['clean:dist'], function() {
+gulp.task('build', ['clean:dist'], function () {
     runSequence(['index-html', 'images', 'bower', 'config', 'build-css', 'build-css-dev', 'build-js', 'html']);
 });
 
 gulp.task('production', ['clean:dist'], function () {
     gulp.src(['app/**/*'])
-    .pipe(gulp.dest(player.dist));
+            .pipe(gulp.dest(player.dist));
     gulp.src(['node_modules/**/*'])
-    .pipe(gulp.dest(player.dist+'/node_modules'))
+            .pipe(gulp.dest(player.dist + '/node_modules'))
 })
 gulp.task('default', ['production']);
 
-gulp.task('config', function() {
-    gulp.src(player.app+'config/playerAppConfig.json')
-        .pipe(gulpNgConfig('playerApp.config'))
-        .pipe(gulp.dest(player.app+'scripts'))
-        .pipe(gulp.dest(dist.path + dist.scripts));
+gulp.task('config', function () {
+    jsonConfigArr.forEach(function (item, index) {
+        gulp.src(player.app + item.path)
+                .pipe(gulpNgConfig('playerApp.'+item.name))
+                .pipe(gulp.dest(player.app + 'scripts'))
+                .pipe(gulp.dest(dist.path + dist.scripts));
+    });
 });
