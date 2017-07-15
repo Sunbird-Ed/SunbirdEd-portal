@@ -38,6 +38,34 @@
                 "START": "We are fetching data...",
                 "FAILED": "Fetching other courses failed, please try again later..."
             }
+        },
+        "NOTES": {
+            "CREATE": {
+                "START": "We are creating note...",
+                "FAILED": "Creating note is failed, please try again later...",
+                "SUCCESS": "Note created successfully..."
+            },
+            "GET": {
+                "START": "Fetching note detail, please wait...",
+                "FAILED": "Fetching note detail is failed, please try again later...",
+                "SUCCESS": "Note detail fetched successfully..."
+            },
+            "REMOVE": {
+                "START": "We are removing note...",
+                "FAILED": "Removing note is failed, please try again later...",
+                "SUCCESS": "Note deleted successfully..."
+            },
+            "SEARCH": {
+                "START": "We are fetching notes...",
+                "FAILED": "Fetching note is failed, please try again later...",
+                "SUCCESS": "Note detail fetched successfully...",
+                "NO_RESULT": "You don't have any note, please create note..."
+            },
+            "UPDATE": {
+                "START": "We are updating note...",
+                "FAILED": "Updating note is failed, please try again later...",
+                "SUCCESS": "Note updated successfully..."
+            }
         }
     }
 }
