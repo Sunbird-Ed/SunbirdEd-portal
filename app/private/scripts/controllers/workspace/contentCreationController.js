@@ -212,11 +212,33 @@ angular.module('playerApp')
 
             contentCreation.uploadContent = function () {
                 var endpoint = 'http://localhost:5000/api/sb/v1/content/upload' + '/' + contentCreation.contentId;
-                contentCreation.manualUploader.setEndpoint(endpoint, contentCreation.uploadedFileId)
+                contentCreation.manualUploader.setEndpoint(endpoint, contentCreation.uploadedFileId);
                 contentCreation.manualUploader.uploadStoredFiles();
             };
             
             contentCreation.uploadYoutubeFile = function() {
-                contentCreation.initilizeModal();
+                var isValid = validateYouTubeUrl(contentCreation.youtubeFileLink);
+                if(isValid) {
+                    contentCreation.invalidYoutubeUrl = false;
+                    contentCreation.initilizeModal();
+                } else {
+                    contentCreation.invalidYoutubeUrl = true;
+                }
+            };
+            
+            function validateYouTubeUrl(url) {
+                if (url !== undefined || url !== '') {        
+                    var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
+                    var match = url.match(regExp);
+                    if (match && match[2].length === 11) {           
+                        contentCreation.youtubeFileLink = 'https://www.youtube.com/embed/' + match[2] + '?autoplay=1&enablejsapi=1';
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
             }
+            
         });
