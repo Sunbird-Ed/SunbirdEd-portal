@@ -1,6 +1,6 @@
 <div ng-init="reviewContent.initializeData()">
     <div ng-if="!reviewContent.reviewApi.loader.showLoader && !reviewContent.reviewApi.error.showError">
-        <div class="ui three stackable cards">
+        <div class="ui four stackable cards">
             <div class="link card mouse-pointer" ng-repeat="item in reviewContent.reviewContentData track by $index"
                  ng-click="reviewContent.openContentPlayer(item)">
                 <div class="image imageInCardsResponsive">
@@ -16,7 +16,7 @@
                 </div>
                 <div class="content">
                     <span class="sliderCardSubDesc">
-                        <span>{{item.description| limitTo:14}}</span>
+                        <span>{{item.description| limitTo:30}}</span>
                     </span>
                 </div>
             </div>
