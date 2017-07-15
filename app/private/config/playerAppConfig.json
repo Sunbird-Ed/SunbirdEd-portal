@@ -229,6 +229,12 @@
                     "START": "We are sending content for retire...",
                     "FAILED": "Sending content for retire failed, please try again later..."
                 }
+            },
+            "COLLECTION":{
+                "PREVIEW":{
+                    "START": "Fetching data for you....",
+                    "FAILED": "Unable to load data."
+                }
             }
         },
         "ekstep_CE_config": {
