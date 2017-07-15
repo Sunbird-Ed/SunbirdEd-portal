@@ -345,8 +345,6 @@ angular.module('playerApp')
                                 node.setActive(true);
                                 node.setFocus(false);
                                 $('#resume-button-' + toc.itemIndex).show();
-                                $('#toc-resume-button').css('font-size', '10px');
-                                $('#toc-resume-button').css('margin-right', '15px');
 
                             } else
                             {
