@@ -70,7 +70,7 @@ angular.module('playerApp')
                         }
                     }
                 });
-            }, 500);
+            }, 300);
 
             contentCreation.editContent = function (contentId) {
                 var params = {contentId: contentId}
@@ -113,7 +113,7 @@ angular.module('playerApp')
                             contentCreation.clearContentCreationModal();
                         },
                         onHide: function () {
-                            if (!contentCreation.contentId) {
+                            if (!contentCreation.contentId && !contentCreation.youtubeFileLink) {
                                 document.getElementById("hide-section-with-button").style.display = 'block';
                                 contentCreation.manualUploader.cancel(contentCreation.uploadedFileId);
                             }
@@ -129,7 +129,7 @@ angular.module('playerApp')
                         $('#mimeTypeDropDown').dropdown('set text', "Youtube Video");
                         $("#mimeTypeDropDown").dropdown("destroy");
                     }
-                }, 100);
+                }, 10);
             };
 
             /**
