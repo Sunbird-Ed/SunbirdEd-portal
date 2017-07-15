@@ -6,7 +6,7 @@
     <div class="ten wide column">
     <div class="ui segments">
         <div class="ui segment margin-auto padding-left-right-0 padding-top-bottom-0 " ng-init="noteList.ngInit()">
-            <div class="ui grid margin-top-0 margin-left-right-0 margin-bottom-0 height-100" id="notesList" ng-if="(!noteList.searchApi.loader.showLoader && !noteList.searchApi.error.showError) || noteList.notesList.length > 0">
+            <div class="ui grid margin-top-0 margin-left-right-0 margin-bottom-0 height-100" id="notesList">
                 <div class="twelve wide column">
                     <div class="addnotes ui container container-with-button padding-left-right-0">
                         <span class="ui header">{{$root.labels.Notes.myNotes}}</span>
@@ -28,7 +28,7 @@
                  
             </div>
         </div>
-         <div class="noteListSegment ui secondary segment">
+         <div class="noteListSegment ui secondary segment" ng-if="noteList.notesList.length>0">
             <div class="twelve wide column" >
                     <div class="ui grid">
                         <div class="four wide column padding-topBottomNone">
@@ -52,37 +52,31 @@
                         </div>
                         <div class=" eight wide column " ng-if="!noteList.update.showUpdateNote">
                             <div class="ui items">
-                                
-                                    <div class="content">
-                                        <div class="ui row margin-right-15">
-                                            <div class="right-floated padding-top-10">
-                                            <i class="large edit icon cursor-pointer" title={{$root.labels.Notes.edit}}
-                                               ng-click="noteList.update.showUpdateNote = !noteList.update.showUpdateNote; noteList.updateNoteData(noteList.selectedNoteData);"></i>
-                                            <i class="right-floated large trash outline icon cursor-pointer" title={{$root.labels.Notes.delete}}
-                                               ng-click="noteList.removeNote(noteList.selectedNoteData.identifier);"></i>
-                                              </div> 
-                                              
-                                            <span class="ui small header notedecheader mouse-pointer"> {{ noteList.selectedNoteData.title}}
-                                            </span>
-                                            <div class="description padding-top-10">
+                                <div class="content notelistscroll">
+                                    <div class="ui row margin-right-15">
+                                        <div class="right-floated padding-top-10">
+                                        <i class="large edit icon cursor-pointer" title={{$root.labels.Notes.edit}}
+                                           ng-click="noteList.update.showUpdateNote = !noteList.update.showUpdateNote; noteList.updateNoteData(noteList.selectedNoteData);"></i>
+                                        <i class="right-floated large trash outline icon cursor-pointer" title={{$root.labels.Notes.delete}}
+                                           ng-click="noteList.removeNote(noteList.selectedNoteData.identifier);"></i>
+                                          </div> 
+
+                                        <span class="ui small header notedecheader mouse-pointer"> {{ noteList.selectedNoteData.title}}
+                                        </span>
+                                        <div class="description padding-top-10">
                                             <pagedown-viewer content="noteList.selectedNoteData.note"></pagedown-viewer>
-                                            </div>
                                         </div>
                                     </div>
+                                </div>
                             </div>
-                            
                         </div>
                         <div class="eight wide column" ng-if="noteList.update.showUpdateNote" style="    padding-right: 28px;">
-                                <div ng-include="'views/note/updateNote.html'"></div>
-                            </div>
-
+                            <div ng-include="'views/note/updateNote.html'"></div>
+                        </div>
                     </div>
                 </div>
-          </div>
+            </div>
         </div>
-        
-                
-               
         <div ng-if="noteList.searchApi.loader.showLoader">
             <app-loader data="{{noteList.searchApi.loader}}"></app-loader>
         </div>
