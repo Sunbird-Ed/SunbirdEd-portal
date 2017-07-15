@@ -23,6 +23,11 @@
             "INFO": "info",
             "WARNING": "warning",
             "SUCCESS": "success"
+        },
+        "WorkSpace": {
+            "ContentCreation": {
+                "invalidYoutubeUrl": "Invalid url, Please check..."
+            }
         }
     }
 }
