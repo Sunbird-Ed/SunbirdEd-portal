@@ -8,7 +8,7 @@
             "LEARNER_PREFIX": "v1/learner/",
             "CONTENT_PREFIX": "v1/content/",
             "CONFIG_BASE": "http://localhost:4000/api/sb/v1/",
-            "PAGE_PREFIX":"page/assemble",
+            "PAGE_PREFIX": "page/assemble",
             "USER": {
                 "RESOURCE_BUNDLE": "resourcebundle",
                 "SIGNUP": "user/create",
@@ -30,7 +30,7 @@
                 "GET_ENROLLED_COURSES": "user/courses",
                 "GET_LEARN_OTHER_SECTION": "Course",
                 "ENROLL_USER_COURSE": "user/courses/enroll",
-                "RECOMMENDED_COURSE": "course/recommended/courses"
+                "RECOMMENDED_COURSE": "recommended/courses"
 
 
             },
@@ -44,7 +44,8 @@
                 "GET_MY_COURSE": "content/get/mycontent",
                 "UPLOAD": "content/upload",
                 "UPLOAD_MEDIA": "upload/media",
-                "RETIRE": "content/retire"
+                "RETIRE": "content/retire",
+                "REJECT": "content/reject"
             },
             "AUTH": {
                 "LOGIN": "user/login",
@@ -224,7 +225,7 @@
                     "START": "We are sending content for publish...",
                     "FAILED": "Sending content for publish failed, please try again later..."
                 },
-                "RETIRE_CONTENT": {
+                "REJECT_CONTENT": {
                     "START": "We are sending content for retire...",
                     "FAILED": "Sending content for retire failed, please try again later..."
                 }
@@ -356,16 +357,16 @@
         },
         "ekstep_CP_config": {
             "context": {
-                "authToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI2MzExMTYwNTMzOGY0Zjc5YTgwZTM3YjcyZjVjMmUwZiJ9.azmj_AHmndeJz0h6yIkOJz1XjeZR6Gzd-OrZzR66I0A",
+                "authToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI1OWFiMmE2MDc1YzI0ODU2YjhiYjIzMjg4ZDdhZGNmNSJ9.RLouNX7RQ0VkVv2BYqNtH12D0IzKnBJ_I46xEORwHsU",
                 "mode": "play"
             },
             "config": {
-                "showEndPage": true,
+                "showEndPage": false,
                 "showStartPage": true,
-                "host": "https://qa.ekstep.in",
+                "host": "https://dev.ekstep.in",
                 "apislug": "/api",
                 "repos": ["/content-plugins/renderer"],
-                "plugins": [{ "id": "org.sunbird.iframeEvent", "ver": 1.0, "type": "plugin" }]
+                "plugins": [{ "id": "org.sunbird.iframeEvent", "ver": 1.0, "type": "plugin" },{"id":"org.sunbird.player.endpage","ver":1.0,"type":"plugin"}]
             },
             "baseURL": "/content/preview/preview.html?webview=true"
         },
@@ -546,6 +547,10 @@
                 "defaultTemplate": {}
 
             }
+        },
+        "TELEMETRY": {
+            "MAX_BATCH_SIZE": 20,
+            "SYNC": "telemetry"
         }
     }
 }

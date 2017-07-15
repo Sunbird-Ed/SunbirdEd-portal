@@ -1,0 +1,75 @@
+<style>
+.sunbird-content-holder {
+    position: absolute;
+    top: 28%;
+    margin: 5% 9%;
+    left: 26%;
+    width: 40%;
+    height: 26%
+}
+
+.sunbird-content {
+    width: 54%;
+    left: 23%;
+    top: 13%;
+    position: absolute
+}
+
+.gc-ep-home {
+    position: absolute;
+    width: 22%;
+    left: 57%;
+    top: 3%;
+    opacity: 0.5
+}
+
+.sunbird-footer {
+    top: 70%;
+    /* width: 97%; */
+    position: relative;
+    /* margin-top: 10%; */
+    font-size: 22px;
+    padding: 1%;
+    right: 40%;
+    left: 40%;
+    /* background: white; */
+    position: absolute;
+}
+
+.sunbid-content-title {
+    width: 100%;
+    text-transform: uppercase;
+    padding: 0.3em 0em 0.48em;
+    font-size: 1.8em;
+    text-align: center;
+    line-height:1.1em;
+    color: black;
+}
+</style>
+<div class="font-lato gc-ep-cont" ng-app="sunbird-endpage" ng-controller="endPageController" id='endpage' ng-show="showEndPage">
+    <image class="gc-ep-cont-background" ng-src="{{endpageBackground}}" />
+    <div class="sunbird-content">
+        <p class="gc-ep-cong gc-text-elipsis" style="font-size: 2em;
+    padding: 2%;">Congratulations! You just completed</p>
+        <p class="sunbid-content-title" ng-if="playerMetadata .name">{{playerMetadata .name}}</p>
+        <p class="gc-content-owner gc-text-elipsis" ng-if="playerMetadata.owner">Author: {{playerMetadata.owner}}</p>
+    </div>
+    <div class="sunbird-content-holder">
+        <div class="sunbird-content-replay" ng-click="replayContent()">
+            <img class="replay" ng-src="{{replayIcon}}" style="width: 22%;">
+        </div>
+        <div class="sunbird-content-timer">
+            <img class ="gc-ep-home" ng-disabled="true" ng-src="{{genieIcon}}" ng-click="openGene()"></img>
+        </div>
+    </div>
+    <center>
+        <div class="sunbird-footer">
+            <center>
+                <p class="">Total Timespent: &nbsp;&nbsp;{{totalTimeSpent}}</p>
+            </center>
+        </div>
+    </center>
+    <div class="end-license">
+        <b>{{licenseAttribute}}</b>
+    </div>
+</div>
