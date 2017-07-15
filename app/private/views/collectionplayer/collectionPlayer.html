@@ -1,0 +1,29 @@
+<div class="ui grid">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+        <content-player visibility="cpvm.showPlayer" id="cpvm.contentId" isshowmetaview="false" isheader="true" isclose="true" height="8" width="100" ispercentage="true"></content-player>
+    </div>
+    <div class="one wide column"></div>
+</div>
+<div class="ui grid" ng-hide="cpvm.showPlayer">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+        <h3 class="ui header" ng-if="cpvm.name">{{cpvm.name}}</h3>
+        <div id="collectionPlayer" class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100" ng-repeat="item in  cpvm.courseHierachy.children track by $index" ng-click="cpvm.expandMe($event, item)">
+            <div class="courseAccordianHeading title title-padding-left accordian-left-text" name="{{item.identifier}}">
+                <i ng-class="[cpvm.getContentIcon(item.mimeType)]"></i> {{item.name}}
+                <i ng-if='item.children && item.children.length > 0' class="plus icon down-arrow-accordion"></i>
+            </div>
+            <div ng-if='item.children && item.children.length > 0' class="content">
+                <div id="FT_{{$index}}" class="fancy-tree-container" ng-init="cpvm.constructTree($index, item.children)"></div>
+            </div>
+        </div>
+    </div>
+    <div class="one wide column"></div>
+</div>
+<div ng-if="cpvm.loader.showLoader">
+    <app-loader data="{{cpvm.loader}}"></app-loader>
+</div>
+<div ng-if="cpvm.error.showError">
+    <error-message data="{{cpvm.error}}" visibility="cpvm.error.showError"></error-message>
+</div>
