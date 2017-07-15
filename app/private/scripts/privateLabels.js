@@ -1,2 +1,2 @@
 angular.module("playerApp.labels", [])
-.constant("labels", {"Courses":{"resume":"RESUME"}});
+.constant("labels", {"Courses":{"resume":"RESUME"},"Notes":{"title":"Title","description":"Description","clear":"Clear","save":"Save","takeNote":"Take Note","addNote":"ADD NOTE","takeANote":"Take a note","update":"Update","viewAll":"View All","myNoteBook":"My Notebook","myNotes":"My Notes","searchForNotesOrTitle":"Search for notes or title","search":"Search","edit":"Edit","delete":"Delete"}});
