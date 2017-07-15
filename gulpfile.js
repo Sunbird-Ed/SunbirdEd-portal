@@ -82,13 +82,13 @@ var dist = {
 
 var jsonConfigArr = [
     { name: 'config', path: 'config/playerAppConfig.json' },
-    { name: 'labels', path: 'config/labels.json' },
-    { name: 'errorMessages', path: 'config/errorMessages.json' }
+    { name: 'labels', path: 'config/privateLabels.json' },
+    { name: 'errorMessages', path: 'config/privateErrorMessages.json' }
 ];
 
 var jsonConfigPublic = [
-    { name: 'labels', path: 'config/labels.json' },
-    { name: 'errorMessages', path: 'config/errorMessages.json' }
+    { name: 'labels', path: 'config/publicLabels.json' },
+    { name: 'errorMessages', path: 'config/publicErrorMessages.json' }
 ];
 
 ////////////////////////
@@ -265,7 +265,7 @@ gulp.task('semantic', function() {
 });
 
 gulp.task('build', ['clean:dist'], function() {
-    runSequence(['index-html', 'images', 'bower', 'config', 'build-css', 'build-css-dev', 'build-js', 'html']);
+    runSequence(['index-html', 'images', 'bower', 'config', 'build-css', 'build-css-dev', 'build-js', 'html', 'config-public-const']);
 });
 
 gulp.task('production', ['clean:dist'], function() {
@@ -287,7 +287,7 @@ gulp.task('config', function() {
 gulp.task('config-public-const', function() {
     jsonConfigPublic.forEach(function(item, index) {
         gulp.src(player.public + item.path)
-            .pipe(gulpNgConfig('loginApp'))
+            .pipe(gulpNgConfig('loginApp.' + item.name))
             .pipe(gulp.dest(player.public + 'scripts'))
             .pipe(gulp.dest(dist.path + dist.scripts));
     });

@@ -1592,6 +1592,7 @@ span.fancytree-title {
 /* file upload border */
 .qq-uploader {
   border: 2px dashed #CCCCCC !important;
+  min-height: 130px !important;
 }
 .selectuploadfile .ui.button {
   margin: 32px 0 0 0;
@@ -1618,6 +1619,12 @@ span.fancytree-title {
   color: #979797;
   font-size: 12px;
   padding-top: 40px;
+}
+.fileUploadDivider {
+  padding: 35px 0px 10px 0px !important;
+  border: 2px dashed #CCCCCC !important;
+  margin-left: 0rem !important;
+  margin-right: 0rem !important;
 }
 .profilesegmentmargin.ui.segment:first-child {
   margin-top: 20px;
