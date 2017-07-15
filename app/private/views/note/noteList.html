@@ -9,11 +9,11 @@
             <div class="ui grid margin-top-0 margin-left-right-0 margin-bottom-0 height-100" id="notesList" ng-if="(!noteList.searchApi.loader.showLoader && !noteList.searchApi.error.showError) || noteList.notesList.length > 0">
                 <div class="twelve wide column" ng-if="!noteList.update.showUpdateNote">
                     <div class="addnotes ui container container-with-button padding-left-right-0">
-                        <span class="ui header">My Notes</span>
+                        <span class="ui header">{{$root.labels.Notes.myNotes}}</span>
                         <i class=" circular icon margin-left-right-10 link" ng-class="!noteList.add.showCreateNote ? 'plus' : 'remove'" ng-click="noteList.add.showCreateNote = !noteList.add.showCreateNote;"></i>
                         <div class="notesearch" style="float:right">
                             <div class="ui icon input">
-                                <input type="text" ng-model="noteList.searchData.text" placeholder="Search for notes or title" title="Search" />
+                                <input type="text" ng-model="noteList.searchData.text" placeholder={{$root.labels.Notes.searchForNotesOrTitle}} title={{$root.labels.Notes.search}} />
                                 <i class="circular search link icon"></i>
                             </div>
                             <h5 class="ui right floated basic icon circular button" ng-click="noteList.closeNoteList()">
@@ -37,7 +37,7 @@
                             <div class="notelistscroll">
                                 <div class="profileitems ui relaxed divided items ">
                                     <div class="item padding-topBottomNone notelistfocus"  ng-repeat="note in noteList.notesList| orderBy : '-lastUpdatedOn' | noteListFilter:noteList.searchData.text">
-                                        <div class="content padding-all-10 contentnotelist" id="notelistcontent{{$index}}" ng-class="{'notelistborder': $index == noteList.selectedIndex || $index == 0 }" ng-click="noteList.showNoteList(note, $index)">
+                                        <div class="content padding-all-10 contentnotelist" id="notelistcontent{{$index}}" ng-class="{'notelistborder': $index === noteList.selectedIndex || $index === 0 }" ng-click="noteList.showNoteList(note, $index)">
                                             <a class="header ">{{ note.title | limitTo: 20 }}</a>
                                             <div class="description margin-top-0" ng-init="noteData = note.note.length > 20 ? note.note.substring(-1,20) : note.note">
                                         
@@ -57,8 +57,10 @@
                                 <div class="item">
                                     <div class="content">
                                         <div class="ui row margin-right-15">
-                                            <i class="ui right floated large edit icon cursor-pointer" ng-click="noteList.update.showUpdateNote = !noteList.update.showUpdateNote; noteList.updateNoteData(noteList.selectedNoteData);"></i>
-                                            <i class="ui right floated large remove circle icon cursor-pointer" ng-click="noteList.removeNote(noteList.selectedNoteData.identifier);"></i>
+                                            <i class="ui right floated large edit icon cursor-pointer" title={{$root.labels.Notes.edit}}
+                                               ng-click="noteList.update.showUpdateNote = !noteList.update.showUpdateNote; noteList.updateNoteData(noteList.selectedNoteData);"></i>
+                                            <i class="ui right floated large remove circle icon cursor-pointer" title={{$root.labels.Notes.delete}}
+                                               ng-click="noteList.removeNote(noteList.selectedNoteData.identifier);"></i>
                                             <span class="ui small header notedecheader mouse-pointer"> {{ noteList.selectedNoteData.title}}
                                             </span>
                                             <div class="description padding-top-10">
