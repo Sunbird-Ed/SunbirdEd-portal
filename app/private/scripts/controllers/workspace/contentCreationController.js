@@ -217,28 +217,23 @@ angular.module('playerApp')
             };
             
             contentCreation.uploadYoutubeFile = function() {
-                var isValid = validateYouTubeUrl(contentCreation.youtubeFileLink);
-                if(isValid) {
-                    contentCreation.invalidYoutubeUrl = false;
-                    contentCreation.initilizeModal();
+                contentCreation.initilizeModal();
+            };
+            
+            contentCreation.validateYouTubeUrl = function(url) {
+                contentCreation.invalidYoutubeUrl = false;
+                if (url !== undefined && url !== '') {        
+                    var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
+                    var match = url.match(regExp);
+                    if (match && match.length > 1 && match[2].length === 11) {
+                        contentCreation.youtubeFileLink = 'https://www.youtube.com/embed/' + match[2] + '?autoplay=1&enablejsapi=1';
+                        contentCreation.invalidYoutubeUrl = false;
+                    } else {
+                        contentCreation.invalidYoutubeUrl = true;
+                    }
                 } else {
                     contentCreation.invalidYoutubeUrl = true;
                 }
             };
-            
-            function validateYouTubeUrl(url) {
-                if (url !== undefined || url !== '') {        
-                    var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
-                    var match = url.match(regExp);
-                    if (match && match[2].length === 11) {           
-                        contentCreation.youtubeFileLink = 'https://www.youtube.com/embed/' + match[2] + '?autoplay=1&enablejsapi=1';
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    return false;
-                }
-            }
             
         });

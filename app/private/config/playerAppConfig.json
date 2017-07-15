@@ -376,7 +376,7 @@
                     "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Marathi", "Punjabi", "Tamil", "Telugu"
                 ],
                 "lessonTypes": [
-                    "Story", "Worksheet", "Game", "Plugin", "Template"
+                    "Story", "Worksheet"
                 ],
                 "subjects": [
                     "Maths", "English", "Hindi", "Assamese", "Bengali", "Gujarati", "Kannada", "Malayalam", "Marathi", "Nepali", "Oriya", "Punjabi", "Tamil", "Telugu", "Urdu"
