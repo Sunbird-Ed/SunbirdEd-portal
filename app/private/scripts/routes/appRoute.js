@@ -757,10 +757,9 @@ angular
 
         $rootScope.$on('$stateChangeStart',
             function(event, toState, toParams, fromState, fromParams) {
-                
                 switch (toState.name) {
                     case "WorkSpace.ContentCreation":
-                        if (!permissionsService.checkRolesPermissions(['CONTENT_CREATER', 'CONTENT_REVIEW', 'CONTENT_CREATION'], false)) {
+                        if (permissionsService.checkRolesPermissions(['CONTENT_CREATER', 'CONTENT_REVIEW', 'CONTENT_CREATION', 'CONTENT_REVIEWER'], false)) {
                             $rootScope.accessDenied = "You are not authorized to access this resource";
                             event.preventDefault();
                             $state.go('Home');
