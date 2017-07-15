@@ -734,6 +734,29 @@ angular
                 onExit: function($rootScope) {
                     $rootScope.profileActive = '';
                 }
+            }).state('PreviewCollection', {
+                url: '/preview/collection/:Id/:name',
+                views: {
+                    'mainView': {
+                        templateUrl: 'views/collectionPlayer/collectionPlayer.html',
+                        controller: 'CollectionPlayerCtrl as cpvm'
+                    }
+                },
+                params: { Id: null, name: null},
+                onEnter: function($state, $rootScope, portalTelemetryService) {
+                    $rootScope.resourcesActive = 'active';
+                    portalTelemetryService.fireImpressions({
+                        "env": "collection",
+                        "type": "preview",
+                        "pageid": "PreviewCollection",
+                        "id": $state.params["Id"],
+                        "name": "",
+                        "url": "/private/index#!/preview/collection/"+$state.params["Id"]+"/"+$state.params["name"]
+                    });
+                },
+                onExit: function ($rootScope) {
+                    $rootScope.resourcesActive = '';
+                }
             });
     })
     .run(function($urlRouter, $http, $state, permissionsService, $rootScope, $location) {
