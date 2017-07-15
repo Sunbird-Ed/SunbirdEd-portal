@@ -2,7 +2,7 @@
     <div ng-if="!publishedContent.publishedApi.loader.showLoader && !publishedContent.publishedApi.error.showError">
         <div class="ui three stackable cards">
             <div class="link card mouse-pointer" ng-repeat="item in publishedContent.publishedContentData track by $index"
-                 ng-click="publishedContent.openEditForm(item.identifier)">
+                 ng-click="publishedContent.openContentPlayer(item)">
                 <div class="image imageInCardsResponsive">
                     <div class="ui fluid image">
                         <a class="ui black right ribbon label">{{item.contentType}}</a>

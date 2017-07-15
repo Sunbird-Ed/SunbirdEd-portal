@@ -2,7 +2,7 @@
     <div ng-if="!upForReviewContent.reviewApi.loader.showLoader && !upForReviewContent.reviewApi.error.showError">
         <div class="ui three stackable cards">
             <div class="link card mouse-pointer" ng-repeat="item in upForReviewContent.upForReviewContentData track by $index"
-                 ng-click="upForReviewContent.openEditForm(item.identifier)">
+                 ng-click="upForReviewContent.openContentPlayer(item)">
                 <div class="image imageInCardsResponsive">
                     <div class="ui fluid image">
                         <a class="ui black right ribbon label">{{item.contentType}}</a>
