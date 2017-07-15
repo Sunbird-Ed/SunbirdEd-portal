@@ -58,9 +58,10 @@
                                             <div class="right-floated padding-top-10">
                                             <i class="large edit icon cursor-pointer" title={{$root.labels.Notes.edit}}
                                                ng-click="noteList.update.showUpdateNote = !noteList.update.showUpdateNote; noteList.updateNoteData(noteList.selectedNoteData);"></i>
-                                            <i class="right-floated large remove circle icon cursor-pointer" title={{$root.labels.Notes.delete}}
+                                            <i class="right-floated large trash outline icon cursor-pointer" title={{$root.labels.Notes.delete}}
                                                ng-click="noteList.removeNote(noteList.selectedNoteData.identifier);"></i>
                                               </div> 
+                                              
                                             <span class="ui small header notedecheader mouse-pointer"> {{ noteList.selectedNoteData.title}}
                                             </span>
                                             <div class="description padding-top-10">
