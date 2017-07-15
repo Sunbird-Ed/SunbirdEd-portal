@@ -10,6 +10,7 @@ const express = require('express'),
     request = require('request'),
     env = process.env,
     trampolineServiceHelper = require('./helpers/trampolineServiceHelper.js'),
+    telemetryHelper = require('./helpers/telemetryHelper.js'),
     port = env['sunbird_port'] || 3000;
 
 
@@ -51,14 +52,14 @@ app.all('/public/service/v1/*', proxy(learnerURL, {
         return require('url').parse(learnerURL + urlParam).path;
     }
 }))
-app.all('/service/v1/learner/*', keycloak.protect(), proxy(learnerURL, {
+app.all('/private/service/v1/learner/*', keycloak.protect(), proxy(learnerURL, {
     proxyReqPathResolver: function(req) {
         let urlParam = req.params["0"];
         return require('url').parse(learnerURL + urlParam).path;
     }
 }))
 const contentURL = env.sunbird_content_player_url || 'http://localhost:5000/v1/';
-app.all('/service/v1/content/*', keycloak.protect(), proxy(contentURL, {
+app.all('/private/service/v1/content/*', keycloak.protect(), proxy(contentURL, {
     proxyReqPathResolver: function(req) {
         let urlParam = req.params["0"];
         let query = require('url').parse(req.url).query;
@@ -141,5 +142,11 @@ app.all('*', function(req, res) {
     res.redirect('/');
 });
 
+//callback after authentication
+
+
+keycloak.authenticated = function (request) {
+    telemetryHelper.logSessionStart(request)
+}
 app.listen(port);
 console.log('app running on port ' + port);

@@ -109,7 +109,7 @@ angular.module('playerApp')
             requestBody.mimeType = "application/vnd.ekstep.content-collection";
             requestBody.createdBy = collection.userId;
 
-            requestBody.name = requestBody.name ? requestBody.name : "Title";
+            requestBody.name = requestBody.name ? requestBody.name : "Untitle collection";
             requestBody.description = requestBody.description ? requestBody.description : "Description";
             requestBody.contentType = "Collection";
 
