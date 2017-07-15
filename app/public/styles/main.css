@@ -1608,6 +1608,16 @@ span.fancytree-title {
   margin-left: 0rem !important;
   margin-right: 0rem !important;
 }
+.dividerInFileUploader {
+  padding-top: 0rem !important;
+  padding-bottom: 0.3rem !important;
+}
+.textIndentForUploadFile {
+  text-indent: -25px !important;
+}
+.youTubeFileUploadForm {
+  max-width: 90% !important;
+}
 .profilesegmentmargin.ui.segment:first-child {
   margin-top: 20px;
 }
