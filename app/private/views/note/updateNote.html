@@ -1,7 +1,7 @@
-<div class="margin-auto margin-top-10" ng-if="!noteList.updateApi.loader.showLoader && !noteList.updateApi.error.showError">
+<div ng-show="!noteList.updateApi.loader.showLoader && !noteList.updateApi.error.showError" class="margin-auto margin-top-10" ng-if="!noteList.updateApi.loader.showLoader && !noteList.updateApi.error.showError">
     <div class=" margin-bottom-15">
-        <span class="ui header">{{noteList.update.metaData.title}}</span>
-        <span class="ui right floated secondary button" ng-click="noteList.update.showUpdateNote = !noteList.update.showUpdateNote">Back to list
+        <!-- <span class="ui header">{{noteList.update.metaData.title}}</span> -->
+        <span class="ui right floated basic icon circular button " ng-click="noteList.update.showUpdateNote = !noteList.update.showUpdateNote"><i class="ui remove icon"></i>
         </span>
     </div>
     <div class="ui fluid icon input" id="search-input-container">
