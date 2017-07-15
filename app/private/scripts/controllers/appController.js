@@ -67,6 +67,9 @@ angular.module('playerApp')
                 $rootScope.avatar = profileData.avatar;
                 $rootScope.firstName = profileData.firstName;
                 $rootScope.lastName = profileData.lastName;
+                if(profileData.rootOrg) {
+                    $rootScope.orgLogo = profileData.rootOrg.imgUrl;
+                }
             } else {
                 console.error('fetching profile failed');
                 //error handler
