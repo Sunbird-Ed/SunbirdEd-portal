@@ -1,161 +1,144 @@
 <div class="ui grid">
-  <div class="twelve wide column ">
-    <a class="section backtoprofile" ui-sref="Profile">
-      < Back To Profile</a>
-  </div>
-  <div class="twelve wide column ">
-    <div class="ui grid">
-      <div class="three wide column">
-        <div class="workspacecontent link ui card" ui-sref="CreateTextbook">
-          <div class="content">
-            <div class="textcontent">
-              <i class='my-icon file text outline icon '></i>
-              <span class="my-text">TEXTBOOK</span>
-            </div>
-          </div>
-        </div>
-        <p class="workspaceinstuction">You can create book with the structured section </p>
-      </div>
-      <div class="three wide column">
-        <div class="workspacecontent ui card">
-          <div class="content">
-            <div class="textcontent">
-              <i class='my-icon file text outline icon'></i>
-              <span class="my-text">COURSE</span>
-            </div>
-          </div>
-        </div>
-        <p class="workspaceinstuction">You will be taken to an editor to create a course with assessments/quizes. </p>
-      </div>
-      <div class="three wide column">
-        <div class="workspacecontent ui link card" ui-sref="CreateLesson">
-          <div class="content">
-            <div class="textcontent">
-              <i class='my-icon file text icon'></i>
-              <span class="my-text">LESSON</span>
-            </div>
-          </div>
-        </div>
-        <p class="workspaceinstuction">You can create stuff here. You must try it, it's magical!</p>
-      </div>
-      <div class="three wide column">
-        <div class="workspacecontent ui link card" ui-sref="CreateCollection">
-          <div class="content">
-            <div class="textcontent">
-              <i class='my-icon folder open outline icon'></i>
-              <span class="my-text">COLLECTION</span>
-            </div>
-          </div>
-        </div>
-        <p class="workspaceinstuction">Collections are folders/bundles of lessons or resources.</p>
-      </div>
+    <div class="twelve wide column ">
+        <a class="section backtoprofile" ui-sref="Profile">
+            < Back To Profile</a>
     </div>
-  </div>
-  <div class="twelve wide column dividerInFileUploader">
-    <div class="ui divider"></div>
-  </div>
-  <div class="twelve wide column">
-    <div fine-uploader></div>
-    <div class="ui grid fileUploadDivider">
-      <div class="one wide column"></div>
-      <div class="uploadicon four wide column">
-        <p class="padding-top-10 dropfile textIndentForUploadFile">ENTER YOUTUBE URL</p>
-      </div>
-      <div class="six wide column">
-        <div class="ui form youtubeupload youTubeFileUploadForm">
-          <div class="inline fields">
-            <div class="eight wide field">
-                <input type="text" ng-model="contentCreation.youtubeFileLink" placeholder="ENTER YOUTUBE URL">
-            </div>
-            <div class="two wide field">
-              <button class="ui primary basic button text-align-center padding-left-25 qq-upload-button-selector"
-                      ng-click="contentCreation.uploadYoutubeFile()" ng-disabled="!contentCreation.youtubeFileLink">UPLOAD</button>
-            </div>
-            <!-- d -->
-          </div>
-        </div>
-      </div>
-      <!--  <div class="uploadicon four wide column text-align-center">
-                    <p class="dropfile">UPLOAD YOUTUBE FILE
-                    </p>
-                </div>
-                <div class="six wide column">
-                    <div class="ui form ">
-                        <div class="field">
-                            <input type="text">
+    <div class="twelve wide column ">
+        <div class="ui grid">
+            <div class="three wide column">
+                <div class="workspacecontent link ui card" ui-sref="CreateTextbook">
+                    <div class="content">
+                        <div class="textcontent">
+                            <i class='my-icon file text outline icon '></i>
+                            <span class="my-text">TEXTBOOK</span>
                         </div>
-                        <button class="ui primary basic button text-align-center padding-left-25 qq-upload-button-selector">UPLOAD</button>
                     </div>
-                </div> -->
-      <div class="one wide column"></div>
+                </div>
+                <p class="workspaceinstuction">You can create book with the structured section </p>
+            </div>
+            <div class="three wide column">
+                <div class="workspacecontent ui card">
+                    <div class="content">
+                        <div class="textcontent">
+                            <i class='my-icon file text outline icon'></i>
+                            <span class="my-text">COURSE</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="workspaceinstuction">You will be taken to an editor to create a course with assessments/quizes. </p>
+            </div>
+            <div class="three wide column">
+                <div class="workspacecontent ui link card" ui-sref="CreateLesson">
+                    <div class="content">
+                        <div class="textcontent">
+                            <i class='my-icon file text icon'></i>
+                            <span class="my-text">LESSON</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="workspaceinstuction">You can create stuff here. You must try it, it's magical!</p>
+            </div>
+            <div class="three wide column">
+                <div class="workspacecontent ui link card" ui-sref="CreateCollection">
+                    <div class="content">
+                        <div class="textcontent">
+                            <i class='my-icon folder open outline icon'></i>
+                            <span class="my-text">COLLECTION</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="workspaceinstuction">Collections are folders/bundles of lessons or resources.</p>
+            </div>
+        </div>
     </div>
-    <p class="margin-top-20 workspaceinstuction">file accepted only pdf, mp4, youtube video and html zip.</p>
-  </div>
+    <div class="twelve wide column dividerInFileUploader">
+        <div class="ui divider"></div>
+    </div>
+    <div class="twelve wide column">
+        <div fine-uploader></div>
+        <div class="ui grid fileUploadDivider">
+            <div class="one wide column"></div>
+            <div class="uploadicon four wide column">
+                <p class="padding-top-10 dropfile textIndentForUploadFile">ENTER YOUTUBE URL</p>
+            </div>
+            <div class="six wide column">
+                <div class="ui form youtubeupload youTubeFileUploadForm">
+                    <div class="inline fields">
+                        <div class="eight wide field">
+                            <input type="text" ng-model="contentCreation.youtubeFileLink" placeholder="ENTER YOUTUBE URL">
+                        </div>
+                        <div class="two wide field">
+                            <button class="ui primary basic button text-align-center padding-left-25 qq-upload-button-selector"
+                                    ng-click="contentCreation.uploadYoutubeFile()" ng-disabled="!contentCreation.youtubeFileLink">UPLOAD</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="one wide column"></div>
+        </div>
+        <p class="margin-top-20 workspaceinstuction">file accepted only pdf, mp4, youtube video and html zip.</p>
+    </div>
 </div>
 <div class="ui negative message" ng-if="contentCreation.invalidYoutubeUrl">{{$root.errorMessages.WorkSpace.ContentCreation.invalidYoutubeUrl}}</div>
-<!--<button class="ui primary text-align-center icon button" ng-click="contentCreation.editContent('do_112284030010171392175')"
-                        >
-                        Edit Content
-                    </button>-->
 <div ng-show="contentCreation.showContentCreationModal">
-  <div class="ui modal" id="contentCreationModal">
-    <div class=" ui segment margin-top-10" ng-show="!contentCreation.createApi.loader.showLoader && !contentCreation.createApi.error.showError">
-      <div class=" margin-bottom-15">
-        <div class="ui grid">
-          <div class="eleven wide column">
-            <span class="ui header">Upload Content</span>
-          </div>
-          <div class="one wide column actions">
-            <h5 class="ui basic icon circular button deny" ng-click="contentCreation.closeContentCreationModal();">
+    <div class="ui modal" id="contentCreationModal">
+        <div class=" ui segment margin-top-10" ng-show="!contentCreation.createApi.loader.showLoader && !contentCreation.createApi.error.showError">
+            <div class=" margin-bottom-15">
+                <div class="ui grid">
+                    <div class="eleven wide column">
+                        <span class="ui header">Upload Content</span>
+                    </div>
+                    <div class="one wide column actions">
+                        <h5 class="ui basic icon circular button deny" ng-click="contentCreation.closeContentCreationModal();">
                             <i class="ui remove icon"></i>
                         </h5>
-          </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                <form class="ui form" name="Create">
+                    <div class="field">
+                        <label>Title</label>
+                        <div class="field">
+                            <input type="text" name="title" placeholder="Lesson Title" ng-model="contentCreation.data.name">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label>Description</label>
+                        <div class="field">
+                            <input type="text" name="title" placeholder="Lesson Title" ng-model="contentCreation.data.description">
+                        </div>
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <label>Lesson Type</label>
+                            <select name="lassonType" class="ui fluid dropdown singleSelectDropDown" ng-options=" lesson for lesson in contentCreation.lessonTypes" ng-model="contentCreation.data.contentType">
+                                <option value="" translate="lassonType">Lesson Type</option>
+                            </select>
+                        </div>
+                        <div class="required field">
+                            <label>Mime Type</label>
+                            <select name="mimeType" class="ui fluid dropdown singleSelectDropDown" id="mimeTypeDropDown"
+                                    ng-options=" mimeType.name for mimeType in contentCreation.mimeType" ng-model="contentCreation.data.mimeType">
+                                <option value="" translate="mimeType">Mime Type</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="actions">
+                <p class="text-align-center">
+                    <button class="ui primary text-align-center icon button" ng-click="contentCreation.saveMetaData(contentCreation.data)" ng-disabled="!contentCreation.data.mimeType && !contentCreation.youtubeFileLink">
+                        Upload
+                    </button>
+                </p>
+            </div>
         </div>
-      </div>
-      <div class="content">
-        <form class="ui form" name="Create">
-          <div class="field">
-            <label>Title</label>
-            <div class="field">
-              <input type="text" name="title" placeholder="Lesson Title" ng-model="contentCreation.data.name">
-            </div>
-          </div>
-          <div class="field">
-            <label>Description</label>
-            <div class="field">
-              <input type="text" name="title" placeholder="Lesson Title" ng-model="contentCreation.data.description">
-            </div>
-          </div>
-          <div class="two fields">
-            <div class="field">
-              <label>Lesson Type</label>
-              <select name="lassonType" class="ui fluid dropdown singleSelectDropDown" ng-options=" lesson for lesson in contentCreation.lessonTypes" ng-model="contentCreation.data.contentType">
-                <option value="" translate="lassonType">Lesson Type</option>
-              </select>
-            </div>
-            <div class="required field">
-              <label>Mime Type</label>
-              <select name="mimeType" class="ui fluid dropdown singleSelectDropDown" id="mimeTypeDropDown"
-                      ng-options=" mimeType.name for mimeType in contentCreation.mimeType" ng-model="contentCreation.data.mimeType">
-                <option value="" translate="mimeType">Mime Type</option>
-              </select>
-            </div>
-          </div>
-        </form>
-      </div>
-      <div class="actions">
-        <p class="text-align-center">
-          <button class="ui primary text-align-center icon button" ng-click="contentCreation.saveMetaData(contentCreation.data)" ng-disabled="!contentCreation.data.mimeType && !contentCreation.youtubeFileLink">
-            Upload
-          </button>
-        </p>
-      </div>
+        <div class=" ui segment margin-top-10" ng-if="contentCreation.createApi.loader.showLoader">
+            <app-loader data="{{contentCreation.createApi.loader}}"></app-loader>
+        </div>
+        <div class=" ui segment margin-top-10" ng-if="contentCreation.createApi.error.showError">
+            <error-message data="{{contentCreation.createApi.error}}" visibility="contentCreation.createApi.error.showError"></error-message>
+        </div>
     </div>
-    <div class=" ui segment margin-top-10" ng-if="contentCreation.createApi.loader.showLoader">
-      <app-loader data="{{contentCreation.createApi.loader}}"></app-loader>
-    </div>
-    <div class=" ui segment margin-top-10" ng-if="contentCreation.createApi.error.showError">
-      <error-message data="{{contentCreation.createApi.error}}" visibility="contentCreation.createApi.error.showError"></error-message>
-    </div>
-  </div>
 </div>
