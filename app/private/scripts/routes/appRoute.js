@@ -85,6 +85,7 @@ angular
                     $rootScope.searchKey = 'Courses';
                     $rootScope.searchKeyword = '';
                     $rootScope.isLearnPage = true;
+                    $rootScope.isSearchPage=true;
                     $rootScope.courseActive = 'active';
                     $rootScope.breadCrumbsData = [{ name: 'Home', link: 'home' }, { 'name': 'Courses', 'link': 'learn' }];
                     $('.content-search-filter').dropdown('clear');
@@ -99,6 +100,7 @@ angular
                 },
                 onExit: function($rootScope) {
                     $rootScope.isLearnPage = false;
+                    $rootScope.isSearchPage=false;
                     $('#content-search-filter-accordion').accordion('close', 0);
                     $rootScope.courseActive = '';
                     $rootScope.breadCrumbsData = null;
