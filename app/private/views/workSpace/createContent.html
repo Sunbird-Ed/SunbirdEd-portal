@@ -65,21 +65,22 @@
                 <div class="ui form youtubeupload youTubeFileUploadForm">
                     <div class="inline fields">
                         <div class="eight wide field">
-                            <input type="text" ng-model="contentCreation.youtubeFileLink" placeholder="ENTER YOUTUBE URL">
+                            <input type="url" ng-model="contentCreation.youtubeFileLink" placeholder="ENTER YOUTUBE URL"
+                                   ng-model-options="{ debounce: 500 }" ng-change="contentCreation.validateYouTubeUrl(contentCreation.youtubeFileLink)">
                         </div>
                         <div class="two wide field">
                             <button class="ui primary basic button text-align-center padding-left-25 qq-upload-button-selector"
-                                    ng-click="contentCreation.uploadYoutubeFile()" ng-disabled="!contentCreation.youtubeFileLink">UPLOAD</button>
+                                    ng-click="contentCreation.uploadYoutubeFile()" ng-disabled="!contentCreation.youtubeFileLink || contentCreation.invalidYoutubeUrl">UPLOAD</button>
                         </div>
                     </div>
                 </div>
+                <div class="ui negative message" ng-if="contentCreation.invalidYoutubeUrl && contentCreation.youtubeFileLink.length !== 0">{{$root.errorMessages.WorkSpace.ContentCreation.invalidYoutubeUrl}}</div>
             </div>
             <div class="one wide column"></div>
         </div>
         <p class="margin-top-20 workspaceinstuction">file accepted only pdf, mp4, youtube video and html zip.</p>
     </div>
 </div>
-<div class="ui negative message" ng-if="contentCreation.invalidYoutubeUrl">{{$root.errorMessages.WorkSpace.ContentCreation.invalidYoutubeUrl}}</div>
 <div ng-show="contentCreation.showContentCreationModal">
     <div class="ui modal" id="contentCreationModal">
         <div class=" ui segment margin-top-10" ng-show="!contentCreation.createApi.loader.showLoader && !contentCreation.createApi.error.showError">
