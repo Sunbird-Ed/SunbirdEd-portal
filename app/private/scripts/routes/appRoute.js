@@ -59,7 +59,7 @@ angular
                 views: {
                     'mainView': {
                         templateUrl: '/views/content/usercontent.html',
-                        controller: 'userContentCtrl as userContent',
+                        controller: 'userContentCtrl as userContent'
                     }
                 },
                 onEnter: function(portalTelemetryService) {
@@ -78,7 +78,7 @@ angular
                 views: {
                     'mainView': {
                         templateUrl: '/views/learn/learn.html',
-                        controller: 'LearnCtrl as learn',
+                        controller: 'LearnCtrl as learn'
                     }
                 },
                 onEnter: function($rootScope, portalTelemetryService) {
@@ -109,7 +109,7 @@ angular
                 url: '/resources',
                 views: {
                     'mainView': {
-                        templateUrl: '/views/resource/resource.html',
+                        templateUrl: '/views/resource/resource.html'
                     }
                 },
                 onEnter: function($rootScope, portalTelemetryService) {
@@ -141,7 +141,7 @@ angular
                 views: {
                     'mainView': {
                         templateUrl: 'views/note/noteList.html',
-                        controller: 'NoteListCtrl as noteList',
+                        controller: 'NoteListCtrl as noteList'
                     }
                 },
                 onEnter: function($state, $rootScope, sessionService, portalTelemetryService) {
@@ -172,7 +172,7 @@ angular
                 views: {
                     'mainView': {
                         templateUrl: 'views/note/noteList.html',
-                        controller: 'NoteListCtrl as noteList',
+                        controller: 'NoteListCtrl as noteList'
                     }
                 },
                 onEnter: function($state, $rootScope, $stateParams, portalTelemetryService) {
@@ -202,10 +202,10 @@ angular
                 views: {
                     'mainView': {
                         templateUrl: 'views/note/noteList.html',
-                        controller: 'NoteListCtrl as noteList',
+                        controller: 'NoteListCtrl as noteList'
                     }
                 },
-                onEnter: function($rootScope, sessionService, portalTelemetryService) {
+                onEnter: function($rootScope, sessionService, portalTelemetryService, $state) {
                     var courseParams = sessionService.getSessionData('COURSE_PARAMS');
                     var courseLink = '/toc/' + courseParams.tocId + '/' + courseParams.courseId + '/' + courseParams.lectureView;
                     var contentLink = courseLink + '/' + courseParams.contentId + '/' + courseParams.contentIndex;
@@ -313,7 +313,7 @@ angular
                         controller: 'playerCtrl as player'
                     }
                 },
-                params: { content: null, contentId: null, contentName: null, },
+                params: { content: null, contentId: null, contentName: null },
                 onEnter: function($state, $rootScope, $stateParams, portalTelemetryService) {
                     $rootScope.breadCrumbsData = [{ name: 'Home', link: 'home' }, { 'name': 'Resources', 'link': 'resources' }, { 'name': $stateParams.contentName, link: '' }];
                     $rootScope.searchKey = 'Resources';
@@ -341,7 +341,7 @@ angular
                 views: {
                     'mainView': {
                         templateUrl: 'views/search/search.html',
-                        controller: 'SearchCourseCtrl as search',
+                        controller: 'SearchCourseCtrl as search'
                     }
                 },
                 params: { searchType: null, query: null, searchKey: null, event: null },
@@ -374,7 +374,7 @@ angular
                     }
                 },
                 params: { searchType: null, query: null, event: null },
-                onEnter: function($rootScope, portalTelemetryService) {
+                onEnter: function($rootScope, portalTelemetryService, $state) {
                     $rootScope.breadCrumbsData = [{ name: 'Home', link: 'home' }, { 'name': 'Resources', 'link': 'resources' }, { name: 'Search', link: '' }];
                     $rootScope.isSearchPage = true;
                     $rootScope.searchKey = 'Resources';
@@ -398,7 +398,7 @@ angular
                 views: {
                     'mainView': {
                         templateUrl: 'views/course/toc.html',
-                        controller: 'courseScheduleCtrl as toc',
+                        controller: 'courseScheduleCtrl as toc'
                     }
                 },
                 onEnter: function($state, $rootScope, sessionService, portalTelemetryService) {
@@ -612,7 +612,7 @@ angular
                     }
                 },
                 params: { contentId: null, backState: null },
-                onEnter: function($rootScope, portalTelemetryService) {
+                onEnter: function($rootScope, portalTelemetryService, $state) {
                     $rootScope.profileActive = 'active';
                     portalTelemetryService.fireImpressions({
                         "env": "content",
@@ -745,7 +745,7 @@ angular
                 var permissions = res.data;
                 if (res && res.responseCode === 'OK') {
                     permissionsService.setRolesAndPermissions(res.result);
-                    permissionsService.setCurrentUserRoles(["CONTENT_REVIEWER"])
+                    permissionsService.setCurrentUserRoles(["CONTENT_REVIEWER"]);
                 } else {
                     //TODO: allow only public permissions
                 }
