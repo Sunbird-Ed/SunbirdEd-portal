@@ -1,18 +1,24 @@
-<h4 class="workspaceicon ui header sectionHeading margin-top-20"><i class="database icon"></i><span translate="workspace">My Workspace</span></h4>
+<h4 class="workspaceicon ui header sectionHeading margin-top-20"><i class="database icon"></i>
+    <span>
+        {{$root.labels.WORKSPACE.myWorkSpaceText}}
+    </span></h4>
 <div class="publicmenusection ui secondary vertical menu">
     <a class="item" ui-sref="WorkSpace.ContentCreation" ui-sref-active="active" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER">
-        START CREATING
+        {{$root.labels.WORKSPACE.start}}
     </a>
     <a class="item" ui-sref="WorkSpace.DraftContent" ui-sref-active="active" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER">
-        DRAFTS
+        {{$root.labels.WORKSPACE.drafts}}
     </a>
     <a class="item" ui-sref="WorkSpace.ReviewContent" ui-sref-active="active" sb-permissions permission-only="CONTENT_REVIEWER,CONTENT_REVIEW">
-        IN REVIEW
+        {{$root.labels.WORKSPACE.inReview}}
     </a>
     <a class="item" ui-sref="WorkSpace.PublishedContent" ui-sref-active="active" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER">
-        PUBLISHED
+        {{$root.labels.WORKSPACE.published}}
     </a>
     <a class="item" ui-sref="WorkSpace.AllUploadedContent" ui-sref-active="active" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER">
-        ALL UPLOADS
+        {{$root.labels.WORKSPACE.allUploads}}
+    </a>
+    <a class="item" ui-sref="WorkSpace.UpForReviewContent" ui-sref-active="active" sb-permissions permission-only="CONTENT_REVIEWER">
+        {{$root.labels.WORKSPACE.upForReview}}
     </a>
 </div>

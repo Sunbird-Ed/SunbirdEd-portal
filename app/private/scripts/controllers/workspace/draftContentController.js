@@ -43,13 +43,14 @@ angular.module('playerApp')
 
             var api = "draftApi";
             draftContent[api] = {};
-            draftContent[api].loader = showLoaderWithMessage("", config.MESSAGES.WORKSPACE.DRAFT.START);
+            draftContent[api].loader = showLoaderWithMessage("", $rootScope.errorMessages.WORKSPACE.DRAFT.START);
 
             var request = {
                 filters: {
                     status: ["Draft"],
                     createdBy: draftContent.userId,
-                    mimeType: ['application/vnd.ekstep.ecml-archive']
+                    mimeType: ['application/vnd.ekstep.ecml-archive', 'application/vnd.ekstep.content-collection'],
+                    
                 },
                 'sort_by': {
                     "lastUpdatedOn": "desc"
@@ -60,14 +61,17 @@ angular.module('playerApp')
                     if (res && res.responseCode === 'OK') {
                         draftContent[api].loader.showLoader = false;
                         draftContent.draftContentData = res.result.content;
+                        if(res.result.count === 0) {
+                            draftContent[api].error = showErrorMessage(false, $rootScope.errorMessages.WORKSPACE.DRAFT.NO_CONTENT, $rootScope.errorMessages.COMMON.SUCCESS);
+                        }
                     } else {
                         draftContent[api].loader.showLoader = false;
-                        draftContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.DRAFT.FAILED, config.MESSAGES.COMMON.ERROR);
+                        draftContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.DRAFT.FAILED, $rootScope.errorMessages.COMMON.ERROR);
                     }
                 })
                 .catch(function(error) {
                     draftContent[api].loader.showLoader = false;
-                    draftContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.DRAFT.FAILED, config.MESSAGES.COMMON.ERROR);
+                    draftContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.DRAFT.FAILED, $rootScope.errorMessages.COMMON.ERROR);
                 });
         };
 
