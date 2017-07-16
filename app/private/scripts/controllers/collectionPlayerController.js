@@ -31,6 +31,7 @@
             courseService.courseHierarchy($state.params['Id']).then(function(res) {
                 if (res && res.responseCode === "OK") {
                     cpvm.loader.showLoader = false;
+                    res.result.content.children = _.sortBy(res.result.content.children, ['index']);
                     cpvm.courseHierachy = res.result.content;
                     cpvm.collectionMeta.author = cpvm.courseHierachy.owner;
                     cpvm.collectionMeta.language = cpvm.courseHierachy.language[0];
