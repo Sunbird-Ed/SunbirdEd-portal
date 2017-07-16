@@ -49,18 +49,21 @@ app.get('/collectionEditor', function(req, res) {
 
 
 app.all('/public/service/v1/*', proxy(learnerURL, {
+    https: false,
     proxyReqPathResolver: function(req) {
         let urlParam = req.params["0"];
         return require('url').parse(learnerURL + urlParam).path;
     }
 }))
 app.all('/private/service/v1/learner/*', keycloak.protect(), proxy(learnerURL, {
+    https: false,
     proxyReqPathResolver: function(req) {
         let urlParam = req.params["0"];
         return require('url').parse(learnerURL + urlParam).path;
     }
 }))
 app.all('/private/service/v1/content/*', keycloak.protect(), proxy(contentURL, {
+    https: false,
     proxyReqPathResolver: function(req) {
         let urlParam = req.params["0"];
         let query = require('url').parse(req.url).query;
