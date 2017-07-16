@@ -249,18 +249,14 @@ angular.module('playerApp')
                     } else {
                         profile.loader.showLoader = false;
                         profile.error = showErrorMessage(true, apiMessages.ERROR.update, errorMessageType.ERROR);
-                        $timeout(function() {
-                            profile.error.showError = false;
-                        }, 2000);
+                       
                     }
                 }).catch(function(error) {
                     profile.experienceForm = false;
                     profile.basicProfileForm = false;
                     profile.loader.showLoader = false;
                     profile.error = showErrorMessage(true, apiMessages.ERROR.update, errorMessageType.ERROR);
-                    $timeout(function() {
-                        profile.error.showError = false;
-                    }, 2000);
+                    
                 });
         };
         //profile newAddress
@@ -310,7 +306,7 @@ angular.module('playerApp')
             profile.formValidation();
             var isValid = $('.addressEditForm').form('validate form');
 
-            if (!isValid.includes(false)) {
+            if (isValid === true || !isValid.includes(false)) {
                 var req = { address: address };
                 req.userId = $rootScope.userId;
                 profile.updateProfile(req);
@@ -320,8 +316,8 @@ angular.module('playerApp')
         };
         // edit education
         profile.addEducation = function(newEducation) {
-            newEducation.percentage = newEducation.percentage ? parseFloat(newEducation.percentage) : null;
-            newEducation.yearOfPassing = newEducation.yearOfPassing ? parseInt(newEducation.yearOfPassing) : null;
+            newEducation.percentage = newEducation.percentage ? parseFloat(newEducation.percentage) : 0;
+            newEducation.yearOfPassing = newEducation.yearOfPassing ? parseInt(newEducation.yearOfPassing) : 0;
             profile.education.push(newEducation);
             profile.editEducation(profile.education);
         };
@@ -349,6 +345,7 @@ angular.module('playerApp')
                 experiences.forEach(function(element) {
                     var startDate = $('.rangeStart').calendar('get date');
                     var endDate = $('.rangeEnd').calendar('get date');
+                    console.log('startDate', startDate instanceof Array);
                     element.joiningDate = startDate ? $filter('date')(startDate, 'yyyy-MM-dd') : element.joiningDate;
                     element.endDate = endDate ? $filter('date')(endDate, 'yyyy-MM-dd') : element.startDate;
                 }, this);

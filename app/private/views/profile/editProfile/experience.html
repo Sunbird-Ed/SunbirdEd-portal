@@ -1,15 +1,21 @@
 <form class="ui form formdivider">
     <div class="two fields">
 
+          <div class="  required field">
+            <label>Job name</label>
+            <input type="text" name="" ng-model="experience.jobName">
+        </div>
         <div class=" field">
             <label>Position</label>
             <input type="text" name="" ng-model="experience.role">
         </div>
-        <div class="  field">
+    </div> 
+    <div class="two fields">
+        <div class=" required field">
             <label>Organization</label>
             <input type="text" name="" ng-model="experience.orgName">
         </div>
-    </div>
+    
     <div class=" field">
         <label>Subjects</label>
         <div class="field" ng-init="profileCtrl.setEditSubject(experience.subject)">
@@ -17,6 +23,7 @@
                                             </select>
         </div>
 
+    </div>
     </div>
     <div class="inline fields">
         <label for="address">Is this your current job?</label>

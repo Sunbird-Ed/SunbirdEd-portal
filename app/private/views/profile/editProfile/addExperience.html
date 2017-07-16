@@ -1,22 +1,30 @@
 <form class="ui form ">
     <div class="ui dividing header margin-top-15 "></div>
     <div class="two fields">
+        
+          <div class="  required field">
+            <label>Job name</label>
+            <input type="text" name="" ng-model="profileCtrl.newExperience.jobName">
+        </div>
         <div class=" field">
             <label>Position</label>
             <input type="text" name="" ng-model="profileCtrl.newExperience.role">
         </div>
-        <div class="  field">
+        
+      
+    </div>
+    <div class="two fields">
+          <div class="required  field">
             <label>Organization</label>
             <input type="text" name="" ng-model="profileCtrl.newExperience.orgName">
         </div>
-    </div>
     <div class=" field">
         <label>Subjects</label>
         <div class="field">
-
             <select apply-script class="ui fluid dropdown signupMultiple" multiple="" ng-model="profileCtrl.newExperience.subject" ng-value="option.value" ng-options=" subject for subject in ::profileCtrl.subjects">
-                                            </select>
+            </select>
         </div>
+    </div>
     </div>
 
     <div class="inline fields" ng-if="!profileCtrl.currentJobLocation">
