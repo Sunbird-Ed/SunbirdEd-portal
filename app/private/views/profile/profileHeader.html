@@ -1,4 +1,4 @@
-<div class="ui grid padding-topBottom-10 courseStructureHeader" ng-if="!profileCtrl.loader.showLoader && !profileCtrl.error.showError">
+<div class="ui grid padding-topBottom-10 courseStructureHeader">
     <div class="one wide column"></div>
     <div class=" ten wide column">
         <div class="ui grid">
@@ -6,20 +6,21 @@
                 <div class="profileheader ui link items">
                     <div class="ui grid">
                         <div class="two wide column">
-                            <!--<div ng-include="'views/profile/editProfile/userAvtar.html'"></div>-->
-                            <img class="ui small circular image header-image-profile" src="{{::profileCtrl.user.profilePic || 'images/user_logo.png'}}">
+                            <div ng-include="'views/profile/editProfile/userAvtar.html'"></div>
                         </div>
                         <div class="ten wide column">
                             <div class="content padding-top-10 ">
                                 <div class="sectionHeading header">{{::profileCtrl.user.firstName}} &nbsp;{{::profileCtrl.user.lastName}}</div>
                                 <div class="meta">
-                                    <span class="cinema">{{::profileCtrl.user.organizationName}}{{::profileCtrl.user.city}}</span>
+                                    <span class="cinema">
+                                        <span ng-if="profileCtrl.currentJobLocation">{{::profileCtrl.currentJobLocation.orgName}}</span>
+                                    <span ng-if="profileCtrl.currentAddressLocation">{{::profileCtrl.currentAddressLocation.city}}</span>
                                 </div>
                                 <div class="description" ng-init="profileCtrl.readMore = false">
-                                    <p ng-if="!profileCtrl.readMore"> {{::profileCtrl.summary | limitTo: 120 }}&nbsp;
+                                    <p ng-if="!profileCtrl.readMore"> {{::profileCtrl.user.profileSummary | limitTo: 120 }}&nbsp;
                                         <span class="ui cardsKnowMore mouse-pointer" ng-if="profileCtrl.summary.length > 120 && profileCtrl.readMore === false" ng-click="profileCtrl.readMore = !profileCtrl.readMore;"> ... Read More</span>
                                     </p>
-                                    <p ng-if="profileCtrl.readMore"> {{::profileCtrl.summary}}&nbsp;
+                                    <p ng-if="profileCtrl.readMore"> {{::profileCtrl.user.profileSummary}}&nbsp;
                                         <span class="ui cardsKnowMore mouse-pointer" ng-click="profileCtrl.readMore = false;">Read Less ...</span>
                                     </p>
                                 </div>
@@ -32,7 +33,7 @@
                 <div class="ui grid">
                     <div class="twelve wide column ">
                         <h4 class="profilesttingheader ui header">
-                            <div class="content">
+                            <!--<div class="content">
                                 Profile settings
                                 <i class="setting icon"></i>
                                 <div class="ui inline dropdown">
@@ -42,21 +43,15 @@
 
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
                         </h4>
                     </div>
                     <div class="twelve wide column ">
-                        <button apply-script class="ui primary basic button" id="openTreeModal">EDIT PROFILE</button>
+                        <!--<button apply-script class="ui primary basic button" id="openTreeModal">EDIT PROFILE</button>-->
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="one wide column"></div>
-</div>
-<div ng-if="profileCtrl.loader.showLoader">
-    <app-loader data="{{profileCtrl.loader}}"></app-loader>
-</div>
-<div ng-if="profileCtrl.error.showError">
-    <error-message data="{{profileCtrl.error}}" visibility="search.error.showError"></error-message>
 </div>

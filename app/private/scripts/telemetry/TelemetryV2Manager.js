@@ -9,10 +9,15 @@ TelemetryV2Manager = function() {
         if (error) message += ' Error: ' + JSON.stringify(error);
         this.exitApp();
     };
-    this.createEvent = function(eventName, body) {
+    this.createEvent = function(eventName, body, consumer) {
         var event = new TelemetryEvent();
-        event.init(eventName, TelemetryService._version, body, TelemetryService._user, TelemetryService._gameData, TelemetryService._correlationData, TelemetryService._otherData);
-        return event
+        if (consumer == 'PORTAL') {
+            event.portalInit(eventName, TelemetryService._version, body, TelemetryService._user, TelemetryService._correlationData, TelemetryService._otherData)
+            return event
+        } else {
+            event.init(eventName, TelemetryService._version, body, TelemetryService._user, TelemetryService._gameData, TelemetryService._correlationData, TelemetryService._otherData);
+            return event
+        }
     };
     this.start = function(id, ver, data) {
         TelemetryService._gameData = {
@@ -163,5 +168,48 @@ TelemetryV2Manager = function() {
 
     this.sendFeedback = function(eks) {
         return this.createEvent("", eks);
-    }
+    };
+    this.impression = function(data) {
+        var obj = {
+            env: data.env || '',
+            type: data.type || '',
+            pageid: data.pageid || '',
+            id: data.id || '',
+            name: data.name || '',
+            url: data.url || ''
+        };
+        return this.createEvent("CP_IMPRESSION", obj, "PORTAL")
+    };
+    this.sessionStart = function(data) {
+        return this.createEvent("CP_SESSION_START", data, "PORTAL")
+    };
+    this.sessionEnd = function(data) {
+        return this.createEvent("CP_SESSION_END", data, "PORTAL")
+    };
+    this.profileUpdate = function(data) {
+        var obj = {
+            "name": data.name || '',
+            "email": data.email || "",
+            "access": data.access || [],
+            "partners": data.partners || [],
+            "profile": data.profile || [],
+        }
+        return this.createEvent("CP_UPDATE_PROFILE", data, "PORTAL")
+    };
+    this.portalIntreact = function(data) {
+        var obj = {
+            "env": data.env || '',
+            "context": data.context || '',
+            "type": data.type || '',
+            "target": data.target || '',
+            "targetid": data.targetid || '',
+            "subtype": data.subtype || '',
+            "values": data.values || []
+        }
+
+
+        return this.createEvent("CP_INTERACT", data, "PORTAL")
+    };
+
+
 };

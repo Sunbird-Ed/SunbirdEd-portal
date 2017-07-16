@@ -1,23 +1,25 @@
 <div class="ui raised segment">
     <div class="header announcementCard-header">
         <span class="header cardsHeading" translate="experiance">Education</span>
-        <a href=""class="addeditprofile" ng-if="!profileCtrl.educationForm" translate="edit" ng-click="profileCtrl.educationForm=true ;profileCtrl.isNewEducation=false ">Edit</a>
-        <a href=""href="" class="addeditprofile" ng-if="!profileCtrl.educationForm " ng-click="profileCtrl.educationForm=true ;profileCtrl.isNewEducation=true ;profileCtrl.newEducation={} " translate="add ">Add</a>
-        <a  href="" class="addeditprofile" ng-if="profileCtrl.educationForm" translate="edit" ng-click="profileCtrl.educationForm=false">close</a>
+        <a href="" class="addeditprofile" ng-if="!profileCtrl.educationForm && profileCtrl.education.length" translate="edit" ng-click="profileCtrl.educationForm=true ;profileCtrl.isNewEducation=false ">Edit</a>
+        <a href="" href="" class="addeditprofile" ng-if="!profileCtrl.educationForm " ng-click="profileCtrl.educationForm=true ;profileCtrl.isNewEducation=true ;profileCtrl.newEducation={} " translate="add ">Add</a>
+        <a href="" class="addeditprofile" ng-if="profileCtrl.educationForm" translate="edit" ng-click="profileCtrl.educationForm=false">Close</a>
     </div>
     <div ng-if="!profileCtrl.educationForm" class="profileitems ui relaxed divided list">
-        <div class="item" ng-repeat="education in profileCtrl.user.education">
+        <div class="item" ng-repeat="education in profileCtrl.education">
             <div class="right floated content">
                 <div class="metadata">
-                    <span class="date">{{education.updatedDate|date: "dd/MM/yyyy"  }}</span>
+                    <a href="" ng-click="education.isDeleted=true;profileCtrl.deleteEducation(profileCtrl.education)"> <i class="trash outline icon trashIcon-fontSize"></i></a>
+                    <!--<span class="date">{{education.updatedDate|date: "dd/MM/yyyy"  }}</span>-->
                 </div>
             </div>
             <img class="ui avatar image" src="/images/user_logo.png">
             <div class="content">
-                <a class=" header">{{education.degree}}</a>
-                <div class="description"> {{education.yearOfPassing}}, {{education.percentage}}
+                <a class=" header">{{education.courseName}}</a>
+                <div class="description"> {{education.yearOfPassing}}<span ng-if="education.percentage">,</span>{{education.percentage}}
                     <br/>
-                    <p>{{education.grade}},{{education.name}},{{education.country}},{{education.boardOrUniversity}}</p>
+                    <p>{{education.grade}}<span ng-if="education.name">,</span>{{education.name}}<span ng-if="education.boardOrUniversity">,</span>{{education.boardOrUniversity}}
+
                 </div>
             </div>
         </div>

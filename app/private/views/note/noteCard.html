@@ -1,8 +1,8 @@
 <div class="rightSideSectionCards ui card margin-bottom-15" ng-if="noteCard.showNoteCard">
     <div class="content" ng-if="!noteCard.searchApi.loader.showLoader && (!noteCard.searchApi.error.showError || noteCard.notesList.length > 0)">
         <div class="header">
-            <span>My Notebook</span>
-            <a class="ui right floated font-dark-blue" ng-click="noteCard.showAllNoteList()">View All</a>
+            <span>{{$root.labels.Notes.myNoteBook}}</span>
+            <a class="ui right floated font-dark-blue" ng-click="noteCard.showAllNoteList()">{{$root.labels.Notes.viewAll}}</a>
         </div>
         <div class="description" >
             <div class="ui list" ng-repeat="note in noteCard.notesList| orderBy : '-lastUpdatedOn' | limitTo: noteCard.quantityOfNotes track by $index">
@@ -51,14 +51,14 @@
                     </div>
                 </div>
                 <div class="ui fluid icon input">
-                    <input type="text" placeholder="Title" name="title" ng-model="noteCard.update.metaData.title" tabindex="1" />
+                    <input type="text" placeholder={{$root.labels.Notes.title}} name="title" ng-model="noteCard.update.metaData.title" tabindex="1" />
                 </div>
                 <div class="content editor">
-                    <pagedown-editor content="noteCard.update.metaData.note" show-preview="false" tabindex="2"></pagedown-editor>
+                    <pagedown-editor content="noteCard.update.metaData.note" show-preview="false" tabindex="2" placeholder={{$root.labels.Notes.description}}></pagedown-editor>
                 </div>
                 <div class="actions">
                     <button class="ui primary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="noteCard.updateNote(noteCard.update.metaData)" ng-disabled="!noteCard.update.metaData.title || !noteCard.update.metaData.note" tabindex="4"
-                            ng-class="noteCard.denyModalClass">Update</button>
+                            ng-class="noteCard.denyModalClass">{{$root.labels.Notes.update}}</button>
                 </div>
             </div>
             <div class=" ui segment margin-top-10" ng-if="noteCard.updateApi.loader.showLoader">
