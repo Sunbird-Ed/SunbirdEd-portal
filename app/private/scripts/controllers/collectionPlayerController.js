@@ -34,8 +34,8 @@
                     res.result.content.children = _.sortBy(res.result.content.children, ['index']);
                     cpvm.courseHierachy = res.result.content;
                     cpvm.collectionMeta.author = cpvm.courseHierachy.owner;
-                    cpvm.collectionMeta.language = cpvm.courseHierachy.language[0];
-                    cpvm.collectionMeta.gradeLevel = cpvm.courseHierachy.gradeLevel[0];
+                    cpvm.collectionMeta.language = cpvm.courseHierachy.language;
+                    cpvm.collectionMeta.gradeLevel = cpvm.courseHierachy.gradeLevel;
                     cpvm.collectionMeta.subject = cpvm.courseHierachy.subject;
                     cpvm.collectionMeta.medium = cpvm.courseHierachy.medium;
                     cpvm.collectionMeta.lastUpdatedOn = cpvm.courseHierachy.lastUpdatedOn;
