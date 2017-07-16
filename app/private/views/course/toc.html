@@ -35,7 +35,7 @@
                                     </div>
                                     <div id="course-toc{{$index}}" class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100" ng-repeat="item in  toc.courseHierachy.children track by $index" ng-click="toc.expandMe($event, item)">
                                         <div class="courseAccordianHeading title title-padding-left accordian-left-text"  name="{{item.identifier}}">
-                                            <i ng-class="[toc.getContentClass(item.identifier),toc.getContentIcon(item.mimeType)]"></i> {{item.name}}
+                                            <i ng-class="[toc.contentStatusList[item.identifier],toc.getContentIcon(item.mimeType)]"></i> {{item.name}}
                                             <i ng-if='item.children && item.children.length > 0' class="plus icon down-arrow-accordion"></i>
                                         </div>
                                         <div ng-if='item.children && item.children.length > 0' class="content">
@@ -56,9 +56,6 @@
                                         <b>Course created on: 15 jun 2017</b><br>
                                         <b>Updated on: 16 jun 2017</b>
                                     </div>
-                                </div>
-                                <div ng-if="toc.showNoteModal">
-                                    <div ng-include=" 'views/course/noteAddCardModal.html'"></div>
                                 </div>
                             </div>
                         </div>

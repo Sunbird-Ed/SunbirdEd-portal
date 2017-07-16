@@ -16,22 +16,14 @@
     color: #2e9fd9;
     font-weight: bold;
 }
-.headerClose{
+
+.headerClose {
     margin-left: 97%;
-    margin-top: 5px;   
+    margin-top: 5px;
 }
-
-
-
-
 </style>
 <div ng-app="org.sunbird.header:headerApp" ng-controller="mainController" class="ui masthead vertical segment content-masterhead">
     <!-- new header code start -->
-    <div class="icon-box popup-item headerClose" data-content="Close Me" data-variation="tiny inverted" data-position="top right" style="margin-left:97%">
-        <h5 class="ui right floated basic icon circular button" ng-click="closeEditor()">
-            <i class="ui remove icon"></i>
-        </h5>
-    </div>
     <div class="ui grid fluid container custom-container" style="padding: 1%">
         <!-- header part 1 -->
         <div class="one wide centered column custom-1-wide" id="sunbirdLogo">
@@ -64,7 +56,7 @@
                 <div class="custom-row-2">
                     <div class="icon-group-2">
                         <div class="icon-box popup-item" data-content="Send for review" data-variation="tiny inverted" data-position="top center">
-                            <i class="send icon custom-icon" id="iconStyle" ng-click="fireEvent({id: 'org.ekstep.review:review'});"></i>
+                            <i class="send icon custom-icon" id="iconStyle" ng-click="fireEvent({id: 'org.ekstep.review:review'}); sendForReview(contentId)"></i>
                         </div>
                         <div class="preview-icon-group">
                             <div class="icon-box popup-item" data-content="Preview" data-variation="tiny inverted" data-position="top center">
@@ -81,6 +73,11 @@
                         </div>
                         <div class="icon-box popup-item" data-content="Save content" data-variation="tiny inverted" data-position="top center">
                             <i class="ui primary icon-save custom-icon" id="iconStyle" ng-class="saveBtnEnabled ? 'ui' : 'ui disabled'" ng-click="saveContent(); fireToolbarTelemetry({id: 'save'}, 'saveButton')" ng-disabled="!contentId"></i>
+                        </div>
+                        <div class="icon-box popup-item " data-content="Close Me" data-variation="tiny inverted" data-position="top center" style="position: relative;top: -12px;">
+                            <button class="ui basic icon circular button" ng-click="closeEditor()" style="position: relative;line-height: 0.9;">
+                                <i class="icon remove" style="display: inline-block;position: absolute;top: 0;bottom: 0;left: 0;right: 0;margin: auto!important;"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
