@@ -1,8 +1,8 @@
 <div class="ui grid">
-    <div class="twelve wide column ">
+<!--    <div class="twelve wide column ">
         <a class="section backtoprofile" ui-sref="Profile">
             < Back To Profile</a>
-    </div>
+    </div>-->
     <div class="twelve wide column ">
         <div class="ui grid">
             <div class="three wide column">
@@ -10,44 +10,44 @@
                     <div class="content">
                         <div class="textcontent">
                             <i class='my-icon file text outline icon '></i>
-                            <span class="my-text">TEXTBOOK</span>
+                            <span class="my-text">{{$root.labels.WORKSPACE.startCreating.textbook}}</span>
                         </div>
                     </div>
                 </div>
-                <p class="workspaceinstuction">You can create book with the structured section </p>
+                <p class="workspaceinstuction">{{$root.labels.WORKSPACE.startCreating.textbookDescription}}</p>
             </div>
             <div class="three wide column">
                 <div class="workspacecontent ui card">
                     <div class="content">
                         <div class="textcontent">
                             <i class='my-icon file text outline icon'></i>
-                            <span class="my-text">COURSE</span>
+                            <span class="my-text">{{$root.labels.WORKSPACE.startCreating.course}}</span>
                         </div>
                     </div>
                 </div>
-                <p class="workspaceinstuction">You will be taken to an editor to create a course with assessments/quizes. </p>
+                <p class="workspaceinstuction">{{$root.labels.WORKSPACE.startCreating.courseDescription}}</p>
             </div>
             <div class="three wide column">
                 <div class="workspacecontent ui link card" ui-sref="CreateLesson">
                     <div class="content">
                         <div class="textcontent">
                             <i class='my-icon file text icon'></i>
-                            <span class="my-text">LESSON</span>
+                            <span class="my-text">{{$root.labels.WORKSPACE.startCreating.lesson}}</span>
                         </div>
                     </div>
                 </div>
-                <p class="workspaceinstuction">You can create stuff here. You must try it, it's magical!</p>
+                <p class="workspaceinstuction">{{$root.labels.WORKSPACE.startCreating.lessonDescription}}</p>
             </div>
             <div class="three wide column">
                 <div class="workspacecontent ui link card" ui-sref="CreateCollection">
                     <div class="content">
                         <div class="textcontent">
                             <i class='my-icon folder open outline icon'></i>
-                            <span class="my-text">COLLECTION</span>
+                            <span class="my-text">{{$root.labels.WORKSPACE.startCreating.collection}}</span>
                         </div>
                     </div>
                 </div>
-                <p class="workspaceinstuction">Collections are folders/bundles of lessons or resources.</p>
+                <p class="workspaceinstuction">{{$root.labels.WORKSPACE.startCreating.collectionDescription}}</p>
             </div>
         </div>
     </div>
@@ -59,13 +59,13 @@
         <div class="ui grid fileUploadDivider">
             <div class="one wide column"></div>
             <div class="uploadicon four wide column">
-                <p class="padding-top-10 dropfile textIndentForUploadFile">ENTER YOUTUBE URL</p>
+                <p class="padding-top-10 dropfile textIndentForUploadFile">{{$root.labels.WORKSPACE.startCreating.enterYuotubeURL}}</p>
             </div>
             <div class="six wide column">
                 <div class="ui form youtubeupload youTubeFileUploadForm">
                     <div class="inline fields">
                         <div class="eight wide field">
-                            <input type="url" ng-model="contentCreation.youtubeFileLink" placeholder="ENTER YOUTUBE URL"
+                            <input type="url" ng-model="contentCreation.youtubeFileLink" placeholder={{$root.labels.WORKSPACE.startCreating.enterYuotubeURL}}
                                    ng-model-options="{ debounce: 500 }" ng-change="contentCreation.validateYouTubeUrl(contentCreation.youtubeFileLink)">
                         </div>
                         <div class="two wide field">
@@ -80,7 +80,7 @@
         </div>
        
 
-    <p class="margin-top-20 workspaceinstuction">File accepted only pdf, mp4, youtube video and html zip.</p>
+    <p class="margin-top-20 workspaceinstuction">{{$root.labels.WORKSPACE.startCreating.fileUploadOptions}}</p>
   </div>
 
 </div>
@@ -90,7 +90,7 @@
             <div class=" margin-bottom-15">
                 <div class="ui grid">
                     <div class="eleven wide column">
-                        <span class="ui header">Upload Content</span>
+                        <span class="ui header">{{$root.labels.WORKSPACE.startCreating.uploadContent}}</span>
                     </div>
                     <div class="one wide column actions">
                         <h5 class="ui basic icon circular button deny" ng-click="contentCreation.closeContentCreationModal();">
@@ -102,29 +102,29 @@
             <div class="content">
                 <form class="ui form" name="Create">
                     <div class="field">
-                        <label>Title</label>
+                        <label>{{$root.labels.WORKSPACE.common.title}}</label>
                         <div class="field">
-                            <input type="text" name="title" placeholder="Lesson Title" ng-model="contentCreation.data.name">
+                            <input type="text" name="title" placeholder={{$root.labels.WORKSPACE.common.title}} ng-model="contentCreation.data.name">
                         </div>
                     </div>
                     <div class="field">
-                        <label>Description</label>
+                        <label>{{$root.labels.WORKSPACE.common.description}}</label>
                         <div class="field">
-                            <input type="text" name="title" placeholder="Lesson Title" ng-model="contentCreation.data.description">
+                            <input type="text" name="description" placeholder={{$root.labels.WORKSPACE.common.description}} ng-model="contentCreation.data.description">
                         </div>
                     </div>
                     <div class="two fields">
                         <div class="field">
-                            <label>Lesson Type</label>
-                            <select name="lassonType" class="ui fluid dropdown singleSelectDropDown" ng-options=" lesson for lesson in contentCreation.lessonTypes" ng-model="contentCreation.data.contentType">
-                                <option value="" translate="lassonType">Lesson Type</option>
+                            <label>L{{$root.labels.WORKSPACE.common.lessonType}}</label>
+                            <select name="lessonType" class="ui fluid dropdown singleSelectDropDown" ng-options=" lesson for lesson in contentCreation.lessonTypes" ng-model="contentCreation.data.contentType">
+                                <option value="" >{{$root.labels.WORKSPACE.common.lessonType}}</option>
                             </select>
                         </div>
                         <div class="required field">
-                            <label>Mime Type</label>
+                            <label>{{$root.labels.WORKSPACE.common.mimeType}}</label>
                             <select name="mimeType" class="ui fluid dropdown singleSelectDropDown" id="mimeTypeDropDown"
                                     ng-options=" mimeType.name for mimeType in contentCreation.mimeType" ng-model="contentCreation.data.mimeType">
-                                <option value="" translate="mimeType">Mime Type</option>
+                                <option value="">{{$root.labels.WORKSPACE.common.mimeType}}</option>
                             </select>
                         </div>
                     </div>
@@ -133,7 +133,7 @@
             <div class="actions">
                 <p class="text-align-center">
                     <button class="ui primary text-align-center icon button" ng-click="contentCreation.saveMetaData(contentCreation.data)" ng-disabled="!contentCreation.data.mimeType && !contentCreation.youtubeFileLink">
-                        Upload
+                        {{$root.labels.WORKSPACE.startCreating.upload}}
                     </button>
                 </p>
             </div>

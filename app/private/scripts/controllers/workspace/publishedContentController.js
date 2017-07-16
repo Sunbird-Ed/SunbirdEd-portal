@@ -43,7 +43,7 @@ angular.module('playerApp')
 
             var api = "publishedApi";
             publishedContent[api] = {};
-            publishedContent[api].loader = showLoaderWithMessage("", config.MESSAGES.WORKSPACE.PUBLISHED.START);
+            publishedContent[api].loader = showLoaderWithMessage("", $rootScope.errorMessages.WORKSPACE.PUBLISHED.START);
 
             var request = {
                 filters: {
@@ -62,16 +62,16 @@ angular.module('playerApp')
                         publishedContent[api].loader.showLoader = false;
                         publishedContent.publishedContentData = res.result.content;
                         if(res.result.count === 0) {
-                            publishedContent[api].error = showErrorMessage(false, config.MESSAGES.WORKSPACE.PUBLISHED.NO_CONTENT, config.MESSAGES.COMMON.SUCCESS);
+                            publishedContent[api].error = showErrorMessage(false, $rootScope.errorMessages.WORKSPACE.PUBLISHED.NO_CONTENT, $rootScope.errorMessages.COMMON.SUCCESS);
                         }
                     } else {
                         publishedContent[api].loader.showLoader = false;
-                        publishedContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.PUBLISHED.FAILED, config.MESSAGES.COMMON.ERROR);
+                        publishedContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.PUBLISHED.FAILED, $rootScope.errorMessages.COMMON.ERROR);
                     }
                 })
                 .catch(function(error) {
                     publishedContent[api].loader.showLoader = false;
-                    publishedContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.PUBLISHED.FAILED, config.MESSAGES.COMMON.ERROR);
+                    publishedContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.PUBLISHED.FAILED, $rootScope.errorMessages.COMMON.ERROR);
                 });
         };
 

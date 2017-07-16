@@ -65,7 +65,7 @@ angular.module('playerApp')
 
                 var api = 'editApi';
                 editContent[api] = {};
-                editContent[api].loader = showLoaderWithMessage("", config.MESSAGES.WORKSPACE.GET.START);
+                editContent[api].loader = showLoaderWithMessage("", $rootScope.errorMessages.WORKSPACE.GET.START);
 
                 editContent.initilizeView();
 
@@ -92,11 +92,11 @@ angular.module('playerApp')
                         }
                     } else {
                         editContent[api].loader.showLoader = false;
-                        editContent[api].error = showErrorMessage(false, config.MESSAGES.WORKSPACE.GET.FAILED, config.MESSAGES.COMMON.ERROR);
+                        editContent[api].error = showErrorMessage(false, $rootScope.errorMessages.WORKSPACE.GET.FAILED, $rootScope.errorMessages.COMMON.ERROR);
                     }
                 }).catch(function (error) {
                     editContent[api].loader.showLoader = false;
-                    editContent[api].error = showErrorMessage(false, config.MESSAGES.WORKSPACE.GET.FAILED, config.MESSAGES.COMMON.ERROR);
+                    editContent[api].error = showErrorMessage(false, $rootScope.errorMessages.WORKSPACE.GET.FAILED, $rootScope.errorMessages.COMMON.ERROR);
                 });
             };
 
@@ -139,7 +139,7 @@ angular.module('playerApp')
             editContent.uploadOrUpdateAppIcon = function (requestBody, isReviewContent) {
                 var api = 'editApi';
                 editContent[api] = {};
-                editContent[api].loader = showLoaderWithMessage("", config.MESSAGES.WORKSPACE.UPLOAD_ICON.START);
+                editContent[api].loader = showLoaderWithMessage("", $rootScope.errorMessages.WORKSPACE.UPLOAD_ICON.START);
 
                 contentService.uploadMedia(editContent.icon).then(function (res) {
                     if (res && res.responseCode === "OK") {
@@ -148,11 +148,11 @@ angular.module('playerApp')
                         editContent.updateContent(requestBody, isReviewContent);
                     } else {
                         editContent[api].loader.showLoader = false;
-                        editContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.UPLOAD_ICON.FAILED, config.MESSAGES.COMMON.ERROR);
+                        editContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.UPLOAD_ICON.FAILED, $rootScope.errorMessages.COMMON.ERROR);
                     }
                 }).catch(function (error) {
                     editContent[api].loader.showLoader = false;
-                    editContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.UPLOAD_ICON.FAILED, config.MESSAGES.COMMON.ERROR);
+                    editContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.UPLOAD_ICON.FAILED, $rootScope.errorMessages.COMMON.ERROR);
                 });
             };
 
@@ -160,23 +160,23 @@ angular.module('playerApp')
 
                 var api = 'editApi';
                 editContent[api] = {};
-                editContent[api].loader = showLoaderWithMessage("", config.MESSAGES.WORKSPACE.UPDATE.START);
+                editContent[api].loader = showLoaderWithMessage("", $rootScope.errorMessages.WORKSPACE.UPDATE.START);
 
                 contentService.update(requestBody, editContent.contentId).then(function (res) {
                     if (res && res.responseCode === "OK") {
                         editContent[api].loader.showLoader = false;
-                        editContent[api].error = showErrorMessage(true, "Saved Successfully", config.MESSAGES.COMMON.SUCCESS);
+                        editContent[api].error = showErrorMessage(true, "Saved Successfully", $rootScope.errorMessages.COMMON.SUCCESS);
                         editContent[api].error.success = true;
                         if (isReviewContent) {
                             editContent.callReviewApi();
                         }
                     } else {
                         editContent[api].loader.showLoader = false;
-                        editContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.UPDATE.FAILED, config.MESSAGES.COMMON.ERROR);
+                        editContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.UPDATE.FAILED, $rootScope.errorMessages.COMMON.ERROR);
                     }
                 }).catch(function (error) {
                     editContent[api].loader.showLoader = false;
-                    editContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.UPDATE.FAILED, config.MESSAGES.COMMON.ERROR);
+                    editContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.UPDATE.FAILED, $rootScope.errorMessages.COMMON.ERROR);
                 });
             };
 
@@ -222,7 +222,7 @@ angular.module('playerApp')
             editContent.callReviewApi = function () {
                 var api = 'editApi';
                 editContent[api] = {};
-                editContent[api].loader = showLoaderWithMessage("", config.MESSAGES.WORKSPACE.REVIEW_CONTENT.START);
+                editContent[api].loader = showLoaderWithMessage("", $rootScope.errorMessages.WORKSPACE.REVIEW_CONTENT.START);
                 var req = {content: {}};
 
                 contentService.review(req, editContent.contentId).then(function (res) {
@@ -232,11 +232,11 @@ angular.module('playerApp')
 
                     } else {
                         editContent[api].loader.showLoader = false;
-                        editContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.REVIEW_CONTENT.FAILED, config.MESSAGES.COMMON.ERROR);
+                        editContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.REVIEW_CONTENT.FAILED, $rootScope.errorMessages.COMMON.ERROR);
                     }
                 }).catch(function (error) {
                     editContent[api].loader.showLoader = false;
-                    editContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.REVIEW_CONTENT.FAILED, config.MESSAGES.COMMON.ERROR);
+                    editContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.REVIEW_CONTENT.FAILED, $rootScope.errorMessages.COMMON.ERROR);
                 });
             }
 
