@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="shortcut icon" href="/templates/ja_social_ii/favicon.ico" />
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- inject:css -->
+    <link rel="stylesheet" href="styles/external.min.css">
+    <link rel="stylesheet" href="styles/style.min.css">
+    <!-- endinject -->
+</head>
+
+<body class="ui fluid container">
+    <!-- End of localhost only code-->
+    <div ng-app="editorApp" class="maincontainer" ng-strict-di>
+        <div ng-controller="popupController as $ctrl" id="popuptemplate"></div>
+        <div ng-controller="MainCtrl">
+            <div ng-if="editorContainer" ng-include="editorContainer.templateURL"></div>
+        </div>
+    </div>
+    <!-- <script type="text/javascript" src="https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/content-editor/scripts/plugin-framework.min.js"></script> -->
+    <!-- inject:js -->
+    <script src="scripts/external.min.js"></script>
+    <script src="scripts/collectioneditor.min.js"></script>
+    <!-- endinject -->
+</body>
+
+</html>

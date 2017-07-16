@@ -8,7 +8,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('ContentEditorController', function(config, $stateParams, $location, $sce, $state, $rootScope) {
+    .controller('ContentEditorController', function(config, $stateParams, $location, $sce, $state, contentService) {
 
         var contentEditor = this;
         contentEditor.contentId = $stateParams.contentId;
@@ -32,6 +32,12 @@ angular.module('playerApp')
                 $state.go("WorkSpace.DraftContent");
             });
             
+            org.sunbird.portal.eventManager.addEventListener("sunbird:portal:content:review", function (event, data) {
+                console.log("sunbird:portal:content:review event fired")
+                var params = {contentId : contentEditor.contentId, backState : $state.current.name}
+                $state.go("EditContent", params);
+            });
+            
             window.addEventListener('editor:metadata:edit', function(event, data) {
                 console.info('Sunbird edit metadata is calling');
                 org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:editor:editmeta');
@@ -41,6 +47,12 @@ angular.module('playerApp')
                 console.info('Sunbird editor is closing');
                 org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:editor:close');
             });
+            
+            window.addEventListener('editor:content:review', function (event, data) {
+                console.info('Sunbird edit metadata is calling', event.detail.contentId);
+                org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:content:review', event.detail.contentId);
+            });
+            
         };
         
         contentEditor.init();
