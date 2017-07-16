@@ -2,22 +2,22 @@
     <div class="two fields">
 
           <div class="  required field">
-            <label>Job name</label>
+            <label>{{$root.labels.PROFILE.JOB_PROFILE.jobName}}</label>
             <input type="text" name="" ng-model="experience.jobName">
         </div>
         <div class=" field">
-            <label>Position</label>
+            <label>{{$root.labels.PROFILE.JOB_PROFILE.position}}</label>
             <input type="text" name="" ng-model="experience.role">
         </div>
     </div> 
     <div class="two fields">
         <div class=" required field">
-            <label>Organization</label>
+            <label>{{$root.labels.PROFILE.JOB_PROFILE.organization}}</label>
             <input type="text" name="" ng-model="experience.orgName">
         </div>
     
     <div class=" field">
-        <label>Subjects</label>
+        <label>{{$root.labels.PROFILE.JOB_PROFILE.subjects}}</label>
         <div class="field" ng-init="profileCtrl.setEditSubject(experience.subject)">
             <select class="ui fluid dropdown editSubjects" multiple="" id="editSubjects" ng-selected=true ng-model="experience.subject" ng-value="option.value" ng-options=" subject for subject in ::profileCtrl.subjects">
                                             </select>
@@ -26,17 +26,17 @@
     </div>
     </div>
     <div class="inline fields">
-        <label for="address">Is this your current job?</label>
+        <label for="address">{{$root.labels.PROFILE.JOB_PROFILE.isCurrentJob}}</label>
         <div class="field">
             <div class="ui radio checkbox ">
                 <input type="radio" name="radio" value='true' ng-model="experience.isCurrentJob" ng-checked="experience.isCurrentJob===true" ng-change="profileCtrl.checkCurrentJob(experience);profileCtrl.setJobProfileCheckbox(experience,true)">
-                <label>yes</label>
+                <label>{{$root.labels.PROFILE.JOB_PROFILE.currentJobOptionYes}}</label>
             </div>
         </div>
         <div class="field">
             <div class="ui radio checkbox ">
                 <input type="radio" name="radio" value=null ng-model="experience.isCurrentJob" ng-checked="experience.isCurrentJob!==true" ng-change="profileCtrl.checkCurrentJob(experience);profileCtrl.setJobProfileCheckbox(experience,false)">
-                <label>no</label>
+                <label>{{$root.labels.PROFILE.JOB_PROFILE.currentJobOptionNo}}</label>
             </div>
         </div>
     </div>
@@ -44,7 +44,7 @@
 
     <div apply-script class="two fields">
         <div class="field">
-            <label>Start date</label>
+            <label>{{$root.labels.PROFILE.JOB_PROFILE.joiningDate}}</label>
             <div ng-init="profileCtrl.setEditStart(experience.joiningDate)" class="ui calendar rangeStart" id="rangeStart">
                 <div class="ui input left icon">
                     <i class="calendar icon"></i>
@@ -53,7 +53,7 @@
             </div>
         </div>
         <div class="field" ng-hide="experience.isCurrentJob==='true' ||experience.isCurrentJob===true">
-            <label>End date</label>
+            <label>{{$root.labels.PROFILE.JOB_PROFILE.endDate}}</label>
             <div ng-init="profileCtrl.setEditEnd(experience.endDate)" class="ui calendar rangeEnd" id="rangeEnd" ng-model="experience.endDate">
                 <div class="ui input left icon">
                     <i class="calendar icon"></i>
