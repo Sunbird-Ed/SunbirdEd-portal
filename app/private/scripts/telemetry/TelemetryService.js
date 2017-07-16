@@ -9,6 +9,7 @@ TelemetryService = {
     _gameData: undefined,
     _correlationData: undefined,
     _data: [],
+    _batchEvents:[],
     _gameIds: [],
     _user: {},
     apis: {
@@ -22,18 +23,33 @@ TelemetryService = {
         pressup: 'DRAG'
     },
 
-     /**
+    /**
      * Telemetry service init should happen before calling any telemetry action
      * @param  {obj} event name of the event which has been calling by using sunbird eventmanager
      * @param  {obj} obj   object whihc should have mandtory fileds to instantiate the
      */
-    
+
     registerEvents: function() {
+
+        /**
+         * player events are being registred
+         */
+
         org.sunbird.portal.eventManager.addEventListener("sunbird:telemetry:init", this.init, this);
         org.sunbird.portal.eventManager.addEventListener("sunbird:telemetry:start", this.start, this);
         org.sunbird.portal.eventManager.addEventListener("sunbird:telemetry:end", this.end, this);
         org.sunbird.portal.eventManager.addEventListener("sunbird:telemetry:intreact", this.interact, this);
-        org.sunbird.portal.eventManager.addEventListener("sunbird:telemetry:navigate",this.navigate,this);
+        org.sunbird.portal.eventManager.addEventListener("sunbird:telemetry:navigate", this.navigate, this);
+
+        /**
+         * portal events are being registred
+         */
+        org.sunbird.portal.eventManager.addEventListener("sunbird:telemetery:portal:impression", this.impression, this);
+        org.sunbird.portal.eventManager.addEventListener("sunbird:telemetry:portal:sessionStart", this.sessionStart, this);
+        org.sunbird.portal.eventManager.addEventListener("sunbird:telemetry:portal:sessionEnd", this.sessionEnd, this);
+        org.sunbird.portal.eventManager.addEventListener("sunbird:telemetry:portal:profileupdate", this.profileUpdate, this);
+        org.sunbird.portal.eventManager.addEventListener("sunbird:telemetry:portal:intreact", this.portalIntreact, this);
+
     },
 
     /**
@@ -43,38 +59,31 @@ TelemetryService = {
      */
     init: function(event, obj) {
         return new Promise(function(resolve, reject) {
-            if (!TelemetryService.instance) {
-                TelemetryService._user = obj.user;
-                TelemetryService.instance = new TelemetryV2Manager();
-                TelemetryService.instance.init();
-                if (obj.gameData) {
-                    if (obj.gameData.id && obj.gameData.ver) {
-                        TelemetryService._parentGameData = obj.gameData;
-                        TelemetryService._gameData = obj.gameData;
-                    } else {
-                        reject('Invalid game data.');
-                    }
-                    TelemetryServiceUtil.getConfig().then(function(config) {
-                        TelemetryService._config = config;
-                        if (TelemetryService._config.isActive) TelemetryService.isActive = TelemetryService._config.isActive;
-                        resolve(true);
-                    }).catch(function(err) {
-                        reject(err);
-                    });
+            TelemetryService._user = obj.user;
+            TelemetryService.instance = new TelemetryV2Manager();
+            TelemetryService.instance.init();
+            if (obj.gameData) {
+                if (obj.gameData.id && obj.gameData.ver) {
+                    TelemetryService._parentGameData = obj.gameData;
+                    TelemetryService._gameData = obj.gameData;
                 } else {
-                    reject('Game data is empty.');
-                };
-                if (obj.correlationData && !_.isEmpty(obj.correlationData)) {
-                    TelemetryService._correlationData = obj.correlationData;
-                };
-                if(obj.otherData && !_.isEmpty(obj.otherData)){
-                    TelemetryService._otherData = obj.otherData;
-                };
-                resolve(true);
-            } else {
-                resolve(true)
-                console.log("TelemetryService instance is not create")
+                    reject('Invalid game data.');
+                }
             }
+            TelemetryServiceUtil.getConfig().then(function(config) {
+                TelemetryService._config = config;
+                if (TelemetryService._config.isActive) TelemetryService.isActive = TelemetryService._config.isActive;
+                resolve(true);
+            }).catch(function(err) {
+                reject(err);
+            });
+            if (obj.correlationData && !_.isEmpty(obj.correlationData)) {
+                TelemetryService._correlationData = obj.correlationData;
+            };
+            if (obj.otherData && !_.isEmpty(obj.otherData)) {
+                TelemetryService._otherData = obj.otherData;
+            };
+            resolve(true);
         });
     },
     webInit: function(gameData, user) {
@@ -250,8 +259,40 @@ TelemetryService = {
         } else {
             console.log("No events to print.");
         }
-    }
+    },
+    impression: function(eventName, obj) {
+        if (!TelemetryService.isActive) {
+            return InActiveEvent();
+        }
+        return TelemetryService.flushEvent(TelemetryService.instance.impression(obj), TelemetryService.apis.telemetry);
+    },
+    sessionStart: function(eventName, obj) {
+        if (!TelemetryService.isActive) {
+            return InActiveEvent();
+        }
+        return TelemetryService.flushEvent(TelemetryService.instance.sessionStart(obj), TelemetryService.apis.telemetry);
+    },
+    sessionEnd: function(eventName, obj) {
+        if (!TelemetryService.isActive) {
+            return InActiveEvent();
+        }
+        return TelemetryService.flushEvent(TelemetryService.instance.sessionEnd(obj), TelemetryService.apis.telemetry);
 
+    },
+    profileUpdate: function(eventName, obj) {
+        if (!TelemetryService.isActive) {
+            return InActiveEvent();
+        }
+        return TelemetryService.flushEvent(TelemetryService.instance.profileUpdate(obj), TelemetryService.apis.telemetry);
+
+    },
+    portalIntreact: function(eventName, obj) {
+        if (!TelemetryService.isActive) {
+            return InActiveEvent();
+        }
+        return TelemetryService.flushEvent(TelemetryService.instance.portalIntreact(obj), TelemetryService.apis.telemetry);
+
+    }
 }
 
 Array.prototype.cleanUndefined = function() {
@@ -263,4 +304,3 @@ Array.prototype.cleanUndefined = function() {
     }
     return this;
 };
-

@@ -43,7 +43,7 @@ angular.module('playerApp')
 
             var api = "allUploadedApi";
             allUploadedContent[api] = {};
-            allUploadedContent[api].loader = showLoaderWithMessage("", config.MESSAGES.WORKSPACE.ALL_UPLOADED.START);
+            allUploadedContent[api].loader = showLoaderWithMessage("", $rootScope.errorMessages.WORKSPACE.ALL_UPLOADED.START);
 
             var request = {
                 filters: {
@@ -60,14 +60,18 @@ angular.module('playerApp')
                     if (res && res.responseCode === 'OK') {
                         allUploadedContent[api].loader.showLoader = false;
                         allUploadedContent.allUploadedContentData = res.result.content;
+                        if(res.result.count === 0) {
+                            allUploadedContent[api].error = showErrorMessage(false, $rootScope.errorMessages.WORKSPACE.ALL_UPLOADED.NO_CONTENT, $rootScope.errorMessages.COMMON.SUCCESS);
+                            allUploadedContent[api].error.success = true;
+                        }
                     } else {
                         allUploadedContent[api].loader.showLoader = false;
-                        allUploadedContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.ALL_UPLOADED.FAILED, config.MESSAGES.COMMON.ERROR);
+                        allUploadedContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.ALL_UPLOADED.FAILED, $rootScope.errorMessages.COMMON.ERROR);
                     }
                 })
                 .catch(function(error) {
                     allUploadedContent[api].loader.showLoader = false;
-                    allUploadedContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.ALL_UPLOADED.FAILED, config.MESSAGES.COMMON.ERROR);
+                    allUploadedContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.ALL_UPLOADED.FAILED, $rootScope.errorMessages.COMMON.ERROR);
                 });
         };
 

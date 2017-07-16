@@ -9,28 +9,32 @@
         <div class="one wide column"></div>
         <div class="six wide column">
             <div class="beforelogin ui secondary pointing menu padding-top-1rem">
-                <a class="item " href="#" translate="home">
-                    Home
+                <a class="item " href="#">
+                   {{labels.MainMenu.home}}
                 </a>
-                <a class="item " href="#" translate="courses">
-                     Courses
+                <a class="item " href="#">
+                     {{labels.MainMenu.courses}}
+                     
                 </a>
-                <a class="item" href="#" translate="resources">
-                    Resources
+                <a class="item" href="#">
+                     {{labels.MainMenu.resources}}
+                    
                 </a>
-                <a class="item" href="#" translate="community">
-                    Community
+                <a class="item" href="#">
+                     {{labels.MainMenu.community}}
+                    
                 </a>
-                <a class="item" href="#" translate="profile">
-                    Profile
+                <a class="item" href="#">
+                     {{labels.MainMenu.profile}}
+                    
                 </a>
             </div>
         </div>
         <div class="one wide column"></div>
         <div class="one wide column">
             <div class="beforelogin ui secondary pointing menu padding-top-1rem" ng-controller="SignUpCtrl as newUser">
-                <button class="ui item" ng-if="!isLoggedIn" ng-click="newUser.showModal();" translate="signup" translate-default="Sign up"> SIGN UP</button>
-                <a class="ui item" ng-if="!isLoggedIn" href="/private/index" translate="login" translate-default="LOGIN"> LOGIN</a>
+                <button class="ui item" ng-if="!isLoggedIn" ng-click="newUser.showModal();"> {{labels.Button.signUp}}</button>
+                <a href="/private/index" class="sunblogin"> <button class="ui item " ng-if="!isLoggedIn">{{labels.Button.login}}</button></a>
                 <div ng-include="'views/home/Signup.html'"></div>
             </div>
 

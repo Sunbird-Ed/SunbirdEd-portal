@@ -3,7 +3,7 @@
         <app-loader data="{{profileCtrl.loader}}"></app-loader>
     </div>
     <div class="ui raised segment " ng-if="profileCtrl.error.showError">
-        <error-message data="{{profileCtrl.error}}" visibility="search.error.showError"></error-message>
+        <error-message data="{{profileCtrl.error}}" visibility="profileCtrl.error.showError"></error-message>
     </div>
 </div>
 <div class="ui grid">
@@ -15,16 +15,16 @@
             </div>
             <div class="twelve wide column" ng-include=" 'views/profile/profileView/userEducation.html' ">
             </div>
-            <div class="twelve wide column " ng-init="profileCtrl.basicProfileForm=false" ng-include=" 'views/profile/profileView/userBasicInfo.html' ">
+            <div class="twelve wide column " ng-include=" 'views/profile/profileView/userBasicInfo.html' ">
             </div>
         </div>
     </div>
     <div class=" four wide column ">
         <div class="ui grid ">
             <div class="twelve wide column ">
-                <div class="workspacebutton workspacecontent ui link card " ui-sref="WorkSpace ">
+                <div class="workspacebutton workspacecontentProfile ui link card " ui-sref="WorkSpace ">
                     <div class="content ">
-                        <div class="textcontent ">
+                        <div class="WorkSpaceTextContent ">
                             <i class='my-icon database icon '></i>
                             <span class="my-text ">View your workspace</span>
                         </div>
