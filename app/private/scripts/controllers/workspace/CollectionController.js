@@ -90,11 +90,11 @@ angular.module('playerApp')
 
                 } else {
                     collection[api].loader.showLoader = false;
-                    collection[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.CREATE_LESSON.FAILED, config.MESSAGES.COMMON.ERROR);
+                    collection[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.CREATE_LESSON.FAILED, $rootScope.errorMessages.COMMON.ERROR);
                 }
             }).catch(function (error){
                 collection[api].loader.showLoader = false;
-                collection[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.CREATE_LESSON.FAILED, config.MESSAGES.COMMON.ERROR);
+                collection[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.CREATE_LESSON.FAILED, $rootScope.errorMessages.COMMON.ERROR);
             });
         };
 
@@ -102,7 +102,7 @@ angular.module('playerApp')
 
             var api = 'createApi';
             collection[api] = {};
-            collection[api].loader = showLoaderWithMessage("", config.MESSAGES.WORKSPACE.CREATE_LESSON.START);
+            collection[api].loader = showLoaderWithMessage("", $rootScope.errorMessages.WORKSPACE.CREATE_LESSON.START);
 
             var requestBody = angular.copy(data);
 

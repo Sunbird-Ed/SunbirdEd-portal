@@ -45,7 +45,7 @@ angular.module('playerApp')
 
                 var api = "reviewApi";
                 upForReviewContent[api] = {};
-                upForReviewContent[api].loader = showLoaderWithMessage("", config.MESSAGES.WORKSPACE.REVIEW.START);
+                upForReviewContent[api].loader = showLoaderWithMessage("", $rootScope.errorMessages.WORKSPACE.REVIEW.START);
 
                 var request = {
                     filters: {
@@ -63,16 +63,16 @@ angular.module('playerApp')
                             return contentData.createdBy !== upForReviewContent.userId;
                         });
                         if(res.result.count === 0) {
-                            upForReviewContent[api].error = showErrorMessage(false, config.MESSAGES.WORKSPACE.REVIEW.NO_CONTENT, config.MESSAGES.COMMON.SUCCESS);
+                            upForReviewContent[api].error = showErrorMessage(false, $rootScope.errorMessages.WORKSPACE.REVIEW.NO_CONTENT, $rootScope.errorMessages.COMMON.SUCCESS);
                         }
                     } else {
                         upForReviewContent[api].loader.showLoader = false;
-                        upForReviewContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.REVIEW.FAILED, config.MESSAGES.COMMON.ERROR);
+                        upForReviewContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.REVIEW.FAILED, $rootScope.errorMessages.COMMON.ERROR);
                     }
                 })
                 .catch(function (error) {
                     upForReviewContent[api].loader.showLoader = false;
-                    upForReviewContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.REVIEW.FAILED, config.MESSAGES.COMMON.ERROR);
+                    upForReviewContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.REVIEW.FAILED, $rootScope.errorMessages.COMMON.ERROR);
                 });
             };
 
