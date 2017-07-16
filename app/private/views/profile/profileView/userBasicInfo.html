@@ -1,8 +1,8 @@
 <div class="ui raised segment " ng-init="profileCtrl.basicProfileForm=false">
     <div class="header announcementCard-header ">
-        <span class="header cardsHeading " translate="experiance ">Additional Information</span>
-        <a href="" class="addeditprofile " ng-if="!profileCtrl.basicProfileForm" translate="edit " ng-click="profileCtrl.basicProfileForm=true">Edit</a>
-        <a href="" class="addeditprofile" ng-if="profileCtrl.basicProfileForm" translate="close" ng-click="profileCtrl.basicProfileForm=false">Close</a>
+        <span class="header cardsHeading " > {{$root.labels.PROFILE.BASIC_PROFILE.header}}</span>
+        <a href="" class="addeditprofile " ng-if="!profileCtrl.basicProfileForm"  ng-click="profileCtrl.basicProfileForm=true">{{$root.labels.PROFILE.BUTTON.edit}}</a>
+        <a href="" class="addeditprofile" ng-if="profileCtrl.basicProfileForm"  ng-click="profileCtrl.basicProfileForm=false">{{$root.labels.PROFILE.BUTTON.close}}</a>
 
     </div>
     <div class="profileitems ui relaxed aligned list " ng-if="!profileCtrl.basicProfileForm && profileCtrl.basicProfile">
@@ -12,7 +12,7 @@
                 <span translate="edit ">{{::profileCtrl.basicProfile.email}}</span>
             </div>
             <div class="iniformationcontent content ">
-                E-MAIL
+                {{$root.labels.PROFILE.BASIC_PROFILE.email}}
             </div>
         </div>
         <div class="item ">
@@ -20,7 +20,7 @@
                 <span translate="edit ">{{::profileCtrl.basicProfile.phone}}</span>
             </div>
             <div class="iniformationcontent content ">
-                PHONE
+                {{$root.labels.PROFILE.BASIC_PROFILE.phone}}
             </div>
         </div>
         <div class="item ">
@@ -28,7 +28,7 @@
                 <span translate="edit ">{{::profileCtrl.basicProfile.gender}}</span>
             </div>
             <div class="iniformationcontent content ">
-                GENDER
+                {{$root.labels.PROFILE.BASIC_PROFILE.gender}}
             </div>
         </div>
         <div class="item ">
@@ -36,7 +36,7 @@
                 <span translate="edit ">{{::profileCtrl.basicProfile.aadhaarNo}}</span>
             </div>
             <div class="iniformationcontent content ">
-                AADHAR NUMBER
+                {{$root.labels.PROFILE.BASIC_PROFILE.aadhar}}
             </div>
         </div>
         <div class="item ">
@@ -44,7 +44,7 @@
                 <span translate="edit ">{{::profileCtrl.basicProfile.dob}}</span>
             </div>
             <div class="iniformationcontent content ">
-                DATE OF BIRTH
+                {{$root.labels.PROFILE.BASIC_PROFILE.dob}}
             </div>
         </div>
         <div class="item ">
@@ -53,7 +53,7 @@
                 </span>
             </div>
             <div class="iniformationcontent content ">
-                LANGUAGE
+                {{$root.labels.PROFILE.BASIC_PROFILE.language}}
             </div>
         </div>
         <div class="item ">
@@ -62,7 +62,7 @@
                 </span>
             </div>
             <div class="iniformationcontent content ">
-                SUBJECTS
+                {{$root.labels.PROFILE.BASIC_PROFILE.subjects}}
             </div>
         </div>
     </div>

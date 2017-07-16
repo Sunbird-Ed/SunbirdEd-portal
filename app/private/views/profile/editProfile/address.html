@@ -1,16 +1,16 @@
 <form class="ui form formdivider addressEditForm">
     <div apply-script class="inline fields">
-        <label for="address">Address Type</label>
+        <label for="address">{{$root.labels.PROFILE.ADDRESS.addressType}}</label>
         <div class="field">
             <div class="ui radio checkbox">
                 <input type="radio" name="radio" value='permanent' ng-checked="address.addType==='permanent'" ng-model="address.addType">
-                <label>Permanent</label>
+                <label> {{$root.labels.PROFILE.ADDRESS.addressTypePermanent}}</label>
             </div>
         </div>
         <div class="field">
             <div class="ui radio checkbox">
                 <input type="radio" name="radio" value='current' ng-checked="address.addType==='current'" ng-model="address.addType">
-                <label>Current</label>
+                <label>{{$root.labels.PROFILE.ADDRESS.addressTypeCurrent}}</label>
             </div>
         </div>
     </div>
@@ -18,31 +18,31 @@
 
     <div class="two fields">
         <div class=" required field">
-            <label>Address Line 1</label>
+            <label>{{$root.labels.PROFILE.ADDRESS.line1}}</label>
             <input type="text" name="addLine1" ng-model="address.addressLine1">
         </div>
         <div class="  field">
-            <label>Address Line 2</label>
+            <label>{{$root.labels.PROFILE.ADDRESS.line2}}</label>
             <input type="text" name="" ng-model="address.addressLine2">
         </div>
     </div>
     <div class="two fields">
         <div class=" required field">
-            <label>City</label>
+            <label>{{$root.labels.PROFILE.ADDRESS.city}}</label>
             <input type="text" name="city" ng-model="address.city">
         </div>
         <div class="  field">
-            <label>State</label>
+            <label>{{$root.labels.PROFILE.ADDRESS.state}}</label>
             <input type="text" name="" ng-model="address.state">
         </div>
     </div>
     <div class="two fields">
         <div class=" field">
-            <label>Country</label>
+            <label>{{$root.labels.PROFILE.ADDRESS.country}}</label>
             <input type="text" name="" ng-model="address.country">
         </div>
         <div class="  field">
-            <label>Pin Code</label>
+            <label>{{$root.labels.PROFILE.ADDRESS.pinCode}}</label>
             <input type="text" name="pinCode" ng-model="address.zipcode">
         </div>
     </div>
