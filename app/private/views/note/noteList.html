@@ -4,32 +4,32 @@
 <div class="ui grid">
     <div class="one wide column"></div>
     <div class="ten wide column">
-    <div class="ui segments">
-        <div class="ui segment margin-auto padding-left-right-0 padding-top-bottom-0 " ng-init="noteList.ngInit()">
-            <div class="ui grid margin-top-0 margin-left-right-0 margin-bottom-0 height-100" id="notesList">
-                <div class="twelve wide column">
-                    <div class="addnotes ui container container-with-button padding-left-right-0">
-                        <span class="ui header">{{$root.labels.Notes.myNotes}}</span>
-                        <i class=" circular icon margin-left-right-10 link" ng-class="!noteList.add.showCreateNote ? 'plus' : 'remove'" ng-click="noteList.add.showCreateNote = !noteList.add.showCreateNote;"></i>
-                        <div class="notesearch" style="float:right">
-                            <div class="ui icon input">
-                                <input type="text" ng-model="noteList.searchData.text" placeholder={{$root.labels.Notes.searchForNotesOrTitle}} title={{$root.labels.Notes.search}} />
-                                <i class="circular search link icon"></i>
+        <div class="ui segments">
+            <div class="ui segment margin-auto padding-left-right-0 padding-top-bottom-0 " ng-init="noteList.ngInit()">
+                <div class="ui grid margin-top-0 margin-left-right-0 margin-bottom-0 height-100" id="notesList">
+                    <div class="twelve wide column">
+                        <div class="addnotes ui container container-with-button padding-left-right-0">
+                            <span class="ui header">{{$root.labels.Notes.myNotes}}</span>
+                            <i class=" circular icon margin-left-right-10 link" ng-class="!noteList.add.showCreateNote ? 'plus' : 'remove'" ng-click="noteList.add.showCreateNote = !noteList.add.showCreateNote;"></i>
+                            <div class="notesearch" style="float:right">
+                                <div class="ui icon input">
+                                    <input type="text" ng-model="noteList.searchData.text" placeholder={{$root.labels.Notes.searchForNotesOrTitle}} title={{$root.labels.Notes.search}} />
+                                    <i class="circular search link icon"></i>
+                                </div>
+                                <h5 class="ui right floated basic icon circular button" ng-click="noteList.closeNoteList()">
+                                    <i class="ui remove icon"></i>
+                                </h5>
                             </div>
-                            <h5 class="ui right floated basic icon circular button" ng-click="noteList.closeNoteList()">
-                            <i class="ui remove icon"></i>
-                        </h5>
+                        </div>
+                        <div class="twelve wide column padding-top-20" ng-if="noteList.add.showCreateNote">
+                            <div ng-include="'views/note/createNote.html'"></div>
                         </div>
                     </div>
-                    <div class="twelve wide column padding-top-20" ng-if="noteList.add.showCreateNote">
-                        <div ng-include="'views/note/createNote.html'"></div>
-                    </div>
+
                 </div>
-                 
             </div>
-        </div>
-         <div class="noteListSegment ui secondary segment" ng-if="noteList.notesList.length>0">
-            <div class="twelve wide column" >
+            <div class="noteListSegment ui secondary segment" ng-if="noteList.notesList.length > 0">
+                <div class="twelve wide column" >
                     <div class="ui grid">
                         <div class="four wide column padding-topBottomNone">
                             <div class="notelistscroll">
@@ -38,7 +38,7 @@
                                         <div class="content padding-all-10 contentnotelist" id="notelistcontent{{$index}}" ng-class="{'notelistborder': $index === noteList.selectedIndex || $index === 0 }" ng-click="noteList.showNoteList(note, $index)">
                                             <a class="header ">{{ note.title | limitTo: 20 }}</a>
                                             <div class="description margin-top-0" ng-init="noteData = note.note.length > 20 ? note.note.substring(-1,20) : note.note">
-                                        
+
                                                 <pagedown-viewer content="noteData"></pagedown-viewer>
                                             </div>
                                             <div class="meta ">
@@ -55,11 +55,11 @@
                                 <div class="content notelistscroll">
                                     <div class="ui row margin-right-15">
                                         <div class="right-floated padding-top-10">
-                                        <i class="large edit icon cursor-pointer" title={{$root.labels.Notes.edit}}
-                                           ng-click="noteList.update.showUpdateNote = !noteList.update.showUpdateNote; noteList.updateNoteData(noteList.selectedNoteData);"></i>
-                                        <i class="right-floated large trash outline icon cursor-pointer" title={{$root.labels.Notes.delete}}
-                                           ng-click="noteList.removeNote(noteList.selectedNoteData.identifier);"></i>
-                                          </div> 
+                                            <i class="large edit icon cursor-pointer" title={{$root.labels.Notes.edit}}
+                                               ng-click="noteList.update.showUpdateNote = !noteList.update.showUpdateNote; noteList.updateNoteData(noteList.selectedNoteData);"></i>
+                                            <i class="right-floated large trash outline icon cursor-pointer" title={{$root.labels.Notes.delete}}
+                                               ng-click="noteList.openRemoveNoteModel(noteList.selectedNoteData.identifier);"></i>
+                                        </div> 
 
                                         <span class="ui small header notedecheader mouse-pointer"> {{ noteList.selectedNoteData.title}}
                                         </span>
@@ -85,4 +85,21 @@
         </div>
     </div>
     <div class="one wide column"></div>
+</div>
+
+<div ng-show="noteList.showRemoveNoteModel">
+    <div class="ui mini modal" id="removeNoteModal">
+        <div class="header">
+            Delete Note
+        </div>
+        <div class="content">
+            <div class="description">
+                Are you sure you want to delete your note
+            </div>
+        </div>
+        <div class="actions">
+            <div class="ui negative button" ng-click="noteList.hideRemoveNoteModel">No</div>
+            <div class="ui primary button " ng-click="noteList.removeNote(noteList.removeNoteId)">Yes</div>
+        </div>
+    </div>
 </div>
