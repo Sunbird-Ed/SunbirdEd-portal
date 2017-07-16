@@ -59,25 +59,24 @@ angular.module('playerApp')
                 if (attrs.id == 'content-video-player-youtube-holder') {
                     var oldPlayer = document.getElementById('content-video-player-youtube');
                     videojs(oldPlayer).dispose();
-                    $(element).append('<video id=\'content-video-player-youtube\' height=\'100%\' width=\'100%\' class=\'video-js player-video\' controls  data-setup=\'{ "fluid": true,"techOrder": ["youtube"], "sources": [{ "type": "video/youtube", "src": ""}] }\'></video>');
-                    videojs('content-video-player-youtube').ready(function() {
-                        var newPlayer = this;
-                        newPlayer.src({ type: 'video/youtube', src: attrs.videosrc });
+                    $(element).append('<video id=\'content-video-player-youtube\'  controls preload="auto" height=\'100%\' width=\'100%\' class=\'video-js vjs-default-skin vjs-big-play-centered player-video\'  data-setup=\'{ "fluid": true,"techOrder": ["youtube"], "sources": [{ "type": "video/youtube", "src": "'+attrs.videosrc+'","youtube": false}]}\'></video>');
+                    videojs('content-video-player-youtube').ready(function() {                        
                         scope.initVideoEvents(this);
                     });
                 } else if (attrs.id == 'content-video-player-holder') {
                     var oldPlayer = document.getElementById('content-video-player');
                     videojs(oldPlayer).dispose();
-                    $(element).append('<video id=\'content-video-player\' height=\'100%\' width=\'100%\' class=\'video-js player-video\' controls  data-setup=\'{ "controls": true}\'></video>');
+                    $(element).append('<video id=\'content-video-player\' height=\'100%\' width=\'100%\' class=\'video-js vjs-default-skin vjs-big-play-centered player-video\' controls  data-setup=\'{ "controls": true}\'></video>');
                     videojs('content-video-player').ready(function() {
                         var newPlayer = this;
                         newPlayer.src({ type: attrs.videotype, src: attrs.videosrc });
                         scope.initVideoEvents(this);
                     });
                 }
-
+                var today = new Date();
                 $('#example2').calendar({
                     type: 'date',
+                    maxDate: today,
                     formatter: {
                         date: function(date, settings) {
                             if (!date)
@@ -91,6 +90,7 @@ angular.module('playerApp')
                 });
                 $('#rangestart').calendar({
                     type: 'date',
+                    maxDate: today,
                     endCalendar: $('#rangeend'),
                     formatter: {
                         date: function(date, settings) {
@@ -105,6 +105,7 @@ angular.module('playerApp')
                 });
                 $('#rangeend').calendar({
                     type: 'date',
+                    maxDate: today,
                     startCalendar: $('#rangestart'),
                     formatter: {
                         date: function(date, settings) {
@@ -120,6 +121,7 @@ angular.module('playerApp')
 
                 $('#start').calendar({
                     type: 'date',
+                    maxDate: today,
                     endCalendar: $('#start'),
                     formatter: {
                         date: function(date, settings) {
@@ -133,6 +135,7 @@ angular.module('playerApp')
                 });
                 $('#end').calendar({
                     type: 'date',
+                    maxDate: today,
                     startCalendar: $('#end'),
                     formatter: {
                         date: function(date, settings) {
@@ -150,6 +153,7 @@ angular.module('playerApp')
                 });
                 $('#rangestartAdd').calendar({
                     type: 'date',
+                    maxDate: today,
                     endCalendar: $('#rangeendAdd'),
                     formatter: {
                         date: function(date, settings) {
@@ -165,6 +169,7 @@ angular.module('playerApp')
                 });
                 $('#rangeendAdd').calendar({
                     type: 'date',
+                    maxDate: today,
                     startCalendar: $('#rangestartAdd'),
                     formatter: {
                         date: function(date, settings) {
@@ -179,9 +184,10 @@ angular.module('playerApp')
                     }
                 });
 
-                $('#rangeStart').calendar({
+                $('.rangeStart').calendar({
                     type: 'date',
-                    endCalendar: $('#rangeEnd'),
+                    maxDate: today,
+                    endCalendar: $('.rangeEnd'),
                     formatter: {
                         date: function(date, settings) {
                             if (!date) return '';
@@ -192,9 +198,10 @@ angular.module('playerApp')
                         }
                     }
                 });
-                $('#rangeEnd').calendar({
+                $('.rangeEnd').calendar({
                     type: 'date',
-                    startCalendar: $('#rangeStart'),
+                    maxDate: today,
+                    startCalendar: $('.rangeStart'),
                     formatter: {
                         date: function(date, settings) {
                             if (!date) return '';
@@ -208,6 +215,7 @@ angular.module('playerApp')
 
                 $('#editDob').calendar({
                     type: 'date',
+                    maxDate: today,
                     formatter: {
                         date: function(date, settings) {
                             if (!date) return '';

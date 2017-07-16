@@ -4,7 +4,7 @@
             <div class=" margin-bottom-15">
                 <div class="ui grid">
                     <div class="eleven wide column">
-                        <span class="ui header">Create New Lesson</span>
+                        <span class="ui header">{{$root.labels.WORKSPACE.createLesson.createLessonText}}</span>
                     </div>
                     <div class="one wide column actions">
                         <h5 class="ui basic icon circular button deny" ng-click="contentLesson.hideCreateSlideShowModal();">
@@ -16,36 +16,36 @@
             <div class="content">
                 <form class="ui form" ng-init="contentLesson.data = {}">
                     <div class="field">
-                        <label>Title</label>
+                        <label>{{$root.labels.WORKSPACE.common.title}}</label>
                         <div class="field">
-                            <input type="text" name="title" placeholder="Lesson Title" ng-model="contentLesson.data.name">
+                            <input type="text" name="title" placeholder={{$root.labels.WORKSPACE.createLesson.lessonTitle}} ng-model="contentLesson.data.name">
                         </div>
                     </div>
                     <div class="two fields">
                         <div class="field">
-                            <label>Board</label>
+                            <label>{{$root.labels.WORKSPACE.common.board}}</label>
                             <select name="board" class="ui fluid dropdown singleSelectDropDown" ng-options=" board for board in contentLesson.boards" ng-model="contentLesson.data.board">
-                                <option value="" translate="board">Board</option>
+                                <option value="">{{$root.labels.WORKSPACE.common.board}}</option>
                             </select>
                         </div>
                         <div class="field">
-                            <label>Medium</label>
+                            <label>{{$root.labels.WORKSPACE.common.medium}}</label>
                             <select name="medium" class="ui fluid dropdown singleSelectDropDown" ng-options=" audience for audience in contentLesson.mediums" ng-model="contentLesson.data.medium">
-                                <option value="" translate="medium">Medium</option>
+                                <option value="">{{$root.labels.WORKSPACE.common.medium}}</option>
                             </select>
                         </div>
                     </div>
                     <div class="two fields">
                         <div class="field">
-                            <label>Subject</label>
+                            <label>{{$root.labels.WORKSPACE.common.subject}}</label>
                             <select name="subject" class="ui fluid dropdown singleSelectDropDown" ng-options=" subject for subject in contentLesson.subjects" ng-model="contentLesson.data.subject">
-                                <option value="" translate="subject">Subject</option>
+                                <option value="">{{$root.labels.WORKSPACE.common.subject}}</option>
                             </select>
                         </div>
                         <div class="field">
-                            <label>Grade</label>
+                            <label>{{$root.labels.WORKSPACE.common.grade}}</label>
                             <select name="grades" multiple="" class="ui fluid dropdown multiSelectDropDown" ng-options=" grade for grade in contentLesson.grades" ng-model="contentLesson.data.gradeLevel" s>
-                                <option value="" translate="grades">Grades</option>
+                                <option value="">{{$root.labels.WORKSPACE.common.grade}}</option>
                             </select>
                         </div>
                     </div>
@@ -54,13 +54,13 @@
             <div class="actions">
                 <p class="text-align-center">
                     <button class="ui primary text-align-center icon button" ng-click="contentLesson.saveMetaData(contentLesson.data)">
-                        Start Creating
+                        {{$root.labels.WORKSPACE.common.startCreating}}
                     </button>
                 </p>
-                <h4 class="text-align-center">You can fill in this details later</h4>
+                <h4 class="text-align-center">{{$root.labels.WORKSPACE.common.youCanFillThisDL}}</h4>
                 <div>
                     <label>
-                        <p class="text-align-center">By proceeding you agreed to make all lessons created through authoring tool or uploaded on the Ek Step platform to be available under licence CC-BY 4.0</p>
+                        <p class="text-align-center">{{$root.labels.WORKSPACE.common.byProceedYouAgreed}}</p>
                     </label>
                 </div>
             </div>

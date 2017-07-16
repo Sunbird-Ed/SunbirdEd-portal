@@ -1,11 +1,10 @@
-<form class="ui form ">
-    <h4 class="ui dividing header">Basic Information</h4>
-    <div class="ui" ng-include=" 'views/profile/editProfile/userAvtar.html' "></div>
+<form class="ui form basicInfoForm">
+    <div class="ui dividing header margin-top-15 "></div>
     <div class="  field">
         <div class=" two fields">
             <div class=" required field">
                 <label>Name</label>
-                <input type="text" name="" placeholder="First Name" ng-model="profileCtrl.basicProfile.firstName">
+                <input type="text" name="firstName" placeholder="First Name" ng-model="profileCtrl.basicProfile.firstName">
             </div>
             <div class="field">
                 <label>&nbsp;  </label>
@@ -17,11 +16,11 @@
     <div class="two fields">
         <div class="required field">
             <label>Phone number</label>
-            <input type="text" name="" ng-model="profileCtrl.basicProfile.phone">
+            <input type="text" name="phone" ng-model="profileCtrl.basicProfile.phone">
         </div>
         <div class=" required field">
             <label>Email</label>
-            <input type="text" name="" ng-model="profileCtrl.basicProfile.email">
+            <input type="email" name="email" ng-model="profileCtrl.basicProfile.email">
         </div>
     </div>
     <div class="two fields">
@@ -32,21 +31,21 @@
                         <option value="">Male</option>
                      </select>
         </div>
-        <div class="field">
+        <div class="field" ng-init=" profileCtrl.setDropdownValue()">
             <label>Language</label>
-            <select apply-script name="language" ng-selected="true" class="ui fluid dropdown signupMultiple" multiple="" ng-value="option.value" ng-options=" language for language in ::profileCtrl.languages" ng-model="profileCtrl.basicProfile.language">
+            <select name="language" id=languageSelect class="ui fluid dropdown" multiple="" ng-value="option.value" ng-options=" language for language in ::profileCtrl.languages" ng-model="profileCtrl.basicProfile.language">
                                         <option value="" translate="languages">Languages</option>
                                     </select>
         </div>
     </div>
     <div class="two fields">
         <div class="field">
-            <label>Aadhar no</label>
-            <input type="text" name="" ng-model="profileCtrl.basicProfile.aadhar">
+            <label>Aadhar number</label>
+            <input type="text" name="" ng-model="profileCtrl.basicProfile.aadhaarNo">
         </div>
-        <div class="field">
+        <div class="field" apply-script>
             <label>Date of birth </label>
-            <div apply-script ng-init="profileCtrl.setDob();" class="ui calendar" id="editDob">
+            <div ng-init="profileCtrl.setDob();" class="ui calendar" id="editDob">
                 <div class="ui input left icon">
                     <i class="calendar icon"></i>
                     <input type="text" placeholder="Date" ng-model="profileCtrl.basicProfile.dob">
@@ -56,15 +55,20 @@
     </div>
     <div class="field">
         <label>Subjects</label>
+        <div class="field" ng-init=" profileCtrl.setSubject()">
+            <select id="setSubjects" class="ui fluid dropdown " multiple="" ng-model="profileCtrl.basicProfile.subject" ng-value="option.value" ng-options=" subject for subject in ::profileCtrl.subjects">
+                                           </select>
+        </div>
+    </div>
+    <div class="field">
+        <label>Summary</label>
         <div class="field">
-            <select class="ui fluid dropdown signupMultiple" multiple="" ng-model="profileCtrl.basicProfile.subject">
-                        <option value="English">English</option>
-                        <option value="Hindi">Hindi</option>
-                         <option value="Math">Math</option>
-                     </select>
+            <textarea ng-model="profileCtrl.profileSummary"></textarea>
         </div>
 
     </div>
-    <div class="ui button margin-top-15" ng-click="profileCtrl.EditBasicProfile()" ;>Save profile</div>
+    <div class="ui error message">
+    </div>
+    <div class="ui button margin-top-15" ng-click="profileCtrl.EditBasicProfile();">Save profile</div>
 
 </form>

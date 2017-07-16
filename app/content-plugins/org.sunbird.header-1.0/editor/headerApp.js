@@ -157,6 +157,21 @@ angular.module('org.sunbird.header:headerApp', []).controller('mainController', 
         window.parent.dispatchEvent(editMetadata);
 
     };
+
+    $scope.sendForReview = function(contentId) {
+        /**
+         * Dispatching custom event to parent;
+         */
+        console.log("sendForReview event called");
+        var send = new CustomEvent('editor:content:review', {
+                "detail": {
+                    "contentId": contentId
+                }
+            });
+        window.parent.dispatchEvent(send);
+
+    };
+
     $scope.closeEditor = function(){
          /**
          * Dispatching custom event to parent;

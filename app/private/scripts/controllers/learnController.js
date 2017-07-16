@@ -36,7 +36,7 @@ angular.module('playerApp').controller('LearnCtrl', function (learnService, $sco
 
             learn.openCourseView = function (course, courseType) {
                 var showLectureView = 'no';
-                var params = {courseType: courseType, courseId: course.courseId || course.identifier, tocId: course.courseId || course.identifier, lectureView: showLectureView, progress: course.progress, total: course.total,courseName:course.courseName};
+                var params = {courseType: courseType, courseId: course.courseId || course.identifier, tocId: course.courseId || course.identifier, lectureView: showLectureView, progress: course.progress, total: course.total,courseName:course.courseName||course.name,lastReadContentId:course.lastReadContentId};
                 sessionService.setSessionData('COURSE_PARAMS', params);
                 $rootScope.isPlayerOpen = true;
                 $state.go('Toc', params);
@@ -46,25 +46,24 @@ angular.module('playerApp').controller('LearnCtrl', function (learnService, $sco
 
                 var api = 'enrollCourseApi';
                 learn[api] = {};
-                learn[api].loader = showLoaderWithMessage("", config.MESSAGES.COURSE.ENROLLED.START);
+                learn[api].loader = showLoaderWithMessage("", $rootScope.errorMessages.Courses.ENROLLED.START);
 
                 learnService.enrolledCourses(uid).then(function (successResponse) {
                     if (successResponse && successResponse.responseCode === 'OK') {
                         learn[api].loader.showLoader = false;
                         learn.enrolledCourses = successResponse.result.courses;
                         $rootScope.enrolledCourseIds = [];
-
-                        var isEnrolled = learn.enrolledCourses.forEach(function (course) {
+                       learn.enrolledCourses.forEach(function (course) {
                             $rootScope.enrolledCourseIds.push(course.courseId);
                         });
                     } else {
                         learn[api].loader.showLoader = false;
-                        learn[api].error = showErrorMessage(true, config.MESSAGES.HOME.ENROLLED.FAILED, config.MESSAGES.COMMON.ERROR);
+                        learn[api].error = showErrorMessage(true, $rootScope.errorMessages.Courses.ENROLLED.FAILED, $rootScope.errorMessages.COMMON.ERROR);
                     }
                 })
                 .catch(function (error) {
                     learn[api].loader.showLoader = false;
-                    learn[api].error = showErrorMessage(true, config.MESSAGES.HOME.ENROLLED.FAILED, config.MESSAGES.COMMON.ERROR);
+                    learn[api].error = showErrorMessage(true,$rootScope.errorMessages.Courses.ENROLLED.FAILED, $rootScope.errorMessages.COMMON.ERROR);
                 });
             };
 
