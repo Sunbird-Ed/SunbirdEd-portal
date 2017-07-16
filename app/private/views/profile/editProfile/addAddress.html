@@ -1,23 +1,23 @@
 <form class="ui form  addressEditForm">
     <div class="ui dividing header margin-top-15 "></div>
-    <div apply-script class="inline fields">
-        <label for="address">Select Address Type</label>
+    <div apply-script class="inline  fields" ng-init="profileCtrl.newAddress.addType='current'">
+        <label for="address" class="required">Select Address Type</label>
         <div class="field">
             <div class="ui radio checkbox">
-                <input type="radio" name="radio" value='Permanent' ng-model="profileCtrl.newAddress.addType">
+                <input type="radio" name="radio" value='permanent' ng-model="profileCtrl.newAddress.addType">
                 <label>Permanent</label>
             </div>
         </div>
         <div class="field">
             <div class="ui radio checkbox">
-                <input type="radio" name="radio" value='Current' checked="checked" ng-checked="true" ng-model="profileCtrl.newAddress.addType">
+                <input type="radio" name="radio" value='current' ng-checked="true" ng-model="profileCtrl.newAddress.addType">
                 <label>Current</label>
             </div>
         </div>
     </div>
 
     <div class="two fields">
-        <div class=" field">
+        <div class="field required" >
             <label>Address Line 1</label>
             <input type="text" name="addLine1" ng-model="profileCtrl.newAddress.addressLine1">
         </div>
@@ -27,7 +27,7 @@
         </div>
     </div>
     <div class="two fields">
-        <div class=" field">
+        <div class=" required field">
             <label>City</label>
             <input type="text" name="city" ng-model="profileCtrl.newAddress.city">
         </div>

@@ -15,10 +15,10 @@
             </div>
             <img class="ui avatar image" src="/images/user_logo.png">
             <div class="content">
-                <a class=" header">{{education.courseName}}</a>
+                <a class=" header">{{education.degree}}</a>
                 <div class="description"> {{education.yearOfPassing}}<span ng-if="education.percentage">,</span>{{education.percentage}}
                     <br/>
-                    <p>{{education.grade}}<span ng-if="education.name">,</span>{{education.name}}<span ng-if="education.boardOrUniversity">,</span>{{education.boardOrUniversity}}
+                    <p>{{education.grade}}<span ng-if="education.name && education.grade">,</span>{{education.name}}<span ng-if="education.boardOrUniversity && eduction.name">,</span>{{education.boardOrUniversity}}
 
                 </div>
             </div>
