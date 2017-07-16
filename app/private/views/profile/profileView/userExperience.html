@@ -19,6 +19,8 @@
                 <div class="description"> {{::experience.orgName}}
                     <p ng-if="experience.subject.length">subjects: <span><span ng-repeat="sub in ::experience.subject">{{::sub}}<span ng-if="!$last">,</span></span> </span>
                     </p>
+                    <p ng-if="experience.joiningDate">Joining date : {{experience.joiningDate}} &nbsp;
+                        <span ng-if="experience.endDate">, End date{{experience.endDate}}</span></p>
                 </div>
             </div>
         </div>
