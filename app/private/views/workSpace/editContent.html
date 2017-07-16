@@ -1,140 +1,141 @@
-<div class="ui grid" ng-init="editContent.initializeData()">
+<div class="ui grid">
     <div class="one wide column"></div>
-    <div class="ten wide column" ng-show="!contentPlayer.isContentPlayerEnabled">
+    <div class="ten wide column">
         <div class="ui grid">
             <div class="one wide column"></div>
-            <div class="ten wide column" ng-show="!editContent.editApi.loader.showLoader && !editContent.editApi.error.showError">
-                <!--                <h2 class="ui center aligned header">
-                                    {{editContent.data.name}}
-                                </h2>-->
-                <div class="videosegment  ui clearing segment">
-                    <h1 class="ui HomeAccordianHeading left floated header margin-auto">
-                        {{editContent.data.name}}
-                    </h1>
-                    <h5 class="ui right floated basic icon circular button"ng-click="editContent.closeEditForm(editContent.data)">
-                        <i class="ui remove icon"></i>
-                    </h5>
+            <div class="ten wide column">
+                <div class="row margin-bottom-15" ng-if="editContent.requiredFieldsMessage.length > 0">
+                    <div class="ui error message">
+                        <div class="header">
+                            <label>{{$root.labels.WORKSPACE.common.plaseFillThisRD}}</label>
+                        </div>
+                        <ul class="list" ng-repeat="message in editContent.requiredFieldsMessage">
+                            <li>{{message}}.</li>
+                        </ul>
+                    </div>
                 </div>
-                <form class="ui form" novalidate="">
-                    <div class="field">
-                        <div class="ui grid">
-                            <div class="two wide column">
-                                <div class="field">
-                                    <label>
-                                        Icon
-                                    </label>
-                                    <div class="ui card userProfilePic margin-none" ng-click="editContent.openImageBrowser()" ng-if="!editContent.iconImage">
-                                        <div class="image iconProfilePic">
-                                            <i class="image icon"></i>
+                <div class="row" ng-if="editContent.editApi.loader.showLoader">
+                    <app-loader data="{{editContent.editApi.loader}}"></app-loader>
+                </div>
+                <div class="row margin-bottom-15" ng-if="editContent.editApi.error.showError">
+                    <error-message data="{{editContent.editApi.error}}" visibility="editContent.editApi.error.showError"></error-message>
+                </div>
+                <div class="row">
+                    <div class="videosegment  ui clearing segment">
+                        <h1 class="ui HomeAccordianHeading left floated header margin-auto">
+                            {{editContent.contentData.name}}
+                        </h1>
+                        <h5 class="ui right floated basic icon circular button"ng-click="editContent.closeEditForm(editContent.contentData)">
+                            <i class="ui remove icon"></i>
+                        </h5>
+                    </div>
+                    <form class="ui form" novalidate="">
+                        <div class="field">
+                            <div class="ui grid">
+                                <div class="two wide column">
+                                    <div class="field">
+                                        <label>
+                                            {{$root.labels.WORKSPACE.common.icon}}
+                                        </label>
+                                        <div class="ui link card userProfilePic margin-none" ng-click="editContent.openImageBrowser()" ng-if="!editContent.iconImage">
+                                            <div class="image iconProfilePic">
+                                                <i class="image icon"></i>
+                                            </div>
+                                        </div>
+                                        <div class="ui link card userProfilePic margin-none" ng-if="editContent.iconImage" ng-click="editContent.openImageBrowser()" >
+                                            <div class="image landscapeImgUser">
+                                                <img ng-src="{{editContent.iconImage}}">
+                                            </div>
+                                        </div>
+                                        <input type="file" accept="image/x-png,image/gif,image/jpeg" class="content-input" id="iconImageInput" onchange="angular.element(this).scope().updateIcon(this.files);" required="" />
+                                    </div>
+                                </div>
+                                <div class="ten wide column">
+                                    <div class="row">
+                                        <div class="required field">
+                                            <label>{{$root.labels.WORKSPACE.common.title}}</label>
+                                            <input type="text" name="title" placeholder={{$root.labels.WORKSPACE.common.title}} ng-model="editContent.contentData.name" required="">
                                         </div>
                                     </div>
-                                    <div class="ui card userProfilePic margin-none" ng-if="editContent.iconImage" ng-click="editContent.openImageBrowser()" >
-                                        <div class="image landscapeImgUser">
-                                            <img ng-src="{{editContent.iconImage}}">
+                                    <div class="row margin-top-10">
+                                        <div class="required field">
+                                            <label>{{$root.labels.WORKSPACE.common.description}}</label>
+                                            <textarea rows="2" name="description" placeholder={{$root.labels.WORKSPACE.common.description}} ng-model="editContent.contentData.description" required=""></textarea>
                                         </div>
                                     </div>
-                                    <input type="file" accept="image/x-png,image/gif,image/jpeg" class="content-input" id="iconImageInput" onchange="angular.element(this).scope().updateIcon(this.files);" required="" />
-                                </div>
-                            </div>
-                            <div class="ten wide column">
-                                <div class="row">
-                                    <div class="field">
-                                        <label>Title</label>
-                                        <input type="text" name="title" placeholder="Name this lesson" ng-model="editContent.data.name" required="">
-                                    </div>
-                                </div>
-                                <div class="row margin-top-10">
-                                    <div class="field">
-                                        <label>Write short description of your lesson</label>
-                                        <textarea rows="2" name="description" placeholder="Description for the lesson" ng-model="editContent.data.description" required=""></textarea>
-                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="two fields">
-                        <div class="field">
-                            <label>Lesson type</label>
-                            <select class="ui fluid dropdown singleSelectDropDown" id="contentTypeDropDown" ng-options=" lesson for lesson in editContent.lessonTypes" ng-model="editContent.data.contentType">
-                                <option value="">Choose lesson type</option>
-                            </select>
-                        </div>
-                        <div class="field">
-                            <label>Audience</label>
-                            <select name="audience" class="ui fluid dropdown multiSelectDropDown" multiple="" id="audienceDropDown" ng-options=" audience for audience in editContent.audiences" ng-model="editContent.data.audience">
-                                <option value="" translate="languages">Choose audience</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="two fields">
-                        <div class="field">
-                            <label>Language</label>
-                            <select name="language" class="ui fluid dropdown multiSelectDropDown" multiple="" id="languageDropDown" ng-options=" language for language in editContent.languages" ng-model="editContent.data.language">
-                                <option value="" translate="languages">Choose language</option>
-                            </select>
-                        </div>
-                        <div class="field">
-                            <label>Subject</label>
-                            <select name="subject" class="ui fluid dropdown singleSelectDropDown" id="subjectDropDown" ng-options=" subject for subject in editContent.subjects" ng-model="editContent.data.subject">
-                                <option value="" translate="ageGroup">Choose subject</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="two fields">
-                        <div class="field">
-                            <label>Grade</label>
-                            <select name="grades" multiple="" class="ui fluid dropdown multiSelectDropDown" id="gradesDropDown" ng-options=" grade for grade in editContent.grades" ng-model="editContent.data.gradeLevel" s>
-                                <option value="">Choose grades</option>
-                            </select>
-                        </div>
-                        <div class="field">
-                            <label>Age Group</label>
-                            <select name="ageGroup" multiple="" class="ui fluid dropdown multiSelectDropDown" id="ageGroupDropDown" ng-options=" ageGroup for ageGroup in editContent.ageGroup" ng-model="editContent.data.ageGroup">
-                                <option value="" translate="agegroup">Choose age Group</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="two fields">
-                        <div class="field">
-                            <label>Medium</label>
-                            <select name="medium" class="ui fluid dropdown singleSelectDropDown" id="mediumDropDown" ng-options=" medium for medium in editContent.mediums" ng-model="editContent.data.medium">
-                                <option value="" medium="medium">Choose medium</option>
-                            </select>
-                        </div>
-                        <div class="field">
-                            <label>Author</label>
-                            <input type="text" name="author" placeholder="author" ng-model="editContent.data.author" required="">
-                        </div>
-
-                    </div>
-<!--                    <div class="field">
                         <div class="two fields">
-                            <div class="field">
-                                <label>Domain</label>
-                                <select class="ui fluid dropdown singleSelectDropDown">
-                                    <option value="">Numeracy</option>
-                                    <option value="AL">Alabama</option>
+                            <div class="required field">
+                                <label>{{$root.labels.WORKSPACE.common.lessonType}}</label>
+                                <select name="lessonType" class="ui fluid dropdown singleSelectDropDown" id="contentTypeDropDown" ng-options=" lesson for lesson in editContent.lessonTypes" ng-model="editContent.contentData.contentType">
+                                    <option value="">{{$root.labels.WORKSPACE.common.lessonType}}</option>
+                                </select>
+                            </div>
+                            <div class="required field">
+                                <label>{{$root.labels.WORKSPACE.common.audience}}</label>
+                                <select name="audience" class="ui fluid dropdown multiSelectDropDown" multiple="" id="audienceDropDown" ng-options=" audience for audience in editContent.audiences" ng-model="editContent.contentData.audience">
+                                    <option value="">{{$root.labels.WORKSPACE.common.audience}}</option>
                                 </select>
                             </div>
                         </div>
-                    </div>-->
-                </form>
-                <button class="ui primary basic button" ng-click="editContent.previewContent(editContent.data)">Preview</button>
-                <button class="ui primary basic button" ng-click="editContent.saveMetaContent(editContent.data)">Save</button>
-                <!--<button class="ui primary basic button" ng-click="editContent.submitForReview(editContent.data)">Submit For Review</button>-->
-            </div>
-            <div class="ten wide column" ng-if="editContent.editApi.loader.showLoader">
-                <app-loader data="{{editContent.editApi.loader}}"></app-loader>
-            </div>
-            <div class="ten wide column" ng-if="editContent.editApi.error.showError">
-                <error-message data="{{editContent.editApi.error}}" visibility="editContent.editApi.error.showError"></error-message>
+                        <div class="two fields">
+                            <div class="field">
+                                <label>{{$root.labels.WORKSPACE.common.language}}</label>
+                                <select name="language" class="ui fluid dropdown multiSelectDropDown" multiple="" id="languageDropDown" ng-options=" language for language in editContent.languages" ng-model="editContent.contentData.language">
+                                    <option value="">{{$root.labels.WORKSPACE.common.language}}</option>
+                                </select>
+                            </div>
+                            <div class="required field">
+                                <label>{{$root.labels.WORKSPACE.common.subject}}</label>
+                                <select name="subject" class="ui fluid dropdown singleSelectDropDown" id="subjectDropDown" ng-options=" subject for subject in editContent.subjects" ng-model="editContent.contentData.subject">
+                                    <option value="">{{$root.labels.WORKSPACE.common.subject}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="two fields">
+                            <div class="required field">
+                                <label>{{$root.labels.WORKSPACE.common.grade}}</label>
+                                <select name="grade" multiple="" class="ui fluid dropdown multiSelectDropDown" id="gradesDropDown" ng-options=" grade for grade in editContent.grades" ng-model="editContent.contentData.gradeLevel">
+                                    <option value="">{{$root.labels.WORKSPACE.common.grade}}</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label>{{$root.labels.WORKSPACE.common.ageGroup}}</label>
+                                <select name="ageGroup" multiple="" class="ui fluid dropdown multiSelectDropDown" id="ageGroupDropDown" ng-options=" ageGroup for ageGroup in editContent.ageGroup" ng-model="editContent.contentData.ageGroup">
+                                    <option value="">{{$root.labels.WORKSPACE.common.ageGroup}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="two fields">
+                            <div class="required field">
+                                <label>{{$root.labels.WORKSPACE.common.medium}}</label>
+                                <select name="medium" class="ui fluid dropdown singleSelectDropDown" id="mediumDropDown" ng-options=" medium for medium in editContent.mediums" ng-model="editContent.contentData.medium">
+                                    <option value="">{{$root.labels.WORKSPACE.common.medium}}</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label>{{$root.labels.WORKSPACE.common.author}}</label>
+                                <input type="text" name="author" placeholder={{$root.labels.WORKSPACE.common.author}} ng-model="editContent.contentData.author" required="">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="row margin-top-10 margin-bottom-15" ng-if="contentPlayer.isContentPlayerEnabled">
+                    <content-player visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="false" height="8" width="100" ispercentage="true"></content-player>
+                </div>
+                <div class="row margin-top-10" id="content-player-bottom-edit">
+                    <button class="ui primary basic button" ng-if="!contentPlayer.isContentPlayerEnabled" ng-click="editContent.previewContent(editContent.contentData)">{{$root.labels.WORKSPACE.common.preview}}</button>
+                    <button class="ui primary basic button" ng-if="contentPlayer.isContentPlayerEnabled"
+                            ng-click="contentPlayer.isContentPlayerEnabled = !contentPlayer.isContentPlayerEnabled">{{$root.labels.WORKSPACE.common.closePreview}}s</button>
+                    <button class="ui primary basic button" ng-click="editContent.saveMetaContent(editContent.contentData)"ng-disabled="editContent.editApi.loader.showLoader">{{$root.labels.WORKSPACE.common.save}}</button>
+                    <button class="ui primary basic button" ng-click="editContent.submitForReview(editContent.contentData)" ng-disabled="editContent.editApi.loader.showLoader">{{$root.labels.WORKSPACE.common.submitForReview}}</button>
+                    <button class="ui primary basic button" ng-if="editContent.contentData.mimeType === 'application/vnd.ekstep.ecml-archive'" ng-click="editContent.openContentEditor(editContent.contentData.identifier)">{{$root.labels.WORKSPACE.common.launchEditor}}</button>
+                </div>
             </div>
             <div class="one wide column"></div>
         </div>
     </div>
-    <div class="ten wide column" ng-if="contentPlayer.isContentPlayerEnabled">
-        <content-player visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="true" height="10" width="100" ispercentage="true"></content-player>
-    </div>
-
     <div class="one wide column"></div>
 </div>

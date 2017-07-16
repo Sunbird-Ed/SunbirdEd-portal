@@ -288,9 +288,13 @@ th {
   font-size: 1.0625em !important;
 }
 /*course structure page fonts*/
+.courseStructureSectionHeading {
+  font-family: 'sunbirdboldfont' !important;
+  font-size: 1.9em !important;
+}
 .courseStructureHeading {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 1.0625em !important;
+  font-size: 0.955em !important;
 }
 .courseStructureDesc {
   font-family: 'sunbirdregularfont' !important;
@@ -362,11 +366,24 @@ th {
 .padding-top-10 {
   padding-top: 10px !important;
 }
-.padding-topBottom-10 {
+.padding-top-20 {
+  padding-top: 20px !important;
+}
+.padding-topBottom-20 {
   padding: 10px 0px!important;
 }
 .padding-left-25 {
   padding-left: 25px !important;
+}
+.padding-topBottom-35 {
+  padding: 35px 0px!important;
+}
+.padding-topBottomNone {
+  padding-top: 0px!important;
+  padding-bottom: 0px!important;
+}
+.padding-all-10 {
+  padding: 10px!important;
 }
 .margin-none {
   margin: 0em !important;
@@ -412,6 +429,9 @@ th {
 .margin-right-20 {
   margin-right: 20px !important;
 }
+.margin-right-15 {
+  margin-right: 15px !important;
+}
 .margin-left-20 {
   margin-left: 20px !important;
 }
@@ -423,6 +443,12 @@ th {
 }
 .margin-top-30 {
   margin-top: 30px !important;
+}
+.margin-top-3rem {
+  margin-top: -3rem !important;
+}
+.margin-top-40 {
+  margin-top: 40px !important;
 }
 .text-align-right {
   text-align: right !important;
@@ -456,6 +482,12 @@ th {
 }
 .text-align-center {
   text-align: center !important;
+}
+.contentVisibility-hidden {
+  visibility: hidden;
+}
+.right-floated {
+  float: right;
 }
 .header-container {
   margin-left: 1px !important;
@@ -702,10 +734,10 @@ th {
   width: 25% !important;
 }
 .editroIframe {
-  box-shadow: -1px -1px 9px 6px rgba(0, 0, 0, 0.41);
+  box-shadow: 2px 2px 2px 2px rgba(1, 5, 0, 0.41);
 }
 .contentViewerIframeShadow {
-  box-shadow: -1px -1px 9px 6px rgba(0, 0, 0, 0.41);
+  box-shadow: 2px 2px 2px 2px rgba(1, 5, 0, 0.41);
   width: 77%;
   margin-left: 11%;
   border-radius: 1%;
@@ -1014,6 +1046,44 @@ span.fancytree-title {
   position: absolute;
   margin-top: 6px;
 }
+.notesearch .ui.input input {
+  width: 340px;
+}
+.notelistscroll {
+  height: 600px;
+  overflow-y: scroll;
+  cursor: pointer;
+  border-top: 0!important;
+}
+.notelistborder {
+  border: 2px solid #d9d9d9!important;
+  padding: 10px!important;
+}
+.contentnotelist:hover {
+  background-color: #d8d7d7!important;
+  box-shadow: 0px 2px 3px #888888!important;
+}
+.noteellipsis {
+  overflow: hidden;
+  overflow-wrap: break-word;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.notedecheader {
+  font-weight: 600!important;
+  word-wrap: break-word;
+}
+.fancytree-plain span.fancytree-node:hover span.fancytree-title {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+.fancytree-plain span.fancytree-node:hover span.fancytree-title .padded i.icon {
+  margin: 0px 0.3em 0.24em 0!important;
+}
+.noteListSegment.ui.segment {
+  padding: 14px 0px;
+  background: #fff!important;
+}
 .homeCard.ui.card {
   max-width: 100%;
   position: relative;
@@ -1078,6 +1148,18 @@ span.fancytree-title {
   font-family: "Open Sans";
   font-size: 10px;
   line-height: 14px;
+}
+.sunblogin {
+  color: #212121!important;
+  z-index: 11;
+}
+.ui[class*="right ribbon"].label:after {
+  left: auto;
+  right: 0;
+  border-style: solid;
+  border-width: 0em 0em 0 0 !important;
+  border-color: transparent;
+  border-top-color: inherit;
 }
 .opacity-cardContent {
   opacity: 0.2 !important;
@@ -1314,7 +1396,7 @@ span.fancytree-title {
   float: left;
 }
 .workspaceicon.ui.header:first-child {
-  margin-top: 20px;
+  margin-top: 21px;
 }
 .publicmenusection.ui.vertical.menu {
   padding: 15px 0 0 4px;
@@ -1336,15 +1418,11 @@ span.fancytree-title {
   margin-top: 33px;
 }
 .workspacecontent {
-  text-align: center;
-  color: #333333;
-  font-family: "Open Sans";
-  font-size: 14px;
-  line-height: 17px;
-  font-weight: 400;
+  line-height: 45px;
 }
 .workspacecontent.ui.card {
-  box-shadow: 0 1px 3px 0 #000000, 0 0 0 1px #171718;
+  border: 1px solid #333333;
+  box-shadow: 0 1px 0px 0 #d4d4d5, 0 0 0 1px #d4d4d5 !important;
 }
 .workspacetitle.title {
   color: #333333;
@@ -1369,6 +1447,11 @@ span.fancytree-title {
   color: #979797;
 }
 .workspaceinstuction {
+  text-align: center;
+  color: #979797;
+  font-size: 12px;
+}
+.dropfile {
   text-align: center;
   color: #979797;
   font-size: 12px;
@@ -1405,9 +1488,7 @@ span.fancytree-title {
 }
 .textcontent {
   display: inline-block;
-  margin: 8px;
-  padding: 0px;
-  font-size: 1em;
+  margin: 5px;
   white-space: nowrap;
 }
 @media only screen and (max-width: 1200px) {
@@ -1416,10 +1497,13 @@ span.fancytree-title {
   }
 }
 .textcontent i.icon {
-  font-size: 2em;
+  font-size: 3.5em;
 }
 .my-text {
-  font-size: 1.2em;
+  font-size: 1.063em;
+  font-family: 'sunbirdregularfont';
+  color: #333333;
+  vertical-align: middle;
 }
 .my-icon {
   vertical-align: middle;
@@ -1437,43 +1521,106 @@ span.fancytree-title {
 /* user avatar on hover effects in profile edit page*/
 .userAvtarWrap {
   position: relative;
-  height: 150px;
-  width: 150px;
+  height: 150px !important;
+  width: 150px !important;
 }
 .img-description-layer {
-  position: absolute;
+  position: absolute !important;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  color: #FFFFFF;
-  visibility: hidden;
-  opacity: 0.1;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  color: #FFFFFF !important;
+  visibility: hidden !important;
+  opacity: 0.1 !important;
+  display: -webkit-box !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -webkit-box-align: center !important;
+      -ms-flex-align: center !important;
+          align-items: center !important;
+  -webkit-box-pack: center !important;
+      -ms-flex-pack: center !important;
+          justify-content: center !important;
   font-size: 2em !important;
-  border-radius: 50%;
+  border-radius: 50% !important;
   background: rgba(34, 36, 38, 0.1);
 }
 .userAvtarWrap:hover .img-description-layer {
-  visibility: visible;
-  opacity: 1;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+.workspacecontentProfile {
+  line-height: 22px;
+}
+.workspacecontentProfile.ui.card {
+  border: 1px solid #333333;
+  box-shadow: 0 1px 0px 0 #d4d4d5, 0 0 0 1px #d4d4d5 !important;
+}
+.WorkSpaceTextContent {
+  display: inline-block;
+  margin: 16px;
+  white-space: nowrap;
+}
+@media only screen and (max-width: 1200px) {
+  .WorkSpaceTextContent {
+    white-space: pre-line;
+  }
+}
+.WorkSpaceTextContent i.icon {
+  font-size: 2em;
+  padding-right: 10px;
+}
+.WorkSpaceTextContent .my-text {
+  font-size: 1.3em;
+  font-family: 'sunbirdboldfont';
 }
 /* file upload border */
 .qq-uploader {
   border: 2px dashed #CCCCCC !important;
+  min-height: 130px !important;
+}
+.selectuploadfile .ui.button {
+  margin: 32px 0 0 0;
 }
 /*profile image header css*/
 .header-image-profile {
   height: 100px !important;
   width: 100px !important;
+}
+/*trashIcon in address css*/
+.trashIcon-fontSize {
+  font-size: 1.5em !important;
+}
+.youtubeupload.ui.form .inline.fields .field > label {
+  text-align: center;
+  color: #979797;
+  font-size: 13px;
+  font-weight: 400;
+  white-space: nowrap;
+  font-family: "Open Sans";
+}
+.orinstuction {
+  text-align: center;
+  color: #979797;
+  font-size: 12px;
+  padding-top: 40px;
+}
+.fileUploadDivider {
+  padding: 35px 0px 10px 0px !important;
+  border: 2px dashed #CCCCCC !important;
+  margin-left: 0rem !important;
+  margin-right: 0rem !important;
+}
+.dividerInFileUploader {
+  padding-top: 0rem !important;
+  padding-bottom: 0.3rem !important;
+}
+.textIndentForUploadFile {
+  text-indent: -25px !important;
+}
+.youTubeFileUploadForm {
+  max-width: 90% !important;
 }
 .profilesegmentmargin.ui.segment:first-child {
   margin-top: 20px;

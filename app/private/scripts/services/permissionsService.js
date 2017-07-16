@@ -59,7 +59,7 @@ angular.module('playerApp')
         this.checkActionsPermissions = function(data, flag) {
             if (_.isArray(data)) {
                 if ((_.intersection(data, currentRoleActions).length === 0) && !flag) {
-                    return true
+                    return false;
                 }
                 return ((_.intersection(data, currentRoleActions).length > 0) && flag)
             }
