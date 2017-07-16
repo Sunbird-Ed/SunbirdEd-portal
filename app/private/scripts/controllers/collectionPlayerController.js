@@ -14,6 +14,15 @@
             isClose: false,
             showEnrollError: false
         }
+        cpvm.collectionMeta = {
+            author: '-',
+            language: '-',
+            gradeLevel: '-',
+            subject: '-',
+            medium: '-',
+            lastUpdatedOn: '-',
+            createdOn: '-',
+        }
         cpvm.showPlayer = false;
         cpvm.name = $state.params['name'];
         cpvm.loadData = function() {
@@ -23,6 +32,13 @@
                 if (res && res.responseCode === "OK") {
                     cpvm.loader.showLoader = false;
                     cpvm.courseHierachy = res.result.content;
+                    cpvm.collectionMeta.author = cpvm.courseHierachy.owner;
+                    cpvm.collectionMeta.language = cpvm.courseHierachy.language[0];
+                    cpvm.collectionMeta.gradeLevel = cpvm.courseHierachy.gradeLevel[0];
+                    cpvm.collectionMeta.subject = cpvm.courseHierachy.subject;
+                    cpvm.collectionMeta.medium = cpvm.courseHierachy.medium;
+                    cpvm.collectionMeta.lastUpdatedOn = cpvm.courseHierachy.lastUpdatedOn;
+                    cpvm.collectionMeta.createdOn = cpvm.courseHierachy.createdOn;
                     cpvm.applyAccordion();
                 } else {
                     cpvm.showError(config.MESSAGES.COLLECTION.PREVIEW.ERROR);
