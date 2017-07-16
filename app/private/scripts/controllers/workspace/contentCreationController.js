@@ -60,6 +60,7 @@ angular.module('playerApp')
                             console.log("onComplete:", id, name, responseJSON);
                         },
                         onSubmitted: function (id, name) {
+                            contentCreation.youtubeFileLink = '';
                             contentCreation.showContentCreationModal = true;
                             contentCreation.uploadedFileId = id;
                             contentCreation.openContentCreationModal();
@@ -173,11 +174,11 @@ angular.module('playerApp')
                         }
                     } else {
                         contentCreation[api].loader.showLoader = false;
-                        contentCreation[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.CREATE_LESSON.FAILED, config.MESSAGES.COMMON.ERROR);
+                        contentCreation[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.CREATE_LESSON.FAILED, $rootScope.errorMessages.COMMON.ERROR);
                     }
                 }).catch(function (error) {
                     contentCreation[api].loader.showLoader = false;
-                    contentCreation[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.CREATE_LESSON.FAILED, config.MESSAGES.COMMON.ERROR);
+                    contentCreation[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.CREATE_LESSON.FAILED, $rootScope.errorMessages.COMMON.ERROR);
                 });
             };
 
@@ -185,7 +186,7 @@ angular.module('playerApp')
 
                 var api = 'createApi';
                 contentCreation[api] = {};
-                contentCreation[api].loader = showLoaderWithMessage("", config.MESSAGES.WORKSPACE.CREATE_LESSON.START);
+                contentCreation[api].loader = showLoaderWithMessage("", $rootScope.errorMessages.WORKSPACE.CREATE_LESSON.START);
 
                 var requestBody = angular.copy(data);
 
