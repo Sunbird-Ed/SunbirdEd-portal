@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, noteService, config, $state, $stateParams) {
+angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, noteService, config, $state, $stateParams, $timeout) {
 
     var noteList = this;
     noteList.userId = $rootScope.userId;
@@ -134,14 +134,14 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
         var requestData = {noteId: noteId};
         var api = 'searchApi';
         showLoaderWithMessage(api, "", $rootScope.errorMessages.NOTES.REMOVE.START);
-
+        noteList.hideRemoveNoteModel();
         noteService.remove(requestData).then(function (response) {
             if (response && response.responseCode === "OK") {
                 noteList.notesList = noteList.notesList.filter(function (note) {
                     return note.identifier !== noteId;
                 });
                 noteList[api].loader.showLoader = false;
-                noteList.showNoteList(noteList.notesList[noteList.notesList.length-1], noteList.notesList.length-1);
+                noteList.showNoteList(noteList.notesList[noteList.notesList.length - 1], noteList.notesList.length - 1);
                 if (noteList.notesList.length === 0) {
                     noteList[api].error = showErrorMessage(api, false, $rootScope.errorMessages.NOTES.SEARCH.NO_RESULT, $rootScope.errorMessages.COMMON.INFO);
                 }
@@ -149,11 +149,32 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
                 noteList[api].loader.showLoader = false;
                 showErrorMessage(api, true, $rootScope.errorMessages.NOTES.REMOVE.FAILED, $rootScope.errorMessages.COMMON.ERROR);
             }
-        })
-                .catch(function (error) {
-                    noteList[api].loader.showLoader = false;
-                    showErrorMessage(api, true, $rootScope.errorMessages.NOTES.REMOVE.FAILED, $rootScope.errorMessages.COMMON.ERROR);
-                });
+        }).catch(function (error) {
+            noteList[api].loader.showLoader = false;
+            showErrorMessage(api, true, $rootScope.errorMessages.NOTES.REMOVE.FAILED, $rootScope.errorMessages.COMMON.ERROR);
+        });
+    };
+
+    noteList.openRemoveNoteModel = function (noteId) {
+        noteList.removeNoteId = noteId;
+        noteList.showRemoveNoteModel = true;
+        $timeout(function () {
+            $('#removeNoteModal').modal({
+                onShow: function () {
+                },
+                onHide: function () {
+                }
+            }).modal('show');
+        }, 10);
+    };
+
+    noteList.hideRemoveNoteModel = function () {
+        $('#removeNoteModal').modal('hide');
+        $('#removeNoteModal').modal('hide all');
+        $('#removeNoteModal').modal('hide other');
+        $('#removeNoteModal').modal('hide dimmer');
+        noteList.removeNoteId = '';
+        noteList.showRemoveNoteModel = false;
     };
 
     /**
@@ -218,22 +239,24 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
             $state.go('Player', params);
         }
     };
-    
+
 
     noteList.updateNoteData = function (note) {
 
         noteList.update.metaData = angular.copy(note);
     };
 
-    noteList.showNoteList =function(note, index){
-       
+    noteList.showNoteList = function (note, index) {
+
         noteList.selectedIndex = index;
-        if(noteList.selectedIndex != '0'){
+        if (noteList.selectedIndex != '0') {
             $("#notelistcontent0").removeClass('notelistborder');
-        }else{
+        } else {
             $("#notelistcontent0").addClass('notelistborder');
         }
         noteList.selectedNoteData = note;
     }
+
+
 
 });
