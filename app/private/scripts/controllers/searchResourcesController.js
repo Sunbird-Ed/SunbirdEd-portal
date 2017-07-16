@@ -38,14 +38,17 @@ angular.module('playerApp')
 
         // play resource
         search.playContent = function(item) {
-            var params = {content: item,contentName:item.name,contentId:item.identifier};
-            $state.go('Player', params);
+            
+            if (item.mimeType === "application/vnd.ekstep.content-collection") {
+                $state.go('PreviewCollection', {Id: item.identifier, name:item.name})       
+            } else{
+                $state.go('Player', {content: item,contentName:item.name,contentId:item.identifier});    
+            }
         };
         // resourceSearch
         search.handleContentSearch = function(contents) {
             if (contents.result.count > 0) {
                 search.searchResult = contents.result.content;
-                console.log('search.searchResult', search.searchResult);
             } else {
                 search.error = showErrorMessage(true, config.MESSAGES.SEARCH.RESOURCE.NO_RESULT, config.MESSAGES.COMMON.INFO);
             }

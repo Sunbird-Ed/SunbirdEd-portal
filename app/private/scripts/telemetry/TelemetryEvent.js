@@ -55,7 +55,7 @@ function TelemetryEvent() {
         var instance = this;
         TelemetryService._data.push(this.event);
         if (this.event) {
-            org.sunbird.portal.eventManager.dispatchEvent('sunbird:player:telemetry', this.event);
+            org.sunbird.portal.eventManager.dispatchEvent('sunbird:telemetry:flush', this.event);
             if ("undefined" != typeof telemetry) {
                 telemetry.send(JSON.stringify(this.event), apiName).then(function() {
                     return JSON.stringify(this.event);
@@ -97,5 +97,50 @@ function TelemetryEvent() {
         } else {
             throw "can't end event without starting.";
         }
-    }
+    };
+    
+    this.portalInit = function(eid, version, body, user, cdata, otherData) {
+        
+        this.createdTime = getCurrentTime();
+        this.name = eid;
+        this.event = {
+            ver: version,
+            uid: user.uid,
+            sid: (otherData) ? (otherData.sid || "") : "",
+            did: (otherData) ? (otherData.did || "") : "",
+            edata: {
+                eks: body || {}
+            },
+            eid: eid,
+            cdata: cdata
+        };
+        if(otherData){
+            var otherKeys = Object.keys(otherData);
+            for (var i=0; i<otherKeys.length; i++) {
+                var keyName = otherKeys[i];
+
+                var sourceObj = this.event[keyName];
+                var targetObj = otherData[keyName];
+                if (sourceObj) {
+                    // data is already present
+                    if(typeof(sourceObj) === 'object'){
+                        // data is of type object or Array
+                        if(Array.isArray(sourceObj)){
+                            sourceObj.push(targetObj);;
+                        } else {
+                            Object.assign(sourceObj, targetObj);
+                        }
+                    } else {
+                        // Data is of type 'string' or number
+                        sourceObj = targetObj;
+                    }
+                } else if(targetObj){
+                    // Data is not present
+                    this.event[keyName] = targetObj;
+                }
+            }
+        }
+        TelemetryService._version == "1.0" ? this.event.ts = getTime(this.createdTime) : this.event.ets = getTime(this.createdTime);
+    };
+
 }

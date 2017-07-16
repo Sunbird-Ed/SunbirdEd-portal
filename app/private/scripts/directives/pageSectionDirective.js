@@ -16,6 +16,6 @@ angular.module('playerApp').directive('pageSection', function () {
         link: function (scope, element, attrs) {
            
         },
-        controller: 'pageSectionCtrl'
+        controller: 'pageSectionCtrl as section'
     };
 });

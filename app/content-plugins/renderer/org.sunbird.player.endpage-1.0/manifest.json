@@ -1,0 +1,12 @@
+{
+    "id": "org.sunbird.player.endpage",
+    "ver": "1.0",
+    "shortId": "org.sunbird.player.endpage",
+    "author": "Manjunath Davanam",
+    "description": "",
+    "publishedDate": "",
+    "renderer": {
+        "main": "renderer/plugin.js"
+    } 
+
+}
