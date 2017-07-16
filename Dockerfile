@@ -7,6 +7,7 @@ WORKDIR /home/sunbird
 COPY player-dist.zip  /home/sunbird/
 RUN unzip /home/sunbird/player-dist.zip \ 
     && chown -R sunbird:sunbird /home/sunbird
+USER sunbird
 WORKDIR /home/sunbird/dist
 EXPOSE 3000
 CMD ["node", "server.js", "&"]
