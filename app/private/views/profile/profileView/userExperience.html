@@ -15,9 +15,9 @@
             <img class="ui avatar image" src="/images/user_logo.png">
             <div class="content">
 
-                <a class=" header">{{::experience.role}}</a>
+                <a class=" header">{{::experience.jobName}}</a>
                 <div class="description"> {{::experience.orgName}}
-                    <p ng-if="experience.subject.length">subjects: <span><span ng-repeat="sub in ::experience.subject">{{::sub}}&nbsp;</span> </span>
+                    <p ng-if="experience.subject.length">subjects: <span><span ng-repeat="sub in ::experience.subject">{{::sub}}<span ng-if="!$last">,</span></span> </span>
                     </p>
                 </div>
             </div>
