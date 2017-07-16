@@ -56,6 +56,7 @@ app.all('/public/service/v1/*', proxy(learnerURL, {
 }))
 app.all('/private/service/v1/learner/*', keycloak.protect(), proxy(learnerURL, {
     proxyReqPathResolver: function(req) {
+        console.log('proxying request: ', req.params);
         let urlParam = req.params["0"];
         return require('url').parse(learnerURL + urlParam).path;
     }
