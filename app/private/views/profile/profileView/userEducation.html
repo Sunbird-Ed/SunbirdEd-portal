@@ -1,9 +1,9 @@
 <div class="ui raised segment">
     <div class="header announcementCard-header">
-        <span class="header cardsHeading" translate="experiance">Education</span>
-        <a href="" class="addeditprofile" ng-if="!profileCtrl.educationForm && profileCtrl.education.length" translate="edit" ng-click="profileCtrl.educationForm=true ;profileCtrl.isNewEducation=false ">Edit</a>
-        <a href="" href="" class="addeditprofile" ng-if="!profileCtrl.educationForm " ng-click="profileCtrl.educationForm=true ;profileCtrl.isNewEducation=true ;profileCtrl.newEducation={} " translate="add ">Add</a>
-        <a href="" class="addeditprofile" ng-if="profileCtrl.educationForm" translate="edit" ng-click="profileCtrl.educationForm=false">Close</a>
+            <span class="header cardsHeading" >{{$root.labels.PROFILE.EDUCATION.header}} </span>
+        <a href="" class="addeditprofile" ng-if="!profileCtrl.educationForm && profileCtrl.education.length"  ng-click="profileCtrl.educationForm=true ;profileCtrl.isNewEducation=false ">{{$root.labels.PROFILE.BUTTON.edit}}</a>
+        <a href="" href="" class="addeditprofile" ng-if="!profileCtrl.educationForm " ng-click="profileCtrl.educationForm=true ;profileCtrl.isNewEducation=true ;profileCtrl.newEducation={} " >{{$root.labels.PROFILE.BUTTON.add}}</a>
+        <a href="" class="addeditprofile" ng-if="profileCtrl.educationForm"  ng-click="profileCtrl.educationForm=false">{{$root.labels.PROFILE.BUTTON.close}}</a>
     </div>
     <div ng-if="!profileCtrl.educationForm" class="profileitems ui relaxed divided list">
         <div class="item" ng-repeat="education in profileCtrl.education">
@@ -27,7 +27,7 @@
     <div ng-if="profileCtrl.educationForm" class="profileitems ui relaxed divided list">
         <div class="edit-education-form" ng-if="!profileCtrl.isNewEducation ">
             <div class=" ui " ng-repeat="education in profileCtrl.user.education track by $index " ng-include=" 'views/profile/editProfile/education.html' "></div>
-            <div class="ui button margin-top-15" ng-click="profileCtrl.editEducation(profileCtrl.education)" ;>Save </div>
+            <div class="ui button margin-top-15" ng-click="profileCtrl.editEducation(profileCtrl.education)" ;>{{$root.labels.PROFILE.BUTTON.save}} </div>
         </div>
         <div class="add-education-form" ng-if="profileCtrl.isNewEducation ">
             <div class="ui " ng-include=" 'views/profile/editProfile/addEducation.html' "></div>
