@@ -1,32 +1,32 @@
 <form class="ui form formdivider">
     <h4>{{::education.degree }}</h4>
     <div class="two fields">
-        <div class=" field">
-            <label>Education Degree</label>
-            <input type="text" name="" ng-model="education.courseName">
+        <div class="required field">
+            <label>{{$root.labels.PROFILE.EDUCATION.degree}} </label>
+            <input type="text" name="" ng-model="education.degree">
         </div>
         <div class="  field">
-            <label>Year of passing</label>
+            <label>{{$root.labels.PROFILE.EDUCATION.yearOfPassing}}</label>
             <input type="text" name="" ng-model="education.yearOfPassing">
         </div>
     </div>
     <div class="two fields">
         <div class=" field">
-            <label>Percentage</label>
+            <label>{{$root.labels.PROFILE.EDUCATION.percentage}}</label>
             <input type="text" name="" ng-model="education.percentage">
         </div>
         <div class="  field">
-            <label>Grade</label>
+            <label>{{$root.labels.PROFILE.EDUCATION.grade}}</label>
             <input type="text" name="" ng-model="education.grade">
         </div>
     </div>
     <div class="two fields">
-        <div class=" field">
-            <label>Name of Institution</label>
+        <div class=" required field">
+            <label>{{$root.labels.PROFILE.EDUCATION.institute}}</label>
             <input type="text" name="" ng-model="education.name">
         </div>
         <div class="  field">
-            <label>Board/University</label>
+            <label>{{$root.labels.PROFILE.EDUCATION.board}}</label>
             <input type="text" name="" ng-model="education.boardOrUniversity">
         </div>
     </div>
