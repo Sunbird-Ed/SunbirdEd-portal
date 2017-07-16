@@ -342,12 +342,19 @@ angular.module('playerApp')
         };
         profile.editExperience = function(experiences) {
             if (experiences.length) {
-                experiences.forEach(function(element) {
+                experiences.forEach(function(element,index) {
                     var startDate = $('.rangeStart').calendar('get date');
                     var endDate = $('.rangeEnd').calendar('get date');
+                    if(startDate instanceof Array && endDate instanceof Array){
+                    element.joiningDate = startDate ? $filter('date')(startDate[index], 'yyyy-MM-dd') : element.joiningDate;
+                    element.endDate = endDate ? $filter('date')(endDate[index], 'yyyy-MM-dd') : element.endDate;
+                    } else{
                     console.log('startDate', startDate instanceof Array);
                     element.joiningDate = startDate ? $filter('date')(startDate, 'yyyy-MM-dd') : element.joiningDate;
-                    element.endDate = endDate ? $filter('date')(endDate, 'yyyy-MM-dd') : element.startDate;
+                    element.endDate = endDate ? $filter('date')(endDate, 'yyyy-MM-dd') : element.endDate;
+                    }
+                console.log('joinig date',element.joiningDate )
+                console.log('end date',element.endDate )
                 }, this);
             }
             var req = { jobProfile: experiences };
