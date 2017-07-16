@@ -101,9 +101,11 @@ angular.module('playerApp')
                     if (res && res.responseCode === "OK") {
 
                         toc.loader.showLoader = false;
+                        res.result.content.children = _.sortBy(res.result.content.children, ['index']);
                         toc.getAllContentsFromCourse(res.result.content);
                         toc.courseParams.lastReadContentId ? toc.itemIndex = toc.playList.indexOf(toc.courseParams.lastReadContentId) : 0;
                         if (toc.courseType == "ENROLLED_COURSE") {
+
                             toc.courseHierachy = res.result.content;
                             $rootScope.courseName = toc.courseHierachy.name;
                             $rootScope.isTocPage ? toc.applyAccordion() : false;

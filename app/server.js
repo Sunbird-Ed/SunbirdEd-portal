@@ -140,7 +140,6 @@ app.all('*', function(req, res) {
 * Method called after successful authentication and it will log the telemetry for CP_SESSION_START
  */
 keycloak.authenticated = function(request) {
-
     telemetryHelper.logSessionStart(request)
 }
 

@@ -24,9 +24,62 @@
             "WARNING": "warning",
             "SUCCESS": "success"
         },
-        "WorkSpace": {
+        "WORKSPACE": { 
+            "DRAFT": { 
+                "START": "We are fetching draft content...", 
+                "FAILED": "Fetching draft content failed, please try again later...", 
+                "NO_CONTENT": "You don't have any draft content..." 
+            }, 
+            "CREATE_LESSON": { 
+                "START": "We are creating lesson...", 
+                "FAILED": "Creating lesson failed, please try again later..." 
+            }, 
+            "REVIEW": { 
+                "START": "We are fetching review content...", 
+                "FAILED": "Fetching review content failed, please try again later...", 
+                "NO_CONTENT": "You don't have any content in review..." 
+            }, 
+            "PUBLISHED": { 
+                "START": "We are fetching published content...", 
+                "FAILED": "Fetching published content failed, please try again later...", 
+                "NO_CONTENT": "You don't have any published content..." 
+            }, 
+            "ALL_UPLOADED": { 
+                "START": "We are fetching uploaded content...", 
+                "FAILED": "Fetching uploaded content failed, please try again later...", 
+                "NO_CONTENT": "You don't have any uploaded content..." 
+            }, 
+            "GET": { 
+                "START": "We are fetching content detail...", 
+                "FAILED": "Fetching content detail failed, please try again later..." 
+            }, 
+            "UPLOAD_ICON": { 
+                "START": "We are updating icon...", 
+                "FAILED": "Updating icon failed, please try again later..." 
+            }, 
+            "UPDATE": { 
+                "START": "We are updating content detail...", 
+                "FAILED": "Updating content detail failed, please try again later..." 
+            }, 
+            "REVIEW_CONTENT": { 
+                "START": "We are sending content for review...", 
+                "FAILED": "Sending content for review failed, please try again later..." 
+            }, 
+            "PUBLISH_CONTENT": { 
+                "START": "We are sending content for publish...", 
+                "FAILED": "Sending content for publish failed, please try again later..." 
+            }, 
+            "REJECT_CONTENT": { 
+                "START": "We are sending content for retire...", 
+                "FAILED": "Sending content for retire failed, please try again later..." 
+            },
             "ContentCreation": {
                 "invalidYoutubeUrl": "Invalid youtube url, Please check..."
+            },
+            "UP_FOR_REVIEW": {
+                "START": "We are fetching up for review content...", 
+                "FAILED": "Fetching up for review content failed, please try again later...", 
+                "NO_CONTENT": "You don't have any up for review content..."
             }
         },
         "HOME": {
@@ -67,54 +120,31 @@
                 "SUCCESS": "Note updated successfully..."
             }
         },
-        "WORKSPACE": {
-            "DRAFT": {
-                "START": "We are fetching draft content...",
-                "FAILED": "Fetching draft content failed, please try again later...",
-                "NO_CONTENT": "You have 0 content in draft..."
+        "PROFILE": {
+            "FORM_VALIDATION": {
+                "ADDRESS": {
+                    "address_type": "Please select address type",
+                    "addLine1": "Please enter address line 1",
+                    "city": "Please enter city",
+                    "pin_code": "Please enter a valid pin code"
+                },
+                "BASIC_PROFILE": {
+                    "firstName": "Please enter a valid first name",
+                    "phone": "Please enter a valid mobile number",
+                    "email": "Please enter a valid email",
+                    "language": "Please select a language"
+                }
             },
-            "CREATE_LESSON": {
-                "START": "We are creating lesson...",
-                "FAILED": "Creating lesson failed, please try again later..."
-            },
-            "REVIEW": {
-                "START": "We are fetching review content...",
-                "FAILED": "Fetching review content failed, please try again later...",
-                "NO_CONTENT": "You have 0 content in review..."
-            },
-            "PUBLISHED": {
-                "START": "We are fetching published content...",
-                "FAILED": "Fetching published content failed, please try again later...",
-                "NO_CONTENT": "You have 0 published content..."
-            },
-            "ALL_UPLOADED": {
-                "START": "We are fetching uploaded content...",
-                "FAILED": "Fetching uploaded content failed, please try again later...",
-                "NO_CONTENT": "You have 0 all uploaded content..."
-            },
-            "GET": {
-                "START": "We are fetching content detail...",
-                "FAILED": "Fetching content detail failed, please try again later..."
-            },
-            "UPLOAD_ICON": {
-                "START": "We are updating icon...",
-                "FAILED": "Updating icon failed, please try again later..."
-            },
-            "UPDATE": {
-                "START": "We are updating content detail...",
-                "FAILED": "Updating content detail failed, please try again later..."
-            },
-            "REVIEW_CONTENT": {
-                "START": "We are sending content for review...",
-                "FAILED": "Sending content for review failed, please try again later..."
-            },
-            "PUBLISH_CONTENT": {
-                "START": "We are sending content for publish...",
-                "FAILED": "Sending content for publish failed, please try again later..."
-            },
-            "REJECT_CONTENT": {
-                "START": "We are sending content for retire...",
-                "FAILED": "Sending content for retire failed, please try again later..."
+            "API": {
+                "SUCCESS": {
+                    "loadingProfile": "Loading profile ...",
+                    "editingProfile": "Updating profile ...",
+                    "profileEdited": "Profile successfully updated"
+                },
+                "ERROR": {
+                    "get": "Fetching profile failed, please try again later...",
+                    "update": "Updating user profile failed,please try again later..."
+                }
             }
         }
     }
