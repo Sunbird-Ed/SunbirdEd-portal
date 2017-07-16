@@ -17,6 +17,10 @@ angular.module('playerApp')
         profile.profileSummary = '';
         profile.languages = config.DROPDOWN.COMMON.languages;
         profile.subjects = config.DROPDOWN.COMMON.subjects;
+        var errorMessageType=$rootScope.errorMessages.COMMON;
+        var addressValidationError=$rootScope.errorMessages.PROFILE.FORM_VALIDATION.ADDRESS;
+        var basicProfileValidationError=$rootScope.errorMessages.PROFILE.FORM_VALIDATION.BASIC_PROFILE;
+        var apiMessages=$rootScope.errorMessages.PROFILE.API;
         //forms validation
         profile.formValidation = function() {
             $('.addressEditForm').form({
@@ -24,23 +28,25 @@ angular.module('playerApp')
                     radio: {
                         rules: [{
                             type: 'checked',
-                            prompt: 'please select address type'
+                            prompt: addressValidationError.address_type
                         }]
                     },
                     addLine1: {
                         rules: [{
                             type: 'empty',
+                            prompt: addressValidationError.addLine1
                         }]
                     },
                     city: {
                         rules: [{
                             type: 'empty',
+                            prompt: addressValidationError.city
                         }]
                     },
                     pinCode: {
                         rules: [{
                             type: 'regExp[^[0-9]*$]',
-                            prompt: 'please enter a valid pin code'
+                            prompt: addressValidationError.pin_code
                         }]
                     }
 
@@ -59,24 +65,25 @@ angular.module('playerApp')
                     firstName: {
                         rules: [{
                             type: 'regExp[^[a-zA-Z -]+$]',
-                            prompt: 'please enter a valid first name'
+                            prompt: basicProfileValidationError.firstName
                         }]
                     },
                     phone: {
                         rules: [{
                             type: 'regExp[^(?:(?:\\+|0{0,2})91(\\s*[\\-]\\s*)?|[0]?)?[789]\\d{9}$]',
-                            prompt: 'Please enter a valid mobile number'
+                            prompt: basicProfileValidationError.phone
                         }]
                     },
                     email: {
                         rules: [{
                             type: 'email',
-                            prompt: 'Please enter a valid email'
+                            prompt: basicProfileValidationError.email
                         }]
                     },
                     language: {
                         rules: [{
                             type: 'empty',
+                             prompt: basicProfileValidationError.language
                         }]
                     }
                 },
@@ -121,11 +128,11 @@ angular.module('playerApp')
                     profile.EditAvatar();
                 } else {
                     profile.loader.showLoader = false;
-                    profile.error = showErrorMessage(true, config.MESSAGES.PROFILE.HEADER.UPDATE, config.MESSAGES.COMMON.ERROR);
+                    profile.error = showErrorMessage(true, apiMessages.ERROR.update, errorMessageType.ERROR);
                 }
             }).catch(function(error) {
                 profile.loader.showLoader = false;
-                profile.error = showErrorMessage(true, config.MESSAGES.PROFILE.HEADER.UPDATE, config.MESSAGES.COMMON.ERROR);
+                profile.error = showErrorMessage(true, apiMessages.ERROR.update, errorMessageType.ERROR);
             });
         };
         /**
@@ -198,19 +205,19 @@ angular.module('playerApp')
                 profile.experience = profileData.jobProfile;
             } else {
                 profile.loader.showLoader = false;
-                profile.error = showErrorMessage(true, config.MESSAGES.PROFILE.HEADER.FAILED, config.MESSAGES.COMMON.ERROR);
+                profile.error = showErrorMessage(true, apiMessages.ERROR.get, errorMessageType.ERROR);
             }
         };
         // Get user profile
         profile.getProfile = function() {
-            profile.loader = showLoaderWithMessage('', config.MESSAGES.PROFILE.HEADER.START);
-            userService.getUserProfile(profile.userId)
+            profile.loader = showLoaderWithMessage('', apiMessages.SUCCESS.loadingProfile);
+                userService.getUserProfile(profile.userId)
                 .then(function(successResponse) {
                     profile.userProfile(successResponse);
                 }).catch(function(error) {
                     profile.loader.showLoader = false;
-                    profile.error = showErrorMessage(true, config.MESSAGES.PROFILE.HEADER.FAILED, config.MESSAGES.COMMON.ERROR);
-                });
+                    profile.error = showErrorMessage(true, apiMessages.ERROR.get, errorMessageType.ERROR);
+                });           
         };
         profile.getProfile();
         // update user profile
@@ -223,8 +230,9 @@ angular.module('playerApp')
                 },
                 'request': updateReq
             };
-            profile.loader = showLoaderWithMessage('', config.MESSAGES.PROFILE.HEADER.START);
-
+        
+            profile.loader = showLoaderWithMessage('', apiMessages.SUCCESS.editingProfile);
+              
             userService.updateUserProfile(profile.updateProfileRequest, profile.fullName, profile.email)
                 .then(function(successResponse) {
                     if (successResponse && successResponse.responseCode === 'OK') {
@@ -233,14 +241,14 @@ angular.module('playerApp')
                         profile.addressForm = false;
                         profile.educationForm = false;
                         profile.loader.showLoader = false;
-                        profile.error = showErrorMessage(true, config.MESSAGES.PROFILE.HEADER.UPDATE_SUCCESS, config.MESSAGES.COMMON.SUCCESS);
+                        profile.error = showErrorMessage(true, apiMessages.SUCCESS.profileEdited, errorMessageType.SUCCESS);
                         profile.getProfile();
                         $timeout(function() {
                             profile.error.showError = false;
                         }, 2000);
                     } else {
                         profile.loader.showLoader = false;
-                        profile.error = showErrorMessage(true, config.MESSAGES.PROFILE.HEADER.UPDATE, config.MESSAGES.COMMON.ERROR);
+                        profile.error = showErrorMessage(true, apiMessages.ERROR.update, errorMessageType.ERROR);
                         $timeout(function() {
                             profile.error.showError = false;
                         }, 2000);
@@ -249,7 +257,7 @@ angular.module('playerApp')
                     profile.experienceForm = false;
                     profile.basicProfileForm = false;
                     profile.loader.showLoader = false;
-                    profile.error = showErrorMessage(true, config.MESSAGES.PROFILE.HEADER.UPDATE, config.MESSAGES.COMMON.ERROR);
+                    profile.error = showErrorMessage(true, apiMessages.ERROR.update, errorMessageType.ERROR);
                     $timeout(function() {
                         profile.error.showError = false;
                     }, 2000);
