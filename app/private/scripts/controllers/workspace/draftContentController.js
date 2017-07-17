@@ -80,7 +80,6 @@ angular.module('playerApp')
         };
 
         draftContent.openContentEditor = function(contentId) {
-            var params = { contentId: contentId }
-            $state.go("ContentEditor", params);
+            $state.go("EditContent", { contentId: contentId });
         };
     });
