@@ -45,11 +45,11 @@ angular.module('playerApp')
 
                 var api = "reviewApi";
                 upForReviewContent[api] = {};
-                upForReviewContent[api].loader = showLoaderWithMessage("", config.MESSAGES.WORKSPACE.REVIEW.START);
-
+                upForReviewContent[api].loader = showLoaderWithMessage("", $rootScope.errorMessages.WORKSPACE.UP_FOR_REVIEW.START);
                 var request = {
                     filters: {
-                        status: ["Review"]
+                        status: ["Review"],
+                        "channelId": "sunbird"
                     },
                     'sort_by': {
                         "lastUpdatedOn": "desc"
@@ -59,20 +59,21 @@ angular.module('playerApp')
                 contentService.search(request).then(function (res) {
                     if (res && res.responseCode === 'OK') {
                         upForReviewContent[api].loader.showLoader = false;
-                        upForReviewContent.upForReviewContentData = res.result.content.filter(function(contentData) {
-                            return contentData.createdBy !== upForReviewContent.userId;
-                        });
                         if(res.result.count === 0) {
-                            upForReviewContent[api].error = showErrorMessage(false, config.MESSAGES.WORKSPACE.REVIEW.NO_CONTENT, config.MESSAGES.COMMON.SUCCESS);
+                            upForReviewContent[api].error = showErrorMessage(false, $rootScope.errorMessages.WORKSPACE.UP_FOR_REVIEW.NO_CONTENT, $rootScope.errorMessages.COMMON.SUCCESS);
+                        } else {
+                            upForReviewContent.upForReviewContentData = res.result.content.filter(function(contentData) {
+                                return contentData.createdBy !== upForReviewContent.userId;
+                            });
                         }
                     } else {
                         upForReviewContent[api].loader.showLoader = false;
-                        upForReviewContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.REVIEW.FAILED, config.MESSAGES.COMMON.ERROR);
+                        upForReviewContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.UP_FOR_REVIEW.FAILED, $rootScope.errorMessages.COMMON.ERROR);
                     }
                 })
                 .catch(function (error) {
                     upForReviewContent[api].loader.showLoader = false;
-                    upForReviewContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.REVIEW.FAILED, config.MESSAGES.COMMON.ERROR);
+                    upForReviewContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.UP_FOR_REVIEW.FAILED, $rootScope.errorMessages.COMMON.ERROR);
                 });
             };
 
