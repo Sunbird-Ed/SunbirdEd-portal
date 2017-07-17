@@ -98,6 +98,19 @@ app.use('*/content-editor-iframe/api/*', proxy(ekstep, {
     }
 }));
 
+app.use('*/collection-editor-iframe/api/*', proxy(ekstep, {
+    proxyReqOptDecorator: function(proxyReqOpts, srcReq) {
+        // you can update headers 
+        proxyReqOpts.headers['Authorization'] = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI2MzExMTYwNTMzOGY0Zjc5YTgwZTM3YjcyZjVjMmUwZiJ9.azmj_AHmndeJz0h6yIkOJz1XjeZR6Gzd-OrZzR66I0A';
+        return proxyReqOpts;
+    },
+    proxyReqPathResolver: function(req) {
+        var originalUrl = req.originalUrl;
+        originalUrl = originalUrl.replace('thirdparty/bower_components/collection-editor-iframe/', '');
+        return require('url').parse(ekstep + originalUrl).path;
+    }
+}));
+
 app.use('/api/*', proxy(ekstep, {
     proxyReqOptDecorator: function(proxyReqOpts, srcReq) {
         // you can update headers 

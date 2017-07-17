@@ -698,8 +698,30 @@ angular
                 onExit: function($rootScope) {
                     $rootScope.profileActive = '';
                 }
+            }).state('CreateCourse', {
+                url: '/create/course',
+                views: {
+                    'mainView': {
+                        templateUrl: '/views/workSpace/createCourse.html',
+                        controller: 'CourseController as course'
+                    }
+                },
+                onEnter: function($rootScope, portalTelemetryService) {
+                    $rootScope.profileActive = 'active';
+                    portalTelemetryService.fireImpressions({
+                        "env": "course",
+                        "type": "creation",
+                        "pageid": "CreateCourse",
+                        "id": "",
+                        "name": "",
+                        "url": "/private/index#!/create/course"
+                    });
+                },
+                onExit: function($rootScope) {
+                    $rootScope.profileActive = '';
+                }
             }).state('CollectionEditor', {
-                url: '/collection/editor/',
+                url: '/collection/editor/:contentId/:type',
                 views: {
                     'mainView': {
                         templateUrl: 'views/common/collectionEditor.html',
