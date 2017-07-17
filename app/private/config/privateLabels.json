@@ -53,11 +53,17 @@
             },
             "createCollection": {
                 "createCollectionText": "Create Collection",
-                "collectionTitle": "Collection Title"
+                "collectionTitle": "Collection Title",
+                "collectionDescription": "Collection Description"
             },
             "createTextBook": {
                 "createTextBookText": "Create TextBook",
                 "textBookTitle": "TextBook Title"
+            },
+            "createCourse": {
+                "createCourseText": "Create Course",
+                "courseTitle": "Course Title",
+                "courseDescription": "Course Description"
             },
             "common": {
                 "title": "Title",

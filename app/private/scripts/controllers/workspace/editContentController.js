@@ -283,8 +283,8 @@ angular.module('playerApp')
                 $state.go("ContentEditor", params);
             };
             
-            editContent.openCollectionEditor = function (contentId) {
-                var params = {contentId: contentId};
+            editContent.openCollectionEditor = function (data) {
+                var params = {contentId: data.identifier, type: data.contentType};
                 $state.go("CollectionEditor", params);
             };
 
