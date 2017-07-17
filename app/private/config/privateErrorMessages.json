@@ -31,62 +31,65 @@
             "WARNING": "warning",
             "SUCCESS": "success"
         },
-        "WORKSPACE": {
-            "DRAFT": {
-                "START": "We are fetching draft content...",
-                "FAILED": "Fetching draft content failed, please try again later...",
-                "NO_CONTENT": "You don't have any draft content..."
-            },
-            "CREATE_LESSON": {
-                "START": "We are creating lesson...",
-                "FAILED": "Creating lesson failed, please try again later..."
-            },
-            "REVIEW": {
-                "START": "We are fetching review content...",
-                "FAILED": "Fetching review content failed, please try again later...",
-                "NO_CONTENT": "You don't have any content in review..."
-            },
-            "PUBLISHED": {
-                "START": "We are fetching published content...",
-                "FAILED": "Fetching published content failed, please try again later...",
-                "NO_CONTENT": "You don't have any published content..."
-            },
-            "ALL_UPLOADED": {
-                "START": "We are fetching uploaded content...",
-                "FAILED": "Fetching uploaded content failed, please try again later...",
-                "NO_CONTENT": "You don't have any uploaded content..."
-            },
-            "GET": {
-                "START": "We are fetching content detail...",
-                "FAILED": "Fetching content detail failed, please try again later..."
-            },
-            "UPLOAD_ICON": {
-                "START": "We are updating icon...",
-                "FAILED": "Updating icon failed, please try again later..."
-            },
-            "UPDATE": {
-                "START": "We are updating content detail...",
-                "FAILED": "Updating content detail failed, please try again later..."
-            },
-            "REVIEW_CONTENT": {
-                "START": "We are sending content for review...",
-                "FAILED": "Sending content for review failed, please try again later..."
-            },
-            "PUBLISH_CONTENT": {
-                "START": "We are sending content for publish...",
-                "FAILED": "Sending content for publish failed, please try again later..."
-            },
-            "REJECT_CONTENT": {
-                "START": "We are sending content for retire...",
-                "FAILED": "Sending content for retire failed, please try again later..."
+        "WORKSPACE": { 
+            "DRAFT": { 
+                "START": "We are fetching draft content...", 
+                "FAILED": "Fetching draft content failed, please try again later...", 
+                "NO_CONTENT": "You don't have any draft content..." 
+            }, 
+            "CREATE_LESSON": { 
+                "START": "We are creating lesson...", 
+                "FAILED": "Creating lesson failed, please try again later..." 
+            }, 
+            "REVIEW": { 
+                "START": "We are fetching review content...", 
+                "FAILED": "Fetching review content failed, please try again later...", 
+                "NO_CONTENT": "You don't have any content in review..." 
+            }, 
+            "PUBLISHED": { 
+                "START": "We are fetching published content...", 
+                "FAILED": "Fetching published content failed, please try again later...", 
+                "NO_CONTENT": "You don't have any published content..." 
+            }, 
+            "ALL_UPLOADED": { 
+                "START": "We are fetching uploaded content...", 
+                "FAILED": "Fetching uploaded content failed, please try again later...", 
+                "NO_CONTENT": "You don't have any uploaded content..." 
+            }, 
+            "GET": { 
+                "START": "We are fetching content detail...", 
+                "FAILED": "Fetching content detail failed, please try again later..." 
+            }, 
+            "UPLOAD_ICON": { 
+                "START": "We are updating icon...", 
+                "FAILED": "Updating icon failed, please try again later..." 
+            }, 
+            "UPDATE": { 
+                "START": "We are updating the content detail...", 
+                "FAILED": "Updating content detail failed, please try again later..." 
+            }, 
+            "REVIEW_CONTENT": { 
+                "START": "We are sending content for review...", 
+                "FAILED": "Sending content for review failed, please try again later...",
+                "SUCCESS": "Content sent for review..."
+            }, 
+            "PUBLISH_CONTENT": { 
+                "START": "We are publishing the content...", 
+                "FAILED": "Publishing content failed, please try again later...",
+                "SUCCESS": "Content published successfully..."
+            }, 
+            "REJECT_CONTENT": { 
+                "START": "We are rejecting the content...", 
+                "FAILED": "Rejecting content failed, please try again later..." ,
+                "SUCCESS": "Content rejected successfully..."
             },
             "ContentCreation": {
                 "invalidYoutubeUrl": "Invalid youtube url, Please check..."
             },
             "UP_FOR_REVIEW": {
-                "START": "We are fetching up for review content...",
-                "FAILED": "Fetching up for review content failed, please try again later...",
-                "NO_CONTENT": "You don't have any up for review content..."
+                "START": "We are fetching up for review content...", 
+                "FAILED": "Fetching up for review content failed, please try again later...", 
+                "NO_CONTENT": "You don't have any content for review..."
             }
         },
         "HOME": {
