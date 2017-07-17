@@ -38,7 +38,7 @@ angular.module('playerApp')
                         customHeaders: {
                             cid: "sunbird"
                         },
-                        endpoint: 'http://localhost:5000/api/sb/v1/content/upload/' + contentCreation.contentId
+                        endpoint: config.URL.BASE_PREFIX + config.URL.CONTENT_PREFIX + config.URL.UPLOAD + contentCreation.contentId
                     },
                     thumbnails: {
                         placeholders: {
