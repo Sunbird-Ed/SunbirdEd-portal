@@ -1,8 +1,8 @@
 <div class="center aligned twelve column row padding-top-2rem">
     <div class="one wide column"></div>
-    <div class="one wide column">
+    <div class="one wide column ">
         <a ui-sref="LandingPage">
-            <img class="ui tiny circular image centered" src="/images/sunbird_logo.png">
+            <img class="ui tiny circular image centered" ng-src="{{orgLogo || '/images/sunbird_logo.png'}} ">
         </a>
     </div>
     <div class="one wide column"></div>
@@ -19,7 +19,7 @@
             <img ng-src="{{ avatar || 'images/user_logo.png'}}" class="ui circular image logged-in-user" />
 
             <div class="menu">
-                <div class="item" ng-if="firstName">{{firstName}} &nbsp; {{lastName}}</div>
+                <div class="item" ng-if="firstName">{{firstName}}&nbsp;{{lastName}}</div>
                 <div ng-if="firstName" class="ui divider"></div>
 
                 <a class="item" href="#" ui-sref-active="active" ui-sref="Profile" translate="profile">Profile</a>

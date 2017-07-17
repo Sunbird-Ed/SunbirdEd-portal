@@ -236,7 +236,7 @@ angular.module('playerApp').controller('PreviewContentController', function (pla
 
         var api = "previewContentApi";
         previewContent[api] = {};
-        previewContent[api].loader = showLoader("", config.MESSAGES.WORKSPACE.PUBLISH_CONTENT.START);
+        previewContent[api].loader = showLoader("", $rootScope.errorMessages.WORKSPACE.PUBLISH_CONTENT.START);
 
         contentService.publish(request, previewContent.contentId).then(function (res) {
             if (res && res.responseCode === 'OK') {
@@ -244,11 +244,11 @@ angular.module('playerApp').controller('PreviewContentController', function (pla
                 $state.go("WorkSpace.UpForReviewContent")
             } else {
                 previewContent[api].loader.showLoader = false;
-                previewContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.PUBLISH_CONTENT.FAILED, config.MESSAGES.COMMON.ERROR);
+                previewContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.PUBLISH_CONTENT.FAILED, $rootScope.errorMessages.COMMON.ERROR);
             }
         }).catch(function (error) {
             previewContent[api].loader.showLoader = false;
-            previewContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.PUBLISH_CONTENT.FAILED, config.MESSAGES.COMMON.ERROR);
+            previewContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.PUBLISH_CONTENT.FAILED, $rootScope.errorMessages.COMMON.ERROR);
         });
     };
 
@@ -256,7 +256,7 @@ angular.module('playerApp').controller('PreviewContentController', function (pla
         
         var api = "previewContentApi";
         previewContent[api] = {};
-        previewContent[api].loader = showLoader("", config.MESSAGES.WORKSPACE.REJECT_CONTENT.START);
+        previewContent[api].loader = showLoader("", $rootScope.errorMessages.WORKSPACE.REJECT_CONTENT.START);
         
         var request = {};
 
@@ -266,11 +266,11 @@ angular.module('playerApp').controller('PreviewContentController', function (pla
                 $state.go("WorkSpace.UpForReviewContent");
             } else {
                 previewContent[api].loader.showLoader = false;
-                previewContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.REJECT_CONTENT.FAILED, config.MESSAGES.COMMON.ERROR);
+                previewContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.REJECT_CONTENT.FAILED, $rootScope.errorMessages.COMMON.ERROR);
             }
         }).catch(function (error) {
             previewContent[api].loader.showLoader = false;
-            previewContent[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.REJECT_CONTENT.FAILED, config.MESSAGES.COMMON.ERROR);
+            previewContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.REJECT_CONTENT.FAILED, $rootScope.errorMessages.COMMON.ERROR);
         });
     };
 

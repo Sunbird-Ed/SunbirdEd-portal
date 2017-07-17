@@ -486,6 +486,9 @@ th {
 .contentVisibility-hidden {
   display: none !important;
 }
+.right-floated {
+  float: right;
+}
 .header-container {
   margin-left: 1px !important;
   border-bottom: 5px solid #0099CC !important;
@@ -1065,7 +1068,7 @@ span.fancytree-title {
   width: 340px;
 }
 .notelistscroll {
-  height: 400px;
+  height: 600px;
   overflow-y: scroll;
   cursor: pointer;
   border-top: 0!important;
@@ -1086,6 +1089,7 @@ span.fancytree-title {
 }
 .notedecheader {
   font-weight: 600!important;
+  word-wrap: break-word;
 }
 .fancytree-plain span.fancytree-node:hover span.fancytree-title {
   padding-top: 4px;
@@ -1625,6 +1629,16 @@ span.fancytree-title {
   border: 2px dashed #CCCCCC !important;
   margin-left: 0rem !important;
   margin-right: 0rem !important;
+}
+.dividerInFileUploader {
+  padding-top: 0rem !important;
+  padding-bottom: 0.3rem !important;
+}
+.textIndentForUploadFile {
+  text-indent: -25px !important;
+}
+.youTubeFileUploadForm {
+  max-width: 90% !important;
 }
 .profilesegmentmargin.ui.segment:first-child {
   margin-top: 20px;
