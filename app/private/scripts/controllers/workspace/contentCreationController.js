@@ -52,6 +52,9 @@ angular.module('playerApp')
                         acceptFiles: 'application/pdf, video/mp4, application/vnd.ekstep.html-archive, video/youtube'
                     },
                     callbacks: {
+                        validate: function(data) {
+                            console.log("validate data", data);
+                        },
                         onValidate: function (data) {
                             console.log("On validate data", data);
                         },
