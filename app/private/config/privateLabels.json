@@ -18,7 +18,11 @@
             "searchForNotesOrTitle": "Search for notes or title",
             "search": "Search",
             "edit": "Edit",
-            "delete": "Delete"
+            "delete": "Delete",
+            "deleteNote": "Delete Note",
+            "deleteConfirmMessage": "Are you sure to delete this note?",
+            "no": "No",
+            "yes": "Yes"
         },
         "WORKSPACE": {
             "myWorkSpaceText": "My WorkSpace",
