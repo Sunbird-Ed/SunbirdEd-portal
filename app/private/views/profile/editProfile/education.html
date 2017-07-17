@@ -1,9 +1,9 @@
-<form class="ui form formdivider">
+<form class="ui form formdivider educationForm">
     <h4>{{::education.degree }}</h4>
     <div class="two fields">
         <div class="required field">
             <label>{{$root.labels.PROFILE.EDUCATION.degree}} </label>
-            <input type="text" name="" ng-model="education.degree">
+            <input type="text" name="degree" ng-model="education.degree">
         </div>
         <div class="  field">
             <label>{{$root.labels.PROFILE.EDUCATION.yearOfPassing}}</label>
@@ -23,12 +23,13 @@
     <div class="two fields">
         <div class=" required field">
             <label>{{$root.labels.PROFILE.EDUCATION.institute}}</label>
-            <input type="text" name="" ng-model="education.name">
+            <input type="text" name="institute" ng-model="education.name">
         </div>
         <div class="  field">
             <label>{{$root.labels.PROFILE.EDUCATION.board}}</label>
             <input type="text" name="" ng-model="education.boardOrUniversity">
         </div>
     </div>
-
+    <div class="ui error message">
+    </div>
 </form>
