@@ -26,7 +26,7 @@ angular.module('playerApp')
                 baseURL: '',
                 modalId: 'contentEditor',
                 apislug: 'api',
-                alertOnUnload: true,
+                alertOnUnload: false,
                 plugins: [
                     { "id": "org.ekstep.sunbirdheader", "ver": "1.0", "type": "plugin" }
                 ],
