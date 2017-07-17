@@ -16,7 +16,6 @@
                 ng-keypress="($event.charCode==13)?search.searchRequest($event):false"    title="Search" autocomplete="off" spellcheck="false" dir="auto" class="searchinput" ng-keyup="search.keyUp()" ng-keydown="search.keyDown()"   />
                 <i class="circular search link icon" ng-click="search.searchRequest()"></i>
             </div>
-            {{$root.search.searchKeyword}}
             <div id="search-suggestions" ng-if="search.autosuggest_data.length > 1" class="ui fluid results transition visible dropdown-menu-list">
                 <div>
                     <a class="result" ng-repeat="item in search.autosuggest_data" ng-click='search.setSearchText(item.name)'>
