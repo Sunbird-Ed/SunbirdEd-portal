@@ -241,7 +241,9 @@ angular.module('playerApp').controller('PreviewContentController', function (pla
         contentService.publish(request, previewContent.contentId).then(function (res) {
             if (res && res.responseCode === 'OK') {
                 previewContent[api].loader.showLoader = false;
-                $state.go("WorkSpace.UpForReviewContent")
+                previewContent.isShowPublishRejectButton = false;
+                previewContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.PUBLISH_CONTENT.SUCCESS, $rootScope.errorMessages.COMMON.SUCCESS);
+//                $state.go("WorkSpace.UpForReviewContent")
             } else {
                 previewContent[api].loader.showLoader = false;
                 previewContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.PUBLISH_CONTENT.FAILED, $rootScope.errorMessages.COMMON.ERROR);
@@ -263,7 +265,9 @@ angular.module('playerApp').controller('PreviewContentController', function (pla
         contentService.reject(request, previewContent.contentId).then(function (res) {
             if (res && res.responseCode === 'OK') {
                 previewContent[api].loader.showLoader = false;
-                $state.go("WorkSpace.UpForReviewContent");
+                previewContent.isShowPublishRejectButton = false;
+                previewContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.REJECT_CONTENT.SUCCESS, $rootScope.errorMessages.COMMON.SUCCESS);
+//                $state.go("WorkSpace.UpForReviewContent");
             } else {
                 previewContent[api].loader.showLoader = false;
                 previewContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.REJECT_CONTENT.FAILED, $rootScope.errorMessages.COMMON.ERROR);

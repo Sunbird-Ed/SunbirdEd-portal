@@ -1,13 +1,13 @@
 <div class="ui grid">
     <div class="one wide column"></div>
     <div class="ten wide column">
-        <div class="row" ng-if="contentEditor.previewContentApi.loader.showLoader">
-            <app-loader data="{{contentEditor.previewContentApi.loader}}"></app-loader>
+        <div class="row" ng-if="previewContent.previewContentApi.loader.showLoader">
+            <app-loader data="{{previewContent.previewContentApi.loader}}"></app-loader>
         </div>
-        <div class="row" ng-if="contentEditor.previewContentApi.error.showError">
-            <error-message data="{{contentEditor.previewContentApi.error}}" visibility="contentEditor.previewContentApi.error.showError"></error-message>
+        <div class="row margin-bottom-15" ng-if="previewContent.previewContentApi.error.showError">
+            <error-message data="{{previewContent.previewContentApi.error}}" visibility="previewContent.previewContentApi.error.showError"></error-message>
         </div>
-        <div class="row">
+        <div class="row" ng-show="!previewContent.previewContentApi.error.showError && !previewContent.previewContentApi.loader.showLoader">
             <div class='videosegment ui segment'>
                 <div class='content-player-body'>
                     <div class="videosegment  ui clearing segment">
