@@ -2,4 +2,5 @@
 # Build script
 # set -o errexit
 
-apt-get -v --update --no-cache add jq
+#apk -v --update --no-cache add jq
+apt-get install -y jq
