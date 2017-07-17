@@ -4,7 +4,7 @@
         <span class="header cardsHeading"> {{$root.labels.PROFILE.JOB_PROFILE.header}} </span>
         <a href="" class="addeditprofile" ng-if="!profileCtrl.experienceForm && profileCtrl.experience.length" ng-click="profileCtrl.experienceForm=true ;profileCtrl.isNewExperience=false ">{{$root.labels.PROFILE.BUTTON.edit}}</a>
         <a href="" class="addeditprofile" ng-if="!profileCtrl.experienceForm  " ng-click="profileCtrl.experienceForm=true ; profileCtrl.isNewExperience=true ;profileCtrl.newExperience={} ">{{$root.labels.PROFILE.BUTTON.add}}</a>
-        <a href="" class="addeditprofile" ng-if="profileCtrl.experienceForm" translate="edit" ng-click="profileCtrl.experienceForm=false;profileCtrl.isCurrentJobExist=false;">close</a>
+        <a href="" class="addeditprofile" ng-if="profileCtrl.experienceForm" ng-click="profileCtrl.experienceForm=false;profileCtrl.isCurrentJobExist=false;">{{$root.labels.PROFILE.BUTTON.close}}</a>
     </div>
     <div ng-if="!profileCtrl.experienceForm " class="profileitems ui relaxed divided list ">
         <div class="item " ng-repeat="experience in ::profileCtrl.experience ">
