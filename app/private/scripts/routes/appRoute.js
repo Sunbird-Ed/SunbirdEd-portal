@@ -121,6 +121,7 @@ angular
                     $rootScope.isResourcesPage = true;
                     $rootScope.searchKeyword = '';
                     $rootScope.resourcesActive = 'active';
+                    $rootScope.isSearchPage=true;
                     $('.content-search-filter').dropdown('clear');
                     portalTelemetryService.fireImpressions({
                         "env": "content",
@@ -340,20 +341,24 @@ angular
                     $rootScope.breadCrumbsData = null;
                 }
             })
-            .state('SearchCourse', {
-                url: '/:searchType/search/:query/',
+            .state('Search', {
+                url: '/search/:type/:query/:filters/:sort',
                 views: {
                     'mainView': {
                         templateUrl: 'views/search/search.html',
-                        controller: 'SearchCourseCtrl as search'
+                        controller: 'SearchCtrl as search'
                     }
                 },
-                params: { searchType: null, query: null, searchKey: null, event: null },
-                onEnter: function($state, $rootScope, portalTelemetryService) {
-                    $rootScope.breadCrumbsData = [{ name: 'Home', link: 'home' }, { 'name': 'Courses', 'link': 'learn' }, { name: 'Search', link: '' }];
+                params: { type: null, query: null, filters: null, sort: null },
+                onEnter: function($state, $rootScope, portalTelemetryService,$stateParams) {
+                    $rootScope.breadCrumbsData = [{ name: 'Home', link: 'home' }, { 'name': 'Search', 'link': '' }];
                     $rootScope.isSearchPage = true;
-                    $rootScope.searchKey = 'Courses';
-                    $rootScope.courseActive = 'active';
+                    $rootScope.isSearchResultsPage=true;
+                    if($stateParams.type=='Courses'){
+                         $rootScope.courseActive = 'active';
+                    }else{
+                         $rootScope.resourcesActive = 'active';
+                    }
                     portalTelemetryService.fireImpressions({
                         "env": "course",
                         "type": "search",
@@ -364,9 +369,10 @@ angular
                     });
                 },
                 onExit: function($rootScope) {
+                    $rootScope.courseActive=$rootScope.resourcesActive='';
                     $rootScope.isSearchPage = false;
-                    $rootScope.courseActive = '';
                     $rootScope.breadCrumbsData = null;
+                     $rootScope.isSearchResultsPage=false;
                 }
             })
             .state('SearchResource', {
