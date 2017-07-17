@@ -33,7 +33,7 @@ angular.module('playerApp')
                 loader.loaderMessage = loaderMessage;
                 return loader;
             }
-          
+
             section.playContent = function (item) {
                 var params = {content: item, contentName: item.name, contentId: item.identifier};
                 $state.go('Player', params);
@@ -52,10 +52,11 @@ angular.module('playerApp')
 
             section.sections = function () {
                 section.loader = showLoaderWithMessage("", config.MESSAGES.RESOURCE.PAGE.START);
+                ($rootScope.search == undefined) ? $rootScope.search = {} : 0
                 var request = {"request": {
                         "source": "web",
                         "name": section.pageTypeUrls[$scope.type],
-                        "filters": $rootScope.search.filters
+                        "filters": $rootScope.search.filters || {}
                     }};
                 pageSectionService.getPageData(config.URL.PAGE_PREFIX, request).then(function (successResponse) {
                     if (successResponse && successResponse.responseCode === 'OK') {
@@ -94,7 +95,7 @@ angular.module('playerApp')
                 });
             };
             section.sections();
-              $rootScope.$on('initPageSearch', function (event, args) {
+            $rootScope.$on('initPageSearch', function (event, args) {
                 section.sections();
             });
             // section.openCourseView = function (course, courseType) {
