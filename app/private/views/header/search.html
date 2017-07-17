@@ -6,19 +6,19 @@
             <div class="text"></div>
             <i class="dropdown icon"></i>
             <div class="menu">
-                <div class="item" ng-repeat="key in searchQuery.searchSelectionKeys" value="{{key.id}}">{{key.name}}</div>
+                <div class="item" ng-repeat="key in $root.search.searchSelectionKeys" value="{{key.id}}">{{key.name}}</div>
             </div>
         </div>
 
         <div class="searchfilterinput ui search">
             <div class="searchicon ui icon input ">
-                <input type="text" id="keyword" name="filter_search" ng-model="searchQuery.keyword" ng-change="searchQuery.checkTyping()" ng-keyup="searchQuery.stoppedTyping()" ng-keypress="($event.which === 13)? searchQuery.searchRequest():0" placeholder="What are you looking for?"
-                    title="Search" autocomplete="off" spellcheck="false" dir="auto" class="searchinput" />
-                <i class="circular search link icon" ng-click=" searchQuery.searchRequest()"></i>
+                <input type="text" id="keyword" name="filter_search" ng-model="$root.search.searchKeyword"  placeholder="What are you looking for?"
+                  ng-keypress="($event.charCode==13)?$root.search.searchRequest():return"  title="Search" autocomplete="off" spellcheck="false" dir="auto" class="searchinput" ng-model-options="{debounce: 2000}"  ng-change="$root.search.searchRequest(true)"  />
+                <i class="circular search link icon" ng-click="$root.search.searchRequest()"></i>
             </div>
-            <div id="search-suggestions" ng-if="searchQuery.autosuggest_data.length >1" class="ui fluid results transition visible dropdown-menu-list">
+            <div id="search-suggestions" ng-if="$root.search.autosuggest_data.length > 1" class="ui fluid results transition visible dropdown-menu-list">
                 <div>
-                    <a class="result" ng-repeat="item in searchQuery.autosuggest_data" ng-click='searchQuery.setSearchText(item.name)'>
+                    <a class="result" ng-repeat="item in $root.search.autosuggest_data" ng-click='$root.search.setSearchText(item.name)'>
                         <div class="content">
                             <div class="title">{{item.name}}</div>
                         </div>
