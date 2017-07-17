@@ -279,6 +279,11 @@ angular.module('playerApp')
                 var params = {contentId: contentId};
                 $state.go("ContentEditor", params);
             };
+            
+            editContent.openCollectionEditor = function (contentId) {
+                var params = {contentId: contentId};
+                $state.go("CollectionEditor", params);
+            };
 
             if ($stateParams.backState === "ContentEditor") {
                 editContent.initializeData(true);
