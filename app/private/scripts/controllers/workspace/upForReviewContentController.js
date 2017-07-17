@@ -59,19 +59,20 @@ angular.module('playerApp')
                 contentService.search(request).then(function (res) {
                     if (res && res.responseCode === 'OK') {
                         upForReviewContent[api].loader.showLoader = false;
-                        if(res.result.count === 0) {
-                            upForReviewContent[api].error = showErrorMessage(false, $rootScope.errorMessages.WORKSPACE.UP_FOR_REVIEW.NO_CONTENT, $rootScope.errorMessages.COMMON.SUCCESS);
-                        } else {
-                            upForReviewContent.upForReviewContentData = res.result.content.filter(function(contentData) {
+                        if(res.result.content) {
+                            upForReviewContent.upForReviewContentData = [];
+                            upForReviewContent.upForReviewContentData = res.result.content.filter(function (contentData) {
                                 return contentData.createdBy !== upForReviewContent.userId;
                             });
+                        }
+                        if (res.result.count === 0 || upForReviewContent.upForReviewContentData.length === 0) {
+                            upForReviewContent[api].error = showErrorMessage(false, $rootScope.errorMessages.WORKSPACE.UP_FOR_REVIEW.NO_CONTENT, $rootScope.errorMessages.COMMON.SUCCESS);
                         }
                     } else {
                         upForReviewContent[api].loader.showLoader = false;
                         upForReviewContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.UP_FOR_REVIEW.FAILED, $rootScope.errorMessages.COMMON.ERROR);
                     }
-                })
-                .catch(function (error) {
+                }).catch(function (error) {
                     upForReviewContent[api].loader.showLoader = false;
                     upForReviewContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.UP_FOR_REVIEW.FAILED, $rootScope.errorMessages.COMMON.ERROR);
                 });

@@ -156,6 +156,7 @@ angular.module('playerApp')
 
                 contentService.uploadMedia(editContent.icon).then(function (res) {
                     if (res && res.responseCode === "OK") {
+                        editContent.iconUpdate = false; 
                         requestBody.content.appIcon = res.result.url;
                         editContent[api].loader.showLoader = false;
                         editContent.updateContent(requestBody, isReviewContent);
@@ -241,7 +242,8 @@ angular.module('playerApp')
                 contentService.review(req, editContent.contentId).then(function (res) {
                     if (res && res.responseCode === "OK") {
                         editContent[api].loader.showLoader = false;
-                        $state.go("WorkSpace.ReviewContent");
+                        editContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.REVIEW_CONTENT.SUCCESS, $rootScope.errorMessages.COMMON.SUCCESS);
+//                        $state.go("WorkSpace.ReviewContent");
 
                     } else {
                         editContent[api].loader.showLoader = false;
@@ -276,6 +278,11 @@ angular.module('playerApp')
             editContent.openContentEditor = function (contentId) {
                 var params = {contentId: contentId};
                 $state.go("ContentEditor", params);
+            };
+            
+            editContent.openCollectionEditor = function (contentId) {
+                var params = {contentId: contentId};
+                $state.go("CollectionEditor", params);
             };
 
             if ($stateParams.backState === "ContentEditor") {
