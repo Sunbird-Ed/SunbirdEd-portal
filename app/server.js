@@ -30,23 +30,13 @@ app.use(session({
     store: memoryStore
 }));
 app.use(keycloak.middleware({ admin: '/callback' }));
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json({ limit: '50mb' }))
 
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, '/')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'private')));
-app.all('/content-editor/telemetry', function(req, res) {
-    console.log(req.body.event);
-});
-app.use('/ekContentEditor', express.static('./thirdparty/content-editor'))
-app.get('/ekContentEditor', function(req, res) {
-    res.sendFile(__dirname + "/thirdparty/content-editor/index.html");
-});
-app.get('/ekContentEditor/image/get/:url', function(req, res) {
-    request.get(req.params.url).pipe(res);
-});
+app.all('/content-editor/telemetry', bodyParser.urlencoded({ extended: false }), 
+    bodyParser.json({ limit: '50mb' }), keycloak.protect(), telemetryHelper.logContentEditorEvents);
 
 app.use('/collectionEditor', express.static('./thirdparty/collection-editor'))
 app.get('/collectionEditor', function(req, res) {
