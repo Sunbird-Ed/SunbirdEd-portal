@@ -48,8 +48,7 @@ angular.module('playerApp')
             });
            $timeout(function() {
                $('#contentEditor').iziModal('open');
-            }, 1000)
-
+            }, 100)
         };
 
         contentEditor.init = function() {

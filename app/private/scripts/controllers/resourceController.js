@@ -6,7 +6,7 @@ angular.module('playerApp')
             resource.contentPlayer = {
                 isContentPlayerEnabled: false
             };
-            $rootScope.searchResult = [];
+          //  $rootScope.searchResult = [];
             /**
              * This function called when api failed, and its show failed response for 2 sec.
              * @param {String} message
