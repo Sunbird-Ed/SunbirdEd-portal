@@ -1,31 +1,31 @@
-<div ng-init="collection.initilizeView()">
-    <div class="ui modal" id="createSlideShowModal" ng-if="collection.showCreateSlideShowModal">
-        <div class=" ui segment margin-top-10" ng-show="!collection.createApi.loader.showLoader && !collection.createApi.error.showError">
+<div ng-init="course.initilizeView()">
+    <div class="ui modal" id="createSlideShowModal" ng-if="course.showCreateSlideShowModal">
+        <div class=" ui segment margin-top-10" ng-show="!course.createApi.loader.showLoader && !course.createApi.error.showError">
             <div class=" margin-bottom-15">
                 <div class="ui grid">
                     <div class="eleven wide column">
-                        <span class="ui header">{{$root.labels.WORKSPACE.createCollection.createCollectionText}}</span>
+                        <span class="ui header">{{$root.labels.WORKSPACE.createCourse.createCourseText}}</span>
                     </div>
                     <div class="one wide column actions">
-                        <h5 class="ui basic icon circular button deny" ng-click="collection.hideCreateSlideShowModal();">
+                        <h5 class="ui basic icon circular button deny" ng-click="course.hideCreateSlideShowModal();">
                             <i class="ui remove icon"></i>
                         </h5>
                     </div>
                 </div>
             </div>
             <div class="content">
-                <form class="ui form" ng-init="collection.data = {}">
+                <form class="ui form" ng-init="course.data = {}">
                     <div class="field">
                         <label>{{$root.labels.WORKSPACE.common.title}}</label>
                         <div class="field">
-                            <input type="text" name="title" placeholder={{$root.labels.WORKSPACE.createCollection.collectionTitle}} ng-model="collection.data.name">
+                            <input type="text" name="title" placeholder={{$root.labels.WORKSPACE.createCourse.courseTitle}} ng-model="course.data.name">
                         </div>
                     </div>
                     <div class="field">
                         <div class="field">
                             <label>{{$root.labels.WORKSPACE.common.description}}</label>
                             <div class="field">
-                                <textarea name="description" name="title" placeholder={{$root.labels.WORKSPACE.createCollection.description}} ng-model="collection.data.description"></textarea>
+                                <textarea name="description" name="title" placeholder={{$root.labels.WORKSPACE.createCourse.description}} ng-model="course.data.description"></textarea>
                             </div>
                         </div>
                     </div>
@@ -33,7 +33,7 @@
             </div>
             <div class="actions">
                 <p class="text-align-center">
-                    <button class="ui primary text-align-center icon button" ng-click="collection.saveMetaData(collection.data)">
+                    <button class="ui primary text-align-center icon button" ng-click="course.saveMetaData(course.data)">
                         {{$root.labels.WORKSPACE.common.startCreating}}
                     </button>
                 </p>
@@ -45,11 +45,11 @@
                 </div>
             </div>
         </div>
-        <div class=" ui segment margin-top-10" ng-if="collection.createApi.loader.showLoader">
-            <app-loader data="{{collection.createApi.loader}}"></app-loader>
+        <div class=" ui segment margin-top-10" ng-if="course.createApi.loader.showLoader">
+            <app-loader data="{{course.createApi.loader}}"></app-loader>
         </div>
-        <div class=" ui segment margin-top-10" ng-if="collection.createApi.error.showError">
-            <error-message data="{{collection.createApi.error}}" visibility="collection.createApi.error.showError"></error-message>
+        <div class=" ui segment margin-top-10" ng-if="course.createApi.error.showError">
+            <error-message data="{{course.createApi.error}}" visibility="course.createApi.error.showError"></error-message>
         </div>
     </div>
 </div>
