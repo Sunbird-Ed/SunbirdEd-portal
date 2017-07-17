@@ -106,16 +106,20 @@ angular.module('playerApp').directive('search', function () {
             };
 
             $rootScope.search.playContent = function (item) {
-                var params = {content: item, contentName: item.name, contentId: item.identifier};
-                $state.go('Player', params);
+                if (item.mimeType === "application/vnd.ekstep.content-collection") {
+                    $state.go('PreviewCollection', {Id: item.identifier, name: item.name})
+                } else {
+                    $state.go('Player', {content: item, contentName: item.name, contentId: item.identifier});
+                }
             };
+
             $scope.search.setSearchText = function (searchText) {
                 $rootScope.search.searchKeyword = searchText;
                 $scope.search.searchRequest(false);
             }
             $scope.search.autoSuggestSearch = function () {
-                if ($scope.search.autoSuggest&&$rootScope.isSearchPage&&$rootScope.search.searchKeyword.length>2) {
-                    
+                if ($scope.search.autoSuggest && $rootScope.isSearchPage && $rootScope.search.searchKeyword.length > 2) {
+
                     $scope.search.handleSearch();
                 }
             }
@@ -215,19 +219,25 @@ angular.module('playerApp').directive('search', function () {
                 $rootScope.search.filters['contentType'] = $rootScope.search.selectedContentType ? $rootScope.search.selectedContentType : [];
                 $rootScope.search.filters['subject'] = $rootScope.search.selectedSubject ? $rootScope.search.selectedSubject : [];
                 $rootScope.search.filters['board'] = $rootScope.search.selectedBoard ? $rootScope.search.selectedBoard : [];
+                $rootScope.isSearchResultsPage = false;
                 $scope.search.searchRequest();
             };
             $rootScope.search.resetFilter = function () {
+                $rootScope.isSearchPage = false;
                 $('.content-search-filter').dropdown('clear');
                 $rootScope.search.selectedLanguage = [];
                 $rootScope.search.selectedContentType = [];
                 $rootScope.search.selectedSubject = [];
                 $rootScope.search.selectedBoard = [];
-                $rootScope.isSearchPage = false;
-                $rootScope.isSearchPage = true;
                 $rootScope.search.filters = {};
-                // $scope.search.searchRequest();
-                $state.go($rootScope.search.selectedSearchKey);
+                $rootScope.isSearchResultsPage = false;
+                $rootScope.isSearchPage = true;
+                $("#filterLang").find('.filter-sel-text').text('Language');
+                $("#filterSub").find('.filter-sel-text').text('Subject');
+                $("#filterContent").find('.filter-sel-text').text('Content Type');
+                $("#filterBoard").find('.filter-sel-text').text('Board');
+                $scope.search.searchRequest();
+                //$state.go($rootScope.search.selectedSearchKey);
 
             };
             $rootScope.search.applySorting = function () {

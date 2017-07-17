@@ -25,7 +25,7 @@
                                     <!--                                    <select name="language" class="filtersearch ui selection course-search-filter dropdown" multiple="" id="multi-select-lang" ng-value="option.value" ng-options=" language for language in $root.search.languages" ng-model="$root.$root.search.selectedLanguage">
                                                                             <option value="" translate="languages">Languages</option>
                                                                         </select>-->
-                                    <div class="ui filtersearch ui multiple selection course-search-filter dropdown">
+                                    <div id="filterLang" class="ui filtersearch ui multiple selection course-search-filter dropdown">
                                         <input type='hidden' ng-value='{{}}' />
                                         <i class="dropdown icon"></i>
                                         <div class="filter-sel-text text">{{$root.search.selectedLanguage.length > 0 ?$root.search.selectedLanguage.length+' selected'  :'Languages'}}</div>
@@ -38,7 +38,7 @@
                                     <!--                                    <select name="Subject" class="filtersearch ui selection course-search-filter dropdown" multiple="" id="multi-select-subject" ng-value="option.value" ng-options=" subject for subject in search.subjects" ng-model="$root.search.selectedSubject">
                                                                             <option value="" translate="subjects">Subjects</option>
                                                                         </select>-->
-                                    <div class="ui filtersearch ui multiple selection course-search-filter dropdown">
+                                    <div  id="filterSub" class="ui filtersearch ui multiple selection course-search-filter dropdown">
                                         <i class="dropdown icon"></i>
                                         <div class="filter-sel-text text">{{$root.search.selectedSubject.length > 0 ?$root.search.selectedSubject.length+' selected'  :'Subject'}}</div>
                                         <div class="menu">
@@ -50,7 +50,7 @@
                                     <!--                                    <select name="Board" class="filtersearch ui selection course-search-filter dropdown" multiple="" id="multi-select-board" ng-value="option.value" ng-options="board for board in search.boards" ng-model="$root.search.selectedBoard">
                                                                             <option value="" translate="boards">Boards</option>
                                                                         </select>-->
-                                    <div class="ui filtersearch ui multiple selection course-search-filter dropdown">
+                                    <div  id="filterBoard" class="ui filtersearch ui multiple selection course-search-filter dropdown">
                                         <i class="dropdown icon"></i>
                                         <div class="filter-sel-text text">{{$root.search.selectedBoard.length > 0 ?$root.search.selectedBoard.length+' selected'  :'Board'}}</div>
                                         <div class="menu">
@@ -59,7 +59,7 @@
                                     </div>
                                 </div>
                                 <div class='two wide column'>
-                                    <div class="ui filtersearch ui multiple selection course-search-filter dropdown">
+                                    <div  id="filterContent" class="ui filtersearch ui multiple selection course-search-filter dropdown">
                                         <input type='hidden' ng-value='{{}}' />
                                         <i class="dropdown icon"></i>
                                         <div class="filter-sel-text text">{{$root.search.selectedContentType.length > 0 ?$root.search.selectedContentType.length+' selected'  :'Content Type'}}</div>
