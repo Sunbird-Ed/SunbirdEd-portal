@@ -9,7 +9,7 @@
     </div>
     <div class=" ui stackable four column grid dynamic-section-card ">
         <div class="column " ng-repeat="item in $root.search.searchResult.content track by $index ">
-            <div class="slider link " ng-include=" 'views/common/ratingCard.html' " ng-click="search.playContent(item)"></div>
+            <div class="slider link " ng-include=" 'views/common/ratingCard.html' " ng-click="$root.search.playContent(item)"></div>
         </div>
     </div>
 </div>
