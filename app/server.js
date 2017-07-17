@@ -37,16 +37,7 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, '/')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'private')));
-app.all('/content-editor/telemetry', function(req, res) {
-    console.log(req.body.event);
-});
-app.use('/ekContentEditor', express.static('./thirdparty/content-editor'))
-app.get('/ekContentEditor', function(req, res) {
-    res.sendFile(__dirname + "/thirdparty/content-editor/index.html");
-});
-app.get('/ekContentEditor/image/get/:url', function(req, res) {
-    request.get(req.params.url).pipe(res);
-});
+app.all('/content-editor/telemetry', keycloak.protect(), telemetryHelper.logContentEditorEvents);
 
 app.use('/collectionEditor', express.static('./thirdparty/collection-editor'))
 app.get('/collectionEditor', function(req, res) {
