@@ -3,7 +3,7 @@
 angular.module('playerApp').controller('LearnCtrl', function (learnService, $scope,$state, $rootScope, sessionService, config) {
             var learn = this;
             var uid = $rootScope.userId;
-            $rootScope.searchResult = [];
+         //   $rootScope.searchResult = [];
             $scope.contentPlayer = {
                 isContentPlayerEnabled: false
             };
