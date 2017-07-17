@@ -1,13 +1,2 @@
-<div class="ui grid" ng-if="contentEditor.ekURL">    
-    <div class="twelve wide column">
-        <div class="row" ng-if="contentEditor.reviewApi.loader.showLoader">
-            <app-loader data="{{contentEditor.reviewApi.loader}}"></app-loader>
-        </div>
-        <div class="row" ng-if="contentEditor.reviewApi.error.showError">
-            <error-message data="{{contentEditor.reviewApi.error}}" visibility="contentEditor.reviewApi.error.showError"></error-message>
-        </div>
-        <div class="row">
-            <iframe ng-if="contentEditor.ekURL" ng-src="{{contentEditor.ekURL}}" class="content-iframe editroIframe"></iframe>
-        </div>
-    </div>
-</div>
+<div id="contentEditor"></div>
+
