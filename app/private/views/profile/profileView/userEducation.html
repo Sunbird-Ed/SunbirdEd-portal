@@ -5,14 +5,9 @@
         <a href="" href="" class="addeditprofile" ng-if="!profileCtrl.educationForm " ng-click="profileCtrl.educationForm=true ;profileCtrl.isNewEducation=true ;profileCtrl.newEducation={} " >{{$root.labels.PROFILE.BUTTON.add}}</a>
         <a href="" class="addeditprofile" ng-if="profileCtrl.educationForm"  ng-click="profileCtrl.educationForm=false">{{$root.labels.PROFILE.BUTTON.close}}</a>
     </div>
-    <div ng-if="!profileCtrl.educationForm" class="profileitems ui relaxed divided list">
+    <div ng-if="!profileCtrl.educationForm" class="profileitems ui relaxed divided items">
         <div class="item" ng-repeat="education in profileCtrl.education">
-            <div class="right floated content">
-                <div class="metadata">
-                    <a href="" ng-click="education.isDeleted=true;profileCtrl.deleteEducation(profileCtrl.education)"> <i class="trash outline icon trashIcon-fontSize"></i></a>
-                    <!--<span class="date">{{education.updatedDate|date: "dd/MM/yyyy"  }}</span>-->
-                </div>
-            </div>
+            
             <img class="ui avatar image" src="/images/user_logo.png">
             <div class="content">
                 <a class=" header">{{education.degree}}</a>
@@ -22,9 +17,15 @@
 
                 </div>
             </div>
+            <div class="right-floated ">
+                <div class="metadata">
+                    <a href="" ng-click="education.isDeleted=true;profileCtrl.deleteEducation(profileCtrl.education)"> <i class="trash outline icon trashIcon-fontSize"></i></a>
+                    <!--<span class="date">{{education.updatedDate|date: "dd/MM/yyyy"  }}</span>-->
+                </div>
+            </div>
         </div>
     </div>
-    <div ng-if="profileCtrl.educationForm" class="profileitems ui relaxed divided list">
+    <div ng-if="profileCtrl.educationForm" class="profileitems ui relaxed divided items">
         <div class="edit-education-form" ng-if="!profileCtrl.isNewEducation ">
             <div class=" ui " ng-repeat="education in profileCtrl.user.education track by $index " ng-include=" 'views/profile/editProfile/education.html' "></div>
             <div class="ui button margin-top-15" ng-click="profileCtrl.editEducation(profileCtrl.education)" ;>{{$root.labels.PROFILE.BUTTON.save}} </div>
