@@ -92,9 +92,9 @@
                 "organization": "Organization",
                 "subjects": "Subjects",
                 "isCurrentJob": "Is this your current job?",
-                "currentJobOptionYes": "yes",
-                "currentJobOptionNo": "no",
-                "joiningDate": "joining Date",
+                "currentJobOptionYes": "Yes",
+                "currentJobOptionNo": "No",
+                "joiningDate": "Joining Date",
                 "endDate": "End Date"
 
             },
@@ -102,7 +102,7 @@
                 "header": "Address",
                 "addressType": "Select Address Type",
                 "addressTypePermanent": "Permanent",
-                "addresstypeCurrent": "Current",
+                "addressTypeCurrent": "Current",
                 "line1": "Address Line 1",
                 "line2": "Address Line 2",
                 "city": "City",
@@ -114,9 +114,9 @@
                 "header": "Education",
                 "degree": "Degree",
                 "yearOfPassing": "Year Of Passing",
-                "institute": "Name Of Institute",
+                "institute": "Institution Name",
                 "grade": "Grade",
-                "percentage": "percentage",
+                "percentage": "Percentage",
                 "board": "Board/University"
             },
             "BASIC_PROFILE": {
