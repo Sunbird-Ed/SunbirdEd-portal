@@ -128,7 +128,7 @@
                 <div class="row margin-top-10" id="content-player-bottom-edit">
                     <button class="ui primary basic button" ng-if="!contentPlayer.isContentPlayerEnabled" ng-click="editContent.previewContent(editContent.contentData)">{{$root.labels.WORKSPACE.common.preview}}</button>
                     <button class="ui primary basic button" ng-if="contentPlayer.isContentPlayerEnabled"
-                            ng-click="contentPlayer.isContentPlayerEnabled = !contentPlayer.isContentPlayerEnabled">{{$root.labels.WORKSPACE.common.closePreview}}s</button>
+                            ng-click="contentPlayer.isContentPlayerEnabled = !contentPlayer.isContentPlayerEnabled">{{$root.labels.WORKSPACE.common.closePreview}}</button>
                     <button class="ui primary basic button" ng-click="editContent.saveMetaContent(editContent.contentData)"ng-disabled="editContent.editApi.loader.showLoader">{{$root.labels.WORKSPACE.common.save}}</button>
                     <button class="ui primary basic button" ng-click="editContent.submitForReview(editContent.contentData)" ng-disabled="editContent.editApi.loader.showLoader">{{$root.labels.WORKSPACE.common.submitForReview}}</button>
                     <button class="ui primary basic button" ng-if="editContent.contentData.mimeType === 'application/vnd.ekstep.ecml-archive'" ng-click="editContent.openContentEditor(editContent.contentData.identifier)">{{$root.labels.WORKSPACE.common.launchEditor}}</button>
