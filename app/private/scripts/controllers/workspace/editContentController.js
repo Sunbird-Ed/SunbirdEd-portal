@@ -82,7 +82,20 @@ angular.module('playerApp')
                             $('#audienceDropDown').dropdown('set selected', response.result.content.audience);
                             $('#languageDropDown').dropdown('set selected', response.result.content.language);
                             $('#gradesDropDown').dropdown('set selected', response.result.content.gradeLevel);
-                            $('#ageGroupDropDown').dropdown('set selected', response.result.content.ageGroup);
+                            if(response.result.content.ageGroup) {
+                                var ModifyAgeGroup = response.result.content.ageGroup.filter(function(val) {
+                                    var ageGroup = [];
+                                    if(val === "<5") {
+                                        ageGroup.push("&lt;5");
+                                    }else if(val === ">10") {
+                                        ageGroup.push("&gt;10");
+                                    } else {
+                                        ageGroup.push(val);
+                                    }
+                                    return ageGroup;
+                                });
+                                $('#ageGroupDropDown').dropdown('set selected', response.result.content.ModifyAgeGroup);
+                            }
                             $('#subjectDropDown').dropdown('set selected', response.result.content.subject);
                             $('#mediumDropDown').dropdown('set selected', response.result.content.medium);
                         }, 100);
