@@ -1643,43 +1643,44 @@ span.fancytree-title {
 .profilesegmentmargin.ui.segment:first-child {
   margin-top: 20px;
 }
-.profileitems.ui.list > .item a.header,
-.profileitems.ui.list > .item a.header:hover {
+.profileitems.ui.items > .item a.header,
+.profileitems.ui.items > .item a.header:hover {
   font-family: "Open Sans";
-  font-size: 1em;
-  font-weight: 600;
-  line-height: 20px;
+  font-size: 1em!important;
+  font-weight: 600!important;
+  line-height: 20px!important;
   color: #333333 !important;
 }
 .profileitems.ui.items > .item > .content > a.header,
 .profileitems.ui.items > .item > .content > a.header:hover {
   font-family: "Open Sans";
-  font-size: 1em;
-  font-weight: 600;
-  line-height: 20px;
+  font-size: 1em!important;
+  font-weight: 600!important;
+  line-height: 20px!important;
   color: #333333 !important;
 }
-.profileitems.ui.list > .item .description {
-  color: #979797;
+.profileitems.ui.items > .item .description {
+  color: #979797 !important;
   font-family: "Open Sans";
-  font-size: 0.89em;
-  line-height: 17px;
+  font-size: 0.89em!important;
+  line-height: 17px!important;
+  margin-top: 0!important;
 }
 .profileitems .item .metadata .date {
-  color: #979797;
+  color: #979797 !important;
   font-family: "Open Sans";
-  font-size: 0.89em;
-  line-height: 14px;
+  font-size: 0.89em!important;
+  line-height: 14px!important;
 }
 .addeditprofile {
   float: right;
   margin: 0 0 0 1em;
 }
-.profileitems.ui.relaxed.list:not(.horizontal) > .item:not(:last-child) {
-  padding: 10px 0 15px 0;
+.profileitems.ui.relaxed.items:not(.horizontal) > .item:not(:last-child) {
+  padding: 12px 0 12px 0;
 }
-.profileitems.ui.relaxed.list:not(.horizontal) > .item:not(:first-child) {
-  padding: 10px 0 15px 0;
+.profileitems.ui.relaxed.items:not(.horizontal) > .item:not(:first-child) {
+  padding: 12px 0 12px 0;
 }
 .workspacebuttongrid.ui.grid > .column:not(.row),
 .ui.grid > .row > .column {
@@ -1701,7 +1702,7 @@ span.fancytree-title {
 .ui.items > .item img.avatar {
   width: 4em;
   height: 4em;
-  border-radius: 0;
+  border-radius: 0!important;
 }
 .iniformationcontent {
   color: #979797;
@@ -1710,6 +1711,9 @@ span.fancytree-title {
   border-bottom: 1px dashed #979797;
   padding-top: 10px;
   padding-bottom: 10px;
+}
+.profileitems.ui.items > .item > .image + .content {
+  padding-left: 1em!important;
 }
 body {
   position: relative !important;
