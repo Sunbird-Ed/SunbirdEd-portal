@@ -8,6 +8,7 @@
 3. sunbird_port
 4. sunbird_echo_api_url
 5. sunbird_autocreate_trampoline_user eg: true (boolean value, default to true)
+6. telemetry_packet_size (number Eg: 20)
 
 
 ##Pre Requirements

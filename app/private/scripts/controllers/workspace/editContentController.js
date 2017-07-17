@@ -70,10 +70,13 @@ angular.module('playerApp')
                 editContent.initilizeView();
 
                 var req = {contentId: editContent.contentId};
-                var qs = {mode: "edit", fields: 'name,description,appIcon,contentType,mimeType,artifactUrl,versionKey,audience,language,gradeLevel,ageGroup,subject,medium,author,domain'}
+                var qs = {mode: "edit", fields: 'name,description,appIcon,contentType,mimeType,artifactUrl,versionKey,audience,language,gradeLevel,ageGroup,subject,medium,author,domain,createdBy'}
 
                 contentService.getById(req, qs).then(function (response) {
                     if (response && response.responseCode === 'OK') {
+                        if (response.result.content.createdBy !== $rootScope.userId) {
+                            $state.go('Home');
+                        }
                         editContent.contentData = {};
                         editContent.contentData = response.result.content;
                         editContent.iconImage = editContent.contentData.appIcon;
