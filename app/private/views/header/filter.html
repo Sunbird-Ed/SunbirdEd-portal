@@ -22,7 +22,7 @@
                                     <span class="ShowFilterSubTitle" translate="filterby">Filter by:</span>
                                 </div>
                                 <div class="two wide column">
-                                    <!--                                    <select name="language" class="filtersearch ui selection course-search-filter dropdown" multiple="" id="multi-select-lang" ng-value="option.value" ng-options=" language for language in $root.search.languages" ng-model="$root.search.selectedLanguage">
+                                    <!--                                    <select name="language" class="filtersearch ui selection course-search-filter dropdown" multiple="" id="multi-select-lang" ng-value="option.value" ng-options=" language for language in $root.search.languages" ng-model="$root.$root.search.selectedLanguage">
                                                                             <option value="" translate="languages">Languages</option>
                                                                         </select>-->
                                     <div class="ui filtersearch ui multiple selection course-search-filter dropdown">
@@ -35,7 +35,7 @@
                                     </div>
                                 </div>
                                 <div class="two wide column">
-                                    <!--                                    <select name="Subject" class="filtersearch ui selection course-search-filter dropdown" multiple="" id="multi-select-subject" ng-value="option.value" ng-options=" subject for subject in $root.search.subjects" ng-model="$root.search.selectedSubject">
+                                    <!--                                    <select name="Subject" class="filtersearch ui selection course-search-filter dropdown" multiple="" id="multi-select-subject" ng-value="option.value" ng-options=" subject for subject in search.subjects" ng-model="$root.search.selectedSubject">
                                                                             <option value="" translate="subjects">Subjects</option>
                                                                         </select>-->
                                     <div class="ui filtersearch ui multiple selection course-search-filter dropdown">
@@ -47,7 +47,7 @@
                                     </div>
                                 </div>
                                 <div class="two wide column">
-                                    <!--                                    <select name="Board" class="filtersearch ui selection course-search-filter dropdown" multiple="" id="multi-select-board" ng-value="option.value" ng-options="board for board in $root.search.boards" ng-model="$root.search.selectedBoard">
+                                    <!--                                    <select name="Board" class="filtersearch ui selection course-search-filter dropdown" multiple="" id="multi-select-board" ng-value="option.value" ng-options="board for board in search.boards" ng-model="$root.search.selectedBoard">
                                                                             <option value="" translate="boards">Boards</option>
                                                                         </select>-->
                                     <div class="ui filtersearch ui multiple selection course-search-filter dropdown">
@@ -69,8 +69,8 @@
                                     </div>
                                 </div>
                                 <div class="three wide column filter-button">
-                                    <button class="searchfilterbutton ui blue tiny  button" ng-click="search.applyFilter()" translate="apply">APPLY</button>
-                                    <button class="searchfilterbutton ui primary tiny basic button" ng-click="search.resetFilter()" translate="reset">RESET</button>
+                                    <button class="searchfilterbutton ui blue tiny  button" ng-click="$root.search.applyFilter()" translate="apply">APPLY</button>
+                                    <button class="searchfilterbutton ui primary tiny basic button" ng-click="$root.search.resetFilter()" translate="reset">RESET</button>
                                 </div>
                             </div>
                         </div>
@@ -82,11 +82,11 @@
                                 <div apply-script class="ui inline dropdown search-dropdown" id="multi-select-sort">
                                     <div class="text"></div>
                                     <i class="dropdown icon"></i>
-                                    <select  ng-options="sortingOption.field as sortingOption.name for sortingOption in search.sortingOptions" ng-model="search.sortByOption" ng-change="search.applySorting()">
+                                    <select  ng-options="sortingOption.field as sortingOption.name for sortingOption in $root.search.sortingOptions" ng-model="$root.search.sortByOption" ng-change="$root.search.applySorting()">
                                         <option value=""></option>
                                     </select>
                                 </div>
-                                <i class="link" ng-class="{'sort content ascending icon':(search.sortIcon===true),'sort content descending icon':(search.sortIcon===false)}" ng-click="search.sortIcon=!search.sortIcon;search.applySorting()"></i>
+                                <i class="link" ng-class="{'sort content ascending icon':($root.search.sortIcon===true),'sort content descending icon':($root.search.sortIcon===false)}" ng-click="$root.search.sortIcon=!$root.search.sortIcon;$root.search.applySorting()"></i>
                             </div>
                         </div>
                     </div>
