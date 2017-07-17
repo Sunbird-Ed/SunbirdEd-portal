@@ -132,7 +132,7 @@
                     <button class="ui primary basic button" ng-click="editContent.saveMetaContent(editContent.contentData)"ng-disabled="editContent.editApi.loader.showLoader">{{$root.labels.WORKSPACE.common.save}}</button>
                     <button class="ui primary basic button" ng-click="editContent.submitForReview(editContent.contentData)" ng-disabled="editContent.editApi.loader.showLoader">{{$root.labels.WORKSPACE.common.submitForReview}}</button>
                     <button class="ui primary basic button" ng-if="editContent.contentData.mimeType === 'application/vnd.ekstep.ecml-archive'" ng-click="editContent.openContentEditor(editContent.contentData.identifier)">{{$root.labels.WORKSPACE.common.launchEditor}}</button>
-                    <button class="ui primary basic button" ng-if="editContent.contentData.mimeType === 'application/vnd.ekstep.content-collection'" ng-click="editContent.openCollectionEditor(editContent.contentData.identifier)">{{$root.labels.WORKSPACE.common.launchEditor}}</button>
+                    <button class="ui primary basic button" ng-if="editContent.contentData.mimeType === 'application/vnd.ekstep.content-collection'" ng-click="editContent.openCollectionEditor(editContent.contentData)">{{$root.labels.WORKSPACE.common.launchEditor}}</button>
                 </div>
             </div>
             <div class="one wide column"></div>
