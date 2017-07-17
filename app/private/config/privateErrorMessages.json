@@ -18,6 +18,13 @@
                 "ERROR": "Cannot enroll now.Try again later"
             }
         },
+        "SEARCH": {
+            "DATA": {
+                "START": "We are fetching data",
+                "FAILED": "Fetching data failed, please try again later...",
+                "NO_CONTENT": "No results found"
+            }
+        },
         "COMMON": {
             "ERROR": "error",
             "INFO": "info",

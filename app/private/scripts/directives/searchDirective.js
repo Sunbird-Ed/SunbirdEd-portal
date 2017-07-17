@@ -13,7 +13,7 @@ angular.module('playerApp').directive('search', function () {
             $rootScope.search.searchKeyword = '';
             $rootScope.search.filters = {};
             $rootScope.search.typingTimer;                //timer identifier
-            $rootScope.search.doneTypingInterval = 500;
+            $rootScope.search.doneTypingInterval = 2000;
             $rootScope.search.languages = config.FILTER.RESOURCES.languages;
             $rootScope.search.contentTypes = config.FILTER.RESOURCES.contentTypes;
             $rootScope.search.subjects = config.FILTER.RESOURCES.subjects;
@@ -97,7 +97,7 @@ angular.module('playerApp').directive('search', function () {
                 $scope.search.searchRequest();
             };
 
-            $scope.search.openCourseView = function (course, courseType) {
+            $rootScope.search.openCourseView = function (course, courseType) {
                 var showLectureView = 'no';
                 //  var params = { courseType: courseType, courseId: course.courseId || course.identifier, tocId: course.courseId || course.identifier, lectureView: showLectureView, progress: course.progress, total: course.total };
                 var params = {courseType: courseType, courseId: course.courseId || course.identifier, tocId: course.courseId || course.identifier, lectureView: showLectureView, progress: course.progress, total: course.total, courseName: course.courseName || course.name, lastReadContentId: course.lastReadContentId};
@@ -105,7 +105,7 @@ angular.module('playerApp').directive('search', function () {
                 $state.go('Toc', params);
             };
 
-            $scope.search.playContent = function (item) {
+            $rootScope.search.playContent = function (item) {
                 var params = {content: item, contentName: item.name, contentId: item.identifier};
                 $state.go('Player', params);
             };
@@ -114,13 +114,15 @@ angular.module('playerApp').directive('search', function () {
                 $scope.search.searchRequest(false);
             }
             $scope.search.autoSuggestSearch = function () {
-                if ($scope.search.autoSuggest) {
+                if ($scope.search.autoSuggest&&$rootScope.isSearchPage&&$rootScope.search.searchKeyword.length>2) {
+                    
                     $scope.search.handleSearch();
                 }
             }
             $scope.search.keyUp = function () {
                 clearTimeout($rootScope.search.typingTimer);
                 $rootScope.search.typingTimer = setTimeout($scope.search.autoSuggestSearch, $rootScope.search.doneTypingInterval);
+                //$scope.search.autoSuggest=true;
             };
 
 
@@ -129,11 +131,12 @@ angular.module('playerApp').directive('search', function () {
             };
 
             $scope.search.searchRequest = function ($event) {
+                clearTimeout($rootScope.search.typingTimer);
                 if (!$event || $event.charCode == 13) {
                     $scope.search.autoSuggest = false;
-                    if ($rootScope.search.searchKeyword != '') {
+                    if ($rootScope.search.searchKeyword != '' && $rootScope.isSearchPage) {
                         if ($rootScope.isSearchResultsPage && $rootScope.search.searchKeyword == $stateParams.query) {
-                            $rootScope.search.loader = showLoaderWithMessage('', config.MESSAGES.SEARCH.COURSE.START);
+                            $rootScope.search.loader = showLoaderWithMessage('', $rootScope.errorMessages.SEARCH.DATA.START);
                             $scope.search.handleSearch();
                         } else {
                             $scope.search.autoSuggest = false;
@@ -177,7 +180,7 @@ angular.module('playerApp').directive('search', function () {
                     $scope.curSearchText = $rootScope.search.searchKeyword;
                     if (res != null && res.responseCode === 'OK') {
                         $scope.search.autosuggest_data = [];
-                        if ($scope.search.autoSuggest) {
+                        if ($scope.search.autoSuggest && $rootScope.search.searchKeyword != $stateParams.query) {
                             $scope.search.autosuggest_data = res.result[$scope.search.resultType];
 
                         } else
@@ -186,7 +189,7 @@ angular.module('playerApp').directive('search', function () {
                             $rootScope.search.loader.showLoader = false;
 
                             if (res.result.count == 0) {
-                                $rootScope.search.error = showErrorMessage(true, config.MESSAGES.SEARCH.RESOURCE.NO_RESULT, config.MESSAGES.COMMON.INFO);
+                                $rootScope.search.error = showErrorMessage(true, $rootScope.errorMessages.SEARCH.DATA.NO_CONTENT, $rootScope.errorMessages.COMMON.INFO);
                             } else {
                                 $rootScope.search.error = {};
                                 $rootScope.search.searchResult = res.result;
@@ -195,13 +198,13 @@ angular.module('playerApp').directive('search', function () {
                         $scope.search.autoSuggest = true;
                     } else {
                         $rootScope.search.loader.showLoader = false;
-                        $rootScope.search.error = showErrorMessage(true, config.MESSAGES.SEARCH.COURSE.FAILED, config.MESSAGES.COMMON.ERROR);
+                        $rootScope.search.error = showErrorMessage(true, $rootScope.errorMessages.SEARCH.DATA.FAILED, $rootScope.errorMessages.COMMON.ERROR);
                         throw new Error('');
                         $scope.search.autoSuggest = true;
                     }
                 }).catch(function (e) {
                     $rootScope.search.loader.showLoader = false;
-                    $rootScope.search.error = showErrorMessage(true, config.MESSAGES.SEARCH.COURSE.FAILED, config.MESSAGES.COMMON.ERROR);
+                    $rootScope.search.error = showErrorMessage(true, $rootScope.errorMessages.SEARCH.DATA.FAILED, $rootScope.errorMessages.COMMON.ERROR);
                 });
 
             }
