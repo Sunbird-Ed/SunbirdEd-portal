@@ -60,6 +60,7 @@ angular.module('playerApp')
                             console.log("onComplete:", id, name, responseJSON);
                         },
                         onSubmitted: function (id, name) {
+                            contentCreation.youtubeFileLink = '';
                             contentCreation.showContentCreationModal = true;
                             contentCreation.uploadedFileId = id;
                             contentCreation.openContentCreationModal();
@@ -70,7 +71,7 @@ angular.module('playerApp')
                         }
                     }
                 });
-            }, 500);
+            }, 300);
 
             contentCreation.editContent = function (contentId) {
                 var params = {contentId: contentId}
@@ -113,7 +114,7 @@ angular.module('playerApp')
                             contentCreation.clearContentCreationModal();
                         },
                         onHide: function () {
-                            if (!contentCreation.contentId) {
+                            if (!contentCreation.contentId && !contentCreation.youtubeFileLink) {
                                 document.getElementById("hide-section-with-button").style.display = 'block';
                                 contentCreation.manualUploader.cancel(contentCreation.uploadedFileId);
                             }
@@ -129,7 +130,7 @@ angular.module('playerApp')
                         $('#mimeTypeDropDown').dropdown('set text', "Youtube Video");
                         $("#mimeTypeDropDown").dropdown("destroy");
                     }
-                }, 100);
+                }, 10);
             };
 
             /**
@@ -173,11 +174,11 @@ angular.module('playerApp')
                         }
                     } else {
                         contentCreation[api].loader.showLoader = false;
-                        contentCreation[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.CREATE_LESSON.FAILED, config.MESSAGES.COMMON.ERROR);
+                        contentCreation[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.CREATE_LESSON.FAILED, $rootScope.errorMessages.COMMON.ERROR);
                     }
                 }).catch(function (error) {
                     contentCreation[api].loader.showLoader = false;
-                    contentCreation[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.CREATE_LESSON.FAILED, config.MESSAGES.COMMON.ERROR);
+                    contentCreation[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.CREATE_LESSON.FAILED, $rootScope.errorMessages.COMMON.ERROR);
                 });
             };
 
@@ -185,7 +186,7 @@ angular.module('playerApp')
 
                 var api = 'createApi';
                 contentCreation[api] = {};
-                contentCreation[api].loader = showLoaderWithMessage("", config.MESSAGES.WORKSPACE.CREATE_LESSON.START);
+                contentCreation[api].loader = showLoaderWithMessage("", $rootScope.errorMessages.WORKSPACE.CREATE_LESSON.START);
 
                 var requestBody = angular.copy(data);
 
@@ -212,11 +213,28 @@ angular.module('playerApp')
 
             contentCreation.uploadContent = function () {
                 var endpoint = 'http://localhost:5000/api/sb/v1/content/upload' + '/' + contentCreation.contentId;
-                contentCreation.manualUploader.setEndpoint(endpoint, contentCreation.uploadedFileId)
+                contentCreation.manualUploader.setEndpoint(endpoint, contentCreation.uploadedFileId);
                 contentCreation.manualUploader.uploadStoredFiles();
             };
             
             contentCreation.uploadYoutubeFile = function() {
                 contentCreation.initilizeModal();
-            }
+            };
+            
+            contentCreation.validateYouTubeUrl = function(url) {
+                contentCreation.invalidYoutubeUrl = false;
+                if (url !== undefined && url !== '') {        
+                    var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
+                    var match = url.match(regExp);
+                    if (match && match.length > 1 && match[2].length === 11) {
+                        contentCreation.youtubeFileLink = 'https://www.youtube.com/embed/' + match[2] + '?autoplay=1&enablejsapi=1';
+                        contentCreation.invalidYoutubeUrl = false;
+                    } else {
+                        contentCreation.invalidYoutubeUrl = true;
+                    }
+                } else {
+                    contentCreation.invalidYoutubeUrl = true;
+                }
+            };
+            
         });

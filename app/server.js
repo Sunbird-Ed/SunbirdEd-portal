@@ -11,8 +11,10 @@ const express = require('express'),
     env = process.env,
     trampolineServiceHelper = require('./helpers/trampolineServiceHelper.js'),
     telemetryHelper = require('./helpers/telemetryHelper.js'),
-    port = env['sunbird_port'] || 3000;
-
+    port = env['sunbird_port'] || 3000,
+    learnerURL = env.sunbird_learner_player_url || 'http://52.172.36.121:9000/v1/',
+    contentURL = env.sunbird_content_player_url || 'http://localhost:5000/v1/',
+    ekstep = "https://qa.ekstep.in";
 
 // Create a new session store in-memory
 let memoryStore = new session.MemoryStore();
@@ -45,7 +47,7 @@ app.get('/collectionEditor', function(req, res) {
     res.sendFile(__dirname + "/thirdparty/collection-editor/index.html");
 });
 
-const learnerURL = env.sunbird_learner_player_url || 'http://52.172.36.121:9000/v1/';
+
 app.all('/public/service/v1/*', proxy(learnerURL, {
     proxyReqPathResolver: function(req) {
         let urlParam = req.params["0"];
@@ -58,7 +60,6 @@ app.all('/private/service/v1/learner/*', keycloak.protect(), proxy(learnerURL, {
         return require('url').parse(learnerURL + urlParam).path;
     }
 }))
-const contentURL = env.sunbird_content_player_url || 'http://localhost:5000/v1/';
 app.all('/private/service/v1/content/*', keycloak.protect(), proxy(contentURL, {
     proxyReqPathResolver: function(req) {
         let urlParam = req.params["0"];
@@ -85,13 +86,7 @@ app.all('/', function(req, res) {
     res.sendFile(__dirname + '/public/index.html');
 });
 
-
-
 //proxy urls
-
-var ekstep = "https://qa.ekstep.in";
-//need to remove 
-var dev = "https://dev.ekstep.in";
 
 app.use('/api/*', proxy(ekstep, {
     proxyReqOptDecorator: function(proxyReqOpts, srcReq) {
@@ -104,16 +99,15 @@ app.use('/api/*', proxy(ekstep, {
     }
 }));
 
-app.use('/content-plugins/*', proxy(dev, {
+app.use('/content-plugins/*', proxy(ekstep, {
     proxyReqPathResolver: function(req) {
-        return require('url').parse(dev + req.originalUrl).path;
+        return require('url').parse(ekstep + req.originalUrl).path;
     }
 }));
 
-app.use('/plugins/*', proxy(dev, {
+app.use('/plugins/*', proxy(ekstep, {
     proxyReqPathResolver: function(req) {
-        console.log('req',req.originalUrl)
-        return require('url').parse(dev + req.originalUrl).path;
+        return require('url').parse(ekstep + req.originalUrl).path;
     }
 }));
 
@@ -142,11 +136,12 @@ app.all('*', function(req, res) {
     res.redirect('/');
 });
 
-//callback after authentication
-
-
-keycloak.authenticated = function (request) {
+/*
+* Method called after successful authentication and it will log the telemetry for CP_SESSION_START
+ */
+keycloak.authenticated = function(request) {
     telemetryHelper.logSessionStart(request)
 }
+
 app.listen(port);
 console.log('app running on port ' + port);

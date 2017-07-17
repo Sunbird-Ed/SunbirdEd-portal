@@ -90,11 +90,11 @@ angular.module('playerApp')
 
                 } else {
                     textbook[api].loader.showLoader = false;
-                    textbook[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.CREATE_LESSON.FAILED, config.MESSAGES.COMMON.ERROR);
+                    textbook[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.CREATE_LESSON.FAILED, $rootScope.errorMessages.COMMON.ERROR);
                 }
             }).catch(function (error){
                 textbook[api].loader.showLoader = false;
-                textbook[api].error = showErrorMessage(true, config.MESSAGES.WORKSPACE.CREATE_LESSON.FAILED, config.MESSAGES.COMMON.ERROR);
+                textbook[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.CREATE_LESSON.FAILED, $rootScope.errorMessages.COMMON.ERROR);
             });
         };
 
@@ -102,7 +102,7 @@ angular.module('playerApp')
 
             var api = 'createApi';
             textbook[api] = {};
-            textbook[api].loader = showLoaderWithMessage("", config.MESSAGES.WORKSPACE.CREATE_LESSON.START);
+            textbook[api].loader = showLoaderWithMessage("", $rootScope.errorMessages.WORKSPACE.CREATE_LESSON.START);
 
             var requestBody = angular.copy(data);
 
