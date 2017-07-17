@@ -90,16 +90,16 @@
 <div ng-show="noteList.showRemoveNoteModel">
     <div class="ui mini modal" id="removeNoteModal">
         <div class="header">
-            Delete Note
+            {{$root.labels.Notes.deleteNote}}
         </div>
         <div class="content">
             <div class="description">
-                Are you sure you want to delete your note
+                {{$root.labels.Notes.deleteConfirmMessage}}
             </div>
         </div>
         <div class="actions">
-            <div class="ui negative button" ng-click="noteList.hideRemoveNoteModel">No</div>
-            <div class="ui primary button " ng-click="noteList.removeNote(noteList.removeNoteId)">Yes</div>
+            <div class="ui negative button" ng-click="noteList.hideRemoveNoteModel">{{$root.labels.Notes.no}}</div>
+            <div class="ui primary button " ng-click="noteList.removeNote(noteList.removeNoteId)">{{$root.labels.Notes.yes}}</div>
         </div>
     </div>
 </div>
