@@ -1,29 +1,28 @@
-<form class="ui form formdivider">
+<form class="ui form formdivider EditJobProfileForm">
     <div class="two fields">
-
-          <div class="  required field">
+        <div class="required field">
             <label>{{$root.labels.PROFILE.JOB_PROFILE.jobName}}</label>
-            <input type="text" name="" ng-model="experience.jobName">
+            <input type="text" name="jobName" ng-model="experience.jobName">
         </div>
         <div class=" field">
             <label>{{$root.labels.PROFILE.JOB_PROFILE.position}}</label>
             <input type="text" name="" ng-model="experience.role">
         </div>
-    </div> 
+    </div>
     <div class="two fields">
         <div class=" required field">
             <label>{{$root.labels.PROFILE.JOB_PROFILE.organization}}</label>
-            <input type="text" name="" ng-model="experience.orgName">
-        </div>
-    
-    <div class=" field">
-        <label>{{$root.labels.PROFILE.JOB_PROFILE.subjects}}</label>
-        <div class="field" ng-init="profileCtrl.setEditSubject(experience.subject)">
-            <select class="ui fluid dropdown editSubjects" multiple="" id="editSubjects" ng-selected=true ng-model="experience.subject" ng-value="option.value" ng-options=" subject for subject in ::profileCtrl.subjects">
-                                            </select>
+            <input type="text" name="org" ng-model="experience.orgName">
         </div>
 
-    </div>
+        <div class=" field">
+            <label>{{$root.labels.PROFILE.JOB_PROFILE.subjects}}</label>
+            <div class="field" ng-init="profileCtrl.setEditSubject(experience.subject)">
+                <select class="ui fluid dropdown editSubjects" multiple="" id="editSubjects" ng-selected=true ng-model="experience.subject" ng-value="option.value" ng-options=" subject for subject in ::profileCtrl.subjects">
+                </select>
+            </div>
+
+        </div>
     </div>
     <div class="inline fields">
         <label for="address">{{$root.labels.PROFILE.JOB_PROFILE.isCurrentJob}}</label>
@@ -40,21 +39,19 @@
             </div>
         </div>
     </div>
-
-
-    <div apply-script class="two fields">
-        <div class="field">
+    <div class="two fields">
+        <div apply-script class="field">
             <label>{{$root.labels.PROFILE.JOB_PROFILE.joiningDate}}</label>
-            <div ng-init="profileCtrl.setEditStart(experience.joiningDate)" class="ui calendar rangeStart" id="rangeStart">
+            <div ng-init="profileCtrl.setEditStart('rangeStart',$index,experience.joiningDate)" class="ui calendar rangeStart" id="{{'rangeStart'+$index}}">
                 <div class="ui input left icon">
                     <i class="calendar icon"></i>
                     <input type="text" ng-model="experience.joiningDate">
                 </div>
             </div>
         </div>
-        <div class="field" ng-hide="experience.isCurrentJob==='true' ||experience.isCurrentJob===true">
+        <div apply-script class="field" ng-hide="experience.isCurrentJob==='true' ||experience.isCurrentJob===true">
             <label>{{$root.labels.PROFILE.JOB_PROFILE.endDate}}</label>
-            <div ng-init="profileCtrl.setEditEnd(experience.endDate)" class="ui calendar rangeEnd" id="rangeEnd" ng-model="experience.endDate">
+            <div ng-init="profileCtrl.setEditEnd('rangeEnd',$index,experience.endDate)" class="ui calendar rangeEnd " id="{{'rangeEnd'+$index}}">
                 <div class="ui input left icon">
                     <i class="calendar icon"></i>
                     <input type="text" ng-model="experience.endDate">
@@ -63,4 +60,6 @@
         </div>
     </div>
 
+    <div class="ui error message">
+    </div>
 </form>

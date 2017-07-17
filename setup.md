@@ -24,7 +24,8 @@
 * Clone the project.
 * Change to PROJECT_FOLDER
 * RUN `npm install`
-* RUN `bower install`
+* RUN `bower cache clean`
+* RUN `bower install --force`
 * RUN `gulp semantic`
 * RUN `gulp`
 * Change to dist
