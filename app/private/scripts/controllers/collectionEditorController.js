@@ -13,6 +13,7 @@ angular.module('playerApp')
         var collectionEditor = this;
         collectionEditor.contentId = $stateParams.contentId;
 
+
         collectionEditor.openCollectionEditor = function(data) {
 
             $("#collectionEditor").iziModal({
@@ -25,7 +26,12 @@ angular.module('playerApp')
                 closeOnEscape: false,
                 overlayClose: false,
                 onClosed: function() {
-                    $state.go('EditContent', { contentId: collectionEditor.contentId });
+                    if ($stateParams.state) {
+                        $state.go($stateParams.state);    
+                    } else{
+                        $state.go("Profile");
+                    }
+                    
                 }
             });
 

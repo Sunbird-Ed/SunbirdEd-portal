@@ -60,7 +60,7 @@ angular.module('playerApp')
                     if (res && res.responseCode === 'OK') {
                         allUploadedContent[api].loader.showLoader = false;
                         allUploadedContent.allUploadedContentData = res.result.content;
-                        if(res.result.count === 0) {
+                        if (res.result.count === 0) {
                             allUploadedContent[api].error = showErrorMessage(false, $rootScope.errorMessages.WORKSPACE.ALL_UPLOADED.NO_CONTENT, $rootScope.errorMessages.COMMON.SUCCESS);
                             allUploadedContent[api].error.success = true;
                         }
@@ -80,12 +80,17 @@ angular.module('playerApp')
         };
 
         allUploadedContent.openContentEditor = function(contentId) {
+
             var params = { contentId: contentId };
             $state.go("ContentEditor", params);
         };
-        
-        allUploadedContent.openEditForm = function(contentId) {
-            var params = {contentId : contentId};
-            $state.go("EditContent", params);
+
+        allUploadedContent.openEditForm = function(item) {
+            if (item.mimeType === "application/vnd.ekstep.content-collection") {
+                $state.go("CollectionEditor", { contentId: item.identifier, type: item.contentType, state: "WorkSpace.AllUploadedContent" });
+            } else {
+                var params = { contentId: item.identifier };
+                $state.go("EditContent", params);
+            }
         };
     });
