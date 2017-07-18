@@ -156,6 +156,7 @@ angular
                         onEnter: function ($state, $rootScope, sessionService, portalTelemetryService) {
                             $rootScope.searchKey = 'Courses';
                             $rootScope.searchKeyword = '';
+                            $rootScope.isSearchPage = true;
                             $rootScope.isNotePage = true;
                             $rootScope.courseActive = 'active';
                             var courseParams = sessionService.getSessionData('COURSE_PARAMS');
@@ -172,6 +173,7 @@ angular
                         onExit: function ($rootScope) {
                             $rootScope.breadCrumbsData = null;
                             $rootScope.isNotePage = false;
+                             $rootScope.isSearchPage = false;
                             $('#content-search-filter-accordion').accordion('close', 0);
                             $rootScope.courseActive = '';
                         }
@@ -188,6 +190,7 @@ angular
                             $rootScope.breadCrumbsData = [{'name': 'Resources', 'link': 'resources'}, {'name': $stateParams.contentName, link: 'player/' + $stateParams.contentId + '/' + $stateParams.contentName}, {name: 'Notes', link: ''}];
                             $rootScope.searchKey = 'Resources';
                             $rootScope.isNotePage = true;
+                             $rootScope.isSearchPage = true;
                             $rootScope.searchKeyword = '';
                             $rootScope.resourcesActive = 'active';
                             portalTelemetryService.fireImpressions({
@@ -204,6 +207,7 @@ angular
                             $('#content-search-filter-accordion').accordion('close', 0);
                             $rootScope.resourcesActive = '';
                             $rootScope.breadCrumbsData = null;
+                             $rootScope.isSearchPage = false;
                         }
                     })
                     .state('CourseContentNote', {
@@ -223,6 +227,7 @@ angular
                             $rootScope.searchKeyword = '';
                             $rootScope.isNotePage = true;
                             $rootScope.courseActive = 'active';
+                             $rootScope.isSearchPage = true;
                             portalTelemetryService.fireImpressions({
                                 "env": "notes",
                                 "type": "default",
@@ -234,6 +239,7 @@ angular
                         },
                         onExit: function ($rootScope) {
                             $rootScope.isNotePage = false;
+                             $rootScope.isSearchPage = false;
                             $('#content-search-filter-accordion').accordion('close', 0);
                             $rootScope.courseActive = '';
                             $rootScope.breadCrumbsData = null;
