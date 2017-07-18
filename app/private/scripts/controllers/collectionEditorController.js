@@ -29,7 +29,7 @@ angular.module('playerApp')
                     if ($stateParams.state) {
                         $state.go($stateParams.state);    
                     } else{
-                        $state.go("Profile");
+                        $state.go("WorkSpace.DraftContent");
                     }
                     
                 }
