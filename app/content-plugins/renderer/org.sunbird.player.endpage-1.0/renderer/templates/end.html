@@ -48,12 +48,20 @@
   line-height: 1.1em;
   color: black;
 }
+.sunbird-message{
+    width: 100%;
+    text-align: center;
+    font-size: 1.1em;
+    font-weight: bold;
+    padding: 0 5%;
+    color: #494949;
+}
 
 </style>
 <div class="font-lato gc-ep-cont" ng-app="sunbird-endpage" ng-controller="endPageController" id='endpage' ng-show="showEndPage">
   <image class="gc-ep-cont-background" ng-src="{{endpageBackground}}" />
   <div class="sunbird-content">
-    <p class="gc-ep-cong gc-text-elipsis" style="font-size: 2em;
+    <p class="sunbird-message" style="font-size: 2em;
     padding: 2%;">Congratulations! You just completed</p>
     <p class="sunbid-content-title" ng-if="playerMetadata .name">{{playerMetadata .name}}</p>
     <p class="gc-content-owner gc-text-elipsis" ng-if="playerMetadata.owner">Author: {{playerMetadata.owner}}</p>
