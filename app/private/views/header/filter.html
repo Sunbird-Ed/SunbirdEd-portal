@@ -4,7 +4,7 @@
         <div class="one wide column">
 
         </div>
-        <div class=" ten wide column " >
+        <div class=" ten wide column ">
             <div apply-script class="ui accordion" id='content-search-filter-accordion'>
                 <div class="ui twelve column grid">
                     <div class="ten wide column">
@@ -20,24 +20,28 @@
                         <div class="twelve wide column content">
                             <div class="twelve wide column content margin-bottom-15">
                                 <span class="padded chip" ng-if='$root.search.selectedLanguage.length > 0'>
+                                     Languages:
                                     <a class="ui label margin-top--5" ng-repeat="language in $root.search.selectedLanguage">
-                                        {{language}}
+                                       {{language}}
                                         <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedLanguage',language)"></i>
                                     </a>
                                 </span>
                                 <span class="padded chip margin-top--5" ng-if='$root.search.selectedSubject.length > 0'>
+                                     Subjects:
                                     <a class="ui label margin-top--5" ng-repeat="subject in $root.search.selectedSubject">
-                                        {{subject}}
+                                       {{subject}}
                                         <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedSubject',subject)"></i>
                                     </a>
                                 </span>
                                 <span class="padded chip margin-top--5" ng-if='$root.search.selectedBoard.length > 0'>
+                                     Board: 
                                     <a class="ui label margin-top--5" ng-repeat="board in $root.search.selectedBoard">
-                                        {{board}}
+                                       {{board}}
                                         <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedBoard',board)"></i>
                                     </a>
                                 </span>
                                 <span class="padded chip margin-top--5" ng-if='$root.search.selectedContentType.length > 0'>
+                                     Content Type:
                                     <a class="ui label margin-top--5" ng-repeat="contenttype in $root.search.selectedContentType">
                                         {{contenttype}}
                                         <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedContentType',contenttype)"></i>
@@ -62,7 +66,7 @@
                                     </div>
                                 </div>
                                 <div class="two wide column">
-                                    <div  id="filterSub" class="ui filtersearch ui multiple selection course-search-filter dropdown">
+                                    <div id="filterSub" class="ui filtersearch ui multiple selection course-search-filter dropdown">
                                         <i class="dropdown icon"></i>
                                         <div class="filter-sel-text text" ng-if="$root.search.selectedSubject.length > 0 ">{{$root.search.selectedSubject.length+' subjects'}}</div>
                                         <div class="filter-sel-text text" ng-if="$root.search.selectedSubject.length == 0 ">Subject</div>
@@ -72,7 +76,7 @@
                                     </div>
                                 </div>
                                 <div class="two wide column">
-                                    <div  id="filterBoard" class="ui filtersearch ui multiple selection course-search-filter dropdown">
+                                    <div id="filterBoard" class="ui filtersearch ui multiple selection course-search-filter dropdown">
                                         <i class="dropdown icon"></i>
                                         <div class="filter-sel-text text" ng-if="$root.search.selectedBoard.length > 0 ">{{$root.search.selectedBoard.length+' boards'}}</div>
                                         <div class="filter-sel-text text" ng-if="$root.search.selectedBoard.length == 0 ">Board</div>
@@ -82,7 +86,7 @@
                                     </div>
                                 </div>
                                 <div class='two wide column'>
-                                    <div  id="filterContent" class="ui filtersearch ui multiple selection course-search-filter dropdown">
+                                    <div id="filterContent" class="ui filtersearch ui multiple selection course-search-filter dropdown">
                                         <input type='hidden' ng-value='{{}}' />
                                         <i class="dropdown icon"></i>
                                         <div class="filter-sel-text text" ng-if="$root.search.selectedContentType.length > 0 ">{{$root.search.selectedContentType.length+' content types'}}</div>
@@ -107,7 +111,7 @@
                                 <div apply-script class="ui inline dropdown search-dropdown" id="multi-select-sort">
                                     <div class="text"></div>
                                     <i class="dropdown icon"></i>
-                                    <select  ng-options="sortingOption.field as sortingOption.name for sortingOption in $root.search.sortingOptions" ng-model="$root.search.sortByOption" ng-change="$root.search.applySorting()">
+                                    <select ng-options="sortingOption.field as sortingOption.name for sortingOption in $root.search.sortingOptions" ng-model="$root.search.sortByOption" ng-change="$root.search.applySorting()">
                                         <option value=""></option>
                                     </select>
                                 </div>
