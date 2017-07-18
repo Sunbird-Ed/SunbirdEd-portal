@@ -16,45 +16,68 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="twelve wide column content">
+                            <div class="twelve wide column content margin-left-10 margin-top-10 margin-bottom-10">
+                                <span class="padded chip margin-top--5" ng-if='$root.search.selectedLanguage.length > 0'>
+                                    <a class="ui label" ng-repeat="language in $root.search.selectedLanguage">
+                                        {{language}}
+                                        <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedLanguage',language)"></i>
+                                    </a>
+                                </span>
+                                <span class="padded chip margin-top--5" ng-if='$root.search.selectedSubject.length > 0'>
+                                    <a class="ui label" ng-repeat="subject in $root.search.selectedSubject">
+                                        {{subject}}
+                                        <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedSubject',subject)"></i>
+                                    </a>
+                                </span>
+                                <span class="padded chip margin-top--5" ng-if='$root.search.selectedBoard.length > 0'>
+                                    <a class="ui label" ng-repeat="board in $root.search.selectedBoard">
+                                        {{board}}
+                                        <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedBoard',board)"></i>
+                                    </a>
+                                </span>
+                                <span class="padded chip margin-top--5" ng-if='$root.search.selectedContentType.length > 0'>
+                                    <a class="ui label" ng-repeat="contenttype in $root.search.selectedContentType">
+                                        {{contenttype}}
+                                        <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedContentType',contenttype)"></i>
+                                    </a>
+                                </span>
+
+                            </div>
                             <div class="filtercolmntext ui grid">
                                 <div class="one wide column filter-text">
                                     <span class="ShowFilterSubTitle" translate="filterby">Filter by:</span>
                                 </div>
+
                                 <div class="two wide column">
-                                    <!--                                    <select name="language" class="filtersearch ui selection course-search-filter dropdown" multiple="" id="multi-select-lang" ng-value="option.value" ng-options=" language for language in $root.search.languages" ng-model="$root.$root.search.selectedLanguage">
-                                                                            <option value="" translate="languages">Languages</option>
-                                                                        </select>-->
                                     <div id="filterLang" class="ui filtersearch ui multiple selection course-search-filter dropdown">
                                         <input type='hidden' ng-value='{{}}' />
                                         <i class="dropdown icon"></i>
-                                        <div class="filter-sel-text text">{{$root.search.selectedLanguage.length > 0 ?$root.search.selectedLanguage.length+' selected'  :'Languages'}}</div>
+                                        <div class="filter-sel-text middle aligned text" ng-if="$root.search.selectedLanguage.length > 0 ">{{$root.search.selectedLanguage.length+' languages'}}</div>
+                                        <div class="filter-sel-text text" ng-if="$root.search.selectedLanguage.length == 0 ">Language</div>
                                         <div class="menu">
-                                            <div ng-click="$root.search.selectFilter('selectedLanguage',language,$event,'Language')" ng-repeat="language in $root.search.languages" class="item" ng-class="{'active':($root.search.selectedLanguage.indexOf(language)>=0)}" data-value="{{language}}">{{language}}</div>
+                                            <div ng-click="$root.search.selectFilter('selectedLanguage',language,$event)" ng-repeat="language in $root.search.languages" class="item" ng-class="{'active':($root.search.selectedLanguage.indexOf(language)>=0)}" data-value="{{language}}">{{language}}</div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="two wide column">
-                                    <!--                                    <select name="Subject" class="filtersearch ui selection course-search-filter dropdown" multiple="" id="multi-select-subject" ng-value="option.value" ng-options=" subject for subject in search.subjects" ng-model="$root.search.selectedSubject">
-                                                                            <option value="" translate="subjects">Subjects</option>
-                                                                        </select>-->
                                     <div  id="filterSub" class="ui filtersearch ui multiple selection course-search-filter dropdown">
                                         <i class="dropdown icon"></i>
-                                        <div class="filter-sel-text text">{{$root.search.selectedSubject.length > 0 ?$root.search.selectedSubject.length+' selected'  :'Subject'}}</div>
+                                        <div class="filter-sel-text text" ng-if="$root.search.selectedSubject.length > 0 ">{{$root.search.selectedSubject.length+' subjects'}}</div>
+                                        <div class="filter-sel-text text" ng-if="$root.search.selectedSubject.length == 0 ">Subject</div>
                                         <div class="menu">
-                                            <div ng-click="$root.search.selectFilter('selectedSubject',subject,$event,'Subject')" ng-repeat="subject in $root.search.subjects" class="item" ng-class="{'active':($root.search.selectedSubject.indexOf(subject)>=0)}" data-value="{{subject}}">{{subject}}</div>
+                                            <div ng-click="$root.search.selectFilter('selectedSubject',subject,$event)" ng-repeat="subject in $root.search.subjects" class="item" ng-class="{'active':($root.search.selectedSubject.indexOf(subject)>=0)}" data-value="{{subject}}">{{subject}}</div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="two wide column">
-                                    <!--                                    <select name="Board" class="filtersearch ui selection course-search-filter dropdown" multiple="" id="multi-select-board" ng-value="option.value" ng-options="board for board in search.boards" ng-model="$root.search.selectedBoard">
-                                                                            <option value="" translate="boards">Boards</option>
-                                                                        </select>-->
                                     <div  id="filterBoard" class="ui filtersearch ui multiple selection course-search-filter dropdown">
                                         <i class="dropdown icon"></i>
-                                        <div class="filter-sel-text text">{{$root.search.selectedBoard.length > 0 ?$root.search.selectedBoard.length+' selected'  :'Board'}}</div>
+                                        <div class="filter-sel-text text" ng-if="$root.search.selectedBoard.length > 0 ">{{$root.search.selectedBoard.length+' boards'}}</div>
+                                        <div class="filter-sel-text text" ng-if="$root.search.selectedBoard.length == 0 ">Board</div>
                                         <div class="menu">
-                                            <div ng-click="$root.search.selectFilter('selectedBoard',board,$event,'Board')" ng-repeat="board in $root.search.boards" class="item" ng-class="{'active':($root.search.selectedBoard.indexOf(board)>=0)}" data-value="{{board}}">{{board}}</div>
+                                            <div ng-click="$root.search.selectFilter('selectedBoard',board,$event)" ng-repeat="board in $root.search.boards" class="item" ng-class="{'active':($root.search.selectedBoard.indexOf(board)>=0)}" data-value="{{board}}">{{board}}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -62,7 +85,8 @@
                                     <div  id="filterContent" class="ui filtersearch ui multiple selection course-search-filter dropdown">
                                         <input type='hidden' ng-value='{{}}' />
                                         <i class="dropdown icon"></i>
-                                        <div class="filter-sel-text text">{{$root.search.selectedContentType.length > 0 ?$root.search.selectedContentType.length+' selected'  :'Content Type'}}</div>
+                                        <div class="filter-sel-text text" ng-if="$root.search.selectedContentType.length > 0 ">{{$root.search.selectedContentType.length+' content types'}}</div>
+                                        <div class="filter-sel-text text" ng-if="$root.search.selectedContentType.length == 0 ">Content Type</div>
                                         <div class="menu">
                                             <div ng-click="$root.search.selectFilter('selectedContentType',contentType,$event,'Content Type')" ng-repeat="contentType in $root.search.contentTypes" class="item" ng-class="{'active':($root.search.selectedContentType.indexOf(contentType)>=0)}" data-value="{{contentType}}">{{contentType}}</div>
                                         </div>
@@ -75,6 +99,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="two wide column">
                         <div class="field">
                             <div class="content dropdown-content">
