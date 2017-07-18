@@ -17,7 +17,7 @@
                 <p class="workspaceinstuction">{{$root.labels.WORKSPACE.startCreating.textbookDescription}}</p>
             </div>
             <div class="three wide column">
-                <div class="workspacecontent ui card">
+                <div class="workspacecontent ui link card" ui-sref="CreateCourse">
                     <div class="content">
                         <div class="textcontent">
                             <i class='my-icon file text outline icon'></i>
@@ -65,8 +65,8 @@
                 <div class="ui form youtubeupload youTubeFileUploadForm">
                     <div class="inline fields">
                         <div class="eight wide field">
-                            <input type="url" ng-model="contentCreation.youtubeFileLink" placeholder={{$root.labels.WORKSPACE.startCreating.enterYuotubeURL}}
-                                   ng-model-options="{ debounce: 500 }" ng-change="contentCreation.validateYouTubeUrl(contentCreation.youtubeFileLink)">
+                            <input type="text" ng-model="contentCreation.youtubeFileLink" placeholder={{$root.labels.WORKSPACE.startCreating.enterYuotubeURL}}
+                                   ng-model-options="{ debounce: 1000 }" ng-change="contentCreation.validateYouTubeUrl(contentCreation.youtubeFileLink)">
                         </div>
                         <div class="two wide field">
                             <button class="ui primary basic button text-align-center padding-left-25 qq-upload-button-selector"

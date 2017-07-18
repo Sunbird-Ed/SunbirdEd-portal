@@ -30,7 +30,7 @@
                 "GET_ENROLLED_COURSES": "user/courses",
                 "GET_LEARN_OTHER_SECTION": "Course",
                 "ENROLL_USER_COURSE": "user/courses/enroll",
-                "RECOMMENDED_COURSE": "course/recommended/courses"
+                "RECOMMENDED_COURSE": "recommended/courses"
 
 
             },
