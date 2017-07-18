@@ -59,14 +59,13 @@ endPage.controller("endPageController", function($scope, $rootScope, $state,$ele
         }, 1000);
         EkstepRendererAPI.dispatchEvent("renderer:splash:hide");
         $scope.setTotalTimeSpent();
+        EkstepRendererAPI.getTelemetryService().end(100);
     }
     $scope.initEndpage = function() {
         $scope.playerMetadata = content.localData.localData;
         $scope.genieIcon = EkstepRendererAPI.resolvePluginResource("org.sunbird.player.endpage", "1.0", "renderer/assets/home.png");
         $scope.replayIcon = EkstepRendererAPI.resolvePluginResource("org.sunbird.player.endpage", "1.0", "renderer/assets/icn_replay.png");
         $scope.endpageBackground = EkstepRendererAPI.resolvePluginResource("org.sunbird.player.endpage", "1.0", "renderer/assets/endpageBackground.png");
-
-
         $scope.handleEndpage();
     };
     EkstepRendererAPI.addEventListener('renderer:content:end', function() {
