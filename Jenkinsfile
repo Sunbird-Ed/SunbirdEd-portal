@@ -1,6 +1,6 @@
 #!groovy
 
-node('docker') {
+node('build-slave') {
 
     currentBuild.result = "SUCCESS"
 
