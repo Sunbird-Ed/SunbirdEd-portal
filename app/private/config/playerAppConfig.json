@@ -72,7 +72,7 @@
                     "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Marathi", "Punjabi", "Tamil", "Telugu"
                 ],
                 "contentTypes": [
-                    "Story", "Worksheet"
+                    "Story", "Worksheet", "TextBook", "Collection"
                 ],
                 "subjects": [
                     "Maths", "English", "Hindi", "Assamese", "Bengali", "Gujarati", "Kannada", "Malayalam", "Marathi", "Nepali", "Oriya", "Punjabi", "Tamil", "Telugu", "Urdu"
