@@ -13,7 +13,7 @@ angular.module('playerApp').directive('search', function () {
             $rootScope.search.searchKeyword = '';
             $rootScope.search.filters = {};
             $rootScope.search.typingTimer;                //timer identifier
-            $rootScope.search.doneTypingInterval = 500;
+            $rootScope.search.doneTypingInterval = 1000;
             $rootScope.search.languages = config.FILTER.RESOURCES.languages;
             $rootScope.search.contentTypes = config.FILTER.RESOURCES.contentTypes;
             $rootScope.search.subjects = config.FILTER.RESOURCES.subjects;
@@ -28,7 +28,7 @@ angular.module('playerApp').directive('search', function () {
             $rootScope.search.selectedSubject = [];
             $rootScope.search.selectedBoard = [];
             $rootScope.search.sortByOption = {};
-
+            $scope.search.autoSuggest = true;
             // search select dropdown changes
             $rootScope.$watch('searchKey', function () {
                 $timeout(function () {
@@ -119,7 +119,7 @@ angular.module('playerApp').directive('search', function () {
                 }
             };
 
-            $scope.search.setSearchText = function (searchText) {
+            $rootScope.search.setSearchText = function (searchText) {
                 $rootScope.search.searchKeyword = searchText;
                 $scope.search.searchRequest(false);
             }
@@ -189,13 +189,13 @@ angular.module('playerApp').directive('search', function () {
                 $scope.search.searchFn.then(function (res) {
                     $scope.curSearchText = $rootScope.search.searchKeyword;
                     if (res != null && res.responseCode === 'OK') {
-                        $scope.search.autosuggest_data = [];
+                        $rootScope.search.autosuggest_data = [];
                         if ($scope.search.autoSuggest && $rootScope.search.searchKeyword != $stateParams.query) {
-                            $scope.search.autosuggest_data = res.result[$scope.search.resultType];
+                            $rootScope.search.autosuggest_data = res.result[$scope.search.resultType];
 
                         } else
                         {
-                            $scope.search.autosuggest_data = [];
+                            $rootScope.search.autosuggest_data = [];
                             $rootScope.search.loader.showLoader = false;
 
                             if (res.result.count == 0) {
@@ -248,7 +248,9 @@ angular.module('playerApp').directive('search', function () {
                 $scope.search.sortBy[sortByField] = ($rootScope.search.sortIcon === true) ? 'asc' : 'desc';
                 $scope.search.searchRequest();
             };
-
+            $rootScope.search.close = function () {
+                $state.go($rootScope.search.selectedSearchKey);
+            }
 
         }];
     return {
