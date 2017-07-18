@@ -6,13 +6,14 @@ endPage.controller("endPageController", function($scope, $rootScope, $state,$ele
     $scope.genieIcon;
     $scope.endpageBackground;
     $scope.replayIcon;
+    $scope.isCordova = window.cordova ? true : false;
     $scope.arrayToString = function(array) {
         return (_.isString(array)) ? array : (!_.isEmpty(array) && _.isArray(array)) ? array.join(", ") : "";
     };
     $scope.setLicense = function(){
         $scope.licenseAttribute = $scope.playerMetadata.license || 'Licensed under CC By 4.0 license'
     };
-    
+
     $scope.replayContent = function() {
         var data = {
             'interactId' : 'ge_replay',

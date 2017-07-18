@@ -17,7 +17,7 @@
     </div>
 
     <div class="two fields">
-        <div class="field required" >
+        <div class="field required">
             <label>{{$root.labels.PROFILE.ADDRESS.line1}}</label>
             <input type="text" name="addLine1" ng-model="profileCtrl.newAddress.addressLine1">
         </div>
@@ -48,6 +48,6 @@
     </div>
     <div class="ui error message">
     </div>
-    <div class="ui button " ng-click="profileCtrl.addAddress(profileCtrl.newAddress) ;">{{$root.labels.PROFILE.BUTTON.save}}</div>
+    <div class="ui button " ng-class="{ 'disabled' : profileCtrl.disableSave}" ng-click="profileCtrl.addAddress(profileCtrl.newAddress) ;">{{$root.labels.PROFILE.BUTTON.save}}</div>
 
 </form>
