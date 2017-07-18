@@ -13,7 +13,7 @@ angular.module('playerApp').directive('search', function () {
             $rootScope.search.searchKeyword = '';
             $rootScope.search.filters = {};
             $rootScope.search.typingTimer;                //timer identifier
-            $rootScope.search.doneTypingInterval = 2000;
+            $rootScope.search.doneTypingInterval = 500;
             $rootScope.search.languages = config.FILTER.RESOURCES.languages;
             $rootScope.search.contentTypes = config.FILTER.RESOURCES.contentTypes;
             $rootScope.search.subjects = config.FILTER.RESOURCES.subjects;
@@ -43,7 +43,7 @@ angular.module('playerApp').directive('search', function () {
                 $scope.search.initSearch();
             });
 
-            $rootScope.search.selectFilter = function (filterType, value, $event, defaultVal) {
+            $rootScope.search.selectFilter = function (filterType, value, $event) {
                 $timeout(function () {
                     var itemIndex = $rootScope.search[filterType].indexOf(value);
                     if (itemIndex == -1) {
@@ -53,11 +53,17 @@ angular.module('playerApp').directive('search', function () {
                         $rootScope.search[filterType].splice(itemIndex, 1);
                         $($event.target).removeClass('active');
                     }
-                    var selText = $rootScope.search[filterType].length > 0 ? $rootScope.search[filterType].length + ' selected' : defaultVal;
-                    $($event.target).closest('.filtersearch').find('.filter-sel-text').text(selText).removeClass('default');
                 }, 0);
 
             }
+            $rootScope.search.removeFilterSelection = function (filterType, value) {
+                var itemIndex = $rootScope.search[filterType].indexOf(value);
+                if (itemIndex != -1) {
+                    $rootScope.search[filterType].splice(itemIndex, 1);
+                }
+            }
+
+
             /**
              * This function called when api failed, and its show failed response for 2 sec.
              * @param {String} message
@@ -232,10 +238,6 @@ angular.module('playerApp').directive('search', function () {
                 $rootScope.search.filters = {};
                 $rootScope.isSearchResultsPage = false;
                 $rootScope.isSearchPage = true;
-                $("#filterLang").find('.filter-sel-text').text('Language');
-                $("#filterSub").find('.filter-sel-text').text('Subject');
-                $("#filterContent").find('.filter-sel-text').text('Content Type');
-                $("#filterBoard").find('.filter-sel-text').text('Board');
                 $scope.search.searchRequest();
                 //$state.go($rootScope.search.selectedSearchKey);
 

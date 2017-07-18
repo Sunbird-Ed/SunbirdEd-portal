@@ -606,6 +606,14 @@ th {
 .ui.breadcrumb .divider {
   color: #007AFF !important;
 }
+.headerSearchDropdown:hover {
+  background: #f9fafb !important;
+}
+.headerDropdownProfile {
+  cursor: text !important;
+  background: none !important;
+  font-weight: bold !important;
+}
 .ui.card > .sliderCards.content {
   -webkit-box-flex: 1;
   -ms-flex-positive: 1;

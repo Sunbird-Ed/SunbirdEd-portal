@@ -65,6 +65,6 @@
     </div>
     <div class="ui error message">
     </div>
-    <div class="ui button " ng-click="profileCtrl.addExperience(profileCtrl.newExperience) ;">{{$root.labels.PROFILE.BUTTON.save}}</div>
+    <div class="ui button " ng-class="{ 'disabled' : profileCtrl.disableSave}" ng-click="profileCtrl.addExperience(profileCtrl.newExperience) ;">{{$root.labels.PROFILE.BUTTON.save}}</div>
 
 </form>
