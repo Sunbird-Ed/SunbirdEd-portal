@@ -721,14 +721,14 @@ angular
                     $rootScope.profileActive = '';
                 }
             }).state('CollectionEditor', {
-                url: '/collection/editor/:contentId/:type',
+                url: '/collection/editor/:contentId/:type/:state',
                 views: {
                     'mainView': {
                         templateUrl: 'views/common/collectionEditor.html',
                         controller: 'CollectionEditorController as collectionEditor'
                     }
                 },
-                params: { contentId: null, type: null },
+                params: { contentId: null, type: null, state: null },
                 onEnter: function($rootScope, portalTelemetryService) {
                     $rootScope.profileActive = 'active';
                     portalTelemetryService.fireImpressions({
