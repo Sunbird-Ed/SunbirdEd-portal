@@ -51,6 +51,9 @@ angular.module('playerApp')
                 dispatcher: 'local',
                 apislug: 'api',
                 alertOnUnload: true,
+                plugins: [
+                    { "id": "org.ekstep.sunbirdcollectionheader", "ver": "1.0", "type": "plugin" }
+                ],
                 localDispatcherEndpoint: '/telemetry',
                 editorConfig: {
                     "mode": "Edit",
