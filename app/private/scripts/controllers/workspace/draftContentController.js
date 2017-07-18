@@ -50,7 +50,7 @@ angular.module('playerApp')
                     status: ["Draft"],
                     createdBy: draftContent.userId,
                     mimeType: ['application/vnd.ekstep.ecml-archive', 'application/vnd.ekstep.content-collection'],
-                    
+
                 },
                 'sort_by': {
                     "lastUpdatedOn": "desc"
@@ -61,7 +61,7 @@ angular.module('playerApp')
                     if (res && res.responseCode === 'OK') {
                         draftContent[api].loader.showLoader = false;
                         draftContent.draftContentData = res.result.content;
-                        if(res.result.count === 0) {
+                        if (res.result.count === 0) {
                             draftContent[api].error = showErrorMessage(false, $rootScope.errorMessages.WORKSPACE.DRAFT.NO_CONTENT, $rootScope.errorMessages.COMMON.SUCCESS);
                         }
                     } else {
@@ -79,7 +79,11 @@ angular.module('playerApp')
             getDraftContent();
         };
 
-        draftContent.openContentEditor = function(contentId) {
-            $state.go("EditContent", { contentId: contentId });
+        draftContent.openContentEditor = function(item) {
+            if (item.mimeType === "application/vnd.ekstep.content-collection") {
+                $state.go("CollectionEditor", { contentId: item.identifier, type: item.contentType, state: "WorkSpace.DraftContent" });
+            } else {
+                $state.go("EditContent", { contentId: contentId });
+            }
         };
     });
