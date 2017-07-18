@@ -25,9 +25,8 @@ angular.module('playerApp').controller('PreviewContentController', function (pla
         });
         window.onbeforeunload = function (e) {
             playerTelemetryUtilsService.endTelemetry({progress: previewContent.contentProgress});
-        }
-
-
+        };
+        
         if (previewContent.contentData.mimeType === 'application/vnd.ekstep.ecml-archive' || previewContent.contentData.mimeType === 'application/vnd.ekstep.html-archive') {
             previewContent.showIFrameContent = true;
             var iFrameSrc = config.ekstep_CP_config.baseURL;
@@ -115,11 +114,11 @@ angular.module('playerApp').controller('PreviewContentController', function (pla
                 previewContent.errorObject = {};
                 showPlayer(response.result.content);
             } else {
-                var message = 'Unable to play, please try Again or close.';
+                var message = 'Unable to play, please try again or close.';
                 showLoaderWithMessage(false, 'red', message, true, true);
             }
         }).catch(function (error) {
-            var message = 'Unable to play, please try Again or close.';
+            var message = 'Unable to play, please try again or close.';
             showLoaderWithMessage(false, 'red', message, true, true);
         });
     }
@@ -135,7 +134,7 @@ angular.module('playerApp').controller('PreviewContentController', function (pla
 
     previewContent.tryAgain = function () {
         previewContent.errorObject = {};
-        getContent(previewContent.id);
+        getContent(previewContent.contentId);
     };
 
     previewContent.zoomIn = function () {
