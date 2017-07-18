@@ -221,16 +221,15 @@ angular.module('playerApp').directive('search', function () {
 
 
             $rootScope.search.applyFilter = function () {
-                $rootScope.search.filters['language'] = $rootScope.search.selectedLanguage ? $rootScope.search.selectedLanguage : [];
-                $rootScope.search.filters['contentType'] = $rootScope.search.selectedContentType ? $rootScope.search.selectedContentType : [];
-                $rootScope.search.filters['subject'] = $rootScope.search.selectedSubject ? $rootScope.search.selectedSubject : [];
-                $rootScope.search.filters['board'] = $rootScope.search.selectedBoard ? $rootScope.search.selectedBoard : [];
+                $rootScope.search.filters['language'] = $rootScope.search.selectedLanguage;
+                $rootScope.search.filters['contentType'] = $rootScope.search.selectedContentType;
+                $rootScope.search.filters['subject'] = $rootScope.search.selectedSubject;
+                $rootScope.search.filters['board'] = $rootScope.search.selectedBoard;
                 $rootScope.isSearchResultsPage = false;
                 $scope.search.searchRequest();
             };
             $rootScope.search.resetFilter = function () {
                 $rootScope.isSearchPage = false;
-                $('.content-search-filter').dropdown('clear');
                 $rootScope.search.selectedLanguage = [];
                 $rootScope.search.selectedContentType = [];
                 $rootScope.search.selectedSubject = [];
