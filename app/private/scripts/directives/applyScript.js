@@ -7,7 +7,7 @@
  * # applyScript
  */
 angular.module('playerApp')
-    .directive('applyScript', function() {
+    .directive('applyScript', function($timeout) {
         return {
             restrict: 'A',
             link: function(scope, element, attrs) {
@@ -16,10 +16,9 @@ angular.module('playerApp')
                 $('.popup-button').popup();
                 $('#content-search-filter-accordion').accordion();
                 $('.ui.accordion').accordion({ exclusive: false });
-                $('.ui.rating')
-                    .rating({
-                        maxRating: 5
-                    }).rating('disable', true);
+                          $timeout(function() {
+                $('.courseHeader-rating')
+                    .rating('disable');},0);
                 $('.dropdown.resource-search-filter').dropdown({
                     useLabels: false,
                     forceSelection: false,
@@ -59,8 +58,8 @@ angular.module('playerApp')
                 if (attrs.id == 'content-video-player-youtube-holder') {
                     var oldPlayer = document.getElementById('content-video-player-youtube');
                     videojs(oldPlayer).dispose();
-                    $(element).append('<video id=\'content-video-player-youtube\'  controls preload="auto" height=\'100%\' width=\'100%\' class=\'video-js vjs-default-skin vjs-big-play-centered player-video\'  data-setup=\'{ "fluid": true,"techOrder": ["youtube"], "sources": [{ "type": "video/youtube", "src": "'+attrs.videosrc+'","youtube": false}]}\'></video>');
-                    videojs('content-video-player-youtube').ready(function() {                        
+                    $(element).append('<video id=\'content-video-player-youtube\'  controls preload="auto" height=\'100%\' width=\'100%\' class=\'video-js vjs-default-skin vjs-big-play-centered player-video\'  data-setup=\'{ "fluid": true,"techOrder": ["youtube"], "sources": [{ "type": "video/youtube", "src": "' + attrs.videosrc + '","youtube": false}]}\'></video>');
+                    videojs('content-video-player-youtube').ready(function() {
                         scope.initVideoEvents(this);
                     });
                 } else if (attrs.id == 'content-video-player-holder') {
