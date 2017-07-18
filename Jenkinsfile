@@ -22,7 +22,7 @@ node('docker') {
          env.NODE_ENV = "build"
 
          print "Environment will be : ${env.NODE_ENV}"
-         sh('sudo ./player/build.sh')
+         sh(' ./player/build.sh')
 
        }
 
