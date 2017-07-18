@@ -365,6 +365,7 @@ angular
                             $rootScope.isSearchPage = true;
                             $rootScope.isSearchResultsPage = true;
                             $rootScope.showFilter = true;
+                            $rootScope.searchKey=$stateParams.type;
                             if ($stateParams.type == 'Courses') {
                                 $rootScope.courseActive = 'active';
                             } else {
@@ -785,7 +786,7 @@ angular
                 url: '/preview/collection/:Id/:name',
                 views: {
                     'mainView': {
-                        templateUrl: 'views/collectionPlayer/collectionPlayer.html',
+                        templateUrl: 'views/collectionplayer/collectionPlayer.html',
                         controller: 'CollectionPlayerCtrl as cpvm'
                     }
                 },
