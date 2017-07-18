@@ -10,11 +10,11 @@
             </div>
         </div>
         <div class="sliderCards content">
-            <div  class="sliderCardDesc">
+            <div class="sliderCardDesc">
                 {{ item.description | limitTo: 55 }}&nbsp;<i ng-show="item.description.length >= 55" class="ellipsis horizontal icon popup-button link" data-content="{{item.description}}" data-variation="wide"></i>
             </div>
             <button ng-show="($root.enrolledCourseIds.indexOf(item.identifier)>=0)" class="ui blue basic right floated button">{{$root.labels.Courses.resume}}</button>
-            <div  class="courseHeader-rating ui mini star rating" data-rating="3"></div>
+            <div apply-script class="courseHeader-rating ui  star rating" data-rating="{{item.me_averageRating |number:0}}" data-max-rating="5"></div>
         </div>
     </div>
 </div>
