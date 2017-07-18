@@ -1,4 +1,4 @@
-{  
+{
     "errorMessages": {
         "Courses": {
             "ENROLLED": {
@@ -16,6 +16,13 @@
             "ENROLL": {
                 "START": "Enrolling....",
                 "ERROR": "Cannot enroll now.Try again later"
+            }
+        },
+        "SEARCH": {
+            "DATA": {
+                "START": "We are fetching data",
+                "FAILED": "Fetching data failed, please try again later...",
+                "NO_CONTENT": "No results found"
             }
         },
         "COMMON": {
@@ -58,20 +65,23 @@
                 "FAILED": "Updating icon failed, please try again later..." 
             }, 
             "UPDATE": { 
-                "START": "We are updating content detail...", 
+                "START": "We are updating the content detail...", 
                 "FAILED": "Updating content detail failed, please try again later..." 
             }, 
             "REVIEW_CONTENT": { 
                 "START": "We are sending content for review...", 
-                "FAILED": "Sending content for review failed, please try again later..." 
+                "FAILED": "Sending content for review failed, please try again later...",
+                "SUCCESS": "Content sent for review..."
             }, 
             "PUBLISH_CONTENT": { 
-                "START": "We are sending content for publish...", 
-                "FAILED": "Sending content for publish failed, please try again later..." 
+                "START": "We are publishing the content...", 
+                "FAILED": "Publishing content failed, please try again later...",
+                "SUCCESS": "Content published successfully..."
             }, 
             "REJECT_CONTENT": { 
-                "START": "We are sending content for retire...", 
-                "FAILED": "Sending content for retire failed, please try again later..." 
+                "START": "We are rejecting the content...", 
+                "FAILED": "Rejecting content failed, please try again later..." ,
+                "SUCCESS": "Content rejected successfully..."
             },
             "ContentCreation": {
                 "invalidYoutubeUrl": "Invalid youtube url, Please check..."
@@ -79,7 +89,7 @@
             "UP_FOR_REVIEW": {
                 "START": "We are fetching up for review content...", 
                 "FAILED": "Fetching up for review content failed, please try again later...", 
-                "NO_CONTENT": "You don't have any up for review content..."
+                "NO_CONTENT": "You don't have any content for review..."
             }
         },
         "HOME": {
@@ -132,7 +142,16 @@
                     "firstName": "Please enter a valid first name",
                     "phone": "Please enter a valid mobile number",
                     "email": "Please enter a valid email",
-                    "language": "Please select a language"
+                    "language": "Please select a language",
+                    "addhar": "Please enter a valid Aadhar Number"
+                },
+                "EDUCATION": {
+                    "institute": "Name Of Institute must have a value",
+                    "degree": "Degree must have a value"
+                },
+                "JOB_PROFILE": {
+                    "jobName": "Job Name must have a value",
+                    "org": "Organization must have a value"
                 }
             },
             "API": {
@@ -149,4 +168,3 @@
         }
     }
 }
-

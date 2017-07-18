@@ -1,9 +1,10 @@
-<div class="ui grid ">
+<div ng-controller="SearchCtrl as search" class="ui grid " ng-init="search.initSearch()">
     <div class=" one wide column "></div>
     <div class="ten wide column ">
-        <div ng-if="search.searchType==='resources' " ng-include=" 'views/search/contentSearch.html' ">
+
+        <div ng-if="$root.search.selectedSearchKey=='Resources'" ng-include=" 'views/search/contentSearch.html' ">
         </div>
-        <div ng-if="search.searchType==='courses' " ng-include=" 'views/search/courseSearch.html' ">
+        <div ng-if="$root.search.selectedSearchKey=='Courses'" ng-include="'views/search/courseSearch.html'">
         </div>
     </div>
     <div class="one wide column "></div>
