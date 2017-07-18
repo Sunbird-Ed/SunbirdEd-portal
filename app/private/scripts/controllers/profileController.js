@@ -220,13 +220,13 @@ angular.module('playerApp')
         profile.userProfile = function(userProfile) {
             profile.loader.showLoader = false;
             if (userProfile && userProfile.responseCode === 'OK') {
-                var profileData = userProfile.result.response;
+                var profileData = angular.copy(userProfile.result.response);
 
                 profile.fullName = profileData['firstName'] + ' ' + profileData['lastName'];
                 profile.email = profileData['email'];
                 profile.user = profileData;
 
-                profile.basicProfile = profile.user;
+                profile.basicProfile = angular.copy(profile.user);
                 profile.address = profileData.address;
                 if (profileData.jobProfile.length) {
                     profileData.jobProfile.forEach(function(element) {
@@ -286,11 +286,12 @@ angular.module('playerApp')
                 },
                 'request': updateReq
             };
-
+            profile.disableSave = true;
             profile.loader = showLoaderWithMessage('', apiMessages.SUCCESS.editingProfile);
 
             userService.updateUserProfile(profile.updateProfileRequest, profile.fullName, profile.email)
                 .then(function(successResponse) {
+                    profile.disableSave = false;
                     if (successResponse && successResponse.responseCode === 'OK') {
                         profile.experienceForm = false;
                         profile.basicProfileForm = false;
