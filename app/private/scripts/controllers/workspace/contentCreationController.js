@@ -38,7 +38,7 @@ angular.module('playerApp')
                         customHeaders: {
                             cid: "sunbird"
                         },
-                        endpoint: 'http://localhost:5000/api/sb/v1/content/upload/' + contentCreation.contentId
+                        endpoint: config.URL.BASE_PREFIX + config.URL.CONTENT_PREFIX + config.URL.UPLOAD + contentCreation.contentId
                     },
                     thumbnails: {
                         placeholders: {
@@ -52,6 +52,9 @@ angular.module('playerApp')
                         acceptFiles: 'application/pdf, video/mp4, application/vnd.ekstep.html-archive, video/youtube'
                     },
                     callbacks: {
+                        validate: function(data) {
+                            console.log("validate data", data);
+                        },
                         onValidate: function (data) {
                             console.log("On validate data", data);
                         },

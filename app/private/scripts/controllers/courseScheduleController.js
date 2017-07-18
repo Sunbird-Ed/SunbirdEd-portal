@@ -300,6 +300,9 @@ angular.module('playerApp')
                             if (nodeData.key != -1) {
                                 toc.expandMe(nodeData.key, nodeData.data);
                             }
+                        },
+                        create: function (event, data) {
+                            (toc.courseType == 'OTHER_COURSE') ? $(".fancytree-title").addClass('noselect') : '';
                         }
                     });
                     $(".fancytree-container").addClass("fancytree-connectors");
@@ -329,9 +332,7 @@ angular.module('playerApp')
                     toc.hashId = '';
                     $location.hash(toc.hashId);
                     toc.getContentState();
-                    $('.toc-resume-button').css('visibility', 'hidden');
-                    $('.toc-resume-button').css('font-size', '10px');
-                    $('.toc-resume-button').css('margin-right', '15px');
+                    $('.toc-resume-button').hide();
                     $('.fancy-tree-container').each(function () {
                         var treeId = this.id;
                         $(this).fancytree("getTree").visit(function (node) {
@@ -345,7 +346,8 @@ angular.module('playerApp')
                                 node.setExpanded(true);
                                 node.setActive(true);
                                 node.setFocus(false);
-                                $('#resume-button-' + toc.itemIndex).css('visibility', 'visible');
+                                $('#resume-button-' + toc.itemIndex).show();
+
                             } else
                             {
                                 node.setActive(false);
@@ -375,7 +377,7 @@ angular.module('playerApp')
             }
 
 
-            toc.init = function () {                
+            toc.init = function () {
                 toc.lectureView = toc.courseParams.lectureView;
                 toc.courseId = toc.courseParams.courseId;
                 toc.courseType = ($rootScope.enrolledCourseIds && $rootScope.enrolledCourseIds.indexOf(toc.courseId) >= 0) ? 'ENROLLED_COURSE' : toc.courseParams.courseType;
