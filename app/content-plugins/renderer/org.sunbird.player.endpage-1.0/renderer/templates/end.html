@@ -15,11 +15,14 @@
     position: absolute
 }
 
-.gc-ep-home {
+.sunbird-ep-home {
     position: absolute;
     width: 22%;
     left: 57%;
     top: 3%;
+}
+.sunbird-ep-opactiy{
+
     opacity: 0.5
 }
 
@@ -58,14 +61,15 @@
         <div class="sunbird-content-replay" ng-click="replayContent()">
             <img class="replay" ng-src="{{replayIcon}}" style="width: 22%;">
         </div>
-        <div class="sunbird-content-timer">
-            <img class ="gc-ep-home" ng-disabled="true" ng-src="{{genieIcon}}" ng-click="openGene()"></img>
+        <div class="sunbird-content-home">
+            <img class ="sunbird-ep-home" ng-class="isCordova ? 'sunbird-ep-home' : ' sunbird-ep-opactiy' " ng-src="{{genieIcon}}" ng-click="openGene()"></img>
         </div>
     </div>
     <center>
         <div class="sunbird-footer">
             <center>
-                <p class="">Total Timespent: &nbsp;&nbsp;{{totalTimeSpent}}</p>
+                <p style="text-decoration: underline;">Total TimeSpent</p>
+                    <p style="padding: 4%">{{totalTimeSpent}}</p>
             </center>
         </div>
     </center>
