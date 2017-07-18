@@ -29,7 +29,7 @@ angular.module('playerApp')
                     if ($stateParams.state) {
                         $state.go($stateParams.state);    
                     } else{
-                        $state.go("Profile");
+                        $state.go("WorkSpace.DraftContent");
                     }
                     
                 }
@@ -51,6 +51,9 @@ angular.module('playerApp')
                 dispatcher: 'local',
                 apislug: 'api',
                 alertOnUnload: true,
+                plugins: [
+                    { "id": "org.ekstep.sunbirdcollectionheader", "ver": "1.0", "type": "plugin" }
+                ],
                 localDispatcherEndpoint: '/telemetry',
                 editorConfig: {
                     "mode": "Edit",
