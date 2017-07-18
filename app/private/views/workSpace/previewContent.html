@@ -7,7 +7,7 @@
         <div class="row margin-bottom-15" ng-if="previewContent.previewContentApi.error.showError">
             <error-message data="{{previewContent.previewContentApi.error}}" visibility="previewContent.previewContentApi.error.showError"></error-message>
         </div>
-        <div class="row" ng-show="!previewContent.previewContentApi.error.showError && !previewContent.previewContentApi.loader.showLoader">
+        <div class="row" ng-if="!previewContent.previewContentApi.error.showError && !previewContent.previewContentApi.loader.showLoader">
             <div class='videosegment ui segment'>
                 <div class='content-player-body'>
                     <div class="videosegment  ui clearing segment">
@@ -52,11 +52,11 @@
                             <div class="content-player" ng-if="previewContent.contentData.mimeType.indexOf('image') > -1">
                                 <img height='100%' width='100%' ng-src="{{previewContent.contentData.artifactUrl}}" />
                             </div>
-                            <div class="videosegment  ui clearing segment margin-bottom-15" ng-if="previewContent.contentData.status === 'Review'" >
+                            <div class="videosegment  ui clearing segment" ng-if="previewContent.contentData.status === 'Review' && previewContent.isShowPublishRejectButton" >
                                 <h5 sb-permissions permission-only="CONTENT_REVIEWER" ng-if="previewContent.isShowPublishRejectButton" class="ui right floated primary button mouse-pointer" ng-click="previewContent.publishContent()">
                                     Publish
                                 </h5>
-                                 <h5 sb-permissions permission-only="CONTENT_REVIEWER" ng-if="previewContent.isShowPublishRejectButton" class="ui right floated primary button mouse-pointer" ng-click="previewContent.rejectContent()">
+                                <h5 sb-permissions permission-only="CONTENT_REVIEWER" ng-if="previewContent.isShowPublishRejectButton" class="ui right floated primary button mouse-pointer" ng-click="previewContent.rejectContent()">
                                     Reject
                                 </h5> 
                             </div>
@@ -69,8 +69,8 @@
                                     <h2 class="ui header {{previewContent.errorObject.messageClass}}">
                                         {{previewContent.errorObject.message}}
                                     </h2>
-                                    <span ng-if="previewContent.errorObject.showTryAgainButton"><button class="ui button" ng-click="tryAgain()">Try Again</button></span>
-                                    <span ng-if="previewContent.errorObject.showCloseButton"><button class="ui red button" ng-click="close()">Close</button></span>
+                                    <span ng-if="previewContent.errorObject.showTryAgainButton"><button class="ui button" ng-click="previewContent.tryAgain()">Try Again</button></span>
+                                    <span ng-if="previewContent.errorObject.showCloseButton"><button class="ui red button" ng-click="previewContent.closePreview()">Close</button></span>
                                 </div>
                             </div>
                         </div>
@@ -78,8 +78,8 @@
                 </div>
             </div>
         </div>  
-        <div class="row margin-top-40">
-            <h2 class="ui header">
+        <div class="row margin-top-15">
+            <h2 class="ui header" title="Description">
                 {{previewContent.contentData.description}}
             </h2>
             <div class="ui clearing divider"></div>
