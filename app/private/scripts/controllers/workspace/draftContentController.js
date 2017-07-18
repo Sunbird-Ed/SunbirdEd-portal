@@ -83,7 +83,7 @@ angular.module('playerApp')
             if (item.mimeType === "application/vnd.ekstep.content-collection") {
                 $state.go("CollectionEditor", { contentId: item.identifier, type: item.contentType, state: "WorkSpace.DraftContent" });
             } else {
-                $state.go("EditContent", { contentId: contentId });
+                $state.go("EditContent", { contentId: item.identifier });
             }
         };
     });
