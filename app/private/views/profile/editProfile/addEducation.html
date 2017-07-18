@@ -32,6 +32,6 @@
     </div>
     <div class="ui error message">
     </div>
-    <div class="ui button " ng-click="profileCtrl.addEducation(profileCtrl.newEducation) ;">{{$root.labels.PROFILE.BUTTON.save}}</div>
+    <div class="ui button " ng-class="{ 'disabled' : profileCtrl.disableSave}" ng-click="profileCtrl.addEducation(profileCtrl.newEducation) ;">{{$root.labels.PROFILE.BUTTON.save}}</div>
 
 </form>
