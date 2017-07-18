@@ -91,10 +91,10 @@ angular.module('playerApp').directive('search', function () {
             }
             $scope.search.initSearch = function () {
                 var searchParams = $stateParams;
-                $rootScope.searchKey = $rootScope.search.selectedSearchKey = searchParams.type;
+                $rootScope.search.selectedSearchKey = $rootScope.searchKey || searchParams.type;
                 $scope.curSearchText = $rootScope.search.searchKeyword = $rootScope.search.searchKeyword || searchParams.query;
-                $rootScope.search.filters = JSON.parse(atob(searchParams.filters));
-                $scope.search.sortBy = JSON.parse(atob(searchParams.sort));
+                $rootScope.search.filters = JSON.parse(atob(searchParams.filters || btoa('{}')));
+                $scope.search.sortBy = JSON.parse(atob(searchParams.sort || btoa('{}')));
                 $rootScope.search.selectedLanguage = $rootScope.search.filters.language || [];
                 $rootScope.search.selectedContentType = $rootScope.search.filters.contentType || [];
                 $rootScope.search.selectedBoard = $rootScope.search.filters.board || [];
