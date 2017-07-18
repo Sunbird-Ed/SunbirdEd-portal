@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('playerApp').controller('contentPlayerCtrl', function (playerTelemetryUtilsService, $state, $scope, $sce, contentService, pdfDelegate, $timeout, $stateParams, config) {
+angular.module('playerApp').controller('contentPlayerCtrl', function (playerTelemetryUtilsService, $state, $scope, $sce, contentService, pdfDelegate, $timeout, $stateParams, config, $rootScope) {
     var player = this;
     $scope.isClose = $scope.isclose;
     $scope.isHeader = $scope.isheader;
@@ -28,7 +28,7 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (playerTele
          */
         window.addEventListener('renderer:telemetry:event', function (event, data) {
             console.info('Telemetry events', event.detail.telemetryData);
-        org.sunbird.portal.eventManager.dispatchEvent('sunbird:player:telemetry', event.detail.telemetryData);
+            org.sunbird.portal.eventManager.dispatchEvent('sunbird:player:telemetry', event.detail.telemetryData);
         });
         window.onbeforeunload = function (e) {
             playerTelemetryUtilsService.endTelemetry({progress: $scope.contentProgress});
@@ -52,7 +52,7 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (playerTele
                             configuration.context.dimension = 'Sunbird_dimension',
                             configuration.context.appid = 'Sunbird_appId',
                             configuration.config = config.ekstep_CP_config.config;
-                            configuration.context.cdata = {'id': $stateParams.tocId,'type':'course'};
+                    configuration.context.cdata = {'id': $stateParams.tocId, 'type': 'course'};
                     configuration.plugins = config.ekstep_CP_config.config.plugins;
                     configuration.repos = config.ekstep_CP_config.config.repos;
                     previewContentIframe.contentWindow.initializePreview(configuration);
@@ -134,7 +134,13 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (playerTele
     $scope.close = function () {
         if ($scope.closeurl)
         {
-            $state.go($scope.closeurl);
+            if ($rootScope.search.searchKeyword != '') {
+                $timeout(function () {
+                    $rootScope.$emit('initSearch', {});
+                }, 0);
+            } else {
+                $state.go($scope.closeurl);
+            }
         }
         $scope.errorObject = {};
         if ($scope.id) {
@@ -146,8 +152,8 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (playerTele
 
         $scope.visibility = false;
         playerTelemetryUtilsService.endTelemetry({progress: $scope.contentProgress});
-        
-        window.removeEventListener('renderer:telemetry:event',function(){
+
+        window.removeEventListener('renderer:telemetry:event', function () {
             console.info("event is removed.")
         })
     };
