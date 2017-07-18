@@ -6,12 +6,15 @@
         </a>
     </div>
     <div class="one wide column"></div>
-    <div class="six wide column padding-top-1rem" ng-include="'views/header/search.html'"></div>
+
+    <div class="six wide column padding-top-1rem">
+        <search type="searchKey"></search>
+    </div>
     <div class="one wide column"></div>
 
     <div class="one wide column">
         <i class="float-ContentLeft alarm-icon-header alarm icon large"></i>
-        <div class="ui floating dropdown right top pointing 
+        <div class="ui floating dropdown right top pointing
                header-user-container padding-top-circular-human-icon" id="dropdown-menu-list-header">
             <img ng-src="{{ avatar || 'images/user_logo.png'}}" class="ui circular image logged-in-user" />
 

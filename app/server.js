@@ -8,13 +8,15 @@ const express = require('express'),
     session = require('express-session'),
     path = require('path'),
     request = require('request'),
+    bodyParser = require('body-parser'),
     env = process.env,
     trampolineServiceHelper = require('./helpers/trampolineServiceHelper.js'),
     telemetryHelper = require('./helpers/telemetryHelper.js'),
     port = env['sunbird_port'] || 3000,
     learnerURL = env.sunbird_learner_player_url || 'http://52.172.36.121:9000/v1/',
     contentURL = env.sunbird_content_player_url || 'http://localhost:5000/v1/',
-    ekstep = "https://qa.ekstep.in";
+    ekstep = "https://qa.ekstep.in",
+    dev = "https://dev.ekstep.in";
 
 // Create a new session store in-memory
 let memoryStore = new session.MemoryStore();
@@ -33,14 +35,8 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, '/')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'private')));
-
-app.use('/ekContentEditor', express.static('./thirdparty/content-editor'))
-app.get('/ekContentEditor', function(req, res) {
-    res.sendFile(__dirname + "/thirdparty/content-editor/index.html");
-});
-app.get('/ekContentEditor/image/get/:url', function(req, res) {
-    request.get(req.params.url).pipe(res);
-});
+app.all('/content-editor/telemetry', bodyParser.urlencoded({ extended: false }), 
+    bodyParser.json({ limit: '50mb' }), keycloak.protect(), telemetryHelper.logContentEditorEvents);
 
 app.use('/collectionEditor', express.static('./thirdparty/collection-editor'))
 app.get('/collectionEditor', function(req, res) {
@@ -88,6 +84,33 @@ app.all('/', function(req, res) {
 
 //proxy urls
 
+
+app.use('*/content-editor-iframe/api/*', proxy(ekstep, {
+    proxyReqOptDecorator: function(proxyReqOpts, srcReq) {
+        // you can update headers 
+        proxyReqOpts.headers['Authorization'] = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI2MzExMTYwNTMzOGY0Zjc5YTgwZTM3YjcyZjVjMmUwZiJ9.azmj_AHmndeJz0h6yIkOJz1XjeZR6Gzd-OrZzR66I0A';
+        return proxyReqOpts;
+    },
+    proxyReqPathResolver: function(req) {
+        var originalUrl = req.originalUrl;
+        originalUrl = originalUrl.replace('thirdparty/bower_components/content-editor-iframe/', '');
+        return require('url').parse(ekstep + originalUrl).path;
+    }
+}));
+
+app.use('*/collection-editor-iframe/api/*', proxy(ekstep, {
+    proxyReqOptDecorator: function(proxyReqOpts, srcReq) {
+        // you can update headers 
+        proxyReqOpts.headers['Authorization'] = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI2MzExMTYwNTMzOGY0Zjc5YTgwZTM3YjcyZjVjMmUwZiJ9.azmj_AHmndeJz0h6yIkOJz1XjeZR6Gzd-OrZzR66I0A';
+        return proxyReqOpts;
+    },
+    proxyReqPathResolver: function(req) {
+        var originalUrl = req.originalUrl;
+        originalUrl = originalUrl.replace('thirdparty/bower_components/collection-editor-iframe/', '');
+        return require('url').parse(ekstep + originalUrl).path;
+    }
+}));
+
 app.use('/api/*', proxy(ekstep, {
     proxyReqOptDecorator: function(proxyReqOpts, srcReq) {
         // you can update headers 
@@ -99,15 +122,15 @@ app.use('/api/*', proxy(ekstep, {
     }
 }));
 
-app.use('/content-plugins/*', proxy(ekstep, {
+app.use('/content-plugins/*', proxy(dev, {
     proxyReqPathResolver: function(req) {
-        return require('url').parse(ekstep + req.originalUrl).path;
+        return require('url').parse(dev + req.originalUrl).path;
     }
 }));
 
-app.use('/plugins/*', proxy(ekstep, {
+app.use('/plugins/*', proxy(dev, {
     proxyReqPathResolver: function(req) {
-        return require('url').parse(ekstep + req.originalUrl).path;
+        return require('url').parse(dev + req.originalUrl).path;
     }
 }));
 
@@ -137,7 +160,7 @@ app.all('*', function(req, res) {
 });
 
 /*
-* Method called after successful authentication and it will log the telemetry for CP_SESSION_START
+ * Method called after successful authentication and it will log the telemetry for CP_SESSION_START
  */
 keycloak.authenticated = function(request) {
     telemetryHelper.logSessionStart(request)

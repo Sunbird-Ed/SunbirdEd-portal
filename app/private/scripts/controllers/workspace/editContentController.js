@@ -70,10 +70,13 @@ angular.module('playerApp')
                 editContent.initilizeView();
 
                 var req = {contentId: editContent.contentId};
-                var qs = {mode: "edit", fields: 'name,description,appIcon,contentType,mimeType,artifactUrl,versionKey,audience,language,gradeLevel,ageGroup,subject,medium,author,domain'}
+                var qs = {mode: "edit", fields: 'name,description,appIcon,contentType,mimeType,artifactUrl,versionKey,audience,language,gradeLevel,ageGroup,subject,medium,author,domain,createdBy'}
 
                 contentService.getById(req, qs).then(function (response) {
                     if (response && response.responseCode === 'OK') {
+                        if (response.result.content.createdBy !== $rootScope.userId) {
+                            $state.go('Home');
+                        }
                         editContent.contentData = {};
                         editContent.contentData = response.result.content;
                         editContent.iconImage = editContent.contentData.appIcon;
@@ -82,7 +85,20 @@ angular.module('playerApp')
                             $('#audienceDropDown').dropdown('set selected', response.result.content.audience);
                             $('#languageDropDown').dropdown('set selected', response.result.content.language);
                             $('#gradesDropDown').dropdown('set selected', response.result.content.gradeLevel);
-                            $('#ageGroupDropDown').dropdown('set selected', response.result.content.ageGroup);
+                            if(response.result.content.ageGroup) {
+                                var ModifyAgeGroup = response.result.content.ageGroup.filter(function(val) {
+                                    var ageGroup = [];
+                                    if(val === "<5") {
+                                        ageGroup.push("&lt;5");
+                                    }else if(val === ">10") {
+                                        ageGroup.push("&gt;10");
+                                    } else {
+                                        ageGroup.push(val);
+                                    }
+                                    return ageGroup;
+                                });
+                                $('#ageGroupDropDown').dropdown('set selected', response.result.content.ModifyAgeGroup);
+                            }
                             $('#subjectDropDown').dropdown('set selected', response.result.content.subject);
                             $('#mediumDropDown').dropdown('set selected', response.result.content.medium);
                         }, 100);
@@ -143,6 +159,7 @@ angular.module('playerApp')
 
                 contentService.uploadMedia(editContent.icon).then(function (res) {
                     if (res && res.responseCode === "OK") {
+                        editContent.iconUpdate = false; 
                         requestBody.content.appIcon = res.result.url;
                         editContent[api].loader.showLoader = false;
                         editContent.updateContent(requestBody, isReviewContent);
@@ -228,7 +245,8 @@ angular.module('playerApp')
                 contentService.review(req, editContent.contentId).then(function (res) {
                     if (res && res.responseCode === "OK") {
                         editContent[api].loader.showLoader = false;
-                        $state.go("WorkSpace.ReviewContent");
+                        editContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.REVIEW_CONTENT.SUCCESS, $rootScope.errorMessages.COMMON.SUCCESS);
+//                        $state.go("WorkSpace.ReviewContent");
 
                     } else {
                         editContent[api].loader.showLoader = false;
@@ -263,6 +281,11 @@ angular.module('playerApp')
             editContent.openContentEditor = function (contentId) {
                 var params = {contentId: contentId};
                 $state.go("ContentEditor", params);
+            };
+            
+            editContent.openCollectionEditor = function (data) {
+                var params = {contentId: data.identifier, type: data.contentType};
+                $state.go("CollectionEditor", params);
             };
 
             if ($stateParams.backState === "ContentEditor") {
