@@ -27,11 +27,10 @@ angular.module('playerApp')
                 overlayClose: false,
                 onClosed: function() {
                     if ($stateParams.state) {
-                        $state.go($stateParams.state);    
-                    } else{
+                        $state.go($stateParams.state);
+                    } else {
                         $state.go("WorkSpace.DraftContent");
                     }
-                    
                 }
             });
 
@@ -51,8 +50,20 @@ angular.module('playerApp')
                 dispatcher: 'local',
                 apislug: 'api',
                 alertOnUnload: true,
+                headerLogo: !_.isUndefined($rootScope.orgLogo) ? $rootScope.orgLogo : '',
+                loadingImage: !_.isUndefined($rootScope.orgLogo) ? $rootScope.orgLogo : '',
                 plugins: [
-                    { "id": "org.ekstep.sunbirdcollectionheader", "ver": "1.0", "type": "plugin" }
+                    { "id": "org.ekstep.preview", "ver": "1.0", "type": "plugin" },
+                    { "id": "org.ekstep.lessonbrowser", "ver": "1.0", "type": "plugin" },
+                    { "id": "org.ekstep.textbookmeta", "ver": "1.0", "type": "plugin" },
+                    { "id": "org.ekstep.unitmeta", "ver": "1.0", "type": "plugin" },
+                    { "id": "org.ekstep.contentmeta", "ver": "1.0", "type": "plugin" },
+                    { "id": "org.ekstep.coursemeta", "ver": "1.0", "type": "plugin" },
+                    { "id": "org.ekstep.courseunitmeta", "ver": "1.0", "type": "plugin" },
+                    { "id": "org.ekstep.telemetry", "ver": "1.0", "type": "plugin" },
+                    { "id": "org.ekstep.sunbirdcollectionheader", "ver": "1.0", "type": "plugin" },
+                    { "id": "org.ekstep.toaster", "ver": "1.0", "type": "plugin" },
+                    { "id": "org.ekstep.collectioneditorfunctions", "ver": "1.0", "type": "plugin" } 
                 ],
                 localDispatcherEndpoint: '/telemetry',
                 editorConfig: {
@@ -98,7 +109,7 @@ angular.module('playerApp')
             }
         };
 
-        collectionEditor.updateModeAndStatus = function (status) {
+        collectionEditor.updateModeAndStatus = function(status) {
             if (status.toLowerCase() === "draft") {
                 window.config.editorConfig.mode = "Edit";
                 window.config.editorConfig.contentStatus = "draft";
