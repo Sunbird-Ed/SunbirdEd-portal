@@ -8,7 +8,7 @@
  * Service in the playerApp.
  */
 angular.module('playerApp')
-    .service('permissionsService', function(httpServiceJava, config) {
+    .service('permissionsService', function(httpServiceJava, config, $rootScope) {
         var rolesAndPermissions = [];
         var currentUserRoles = [];
         var currentRoleActions = [];
@@ -45,7 +45,7 @@ angular.module('playerApp')
                     if (!this.checkActionsPermissions(data, flag)) {
                         if (_.isArray(data)) {
                             if ((_.intersection(data, currentUserRoles).length === 0) && !flag) {
-                                return true
+                                return true;
                             }
                             return ((_.intersection(data, currentUserRoles).length > 0) && flag)
                         }
@@ -54,15 +54,15 @@ angular.module('playerApp')
                     }
                     return false;
                 } else {
-                    this.getPermissionsData().then(function (res) {
-                        var permissions = res.data;
+                    this.getCurrentUserProfile().then(function (res) {
                         if (res && res.responseCode === 'OK') {
-                            this.setRolesAndPermissions(res.result);
-                            this.setCurrentUserRoles(config.CURRENT_USER_ROLES);
-                            this.checkRolesPermissions();
+                            this.setCurrentUserRoles(res.result.response.roles);
+                            this.checkRolesPermissions(data, flag);
                         } else {
                             //TODO: allow only public permissions
                         }
+                    }).catch(function(err) {
+                        
                     });
                 }
             };
@@ -85,5 +85,10 @@ angular.module('playerApp')
 
         this.getCurrentUserRoles = function() {
             return currentUserRoles;
+        }
+        
+        this.getCurrentUserProfile = function() {
+            var url = config.URL.LEARNER_PREFIX + config.URL.USER.GET_PROFILE + '/' + $rootScope.userId;
+            return httpServiceJava.get(url);
         }
     })

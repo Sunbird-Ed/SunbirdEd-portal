@@ -11,15 +11,6 @@ angular.module('playerApp')
             var homeCtrl = this;
             var uid = $rootScope.userId;
             
-            if($rootScope.accessDenied) {
-                homeCtrl.roleAccessError = {};
-                homeCtrl.roleAccessError.error = showErrorMessage(true, $rootScope.accessDenied, $rootScope.errorMessages.COMMON.ERROR);
-            }
-            
-            $scope.$watch("homeCtrl.roleAccessError.error.showError", function() {
-                $rootScope.accessDenied = null;
-            });
-            
             homeCtrl.loadCarousel = function () {
                 $('.ui .progress .course-progress').progress();
                 $('.ui.rating')
