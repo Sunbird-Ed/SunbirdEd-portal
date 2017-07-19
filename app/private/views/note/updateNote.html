@@ -10,7 +10,7 @@
     <div class="editor">
         <pagedown-editor content="noteList.update.metaData.note" show-preview="false" placeholder={{$root.labels.Notes.description}}></pagedown-editor>
     </div>
-    <button class="ui primary right floated button" type="submit" ng-click="noteList.updateNote(noteList.update.metaData)"
+    <button class="ui primary right floated button margin-top-10" type="submit" ng-click="noteList.updateNote(noteList.update.metaData)"
             ng-disabled="!noteList.update.metaData.title || !noteList.update.metaData.note" tabindex="4">{{$root.labels.Notes.update}}</button>
 </div>
 <div ng-if="noteList.updateApi.loader.showLoader">
