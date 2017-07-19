@@ -9,6 +9,7 @@ const express = require('express'),
     path = require('path'),
     request = require('request'),
     bodyParser = require('body-parser'),
+    MongoStore = require('connect-mongo')(session),
     env = process.env,
     trampolineServiceHelper = require('./helpers/trampolineServiceHelper.js'),
     telemetryHelper = require('./helpers/telemetryHelper.js'),
@@ -16,11 +17,16 @@ const express = require('express'),
     learnerURL = env.sunbird_learner_player_url || 'http://52.172.36.121:9000/v1/',
     contentURL = env.sunbird_content_player_url || 'http://localhost:5000/v1/',
     ekstep = "https://qa.ekstep.in",
-    dev = "https://dev.ekstep.in";
+    dev = "https://dev.ekstep.in",
+    reqDataLimit = '50mb';
 
-// Create a new session store in-memory
-let memoryStore = new session.MemoryStore();
-// Setup keycloak to use the in-memory store
+let mongoURL = (env.sunbird_mongodb_ip && env.sunbird_mongodb_port) ? ("mongodb://" + env.sunbird_mongodb_ip + ":" + env.sunbird_mongodb_port + "/portal") : 'mongodb://localhost/portal';
+let session_ttl = env.sunbird_mongodb_ttl | 1; //in days
+let memoryStore = new MongoStore({
+    url: mongoURL,
+    autoRemove: 'native',
+    ttl: session_ttl * 24 * 60 * 60
+});
 let keycloak = new Keycloak({ store: memoryStore });
 
 app.use(session({
@@ -35,8 +41,13 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, '/')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'private')));
-app.all('/content-editor/telemetry', bodyParser.urlencoded({ extended: false }), 
-    bodyParser.json({ limit: '50mb' }), keycloak.protect(), telemetryHelper.logContentEditorEvents);
+
+app.all('/content-editor/telemetry', bodyParser.urlencoded({ extended: false }),
+    bodyParser.json({ limit: reqDataLimit }), keycloak.protect(), telemetryHelper.logSessionEvents);
+
+app.all('/collection-editor/telemetry', bodyParser.urlencoded({ extended: false }),
+    bodyParser.json({ limit: reqDataLimit }), keycloak.protect(), telemetryHelper.logSessionEvents);
+
 
 app.use('/collectionEditor', express.static('./thirdparty/collection-editor'))
 app.get('/collectionEditor', function(req, res) {
@@ -55,8 +66,10 @@ app.all('/private/service/v1/learner/*', keycloak.protect(), proxy(learnerURL, {
         let urlParam = req.params["0"];
         return require('url').parse(learnerURL + urlParam).path;
     }
-}))
+}));
+
 app.all('/private/service/v1/content/*', keycloak.protect(), proxy(contentURL, {
+    limit: reqDataLimit,
     proxyReqPathResolver: function(req) {
         let urlParam = req.params["0"];
         let query = require('url').parse(req.url).query;
@@ -164,6 +177,16 @@ app.all('*', function(req, res) {
  */
 keycloak.authenticated = function(request) {
     telemetryHelper.logSessionStart(request)
+};
+
+keycloak.deauthenticated = function(request) {
+    if (request.session) {
+        request.session.sessionEvents = request.session.sessionEvents || [];
+        telemetryHelper.sendTelemetry(request, request.session.sessionEvents, function(status) {
+            //remove session data
+            delete request.session.sessionEvents;
+        });
+    }
 }
 
 app.listen(port);
