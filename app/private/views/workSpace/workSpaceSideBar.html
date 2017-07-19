@@ -3,22 +3,22 @@
         {{$root.labels.WORKSPACE.myWorkSpaceText}}
     </span></h4>
 <div class="publicmenusection ui secondary vertical menu">
-    <a class="item" ui-sref="WorkSpace.ContentCreation" ui-sref-active="active" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER">
+    <a class="item" ui-sref="WorkSpace.ContentCreation" ui-sref-active="active" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW">
         {{$root.labels.WORKSPACE.start}}
     </a>
-    <a class="item" ui-sref="WorkSpace.DraftContent" ui-sref-active="active" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER">
+    <a class="item" ui-sref="WorkSpace.DraftContent" ui-sref-active="active" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW">
         {{$root.labels.WORKSPACE.drafts}}
     </a>
-    <a class="item" ui-sref="WorkSpace.ReviewContent" ui-sref-active="active" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_REVIEWER,CONTENT_REVIEW,CONTENT_CREATION">
+    <a class="item" ui-sref="WorkSpace.ReviewContent" ui-sref-active="active" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW">
         {{$root.labels.WORKSPACE.inReview}}
     </a>
-    <a class="item" ui-sref="WorkSpace.PublishedContent" ui-sref-active="active" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER">
+    <a class="item" ui-sref="WorkSpace.PublishedContent" ui-sref-active="active" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW">
         {{$root.labels.WORKSPACE.published}}
     </a>
-    <a class="item" ui-sref="WorkSpace.AllUploadedContent" ui-sref-active="active" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER">
+    <a class="item" ui-sref="WorkSpace.AllUploadedContent" ui-sref-active="active" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW">
         {{$root.labels.WORKSPACE.allUploads}}
     </a>
-    <a class="item" ui-sref="WorkSpace.UpForReviewContent" ui-sref-active="active" sb-permissions permission-only="CONTENT_REVIEWER">
+    <a class="item" ui-sref="WorkSpace.UpForReviewContent" ui-sref-active="active" sb-permissions permission-only="CONTENT_REVIEWER,CONTENT_REVIEW">
         {{$root.labels.WORKSPACE.upForReview}}
     </a>
 </div>
