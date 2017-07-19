@@ -37,9 +37,13 @@
                                     <div class="item padding-topBottomNone notelistfocus"  ng-repeat="note in noteList.notesList| orderBy : '-lastUpdatedOn' | noteListFilter:noteList.searchData.text">
                                         <div class="content padding-all-10 contentnotelist" id="notelistcontent{{$index}}" ng-class="{'notelistborder': $index === noteList.selectedIndex || $index === 0 }" ng-click="noteList.showNoteList(note, $index)">
                                             <a class="header ">{{ note.title | limitTo: 20 }}</a>
+                                            <i ng-show="note.title.length > 15" class="ellipsis horizontal icon popup-button" data-content="{{note.titles}}"
+                                   data-variation="wide"></i>
                                             <div class="description margin-top-0" ng-init="noteData = note.note.length > 20 ? note.note.substring(-1,20) : note.note">
 
                                                 <pagedown-viewer content="noteData"></pagedown-viewer>
+                                                <i ng-show="noteData.length > 15" class="ellipsis horizontal icon popup-button" data-content="{{note.titles}}"
+                                   data-variation="wide"></i>
                                             </div>
                                             <div class="meta ">
                                                 <span class="note-card-timeStamp">{{note.lastUpdatedOn| dateFilterXTimeAgo}}</span>
@@ -64,7 +68,7 @@
                                         <span class="ui small header notedecheader mouse-pointer"> {{ noteList.selectedNoteData.title}}
                                         </span>
                                         <div class="description padding-top-10">
-                                            <pagedown-viewer content="noteList.selectedNoteData.note"></pagedown-viewer>
+                                            <pagedown-viewer content="noteList.selectedNoteData.note" class="notedec"></pagedown-viewer>
                                         </div>
                                     </div>
                                 </div>
