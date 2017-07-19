@@ -11,6 +11,7 @@ angular.module('playerApp')
         .controller('ContentCreationController', function (contentService, config, $scope, $state, $timeout, $rootScope) {
 
             var contentCreation = this;
+            contentCreation.contentUploadUrl = config.URL.BASE_PREFIX + config.URL.CONTENT_PREFIX + config.URL.CONTENT.UPLOAD;
 
             contentCreation.mimeType = [{
                     name: 'Pdf',
@@ -37,8 +38,8 @@ angular.module('playerApp')
                     request: {
                         customHeaders: {
                             cid: "sunbird"
-                        },
-                        endpoint: config.URL.BASE_PREFIX + config.URL.CONTENT_PREFIX + config.URL.UPLOAD + contentCreation.contentId
+                    },
+                        endpoint: contentCreation.contentUploadUrl + '/' + contentCreation.contentId
                     },
                     thumbnails: {
                         placeholders: {
@@ -215,7 +216,7 @@ angular.module('playerApp')
             };
 
             contentCreation.uploadContent = function () {
-                var endpoint = 'http://localhost:5000/api/sb/v1/content/upload' + '/' + contentCreation.contentId;
+                var endpoint = contentCreation.contentUploadUrl + '/' + contentCreation.contentId;
                 contentCreation.manualUploader.setEndpoint(endpoint, contentCreation.uploadedFileId);
                 contentCreation.manualUploader.uploadStoredFiles();
             };
