@@ -173,7 +173,7 @@ angular
                         onExit: function ($rootScope) {
                             $rootScope.breadCrumbsData = null;
                             $rootScope.isNotePage = false;
-                             $rootScope.isSearchPage = false;
+                            $rootScope.isSearchPage = false;
                             $('#content-search-filter-accordion').accordion('close', 0);
                             $rootScope.courseActive = '';
                         }
@@ -190,7 +190,7 @@ angular
                             $rootScope.breadCrumbsData = [{'name': 'Resources', 'link': 'resources'}, {'name': $stateParams.contentName, link: 'player/' + $stateParams.contentId + '/' + $stateParams.contentName}, {name: 'Notes', link: ''}];
                             $rootScope.searchKey = 'Resources';
                             $rootScope.isNotePage = true;
-                             $rootScope.isSearchPage = true;
+                            $rootScope.isSearchPage = true;
                             $rootScope.searchKeyword = '';
                             $rootScope.resourcesActive = 'active';
                             portalTelemetryService.fireImpressions({
@@ -207,7 +207,7 @@ angular
                             $('#content-search-filter-accordion').accordion('close', 0);
                             $rootScope.resourcesActive = '';
                             $rootScope.breadCrumbsData = null;
-                             $rootScope.isSearchPage = false;
+                            $rootScope.isSearchPage = false;
                         }
                     })
                     .state('CourseContentNote', {
@@ -227,7 +227,7 @@ angular
                             $rootScope.searchKeyword = '';
                             $rootScope.isNotePage = true;
                             $rootScope.courseActive = 'active';
-                             $rootScope.isSearchPage = true;
+                            $rootScope.isSearchPage = true;
                             portalTelemetryService.fireImpressions({
                                 "env": "notes",
                                 "type": "default",
@@ -239,7 +239,7 @@ angular
                         },
                         onExit: function ($rootScope) {
                             $rootScope.isNotePage = false;
-                             $rootScope.isSearchPage = false;
+                            $rootScope.isSearchPage = false;
                             $('#content-search-filter-accordion').accordion('close', 0);
                             $rootScope.courseActive = '';
                             $rootScope.breadCrumbsData = null;
@@ -371,7 +371,7 @@ angular
                             $rootScope.isSearchPage = true;
                             $rootScope.isSearchResultsPage = true;
                             $rootScope.showFilter = true;
-                            $rootScope.searchKey=$stateParams.type;
+                            $rootScope.searchKey = $stateParams.type;
                             if ($stateParams.type == 'Courses') {
                                 $rootScope.courseActive = 'active';
                             } else {
@@ -797,15 +797,20 @@ angular
                     }
                 },
                 params: {Id: null, name: null},
-                onEnter: function ($state, $rootScope, portalTelemetryService) {
+                onEnter: function ($stateParams, $rootScope, portalTelemetryService) {
                     $rootScope.resourcesActive = 'active';
+                    $rootScope.breadCrumbsData = [{name: 'Home', link: 'home'}, {'name': 'Resources', 'link': 'resources'}, {'name': $stateParams['name'], link: ''}];
+                    $rootScope.searchKey = 'Resources';
+                    $rootScope.isSearchPage = true;
+                    $rootScope.isPlayerPage = true;
+                    $rootScope.searchKeyword = '';
                     portalTelemetryService.fireImpressions({
                         "env": "collection",
                         "type": "preview",
                         "pageid": "PreviewCollection",
-                        "id": $state.params["Id"],
+                        "id": $stateParams["Id"],
                         "name": "",
-                        "url": "/private/index#!/preview/collection/" + $state.params["Id"] + "/" + $state.params["name"]
+                        "url": "/private/index#!/preview/collection/" + $stateParams["Id"] + "/" + $stateParams["name"]
                     });
                 },
                 onExit: function ($rootScope) {
@@ -813,7 +818,7 @@ angular
                 }
             });
         })
-        .run(function ($urlRouter, $http, $state, permissionsService, $rootScope, $location) {
+        .run(function ($urlRouter, $http, $state, permissionsService, $rootScope, $location, config) {
 
 
 
@@ -822,7 +827,6 @@ angular
                         var permissions = res.data;
                         if (res && res.responseCode === 'OK') {
                             permissionsService.setRolesAndPermissions(res.result);
-                            permissionsService.setCurrentUserRoles(["CONTENT_REVIEWER"]);
                         } else {
                             //TODO: allow only public permissions
                         }
@@ -835,16 +839,23 @@ angular
             $rootScope.$on('$stateChangeStart',
                     function (event, toState, toParams, fromState, fromParams) {
                         switch (toState.name) {
+                            case "WorkSpace":
+                                if (permissionsService.checkRolesPermissions(['CONTENT_CREATOR', 'CONTENT_REVIEW', 'CONTENT_CREATION', 'CONTENT_REVIEWER'], false)) {
+                                    $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
+                                    event.preventDefault();
+                                    $state.go('Home');
+                                }
+                                break;
                             case "WorkSpace.ContentCreation":
                                 if (permissionsService.checkRolesPermissions(['CONTENT_CREATOR', 'CONTENT_REVIEW', 'CONTENT_CREATION', 'CONTENT_REVIEWER'], false)) {
-                                    $rootScope.accessDenied = "You are not authorized to access this resource";
+                                    $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
                                     event.preventDefault();
                                     $state.go('Home');
                                 }
                                 break;
                             case "WorkSpace.UpForReviewContent":
-                                if (permissionsService.checkRolesPermissions(['CONTENT_REVIEWER'], false)) {
-                                    $rootScope.accessDenied = "You are not authorized to access this resource";
+                                if (permissionsService.checkRolesPermissions(['CONTENT_REVIEWER', 'CONTENT_REVIEW'], false)) {
+                                    $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
                                     event.preventDefault();
                                     $state.go('Home');
                                 }

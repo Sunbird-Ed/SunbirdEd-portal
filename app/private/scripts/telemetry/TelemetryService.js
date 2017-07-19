@@ -1,6 +1,6 @@
 TelemetryService = {
-    _version: "2.0",
-    _baseDir: 'EkStep Content App',
+    _version: "2.1",
+    _baseDir: '',
     isActive: false,
     _config: undefined,
     instance: undefined,
