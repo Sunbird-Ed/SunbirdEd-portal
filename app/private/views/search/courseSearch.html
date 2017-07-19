@@ -10,7 +10,7 @@
     <div class="ui stackable four column grid dynamic-section-card ">
         <div class="column " ng-repeat="item in $root.search.searchResult.course track by $index " ng-init="$last && search.loadRating() ">
 
-            <div class="slider link " ng-include=" 'views/common/ratingCard.html' " ng-click="$root.search.openCourseView(item,(enrolledCourseIds.indexOf(item.courseId)<0)?'OTHER_COURSE': 'ENROLLED_COURSE')">
+            <div class="slider link " ng-include=" 'views/common/ratingCard.html' " ng-click="$root.search.openCourseView(item,($root.enrolledCourseIds[item.courseId])?'OTHER_COURSE': 'ENROLLED_COURSE')">
 
             </div>
         </div>

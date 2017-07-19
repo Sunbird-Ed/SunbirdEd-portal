@@ -45,7 +45,7 @@ angular.module('playerApp')
             };
 
             window.config = {
-                corePluginsPackaged: false,
+                corePluginsPackaged: true,
                 modalId: 'collectionEditor',
                 dispatcher: 'local',
                 apislug: 'api',
@@ -53,17 +53,7 @@ angular.module('playerApp')
                 headerLogo: !_.isUndefined($rootScope.orgLogo) ? $rootScope.orgLogo : '',
                 loadingImage: !_.isUndefined($rootScope.orgLogo) ? $rootScope.orgLogo : '',
                 plugins: [
-                    { "id": "org.ekstep.preview", "ver": "1.0", "type": "plugin" },
-                    { "id": "org.ekstep.lessonbrowser", "ver": "1.0", "type": "plugin" },
-                    { "id": "org.ekstep.textbookmeta", "ver": "1.0", "type": "plugin" },
-                    { "id": "org.ekstep.unitmeta", "ver": "1.0", "type": "plugin" },
-                    { "id": "org.ekstep.contentmeta", "ver": "1.0", "type": "plugin" },
-                    { "id": "org.ekstep.coursemeta", "ver": "1.0", "type": "plugin" },
-                    { "id": "org.ekstep.courseunitmeta", "ver": "1.0", "type": "plugin" },
-                    { "id": "org.ekstep.telemetry", "ver": "1.0", "type": "plugin" },
-                    { "id": "org.ekstep.sunbirdcollectionheader", "ver": "1.0", "type": "plugin" },
-                    { "id": "org.ekstep.toaster", "ver": "1.0", "type": "plugin" },
-                    { "id": "org.ekstep.collectioneditorfunctions", "ver": "1.0", "type": "plugin" } 
+                    { "id": "org.ekstep.sunbirdcollectionheader", "ver": "1.0", "type": "plugin" }
                 ],
                 localDispatcherEndpoint: '/collection-editor/telemetry',
                 editorConfig: {

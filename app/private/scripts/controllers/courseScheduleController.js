@@ -103,6 +103,7 @@ angular.module('playerApp')
                         toc.loader.showLoader = false;
                         res.result.content.children = _.sortBy(res.result.content.children, ['index']);
                         toc.getAllContentsFromCourse(res.result.content);
+                        toc.courseTotal = toc.courseTotal || toc.playList.length;
                         toc.courseParams.lastReadContentId ? toc.itemIndex = toc.playList.indexOf(toc.courseParams.lastReadContentId) : 0;
                         if (toc.courseType == "ENROLLED_COURSE") {
 
@@ -280,6 +281,7 @@ angular.module('playerApp')
                     if (toc.courseType == "ENROLLED_COURSE") {
                         toc.resumeCourse();
                     }
+                    $('.course-progress').progress();
 
                 }, 100);
             }
@@ -380,7 +382,7 @@ angular.module('playerApp')
             toc.init = function () {
                 toc.lectureView = toc.courseParams.lectureView;
                 toc.courseId = toc.courseParams.courseId;
-                toc.courseType = ($rootScope.enrolledCourseIds && $rootScope.enrolledCourseIds.indexOf(toc.courseId) >= 0) ? 'ENROLLED_COURSE' : toc.courseParams.courseType;
+                toc.courseType = ($rootScope.enrolledCourseIds[toc.courseId]) ? 'ENROLLED_COURSE' : toc.courseParams.courseType;
                 toc.courseProgress = toc.courseParams.progress;
                 toc.courseTotal = toc.courseParams.total;
                 toc.tocId = toc.courseParams.tocId;

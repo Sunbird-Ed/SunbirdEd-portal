@@ -8,7 +8,14 @@
 <div class="ui grid" ng-hide="cpvm.showPlayer">
     <div class="one wide column"></div>
     <div class="ten wide column">
-        <h3 class="ui header" ng-if="cpvm.name">{{cpvm.name}}</h3>
+        <div ng-if="cpvm.name" class=" ui clearing segment content-player-header search-content-header">
+            <div class="ui left floated header margin-auto ">
+                {{cpvm.name}}
+            </div>
+            <h5 class="ui right floated basic icon circular button " ng-click="cpvm.closePlayer()">
+                <i class="ui remove icon "></i>
+            </h5>
+        </div>
         <div id="collectionPlayer" class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100" ng-repeat="item in  cpvm.courseHierachy.children track by $index" ng-click="cpvm.expandMe($event, item)">
             <div class="courseAccordianHeading title title-padding-left accordian-left-text" name="{{item.identifier}}">
                 <i ng-class="[cpvm.getContentIcon(item.mimeType)]"></i> {{item.name}}
@@ -24,7 +31,7 @@
 <div class="ui grid" ng-hide="cpvm.showPlayer">
     <div class="one wide column"></div>
     <div class="ten wide column">
-    <div class="ui clearing divider" ng-hide="cpvm.showPlayer"></div>
+        <div class="ui clearing divider" ng-hide="cpvm.showPlayer"></div>
         <div class="ui grid">
             <div class="row">
                 <div class="three wide column">
