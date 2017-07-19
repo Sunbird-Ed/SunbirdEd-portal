@@ -8,7 +8,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('CollectionEditorController', function(config, $stateParams, $location, $sce, $state, $timeout, $rootScope, contentService) {
+    .controller('CollectionEditorController', function(config, $stateParams, $location, $sce, $state, $timeout, $rootScope, contentService, permissionsService) {
 
         var collectionEditor = this;
         collectionEditor.contentId = $stateParams.contentId;
@@ -75,6 +75,11 @@ angular.module('playerApp')
                     },
                     "defaultTemplate": {}
                 }
+            }
+
+            window.config.editorConfig.publishMode = false;
+            if($stateParams.state === "WorkSpace.UpForReviewContent" && _.intersection(permissionsService.getCurrentUserRoles(), ['CONTENT_REVIEWER', 'CONTENT_REVIEW']).length > 0){
+                window.config.editorConfig.publishMode = true;
             }
 
             var req = { contentId: collectionEditor.contentId };
