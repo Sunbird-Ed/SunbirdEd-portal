@@ -45,7 +45,7 @@ angular.module('playerApp')
             };
 
             window.config = {
-                corePluginsPackaged: false,
+                corePluginsPackaged: true,
                 modalId: 'collectionEditor',
                 dispatcher: 'local',
                 apislug: 'api',
