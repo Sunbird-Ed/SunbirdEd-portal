@@ -1,9 +1,12 @@
 <div class="ui grid">
     <div class="one wide column"></div>
     <div class="ten wide column">
-        <div class="row margin-bottom-15" ng-init="accessDenied = ''" ng-if="homeCtrl.roleAccessError.error.showError">
-            <div class="twelve wide column">
-                <error-message data="{{homeCtrl.roleAccessError.error}}" visibility="homeCtrl.roleAccessError.error.showError"></error-message>
+        <div class="row margin-bottom-15" ng-if="$root.accessDenied">
+            <div class="twelve wide column" ng-init="">
+                <div class="ui huge negative message">
+                    <i class="close icon" ng-click="closeRoleAccessError()"></i>
+                    <span>{{$root.accessDenied}}</span>
+                </div>
             </div>
         </div>
         <div class="row">
