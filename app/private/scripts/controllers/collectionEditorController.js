@@ -8,7 +8,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('CollectionEditorController', function(config, $stateParams, $location, $sce, $state, $timeout, $rootScope, contentService) {
+    .controller('CollectionEditorController', function(config, $stateParams, $location, $sce, $state, $timeout, $rootScope, contentService, permissionsService) {
 
         var collectionEditor = this;
         collectionEditor.contentId = $stateParams.contentId;
@@ -45,7 +45,7 @@ angular.module('playerApp')
             };
 
             window.config = {
-                corePluginsPackaged: false,
+                corePluginsPackaged: true,
                 modalId: 'collectionEditor',
                 dispatcher: 'local',
                 apislug: 'api',
@@ -53,19 +53,9 @@ angular.module('playerApp')
                 headerLogo: !_.isUndefined($rootScope.orgLogo) ? $rootScope.orgLogo : '',
                 loadingImage: !_.isUndefined($rootScope.orgLogo) ? $rootScope.orgLogo : '',
                 plugins: [
-                    { "id": "org.ekstep.preview", "ver": "1.0", "type": "plugin" },
-                    { "id": "org.ekstep.lessonbrowser", "ver": "1.0", "type": "plugin" },
-                    { "id": "org.ekstep.textbookmeta", "ver": "1.0", "type": "plugin" },
-                    { "id": "org.ekstep.unitmeta", "ver": "1.0", "type": "plugin" },
-                    { "id": "org.ekstep.contentmeta", "ver": "1.0", "type": "plugin" },
-                    { "id": "org.ekstep.coursemeta", "ver": "1.0", "type": "plugin" },
-                    { "id": "org.ekstep.courseunitmeta", "ver": "1.0", "type": "plugin" },
-                    { "id": "org.ekstep.telemetry", "ver": "1.0", "type": "plugin" },
-                    { "id": "org.ekstep.sunbirdcollectionheader", "ver": "1.0", "type": "plugin" },
-                    { "id": "org.ekstep.toaster", "ver": "1.0", "type": "plugin" },
-                    { "id": "org.ekstep.collectioneditorfunctions", "ver": "1.0", "type": "plugin" } 
+                    { "id": "org.ekstep.sunbirdcollectionheader", "ver": "1.0", "type": "plugin" }
                 ],
-                localDispatcherEndpoint: '/telemetry',
+                localDispatcherEndpoint: '/collection-editor/telemetry',
                 editorConfig: {
                     "mode": "Edit",
                     "contentStatus": "draft",
@@ -75,6 +65,11 @@ angular.module('playerApp')
                     },
                     "defaultTemplate": {}
                 }
+            }
+
+            window.config.editorConfig.publishMode = false;
+            if($stateParams.state === "WorkSpace.UpForReviewContent" && _.intersection(permissionsService.getCurrentUserRoles(), ['CONTENT_REVIEWER', 'CONTENT_REVIEW']).length > 0){
+                window.config.editorConfig.publishMode = true;
             }
 
             var req = { contentId: collectionEditor.contentId };
