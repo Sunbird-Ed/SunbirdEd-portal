@@ -8,7 +8,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('CollectionEditorController', function(config, $stateParams, $location, $sce, $state, $timeout, $rootScope, contentService) {
+    .controller('CollectionEditorController', function(config, $stateParams, $location, $sce, $state, $timeout, $rootScope, contentService, permissionsService) {
 
         var collectionEditor = this;
         collectionEditor.contentId = $stateParams.contentId;
@@ -65,7 +65,7 @@ angular.module('playerApp')
                     { "id": "org.ekstep.toaster", "ver": "1.0", "type": "plugin" },
                     { "id": "org.ekstep.collectioneditorfunctions", "ver": "1.0", "type": "plugin" } 
                 ],
-                localDispatcherEndpoint: '/telemetry',
+                localDispatcherEndpoint: '/collection-editor/telemetry',
                 editorConfig: {
                     "mode": "Edit",
                     "contentStatus": "draft",
@@ -77,19 +77,24 @@ angular.module('playerApp')
                 }
             }
 
+            window.config.editorConfig.publishMode = false;
+            if($stateParams.state === "WorkSpace.UpForReviewContent" && _.intersection(permissionsService.getCurrentUserRoles(), ['CONTENT_REVIEWER', 'CONTENT_REVIEW']).length > 0){
+                window.config.editorConfig.publishMode = true;
+            }
+
             var req = { contentId: collectionEditor.contentId };
             var qs = { fields: 'createdBy,status' }
 
             contentService.getById(req, qs).then(function(response) {
                 if (response && response.responseCode === 'OK') {
-                    if (response.result.content.createdBy !== $rootScope.userId) {
-                        $state.go('Home');
-                    } else {
+                    // if (response.result.content.createdBy !== $rootScope.userId) {
+                    //     $state.go('Home');
+                    // } else {
                         collectionEditor.updateModeAndStatus(response.result.content.status);
                         $timeout(function() {
                             $('#collectionEditor').iziModal('open');
                         }, 100);
-                    }
+                    //}
                 }
             });
         };
