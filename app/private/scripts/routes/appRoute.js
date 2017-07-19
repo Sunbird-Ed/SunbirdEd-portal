@@ -818,7 +818,7 @@ angular
                 }
             });
         })
-        .run(function ($urlRouter, $http, $state, permissionsService, $rootScope, $location) {
+        .run(function ($urlRouter, $http, $state, permissionsService, $rootScope, $location, config) {
 
 
 
@@ -827,7 +827,6 @@ angular
                         var permissions = res.data;
                         if (res && res.responseCode === 'OK') {
                             permissionsService.setRolesAndPermissions(res.result);
-                            permissionsService.setCurrentUserRoles(["CONTENT_REVIEWER"]);
                         } else {
                             //TODO: allow only public permissions
                         }
@@ -840,16 +839,23 @@ angular
             $rootScope.$on('$stateChangeStart',
                     function (event, toState, toParams, fromState, fromParams) {
                         switch (toState.name) {
+                            case "WorkSpace":
+                                if (permissionsService.checkRolesPermissions(['CONTENT_CREATOR', 'CONTENT_REVIEW', 'CONTENT_CREATION', 'CONTENT_REVIEWER'], false)) {
+                                    $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
+                                    event.preventDefault();
+                                    $state.go('Home');
+                                }
+                                break;
                             case "WorkSpace.ContentCreation":
                                 if (permissionsService.checkRolesPermissions(['CONTENT_CREATOR', 'CONTENT_REVIEW', 'CONTENT_CREATION', 'CONTENT_REVIEWER'], false)) {
-                                    $rootScope.accessDenied = "You are not authorized to access this resource";
+                                    $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
                                     event.preventDefault();
                                     $state.go('Home');
                                 }
                                 break;
                             case "WorkSpace.UpForReviewContent":
-                                if (permissionsService.checkRolesPermissions(['CONTENT_REVIEWER'], false)) {
-                                    $rootScope.accessDenied = "You are not authorized to access this resource";
+                                if (permissionsService.checkRolesPermissions(['CONTENT_REVIEWER', 'CONTENT_REVIEW'], false)) {
+                                    $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
                                     event.preventDefault();
                                     $state.go('Home');
                                 }
