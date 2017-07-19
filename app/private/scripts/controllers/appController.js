@@ -8,16 +8,17 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-        .controller('AppCtrl', function ($scope, $state, $stateParams, $rootScope, $translate, userService, $q, config, $location, $timeout, portalTelemetryService, setResourceBundle, errorMessages, labels, learnService, sessionService) {
+        .controller('AppCtrl', function ($scope, $state, $stateParams, permissionsService, $rootScope, $translate, userService, $q, config, $location, $timeout, portalTelemetryService, setResourceBundle, errorMessages, labels, sessionService, learnService) {
             $rootScope.userId = $("#userId").attr("value");
+            $rootScope.sessionId = $("#sessionId").attr("value");
             $rootScope.language = $rootScope.userLanguage || config.SITE.DEFAULT_LANGUAGE;
             $rootScope.errorMessages = errorMessages;
             $rootScope.labels = labels;
             $rootScope.translationBundle = {};
             $rootScope.searchKey = '';
-            $rootScope.enrolledCourseIds = {};
             org.sunbird.portal.init();
-            portalTelemetryService.init()
+            portalTelemetryService.init();
+            $rootScope.enrolledCourseIds = {};
             $rootScope.openLink = function (url) {
                 $location.path(url);
             }
@@ -71,6 +72,7 @@ angular.module('playerApp')
                     if (profileData.rootOrg) {
                         $rootScope.orgLogo = profileData.rootOrg.imgUrl;
                     }
+                    permissionsService.setCurrentUserRoles(profileData.roles);
                 } else {
                     console.error('fetching profile failed');
                     //error handler
@@ -86,7 +88,10 @@ angular.module('playerApp')
                 });
             };
             $scope.getProfile();
-            //end of get user profile
+
+            $rootScope.closeRoleAccessError = function () {
+                $rootScope.accessDenied = '';
+            }
             $scope.getMyCourses = function () {
 //                var userCourseInfo = sessionService.getSessionData("ENROLLED_COURSES");
 //                if (userCourseInfo && userCourseInfo['uid'] == $rootScope.userId) {
