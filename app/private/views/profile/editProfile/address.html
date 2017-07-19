@@ -1,4 +1,6 @@
-<form class="ui form formdivider addressEditForm">
+<form class="ui form  addressEditForm">
+
+<div class="formdivider margin-bottom-20" ng-if="$index > 0  "></div>
     <div apply-script class="inline fields">
         <label for="address">{{$root.labels.PROFILE.ADDRESS.addressType}}</label>
         <div class="field">
@@ -14,7 +16,7 @@
             </div>
         </div>
     </div>
-
+    
 
     <div class="two fields">
         <div class=" required field">
@@ -48,4 +50,5 @@
     </div>
     <div class="ui error message">
     </div>
+
 </form>
