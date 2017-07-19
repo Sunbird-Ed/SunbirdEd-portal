@@ -1,9 +1,12 @@
 <div class="ui grid">
     <div class="one wide column"></div>
     <div class="ten wide column">
-        <div class="row margin-bottom-15" ng-init="accessDenied = ''" ng-if="homeCtrl.roleAccessError.error.showError">
-            <div class="twelve wide column">
-                <error-message data="{{homeCtrl.roleAccessError.error}}" visibility="homeCtrl.roleAccessError.error.showError"></error-message>
+        <div class="row margin-bottom-15" ng-if="$root.accessDenied">
+            <div class="twelve wide column" ng-init="">
+                <div class="ui huge negative message">
+                    <i class="close icon" ng-click="closeRoleAccessError()"></i>
+                    <span>{{$root.accessDenied}}</span>
+                </div>
             </div>
         </div>
         <div class="row">
@@ -15,7 +18,7 @@
                     </span>
                     <div class="ui active homePage" ng-if="homeCtrl.enrolledCourses.length > 0">
                         <div class="regular slider padding-top-10">
-                            <div ng-repeat="item in homeCtrl.enrolledCourses track by $index" ng-init="$last && homeCtrl.loadCarousel()" ng-click="homeCtrl.openCourseView(item, 'ENROLLED_COURSE')" add-slick>
+                            <div ng-repeat="item in homeCtrl.enrolledCourses track by $index" ng-init="$last && homeCtrl.loadCarousel()&&$root.loadProgress()" ng-click="homeCtrl.openCourseView(item, 'ENROLLED_COURSE')" add-slick>
                                 <div ng-include=" 'views/common/actionCard.html'"></div>
                             </div>
                         </div>
@@ -37,7 +40,7 @@
                     </span>
                     <div class="ui active homePage">
                         <div class="regular slider padding-top-10" ng-init="recommended=true">
-                            <div  ng-repeat="item in homeCtrl.recommendedCourse track by $index" ng-init="$last && homeCtrl.loadCarousel()" ng-click="homeCtrl.openCourseView(item, 'OTHER_COURSE')" add-slick>
+                            <div  ng-repeat="item in homeCtrl.recommendedCourse track by $index" ng-init="$last && homeCtrl.loadCarousel()&&$root.loadProgress()" ng-click="homeCtrl.openCourseView(item, 'OTHER_COURSE')" add-slick>
                                 <div ng-include=" 'views/common/ratingCard.html'"></div>
                             </div>
                         </div>

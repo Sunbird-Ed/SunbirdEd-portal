@@ -43,7 +43,7 @@ angular.module('playerApp')
 
             section.openCourseView = function (course) {
                 var courseId = course.courseId || course.identifier;
-                var courseType = ($rootScope.enrolledCourseIds && $rootScope.enrolledCourseIds.indexOf(courseId) >= 0) ? 'ENROLLED_COURSE' : 'OTHER_COURSE';
+                var courseType = ($rootScope.enrolledCourseIds[courseId] >= 0) ? 'ENROLLED_COURSE' : 'OTHER_COURSE';
                 var showLectureView = 'no';
                 var params = {courseType: courseType, courseId: course.courseId || course.identifier, tocId: course.courseId || course.identifier, lectureView: showLectureView, progress: course.progress, total: course.total, courseRecordId: course.id, courseName: course.courseName || course.name};
                 sessionService.setSessionData('COURSE_PARAMS', params);
