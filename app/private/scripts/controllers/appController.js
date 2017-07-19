@@ -70,7 +70,7 @@ angular.module('playerApp')
                 if(profileData.rootOrg) {
                     $rootScope.orgLogo = profileData.rootOrg.imgUrl;
                 }
-//                permissionsService.setCurrentUserRoles(profileData.roles);
+                permissionsService.setCurrentUserRoles(profileData.roles);
             } else {
                 console.error('fetching profile failed');
                 //error handler
@@ -86,5 +86,9 @@ angular.module('playerApp')
                 });
         };
         $scope.getProfile();
-        //end of get user profile
+        
+        $rootScope.closeRoleAccessError = function() {
+            $rootScope.accessDenied = '';
+        }
+
     });

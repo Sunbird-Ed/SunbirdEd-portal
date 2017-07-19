@@ -822,7 +822,6 @@ angular
                         var permissions = res.data;
                         if (res && res.responseCode === 'OK') {
                             permissionsService.setRolesAndPermissions(res.result);
-                            permissionsService.setCurrentUserRoles(config.CURRENT_USER_ROLES);
                         } else {
                             //TODO: allow only public permissions
                         }
