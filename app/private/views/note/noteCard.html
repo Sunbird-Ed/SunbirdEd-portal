@@ -15,9 +15,9 @@
                             </span>
                             <span class="note-card-timeStamp right floated">{{note.lastUpdatedOn| dateFilterXTimeAgo}}</span>
                         </span>
-                        <div class="description" ng-init="noteData = note.note.length > 70 ? note.note.substring(0,70) : note.note">
+                        <div class="description" ng-init="noteData = note.note.length > 20 ? note.note.substring(0,20) : note.note">
                             <pagedown-viewer content="noteData"></pagedown-viewer>
-                            <i ng-if="note.note.length > 70" class="ellipsis horizontal icon popup-button" data-content="{{note.note}}"
+                            <i ng-if="note.note.length > 20" class="ellipsis horizontal icon popup-button" data-content="{{note.note}}"
                                data-variation="wide">
                             </i> 
                         </div>

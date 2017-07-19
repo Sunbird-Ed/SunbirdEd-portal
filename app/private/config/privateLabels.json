@@ -145,6 +145,11 @@
                 "edit": "Edit",
                 "add": "Add"
             }
+        },
+        "HEADER" : {
+            "profile" : "Profile",
+            "workSpace": "WorkSpace",
+            "logout" : "Logout"
         }
     }
 }
