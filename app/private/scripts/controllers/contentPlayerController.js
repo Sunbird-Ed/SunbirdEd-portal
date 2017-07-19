@@ -21,6 +21,9 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (playerTele
             ver: $scope.contentData.pkgVersion
         };
         $scope.showMetaData = $scope.isshowmetaview;
+        //temporary ,remove once genie player issue is fixed
+        $rootScope.contentId=$scope.contentData.identifier;
+        
         /**
          * @event 'sunbird:portal:telemetryend' 
          * Listen for this event to get the telemetry OE_END event from renderer
@@ -52,7 +55,7 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (playerTele
                             configuration.context.dimension = 'Sunbird_dimension',
                             configuration.context.appid = 'Sunbird_appId',
                             configuration.config = config.ekstep_CP_config.config;
-                    configuration.context.cdata = {'id': $stateParams.tocId, 'type': 'course'};
+                    configuration.context.cdata = [{'id': $stateParams.courseId, 'type': 'course'}];
                     configuration.plugins = config.ekstep_CP_config.config.plugins;
                     configuration.repos = config.ekstep_CP_config.config.repos;
                     previewContentIframe.contentWindow.initializePreview(configuration);
@@ -154,7 +157,8 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (playerTele
         playerTelemetryUtilsService.endTelemetry({progress: $scope.contentProgress});
 
         window.removeEventListener('renderer:telemetry:event', function () {
-            console.info("event is removed.")
+            console.info("event is removed.");
+            org.sunbird.portal.eventManager.dispatchEvent('sunbird:player:telemetry', event.detail.telemetryData);
         })
     };
     $scope.tryAgain = function () {
