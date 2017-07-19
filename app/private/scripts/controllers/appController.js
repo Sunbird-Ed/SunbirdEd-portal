@@ -8,7 +8,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('AppCtrl', function($scope, $state, $stateParams, $rootScope, $translate, userService, $q, config, $location, $timeout, portalTelemetryService, setResourceBundle, errorMessages, labels) {
+    .controller('AppCtrl', function($scope, $state, $stateParams, permissionsService, $rootScope, $translate, userService, $q, config, $location, $timeout, portalTelemetryService, setResourceBundle, errorMessages, labels) {
         $rootScope.userId = $("#userId").attr("value");
         $rootScope.language = $rootScope.userLanguage || config.SITE.DEFAULT_LANGUAGE;
         $rootScope.errorMessages=errorMessages;
@@ -70,6 +70,7 @@ angular.module('playerApp')
                 if(profileData.rootOrg) {
                     $rootScope.orgLogo = profileData.rootOrg.imgUrl;
                 }
+//                permissionsService.setCurrentUserRoles(profileData.roles);
             } else {
                 console.error('fetching profile failed');
                 //error handler

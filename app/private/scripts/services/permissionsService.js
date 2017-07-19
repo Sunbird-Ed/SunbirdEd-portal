@@ -41,18 +41,31 @@ angular.module('playerApp')
             //if flag is true than and we check equality if data is string and
             // if data is array check if it is array check role/actions exists in array
             this.checkRolesPermissions = function(data, flag) {
-                if (!this.checkActionsPermissions(data, flag)) {
-                    if (_.isArray(data)) {
-                        if ((_.intersection(data, currentUserRoles).length === 0) && !flag) {
-                            return true
+                if(currentUserRoles.length > 0) {
+                    if (!this.checkActionsPermissions(data, flag)) {
+                        if (_.isArray(data)) {
+                            if ((_.intersection(data, currentUserRoles).length === 0) && !flag) {
+                                return true
+                            }
+                            return ((_.intersection(data, currentUserRoles).length > 0) && flag)
                         }
-                        return ((_.intersection(data, currentUserRoles).length > 0) && flag)
+                    } else{
+                        return true;
                     }
-                } else{
-                    return true;
+                    return false;
+                } else {
+                    this.getPermissionsData().then(function (res) {
+                        var permissions = res.data;
+                        if (res && res.responseCode === 'OK') {
+                            this.setRolesAndPermissions(res.result);
+                            this.setCurrentUserRoles(config.CURRENT_USER_ROLES);
+                            this.checkRolesPermissions();
+                        } else {
+                            //TODO: allow only public permissions
+                        }
+                    });
                 }
-                return false;
-            }
+            };
 
         //if flag is true than and we check equality if data is string and
         // if data is array check if it is array check role/actions exists in array
