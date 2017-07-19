@@ -65,7 +65,7 @@ angular.module('playerApp')
                     { "id": "org.ekstep.toaster", "ver": "1.0", "type": "plugin" },
                     { "id": "org.ekstep.collectioneditorfunctions", "ver": "1.0", "type": "plugin" } 
                 ],
-                localDispatcherEndpoint: '/telemetry',
+                localDispatcherEndpoint: '/collection-editor/telemetry',
                 editorConfig: {
                     "mode": "Edit",
                     "contentStatus": "draft",
@@ -87,14 +87,14 @@ angular.module('playerApp')
 
             contentService.getById(req, qs).then(function(response) {
                 if (response && response.responseCode === 'OK') {
-                    if (response.result.content.createdBy !== $rootScope.userId) {
-                        $state.go('Home');
-                    } else {
+                    // if (response.result.content.createdBy !== $rootScope.userId) {
+                    //     $state.go('Home');
+                    // } else {
                         collectionEditor.updateModeAndStatus(response.result.content.status);
                         $timeout(function() {
                             $('#collectionEditor').iziModal('open');
                         }, 100);
-                    }
+                    //}
                 }
             });
         };
