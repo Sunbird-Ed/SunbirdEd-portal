@@ -558,6 +558,6 @@
             "MAX_BATCH_SIZE": 20,
             "SYNC": "telemetry"
         },
-        "CURRENT_USER_ROLES" : ["ADMIN"]
+        "CURRENT_USER_ROLES" : ["CONTENT_REVIEWER"]
     }
 }
