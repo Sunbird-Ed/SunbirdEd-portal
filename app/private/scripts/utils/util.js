@@ -38,7 +38,14 @@ org.sunbird.portal.telemetryInit = function() {
         correlationData: [{ "id": "", "type": "" }],
         user: {"sid": "", "did": "", "uid": ""},
         otherdata:{
-            channel:"portal",
+            channel:"88ef38210fa971d9fab3a7076013a6a7",
+            pdata:{
+                "id": "",
+                "ver": ""
+            },
+            "app": [""],
+            "partner": [""],
+            "dims": [""]
         }
     }
     org.sunbird.portal.eventManager.dispatchEvent('sunbird:telemetry:init', _instance);
