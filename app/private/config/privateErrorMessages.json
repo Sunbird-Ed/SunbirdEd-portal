@@ -29,7 +29,8 @@
             "ERROR": "error",
             "INFO": "info",
             "WARNING": "warning",
-            "SUCCESS": "success"
+            "SUCCESS": "success",
+            "UN_AUTHORIZED" : "You are not authorized to access this resource"
         },
         "WORKSPACE": { 
             "DRAFT": { 

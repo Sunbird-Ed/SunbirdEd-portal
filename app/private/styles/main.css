@@ -684,6 +684,9 @@ th {
   color: rgba(16, 16, 16, 0.88) !important;
   line-height: 1.5;
 }
+div:focus {
+  outline: none;
+}
 .content-input {
   display: none;
 }
@@ -1098,6 +1101,13 @@ span.fancytree-title {
   font-weight: 600!important;
   word-wrap: break-word;
 }
+.fancytree-plain span.fancytree-node span.fancytree-title {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+.fancytree-plain span.fancytree-node span.fancytree-title .padded i.icon {
+  margin: 0px 0.3em 0.24em 0!important;
+}
 .fancytree-plain span.fancytree-node:hover span.fancytree-title {
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1108,6 +1118,16 @@ span.fancytree-title {
 .noteListSegment.ui.segment {
   padding: 14px 0px;
   background: #fff!important;
+}
+.notedec p {
+  word-break: break-all;
+}
+span.fancytree-node {
+  display: inherit;
+  width: 98%!important;
+}
+ul.fancytree-container li {
+  padding-bottom: 0.8em !important;
 }
 .homeCard.ui.card {
   max-width: 100%;
@@ -1705,7 +1725,7 @@ span.fancytree-title {
   width: inherit;
 }
 .workspacebutton.ui.card:first-child {
-  margin-top: 20px;
+  /*margin-top: 20px;*/
 }
 .profileitems .ui.avatar.image {
   width: 4em;
@@ -1723,7 +1743,6 @@ span.fancytree-title {
 }
 .formdivider {
   border-bottom: 1px dashed #979797;
-  padding-top: 10px;
   padding-bottom: 10px;
 }
 .profileitems.ui.items > .item > .image + .content {
