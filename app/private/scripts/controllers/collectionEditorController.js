@@ -87,14 +87,14 @@ angular.module('playerApp')
 
             contentService.getById(req, qs).then(function(response) {
                 if (response && response.responseCode === 'OK') {
-                    // if (response.result.content.createdBy !== $rootScope.userId) {
-                    //     $state.go('Home');
-                    // } else {
+                    if (response.result.content.createdBy !== $rootScope.userId) {
+                        $state.go('Home');
+                    } else {
                         collectionEditor.updateModeAndStatus(response.result.content.status);
                         $timeout(function() {
                             $('#collectionEditor').iziModal('open');
                         }, 100);
-                    //}
+                    }
                 }
             });
         };
