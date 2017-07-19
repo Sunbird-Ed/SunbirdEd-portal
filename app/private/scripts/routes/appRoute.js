@@ -173,7 +173,7 @@ angular
                         onExit: function ($rootScope) {
                             $rootScope.breadCrumbsData = null;
                             $rootScope.isNotePage = false;
-                             $rootScope.isSearchPage = false;
+                            $rootScope.isSearchPage = false;
                             $('#content-search-filter-accordion').accordion('close', 0);
                             $rootScope.courseActive = '';
                         }
@@ -190,7 +190,7 @@ angular
                             $rootScope.breadCrumbsData = [{'name': 'Resources', 'link': 'resources'}, {'name': $stateParams.contentName, link: 'player/' + $stateParams.contentId + '/' + $stateParams.contentName}, {name: 'Notes', link: ''}];
                             $rootScope.searchKey = 'Resources';
                             $rootScope.isNotePage = true;
-                             $rootScope.isSearchPage = true;
+                            $rootScope.isSearchPage = true;
                             $rootScope.searchKeyword = '';
                             $rootScope.resourcesActive = 'active';
                             portalTelemetryService.fireImpressions({
@@ -207,7 +207,7 @@ angular
                             $('#content-search-filter-accordion').accordion('close', 0);
                             $rootScope.resourcesActive = '';
                             $rootScope.breadCrumbsData = null;
-                             $rootScope.isSearchPage = false;
+                            $rootScope.isSearchPage = false;
                         }
                     })
                     .state('CourseContentNote', {
@@ -227,7 +227,7 @@ angular
                             $rootScope.searchKeyword = '';
                             $rootScope.isNotePage = true;
                             $rootScope.courseActive = 'active';
-                             $rootScope.isSearchPage = true;
+                            $rootScope.isSearchPage = true;
                             portalTelemetryService.fireImpressions({
                                 "env": "notes",
                                 "type": "default",
@@ -239,7 +239,7 @@ angular
                         },
                         onExit: function ($rootScope) {
                             $rootScope.isNotePage = false;
-                             $rootScope.isSearchPage = false;
+                            $rootScope.isSearchPage = false;
                             $('#content-search-filter-accordion').accordion('close', 0);
                             $rootScope.courseActive = '';
                             $rootScope.breadCrumbsData = null;
@@ -371,7 +371,7 @@ angular
                             $rootScope.isSearchPage = true;
                             $rootScope.isSearchResultsPage = true;
                             $rootScope.showFilter = true;
-                            $rootScope.searchKey=$stateParams.type;
+                            $rootScope.searchKey = $stateParams.type;
                             if ($stateParams.type == 'Courses') {
                                 $rootScope.courseActive = 'active';
                             } else {
@@ -797,15 +797,20 @@ angular
                     }
                 },
                 params: {Id: null, name: null},
-                onEnter: function ($state, $rootScope, portalTelemetryService) {
+                onEnter: function ($stateParams, $rootScope, portalTelemetryService) {
                     $rootScope.resourcesActive = 'active';
+                    $rootScope.breadCrumbsData = [{name: 'Home', link: 'home'}, {'name': 'Resources', 'link': 'resources'}, {'name': $stateParams['name'], link: ''}];
+                    $rootScope.searchKey = 'Resources';
+                    $rootScope.isSearchPage = true;
+                    $rootScope.isPlayerPage = true;
+                    $rootScope.searchKeyword = '';
                     portalTelemetryService.fireImpressions({
                         "env": "collection",
                         "type": "preview",
                         "pageid": "PreviewCollection",
-                        "id": $state.params["Id"],
+                        "id": $stateParams["Id"],
                         "name": "",
-                        "url": "/private/index#!/preview/collection/" + $state.params["Id"] + "/" + $state.params["name"]
+                        "url": "/private/index#!/preview/collection/" + $stateParams["Id"] + "/" + $stateParams["name"]
                     });
                 },
                 onExit: function ($rootScope) {
