@@ -2,7 +2,7 @@ const request = require("request"),
     parser = require('ua-parser-js'),
     uuidv1 = require('uuid/v1'),
     contentURL = process.env.sunbird_content_player_url || 'http://localhost:5000/v1/';
-telemetry_packet_size = process.env.sunbird_telemetry_packet_size || 2;
+telemetry_packet_size = process.env.sunbird_telemetry_packet_size || 20;
 
 module.exports = {
     logSessionStart: function(req) {
@@ -33,13 +33,17 @@ module.exports = {
         }];
         this.sendTelemetry(req, event, function(status) {})
     },
-    logContentEditorEvents: function(req, res) {
+    logSessionEvents: function(req, res) {
         var self = this;
         if (req.body && req.body.event) {
-            req.session['ceTelemetryEvents'] = req.session['ceTelemetryEvents'] || [];
-            req.session['ceTelemetryEvents'].push(req.body.event);
-            if (req.session['ceTelemetryEvents'].length >= telemetry_packet_size) {
-                module.exports.sendTelemetry(req ,req.session['ceTelemetryEvents'], function(status) {
+            req.session['sessionEvents'] = req.session['sessionEvents'] || [];
+            req.session['sessionEvents'].push(req.body.event);
+            if (req.session['sessionEvents'].length >= telemetry_packet_size) {
+                module.exports.sendTelemetry(req, req.session['sessionEvents'], function(status) {
+                    if (status) {
+                        req.session['sessionEvents'] = [];
+                    }
+                    console.log('status',status);
                 });
             }
         }
@@ -61,6 +65,11 @@ module.exports = {
         return data
     },
     sendTelemetry: function(req, eventsData, callback) {
+        if (!eventsData || eventsData.length == 0) {
+            if (callback) {
+                callback(true);
+            }
+        }
         var data = this.prepareTelemetryRequestBody(req, eventsData)
         var options = {
             method: 'POST',
