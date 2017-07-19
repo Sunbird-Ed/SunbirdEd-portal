@@ -27,7 +27,13 @@ let memoryStore = new MongoStore({
     autoRemove: 'native',
     ttl: session_ttl * 24 * 60 * 60
 });
-let keycloak = new Keycloak({ store: memoryStore });
+let keycloak = new Keycloak({ store: memoryStore }, {
+    "realm": "sunbird",
+    "auth-server-url": "https://keycloakidp-coacher.rhcloud.com/auth",
+    "ssl-required": "external",
+    "resource": "portal",
+    "public-client": true
+});
 
 app.use(session({
     secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
