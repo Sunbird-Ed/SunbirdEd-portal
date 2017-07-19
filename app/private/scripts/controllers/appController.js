@@ -10,6 +10,7 @@
 angular.module('playerApp')
     .controller('AppCtrl', function($scope, $state, $stateParams, permissionsService, $rootScope, $translate, userService, $q, config, $location, $timeout, portalTelemetryService, setResourceBundle, errorMessages, labels) {
         $rootScope.userId = $("#userId").attr("value");
+        $rootScope.sessionId = $("#sessionId").attr("value");
         $rootScope.language = $rootScope.userLanguage || config.SITE.DEFAULT_LANGUAGE;
         $rootScope.errorMessages=errorMessages;
         $rootScope.labels=labels;

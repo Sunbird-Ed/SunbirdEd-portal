@@ -87,6 +87,7 @@ app.all('/v1/user/session/create', function(req, res) {
 
 app.all('/private/*', keycloak.protect(), function(req, res) {
     res.locals.userId = req.kauth.grant.access_token.content.sub;
+    res.locals.sessionId = req.sessionID;
     res.render(__dirname + '/private/index.ejs');
 });
 
