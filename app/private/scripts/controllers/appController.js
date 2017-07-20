@@ -58,30 +58,27 @@ angular.module('playerApp')
             }
         });
         $scope.logout = function() {
-                window.document.location.replace('/logout');
-            }
-            //get user profile
+            window.document.location.replace('/logout');
+        };
+        //get user profile
         $scope.userProfile = function(userProfile) {
             if (userProfile && userProfile.responseCode === 'OK') {
                 var profileData = userProfile.result.response;
                 $rootScope.avatar = profileData.avatar;
                 $rootScope.firstName = profileData.firstName;
                 $rootScope.lastName = profileData.lastName;
-                if (profileData.rootOrg) {
-                    $rootScope.orgLogo = profileData.rootOrg.imgUrl;
-                }
                 var userRoles = profileData.roles;
                 org.sunbird.portal.channel = (profileData.rootOrg && !_.isUndefined(profileData.rootOrg.id)) ? profileData.rootOrg.id : "505c7c48ac6dc1edc9b08f21db5a571d";
                 var organisationIds = [org.sunbird.portal.channel];
-                _.forEach(profileData.organisations, function (org) {
+                _.forEach(profileData.organisations, function(org) {
                     if (org.roles && _.isArray(org.roles)) {
-                        userRoles = _.union(userRoles, org.roles)   
+                        userRoles = _.union(userRoles, org.roles)
                     }
                     if (org.organisationId) {
                         organisationIds.push(org.organisationId);
                     }
                 })
-                org.sunbird.portal.dims =  organisationIds;
+                org.sunbird.portal.dims = organisationIds;
                 permissionsService.setCurrentUserRoles(userRoles);
                 $rootScope.initializePermissionDirective = true;
                 $scope.getTelemetryConfigData(profileData);
@@ -149,5 +146,12 @@ angular.module('playerApp')
                 $('.course-progress').progress();
             }, 0);
         };
-
+        $scope.getTenantLogo = function () {
+            userService.getTenantLogo().then(function (res) {
+                if (res && res.logo !== "") {
+                    $rootScope.orgLogo = res.logo;
+                }
+            })
+        }
+        $scope.getTenantLogo()
     });

@@ -19,6 +19,7 @@
 14. sunbird_trampoline_secret 
 15. sunbird_appid (string Eg. sunbird.portal)
 16. ekstep_env (string Eg. qa or prod)
+17. sunbird_default_tenant (string Eg: ntp)
 
 ##Pre Requirements
 
