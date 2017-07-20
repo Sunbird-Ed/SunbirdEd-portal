@@ -9,7 +9,7 @@
  */
 angular.module('playerApp')
         .controller('EditContentController', function (contentService, config, $scope, $state, $timeout, $rootScope, $stateParams, $location, $anchorScroll) {
-
+            
             var editContent = this;
             editContent.contentId = $stateParams.contentId;
             editContent.lessonTypes = config.DROPDOWN.COMMON.lessonTypes;
@@ -24,6 +24,8 @@ angular.module('playerApp')
             editContent.userId = $rootScope.userId;
             editContent.accept = false;
             $scope.contentPlayer = {isContentPlayerEnabled: false};
+            editContent.checkMimeTypeForEditContent = ['application/pdf', 'video/mp4',
+                'application/vnd.ekstep.html-archive', 'video/youtube', "application/vnd.ekstep.ecml-archive"];
 
             editContent.initilizeView = function () {
                 editContent.showCreateSlideShowModal = true;
@@ -60,7 +62,7 @@ angular.module('playerApp')
                 loader.loaderMessage = loaderMessage;
                 return loader;
             }
-
+            
             editContent.initializeData = function (isReview) {
 
                 var api = 'editApi';
@@ -74,7 +76,8 @@ angular.module('playerApp')
 
                 contentService.getById(req, qs).then(function (response) {
                     if (response && response.responseCode === 'OK') {
-                        if (response.result.content.createdBy !== $rootScope.userId) {
+                        if (!editContent.checkContentAccess(response.result.content)) {
+                            $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
                             $state.go('Home');
                         }
                         editContent.contentData = {};
@@ -114,6 +117,14 @@ angular.module('playerApp')
                     editContent[api].loader.showLoader = false;
                     editContent[api].error = showErrorMessage(false, $rootScope.errorMessages.WORKSPACE.GET.FAILED, $rootScope.errorMessages.COMMON.ERROR);
                 });
+            };
+            
+            editContent.checkContentAccess = function(data) {
+                if(data.createdBy === $rootScope.userId && _.indexOf(editContent.checkMimeTypeForEditContent, data.mimeType) > -1) {
+                    return true;
+                } else { 
+                    return false;
+                }
             };
 
             editContent.openImageBrowser = function () {
