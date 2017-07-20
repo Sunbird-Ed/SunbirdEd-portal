@@ -8,7 +8,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-        .controller('ContentEditorController', function (config, $stateParams, $location, $sce, $state, contentService, $timeout, $rootScope, contentValidatorService) {
+        .controller('ContentEditorController', function (config, $stateParams, $location, $sce, $state, contentService, $timeout, $rootScope) {
 
             var contentEditor = this;
             contentEditor.contentId = $stateParams.contentId;
