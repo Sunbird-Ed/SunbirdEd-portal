@@ -1,5 +1,5 @@
 angular.module('playerApp')
-        .controller('courseScheduleCtrl', function (config, $compile, courseService, sessionService, $stateParams, $state, $timeout, $scope, $rootScope, $location, $anchorScroll, contentStateService) {
+        .controller('courseScheduleCtrl', function (config, $compile, courseService, sessionService, $stateParams, $state, $timeout, $scope, $rootScope, $location, $anchorScroll, contentStateService,$window) {
             var toc = this;
             toc.playList = [];
             toc.playListContent = [];
@@ -32,12 +32,8 @@ angular.module('playerApp')
                 toc.loader.loaderMessage = config.MESSAGES.COURSE.ENROLL.START;
                 courseService.enrollUserToCourse(req).then(function (successResponse) {
                     toc.loader.enrollLoader = false;
-                    if (successResponse && successResponse.responseCode === 'OK') {
-                        //temporary change it later
-
-                        toc.courseType = "ENROLLED_COURSE";
-                        toc.courseParams.courseType = toc.courseType;
-                        sessionService.setSessionData('COURSE_PARAMS', toc.courseParams);
+                    if (successResponse && successResponse.responseCode === 'OK') {                        
+                        $window.location.reload();
 
                     } else {
                         toc.error.showEnrollError = true;
@@ -288,7 +284,7 @@ angular.module('playerApp')
                     $('.ui.accordion').accordion({
                         exclusive: false
                     });
-                    if (toc.courseType == "ENROLLED_COURSE" && toc.playList.length > 0) {
+                    if (toc.courseType == "ENROLLED_COURSE" && toc.playList.length > 0 && toc.lectureView=='no') {
                         toc.resumeCourse();
                     }
                     $('.course-progress').progress();

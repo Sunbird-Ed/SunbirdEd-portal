@@ -45,6 +45,7 @@ angular.module('playerApp')
                 var courseId = course.courseId || course.identifier;
                 var courseType = ($rootScope.enrolledCourseIds[courseId] >= 0) ? 'ENROLLED_COURSE' : 'OTHER_COURSE';
                 var showLectureView = 'no';
+                $rootScope.enrolledCourseIds[courseId] ? showLectureView = 'no' : showLectureView = 'yes';
                 var params = {courseType: courseType, courseId: course.courseId || course.identifier, tocId: course.courseId || course.identifier, lectureView: showLectureView, progress: course.progress, total: course.total, courseRecordId: course.id, courseName: course.courseName || course.name};
                 sessionService.setSessionData('COURSE_PARAMS', params);
                 $state.go('Toc', params);
