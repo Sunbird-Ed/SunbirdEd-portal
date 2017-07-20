@@ -19,20 +19,6 @@
 
                         <div class="twelve wide column content">
                             <div class="twelve wide column content margin-bottom-15">
-                                <span class="padded chip" ng-if='$root.search.selectedLanguage.length > 0'>
-                                    Languages:
-                                    <a class="ui label margin-top--5" ng-repeat="language in $root.search.selectedLanguage">
-                                        {{language}}
-                                        <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedLanguage',language)"></i>
-                                    </a>
-                                </span>
-                                <span class="padded chip margin-top--5" ng-if='$root.search.selectedSubject.length > 0'>
-                                    Subjects:
-                                    <a class="ui label margin-top--5" ng-repeat="subject in $root.search.selectedSubject">
-                                        {{subject}}
-                                        <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedSubject',subject)"></i>
-                                    </a>
-                                </span>
                                 <span class="padded chip margin-top--5" ng-if='$root.search.selectedBoard.length > 0'>
                                     Board:
                                     <a class="ui label margin-top--5" ng-repeat="board in $root.search.selectedBoard">
@@ -47,6 +33,21 @@
                                         <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedContentType',contenttype)"></i>
                                     </a>
                                 </span>
+                                <span class="padded chip" ng-if='$root.search.selectedLanguage.length > 0'>
+                                    Languages:
+                                    <a class="ui label margin-top--5" ng-repeat="language in $root.search.selectedLanguage">
+                                        {{language}}
+                                        <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedLanguage',language)"></i>
+                                    </a>
+                                </span>
+                                <span class="padded chip margin-top--5" ng-if='$root.search.selectedSubject.length > 0'>
+                                    Subjects:
+                                    <a class="ui label margin-top--5" ng-repeat="subject in $root.search.selectedSubject">
+                                        {{subject}}
+                                        <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedSubject',subject)"></i>
+                                    </a>
+                                </span>
+
 
                             </div>
                             <div class="filtercolmntext ui grid">
