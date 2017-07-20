@@ -142,9 +142,10 @@ angular.module('playerApp')
         $rootScope.enrolledCourses ? $rootScope.enrolledCourses : $scope.getMyCourses();
         //dont remove this .to load progress bars in cards
         $rootScope.loadProgress = function() {
+            $('.course-progress').progress('reset');
             $timeout(function() {
                 $('.course-progress').progress();
-            }, 0);
+            }, 100);
         };
         $scope.getTenantLogo = function () {
             userService.getTenantLogo().then(function (res) {
