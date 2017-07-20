@@ -1,5 +1,5 @@
 angular.module('playerApp')
-        .controller('courseScheduleCtrl', function (config, $compile, courseService, sessionService, $stateParams, $state, $timeout, $scope, $rootScope, $location, $anchorScroll, contentStateService,$window) {
+        .controller('courseScheduleCtrl', function (config, $compile, courseService, sessionService, $stateParams, $state, $timeout, $scope, $rootScope, $location, $anchorScroll, contentStateService, $window) {
             var toc = this;
             toc.playList = [];
             toc.playListContent = [];
@@ -32,7 +32,7 @@ angular.module('playerApp')
                 toc.loader.loaderMessage = config.MESSAGES.COURSE.ENROLL.START;
                 courseService.enrollUserToCourse(req).then(function (successResponse) {
                     toc.loader.enrollLoader = false;
-                    if (successResponse && successResponse.responseCode === 'OK') {                        
+                    if (successResponse && successResponse.responseCode === 'OK') {
                         $window.location.reload();
 
                     } else {
@@ -99,20 +99,14 @@ angular.module('playerApp')
                         toc.loader.showLoader = false;
                         res.result.content.children = _.sortBy(res.result.content.children, ['index']);
                         toc.getAllContentsFromCourse(res.result.content);
+                        if (toc.courseType == "ENROLLED_COURSE") {
+                            toc.getContentState();
+                        }
                         toc.courseTotal = toc.courseTotal || toc.playList.length;
                         toc.courseParams.lastReadContentId ? toc.itemIndex = toc.playList.indexOf(toc.courseParams.lastReadContentId) : 0;
-                        if (toc.courseType == "ENROLLED_COURSE") {
-
-                            toc.courseHierachy = res.result.content;
-                            $rootScope.courseName = toc.courseHierachy.name;
-                            $rootScope.isTocPage ? toc.applyAccordion() : false;
-                            toc.getContentState();
-                        } else {
-                            toc.courseHierachy = res.result.content;
-                            $rootScope.courseName = toc.courseHierachy.name;
-                            $rootScope.isTocPage ? toc.applyAccordion() : false;
-                        }
-
+                        toc.courseHierachy = res.result.content;
+                        $rootScope.courseName = toc.courseHierachy.name;
+                        $rootScope.isTocPage ? toc.applyAccordion() : false;
                     } else {
                         toc.showError(config.MESSAGES.COURSE.TOC.ERROR);
                     }
@@ -130,7 +124,6 @@ angular.module('playerApp')
                 };
                 contentStateService.getContentsState(req, function (content_res) {
                     toc.contentStatusList = toc.fetchObjectAttributeAsArrayOrObject(content_res, "contentId", "status", true);
-                    toc.courseTotal = null;
                     toc.courseProgress = 0;
                     angular.forEach(toc.contentStatusList, function (status, id) {
                         if (id && toc.playList.indexOf(id) >= 0) {
@@ -138,15 +131,25 @@ angular.module('playerApp')
                             (status == 2) ? toc.courseProgress += 1 : 0;
                         }
                     });
-                    toc.courseTotal = toc.playList.length;
-                    $('.course-progress').progress({value: toc.courseProgress, total: toc.courseTotal});
-                    //update status of last played content
-                    if (toc.itemIndex >= 0 && toc.contentStatusList[toc.playList[toc.itemIndex]]) {
-                        $('#node' + toc.itemIndex).find('.icon').removeClass('grey blue green').addClass(toc.contentStatusList[toc.playList[toc.itemIndex]]);
-
+                    if (toc.courseProgress > toc.courseParams.progress || !toc.courseParams.progress) {
+                        $timeout(function () {
+                            var progPercent = parseInt(toc.courseProgress * 100 / toc.courseTotal);
+                            $('#tocProgress').progress({percent: progPercent});
+                        }, 100);
+                        var curCourse = _.find($rootScope.enrolledCourses, {courseId: toc.courseId});
+                        if (curCourse) {
+                            $rootScope.enrolledCourseIds[toc.courseId].lastReadContentId = curCourse.lastReadContentId = toc.playList[toc.itemIndex];
+                            $rootScope.enrolledCourseIds[toc.courseId].progress = curCourse.progress = toc.courseProgress;
+                        }
                     }
-                    var curCourse = _.find($rootScope.enrolledCourses, {courseId: toc.courseId});
-                    curCourse ? $rootScope.enrolledCourseIds[toc.courseId].lastReadContentId = curCourse.lastReadContentId = toc.playList[toc.itemIndex] : 0;
+                    //update status of content items
+                    toc.playList.forEach(function (item, index) {
+                        if (index >= 0 && toc.contentStatusList[toc.playList[index]]) {
+                            $('#node' + index).find('.icon').removeClass('grey blue green').addClass(toc.contentStatusList[toc.playList[index]]);
+
+                        }
+                    });
+
                 });
             };
             toc.expandMe = function (index, item) {
@@ -280,15 +283,20 @@ angular.module('playerApp')
                 return contentIcons[contentMimeType];
             }
             toc.applyAccordion = function () {
+
                 $timeout(function () {
+
                     $('.ui.accordion').accordion({
                         exclusive: false
                     });
-                    if (toc.courseType == "ENROLLED_COURSE" && toc.playList.length > 0 && toc.lectureView=='no') {
+                    if (toc.courseType == "ENROLLED_COURSE" && toc.playList.length > 0 && toc.lectureView == 'no') {
+
                         toc.resumeCourse();
+
                     }
-                    $('.course-progress').progress();
+                    var progPercent = parseInt(toc.courseProgress * 100 / toc.courseTotal);
                     $('.toc-resume-button').addClass('contentVisibility-hidden');
+                    $('#tocProgress').progress({percent: progPercent});
                 }, 100);
             }
             toc.constructTree = function (pos, tocData) {
@@ -427,5 +435,4 @@ angular.module('playerApp')
                     toc.init();
                 }
             }
-            toc.loadData();
         });
