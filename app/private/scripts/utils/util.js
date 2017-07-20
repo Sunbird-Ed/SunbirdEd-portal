@@ -48,10 +48,11 @@ org.sunbird.portal.telemetryInit = function() {
             "etags": {
                 "app": [""],
                 "partner": [""],
-                "dims": [org.sunbird.portal.channel ]
+                "dims": org.sunbird.portal.dims
             },
             "sid": org.sunbird.portal.sid,
-            "did": ""
+            "did": "",
+            "mid": ""
         }
     }
     org.sunbird.portal.eventManager.dispatchEvent('sunbird:telemetry:init', _instance);
