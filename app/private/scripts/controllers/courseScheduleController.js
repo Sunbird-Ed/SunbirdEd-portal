@@ -131,13 +131,11 @@ angular.module('playerApp')
                             (status == 2) ? toc.courseProgress += 1 : 0;
                         }
                     });
-                    if (toc.courseProgress > toc.courseParams.progress) {
+                    if (toc.courseProgress > toc.courseParams.progress || !toc.courseParams.progress) {
                         $timeout(function () {
-                            toc.courseTotal = null;
-                            $('#tocProgress').progress('reset');
-                            toc.courseTotal = toc.playList.length;
-                            $('#tocProgress').progress();
-                        }, 10);
+                            var progPercent = parseInt(toc.courseProgress * 100 / toc.courseTotal);
+                            $('#tocProgress').progress({percent: progPercent});
+                        }, 100);
                         var curCourse = _.find($rootScope.enrolledCourses, {courseId: toc.courseId});
                         if (curCourse) {
                             $rootScope.enrolledCourseIds[toc.courseId].lastReadContentId = curCourse.lastReadContentId = toc.playList[toc.itemIndex];
@@ -285,16 +283,20 @@ angular.module('playerApp')
                 return contentIcons[contentMimeType];
             }
             toc.applyAccordion = function () {
-                $('#tocProgress').progress();
+
                 $timeout(function () {
 
                     $('.ui.accordion').accordion({
                         exclusive: false
                     });
                     if (toc.courseType == "ENROLLED_COURSE" && toc.playList.length > 0 && toc.lectureView == 'no') {
+
                         toc.resumeCourse();
+
                     }
+                    var progPercent = parseInt(toc.courseProgress * 100 / toc.courseTotal);
                     $('.toc-resume-button').addClass('contentVisibility-hidden');
+                    $('#tocProgress').progress({percent: progPercent});
                 }, 100);
             }
             toc.constructTree = function (pos, tocData) {
