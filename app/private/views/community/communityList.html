@@ -1,10 +1,11 @@
 <div class="ui grid">
     <div class="one wide column"></div>
     <div class="ten wide column">
-        <div class="ui mouse-pointer" ng-if="!commCtrl.showDetail" >
-            <img class="ui fluid image" ng-src="images/comm_landing.png" ng-click="commCtrl.showDetail = true">
+        <h1 class="community-overlay">Coming Soon....</h1>
+        <div class="ui mouse-pointer community-background" ng-if="!commCtrl.showDetail" >
+            <img class="ui fluid image" ng-src="images/comm_landing.png">
         </div>
-        <div class="ui mouse-pointer" ng-if="commCtrl.showDetail" ng-click="commCtrl.showDetail = false">
+        <div class="ui mouse-pointer" ng-if="commCtrl.showDetail">
             <img class="ui fluid image" ng-src="images/Comm_detail.png">
         </div>
     </div>

@@ -618,7 +618,7 @@ th {
 }
 .header-logo {
   top: 14% !important;
-  left: 50% !important;
+  left: 20% !important;
   height: auto;
   width: 57px !important;
   position: absolute !important;
@@ -1217,6 +1217,17 @@ ul.fancytree-container li {
   border-width: 0em 0em 0 0 !important;
   border-color: transparent;
   border-top-color: inherit;
+}
+.community-overlay {
+  position: absolute;
+  top: 4%;
+  font-size: 6em;
+  left: 25%;
+  display: block;
+}
+.community-background {
+  opacity: 0.3;
+  background: gray;
 }
 .opacity-cardContent {
   opacity: 0.2 !important;

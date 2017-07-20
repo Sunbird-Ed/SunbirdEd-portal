@@ -18,7 +18,7 @@
                     </span>
                     <div class="ui active homePage" ng-if="homeCtrl.enrolledCourses.length > 0">
                         <div class="regular slider padding-top-10">
-                            <div ng-repeat="item in homeCtrl.enrolledCourses track by $index" ng-init="$last && homeCtrl.loadCarousel()&&$root.loadProgress()" ng-click="homeCtrl.openCourseView(item, 'ENROLLED_COURSE')" add-slick>
+                            <div ng-repeat="item in homeCtrl.enrolledCourses track by $index" ng-init="$last && $root.loadProgress()" ng-click="homeCtrl.openCourseView(item, 'ENROLLED_COURSE')" add-slick>
                                 <div ng-include=" 'views/common/actionCard.html'"></div>
                             </div>
                         </div>
