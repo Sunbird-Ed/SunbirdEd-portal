@@ -8,7 +8,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('AllUploadedContentController', function(contentService, config, $rootScope, $state) {
+    .controller('AllUploadedContentController', function(contentService, searchService, config, $rootScope, $state) {
 
         var allUploadedContent = this;
         allUploadedContent.userId = $rootScope.userId;
@@ -56,7 +56,7 @@ angular.module('playerApp')
                 }
             };
             allUploadedContent.allUploadedContentData = [];
-            contentService.search(request).then(function(res) {
+            searchService.search(request).then(function(res) {
                     if (res && res.responseCode === 'OK') {
                         allUploadedContent[api].loader.showLoader = false;
                         allUploadedContent.allUploadedContentData = res.result.content;
