@@ -74,6 +74,7 @@
     "fine-uploader": "^5.14.5",
     "gulp-ng-config": "^1.4.0",
     "jsonwebtoken": "^7.4.1",
+    "lodash": "^4.17.4",
     "request": "^2.81.0",
     "ua-parser-js": "^0.7.13",
     "uuid": "^3.1.0"

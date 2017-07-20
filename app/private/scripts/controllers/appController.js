@@ -60,7 +60,7 @@ angular.module('playerApp')
                 }
             });
             $scope.logout = function () {
-                window.document.location.href = '/logout';
+                window.document.location.replace('/logout');
             }
             //get user profile
             $scope.userProfile = function (userProfile) {
@@ -77,12 +77,12 @@ angular.module('playerApp')
                     console.error('fetching profile failed');
                     //error handler
                 }
-            };
+            };        
             $scope.getProfile = function () {
                 userService.getUserProfile($rootScope.userId)
-                        .then(function (successResponse) {
-                            $scope.userProfile(successResponse);
-                        }).catch(function (error) {
+                    .then(function (successResponse) {
+                        $scope.userProfile(successResponse);
+                    }).catch(function (error) {
                     console.error('api fetching profile  failed');
                     //error handler
                 });
@@ -124,7 +124,7 @@ angular.module('playerApp')
             $rootScope.loadProgress = function () {
                 $timeout(function () {
                     $('.course-progress').progress();
-                });
+                },0);
             };
 
         });

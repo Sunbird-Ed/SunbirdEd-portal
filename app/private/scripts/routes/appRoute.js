@@ -308,6 +308,7 @@ angular
                             }
                         },
                         onEnter: function ($rootScope, portalTelemetryService) {
+                            $rootScope.breadCrumbsData = [{name: 'Home', link: 'home'}, {name: 'Profile', link: ''}];
                             $rootScope.searchKey = 'Profile';
                             $rootScope.profileActive = 'active';
                             portalTelemetryService.fireImpressions({
@@ -320,6 +321,7 @@ angular
                             });
                         },
                         onExit: function ($rootScope) {
+                            $rootScope.breadCrumbsData = null;
                             $rootScope.profileActive = '';
                         }
                     })
@@ -462,6 +464,7 @@ angular
                         templateUrl: '/views/workSpace/workSpace.html',
                         controller: function ($state, $rootScope) {
                             $rootScope.profileActive = 'active';
+                            $rootScope.breadCrumbsData = [{name: 'Home', link: 'home'}, {name: 'Profile', link: 'profile'}, {name: 'Workspace', link: 'workspace/content/create'}];
                             if ($state.current.name === "WorkSpace") {
                                 $state.go('WorkSpace.ContentCreation');
                             }
@@ -470,6 +473,7 @@ angular
                 },
                 onEnter: function ($rootScope, portalTelemetryService) {
                     $rootScope.profileActive = 'active';
+                    $rootScope.breadCrumbsData = null;
                     portalTelemetryService.fireImpressions({
                         "env": "workspace",
                         "type": "default",
@@ -646,6 +650,7 @@ angular
                 params: {contentId: null, backState: null},
                 onEnter: function ($rootScope, portalTelemetryService, $state) {
                     $rootScope.profileActive = 'active';
+                    $rootScope.breadCrumbsData = [{name: 'Home', link: 'home'}, {name: 'Profile', link: 'profile'}, {name: 'Workspace', link: 'workspace/content/create'}, {name: 'Edit Content', link: ''}];
                     portalTelemetryService.fireImpressions({
                         "env": "content",
                         "type": "edit",
@@ -656,6 +661,7 @@ angular
                     });
                 },
                 onExit: function ($rootScope) {
+                     $rootScope.breadCrumbsData = null;
                     $rootScope.profileActive = '';
                 }
 
@@ -840,14 +846,77 @@ angular
                     function (event, toState, toParams, fromState, fromParams) {
                         switch (toState.name) {
                             case "WorkSpace":
-                                if (permissionsService.checkRolesPermissions(['CONTENT_CREATOR', 'CONTENT_REVIEW', 'CONTENT_CREATION', 'CONTENT_REVIEWER'], false)) {
+                                if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
                                     $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
                                     event.preventDefault();
                                     $state.go('Home');
                                 }
                                 break;
                             case "WorkSpace.ContentCreation":
-                                if (permissionsService.checkRolesPermissions(['CONTENT_CREATOR', 'CONTENT_REVIEW', 'CONTENT_CREATION', 'CONTENT_REVIEWER'], false)) {
+                                if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
+                                    $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
+                                    event.preventDefault();
+                                    $state.go('Home');
+                                }
+                                break;
+                            case "CreateLesson":
+                                if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
+                                    $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
+                                    event.preventDefault();
+                                    $state.go('Home');
+                                }
+                                break;
+                            case "ContentEditor":
+                                if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
+                                    $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
+                                    event.preventDefault();
+                                    $state.go('Home');
+                                }
+                                break;
+                            case "EditContent":
+                                if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
+                                    $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
+                                    event.preventDefault();
+                                    $state.go('Home');
+                                }
+                                break;
+                            case "CreateTextbook":
+                                if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
+                                    $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
+                                    event.preventDefault();
+                                    $state.go('Home');
+                                }
+                                break;
+                            case "CreateCollection":
+                                if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
+                                    $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
+                                    event.preventDefault();
+                                    $state.go('Home');
+                                }
+                                break;
+                            case "CreateCourse":
+                                if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
+                                    $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
+                                    event.preventDefault();
+                                    $state.go('Home');
+                                }
+                                break;
+                            case "CollectionEditor":
+                                if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
+                                    $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
+                                    event.preventDefault();
+                                    $state.go('Home');
+                                }
+                                break;
+                            case "PreviewContent":
+                                if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
+                                    $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
+                                    event.preventDefault();
+                                    $state.go('Home');
+                                }
+                                break;
+                            case "PreviewCollection":
+                                if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
                                     $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
                                     event.preventDefault();
                                     $state.go('Home');
