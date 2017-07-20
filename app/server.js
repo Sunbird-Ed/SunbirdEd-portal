@@ -65,7 +65,7 @@ app.use(express.static(path.join(__dirname, 'private')));
 app.get('/private/service/get/tenant/logo', function (req, res) {
     res.status(200);
     var data = {'logo': ''};
-    if (default_tenant) {
+    if (default_tenant && default_tenant !== 'sunbird') {
         data.logo = (req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') + '/tenant/'+ default_tenant + '/logo.png';
     }
     res.send(data)
@@ -211,6 +211,7 @@ keycloak.authenticated = function(request) {
 
 keycloak.deauthenticated = function(request) {
     delete request.session['roles'];
+    delete request.session['rootOrgId'];
     if (request.session) {
         request.session.sessionEvents = request.session.sessionEvents || [];
         telemetryHelper.sendTelemetry(request, request.session.sessionEvents, function(status) {
