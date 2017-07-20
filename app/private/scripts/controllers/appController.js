@@ -149,7 +149,7 @@ angular.module('playerApp')
         };
         $scope.getTenantLogo = function () {
             userService.getTenantLogo().then(function (res) {
-                if (res && res.logo !== "") {
+                if (res && res.logo !== '') {
                     $rootScope.orgLogo = res.logo;
                 }
             })
