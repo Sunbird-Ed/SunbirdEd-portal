@@ -24,7 +24,7 @@ angular.module('playerApp')
                      "id": org.sunbird.portal.appid, 
                      "type": "1.0" 
                 },
-                etags: { app: [""], partner: [""], dims: [org.sunbird.portal.channel] },
+                etags: { app: [""], partner: [""], dims: org.sunbird.portal.dims },
                 channel: org.sunbird.portal.channel
             };
             window.config = {
