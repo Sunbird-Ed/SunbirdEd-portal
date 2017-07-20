@@ -5,11 +5,11 @@
             <div class="ui grid">
                 <div class="eight wide column padding-top-10">
                     <div class="courseStructureHeaderText courseStructureSectionHeading">{{toc.courseHierachy.name}}</div> <br>
-                    <span> 1,870 Learners</span> | <div apply-script class="courseHeader-rating ui mini star rating" data-rating="3"></div>
+
                 </div>
                 <div class="four wide column" ng-if="toc.courseType === 'ENROLLED_COURSE'">
                     <div ng-if="toc.courseTotal"><p class="text-align-center">Your Progress {{(toc.courseProgress * 100 / toc.courseTotal)| number: 0 || 0}}%</p></div>
-                    <button class="fluid blue right floated  ui button courseHeaderButton" ng-click="toc.resumeCourse()">
+                    <button ng-if="toc.playList.length > 0" class="fluid blue right floated  ui button courseHeaderButton" ng-click="toc.resumeCourse()">
                         RESUME COURSE  <i class="caret right icon"></i>
                     </button>
                 </div>
