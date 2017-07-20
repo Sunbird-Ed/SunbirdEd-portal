@@ -3,7 +3,7 @@
         width:100% !important;
     }
 </style>
-<div ng-controller="courseScheduleCtrl as toc">
+<div ng-controller="courseScheduleCtrl as toc" ng-init="toc.loadData()">
     <div ng-include="'views/course/courseHeader.html'"></div>
 
     <div class="ui grid">
