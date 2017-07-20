@@ -287,7 +287,7 @@ angular.module('playerApp')
                     $('.ui.accordion').accordion({
                         exclusive: false
                     });
-                    if (toc.courseType == "ENROLLED_COURSE") {
+                    if (toc.courseType == "ENROLLED_COURSE" && toc.playList.length>0) {
                         toc.resumeCourse();
                     }
                     $('.course-progress').progress();

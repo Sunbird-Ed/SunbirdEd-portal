@@ -308,6 +308,7 @@ angular
                             }
                         },
                         onEnter: function ($rootScope, portalTelemetryService) {
+                            $rootScope.breadCrumbsData = [{name: 'Home', link: 'home'}, {name: 'Profile', link: ''}];
                             $rootScope.searchKey = 'Profile';
                             $rootScope.profileActive = 'active';
                             portalTelemetryService.fireImpressions({
@@ -320,6 +321,7 @@ angular
                             });
                         },
                         onExit: function ($rootScope) {
+                            $rootScope.breadCrumbsData = null;
                             $rootScope.profileActive = '';
                         }
                     })
@@ -462,6 +464,7 @@ angular
                         templateUrl: '/views/workSpace/workSpace.html',
                         controller: function ($state, $rootScope) {
                             $rootScope.profileActive = 'active';
+                            $rootScope.breadCrumbsData = [{name: 'Home', link: 'home'}, {name: 'Profile', link: 'profile'}, {name: 'Workspace', link: 'workspace/content/create'}];
                             if ($state.current.name === "WorkSpace") {
                                 $state.go('WorkSpace.ContentCreation');
                             }
@@ -470,6 +473,7 @@ angular
                 },
                 onEnter: function ($rootScope, portalTelemetryService) {
                     $rootScope.profileActive = 'active';
+                    $rootScope.breadCrumbsData = null;
                     portalTelemetryService.fireImpressions({
                         "env": "workspace",
                         "type": "default",
@@ -646,6 +650,7 @@ angular
                 params: {contentId: null, backState: null},
                 onEnter: function ($rootScope, portalTelemetryService, $state) {
                     $rootScope.profileActive = 'active';
+                    $rootScope.breadCrumbsData = [{name: 'Home', link: 'home'}, {name: 'Profile', link: 'profile'}, {name: 'Workspace', link: 'workspace/content/create'}, {name: 'Edit Content', link: ''}];
                     portalTelemetryService.fireImpressions({
                         "env": "content",
                         "type": "edit",
@@ -656,6 +661,7 @@ angular
                     });
                 },
                 onExit: function ($rootScope) {
+                     $rootScope.breadCrumbsData = null;
                     $rootScope.profileActive = '';
                 }
 
