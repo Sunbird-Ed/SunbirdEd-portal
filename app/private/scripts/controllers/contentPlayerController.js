@@ -52,11 +52,17 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (playerTele
                     configuration.context.sid = $rootScope.sessionId;
                     configuration.context.uid = $rootScope.userId;
                     configuration.context.channel = org.sunbird.portal.channel,
-                    configuration.context.dims = org.sunbird.portal.dims,
-                    configuration.context.app = [org.sunbird.portal.appid],
-                    configuration.context.partner = [""],
+                    if(_.isUndefined($stateParams.courseId)){
+                        configuration.context.dims = org.sunbird.portal.dims;
+                    }else{
+                        var cloneDims = _.cloneDeep(org.sunbird.portal.dims);
+                        cloneDims.push($stateParams.courseId);
+                        configuration.context.dims = cloneDims;
+                    }
+                    configuration.context.app = [org.sunbird.portal.appid];
+                    configuration.context.partner = [];
                     configuration.config = config.ekstep_CP_config.config;
-                    configuration.context.cdata = [{'id': $stateParams.courseId, 'type': 'course'}];
+                    configuration.context.cdata = [];
                     configuration.plugins = config.ekstep_CP_config.config.plugins;
                     configuration.repos = config.ekstep_CP_config.config.repos;
                     previewContentIframe.contentWindow.initializePreview(configuration);
