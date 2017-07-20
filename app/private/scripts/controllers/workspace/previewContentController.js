@@ -285,6 +285,7 @@ angular.module('playerApp').controller('PreviewContentController', function (pla
             if (res && res.responseCode === 'OK') {
                 previewContent[api].loader.showLoader = false;
                 previewContent.isShowPublishRejectButton = false;
+                previewContent.contentData.status = "Live";
                 previewContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.PUBLISH_CONTENT.SUCCESS, $rootScope.errorMessages.COMMON.SUCCESS);
 //                $state.go("WorkSpace.UpForReviewContent")
             } else {
