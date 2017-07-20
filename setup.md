@@ -36,7 +36,6 @@
 * RUN `npm install`
 * RUN `bower cache clean`
 * RUN `bower install --force`
-* RUN `gulp semantic`
 * RUN `gulp`
 * Change to dist
 * Run `node server.js`
