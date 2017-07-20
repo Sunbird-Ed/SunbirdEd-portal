@@ -15,6 +15,9 @@
                 "UPDATE_USER_PROFILE": "user/update",
                 "GET_PROFILE": "user/getprofile"
             },
+            "COMPOSITE": {
+                "SEARCH": "search"
+            },
             "COURSE": {
                 "SEARCH": "course/search",
                 "CREATE": "course/create",
