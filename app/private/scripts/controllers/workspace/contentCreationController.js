@@ -50,17 +50,14 @@ angular.module('playerApp')
                     autoUpload: false,
                     debug: true,
                     validation: {
-                        acceptFiles: 'application/pdf, video/mp4, application/vnd.ekstep.html-archive, video/youtube'
+                        acceptFiles: config.FileExtensionToUpload,
+                        sizeLimit: config.MaxFileSizeToUpload
                     },
                     callbacks: {
-                        validate: function(data) {
-                            console.log("validate data", data);
-                        },
-                        onValidate: function (data) {
-                            console.log("On validate data", data);
-                        },
                         onComplete: function (id, name, responseJSON) {
-                            contentCreation.editContent(contentCreation.contentId);
+                            if(responseJSON.success) {
+                                contentCreation.editContent(contentCreation.contentId);
+                            }
                             console.log("onComplete:", id, name, responseJSON);
                         },
                         onSubmitted: function (id, name) {
@@ -72,11 +69,19 @@ angular.module('playerApp')
                         },
                         onError: function (id, name, error) {
                             console.log("onError:", id, name, error);
+                        },
+                        onCancel: function() {
+                            console.log("onCancel:");
+                            document.getElementById("hide-section-with-button").style.display = 'block';
                         }
                     }
                 });
+                
+                window.cancelUploadFile = function() {
+                    document.getElementById("hide-section-with-button").style.display = 'block';
+                };
             }, 300);
-
+            
             contentCreation.editContent = function (contentId) {
                 var params = {contentId: contentId}
                 $state.go("EditContent", params);

@@ -239,6 +239,7 @@ th {
 .cardsSubHeading {
   font-family: 'sunbirdregularfont' !important;
   font-size: 1.125em;
+  color: #0076FE !important;
 }
 .cardsDescription {
   font-family: 'sunbirdregularfont' !important;
@@ -251,7 +252,7 @@ th {
 .cardsKnowMore {
   font-family: 'sunbirdboldfont' !important;
   font-size: 1em;
-  color: #0099CC;
+  color: #0076FE;
 }
 /* cards used in slider fonts*/
 .sliderCardHeading {
@@ -491,7 +492,7 @@ th {
 }
 .header-container {
   margin-left: 1px !important;
-  border-bottom: 5px solid #0099CC !important;
+  border-bottom: 5px solid #007AFF !important;
 }
 .header-user-icon {
   margin-right: 0px !important;
@@ -589,7 +590,7 @@ th {
   padding-top: 1rem !important;
 }
 .ui.secondary.pointing.menu .active.item {
-  border-color: #0099CC !important;
+  border-color: #007AFF !important;
 }
 .ui.secondary.pointing.menu {
   background: #fdfdfd !important;
@@ -601,7 +602,8 @@ th {
 .breadcrumppadding.ui.breadcrumb,
 .breadcrumppadding.ui.breadcrumb:last-child,
 .breadcrumppadding.ui.breadcrumb:first-child {
-  margin: 10px;
+  margin-left: 10px;
+  line-height: 1.5;
 }
 .ui.breadcrumb .divider {
   color: #007AFF !important;
@@ -986,7 +988,7 @@ span.fancytree-title {
   /* box-shadow: 0 8px 6px -8px #d9d4d4;*/
   padding-top: 1em;
   padding-bottom: 1em;
-  padding-left: 0.3em;
+  /*padding-left: 0.3em;*/
 }
 .popular-page .ui.cards ~ .ui.cards {
   margin-top: 1.875em;
@@ -1128,6 +1130,9 @@ span.fancytree-node {
 }
 ul.fancytree-container li {
   padding-bottom: 0.8em !important;
+}
+.rightSideSectionCards .content .header a {
+  color: #007AFF !important;
 }
 .homeCard.ui.card {
   max-width: 100%;
@@ -1365,6 +1370,30 @@ ul.fancytree-container li {
   max-width: 100%;
   margin: .45238095em 0 .45238095em .64285714em;
   line-height: 1.21428571em;
+  color: #908e90;
+}
+.dropdown-items.ui.selection.dropdown .menu > .item {
+  border-top: none;
+  padding: 1em 1.5em!important;
+  white-space: normal;
+  word-wrap: normal;
+}
+.dropdown-items.ui.dropdown .menu > .item {
+  position: relative;
+  cursor: pointer;
+  display: block;
+  border: none;
+  height: auto;
+  text-align: left;
+  border-top: none;
+  line-height: 1em;
+  color: #212121;
+  padding: 1em 1.5em!important;
+  font-size: 1rem;
+  text-transform: none;
+  font-weight: 400;
+  box-shadow: none;
+  -webkit-touch-callout: none;
 }
 .resource-padding.ui.grid > .column:not(.row) {
   padding-top: 0;
@@ -1439,7 +1468,7 @@ ul.fancytree-container li {
   border-top: transparent !important;
 }
 .dynamic-section-card .slider .card .extra .card-rating .active {
-  color: #0099CC !important;
+  color: #007AFF !important;
   text-shadow: none !important;
   padding-top: 0!important;
 }
@@ -1728,14 +1757,14 @@ ul.fancytree-container li {
   /*margin-top: 20px;*/
 }
 .profileitems .ui.avatar.image {
-  width: 4em;
-  height: 4em;
+  width: 3em;
+  height: 3em;
   border-radius: 0;
 }
 .profileitems.ui.items > .item .avatar img,
 .ui.items > .item img.avatar {
-  width: 4em;
-  height: 4em;
+  width: 3em;
+  height: 3em;
   border-radius: 0!important;
 }
 .iniformationcontent {

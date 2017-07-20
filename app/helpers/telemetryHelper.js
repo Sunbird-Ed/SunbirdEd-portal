@@ -5,16 +5,17 @@ const request = require("request"),
 telemetry_packet_size = process.env.sunbird_telemetry_packet_size || 20;
 
 module.exports = {
-    logSessionStart: function(req) {
+    
+    logSessionStart: function(req, callback) {
         var ua = parser(req.headers['user-agent']);
         var event = [{
             "ver": "2.0",
             "uid": req.kauth.grant.access_token.content.sub,
-            "sid": "",
+            "sid": req.sessionID,
             "did": "",
             "edata": {
                 "eks": {
-                    "authprovider": "Keycloak",
+                    "authprovider": "keycloak",
                     "uaspec": {
                         "agent": ua["browser"]["name"],
                         "ver": ua["browser"]["version"],
@@ -25,13 +26,16 @@ module.exports = {
                 }
             },
             "eid": "CP_SESSION_START",
+            "channel": req.session.rootOrgId,
             "cdata": [{
                 "id": "",
                 "type": ""
             }],
             "ets": new Date().getTime()
         }];
-        this.sendTelemetry(req, event, function(status) {})
+        this.sendTelemetry(req, event, function(status) {
+            callback(null, status)
+        })
     },
     logSessionEvents: function(req, res) {
         var self = this;
@@ -40,10 +44,7 @@ module.exports = {
             req.session['sessionEvents'].push(req.body.event);
             if (req.session['sessionEvents'].length >= telemetry_packet_size) {
                 module.exports.sendTelemetry(req, req.session['sessionEvents'], function(status) {
-                    if (status) {
                         req.session['sessionEvents'] = [];
-                    }
-                    console.log('status',status);
                 });
             }
         }

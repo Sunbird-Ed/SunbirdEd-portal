@@ -9,7 +9,7 @@
  */
 angular.module('playerApp')
         .controller('EditContentController', function (contentService, config, $scope, $state, $timeout, $rootScope, $stateParams, $location, $anchorScroll) {
-
+            
             var editContent = this;
             editContent.contentId = $stateParams.contentId;
             editContent.lessonTypes = config.DROPDOWN.COMMON.lessonTypes;
@@ -24,6 +24,8 @@ angular.module('playerApp')
             editContent.userId = $rootScope.userId;
             editContent.accept = false;
             $scope.contentPlayer = {isContentPlayerEnabled: false};
+            editContent.checkMimeTypeForEditContent = ['application/pdf', 'video/mp4',
+                'application/vnd.ekstep.html-archive', 'video/youtube', "application/vnd.ekstep.ecml-archive"];
 
             editContent.initilizeView = function () {
                 editContent.showCreateSlideShowModal = true;
@@ -60,7 +62,7 @@ angular.module('playerApp')
                 loader.loaderMessage = loaderMessage;
                 return loader;
             }
-
+            
             editContent.initializeData = function (isReview) {
 
                 var api = 'editApi';
@@ -74,7 +76,8 @@ angular.module('playerApp')
 
                 contentService.getById(req, qs).then(function (response) {
                     if (response && response.responseCode === 'OK') {
-                        if (response.result.content.createdBy !== $rootScope.userId) {
+                        if (!editContent.checkContentAccess(response.result.content)) {
+                            $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
                             $state.go('Home');
                         }
                         editContent.contentData = {};
@@ -115,13 +118,22 @@ angular.module('playerApp')
                     editContent[api].error = showErrorMessage(false, $rootScope.errorMessages.WORKSPACE.GET.FAILED, $rootScope.errorMessages.COMMON.ERROR);
                 });
             };
+            
+            editContent.checkContentAccess = function(data) {
+                if(data.createdBy === $rootScope.userId && _.indexOf(editContent.checkMimeTypeForEditContent, data.mimeType) > -1) {
+                    return true;
+                } else { 
+                    return false;
+                }
+            };
 
             editContent.openImageBrowser = function () {
                 $('#iconImageInput').click();
             };
 
             $scope.updateIcon = function (files) {
-                if (files) {
+                console.log("File data", files[0]);
+                if (files && files[0].name.match(/.(jpg|jpeg|png)$/i) && files[0].size < 4000000) {
                     var fd = new FormData();
                     fd.append("file", files[0]);
 
@@ -133,6 +145,8 @@ angular.module('playerApp')
                     reader.readAsDataURL(files[0]);
                     editContent.icon = fd;
                     editContent.iconUpdate = true;
+                } else {
+                    alert($rootScope.errorMessages.COMMON.INVAILID_IMAGE);
                 }
             };
 
