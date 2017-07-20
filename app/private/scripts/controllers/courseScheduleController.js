@@ -106,7 +106,7 @@ angular.module('playerApp')
                         toc.courseParams.lastReadContentId ? toc.itemIndex = toc.playList.indexOf(toc.courseParams.lastReadContentId) : 0;
                         toc.courseHierachy = res.result.content;
                         $rootScope.courseName = toc.courseHierachy.name;
-                        $rootScope.isTocPage ? toc.applyAccordion() : false;
+                        $rootScope.isTocPage ? toc.applyAccordion() : toc.courseProgress=0;
                     } else {
                         toc.showError(config.MESSAGES.COURSE.TOC.ERROR);
                     }
