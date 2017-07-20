@@ -5,11 +5,10 @@ const request = require("request"),
 telemetry_packet_size = process.env.sunbird_telemetry_packet_size || 20;
 
 module.exports = {
-    
     logSessionStart: function(req, callback) {
         var ua = parser(req.headers['user-agent']);
         var event = [{
-            "ver": "2.0",
+            "ver": "2.1",
             "uid": req.kauth.grant.access_token.content.sub,
             "sid": req.sessionID,
             "did": "",
@@ -45,6 +44,7 @@ module.exports = {
             if (req.session['sessionEvents'].length >= telemetry_packet_size) {
                 module.exports.sendTelemetry(req, req.session['sessionEvents'], function(status) {
                         req.session['sessionEvents'] = [];
+                        req.session.save(); 
                 });
             }
         }
