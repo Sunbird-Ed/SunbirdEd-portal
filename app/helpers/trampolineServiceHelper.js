@@ -5,17 +5,21 @@ request = require('request'),
     session = require('express-session'),
     uuidv1 = require('uuid/v1'),
     dateFormat = require('dateformat'),
-    echoAPI = process.env['sunbird_echo_api_url'] || "https://sunbird-1b.centralindia.cloudapp.azure.com/api/echo/",
+    echoAPI = process.env['sunbird_echo_api_url'] || "https://dev.open-sunbird.org/api/echo/",
     createUserFlag = process.env['sunbird_autocreate_trampoline_user'] || true,
-    learnerURL = process.env.sunbird_learner_player_url || 'http://52.172.36.121:9000/v1/';
+    learnerURL = process.env.sunbird_learner_player_url || 'http://52.172.36.121:9000/v1/',
+    trampoline_clientId = process.env["sunbird_trampoline_client_id"] || "trampoline",
+    trampoline_server_url = process.env["sunbird_portal_auth_server_url"] || "https://dev.open-sunbird.org/auth",
+    trampoline_realm = process.env["sunbird_portal_realm"] || "sunbird",
+    trampoline_secret = process.env["sunbird_trampoline_secret"] || "36c4277f-d59b-4ea2-b788-964b96bd47d1";
 let memoryStore = new session.MemoryStore();
 var keycloak = new Keycloak({ store: memoryStore }, {
-    clientId: 'trampoline',
+    clientId: trampoline_clientId,
     bearerOnly: true,
-    serverUrl: 'https://keycloakidp-coacher.rhcloud.com/auth',
-    realm: 'sunbird',
+    serverUrl: trampoline_server_url,
+    realm: trampoline_realm,
     credentials: {
-        secret: "36c4277f-d59b-4ea2-b788-964b96bd47d1"
+        secret: trampoline_secret
     }
 });
 
