@@ -14,9 +14,10 @@
 11. sunbird_portal_auth_server_url (keycloak auth server url Eg: "https://dev.open-sunbird.org/auth")
 12. sunbird_portal_auth_server_client (string Eg: "portal")
 13. sunbird_trampoline_client_id (string Eg: "trampoline")
-14. sunbird_trampoline_secret 
-15. sunbird_appid (string Eg. sunbird.portal)
+14. sunbird_trampoline_secret (string Eg: 36c4277f-d59b-4ea2-b788-964b96bd47d1)
+15. sunbird_appid (string Eg. sunbird.portal or ntp.portal)
 16. ekstep_env (string Eg. qa or prod)
+17. sunbird_default_tenant (string Eg: ntp)
 
 ##Pre Requirements
 1. Node
