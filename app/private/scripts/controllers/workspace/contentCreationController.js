@@ -74,9 +74,17 @@ angular.module('playerApp')
                         },
                         onError: function (id, name, error) {
                             console.log("onError:", id, name, error);
+                        },
+                        onCancel: function() {
+                            console.log("onCancel:");
+                            document.getElementById("hide-section-with-button").style.display = 'block';
                         }
                     }
                 });
+                
+                window.cancelUploadFile = function() {
+                    document.getElementById("hide-section-with-button").style.display = 'block';
+                };
             }, 300);
 
             contentCreation.editContent = function (contentId) {

@@ -50,6 +50,65 @@ angular.module('playerApp')
                $('#contentEditor').iziModal('open');
             }, 100)
         };
+        
+        var validateModal = {
+            state: ["WorkSpace.UpForReviewContent", "WorkSpace.ReviewContent"],
+            status: ["Review", "Draft", "Live"],
+            mimeType: config.CreateLessonMimeType
+        };
+        
+        contentEditor.validateRequest = function(reqData, validateData) {
+            var status = reqData.status;
+            var createdBy = reqData.createdBy;
+            var state = reqData.state;
+            var userId = reqData.userId;
+            var validateDataStatus = validateData.status;
+            console.log("Log for validateRequest", reqData, validateData);
+            if(reqData.mimeType === validateData.mimeType) {
+                var isStatus = _.indexOf(validateDataStatus, status) > -1 ? true : false;
+                var isState = _.indexOf(validateData.state, state) > -1 ? true : false;
+                if(isStatus && isState && createdBy !== userId) {
+                    console.log("1");
+                    return true;
+                } else if(isStatus && isState && createdBy === userId) {
+                    console.log("2");
+                    return true;
+                } else if(isStatus && createdBy === userId) {
+                    console.log("3");
+                    return true;
+                } else {
+                    console.log("4");
+                    return false;
+                }
+            } else {
+                console.log("5");
+                return false;
+            }
+        };
+        
+        contentService.getContentData = function() {
+        
+            var req = {contentId: contentEditor.contentId};
+            var qs = {fields: 'createdBy,status,mimeType'}
+
+            contentService.getById(req, qs).then(function (response) {
+                if (response && response.responseCode === 'OK') {
+                    var rspData = response.result.content;
+                    rspData.state = $stateParams.state;
+                    rspData.userId = $rootScope.userId;
+
+                    if (contentEditor.validateRequest(rspData, validateModal)) {
+                        contentEditor.openContentEditor();
+                    } else {
+                        $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
+                        $state.go('Home');
+                    }
+                } else {
+                    $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
+                    $state.go('Home');
+                }
+            });
+        }
 
         contentEditor.init = function() {
             org.sunbird.portal.eventManager.addEventListener("sunbird:portal:editor:editmeta", function() {
@@ -84,5 +143,6 @@ angular.module('playerApp')
         };
 
         contentEditor.init();
-        contentEditor.openContentEditor();
+//        contentEditor.openContentEditor();
+        contentService.getContentData();
     });

@@ -987,7 +987,7 @@ span.fancytree-title {
   /* box-shadow: 0 8px 6px -8px #d9d4d4;*/
   padding-top: 1em;
   padding-bottom: 1em;
-  padding-left: 0.3em;
+  /*padding-left: 0.3em;*/
 }
 .popular-page .ui.cards ~ .ui.cards {
   margin-top: 1.875em;
@@ -1368,6 +1368,29 @@ ul.fancytree-container li {
   line-height: 1.21428571em;
   color: #908e90;
 }
+.dropdown-items.ui.selection.dropdown .menu > .item {
+  border-top: none;
+  padding: 1em 1.5em!important;
+  white-space: normal;
+  word-wrap: normal;
+}
+.dropdown-items.ui.dropdown .menu > .item {
+  position: relative;
+  cursor: pointer;
+  display: block;
+  border: none;
+  height: auto;
+  text-align: left;
+  border-top: none;
+  line-height: 1em;
+  color: #212121;
+  padding: 1em 1.5em!important;
+  font-size: 1rem;
+  text-transform: none;
+  font-weight: 400;
+  box-shadow: none;
+  -webkit-touch-callout: none;
+}
 .resource-padding.ui.grid > .column:not(.row) {
   padding-top: 0;
   margin-bottom: 1em;
@@ -1730,14 +1753,14 @@ ul.fancytree-container li {
   /*margin-top: 20px;*/
 }
 .profileitems .ui.avatar.image {
-  width: 4em;
-  height: 4em;
+  width: 3em;
+  height: 3em;
   border-radius: 0;
 }
 .profileitems.ui.items > .item .avatar img,
 .ui.items > .item img.avatar {
-  width: 4em;
-  height: 4em;
+  width: 3em;
+  height: 3em;
   border-radius: 0!important;
 }
 .iniformationcontent {
