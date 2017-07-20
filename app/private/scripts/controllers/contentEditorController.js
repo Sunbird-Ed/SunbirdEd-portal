@@ -24,7 +24,7 @@ angular.module('playerApp')
                      "id": org.sunbird.portal.appid, 
                      "type": "1.0" 
                 },
-                etags: { app: [""], partner: [""], dims: [org.sunbird.portal.channel] },
+                etags: { app: [""], partner: [""], dims: org.sunbird.portal.dims },
                 channel: org.sunbird.portal.channel
             };
             window.config = {
@@ -32,6 +32,7 @@ angular.module('playerApp')
                 modalId: 'contentEditor',
                 apislug: '/api',
                 alertOnUnload: true,
+                aws_s3_urls: ["https://s3.ap-south-1.amazonaws.com/ekstep-public-"+org.sunbird.portal.ekstep_env+"/", "https://ekstep-public-"+org.sunbird.portal.ekstep_env+".s3-ap-south-1.amazonaws.com/"],
                 plugins: [
                     { "id": "org.ekstep.sunbirdheader", "ver": "1.0", "type": "plugin" }
                 ],
@@ -47,6 +48,8 @@ angular.module('playerApp')
                 openFullscreen: true,
                 closeOnEscape: false,
                 overlayClose: false,
+                overlay: false,
+                overlayColor: '',
                 onClosed: function () {
                     $state.go('EditContent' ,{contentId: contentEditor.contentId});
                 }
