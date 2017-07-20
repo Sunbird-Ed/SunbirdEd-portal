@@ -104,7 +104,8 @@ angular.module('playerApp')
                             homeCtrl[api].error = showErrorMessage(true, $rootScope.errorMessages.HOME.PAGE_API.FAILED, $rootScope.errorMessages.COMMON.ERROR);
                         });
             };
-            homeCtrl.otherSection();
+            //hide recommended temporarily
+           // homeCtrl.otherSection();
             homeCtrl.openCourseView = function (course, courseType) {
                 // courseId = 'do_112265805439688704113';
                 var showLectureView = 'no';

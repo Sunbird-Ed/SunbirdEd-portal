@@ -20,7 +20,7 @@ angular.module('playerApp').directive('search', function () {
             $rootScope.search.boards = config.FILTER.RESOURCES.boards;
             $scope.search.searchTypeKeys = ['Courses', 'Resources'];
             $rootScope.search.sortingOptions = [{field: 'lastUpdatedOn', name: 'Updated On'}, {field: 'createdOn', name: 'Created On'}];
-            $scope.search.sortBy = {'createdOn': 'asc'};
+            $rootScope.search.sortBy = {'createdOn': 'asc'};
             $scope.search.searchSelectionKeys = [{id: 'Courses', name: 'Courses'}, {id: 'Resources', name: 'Resources'}, {id: 'All', name: 'All'}];
             $rootScope.search.sortIcon = true;
             $rootScope.search.selectedLanguage = [];
@@ -34,8 +34,7 @@ angular.module('playerApp').directive('search', function () {
                 $timeout(function () {
                     $rootScope.search.selectedSearchKey = $rootScope.searchKey;
                     $scope.search.isSearchTypeKey = $scope.search.searchTypeKeys.includes($rootScope.search.selectedSearchKey);
-                    $('#headerSearch').dropdown('set selected', $scope.search.isSearchTypeKey === true ? $rootScope.search.selectedSearchKey : 'All');
-                    $('.content-search-filter').dropdown('clear');
+                    $('#headerSearch').dropdown('set selected', $scope.search.isSearchTypeKey === true ? $rootScope.search.selectedSearchKey : 'All');                    
                 }, 0);
 
             });
@@ -94,12 +93,12 @@ angular.module('playerApp').directive('search', function () {
                 $rootScope.search.selectedSearchKey = $rootScope.searchKey || searchParams.type;
                 $scope.curSearchText = $rootScope.search.searchKeyword = $rootScope.search.searchKeyword || searchParams.query;
                 $rootScope.search.filters = JSON.parse(atob(searchParams.filters || btoa('{}')));
-                $scope.search.sortBy = JSON.parse(atob(searchParams.sort || btoa('{}')));
+                $rootScope.search.sortBy = JSON.parse(atob(searchParams.sort || btoa('{}')));
                 $rootScope.search.selectedLanguage = $rootScope.search.filters.language || [];
                 $rootScope.search.selectedContentType = $rootScope.search.filters.contentType || [];
                 $rootScope.search.selectedBoard = $rootScope.search.filters.board || [];
                 $rootScope.search.selectedSubject = $rootScope.search.filters.subject || [];
-                // $scope.search.sortBy=$scope.search.sortBy;
+                // $rootScope.search.sortBy=$rootScope.search.sortBy;
                 $scope.search.searchRequest();
             };
 
@@ -154,7 +153,7 @@ angular.module('playerApp').directive('search', function () {
                                 type: $rootScope.search.selectedSearchKey,
                                 query: $rootScope.search.searchKeyword,
                                 filters: btoa(JSON.stringify($rootScope.search.filters)),
-                                sort: btoa(JSON.stringify($scope.search.sortBy))
+                                sort: btoa(JSON.stringify($rootScope.search.sortBy))
                             };
                             //$state.go('Search', searchParams);
                             $location.path('search/' + searchParams.type + '/' + searchParams.query + '/' + searchParams.filters + '/' + searchParams.sort);
@@ -174,7 +173,7 @@ angular.module('playerApp').directive('search', function () {
                         'cid': '12'
                     },
                     'limit': 20,
-                    'sort_by': $scope.search.sortBy
+                    'sort_by': $rootScope.search.sortBy
 
                 };
 
@@ -243,8 +242,8 @@ angular.module('playerApp').directive('search', function () {
             };
             $rootScope.search.applySorting = function () {
                 var sortByField = $rootScope.search.sortByOption;
-                $scope.search.sortBy = {};
-                $scope.search.sortBy[sortByField] = ($rootScope.search.sortIcon === true) ? 'asc' : 'desc';
+                $rootScope.search.sortBy = {};
+                $rootScope.search.sortBy[sortByField] = ($rootScope.search.sortIcon === true) ? 'asc' : 'desc';
                 $scope.search.searchRequest();
             };
             $rootScope.search.close = function () {
