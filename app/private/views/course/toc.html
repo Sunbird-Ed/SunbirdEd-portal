@@ -9,7 +9,7 @@
     <div class="ui grid">
         <div class="one wide column"></div>
         <div class="ten wide column">
-            <div ng-if="toc.courseHierachy  && toc.lectureView == 'no'">
+            <div ng-if="toc.courseHierachy">
                 <div id="course-toc-list" ng-show="!contentPlayer.isContentPlayerEnabled && !toc.showAllNoteList">
                     <div class="content">
                         <div class='ui grid'>
@@ -67,8 +67,8 @@
                             <div class="ui grid">
                                 <div class="row">
                                     <div class="twelve wide column">
-                                        <content-player ng-if="toc.lectureView == 'no'" visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="true" height="10" width="100" ispercentage="true"></content-player>
-                                        <content-player ng-if="toc.lectureView == 'yes'" visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="false" height="10" width="100" ispercentage="true"></content-player>
+                                        <content-player ng-if="true" visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="true" height="10" width="100" ispercentage="true"></content-player>
+<!--                                        <content-player ng-if="toc.lectureView == 'yes'" visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="false" height="10" width="100" ispercentage="true"></content-player>-->
                                     </div>
                                 </div>
                                 <div class="ui row">

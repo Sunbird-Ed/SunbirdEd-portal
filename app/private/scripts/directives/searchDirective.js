@@ -104,6 +104,7 @@ angular.module('playerApp').directive('search', function () {
 
             $rootScope.search.openCourseView = function (course, courseType) {
                 var showLectureView = 'no';
+                 $rootScope.enrolledCourseIds[course.courseId || course.identifier] ? showLectureView = 'no' : showLectureView = 'yes';
                 //  var params = { courseType: courseType, courseId: course.courseId || course.identifier, tocId: course.courseId || course.identifier, lectureView: showLectureView, progress: course.progress, total: course.total };
                 var params = {courseType: courseType, courseId: course.courseId || course.identifier, tocId: course.courseId || course.identifier, lectureView: showLectureView, progress: course.progress, total: course.total, courseName: course.courseName || course.name, lastReadContentId: course.lastReadContentId};
                 sessionService.setSessionData('COURSE_PARAMS', params);
