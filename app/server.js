@@ -10,9 +10,11 @@ const express = require('express'),
     request = require('request'),
     bodyParser = require('body-parser'),
     MongoStore = require('connect-mongo')(session),
+    async = require('async'),
     env = process.env,
     trampolineServiceHelper = require('./helpers/trampolineServiceHelper.js'),
     telemetryHelper = require('./helpers/telemetryHelper.js'),
+    permissionsHelper = require('./helpers/permissionsHelper.js'),
     port = env['sunbird_port'] || 3000,
     learnerURL = env.sunbird_learner_player_url || 'http://52.172.36.121:9000/v1/',
     contentURL = env.sunbird_content_player_url || 'http://localhost:5000/v1/',
@@ -55,27 +57,20 @@ app.all('/content-editor/telemetry', bodyParser.urlencoded({ extended: false }),
 app.all('/collection-editor/telemetry', bodyParser.urlencoded({ extended: false }),
     bodyParser.json({ limit: reqDataLimitOfContentEditor }), keycloak.protect(), telemetryHelper.logSessionEvents);
 
-
-app.use('/collectionEditor', express.static('./thirdparty/collection-editor'))
-app.get('/collectionEditor', function(req, res) {
-    res.sendFile(__dirname + "/thirdparty/collection-editor/index.html");
-});
-
-
 app.all('/public/service/v1/*', proxy(learnerURL, {
     proxyReqPathResolver: function(req) {
         let urlParam = req.params["0"];
         return require('url').parse(learnerURL + urlParam).path;
     }
 }))
-app.all('/private/service/v1/learner/*', keycloak.protect(), proxy(learnerURL, {
+app.all('/private/service/v1/learner/*', keycloak.protect(), permissionsHelper.checkPermission(), proxy(learnerURL, {
     proxyReqPathResolver: function(req) {
         let urlParam = req.params["0"];
         return require('url').parse(learnerURL + urlParam).path;
     }
 }));
 
-app.all('/private/service/v1/content/*', keycloak.protect(), proxy(contentURL, {
+app.all('/private/service/v1/content/*', keycloak.protect(), permissionsHelper.checkPermission(), proxy(contentURL, {
     limit: reqDataLimitOfContentUpload,
     proxyReqPathResolver: function(req) {
         let urlParam = req.params["0"];
@@ -92,7 +87,7 @@ app.all('/v1/user/session/create', function(req, res) {
     trampolineServiceHelper.handleRequest(req, res, keycloak);
 })
 
-app.all('/private/*', keycloak.protect(), function(req, res) {
+app.all('/private/*', keycloak.protect(), permissionsHelper.checkPermission(), function(req, res) {
     res.locals.userId = req.kauth.grant.access_token.content.sub;
     res.locals.sessionId = req.sessionID;
     res.render(__dirname + '/private/index.ejs');
@@ -106,7 +101,7 @@ app.all('/', function(req, res) {
 //proxy urls
 
 
-app.use('*/content-editor-iframe/api/*', proxy(ekstep, {
+app.use('*/content-editor-iframe/api/*', permissionsHelper.checkPermission(), proxy(ekstep, {
     proxyReqOptDecorator: function(proxyReqOpts, srcReq) {
         // you can update headers 
         proxyReqOpts.headers['Authorization'] = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI2MzExMTYwNTMzOGY0Zjc5YTgwZTM3YjcyZjVjMmUwZiJ9.azmj_AHmndeJz0h6yIkOJz1XjeZR6Gzd-OrZzR66I0A';
@@ -119,7 +114,7 @@ app.use('*/content-editor-iframe/api/*', proxy(ekstep, {
     }
 }));
 
-app.use('*/collection-editor-iframe/api/*', proxy(ekstep, {
+app.use('*/collection-editor-iframe/api/*', permissionsHelper.checkPermission(), proxy(ekstep, {
     proxyReqOptDecorator: function(proxyReqOpts, srcReq) {
         // you can update headers 
         proxyReqOpts.headers['Authorization'] = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI2MzExMTYwNTMzOGY0Zjc5YTgwZTM3YjcyZjVjMmUwZiJ9.azmj_AHmndeJz0h6yIkOJz1XjeZR6Gzd-OrZzR66I0A';
@@ -132,7 +127,7 @@ app.use('*/collection-editor-iframe/api/*', proxy(ekstep, {
     }
 }));
 
-app.use('/api/*', proxy(ekstep, {
+app.use('/api/*', permissionsHelper.checkPermission(), proxy(ekstep, {
     proxyReqOptDecorator: function(proxyReqOpts, srcReq) {
         // you can update headers 
         proxyReqOpts.headers['Authorization'] = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI2MzExMTYwNTMzOGY0Zjc5YTgwZTM3YjcyZjVjMmUwZiJ9.azmj_AHmndeJz0h6yIkOJz1XjeZR6Gzd-OrZzR66I0A';
@@ -168,7 +163,7 @@ app.use('/content/preview/*', proxy(ekstep, {
     }
 }));
 
-app.use('/action/*', proxy(ekstep, {
+app.use('/action/*', permissionsHelper.checkPermission(), proxy(ekstep, {
     proxyReqPathResolver: function(req) {
         return require('url').parse(ekstep + req.originalUrl).path;
     }
@@ -184,10 +179,22 @@ app.all('*', function(req, res) {
  * Method called after successful authentication and it will log the telemetry for CP_SESSION_START
  */
 keycloak.authenticated = function(request) {
-    telemetryHelper.logSessionStart(request)
+    async.series({
+        getUserData: function (callback) {
+            permissionsHelper.getCurrentUserRoles(request,callback);
+        },
+        logSession: function (callback) {
+            telemetryHelper.logSessionStart(request,callback);     
+        }
+    },function (err, results) {
+        
+    });
+        
+    
 };
 
 keycloak.deauthenticated = function(request) {
+    delete request.session['roles'];
     if (request.session) {
         request.session.sessionEvents = request.session.sessionEvents || [];
         telemetryHelper.sendTelemetry(request, request.session.sessionEvents, function(status) {
@@ -195,7 +202,7 @@ keycloak.deauthenticated = function(request) {
             delete request.session.sessionEvents;
         });
     }
-}
+};
 
 app.listen(port);
 console.log('app running on port ' + port);
