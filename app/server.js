@@ -44,7 +44,7 @@ app.use(session({
     saveUninitialized: true,
     store: memoryStore
 }));
-app.use(keycloak.middleware({ admin: '/callback' }));
+app.use(keycloak.middleware({ admin: '/callback', logout: '/logout' }));
 
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, '/')));
@@ -93,6 +93,13 @@ app.all('/private/*', keycloak.protect(), permissionsHelper.checkPermission(), f
     res.render(__dirname + '/private/index.ejs');
 });
 
+app.all('/logout', function(req, res, next) {
+    req.logOut();
+    req.session.destroy(function(err) {
+        res.sendFile(__dirname + '/public/index.html');
+    });
+    next();
+});
 
 app.all('/', function(req, res) {
     res.sendFile(__dirname + '/public/index.html');
@@ -180,17 +187,17 @@ app.all('*', function(req, res) {
  */
 keycloak.authenticated = function(request) {
     async.series({
-        getUserData: function (callback) {
-            permissionsHelper.getCurrentUserRoles(request,callback);
+        getUserData: function(callback) {
+            permissionsHelper.getCurrentUserRoles(request, callback);
         },
-        logSession: function (callback) {
-            telemetryHelper.logSessionStart(request,callback);     
+        logSession: function(callback) {
+            telemetryHelper.logSessionStart(request, callback);
         }
-    },function (err, results) {
-        
+    }, function(err, results) {
+
     });
-        
-    
+
+
 };
 
 keycloak.deauthenticated = function(request) {
