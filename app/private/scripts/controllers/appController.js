@@ -77,12 +77,12 @@ angular.module('playerApp')
                     console.error('fetching profile failed');
                     //error handler
                 }
-            };
+            };        
             $scope.getProfile = function () {
                 userService.getUserProfile($rootScope.userId)
-                        .then(function (successResponse) {
-                            $scope.userProfile(successResponse);
-                        }).catch(function (error) {
+                    .then(function (successResponse) {
+                        $scope.userProfile(successResponse);
+                    }).catch(function (error) {
                     console.error('api fetching profile  failed');
                     //error handler
                 });

@@ -840,14 +840,77 @@ angular
                     function (event, toState, toParams, fromState, fromParams) {
                         switch (toState.name) {
                             case "WorkSpace":
-                                if (permissionsService.checkRolesPermissions(['CONTENT_CREATOR', 'CONTENT_REVIEW', 'CONTENT_CREATION', 'CONTENT_REVIEWER'], false)) {
+                                if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
                                     $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
                                     event.preventDefault();
                                     $state.go('Home');
                                 }
                                 break;
                             case "WorkSpace.ContentCreation":
-                                if (permissionsService.checkRolesPermissions(['CONTENT_CREATOR', 'CONTENT_REVIEW', 'CONTENT_CREATION', 'CONTENT_REVIEWER'], false)) {
+                                if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
+                                    $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
+                                    event.preventDefault();
+                                    $state.go('Home');
+                                }
+                                break;
+                            case "CreateLesson":
+                                if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
+                                    $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
+                                    event.preventDefault();
+                                    $state.go('Home');
+                                }
+                                break;
+                            case "ContentEditor":
+                                if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
+                                    $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
+                                    event.preventDefault();
+                                    $state.go('Home');
+                                }
+                                break;
+                            case "EditContent":
+                                if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
+                                    $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
+                                    event.preventDefault();
+                                    $state.go('Home');
+                                }
+                                break;
+                            case "CreateTextbook":
+                                if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
+                                    $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
+                                    event.preventDefault();
+                                    $state.go('Home');
+                                }
+                                break;
+                            case "CreateCollection":
+                                if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
+                                    $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
+                                    event.preventDefault();
+                                    $state.go('Home');
+                                }
+                                break;
+                            case "CreateCourse":
+                                if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
+                                    $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
+                                    event.preventDefault();
+                                    $state.go('Home');
+                                }
+                                break;
+                            case "CollectionEditor":
+                                if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
+                                    $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
+                                    event.preventDefault();
+                                    $state.go('Home');
+                                }
+                                break;
+                            case "PreviewContent":
+                                if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
+                                    $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
+                                    event.preventDefault();
+                                    $state.go('Home');
+                                }
+                                break;
+                            case "PreviewCollection":
+                                if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
                                     $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
                                     event.preventDefault();
                                     $state.go('Home');
