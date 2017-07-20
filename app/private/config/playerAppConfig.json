@@ -13,7 +13,8 @@
                 "RESOURCE_BUNDLE": "resourcebundle",
                 "SIGNUP": "user/create",
                 "UPDATE_USER_PROFILE": "user/update",
-                "GET_PROFILE": "user/getprofile"
+                "GET_PROFILE": "user/getprofile",
+                "TENANT_LOGO": "get/tenant/logo"
             },
             "COMPOSITE": {
                 "SEARCH": "search"
