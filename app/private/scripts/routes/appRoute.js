@@ -88,8 +88,17 @@ angular
                             $rootScope.isSearchPage = true;
                             $rootScope.showFilter = true;
                             $rootScope.courseActive = 'active';
+                            //filters section
+                            if ($rootScope.search) {
+                                $rootScope.search.selectedLanguage = [];
+                                $rootScope.search.selectedContentType = [];
+                                $rootScope.search.selectedSubject = [];
+                                $rootScope.search.selectedBoard = [];
+                                $rootScope.search.filters = {};
+                                $rootScope.search.sortBy={};
+                            }
+                            //filters section -- ends
                             $rootScope.breadCrumbsData = [{name: 'Home', link: 'home'}, {'name': 'Courses', 'link': 'learn'}];
-                            $('.content-search-filter').dropdown('clear');
                             portalTelemetryService.fireImpressions({
                                 "env": "course",
                                 "type": "list",
@@ -125,7 +134,16 @@ angular
                             $rootScope.resourcesActive = 'active';
                             $rootScope.isSearchPage = true;
                             $rootScope.showFilter = true;
-                            $('.content-search-filter').dropdown('clear');
+                            //filters section
+                            if ($rootScope.search) {
+                                $rootScope.search.selectedLanguage = [];
+                                $rootScope.search.selectedContentType = [];
+                                $rootScope.search.selectedSubject = [];
+                                $rootScope.search.selectedBoard = [];
+                                $rootScope.search.filters = {};
+                                $rootScope.search.sortBy={};
+                            }
+                            //filters section -- ends                         
                             portalTelemetryService.fireImpressions({
                                 "env": "content",
                                 "type": "list",
@@ -661,7 +679,7 @@ angular
                     });
                 },
                 onExit: function ($rootScope) {
-                     $rootScope.breadCrumbsData = null;
+                    $rootScope.breadCrumbsData = null;
                     $rootScope.profileActive = '';
                 }
 

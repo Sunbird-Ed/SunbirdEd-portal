@@ -292,7 +292,7 @@ angular.module('playerApp')
                         toc.resumeCourse();
                     }
                     $('.course-progress').progress();
-
+                    $('.toc-resume-button').addClass('contentVisibility-hidden');
                 }, 100);
             }
             toc.constructTree = function (pos, tocData) {
@@ -340,11 +340,11 @@ angular.module('playerApp')
                 return attributeArr;
             };
             $scope.$watch('contentPlayer.isContentPlayerEnabled', function (newValue, oldValue) {
+                $('.toc-resume-button').addClass('contentVisibility-hidden');
                 if (oldValue == true && newValue == false) {
                     toc.hashId = '';
                     $location.hash(toc.hashId);
                     toc.getContentState();
-                    $('.toc-resume-button').hide();
                     $('.fancy-tree-container').each(function () {
                         var treeId = this.id;
                         $(this).fancytree("getTree").visit(function (node) {
@@ -358,7 +358,7 @@ angular.module('playerApp')
                                 node.setExpanded(true);
                                 node.setActive(true);
                                 node.setFocus(false);
-                                $('#resume-button-' + toc.itemIndex).show();
+                                $('#resume-button-' + toc.itemIndex).removeClass('contentVisibility-hidden');
 
                             } else
                             {

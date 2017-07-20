@@ -22,8 +22,8 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (playerTele
         };
         $scope.showMetaData = $scope.isshowmetaview;
         //temporary ,remove once genie player issue is fixed
-        $rootScope.contentId=$scope.contentData.identifier;
-        
+        $rootScope.contentId = $scope.contentData.identifier;
+
         /**
          * @event 'sunbird:portal:telemetryend' 
          * Listen for this event to get the telemetry OE_END event from renderer
@@ -70,7 +70,7 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (playerTele
 
 
     $scope.initVideoEvents = function (video) {
-
+        $rootScope.videoElem = video;
         video.on('play', function () {
             if (parseInt(this.currentTime()) == 0) {
                 var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, "data": {"mode": "play"}};
