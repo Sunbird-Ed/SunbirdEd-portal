@@ -18,7 +18,8 @@ const express = require('express'),
     contentURL = env.sunbird_content_player_url || 'http://localhost:5000/v1/',
     ekstep = "https://qa.ekstep.in",
     dev = "https://dev.ekstep.in",
-    reqDataLimit = '50mb';
+    reqDataLimitOfContentEditor = '50mb',
+    reqDataLimitOfContentUpload = '30mb';
 
 let mongoURL = (env.sunbird_mongodb_ip && env.sunbird_mongodb_port) ? ("mongodb://" + env.sunbird_mongodb_ip + ":" + env.sunbird_mongodb_port + "/portal") : 'mongodb://localhost/portal';
 let session_ttl = env.sunbird_mongodb_ttl | 1; //in days
@@ -49,10 +50,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'private')));
 
 app.all('/content-editor/telemetry', bodyParser.urlencoded({ extended: false }),
-    bodyParser.json({ limit: reqDataLimit }), keycloak.protect(), telemetryHelper.logSessionEvents);
+    bodyParser.json({ limit: reqDataLimitOfContentEditor }), keycloak.protect(), telemetryHelper.logSessionEvents);
 
 app.all('/collection-editor/telemetry', bodyParser.urlencoded({ extended: false }),
-    bodyParser.json({ limit: reqDataLimit }), keycloak.protect(), telemetryHelper.logSessionEvents);
+    bodyParser.json({ limit: reqDataLimitOfContentEditor }), keycloak.protect(), telemetryHelper.logSessionEvents);
 
 
 app.use('/collectionEditor', express.static('./thirdparty/collection-editor'))
@@ -75,7 +76,7 @@ app.all('/private/service/v1/learner/*', keycloak.protect(), proxy(learnerURL, {
 }));
 
 app.all('/private/service/v1/content/*', keycloak.protect(), proxy(contentURL, {
-    limit: reqDataLimit,
+    limit: reqDataLimitOfContentUpload,
     proxyReqPathResolver: function(req) {
         let urlParam = req.params["0"];
         let query = require('url').parse(req.url).query;
