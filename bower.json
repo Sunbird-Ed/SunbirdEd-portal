@@ -20,8 +20,8 @@
         "file-upload": "./node_modules/fine-uploader/",
         "angular-uuid4": "^0.3.1",
         "izimodal": "~1.5.0",
-        "content-editor-iframe": "https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/artefacts/editor/content-editor-iframe-1.0.0.zip",
-        "collection-editor-iframe": "https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/artefacts/editor/collection-editor-iframe-1.0.0.zip",
+        "content-editor-iframe": "https://s3.ap-south-1.amazonaws.com/ekstep-public-qa/artefacts/editor/content-editor-iframe-1.0.0.zip",
+        "collection-editor-iframe": "https://s3.ap-south-1.amazonaws.com/ekstep-public-qa/artefacts/editor/collection-editor-iframe-1.0.0.zip",
         "font-awesome": "~4.5.0"
     },
     "devDependencies": {
