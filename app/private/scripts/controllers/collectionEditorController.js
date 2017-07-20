@@ -38,19 +38,24 @@ angular.module('playerApp')
                     id: $rootScope.userId,
                     name: ""
                 },
-                sid: "rctrs9r0748iidtuhh79ust993",
+                sid: $rootScope.sessionId,
                 contentId: collectionEditor.contentId,
-                channel: "ntp.sunbird"
+                pdata: {
+                     "id": org.sunbird.portal.appId, 
+                     "type": "1.0" 
+                },
+                etags: { app: [""], partner: [""], dims: [org.sunbird.portal.channel] },
+                channel: org.sunbird.portal.channel
             };
 
             window.config = {
                 corePluginsPackaged: true,
                 modalId: 'collectionEditor',
                 dispatcher: 'local',
-                apislug: 'api',
+                apislug: '/api',
                 alertOnUnload: true,
                 headerLogo: !_.isUndefined($rootScope.orgLogo) ? $rootScope.orgLogo : '',
-                loadingImage: !_.isUndefined($rootScope.orgLogo) ? $rootScope.orgLogo : '',
+                loadingImage: '',
                 plugins: [
                     { "id": "org.ekstep.sunbirdcollectionheader", "ver": "1.0", "type": "plugin" }
                 ],
