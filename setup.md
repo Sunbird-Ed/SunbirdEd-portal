@@ -11,8 +11,12 @@
 6. sunbird_telemetry_packet_size (number Eg: 20)
 7. sunbird_mongodb_ip
 8. sunbird_mongodb_port
-9. sunbird_mongodb_ttl // (number Eg: 1)
-
+9. sunbird_mongodb_ttl  (number Eg: 1)
+10. sunbird_portal_realm (string Eg: "sunbird") 
+11. sunbird_portal_auth_server_url (keycloak auth server url Eg: "https://dev.open-sunbird.org/auth")
+12. sunbird_portal_auth_server_client (string Eg: "portal")
+13. sunbird_trampoline_client_id (string Eg: "trampoline")
+14. sunbird_trampoline_secret 
 
 ##Pre Requirements
 
