@@ -23,7 +23,8 @@ const express = require('express'),
     keycloak_resource = env.sunbird_portal_auth_server_client || "portal",
     ekstep = "https://qa.ekstep.in",
     reqDataLimitOfContentEditor = '50mb',
-    reqDataLimitOfContentUpload = '30mb';
+    reqDataLimitOfContentUpload = '30mb',
+    appId = env.sunbird_appid || 'sunbird.portal';
 
 let mongoURL = (env.sunbird_mongodb_ip && env.sunbird_mongodb_port) ? ("mongodb://" + env.sunbird_mongodb_ip + ":" + env.sunbird_mongodb_port + "/portal") : 'mongodb://localhost/portal';
 let session_ttl = env.sunbird_mongodb_ttl | 1; //in days
@@ -177,6 +178,13 @@ app.use('/action/*', permissionsHelper.checkPermission(), proxy(ekstep, {
 app.all('*', function(req, res) {
     res.redirect('/');
 });
+
+app.get('/get/appid', keycloak.protect(), function(req,res){
+    res.status(200);
+    res.send({appId : appId});
+    res.end();
+});
+
 
 /*
  * Method called after successful authentication and it will log the telemetry for CP_SESSION_START

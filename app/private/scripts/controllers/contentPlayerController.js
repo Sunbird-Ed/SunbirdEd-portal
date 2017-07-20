@@ -51,7 +51,7 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (playerTele
                     // TODO: sid,uid,channel 
                     configuration.context.sid = 'Sunbird_sid';
                     configuration.context.uid = 'Sunbird_uid';
-                    configuration.context.channel = 'Sunbird_channel',
+                    configuration.context.channel = org.sunbird.portal.channel,
                             configuration.context.dimension = 'Sunbird_dimension',
                             configuration.context.appid = 'Sunbird_appId',
                             configuration.config = config.ekstep_CP_config.config;
