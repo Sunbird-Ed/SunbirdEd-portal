@@ -18,6 +18,7 @@
 13. sunbird_trampoline_client_id (string Eg: "trampoline")
 14. sunbird_trampoline_secret 
 15. sunbird_appid (string Eg. sunbird.portal)
+16. ekstep_env (string Eg. qa or prod)
 
 ##Pre Requirements
 
