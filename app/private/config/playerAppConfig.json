@@ -559,6 +559,10 @@
             "SYNC": "telemetry"
         },
         "CURRENT_USER_ROLES" : ["CONTENT_REVIEWER"],
-        "COMMON_ROLES_CHECK" : ["CONTENT_CREATOR", "CONTENT_REVIEW", "CONTENT_CREATION", "CONTENT_REVIEWER"]
+        "COMMON_ROLES_CHECK" : ["CONTENT_CREATOR", "CONTENT_REVIEW", "CONTENT_CREATION", "CONTENT_REVIEWER"],
+        "CreateLessonMimeType" : "application/vnd.ekstep.ecml-archive",
+        "CreateCollectionMimeType": "application/vnd.ekstep.content-collection",
+        "MimeTypeExceptCollection" : ["application/pdf", "video/mp4",
+                "application/vnd.ekstep.html-archive", "video/youtube", "application/vnd.ekstep.ecml-archive"]
     }
 }
