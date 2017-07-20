@@ -88,6 +88,9 @@ angular.module('playerApp')
             }).catch(function(error) {
                 org.sunbird.portal.appid = 'sunbird.portal';
                 console.error('api fetching appId failed');
+            }).finally(function() {
+                org.sunbird.portal.init();
+                portalTelemetryService.init();
             });
         }
 
@@ -98,9 +101,6 @@ angular.module('playerApp')
                 }).catch(function(error) {
                     console.error('api fetching profile  failed');
                     //error handler
-                }).finally(function() {
-                    org.sunbird.portal.init();
-                    portalTelemetryService.init();
                 });
 
         };
