@@ -147,8 +147,7 @@ app.use('/plugins/*', proxy(contentProxyUrl, {
     }
 }));
 
-
-app.use('/assets/public/preview/*', proxy(contentProxyUrl, {
+app.use('/assets/public/*', proxy(contentProxyUrl, {
     proxyReqPathResolver: function(req) {
         return require('url').parse(contentProxyUrl + req.originalUrl).path;
     }
