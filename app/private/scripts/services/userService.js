@@ -78,5 +78,8 @@ angular.module('playerApp')
             // _.remove(data, _.isFunction)
             // delete data['$$hashKey'];
             return data;
+        },
+        this.getTenantLogo = function () {
+            return httpService.get(config.URL.USER.TENANT_LOGO);
         }
     });
