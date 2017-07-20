@@ -856,9 +856,9 @@ angular
                         }
                     })
                     .then(function () {
-                        $urlRouter.sync();
-                        $urlRouter.listen();
-                    });
+                            $urlRouter.sync();
+                            $urlRouter.listen();
+                        });
 
             $rootScope.$on('$stateChangeStart',
                     function (event, toState, toParams, fromState, fromParams) {
