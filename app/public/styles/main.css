@@ -1365,6 +1365,7 @@ ul.fancytree-container li {
   max-width: 100%;
   margin: .45238095em 0 .45238095em .64285714em;
   line-height: 1.21428571em;
+  color: #908e90;
 }
 .resource-padding.ui.grid > .column:not(.row) {
   padding-top: 0;
