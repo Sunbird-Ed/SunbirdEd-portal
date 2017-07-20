@@ -47,6 +47,8 @@ angular.module('playerApp')
                 openFullscreen: true,
                 closeOnEscape: false,
                 overlayClose: false,
+                overlay: false,
+                overlayColor: '',
                 onClosed: function () {
                     $state.go('EditContent' ,{contentId: contentEditor.contentId});
                 }
