@@ -71,6 +71,7 @@ angular.module('playerApp')
                     $rootScope.orgLogo = profileData.rootOrg.imgUrl;
                 }
                 permissionsService.setCurrentUserRoles(profileData.roles);
+                $rootScope.initializePermissionDirective = true;
                 $scope.getTelemetryConfigData(profileData);
             } else {
                 console.error('fetching profile failed');
