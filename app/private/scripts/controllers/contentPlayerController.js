@@ -52,9 +52,10 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (playerTele
                     configuration.context.sid = $rootScope.sessionId;
                     configuration.context.uid = $rootScope.userId;
                     configuration.context.channel = org.sunbird.portal.channel,
-                            configuration.context.dimension = org.sunbird.portal.channel,
-                            configuration.context.appid = org.sunbird.portal.appid,
-                            configuration.config = config.ekstep_CP_config.config;
+                    configuration.context.dims = org.sunbird.portal.dims,
+                    configuration.context.app = [org.sunbird.portal.appid],
+                    configuration.context.partner = [""],
+                    configuration.config = config.ekstep_CP_config.config;
                     configuration.context.cdata = [{'id': $stateParams.courseId, 'type': 'course'}];
                     configuration.plugins = config.ekstep_CP_config.config.plugins;
                     configuration.repos = config.ekstep_CP_config.config.repos;

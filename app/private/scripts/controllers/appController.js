@@ -79,10 +79,18 @@ angular.module('playerApp')
             }
         };
         $scope.getTelemetryConfigData = function(profileData) {
-            if (profileData.rootOrg)
-                org.sunbird.portal.channel = !_.isUndefined(profileData.rootOrg.id) ? profileData.rootOrg.id : "505c7c48ac6dc1edc9b08f21db5a571d";
+            org.sunbird.portal.channel = (profileData.rootOrg && !_.isUndefined(profileData.rootOrg.id)) ? profileData.rootOrg.id : "505c7c48ac6dc1edc9b08f21db5a571d";
             org.sunbird.portal.sid = $rootScope.sessionId;
             org.sunbird.portal.uid = $rootScope.userId;
+            var organisationIds = [org.sunbird.portal.channel];
+            if(profileData){
+                _.forEach(profileData.organisations, function (org) {
+                    if (org.organisationId) {
+                        organisationIds.push(org.organisationId);
+                    }
+                })
+            }
+            org.sunbird.portal.dims =  organisationIds;
 
             $http.get('/get/appid').then(function(res) {
                 org.sunbird.portal.appid = res.data.appId;
