@@ -102,6 +102,12 @@ app.all('/', function(req, res) {
     res.sendFile(__dirname + '/public/index.html');
 });
 
+app.get('/get/appid', keycloak.protect(), function(req,res){
+    res.status(200);
+    res.send({appId : appId});
+    res.end();
+});
+
 //proxy urls
 
 
@@ -178,13 +184,6 @@ app.use('/action/*', permissionsHelper.checkPermission(), proxy(ekstep, {
 app.all('*', function(req, res) {
     res.redirect('/');
 });
-
-app.get('/get/appid', keycloak.protect(), function(req,res){
-    res.status(200);
-    res.send({appId : appId});
-    res.end();
-});
-
 
 /*
  * Method called after successful authentication and it will log the telemetry for CP_SESSION_START
