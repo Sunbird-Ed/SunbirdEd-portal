@@ -60,7 +60,7 @@ angular.module('playerApp')
                 }
             });
             $scope.logout = function () {
-                window.document.location.href = '/logout';
+                window.document.location.replace('/logout');
             }
             //get user profile
             $scope.userProfile = function (userProfile) {
