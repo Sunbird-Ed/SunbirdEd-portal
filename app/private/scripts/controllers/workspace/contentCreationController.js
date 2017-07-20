@@ -60,7 +60,9 @@ angular.module('playerApp')
                             console.log("On validate data", data);
                         },
                         onComplete: function (id, name, responseJSON) {
-                            contentCreation.editContent(contentCreation.contentId);
+                            if(responseJSON.success) {
+                                contentCreation.editContent(contentCreation.contentId);
+                            }
                             console.log("onComplete:", id, name, responseJSON);
                         },
                         onSubmitted: function (id, name) {
