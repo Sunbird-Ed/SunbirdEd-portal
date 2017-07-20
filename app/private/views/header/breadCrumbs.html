@@ -4,10 +4,9 @@
         <div class="ten wide column">
             <div class="breadcrumppadding ui padded breadcrumb">
                 <span ng-repeat="item in breadCrumbsData">
-                    <a ng-click="openLink(item.link)"  class="breadcrumb-fontColor section">{{item.name}}</a>
+                    <a ng-if="!$last" ng-click="openLink(item.link)"  class="breadcrumb-fontColor section">{{item.name}}</a>
                     <i ng-if="!$last" class="right chevron icon divider"></i>
-                    <!--
-                    <span ng-if="$last" class="breadcrumb-fontColor active section">{{item.name}}</span>-->
+                    <span ng-if="$last" class="breadcrumb-fontColor active section">{{item.name}}</span>
                 </span>
             </div>
         </div>
