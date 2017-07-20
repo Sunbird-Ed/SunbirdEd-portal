@@ -9,6 +9,7 @@
  */
 angular.module('playerApp')
     .service('permissionsService', function(httpServiceJava, config, $rootScope) {
+        var self = this;
         var rolesAndPermissions = [];
         var currentUserRoles = [];
         var currentRoleActions = [];
@@ -47,23 +48,12 @@ angular.module('playerApp')
                             if ((_.intersection(data, currentUserRoles).length === 0) && !flag) {
                                 return true;
                             }
-                            return ((_.intersection(data, currentUserRoles).length > 0) && flag)
+                            return ((_.intersection(data, currentUserRoles).length > 0) && flag);
                         }
                     } else{
                         return true;
                     }
                     return false;
-                } else {
-                    this.getCurrentUserProfile().then(function (res) {
-                        if (res && res.responseCode === 'OK') {
-                            this.setCurrentUserRoles(res.result.response.roles);
-                            this.checkRolesPermissions(data, flag);
-                        } else {
-                            //TODO: allow only public permissions
-                        }
-                    }).catch(function(err) {
-                        
-                    });
                 }
             };
 
