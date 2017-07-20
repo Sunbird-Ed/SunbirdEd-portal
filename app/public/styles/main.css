@@ -1730,14 +1730,14 @@ ul.fancytree-container li {
   /*margin-top: 20px;*/
 }
 .profileitems .ui.avatar.image {
-  width: 4em;
-  height: 4em;
+  width: 3em;
+  height: 3em;
   border-radius: 0;
 }
 .profileitems.ui.items > .item .avatar img,
 .ui.items > .item img.avatar {
-  width: 4em;
-  height: 4em;
+  width: 3em;
+  height: 3em;
   border-radius: 0!important;
 }
 .iniformationcontent {
