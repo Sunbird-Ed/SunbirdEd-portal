@@ -49,11 +49,11 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (playerTele
                     configuration.context = config.ekstep_CP_config.context;
                     configuration.context.contentId = $scope.contentData.identifier;
                     // TODO: sid,uid,channel 
-                    configuration.context.sid = 'Sunbird_sid';
-                    configuration.context.uid = 'Sunbird_uid';
+                    configuration.context.sid = $rootScope.sessionId;
+                    configuration.context.uid = $rootScope.userId;
                     configuration.context.channel = org.sunbird.portal.channel,
-                            configuration.context.dimension = 'Sunbird_dimension',
-                            configuration.context.appid = 'Sunbird_appId',
+                            configuration.context.dimension = org.sunbird.portal.channel,
+                            configuration.context.appid = org.sunbird.portal.appid,
                             configuration.config = config.ekstep_CP_config.config;
                     configuration.context.cdata = [{'id': $stateParams.courseId, 'type': 'course'}];
                     configuration.plugins = config.ekstep_CP_config.config.plugins;
