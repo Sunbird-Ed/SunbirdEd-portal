@@ -18,8 +18,10 @@ const express = require('express'),
     port = env['sunbird_port'] || 3000,
     learnerURL = env.sunbird_learner_player_url || 'http://52.172.36.121:9000/v1/',
     contentURL = env.sunbird_content_player_url || 'http://localhost:5000/v1/',
+    realm = env.sunbird_portal_realm || "sunbird",
+    auth_server_url = env.sunbird_portal_auth_server_url || "https://dev.open-sunbird.org/auth",
+    keycloak_resource = env.sunbird_portal_auth_server_client || "portal",
     ekstep = "https://qa.ekstep.in",
-    dev = "https://dev.ekstep.in",
     reqDataLimitOfContentEditor = '50mb',
     reqDataLimitOfContentUpload = '30mb';
 
@@ -31,10 +33,10 @@ let memoryStore = new MongoStore({
     ttl: session_ttl * 24 * 60 * 60
 });
 let keycloak = new Keycloak({ store: memoryStore }, {
-    "realm": "sunbird",
-    "auth-server-url": "https://keycloakidp-coacher.rhcloud.com/auth",
-    "ssl-required": "external",
-    "resource": "portal",
+    "realm": realm,
+    "auth-server-url": auth_server_url,
+    "ssl-required": "none",
+    "resource": keycloak_resource,
     "public-client": true
 });
 
@@ -93,13 +95,7 @@ app.all('/private/*', keycloak.protect(), permissionsHelper.checkPermission(), f
     res.render(__dirname + '/private/index.ejs');
 });
 
-app.all('/logout', function(req, res, next) {
-    req.logOut();
-    req.session.destroy(function(err) {
-        res.sendFile(__dirname + '/public/index.html');
-    });
-    next();
-});
+
 
 app.all('/', function(req, res) {
     res.sendFile(__dirname + '/public/index.html');
@@ -145,15 +141,15 @@ app.use('/api/*', permissionsHelper.checkPermission(), proxy(ekstep, {
     }
 }));
 
-app.use('/content-plugins/*', proxy(dev, {
+app.use('/content-plugins/*', proxy(ekstep, {
     proxyReqPathResolver: function(req) {
-        return require('url').parse(dev + req.originalUrl).path;
+        return require('url').parse(ekstep + req.originalUrl).path;
     }
 }));
 
-app.use('/plugins/*', proxy(dev, {
+app.use('/plugins/*', proxy(ekstep, {
     proxyReqPathResolver: function(req) {
-        return require('url').parse(dev + req.originalUrl).path;
+        return require('url').parse(ekstep + req.originalUrl).path;
     }
 }));
 
