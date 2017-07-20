@@ -73,6 +73,11 @@ angular.module('playerApp')
                         onCancel: function() {
                             console.log("onCancel:");
                             document.getElementById("hide-section-with-button").style.display = 'block';
+                        },
+                        onStatusChange: function(id, oldStatus, newStatus) {
+                            if(newStatus === "rejected") {
+                                document.getElementById("hide-progress-bar-on-reject").style.display = 'none';
+                            }
                         }
                     }
                 });
