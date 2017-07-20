@@ -18,14 +18,19 @@ angular.module('playerApp')
                     id: $rootScope.userId,
                     name: ""
                 },
-                sid: "rctrs9r0748iidtuhh79ust993",
+                sid: $rootScope.sessionId,
                 contentId: contentEditor.contentId,
-                channel: "ntp.sunbird"
+                pdata: {
+                     "id": org.sunbird.portal.appid, 
+                     "type": "1.0" 
+                },
+                etags: { app: [""], partner: [""], dims: [org.sunbird.portal.channel] },
+                channel: org.sunbird.portal.channel
             };
             window.config = {
                 baseURL: '',
                 modalId: 'contentEditor',
-                apislug: 'api',
+                apislug: '/api',
                 alertOnUnload: true,
                 plugins: [
                     { "id": "org.ekstep.sunbirdheader", "ver": "1.0", "type": "plugin" }
