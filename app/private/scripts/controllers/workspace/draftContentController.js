@@ -8,7 +8,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('DraftContentController', function(contentService, config, $rootScope, $state) {
+    .controller('DraftContentController', function(contentService, searchService, config, $rootScope, $state) {
 
         var draftContent = this;
         draftContent.userId = $rootScope.userId;
@@ -57,7 +57,7 @@ angular.module('playerApp')
                 }
             };
             draftContent.draftContentData = [];
-            contentService.search(request).then(function(res) {
+            searchService.search(request).then(function(res) {
                     if (res && res.responseCode === 'OK') {
                         draftContent[api].loader.showLoader = false;
                         draftContent.draftContentData = res.result.content;

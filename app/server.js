@@ -18,10 +18,15 @@ const express = require('express'),
     port = env['sunbird_port'] || 3000,
     learnerURL = env.sunbird_learner_player_url || 'http://52.172.36.121:9000/v1/',
     contentURL = env.sunbird_content_player_url || 'http://localhost:5000/v1/',
-    ekstep = "https://qa.ekstep.in",
-    dev = "https://dev.ekstep.in",
+    realm = env.sunbird_portal_realm || "sunbird",
+    auth_server_url = env.sunbird_portal_auth_server_url || "https://dev.open-sunbird.org/auth",
+    keycloak_resource = env.sunbird_portal_auth_server_client || "portal",
     reqDataLimitOfContentEditor = '50mb',
-    reqDataLimitOfContentUpload = '30mb';
+    reqDataLimitOfContentUpload = '30mb',
+    ekstep_env = env.ekstep_env || 'qa',
+    appId = env.sunbird_appid || 'sunbird.portal';
+
+const contentProxyUrl = contentURL.replace('/v1/', '');
 
 let mongoURL = (env.sunbird_mongodb_ip && env.sunbird_mongodb_port) ? ("mongodb://" + env.sunbird_mongodb_ip + ":" + env.sunbird_mongodb_port + "/portal") : 'mongodb://localhost/portal';
 let session_ttl = env.sunbird_mongodb_ttl | 1; //in days
@@ -31,10 +36,10 @@ let memoryStore = new MongoStore({
     ttl: session_ttl * 24 * 60 * 60
 });
 let keycloak = new Keycloak({ store: memoryStore }, {
-    "realm": "sunbird",
-    "auth-server-url": "https://keycloakidp-coacher.rhcloud.com/auth",
-    "ssl-required": "external",
-    "resource": "portal",
+    "realm": realm,
+    "auth-server-url": auth_server_url,
+    "ssl-required": "none",
+    "resource": keycloak_resource,
     "public-client": true
 });
 
@@ -93,86 +98,70 @@ app.all('/private/*', keycloak.protect(), permissionsHelper.checkPermission(), f
     res.render(__dirname + '/private/index.ejs');
 });
 
-app.all('/logout', function(req, res, next) {
-    req.logOut();
-    req.session.destroy(function(err) {
-        res.sendFile(__dirname + '/public/index.html');
-    });
-    next();
-});
+
 
 app.all('/', function(req, res) {
     res.sendFile(__dirname + '/public/index.html');
 });
 
+app.get('/get/envData', keycloak.protect(), function(req,res){
+    res.status(200);
+    res.send({appId : appId, ekstep_env : ekstep_env});
+    res.end();
+});
+
 //proxy urls
 
 
-app.use('*/content-editor-iframe/api/*', permissionsHelper.checkPermission(), proxy(ekstep, {
-    proxyReqOptDecorator: function(proxyReqOpts, srcReq) {
-        // you can update headers 
-        proxyReqOpts.headers['Authorization'] = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI2MzExMTYwNTMzOGY0Zjc5YTgwZTM3YjcyZjVjMmUwZiJ9.azmj_AHmndeJz0h6yIkOJz1XjeZR6Gzd-OrZzR66I0A';
-        return proxyReqOpts;
-    },
+app.use('*/content-editor-iframe/api/*', permissionsHelper.checkPermission(), proxy(contentProxyUrl, {
     proxyReqPathResolver: function(req) {
         var originalUrl = req.originalUrl;
         originalUrl = originalUrl.replace('thirdparty/bower_components/content-editor-iframe/', '');
-        return require('url').parse(ekstep + originalUrl).path;
+        return require('url').parse(contentProxyUrl + originalUrl).path;
     }
 }));
 
-app.use('*/collection-editor-iframe/api/*', permissionsHelper.checkPermission(), proxy(ekstep, {
-    proxyReqOptDecorator: function(proxyReqOpts, srcReq) {
-        // you can update headers 
-        proxyReqOpts.headers['Authorization'] = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI2MzExMTYwNTMzOGY0Zjc5YTgwZTM3YjcyZjVjMmUwZiJ9.azmj_AHmndeJz0h6yIkOJz1XjeZR6Gzd-OrZzR66I0A';
-        return proxyReqOpts;
-    },
+app.use('*/collection-editor-iframe/api/*', permissionsHelper.checkPermission(), proxy(contentProxyUrl, {
     proxyReqPathResolver: function(req) {
         var originalUrl = req.originalUrl;
         originalUrl = originalUrl.replace('thirdparty/bower_components/collection-editor-iframe/', '');
-        return require('url').parse(ekstep + originalUrl).path;
+        return require('url').parse(contentProxyUrl + originalUrl).path;
     }
 }));
 
-app.use('/api/*', permissionsHelper.checkPermission(), proxy(ekstep, {
-    proxyReqOptDecorator: function(proxyReqOpts, srcReq) {
-        // you can update headers 
-        proxyReqOpts.headers['Authorization'] = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI2MzExMTYwNTMzOGY0Zjc5YTgwZTM3YjcyZjVjMmUwZiJ9.azmj_AHmndeJz0h6yIkOJz1XjeZR6Gzd-OrZzR66I0A';
-        return proxyReqOpts;
-    },
+app.use('/api/*', permissionsHelper.checkPermission(), proxy(contentProxyUrl, {
     proxyReqPathResolver: function(req) {
-        return require('url').parse(ekstep + req.originalUrl).path;
+        return require('url').parse(contentProxyUrl + req.originalUrl).path;
     }
 }));
 
-app.use('/content-plugins/*', proxy(dev, {
+app.use('/content-plugins/*', proxy(contentProxyUrl, {
     proxyReqPathResolver: function(req) {
-        return require('url').parse(dev + req.originalUrl).path;
+        return require('url').parse(contentProxyUrl + req.originalUrl).path;
     }
 }));
 
-app.use('/plugins/*', proxy(dev, {
+app.use('/plugins/*', proxy(contentProxyUrl, {
     proxyReqPathResolver: function(req) {
-        return require('url').parse(dev + req.originalUrl).path;
+        return require('url').parse(contentProxyUrl + req.originalUrl).path;
     }
 }));
 
-
-app.use('/assets/public/preview/*', proxy(ekstep, {
+app.use('/assets/public/*', proxy(contentProxyUrl, {
     proxyReqPathResolver: function(req) {
-        return require('url').parse(ekstep + req.originalUrl).path;
+        return require('url').parse(contentProxyUrl + req.originalUrl).path;
     }
 }));
 
-app.use('/content/preview/*', proxy(ekstep, {
+app.use('/content/preview/*', proxy(contentProxyUrl, {
     proxyReqPathResolver: function(req) {
-        return require('url').parse(ekstep + req.originalUrl).path;
+        return require('url').parse(contentProxyUrl + req.originalUrl).path;
     }
 }));
 
-app.use('/action/*', permissionsHelper.checkPermission(), proxy(ekstep, {
+app.use('/action/*', permissionsHelper.checkPermission(), proxy(contentProxyUrl, {
     proxyReqPathResolver: function(req) {
-        return require('url').parse(ekstep + req.originalUrl).path;
+        return require('url').parse(contentProxyUrl + req.originalUrl).path;
     }
 }));
 

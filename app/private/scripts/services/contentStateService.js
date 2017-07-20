@@ -34,7 +34,7 @@ angular.module('playerApp')
                     "courseId": _.find(data['cdata'], {type: 'course'}).id
                 }
                 var contentStatusData = _.find(localContentState[content["courseId"]].contents, {contentId: content['contentId']});
-                if (contentStatusData.status > content["status"]) {
+                if (contentStatusData && contentStatusData.status > content["status"]) {
                     content["status"] = contentStatusData.status;
                 }
                 if (data['eid'] === "OE_END" && data['edata'] && data['edata']['eks'] && data['edata']['eks']['progress']) {

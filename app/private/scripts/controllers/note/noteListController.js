@@ -229,10 +229,10 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
     noteList.closeNoteList = function () {
 
         if (noteList.courseId && noteList.contentId) {
-            var params = {tocId: noteList.tocId, courseId: noteList.courseId, contentId: noteList.contentId, lectureView: 'yes'};
+            var params = {tocId: noteList.tocId, courseId: noteList.courseId, contentId: noteList.contentId, lectureView: 'no'};
             $state.go('Toc', params);
         } else if (noteList.courseId) {
-            var params = {tocId: noteList.tocId, courseId: noteList.courseId, lectureView: 'no'};
+            var params = {tocId: noteList.tocId, courseId: noteList.courseId, lectureView: 'yes'};
             $state.go('Toc', params);
         } else if (noteList.contentId) {
             var params = {contentId: noteList.contentId};

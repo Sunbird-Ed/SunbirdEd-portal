@@ -24,6 +24,8 @@ angular.module('playerApp')
                 openFullscreen: true,
                 closeOnEscape: false,
                 overlayClose: false,
+                overlay: false,
+                overlayColor: '',
                 onClosed: function() {
                     if ($stateParams.state) {
                         $state.go($stateParams.state);
@@ -38,19 +40,24 @@ angular.module('playerApp')
                     id: $rootScope.userId,
                     name: ""
                 },
-                sid: "rctrs9r0748iidtuhh79ust993",
+                sid: $rootScope.sessionId,
                 contentId: collectionEditor.contentId,
-                channel: "ntp.sunbird"
+                pdata: {
+                     "id": org.sunbird.portal.appid, 
+                     "type": "1.0" 
+                },
+                etags: { app: [""], partner: [""], dims: org.sunbird.portal.dims },
+                channel: org.sunbird.portal.channel
             };
 
             window.config = {
                 corePluginsPackaged: true,
                 modalId: 'collectionEditor',
                 dispatcher: 'local',
-                apislug: 'api',
+                apislug: '/api',
                 alertOnUnload: true,
                 headerLogo: !_.isUndefined($rootScope.orgLogo) ? $rootScope.orgLogo : '',
-                loadingImage: !_.isUndefined($rootScope.orgLogo) ? $rootScope.orgLogo : '',
+                loadingImage: '',
                 plugins: [
                     { "id": "org.ekstep.sunbirdcollectionheader", "ver": "1.0", "type": "plugin" }
                 ],
@@ -134,13 +141,13 @@ angular.module('playerApp')
             var editorConfig = [];
             switch (type) {
                 case 'Course':
-                    editorConfig.push({ "type": "Course", "label": "Course", "isRoot": true, "editable": true, "childrenTypes": ["CourseUnit", "Collection", "Story", "Game", "Worksheet"], "addType": "Editor", "iconClass": "fa fa-book" }, { "type": "CourseUnit", "label": "Course Unit", "isRoot": false, "editable": true, "childrenTypes": ["CourseUnit", "Collection", "Story", "Game", "Worksheet"], "addType": "Editor", "iconClass": "fa fa-folder" }, { "type": "Collection", "label": "Collection", "isRoot": false, "editable": false, "childrenTypes": [], "addType": "Browser", "iconClass": "fa fa-file" }, { "type": "Story", "label": "Story", "isRoot": false, "editable": false, "childrenTypes": [], "addType": "Browser", "iconClass": "fa fa-file" }, { "type": "Worksheet", "label": "Worksheet", "isRoot": false, "editable": false, "childrenTypes": [], "addType": "Browser", "iconClass": "fa fa-file" }, { "type": "Game", "label": "Game", "isRoot": false, "editable": false, "childrenTypes": [], "addType": "Browser", "iconClass": "fa fa-file" });
+                    editorConfig.push({"type":"Course","label":"Course","isRoot":true,"editable":true,"childrenTypes":["CourseUnit","Collection","Story","Worksheet"],"addType":"Editor","iconClass":"fa fa-book"},{"type":"CourseUnit","label":"Course Unit","isRoot":false,"editable":true,"childrenTypes":["CourseUnit","Collection","Story","Worksheet"],"addType":"Editor","iconClass":"fa fa-folder"},{"type":"Collection","label":"Collection","isRoot":false,"editable":false,"childrenTypes":[],"addType":"Browser","iconClass":"fa fa-file"},{"type":"Story","label":"Story","isRoot":false,"editable":false,"childrenTypes":[],"addType":"Browser","iconClass":"fa fa-file"},{"type":"Worksheet","label":"Worksheet","isRoot":false,"editable":false,"childrenTypes":[],"addType":"Browser","iconClass":"fa fa-file"});
                     return editorConfig;
                 case 'Collection':
-                    editorConfig.push({ "type": "Collection", "label": "Collection", "isRoot": true, "editable": true, "childrenTypes": ["Collection", "Story", "Game", "Worksheet"], "addType": "Editor", "iconClass": "fa fa-folder" }, { "type": "Story", "label": "Story", "isRoot": false, "editable": false, "childrenTypes": [], "addType": "Browser", "iconClass": "fa fa-file" }, { "type": "Worksheet", "label": "Worksheet", "isRoot": false, "editable": false, "childrenTypes": [], "addType": "Browser", "iconClass": "fa fa-file" }, { "type": "Game", "label": "Game", "isRoot": false, "editable": false, "childrenTypes": [], "addType": "Browser", "iconClass": "fa fa-file" });
+                    editorConfig.push({"type":"Collection","label":"Collection","isRoot":true,"editable":true,"childrenTypes":["Collection","Story","Worksheet"],"addType":"Editor","iconClass":"fa fa-folder"},{"type":"Story","label":"Story","isRoot":false,"editable":false,"childrenTypes":[],"addType":"Browser","iconClass":"fa fa-file"},{"type":"Worksheet","label":"Worksheet","isRoot":false,"editable":false,"childrenTypes":[],"addType":"Browser","iconClass":"fa fa-file"});
                     return editorConfig;
                 default:
-                    editorConfig.push({ "type": "TextBook", "label": "Textbook", "isRoot": true, "editable": true, "childrenTypes": ["TextBookUnit", "Collection", "Story", "Game", "Worksheet"], "addType": "Editor", "iconClass": "fa fa-book" }, { "type": "TextBookUnit", "label": "Textbook Unit", "isRoot": false, "editable": true, "childrenTypes": ["TextBookUnit", "Collection", "Story", "Game", "Worksheet"], "addType": "Editor", "iconClass": "fa fa-folder" }, { "type": "Collection", "label": "Collection", "isRoot": false, "editable": false, "childrenTypes": [], "addType": "Browser", "iconClass": "fa fa-file" }, { "type": "Story", "label": "Story", "isRoot": false, "editable": false, "childrenTypes": [], "addType": "Browser", "iconClass": "fa fa-file" }, { "type": "Worksheet", "label": "Worksheet", "isRoot": false, "editable": false, "childrenTypes": [], "addType": "Browser", "iconClass": "fa fa-file" }, { "type": "Game", "label": "Game", "isRoot": false, "editable": false, "childrenTypes": [], "addType": "Browser", "iconClass": "fa fa-file" });
+                    editorConfig.push({"type":"TextBook","label":"Textbook","isRoot":true,"editable":true,"childrenTypes":["TextBookUnit","Collection","Story","Worksheet"],"addType":"Editor","iconClass":"fa fa-book"},{"type":"TextBookUnit","label":"Textbook Unit","isRoot":false,"editable":true,"childrenTypes":["TextBookUnit","Collection","Story","Worksheet"],"addType":"Editor","iconClass":"fa fa-folder"},{"type":"Collection","label":"Collection","isRoot":false,"editable":false,"childrenTypes":[],"addType":"Browser","iconClass":"fa fa-file"},{"type":"Story","label":"Story","isRoot":false,"editable":false,"childrenTypes":[],"addType":"Browser","iconClass":"fa fa-file"},{"type":"Worksheet","label":"Worksheet","isRoot":false,"editable":false,"childrenTypes":[],"addType":"Browser","iconClass":"fa fa-file"});
                     return editorConfig;
             }
         };
