@@ -210,7 +210,7 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $sc
     };
 
     noteCard.showUpdateNoteModal = function (note) {
-
+        $rootScope.videoElem ? $rootScope.videoElem.pause() : 0;
         noteCard.showUpdateNote = true;
         $timeout(function () {
             $('#updateNoteModal').modal({
@@ -239,6 +239,7 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $sc
 
     noteCard.showAddNoteModal = function () {
         noteCard.showCreateNote = true;
+        $rootScope.videoElem ? $rootScope.videoElem.pause() : 0;
         $timeout(function () {
             $('#addNoteModal').modal({
                 onShow: function () {

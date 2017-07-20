@@ -485,7 +485,7 @@ th {
   text-align: center !important;
 }
 .contentVisibility-hidden {
-  display: none !important;
+  visibility: hidden !important;
 }
 .right-floated {
   float: right;
