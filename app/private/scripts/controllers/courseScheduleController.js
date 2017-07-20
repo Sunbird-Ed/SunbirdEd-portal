@@ -134,12 +134,21 @@ angular.module('playerApp')
                 };
                 contentStateService.getContentsState(req, function (content_res) {
                     toc.contentStatusList = toc.fetchObjectAttributeAsArrayOrObject(content_res, "contentId", "status", true);
+                    toc.courseTotal = null;
+                    toc.courseProgress = 0;
                     angular.forEach(toc.contentStatusList, function (status, id) {
-                        toc.contentStatusList[id] = toc.statusClass[status] || toc.statusClass[0];
+                        if (id && toc.playList.indexOf(id) >= 0) {
+                            toc.contentStatusList[id] = toc.statusClass[status] || toc.statusClass[0];
+                            (status == 2) ? toc.courseProgress += 1 : 0;
+                        }
                     });
+                    toc.courseTotal = toc.playList.length;
+                    $('.course-progress').progress({value: toc.courseProgress, total: toc.courseTotal});
                     //update status of last played content
                     if (toc.itemIndex >= 0 && toc.contentStatusList[toc.playList[toc.itemIndex]]) {
-                        $('#node' + toc.itemIndex).find('.icon').addClass(toc.contentStatusList[toc.playList[toc.itemIndex]]);
+                        $('#node' + toc.itemIndex).find('.icon').removeClass('grey blue green').addClass(toc.contentStatusList[toc.playList[toc.itemIndex]]);
+                        var curCourse = _.find($rootScope.enrolledCourses, {courseId: toc.courseId});
+                        curCourse ? $rootScope.enrolledCourseIds[toc.courseId].lastReadContentId = curCourse.lastReadContentId = toc.playList[toc.itemIndex] : 0;
                     }
                 });
             };
