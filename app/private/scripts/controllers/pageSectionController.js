@@ -56,7 +56,8 @@ angular.module('playerApp')
                 var request = {"request": {
                         "source": "web",
                         "name": section.pageTypeUrls[$scope.type],
-                        "filters": $rootScope.search.filters || {}
+                        "filters": $rootScope.search.filters || {},
+                        "sort_by": $rootScope.search.sortBy || {}
                     }};
                 pageSectionService.getPageData(config.URL.PAGE_PREFIX, request).then(function (successResponse) {
                     if (successResponse && successResponse.responseCode === 'OK') {
