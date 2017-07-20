@@ -94,10 +94,12 @@ angular.module('playerApp')
             org.sunbird.portal.sid = $rootScope.sessionId;
             org.sunbird.portal.uid = $rootScope.userId;
 
-            $http.get('/get/appid').then(function(res) {
+            $http.get('/get/envData').then(function(res) {
                 org.sunbird.portal.appid = res.data.appId;
+                org.sunbird.portal.ekstep_env = res.data.ekstep_env;
             }).catch(function(error) {
                 org.sunbird.portal.appid = 'sunbird.portal';
+                org.sunbird.portal.ekstep_env = 'qa';
                 console.error('api fetching appId failed');
             }).finally(function() {
                 org.sunbird.portal.init();
