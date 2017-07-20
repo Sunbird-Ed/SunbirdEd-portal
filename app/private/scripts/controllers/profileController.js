@@ -155,9 +155,9 @@ angular.module('playerApp')
         profile.openImageBrowser = function() {
             $('#iconImageInput').click();
         };
-
+        
         profile.updateIcon = function(files) {
-            if (files) {
+            if (files[0] && files[0].name.match(/.(jpg|jpeg|png)$/i) && files[0].size < 4000000) {
                 var fd = new FormData();
                 if (files.length) {
 
@@ -173,6 +173,8 @@ angular.module('playerApp')
                 reader.readAsDataURL(files[0]);
                 profile.icon = fd;
                 profile.iconUpdate = true;
+            } else {
+                alert($rootScope.errorMessages.COMMON.INVAILID_IMAGE);
             }
         };
 
