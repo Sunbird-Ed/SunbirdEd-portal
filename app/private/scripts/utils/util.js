@@ -45,9 +45,11 @@ org.sunbird.portal.telemetryInit = function() {
                 "id": org.sunbird.portal.appid,
                 "ver": "1.0"
             },
-            "app": [""],
-            "partner": [""],
-            "dims": [org.sunbird.portal.channel ],
+            "etags": {
+                "app": [""],
+                "partner": [""],
+                "dims": [org.sunbird.portal.channel ]
+            },
             "sid": org.sunbird.portal.sid,
             "did": ""
         }

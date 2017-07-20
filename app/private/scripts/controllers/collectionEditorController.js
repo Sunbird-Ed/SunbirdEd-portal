@@ -41,7 +41,7 @@ angular.module('playerApp')
                 sid: $rootScope.sessionId,
                 contentId: collectionEditor.contentId,
                 pdata: {
-                     "id": org.sunbird.portal.appId, 
+                     "id": org.sunbird.portal.appid, 
                      "type": "1.0" 
                 },
                 etags: { app: [""], partner: [""], dims: [org.sunbird.portal.channel] },
