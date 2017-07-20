@@ -30,7 +30,8 @@
             "INFO": "info",
             "WARNING": "warning",
             "SUCCESS": "success",
-            "UN_AUTHORIZED" : "You are not authorized to access this resource"
+            "UN_AUTHORIZED" : "You are not authorized to access this resource",
+            "INVAILID_IMAGE" : "Please upload a valid image file. Supported formats: JPG, PNG, JPEG. Max size: 4MB."
         },
         "WORKSPACE": { 
             "DRAFT": { 
