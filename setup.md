@@ -6,7 +6,7 @@
 1. sunbird_content_player_url
 2. sunbird_learner_player_url
 3. sunbird_port
-4. sunbird_echo_api_url
+4. sunbird_echo_api_url - e.g.: https://dev.open-sunbird.org/api/echo/
 5. sunbird_autocreate_trampoline_user eg: true (boolean value, default to true)
 6. sunbird_telemetry_packet_size (number Eg: 20)
 7. sunbird_mongodb_ip
