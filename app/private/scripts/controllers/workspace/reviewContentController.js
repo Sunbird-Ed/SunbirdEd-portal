@@ -8,7 +8,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('ReviewContentController', function(contentService, config, $rootScope, $scope, $state) {
+    .controller('ReviewContentController', function(contentService, searchService, config, $rootScope, $scope, $state) {
 
         var reviewContent = this;
         reviewContent.userId = $rootScope.userId;
@@ -57,7 +57,7 @@ angular.module('playerApp')
                 }
             };
             reviewContent.reviewContentData = [];
-            contentService.search(request).then(function(res) {
+            searchService.search(request).then(function(res) {
                     if (res && res.responseCode === 'OK') {
                         reviewContent[api].loader.showLoader = false;
                         reviewContent.reviewContentData = res.result.content;
