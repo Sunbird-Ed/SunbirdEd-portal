@@ -132,7 +132,8 @@ angular.module('playerApp')
             };
 
             $scope.updateIcon = function (files) {
-                if (files) {
+                console.log("File data", files[0]);
+                if (files && files[0].name.match(/.(jpg|jpeg|png)$/i) && files[0].size < 4000000) {
                     var fd = new FormData();
                     fd.append("file", files[0]);
 
@@ -144,6 +145,8 @@ angular.module('playerApp')
                     reader.readAsDataURL(files[0]);
                     editContent.icon = fd;
                     editContent.iconUpdate = true;
+                } else {
+                    alert($rootScope.errorMessages.COMMON.INVAILID_IMAGE);
                 }
             };
 
