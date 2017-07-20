@@ -47,7 +47,7 @@ org.sunbird.portal.telemetryInit = function() {
             },
             "app": [""],
             "partner": [""],
-            "dims": [org.sunbird.portal.sid ],
+            "dims": [org.sunbird.portal.channel ],
             "sid": org.sunbird.portal.sid,
             "did": ""
         }
