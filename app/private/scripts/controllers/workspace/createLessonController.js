@@ -106,7 +106,7 @@ angular.module('playerApp')
 
             var requestBody = angular.copy(data);
 
-            requestBody.mimeType = "application/vnd.ekstep.ecml-archive";
+            requestBody.mimeType = config.CreateLessonMimeType;
             requestBody.createdBy = contentLesson.userId;
 
             requestBody.name = requestBody.name ? requestBody.name : "Untitled lesson";
