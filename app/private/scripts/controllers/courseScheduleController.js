@@ -147,9 +147,10 @@ angular.module('playerApp')
                     //update status of last played content
                     if (toc.itemIndex >= 0 && toc.contentStatusList[toc.playList[toc.itemIndex]]) {
                         $('#node' + toc.itemIndex).find('.icon').removeClass('grey blue green').addClass(toc.contentStatusList[toc.playList[toc.itemIndex]]);
-                        var curCourse = _.find($rootScope.enrolledCourses, {courseId: toc.courseId});
-                        curCourse ? $rootScope.enrolledCourseIds[toc.courseId].lastReadContentId = curCourse.lastReadContentId = toc.playList[toc.itemIndex] : 0;
+
                     }
+                    var curCourse = _.find($rootScope.enrolledCourses, {courseId: toc.courseId});
+                    curCourse ? $rootScope.enrolledCourseIds[toc.courseId].lastReadContentId = curCourse.lastReadContentId = toc.playList[toc.itemIndex] : 0;
                 });
             };
             toc.expandMe = function (index, item) {
@@ -287,7 +288,7 @@ angular.module('playerApp')
                     $('.ui.accordion').accordion({
                         exclusive: false
                     });
-                    if (toc.courseType == "ENROLLED_COURSE" && toc.playList.length>0) {
+                    if (toc.courseType == "ENROLLED_COURSE" && toc.playList.length > 0) {
                         toc.resumeCourse();
                     }
                     $('.course-progress').progress();
