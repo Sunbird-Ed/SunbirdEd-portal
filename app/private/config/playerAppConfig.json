@@ -563,6 +563,8 @@
         "CreateLessonMimeType" : "application/vnd.ekstep.ecml-archive",
         "CreateCollectionMimeType": "application/vnd.ekstep.content-collection",
         "MimeTypeExceptCollection" : ["application/pdf", "video/mp4",
-                "application/vnd.ekstep.html-archive", "video/youtube", "application/vnd.ekstep.ecml-archive"]
+                "application/vnd.ekstep.html-archive", "video/youtube", "application/vnd.ekstep.ecml-archive"],
+        "MaxFileSizeToUpload": 25000000,
+        "FileExtensionToUpload": "application/pdf, video/mp4, application/zip, video/webm"
     }
 }
