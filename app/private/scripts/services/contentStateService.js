@@ -28,10 +28,14 @@ angular.module('playerApp')
             }
             this.prepareContentObject = function (data) {
                 var content = {
-                    "contentId":$rootScope.contentId, //data['gdata']['id'],
+                    "contentId": $rootScope.contentId, //data['gdata']['id'],
                     "status": 1,
                     "lastAccessTime": $filter('date')(new Date(data['ets']), 'yyyy-MM-dd HH:mm:ss:sssZ'),
                     "courseId": _.find(data['cdata'], {type: 'course'}).id
+                }
+                var contentStatusData = _.find(localContentState[content["courseId"]].contents, {contentId: content['contentId']});
+                if (contentStatusData.status > content["status"]) {
+                    content["status"] = contentStatusData.status;
                 }
                 if (data['eid'] === "OE_END" && data['edata'] && data['edata']['eks'] && data['edata']['eks']['progress']) {
                     content['progress'] = parseInt(data['edata']['eks']['progress']);
