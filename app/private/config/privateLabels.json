@@ -146,10 +146,10 @@
                 "add": "Add"
             }
         },
-        "HEADER" : {
-            "profile" : "Profile",
-            "workSpace": "WorkSpace",
-            "logout" : "Logout"
+        "HEADER": {
+            "profile": "Profile",
+            "workSpace": "Workspace",
+            "logout": "Logout"
         }
     }
 }
