@@ -22,6 +22,14 @@ angular.module('playerApp')
                     user: {"sid": "", "did": "", "uid": $rootScope.userId},
                     gameData: {"id": "org.sunbird.player", "ver": "1.0"}
                 }
+                var courseId = $stateParams.tocId || data.contentId;
+                if(_.isUndefined(courseId)){
+                    _instance.context.dims = { dims : org.sunbird.portal.dims };
+                }else{
+                    var cloneDims = _.cloneDeep(org.sunbird.portal.dims);
+                    cloneDims.push(courseId);
+                    _instance.context = { dims :  cloneDims};
+                }
                 org.sunbird.portal.eventManager.dispatchEvent('sunbird:telemetry:init', _instance);
             };
 

@@ -83,6 +83,9 @@ TelemetryService = {
             if (obj.otherData && !_.isEmpty(obj.otherData)) {
                 TelemetryService._otherData = obj.otherData;
             };
+            if(obj.context && !_.isEmpty(obj.context.dims)){
+                TelemetryService._otherData.etags.dims = obj.context.dims;
+            }
             resolve(true);
         });
     },
