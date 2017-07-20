@@ -30,7 +30,7 @@
 <div class="ui grid margin-bottom-20">
     <div class="row">
         <div class="twelve wide column padding-none">
-            <div ng-if="toc.courseTotal">
+            <div ng-if="toc.courseTotal && toc.courseProgress > 0">
                 <div  class="ui tiny progress course-progress orange" data-total="{{toc.courseTotal}}" data-value="{{toc.courseProgress}}" >
                     <div class="bar"></div>
                 </div>

@@ -124,7 +124,7 @@ angular.module('playerApp')
             $rootScope.loadProgress = function () {
                 $timeout(function () {
                     $('.course-progress').progress();
-                });
+                },0);
             };
 
         });
