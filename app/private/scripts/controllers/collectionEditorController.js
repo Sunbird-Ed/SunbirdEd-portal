@@ -24,6 +24,8 @@ angular.module('playerApp')
                 openFullscreen: true,
                 closeOnEscape: false,
                 overlayClose: false,
+                overlay: false,
+                overlayColor: '',
                 onClosed: function() {
                     if ($stateParams.state) {
                         $state.go($stateParams.state);
