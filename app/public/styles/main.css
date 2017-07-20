@@ -616,6 +616,13 @@ th {
   background: none !important;
   font-weight: bold !important;
 }
+.header-logo {
+  top: 14% !important;
+  left: 50% !important;
+  height: auto;
+  width: 57px !important;
+  position: absolute !important;
+}
 .ui.card > .sliderCards.content {
   -webkit-box-flex: 1;
   -ms-flex-positive: 1;
