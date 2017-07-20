@@ -6,7 +6,7 @@
 1. sunbird_content_player_url
 2. sunbird_learner_player_url
 3. sunbird_port
-4. sunbird_echo_api_url
+4. sunbird_echo_api_url - e.g.: https://dev.open-sunbird.org/api/echo/
 5. sunbird_autocreate_trampoline_user eg: true (boolean value, default to true)
 6. sunbird_telemetry_packet_size (number Eg: 20)
 7. sunbird_mongodb_ip
@@ -18,6 +18,8 @@
 13. sunbird_trampoline_client_id (string Eg: "trampoline")
 14. sunbird_trampoline_secret 
 15. sunbird_appid (string Eg. sunbird.portal)
+16. ekstep_env (string Eg. qa or prod)
+17. sunbird_default_tenant (string Eg: ntp)
 
 ##Pre Requirements
 
@@ -36,7 +38,6 @@
 * RUN `npm install`
 * RUN `bower cache clean`
 * RUN `bower install --force`
-* RUN `gulp semantic`
 * RUN `gulp`
 * Change to dist
 * Run `node server.js`

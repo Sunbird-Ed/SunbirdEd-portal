@@ -13,7 +13,11 @@
                 "RESOURCE_BUNDLE": "resourcebundle",
                 "SIGNUP": "user/create",
                 "UPDATE_USER_PROFILE": "user/update",
-                "GET_PROFILE": "user/getprofile"
+                "GET_PROFILE": "user/getprofile",
+                "TENANT_LOGO": "get/tenant/logo"
+            },
+            "COMPOSITE": {
+                "SEARCH": "search"
             },
             "COURSE": {
                 "SEARCH": "course/search",
@@ -363,13 +367,12 @@
         },
         "ekstep_CP_config": {
             "context": {
-                "authToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkNjNiMjgwZTQ1NDE0NDU4ODk4NzcwYzZhOGZiZjQ1MCJ9.Ji-22XcRrOiVy4dFAmE68wPxLkNmX4wKbTj_IB7fG6Y",
                 "mode": "play"
             },
             "config": {
                 "showEndPage": false,
                 "showStartPage": true,
-                "host": "https://qa.ekstep.in",
+                "host": "",
                 "apislug": "/api",
                 "repos": ["/content-plugins/renderer"],
                 "plugins": [{ "id": "org.sunbird.iframeEvent", "ver": 1.0, "type": "plugin" },{"id":"org.sunbird.player.endpage","ver":1.0,"type":"plugin"}]
