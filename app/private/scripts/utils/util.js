@@ -36,16 +36,22 @@ org.sunbird.portal.addUnloadEvent = function() {
 org.sunbird.portal.telemetryInit = function() {
     var _instance = {
         correlationData: [{ "id": "", "type": "" }],
-        user: {"sid": "", "did": "", "uid": ""},
-        otherdata:{
-            channel:"88ef38210fa971d9fab3a7076013a6a7",
+        user: {
+            "uid": org.sunbird.portal.uid 
+        },
+        otherData:{
+            channel: org.sunbird.portal.channel,
             pdata:{
-                "id": "",
-                "ver": ""
+                "id": org.sunbird.portal.appid,
+                "ver": "1.0"
             },
-            "app": [""],
-            "partner": [""],
-            "dims": [""]
+            "etags": {
+                "app": [""],
+                "partner": [""],
+                "dims": [org.sunbird.portal.channel ]
+            },
+            "sid": org.sunbird.portal.sid,
+            "did": ""
         }
     }
     org.sunbird.portal.eventManager.dispatchEvent('sunbird:telemetry:init', _instance);

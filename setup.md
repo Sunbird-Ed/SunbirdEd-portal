@@ -17,6 +17,7 @@
 12. sunbird_portal_auth_server_client (string Eg: "portal")
 13. sunbird_trampoline_client_id (string Eg: "trampoline")
 14. sunbird_trampoline_secret 
+15. sunbird_appid (string Eg. sunbird.portal)
 
 ##Pre Requirements
 
