@@ -602,7 +602,7 @@ th {
 .breadcrumppadding.ui.breadcrumb,
 .breadcrumppadding.ui.breadcrumb:last-child,
 .breadcrumppadding.ui.breadcrumb:first-child {
-  margin: 10px;
+  margin-left: 10px;
   line-height: 1.5;
 }
 .ui.breadcrumb .divider {
