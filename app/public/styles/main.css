@@ -239,6 +239,7 @@ th {
 .cardsSubHeading {
   font-family: 'sunbirdregularfont' !important;
   font-size: 1.125em;
+  color: #0076FE !important;
 }
 .cardsDescription {
   font-family: 'sunbirdregularfont' !important;
@@ -251,7 +252,7 @@ th {
 .cardsKnowMore {
   font-family: 'sunbirdboldfont' !important;
   font-size: 1em;
-  color: #0099CC;
+  color: #0076FE;
 }
 /* cards used in slider fonts*/
 .sliderCardHeading {
@@ -491,7 +492,7 @@ th {
 }
 .header-container {
   margin-left: 1px !important;
-  border-bottom: 5px solid #0099CC !important;
+  border-bottom: 5px solid #007AFF !important;
 }
 .header-user-icon {
   margin-right: 0px !important;
@@ -589,7 +590,7 @@ th {
   padding-top: 1rem !important;
 }
 .ui.secondary.pointing.menu .active.item {
-  border-color: #0099CC !important;
+  border-color: #007AFF !important;
 }
 .ui.secondary.pointing.menu {
   background: #fdfdfd !important;
@@ -1130,6 +1131,9 @@ span.fancytree-node {
 ul.fancytree-container li {
   padding-bottom: 0.8em !important;
 }
+.rightSideSectionCards .content .header a {
+  color: #007AFF !important;
+}
 .homeCard.ui.card {
   max-width: 100%;
   position: relative;
@@ -1464,7 +1468,7 @@ ul.fancytree-container li {
   border-top: transparent !important;
 }
 .dynamic-section-card .slider .card .extra .card-rating .active {
-  color: #0099CC !important;
+  color: #007AFF !important;
   text-shadow: none !important;
   padding-top: 0!important;
 }
