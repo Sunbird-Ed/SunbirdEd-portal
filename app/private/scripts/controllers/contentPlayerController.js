@@ -22,8 +22,8 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (playerTele
         };
         $scope.showMetaData = $scope.isshowmetaview;
         //temporary ,remove once genie player issue is fixed
-        $rootScope.contentId=$scope.contentData.identifier;
-        
+        $rootScope.contentId = $scope.contentData.identifier;
+
         /**
          * @event 'sunbird:portal:telemetryend' 
          * Listen for this event to get the telemetry OE_END event from renderer
@@ -49,12 +49,13 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (playerTele
                     configuration.context = config.ekstep_CP_config.context;
                     configuration.context.contentId = $scope.contentData.identifier;
                     // TODO: sid,uid,channel 
-                    configuration.context.sid = 'Sunbird_sid';
-                    configuration.context.uid = 'Sunbird_uid';
-                    configuration.context.channel = 'Sunbird_channel',
-                            configuration.context.dimension = 'Sunbird_dimension',
-                            configuration.context.appid = 'Sunbird_appId',
-                            configuration.config = config.ekstep_CP_config.config;
+                    configuration.context.sid = $rootScope.sessionId;
+                    configuration.context.uid = $rootScope.userId;
+                    configuration.context.channel = org.sunbird.portal.channel,
+                    configuration.context.dims = org.sunbird.portal.dims,
+                    configuration.context.app = [org.sunbird.portal.appid],
+                    configuration.context.partner = [""],
+                    configuration.config = config.ekstep_CP_config.config;
                     configuration.context.cdata = [{'id': $stateParams.courseId, 'type': 'course'}];
                     configuration.plugins = config.ekstep_CP_config.config.plugins;
                     configuration.repos = config.ekstep_CP_config.config.repos;
@@ -70,7 +71,7 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (playerTele
 
 
     $scope.initVideoEvents = function (video) {
-
+        $rootScope.videoElem = video;
         video.on('play', function () {
             if (parseInt(this.currentTime()) == 0) {
                 var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, "data": {"mode": "play"}};

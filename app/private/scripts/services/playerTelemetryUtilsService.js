@@ -19,7 +19,7 @@ angular.module('playerApp')
             this.init = function (data) {
                 var _instance = {
                     correlationData: [{"id": $stateParams.tocId || data.contentId, "type": "course"}],
-                    user: {"avatar": "assets/icons/avatar_anonymous.png", "profileImage": "assets/icons/avatar_anonymous.png", "gender": "male", "handle": "Anonymous", "age": 6, "standard": -1, "sid": "", "did": "", "uid": $rootScope.userId},
+                    user: {"sid": "", "did": "", "uid": $rootScope.userId},
                     gameData: {"id": "org.sunbird.player", "ver": "1.0"}
                 }
                 org.sunbird.portal.eventManager.dispatchEvent('sunbird:telemetry:init', _instance);

@@ -1,5 +1,5 @@
 angular.module('playerApp')
-        .controller('courseScheduleCtrl', function (config, $compile, courseService, sessionService, $stateParams, $state, $timeout, $scope, $rootScope, $location, $anchorScroll, contentStateService) {
+        .controller('courseScheduleCtrl', function (config, $compile, courseService, sessionService, $stateParams, $state, $timeout, $scope, $rootScope, $location, $anchorScroll, contentStateService,$window) {
             var toc = this;
             toc.playList = [];
             toc.playListContent = [];
@@ -32,12 +32,8 @@ angular.module('playerApp')
                 toc.loader.loaderMessage = config.MESSAGES.COURSE.ENROLL.START;
                 courseService.enrollUserToCourse(req).then(function (successResponse) {
                     toc.loader.enrollLoader = false;
-                    if (successResponse && successResponse.responseCode === 'OK') {
-                        //temporary change it later
-
-                        toc.courseType = "ENROLLED_COURSE";
-                        toc.courseParams.courseType = toc.courseType;
-                        sessionService.setSessionData('COURSE_PARAMS', toc.courseParams);
+                    if (successResponse && successResponse.responseCode === 'OK') {                        
+                        $window.location.reload();
 
                     } else {
                         toc.error.showEnrollError = true;
@@ -288,11 +284,11 @@ angular.module('playerApp')
                     $('.ui.accordion').accordion({
                         exclusive: false
                     });
-                    if (toc.courseType == "ENROLLED_COURSE" && toc.playList.length > 0) {
+                    if (toc.courseType == "ENROLLED_COURSE" && toc.playList.length > 0 && toc.lectureView=='no') {
                         toc.resumeCourse();
                     }
                     $('.course-progress').progress();
-
+                    $('.toc-resume-button').addClass('contentVisibility-hidden');
                 }, 100);
             }
             toc.constructTree = function (pos, tocData) {
@@ -340,11 +336,11 @@ angular.module('playerApp')
                 return attributeArr;
             };
             $scope.$watch('contentPlayer.isContentPlayerEnabled', function (newValue, oldValue) {
+                $('.toc-resume-button').addClass('contentVisibility-hidden');
                 if (oldValue == true && newValue == false) {
                     toc.hashId = '';
                     $location.hash(toc.hashId);
                     toc.getContentState();
-                    $('.toc-resume-button').hide();
                     $('.fancy-tree-container').each(function () {
                         var treeId = this.id;
                         $(this).fancytree("getTree").visit(function (node) {
@@ -358,7 +354,7 @@ angular.module('playerApp')
                                 node.setExpanded(true);
                                 node.setActive(true);
                                 node.setFocus(false);
-                                $('#resume-button-' + toc.itemIndex).show();
+                                $('#resume-button-' + toc.itemIndex).removeClass('contentVisibility-hidden');
 
                             } else
                             {

@@ -47,7 +47,7 @@ angular
                             portalTelemetryService.fireImpressions({
                                 "env": "home",
                                 "type": "default",
-                                "pageid": "Home",
+                                "pageid": org.sunbird.portal.appid + "_Home",
                                 "id": "",
                                 "name": "",
                                 "url": "/private/index#!/home"
@@ -66,7 +66,7 @@ angular
                             portalTelemetryService.fireImpressions({
                                 "env": "content",
                                 "type": "list",
-                                "pageid": "UserContent",
+                                "pageid": org.sunbird.portal.appid + "_UserContent",
                                 "id": "",
                                 "name": "",
                                 "url": "/private/index#!/content"
@@ -88,12 +88,21 @@ angular
                             $rootScope.isSearchPage = true;
                             $rootScope.showFilter = true;
                             $rootScope.courseActive = 'active';
+                            //filters section
+                            if ($rootScope.search) {
+                                $rootScope.search.selectedLanguage = [];
+                                $rootScope.search.selectedContentType = [];
+                                $rootScope.search.selectedSubject = [];
+                                $rootScope.search.selectedBoard = [];
+                                $rootScope.search.filters = {};
+                                $rootScope.search.sortBy={};
+                            }
+                            //filters section -- ends
                             $rootScope.breadCrumbsData = [{name: 'Home', link: 'home'}, {'name': 'Courses', 'link': 'learn'}];
-                            $('.content-search-filter').dropdown('clear');
                             portalTelemetryService.fireImpressions({
                                 "env": "course",
                                 "type": "list",
-                                "pageid": "Courses",
+                                "pageid": org.sunbird.portal.appid + "_Courses",
                                 "id": "",
                                 "name": "",
                                 "url": "/private/index#!/learn"
@@ -125,11 +134,20 @@ angular
                             $rootScope.resourcesActive = 'active';
                             $rootScope.isSearchPage = true;
                             $rootScope.showFilter = true;
-                            $('.content-search-filter').dropdown('clear');
+                            //filters section
+                            if ($rootScope.search) {
+                                $rootScope.search.selectedLanguage = [];
+                                $rootScope.search.selectedContentType = [];
+                                $rootScope.search.selectedSubject = [];
+                                $rootScope.search.selectedBoard = [];
+                                $rootScope.search.filters = {};
+                                $rootScope.search.sortBy={};
+                            }
+                            //filters section -- ends                         
                             portalTelemetryService.fireImpressions({
                                 "env": "content",
                                 "type": "list",
-                                "pageid": "Resources",
+                                "pageid": org.sunbird.portal.appid + "_Resources",
                                 "id": "",
                                 "name": "",
                                 "url": "/private/index#!/resources"
@@ -164,7 +182,7 @@ angular
                             portalTelemetryService.fireImpressions({
                                 "env": "notes",
                                 "type": "detail",
-                                "pageid": "CourseNote",
+                                "pageid": org.sunbird.portal.appid + "_CourseNote",
                                 "id": "",
                                 "name": "",
                                 "url": "/private/index#!/course/note/" + $state.params["tocId"] + "/" + $state.params["courseId"]
@@ -196,7 +214,7 @@ angular
                             portalTelemetryService.fireImpressions({
                                 "env": "notes",
                                 "type": "detail",
-                                "pageid": "ContentNote",
+                                "pageid": org.sunbird.portal.appid + "_ContentNote",
                                 "id": $state.params["contentId"],
                                 "name": $state.params["contentName"],
                                 "url": "/private/index#!/resourse/note/" + $state.params["contentId"] + "/" + $state.params["contentName"]
@@ -231,7 +249,7 @@ angular
                             portalTelemetryService.fireImpressions({
                                 "env": "notes",
                                 "type": "default",
-                                "pageid": "CourseContentNote",
+                                "pageid": org.sunbird.portal.appid + "_CourseContentNote",
                                 "id": $state.params["contentId"],
                                 "name": "",
                                 "url": "/private/index#!/note/" + $state.params["tocId"] + "/" + $state.params["courseId"] + "/" + $state.params["contentId"]
@@ -264,7 +282,7 @@ angular
                             portalTelemetryService.fireImpressions({
                                 "env": "course",
                                 "type": "detail",
-                                "pageid": "Toc",
+                                "pageid": org.sunbird.portal.appid + "_Toc",
                                 "id": "",
                                 "name": "",
                                 "url": "/private/index#!/toc/" + $state.params["tocId"] + "/" + $state.params["courseId"] + "/" + $state.params["lectureView"]
@@ -292,7 +310,7 @@ angular
                             portalTelemetryService.fireImpressions({
                                 "env": "community",
                                 "type": "default",
-                                "pageid": "Community",
+                                "pageid": org.sunbird.portal.appid + "_Community",
                                 "id": "",
                                 "name": "",
                                 "url": "/private/index#!/community"
@@ -314,7 +332,7 @@ angular
                             portalTelemetryService.fireImpressions({
                                 "env": "profile",
                                 "type": "default",
-                                "pageid": "Profile",
+                                "pageid": org.sunbird.portal.appid + "_Profile",
                                 "id": "",
                                 "name": "",
                                 "url": "/private/index#!/profile"
@@ -344,7 +362,7 @@ angular
                             portalTelemetryService.fireImpressions({
                                 "env": "player",
                                 "type": "default",
-                                "pageid": "Player",
+                                "pageid": org.sunbird.portal.appid + "_Player",
                                 "id": $state.params["contentId"],
                                 "name": $state.params["contentName"],
                                 "url": "/private/index#!/player/" + $state.params["contentId"] + "/" + $state.params["contentName"]
@@ -382,7 +400,7 @@ angular
                             portalTelemetryService.fireImpressions({
                                 "env": "course",
                                 "type": "search",
-                                "pageid": "SearchCourse",
+                                "pageid": org.sunbird.portal.appid + "_SearchCourse",
                                 "id": "",
                                 "name": "",
                                 "url": "/private/index#!/" + $state.params["searchType"] + "/search/" + $state.params["query"] + "/"
@@ -413,7 +431,7 @@ angular
                             portalTelemetryService.fireImpressions({
                                 "env": "content",
                                 "type": "search",
-                                "pageid": "SearchResource",
+                                "pageid": org.sunbird.portal.appid + "_SearchResource",
                                 "id": "",
                                 "name": "",
                                 "url": "/private/index#!/resources/search/" + $state.params["query"] + "/" + $state.params["searchType"] + "/"
@@ -443,7 +461,7 @@ angular
                     portalTelemetryService.fireImpressions({
                         "env": "player",
                         "type": "detail",
-                        "pageid": "TocPlayer",
+                        "pageid": org.sunbird.portal.appid + "_TocPlayer",
                         "id": "",
                         "name": "",
                         "url": "/private/index#!/toc/" + $state.params["tocId"] + "/" + $state.params["courseId"] + "/" + $state.params["lectureView"] + "/" + $state.params["contentId"] + "/" + $state.params["contentIndex"]
@@ -477,7 +495,7 @@ angular
                     portalTelemetryService.fireImpressions({
                         "env": "workspace",
                         "type": "default",
-                        "pageid": "WorkSpace",
+                        "pageid": org.sunbird.portal.appid + "_WorkSpace",
                         "id": "",
                         "name": "",
                         "url": "/private/index#!/workspace"
@@ -498,7 +516,7 @@ angular
                     portalTelemetryService.fireImpressions({
                         "env": "content",
                         "type": "creation",
-                        "pageid": "WorkSpace.ContentCreation",
+                        "pageid": org.sunbird.portal.appid + "_WorkSpace.ContentCreation",
                         "id": "",
                         "name": "",
                         "url": "/private/index#!/content/create"
@@ -516,7 +534,7 @@ angular
                     portalTelemetryService.fireImpressions({
                         "env": "content",
                         "type": "list",
-                        "pageid": "WorkSpace.DraftContent",
+                        "pageid": org.sunbird.portal.appid + "_WorkSpace.DraftContent",
                         "id": "",
                         "name": "",
                         "url": "/private/index#!/content/draft"
@@ -534,7 +552,7 @@ angular
                     portalTelemetryService.fireImpressions({
                         "env": "content",
                         "type": "list",
-                        "pageid": "WorkSpace.ReviewContent",
+                        "pageid": org.sunbird.portal.appid + "_WorkSpace.ReviewContent",
                         "id": "",
                         "name": "",
                         "url": "/private/index#!/content/review"
@@ -552,7 +570,7 @@ angular
                     portalTelemetryService.fireImpressions({
                         "env": "content",
                         "type": "list",
-                        "pageid": "WorkSpace.PublishedContent",
+                        "pageid": org.sunbird.portal.appid + "_WorkSpace.PublishedContent",
                         "id": "",
                         "name": "",
                         "url": "/private/index#!/content/published"
@@ -570,7 +588,7 @@ angular
                     portalTelemetryService.fireImpressions({
                         "env": "content",
                         "type": "list",
-                        "pageid": "WorkSpace.AllUploadedContent",
+                        "pageid": org.sunbird.portal.appid + "_WorkSpace.AllUploadedContent",
                         "id": "",
                         "name": "",
                         "url": "/private/index#!/content/uploaded"
@@ -588,7 +606,7 @@ angular
                     portalTelemetryService.fireImpressions({
                         "env": "content",
                         "type": "list",
-                        "pageid": "WorkSpace.UpForReviewContent",
+                        "pageid": org.sunbird.portal.appid + "_WorkSpace.UpForReviewContent",
                         "id": "",
                         "name": "",
                         "url": "/private/index#!/content/upForReview"
@@ -607,7 +625,7 @@ angular
                     portalTelemetryService.fireImpressions({
                         "env": "content",
                         "type": "creation",
-                        "pageid": "CreateLesson",
+                        "pageid": org.sunbird.portal.appid + "_CreateLesson",
                         "id": "",
                         "name": "",
                         "url": "/private/index#!/create/lesson"
@@ -630,7 +648,7 @@ angular
                     portalTelemetryService.fireImpressions({
                         "env": "content",
                         "type": "creation",
-                        "pageid": "ContentEditor",
+                        "pageid": org.sunbird.portal.appid + "_ContentEditor",
                         "id": $state.params["contentId"],
                         "name": "",
                         "url": "/private/index#!/content/editor/" + $state.params["contentId"]
@@ -654,14 +672,14 @@ angular
                     portalTelemetryService.fireImpressions({
                         "env": "content",
                         "type": "edit",
-                        "pageid": "EditContent",
+                        "pageid": org.sunbird.portal.appid + "_EditContent",
                         "id": $state.params["contentId"],
                         "name": "",
                         "url": "/private/index#!/content/edit/" + $state.params["contentId"]
                     });
                 },
                 onExit: function ($rootScope) {
-                     $rootScope.breadCrumbsData = null;
+                    $rootScope.breadCrumbsData = null;
                     $rootScope.profileActive = '';
                 }
 
@@ -676,7 +694,7 @@ angular
                     portalTelemetryService.fireImpressions({
                         "env": "content",
                         "type": "creation",
-                        "pageid": "profileStartCreate",
+                        "pageid": org.sunbird.portal.appid + "_profileStartCreate",
                         "id": "",
                         "name": "",
                         "url": "/private/index#!/create/workspace"
@@ -695,7 +713,7 @@ angular
                     portalTelemetryService.fireImpressions({
                         "env": "textbook",
                         "type": "creation",
-                        "pageid": "CreateTextbook",
+                        "pageid": org.sunbird.portal.appid + "_CreateTextbook",
                         "id": "",
                         "name": "",
                         "url": "/private/index#!/create/textbook"
@@ -717,7 +735,7 @@ angular
                     portalTelemetryService.fireImpressions({
                         "env": "collection",
                         "type": "creation",
-                        "pageid": "CreateCollection",
+                        "pageid": org.sunbird.portal.appid + "_CreateCollection",
                         "id": "",
                         "name": "",
                         "url": "/private/index#!/create/collection"
@@ -739,7 +757,7 @@ angular
                     portalTelemetryService.fireImpressions({
                         "env": "course",
                         "type": "creation",
-                        "pageid": "CreateCourse",
+                        "pageid": org.sunbird.portal.appid + "_CreateCourse",
                         "id": "",
                         "name": "",
                         "url": "/private/index#!/create/course"
@@ -762,7 +780,7 @@ angular
                     portalTelemetryService.fireImpressions({
                         "env": "collectioneditor",
                         "type": "edit",
-                        "pageid": "CollectionEditor",
+                        "pageid": org.sunbird.portal.appid + "_CollectionEditor",
                         "id": "",
                         "name": "",
                         "url": "/private/index#!/collection/editor/"
@@ -785,7 +803,7 @@ angular
                     portalTelemetryService.fireImpressions({
                         "env": "content",
                         "type": "preview",
-                        "pageid": "PreviewContent",
+                        "pageid": org.sunbird.portal.appid + "_PreviewContent",
                         "id": $state.params["contentId"],
                         "name": "",
                         "url": "/private/index#!/preview/content/" + $state.params["contentId"] + "/" + $state.params["backState"]
@@ -813,7 +831,7 @@ angular
                     portalTelemetryService.fireImpressions({
                         "env": "collection",
                         "type": "preview",
-                        "pageid": "PreviewCollection",
+                        "pageid": org.sunbird.portal.appid + "_PreviewCollection",
                         "id": $stateParams["Id"],
                         "name": "",
                         "url": "/private/index#!/preview/collection/" + $stateParams["Id"] + "/" + $stateParams["name"]
@@ -838,9 +856,9 @@ angular
                         }
                     })
                     .then(function () {
-                        $urlRouter.sync();
-                        $urlRouter.listen();
-                    });
+                            $urlRouter.sync();
+                            $urlRouter.listen();
+                        });
 
             $rootScope.$on('$stateChangeStart',
                     function (event, toState, toParams, fromState, fromParams) {
