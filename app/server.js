@@ -15,6 +15,7 @@ const express = require('express'),
     trampolineServiceHelper = require('./helpers/trampolineServiceHelper.js'),
     telemetryHelper = require('./helpers/telemetryHelper.js'),
     permissionsHelper = require('./helpers/permissionsHelper.js'),
+    fs = require('fs'),
     port = env['sunbird_port'] || 3000,
     learnerURL = env.sunbird_learner_player_url || 'http://52.172.36.121:9000/v1/',
     contentURL = env.sunbird_content_player_url || 'http://localhost:5000/v1/',
@@ -23,8 +24,9 @@ const express = require('express'),
     keycloak_resource = env.sunbird_portal_auth_server_client || "portal",
     reqDataLimitOfContentEditor = '50mb',
     reqDataLimitOfContentUpload = '30mb',
-    ekstep_env = env.ekstep_env || 'qa',
-    appId = env.sunbird_appid || 'sunbird.portal';
+    ekstep_env = env.ekstep_env || 'qa',    
+    appId = env.sunbird_appid || 'sunbird.portal',
+    default_tenant = env.sunbird_default_tenant;
 
 const contentProxyUrl = contentURL.replace('/v1/', '');
 
@@ -52,9 +54,23 @@ app.use(session({
 app.use(keycloak.middleware({ admin: '/callback', logout: '/logout' }));
 
 app.set('view engine', 'ejs');
+
 app.use(express.static(path.join(__dirname, '/')));
+if (default_tenant) {
+    app.use(express.static(path.join(__dirname, 'tenant', default_tenant)));    
+}
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'private')));
+
+app.get('/private/service/get/tenant/logo', function (req, res) {
+    res.status(200);
+    var data = {'logo': ''};
+    if (default_tenant) {
+        data.logo = (req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') + '/tenant/'+ default_tenant + '/logo.png';
+    }
+    res.send(data)
+    res.end();
+});
 
 app.all('/content-editor/telemetry', bodyParser.urlencoded({ extended: false }),
     bodyParser.json({ limit: reqDataLimitOfContentEditor }), keycloak.protect(), telemetryHelper.logSessionEvents);
@@ -98,10 +114,12 @@ app.all('/private/*', keycloak.protect(), permissionsHelper.checkPermission(), f
     res.render(__dirname + '/private/index.ejs');
 });
 
-
-
 app.all('/', function(req, res) {
-    res.sendFile(__dirname + '/public/index.html');
+    if (default_tenant && fs.fileExistsSync(path.join(__dirname,'tenant', default_tenant, 'index.html'))) {
+        res.sendFile(path.join(__dirname,'tenant', default_tenant, 'index.html'));    
+    } else{
+        res.sendFile(path.join(__dirname + '/public/index.html'));
+    }
 });
 
 app.get('/get/envData', keycloak.protect(), function(req,res){
@@ -109,6 +127,8 @@ app.get('/get/envData', keycloak.protect(), function(req,res){
     res.send({appId : appId, ekstep_env : ekstep_env});
     res.end();
 });
+
+
 
 //proxy urls
 
