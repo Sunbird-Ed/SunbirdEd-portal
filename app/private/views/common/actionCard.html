@@ -16,10 +16,11 @@
             </div>
         </div>
         <div class="sliderCards content">
+            <div class="sliderCardDesc">
+                {{ item.description | limitTo: 55 }}&nbsp;<i ng-show="item.description.length >= 55" class="ellipsis horizontal icon popup-button link" data-content="{{item.description}}" data-variation="wide"></i>
+            </div>
             <button class="ui blue basic right floated button">RESUME</button>
-            <span  class="sliderCardSubDesc">
-                <span ng-if="item.leafNodesCount"> {{(item.progress / item.leafNodesCount)*100| number: 0 || 0}}% complete <br/></span> 2 hrs remaining
-            </span>
+           <div apply-script class="courseHeader-rating ui  star rating" data-rating="{{item.me_averageRating |number:0}}" data-max-rating="5"></div>
         </div>
     </div>
 </div>
