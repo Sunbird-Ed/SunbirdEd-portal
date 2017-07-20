@@ -7,8 +7,52 @@ angular.module('playerApp').controller('PreviewContentController', function (pla
     previewContent.contentId = $stateParams.contentId;
     previewContent.userId = $rootScope.userId;
     previewContent.isShowPublishRejectButton = $stateParams.backState === "WorkSpace.UpForReviewContent" ? true : false;
+    
+    var validateModal = {
+        state: ["WorkSpace.UpForReviewContent", "WorkSpace.ReviewContent", "WorkSpace.PublishedContent"],
+        status: ["Review", "Live"],
+        mimeType: config.MimeTypeExceptCollection
+    };
+    
+    function validateRequest(reqData, validateData) {
+        var status = reqData.status;
+        var createdBy = reqData.createdBy;
+        var state = reqData.state;
+        var userId = reqData.userId;
+        var validateDataStatus = validateData.status;
+        var isMime = _.indexOf(validateData.mimeType, reqData.mimeType) > -1 ? true : false;
+        console.log("Log for validateRequest", reqData, validateData);
+        if (isMime) {
+            var isStatus = _.indexOf(validateDataStatus, status) > -1 ? true : false;
+            var isState = _.indexOf(validateData.state, state) > -1 ? true : false;
+            if (isStatus && isState && createdBy !== userId) {
+                console.log("1");
+                return true;
+            } else if (isStatus && isState && createdBy === userId) {
+                console.log("2");
+                return true;
+            } else if (isStatus && createdBy === userId) {
+                console.log("3");
+                return true;
+            } else {
+                console.log("4");
+                return false;
+            }
+        } else {
+            console.log("5");
+            return false;
+        }
+    };
 
     function showPlayer(data) {
+        var rspData = data;
+        rspData.state = $stateParams.backState;
+        rspData.userId = $rootScope.userId;
+        
+        if(!validateRequest(rspData, validateModal)) {
+            $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
+            $state.go('Home');
+        }
         previewContent.contentData = data;
         previewContent._instance = {
             id: previewContent.contentData.identifier,
@@ -241,6 +285,7 @@ angular.module('playerApp').controller('PreviewContentController', function (pla
             if (res && res.responseCode === 'OK') {
                 previewContent[api].loader.showLoader = false;
                 previewContent.isShowPublishRejectButton = false;
+                previewContent.contentData.status = "Live";
                 previewContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.PUBLISH_CONTENT.SUCCESS, $rootScope.errorMessages.COMMON.SUCCESS);
 //                $state.go("WorkSpace.UpForReviewContent")
             } else {

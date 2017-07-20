@@ -12,8 +12,7 @@ angular.module('playerApp')
 
         var collectionEditor = this;
         collectionEditor.contentId = $stateParams.contentId;
-
-
+        
         collectionEditor.openCollectionEditor = function(data) {
 
             $("#collectionEditor").iziModal({
@@ -71,22 +70,64 @@ angular.module('playerApp')
             if($stateParams.state === "WorkSpace.UpForReviewContent" && _.intersection(permissionsService.getCurrentUserRoles(), ['CONTENT_REVIEWER', 'CONTENT_REVIEW']).length > 0){
                 window.config.editorConfig.publishMode = true;
             }
+            
+            var validateModal = {
+                state : ["WorkSpace.UpForReviewContent", "WorkSpace.ReviewContent", "WorkSpace.PublishedContents"],
+                status : ["Review", "Draft", "Live"],
+                mimeType: "application/vnd.ekstep.content-collection"
+            };
 
             var req = { contentId: collectionEditor.contentId };
-            var qs = { fields: 'createdBy,status' }
+            var qs = { fields: 'createdBy,status,mimeType'}
 
             contentService.getById(req, qs).then(function(response) {
                 if (response && response.responseCode === 'OK') {
-                    if (response.result.content.createdBy !== $rootScope.userId) {
-                        $state.go('Home');
-                    } else {
+                    var rspData = response.result.content;
+                    rspData.state = $stateParams.state;
+                    rspData.userId = $rootScope.userId;
+                    
+                    if(collectionEditor.validateRequest(rspData, validateModal)) {
                         collectionEditor.updateModeAndStatus(response.result.content.status);
                         $timeout(function() {
                             $('#collectionEditor').iziModal('open');
                         }, 100);
+                    } else {
+                        $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
+                        $state.go('Home');
                     }
+                } else {
+                    
                 }
             });
+        };
+        
+        collectionEditor.validateRequest = function(reqData, validateData) {
+            var status = reqData.status;
+            var createdBy = reqData.createdBy;
+            var state = reqData.state;
+            var userId = reqData.userId;
+            var validateDataStatus = validateData.status;
+            console.log("Log for validateRequest", reqData, validateData);
+            if(reqData.mimeType === validateData.mimeType) {
+                var isStatus = _.indexOf(validateDataStatus, status) > -1 ? true : false;
+                var isState = _.indexOf(validateData.state, state) > -1 ? true : false;
+                if(isStatus && isState && createdBy !== userId) {
+                    console.log("1");
+                    return true;
+                } else if(isStatus && isState && createdBy === userId) {
+                    console.log("2");
+                    return true;
+                } else if(isStatus && createdBy === userId) {
+                    console.log("3");
+                    return true;
+                } else {
+                    console.log("4");
+                    return false;
+                }
+            } else {
+                console.log("5");
+                return false;
+            }
         };
 
         collectionEditor.getTreeNodes = function(type) {

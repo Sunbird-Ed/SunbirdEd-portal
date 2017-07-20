@@ -43,7 +43,7 @@
                 "collection": "COLLECTION",
                 "collectionDescription": "You will be taken to an editor to create a course with assessments/quizes.",
                 "enterYuotubeURL": "ENTER YOUTUBE URL",
-                "fileUploadOptions": "File accepted only pdf, mp4, youtube video and html zip.",
+                "fileUploadOptions": "File accepted only pdf, mp4, youtube video and html zip (Max size 25mb).",
                 "uploadContent": "Upload Content",
                 "upload": "Upload"
             },
@@ -146,10 +146,10 @@
                 "add": "Add"
             }
         },
-        "HEADER" : {
-            "profile" : "Profile",
-            "workSpace": "WorkSpace",
-            "logout" : "Logout"
+        "HEADER": {
+            "profile": "Profile",
+            "workSpace": "Workspace",
+            "logout": "Logout"
         }
     }
 }
