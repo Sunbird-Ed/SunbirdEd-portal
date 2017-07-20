@@ -55,44 +55,44 @@
                                 </div>
 
                                 <div class="two wide column">
-                                    <div id="filterLang" class="ui filtersearch ui multiple selection course-search-filter dropdown">
+                                    <div id="filterLang" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
                                         <input type='hidden' ng-value='{{}}' />
                                         <i class="dropdown icon"></i>
                                         <div class="filter-sel-text" ng-if="$root.search.selectedLanguage.length > 0 ">{{$root.search.selectedLanguage.length+' languages'}}</div>
                                         <div class="filter-sel-text" ng-if="$root.search.selectedLanguage.length == 0 ">Language</div>
                                         <div class="menu">
-                                            <div ng-click="$root.search.selectFilter('selectedLanguage',language,$event)" ng-repeat="language in $root.search.languages" class="item" ng-class="{'active':($root.search.selectedLanguage.indexOf(language)>=0)}" data-value="{{language}}">{{language}}</div>
+                                            <div ng-click="$root.search.selectFilter('selectedLanguage',language,$event)" ng-repeat="language in $root.search.languages" class="item dropdown-item" ng-class="{'active':($root.search.selectedLanguage.indexOf(language)>=0)}" data-value="{{language}}">{{language}}</div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="two wide column">
-                                    <div id="filterSub" class="ui filtersearch ui multiple selection course-search-filter dropdown">
+                                    <div id="filterSub" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
                                         <i class="dropdown icon"></i>
                                         <div class="filter-sel-text" ng-if="$root.search.selectedSubject.length > 0 ">{{$root.search.selectedSubject.length+' subjects'}}</div>
                                         <div class="filter-sel-text" ng-if="$root.search.selectedSubject.length == 0 ">Subject</div>
                                         <div class="menu">
-                                            <div ng-click="$root.search.selectFilter('selectedSubject',subject,$event)" ng-repeat="subject in $root.search.subjects" class="item" ng-class="{'active':($root.search.selectedSubject.indexOf(subject)>=0)}" data-value="{{subject}}">{{subject}}</div>
+                                            <div ng-click="$root.search.selectFilter('selectedSubject',subject,$event)" ng-repeat="subject in $root.search.subjects" class="item dropdown-item" ng-class="{'active':($root.search.selectedSubject.indexOf(subject)>=0)}" data-value="{{subject}}">{{subject}}</div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="two wide column">
-                                    <div id="filterBoard" class="ui filtersearch ui multiple selection course-search-filter dropdown">
+                                    <div id="filterBoard" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
                                         <i class="dropdown icon"></i>
                                         <div class="filter-sel-text" ng-if="$root.search.selectedBoard.length > 0 ">{{$root.search.selectedBoard.length+' boards'}}</div>
                                         <div class="filter-sel-text" ng-if="$root.search.selectedBoard.length == 0 ">Board</div>
                                         <div class="menu">
-                                            <div ng-click="$root.search.selectFilter('selectedBoard',board,$event)" ng-repeat="board in $root.search.boards" class="item" ng-class="{'active':($root.search.selectedBoard.indexOf(board)>=0)}" data-value="{{board}}">{{board}}</div>
+                                            <div ng-click="$root.search.selectFilter('selectedBoard',board,$event)" ng-repeat="board in $root.search.boards" class="item dropdown-item" ng-class="{'active':($root.search.selectedBoard.indexOf(board)>=0)}" data-value="{{board}}">{{board}}</div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class='two wide column' ng-if="$root.search.selectedSearchKey == 'Resources'">
-                                    <div id="filterContent" class="ui filtersearch ui multiple selection course-search-filter dropdown">
+                                    <div id="filterContent" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
                                         <input type='hidden' ng-value='{{}}' />
                                         <i class="dropdown icon"></i>
                                         <div class="filter-sel-text" ng-if="$root.search.selectedContentType.length > 0 ">{{$root.search.selectedContentType.length+' content types'}}</div>
                                         <div class="filter-sel-text" ng-if="$root.search.selectedContentType.length == 0 ">Content Type</div>
                                         <div class="menu">
-                                            <div ng-click="$root.search.selectFilter('selectedContentType',contentType,$event,'Content Type')" ng-repeat="contentType in $root.search.contentTypes" class="item" ng-class="{'active':($root.search.selectedContentType.indexOf(contentType)>=0)}" data-value="{{contentType}}">{{contentType}}</div>
+                                            <div ng-click="$root.search.selectFilter('selectedContentType',contentType,$event,'Content Type')" ng-repeat="contentType in $root.search.contentTypes" class="item dropdown-item" ng-class="{'active':($root.search.selectedContentType.indexOf(contentType)>=0)}" data-value="{{contentType}}">{{contentType}}</div>
                                         </div>
                                     </div>
                                 </div>
