@@ -23,6 +23,7 @@ const express = require('express'),
     keycloak_resource = env.sunbird_portal_auth_server_client || "portal",
     reqDataLimitOfContentEditor = '50mb',
     reqDataLimitOfContentUpload = '30mb',
+    ekstep_env = env.ekstep_env || 'qa',
     appId = env.sunbird_appid || 'sunbird.portal';
 
 const contentProxyUrl = contentURL.replace('/v1/', '');
@@ -103,9 +104,9 @@ app.all('/', function(req, res) {
     res.sendFile(__dirname + '/public/index.html');
 });
 
-app.get('/get/appid', keycloak.protect(), function(req,res){
+app.get('/get/envData', keycloak.protect(), function(req,res){
     res.status(200);
-    res.send({appId : appId});
+    res.send({appId : appId, ekstep_env : ekstep_env});
     res.end();
 });
 

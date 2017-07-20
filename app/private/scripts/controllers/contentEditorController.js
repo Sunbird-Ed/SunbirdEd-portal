@@ -32,6 +32,7 @@ angular.module('playerApp')
                 modalId: 'contentEditor',
                 apislug: '/api',
                 alertOnUnload: true,
+                aws_s3_urls: ["https://s3.ap-south-1.amazonaws.com/ekstep-public-"+org.sunbird.portal.ekstep_env+"/", "https://ekstep-public-"+org.sunbird.portal.ekstep_env+".s3-ap-south-1.amazonaws.com/"],
                 plugins: [
                     { "id": "org.ekstep.sunbirdheader", "ver": "1.0", "type": "plugin" }
                 ],
