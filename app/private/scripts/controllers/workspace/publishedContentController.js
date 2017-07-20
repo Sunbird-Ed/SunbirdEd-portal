@@ -8,7 +8,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('PublishedContentController', function(contentService, config, $rootScope, $state) {
+    .controller('PublishedContentController', function(contentService, searchService, config, $rootScope, $state) {
 
         var publishedContent = this;
         publishedContent.userId = $rootScope.userId;
@@ -57,7 +57,7 @@ angular.module('playerApp')
                 }
             };
             publishedContent.publishedContentData = [];
-            contentService.search(request).then(function(res) {
+            searchService.search(request).then(function(res) {
                     if (res && res.responseCode === 'OK') {
                         publishedContent[api].loader.showLoader = false;
                         publishedContent.publishedContentData = res.result.content;

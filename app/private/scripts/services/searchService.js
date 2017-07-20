@@ -11,4 +11,9 @@ angular.module('playerApp')
             var url =  config.URL.CONTENT_PREFIX + config.URL.COURSE.SEARCH;
             return httpService.post(url, req);
         };
+
+        this.search = function(req) {
+            var url =  config.URL.CONTENT_PREFIX + config.URL.COMPOSITE.SEARCH;
+            return httpService.post(url, req);
+        };
     });

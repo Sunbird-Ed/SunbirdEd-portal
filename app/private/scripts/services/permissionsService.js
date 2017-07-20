@@ -42,7 +42,7 @@ angular.module('playerApp')
             //if flag is true than and we check equality if data is string and
             // if data is array check if it is array check role/actions exists in array
             this.checkRolesPermissions = function(data, flag) {
-                if(currentUserRoles.length > 0) {
+                if(currentUserRoles && currentUserRoles.length > 0) {
                     if (!this.checkActionsPermissions(data, flag)) {
                         if (_.isArray(data)) {
                             if ((_.intersection(data, currentUserRoles).length === 0) && !flag) {
@@ -53,8 +53,8 @@ angular.module('playerApp')
                     } else{
                         return true;
                     }
-                    return false;
                 }
+                return false;
             };
 
         //if flag is true than and we check equality if data is string and
