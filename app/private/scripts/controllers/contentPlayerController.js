@@ -195,7 +195,7 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (playerTele
         $scope.getCurrentPage = $scope.getCurrentPage < $scope.totalPageNumber ? $scope.getCurrentPage + 1 : $scope.getCurrentPage;
         var telemetryData = {"id": $scope._instance.id, "ver": $scope._instance.ver, type: "TOUCH", subtype: "", "data": {"stageId": $scope.getCurrentPage?$scope.getCurrentPage.toString():""}};
         playerTelemetryUtilsService.updateTelemetry(telemetryData);
-        var telemetryNavData = {"id": $scope._instance.id, "ver": $scope._instance.ver, "stageid": ($scope.getCurrentPage - 1).toString(), "stageto": $scope.getCurrentPage.toString(), "data": {}};
+        var telemetryNavData = {"id": $scope._instance.id, "ver": $scope._instance.ver, "stageid": ($scope.getCurrentPage - 1).toString(), "stageto": $scope.getCurrentPage?$scope.getCurrentPage.toString():'', "data": {}};
         playerTelemetryUtilsService.navigateTelemetry(telemetryNavData);
         $scope.contentProgress = $scope.getCurrentPage * 100 / $scope.totalPageNumber;
         if ($scope.getCurrentPage == $scope.totalPageNumber) {
