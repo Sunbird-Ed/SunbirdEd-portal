@@ -30,7 +30,7 @@ angular.module('playerApp')
             window.config = {
                 baseURL: '',
                 modalId: 'contentEditor',
-                apislug: '/api',
+                apislug: '/action',
                 alertOnUnload: true,
                 aws_s3_urls: ["https://s3.ap-south-1.amazonaws.com/ekstep-public-"+org.sunbird.portal.ekstep_env+"/", "https://ekstep-public-"+org.sunbird.portal.ekstep_env+".s3-ap-south-1.amazonaws.com/"],
                 plugins: [
