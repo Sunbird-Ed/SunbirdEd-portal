@@ -373,7 +373,7 @@
                 "showEndPage": false,
                 "showStartPage": true,
                 "host": "",
-                "apislug": "/api",
+                "apislug": "/action",
                 "repos": ["/content-plugins/renderer"],
                 "plugins": [{ "id": "org.sunbird.iframeEvent", "ver": 1.0, "type": "plugin" },{"id":"org.sunbird.player.endpage","ver":1.0,"type":"plugin"}]
             },

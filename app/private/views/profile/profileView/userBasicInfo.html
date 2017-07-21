@@ -1,8 +1,8 @@
 <div class="ui raised segment " ng-init="profileCtrl.basicProfileForm=false">
     <div class="header announcementCard-header ">
         <span class="header cardsHeading " > {{$root.labels.PROFILE.BASIC_PROFILE.header}}</span>
-        <a href="" class="addeditprofile " ng-if="!profileCtrl.basicProfileForm"  ng-click="profileCtrl.basicProfileForm=true">{{$root.labels.PROFILE.BUTTON.edit}}</a>
-        <a href="" class="addeditprofile" ng-if="profileCtrl.basicProfileForm"  ng-click="profileCtrl.basicProfileForm=false">{{$root.labels.PROFILE.BUTTON.close}}</a>
+        <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.basicProfileForm"  ng-click="profileCtrl.basicProfileForm=true">{{$root.labels.PROFILE.BUTTON.edit}}</a>
+        <a class="addeditprofile cursor-pointer" ng-if="profileCtrl.basicProfileForm"  ng-click="profileCtrl.basicProfileForm=false">{{$root.labels.PROFILE.BUTTON.close}}</a>
 
     </div>
     <div class="profileitems ui relaxed aligned list " ng-if="!profileCtrl.basicProfileForm && profileCtrl.basicProfile">
