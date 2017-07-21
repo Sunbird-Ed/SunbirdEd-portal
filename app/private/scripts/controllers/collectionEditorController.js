@@ -54,7 +54,7 @@ angular.module('playerApp')
                 corePluginsPackaged: true,
                 modalId: 'collectionEditor',
                 dispatcher: 'local',
-                apislug: '/api',
+                apislug: '/action',
                 alertOnUnload: true,
                 headerLogo: !_.isUndefined($rootScope.orgLogo) ? $rootScope.orgLogo : '',
                 loadingImage: '',
