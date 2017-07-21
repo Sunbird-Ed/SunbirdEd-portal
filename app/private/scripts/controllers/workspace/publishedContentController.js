@@ -48,8 +48,7 @@ angular.module('playerApp')
             var request = {
                 filters: {
                     status: ["Live"],
-                    createdBy: publishedContent.userId,
-                    mimeType: ['application/vnd.ekstep.ecml-archive']
+                    createdBy: publishedContent.userId
                 },
 
                 'sort_by': {
