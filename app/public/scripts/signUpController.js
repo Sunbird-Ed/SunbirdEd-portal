@@ -77,6 +77,9 @@ angular.module('loginApp')
                 $('ui.fluid.dropdown.signupMultiple')
                     .dropdown({ placeholder: 'Languages' });
                 $('.ui .modal').modal('show');
+                $('#signupModal').modal({
+                    closable: false
+                });
             });
 
             $timeout(function() {
@@ -187,6 +190,9 @@ angular.module('loginApp')
             newUser.loader = showLoaderWithMessage('', errorMessages.SIGNUP.loading);
             var req = newUser.request;
             $('.ui .modal').modal('show');
+            $('#signupModal').modal({
+                closable: false
+            });
 
             signUpService.signUp(req).then(function(successResponse) {
                 if (successResponse && successResponse.responseCode === 'OK') {
