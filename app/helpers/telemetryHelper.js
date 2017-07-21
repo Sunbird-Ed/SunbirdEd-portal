@@ -1,12 +1,14 @@
 const request = require("request"),
     parser = require('ua-parser-js'),
     uuidv1 = require('uuid/v1'),
+    appId = process.env.sunbird_appid || 'sunbird.portal',
     contentURL = process.env.sunbird_content_player_url || 'http://localhost:5000/v1/';
 telemetry_packet_size = process.env.sunbird_telemetry_packet_size || 20;
 
 module.exports = {
     logSessionStart: function(req, callback) {
         var ua = parser(req.headers['user-agent']);
+        var dims = req.session.orgs.push(req.session.rootOrgId);
         var event = [{
             "ver": "2.1",
             "uid": req.kauth.grant.access_token.content.sub,
@@ -30,6 +32,12 @@ module.exports = {
                 "id": "",
                 "type": ""
             }],
+            "etags": {
+                "app": [],
+                "partner": [],
+                "dims": dims
+            },
+            "pdata": { "id": appId, "ver": "1.0" },
             "ets": new Date().getTime()
         }];
         this.sendTelemetry(req, event, function(status) {
@@ -43,8 +51,8 @@ module.exports = {
             req.session['sessionEvents'].push(req.body.event);
             if (req.session['sessionEvents'].length >= telemetry_packet_size) {
                 module.exports.sendTelemetry(req, req.session['sessionEvents'], function(status) {
-                        req.session['sessionEvents'] = [];
-                        req.session.save(); 
+                    req.session['sessionEvents'] = [];
+                    req.session.save();
                 });
             }
         }
