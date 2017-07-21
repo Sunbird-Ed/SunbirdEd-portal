@@ -1,9 +1,9 @@
 <div class="ui raised segment">
     <div class="header announcementCard-header">
         <span class="header cardsHeading">{{$root.labels.PROFILE.ADDRESS.header}} </span>
-        <a href="" class="addeditprofile" ng-if="!profileCtrl.addressForm && profileCtrl.address.length" ng-click="profileCtrl.addressForm=true ;profileCtrl.isNewAddress=false ">{{$root.labels.PROFILE.BUTTON.edit}}</a>
-        <a href="" class="addeditprofile" ng-if="!profileCtrl.addressForm " ng-click="profileCtrl.addressForm=true ;profileCtrl.isNewAddress=true ;profileCtrl.newAddress={} ">{{$root.labels.PROFILE.BUTTON.add}}</a>
-        <a href="" class="addeditprofile" ng-if="profileCtrl.addressForm" ng-click="profileCtrl.addressForm=false">{{$root.labels.PROFILE.BUTTON.close}}</a>
+        <a  class="addeditprofile cursor-pointer" ng-if="!profileCtrl.addressForm && profileCtrl.address.length" ng-click="profileCtrl.addressForm=true ;profileCtrl.isNewAddress=false ">{{$root.labels.PROFILE.BUTTON.edit}}</a>
+        <a  class="addeditprofile cursor-pointer" ng-if="!profileCtrl.addressForm " ng-click="profileCtrl.addressForm=true ;profileCtrl.isNewAddress=true ;profileCtrl.newAddress={} ">{{$root.labels.PROFILE.BUTTON.add}}</a>
+        <a  class="addeditprofile cursor-pointer" ng-if="profileCtrl.addressForm" ng-click="profileCtrl.addressForm=false">{{$root.labels.PROFILE.BUTTON.close}}</a>
     </div>
     <div ng-if="!profileCtrl.addressForm" class="profileitems ui relaxed divided items">
         <div class="item" ng-repeat="address in profileCtrl.address">
@@ -20,7 +20,7 @@
             </div>
             <div class="right-floated">
                 <div class="metadata">
-                    <a href="" ng-click="address.isDeleted=true;profileCtrl.deleteAddress(profileCtrl.address)"> <i class="trash outline icon trashIcon-fontSize"></i></a>
+                    <a  ng-click="address.isDeleted=true;profileCtrl.deleteAddress(profileCtrl.address)"> <i class="trash outline icon trashIcon-fontSize"></i></a>
                 </div>
             </div>
         </div>

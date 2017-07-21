@@ -46,7 +46,7 @@ angular.module('playerApp')
                      "id": org.sunbird.portal.appid, 
                      "type": "1.0" 
                 },
-                etags: { app: [""], partner: [""], dims: org.sunbird.portal.dims },
+                etags: { app: [], partner: [], dims: org.sunbird.portal.dims },
                 channel: org.sunbird.portal.channel
             };
 
@@ -54,7 +54,7 @@ angular.module('playerApp')
                 corePluginsPackaged: true,
                 modalId: 'collectionEditor',
                 dispatcher: 'local',
-                apislug: '/api',
+                apislug: '/action',
                 alertOnUnload: true,
                 headerLogo: !_.isUndefined($rootScope.orgLogo) ? $rootScope.orgLogo : '',
                 loadingImage: '',

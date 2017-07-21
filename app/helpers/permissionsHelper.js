@@ -85,6 +85,7 @@ let PERMISSIONS_HELPER = {
 
         request(options, function(error, response, body) {
             reqObj.session.roles = [];
+            reqObj.session.orgs = [];
             if (!error && body) {
                 body = JSON.parse(body)
                 if (body.responseCode === "OK") {
@@ -93,6 +94,9 @@ let PERMISSIONS_HELPER = {
                         _.forEach(body.result.response.organisations, function (org) {
                             if (org.roles && _.isArray(org.roles)) {
                                 reqObj.session.roles = _.union(reqObj.session.roles, org.roles)   
+                            }
+                            if (org.organisationId) {
+                                reqObj.session.orgs.push(org.organisationId);
                             }
                         })
                     }
