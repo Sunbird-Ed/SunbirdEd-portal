@@ -50,6 +50,7 @@ function TelemetryEvent() {
             }
         }
         TelemetryService._version == "1.0" ? this.event.ts = getTime(this.createdTime) : this.event.ets = getTime(this.createdTime);
+        this.event.mid = 'SB:' + CryptoJS.MD5(JSON.stringify(this.event)).toString();
     };
     this.flush = function(apiName) {
         var instance = this;
