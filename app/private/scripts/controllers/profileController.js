@@ -8,7 +8,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('ProfileController', function($scope, $rootScope, contentService, userService, config, $timeout, $filter) {
+    .controller('ProfileController', function($scope, $rootScope, contentService, userService, config, $timeout, $filter, uuid4) {
         var profile = this;
         profile.userId = $rootScope.userId;
         profile.experienceForm = false;
@@ -281,8 +281,8 @@ angular.module('playerApp')
         profile.updateProfile = function(updateReq) {
             updateReq.userId = $rootScope.userId;
             profile.updateProfileRequest = {
-                'id': 'unique API ID',
-                'ts': '2013/10/15 16:16:39',
+                'id': uuid4.generate(),
+                'ts': $filter('date')(new Date(), 'yyyy-MM-dd HH:mm:ss:sssZ'),
                 'params': {
 
                 },
