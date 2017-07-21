@@ -76,10 +76,10 @@
                     "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Marathi", "Punjabi", "Tamil", "Telugu"
                 ],
                 "contentTypes": [
-                    "Story", "Worksheet", "TextBook", "Collection"
+                    "Collection", "Story", "TextBook", "Worksheet"
                 ],
                 "subjects": [
-                    "Maths", "English", "Hindi", "Assamese", "Bengali", "Gujarati", "Kannada", "Malayalam", "Marathi", "Nepali", "Oriya", "Punjabi", "Tamil", "Telugu", "Urdu"
+                    "Assamese","Bengali","English","Gujarati","Hindi","Kannada","Malayalam","Marathi","Maths","Nepali","Oriya","Punjabi","Tamil","Telugu","Urdu"
                 ],
                 "boards": [
                     "NCERT", "CBSE", "ICSE", "MSCERT"
@@ -381,14 +381,12 @@
         },
         "DROPDOWN": {
             "COMMON": {
-                "languages": [
-                    "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Marathi", "Punjabi", "Tamil", "Telugu"
-                ],
+                "languages": ["Bengali","English","Gujarati","Hindi","Kannada","Marathi","Punjabi","Tamil","Telugu"],
                 "lessonTypes": [
                     "Story", "Worksheet"
                 ],
                 "subjects": [
-                    "Maths", "English", "Hindi", "Assamese", "Bengali", "Gujarati", "Kannada", "Malayalam", "Marathi", "Nepali", "Oriya", "Punjabi", "Tamil", "Telugu", "Urdu"
+                    "Assamese","Bengali","English","Gujarati","Hindi","Kannada","Malayalam","Marathi","Maths","Nepali","Oriya","Punjabi","Tamil","Telugu","Urdu"
                 ],
                 "grades": [
                     "Kindergarten",
@@ -413,10 +411,10 @@
                     "<5", "5-6", "6-7", "7-8", "8-10", ">10", "Other"
                 ],
                 "medium": [
-                    "English", "Hindi", "Assamese", "Bengali", "Gujarati", "Kannada", "Malayalam", "Marathi", "Nepali", "Oriya", "Punjabi", "Tamil", "Telugu", "Urdu", "Other"
+                    "Assamese","Bengali","English","Gujarati","Hindi","Kannada","Malayalam","Marathi","Nepali","Oriya","Other","Punjabi","Tamil","Telugu","Urdu"
                 ],
                 "boards": [
-                    "NCERT", "CBSE", "ICSE", "MSCERT"
+                    "CBSE", "ICSE", "NCERT", "MSCERT"
                 ]
             }
         },
