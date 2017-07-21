@@ -931,14 +931,7 @@ angular
                                     $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
                                     event.preventDefault();
                                     $state.go('Home');
-                                }
-                                break;
-                            case "PreviewCollection":
-                                if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
-                                    $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
-                                    event.preventDefault();
-                                    $state.go('Home');
-                                }
+                                }                                
                                 break;
                             case "WorkSpace.UpForReviewContent":
                                 if (permissionsService.checkRolesPermissions(['CONTENT_REVIEWER', 'CONTENT_REVIEW'], false)) {
