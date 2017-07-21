@@ -51,7 +51,7 @@ angular.module('playerApp').controller('contentPlayerCtrl', function (playerTele
                     // TODO: sid,uid,channel 
                     configuration.context.sid = $rootScope.sessionId;
                     configuration.context.uid = $rootScope.userId;
-                    configuration.context.channel = org.sunbird.portal.channel,
+                    configuration.context.channel = org.sunbird.portal.channel;
                     if(_.isUndefined($stateParams.courseId)){
                         configuration.context.dims = org.sunbird.portal.dims;
                     }else{
