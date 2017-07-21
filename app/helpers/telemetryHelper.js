@@ -8,7 +8,7 @@ telemetry_packet_size = process.env.sunbird_telemetry_packet_size || 20;
 module.exports = {
     logSessionStart: function(req, callback) {
         var ua = parser(req.headers['user-agent']);
-        var dims = req.session.orgs.push(req.session.rootOrgId);
+        req.session.orgs.push(req.session.rootOrgId);
         var event = [{
             "ver": "2.1",
             "uid": req.kauth.grant.access_token.content.sub,
@@ -35,7 +35,7 @@ module.exports = {
             "etags": {
                 "app": [],
                 "partner": [],
-                "dims": dims
+                "dims": req.session.orgs
             },
             "pdata": { "id": appId, "ver": "1.0" },
             "ets": new Date().getTime()
