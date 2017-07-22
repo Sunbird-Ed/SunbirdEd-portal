@@ -191,6 +191,7 @@ module.exports = {
             json: true
         };
         request(options, function(error, response, body) {
+            console.log('create user response: ' + body);
             if (error) {
                 callback(error, null)
                 return;
