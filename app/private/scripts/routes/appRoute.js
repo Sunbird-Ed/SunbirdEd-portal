@@ -479,7 +479,7 @@ angular
                 }
             })
             .state('Search', {
-                url: '/search/:type/:query/:filters/:sort',
+                url: '/search/:type/:query/:filters/:sort/:autoSuggestSearch',
                 views: {
                     'mainView': {
                         templateUrl: 'views/search/search.html',
@@ -490,7 +490,8 @@ angular
                     type: null,
                     query: null,
                     filters: null,
-                    sort: null
+                    sort: null,
+                    autoSuggestSearch:null
                 },
                 onEnter: function($state, $rootScope, portalTelemetryService, $stateParams) {
                     $rootScope.breadCrumbsData = [{
