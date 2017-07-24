@@ -116,7 +116,7 @@
                                         <option value=""></option>
                                     </select>
                                 </div>
-                                <i class="link" ng-class="{'sort content ascending icon':($root.search.sortIcon===true),'sort content descending icon':($root.search.sortIcon===false)}" ng-click="$root.search.sortIcon=!$root.search.sortIcon;$root.search.applySorting()"></i>
+                                <i class="link" ng-if="$root.search.sortByOption!=''" ng-class="{'sort content ascending icon':($root.search.sortIcon===true),'sort content descending icon':($root.search.sortIcon===false)}" ng-click="$root.search.sortIcon=!$root.search.sortIcon;$root.search.applySorting()"></i>
                             </div>
                         </div>
                     </div>

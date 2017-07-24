@@ -52,6 +52,7 @@ angular.module('playerApp')
             };
 
             section.sections = function () {
+                section.error ={};
                 section.loader = showLoaderWithMessage("", config.MESSAGES.RESOURCE.PAGE.START);
                 ($rootScope.search == undefined) ? $rootScope.search = {} : 0
                 var request = {"request": {
