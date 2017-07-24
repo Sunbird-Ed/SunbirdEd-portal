@@ -61,10 +61,6 @@ angular.module('loginApp')
             newUser.email = '';
             newUser.userName = '';
             newUser.phone = '';
-            newUser.gender = '';
-            newUser.avatar = '';
-            newUser.dob = null;
-            newUser.aadhaarNo = '';
             newUser.language = [];
 
             $timeout(function() {
@@ -77,6 +73,9 @@ angular.module('loginApp')
                 $('ui.fluid.dropdown.signupMultiple')
                     .dropdown({ placeholder: 'Languages' });
                 $('.ui .modal').modal('show');
+                $('#signupModal').modal({
+                    closable: false
+                });
             });
 
             $timeout(function() {
@@ -175,18 +174,16 @@ angular.module('loginApp')
                     'email': newUser.email,
                     'userName': newUser.userName.trim(),
                     'phone': newUser.phone,
-                    'gender': newUser.gender,
-                    'avatar': newUser.avatar,
-                    'dob': newUser.dob,
-                    'aadhaarNo': newUser.aadhaarNo,
-                    'language': newUser.language
-
+                    'language': [newUser.language]
                 }
             };
             console.log('newUser.dob', newUser.dob);
             newUser.loader = showLoaderWithMessage('', errorMessages.SIGNUP.loading);
             var req = newUser.request;
             $('.ui .modal').modal('show');
+            $('#signupModal').modal({
+                closable: false
+            });
 
             signUpService.signUp(req).then(function(successResponse) {
                 if (successResponse && successResponse.responseCode === 'OK') {
