@@ -53,6 +53,9 @@ angular.module('playerApp')
                         acceptFiles: config.FileExtensionToUpload,
                         sizeLimit: config.MaxFileSizeToUpload
                     },
+                    messages: {
+                        sizeError: '{file} is too large, maximum file size is 25 MB.'
+                    },
                     callbacks: {
                         onComplete: function (id, name, responseJSON) {
                             if(responseJSON.success) {
