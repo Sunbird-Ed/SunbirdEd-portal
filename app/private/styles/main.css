@@ -370,9 +370,6 @@ th {
 .padding-top-20 {
   padding-top: 20px !important;
 }
-.padding-top-30 {
-  padding-top: 30px !important;
-}
 .padding-topBottom-20 {
   padding: 10px 0px!important;
 }
@@ -495,6 +492,11 @@ th {
 }
 .right-floated {
   float: right;
+}
+.blur-content {
+  opacity: 0.2;
+  background: #f7f7f7;
+  cursor: text;
 }
 .header-container {
   margin-left: 1px !important;
