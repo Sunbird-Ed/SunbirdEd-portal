@@ -32,6 +32,7 @@ angular.module('playerApp')
             contentCreation.data = {};
 
             $timeout(function () {
+                
                 contentCreation.manualUploader = new qq.FineUploader({
                     element: document.getElementById('fine-uploader-manual-trigger'),
                     template: 'qq-template-manual-trigger',
@@ -52,6 +53,9 @@ angular.module('playerApp')
                     validation: {
                         acceptFiles: config.FileExtensionToUpload,
                         sizeLimit: config.MaxFileSizeToUpload
+                    },
+                    messages: {
+                        sizeError: '{file} is too large, maximum file size is 25 MB.'
                     },
                     callbacks: {
                         onComplete: function (id, name, responseJSON) {
@@ -81,6 +85,7 @@ angular.module('playerApp')
                         }
                     }
                 });
+                $("#fileUploadOptions").text($rootScope.labels.WORKSPACE.startCreating.fileUploadOptions);
                 
                 window.cancelUploadFile = function() {
                     document.getElementById("hide-section-with-button").style.display = 'block';
