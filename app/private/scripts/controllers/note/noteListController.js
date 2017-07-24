@@ -1,7 +1,6 @@
 'use strict';
 
-angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, noteService, config, $state, $stateParams, $timeout) {
-
+angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, noteService, config, $state, $stateParams, $timeout, $q) {
     var noteList = this;
     noteList.userId = $rootScope.userId;
     noteList.courseId = $stateParams.courseId;
@@ -255,8 +254,55 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope, not
             $("#notelistcontent0").addClass('notelistborder');
         }
         noteList.selectedNoteData = note;
-    }
+    };
+    
+    noteList.insertImage = function (update) {
+        
+        var defer = $q.defer();
+        noteList.openAddImageModal(function (response) {
+            if (!response) {
+                defer.reject();
+            } else {
+                console.log("response", response)
+                defer.resolve(response);
+            }
+        });
+        return defer.promise;
+    };
 
+    noteList.openAddImageModal = function (callback) {
+        noteList.showAddImageModal = true;
+        $('.wmd-prompt-background').css("z-index", 0);
+        $('.wmd-prompt-background').css("position", "initial");
+        $timeout(function () {
+            $('#showAddImageModal').modal({
+                onShow: function () {
+                    noteList.imageLink = "http://";
+                },
+                onHide: function (data) {
 
+                    console.info("link:", noteList.imageLink);
+                    console.info("data:", data);
+                    noteList.showAddImageModal = false;
+                    return callback(noteList.imageLink);
+                }
+            }).modal('show');
+        }, 10);
+    };
+    
+    noteList.closeAddImageModal = function (isCancle) {
+        if(isCancle) {
+            noteList.imageLink = '';
+        }
 
+        $('#showAddImageModal')
+                .modal('hide');
+        $('#showAddImageModal')
+                .modal('hide others');
+        $('#showAddImageModal')
+                .modal('hide all');
+        $('#showAddImageModal')
+                .modal('hide dimmer');
+    };
 });
+
