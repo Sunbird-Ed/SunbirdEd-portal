@@ -42,7 +42,6 @@ module.exports = {
             "pdata": { "id": appId, "ver": "1.0" },
             "ets": new Date().getTime()
         }];
-        console.log(JSON.stringify(event))
         this.sendTelemetry(req, event, function(status) {
             callback(null, status)
         })
