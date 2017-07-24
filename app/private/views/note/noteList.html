@@ -107,3 +107,28 @@
         </div>
     </div>
 </div>
+<div ng-if="noteList.showAddImageModal">
+    <div class="ui modal" id="showAddImageModal">
+        <div class=" ui segment margin-top-10">
+            <div class=" margin-bottom-15">
+                <div class="ui grid">
+                    <div class="eleven wide column">
+                        <span class="ui header">Insert Image</span>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                <div>
+                    <p>http://example.com/images/diagram.jpg "optional title"</p>
+                </div>
+                <div class="ui fluid icon input">
+                    <input type="text" placeholder="Title" name="title" ng-model="noteList.imageLink" />
+                </div>
+            </div>
+            <div class="actions">
+                <button class="ui primary right floated button margin-bottom-15 margin-top-10 " type="submit" tabindex="3" ng-click="noteList.closeAddImageModal()">OK</button>
+                <button class="ui secondary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="noteList.closeAddImageModal(true)">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
