@@ -389,6 +389,9 @@ th {
 .padding-all-10 {
   padding: 10px!important;
 }
+.padding-bottom-5 {
+  padding-bottom: 5px!important;
+}
 .margin-none {
   margin: 0em !important;
 }
