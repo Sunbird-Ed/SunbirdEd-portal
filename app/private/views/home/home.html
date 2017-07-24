@@ -32,7 +32,7 @@
                 <error-message data="{{homeCtrl.enrollCourseApi.error}}" visibility="homeCtrl.enrollCourseApi.error.showError"></error-message>
             </div>
         </div><br>
-        <div class="row">
+        <div class="row" ng-if="false">
             <div class="twelve wide column" ng-if="!homeCtrl.pageApi.loader.showLoader && !homeCtrl.pageApi.error.showError">
                 <div class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100 homeHeaderPadding" apply-script ng-if="homeCtrl.recommendedCourse.length > 0">
                     <span class="ui header  HomeAccordianHeading" translate="recommended">Recommended</span><span class="todolabel ui red circular inline label ">{{homeCtrl.recommendedCourse.length}}</span>
@@ -53,7 +53,7 @@
             <div class="twelve wide column" ng-if="homeCtrl.pageApi.error.showError">
                 <error-message data="{{homeCtrl.pageApi.error}}" visibility="homeCtrl.pageApi.error.showError"></error-message>
             </div>
-        </div><br><br>
+        </div>
         <div class="ui grid">
             <div class="row">
                 <div class="eight wide column">
