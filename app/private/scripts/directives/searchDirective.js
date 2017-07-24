@@ -163,7 +163,7 @@ angular.module('playerApp').directive('search', function () {
                                 query: $rootScope.search.searchKeyword,
                                 filters: btoa(JSON.stringify($rootScope.search.filters)),
                                 sort: btoa(JSON.stringify($rootScope.search.sortBy)),
-                                autoSuggestSearch:$rootScope.search.searchFromSuggestion
+                                autoSuggestSearch:$rootScope.search.searchFromSuggestion||false
                             };
                             //$state.go('Search', searchParams);
                             $location.path('search/' + searchParams.type + '/' + searchParams.query + '/' + searchParams.filters + '/' + searchParams.sort+"/"+searchParams.autoSuggestSearch);
