@@ -155,7 +155,7 @@ angular.module('playerApp')
         profile.openImageBrowser = function() {
             $('#iconImageInput').click();
         };
-        
+
         profile.updateIcon = function(files) {
             if (files[0] && files[0].name.match(/.(jpg|jpeg|png)$/i) && files[0].size < 4000000) {
                 var fd = new FormData();
@@ -166,8 +166,8 @@ angular.module('playerApp')
 
                 var reader = new FileReader();
                 reader.onload = function(e) {
-                    profile.user.avatar = e.target.result;
-                    $scope.$apply();
+                    // profile.user.avatar = e.target.result;
+                    // $scope.$apply();
                     profile.uploadOrUpdateAppIcon();
                 };
                 reader.readAsDataURL(files[0]);
@@ -342,6 +342,8 @@ angular.module('playerApp')
                 profile.basicProfile.profileSummary = profile.profileSummary;
                 profile.basicProfile.dob = dob instanceof Date ? $filter('date')(dob, 'yyyy-MM-dd') : null;
                 console.log(' profile.basicProfile.dob ', profile.basicProfile.dob);
+                console.log('profile.basicProfile.language', profile.basicProfile.language);
+                profile.basicProfile.language = [profile.basicProfile.language];
                 profile.updateProfile(profile.basicProfile);
             } else {
                 return false;

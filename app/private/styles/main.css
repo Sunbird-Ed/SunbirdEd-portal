@@ -386,6 +386,9 @@ th {
 .padding-all-10 {
   padding: 10px!important;
 }
+.padding-bottom-5 {
+  padding-bottom: 5px!important;
+}
 .margin-none {
   margin: 0em !important;
 }
@@ -489,6 +492,11 @@ th {
 }
 .right-floated {
   float: right;
+}
+.blur-content {
+  opacity: 0.2;
+  background: #f7f7f7;
+  cursor: text;
 }
 .header-container {
   margin-left: 1px !important;
@@ -722,7 +730,7 @@ div:focus {
 }
 .content-player {
   position: relative;
-  height: 99%;
+  height: 500px;
   width: 99.8%;
 }
 .content-player iframe {
