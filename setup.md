@@ -1,8 +1,6 @@
-#Player  Setup
+# Player  Setup
 
-
-##Environment Variables
-
+## Environment Variables
 1. sunbird_content_player_url
 2. sunbird_learner_player_url
 3. sunbird_port
@@ -22,17 +20,12 @@
 17. sunbird_default_tenant (string Eg: ntp)
 
 ##Pre Requirements
-
 1. Node
 2. gulp (npm install -g gulp)
 3. bower (npm install -g bower)
 4. Mongo
 
-
-
-##Setup Instructions
-
-
+## Setup Instructions
 * Clone the project.
 * Change to PROJECT_FOLDER
 * RUN `npm install`
