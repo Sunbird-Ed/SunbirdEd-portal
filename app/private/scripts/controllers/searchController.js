@@ -4,8 +4,8 @@ angular.module('playerApp')
             var search = this;
             search.initSearch = function () {
                 $timeout(function(){
-                $rootScope.$emit('initSearch', {});
-                },0);
+                $rootScope.$broadcast('initSearch', {});
+                },500);
             };
            
         });
