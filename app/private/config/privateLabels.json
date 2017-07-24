@@ -87,7 +87,10 @@
                 "plaseFillThisRD": "Please fill the details in below fields.",
                 "icon": "Icon",
                 "youCanFillThisDL": "You can fill in this details later",
-                "byProceedYouAgreed": "By proceeding you agreed to make all collections created through authoring tool or uploaded on the Ek Step platform to be available under licence CC-BY 4.0"
+                "byProceedYouAgreedCollection": "By proceeding you agreed to make all collection created through authoring tool or uploaded on the Ek Step platform to be available under licence CC-BY 4.0",
+                "byProceedYouAgreedCourse": "By proceeding you agreed to make all course created through authoring tool or uploaded on the Ek Step platform to be available under licence CC-BY 4.0",
+                "byProceedYouAgreedTextBook": "By proceeding you agreed to make all textbook created through authoring tool or uploaded on the Ek Step platform to be available under licence CC-BY 4.0",
+                "byProceedYouAgreedLesson": "By proceeding you agreed to make all lesson created through authoring tool or uploaded on the Ek Step platform to be available under licence CC-BY 4.0"
             }
         },
         "PROFILE": {
@@ -134,6 +137,7 @@
                 "gender": "Gender",
                 "male": "Male",
                 "female": "Female",
+                "transgender": "Transgender",
                 "language": "Language",
                 "dob": "Date Of Birth",
                 "subjects": "Subjects",

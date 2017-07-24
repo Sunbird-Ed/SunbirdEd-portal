@@ -68,7 +68,7 @@ angular.module('playerApp')
                 $rootScope.firstName = profileData.firstName;
                 $rootScope.lastName = profileData.lastName;
                 var userRoles = profileData.roles;
-                org.sunbird.portal.channel = (profileData.rootOrg && !_.isUndefined(profileData.rootOrg.id)) ? profileData.rootOrg.id : "505c7c48ac6dc1edc9b08f21db5a571d";
+                org.sunbird.portal.channel = md5((profileData.rootOrg && !_.isUndefined(profileData.rootOrg.id)) ? profileData.rootOrg.id : "sunbird");
                 var organisationIds = [org.sunbird.portal.channel];
                 _.forEach(profileData.organisations, function(org) {
                     if (org.roles && _.isArray(org.roles)) {
