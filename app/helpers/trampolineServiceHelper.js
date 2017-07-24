@@ -29,9 +29,10 @@ module.exports = {
             payload;
         async.series({
                 verifySignature: function(callback) {
+                    console.log('echoAPI : ' + echoAPI);
                     var options = {
                         method: 'GET',
-                        url: echoAPI + 'test',
+                        url: echoAPI + '/test',
                         "rejectUnauthorized": false,
                         headers: {
                             'cache-control': 'no-cache',
@@ -40,10 +41,13 @@ module.exports = {
                     };
                     request(options, function(error, response, body) {
                         if (error) {
+                            console.log('echo API error');
                             callback(error, response);
                         } else if (body === '/test') {
+                            console.log('echo API succesful');
                             callback(null, response);
                         } else {
+                            console.log('echo returned invalid response');
                             callback(body, response);
                         }
 
@@ -66,9 +70,11 @@ module.exports = {
                     //check user exist
                     self.checkUserExists(self.payload, function(err, status) {
                         if (err) {
+                            console.log('get user profile API error');
                             callback(err, null);
                             return;
                         } else if (status) {
+                            console.log('user already exists');
                             callback(null, status)
                             return;
                         } else {
@@ -76,12 +82,15 @@ module.exports = {
                             if (createUserFlag) {
                                 self.createUser(self.payload, function(error, status) {
                                     if (error) {
+                                        console.log('create user failed');
                                         callback(error, null);
                                         return;
                                     } else if (status) {
+                                        console.log('create user successful');
                                         callback(null, status)
                                         return;
                                     } else {
+                                        console.log('unable to create user');
                                         callback('unable to create user', null);
                                         return;
                                     }
@@ -112,6 +121,7 @@ module.exports = {
                 }
             },
             function(err, results) {
+                console.log('grant successful');
                 if (err) {
                     res.redirect((req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host'));
                 } else {
