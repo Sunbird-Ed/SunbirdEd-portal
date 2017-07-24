@@ -68,7 +68,7 @@ function TelemetryEvent() {
                     }
                 });
             } else {
-                console.log(JSON.stringify(this.event));
+                //console.log(JSON.stringify(this.event));
             }
         }
     };
