@@ -1,4 +1,4 @@
-<div ng-if="!$root.search.loader.showLoader && !$root.search.error.showError&&$root.search.searchResult.course.length">
+<div ng-if="!$root.search.loader.showLoader && !$root.search.error.showError&&$root.search.searchResult.content.length">
     <div class=" ui clearing segment content-player-header search-content-header">
         <div class="ui left floated header margin-auto ">
             <p class="serch-allresult">Showing results {{$root.search.searchKeyword? 'for ': ''}}<span class="lower-case">{{$root.search.searchKeyword? '"'+$root.search.searchKeyword+'"': ''}}  in "{{$root.search.selectedSearchKey }} "</span></p>
@@ -8,11 +8,9 @@
         </h5>
     </div>
     <div class="ui stackable four column grid dynamic-section-card ">
-        <div class="column " ng-repeat="item in $root.search.searchResult.course track by $index " ng-init="$last && search.loadRating() ">
-
-            <div class="slider link " ng-include=" 'views/common/ratingCard.html' " ng-click="$root.search.openCourseView(item,($root.enrolledCourseIds[item.courseId])?'ENROLLED_COURSE':'OTHER_COURSE')">
-
-            </div>
+        <div class="column " ng-repeat="item in $root.search.searchResult.content track by $index" ng-init="$last && search.loadRating() ">
+            <div ng-if="item.contentType!='Course'" ng-include=" 'views/common/ratingCard.html'" ng-click="$root.search.playContent(item)"></div>
+            <div ng-if="item.contentType=='Course'" ng-include=" 'views/common/ratingCard.html'" ng-click="$root.search.openCourseView(item)"></div>
         </div>
     </div>
 </div>

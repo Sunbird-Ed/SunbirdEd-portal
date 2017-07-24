@@ -34,7 +34,7 @@ angular.module('playerApp').directive('search', function () {
                 $timeout(function () {
                     $rootScope.search.selectedSearchKey = $rootScope.searchKey;
                     $scope.search.isSearchTypeKey = $scope.search.searchTypeKeys.includes($rootScope.search.selectedSearchKey);
-                    $('#headerSearch').dropdown('set selected', $scope.search.isSearchTypeKey === true ? $rootScope.search.selectedSearchKey : 'All');                    
+                    $('#headerSearch').dropdown('set selected', $scope.search.isSearchTypeKey === true ? $rootScope.search.selectedSearchKey : 'All');
                 }, 0);
 
             });
@@ -104,7 +104,7 @@ angular.module('playerApp').directive('search', function () {
 
             $rootScope.search.openCourseView = function (course, courseType) {
                 var showLectureView = 'no';
-                 $rootScope.enrolledCourseIds[course.courseId || course.identifier] ? showLectureView = 'no' : showLectureView = 'yes';
+                $rootScope.enrolledCourseIds[course.courseId || course.identifier] ? showLectureView = 'no' : showLectureView = 'yes';
                 //  var params = { courseType: courseType, courseId: course.courseId || course.identifier, tocId: course.courseId || course.identifier, lectureView: showLectureView, progress: course.progress, total: course.total };
                 var params = {courseType: courseType, courseId: course.courseId || course.identifier, tocId: course.courseId || course.identifier, lectureView: showLectureView, progress: course.progress, total: course.total, courseName: course.courseName || course.name, lastReadContentId: course.lastReadContentId};
                 sessionService.setSessionData('COURSE_PARAMS', params);
@@ -121,6 +121,7 @@ angular.module('playerApp').directive('search', function () {
 
             $rootScope.search.setSearchText = function (searchText) {
                 $rootScope.search.searchKeyword = searchText;
+                $rootScope.search.searchFromSuggestion = true;
                 $scope.search.searchRequest(false);
             }
             $scope.search.autoSuggestSearch = function () {
@@ -146,6 +147,7 @@ angular.module('playerApp').directive('search', function () {
                     $scope.search.autoSuggest = false;
                     if ($rootScope.search.searchKeyword != '' && $rootScope.isSearchPage) {
                         if ($rootScope.isSearchResultsPage && $rootScope.search.searchKeyword == $stateParams.query) {
+                            $rootScope.search.error = {};
                             $rootScope.search.loader = showLoaderWithMessage('', $rootScope.errorMessages.SEARCH.DATA.START);
                             $scope.search.handleSearch();
                         } else {
@@ -177,12 +179,22 @@ angular.module('playerApp').directive('search', function () {
                     'sort_by': $rootScope.search.sortBy
 
                 };
-
+                //if autosuggest option is clicked
+                if ($rootScope.search.searchFromSuggestion) {
+                    req.filters.name = req.query;
+                    req.query = '';
+                    $rootScope.search.searchFromSuggestion = false;
+                } else {
+                   delete req.filters.name;
+                }
                 if ($rootScope.search.selectedSearchKey == "Courses") {
                     $scope.search.searchFn = searchService.courseSearch(req);
                     $scope.search.resultType = 'course';
                 } else if ($rootScope.search.selectedSearchKey == "Resources") {
                     $scope.search.searchFn = searchService.contentSearch(req);
+                    $scope.search.resultType = 'content';
+                } else if ($rootScope.search.selectedSearchKey == "All") {
+                    $scope.search.searchFn = searchService.search(req);
                     $scope.search.resultType = 'content';
                 }
 
