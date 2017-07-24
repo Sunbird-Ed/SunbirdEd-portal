@@ -87,6 +87,9 @@ angular.module('playerApp')
                         });
 
                         section.loader.showLoader = false;
+                        if (section.page.length == 0) {
+                            section.error = showErrorMessage(true, $rootScope.errorMessages.SEARCH.DATA.NO_CONTENT, $rootScope.errorMessages.COMMON.INFO);
+                       }
                     } else {
                         section.loader.showLoader = false;
                         section.error = showErrorMessage(true, config.MESSAGES.RESOURCE.PAGE.FAILED, config.MESSAGES.COMMON.ERROR);
