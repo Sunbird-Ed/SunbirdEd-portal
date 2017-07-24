@@ -44,6 +44,10 @@ angular
                         onEnter: function ($rootScope, portalTelemetryService) {
                             $rootScope.searchKey = 'Home';
                             $rootScope.breadCrumbsData = null;
+                            $rootScope.isSearchPage = true;
+                            $rootScope.showFilter = true;
+                            $rootScope.searchKey = 'All';
+                            $rootScope.homeActive = 'active';
                             portalTelemetryService.fireImpressions({
                                 "env": "home",
                                 "type": "default",
@@ -52,6 +56,11 @@ angular
                                 "name": "",
                                 "url": "/private/index#!/home"
                             });
+                        },
+                        onExit: function ($rootScope) {
+                            $rootScope.isSearchPage = false;
+                            $rootScope.showFilter = false;
+                            $rootScope.homeActive = '';
                         }
                     })
                     .state('UserContent', {
@@ -95,7 +104,7 @@ angular
                                 $rootScope.search.selectedSubject = [];
                                 $rootScope.search.selectedBoard = [];
                                 $rootScope.search.filters = {};
-                                $rootScope.search.sortBy={};
+                                $rootScope.search.sortBy = {};
                             }
                             //filters section -- ends
                             $rootScope.breadCrumbsData = [{name: 'Home', link: 'home'}, {'name': 'Courses', 'link': 'learn'}];
@@ -141,7 +150,7 @@ angular
                                 $rootScope.search.selectedSubject = [];
                                 $rootScope.search.selectedBoard = [];
                                 $rootScope.search.filters = {};
-                                $rootScope.search.sortBy={};
+                                $rootScope.search.sortBy = {};
                             }
                             //filters section -- ends                         
                             portalTelemetryService.fireImpressions({
@@ -394,8 +403,11 @@ angular
                             $rootScope.searchKey = $stateParams.type;
                             if ($stateParams.type == 'Courses') {
                                 $rootScope.courseActive = 'active';
-                            } else {
+                            } else if($stateParams.type == 'Resources'){
                                 $rootScope.resourcesActive = 'active';
+                            }
+                            else{
+                                 $rootScope.homeActive = 'active';
                             }
                             portalTelemetryService.fireImpressions({
                                 "env": "course",
@@ -412,6 +424,7 @@ angular
                             $rootScope.breadCrumbsData = null;
                             $rootScope.isSearchResultsPage = false;
                             $rootScope.showFilter = false;
+                            $rootScope.homeActive = '';
                         }
                     })
                     .state('SearchResource', {
@@ -856,9 +869,9 @@ angular
                         }
                     })
                     .then(function () {
-                            $urlRouter.sync();
-                            $urlRouter.listen();
-                        });
+                        $urlRouter.sync();
+                        $urlRouter.listen();
+                    });
 
             $rootScope.$on('$stateChangeStart',
                     function (event, toState, toParams, fromState, fromParams) {
@@ -931,7 +944,7 @@ angular
                                     $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
                                     event.preventDefault();
                                     $state.go('Home');
-                                }                                
+                                }
                                 break;
                             case "WorkSpace.UpForReviewContent":
                                 if (permissionsService.checkRolesPermissions(['CONTENT_REVIEWER', 'CONTENT_REVIEW'], false)) {
