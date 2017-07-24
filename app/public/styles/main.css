@@ -386,6 +386,9 @@ th {
 .padding-all-10 {
   padding: 10px!important;
 }
+.padding-bottom-5 {
+  padding-bottom: 5px!important;
+}
 .margin-none {
   margin: 0em !important;
 }
@@ -489,6 +492,11 @@ th {
 }
 .right-floated {
   float: right;
+}
+.blur-content {
+  opacity: 0.2;
+  background: #f7f7f7;
+  cursor: text;
 }
 .header-container {
   margin-left: 1px !important;
@@ -696,6 +704,9 @@ th {
 div:focus {
   outline: none;
 }
+.ui.cards > .card > .content {
+  padding-right: 3px !important;
+}
 .content-input {
   display: none;
 }
@@ -719,7 +730,7 @@ div:focus {
 }
 .content-player {
   position: relative;
-  height: 99%;
+  height: 500px;
   width: 99.8%;
 }
 .content-player iframe {
@@ -995,7 +1006,7 @@ span.fancytree-title {
   /* box-shadow: 0 8px 6px -8px #d9d4d4;*/
   padding-top: 1em;
   padding-bottom: 1em;
-  /*padding-left: 0.3em;*/
+  padding-left: 0.3em;
 }
 .popular-page .ui.cards ~ .ui.cards {
   margin-top: 1.875em;
