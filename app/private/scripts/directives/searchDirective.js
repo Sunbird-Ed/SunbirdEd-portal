@@ -43,6 +43,7 @@ angular.module('playerApp').directive('search', function () {
             });
             $rootScope.$on('setSearchKey', function (event, args) {
                 $rootScope.search.selectedSearchKey = args.key;
+                $scope.search.searchRequest(false);
             });
 
             $rootScope.search.selectFilter = function (filterType, value, $event) {
@@ -102,6 +103,7 @@ angular.module('playerApp').directive('search', function () {
                 $rootScope.search.selectedBoard = $rootScope.search.filters.board || [];
                 $rootScope.search.selectedSubject = $rootScope.search.filters.subject || [];
                 $rootScope.search.sortByOption = Object.keys($rootScope.search.sortBy).length > 0 ? Object.keys($rootScope.search.sortBy)[0] : '';
+                $rootScope.search.searchFromSuggestion=$stateParams.autoSuggestSearch;
                 // $rootScope.search.sortBy=$rootScope.search.sortBy;
                 $scope.search.searchRequest();
             };
@@ -160,10 +162,11 @@ angular.module('playerApp').directive('search', function () {
                                 type: $rootScope.search.selectedSearchKey,
                                 query: $rootScope.search.searchKeyword,
                                 filters: btoa(JSON.stringify($rootScope.search.filters)),
-                                sort: btoa(JSON.stringify($rootScope.search.sortBy))
+                                sort: btoa(JSON.stringify($rootScope.search.sortBy)),
+                                autoSuggestSearch:$rootScope.search.searchFromSuggestion
                             };
                             //$state.go('Search', searchParams);
-                            $location.path('search/' + searchParams.type + '/' + searchParams.query + '/' + searchParams.filters + '/' + searchParams.sort);
+                            $location.path('search/' + searchParams.type + '/' + searchParams.query + '/' + searchParams.filters + '/' + searchParams.sort+"/"+searchParams.autoSuggestSearch);
                         }
                     } else
                     {
@@ -184,10 +187,10 @@ angular.module('playerApp').directive('search', function () {
 
                 };
                 //if autosuggest option is clicked
-                if ($rootScope.search.searchFromSuggestion) {
+                if ($rootScope.search.searchFromSuggestion=='true') {
                     req.filters.name = req.query;
                     req.query = '';
-                    $rootScope.search.searchFromSuggestion = false;
+                    $rootScope.search.searchFromSuggestion = 'false';
                 } else {
                     delete req.filters.name;
                 }
