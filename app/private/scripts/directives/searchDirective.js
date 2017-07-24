@@ -34,12 +34,15 @@ angular.module('playerApp').directive('search', function () {
                 $timeout(function () {
                     $rootScope.search.selectedSearchKey = $rootScope.searchKey;
                     $scope.search.isSearchTypeKey = $scope.search.searchTypeKeys.includes($rootScope.search.selectedSearchKey);
-                    $('#headerSearch').dropdown('set selected', $scope.search.isSearchTypeKey === true ? $rootScope.search.selectedSearchKey : 'All');                    
+                    $('#headerSearch').dropdown('set selected', $scope.search.isSearchTypeKey === true ? $rootScope.search.selectedSearchKey : 'All');
                 }, 0);
 
             });
             $rootScope.$on('initSearch', function (event, args) {
                 $scope.search.initSearch();
+            });
+            $rootScope.$on('setSearchKey', function (event, args) {
+                $rootScope.search.selectedSearchKey = args.key;
             });
 
             $rootScope.search.selectFilter = function (filterType, value, $event) {
@@ -98,13 +101,14 @@ angular.module('playerApp').directive('search', function () {
                 $rootScope.search.selectedContentType = $rootScope.search.filters.contentType || [];
                 $rootScope.search.selectedBoard = $rootScope.search.filters.board || [];
                 $rootScope.search.selectedSubject = $rootScope.search.filters.subject || [];
+                $rootScope.search.sortByOption = Object.keys($rootScope.search.sortBy).length > 0 ? Object.keys($rootScope.search.sortBy)[0] : '';
                 // $rootScope.search.sortBy=$rootScope.search.sortBy;
                 $scope.search.searchRequest();
             };
 
             $rootScope.search.openCourseView = function (course, courseType) {
                 var showLectureView = 'no';
-                 $rootScope.enrolledCourseIds[course.courseId || course.identifier] ? showLectureView = 'no' : showLectureView = 'yes';
+                $rootScope.enrolledCourseIds[course.courseId || course.identifier] ? showLectureView = 'no' : showLectureView = 'yes';
                 //  var params = { courseType: courseType, courseId: course.courseId || course.identifier, tocId: course.courseId || course.identifier, lectureView: showLectureView, progress: course.progress, total: course.total };
                 var params = {courseType: courseType, courseId: course.courseId || course.identifier, tocId: course.courseId || course.identifier, lectureView: showLectureView, progress: course.progress, total: course.total, courseName: course.courseName || course.name, lastReadContentId: course.lastReadContentId};
                 sessionService.setSessionData('COURSE_PARAMS', params);
@@ -121,6 +125,7 @@ angular.module('playerApp').directive('search', function () {
 
             $rootScope.search.setSearchText = function (searchText) {
                 $rootScope.search.searchKeyword = searchText;
+                $rootScope.search.searchFromSuggestion = true;
                 $scope.search.searchRequest(false);
             }
             $scope.search.autoSuggestSearch = function () {
@@ -145,7 +150,8 @@ angular.module('playerApp').directive('search', function () {
                 if (!$event || $event.charCode == 13) {
                     $scope.search.autoSuggest = false;
                     if ($rootScope.search.searchKeyword != '' && $rootScope.isSearchPage) {
-                        if ($rootScope.isSearchResultsPage && $rootScope.search.searchKeyword == $stateParams.query) {
+                        if ($rootScope.isSearchResultsPage && $rootScope.search.searchKeyword == $stateParams.query && $rootScope.search.selectedSearchKey == $stateParams.type) {
+                            $rootScope.search.error = {};
                             $rootScope.search.loader = showLoaderWithMessage('', $rootScope.errorMessages.SEARCH.DATA.START);
                             $scope.search.handleSearch();
                         } else {
@@ -177,12 +183,22 @@ angular.module('playerApp').directive('search', function () {
                     'sort_by': $rootScope.search.sortBy
 
                 };
-
+                //if autosuggest option is clicked
+                if ($rootScope.search.searchFromSuggestion) {
+                    req.filters.name = req.query;
+                    req.query = '';
+                    $rootScope.search.searchFromSuggestion = false;
+                } else {
+                    delete req.filters.name;
+                }
                 if ($rootScope.search.selectedSearchKey == "Courses") {
                     $scope.search.searchFn = searchService.courseSearch(req);
                     $scope.search.resultType = 'course';
                 } else if ($rootScope.search.selectedSearchKey == "Resources") {
                     $scope.search.searchFn = searchService.contentSearch(req);
+                    $scope.search.resultType = 'content';
+                } else if ($rootScope.search.selectedSearchKey == "All") {
+                    $scope.search.searchFn = searchService.search(req);
                     $scope.search.resultType = 'content';
                 }
 
@@ -192,6 +208,9 @@ angular.module('playerApp').directive('search', function () {
                         $rootScope.search.autosuggest_data = [];
                         if ($scope.search.autoSuggest && $rootScope.search.searchKeyword != $stateParams.query) {
                             $rootScope.search.autosuggest_data = res.result[$scope.search.resultType];
+                            if ($rootScope.search.autosuggest_data.length > 0) {
+                                $("#search-suggestions").addClass('visible').removeClass('hidden');
+                            }
 
                         } else
                         {
@@ -248,7 +267,11 @@ angular.module('playerApp').directive('search', function () {
                 $scope.search.searchRequest();
             };
             $rootScope.search.close = function () {
-                $state.go($rootScope.search.selectedSearchKey);
+                var closeUrl = $rootScope.search.selectedSearchKey == 'All' ? 'Home' : $rootScope.search.selectedSearchKey;
+                $state.go(closeUrl);
+            }
+            $rootScope.search.setSearchKey = function (key) {
+                $rootScope.$emit('setSearchKey', {key: key});
             }
 
         }];

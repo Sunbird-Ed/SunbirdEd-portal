@@ -6,7 +6,7 @@
             <div class="text"></div>
             <i class="dropdown icon"></i>
             <div class="menu">
-                <div class="item" ng-repeat="key in search.searchSelectionKeys" value="{{key.id}}">{{key.name}}</div>
+                <div class="item" ng-click="$root.search.setSearchKey(key.id)" ng-repeat="key in search.searchSelectionKeys" value="{{key.id}}">{{key.name}}</div>
             </div>
         </div>
 
