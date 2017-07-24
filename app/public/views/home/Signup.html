@@ -39,27 +39,10 @@
                     <input type="text" name="email" autocomplete="false" placeholder="User@example.com" ng-model="newUser.email">
                 </div>
             </div>
-            <div class="two fields">
-                <div class="field">
-                    <label>{{labels.SignUp.gender}}</label>
-                    <select class="ui fluid dropdown" ng-model="newUser.gender">
-                        <option value="Female">Female</option>
-                        <option value="Male">Male</option>
-                    </select>
-                </div>
-                <div class="field">
-                    <label>{{labels.SignUp.dob}}</label>
-                    <div class="ui calendar" id="dobCalendar">
-                        <div class="ui input left icon">
-                            <i class="calendar icon"></i>
-                            <input type="text" placeholder="Date" ng-model="newUser.dob">
-                        </div>
-                    </div>
-                </div>
-            </div>
+
             <div class=" required field" ng-init="newUser.formInit() ">
                 <label>{{labels.SignUp.language}}</label>
-                <select name="language" ng-selected="true" placeholder="Languages" class="ui fluid dropdown signupMultiple" multiple="" ng-value="option.value" ng-options=" language for language in newUser.languages" ng-model="newUser.language">
+                <select name="language" ng-selected="true" placeholder="Languages" class="ui fluid dropdown signupMultiple" ng-value="option.value" ng-options=" language for language in newUser.languages" ng-model="newUser.language">
                         <option value="" translate="languages">Languages</option>
                     </select>
             </div>
