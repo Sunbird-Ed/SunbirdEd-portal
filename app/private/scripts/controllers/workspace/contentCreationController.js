@@ -8,7 +8,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-        .controller('ContentCreationController', function (contentService, config, $scope, $state, $timeout, $rootScope) {
+        .controller('ContentCreationController', function (contentService, config, $scope, $state, $timeout, $rootScope, ToasterService) {
 
             var contentCreation = this;
             contentCreation.contentUploadUrl = config.URL.BASE_PREFIX + config.URL.CONTENT_PREFIX + config.URL.CONTENT.UPLOAD;
@@ -153,37 +153,11 @@ angular.module('playerApp')
                 }, 10);
             };
 
-            /**
-             * This function called when api failed, and its show failed response for 2 sec.
-             * @param {String} message
-             */
-            function showErrorMessage(isClose, message, messageType) {
-                var error = {};
-                error.showError = true;
-                error.isClose = isClose;
-                error.message = message;
-                error.messageType = messageType;
-                return error;
-            }
-
-            /**
-             * This function helps to show loader with message.
-             * @param {String} headerMessage
-             * @param {String} loaderMessage
-             */
-            function showLoaderWithMessage(headerMessage, loaderMessage) {
-                var loader = {};
-                loader.showLoader = true;
-                loader.headerMessage = headerMessage;
-                loader.loaderMessage = loaderMessage;
-                return loader;
-            }
-
             contentCreation.createContent = function (requestData, api) {
 
                 contentService.create(requestData).then(function (res) {
                     if (res && res.responseCode === "OK") {
-                        contentCreation[api].loader.showLoader = false;
+                        contentCreation.loader.showLoader = false;
                         contentCreation.contentId = res.result.content_id;
                         contentCreation.hideContentCreationModal();
                         if(contentCreation.youtubeFileLink) {
@@ -193,20 +167,18 @@ angular.module('playerApp')
                             contentCreation.uploadContent(res.result.content_id);
                         }
                     } else {
-                        contentCreation[api].loader.showLoader = false;
-                        contentCreation[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.CREATE_LESSON.FAILED, $rootScope.errorMessages.COMMON.ERROR);
+                        contentCreation.loader.showLoader = false;
+                        ToasterService.error($rootScope.errorMessages.WORKSPACE.UPLOAD_CONTENT.FAILED);
                     }
                 }).catch(function (error) {
-                    contentCreation[api].loader.showLoader = false;
-                    contentCreation[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.CREATE_LESSON.FAILED, $rootScope.errorMessages.COMMON.ERROR);
+                    contentCreation.loader.showLoader = false;
+                    ToasterService.error($rootScope.errorMessages.WORKSPACE.UPLOAD_CONTENT.FAILED);
                 });
             };
 
             contentCreation.saveMetaData = function (data) {
 
-                var api = 'createApi';
-                contentCreation[api] = {};
-                contentCreation[api].loader = showLoaderWithMessage("", $rootScope.errorMessages.WORKSPACE.CREATE_LESSON.START);
+                contentCreation.loader = ToasterService.loader("", $rootScope.errorMessages.WORKSPACE.UPLOAD_CONTENT.START);
 
                 var requestBody = angular.copy(data);
 
@@ -222,13 +194,9 @@ angular.module('playerApp')
                 }
 
                 var requestdata = {
-                    "content": requestBody,
-                    "params": {
-                        "cid": "new",
-                        "sid": "12345"
-                    }
+                    "content": requestBody
                 };
-                contentCreation.createContent(requestdata, api);
+                contentCreation.createContent(requestdata);
             };
 
             contentCreation.uploadContent = function () {

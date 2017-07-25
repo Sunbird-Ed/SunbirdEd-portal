@@ -1,6 +1,6 @@
 <div ng-init="collection.initilizeView()">
     <div class="ui modal" id="createSlideShowModal" ng-if="collection.showCreateSlideShowModal">
-        <div class=" ui segment margin-top-10" ng-show="!collection.createApi.loader.showLoader && !collection.createApi.error.showError">
+        <div class=" ui segment margin-top-10" ng-show="!collection.loader.showLoader">
             <div class=" margin-bottom-15">
                 <div class="ui grid">
                     <div class="eleven wide column">
@@ -33,7 +33,8 @@
             </div>
             <div class="actions margin-top-10">
                 <p class="text-align-center padding-top-20">
-                    <button class="ui primary text-align-center icon button" ng-click="collection.saveMetaData(collection.data)">
+                    <button class="ui primary text-align-center icon button" ng-click="collection.saveMetaData(collection.data)"
+                            ng-disabled="collection.loader.showLoader">
                         {{$root.labels.WORKSPACE.common.startCreating}}
                     </button>
                 </p>
@@ -45,11 +46,8 @@
                 </div>
             </div>
         </div>
-        <div class=" ui segment margin-top-10" ng-if="collection.createApi.loader.showLoader">
-            <app-loader data="{{collection.createApi.loader}}"></app-loader>
-        </div>
-        <div class=" ui segment margin-top-10" ng-if="collection.createApi.error.showError">
-            <error-message data="{{collection.createApi.error}}" visibility="collection.createApi.error.showError"></error-message>
+        <div class=" ui segment margin-top-10" ng-if="collection.loader.showLoader">
+            <app-loader data="{{collection.loader}}"></app-loader>
         </div>
     </div>
 </div>

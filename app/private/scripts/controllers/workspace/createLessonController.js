@@ -9,7 +9,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('ContentLessonController', function(contentService, $timeout, $state, config, $rootScope) {
+    .controller('ContentLessonController', function(contentService, $timeout, $state, config, $rootScope, ToasterService) {
 
         var contentLesson = this;
         contentLesson.lessonTypes = config.DROPDOWN.COMMON.lessonTypes;
@@ -52,57 +52,29 @@ angular.module('playerApp')
             }, 10);
         };
 
-        /**
-         * This function called when api failed, and its show failed response for 2 sec.
-         * @param {String} message
-         */
-        function showErrorMessage(isClose, message, messageType) {
-            var error = {};
-            error.showError = true;
-            error.isClose = isClose;
-            error.message = message;
-            error.messageType = messageType;
-            return error;
-        }
-
-        /**
-         * This function helps to show loader with message.
-         * @param {String} headerMessage
-         * @param {String} loaderMessage
-         */
-        function showLoaderWithMessage(headerMessage, loaderMessage) {
-            var loader = {};
-            loader.showLoader = true;
-            loader.headerMessage = headerMessage;
-            loader.loaderMessage = loaderMessage;
-            return loader;
-        }
-
-        contentLesson.createContent = function(requestData, api) {
+        contentLesson.createContent = function(requestData) {
 
             contentService.create(requestData).then(function(res) {
                 if (res && res.responseCode === "OK") {
                     contentLesson.slideShowCreated = true;
                     contentLesson.showCreateSlideShowModal = false;
-                    contentLesson[api].loader.showLoader = false;
+                    contentLesson.loader.showLoader = false;
                     contentLesson.hideCreateSlideShowModal();
                     contentLesson.initEKStepCE(res.result.content_id);
-
+                    
                 } else {
-                    contentLesson[api].loader.showLoader = false;
-                    contentLesson[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.CREATE_LESSON.FAILED, $rootScope.errorMessages.COMMON.ERROR);
+                    contentLesson.loader.showLoader = false;
+                    ToasterService.error($rootScope.errorMessages.WORKSPACE.CREATE_LESSON.FAILED);
                 }
             }).catch(function (error){
-                contentLesson[api].loader.showLoader = false;
-                contentLesson[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.CREATE_LESSON.FAILED, $rootScope.errorMessages.COMMON.ERROR);
+                contentLesson.loader.showLoader = false;
+                ToasterService.error($rootScope.errorMessages.WORKSPACE.CREATE_LESSON.FAILED);
             });
         };
 
         contentLesson.saveMetaData = function(data) {
 
-            var api = 'createApi';
-            contentLesson[api] = {};
-            contentLesson[api].loader = showLoaderWithMessage("", $rootScope.errorMessages.WORKSPACE.CREATE_LESSON.START);
+            contentLesson.loader = ToasterService.loader("", $rootScope.errorMessages.WORKSPACE.CREATE_LESSON.START);
 
             var requestBody = angular.copy(data);
 
@@ -115,14 +87,10 @@ angular.module('playerApp')
             var requestdata = {
                 "content": requestBody
             };
-            contentLesson.createContent(requestdata, api);
+            contentLesson.createContent(requestdata);
         };
 
         contentLesson.clearCreateSlideShowData = function() {
-
-            if (contentLesson.createApi) {
-                contentLesson.createApi.error = {};
-            }
             contentLesson.data = {};
         };
 

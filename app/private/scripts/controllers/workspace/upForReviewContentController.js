@@ -8,57 +8,31 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('UpForReviewContentController', function(contentService, searchService, config, $rootScope, $scope, $state) {
+    .controller('UpForReviewContentController', function(contentService, searchService, config, $rootScope, $scope, $state, ToasterService) {
 
         var upForReviewContent = this;
         upForReviewContent.userId = $rootScope.userId;
+        upForReviewContent.contentStatus = ["Review"];
+        upForReviewContent.channelId = "sunbird";
         $scope.contentPlayer = { isContentPlayerEnabled: false };
-
-        /**
-         * This function helps to show loader with message.
-         * @param {String} headerMessage
-         * @param {String} loaderMessage
-         */
-        function showLoaderWithMessage(headerMessage, loaderMessage) {
-            var loader = {};
-            loader.showLoader = true;
-            loader.headerMessage = headerMessage;
-            loader.loaderMessage = loaderMessage;
-            return loader;
-        }
-
-        /**
-         * This function called when api failed, and its show failed response for 2 sec.
-         * @param {String} message
-         */
-        function showErrorMessage(isClose, message, messageType) {
-            var error = {};
-            error.showError = true;
-            error.isClose = isClose;
-            error.message = message;
-            error.messageType = messageType;
-            return error;
-        }
-
-
+        
         function getReviewContent() {
 
-            var api = "reviewApi";
-            upForReviewContent[api] = {};
-            upForReviewContent[api].loader = showLoaderWithMessage("", $rootScope.errorMessages.WORKSPACE.UP_FOR_REVIEW.START);
+            upForReviewContent.loader = ToasterService.loader("", $rootScope.errorMessages.WORKSPACE.UP_FOR_REVIEW.START);
             var request = {
                 filters: {
-                    status: ["Review"],
-                    "channelId": "sunbird"
+                    status: upForReviewContent.contentStatus,
+                    "channelId": upForReviewContent.channelId
                 },
                 'sort_by': {
                     "lastUpdatedOn": "desc"
                 }
             };
+            
             upForReviewContent.upForReviewContentData = [];
             searchService.search(request).then(function(res) {
                 if (res && res.responseCode === 'OK') {
-                    upForReviewContent[api].loader.showLoader = false;
+                    upForReviewContent.loader.showLoader = false;
                     if (res.result.content) {
                         upForReviewContent.upForReviewContentData = [];
                         upForReviewContent.upForReviewContentData = res.result.content.filter(function(contentData) {
@@ -66,15 +40,15 @@ angular.module('playerApp')
                         });
                     }
                     if (res.result.count === 0 || upForReviewContent.upForReviewContentData.length === 0) {
-                        upForReviewContent[api].error = showErrorMessage(false, $rootScope.errorMessages.WORKSPACE.UP_FOR_REVIEW.NO_CONTENT, $rootScope.errorMessages.COMMON.SUCCESS);
+                        upForReviewContent.zeroContentMessage = $rootScope.errorMessages.WORKSPACE.UP_FOR_REVIEW.NO_CONTENT;
                     }
                 } else {
-                    upForReviewContent[api].loader.showLoader = false;
-                    upForReviewContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.UP_FOR_REVIEW.FAILED, $rootScope.errorMessages.COMMON.ERROR);
+                    upForReviewContent.loader.showLoader = false;
+                    ToasterService.error($rootScope.errorMessages.WORKSPACE.UP_FOR_REVIEW.FAILED);
                 }
             }).catch(function(error) {
-                upForReviewContent[api].loader.showLoader = false;
-                upForReviewContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.UP_FOR_REVIEW.FAILED, $rootScope.errorMessages.COMMON.ERROR);
+                upForReviewContent.loader.showLoader = false;
+                ToasterService.error($rootScope.errorMessages.WORKSPACE.UP_FOR_REVIEW.FAILED);
             });
         };
 
