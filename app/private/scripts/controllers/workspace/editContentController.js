@@ -9,7 +9,7 @@
  */
 angular.module('playerApp')
         .controller('EditContentController', function (contentService, config, $scope, $state, $timeout, $rootScope, $stateParams, $location, $anchorScroll) {
-            
+
             var editContent = this;
             editContent.contentId = $stateParams.contentId;
             editContent.lessonTypes = config.DROPDOWN.COMMON.lessonTypes;
@@ -23,9 +23,19 @@ angular.module('playerApp')
             editContent.showCreateSlideShowModal = true;
             editContent.userId = $rootScope.userId;
             editContent.accept = false;
+            editContent.showUploadFileForm = false;
             $scope.contentPlayer = {isContentPlayerEnabled: false};
+            editContent.contentUploadUrl = config.URL.BASE_PREFIX + config.URL.CONTENT_PREFIX + config.URL.CONTENT.UPLOAD;
             editContent.checkMimeTypeForEditContent = ['application/pdf', 'video/mp4',
                 'application/vnd.ekstep.html-archive', 'video/youtube', "application/vnd.ekstep.ecml-archive"];
+
+            editContent.checkMimeTypeForUploadContent = ['application/pdf', 'video/mp4',
+                'application/vnd.ekstep.html-archive', 'video/youtube'];
+            
+            editContent.mimeTypeForPdfVideoHtml = ['application/pdf', 'video/mp4',
+                'application/vnd.ekstep.html-archive'];
+            
+            editContent.mimeTypeForYoutubeVideo = 'video/youtube';
 
             editContent.initilizeView = function () {
                 editContent.showCreateSlideShowModal = true;
@@ -63,6 +73,28 @@ angular.module('playerApp')
                 return loader;
             }
             
+            function checkMimeType() {
+                editContent.uploadedContentMimeType = editContent.contentData.mimeType;
+                if(editContent.uploadedContentMimeType === 'application/pdf') {
+                    editContent.fileUploadOptions = "File accepted only pdf (Max size 25mb).";
+                    editContent.allowedExtensions = ["pdf"];
+                    editContent.acceptFiles = 'application/pdf';
+                    editContent.invalidFileMessage = ' is not valid pdf file.';
+                }
+                if(editContent.uploadedContentMimeType === 'video/mp4') {
+                    editContent.fileUploadOptions = "File accepted only mp4 (Max size 25mb).";
+                    editContent.allowedExtensions = ["mp4"];
+                    editContent.acceptFiles = 'video/mp4';
+                    editContent.invalidFileMessage = ' is not valid video file.';
+                }
+                if(editContent.uploadedContentMimeType === 'application/vnd.ekstep.html-archive') {
+                    editContent.fileUploadOptions = "File accepted only html zip (Max size 25mb).";
+                    editContent.allowedExtensions = ["zip"];
+                    editContent.acceptFiles = 'application/zip';
+                    editContent.invalidFileMessage = ' is not valid zip file.';
+                }
+            };
+
             editContent.initializeData = function (isReview) {
 
                 var api = 'editApi';
@@ -83,17 +115,18 @@ angular.module('playerApp')
                         editContent.contentData = {};
                         editContent.contentData = response.result.content;
                         editContent.iconImage = editContent.contentData.appIcon;
+                        checkMimeType();
                         $timeout(function () {
                             $('#contentTypeDropDown').dropdown('set selected', response.result.content.contentType);
                             $('#audienceDropDown').dropdown('set selected', response.result.content.audience);
                             $('#languageDropDown').dropdown('set selected', response.result.content.language);
                             $('#gradesDropDown').dropdown('set selected', response.result.content.gradeLevel);
-                            if(response.result.content.ageGroup) {
-                                var ModifyAgeGroup = response.result.content.ageGroup.filter(function(val) {
+                            if (response.result.content.ageGroup) {
+                                var ModifyAgeGroup = response.result.content.ageGroup.filter(function (val) {
                                     var ageGroup = [];
-                                    if(val === "<5") {
+                                    if (val === "<5") {
                                         ageGroup.push("&lt;5");
-                                    }else if(val === ">10") {
+                                    } else if (val === ">10") {
                                         ageGroup.push("&gt;10");
                                     } else {
                                         ageGroup.push(val);
@@ -118,11 +151,11 @@ angular.module('playerApp')
                     editContent[api].error = showErrorMessage(false, $rootScope.errorMessages.WORKSPACE.GET.FAILED, $rootScope.errorMessages.COMMON.ERROR);
                 });
             };
-            
-            editContent.checkContentAccess = function(data) {
-                if(data.createdBy === $rootScope.userId && _.indexOf(editContent.checkMimeTypeForEditContent, data.mimeType) > -1) {
+
+            editContent.checkContentAccess = function (data) {
+                if (data.createdBy === $rootScope.userId && _.indexOf(editContent.checkMimeTypeForEditContent, data.mimeType) > -1) {
                     return true;
-                } else { 
+                } else {
                     return false;
                 }
             };
@@ -173,7 +206,7 @@ angular.module('playerApp')
 
                 contentService.uploadMedia(editContent.icon).then(function (res) {
                     if (res && res.responseCode === "OK") {
-                        editContent.iconUpdate = false; 
+                        editContent.iconUpdate = false;
                         requestBody.content.appIcon = res.result.url;
                         editContent[api].loader.showLoader = false;
                         editContent.updateContent(requestBody, isReviewContent);
@@ -198,6 +231,10 @@ angular.module('playerApp')
                         editContent[api].loader.showLoader = false;
                         editContent[api].error = showErrorMessage(true, "Saved Successfully", $rootScope.errorMessages.COMMON.SUCCESS);
                         editContent[api].error.success = true;
+                        if(editContent.youtubeFileLink) {
+                            editContent.youtubeFileLink = '';
+                            editContent.contentData.artifactUrl = requestBody.content.artifactUrl;
+                        }                        
                         if (isReviewContent) {
                             editContent.callReviewApi();
                         }
@@ -246,7 +283,7 @@ angular.module('playerApp')
                     return;
                 } else {
                     var isReviewContent = true;
-                    editContent.saveMetaContent(contentData, isReviewContent)
+                    editContent.saveMetaContent(contentData, isReviewContent);
                 }
             };
 
@@ -270,18 +307,21 @@ angular.module('playerApp')
                     editContent[api].loader.showLoader = false;
                     editContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.REVIEW_CONTENT.FAILED, $rootScope.errorMessages.COMMON.ERROR);
                 });
-            }
+            };
 
             editContent.previewContent = function (requestData) {
-                
+
                 $scope.contentPlayer.contentData = requestData;
                 $scope.contentPlayer.isContentPlayerEnabled = true;
+                editContent.scrollUptoButton();
+            };
+            
+            editContent.scrollUptoButton = function() {
                 $timeout(function () {
                     $location.hash('content-player-bottom-edit');
-
                     // call $anchorScroll()
                     $anchorScroll();
-                }, 100);
+                }, 500);
             };
 
             editContent.closeEditForm = function (requestData) {
@@ -296,7 +336,7 @@ angular.module('playerApp')
                 var params = {contentId: contentId};
                 $state.go("ContentEditor", params);
             };
-            
+
             editContent.openCollectionEditor = function (data) {
                 var params = {contentId: data.identifier, type: data.contentType};
                 $state.go("CollectionEditor", params);
@@ -307,5 +347,99 @@ angular.module('playerApp')
             } else {
                 editContent.initializeData(false);
             }
+
+            editContent.uploadFileForm = function () {
+                editContent.scrollUptoButton();
+                editContent.showUploadFileForm = true;
+                $timeout(function () {
+                    editContent.manualUploader = new qq.FineUploader({
+                        element: document.getElementById('fine-uploader-manual-trigger'),
+                        template: 'qq-template-manual-trigger',
+                        request: {
+                            customHeaders: {
+                                cid: "sunbird"
+                            },
+                            endpoint: editContent.contentUploadUrl + '/' + editContent.contentId
+                        },
+                        thumbnails: {
+                            placeholders: {
+                                waitingPath: '/source/placeholders/waiting-generic.png',
+                                notAvailablePath: '/source/placeholders/not_available-generic.png'
+                            }
+                        },
+                        autoUpload: false,
+                        debug: true,
+                        validation: {
+                            acceptFiles: editContent.FileExtensionToUpload,
+                            sizeLimit: config.MaxFileSizeToUpload,
+                            allowedExtensions: editContent.allowedExtensions
+                        },
+                        messages: {
+                            sizeError: '{file} is too large, maximum file size is 25 MB.',
+                            typeError: '{file}' + editContent.invalidFileMessage
+                        },
+                        callbacks: {
+                            onComplete: function (id, name, responseJSON) {
+                                console.log("onComplete:", id, name, responseJSON);
+                                if(responseJSON.success) {
+                                    editContent.initializeData(false);
+                                    editContent.showUploadFileForm = !editContent.showUploadFileForm;
+                                }
+                            },
+                            onSubmitted: function (id, name) {
+                                editContent.youtubeFileLink = '';
+                                editContent.uploadedFileId = id;
+                                editContent.uploadContent();
+                                document.getElementById("hide-section-with-button").style.display = 'none';
+                            },
+                            onError: function (id, name, error) {
+                                console.log("onError:", id, name, error);
+                            },
+                            onCancel: function () {
+                                console.log("onCancel:");
+                                document.getElementById("hide-section-with-button").style.display = 'block';
+                            },
+                            onStatusChange: function (id, oldStatus, newStatus) {
+                                if (newStatus === "rejected") {
+                                    document.getElementById("hide-progress-bar-on-reject").style.display = 'none';
+                                }
+                            }
+                        }
+                    });
+                    $("#fileUploadOptions").text(editContent.fileUploadOptions);
+                }, 100);
+            };
+            
+            editContent.uploadContent = function () {
+                var endpoint = editContent.contentUploadUrl + '/' + editContent.contentId;
+                editContent.manualUploader.setEndpoint(endpoint, editContent.uploadedFileId);
+                editContent.manualUploader.uploadStoredFiles();
+            };
+            
+            editContent.uploadYoutubeFile = function(contentData) {
+                var requestData = angular.copy(contentData);
+                requestData.artifactUrl = editContent.youtubeFileLink;
+                var requestBody = {
+                    "content": requestData
+                };
+                
+                editContent.updateContent(requestBody, false);
+            };
+            
+            editContent.validateYouTubeUrl = function(url) {
+                editContent.invalidYoutubeUrl = false;
+                if (url !== undefined && url !== '') {        
+                    var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
+                    var match = url.match(regExp);
+                    if (match && match.length > 1 && match[2].length === 11) {
+                        editContent.youtubeFileLink = 'https://www.youtube.com/embed/' + match[2] + '?autoplay=1&enablejsapi=1';
+                        editContent.invalidYoutubeUrl = false;
+                    } else {
+                        editContent.invalidYoutubeUrl = true;
+                    }
+                } else {
+                    editContent.invalidYoutubeUrl = true;
+                }
+            };
 
         });
