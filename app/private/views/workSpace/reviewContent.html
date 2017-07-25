@@ -1,5 +1,5 @@
 <div ng-init="reviewContent.initializeData()">
-    <div ng-if="!reviewContent.reviewApi.loader.showLoader && !reviewContent.reviewApi.error.showError">
+    <div ng-if="!reviewContent.loader.showLoader && !reviewContent.zeroContentMessage">
         <div class="ui three stackable cards">
             <div class="link card mouse-pointer" ng-repeat="item in reviewContent.reviewContentData track by $index"
                  ng-click="reviewContent.openContentPlayer(item)">
@@ -24,10 +24,12 @@
             </div>
         </div>
     </div>
-    <div class="twelve wide column" ng-if="reviewContent.reviewApi.loader.showLoader">
-        <app-loader data="{{reviewContent.reviewApi.loader}}"></app-loader>
+    <div class="twelve wide column" ng-if="reviewContent.loader.showLoader">
+        <app-loader data="{{reviewContent.loader}}"></app-loader>
     </div>
-    <div class="twelve wide column" ng-if="reviewContent.reviewApi.error.showError">
-        <error-message data="{{reviewContent.reviewApi.error}}" visibility="reviewContent.reviewApi.error.showError"></error-message>
+    <div class="twelve wide column" ng-if="reviewContent.zeroContentMessage">
+        <div class="ui huge positive message">
+            <p>{{reviewContent.zeroContentMessage}}</p>
+        </div>
     </div>
 </div>

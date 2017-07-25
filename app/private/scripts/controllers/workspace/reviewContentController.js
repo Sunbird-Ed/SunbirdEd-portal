@@ -8,44 +8,15 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('ReviewContentController', function(contentService, searchService, config, $rootScope, $scope, $state) {
+    .controller('ReviewContentController', function(contentService, searchService, config, $rootScope, $scope, $state, ToasterService) {
 
         var reviewContent = this;
         reviewContent.userId = $rootScope.userId;
         $scope.contentPlayer = { isContentPlayerEnabled: false };
 
-        /**
-         * This function helps to show loader with message.
-         * @param {String} headerMessage
-         * @param {String} loaderMessage
-         */
-        function showLoaderWithMessage(headerMessage, loaderMessage) {
-            var loader = {};
-            loader.showLoader = true;
-            loader.headerMessage = headerMessage;
-            loader.loaderMessage = loaderMessage;
-            return loader;
-        }
-
-        /**
-         * This function called when api failed, and its show failed response for 2 sec.
-         * @param {String} message
-         */
-        function showErrorMessage(isClose, message, messageType) {
-            var error = {};
-            error.showError = true;
-            error.isClose = isClose;
-            error.message = message;
-            error.messageType = messageType;
-            return error;
-        }
-
-
         function getReviewContent() {
 
-            var api = "reviewApi";
-            reviewContent[api] = {};
-            reviewContent[api].loader = showLoaderWithMessage("", $rootScope.errorMessages.WORKSPACE.REVIEW.START);
+            reviewContent.loader = ToasterService.loader("", $rootScope.errorMessages.WORKSPACE.REVIEW.START);
 
             var request = {
                 filters: {
@@ -59,19 +30,19 @@ angular.module('playerApp')
             reviewContent.reviewContentData = [];
             searchService.search(request).then(function(res) {
                     if (res && res.responseCode === 'OK') {
-                        reviewContent[api].loader.showLoader = false;
+                        reviewContent.loader.showLoader = false;
                         reviewContent.reviewContentData = res.result.content;
                         if (res.result.count === 0) {
-                            reviewContent[api].error = showErrorMessage(false, $rootScope.errorMessages.WORKSPACE.REVIEW.NO_CONTENT, $rootScope.errorMessages.COMMON.SUCCESS);
+                            reviewContent.zeroContentMessage = $rootScope.errorMessages.WORKSPACE.REVIEW.NO_CONTENT;
                         }
                     } else {
-                        reviewContent[api].loader.showLoader = false;
-                        reviewContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.REVIEW.FAILED, $rootScope.errorMessages.COMMON.ERROR);
+                        reviewContent.loader.showLoader = false;
+                        ToasterService.error($rootScope.errorMessages.WORKSPACE.REVIEW.FAILED);
                     }
                 })
                 .catch(function(error) {
-                    reviewContent[api].loader.showLoader = false;
-                    reviewContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.REVIEW.FAILED, $rootScope.errorMessages.COMMON.ERROR);
+                    reviewContent.loader.showLoader = false;
+                    ToasterService.error($rootScope.errorMessages.WORKSPACE.REVIEW.FAILED);
                 });
         };
 

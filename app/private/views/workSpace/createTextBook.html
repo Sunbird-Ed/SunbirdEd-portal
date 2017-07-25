@@ -1,6 +1,6 @@
 <div ng-init="textbook.initilizeView()">
     <div class="ui modal" id="createSlideShowModal" ng-if="textbook.showCreateSlideShowModal">
-        <div class=" ui segment margin-top-10" ng-show="!textbook.createApi.loader.showLoader && !textbook.createApi.error.showError">
+        <div class=" ui segment margin-top-10" ng-show="!textbook.loader.showLoader">
             <div class=" margin-bottom-15">
                 <div class="ui grid">
                     <div class="eleven wide column">
@@ -53,7 +53,8 @@
             </div>
             <div class="actions">
                 <p class="text-align-center padding-top-20">
-                    <button class="ui primary text-align-center icon button" ng-click="textbook.saveMetaData(textbook.data)">
+                    <button class="ui primary text-align-center icon button" ng-click="textbook.saveMetaData(textbook.data)"
+                            ng-disabled="textbook.loader.showLoader">
                         {{$root.labels.WORKSPACE.common.startCreating}}
                     </button>
                 </p>
@@ -66,11 +67,8 @@
                 </div>
             </div>
         </div>
-        <div class=" ui segment margin-top-10" ng-if="textbook.createApi.loader.showLoader">
-            <app-loader data="{{textbook.createApi.loader}}"></app-loader>
-        </div>
-        <div class=" ui segment margin-top-10" ng-if="textbook.createApi.error.showError">
-            <error-message data="{{textbook.createApi.error}}" visibility="textbook.createApi.error.showError"></error-message>
+        <div class=" ui segment margin-top-10" ng-if="textbook.loader.showLoader">
+            <app-loader data="{{textbook.loader}}"></app-loader>
         </div>
     </div>
 </div>

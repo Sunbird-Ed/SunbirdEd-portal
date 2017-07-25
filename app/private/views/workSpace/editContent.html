@@ -4,7 +4,7 @@
         <div class="ui grid">
             <div class="one wide column"></div>
             <div class="ten wide column">
-                <div class="row margin-bottom-15" ng-if="editContent.requiredFieldsMessage.length > 0">
+                <div class="row  margin-bottom-15" ng-if="editContent.requiredFieldsMessage.length > 0">
                     <div class="ui error message">
                         <div class="header">
                             <label>{{$root.labels.WORKSPACE.common.plaseFillThisRD}}</label>
@@ -14,11 +14,8 @@
                         </ul>
                     </div>
                 </div>
-                <div class="row" ng-if="editContent.editApi.loader.showLoader">
+                <div class="row margin-bottom-15" ng-if="editContent.editApi.loader.showLoader">
                     <app-loader data="{{editContent.editApi.loader}}"></app-loader>
-                </div>
-                <div class="row margin-bottom-15" ng-if="editContent.editApi.error.showError">
-                    <error-message data="{{editContent.editApi.error}}" visibility="editContent.editApi.error.showError"></error-message>
                 </div>
                 <div class="row">
                     <div class="videosegment  ui clearing segment">
