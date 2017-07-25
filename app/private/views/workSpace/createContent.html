@@ -84,7 +84,7 @@
 </div>
 <div ng-show="contentCreation.showContentCreationModal">
     <div class="ui modal" id="contentCreationModal">
-        <div class=" ui segment margin-top-10" ng-show="!contentCreation.createApi.loader.showLoader && !contentCreation.createApi.error.showError">
+        <div class=" ui segment margin-top-10" ng-show="!contentCreation.loader.showLoader && !contentCreation.error.showError">
             <div class=" margin-bottom-15">
                 <div class="ui grid">
                     <div class="eleven wide column">
@@ -136,11 +136,8 @@
                 </p>
             </div>
         </div>
-        <div class=" ui segment margin-top-10" ng-if="contentCreation.createApi.loader.showLoader">
-            <app-loader data="{{contentCreation.createApi.loader}}"></app-loader>
-        </div>
-        <div class=" ui segment margin-top-10" ng-if="contentCreation.createApi.error.showError">
-            <error-message data="{{contentCreation.createApi.error}}" visibility="contentCreation.createApi.error.showError"></error-message>
+        <div class=" ui segment margin-top-10" ng-if="contentCreation.loader.showLoader">
+            <app-loader data="{{contentCreation.loader}}"></app-loader>
         </div>
     </div>
 </div>

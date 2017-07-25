@@ -43,6 +43,22 @@
                 "START": "We are creating lesson...",
                 "FAILED": "Creating lesson failed, please try again later..."
             },
+            "CREATE_TEXTBOOK": {
+                "START": "We are creating textbook...",
+                "FAILED": "Creating textbook failed, please try again later..."
+            },
+            "CREATE_COURSE": {
+                "START": "We are creating course...",
+                "FAILED": "Creating course failed, please try again later..."
+            },
+            "CREATE_COLLECTION": {
+                "START": "We are creating collection...",
+                "FAILED": "Creating collection failed, please try again later..."
+            },
+            "UPLOAD_CONTENT": {
+                "START": "We are uploading content...",
+                "FAILED": "Uploading content failed, please try again later..."
+            },
             "REVIEW": {
                 "START": "We are fetching review content...",
                 "FAILED": "Fetching review content failed, please try again later...",
@@ -68,7 +84,8 @@
             },
             "UPDATE": {
                 "START": "We are updating the content detail...",
-                "FAILED": "Updating content detail failed, please try again later..."
+                "FAILED": "Updating content detail failed, please try again later...",
+                "SUCCESS": "Saved successfully..."
             },
             "REVIEW_CONTENT": {
                 "START": "We are sending content for review...",

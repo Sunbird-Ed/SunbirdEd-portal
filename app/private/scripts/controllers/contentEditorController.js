@@ -8,7 +8,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('ContentEditorController', function(config, $stateParams, $location, $sce, $state, contentService, $timeout, $rootScope) {
+    .controller('ContentEditorController', function(config, $stateParams, ToasterService, $sce, $state, contentService, $timeout, $rootScope) {
 
         var contentEditor = this;
         contentEditor.contentId = $stateParams.contentId;
@@ -109,11 +109,11 @@ angular.module('playerApp')
                     if (contentEditor.validateRequest(rspData, validateModal)) {
                         contentEditor.openContentEditor();
                     } else {
-                        $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
+                        ToasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
                         $state.go('Home');
                     }
                 } else {
-                    $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
+                    ToasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
                     $state.go('Home');
                 }
             });
