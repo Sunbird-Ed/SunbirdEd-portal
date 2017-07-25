@@ -84,8 +84,10 @@
         <div ng-if="noteList.searchApi.loader.showLoader">
             <app-loader data="{{noteList.searchApi.loader}}"></app-loader>
         </div>
-        <div ng-if="noteList.searchApi.error.showError && noteList.notesList.length === 0">
-            <error-message data="{{noteList.searchApi.error}}" visibility="noteList.searchApi.error.showError"></error-message>
+        <div ng-if="noteList.zeroNoteMessage">
+            <div class="ui huge positive message">
+                <p>{{noteList.zeroNoteMessage}}</p>
+            </div>
         </div>
     </div>
     <div class="one wide column"></div>

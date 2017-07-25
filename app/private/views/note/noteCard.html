@@ -1,5 +1,5 @@
 <div class="rightSideSectionCards ui card margin-bottom-15" ng-if="noteCard.showNoteCard">
-    <div class="content" ng-if="!noteCard.searchApi.loader.showLoader && (!noteCard.searchApi.error.showError || noteCard.notesList.length > 0)">
+    <div class="content" ng-if="!noteCard.searchApi.loader.showLoader && noteCard.notesList.length > 0">
         <div class="header">
             <span>{{$root.labels.Notes.myNoteBook}}</span>
             <a class="ui right floated font-dark-blue" ng-click="noteCard.showAllNoteList()">{{$root.labels.Notes.viewAll}}</a>
@@ -16,7 +16,7 @@
                             <span class="note-card-timeStamp right floated">{{note.lastUpdatedOn| dateFilterXTimeAgo}}</span>
                         </span>
                         <div class="description" ng-init="noteData = note.note.length > 20 ? note.note.substring(0,20) : note.note">
-                            <pagedown-viewer content="noteData"></pagedown-viewer>
+                            <pagedown-viewer content="note.note.length > 20 ? note.note.substring(0,20) : note.note"></pagedown-viewer>
                             <i ng-if="note.note.length > 20" class="ellipsis horizontal icon popup-button" data-content="{{note.note}}"
                                data-variation="wide">
                             </i> 
@@ -31,8 +31,10 @@
         <div class="ui list" ng-if="noteCard.searchApi.loader.showLoader">
             <app-loader data="{{noteCard.searchApi.loader}}"></app-loader>
         </div>
-        <div class="ui list" ng-if="noteCard.searchApi.error.showError && noteCard.notesList.length === 0">
-            <error-message data="{{noteCard.searchApi.error}}" visibility="noteCard.searchApi.error.showError"></error-message>
+        <div class="ui list" ng-if="noteCard.notesList.length === 0">
+            <div class="ui huge positive message">
+                <p>{{noteCard.zeroNoteMessage}}</p>
+            </div>
         </div>
     </div>
     <div ng-if="noteCard.showUpdateNote">
@@ -63,9 +65,6 @@
             </div>
             <div class=" ui segment margin-top-10" ng-if="noteCard.updateApi.loader.showLoader">
                 <app-loader data="{{noteCard.updateApi.loader}}"></app-loader>
-            </div>
-            <div class=" ui segment margin-top-10" ng-if="noteCard.updateApi.error.showError">
-                <error-message data="{{noteCard.updateApi.error}}" visibility="noteCard.updateApi.error.showError"></error-message>
             </div>
         </div>
     </div>

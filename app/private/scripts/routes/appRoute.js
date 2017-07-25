@@ -646,7 +646,7 @@ angular
                     $rootScope.profileActive = 'active';
                     $rootScope.breadCrumbsData = null;
                     $rootScope.isSearchPage = false;
-                    $rootScope.search.searchKeyword="";
+                    $rootScope.searchKeyword="";
                     $rootScope.showFilter = false;
                     $rootScope.searchKey = 'All';
                     portalTelemetryService.fireImpressions({

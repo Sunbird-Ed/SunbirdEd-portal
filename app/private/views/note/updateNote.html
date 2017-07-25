@@ -1,4 +1,4 @@
-<div ng-show="!noteList.updateApi.loader.showLoader && !noteList.updateApi.error.showError" class="margin-auto margin-top-10" ng-if="!noteList.updateApi.loader.showLoader && !noteList.updateApi.error.showError">
+<div class="margin-auto margin-top-10" ng-if="!noteList.updateApi.loader.showLoader">
     <div class=" margin-bottom-15">
         <!-- <span class="ui header">{{noteList.update.metaData.title}}</span> -->
         <span class="ui right floated basic icon circular button " ng-click="noteList.update.showUpdateNote = !noteList.update.showUpdateNote"><i class="ui remove icon"></i>
@@ -17,7 +17,4 @@
 </div>
 <div ng-if="noteList.updateApi.loader.showLoader">
     <app-loader data="{{noteList.updateApi.loader}}"></app-loader>
-</div>
-<div ng-if="noteList.updateApi.error.showError">
-    <error-message data="{{noteList.updateApi.error}}" visibility="noteList.updateApi.error.showError"></error-message>
 </div>

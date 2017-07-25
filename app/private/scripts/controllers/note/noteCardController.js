@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $scope, noteService, config, $timeout, $state, $stateParams) {
+angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $scope, noteService, config, $timeout, $state, $stateParams, ToasterService) {
 
     var noteCard = this;
     noteCard.userId = $rootScope.userId;
@@ -21,32 +21,6 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $sc
     noteCard.notesList = [];
 
     /**
-     * This function helps to show loader with message.
-     * @param {String} headerMessage
-     * @param {String} loaderMessage
-     */
-    function showLoaderWithMessage(headerMessage, loaderMessage) {
-        var loader = {};
-        loader.showLoader = true;
-        loader.headerMessage = headerMessage;
-        loader.loaderMessage = loaderMessage;
-        return loader;
-    }
-
-    /**
-     * This function called when api failed, and its show failed response for 2 sec.
-     * @param {String} message
-     */
-    function showErrorMessage(isClose, message, messageType) {
-        var error = {};
-        error.showError = true;
-        error.isClose = isClose;
-        error.message = message;
-        error.messageType = messageType;
-        return error;
-    }
-
-    /**
      * This function call search api and bind data
      * @param {type} request
      * @returns {undefined}
@@ -55,24 +29,23 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $sc
 
         var api = 'searchApi';
         noteCard[api] = {};
-        noteCard[api].loader = showLoaderWithMessage("", $rootScope.errorMessages.NOTES.SEARCH.START);
+        noteCard[api].loader = ToasterService.loader("", $rootScope.errorMessages.NOTES.SEARCH.START);
 
         noteService.search(request).then(function (response) {
             if (response && response.responseCode === "OK") {
                 noteCard[api].loader.showLoader = false;
                 noteCard.notesList = response.result.note || [];
                 if (noteCard.notesList.length === 0) {
-                    noteCard[api].error = showErrorMessage(false, $rootScope.errorMessages.NOTES.SEARCH.NO_RESULT, $rootScope.errorMessages.COMMON.INFO);
+                    noteCard.zeroNoteMessage = $rootScope.errorMessages.NOTES.SEARCH.NO_RESULT;
                 }
             } else {
                 noteCard[api].loader.showLoader = false;
-                noteCard[api].error = showErrorMessage(false, $rootScope.errorMessages.NOTES.SEARCH.FAILED, $rootScope.errorMessages.COMMON.ERROR);
+                ToasterService.error($rootScope.errorMessages.NOTES.SEARCH.FAILED);
             }
-        })
-                .catch(function (error) {
-                    noteCard[api].loader.showLoader = false;
-                    noteCard[api].error = showErrorMessage(false, $rootScope.errorMessages.NOTES.SEARCH.FAILED, $rootScope.errorMessages.COMMON.ERROR);
-                });
+        }).catch(function (error) {
+            noteCard[api].loader.showLoader = false;
+            ToasterService.error($rootScope.errorMessages.NOTES.SEARCH.FAILED);
+        });
     }
 
     /**
@@ -80,7 +53,7 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $sc
      * This function help to fetch the user notes.
      */
     noteCard.ngInit = function () {
-        showLoaderWithMessage(true, "", $rootScope.errorMessages.NOTES.SEARCH.START);
+        ToasterService.loader(true, "", $rootScope.errorMessages.NOTES.SEARCH.START);
         var request = {
             filters: {
                 userId: noteCard.userId,
@@ -99,7 +72,7 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $sc
     };
 
     $scope.updateDataOnWatch = function (contentId) {
-        showLoaderWithMessage(true, "", $rootScope.errorMessages.NOTES.SEARCH.START);
+        ToasterService.loader(true, "", $rootScope.errorMessages.NOTES.SEARCH.START);
         var request = {
             filters: {
                 userId: noteCard.userId,
@@ -131,7 +104,7 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $sc
 
         var api = 'createApi';
         noteCard[api] = {};
-        noteCard[api].loader = showLoaderWithMessage("", $rootScope.errorMessages.NOTES.CREATE.START);
+        noteCard[api].loader = ToasterService.loader("", $rootScope.errorMessages.NOTES.CREATE.START);
 
         noteService.create(requestData).then(function (response) {
             if (response && response.responseCode === "OK") {
@@ -140,13 +113,12 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $sc
                 $rootScope.$emit("updateNotesListData", response.result.note);
             } else {
                 noteCard[api].loader.showLoader = false;
-                noteCard[api].error = showErrorMessage(true, $rootScope.errorMessages.NOTES.CREATE.FAILED, $rootScope.errorMessages.COMMON.ERROR);
+                ToasterService.error($rootScope.errorMessages.NOTES.CREATE.FAILED);
             }
-        })
-                .catch(function (error) {
-                    noteCard[api].loader.showLoader = false;
-                    noteCard[api].error = showErrorMessage(true, $rootScope.errorMessages.NOTES.CREATE.FAILED, $rootScope.errorMessages.COMMON.ERROR);
-                });
+        }).catch(function (error) {
+            noteCard[api].loader.showLoader = false;
+            ToasterService.error($rootScope.errorMessages.NOTES.CREATE.FAILED);
+        });
     };
 
     /**
@@ -162,7 +134,7 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $sc
 
         var api = 'updateApi';
         noteCard[api] = {};
-        noteCard[api].loader = showLoaderWithMessage("", $rootScope.errorMessages.NOTES.UPDATE.START);
+        noteCard[api].loader = ToasterService.loader("", $rootScope.errorMessages.NOTES.UPDATE.START);
 
         noteService.update(requestData).then(function (response) {
             if (response && response.responseCode === "OK") {
@@ -171,13 +143,12 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $sc
                 $rootScope.$emit("updateNotesListData", response.result.note, true);
             } else {
                 noteCard[api].loader.showLoader = false;
-                noteCard[api].error = showErrorMessage(true, $rootScope.errorMessages.NOTES.UPDATE.FAILED, $rootScope.errorMessages.COMMON.ERROR);
+                ToasterService.error($rootScope.errorMessages.NOTES.UPDATE.FAILED);
             }
-        })
-                .catch(function (error) {
-                    noteCard[api].loader.showLoader = false;
-                    noteCard[api].error = showErrorMessage(true, $rootScope.errorMessages.NOTES.UPDATE.FAILED, $rootScope.errorMessages.COMMON.ERROR);
-                });
+        }).catch(function (error) {
+            noteCard[api].loader.showLoader = false;
+            ToasterService.error($rootScope.errorMessages.NOTES.UPDATE.FAILED);
+        });
     };
 
     noteCard.hideUpdateModal = function () {
