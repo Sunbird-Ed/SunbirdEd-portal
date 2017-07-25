@@ -23,7 +23,7 @@ angular.module('playerApp').service('portalTelemetryService', function($http, $f
     this.sendTelementry = function(asyncFlag) {
         var request = {
             "id": "ekstep.telemetry",
-            "ver": "2.0",
+            "ver": "2.1",
             "ts": $filter('date')(new Date(), 'yyyy-MM-dd HH:mm:ss:sssZ'),
             "params": {
                 "requesterId": $rootScope.userId,

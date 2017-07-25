@@ -566,6 +566,7 @@
         "MimeTypeExceptCollection" : ["application/pdf", "video/mp4",
                 "application/vnd.ekstep.html-archive", "video/youtube", "application/vnd.ekstep.ecml-archive"],
         "MaxFileSizeToUpload": 25600000,
-        "FileExtensionToUpload": "application/pdf, video/mp4, application/zip, video/webm"
+        "FileExtensionToUpload": "application/pdf, video/mp4, application/zip, video/webm",
+        "AllowedFileExtention": ["mp4", "pdf", "zip"]
     }
 }

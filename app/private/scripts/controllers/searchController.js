@@ -3,9 +3,13 @@ angular.module('playerApp')
         .controller('SearchCtrl', function (config, sessionService, searchService, $scope, $timeout, $rootScope, $stateParams, $state, $location) {
             var search = this;
             search.initSearch = function () {
-                $timeout(function(){
-                $rootScope.$broadcast('initSearch', {});
-                },500);
+                if ($rootScope.search) {
+                    $rootScope.search.searchResult = {};
+                    $rootScope.search.autosuggest_data = [];
+                }
+                $timeout(function () {
+                    $rootScope.$broadcast('initSearch', {});
+                }, 500);
             };
-           
+
         });

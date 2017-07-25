@@ -56,7 +56,7 @@ angular.module('playerApp')
                         $('#course-toc').find('.content').first().addClass('active');
                         toc.playPlaylistContent(toc.playList[toc.itemIndex], '');
                     } else {
-                        var currentHash = $location.hash().toString().split("/");
+                        var currentHash = $location.hash().toString().split('/');
                         toc.itemIndex = parseInt(currentHash[2]);
                         toc.playPlaylistContent(currentHash[1], '');
 
@@ -94,12 +94,13 @@ angular.module('playerApp')
                 toc.loader.showLoader = true;
                 toc.loader.loaderMessage = config.MESSAGES.COURSE.TOC.START;
                 courseService.courseHierarchy(toc.courseId).then(function (res) {
-                    if (res && res.responseCode === "OK") {
+                    if (res && res.responseCode === 'OK') {
 
                         toc.loader.showLoader = false;
                         res.result.content.children = _.sortBy(res.result.content.children, ['index']);
                         toc.getAllContentsFromCourse(res.result.content);
-                        if (toc.courseType == "ENROLLED_COURSE") {
+                        toc.contentCountByType = _.countBy(toc.playListContent, 'mimeType');
+                        if (toc.courseType == 'ENROLLED_COURSE') {
                             toc.getContentState();
                         }
                         toc.courseTotal = toc.courseTotal || toc.playList.length;
@@ -116,14 +117,14 @@ angular.module('playerApp')
             };
             toc.getContentState = function () {
                 var req = {
-                    "request": {
-                        "userId": toc.uid,
-                        "courseIds": [toc.courseId],
-                        "contentIds": toc.playList
+                    'request': {
+                        'userId': toc.uid,
+                        'courseIds': [toc.courseId],
+                        'contentIds': toc.playList
                     }
                 };
                 contentStateService.getContentsState(req, function (content_res) {
-                    toc.contentStatusList = toc.fetchObjectAttributeAsArrayOrObject(content_res, "contentId", "status", true);
+                    toc.contentStatusList = toc.fetchObjectAttributeAsArrayOrObject(content_res, 'contentId', 'status', true);
                     toc.courseProgress = 0;
                     angular.forEach(toc.contentStatusList, function (status, id) {
                         if (id && toc.playList.indexOf(id) >= 0) {
@@ -153,7 +154,7 @@ angular.module('playerApp')
                 });
             };
             toc.expandMe = function (index, item) {
-                if (item && item.mimeType !== "application/vnd.ekstep.content-collection") {
+                if (item && item.mimeType !== 'application/vnd.ekstep.content-collection') {
                     toc.itemIndex = toc.playList.indexOf(item.identifier);
                     toc.playPlaylistContent(item.identifier, '');
                 } else {
@@ -165,7 +166,7 @@ angular.module('playerApp')
                 isPlus ? $(icon).addClass('plus').removeClass('minus') : $(icon).addClass('minus').removeClass('plus');
             }
             toc.checkAndAddToPlaylist = function (item) {
-                if (item.mimeType !== "application/vnd.ekstep.content-collection" && toc.playList.indexOf(item.identifier) === -1) {
+                if (item.mimeType !== 'application/vnd.ekstep.content-collection' && toc.playList.indexOf(item.identifier) === -1) {
                     toc.playList.push(item.identifier);
                     toc.playListContent.push(item);
                 }
@@ -181,9 +182,9 @@ angular.module('playerApp')
                 }
                 toc.prevPlaylistItem = (toc.itemIndex - 1) > -1 ? toc.playList[toc.itemIndex - 1] : -1;
                 toc.nextPlaylistItem = (toc.itemIndex + 1) <= toc.playList.length ? toc.playList[toc.itemIndex + 1] : -1;
-                toc.previousPlayListName = (toc.itemIndex - 1) > -1 ? toc.playListContent[toc.itemIndex - 1]['name'] : "No content to play";
-                toc.nextPlayListName = (toc.itemIndex + 1) < toc.playList.length ? toc.playListContent[toc.itemIndex + 1]['name'] : "No content to play";
-                if (toc.courseType === "ENROLLED_COURSE") {
+                toc.previousPlayListName = (toc.itemIndex - 1) > -1 ? toc.playListContent[toc.itemIndex - 1]['name'] : 'No content to play';
+                toc.nextPlayListName = (toc.itemIndex + 1) < toc.playList.length ? toc.playListContent[toc.itemIndex + 1]['name'] : 'No content to play';
+                if (toc.courseType === 'ENROLLED_COURSE') {
                     $rootScope.contentId = contentId;
                     $scope.contentPlayer.contentData = toc.playListContent[toc.itemIndex];
                     $scope.contentPlayer.isContentPlayerEnabled = true;
@@ -229,7 +230,7 @@ angular.module('playerApp')
 
                 if (contentData.mimeType != 'application/vnd.ekstep.content-collection') {
                     parent.push({
-                        title: "<span id='node" + toc.treeKey + "' class='padded'><i class='" + toc.getContentIcon(contentData.mimeType) + " " + (toc.contentStatusList[contentData.identifier] ? toc.contentStatusList[contentData.identifier] : 'grey') + "'></i>" + contentData.name + "</span><button id='resume-button-" + toc.treeKey + "' class='toc-resume-button contentVisibility-hidden blue right floated ui button'>RESUME</button",
+                        title: '<span id="node' + toc.treeKey + '" class="padded"><i class="' + toc.getContentIcon(contentData.mimeType) + ' ' + (toc.contentStatusList[contentData.identifier] ? toc.contentStatusList[contentData.identifier] : "grey") + '"></i>' + contentData.name + '</span><button id="resume-button-' + toc.treeKey + '" class="toc-resume-button contentVisibility-hidden blue right floated ui button">RESUME</button',
                         key: toc.treeKey,
                         data: contentData,
                         icon: false
@@ -238,13 +239,13 @@ angular.module('playerApp')
 
                 } else {
                     parent.push({
-                        title: "<span class='courseAccordianDesc'><i class='" + toc.getContentIcon(contentData.mimeType) + "'></i>" + contentData.name + "</span>",
+                        title: '<span class="courseAccordianDesc"><i class="' + toc.getContentIcon(contentData.mimeType) + '"></i>' + contentData.name + '</span>',
                         key: -1,
                         children: [],
                         icon: false
                     })
                     angular.forEach(contentData.children, function (child, item) {
-                        toc.getTreeData(contentData.children[item], parent[parent.length - 1]['children']);
+                        toc.getTreeData(contentData.children[item], parent[parent.length - 1]["children"]);
                     });
                 }
                 return toc.fancyTree;
@@ -267,16 +268,16 @@ angular.module('playerApp')
 
             toc.getContentIcon = function (contentMimeType) {
                 var contentIcons = {
-                    "application/pdf": "large file pdf outline icon",
-                    "image/jpeg": "large file image outline icon",
-                    "image/jpg": "large file image outline icon",
-                    "image/png": "large file image outline icon",
-                    "video/mp4": "large file video outline icon",
-                    "video/ogg": "large file video outline icon",
-                    "video/youtube": "large youtube square icon",
-                    "application/vnd.ekstep.html-archive": "large html5 icon",
-                    "application/vnd.ekstep.ecml-archive": "large file archive outline icon",
-                    "application/vnd.ekstep.content-collection": "large folder open outline icon grey icon"
+                    'application/pdf': 'large file pdf outline icon',
+                    'image/jpeg': 'large file image outline icon',
+                    'image/jpg': 'large file image outline icon',
+                    'image/png': 'large file image outline icon',
+                    'video/mp4': 'large file video outline icon',
+                    'video/ogg': 'large file video outline icon',
+                    'video/youtube': 'large youtube square icon',
+                    'application/vnd.ekstep.html-archive': 'large html5 icon',
+                    'application/vnd.ekstep.ecml-archive': 'large file archive outline icon',
+                    'application/vnd.ekstep.content-collection': 'large folder open outline icon grey icon'
 
 
                 };
@@ -289,7 +290,7 @@ angular.module('playerApp')
                     $('.ui.accordion').accordion({
                         exclusive: false
                     });
-                    if (toc.courseType == "ENROLLED_COURSE" && toc.playList.length > 0 && toc.lectureView == 'no') {
+                    if (toc.courseType == 'ENROLLED_COURSE' && toc.playList.length > 0 && toc.lectureView == 'no') {
 
                         toc.resumeCourse();
 
@@ -304,7 +305,7 @@ angular.module('playerApp')
                 angular.forEach(tocData, function (item, child) {
                     toc.getTreeData(item, toc.fancyTree);
                 });
-                toc.initializeFancyTree("#FT_" + pos, toc.fancyTree);
+                toc.initializeFancyTree('#FT_' + pos, toc.fancyTree);
             }
             toc.initializeFancyTree = function (id, src) {
                 $timeout(function () {
@@ -318,10 +319,10 @@ angular.module('playerApp')
                             }
                         },
                         create: function (event, data) {
-                            (toc.courseType == 'OTHER_COURSE') ? $(".fancytree-title").addClass('noselect') : '';
+                            (toc.courseType == 'OTHER_COURSE') ? $('.fancytree-title').addClass('noselect') : '';
                         }
                     });
-                    $(".fancytree-container").addClass("fancytree-connectors");
+                    $('.fancytree-container').addClass('fancytree-connectors');
                 }, 0);
 
 
@@ -351,11 +352,11 @@ angular.module('playerApp')
                     toc.getContentState();
                     $('.fancy-tree-container').each(function () {
                         var treeId = this.id;
-                        $(this).fancytree("getTree").visit(function (node) {
+                        $(this).fancytree('getTree').visit(function (node) {
                             if (node.key == toc.itemIndex) {
                                 $timeout(function () {
-                                    if (!$('#' + treeId).closest(".accordion").find('.title').hasClass('active')) {
-                                        $('#' + treeId).closest(".accordion").find('.title').trigger('click');
+                                    if (!$('#' + treeId).closest('.accordion').find('.title').hasClass('active')) {
+                                        $('#' + treeId).closest('.accordion').find('.title').trigger('click');
                                     }
                                     node.setActive(false);
                                 }, 10);

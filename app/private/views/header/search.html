@@ -2,7 +2,7 @@
 <div>
     <div class="ui fluid icon input left action" id="search-input-container">
 
-        <div class="searchdropdown ui basic floating dropdown button" apply-script id="headerSearch">
+        <div class="searchdropdown ui basic floating dropdown button" apply-script id="headerSearch" ng-class={disabled:$root.isSearchPage==false}>
             <div class="text"></div>
             <i class="dropdown icon"></i>
             <div class="menu">
@@ -12,7 +12,7 @@
 
         <div class="searchfilterinput ui search">
             <div class="searchicon ui icon input ">
-                <input type="text" id="keyword" name="filter_search" ng-model="$root.search.searchKeyword"  placeholder="What are you looking for?"
+                <input ng-disabled="!$root.isSearchPage" type="text" id="keyword" name="filter_search" ng-model="$root.search.searchKeyword"  placeholder="What are you looking for?"
                 ng-keypress="($event.charCode==13)?search.searchRequest($event):false"    title="Search" autocomplete="off" spellcheck="false" dir="auto" class="searchinput" ng-keyup="search.keyUp()" ng-keydown="search.keyDown()"   />
                 <i class="circular search link icon" ng-click="search.searchRequest()"></i>
             </div>
