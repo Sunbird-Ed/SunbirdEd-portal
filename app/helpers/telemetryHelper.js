@@ -63,7 +63,7 @@ module.exports = {
     prepareTelemetryRequestBody: function(req, eventsData) {
         var data = {
             "id": "ekstep.telemetry",
-            "ver": "1.0",
+            "ver": "2.1",
             "ts": dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo"),
             "params": {
                 "requesterId": req.kauth.grant.access_token.content.sub,
