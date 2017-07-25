@@ -389,6 +389,7 @@ angular
                 },
                 onEnter: function($rootScope, portalTelemetryService) {
                     $rootScope.searchKey = 'Community';
+                    $rootScope.isSearchPage = false;
                     portalTelemetryService.fireImpressions({
                         "env": "community",
                         "type": "default",
@@ -415,8 +416,11 @@ angular
                         name: 'Profile',
                         link: ''
                     }];
-                    $rootScope.searchKey = 'Profile';
+                    
                     $rootScope.profileActive = 'active';
+                    $rootScope.isSearchPage = false;
+                    $rootScope.showFilter = false;
+                    $rootScope.searchKey = 'All';
                     portalTelemetryService.fireImpressions({
                         "env": "profile",
                         "type": "default",
@@ -429,6 +433,8 @@ angular
                 onExit: function($rootScope) {
                     $rootScope.breadCrumbsData = null;
                     $rootScope.profileActive = '';
+                    $rootScope.isSearchPage = false;
+                    $rootScope.search.searchKeyword='';
                 }
             })
             .state('Player', {
@@ -518,7 +524,7 @@ angular
                         "pageid": org.sunbird.portal.appid + "_SearchCourse",
                         "id": "",
                         "name": "",
-                        "url": "/private/index#!/" + $state.params["searchType"] + "/search/" + $state.params["query"] + "/"
+                        "url": "/private/index#!/" + $state.params["type"] + "/search/" + $state.params["query"] + "/"+ $state.params["filters"] + "/"+ $state.params["sort"] + "/"+ $state.params["autoSuggestSearch"]
                     });
                 },
                 onExit: function($rootScope) {
@@ -639,6 +645,10 @@ angular
                 onEnter: function($rootScope, portalTelemetryService) {
                     $rootScope.profileActive = 'active';
                     $rootScope.breadCrumbsData = null;
+                    $rootScope.isSearchPage = false;
+                    $rootScope.search.searchKeyword="";
+                    $rootScope.showFilter = false;
+                    $rootScope.searchKey = 'All';
                     portalTelemetryService.fireImpressions({
                         "env": "workspace",
                         "type": "default",
