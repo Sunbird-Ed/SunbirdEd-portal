@@ -52,13 +52,17 @@
                             <div class="content-player" ng-if="previewContent.contentData.mimeType.indexOf('image') > -1">
                                 <img height='100%' width='100%' ng-src="{{previewContent.contentData.artifactUrl}}" />
                             </div>
-                            <div class="videosegment  ui clearing segment" ng-if="previewContent.contentData.status === 'Review' && previewContent.isShowPublishRejectButton" >
-                                <h5 sb-permissions permission-only="CONTENT_REVIEWER" ng-if="previewContent.isShowPublishRejectButton" class="ui right floated primary button mouse-pointer" ng-click="previewContent.publishContent()">
+                            <div class="videosegment  ui clearing segment margin-bottom-15" ng-if="previewContent.contentData.status === 'Review' && previewContent.isShowPublishRejectButton" >
+                                <button sb-permissions permission-only="CONTENT_REVIEWER" ng-if="previewContent.isShowPublishRejectButton"
+                                        ng-disabled="previewContent.previewContentApi.loader.showLoader"
+                                        class="ui right floated primary button mouse-pointer" ng-click="previewContent.publishContent()">
                                     Publish
-                                </h5>
-                                <h5 sb-permissions permission-only="CONTENT_REVIEWER" ng-if="previewContent.isShowPublishRejectButton" class="ui right floated primary button mouse-pointer" ng-click="previewContent.rejectContent()">
+                                </button>
+                                <button sb-permissions permission-only="CONTENT_REVIEWER" ng-if="previewContent.isShowPublishRejectButton" 
+                                        ng-disabled="previewContent.previewContentApi.loader.showLoader"
+                                        class="ui right floated primary button mouse-pointer" ng-click="previewContent.rejectContent()">
                                     Reject
-                                </h5> 
+                                </button> 
                             </div>
                         </div>
                     </div>
@@ -162,3 +166,4 @@
         </div>
         <div class="one wide column"></div>
     </div>
+</div>

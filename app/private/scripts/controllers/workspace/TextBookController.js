@@ -9,7 +9,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('TextBookController', function(contentService, $timeout, $state, config, $rootScope) {
+    .controller('TextBookController', function(contentService, $timeout, $state, config, $rootScope, ToasterService) {
 
         var textbook = this;
         textbook.lessonTypes = config.DROPDOWN.COMMON.lessonTypes;
@@ -52,57 +52,29 @@ angular.module('playerApp')
             }, 10);
         };
 
-        /**
-         * This function called when api failed, and its show failed response for 2 sec.
-         * @param {String} message
-         */
-        function showErrorMessage(isClose, message, messageType) {
-            var error = {};
-            error.showError = true;
-            error.isClose = isClose;
-            error.message = message;
-            error.messageType = messageType;
-            return error;
-        }
-
-        /**
-         * This function helps to show loader with message.
-         * @param {String} headerMessage
-         * @param {String} loaderMessage
-         */
-        function showLoaderWithMessage(headerMessage, loaderMessage) {
-            var loader = {};
-            loader.showLoader = true;
-            loader.headerMessage = headerMessage;
-            loader.loaderMessage = loaderMessage;
-            return loader;
-        }
-
-        textbook.createContent = function(requestData, api) {
+        textbook.createContent = function(requestData) {
 
             contentService.create(requestData).then(function(res) {
                 if (res && res.responseCode === "OK") {
                     textbook.slideShowCreated = true;
                     textbook.showCreateSlideShowModal = false;
-                    textbook[api].loader.showLoader = false;
+                    textbook.loader.showLoader = false;
                     textbook.hideCreateSlideShowModal();
                     textbook.initEKStepCE(res.result.content_id);
 
                 } else {
-                    textbook[api].loader.showLoader = false;
-                    textbook[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.CREATE_LESSON.FAILED, $rootScope.errorMessages.COMMON.ERROR);
+                    textbook.loader.showLoader = false;
+                    ToasterService.error($rootScope.errorMessages.WORKSPACE.CREATE_TEXTBOOK.FAILED);
                 }
             }).catch(function (error){
-                textbook[api].loader.showLoader = false;
-                textbook[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.CREATE_LESSON.FAILED, $rootScope.errorMessages.COMMON.ERROR);
+                textbook.loader.showLoader = false;
+                ToasterService.error($rootScope.errorMessages.WORKSPACE.CREATE_TEXTBOOK.FAILED);
             });
         };
 
         textbook.saveMetaData = function(data) {
 
-            var api = 'createApi';
-            textbook[api] = {};
-            textbook[api].loader = showLoaderWithMessage("", $rootScope.errorMessages.WORKSPACE.CREATE_LESSON.START);
+            textbook.loader = ToasterService.loader("", $rootScope.errorMessages.WORKSPACE.CREATE_TEXTBOOK.START);
 
             var requestBody = angular.copy(data);
 
@@ -115,7 +87,7 @@ angular.module('playerApp')
             var requestdata = {
                 "content": requestBody
             };
-            textbook.createContent(requestdata, api);
+            textbook.createContent(requestdata);
         };
 
         textbook.clearCreateSlideShowData = function() {

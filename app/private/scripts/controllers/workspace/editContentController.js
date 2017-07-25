@@ -8,7 +8,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-        .controller('EditContentController', function (contentService, config, $scope, $state, $timeout, $rootScope, $stateParams, $location, $anchorScroll) {
+        .controller('EditContentController', function (contentService, config, $scope, $state, $timeout, $rootScope, $stateParams, $location, $anchorScroll, ToasterService) {
 
             var editContent = this;
             editContent.contentId = $stateParams.contentId;
@@ -46,32 +46,6 @@ angular.module('playerApp')
                             .dropdown();
                 }, 10);
             };
-
-            /**
-             * This function called when api failed, and its show failed response for 2 sec.
-             * @param {String} message
-             */
-            function showErrorMessage(isClose, message, messageType) {
-                var error = {};
-                error.showError = true;
-                error.isClose = isClose;
-                error.message = message;
-                error.messageType = messageType;
-                return error;
-            }
-
-            /**
-             * This function helps to show loader with message.
-             * @param {String} headerMessage
-             * @param {String} loaderMessage
-             */
-            function showLoaderWithMessage(headerMessage, loaderMessage) {
-                var loader = {};
-                loader.showLoader = true;
-                loader.headerMessage = headerMessage;
-                loader.loaderMessage = loaderMessage;
-                return loader;
-            }
             
             function checkMimeType() {
                 editContent.uploadedContentMimeType = editContent.contentData.mimeType;
@@ -99,7 +73,7 @@ angular.module('playerApp')
 
                 var api = 'editApi';
                 editContent[api] = {};
-                editContent[api].loader = showLoaderWithMessage("", $rootScope.errorMessages.WORKSPACE.GET.START);
+                editContent[api].loader = ToasterService.loader("", $rootScope.errorMessages.WORKSPACE.GET.START);
 
                 editContent.initilizeView();
 
@@ -109,7 +83,7 @@ angular.module('playerApp')
                 contentService.getById(req, qs).then(function (response) {
                     if (response && response.responseCode === 'OK') {
                         if (!editContent.checkContentAccess(response.result.content)) {
-                            $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
+                            ToasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
                             $state.go('Home');
                         }
                         editContent.contentData = {};
@@ -144,11 +118,11 @@ angular.module('playerApp')
                         }
                     } else {
                         editContent[api].loader.showLoader = false;
-                        editContent[api].error = showErrorMessage(false, $rootScope.errorMessages.WORKSPACE.GET.FAILED, $rootScope.errorMessages.COMMON.ERROR);
+                        ToasterService.error($rootScope.errorMessages.WORKSPACE.GET.FAILED);
                     }
                 }).catch(function (error) {
                     editContent[api].loader.showLoader = false;
-                    editContent[api].error = showErrorMessage(false, $rootScope.errorMessages.WORKSPACE.GET.FAILED, $rootScope.errorMessages.COMMON.ERROR);
+                    ToasterService.error($rootScope.errorMessages.WORKSPACE.GET.FAILED);
                 });
             };
 
@@ -202,7 +176,7 @@ angular.module('playerApp')
             editContent.uploadOrUpdateAppIcon = function (requestBody, isReviewContent) {
                 var api = 'editApi';
                 editContent[api] = {};
-                editContent[api].loader = showLoaderWithMessage("", $rootScope.errorMessages.WORKSPACE.UPLOAD_ICON.START);
+                editContent[api].loader = ToasterService.loader("", $rootScope.errorMessages.WORKSPACE.UPLOAD_ICON.START);
 
                 contentService.uploadMedia(editContent.icon).then(function (res) {
                     if (res && res.responseCode === "OK") {
@@ -212,11 +186,11 @@ angular.module('playerApp')
                         editContent.updateContent(requestBody, isReviewContent);
                     } else {
                         editContent[api].loader.showLoader = false;
-                        editContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.UPLOAD_ICON.FAILED, $rootScope.errorMessages.COMMON.ERROR);
+                        ToasterService.error($rootScope.errorMessages.WORKSPACE.UPLOAD_ICON.FAILED);
                     }
                 }).catch(function (error) {
                     editContent[api].loader.showLoader = false;
-                    editContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.UPLOAD_ICON.FAILED, $rootScope.errorMessages.COMMON.ERROR);
+                    ToasterService.error($rootScope.errorMessages.WORKSPACE.UPLOAD_ICON.FAILED);
                 });
             };
 
@@ -224,13 +198,12 @@ angular.module('playerApp')
 
                 var api = 'editApi';
                 editContent[api] = {};
-                editContent[api].loader = showLoaderWithMessage("", $rootScope.errorMessages.WORKSPACE.UPDATE.START);
+                editContent[api].loader = ToasterService.loader("", $rootScope.errorMessages.WORKSPACE.UPDATE.START);
 
                 contentService.update(requestBody, editContent.contentId).then(function (res) {
                     if (res && res.responseCode === "OK") {
                         editContent[api].loader.showLoader = false;
-                        editContent[api].error = showErrorMessage(true, "Saved Successfully", $rootScope.errorMessages.COMMON.SUCCESS);
-                        editContent[api].error.success = true;
+                        ToasterService.success($rootScope.errorMessages.WORKSPACE.UPDATE.SUCCESS);
                         if(editContent.youtubeFileLink) {
                             editContent.youtubeFileLink = '';
                             editContent.contentData.artifactUrl = requestBody.content.artifactUrl;
@@ -240,11 +213,11 @@ angular.module('playerApp')
                         }
                     } else {
                         editContent[api].loader.showLoader = false;
-                        editContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.UPDATE.FAILED, $rootScope.errorMessages.COMMON.ERROR);
+                        ToasterService.error($rootScope.errorMessages.WORKSPACE.UPDATE.FAILED);
                     }
                 }).catch(function (error) {
                     editContent[api].loader.showLoader = false;
-                    editContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.UPDATE.FAILED, $rootScope.errorMessages.COMMON.ERROR);
+                    ToasterService.error($rootScope.errorMessages.WORKSPACE.UPDATE.FAILED);
                 });
             };
 
@@ -290,22 +263,22 @@ angular.module('playerApp')
             editContent.callReviewApi = function () {
                 var api = 'editApi';
                 editContent[api] = {};
-                editContent[api].loader = showLoaderWithMessage("", $rootScope.errorMessages.WORKSPACE.REVIEW_CONTENT.START);
+                editContent[api].loader = ToasterService.loader("", $rootScope.errorMessages.WORKSPACE.REVIEW_CONTENT.START);
                 var req = {content: {}};
 
                 contentService.review(req, editContent.contentId).then(function (res) {
                     if (res && res.responseCode === "OK") {
                         editContent[api].loader.showLoader = false;
-                        editContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.REVIEW_CONTENT.SUCCESS, $rootScope.errorMessages.COMMON.SUCCESS);
+                        ToasterService.success($rootScope.errorMessages.WORKSPACE.REVIEW_CONTENT.SUCCESS);
 //                        $state.go("WorkSpace.ReviewContent");
 
                     } else {
                         editContent[api].loader.showLoader = false;
-                        editContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.REVIEW_CONTENT.FAILED, $rootScope.errorMessages.COMMON.ERROR);
+                        ToasterService.error($rootScope.errorMessages.WORKSPACE.REVIEW_CONTENT.FAILED);
                     }
                 }).catch(function (error) {
                     editContent[api].loader.showLoader = false;
-                    editContent[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.REVIEW_CONTENT.FAILED, $rootScope.errorMessages.COMMON.ERROR);
+                    ToasterService.error($rootScope.errorMessages.WORKSPACE.REVIEW_CONTENT.FAILED);
                 });
             };
 

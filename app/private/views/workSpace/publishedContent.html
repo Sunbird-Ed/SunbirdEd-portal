@@ -1,5 +1,5 @@
 <div ng-init="publishedContent.initializeData()">
-    <div ng-if="!publishedContent.publishedApi.loader.showLoader && !publishedContent.publishedApi.error.showError">
+    <div ng-if="!publishedContent.loader.showLoader && !publishedContent.zeroContentMessage">
         <div class="ui three stackable cards">
             <div class="link card mouse-pointer" ng-repeat="item in publishedContent.publishedContentData track by $index"
                  ng-click="publishedContent.openContentPlayer(item)">
@@ -24,10 +24,12 @@
             </div>
         </div>
     </div>
-    <div class="twelve wide column" ng-if="publishedContent.publishedApi.loader.showLoader">
-        <app-loader data="{{publishedContent.publishedApi.loader}}"></app-loader>
+    <div class="twelve wide column" ng-if="publishedContent.loader.showLoader">
+        <app-loader data="{{publishedContent.loader}}"></app-loader>
     </div>
-    <div class="twelve wide column" ng-if="publishedContent.publishedApi.error.showError">
-        <error-message data="{{publishedContent.publishedApi.error}}" visibility="publishedContent.publishedApi.error.showError"></error-message>
+    <div class="twelve wide column" ng-if="publishedContent.zeroContentMessage">
+        <div class="ui huge positive message">
+            <p>{{publishedContent.zeroContentMessage}}</p>
+        </div>
     </div>
 </div>

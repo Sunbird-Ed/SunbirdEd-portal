@@ -9,7 +9,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('CollectionController', function(contentService, $timeout, $state, config, $rootScope) {
+    .controller('CollectionController', function(contentService, $timeout, $state, config, $rootScope, ToasterService) {
 
         var collection = this;
         collection.lessonTypes = config.DROPDOWN.COMMON.lessonTypes;
@@ -52,57 +52,30 @@ angular.module('playerApp')
             }, 10);
         };
 
-        /**
-         * This function called when api failed, and its show failed response for 2 sec.
-         * @param {String} message
-         */
-        function showErrorMessage(isClose, message, messageType) {
-            var error = {};
-            error.showError = true;
-            error.isClose = isClose;
-            error.message = message;
-            error.messageType = messageType;
-            return error;
-        }
-
-        /**
-         * This function helps to show loader with message.
-         * @param {String} headerMessage
-         * @param {String} loaderMessage
-         */
-        function showLoaderWithMessage(headerMessage, loaderMessage) {
-            var loader = {};
-            loader.showLoader = true;
-            loader.headerMessage = headerMessage;
-            loader.loaderMessage = loaderMessage;
-            return loader;
-        }
-
-        collection.createContent = function(requestData, api) {
+        collection.createContent = function(requestData) {
 
             contentService.create(requestData).then(function(res) {
                 if (res && res.responseCode === "OK") {
                     collection.slideShowCreated = true;
                     collection.showCreateSlideShowModal = false;
-                    collection[api].loader.showLoader = false;
+                    collection.loader.showLoader = false;
                     collection.hideCreateSlideShowModal();
                     collection.initEKStepCE(res.result.content_id);
 
                 } else {
-                    collection[api].loader.showLoader = false;
-                    collection[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.CREATE_LESSON.FAILED, $rootScope.errorMessages.COMMON.ERROR);
+                    collection.loader.showLoader = false;
+                    ToasterService.error($rootScope.errorMessages.WORKSPACE.CREATE_COLLECTION.FAILED);
                 }
             }).catch(function (error){
-                collection[api].loader.showLoader = false;
-                collection[api].error = showErrorMessage(true, $rootScope.errorMessages.WORKSPACE.CREATE_LESSON.FAILED, $rootScope.errorMessages.COMMON.ERROR);
+                collection.loader.showLoader = false;
+                ToasterService.error($rootScope.errorMessages.WORKSPACE.CREATE_COLLECTION.FAILED);
             });
         };
 
         collection.saveMetaData = function(data) {
 
-            var api = 'createApi';
-            collection[api] = {};
-            collection[api].loader = showLoaderWithMessage("", $rootScope.errorMessages.WORKSPACE.CREATE_LESSON.START);
+            collection = {};
+            collection.loader = ToasterService.loader("", $rootScope.errorMessages.WORKSPACE.CREATE_COLLECTION.START);
 
             var requestBody = angular.copy(data);
 
@@ -116,14 +89,10 @@ angular.module('playerApp')
             var requestdata = {
                 "content": requestBody
             };
-            collection.createContent(requestdata, api);
+            collection.createContent(requestdata);
         };
 
         collection.clearCreateSlideShowData = function() {
-
-            if (collection.createApi) {
-                collection.createApi.error = {};
-            }
             collection.data = {};
         };
 

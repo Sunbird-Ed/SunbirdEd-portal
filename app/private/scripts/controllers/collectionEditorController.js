@@ -8,7 +8,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('CollectionEditorController', function(config, $stateParams, $location, $sce, $state, $timeout, $rootScope, contentService, permissionsService) {
+    .controller('CollectionEditorController', function(config, $stateParams, ToasterService, $sce, $state, $timeout, $rootScope, contentService, permissionsService) {
 
         var collectionEditor = this;
         collectionEditor.contentId = $stateParams.contentId;
@@ -99,7 +99,7 @@ angular.module('playerApp')
                             $('#collectionEditor').iziModal('open');
                         }, 100);
                     } else {
-                        $rootScope.accessDenied = $rootScope.errorMessages.COMMON.UN_AUTHORIZED;
+                        ToasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
                         $state.go('Home');
                     }
                 } else {

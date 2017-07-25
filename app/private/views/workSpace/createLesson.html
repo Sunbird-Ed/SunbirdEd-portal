@@ -1,6 +1,6 @@
 <div ng-init="contentLesson.initilizeView()">
     <div class="ui modal" id="createSlideShowModal" ng-if="contentLesson.showCreateSlideShowModal">
-        <div class=" ui segment margin-top-10" ng-show="!contentLesson.createApi.loader.showLoader && !contentLesson.createApi.error.showError">
+        <div class=" ui segment margin-top-10" ng-show="!contentLesson.loader.showLoader">
             <div class=" margin-bottom-15">
                 <div class="ui grid">
                     <div class="eleven wide column">
@@ -53,7 +53,8 @@
             </div>
             <div class="actions">
                 <p class="text-align-center padding-top-20">
-                    <button class="ui primary text-align-center icon button" ng-click="contentLesson.saveMetaData(contentLesson.data)">
+                    <button class="ui primary text-align-center icon button" ng-click="contentLesson.saveMetaData(contentLesson.data)"
+                            ng-disabled="contentLesson.loader.showLoader">
                         {{$root.labels.WORKSPACE.common.startCreating}}
                     </button>
                 </p>
@@ -65,11 +66,8 @@
                 </div>
             </div>
         </div>
-        <div class=" ui segment margin-top-10" ng-if="contentLesson.createApi.loader.showLoader">
-            <app-loader data="{{contentLesson.createApi.loader}}"></app-loader>
-        </div>
-        <div class=" ui segment margin-top-10" ng-if="contentLesson.createApi.error.showError">
-            <error-message data="{{contentLesson.createApi.error}}" visibility="contentLesson.createApi.error.showError"></error-message>
+        <div class=" ui segment margin-top-10" ng-if="contentLesson.loader.showLoader">
+            <app-loader data="{{contentLesson.loader}}"></app-loader>
         </div>
     </div>
 </div>
