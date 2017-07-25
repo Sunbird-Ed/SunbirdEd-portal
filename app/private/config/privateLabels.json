@@ -43,7 +43,7 @@
                 "collection": "COLLECTION",
                 "collectionDescription": "You will be taken to an editor to create a course with assessments/quizes.",
                 "enterYuotubeURL": "ENTER YOUTUBE URL",
-                "fileUploadOptions": "File accepted only pdf, mp4, youtube video and html zip (Max size 25mb).",
+                "fileUploadOptions": "File accepted only pdf, mp4 and html zip (Max size 25mb).",
                 "uploadContent": "Upload Content",
                 "upload": "Upload"
             },
@@ -84,6 +84,8 @@
                 "closePreview": "Close Preview",
                 "submitForReview": "Submit For Review",
                 "launchEditor": "Launch Editor",
+                "upload": "Upload",
+                "uploadButton": "UPLOAD",
                 "plaseFillThisRD": "Please fill the details in below fields.",
                 "icon": "Icon",
                 "youCanFillThisDL": "You can fill in this details later",
