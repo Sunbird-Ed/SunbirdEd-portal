@@ -1,4 +1,4 @@
-<div ng-show="!noteList.createApi.loader.showLoader && !noteList.createApi.error.showError">
+<div ng-show="!noteList.createApi.loader.showLoader">
     <div class="ui fluid icon input">
         <input type="text" placeholder={{$root.labels.Notes.title}} name="title" ng-model="metaData.title" autofocus="" tabindex="1">
     </div>
@@ -13,8 +13,5 @@
 </div>
 <div ng-if="noteList.createApi.loader.showLoader">
     <app-loader data="{{noteList.createApi.loader}}"></app-loader>
-</div>
-<div ng-if="noteList.createApi.error.showError">
-    <error-message data="{{noteList.createApi.error}}" visibility="noteList.createApi.error.showError"></error-message>
 </div>
 <!-- <div class="ui clearing divider"></div> -->

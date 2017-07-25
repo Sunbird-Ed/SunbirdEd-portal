@@ -10,14 +10,14 @@
 </span>
 <div ng-if="noteCard.showCreateNote">
     <div class="ui modal" id="addNoteModal">
-        <div class=" ui segment margin-top-10" ng-if="!noteCard.createApi.loader.showLoader && !noteCard.createApi.error.showError">
+        <div class=" ui segment margin-top-10" ng-if="!noteCard.createApi.loader.showLoader">
             <div class=" margin-bottom-15">
                 <div class="ui grid">
                     <div class="eleven wide column">
                         <span class="ui header">{{$root.labels.Notes.takeANote}}</span>
                     </div>
                     <div class="one wide column actions">
-                        <h5 class="ui basic icon circular button deny" ng-click="noteCard.createApi.error.showError = false;">
+                        <h5 class="ui basic icon circular button deny">
                             <i class="ui remove icon"></i>
                         </h5>
                     </div>
@@ -41,9 +41,6 @@
         </div>
         <div class=" ui segment margin-top-10" ng-if="noteCard.createApi.loader.showLoader">
             <app-loader data="{{noteCard.createApi.loader}}"></app-loader>
-        </div>
-        <div class=" ui segment margin-top-10" ng-if="noteCard.createApi.error.showError">
-            <error-message data="{{noteCard.createApi.error}}" visibility="noteCard.createApi.error.showError"></error-message>
         </div>
     </div>
 </div>
