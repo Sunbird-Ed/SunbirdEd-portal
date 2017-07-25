@@ -2,17 +2,17 @@
 
 angular.module('loginApp')
     .controller('SignUpCtrl',
-        function(signUpService, $timeout, $filter, $location, labels,
+        function (signUpService, $timeout, $filter, $location, labels,
             $rootScope, errorMessages) {
             var newUser = this;
             var today = new Date();
             newUser.languages = labels.languages;
-            newUser.formValidation = function() {
+            newUser.formValidation = function () {
                 $('.ui.form').form({
                     fields: {
                         userName: {
                             rules: [{
-                                type: 'regExp[^[-\\w\.\\$@\*\\!]{5,256}$]',
+                                type: 'regExp[^[-\\w\.\\$@\*\\!]{5,256}$]', // eslint-disable-line no-useless-escape ,max-len
                                 prompt: errorMessages.FORM_VALIDATION.userName
                             }]
                         },
@@ -30,7 +30,7 @@ angular.module('loginApp')
                         },
                         phone: {
                             rules: [{
-                                type: 'regExp[^(?:(?:\\+|0{0,2})91(\\s*[\\-]\\s*)?|[0]?)?[789]\\d{9}$]',
+                                type: 'regExp[^(?:(?:\\+|0{0,2})91(\\s*[\\-]\\s*)?|[0]?)?[789]\\d{9}$]', // eslint-disable-line  ,max-len
                                 prompt: errorMessages.FORM_VALIDATION.phone
                             }]
                         },
@@ -47,16 +47,16 @@ angular.module('loginApp')
                             }]
                         }
                     },
-                    onSuccess: function() {
+                    onSuccess: function () {
                         return true;
                     },
-                    onFailure: function() {
+                    onFailure: function () {
                         return false;
                     }
                 });
             };
 
-            newUser.showModal = function() {
+            newUser.showModal = function () {
                 newUser.firstName = '';
                 newUser.lastName = '';
                 newUser.password = '';
@@ -65,10 +65,10 @@ angular.module('loginApp')
                 newUser.phone = '';
                 newUser.language = [];
 
-                $timeout(function() {
-                    //Resets form input fields from data values
+                $timeout(function () {
+                    // Resets form input fields from data values
                     $('.ui.form').trigger('reset');
-                    //Resets form error messages and field styles
+                    // Resets form error messages and field styles
                     $('.ui.form .field.error')
                         .removeClass(errorMessages.COMMON.ERROR);
                     $('.ui.form.error').removeClass(errorMessages.COMMON.ERROR);
@@ -81,13 +81,14 @@ angular.module('loginApp')
                     });
                 });
 
-                $timeout(function() {
+                $timeout(function () {
                     $('#dobCalendar').calendar({
                         type: 'date',
                         maxDate: today,
                         formatter: {
-                            date: function(date) {
+                            date: function (date) {
                                 if (!date) return '';
+                                /*eslint-disable */
                                 var day = date.getDate();
                                 var month = date.getMonth() + 1;
                                 var year = date.getFullYear();
@@ -123,7 +124,7 @@ angular.module('loginApp')
             };
 
             /**
-             * This function called when api failed, 
+             * This function called when api failed,
              * and its show failed response for 2 sec.
              * @param {String} message
              */
@@ -170,15 +171,15 @@ angular.module('loginApp')
             };
             newUser.signUp = function() {
                 newUser.request = {
-                    'params': {},
-                    'request': {
-                        'firstName': newUser.firstName,
-                        'lastName': newUser.lastName,
-                        'password': newUser.password,
-                        'email': newUser.email,
-                        'userName': newUser.userName.trim(),
-                        'phone': newUser.phone,
-                        'language': [newUser.language]
+                    params: {},
+                    request: {
+                        firstName: newUser.firstName,
+                        lastName: newUser.lastName,
+                        password: newUser.password,
+                        email: newUser.email,
+                        userName: newUser.userName.trim(),
+                        phone: newUser.phone,
+                        language: [newUser.language]
                     }
                 };
                 newUser.loader = showLoaderWithMessage(
