@@ -41,13 +41,13 @@ module.exports = {
                     };
                     request(options, function(error, response, body) {
                         if (error) {
-                            console.log('echo API error');
+                            console.log('echo API error', error);
                             callback(error, response);
                         } else if (body === '/test') {
                             console.log('echo API succesful');
                             callback(null, response);
                         } else {
-                            console.log('echo returned invalid response');
+                            console.log('echo returned invalid response', body);
                             callback(body, response);
                         }
 
@@ -70,7 +70,7 @@ module.exports = {
                     //check user exist
                     self.checkUserExists(self.payload, function(err, status) {
                         if (err) {
-                            console.log('get user profile API error');
+                            console.log('get user profile API error', err);
                             callback(err, null);
                             return;
                         } else if (status) {
@@ -82,7 +82,7 @@ module.exports = {
                             if (createUserFlag) {
                                 self.createUser(self.payload, function(error, status) {
                                     if (error) {
-                                        console.log('create user failed');
+                                        console.log('create user failed', error);
                                         callback(error, null);
                                         return;
                                     } else if (status) {
@@ -116,6 +116,7 @@ module.exports = {
                                 callback(null, grant);
                             },
                             function(err) {
+                                console.log('grant failed', err)
                                 callback(err, null)
                             });
                 }
