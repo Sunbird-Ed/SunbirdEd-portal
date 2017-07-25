@@ -414,7 +414,7 @@
                     "Assamese","Bengali","English","Gujarati","Hindi","Kannada","Malayalam","Marathi","Nepali","Oriya","Other","Punjabi","Tamil","Telugu","Urdu"
                 ],
                 "boards": [
-                    "CBSE", "ICSE", "NCERT", "MSCERT"
+                    "CBSE", "ICSE", "MSCERT", "NCERT"
                 ]
             }
         },
