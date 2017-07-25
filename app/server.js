@@ -180,6 +180,7 @@ app.use('/content/preview/*', proxy(contentProxyUrl, {
 }));
 
 app.use('/action/*', permissionsHelper.checkPermission(), proxy(contentProxyUrl, {
+    limit: reqDataLimitOfContentUpload,
     proxyReqPathResolver: function(req) {
         return require('url').parse(contentProxyUrl + req.originalUrl).path;
     }
