@@ -99,6 +99,7 @@ angular.module('playerApp')
                         toc.loader.showLoader = false;
                         res.result.content.children = _.sortBy(res.result.content.children, ['index']);
                         toc.getAllContentsFromCourse(res.result.content);
+                        toc.contentCountByType = _.countBy(toc.playListContent, 'mimeType');
                         if (toc.courseType == "ENROLLED_COURSE") {
                             toc.getContentState();
                         }

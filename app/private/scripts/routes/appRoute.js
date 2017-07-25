@@ -518,7 +518,7 @@ angular
                         "pageid": org.sunbird.portal.appid + "_SearchCourse",
                         "id": "",
                         "name": "",
-                        "url": "/private/index#!/" + $state.params["searchType"] + "/search/" + $state.params["query"] + "/"
+                        "url": "/private/index#!/" + $state.params["type"] + "/search/" + $state.params["query"] + "/"+ $state.params["filters"] + "/"+ $state.params["sort"] + "/"+ $state.params["autoSuggestSearch"]
                     });
                 },
                 onExit: function($rootScope) {
