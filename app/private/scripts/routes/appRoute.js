@@ -389,6 +389,7 @@ angular
                 },
                 onEnter: function($rootScope, portalTelemetryService) {
                     $rootScope.searchKey = 'Community';
+                    $rootScope.isSearchPage = false;
                     portalTelemetryService.fireImpressions({
                         "env": "community",
                         "type": "default",
@@ -415,8 +416,11 @@ angular
                         name: 'Profile',
                         link: ''
                     }];
-                    $rootScope.searchKey = 'Profile';
+                    
                     $rootScope.profileActive = 'active';
+                    $rootScope.isSearchPage = true;
+                    $rootScope.showFilter = false;
+                    $rootScope.searchKey = 'All';
                     portalTelemetryService.fireImpressions({
                         "env": "profile",
                         "type": "default",
@@ -429,6 +433,7 @@ angular
                 onExit: function($rootScope) {
                     $rootScope.breadCrumbsData = null;
                     $rootScope.profileActive = '';
+                    $rootScope.isSearchPage = false;
                 }
             })
             .state('Player', {
@@ -639,6 +644,9 @@ angular
                 onEnter: function($rootScope, portalTelemetryService) {
                     $rootScope.profileActive = 'active';
                     $rootScope.breadCrumbsData = null;
+                    $rootScope.isSearchPage = true;
+                    $rootScope.showFilter = false;
+                    $rootScope.searchKey = 'All';
                     portalTelemetryService.fireImpressions({
                         "env": "workspace",
                         "type": "default",

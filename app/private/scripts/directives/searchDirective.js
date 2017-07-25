@@ -92,7 +92,7 @@ angular.module('playerApp').directive('search', function () {
                 loader.loaderMessage = loaderMessage;
                 return loader;
             }
-            $scope.search.initSearch = function () {
+            $scope.search.initSearch = function () {                
                 var searchParams = $stateParams;
                 $rootScope.search.selectedSearchKey = $rootScope.searchKey || searchParams.type;
                 $scope.curSearchText = $rootScope.search.searchKeyword = $rootScope.search.searchKeyword || searchParams.query;
