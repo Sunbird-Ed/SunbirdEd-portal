@@ -23,7 +23,8 @@
     "content-editor-iframe": "https://s3.ap-south-1.amazonaws.com/ekstep-public-qa/artefacts/editor/content-editor-iframe-1.0.0.zip",
     "collection-editor-iframe": "https://s3.ap-south-1.amazonaws.com/ekstep-public-qa/artefacts/editor/collection-editor-iframe-1.0.0.zip",
     "font-awesome": "~4.5.0",
-    "js-md5": "md5#^0.5.0"
+    "js-md5": "md5#^0.5.0",
+    "izitoast": "^1.1.4"
   },
   "devDependencies": {
     "angular-mocks": "1.6.0",
