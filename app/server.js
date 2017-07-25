@@ -62,6 +62,13 @@ if (default_tenant) {
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'private')));
 
+app.use('/private/index', function (req, res, next) {
+    res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+    res.header('Expires', '-1');
+    res.header('Pragma', 'no-cache');
+    next();
+});
+
 app.get('/private/service/get/tenant/logo', function (req, res) {
     res.status(200);
     var data = {'logo': ''};
