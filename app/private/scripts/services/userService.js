@@ -40,8 +40,7 @@ angular.module('playerApp')
             var request = req.request;
             _.forEach(request, function (v,k) {
                 if (!_.isArray(v) && !_.isObject(v)) {
-                    var obj = 
-                    data.push({k:v});
+                    data.push({[k]:v});
                 }
             })
             // if (request['address'] && _.isArray(request['address'])) {
