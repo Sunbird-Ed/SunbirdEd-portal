@@ -61,7 +61,9 @@ var paths = {
 
         player.app + '/thirdparty/bower_components/file-upload/fine-uploader/fine-uploader.js',
         player.app + '/thirdparty/bower_components/semantic-tree-picker/semantic-ui-tree-picker.js',
-        player.app + '/thirdparty/bower_components/angular-ui-router/release/stateEvents.min.jss'
+        player.app + '/thirdparty/bower_components/angular-ui-router/release/stateEvents.min.jss',
+        player.app + '/thirdparty/bower_components/izitoast/dist/js/iziToast.min.js'
+
 
     ],
     karma: 'karma.conf.js',
