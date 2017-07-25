@@ -45,7 +45,8 @@
                 "enterYuotubeURL": "ENTER YOUTUBE URL",
                 "fileUploadOptions": "File accepted only pdf, mp4 and html zip (Max size 25mb).",
                 "uploadContent": "Upload Content",
-                "upload": "Upload"
+                "upload": "Upload",
+                "closeUpload" : "Close Upload"
             },
             "createLesson": {
                 "createLessonText": "Create Lesson",
