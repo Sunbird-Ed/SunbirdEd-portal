@@ -52,7 +52,8 @@ angular.module('playerApp')
                     debug: true,
                     validation: {
                         acceptFiles: config.FileExtensionToUpload,
-                        sizeLimit: config.MaxFileSizeToUpload
+                        sizeLimit: config.MaxFileSizeToUpload,
+                        allowedExtensions: config.AllowedFileExtention
                     },
                     messages: {
                         sizeError: '{file} is too large, maximum file size is 25 MB.'

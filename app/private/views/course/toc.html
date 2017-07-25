@@ -50,11 +50,11 @@
                                         <add-note shownoteincourse="true" courseid="toc.courseParams.courseId"></add-note>
                                     </div>
                                     <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false" courseid="toc.courseParams.courseId"></note-card>
-                                    <div ng-include=" 'views/course/facultyCard.html'" class="margin-bottom-15"></div>
+<!--                                    <div ng-include=" 'views/course/facultyCard.html'" class="margin-bottom-15"></div>-->
                                     <div ng-include=" 'views/course/carriculumCard.html'"></div><br>
                                     <div class="courseupdate">
-                                        <b>Course created on: 15 jun 2017</b><br>
-                                        <b>Updated on: 16 jun 2017</b>
+                                        <b>Course created on: {{toc.courseHierachy.createdOn | dateFilterWithMDY}}</b><br>
+                                        <b>Updated on: {{toc.courseHierachy.lastUpdatedOn | dateFilterWithMDY}}</b>
                                     </div>
                                 </div>
                             </div>
