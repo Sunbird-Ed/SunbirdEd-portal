@@ -418,7 +418,7 @@ angular
                     }];
                     
                     $rootScope.profileActive = 'active';
-                    $rootScope.isSearchPage = true;
+                    $rootScope.isSearchPage = false;
                     $rootScope.showFilter = false;
                     $rootScope.searchKey = 'All';
                     portalTelemetryService.fireImpressions({
@@ -434,6 +434,7 @@ angular
                     $rootScope.breadCrumbsData = null;
                     $rootScope.profileActive = '';
                     $rootScope.isSearchPage = false;
+                    $rootScope.search.searchKeyword='';
                 }
             })
             .state('Player', {
@@ -644,7 +645,8 @@ angular
                 onEnter: function($rootScope, portalTelemetryService) {
                     $rootScope.profileActive = 'active';
                     $rootScope.breadCrumbsData = null;
-                    $rootScope.isSearchPage = true;
+                    $rootScope.isSearchPage = false;
+                    $rootScope.search.searchKeyword="";
                     $rootScope.showFilter = false;
                     $rootScope.searchKey = 'All';
                     portalTelemetryService.fireImpressions({
