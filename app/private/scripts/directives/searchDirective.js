@@ -92,7 +92,7 @@ angular.module('playerApp').directive('search', function () {
                 loader.loaderMessage = loaderMessage;
                 return loader;
             }
-            $scope.search.initSearch = function () {
+            $scope.search.initSearch = function () {                
                 var searchParams = $stateParams;
                 $rootScope.search.selectedSearchKey = $rootScope.searchKey || searchParams.type;
                 $scope.curSearchText = $rootScope.search.searchKeyword = $rootScope.search.searchKeyword || searchParams.query;
@@ -163,7 +163,7 @@ angular.module('playerApp').directive('search', function () {
                                 query: $rootScope.search.searchKeyword,
                                 filters: btoa(JSON.stringify($rootScope.search.filters)),
                                 sort: btoa(JSON.stringify($rootScope.search.sortBy)),
-                                autoSuggestSearch:$rootScope.search.searchFromSuggestion
+                                autoSuggestSearch:$rootScope.search.searchFromSuggestion||false
                             };
                             //$state.go('Search', searchParams);
                             $location.path('search/' + searchParams.type + '/' + searchParams.query + '/' + searchParams.filters + '/' + searchParams.sort+"/"+searchParams.autoSuggestSearch);
@@ -217,6 +217,7 @@ angular.module('playerApp').directive('search', function () {
 
                         } else
                         {
+                            $("#search-suggestions").addClass('hidden').removeClass('visible');
                             $rootScope.search.autosuggest_data = [];
                             $rootScope.search.loader.showLoader = false;
 
