@@ -217,6 +217,7 @@ angular.module('playerApp').directive('search', function () {
 
                         } else
                         {
+                            $("#search-suggestions").addClass('hidden').removeClass('visible');
                             $rootScope.search.autosuggest_data = [];
                             $rootScope.search.loader.showLoader = false;
 
