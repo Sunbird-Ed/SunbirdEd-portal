@@ -11,7 +11,7 @@ module.exports = {
         var ua = parser(req.headers['user-agent']);
         req.session.orgs.push(req.session.rootOrgId);
         var channel = md5(req.session.rootOrgId || 'sunbird');
-        var event = [{
+        var event = {
             "ver": "2.1",
             "uid": req.kauth.grant.access_token.content.sub,
             "sid": req.sessionID,
@@ -41,8 +41,10 @@ module.exports = {
             },
             "pdata": { "id": appId, "ver": "1.0" },
             "ets": new Date().getTime()
-        }];
-        this.sendTelemetry(req, event, function(status) {
+        };
+        event.mid = 'SB:' + md5(JSON.stringify(event));    
+        this.sendTelemetry(req, [event] , function(status) {
+            console.log(status)
             callback(null, status)
         })
     },
