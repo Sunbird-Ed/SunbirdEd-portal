@@ -34,6 +34,9 @@ module.exports = {
         'padded-blocks': ['error', 'never'],
         'object-curly-spacing': ['error', 'always'],
         'max-len': ['error', 80],
-        'eol-last': 2
+        'eol-last': 2,
+        'no-tabs': 0,
+        'no-mixed-spaces-and-tabs':0
     }
+
 };
