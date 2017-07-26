@@ -9,8 +9,8 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('CourseController', function(contentService, $timeout, $state, config, $rootScope, ToasterService) {
-
+    .controller('CourseController', function (contentService, $timeout, $state,
+        config, $rootScope, ToasterService) {
         var course = this;
         course.lessonTypes = config.DROPDOWN.COMMON.lessonTypes;
         course.audiences = config.DROPDOWN.COMMON.audiences;
@@ -25,7 +25,7 @@ angular.module('playerApp')
         course.userId = $rootScope.userId;
         course.accept = false;
 
-        course.hideCreateSlideShowModal = function() {
+        course.hideCreateSlideShowModal = function () {
             $('#createSlideShowModal')
                 .modal('hide');
             $('#createSlideShowModal')
@@ -34,69 +34,71 @@ angular.module('playerApp')
                 .modal('hide dimmer');
         };
 
-        course.initilizeView = function() {
+        course.initilizeView = function () {
             course.showCreateSlideShowModal = true;
-            $timeout(function() {
+            $timeout(function () {
                 $('.multiSelectDropDown')
                     .dropdown();
                 $('.singleSelectDropDown')
                     .dropdown();
                 $('#createSlideShowModal').modal({
-                    onHide: function() {
+                    onHide: function () {
                         course.clearCreateSlideShowData();
                         if (!course.slideShowCreated) {
-                            $state.go("WorkSpace.ContentCreation");
+                            $state.go('WorkSpace.ContentCreation');
                         }
                     }
                 }).modal('show');
             }, 10);
         };
 
-        course.createContent = function(requestData) {
-
-            contentService.create(requestData).then(function(res) {
-                if (res && res.responseCode === "OK") {
+        course.createContent = function (requestData) {
+            contentService.create(requestData).then(function (res) {
+                if (res && res.responseCode === 'OK') {
                     course.slideShowCreated = true;
                     course.showCreateSlideShowModal = false;
                     course.loader.showLoader = false;
                     course.hideCreateSlideShowModal();
                     course.initEKStepCE(res.result.content_id);
-
                 } else {
                     course.loader.showLoader = false;
-                    ToasterService.error($rootScope.errorMessages.WORKSPACE.CREATE_COURSE.FAILED);
+                    ToasterService.error($rootScope
+                        .errorMessages.WORKSPACE.CREATE_COURSE.FAILED);
                 }
-            }).catch(function (error){
+            }).catch(function () {
                 course.loader.showLoader = false;
-                ToasterService.error($rootScope.errorMessages.WORKSPACE.CREATE_COURSE.FAILED);
+                ToasterService.error($rootScope
+                    .errorMessages.WORKSPACE.CREATE_COURSE.FAILED);
             });
         };
 
-        course.saveMetaData = function(data) {
-
-            course.loader = ToasterService.loader("", $rootScope.errorMessages.WORKSPACE.CREATE_COURSE.START);
+        course.saveMetaData = function (data) {
+            course.loader = ToasterService.loader('', $rootScope
+                    .errorMessages.WORKSPACE.CREATE_COURSE.START);
 
             var requestBody = angular.copy(data);
 
-            requestBody.mimeType = "application/vnd.ekstep.content-collection";
+            requestBody.mimeType = 'application/vnd.ekstep.content-collection';
             requestBody.createdBy = course.userId;
 
-            requestBody.name = requestBody.name ? requestBody.name : "Untitled Course";
-            requestBody.description = requestBody.description ? requestBody.description : "Description";
-            requestBody.contentType = "Course";
+            requestBody.name = requestBody.name
+                ? requestBody.name : 'Untitled Course';
+            requestBody.description = requestBody.description
+                ? requestBody.description : 'Description';
+            requestBody.contentType = 'Course';
 
             var requestdata = {
-                "content": requestBody
+                content: requestBody
             };
             course.createContent(requestdata);
         };
 
-        course.clearCreateSlideShowData = function() {
+        course.clearCreateSlideShowData = function () {
             course.data = {};
         };
 
-        course.initEKStepCE = function(contentId) {
-            var params = { contentId: contentId ,type: "Course"};
-            $state.go("CollectionEditor", params);
+        course.initEKStepCE = function (contentId) {
+            var params = { contentId: contentId, type: 'Course' };
+            $state.go('CollectionEditor', params);
         };
     });

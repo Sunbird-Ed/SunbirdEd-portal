@@ -36,7 +36,10 @@ module.exports = {
         'max-len': ['error', 80],
         'eol-last': 2,
         'no-tabs': 0,
-        'no-mixed-spaces-and-tabs':0
+        'no-mixed-spaces-and-tabs':0,
+        'no-console': 2,
+        'no-mixed-operators': 0,
+        'no-underscore-dangle': 0
     }
 
 };
