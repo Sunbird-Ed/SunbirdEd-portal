@@ -1,20 +1,9 @@
-<div class="ui" ng-include=" 'views/profile/profileHeader.html' ">
+<div class="ui" ng-if="!profileCtrl.isError" ng-include=" 'views/profile/profileHeader.html' ">
 </div>
-<!-- <div class="ui" ng-include=" 'views/profile/uprofile.html' ">
-</div> -->
-<div class="ui grid">
+<div class="ui grid" ng-if="!profileCtrl.isError">
     <div class="one wide column"></div>
     <div class="ten wide column">
-
         <div ng-include="'views/profile/profileView.html'"></div>
-        <!-- <div class="ui grid">
-            <div class="three wide column">
-                <div ng-include="'views/profile/profileSidebar.html'"></div>
-            </div>
-            <div class="workspacesegment nine wide column">
-                <div ng-include="'views/profile/profileStartCreate.html'"></div>
-            </div>
-        </div> -->
-    </div>
+           </div>
     <div class="one wide column"></div>
 </div>
