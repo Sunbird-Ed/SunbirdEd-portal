@@ -217,7 +217,7 @@ angular
                         controller: 'NoteListCtrl as noteList'
                     }
                 },
-                onEnter: function($state, $rootScope, sessionService, portalTelemetryService) {
+                onEnter: function($stateParams, $rootScope, sessionService, portalTelemetryService) {
                     $rootScope.searchKey = 'Courses';
                     $rootScope.searchKeyword = '';
                     $rootScope.isSearchPage = true;
@@ -240,7 +240,7 @@ angular
                         "pageid": org.sunbird.portal.appid + "_CourseNote",
                         "id": "",
                         "name": "",
-                        "url": "/private/index#!/course/note/" + $state.params["tocId"] + "/" + $state.params["courseId"]
+                        "url": "/private/index#!/course/note/" + $stateParams["tocId"] + "/" + $stateParams["courseId"]
                     });
                 },
                 onExit: function($rootScope) {
@@ -279,9 +279,9 @@ angular
                         "env": "notes",
                         "type": "detail",
                         "pageid": org.sunbird.portal.appid + "_ContentNote",
-                        "id": $state.params["contentId"],
-                        "name": $state.params["contentName"],
-                        "url": "/private/index#!/resourse/note/" + $state.params["contentId"] + "/" + $state.params["contentName"]
+                        "id": $stateParams["contentId"],
+                        "name": $stateParams["contentName"],
+                        "url": "/private/index#!/resourse/note/" + $stateParams["contentId"] + "/" + $stateParams["contentName"]
                     });
                 },
                 onExit: function($rootScope) {
@@ -300,7 +300,7 @@ angular
                         controller: 'NoteListCtrl as noteList'
                     }
                 },
-                onEnter: function($rootScope, sessionService, portalTelemetryService, $state) {
+                onEnter: function($rootScope, sessionService, portalTelemetryService, $state,$stateParams) {
                     var courseParams = sessionService.getSessionData('COURSE_PARAMS');
                     var courseLink = '/toc/' + courseParams.tocId + '/' + courseParams.courseId + '/' + courseParams.lectureView;
                     var contentLink = courseLink + '/' + courseParams.contentId + '/' + courseParams.contentIndex;
@@ -323,9 +323,9 @@ angular
                         "env": "notes",
                         "type": "default",
                         "pageid": org.sunbird.portal.appid + "_CourseContentNote",
-                        "id": $state.params["contentId"],
+                        "id": $stateParams["contentId"],
                         "name": "",
-                        "url": "/private/index#!/note/" + $state.params["tocId"] + "/" + $state.params["courseId"] + "/" + $state.params["contentId"]
+                        "url": "/private/index#!/note/" + $stateParams["tocId"] + "/" + $stateParams["courseId"] + "/" + $stateParams["contentId"]
                     });
                 },
                 onExit: function($rootScope) {
@@ -344,7 +344,7 @@ angular
                         controller: 'courseScheduleCtrl as toc'
                     }
                 },
-                onEnter: function($state, $rootScope, sessionService, portalTelemetryService) {
+                onEnter: function($state, $rootScope, sessionService, portalTelemetryService,$stateParams) {
                     var courseParams = sessionService.getSessionData('COURSE_PARAMS');
                     $rootScope.breadCrumbsData = [{
                         name: 'Home',
@@ -367,7 +367,7 @@ angular
                         "pageid": org.sunbird.portal.appid + "_Toc",
                         "id": "",
                         "name": "",
-                        "url": "/private/index#!/toc/" + $state.params["tocId"] + "/" + $state.params["courseId"] + "/" + $state.params["lectureView"]
+                        "url": "/private/index#!/toc/" + $stateParams["tocId"] + "/" + $stateParams["courseId"] + "/" + $stateParams["lectureView"]
                     });
                 },
                 onExit: function($rootScope) {
@@ -470,9 +470,9 @@ angular
                         "env": "player",
                         "type": "default",
                         "pageid": org.sunbird.portal.appid + "_Player",
-                        "id": $state.params["contentId"],
-                        "name": $state.params["contentName"],
-                        "url": "/private/index#!/player/" + $state.params["contentId"] + "/" + $state.params["contentName"]
+                        "id": $stateParams["contentId"],
+                        "name": $stateParams["contentName"],
+                        "url": "/private/index#!/player/" + $stateParams["contentId"] + "/" + $stateParams["contentName"]
                     });
                 },
                 onExit: function($rootScope) {
@@ -524,7 +524,7 @@ angular
                         "pageid": org.sunbird.portal.appid + "_SearchCourse",
                         "id": "",
                         "name": "",
-                        "url": "/private/index#!/" + $state.params["type"] + "/search/" + $state.params["query"] + "/"+ $state.params["filters"] + "/"+ $state.params["sort"] + "/"+ $state.params["autoSuggestSearch"]
+                        "url": "/private/index#!/" + $stateParams["type"] + "/search/" + $stateParams["query"] + "/"+ $stateParams["filters"] + "/"+ $stateParams["sort"] + "/"+ $stateParams["autoSuggestSearch"]
                     });
                 },
                 onExit: function($rootScope) {
@@ -549,7 +549,7 @@ angular
                     query: null,
                     event: null
                 },
-                onEnter: function($rootScope, portalTelemetryService, $state) {
+                onEnter: function($rootScope, portalTelemetryService, $state,$stateParams) {
                     $rootScope.breadCrumbsData = [{
                         name: 'Home',
                         link: 'home'
@@ -569,7 +569,7 @@ angular
                         "pageid": org.sunbird.portal.appid + "_SearchResource",
                         "id": "",
                         "name": "",
-                        "url": "/private/index#!/resources/search/" + $state.params["query"] + "/" + $state.params["searchType"] + "/"
+                        "url": "/private/index#!/resources/search/" + $stateParams["query"] + "/" + $stateParams["searchType"] + "/"
                     });
                 },
                 onExit: function($rootScope) {
@@ -585,7 +585,7 @@ angular
                         controller: 'courseScheduleCtrl as toc'
                     }
                 },
-                onEnter: function($state, $rootScope, sessionService, portalTelemetryService) {
+                onEnter: function($state, $rootScope, sessionService, portalTelemetryService,$stateParams) {
                     var courseParams = sessionService.getSessionData('COURSE_PARAMS');
                     $rootScope.breadCrumbsData = [{
                         name: 'Home',
@@ -608,7 +608,7 @@ angular
                         "pageid": org.sunbird.portal.appid + "_TocPlayer",
                         "id": "",
                         "name": "",
-                        "url": "/private/index#!/toc/" + $state.params["tocId"] + "/" + $state.params["courseId"] + "/" + $state.params["lectureView"] + "/" + $state.params["contentId"] + "/" + $state.params["contentIndex"]
+                        "url": "/private/index#!/toc/" + $stateParams["tocId"] + "/" + $stateParams["courseId"] + "/" + $stateParams["lectureView"] + "/" + $stateParams["contentId"] + "/" + $stateParams["contentIndex"]
                     });
                 },
                 onExit: function($rootScope) {
@@ -802,15 +802,15 @@ angular
                 params: {
                     contentId: null
                 },
-                onEnter: function($state, $rootScope, portalTelemetryService) {
+                onEnter: function($state, $rootScope, portalTelemetryService,$stateParams) {
                     $rootScope.profileActive = 'active';
                     portalTelemetryService.fireImpressions({
                         "env": "content",
                         "type": "creation",
                         "pageid": org.sunbird.portal.appid + "_ContentEditor",
-                        "id": $state.params["contentId"],
+                        "id": $stateParams["contentId"],
                         "name": "",
-                        "url": "/private/index#!/content/editor/" + $state.params["contentId"]
+                        "url": "/private/index#!/content/editor/" + $stateParams["contentId"]
                     });
                 },
                 onExit: function($rootScope) {
@@ -828,7 +828,7 @@ angular
                     contentId: null,
                     backState: null
                 },
-                onEnter: function($rootScope, portalTelemetryService, $state) {
+                onEnter: function($rootScope, portalTelemetryService, $state,$stateParams) {
                     $rootScope.profileActive = 'active';
                     $rootScope.breadCrumbsData = [{
                         name: 'Home',
@@ -847,9 +847,9 @@ angular
                         "env": "content",
                         "type": "edit",
                         "pageid": org.sunbird.portal.appid + "_EditContent",
-                        "id": $state.params["contentId"],
+                        "id": $stateParams["contentId"],
                         "name": "",
-                        "url": "/private/index#!/content/edit/" + $state.params["contentId"]
+                        "url": "/private/index#!/content/edit/" + $stateParams["contentId"]
                     });
                 },
                 onExit: function($rootScope) {
@@ -979,15 +979,15 @@ angular
                     contentId: null,
                     backState: null
                 },
-                onEnter: function($state, $rootScope, portalTelemetryService) {
+                onEnter: function($state, $rootScope, portalTelemetryService,$stateParams) {
                     $rootScope.profileActive = 'active';
                     portalTelemetryService.fireImpressions({
                         "env": "content",
                         "type": "preview",
                         "pageid": org.sunbird.portal.appid + "_PreviewContent",
-                        "id": $state.params["contentId"],
+                        "id": $stateParams["contentId"],
                         "name": "",
-                        "url": "/private/index#!/preview/content/" + $state.params["contentId"] + "/" + $state.params["backState"]
+                        "url": "/private/index#!/preview/content/" + $stateParams["contentId"] + "/" + $stateParams["backState"]
                     });
                 },
                 onExit: function($rootScope) {
