@@ -1,7 +1,7 @@
-'use strict'
+'use strict';
 
-angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $scope, noteService, config, $timeout, $state, $stateParams, ToasterService) {
-
+angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope,
+  $scope, noteService, config, $timeout, $state, $stateParams, ToasterService) {
     var noteCard = this;
     noteCard.userId = $rootScope.userId;
     noteCard.showNoteCard = $scope.shownotecard;
@@ -26,34 +26,37 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $sc
      * @returns {undefined}
      */
     function search(request) {
-
         var api = 'searchApi';
         noteCard[api] = {};
-        noteCard[api].loader = ToasterService.loader("", $rootScope.errorMessages.NOTES.SEARCH.START);
+        noteCard[api].loader = ToasterService.loader('',
+            $rootScope.errorMessages.NOTES.SEARCH.START);
 
         noteService.search(request).then(function (response) {
-            if (response && response.responseCode === "OK") {
+            if (response && response.responseCode === 'OK') {
                 noteCard[api].loader.showLoader = false;
                 noteCard.notesList = response.result.note || [];
                 if (noteCard.notesList.length === 0) {
-                    noteCard.zeroNoteMessage = $rootScope.errorMessages.NOTES.SEARCH.NO_RESULT;
+                    noteCard.zeroNoteMessage =
+                        $rootScope.errorMessages.NOTES.SEARCH.NO_RESULT;
                 }
             } else {
                 noteCard[api].loader.showLoader = false;
-                ToasterService.error($rootScope.errorMessages.NOTES.SEARCH.FAILED);
+                ToasterService
+                  .error($rootScope.errorMessages.NOTES.SEARCH.FAILED);
             }
-        }).catch(function (error) {
+        }).catch(function () {
             noteCard[api].loader.showLoader = false;
             ToasterService.error($rootScope.errorMessages.NOTES.SEARCH.FAILED);
         });
     }
 
     /**
-     * This function called on ng-init(), 
+     * This function called on ng-init(),
      * This function help to fetch the user notes.
      */
     noteCard.ngInit = function () {
-        ToasterService.loader(true, "", $rootScope.errorMessages.NOTES.SEARCH.START);
+        ToasterService.loader(true, '',
+            $rootScope.errorMessages.NOTES.SEARCH.START);
         var request = {
             filters: {
                 userId: noteCard.userId,
@@ -61,7 +64,7 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $sc
                 contentId: noteCard.contentId
             },
             sort_by: {
-                "lastUpdatedOn": "desc"
+                lastUpdatedOn: 'desc'
             }
         };
         search(request);
@@ -72,15 +75,16 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $sc
     };
 
     $scope.updateDataOnWatch = function (contentId) {
-        ToasterService.loader(true, "", $rootScope.errorMessages.NOTES.SEARCH.START);
+        ToasterService
+          .loader(true, '', $rootScope.errorMessages.NOTES.SEARCH.START);
         var request = {
             filters: {
                 userId: noteCard.userId,
                 courseId: noteCard.tocId,
-                contentId: contentId
+                contentId: contentId/*  */
             },
             sort_by: {
-                "lastUpdatedOn": "desc"
+                lastUpdatedOn: 'desc'
             }
         };
         search(request);
@@ -91,7 +95,6 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $sc
      * @param {Object} noteData
      */
     noteCard.createNote = function (noteData) {
-
         var requestData = {
             note: {
                 note: noteData.note,
@@ -104,18 +107,20 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $sc
 
         var api = 'createApi';
         noteCard[api] = {};
-        noteCard[api].loader = ToasterService.loader("", $rootScope.errorMessages.NOTES.CREATE.START);
+        noteCard[api].loader = ToasterService
+                    .loader('', $rootScope.errorMessages.NOTES.CREATE.START);
 
         noteService.create(requestData).then(function (response) {
-            if (response && response.responseCode === "OK") {
+            if (response && response.responseCode === 'OK') {
                 noteCard[api].loader.showLoader = false;
                 noteCard.hideAddModal();
-                $rootScope.$emit("updateNotesListData", response.result.note);
+                $rootScope.$emit('updateNotesListData', response.result.note);
             } else {
                 noteCard[api].loader.showLoader = false;
-                ToasterService.error($rootScope.errorMessages.NOTES.CREATE.FAILED);
+                ToasterService
+                  .error($rootScope.errorMessages.NOTES.CREATE.FAILED);
             }
-        }).catch(function (error) {
+        }).catch(function () {
             noteCard[api].loader.showLoader = false;
             ToasterService.error($rootScope.errorMessages.NOTES.CREATE.FAILED);
         });
@@ -126,7 +131,6 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $sc
      * @param {Object} noteData
      */
     noteCard.updateNote = function (noteData) {
-
         var requestData = {
             noteId: noteData.identifier,
             note: noteData
@@ -134,18 +138,21 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $sc
 
         var api = 'updateApi';
         noteCard[api] = {};
-        noteCard[api].loader = ToasterService.loader("", $rootScope.errorMessages.NOTES.UPDATE.START);
+        noteCard[api].loader = ToasterService
+            .loader('', $rootScope.errorMessages.NOTES.UPDATE.START);
 
         noteService.update(requestData).then(function (response) {
-            if (response && response.responseCode === "OK") {
+            if (response && response.responseCode === 'OK') {
                 noteCard.hideUpdateModal();
                 noteCard[api].loader.showLoader = false;
-                $rootScope.$emit("updateNotesListData", response.result.note, true);
+                $rootScope
+                .$emit('updateNotesListData', response.result.note, true);
             } else {
                 noteCard[api].loader.showLoader = false;
-                ToasterService.error($rootScope.errorMessages.NOTES.UPDATE.FAILED);
+                ToasterService
+                    .error($rootScope.errorMessages.NOTES.UPDATE.FAILED);
             }
-        }).catch(function (error) {
+        }).catch(function () {
             noteCard[api].loader.showLoader = false;
             ToasterService.error($rootScope.errorMessages.NOTES.UPDATE.FAILED);
         });
@@ -153,20 +160,20 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $sc
 
     noteCard.hideUpdateModal = function () {
         $('#updateNoteModal')
-                .modal('hide');
+            .modal('hide');
         $('#updateNoteModal')
-                .modal('hide others');
+            .modal('hide others');
         $('#updateNoteModal')
-                .modal('hide dimmer');
+            .modal('hide dimmer');
     };
 
     noteCard.hideAddModal = function () {
         $('#addNoteModal')
-                .modal('hide');
+            .modal('hide');
         $('#addNoteModal')
-                .modal('hide others');
+            .modal('hide others');
         $('#addNoteModal')
-                .modal('hide dimmer');
+            .modal('hide dimmer');
     };
 
     noteCard.clearUpdateNoteData = function () {
@@ -181,7 +188,9 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $sc
     };
 
     noteCard.showUpdateNoteModal = function (note) {
-        $rootScope.videoElem ? $rootScope.videoElem.pause() : 0;
+        if ($rootScope.videoElem) {
+            $rootScope.videoElem.pause();
+        }
         noteCard.showUpdateNote = true;
         $timeout(function () {
             $('#updateNoteModal').modal({
@@ -210,7 +219,9 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $sc
 
     noteCard.showAddNoteModal = function () {
         noteCard.showCreateNote = true;
-        $rootScope.videoElem ? $rootScope.videoElem.pause() : 0;
+        if ($rootScope.videoElem) {
+            $rootScope.videoElem.pause();
+        }
         $timeout(function () {
             $('#addNoteModal').modal({
                 onShow: function () {
@@ -225,7 +236,7 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $sc
         }, 10);
     };
 
-    $rootScope.$on("updateNotesListData", function (e, content, status) {
+    $rootScope.$on('updateNotesListData', function (e, content, status) {
         if (status) {
             noteCard.notesList = noteCard.notesList.filter(function (note) {
                 return note.identifier !== content.identifier;
@@ -235,18 +246,28 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope, $sc
             noteCard.notesList = noteCard.notesList ? noteCard.notesList : [];
             noteCard.notesList.push(content);
         }
-
     });
 
     noteCard.showAllNoteList = function () {
+        var params = {};
         if (noteCard.courseId && $scope.contentid && noteCard.tocId) {
-            var params = {courseId: noteCard.courseId, contentId: $scope.contentid, tocId: noteCard.tocId};
+            params = {
+                courseId: noteCard.courseId,
+                contentId: $scope.contentid,
+                tocId: noteCard.tocId
+            };
             $state.go('CourseContentNote', params);
         } else if (noteCard.courseId) {
-            var params = {courseId: noteCard.courseId, tocId: noteCard.tocId};
+            params = {
+                courseId: noteCard.courseId,
+                tocId: noteCard.tocId
+            };
             $state.go('CourseNote', params);
         } else if (noteCard.contentId) {
-            var params = {contentId: noteCard.contentId, contentName: noteCard.contentName};
+            params = {
+                contentId: noteCard.contentId,
+                contentName: noteCard.contentName
+            };
             $state.go('ContentNote', params);
         }
     };
