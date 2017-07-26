@@ -4,7 +4,7 @@
         {{labels.Headers.signUp}}
     </div>
     <div class="content">
-        <form automcomplete="off" ng-init="newUser.formInit();" id="signUpForm" class="ui form" ng-if="!newUser.loader.showLoader && !newUser.error.showError ">
+        <form autocomplete="off" ng-init="newUser.formInit();" id="signUpForm" class="ui form" ng-if="!newUser.loader.showLoader && !newUser.error.showError ">
             <div class="  field">
                 <div class=" two fields">
                     <div class="required field ">
@@ -13,7 +13,7 @@
                     </div>
                     <div class="required field">
                         <label>{{labels.SignUp.password}}</label>
-                        <input type="text" name="password" placeholder="Password" ng-model="newUser.password" />
+                        <input type="password" name="password" placeholder="Password" ng-model="newUser.password" />
                     </div>
                 </div>
             </div>
