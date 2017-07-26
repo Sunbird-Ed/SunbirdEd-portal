@@ -197,10 +197,7 @@ angular.module('playerApp')
         profile.userProfile = function (userProfile) {
             profile.loader.showLoader = false;
             if (userProfile && userProfile.responseCode === 'OK') {
-                var profileData = angular.copy(userProfile.result.response); // eslint-disable-line
-                // profile.fullName
-                // = profileData.firstName + ' ' + profileData.lastName;
-                // profile.email = profileData.email;
+                var profileData = angular.copy(userProfile.result.response);
                 profile.user = profileData;
                 profile.basicProfile = angular.copy(profile.user);
                 profile.address = profileData.address;
