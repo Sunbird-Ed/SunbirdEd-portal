@@ -230,7 +230,7 @@ keycloak.authenticated = function(request) {
       telemetryHelper.logSessionStart(request, callback);
     }
   }, function(err, results) {
-
+    console.log('res', results);
   });
 
 
