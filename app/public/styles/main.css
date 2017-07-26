@@ -498,6 +498,9 @@ th {
   background: #f7f7f7;
   cursor: text;
 }
+.searchdropdown.ui.disabled.button {
+  box-shadow: 0 0 0 1px rgba(51, 51, 51, 0.33) inset !important;
+}
 .header-container {
   margin-left: 1px !important;
   border-bottom: 5px solid #007AFF !important;
