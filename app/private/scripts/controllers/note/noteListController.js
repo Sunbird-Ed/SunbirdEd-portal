@@ -236,7 +236,6 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope,
             if (!response) {
                 defer.reject();
             } else {
-                console.log('response', response);
                 defer.resolve(response);
             }
         });
@@ -252,9 +251,7 @@ angular.module('playerApp').controller('NoteListCtrl', function ($rootScope,
                 onShow: function () {
                     noteList.imageLink = 'http://';
                 },
-                onHide: function (data) {
-                    console.info('link:', noteList.imageLink);
-                    console.info('data:', data);
+                onHide: function () {
                     noteList.showAddImageModal = false;
                     return callback(noteList.imageLink);
                 }
