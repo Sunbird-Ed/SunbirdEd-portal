@@ -1,16 +1,8 @@
 <div class="ui grid">
     <div class="one wide column"></div>
     <div class="ten wide column">
-        <div class="row margin-bottom-15" ng-if="$root.accessDenied">
-            <div class="twelve wide column" ng-init="">
-                <div class="ui huge negative message">
-                    <i class="close icon" ng-click="closeRoleAccessError()"></i>
-                    <span>{{$root.accessDenied}}</span>
-                </div>
-            </div>
-        </div>
         <div class="row">
-            <div class="twelve wide column" ng-if="!homeCtrl.enrollCourseApi.loader.showLoader && !homeCtrl.enrollCourseApi.error.showError">
+            <div class="twelve wide column" ng-if="!homeCtrl.enrollCourseApi.loader.showLoader">
                 <div ng-if="homeCtrl.enrolledCourses.length" class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100 homeHeaderPadding" apply-script>
                     <span class="ui header HomeAccordianHeading" translate="todo">To Do</span><span class="todolabel ui red circular inline label ">{{homeCtrl.enrolledCourses.length}}</span>
                     <span ng-init="expandAcc=true" class="removeline title title-padding-left accordian-HomeLeft-text active float-ContentRight" data-tooltip="{{expandAcc==true?'Collapse':'Expand'}}" data-inverted="">
@@ -28,12 +20,9 @@
             <div class="twelve wide column" ng-if="homeCtrl.enrollCourseApi.loader.showLoader">
                 <app-loader data="{{homeCtrl.enrollCourseApi.loader}}"></app-loader>
             </div>
-            <div class="twelve wide column" ng-if="homeCtrl.enrollCourseApi.error.showError">
-                <error-message data="{{homeCtrl.enrollCourseApi.error}}" visibility="homeCtrl.enrollCourseApi.error.showError"></error-message>
-            </div>
         </div><br>
         <div class="row" ng-if="false">
-            <div class="twelve wide column" ng-if="!homeCtrl.pageApi.loader.showLoader && !homeCtrl.pageApi.error.showError">
+            <div class="twelve wide column" ng-if="!homeCtrl.pageApi.loader.showLoader">
                 <div class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100 homeHeaderPadding" apply-script ng-if="homeCtrl.recommendedCourse.length > 0">
                     <span class="ui header  HomeAccordianHeading" translate="recommended">Recommended</span><span class="todolabel ui red circular inline label ">{{homeCtrl.recommendedCourse.length}}</span>
                     <span ng-init="expandAcc=true" class="removeline title title-padding-left active float-ContentRight" data-tooltip="{{expandAcc==true?'Collapse':'Expand'}}" data-inverted=""><i class="angle down icon down-arrow-accordion accordian-homeIcon float-ContentRight" ng-click="expandAcc=!expandAcc"></i>
@@ -49,9 +38,6 @@
             </div>
             <div class="twelve wide column" ng-if="homeCtrl.pageApi.loader.showLoader">
                 <app-loader data="{{homeCtrl.pageApi.loader}}"></app-loader>
-            </div>
-            <div class="twelve wide column" ng-if="homeCtrl.pageApi.error.showError">
-                <error-message data="{{homeCtrl.pageApi.error}}" visibility="homeCtrl.pageApi.error.showError"></error-message>
             </div>
         </div>
         <div class="ui grid">
