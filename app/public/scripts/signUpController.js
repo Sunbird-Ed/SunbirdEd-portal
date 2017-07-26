@@ -3,7 +3,7 @@
 angular.module('loginApp')
     .controller('SignUpCtrl',
         function (signUpService, $timeout, $filter, $location, labels,
-            $rootScope, errorMessages) {
+          $rootScope, errorMessages) {
             var newUser = this;
             var today = new Date();
             newUser.languages = labels.languages;
