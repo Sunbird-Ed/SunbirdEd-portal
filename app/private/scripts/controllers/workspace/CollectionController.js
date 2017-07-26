@@ -74,7 +74,6 @@ angular.module('playerApp')
 
         collection.saveMetaData = function(data) {
 
-            collection = {};
             collection.loader = ToasterService.loader("", $rootScope.errorMessages.WORKSPACE.CREATE_COLLECTION.START);
 
             var requestBody = angular.copy(data);
