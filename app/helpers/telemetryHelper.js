@@ -54,7 +54,7 @@ module.exports = {
     var self = this;
     if (req.body && req.body.event) {
       req.session['sessionEvents'] = req.session['sessionEvents'] || [];
-      req.session['sessionEvents'].push(req.body.event);
+      req.session['sessionEvents'].push(JSON.parse(req.body.event));
       if (req.session['sessionEvents'].length >= telemetry_packet_size) {
         module.exports.sendTelemetry(req, req.session['sessionEvents'], function(status) {
           req.session['sessionEvents'] = [];
@@ -90,7 +90,7 @@ module.exports = {
       method: 'POST',
       url: contentURL + 'telemetry',
       headers: {
-        'content-type': 'application/json'
+        'Content-Type': 'application/json'
       },
       body: data,
       json: true
@@ -98,11 +98,11 @@ module.exports = {
     request(options, function(error, response, body) {
       if (callback) {
         if (error) {
-          callback(false);
+            callback(false);
         } else if (body && body.params && body.params.err) {
-          callback(false);
+            callback(false);
         } else {
-          callback(true)
+            callback(true)
         }
       }
     });
