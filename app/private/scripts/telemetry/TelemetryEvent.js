@@ -101,17 +101,18 @@ function TelemetryEvent() {
     };
     
     this.portalInit = function(eid, version, body, user, cdata, otherData) {
-        
         this.createdTime = getCurrentTime();
         this.name = eid;
         this.event = {
             ver: version,
             uid: user.uid,
-            sid: (otherData) ? (otherData.sid || "") : "",
             did: (otherData) ? (otherData.did || "") : "",
             mid: (otherData) ? (otherData.mid || "") : "",
             edata: {
                 eks: body || {}
+            },
+            context: {
+                sid: (otherData) ? (otherData.sid || "") : ""
             },
             eid: eid,
             cdata: cdata
@@ -142,6 +143,7 @@ function TelemetryEvent() {
                 }
             }
         }
+        delete this.event.sid;
         TelemetryService._version == "1.0" ? this.event.ts = getTime(this.createdTime) : this.event.ets = getTime(this.createdTime);
         this.event.mid = 'SB:' + CryptoJS.MD5(JSON.stringify(this.event)).toString();
     };
