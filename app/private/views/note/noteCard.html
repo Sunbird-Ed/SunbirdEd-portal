@@ -31,7 +31,7 @@
         <div class="ui list" ng-if="noteCard.searchApi.loader.showLoader">
             <app-loader data="{{noteCard.searchApi.loader}}"></app-loader>
         </div>
-        <div class="ui list" ng-if="noteCard.notesList.length === 0">
+        <div class="ui list" ng-if="!noteCard.searchApi.loader.showLoader && noteCard.notesList.length === 0">
             <div class="ui huge positive message">
                 <p>{{noteCard.zeroNoteMessage}}</p>
             </div>
