@@ -28,7 +28,7 @@ angular.module('playerApp')
         profile.profileSummary = '';
         profile.languages = config.DROPDOWN.COMMON.languages;
         profile.subjects = config.DROPDOWN.COMMON.subjects;
-
+        profile.isError = false;
         // forms validation
         profile.formValidation = function () {
             $('.addressEditForm').form({
@@ -235,6 +235,7 @@ angular.module('playerApp')
                 profile.experience = profileData.jobProfile;
             } else {
                 profile.loader.showLoader = false;
+                profile.isError = true;
                 ToasterService.error(apiMessages.ERROR.get);
             }
         };
@@ -247,6 +248,7 @@ angular.module('playerApp')
                     profile.userProfile(successResponse);
                 }).catch(function () {
                     profile.loader.showLoader = false;
+                    profile.isError = true;
                     ToasterService.error(apiMessages.ERROR.get);
                 });
         };
