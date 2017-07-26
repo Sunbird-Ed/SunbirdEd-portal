@@ -126,8 +126,8 @@ module.exports = {
                 if (err) {
                     res.redirect((req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host'));
                 } else {
-                    if (self.payload['redirect_url']) {
-                        res.redirect(self.payload['redirect_url'])
+                    if (self.payload['redirect_uri']) {
+                        res.redirect(self.payload['redirect_uri'])
                     } else {
                         res.redirect((req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') + '/private/index');
                     }
