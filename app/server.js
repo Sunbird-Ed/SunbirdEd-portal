@@ -26,7 +26,8 @@ const express = require('express'),
   reqDataLimitOfContentUpload = '30mb',
   ekstep_env = env.ekstep_env || 'qa',
   appId = env.sunbird_appid || 'sunbird.portal',
-  default_tenant = env.sunbird_default_tenant;
+  default_tenant = env.sunbird_default_tenant,
+  md5 = require('js-md5');
 
 const contentProxyUrl = contentURL.replace('/v1/', '');
 
@@ -44,6 +45,20 @@ let keycloak = new Keycloak({ store: memoryStore }, {
   "resource": keycloak_resource,
   "public-client": true
 });
+
+const decorateRequestHeaders = function() {
+    return function(proxyReqOpts, srcReq) {
+        if (srcReq.session) {
+            var userId = srcReq.session.userId;
+            var channel = md5(srcReq.session.rootOrgId || 'sunbird');
+            if (userId)
+                proxyReqOpts.headers['X-Authenticated-Userid'] = userId;
+            proxyReqOpts.headers['X-Channel-Id'] = channel;    
+        }
+        proxyReqOpts.headers['X-App-Id'] = appId;
+        return proxyReqOpts;
+    };
+};
 
 app.use(session({
   secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
@@ -92,6 +107,7 @@ app.all('/public/service/v1/*', proxy(learnerURL, {
   }
 }))
 app.all('/private/service/v1/learner/*', keycloak.protect(), permissionsHelper.checkPermission(), proxy(learnerURL, {
+  proxyReqOptDecorator: decorateRequestHeaders(),
   proxyReqPathResolver: function(req) {
     let urlParam = req.params["0"];
     return require('url').parse(learnerURL + urlParam).path;
@@ -100,6 +116,7 @@ app.all('/private/service/v1/learner/*', keycloak.protect(), permissionsHelper.c
 
 app.all('/private/service/v1/content/*', keycloak.protect(), permissionsHelper.checkPermission(), proxy(contentURL, {
   limit: reqDataLimitOfContentUpload,
+  proxyReqOptDecorator: decorateRequestHeaders(),
   proxyReqPathResolver: function(req) {
     let urlParam = req.params["0"];
     let query = require('url').parse(req.url).query;
@@ -157,6 +174,7 @@ app.use('*/collection-editor-iframe/api/*', permissionsHelper.checkPermission(),
 }));
 
 app.use('/api/*', permissionsHelper.checkPermission(), proxy(contentProxyUrl, {
+  proxyReqOptDecorator: decorateRequestHeaders(),
   proxyReqPathResolver: function(req) {
     return require('url').parse(contentProxyUrl + req.originalUrl).path;
   }
@@ -188,6 +206,7 @@ app.use('/content/preview/*', proxy(contentProxyUrl, {
 
 app.use('/action/*', permissionsHelper.checkPermission(), proxy(contentProxyUrl, {
   limit: reqDataLimitOfContentUpload,
+  proxyReqOptDecorator: decorateRequestHeaders(),
   proxyReqPathResolver: function(req) {
     return require('url').parse(contentProxyUrl + req.originalUrl).path;
   }
