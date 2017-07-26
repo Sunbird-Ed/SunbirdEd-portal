@@ -197,10 +197,7 @@ angular.module('playerApp')
         profile.userProfile = function (userProfile) {
             profile.loader.showLoader = false;
             if (userProfile && userProfile.responseCode === 'OK') {
-                var profileData = angular.copy(userProfile.result.response); // eslint-disable-line
-                // profile.fullName
-                // = profileData.firstName + ' ' + profileData.lastName;
-                // profile.email = profileData.email;
+                var profileData = angular.copy(userProfile.result.response);
                 profile.user = profileData;
                 profile.basicProfile = angular.copy(profile.user);
                 profile.address = profileData.address;
@@ -335,7 +332,6 @@ angular.module('playerApp')
         profile.addAddress = function (newAddress) {
             profile.formValidation();
             var isValid = $('.addressEditForm').form('validate form');
-            console.log('isValidForm', isValid);
             if (isValid === true) {
                 profile.address.push(newAddress);
                 var req = { address: profile.address };
@@ -414,7 +410,6 @@ angular.module('playerApp')
         profile.editExperience = function (experiences) {
             profile.formValidation();
             var isValid = $('.EditJobProfileForm').form('validate form');
-            console.log('isValid experdssf', isValid);
             if (isValid === true || !isValid.includes(false)) {
                 if (experiences.length) {
                     experiences.forEach(function (element, index) {
@@ -450,8 +445,6 @@ angular.module('playerApp')
             }, 500);
         };
         profile.setEditEnd = function (id, index, endDate) {
-            console.log('id, index, endDate', id, index, endDate);
-
             $timeout(function () {
                 $('#' + id + index).calendar('set date', endDate);
             }, 500);
@@ -510,14 +503,9 @@ angular.module('playerApp')
           !(profile.currentJobLocation.id !== experience.id
             && profile.currentJobLocation.isCurrentJob === true
              && experience.isCurrentJob === 'true');
-
-                console.log('profile.isCurrentJobExist',
-                 profile.isCurrentJobExist,
-          profile.currentJobLocation.isCurrentJob, experience.isCurrentJob);
             }
         };
         profile.setJobProfileCheckbox = function (experience, value) {
-            console.log('value', value);
             experience.isCurrentJob = value;
         };
     });
