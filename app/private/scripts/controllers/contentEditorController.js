@@ -159,7 +159,7 @@ angular.module('playerApp')
             });
 
             window.addEventListener('editor:content:review',
-            function (event, data) {
+            function (event, data) { //eslint-disable-line
                 org.sunbird.portal.eventManager
                 .dispatchEvent('sunbird:portal:content:review',
                 event.detail.contentId);
