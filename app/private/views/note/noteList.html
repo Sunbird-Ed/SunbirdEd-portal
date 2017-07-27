@@ -11,7 +11,7 @@
                         <div class="addnotes ui container container-with-button padding-left-right-0">
                             <span class="ui header">{{$root.labels.Notes.myNotes}}</span>
                             <i class=" circular icon margin-left-right-10 link" ng-class="!noteList.add.showCreateNote ? 'plus' : 'remove'" ng-click="noteList.add.showCreateNote = !noteList.add.showCreateNote;"></i>
-                            <div class="notesearch" style="float:right">
+                            <div class="notesearch right-floated">
                                 <div class="ui icon input">
                                     <input type="text" ng-model="noteList.searchData.text" placeholder={{$root.labels.Notes.searchForNotesOrTitle}} title={{$root.labels.Notes.search}} />
                                     <i class="circular search link icon"></i>
@@ -74,7 +74,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="eight wide column" ng-if="noteList.update.showUpdateNote" style="    padding-right: 28px;">
+                        <div class="eight wide column padding-right-28" ng-if="noteList.update.showUpdateNote">
                             <div ng-include="'views/note/updateNote.html'"></div>
                         </div>
                     </div>
