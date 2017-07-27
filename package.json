@@ -63,7 +63,7 @@
   },
   "scripts": {
     "test": "karma start test/karma.conf.js",
-    "lint": "eslint --ignore-path .gitignore ."
+    "lint": "eslint --ignore-path .eslintignore ."
   },
   "dependencies": {
     "async": "^2.5.0",
