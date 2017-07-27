@@ -1,20 +1,20 @@
 <div  class="ui" ng-if="toc.courseHierachy">
     <div class="ui grid margin-top-4rem courseStructureHeader">
         <div class="one wide column"></div>
-        <div class="ten wide column">
+        <div class="ten wide column padding-top-none">
             <div class="ui grid">
-                <div class="eight wide column padding-top-10">
+                <div class="eight wide column padding-top-none">
                     <div class="courseStructureHeaderText courseStructureSectionHeading">{{toc.courseHierachy.name}}</div> <br>
 
                 </div>
-                <div class="four wide column" ng-if="toc.courseType === 'ENROLLED_COURSE'">
-                    <div ng-if="toc.courseTotal"><p class="text-align-center">Your Progress {{(toc.courseProgress * 100 / toc.courseTotal)| number: 0 || 0}}%</p></div>
-                    <button ng-if="toc.playList.length > 0" class="fluid blue right floated  ui button courseHeaderButton" ng-click="toc.resumeCourse()">
+                <div class="four wide column margin-top-Negative30" ng-if="toc.courseType === 'ENROLLED_COURSE'">
+                    <span ng-if="toc.courseTotal"><p class="text-align-center">Your Progress {{(toc.courseProgress * 100 / toc.courseTotal)| number: 0 || 0}}%</p></span>
+                    <button ng-if="toc.playList.length > 0" class="fluid blue right floated  ui button courseHeaderButton margin-top-0" ng-click="toc.resumeCourse()">
                         RESUME COURSE  <i class="caret right icon"></i>
                     </button>
                 </div>
-                <div class="four wide column" ng-if="toc.courseType === 'OTHER_COURSE'">
-                    <button ng-if="!toc.loader.enrollLoader" class="fluid blue right floated  ui button courseHeaderButton" ng-click="toc.enrollUserToCourse(toc.tocId)"> ENROLL TO COURSE</button>
+                <div class="four wide column padding-top-none" ng-if="toc.courseType === 'OTHER_COURSE'">
+                    <button ng-if="!toc.loader.enrollLoader" class="fluid blue right floated  ui button courseHeaderButton margin-top-0" ng-click="toc.enrollUserToCourse(toc.tocId)"> ENROLL TO COURSE</button>
                     <div ng-if="toc.loader.enrollLoader">
                         <app-loader data="{{toc.loader}}"></app-loader>
                     </div>
