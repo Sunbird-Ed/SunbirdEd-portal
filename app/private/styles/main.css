@@ -1490,8 +1490,8 @@ ul.fancytree-container li {
 /* user avatar on hover effects in profile edit page*/
 .userAvtarWrap {
   position: relative;
-  height: 150px !important;
-  width: 150px !important;
+  max-height: 150px !important;
+  max-width: 150px !important;
 }
 .img-description-layer {
   position: absolute !important;
@@ -1523,6 +1523,12 @@ ul.fancytree-container li {
 .header-image-profile {
   height: 100px !important;
   width: 100px !important;
+}
+/*profile header text css*/
+@media only screen and (max-width: 1024px) {
+  .profile-header-text {
+    padding-left: 40px !important;
+  }
 }
 .profilesegmentmargin.ui.segment:first-child {
   margin-top: 20px;
