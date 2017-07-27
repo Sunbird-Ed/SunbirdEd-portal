@@ -710,6 +710,9 @@ div:focus {
 .ui.cards > .card > .content {
   padding-right: 3px !important;
 }
+.ui.cards {
+  margin: -0.875em -0.3em !important;
+}
 .content-input {
   display: none;
 }
