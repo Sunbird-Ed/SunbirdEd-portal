@@ -386,7 +386,7 @@ angular.module('playerApp')
 
             contentService.reject(request, previewContent.contentId)
             .then(function (res) {
-                if (res && res.responseCode !== 'OK') {
+                if (res && res.responseCode === 'OK') {
                     previewContent[api].loader.showLoader = false;
                     previewContent.isShowPublishRejectButton = false;
                     ToasterService.success($rootScope
