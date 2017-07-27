@@ -28,7 +28,8 @@ var keycloak = new Keycloak({ store: memoryStore }, {
 module.exports = {
   handleRequest: function(req, res) {
     var self = this,
-      payload;
+      payload,
+      errorMsg = undefined;
     async.series({
         verifySignature: function(callback) {
           console.log('echoAPI : ' + echoAPI);
@@ -42,10 +43,12 @@ module.exports = {
             }
           };
           request(options, function(error, response, body) {
+            self.errorMsg = "Request credentials verification failed. Please try with valid credentials.";
             if (error) {
               console.log('echo API error', error);
               callback(error, response);
             } else if (body === '/test') {
+              self.errorMsg = undefined;
               console.log('echo API succesful');
               callback(null, response);
             } else {
@@ -58,6 +61,7 @@ module.exports = {
         verifyRequest: function(callback) {
           self.payload = jwt.decode(req.query['token']);
           var timeInSeconds = parseInt(Date.now() / 1000);
+          self.errorMsg = "Request credentials verification failed. Please try with valid credentials.";
           if (!(self.payload['iat'] && self.payload['iat'] < timeInSeconds)) {
             callback('Token issued time is not available or it is in future', null)
           } else if (!(self.payload['exp'] && self.payload['exp'] > timeInSeconds)) {
@@ -65,17 +69,20 @@ module.exports = {
           } else if (!self.payload['sub']) {
             callback('user id not present', null)
           } else {
+            self.errorMsg = undefined;
             callback(null, {});
           }
         },
         verifyUser: function(callback) {
           //check user exist
           self.checkUserExists(self.payload, function(err, status) {
+            self.errorMsg = "Failed to create/authenticate user. Please try again with valid user data";
             if (err) {
               console.log('get user profile API error', err);
               callback(err, null);
               return;
             } else if (status) {
+              self.errorMsg = undefined;
               console.log('user already exists');
               callback(null, status)
               return;
@@ -88,6 +95,7 @@ module.exports = {
                     callback(error, null);
                     return;
                   } else if (status) {
+                    self.errorMsg = undefined;
                     console.log('create user successful');
                     callback(null, status)
                     return;
@@ -105,7 +113,8 @@ module.exports = {
           })
         },
         getGrantFromUserName: function(callback) {
-          var userName = self.payload['sub'] + (self.payload['iss'] ? '@' + self.payload['iss'] : '')
+          var userName = self.payload['sub'] + (self.payload['iss'] ? '@' + self.payload['iss'] : '');
+          self.errorMsg = "Request credentials verification failed. Please try with valid credentials.";
           keycloak.grantManager.obtainDirectly(userName)
             .then(function(grant) {
                 keycloak.storeGrant(grant, req, res);
@@ -114,8 +123,12 @@ module.exports = {
                   keycloak.authenticated(req);
                 } catch (err) {
                   console.log(err);
+                  callback(err, null);
+                  return;
                 };
+                self.errorMsg = undefined;
                 callback(null, grant);
+                return;
               },
               function(err) {
                 console.log('grant failed', err)
@@ -124,12 +137,12 @@ module.exports = {
         }
       },
       function(err, results) {
-        
+        console.log('results', results);
         if (err) {
-            console.log('err', err)
-          res.redirect((req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host'));
+          console.log('err', err)
+          res.redirect((req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host')+"?error="+Buffer.from(self.errorMsg).toString('base64'));
         } else {
-            console.log('grant successful');
+          console.log('grant successful');
           if (self.payload['redirect_uri']) {
             res.redirect(self.payload['redirect_uri'])
           } else {
