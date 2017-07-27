@@ -89,7 +89,7 @@ module.exports = {
             } else {
               //create User
               console.log('create User Flag', createUserFlag, 'type of', typeof createUserFlag)
-              if (createUserFlag) {
+              if (createUserFlag === "true") {
                 self.createUser(self.payload, function(error, status) {
                   if (error) {
                     console.log('create user failed', error);
