@@ -6,16 +6,16 @@
  * @description
  * # contentPlayer
  */
-angular.module('playerApp').directive('pageSection', function () {
-    return {
-        templateUrl: 'views/common/pageSection.html',
-        restrict: 'E',
-        scope: {
-            type: '=',           
-        },
-        link: function (scope, element, attrs) {
-           
-        },
-        controller: 'pageSectionCtrl as section'
-    };
+angular.module('playerApp').directive('pageSection', function() {
+  return {
+    templateUrl: 'views/common/pageSection.html',
+    restrict: 'E',
+    scope: {
+      type: '=',
+    },
+    link: function(scope, element, attrs) {
+
+    },
+    controller: 'pageSectionCtrl as section'
+  };
 });
