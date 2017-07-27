@@ -8,9 +8,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('CommunityController', function() {
-        
+    .controller('CommunityController', function () {
         var commCtrl = this;
         commCtrl.showDetail = false;
-        
-});
+    });
