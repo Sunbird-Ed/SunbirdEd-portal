@@ -88,7 +88,7 @@ module.exports = {
               return;
             } else {
               //create User
-              console.log('create User Flag', createUserFlag)
+              console.log('create User Flag', createUserFlag, 'type of', typeof createUserFlag)
               if (createUserFlag) {
                 self.createUser(self.payload, function(error, status) {
                   if (error) {
@@ -111,7 +111,7 @@ module.exports = {
               }
 
             }
-          })
+          });
         },
         getGrantFromUserName: function(callback) {
           var userName = self.payload['sub'] + (self.payload['iss'] ? '@' + self.payload['iss'] : '');
@@ -169,6 +169,7 @@ module.exports = {
     };
 
     request(options, function(error, response, body) {
+        console.log('check user exists', body);
       if (error) {
         callback(error, null)
         return;
@@ -209,6 +210,7 @@ module.exports = {
       json: true
     };
     request(options, function(error, response, body) {
+        console.log('create user', body);
       if (error) {
         callback(error, null)
         return;
