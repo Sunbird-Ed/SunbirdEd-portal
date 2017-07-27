@@ -353,6 +353,9 @@ th {
 .padding-none {
   padding: 0px !important;
 }
+.padding-top-none {
+  padding-top: 0px !important;
+}
 .padding-left-right-0 {
   padding-left: 0px !important;
   padding-right: 0px !important;
@@ -415,6 +418,9 @@ th {
 .margin-top-15 {
   margin-top: 15px !important;
 }
+.margin-bottom-10 {
+  margin-bottom: 10px !important;
+}
 .margin-bottom-15 {
   margin-bottom: 15px !important;
 }
@@ -453,6 +459,9 @@ th {
 }
 .margin-top-40 {
   margin-top: 40px !important;
+}
+.margin-top-Negative30 {
+  margin-top: -30px !important;
 }
 .text-align-right {
   text-align: right !important;
@@ -973,7 +982,6 @@ ul.subList-padding {
   text-align: center !important;
 }
 .courseHeaderButton {
-  margin-top: 3% !important;
   padding: 5% !important;
 }
 /* margin removed for progress bar*/
