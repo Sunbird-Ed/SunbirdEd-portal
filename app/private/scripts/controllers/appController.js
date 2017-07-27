@@ -8,36 +8,49 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('AppCtrl', function ($scope, $state, $stateParams, permissionsService, $rootScope, $translate, userService, $q, config, $location, $timeout, portalTelemetryService, setResourceBundle, errorMessages, labels, sessionService, learnService, $http) {
+    .controller('AppCtrl', function ($scope, $state, $stateParams,
+        permissionsService, $rootScope, $translate, userService, $q, config,
+        $location, $timeout, portalTelemetryService, setResourceBundle,
+        errorMessages, labels, sessionService, learnService, $http) {
         $rootScope.userId = $('#userId').attr('value');
         $rootScope.sessionId = $('#sessionId').attr('value');
-        $rootScope.language = $rootScope.userLanguage || config.SITE.DEFAULT_LANGUAGE;
+        $rootScope.language =
+        $rootScope.userLanguage || config.SITE.DEFAULT_LANGUAGE;
         $rootScope.errorMessages = errorMessages;
         $rootScope.labels = labels;
         $rootScope.translationBundle = {};
         $rootScope.searchKey = '';
         $rootScope.enrolledCourseIds = {};
+
         $rootScope.openLink = function (url) {
             $location.path(url);
         };
+
         $rootScope.loadBundle = function () {
             var promises = [];
-            promises.push(userService.resourceBundle($rootScope.language, 'label'));
-            promises.push(userService.resourceBundle($rootScope.language, 'error'));
+            promises.push(userService
+                .resourceBundle($rootScope.language, 'label'));
+            promises.push(userService
+                .resourceBundle($rootScope.language, 'error'));
             $q.all(promises).then(function (results) {
                 results.forEach(function (res) {
-                    if (res && res.responseCode == 'OK' && res.result) {
-                        $rootScope.translationBundle = $rootScope.mergeObjects($rootScope.translationBundle, res.result[$rootScope.language]);
-                        $rootScope.addTranslation($rootScope.language, $rootScope.translationBundle);
+                    if (res && res.responseCode === 'OK' && res.result) {
+                        $rootScope.translationBundle =
+                        $rootScope.mergeObjects($rootScope.translationBundle,
+                            res.result[$rootScope.language]);
+                        $rootScope.addTranslation($rootScope.language,
+                            $rootScope.translationBundle);
                     }
                 });
             });
         };
+
         $rootScope.addTranslation = function (language, translationBundle) {
             if (setResourceBundle(language, translationBundle)) {
                 $translate.use(language);
             }
         };
+
         $rootScope.mergeObjects = function (obj1, obj2) {
             var objMerge = '';
             if (Object.keys(obj1).length > 0) {
@@ -49,13 +62,18 @@ angular.module('playerApp')
             }
             return objMerge;
         };
+
         $rootScope.loadBundle('label');
+
         $('body').click(function (e) {
-            if ($(e.target).closest('div.dropdown-menu-list').prop('id') == 'search-suggestions') {
+            if ($(e.target).closest('div.dropdown-menu-list')
+                .prop('id') === 'search-suggestions') {
                 return false;
             }
-            $('body').find('.dropdown-menu-list').removeClass('visible').addClass('hidden');
+            $('body').find('.dropdown-menu-list')
+            .removeClass('visible').addClass('hidden');
         });
+
         $scope.logout = function () {
             window.document.location.replace('/logout');
         };
@@ -67,8 +85,14 @@ angular.module('playerApp')
                 $rootScope.firstName = profileData.firstName;
                 $rootScope.lastName = profileData.lastName;
                 var userRoles = profileData.roles;
-                org.sunbird.portal.channel = md5((profileData.rootOrg && !_.isUndefined(profileData.rootOrg.id)) ? profileData.rootOrg.id : 'sunbird');
+                var organisationNames = [];
+
+                org.sunbird.portal.channel = md5((profileData.rootOrg
+                    && !_.isUndefined(profileData.rootOrg.id))
+                    ? profileData.rootOrg.id : 'sunbird');
+
                 var organisationIds = [org.sunbird.portal.channel];
+
                 _.forEach(profileData.organisations, function (org) {
                     if (org.roles && _.isArray(org.roles)) {
                         userRoles = _.union(userRoles, org.roles);
@@ -76,27 +100,29 @@ angular.module('playerApp')
                     if (org.organisationId) {
                         organisationIds.push(org.organisationId);
                     }
+                    if (org.orgName) {
+                        organisationNames.push(org.orgName);
+                    }
                 });
+                $rootScope.organisationNames = organisationNames;
                 org.sunbird.portal.dims = organisationIds;
                 permissionsService.setCurrentUserRoles(userRoles);
                 $rootScope.initializePermissionDirective = true;
                 $scope.getTelemetryConfigData(profileData);
             } else {
-                console.error('fetching profile failed');
                 // error handler
             }
         };
-        $scope.getTelemetryConfigData = function (profileData) {
+        $scope.getTelemetryConfigData = function () {
             org.sunbird.portal.sid = $rootScope.sessionId;
             org.sunbird.portal.uid = $rootScope.userId;
 
             $http.get('/get/envData').then(function (res) {
                 org.sunbird.portal.appid = res.data.appId;
                 org.sunbird.portal.ekstep_env = res.data.ekstep_env;
-            }).catch(function (error) {
+            }).catch(function () {
                 org.sunbird.portal.appid = 'sunbird.portal';
                 org.sunbird.portal.ekstep_env = 'qa';
-                console.error('api fetching appId failed');
             }).finally(function () {
                 org.sunbird.portal.init();
                 portalTelemetryService.init();
@@ -107,8 +133,7 @@ angular.module('playerApp')
             userService.getUserProfile($rootScope.userId)
                 .then(function (successResponse) {
                     $scope.userProfile(successResponse);
-                }).catch(function (error) {
-                    console.error('api fetching profile  failed');
+                }).catch(function () {
                     // error handler
                 });
         };
@@ -119,14 +144,22 @@ angular.module('playerApp')
         };
         $scope.getMyCourses = function () {
             sessionService.setSessionData('ENROLLED_COURSES', undefined);
-            learnService.enrolledCourses($rootScope.userId).then(function (successResponse) {
+            learnService.enrolledCourses($rootScope.userId)
+            .then(function (successResponse) {
                 if (successResponse && successResponse.responseCode === 'OK') {
                     $rootScope.enrolledCourses = successResponse.result.courses;
-                    $rootScope.enrolledCourseIds = $rootScope.arrObjsToObject($rootScope.enrolledCourses, 'courseId');
-                    sessionService.setSessionData('ENROLLED_COURSES', { uid: $rootScope.userId, courseArr: $rootScope.enrolledCourses, courseObj: $rootScope.enrolledCourseIds });
+                    $rootScope.enrolledCourseIds
+                    = $rootScope.arrObjsToObject($rootScope.enrolledCourses,
+                        'courseId');
+                    sessionService.setSessionData('ENROLLED_COURSES', {
+                        uid: $rootScope.userId,
+                        courseArr: $rootScope.enrolledCourses,
+                        courseObj: $rootScope.enrolledCourseIds
+                    });
                 } else {
                     $rootScope.enrolledCourses = undefined;
-                    sessionService.setSessionData('ENROLLED_COURSES', undefined);
+                    sessionService.setSessionData('ENROLLED_COURSES',
+                    undefined);
                 }
             });
         };
@@ -137,7 +170,7 @@ angular.module('playerApp')
             });
             return objData;
         };
-        $rootScope.enrolledCourses ? $rootScope.enrolledCourses : $scope.getMyCourses();
+        $rootScope.enrolledCourses ? $rootScope.enrolledCourses : $scope.getMyCourses(); //eslint-disable-line
         // dont remove this .to load progress bars in cards
         $rootScope.loadProgress = function () {
             $('.course-progress').progress('reset');
