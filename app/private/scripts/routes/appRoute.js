@@ -58,25 +58,6 @@ angular
                             $rootScope.homeActive = '';
                         }
                     })
-                    .state('UserContent', {
-                        url: '/content',
-                        views: {
-                            'mainView': {
-                                templateUrl: '/views/content/usercontent.html',
-                                controller: 'userContentCtrl as userContent'
-                            }
-                        },
-                        onEnter: function (portalTelemetryService) {
-                            portalTelemetryService.fireImpressions({
-                                "env": "content",
-                                "type": "list",
-                                "pageid": org.sunbird.portal.appid + "_UserContent",
-                                "id": "",
-                                "name": "",
-                                "url": "/private/index#!/content"
-                            });
-                        }
-                    })
                     .state('Courses', {
                         url: '/learn',
                         views: {
