@@ -95,21 +95,22 @@ angular.module('loginApp')
                                 var selectedDate =
                                     day + '/' + month + '/' + year;
                                 return selectedDate;
+                                  /*eslint-enable */
                             }
                         }
                     });
                 }, 1500);
             };
 
-            newUser.formInit = function() {
-                $timeout(function() {
+            newUser.formInit = function () {
+                $timeout(function () {
                     $('.signupMultiple')
                         .dropdown();
                     $('#dobCalendar').calendar({
                         type: 'date',
                         maxDate: today,
                         formatter: {
-                            date: function(date) {
+                            date: function (date) {
                                 if (!date) return '';
                                 var day = date.getDate();
                                 var month = date.getMonth() + 1;
@@ -134,7 +135,7 @@ angular.module('loginApp')
                 error.isClose = isClose;
                 error.message = message;
                 error.messageType = messageType;
-                $timeout(function() { error.showError = false; }, 4000);
+                $timeout(function () { error.showError = false; }, 4000);
                 return error;
             }
 
@@ -150,7 +151,7 @@ angular.module('loginApp')
                 loader.loaderMessage = loaderMessage;
                 return loader;
             }
-            newUser.submitForm = function() {
+            newUser.submitForm = function () {
                 var dob = $('#dobCalendar').calendar('get date');
                 newUser.dob = $filter('date')(dob, 'yyyy-MM-dd');
                 newUser.formValidation();
@@ -160,7 +161,7 @@ angular.module('loginApp')
                     return false;
                 }
             };
-            newUser.getErrorMsg = function(errorKey) {
+            newUser.getErrorMsg = function (errorKey) {
                 var errorMessage = '';
                 if (errorKey === 'USER_ALREADY_EXIST') {
                     errorMessage = errorMessages.SIGNUP.userExist;
@@ -169,7 +170,7 @@ angular.module('loginApp')
                 } else errorMessage = errorMessages.SIGNUP.apiError;
                 return errorMessage;
             };
-            newUser.signUp = function() {
+            newUser.signUp = function () {
                 newUser.request = {
                     params: {},
                     request: {
@@ -191,7 +192,7 @@ angular.module('loginApp')
                     closable: false
                 });
 
-                signUpService.signUp(req).then(function(successResponse) {
+                signUpService.signUp(req).then(function (successResponse) {
                     if (successResponse &&
                         successResponse.responseCode === 'OK') {
                         newUser.loader.showLoader = false;
@@ -202,7 +203,7 @@ angular.module('loginApp')
                             true,
                             errorMessages.SIGNUP.success,
                             errorMessages.COMMON.SUCCESS);
-                        $timeout(function() {
+                        $timeout(function () {
                             $('.ui .modal').modal('hide');
                         }, 2000);
                     } else {
@@ -214,7 +215,7 @@ angular.module('loginApp')
                             errorMessage,
                             errorMessages.COMMON.ERROR);
                     }
-                }).catch(function() {
+                }).catch(function () {
                     newUser.loader.showLoader = false;
                     newUser.error = showErrorMessage(
                         true,

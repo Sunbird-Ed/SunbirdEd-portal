@@ -7,16 +7,14 @@
  * # CourseDiscussions
  */
 angular.module('playerApp').directive('courseDiscussions', function () {
-
     return {
         templateUrl: 'views/course/courseDiscussions.html',
         restrict: 'E',
         scope: {
             showaskquestion: '='
         },
-        link: function (scope, element, attrs) {
-                scope.showAskQuestion = scope.showaskquestion;
-            
+        link: function (scope, element, attrs) {// eslint-disable-line
+            scope.showAskQuestion = scope.showaskquestion;
         }
     };
 });
