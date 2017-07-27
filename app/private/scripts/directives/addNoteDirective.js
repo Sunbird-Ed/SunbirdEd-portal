@@ -7,8 +7,7 @@
  * # contentPlayer
  */
 
-angular.module('playerApp').directive('addNote', function() {
-
+angular.module('playerApp').directive('addNote', function () {
     return {
         templateUrl: 'views/note/noteAddCardModal.html',
         restrict: 'E',
@@ -19,12 +18,10 @@ angular.module('playerApp').directive('addNote', function() {
             contentid: '=',
             visibility: '='
         },
-        link: function(scope, element, attrs) {
-            scope.$watch('contentid', function() {
-
+        link: function (scope, element, attrs) {// eslint-disable-line
+            scope.$watch('contentid', function () {
                 scope.updateContentId();
             });
-
         },
         controller: 'NoteCardCtrl as noteCard'
     };
