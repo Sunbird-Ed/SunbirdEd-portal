@@ -353,6 +353,9 @@ th {
 .padding-none {
   padding: 0px !important;
 }
+.padding-top-none {
+  padding-top: 0px !important;
+}
 .padding-left-right-0 {
   padding-left: 0px !important;
   padding-right: 0px !important;
@@ -415,6 +418,9 @@ th {
 .margin-top-15 {
   margin-top: 15px !important;
 }
+.margin-bottom-10 {
+  margin-bottom: 10px !important;
+}
 .margin-bottom-15 {
   margin-bottom: 15px !important;
 }
@@ -453,6 +459,9 @@ th {
 }
 .margin-top-40 {
   margin-top: 40px !important;
+}
+.margin-top-Negative30 {
+  margin-top: -30px !important;
 }
 .text-align-right {
   text-align: right !important;
@@ -709,6 +718,10 @@ div:focus {
 }
 .ui.cards > .card > .content {
   padding-right: 3px !important;
+}
+.ui.cards {
+  margin-left: -0.3em !important;
+  margin-right: -0.3em !important;
 }
 .content-input {
   display: none;
@@ -970,7 +983,6 @@ ul.subList-padding {
   text-align: center !important;
 }
 .courseHeaderButton {
-  margin-top: 3% !important;
   padding: 5% !important;
 }
 /* margin removed for progress bar*/
@@ -1010,9 +1022,6 @@ span.fancytree-title {
   padding-top: 1em;
   padding-bottom: 1em;
   padding-left: 0.3em;
-}
-.popular-page .ui.cards ~ .ui.cards {
-  margin-top: 1.875em;
 }
 .popular-section > .card-section-header {
   font-weight: bold;
@@ -1088,42 +1097,6 @@ span.fancytree-title {
   cursor: pointer;
   margin-left: 5px;
 }
-.addnotes i.circular.icon {
-  padding: .6em .6em!important;
-  position: absolute;
-  margin-top: 4px;
-}
-.circleicon i.link.icon {
-  position: absolute;
-  margin-top: 6px;
-}
-.notesearch .ui.input input {
-  width: 340px;
-}
-.notelistscroll {
-  height: 600px;
-  overflow-y: scroll;
-  cursor: pointer;
-  border-top: 0!important;
-}
-.notelistborder {
-  border: 2px solid #d9d9d9!important;
-  padding: 10px!important;
-}
-.contentnotelist:hover {
-  background-color: #d8d7d7!important;
-  box-shadow: 0px 2px 3px #888888!important;
-}
-.noteellipsis {
-  overflow: hidden;
-  overflow-wrap: break-word;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.notedecheader {
-  font-weight: 600!important;
-  word-wrap: break-word;
-}
 .fancytree-plain span.fancytree-node span.fancytree-title {
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1137,13 +1110,6 @@ span.fancytree-title {
 }
 .fancytree-plain span.fancytree-node:hover span.fancytree-title .padded i.icon {
   margin: 0px 0.3em 0.24em 0!important;
-}
-.noteListSegment.ui.segment {
-  padding: 14px 0px;
-  background: #fff!important;
-}
-.notedec p {
-  word-break: break-all;
 }
 span.fancytree-node {
   display: inherit;
@@ -1504,46 +1470,6 @@ ul.fancytree-container li {
   text-shadow: none !important;
   padding-top: 0!important;
 }
-.workspaceicon.ui.header > .icon {
-  padding-top: 0;
-  float: left;
-}
-.workspaceicon.ui.header:first-child {
-  margin-top: 21px;
-}
-.publicmenusection.ui.vertical.menu {
-  padding: 15px 0 0 4px;
-}
-.publicmenusection.ui.secondary.vertical.menu > .item {
-  color: #979797;
-}
-.publicmenusection.ui.secondary.menu .active.item {
-  background: linear-gradient(270deg, rgba(218, 218, 218, 0) 0%, #F1F1F1 100%);
-  border-radius: 0!important;
-  color: rgba(0, 0, 0, 0.95);
-}
-.publicmenusection.ui.secondary.menu a.item:hover {
-  background: linear-gradient(270deg, rgba(218, 218, 218, 0) 0%, #F1F1F1 100%);
-  border-radius: 0!important;
-  color: rgba(0, 0, 0, 0.95);
-}
-.workspacesegment {
-  margin-top: 33px;
-}
-.workspacecontent {
-  line-height: 45px;
-}
-.workspacecontent.ui.card {
-  border: 1px solid #333333;
-  box-shadow: 0 1px 0px 0 #d4d4d5, 0 0 0 1px #d4d4d5 !important;
-}
-.workspacetitle.title {
-  color: #333333;
-  font-family: "Open Sans";
-  font-size: 14px;
-  line-height: 17px;
-  font-weight: 400;
-}
 .profilesettings {
   text-align: right;
 }
@@ -1559,83 +1485,11 @@ ul.fancytree-container li {
 .profileheader.ui.items > .item .meta:last-child {
   color: #979797;
 }
-.workspaceinstuction {
-  text-align: center;
-  color: #979797;
-  font-size: 12px;
-}
-.dropfile {
-  text-align: center;
-  color: #979797;
-  font-size: 12px;
-}
-.workspacedownload.ui.segment {
-  box-sizing: border-box;
-  border: 2px solid #979797;
-  border-radius: 4px;
-  border-style: dashed;
-  text-align: center;
-}
-.uploadicon i.icon {
-  font-size: 3em;
-  color: #979797;
-}
-.uploadicon p {
-  color: #979797;
-  font-family: "Open Sans";
-  font-size: 13px;
-}
-.uploador p {
-  color: #979797;
-  font-family: "Open Sans";
-  font-size: 10px;
-}
-.fileupload.ui.primary.basic.button {
-  margin-top: 20px;
-}
-.filedivider.ui.divider {
-  margin: 40px;
-}
-.iwt {
-  display: block;
-}
-.textcontent {
-  display: inline-block;
-  margin: 5px;
-  white-space: nowrap;
-}
-@media only screen and (max-width: 1200px) {
-  .textcontent {
-    white-space: pre-line;
-  }
-}
-.textcontent i.icon {
-  font-size: 3.5em;
-}
-.my-text {
-  font-size: 1.063em;
-  font-family: 'sunbirdregularfont';
-  color: #333333;
-  vertical-align: middle;
-}
-.my-icon {
-  vertical-align: middle;
-}
-.backtoprofile {
-  float: right;
-  font-size: 1.1em;
-}
-.ui.tree-picker.modal .search {
-  display: none;
-}
-.ui.tree-picker.modal .header .menu {
-  display: none;
-}
 /* user avatar on hover effects in profile edit page*/
 .userAvtarWrap {
   position: relative;
-  height: 150px !important;
-  width: 150px !important;
+  max-height: 150px !important;
+  max-width: 150px !important;
 }
 .img-description-layer {
   position: absolute !important;
@@ -1663,77 +1517,16 @@ ul.fancytree-container li {
   visibility: visible !important;
   opacity: 1 !important;
 }
-.workspacecontentProfile {
-  line-height: 22px;
-}
-.workspacecontentProfile.ui.card {
-  border: 1px solid #333333;
-  box-shadow: 0 1px 0px 0 #d4d4d5, 0 0 0 1px #d4d4d5 !important;
-}
-.WorkSpaceTextContent {
-  display: inline-block;
-  margin: 16px;
-  white-space: nowrap;
-}
-@media only screen and (max-width: 1200px) {
-  .WorkSpaceTextContent {
-    white-space: pre-line;
-  }
-}
-.WorkSpaceTextContent i.icon {
-  font-size: 2em;
-  padding-right: 10px;
-}
-.WorkSpaceTextContent .my-text {
-  font-size: 1.3em;
-  font-family: 'sunbirdboldfont';
-}
-/* file upload border */
-.qq-uploader {
-  border: 2px dashed #CCCCCC !important;
-  min-height: 130px !important;
-}
-.selectuploadfile .ui.button {
-  margin: 32px 0 0 0;
-}
 /*profile image header css*/
 .header-image-profile {
   height: 100px !important;
   width: 100px !important;
 }
-/*trashIcon in address css*/
-.trashIcon-fontSize {
-  font-size: 1.5em !important;
-}
-.youtubeupload.ui.form .inline.fields .field > label {
-  text-align: center;
-  color: #979797;
-  font-size: 13px;
-  font-weight: 400;
-  white-space: nowrap;
-  font-family: "Open Sans";
-}
-.orinstuction {
-  text-align: center;
-  color: #979797;
-  font-size: 12px;
-  padding-top: 40px;
-}
-.fileUploadDivider {
-  padding: 35px 0px 10px 0px !important;
-  border: 2px dashed #CCCCCC !important;
-  margin-left: 0rem !important;
-  margin-right: 0rem !important;
-}
-.dividerInFileUploader {
-  padding-top: 0rem !important;
-  padding-bottom: 0.3rem !important;
-}
-.textIndentForUploadFile {
-  text-indent: -25px !important;
-}
-.youTubeFileUploadForm {
-  max-width: 90% !important;
+/*profile header text css*/
+@media only screen and (max-width: 1024px) {
+  .profile-header-text {
+    padding-left: 40px !important;
+  }
 }
 .profilesegmentmargin.ui.segment:first-child {
   margin-top: 20px;
@@ -1808,6 +1601,228 @@ ul.fancytree-container li {
 }
 .profileitems.ui.items > .item > .image + .content {
   padding-left: 1em!important;
+}
+.workspaceicon.ui.header > .icon {
+  padding-top: 0;
+  float: left;
+}
+.workspaceicon.ui.header:first-child {
+  margin-top: 21px;
+}
+.publicmenusection.ui.vertical.menu {
+  padding: 15px 0 0 4px;
+}
+.publicmenusection.ui.secondary.vertical.menu > .item {
+  color: #979797;
+}
+.publicmenusection.ui.secondary.menu .active.item {
+  background: linear-gradient(270deg, rgba(218, 218, 218, 0) 0%, #F1F1F1 100%);
+  border-radius: 0!important;
+  color: rgba(0, 0, 0, 0.95);
+}
+.publicmenusection.ui.secondary.menu a.item:hover {
+  background: linear-gradient(270deg, rgba(218, 218, 218, 0) 0%, #F1F1F1 100%);
+  border-radius: 0!important;
+  color: rgba(0, 0, 0, 0.95);
+}
+.workspacesegment {
+  margin-top: 33px;
+}
+.workspacecontent {
+  line-height: 45px;
+}
+.workspacecontent.ui.card {
+  border: 1px solid #333333;
+  box-shadow: 0 1px 0px 0 #d4d4d5, 0 0 0 1px #d4d4d5 !important;
+}
+.workspacetitle.title {
+  color: #333333;
+  font-family: "Open Sans";
+  font-size: 14px;
+  line-height: 17px;
+  font-weight: 400;
+}
+.workspaceinstuction {
+  text-align: center;
+  color: #979797;
+  font-size: 12px;
+}
+.dropfile {
+  text-align: center;
+  color: #979797;
+  font-size: 12px;
+}
+.workspacedownload.ui.segment {
+  box-sizing: border-box;
+  border: 2px solid #979797;
+  border-radius: 4px;
+  border-style: dashed;
+  text-align: center;
+}
+.uploadicon i.icon {
+  font-size: 3em;
+  color: #979797;
+}
+.uploadicon p {
+  color: #979797;
+  font-family: "Open Sans";
+  font-size: 13px;
+}
+.uploador p {
+  color: #979797;
+  font-family: "Open Sans";
+  font-size: 10px;
+}
+.fileupload.ui.primary.basic.button {
+  margin-top: 20px;
+}
+.filedivider.ui.divider {
+  margin: 40px;
+}
+.iwt {
+  display: block;
+}
+.textcontent {
+  display: inline-block;
+  margin: 5px;
+  white-space: nowrap;
+}
+@media only screen and (max-width: 1200px) {
+  .textcontent {
+    white-space: pre-line;
+  }
+}
+.textcontent i.icon {
+  font-size: 3.5em;
+}
+.my-text {
+  font-size: 1.063em;
+  font-family: 'sunbirdregularfont';
+  color: #333333;
+  vertical-align: middle;
+}
+.my-icon {
+  vertical-align: middle;
+}
+.backtoprofile {
+  float: right;
+  font-size: 1.1em;
+}
+.ui.tree-picker.modal .search {
+  display: none;
+}
+.ui.tree-picker.modal .header .menu {
+  display: none;
+}
+.workspacecontentProfile {
+  line-height: 22px;
+}
+.workspacecontentProfile.ui.card {
+  border: 1px solid #333333;
+  box-shadow: 0 1px 0px 0 #d4d4d5, 0 0 0 1px #d4d4d5 !important;
+}
+.WorkSpaceTextContent {
+  display: inline-block;
+  margin: 16px;
+  white-space: nowrap;
+}
+@media only screen and (max-width: 1200px) {
+  .WorkSpaceTextContent {
+    white-space: pre-line;
+  }
+}
+.WorkSpaceTextContent i.icon {
+  font-size: 2em;
+  padding-right: 10px;
+}
+.WorkSpaceTextContent .my-text {
+  font-size: 1.3em;
+  font-family: 'sunbirdboldfont';
+}
+/* file upload border */
+.qq-uploader {
+  border: 2px dashed #CCCCCC !important;
+  min-height: 130px !important;
+}
+.selectuploadfile .ui.button {
+  margin: 32px 0 0 0;
+}
+/*trashIcon in address css*/
+.trashIcon-fontSize {
+  font-size: 1.5em !important;
+}
+.youtubeupload.ui.form .inline.fields .field > label {
+  text-align: center;
+  color: #979797;
+  font-size: 13px;
+  font-weight: 400;
+  white-space: nowrap;
+  font-family: "Open Sans";
+}
+.orinstuction {
+  text-align: center;
+  color: #979797;
+  font-size: 12px;
+  padding-top: 40px;
+}
+.fileUploadDivider {
+  padding: 35px 0px 10px 0px !important;
+  border: 2px dashed #CCCCCC !important;
+  margin-left: 0rem !important;
+  margin-right: 0rem !important;
+}
+.dividerInFileUploader {
+  padding-top: 0rem !important;
+  padding-bottom: 0.3rem !important;
+}
+.textIndentForUploadFile {
+  text-indent: -25px !important;
+}
+.youTubeFileUploadForm {
+  max-width: 90% !important;
+}
+.addnotes i.circular.icon {
+  padding: .6em .6em!important;
+  position: absolute;
+  margin-top: 4px;
+}
+.circleicon i.link.icon {
+  position: absolute;
+  margin-top: 6px;
+}
+.notesearch .ui.input input {
+  width: 340px;
+}
+.notelistscroll {
+  height: 600px;
+  overflow-y: scroll;
+  cursor: pointer;
+  border-top: 0!important;
+}
+.notelistborder {
+  border: 2px solid #d9d9d9!important;
+  padding: 10px!important;
+}
+.contentnotelist:hover {
+  background-color: #d8d7d7!important;
+  box-shadow: 0px 2px 3px #888888!important;
+}
+.noteellipsis {
+  overflow: hidden;
+  overflow-wrap: break-word;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.notedecheader {
+  font-weight: 600!important;
+  word-wrap: break-word;
+}
+.noteListSegment.ui.segment {
+  padding: 14px 0px;
+  background: #fff!important;
+}
+.notedec p {
+  word-break: break-all;
 }
 body {
   position: relative !important;
