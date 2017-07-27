@@ -88,6 +88,7 @@ module.exports = {
               return;
             } else {
               //create User
+              console.log('create User Flag', createUserFlag)
               if (createUserFlag) {
                 self.createUser(self.payload, function(error, status) {
                   if (error) {
@@ -137,7 +138,6 @@ module.exports = {
         }
       },
       function(err, results) {
-        console.log('results', results);
         if (err) {
           console.log('err', err)
           res.redirect((req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host')+"?error="+Buffer.from(self.errorMsg).toString('base64'));
