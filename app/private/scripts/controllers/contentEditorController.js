@@ -22,7 +22,7 @@ angular.module('playerApp')
                 contentId: contentEditor.contentId,
                 pdata: {
                      "id": org.sunbird.portal.appid, 
-                     "type": "1.0" 
+                     "ver": "1.0" 
                 },
                 etags: { app: [], partner: [], dims: org.sunbird.portal.dims },
                 channel: org.sunbird.portal.channel
@@ -72,25 +72,19 @@ angular.module('playerApp')
             var state = reqData.state;
             var userId = reqData.userId;
             var validateDataStatus = validateData.status;
-            console.log("Log for validateRequest", reqData, validateData);
             if(reqData.mimeType === validateData.mimeType) {
                 var isStatus = _.indexOf(validateDataStatus, status) > -1 ? true : false;
                 var isState = _.indexOf(validateData.state, state) > -1 ? true : false;
                 if(isStatus && isState && createdBy !== userId) {
-                    console.log("1");
                     return true;
                 } else if(isStatus && isState && createdBy === userId) {
-                    console.log("2");
                     return true;
                 } else if(isStatus && createdBy === userId) {
-                    console.log("3");
                     return true;
                 } else {
-                    console.log("4");
                     return false;
                 }
             } else {
-                console.log("5");
                 return false;
             }
         };
