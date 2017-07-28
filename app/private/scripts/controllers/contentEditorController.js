@@ -32,14 +32,8 @@ angular.module('playerApp')
                 modalId: 'contentEditor',
                 apislug: '/action',
                 alertOnUnload: true,
-                headerLogo:
-                !_.isUndefined($rootScope.orgLogo) ? $rootScope.orgLogo : '',
-                aws_s3_urls:
-                ['https://s3.ap-south-1.amazonaws.com/ekstep-public-'
-                + org.sunbird.portal.ekstep_env
-                + '/', 'https://ekstep-public-'
-                + org.sunbird.portal.ekstep_env
-                + '.s3-ap-south-1.amazonaws.com/'],
+                headerLogo: !_.isUndefined($rootScope.orgLogo) ? $rootScope.orgLogo : '',
+                aws_s3_urls: ['https://s3.ap-south-1.amazonaws.com/ekstep-public-' + org.sunbird.portal.ekstep_env + '/', 'https://ekstep-public-' + org.sunbird.portal.ekstep_env + '.s3-ap-south-1.amazonaws.com/'],
                 plugins: [
                     {
                         id: 'org.ekstep.sunbirdheader',
@@ -48,13 +42,13 @@ angular.module('playerApp')
                     }
                 ],
                 dispatcher: 'local',
-                localDispatcherEndpoint: '/content-editor/telemetry'
+                localDispatcherEndpoint: '/content-editor/telemetry',
+                showHelp: false
             };
             $('#contentEditor').iziModal({
                 title: '',
                 iframe: true,
-                iframeURL:
-                '/thirdparty/bower_components/content-editor-iframe/index.html',
+                iframeURL: '/thirdparty/bower_components/content-editor-iframe/index.html',
                 navigateArrows: false,
                 fullscreen: false,
                 openFullscreen: true,
@@ -113,60 +107,48 @@ angular.module('playerApp')
                     if (contentEditor.validateRequest(rspData, validateModal)) {
                         contentEditor.openContentEditor();
                     } else {
-                        toasterService
-                        .warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
+                        toasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
                         $state.go('Home');
                     }
                 } else {
-                    toasterService
-                    .warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
+                    toasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
                     $state.go('Home');
                 }
             });
         };
 
         contentEditor.init = function () {
-            org.sunbird.portal.eventManager
-            .addEventListener('sunbird:portal:editor:editmeta', function () {
+            org.sunbird.portal.eventManager.addEventListener('sunbird:portal:editor:editmeta', function () {
                 var params = { contentId: contentEditor.contentId };
                 $state.go('EditContent', params);
             });
 
-            org.sunbird.portal.eventManager
-            .addEventListener('sunbird:portal:editor:close', function () {
+            org.sunbird.portal.eventManager.addEventListener('sunbird:portal:editor:close', function () {
                 $state.go('WorkSpace.DraftContent');
             });
 
-            org.sunbird.portal.eventManager
-            .addEventListener('sunbird:portal:content:review',
-            function (event, data) { //eslint-disable-line
+            org.sunbird.portal.eventManager.addEventListener('sunbird:portal:content:review',function (event, data) {
                 var params = {
                     contentId: contentEditor.contentId,
-                    backState: $state.current.name };
+                    backState: $state.current.name 
+                };
                 $state.go('EditContent', params);
             });
 
-            window.addEventListener('editor:metadata:edit',
-            function (event, data) { //eslint-disable-line
-                org.sunbird.portal.eventManager
-                .dispatchEvent('sunbird:portal:editor:editmeta');
+            window.addEventListener('editor:metadata:edit',function (event, data) {
+                org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:editor:editmeta');
             });
 
-            window.addEventListener('editor:window:close',
-            function (event, data) { //eslint-disable-line
-                org.sunbird.portal.eventManager
-                .dispatchEvent('sunbird:portal:editor:close');
+            window.addEventListener('editor:window:close',function (event, data) {
+                org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:editor:close');
             });
 
-            window.addEventListener('editor:content:review',
-            function (event, data) { //eslint-disable-line
-                org.sunbird.portal.eventManager
-                .dispatchEvent('sunbird:portal:content:review',
+            window.addEventListener('editor:content:review',function (event, data) {
+                org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:content:review',
                 event.detail.contentId);
             });
         };
 
         contentEditor.init();
-//        contentEditor.openContentEditor();
         contentService.getContentData();
     });
