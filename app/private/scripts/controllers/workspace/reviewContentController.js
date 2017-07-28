@@ -9,13 +9,13 @@
  */
 angular.module('playerApp')
     .controller('ReviewContentController', function (contentService,
-         searchService, config, $rootScope, $scope, $state, ToasterService) {
+         searchService, config, $rootScope, $scope, $state, toasterService) {
         var reviewContent = this;
         reviewContent.userId = $rootScope.userId;
         $scope.contentPlayer = { isContentPlayerEnabled: false };
 
         function getReviewContent() {
-            reviewContent.loader = ToasterService
+            reviewContent.loader = toasterService
             .loader('', $rootScope.errorMessages.WORKSPACE.REVIEW.START);
 
             var request = {
@@ -38,13 +38,13 @@ angular.module('playerApp')
                     }
                 } else {
                     reviewContent.loader.showLoader = false;
-                    ToasterService
+                    toasterService
                     .error($rootScope.errorMessages.WORKSPACE.REVIEW.FAILED);
                 }
             })
                 .catch(function () {
                     reviewContent.loader.showLoader = false;
-                    ToasterService
+                    toasterService
                     .error($rootScope.errorMessages.WORKSPACE.REVIEW.FAILED);
                 });
         }

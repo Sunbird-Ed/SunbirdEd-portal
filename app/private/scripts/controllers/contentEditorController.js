@@ -9,7 +9,7 @@
  */
 angular.module('playerApp')
     .controller('ContentEditorController', function (config, $stateParams,
-        ToasterService, $sce, $state, contentService, $timeout, $rootScope) {
+        toasterService, $sce, $state, contentService, $timeout, $rootScope) {
         var contentEditor = this;
         contentEditor.contentId = $stateParams.contentId;
         contentEditor.openContentEditor = function () {
@@ -113,12 +113,12 @@ angular.module('playerApp')
                     if (contentEditor.validateRequest(rspData, validateModal)) {
                         contentEditor.openContentEditor();
                     } else {
-                        ToasterService
+                        toasterService
                         .warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
                         $state.go('Home');
                     }
                 } else {
-                    ToasterService
+                    toasterService
                     .warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
                     $state.go('Home');
                 }

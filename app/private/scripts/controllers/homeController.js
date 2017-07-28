@@ -7,7 +7,7 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-  .controller('HomeController', function($state, learnService, $rootScope, sessionService, config, $scope, ToasterService) {
+  .controller('HomeController', function($state, learnService, $rootScope, sessionService, config, $scope, toasterService) {
     var homeCtrl = this;
     var uid = $rootScope.userId;
 
@@ -28,7 +28,7 @@ angular.module('playerApp')
     homeCtrl.courses = function() {
       var api = 'enrollCourseApi';
       homeCtrl[api] = {};
-      homeCtrl[api].loader = ToasterService.loader("", $rootScope.errorMessages.HOME.ENROLLED.START);
+      homeCtrl[api].loader = toasterService.loader("", $rootScope.errorMessages.HOME.ENROLLED.START);
       learnService.enrolledCourses(uid).then(function(successResponse) {
         if (successResponse && successResponse.responseCode !== 'OK') {
           homeCtrl[api].loader.showLoader = false;
@@ -37,11 +37,11 @@ angular.module('playerApp')
           homeCtrl.enrolledCourses = $rootScope.enrolledCourses;
         } else {
           homeCtrl[api].loader.showLoader = false;
-          ToasterService.error($rootScope.errorMessages.HOME.ENROLLED.FAILED);
+          toasterService.error($rootScope.errorMessages.HOME.ENROLLED.FAILED);
         }
       }).catch(function(error) {
         homeCtrl[api].loader.showLoader = false;
-        ToasterService.error($rootScope.errorMessages.HOME.ENROLLED.FAILED);
+        toasterService.error($rootScope.errorMessages.HOME.ENROLLED.FAILED);
       });
     };
     $rootScope.enrolledCourseIds ? homeCtrl.enrolledCourses = $rootScope.enrolledCourses : homeCtrl.courses();
@@ -54,18 +54,18 @@ angular.module('playerApp')
       };
       var api = 'pageApi';
       homeCtrl[api] = {};
-      homeCtrl[api].loader = ToasterService.loader("", $rootScope.errorMessages.HOME.PAGE_API.START);
+      homeCtrl[api].loader = toasterService.loader("", $rootScope.errorMessages.HOME.PAGE_API.START);
       learnService.recommendedCourses(req).then(function(successResponse) {
         if (successResponse && successResponse.responseCode === 'OK') {
           homeCtrl.recommendedCourse = successResponse.result.response;
           homeCtrl[api].loader.showLoader = false;
         } else {
           homeCtrl[api].loader.showLoader = false;
-          ToasterService.error($rootScope.errorMessages.HOME.PAGE_API.FAILED);
+          toasterService.error($rootScope.errorMessages.HOME.PAGE_API.FAILED);
         }
       }).catch(function(error) {
         homeCtrl[api].loader.showLoader = false;
-        ToasterService.error($rootScope.errorMessages.HOME.PAGE_API.FAILED);
+        toasterService.error($rootScope.errorMessages.HOME.PAGE_API.FAILED);
       });
     };
     //hide recommended temporarily

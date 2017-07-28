@@ -1,6 +1,6 @@
 'use strict';
 angular.module('playerApp')
-    .service('ToasterService', function() {
+    .service('toasterService', function() {
         
         iziToast.settings({
             position: 'topCenter',
