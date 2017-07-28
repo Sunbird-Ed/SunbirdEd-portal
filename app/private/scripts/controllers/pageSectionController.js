@@ -2,37 +2,10 @@
 
 angular.module('playerApp')
   .controller('pageSectionCtrl', function (pageSectionService, $scope,
-    $state, config, sessionService, $rootScope) {
+    $state, config, sessionService, $rootScope,toasterService) {
       var section = this;
       section.pageTypeUrls = { resource: config.URL.RESOURCE.GET,
           course: config.URL.COURSE.GET_LEARN_OTHER_SECTION };
-    /**
-     * This function called when api failed,
-     * //and its show failed response for 2 sec.
-     * @param {String} message
-     */
-      function showErrorMessage(isClose, message, messageType) {
-          var error = {};
-          error.showError = true;
-          error.isClose = isClose;
-          error.message = message;
-          error.messageType = messageType;
-          return error;
-      }
-
-    /**
-     * This function helps to show loader with message.
-     * @param {String} headerMessage
-     * @param {String} loaderMessage
-     */
-      function showLoaderWithMessage(headerMessage, loaderMessage) {
-          var loader = {};
-          loader.showLoader = true;
-          loader.headerMessage = headerMessage;
-          loader.loaderMessage = loaderMessage;
-          return loader;
-      }
-
       section.playContent = function (item) {
           var params = { content: item,
               contentName: item.name,
@@ -64,8 +37,8 @@ angular.module('playerApp')
 
       section.sections = function () {
           section.error = {};
-          section.loader = showLoaderWithMessage('',
-           config.MESSAGES.RESOURCE.PAGE.START);
+          toasterService.loader(''
+           ,$rootScope.errorMessages.RESOURCE.PAGE.START);
           if ($rootScope.search === undefined) {
               $rootScope.search = {};
           }
@@ -112,21 +85,18 @@ angular.module('playerApp')
 
                   section.loader.showLoader = false;
                   if (section.page.length === 0) {
-                      section.error = showErrorMessage(true,
-                         $rootScope.errorMessages.SEARCH.DATA.NO_CONTENT,
-                          $rootScope.errorMessages.COMMON.INFO);
+                      toasterService.error(
+                         $rootScope.errorMessages.SEARCH.DATA.NO_CONTENT);
                   }
               } else {
                   section.loader.showLoader = false;
-                  section.error = showErrorMessage(true,
-                    config.MESSAGES.RESOURCE.PAGE.FAILED,
-                    config.MESSAGES.COMMON.ERROR);
+                 toasterService.error(
+                         $rootScope.errorMessages.RESOURCE.PAGE.FAILED);
               }
           }).catch(function () {
               section.loader.showLoader = false;
-              section.error = showErrorMessage(true,
-                config.MESSAGES.RESOURCE.PAGE.FAILED,
-                config.MESSAGES.COMMON.ERROR);
+             toasterService.error(
+                         $rootScope.errorMessages.RESOURCE.PAGE.FAILED);
           });
       };
       section.sections();

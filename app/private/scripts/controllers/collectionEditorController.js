@@ -5,7 +5,7 @@
  * @description
  */
 angular.module('playerApp')
-  .controller('CollectionEditorController', function(config, $stateParams, ToasterService, $sce, $state, $timeout, $rootScope, contentService, permissionsService) {
+  .controller('CollectionEditorController', function(config, $stateParams, toasterService, $sce, $state, $timeout, $rootScope, contentService, permissionsService) {
 
     var collectionEditor = this;
     collectionEditor.contentId = $stateParams.contentId;
@@ -93,7 +93,7 @@ angular.module('playerApp')
                   $('#collectionEditor').iziModal('open');
                 }, 100);
             } else {
-                ToasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
+                toasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
                 $state.go('Home');
             }
         }
