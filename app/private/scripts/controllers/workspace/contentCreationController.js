@@ -9,7 +9,7 @@
  */
 angular.module('playerApp')
     .controller('ContentCreationController', function (contentService,
-            config, $scope, $state, $timeout, $rootScope, ToasterService) {
+            config, $scope, $state, $timeout, $rootScope, toasterService) {
         var contentCreation = this;
         contentCreation.contentUploadUrl = config.URL.BASE_PREFIX
              + config.URL.CONTENT_PREFIX + config.URL.CONTENT.UPLOAD;
@@ -178,20 +178,20 @@ angular.module('playerApp')
                     }
                 } else {
                     contentCreation.loader.showLoader = false;
-                    ToasterService
+                    toasterService
                         .error($rootScope.errorMessages
                             .WORKSPACE.UPLOAD_CONTENT.FAILED);
                 }
             }).catch(function () {
                 contentCreation.loader.showLoader = false;
-                ToasterService
+                toasterService
                     .error($rootScope.errorMessages
                         .WORKSPACE.UPLOAD_CONTENT.FAILED);
             });
         };
 
         contentCreation.saveMetaData = function (data) {
-            contentCreation.loader = ToasterService.loader('', $rootScope
+            contentCreation.loader = toasterService.loader('', $rootScope
                     .errorMessages.WORKSPACE.UPLOAD_CONTENT.START);
 
             var requestBody = angular.copy(data);

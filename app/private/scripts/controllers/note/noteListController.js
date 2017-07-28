@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('playerApp').controller('NoteListCtrl', function($rootScope, noteService, config, $state, $stateParams, $timeout, $q, ToasterService) {
+angular.module('playerApp').controller('NoteListCtrl', function($rootScope, noteService, config, $state, $stateParams, $timeout, $q, toasterService) {
     var noteList = this;
     noteList.userId = $rootScope.userId;
     noteList.courseId = $stateParams.courseId;
@@ -16,7 +16,7 @@ angular.module('playerApp').controller('NoteListCtrl', function($rootScope, note
     function search(request) {
         var api = 'searchApi';
         noteList[api] = {};
-        noteList[api].loader = ToasterService.loader(api, '', $rootScope.errorMessages.NOTES.SEARCH.START);
+        noteList[api].loader = toasterService.loader(api, '', $rootScope.errorMessages.NOTES.SEARCH.START);
 
         noteService.search(request).then(function(response) {
             if (response && response.responseCode === 'OK') {
@@ -28,12 +28,12 @@ angular.module('playerApp').controller('NoteListCtrl', function($rootScope, note
                 noteList.selectedNoteData = noteList.notesList[0];
             } else {
                 noteList[api].loader.showLoader = false;
-                ToasterService.error($rootScope.errorMessages.NOTES.SEARCH.FAILED);
+                toasterService.error($rootScope.errorMessages.NOTES.SEARCH.FAILED);
             }
         }).
         catch (function() {
             noteList[api].loader.showLoader = false;
-            ToasterService.error($rootScope.errorMessages.NOTES.SEARCH.FAILED);
+            toasterService.error($rootScope.errorMessages.NOTES.SEARCH.FAILED);
         });
     }
 
@@ -54,7 +54,7 @@ angular.module('playerApp').controller('NoteListCtrl', function($rootScope, note
     noteList.createNote = function(noteData) {
         var api = 'createApi';
         noteList[api] = {};
-        noteList[api].loader = ToasterService.loader(api, '', $rootScope.errorMessages.NOTES.CREATE.START);
+        noteList[api].loader = toasterService.loader(api, '', $rootScope.errorMessages.NOTES.CREATE.START);
 
         var requestData = {
             note: {
@@ -75,12 +75,12 @@ angular.module('playerApp').controller('NoteListCtrl', function($rootScope, note
                 noteList.showNoteList(response.result.note);
             } else {
                 noteList[api].loader.showLoader = false;
-                ToasterService.error($rootScope.errorMessages.NOTES.CREATE.FAILED);
+                toasterService.error($rootScope.errorMessages.NOTES.CREATE.FAILED);
             }
         }).
         catch (function() {
             noteList[api].loader.showLoader = false;
-            ToasterService.error($rootScope.errorMessages.NOTES.CREATE.FAILED);
+            toasterService.error($rootScope.errorMessages.NOTES.CREATE.FAILED);
         });
     };
 
@@ -91,7 +91,7 @@ angular.module('playerApp').controller('NoteListCtrl', function($rootScope, note
     noteList.removeNote = function(noteId) {
         var api = 'searchApi';
         noteList[api] = {};
-        noteList[api].loader = ToasterService.loader(api, '', $rootScope.errorMessages.NOTES.REMOVE.START);
+        noteList[api].loader = toasterService.loader(api, '', $rootScope.errorMessages.NOTES.REMOVE.START);
 
         var requestData = {
             noteId: noteId
@@ -110,12 +110,12 @@ angular.module('playerApp').controller('NoteListCtrl', function($rootScope, note
                 }
             } else {
                 noteList[api].loader.showLoader = false;
-                ToasterService.error($rootScope.errorMessages.NOTES.REMOVE.FAILED);
+                toasterService.error($rootScope.errorMessages.NOTES.REMOVE.FAILED);
             }
         }).
         catch (function() {
             noteList[api].loader.showLoader = false;
-            ToasterService.error($rootScope.errorMessages.NOTES.REMOVE.FAILED);
+            toasterService.error($rootScope.errorMessages.NOTES.REMOVE.FAILED);
         });
     };
 
@@ -151,7 +151,7 @@ angular.module('playerApp').controller('NoteListCtrl', function($rootScope, note
 
         var api = 'updateApi';
         noteList[api] = {};
-        noteList[api].loader = ToasterService.loader(api, '', $rootScope.errorMessages.NOTES.UPDATE.START);
+        noteList[api].loader = toasterService.loader(api, '', $rootScope.errorMessages.NOTES.UPDATE.START);
 
         noteService.update(requestData).then(function(response) {
             if (response && response.responseCode === 'OK') {
@@ -164,12 +164,12 @@ angular.module('playerApp').controller('NoteListCtrl', function($rootScope, note
                 noteList.showNoteList(response.result.note);
             } else {
                 noteList[api].loader.showLoader = false;
-                ToasterService.error($rootScope.errorMessages.NOTES.UPDATE.FAILED);
+                toasterService.error($rootScope.errorMessages.NOTES.UPDATE.FAILED);
             }
         }).
         catch (function() {
             noteList[api].loader.showLoader = false;
-            ToasterService.error($rootScope.errorMessages.NOTES.UPDATE.FAILED);
+            toasterService.error($rootScope.errorMessages.NOTES.UPDATE.FAILED);
         });
     };
 

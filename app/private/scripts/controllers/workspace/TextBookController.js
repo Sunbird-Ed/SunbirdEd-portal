@@ -10,7 +10,7 @@
  */
 angular.module('playerApp')
     .controller('TextBookController', function (contentService, $timeout,
-         $state, config, $rootScope, ToasterService) {
+         $state, config, $rootScope, toasterService) {
         var textbook = this;
         textbook.lessonTypes = config.DROPDOWN.COMMON.lessonTypes;
         textbook.audiences = config.DROPDOWN.COMMON.audiences;
@@ -62,18 +62,18 @@ angular.module('playerApp')
                     textbook.initEKStepCE(res.result.content_id);
                 } else {
                     textbook.loader.showLoader = false;
-                    ToasterService.error($rootScope.errorMessages
+                    toasterService.error($rootScope.errorMessages
                         .WORKSPACE.CREATE_TEXTBOOK.FAILED);
                 }
             }).catch(function () {
                 textbook.loader.showLoader = false;
-                ToasterService.error($rootScope.errorMessages
+                toasterService.error($rootScope.errorMessages
                     .WORKSPACE.CREATE_TEXTBOOK.FAILED);
             });
         };
 
         textbook.saveMetaData = function (data) {
-            textbook.loader = ToasterService.loader('',
+            textbook.loader = toasterService.loader('',
             $rootScope.errorMessages.WORKSPACE.CREATE_TEXTBOOK.START);
 
             var requestBody = angular.copy(data);
