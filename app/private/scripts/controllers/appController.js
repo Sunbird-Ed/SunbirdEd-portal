@@ -90,7 +90,7 @@ angular.module('playerApp')
                     !_.isUndefined(profileData.rootOrg.id)) ? 
                 profileData.rootOrg.id : "sunbird"
                 org.sunbird.portal.channel = md5(rootOrg);
-                var organisationIds = [rootOrg];
+                var organisationIds = [];
 
                 _.forEach(profileData.organisations, function(org) {
                     if (org.roles && _.isArray(org.roles)) {
