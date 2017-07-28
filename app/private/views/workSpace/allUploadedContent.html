@@ -1,17 +1,16 @@
-<div ng-init="allUploadedContent.initializeData()">
-    <div ng-if="!allUploadedContent.loader.showLoader && !allUploadedContent.zeroContentMessage">
-        <div class="ui three stackable cards">
-            <div class="link card mouse-pointer" ng-repeat="item in allUploadedContent.allUploadedContentData track by $index"
-                 ng-click="allUploadedContent.openEditForm(item)">
-                <div class="image imageInCardsResponsive">
-                    <div class="ui fluid image">
-                        <a class="ui black right ribbon label">{{item.contentType}}</a>
+<div ng-init="allUploadedContent.getAllUploadedContent()">
+    <div ng-if="!allUploadedContent.loader.showLoader">
+        <div class="ui three stackable cards" ng-if="allUploadedContent.allUploadedContentData.length > 0">
+            <div class=" link card mouse-pointer " ng-repeat="item in allUploadedContent.allUploadedContentData track by $index " ng-click="allUploadedContent.editContent(item) ">
+                <div class="image imageInCardsResponsive ">
+                    <div class="ui fluid image ">
+                        <a class="ui black right ribbon label ">{{item.contentType}}</a>
                         <img ng-src=" {{item.appIcon ? item.appIcon : '../images/sunbird_logo.png'}} ">
                     </div>
                     <div class="cardImageText center aligned ">
-                        <span class="sliderCardHeading text-cencapitalize">
-                            {{ item.name | limitTo: 15 }}&nbsp;<i ng-show="item.name.length >= 15" class="ellipsis horizontal icon popup-button link" data-content="{{item.name}}" data-variation="wide"></i>
-                        </span>
+                        <span class="sliderCardHeading text-cencapitalize ">
+                            {{ item.name | limitTo: 15 }}&nbsp;<i ng-show="item.name.length>= 15" class="ellipsis horizontal icon popup-button link" data-content="{{item.name}}" data-variation="wide"></i>
+            </span>
                     </div>
                 </div>
                 <div class="sliderCards content">
@@ -23,13 +22,14 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="twelve wide column" ng-if="allUploadedContent.loader.showLoader">
-        <app-loader data="{{allUploadedContent.loader}}"></app-loader>
-    </div>
-    <div class="twelve wide column" ng-if="allUploadedContent.zeroContentMessage">
-        <div class="ui huge positive message">
-            <p>{{allUploadedContent.zeroContentMessage}}</p>
+        <div ng-if="allUploadedContent.allUploadedContentData.length === 0">
+            <div class="ui huge positive message">
+                <p>{{$root.errorMessages.WORKSPACE.ALL_UPLOADED.NO_CONTENT}}
+                </p>
+            </div>
         </div>
+    </div>
+    <div ng-if="allUploadedContent.loader.showLoader">
+        <app-loader data="{{allUploadedContent.loader}}"></app-loader>
     </div>
 </div>
