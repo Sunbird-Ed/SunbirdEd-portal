@@ -48,7 +48,8 @@ angular.module('playerApp')
                     }
                 ],
                 dispatcher: 'local',
-                localDispatcherEndpoint: '/content-editor/telemetry'
+                localDispatcherEndpoint: '/content-editor/telemetry',
+                showHelp: false
             };
             $('#contentEditor').iziModal({
                 title: '',
@@ -167,6 +168,5 @@ angular.module('playerApp')
         };
 
         contentEditor.init();
-//        contentEditor.openContentEditor();
         contentService.getContentData();
     });
