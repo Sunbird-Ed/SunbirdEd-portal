@@ -33,7 +33,7 @@ module.exports = {
         'space-infix-ops': ['error'],
         'padded-blocks': ['error', 'never'],
         'object-curly-spacing': ['error', 'always'],
-        'max-len': ['error', 80],
+        'max-len': ['error', 100],
         'eol-last': 2,
         'no-tabs': 0,
         'no-mixed-spaces-and-tabs':0,
