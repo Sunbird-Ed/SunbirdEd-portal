@@ -22,7 +22,11 @@
             "deleteNote": "Delete Note",
             "deleteConfirmMessage": "Are you sure to delete this note?",
             "no": "No",
-            "yes": "Yes"
+            "yes": "Yes",
+            "imageLinkMessage": "http://example.com/images/diagram.jpg optional title ",
+            "ok": "Ok",
+            "cancel": "Cancel",
+            "insertImage": "Insert Image"
         },
         "WORKSPACE": {
             "myWorkSpaceText": "My WorkSpace",
@@ -86,7 +90,7 @@
                 "launchEditor": "Launch Editor",
                 "upload": "Upload",
                 "uploadButton": "UPLOAD",
-                "closeUpload" : "Close Upload",
+                "closeUpload": "Close Upload",
                 "plaseFillThisRD": "Please fill the details in below fields.",
                 "icon": "Icon",
                 "youCanFillThisDL": "You can fill in this details later",
