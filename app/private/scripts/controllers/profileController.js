@@ -9,7 +9,7 @@
  */
 angular.module('playerApp')
     .controller('ProfileController', function (
-      $scope, $rootScope, contentService, userService, ToasterService,
+      $scope, $rootScope, contentService, userService, toasterService,
       config, $timeout, $filter, uuid4) {
         var profile = this;
         var addressValidationError
@@ -173,7 +173,7 @@ angular.module('playerApp')
                 profile.icon = fd;
                 profile.iconUpdate = true;
             } else {
-                ToasterService.warning(
+                toasterService.warning(
                     $rootScope.errorMessages.COMMON.INVAILID_IMAGE);
             }
         };
@@ -185,12 +185,12 @@ angular.module('playerApp')
                     profile.EditAvatar();
                 } else {
                     profile.loader.showLoader = false;
-                    profile.error = ToasterService
+                    profile.error = toasterService
                     .error(apiMessages.ERROR.update);
                 }
             }).catch(function () {
                 profile.loader.showLoader = false;
-                profile.error = ToasterService.error(apiMessages.ERROR.update);
+                profile.error = toasterService.error(apiMessages.ERROR.update);
             });
         };
 
@@ -236,12 +236,12 @@ angular.module('playerApp')
             } else {
                 profile.loader.showLoader = false;
                 profile.isError = true;
-                ToasterService.error(apiMessages.ERROR.get);
+                toasterService.error(apiMessages.ERROR.get);
             }
         };
         // Get user profile
         profile.getProfile = function () {
-            profile.loader = ToasterService
+            profile.loader = toasterService
             .loader('', apiMessages.SUCCESS.loadingProfile);
             userService.getUserProfile(profile.userId)
                 .then(function (successResponse) {
@@ -249,7 +249,7 @@ angular.module('playerApp')
                 }).catch(function () {
                     profile.loader.showLoader = false;
                     profile.isError = true;
-                    ToasterService.error(apiMessages.ERROR.get);
+                    toasterService.error(apiMessages.ERROR.get);
                 });
         };
         profile.getProfile();
@@ -265,7 +265,7 @@ angular.module('playerApp')
                 request: updateReq
             };
             profile.disableSave = true;
-            profile.loader = ToasterService
+            profile.loader = toasterService
             .loader('', apiMessages.SUCCESS.editingProfile);
             userService.updateUserProfile(
                 profile.updateProfileRequest,
@@ -280,18 +280,18 @@ angular.module('playerApp')
                     profile.addressForm = false;
                     profile.educationForm = false;
                     profile.loader.showLoader = false;
-                    ToasterService
+                    toasterService
                         .success(apiMessages.SUCCESS.profileEdited);
                     profile.getProfile();
                 } else {
                     profile.loader.showLoader = false;
-                    ToasterService.error(apiMessages.ERROR.update);
+                    toasterService.error(apiMessages.ERROR.update);
                 }
             }).catch(function () {
                 profile.experienceForm = false;
                 profile.basicProfileForm = false;
                 profile.loader.showLoader = false;
-                ToasterService.error(apiMessages.ERROR.update);
+                toasterService.error(apiMessages.ERROR.update);
             });
         };
         // profile newAddress

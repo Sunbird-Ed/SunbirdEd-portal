@@ -1,7 +1,7 @@
 angular.module('playerApp')
   .controller('courseScheduleCtrl',
-   function (config, $compile, courseService, sessionService,
-     $stateParams, $state, $timeout, $scope, $rootScope,
+   function (courseService, sessionService,
+     $stateParams, $state, $timeout, $scope, $rootScope,toasterService,
      $location, $anchorScroll, contentStateService, $window) {
        var toc = this;
        toc.playList = [];
@@ -32,7 +32,7 @@ angular.module('playerApp')
            };
 
            toc.loader.enrollLoader = true;
-           toc.loader.loaderMessage = config.MESSAGES.COURSE.ENROLL.START;
+           toc.loader.loaderMessage = $rootScope.errorMessages.Courses.ENROLL.START;
            courseService.enrollUserToCourse(req)
            .then(function (successResponse) {
                toc.loader.enrollLoader = false;
@@ -40,14 +40,14 @@ angular.module('playerApp')
                    $window.location.reload();
                } else {
                    toc.error.showEnrollError = true;
-                   toc.error.message = config.MESSAGES.COURSE.ENROLL.ERROR;
+                   toc.error.message = $rootScope.errorMessages.Courses.ENROLL.ERROR;
                    $timeout(function () {
                        toc.error.showEnrollError = false;
                    }, 3000);
                }
            }).catch(function () {
                toc.error.showEnrollError = true;
-               toc.error.message = config.MESSAGES.COURSE.ENROLL.ERROR;
+               toc.error.message = $rootScope.errorMessages.Courses.ENROLL.ERROR;
            });
        };
 
@@ -84,8 +84,9 @@ angular.module('playerApp')
 
     // $scope.contentPlayer.contentData=};
        toc.getCourseToc = function () {
-           toc.loader.showLoader = true;
-           toc.loader.loaderMessage = config.MESSAGES.COURSE.TOC.START;
+          
+           toc.loader = toasterService.loader(''
+           ,$rootScope.errorMessages.Courses.TOC.START);
            courseService.courseHierarchy(toc.courseId).then(function (res) {
                if (res && res.responseCode === 'OK') {
                    toc.loader.showLoader = false;
@@ -112,10 +113,12 @@ angular.module('playerApp')
                        toc.courseProgress = 0;
                    }
                } else {
-                   toc.showError(config.MESSAGES.COURSE.TOC.ERROR);
+                   toc.loader.showLoader = false;
+                   toasterService.error($rootScope.errorMessages.Courses.TOC.ERROR);
                }
            }, function () {
-               toc.showError(config.MESSAGES.COURSE.TOC.ERROR);
+               toc.loader.showLoader = false;
+                toasterService.error($rootScope.errorMessages.Courses.TOC.ERROR);
            });
        };
        toc.getContentState = function () {

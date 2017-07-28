@@ -9,7 +9,7 @@
  */
 angular.module('playerApp')
     .controller('AllUploadedContentController', function (contentService,
-  searchService, config, $rootScope, $state, ToasterService) {
+  searchService, config, $rootScope, $state, toasterService) {
         var allUploadedContent = this;
         allUploadedContent.userId = $rootScope.userId;
         allUploadedContent.contentStatus = ['Draft'];
@@ -19,7 +19,7 @@ angular.module('playerApp')
             'video/mp4', 'application/pdf'];
 
         function getUploadedContent() {
-            allUploadedContent.loader = ToasterService
+            allUploadedContent.loader = toasterService
 			.loader('', $rootScope.errorMessages.WORKSPACE.ALL_UPLOADED.START);
 
             var request = {
@@ -46,14 +46,14 @@ angular.module('playerApp')
                     }
                 } else {
                     allUploadedContent.loader.showLoader = false;
-                    ToasterService.error($rootScope
+                    toasterService.error($rootScope
 									.errorMessages
 									.WORKSPACE.ALL_UPLOADED.FAILED);
                 }
             })
             .catch(function () {
                 allUploadedContent.loader.showLoader = false;
-                ToasterService.error($rootScope
+                toasterService.error($rootScope
 									.errorMessages
 									.WORKSPACE.ALL_UPLOADED.FAILED);
             });

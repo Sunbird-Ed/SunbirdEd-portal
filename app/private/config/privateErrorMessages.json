@@ -121,6 +121,12 @@
                 "FAILED": "Fetching other courses failed, please try again later..."
             }
         },
+        "RESOURCE": {
+                "PAGE": {
+                    "START": "We are fetching content...",
+                    "FAILED": "Fetching content failed, please try again later..."
+                }
+            },
         "NOTES": {
             "CREATE": {
                 "START": "We are creating note...",
