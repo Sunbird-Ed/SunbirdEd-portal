@@ -10,7 +10,7 @@
 angular.module('playerApp')
   .controller('HomeController',
    function ($state, learnService, $rootScope,
-     sessionService, config, $scope, ToasterService) {
+     sessionService, config, $scope, toasterService) {
        var homeCtrl = this;
        var uid = $rootScope.userId;
 
@@ -31,7 +31,7 @@ angular.module('playerApp')
        homeCtrl.courses = function () {
            var api = 'enrollCourseApi';
            homeCtrl[api] = {};
-           homeCtrl[api].loader = ToasterService.loader('',
+           homeCtrl[api].loader = toasterService.loader('',
             $rootScope.errorMessages.HOME.ENROLLED.START);
            learnService.enrolledCourses(uid).then(function (successResponse) {
                if (successResponse && successResponse.responseCode !== 'OK') {
@@ -43,17 +43,18 @@ angular.module('playerApp')
                    homeCtrl.enrolledCourses = $rootScope.enrolledCourses;
                } else {
                    homeCtrl[api].loader.showLoader = false;
-                   ToasterService.error(
+                   toasterService.error(
                      $rootScope.errorMessages.HOME.ENROLLED.FAILED
                     );
                }
            }).catch(function () {
                homeCtrl[api].loader.showLoader = false;
-               ToasterService.error(
+               toasterService.error(
                  $rootScope.errorMessages.HOME.ENROLLED.FAILED);
            });
        };
-       if ($rootScope.enrolledCourseIds) {
+       if ($rootScope.enrolledCourseIds
+               &&!_.isEmpty($rootScope.enrolledCourseIds)) {
            homeCtrl.enrolledCourses = $rootScope.enrolledCourses;
        } else {
            homeCtrl.courses();
@@ -67,7 +68,7 @@ angular.module('playerApp')
            };
            var api = 'pageApi';
            homeCtrl[api] = {};
-           homeCtrl[api].loader = ToasterService.loader(
+           homeCtrl[api].loader = toasterService.loader(
              '', $rootScope.errorMessages.HOME.PAGE_API.START);
            learnService.recommendedCourses(req)
            .then(function (successResponse) {
@@ -76,12 +77,12 @@ angular.module('playerApp')
                    homeCtrl[api].loader.showLoader = false;
                } else {
                    homeCtrl[api].loader.showLoader = false;
-                   ToasterService.error(
+                   toasterService.error(
                      $rootScope.errorMessages.HOME.PAGE_API.FAILED);
                }
            }).catch(function () {
                homeCtrl[api].loader.showLoader = false;
-               ToasterService.error(
+               toasterService.error(
                  $rootScope.errorMessages.HOME.PAGE_API.FAILED);
            });
        };

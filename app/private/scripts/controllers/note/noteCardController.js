@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope,
-  $scope, noteService, config, $timeout, $state, $stateParams, ToasterService) {
+  $scope, noteService, config, $timeout, $state, $stateParams, toasterService) {
     var noteCard = this;
     noteCard.userId = $rootScope.userId;
     noteCard.showNoteCard = $scope.shownotecard;
@@ -28,7 +28,7 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope,
     function search(request) {
         var api = 'searchApi';
         noteCard[api] = {};
-        noteCard[api].loader = ToasterService.loader('',
+        noteCard[api].loader = toasterService.loader('',
             $rootScope.errorMessages.NOTES.SEARCH.START);
 
         noteService.search(request).then(function (response) {
@@ -41,12 +41,12 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope,
                 }
             } else {
                 noteCard[api].loader.showLoader = false;
-                ToasterService
+                toasterService
                   .error($rootScope.errorMessages.NOTES.SEARCH.FAILED);
             }
         }).catch(function () {
             noteCard[api].loader.showLoader = false;
-            ToasterService.error($rootScope.errorMessages.NOTES.SEARCH.FAILED);
+            toasterService.error($rootScope.errorMessages.NOTES.SEARCH.FAILED);
         });
     }
 
@@ -55,7 +55,7 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope,
      * This function help to fetch the user notes.
      */
     noteCard.ngInit = function () {
-        ToasterService.loader(true, '',
+        toasterService.loader(true, '',
             $rootScope.errorMessages.NOTES.SEARCH.START);
         var request = {
             filters: {
@@ -75,7 +75,7 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope,
     };
 
     $scope.updateDataOnWatch = function (contentId) {
-        ToasterService
+        toasterService
           .loader(true, '', $rootScope.errorMessages.NOTES.SEARCH.START);
         var request = {
             filters: {
@@ -107,7 +107,7 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope,
 
         var api = 'createApi';
         noteCard[api] = {};
-        noteCard[api].loader = ToasterService
+        noteCard[api].loader = toasterService
                     .loader('', $rootScope.errorMessages.NOTES.CREATE.START);
 
         noteService.create(requestData).then(function (response) {
@@ -117,12 +117,12 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope,
                 $rootScope.$emit('updateNotesListData', response.result.note);
             } else {
                 noteCard[api].loader.showLoader = false;
-                ToasterService
+                toasterService
                   .error($rootScope.errorMessages.NOTES.CREATE.FAILED);
             }
         }).catch(function () {
             noteCard[api].loader.showLoader = false;
-            ToasterService.error($rootScope.errorMessages.NOTES.CREATE.FAILED);
+            toasterService.error($rootScope.errorMessages.NOTES.CREATE.FAILED);
         });
     };
 
@@ -138,7 +138,7 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope,
 
         var api = 'updateApi';
         noteCard[api] = {};
-        noteCard[api].loader = ToasterService
+        noteCard[api].loader = toasterService
             .loader('', $rootScope.errorMessages.NOTES.UPDATE.START);
 
         noteService.update(requestData).then(function (response) {
@@ -149,12 +149,12 @@ angular.module('playerApp').controller('NoteCardCtrl', function ($rootScope,
                 .$emit('updateNotesListData', response.result.note, true);
             } else {
                 noteCard[api].loader.showLoader = false;
-                ToasterService
+                toasterService
                     .error($rootScope.errorMessages.NOTES.UPDATE.FAILED);
             }
         }).catch(function () {
             noteCard[api].loader.showLoader = false;
-            ToasterService.error($rootScope.errorMessages.NOTES.UPDATE.FAILED);
+            toasterService.error($rootScope.errorMessages.NOTES.UPDATE.FAILED);
         });
     };
 

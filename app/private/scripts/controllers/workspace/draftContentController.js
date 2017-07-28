@@ -9,12 +9,12 @@
  */
 angular.module('playerApp')
     .controller('DraftContentController', function (contentService,
-        searchService, config, $rootScope, $state, ToasterService) {
+        searchService, config, $rootScope, $state, toasterService) {
         var draftContent = this;
         draftContent.userId = $rootScope.userId;
 
         function getDraftContent() {
-            draftContent.loader = ToasterService.loader('', $rootScope
+            draftContent.loader = toasterService.loader('', $rootScope
             .errorMessages.WORKSPACE.DRAFT.START);
 
             var request = {
@@ -40,13 +40,13 @@ angular.module('playerApp')
                     }
                 } else {
                     draftContent.loader.showLoader = false;
-                    ToasterService.error($rootScope
+                    toasterService.error($rootScope
                         .errorMessages.WORKSPACE.DRAFT.FAILED);
                 }
             })
             .catch(function () {
                 draftContent.loader.showLoader = false;
-                ToasterService.error($rootScope
+                toasterService.error($rootScope
                     .errorMessages.WORKSPACE.DRAFT.FAILED);
             });
         }
