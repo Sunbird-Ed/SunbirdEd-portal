@@ -218,10 +218,10 @@ angular.module('playerApp')
 
             noteCard.viewAllNotes = function () {
                 var params = {};
-                if (noteCard.courseId && $scope.contentid && noteCard.tocId) {
+                if (noteCard.courseId && noteCard.contentId && noteCard.tocId) {
                     params = {
                         courseId: noteCard.courseId,
-                        contentId: $scope.contentid,
+                        contentId: noteCard.contentId,
                         tocId: noteCard.tocId
                     };
                     $state.go('CourseContentNote', params);
