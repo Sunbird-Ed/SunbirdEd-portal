@@ -10,7 +10,7 @@
  */
 angular.module('playerApp')
     .controller('CourseController', function (contentService, $timeout, $state,
-        config, $rootScope, ToasterService) {
+        config, $rootScope, toasterService) {
         var course = this;
         course.lessonTypes = config.DROPDOWN.COMMON.lessonTypes;
         course.audiences = config.DROPDOWN.COMMON.audiences;
@@ -62,18 +62,18 @@ angular.module('playerApp')
                     course.initEKStepCE(res.result.content_id);
                 } else {
                     course.loader.showLoader = false;
-                    ToasterService.error($rootScope
+                    toasterService.error($rootScope
                         .errorMessages.WORKSPACE.CREATE_COURSE.FAILED);
                 }
             }).catch(function () {
                 course.loader.showLoader = false;
-                ToasterService.error($rootScope
+                toasterService.error($rootScope
                     .errorMessages.WORKSPACE.CREATE_COURSE.FAILED);
             });
         };
 
         course.saveMetaData = function (data) {
-            course.loader = ToasterService.loader('', $rootScope
+            course.loader = toasterService.loader('', $rootScope
                     .errorMessages.WORKSPACE.CREATE_COURSE.START);
 
             var requestBody = angular.copy(data);

@@ -2,31 +2,13 @@
 
 angular.module('playerApp')
     .controller('LearnCtrl', function (learnService, $scope, $state, $rootScope,
-         sessionService) {
+         sessionService,toasterService) {
         var learn = this;
         var uid = $rootScope.userId;
     //   $rootScope.searchResult = [];
         $scope.contentPlayer = {
             isContentPlayerEnabled: false
         };
-
-        function showLoaderWithMessage(headerMessage, loaderMessage) {
-            var loader = {};
-            loader.showLoader = true;
-            loader.headerMessage = headerMessage;
-            loader.loaderMessage = loaderMessage;
-            return loader;
-        }
-
-        function showErrorMessage(isClose, message, messageType) {
-            var error = {};
-            error.showError = true;
-            error.isClose = isClose;
-            error.message = message;
-            error.messageType = messageType;
-            return error;
-        }
-
         learn.openCourseView = function (course, courseType) {
             var showLectureView = 'no';
             $rootScope.enrolledCourseIds[course.courseId || course.identifier] ? showLectureView = 'no' : showLectureView = 'yes'; //eslint-disable-line
@@ -51,7 +33,7 @@ angular.module('playerApp')
         learn.courses = function () {
             var api = 'enrollCourseApi';
             learn[api] = {};
-            learn[api].loader = showLoaderWithMessage('', $rootScope
+            learn[api].loader = toasterService.loader('', $rootScope
                 .errorMessages.Courses.ENROLLED.START);
 
             learnService.enrolledCourses(uid).then(function (successResponse) {
@@ -63,21 +45,18 @@ angular.module('playerApp')
                     learn.enrolledCourses = $rootScope.enrolledCourses;
                 } else {
                     learn[api].loader.showLoader = false;
-                    learn[api].error
-                    = showErrorMessage(true,
-                        $rootScope.errorMessages.Courses.ENROLLED.FAILED,
-                        $rootScope.errorMessages.COMMON.ERROR);
+                    toasterService.error(
+                    $rootScope.errorMessages.Courses.ENROLLED.FAILED);
                 }
             })
                 .catch(function () {
                     learn[api].loader.showLoader = false;
-                    learn[api].error = showErrorMessage(
-                        true, $rootScope.errorMessages.Courses.ENROLLED.FAILED,
-                        $rootScope.errorMessages.COMMON.ERROR);
+            toasterService.error(
+                            $rootScope.errorMessages.Courses.ENROLLED.FAILED);
                 });
         };
-
-        if ($rootScope.enrolledCourseIds) {
+        if ($rootScope.enrolledCourseIds 
+                && !_.isEmpty($rootScope.enrolledCourseIds)) {
             learn.enrolledCourses = $rootScope.enrolledCourses;
         } else {
             learn.courses();

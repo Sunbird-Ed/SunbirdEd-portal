@@ -10,7 +10,7 @@
  */
 angular.module('playerApp')
     .controller('CollectionController', function (contentService, $timeout,
-        $state, config, $rootScope, ToasterService) {
+        $state, config, $rootScope, toasterService) {
         var collection = this;
         collection.lessonTypes = config.DROPDOWN.COMMON.lessonTypes;
         collection.audiences = config.DROPDOWN.COMMON.audiences;
@@ -62,18 +62,18 @@ angular.module('playerApp')
                     collection.initEKStepCE(res.result.content_id);
                 } else {
                     collection.loader.showLoader = false;
-                    ToasterService.error($rootScope.errorMessages.WORKSPACE
+                    toasterService.error($rootScope.errorMessages.WORKSPACE
                         .CREATE_COLLECTION.FAILED);
                 }
             }).catch(function () {
                 collection.loader.showLoader = false;
-                ToasterService.error($rootScope.errorMessages.WORKSPACE
+                toasterService.error($rootScope.errorMessages.WORKSPACE
                     .CREATE_COLLECTION.FAILED);
             });
         };
 
         collection.saveMetaData = function (data) {
-            collection.loader = ToasterService.loader('', $rootScope
+            collection.loader = toasterService.loader('', $rootScope
             .errorMessages.WORKSPACE.CREATE_COLLECTION.START);
 
             var requestBody = angular.copy(data);

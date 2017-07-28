@@ -3,7 +3,7 @@
 angular.module('playerApp')
     .controller('PreviewContentController', function ($stateParams,
         playerTelemetryUtilsService, $rootScope, $state, $sce, contentService,
-        pdfDelegate, $timeout, config, ToasterService) {
+        pdfDelegate, $timeout, config, toasterService) {
         var previewContent = this;
         previewContent.contentProgress = 0;
         previewContent.contentId = $stateParams.contentId;
@@ -47,7 +47,7 @@ angular.module('playerApp')
             rspData.userId = $rootScope.userId;
 
             if (!validateRequest(rspData, validateModal)) {
-                ToasterService
+                toasterService
                     .warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
                 $state.go('Home');
             }
@@ -352,7 +352,7 @@ angular.module('playerApp')
 
             var api = 'previewContentApi';
             previewContent[api] = {};
-            previewContent[api].loader = ToasterService.loader('', $rootScope
+            previewContent[api].loader = toasterService.loader('', $rootScope
             .errorMessages.WORKSPACE.PUBLISH_CONTENT.START);
 
             contentService.publish(request, previewContent.contentId)
@@ -361,17 +361,17 @@ angular.module('playerApp')
                     previewContent[api].loader.showLoader = false;
                     previewContent.isShowPublishRejectButton = false;
                     previewContent.contentData.status = 'Live';
-                    ToasterService.success($rootScope
+                    toasterService.success($rootScope
                         .errorMessages.WORKSPACE.PUBLISH_CONTENT.SUCCESS);
 //                $state.go("WorkSpace.UpForReviewContent")
                 } else {
                     previewContent[api].loader.showLoader = false;
-                    ToasterService.error($rootScope
+                    toasterService.error($rootScope
                         .errorMessages.WORKSPACE.PUBLISH_CONTENT.FAILED);
                 }
             }).catch(function () {
                 previewContent[api].loader.showLoader = false;
-                ToasterService.error($rootScope
+                toasterService.error($rootScope
                     .errorMessages.WORKSPACE.PUBLISH_CONTENT.FAILED);
             });
         };
@@ -389,17 +389,17 @@ angular.module('playerApp')
                 if (res && res.responseCode === 'OK') {
                     previewContent[api].loader.showLoader = false;
                     previewContent.isShowPublishRejectButton = false;
-                    ToasterService.success($rootScope
+                    toasterService.success($rootScope
                         .errorMessages.WORKSPACE.REJECT_CONTENT.SUCCESS);
 //                $state.go("WorkSpace.UpForReviewContent");
                 } else {
                     previewContent[api].loader.showLoader = false;
-                    ToasterService.error($rootScope
+                    toasterService.error($rootScope
                         .errorMessages.WORKSPACE.REJECT_CONTENT.FAILED);
                 }
             }).catch(function () {
                 previewContent[api].loader.showLoader = false;
-                ToasterService.error($rootScope
+                toasterService.error($rootScope
                     .errorMessages.WORKSPACE.REJECT_CONTENT.FAILED);
             });
         };

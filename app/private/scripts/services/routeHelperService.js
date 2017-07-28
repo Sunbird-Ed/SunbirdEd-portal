@@ -225,7 +225,7 @@ angular.module('playerApp')
                     $rootScope.search.selectedBoard = [];
                     $rootScope.search.filters = {};
                     $rootScope.search.sortBy = {};
-                    $rootScope.search.sortByOption = '';
+                    $rootScope.search.sortByOption = {};
                     $timeout(function () {
                         $('#multi-select-sort').dropdown('clear');
                         $('#content-search-filter-accordion').accordion('close', 0);

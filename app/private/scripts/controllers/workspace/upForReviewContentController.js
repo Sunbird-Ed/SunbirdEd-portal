@@ -10,7 +10,7 @@
 angular.module('playerApp')
     .controller('UpForReviewContentController', function (
         contentService, searchService, config,
-         $rootScope, $scope, $state, ToasterService) {
+         $rootScope, $scope, $state, toasterService) {
         var upForReviewContent = this;
         upForReviewContent.userId = $rootScope.userId;
         upForReviewContent.contentStatus = ['Review'];
@@ -18,7 +18,7 @@ angular.module('playerApp')
         $scope.contentPlayer = { isContentPlayerEnabled: false };
 
         function getReviewContent() {
-            upForReviewContent.loader = ToasterService
+            upForReviewContent.loader = toasterService
             .loader('', $rootScope.errorMessages.WORKSPACE.UP_FOR_REVIEW.START);
             var request = {
                 filters: {
@@ -51,12 +51,12 @@ angular.module('playerApp')
                     }
                 } else {
                     upForReviewContent.loader.showLoader = false;
-                    ToasterService.error($rootScope.errorMessages
+                    toasterService.error($rootScope.errorMessages
                         .WORKSPACE.UP_FOR_REVIEW.FAILED);
                 }
             }).catch(function () {
                 upForReviewContent.loader.showLoader = false;
-                ToasterService.error($rootScope.errorMessages
+                toasterService.error($rootScope.errorMessages
                     .WORKSPACE.UP_FOR_REVIEW.FAILED);
             });
         }
