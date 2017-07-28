@@ -8,12 +8,10 @@
         <input type="text" placeholder={{$root.labels.Notes.title}} name="title" ng-model="noteList.update.metaData.title" />
     </div>
     <div class="editor">
-        <pagedown-editor content="noteList.update.metaData.note" show-preview="false" placeholder={{$root.labels.Notes.description}}
-                         insert-image="noteList.insertImage()"></pagedown-editor>
+        <pagedown-editor content="noteList.update.metaData.note" show-preview="false" placeholder={{$root.labels.Notes.description}} insert-image="noteList.insertImage()"></pagedown-editor>
 
     </div>
-    <button class="ui primary right floated button margin-top-10" type="submit" ng-click="noteList.updateNote(noteList.update.metaData)"
-            ng-disabled="!noteList.update.metaData.title || !noteList.update.metaData.note" tabindex="4">{{$root.labels.Notes.update}}</button>
+    <button class="ui primary right floated button margin-top-10" type="submit" ng-click="noteList.updateNote(noteList.update.metaData)" ng-disabled="!noteList.update.metaData.title || !noteList.update.metaData.note" tabindex="4">{{$root.labels.Notes.update}}</button>
 </div>
 <div ng-if="noteList.updateApi.loader.showLoader">
     <app-loader data="{{noteList.updateApi.loader}}"></app-loader>
