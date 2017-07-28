@@ -22,7 +22,7 @@ angular.module('playerApp')
             var request = {
                 filters: {
                     status: upForReviewContent.contentStatus,
-                    "channelId": upForReviewContent.channelId
+                    createdFor: $rootScope.organisationIds
                 },
                 'sort_by': {
                     "lastUpdatedOn": "desc"
