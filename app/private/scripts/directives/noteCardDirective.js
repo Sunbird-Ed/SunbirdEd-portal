@@ -4,7 +4,6 @@
  * @ngdoc directive
  * @name playerApp.directive:noteCard
  * @description
- * # contentPlayer
  */
 angular.module('playerApp').directive('noteCard', function () {
     return {
@@ -17,7 +16,7 @@ angular.module('playerApp').directive('noteCard', function () {
         },
         link: function (scope, element, attrs) {// eslint-disable-line
             scope.$watch('contentid', function () {
-                scope.updateDataOnWatch(scope.contentid);
+                scope.updateNoteMetaData(scope.contentid);
             });
         },
         controller: 'NoteCardCtrl as noteCard'

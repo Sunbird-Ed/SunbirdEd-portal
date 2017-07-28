@@ -2,9 +2,9 @@
     <div class="content" ng-if="!noteCard.searchApi.loader.showLoader && noteCard.notesList.length > 0">
         <div class="header">
             <span>{{$root.labels.Notes.myNoteBook}}</span>
-            <a class="ui right floated font-dark-blue" ng-click="noteCard.showAllNoteList()">{{$root.labels.Notes.viewAll}}</a>
+            <a class="ui right floated font-dark-blue" ng-click="noteCard.viewAllNotes()">{{$root.labels.Notes.viewAll}}</a>
         </div>
-        <div class="description" >
+        <div class="description">
             <div class="ui list" ng-repeat="note in noteCard.notesList| orderBy : '-lastUpdatedOn' | limitTo: noteCard.quantityOfNotes track by $index">
                 <div class="item">
                     <div class="content">
@@ -13,13 +13,12 @@
                                 <i ng-show="note.title.length > 15" class="ellipsis horizontal icon popup-button" data-content="{{note.titles}}"
                                    data-variation="wide"></i>
                             </span>
-                            <span class="note-card-timeStamp right floated">{{note.lastUpdatedOn| dateFilterXTimeAgo}}</span>
+                        <span class="note-card-timeStamp right floated">{{note.lastUpdatedOn| dateFilterXTimeAgo}}</span>
                         </span>
                         <div class="description" ng-init="noteData = note.note.length > 20 ? note.note.substring(0,20) : note.note">
                             <pagedown-viewer content="note.note.length > 20 ? note.note.substring(0,20) : note.note"></pagedown-viewer>
-                            <i ng-if="note.note.length > 20" class="ellipsis horizontal icon popup-button" data-content="{{note.note}}"
-                               data-variation="wide">
-                            </i> 
+                            <i ng-if="note.note.length > 20" class="ellipsis horizontal icon popup-button" data-content="{{note.note}}" data-variation="wide">
+                            </i>
                         </div>
                     </div>
                     <div ng-if="($index < noteCard.quantityOfNotes - 1) && noteCard.notesList.length > 1" class="ui clearing divider"></div>
@@ -39,7 +38,7 @@
     </div>
     <div ng-if="noteCard.showUpdateNote">
         <div class="ui modal" id="updateNoteModal">
-            <div class=" ui segment margin-top-10"  ng-if="!noteCard.updateApi.loader.showLoader && !noteCard.updateApi.error.showError">
+            <div class=" ui segment margin-top-10" ng-if="!noteCard.updateApi.loader.showLoader && !noteCard.updateApi.error.showError">
                 <div class=" margin-bottom-15">
                     <div class="ui grid">
                         <div class="eleven wide column">
@@ -59,8 +58,7 @@
                     <pagedown-editor content="noteCard.update.metaData.note" show-preview="false" tabindex="2" placeholder={{$root.labels.Notes.description}}></pagedown-editor>
                 </div>
                 <div class="actions">
-                    <button class="ui primary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="noteCard.updateNote(noteCard.update.metaData)" ng-disabled="!noteCard.update.metaData.title || !noteCard.update.metaData.note" tabindex="4"
-                            ng-class="noteCard.denyModalClass">{{$root.labels.Notes.update}}</button>
+                    <button class="ui primary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="noteCard.updateNote(noteCard.update.metaData)" ng-disabled="!noteCard.update.metaData.title || !noteCard.update.metaData.note" tabindex="4" ng-class="noteCard.denyModalClass">{{$root.labels.Notes.update}}</button>
                 </div>
             </div>
             <div class=" ui segment margin-top-10" ng-if="noteCard.updateApi.loader.showLoader">
