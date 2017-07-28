@@ -10,7 +10,7 @@
 angular.module('playerApp')
     .controller('EditContentController', function (contentService, config,
         $scope, $state, $timeout, $rootScope, $stateParams, $location,
-        $anchorScroll, ToasterService) {
+        $anchorScroll, toasterService) {
         var editContent = this;
         editContent.contentId = $stateParams.contentId;
         editContent.lessonTypes = config.DROPDOWN.COMMON.lessonTypes;
@@ -81,7 +81,7 @@ angular.module('playerApp')
         editContent.initializeData = function (isReview) {
             var api = 'editApi';
             editContent[api] = {};
-            editContent[api].loader = ToasterService
+            editContent[api].loader = toasterService
             .loader('', $rootScope.errorMessages.WORKSPACE.GET.START);
 
             editContent.initilizeView();
@@ -95,7 +95,7 @@ angular.module('playerApp')
             contentService.getById(req, qs).then(function (response) {
                 if (response && response.responseCode === 'OK') {
                     if (!editContent.checkContentAccess(response.result.content)) { // eslint-disable-line
-                        ToasterService.warning($rootScope
+                        toasterService.warning($rootScope
                             .errorMessages.COMMON.UN_AUTHORIZED);
                         $state.go('Home');
                     }
@@ -138,12 +138,12 @@ angular.module('playerApp')
                     }
                 } else {
                     editContent[api].loader.showLoader = false;
-                    ToasterService.error($rootScope
+                    toasterService.error($rootScope
                         .errorMessages.WORKSPACE.GET.FAILED);
                 }
             }).catch(function () {
                 editContent[api].loader.showLoader = false;
-                ToasterService.error($rootScope
+                toasterService.error($rootScope
                     .errorMessages.WORKSPACE.GET.FAILED);
             });
         };
@@ -199,7 +199,7 @@ angular.module('playerApp')
         editContent.uploadOrUpdateAppIcon = function (requestBody, isReviewContent) { //eslint-disable-line
             var api = 'editApi';
             editContent[api] = {};
-            editContent[api].loader = ToasterService
+            editContent[api].loader = toasterService
             .loader('', $rootScope.errorMessages.WORKSPACE.UPLOAD_ICON.START);
 
             contentService.uploadMedia(editContent.icon).then(function (res) {
@@ -210,12 +210,12 @@ angular.module('playerApp')
                     editContent.updateContent(requestBody, isReviewContent);
                 } else {
                     editContent[api].loader.showLoader = false;
-                    ToasterService.error($rootScope
+                    toasterService.error($rootScope
                         .errorMessages.WORKSPACE.UPLOAD_ICON.FAILED);
                 }
             }).catch(function () {
                 editContent[api].loader.showLoader = false;
-                ToasterService.error($rootScope
+                toasterService.error($rootScope
                     .errorMessages.WORKSPACE.UPLOAD_ICON.FAILED);
             });
         };
@@ -223,14 +223,14 @@ angular.module('playerApp')
         editContent.updateContent = function (requestBody, isReviewContent) {
             var api = 'editApi';
             editContent[api] = {};
-            editContent[api].loader = ToasterService
+            editContent[api].loader = toasterService
             .loader('', $rootScope.errorMessages.WORKSPACE.UPDATE.START);
 
             contentService.update(requestBody, editContent.contentId)
             .then(function (res) {
                 if (res && res.responseCode === 'OK') {
                     editContent[api].loader.showLoader = false;
-                    ToasterService.success($rootScope
+                    toasterService.success($rootScope
                         .errorMessages.WORKSPACE.UPDATE.SUCCESS);
                     if (editContent.youtubeFileLink) {
                         editContent.youtubeFileLink = '';
@@ -242,12 +242,12 @@ angular.module('playerApp')
                     }
                 } else {
                     editContent[api].loader.showLoader = false;
-                    ToasterService.error($rootScope
+                    toasterService.error($rootScope
                         .errorMessages.WORKSPACE.UPDATE.FAILED);
                 }
             }).catch(function () {
                 editContent[api].loader.showLoader = false;
-                ToasterService.error($rootScope
+                toasterService.error($rootScope
                     .errorMessages.WORKSPACE.UPDATE.FAILED);
             });
         };
@@ -293,7 +293,7 @@ angular.module('playerApp')
         editContent.callReviewApi = function () {
             var api = 'editApi';
             editContent[api] = {};
-            editContent[api].loader = ToasterService.loader('', $rootScope
+            editContent[api].loader = toasterService.loader('', $rootScope
                 .errorMessages.WORKSPACE.REVIEW_CONTENT.START);
             var req = { content: {} };
 
@@ -301,17 +301,17 @@ angular.module('playerApp')
             .then(function (res) {
                 if (res && res.responseCode === 'OK') {
                     editContent[api].loader.showLoader = false;
-                    ToasterService.success($rootScope
+                    toasterService.success($rootScope
                         .errorMessages.WORKSPACE.REVIEW_CONTENT.SUCCESS);
 //                        $state.go("WorkSpace.ReviewContent");
                 } else {
                     editContent[api].loader.showLoader = false;
-                    ToasterService.error($rootScope
+                    toasterService.error($rootScope
                         .errorMessages.WORKSPACE.REVIEW_CONTENT.FAILED);
                 }
             }).catch(function () {
                 editContent[api].loader.showLoader = false;
-                ToasterService.error($rootScope
+                toasterService.error($rootScope
                     .errorMessages.WORKSPACE.REVIEW_CONTENT.FAILED);
             });
         };

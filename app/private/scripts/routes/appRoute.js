@@ -773,82 +773,82 @@ angular
       });
 
     $rootScope.$on('$stateChangeStart',
-      function(event, toState, toParams, fromState, fromParams, ToasterService) {
+      function(event, toState, toParams, fromState, fromParams, toasterService) {
         switch (toState.name) {
           case "WorkSpace":
             if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
-              //                            ToasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
-              ToasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
+              //                            toasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
+              toasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
               event.preventDefault();
               $state.go('Home');
             }
             break;
           case "WorkSpace.ContentCreation":
             if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
-              ToasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
+              toasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
               event.preventDefault();
               $state.go('Home');
             }
             break;
           case "CreateLesson":
             if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
-              ToasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
+              toasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
               event.preventDefault();
               $state.go('Home');
             }
             break;
           case "ContentEditor":
             if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
-              ToasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
+              toasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
               event.preventDefault();
               $state.go('Home');
             }
             break;
           case "EditContent":
             if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
-              ToasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
+              toasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
               event.preventDefault();
               $state.go('Home');
             }
             break;
           case "CreateTextbook":
             if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
-              ToasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
+              toasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
               event.preventDefault();
               $state.go('Home');
             }
             break;
           case "CreateCollection":
             if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
-              ToasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
+              toasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
               event.preventDefault();
               $state.go('Home');
             }
             break;
           case "CreateCourse":
             if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
-              ToasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
+              toasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
               event.preventDefault();
               $state.go('Home');
             }
             break;
           case "CollectionEditor":
             if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
-              ToasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
+              toasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
               event.preventDefault();
               $state.go('Home');
             }
             break;
           case "PreviewContent":
             if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
-              ToasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
+              toasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
               event.preventDefault();
               $state.go('Home');
             }
             break;
           case "WorkSpace.UpForReviewContent":
             if (permissionsService.checkRolesPermissions(['CONTENT_REVIEWER', 'CONTENT_REVIEW'], false)) {
-              ToasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
+              toasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
               event.preventDefault();
               $state.go('Home');
             }
