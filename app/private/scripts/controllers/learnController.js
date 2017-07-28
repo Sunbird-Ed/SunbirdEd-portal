@@ -77,5 +77,9 @@ angular.module('playerApp')
                 });
         };
 
-        $rootScope.enrolledCourseIds ? learn.enrolledCourses = $rootScope.enrolledCourses : learn.courses();//eslint-disable-line
+        if ($rootScope.enrolledCourseIds) {
+            learn.enrolledCourses = $rootScope.enrolledCourses;
+        } else {
+            learn.courses();
+        }
     });
