@@ -9,12 +9,12 @@
  */
 angular.module('playerApp')
     .controller('PublishedContentController', function (contentService,
-        searchService, config, $rootScope, $state, ToasterService) {
+        searchService, config, $rootScope, $state, toasterService) {
         var publishedContent = this;
         publishedContent.userId = $rootScope.userId;
 
         function getPublishedContent() {
-            publishedContent.loader = ToasterService
+            publishedContent.loader = toasterService
             .loader('', $rootScope.errorMessages.WORKSPACE.PUBLISHED.START);
             var request = {
                 filters: {
@@ -39,13 +39,13 @@ angular.module('playerApp')
                     }
                 } else {
                     publishedContent.loader.showLoader = false;
-                    ToasterService
+                    toasterService
                     .error($rootScope.errorMessages.WORKSPACE.PUBLISHED.FAILED);
                 }
             })
                 .catch(function () {
                     publishedContent.loader.showLoader = false;
-                    ToasterService
+                    toasterService
                     .error($rootScope.errorMessages.WORKSPACE.PUBLISHED.FAILED);
                 });
         }
