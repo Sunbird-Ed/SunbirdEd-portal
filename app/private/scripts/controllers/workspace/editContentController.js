@@ -176,7 +176,7 @@ angular.module('playerApp')
                 editContent.icon = fd;
                 editContent.iconUpdate = true;
             } else {
-                alert($rootScope.errorMessages.COMMON.INVAILID_IMAGE);
+                alert($rootScope.errorMessages.COMMON.INVALID_IMAGE);
             }
         };
 

@@ -31,7 +31,8 @@
             "WARNING": "warning",
             "SUCCESS": "success",
             "UN_AUTHORIZED": "You are not authorized to access this resource",
-            "INVAILID_IMAGE": "Please upload a valid image file. Supported formats: JPG, PNG, JPEG. Max size: 4MB."
+            "INVALID_IMAGE": "Please upload a valid image file. Supported formats: JPG, PNG, JPEG. Max size: 4MB.",
+            "INVALID_FILE_SIZE": " is too large, maximum file size is "
         },
         "WORKSPACE": {
             "DRAFT": {
@@ -103,7 +104,7 @@
                 "SUCCESS": "Content rejected successfully..."
             },
             "ContentCreation": {
-                "invalidYoutubeUrl": "Invalid youtube url, Please check..."
+                "invalidYoutubeVideoUrl": "Invalid youtube url, Please check..."
             },
             "UP_FOR_REVIEW": {
                 "START": "We are fetching up for review content...",

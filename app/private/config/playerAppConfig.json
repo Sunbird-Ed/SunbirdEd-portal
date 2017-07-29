@@ -79,7 +79,7 @@
                     "Collection", "Story", "TextBook", "Worksheet"
                 ],
                 "subjects": [
-                    "Assamese","Bengali","English","Gujarati","Hindi","Kannada","Malayalam","Marathi","Maths","Nepali","Oriya","Punjabi","Tamil","Telugu","Urdu"
+                    "Assamese", "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Malayalam", "Marathi", "Maths", "Nepali", "Oriya", "Punjabi", "Tamil", "Telugu", "Urdu"
                 ],
                 "boards": [
                     "NCERT", "CBSE", "ICSE", "MSCERT"
@@ -234,8 +234,8 @@
                     "FAILED": "Sending content for retire failed, please try again later..."
                 }
             },
-            "COLLECTION":{
-                "PREVIEW":{
+            "COLLECTION": {
+                "PREVIEW": {
                     "START": "Fetching data for you....",
                     "FAILED": "Unable to load data."
                 }
@@ -375,18 +375,18 @@
                 "host": "",
                 "apislug": "/action",
                 "repos": ["/content-plugins/renderer"],
-                "plugins": [{ "id": "org.sunbird.iframeEvent", "ver": 1.0, "type": "plugin" },{"id":"org.sunbird.player.endpage","ver":1.0,"type":"plugin"}]
+                "plugins": [{ "id": "org.sunbird.iframeEvent", "ver": 1.0, "type": "plugin" }, { "id": "org.sunbird.player.endpage", "ver": 1.0, "type": "plugin" }]
             },
             "baseURL": "/content/preview/preview.html?webview=true"
         },
         "DROPDOWN": {
             "COMMON": {
-                "languages": ["Bengali","English","Gujarati","Hindi","Kannada","Marathi","Punjabi","Tamil","Telugu"],
+                "languages": ["Bengali", "English", "Gujarati", "Hindi", "Kannada", "Marathi", "Punjabi", "Tamil", "Telugu"],
                 "lessonTypes": [
                     "Story", "Worksheet"
                 ],
                 "subjects": [
-                    "Assamese","Bengali","English","Gujarati","Hindi","Kannada","Malayalam","Marathi","Maths","Nepali","Oriya","Punjabi","Tamil","Telugu","Urdu"
+                    "Assamese", "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Malayalam", "Marathi", "Maths", "Nepali", "Oriya", "Punjabi", "Tamil", "Telugu", "Urdu"
                 ],
                 "grades": [
                     "Kindergarten",
@@ -411,7 +411,7 @@
                     "<5", "5-6", "6-7", "7-8", "8-10", ">10", "Other"
                 ],
                 "medium": [
-                    "Assamese","Bengali","English","Gujarati","Hindi","Kannada","Malayalam","Marathi","Nepali","Oriya","Other","Punjabi","Tamil","Telugu","Urdu"
+                    "Assamese", "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Malayalam", "Marathi", "Nepali", "Oriya", "Other", "Punjabi", "Tamil", "Telugu", "Urdu"
                 ],
                 "boards": [
                     "CBSE", "ICSE", "MSCERT", "NCERT"
@@ -559,14 +559,15 @@
             "MAX_BATCH_SIZE": 20,
             "SYNC": "telemetry"
         },
-        "CURRENT_USER_ROLES" : ["CONTENT_REVIEWER"],
-        "COMMON_ROLES_CHECK" : ["CONTENT_CREATOR", "CONTENT_REVIEW", "CONTENT_CREATION", "CONTENT_REVIEWER"],
-        "CreateLessonMimeType" : "application/vnd.ekstep.ecml-archive",
+        "CURRENT_USER_ROLES": ["CONTENT_REVIEWER"],
+        "COMMON_ROLES_CHECK": ["CONTENT_CREATOR", "CONTENT_REVIEW", "CONTENT_CREATION", "CONTENT_REVIEWER"],
+        "CreateLessonMimeType": "application/vnd.ekstep.ecml-archive",
         "CreateCollectionMimeType": "application/vnd.ekstep.content-collection",
-        "MimeTypeExceptCollection" : ["application/pdf", "video/mp4",
-                "application/vnd.ekstep.html-archive", "video/youtube", "application/vnd.ekstep.ecml-archive"],
+        "MimeTypeExceptCollection": ["application/pdf", "video/mp4",
+            "application/vnd.ekstep.html-archive", "video/youtube", "application/vnd.ekstep.ecml-archive"
+        ],
         "MaxFileSizeToUpload": 25600000,
         "FileExtensionToUpload": "application/pdf, video/mp4, application/zip, video/webm",
-        "AllowedFileExtention": ["mp4", "pdf", "zip"]
+        "AllowedFileExtension": ["mp4", "pdf", "zip"]
     }
 }
