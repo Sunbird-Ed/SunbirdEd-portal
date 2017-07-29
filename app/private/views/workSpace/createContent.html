@@ -1,8 +1,4 @@
 <div class="ui grid">
-<!--    <div class="twelve wide column ">
-        <a class="section backtoprofile" ui-sref="Profile">
-            < Back To Profile</a>
-    </div>-->
     <div class="twelve wide column ">
         <div class="ui grid">
             <div class="three wide column">
@@ -67,16 +63,14 @@
                 <div class="ui form youtubeupload youTubeFileUploadForm">
                     <div class="inline fields">
                         <div class="eight wide field">
-                            <input type="text" ng-model="contentCreation.youtubeFileLink" placeholder={{$root.labels.WORKSPACE.startCreating.enterYuotubeURL}}
-                                   ng-model-options="{ debounce: 1000 }" ng-change="contentCreation.validateYouTubeUrl(contentCreation.youtubeFileLink)">
+                            <input type="text" ng-model="contentCreation.youtubeVideoUrl" placeholder={{$root.labels.WORKSPACE.startCreating.enterYuotubeURL}} ng-model-options="{ debounce: 1000 }" ng-change="contentCreation.validateYouTubeUrl(contentCreation.youtubeVideoUrl)">
                         </div>
                         <div class="two wide field">
-                            <button class="ui primary basic button text-align-center padding-left-25 qq-upload-button-selector"
-                                    ng-click="contentCreation.uploadYoutubeFile()" ng-disabled="!contentCreation.youtubeFileLink || contentCreation.invalidYoutubeUrl">UPLOAD</button>
+                            <button class="ui primary basic button text-align-center padding-left-25 qq-upload-button-selector" ng-click="contentCreation.uploadYoutubeFile()" ng-disabled="!contentCreation.youtubeVideoUrl || contentCreation.invalidYoutubeVideoUrl">UPLOAD</button>
                         </div>
                     </div>
                 </div>
-                <div class="ui negative message" ng-if="contentCreation.invalidYoutubeUrl && contentCreation.youtubeFileLink.length !== 0">{{$root.errorMessages.WORKSPACE.ContentCreation.invalidYoutubeUrl}}</div>
+                <div class="ui negative message" ng-if="contentCreation.invalidYoutubeVideoUrl && contentCreation.youtubeVideoUrl.length !== 0">{{$root.errorMessages.WORKSPACE.ContentCreation.invalidYoutubeVideoUrl}}</div>
             </div>
             <div class="one wide column"></div>
         </div>
@@ -114,14 +108,13 @@
                     <div class="two fields">
                         <div class="field">
                             <label>{{$root.labels.WORKSPACE.common.lessonType}}</label>
-                            <select name="lessonType" class="ui fluid dropdown singleSelectDropDown" ng-options=" lesson for lesson in contentCreation.lessonTypes" ng-model="contentCreation.data.contentType">
+                            <select name="lessonType" class="ui fluid dropdown" id="lessonTypeDropDown" ng-options=" lesson for lesson in contentCreation.lessonTypes" ng-model="contentCreation.data.contentType">
                                 <option value="" >{{$root.labels.WORKSPACE.common.lessonType}}</option>
                             </select>
                         </div>
                         <div class="required field">
                             <label>{{$root.labels.WORKSPACE.common.mimeType}}</label>
-                            <select name="mimeType" class="ui fluid dropdown singleSelectDropDown" id="mimeTypeDropDown"
-                                    ng-options=" mimeType.name for mimeType in contentCreation.mimeType" ng-model="contentCreation.data.mimeType">
+                            <select name="mimeType" class="ui fluid dropdown singleSelectDropDown" id="mimeTypeDropDown" ng-options=" mimeType.name for mimeType in contentCreation.mimeType" ng-model="contentCreation.data.mimeType">
                                 <option value="">{{$root.labels.WORKSPACE.common.mimeType}}</option>
                             </select>
                         </div>
@@ -130,7 +123,7 @@
             </div>
             <div class="actions">
                 <p class="text-align-center">
-                    <button class="ui primary text-align-center icon button" ng-click="contentCreation.saveMetaData(contentCreation.data)" ng-disabled="!contentCreation.data.mimeType && !contentCreation.youtubeFileLink">
+                    <button class="ui primary text-align-center icon button" ng-click="contentCreation.saveMetaData(contentCreation.data)" ng-disabled="!contentCreation.data.mimeType && !contentCreation.youtubeVideoUrl">
                         {{$root.labels.WORKSPACE.startCreating.upload}}
                     </button>
                 </p>
