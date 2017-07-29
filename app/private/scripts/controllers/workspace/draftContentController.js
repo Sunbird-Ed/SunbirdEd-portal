@@ -20,7 +20,6 @@ angular.module('playerApp')
                 'application/vnd.ekstep.content-collection'
             ];
             draftContent.sortBy = 'desc';
-            draftContent.draftContentData = [];
 
             draftContent.getDraftContent = function () {
                 draftContent.loader = toasterService.loader('', $rootScope.errorMessages.WORKSPACE
