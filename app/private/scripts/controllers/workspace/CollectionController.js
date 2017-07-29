@@ -9,96 +9,74 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('CollectionController', function (contentService, $timeout,
-        $state, config, $rootScope, toasterService) {
-        var collection = this;
-        collection.lessonTypes = config.DROPDOWN.COMMON.lessonTypes;
-        collection.audiences = config.DROPDOWN.COMMON.audiences;
-        collection.languages = config.DROPDOWN.COMMON.languages;
-        collection.grades = config.DROPDOWN.COMMON.grades;
-        collection.ageGroup = config.DROPDOWN.COMMON.ageGroup;
-        collection.mediums = config.DROPDOWN.COMMON.medium;
-        collection.subjects = config.DROPDOWN.COMMON.subjects;
-        collection.boards = config.DROPDOWN.COMMON.boards;
-        collection.showCreateSlideShowModal = false;
-        collection.slideShowCreated = false;
-        collection.userId = $rootScope.userId;
-        collection.accept = false;
+    .controller('CollectionController', ['contentService', '$timeout', '$state', 'config',
+        '$rootScope', 'toasterService', function (contentService, $timeout, $state, config,
+            $rootScope, toasterService) {
+            var collection = this;
+            collection.showCreateCollectionModel = false;
+            collection.isCollectionCreated = false;
+            collection.userId = $rootScope.userId;
+            collection.mimeType = 'application/vnd.ekstep.content-collection';
+            collection.defaultName = 'Untitled collection';
+            collection.contentType = 'Collection';
 
-        collection.hideCreateSlideShowModal = function () {
-            $('#createSlideShowModal')
-                .modal('hide');
-            $('#createSlideShowModal')
-                .modal('hide others');
-            $('#createSlideShowModal')
-                .modal('hide dimmer');
-        };
-
-        collection.initilizeView = function () {
-            collection.showCreateSlideShowModal = true;
-            $timeout(function () {
-                $('.multiSelectDropDown')
-                    .dropdown();
-                $('.singleSelectDropDown')
-                    .dropdown();
-                $('#createSlideShowModal').modal({
-                    onHide: function () {
-                        collection.clearCreateSlideShowData();
-                        if (!collection.slideShowCreated) {
-                            $state.go('WorkSpace.ContentCreation');
+            collection.initializeModal = function () {
+                collection.showCreateCollectionModel = true;
+                $timeout(function () {
+                    $('#createCollectionModel').modal({
+                        onHide: function () {
+                            collection.data = {};
+                            if (!collection.isCollectionCreated) {
+                                $state.go('WorkSpace.ContentCreation');
+                            }
                         }
-                    }
-                }).modal('show');
-            }, 10);
-        };
-
-        collection.createContent = function (requestData) {
-            contentService.create(requestData).then(function (res) {
-                if (res && res.responseCode === 'OK') {
-                    collection.slideShowCreated = true;
-                    collection.showCreateSlideShowModal = false;
-                    collection.loader.showLoader = false;
-                    collection.hideCreateSlideShowModal();
-                    collection.initEKStepCE(res.result.content_id);
-                } else {
-                    collection.loader.showLoader = false;
-                    toasterService.error($rootScope.errorMessages.WORKSPACE
-                        .CREATE_COLLECTION.FAILED);
-                }
-            }).catch(function () {
-                collection.loader.showLoader = false;
-                toasterService.error($rootScope.errorMessages.WORKSPACE
-                    .CREATE_COLLECTION.FAILED);
-            });
-        };
-
-        collection.saveMetaData = function (data) {
-            collection.loader = toasterService.loader('', $rootScope
-            .errorMessages.WORKSPACE.CREATE_COLLECTION.START);
-
-            var requestBody = angular.copy(data);
-
-            requestBody.mimeType = 'application/vnd.ekstep.content-collection';
-            requestBody.createdBy = collection.userId;
-
-            requestBody.name
-            = requestBody.name ? requestBody.name : 'Untitled collection';
-            requestBody.description
-            = requestBody.description ? requestBody.description : 'Description';
-            requestBody.contentType = 'Collection';
-
-            var requestdata = {
-                content: requestBody
+                    }).modal('show');
+                }, 10);
             };
-            collection.createContent(requestdata);
-        };
 
-        collection.clearCreateSlideShowData = function () {
-            collection.data = {};
-        };
+            collection.hideCreateCollectionModel = function () {
+                $('#createCollectionModel').modal('hide');
+                $('#createCollectionModel').modal('hide others');
+                $('#createCollectionModel').modal('hide dimmer');
+            };
 
-        collection.initEKStepCE = function (contentId) {
-            var params = { contentId: contentId, type: 'Collection' };
-            $state.go('CollectionEditor', params);
-        };
-    });
+            collection.createCollection = function (requestData) {
+                collection.loader = toasterService.loader('', $rootScope.errorMessages.WORKSPACE
+                                                                    .CREATE_COLLECTION.START);
+                contentService.create(requestData).then(function (res) {
+                    if (res && res.responseCode === 'OK') {
+                        collection.isCollectionCreated = true;
+                        collection.showCreateCollectionModel = false;
+                        collection.loader.showLoader = false;
+                        collection.hideCreateCollectionModel();
+                        collection.initEKStepCE(res.result.content_id);
+                    } else {
+                        collection.loader.showLoader = false;
+                        toasterService.error($rootScope.errorMessages.WORKSPACE.CREATE_COLLECTION
+                                                                                .FAILED);
+                    }
+                }).catch(function () {
+                    collection.loader.showLoader = false;
+                    toasterService.error($rootScope.errorMessages.WORKSPACE.CREATE_COLLECTION
+                                                                                .FAILED);
+                });
+            };
+
+            collection.saveMetaData = function (data) {
+                var requestBody = angular.copy(data);
+                requestBody.name = requestBody.name ? requestBody.name : collection.defaultName;
+                requestBody.mimeType = collection.mimeType;
+                requestBody.createdBy = collection.userId;
+                requestBody.contentType = collection.contentType;
+
+                var requestData = {
+                    content: requestBody
+                };
+                collection.createCollection(requestData);
+            };
+
+            collection.initEKStepCE = function (contentId) {
+                var params = { contentId: contentId, type: 'Collection' };
+                $state.go('CollectionEditor', params);
+            };
+        }]);
