@@ -22,11 +22,8 @@
                 </div>
             </div>
         </div>
-        <div ng-if="allUploadedContent.allUploadedContentData.length === 0">
-            <div class="ui huge positive message">
-                <p>{{$root.errorMessages.WORKSPACE.ALL_UPLOADED.NO_CONTENT}}
-                </p>
-            </div>
+        <div class="ui huge positive message" ng-if="allUploadedContent.allUploadedContentData.length === 0">
+            <p>{{$root.errorMessages.WORKSPACE.ALL_UPLOADED.NO_CONTENT}}</p>
         </div>
     </div>
     <div ng-if="allUploadedContent.loader.showLoader">
