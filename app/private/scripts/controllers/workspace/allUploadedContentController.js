@@ -18,7 +18,6 @@ angular.module('playerApp')
             allUploadedContent.contentMimeType = ['application/vnd.ekstep.html-archive',
                 'video/youtube', 'video/mp4', 'application/pdf'];
             allUploadedContent.sortBy = 'desc';
-            allUploadedContent.allUploadedContentData = [];
 
             allUploadedContent.getAllUploadedContent = function () {
                 allUploadedContent.loader = toasterService.loader('', $rootScope.errorMessages

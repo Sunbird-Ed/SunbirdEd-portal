@@ -1,8 +1,7 @@
-<div ng-init="reviewContent.initializeData()">
-    <div ng-if="!reviewContent.loader.showLoader && !reviewContent.zeroContentMessage">
-        <div class="ui three stackable cards">
-            <div class="link card mouse-pointer" ng-repeat="item in reviewContent.reviewContentData track by $index"
-                 ng-click="reviewContent.openContentPlayer(item)">
+<div ng-init="reviewContent.getReviewContent()">
+    <div ng-if="!reviewContent.loader.showLoader">
+        <div class="ui three stackable cards" ng-if="reviewContent.reviewContentData.length > 0">
+            <div class="link card mouse-pointer" ng-repeat="item in reviewContent.reviewContentData track by $index" ng-click="reviewContent.openContentPlayer(item)">
                 <div class="image imageInCardsResponsive">
                     <div class="ui fluid image">
                         <a class="ui black right ribbon label">{{item.contentType}}</a>
@@ -23,13 +22,11 @@
                 </div>
             </div>
         </div>
+        <div class="ui huge positive message" ng-if="reviewContent.reviewContentData.length === 0">
+            <p>{{$root.errorMessages.WORKSPACE.REVIEW.NO_CONTENT}}</p>
+        </div>
     </div>
     <div class="twelve wide column" ng-if="reviewContent.loader.showLoader">
         <app-loader data="{{reviewContent.loader}}"></app-loader>
-    </div>
-    <div class="twelve wide column" ng-if="reviewContent.zeroContentMessage">
-        <div class="ui huge positive message">
-            <p>{{reviewContent.zeroContentMessage}}</p>
-        </div>
     </div>
 </div>
