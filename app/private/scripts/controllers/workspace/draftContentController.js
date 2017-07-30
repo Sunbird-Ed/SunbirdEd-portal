@@ -8,6 +8,7 @@
  * # DraftContentController
  * Controller of the playerApp
  */
+
 angular.module('playerApp')
     .controller('DraftContentController', ['contentService', 'searchService', 'config',
         '$rootScope', '$state', 'toasterService', function (contentService, searchService, config,

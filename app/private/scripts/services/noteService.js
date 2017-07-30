@@ -2,13 +2,15 @@
 
 /**
  * @ngdoc service
- * @name studioApp.noteService
+ * @name playerApp.noteService
  * @description
+ * @author Anuj Gupta
  * # notesService
- * Service in the studioApp.
+ * Service in the playerApp.
  */
+
 angular.module('playerApp')
-    .service('noteService', function (httpService, config) {
+    .service('noteService', ['httpService', 'config', function (httpService, config) {
         this.search = function (req) {
             var url = config.URL.CONTENT_PREFIX + config.URL.NOTES.SEARCH;
             return httpService.post(url, req);
@@ -20,20 +22,17 @@ angular.module('playerApp')
         };
 
         this.update = function (req) {
-            var url = config.URL.CONTENT_PREFIX + config.URL.NOTES.UPDATE + '/'
-                     + req.noteId;
+            var url = config.URL.CONTENT_PREFIX + config.URL.NOTES.UPDATE + '/' + req.noteId;
             return httpService.patch(url, req);
         };
 
         this.get = function (req) {
-            var url = config.URL.CONTENT_PREFIX + config.URL.NOTES.GET + '/'
-                     + req.noteId;
+            var url = config.URL.CONTENT_PREFIX + config.URL.NOTES.GET + '/' + req.noteId;
             return httpService.get(url, req);
         };
 
         this.remove = function (req) {
-            var url = config.URL.CONTENT_PREFIX + config.URL.NOTES.DELETE + '/'
-                     + req.noteId;
+            var url = config.URL.CONTENT_PREFIX + config.URL.NOTES.DELETE + '/' + req.noteId;
             return httpService.remove(url, req);
         };
-    });
+    }]);
