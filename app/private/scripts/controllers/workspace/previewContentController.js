@@ -1,5 +1,14 @@
 'use strict';
 
+/**
+ * @ngdoc function
+ * @name playerApp.controller:PreviewContentController
+ * @description
+ * @author Anuj Gupta
+ * # PreviewContentController
+ * Controller of the playerApp
+ */
+
 angular.module('playerApp')
     .controller('PreviewContentController', ['$stateParams', 'playerTelemetryUtilsService',
         '$rootScope', '$state', '$sce', 'contentService', 'pdfDelegate', '$timeout', 'config',
