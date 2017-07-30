@@ -1,5 +1,14 @@
 'use strict';
 
+/**
+ * @ngdoc function
+ * @name playerApp.controller.note:NoteListCtrl
+ * @author Anuj Gupta
+ * @description
+ * # NoteListCtrl
+ * Controller of the playerApp
+ */
+
 angular.module('playerApp')
     .controller('NoteListCtrl', ['$rootScope', 'noteService', '$state', '$stateParams',
         '$timeout', '$q', 'toasterService', function ($rootScope, noteService, $state,

@@ -1,43 +1,47 @@
 'use strict';
+
+/**
+ * @ngdoc service
+ * @name playerApp.toasterService
+ * @description
+ * @author Anuj Gupta
+ * # toasterService
+ * Service in the playerApp.
+ */
+
 angular.module('playerApp')
-    .service('toasterService', function() {
-        
+    .service('toasterService', [function () {
         iziToast.settings({
             position: 'topCenter',
             titleSize: '18'
         });
-        
-        this.success = function(message) {
+
+        this.success = function (message) {
             iziToast.success({
-                title: message
+                title: message
             });
         };
-        
-        this.info = function(message) {
+
+        this.info = function (message) {
             iziToast.info({
-                title: message
+                title: message
             });
         };
-        
-        this.error = function(message) {
+
+        this.error = function (message) {
             iziToast.error({
                 progressBar: false,
                 timeout: false,
-                title: message
+                title: message
             });
         };
-        
-        this.warning = function(message) {
+
+        this.warning = function (message) {
             iziToast.warning({
-                title: message
+                title: message
             });
         };
-        
-        /**
-        * This function helps to show loader with message.
-        * @param {String} headerMessage
-        * @param {String} loaderMessage
-        */
+
         this.loader = function (headerMessage, loaderMessage) {
             var loader = {};
             loader.showLoader = true;
@@ -45,5 +49,4 @@ angular.module('playerApp')
             loader.loaderMessage = loaderMessage;
             return loader;
         };
-        
-});
+    }]);
