@@ -14,15 +14,15 @@
                         </ul>
                     </div>
                 </div>
-                <div class="row margin-bottom-15" ng-if="editContent.editApi.loader.showLoader">
-                    <app-loader data="{{editContent.editApi.loader}}"></app-loader>
+                <div class="row margin-bottom-15" ng-if="editContent.loader.showLoader">
+                    <app-loader data="{{editContent.loader}}"></app-loader>
                 </div>
                 <div class="row">
                     <div class="videosegment  ui clearing segment">
                         <h1 class="ui HomeAccordianHeading left floated header margin-auto">
                             {{editContent.contentData.name}}
                         </h1>
-                        <h5 class="ui right floated basic icon circular button"ng-click="editContent.closeEditForm(editContent.contentData)">
+                        <h5 class="ui right floated basic icon circular button" ng-click="editContent.closeEditForm(editContent.contentData)">
                             <i class="ui remove icon"></i>
                         </h5>
                     </div>
@@ -39,7 +39,7 @@
                                                 <i class="image icon"></i>
                                             </div>
                                         </div>
-                                        <div class="ui link card userProfilePic margin-none" ng-if="editContent.iconImage" ng-click="editContent.openImageBrowser()" >
+                                        <div class="ui link card userProfilePic margin-none" ng-if="editContent.iconImage" ng-click="editContent.openImageBrowser()">
                                             <div class="image landscapeImgUser">
                                                 <img ng-src="{{editContent.iconImage}}">
                                             </div>
@@ -124,10 +124,10 @@
                 </div>
                 <div class="twelve wide column margin-bottom-15" ng-if="editContent.showUploadFileForm">
                     <h3>
-                            Upload file
+                        Upload file
                     </h3>
                     <div fine-uploader ng-if="editContent.mimeTypeForPdfVideoHtml.indexOf(editContent.contentData.mimeType) > -1"></div>
-                    <div class="ui grid fileUploadDivider margin-bottom-15"  ng-if="editContent.mimeTypeForYoutubeVideo === editContent.contentData.mimeType">
+                    <div class="ui grid fileUploadDivider margin-bottom-15" ng-if="editContent.mimeTypeForYoutubeVideo === editContent.contentData.mimeType">
                         <div class="one wide column"></div>
                         <div class="uploadicon four wide column">
                             <p class="padding-top-10 dropfile textIndentForUploadFile">{{$root.labels.WORKSPACE.startCreating.enterYuotubeURL}}</p>
@@ -136,32 +136,27 @@
                             <div class="ui form youtubeupload youTubeFileUploadForm">
                                 <div class="inline fields">
                                     <div class="eight wide field">
-                                        <input type="text" ng-model="editContent.youtubeFileLink" placeholder={{$root.labels.WORKSPACE.startCreating.enterYuotubeURL}}
-                                               ng-model-options="{ debounce: 1000 }" ng-change="editContent.validateYouTubeUrl(editContent.youtubeFileLink)">
+                                        <input type="text" ng-model="editContent.youtubeFileLink" placeholder={{$root.labels.WORKSPACE.startCreating.enterYuotubeURL}} ng-model-options="{ debounce: 1000 }" ng-change="editContent.validateYouTubeUrl(editContent.youtubeFileLink)">
                                     </div>
                                     <div class="two wide field">
-                                        <button class="ui primary basic button text-align-center padding-left-25 qq-upload-button-selector"
-                                                ng-click="editContent.uploadYoutubeFile(editContent.contentData)" ng-disabled="!editContent.youtubeFileLink || editContent.invalidYoutubeUrl">{{$root.labels.WORKSPACE.common.uploadButton}}</button>
+                                        <button class="ui primary basic button text-align-center padding-left-25 qq-upload-button-selector" ng-click="editContent.uploadYoutubeFile(editContent.contentData)" ng-disabled="!editContent.youtubeFileLink || editContent.invalidYoutubeUrl">{{$root.labels.WORKSPACE.common.uploadButton}}</button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="ui negative message" ng-if="editContent.invalidYoutubeUrl && editContent.youtubeFileLink.length !== 0">{{$root.errorMessages.WORKSPACE.ContentCreation.invalidYoutubeUrl}}</div>
+                            <div class="ui negative message" ng-if="editContent.invalidYoutubeUrl && editContent.youtubeFileLink.length !== 0">{{$root.errorMessages.WORKSPACE.ContentCreation.invalidYoutubeVideoUrl}}</div>
                         </div>
                         <div class="one wide column"></div>
                     </div>
                 </div>
                 <div class="row margin-top-10" id="content-player-bottom-edit">
                     <button class="ui primary basic button" ng-if="!contentPlayer.isContentPlayerEnabled" ng-click="editContent.previewContent(editContent.contentData)">{{$root.labels.WORKSPACE.common.preview}}</button>
-                    <button class="ui primary basic button" ng-if="contentPlayer.isContentPlayerEnabled"
-                            ng-click="contentPlayer.isContentPlayerEnabled = !contentPlayer.isContentPlayerEnabled">{{$root.labels.WORKSPACE.common.closePreview}}</button>
-                    <button class="ui primary basic button" ng-click="editContent.saveMetaContent(editContent.contentData)"ng-disabled="editContent.editApi.loader.showLoader">{{$root.labels.WORKSPACE.common.save}}</button>
-                    <button class="ui primary basic button" ng-click="editContent.submitForReview(editContent.contentData)" ng-disabled="editContent.editApi.loader.showLoader">{{$root.labels.WORKSPACE.common.submitForReview}}</button>
+                    <button class="ui primary basic button" ng-if="contentPlayer.isContentPlayerEnabled" ng-click="contentPlayer.isContentPlayerEnabled = !contentPlayer.isContentPlayerEnabled">{{$root.labels.WORKSPACE.common.closePreview}}</button>
+                    <button class="ui primary basic button" ng-click="editContent.saveMetaContent(editContent.contentData)" ng-disabled="editContent.loader.showLoader">{{$root.labels.WORKSPACE.common.save}}</button>
+                    <button class="ui primary basic button" ng-click="editContent.submitForReview(editContent.contentData)" ng-disabled="editContent.loader.showLoader">{{$root.labels.WORKSPACE.common.submitForReview}}</button>
                     <button class="ui primary basic button" ng-if="editContent.contentData.mimeType === 'application/vnd.ekstep.ecml-archive'" ng-click="editContent.openContentEditor(editContent.contentData.identifier)">{{$root.labels.WORKSPACE.common.launchEditor}}</button>
                     <button class="ui primary basic button" ng-if="editContent.contentData.mimeType === 'application/vnd.ekstep.content-collection'" ng-click="editContent.openCollectionEditor(editContent.contentData)">{{$root.labels.WORKSPACE.common.launchEditor}}</button>
-                    <button class="ui primary basic button" ng-if="editContent.checkMimeTypeForUploadContent.indexOf(editContent.contentData.mimeType) > -1 && !editContent.showUploadFileForm"
-                            ng-click="editContent.uploadFileForm(editContent.contentData.identifier)">{{$root.labels.WORKSPACE.common.upload}}</button>
-                    <button class="ui primary basic button" ng-if="editContent.showUploadFileForm"
-                            ng-click="editContent.showUploadFileForm = !editContent.showUploadFileForm">{{$root.labels.WORKSPACE.common.closeUpload}}</button>
+                    <button class="ui primary basic button" ng-if="editContent.checkMimeTypeForUploadContent.indexOf(editContent.contentData.mimeType) > -1 && !editContent.showUploadFileForm" ng-click="editContent.uploadFileForm(editContent.contentData.identifier)">{{$root.labels.WORKSPACE.common.upload}}</button>
+                    <button class="ui primary basic button" ng-if="editContent.showUploadFileForm" ng-click="editContent.showUploadFileForm = !editContent.showUploadFileForm">{{$root.labels.WORKSPACE.common.closeUpload}}</button>
                 </div>
             </div>
             <div class="one wide column"></div>
