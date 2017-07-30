@@ -2,10 +2,10 @@
 
 /**
  * @ngdoc function
- * @name playerApp.controller.note:noteCardController
+ * @name playerApp.controller.note:NoteCardCtrl
  * @author Anuj Gupta
  * @description
- * # NoteCardCtrls
+ * # NoteCardCtrl
  * Controller of the playerApp
  */
 
