@@ -1,13 +1,10 @@
 <div class="ui grid">
     <div class="one wide column"></div>
     <div class="ten wide column">
-        <div class="row" ng-if="previewContent.previewContentApi.loader.showLoader">
-            <app-loader data="{{previewContent.previewContentApi.loader}}"></app-loader>
+        <div class="row" ng-if="previewContent.loader.showLoader">
+            <app-loader data="{{previewContent.loader}}"></app-loader>
         </div>
-        <div class="row margin-bottom-15" ng-if="previewContent.previewContentApi.error.showError">
-            <error-message data="{{previewContent.previewContentApi.error}}" visibility="previewContent.previewContentApi.error.showError"></error-message>
-        </div>
-        <div class="row">
+        <div class="row margin-top-10">
             <div class='videosegment ui segment'>
                 <div class='content-player-body'>
                     <div class="videosegment  ui clearing segment">
@@ -44,7 +41,8 @@
                                         <i class="large repeat icon link" ng-click="previewContent.rotate()"></i>
                                     </span>
                                     <span class="right-float">
-                                        Page <input type="number" min="1" max="{{previewContent.totalPageNumber}}" ng-value="previewContent.getCurrentPage" ng-model="previewContent.inputPageNumber" class="ui input" ng-change="previewContent.goToPage(inputPageNumber)"> Of {{previewContent.totalPageNumber}}
+                                        {{$root.labels.WORKSPACE.previewContent.page}}
+                                        <input type="number" min="1" max="{{previewContent.totalPageNumber}}" ng-value="previewContent.getCurrentPage" ng-model="previewContent.inputPageNumber" class="ui input" ng-change="previewContent.goToPage(inputPageNumber)"> Of {{previewContent.totalPageNumber}}
                                     </span>
                                 </div>
                                 <pdf-viewer delegate-handle="content-player" url="previewContent.contentData.artifactUrl" scale="1.5" show-toolbar="false"></pdf-viewer>
@@ -52,37 +50,33 @@
                             <div class="content-player" ng-if="previewContent.contentData.mimeType.indexOf('image') > -1">
                                 <img height='100%' width='100%' ng-src="{{previewContent.contentData.artifactUrl}}" />
                             </div>
-                            <div class="videosegment  ui clearing segment margin-bottom-15" ng-if="previewContent.contentData.status === 'Review' && previewContent.isShowPublishRejectButton" >
-                                <button sb-permissions permission-only="CONTENT_REVIEWER" ng-if="previewContent.isShowPublishRejectButton"
-                                        ng-disabled="previewContent.previewContentApi.loader.showLoader"
-                                        class="ui right floated primary button mouse-pointer" ng-click="previewContent.publishContent()">
-                                    Publish
+                            <div class="videosegment  ui clearing segment" ng-if="previewContent.contentData.status === 'Review' && previewContent.isShowPublishRejectButton">
+                                <button sb-permissions permission-only="CONTENT_REVIEWER" ng-if="previewContent.isShowPublishRejectButton" ng-disabled="previewContent.loader.showLoader" class="ui right floated primary button mouse-pointer" ng-click="previewContent.publishContent()">
+                                    {{$root.labels.WORKSPACE.previewContent.publish}}
                                 </button>
-                                <button sb-permissions permission-only="CONTENT_REVIEWER" ng-if="previewContent.isShowPublishRejectButton" 
-                                        ng-disabled="previewContent.previewContentApi.loader.showLoader"
-                                        class="ui right floated primary button mouse-pointer" ng-click="previewContent.rejectContent()">
-                                    Reject
-                                </button> 
+                                <button sb-permissions permission-only="CONTENT_REVIEWER" ng-if="previewContent.isShowPublishRejectButton" ng-disabled="previewContent.loader.showLoader" class="ui right floated primary button mouse-pointer" ng-click="previewContent.rejectContent()">
+                                    {{$root.labels.WORKSPACE.previewContent.reject}}
+                                </button>
                             </div>
                         </div>
                     </div>
                     <div ng-if="previewContent.errorObject.showError">
                         <div class="ui active dimmer inverted">
                             <div class="content">
-                                <div class="center" ng-if="!previewContent.errorObject.showMetaLoader">
+                                <div class="ui center aligned header" ng-if="!previewContent.errorObject.showMetaLoader">
                                     <h2 class="ui header {{previewContent.errorObject.messageClass}}">
                                         {{previewContent.errorObject.message}}
                                     </h2>
-                                    <span ng-if="previewContent.errorObject.showTryAgainButton"><button class="ui button" ng-click="previewContent.tryAgain()">Try Again</button></span>
-                                    <span ng-if="previewContent.errorObject.showCloseButton"><button class="ui red button" ng-click="previewContent.closePreview()">Close</button></span>
+                                    <button class="ui button margin-bottom-15"ng-if="previewContent.errorObject.showTryAgainButton" ng-click="previewContent.tryAgain()">{{$root.labels.WORKSPACE.previewContent.tryAgain}}</button>
+                                   <button class="ui red button margin-bottom-15" ng-if="previewContent.errorObject.showCloseButton" ng-click="previewContent.closePreview()">{{$root.labels.WORKSPACE.previewContent.close}}</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>  
-        <div class="row margin-top-15">
+        </div>
+        <div class="row margin-top-15" ng-if="!previewContent.errorObject.showError">
             <h2 class="ui header" title="Description">
                 {{previewContent.contentData.description}}
             </h2>
@@ -93,7 +87,7 @@
                         <div class="ui list">
                             <div class="item">
                                 <div class="content">
-                                    <div class="header">Author</div>
+                                    <div class="header">{{$root.labels.WORKSPACE.previewContent.author}}</div>
                                     <div class="description padding-top-1rem">{{previewContent.contentData.author}}</div>
                                 </div>
                             </div>
@@ -103,7 +97,7 @@
                         <div class="ui list">
                             <div class="item">
                                 <div class="content">
-                                    <div class="header">Language</div>
+                                    <div class="header">{{$root.labels.WORKSPACE.previewContent.language}}</div>
                                     <div class="description padding-top-1rem">{{previewContent.contentData.language.toString()}}</div>
                                 </div>
                             </div>
@@ -113,7 +107,7 @@
                         <div class="ui list">
                             <div class="item">
                                 <div class="content">
-                                    <div class="header">Grades</div>
+                                    <div class="header">{{$root.labels.WORKSPACE.previewContent.grades}}</div>
                                     <div class="description padding-top-1rem">{{previewContent.contentData.gradeLevel.toString()}}</div>
                                 </div>
                             </div>
@@ -123,7 +117,7 @@
                         <div class="ui list">
                             <div class="item">
                                 <div class="content">
-                                    <div class="header">Subject</div>
+                                    <div class="header">{{$root.labels.WORKSPACE.previewContent.subject}}</div>
                                     <div class="description padding-top-1rem">{{previewContent.contentData.subject}}</div>
                                 </div>
                             </div>
@@ -135,7 +129,7 @@
                         <div class="ui list">
                             <div class="item">
                                 <div class="content">
-                                    <div class="header">Last update</div>
+                                    <div class="header">{{$root.labels.WORKSPACE.previewContent.lastUpdate}}</div>
                                     <div class="description padding-top-1rem">{{previewContent.contentData.lastUpdatedOn| dateFilterWithMDY}}</div>
                                 </div>
                             </div>
@@ -145,7 +139,7 @@
                         <div class="ui list">
                             <div class="item">
                                 <div class="content">
-                                    <div class="header">Created On</div>
+                                    <div class="header">{{$root.labels.WORKSPACE.previewContent.createdOn}}</div>
                                     <div class="description padding-top-1rem">{{previewContent.contentData.createdOn| dateFilterWithMDY}}</div>
                                 </div>
                             </div>
@@ -155,7 +149,7 @@
                         <div class="ui list">
                             <div class="item">
                                 <div class="content">
-                                    <div class="header">Status</div>
+                                    <div class="header">{{$root.labels.WORKSPACE.previewContent.status}}</div>
                                     <div class="description padding-top-1rem">{{previewContent.contentData.status}}</div>
                                 </div>
                             </div>
