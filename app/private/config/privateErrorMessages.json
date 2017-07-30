@@ -38,7 +38,8 @@
             "ZIP_MESSAGE": "File accepted only html zip (Max size 25mb).",
             "INVALID_PDF_FILE": " is not valid pdf file.",
             "INVALID_MP4_FILE": " is not valid mp4 file.",
-            "INVALID_ZIP_FILE": " is not valid zip file."
+            "INVALID_ZIP_FILE": " is not valid zip file.",
+            "UNABLE_TO_PLAY": "Unable to play, please try again or close."
         },
         "WORKSPACE": {
             "DRAFT": {
