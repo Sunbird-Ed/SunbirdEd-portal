@@ -4,7 +4,8 @@
  * @ngdoc function
  * @name playerApp.controller:ContentCreationController
  * @description
- * # CreatecontentCtrl
+ * @author Anuj Gupta
+ * # ContentCreationController
  * Controller of the playerApp
  */
 angular.module('playerApp')
@@ -124,15 +125,13 @@ angular.module('playerApp')
                                                         .style.display = 'block';
                                 contentCreation.manualUploader.cancel(contentCreation
                                                                                 .uploadedFileId);
-                            } else {
-                                contentCreation.youtubeVideoUrl = '';
                             }
                             contentCreation.clearContentCreationModal();
                             contentCreation.closeContentCreationModal();
                         }
                     }).modal('show');
-                    $('#lessonTypeDropDown').dropdown('restore defaults');
-                    $('#mimeTypeDropDown').dropdown('restore defaults');
+                    $('#lessonTypeDropDown').dropdown();
+                    $('#mimeTypeDropDown').dropdown();
 
                     if (contentCreation.youtubeVideoUrl) {
                         $('#mimeTypeDropDown').dropdown('set text', 'Youtube Video');

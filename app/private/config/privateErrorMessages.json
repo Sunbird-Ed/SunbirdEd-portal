@@ -32,7 +32,13 @@
             "SUCCESS": "success",
             "UN_AUTHORIZED": "You are not authorized to access this resource",
             "INVALID_IMAGE": "Please upload a valid image file. Supported formats: JPG, PNG, JPEG. Max size: 4MB.",
-            "INVALID_FILE_SIZE": " is too large, maximum file size is "
+            "INVALID_FILE_SIZE": " is too large, maximum file size is ",
+            "PDF_MESSAGE": "File accepted only pdf (Max size 25mb).",
+            "MP4_MESSAGE": "File accepted only mp4 (Max size 25mb).",
+            "ZIP_MESSAGE": "File accepted only html zip (Max size 25mb).",
+            "INVALID_PDF_FILE": " is not valid pdf file.",
+            "INVALID_MP4_FILE": " is not valid mp4 file.",
+            "INVALID_ZIP_FILE": " is not valid zip file."
         },
         "WORKSPACE": {
             "DRAFT": {
@@ -110,6 +116,15 @@
                 "START": "We are fetching up for review content...",
                 "FAILED": "Fetching up for review content failed, please try again later...",
                 "NO_CONTENT": "You don't have any content for review..."
+            },
+            "REQUIRED_FIELDS": {
+                "TITLE": "Title is missing",
+                "DESCRIPTION": "Description is missing",
+                "LESSON_TYPE": "Lesson type is missing",
+                "AUDIENCE": "Audience is missing",
+                "SUBJECT": "Subject is missing",
+                "GRADE": "Grade is missing",
+                "MEDIUM": "Medium is missing"
             }
         },
         "HOME": {
