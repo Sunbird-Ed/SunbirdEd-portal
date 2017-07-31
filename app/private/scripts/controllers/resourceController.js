@@ -1,8 +1,7 @@
 'use strict';
 
 angular.module('playerApp')
-        .controller('resourceCtrl', function ($log, $scope, $state, $rootScope,
-            $sessionStorage, $timeout, config, sessionService) {
+        .controller('resourceCtrl',['$state', 'sessionService', function ($state, sessionService) {
             var resource = this;
             resource.contentPlayer = {
                 isContentPlayerEnabled: false
@@ -32,4 +31,4 @@ angular.module('playerApp')
                 sessionService.setSessionData('COURSE_PARAMS', params);
                 $state.go('Toc', params);
             };
-        });
+        }]);

@@ -8,9 +8,10 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-  .controller('HomeController',
+  .controller('HomeController',['$state', 'learnService', '$rootScope',
+     'sessionService', 'toasterService',
    function ($state, learnService, $rootScope,
-     sessionService, config, $scope, toasterService) {
+     sessionService, toasterService) {
        var homeCtrl = this;
        var uid = $rootScope.userId;
 
@@ -109,4 +110,4 @@ angular.module('playerApp')
            sessionService.setSessionData('COURSE_PARAMS', params);
            $state.go('Toc', params);
        };
-   });
+   }]);

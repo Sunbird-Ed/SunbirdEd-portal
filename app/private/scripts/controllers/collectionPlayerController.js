@@ -1,5 +1,8 @@
+'use strict';
 (function () {
-    angular.module("playerApp").controller('CollectionPlayerCtrl', ['$scope', '$state', '$timeout', 'config', 'courseService','$rootScope', function ($scope, $state, $timeout, config, courseService,$rootScope) {
+    angular.module("playerApp").controller('CollectionPlayerCtrl', ['$state', '$timeout', 
+         'courseService','$rootScope', 
+        function ($state, $timeout, courseService,$rootScope) {
             var cpvm = this;
             cpvm.treeKey = 0;
             cpvm.loader = {
@@ -31,7 +34,8 @@
                 courseService.courseHierarchy($state.params['Id']).then(function (res) {
                     if (res && res.responseCode === "OK") {
                         cpvm.loader.showLoader = false;
-                        res.result.content.children = _.sortBy(res.result.content.children, ['index']);
+                        res.result.content.children = _.sortBy(res.result.content.children,
+                        ['index']);
                         cpvm.courseHierachy = res.result.content;
                         cpvm.collectionMeta.author = cpvm.courseHierachy.owner;
                         cpvm.collectionMeta.language = cpvm.courseHierachy.language;
@@ -58,7 +62,10 @@
             cpvm.getTreeData = function (contentData, parent) {
                 if (contentData.mimeType != 'application/vnd.ekstep.content-collection') {
                     parent.push({
-                        title: "<span id='node" + cpvm.treeKey + "' class='padded'><i class='" + cpvm.getContentIcon(contentData.mimeType) + "'></i>" + contentData.name + "</span>",
+                        title: "<span id='node" + cpvm.treeKey 
+                                + "' class='padded'><i class='" 
+                                + cpvm.getContentIcon(contentData.mimeType) + "'></i>" 
+                                + contentData.name + "</span>",
                         key: cpvm.treeKey,
                         data: contentData,
                         icon: false
@@ -67,13 +74,16 @@
 
                 } else {
                     parent.push({
-                        title: "<span class='courseAccordianDesc'><i class='" + cpvm.getContentIcon(contentData.mimeType) + "'></i>" + contentData.name + "</span>",
+                        title: "<span class='courseAccordianDesc'><i class='" 
+                                + cpvm.getContentIcon(contentData.mimeType) 
+                                + "'></i>" + contentData.name + "</span>",
                         key: -1,
                         children: [],
                         icon: false
                     })
                     angular.forEach(contentData.children, function (child, item) {
-                        cpvm.getTreeData(contentData.children[item], parent[parent.length - 1]['children']);
+                        cpvm.getTreeData(contentData.children[item]
+                        , parent[parent.length - 1]['children']);
                     });
                 }
                 return cpvm.fancyTree;
@@ -118,7 +128,8 @@
                 return contentIcons[contentMimeType];
             }
             cpvm.updateIcon = function (icon, isPlus) {
-                isPlus ? $(icon).addClass('plus').removeClass('minus') : $(icon).addClass('minus').removeClass('plus');
+                isPlus ? $(icon).addClass('plus').removeClass('minus') : $(icon)
+                        .addClass('minus').removeClass('plus');
             }
             cpvm.applyAccordion = function () {
                 $timeout(function () {
