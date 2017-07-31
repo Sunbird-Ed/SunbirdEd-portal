@@ -27,7 +27,7 @@
             cpvm.name = $state.params['name'];
             cpvm.loadData = function () {
                 cpvm.loader.showLoader = true;
-                cpvm.loader.loaderMessage = config.MESSAGES.COLLECTION.PREVIEW.START;
+                cpvm.loader.loaderMessage = $rootScope.errorMessages.COLLECTION.PREVIEW.START;
                 courseService.courseHierarchy($state.params['Id']).then(function (res) {
                     if (res && res.responseCode === "OK") {
                         cpvm.loader.showLoader = false;
@@ -42,10 +42,10 @@
                         cpvm.collectionMeta.createdOn = cpvm.courseHierachy.createdOn;
                         cpvm.applyAccordion();
                     } else {
-                        cpvm.showError(config.MESSAGES.COLLECTION.PREVIEW.ERROR);
+                        cpvm.showError($rootScope.errorMessages.COLLECTION.PREVIEW.ERROR);
                     }
                 }, function (err) {
-                    cpvm.showError(config.MESSAGES.COLLECTION.PREVIEW.ERROR);
+                    cpvm.showError($rootScope.errorMessages.COLLECTION.PREVIEW.ERROR);
                 });
             }
             cpvm.constructTree = function (pos, cpvmData) {

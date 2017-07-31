@@ -24,7 +24,7 @@
             <div class="ui list">
                 <div class="item">
                     <div class="content">
-                        <div class="header">Author</div>
+                        <div class="header">{{$root.labels.WORKSPACE.previewContent.author}}</div>
                         <div class="description padding-top-1rem">{{contentData.author}}</div>
                     </div>
                 </div>
@@ -34,7 +34,7 @@
             <div class="ui list">
                 <div class="item">
                     <div class="content">
-                        <div class="header">Language</div>
+                        <div class="header">{{$root.labels.WORKSPACE.previewContent.language}}</div>
                         <div class="description padding-top-1rem">{{contentData.language.toString()}}</div>
                     </div>
                 </div>
@@ -44,7 +44,7 @@
             <div class="ui list">
                 <div class="item">
                     <div class="content">
-                        <div class="header">Grades</div>
+                        <div class="header">{{$root.labels.WORKSPACE.previewContent.grades}}</div>
                         <div class="description padding-top-1rem">{{contentData.gradeLevel.toString()}}</div>
                     </div>
                 </div>
@@ -54,7 +54,7 @@
             <div class="ui list">
                 <div class="item">
                     <div class="content">
-                        <div class="header">Subject</div>
+                        <div class="header">{{$root.labels.WORKSPACE.previewContent.subject}}</div>
                         <div class="description padding-top-1rem">{{contentData.subject}}</div>
                     </div>
                 </div>
@@ -66,7 +66,7 @@
             <div class="ui list">
                 <div class="item">
                     <div class="content">
-                        <div class="header">Last update</div>
+                        <div class="header">{{$root.labels.WORKSPACE.previewContent.lastUpdate}}</div>
                         <div class="description padding-top-1rem">{{contentData.lastUpdatedOn| dateFilterWithMDY}}</div>
                     </div>
                 </div>
@@ -76,7 +76,7 @@
             <div class="ui list">
                 <div class="item">
                     <div class="content">
-                        <div class="header">Created On</div>
+                        <div class="header">{{$root.labels.WORKSPACE.previewContent.createdOn}}</div>
                         <div class="description padding-top-1rem">{{contentData.createdOn| dateFilterWithMDY}}</div>
                     </div>
                 </div>
@@ -87,7 +87,7 @@
 <div class="ui grid">
     <div class="row">
         <div class="eight wide column">
-            <course-discussions  showaskquestion="false"></course-discussions>
+            <course-discussions showaskquestion="false"></course-discussions>
         </div>
         <div class="four wide column toc-note-content">
             <note-card shownotecard="true" contentid="contentData.identifier"></note-card>
