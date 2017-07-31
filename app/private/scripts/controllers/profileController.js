@@ -198,6 +198,8 @@ angular.module('playerApp')
             profile.loader.showLoader = false;
             if (userProfile && userProfile.responseCode === 'OK') {
                 var profileData = angular.copy(userProfile.result.response);
+                profile.fullName = profileData.firstName + ' ' + profileData.lastName;
+                profile.email = profileData.email;
                 profile.user = profileData;
                 profile.basicProfile = angular.copy(profile.user);
                 profile.address = profileData.address;
