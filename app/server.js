@@ -17,7 +17,7 @@ const express = require('express'),
   permissionsHelper = require('./helpers/permissionsHelper.js'),
   fs = require('fs'),
   port = env['sunbird_port'] || 3000,
-  learnerURL = env.sunbird_learner_player_url || 'http://52.172.36.121:9000/v1/',
+  learnerURL = env.sunbird_learner_player_url || 'https://dev.open-sunbird.org/api/',
   contentURL = env.sunbird_content_player_url || 'http://localhost:5000/v1/',
   realm = env.sunbird_portal_realm || "sunbird",
   auth_server_url = env.sunbird_portal_auth_server_url || "https://dev.open-sunbird.org/auth",
@@ -85,15 +85,16 @@ app.all('/content-editor/telemetry', bodyParser.urlencoded({ extended: false }),
 app.all('/collection-editor/telemetry', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: reqDataLimitOfContentEditor }), keycloak.protect(), telemetryHelper.logSessionEvents);
 
-app.all('/public/service/v1/*', proxy(learnerURL, {
+app.all('/public/service/*', proxy(learnerURL, {
   proxyReqPathResolver: function(req) {
     let urlParam = req.params["0"];
     return require('url').parse(learnerURL + urlParam).path;
   }
 }))
-app.all('/private/service/v1/learner/*', keycloak.protect(), permissionsHelper.checkPermission(), proxy(learnerURL, {
+app.all('/private/service/v1/learner/*', proxy(learnerURL, {
   proxyReqPathResolver: function(req) {
     let urlParam = req.params["0"];
+    console.log("Url",require('url').parse(learnerURL + urlParam).path)
     return require('url').parse(learnerURL + urlParam).path;
   }
 }));

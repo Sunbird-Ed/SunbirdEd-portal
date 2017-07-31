@@ -11,9 +11,9 @@
             "PAGE_PREFIX": "page/assemble",
             "USER": {
                 "RESOURCE_BUNDLE": "resourcebundle",
-                "SIGNUP": "user/create",
-                "UPDATE_USER_PROFILE": "user/update",
-                "GET_PROFILE": "user/getprofile",
+                "SIGNUP": "user/v1/create",
+                "UPDATE_USER_PROFILE": "user/v1/update",
+                "GET_PROFILE": "user/v1/read",
                 "TENANT_LOGO": "get/tenant/logo"
             },
             "COMPOSITE": {

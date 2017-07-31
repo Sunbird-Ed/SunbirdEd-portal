@@ -3,5 +3,5 @@
     <div class="img-description-layer ui small circular image header-image-profile">
         <i class="edit icon" ng-click="profileCtrl.openImageBrowser();"></i>
     </div>
-    <input type="file" accept="image/x-png,image/gif,image/jpeg" class="content-input ui small circular image header-image-profile" id="iconImageInput" onchange="angular.element(this).scope().profileCtrl.updateIcon(this.files);" required="" />
+    <input type="file" accept="image/x-png,image/gif,image/jpeg" class="content-input ui small circular image header-image-profile" id="iconImageInput" onchange="angular.element(this).scope().profileCtrl.validateAvatar(this.files);" required="" />
 </div>

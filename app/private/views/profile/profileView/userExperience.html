@@ -1,12 +1,12 @@
 <div class="margin-top-20 ui raised segment">
     <div class="header announcementCard-header">
         <span class="header cardsHeading"> {{$root.labels.PROFILE.JOB_PROFILE.header}} </span>
-        <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.experienceForm && profileCtrl.experience.length" ng-click="profileCtrl.experienceForm=true ;profileCtrl.isNewExperience=false ">{{$root.labels.PROFILE.BUTTON.edit}}</a>
+        <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.experienceForm && profileCtrl.user.jobProfile.length" ng-click="profileCtrl.experienceForm=true ;profileCtrl.isNewExperience=false ;">{{$root.labels.PROFILE.BUTTON.edit}}</a>
         <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.experienceForm  " ng-click="profileCtrl.experienceForm=true ; profileCtrl.isNewExperience=true ;profileCtrl.newExperience={} ">{{$root.labels.PROFILE.BUTTON.add}}</a>
         <a class="addeditprofile cursor-pointer" ng-if="profileCtrl.experienceForm" ng-click="profileCtrl.experienceForm=false;profileCtrl.isCurrentJobExist=false;">{{$root.labels.PROFILE.BUTTON.close}}</a>
     </div>
     <div ng-if="!profileCtrl.experienceForm " class="profileitems ui relaxed divided items ">
-        <div class="item " ng-repeat="experience in profileCtrl.experience ">
+        <div class="item " ng-repeat="experience in profileCtrl.user.jobProfile">
             <img class="ui avatar image" src="/images/businessman.png">
             <div class="content ">
                 <a class=" header ">{{experience.jobName}}</a>
@@ -27,7 +27,7 @@
     </div>
     <div ng-if="profileCtrl.experienceForm " class="profileitems ui relaxed divided items ">
         <div class="edit-experience-form " ng-if="!profileCtrl.isNewExperience ">
-            <div class=" ui " ng-repeat="experience in profileCtrl.user.jobProfile track by $index " ng-include=" 'views/profile/editProfile/experience.html' "></div>
+            <div class=" ui " ng-repeat="experience in profileCtrl.experience track by $index " ng-include=" 'views/profile/editProfile/experience.html' "></div>
             <div class="ui warning message " ng-if="profileCtrl.isCurrentJobExist ">
                 <i class="close icon "></i>
                 <p>You already have a current job, please change that to not a current job</p>
