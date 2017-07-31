@@ -18,7 +18,6 @@ angular.module('playerApp')
             noteList.courseId = $stateParams.courseId;
             noteList.contentId = $stateParams.contentId;
             noteList.contentName = $stateParams.contentName;
-            noteList.tocId = $stateParams.tocId;
             noteList.add = {};
             noteList.update = {};
             noteList.update.showUpdateNote = false;
@@ -51,7 +50,7 @@ angular.module('playerApp')
                 var request = {
                     filters: {
                         userId: noteList.userId,
-                        courseId: noteList.tocId,
+                        courseId: noteList.courseId,
                         contentId: noteList.contentId
                     },
                     sort_by: {
@@ -72,7 +71,7 @@ angular.module('playerApp')
                         note: noteData.note,
                         userId: noteList.userId,
                         title: noteData.title,
-                        courseId: noteList.tocId,
+                        courseId: noteList.courseId,
                         contentId: noteList.contentId
                     }
                 };
@@ -174,7 +173,6 @@ angular.module('playerApp')
                 var params = {};
                 if (noteList.courseId && noteList.contentId) {
                     params = {
-                        tocId: noteList.tocId,
                         courseId: noteList.courseId,
                         contentId: noteList.contentId,
                         lectureView: 'no'
@@ -182,7 +180,6 @@ angular.module('playerApp')
                     $state.go('Toc', params);
                 } else if (noteList.courseId) {
                     params = {
-                        tocId: noteList.tocId,
                         courseId: noteList.courseId,
                         lectureView: 'yes'
                     };
