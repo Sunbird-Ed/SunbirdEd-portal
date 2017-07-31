@@ -47,8 +47,8 @@
                             <h2 class="ui header {{errorObject.messageClass}}">
                                 {{errorObject.message}}
                             </h2>
-                            <span ng-if="errorObject.showTryAgainButton"><button class="ui button" ng-click="tryAgain()">Try Again</button></span>
-                            <span ng-if="errorObject.showCloseButton"><button class="ui red button" ng-click="close()">Close</button></span>
+                            <span ng-if="errorObject.showTryAgainButton"><button class="ui button" ng-click="tryAgain()">{{$root.labels.WORKSPACE.previewContent.tryAgain}}</button></span>
+                            <span ng-if="errorObject.showCloseButton"><button class="ui red button" ng-click="close()">{{$root.labels.WORKSPACE.previewContent.close}}</button></span>
                         </div>
                     </div>
                 </div>

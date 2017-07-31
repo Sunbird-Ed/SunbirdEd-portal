@@ -69,6 +69,20 @@
                 "courseTitle": "Course Title",
                 "courseDescription": "Course Description"
             },
+            "previewContent": {
+                "page": "Page",
+                "publish": "Publish",
+                "reject": "Reject",
+                "tryAgain": "Try Again",
+                "close": "Close",
+                "author": "Author",
+                "language": "Language",
+                "grades": "Grades",
+                "subject": "Subject",
+                "lastUpdate": "Last update",
+                "createdOn": "Created On",
+                "status": "Status"
+            },
             "common": {
                 "title": "Title",
                 "description": "Description",
@@ -91,7 +105,7 @@
                 "upload": "Upload",
                 "uploadButton": "UPLOAD",
                 "closeUpload": "Close Upload",
-                "plaseFillThisRD": "Please fill the details in below fields.",
+                "pleaseFillThisRD": "Please fill the details in below fields.",
                 "icon": "Icon",
                 "youCanFillThisDL": "You can fill in this details later",
                 "byProceedYouAgreedCollection": "By proceeding you agreed to make all collection created through authoring tool or uploaded on the Ek Step platform to be available under licence CC-BY 4.0",
