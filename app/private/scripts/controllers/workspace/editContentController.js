@@ -161,7 +161,7 @@ angular.module('playerApp')
                 }
             };
 
-            editContent.uploadAppIcon = function (requestBody, isReviewContent) {
+            editContent.uploadContentIcon = function (requestBody, isReviewContent) {
                 editContent.loader = toasterService.loader('', $rootScope.errorMessages.WORKSPACE
                                                 .UPLOAD_ICON.START);
                 contentService.uploadMedia(editContent.icon).then(function (res) {
@@ -213,7 +213,7 @@ angular.module('playerApp')
                     content: newData
                 };
                 if (editContent.iconUpdate) {
-                    editContent.uploadAppIcon(requestBody, isReviewContent);
+                    editContent.uploadContentIcon(requestBody, isReviewContent);
                 } else {
                     editContent.updateContent(requestBody, isReviewContent);
                 }
