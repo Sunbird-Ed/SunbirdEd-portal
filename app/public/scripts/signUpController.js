@@ -3,7 +3,7 @@
 angular.module('loginApp')
     .controller('SignUpCtrl',
         function (signUpService, $timeout, $filter, $location, labels,
-          $rootScope, errorMessages) {
+          $rootScope, errorMessages, toasterService) {
             var newUser = this;
             var today = new Date();
             newUser.languages = labels.languages;
@@ -124,33 +124,6 @@ angular.module('loginApp')
                 }, 1500);
             };
 
-            /**
-             * This function called when api failed,
-             * and its show failed response for 2 sec.
-             * @param {String} message
-             */
-            function showErrorMessage(isClose, message, messageType) {
-                var error = {};
-                error.showError = true;
-                error.isClose = isClose;
-                error.message = message;
-                error.messageType = messageType;
-                $timeout(function () { error.showError = false; }, 4000);
-                return error;
-            }
-
-            /**
-             * This function helps to show loader with message.
-             * @param {String} headerMessage
-             * @param {String} loaderMessage
-             */
-            function showLoaderWithMessage(headerMessage, loaderMessage) {
-                var loader = {};
-                loader.showLoader = true;
-                loader.headerMessage = headerMessage;
-                loader.loaderMessage = loaderMessage;
-                return loader;
-            }
             newUser.submitForm = function () {
                 var dob = $('#dobCalendar').calendar('get date');
                 newUser.dob = $filter('date')(dob, 'yyyy-MM-dd');
@@ -183,9 +156,7 @@ angular.module('loginApp')
                         language: [newUser.language]
                     }
                 };
-                newUser.loader = showLoaderWithMessage(
-                    '',
-                    errorMessages.SIGNUP.loading);
+                newUser.loader = toasterService.loader('', errorMessages.SIGNUP.loading);
                 var req = newUser.request;
                 $('.ui .modal').modal('show');
                 $('#signupModal').modal({
@@ -199,28 +170,18 @@ angular.module('loginApp')
 
                         $location.path('/private/index');
                         newUser.loader.showLoader = false;
-                        newUser.error = showErrorMessage(
-                            true,
-                            errorMessages.SIGNUP.success,
-                            errorMessages.COMMON.SUCCESS);
+                        toasterService.success(errorMessages.SIGNUP.success);
                         $timeout(function () {
                             $('.ui .modal').modal('hide');
                         }, 2000);
                     } else {
                         newUser.loader.showLoader = false;
-                        var errorMessage = newUser
-                            .getErrorMsg(successResponse.params.err);
-                        newUser.error = showErrorMessage(
-                            true,
-                            errorMessage,
-                            errorMessages.COMMON.ERROR);
+                        var errorMessage = newUser.getErrorMsg(successResponse.params.err);
+                        toasterService.error(errorMessage);
                     }
                 }).catch(function () {
                     newUser.loader.showLoader = false;
-                    newUser.error = showErrorMessage(
-                        true,
-                        errorMessages.SIGNUP.apiError,
-                        errorMessages.COMMON.ERROR);
+                    toasterService.error(errorMessages.SIGNUP.apiError);
                 });
             };
         });

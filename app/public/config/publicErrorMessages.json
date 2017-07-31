@@ -2,10 +2,10 @@
     "errorMessages": {
         "SIGNUP": {
             "loading": "Requesting sign up , please wait....",
-            "success": "Please login...",
+            "success": "Sign up successfully, Please login...",
             "apiError": "Something went wrong, please try in some time.... ",
-            "userExist": "User name already exist, sign up with different username.",
-            "emailExist": "Email already exist, please login..."
+            "userExist": "User name already exist, sign up with different username...",
+            "emailExist": "Email already exist, sign up with different email..."
         },
         "FORM_VALIDATION": {
             "userName": "Please enter a valid user name, must have minimum 5 character",
