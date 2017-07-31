@@ -25,32 +25,29 @@ angular.module('playerApp')
             noteList.add.showCreateNote = false;
             noteList.sortBy = 'desc';
             noteList.successResponseCode = 'OK';
+            noteList.messages = $rootScope.errorMessages.NOTES;
 
             function searchNote(request) {
                 var api = 'searchApi';
                 noteList[api] = {};
-                noteList[api].loader = toasterService.loader(api, '', $rootScope.errorMessages
-                                                                            .NOTES.SEARCH.START);
+                noteList[api].loader = toasterService.loader(api, '', noteList.messages.SEARCH
+                                                    .START);
                 noteService.search(request).then(function (response) {
                     if (response && response.responseCode === noteList.successResponseCode) {
                         noteList[api].loader.showLoader = false;
                         noteList.notesList = response.result.note || [];
-                        if (!noteList.notesList.length) {
-                            noteList.zeroNoteMessage = $rootScope.errorMessages.NOTES.SEARCH
-                                                                .NO_RESULT;
-                        }
                         noteList.selectedNoteData = noteList.notesList[0];
                     } else {
                         noteList[api].loader.showLoader = false;
-                        toasterService.error($rootScope.errorMessages.NOTES.SEARCH.FAILED);
+                        toasterService.error(noteList.messages.SEARCH.FAILED);
                     }
                 }).catch(function () {
                     noteList[api].loader.showLoader = false;
-                    toasterService.error($rootScope.errorMessages.NOTES.SEARCH.FAILED);
+                    toasterService.error(noteList.messages.SEARCH.FAILED);
                 });
             }
 
-            noteList.ngInit = function () {
+            noteList.getAllNotes = function () {
                 var request = {
                     filters: {
                         userId: noteList.userId,
@@ -67,8 +64,8 @@ angular.module('playerApp')
             noteList.createNote = function (noteData) {
                 var api = 'createApi';
                 noteList[api] = {};
-                noteList[api].loader = toasterService.loader(api, '', $rootScope.errorMessages
-                                                                            .NOTES.CREATE.START);
+                noteList[api].loader = toasterService.loader(api, '', noteList.messages.CREATE
+                                                    .START);
 
                 var requestData = {
                     note: {
@@ -89,19 +86,19 @@ angular.module('playerApp')
                         noteList.showNoteList(response.result.note);
                     } else {
                         noteList[api].loader.showLoader = false;
-                        toasterService.error($rootScope.errorMessages.NOTES.CREATE.FAILED);
+                        toasterService.error(noteList.messages.CREATE.FAILED);
                     }
                 }).catch(function () {
                     noteList[api].loader.showLoader = false;
-                    toasterService.error($rootScope.errorMessages.NOTES.CREATE.FAILED);
+                    toasterService.error(noteList.messages.CREATE.FAILED);
                 });
             };
 
             noteList.removeNote = function (noteId) {
                 var api = 'removeApi';
                 noteList[api] = {};
-                noteList[api].loader = toasterService.loader(api, '', $rootScope.errorMessages
-                                                                            .NOTES.REMOVE.START);
+                noteList[api].loader = toasterService.loader(api, '', noteList.messages.REMOVE
+                                                    .START);
                 var requestData = {
                     noteId: noteId
                 };
@@ -115,17 +112,13 @@ angular.module('playerApp')
                         noteList[api].loader.showLoader = false;
                         noteList.showNoteList(noteList.notesList[noteList.notesList.length - 1],
                                                 noteList.notesList.length - 1);
-                        if (noteList.notesList.length === 0) {
-                            noteList.zeroNoteMessage = $rootScope.errorMessages.NOTES.SEARCH
-                                                                                .NO_RESULT;
-                        }
                     } else {
                         noteList[api].loader.showLoader = false;
-                        toasterService.error($rootScope.errorMessages.NOTES.REMOVE.FAILED);
+                        toasterService.error(noteList.messages.REMOVE.FAILED);
                     }
                 }).catch(function () {
                     noteList[api].loader.showLoader = false;
-                    toasterService.error($rootScope.errorMessages.NOTES.REMOVE.FAILED);
+                    toasterService.error(noteList.messages.REMOVE.FAILED);
                 });
             };
 
@@ -155,8 +148,8 @@ angular.module('playerApp')
 
                 var api = 'updateApi';
                 noteList[api] = {};
-                noteList[api].loader = toasterService.loader(api, '', $rootScope.errorMessages
-                                                                            .NOTES.UPDATE.START);
+                noteList[api].loader = toasterService.loader(api, '', noteList.messages.UPDATE
+                                                    .START);
 
                 noteService.update(requestData).then(function (response) {
                     if (response && response.responseCode === noteList.successResponseCode) {
@@ -169,11 +162,11 @@ angular.module('playerApp')
                         noteList.showNoteList(response.result.note);
                     } else {
                         noteList[api].loader.showLoader = false;
-                        toasterService.error($rootScope.errorMessages.NOTES.UPDATE.FAILED);
+                        toasterService.error(noteList.messages.UPDATE.FAILED);
                     }
                 }).catch(function () {
                     noteList[api].loader.showLoader = false;
-                    toasterService.error($rootScope.errorMessages.NOTES.UPDATE.FAILED);
+                    toasterService.error(noteList.messages.UPDATE.FAILED);
                 });
             };
 
@@ -246,8 +239,8 @@ angular.module('playerApp')
                 }, 10);
             };
 
-            noteList.closeAddImageModal = function (isCancle) {
-                if (isCancle) {
+            noteList.closeAddImageModal = function (isCancel) {
+                if (isCancel) {
                     noteList.imageLink = '';
                 }
                 $('#showAddImageModal').modal('hide');

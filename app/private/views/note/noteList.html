@@ -5,7 +5,7 @@
     <div class="one wide column"></div>
     <div class="ten wide column">
         <div class="ui segments">
-            <div class="ui segment margin-auto padding-left-right-0 padding-top-bottom-0 " ng-init="noteList.ngInit()">
+            <div class="ui segment margin-auto padding-left-right-0 padding-top-bottom-0 " ng-init="noteList.getAllNotes()">
                 <div class="ui grid margin-top-0 margin-left-right-0 margin-bottom-0 height-100" id="notesList">
                     <div class="twelve wide column">
                         <div class="addnotes ui container container-with-button padding-left-right-0">
@@ -80,9 +80,9 @@
         <div ng-if="noteList.searchApi.loader.showLoader">
             <app-loader data="{{noteList.searchApi.loader}}"></app-loader>
         </div>
-        <div ng-if="noteList.zeroNoteMessage">
+        <div ng-if="noteList.notesList.length === 0">
             <div class="ui huge positive message">
-                <p>{{noteList.zeroNoteMessage}}</p>
+                <p>{{noteList.messages.SEARCH.NO_RESULT}}</p>
             </div>
         </div>
     </div>
