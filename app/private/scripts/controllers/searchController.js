@@ -1,8 +1,7 @@
 'use strict';
 
 angular.module('playerApp')
-    .controller('SearchCtrl', function (config, sessionService, searchService,
-        $scope, $timeout, $rootScope) {
+    .controller('SearchCtrl',['$timeout', '$rootScope', function ( $timeout, $rootScope) {
         var search = this;
         search.initSearch = function () {
             if ($rootScope.search) {
@@ -13,4 +12,4 @@ angular.module('playerApp')
                 $rootScope.$broadcast('initSearch', {});
             }, 500);
         };
-    });
+    }]);

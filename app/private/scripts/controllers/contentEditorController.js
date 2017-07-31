@@ -9,9 +9,9 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('ContentEditorController', ['config', '$stateParams', 'toasterService', '$sce',
+    .controller('ContentEditorController', ['config', '$stateParams', 'toasterService',
         '$state', 'contentService', '$timeout', '$rootScope', function (config, $stateParams,
-         toasterService, $sce, $state, contentService, $timeout, $rootScope) {
+         toasterService, $state, contentService, $timeout, $rootScope) {
             var contentEditor = this;
             contentEditor.contentId = $stateParams.contentId;
             contentEditor.openContentEditor = function () {
@@ -142,15 +142,15 @@ angular.module('playerApp')
                     $state.go('EditContent', params);
                 });
 
-                window.addEventListener('editor:metadata:edit', function (event, data) {//eslint-disable-line
+                window.addEventListener('editor:metadata:edit', function (event, data) {
                     org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:editor:editmeta');
                 });
 
-                window.addEventListener('editor:window:close',function (event, data) { //eslint-disable-line
+                window.addEventListener('editor:window:close',function (event, data) { 
                     org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:editor:close');
                 });
 
-                window.addEventListener('editor:content:review',function (event, data) { //eslint-disable-line
+                window.addEventListener('editor:content:review',function (event, data) { 
                     org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:content:review',
                                                                     event.detail.contentId);
                 });

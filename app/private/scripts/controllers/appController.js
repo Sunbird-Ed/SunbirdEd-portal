@@ -8,7 +8,11 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('AppCtrl', function ($scope, $state, $stateParams,
+    .controller('AppCtrl',['$scope',
+'permissionsService','$rootScope','$translate','userService','$q','config',
+'$location','$timeout','portalTelemetryService','setResourceBundle',
+'errorMessages','labels','sessionService','learnService','$http',
+function ($scope,
         permissionsService, $rootScope, $translate, userService, $q, config,
         $location, $timeout, portalTelemetryService, setResourceBundle,
         errorMessages, labels, sessionService, learnService, $http) {
@@ -170,7 +174,9 @@ angular.module('playerApp')
             });
             return objData;
         };
-        $rootScope.enrolledCourses ? $rootScope.enrolledCourses : $scope.getMyCourses(); //eslint-disable-line
+        if(!$rootScope.enrolledCourses){
+           $scope.getMyCourses();
+        } 
         // dont remove this .to load progress bars in cards
         $rootScope.loadProgress = function () {
             $('.course-progress').progress('reset');
@@ -186,4 +192,4 @@ angular.module('playerApp')
             });
         };
         $scope.getTenantLogo();
-    });
+    }]);

@@ -1,7 +1,9 @@
 'use strict';
 
 angular.module('playerApp')
-  .controller('pageSectionCtrl', function (pageSectionService, $scope,
+  .controller('pageSectionCtrl',['pageSectionService', '$scope',
+    '$state', 'config', 'sessionService', '$rootScope','toasterService', 
+    function (pageSectionService, $scope,
     $state, config, sessionService, $rootScope,toasterService) {
       var section = this;
       section.pageTypeUrls = { resource: config.URL.RESOURCE.GET,
@@ -102,4 +104,4 @@ angular.module('playerApp')
       $rootScope.$on('initPageSearch', function (event, args) {
           section.sections();
       });
-  });
+  }]);
