@@ -86,6 +86,31 @@ angular.module('playerApp')
                             'medium,author,domain,createdBy'
                 };
 
+                function updateDropDownMetaData(response) {
+                    $timeout(function () {
+                        $('#contentTypeDropDown').dropdown('set selected');
+                        $('#audienceDropDown').dropdown('set selected');
+                        $('#languageDropDown').dropdown('set selected');
+                        $('#gradesDropDown').dropdown('set selected');
+                        if (response.ageGroup) {
+                            response.ageGroup.filter(function (val) {
+                                var ageGroup = [];
+                                if (val === '<5') {
+                                    ageGroup.push('&lt;5');
+                                } else if (val === '>10') {
+                                    ageGroup.push('&gt;10');
+                                } else {
+                                    ageGroup.push(val);
+                                }
+                                return ageGroup;
+                            });
+                            $('#ageGroupDropDown').dropdown('set selected');
+                        }
+                        $('#subjectDropDown').dropdown('set selected');
+                        $('#mediumDropDown').dropdown('set selected');
+                    }, 0);
+                }
+
                 contentService.getById(req, qs).then(function (response) {
                     if (response && response.responseCode === 'OK') {
                         if (!editContent.checkContentAccess(response.result.content)) {
@@ -95,29 +120,8 @@ angular.module('playerApp')
                         editContent.contentData = {};
                         editContent.contentData = response.result.content;
                         editContent.iconImage = editContent.contentData.appIcon;
+                        updateDropDownMetaData(response.result.content);
                         checkMimeType();
-                        $timeout(function () {
-                            $('#contentTypeDropDown').dropdown('set selected');
-                            $('#audienceDropDown').dropdown('set selected');
-                            $('#languageDropDown').dropdown('set selected');
-                            $('#gradesDropDown').dropdown('set selected');
-                            if (response.result.content.ageGroup) {
-                                response.result.content.ageGroup.filter(function (val) {
-                                    var ageGroup = [];
-                                    if (val === '<5') {
-                                        ageGroup.push('&lt;5');
-                                    } else if (val === '>10') {
-                                        ageGroup.push('&gt;10');
-                                    } else {
-                                        ageGroup.push(val);
-                                    }
-                                    return ageGroup;
-                                });
-                                $('#ageGroupDropDown').dropdown('set selected');
-                            }
-                            $('#subjectDropDown').dropdown('set selected');
-                            $('#mediumDropDown').dropdown('set selected');
-                        }, 100);
                         editContent.loader.showLoader = false;
                         if (isReview) {
                             editContent.submitForReview(editContent.contentData);
