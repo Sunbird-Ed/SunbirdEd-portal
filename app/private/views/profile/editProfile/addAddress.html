@@ -1,16 +1,16 @@
-<form class="ui form  addressEditForm">
+<form class="ui form  addressForm" id="addressForm">
     <div class="ui dividing header margin-top-15 "></div>
     <div apply-script class="inline  fields" ng-init="profileCtrl.newAddress.addType='current'">
         <label for="address" class="required">{{$root.labels.PROFILE.ADDRESS.addressType}}</label>
         <div class="field">
             <div class="ui radio checkbox">
-                <input type="radio" name="radio" value='permanent' ng-model="profileCtrl.newAddress.addType">
+                <input type="radio" name="addressType" value='permanent' ng-model="profileCtrl.newAddress.addType">
                 <label>{{$root.labels.PROFILE.ADDRESS.addressTypePermanent}}</label>
             </div>
         </div>
         <div class="field">
             <div class="ui radio checkbox">
-                <input type="radio" name="radio" value='current' ng-checked="true" ng-model="profileCtrl.newAddress.addType">
+                <input type="radio" name="addressType" value='current' ng-checked="true" ng-model="profileCtrl.newAddress.addType">
                 <label>{{$root.labels.PROFILE.ADDRESS.addressTypeCurrent}}</label>
             </div>
         </div>
