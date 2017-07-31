@@ -12,8 +12,8 @@
 angular.module('playerApp')
     .controller('PreviewContentController', ['$stateParams', 'playerTelemetryUtilsService',
         '$rootScope', '$state', '$sce', 'contentService', 'pdfDelegate', '$timeout', 'config',
-        'toasterService', function ($stateParams, playerTelemetryUtilsService, $rootScope, $state,
-            $sce, contentService, pdfDelegate, $timeout, config, toasterService) {
+        'toasterService','$scope', function ($stateParams, playerTelemetryUtilsService, $rootScope, $state,
+            $sce, contentService, pdfDelegate, $timeout, config, toasterService,$scope) {
             var previewContent = this;
             previewContent.contentProgress = 0;
             previewContent.contentId = $stateParams.contentId;
@@ -101,7 +101,7 @@ angular.module('playerApp')
                             configuration.context.appid = 'Sunbird_appId';
                             configuration.config = config.ekstep_CP_config.config;
                             configuration.context.cdata = {
-                                id: $stateParams.tocId, type: 'course'
+                                id: $stateParams.courseId, type: 'course'
                             };
                             configuration.plugins = config.ekstep_CP_config.config.plugins;
                             configuration.repos = config.ekstep_CP_config.config.repos;
@@ -117,7 +117,7 @@ angular.module('playerApp')
                 }
             }
 
-            previewContent.initVideoEvents = function (video) {
+            $scope.initVideoEvents = function (video) {
                 var telemetryData = {};
                 video.on('play', function () {
                     if (parseInt(this.currentTime(), 10) === 0) {
