@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('playerApp')
-    .controller('LearnCtrl', function (learnService, $scope, $state, $rootScope,
+    .controller('LearnCtrl',['learnService', '$scope', '$state', '$rootScope',
+         'sessionService','toasterService', function (learnService, $scope, $state, $rootScope,
          sessionService,toasterService) {
         var learn = this;
         var uid = $rootScope.userId;
@@ -60,4 +61,4 @@ angular.module('playerApp')
         } else {
             learn.courses();
         }
-    });
+    }]);

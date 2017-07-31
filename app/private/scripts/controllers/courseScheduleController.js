@@ -1,6 +1,9 @@
+'use strict';
 angular.module('playerApp')
   .controller('courseScheduleCtrl',
-   function (courseService, sessionService,
+['courseService','sessionService',
+'$stateParams','$state','$timeout','$scope','$rootScope','toasterService',
+'$location','$anchorScroll','contentStateService','$window',function (courseService, sessionService,
      $stateParams, $state, $timeout, $scope, $rootScope,toasterService,
      $location, $anchorScroll, contentStateService, $window) {
        var toc = this;
@@ -489,4 +492,4 @@ angular.module('playerApp')
                toc.init();
            }
        };
-   });
+   }]);
