@@ -3,9 +3,11 @@
 /**
  * @ngdoc directive
  * @name playerApp.directive:errorMessage
+ * @author Anuj Gupta
  * @description
  * # errorMessage
  */
+
 angular.module('playerApp')
     .directive('errorMessage', function () {
         return {

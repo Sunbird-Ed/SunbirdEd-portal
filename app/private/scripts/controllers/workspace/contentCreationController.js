@@ -4,245 +4,212 @@
  * @ngdoc function
  * @name playerApp.controller:ContentCreationController
  * @description
- * # CreatecontentCtrl
+ * @author Anuj Gupta
+ * # ContentCreationController
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('ContentCreationController', function (contentService,
-            config, $scope, $state, $timeout, $rootScope, toasterService) {
-        var contentCreation = this;
-        contentCreation.contentUploadUrl = config.URL.BASE_PREFIX
-             + config.URL.CONTENT_PREFIX + config.URL.CONTENT.UPLOAD;
+    .controller('ContentCreationController', ['contentService', 'config', '$scope', '$state',
+        '$timeout', '$rootScope', 'toasterService', function (contentService, config, $scope,
+            $state, $timeout, $rootScope, toasterService) {
+            var contentCreation = this;
+            contentCreation.contentUploadUrl = config.URL.BASE_PREFIX + config.URL.CONTENT_PREFIX
+                                                                        + config.URL.CONTENT.UPLOAD;
 
-        contentCreation.mimeType = [{
-            name: 'Pdf',
-            value: 'application/pdf'
-        }, {
-            name: 'Video',
-            value: 'video/mp4'
-        }, {
-            name: 'Html Archive',
-            value: 'application/vnd.ekstep.html-archive'
-        }];
-        contentCreation.youtubeVideoMimeType = { name: 'Youtube Video',
-            value: 'video/youtube' };
-
-        contentCreation.lessonTypes = config.DROPDOWN.COMMON.lessonTypes;
-        contentCreation.showContentCreationModal = true;
-        contentCreation.userId = $rootScope.userId;
-        contentCreation.data = {};
-
-        $timeout(function () {
-            contentCreation.manualUploader = new qq.FineUploader({
-                element: document
-                    .getElementById('fine-uploader-manual-trigger'),
-                template: 'qq-template-manual-trigger',
-                request: {
-                    customHeaders: {
-                        cid: 'sunbird'
-                    },
-                    endpoint: contentCreation
-                        .contentUploadUrl + '/' + contentCreation.contentId
-                },
-                thumbnails: {
-                    placeholders: {
-                        waitingPath:
-                             '/source/placeholders/waiting-generic.png',
-                        notAvailablePath:
-                             '/source/placeholders/not_available-generic.png'
-                    }
-                },
-                autoUpload: false,
-                debug: true,
-                validation: {
-                    acceptFiles: config.FileExtensionToUpload,
-                    sizeLimit: config.MaxFileSizeToUpload,
-                    allowedExtensions: config.AllowedFileExtention
-                },
-                messages: {
-                    sizeError:
-                         '{file} is too large, maximum file size is 25 MB.'
-                },
-                callbacks: {
-                    onComplete: function (id, name, responseJSON) {
-                        if (responseJSON.success) {
-                            contentCreation
-                                .editContent(contentCreation.contentId);
-                        }
-                    },
-                    onSubmitted: function (id) {
-                        contentCreation.youtubeFileLink = '';
-                        contentCreation.showContentCreationModal = true;
-                        contentCreation.uploadedFileId = id;
-                        contentCreation.openContentCreationModal();
-                        document.getElementById('hide-section-with-button')
-                            .style.display = 'none';
-                    },
-                    onCancel: function () {
-                        document.getElementById('hide-section-with-button')
-                            .style.display = 'block';
-                    },
-                    onStatusChange: function (id, oldStatus, newStatus) {
-                        if (newStatus === 'rejected') {
-                            document
-                                .getElementById('hide-progress-bar-on-reject')
-                                .style.display = 'none';
-                        }
-                    }
-                }
-            });
-            $('#fileUploadOptions').text($rootScope.labels.WORKSPACE
-                    .startCreating.fileUploadOptions);
-
-            window.cancelUploadFile = function () {
-                document.getElementById('hide-section-with-button').style
-                    .display = 'block';
+            contentCreation.mimeType = [
+                { name: 'Pdf', value: 'application/pdf' },
+                { name: 'Video', value: 'video/mp4' },
+                { name: 'Html Archive', value: 'application/vnd.ekstep.html-archive' }
+            ];
+            contentCreation.youtubeVideoMimeType = {
+                name: 'Youtube Video', value: 'video/youtube'
             };
-        }, 300);
-
-        contentCreation.editContent = function (contentId) {
-            var params = { contentId: contentId };
-            $state.go('EditContent', params);
-        };
-
-        contentCreation.openContentCreationModal = function () {
-            contentCreation.initilizeModal();
-        };
-
-        contentCreation.hideContentCreationModal = function () {
-            $('#contentCreationModal')
-                        .modal('hide');
-            $('#contentCreationModal')
-                        .modal('hide others');
-            $('#contentCreationModal')
-                        .modal('hide all');
-            $('#contentCreationModal')
-                        .modal('hide dimmer');
-        };
-
-        contentCreation.clearContentCreationModal = function () {
-            if (contentCreation.createApi) {
-                contentCreation.createApi.error = {};
-            }
+            contentCreation.lessonTypes = config.DROPDOWN.COMMON.lessonTypes;
+            contentCreation.showContentCreationModal = true;
+            contentCreation.userId = $rootScope.userId;
             contentCreation.data = {};
-        };
+            contentCreation.defaultName = 'Untitled';
+            contentCreation.defaultContentType = 'Story';
 
-        contentCreation.closeContentCreationModal = function () {
             $timeout(function () {
-                contentCreation.showContentCreationModal = false;
-            }, 0);
-        };
-
-        contentCreation.initilizeModal = function () {
-            $timeout(function () {
-                $('#contentCreationModal').modal({
-                    onShow: function () {
-                        contentCreation.clearContentCreationModal();
+                contentCreation.manualUploader = new qq.FineUploader({
+                    element: document.getElementById('fine-uploader-manual-trigger'),
+                    template: 'qq-template-manual-trigger',
+                    request: {
+                        endpoint: contentCreation.contentUploadUrl + '/' + contentCreation.contentId
                     },
-                    onHide: function () {
-                        if (!contentCreation.contentId
-                                && !contentCreation.youtubeFileLink) {
-                            document
-                                .getElementById('hide-section-with-button')
-                                .style.display = 'block';
-                            contentCreation.manualUploader
-                                .cancel(contentCreation.uploadedFileId);
+                    // thumbnails: {
+                    //     placeholders: {
+                    //         waitingPath: '/source/placeholders/waiting-generic.png',
+                    //         notAvailablePath: '/source/placeholders/not_available-generic.png'
+                    //     }
+                    // },
+                    autoUpload: false,
+                    debug: true,
+                    validation: {
+                        acceptFiles: config.FileExtensionToUpload,
+                        sizeLimit: config.MaxFileSizeToUpload,
+                        allowedExtensions: config.AllowedFileExtension
+                    },
+                    messages: {
+                        sizeError: '{file}' + $rootScope.errorMessages.COMMON.INVALID_FILE_SIZE +
+                                                config.MaxFileSizeToUpload / (1000 * 1024) + ' MB.'
+                    },
+                    callbacks: {
+                        onComplete: function (id, name, responseJSON) {
+                            if (responseJSON.success) {
+                                contentCreation.editContent(contentCreation.contentId);
+                            }
+                        },
+                        onSubmitted: function (id) {
+                            contentCreation.youtubeVideoUrl = '';
+                            contentCreation.showContentCreationModal = true;
+                            contentCreation.uploadedFileId = id;
+                            contentCreation.initializeModal();
+                            document.getElementById('hide-section-with-button')
+                                                    .style.display = 'none';
+                        },
+                        onCancel: function () {
+                            document.getElementById('hide-section-with-button')
+                                                    .style.display = 'block';
+                        },
+                        onStatusChange: function (id, oldStatus, newStatus) {
+                            if (newStatus === 'rejected') {
+                                document.getElementById('hide-progress-bar-on-reject')
+                                                    .style.display = 'none';
+                            }
                         }
-                        contentCreation.clearContentCreationModal();
-                        contentCreation.closeContentCreationModal();
                     }
-                }).modal('show');
-                $('.singleSelectDropDown')
-                            .dropdown('restore defaults');
+                });
+                $('#fileUploadOptions').text($rootScope.labels.WORKSPACE.startCreating
+                                                                    .fileUploadOptions);
 
-                if (contentCreation.youtubeFileLink) {
-                    $('#mimeTypeDropDown')
-                        .dropdown('set text', 'Youtube Video');
-                    $('#mimeTypeDropDown').dropdown('destroy');
-                }
-            }, 10);
-        };
+                window.cancelUploadFile = function () {
+                    document.getElementById('hide-section-with-button').style.display = 'block';
+                };
+            }, 100);
 
-        contentCreation.createContent = function (requestData) {
-            contentService.create(requestData).then(function (res) {
-                if (res && res.responseCode === 'OK') {
-                    contentCreation.loader.showLoader = false;
-                    contentCreation.contentId = res.result.content_id;
-                    contentCreation.hideContentCreationModal();
-                    if (contentCreation.youtubeFileLink) {
-                        contentCreation.youtubeFileLink = '';
-                        contentCreation.editContent(res.result.content_id);
-                    } else {
-                        contentCreation.uploadContent(res.result
-                                .content_id);
-                    }
-                } else {
-                    contentCreation.loader.showLoader = false;
-                    toasterService
-                        .error($rootScope.errorMessages
-                            .WORKSPACE.UPLOAD_CONTENT.FAILED);
-                }
-            }).catch(function () {
-                contentCreation.loader.showLoader = false;
-                toasterService
-                    .error($rootScope.errorMessages
-                        .WORKSPACE.UPLOAD_CONTENT.FAILED);
-            });
-        };
-
-        contentCreation.saveMetaData = function (data) {
-            contentCreation.loader = toasterService.loader('', $rootScope
-                    .errorMessages.WORKSPACE.UPLOAD_CONTENT.START);
-
-            var requestBody = angular.copy(data);
-
-            requestBody.createdBy = contentCreation.userId;
-
-            requestBody.name = requestBody.name
-                    ? requestBody.name : 'Untitled';
-            requestBody.contentType = requestBody.contentType
-                    ? requestBody.contentType : 'Story';
-            if (contentCreation.youtubeFileLink) {
-                requestBody.mimeType
-                    = contentCreation.youtubeVideoMimeType.value;
-                requestBody.artifactUrl = contentCreation.youtubeFileLink;
-            } else {
-                requestBody.mimeType = requestBody.mimeType.value;
-            }
-
-            var requestdata = {
-                content: requestBody
+            contentCreation.editContent = function (contentId) {
+                var params = { contentId: contentId };
+                $state.go('EditContent', params);
             };
-            contentCreation.createContent(requestdata);
-        };
 
-        contentCreation.uploadContent = function () {
-            var endpoint = contentCreation.contentUploadUrl + '/'
-                + contentCreation.contentId;
-            contentCreation.manualUploader
-                .setEndpoint(endpoint, contentCreation.uploadedFileId);
-            contentCreation.manualUploader.uploadStoredFiles();
-        };
+            contentCreation.hideContentCreationModal = function () {
+                $('#contentCreationModal').modal('hide');
+                $('#contentCreationModal').modal('hide others');
+                $('#contentCreationModal').modal('hide dimmer');
+            };
 
-        contentCreation.uploadYoutubeFile = function () {
-            contentCreation.initilizeModal();
-        };
-
-        contentCreation.validateYouTubeUrl = function (url) {
-            contentCreation.invalidYoutubeUrl = false;
-            if (url !== undefined && url !== '') {
-                    var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/; //eslint-disable-line
-                var match = url.match(regExp);
-                if (match && match.length > 1 && match[2].length === 11) {
-                    contentCreation.youtubeFileLink
-                        = 'https://www.youtube.com/embed/'
-                        + match[2] + '?autoplay=1&enablejsapi=1';
-                    contentCreation.invalidYoutubeUrl = false;
-                } else {
-                    contentCreation.invalidYoutubeUrl = true;
+            contentCreation.clearContentCreationModal = function () {
+                if (contentCreation.createApi) {
+                    contentCreation.createApi.error = {};
                 }
-            } else {
-                contentCreation.invalidYoutubeUrl = true;
-            }
-        };
-    });
+                contentCreation.data = {};
+            };
+
+            contentCreation.closeContentCreationModal = function () {
+                $timeout(function () {
+                    contentCreation.showContentCreationModal = false;
+                }, 0);
+            };
+
+            contentCreation.initializeModal = function () {
+                $timeout(function () {
+                    $('#contentCreationModal').modal({
+                        onShow: function () {
+                            contentCreation.clearContentCreationModal();
+                        },
+                        onHide: function () {
+                            if (!contentCreation.contentId && !contentCreation.youtubeVideoUrl) {
+                                document.getElementById('hide-section-with-button')
+                                                        .style.display = 'block';
+                                contentCreation.manualUploader.cancel(contentCreation
+                                                                                .uploadedFileId);
+                            }
+                            contentCreation.clearContentCreationModal();
+                            contentCreation.closeContentCreationModal();
+                        }
+                    }).modal('show');
+                    $('#lessonTypeDropDown').dropdown();
+                    $('#mimeTypeDropDown').dropdown();
+
+                    if (contentCreation.youtubeVideoUrl) {
+                        $('#mimeTypeDropDown').dropdown('set text', 'Youtube Video');
+                        $('#mimeTypeDropDown').dropdown('destroy');
+                    }
+                }, 10);
+            };
+
+            contentCreation.createContent = function (requestData) {
+                contentCreation.loader = toasterService.loader('', $rootScope.errorMessages
+                                                                .WORKSPACE.UPLOAD_CONTENT.START);
+                contentService.create(requestData).then(function (res) {
+                    if (res && res.responseCode === 'OK') {
+                        contentCreation.loader.showLoader = false;
+                        contentCreation.contentId = res.result.content_id;
+                        contentCreation.hideContentCreationModal();
+                        if (contentCreation.youtubeVideoUrl) {
+                            contentCreation.youtubeVideoUrl = '';
+                            contentCreation.editContent(res.result.content_id);
+                        } else {
+                            contentCreation.uploadContent(res.result.content_id);
+                        }
+                    } else {
+                        contentCreation.loader.showLoader = false;
+                        toasterService.error($rootScope.errorMessages.WORKSPACE.UPLOAD_CONTENT
+                                                                                        .FAILED);
+                    }
+                }).catch(function () {
+                    contentCreation.loader.showLoader = false;
+                    toasterService.error($rootScope.errorMessages.WORKSPACE.UPLOAD_CONTENT.FAILED);
+                });
+            };
+
+            contentCreation.saveMetaData = function (data) {
+                var requestBody = angular.copy(data);
+                requestBody.createdBy = contentCreation.userId;
+                requestBody.name = requestBody.name ? requestBody.name
+                                                            : contentCreation.defaultName;
+                requestBody.contentType = requestBody.contentType ? requestBody.contentType
+                                                            : contentCreation.defaultContentType;
+                if (contentCreation.youtubeVideoUrl) {
+                    requestBody.mimeType = contentCreation.youtubeVideoMimeType.value;
+                    requestBody.artifactUrl = contentCreation.youtubeVideoUrl;
+                } else {
+                    requestBody.mimeType = requestBody.mimeType.value;
+                }
+
+                var requestData = {
+                    content: requestBody
+                };
+                contentCreation.createContent(requestData);
+            };
+
+            contentCreation.uploadContent = function () {
+                var endpoint = contentCreation.contentUploadUrl + '/' + contentCreation.contentId;
+                contentCreation.manualUploader.setEndpoint(endpoint,
+                                                                contentCreation.uploadedFileId);
+                contentCreation.manualUploader.uploadStoredFiles();
+            };
+
+            contentCreation.uploadYoutubeFile = function () {
+                contentCreation.initializeModal();
+            };
+
+            contentCreation.validateYouTubeUrl = function (url) {
+                contentCreation.invalidYoutubeVideoUrl = false;
+                if (url !== undefined && url !== '') {
+                    var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/; //eslint-disable-line
+                    var match = url.match(regExp);
+                    if (match && match.length > 1 && match[2].length === 11) {
+                        contentCreation.youtubeVideoUrl = 'https://www.youtube.com/embed/' +
+                                                            match[2] + '?autoplay=1&enablejsapi=1';
+                        contentCreation.invalidYoutubeVideoUrl = false;
+                    } else {
+                        contentCreation.invalidYoutubeVideoUrl = true;
+                    }
+                } else {
+                    contentCreation.invalidYoutubeVideoUrl = true;
+                }
+            };
+        }]);

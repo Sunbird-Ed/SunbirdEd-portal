@@ -1,8 +1,7 @@
-<div ng-init="publishedContent.initializeData()">
-    <div ng-if="!publishedContent.loader.showLoader && !publishedContent.zeroContentMessage">
-        <div class="ui three stackable cards">
-            <div class="link card mouse-pointer" ng-repeat="item in publishedContent.publishedContentData track by $index"
-                 ng-click="publishedContent.openContentPlayer(item)">
+<div ng-init="publishedContent.getPublishedContent()">
+    <div ng-if="!publishedContent.loader.showLoader">
+        <div class="ui three stackable cards" ng-if="publishedContent.publishedContentData.length > 0">
+            <div class="link card mouse-pointer" ng-repeat="item in publishedContent.publishedContentData track by $index" ng-click="publishedContent.openContentPlayer(item)">
                 <div class="image imageInCardsResponsive">
                     <div class="ui fluid image">
                         <a class="ui black right ribbon label">{{item.contentType}}</a>
@@ -23,13 +22,11 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="twelve wide column" ng-if="publishedContent.loader.showLoader">
-        <app-loader data="{{publishedContent.loader}}"></app-loader>
-    </div>
-    <div class="twelve wide column" ng-if="publishedContent.zeroContentMessage">
-        <div class="ui huge positive message">
-            <p>{{publishedContent.zeroContentMessage}}</p>
+        <div class="ui huge positive message" ng-if="publishedContent.publishedContentData.length === 0">
+            <p>{{$root.errorMessages.WORKSPACE.PUBLISHED.NO_CONTENT}}</p>
         </div>
+    </div>
+    <div ng-if="publishedContent.loader.showLoader">
+        <app-loader data="{{publishedContent.loader}}"></app-loader>
     </div>
 </div>

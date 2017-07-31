@@ -174,7 +174,7 @@ angular.module('playerApp')
                 profile.iconUpdate = true;
             } else {
                 toasterService.warning(
-                    $rootScope.errorMessages.COMMON.INVAILID_IMAGE);
+                    $rootScope.errorMessages.COMMON.INVALID_IMAGE);
             }
         };
 

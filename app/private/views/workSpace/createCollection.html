@@ -1,13 +1,15 @@
-<div ng-init="collection.initilizeView()">
-    <div class="ui modal" id="createSlideShowModal" ng-if="collection.showCreateSlideShowModal">
+<div ng-init="collection.initializeModal()">
+    <div class="ui modal" id="createCollectionModel" ng-if="collection.showCreateCollectionModel">
         <div class=" ui segment margin-top-10" ng-show="!collection.loader.showLoader">
             <div class=" margin-bottom-15">
                 <div class="ui grid">
                     <div class="eleven wide column">
-                        <span class="ui header">{{$root.labels.WORKSPACE.createCollection.createCollectionText}}</span>
+                        <span class="ui header">
+                            {{$root.labels.WORKSPACE.createCollection.createCollectionText}}
+                        </span>
                     </div>
                     <div class="one wide column actions">
-                        <h5 class="ui basic icon circular button deny" ng-click="collection.hideCreateSlideShowModal();">
+                        <h5 class="ui basic icon circular button deny" ng-click="collection.hideCreateCollectionModel();">
                             <i class="ui remove icon"></i>
                         </h5>
                     </div>
@@ -16,7 +18,9 @@
             <div class="content">
                 <form class="ui form" ng-init="collection.data = {}">
                     <div class="field">
-                        <label>{{$root.labels.WORKSPACE.common.title}}</label>
+                        <label>
+                            {{$root.labels.WORKSPACE.common.title}}
+                        </label>
                         <div class="field">
                             <input type="text" name="title" placeholder={{$root.labels.WORKSPACE.createCollection.collectionTitle}} ng-model="collection.data.name">
                         </div>
@@ -33,15 +37,18 @@
             </div>
             <div class="actions margin-top-10">
                 <p class="text-align-center padding-top-20">
-                    <button class="ui primary text-align-center icon button" ng-click="collection.saveMetaData(collection.data)"
-                            ng-disabled="collection.loader.showLoader">
+                    <button class="ui primary text-align-center icon button" ng-click="collection.saveMetaData(collection.data)" ng-disabled="collection.loader.showLoader">
                         {{$root.labels.WORKSPACE.common.startCreating}}
                     </button>
                 </p>
-                <h4 class="text-align-center">{{$root.labels.WORKSPACE.common.youCanFillThisDL}}</h4>
+                <h4 class="text-align-center">
+                    {{$root.labels.WORKSPACE.common.youCanFillThisDL}}
+                </h4>
                 <div>
                     <label>
-                        <p class="text-align-center">{{$root.labels.WORKSPACE.common.byProceedYouAgreedCollection}}</p>
+                        <p class="text-align-center">
+                            {{$root.labels.WORKSPACE.common.byProceedYouAgreedCollection}}
+                        </p>
                     </label>
                 </div>
             </div>
