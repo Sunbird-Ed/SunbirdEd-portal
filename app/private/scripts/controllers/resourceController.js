@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('playerApp')
-        .controller('resourceCtrl',['$state', 'sessionService', function ($state, sessionService) {
+        .controller('resourceCtrl', ['$state', 'sessionService', function ($state, sessionService) {
             var resource = this;
             resource.contentPlayer = {
                 isContentPlayerEnabled: false
