@@ -429,7 +429,7 @@ angular.module('playerApp')
              { name: 'Home', link: 'home' },
              { name: 'Courses', link: 'learn' },
                { name: toc.courseName,
-                   link: '/toc/' + toc.tocId
+                   link: '/toc/' 
                    + '/' + toc.courseId + '/' + toc.lectureView }];
            if ($scope.contentPlayer.isContentPlayerEnabled) {
                var curContentName = toc.playListContent[toc.itemIndex].name;
@@ -453,7 +453,6 @@ angular.module('playerApp')
            ? 'ENROLLED_COURSE' : toc.courseParams.courseType;
            toc.courseProgress = toc.courseParams.progress;
            toc.courseTotal = toc.courseParams.total;
-           toc.tocId = toc.courseParams.tocId;
            toc.courseName = toc.courseParams.courseName;
            toc.contentStatusList = {};
            $scope.enableCloseButton = (toc.lectureView === 'yes')

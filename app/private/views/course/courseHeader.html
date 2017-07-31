@@ -14,7 +14,7 @@
                     </button>
                 </div>
                 <div class="four wide column padding-top-none" ng-if="toc.courseType === 'OTHER_COURSE'">
-                    <button ng-if="!toc.loader.enrollLoader" class="fluid blue right floated  ui button courseHeaderButton margin-top-0" ng-click="toc.enrollUserToCourse(toc.tocId)"> ENROLL TO COURSE</button>
+                    <button ng-if="!toc.loader.enrollLoader" class="fluid blue right floated  ui button courseHeaderButton margin-top-0" ng-click="toc.enrollUserToCourse(toc.courseId)"> ENROLL TO COURSE</button>
                     <div ng-if="toc.loader.enrollLoader">
                         <app-loader data="{{toc.loader}}"></app-loader>
                     </div>

@@ -25,7 +25,6 @@ angular.module('playerApp')
           }
           var params = { courseType: courseType,
               courseId: course.courseId || course.identifier,
-              tocId: course.courseId || course.identifier,
               lectureView: showLectureView,
               progress: course.progress,
               total: course.total,
@@ -37,7 +36,7 @@ angular.module('playerApp')
 
       section.sections = function () {
           section.error = {};
-          toasterService.loader(''
+          section.loader=toasterService.loader(''
            ,$rootScope.errorMessages.RESOURCE.PAGE.START);
           if ($rootScope.search === undefined) {
               $rootScope.search = {};

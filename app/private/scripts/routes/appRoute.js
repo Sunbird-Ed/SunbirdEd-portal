@@ -135,7 +135,7 @@ angular
         }
       })
       .state('CourseNote', {
-        url: '/course/note/:tocId/:courseId',
+        url: '/course/note/:courseId',
         views: {
           'mainView': {
             templateUrl: 'views/note/noteList.html',
@@ -151,7 +151,7 @@ angular
             "pageid": org.sunbird.portal.appid + "_CourseNote",
             "id": "",
             "name": "",
-            "url": "/private/index#!/course/note/" + $stateParams["tocId"] + "/" + $stateParams["courseId"]
+            "url": "/private/index#!/course/note/"  + $stateParams["courseId"]
           });
           routeHelperService.loadRouteConfig('CourseNote',$stateParams);
         },
@@ -187,7 +187,7 @@ angular
         }
       })
       .state('CourseContentNote', {
-        url: '/note/:tocId/:courseId/:contentId',
+        url: '/note/:courseId/:contentId',
         views: {
           'mainView': {
             templateUrl: 'views/note/noteList.html',
@@ -204,7 +204,7 @@ angular
             "pageid": org.sunbird.portal.appid + "_CourseContentNote",
             "id": $stateParams["contentId"],
             "name": "",
-            "url": "/private/index#!/note/" + $stateParams["tocId"] + "/" + $stateParams["courseId"] + "/" + $stateParams["contentId"]
+            "url": "/private/index#!/note/" + $stateParams["courseId"] + "/" + $stateParams["contentId"]
           });
         },
         onExit: function($rootScope) {
@@ -213,7 +213,7 @@ angular
         }
       })
       .state('Toc', {
-        url: '/toc/:tocId/:courseId/:lectureView',
+        url: '/toc/:courseId/:lectureView',
         views: {
           'mainView': {
             templateUrl: 'views/course/toc.html',
@@ -229,7 +229,7 @@ angular
             "pageid": org.sunbird.portal.appid + "_Toc",
             "id": "",
             "name": "",
-            "url": "/private/index#!/toc/" + $stateParams["tocId"] + "/" + $stateParams["courseId"] + "/" + $stateParams["lectureView"]
+            "url": "/private/index#!/toc/" + $stateParams["courseId"] + "/" + $stateParams["lectureView"]
           });
           routeHelperService.loadRouteConfig('Toc',$stateParams);
         },
@@ -354,7 +354,7 @@ angular
         }
       })
       .state('TocPlayer', {
-        url: '/toc/:tocId/:courseId/:lectureView/:contentId/:contentIndex',
+        url: '/toc/:courseId/:lectureView/:contentId/:contentIndex',
         views: {
           'mainView': {
             templateUrl: 'views/course/toc.html',
@@ -371,7 +371,7 @@ angular
             "pageid": org.sunbird.portal.appid + "_TocPlayer",
             "id": "",
             "name": "",
-            "url": "/private/index#!/toc/" + $stateParams["tocId"] + "/" + $stateParams["courseId"] + "/" + $stateParams["lectureView"] + "/" + $stateParams["contentId"] + "/" + $stateParams["contentIndex"]
+            "url": "/private/index#!/toc/" + $stateParams["courseId"] + "/" + $stateParams["lectureView"] + "/" + $stateParams["contentId"] + "/" + $stateParams["contentIndex"]
           });
         },
         onExit: function($rootScope) {

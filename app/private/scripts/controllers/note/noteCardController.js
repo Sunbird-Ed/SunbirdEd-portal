@@ -22,7 +22,6 @@ angular.module('playerApp')
             noteCard.courseId = $stateParams.courseId;
             noteCard.contentId = $stateParams.contentId;
             noteCard.contentName = $stateParams.contentName;
-            noteCard.tocId = $stateParams.tocId;
             noteCard.add = {};
             noteCard.update = {};
             noteCard.showCreateNote = false;
@@ -60,7 +59,7 @@ angular.module('playerApp')
                 var request = {
                     filters: {
                         userId: noteCard.userId,
-                        courseId: noteCard.tocId,
+                        courseId: noteCard.courseId,
                         contentId: noteCard.contentId
                     },
                     sort_by: {
@@ -82,7 +81,7 @@ angular.module('playerApp')
                         note: noteData.note,
                         userId: noteCard.userId,
                         title: noteData.title,
-                        courseId: noteCard.tocId,
+                        courseId: noteCard.courseId,
                         contentId: noteCard.contentId
                     }
                 };
@@ -211,17 +210,15 @@ angular.module('playerApp')
 
             noteCard.viewAllNotes = function () {
                 var params = {};
-                if (noteCard.courseId && noteCard.contentId && noteCard.tocId) {
+                if (noteCard.courseId && noteCard.contentId) {
                     params = {
                         courseId: noteCard.courseId,
-                        contentId: noteCard.contentId,
-                        tocId: noteCard.tocId
+                        contentId: noteCard.contentId
                     };
                     $state.go('CourseContentNote', params);
                 } else if (noteCard.courseId) {
                     params = {
-                        courseId: noteCard.courseId,
-                        tocId: noteCard.tocId
+                        courseId: noteCard.courseId
                     };
                     $state.go('CourseNote', params);
                 } else if (noteCard.contentId) {

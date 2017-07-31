@@ -8,10 +8,10 @@
  */
 angular.module('playerApp').directive('search', function () {
     var controller = ['$scope', '$rootScope', 'config', '$timeout',
-        '$state', '$stateParams', 'searchService', '$location',
+        '$state', '$stateParams', 'searchService','toasterService', '$location',
         'sessionService', '$window', function ($scope, $rootScope,
-      config, $timeout, $state, $stateParams, searchService,
-      $location, sessionService) {
+      config, $timeout, $state, $stateParams, searchService,toasterService,
+      $location, sessionService,$window) {
             $scope.search = {};
             $rootScope.search = {};
             $rootScope.search.searchKeyword = '';
@@ -94,18 +94,6 @@ angular.module('playerApp').directive('search', function () {
                 return error;
             }
 
-    /**
-     * This function helps to show loader with message.
-     * @param {String} headerMessage
-     * @param {String} loaderMessage
-     */
-            function showLoaderWithMessage(headerMessage, loaderMessage) {
-                var loader = {};
-                loader.showLoader = true;
-                loader.headerMessage = headerMessage;
-                loader.loaderMessage = loaderMessage;
-                return loader;
-            }
             $scope.search.initSearch = function () {
                 var searchParams = $stateParams;
                 $rootScope.search.selectedSearchKey = $rootScope.searchKey || searchParams.type;
@@ -126,7 +114,7 @@ angular.module('playerApp').directive('search', function () {
                 var showLectureView = 'no';
                 $rootScope.enrolledCourseIds[course.courseId || course.identifier] ? showLectureView = 'no' : showLectureView = 'yes';
       //  var params = { courseType: courseType, courseId: course.courseId || course.identifier, tocId: course.courseId || course.identifier, lectureView: showLectureView, progress: course.progress, total: course.total };
-                var params = { courseType: courseType, courseId: course.courseId || course.identifier, tocId: course.courseId || course.identifier, lectureView: showLectureView, progress: course.progress, total: course.total, courseName: course.courseName || course.name, lastReadContentId: course.lastReadContentId };
+                var params = { courseType: courseType, courseId: course.courseId || course.identifier, lectureView: showLectureView, progress: course.progress, total: course.total, courseName: course.courseName || course.name, lastReadContentId: course.lastReadContentId };
                 sessionService.setSessionData('COURSE_PARAMS', params);
                 $state.go('Toc', params);
             };
@@ -166,7 +154,8 @@ angular.module('playerApp').directive('search', function () {
                     if ($rootScope.search.searchKeyword != '' && $rootScope.isSearchPage) {
                         if ($rootScope.isSearchResultsPage && $rootScope.search.searchKeyword == $stateParams.query && $rootScope.search.selectedSearchKey == $stateParams.type) {
                             $rootScope.search.error = {};
-                            $rootScope.search.loader = showLoaderWithMessage('', $rootScope.errorMessages.SEARCH.DATA.START);
+                            $rootScope.search.loader = toasterService.loader(''
+           , $rootScope.errorMessages.SEARCH.DATA.START);
                             $scope.search.handleSearch();
                         } else {
                             $scope.search.autoSuggest = false;

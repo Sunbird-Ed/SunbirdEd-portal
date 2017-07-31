@@ -16,7 +16,6 @@ angular.module('playerApp')
             var params = {
                 courseType: courseType,
                 courseId: course.courseId || course.identifier,
-                tocId: course.courseId || course.identifier,
                 lectureView: showLectureView,
                 progress: course.progress,
                 total:
