@@ -111,7 +111,7 @@ let PERMISSIONS_HELPER = {
         });
 
     },
-    checkPermission: function(url) {
+    checkPermission: function() {
         return function(req, res, next) {           
             var roles = module.exports.checkURLMatch(req.originalUrl);
             if (_.isArray(roles)) {
