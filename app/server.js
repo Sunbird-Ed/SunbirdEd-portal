@@ -17,7 +17,7 @@ const express = require('express'),
   permissionsHelper = require('./helpers/permissionsHelper.js'),
   fs = require('fs'),
   port = env['sunbird_port'] || 3000,
-  learnerURL = env.sunbird_learner_player_url || 'http://52.172.36.121:9000/v1/',
+  learnerURL = env.sunbird_learner_player_url || 'https://dev.open-sunbird.org/api/',
   contentURL = env.sunbird_content_player_url || 'http://localhost:5000/v1/',
   realm = env.sunbird_portal_realm || "sunbird",
   auth_server_url = env.sunbird_portal_auth_server_url || "https://dev.open-sunbird.org/auth",
@@ -47,17 +47,17 @@ let keycloak = new Keycloak({ store: memoryStore }, {
 });
 
 const decorateRequestHeaders = function() {
-    return function(proxyReqOpts, srcReq) {
-        if (srcReq.session) {
-            var userId = srcReq.session.userId;
-            var channel = md5(srcReq.session.rootOrgId || 'sunbird');
-            if (userId)
-                proxyReqOpts.headers['X-Authenticated-Userid'] = userId;
-            proxyReqOpts.headers['X-Channel-Id'] = channel;    
-        }
-        proxyReqOpts.headers['X-App-Id'] = appId;
-        return proxyReqOpts;
-    };
+  return function(proxyReqOpts, srcReq) {
+    if (srcReq.session) {
+      var userId = srcReq.session.userId;
+      var channel = md5(srcReq.session.rootOrgId || 'sunbird');
+      if (userId)
+        proxyReqOpts.headers['X-Authenticated-Userid'] = userId;
+      proxyReqOpts.headers['X-Channel-Id'] = channel;
+    }
+    proxyReqOpts.headers['X-App-Id'] = appId;
+    return proxyReqOpts;
+  };
 };
 
 app.use(session({
@@ -107,17 +107,15 @@ app.all('/public/service/*', proxy(learnerURL, {
   }
 }))
 
-app.all('/private/service/v1/learner/*', keycloak.protect(), permissionsHelper.checkPermission(), proxy(learnerURL, {
+app.all('/private/service/v1/learner/*', verifyToken(), permissionsHelper.checkPermission(), proxy(learnerURL, {
   proxyReqOptDecorator: decorateRequestHeaders(),
-
   proxyReqPathResolver: function(req) {
     let urlParam = req.params["0"];
-    console.log("Url",require('url').parse(learnerURL + urlParam).path)
     return require('url').parse(learnerURL + urlParam).path;
   }
 }));
 
-app.all('/private/service/v1/content/*', keycloak.protect(), permissionsHelper.checkPermission(), proxy(contentURL, {
+app.all('/private/service/v1/content/*', verifyToken(), permissionsHelper.checkPermission(), proxy(contentURL, {
   limit: reqDataLimitOfContentUpload,
   proxyReqOptDecorator: decorateRequestHeaders(),
   proxyReqPathResolver: function(req) {
@@ -242,6 +240,7 @@ keycloak.authenticated = function(request) {
 keycloak.deauthenticated = function(request) {
   delete request.session['roles'];
   delete request.session['rootOrgId'];
+  delete request.session['orgs'];
   if (request.session) {
     request.session.sessionEvents = request.session.sessionEvents || [];
     telemetryHelper.sendTelemetry(request, request.session.sessionEvents, function(status) {
@@ -250,6 +249,31 @@ keycloak.deauthenticated = function(request) {
     });
   }
 };
+
+function verifyToken() {
+  return function(req, res, next) {
+    if (!req.session['keycloak-token']) {
+      res.status(440);
+      res.send({
+        "id": "api.error",
+        "ver": "1.0",
+        "ts": dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo"),
+        "params": {
+          "resmsgid": uuidv1(),
+          "msgid": null,
+          "status": "failed",
+          "err": "LOGIN_TIMEOUT",
+          "errmsg": "Session Expired"
+        },
+        "responseCode": "LOGIN_TIMEOUT",
+        "result": {}
+      });
+      res.end();
+    } else {
+      next();
+    }
+  }
+}
 
 app.listen(port);
 console.log('app running on port ' + port);
