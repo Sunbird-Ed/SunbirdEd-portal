@@ -59,6 +59,9 @@
             },
             "ROLES": {
                 "READ": "data/v1/role/read"
+            }, 
+              "ADMIN":{
+                "USER_SEARCH":"composite/v1/search"
             }
         },
         "FILTER": {
