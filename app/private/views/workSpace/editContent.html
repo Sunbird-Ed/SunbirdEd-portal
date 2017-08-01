@@ -157,7 +157,7 @@
                     <button class="ui primary basic button" ng-if="editContent.contentData.mimeType === 'application/vnd.ekstep.content-collection'" ng-click="editContent.openCollectionEditor(editContent.contentData)">{{$root.labels.WORKSPACE.common.launchEditor}}</button>
                     <button class="ui primary basic button" ng-if="editContent.checkMimeTypeForUploadContent.indexOf(editContent.contentData.mimeType) > -1 && !editContent.showUploadFileForm" ng-click="editContent.uploadFileForm(editContent.contentData.identifier)">{{$root.labels.WORKSPACE.common.upload}}</button>
                     <button class="ui primary basic button" ng-if="editContent.showUploadFileForm" ng-click="editContent.showUploadFileForm = !editContent.showUploadFileForm">{{$root.labels.WORKSPACE.common.closeUpload}}</button>
-                    <button class="ui primary basic button" ng-click="editContent.deleteContent(editContent.contentData)">{{$root.labels.WORKSPACE.common.delete}}</button>
+                    <!-- <button class="ui primary basic button" ng-click="editContent.deleteContent(editContent.contentData)">{{$root.labels.WORKSPACE.common.delete}}</button> -->
                 </div>
             </div>
             <div class="one wide column"></div>
