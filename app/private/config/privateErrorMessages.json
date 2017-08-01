@@ -118,6 +118,11 @@
                 "FAILED": "Fetching up for review content failed, please try again later...",
                 "NO_CONTENT": "You don't have any content for review..."
             },
+            "RETIRE_CONTENT": {
+                "START": "We are deleting the content...",
+                "FAILED": "Deleting content failed, please try again later...",
+                "SUCCESS": "Content deleted successfully..."
+            },
             "REQUIRED_FIELDS": {
                 "TITLE": "Title is missing",
                 "DESCRIPTION": "Description is missing",

@@ -33,7 +33,7 @@ angular.module('playerApp')
                 searchService.search(request).then(function (res) {
                     if (res && res.responseCode === 'OK') {
                         publishedContent.loader.showLoader = false;
-                        publishedContent.publishedContentData = res.result.content;
+                        publishedContent.publishedContentData = res.result.content || [];
                     } else {
                         publishedContent.loader.showLoader = false;
                         toasterService.error($rootScope.errorMessages.WORKSPACE.PUBLISHED.FAILED);

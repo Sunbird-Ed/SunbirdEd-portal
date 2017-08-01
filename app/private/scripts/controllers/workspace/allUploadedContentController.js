@@ -37,7 +37,7 @@ angular.module('playerApp')
                 searchService.search(request).then(function (res) {
                     if (res && res.responseCode === 'OK') {
                         allUploadedContent.loader.showLoader = false;
-                        allUploadedContent.allUploadedContentData = res.result.content;
+                        allUploadedContent.allUploadedContentData = res.result.content || [];
                     } else {
                         allUploadedContent.loader.showLoader = false;
                         toasterService.error($rootScope.errorMessages.WORKSPACE.ALL_UPLOADED
