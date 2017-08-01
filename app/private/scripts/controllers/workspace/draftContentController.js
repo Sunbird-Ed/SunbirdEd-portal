@@ -40,7 +40,7 @@ angular.module('playerApp')
                 searchService.search(request).then(function (res) {
                     if (res && res.responseCode === 'OK') {
                         draftContent.loader.showLoader = false;
-                        draftContent.draftContentData = res.result.content;
+                        draftContent.draftContentData = res.result.content || [];
                     } else {
                         draftContent.loader.showLoader = false;
                         toasterService.error($rootScope.errorMessages.WORKSPACE.DRAFT.FAILED);
