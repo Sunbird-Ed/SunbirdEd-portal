@@ -34,7 +34,7 @@ angular.module('playerApp')
                 searchService.search(request).then(function (res) {
                     if (res && res.responseCode === 'OK') {
                         reviewContent.loader.showLoader = false;
-                        reviewContent.reviewContentData = res.result.content;
+                        reviewContent.reviewContentData = res.result.content || [];
                     } else {
                         reviewContent.loader.showLoader = false;
                         toasterService.error($rootScope.errorMessages.WORKSPACE.REVIEW.FAILED);

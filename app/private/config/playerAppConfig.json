@@ -8,7 +8,7 @@
             "LEARNER_PREFIX": "v1/learner/",
             "CONTENT_PREFIX": "v1/content/",
             "CONFIG_BASE": "http://localhost:4000/api/sb/v1/",
-            "PAGE_PREFIX": "page/assemble",
+            "PAGE_PREFIX": "data/v1/page/assemble",
             "USER": {
                 "RESOURCE_BUNDLE": "resourcebundle",
                 "SIGNUP": "user/v1/create",
@@ -17,57 +17,48 @@
                 "TENANT_LOGO": "get/tenant/logo"
             },
             "COMPOSITE": {
-                "SEARCH": "search"
+                "SEARCH": "composite/v1/search"
             },
             "COURSE": {
-                "SEARCH": "course/search",
-                "CREATE": "course/create",
-                "UPDATE": "course/update",
-                "REVIEW": "course/review",
-                "PUBLISH": "course/publish",
-                "GET": "course/get",
-                "GET_MY_COURSE": "course/get/mycourse",
-                "HIERARCHY": "course/hierarchy",
-                "UPLOAD_MEDIA": "upload/media",
-                "USER_COURSE_SCHEDULE": "user/courses",
-                "USER_CONTENT_STATE": "user/content/state",
-                "GET_ENROLLED_COURSES": "user/courses",
+                "SEARCH": "course/v1/search",
+                "CREATE": "course/v1/create",
+                "UPDATE": "course/v1/update",
+                "REVIEW": "course/v1/review",
+                "PUBLISH": "course/v1/publish",
+                "GET": "course/v1/get",
+                "GET_MY_COURSE": "course/v1/get/mycourse",
+                "HIERARCHY": "course/v1/hierarchy",
+                "USER_CONTENT_STATE": "course/v1/content/state",
+                "GET_ENROLLED_COURSES": "course/v1/user/enrollment/list",
                 "GET_LEARN_OTHER_SECTION": "Course",
-                "ENROLL_USER_COURSE": "user/courses/enroll",
+                "ENROLL_USER_COURSE": "course/v1/enrol",
                 "RECOMMENDED_COURSE": "recommended/courses"
-
-
             },
             "CONTENT": {
-                "SEARCH": "content/search",
-                "CREATE": "content/create",
-                "UPDATE": "content/update",
-                "REVIEW": "content/review",
-                "PUBLISH": "content/publish",
-                "GET": "content/read",
-                "GET_MY_COURSE": "content/get/mycontent",
-                "UPLOAD": "content/upload",
+                "SEARCH": "content/v1/search",
+                "CREATE": "content/v1/create",
+                "UPDATE": "content/v1/update",
+                "REVIEW": "content/v1/review",
+                "PUBLISH": "content/v1/publish",
                 "UPLOAD_MEDIA": "upload/media",
-                "RETIRE": "content/retire",
-                "REJECT": "content/reject"
-            },
-            "AUTH": {
-                "LOGIN": "user/login",
-                "LOGOUT": "user/logout"
-
+                "GET": "content/v1/read",
+                "GET_MY_COURSE": "content/v1/get/mycontent",
+                "UPLOAD": "content/v1/upload",
+                "RETIRE": "content/v1/retire",
+                "REJECT": "content/v1/reject"
             },
             "NOTES": {
-                "SEARCH": "note/search",
-                "CREATE": "note/create",
-                "UPDATE": "note/update",
-                "GET": "note/read",
-                "DELETE": "note/delete"
+                "SEARCH": "notes/v1/search",
+                "CREATE": "notes/v1/create",
+                "UPDATE": "notes/v1/update",
+                "GET": "notes/v1/read",
+                "DELETE": "notes/v1/delete"
             },
             "RESOURCE": {
                 "GET": "Resource"
             },
             "ROLES": {
-                "READ": "role/read"
+                "READ": "data/v1/role/read"
             }
         },
         "FILTER": {
@@ -75,7 +66,7 @@
                 "languages": [
                     "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Marathi", "Punjabi", "Tamil", "Telugu"
                 ],
-                "contentTypes": [
+                "content/v1Types": [
                     "Collection", "Story", "TextBook", "Worksheet"
                 ],
                 "subjects": [
@@ -165,7 +156,7 @@
         },
         "ekstep_CE_config": {
             "context": {
-                "content_id": "",
+                "content/v1_id": "",
                 "sid": "rctrs9r0748iidtuhh79ust993",
                 "baseURL": "",
                 "editMetaLink": "",
@@ -344,7 +335,7 @@
             "TextBook": {
                 "context": {
                     "uid": "",
-                    "contentId": "",
+                    "content/v1Id": "",
                     "sid": "0d5b94c87052869b58e47ec692f467cd",
                     "channel": "ntp/ap",
                     "pdata": {
@@ -421,7 +412,7 @@
             "Collection": {
                 "context": {
                     "uid": "",
-                    "contentId": "",
+                    "content/v1Id": "",
                     "sid": "0d5b94c87052869b58e47ec692f467cd",
                     "channel": "ntp/ap",
                     "pdata": {
