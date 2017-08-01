@@ -1,5 +1,6 @@
 const request = require("request"),
   parser = require('ua-parser-js'),
+  _ = require('lodash'),
   uuidv1 = require('uuid/v1'),
   appId = process.env.sunbird_appid || 'sunbird.portal',
   contentURL = process.env.sunbird_content_player_url || 'http://localhost:5000/v1/',
@@ -10,6 +11,12 @@ module.exports = {
   logSessionStart: function(req, callback) {
     var ua = parser(req.headers['user-agent']);
     req.session.orgs.push(req.session.rootOrgId);
+    req.session.orgs = _.compact(req.session.orgs);
+    req.session.save();
+    var dims = _.clone(req.session.orgs);
+    dims.forEach(function(value, index, arr) {
+      arr[index] = md5(value);
+    });
     var channel = md5(req.session.rootOrgId || 'sunbird');
     var event = {
       "ver": "2.1",
@@ -39,7 +46,7 @@ module.exports = {
       "etags": {
         "app": [],
         "partner": [],
-        "dims": req.session.orgs
+        "dims": dims
       },
       "pdata": { "id": appId, "ver": "1.0" },
       "ets": new Date().getTime()
@@ -98,11 +105,11 @@ module.exports = {
     request(options, function(error, response, body) {
       if (callback) {
         if (error) {
-            callback(false);
+          callback(false);
         } else if (body && body.params && body.params.err) {
-            callback(false);
+          callback(false);
         } else {
-            callback(true)
+          callback(true)
         }
       }
     });

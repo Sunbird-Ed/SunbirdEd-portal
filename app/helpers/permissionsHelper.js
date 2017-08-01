@@ -89,6 +89,7 @@ let PERMISSIONS_HELPER = {
             if (!error && body) {
                 body = JSON.parse(body)
                 if (body.responseCode === "OK") {
+                    reqObj.session.userId = body.result.response.identifier;
                     reqObj.session.roles = body.result.response.roles;
                     if (body.result.response.organisations) {
                         _.forEach(body.result.response.organisations, function (org) {
