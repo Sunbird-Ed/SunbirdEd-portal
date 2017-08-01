@@ -8,7 +8,7 @@
  * Service in the playerApp.
  */
 angular.module('playerApp')
-    .service('contentService', function(httpService, config) {
+    .service('contentService', function(httpService, config, $rootScope) {
 
         this.search = function(req) {
             var url =  config.URL.CONTENT_PREFIX + config.URL.CONTENT.SEARCH;
@@ -16,6 +16,9 @@ angular.module('playerApp')
         };
         
         this.create = function(req) {
+            req.content.organization = $rootScope.organisationNames;
+            req.content.createdFor = $rootScope.organisationIds;
+            req.content.creator = $rootScope.firstName + $rootScope.lastName;
             var url =  config.URL.CONTENT_PREFIX + config.URL.CONTENT.CREATE;
             return httpService.post(url, req);
         };

@@ -31,7 +31,6 @@ angular.module('playerApp')
                         lastUpdatedOn: upForReviewContent.sortBy
                     }
                 };
-
                 searchService.search(request).then(function (res) {
                     if (res && res.responseCode === 'OK') {
                         upForReviewContent.loader.showLoader = false;
