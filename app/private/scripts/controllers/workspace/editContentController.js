@@ -37,6 +37,7 @@ angular.module('playerApp')
             editContent.mimeTypeForPdfVideoHtml = ['application/pdf', 'video/mp4',
                 'application/vnd.ekstep.html-archive'];
             editContent.mimeTypeForYoutubeVideo = 'video/youtube';
+            editContent.message = $rootScope.errorMessages.WORKSPACE;
 
             editContent.initializeDropDown = function () {
                 $timeout(function () {
@@ -403,5 +404,23 @@ angular.module('playerApp')
                 } else {
                     editContent.invalidYoutubeUrl = true;
                 }
+            };
+
+            editContent.deleteContent = function (requestData) {
+                editContent.loader = toasterService.loader('', editContent.message.RETIRE_CONTENT
+                                                    .START);
+                contentService.retire(requestData.identifier).then(function (res) {
+                    if (res && res.responseCode === 'OK') {
+                        editContent.loader.showLoader = false;
+                        editContent.closeEditForm(requestData);
+                        toasterService.success(editContent.message.RETIRE_CONTENT.SUCCESS);
+                    } else {
+                        editContent.loader.showLoader = false;
+                        toasterService.error(editContent.message.RETIRE_CONTENT.FAILED);
+                    }
+                }).catch(function () {
+                    editContent.loader.showLoader = false;
+                    toasterService.error(editContent.message.RETIRE_CONTENT.FAILED);
+                });
             };
         }]);

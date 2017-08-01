@@ -12,14 +12,17 @@
 angular.module('playerApp')
     .controller('PreviewContentController', ['$stateParams', 'playerTelemetryUtilsService',
         '$rootScope', '$state', '$sce', 'contentService', 'pdfDelegate', '$timeout', 'config',
-        'toasterService','$scope', function ($stateParams, playerTelemetryUtilsService, $rootScope, $state,
-            $sce, contentService, pdfDelegate, $timeout, config, toasterService,$scope) {
+        'toasterService', '$scope', function ($stateParams, playerTelemetryUtilsService, $rootScope,
+             $state, $sce, contentService, pdfDelegate, $timeout, config, toasterService, $scope) {
             var previewContent = this;
             previewContent.contentProgress = 0;
             previewContent.contentId = $stateParams.contentId;
             previewContent.userId = $rootScope.userId;
             previewContent.isShowPublishRejectButton =
-            $stateParams.backState === 'WorkSpace.UpForReviewContent';
+                                    $stateParams.backState === 'WorkSpace.UpForReviewContent';
+            previewContent.isShowDeleteButton =
+                                    $stateParams.backState === 'WorkSpace.PublishedContent';
+            previewContent.message = $rootScope.errorMessages.WORKSPACE;
 
             var validateModal = {
                 state: ['WorkSpace.UpForReviewContent', 'WorkSpace.ReviewContent',
@@ -357,40 +360,55 @@ angular.module('playerApp')
                         previewContent.loader.showLoader = false;
                         previewContent.isShowPublishRejectButton = false;
                         previewContent.contentData.status = 'Live';
-                        toasterService.success($rootScope.errorMessages.WORKSPACE.PUBLISH_CONTENT
-                                                        .SUCCESS);
+                        toasterService.success(previewContent.message.PUBLISH_CONTENT.SUCCESS);
 //                $state.go("WorkSpace.UpForReviewContent")
                     } else {
                         previewContent.loader.showLoader = false;
-                        toasterService.error($rootScope.errorMessages.WORKSPACE.PUBLISH_CONTENT
-                                                        .FAILED);
+                        toasterService.error(previewContent.message.PUBLISH_CONTENT.FAILED);
                     }
                 }).catch(function () {
                     previewContent.loader.showLoader = false;
-                    toasterService.error($rootScope.errorMessages.WORKSPACE.PUBLISH_CONTENT.FAILED);
+                    toasterService.error(previewContent.message.PUBLISH_CONTENT.FAILED);
                 });
             };
 
             previewContent.rejectContent = function () {
-                previewContent.loader = toasterService.loader('', $rootScope.errorMessages.WORKSPACE
-                                                        .REJECT_CONTENT.START);
+                previewContent.loader = toasterService.loader('', previewContent.message
+                                                            .REJECT_CONTENT.START);
 
                 var request = {};
                 contentService.reject(request, previewContent.contentId).then(function (res) {
                     if (res && res.responseCode === 'OK') {
                         previewContent.loader.showLoader = false;
                         previewContent.isShowPublishRejectButton = false;
-                        toasterService.success($rootScope.errorMessages.WORKSPACE.REJECT_CONTENT
-                                                        .SUCCESS);
+                        toasterService.success(previewContent.message.REJECT_CONTENT.SUCCESS);
 //                $state.go("WorkSpace.UpForReviewContent");
                     } else {
                         previewContent.loader.showLoader = false;
-                        toasterService.error($rootScope.errorMessages.WORKSPACE.REJECT_CONTENT
-                                                        .FAILED);
+                        toasterService.error(previewContent.message.REJECT_CONTENT.FAILED);
                     }
                 }).catch(function () {
                     previewContent.loader.showLoader = false;
-                    toasterService.error($rootScope.errorMessages.WORKSPACE.REJECT_CONTENT.FAILED);
+                    toasterService.error(previewContent.message.REJECT_CONTENT.FAILED);
+                });
+            };
+
+            previewContent.deleteContent = function () {
+                previewContent.loader = toasterService.loader('', previewContent.message
+                                                        .RETIRE_CONTENT.START);
+                contentService.retire(previewContent.contentId).then(function (res) {
+                    if (res && res.responseCode === 'OK') {
+                        previewContent.loader.showLoader = false;
+                        previewContent.isShowDeleteButton = false;
+                        toasterService.success(previewContent.message.RETIRE_CONTENT.SUCCESS);
+//                $state.go("WorkSpace.PublishedContent");
+                    } else {
+                        previewContent.loader.showLoader = false;
+                        toasterService.error(previewContent.message.RETIRE_CONTENT.FAILED);
+                    }
+                }).catch(function () {
+                    previewContent.loader.showLoader = false;
+                    toasterService.error(previewContent.message.RETIRE_CONTENT.FAILED);
                 });
             };
         }]);

@@ -18,7 +18,7 @@ const express = require('express'),
   fs = require('fs'),
   port = env['sunbird_port'] || 3000,
   learnerURL = env.sunbird_learner_player_url || 'https://dev.open-sunbird.org/api/',
-  contentURL = env.sunbird_content_player_url || 'http://localhost:5000/v1/',
+  contentURL = env.sunbird_content_player_url || 'https://dev.open-sunbird.org/api/',
   realm = env.sunbird_portal_realm || "sunbird",
   auth_server_url = env.sunbird_portal_auth_server_url || "https://dev.open-sunbird.org/auth",
   keycloak_resource = env.sunbird_portal_auth_server_client || "portal",
@@ -27,7 +27,9 @@ const express = require('express'),
   ekstep_env = env.ekstep_env || 'qa',
   appId = env.sunbird_appid || 'sunbird.portal',
   default_tenant = env.sunbird_default_tenant,
-  md5 = require('js-md5');
+  md5 = require('js-md5'),
+  sunbird_api_auth_token = env.sunbird_api_auth_token || 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkMTc1MDI' +
+                'wNDdlODc0ODZjOTM0ZDQ1ODdlYTQ4MmM3MyJ9.7LWocwCn5rrCScFQYOne8_Op2EOo-xTCK5JCFarHKSs';
 
 const contentProxyUrl = contentURL.replace('/v1/', '');
 
@@ -56,6 +58,7 @@ const decorateRequestHeaders = function() {
       proxyReqOpts.headers['X-Channel-Id'] = channel;
     }
     proxyReqOpts.headers['X-App-Id'] = appId;
+    proxyReqOpts.headers.Authorization = sunbird_api_auth_token;
     return proxyReqOpts;
   };
 };
