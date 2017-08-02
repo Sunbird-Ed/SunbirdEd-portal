@@ -63,6 +63,14 @@
             },
             "ADMIN": {
                 "USER_SEARCH": "composite/v1/search"
+            },
+            "BATCH":{
+                "CREATE": "course/v1/batch/create",
+                "UPDATE": "course/v1/batch/update",
+                "ADD_USERS": "course/v1/batch/users/add",
+                "REMOVE_USERS": "course/v1/batch/users/remove",
+                "GET_DETAILS": "course/v1/batch/read",
+                "GET_BATCHS": "course/v1/batch/list"
             }
         },
         "FILTER": {
