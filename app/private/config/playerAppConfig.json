@@ -78,7 +78,7 @@
                 "languages": [
                     "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Marathi", "Punjabi", "Tamil", "Telugu"
                 ],
-                "content/v1Types": [
+                "contentTypes": [
                     "Collection", "Story", "TextBook", "Worksheet"
                 ],
                 "subjects": [
