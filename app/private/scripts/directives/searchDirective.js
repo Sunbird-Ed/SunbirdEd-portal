@@ -9,9 +9,9 @@
 angular.module('playerApp').directive('search', function () {
     var controller = ['$scope', '$rootScope', 'config', '$timeout',
         '$state', '$stateParams', 'searchService', 'toasterService', '$location',
-        'sessionService', function ($scope, $rootScope,
+        'sessionService', 'adminService', function ($scope, $rootScope,
       config, $timeout, $state, $stateParams, searchService, toasterService,
-      $location, sessionService) {
+      $location, sessionService, adminService) {
             $scope.search = {};
             $rootScope.search = {};
             $rootScope.search.searchKeyword = '';
@@ -23,15 +23,16 @@ angular.module('playerApp').directive('search', function () {
             = config.FILTER.RESOURCES.contentTypes;
             $rootScope.search.subjects = config.FILTER.RESOURCES.subjects;
             $rootScope.search.boards = config.FILTER.RESOURCES.boards;
-            $scope.search.searchTypeKeys = ['Courses', 'Resources'];
+            $scope.search.searchTypeKeys = ['Courses', 'Resources', 'Users'];
             $rootScope.search.sortingOptions = [
-              { field: 'lastUpdatedOn', name: 'Updated On' },
+               { field: 'lastUpdatedOn', name: 'Updated On' },
                { field: 'createdOn', name: 'Created On' }];
             $rootScope.search.sortBy = { createdOn: 'asc' };
             $scope.search.searchSelectionKeys = [
               { id: 'Courses', name: 'Courses' },
-            { id: 'Resources', name: 'Resources' },
-             { id: 'All', name: 'All' }];
+              { id: 'Resources', name: 'Resources' },
+              { id: 'All', name: 'All' },
+              { id: 'Users', name: 'Users' }];
             $rootScope.search.sortIcon = true;
             $rootScope.search.selectedLanguage = [];
             $rootScope.search.selectedContentType = [];
@@ -168,12 +169,12 @@ angular.module('playerApp').directive('search', function () {
                 if (!$event || $event.charCode === 13) {
                     $scope.search.autoSuggest = false;
                     if ($rootScope.search.searchKeyword !== '' && $rootScope.isSearchPage) {
-                        if ($rootScope.isSearchResultsPage
-                                && $rootScope.search.searchKeyword === $stateParams.query
-                                && $rootScope.search.selectedSearchKey === $stateParams.type) {
+                        if ($rootScope.isSearchResultsPage && $rootScope.search.searchKeyword
+                            === $stateParams.query && $rootScope.search.selectedSearchKey
+                            === $stateParams.type) {
                             $rootScope.search.error = {};
                             $rootScope.search.loader = toasterService.loader(''
-           , $rootScope.errorMessages.SEARCH.DATA.START);
+                                                    , $rootScope.errorMessages.SEARCH.DATA.START);
                             $scope.search.handleSearch();
                         } else {
                             $scope.search.autoSuggest = false;
@@ -205,7 +206,7 @@ angular.module('playerApp').directive('search', function () {
                     sort_by: $rootScope.search.sortBy
 
                 };
-      // if autosuggest option is clicked
+                // if autosuggest option is clicked
                 if ($rootScope.search.searchFromSuggestion === 'true') {
                     req.filters.name = req.query;
                     req.query = '';
@@ -222,6 +223,9 @@ angular.module('playerApp').directive('search', function () {
                 } else if ($rootScope.search.selectedSearchKey === 'All') {
                     $scope.search.searchFn = searchService.search(req);
                     $scope.search.resultType = 'content';
+                } else if ($rootScope.search.selectedSearchKey === 'Users') {
+                    $scope.search.searchFn = adminService.search(req);
+                    $scope.search.resultType = 'users';
                 }
 
                 $scope.search.searchFn.then(function (res) {
@@ -293,6 +297,10 @@ angular.module('playerApp').directive('search', function () {
                 $scope.search.searchRequest();
             };
             $rootScope.search.close = function () {
+                $rootScope.search.selectedSearchKey =
+                                                    $rootScope.search.selectedSearchKey === 'Users'
+                                                    ? 'Profile'
+                                                    : $rootScope.search.selectedSearchKey;
                 var closeUrl = ($rootScope.search.selectedSearchKey === 'All')
                 ? 'Home' : $rootScope.search.selectedSearchKey;
                 $state.go(closeUrl);

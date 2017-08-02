@@ -8,11 +8,14 @@
  * Service in the playerApp.
  */
 angular.module('playerApp')
-    .service('adminService', ['config', 'httpServiceJava', '$rootScope', 'portalTelemetryService', '$q',
-        function (config, httpServiceJava, $rootScope, portalTelemetryService, $q) {
-            this.searchUser = function (req) {
-                var url = config.URL.ADMIN.USER_SEARCH;
-
+    .service('adminService', [
+        'config',
+        'httpServiceJava',
+        '$rootScope',
+        'portalTelemetryService',
+        '$q', function (config, httpServiceJava, $rootScope, portalTelemetryService, $q) {
+            this.search = function (req) {
+                var url = config.URL.LEARNER_PREFIX + config.URL.ADMIN.USER_SEARCH;
                 var res = {
                     id: null,
                     ver: 'v1',
@@ -27,7 +30,9 @@ angular.module('playerApp')
                     responseCode: 'OK',
                     result: {
                         response: {
-                            response: [
+                            count: 2,
+                            content: [
+
                                 {
                                     lastName: 'kumar',
                                     loginId: null,
@@ -257,7 +262,7 @@ angular.module('playerApp')
 
                 var deferred = $q.defer();
                 deferred.resolve(res);
-                // return deferred.promise;
+                return deferred.promise;
                 // return httpServiceJava.get(url, req);
             };
 
@@ -281,7 +286,7 @@ angular.module('playerApp')
                 };
                 var deferred = $q.defer();
                 deferred.resolve(res);
-                // return deferred.promise;
+                return deferred.promise;
                 // return httpServiceJava.get(url, req);
             };
         }]);
