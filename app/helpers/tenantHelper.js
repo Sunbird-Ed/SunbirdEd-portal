@@ -13,8 +13,8 @@ module.exports = {
     },
     getFavicon: function(req, res){
         var tenantId = req.params.tenantId;
-        if(tenantId && fs.existsSync(path.join(__dirname, '../tenant', tenantId, 'favicon.png'))){
-            module.exports.getSucessResponse(res, "api.tenant.favicon", { "favicon" : (req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') + '/tenant/' + tenantId + '/favicon.png' });
+        if(tenantId && fs.existsSync(path.join(__dirname, '../tenant', tenantId, 'favicon.ico'))){
+            module.exports.getSucessResponse(res, "api.tenant.favicon", { "favicon" : (req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') + '/tenant/' + tenantId + '/favicon.ico' });
         }else{
             module.exports.getErrorResponse(res);
         }
