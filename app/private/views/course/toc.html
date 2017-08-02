@@ -51,7 +51,7 @@
                                         <b>Course created on: {{toc.courseHierachy.createdOn | dateFilterWithMDY}}</b><br>
                                         <b>Updated on: {{toc.courseHierachy.lastUpdatedOn | dateFilterWithMDY}}</b>
                                     </div>
-                                    <div class="cursor-pointer ng-binding padding-top-10 medium-font-text">
+                                    <div class="cursor-pointer ng-binding padding-top-10 medium-font-text" ng-click="toc.showCreateBatchModal()">
                                         <i class="circular icon margin-right-10 plus"></i>Create New Batch
                                     </div>
                                 </div>
@@ -121,3 +121,4 @@
         </div>
     </div>
 </div>
+<ng-include src="'views/common/createBatch.html'" ></ng-include>
