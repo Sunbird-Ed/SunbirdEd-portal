@@ -1,19 +1,16 @@
 'use strict';
 
 angular.module('playerApp')
-    .service('searchService', function(httpService, httpServiceJava, config, $q) {
-        this.contentSearch = function(req) {
-            var url =  config.URL.CONTENT_PREFIX + config.URL.CONTENT.SEARCH;
-            return httpService.post(url, req);
+    .service('searchService', function (httpService, config) {
+        this.contentSearch = function (req) {
+            return httpService.post(config.URL.CONTENT.SEARCH, req);
         };
 
-        this.courseSearch = function(req) {
-            var url =  config.URL.CONTENT_PREFIX + config.URL.COURSE.SEARCH;
-            return httpService.post(url, req);
+        this.courseSearch = function (req) {
+            return httpService.post(config.URL.COURSE.SEARCH, req);
         };
 
-        this.search = function(req) {
-            var url =  config.URL.CONTENT_PREFIX + config.URL.COMPOSITE.SEARCH;
-            return httpService.post(url, req);
+        this.search = function (req) {
+            return httpService.post(config.URL.COMPOSITE.SEARCH, req);
         };
     });

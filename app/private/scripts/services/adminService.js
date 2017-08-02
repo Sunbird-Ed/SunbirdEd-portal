@@ -11,7 +11,7 @@ angular.module('playerApp')
     .service('adminService', ['config', 'httpServiceJava', '$rootScope', 'portalTelemetryService', '$q',
         function (config, httpServiceJava, $rootScope, portalTelemetryService, $q) {
             this.searchUser = function (req) {
-                var url = config.URL.LEARNER_PREFIX + config.URL.ADMIN.USER_SEARCH;
+                var url = config.URL.ADMIN.USER_SEARCH;
 
                 var res = {
                     id: null,
