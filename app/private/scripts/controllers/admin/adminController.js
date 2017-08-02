@@ -9,8 +9,9 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('adminController', ['adminService', '$timeout', '$state', 'config', '$rootScope',
-        function (adminService, $timeout, $state, config, $rootScope) {
+    .controller('adminController', ['adminService', '$timeout', '$state', 'config', '$rootScope', '$scope',
+        function (adminService, $timeout, $state, config, $rootScope, $scope) {
+            console.log('inside conroller', $scope.data);
             var admin = this;
             admin.userName = '';
             admin.searchUser = function () {
