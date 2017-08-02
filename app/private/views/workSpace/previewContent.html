@@ -58,6 +58,17 @@
                                     {{$root.labels.WORKSPACE.previewContent.reject}}
                                 </button>
                             </div>
+                            <div class="videosegment  ui clearing segment" ng-if="previewContent.contentData.status === 'Flagged' && previewContent.isShowFlagActionButton">
+                                <button sb-permissions permission-only="FLAG_REVIEWER" ng-if="previewContent.isShowFlagActionButton" ng-disabled="previewContent.loader.showLoader" class="ui right floated primary button mouse-pointer" ng-click="previewContent.deleteContent()">
+                                    {{$root.labels.WORKSPACE.previewContent.delete}}
+                                </button>
+                                <button sb-permissions permission-only="FLAG_REVIEWER" ng-if="previewContent.isShowFlagActionButton" ng-disabled="previewContent.loader.showLoader" class="ui right floated primary button mouse-pointer" ng-click="previewContent.acceptContentFlag(previewContent.contentData)">
+                                    {{$root.labels.WORKSPACE.previewContent.accept}}
+                                </button>
+                                <button sb-permissions permission-only="FLAG_REVIEWER" ng-if="previewContent.isShowFlagActionButton" ng-disabled="previewContent.loader.showLoader" class="ui right floated primary button mouse-pointer" ng-click="previewContent.discardContentFlag(previewContent.contentData)">
+                                    {{$root.labels.WORKSPACE.previewContent.discard}}
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div ng-if="previewContent.errorObject.showError">
@@ -67,8 +78,8 @@
                                     <h2 class="ui header {{previewContent.errorObject.messageClass}}">
                                         {{previewContent.errorObject.message}}
                                     </h2>
-                                    <button class="ui button margin-bottom-15"ng-if="previewContent.errorObject.showTryAgainButton" ng-click="previewContent.tryAgain()">{{$root.labels.WORKSPACE.previewContent.tryAgain}}</button>
-                                   <button class="ui red button margin-bottom-15" ng-if="previewContent.errorObject.showCloseButton" ng-click="previewContent.closePreview()">{{$root.labels.WORKSPACE.previewContent.close}}</button>
+                                    <button class="ui button margin-bottom-15" ng-if="previewContent.errorObject.showTryAgainButton" ng-click="previewContent.tryAgain()">{{$root.labels.WORKSPACE.previewContent.tryAgain}}</button>
+                                    <button class="ui red button margin-bottom-15" ng-if="previewContent.errorObject.showCloseButton" ng-click="previewContent.closePreview()">{{$root.labels.WORKSPACE.previewContent.close}}</button>
                                 </div>
                             </div>
                         </div>

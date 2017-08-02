@@ -46,7 +46,9 @@
                 "UPLOAD": "content/v1/upload",
                 "RETIRE": "content/v1/retire",
                 "REJECT": "content/v1/reject",
-                "FLAG": "content/flag"
+                "FLAG": "content/flag",
+                "ACCEPT_FLAG": "content/flag/accept",
+                "DISCARD_FLAG": "content/flag/reject"
             },
             "NOTES": {
                 "SEARCH": "notes/v1/search",
@@ -64,7 +66,7 @@
             "ADMIN": {
                 "USER_SEARCH": "composite/v1/search"
             },
-            "BATCH":{
+            "BATCH": {
                 "CREATE": "course/v1/batch/create",
                 "UPDATE": "course/v1/batch/update",
                 "ADD_USERS": "course/v1/batch/users/add",
@@ -78,7 +80,7 @@
                 "languages": [
                     "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Marathi", "Punjabi", "Tamil", "Telugu"
                 ],
-                "content/v1Types": [
+                "contentTypes": [
                     "Collection", "Story", "TextBook", "Worksheet"
                 ],
                 "subjects": [
@@ -168,7 +170,7 @@
         },
         "ekstep_CE_config": {
             "context": {
-                "content/v1_id": "",
+                "content_id": "",
                 "sid": "rctrs9r0748iidtuhh79ust993",
                 "baseURL": "",
                 "editMetaLink": "",
@@ -347,7 +349,7 @@
             "TextBook": {
                 "context": {
                     "uid": "",
-                    "content/v1Id": "",
+                    "contentId": "",
                     "sid": "0d5b94c87052869b58e47ec692f467cd",
                     "channel": "ntp/ap",
                     "pdata": {
@@ -424,7 +426,7 @@
             "Collection": {
                 "context": {
                     "uid": "",
-                    "content/v1Id": "",
+                    "contentId": "",
                     "sid": "0d5b94c87052869b58e47ec692f467cd",
                     "channel": "ntp/ap",
                     "pdata": {
