@@ -45,7 +45,8 @@
                 "GET_MY_COURSE": "content/v1/get/mycontent",
                 "UPLOAD": "content/v1/upload",
                 "RETIRE": "content/v1/retire",
-                "REJECT": "content/v1/reject"
+                "REJECT": "content/v1/reject",
+                "FLAG": "content/flag"
             },
             "NOTES": {
                 "SEARCH": "notes/v1/search",
@@ -59,9 +60,9 @@
             },
             "ROLES": {
                 "READ": "data/v1/role/read"
-            }, 
-              "ADMIN":{
-                "USER_SEARCH":"composite/v1/search"
+            },
+            "ADMIN": {
+                "USER_SEARCH": "composite/v1/search"
             }
         },
         "FILTER": {
