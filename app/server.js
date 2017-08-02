@@ -31,7 +31,7 @@ const express = require('express'),
   sunbird_api_auth_token = env.sunbird_api_auth_token || 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkMTc1MDI' +
                 'wNDdlODc0ODZjOTM0ZDQ1ODdlYTQ4MmM3MyJ9.7LWocwCn5rrCScFQYOne8_Op2EOo-xTCK5JCFarHKSs';
 
-const contentProxyUrl = contentURL.replace('/v1/', '');
+const contentProxyUrl = contentURL.replace('/api/', '');
 
 let mongoURL = (env.sunbird_mongodb_ip && env.sunbird_mongodb_port) ? ("mongodb://" + env.sunbird_mongodb_ip + ":" + env.sunbird_mongodb_port + "/portal") : 'mongodb://localhost/portal';
 let session_ttl = env.sunbird_mongodb_ttl | 1; //in days
