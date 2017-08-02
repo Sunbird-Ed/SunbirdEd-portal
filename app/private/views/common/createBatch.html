@@ -1,4 +1,4 @@
-<div class="ui modal">
+<div class="ui modal" id="createBatchModal">
     <div class="ui segment margin-top-10">
         <div class=" margin-bottom-15">
             <div class="ui grid">
@@ -18,7 +18,7 @@
                 <div class="one field">
                     <div class="required field">
                       <label>Batch Name</label>
-                      <input type="text" name="batchName" ng-model="">
+                      <input type="text" name="batchName">
                     </div>
                 </div>
                 <div class="one field">
@@ -30,14 +30,14 @@
                 <div class="inline fields">
                     <label for="Enrollment Type">Enrollment Type</label>
                     <div class="field">
-                        <div class="ui radio checkbox ">
-                            <input type="radio" name="radio" value='true' ng-model="">
+                        <div class="ui radio checkbox">
+                            <input type="radio" name="radio" value='true'>
                             <label>Closed</label>
                         </div>
                     </div>
                     <div class="field">
-                        <div class="ui radio checkbox ">
-                            <input type="radio" name="radio" value='false' ng-model="">
+                        <div class="ui radio checkbox">
+                            <input type="radio" name="radio" value='false'>
                             <label>Open</label>
                         </div>
                     </div>
@@ -48,7 +48,7 @@
                         <div class="ui calendar" id="rangestartAdd">
                             <div class="ui input left icon">
                                 <i class="calendar icon"></i>
-                                 <input type="text" ng-model="">
+                                 <input type="text">
                             </div>
                         </div>
                     </div>
@@ -57,7 +57,7 @@
                         <div apply-script class="ui calendar" id="rangeendAdd">
                             <div class="ui input left icon">
                                 <i class="calendar icon"></i>
-                                <input type="text" ng-model="">
+                                <input type="text">
                             </div>
                         </div>
                     </div>
@@ -65,7 +65,7 @@
                <div class="one field">                              
                     <label>Add Users</label>
                     <select name="addUsers" class="ui fluid dropdown multiSelectDropDown" multiple="" 
-                        id="AddUsersDropDown" ng-model="">
+                        id="AddUsersDropDown">
                         <option value=""></option>
                     </select>
                 </div>
