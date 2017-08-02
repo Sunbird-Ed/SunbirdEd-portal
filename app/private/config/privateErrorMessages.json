@@ -218,6 +218,11 @@
                 "START": "Fetching data for you....",
                 "FAILED": "Unable to load data."
             }
+        },
+        "CONTENT_FLAG": {
+            "START": "We are submitting your request...",
+            "FAILED": "Submitting request is failed, please try again later...",
+            "SUCCESS": "Request submitted successfully..."
         }
     }
 }
