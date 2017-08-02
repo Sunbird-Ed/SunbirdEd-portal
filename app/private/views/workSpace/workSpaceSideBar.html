@@ -24,5 +24,7 @@
     </a>
     <a class="item" ui-sref="WorkSpace.ContentBatch" ui-sref-active="active">
         BATCHES
+    <a class="item" ui-sref="WorkSpace.FlaggedContent" ui-sref-active="active" sb-permissions permission-only="FLAG_REVIEWER">
+        {{$root.labels.WORKSPACE.flagged}}
     </a>
 </div>

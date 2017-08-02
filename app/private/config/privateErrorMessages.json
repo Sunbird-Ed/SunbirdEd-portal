@@ -123,6 +123,21 @@
                 "FAILED": "Deleting content failed, please try again later...",
                 "SUCCESS": "Content deleted successfully..."
             },
+            "FLAGGED": {
+                "START": "We are fetching flagged content...",
+                "FAILED": "Fetching flagged content failed, please try again later...",
+                "NO_CONTENT": "You don't have any flagged content..."
+            },
+            "ACCEPT_CONTENT_FLAG": {
+                "START": "We are accepting the flag...",
+                "FAILED": "Accepting flag failed, please try again later...",
+                "SUCCESS": "Flag accepted successfully..."
+            },
+            "DISCARD_CONTENT_FLAG": {
+                "START": "We are discarding the flag...",
+                "FAILED": "Discarding flag failed, please try again later...",
+                "SUCCESS": "Flag discarded successfully..."
+            },
             "REQUIRED_FIELDS": {
                 "TITLE": "Title is missing",
                 "DESCRIPTION": "Description is missing",
