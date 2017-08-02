@@ -494,97 +494,120 @@ angular
                   url: '/private/index#!/content/uploaded'
               });
           }
-      }).state('WorkSpace.UpForReviewContent', {
-          url: '/content/upForReview',
-          views: {
-              contentView: {
-                  templateUrl: 'views/workSpace/upForReviewContent.html',
-                  controller: 'UpForReviewContentController as upForReviewContent'
-              }
-          },
-          onEnter: function (portalTelemetryService) {
-              portalTelemetryService.fireImpressions({
-                  env: 'content',
-                  type: 'list',
-                  pageid: org.sunbird.portal.appid + '_WorkSpace.UpForReviewContent',
-                  id: '',
-                  name: '',
-                  url: '/private/index#!/content/upForReview'
-              });
-          }
-      }).state('CreateLesson', {
-          url: '/create/lesson',
-          views: {
-              mainView: {
-                  templateUrl: '/views/workSpace/createLesson.html',
-                  controller: 'ContentLessonController as contentLesson'
-              }
-          },
-          onEnter: function ($rootScope, portalTelemetryService) {
-              $rootScope.profileActive = 'active';
-              portalTelemetryService.fireImpressions({
-                  env: 'content',
-                  type: 'creation',
-                  pageid: org.sunbird.portal.appid + '_CreateLesson',
-                  id: '',
-                  name: '',
-                  url: '/private/index#!/create/lesson'
-              });
-          },
-          onExit: function ($rootScope) {
-              $rootScope.profileActive = '';
-          }
-      }).state('ContentEditor', {
-          url: '/content/editor/:contentId',
-          views: {
-              mainView: {
-                  templateUrl: 'views/common/contentEditor.html',
-                  controller: 'ContentEditorController as contentEditor'
-              }
-          },
-          params: {
-              contentId: null
-          },
-          onEnter: function ($state, $rootScope, portalTelemetryService, $stateParams) {
-              $rootScope.profileActive = 'active';
-              portalTelemetryService.fireImpressions({
-                  env: 'content',
-                  type: 'creation',
-                  pageid: org.sunbird.portal.appid + '_ContentEditor',
-                  id: $stateParams.contentId,
-                  name: '',
-                  url: '/private/index#!/content/editor/' + $stateParams.contentId
-              });
-          },
-          onExit: function ($rootScope) {
-              $rootScope.profileActive = '';
-          }
-      }).state('EditContent', {
-          url: '/content/edit/:contentId',
-          views: {
-              mainView: {
-                  templateUrl: '/views/workSpace/editContent.html',
-                  controller: 'EditContentController as editContent'
-              }
-          },
-          params: {
-              contentId: null,
-              backState: null
-          },
-          onEnter: function ($rootScope, portalTelemetryService, $state, $stateParams) {
-              $rootScope.profileActive = 'active';
-              portalTelemetryService.fireImpressions({
-                  env: 'content',
-                  type: 'edit',
-                  pageid: org.sunbird.portal.appid + '_EditContent',
-                  id: $stateParams.contentId,
-                  name: '',
-                  url: '/private/index#!/content/edit/' + $stateParams.contentId
-              });
-          },
-          onExit: function ($rootScope) {
-              $rootScope.profileActive = '';
-          }
+      })
+        .state('WorkSpace.UpForReviewContent', {
+            url: '/content/upForReview',
+            views: {
+                contentView: {
+                    templateUrl: 'views/workSpace/upForReviewContent.html',
+                    controller: 'UpForReviewContentController as upForReviewContent'
+                }
+            },
+            onEnter: function (portalTelemetryService) {
+                portalTelemetryService.fireImpressions({
+                    env: 'content',
+                    type: 'list',
+                    pageid: org.sunbird.portal.appid + '_WorkSpace.UpForReviewContent',
+                    id: '',
+                    name: '',
+                    url: '/private/index#!/content/upForReview'
+                });
+            }
+        })
+        .state('WorkSpace.FlaggedContent', {
+            url: '/content/flagged',
+            views: {
+                contentView: {
+                    templateUrl: 'views/workSpace/flaggedContent.html',
+                    controller: 'FlaggedContentController as flaggedContent'
+                }
+            },
+            onEnter: function (portalTelemetryService) {
+                portalTelemetryService.fireImpressions({
+                    env: 'content',
+                    type: 'list',
+                    pageid: org.sunbird.portal.appid + '_WorkSpace.FlaggedContent',
+                    id: '',
+                    name: '',
+                    url: '/private/index#!/content/flagged'
+                });
+            }
+        })
+        .state('CreateLesson', {
+            url: '/create/lesson',
+            views: {
+                mainView: {
+                    templateUrl: '/views/workSpace/createLesson.html',
+                    controller: 'ContentLessonController as contentLesson'
+                }
+            },
+            onEnter: function ($rootScope, portalTelemetryService) {
+                $rootScope.profileActive = 'active';
+                portalTelemetryService.fireImpressions({
+                    env: 'content',
+                    type: 'creation',
+                    pageid: org.sunbird.portal.appid + '_CreateLesson',
+                    id: '',
+                    name: '',
+                    url: '/private/index#!/create/lesson'
+                });
+            },
+            onExit: function ($rootScope) {
+                $rootScope.profileActive = '';
+            }
+        })
+        .state('ContentEditor', {
+            url: '/content/editor/:contentId',
+            views: {
+                mainView: {
+                    templateUrl: 'views/common/contentEditor.html',
+                    controller: 'ContentEditorController as contentEditor'
+                }
+            },
+            params: {
+                contentId: null
+            },
+            onEnter: function ($state, $rootScope, portalTelemetryService, $stateParams) {
+                $rootScope.profileActive = 'active';
+                portalTelemetryService.fireImpressions({
+                    env: 'content',
+                    type: 'creation',
+                    pageid: org.sunbird.portal.appid + '_ContentEditor',
+                    id: $stateParams.contentId,
+                    name: '',
+                    url: '/private/index#!/content/editor/' + $stateParams.contentId
+                });
+            },
+            onExit: function ($rootScope) {
+                $rootScope.profileActive = '';
+            }
+        })
+        .state('EditContent', {
+            url: '/content/edit/:contentId',
+            views: {
+                mainView: {
+                    templateUrl: '/views/workSpace/editContent.html',
+                    controller: 'EditContentController as editContent'
+                }
+            },
+            params: {
+                contentId: null,
+                backState: null
+            },
+            onEnter: function ($rootScope, portalTelemetryService, $state, $stateParams) {
+                $rootScope.profileActive = 'active';
+                portalTelemetryService.fireImpressions({
+                    env: 'content',
+                    type: 'edit',
+                    pageid: org.sunbird.portal.appid + '_EditContent',
+                    id: $stateParams.contentId,
+                    name: '',
+                    url: '/private/index#!/content/edit/' + $stateParams.contentId
+                });
+            },
+            onExit: function ($rootScope) {
+                $rootScope.profileActive = '';
+            }
 
       }).state('profileStartCreate', {
           url: '/create/workspace',
@@ -750,8 +773,17 @@ angular
           onExit: function ($rootScope) {
               $rootScope.resourcesActive = '';
           }
-      });
-  })
+      })
+      .state('Admin', {
+            url: '/admin',
+            views: {
+                mainView: {
+                    templateUrl: 'views/admin/admin.html',
+                    controller: 'adminController as admin'
+                }
+            }
+        });
+        })
   .run(function ($urlRouter, $http, $state, permissionsService, $rootScope, $location, config) {
       permissionsService.getPermissionsData('/permissions')
       .then(function (res) {
@@ -843,6 +875,13 @@ angular
               break;
           case 'WorkSpace.UpForReviewContent':
               if (permissionsService.checkRolesPermissions(['CONTENT_REVIEWER', 'CONTENT_REVIEW'], false)) {
+                  toasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
+                  event.preventDefault();
+                  $state.go('Home');
+              }
+              break;
+          case 'WorkSpace.FlaggedContent':
+              if (permissionsService.checkRolesPermissions(['FLAG_REVIEWER'], false)) {
                   toasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
                   event.preventDefault();
                   $state.go('Home');
