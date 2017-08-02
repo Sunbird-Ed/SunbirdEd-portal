@@ -28,8 +28,7 @@ angular
           url: '/',
           views: {
               mainView: {
-                  templateUrl: '/views/home/landingPage.html',
-                  controller: 'AuthCtrl as auth'
+                  templateUrl: '/views/home/landingPage.html'
               }
           }
       })

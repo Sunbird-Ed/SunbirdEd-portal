@@ -15,7 +15,7 @@ angular.module('playerApp')
         };
 
         this.getUserProfile = function(uId) {
-            var url = config.URL.LEARNER_PREFIX + config.URL.USER.GET_PROFILE + '/' + uId;
+            var url = config.URL.USER.GET_PROFILE + '/' + uId;
             return httpServiceJava.get(url);
         };
 
@@ -31,7 +31,7 @@ angular.module('playerApp')
             }
             portalTelemetryService.fireupdateProfile(data);
 
-            var url = config.URL.LEARNER_PREFIX + config.URL.USER.UPDATE_USER_PROFILE;
+            var url = config.URL.USER.UPDATE_USER_PROFILE;
             return httpServiceJava.patch(url, req);
         };
 
