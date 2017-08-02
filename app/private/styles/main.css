@@ -350,6 +350,9 @@ th {
   font-size: 0.9375em !important;
   line-height: 17px;
 }
+.medium-font-text {
+  font-size: medium !important;
+}
 .padding-none {
   padding: 0px !important;
 }
