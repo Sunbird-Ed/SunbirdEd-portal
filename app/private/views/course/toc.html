@@ -1,8 +1,3 @@
-<style>
-    .fancytree-title{
-        width:100% !important;
-    }
-</style>
 <div ng-controller="courseScheduleCtrl as toc" ng-init="toc.loadData()">
     <div ng-include="'views/course/courseHeader.html'"></div>
 
@@ -55,6 +50,9 @@
                                     <div class="courseupdate">
                                         <b>Course created on: {{toc.courseHierachy.createdOn | dateFilterWithMDY}}</b><br>
                                         <b>Updated on: {{toc.courseHierachy.lastUpdatedOn | dateFilterWithMDY}}</b>
+                                    </div>
+                                    <div class="cursor-pointer ng-binding padding-top-10 medium-font-text">
+                                        <i class="circular icon margin-right-10 plus"></i>Create New Batch
                                     </div>
                                 </div>
                             </div>
