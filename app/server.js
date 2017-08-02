@@ -168,23 +168,6 @@ app.get('/api/tenant/favicon/:tenantId', tenantHelper.getFavicon);
 
 //proxy urls
 
-
-app.use('*/content-editor-iframe/api/*', permissionsHelper.checkPermission(), proxy(contentProxyUrl, {
-  proxyReqPathResolver: function(req) {
-    var originalUrl = req.originalUrl;
-    originalUrl = originalUrl.replace('thirdparty/bower_components/content-editor-iframe/', '');
-    return require('url').parse(contentProxyUrl + originalUrl).path;
-  }
-}));
-
-app.use('*/collection-editor-iframe/api/*', permissionsHelper.checkPermission(), proxy(contentProxyUrl, {
-  proxyReqPathResolver: function(req) {
-    var originalUrl = req.originalUrl;
-    originalUrl = originalUrl.replace('thirdparty/bower_components/collection-editor-iframe/', '');
-    return require('url').parse(contentProxyUrl + originalUrl).path;
-  }
-}));
-
 app.use('/api/*', permissionsHelper.checkPermission(), proxy(contentProxyUrl, {
   proxyReqOptDecorator: decorateRequestHeaders(),
   proxyReqPathResolver: function(req) {
