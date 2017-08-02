@@ -15,6 +15,7 @@ const express = require('express'),
   trampolineServiceHelper = require('./helpers/trampolineServiceHelper.js'),
   telemetryHelper = require('./helpers/telemetryHelper.js'),
   permissionsHelper = require('./helpers/permissionsHelper.js'),
+  tenantHelper = require('./helpers/tenantHelper.js'),
   fs = require('fs'),
   port = env['sunbird_port'] || 3000,
   learnerURL = env.sunbird_learner_player_url || 'https://dev.open-sunbird.org/api/',
@@ -47,6 +48,7 @@ let keycloak = new Keycloak({ store: memoryStore }, {
   "resource": keycloak_resource,
   "public-client": true
 });
+let tenantId = '';
 
 const decorateRequestHeaders = function() {
   return function(proxyReqOpts, srcReq) {
@@ -74,6 +76,7 @@ app.use(keycloak.middleware({ admin: '/callback', logout: '/logout' }));
 app.set('view engine', 'ejs');
 
 app.use(express.static(path.join(__dirname, '/')));
+app.use(express.static(path.join(__dirname, 'tenant', tenantId)));
 if (default_tenant) {
   app.use(express.static(path.join(__dirname, 'tenant', default_tenant)));
 }
@@ -142,8 +145,11 @@ app.all('/private/*', keycloak.protect(), permissionsHelper.checkPermission(), f
   res.render(__dirname + '/private/index.ejs');
 });
 
-app.all('/', function(req, res) {
-  if (default_tenant && fs.fileExistsSync(path.join(__dirname, 'tenant', default_tenant, 'index.html'))) {
+app.all('/:tenantName', function(req, res) {
+  tenantId = req.params.tenantName;
+  if(tenantId && fs.existsSync(path.join(__dirname, 'tenant', tenantId, 'index.html'))){
+    res.sendFile(path.join(__dirname, 'tenant', tenantId, 'index.html'));
+  }else if (default_tenant && fs.fileExistsSync(path.join(__dirname, 'tenant', default_tenant, 'index.html'))) {
     res.sendFile(path.join(__dirname, 'tenant', default_tenant, 'index.html'));
   } else {
     res.sendFile(path.join(__dirname + '/public/index.html'));
@@ -156,7 +162,9 @@ app.get('/get/envData', keycloak.protect(), function(req, res) {
   res.end();
 });
 
-
+//tenant Api's
+app.get('/api/tenant/logo/:tenantId', tenantHelper.getLogo);
+app.get('/api/tenant/favicon/:tenantId', tenantHelper.getFavicon);
 
 //proxy urls
 
