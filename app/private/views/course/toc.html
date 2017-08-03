@@ -51,7 +51,7 @@
                                         <b>Course created on: {{toc.courseHierachy.createdOn | dateFilterWithMDY}}</b><br>
                                         <b>Updated on: {{toc.courseHierachy.lastUpdatedOn | dateFilterWithMDY}}</b>
                                     </div>
-                                    <div class="cursor-pointer ng-binding padding-top-10 medium-font-text" ng-click="toc.showCreateBatchModal()">
+                                    <div class="cursor-pointer ng-binding padding-top-10 medium-font-text" ui-sref="CreateBatch({courseId: toc.courseParams.courseId, lectureView: toc.courseParams.lectureView})">
                                         <i class="circular icon margin-right-10 plus"></i>Create New Batch
                                     </div>
                                 </div>
