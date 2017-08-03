@@ -460,6 +460,9 @@ th {
 .margin-top-30 {
   margin-top: 30px !important;
 }
+.margin-bottom-30 {
+  margin-bottom: 30px !important;
+}
 .margin-top-3rem {
   margin-top: -3rem !important;
 }
@@ -630,6 +633,7 @@ th {
 .modal .ui.segment {
   box-shadow: none !important;
   border: none!important;
+  overflow-y: auto !important;
 }
 .breadcrumppadding.ui.breadcrumb,
 .breadcrumppadding.ui.breadcrumb:last-child,
