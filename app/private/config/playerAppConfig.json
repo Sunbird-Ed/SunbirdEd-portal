@@ -484,7 +484,7 @@
         },
         "TELEMETRY": {
             "MAX_BATCH_SIZE": 20,
-            "SYNC": "telemetry"
+            "SYNC": "data/v1/telemetry"
         },
         "CURRENT_USER_ROLES": ["CONTENT_REVIEWER"],
         "COMMON_ROLES_CHECK": ["CONTENT_CREATOR", "CONTENT_REVIEW", "CONTENT_CREATION", "CONTENT_REVIEWER"],
