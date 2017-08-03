@@ -14,13 +14,30 @@
                     </button>
                 </div>
                 <div class="four wide column padding-top-none" ng-if="toc.courseType === 'OTHER_COURSE'">
-                    <button ng-if="!toc.loader.enrollLoader" class="fluid blue right floated  ui button courseHeaderButton margin-top-0" ng-click="toc.enrollUserToCourse(toc.courseId)"> ENROLL TO COURSE</button>
+                <div class="ui dropdown fluid blue right floated  ui button courseHeaderButton margin-top-0">
+                   <span class="text">ENROLL TO COURSE</span>
+                   <i class="dropdown icon"></i>
+                   <div class="menu">
+                        <div class="item">
+                            <span class="text">BATCH 1</span>
+                        </div>
+                        <div class="item">
+                            <span class="text">BATCH 2</span>
+                        </div>
+                        <div class="item">
+                            <span class="text">BATCH 3</span>
+                        </div> 
+                    </div>
+                </div>
+                   
+
+                   <!-- <button ng-if="!toc.loader.enrollLoader" class="fluid blue right floated  ui button courseHeaderButton margin-top-0" ng-click="toc.enrollUserToCourse(toc.courseId)"> ENROLL TO COURSE</button>
                     <div ng-if="toc.loader.enrollLoader">
                         <app-loader data="{{toc.loader}}"></app-loader>
                     </div>
                     <div ng-if="toc.error.showEnrollError">
                         <error-message data="{{toc.error}}" visibility="toc.error.showEnrollError"></error-message>
-                    </div>
+                    </div>-->
                 </div>
             </div>
         </div>
