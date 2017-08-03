@@ -783,6 +783,28 @@ angular.module('playerApp')
             controller: 'BatchListController as batch'
           }
         }
+      }).state('CreateBatch', {
+          url: '/create/batch/:courseId/:lectureView',
+          views: {
+              mainView: {
+                  templateUrl: '/views/common/createBatch.html',
+                  controller: 'BatchController as batch'
+              }
+          },
+          onEnter: function ($rootScope, portalTelemetryService) {
+              $rootScope.profileActive = 'active';
+              portalTelemetryService.fireImpressions({
+                  env: 'content',
+                  type: 'creation',
+                  pageid: org.sunbird.portal.appid + '_CreateBatch',
+                  id: '',
+                  name: '',
+                  url: '/private/index#!/create/batch'
+              });
+          },
+          onExit: function ($rootScope) {
+              $rootScope.profileActive = '';
+          }
       });
   })
   .run(function($urlRouter, $http, $state, permissionsService, $rootScope, $location, config) {
