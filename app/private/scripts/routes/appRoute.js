@@ -820,8 +820,23 @@ angular.module('playerApp')
         // TODO: allow only public permissions
           }
       }).then(function () {
-          $urlRouter.sync();
-          $urlRouter.listen();
+          permissionsService.getCurrentUserProfile().then(function (res) {
+              if (res && res.responseCode === 'OK') {
+                  var profileData = res.result.response;
+                  var userRoles = profileData.roles;
+                  _.forEach(profileData.organisations, function (org) {
+                      if (org.roles && _.isArray(org.roles)) {
+                          userRoles = _.union(userRoles, org.roles);
+                      }
+                  });
+                  permissionsService.setCurrentUserRoles(userRoles);
+              } else {
+                // TODO: allow only public permissions
+              }
+          }).then(function () {
+              $urlRouter.sync();
+              $urlRouter.listen();
+          });
       });
 
       $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState,
