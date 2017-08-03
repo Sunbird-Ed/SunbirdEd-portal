@@ -19,7 +19,7 @@ angular.module('playerApp')
         };
 
         this.addUsers = function (req) {
-            return httpServiceJava.post(config.URL.BATCH.ADD_USERS + '/' + req.batchId;, req);
+            return httpServiceJava.post(config.URL.BATCH.ADD_USERS + '/' + req.batchId, req);
         };
 
         this.removeUsers = function (req) {
