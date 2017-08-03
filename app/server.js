@@ -29,7 +29,7 @@ const express = require('express'),
   appId = env.sunbird_appid || 'sunbird.portal',
   default_tenant = env.sunbird_default_tenant,
   md5 = require('js-md5'),
-  sunbird_api_auth_token = env.sunbird_api_auth_token || 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkMTc1MDI' +
+  sunbird_api_auth_token = env.sunbird_api_auth_token || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkMTc1MDI' +
                 'wNDdlODc0ODZjOTM0ZDQ1ODdlYTQ4MmM3MyJ9.7LWocwCn5rrCScFQYOne8_Op2EOo-xTCK5JCFarHKSs';
 
 const contentProxyUrl = contentURL.replace('/api/', '');
@@ -60,7 +60,7 @@ const decorateRequestHeaders = function() {
       proxyReqOpts.headers['X-Channel-Id'] = channel;
     }
     proxyReqOpts.headers['X-App-Id'] = appId;
-    proxyReqOpts.headers.Authorization = sunbird_api_auth_token;
+    proxyReqOpts.headers.Authorization = 'Bearer '+sunbird_api_auth_token;
     return proxyReqOpts;
   };
 };
