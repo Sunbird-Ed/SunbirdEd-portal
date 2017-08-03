@@ -1,6 +1,23 @@
-<div> {{admin.data}}
-<h3>name:{{user.firstName}}{{user.lastName}}</h3>
+
+<button ng-click="admin.exportUsers()">Export data to CSV file</button>
+<div ng-repeat="user in admin.searchedUsers"> 
+        <h3>name:{{user.firstName}}{{user.lastName}}</h3>
         <span>email:{{user.email}}</span>
         <span>orgId:{{user.rootOrgId}}</span>
         <span>userId:{{user.userId}}</span>
+
+        <button ng-click="admin.deleteUser(user.userId)">delete user</button>
+        <button ng-click=""> change role of user</button>
+        <div ng-repeat="org in user.organisations track by $index">
+                {{$index}}
+                organisationId:{{org.organisationId}}
+                roles:<span ng-repeat="role in org.roles">{{role}}</span>
+        </div>
+        
+        <div ng-repeat="role in admin.userRoles track by $index">{{$index}}{{role}} </div>
+
+
+
+        
+
 </div>
