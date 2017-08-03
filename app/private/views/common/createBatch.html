@@ -1,79 +1,86 @@
-<div class="ui modal" id="createBatchModal">
-    <div class="ui segment margin-top-10">
-        <div class=" margin-bottom-15">
-            <div class="ui grid">
-                <div class="eleven wide column">
-                   <span class="ui header">Create New Batch</span>
-                </div>
-                <div class="one wide column actions">
-                    <h5 class="ui basic icon circular button deny">
-                        <i class="ui remove icon"></i>
-                    </h5>
+<div ng-init="batch.showCreateBatchModal()">
+    <div class="ui modal" id="createBatchModal">
+        <div class="ui segment margin-top-10">
+            <div class=" margin-bottom-15">
+                <div class="ui grid">
+                    <div class="eleven wide column">
+                       <span class="ui header">Create New Batch</span>
+                    </div>
+                    <div class="one wide column actions">
+                        <h5 class="ui basic icon circular button deny">
+                            <i class="ui remove icon"></i>
+                        </h5>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="content">
-            <form class="ui form batchAddUserForm" id="batchAddUserForm">
-              <div class="ui dividing header margin-top-15"></div>
-                <div class="one field">
-                    <div class="required field">
-                      <label>Batch Name</label>
-                      <input type="text" name="batchName">
-                    </div>
-                </div>
-                <div class="one field">
-                    <div class="field">
-                        <label>Batch Description</label>
-                        <textarea rows="2"></textarea>
-                    </div>
-                </div>
-                <div class="inline fields">
-                    <label for="Enrollment Type">Enrollment Type</label>
-                    <div class="field">
-                        <div class="ui radio checkbox">
-                            <input type="radio" name="radio" value='true'>
-                            <label>Closed</label>
+            <div class="content">
+                <form class="ui form batchAddUserForm" id="batchAddUserForm">
+                  <div class="ui dividing header margin-top-15"></div>
+                    <div class="one field">
+                        <div class="required field">
+                          <label>Batch Name</label>
+                          <input type="text" name="name" ng-model="batch.name">
                         </div>
                     </div>
-                    <div class="field">
-                        <div class="ui radio checkbox">
-                            <input type="radio" name="radio" value='false'>
-                            <label>Open</label>
+                    <div class="one field">
+                        <div class="field">
+                            <label>Batch Description</label>
+                            <textarea rows="2" ng-model="batch.description"></textarea>
                         </div>
                     </div>
-                </div>
-                <div class="two fields">
-                    <div apply-script class="field">
-                       <label>Start Date</label>
-                        <div class="ui calendar" id="rangestartAdd">
-                            <div class="ui input left icon">
-                                <i class="calendar icon"></i>
-                                 <input type="text">
+                    <div class="inline fields">
+                        <label for="Enrollment Type">Enrollment Type</label>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="radio" value='true' ng-model="batch.enrollmenttype">
+                                <label>Closed</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="radio" value='false' ng-model="batch.enrollmenttype">
+                                <label>Open</label>
                             </div>
                         </div>
                     </div>
-                    <div class="field">
-                        <label>End Date</label>
-                        <div apply-script class="ui calendar" id="rangeendAdd">
-                            <div class="ui input left icon">
-                                <i class="calendar icon"></i>
-                                <input type="text">
+                    <div class="two fields">
+                        <div apply-script class="field">
+                           <label>Start Date</label>
+                            <div class="ui calendar" id="rangestartAdd">
+                                <div class="ui input left icon">
+                                    <i class="calendar icon"></i>
+                                     <input type="text" ng-model="batch.startdate">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label>End Date</label>
+                            <div apply-script class="ui calendar" id="rangeendAdd">
+                                <div class="ui input left icon">
+                                    <i class="calendar icon"></i>
+                                    <input type="text" ng-model="batch.enddate">
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-               <div class="one field">                              
-                    <label>Add Users</label>
-                    <select name="addUsers" class="ui fluid dropdown multiSelectDropDown" multiple="" 
-                        id="AddUsersDropDown">
-                        <option value=""></option>
-                    </select>
-                </div>
-            </form>
-        </div>
-        <div class="actions">
-            <button class="ui primary right floated button margin-bottom-15 margin-top-10 " type="submit">Create</button>
-            <button class="ui secondary right floated button margin-bottom-15 margin-top-10" type="submit">Clear</button>
+                   <div class="one field">                              
+                         <label>Add Users</label>
+                        <select name="addUsers" class="ui fluid multiple search selection dropdown multiSelectDropDown" multiple="" id="AddUsersDropDown" ng-options=" grade for grade in batch.userList"  ng-model="batch.users">
+                            <option value="">Select User</option>
+                        </select>
+                    </div>
+                     <div class="one field">                              
+                         <label>Add Mentor</label>
+                        <select name="addMentors" class="ui fluid multiple search selection dropdown multiSelectDropDown" multiple="" id="AddMentorsDropDown" ng-options=" grade for grade in batch.userList"  ng-model="batch.mentors">
+                            <option value="">Select Mentor</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="actions">
+                <button class="ui primary right floated button margin-bottom-15 margin-top-10 " type="submit">Create</button>
+                <button class="ui secondary right floated button margin-bottom-15 margin-top-10" type="submit">Clear</button>
+            </div>
         </div>
     </div>
 </div>
