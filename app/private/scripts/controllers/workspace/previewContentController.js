@@ -404,7 +404,7 @@ angular.module('playerApp')
                         previewContent.isShowDeleteButton = false;
                         previewContent.isShowFlagActionButton = false;
                         toasterService.success(previewContent.message.RETIRE_CONTENT.SUCCESS);
-//                $state.go("WorkSpace.PublishedContent");
+                        $state.go($stateParams.backState);
                     } else {
                         previewContent.loader.showLoader = false;
                         toasterService.error(previewContent.message.RETIRE_CONTENT.FAILED);

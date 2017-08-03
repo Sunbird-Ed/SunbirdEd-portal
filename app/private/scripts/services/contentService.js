@@ -4,6 +4,7 @@
  * @ngdoc service
  * @name playerApp.contentService
  * @description
+ * @author Anuj Gupta
  * # contentService
  * Service in the playerApp.
  */
