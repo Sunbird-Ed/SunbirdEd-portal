@@ -807,7 +807,7 @@ angular.module('playerApp')
           }
       });
   })
-  .run(function($urlRouter, $http, $state, permissionsService, $rootScope, $location, config) {
+  .run(function($urlRouter, $http, $state, permissionsService, $rootScope, $location, config, toasterService) {
     permissionsService.getPermissionsData('/permissions').then(function(res) {
       var permissions = res.data; //eslint-disable-line
       if (res && res.responseCode === 'OK') {
@@ -821,7 +821,7 @@ angular.module('playerApp')
     });
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState,
-      fromParams, toasterService) {
+      fromParams) {
       switch (toState.name) {
         case 'WorkSpace':
           if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
