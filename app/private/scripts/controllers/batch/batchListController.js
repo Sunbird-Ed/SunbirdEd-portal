@@ -11,7 +11,7 @@
 
 angular.module('playerApp')
   .controller('BatchListController', ['$rootScope', 'toasterService', 'batchService', function($rootScope, toasterService, batchService) {
-    var batch = this.
+    var batch = this;
     batch.list = [];
     batch.status = 0;
     batch.statusOptions = [
