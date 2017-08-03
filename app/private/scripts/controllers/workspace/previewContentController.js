@@ -22,12 +22,14 @@ angular.module('playerApp')
                                     $stateParams.backState === 'WorkSpace.UpForReviewContent';
             previewContent.isShowDeleteButton =
                                     $stateParams.backState === 'WorkSpace.PublishedContent';
+            previewContent.isShowFlagActionButton =
+                                    $stateParams.backState === 'WorkSpace.FlaggedContent';
             previewContent.message = $rootScope.errorMessages.WORKSPACE;
 
             var validateModal = {
                 state: ['WorkSpace.UpForReviewContent', 'WorkSpace.ReviewContent',
-                    'WorkSpace.PublishedContent'],
-                status: ['Review', 'Live'],
+                    'WorkSpace.PublishedContent', 'WorkSpace.FlaggedContent'],
+                status: ['Review', 'Live', 'Flagged'],
                 mimeType: config.MimeTypeExceptCollection
             };
 
@@ -352,8 +354,8 @@ angular.module('playerApp')
                         lastPublishedBy: previewContent.userId
                     }
                 };
-                previewContent.loader = toasterService.loader('', $rootScope.errorMessages
-                                            .WORKSPACE.PUBLISH_CONTENT.START);
+                previewContent.loader = toasterService.loader('', previewContent.message
+                                                      .PUBLISH_CONTENT.START);
 
                 contentService.publish(request, previewContent.contentId).then(function (res) {
                     if (res && res.responseCode === 'OK') {
@@ -400,8 +402,9 @@ angular.module('playerApp')
                     if (res && res.responseCode === 'OK') {
                         previewContent.loader.showLoader = false;
                         previewContent.isShowDeleteButton = false;
+                        previewContent.isShowFlagActionButton = false;
                         toasterService.success(previewContent.message.RETIRE_CONTENT.SUCCESS);
-//                $state.go("WorkSpace.PublishedContent");
+                        $state.go($stateParams.backState);
                     } else {
                         previewContent.loader.showLoader = false;
                         toasterService.error(previewContent.message.RETIRE_CONTENT.FAILED);
@@ -409,6 +412,51 @@ angular.module('playerApp')
                 }).catch(function () {
                     previewContent.loader.showLoader = false;
                     toasterService.error(previewContent.message.RETIRE_CONTENT.FAILED);
+                });
+            };
+
+            previewContent.acceptContentFlag = function (contentData) {
+                var request = {
+                    versionKey: contentData.versionKey
+                };
+                previewContent.loader = toasterService.loader('', previewContent.message
+                                                  .ACCEPT_CONTENT_FLAG.START);
+
+                contentService.acceptContentFlag(request, contentData.identifier).then(function (res) {
+                    if (res && res.responseCode === 'OK') {
+                        previewContent.loader.showLoader = false;
+                        previewContent.isShowFlagActionButton = false;
+                        previewContent.contentData.status = 'DraftFlag';
+                        toasterService.success(previewContent.message.ACCEPT_CONTENT_FLAG.SUCCESS);
+//                $state.go("WorkSpace.FlaggedContent");
+                    } else {
+                        previewContent.loader.showLoader = false;
+                        toasterService.error(previewContent.message.ACCEPT_CONTENT_FLAG.FAILED);
+                    }
+                }).catch(function () {
+                    previewContent.loader.showLoader = false;
+                    toasterService.error(previewContent.message.ACCEPT_CONTENT_FLAG.FAILED);
+                });
+            };
+
+            previewContent.discardContentFlag = function (contentData) {
+                var request = { };
+                previewContent.loader = toasterService.loader('', previewContent.message
+                                                     .DISCARD_CONTENT_FLAG.START);
+
+                contentService.discardContentFlag(request, contentData.identifier).then(function (res) {
+                    if (res && res.responseCode === 'OK') {
+                        previewContent.loader.showLoader = false;
+                        previewContent.isShowFlagActionButton = false;
+                        toasterService.success(previewContent.message.DISCARD_CONTENT_FLAG.SUCCESS);
+//                $state.go("WorkSpace.PublishedContent");
+                    } else {
+                        previewContent.loader.showLoader = false;
+                        toasterService.error(previewContent.message.DISCARD_CONTENT_FLAG.FAILED);
+                    }
+                }).catch(function () {
+                    previewContent.loader.showLoader = false;
+                    toasterService.error(previewContent.message.DISCARD_CONTENT_FLAG.FAILED);
                 });
             };
         }]);

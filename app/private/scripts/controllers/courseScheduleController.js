@@ -492,4 +492,9 @@ angular.module('playerApp')
                     toc.init();
                 }
             };
+
+            //method to open batch create popup
+            toc.showCreateBatchModal  = function () {
+                $("#createBatchModal").modal("show");
+            }
         }]);

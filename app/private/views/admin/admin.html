@@ -1,17 +1,13 @@
-<!-- <h1>hello admin</h1> -->
-
-<div class="ui fluid category search">
-  <div class="ui icon input">
-    <input class="prompt" type="text" placeholder="Search user..."ng-model="admin.userName">
-    <i class="search icon" ></i>
-  </div>
-  <!-- <button ng-click="admin.searchUser()"></button> -->
-  <div class="results"></div>
-</div>
-<div ng-repeat="user in admin.searchedUsers">
-  <h3>name:{{user.firstName}}{{user.lastName}}</h3>
-  <span>email:{{user.email}}</span>
-  <span>orgId:{{user.rootOrgId}}</span>
-  <span>userId:{{user.userId}}</span>
-  <button ng-click="admin.deleteUser();">delete</button>
+<div ng-if="!$root.search.loader.showLoader && !$root.search.error.showError && $root.search.searchResult.response.content.length">
+    <div class="ui clearing segment content-player-header search-content-header">
+      <div class="ui  left floated header margin-auto">
+          <p class="serch-allresult">Showing results {{$root.search.searchKeyword? 'for ': ''}}<span class="lower-case">{{$root.search.searchKeyword? '"'+$root.search.searchKeyword+'"': ''}}  in "{{$root.search.selectedSearchKey }} "</span></p>
+      </div>
+      <h5 class="ui right floated basic icon circular button" ng-click="$root.search.close()">
+          <i class="ui remove icon"></i>
+      </h5>
+    </div>
+    <!-- <div ng-repeat="user in $root.search.searchResult.response.content"> -->
+        <user-search data="$root.search.searchResult.response.content"></user-search>
+    <!-- </div> -->
 </div>

@@ -423,4 +423,23 @@ angular.module('playerApp')
                     toasterService.error(editContent.message.RETIRE_CONTENT.FAILED);
                 });
             };
+            editContent.loadConceptTree=function(){
+                 var req = {
+                    query:"",
+                   "filters": {
+                    "objectType": ["Concept"]
+                     },
+                    params: {
+                        cid: '12'
+                    },
+                    limit: 20
+                }; 
+                contentService.search(req).then(function(res){
+                    console.log(res);
+                }).catch(function(err){
+                   toasterService.error($rootScope.errorMessages.WORKSPACE.GET.FAILED); 
+                });
+            }
+            
+            
         }]);

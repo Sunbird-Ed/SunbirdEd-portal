@@ -4,6 +4,7 @@
  * @ngdoc service
  * @name playerApp.contentService
  * @description
+ * @author Anuj Gupta
  * # contentService
  * Service in the playerApp.
  */
@@ -57,6 +58,16 @@ angular.module('playerApp')
 
             this.flag = function (req, contentId) {
                 var url = config.URL.CONTENT.FLAG + '/' + contentId;
+                return httpService.post(url, req);
+            };
+
+            this.acceptContentFlag = function (req, contentId) {
+                var url = config.URL.CONTENT.ACCEPT_FLAG + '/' + contentId;
+                return httpService.post(url, req);
+            };
+
+            this.discardContentFlag = function (req, contentId) {
+                var url = config.URL.CONTENT.DISCARD_FLAG + '/' + contentId;
                 return httpService.post(url, req);
             };
         }]);

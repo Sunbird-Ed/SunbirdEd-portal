@@ -4,7 +4,8 @@
  * @ngdoc filter
  * @name studioApp.filter:dateFilter
  * @function
- * @description
+ * @description filter related to date
+ * @author Anuj Gupta
  * # dateFilter
  * Filter in the studioApp.
  */
