@@ -1,10 +1,10 @@
 <div class="ui grid">
-    <div class="ten wide column">
+    <div class="eight wide column">
     </div>
-    <div class="two wide column padding-top-none">
+    <div class="four wide column padding-top-none">
         <div class="ui form">
           <div class="field">
-            <select ng-options="option.value as option.name for option in batch.statusOptions" ng-model="batch.status">
+            <select ng-options="option.value as option.name for option in batch.statusOptions" ng-model="batch.status" ng-change="batch.listBatches()" id="batchStatusOptions">
             </select>
           </div>
         </div>
