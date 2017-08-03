@@ -328,7 +328,7 @@ angular.module('playerApp')// add those all values
                 $timeout(function () {
                     $('#languageSelect').dropdown();
                     $('#languageSelect').dropdown('refresh');
-                    $('#languageSelect').dropdown('set selected', profile.basicProfile.language);
+                    $('#languageSelect').dropdown('set selected', profile.basicProfile.language[0]);
                 }, 100);
             };
 
