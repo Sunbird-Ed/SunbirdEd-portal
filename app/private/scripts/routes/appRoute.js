@@ -767,6 +767,14 @@ angular.module('playerApp')
             onExit: function ($rootScope) {
                 $rootScope.resourcesActive = '';
             }
+        })
+        .state('WorkSpace.ContentBatch', {
+            url: '/content/batches',
+            views: {
+                contentView: {
+                    templateUrl: 'views/workSpace/viewBatch.html'
+                }
+            }
         });
     })
     .run(function ($urlRouter, $http, $state, permissionsService, $rootScope, $location, config) {
