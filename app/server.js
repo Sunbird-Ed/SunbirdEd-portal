@@ -246,7 +246,8 @@ keycloak.deauthenticated = function(request) {
 
 function verifyToken() {
   return function(req, res, next) {
-    if (!req.session['keycloak-token']) {
+
+    if (!req.session) {
       res.status(440);
       res.send({
         "id": "api.error",
