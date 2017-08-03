@@ -2,7 +2,7 @@ const request = require('request'),
     _ = require('lodash'),
     dateFormat = require('dateformat'),
     uuidv1 = require('uuid/v1'),
-    learnerURL = process.env.sunbird_learner_player_url || 'http://52.172.36.121:9000/v1/';
+    learnerURL = process.env.sunbird_learner_player_url || 'https://dev.open-sunbird.org/api/';
 
 
 
