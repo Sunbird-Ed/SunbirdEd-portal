@@ -3,7 +3,7 @@ const request = require("request"),
   _ = require('lodash'),
   uuidv1 = require('uuid/v1'),
   appId = process.env.sunbird_appid || 'sunbird.portal',
-  contentURL = process.env.sunbird_content_player_url || 'http://localhost:5000/v1/',
+  contentURL = process.env.sunbird_content_player_url || 'https://dev.open-sunbird.org/api/',
   md5 = require('js-md5');
 telemetry_packet_size = process.env.sunbird_telemetry_packet_size || 20;
 
