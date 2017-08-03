@@ -36,6 +36,7 @@
             "published": "PUBLISHED",
             "allUploads": "ALL UPLOADS",
             "upForReview": "UP FOR REVIEW",
+            "flagged": "FLAGGED",
 
             "startCreating": {
                 "textbook": "TEXTBOOK",
@@ -81,7 +82,10 @@
                 "subject": "Subject",
                 "lastUpdate": "Last update",
                 "createdOn": "Created On",
-                "status": "Status"
+                "status": "Status",
+                "delete": "Delete",
+                "accept": "Accept",
+                "discard": "Discard"
             },
             "common": {
                 "title": "Title",

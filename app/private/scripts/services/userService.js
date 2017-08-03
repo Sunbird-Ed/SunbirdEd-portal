@@ -8,9 +8,16 @@
  * Service in the playerApp.
  */
 angular.module('playerApp')
-    .service('userService', function(config, httpService, httpServiceJava, $q, $rootScope, portalTelemetryService) {
+    .service('userService',[
+        'config', 
+        'httpService', 
+        'httpServiceJava', 
+        '$rootScope',
+        'portalTelemetryService',
+        function(config, httpService, httpServiceJava, $rootScope, portalTelemetryService) {
         this.resourceBundle = function(language, type) {
-            var url = config.URL.CONFIG_BASE + config.URL.USER.RESOURCE_BUNDLE + '/' + type + '/' + language;
+            var url = config.URL.CONFIG_BASE + config.URL.USER.RESOURCE_BUNDLE + '/' 
+                    + type + '/' + language;
             return httpService.get(url);
         };
 
@@ -81,4 +88,4 @@ angular.module('playerApp')
         this.getTenantLogo = function () {
             return httpService.get(config.URL.USER.TENANT_LOGO);
         }
-    });
+    }]);
