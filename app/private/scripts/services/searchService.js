@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('playerApp')
-    .service('searchService', function (httpService, config) {
+    .service('searchService', ['httpService', 'config', function (httpService, config) {
         this.contentSearch = function (req) {
             return httpService.post(config.URL.CONTENT.SEARCH, req);
         };
@@ -13,4 +13,4 @@ angular.module('playerApp')
         this.search = function (req) {
             return httpService.post(config.URL.COMPOSITE.SEARCH, req);
         };
-    });
+    }]);
