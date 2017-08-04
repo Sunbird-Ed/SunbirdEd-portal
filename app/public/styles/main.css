@@ -1719,12 +1719,6 @@ ul.fancytree-container li {
   float: right;
   font-size: 1.1em;
 }
-.ui.tree-picker.modal .search {
-  display: none;
-}
-.ui.tree-picker.modal .header .menu {
-  display: none;
-}
 .workspacecontentProfile {
   line-height: 22px;
 }
