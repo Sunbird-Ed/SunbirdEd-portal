@@ -20,14 +20,14 @@
           </div>
       </div>
       <div class="ui form" ng-if="admin.selectedOrgUserRoles">
-        <div class="inline fields">
-          <div class="field" ng-repeat="role in admin.userRoles">
-            <div class="ui checkbox">
-              <input type="checkbox" value='{{role}}' ng-click="admin.modal(role,admin.selectedOrgUserRoles)" ng-modal="admin.array" ng-checked="admin.isUserRole(role,admin.selectedOrgUserRoles);">
-              <label>{{role}}</label>
+        <div class="ui stackable four column grid">            
+            <div class="field" ng-repeat="role in admin.userRoles">
+                <div class="ui checkbox">
+                  <input type="checkbox" value='{{role}}' ng-click="admin.modal(role,admin.selectedOrgUserRoles)" ng-modal="admin.array" ng-checked="admin.isUserRole(role,admin.selectedOrgUserRoles);">
+                  <label>{{role}}</label>
+                </div>
             </div>
-          </div>
-          </div>
+        </div>
       </div>
     </div>
     <div class="actions">
