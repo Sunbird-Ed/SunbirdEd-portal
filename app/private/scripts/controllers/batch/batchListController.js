@@ -24,8 +24,7 @@ angular.module('playerApp')
 
       //sematic ui scripts
       $rootScope.$on('$viewContentLoaded', function() {
-        $('#batchStatusOptions').dropdown()
-          .dropdown('set selected', value);
+        $('#batchStatusOptions').dropdown();
       });
 
       batch.listBatches = function() {

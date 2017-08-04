@@ -398,7 +398,10 @@ angular.module('playerApp')
             previewContent.deleteContent = function () {
                 previewContent.loader = toasterService.loader('', previewContent.message
                                                         .RETIRE_CONTENT.START);
-                contentService.retire(previewContent.contentId).then(function (res) {
+                var request = {
+                    contentIds: [previewContent.contentId]
+                };
+                contentService.retire(request).then(function (res) {
                     if (res && res.responseCode === 'OK') {
                         previewContent.loader.showLoader = false;
                         previewContent.isShowDeleteButton = false;
@@ -428,7 +431,9 @@ angular.module('playerApp')
                         previewContent.isShowFlagActionButton = false;
                         previewContent.contentData.status = 'DraftFlag';
                         toasterService.success(previewContent.message.ACCEPT_CONTENT_FLAG.SUCCESS);
-//                $state.go("WorkSpace.FlaggedContent");
+                        // $timeout(function () {
+                        //     $state.go($stateParams.backState);
+                        // }, 1000);
                     } else {
                         previewContent.loader.showLoader = false;
                         toasterService.error(previewContent.message.ACCEPT_CONTENT_FLAG.FAILED);
@@ -449,7 +454,9 @@ angular.module('playerApp')
                         previewContent.loader.showLoader = false;
                         previewContent.isShowFlagActionButton = false;
                         toasterService.success(previewContent.message.DISCARD_CONTENT_FLAG.SUCCESS);
-//                $state.go("WorkSpace.PublishedContent");
+                        // $timeout(function () {
+                        //     $state.go($stateParams.backState);
+                        // }, 1000);
                     } else {
                         previewContent.loader.showLoader = false;
                         toasterService.error(previewContent.message.DISCARD_CONTENT_FLAG.FAILED);

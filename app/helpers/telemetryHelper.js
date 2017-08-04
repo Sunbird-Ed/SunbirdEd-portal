@@ -3,7 +3,8 @@ const request = require("request"),
   _ = require('lodash'),
   uuidv1 = require('uuid/v1'),
   appId = process.env.sunbird_appid || 'sunbird.portal',
-  contentURL = process.env.sunbird_content_player_url || 'http://localhost:5000/v1/',
+  contentURL = process.env.sunbird_content_player_url || 'https://dev.open-sunbird.org/api/',
+  learner_authorization = process.env["sunbird_api_auth_token"] || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkMTc1MDIwNDdlODc0ODZjOTM0ZDQ1ODdlYTQ4MmM3MyJ9.7LWocwCn5rrCScFQYOne8_Op2EOo-xTCK5JCFarHKSs",
   md5 = require('js-md5');
 telemetry_packet_size = process.env.sunbird_telemetry_packet_size || 20;
 
@@ -95,9 +96,10 @@ module.exports = {
     var data = this.prepareTelemetryRequestBody(req, eventsData)
     var options = {
       method: 'POST',
-      url: contentURL + 'telemetry',
+      url: contentURL + 'data/v1/telemetry',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer '+learner_authorization
       },
       body: data,
       json: true

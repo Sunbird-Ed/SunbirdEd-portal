@@ -121,7 +121,8 @@
             "RETIRE_CONTENT": {
                 "START": "We are deleting the content...",
                 "FAILED": "Deleting content failed, please try again later...",
-                "SUCCESS": "Content deleted successfully..."
+                "SUCCESS": "Content deleted successfully...",
+                "NOT_DELETE": "content not deleted"
             },
             "FLAGGED": {
                 "START": "We are fetching flagged content...",
