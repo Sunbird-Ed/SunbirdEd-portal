@@ -1,23 +1,38 @@
 
-<button ng-click="admin.exportUsers()">Export data to CSV file</button>
-<div ng-repeat="user in admin.searchedUsers"> 
-        <h3>name:{{user.firstName}}{{user.lastName}}</h3>
-        <span>email:{{user.email}}</span>
-        <span>orgId:{{user.rootOrgId}}</span>
-        <span>userId:{{user.userId}}</span>
 
-        <button ng-click="admin.deleteUser(user.userId)">delete user</button>
-        <button ng-click=""> change role of user</button>
-        <div ng-repeat="org in user.organisations track by $index">
-                {{$index}}
-                organisationId:{{org.organisationId}}
-                roles:<span ng-repeat="role in org.roles">{{role}}</span>
-        </div>
-        
-        <div ng-repeat="role in admin.userRoles track by $index">{{$index}}{{role}} </div>
-
-
-
-        
-
+<!-- userSearch -->
+ <div class="ui divided items">
+   <div class="userSearchCardHover item " ng-repeat="user in admin.searchedUsers">
+    <div class="ui tiny image userSearchImage " >
+      <img ng-src="{{user.avatar|| 'images/user_logo.png'}} ">
+    </div>
+    <div class="content ">
+      <a class="header ">{{user.firstName}}{{user.lastName}}</a>
+       <a class="float-ContentRight"><i class="trash outline icon trashIcon-fontSize"></i></a>
+      <div class="meta ">
+        <span class="cinema "><span ng-repeat="org in user.organisations">{{org.orgName}}
+                <span ng-if="!$last">,</span>
+        </span>
+      </div>
+      <div class="description ">
+        <p></p>
+      </div>
+      <div class="extra ">
+        <button class="ui right floated primary button userSearchButton " ng-click="admin.showModal();">
+          Change Role
+        </button>
+        <div ng-include=" 'views/admin/updateRoleModal.html' "></div>  
+        <div class="ui label ">{{user.phone}}</div>
+        <div class="ui label ">{{user.email}}</div>
+      </div>
+    </div>
+  </div>
 </div>
+<!-- export fille -->
+<button ng-click="admin.exportUsers()">Export data to CSV file</button>
+<div class=" field link ui small " >
+    <button  ng-click="admin.openImageBrowser();">upload CSV</button>
+<input type="file" accept="file/csv,file/xlsx" class="content-input ui small " id="uploadCSV" onchange="angular.element(this).scope().admin.validateFile(this.files);" required="" />
+</div>
+
+

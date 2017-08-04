@@ -48,14 +48,14 @@ angular.module('playerApp')
                                         'public'
                                     ],
                                     organisations: [
-                                        {
+                                        { orgName: 'abc',
                                             organisationId: '012301184897351680218',
                                             roles: [
                                                 'FLAG_REVIEWER',
                                                 'CONTENT_CREATOR'
                                             ]
                                         },
-                                        {
+                                        { orgName: 'def',
                                             organisationId: '01229679190641868838',
                                             roles: [
                                                 'CONTENT_CREATOR'
@@ -164,7 +164,7 @@ angular.module('playerApp')
                 var deferred = $q.defer();
                 deferred.resolve(res);
                 // return deferred.promise;
-                console.log('urluser search', url);
+                // console.log('urluser search', url);
                 // return httpServiceJava.post(url, req);
             };
 
