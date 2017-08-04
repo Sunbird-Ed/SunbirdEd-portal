@@ -8,7 +8,7 @@
         </div>
         <div ng-if="$root.search.selectedSearchKey=='All'" ng-include="'views/search/allSearch.html'">
         </div>
-        <div ng-if="$root.search.selectedSearchKey=='Users'" ng-include="'views/admin/admin.html'">
+        <div ng-if="$root.search.selectedSearchKey=='Users' || $root.search.selectedSearchKey=='Organisations'" ng-include="'views/admin/admin.html'">
         </div>
     </div>
     <div class="one wide column "></div>

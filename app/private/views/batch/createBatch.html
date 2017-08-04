@@ -1,0 +1,83 @@
+<div ng-init="batch.showCreateBatchModal()">
+    <div class="ui modal" id="createBatchModal">
+        <div class="header">
+            <div class="ui grid">
+                <div class="eleven wide column">
+                   <span class="ui header">Create New Batch</span>
+                </div>
+                <div class="one wide column actions">
+                    <h5 class="ui basic icon circular button deny">
+                        <i class="ui remove icon"></i>
+                    </h5>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <form class="ui form batchAddUserForm" id="createBatch" name="createBatch" validate>
+                <div class="one field" ng-class="{true: 'error'}[batch.submitted && createBatch.name.$invalid]">
+                    <div class="required field">
+                      <label>Batch Name</label>
+                      <input type="text" name="name" ng-model="batch.data.name" required>
+                    </div>
+                </div>
+                <div class="one field">
+                    <div class="field">
+                        <label>Batch Description</label>
+                        <textarea rows="2" name="description" id="description" ng-model="batch.data.description"></textarea>
+                    </div>
+                </div>
+                <div class="inline fields" ng-class="{true: 'error'}[batch.submitted && createBatch.enrollmenttype.$invalid]">
+                    <label for="Enrollment Type">Enrollment Type</label>
+                    <div class="field">
+                        <div class="ui radio checkbox">
+                            <input type="radio" name="enrollmenttype" value='invite-only' ng-model="batch.data.enrollmenttype" required>
+                            <label>Invite-only</label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui radio checkbox">
+                            <input type="radio" name="enrollmenttype" value='open' ng-model="batch.data.enrollmenttype" required>
+                            <label>Open</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="two fields" >
+                    <div class="required field" ng-class="{true: 'error'}[batch.submitted && createBatch.startdate.$invalid]">
+                       <label>Start Date</label>
+                        <div class="ui calendar rangestartAdd" id="rangestartAdd">
+                            <div class="ui input left icon">
+                                <i class="calendar icon"></i>
+                                 <input type="text" name="startdate" ng-model="batch.data.startdate" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label>End Date</label>
+                        <div apply-script class="ui calendar rangeendAdd" id="rangeendAdd">
+                            <div class="ui input left icon">
+                                <i class="calendar icon"></i>
+                                <input type="text" name="enddate" ng-model="batch.data.enddate">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               <div class="one field">                              
+                     <label>Add Users</label>
+                    <select name="addUsers" class="ui fluid multiple search selection dropdown multiSelectDropDown" multiple="" id="AddUsersDropDown" ng-options=" grade for grade in batch.userList"  ng-model="batch.data.users">
+                        <option value="">Select User</option>
+                    </select>
+                </div>
+                <div class="one field">                              
+                    <label>Add Mentor</label>
+                    <select name="addMentors" class="ui fluid multiple search selection dropdown multiSelectDropDown" multiple="" id="AddMentorsDropDown" ng-options=" grade for grade in batch.menterList"  ng-model="batch.data.mentors">
+                        <option value="">Select Mentor</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+        <div class="actions">
+            <div class="ui secondary button" >Clear</div>
+            <div class="ui primary button" ng-click="batch.submitted = true; batch.createBatch(batch.data)">Create</div>
+        </div>
+    </div>
+</div>

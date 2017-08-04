@@ -16,13 +16,8 @@ angular.module('loginApp', ['loginApp.labels', 'loginApp.errorMessages'])
       return decodeURIComponent(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + encodeURIComponent(key).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));
     };
     var error = $rootScope.getQueryStringValue('error');
+
     if (error && atob(error) !== "undefined") {
-      iziToast.error({
-        'title': 'Error',
-        'message': atob(error),
-        'position': 'topCenter',
-        'progressBar': false,
-        'timeout': false
-      });
+      alert(atob(error))
     }
   }]);
