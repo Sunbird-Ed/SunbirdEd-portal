@@ -37,9 +37,9 @@ angular.module('playerApp')
                 return httpService.post(url, req);
             };
 
-            this.retire = function (id) {
-                var url = config.URL.CONTENT.RETIRE + '/' + id;
-                return httpService.remove(url);
+            this.retire = function (req) {
+                var url = config.URL.CONTENT.RETIRE;
+                return httpService.remove(url, req);
             };
 
             this.reject = function (data, id) {
