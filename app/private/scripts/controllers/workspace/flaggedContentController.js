@@ -16,7 +16,6 @@ angular.module('playerApp')
             flaggedContent.userId = $rootScope.userId;
             flaggedContent.contentStatus = ['Flagged'];
             flaggedContent.sortBy = 'desc';
-            console.log('organisationIds', $rootScope.organisationIds);
 
             flaggedContent.getAllFlaggedContent = function () {
                 flaggedContent.loader = toasterService.loader('', $rootScope.errorMessages
