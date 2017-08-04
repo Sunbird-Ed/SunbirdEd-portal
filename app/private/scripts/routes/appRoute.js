@@ -783,7 +783,7 @@ angular.module('playerApp')
           url: '/batches',
           views: {
               contentView: {
-                  templateUrl: 'views/workSpace/batchList.html',
+                  templateUrl: 'views/batch/batchList.html',
                   controller: 'BatchListController as batch'
               }
           }
@@ -791,7 +791,7 @@ angular.module('playerApp')
           url: '/create/batch/:courseId/:lectureView',
           views: {
               mainView: {
-                  templateUrl: '/views/common/createBatch.html',
+                  templateUrl: '/views/batch/createBatch.html',
                   controller: 'BatchController as batch'
               }
           },
