@@ -1,8 +1,8 @@
-<div class="ui modal" id="createBatchModal">
+<div class="ui modal" id="changeUserRoles" ng-init="admin.modalInit(user.organisations)">
   <div class="ui segment">
     <div class="ui grid">
       <div class="eleven wide column">
-        <span class="ui header">Select Role</span>
+        <span class="ui header">Select Role</span>{{admin.userOrgsCopy}}
       </div>
       <div class="one wide column actions">
         <h5 class="ui basic icon circular button deny">
@@ -11,42 +11,23 @@
       </div>
     </div>
     <div class="content">
-      <div class="ui selection dropdown margin-bottom-30 margin-top-20">
+      <div class="ui inline selection  dropdown margin-bottom-30 margin-top-20" id="userOrgs">
         <input type="hidden" name="gender">
         <i class="dropdown icon"></i>
         <div class="default text">Org</div>
         <div class="menu">
-          <div class="item" data-value="1">Org1</div>
-          <div class="item" data-value="0">Org2</div>
-        </div>
+          <div class="item" ng-click="admin.selectedIrg(org.organisationId);admin.selectedOrgUserRoles=org.roles" ng-repeat="org in user.organisations" value="{{org.organisationId}}">{{org.orgName}}</div>
+          </div>
       </div>
-      <div class="ui form">
+      <div class="ui form" ng-if="admin.selectedOrgUserRoles">
         <div class="inline fields">
-          <div class="field">
+          <div class="field" ng-repeat="role in admin.userRoles">
             <div class="ui checkbox">
-              <input type="checkbox" name="example">
-              <label>Role1</label>
+              <input type="checkbox" value='{{role}}' ng-click="admin.modal(role,admin.selectedOrgUserRoles)" ng-modal="admin.array" ng-checked="admin.isUserRole(role,admin.selectedOrgUserRoles);">
+              <label>{{role}}</label>
             </div>
           </div>
-          <div class="field">
-            <div class="ui checkbox">
-              <input type="checkbox" name="example">
-              <label>Role2</label>
-            </div>
           </div>
-          <div class="field">
-            <div class="ui checkbox">
-              <input type="checkbox" name="example">
-              <label>Role3</label>
-            </div>
-          </div>
-          <div class="field">
-            <div class="ui checkbox">
-              <input type="checkbox" name="example">
-              <label>Role4</label>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
     <div class="actions">
