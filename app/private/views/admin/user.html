@@ -8,7 +8,7 @@
     </div>
     <div class="content ">
       <a class="header ">{{user.firstName}}{{user.lastName}}</a>
-       <a class="float-ContentRight"><i class="trash outline icon trashIcon-fontSize"></i></a>
+       <a class="float-ContentRight"><span ng-click="admin.showModal();"><i class="edit icon trashIcon-fontSize"></span></i><i class="trash outline icon trashIcon-fontSize"></i></a>
       <div class="meta ">
         <span class="cinema "><span ng-repeat="org in user.organisations">{{org.orgName}}
                 <span ng-if="!$last">,</span>
@@ -18,9 +18,6 @@
         <p></p>
       </div>
       <div class="extra ">
-        <button class="ui right floated primary button userSearchButton " ng-click="admin.showModal();">
-          Change Role
-        </button>
         <div ng-include=" 'views/admin/updateRoleModal.html' "></div>  
         <div class="ui label ">{{user.phone}}</div>
         <div class="ui label ">{{user.email}}</div>
