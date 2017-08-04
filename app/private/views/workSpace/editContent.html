@@ -119,8 +119,9 @@
                         </div>
                         <div class="two fields">
                             <div class="field">
-                                <label>Concepts</label>
-                                <input type="text" ng-click="editContent.loadConceptTree()" readonly />
+                                <label>{{$root.labels.WORKSPACE.common.concept}}</label>
+                                <div class="cursor-pointer" ng-if="!editContent.conceptLoader.showLoader"> <input  id="treePicker" type="text"  readonly value="{{editContent.contentData.concepts.length}} concepts selected" /></div>
+                                <app-loader ng-if="editContent.conceptLoader.showLoader" data="{{editContent.conceptLoader}}"></app-loader>
                             </div>
 
                         </div>
