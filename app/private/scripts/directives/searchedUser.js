@@ -11,7 +11,7 @@ angular.module('playerApp').directive('userSearch', function () {
         templateUrl: 'views/admin/user.html',
         restrict: 'E',
         scope: {
-            data: '=',
+            users: '=',
             type: '='
         },
         link: function (scope, element, attrs) {
