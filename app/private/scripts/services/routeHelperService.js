@@ -149,11 +149,12 @@ angular.module('playerApp')
 
                         break;
                     case 'Search':
-                        if ($rootScope.searchKey === 'Users') {
+                        if ($rootScope.searchKey === 'Users'
+                            || $rootScope.searchKey === 'Organisations') {
                             $rootScope.breadCrumbsData = [{
                                 name: 'Home',
                                 link: 'home'
-                            }, { name: 'Admin',
+                            }, { name: 'Profile',
                                 link: 'profile'
                             }, {
                                 name: 'Search',

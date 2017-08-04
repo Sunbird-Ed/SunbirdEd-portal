@@ -460,6 +460,9 @@ th {
 .margin-top-30 {
   margin-top: 30px !important;
 }
+.margin-bottom-30 {
+  margin-bottom: 30px !important;
+}
 .margin-top-3rem {
   margin-top: -3rem !important;
 }
@@ -630,6 +633,7 @@ th {
 .modal .ui.segment {
   box-shadow: none !important;
   border: none!important;
+  overflow-y: auto !important;
 }
 .breadcrumppadding.ui.breadcrumb,
 .breadcrumppadding.ui.breadcrumb:last-child,
@@ -1828,6 +1832,32 @@ ul.fancytree-container li {
 }
 .notedec p {
   word-break: break-all;
+}
+.userSearchImage > img {
+  min-height: 80px !important;
+}
+.userSearchButton {
+  margin-top: -5px !important;
+}
+.userSearchCardHover {
+  padding: 10px !important;
+}
+.ui.items > .userSearchCardHover.item:hover {
+  -webkit-box-shadow: 1px 6px 15px 2px rgba(0, 0, 0, 0.15);
+  moz-box-shadow: 1px 6px 15px 2px rgba(0, 0, 0, 0.15);
+  -o-box-shadow: 1px 6px 15px 2px rgba(0, 0, 0, 0.15);
+  transition: all 0.5s;
+  z-index: 100;
+  transform: scale(1.07);
+  -webkit-transform: scale(1.02);
+  background-color: #ffffff;
+  border-radius: 5px;
+}
+.ui.divided.items > .userSearchCardHover.item:first-child {
+  padding-top: 10px !important;
+}
+.ui.divided.items > .userSearchCardHover.item:last-child {
+  padding-bottom: 10px !important;
 }
 body {
   position: relative !important;

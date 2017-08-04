@@ -23,16 +23,10 @@ angular.module('playerApp').directive('search', function () {
             = config.FILTER.RESOURCES.contentTypes;
             $rootScope.search.subjects = config.FILTER.RESOURCES.subjects;
             $rootScope.search.boards = config.FILTER.RESOURCES.boards;
-            $scope.search.searchTypeKeys = ['Courses', 'Resources', 'Users'];
-            $rootScope.search.sortingOptions = [
-               { field: 'lastUpdatedOn', name: 'Updated On' },
-               { field: 'createdOn', name: 'Created On' }];
+            $scope.search.searchTypeKeys = config.searchTypeKeys;
+            $rootScope.search.sortingOptions = config.sortingOptions;
             $rootScope.search.sortBy = { createdOn: 'asc' };
-            $scope.search.searchSelectionKeys = [
-              { id: 'Courses', name: 'Courses' },
-              { id: 'Resources', name: 'Resources' },
-              { id: 'All', name: 'All' },
-              { id: 'Users', name: 'Users' }];
+            $scope.search.searchSelectionKeys = config.searchSelectionKeys;
             $rootScope.search.sortIcon = true;
             $rootScope.search.selectedLanguage = [];
             $rootScope.search.selectedContentType = [];
@@ -223,9 +217,15 @@ angular.module('playerApp').directive('search', function () {
                 } else if ($rootScope.search.selectedSearchKey === 'All') {
                     $scope.search.searchFn = searchService.search(req);
                     $scope.search.resultType = 'content';
-                } else if ($rootScope.search.selectedSearchKey === 'Users') {
-                    $scope.search.searchFn = adminService.search(req);
-                    $scope.search.resultType = 'users';
+                } else if ($rootScope.search.selectedSearchKey === 'Users'
+                          || $rootScope.search.selectedSearchKey === 'Organisations') {
+                    req.filters.objectType = $rootScope.search.selectedSearchKey === 'Users'
+                                            ? ['user']
+                                            : ['org'];
+                    $scope.search.searchFn = adminService.search({ request: req });
+                    $scope.search.resultType = $rootScope.search.selectedSearchKey === 'Users'
+                                              ? 'users'
+                                              : 'organisations';
                 }
 
                 $scope.search.searchFn.then(function (res) {

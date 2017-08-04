@@ -408,23 +408,23 @@ angular.module('playerApp')
                     }
                 };
 
-                editContent.deleteContent = function (requestData) {
-                    editContent.loader = toasterService.loader('', editContent.message.RETIRE_CONTENT
-                            .START);
-                    contentService.retire(requestData.identifier).then(function (res) {
-                        if (res && res.responseCode === 'OK') {
-                            editContent.loader.showLoader = false;
-                            editContent.closeEditForm(requestData);
-                            toasterService.success(editContent.message.RETIRE_CONTENT.SUCCESS);
-                        } else {
-                            editContent.loader.showLoader = false;
-                            toasterService.error(editContent.message.RETIRE_CONTENT.FAILED);
-                        }
-                    }).catch(function () {
+            editContent.deleteContent = function (requestData) {
+                editContent.loader = toasterService.loader('', editContent.message.RETIRE_CONTENT
+                                                    .START);
+                var request = {
+                    contentIds: [requestData.identifier]
+                };
+                contentService.retire(request).then(function (res) {
+                    if (res && res.responseCode === 'OK') {
+                        editContent.loader.showLoader = false;
+                        editContent.closeEditForm(requestData);
+                        toasterService.success(editContent.message.RETIRE_CONTENT.SUCCESS);
+                    } else {
                         editContent.loader.showLoader = false;
                         toasterService.error(editContent.message.RETIRE_CONTENT.FAILED);
-                    });
-                };
+                    }
+                });
+            };
 
                 /*
                  * load concepts section

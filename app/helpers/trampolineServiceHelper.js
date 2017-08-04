@@ -8,12 +8,13 @@ request = require('request'),
   permissionsHelper = require('./permissionsHelper.js'),
   telemetryHelper = require('./telemetryHelper.js'),
   echoAPI = process.env['sunbird_echo_api_url'] || "https://dev.open-sunbird.org/api/echo/",
-  createUserFlag = process.env['sunbird_autocreate_trampoline_user'] || true,
-  learnerURL = process.env.sunbird_learner_player_url || 'http://52.172.36.121:9000/v1/',
+  createUserFlag = process.env['sunbird_autocreate_trampoline_user'] || 'true',
+  learnerURL = process.env.sunbird_learner_player_url || 'https://dev.open-sunbird.org/api/',
   trampoline_clientId = process.env["sunbird_trampoline_client_id"] || "trampoline",
   trampoline_server_url = process.env["sunbird_portal_auth_server_url"] || "https://dev.open-sunbird.org/auth",
   trampoline_realm = process.env["sunbird_portal_realm"] || "sunbird",
   trampoline_secret = process.env["sunbird_trampoline_secret"] || "36c4277f-d59b-4ea2-b788-964b96bd47d1";
+  learner_authorization = process.env["sunbird_api_auth_token"] || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkMTc1MDIwNDdlODc0ODZjOTM0ZDQ1ODdlYTQ4MmM3MyJ9.7LWocwCn5rrCScFQYOne8_Op2EOo-xTCK5JCFarHKSs";
 let memoryStore = new session.MemoryStore();
 var keycloak = new Keycloak({ store: memoryStore }, {
   clientId: trampoline_clientId,
@@ -155,21 +156,22 @@ module.exports = {
     var loginId = payload['sub'] + (payload['iss'] ? '@' + payload['iss'] : '')
     var options = {
       method: 'POST',
-      url: learnerURL + 'user/getuser',
+      url: learnerURL + 'user/v1/profile/read',
       headers: {
         'x-device-id': 'trampoline',
         'x-msgid': uuidv1(),
         'ts': dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo"),
         'x-consumer-id': '7c03ca2e78326957afbb098044a3f60783388d5cc731a37821a20d95ad497ca8',
         'content-type': 'application/json',
-        accept: 'application/json'
+        accept: 'application/json',
+        'Authorization': 'Bearer '+learner_authorization
       },
       body: { params: {}, request: { loginId: loginId } },
       json: true
     };
 
     request(options, function(error, response, body) {
-        console.log('check user exists', body);
+        console.log('check user exists', JSON.stringify(body));
       if (error) {
         callback(error, null)
         return;
@@ -185,7 +187,7 @@ module.exports = {
   createUser: function(payload, callback) {
     var options = {
       method: 'POST',
-      url: learnerURL + 'user/create',
+      url: learnerURL + 'user/v1/create',
       headers: {
         ts: dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo"),
         'x-msgid': uuidv1(),
@@ -193,7 +195,8 @@ module.exports = {
         'x-consumer-id': '7c03ca2e78326957afbb098044a3f60783388d5cc731a37821a20d95ad497ca8',
         id: 'id',
         'content-type': 'application/json',
-        accept: 'application/json'
+        accept: 'application/json',
+        'Authorization': 'Bearer '+learner_authorization
       },
       body: {
         params: {},
