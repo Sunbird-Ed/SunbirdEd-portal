@@ -409,7 +409,10 @@ angular.module('playerApp')
             editContent.deleteContent = function (requestData) {
                 editContent.loader = toasterService.loader('', editContent.message.RETIRE_CONTENT
                                                     .START);
-                contentService.retire(requestData.identifier).then(function (res) {
+                var request = {
+                    contentIds: [requestData.identifier]
+                };
+                contentService.retire(request).then(function (res) {
                     if (res && res.responseCode === 'OK') {
                         editContent.loader.showLoader = false;
                         editContent.closeEditForm(requestData);
