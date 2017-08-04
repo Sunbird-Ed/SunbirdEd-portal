@@ -431,7 +431,7 @@ angular.module('playerApp')
                  */
                 editContent.loadConceptTree = function () {
                     editContent.conceptLoader = toasterService.loader('', $rootScope.errorMessages
-                            .WORKSPACE.GET.START);
+                            .WORKSPACE.CONCEPTS.START);
                     editContent.concepts = [];
                     editContent.getConcept(0, 200, function (err) {
                         if (err === true) {
