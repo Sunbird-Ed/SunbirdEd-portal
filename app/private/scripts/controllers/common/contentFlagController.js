@@ -16,7 +16,6 @@ angular.module('playerApp')
             contentFlag.showContentFlagModal = false;
             contentFlag.userId = $rootScope.userId;
             contentFlag.userFullName = $rootScope.firstName + $rootScope.lastName;
-            contentFlag.courseId = $scope.courseid;
             contentFlag.contentId = $scope.contentid;
             contentFlag.contentName = $scope.contentname;
             contentFlag.contentVersionKey = $scope.versionkey;
@@ -46,8 +45,8 @@ angular.module('playerApp')
                                                             .START);
                 contentService.flag(requestData, contentFlag.contentId).then(function (res) {
                     if (res && res.responseCode === 'OK') {
-                        contentFlag.showContentFlagModal = false;
                         contentFlag.loader.showLoader = false;
+                        contentFlag.showContentFlagModal = false;
                         contentFlag.hideContentFlagModal();
                         contentFlag.close();
                     } else {
@@ -62,10 +61,10 @@ angular.module('playerApp')
 
             contentFlag.saveMetaData = function (data) {
                 var requestData = {
-                    flagReasons: data.flagReasons,
+                    flagReasons: [data.flagReasons],
                     flaggedBy: contentFlag.userFullName,
                     versionKey: contentFlag.contentVersionKey,
-                    content: data.comment
+                    comment: [data.comment]
                 };
                 contentFlag.createFlag(requestData);
             };
