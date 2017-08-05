@@ -11,7 +11,8 @@
             },
             "TOC": {
                 "START": "We are fetching course details...",
-                "ERROR": "Unable to get course schedule details."
+                "ERROR": "Unable to get course schedule details.",
+                "Flagged_COURSE": "This course content may be inappropriate..."
             },
             "ENROLL": {
                 "START": "Enrolling....",
@@ -122,7 +123,9 @@
                 "START": "We are deleting the content...",
                 "FAILED": "Deleting content failed, please try again later...",
                 "SUCCESS": "Content deleted successfully...",
-                "NOT_DELETE": "content not deleted"
+                "NOT_DELETE": "content not deleted",
+                "SELECT_CONTENT": "Please select content to",
+                "SELECT_ACTION": "Please select action..."
             },
             "FLAGGED": {
                 "START": "We are fetching flagged content...",

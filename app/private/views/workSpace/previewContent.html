@@ -166,9 +166,53 @@
                             </div>
                         </div>
                     </div>
+                    <div class="three wide column">
+                        <div class="ui list">
+                            <div class="item">
+                                <div class="content">
+                                    <div class="header">{{$root.labels.WORKSPACE.previewContent.medium}}</div>
+                                    <div class="description padding-top-1rem">{{previewContent.contentData.medium}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-if="previewContent.contentData.status === 'Flagged'">
+                    <div class="three wide column">
+                        <div class="ui list">
+                            <div class="item">
+                                <div class="content">
+                                    <div class="header">{{$root.labels.WORKSPACE.previewContent.flaggedReasons}}</div>
+                                    <div class="description padding-top-1rem">{{previewContent.contentData.flagReasons.toString()}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="three wide column">
+                        <div class="ui list">
+                            <div class="item">
+                                <div class="content">
+                                    <div class="header">{{$root.labels.WORKSPACE.previewContent.flaggedBy}}</div>
+                                    <div class="description padding-top-1rem">{{previewContent.contentData.flaggedBy.toString()}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-if="previewContent.contentData.status === 'Flagged' && previewContent.contentData.flags">
+                    <div class="twelve wide column">
+                        <div class="ui list">
+                            <div class="item">
+                                <div class="content">
+                                    <div class="header">{{$root.labels.WORKSPACE.previewContent.flaggedDescription}}</div>
+                                    <div class="description padding-top-1rem">{{previewContent.contentData.flags}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="one wide column"></div>
+        <div class=" one wide column "></div>
     </div>
 </div>

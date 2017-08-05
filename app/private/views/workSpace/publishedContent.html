@@ -1,32 +1,52 @@
-<div ng-init="publishedContent.getPublishedContent()">
-    <div ng-if="!publishedContent.loader.showLoader">
-        <div class="ui three stackable cards" ng-if="publishedContent.publishedContentData.length > 0">
-            <div class="link card mouse-pointer" ng-repeat="item in publishedContent.publishedContentData track by $index" ng-click="publishedContent.openContentPlayer(item)">
-                <div class="image imageInCardsResponsive">
-                    <div class="ui fluid image">
-                        <a class="ui black right ribbon label">{{item.contentType}}</a>
-                        <img ng-src=" {{item.appIcon ? item.appIcon : '../images/sunbird_logo.png'}} ">
-                    </div>
-                    <div class="cardImageText center aligned ">
-                        <span class="sliderCardHeading text-cencapitalize">
-                            {{ item.name | limitTo: 15 }}&nbsp;<i ng-show="item.name.length >= 15" class="ellipsis horizontal icon popup-button link" data-content="{{item.name}}" data-variation="wide"></i>
-                        </span>
-                    </div>
+<div class="ui grid">
+    <div class="twelve wide column" ng-if="!publishedContent.loader.showLoader && publishedContent.publishedContentData.length > 0">
+        <div class="content" ng-init="publishedContent.initializeUIElement()">
+            {{$root.labels.WORKSPACE.common.action}}:&nbsp;
+            <div class="ui inline dropdown" id="actionDropDown" name="global">
+                <div class="text">{{$root.labels.WORKSPACE.common.actionName}}</div>
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                    <div class="active item" value="default" data-text="Delete">{{$root.labels.WORKSPACE.common.delete}}</div>
                 </div>
-                <div class="sliderCards content">
-                    <span class="sliderCardSubDesc">
-                        <span>
-                            {{ item.description | limitTo: 70 }}&nbsp;<i ng-show="item.description.length >= 70" class="ellipsis horizontal icon popup-button link" data-content="{{item.description}}" data-variation="wide"></i>
-                        </span>
-                    </span>
-                </div>
-            </div>
-        </div>
-        <div class="ui huge positive message" ng-if="publishedContent.publishedContentData.length === 0">
-            <p>{{$root.errorMessages.WORKSPACE.PUBLISHED.NO_CONTENT}}</p>
+            </div>&nbsp;
+            <a class="mouse-pointer" ng-click="publishedContent.applyAction()">{{$root.labels.WORKSPACE.common.apply}}</a>
         </div>
     </div>
-    <div ng-if="publishedContent.loader.showLoader">
-        <app-loader data="{{publishedContent.loader}}"></app-loader>
+    <div class="twelve wide column">
+        <div ng-init="publishedContent.getPublishedContent()">
+            <div ng-if="!publishedContent.loader.showLoader">
+                <div class="ui three stackable cards" ng-if="publishedContent.publishedContentData.length > 0">
+                    <div class="card" ng-repeat="item in publishedContent.publishedContentData track by $index">
+                        <div class="image imageInCardsResponsive">
+                            <div class="ui fluid image">
+                                <span class="ui large left corner label">
+                                    <i class="ui link large icon mouse-pointer" title="Select" ng-click="isSelected = !isSelected; addContentOnSelect(item, isSelected)" ng-class="isSelected ? 'checkmark box green' : 'square outline' "></i>
+                                </span>
+                                <span class="ui black right ribbon label">{{item.contentType}}</span>
+                                <img ng-src=" {{item.appIcon ? item.appIcon : '../images/sunbird_logo.png'}} ">
+                            </div>
+                            <div class="cardImageText center aligned mouse-pointer " ng-click="publishedContent.openContentPlayer(item) ">
+                                <span class="sliderCardHeading text-cencapitalize ">
+                            {{ item.name | limitTo: 15 }}&nbsp;<i ng-show="item.name.length>= 15" class="ellipsis horizontal icon popup-button link" data-content="{{item.name}}" data-variation="wide"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="sliderCards content" ng-click="publishedContent.openContentPlayer(item)">
+                            <span class="sliderCardSubDesc">
+                                <span>
+                                    {{ item.description | limitTo: 70 }}&nbsp;<i ng-show="item.description.length >= 70" class="ellipsis horizontal icon popup-button link" data-content="{{item.description}}" data-variation="wide"></i>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui huge positive message" ng-if="publishedContent.publishedContentData.length === 0">
+                    <p>{{$root.errorMessages.WORKSPACE.PUBLISHED.NO_CONTENT}}</p>
+                </div>
+            </div>
+            <div ng-if="publishedContent.loader.showLoader">
+                <app-loader data="{{publishedContent.loader}}"></app-loader>
+            </div>
+        </div>
     </div>
 </div>
