@@ -25,17 +25,17 @@
                                 <span class="ui black right ribbon label">{{item.contentType}}</span>
                                 <img ng-src=" {{item.appIcon ? item.appIcon : '../images/sunbird_logo.png'}} ">
                             </div>
-                            <div class="cardImageText center aligned " ng-click="allUploadedContent.editContent(item) ">
+                            <div class="cardImageText center aligned mouse-pointer" ng-click="allUploadedContent.editContent(item) ">
                                 <span class="sliderCardHeading text-cencapitalize ">
                                     {{ item.name | limitTo: 15 }}&nbsp;<i ng-show="item.name.length>= 15" class="ellipsis horizontal icon popup-button link" data-content="{{item.name}}" data-variation="wide"></i>
                                 </span>
                             </div>
                         </div>
-                        <div class="sliderCards content" ng-click="allUploadedContent.editContent(item) " s>
+                        <div class="sliderCards content mouse-pointer" ng-click="allUploadedContent.editContent(item)">
                             <span class="sliderCardSubDesc">
-                        <span>
-                            {{ item.description | limitTo: 70 }}&nbsp;<i ng-show="item.description.length >= 70" class="ellipsis horizontal icon popup-button link" data-content="{{item.description}}" data-variation="wide"></i>
-                        </span>
+                                <span>
+                                    {{ item.description | limitTo: 70 }}&nbsp;<i ng-show="item.description.length >= 70" class="ellipsis horizontal icon popup-button link" data-content="{{item.description}}" data-variation="wide"></i>
+                                </span>
                             </span>
                         </div>
                     </div>

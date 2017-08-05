@@ -27,11 +27,11 @@
                             </div>
                             <div class="cardImageText center aligned mouse-pointer " ng-click="publishedContent.openContentPlayer(item) ">
                                 <span class="sliderCardHeading text-cencapitalize ">
-                            {{ item.name | limitTo: 15 }}&nbsp;<i ng-show="item.name.length>= 15" class="ellipsis horizontal icon popup-button link" data-content="{{item.name}}" data-variation="wide"></i>
+                                    {{ item.name | limitTo: 15 }}&nbsp;<i ng-show="item.name.length>= 15" class="ellipsis horizontal icon popup-button link" data-content="{{item.name}}" data-variation="wide"></i>
                                 </span>
                             </div>
                         </div>
-                        <div class="sliderCards content" ng-click="publishedContent.openContentPlayer(item)">
+                        <div class="sliderCards content mouse-pointer" ng-click="publishedContent.openContentPlayer(item)">
                             <span class="sliderCardSubDesc">
                                 <span>
                                     {{ item.description | limitTo: 70 }}&nbsp;<i ng-show="item.description.length >= 70" class="ellipsis horizontal icon popup-button link" data-content="{{item.description}}" data-variation="wide"></i>
