@@ -27,7 +27,7 @@
 
 ## Setup Instructions
 * Clone the project.
-* Change to PROJECT_FOLDER
+* Change to src folder
 * RUN `npm install`
 * RUN `bower cache clean`
 * RUN `bower install --force`
