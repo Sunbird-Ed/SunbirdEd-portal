@@ -85,7 +85,11 @@
                 "status": "Status",
                 "delete": "Delete",
                 "accept": "Accept",
-                "discard": "Discard"
+                "discard": "Discard",
+                "flaggedReasons": "Flagged reason",
+                "flaggedBy": "Flagged by",
+                "flaggedDescription": "Flagged Description",
+                "medium": "Medium"
             },
             "common": {
                 "concept":"Concepts",
