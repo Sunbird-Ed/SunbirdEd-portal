@@ -836,7 +836,30 @@ angular.module('playerApp')
           onExit: function ($rootScope) {
               $rootScope.profileActive = '';
           }
-      });
+      })
+        .state('CreateLessonPlan', {
+            url: '/create/lessonPlan',
+            views: {
+                mainView: {
+                    templateUrl: '/views/workSpace/createLessonPlan.html',
+                    controller: 'LessonPlanController as lessonPlan'
+                }
+            },
+            onEnter: function ($rootScope, portalTelemetryService) {
+                $rootScope.profileActive = 'active';
+                portalTelemetryService.fireImpressions({
+                    env: 'lessonPlan',
+                    type: 'creation',
+                    pageid: org.sunbird.portal.appid + '_CreateLessonPlan',
+                    id: '',
+                    name: '',
+                    url: '/private/index#!/create/lessonPlan'
+                });
+            },
+            onExit: function ($rootScope) {
+                $rootScope.profileActive = '';
+            }
+        });
   })
   .run(function ($urlRouter, $http, $state, permissionsService, $rootScope, $location, config, toasterService) {
       permissionsService.getPermissionsData('/permissions').then(function (res) {
@@ -868,7 +891,7 @@ angular.module('playerApp')
 
       $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState,
       fromParams) {
-          window.localStorage.setItem('previousURl', JSON.stringify({'name':fromState.name, 'params': fromParams}));
+          window.localStorage.setItem('previousURl', JSON.stringify({ name: fromState.name, params: fromParams }));
           switch (toState.name) {
           case 'WorkSpace':
               if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
