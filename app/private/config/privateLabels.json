@@ -92,6 +92,7 @@
                 "medium": "Medium"
             },
             "common": {
+                "concept":"Concepts",
                 "title": "Title",
                 "description": "Description",
                 "board": "Board",
