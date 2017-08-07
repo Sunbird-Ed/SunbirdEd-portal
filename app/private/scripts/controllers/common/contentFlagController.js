@@ -64,7 +64,7 @@ angular.module('playerApp')
                     flagReasons: [data.flagReasons],
                     flaggedBy: contentFlag.userFullName,
                     versionKey: contentFlag.contentVersionKey,
-                    comment: [data.comment]
+                    flags: [data.comment]
                 };
                 contentFlag.createFlag(requestData);
             };
