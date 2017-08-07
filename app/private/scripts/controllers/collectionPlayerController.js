@@ -2,8 +2,8 @@
 
 (function () {
     angular.module('playerApp').controller('CollectionPlayerCtrl', ['$state', '$timeout',
-        'courseService', '$rootScope',
-        function ($state, $timeout, courseService, $rootScope) {
+        'courseService', '$rootScope', '$stateParams',
+        function ($state, $timeout, courseService, $rootScope, $stateParams) {
             var cpvm = this;
             cpvm.treeKey = 0;
             cpvm.loader = {
@@ -146,6 +146,10 @@
                 cpvm.showPlayer = true;
             };
             cpvm.closePlayer = function () {
+                if ($stateParams.backState === 'Profile') {
+                    $state.go($stateParams.backState);
+                    return;
+                }
                 if ($rootScope.search.searchKeyword !== '') {
                     $timeout(function () {
                         $rootScope.$emit('initSearch', {});

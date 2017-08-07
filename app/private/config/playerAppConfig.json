@@ -511,6 +511,7 @@
             { "id": "Resources", "name": "Resources" },
             { "id": "Organisations", "name": "Organisations" },
             { "id": "Users", "name": "Users" }
-        ]
+        ],
+        "contributeContentType": ["Collection", "Story", "Worksheet", "TextBook", "Course", "LessonPlan"]
     }
 }
