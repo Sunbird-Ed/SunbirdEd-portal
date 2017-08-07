@@ -2,7 +2,8 @@ const request = require('request'),
     _ = require('lodash'),
     dateFormat = require('dateformat'),
     uuidv1 = require('uuid/v1'),
-    learnerURL = process.env.sunbird_learner_player_url || 'https://dev.open-sunbird.org/api/';
+    envHelper = require('./environmentVariablesHelper.js'),
+    learnerURL = envHelper.LEARNER_URL;
 
 
 
