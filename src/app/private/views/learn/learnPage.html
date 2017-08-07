@@ -1,33 +1,3 @@
-<div class="ui grid">
-    <div class="one wide column"></div>
-    <div class="ten wide column popular-page" ng-if="!learn.pageApi.loader.showLoader && !learn.pageApi.error.showError">
-        <div class="ui link cards popular-section" ng-repeat="section in learn.page"  ng-if="section.contents.response.length > 0">
-            <h4 class="ui header sectionHeading">{{section.name}}
-                <a class="ui red circular inline label">{{section.contents.response.length|| 0}}</a></h4>
-
-            <div class="regular slider " ng-if="section.contents.response.length > 0" ng-init="recommended = true">
-                <div apply-script ng-click="learn.openCourseView(item, 'OTHER_COURSE')" ng-repeat=" item in section.contents.response track by $index" add-slick>
-                    <div ng-include=" 'views/common/ratingCard.html'"></div>
-
-                </div>
-
-                <div ng-if="learn.error.isError">
-                    <error-message data={{learn.error}}></error-message>
-                </div>
-                <div class="ui inverted dimmer margin-top-20 " ng-class="{true: 'active', false: 'disabled'}[loading] ">
-                    <div class="ui text loader ">Featching enrolled courses</div>
-                </div>
-
-
-            </div>
-            <br>
-        </div>
-    </div>
-    <div class="ten wide column" ng-if="learn.pageApi.loader.showLoader">
-        <app-loader data="{{learn.pageApi.loader}}"></app-loader>
-    </div>
-    <div class="ten wide column" ng-if="learn.pageApi.error.showError">
-        <error-message data="{{learn.pageApi.error}}" visibility="learn.pageApi.error.showError"></error-message>
-    </div>
-    <div class="one wide column"></div>
+<div ng-if='$root.enrolledCourseIds'>
+<page-section type="'course'"></page-section>
 </div>

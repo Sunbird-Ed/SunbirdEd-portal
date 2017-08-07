@@ -1,6 +1,5 @@
 <!--notes start-->
 <div class="ui row">
-
     <div class="three wide column ">
     </div>
     <div class="six wide column center aligned" ng-if="showModalInLectureView">
@@ -23,75 +22,64 @@
     <div class="row">
         <div class="three wide column">
             <div class="ui list">
-                <a class="item">
+                <div class="item">
                     <div class="content">
                         <div class="header">Author</div>
-                        <div class="description padding-top-1rem">{{contentData.owner}}</div>
+                        <div class="description padding-top-1rem">{{contentData.author}}</div>
                     </div>
-                </a>
+                </div>
             </div>
         </div>
         <div class="three wide column">
             <div class="ui list">
-                <a class="item">
+                <div class="item">
                     <div class="content">
                         <div class="header">Language</div>
                         <div class="description padding-top-1rem">{{contentData.language.toString()}}</div>
                     </div>
-                </a>
+                </div>
             </div>
         </div>
         <div class="three wide column">
             <div class="ui list">
-                <a class="item">
+                <div class="item">
                     <div class="content">
                         <div class="header">Grades</div>
                         <div class="description padding-top-1rem">{{contentData.gradeLevel.toString()}}</div>
                     </div>
-                </a>
+                </div>
             </div>
         </div>
         <div class="three wide column">
             <div class="ui list">
-                <a class="item">
-                    <div class="content">
-                        <div class="header">Keywords</div>
-                        <div class="description padding-top-1rem">{{contentData.keywords.toString()}}</div>
-                    </div>
-                </a>
-            </div>
-        </div>
-
-    </div>
-    <div class="row">
-        <div class="three wide column">
-            <div class="ui list">
-                <a class="item">
+                <div class="item">
                     <div class="content">
                         <div class="header">Subject</div>
                         <div class="description padding-top-1rem">{{contentData.subject}}</div>
                     </div>
-                </a>
+                </div>
             </div>
         </div>
+    </div>
+    <div class="row">
         <div class="three wide column">
             <div class="ui list">
-                <a class="item">
+                <div class="item">
                     <div class="content">
                         <div class="header">Last update</div>
                         <div class="description padding-top-1rem">{{contentData.lastUpdatedOn| dateFilterWithMDY}}</div>
                     </div>
-                </a>
+                </div>
             </div>
         </div>
         <div class="three wide column">
             <div class="ui list">
-                <a class="item">
+                <div class="item">
                     <div class="content">
                         <div class="header">Created On</div>
                         <div class="description padding-top-1rem">{{contentData.createdOn| dateFilterWithMDY}}</div>
                     </div>
-                </a>
+                </div>
             </div>
         </div>
     </div>

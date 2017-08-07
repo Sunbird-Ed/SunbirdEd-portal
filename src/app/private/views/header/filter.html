@@ -1,7 +1,9 @@
 <div>
     <div class="ui divider header-search-filters-divider"></div>
     <div class="filtercolumn ui grid">
-        <div class="one wide column"></div>
+        <div class="one wide column">
+
+        </div>
         <div class=" ten wide column ">
             <div apply-script class="ui accordion" id='content-search-filter-accordion'>
                 <div class="ui twelve column grid">
@@ -14,56 +16,116 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="twelve wide column content">
+                            <div class="twelve wide column content margin-bottom-15">
+                                <span class="padded chip margin-top--5" ng-if='$root.search.selectedBoard.length > 0'>
+                                    Board:
+                                    <a class="ui label margin-top--5" ng-repeat="board in $root.search.selectedBoard">
+                                        {{board}}
+                                        <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedBoard',board)"></i>
+                                    </a>
+                                </span>
+                                <span class="padded chip margin-top--5" ng-if='$root.search.selectedContentType.length > 0'>
+                                    Content Type:
+                                    <a class="ui label margin-top--5" ng-repeat="contenttype in $root.search.selectedContentType">
+                                        {{contenttype}}
+                                        <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedContentType',contenttype)"></i>
+                                    </a>
+                                </span>
+                                <span class="padded chip" ng-if='$root.search.selectedLanguage.length > 0'>
+                                    Languages:
+                                    <a class="ui label margin-top--5" ng-repeat="language in $root.search.selectedLanguage">
+                                        {{language}}
+                                        <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedLanguage',language)"></i>
+                                    </a>
+                                </span>
+                                <span class="padded chip margin-top--5" ng-if='$root.search.selectedSubject.length > 0'>
+                                    Subjects:
+                                    <a class="ui label margin-top--5" ng-repeat="subject in $root.search.selectedSubject">
+                                        {{subject}}
+                                        <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedSubject',subject)"></i>
+                                    </a>
+                                </span>
+
+
+                            </div>
                             <div class="filtercolmntext ui grid">
                                 <div class="one wide column filter-text">
                                     <span class="ShowFilterSubTitle" translate="filterby">Filter by:</span>
                                 </div>
                                 <div class="two wide column">
-                                    <select name="language" class="filtersearch ui selection content-search-filter dropdown" multiple="" id="multi-select" ng-value="option.value" ng-options=" language for language in search.languages" ng-model="search.selectedLanguage">
-                                        <option value="" translate="languages">Languages</option>
-                                    </select>
+                                    <div id="filterBoard" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
+                                        <i class="dropdown icon"></i>
+                                        <div class="filter-sel-text" ng-if="$root.search.selectedBoard.length > 0 ">{{$root.search.selectedBoard.length+' boards'}}</div>
+                                        <div class="filter-sel-text" ng-if="$root.search.selectedBoard.length == 0 ">Board</div>
+                                        <div class="menu">
+                                            <div ng-click="$root.search.selectFilter('selectedBoard',board,$event)" ng-repeat="board in $root.search.boards | orderBy:'toString()'" class="item dropdown-item" ng-class="{'active':($root.search.selectedBoard.indexOf(board)>=0)}" data-value="{{board}}">{{board}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class='two wide column' ng-if="$root.search.selectedSearchKey == 'Resources'">
+                                    <div id="filterContent" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
+                                        <input type='hidden' ng-value='{{}}' />
+                                        <i class="dropdown icon"></i>
+                                        <div class="filter-sel-text" ng-if="$root.search.selectedContentType.length > 0 ">{{$root.search.selectedContentType.length+' content types'}}</div>
+                                        <div class="filter-sel-text" ng-if="$root.search.selectedContentType.length == 0 ">Content Type</div>
+                                        <div class="menu">
+                                            <div ng-click="$root.search.selectFilter('selectedContentType',contentType,$event,'Content Type')" ng-repeat="contentType in $root.search.contentTypes  | orderBy:'toString()'" class="item dropdown-item" ng-class="{'active':($root.search.selectedContentType.indexOf(contentType)>=0)}" data-value="{{contentType}}">{{contentType}}</div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="two wide column">
-                                    <select name="Lesson Type" class="filtersearch ui selection content-search-filter dropdown" multiple="" id="multi-select" ng-value="option.value" ng-options=" contentType for contentType in search.contentTypes" ng-model="search.selectedContentType">
-                                        <option value="" translate="types">Types</option>
-                                    </select>
+                                    <div id="filterLang" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
+                                        <input type='hidden' ng-value='{{}}' />
+                                        <i class="dropdown icon"></i>
+                                        <div class="filter-sel-text" ng-if="$root.search.selectedLanguage.length > 0 ">{{$root.search.selectedLanguage.length+' languages'}}</div>
+                                        <div class="filter-sel-text" ng-if="$root.search.selectedLanguage.length == 0 ">Language</div>
+                                        <div class="menu">
+                                            <div ng-click="$root.search.selectFilter('selectedLanguage',language,$event)" ng-repeat="language in $root.search.languages  | orderBy:'toString()'" class="item dropdown-item" ng-class="{'active':($root.search.selectedLanguage.indexOf(language)>=0)}" data-value="{{language}}">{{language}}</div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="two wide column">
-                                    <select name="Subject" class="filtersearch ui selection content-search-filter dropdown" multiple="" id="multi-select" ng-value="option.value" ng-options=" subject for subject in search.subjects" ng-model="search.selectedSubject">
-                                        <option value="" translate="subjects">Subjects</option>
-                                    </select>
+                                    <div id="filterSub" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
+                                        <i class="dropdown icon"></i>
+                                        <div class="filter-sel-text" ng-if="$root.search.selectedSubject.length > 0 ">{{$root.search.selectedSubject.length+' subjects'}}</div>
+                                        <div class="filter-sel-text" ng-if="$root.search.selectedSubject.length == 0 ">Subject</div>
+                                        <div class="menu">
+                                            <div ng-click="$root.search.selectFilter('selectedSubject',subject,$event)" ng-repeat="subject in $root.search.subjects  | orderBy:'toString()'" class="item dropdown-item" ng-class="{'active':($root.search.selectedSubject.indexOf(subject)>=0)}" data-value="{{subject}}">{{subject}}</div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="two wide column">
-                                    <select name="Board" class="filtersearch ui selection content-search-filter dropdown" multiple="" id="multi-select" ng-value="option.value" ng-options="board for board in search.boards" ng-model="search.selectedBoard">
-                                        <option value="" translate="boards">Boards</option>
-                                    </select>
-                                </div>
+
                                 <div class="three wide column filter-button">
-                                    <button class="searchfilterbutton ui blue tiny  button" ng-click="search.applyFilter()" translate="apply">APPLY</button>
-                                    <button class="searchfilterbutton ui primary tiny basic button" ng-click="search.resetFilter()" translate="reset">RESET</button>
+                                    <a class="searchfilterbutton ui blue tiny  button" ng-click="$root.search.applyFilter()" translate="apply">APPLY</a>
+                                    <a class="searchfilterbutton ui primary tiny basic button" ng-click="$root.search.resetFilter()" translate="reset">RESET</a>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                     <div class="two wide column">
                         <div class="field">
                             <div class="content dropdown-content">
                                 <span class="ShowFilterSubTitle" translate="sortby"> Sort by:&nbsp;</span>
-                                <div class="ui inline dropdown search-dropdown" id="multi-select-sort">
+                                <div apply-script class="ui inline dropdown search-dropdown" id="multi-select-sort">
                                     <div class="text"></div>
                                     <i class="dropdown icon"></i>
-                                    <select ng-options="sortingOption as sortingOption.name for sortingOption in search.sortingOptions " ng-model="search.sortByOption" ng-change="search.applySorting()"></select>
+                                    <select ng-options="sortingOption.field as sortingOption.name for sortingOption in $root.search.sortingOptions" ng-model="$root.search.sortByOption" ng-change="$root.search.applySorting()">
+                                        <option value=""></option>
+                                    </select>
                                 </div>
-                                <i class="link" ng-class="{'sort content ascending icon':(search.sortIcon==true),'sort content descending icon':(search.sortIcon==false)}" ng-click="search.sortIcon=!search.sortIcon;search.applySorting()"></i>
+                                <i class="link" ng-if="$root.search.sortByOption!=''" ng-class="{'sort content ascending icon':($root.search.sortIcon===true),'sort content descending icon':($root.search.sortIcon===false)}" ng-click="$root.search.sortIcon=!$root.search.sortIcon;$root.search.applySorting()"></i>
                             </div>
                         </div>
                     </div>
                 </div>
 
             </div>
+
         </div>
-        <!-- <div class="one wide column"></div> -->
+
     </div>
     <div class="ui divider"></div>
 </div>

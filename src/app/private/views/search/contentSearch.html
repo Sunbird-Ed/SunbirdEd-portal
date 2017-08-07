@@ -1,21 +1,22 @@
-<!--<div ng-show="search.searchResult.length> 0 && !search.contentPlayer.isContentPlayerEnabled">-->
-<div>
+<div ng-if="!$root.search.loader.showLoader && !$root.search.error.showError && $root.search.searchResult.content.length">
     <div class="ui clearing segment content-player-header search-content-header">
         <div class="ui  left floated header margin-auto">
-            <p class="serch-allresult">Showing results {{search.searchQuery ? 'for ': ''}}<span class="lower-case">{{search.searchQuery? '"'+search.searchQuery+'"': ''}}  in "{{search.searchType }}"</span></p>
+           <p class="serch-allresult">Showing results {{$root.search.searchKeyword? 'for ': ''}}<span class="lower-case">{{$root.search.searchKeyword? '"'+$root.search.searchKeyword+'"': ''}}  in "{{$root.search.selectedSearchKey }} "</span></p>
         </div>
-        <h5 class="ui right floated basic icon circular button" ng-click="close()">
+        <h5 class="ui right floated basic icon circular button" ng-click="$root.search.close()">
             <i class="ui remove icon"></i>
         </h5>
     </div>
     <div class=" ui stackable four column grid dynamic-section-card ">
-        <div class="column " ng-repeat="item in search.searchResult track by $index ">
-            <div class="slider link " ng-include=" 'views/common/ratingCard.html' " ng-click="search.playContent(item)"></div>
+        <div class="column " ng-repeat="item in $root.search.searchResult.content track by $index ">
+            <div class="slider link " ng-include=" 'views/common/ratingCard.html' " ng-click="$root.search.playContent(item)"></div>
         </div>
     </div>
 </div>
-<content-player visibility="search.contentPlayer.isContentPlayerEnabled " body="search.contentPlayer.contentData" id="search.contentPlayer.contentId" isshowmetaview="true " isheader="true " isclose="true " height="10 " width="100 " ispercentage="true "></content-player>
 
-<div ng-if="isSearchError.isError">
-    <error-message data={{isSearchError}}></error-message>
+<div ng-if="$root.search.loader.showLoader">
+    <app-loader data="{{$root.search.loader}}"></app-loader>
+</div>
+<div ng-if="$root.search.error.showError">
+    <error-message data="{{$root.search.error}}" visibility="$root.search.error.showError"></error-message>
 </div>

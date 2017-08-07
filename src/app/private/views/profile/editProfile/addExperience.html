@@ -1,0 +1,70 @@
+<form class="ui form EditJobProfileForm">
+    <div class="ui dividing header margin-top-15 "></div>
+    <div class="two fields">
+
+        <div class="  required field">
+            <label>{{$root.labels.PROFILE.JOB_PROFILE.jobName}}</label>
+            <input type="text" name="jobName" ng-model="profileCtrl.newExperience.jobName">
+        </div>
+        <div class=" field">
+            <label>{{$root.labels.PROFILE.JOB_PROFILE.position}}</label>
+            <input type="text" name="" ng-model="profileCtrl.newExperience.role">
+        </div>
+
+
+    </div>
+    <div class="two fields">
+        <div class="required  field">
+            <label>{{$root.labels.PROFILE.JOB_PROFILE.organization}}</label>
+            <input type="text" name="org" ng-model="profileCtrl.newExperience.orgName">
+        </div>
+        <div class=" field">
+            <label>{{$root.labels.PROFILE.JOB_PROFILE.subjects}}</label>
+            <div class="field">
+                <select apply-script class="ui fluid dropdown signupMultiple" multiple="" ng-model="profileCtrl.newExperience.subject" ng-value="option.value" ng-options=" subject for subject in ::profileCtrl.subjects">
+            </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="inline fields" ng-if="!profileCtrl.currentJobLocation">
+        <label for="address">{{$root.labels.PROFILE.JOB_PROFILE.isCurrentJob}}</label>
+        <div class="field">
+            <div class="ui radio checkbox ">
+                <input type="radio" name="radio" value='true' ng-model="profileCtrl.newExperience.isCurrentJob">
+                <label>{{$root.labels.PROFILE.JOB_PROFILE.currentJobOptionYes}}</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui radio checkbox ">
+                <input type="radio" name="radio" value='false' ng-model="profileCtrl.newExperience.isCurrentJob">
+                <label>{{$root.labels.PROFILE.JOB_PROFILE.currentJobOptionNo}}</label>
+            </div>
+        </div>
+    </div>
+    <div class="two fields" ng-init="profileCtrl.getDate()">
+        <div apply-script class="field">
+            <label>{{$root.labels.PROFILE.JOB_PROFILE.joiningDate}}</label>
+            <div class="ui calendar" id="rangestartAdd">
+                <div class="ui input left icon">
+                    <i class="calendar icon"></i>
+                    <input type="text" ng-model="newExperience.joiningDate">
+                </div>
+            </div>
+        </div>
+
+        <div class="field" ng-if="profileCtrl.newExperience.isCurrentJob!=='true'">
+            <label>{{$root.labels.PROFILE.JOB_PROFILE.endDate}}</label>
+            <div apply-script class="ui calendar" id="rangeendAdd">
+                <div class="ui input left icon">
+                    <i class="calendar icon"></i>
+                    <input type="text" ng-model="newExperience.endDate">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui error message">
+    </div>
+    <div class="ui button " ng-class="{ 'disabled' : profileCtrl.disableSave}" ng-click="profileCtrl.addExperience(profileCtrl.newExperience) ;">{{$root.labels.PROFILE.BUTTON.save}}</div>
+
+</form>

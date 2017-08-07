@@ -1,0 +1,53 @@
+<div ng-init="course.initilizeView()">
+    <div class="ui modal" id="createSlideShowModal" ng-if="course.showCreateSlideShowModal">
+        <div class=" ui segment margin-top-10" ng-show="!course.loader.showLoader">
+            <div class=" margin-bottom-15">
+                <div class="ui grid">
+                    <div class="eleven wide column">
+                        <span class="ui header">{{$root.labels.WORKSPACE.createCourse.createCourseText}}</span>
+                    </div>
+                    <div class="one wide column actions">
+                        <h5 class="ui basic icon circular button deny" ng-click="course.hideCreateSlideShowModal();">
+                            <i class="ui remove icon"></i>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                <form class="ui form" ng-init="course.data = {}">
+                    <div class="field">
+                        <label>{{$root.labels.WORKSPACE.common.title}}</label>
+                        <div class="field">
+                            <input type="text" name="title" placeholder={{$root.labels.WORKSPACE.createCourse.courseTitle}} ng-model="course.data.name">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="field">
+                            <label>{{$root.labels.WORKSPACE.common.description}}</label>
+                            <div class="field">
+                                <textarea name="description" name="title" placeholder={{$root.labels.WORKSPACE.createCourse.description}} ng-model="course.data.description"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="actions margin-top-10">
+                <p class="text-align-center padding-top-20">
+                    <button class="ui primary text-align-center icon button" ng-click="course.saveMetaData(course.data)"
+                            ng-disabled="course.loader.showLoader">
+                        {{$root.labels.WORKSPACE.common.startCreating}}
+                    </button>
+                </p>
+                <h4 class="text-align-center">{{$root.labels.WORKSPACE.common.youCanFillThisDL}}</h4>
+                <div>
+                    <label>
+                        <p class="text-align-center">{{$root.labels.WORKSPACE.common.byProceedYouAgreedCourse}}</p>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class=" ui segment margin-top-10" ng-if="course.loader.showLoader">
+            <app-loader data="{{course.loader}}"></app-loader>
+        </div>
+    </div>
+</div>
