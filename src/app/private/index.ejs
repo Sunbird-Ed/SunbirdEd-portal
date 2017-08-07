@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>sunbird</title>
+    <title>Sunbird</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="icon" type="image/ico" href="./images/favicon.ico">
@@ -11,35 +11,48 @@
     <link rel="stylesheet" href="/thirdparty/semantic/styles/semantic.min.css">
     <link rel="stylesheet" href="/thirdparty/bower_components/video.js/dist/video-js.min.css">
     <link rel="stylesheet" href="/thirdparty/bower_components/angular-pagedown/angular-pagedown.min.css">
-    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css" />
     <link rel="stylesheet" href="/thirdparty/bower_components/slick-carousel/slick/slick.css">
     <link rel="stylesheet" href="/thirdparty/bower_components/slick-carousel/slick/slick-theme.css">
     <link rel="stylesheet" href="/thirdparty/bower_components/jquery.fancytree/dist/skin-win8/ui.fancytree.css">
-    <base href="/">
+    <link rel="stylesheet" href="/thirdparty/bower_components/izimodal/css/iziModal.css"/>
+    
+
+    <link rel="stylesheet" href="/thirdparty/bower_components/file-upload/fine-uploader/fine-uploader-new.css">
+
+    <link rel="stylesheet" href="/thirdparty/semantic-tree-picker/semantic-ui-tree-picker.css">
+
+    <base href="/private/index">
+    <link rel="stylesheet" href="/thirdparty/bower_components/semantic-ui-calendar/dist/calendar.min.css" />
+    <link rel="stylesheet" href="/thirdparty/bower_components/izitoast/dist/css/iziToast.min.css"/>
 </head>
 
 <body ng-app="playerApp" ng-controller="AppCtrl">
-    <input type="hidden" id="userId" value="<%=userId%>"/>
+    <input type="hidden" id="userId" value="<%=userId%>" />
+    <input type="hidden" id="sessionId" value="<%=sessionId%>" />
     <div ng-include="'views/common/topHeader.html'"></div>
     <div class="ui top attached fluid container">
         <div class="ui padded grid">
             <div class="row">
                 <div class="twelve wide column">
                     <main>
-                        <div ui-view="contentView"></div>
+                        <div ui-view="mainView">
+                        </div>
                     </main>
                 </div>
             </div>
         </div>
     </div>
-
+    <!-- libs -->
+    <script src="/thirdparty/libs/eventbus.min.js"></script>
+    <script src="/thirdparty/libs/md5.js"></script>
     <script src="/thirdparty/bower_components/jquery/dist/jquery.js"></script>
     <script src="/thirdparty/bower_components/jquery-ui/jquery-ui.min.js"></script>
     <script src="/thirdparty/bower_components/angular/angular.js"></script>
     <script src="/thirdparty/bower_components/angular-cookies/angular-cookies.js"></script>
     <script src="/thirdparty/bower_components/angular-route/angular-route.js"></script>
-
+    <script type="text/javascript" src="/thirdparty/bower_components/semantic-ui-calendar/dist/calendar.min.js"></script>
     <script src="/thirdparty/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="/thirdparty/bower_components/angular-ui-router/release/stateEvents.min.js"></script>
     <script src="/thirdparty/semantic/semantic.min.js"></script>
     <script src="/thirdparty/bower_components/video.js/dist/video.js"></script>
     <script src="/thirdparty/bower_components/videojs-youtube/dist/Youtube.js"></script>
@@ -54,16 +67,39 @@
     <script src="/thirdparty/bower_components/pdfjs-dist/build/pdf.js"></script>
     <script src="/thirdparty/bower_components/angular-pdf-viewer/dist/angular-pdf-viewer.min.js"></script>
     <script src="/thirdparty/bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="/thirdparty/bower_components/ngSafeApply/index.js"></script>
-    <script src="/thirdparty/bower_components/jquery.fancytree/dist/jquery.fancytree.min.js"></script>
-    <!-- endbower -->
+    <script src="/thirdparty/bower_components/izimodal/js/iziModal.js"></script>
+    
 
+    <script src="/thirdparty/bower_components/jquery.fancytree/dist/jquery.fancytree.min.js"></script>
+    <script src="/thirdparty/bower_components/lodash/lodash.js"></script>
+    <script src="/thirdparty/bower_components/file-upload/fine-uploader/fine-uploader.js"></script>
+    <script src="/thirdparty/bower_components/angular-uuid4/angular-uuid4.min.js"></script>
+    <script src="/thirdparty/bower_components/js-md5/build/md5.min.js"></script>
+    <script src="/thirdparty/bower_components/izitoast/dist/js/iziToast.min.js"></script>
+    <script src="/thirdparty/jquery.fancytree/dist/jquery.fancytree.min.js"></script>
+    <script src="/thirdparty/semantic-tree-picker/semantic-ui-tree-picker.js"></script>
+
+
+    <!-- utils -->
+    <script src="/scripts/utils/util.js"></script>
+
+    <!-- Telemetry service -->
+    <script src="/scripts/telemetry/TelemetryEvent.js"></script>
+    <script src="/scripts/telemetry/TelemetryService.js"></script>
+    <script src="/scripts/telemetry/TelemetryV2Manager.js"></script>
+    <script src="/scripts/telemetry/TelemetryServiceUtil.js"></script>
+    <script src="/scripts/telemetry/InActiveEvent.js"></script>
+
+    <!-- endbower -->
 
     <!-- endbuild -->
     <script src="scripts/playerAppConfig.js"></script>
+    <script src="scripts/privateLabels.js"></script>
+    <script src="scripts/privateErrorMessages.js"></script>
 
+    <!-- managers -->
+    <script src="/scripts/managers/eventManager.js"></script>
 
-    
     <script src="scripts/app.js"></script>
     <script src="scripts/routes/appRoute.js"></script>
     <!--factories-->
@@ -78,12 +114,16 @@
     <script src="scripts/services/courseService.js"></script>
     <script src="scripts/services/learnService.js"></script>
     <script src="scripts/services/userService.js"></script>
-    <script src="scripts/services/resourceService.js"></script>
+    <script src="scripts/services/pageSectionService.js"></script>
     <script src="scripts/services/searchService.js"></script>
+    <script src="scripts/services/profileService.js"></script>
+    <script src="scripts/services/permissionsService.js"></script>
+    <script src="scripts/services/playerTelemetryUtilsService.js"></script>
+    <script src="scripts/services/contentStateService.js"></script>
+    <script src="scripts/services/portalTelemetryService.js"></script>
+    <script src="scripts/services/toasterService.js"></script>
     <!--controller-->
-    <script src="scripts/controllers/searchCourseController.js"></script>
-    <script src="scripts/controllers/searchResourcesController.js"></script>
-    <script src="scripts/controllers/searchQueryController.js"></script>
+    <script src="scripts/controllers/searchController.js"></script>
     <script src="scripts/controllers/authController.js"></script>
     <script src="scripts/controllers/sideMenuController.js"></script>
     <script src="scripts/controllers/createContentController.js"></script>
@@ -100,6 +140,22 @@
     <script src="scripts/controllers/contentPlayer.js"></script>
     <script src="scripts/controllers/note/noteCardController.js"></script>
     <script src="scripts/controllers/contentPlayerController.js"></script>
+    <script src="scripts/controllers/workspace/createLessonController.js"></script>
+    <script src="scripts/controllers/workspace/draftContentController.js"></script>
+    <script src="scripts/controllers/workspace/reviewContentController.js"></script>
+    <script src="scripts/controllers/workspace/publishedContentController.js"></script>
+    <script src="scripts/controllers/workspace/allUploadedContentController.js"></script>
+    <script src="scripts/controllers/workspace/contentCreationController.js"></script>
+    <script src="scripts/controllers/workspace/editContentController.js"></script>
+    <script src="scripts/controllers/contentEditorController.js"></script>
+    <script src="scripts/controllers/collectionEditorController.js"></script>
+    <script src="scripts/controllers/workspace/TextBookController.js"></script>
+    <script src="scripts/controllers/workspace/CollectionController.js"></script>
+    <script src="scripts/controllers/workspace/previewContentController.js"></script>
+    <script src="scripts/controllers/workspace/upForReviewContentController.js"></script>
+    <script src="scripts/controllers/collectionPlayerController.js"></script>
+    <script src="scripts/controllers/pageSectionController.js"></script>
+    <script src="scripts/controllers/workspace/CourseController.js"></script>
     <!--filter-->
     <script src="scripts/filters/dateFilter.js"></script>
 
@@ -115,6 +171,10 @@
     <script src="scripts/directives/courseDiscussions.js"></script>
     <script src="scripts/directives/slickDirective.js"></script>
     <script src="scripts/directives/addNoteDirective.js"></script>
+    <script src="scripts/directives/permissionsDirective.js"></script>
+    <script src="scripts/directives/pageSectionDirective.js"></script>
+    <script src="scripts/directives/fileUpload.js"></script>
+    <script src="scripts/directives/searchDirective.js"></script>
     <!--routes-->
 </body>
 

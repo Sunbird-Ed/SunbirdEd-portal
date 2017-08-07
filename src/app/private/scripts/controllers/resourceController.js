@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('playerApp')
-        .controller('resourceCtrl', function (resourceService, $log, $scope, $state, $rootScope, $sessionStorage, $timeout, config) {
+        .controller('resourceCtrl', function ($log, $scope, $state, $rootScope, $sessionStorage, $timeout, config,sessionService) {
             var resource = this;
             resource.contentPlayer = {
                 isContentPlayerEnabled: false
             };
-            $rootScope.searchResult = [];
+          //  $rootScope.searchResult = [];
             /**
              * This function called when api failed, and its show failed response for 2 sec.
              * @param {String} message
@@ -19,7 +19,7 @@ angular.module('playerApp')
                 error.messageType = messageType;
                 return error;
             }
-            
+
             /**
              * This function helps to show loader with message.
              * @param {String} headerMessage
@@ -32,27 +32,19 @@ angular.module('playerApp')
                 loader.loaderMessage = loaderMessage;
                 return loader;
             }
-            
+
             resource.playContent = function (item) {
-                var params = {content: item};
+                var params = {content: item, contentName: item.name, contentId: item.identifier};
                 $state.go('Player', params);
             };
+
+          
             
-            resource.sections = function () {
-                resource.loader = showLoaderWithMessage("", config.MESSAGES.RESOURCE.PAGE.START);
-                
-                resourceService.resources().then(function (successResponse) {
-                    if (successResponse && successResponse.responseCode === 'OK') {
-                        resource.loader.showLoader = false;
-                        resource.page = successResponse.result.response.sections;
-                    } else {
-                        resource.loader.showLoader = false;
-                        resource.error = showErrorMessage(true, config.MESSAGES.RESOURCE.PAGE.FAILED, config.MESSAGES.COMMON.ERROR);
-                    }
-                }).catch(function (error) {
-                    resource.loader.showLoader = false;
-                    resource.error = showErrorMessage(true, config.MESSAGES.RESOURCE.PAGE.FAILED, config.MESSAGES.COMMON.ERROR);
-                });
+            resource.openCourseView = function (course, courseType) {
+                // courseId = 'do_112265805439688704113';
+                var showLectureView = 'no';
+                var params = {courseType: courseType, courseId: course.courseId || course.identifier, tocId: course.courseId || course.identifier, lectureView: showLectureView, progress: course.progress, total: course.total,courseRecordId:course.id,courseName:course.courseName};
+                sessionService.setSessionData('COURSE_PARAMS', params);
+                $state.go('Toc', params);
             };
-            resource.sections();
         });

@@ -8,6 +8,6 @@
         <i class="large repeat icon link" ng-click="rotate()"></i>
     </span>
     <span class="right-float">
-        Page <input type="number" ng-value="getCurrentPage" ng-model="inputPageNumber" class="ui input width-25p" ng-change="goToPage(inputPageNumber)"> Of {{totalPageNumber}}
+        Page <input type="number" min="1" max="{{totalPageNumber}}" ng-value="getCurrentPage" ng-model="inputPageNumber" class="ui input" ng-change="goToPage(inputPageNumber)"> Of {{totalPageNumber}}
     </span>
 </div>

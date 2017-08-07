@@ -1,0 +1,10 @@
+/nbproject/private/
+/node_modules
+/dist
+/.tmp
+/.sass-cache
+/bower_components
+/app/thirdparty/bower_components
+/coverage
+/npm-debug.log
+nbproject/
