@@ -1,49 +1,51 @@
 .accordian-left-bottomMargin {
-	margin-bottom: 16px !important;
+    margin-bottom: 16px !important;
 }
 
 .accordian-left-text {
-	padding: 2% !important;
+    padding: 2% !important;
     font-size: 16px !important;
-    color: black !important;	
+    color: black !important;
 }
-.toc-left-nav-btn-content{
+
+.toc-left-nav-btn-content {
     text-align: left;
-  
-    >h4{
+    >h4 {
         margin-bottom: 2px;
     }
 }
 
-.toc-right-nav-btn-content{
+.toc-right-nav-btn-content {
     text-align: right;
-    >h4{
+    >h4 {
         margin-bottom: 2px;
     }
 }
-.toc-note{
+
+.toc-note {
     font-size: 10px !important;
     margin: 15px !important;
 }
-.toc-note-content{
+
+.toc-note-content {
     margin-top: 46px !important;
 }
 
-.tocbutton{
+.tocbutton {
     white-space: nowrap;
 }
 
 .videosegment.ui.segment {
-  position: relative;
-  background: #fff;
-  box-shadow: 0 0 0;
-  margin: 1rem 0;
-  padding: 0;
-  border-radius: 0;
-  border: 0;
+    position: relative;
+    background: @websiteBody-color !important;
+    box-shadow: 0 0 0;
+    margin: 1rem 0;
+    padding: 0;
+    border-radius: 0;
+    border: 0;
 }
 
-.tocplayer.ui.grid{
+.tocplayer.ui.grid {
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     box-shadow: 0 8px 6px -8px #d9d4d4;
     padding-top: 0;
@@ -51,14 +53,15 @@
     padding-bottom: 20px;
 }
 
-.courseupdate{
-  color: #a5a5ad;
-  line-height: 1.6;
-  padding-left: 15px;
-  font-size: 1.1em;
+.courseupdate {
+    color: #a5a5ad;
+    line-height: 1.6;
+    padding-left: 15px;
+    font-size: 1.1em;
 }
-.courseupdate b{
-  font-weight: 400;
+
+.courseupdate b {
+    font-weight: 400;
 }
 
 .verticalLine {
@@ -72,10 +75,86 @@
 
 .toc-list {
     list-style: none !important;
-    cursor:pointer;
-    margin-left:5px;
+    cursor: pointer;
+    margin-left: 5px;
 }
 
+.addnotes i.circular.icon {
+    padding: .6em .6em!important;
+    position: absolute;
+    margin-top: 4px;
+}
 
+.circleicon i.link.icon {
+    position: absolute;
+    margin-top: 6px;
+}
 
+.notesearch .ui.input input {
+    width: 340px;
+}
 
+.notelistscroll {
+    height: 600px;
+    overflow-y: scroll;
+    cursor: pointer;
+    border-top: 0!important;
+}
+
+.notelistborder {
+    border: 2px solid #d9d9d9!important;
+   
+    padding: 10px!important;
+}
+
+.contentnotelist:hover{
+    background-color: #d8d7d7!important;
+    box-shadow: 0px 2px 3px #888888!important;
+}
+.noteellipsis {
+    overflow: hidden;
+    overflow-wrap: break-word;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.notedecheader {
+    font-weight: 600!important;
+    word-wrap: break-word;
+}
+
+.fancytree-plain span.fancytree-node span.fancytree-title {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+.fancytree-plain span.fancytree-node span.fancytree-title .padded i.icon{
+      margin: 0px 0.3em 0.24em 0!important;
+}
+.fancytree-plain span.fancytree-node:hover span.fancytree-title {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+.fancytree-plain span.fancytree-node:hover span.fancytree-title .padded i.icon{
+      margin: 0px 0.3em 0.24em 0!important;
+}
+
+.noteListSegment.ui.segment{
+    padding: 14px 0px;
+    background: #fff!important;
+} 
+
+.notedec p{
+    word-break: break-all;
+}
+span.fancytree-node {
+    display: inherit;
+    width: 98%!important;
+   
+}
+ul.fancytree-container li {
+    padding-bottom: 0.8em !important;
+}
+
+.rightSideSectionCards .content .header a{
+    color: @blue!important;
+}

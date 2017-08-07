@@ -3,33 +3,66 @@
 
 <head>
     <meta charset="utf-8">
-    <title>sunbird</title>
+    <title>Sunbird</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="icon" type="image/ico" href="./images/favicon.ico">
-    <link rel="stylesheet" href="/styles/main
-.css">
+    <link rel="stylesheet" href="/styles/main.css">
     <link rel="stylesheet" href="/thirdparty/semantic/styles/semantic.min.css">
     <base href="/">
+    <link rel="stylesheet" href="/thirdparty/bower_components/semantic-ui-calendar/dist/calendar.min.css" />
+    <link rel="stylesheet" href="/thirdparty/bower_components/izitoast/dist/css/iziToast.min.css"/>
+
 </head>
 
 <body ng-app="loginApp" ng-controller="loginCtrl">
-    <div ng-include="'views/header.html'"></div>
+    <div ng-include="'views/header/publicHeader.html'"></div>
     <div class="ui top attached fluid container">
         <div class="ui padded grid">
             <div class="row">
                 <div class="twelve wide column">
+                    <main>
+                        <div ng-include="'views/home/landingPage.html'"></div>
+                    </main>
                 </div>
             </div>
         </div>
     </div>
-    <script src="./thirdparty/bower_components/jquery/dist/jquery.js"></script>
+    <script src="../thirdparty/libs/eventbus.min.js"></script>
+    <!-- utils -->
+    <script src="./private/scripts/utils/util.js"></script>
+
+    <script src="./private/scripts/managers/eventManager.js"></script>
+
+    <!-- Telemetry service -->
+    <script src="/scripts/telemetry/TelemetryEvent.js"></script>
+    <script src="/scripts/telemetry/TelemetryService.js"></script>
+    <script src="/scripts/telemetry/TelemetryV2Manager.js"></script>
+    <script src="/scripts/telemetry/TelemetryServiceUtil.js"></script>
+    <script src="/scripts/telemetry/InActiveEvent.js"></script>
+
+
+
+    <script src="/thirdparty/bower_components/jquery/dist/jquery.js"></script>
+    <script src="/thirdparty/bower_components/jquery-ui/jquery-ui.min.js"></script>
     <script src="/thirdparty/bower_components/angular/angular.js"></script>
     <script src="/thirdparty/bower_components/angular-cookies/angular-cookies.js"></script>
     <script src="/thirdparty/bower_components/angular-route/angular-route.js"></script>
     <script src="/thirdparty/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script src="/thirdparty/semantic/semantic.min.js"></script>
+    <script type="text/javascript" src="/thirdparty/bower_components/semantic-ui-calendar/dist/calendar.min.js"></script>
+    <script src="/thirdparty/bower_components/izitoast/dist/js/iziToast.min.js"></script>
+
     <script src="scripts/application.js"></script>
+    <script src="scripts/publicLabels.js"></script>
+    <script src="scripts/publicErrorMessages.js"></script>
+    <script src="scripts/service/httpService.js"></script>
+    <script src="scripts/signUpController.js"></script>
+    <script src="scripts/service/signUpService.js"></script>
+    <script src="scripts/directive/error.js"></script>
+    <script src="scripts/directive/loader.js"></script>
+
+
 </body>
 
 </html>

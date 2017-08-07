@@ -1,6 +1,10 @@
-<div apply-script class="ui grid" ng-controller="AuthCtrl as auth" ng-include="'views/header/header.html'">
-</div>
-<div class="ui secondary pointing menu" ng-include="'views/header/mainMenu.html'">
-</div>
-<div ng-if="(isLearnPage || isResourcesPage || isTocPage || isNotePage || isPlayerPage||isSearchPage)" ng-controller="SearchQueryCtrl as search" class="header-filter-container" ng-include="'views/header/filter.html'">
+<div>
+    <div apply-script class="ui grid" ng-include="'views/header/header.html'">
+    </div>
+    <div class="ui secondary pointing menu" ng-include="'views/header/mainMenu.html'">
+    </div>
+    <div ng-if="$root.showFilter" class="header-filter-container" ng-include="'views/header/filter.html'">
+    </div>
+    <div ng-include="'views/header/breadCrumbs.html'">
+    </div>
 </div>

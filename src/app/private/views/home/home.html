@@ -2,15 +2,15 @@
     <div class="one wide column"></div>
     <div class="ten wide column">
         <div class="row">
-            <div class="twelve wide column" ng-if="!homeCtrl.enrollCourseApi.loader.showLoader && !homeCtrl.enrollCourseApi.error.showError">
+            <div class="twelve wide column" ng-if="!homeCtrl.enrollCourseApi.loader.showLoader">
                 <div ng-if="homeCtrl.enrolledCourses.length" class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100 homeHeaderPadding" apply-script>
-                    <span class="ui header HomeAccordianHeading" translate="todo">To Do</span><a class="todolabel ui red circular inline label ">{{homeCtrl.enrolledCourses.length}}</a>
-                    <span class="removeline title title-padding-left accordian-HomeLeft-text active float-ContentRight" data-tooltip="Collapse" data-inverted="">
-                        <i class="angle down icon down-arrow-accordion float-ContentRight" ></i>
+                    <span class="ui header HomeAccordianHeading" translate="todo">To Do</span><span class="todolabel ui red circular inline label ">{{homeCtrl.enrolledCourses.length}}</span>
+                    <span ng-init="expandAcc=true" class="removeline title title-padding-left accordian-HomeLeft-text active float-ContentRight" data-tooltip="{{expandAcc==true?'Collapse':'Expand'}}" data-inverted="">
+                        <i class="angle down icon down-arrow-accordion float-ContentRight" ng-click="expandAcc=!expandAcc"></i>
                     </span>
                     <div class="ui active homePage" ng-if="homeCtrl.enrolledCourses.length > 0">
                         <div class="regular slider padding-top-10">
-                            <div ng-repeat="item in homeCtrl.enrolledCourses track by $index" ng-init="$last && homeCtrl.loadCarousel()" ng-click="homeCtrl.openCourseView(item, 'ENROLLED_COURSE')" add-slick>
+                            <div ng-repeat="item in homeCtrl.enrolledCourses track by $index" ng-init="$last && $root.loadProgress()" ng-click="homeCtrl.openCourseView(item, 'ENROLLED_COURSE')" add-slick>
                                 <div ng-include=" 'views/common/actionCard.html'"></div>
                             </div>
                         </div>
@@ -20,19 +20,16 @@
             <div class="twelve wide column" ng-if="homeCtrl.enrollCourseApi.loader.showLoader">
                 <app-loader data="{{homeCtrl.enrollCourseApi.loader}}"></app-loader>
             </div>
-            <div class="twelve wide column" ng-if="homeCtrl.enrollCourseApi.error.showError">
-                <error-message data="{{homeCtrl.enrollCourseApi.error}}" visibility="homeCtrl.enrollCourseApi.error.showError"></error-message>
-            </div>
         </div><br>
-        <div class="row">
-            <div class="twelve wide column" ng-if="!homeCtrl.pageApi.loader.showLoader && !homeCtrl.pageApi.error.showError">
+        <div class="row" ng-if="false">
+            <div class="twelve wide column" ng-if="!homeCtrl.pageApi.loader.showLoader">
                 <div class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100 homeHeaderPadding" apply-script ng-if="homeCtrl.recommendedCourse.length > 0">
-                    <span class="ui header  HomeAccordianHeading" translate="recommended">Recommended</span>
-                    <span class="removeline title title-padding-left active float-ContentRight" data-tooltip="Collapse" data-inverted=""><i class="angle down icon down-arrow-accordion accordian-homeIcon float-ContentRight" ></i>
+                    <span class="ui header  HomeAccordianHeading" translate="recommended">Recommended</span><span class="todolabel ui red circular inline label ">{{homeCtrl.recommendedCourse.length}}</span>
+                    <span ng-init="expandAcc=true" class="removeline title title-padding-left active float-ContentRight" data-tooltip="{{expandAcc==true?'Collapse':'Expand'}}" data-inverted=""><i class="angle down icon down-arrow-accordion accordian-homeIcon float-ContentRight" ng-click="expandAcc=!expandAcc"></i>
                     </span>
                     <div class="ui active homePage">
                         <div class="regular slider padding-top-10" ng-init="recommended=true">
-                            <div  ng-repeat="item in homeCtrl.recommendedCourse track by $index" ng-init="$last && homeCtrl.loadCarousel()" ng-click="homeCtrl.openCourseView(item, 'OTHER_COURSE')" add-slick>
+                            <div  ng-repeat="item in homeCtrl.recommendedCourse track by $index" ng-init="$last && homeCtrl.loadCarousel()&&$root.loadProgress()" ng-click="homeCtrl.openCourseView(item, 'OTHER_COURSE')" add-slick>
                                 <div ng-include=" 'views/common/ratingCard.html'"></div>
                             </div>
                         </div>
@@ -42,10 +39,7 @@
             <div class="twelve wide column" ng-if="homeCtrl.pageApi.loader.showLoader">
                 <app-loader data="{{homeCtrl.pageApi.loader}}"></app-loader>
             </div>
-            <div class="twelve wide column" ng-if="homeCtrl.pageApi.error.showError">
-                <error-message data="{{homeCtrl.pageApi.error}}" visibility="homeCtrl.pageApi.error.showError"></error-message>
-            </div>
-        </div><br><br>
+        </div>
         <div class="ui grid">
             <div class="row">
                 <div class="eight wide column">
@@ -58,7 +52,7 @@
             </div>
         </div>
         <div class="ui grid">
-            <div class="row">
+            <div class="row blur-content">
                 <div class="eight wide column">
                     <div ng-include="'views/home/homeFeedCard.html'"></div>
                 </div>

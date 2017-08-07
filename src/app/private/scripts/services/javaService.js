@@ -8,8 +8,8 @@
  * Service in the playerApp.
  */
 angular.module('playerApp')
-    .service('javaService', function($http, $sessionStorage, $rootScope, $window) {
-        var user = JSON.parse($window.localStorage.getItem('user'));
+    .service('javaService', function($http, $rootScope, $window, config) {
+        var user = $rootScope.userId;
 
         function handleSuccess(response) {
             return (response.data);
@@ -26,7 +26,9 @@ angular.module('playerApp')
                 'X-Consumer-ID': 'X-Consumer-ID',
                 'X-Device-ID': 'X-Device-ID',
                 'X-msgid': '8e27cbf5-e299-43b0-bca7-8347f7e5abcf',
-                'ts': '2017-05-25 10:18:56:578+0530'
+                'X-Source':'web',
+                'ts': '2017-05-25 10:18:56:578+0530',
+                'X-Org-code':'AP'
 
             };
             if (user || $rootScope.userId) {
@@ -38,9 +40,10 @@ angular.module('playerApp')
 
         function httpCall(url, data, method, header) {
             var headers = header || getHeader();
+            var URL = config.URL.BASE_PREFIX + url; 
             return $http({
                 method: method,
-                url: url,
+                url: URL,
                 headers: headers,
                 data: data
             });
@@ -72,7 +75,7 @@ angular.module('playerApp')
         };
 
         this.upload = function(url, data, headers) {
-            var request = $http.post(url, data, {
+            var request = $http.post(config.URL.BASE_PREFIX + url, data, {
 
                 headers: {
                     'Content-Type': undefined,

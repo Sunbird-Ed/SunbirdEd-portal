@@ -1,0 +1,36 @@
+<form class="ui form  educationForm">
+<div class="formdivider margin-bottom-20" ng-if="$index > 0  "></div>
+    <h4>{{::education.degree }}</h4>
+    <div class="two fields">
+        <div class="required field">
+            <label>{{$root.labels.PROFILE.EDUCATION.degree}} </label>
+            <input type="text" name="degree" ng-model="education.degree">
+        </div>
+        <div class="  field">
+            <label>{{$root.labels.PROFILE.EDUCATION.yearOfPassing}}</label>
+            <input type="text" name="" ng-model="education.yearOfPassing">
+        </div>
+    </div>
+    <div class="two fields">
+        <div class=" field">
+            <label>{{$root.labels.PROFILE.EDUCATION.percentage}}</label>
+            <input type="text" name="" ng-model="education.percentage">
+        </div>
+        <div class="  field">
+            <label>{{$root.labels.PROFILE.EDUCATION.grade}}</label>
+            <input type="text" name="" ng-model="education.grade">
+        </div>
+    </div>
+    <div class="two fields">
+        <div class=" required field">
+            <label>{{$root.labels.PROFILE.EDUCATION.institute}}</label>
+            <input type="text" name="institute" ng-model="education.name">
+        </div>
+        <div class="  field">
+            <label>{{$root.labels.PROFILE.EDUCATION.board}}</label>
+            <input type="text" name="" ng-model="education.boardOrUniversity">
+        </div>
+    </div>
+    <div class="ui error message">
+    </div>
+</form>

@@ -1,0 +1,70 @@
+<div class="ui raised segment " ng-init="profileCtrl.basicProfileForm=false">
+    <div class="header announcementCard-header ">
+        <span class="header cardsHeading " > {{$root.labels.PROFILE.BASIC_PROFILE.header}}</span>
+        <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.basicProfileForm"  ng-click="profileCtrl.basicProfileForm=true">{{$root.labels.PROFILE.BUTTON.edit}}</a>
+        <a class="addeditprofile cursor-pointer" ng-if="profileCtrl.basicProfileForm"  ng-click="profileCtrl.basicProfileForm=false">{{$root.labels.PROFILE.BUTTON.close}}</a>
+
+    </div>
+    <div class="profileitems ui relaxed aligned list " ng-if="!profileCtrl.basicProfileForm && profileCtrl.basicProfile">
+
+        <div class="item ">
+            <div class="right floated content ">
+                <span translate="edit ">{{::profileCtrl.basicProfile.email}}</span>
+            </div>
+            <div class="iniformationcontent content ">
+                {{$root.labels.PROFILE.BASIC_PROFILE.email}}
+            </div>
+        </div>
+        <div class="item ">
+            <div class="right floated content ">
+                <span translate="edit ">{{::profileCtrl.basicProfile.phone}}</span>
+            </div>
+            <div class="iniformationcontent content ">
+                {{$root.labels.PROFILE.BASIC_PROFILE.phone}}
+            </div>
+        </div>
+        <div class="item ">
+            <div class="right floated content ">
+                <span translate="edit ">{{::profileCtrl.basicProfile.gender}}</span>
+            </div>
+            <div class="iniformationcontent content ">
+                {{$root.labels.PROFILE.BASIC_PROFILE.gender}}
+            </div>
+        </div>
+        <div class="item ">
+            <div class="right floated content ">
+                <span translate="edit ">{{::profileCtrl.basicProfile.aadhaarNo}}</span>
+            </div>
+            <div class="iniformationcontent content ">
+                {{$root.labels.PROFILE.BASIC_PROFILE.aadhar}}
+            </div>
+        </div>
+        <div class="item ">
+            <div class="right floated content ">
+                <span translate="edit ">{{::profileCtrl.basicProfile.dob}}</span>
+            </div>
+            <div class="iniformationcontent content ">
+                {{$root.labels.PROFILE.BASIC_PROFILE.dob}}
+            </div>
+        </div>
+        <div class="item ">
+            <div class="right floated content ">
+                <span translate="edit "><span ng-repeat="lan in ::profileCtrl.basicProfile.language">{{::lan}}<span ng-if="!$last">,</span></span>
+                </span>
+            </div>
+            <div class="iniformationcontent content ">
+                {{$root.labels.PROFILE.BASIC_PROFILE.language}}
+            </div>
+        </div>
+        <div class="item ">
+            <div class="right floated content ">
+                <span><span ng-repeat="sub in ::profileCtrl.basicProfile.subject">{{::sub}}<span ng-show="!$last">,</span></span>
+                </span>
+            </div>
+            <div class="iniformationcontent content ">
+                {{$root.labels.PROFILE.BASIC_PROFILE.subjects}}
+            </div>
+        </div>
+    </div>
+    <div class="ui" ng-if="profileCtrl.basicProfileForm" ng-include=" 'views/profile/editProfile/basicInformtion.html' "></div>
+</div>
