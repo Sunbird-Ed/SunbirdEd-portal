@@ -120,7 +120,7 @@
                         <div class="two fields">
                             <div class="field">
                                 <label>{{$root.labels.WORKSPACE.common.concept}}</label>
-                                <div class="cursor-pointer" ng-if="!editContent.conceptLoader.showLoader"> <input  id="treePicker" type="text"  readonly value="{{editContent.contentData.concepts.length}} concepts selected" /></div>
+                                <div class="cursor-pointer" ng-if="!editContent.conceptLoader.showLoader"> <input id="treePicker" type="text" readonly value="{{editContent.contentData.concepts.length}} concepts selected" /></div>
                                 <app-loader ng-if="editContent.conceptLoader.showLoader" data="{{editContent.conceptLoader}}"></app-loader>
                             </div>
 
@@ -138,13 +138,13 @@
                     <div class="ui grid fileUploadDivider margin-bottom-15" ng-if="editContent.mimeTypeForYoutubeVideo === editContent.contentData.mimeType">
                         <div class="one wide column"></div>
                         <div class="uploadicon four wide column">
-                            <p class="padding-top-10 dropfile textIndentForUploadFile">{{$root.labels.WORKSPACE.startCreating.enterYuotubeURL}}</p>
+                            <p class="padding-top-10 dropfile textIndentForUploadFile">{{$root.labels.WORKSPACE.startCreating.enterYoutubeURL}}</p>
                         </div>
                         <div class="six wide column">
                             <div class="ui form youtubeupload youTubeFileUploadForm">
                                 <div class="inline fields">
                                     <div class="eight wide field">
-                                        <input type="text" ng-model="editContent.youtubeFileLink" placeholder={{$root.labels.WORKSPACE.startCreating.enterYuotubeURL}} ng-model-options="{ debounce: 1000 }" ng-change="editContent.validateYouTubeUrl(editContent.youtubeFileLink)">
+                                        <input type="text" ng-model="editContent.youtubeFileLink" placeholder={{$root.labels.WORKSPACE.startCreating.enterYoutubeURL}} ng-model-options="{ debounce: 1000 }" ng-change="editContent.validateYouTubeUrl(editContent.youtubeFileLink)">
                                     </div>
                                     <div class="two wide field">
                                         <button class="ui primary basic button text-align-center padding-left-25 qq-upload-button-selector" ng-click="editContent.uploadYoutubeFile(editContent.contentData)" ng-disabled="!editContent.youtubeFileLink || editContent.invalidYoutubeUrl">{{$root.labels.WORKSPACE.common.uploadButton}}</button>
