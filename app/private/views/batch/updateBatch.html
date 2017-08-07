@@ -1,0 +1,211 @@
+<div ng-init="batchUpdate.showUpdateBatchModal()">
+    <div class="ui modal" id="updateBatchModal">
+        <div class="header">
+            <div class="ui grid">
+                <div class="eleven wide column">
+                   <span class="ui header">Update Batch Details</span>
+                </div>
+                <div class="one wide column actions">
+                    <h5 class="ui basic icon circular button deny">
+                        <i class="ui remove icon"></i>
+                    </h5>
+                </div>
+            </div>
+        </div>
+        <div class="content" ng-switch="batchUpdate.batchData.status">
+            <div ng-switch-when="0">
+                <form class="ui form batchAddUserForm" id="updateBatch" name="updateBatch" validate>
+                    <div class="one field" ng-class="{true: 'error'}[batchUpdate.submitted && updateBatch.name.$invalid]">
+                        <div class="required field">
+                          <label>Batch Name</label>
+                          <input type="text" name="name" ng-model="batchUpdate.batchData.name" required>
+                        </div>
+                    </div>
+                    <div class="one field">
+                        <div class="field">
+                            <label>Batch Description</label>
+                            <textarea rows="2" name="description" id="description" ng-model="batchUpdate.batchData.description"></textarea>
+                        </div>
+                    </div>
+                    <div class="inline fields" ng-class="{true: 'error'}[batchUpdate.submitted && updateBatch.enrollmenttype.$invalid]">
+                        <label for="Enrollment Type">Enrollment Type</label>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="enrollmenttype" value='invite-only' ng-model="batchUpdate.batchData.enrollmenttype" required>
+                                <label>Invite-only</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="enrollmenttype" value='open' ng-model="batchUpdate.batchData.enrollmenttype" required>
+                                <label>Open</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="two fields" >
+                        <div class="required field" ng-class="{true: 'error'}[batchUpdate.submitted && updateBatch.startdate.$invalid]">
+                           <label>Start Date</label>
+                            <div class="ui calendar rangestartAdd" id="rangestartAdd">
+                                <div class="ui input left icon">
+                                    <i class="calendar icon"></i>
+                                     <input type="text" id="startdate" name="startdate" ng-model="batchUpdate.batchData.startdate" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label>End Date</label>
+                            <div apply-script class="ui calendar rangeendAdd" id="rangeendAdd">
+                                <div class="ui input left icon">
+                                    <i class="calendar icon"></i>
+                                    <input type="text" name="enddate" id="enddate" ng-model="batchUpdate.batchData.enddate">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   <div class="one field">                              
+                         <label>Users</label>
+                        <select name="addUsers" class="ui fluid multiple search selection dropdown multiSelectDropDown" multiple="" id="users" ng-options=" grade for grade in batchUpdate.userList" ng-model="batchUpdate.batchData.users">
+                            <option value="">Select User</option>
+                        </select>
+                    </div>
+                    <div class="one field">                              
+                        <label>Mentor</label>
+                        <select name="addMentors" class="ui fluid multiple search selection dropdown multiSelectDropDown" multiple="" id="mentors" ng-options=" grade for grade in batchUpdate.menterList" ng-model="batchUpdate.batchData.mentors">
+                            <option value="">Select Mentor</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div ng-switch-when="1">
+                <form class="ui form batchAddUserForm" id="updateBatch" name="updateBatch" validate>
+                    <div class="one field" ng-class="{true: 'error'}[batchUpdate.submitted && updateBatch.name.$invalid]">
+                        <div class="required field">
+                          <label>Batch Name</label>
+                          <input type="text" name="name" ng-model="batchUpdate.batchData.name" required>
+                        </div>
+                    </div>
+                    <div class="one field">
+                        <div class="field">
+                            <label>Batch Description</label>
+                            <textarea rows="2" name="description" id="description" ng-model="batchUpdate.batchData.description"></textarea>
+                        </div>
+                    </div>
+                    <div class="inline fields" ng-class="{true: 'error'}[batchUpdate.submitted && updateBatch.enrollmenttype.$invalid]">
+                        <label for="Enrollment Type">Enrollment Type</label>
+                        <div class="field">
+                            <div class="ui read-only radio checkbox">
+                                <input type="radio" name="enrollmenttype" value='invite-only' ng-model="batchUpdate.batchData.enrollmenttype" required disabled="true">
+                                <label>Invite-only</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui read-only radio checkbox">
+                                <input type="radio" name="enrollmenttype" value='open' ng-model="batchUpdate.batchData.enrollmenttype" required disabled="true">
+                                <label>Open</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="two fields" >
+                        <div class="required field" ng-class="{true: 'error'}[batchUpdate.submitted && updateBatch.startdate.$invalid]">
+                           <label>Start Date</label>
+                            <div class="ui read-only calendar rangestartAdd" id="rangestartAdd">
+                                <div class="ui input left icon">
+                                    <i class="calendar icon"></i>
+                                     <input type="text" id="startdate" name="startdate" ng-model="batchUpdate.batchData.startdate" required disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label>End Date</label>
+                            <div apply-script class="ui calendar rangeendAdd" id="rangeendAdd">
+                                <div class="ui input left icon">
+                                    <i class="calendar icon"></i>
+                                    <input type="text" name="enddate" id="enddate" ng-model="batchUpdate.batchData.enddate">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   <div class="one field">                              
+                         <label>Users</label>
+                        <select name="addUsers" class="ui fluid multiple search selection dropdown multiSelectDropDown" multiple="" id="users" ng-options=" grade for grade in batchUpdate.userList" ng-model="batchUpdate.batchData.users" disabled="true">
+                            <option value="">Select User</option>
+                        </select>
+                    </div>
+                    <div class="one field">                              
+                        <label>Mentor</label>
+                        <select name="addMentors" class="ui fluid multiple search selection dropdown multiSelectDropDown" multiple="" id="mentors" ng-options=" grade for grade in batchUpdate.menterList" ng-model="batchUpdate.batchData.mentors" disabled="true">
+                            <option value="">Select Mentor</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div ng-switch-when="2">
+                <form class="ui form batchAddUserForm" id="updateBatch" name="updateBatch" validate>
+                    <div class="one field" ng-class="{true: 'error'}[batchUpdate.submitted && updateBatch.name.$invalid]">
+                        <div class="required field">
+                          <label>Batch Name</label>
+                          <input type="text" name="name" ng-model="batchUpdate.batchData.name" required disabled="true">
+                        </div>
+                    </div>
+                    <div class="one field">
+                        <div class="field">
+                            <label>Batch Description</label>
+                            <textarea rows="2" name="description" id="description" ng-model="batchUpdate.batchData.description" disabled="true"></textarea>
+                        </div>
+                    </div>
+                    <div class="inline fields" ng-class="{true: 'error'}[batchUpdate.submitted && updateBatch.enrollmenttype.$invalid]">
+                        <label for="Enrollment Type">Enrollment Type</label>
+                        <div class="field">
+                            <div class="ui read-only radio checkbox">
+                                <input type="radio" name="enrollmenttype" value='invite-only' ng-model="batchUpdate.batchData.enrollmenttype" required disabled="true">
+                                <label>Invite-only</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui read-only radio checkbox">
+                                <input type="radio" name="enrollmenttype" value='open' ng-model="batchUpdate.batchData.enrollmenttype" required disabled="true">
+                                <label>Open</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="two fields" >
+                        <div class="required field" ng-class="{true: 'error'}[batchUpdate.submitted && updateBatch.startdate.$invalid]">
+                           <label>Start Date</label>
+                            <div class="ui read-only calendar rangestartAdd" id="rangestartAdd">
+                                <div class="ui input left icon">
+                                    <i class="calendar icon"></i>
+                                     <input type="text" id="startdate" name="startdate" ng-model="batchUpdate.batchData.startdate" required disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label>End Date</label>
+                            <div apply-script class="ui calendar rangeendAdd" id="rangeendAdd">
+                                <div class="ui input left icon">
+                                    <i class="calendar icon"></i>
+                                    <input type="text" name="enddate" id="enddate" ng-model="batchUpdate.batchData.enddate" disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   <div class="one field">                              
+                         <label>Users</label>
+                        <select name="addUsers" class="ui fluid multiple search selection dropdown multiSelectDropDown" multiple="" id="users" ng-options=" grade for grade in batchUpdate.userList" ng-model="batchUpdate.batchData.users" disabled="true">
+                            <option value="">Select User</option>
+                        </select>
+                    </div>
+                    <div class="one field">                              
+                        <label>Mentor</label>
+                        <select name="addMentors" class="ui fluid multiple search selection dropdown multiSelectDropDown" multiple="" id="mentors" ng-options=" grade for grade in batchUpdate.menterList" ng-model="batchUpdate.batchData.mentors" disabled="true">
+                            <option value="">Select Mentor</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="actions" ng-hide="batchUpdate.batchData.status == 2">
+            <div class="ui secondary button" >Clear{{batchUpdate.batchData.status}}</div>
+            <div class="ui primary button" ng-click="batchUpdate.submitted = true; batchUpdate.updateBatchDetails(batchUpdate.batchData)">Update</div>
+        </div>
+    </div>
+</div>
