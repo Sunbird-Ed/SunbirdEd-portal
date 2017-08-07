@@ -1,0 +1,73 @@
+<div ng-init="contentLesson.initilizeView()">
+    <div class="ui modal" id="createSlideShowModal" ng-if="contentLesson.showCreateSlideShowModal">
+        <div class=" ui segment margin-top-10" ng-show="!contentLesson.loader.showLoader">
+            <div class=" margin-bottom-15">
+                <div class="ui grid">
+                    <div class="eleven wide column">
+                        <span class="ui header">{{$root.labels.WORKSPACE.createLesson.createLessonText}}</span>
+                    </div>
+                    <div class="one wide column actions">
+                        <h5 class="ui basic icon circular button deny" ng-click="contentLesson.hideCreateSlideShowModal();">
+                            <i class="ui remove icon"></i>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                <form class="ui form" ng-init="contentLesson.data = {}">
+                    <div class="field">
+                        <label>{{$root.labels.WORKSPACE.common.title}}</label>
+                        <div class="field">
+                            <input type="text" name="title" placeholder={{$root.labels.WORKSPACE.createLesson.lessonTitle}} ng-model="contentLesson.data.name">
+                        </div>
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <label>{{$root.labels.WORKSPACE.common.board}}</label>
+                            <select name="board" class="ui fluid dropdown singleSelectDropDown" ng-options=" board for board in contentLesson.boards" ng-model="contentLesson.data.board">
+                                <option value="">{{$root.labels.WORKSPACE.common.board}}</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>{{$root.labels.WORKSPACE.common.medium}}</label>
+                            <select name="medium" class="ui fluid dropdown singleSelectDropDown" ng-options=" audience for audience in contentLesson.mediums" ng-model="contentLesson.data.medium">
+                                <option value="">{{$root.labels.WORKSPACE.common.medium}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <label>{{$root.labels.WORKSPACE.common.subject}}</label>
+                            <select name="subject" class="ui fluid dropdown singleSelectDropDown" ng-options=" subject for subject in contentLesson.subjects" ng-model="contentLesson.data.subject">
+                                <option value="">{{$root.labels.WORKSPACE.common.subject}}</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>{{$root.labels.WORKSPACE.common.grade}}</label>
+                            <select name="grades" multiple="" class="ui fluid dropdown multiSelectDropDown" ng-options=" grade for grade in contentLesson.grades" ng-model="contentLesson.data.gradeLevel" s>
+                                <option value="">{{$root.labels.WORKSPACE.common.grade}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="actions">
+                <p class="text-align-center padding-top-20">
+                    <button class="ui primary text-align-center icon button" ng-click="contentLesson.saveMetaData(contentLesson.data)"
+                            ng-disabled="contentLesson.loader.showLoader">
+                        {{$root.labels.WORKSPACE.common.startCreating}}
+                    </button>
+                </p>
+                <h4 class="text-align-center">{{$root.labels.WORKSPACE.common.youCanFillThisDL}}</h4>
+                <div>
+                    <label>
+                        <p class="text-align-center">{{$root.labels.WORKSPACE.common.byProceedYouAgreedLesson}}</p>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class=" ui segment margin-top-10" ng-if="contentLesson.loader.showLoader">
+            <app-loader data="{{contentLesson.loader}}"></app-loader>
+        </div>
+    </div>
+</div>

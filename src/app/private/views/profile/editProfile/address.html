@@ -1,0 +1,54 @@
+<form class="ui form  addressEditForm">
+
+<div class="formdivider margin-bottom-20" ng-if="$index > 0  "></div>
+    <div apply-script class="inline fields">
+        <label for="address">{{$root.labels.PROFILE.ADDRESS.addressType}}</label>
+        <div class="field">
+            <div class="ui radio checkbox">
+                <input type="radio" name="radio" value='permanent' ng-checked="address.addType==='permanent'" ng-model="address.addType">
+                <label> {{$root.labels.PROFILE.ADDRESS.addressTypePermanent}}</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui radio checkbox">
+                <input type="radio" name="radio" value='current' ng-checked="address.addType==='current'" ng-model="address.addType">
+                <label>{{$root.labels.PROFILE.ADDRESS.addressTypeCurrent}}</label>
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="two fields">
+        <div class=" required field">
+            <label>{{$root.labels.PROFILE.ADDRESS.line1}}</label>
+            <input type="text" name="addLine1" ng-model="address.addressLine1">
+        </div>
+        <div class="  field">
+            <label>{{$root.labels.PROFILE.ADDRESS.line2}}</label>
+            <input type="text" name="" ng-model="address.addressLine2">
+        </div>
+    </div>
+    <div class="two fields">
+        <div class=" required field">
+            <label>{{$root.labels.PROFILE.ADDRESS.city}}</label>
+            <input type="text" name="city" ng-model="address.city">
+        </div>
+        <div class="  field">
+            <label>{{$root.labels.PROFILE.ADDRESS.state}}</label>
+            <input type="text" name="" ng-model="address.state">
+        </div>
+    </div>
+    <div class="two fields">
+        <div class=" field">
+            <label>{{$root.labels.PROFILE.ADDRESS.country}}</label>
+            <input type="text" name="" ng-model="address.country">
+        </div>
+        <div class="  field">
+            <label>{{$root.labels.PROFILE.ADDRESS.pinCode}}</label>
+            <input type="text" name="pinCode" ng-model="address.zipcode">
+        </div>
+    </div>
+    <div class="ui error message">
+    </div>
+
+</form>

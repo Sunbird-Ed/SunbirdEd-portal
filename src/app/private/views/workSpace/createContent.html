@@ -1,0 +1,143 @@
+<div class="ui grid">
+<!--    <div class="twelve wide column ">
+        <a class="section backtoprofile" ui-sref="Profile">
+            < Back To Profile</a>
+    </div>-->
+    <div class="twelve wide column ">
+        <div class="ui grid">
+            <div class="three wide column">
+                <div class="workspacecontent link ui card" ui-sref="CreateTextbook">
+                    <div class="content">
+                        <div class="textcontent">
+                            <i class='my-icon file text outline icon '></i>
+                            <span class="my-text">{{$root.labels.WORKSPACE.startCreating.textbook}}</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="workspaceinstuction">{{$root.labels.WORKSPACE.startCreating.textbookDescription}}</p>
+            </div>
+            <div class="three wide column">
+                <div class="workspacecontent ui link card" ui-sref="CreateCourse">
+                    <div class="content">
+                        <div class="textcontent">
+                            <i class='my-icon file text outline icon'></i>
+                            <span class="my-text">{{$root.labels.WORKSPACE.startCreating.course}}</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="workspaceinstuction">{{$root.labels.WORKSPACE.startCreating.courseDescription}}</p>
+            </div>
+            <div class="three wide column">
+                <div class="workspacecontent ui link card" ui-sref="CreateLesson">
+                    <div class="content">
+                        <div class="textcontent">
+                            <i class='my-icon file text icon'></i>
+                            <span class="my-text">{{$root.labels.WORKSPACE.startCreating.lesson}}</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="workspaceinstuction">{{$root.labels.WORKSPACE.startCreating.lessonDescription}}</p>
+            </div>
+            <div class="three wide column">
+                <div class="workspacecontent ui link card" ui-sref="CreateCollection">
+                    <div class="content">
+                        <div class="textcontent">
+                            <i class='my-icon folder open outline icon'></i>
+                            <span class="my-text">{{$root.labels.WORKSPACE.startCreating.collection}}</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="workspaceinstuction">{{$root.labels.WORKSPACE.startCreating.collectionDescription}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="twelve wide column dividerInFileUploader">
+        <div class="ui divider"></div>
+    </div>
+    <div class="twelve wide column">
+        <div fine-uploader>
+        </div>
+
+        <div class="ui grid fileUploadDivider">
+            <div class="one wide column"></div>
+            <div class="uploadicon four wide column">
+                <p class="padding-top-10 dropfile textIndentForUploadFile">{{$root.labels.WORKSPACE.startCreating.enterYuotubeURL}}</p>
+            </div>
+            <div class="six wide column">
+                <div class="ui form youtubeupload youTubeFileUploadForm">
+                    <div class="inline fields">
+                        <div class="eight wide field">
+                            <input type="text" ng-model="contentCreation.youtubeFileLink" placeholder={{$root.labels.WORKSPACE.startCreating.enterYuotubeURL}}
+                                   ng-model-options="{ debounce: 1000 }" ng-change="contentCreation.validateYouTubeUrl(contentCreation.youtubeFileLink)">
+                        </div>
+                        <div class="two wide field">
+                            <button class="ui primary basic button text-align-center padding-left-25 qq-upload-button-selector"
+                                    ng-click="contentCreation.uploadYoutubeFile()" ng-disabled="!contentCreation.youtubeFileLink || contentCreation.invalidYoutubeUrl">UPLOAD</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui negative message" ng-if="contentCreation.invalidYoutubeUrl && contentCreation.youtubeFileLink.length !== 0">{{$root.errorMessages.WORKSPACE.ContentCreation.invalidYoutubeUrl}}</div>
+            </div>
+            <div class="one wide column"></div>
+        </div>
+    </div>
+</div>
+<div ng-show="contentCreation.showContentCreationModal">
+    <div class="ui modal" id="contentCreationModal">
+        <div class=" ui segment margin-top-10" ng-show="!contentCreation.loader.showLoader && !contentCreation.error.showError">
+            <div class=" margin-bottom-15">
+                <div class="ui grid">
+                    <div class="eleven wide column">
+                        <span class="ui header">{{$root.labels.WORKSPACE.startCreating.uploadContent}}</span>
+                    </div>
+                    <div class="one wide column actions">
+                        <h5 class="ui basic icon circular button deny" ng-click="contentCreation.closeContentCreationModal();">
+                            <i class="ui remove icon"></i>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                <form class="ui form" name="Create">
+                    <div class="field">
+                        <label>{{$root.labels.WORKSPACE.common.title}}</label>
+                        <div class="field">
+                            <input type="text" name="title" placeholder={{$root.labels.WORKSPACE.common.title}} ng-model="contentCreation.data.name">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label>{{$root.labels.WORKSPACE.common.description}}</label>
+                        <div class="field">
+                            <input type="text" name="description" placeholder={{$root.labels.WORKSPACE.common.description}} ng-model="contentCreation.data.description">
+                        </div>
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <label>{{$root.labels.WORKSPACE.common.lessonType}}</label>
+                            <select name="lessonType" class="ui fluid dropdown singleSelectDropDown" ng-options=" lesson for lesson in contentCreation.lessonTypes" ng-model="contentCreation.data.contentType">
+                                <option value="" >{{$root.labels.WORKSPACE.common.lessonType}}</option>
+                            </select>
+                        </div>
+                        <div class="required field">
+                            <label>{{$root.labels.WORKSPACE.common.mimeType}}</label>
+                            <select name="mimeType" class="ui fluid dropdown singleSelectDropDown" id="mimeTypeDropDown"
+                                    ng-options=" mimeType.name for mimeType in contentCreation.mimeType" ng-model="contentCreation.data.mimeType">
+                                <option value="">{{$root.labels.WORKSPACE.common.mimeType}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="actions">
+                <p class="text-align-center">
+                    <button class="ui primary text-align-center icon button" ng-click="contentCreation.saveMetaData(contentCreation.data)" ng-disabled="!contentCreation.data.mimeType && !contentCreation.youtubeFileLink">
+                        {{$root.labels.WORKSPACE.startCreating.upload}}
+                    </button>
+                </p>
+            </div>
+        </div>
+        <div class=" ui segment margin-top-10" ng-if="contentCreation.loader.showLoader">
+            <app-loader data="{{contentCreation.loader}}"></app-loader>
+        </div>
+    </div>
+</div>

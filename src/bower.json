@@ -14,15 +14,24 @@
     "angular-pdf-viewer": "^0.2.13",
     "slick-carousel": "^1.6.0",
     "angular-translate": "^2.15.1",
-    "angular-sanitize": "^1.6.4",
-    "ngSafeApply": "./node_modules/angularjs-scope.safeapply/src/Scope.SafeApply.js",
+    "angular-sanitize": "1.6.0",
     "jquery-ui": "^1.12.1",
-    "jquery.fancytree": "fancytree#^2.23.0"
+    "jquery.fancytree": "fancytree#^2.23.0",
+    "file-upload": "./node_modules/fine-uploader/",
+    "angular-uuid4": "^0.3.1",
+    "izimodal": "~1.5.0",
+    "content-editor-iframe": "https://s3.ap-south-1.amazonaws.com/ekstep-public-qa/artefacts/editor/content-editor-iframe-1.0.0.zip",
+    "collection-editor-iframe": "https://s3.ap-south-1.amazonaws.com/ekstep-public-qa/artefacts/editor/collection-editor-iframe-1.0.0.zip",
+    "font-awesome": "~4.5.0",
+    "js-md5": "md5#^0.5.0",
+    "izitoast": "^1.1.4"
   },
   "devDependencies": {
     "angular-mocks": "1.6.0",
     "ngstorage": "^0.3.11",
-    "jasmine-jquery": "^2.1.1"
+    "jasmine-jquery": "^2.1.1",
+    "lodash": "^4.17.4",
+    "semantic-ui-calendar": "^0.0.8"
   },
   "overrides": {
     "pagedown": {
@@ -39,7 +48,7 @@
   "moduleName": "playerApp",
   "resolutions": {
     "video.js": "^5.0.0",
-    "angular": "1.6.4",
+    "angular": "1.6.0",
     "jquery": ">=1.7",
     "jquery.fancytree": "^2.23.0",
     "jquery-ui": ">=1.8.6"

@@ -1,0 +1,53 @@
+<form class="ui form  addressEditForm">
+    <div class="ui dividing header margin-top-15 "></div>
+    <div apply-script class="inline  fields" ng-init="profileCtrl.newAddress.addType='current'">
+        <label for="address" class="required">{{$root.labels.PROFILE.ADDRESS.addressType}}</label>
+        <div class="field">
+            <div class="ui radio checkbox">
+                <input type="radio" name="radio" value='permanent' ng-model="profileCtrl.newAddress.addType">
+                <label>{{$root.labels.PROFILE.ADDRESS.addressTypePermanent}}</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui radio checkbox">
+                <input type="radio" name="radio" value='current' ng-checked="true" ng-model="profileCtrl.newAddress.addType">
+                <label>{{$root.labels.PROFILE.ADDRESS.addressTypeCurrent}}</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="two fields">
+        <div class="field required">
+            <label>{{$root.labels.PROFILE.ADDRESS.line1}}</label>
+            <input type="text" name="addLine1" ng-model="profileCtrl.newAddress.addressLine1">
+        </div>
+        <div class="  field">
+            <label>{{$root.labels.PROFILE.ADDRESS.line2}}</label>
+            <input type="text" name="" ng-model="profileCtrl.newAddress.addressLine2">
+        </div>
+    </div>
+    <div class="two fields">
+        <div class=" required field">
+            <label>{{$root.labels.PROFILE.ADDRESS.city}}</label>
+            <input type="text" name="city" ng-model="profileCtrl.newAddress.city">
+        </div>
+        <div class="  field">
+            <label>{{$root.labels.PROFILE.ADDRESS.state}}</label>
+            <input type="text" name="state" ng-model="profileCtrl.newAddress.state">
+        </div>
+    </div>
+    <div class="two fields">
+        <div class=" field">
+            <label>{{$root.labels.PROFILE.ADDRESS.country}}</label>
+            <input type="text" name="country" ng-model="profileCtrl.newAddress.country">
+        </div>
+        <div class="  field">
+            <label>{{$root.labels.PROFILE.ADDRESS.pinCode}}</label>
+            <input type="text" name="pinCode" ng-model="profileCtrl.newAddress.zipCode">
+        </div>
+    </div>
+    <div class="ui error message">
+    </div>
+    <div class="ui button " ng-class="{ 'disabled' : profileCtrl.disableSave}" ng-click="profileCtrl.addAddress(profileCtrl.newAddress) ;">{{$root.labels.PROFILE.BUTTON.save}}</div>
+
+</form>

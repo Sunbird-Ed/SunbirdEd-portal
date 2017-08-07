@@ -1,0 +1,74 @@
+<div ng-init="textbook.initilizeView()">
+    <div class="ui modal" id="createSlideShowModal" ng-if="textbook.showCreateSlideShowModal">
+        <div class=" ui segment margin-top-10" ng-show="!textbook.loader.showLoader">
+            <div class=" margin-bottom-15">
+                <div class="ui grid">
+                    <div class="eleven wide column">
+                        <span class="ui header">{{$root.labels.WORKSPACE.createTextBook.createTextBookText}}</span>
+                    </div>
+                    <div class="one wide column actions">
+                        <h5 class="ui basic icon circular button deny" ng-click="textbook.hideCreateSlideShowModal();">
+                            <i class="ui remove icon"></i>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                <form class="ui form" ng-init="textbook.data = {}">
+                    <div class="field">
+                        <label>{{$root.labels.WORKSPACE.common.title}}</label>
+                        <div class="field">
+                            <input type="text" name="title" placeholder={{$root.labels.WORKSPACE.createTextBook.textBookTitle}} ng-model="textbook.data.name">
+                        </div>
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <label>{{$root.labels.WORKSPACE.common.board}}</label>
+                            <select name="board" class="ui fluid dropdown singleSelectDropDown" ng-options=" board for board in textbook.boards" ng-model="textbook.data.board">
+                                <option value="">{{$root.labels.WORKSPACE.common.board}}</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>{{$root.labels.WORKSPACE.common.medium}}</label>
+                            <select name="medium" class="ui fluid dropdown singleSelectDropDown" ng-options=" audience for audience in textbook.mediums" ng-model="textbook.data.medium">
+                                <option value="">{{$root.labels.WORKSPACE.common.medium}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <label>{{$root.labels.WORKSPACE.common.subject}}</label>
+                            <select name="subject" class="ui fluid dropdown singleSelectDropDown" ng-options=" subject for subject in textbook.subjects" ng-model="textbook.data.subject">
+                                <option value="">{{$root.labels.WORKSPACE.common.subject}}</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>{{$root.labels.WORKSPACE.common.grade}}</label>
+                            <select name="grades" multiple="" class="ui fluid dropdown multiSelectDropDown" ng-options=" grade for grade in textbook.grades" ng-model="textbook.data.gradeLevel" s>
+                                <option value="" translate="grades">{{$root.labels.WORKSPACE.common.grade}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="actions">
+                <p class="text-align-center padding-top-20">
+                    <button class="ui primary text-align-center icon button" ng-click="textbook.saveMetaData(textbook.data)"
+                            ng-disabled="textbook.loader.showLoader">
+                        {{$root.labels.WORKSPACE.common.startCreating}}
+                    </button>
+                </p>
+                <h4 class="text-align-center">{{$root.labels.WORKSPACE.common.youCanFillThisDL}}</h4>
+                <div>
+                    <label>
+                        <p class="text-align-center">
+                            {{$root.labels.WORKSPACE.common.byProceedYouAgreedTextBook}}</p>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class=" ui segment margin-top-10" ng-if="textbook.loader.showLoader">
+            <app-loader data="{{textbook.loader}}"></app-loader>
+        </div>
+    </div>
+</div>

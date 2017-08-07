@@ -1,24 +1,24 @@
 <!--poonam code changes-->
-<div ng-controller="SearchQueryCtrl as searchQuery">
+<div>
     <div class="ui fluid icon input left action" id="search-input-container">
 
-        <div class="searchdropdown ui basic floating dropdown button" apply-script id="headerSearch">
+        <div class="searchdropdown ui basic floating dropdown button" apply-script id="headerSearch" ng-class={disabled:$root.isSearchPage==false}>
             <div class="text"></div>
             <i class="dropdown icon"></i>
             <div class="menu">
-                <div class="item" ng-repeat="key in searchQuery.searchSelectionKeys" value="{{key.id}}">{{key.name}}</div>
+                <div class="item" ng-click="$root.search.setSearchKey(key.id)" ng-repeat="key in search.searchSelectionKeys" value="{{key.id}}">{{key.name}}</div>
             </div>
         </div>
 
         <div class="searchfilterinput ui search">
             <div class="searchicon ui icon input ">
-                <input type="text" id="keyword" name="filter_search" ng-model="searchQuery.keyword" ng-change=" searchQuery.searchRequest('$event')" ng-keypress="($event.which === 13)? searchQuery.searchRequest():0" ng-model-options="{debounce: 2000}" placeholder="What are you looking for?"
-                    title="Search" autocomplete="off" spellcheck="false" dir="auto" class="searchinput" />
-                <i class="circular search link icon" ng-click=" searchQuery.searchRequest()"></i>
+                <input ng-disabled="!$root.isSearchPage" type="text" id="keyword" name="filter_search" ng-model="$root.search.searchKeyword"  placeholder="What are you looking for?"
+                ng-keypress="($event.charCode==13)?search.searchRequest($event):false"    title="Search" autocomplete="off" spellcheck="false" dir="auto" class="searchinput" ng-keyup="search.keyUp()" ng-keydown="search.keyDown()"   />
+                <i class="circular search link icon" ng-click="search.searchRequest()"></i>
             </div>
-            <div id="search-suggestions" ng-if="searchQuery.autosuggest_data.length >1" class="ui fluid results transition visible dropdown-menu-list">
+            <div id="search-suggestions" ng-if="$root.search.autosuggest_data.length > 0" class="ui fluid results transition visible dropdown-menu-list">
                 <div>
-                    <a class="result" ng-repeat="item in searchQuery.autosuggest_data" ng-click='searchQuery.setSearchText(item.name)'>
+                    <a class="result" ng-repeat="item in $root.search.autosuggest_data" ng-click='$root.search.setSearchText(item.name)'>
                         <div class="content">
                             <div class="title">{{item.name}}</div>
                         </div>
