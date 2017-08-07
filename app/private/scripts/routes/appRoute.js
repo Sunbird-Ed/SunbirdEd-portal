@@ -793,7 +793,7 @@ angular.module('playerApp')
               }
           }
       }).state('CreateBatch', {
-          url: '/create/batch/:courseId/:lectureView',
+          url: '/create/batch',
           views: {
               mainView: {
                   templateUrl: '/views/batch/createBatch.html',
@@ -809,6 +809,28 @@ angular.module('playerApp')
                   id: '',
                   name: '',
                   url: '/private/index#!/create/batch'
+              });
+          },
+          onExit: function ($rootScope) {
+              $rootScope.profileActive = '';
+          }
+      }).state('updateBatch', {
+          url: '/upadte/batch/:batchId',
+          views: {
+              mainView: {
+                  templateUrl: '/views/batch/updateBatch.html',
+                  controller: 'BatchUpdateController as batchUpdate'
+              }
+          },
+          onEnter: function ($rootScope, portalTelemetryService) {
+              $rootScope.profileActive = 'active';
+              portalTelemetryService.fireImpressions({
+                  env: 'content',
+                  type: 'creation',
+                  pageid: org.sunbird.portal.appid + '_UpdateBatch',
+                  id: '',
+                  name: '',
+                  url: '/private/index#!/update/batch'
               });
           },
           onExit: function ($rootScope) {
@@ -846,6 +868,7 @@ angular.module('playerApp')
 
       $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState,
       fromParams) {
+          window.localStorage.setItem('previousURl', JSON.stringify({'name':fromState.name, 'params': fromParams}));
           switch (toState.name) {
           case 'WorkSpace':
               if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {
