@@ -1872,7 +1872,6 @@ ul.fancytree-container li {
 }
 .batchCardAlign {
   padding-top: 20px;
-  padding-bottom: 20px;
 }
 .headerBatchCard {
   font-size: 1.3em;
@@ -1884,11 +1883,11 @@ ul.fancytree-container li {
 .batchcardListContent {
   margin-left: 30px;
   float: left;
-  height: 250px;
   background: #F5F5F5;
-  overflow-y: scroll;
-  margin-bottom: 25px;
+  height: 250px;
+  overflow-y: auto;
   border-top: none !important;
+  margin-right: 5px !important;
 }
 .batchcardListContent {
   min-height: 150px;
