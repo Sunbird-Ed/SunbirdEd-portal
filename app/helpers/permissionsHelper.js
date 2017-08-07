@@ -3,7 +3,8 @@ const request = require('request'),
     dateFormat = require('dateformat'),
     uuidv1 = require('uuid/v1'),
     envHelper = require('./environmentVariablesHelper.js'),
-    learnerURL = envHelper.LEARNER_URL;
+    learnerURL = envHelper.LEARNER_URL,
+    api_auth_token = envHelper.PORTAL_API_AUTH_TOKEN;
 
 
 
@@ -72,7 +73,7 @@ let PERMISSIONS_HELPER = {
         var userId = reqObj.kauth.grant.access_token.content.sub;
         var options = {
             method: 'GET',
-            url: learnerURL + 'user/getprofile/' + userId,
+            url: learnerURL + 'user/v1/read/' + userId,
             headers: {
                 'x-authenticated-userid': userId,
                 'x-device-id': 'middleware',
@@ -80,7 +81,8 @@ let PERMISSIONS_HELPER = {
                 ts: dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo"),
                 'x-consumer-id': 'X-Consumer-ID',
                 'content-type': 'application/json',
-                accept: 'application/json'
+                accept: 'application/json',
+                'Authorization': 'Bearer ' + api_auth_token
             }
         };
 
