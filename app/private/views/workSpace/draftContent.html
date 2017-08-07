@@ -1,5 +1,5 @@
 <div class="ui grid">
-    <div class="twelve wide column" ng-if="!draftContent.loader.showLoader">
+    <div class="twelve wide column" ng-if="!draftContent.loader.showLoader && draftContent.draftContentData.length > 0">
         <div class="content" ng-init="draftContent.initializeUIElement()">
             {{$root.labels.WORKSPACE.common.action}}:&nbsp;
             <div class="ui inline dropdown" id="actionDropDown" name="global">
