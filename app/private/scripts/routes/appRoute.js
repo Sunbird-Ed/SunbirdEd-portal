@@ -744,7 +744,7 @@ angular.module('playerApp')
           }
       })
       .state('PreviewCollection', {
-          url: '/preview/collection/:Id/:name',
+          url: '/preview/collection/:Id/:name/:backState',
           views: {
               mainView: {
                   templateUrl: 'views/collectionplayer/collectionPlayer.html',
@@ -753,10 +753,15 @@ angular.module('playerApp')
           },
           params: {
               Id: null,
-              name: null
+              name: null,
+              backState: null
           },
           onEnter: function ($stateParams, $rootScope, portalTelemetryService, routeHelperService) {
-              $rootScope.resourcesActive = 'active';
+              if ($stateParams.backState === 'Profile') {
+                  $rootScope.profileActive = 'active';
+              } else {
+                  $rootScope.resourcesActive = 'active';
+              }
               $rootScope.isPlayerPage = true;
               routeHelperService.loadRouteConfig('PreviewCollection', $stateParams);
               portalTelemetryService.fireImpressions({
