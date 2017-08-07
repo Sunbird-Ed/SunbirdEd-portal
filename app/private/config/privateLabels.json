@@ -92,7 +92,7 @@
                 "medium": "Medium"
             },
             "common": {
-                "concept":"Concepts",
+                "concept": "Concepts",
                 "title": "Title",
                 "description": "Description",
                 "board": "Board",
@@ -175,7 +175,9 @@
                 "language": "Language",
                 "dob": "Date Of Birth",
                 "subjects": "Subjects",
-                "summary": "Summary"
+                "summary": "Summary",
+                "contributions": "Contributions",
+                "contents": "Contents"
             },
             "BUTTON": {
                 "save": "Save",
