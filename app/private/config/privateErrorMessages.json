@@ -150,6 +150,9 @@
                 "SUBJECT": "Subject is missing",
                 "GRADE": "Grade is missing",
                 "MEDIUM": "Medium is missing"
+            },
+            "CONCEPTS":{
+                 "START": "We are loading concept details..."
             }
         },
         "HOME": {

@@ -1723,12 +1723,6 @@ ul.fancytree-container li {
   float: right;
   font-size: 1.1em;
 }
-.ui.tree-picker.modal .search {
-  display: none;
-}
-.ui.tree-picker.modal .header .menu {
-  display: none;
-}
 .workspacecontentProfile {
   line-height: 22px;
 }
@@ -1864,6 +1858,9 @@ ul.fancytree-container li {
 }
 .ui.divided.items > .userSearchCardHover.item:last-child {
   padding-bottom: 10px !important;
+}
+.trashIconAlign {
+  margin: -0.2em -0.2em 0em 0em;
 }
 body {
   position: relative !important;
