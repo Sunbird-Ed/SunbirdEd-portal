@@ -10,6 +10,7 @@
 
 angular.module('playerApp')
     .service('batchService', ['httpServiceJava', 'config', function(httpServiceJava, config){
+        var batchDetails = '';
         this.create = function (req) {
             return httpServiceJava.post(config.URL.BATCH.CREATE, req);
         };
@@ -32,5 +33,13 @@ angular.module('playerApp')
 
         this.getAllBatchs = function (req) {
             return httpServiceJava.get(config.URL.BATCH.GET_BATCHS, req);
+        };
+
+        this.setBatchData = function (batchData) {
+            this.batchDetails = batchData;
+        };
+
+        this.getBatchData = function(){
+            return this.batchDetails;
         };
     }]);
