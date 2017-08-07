@@ -1,0 +1,88 @@
+<div ng-init="lessonPlan.initializeModal()">
+    <div class="ui modal" id="createLessonPlanModal" ng-if="lessonPlan.showCreateLessonPlanModal">
+        <div class=" ui segment margin-top-10" ng-show="!lessonPlan.loader.showLoader">
+            <div class=" margin-bottom-15">
+                <div class="ui grid">
+                    <div class="eleven wide column">
+                        <span class="ui header">
+                            {{$root.labels.WORKSPACE.createLessonPlan.createLessonPlanText}}
+                        </span>
+                    </div>
+                    <div class="one wide column actions">
+                        <h5 class="ui basic icon circular button deny" ng-click="lessonPlan.hideCreateLessonPlanModal();">
+                            <i class="ui remove icon"></i>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                <form class="ui form" ng-init="lessonPlan.data = {}">
+                    <div class="field">
+                        <label>
+                            {{$root.labels.WORKSPACE.common.title}}
+                        </label>
+                        <div class="field">
+                            <input type="text" name="title" placeholder={{$root.labels.WORKSPACE.createLessonPlan.lessonPlanTitle}} ng-model="lessonPlan.data.name">
+                        </div>
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <label>
+                                {{$root.labels.WORKSPACE.common.board}}
+                            </label>
+                            <select name="board" class="ui fluid dropdown" id="boardDropDown" ng-options=" board for board in lessonPlan.boards" ng-model="lessonPlan.data.board">
+                                <option value="">{{$root.labels.WORKSPACE.common.board}}</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>
+                                {{$root.labels.WORKSPACE.common.medium}}
+                            </label>
+                            <select name="medium" class="ui fluid dropdown" id="mediumDropDown" ng-options=" audience for audience in lessonPlan.mediums" ng-model="lessonPlan.data.medium">
+                                <option value="">{{$root.labels.WORKSPACE.common.medium}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <label>
+                                {{$root.labels.WORKSPACE.common.subject}}
+                            </label>
+                            <select name="subject" class="ui fluid dropdown" id="subjectDropDown" ng-options=" subject for subject in lessonPlan.subjects" ng-model="lessonPlan.data.subject">
+                                <option value="">{{$root.labels.WORKSPACE.common.subject}}</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>
+                                {{$root.labels.WORKSPACE.common.grade}}
+                            </label>
+                            <select name="grades" multiple="" class="ui fluid dropdown" id="gradeDropDown" ng-options=" grade for grade in lessonPlan.grades" ng-model="lessonPlan.data.gradeLevel" s>
+                                <option value="" translate="grades">{{$root.labels.WORKSPACE.common.grade}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="actions">
+                <p class="text-align-center padding-top-20">
+                    <button class="ui primary text-align-center icon button" ng-click="lessonPlan.saveMetaData(lessonPlan.data)" ng-disabled="lessonPlan.loader.showLoader">
+                        {{$root.labels.WORKSPACE.common.startCreating}}
+                    </button>
+                </p>
+                <h4 class="text-align-center">
+                    {{$root.labels.WORKSPACE.common.youCanFillThisDL}}
+                </h4>
+                <div>
+                    <label>
+                        <p class="text-align-center">
+                            {{$root.labels.WORKSPACE.common.byProceedYouAgreedTextBook}}
+                        </p>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class=" ui segment margin-top-10" ng-if="lessonPlan.loader.showLoader">
+            <app-loader data="{{lessonPlan.loader}}"></app-loader>
+        </div>
+    </div>
+</div>
