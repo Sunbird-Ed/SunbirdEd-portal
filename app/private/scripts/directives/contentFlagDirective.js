@@ -13,7 +13,6 @@ angular.module('playerApp')
             templateUrl: 'views/common/contentFlagModal.html',
             restrict: 'E',
             scope: {
-                courseid: '=',
                 contentid: '=',
                 contentname: '=',
                 versionkey: '=',

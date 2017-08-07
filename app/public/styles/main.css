@@ -1859,6 +1859,9 @@ ul.fancytree-container li {
 .ui.divided.items > .userSearchCardHover.item:last-child {
   padding-bottom: 10px !important;
 }
+.trashIconAlign {
+  margin: -0.2em -0.2em 0em 0em;
+}
 body {
   position: relative !important;
   min-height: 100% !important;

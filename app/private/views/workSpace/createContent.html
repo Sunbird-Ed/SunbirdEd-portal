@@ -77,15 +77,15 @@
     </div>
 </div>
 <div ng-show="contentCreation.showContentCreationModal">
-    <div class="ui modal" id="contentCreationModal">
-        <div class=" ui segment margin-top-10" ng-show="!contentCreation.loader.showLoader && !contentCreation.error.showError">
+    <div class="ui long modal" id="contentCreationModal" ng-init="contentCreation.data = {}">
+        <div class=" ui segment margin-top-10" ng-show="!contentCreation.loader.showLoader">
             <div class=" margin-bottom-15">
                 <div class="ui grid">
                     <div class="eleven wide column">
                         <span class="ui header">{{$root.labels.WORKSPACE.startCreating.uploadContent}}</span>
                     </div>
                     <div class="one wide column actions">
-                        <h5 class="ui basic icon circular button deny" ng-click="contentCreation.closeContentCreationModal();">
+                        <h5 class="ui basic icon circular button deny">
                             <i class="ui remove icon"></i>
                         </h5>
                     </div>
@@ -114,7 +114,7 @@
                         </div>
                         <div class="required field">
                             <label>{{$root.labels.WORKSPACE.common.mimeType}}</label>
-                            <select name="mimeType" class="ui fluid dropdown singleSelectDropDown" id="mimeTypeDropDown" ng-options=" mimeType.name for mimeType in contentCreation.mimeType" ng-model="contentCreation.data.mimeType">
+                            <select name="mimeType" class="ui fluid dropdown" id="mimeTypeDropDown" ng-options=" mimeType.name for mimeType in contentCreation.mimeType" ng-model="contentCreation.data.mimeType">
                                 <option value="">{{$root.labels.WORKSPACE.common.mimeType}}</option>
                             </select>
                         </div>

@@ -188,7 +188,13 @@ angular.module('playerApp')
 
             function getContent(contentId) {
                 var req = { contentId: contentId };
-                contentService.getById(req).then(function (response) {
+                var qs = {
+                    fields: 'name,description,appIcon,contentType,mimeType,artifactUrl,' +
+                            ',versionKey,audience,language,gradeLevel,ageGroup,subject,' +
+                            'medium,author,domain,createdBy,flagReasons,flaggedBy,flags,status'
+                };
+
+                contentService.getById(req, qs).then(function (response) {
                     if (response && response.responseCode === 'OK') {
                         previewContent.errorObject = {};
                         showPlayer(response.result.content);
@@ -429,11 +435,9 @@ angular.module('playerApp')
                     if (res && res.responseCode === 'OK') {
                         previewContent.loader.showLoader = false;
                         previewContent.isShowFlagActionButton = false;
-                        previewContent.contentData.status = 'DraftFlag';
+                        previewContent.contentData.status = 'FlagDraft';
                         toasterService.success(previewContent.message.ACCEPT_CONTENT_FLAG.SUCCESS);
-                        // $timeout(function () {
                         //     $state.go($stateParams.backState);
-                        // }, 1000);
                     } else {
                         previewContent.loader.showLoader = false;
                         toasterService.error(previewContent.message.ACCEPT_CONTENT_FLAG.FAILED);
@@ -453,10 +457,9 @@ angular.module('playerApp')
                     if (res && res.responseCode === 'OK') {
                         previewContent.loader.showLoader = false;
                         previewContent.isShowFlagActionButton = false;
+                        previewContent.contentData.status = 'Live';
                         toasterService.success(previewContent.message.DISCARD_CONTENT_FLAG.SUCCESS);
-                        // $timeout(function () {
                         //     $state.go($stateParams.backState);
-                        // }, 1000);
                     } else {
                         previewContent.loader.showLoader = false;
                         toasterService.error(previewContent.message.DISCARD_CONTENT_FLAG.FAILED);
