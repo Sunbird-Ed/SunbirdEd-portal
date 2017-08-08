@@ -278,18 +278,7 @@ angular.module('playerApp')
                     ]
                 }
                 ];
-                $('#openTreeModal').treePicker({
-                    data: sampleData,
-                    name: 'EDIT PROFILE',
-                    singlePick: true,
-                    onSubmit: function () {
-                    },
-                    displayFormat: function () {
-                        $('.ui.blue.button.accept').html('Done');
-                        $('.ui.button.close').html('Close');
-                    }
-
-                });
+                
             }
         };
     });

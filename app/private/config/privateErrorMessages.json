@@ -151,8 +151,12 @@
                 "GRADE": "Grade is missing",
                 "MEDIUM": "Medium is missing"
             },
-            "CONCEPTS":{
-                 "START": "We are loading concept details..."
+            "CONCEPTS": {
+                "START": "We are loading concept details..."
+            },
+            "CREATE_LESSON_PLAN": {
+                "START": "We are creating lesson plan...",
+                "FAILED": "Creating lesson plan failed, please try again later..."
             }
         },
         "HOME": {
