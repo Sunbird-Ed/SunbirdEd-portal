@@ -10,10 +10,25 @@
 
 angular.module('playerApp')
     .controller('BatchUpdateController', ['$rootScope', '$timeout', '$state','$scope', '$stateParams', 'config', 
-        'batchService', 'toasterService' ,function($rootScope, $timeout, $state, $scope, $stateParams, config, batchService, toasterService) {
+        'batchService', '$filter' ,function($rootScope, $timeout, $state, $scope, $stateParams, config, batchService, $filter) {
             var batchUpdate = this;
-            batchUpdate.userList = ['User1', 'User2', 'User3', 'User4', 'User5', 'User6', 'User7'];
-            batchUpdate.menterList = ['Mentor1', 'Mentor2', 'Mentor3', 'Mentor4', 'Mentor5', 'Mentor6']
+            batchUpdate.userList = [
+                {name: 'User1', image: 'jenny.jpg'},
+                {name: 'User2', image: 'elliot.jpg'},
+                {name: 'User3', image: 'stevie.jpg'},
+                {name: 'User4', image: 'christian.jpg'},
+                {name: 'User5', image: 'matt.jpg'},
+                {name: 'User6', image: 'justen.jpg'},
+                {name: 'User7', image: 'user_logo.png'}
+            ];
+            batchUpdate.menterList = [
+                {name: 'Mentor1', image: 'jenny.jpg'},
+                {name: 'Mentor2', image: 'elliot.jpg'},
+                {name: 'Mentor3', image: 'stevie.jpg'},
+                {name: 'Mentor4', image: 'christian.jpg'},
+                {name: 'Mentor5', image: 'matt.jpg'},
+                {name: 'Mentor6', image: 'justen.jpg'}
+            ];
             batchUpdate.userId = $rootScope.userId;
             batchUpdate.courseId = $stateParams.courseId;
             batchUpdate.submitted = false;
@@ -21,6 +36,16 @@ angular.module('playerApp')
 
             batchUpdate.showUpdateBatchModal = function () {
                 batchUpdate.batchData = batchService.getBatchData();
+                batchUpdate.selectedUsers = [];
+                batchUpdate.selectedMentors = [];
+                _.forEach(batchUpdate.batchData.users, function(value){
+                    batchUpdate.selectedUsers.push(_.find(batchUpdate.userList, ['name', value]))
+                    batchUpdate.userList = _.reject(batchUpdate.userList, ['name', value]);
+                })
+                _.forEach(batchUpdate.batchData.mentors, function(mentorVal){
+                    batchUpdate.selectedMentors.push(_.find(batchUpdate.menterList, ['name', mentorVal]))
+                    batchUpdate.menterList = _.reject(batchUpdate.menterList, ['name', mentorVal]);
+                })
                 $timeout(function () {
                     $('#users').dropdown('set selected',batchUpdate.batchData.users);
                     $('#mentors').dropdown('set selected',batchUpdate.batchData.mentors);
