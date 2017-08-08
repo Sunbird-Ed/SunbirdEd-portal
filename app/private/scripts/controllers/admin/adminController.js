@@ -18,82 +18,128 @@ angular.module('playerApp')
         '$scope',
         'contentService',
         function (adminService, $timeout, $state, config, $rootScope, $scope, contentService) {
-            console.log('inside conroller', $scope.users);
-
             var admin = this;
             admin.userRoles = config.USER_ROLES;
-            admin.searchedUsers = $scope.users;
+            admin.searchResult = $scope.users;
             admin.userName = '';
-
-
-            admin.exportUsers = function () {
-                alasql('SELECT firstName AS Name, email AS Email ' +
-                         'INTO CSV(\'Users.csv\',{headers:true}) FROM ?', [admin.searchedUsers]);
+            admin.bulkUsers = {};
+        // modal init
+            admin.showModal = function () {
+                $('#changeUserRoles').modal('show');
             };
+            admin.modalInit = function () {
+                $timeout(function () {
+                    $('#userOrgs').dropdown();
+                }, 1000);
+                $('.roleChckbox').checkbox();
+            };
+            // download list of user or organization
+            admin.downloadUsers = function (key, list) {
+                if (key === 'Users') {
+                    list.forEach(function (user) {
+                        user.organisationsName = [];
+                        if (user.organisations) {
+                            user.organisations.forEach(function (org) {
+                                user.organisationsName.push(org.orgName);
+                            });
+                        }
+                    });
+                    alasql('SELECT firstName AS firstName,lastName AS lastName,phone AS phone,'
+                    + 'email AS email,organisationsName AS Organisations,userName AS userName '
+                    + 'INTO CSV(\'Users.csv\',{headers:true}) FROM ?'
+                    , [list]);
+                } else if (key === 'Organisations') {
+                    list.forEach(function (org) {
+                        switch (org.status) {
+                        case 0:org.status = 'INACTIVE'; break;
+                        case 1:org.status = 'ACTIVE'; break;
+                        case 2:org.status = 'BLOCKED'; break;
+                        case 3:org.status = 'RETIRED'; break;
+                        default :break;
+                        }
+                    });
+                    alasql('SELECT orgName AS orgName,orgType AS orgType,'
+                    + 'noOfMembers AS noOfMembers,channel AS channel'
+                    + 'status AS Status INTO CSV(\'Organizations.csv\',{headers:true}) FROM ?'
+                    , [list]);
+                }
+            };
+ // upload for bulk user create
 
             admin.openImageBrowser = function () {
-                $('#uploadCSV').click();
+                if (!((admin.bulkUsers.provider && admin.bulkUsers.externalid)
+                    || admin.bulkUsers.OrgId)) {
+                    admin.bulkUploadError = true;
+                    admin.bulkUploadErrorMessage = 'you should enter Provider and External Id ' +
+                                                    'Or Organization Id';
+
+                    $timeout(function () {
+                        admin.bulkUploadError = false;
+                        admin.bulkUploadErrorMessage = '';
+                        admin.bulkUsers = {};
+                    }, 2000);
+                } else { $('#uploadCSV').click(); }
             };
-            admin.validateFile = function (files) {
+            $scope.validateFile = function (files) {
                 var fd = new FormData();
                 var reader = new FileReader();
                 if (files[0] && files[0].name.match(/.(csv|xlsx)$/i)
                     && files[0].size < 4000000) {
                     fd.append('file', files[0]);
+
                     reader.onload = function () {
-                        profile.uploadFile();
+                        admin.createNewUsers();
                     };
+                    admin.fileName = files[0].name;
                     reader.readAsDataURL(files[0]);
                     admin.fileToUpload = fd;
                 } else {
                     toasterService.warning('');
                 }
             };
-            admin.uploadFile = function () {
-                    //  profile.loader = toasterService.loader('', apiMessages.SUCCESS.editingProfile);
-                contentService.uploadMedia(admin.fileToUpload).then(function (res) {
-                    if (res && res.responseCode === 'OK') {
-                        // admin.createNewUsers(res.result.url);
-                    } else {
-                    //     profile.loader.showLoader = false;
-                    //     profile.error = toasterService
-                    // .error(apiMessages.ERROR.update);
-                    }
-                }).catch(function () {
-                    // profile.loader.showLoader = false;
-                    // profile.error = toasterService.error(apiMessages.ERROR.update);
+            admin.createNewUsers = function (file) {
+                var newUsersReq = {
+                    user: admin.fileToUpload,
+                    organisationId: admin.bulkUsers.OrgId, // valid or
+                    externalid: admin.bulkUsers.externalid, // valid and
+                    provider: admin.bulkUsers.provider// valid
+                };
+                console.log('newUsersReq', newUsersReq);
+                adminService.bulkUserUpload(newUsersReq).then(function (res) {
+                    console.log('res bulk users', res);
                 });
             };
-            // admin.createNewUsers = function (file) {
-            //     var newUsersReq = {
-            //         user: file,
-            //         organisationId: '1213', // valid or
-            //         channel: 'sfs', // valid and
-            //         provider: 'dsfs'// vald
-            //     };
-            //     adminService.createUsers.then(function (res) {
-
-            //     });
-            // };
-            admin.showModal = function () {
-                $('#changeUserRoles').modal('show');
+            admin.closeBulkUploadError = function () {
+                admin.bulkUploadError = false;
+                admin.bulkUploadErrorMessage = '';
+                admin.bulkUsers = {};
             };
-            admin.modalInit = function (organisations) {
-                admin.userOrgsCopy = angular.copy(organisations);
-                $timeout(function () {
-                    $('#userOrgs').dropdown();
-                }, 1000);
-                $('.roleChckbox').checkbox();
-            };
-
-            admin.modal = function (role, userRoles) {
-                admin.selectedOrgUserRoles = userRoles.includes(role)
-                                            ? admin.selectedOrgUserRoles.pop(role)
-                                            : admin.selectedOrgUserRoles.push(role);
-            };
+// edit roles
             admin.isUserRole = function (role, list) {
                 return list.includes(role);
             };
+            admin.editRoles = function (role, userRoles) {
+                if (userRoles.includes(role) === true) {
+                    admin.selectedOrgUserRoles.pop(role);
+                } else {
+                    admin.selectedOrgUserRoles.push(role);
+                }
+            };
+            admin.updateRoles = function (userId, orgId, roles) {
+                var req = {
+                    request: {
+                        userId: userId,
+                        organisationId: orgId,
+                        roles: roles
+
+                    }
+                };
+                console.log('req or role udate', req);
+                adminService.updateRoles(req).then(function (res) {
+                    console.log('res of update', res);
+                });
+            };
+// delete user
             admin.deleteUser = function (userId) {
                 var removeReq = {
                     params: { },
@@ -101,17 +147,20 @@ angular.module('playerApp')
                         userId: userId
                     }
                 };
+                console.log('removeReq', removeReq);
                 adminService.deleteUser(removeReq).then(function (res) {
                     if (res.result.response === 'SUCCESS') {
                         console.log('res of deleter', res);
-                        console.log('admin.searchedUsers before delete', admin.searchedUsers.length);
-                        admin.searchedUsers = admin.searchedUsers.filter(function (user) {
+                        console.log('admin.searchResult before delete', admin.searchResult.length);
+                        admin.searchResult = admin.searchResult.filter(function (user) {
                             return user.userId !== userId;
                         });
-                        console.log('admin.searchedUsers after delete', admin.searchedUsers.length);
+                        console.log('admin.searchResult after delete', admin.searchResult.length);
                     }
                 });
             };
+
+                 // create org
             admin.createOrg = function () {
                 var orgRequest = {
                     params: { },
