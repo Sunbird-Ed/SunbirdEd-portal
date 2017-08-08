@@ -205,6 +205,17 @@
             "selectAReason": "SELECT A REASON",
             "addYourComment": "ADD YOUR COMMENT",
             "submit": "SUBMIT"
+        },
+        "BATCH":{
+            "name": "NAME OF BATCH",
+            "description": "ABOUT THIS BATCH",
+            "startdate": "START DATE",
+            "enddate": "END DATE",
+            "enrollment": "NATURE OF BATCH",
+            "users": "MEMBERS IN THE BATCH",
+            "mentors": "MENTORS IN THE BATCH",
+            "participants": "SELECTED PARTICIPANTS",
+            "selectedmentors": "SELECTED MENTORS"
         }
     }
 }
