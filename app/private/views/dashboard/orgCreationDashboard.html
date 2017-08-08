@@ -1,0 +1,79 @@
+<style>
+<!--
+.stats {padding-left:7px;!important}
+-->
+span.blue { color: #0062FF;}
+.active { 
+    color: #6000FF !important;
+}
+
+</style>
+
+
+
+<div class="ui grid">
+	<div class="one wide column"></div>
+	<div class="ten wide column " style="display: block !important;">
+		<div class="ui grid">
+			<div class="three wide column"><h4><i class="bar chart icon"></i>Admin Dashboard</h4></div>
+			<div class="right floated three wide column"></div>
+			<div class="right floated five wide column">
+				<div class="ui fluid container grid">
+					
+					<div class="four wide right floated column">
+						<div class="ui inline selection  dropdown">
+							<input type="hidden" name="gender">
+							<i class="dropdown icon"></i>
+							<div class="default text">Creation</div>
+							<div class="menu">
+								<div class="active item" ng-click="dashboardData.onAfterDatasetChange('creation')" data-dataset="creation">Creation</div>
+								<div class="item" ng-click="dashboardData.onAfterDatasetChange('consumption')" data-dataset="consumption">Consumption</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="one wide column"></div>
+</div>
+
+</br>
+</br>
+
+
+<div class="ui center aligned grid">
+	<img id="mySpinner" src="http://www.lumene.com/sites/all/themes/lumene2016/images/loading.gif" ng-show="loading" />
+</div>
+
+
+<div>
+	<div class="resource-padding ui grid">
+		<div class="one wide column"></div>
+		<div class="ten wide column">
+			<div class="ui grid column stats">
+				<span class="text blue" onmouseover="this.style.cursor='pointer'" ng-click="dashboardData.onAfterFilterChange('14d')" id="14d">LAST 14 DAYS</span>
+				<span class="text blue active" onmouseover="this.style.cursor='pointer'" ng-click="dashboardData.onAfterFilterChange('7d')" id="7d">LAST 7 DAYS</span>
+				<span class="text blue" onmouseover="this.style.cursor='pointer'" ng-click="dashboardData.onAfterFilterChange('5w')" id="5w">LAST 5 WEEKS</span>
+			</div>
+			<p></p>	
+			
+			<div class="ui three cards">
+				<div class="card" ng-repeat="item in dashboardData.numericStatArray">
+					<div class="content center aligned">
+						<div class="meta">{{item.name}}</div>
+						<h2 class="description">{{item.value}}</h2>
+					</div>
+				</div>
+			</div>
+			
+			<div class="ui one column grid">
+				<div class="column">
+					<canvas id="bar" class="chart chart-line"
+					chart-data="data" chart-labels="labels" chart-series="series" chart-colors="colors" chart-options="options" style="background-color:white; border: 1px solid #D4D4D5; border-radius: 5px;">
+					</canvas>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
