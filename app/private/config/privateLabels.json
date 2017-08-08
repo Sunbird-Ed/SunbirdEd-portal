@@ -215,7 +215,8 @@
             "users": "MEMBERS IN THE BATCH",
             "mentors": "MENTORS IN THE BATCH",
             "participants": "SELECTED PARTICIPANTS",
-            "selectedmentors": "SELECTED MENTORS"
+            "selectedmentors": "SELECTED MENTORS",
+            "courseBatches" : "COURSE BATCHES"            
         }
     }
 }
