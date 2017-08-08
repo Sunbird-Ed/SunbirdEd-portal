@@ -13,11 +13,12 @@ angular.module('playerApp')
             restrict: 'E',
             scope: {
                 showbatchcard: '=',
-                courseid: '='
+                courseid: '=',
+                status: '='
             },
-        link: function (scope, element, attrs) {
-            $('#batchCardDropDown').dropdown('set selected ', 1);
-            scope.getCouserBatches();
+        link: function (scope, element, attrs, batch) {
+            $('#batchStatusOptions').dropdown('set selected ', batch.status);
+            batch.getCouserBatchesList();
         },
         controller: 'BatchController as batch'
         };
