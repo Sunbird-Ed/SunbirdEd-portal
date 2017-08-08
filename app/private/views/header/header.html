@@ -23,7 +23,7 @@
                 <div ng-if="firstName" class="ui divider"></div>
 
                 <a class="item" href="#" ui-sref-active="active" ui-sref="Profile">{{$root.labels.HEADER.profile}}</a>
-                <a class="item" href="#" ui-sref-active="active" ui-sref="WorkSpace" ng-if="initializePermissionDirective" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW">{{$root.labels.HEADER.workSpace}}</a>
+                <a class="item" href="#" ui-sref-active="active" ui-sref="WorkSpace" ng-if="initializePermissionDirective" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW,FLAG_REVIEWER">{{$root.labels.HEADER.workSpace}}</a>
                 <a class="item" ng-click="logout();">{{$root.labels.HEADER.logout}}</a>
             </div>
         </div>

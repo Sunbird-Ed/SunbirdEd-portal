@@ -47,10 +47,12 @@
                 "lessonDescription": "You can create stuff here. You must try it, it's magical!.",
                 "collection": "COLLECTION",
                 "collectionDescription": "You will be taken to an editor to create a course with assessments/quizes.",
-                "enterYuotubeURL": "ENTER YOUTUBE URL",
+                "enterYoutubeURL": "ENTER YOUTUBE URL",
                 "fileUploadOptions": "File accepted only pdf, mp4 and html zip (Max size 25mb).",
                 "uploadContent": "Upload Content",
-                "upload": "Upload"
+                "upload": "Upload",
+                "lessonPlanDescription": "lesson Plan Description",
+                "lessonPlan": "LESSON PLAN"
             },
             "createLesson": {
                 "createLessonText": "Create Lesson",
@@ -64,6 +66,10 @@
             "createTextBook": {
                 "createTextBookText": "Create TextBook",
                 "textBookTitle": "TextBook Title"
+            },
+            "createLessonPlan": {
+                "createLessonPlanText": "Create Lesson Plan",
+                "lessonPlanTitle": "Lesson Plan Title"
             },
             "createCourse": {
                 "createCourseText": "Create Course",
@@ -92,7 +98,7 @@
                 "medium": "Medium"
             },
             "common": {
-                "concept":"Concepts",
+                "concept": "Concepts",
                 "title": "Title",
                 "description": "Description",
                 "board": "Board",
@@ -175,7 +181,9 @@
                 "language": "Language",
                 "dob": "Date Of Birth",
                 "subjects": "Subjects",
-                "summary": "Summary"
+                "summary": "Summary",
+                "contributions": "Contributions",
+                "contents": "Contents"
             },
             "BUTTON": {
                 "save": "Save",
