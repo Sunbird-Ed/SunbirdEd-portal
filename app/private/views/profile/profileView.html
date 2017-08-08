@@ -71,8 +71,8 @@
                         <span class="header cardsHeading">{{$root.labels.PROFILE.BASIC_PROFILE.contributions}}</span>
                         <span class="addeditprofile">{{profileCtrl.contentList.length}} {{$root.labels.PROFILE.BASIC_PROFILE.contents}}</span>
                     </div>
-                    <div class="profileitems ui relaxed divided items">
-                        <div class="item" ng-repeat="item in profileCtrl.contentList | limitTo: profileCtrl.quantityOfContent track by $index" ng-click="profileCtrl.openContentPlayer(item)">
+                    <div class="profileitems contributionsListScroll ui relaxed divided items padding-right-20" id="custom-scroll">
+                        <div class="item" ng-repeat="item in profileCtrl.contentList track by $index" ng-click="profileCtrl.openContentPlayer(item)">
                             <img class="ui avatar image " src="{{profileCtrl.getContentLogo(item)}}">
                             <div class="content ">
                                 <a class=" header ">{{item.name}}</a>
