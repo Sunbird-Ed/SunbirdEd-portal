@@ -96,7 +96,13 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                <div class="two wide column">
+                                    <div class="field">
+                                        <form class="ui form">
+                                            <concept-picker is-search-page="true"  selected-concepts="$root.search.selectedConcepts"></concept-picker>
+                                        </form>
+                                    </div>
+                                </div>
                                 <div class="three wide column filter-button">
                                     <a class="searchfilterbutton ui blue tiny  button" ng-click="$root.search.applyFilter()" translate="apply">APPLY</a>
                                     <a class="searchfilterbutton ui primary tiny basic button" ng-click="$root.search.resetFilter()" translate="reset">RESET</a>
