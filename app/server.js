@@ -18,8 +18,8 @@ const express = require('express'),
   tenantHelper = require('./helpers/tenantHelper.js'),
   fs = require('fs'),
   port = env['sunbird_port'] || 3000,
-  learnerURL = env.sunbird_learner_player_url || 'https://dev.open-sunbird.org/api/',
-  contentURL = env.sunbird_content_player_url || 'https://dev.open-sunbird.org/api/',
+  learnerURL = env.sunbird_learner_player_url || 'https://staging.open-sunbird.org/api/',
+  contentURL = env.sunbird_content_player_url || 'https://staging.open-sunbird.org/api/',
   realm = env.sunbird_portal_realm || "sunbird",
   auth_server_url = env.sunbird_portal_auth_server_url || "https://dev.open-sunbird.org/auth",
   keycloak_resource = env.sunbird_portal_auth_server_client || "portal",
@@ -29,8 +29,8 @@ const express = require('express'),
   appId = env.sunbird_appid || 'sunbird.portal',
   default_tenant = env.sunbird_default_tenant,
   md5 = require('js-md5'),
-  sunbird_api_auth_token = env.sunbird_api_auth_token || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkMTc1MDI' +
-                'wNDdlODc0ODZjOTM0ZDQ1ODdlYTQ4MmM3MyJ9.7LWocwCn5rrCScFQYOne8_Op2EOo-xTCK5JCFarHKSs';
+  sunbird_api_auth_token = env.sunbird_api_auth_token || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI2NTU0NDQ5ZWI0MGQ0YTI4ODQ3YzAzYWZlNmJjMmEyOCJ9.'
+  +'YhnTaDw_xvf8Q5S66QiO71-5WeqLaTPv-vvNZSwBqLk';
 
 const contentProxyUrl = contentURL.replace('/api/', '');
 
