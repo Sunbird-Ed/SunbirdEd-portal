@@ -291,7 +291,7 @@ angular.module('playerApp').directive('search', function () {
                 $rootScope.search.selectedConcepts = [];
                 $rootScope.search.filters = {};
                 $rootScope.isSearchResultsPage = false;
-                $rootScope.isSearchPage = true;
+                $rootScope.isSearchPage = true;                
                 $scope.search.searchRequest();
                 // $state.go($rootScope.search.selectedSearchKey);
             };

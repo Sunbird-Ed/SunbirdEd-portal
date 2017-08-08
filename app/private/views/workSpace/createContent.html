@@ -47,6 +47,21 @@
             </div>
         </div>
     </div>
+    <div class="twelve wide column ">
+        <div class="ui grid">
+            <div class="three wide column">
+                <div class="workspacecontent ui link card" ui-sref="CreateLessonPlan">
+                    <div class="content">
+                        <div class="textcontent">
+                            <i class='my-icon file text outline icon'></i>
+                            <span class="my-text">{{$root.labels.WORKSPACE.startCreating.lessonPlan}}</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="workspaceinstuction">{{$root.labels.WORKSPACE.startCreating.lessonPlanDescription}}</p>
+            </div>
+        </div>
+    </div>
     <div class="twelve wide column dividerInFileUploader">
         <div class="ui divider"></div>
     </div>
@@ -57,13 +72,13 @@
         <div class="ui grid fileUploadDivider">
             <div class="one wide column"></div>
             <div class="uploadicon four wide column">
-                <p class="padding-top-10 dropfile textIndentForUploadFile">{{$root.labels.WORKSPACE.startCreating.enterYuotubeURL}}</p>
+                <p class="padding-top-10 dropfile textIndentForUploadFile">{{$root.labels.WORKSPACE.startCreating.enterYoutubeURL}}</p>
             </div>
             <div class="six wide column">
                 <div class="ui form youtubeupload youTubeFileUploadForm">
                     <div class="inline fields">
                         <div class="eight wide field">
-                            <input type="text" ng-model="contentCreation.youtubeVideoUrl" placeholder={{$root.labels.WORKSPACE.startCreating.enterYuotubeURL}} ng-model-options="{ debounce: 1000 }" ng-change="contentCreation.validateYouTubeUrl(contentCreation.youtubeVideoUrl)">
+                            <input type="text" ng-model="contentCreation.youtubeVideoUrl" placeholder={{$root.labels.WORKSPACE.startCreating.enterYoutubeURL}} ng-model-options="{ debounce: 1000 }" ng-change="contentCreation.validateYouTubeUrl(contentCreation.youtubeVideoUrl)">
                         </div>
                         <div class="two wide field">
                             <button class="ui primary basic button text-align-center padding-left-25 qq-upload-button-selector" ng-click="contentCreation.uploadYoutubeFile()" ng-disabled="!contentCreation.youtubeVideoUrl || contentCreation.invalidYoutubeVideoUrl">UPLOAD</button>

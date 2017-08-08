@@ -10,9 +10,9 @@
 angular.module('playerApp')// add those all values
     .controller('ProfileController',
     ['$scope', '$rootScope', 'contentService', 'userService', 'toasterService', 'config',
-        '$timeout', '$filter', 'uuid4', 'formValidation',
+        '$timeout', '$filter', 'uuid4', 'formValidation', 'searchService', '$state',
         function ($scope, $rootScope, contentService, userService, toasterService, config,
-            $timeout, $filter, uuid4, formValidation) {
+            $timeout, $filter, uuid4, formValidation, searchService, $state) {
             var profile = this;
             var apiMessages = $rootScope.errorMessages.PROFILE.API;
             profile.userId = $rootScope.userId;
@@ -23,6 +23,8 @@ angular.module('playerApp')// add those all values
             profile.languages = config.DROPDOWN.COMMON.languages;
             profile.subjects = config.DROPDOWN.COMMON.subjects;
             profile.isError = false;
+            profile.contentSortBy = 'desc';
+            profile.quantityOfContent = 4;
 
              // Get user profile
             profile.processProfileData = function (userProfile) { // setProfileData
@@ -361,4 +363,61 @@ angular.module('playerApp')// add those all values
             };
 
             profile.getProfile();
+
+            profile.getCreatedContentList = function () {
+                var request = {
+                    filters: {
+                        createdBy: profile.userId,
+                        status: ['Live'],
+                        contentType: config.contributeContentType
+                    },
+                    sort_by: {
+                        lastUpdatedOn: profile.contentSortBy
+                    }
+                };
+
+                searchService.search(request).then(function (res) {
+                    if (res && res.responseCode === 'OK') {
+                        profile.contentList = res.result.content || [];
+                    } else {
+                        // toasterService.error(profile.message.DRAFT.FAILED);
+                    }
+                }).catch(function () {
+                    // toasterService.error(profile.message.DRAFT.FAILED);
+                });
+            };
+
+            profile.getContentLogo = function (content) {
+                var contentIcon = content.appIcon;
+                var mimeType = content.mimeType;
+                if (contentIcon) {
+                    return content.appIcon;
+                }
+                switch (mimeType) {
+                case 'application/pdf':
+                    return '/images/pdf.png';
+                case 'video/mp4':
+                    return '/images/mp4.png';
+                case 'video/youtube':
+                    return '/images/youtubeFileIcon.jpg';
+                default:
+                    return '/images/zipFileIcon.png';
+                }
+            };
+
+            profile.openContentPlayer = function (item) {
+                if (item.mimeType === 'application/vnd.ekstep.content-collection') {
+                    $state.go('PreviewCollection', {
+                        Id: item.identifier,
+                        name: item.name,
+                        backState: $state.current.name
+                    });
+                } else {
+                    var params = {
+                        contentId: item.identifier,
+                        backState: $state.current.name
+                    };
+                    $state.go('PreviewContent', params);
+                }
+            };
         }]);

@@ -99,7 +99,8 @@
                                 <div class="two wide column">
                                     <div class="field">
                                         <form class="ui form">
-                                            <concept-picker is-search-page="true"  selected-concepts="$root.search.selectedConcepts"></concept-picker>
+                                            <concept-picker ng-if="$root.search.selectedConcepts.length == 0" is-search-page="true"  selected-concepts="$root.search.selectedConcepts"></concept-picker>
+                                            <concept-picker ng-if="$root.search.selectedConcepts.length > 0" is-search-page="true"  selected-concepts="$root.search.selectedConcepts"></concept-picker>
                                         </form>
                                     </div>
                                 </div>

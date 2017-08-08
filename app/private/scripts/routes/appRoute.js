@@ -744,7 +744,7 @@ angular.module('playerApp')
           }
       })
       .state('PreviewCollection', {
-          url: '/preview/collection/:Id/:name',
+          url: '/preview/collection/:Id/:name/:backState',
           views: {
               mainView: {
                   templateUrl: 'views/collectionplayer/collectionPlayer.html',
@@ -753,10 +753,15 @@ angular.module('playerApp')
           },
           params: {
               Id: null,
-              name: null
+              name: null,
+              backState: null
           },
           onEnter: function ($stateParams, $rootScope, portalTelemetryService, routeHelperService) {
-              $rootScope.resourcesActive = 'active';
+              if ($stateParams.backState === 'Profile') {
+                  $rootScope.profileActive = 'active';
+              } else {
+                  $rootScope.resourcesActive = 'active';
+              }
               $rootScope.isPlayerPage = true;
               routeHelperService.loadRouteConfig('PreviewCollection', $stateParams);
               portalTelemetryService.fireImpressions({
@@ -788,7 +793,7 @@ angular.module('playerApp')
               }
           }
       }).state('CreateBatch', {
-          url: '/create/batch/:courseId/:lectureView',
+          url: '/create/batch',
           views: {
               mainView: {
                   templateUrl: '/views/batch/createBatch.html',
@@ -809,7 +814,52 @@ angular.module('playerApp')
           onExit: function ($rootScope) {
               $rootScope.profileActive = '';
           }
-      });
+      }).state('updateBatch', {
+          url: '/upadte/batch/:batchId',
+          views: {
+              mainView: {
+                  templateUrl: '/views/batch/updateBatch.html',
+                  controller: 'BatchUpdateController as batchUpdate'
+              }
+          },
+          onEnter: function ($rootScope, portalTelemetryService) {
+              $rootScope.profileActive = 'active';
+              portalTelemetryService.fireImpressions({
+                  env: 'content',
+                  type: 'creation',
+                  pageid: org.sunbird.portal.appid + '_UpdateBatch',
+                  id: '',
+                  name: '',
+                  url: '/private/index#!/update/batch'
+              });
+          },
+          onExit: function ($rootScope) {
+              $rootScope.profileActive = '';
+          }
+      })
+        .state('CreateLessonPlan', {
+            url: '/create/lessonPlan',
+            views: {
+                mainView: {
+                    templateUrl: '/views/workSpace/createLessonPlan.html',
+                    controller: 'LessonPlanController as lessonPlan'
+                }
+            },
+            onEnter: function ($rootScope, portalTelemetryService) {
+                $rootScope.profileActive = 'active';
+                portalTelemetryService.fireImpressions({
+                    env: 'lessonPlan',
+                    type: 'creation',
+                    pageid: org.sunbird.portal.appid + '_CreateLessonPlan',
+                    id: '',
+                    name: '',
+                    url: '/private/index#!/create/lessonPlan'
+                });
+            },
+            onExit: function ($rootScope) {
+                $rootScope.profileActive = '';
+            }
+        });
   })
   .run(function ($urlRouter, $http, $state, permissionsService, $rootScope, $location, config, toasterService) {
       permissionsService.getPermissionsData('/permissions').then(function (res) {
@@ -841,6 +891,7 @@ angular.module('playerApp')
 
       $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState,
       fromParams) {
+          window.localStorage.setItem('previousURl', JSON.stringify({ name: fromState.name, params: fromParams }));
           switch (toState.name) {
           case 'WorkSpace':
               if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {

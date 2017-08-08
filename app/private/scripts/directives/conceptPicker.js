@@ -64,13 +64,13 @@ angular.module('playerApp').directive('conceptPicker', function () {
             };
 
             $scope.initConceptBrowser = function () {
-                console.log($scope.selectedConcepts);
                 $scope.selectedConcepts = $scope.selectedConcepts || [];
-                if ($scope.isSearchPage === 'true') {
+                if ($scope.isSearchPage === true) {
                     $scope.contentConcepts = $scope.selectedConcepts;
                 } else {
                     $scope.contentConcepts = _.map($scope.selectedConcepts, "identifier");
                 }
+                $scope.pickerMessage = $scope.contentConcepts.length+ ' concepts selected';
                 $timeout(function () {
                     $('#treePicker').treePicker({
                         data: $rootScope.conceptData,
@@ -85,8 +85,9 @@ angular.module('playerApp').directive('conceptPicker', function () {
                                     name: obj.name
                                 });
                             });
+                            $scope.selectedConcepts=$scope.contentConcepts;
                             $rootScope.$broadcast('selectedConcepts', {
-                                selectedConcepts: $scope.contentConcepts
+                                selectedConcepts: $scope.selectedConcepts
                             });
 
                         },
@@ -146,10 +147,10 @@ angular.module('playerApp').directive('conceptPicker', function () {
             }
             if (!$rootScope.conceptData) {
                 $scope.loadConceptTree();
-            } else {
-                $scope.initConceptBrowser();
             }
-
+            else{
+               $scope.initConceptBrowser(); 
+            }
         }];
     return {
         templateUrl: 'views/common/conceptSelector.html',
@@ -160,9 +161,7 @@ angular.module('playerApp').directive('conceptPicker', function () {
             isSearchPage: '='
         },
         link: function (scope, element, attrs) {
-            scope.$watch('selectedConcepts', function () {
-                scope.initConceptBrowser();
-            });
+            
         },
         controller: controller
     };

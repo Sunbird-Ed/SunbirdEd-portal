@@ -1,0 +1,35 @@
+<div class="ui card">
+  <div class="header batchCardAlign">
+    <span class="header headerBatchCard">Batches</span>
+    <a>
+      <div class="ui dropdown batchCardDropDown" id="batchCardDropDown">
+        <div class="text">Ongoing</div>
+        <i class="dropdown icon"></i>
+        <div class="menu">
+            <div class="item" data-value="1">Ongoing</div>
+            <div class="item" data-value="0">New</div>
+        </div>
+      </div>
+    </a>
+  </div>
+  <div class="content batchcardListContent" id="batchcardList">
+    <div class="description annannouncement-description">
+        <div class="ui divided list">
+            <div class="item padding-top-10" ng-repeat="batchdata in batch.batchList track by $index">
+                <i class="write icon float-ContentRight cursor-pointer" ng-click="batch.showUpdateBatchModal(batchdata)"></i>
+                <i class="calendar outline icon"></i>
+                <div class="content padding-bottom-15">
+                    <span class="header padding-bottom-5">
+                        {{batchdata.startdate | date: "dd MMM"}} - {{batchdata.enddate | date: "dd MMM"}}
+                    </span>
+                    <div class="description">Created by {{batch.userName}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  <div class="ui bottom attached batchCard button"  ui-sref="CreateBatch()">
+    <a><i class="add icon"></i>
+      Create Batch</a>
+  </div>
+</div>

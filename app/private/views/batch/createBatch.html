@@ -63,20 +63,20 @@
                 </div>
                <div class="one field">                              
                      <label>Add Users</label>
-                    <select name="addUsers" class="ui fluid multiple search selection dropdown multiSelectDropDown" multiple="" id="AddUsersDropDown" ng-options=" grade for grade in batch.userList"  ng-model="batch.data.users">
+                    <select name="addUsers" class="ui fluid multiple search selection dropdown multiSelectDropDown" multiple="" id="users" ng-options=" grade for grade in batch.userList"  ng-model="batch.data.users">
                         <option value="">Select User</option>
                     </select>
                 </div>
                 <div class="one field">                              
                     <label>Add Mentor</label>
-                    <select name="addMentors" class="ui fluid multiple search selection dropdown multiSelectDropDown" multiple="" id="AddMentorsDropDown" ng-options=" grade for grade in batch.menterList"  ng-model="batch.data.mentors">
+                    <select name="addMentors" class="ui fluid multiple search selection dropdown multiSelectDropDown" multiple="" id="mentors" ng-options=" grade for grade in batch.menterList"  ng-model="batch.data.mentors">
                         <option value="">Select Mentor</option>
                     </select>
                 </div>
             </form>
         </div>
         <div class="actions">
-            <div class="ui secondary button" >Clear</div>
+            <div class="ui secondary button" ng-click="batch.clearBatchData()">Clear</div>
             <div class="ui primary button" ng-click="batch.submitted = true; batch.createBatch(batch.data)">Create</div>
         </div>
     </div>
