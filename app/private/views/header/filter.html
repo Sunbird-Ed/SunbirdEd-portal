@@ -2,7 +2,6 @@
     <div class="ui divider header-search-filters-divider"></div>
     <div class="filtercolumn ui grid">
         <div class="one wide column">
-
         </div>
         <div class=" ten wide column ">
             <div apply-script class="ui accordion" id='content-search-filter-accordion'>
@@ -58,13 +57,13 @@
                                     <div id="filterBoard" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
                                         <i class="dropdown icon"></i>
                                         <div class="filter-sel-text" ng-if="$root.search.selectedBoard.length > 0 ">{{$root.search.selectedBoard.length+' boards'}}</div>
-                                        <div class="filter-sel-text" ng-if="$root.search.selectedBoard.length == 0 ">Board</div>
+                                        <div class="filter-sel-text" ng-if="$root.search.selectedBoard.length === 0 ">Board</div>
                                         <div class="menu">
                                             <div ng-click="$root.search.selectFilter('selectedBoard',board,$event)" ng-repeat="board in $root.search.boards | orderBy:'toString()'" class="item dropdown-item" ng-class="{'active':($root.search.selectedBoard.indexOf(board)>=0)}" data-value="{{board}}">{{board}}</div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class='two wide column' ng-if="$root.search.selectedSearchKey == 'Resources'">
+                                <div class='two wide column' ng-if="$root.search.selectedSearchKey === 'Resources'">
                                     <div id="filterContent" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
                                         <input type='hidden' ng-value='{{}}' />
                                         <i class="dropdown icon"></i>
@@ -97,7 +96,7 @@
                                     </div>
                                 </div>
                                 <div class="two wide column">
-                                    <div class="field">
+                                    <div class="field" ng-if="$root.search.selectedSearchKey !== 'Users'">
                                         <form class="ui form">
                                             <concept-picker ng-if="$root.search.selectedConcepts.length == 0" is-search-page="true"  selected-concepts="$root.search.selectedConcepts"></concept-picker>
                                             <concept-picker ng-if="$root.search.selectedConcepts.length > 0" is-search-page="true"  selected-concepts="$root.search.selectedConcepts"></concept-picker>
