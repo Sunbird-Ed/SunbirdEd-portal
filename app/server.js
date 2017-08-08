@@ -11,31 +11,30 @@ const express = require('express'),
   bodyParser = require('body-parser'),
   MongoStore = require('connect-mongo')(session),
   async = require('async'),
-  env = process.env,
   trampolineServiceHelper = require('./helpers/trampolineServiceHelper.js'),
   telemetryHelper = require('./helpers/telemetryHelper.js'),
   permissionsHelper = require('./helpers/permissionsHelper.js'),
   tenantHelper = require('./helpers/tenantHelper.js'),
+  envHelper = require('./helpers/environmentVariablesHelper.js'),
   fs = require('fs'),
-  port = env['sunbird_port'] || 3000,
-  learnerURL = env.sunbird_learner_player_url || 'https://staging.open-sunbird.org/api/',
-  contentURL = env.sunbird_content_player_url || 'https://staging.open-sunbird.org/api/',
-  realm = env.sunbird_portal_realm || "sunbird",
-  auth_server_url = env.sunbird_portal_auth_server_url || "https://dev.open-sunbird.org/auth",
-  keycloak_resource = env.sunbird_portal_auth_server_client || "portal",
+  port = envHelper.PORTAL_PORT,
+  learnerURL = envHelper.LEARNER_URL,
+  contentURL = envHelper.CONTENT_URL,
+  realm = envHelper.PORTAL_REALM,
+  auth_server_url = envHelper.PORTAL_AUTH_SERVER_URL,
+  keycloak_resource = envHelper.PORTAL_AUTH_SERVER_CLIENT,
   reqDataLimitOfContentEditor = '50mb',
   reqDataLimitOfContentUpload = '30mb',
-  ekstep_env = env.ekstep_env || 'qa',
-  appId = env.sunbird_appid || 'sunbird.portal',
-  default_tenant = env.sunbird_default_tenant,
+  ekstep_env = envHelper.EKSTEP_ENV,
+  appId = envHelper.APPID,
+  default_tenant = envHelper.DEFAUULT_TENANT,
   md5 = require('js-md5'),
-  sunbird_api_auth_token = env.sunbird_api_auth_token || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI2NTU0NDQ5ZWI0MGQ0YTI4ODQ3YzAzYWZlNmJjMmEyOCJ9.'
-  +'YhnTaDw_xvf8Q5S66QiO71-5WeqLaTPv-vvNZSwBqLk';
+  sunbird_api_auth_token = envHelper.PORTAL_API_AUTH_TOKEN;
 
 const contentProxyUrl = contentURL.replace('/api/', '');
 
-let mongoURL = (env.sunbird_mongodb_ip && env.sunbird_mongodb_port) ? ("mongodb://" + env.sunbird_mongodb_ip + ":" + env.sunbird_mongodb_port + "/portal") : 'mongodb://localhost/portal';
-let session_ttl = env.sunbird_mongodb_ttl | 1; //in days
+let mongoURL = (envHelper.PORTAL_MONGODB_IP && envHelper.PORTAL_MONGODB_PORT) ? ("mongodb://" + envHelper.PORTAL_MONGODB_IP + ":" + envHelper.PORTAL_MONGODB_PORT + "/portal") : 'mongodb://localhost/portal';
+let session_ttl = envHelper.PORTAL_MONGODB_TTL | 1; //in days
 let memoryStore = new MongoStore({
   url: mongoURL,
   autoRemove: 'native',

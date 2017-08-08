@@ -86,10 +86,10 @@ angular.module('playerApp')
             requestBody.contentType = requestBody.contentType
                 ? requestBody.contentType : 'Story';
 
-            var requestdata = {
+            var requestData = {
                 content: requestBody
             };
-            contentLesson.createContent(requestdata);
+            contentLesson.createContent(requestData);
         };
 
         contentLesson.clearCreateSlideShowData = function () {
