@@ -2,16 +2,16 @@
 
 /**
  * @ngdoc directive
- * @name playerApp.directive:contentPlayer
+ * @name playerApp.directive:search
  * @description
- * # contentPlayer
+ * # search
  */
 angular.module('playerApp').directive('search', function () {
     var controller = ['$scope', '$rootScope', 'config', '$timeout',
         '$state', '$stateParams', 'searchService', 'toasterService', '$location',
         'sessionService', 'adminService', function ($scope, $rootScope,
-      config, $timeout, $state, $stateParams, searchService, toasterService,
-      $location, sessionService, adminService) {
+                config, $timeout, $state, $stateParams, searchService, toasterService,
+                $location, sessionService, adminService) {
             $scope.search = {};
             $rootScope.search = {};
             $rootScope.search.searchKeyword = '';
@@ -20,29 +20,30 @@ angular.module('playerApp').directive('search', function () {
             $rootScope.search.doneTypingInterval = 1000;
             $rootScope.search.languages = config.FILTER.RESOURCES.languages;
             $rootScope.search.contentTypes
-            = config.FILTER.RESOURCES.contentTypes;
+                    = config.FILTER.RESOURCES.contentTypes;
             $rootScope.search.subjects = config.FILTER.RESOURCES.subjects;
             $rootScope.search.boards = config.FILTER.RESOURCES.boards;
             $scope.search.searchTypeKeys = config.searchTypeKeys;
             $rootScope.search.sortingOptions = config.sortingOptions;
-            $rootScope.search.sortBy = { createdOn: 'asc' };
+            $rootScope.search.sortBy = {createdOn: 'asc'};
             $scope.search.searchSelectionKeys = config.searchSelectionKeys;
             $rootScope.search.sortIcon = true;
             $rootScope.search.selectedLanguage = [];
             $rootScope.search.selectedContentType = [];
             $rootScope.search.selectedSubject = [];
             $rootScope.search.selectedBoard = [];
+            $rootScope.search.selectedConcepts = [];
             $rootScope.search.sortByOption = {};
             $scope.search.autoSuggest = true;
-    // search select dropdown changes
+            // search select dropdown changes
             $rootScope.$watch('searchKey', function () {
                 $timeout(function () {
                     $rootScope.search.selectedSearchKey = $rootScope.searchKey;
                     $scope.search.isSearchTypeKey = $scope.search.searchTypeKeys
-                    .includes($rootScope.search.selectedSearchKey);
+                            .includes($rootScope.search.selectedSearchKey);
                     $('#headerSearch').dropdown('set selected',
-                     $scope.search.isSearchTypeKey === true
-                     ? $rootScope.search.selectedSearchKey : 'All');
+                            $scope.search.isSearchTypeKey === true
+                            ? $rootScope.search.selectedSearchKey : 'All');
                 }, 0);
             });
             $rootScope.$on('initSearch', function (event, args) {
@@ -54,32 +55,32 @@ angular.module('playerApp').directive('search', function () {
             });
 
             $rootScope.search.selectFilter =
-            function (filterType, value, $event) {
-                $timeout(function () {
-                    var itemIndex = $rootScope.search[filterType]
-                    .indexOf(value);
-                    if (itemIndex === -1) {
-                        $rootScope.search[filterType].push(value);
-                        $($event.target).addClass('active');
-                    } else {
-                        $rootScope.search[filterType].splice(itemIndex, 1);
-                        $($event.target).removeClass('active');
-                    }
-                }, 0);
-            };
+                    function (filterType, value, $event) {
+                        $timeout(function () {
+                            var itemIndex = $rootScope.search[filterType]
+                                    .indexOf(value);
+                            if (itemIndex === -1) {
+                                $rootScope.search[filterType].push(value);
+                                $($event.target).addClass('active');
+                            } else {
+                                $rootScope.search[filterType].splice(itemIndex, 1);
+                                $($event.target).removeClass('active');
+                            }
+                        }, 0);
+                    };
             $rootScope.search.removeFilterSelection
-            = function (filterType, value) {
-                var itemIndex = $rootScope.search[filterType].indexOf(value);
-                if (itemIndex !== -1) {
-                    $rootScope.search[filterType].splice(itemIndex, 1);
-                }
-            };
+                    = function (filterType, value) {
+                        var itemIndex = $rootScope.search[filterType].indexOf(value);
+                        if (itemIndex !== -1) {
+                            $rootScope.search[filterType].splice(itemIndex, 1);
+                        }
+                    };
 
-    /**
-     * This function called when api failed,
-     * and its show failed response for 2 sec.
-     * @param {String} message
-     */
+            /**
+             * This function called when api failed,
+             * and its show failed response for 2 sec.
+             * @param {String} message
+             */
             function showErrorMessage(isClose, message, messageType) {
                 var error = {};
                 error.showError = true;
@@ -101,10 +102,11 @@ angular.module('playerApp').directive('search', function () {
                 $rootScope.search.selectedContentType = $rootScope.search.filters.contentType || [];
                 $rootScope.search.selectedBoard = $rootScope.search.filters.board || [];
                 $rootScope.search.selectedSubject = $rootScope.search.filters.subject || [];
+                $rootScope.search.selectedConcepts = $rootScope.search.filters.concepts || [];
                 $rootScope.search.sortByOption = Object.keys($rootScope.search.sortBy).length > 0
-                ? Object.keys($rootScope.search.sortBy)[0] : '';
+                        ? Object.keys($rootScope.search.sortBy)[0] : '';
                 $rootScope.search.searchFromSuggestion = $stateParams.autoSuggestSearch;
-      // $rootScope.search.sortBy=$rootScope.search.sortBy;
+                // $rootScope.search.sortBy=$rootScope.search.sortBy;
                 $scope.search.searchRequest();
             };
 
@@ -115,24 +117,24 @@ angular.module('playerApp').directive('search', function () {
                 } else {
                     showLectureView = 'yes';
                 }
-                var params = { courseType: courseType,
+                var params = {courseType: courseType,
                     courseId: course.courseId || course.identifier,
                     lectureView: showLectureView,
                     progress: course.progress,
                     total: course.total,
                     courseName: course.courseName || course.name,
-                    lastReadContentId: course.lastReadContentId };
+                    lastReadContentId: course.lastReadContentId};
                 sessionService.setSessionData('COURSE_PARAMS', params);
                 $state.go('Toc', params);
             };
 
             $rootScope.search.playContent = function (item) {
                 if (item.mimeType === 'application/vnd.ekstep.content-collection') {
-                    $state.go('PreviewCollection', { Id: item.identifier, name: item.name });
+                    $state.go('PreviewCollection', {Id: item.identifier, name: item.name});
                 } else {
-                    $state.go('Player', { content: item,
+                    $state.go('Player', {content: item,
                         contentName: item.name,
-                        contentId: item.identifier });
+                        contentId: item.identifier});
                 }
             };
 
@@ -150,8 +152,8 @@ angular.module('playerApp').directive('search', function () {
             $scope.search.keyUp = function () {
                 clearTimeout($rootScope.search.typingTimer);
                 $rootScope.search.typingTimer = setTimeout($scope.search.autoSuggestSearch,
-                $rootScope.search.doneTypingInterval);
-      // $scope.search.autoSuggest=true;
+                        $rootScope.search.doneTypingInterval);
+                // $scope.search.autoSuggest=true;
             };
 
             $scope.search.keyDown = function () {
@@ -164,11 +166,11 @@ angular.module('playerApp').directive('search', function () {
                     $scope.search.autoSuggest = false;
                     if ($rootScope.search.searchKeyword !== '' && $rootScope.isSearchPage) {
                         if ($rootScope.isSearchResultsPage && $rootScope.search.searchKeyword
-                            === $stateParams.query && $rootScope.search.selectedSearchKey
-                            === $stateParams.type) {
+                                === $stateParams.query && $rootScope.search.selectedSearchKey
+                                === $stateParams.type) {
                             $rootScope.search.error = {};
                             $rootScope.search.loader = toasterService.loader(''
-                                                    , $rootScope.errorMessages.SEARCH.DATA.START);
+                                    , $rootScope.errorMessages.SEARCH.DATA.START);
                             $scope.search.handleSearch();
                         } else {
                             $scope.search.autoSuggest = false;
@@ -179,7 +181,7 @@ angular.module('playerApp').directive('search', function () {
                                 sort: btoa(JSON.stringify($rootScope.search.sortBy)),
                                 autoSuggestSearch: $rootScope.search.searchFromSuggestion || false
                             };
-            // $state.go('Search', searchParams);
+                            // $state.go('Search', searchParams);
                             $location.path('search/' + searchParams.type + '/'
                                     + searchParams.query + '/' + searchParams.filters + '/'
                                     + searchParams.sort + '/' + searchParams.autoSuggestSearch);
@@ -218,14 +220,14 @@ angular.module('playerApp').directive('search', function () {
                     $scope.search.searchFn = searchService.search(req);
                     $scope.search.resultType = 'content';
                 } else if ($rootScope.search.selectedSearchKey === 'Users'
-                          || $rootScope.search.selectedSearchKey === 'Organisations') {
+                        || $rootScope.search.selectedSearchKey === 'Organisations') {
                     req.filters.objectType = $rootScope.search.selectedSearchKey === 'Users'
-                                            ? ['user']
-                                            : ['org'];
-                    $scope.search.searchFn = adminService.search({ request: req });
+                            ? ['user']
+                            : ['org'];
+                    $scope.search.searchFn = adminService.search({request: req});
                     $scope.search.resultType = $rootScope.search.selectedSearchKey === 'Users'
-                                              ? 'users'
-                                              : 'organisations';
+                            ? 'users'
+                            : 'organisations';
                 }
 
                 $scope.search.searchFn.then(function (res) {
@@ -245,8 +247,8 @@ angular.module('playerApp').directive('search', function () {
 
                             if (res.result.count === 0) {
                                 $rootScope.search.error = showErrorMessage(true,
-                                $rootScope.errorMessages.SEARCH.DATA.NO_CONTENT,
-                                $rootScope.errorMessages.COMMON.INFO);
+                                        $rootScope.errorMessages.SEARCH.DATA.NO_CONTENT,
+                                        $rootScope.errorMessages.COMMON.INFO);
                             } else {
                                 $rootScope.search.error = {};
                                 $rootScope.search.searchResult = res.result;
@@ -256,24 +258,27 @@ angular.module('playerApp').directive('search', function () {
                     } else {
                         $rootScope.search.loader.showLoader = false;
                         $rootScope.search.error = showErrorMessage(true,
-                        $rootScope.errorMessages.SEARCH.DATA.FAILED,
-                        $rootScope.errorMessages.COMMON.ERROR);
+                                $rootScope.errorMessages.SEARCH.DATA.FAILED,
+                                $rootScope.errorMessages.COMMON.ERROR);
                         $scope.search.autoSuggest = true;
                         throw new Error('');
                     }
                 }).catch(function (e) {
                     $rootScope.search.loader.showLoader = false;
                     $rootScope.search.error = showErrorMessage(true,
-                    $rootScope.errorMessages.SEARCH.DATA.FAILED,
-                    $rootScope.errorMessages.COMMON.ERROR);
+                            $rootScope.errorMessages.SEARCH.DATA.FAILED,
+                            $rootScope.errorMessages.COMMON.ERROR);
                 });
             };
-
+            $rootScope.$on('selectedConcepts', function (event, args) {
+                $rootScope.search.selectedConcepts = _.map(args.selectedConcepts,'identifier');
+            });
             $rootScope.search.applyFilter = function () {
                 $rootScope.search.filters.language = $rootScope.search.selectedLanguage;
                 $rootScope.search.filters.contentType = $rootScope.search.selectedContentType;
                 $rootScope.search.filters.subject = $rootScope.search.selectedSubject;
                 $rootScope.search.filters.board = $rootScope.search.selectedBoard;
+                $rootScope.search.filters.concepts = $rootScope.search.selectedConcepts;
                 $rootScope.isSearchResultsPage = false;
                 $scope.search.searchRequest();
             };
@@ -283,30 +288,31 @@ angular.module('playerApp').directive('search', function () {
                 $rootScope.search.selectedContentType = [];
                 $rootScope.search.selectedSubject = [];
                 $rootScope.search.selectedBoard = [];
+                $rootScope.search.selectedConcepts = [];
                 $rootScope.search.filters = {};
                 $rootScope.isSearchResultsPage = false;
                 $rootScope.isSearchPage = true;
                 $scope.search.searchRequest();
-      // $state.go($rootScope.search.selectedSearchKey);
+                // $state.go($rootScope.search.selectedSearchKey);
             };
             $rootScope.search.applySorting = function () {
                 var sortByField = $rootScope.search.sortByOption;
                 $rootScope.search.sortBy = {};
                 $rootScope.search.sortBy[sortByField] = ($rootScope.search.sortIcon === true)
-                ? 'asc' : 'desc';
+                        ? 'asc' : 'desc';
                 $scope.search.searchRequest();
             };
             $rootScope.search.close = function () {
                 $rootScope.search.selectedSearchKey =
-                                                    $rootScope.search.selectedSearchKey === 'Users'
-                                                    ? 'Profile'
-                                                    : $rootScope.search.selectedSearchKey;
+                        $rootScope.search.selectedSearchKey === 'Users'
+                        ? 'Profile'
+                        : $rootScope.search.selectedSearchKey;
                 var closeUrl = ($rootScope.search.selectedSearchKey === 'All')
-                ? 'Home' : $rootScope.search.selectedSearchKey;
+                        ? 'Home' : $rootScope.search.selectedSearchKey;
                 $state.go(closeUrl);
             };
             $rootScope.search.setSearchKey = function (key) {
-                $rootScope.$emit('setSearchKey', { key: key });
+                $rootScope.$emit('setSearchKey', {key: key});
             };
         }];
     return {
