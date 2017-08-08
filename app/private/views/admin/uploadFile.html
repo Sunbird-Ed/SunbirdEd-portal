@@ -1,32 +1,41 @@
 <div class="ui segment">
 	<div class="ui form">
 		<div class="two fields">
-		    <div class="inline field">
+		    <div class="inline required field">
 			    <label>Provider</label>
-			    <input type="text" placeholder="Provider">
+			    <input type="text" placeholder="Provider" ng-model="admin.bulkUsers.provider">
 		    </div>
-		     <div class="inline field">
-			    <label>Data1</label>
-			    <input type="text" placeholder="Full Name">
+		     <div class="inline required field">
+			    <label>External Id</label>
+			    <input type="text" placeholder="External Id" ng-model="admin.bulkUsers.externalid">
 		    </div>
 		</div>
 		<div class="ui horizontal divider">
     		Or
  		</div>
  		<div class="one field">
-		    <div class="inline field text-align-center">
+		    <div class="inline required field text-align-center">
 			    <label>OrgId</label>
-			    <input type="text" placeholder="OrgId">
+			    <input type="text" placeholder="OrgId"ng-model="admin.bulkUsers.OrgId">
 		    </div>
 		</div>
+		<div class="ui negative message" ng-if="admin.bulkUploadError">
+					<i class="close icon" ng-click="admin.closeBulkUploadError()"></i>
+					<p>{{admin.bulkUploadErrorMessage}}</p>
+				</div>
 	    <div class="ui grid">
-	      	<div class="six wide column">
+	      	<div class="six wide column"></div>
+		
+	        <div class="three wide column">
+				{{admin.fileName}}
 	      	</div>
 	        <div class="three wide column">
-	      	</div>
-	        <div class="three wide column">
-	        	<button class="ui primary right floated button">Upload CSV</button>
-	      	</div>
+			<button  class="ui primary right floated button" ng-click="admin.openImageBrowser();">upload CSV</button>
+			<input type="file" accept="file/csv,file/xlsx" class="content-input ui small "
+			id="uploadCSV" onchange="angular.element(this).scope().validateFile(this.files);"
+			required="" />
+       </div>
     	</div>
 	</div>
 </div>
+

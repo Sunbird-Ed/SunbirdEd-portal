@@ -1,14 +1,26 @@
-
+<div ng-include=" 'views/admin/uploadFile.html' "></div>  
 
 <!-- userSearch -->
- <div class="ui divided items">
-   <div class="userSearchCardHover item " ng-repeat="user in admin.searchedUsers">
+<div class="ui grid margin-bottom-10 margin-top-10">
+  <div class="ten wide column">
+  </div>
+  <div class="two wide column actions">
+    <div  class="ui right floated primary button"
+     ng-click="admin.downloadUsers($root.search.selectedSearchKey,admin.searchResult)">
+      Download
+    </div>
+    </div>
+</div>
+  <!-- search results -->
+ <div class="ui divided items" ng-if="!$root.search.loader.showLoader">
+   <!-- user Search Result -->
+   <div class="userSearchCardHover item "ng-if="$root.search.selectedSearchKey=='Users'" ng-repeat="user in admin.searchResult">
     <div class="ui tiny image userSearchImage " >
       <img ng-src="{{user.avatar|| 'images/user_logo.png'}} ">
     </div>
     <div class="content ">
       <a class="header ">{{user.firstName}}{{user.lastName}}</a>
-       <a class="float-ContentRight"><span ng-click="admin.showModal();"><i class="edit icon trashIcon-fontSize"></span></i><i class="trash outline icon trashIcon-fontSize"></i></a>
+       <a class="float-ContentRight"><span ng-click="admin.showModal();"><i class="edit icon trashIcon-fontSize"></i></span><span><i class="trash outline icon trashIcon-fontSize" ng-click="admin.deleteUser(user.userId)"></i><span></a>
       <div class="meta ">
         <span class="cinema "><span ng-repeat="org in user.organisations">{{org.orgName}}
                 <span ng-if="!$last">,</span>
@@ -24,12 +36,30 @@
       </div>
     </div>
   </div>
+  <!-- org search result -->
+   <div class="userSearchCardHover item " ng-repeat="org in admin.searchResult"
+     ng-if="$root.search.selectedSearchKey=='Organisations'">
+    <div class="ui tiny image userSearchImage " >
+      <img ng-src="{{org.imgUrl|| 'images/user_logo.png'}} ">
+    </div>
+    <div class="content ">
+      <a class="header ">{{org.orgName}}</a>
+      <div class="description ">
+        <p>{{org.description}}</p>
+      </div>
+      <div class="extra ">
+        <div ng-include=" 'views/admin/updateRoleModal.html' "></div>  
+        <div class="ui label ">Org Type:{{org.orgType}}</div>
+        <div class="ui label ">org code:{{org.orgCode}}</div>
+        <div class="ui label " ng-if="org.isRootOrg">Root organisation</div>
+        <div class="ui label " ng-if="org.status===0">INACTIVE</div>
+        <div class="ui label " ng-if="org.status===1">ACTIVE</div>
+        <div class="ui label " ng-if="org.status===2">BLOCKED</div>
+        <div class="ui label " ng-if="org.status===3">RETIRED</div>
+      </div>
+    </div>
+  </div>
 </div>
-<!-- export fille -->
-<button ng-click="admin.exportUsers()">Export data to CSV file</button>
-<div class=" field link ui small " >
-    <button  ng-click="admin.openImageBrowser();">upload CSV</button>
-<input type="file" accept="file/csv,file/xlsx" class="content-input ui small " id="uploadCSV" onchange="angular.element(this).scope().admin.validateFile(this.files);" required="" />
-</div>
+
 
 
