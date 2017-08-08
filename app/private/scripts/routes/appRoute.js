@@ -752,6 +752,17 @@ angular
         onExit: function($rootScope) {
           $rootScope.resourcesActive = '';
         }
+      }).state('orgCreationDashboard', {
+        url: '/org-dashboard',
+        views: {
+          'mainView': {
+            templateUrl: '/views/dashboard/orgCreationDashboard.html',
+            controller: 'orgCreationDashboardController as dashboardData'
+          }
+        },
+        onExit: function($rootScope) {
+          $rootScope.profileActive = '';
+        }
       });
   })
   .run(function($urlRouter, $http, $state, permissionsService, $rootScope, $location, config) {
