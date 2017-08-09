@@ -5,16 +5,24 @@
             <div class="eight wide column">
                 <div class="profileheader ui link items">
                     <div class="ui grid">
-                        <div class="two wide column">
+                        <div class="two wide column padding-top-none">
                             <div ng-include="'views/profile/editProfile/userAvtar.html'"></div>
                         </div>
                         <div class="ten wide column profile-header-text">
-                            <div class="content padding-top-10 ">
+                            <div class="content padding-top-10 padding-top-none">
                                 <div class="sectionHeading header">{{profileCtrl.user.firstName}} &nbsp;{{::profileCtrl.user.lastName}}</div>
+                                <div class="meta profileViewSubHeader padding-bottom-10">
+                                    <span ng-if="profileCtrl.currentJobLocation">{{profileCtrl.currentJobLocation.orgName}}</span>
+                                    <span  ng-if="profileCtrl.currentAddressLocation">{{profileCtrl.currentAddressLocation.city}}</span>
+                                </div>
                                 <div class="meta">
-                                    <span class="cinema">
-                                        <span ng-if="profileCtrl.currentJobLocation">{{profileCtrl.currentJobLocation.orgName}}</span>
-                                    <span ng-if="profileCtrl.currentAddressLocation">{{profileCtrl.currentAddressLocation.city}}</span>
+                                    <div class="ui label">
+                                        <i class="mail icon"></i> User@gmail.com
+                                    </div>
+                                    <div class="ui label">userName
+                                        <div class="detail">user1
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="description" ng-init="profileCtrl.readMore = false">
                                     <p ng-if="!profileCtrl.readMore"> {{profileCtrl.user.profileSummary | limitTo: 120 }}&nbsp;
