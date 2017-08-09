@@ -1,0 +1,13 @@
+<div ng-if="!$root.search.loader.showLoader && !$root.search.error.showError && $root.search.searchResult.response.content.length">
+    <div class="ui clearing segment content-player-header search-content-header">
+      <div class="ui  left floated header margin-auto">
+          <p class="serch-allresult">Showing results {{$root.search.searchKeyword? 'for ': ''}}<span class="lower-case">{{$root.search.searchKeyword? '"'+$root.search.searchKeyword+'"': ''}}  in "{{$root.search.selectedSearchKey }} "</span></p>
+      </div>
+      <h5 class="ui right floated basic icon circular button" ng-click="$root.search.close()">
+          <i class="ui remove icon"></i>
+      </h5>
+    </div>
+   
+        <user-search users="$root.search.searchResult.response.content"></user-search>
+
+</div>

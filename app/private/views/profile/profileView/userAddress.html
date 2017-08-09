@@ -6,7 +6,7 @@
         <a  class="addeditprofile cursor-pointer" ng-if="profileCtrl.addressForm" ng-click="profileCtrl.addressForm=false">{{$root.labels.PROFILE.BUTTON.close}}</a>
     </div>
     <div ng-if="!profileCtrl.addressForm" class="profileitems ui relaxed divided items">
-        <div class="item" ng-repeat="address in profileCtrl.address">
+        <div class="item" ng-repeat="address in profileCtrl.user.address">
 
             <img class="ui avatar image" src="/images/location.png">
             <div class="content">

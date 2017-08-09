@@ -1,8 +1,3 @@
-<style>
-    .fancytree-title{
-        width:100% !important;
-    }
-</style>
 <div ng-controller="courseScheduleCtrl as toc" ng-init="toc.loadData()">
     <div ng-include="'views/course/courseHeader.html'"></div>
 
@@ -34,7 +29,7 @@
                                         </b>
                                     </div>
                                     <div id="course-toc{{$index}}" class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100" ng-repeat="item in  toc.courseHierachy.children track by $index" ng-click="toc.expandMe($event, item)">
-                                        <div class="courseAccordianHeading title title-padding-left accordian-left-text"  name="{{item.identifier}}">
+                                        <div class="courseAccordianHeading title title-padding-left accordian-left-text" name="{{item.identifier}}">
                                             <i ng-class="[toc.contentStatusList[item.identifier],toc.getContentIcon(item.mimeType)]"></i> {{item.name}}
                                             <i ng-if='item.children && item.children.length > 0' class="plus icon down-arrow-accordion"></i>
                                         </div>
@@ -49,13 +44,23 @@
                                     <div ng-if="toc.courseType === 'ENROLLED_COURSE'" class="margin-bottom-15">
                                         <add-note shownoteincourse="true" courseid="toc.courseParams.courseId"></add-note>
                                     </div>
-                                    <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false" courseid="toc.courseParams.courseId"></note-card>
-<!--                                    <div ng-include=" 'views/course/facultyCard.html'" class="margin-bottom-15"></div>-->
-                                    <div ng-include=" 'views/course/carriculumCard.html'"></div><br>
+                                    <div>
+                                        <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false" courseid="toc.courseParams.courseId"></note-card>
+                                    </div>
+                                    <div>
+                                        <div ng-include=" 'views/course/carriculumCard.html'"></div>
+                                    </div><br>
+
+                                    <!--                                    <div ng-include=" 'views/course/facultyCard.html'" class="margin-bottom-15"></div>-->
+
                                     <div class="courseupdate">
                                         <b>Course created on: {{toc.courseHierachy.createdOn | dateFilterWithMDY}}</b><br>
                                         <b>Updated on: {{toc.courseHierachy.lastUpdatedOn | dateFilterWithMDY}}</b>
                                     </div>
+                                    <div class="ui divider"></div>
+                                    <content-flag contentid="toc.courseParams.courseId" contentname="toc.courseHierachy.name" versionkey="toc.courseHierachy.versionKey" redirect=" 'Courses' "></content-flag>
+                                    <div class="ui divider"></div>
+                                    <batch-card showbatchcard="true" courseid="toc.courseParams.courseId"></batch-card>
                                 </div>
                             </div>
                         </div>
@@ -68,7 +73,7 @@
                                 <div class="row">
                                     <div class="twelve wide column">
                                         <content-player ng-if="true" visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="true" height="10" width="100" ispercentage="true"></content-player>
-<!--                                        <content-player ng-if="toc.lectureView == 'yes'" visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="false" height="10" width="100" ispercentage="true"></content-player>-->
+                                        <!--                                        <content-player ng-if="toc.lectureView == 'yes'" visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="false" height="10" width="100" ispercentage="true"></content-player>-->
                                     </div>
                                 </div>
                                 <div class="ui row">

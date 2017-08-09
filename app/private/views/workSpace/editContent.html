@@ -117,6 +117,14 @@
                                 <input type="text" name="author" placeholder={{$root.labels.WORKSPACE.common.author}} ng-model="editContent.contentData.author" required="">
                             </div>
                         </div>
+                        <div class="two fields">
+                            <div class="field">
+                                <label>{{$root.labels.WORKSPACE.common.concept}}</label>
+                                <div class="cursor-pointer" ng-if="!editContent.conceptLoader.showLoader"> <input id="treePicker" type="text" readonly value="{{editContent.contentData.concepts.length}} concepts selected" /></div>
+                                <app-loader ng-if="editContent.conceptLoader.showLoader" data="{{editContent.conceptLoader}}"></app-loader>
+                            </div>
+
+                        </div>
                     </form>
                 </div>
                 <div class="row margin-top-10 margin-bottom-15" ng-if="contentPlayer.isContentPlayerEnabled">
@@ -130,13 +138,13 @@
                     <div class="ui grid fileUploadDivider margin-bottom-15" ng-if="editContent.mimeTypeForYoutubeVideo === editContent.contentData.mimeType">
                         <div class="one wide column"></div>
                         <div class="uploadicon four wide column">
-                            <p class="padding-top-10 dropfile textIndentForUploadFile">{{$root.labels.WORKSPACE.startCreating.enterYuotubeURL}}</p>
+                            <p class="padding-top-10 dropfile textIndentForUploadFile">{{$root.labels.WORKSPACE.startCreating.enterYoutubeURL}}</p>
                         </div>
                         <div class="six wide column">
                             <div class="ui form youtubeupload youTubeFileUploadForm">
                                 <div class="inline fields">
                                     <div class="eight wide field">
-                                        <input type="text" ng-model="editContent.youtubeFileLink" placeholder={{$root.labels.WORKSPACE.startCreating.enterYuotubeURL}} ng-model-options="{ debounce: 1000 }" ng-change="editContent.validateYouTubeUrl(editContent.youtubeFileLink)">
+                                        <input type="text" ng-model="editContent.youtubeFileLink" placeholder={{$root.labels.WORKSPACE.startCreating.enterYoutubeURL}} ng-model-options="{ debounce: 1000 }" ng-change="editContent.validateYouTubeUrl(editContent.youtubeFileLink)">
                                     </div>
                                     <div class="two wide field">
                                         <button class="ui primary basic button text-align-center padding-left-25 qq-upload-button-selector" ng-click="editContent.uploadYoutubeFile(editContent.contentData)" ng-disabled="!editContent.youtubeFileLink || editContent.invalidYoutubeUrl">{{$root.labels.WORKSPACE.common.uploadButton}}</button>
@@ -157,6 +165,7 @@
                     <button class="ui primary basic button" ng-if="editContent.contentData.mimeType === 'application/vnd.ekstep.content-collection'" ng-click="editContent.openCollectionEditor(editContent.contentData)">{{$root.labels.WORKSPACE.common.launchEditor}}</button>
                     <button class="ui primary basic button" ng-if="editContent.checkMimeTypeForUploadContent.indexOf(editContent.contentData.mimeType) > -1 && !editContent.showUploadFileForm" ng-click="editContent.uploadFileForm(editContent.contentData.identifier)">{{$root.labels.WORKSPACE.common.upload}}</button>
                     <button class="ui primary basic button" ng-if="editContent.showUploadFileForm" ng-click="editContent.showUploadFileForm = !editContent.showUploadFileForm">{{$root.labels.WORKSPACE.common.closeUpload}}</button>
+                    <!-- <button class="ui primary basic button" ng-click="editContent.deleteContent(editContent.contentData)">{{$root.labels.WORKSPACE.common.delete}}</button> -->
                 </div>
             </div>
             <div class="one wide column"></div>

@@ -8,66 +8,71 @@
             "LEARNER_PREFIX": "v1/learner/",
             "CONTENT_PREFIX": "v1/content/",
             "CONFIG_BASE": "http://localhost:4000/api/sb/v1/",
-            "PAGE_PREFIX": "page/assemble",
+            "PAGE_PREFIX": "data/v1/page/assemble",
             "USER": {
                 "RESOURCE_BUNDLE": "resourcebundle",
-                "SIGNUP": "user/create",
-                "UPDATE_USER_PROFILE": "user/update",
-                "GET_PROFILE": "user/getprofile",
+                "SIGNUP": "user/v1/create",
+                "UPDATE_USER_PROFILE": "user/v1/update",
+                "GET_PROFILE": "user/v1/read",
                 "TENANT_LOGO": "get/tenant/logo"
             },
             "COMPOSITE": {
-                "SEARCH": "search"
+                "SEARCH": "composite/v1/search"
             },
             "COURSE": {
-                "SEARCH": "course/search",
-                "CREATE": "course/create",
-                "UPDATE": "course/update",
-                "REVIEW": "course/review",
-                "PUBLISH": "course/publish",
-                "GET": "course/get",
-                "GET_MY_COURSE": "course/get/mycourse",
-                "HIERARCHY": "course/hierarchy",
-                "UPLOAD_MEDIA": "upload/media",
-                "USER_COURSE_SCHEDULE": "user/courses",
-                "USER_CONTENT_STATE": "user/content/state",
-                "GET_ENROLLED_COURSES": "user/courses",
+                "SEARCH": "course/v1/search",
+                "CREATE": "course/v1/create",
+                "UPDATE": "course/v1/update",
+                "REVIEW": "course/v1/review",
+                "PUBLISH": "course/v1/publish",
+                "GET": "course/v1/get",
+                "GET_MY_COURSE": "course/v1/get/mycourse",
+                "HIERARCHY": "course/v1/hierarchy",
+                "USER_CONTENT_STATE": "course/v1/content/state",
+                "GET_ENROLLED_COURSES": "course/v1/user/enrollment/list",
                 "GET_LEARN_OTHER_SECTION": "Course",
-                "ENROLL_USER_COURSE": "user/courses/enroll",
+                "ENROLL_USER_COURSE": "course/v1/enrol",
                 "RECOMMENDED_COURSE": "recommended/courses"
-
-
             },
             "CONTENT": {
-                "SEARCH": "content/search",
-                "CREATE": "content/create",
-                "UPDATE": "content/update",
-                "REVIEW": "content/review",
-                "PUBLISH": "content/publish",
-                "GET": "content/read",
-                "GET_MY_COURSE": "content/get/mycontent",
-                "UPLOAD": "content/upload",
+                "SEARCH": "content/v1/search",
+                "CREATE": "content/v1/create",
+                "UPDATE": "content/v1/update",
+                "REVIEW": "content/v1/review",
+                "PUBLISH": "content/v1/publish",
                 "UPLOAD_MEDIA": "upload/media",
-                "RETIRE": "content/retire",
-                "REJECT": "content/reject"
-            },
-            "AUTH": {
-                "LOGIN": "user/login",
-                "LOGOUT": "user/logout"
-
+                "GET": "content/v1/read",
+                "GET_MY_COURSE": "content/v1/get/mycontent",
+                "UPLOAD": "content/v1/upload",
+                "RETIRE": "content/v1/retire",
+                "REJECT": "content/v1/reject",
+                "FLAG": "content/v1/flag",
+                "ACCEPT_FLAG": "content/v1/flag/accept",
+                "DISCARD_FLAG": "content/v1/flag/reject"
             },
             "NOTES": {
-                "SEARCH": "note/search",
-                "CREATE": "note/create",
-                "UPDATE": "note/update",
-                "GET": "note/read",
-                "DELETE": "note/delete"
+                "SEARCH": "notes/v1/search",
+                "CREATE": "notes/v1/create",
+                "UPDATE": "notes/v1/update",
+                "GET": "notes/v1/read",
+                "DELETE": "notes/v1/delete"
             },
             "RESOURCE": {
                 "GET": "Resource"
             },
             "ROLES": {
-                "READ": "role/read"
+                "READ": "data/v1/role/read"
+            },
+            "ADMIN": {
+                "USER_SEARCH": "composite/v1/search"
+            },
+            "BATCH": {
+                "CREATE": "course/v1/batch/create",
+                "UPDATE": "course/v1/batch/update",
+                "ADD_USERS": "course/v1/batch/users/add",
+                "REMOVE_USERS": "course/v1/batch/users/remove",
+                "GET_DETAILS": "course/v1/batch/read",
+                "GET_BATCHS": "course/v1/batch/list"
             }
         },
         "FILTER": {
@@ -479,7 +484,7 @@
         },
         "TELEMETRY": {
             "MAX_BATCH_SIZE": 20,
-            "SYNC": "telemetry"
+            "SYNC": "data/v1/telemetry"
         },
         "CURRENT_USER_ROLES": ["CONTENT_REVIEWER"],
         "COMMON_ROLES_CHECK": ["CONTENT_CREATOR", "CONTENT_REVIEW", "CONTENT_CREATION", "CONTENT_REVIEWER"],
@@ -490,6 +495,23 @@
         ],
         "MaxFileSizeToUpload": 25600000,
         "FileExtensionToUpload": "application/pdf, video/mp4, application/zip, video/webm",
-        "AllowedFileExtension": ["mp4", "pdf", "zip"]
+        "AllowedFileExtension": ["mp4", "pdf", "zip"],
+        "USER_ROLES": ["ORG_ADMIN", "ORG_MEMBER", "CONTENT_REVIEW", "CONTENT_CURATION", "CONTENT_REVIEWER",
+            "CONTENT_CREATION", "CONTENT_CREATOR", "ORG_MODERATOR", "MEMBERSHIP_MANAGEMENT",
+            "ORG_MANAGEMENT", "SYSTEM_ADMINISTRATION", "ADMIN"
+        ],
+        "searchTypeKeys": ["Courses", "Resources", "Users", "Organisations"],
+        "sortingOptions": [
+            { "field": "lastUpdatedOn", "name": "Updated On" },
+            { "field": "createdOn", "name": "Created On" }
+        ],
+        "searchSelectionKeys": [
+            { "id": "All", "name": "All" },
+            { "id": "Courses", "name": "Courses" },
+            { "id": "Resources", "name": "Resources" },
+            { "id": "Organisations", "name": "Organisations" },
+            { "id": "Users", "name": "Users" }
+        ],
+        "contributeContentType": ["Collection", "Story", "Worksheet", "TextBook", "Course", "LessonPlan"]
     }
 }
