@@ -1,9 +1,5 @@
 <style>
-span.blue { color: #0090ff;}
-.active {
-    color: #6000FF !important;
-    
-}
+
 
 </style>
 
@@ -14,9 +10,9 @@ span.blue { color: #0090ff;}
             <div class="three wide column">
                 <h4><i class="bar chart icon"></i>Admin Dashboard</h4></div>
             <div class="right floated six wide column"></div>
-            <div class="right floated three wide column padding-right-none">
+            <div class="right floated three wide column padding-right-dropdown">
                 <div class="ui dropdown float-ContentRight">
-                    <div class="text">Creation</div>
+                    <div class="text"><h4>Creation</h4></div>
                     <i class="dropdown icon"></i>
                     <div class="menu">
                         <div class="active item" ng-click="dashboardData.onAfterDatasetChange('creation')" data-dataset="creation">Creation</div>
@@ -45,9 +41,9 @@ span.blue { color: #0090ff;}
 		<div class="one wide column"></div>
 		<div class="ten wide column">
 			<div class="ui grid column">
-				<span class="text blue" onmouseover="this.style.cursor='pointer'" ng-click="dashboardData.onAfterFilterChange('14d')" id="14d">LAST 14 DAYS</span>
-				<span class="text blue active" onmouseover="this.style.cursor='pointer'" ng-click="dashboardData.onAfterFilterChange('7d')" id="7d">LAST 7 DAYS</span>
-				<span class="text blue" onmouseover="this.style.cursor='pointer'" ng-click="dashboardData.onAfterFilterChange('5w')" id="5w">LAST 5 WEEKS</span>
+				<span class="text blue cursor-pointer" ng-click="dashboardData.onAfterFilterChange('14d')" id="14d">LAST 14 DAYS</span>
+				<span class="text blue cursor-pointer" ng-click="dashboardData.onAfterFilterChange('7d')" id="7d">LAST 7 DAYS</span>
+				<span class="text blue cursor-pointer" ng-click="dashboardData.onAfterFilterChange('5w')" id="5w">LAST 5 WEEKS</span>
 			</div>
 			<p></p>
 
@@ -62,7 +58,7 @@ span.blue { color: #0090ff;}
 
 			<div class="ui one column grid">
 				<div class="column">
-					<canvas id="bar" class="chart chart-line"
+					<canvas id="bar" class="chart chart-line padding-all-10"
 					chart-data="dashboardData.data" chart-labels="dashboardData.labels" chart-series="dashboardData.series" chart-colors="dashboardData.colors" chart-options="dashboardData.options" style="background-color:white; border: 1px solid #D4D4D5; border-radius: 5px;">
 					</canvas>
 				</div>
