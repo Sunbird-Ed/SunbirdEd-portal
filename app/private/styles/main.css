@@ -362,7 +362,6 @@ th {
   font-family: 'sunbirdregularfont' !important;
   font-size: 0.9375em !important;
   color: #007AFF !important;
-  opacity: 0.5 !Important;
 }
 .dashBoardCardText {
   font-family: 'sunbirdregularfont' !important;
@@ -2083,6 +2082,7 @@ ul.fancytree-container li {
 }
 span.dashBoardMenuItem:active {
   color: #0076FE !important;
+  font-family: 'sunbirdboldfont' !important;
 }
 .dashBoard-dropdownPadding {
   padding-right: 8px !important;
