@@ -1694,6 +1694,10 @@ ul.fancytree-container li {
 .profileitems.ui.items > .item > .image + .content {
   padding-left: 1em!important;
 }
+.profileViewSubHeader {
+  color: #979797 !important;
+  font-size: 1.2em ;
+}
 .workspaceicon.ui.header > .icon {
   padding-top: 0;
   float: left;
