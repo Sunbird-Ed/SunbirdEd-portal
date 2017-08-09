@@ -2,7 +2,9 @@ const request = require('request'),
     _ = require('lodash'),
     dateFormat = require('dateformat'),
     uuidv1 = require('uuid/v1'),
-    learnerURL = process.env.sunbird_learner_player_url || 'http://52.172.36.121:9000/v1/';
+    envHelper = require('./environmentVariablesHelper.js'),
+    learnerURL = envHelper.LEARNER_URL,
+    api_auth_token = envHelper.PORTAL_API_AUTH_TOKEN;
 
 
 
@@ -71,7 +73,7 @@ let PERMISSIONS_HELPER = {
         var userId = reqObj.kauth.grant.access_token.content.sub;
         var options = {
             method: 'GET',
-            url: learnerURL + 'user/getprofile/' + userId,
+            url: learnerURL + 'user/v1/read/' + userId,
             headers: {
                 'x-authenticated-userid': userId,
                 'x-device-id': 'middleware',
@@ -79,7 +81,8 @@ let PERMISSIONS_HELPER = {
                 ts: dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo"),
                 'x-consumer-id': 'X-Consumer-ID',
                 'content-type': 'application/json',
-                accept: 'application/json'
+                accept: 'application/json',
+                'Authorization': 'Bearer ' + api_auth_token
             }
         };
 
@@ -89,6 +92,7 @@ let PERMISSIONS_HELPER = {
             if (!error && body) {
                 body = JSON.parse(body)
                 if (body.responseCode === "OK") {
+                    reqObj.session.userId = body.result.response.identifier;
                     reqObj.session.roles = body.result.response.roles;
                     if (body.result.response.organisations) {
                         _.forEach(body.result.response.organisations, function (org) {
@@ -110,7 +114,7 @@ let PERMISSIONS_HELPER = {
         });
 
     },
-    checkPermission: function(url) {
+    checkPermission: function() {
         return function(req, res, next) {           
             var roles = module.exports.checkURLMatch(req.originalUrl);
             if (_.isArray(roles)) {

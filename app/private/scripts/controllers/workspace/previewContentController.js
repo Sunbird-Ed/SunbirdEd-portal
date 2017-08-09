@@ -12,19 +12,24 @@
 angular.module('playerApp')
     .controller('PreviewContentController', ['$stateParams', 'playerTelemetryUtilsService',
         '$rootScope', '$state', '$sce', 'contentService', 'pdfDelegate', '$timeout', 'config',
-        'toasterService', function ($stateParams, playerTelemetryUtilsService, $rootScope, $state,
-            $sce, contentService, pdfDelegate, $timeout, config, toasterService) {
+        'toasterService', '$scope', function ($stateParams, playerTelemetryUtilsService, $rootScope,
+             $state, $sce, contentService, pdfDelegate, $timeout, config, toasterService, $scope) {
             var previewContent = this;
             previewContent.contentProgress = 0;
             previewContent.contentId = $stateParams.contentId;
             previewContent.userId = $rootScope.userId;
             previewContent.isShowPublishRejectButton =
-            $stateParams.backState === 'WorkSpace.UpForReviewContent';
+                                    $stateParams.backState === 'WorkSpace.UpForReviewContent';
+            previewContent.isShowDeleteButton =
+                                    $stateParams.backState === 'WorkSpace.PublishedContent';
+            previewContent.isShowFlagActionButton =
+                                    $stateParams.backState === 'WorkSpace.FlaggedContent';
+            previewContent.message = $rootScope.errorMessages.WORKSPACE;
 
             var validateModal = {
                 state: ['WorkSpace.UpForReviewContent', 'WorkSpace.ReviewContent',
-                    'WorkSpace.PublishedContent'],
-                status: ['Review', 'Live'],
+                    'WorkSpace.PublishedContent', 'WorkSpace.FlaggedContent'],
+                status: ['Review', 'Live', 'Flagged'],
                 mimeType: config.MimeTypeExceptCollection
             };
 
@@ -101,7 +106,7 @@ angular.module('playerApp')
                             configuration.context.appid = 'Sunbird_appId';
                             configuration.config = config.ekstep_CP_config.config;
                             configuration.context.cdata = {
-                                id: $stateParams.tocId, type: 'course'
+                                id: $stateParams.courseId, type: 'course'
                             };
                             configuration.plugins = config.ekstep_CP_config.config.plugins;
                             configuration.repos = config.ekstep_CP_config.config.repos;
@@ -117,7 +122,7 @@ angular.module('playerApp')
                 }
             }
 
-            previewContent.initVideoEvents = function (video) {
+            $scope.initVideoEvents = function (video) {
                 var telemetryData = {};
                 video.on('play', function () {
                     if (parseInt(this.currentTime(), 10) === 0) {
@@ -183,7 +188,13 @@ angular.module('playerApp')
 
             function getContent(contentId) {
                 var req = { contentId: contentId };
-                contentService.getById(req).then(function (response) {
+                var qs = {
+                    fields: 'name,description,appIcon,contentType,mimeType,artifactUrl,' +
+                            ',versionKey,audience,language,gradeLevel,ageGroup,subject,' +
+                            'medium,author,domain,createdBy,flagReasons,flaggedBy,flags,status'
+                };
+
+                contentService.getById(req, qs).then(function (response) {
                     if (response && response.responseCode === 'OK') {
                         previewContent.errorObject = {};
                         showPlayer(response.result.content);
@@ -349,48 +360,113 @@ angular.module('playerApp')
                         lastPublishedBy: previewContent.userId
                     }
                 };
-                previewContent.loader = toasterService.loader('', $rootScope.errorMessages
-                                            .WORKSPACE.PUBLISH_CONTENT.START);
+                previewContent.loader = toasterService.loader('', previewContent.message
+                                                      .PUBLISH_CONTENT.START);
 
                 contentService.publish(request, previewContent.contentId).then(function (res) {
                     if (res && res.responseCode === 'OK') {
                         previewContent.loader.showLoader = false;
                         previewContent.isShowPublishRejectButton = false;
                         previewContent.contentData.status = 'Live';
-                        toasterService.success($rootScope.errorMessages.WORKSPACE.PUBLISH_CONTENT
-                                                        .SUCCESS);
+                        toasterService.success(previewContent.message.PUBLISH_CONTENT.SUCCESS);
 //                $state.go("WorkSpace.UpForReviewContent")
                     } else {
                         previewContent.loader.showLoader = false;
-                        toasterService.error($rootScope.errorMessages.WORKSPACE.PUBLISH_CONTENT
-                                                        .FAILED);
+                        toasterService.error(previewContent.message.PUBLISH_CONTENT.FAILED);
                     }
                 }).catch(function () {
                     previewContent.loader.showLoader = false;
-                    toasterService.error($rootScope.errorMessages.WORKSPACE.PUBLISH_CONTENT.FAILED);
+                    toasterService.error(previewContent.message.PUBLISH_CONTENT.FAILED);
                 });
             };
 
             previewContent.rejectContent = function () {
-                previewContent.loader = toasterService.loader('', $rootScope.errorMessages.WORKSPACE
-                                                        .REJECT_CONTENT.START);
+                previewContent.loader = toasterService.loader('', previewContent.message
+                                                            .REJECT_CONTENT.START);
 
                 var request = {};
                 contentService.reject(request, previewContent.contentId).then(function (res) {
                     if (res && res.responseCode === 'OK') {
                         previewContent.loader.showLoader = false;
                         previewContent.isShowPublishRejectButton = false;
-                        toasterService.success($rootScope.errorMessages.WORKSPACE.REJECT_CONTENT
-                                                        .SUCCESS);
+                        toasterService.success(previewContent.message.REJECT_CONTENT.SUCCESS);
 //                $state.go("WorkSpace.UpForReviewContent");
                     } else {
                         previewContent.loader.showLoader = false;
-                        toasterService.error($rootScope.errorMessages.WORKSPACE.REJECT_CONTENT
-                                                        .FAILED);
+                        toasterService.error(previewContent.message.REJECT_CONTENT.FAILED);
                     }
                 }).catch(function () {
                     previewContent.loader.showLoader = false;
-                    toasterService.error($rootScope.errorMessages.WORKSPACE.REJECT_CONTENT.FAILED);
+                    toasterService.error(previewContent.message.REJECT_CONTENT.FAILED);
+                });
+            };
+
+            previewContent.deleteContent = function () {
+                previewContent.loader = toasterService.loader('', previewContent.message
+                                                        .RETIRE_CONTENT.START);
+                var request = {
+                    contentIds: [previewContent.contentId]
+                };
+                contentService.retire(request).then(function (res) {
+                    if (res && res.responseCode === 'OK') {
+                        previewContent.loader.showLoader = false;
+                        previewContent.isShowDeleteButton = false;
+                        previewContent.isShowFlagActionButton = false;
+                        toasterService.success(previewContent.message.RETIRE_CONTENT.SUCCESS);
+                        $state.go($stateParams.backState);
+                    } else {
+                        previewContent.loader.showLoader = false;
+                        toasterService.error(previewContent.message.RETIRE_CONTENT.FAILED);
+                    }
+                }).catch(function () {
+                    previewContent.loader.showLoader = false;
+                    toasterService.error(previewContent.message.RETIRE_CONTENT.FAILED);
+                });
+            };
+
+            previewContent.acceptContentFlag = function (contentData) {
+                var request = {
+                    versionKey: contentData.versionKey
+                };
+                previewContent.loader = toasterService.loader('', previewContent.message
+                                                  .ACCEPT_CONTENT_FLAG.START);
+
+                contentService.acceptContentFlag(request, contentData.identifier).then(function (res) {
+                    if (res && res.responseCode === 'OK') {
+                        previewContent.loader.showLoader = false;
+                        previewContent.isShowFlagActionButton = false;
+                        previewContent.contentData.status = 'FlagDraft';
+                        toasterService.success(previewContent.message.ACCEPT_CONTENT_FLAG.SUCCESS);
+                        //     $state.go($stateParams.backState);
+                    } else {
+                        previewContent.loader.showLoader = false;
+                        toasterService.error(previewContent.message.ACCEPT_CONTENT_FLAG.FAILED);
+                    }
+                }).catch(function () {
+                    previewContent.loader.showLoader = false;
+                    toasterService.error(previewContent.message.ACCEPT_CONTENT_FLAG.FAILED);
+                });
+            };
+
+            previewContent.discardContentFlag = function (contentData) {
+                var request = { };
+                previewContent.loader = toasterService.loader('', previewContent.message
+                                                     .DISCARD_CONTENT_FLAG.START);
+
+                contentService.discardContentFlag(request, contentData.identifier).then(function (res) {
+                    if (res && res.responseCode === 'OK') {
+                        previewContent.loader.showLoader = false;
+                        previewContent.isShowFlagActionButton = false;
+                        previewContent.contentData.status = 'Live';
+                        toasterService.success(previewContent.message.DISCARD_CONTENT_FLAG.SUCCESS);
+                        //     $state.go($stateParams.backState);
+                    } else {
+                        previewContent.loader.showLoader = false;
+                        toasterService.error(previewContent.message.DISCARD_CONTENT_FLAG.FAILED);
+                    }
+                }).catch(function () {
+                    previewContent.loader.showLoader = false;
+                    toasterService.error(previewContent.message.DISCARD_CONTENT_FLAG.FAILED);
                 });
             };
         }]);

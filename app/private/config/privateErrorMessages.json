@@ -11,7 +11,8 @@
             },
             "TOC": {
                 "START": "We are fetching course details...",
-                "ERROR": "Unable to get course schedule details."
+                "ERROR": "Unable to get course schedule details.",
+                "Flagged_COURSE": "This course content may be inappropriate..."
             },
             "ENROLL": {
                 "START": "Enrolling....",
@@ -118,6 +119,29 @@
                 "FAILED": "Fetching up for review content failed, please try again later...",
                 "NO_CONTENT": "You don't have any content for review..."
             },
+            "RETIRE_CONTENT": {
+                "START": "We are deleting the content...",
+                "FAILED": "Deleting content failed, please try again later...",
+                "SUCCESS": "Content deleted successfully...",
+                "NOT_DELETE": "content not deleted",
+                "SELECT_CONTENT": "Please select content to",
+                "SELECT_ACTION": "Please select action..."
+            },
+            "FLAGGED": {
+                "START": "We are fetching flagged content...",
+                "FAILED": "Fetching flagged content failed, please try again later...",
+                "NO_CONTENT": "You don't have any flagged content..."
+            },
+            "ACCEPT_CONTENT_FLAG": {
+                "START": "We are accepting the flag...",
+                "FAILED": "Accepting flag failed, please try again later...",
+                "SUCCESS": "Flag accepted successfully..."
+            },
+            "DISCARD_CONTENT_FLAG": {
+                "START": "We are discarding the flag...",
+                "FAILED": "Discarding flag failed, please try again later...",
+                "SUCCESS": "Flag discarded successfully..."
+            },
             "REQUIRED_FIELDS": {
                 "TITLE": "Title is missing",
                 "DESCRIPTION": "Description is missing",
@@ -126,6 +150,13 @@
                 "SUBJECT": "Subject is missing",
                 "GRADE": "Grade is missing",
                 "MEDIUM": "Medium is missing"
+            },
+            "CONCEPTS": {
+                "START": "We are loading concept details..."
+            },
+            "CREATE_LESSON_PLAN": {
+                "START": "We are creating lesson plan...",
+                "FAILED": "Creating lesson plan failed, please try again later..."
             }
         },
         "HOME": {
@@ -213,6 +244,11 @@
                 "START": "Fetching data for you....",
                 "FAILED": "Unable to load data."
             }
+        },
+        "CONTENT_FLAG": {
+            "START": "We are submitting your request...",
+            "FAILED": "Submitting request is failed, please try again later...",
+            "SUCCESS": "Request submitted successfully..."
         }
     }
 }

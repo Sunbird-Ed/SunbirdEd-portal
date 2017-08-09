@@ -9,6 +9,7 @@
     <link rel="icon" type="image/ico" href="./images/favicon.ico">
     <link rel="stylesheet" href="/styles/main.css">
     <link rel="stylesheet" href="/thirdparty/semantic/styles/semantic.min.css">
+    <link rel="stylesheet" href="/thirdparty/libs/semantic-ui-tree-picker/semantic-ui-tree-picker.css" />
     <link rel="stylesheet" href="/thirdparty/bower_components/video.js/dist/video-js.min.css">
     <link rel="stylesheet" href="/thirdparty/bower_components/angular-pagedown/angular-pagedown.min.css">
     <link rel="stylesheet" href="/thirdparty/bower_components/slick-carousel/slick/slick.css">
@@ -16,10 +17,9 @@
     <link rel="stylesheet" href="/thirdparty/bower_components/jquery.fancytree/dist/skin-win8/ui.fancytree.css">
     <link rel="stylesheet" href="/thirdparty/bower_components/izimodal/css/iziModal.css" />
 
-
     <link rel="stylesheet" href="/thirdparty/bower_components/file-upload/fine-uploader/fine-uploader-new.css">
 
-    <link rel="stylesheet" href="/thirdparty/semantic-tree-picker/semantic-ui-tree-picker.css">
+
 
     <base href="/private/index">
     <link rel="stylesheet" href="/thirdparty/bower_components/semantic-ui-calendar/dist/calendar.min.css" />
@@ -54,6 +54,7 @@
     <script src="/thirdparty/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script src="/thirdparty/bower_components/angular-ui-router/release/stateEvents.min.js"></script>
     <script src="/thirdparty/semantic/semantic.min.js"></script>
+    <script src="/thirdparty/libs/semantic-ui-tree-picker/semantic-ui-tree-picker.js"></script>
     <script src="/thirdparty/bower_components/video.js/dist/video.js"></script>
     <script src="/thirdparty/bower_components/videojs-youtube/dist/Youtube.js"></script>
     <script src="/thirdparty/bower_components/ngstorage/ngStorage.js"></script>
@@ -78,6 +79,7 @@
     <script src="/thirdparty/bower_components/izitoast/dist/js/iziToast.min.js"></script>
     <script src="/thirdparty/jquery.fancytree/dist/jquery.fancytree.min.js"></script>
     <script src="/thirdparty/semantic-tree-picker/semantic-ui-tree-picker.js"></script>
+    <script src="/thirdparty/libs/generateAndDownloadCSV.min.js"></script>
 
 
     <!-- utils -->
@@ -107,9 +109,7 @@
     <!--services-->
     <script src="scripts/services/httpService.js"></script>
     <script src="scripts/services/httpServiceJava.js"></script>
-    <script src="scripts/services/javaService.js"></script>
     <script src="scripts/services/contentService.js"></script>
-    <script src="scripts/services/authService.js"></script>
     <script src="scripts/services/noteService.js"></script>
     <script src="scripts/services/courseService.js"></script>
     <script src="scripts/services/learnService.js"></script>
@@ -122,10 +122,12 @@
     <script src="scripts/services/portalTelemetryService.js"></script>
     <script src="scripts/services/toasterService.js"></script>
     <script src="scripts/services/routeHelperService.js"></script>
-    <script src="scripts/services/dashboardService.js"></script>
+    <script src="scripts/services/formValidation.js"></script>
+    <script src="scripts/services/adminService.js"></script>
+    <script src="scripts/services/batchService.js"></script>
+    <script src="scripts/services/workSpaceUtilsService.js"></script>
     <!--controller-->
     <script src="scripts/controllers/searchController.js"></script>
-    <script src="scripts/controllers/authController.js"></script>
     <script src="scripts/controllers/appController.js"></script>
     <script src="scripts/controllers/note/noteListController.js"></script>
     <script src="scripts/controllers/courseScheduleController.js"></script>
@@ -153,12 +155,20 @@
     <script src="scripts/controllers/collectionPlayerController.js"></script>
     <script src="scripts/controllers/pageSectionController.js"></script>
     <script src="scripts/controllers/workspace/CourseController.js"></script>
+    <script src="scripts/controllers/admin/adminController.js"></script>
+    <script src="scripts/controllers/common/contentFlagController.js"></script>
+    <script src="scripts/controllers/workspace/flaggedContentController.js"></script>
+    <script src="scripts/controllers/batch/batchListController.js"></script>
+    <script src="scripts/controllers/batch/batchController.js"></script>
+    <script src="scripts/controllers/batch/batchUpdateController.js"></script>
+    <script src="scripts/controllers/workspace/createLessonPlanController.js"></script>
     
-    <!--Dashboard and chart.js-->
+     <!--Dashboard and chart.js-->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
 	<script src="http://cdn.jsdelivr.net/angular.chartjs/latest/angular-chart.min.js"></script>
 	
-	<script src="scripts/controllers/dashboard/orgCreationDashboardController.js"></script>
+	<script src="scripts/controllers/dashboard/orgDashboardController.js"></script>
+	<script src="scripts/services/dashboardService.js"></script>
 	<!--Dashboard and chart.js-->
     
     <!--filter-->
@@ -179,6 +189,9 @@
     <script src="scripts/directives/pageSectionDirective.js"></script>
     <script src="scripts/directives/fileUpload.js"></script>
     <script src="scripts/directives/searchDirective.js"></script>
+    <script src="scripts/directives/contentFlagDirective.js"></script>
+    <script src="scripts/directives/searchedUser.js"></script>
+    <script src="scripts/directives/batchCardDirective.js"></script>
     <!--routes-->
 </body>
 

@@ -5,6 +5,7 @@
  * @name playerApp.filter:noteListFilter
  * @function
  * @description
+ * @author Anuj Gupta
  * # noteListFilter
  * Filter in the playerApp.
  */
@@ -14,9 +15,8 @@ angular.module('playerApp')
             if (searchText) {
                 var lowerCaseQuery = angular.lowercase(searchText);
                 return noteList.filter(function (list) {
-                    return angular.lowercase(list.title)
-                    .includes(lowerCaseQuery)
-                    || angular.lowercase(list.note).includes(lowerCaseQuery);
+                    return angular.lowercase(list.title).includes(lowerCaseQuery) ||
+                            angular.lowercase(list.note).includes(lowerCaseQuery);
                 });
             }
             return noteList;

@@ -25,13 +25,12 @@ angular.module('playerApp')
                 var request = {
                     filters: {
                         status: upForReviewContent.contentStatus,
-                        channelId: upForReviewContent.channelId
+                        createdFor: $rootScope.organisationIds
                     },
                     sort_by: {
                         lastUpdatedOn: upForReviewContent.sortBy
                     }
                 };
-
                 searchService.search(request).then(function (res) {
                     if (res && res.responseCode === 'OK') {
                         upForReviewContent.loader.showLoader = false;
