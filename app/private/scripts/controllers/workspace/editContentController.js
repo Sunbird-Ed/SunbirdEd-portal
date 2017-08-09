@@ -10,10 +10,10 @@
  */
 angular.module('playerApp')
         .controller('EditContentController', ['contentService', 'config', '$scope', '$state',
-            '$timeout', '$rootScope', '$stateParams', '$location', '$anchorScroll', 'toasterService',
-            'searchService',
+            '$timeout', '$rootScope', '$stateParams',
+            '$location', '$anchorScroll', 'toasterService',
             function (contentService, config, $scope, $state, $timeout, $rootScope, $stateParams,
-                    $location, $anchorScroll, toasterService, searchService) {
+                    $location, $anchorScroll, toasterService) {
                 var editContent = this;
                 editContent.contentId = $stateParams.contentId;
                 editContent.lessonTypes = config.DROPDOWN.COMMON.lessonTypes;
@@ -27,7 +27,7 @@ angular.module('playerApp')
                 editContent.userId = $rootScope.userId;
                 editContent.showUploadFileForm = false;
                 editContent.selectedConcepts = [];
-                $scope.contentPlayer = {isContentPlayerEnabled: false};
+                $scope.contentPlayer = { isContentPlayerEnabled: false };
                 editContent.contentUploadUrl = config.URL.BASE_PREFIX + config.URL.CONTENT_PREFIX +
                         config.URL.CONTENT.UPLOAD;
                 editContent.checkMimeTypeForEditContent = [
@@ -81,7 +81,7 @@ angular.module('playerApp')
 
                     editContent.initializeDropDown();
 
-                    var req = {contentId: editContent.contentId};
+                    var req = { contentId: editContent.contentId };
                     var qs = {
                         mode: 'edit',
                         fields: 'name,description,appIcon,contentType,mimeType,artifactUrl,' +
@@ -266,7 +266,7 @@ angular.module('playerApp')
                 editContent.callReviewApi = function () {
                     editContent.loader = toasterService.loader('', $rootScope.errorMessages.WORKSPACE
                             .REVIEW_CONTENT.START);
-                    var req = {content: {}};
+                    var req = { content: {} };
                     contentService.review(req, editContent.contentId).then(function (res) {
                         if (res && res.responseCode === 'OK') {
                             editContent.loader.showLoader = false;
@@ -308,12 +308,12 @@ angular.module('playerApp')
                 };
 
                 editContent.openContentEditor = function (contentId) {
-                    var params = {contentId: contentId};
+                    var params = { contentId: contentId };
                     $state.go('ContentEditor', params);
                 };
 
                 editContent.openCollectionEditor = function (data) {
-                    var params = {contentId: data.identifier, type: data.contentType};
+                    var params = { contentId: data.identifier, type: data.contentType };
                     $state.go('CollectionEditor', params);
                 };
 
@@ -428,5 +428,4 @@ angular.module('playerApp')
                 $scope.$on('selectedConcepts', function (event, args) {
                     editContent.contentData.concepts = args.selectedConcepts;
                 });
-
             }]);
