@@ -1,5 +1,14 @@
 <div class="ui segment">
-	<div class="ui form">
+	  <div class="ui grid">
+      <div class="eleven wide column"></div>
+      <div class="one wide column actions">
+        <h5 class="ui basic icon circular button deny">
+                <i class="ui remove icon"></i>
+            </h5>
+      </div>
+    </div>
+	<div class="ui form" sb-permissions permission-only="SYSTEM_ADMIN,ORG_ADMIN">
+		<h1>upload	Users</h1>
 		<div class="two fields">
 		    <div class="inline required field">
 			    <label>Provider</label>
@@ -27,15 +36,47 @@
 	      	<div class="six wide column"></div>
 		
 	        <div class="three wide column">
-				{{admin.fileName}}
+			
 	      	</div>
-	        <div class="three wide column">
-			<button  class="ui primary right floated button" ng-click="admin.openImageBrowser();">upload CSV</button>
-			<input type="file" accept="file/csv,file/xlsx" class="content-input ui small "
-			id="uploadCSV" onchange="angular.element(this).scope().validateFile(this.files);"
-			required="" />
+	        <div class="three wide column">	{{admin.fileName}}
+			<button  class="ui primary right floated button" ng-click="admin.openImageBrowser('users');">upload CSV</button>
+			 <input type="file" accept="file/csv,file/xlsx" class="content-input ui small "
+			id="uploadUsrsCSV" onchange="angular.element(this).scope().validateFile(this.files,'users');"
+			required="" /> 
        </div>
-    	</div>
+			</div>
+			<!-- show progress -->
+				<p> Process ID ={{admin.bulkUsersProcessId}}</p>
+			<p>You can track progress with process ID</p>
 	</div>
+		<!-- organization upload -->
+		
+			<div class="ui form" sb-permissions permission-only="SYSTEM_ADMIN">
+					<div class="ui  divider"></div>
+				 <h1>upload	Organization</h1>
+				     <div class="twelve wide column">	{{admin.fileName}}
+			<button  class="ui primary right floated button" ng-click="admin.openImageBrowser('organizations');">upload organizations CSV</button>
+			<input type="file" accept="file/csv,file/xlsx" class="content-input ui small "
+			id="uploadOrgCSV" onchange="angular.element(this).scope().validateFile(this.files,'organizations');"
+			required="" />
+			 </div>
+			<!-- show progress -->
+			<p> Process ID ={{admin.bulkOrgProcessId}}</p>
+			<p>You can track progress with process ID</p>
+			</div>
+		
+			<!-- check Status -->
+			<div class="ui form">
+					<div class="fields">
+						<div class="field">
+							<label>Process ID</label>
+							<input type="text" placeholder="Process ID" ng-model="admin.processID">
+						</div>
+						<div class="field">
+							<button ng-click="admin.checkStatus(admin.processID)"> check status</button>
+						</div>
+					
+					</div>
+				</div>
 </div>
 
