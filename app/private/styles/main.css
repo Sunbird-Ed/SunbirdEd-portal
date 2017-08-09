@@ -534,45 +534,6 @@ th {
 .searchdropdown.ui.disabled.button {
   box-shadow: 0 0 0 1px rgba(51, 51, 51, 0.33) inset !important;
 }
-.ui.modal .ui.form input {
-  border: 0!important;
-  border-bottom: 1px solid #979797!important;
-  border-radius: 0!important;
-  padding: 1em 0 !important;
-}
-.ui.modal .ui.selection.dropdown {
-  border: 0!important;
-  border-bottom: 1px solid #979797!important;
-  border-radius: 0!important;
-  padding: 1em 0 !important;
-  margin: 0 !important;
-}
-.ui.modal .ui.multiple.dropdown > .text {
-  margin: 0 !important;
-  line-height: 0 !important;
-}
-.ui.modal .ui.form .field > label {
-  color: #979797;
-  /* font-size: 14px; */
-  font-weight: bold;
-  line-height: 14px;
-}
-.ui.modal .ui.input input {
-  border: 0!important;
-  border-bottom: 1px solid #979797!important;
-  border-radius: 0!important;
-  padding: 1em 0 !important;
-}
-.ui.modal .ui.form .inline.fields > label {
-  color: #979797;
-}
-.ui.modal .ui.radio.checkbox .box,
-.ui.radio.checkbox label {
-  color: #979797;
-}
-.ui.modal .ui.header {
-  font-size: 1.5em;
-}
 #custom-scroll::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   border-radius: 10px;
@@ -970,6 +931,45 @@ slick-prev:before,
 }
 .radiomargin {
   margin: 1em 0 !important;
+}
+.ui.modal .ui.form input {
+  border: 0!important;
+  border-bottom: 1px solid #979797!important;
+  border-radius: 0!important;
+  padding: 1em 0 !important;
+}
+.ui.modal .ui.selection.dropdown {
+  border: 0!important;
+  border-bottom: 1px solid #979797!important;
+  border-radius: 0!important;
+  padding: 1em 0 !important;
+  margin: 0 !important;
+}
+.ui.modal .ui.multiple.dropdown > .text {
+  margin: 0 !important;
+  line-height: 0 !important;
+}
+.ui.modal .ui.form .field > label {
+  color: #979797;
+  /* font-size: 14px; */
+  font-weight: bold;
+  line-height: 14px;
+}
+.ui.modal .ui.input input {
+  border: 0!important;
+  border-bottom: 1px solid #979797!important;
+  border-radius: 0!important;
+  padding: 1em 0 !important;
+}
+.ui.modal .ui.form .inline.fields > label {
+  color: #979797;
+}
+.ui.modal .ui.radio.checkbox .box,
+.ui.radio.checkbox label {
+  color: #979797;
+}
+.ui.modal .ui.header {
+  font-size: 1.5em;
 }
 .down-arrow-accordion {
   float: right !important;
