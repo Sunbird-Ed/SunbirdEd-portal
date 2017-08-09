@@ -12,25 +12,15 @@
                             <div class="content padding-top-10">
                                 <div class="sectionHeading header">{{profileCtrl.user.firstName}} &nbsp;{{::profileCtrl.user.lastName}}</div>
                                 <div class="meta profileViewSubHeader padding-bottom-10">
-                                    <span ng-if="profileCtrl.currentJobLocation">{{profileCtrl.currentJobLocation.orgName}}</span>
+                                    <span ng-if="profileCtrl.currentJobLocation">{{profileCtrl.currentJobLocation.orgName}},</span>
                                     <span  ng-if="profileCtrl.currentAddressLocation">{{profileCtrl.currentAddressLocation.city}}</span>
                                 </div>
                                 <div class="meta">
                                     <div class="ui label">
-                                        <i class="mail icon"></i> User@gmail.com
+                                        <i class="mail icon"></i> {{profileCtrl.user.email}}
                                     </div>
-                                    <div class="ui label">userName
-                                        <div class="detail">user1
-                                        </div>
+                                    <div class="ui label">userName:{{profileCtrl.user.userName}}                                    
                                     </div>
-                                </div>
-                                <div class="description" ng-init="profileCtrl.readMore = false">
-                                    <p ng-if="!profileCtrl.readMore"> {{profileCtrl.user.profileSummary | limitTo: 120 }}&nbsp;
-                                        <span class="ui cardsKnowMore mouse-pointer" ng-if="profileCtrl.summary.length > 120 && profileCtrl.readMore === false" ng-click="profileCtrl.readMore = !profileCtrl.readMore;"> ... Read More</span>
-                                    </p>
-                                    <p ng-if="profileCtrl.readMore"> {{profileCtrl.user.profileSummary}}&nbsp;
-                                        <span class="ui cardsKnowMore mouse-pointer" ng-click="profileCtrl.readMore = false;">Read Less ...</span>
-                                    </p>
                                 </div>
                             </div>
                         </div>
