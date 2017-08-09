@@ -1,9 +1,4 @@
-<div class="twelve wide column">
-    <div class="ui raised segment " ng-if="profileCtrl.loader.showLoader">
-        <app-loader data="{{profileCtrl.loader}}"></app-loader>
-    </div>
-</div>
-<div class="ui grid">
+<div class="ui grid" ng-init=profileCtrl.getCreatedContentList()>
     <div class="eight wide column">
         <div class="ui grid">
             <div class="twelve wide column" ng-include=" 'views/profile/profileView/userExperience.html' ">
@@ -18,7 +13,7 @@
     </div>
     <div class=" four wide column margin-top-20">
         <div class="ui grid ">
-            <div class="twelve wide column" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW">
+            <div class="twelve wide column" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW,FLAG_REVIEWER">
                 <div class="workspacebutton workspacecontentProfile ui link card " ui-sref="WorkSpace ">
                     <div class="content ">
                         <div class="WorkSpaceTextContent ">
@@ -29,15 +24,22 @@
                 </div>
             </div>
             <div class="twelve wide column" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW">
-                <div class="workspacebutton workspacecontentProfile ui link card " ui-sref="orgCreationDashboard ">
+            <!-- TODO: update roles -->
+                <div class="workspacebutton workspacecontentProfile ui link card ">
                     <div class="content ">
                         <div class="WorkSpaceTextContent ">
                             <i class='my-icon database icon '></i>
                             <span class="my-text ">Dashboard</span>
+
+							<div class="ui bulleted list" ng-repeat="item in profileCtrl.orgDetails"  >
+							  <a class="item" ui-sref="orgDashboard({orgId: '{{item.organisationId}}'}) ">{{item.orgName || item.organisationId}}</a>
+							</div>
+
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="twelve wide column blur-content">
                 <div class="ui raised segment ">
                     <div class="header announcementCard-header ">
@@ -80,28 +82,20 @@
                     </div>
                 </div>
             </div>
-            <div class="twelve wide column blur-content">
-                <div class="ui raised segment ">
+            <div class="twelve wide column" ng-if="profileCtrl.contentList.length > 0">
+                <div class="ui raised segment">
                     <div class="header announcementCard-header ">
-                        <span class="header cardsHeading " translate="experiance ">File uploads</span>
-                        <a class="addeditprofile " translate="edit ">15 files</a>
+                        <span class="header cardsHeading">{{$root.labels.PROFILE.BASIC_PROFILE.contributions}}</span>
+                        <span class="addeditprofile">{{profileCtrl.contentList.length}} {{$root.labels.PROFILE.BASIC_PROFILE.contents}}</span>
                     </div>
-                    <div class="profileitems ui relaxed divided items ">
-                        <div class="item ">
-                            <img class="ui avatar image " src="/images/mp4.png ">
+                    <div class="profileitems ui relaxed divided items">
+                        <div class="item" ng-repeat="item in profileCtrl.contentList | limitTo: profileCtrl.quantityOfContent track by $index" ng-click="profileCtrl.openContentPlayer(item)">
+                            <img class="ui avatar image " src="{{profileCtrl.getContentLogo(item)}}">
                             <div class="content ">
-                                <a class=" header ">Filename.mp4</a>
+                                <a class=" header ">{{item.name}}</a>
                                 <div class="metadata ">
-                                    <span class="date ">4 June'17</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item ">
-                            <img class="ui avatar image " src="/images/pdf.png ">
-                            <div class="content ">
-                                <a class=" header ">Filename.pdf</a>
-                                <div class="metadata ">
-                                    <span class="date ">4 June'17</span>
+                                    <span ng-if="item.me_averageRating" apply-script class="courseHeader-rating ui star rating" data-rating="{{item.me_averageRating |number:0}}" data-max-rating="5"></span>
+                                    <span ng-if="!item.me_averageRating" class="date">{{item.createdOn | dateFilterWithMDY}}</span>
                                 </div>
                             </div>
                         </div>

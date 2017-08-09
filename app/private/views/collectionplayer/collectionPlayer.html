@@ -1,6 +1,18 @@
 <div class="ui grid">
     <div class="one wide column"></div>
     <div class="ten wide column">
+        <div ng-if="cpvm.loader.showLoader">
+            <app-loader data="{{cpvm.loader}}"></app-loader>
+        </div>
+        <div ng-if="cpvm.error.showError">
+            <error-message data="{{cpvm.error}}" visibility="cpvm.error.showError"></error-message>
+        </div>
+    </div>
+    <div class="one wide column"></div>
+</div>
+<div class="ui grid">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
         <content-player visibility="cpvm.showPlayer" id="cpvm.contentId" isshowmetaview="false" isheader="true" isclose="true" height="8" width="100" ispercentage="true"></content-player>
     </div>
     <div class="one wide column"></div>
@@ -110,10 +122,4 @@
         </div>
     </div>
     <div class="one wide column"></div>
-</div>
-<div ng-if="cpvm.loader.showLoader">
-    <app-loader data="{{cpvm.loader}}"></app-loader>
-</div>
-<div ng-if="cpvm.error.showError">
-    <error-message data="{{cpvm.error}}" visibility="cpvm.error.showError"></error-message>
 </div>
