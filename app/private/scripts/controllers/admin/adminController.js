@@ -16,21 +16,41 @@ angular.module('playerApp')
         'config',
         '$rootScope',
         '$scope',
-        'contentService',
-        function (adminService, $timeout, $state, config, $rootScope, $scope, contentService) {
+        'contentService', 'toasterService',
+        function (adminService, $timeout, $state, config, $rootScope, $scope,
+            contentService, toasterService) {
             var admin = this;
             admin.userRoles = config.USER_ROLES;
             admin.searchResult = $scope.users;
             admin.userName = '';
             admin.bulkUsers = {};
         // modal init
-            admin.showModal = function () {
-                $('#changeUserRoles').modal('show');
+            admin.showModal = function (orgs) {
+                $('#changeUserRoles').modal({
+                    onShow: function () {
+                        admin.userOrganisations = orgs;
+                        admin.selectedOrgUserRoles = [];
+                    },
+                    onHide: function () {
+                        admin.userOrganisations = [];
+                        admin.selectedOrgUserRoles = [];
+                        return true;
+                    }
+                }).modal('show');
+                admin.getOrgName(function (orgIdAndNames) {
+                    admin.userOrganisations.forEach(function (userOrg) {
+                        var orgNameAndId = orgIdAndNames.find(function (org) {
+                            return org.orgId === userOrg.organisationId;
+                        });
+                        if (orgNameAndId) { userOrg.orgName = orgNameAndId.orgName; }
+                    });
+                });
             };
+
             admin.modalInit = function () {
                 $timeout(function () {
                     $('#userOrgs').dropdown();
-                }, 1000);
+                }, 0);
                 $('.roleChckbox').checkbox();
             };
             // download list of user or organization
@@ -66,47 +86,67 @@ angular.module('playerApp')
             };
  // upload for bulk user create
 
-            admin.openImageBrowser = function () {
-                if (!((admin.bulkUsers.provider && admin.bulkUsers.externalid)
+            admin.openImageBrowser = function (key) {
+                if (key === 'users') {
+                    if (!((admin.bulkUsers.provider && admin.bulkUsers.externalid)
                     || admin.bulkUsers.OrgId)) {
-                    admin.bulkUploadError = true;
-                    admin.bulkUploadErrorMessage = 'you should enter Provider and External Id ' +
+                        admin.bulkUploadError = true;
+                        admin.bulkUploadErrorMessage = 'you should enter Provider and External Id ' +
                                                     'Or Organization Id';
 
-                    $timeout(function () {
-                        admin.bulkUploadError = false;
-                        admin.bulkUploadErrorMessage = '';
-                        admin.bulkUsers = {};
-                    }, 2000);
-                } else { $('#uploadCSV').click(); }
+                        $timeout(function () {
+                            admin.bulkUploadError = false;
+                            admin.bulkUploadErrorMessage = '';
+                            admin.bulkUsers = {};
+                        }, 2000);
+                    } else { $('#uploadUsrsCSV').click(); }
+                } else if (key === 'organizations') {
+                    $('#uploadOrgCSV').click();
+                }
             };
-            $scope.validateFile = function (files) {
+            $scope.validateFile = function (files, key) {
                 var fd = new FormData();
                 var reader = new FileReader();
                 if (files[0] && files[0].name.match(/.(csv|xlsx)$/i)
                     && files[0].size < 4000000) {
-                    fd.append('file', files[0]);
-
                     reader.onload = function () {
-                        admin.createNewUsers();
+                        if (key === 'users') {
+                            fd.append('user', files[0]);
+                            admin.createNewUsers(fd);
+                        } else if (key === 'organizations') {
+                            fd.append('org', files[0]);
+                            admin.createNewOrganizations(fd);
+                        }
                     };
                     admin.fileName = files[0].name;
                     reader.readAsDataURL(files[0]);
                     admin.fileToUpload = fd;
                 } else {
-                    toasterService.warning('');
+                    toasterService.error(apiMessages.ERROR.get);
                 }
             };
-            admin.createNewUsers = function (file) {
-                var newUsersReq = {
-                    user: admin.fileToUpload,
-                    organisationId: admin.bulkUsers.OrgId, // valid or
-                    externalid: admin.bulkUsers.externalid, // valid and
-                    provider: admin.bulkUsers.provider// valid
-                };
-                console.log('newUsersReq', newUsersReq);
-                adminService.bulkUserUpload(newUsersReq).then(function (res) {
-                    console.log('res bulk users', res);
+            admin.createNewUsers = function () {
+                var organisationId = admin.bulkUsers.OrgId;
+                // var newUsersReq = { user: file, organisationId: organisationId };
+                //     organisationId: admin.bulkUsers.OrgId, // valid or
+                //     externalid: admin.bulkUsers.externalid, // valid and
+                //     provider: admin.bulkUsers.provider// valid
+                // };
+                // console.log('newUsersReq', newUsersReq);
+                admin.fileToUpload.append('organisationId', organisationId);
+                adminService.bulkUserUpload(admin.fileToUpload).then(function (res) {
+                    if (res.responseCode === 'OK') {
+                        admin.bulkUsersProcessId = res.result.processId;
+                        admin.bulkUsersRes = res.result.response;
+                    }
+                });
+            };
+            admin.createNewOrganizations = function () {
+                adminService.bulkOrgrUpload(admin.fileToUpload).then(function (res) {
+                    if (res.responseCode === 'OK') {
+                        admin.bulkOrgProcessId = res.result.processId;
+                        admin.bulkOrgRes = res.result.response;
+                    }
                 });
             };
             admin.closeBulkUploadError = function () {
@@ -126,6 +166,7 @@ angular.module('playerApp')
                 }
             };
             admin.updateRoles = function (userId, orgId, roles) {
+                console.log('trying to update roles', userId, orgId, roles);
                 var req = {
                     request: {
                         userId: userId,
@@ -134,9 +175,12 @@ angular.module('playerApp')
 
                     }
                 };
-                console.log('req or role udate', req);
+
                 adminService.updateRoles(req).then(function (res) {
-                    console.log('res of update', res);
+                    console.log('res', res);
+                }).catch(function (err) {
+                    profile.isError = true;
+                    toasterService.error($rootScope.errorMessages.ADMIN.fail);
                 });
             };
 // delete user
@@ -147,16 +191,15 @@ angular.module('playerApp')
                         userId: userId
                     }
                 };
-                console.log('removeReq', removeReq);
+
                 adminService.deleteUser(removeReq).then(function (res) {
                     if (res.result.response === 'SUCCESS') {
-                        console.log('res of deleter', res);
-                        console.log('admin.searchResult before delete', admin.searchResult.length);
                         admin.searchResult = admin.searchResult.filter(function (user) {
                             return user.userId !== userId;
                         });
-                        console.log('admin.searchResult after delete', admin.searchResult.length);
                     }
+                }).catch(function (err) {
+                    toasterService.error($rootScope.errorMessages.ADMIN.fail);
                 });
             };
 
@@ -180,29 +223,40 @@ angular.module('playerApp')
                     }
                 });
             };
+            // checkStatus
+            admin.checkStatus = function (processID) {
+
+            };
+
+            // getOrgnames
+            admin.getOrgName = function (cb) {
+                var identifiers = [];
+
+                admin.searchResult.forEach(function (user) {
+                    if (user.organisations) {
+                        var ids = user.organisations.map(function (org) {
+                            return org.organisationId;
+                        });
+                        identifiers = _.union(identifiers, ids);
+                    }
+                });
+                var req = { request: {
+
+                    filters: {
+                        identifier: identifiers
+
+                    }
+
+                } };
+                adminService.orgSearch(req).then(function (res) {
+                    var orgIdAndNames = res.result.response.content.map(function (org) {
+                        return {
+                            orgName: org.orgName,
+                            orgId: org.identifier
+                        };
+                    });
+                    cb(orgIdAndNames);
+                });
+            };
         }]);
-         // admin.searchUser = function () {
-            //     var searchReq = {
-            //         id: 'unique API ID',
-            //         ts: '2013/10/15 16:16:39',
-            //         params: {
 
-            //         },
-            //         request: {
-
-            //             filters: {
-        	//                 objectType: ['user'],
-            //                 name: 'newUser1'
-            //                 // 'education.address.country': 'India'
-            //             },
-            //             offset: 0,
-            //             limit: 5
-            //         }
-            //     };
-            //     adminService.searchUser(searchReq).then(function (users) {
-            //         console.log('users', users.result.response.response);
-            //         admin.searchedUsers = users.result.response.response;
-            //     });
-
-            //     console.log('trying to search user', admin.userName);
-            // };
