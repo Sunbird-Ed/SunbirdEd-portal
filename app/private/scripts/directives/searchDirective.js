@@ -260,8 +260,16 @@ angular.module('playerApp').directive('search', function () {
                             $('#search-suggestions').addClass('hidden').removeClass('visible');
                             $rootScope.search.autosuggest_data = [];
                             $rootScope.search.loader.showLoader = false;
-
-                            if (res.result.count === 0) {
+                            if ($rootScope.search.selectedSearchKey === 'Organisations' || $rootScope.search.selectedSearchKey === 'Users') {
+                                if (res.result.response.count === 0) {
+                                    $rootScope.search.error = showErrorMessage(true,
+                                        $rootScope.errorMessages.SEARCH.DATA.NO_CONTENT,
+                                        $rootScope.errorMessages.COMMON.INFO);
+                                } else {
+                                    $rootScope.search.error = {};
+                                    $rootScope.search.searchResult = res.result;
+                                }
+                            } else if (res.result.count === 0) {
                                 $rootScope.search.error = showErrorMessage(true,
                                         $rootScope.errorMessages.SEARCH.DATA.NO_CONTENT,
                                         $rootScope.errorMessages.COMMON.INFO);
@@ -302,6 +310,7 @@ angular.module('playerApp').directive('search', function () {
                 $rootScope.search.filters.contentType = $rootScope.search.selectedContentType;
                 $rootScope.search.filters.subject = $rootScope.search.selectedSubject;
                 if ($rootScope.search.selectedSearchKey === 'Users') {
+                    $rootScope.search.filters.education = {};
                     $rootScope.search.filters.education.board = $rootScope.search.selectedBoard;
                 } else {
                     $rootScope.search.filters.board = $rootScope.search.selectedBoard;
