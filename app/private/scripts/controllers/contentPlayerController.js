@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('playerApp')
-    .controller('contentPlayerCtrl', ['playerTelemetryUtilsService', '$state', '$scope', '$sce',
+    .controller('contentPlayerCtrl', ['playerTelemetryUtilsService', '$state', '$scope',
         'contentService', 'pdfDelegate', '$timeout', '$stateParams', 'config', '$rootScope',
-        function (playerTelemetryUtilsService, $state, $scope, $sce, contentService, pdfDelegate,
+        function (playerTelemetryUtilsService, $state, $scope, contentService, pdfDelegate,
         $timeout, $stateParams, config, $rootScope) {
             $scope.isClose = $scope.isclose;
             $scope.isHeader = $scope.isheader;

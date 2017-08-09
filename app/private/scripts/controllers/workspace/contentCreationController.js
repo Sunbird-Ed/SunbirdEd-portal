@@ -25,11 +25,12 @@ angular.module('playerApp')
                 name: 'Youtube Video', value: 'video/youtube'
             };
             contentCreation.lessonTypes = config.DROPDOWN.COMMON.lessonTypes;
-            contentCreation.showContentCreationModal = true;
+            contentCreation.showContentCreationModal = false;
             contentCreation.userId = $rootScope.userId;
             contentCreation.data = {};
             contentCreation.defaultName = 'Untitled';
             contentCreation.defaultContentType = 'Story';
+            contentCreation.youtubeVideoUrl = '';
 
             $timeout(function () {
                 contentCreation.manualUploader = new qq.FineUploader({
@@ -38,12 +39,6 @@ angular.module('playerApp')
                     request: {
                         endpoint: contentCreation.contentUploadUrl + '/' + contentCreation.contentId
                     },
-                    // thumbnails: {
-                    //     placeholders: {
-                    //         waitingPath: '/source/placeholders/waiting-generic.png',
-                    //         notAvailablePath: '/source/placeholders/not_available-generic.png'
-                    //     }
-                    // },
                     autoUpload: false,
                     debug: true,
                     validation: {
@@ -63,7 +58,6 @@ angular.module('playerApp')
                         },
                         onSubmitted: function (id) {
                             contentCreation.youtubeVideoUrl = '';
-                            contentCreation.showContentCreationModal = true;
                             contentCreation.uploadedFileId = id;
                             contentCreation.initializeModal();
                             document.getElementById('hide-section-with-button')
@@ -77,6 +71,7 @@ angular.module('playerApp')
                             if (newStatus === 'rejected') {
                                 document.getElementById('hide-progress-bar-on-reject')
                                                     .style.display = 'none';
+                                contentCreation.data = {};
                             }
                         }
                     }
@@ -87,7 +82,7 @@ angular.module('playerApp')
                 window.cancelUploadFile = function () {
                     document.getElementById('hide-section-with-button').style.display = 'block';
                 };
-            }, 100);
+            }, 300);
 
             contentCreation.editContent = function (contentId) {
                 var params = { contentId: contentId };
@@ -97,27 +92,33 @@ angular.module('playerApp')
             contentCreation.hideContentCreationModal = function () {
                 $('#contentCreationModal').modal('hide');
                 $('#contentCreationModal').modal('hide others');
+                $('#contentCreationModal').modal('hide all');
                 $('#contentCreationModal').modal('hide dimmer');
-            };
-
-            contentCreation.clearContentCreationModal = function () {
-                if (contentCreation.createApi) {
-                    contentCreation.createApi.error = {};
-                }
-                contentCreation.data = {};
             };
 
             contentCreation.closeContentCreationModal = function () {
                 $timeout(function () {
                     contentCreation.showContentCreationModal = false;
-                }, 0);
+                }, 10);
             };
 
             contentCreation.initializeModal = function () {
+                contentCreation.showContentCreationModal = true;
+                var lessonDD = $('#lessonTypeDropDown').dropdown();
+                var mimeTypeDD = $('#mimeTypeDropDown').dropdown();
+                if (contentCreation.youtubeVideoUrl) {
+                    mimeTypeDD.dropdown('set text', 'Youtube Video');
+                    mimeTypeDD.dropdown('destroy');
+                    lessonDD.dropdown('clear');
+                } else {
+                    mimeTypeDD.dropdown('set text', 'Mime Type');
+                    mimeTypeDD.dropdown('clear');
+                    lessonDD.dropdown('clear');
+                }
                 $timeout(function () {
                     $('#contentCreationModal').modal({
                         onShow: function () {
-                            contentCreation.clearContentCreationModal();
+
                         },
                         onHide: function () {
                             if (!contentCreation.contentId && !contentCreation.youtubeVideoUrl) {
@@ -126,17 +127,11 @@ angular.module('playerApp')
                                 contentCreation.manualUploader.cancel(contentCreation
                                                                                 .uploadedFileId);
                             }
-                            contentCreation.clearContentCreationModal();
+                            contentCreation.data = {};
                             contentCreation.closeContentCreationModal();
+                            return true;
                         }
                     }).modal('show');
-                    $('#lessonTypeDropDown').dropdown();
-                    $('#mimeTypeDropDown').dropdown();
-
-                    if (contentCreation.youtubeVideoUrl) {
-                        $('#mimeTypeDropDown').dropdown('set text', 'Youtube Video');
-                        $('#mimeTypeDropDown').dropdown('destroy');
-                    }
                 }, 10);
             };
 

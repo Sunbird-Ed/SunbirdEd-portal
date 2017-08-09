@@ -350,6 +350,9 @@ th {
   font-size: 0.9375em !important;
   line-height: 17px;
 }
+.medium-font-text {
+  font-size: medium !important;
+}
 .padding-none {
   padding: 0px !important;
 }
@@ -391,6 +394,9 @@ th {
 }
 .padding-bottom-5 {
   padding-bottom: 5px!important;
+}
+.padding-bottom-10 {
+  padding-bottom: 10px!important;
 }
 .padding-right-28 {
   padding-right: 28px!important;
@@ -457,6 +463,9 @@ th {
 .margin-top-30 {
   margin-top: 30px !important;
 }
+.margin-bottom-30 {
+  margin-bottom: 30px !important;
+}
 .margin-top-3rem {
   margin-top: -3rem !important;
 }
@@ -498,6 +507,12 @@ th {
 }
 .text-align-center {
   text-align: center !important;
+}
+.padding-left-50 {
+  padding-left: 3rem !important;
+}
+.padding-right-50 {
+  padding-right: 3rem !important;
 }
 .contentVisibility-hidden {
   visibility: hidden !important;
@@ -621,6 +636,7 @@ th {
 .modal .ui.segment {
   box-shadow: none !important;
   border: none!important;
+  overflow-y: auto !important;
 }
 .breadcrumppadding.ui.breadcrumb,
 .breadcrumppadding.ui.breadcrumb:last-child,
@@ -1710,12 +1726,6 @@ ul.fancytree-container li {
   float: right;
   font-size: 1.1em;
 }
-.ui.tree-picker.modal .search {
-  display: none;
-}
-.ui.tree-picker.modal .header .menu {
-  display: none;
-}
 .workspacecontentProfile {
   line-height: 22px;
 }
@@ -1825,6 +1835,76 @@ ul.fancytree-container li {
 }
 .notedec p {
   word-break: break-all;
+}
+.userSearchImage > img {
+  min-height: 80px !important;
+}
+.userSearchButton {
+  margin-top: -5px !important;
+}
+.userSearchCardHover {
+  padding: 10px !important;
+}
+.ui.items > .userSearchCardHover.item:hover {
+  -webkit-box-shadow: 1px 6px 15px 2px rgba(0, 0, 0, 0.15);
+  moz-box-shadow: 1px 6px 15px 2px rgba(0, 0, 0, 0.15);
+  -o-box-shadow: 1px 6px 15px 2px rgba(0, 0, 0, 0.15);
+  transition: all 0.5s;
+  z-index: 100;
+  transform: scale(1.07);
+  -webkit-transform: scale(1.02);
+  background-color: #ffffff;
+  border-radius: 5px;
+}
+.ui.divided.items > .userSearchCardHover.item:first-child {
+  padding-top: 10px !important;
+}
+.ui.divided.items > .userSearchCardHover.item:last-child {
+  padding-bottom: 10px !important;
+}
+.trashIconAlign {
+  margin: -0.2em -0.2em 0em 0em;
+}
+.batchCardDropDown {
+  float: right;
+  font-size: 13px !important;
+  padding-right: 12px;
+}
+.batchCardAlign {
+  padding-top: 20px;
+}
+.headerBatchCard {
+  font-size: 1.3em;
+  padding-left: 12px;
+}
+.ui.attached.batchCard.button {
+  background: #ffffff !important;
+}
+.batchcardListContent {
+  margin-left: 30px;
+  float: left;
+  background: #F5F5F5;
+  height: 250px;
+  overflow-y: auto;
+  border-top: none !important;
+  margin-right: 5px !important;
+}
+.batchcardListContent {
+  min-height: 150px;
+}
+#batchcardList::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background-color: #F5F5F5;
+}
+#batchcardList::-webkit-scrollbar {
+  width: 6px;
+  background-color: #F5F5F5;
+}
+#batchcardList::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #b9b9b9;
 }
 body {
   position: relative !important;

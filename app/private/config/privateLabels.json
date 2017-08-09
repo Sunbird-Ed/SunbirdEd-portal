@@ -36,6 +36,7 @@
             "published": "PUBLISHED",
             "allUploads": "ALL UPLOADS",
             "upForReview": "UP FOR REVIEW",
+            "flagged": "FLAGGED",
 
             "startCreating": {
                 "textbook": "TEXTBOOK",
@@ -46,10 +47,12 @@
                 "lessonDescription": "You can create stuff here. You must try it, it's magical!.",
                 "collection": "COLLECTION",
                 "collectionDescription": "You will be taken to an editor to create a course with assessments/quizes.",
-                "enterYuotubeURL": "ENTER YOUTUBE URL",
+                "enterYoutubeURL": "ENTER YOUTUBE URL",
                 "fileUploadOptions": "File accepted only pdf, mp4 and html zip (Max size 25mb).",
                 "uploadContent": "Upload Content",
-                "upload": "Upload"
+                "upload": "Upload",
+                "lessonPlanDescription": "lesson Plan Description",
+                "lessonPlan": "LESSON PLAN"
             },
             "createLesson": {
                 "createLessonText": "Create Lesson",
@@ -63,6 +66,10 @@
             "createTextBook": {
                 "createTextBookText": "Create TextBook",
                 "textBookTitle": "TextBook Title"
+            },
+            "createLessonPlan": {
+                "createLessonPlanText": "Create Lesson Plan",
+                "lessonPlanTitle": "Lesson Plan Title"
             },
             "createCourse": {
                 "createCourseText": "Create Course",
@@ -81,9 +88,17 @@
                 "subject": "Subject",
                 "lastUpdate": "Last update",
                 "createdOn": "Created On",
-                "status": "Status"
+                "status": "Status",
+                "delete": "Delete",
+                "accept": "Accept",
+                "discard": "Discard",
+                "flaggedReasons": "Flagged reason",
+                "flaggedBy": "Flagged by",
+                "flaggedDescription": "Flagged Description",
+                "medium": "Medium"
             },
             "common": {
+                "concept": "Concepts",
                 "title": "Title",
                 "description": "Description",
                 "board": "Board",
@@ -105,13 +120,17 @@
                 "upload": "Upload",
                 "uploadButton": "UPLOAD",
                 "closeUpload": "Close Upload",
+                "delete": "Delete",
                 "pleaseFillThisRD": "Please fill the details in below fields.",
                 "icon": "Icon",
                 "youCanFillThisDL": "You can fill in this details later",
                 "byProceedYouAgreedCollection": "By proceeding you agreed to make all collection created through authoring tool or uploaded on the Ek Step platform to be available under licence CC-BY 4.0",
                 "byProceedYouAgreedCourse": "By proceeding you agreed to make all course created through authoring tool or uploaded on the Ek Step platform to be available under licence CC-BY 4.0",
                 "byProceedYouAgreedTextBook": "By proceeding you agreed to make all textbook created through authoring tool or uploaded on the Ek Step platform to be available under licence CC-BY 4.0",
-                "byProceedYouAgreedLesson": "By proceeding you agreed to make all lesson created through authoring tool or uploaded on the Ek Step platform to be available under licence CC-BY 4.0"
+                "byProceedYouAgreedLesson": "By proceeding you agreed to make all lesson created through authoring tool or uploaded on the Ek Step platform to be available under licence CC-BY 4.0",
+                "action": "Action",
+                "actionName": "Action Name",
+                "apply": "Apply"
             }
         },
         "PROFILE": {
@@ -162,7 +181,9 @@
                 "language": "Language",
                 "dob": "Date Of Birth",
                 "subjects": "Subjects",
-                "summary": "Summary"
+                "summary": "Summary",
+                "contributions": "Contributions",
+                "contents": "Contents"
             },
             "BUTTON": {
                 "save": "Save",
@@ -175,6 +196,15 @@
             "profile": "Profile",
             "workSpace": "Workspace",
             "logout": "Logout"
+        },
+        "CONTENT_FLAG": {
+            "contentFlagText": "Flag content as inappropriate",
+            "heading": "What went wrong?",
+            "description": "Let us know what went wrong, please mention the exact reasons so that we review this as soon as possible and address this issue super fast. Thanks for your feedback!",
+            "contentName": "CONTENT NAME",
+            "selectAReason": "SELECT A REASON",
+            "addYourComment": "ADD YOUR COMMENT",
+            "submit": "SUBMIT"
         }
     }
 }

@@ -8,14 +8,21 @@
  * Service in the playerApp.
  */
 angular.module('playerApp')
-    .service('userService', function(config, httpService, httpServiceJava, $q, $rootScope, portalTelemetryService) {
+    .service('userService',[
+        'config', 
+        'httpService', 
+        'httpServiceJava', 
+        '$rootScope',
+        'portalTelemetryService',
+        function(config, httpService, httpServiceJava, $rootScope, portalTelemetryService) {
         this.resourceBundle = function(language, type) {
-            var url = config.URL.CONFIG_BASE + config.URL.USER.RESOURCE_BUNDLE + '/' + type + '/' + language;
+            var url = config.URL.CONFIG_BASE + config.URL.USER.RESOURCE_BUNDLE + '/' 
+                    + type + '/' + language;
             return httpService.get(url);
         };
 
         this.getUserProfile = function(uId) {
-            var url = config.URL.LEARNER_PREFIX + config.URL.USER.GET_PROFILE + '/' + uId;
+            var url = config.URL.USER.GET_PROFILE + '/' + uId;
             return httpServiceJava.get(url);
         };
 
@@ -31,7 +38,7 @@ angular.module('playerApp')
             }
             portalTelemetryService.fireupdateProfile(data);
 
-            var url = config.URL.LEARNER_PREFIX + config.URL.USER.UPDATE_USER_PROFILE;
+            var url = config.URL.USER.UPDATE_USER_PROFILE;
             return httpServiceJava.patch(url, req);
         };
 
@@ -81,4 +88,4 @@ angular.module('playerApp')
         this.getTenantLogo = function () {
             return httpService.get(config.URL.USER.TENANT_LOGO);
         }
-    });
+    }]);
