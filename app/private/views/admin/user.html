@@ -20,7 +20,7 @@
         <div class="content ">
           <a class="header ">{{user.firstName}}{{user.lastName}}</a>
           <a sb-permissions permission-only="SYSTEM_ADMIN,ORG_ADMIN" class="float-ContentRight">
-            <span ng-click="admin.showModal(user.organisations);">
+            <span ng-click="admin.showModal(user.userId,user.organisations);">
               <i class="edit icon trashIcon-fontSize"></i></span>
               <span>
                 <i class="trash outline icon trashIcon-fontSize" ng-click="admin.deleteUser(user.userId)">
