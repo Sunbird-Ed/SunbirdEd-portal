@@ -365,9 +365,8 @@ th {
 }
 .dashBoardCardText {
   font-family: 'sunbirdregularfont' !important;
-  font-size: 1em !important;
-  color: #232425 !important;
-  opacity: 50%;
+  font-size: 1.1em !important;
+  color: #7d7d80 !important;
 }
 .dashboardCardSubText {
   font-family: 'sunbirdregularfont' !important;
@@ -2080,6 +2079,15 @@ ul.fancytree-container li {
 }
 #updateBatchModal .date-select {
   padding: 1em 0 1em 2em !important;
+}
+span.dashBoardMenuItem:active {
+  color: #0076FE !important;
+}
+.dashBoard-dropdownPadding {
+  padding-right: 8px !important;
+}
+.adminCanvasPadding {
+  padding: 15px !important;
 }
 body {
   position: relative !important;
