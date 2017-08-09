@@ -1,4 +1,13 @@
 <div class="margin-top-20 ui raised segment">
     <div class="header cardsHeading padding-bottom-5"> Description</div>
-    <div class="cardsDescription"><p>Nam porttitor blandit accumsan. Ut vel dictum sem, a pretium dui. In malesuada enim in dolor euismod, id commodo mi consectetur. Curabitur at vestibulum nisi. Nullam vehicula nisi velit. Mauris turpis nisl, molestie ut ipsum et, suscipit vehicula odio. Vestibulum interdum vestibulum felis ac molestie. Praesent aliquet quam et libero dictum, vitae dignissim leo eleifend. In in turpis turpis. Quisque justo turpis, vestibulum non enim nec, tempor mollis mi. Sed vel tristique quam.</p></div>
+    <div class="description"  ng-init="profileCtrl.readMore = false"> 
+	    <p ng-if="!profileCtrl.readMore"> {{profileCtrl.user.profileSummary | limitTo: 120 }}&nbsp;
+	        <span class="ui cardsKnowMore mouse-pointer" ng-if="profileCtrl.summary.length > 120 && profileCtrl.readMore === false" ng-click="profileCtrl.readMore = !profileCtrl.readMore;"> ... Read More</span>
+	    </p>
+	    <p ng-if="profileCtrl.readMore"> {{profileCtrl.user.profileSummary}}&nbsp;
+	        <span class="ui cardsKnowMore mouse-pointer" ng-click="profileCtrl.readMore = false;">Read Less ...</span>
+	    </p>
+    </div>
 </div>
+
+                                
