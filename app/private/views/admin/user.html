@@ -12,33 +12,37 @@
   <!-- search results -->
  <div class="ui divided items" ng-if="!$root.search.loader.showLoader">
    <!-- user Search Result -->
-   <div class="userSearchCardHover item "ng-if="$root.search.selectedSearchKey=='Users'" ng-repeat="user in admin.searchResult">
-    <div class="ui tiny image userSearchImage " >
-      <img ng-src="{{user.avatar|| 'images/user_logo.png'}} ">
-    </div>
-    <div class="content ">
-      <a class="header ">{{user.firstName}}{{user.lastName}}</a>
-       <a sb-permissions permission-only="SYSTEM_ADMIN,ORG_ADMIN" class="float-ContentRight">
-         <span ng-click="admin.showModal(user.organisations);">
-           <i class="edit icon trashIcon-fontSize"></i></span>
-           <span>
-             <i class="trash outline icon trashIcon-fontSize" ng-click="admin.deleteUser(user.userId)">
-               </i><span></a>
-      <div class="meta ">
-        <span class="cinema "><span ng-repeat="org in user.organisations">
+    <div ng-init="admin.addOrgNameToOrganizations()" class="ui divided items">  
+      <div class="userSearchCardHover item "ng-if="$root.search.selectedSearchKey=='Users'" ng-repeat="user in admin.searchResult">
+        <div class="ui tiny image userSearchImage " >
+          <img ng-src="{{user.avatar|| 'images/user_logo.png'}} ">
+        </div>
+        <div class="content ">
+          <a class="header ">{{user.firstName}}{{user.lastName}}</a>
+          <a sb-permissions permission-only="SYSTEM_ADMIN,ORG_ADMIN" class="float-ContentRight">
+            <span ng-click="admin.showModal(user.organisations);">
+              <i class="edit icon trashIcon-fontSize"></i></span>
+              <span>
+                <i class="trash outline icon trashIcon-fontSize" ng-click="admin.deleteUser(user.userId)">
+                 </i>
+              <span>
+              </a>
+          <div class="meta ">
+            <span class="cinema ">
+              <span ng-repeat="org in user.organisations">
+                {{org.orgName}}
                 <span ng-if="!$last">,</span>
-        </span>
-      </div>
-      <div class="description ">
-        <p></p>
-      </div>
-      <div class="extra ">
-        <div ng-include=" 'views/admin/updateRoleModal.html' "></div>  
-        <div class="ui label ">{{user.phone}}</div>
-        <div class="ui label ">{{user.email}}</div>
-      </div>
-    </div>
-  </div>
+              </span>
+            </span>
+          </div>
+          <div class="extra ">
+            <div ng-include=" 'views/admin/updateRoleModal.html' "></div>  
+            <div class="ui label ">{{user.phone}}</div>
+            <div class="ui label ">{{user.email}}</div>
+          </div>
+        </div>
+     </div>
+  </div>  
   <!-- org search result -->
    <div class="userSearchCardHover item " ng-repeat="org in admin.searchResult"
      ng-if="$root.search.selectedSearchKey=='Organisations'">

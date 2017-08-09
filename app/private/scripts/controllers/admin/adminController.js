@@ -25,6 +25,22 @@ angular.module('playerApp')
             admin.userName = '';
             admin.bulkUsers = {};
         // modal init
+            admin.addOrgNameToOrganizations = function () {
+                if ($rootScope.search.selectedSearchKey === 'Users') {
+                    admin.searchResult.forEach(function (user) {
+                        if (user.organisations) {
+                            admin.getOrgName(function (orgIdAndNames) {
+                                user.organisations.forEach(function (userOrg) {
+                                    var orgNameAndId = orgIdAndNames.find(function (org) {
+                                        return org.orgId === userOrg.organisationId;
+                                    });
+                                    if (orgNameAndId) { userOrg.orgName = orgNameAndId.orgName; }
+                                });
+                            });
+                        }
+                    });
+                }
+            };
             admin.showModal = function (orgs) {
                 $('#changeUserRoles').modal({
                     onShow: function () {
@@ -37,14 +53,14 @@ angular.module('playerApp')
                         return true;
                     }
                 }).modal('show');
-                admin.getOrgName(function (orgIdAndNames) {
-                    admin.userOrganisations.forEach(function (userOrg) {
-                        var orgNameAndId = orgIdAndNames.find(function (org) {
-                            return org.orgId === userOrg.organisationId;
-                        });
-                        if (orgNameAndId) { userOrg.orgName = orgNameAndId.orgName; }
-                    });
-                });
+                // admin.getOrgName(function (orgIdAndNames) {
+                //     admin.userOrganisations.forEach(function (userOrg) {
+                //         var orgNameAndId = orgIdAndNames.find(function (org) {
+                //             return org.orgId === userOrg.organisationId;
+                //         });
+                //         if (orgNameAndId) { userOrg.orgName = orgNameAndId.orgName; }
+                //     });
+                // });
             };
 
             admin.modalInit = function () {
