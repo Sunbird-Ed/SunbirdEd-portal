@@ -553,7 +553,6 @@ th {
 }
 .ui.modal .ui.form .field > label {
   color: #979797;
-  font-family: "Open Sans";
   /* font-size: 14px; */
   font-weight: bold;
   line-height: 14px;
@@ -563,6 +562,16 @@ th {
   border-bottom: 1px solid #979797!important;
   border-radius: 0!important;
   padding: 1em 0 !important;
+}
+.ui.modal .ui.form .inline.fields > label {
+  color: #979797;
+}
+.ui.modal .ui.radio.checkbox .box,
+.ui.radio.checkbox label {
+  color: #979797;
+}
+.ui.modal .ui.header {
+  font-size: 1.5em;
 }
 #custom-scroll::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
@@ -943,22 +952,19 @@ slick-prev:before,
 }
 .flagheader {
   color: #333333 !important;
-  font-family: "Open Sans" !important;
   font-size: 22px !important;
   font-weight: bold !important;
 }
 .flag-description {
   padding-left: 1em !important;
   color: #979797 !important;
-  font-family: "Open Sans" !important;
   font-size: 14px !important;
   font-weight: 600 !important;
   line-height: 20px !important;
 }
 .flag-form {
   color: #979797 !important;
-  font-family: "Open Sans" !important;
-  font-size: 10px !important;
+  font-size: 12px !important;
   font-weight: bold !important;
   line-height: 14px !important;
 }
@@ -2002,7 +2008,6 @@ ul.fancytree-container li {
 }
 .batch-des label {
   color: #979797;
-  font-family: "Open Sans";
   font-size: 13px;
   font-weight: bold;
   line-height: 14px;
@@ -2016,7 +2021,6 @@ ul.fancytree-container li {
 }
 .batch-date label {
   color: #979797;
-  font-family: "Open Sans";
   font-size: 13px;
   font-weight: bold;
   line-height: 14px;
@@ -2032,6 +2036,19 @@ ul.fancytree-container li {
   left: -10px !important;
 }
 #createBatchModal .date-select {
+  padding: 1em 0 1em 2em !important;
+}
+#updateBatchModal.ui.modal .createbatchdropdown.ui.selection.dropdown {
+  padding-bottom: 2px !important;
+  padding-top: 0 !important;
+}
+#updateBatchModal.ui.modal .createbatchdropdown.ui.multiple.search.dropdown > input.search {
+  margin: 0 !important;
+}
+#updateBatchModal .date-calendar {
+  left: -10px !important;
+}
+#updateBatchModal .date-select {
   padding: 1em 0 1em 2em !important;
 }
 body {
