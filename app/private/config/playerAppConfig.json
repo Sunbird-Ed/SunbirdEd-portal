@@ -40,7 +40,7 @@
                 "UPDATE": "content/v1/update",
                 "REVIEW": "content/v1/review",
                 "PUBLISH": "content/v1/publish",
-                "UPLOAD_MEDIA": "upload/media",
+                "UPLOAD_MEDIA": "content/v1/media/upload",
                 "GET": "content/v1/read",
                 "GET_MY_COURSE": "content/v1/get/mycontent",
                 "UPLOAD": "content/v1/upload",
@@ -63,9 +63,6 @@
             "ROLES": {
                 "READ": "data/v1/role/read"
             },
-            "ADMIN": {
-                "USER_SEARCH": "composite/v1/search"
-            },
             "BATCH": {
                 "CREATE": "course/v1/batch/create",
                 "UPDATE": "course/v1/batch/update",
@@ -73,6 +70,17 @@
                 "REMOVE_USERS": "course/v1/batch/users/remove",
                 "GET_DETAILS": "course/v1/batch/read",
                 "GET_BATCHS": "course/v1/batch/list"
+            },
+            "ADMIN": {
+                "USER_SEARCH": "user/v1/search",
+                "ORG_SEARCH": "org/v1/search",
+                "BULK": {
+                    "USERS_UPLOAD": "user/v1/upload",
+                    "ORGANIZATIONS_UPLOAD": "org/v1/upload",
+                    "STATUS": "data/v1/upload/status"
+                },
+                "DELETE_USER": "user/v1/block",
+                "UPDATE_USER_ORG_ROLES": "org/v1/role/assign"
             }
         },
         "FILTER": {

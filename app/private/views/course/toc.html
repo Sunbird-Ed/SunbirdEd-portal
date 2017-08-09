@@ -57,8 +57,8 @@
                                         <b>Course created on: {{toc.courseHierachy.createdOn | dateFilterWithMDY}}</b><br>
                                         <b>Updated on: {{toc.courseHierachy.lastUpdatedOn | dateFilterWithMDY}}</b>
                                     </div>
-                                    <div class="ui divider"></div>
-                                    <content-flag contentid="toc.courseParams.courseId" contentname="toc.courseHierachy.name" versionkey="toc.courseHierachy.versionKey" redirect=" 'Courses' "></content-flag>
+                                    <div class="ui divider" ng-if="toc.courseType === 'ENROLLED_COURSE'"></div>
+                                    <content-flag ng-if="toc.courseType === 'ENROLLED_COURSE'" contentid="toc.courseParams.courseId" contentname="toc.courseHierachy.name" versionkey="toc.courseHierachy.versionKey" redirect=" 'Courses' "></content-flag>
                                     <div class="ui divider"></div>
                                     <batch-card showbatchcard="true" courseid="toc.courseParams.courseId"></batch-card>
                                 </div>

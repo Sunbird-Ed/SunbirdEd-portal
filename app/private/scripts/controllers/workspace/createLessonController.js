@@ -10,7 +10,7 @@
  */
 angular.module('playerApp')
     .controller('ContentLessonController', function (contentService, $timeout,
-        $state, config, $rootScope, toasterService) {
+        $state, config, $rootScope, toasterService, $scope) {
         var contentLesson = this;
         contentLesson.lessonTypes = config.DROPDOWN.COMMON.lessonTypes;
         contentLesson.audiences = config.DROPDOWN.COMMON.audiences;
@@ -100,4 +100,7 @@ angular.module('playerApp')
             var params = { contentId: contentId };
             $state.go('ContentEditor', params);
         };
+        $scope.$on('selectedConcepts', function (event, args) {
+            contentLesson.data.concepts = args.selectedConcepts;
+        });
     });
