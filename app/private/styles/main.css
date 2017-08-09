@@ -367,6 +367,12 @@ th {
   font-family: 'sunbirdregularfont' !important;
   font-size: 1em !important;
   color: #232425 !important;
+  opacity: 50%;
+}
+.dashboardCardSubText {
+  font-family: 'sunbirdregularfont' !important;
+  font-size: 1.6em !important;
+  color: #232425 !important;
 }
 .padding-none {
   padding: 0px !important;
