@@ -35,7 +35,7 @@ angular.module('playerApp')
               homeCtrl[api].loader = toasterService.loader('',
             $rootScope.errorMessages.HOME.ENROLLED.START);
               learnService.enrolledCourses(uid).then(function (successResponse) {
-                  if (successResponse && successResponse.responseCode !== 'OK') {
+                  if (successResponse && successResponse.responseCode === 'OK') {
                       homeCtrl[api].loader.showLoader = false;
                       $rootScope.enrolledCourses = successResponse.result.courses;
                       $rootScope.enrolledCourseIds = $rootScope.arrObjsToObject(

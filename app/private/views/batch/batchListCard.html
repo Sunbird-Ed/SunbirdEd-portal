@@ -1,56 +1,27 @@
-<div class="ui card">
-    <div class="header batchCardAlign">
-      <span class="header headerBatchCard">Batches</span>
-        <a>
-          <div class="ui dropdown batchCardDropDown">
-            <div class="text">Ongoing</div>
-            <i class="dropdown icon"></i>
-            <div class="menu">
-              <div class="item">New</div>
-              <div class="item">
-                <span class="description">ctrl + o</span> Open...
-              </div>
+<div class="ui modal">
+        <div class="header">
+            <div class="ui grid">
+                <div class="eleven wide column">
+                   <img class="ui tiny image centered batchHeader-logo" ng-src="{{orgLogo || '/images/sunbird_logo.png'}} ">
+                </div>
+                <div class="one wide column actions">
+                    <h5 class="ui basic icon circular button deny">
+                        <i class="ui remove icon"></i>
+                    </h5>
+                </div>
             </div>
-          </div>
-        </a>
-    </div>
-  <div class="content batchcardListContent" id="batchcardList">    
-    <div class="description">
-      <div class="ui divided list">
-        <div class="item padding-top-10">
-          <i class="write icon float-ContentRight cursor-pointer"></i>
-          <i class="calendar outline icon"></i>
-          <div class="content padding-bottom-15">
-            <span class="header padding-bottom-5">7 Aug - 20 Aug</span>
-            <div class="description">Created by Ramgopal Sharma </div>
-          </div>
         </div>
-        <div class="item padding-top-10">
-          <i class="calendar outline icon"></i>
-          <div class="content padding-bottom-15">
-            <span class="header padding-bottom-5">7 Aug - 20 Aug</span>
-            <div class="description">Created by Ramgopal Sharma </div>
-          </div>
-        </div>
-        <div class="item padding-top-10">
-          <i class="calendar outline icon"></i>
-          <div class="content padding-bottom-15">
-            <span class="header padding-bottom-5">7 Aug - 20 Aug</span>
-            <div class="description">Created by Ramgopal Sharma </div>
-          </div>
-        </div>
-        <div class="item padding-top-10">
-          <i class="calendar outline icon"></i>
-          <div class="content padding-bottom-15">
-            <span class="header padding-bottom-5">7 Aug - 20 Aug</span>
-            <div class="description">Created by Ramgopal Sharma </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="ui bottom attached batchCard button">
-      <a><i class="add icon"></i>
-      Create Batch</a>
-  </div>
+        <div class="content">
+           <h5><label>Batch Name</label></h5>
+           <div class="batch-des">
+               <label>DESCRIPTION OF BATCH</label>
+               <div class="des-content">Curabitur lobortis id lorem id bibendum. Ut id consectetur magna. Quisque volutpat augue enim, pulvinar lobortis nibh lacinia at. Vestibulum nec erat ut mi sollicitudin porttitor id sit amet risus… Read more </div>
+           </div>
+           <div class="ui grid batch-date padding-top-20">
+                <div class="six wide column  start-date">
+                <label>START DATE</label><span class="padding-left-10">12 July 2017</span></div>
+                <div class="six wide column  end-date">
+                <label>END DATE</label><span class="padding-left-10">12 August 2017</span></div>
+           </div>
+        </div> 
 </div>

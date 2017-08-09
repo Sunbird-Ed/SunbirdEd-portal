@@ -67,7 +67,7 @@ angular.module('playerApp')
             };
 
             this.upload = function (url, data) {
-                var request = $http.post(config.URL.BASE_PREFIX + url, data, {
+                var request = $http.post(config.URL.BASE_PREFIX + config.URL.CONTENT_PREFIX + url, data, {
                     //                    transformRequest: angular.identity,
                     headers: {
                         'Content-Type': undefined,
