@@ -77,13 +77,23 @@ angular.module('playerApp')
                 return (request.then(handleSuccess, handleError));
             };
 
-            this.upload = function (url, data, headers) {
-                var request = $http.post(config.URL.BASE_PREFIX + url, data, {
-                //  transformRequest: angular.identity,
-                    headers: {
-                        'Content-Type': undefined,
-                        cid: 'sunbird'
-                    }
+            this.upload = function (url, data) {
+                var URL = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + url;
+                var headers = {
+                    'Content-Type': undefined,
+                    'X-Consumer-ID': 'X-Consumer-ID',
+                    'X-Device-ID': 'X-Device-ID',
+                    'X-msgid': uuid4.generate(),
+                    ts: $filter('date')(new Date(), 'yyyy-MM-dd HH:mm:ss:sssZ'),
+                    'X-Authenticated-Userid': $rootScope.userId,
+                    'X-Source': 'web',
+                    'X-Org-code': 'AP'
+                };
+                var request = $http({
+                    method: 'POST',
+                    url: URL,
+                    headers: headers,
+                    data: data
                 });
                 return (request.then(handleSuccess, handleError));
             };

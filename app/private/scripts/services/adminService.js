@@ -35,10 +35,10 @@ angular.module('playerApp')
 
             this.bulkUserUpload = function (req) {
                 var url = config.URL.ADMIN.BULK.USERS_UPLOAD;
-                return httpServiceJava.post(url, req);
+                return httpServiceJava.upload(url, req);
             };
             this.bulkOrgrUpload = function (req) {
                 var url = config.URL.ADMIN.BULK.ORGANIZATIONS_UPLOAD;
-                return httpServiceJava.post(url, req);
+                return httpServiceJava.upload(url, req);
             };
         }]);
