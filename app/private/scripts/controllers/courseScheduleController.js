@@ -479,7 +479,6 @@ angular.module('playerApp')
                 toc.playItemIndex = undefined;
                 toc.getCourseToc();
                 contentStateService.init();
-                toc.listBatches();
             };
 
             toc.loadData = function () {
@@ -491,44 +490,4 @@ angular.module('playerApp')
                     toc.init();
                 }
             };
-
-            toc.setEnrollDropdown = function(){
-                $('#enrollToCourse').dropdown();
-            };
-
-            toc.listBatches = function() {
-                var req = {
-                    request: {
-                        filters: {
-                          status: 'open',
-                          courseId: toc.courseId
-                        },
-                        sort_by: { createdOn: 'desc' }
-                    }
-                }
-                //batchService.getAllBatchs(req).then()
-                console.log('req', JSON.stringify(req));
-                toc.batchList = [{"identifier":"do_123454","name":"Batch1","description":"description1","courseId":"do_212296625948319744173","createdBy":"89cf1a7e-dfd3-46c9-a428-d37e9a2bc001","enrollmenttype":"open","startdate":"2017-07-27","enddate":"2017-08-27","status":"1","users":["User1", "User2", "User3"],"mentors":["Mentor1","Mentor2"]},{"identifier":"do_123455","name":"Batch2","description":"description2","courseId":"do_212296625948319744173","createdBy":"89cf1a7e-dfd3-46c9-a428-d37e9a2bc001","enrollmenttype":"invite-only","startdate":"2017-08-27","enddate":"2017-09-27","status":"0","users":["User3","User4","User2","User5"],"mentors":["Mentor3","Mentor5"]},{"identifier":"do_123456","name":"Batch3","description":"description3","courseId":"do_212296625948319744173","createdBy":"89cf1a7e-dfd3-46c9-a428-d37e9a2bc001","enrollmenttype":"open","startdate":"2017-07-27","enddate":"2017-08-03","status":"2","users":["User3","User6"],"mentors":["Mentor5","Mentor3"]}];
-            };
-
-            toc.showBatchDetailsPage = false; 
-            toc.showBatchDetails = function(batchData){
-                toc.showBatchDetailsPage = true;
-                console.log(JSON.stringify(batchData));
-                $('#batchDetails').iziModal({
-                    title: '',
-                    fullscreen: false,
-                    openFullscreen: true,
-                    closeOnEscape: false,
-                    overlayClose: false,
-                    overlay: false,
-                    overlayColor: '',
-                    onClosed: function () {
-                        toc.showBatchDetailsPage = false;
-                    }
-                });
-                $timeout(function () {
-                    $('#batchDetails').iziModal('open');
-                }, 100);
-            }
         }]);

@@ -17,14 +17,6 @@
                     <div class="ui dropdown fluid blue right floated  ui button courseHeaderButton margin-top-0" id="enrollToCourse" ng-init="toc.setEnrollDropdown()">
                         <span class="text">ENROLL TO COURSE</span>
                         <i class="dropdown icon"></i>
-                        <div class="menu">
-                            <div class="item" ng-repeat="batch in toc.batchList" ng-click="toc.showBatchDetails(batch)">
-                                <span class="text">{{batch.name}}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="batchDetails" ng-show="toc.showBatchDetailsPage">
-                        <div ng-include="'views/batch/batchListCard.html'"></div>
                     </div>
                 </div>
             </div>
