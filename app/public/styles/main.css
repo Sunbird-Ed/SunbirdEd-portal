@@ -1698,6 +1698,10 @@ ul.fancytree-container li {
   color: #979797 !important;
   font-size: 1.2em ;
 }
+.profileViewProgress {
+  color: #979797 !important;
+  font-size: 1em ;
+}
 .workspaceicon.ui.header > .icon {
   padding-top: 0;
   float: left;
