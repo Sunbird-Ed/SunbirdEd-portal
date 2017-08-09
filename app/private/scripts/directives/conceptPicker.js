@@ -7,16 +7,16 @@
  * # conceptPicker
  */
 angular.module('playerApp').directive('conceptPicker', function () {
-    var controller = ['$scope', '$rootScope', 'config', '$timeout', '$state', '$stateParams'
-                , 'searchService', 'toasterService', '$location', 'sessionService', 'adminService',
-        function ($scope, $rootScope, config, $timeout, $state, $stateParams,
-                searchService, toasterService, $location, sessionService, adminService) {
-
+    var controller = ['$scope', '$rootScope', '$timeout',
+        'searchService', 'toasterService',
+        function ($scope, $rootScope, $timeout,
+                searchService, toasterService) {
             /*
              * load concepts section
              */
             $scope.loadConceptTree = function () {
-                $scope.conceptLoader = toasterService.loader('', $rootScope.errorMessages.WORKSPACE.CONCEPTS.START);
+                $scope.conceptLoader = toasterService.loader(''
+                , $rootScope.errorMessages.WORKSPACE.CONCEPTS.START);
                 $scope.concepts = [];
                 $scope.getConcept(0, 200, function (err) {
                     if (err === true) {
@@ -24,15 +24,15 @@ angular.module('playerApp').directive('conceptPicker', function () {
                     } else {
                         var domains = [];
                         var req = {
-                            "filters": {
-                                "objectType": ["Dimension", "Domain"]
+                            filters: {
+                                objectType: ['Dimension', 'Domain']
                             },
                             params: {
                                 cid: '12'
-                            },
+                            }
 
                         };
-                        /**Get domains and dimensions data**/
+                        /** Get domains and dimensions data* */
                         searchService.search(req).then(function (resp) {
                             if (resp.result && _.isArray(resp.result.domains)) {
                                 _.forEach(resp.result.domains, function (value) {
@@ -40,37 +40,34 @@ angular.module('playerApp').directive('conceptPicker', function () {
                                     domain.id = value.identifier;
                                     domain.name = value.name;
                                     var domainChild = [];
-                                    /**Get domain child**/
-                                    _.forEach($scope.getChild(value.identifier, resp.result.dimensions), function (value) {
-                                        var dimension = {};
-                                        dimension.id = value.id;
-                                        dimension.name = value.name;
-                                        /**Get dimension child**/
-                                        dimension.nodes = $scope.getChild(value.id, $scope.concepts);
-                                        domainChild.push(dimension);
-                                    });
+                                    /** Get domain child* */
+                                    _.forEach($scope.getChild(value.identifier
+                                        , resp.result.dimensions),
+                                     function (val) {
+                                         var dimension = {};
+                                         dimension.id = val.id;
+                                         dimension.name = val.name;
+                                        /** Get dimension child* */
+                                         dimension.nodes = $scope.getChild(val.id, $scope.concepts);
+                                         domainChild.push(dimension);
+                                     });
                                     domain.nodes = domainChild;
                                     domains.push(domain);
                                 });
                                 $rootScope.conceptData = domains;
                                 $scope.conceptLoader.showLoader = false;
                                 $scope.initConceptBrowser();
-
                             }
                         });
                     }
                 });
-
             };
 
             $scope.initConceptBrowser = function () {
                 $scope.selectedConcepts = $scope.selectedConcepts || [];
-                if ($scope.isSearchPage === true) {
-                    $scope.contentConcepts = $scope.selectedConcepts;
-                } else {
-                    $scope.contentConcepts = _.map($scope.selectedConcepts, "identifier");
-                }
-                $scope.pickerMessage = $scope.contentConcepts.length+ ' concepts selected';
+                $scope.contentConcepts = _.map($scope.selectedConcepts, 'identifier');
+                $scope.pickerMessage = $scope.contentConcepts.length + ' concepts selected';
+                $('#treePicker').val($scope.pickerMessage);
                 $timeout(function () {
                     $('#treePicker').treePicker({
                         data: $rootScope.conceptData,
@@ -78,6 +75,9 @@ angular.module('playerApp').directive('conceptPicker', function () {
                         picked: $scope.contentConcepts,
                         onSubmit: function (nodes) {
                             $('#treePicker').val(nodes.length + ' concepts selected');
+                            _.defer(function () {
+                                $scope.$apply();
+                            });
                             $scope.contentConcepts = [];
                             _.forEach(nodes, function (obj) {
                                 $scope.contentConcepts.push({
@@ -85,44 +85,42 @@ angular.module('playerApp').directive('conceptPicker', function () {
                                     name: obj.name
                                 });
                             });
-                            $scope.selectedConcepts=$scope.contentConcepts;
+                            $scope.selectedConcepts = $scope.contentConcepts;
+
                             $rootScope.$broadcast('selectedConcepts', {
                                 selectedConcepts: $scope.selectedConcepts
                             });
-
                         },
-                        nodeName: "conceptSelector_treePicker",
+                        nodeName: 'conceptSelector_treePicker',
                         minSearchQueryLength: 1
                     });
-                }, 1000);
+                }, 500);
             };
 
-
-            /**Get child recursively**/
+            /** Get child recursively* */
             $scope.getChild = function (id, resp) {
                 var childArray = [];
                 _.forEach(resp, function (value) {
-                    if (value.parent != undefined) {
-                        if (value.parent[0] == id) {
+                    if (value.parent !== undefined) {
+                        if (value.parent[0] === id) {
                             var child = {};
                             child.id = value.identifier;
                             child.name = value.name;
-                            child.selectable = "selectable";
+                            child.selectable = 'selectable';
 
-                            /**Get concept child recursively**/
+                            /** Get concept child recursively* */
                             child.nodes = $scope.getChild(value.identifier, resp);
                             childArray.push(child);
                         }
                     }
                 });
-                return _.uniqBy(childArray, "id");
-            }
-
+                return _.uniqBy(childArray, 'id');
+            };
 
             $scope.getConcept = function (offset, limit, callback) {
                 var req = {
-                    "filters": {
-                        "objectType": ["Concept"]
+                    filters: {
+                        objectType: ['Concept']
                     },
                     offset: offset,
                     limit: limit
@@ -133,23 +131,27 @@ angular.module('playerApp').directive('conceptPicker', function () {
                             $scope.concepts.push(value);
                         });
                         if ((res.result.count > offset) && res.result.count >= (offset + limit)) {
-                            offset = offset + limit;
-                            $scope.getConcept(offset, limit, callback)
+                            offset += limit;
+                            $scope.getConcept(offset, limit, callback);
                         } else {
                             callback(false);
                         }
-
                     }
-                }).
-                        catch(function (err) {
+                })
+                        .catch(function (err) {
                             callback(true);
                         });
-            }
+            };
             if (!$rootScope.conceptData) {
                 $scope.loadConceptTree();
+            } else {
+                $scope.initConceptBrowser();
             }
-            else{
-               $scope.initConceptBrowser(); 
+            if ($scope.isSearchPage) {
+                $rootScope.$on('selectedConceptsFromSearch', function (event, args) {
+                    $scope.selectedConcepts = args.selectedConcepts;
+                    $scope.initConceptBrowser();
+                });
             }
         }];
     return {
@@ -161,7 +163,7 @@ angular.module('playerApp').directive('conceptPicker', function () {
             isSearchPage: '='
         },
         link: function (scope, element, attrs) {
-            
+
         },
         controller: controller
     };
