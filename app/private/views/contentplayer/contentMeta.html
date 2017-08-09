@@ -82,6 +82,16 @@
                 </div>
             </div>
         </div>
+        <div class="three wide column" ng-if="$root.concepts">
+            <div class="ui list">
+                <div class="item">
+                    <div class="content">
+                        <div class="header">{{$root.labels.WORKSPACE.common.concept}}</div>
+                        <div class="description padding-top-1rem">{{getConceptsNames(contentData.concepts)}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <div class="ui grid">

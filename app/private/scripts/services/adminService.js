@@ -28,7 +28,7 @@ angular.module('playerApp')
                 return httpServiceJava.post(url, req);
             };
 
-            this.updateRoles = function () {
+            this.updateRoles = function (req) {
                 var url = config.URL.ADMIN.UPDATE_USER_ORG_ROLES;
                 return httpServiceJava.post(url, req);
             };

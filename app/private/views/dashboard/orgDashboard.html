@@ -8,11 +8,11 @@
     <div class="ten wide column">
         <div class="ui grid">
             <div class="three wide column">
-                <h4><i class="bar chart icon"></i>Admin Dashboard</h4></div>
+                <span class="dashBoardSectionHeading"><i class="bar chart icon"></i> &nbsp;  Admin Dashboard</span></div>
             <div class="right floated six wide column"></div>
             <div class="right floated three wide column padding-right-dropdown">
                 <div class="ui dropdown float-ContentRight">
-                    <div class="text"><h4>Creation</h4></div>
+                    <div class="text dashBoardSectionHeading">Creation</div>
                     <i class="dropdown icon"></i>
                     <div class="menu">
                         <div class="active item" ng-click="dashboardData.onAfterDatasetChange('creation')" data-dataset="creation">Creation</div>
@@ -24,8 +24,6 @@
     </div>
     <div class="one wide column"></div>
 </div>
-</br>
-</br>
 
 <div>
 	<div class="resource-padding ui grid" ng-if="dashboardData.showLoader">
@@ -36,21 +34,20 @@
 	</div>
 </div>
 
-<div id="orgCreationDiv" ng-hide="dashboardData.showLoader">
+<div id="orgCreationDiv" ng-hide="dashboardData.showLoader" class="margin-top-30">
 	<div class="resource-padding ui grid">
 		<div class="one wide column"></div>
 		<div class="ten wide column">
-			<div class="ui grid column">
-				<span class="text blue cursor-pointer" ng-click="dashboardData.onAfterFilterChange('14d')" id="14d">LAST 14 DAYS</span>
-				<span class="text blue cursor-pointer" ng-click="dashboardData.onAfterFilterChange('7d')" id="7d">LAST 7 DAYS</span>
-				<span class="text blue cursor-pointer" ng-click="dashboardData.onAfterFilterChange('5w')" id="5w">LAST 5 WEEKS</span>
+			<div class="ui grid column margin-bottom-20">
+				<span class="dashBoardMenuItem cursor-pointer" ng-click="dashboardData.onAfterFilterChange('14d')" id="14d">LAST 14 DAYS</span>
+				<span class="dashBoardMenuItem cursor-pointer" ng-click="dashboardData.onAfterFilterChange('7d')" id="7d">LAST 7 DAYS</span>
+				<span class="dashBoardMenuItem cursor-pointer" ng-click="dashboardData.onAfterFilterChange('5w')" id="5w">LAST 5 WEEKS</span>
 			</div>
-			<p></p>
 
 			<div class="ui three cards">
 				<div class="card" ng-repeat="item in dashboardData.numericStatArray">
 					<div class="content center aligned">
-						<div class="meta">{{item.name}}</div>
+						<div class="meta dashBoardCardText">{{item.name}}</div>
 						<h2 class="description">{{item.value}}</h2>
 					</div>
 				</div>
