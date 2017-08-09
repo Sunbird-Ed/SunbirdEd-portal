@@ -24,6 +24,29 @@
             </div>
             <div class="twelve wide column padding-top-none" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW,FLAG_REVIEWER">
                 <div class="workspacebutton workspacecontentProfile ui link card " ui-sref="WorkSpace">
+            <div class="twelve wide column" sb-permissions permission-only="SYSTEM_ADMIN">
+                <div class="workspacebutton workspacecontentProfile ui link card " ng-click="profileCtrl.openBulkUploadModal()">
+                    <div class="content ">
+                        <div class="WorkSpaceTextContent ">
+                            <span class="my-text ">Upload  Organizations</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="twelve wide column" sb-permissions permission-only="SYSTEM_ADMIN,ORG_ADMIN">
+                <div class="workspacebutton workspacecontentProfile ui link card " ng-click="profileCtrl.openBulkUploadModal()">
+                    <div class="content ">
+                        <div class="WorkSpaceTextContent ">
+                            <span class="my-text ">Upload  Users</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ui modal" id="bulkUpload">
+                <bulk-upload></bulk-upload>
+            </div>
+            <div class="twelve wide column" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW,FLAG_REVIEWER">
+                <div class="workspacebutton workspacecontentProfile ui link card " ui-sref="WorkSpace ">
                     <div class="content ">
                         <div class="WorkSpaceTextContent ">
                             <i class='my-icon database icon '></i>

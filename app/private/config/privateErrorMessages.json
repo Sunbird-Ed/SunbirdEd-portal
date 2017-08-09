@@ -249,6 +249,9 @@
             "START": "We are submitting your request...",
             "FAILED": "Submitting request is failed, please try again later...",
             "SUCCESS": "Request submitted successfully..."
+        },
+        "ADMIN": {
+            "fail": "Somthing went wrong, please try again later..."
         }
     }
 }
