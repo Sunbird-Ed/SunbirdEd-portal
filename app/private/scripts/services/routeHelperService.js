@@ -243,6 +243,7 @@ angular.module('playerApp')
                         $rootScope.search.selectedSubject = [];
                         $rootScope.search.selectedBoard = [];
                         $rootScope.search.selectedConcepts = [];
+                        $rootScope.search.broadCastConcepts();
                         $rootScope.search.filters = {};
                         $rootScope.search.sortBy = {};
                         $rootScope.search.sortByOption = {};
