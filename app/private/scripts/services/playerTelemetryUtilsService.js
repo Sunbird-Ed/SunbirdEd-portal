@@ -18,11 +18,11 @@ angular.module('playerApp')
             };
             this.init = function (data) {
                 var _instance = {
-                    correlationData: [{"id": $stateParams.tocId || data.contentId, "type": "course"}],
+                    correlationData: [{"id": $stateParams.courseId || data.contentId, "type": "course"}],
                     user: {"sid": "", "did": "", "uid": $rootScope.userId},
                     gameData: {"id": "org.sunbird.player", "ver": "1.0"}
                 }
-                var courseId = $stateParams.tocId || data.contentId;
+                var courseId = $stateParams.courseId || data.contentId;
                 if(_.isUndefined(courseId)){
                     _instance.context.dims = { dims : org.sunbird.portal.dims };
                 }else{
