@@ -25,6 +25,22 @@ angular.module('playerApp')
             admin.userName = '';
             admin.bulkUsers = {};
         // modal init
+            admin.addOrgNameToOrganizations = function () {
+                if ($rootScope.search.selectedSearchKey === 'Users') {
+                    admin.searchResult.forEach(function (user) {
+                        if (user.organisations) {
+                            admin.getOrgName(function (orgIdAndNames) {
+                                user.organisations.forEach(function (userOrg) {
+                                    var orgNameAndId = orgIdAndNames.find(function (org) {
+                                        return org.orgId === userOrg.organisationId;
+                                    });
+                                    if (orgNameAndId) { userOrg.orgName = orgNameAndId.orgName; }
+                                });
+                            });
+                        }
+                    });
+                }
+            };
             admin.showModal = function (orgs) {
                 $('#changeUserRoles').modal({
                     onShow: function () {
@@ -37,14 +53,14 @@ angular.module('playerApp')
                         return true;
                     }
                 }).modal('show');
-                admin.getOrgName(function (orgIdAndNames) {
-                    admin.userOrganisations.forEach(function (userOrg) {
-                        var orgNameAndId = orgIdAndNames.find(function (org) {
-                            return org.orgId === userOrg.organisationId;
-                        });
-                        if (orgNameAndId) { userOrg.orgName = orgNameAndId.orgName; }
-                    });
-                });
+                // admin.getOrgName(function (orgIdAndNames) {
+                //     admin.userOrganisations.forEach(function (userOrg) {
+                //         var orgNameAndId = orgIdAndNames.find(function (org) {
+                //             return org.orgId === userOrg.organisationId;
+                //         });
+                //         if (orgNameAndId) { userOrg.orgName = orgNameAndId.orgName; }
+                //     });
+                // });
             };
 
             admin.modalInit = function () {
@@ -166,7 +182,6 @@ angular.module('playerApp')
                 }
             };
             admin.updateRoles = function (userId, orgId, roles) {
-                console.log('trying to update roles', userId, orgId, roles);
                 var req = {
                     request: {
                         userId: userId,
@@ -177,7 +192,14 @@ angular.module('playerApp')
                 };
 
                 adminService.updateRoles(req).then(function (res) {
-                    console.log('res', res);
+                    if (res.responseCode === 'OK') {
+                        toasterService.success($rootScope.errorMessages.ADMIN.roleUpdateSuccess);
+                        $('#changeUserRoles').modal('hide');
+                    } else {
+                        $('#changeUserRoles').modal('hide');
+                        // profile.isError = true;
+                        toasterService.error($rootScope.errorMessages.ADMIN.fail);
+                    }
                 }).catch(function (err) {
                     profile.isError = true;
                     toasterService.error($rootScope.errorMessages.ADMIN.fail);
