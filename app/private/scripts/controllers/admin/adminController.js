@@ -41,13 +41,15 @@ angular.module('playerApp')
                     });
                 }
             };
-            admin.showModal = function (orgs) {
+            admin.showModal = function (userId, orgs) {
                 $('#changeUserRoles').modal({
                     onShow: function () {
+                        admin.userId = userId;
                         admin.userOrganisations = orgs;
                         admin.selectedOrgUserRoles = [];
                     },
                     onHide: function () {
+                        admin.userId = '';
                         admin.userOrganisations = [];
                         admin.selectedOrgUserRoles = [];
                         return true;
@@ -194,9 +196,13 @@ angular.module('playerApp')
                 adminService.updateRoles(req).then(function (res) {
                     if (res.responseCode === 'OK') {
                         toasterService.success($rootScope.errorMessages.ADMIN.roleUpdateSuccess);
-                        $('#changeUserRoles').modal('hide');
+                        $('#changeUserRoles').modal('hide', function () {
+                            $('#changeUserRoles').modal('hide');
+                        });
                     } else {
-                        $('#changeUserRoles').modal('hide');
+                        $('#changeUserRoles').modal('hide', function () {
+                            $('#changeUserRoles').modal('hide');
+                        });
                         // profile.isError = true;
                         toasterService.error($rootScope.errorMessages.ADMIN.fail);
                     }
