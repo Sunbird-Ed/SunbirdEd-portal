@@ -70,9 +70,17 @@ angular.module('playerApp').directive('search', function () {
                     };
             $rootScope.search.removeFilterSelection
                     = function (filterType, value) {
-                        var itemIndex = $rootScope.search[filterType].indexOf(value);
-                        if (itemIndex !== -1) {
-                            $rootScope.search[filterType].splice(itemIndex, 1);
+                        if (filterType === 'selectedConcepts') {
+                            $rootScope.search[filterType] = _.filter($rootScope.search[filterType],
+                                 function (x) {
+                                     return x.identifier !== value;
+                                 });
+                            $rootScope.search.broadCastConcepts();
+                        } else {
+                            var itemIndex = $rootScope.search[filterType].indexOf(value);
+                            if (itemIndex !== -1) {
+                                $rootScope.search[filterType].splice(itemIndex, 1);
+                            }
                         }
                     };
 
@@ -103,6 +111,7 @@ angular.module('playerApp').directive('search', function () {
                 $rootScope.search.selectedBoard = $rootScope.search.filters.board || [];
                 $rootScope.search.selectedSubject = $rootScope.search.filters.subject || [];
                 $rootScope.search.selectedConcepts = $rootScope.search.filters.concepts || [];
+                $rootScope.search.broadCastConcepts();
                 $rootScope.search.sortByOption = Object.keys($rootScope.search.sortBy).length > 0
                         ? Object.keys($rootScope.search.sortBy)[0] : '';
                 $rootScope.search.searchFromSuggestion = $stateParams.autoSuggestSearch;
@@ -202,6 +211,12 @@ angular.module('playerApp').directive('search', function () {
                     sort_by: $rootScope.search.sortBy
 
                 };
+
+                // if any concept is selected then pass array of ids
+                if (req.filters.concepts && req.filters.concepts.length > 0) {
+                    req.filters.concepts = _.map(req.filters.concepts, 'identifier');
+                }
+
                 // if autosuggest option is clicked
                 if ($rootScope.search.searchFromSuggestion === 'true') {
                     req.filters.name = req.query;
@@ -235,7 +250,9 @@ angular.module('playerApp').directive('search', function () {
                         $rootScope.search.autosuggest_data = [];
                         if ($scope.search.autoSuggest
                                 && $rootScope.search.searchKeyword !== $stateParams.query) {
-                            $rootScope.search.autosuggest_data = res.result[$scope.search.resultType];
+                            $rootScope.search.autosuggest_data = res.result[
+                                $scope.search.resultType
+                            ];
                             if ($rootScope.search.autosuggest_data.length > 0) {
                                 $('#search-suggestions').addClass('visible').removeClass('hidden');
                             }
@@ -269,9 +286,17 @@ angular.module('playerApp').directive('search', function () {
                             $rootScope.errorMessages.COMMON.ERROR);
                 });
             };
-            $rootScope.$on('selectedConcepts', function (event, args) {
-                $rootScope.search.selectedConcepts = _.map(args.selectedConcepts, 'identifier');
+            $scope.$on('selectedConcepts', function (event, args) {
+                $rootScope.search.selectedConcepts = args.selectedConcepts;
+                _.defer(function () {
+                    $scope.$apply();
+                });
             });
+            $rootScope.search.broadCastConcepts = function () {
+                $rootScope.$broadcast('selectedConceptsFromSearch', {
+                    selectedConcepts: $rootScope.search.selectedConcepts
+                });
+            };
             $rootScope.search.applyFilter = function () {
                 $rootScope.search.filters.language = $rootScope.search.selectedLanguage;
                 $rootScope.search.filters.contentType = $rootScope.search.selectedContentType;
@@ -292,6 +317,7 @@ angular.module('playerApp').directive('search', function () {
                 $rootScope.search.selectedSubject = [];
                 $rootScope.search.selectedBoard = [];
                 $rootScope.search.selectedConcepts = [];
+                $rootScope.search.broadCastConcepts();
                 $rootScope.search.filters = {};
                 $rootScope.isSearchResultsPage = false;
                 $rootScope.isSearchPage = true;
