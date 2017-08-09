@@ -16,7 +16,7 @@ angular.module('playerApp')
         };
 
         this.update = function (req) {
-            return httpServiceJava.patch(config.URL.BATCH.UPDATE + '/' + req.batchId, req);
+            return httpServiceJava.patch(config.URL.BATCH.UPDATE, req);
         };
 
         this.addUsers = function (req) {
@@ -42,4 +42,8 @@ angular.module('playerApp')
         this.getBatchData = function(){
             return this.batchDetails;
         };
+
+        this.getUserList = function(req){
+            return httpServiceJava.post(config.URL.ADMIN.USER_SEARCH, req);
+        }
     }]);
