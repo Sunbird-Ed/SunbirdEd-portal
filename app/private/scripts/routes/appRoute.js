@@ -793,7 +793,7 @@ angular.module('playerApp')
               }
           }
       }).state('CreateBatch', {
-          url: '/create/batch',
+          url: '/create/batch/:courseId',
           views: {
               mainView: {
                   templateUrl: '/views/batch/createBatch.html',
