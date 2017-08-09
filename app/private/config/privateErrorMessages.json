@@ -12,7 +12,7 @@
             "TOC": {
                 "START": "We are fetching course details...",
                 "ERROR": "Unable to get course schedule details.",
-                "Flagged_COURSE": "This course content may be inappropriate..."
+                "Flagged_COURSE": "This course is flagged as inappropriate and is currently under review."
             },
             "ENROLL": {
                 "START": "Enrolling....",
@@ -249,6 +249,9 @@
             "START": "We are submitting your request...",
             "FAILED": "Submitting request is failed, please try again later...",
             "SUCCESS": "Request submitted successfully..."
+        },
+        "ADMIN": {
+            "fail": "Somthing went wrong, please try again later..."
         }
     }
 }

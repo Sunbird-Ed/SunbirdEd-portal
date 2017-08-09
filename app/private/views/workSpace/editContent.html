@@ -57,7 +57,7 @@
                                     <div class="row margin-top-10">
                                         <div class="required field">
                                             <label>{{$root.labels.WORKSPACE.common.description}}</label>
-                                            <textarea rows="2" name="description" placeholder={{$root.labels.WORKSPACE.common.description}} ng-model="editContent.contentData.description" required=""></textarea>
+                                            <input rows="2" name="description" placeholder={{$root.labels.WORKSPACE.common.description}} ng-model="editContent.contentData.description" required="">
                                         </div>
                                     </div>
                                 </div>
@@ -120,10 +120,8 @@
                         <div class="two fields">
                             <div class="field">
                                 <label>{{$root.labels.WORKSPACE.common.concept}}</label>
-                                <div class="cursor-pointer" ng-if="!editContent.conceptLoader.showLoader"> <input id="treePicker" type="text" readonly value="{{editContent.contentData.concepts.length}} concepts selected" /></div>
-                                <app-loader ng-if="editContent.conceptLoader.showLoader" data="{{editContent.conceptLoader}}"></app-loader>
+                                <concept-picker ng-if="editContent.contentData" selected-concepts="editContent.contentData.concepts"></concept-picker>
                             </div>
-
                         </div>
                     </form>
                 </div>
