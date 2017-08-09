@@ -2,7 +2,6 @@
     <div class="ui divider header-search-filters-divider"></div>
     <div class="filtercolumn ui grid">
         <div class="one wide column">
-
         </div>
         <div class=" ten wide column ">
             <div apply-script class="ui accordion" id='content-search-filter-accordion'>
@@ -47,7 +46,13 @@
                                         <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedSubject',subject)"></i>
                                     </a>
                                 </span>
-
+                                <span class="padded chip margin-top--5" ng-if='$root.search.selectedConcepts.length > 0'>
+                                    Concepts:
+                                    <a class="ui label margin-top--5" ng-repeat="concept in $root.search.selectedConcepts">
+                                        {{concept.name}}
+                                        <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedConcepts',concept.identifier)"></i>
+                                    </a>
+                                </span>
 
                             </div>
                             <div class="filtercolmntext ui grid">
@@ -58,13 +63,13 @@
                                     <div id="filterBoard" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
                                         <i class="dropdown icon"></i>
                                         <div class="filter-sel-text" ng-if="$root.search.selectedBoard.length > 0 ">{{$root.search.selectedBoard.length+' boards'}}</div>
-                                        <div class="filter-sel-text" ng-if="$root.search.selectedBoard.length == 0 ">Board</div>
+                                        <div class="filter-sel-text" ng-if="$root.search.selectedBoard.length === 0 ">Board</div>
                                         <div class="menu">
                                             <div ng-click="$root.search.selectFilter('selectedBoard',board,$event)" ng-repeat="board in $root.search.boards | orderBy:'toString()'" class="item dropdown-item" ng-class="{'active':($root.search.selectedBoard.indexOf(board)>=0)}" data-value="{{board}}">{{board}}</div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class='two wide column' ng-if="$root.search.selectedSearchKey == 'Resources'">
+                                <div class='two wide column' ng-if="$root.search.selectedSearchKey === 'Resources'">
                                     <div id="filterContent" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
                                         <input type='hidden' ng-value='{{}}' />
                                         <i class="dropdown icon"></i>
@@ -96,7 +101,13 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                <div class="two wide column">
+                                    <div class="field" ng-if="$root.search.selectedSearchKey !== 'Users'">
+                                        <form class="ui form">
+                                            <concept-picker  is-search-page="true"  selected-concepts="$root.search.selectedConcepts"></concept-picker>
+                                        </form>
+                                    </div>
+                                </div>
                                 <div class="three wide column filter-button">
                                     <a class="searchfilterbutton ui blue tiny  button" ng-click="$root.search.applyFilter()" translate="apply">APPLY</a>
                                     <a class="searchfilterbutton ui primary tiny basic button" ng-click="$root.search.resetFilter()" translate="reset">RESET</a>

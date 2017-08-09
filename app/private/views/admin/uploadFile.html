@@ -1,32 +1,82 @@
 <div class="ui segment">
-	<div class="ui form">
+	  <div class="ui grid">
+      <div class="eleven wide column"></div>
+      <div class="one wide column actions">
+        <h5 class="ui basic icon circular button deny">
+                <i class="ui remove icon"></i>
+            </h5>
+      </div>
+    </div>
+	<div class="ui form" sb-permissions permission-only="SYSTEM_ADMIN,ORG_ADMIN">
+		<h1>upload	Users</h1>
 		<div class="two fields">
-		    <div class="inline field">
+		    <div class="inline required field">
 			    <label>Provider</label>
-			    <input type="text" placeholder="Provider">
+			    <input type="text" placeholder="Provider" ng-model="admin.bulkUsers.provider">
 		    </div>
-		     <div class="inline field">
-			    <label>Data1</label>
-			    <input type="text" placeholder="Full Name">
+		     <div class="inline required field">
+			    <label>External Id</label>
+			    <input type="text" placeholder="External Id" ng-model="admin.bulkUsers.externalid">
 		    </div>
 		</div>
 		<div class="ui horizontal divider">
     		Or
  		</div>
  		<div class="one field">
-		    <div class="inline field text-align-center">
+		    <div class="inline required field text-align-center">
 			    <label>OrgId</label>
-			    <input type="text" placeholder="OrgId">
+			    <input type="text" placeholder="OrgId"ng-model="admin.bulkUsers.OrgId">
 		    </div>
 		</div>
+		<div class="ui negative message" ng-if="admin.bulkUploadError">
+					<i class="close icon" ng-click="admin.closeBulkUploadError()"></i>
+					<p>{{admin.bulkUploadErrorMessage}}</p>
+				</div>
 	    <div class="ui grid">
-	      	<div class="six wide column">
-	      	</div>
+	      	<div class="six wide column"></div>
+		
 	        <div class="three wide column">
+			
 	      	</div>
-	        <div class="three wide column">
-	        	<button class="ui primary right floated button">Upload CSV</button>
-	      	</div>
-    	</div>
+	        <div class="three wide column">	{{admin.fileName}}
+			<button  class="ui primary right floated button" ng-click="admin.openImageBrowser('users');">upload CSV</button>
+			 <input type="file" accept="file/csv,file/xlsx" class="content-input ui small "
+			id="uploadUsrsCSV" onchange="angular.element(this).scope().validateFile(this.files,'users');"
+			required="" /> 
+       </div>
+			</div>
+			<!-- show progress -->
+				<p> Process ID ={{admin.bulkUsersProcessId}}</p>
+			<p>You can track progress with process ID</p>
 	</div>
+		<!-- organization upload -->
+		
+			<div class="ui form" sb-permissions permission-only="SYSTEM_ADMIN">
+					<div class="ui  divider"></div>
+				 <h1>upload	Organization</h1>
+				     <div class="twelve wide column">	{{admin.fileName}}
+			<button  class="ui primary right floated button" ng-click="admin.openImageBrowser('organizations');">upload organizations CSV</button>
+			<input type="file" accept="file/csv,file/xlsx" class="content-input ui small "
+			id="uploadOrgCSV" onchange="angular.element(this).scope().validateFile(this.files,'organizations');"
+			required="" />
+			 </div>
+			<!-- show progress -->
+			<p> Process ID ={{admin.bulkOrgProcessId}}</p>
+			<p>You can track progress with process ID</p>
+			</div>
+		
+			<!-- check Status -->
+			<div class="ui form">
+					<div class="fields">
+						<div class="field">
+							<label>Process ID</label>
+							<input type="text" placeholder="Process ID" ng-model="admin.processID">
+						</div>
+						<div class="field">
+							<button ng-click="admin.checkStatus(admin.processID)"> check status</button>
+						</div>
+					
+					</div>
+				</div>
 </div>
+

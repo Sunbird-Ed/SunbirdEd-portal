@@ -45,10 +45,12 @@ angular.module('playerApp')
                                                             .START);
                 contentService.flag(requestData, contentFlag.contentId).then(function (res) {
                     if (res && res.responseCode === 'OK') {
-                        contentFlag.loader.showLoader = false;
-                        contentFlag.showContentFlagModal = false;
-                        contentFlag.hideContentFlagModal();
-                        contentFlag.close();
+                        $timeout(function () {
+                            contentFlag.loader.showLoader = false;
+                            contentFlag.showContentFlagModal = false;
+                            contentFlag.hideContentFlagModal();
+                            contentFlag.close();
+                        }, 2000);
                     } else {
                         contentFlag.loader.showLoader = false;
                         toasterService.error($rootScope.errorMessages.CONTENT_FLAG.FAILED);

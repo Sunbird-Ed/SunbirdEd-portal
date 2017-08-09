@@ -10,10 +10,10 @@
  */
 angular.module('playerApp')
         .controller('EditContentController', ['contentService', 'config', '$scope', '$state',
-            '$timeout', '$rootScope', '$stateParams', '$location', '$anchorScroll', 'toasterService',
-            'searchService',
+            '$timeout', '$rootScope', '$stateParams',
+            '$location', '$anchorScroll', 'toasterService',
             function (contentService, config, $scope, $state, $timeout, $rootScope, $stateParams,
-                    $location, $anchorScroll, toasterService, searchService) {
+                    $location, $anchorScroll, toasterService) {
                 var editContent = this;
                 editContent.contentId = $stateParams.contentId;
                 editContent.lessonTypes = config.DROPDOWN.COMMON.lessonTypes;
@@ -27,7 +27,7 @@ angular.module('playerApp')
                 editContent.userId = $rootScope.userId;
                 editContent.showUploadFileForm = false;
                 editContent.selectedConcepts = [];
-                $scope.contentPlayer = {isContentPlayerEnabled: false};
+                $scope.contentPlayer = { isContentPlayerEnabled: false };
                 editContent.contentUploadUrl = config.URL.BASE_PREFIX + config.URL.CONTENT_PREFIX +
                         config.URL.CONTENT.UPLOAD;
                 editContent.checkMimeTypeForEditContent = [
@@ -81,7 +81,7 @@ angular.module('playerApp')
 
                     editContent.initializeDropDown();
 
-                    var req = {contentId: editContent.contentId};
+                    var req = { contentId: editContent.contentId };
                     var qs = {
                         mode: 'edit',
                         fields: 'name,description,appIcon,contentType,mimeType,artifactUrl,' +
@@ -266,7 +266,7 @@ angular.module('playerApp')
                 editContent.callReviewApi = function () {
                     editContent.loader = toasterService.loader('', $rootScope.errorMessages.WORKSPACE
                             .REVIEW_CONTENT.START);
-                    var req = {content: {}};
+                    var req = { content: {} };
                     contentService.review(req, editContent.contentId).then(function (res) {
                         if (res && res.responseCode === 'OK') {
                             editContent.loader.showLoader = false;
@@ -308,12 +308,12 @@ angular.module('playerApp')
                 };
 
                 editContent.openContentEditor = function (contentId) {
-                    var params = {contentId: contentId};
+                    var params = { contentId: contentId };
                     $state.go('ContentEditor', params);
                 };
 
                 editContent.openCollectionEditor = function (data) {
-                    var params = {contentId: data.identifier, type: data.contentType};
+                    var params = { contentId: data.identifier, type: data.contentType };
                     $state.go('CollectionEditor', params);
                 };
 
@@ -408,151 +408,24 @@ angular.module('playerApp')
                     }
                 };
 
-            editContent.deleteContent = function (requestData) {
-                editContent.loader = toasterService.loader('', editContent.message.RETIRE_CONTENT
-                                                    .START);
-                var request = {
-                    contentIds: [requestData.identifier]
-                };
-                contentService.retire(request).then(function (res) {
-                    if (res && res.responseCode === 'OK') {
-                        editContent.loader.showLoader = false;
-                        editContent.closeEditForm(requestData);
-                        toasterService.success(editContent.message.RETIRE_CONTENT.SUCCESS);
-                    } else {
-                        editContent.loader.showLoader = false;
-                        toasterService.error(editContent.message.RETIRE_CONTENT.FAILED);
-                    }
-                });
-            };
-
-                /*
-                 * load concepts section
-                 */
-                editContent.loadConceptTree = function () {
-                    editContent.conceptLoader = toasterService.loader('', $rootScope.errorMessages
-                            .WORKSPACE.CONCEPTS.START);
-                    editContent.concepts = [];
-                    editContent.getConcept(0, 200, function (err) {
-                        if (err === true) {
-                            toasterService.error($rootScope.errorMessages.WORKSPACE.GET.FAILED);
-                        } else {
-                            var domains = [];
-                            var req = {
-                                "filters": {
-                                    "objectType": ["Dimension", "Domain"]
-                                },
-                                params: {
-                                    cid: '12'
-                                },
-
-                            };
-                            /**Get domains and dimensions data**/
-                            searchService.search(req).then(function (resp) {
-                                if (resp.result && _.isArray(resp.result.domains)) {
-                                    _.forEach(resp.result.domains, function (value) {
-                                        var domain = {};
-                                        domain.id = value.identifier;
-                                        domain.name = value.name;
-                                        var domainChild = [];
-                                        /**Get domain child**/
-                                        _.forEach(editContent.getChild(value.identifier, resp.result.dimensions), function (value) {
-                                            var dimension = {};
-                                            dimension.id = value.id;
-                                            dimension.name = value.name;
-                                            /**Get dimension child**/
-                                            dimension.nodes = editContent.getChild(value.id, editContent.concepts);
-                                            domainChild.push(dimension);
-                                        });
-                                        domain.nodes = domainChild;
-                                        domains.push(domain);
-                                    });
-                                    $rootScope.conceptData = domains;
-                                    editContent.conceptLoader.showLoader = false;
-                                    editContent.initConceptBrowser();
-
-                                }
-                            });
-                        }
-                    });
-
-                };
-
-                editContent.initConceptBrowser = function () {
-                    editContent.contentData.concepts = editContent.contentData.concepts || [];
-                   editContent.selectedConcepts=_.map(editContent.contentData.concepts,"identifier");
-                    $timeout(function () {
-                        $('#treePicker').treePicker({
-                            data: $rootScope.conceptData,
-                            name: 'Concepts',
-                            picked: editContent.selectedConcepts,
-                            onSubmit: function (nodes) {
-                                $('#treePicker').val(nodes.length + ' concepts selected');
-                                editContent.contentData.concepts = [];
-                                _.forEach(nodes, function (obj) {
-                                    editContent.contentData.concepts.push({
-                                        identifier: obj.id,
-                                        name: obj.name
-                                    })
-                                });
-
-                            },
-                            nodeName: "conceptSelector_treePicker",
-                            /**displayFormat: function(picked) { return "Concepts ("+picked.length+" selected)"; },**/
-                            minSearchQueryLength: 1
-                        });
-                    }, 1000);
-                };
-
-
-                /**Get child recursively**/
-                editContent.getChild = function (id, resp) {
-                    var childArray = [];
-                    _.forEach(resp, function (value) {
-                        if (value.parent != undefined) {
-                            if (value.parent[0] == id) {
-                                var child = {};
-                                child.id = value.identifier;
-                                child.name = value.name;
-                                child.selectable = "selectable";
-
-                                /**Get concept child recursively**/
-                                child.nodes = editContent.getChild(value.identifier, resp);
-                                childArray.push(child);
-                            }
-                        }
-                    });
-                    return _.uniqBy(childArray, "id");
-                }
-
-
-                editContent.getConcept = function (offset, limit, callback) {
-                    var req = {
-                        "filters": {
-                            "objectType": ["Concept"]
-                        },
-                        offset: offset,
-                        limit: limit
+                editContent.deleteContent = function (requestData) {
+                    editContent.loader = toasterService.loader('', editContent.message.RETIRE_CONTENT
+                            .START);
+                    var request = {
+                        contentIds: [requestData.identifier]
                     };
-                    searchService.search(req).then(function (res) {
-                        if (res.result && res.result && _.isArray(res.result.concepts)) {
-                            _.forEach(res.result.concepts, function (value) {
-                                editContent.concepts.push(value);
-                            });
-                            if ((res.result.count > offset) && res.result.count >= (offset + limit)) {
-                                offset = offset + limit;
-                                editContent.getConcept(offset, limit, callback)
-                            } else {
-                                callback(false);
-                            }
-
+                    contentService.retire(request).then(function (res) {
+                        if (res && res.responseCode === 'OK') {
+                            editContent.loader.showLoader = false;
+                            editContent.closeEditForm(requestData);
+                            toasterService.success(editContent.message.RETIRE_CONTENT.SUCCESS);
+                        } else {
+                            editContent.loader.showLoader = false;
+                            toasterService.error(editContent.message.RETIRE_CONTENT.FAILED);
                         }
-                    }).catch(function (err) {
-                        callback(true);
                     });
-                }
-                if (!$rootScope.conceptData) {
-                    editContent.loadConceptTree();
-                }
-
+                };
+                $scope.$on('selectedConcepts', function (event, args) {
+                    editContent.contentData.concepts = args.selectedConcepts;
+                });
             }]);
