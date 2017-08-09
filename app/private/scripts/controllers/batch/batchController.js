@@ -21,6 +21,7 @@ angular.module('playerApp')
             batch.showBatchCard = $scope.showbatchcard;
             batch.quantityOfBatchs = 3;
             batch.userName = $rootScope.firstName + ' ' + $rootScope.lastName;
+            batch.showBatchDetailsPage = false;
             batch.status = 1;
             batch.statusOptions = [
                 { name: 'Ongoing', value: 1 },
@@ -186,5 +187,26 @@ angular.module('playerApp')
                     toasterService.error('Error Message');
                 });
             };
+
+            batch.showBatchDetails = function(batchData){
+                batch.showBatchDetailsPage = true;
+                batch.batchInfo = batchData;
+                //console.log(JSON.stringify(batch.batchInfo));
+                $('#batchDetails').iziModal({
+                    title: '',
+                    fullscreen: false,
+                    openFullscreen: true,
+                    closeOnEscape: false,
+                    overlayClose: false,
+                    overlay: false,
+                    overlayColor: '',
+                    onClosed: function () {
+                        batch.showBatchDetailsPage = false;
+                    }
+                });
+                $timeout(function () {
+                    $('#batchDetails').iziModal('open');
+                }, 100);
+            }
         }
     ]);

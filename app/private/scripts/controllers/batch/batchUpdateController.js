@@ -154,13 +154,27 @@ angular.module('playerApp')
                 $('#updateBatchModal').modal('hide');
                 $('#updateBatchModal').modal('hide others');
                 $('#updateBatchModal').modal('hide dimmer');
+                var previousUrl = JSON.parse(window.localStorage.getItem('previousURl'));
+                $state.go(previousUrl.name, previousUrl.params);
             };
 
             batchUpdate.updateBatchDetails = function(data){
                 if($scope.updateBatch.$valid){
                     console.log('data ', data);
                     var request = {
-                        "request" : data
+                        "request" : {
+                            "name": data.name,
+                            "description": data.description,
+                            "enrollmentType": data.enrollmentType,
+                            "startDate": data.startDate,
+                            "endDate": data.endDate,
+                            "createdFor": data.createdFor,
+                            "id": data.id
+                        }
+                    }
+                    if(data.enrollmentType != 'open'){
+                        request.request.mentors = _.concat(data.mentors, batchUpdate.selectedMentors);
+                        request.request.users = _.concat(data.users, batchUpdate.selectedUsers);
                     }
                     batchService.update(request).then(function (response) {
                         if (response && response.responseCode === 'OK') {
