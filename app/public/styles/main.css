@@ -362,6 +362,7 @@ th {
   font-family: 'sunbirdregularfont' !important;
   font-size: 0.9375em !important;
   color: #007AFF !important;
+  opacity: 0.5 !Important;
 }
 .dashBoardCardText {
   font-family: 'sunbirdregularfont' !important;
@@ -2087,7 +2088,12 @@ span.dashBoardMenuItem:active {
   padding-right: 8px !important;
 }
 .adminCanvasPadding {
-  padding: 15px !important;
+  padding: 20px !important;
+}
+.adminCanvasBorder {
+  background-color: #FFFFFF;
+  border: 1px solid #D4D4D5 ;
+  border-radius: 5px;
 }
 body {
   position: relative !important;
