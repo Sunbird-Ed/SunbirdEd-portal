@@ -1,9 +1,4 @@
-<style>
-
-
-</style>
-
-  <div class="ui grid">
+<div class="ui grid">
     <div class="one wide column"></div>
     <div class="ten wide column">
         <div class="ui grid">
@@ -26,7 +21,7 @@
 </div>
 
 <div>
-	<div class="resource-padding ui grid" ng-if="dashboardData.showLoader">
+	<div class="resource-padding ui grid padding-top-10" ng-if="dashboardData.showLoader">
 		<div class="one wide column"></div>
 		<div class="ten wide column">
 			<app-loader></app-loader>
@@ -38,9 +33,9 @@
 	<div class="resource-padding ui grid">
 		<div class="one wide column"></div>
 		<div class="ten wide column">
-			<div class="ui grid column margin-bottom-20">
+			<div class="ui grid column margin-bottom-10">
 				<span class="dashBoardMenuItem cursor-pointer" ng-click="dashboardData.onAfterFilterChange('14d')" id="14d">LAST 14 DAYS</span>
-				<span class="dashBoardMenuItem cursor-pointer" ng-click="dashboardData.onAfterFilterChange('7d')" id="7d">LAST 7 DAYS</span>
+				<span class="dashBoardMenuItem cursor-pointer active" ng-click="dashboardData.onAfterFilterChange('7d')" id="7d">LAST 7 DAYS</span>
 				<span class="dashBoardMenuItem cursor-pointer" ng-click="dashboardData.onAfterFilterChange('5w')" id="5w">LAST 5 WEEKS</span>
 			</div>
 
@@ -48,7 +43,7 @@
 				<div class="card" ng-repeat="item in dashboardData.numericStatArray">
 					<div class="content center aligned">
 						<div class="meta dashBoardCardText">{{item.name}}</div>
-						<h2 class="description">{{item.value}}</h2>
+						<h2 class="description dashboardCardSubText">{{item.value}}</h2>
 					</div>
 				</div>
 			</div>
