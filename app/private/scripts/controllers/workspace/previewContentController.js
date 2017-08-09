@@ -409,11 +409,13 @@ angular.module('playerApp')
                 };
                 contentService.retire(request).then(function (res) {
                     if (res && res.responseCode === 'OK') {
-                        previewContent.loader.showLoader = false;
-                        previewContent.isShowDeleteButton = false;
-                        previewContent.isShowFlagActionButton = false;
-                        toasterService.success(previewContent.message.RETIRE_CONTENT.SUCCESS);
-                        $state.go($stateParams.backState);
+                        $timeout(function () {
+                            previewContent.loader.showLoader = false;
+                            previewContent.isShowDeleteButton = false;
+                            previewContent.isShowFlagActionButton = false;
+                            toasterService.success(previewContent.message.RETIRE_CONTENT.SUCCESS);
+                            $state.go($stateParams.backState);
+                        }, 2000);
                     } else {
                         previewContent.loader.showLoader = false;
                         toasterService.error(previewContent.message.RETIRE_CONTENT.FAILED);
