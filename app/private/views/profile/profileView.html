@@ -1,6 +1,8 @@
 <div class="ui grid" ng-init=profileCtrl.getCreatedContentList()>
     <div class="eight wide column">
         <div class="ui grid">
+            <div class="twelve wide column" ng-include=" 'views/profile/profileView/userDescription.html' ">
+            </div>
             <div class="twelve wide column" ng-include=" 'views/profile/profileView/userExperience.html' ">
             </div>
             <div class="twelve wide column" ng-include=" 'views/profile/profileView/userAddress.html' ">
