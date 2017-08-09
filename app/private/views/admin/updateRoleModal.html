@@ -17,7 +17,7 @@
         <i class="dropdown icon"></i>
         <div class="default text">Org</div>
         <div class="menu">
-          <div class="item" ng-click="admin.selectedIrg(org.organisationId);admin.selectedOrgUserRoles=org.roles;admin.selectedOrgUserId=org.organizationId" ng-repeat="org in admin.userOrganisations" value="{{org.organisationId}}">{{org.orgName}}</div>
+          <div class="item" ng-repeat="org in admin.userOrganisations" ng-click="admin.selectedIrg(org.organisationId);admin.selectedOrgUserRoles=org.roles;admin.selectedOrgUserId=org.organisationId"  value="{{org.organisationId}}">{{org.orgName}}</div>
           </div>
       </div>
       

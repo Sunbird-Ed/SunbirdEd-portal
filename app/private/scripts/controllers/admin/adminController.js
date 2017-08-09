@@ -182,7 +182,6 @@ angular.module('playerApp')
                 }
             };
             admin.updateRoles = function (userId, orgId, roles) {
-                console.log('trying to update roles', userId, orgId, roles);
                 var req = {
                     request: {
                         userId: userId,
@@ -193,7 +192,14 @@ angular.module('playerApp')
                 };
 
                 adminService.updateRoles(req).then(function (res) {
-                    console.log('res', res);
+                    if (res.responseCode === 'OK') {
+                        toasterService.success($rootScope.errorMessages.ADMIN.roleUpdateSuccess);
+                        $('#changeUserRoles').modal('hide');
+                    } else {
+                        $('#changeUserRoles').modal('hide');
+                        // profile.isError = true;
+                        toasterService.error($rootScope.errorMessages.ADMIN.fail);
+                    }
                 }).catch(function (err) {
                     profile.isError = true;
                     toasterService.error($rootScope.errorMessages.ADMIN.fail);

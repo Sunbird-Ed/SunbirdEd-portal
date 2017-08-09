@@ -251,7 +251,8 @@
             "SUCCESS": "Request submitted successfully..."
         },
         "ADMIN": {
-            "fail": "Somthing went wrong, please try again later..."
+            "fail": "Somthing went wrong, please try again later...",
+            "roleUpdateSuccess":"Roles updated successfully"
         }
     }
 }
