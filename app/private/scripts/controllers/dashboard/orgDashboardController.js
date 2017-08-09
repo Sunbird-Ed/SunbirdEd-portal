@@ -170,7 +170,7 @@ angular.module('playerApp')
       dashboardData.onAfterFilterChange = function(timePeriod) {
         dashboardData.showLoader = true;
         //Adding active class
-        $('.text').removeClass('active');
+        $('.dashBoardMenuItem').removeClass('active');
         $('#' + timePeriod).addClass('active');
 
         dashboardData.getAdminDashboardData(timePeriod);
@@ -189,7 +189,7 @@ angular.module('playerApp')
         dashboardData.datasetPreviousValue = dataset;
 
         //Adding active class
-        $('.text').removeClass('active');
+        $('.dashBoardMenuItem').removeClass('active');
         $('#7d').addClass('active');
 
         dashboardData.getAdminDashboardData();
