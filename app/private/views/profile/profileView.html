@@ -1,7 +1,9 @@
 <div class="ui grid" ng-init=profileCtrl.getCreatedContentList()>
     <div class="eight wide column">
         <div class="ui grid">
-            <div class="twelve wide column" ng-include=" 'views/profile/profileView/userExperience.html' ">
+            <div class="twelve wide column padding-bottom-none" ng-include=" 'views/profile/profileView/userDescription.html' ">
+            </div>
+            <div class="twelve wide column padding-top-none" ng-include=" 'views/profile/profileView/userExperience.html' ">
             </div>
             <div class="twelve wide column" ng-include=" 'views/profile/profileView/userAddress.html' ">
             </div>
@@ -13,6 +15,35 @@
     </div>
     <div class=" four wide column margin-top-20">
         <div class="ui grid ">
+<!--             <div class="twelve wide column">
+                <span class="profileViewProgress">Profile Completeness</span> 
+                <span class="profileViewProgress float-ContentRight">15%</span> 
+                <div class="ui small blue progress margin-top--5">
+                    <div class="bar"></div>
+                </div>                  
+            </div> -->
+            
+            <div class="twelve wide column" sb-permissions permission-only="SYSTEM_ADMIN">
+                <div class="workspacebutton workspacecontentProfile ui link card " ng-click="profileCtrl.openBulkUploadModal()">
+                    <div class="content ">
+                        <div class="WorkSpaceTextContent ">
+                            <span class="my-text ">Upload  Organizations</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="twelve wide column" sb-permissions permission-only="SYSTEM_ADMIN,ORG_ADMIN">
+                <div class="workspacebutton workspacecontentProfile ui link card " ng-click="profileCtrl.openBulkUploadModal()">
+                    <div class="content ">
+                        <div class="WorkSpaceTextContent ">
+                            <span class="my-text ">Upload  Users</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ui modal" id="bulkUpload">
+                <bulk-upload></bulk-upload>
+            </div>
             <div class="twelve wide column" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW,FLAG_REVIEWER">
                 <div class="workspacebutton workspacecontentProfile ui link card " ui-sref="WorkSpace ">
                     <div class="content ">
@@ -71,8 +102,8 @@
                         <span class="header cardsHeading">{{$root.labels.PROFILE.BASIC_PROFILE.contributions}}</span>
                         <span class="addeditprofile">{{profileCtrl.contentList.length}} {{$root.labels.PROFILE.BASIC_PROFILE.contents}}</span>
                     </div>
-                    <div class="profileitems ui relaxed divided items">
-                        <div class="item" ng-repeat="item in profileCtrl.contentList | limitTo: profileCtrl.quantityOfContent track by $index" ng-click="profileCtrl.openContentPlayer(item)">
+                    <div class="profileitems contributionsListScroll ui relaxed divided items padding-right-20" id="custom-scroll">
+                        <div class="item" ng-repeat="item in profileCtrl.contentList track by $index" ng-click="profileCtrl.openContentPlayer(item)">
                             <img class="ui avatar image " src="{{profileCtrl.getContentLogo(item)}}">
                             <div class="content ">
                                 <a class=" header ">{{item.name}}</a>
