@@ -471,4 +471,15 @@ angular.module('playerApp')
                     toasterService.error(previewContent.message.DISCARD_CONTENT_FLAG.FAILED);
                 });
             };
+            
+            previewContent.getConceptsNames = function (concepts) {
+                var conceptNames = _.map(concepts, 'name').toString();
+                if (conceptNames.length < concepts.length) {
+                    var filteredConcepts = _.filter($rootScope.concepts, function (p) {
+                        return _.includes(concepts, p.identifier);
+                    });
+                    conceptNames = _.map(filteredConcepts, 'name').toString();
+                }
+                return conceptNames;
+            };
         }]);
