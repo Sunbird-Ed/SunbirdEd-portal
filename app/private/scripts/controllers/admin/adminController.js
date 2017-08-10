@@ -74,6 +74,7 @@ angular.module('playerApp')
                         admin.userId = userId;
                         admin.userOrganisations = orgs;
                         admin.selectedOrgUserRoles = [];
+                        $('#userOrgs').dropdown('restore defaults');
                     },
                     onHide: function () {
                         admin.userId = '';
@@ -89,6 +90,19 @@ angular.module('playerApp')
                     $('#userOrgs').dropdown();
                 }, 0);
                 $('.roleChckbox').checkbox();
+            };
+            admin.showdeleteModal = function (id, firstName, lastName) {
+                $('#deleteUserConfirmation').modal({
+                    onShow: function () {
+                        admin.deletingUserId = id;
+                        admin.deletingUserFullName = firstName + ' ' + lastName;
+                    },
+                    onHide: function () {
+                        admin.deletingUserId = '';
+                        admin.deletingUserFullName = '';
+                        return true;
+                    }
+                }).modal('show');
             };
             // download list of user or organization
             admin.downloadUsers = function (key, list) {
@@ -163,19 +177,23 @@ angular.module('playerApp')
                 }
             };
             admin.createNewUsers = function () {
-                var organisationId = admin.bulkUsers.OrgId;
+                // var organisationId = admin.bulkUsers.OrgId;
                 // var newUsersReq = { user: file, organisationId: organisationId };
                 //     organisationId: admin.bulkUsers.OrgId, // valid or
                 //     externalid: admin.bulkUsers.externalid, // valid and
                 //     provider: admin.bulkUsers.provider// valid
                 // };
                 // console.log('newUsersReq', newUsersReq);
-                admin.fileToUpload.append('organisationId', organisationId);
+                admin.fileToUpload.append('organisationId', admin.bulkUsers.OrgId);
+                admin.fileToUpload.append('externalid', admin.bulkUsers.externalid);
+                admin.fileToUpload.append('provider', admin.bulkUsers.provider);
                 adminService.bulkUserUpload(admin.fileToUpload).then(function (res) {
                     if (res.responseCode === 'OK') {
                         admin.bulkUsersProcessId = res.result.processId;
                         admin.bulkUsersRes = res.result.response;
-                    }
+                    } else { throw new Error(''); }
+                }).catch(function (err) {
+                    toasterService.error($rootScope.errorMessages.ADMIN.fail);
                 });
             };
             admin.createNewOrganizations = function () {
