@@ -1,0 +1,5 @@
+<div class="cursor-pointer treepicker-parent" ng-if="!conceptLoader.showLoader">
+
+    <input  id="treePicker" type="text"  readonly ng-model="pickerMessage" />
+</div>
+<app-loader ng-if="conceptLoader.showLoader" data="{{conceptLoader}}"></app-loader>

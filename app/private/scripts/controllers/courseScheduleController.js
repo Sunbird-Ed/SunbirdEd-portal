@@ -2,11 +2,10 @@
 
 angular.module('playerApp')
   .controller('courseScheduleCtrl',
-    ['courseService', 'sessionService',
-        '$stateParams', '$state', '$timeout', '$scope', '$rootScope', 'toasterService',
-        '$location', '$anchorScroll', 'contentStateService', '$window', function (courseService, sessionService,
-     $stateParams, $state, $timeout, $scope, $rootScope, toasterService,
-     $location, $anchorScroll, contentStateService, $window) {
+    ['courseService', 'sessionService', '$stateParams', '$state', '$timeout', '$scope', '$rootScope', 
+    'toasterService', '$location', '$anchorScroll', 'contentStateService', '$window', 'batchService', 
+    function (courseService, sessionService, $stateParams, $state, $timeout, $scope, $rootScope, 
+        toasterService, $location, $anchorScroll, contentStateService, $window, batchService) {
             var toc = this;
             toc.playList = [];
             toc.playListContent = [];
@@ -225,7 +224,7 @@ angular.module('playerApp')
            ? toc.playListContent[toc.itemIndex - 1].name : 'No content to play';
                 toc.nextPlayListName = (toc.itemIndex + 1) < toc.playList.length
            ? toc.playListContent[toc.itemIndex + 1].name : 'No content to play';
-                if (toc.courseType === 'ENROLLED_COURSE') {
+                if (toc.courseType === 'ENROLLED_COURSE' && toc.courseHierachy.status !== 'Flagged') {
                     $rootScope.contentId = contentId;
                     $scope.contentPlayer.contentData = toc.playListContent[
                  toc.itemIndex
@@ -338,9 +337,8 @@ angular.module('playerApp')
                     $('.ui.accordion').accordion({
                         exclusive: false
                     });
-                    if (toc.courseType === 'ENROLLED_COURSE'
-                && toc.playList.length > 0
-               && toc.lectureView === 'no') {
+                    if (toc.courseType === 'ENROLLED_COURSE' && toc.playList.length > 0
+                        && toc.lectureView === 'no' && toc.courseHierachy.status !== 'Flagged') {
                         toc.resumeCourse();
                     }
                     var progPercent = parseInt(
