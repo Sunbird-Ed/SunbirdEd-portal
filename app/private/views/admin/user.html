@@ -56,8 +56,8 @@
       </div>
       <div class="extra ">
         <div ng-include=" 'views/admin/updateRoleModal.html' "></div>  
-        <div class="ui label ">Org Type:{{org.orgType}}</div>
-        <div class="ui label ">org code:{{org.orgCode}}</div>
+        <div class="ui label " ng-if="org.orgType">Org Type:{{org.orgType}}</div>
+        <div class="ui label "ng-if="org.orgCode">org code:{{org.orgCode}}</div>
         <div class="ui label " ng-if="org.isRootOrg">Root organisation</div>
         <div class="ui label " ng-if="org.status===0">INACTIVE</div>
         <div class="ui label " ng-if="org.status===1">ACTIVE</div>
