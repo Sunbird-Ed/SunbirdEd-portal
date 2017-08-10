@@ -16,10 +16,11 @@ angular.module('playerApp')
                 courseid: '=',
                 status: '='
             },
-        link: function (scope, element, attrs, batch) {
-            $('#batchStatusOptions').dropdown('set selected ', batch.status);
-            batch.getCouserBatchesList();
-        },
-        controller: 'BatchController as batch'
+            link: function (scope, element, attrs, batch) {
+                $('#batchStatusOptions').dropdown('set selected ', batch.status);
+                batch.getCouserBatchesList();
+            },
+            controller: 'BatchController as batch',
+            bindToController: true
         };
     });

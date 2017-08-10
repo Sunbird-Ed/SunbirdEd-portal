@@ -254,6 +254,25 @@
             "fail": "Somthing went wrong, please try again later...",
             "roleUpdateSuccess":"Roles updated successfully",
             "deleteSuccess":"User deleted successfully"
+        },
+        "BATCH":{
+            "CREATE": {
+                "FAILED": "Creating batch is failed, please try again later...",
+                "SUCCESS": "Batch created successfully..."
+            },
+            "ADD_USERS":{
+                "FAILED": "Adding users to batch is failed, please try again later..."
+            },
+            "GET": {
+                "FAILED": "Fetching batch detail is failed, please try again later..."
+            },
+            "UPDATE": {
+                "FAILED": "Updating batch is failed, please try again later...",
+                "SUCCESS": "Batch updated successfully..."
+            },
+            "GET_USERS": {
+                "FAILED": "Fetching users list failed, please try again later..."
+            }
         }
     }
 }
