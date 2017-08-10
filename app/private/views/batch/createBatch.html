@@ -68,7 +68,7 @@
                           <i class="dropdown icon"></i>
                           <div class="default text padding-top-20">Start searching by name</div>
                           <div class="menu">
-                            <div class="item" data-value="{{user.name}}" ng-repeat="user in batch.userList">
+                            <div class="item" data-value="{{user.id}}" ng-repeat="user in batch.userList">
                               <img class="ui mini avatar image" src="images/user_logo.png">
                               {{user.name}}
                             </div>
@@ -82,7 +82,7 @@
                         <i class="dropdown icon"></i>
                         <div class="default text padding-top-20">Start searching by name</div>
                         <div class="menu">
-                            <div class="item" data-value="{{mentor.name}}" ng-repeat="mentor in batch.menterList">
+                            <div class="item" data-value="{{mentor.id}}" ng-repeat="mentor in batch.menterList">
                                 <img class="ui mini avatar image" src="images/user_logo.png">{{mentor.name}}
                             </div>
                         </div>

@@ -45,17 +45,21 @@ angular.module('playerApp')
             batchUpdate.showUpdateBatchModal = function () {
                 batchUpdate.selectedUsers = [];
                 batchUpdate.selectedMentors = [];
-                _.forEach(batchUpdate.batchData.users, function(value){
-                    batchUpdate.selectedUsers.push(_.find(batchUpdate.userList, ['name', value]))
-                    batchUpdate.userList = _.reject(batchUpdate.userList, ['name', value]);
+                _.forEach(batchUpdate.batchData.participant, function(value, key){
+                    if(!_.isUndefined(_.find(batchUpdate.userList, ['id', key]))){
+                        batchUpdate.selectedUsers.push(_.find(batchUpdate.userList, ['id', key]));
+                        batchUpdate.userList = _.reject(batchUpdate.userList, ['id', key]);
+                    }
                 })
-                _.forEach(batchUpdate.batchData.mentors, function(mentorVal){
-                    batchUpdate.selectedMentors.push(_.find(batchUpdate.menterList, ['name', mentorVal]))
-                    batchUpdate.menterList = _.reject(batchUpdate.menterList, ['name', mentorVal]);
+                _.forEach(batchUpdate.batchData.mentors, function(mentorVal, key){
+                    if(!_.isUndefined(_.find(batchUpdate.menterList, ['id', mentorVal]))){
+                        batchUpdate.selectedMentors.push(_.find(batchUpdate.menterList, ['id', mentorVal]));
+                        batchUpdate.menterList = _.reject(batchUpdate.menterList, ['id', mentorVal]);
+                    }
                 })
                 $timeout(function () {
-                    $('#users').dropdown('set selected',batchUpdate.batchData.users);
-                    $('#mentors').dropdown('set selected',batchUpdate.batchData.mentors);
+                    $('#users').dropdown();
+                    $('#mentors').dropdown();
                     if(batchUpdate.batchData.enrollmentType == 'open'){
                         $('input:radio[name="enrollmentType"]').filter('[value="open"]').attr('checked', true);
                     }else{
@@ -160,7 +164,6 @@ angular.module('playerApp')
 
             batchUpdate.updateBatchDetails = function(data){
                 if($scope.updateBatch.$valid){
-                    console.log('data ', data);
                     var request = {
                         "request" : {
                             "name": data.name,
@@ -173,17 +176,37 @@ angular.module('playerApp')
                         }
                     }
                     if(data.enrollmentType != 'open'){
-                        request.request.mentors = _.concat(data.mentors, batchUpdate.selectedMentors);
-                        request.request.users = _.concat(data.users, batchUpdate.selectedUsers);
+                        var selected = []; 
+                        _.forEach(batchUpdate.selectedMentors, function(value){
+                            selected.push(value.id);
+                        });
+                        request.request.mentors = _.concat(data.mentors, selected);
                     }
                     batchService.update(request).then(function (response) {
                         if (response && response.responseCode === 'OK') {
-                            batchUpdate.hideUpdateBatchModal();
+                            if(data.users && data.users.length > 0){
+                                var userRequest = {
+                                    "request" : {
+                                        "userIds": data.users
+                                    }
+                                }
+                                batchService.addUsers(userRequest, response.result.batchId).then(function (response) {
+                                    if (response && response.responseCode === 'OK') {
+                                        batch.hideUpdateBatchModal();
+                                    }else{
+                                        toasterService.error(errorMessages.BATCH.ADD_USERS.FAILED);
+                                    }
+                                }).catch(function () {
+                                    toasterService.error(errorMessages.BATCH.ADD_USERS.FAILED);
+                                });
+                            }else{
+                                batch.hideUpdateBatchModal();
+                            }
                         }else{
-                            toasterService.error('Error Message');    
+                            toasterService.error(errorMessages.BATCH.UPDATE.FAILED);    
                         }
                     }).catch(function () {
-                        toasterService.error('Error Message');
+                        toasterService.error(errorMessages.BATCH.UPDATE.FAILED);
                     });
                 }
             }
