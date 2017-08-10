@@ -2,11 +2,10 @@
 
 angular.module('playerApp')
   .controller('courseScheduleCtrl',
-    ['courseService', 'sessionService',
-        '$stateParams', '$state', '$timeout', '$scope', '$rootScope', 'toasterService',
-        '$location', '$anchorScroll', 'contentStateService', '$window', function (courseService, sessionService,
-     $stateParams, $state, $timeout, $scope, $rootScope, toasterService,
-     $location, $anchorScroll, contentStateService, $window) {
+    ['courseService', 'sessionService', '$stateParams', '$state', '$timeout', '$scope', '$rootScope', 
+    'toasterService', '$location', '$anchorScroll', 'contentStateService', '$window', 'batchService', 
+    function (courseService, sessionService, $stateParams, $state, $timeout, $scope, $rootScope, 
+        toasterService, $location, $anchorScroll, contentStateService, $window, batchService) {
             var toc = this;
             toc.playList = [];
             toc.playListContent = [];

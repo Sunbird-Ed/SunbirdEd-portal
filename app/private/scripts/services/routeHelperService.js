@@ -8,7 +8,7 @@ angular.module('playerApp')
                     var searchEnabledStates = ['Home', 'Courses', 'Resources', 'CourseNote',
                         'ContentNote', 'CourseContentNote', 'Toc', 'Player',
                         'Search', 'TocPlayer', 'PreviewCollection', 'Profile'];
-                    var filterEnabledStates = ['Home', 'Courses', 'Resources', 'Search', 'Profile'];
+                    var filterEnabledStates = ['Home', 'Courses', 'Resources', 'Search'];
                     var searchKey = {
                         Home: 'All',
                         Courses: 'Courses',
