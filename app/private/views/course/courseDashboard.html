@@ -1,0 +1,152 @@
+<style>
+.table-header {
+  color: #007AFF !important;
+  font-family: 'sunbirdboldfont' !important;
+}
+.dashboard-label{
+	font-family: 'sunbirdboldfont' !important;
+	font-size: 17.9px !important;
+	position: relative; top:-3vh;
+}
+.text-underline{
+	text-decoration: underline;"
+}
+
+</style>
+<div class="ui grid">
+  	<div class="three wide column left floated">
+    	<p class="dashboard-label">Course creator dashboard</p>
+  	</div>
+  	<div class="ui text menu">
+		  <a href="Javascript:void(0);" data-timeperiod="7d" data-timeperiod-text="7 days"
+		  		ng-class="{active:courseDashboard.timePeriod == '7d'}"
+      			ng-click="courseDashboard.onAfterFilterChange($event.target)">LAST 7 DAYS</a>
+      			&nbsp;&nbsp;&nbsp;&nbsp;
+		  <a href="Javascript:void(0);" data-timeperiod="14d" data-timeperiod-text="14 days"
+	      		ng-click="courseDashboard.onAfterFilterChange($event.target)">LAST 14 DAYS</a>
+	      		&nbsp;&nbsp;&nbsp;&nbsp;
+		  <a href="Javascript:void(0);" data-timeperiod="5w" data-timeperiod-text="5 weeks"
+	      		ng-click="courseDashboard.onAfterFilterChange($event.target)">LAST 5 WEEKS</a>
+	      		&nbsp;&nbsp;&nbsp;&nbsp;
+	</div>
+	<div class="ui category search" style="position: relative;top: -1vh">
+		<div class="ui icon input">
+			<input class="search-course-data" type="text" placeholder="Search ..." ng-model="courseDashboard.searchUser">
+		    <i class="search icon"></i>
+		</div>
+	</div>
+	<a class="ui item" href="Javascript:void(0);">
+		<i class="ui remove icon" ng-click="toc.showCourseDashboard = false;courseDashboard.resetDropdown();"></i>
+	</a>
+
+  	<!--<div class="eight wide column right floated" ng-if="!courseDashboard.showError">
+    	<div class="ui secondary  menu">
+      		<a class="item"
+      			data-timeperiod="7d" data-timeperiod-text="7 days"
+      			ng-click="courseDashboard.onAfterFilterChange($event.target)">LAST 7 DAYS
+      		</a>
+	      	<a class="item"
+	      		data-timeperiod="14d" data-timeperiod-text="14 days"
+	      		ng-click="courseDashboard.onAfterFilterChange($event.target)" >LAST 14 DAYS
+	      	</a>
+	      	<a class="item"
+	      		data-timeperiod="5w" data-timeperiod-text="5 weeks"
+	      		ng-click="courseDashboard.onAfterFilterChange($event.target)">LAST 5 WEEKS
+	      	</a>
+	      	<div class="right menu">
+	        	<div class="item">
+	          		<div class="ui icon input">
+	            		<input type="text" placeholder="Search..." ng-model="courseDashboard.searchUser">
+	            		<i class="search link icon"></i>
+	          		</div>
+	        	</div>
+	        	<a class="ui item">
+	        		<i class="ui remove icon" ng-click="toc.showCourseDashboard = false;courseDashboard.resetDropdown();"></i>
+	        	</a>
+	      	</div>
+    	</div>
+ 	 </div>-->
+</div>
+
+<div class="table-data-holder" ng-hide="courseDashboard.showLoader" ng-if="!courseDashboard.showError">
+	<div class="ui raised segment">
+		<div class="eight wide column right floated">
+	    	<h3 style="color: #979797 !important">Stats for last {{courseDashboard.filterQueryTextMsg}} </h3>
+	    </div>
+	  	<table class="ui very basic table">
+	    	<thead>
+	      		<tr>
+			        <th class="table-header">
+			          	<a href="Javascript:void(0);" ng-click="courseDashboard.orderByField='progress'; courseDashboard.reverseSort = !courseDashboard.reverseSort">Status
+							<span ng-show="courseDashboard.orderByField == 'progress'">
+		        				<span ng-show="!courseDashboard.reverseSort">^</span>
+		        				<span ng-show="courseDashboard.reverseSort">v</span>
+							</span>
+						</a>
+			        </th>
+	        		<th>
+	        			<a href="Javascript:void(0);" ng-click="courseDashboard.orderByField='user'; courseDashboard.reverseSort = !courseDashboard.reverseSort">User Name
+		        			<span ng-show="courseDashboard.orderByField == 'user'">
+		        				<span ng-show="!courseDashboard.reverseSort">^</span>
+		        				<span ng-show="courseDashboard.reverseSort">v</span>
+		        			</span>
+				  		</a>
+				  	</th>
+	        		<th>
+			          	<a href="Javascript:void(0);" ng-click="courseDashboard.orderByField='batchEndsOn'; courseDashboard.reverseSort = !courseDashboard.reverseSort">batch end on
+				          	<span ng-show="courseDashboard.orderByField == 'batchEndsOn'">
+				          		<span ng-show="!courseDashboard.reverseSort">^</span>
+				          		<span ng-show="courseDashboard.reverseSort">v</span>
+				          	</span>
+						</a>
+			        </th>
+			        <th>
+			          	<a href="Javascript:void(0);" ng-click="courseDashboard.orderByField='org'; courseDashboard.reverseSort = !courseDashboard.reverseSort">ORG
+			          		<span ng-show="courseDashboard.orderByField == 'org'">
+			          			<span ng-show="!courseDashboard.reverseSort">^</span>
+			          			<span ng-show="courseDashboard.reverseSort">v</span>
+			          		</span>
+						</a>
+			        </th>
+	        		<th>
+	          			<a href="Javascript:void(0);" ng-click="courseDashboard.orderByField='enrolledOn'; courseDashboard.reverseSort = !courseDashboard.reverseSort">Enrolled on
+	          				<span ng-show="courseDashboard.orderByField == 'enrolledOn'">
+	          					<span ng-show="!courseDashboard.reverseSort">^</span>
+	          					<span ng-show="courseDashboard.reverseSort">v</span>
+	          				</span>
+				  		</a>
+	        		</th>
+	      		</tr>
+	    	</thead>
+	    	<tbody>
+		      	<tr ng-repeat="student in courseDashboard.courseProgressArray|orderBy:courseDashboard.orderByField:courseDashboard.reverseSort | filter:courseDashboard.searchUser">
+		        	<td class="description">{{student.progress}}</td>
+			        <td>{{student.userName}}</td>
+			        <td style="color: #979797 !important">{{student.batchEndsOn}}</td>
+			        <td style="color: #979797 !important">{{student.org}}</td>
+			        <td style="color: #979797 !important">{{student.enrolledOn}}</td>
+		      	</tr>
+	    	</tbody>
+	  	</table>
+	</div>
+	<div class="ui grid">
+		<div class="twelve wide column right floated">
+			<p class="text-align-right">Download this view as:
+	  			<a href="Javascript:void(0);" class="item text-underline">CSV</a>
+	  			<a href="Javascript:void(0);" class="item text-underline">PDF</a>
+	  			<a href="Javascript:void(0);" class="item text-underline">DOC</a>
+			</p>
+		</div>
+	</div>
+</div>
+<!-- Show loader-->
+<div class="tweleve wide column" ng-if="courseDashboard.showLoader">
+    <app-loader></app-loader>
+</div>
+
+<div class="ui negative message" ng-if="courseDashboard.showError">
+  	<div class="header">
+    	Error while fetching data..
+  	</div>
+  	<p>{{courseDashboard.errorMsg}}</p>
+</div>

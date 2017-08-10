@@ -24,6 +24,8 @@ angular.module('playerApp')
                 1: 'blue',
                 2: 'green'
             };
+            toc.showCourseDashboard = false;
+
             toc.enrollUserToCourse = function (courseId) {
                 var req = {
                     request: {
@@ -56,6 +58,7 @@ angular.module('playerApp')
             };
 
             toc.resumeCourse = function () {
+                toc.showCourseDashboard = false;
                 if ($rootScope.isTocPage) {
                     if ($location.hash().indexOf('tocPlayer') < 0) {
           // once last played index is given assign it for now zero
@@ -492,4 +495,9 @@ angular.module('playerApp')
                     toc.init();
                 }
             };
+
+            toc.initDropdownValues = function (){
+                $('#dropdownId').dropdown();
+            };
+            $('#dropdownId').dropdown('restore defaults');
         }]);
