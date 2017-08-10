@@ -13,19 +13,21 @@ angular.module('playerApp')
     'dashboardService', '$timeout', '$state', '$stateParams', 'toasterService',
     function($rootScope, $scope, dashboardService, $timeout, $state, $stateParams, toasterService) {
       var dashboardData = this;
+      dashboardData.height = 120;
       dashboardData.showLoader = true;
+      dashboardData.showDataDiv = false;
       dashboardData.datasetPreviousValue = 'creation';
-
       /**
        * @Function to load dashboard
        * @params apis request body
        * @return void
        */
       dashboardData.getAdminDashboardData = function(timePeriod) {
-        timePeriod = timePeriod || '7d';
+        dashboardData.timePeriod = timePeriod || '7d';
+
         var requestBody = {
           org_id: $stateParams.orgId,
-          period: timePeriod
+          period: dashboardData.timePeriod
         };
 
         dashboardService.getAdminDashboardData(requestBody, dashboardData.datasetPreviousValue).then(function(apiResponse) {
@@ -38,7 +40,9 @@ angular.module('playerApp')
             if (apiResponse && apiResponse.responseCode === 'OK') {
               if (dashboardData.datasetPreviousValue == 'creation') {
                 angular.forEach(apiResponse.result.snapshot, function(numericData, key) {
-                  if (key === 'org.creation.authors.count' || key === 'org.creation.reviewers.count' || key === 'org.creation.content.count') {
+                  if (key === 'org.creation.authors.count' ||
+                    key === 'org.creation.reviewers.count' ||
+                    key === 'org.creation.content.count') {
                     dashboardData.numericStatArray.push(numericData);
                   }
                   if (key === 'org.creation.content[@status=published].count') {
@@ -81,30 +85,14 @@ angular.module('playerApp')
                   }
                 });
 
-               dashboardData.options = {legend: { display: true }};
+                dashboardData.options = dashboardService.getChartOptions(dashboardData.datasetPreviousValue);
+                dashboardData.colors = dashboardService.getChartColors(dashboardData.datasetPreviousValue);
 
-                dashboardData.colors = [{
-                    backgroundColor: '#0062ff',
-                    borderColor: '#0062ff',
-                    fill: false
-                  },
-                  {
-                    backgroundColor: '#FF0000',
-                    borderColor: '#FF0000',
-                    fill: false
-                  },
-                  {
-                    backgroundColor: '#006400',
-                    borderColor: '#006400',
-                    fill: false
-                  }
-                ];
               } else if (dashboardData.datasetPreviousValue == 'consumption') {
                 angular.forEach(apiResponse.result.snapshot, function(numericData, key) {
                   if (key === 'org.consumption.content.session.count' || key === 'org.consumption.content.time_spent.sum' || key === 'org.consumption.content.time_spent.average') {
 
                     if (key === 'org.consumption.content.time_spent.sum' || key === 'org.consumption.content.time_spent.average') {
-
                       var result = '';
                       var iNum = '';
 
@@ -119,7 +107,6 @@ angular.module('playerApp')
                         result = iNum.toFixed(2);
                         numericData.value = result + ' hour';
                       }
-
                       dashboardData.numericStatArray.push(numericData);
                     } else {
                       dashboardData.numericStatArray.push(numericData);
@@ -136,43 +123,42 @@ angular.module('playerApp')
                     })
                     dashboardData.data.push(draftArray);
                   }
-
                 });
 
                 dashboardData.series = ['Time spent by day'];
-                dashboardData.options = {legend: { display: true }};
+                dashboardData.options = dashboardService.getChartOptions(dashboardData.datasetPreviousValue);
 
-                dashboardData.colors = [{
-                  backgroundColor: '#0062ff',
-                  borderColor: '#0062ff',
-                  fill: false
-                }];
+                dashboardData.colors = dashboardService.getChartColors(dashboardData.datasetPreviousValue);
               }
               dashboardData.apiResponse = apiResponse;
+              dashboardData.showDataDiv = true;
             } else {
-				toasterService.error(apiResponse.params.errmsg);
-			}
+              toasterService.error(apiResponse.params.errmsg);
+              dashboardData.showDataDiv = false;
+            }
           })
           .catch(function(err) {
             console.log(err);
           })
           .finally(function() {
             // Hide loading spinner whether our call succeeded or failed.
-			dashboardData.showLoader = false;
+            dashboardData.showLoader = false;
+            // dashboardData.showDataDiv = true;
           });
       }
-      $('.ui.dropdown').dropdown();
+      $('#dropdownMenu').dropdown();
 
       /**
        * @Trigger onAfterFilterChange
        * @Params timePeriod
        */
       dashboardData.onAfterFilterChange = function(timePeriod) {
+        // To avoid same
+        if (dashboardData.timePeriod === timePeriod) {
+          return false;
+        }
         dashboardData.showLoader = true;
-        //Adding active class
-        $('.dashBoardMenuItem').removeClass('active');
-        $('#' + timePeriod).addClass('active');
-
+        dashboardData.showDataDiv = false;
         dashboardData.getAdminDashboardData(timePeriod);
       };
 
@@ -181,20 +167,15 @@ angular.module('playerApp')
        * @Params timePeriod
        */
       dashboardData.onAfterDatasetChange = function(dataset) {
-        dashboardData.showLoader = true;
         // To avoid same
         if (dashboardData.datasetPreviousValue === dataset) {
           return false;
         }
+        dashboardData.showLoader = true;
+        dashboardData.showDataDiv = false;
         dashboardData.datasetPreviousValue = dataset;
-
-        //Adding active class
-        $('.dashBoardMenuItem').removeClass('active');
-        $('#7d').addClass('active');
-
         dashboardData.getAdminDashboardData();
       };
-
       dashboardData.getAdminDashboardData();
     }
   ]);
