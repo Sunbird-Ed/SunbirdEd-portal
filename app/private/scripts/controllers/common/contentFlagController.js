@@ -15,7 +15,7 @@ angular.module('playerApp')
             var contentFlag = this;
             contentFlag.showContentFlagModal = false;
             contentFlag.userId = $rootScope.userId;
-            contentFlag.userFullName = $rootScope.firstName + $rootScope.lastName;
+            contentFlag.userFullName = $rootScope.firstName + ' ' + $rootScope.lastName;
             contentFlag.contentId = $scope.contentid;
             contentFlag.contentName = $scope.contentname;
             contentFlag.contentVersionKey = $scope.versionkey;
