@@ -116,7 +116,12 @@ app.all('/private/service/v1/learner/*', verifyToken(), permissionsHelper.checkP
   proxyReqOptDecorator: decorateRequestHeaders(),
   proxyReqPathResolver: function(req) {
     let urlParam = req.params["0"];
-    return require('url').parse(learnerURL + urlParam).path;
+    let query = require('url').parse(req.url).query;
+    if (query) {
+      return require('url').parse(learnerURL + urlParam + '?' + query).path;
+    } else {
+      return require('url').parse(learnerURL + urlParam).path;
+    }
   }
 }));
 
