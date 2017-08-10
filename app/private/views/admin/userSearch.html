@@ -5,14 +5,15 @@
         </div>
         <div class="content ">
           <a class="header ">{{user.firstName}}{{user.lastName}}</a>
-          <a ng-if="user.status===1" sb-permissions permission-only="SYSTEM_ADMIN,ORG_ADMIN" class="float-ContentRight">
+            <a ng-if="user.status===1" sb-permissions permission-only="SYSTEM_ADMIN,ORG_ADMIN" class="float-ContentRight">
              <!-- update user roles -->
             <span ng-click="admin.showModal(user.userId,user.organisations);">
               <i class="edit icon trashIcon-fontSize"></i>
             </span>
               <!-- delete user -->
             <span>
-              <i class="trash outline icon trashIcon-fontSize" ng-click="admin.deleteUser(user.userId)">
+              <i class="trash outline icon trashIcon-fontSize"  
+              ng-click="admin.showdeleteModal(user.userId,user.firstName,user.lastName);">
                 </i>
             <span>
               </a>
@@ -36,4 +37,6 @@
         </div>
      </div>
       <div ng-include=" 'views/admin/updateRoleModal.html' "></div>  
+      <div ng-include=" 'views/admin/deleteUser.html' "></div>  
+    
   </div>  
