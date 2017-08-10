@@ -26,7 +26,10 @@ let PERMISSIONS_HELPER = {
             "ORG_ADMIN",
             "MEMBERSHIP_MANAGEMENT",
             "ORG_MODERATOR"
-        ]
+        ],
+        "user/v1/upload":["ORG_ADMIN","SYSTEM_ADMIN"],
+        "org/v1/role/assign":["ORG_ADMIN","SYSTEM_ADMIN"],
+        "user/v1/block":["ORG_ADMIN","SYSTEM_ADMIN"]
     },
 
     getPermissions: function() {

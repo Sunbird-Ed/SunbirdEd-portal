@@ -9,7 +9,7 @@
                 <div class="ui grid">
                     <div class="row">
                         <div class="eleven wide column">
-                            <span class="ui header">{{$root.labels.CONTENT_FLAG.heading}}</span>
+                            <span class="ui header flagheader">{{$root.labels.CONTENT_FLAG.heading}}</span>
                         </div>
                         <div class="one wide column actions">
                             <h5 class="ui basic icon circular button deny" ng-click="contentFlag.hideContentFlagModal();">
@@ -18,22 +18,22 @@
                         </div>
                     </div>
                     <div class="row">
-                        <span class="ui tiny header">{{$root.labels.CONTENT_FLAG.description}}</span>
+                        <span class="ui tiny header flag-description">{{$root.labels.CONTENT_FLAG.description}}</span>
                     </div>
                 </div>
             </div>
             <div class="content">
                 <form class="ui form">
                     <div class="field">
-                        <label>{{$root.labels.CONTENT_FLAG.contentName}}</label>
+                        <label class="flag-form">{{$root.labels.CONTENT_FLAG.contentName}}</label>
                         <div class="field">
                             <input type="text" name="title" readonly ng-model="contentFlag.contentName">
                         </div>
                     </div>
                     <div class="grouped fields">
-                        <label>{{$root.labels.CONTENT_FLAG.selectAReason}}</label>
+                        <label class="flag-form">{{$root.labels.CONTENT_FLAG.selectAReason}}</label>
                         <div ng-repeat="reason in contentFlag.reasons">
-                            <div class="field">
+                            <div class="field radiomargin">
                                 <div class="ui radio checkbox">
                                     <input type="radio" name="radio" ng-model="contentFlag.data.flagReasons" value="{{reason}}">
                                     <label>{{reason}}</label>
@@ -41,9 +41,9 @@
                             </div>
                         </div>
                         <div class="field">
-                            <label>{{$root.labels.CONTENT_FLAG.addYourComment}}</label>
+                            <!-- <label>{{$root.labels.CONTENT_FLAG.addYourComment}}</label> -->
                             <div class="field">
-                                <textarea rows="2" name="addYourComment" placeholder="ADD YOUR COMMENT" ng-model="contentFlag.data.comment" required=""></textarea>
+                                <input rows="2" name="addYourComment" placeholder="ADD YOUR COMMENT" ng-model="contentFlag.data.comment" required="">
                             </div>
                         </div>
                     </div>
