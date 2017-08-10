@@ -10,41 +10,30 @@
 
 angular.module('playerApp')
     .controller('BatchController', ['$rootScope', '$timeout', '$state','$scope', '$stateParams', 
-        'batchService', '$filter' ,function($rootScope, $timeout, $state, $scope, $stateParams, batchService, $filter) {
+    'batchService', '$filter', 'permissionsService', function($rootScope, $timeout, $state, 
+        $scope, $stateParams, batchService, $filter, permissionsService) {
             var batch = this;
-            batch.userList = [
-                {id: '1', name: 'User1', image: 'jenny.jpg'},
-                {id: '2', name: 'User2', image: 'elliot.jpg'},
-                {id: '3', name: 'User3', image: 'stevie.jpg'},
-                {id: '4', name: 'User4', image: 'christian.jpg'},
-                {id: '5', name: 'User5', image: 'matt.jpg'},
-                {id: '6', name: 'User6', image: 'justen.jpg'},
-                {id: '7', name: 'User7', image: 'user_logo.png'}
-            ];
-            batch.menterList = [
-                {id: '1', name: 'Mentor1', image: 'jenny.jpg'},
-                {id: '2', name: 'Mentor2', image: 'elliot.jpg'},
-                {id: '3', name: 'Mentor3', image: 'stevie.jpg'},
-                {id: '4', name: 'Mentor4', image: 'christian.jpg'},
-                {id: '5', name: 'Mentor5', image: 'matt.jpg'},
-                {id: '6', name: 'Mentor6', image: 'justen.jpg'}
-            ];
+            batch.userList = [];
+            batch.menterList = [];
             batch.userId = $rootScope.userId;
             batch.courseId = $stateParams.courseId;
             batch.submitted = false;
             batch.showBatchCard = $scope.showbatchcard;
             batch.quantityOfBatchs = 3;
             batch.userName = $rootScope.firstName + ' ' + $rootScope.lastName;
+            batch.showBatchDetailsPage = false;
             batch.status = 1;
             batch.statusOptions = [
                 { name: 'Ongoing', value: 1 },
                 { name: 'New', value: 0 }
             ];
+            
             batch.showCreateBatchModal = function () {
+                batch.getUserList();
                 $timeout(function () {
-                    $('#users,#mentors').dropdown({ forceSelection: false });
+                    $('#users,#mentors').dropdown({ forceSelection: false, fullTextSearch: true });
                     $('.ui.calendar').calendar({refresh: true});
-                    $('input:radio[name="enrollmenttype"]').filter('[value="invite-only"]').attr('checked', true);
+                    $('input:radio[name="enrollmentType"]').filter('[value="invite-only"]').attr('checked', true);
                     $("#createBatchModal").modal({
                         onShow: function () {
                             $('.ui.calendar#rangestartAdd').calendar({
@@ -57,11 +46,11 @@ angular.module('playerApp')
                                 },
                                 onChange: function (date, text, mode) {
                                     if(_.isUndefined(batch)){
-                                        batch = { data : { startdate : date.getFullYear() + '-' + date.getMonth() + '-' +date.getDate() } }; 
+                                        batch = { data : { startDate : text } }; 
                                     }else if(_.isUndefined(batch.data)){
-                                        batch.data = { startdate : date.getFullYear() + '-' + date.getMonth() + '-' +date.getDate() };
+                                        batch.data = { startDate : text };
                                     }else{
-                                        batch.data.startdate = date.getFullYear() + '-' + date.getMonth() + '-' +date.getDate();
+                                        batch.data.startDate = text;
                                     }
                                     $('.ui.calendar#rangeendAdd').calendar({
                                         type: 'date',
@@ -73,11 +62,11 @@ angular.module('playerApp')
                                         },
                                         onChange: function (date, text, mode) {
                                             if(_.isUndefined(batch)){
-                                                batch = { data : { enddate : date.getFullYear() + '-' + date.getMonth() + '-' +date.getDate() } };
+                                                batch = { data : { endDate : text } };
                                             }else if(_.isUndefined(batch.data)){
-                                                batch.data = { enddate : date.getFullYear() + '-' + date.getMonth() + '-' +date.getDate() };
+                                                batch.data = { endDate : text };
                                             }else{
-                                                batch.data.enddate = date.getFullYear() + '-' + date.getMonth() + '-' +date.getDate()
+                                                batch.data.endDate = text;
                                             }
                                         }
                                     });
@@ -103,9 +92,15 @@ angular.module('playerApp')
                 }, 10);
             };
 
+            batch.hideCreateBatchModal = function () {
+                $('#createBatchModal').modal('hide');
+                $('#createBatchModal').modal('hide others');
+                $('#createBatchModal').modal('hide dimmer');
+            };
+
             batch.addBatch = function(data){
                 if($scope.createBatch.$valid){
-                    if(data.enrollmenttype != 'open'){
+                    if(data.enrollmentType != 'open'){
                         data.users = $("#users").dropdown("get value").split(",");
                         data.mentors = $("#mentors").dropdown("get value").split(",");
                     }
@@ -113,9 +108,18 @@ angular.module('playerApp')
                     requestBody.courseId = batch.courseId;
                     requestBody.createdBy = batch.userId;
                     requestBody.createdFor = $rootScope.organisationIds;
-                    data.users = $("#users").dropdown("get value");
-                    //batchService.create(requestBody);
-                    console.log('requestBody', JSON.stringify(requestBody));
+                    var request = {
+                        "request" : requestBody
+                    }
+                    batchService.create(request).then(function (response) {
+                        if (response && response.responseCode === 'OK') {
+                            batch.hideCreateBatchModal();
+                        }else{
+                            toasterService.error('Error Message');    
+                        }
+                    }).catch(function () {
+                        toasterService.error('Error Message');
+                    });
                 }
             };
 
@@ -130,9 +134,7 @@ angular.module('playerApp')
                 //         userId: batch.userId,
                 //         courseId: batch.courseId
                 //     },
-                //     sort_by: { createdOn: 'desc' },
-                //     offset: 0,
-                //     limit: 10
+                //     sort_by: { createdOn: 'desc' }
                 // };
                 // batchService.getAllBatchs(request).then(function (response) {
                 //     if (response && response.responseCode === 'OK') {
@@ -143,12 +145,68 @@ angular.module('playerApp')
                 // }).catch(function () {
                 //     toasterService.error(batch.messages.SEARCH.FAILED);
                 // });
-                batch.batchList = [{"identifier":"do_123454","name":"Batch1","description":"description1","courseId":"do_212296625948319744173","createdBy":"89cf1a7e-dfd3-46c9-a428-d37e9a2bc001","enrollmenttype":"open","startdate":"2017-07-27","enddate":"2017-08-27","status":"1","users":["User1", "User2", "User3"],"mentors":["Mentor1","Mentor2"]},{"identifier":"do_123455","name":"Batch2","description":"description2","courseId":"do_212296625948319744173","createdBy":"89cf1a7e-dfd3-46c9-a428-d37e9a2bc001","enrollmenttype":"open","startdate":"2017-08-27","enddate":"2017-09-27","status":"0","users":["User3","User4","User2","User5"],"mentors":["Mentor3","Mentor5"]},{"identifier":"do_123456","name":"Batch3","description":"description3","courseId":"do_212296625948319744173","createdBy":"89cf1a7e-dfd3-46c9-a428-d37e9a2bc001","enrollmenttype":"open","startdate":"2017-07-27","enddate":"2017-08-03","status":"2","users":["User3","User6"],"mentors":["Mentor5","Mentor3"]}];
+                batch.batchList = [{"identifier":"01230667636753203225","name":"Batch1","description":"description1","courseId":"do_212296625948319744173","createdBy":"89cf1a7e-dfd3-46c9-a428-d37e9a2bc001","enrollmenttype":"open","startdate":"2017-07-27","enddate":"2017-08-27","status":"1","users":["User1", "User2", "User3"],"mentors":["Mentor1","Mentor2"]},{"identifier":"01230667636753203225","name":"Batch2","description":"description2","courseId":"do_212296625948319744173","createdBy":"89cf1a7e-dfd3-46c9-a428-d37e9a2bc001","enrollmenttype":"open","startdate":"2017-08-27","enddate":"2017-09-27","status":"0","users":["User3","User4","User2","User5"],"mentors":["Mentor3","Mentor5"]},{"identifier":"01230667636753203225","name":"Batch3","description":"description3","courseId":"do_212296625948319744173","createdBy":"89cf1a7e-dfd3-46c9-a428-d37e9a2bc001","enrollmenttype":"open","startdate":"2017-07-27","enddate":"2017-08-03","status":"2","users":["User3","User6"],"mentors":["Mentor5","Mentor3"]}];
             };
 
             batch.showUpdateBatchModal = function(batchData){
                 batchService.setBatchData(batchData);
                 $state.go('updateBatch', {batchId: batchData.identifier});
+            };
+
+            batch.getUserList = function(){
+                var request = {
+                    "request": {
+                        "filters" : {
+                            "organisations.organisationId": [$rootScope.organisationIds.toString()]
+                        }
+                    }
+                };
+
+                batchService.getUserList(request).then(function (response) {
+                    if (response && response.responseCode === 'OK') {
+                        _.forEach(response.result.response.content, function(userData){
+                            if(userData.identifier != $rootScope.userId){
+                                var user = {
+                                    id: userData.identifier,
+                                    name:  userData.firstName +' '+ userData.lastName,
+                                    avatar: userData.avatar
+                                }
+                                _.forEach(userData.organisations, function(userOrgData){
+                                    if(_.indexOf(userOrgData.roles, "COURSE_MENTOR") != -1){
+                                        batch.menterList.push(user);   
+                                    }
+                                });
+                                batch.userList.push(user);
+                            }
+                        });
+                    }else{
+                        toasterService.error('Error Message');    
+                    }
+                    console.log('response ', response);
+                }).catch(function () {
+                    toasterService.error('Error Message');
+                });
+            };
+
+            batch.showBatchDetails = function(batchData){
+                batch.showBatchDetailsPage = true;
+                batch.batchInfo = batchData;
+                //console.log(JSON.stringify(batch.batchInfo));
+                $('#batchDetails').iziModal({
+                    title: '',
+                    fullscreen: false,
+                    openFullscreen: true,
+                    closeOnEscape: false,
+                    overlayClose: false,
+                    overlay: false,
+                    overlayColor: '',
+                    onClosed: function () {
+                        batch.showBatchDetailsPage = false;
+                    }
+                });
+                $timeout(function () {
+                    $('#batchDetails').iziModal('open');
+                }, 100);
             }
         }
     ]);
