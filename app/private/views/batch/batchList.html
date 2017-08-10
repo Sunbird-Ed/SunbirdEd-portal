@@ -1,18 +1,18 @@
 <div class="ui grid">
     <div class="eight wide column">
-    </div>
-    <div class="four wide column padding-top-none">
-        <div class="ui form">
-          <div class="field">
+        <div class="ui dropdown">
+            <div class="text">Ongoing Batches</div>
+            <i class="dropdown icon"></i>
             <select ng-options="option.value as option.name for option in batch.statusOptions" ng-model="batch.status" ng-change="batch.listBatches()" id="batchStatusOptions">
             </select>
-          </div>
         </div>
     </div>
+    <div class="four wide column"></div>
 </div>
 <div class="ui three stackable cards">
     <div class="link card mouse-pointer" ng-repeat="batchdata in batch.batchList track by $index">
         <div class="image imageInCardsResponsive" ng-click="batch.showUpdateBatchModal(batchdata)">
+            <div class="ui top right attached black label">Batch of {{batchdata.users.length}}</div>
             <div class="ui fluid image">
                 <img ng-src="../images/sunbird_logo.png">
             </div>
@@ -21,8 +21,9 @@
             </div>
         </div>
         <div class="sliderCards content sliderCardSubDesc">
-            start Date: {{batchdata.startdate}}<br>
-            end Date: {{batchdata.enddate}}
+            By User Name <br/>
+            {{batchdata.startdate | date: "dd MMM"}} - {{batchdata.enddate | date: "dd MMM"}}
+            <i class="right floated large unlock alternate icon" ng-show="batchdata.enrollmenttype == 'open'"></i>
         </div>
     </div>
 </div>

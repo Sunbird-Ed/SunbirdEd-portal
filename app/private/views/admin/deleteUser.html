@@ -1,0 +1,12 @@
+  <div class="ui modal" id="deleteUserConfirmation">
+        <div class="header">Delete User</div>
+        <div class="content">
+          <p> Are you sure to delete  {{admin.deletingUserFullName}}?</p>
+        </div>
+        <div class="actions">
+          <div class="ui primary approve button" 
+           ng-click="admin.deleteUser(admin.deletingUserId)">Yes
+          </div>
+          <div class="ui negative cancel button">No</div>
+        </div>
+      </div>

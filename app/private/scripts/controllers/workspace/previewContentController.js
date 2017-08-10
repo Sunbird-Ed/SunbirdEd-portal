@@ -409,11 +409,13 @@ angular.module('playerApp')
                 };
                 contentService.retire(request).then(function (res) {
                     if (res && res.responseCode === 'OK') {
-                        previewContent.loader.showLoader = false;
-                        previewContent.isShowDeleteButton = false;
-                        previewContent.isShowFlagActionButton = false;
-                        toasterService.success(previewContent.message.RETIRE_CONTENT.SUCCESS);
-                        $state.go($stateParams.backState);
+                        $timeout(function () {
+                            previewContent.loader.showLoader = false;
+                            previewContent.isShowDeleteButton = false;
+                            previewContent.isShowFlagActionButton = false;
+                            toasterService.success(previewContent.message.RETIRE_CONTENT.SUCCESS);
+                            $state.go($stateParams.backState);
+                        }, 2000);
                     } else {
                         previewContent.loader.showLoader = false;
                         toasterService.error(previewContent.message.RETIRE_CONTENT.FAILED);
@@ -468,5 +470,16 @@ angular.module('playerApp')
                     previewContent.loader.showLoader = false;
                     toasterService.error(previewContent.message.DISCARD_CONTENT_FLAG.FAILED);
                 });
+            };
+            
+            previewContent.getConceptsNames = function (concepts) {
+                var conceptNames = _.map(concepts, 'name').toString();
+                if (conceptNames.length < concepts.length) {
+                    var filteredConcepts = _.filter($rootScope.concepts, function (p) {
+                        return _.includes(concepts, p.identifier);
+                    });
+                    conceptNames = _.map(filteredConcepts, 'name').toString();
+                }
+                return conceptNames;
             };
         }]);
