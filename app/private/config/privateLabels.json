@@ -224,6 +224,14 @@
             "participants": "SELECTED PARTICIPANTS",
             "selectedmentors": "SELECTED MENTORS",
             "courseBatches" : "COURSE BATCHES"            
+        },
+        "SEARCH":{
+            "STATUS":{
+                "INACTIVE":"Inactive",
+                "ACTIVE":"Active",
+                "BLOCKED":"Blocked",
+                "RETIRED":"Retired"
+            }
         }
     }
 }
