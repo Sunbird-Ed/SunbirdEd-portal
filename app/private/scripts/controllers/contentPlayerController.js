@@ -187,6 +187,7 @@ angular.module('playerApp')
                     org.sunbird.portal.eventManager.dispatchEvent('sunbird:player:telemetry',
                                                     event.detail.telemetryData);
                 });
+                $('#dropdownId').dropdown('restore defaults');
             };
 
             $scope.updateContent = function (scope) {

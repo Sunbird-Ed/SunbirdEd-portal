@@ -3,7 +3,7 @@
 
     <div class="ui grid">
         <div class="one wide column"></div>
-        <div class="ten wide column">
+        <div class="ten wide column" ng-show="!toc.showCourseDashboard">
             <div ng-if="toc.courseHierachy">
                 <div id="course-toc-list" ng-show="!contentPlayer.isContentPlayerEnabled && !toc.showAllNoteList">
                     <div class="content">
@@ -126,5 +126,13 @@
             </div>
             <div class="one wide column"></div>
         </div>
+        <!-- Load dashboard controller.Added by Nilesh-->
+        <div class="ten wide column" ng-if="toc.showCourseDashboard">
+            <div ng-controller="courseDashboardCtrl as courseDashboard" ng-init="courseDashboard.loadData()">
+                <div ng-include="'views/course/courseDashboard.html'"></div>
+            </div>
+            <div class="one wide column"></div>
+        </div>
+        <!-- End-->
     </div>
 </div>
