@@ -1,0 +1,21 @@
+<!-- download -->
+<div class="ui grid margin-bottom-10 margin-top-10">
+  <div class="ten wide column">
+  </div>
+  <div class="two wide column actions">
+    <div  class="ui right floated primary button"
+     ng-click="admin.downloadUsers($root.search.selectedSearchKey,admin.searchResult)">
+      Download
+    </div>
+    </div>
+</div>
+  <!-- search results -->
+ <div class="ui divided items" ng-if="!$root.search.loader.showLoader">
+   <!-- user Search Result -->
+   <div ng-include=" 'views/admin/userSearch.html' "></div>  
+  <!-- org search result -->
+   <div class="ui divided items" ng-include=" 'views/admin/orgSearch.html' "></div>  
+</div>
+
+
+
