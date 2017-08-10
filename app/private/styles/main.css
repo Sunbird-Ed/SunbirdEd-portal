@@ -2080,7 +2080,7 @@ ul.fancytree-container li {
 #updateBatchModal .date-select {
   padding: 1em 0 1em 2em !important;
 }
-span.dashBoardMenuItem:active {
+span.dashBoardMenuItem.active {
   color: #0076FE !important;
   font-family: 'sunbirdboldfont' !important;
 }
