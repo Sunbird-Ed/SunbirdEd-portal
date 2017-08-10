@@ -778,7 +778,7 @@ angular.module('playerApp')
           }
       })
       .state('orgDashboard', {
-		  
+
         url: '/org-dashboard/:orgId',
         views: {
           'mainView': {
@@ -789,6 +789,20 @@ angular.module('playerApp')
         params: {
               orgId: null
 		},
+
+
+onEnter: function ($stateParams, $rootScope, routeHelperService) {
+              if ($stateParams.backState === 'Profile') {
+                  $rootScope.profileActive = 'active';
+              } else {
+                  $rootScope.resourcesActive = 'active';
+              }
+              $rootScope.isPlayerPage = true;
+              routeHelperService.loadRouteConfig('orgDashboard', null);
+
+          },
+
+
         onExit: function($rootScope) {
           $rootScope.profileActive = '';
         }
