@@ -793,7 +793,7 @@ angular.module('playerApp')
               }
           }
       }).state('CreateBatch', {
-          url: '/create/batch',
+          url: '/create/batch/:courseId',
           views: {
               mainView: {
                   templateUrl: '/views/batch/createBatch.html',
@@ -891,7 +891,9 @@ angular.module('playerApp')
 
       $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState,
       fromParams) {
-          window.localStorage.setItem('previousURl', JSON.stringify({ name: fromState.name, params: fromParams }));
+          if(!_.isEmpty(fromState.name)){
+            window.localStorage.setItem('previousURl', JSON.stringify({ name: fromState.name, params: fromParams })); 
+          }
           switch (toState.name) {
           case 'WorkSpace':
               if (permissionsService.checkRolesPermissions(config.COMMON_ROLES_CHECK, false)) {

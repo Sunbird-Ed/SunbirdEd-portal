@@ -1,8 +1,8 @@
-<div class="ui modal" id="changeUserRoles" ng-init="admin.modalInit(user.organisations)">
+<div class="ui modal" id="changeUserRoles" ng-init="admin.modalInit()">
   <div class="ui segment">
     <div class="ui grid">
       <div class="eleven wide column">
-        <span class="ui header">Select Role</span>{{admin.userOrgsCopy}}
+        <span class="ui header">Select Role</span>
       </div>
       <div class="one wide column actions">
         <h5 class="ui basic icon circular button deny">
@@ -10,20 +10,22 @@
             </h5>
       </div>
     </div>
+
     <div class="content">
       <div class="ui inline selection  dropdown margin-bottom-30 margin-top-20" id="userOrgs">
         <input type="hidden" name="gender">
         <i class="dropdown icon"></i>
         <div class="default text">Org</div>
         <div class="menu">
-          <div class="item" ng-click="admin.selectedIrg(org.organisationId);admin.selectedOrgUserRoles=org.roles" ng-repeat="org in user.organisations" value="{{org.organisationId}}">{{org.orgName}}</div>
+          <div class="item" ng-repeat="org in admin.userOrganisations" ng-click="admin.selectedIrg(org.organisationId);admin.selectedOrgUserRoles=org.roles;admin.selectedOrgUserId=org.organisationId"  value="{{org.organisationId}}">{{org.orgName}}</div>
           </div>
       </div>
-      <div class="ui form" ng-if="admin.selectedOrgUserRoles">
+      
+      <div class="ui form margin-top-40" ng-if="admin.selectedOrgUserRoles">
         <div class="ui stackable four column grid">            
             <div class="field" ng-repeat="role in admin.userRoles">
                 <div class="ui checkbox">
-                  <input type="checkbox" value='{{role}}' ng-click="admin.modal(role,admin.selectedOrgUserRoles)" ng-modal="admin.array" ng-checked="admin.isUserRole(role,admin.selectedOrgUserRoles);">
+                  <input type="checkbox" value='{{role}}' ng-click="admin.editRoles(role,admin.selectedOrgUserRoles)" ng-modal="admin.array" ng-checked="admin.isUserRole(role,admin.selectedOrgUserRoles);">
                   <label>{{role}}</label>
                 </div>
             </div>
@@ -31,7 +33,7 @@
       </div>
     </div>
     <div class="actions">
-      <button class="ui primary right floated button margin-bottom-15 margin-top-10 " type="submit">Update</button>
+      <button class="ui primary right floated button margin-bottom-15 margin-top-10 " type="submit" ng-click="admin.updateRoles(admin.userId,admin.selectedOrgUserId,admin.selectedOrgUserRoles)">Update</button>
     </div>
   </div>
 </div>

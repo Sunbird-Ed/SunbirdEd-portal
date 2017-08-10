@@ -1,3 +1,9 @@
+<div ng-if="$root.search.loader.showLoader">
+    <app-loader data="{{$root.search.loader}}"></app-loader>
+</div>
+<div ng-if="$root.search.error.showError">
+    <error-message data="{{$root.search.error}}" visibility="$root.search.error.showError"></error-message>
+</div>
 <div ng-if="!$root.search.loader.showLoader && !$root.search.error.showError && $root.search.searchResult.response.content.length">
     <div class="ui clearing segment content-player-header search-content-header">
       <div class="ui  left floated header margin-auto">
@@ -7,7 +13,6 @@
           <i class="ui remove icon"></i>
       </h5>
     </div>
-   
-        <user-search users="$root.search.searchResult.response.content"></user-search>
+    <user-search users="$root.search.searchResult.response.content"></user-search>
 
 </div>

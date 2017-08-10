@@ -42,11 +42,11 @@
                 "textbook": "TEXTBOOK",
                 "textbookDescription": "You can create book with the structured section.",
                 "course": "COURSE",
-                "courseDescription": "You will be taken to an editor to create a course with assessments/quizes.",
+                "courseDescription": "You will be taken to an editor to create a course with assessments/quizzes.",
                 "lesson": "LESSON",
                 "lessonDescription": "You can create stuff here. You must try it, it's magical!.",
                 "collection": "COLLECTION",
-                "collectionDescription": "You will be taken to an editor to create a course with assessments/quizes.",
+                "collectionDescription": "You will be taken to an editor to create a course with assessments/quizzes.",
                 "enterYoutubeURL": "ENTER YOUTUBE URL",
                 "fileUploadOptions": "File accepted only pdf, mp4 and html zip (Max size 25mb).",
                 "uploadContent": "Upload Content",
@@ -128,6 +128,7 @@
                 "byProceedYouAgreedCourse": "By proceeding you agreed to make all course created through authoring tool or uploaded on the Ek Step platform to be available under licence CC-BY 4.0",
                 "byProceedYouAgreedTextBook": "By proceeding you agreed to make all textbook created through authoring tool or uploaded on the Ek Step platform to be available under licence CC-BY 4.0",
                 "byProceedYouAgreedLesson": "By proceeding you agreed to make all lesson created through authoring tool or uploaded on the Ek Step platform to be available under licence CC-BY 4.0",
+                "byProceedYouAgreedLessonPlan": "By proceeding you agreed to make all lesson plan created through authoring tool or uploaded on the Ek Step platform to be available under licence CC-BY 4.0",
                 "action": "Action",
                 "actionName": "Action Name",
                 "apply": "Apply"
@@ -205,6 +206,32 @@
             "selectAReason": "SELECT A REASON",
             "addYourComment": "ADD YOUR COMMENT",
             "submit": "SUBMIT"
+        },
+        "CONTENT_SHARE": {
+            "contentShareText": "Share this",
+            "shareByTheLink": "Share by the link - ",
+            "copyLink": "COPY LINK",
+            "linkCopyToClipboard": "link copy to clipboard"
+        },
+        "BATCH":{
+            "name": "NAME OF BATCH",
+            "description": "ABOUT THIS BATCH",
+            "startdate": "START DATE",
+            "enddate": "END DATE",
+            "enrollment": "NATURE OF BATCH",
+            "users": "MEMBERS IN THE BATCH",
+            "mentors": "MENTORS IN THE BATCH",
+            "participants": "SELECTED PARTICIPANTS",
+            "selectedmentors": "SELECTED MENTORS",
+            "courseBatches" : "COURSE BATCHES"            
+        },
+        "SEARCH":{
+            "STATUS":{
+                "INACTIVE":"Inactive",
+                "ACTIVE":"Active",
+                "BLOCKED":"Blocked",
+                "RETIRED":"Retired"
+            }
         }
     }
 }
