@@ -922,7 +922,7 @@ onEnter: function ($stateParams, $rootScope, routeHelperService) {
       $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState,
       fromParams) {
           if(!_.isEmpty(fromState.name)){
-            window.localStorage.setItem('previousURl', JSON.stringify({ name: fromState.name, params: fromParams })); 
+            window.localStorage.setItem('previousURl', JSON.stringify({ name: fromState.name, params: fromParams }));
           }
           switch (toState.name) {
           case 'WorkSpace':
@@ -1004,6 +1004,13 @@ onEnter: function ($stateParams, $rootScope, routeHelperService) {
               break;
           case 'WorkSpace.FlaggedContent':
               if (permissionsService.checkRolesPermissions(['FLAG_REVIEWER'], false)) {
+                  toasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
+                  event.preventDefault();
+                  $state.go('Home');
+              }
+              break;
+          case 'orgDashboard':
+              if (permissionsService.checkRolesPermissions(['ORG_ADMIN','SYSTEM_ADMIN'], false)) {
                   toasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
                   event.preventDefault();
                   $state.go('Home');
