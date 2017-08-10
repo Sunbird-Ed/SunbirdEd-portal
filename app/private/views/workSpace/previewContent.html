@@ -177,8 +177,18 @@
                         </div>
                     </div>
                 </div>
-                <div class="row" ng-if="previewContent.contentData.status === 'Flagged'">
-                    <div class="three wide column">
+                <div class="row">
+                    <div class="three wide column" ng-if="previewContent.contentData.concepts">
+                        <div class="ui list">
+                            <div class="item">
+                                <div class="content">
+                                    <div class="header">{{$root.labels.WORKSPACE.common.concept}}</div>
+                                    <div class="description padding-top-1rem">{{previewContent.getConceptsNames(previewContent.contentData.concepts)}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="three wide column" ng-if="previewContent.contentData.status === 'Flagged'">
                         <div class="ui list">
                             <div class="item">
                                 <div class="content">
@@ -188,7 +198,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="three wide column">
+                    <div class="three wide column" ng-if="previewContent.contentData.status === 'Flagged'">
                         <div class="ui list">
                             <div class="item">
                                 <div class="content">
