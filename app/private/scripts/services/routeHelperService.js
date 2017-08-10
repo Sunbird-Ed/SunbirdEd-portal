@@ -230,6 +230,20 @@ angular.module('playerApp')
                         }];
 
                         break;
+                     case 'orgDashboard':
+
+                        $rootScope.breadCrumbsData = [{
+                            name: 'Home',
+                            link: 'home'
+                        }, {
+                            name: 'Profile',
+                            link: 'profile'
+                        }, {
+                            name: 'Organisation Admin Dashboard',
+                            link: ''
+                        }];
+
+                        break;
                     default:
                         {
                             $rootScope.breadCrumbsData = null;
