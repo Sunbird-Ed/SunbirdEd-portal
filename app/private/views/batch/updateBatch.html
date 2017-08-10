@@ -69,16 +69,16 @@
                             <i class="dropdown icon"></i>
                             <div class="default text padding-top-20">Start searching by name</div>
                             <div class="menu">
-                                <div class="item" data-value="{{mentor.name}}" ng-repeat="mentor in batchUpdate.menterList">
-                                    <img class="ui mini avatar image" src="images/user_logo.png">{{mentor.name}}
+                                <div class="item" data-value="{{mentor.id}}" ng-repeat="mentor in batchUpdate.menterList">
+                                    <img class="ui mini avatar image" ng-src="{{mentor.avatar || 'images/user_logo.png'}}">{{mentor.name}}
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="one field" ng-hide="batchUpdate.batchData.enrollmentType == 'open'">
                         <label>{{$root.labels.BATCH.selectedmentors}}</label>
-                        <a class="ui label" ng-hide="batchUpdate.selectedMentors.length > 0" ng-repeat="mentor in batchUpdate.selectedMentors">
-                            <img class="ui right spaced avatar image" src="images/user_logo.png">
+                        <a class="ui label" ng-hide="batchUpdate.selectedMentors.length < 0" ng-repeat="mentor in batchUpdate.selectedMentors">
+                            <img class="ui right spaced avatar image" ng-src="{{mentor.avatar || 'images/user_logo.png'}}">
                             {{mentor.name}}
                         </a>
                     </div>
@@ -89,8 +89,8 @@
                             <i class="dropdown icon"></i>
                             <div class="default text padding-top-20">Select User</div>
                             <div class="menu">
-                                <div class="item" data-value="{{user.name}}" ng-repeat="user in batchUpdate.userList">
-                                    <img class="ui mini avatar image" src="images/user_logo.png">
+                                <div class="item" data-value="{{user.id}}" ng-repeat="user in batchUpdate.userList">
+                                    <img class="ui mini avatar image" ng-src="{{user.avatar || 'images/user_logo.png'}}">
                                     {{user.name}}
                                 </div>
                             </div>
@@ -98,8 +98,8 @@
                     </div>
                     <div class="one field" ng-hide="batchUpdate.batchData.enrollmentType == 'open'">
                         <label>{{$root.labels.BATCH.participants}}</label>
-                        <a class="ui label" ng-hide="batchUpdate.selectedUsers.length > 0" ng-repeat="user in batchUpdate.selectedUsers">
-                            <img class="ui right spaced avatar image" src="images/user_logo.png">
+                        <a class="ui label" ng-hide="batchUpdate.selectedUsers.length < 0" ng-repeat="user in batchUpdate.selectedUsers">
+                            <img class="ui right spaced avatar image" ng-src="{{user.avatar || 'images/user_logo.png'}}">
                             {{user.name}}
                         </a>
                     </div>
@@ -159,8 +159,8 @@
                             <i class="dropdown icon"></i>
                             <div class="default text padding-top-20">Start searching by name</div>
                             <div class="menu">
-                                <div class="item" data-value="{{mentor.name}}" ng-repeat="mentor in batchUpdate.menterList">
-                                    <img class="ui mini avatar image" src="images/user_logo.png">{{mentor.name}}
+                                <div class="item" data-value="{{mentor.id}}" ng-repeat="mentor in batchUpdate.menterList">
+                                    <img class="ui mini avatar image" ng-src="{{mentor.avatar || 'images/user_logo.png'}}">{{mentor.name}}
                                 </div>
                             </div>
                         </div>
@@ -168,7 +168,7 @@
                     <div class="one field" ng-hide="batchUpdate.batchData.enrollmentType == 'open'">
                         <label>{{$root.labels.BATCH.selectedmentors}}</label>
                         <a class="ui label" ng-hide="batchUpdate.selectedMentors.length > 0" ng-repeat="mentor in batchUpdate.selectedMentors">
-                            <img class="ui right spaced avatar image" src="images/user_logo.png">
+                            <img class="ui right spaced avatar image" ng-src="{{mentor.avatar || 'images/user_logo.png'}}">
                             {{mentor.name}}
                         </a>
                     </div>
@@ -179,8 +179,8 @@
                             <i class="dropdown icon"></i>
                             <div class="default text padding-top-20">Select User</div>
                             <div class="menu">
-                                <div class="item" data-value="{{user.name}}" ng-repeat="user in batchUpdate.userList">
-                                    <img class="ui mini avatar image" src="images/user_logo.png">
+                                <div class="item" data-value="{{user.id}}" ng-repeat="user in batchUpdate.userList">
+                                    <img class="ui mini avatar image" ng-src="{{user.avatar || 'images/user_logo.png'}}">
                                     {{user.name}}
                                 </div>
                             </div>
@@ -189,7 +189,7 @@
                     <div class="one field" ng-hide="batchUpdate.batchData.enrollmentType == 'open'">
                         <label>{{$root.labels.BATCH.participants}}</label>
                         <a class="ui label" ng-hide="batchUpdate.selectedUsers.length > 0" ng-repeat="user in batchUpdate.selectedUsers">
-                            <img class="ui right spaced avatar image" src="images/user_logo.png">
+                            <img class="ui right spaced avatar image" ng-src="{{user.avatar || 'images/user_logo.png'}}">
                             {{user.name}}
                         </a>
                     </div>
@@ -249,8 +249,8 @@
                             <i class="dropdown icon "></i>
                             <div class="default text padding-top-20">Start searching by name</div>
                             <div class="menu">
-                                <div class="item" data-value="{{mentor.name}}" ng-repeat="mentor in batchUpdate.menterList">
-                                    <img class="ui mini avatar image" src="images/user_logo.png">{{mentor.name}}
+                                <div class="item" data-value="{{mentor.id}}" ng-repeat="mentor in batchUpdate.menterList">
+                                    <img class="ui mini avatar image" ng-src="{{mentor.avatar || 'images/user_logo.png'}}">{{mentor.name}}
                                 </div>
                             </div>
                         </div>
@@ -258,7 +258,7 @@
                     <div class="one field" ng-hide="batchUpdate.batchData.enrollmentType == 'open'">
                         <label>{{$root.labels.BATCH.selectedmentors}}</label>
                         <a class="ui label" ng-hide="batchUpdate.selectedMentors.length > 0" ng-repeat="mentor in batchUpdate.selectedMentors">
-                            <img class="ui right spaced avatar image" src="images/user_logo.png">
+                            <img class="ui right spaced avatar image" ng-src="{{mentor.avatar || 'images/user_logo.png'}}">
                             {{mentor.name}}
                         </a>
                     </div>
@@ -269,8 +269,8 @@
                             <i class="dropdown icon"></i>
                             <div class="default text padding-top-20">Select User</div>
                             <div class="menu">
-                                <div class="item" data-value="{{user.name}}" ng-repeat="user in batchUpdate.userList">
-                                    <img class="ui mini avatar image" src="images/user_logo.png">
+                                <div class="item" data-value="{{user.id}}" ng-repeat="user in batchUpdate.userList">
+                                    <img class="ui mini avatar image" ng-src="{{user.avatar || 'images/user_logo.png'}}">
                                     {{user.name}}
                                 </div>
                             </div>
@@ -279,7 +279,7 @@
                     <div class="one field" ng-hide="batchUpdate.batchData.enrollmentType == 'open'">
                         <label>{{$root.labels.BATCH.participants}}</label>
                         <a class="ui label" ng-hide="batchUpdate.selectedUsers.length > 0" ng-repeat="user in batchUpdate.selectedUsers">
-                            <img class="ui right spaced avatar image" src="images/user_logo.png">
+                            <img class="ui right spaced avatar image" ng-src="{{user.avatar || 'images/user_logo.png'}}">
                             {{user.name}}
                         </a>
                     </div>
