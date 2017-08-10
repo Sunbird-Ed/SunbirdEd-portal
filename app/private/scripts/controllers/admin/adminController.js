@@ -22,8 +22,35 @@ angular.module('playerApp')
             var admin = this;
             admin.userRoles = config.USER_ROLES;
             admin.searchResult = $scope.users;
-            admin.userName = '';
+            // admin.userName = '';
             admin.bulkUsers = {};
+
+              // getOrgnames
+            admin.getOrgName = function (cb) {
+                var identifiers = [];
+                admin.searchResult.forEach(function (user) {
+                    if (user.organisations) {
+                        var ids = user.organisations.map(function (org) {
+                            return org.organisationId;
+                        });
+                        identifiers = _.union(identifiers, ids);
+                    }
+                });
+                var req = { request: {
+                    filters: {
+                        identifier: identifiers
+                    }
+                } };
+                adminService.orgSearch(req).then(function (res) {
+                    var orgIdAndNames = res.result.response.content.map(function (org) {
+                        return {
+                            orgName: org.orgName,
+                            orgId: org.identifier
+                        };
+                    });
+                    cb(orgIdAndNames);
+                });
+            };
         // modal init
             admin.addOrgNameToOrganizations = function () {
                 if ($rootScope.search.selectedSearchKey === 'Users') {
@@ -55,14 +82,6 @@ angular.module('playerApp')
                         return true;
                     }
                 }).modal('show');
-                // admin.getOrgName(function (orgIdAndNames) {
-                //     admin.userOrganisations.forEach(function (userOrg) {
-                //         var orgNameAndId = orgIdAndNames.find(function (org) {
-                //             return org.orgId === userOrg.organisationId;
-                //         });
-                //         if (orgNameAndId) { userOrg.orgName = orgNameAndId.orgName; }
-                //     });
-                // });
             };
 
             admin.modalInit = function () {
@@ -97,12 +116,12 @@ angular.module('playerApp')
                         }
                     });
                     alasql('SELECT orgName AS orgName,orgType AS orgType,'
-                    + 'noOfMembers AS noOfMembers,channel AS channel'
+                    + 'noOfMembers AS noOfMembers,channel AS channel, '
                     + 'status AS Status INTO CSV(\'Organizations.csv\',{headers:true}) FROM ?'
                     , [list]);
                 }
             };
- // upload for bulk user create
+            // upload for bulk user create
 
             admin.openImageBrowser = function (key) {
                 if (key === 'users') {
@@ -172,6 +191,7 @@ angular.module('playerApp')
                 admin.bulkUploadErrorMessage = '';
                 admin.bulkUsers = {};
             };
+
 // edit roles
             admin.isUserRole = function (role, list) {
                 return list.includes(role);
@@ -211,6 +231,7 @@ angular.module('playerApp')
                     toasterService.error($rootScope.errorMessages.ADMIN.fail);
                 });
             };
+
 // delete user
             admin.deleteUser = function (userId) {
                 var removeReq = {
@@ -222,10 +243,11 @@ angular.module('playerApp')
 
                 adminService.deleteUser(removeReq).then(function (res) {
                     if (res.result.response === 'SUCCESS') {
+                        toasterService.success($rootScope.errorMessages.ADMIN.deleteSuccess);
                         admin.searchResult = admin.searchResult.filter(function (user) {
                             return user.userId !== userId;
                         });
-                    }
+                    } else { toasterService.error($rootScope.errorMessages.ADMIN.fail); }
                 }).catch(function (err) {
                     toasterService.error($rootScope.errorMessages.ADMIN.fail);
                 });
@@ -254,37 +276,6 @@ angular.module('playerApp')
             // checkStatus
             admin.checkStatus = function (processID) {
 
-            };
-
-            // getOrgnames
-            admin.getOrgName = function (cb) {
-                var identifiers = [];
-
-                admin.searchResult.forEach(function (user) {
-                    if (user.organisations) {
-                        var ids = user.organisations.map(function (org) {
-                            return org.organisationId;
-                        });
-                        identifiers = _.union(identifiers, ids);
-                    }
-                });
-                var req = { request: {
-
-                    filters: {
-                        identifier: identifiers
-
-                    }
-
-                } };
-                adminService.orgSearch(req).then(function (res) {
-                    var orgIdAndNames = res.result.response.content.map(function (org) {
-                        return {
-                            orgName: org.orgName,
-                            orgId: org.identifier
-                        };
-                    });
-                    cb(orgIdAndNames);
-                });
             };
         }]);
 
