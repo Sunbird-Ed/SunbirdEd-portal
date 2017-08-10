@@ -421,7 +421,4 @@ angular.module('playerApp')// add those all values
                     $state.go('PreviewContent', params);
                 }
             };
-            profile.openBulkUploadModal = function () {
-                $('#bulkUpload').modal('show');
-            };
         }]);
