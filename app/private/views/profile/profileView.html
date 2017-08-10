@@ -16,13 +16,13 @@
     <div class=" four wide column margin-top-20">
         <div class="ui grid ">
 <!--             <div class="twelve wide column">
-                <span class="profileViewProgress">Profile Completeness</span> 
-                <span class="profileViewProgress float-ContentRight">15%</span> 
+                <span class="profileViewProgress">Profile Completeness</span>
+                <span class="profileViewProgress float-ContentRight">15%</span>
                 <div class="ui small blue progress margin-top--5">
                     <div class="bar"></div>
-                </div>                  
+                </div>
             </div> -->
-            
+
             <div class="twelve wide column" sb-permissions permission-only="SYSTEM_ADMIN">
                 <div class="workspacebutton workspacecontentProfile ui link card " ng-click="profileCtrl.openBulkUploadModal()">
                     <div class="content ">
@@ -54,7 +54,7 @@
                     </div>
                 </div>
             </div>
-            <div class="twelve wide column" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW">
+            <div class="twelve wide column" sb-permissions permission-only="ORG_ADMIN,SYSTEM_ADMIN">
             <!-- TODO: update roles -->
                 <div class="workspacebutton workspacecontentProfile ui link card ">
                     <div class="content ">

@@ -2,9 +2,9 @@
 
 /**
  * @ngdoc function
- * @name playerApp.controller:orgAdminCreationDashboardCtrl
+ * @name playerApp.controller:orgDashboardController
  * @description
- * # orgAdminCreationDashboardCtrl
+ * # orgDashboardController
  * Controller of the playerApp
  */
 
@@ -17,6 +17,7 @@ angular.module('playerApp')
       dashboardData.showLoader = true;
       dashboardData.showDataDiv = false;
       dashboardData.datasetPreviousValue = 'creation';
+
       /**
        * @Function to load dashboard
        * @params apis request body
