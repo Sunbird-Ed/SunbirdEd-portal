@@ -21,7 +21,9 @@
   <div class="header">
     <div class="ui grid">
       <div class="eleven wide column">
-        <!-- <span class="ui header">Upload Users</span> -->
+         <span class="ui header" ng-if="admin.formKey==='users'">Upload Users</span> 
+            <span class="ui header" ng-if="admin.formKey==='organization'">Upload Organization</span> 
+               <span class="ui header" ng-if="admin.formKey==='status'">Check Status</span> 
       </div>
       <div class="one wide column actions">
         <h5 class="ui basic icon circular button deny">
