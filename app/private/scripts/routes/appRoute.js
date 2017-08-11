@@ -777,6 +777,30 @@ angular.module('playerApp')
               $rootScope.resourcesActive = '';
           }
       })
+      .state('orgDashboard', {
+        url: '/org-dashboard/:orgId',
+        views: {
+          'mainView': {
+            templateUrl: '/views/dashboard/orgDashboard.html',
+            controller: 'orgDashboardController as dashboardData'
+          }
+        },
+        params: {
+          orgId: null
+        },
+        onEnter: function($stateParams, $rootScope, routeHelperService) {
+          if ($stateParams.backState === 'Profile') {
+            $rootScope.profileActive = 'active';
+          } else {
+            $rootScope.resourcesActive = 'active';
+          }
+          $rootScope.isPlayerPage = true;
+          routeHelperService.loadRouteConfig('orgDashboard', null);
+        },
+        onExit: function($rootScope) {
+          $rootScope.profileActive = '';
+        }
+      })
       .state('WorkSpace.ContentBatch', {
           url: '/content/batches',
           views: {
@@ -931,7 +955,10 @@ angular.module('playerApp')
                 break;             
           case 'WorkSpace.FlaggedContent':
                 routeHelperService.checkStateAccess(['FLAG_REVIEWER'],false,event);
-                break;   
+                break;  
+		      case 'orgDashboard':
+                routeHelperService.checkStateAccess(['ORG_ADMIN', 'SYSTEM_ADMIN'],false,event);
+                break;
           case 'WorkSpace.DraftContent':
                 routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK,false,event);
                 break; 
