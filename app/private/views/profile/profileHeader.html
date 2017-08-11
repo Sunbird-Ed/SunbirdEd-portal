@@ -27,8 +27,8 @@
                     </div>
                 </div>
             </div>
-            <div class="profilesettings four wide column">
-               <!-- <bulk-upload></bulk-upload> -->
+            <div class="profilesettings four wide column"ng-if="!profileCtrl.isError && !profileCtrl.loader.showLoader" >
+                <bulk-upload></bulk-upload> 
             </div>
         </div>
     </div>
