@@ -14,25 +14,29 @@
     <div class="description annannouncement-description">
         <div class="ui divided list">
             <div class="item padding-top-10" ng-repeat="batchdata in batch.batchList track by $index">
-                <i class="write icon float-ContentRight cursor-pointer" ng-click="batch.showUpdateBatchModal(batchdata)"></i>
-                <!-- <button class="ui right floated blue basic button" ng-click="batch.showBatchDetails(batchdata)">Enroll</button> -->
+                <i class="write icon float-ContentRight cursor-pointer" ng-click="batch.showUpdateBatchModal(batchdata)" ng-show="batch.isMentor"></i>
+                <button class="ui right floated blue basic button" ng-click="batch.showBatchDetails(batchdata)" ng-show="!batch.isMentor">Enroll</button>
                 <i class="calendar outline icon"></i>
                 <div class="content padding-bottom-15">
                     <span class="header padding-bottom-5">
-                        {{batchdata.startdate | date: "dd MMM"}} - {{batchdata.enddate | date: "dd MMM"}}
+                        {{batchdata.startDate | date: "dd MMM"}} - {{batchdata.endDate | date: "dd MMM"}}
                     </span>
                     <div class="description">Created by {{batch.userName}}</div>
+                </div>
+            </div>
+            <div ng-show="batch.batchList.length <= 0">
+                <div class="ui success message">
+                    <div class="header">{{$root.errorMessages.BATCH.GET_LIST.NO_CONTENT}}</div>
                 </div>
             </div>
         </div>
     </div>
   </div>
-  <div class="ui bottom attached batchCard button" ui-sref="CreateBatch({courseId: batch.courseId})">
-    <a><i class="add icon"></i>
-      Create Batch</a>
+  <div class="ui bottom attached batchCard button" ui-sref="CreateBatch({courseId: batch.courseId})" ng-show="batch.isMentor">
+    <a><i class="add icon"></i>Create Batch</a>
   </div>
 </div>
-<div id="batchDetails" ng-show="batch.showBatchDetailsPage">
-    <div ng-include="'views/batch/batchListCard.html'" ng-controller="BatchController"></div>
+<div id="batchDetails">
+    <div ng-include="'views/batch/batchDetails.html'" ng-controller="BatchController as batch"></div>
 </div>
 <!-- sb-permissions permission-only="COURSE_MENTER" -->
