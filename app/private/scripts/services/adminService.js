@@ -41,4 +41,8 @@ angular.module('playerApp')
                 var url = config.URL.ADMIN.BULK.ORGANIZATIONS_UPLOAD;
                 return httpServiceJava.upload(url, req);
             };
+            this.bulkUploadStatus = function (processId) {
+                var url = config.URL.ADMIN.BULK.STATUS + '/' + processId;
+                return httpServiceJava.get(url);
+            };
         }]);
