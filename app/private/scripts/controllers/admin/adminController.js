@@ -26,6 +26,22 @@ angular.module('playerApp')
             // admin.userName = '';
             admin.bulkUsers = {};
 
+            admin.sampleOrgCSV = [{ orgName: null,
+                isRootOrg: null,
+                channel: null,
+                externalId: null,
+                provider: null,
+                description: null
+            }];
+            admin.sampleUserCSV = [{
+                firstName: null,
+                lastName: null,
+                phone: null,
+                email: null,
+                Organisations: null,
+                userName: null
+            }
+            ];
               // getOrgnames
             admin.getOrgName = function (cb) {
                 var identifiers = [];
@@ -109,10 +125,12 @@ angular.module('playerApp')
             };
              // open  upload csv modal
             admin.openBulkUploadModal = function (key) {
+                $('#bulkUpload').modal('refresh');
                 $('#bulkUpload').modal({
                     onShow: function () {
                         admin.formKey = key;
                         admin.fileName = '';
+                        admin.bulkUploadStatus = {};
                     },
                     onHide: function () {
                         admin.formKey = '';
@@ -218,6 +236,7 @@ angular.module('playerApp')
 
             admin.openImageBrowser = function (key) {
                 if (key === 'users') {
+                    console.log('uploadUsrsCSV', uploadUsrsCSV);
                     if (!((admin.bulkUsers.provider && admin.bulkUsers.externalid)
                     || admin.bulkUsers.OrgId)) {
                         admin.bulkUploadError = true;
@@ -256,13 +275,6 @@ angular.module('playerApp')
                 }
             };
             admin.bulkUploadUsers = function () {
-                // var organisationId = admin.bulkUsers.OrgId;
-                // var newUsersReq = { user: file, organisationId: organisationId };
-                //     organisationId: admin.bulkUsers.OrgId, // valid or
-                //     externalid: admin.bulkUsers.externalid, // valid and
-                //     provider: admin.bulkUsers.provider// valid
-                // };
-                // console.log('newUsersReq', newUsersReq);
                 admin.fileToUpload.append('organisationId', admin.bulkUsers.OrgId);
                 admin.fileToUpload.append('externalid', admin.bulkUsers.externalid);
                 admin.fileToUpload.append('provider', admin.bulkUsers.provider);
@@ -290,7 +302,27 @@ angular.module('playerApp')
                 admin.bulkUploadErrorMessage = '';
                 admin.bulkUsers = {};
             };
-
+            admin.getBulkUloadStatus = function (id) {
+                adminService.bulkUploadStatus(id).then(function (res) {
+                    console.log('res');
+                    if (res.responseCode === 'OK') {
+                        $('#bulkUpload').modal('refresh');
+                        admin.bulkUploadStatus.success = res.result.response[0].successResult;
+                        admin.bulkUploadStatus.failure = res.result.response[0].failureResult;
+                    } else { toasterService.error($rootScope.errorMessages.ADMIN.fail); }
+                }).catch(function (err) {
+                    toasterService.error($rootScope.errorMessages.ADMIN.fail);
+                });
+            };
+            admin.downloadSample = function (key) {
+                if (key === 'users') {
+                    alasql('SELECT * INTO CSV(\'Sample_Users.csv\', {headers: true}) FROM ?',
+                [admin.sampleUserCSV]);
+                } else if (key === 'organizations') {
+                    alasql(' SELECT *  INTO CSV(\'Sample_Organizations.csv\', {headers: true}) FROM ?',
+                [admin.sampleOrgCSV]);
+                }
+            };
                  // create org
             // admin.createOrg = function () {
             //     var orgRequest = {
@@ -311,6 +343,5 @@ angular.module('playerApp')
             //         }
             //     });
             // };
-            // checkStatus
         }]);
 
