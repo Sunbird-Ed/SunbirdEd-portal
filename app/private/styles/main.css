@@ -1523,6 +1523,9 @@ ul.fancytree-container li {
 .filtercolmntext {
   z-index: 11;
 }
+.conceptSelector.ui.form .treepicker-parent input {
+  color: #908e90;
+}
 .resource-padding.ui.grid > .column:not(.row) {
   padding-top: 0;
   margin-bottom: 1em;
