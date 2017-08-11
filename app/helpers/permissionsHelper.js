@@ -30,6 +30,8 @@ let PERMISSIONS_HELPER = {
         "user/v1/upload":["ORG_ADMIN","SYSTEM_ADMIN"],
         "org/v1/role/assign":["ORG_ADMIN","SYSTEM_ADMIN"],
         "user/v1/block":["ORG_ADMIN","SYSTEM_ADMIN"],
+        "dashboard/v1/creation":["ORG_ADMIN","SYSTEM_ADMIN"],
+        "dashboard/v1/consumption":["ORG_ADMIN","SYSTEM_ADMIN"],
         "org/v1/upload":["SYSTEM_ADMIN"],
         "data/v1/upload/status/":["ORG_ADMIN","SYSTEM_ADMIN"]
     },
@@ -102,7 +104,7 @@ let PERMISSIONS_HELPER = {
                     if (body.result.response.organisations) {
                         _.forEach(body.result.response.organisations, function (org) {
                             if (org.roles && _.isArray(org.roles)) {
-                                reqObj.session.roles = _.union(reqObj.session.roles, org.roles)   
+                                reqObj.session.roles = _.union(reqObj.session.roles, org.roles)
                             }
                             if (org.organisationId) {
                                 reqObj.session.orgs.push(org.organisationId);
@@ -120,7 +122,7 @@ let PERMISSIONS_HELPER = {
 
     },
     checkPermission: function() {
-        return function(req, res, next) {           
+        return function(req, res, next) {
             var roles = module.exports.checkURLMatch(req.originalUrl);
             if (_.isArray(roles)) {
                if (_.intersection(roles, req.session['roles']).length > 0) {
