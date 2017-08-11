@@ -79,6 +79,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
                 $rootScope.firstName = profileData.firstName;
                 $rootScope.lastName = profileData.lastName;
                 var userRoles = profileData.roles;
+                $rootScope.organisations = profileData.organisations;
                 var organisationNames = [];
 
                 var rootOrg = (profileData.rootOrg && !_.isUndefined(profileData.rootOrg.id)) ? profileData.rootOrg.id : 'sunbird';
