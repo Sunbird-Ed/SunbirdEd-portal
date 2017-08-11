@@ -1,121 +1,197 @@
- <!-- LINKS ON PROFILE PAGE -->
- <div class="ui grid">
-		<div class="twelve wide column padding-top-none ">
-				<a  class="ui  " 
-								sb-permissions permission-only="SYSTEM_ADMIN" 
-								ng-click="admin.openBulkUploadModal('organization')">
-								Upload Organizations
-				</a>
-		</div>
-		<div class="twelve wide column padding-top-none ">
-				<a class="ui  " 
-								sb-permissions permission-only="SYSTEM_ADMIN,ORG_ADMIN" 
-								ng-click="admin.openBulkUploadModal('users')"	>
-								Upload Users
-				</a>
-		</div>
-		 <div class="twelve wide column padding-top-none ">
-				<a  class="ui  " 
-								sb-permissions permission-only="SYSTEM_ADMIN,ORG_ADMIN" 
-								ng-click="admin.openBulkUploadModal('status')">
-								Check Status
-				</a>
-		</div> 
+<!-- LINKS ON PROFILE PAGE -->
+<div class="ui grid">
+  <div class="twelve wide column padding-top-none ">
+    <a class="ui  " sb-permissions permission-only="SYSTEM_ADMIN" ng-click="admin.openBulkUploadModal('organization')">
+        Upload Organizations
+        </a>
+  </div>
+  <div class="twelve wide column padding-top-none ">
+    <a class="ui  " sb-permissions permission-only="SYSTEM_ADMIN,ORG_ADMIN" ng-click="admin.openBulkUploadModal('users')">
+            Upload Users
+        </a>
+  </div>
+  <div class="twelve wide column padding-top-none ">
+    <a class="ui  " sb-permissions permission-only="SYSTEM_ADMIN,ORG_ADMIN" ng-click=" admin.openBulkUploadModal('status')">
+          Check Status
+        </a>
+  </div>
 </div>
-	<!-- MODAL -->
-<div class="ui modal" id="bulkUpload">
-		<div class="header">
-        <div class="ui grid">
-            <div class="eleven wide column">
-               <!-- <span class="ui header">Upload Users</span> -->
-            </div>
-            <div class="one wide column actions">
-                <h5 class="ui basic icon circular button deny">
-                    <i class="ui remove icon"></i>
-                </h5>
-            </div>
+<!-- MODAL -->
+<div class="ui large modal" id="bulkUpload">
+  <div class="header">
+    <div class="ui grid">
+      <div class="eleven wide column">
+         <span class="ui header" ng-if="admin.formKey==='users'">Upload Users</span> 
+            <span class="ui header" ng-if="admin.formKey==='organization'">Upload Organization</span> 
+               <span class="ui header" ng-if="admin.formKey==='status'">Check Status</span> 
+      </div>
+      <div class="one wide column actions">
+        <h5 class="ui basic icon circular button deny">
+                <i class="ui remove icon"></i>
+            </h5>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <!-- USERS upload -->
+    <form   class="ui form" sb-permissions permission-only="SYSTEM_ADMIN,ORG_ADMIN" ng-if="admin.formKey==='users'">
+      <div class="ui grid" ng-if="!admin.bulkUsersProcessId">
+        <div class="six wide column">
+          <div class="required field">
+            <label>Provider</label>
+            <input type="text" placeholder="Provider" ng-model="admin.bulkUsers.provider">
+          </div>
         </div>
-    </div> 
-    <div class="content">
-				<!-- USERS upload -->
-        <form class="ui form" sb-permissions permission-only="SYSTEM_ADMIN,ORG_ADMIN" ng-if="admin.formKey==='users'">
-            <div class="ui grid">
-                <div class="six wide column">
-                    <div class="required field">
-                        <label>Provider</label>
-                        <input type="text" placeholder="Provider" ng-model="admin.bulkUsers.provider">
-                    </div>
-                </div>
-                <div class="six wide column">
-                     <div class="required field">
-                        <label>External Id</label>
-                        <input type="text" placeholder="External Id" ng-model="admin.bulkUsers.externalid">
-                    </div>
-                </div>
+        <div class="six wide column">
+          <div class="required field">
+            <label>External Id</label>
+            <input type="text" placeholder="External Id" ng-model="admin.bulkUsers.externalid">
+          </div>
+        </div>
+      </div>
+      <div class="ui horizontal divider margin-top-40" ng-if="!admin.bulkUsersProcessId">
+        Or
+      </div>
+      <div class="ui grid" ng-if="!admin.bulkUsersProcessId">
+        <div class="six wide column">
+          <div class="one field">
+            <div class=" required field">
+              <label>OrgId</label>
+              <input type="text" placeholder="OrgId" ng-model="admin.bulkUsers.OrgId">
             </div>
-            <div class="ui horizontal divider margin-top-40">
-                Or
-            </div>
-            <div class="ui grid">
-                <div class="six wide column">
-                    <div class="one field">
-                        <div class=" required field">
-                            <label>OrgId</label>
-                            <input type="text" placeholder="OrgId"ng-model="admin.bulkUsers.OrgId">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="ui grid">
-                <div class="four wide column">
-                   	<button  class="ui primary right floated button" ng-click="admin.openImageBrowser('organizations');">upload organizations CSV</button>
+          </div>
+        </div>
+      </div>
+      <div class="ui negative message" ng-if="admin.bulkUploadError">
+        <i class="close icon" ng-click="admin.closeBulkUploadError()"></i>
+        <p>{{admin.bulkUploadErrorMessage}}</p>
+      </div>
+      <div class="ui grid" ng-if="!admin.bulkUsersProcessId">
+        <div class="four wide column">
+          <button class="ui primary left floated button"ng-click="admin.downloadSample('users')">Download Sample CSV</button>
+        </div>
+        <div class="four wide column">
+        </div>
+        <div class="four wide column">
+       <button  class="ui primary left floated button" ng-click="admin.openImageBrowser('users');">upload CSV</button>
 								<input type="file" accept="file/csv,file/xlsx" class="content-input ui small "
-								id="uploadOrgCSV" onchange="angular.element(this).scope().validateFile(this.files,'organizations');"
-								required="" />
-                </div>                
-                <div class="four wide column">                                     
-                </div>
-                <div class="four wide column">                
-								</div>
-									<!-- show progress -->
-							<p> Process ID ={{admin.bulkUsersProcessId}}</p>
-						<p>Please save the Process Id.You can track progress with process ID</P>
-            </div>  
-        </form>
-		
-			
-				<!-- organization upload -->
-				<form class="ui form" sb-permissions permission-only="SYSTEM_ADMIN" ng-if="admin.formKey==='organization'">
-						<h1>upload	Organization</h1>
-						<div class="twelve wide column">	{{admin.fileName}}
-								<button  class="ui primary right floated button" ng-click="admin.openImageBrowser('organizations');">upload organizations CSV</button>
-								<input type="file" accept="file/csv,file/xlsx" class="content-input ui small "
-								id="uploadOrgCSV" onchange="angular.element(this).scope().validateFile(this.files,'organizations');"
-								required="" />
-						</div>
-				<!-- show progress -->
-						<p> Process ID ={{admin.bulkOrgProcessId}}</p>
-						<p>Please save the Process Id . You can track progress with process ID</p>
-				</form>
-				
-					<!-- check Status -->
-				<form class="ui form" sb-permissions permission-only="SYSTEM_ADMIN,ORG_ADMIN"  ng-if="admin.formKey==='status'">
-					<h4>You can track progress with process ID</h4>
-						           <div class="ui grid">
-                <div class="six wide column">
-                    <div class="field">
-                        <label>Process ID</label>
-                        <input type="text" placeholder="Process ID" ng-model="admin.processID">
-                    </div>
-                    <button class="ui primary left floated button"ng-click="admin.getBulkUloadStatus(admin.processID)"> check status</button>
-                </div>
-                <div class="three wide column">
-                                    </div>
-               </div>
-						<p>Status={{ admin.statusResponse}}</p>
-				</form>
-	
-			 <div class="actions">           
-    </div>
-    </div>
+								id="uploadUsrsCSV" onchange="angular.element(this).scope().validateFile(this.files,'users');"
+								required="" /> 
 
+        </div>
+      </div>
+      <h5><i class="file outline icon" ng-if="admin.fileName"></i>Uploaded File ={{admin.fileName}}</h5>
+      <!-- show progress -->
+      <div ng-if="admin.bulkUsersProcessId">
+      <h5>Process ID ={{admin.bulkUsersProcessId}}</h5>
+      <h5>Please save the Process ID.You can track progress with Process ID</h5>
+      </div>
+    </form>
+    <!-- organization upload -->
+    <form class="ui form" sb-permissions permission-only="SYSTEM_ADMIN" ng-if="admin.formKey==='organization'">
+        <div class="ui grid" ng-if="!admin.bulkUsersProcessId">
+        <div class="four wide column">
+          <button class="ui primary left floated button"ng-click="admin.downloadSample('organizations')">Download Sample CSV</button>
+        </div>
+        <div class="four wide column">
+        </div>
+        <div class="four wide column">
+        <button  class="ui primary right floated button" ng-click="admin.openImageBrowser('organizations');">upload organizations CSV</button>
+								<input type="file" accept="file/csv,file/xlsx" class="content-input ui small "
+								id="uploadOrgCSV" onchange="angular.element(this).scope().validateFile(this.files,'organizations');"
+								required="" />
+              
+      </div>
+      </div>
+      <h5 ng-if="admin.fileName">
+        <i class="file outline icon"></i>Uploaded File ={{admin.fileName}}
+      </h5>
+      <!-- show progress -->
+      <div ng-if="admin.bulkUsersProcessId">
+      <h5>Process ID ={{admin.bulkUsersProcessId}}</h5>
+      <h5>Please save the Process ID.You can track progress with process ID</h5>
+      </div>
+    </form>
+    <!-- check Status -->
+    <form class="ui form" sb-permissions permission-only="SYSTEM_ADMIN,ORG_ADMIN" ng-if="admin.formKey==='status'">
+      <h4>You can track progress with process ID</h4>
+      <div class="ui grid">
+        <div class="six wide column">
+          <div class="field">
+            <label>Process ID</label>
+            <input type="text" placeholder="Process ID" ng-model="admin.processID">
+          </div>
+          <button class="ui primary left floated button" ng-click="admin.getBulkUloadStatus(admin.processID)"> check status</button>
+        </div>
+        <div class="three wide column">
+        </div>
+      </div>
+<div ng-if="admin.bulkUploadStatus.success">
+       <h5>Success Result Table</h5>
+    <table class="ui celled table">
+        <thead>
+            <tr>
+               <th>OrgName</th>
+               <th>Provider</th>
+               <th>Channel</th>
+               <th>ExternalId</th>
+               <th>Description</th>
+               <th>IsRootOrg</th>
+               <th>RootOrgId</th>
+               <th>Id</th>
+               <th>CreatedDate</th>
+               <th>Status</th>
+               <th>CreatedBy</th>
+            </tr>
+        </thead>
+        <tbody>
+                 <tr class="positive" ng-repeat="fields in admin.bulkUploadStatus.success" >
+              <td>{{fields.orgName}}</td>
+              <td>{{fields.provider}}</td>
+               <td>{{fields.channel}}</td>
+                <td>{{fields.externalId}}</td>
+                 <td>{{fields.description}}</td>
+                  <td>{{fields.isRootOrg}}</td>
+                   <td>{{fields.id}}</td>
+                    <td>{{fields.createdDate}}</td>
+                     <td>{{fields.status}}</td>
+                      <td>{{fields.createdBy}}</td>
+          
+        </tbody>
+    </table>
+</div>
+  <div ng-if="admin.bulkUploadStatus.failure">
+    <h5>Failure Result Table</h5>
+    <table class="ui celled table">
+        <thead>
+            <tr>
+               <th>orgName</th>
+               <th>Provider</th>
+               <th>Channel</th>
+               <th>externalId</th>
+               <th>Description</th>
+               <th>isRootOrg</th>
+               <th>err_msg</th>
+            </tr>
+        </thead>
+        <tbody>
+    
+            <tr class="error" ng-repeat="fields in admin.bulkUploadStatus.failure">
+              <td>{{fields.orgName}}</td>
+              <td>{{fields.provider}}</td>
+               <td>{{fields.channel}}</td>
+                <td>{{fields.externalId}}</td>
+                 <td>{{fields.description}}</td>
+                  <td>{{fields.isRootOrg}}</td>
+                  <td>{{fields.err_msg}}</td>
+            </tr>
+            </tbody>
+    </table>
+  </div>
+   </div>
+    </form>
+   
+  </div>
+  <div class="actions">
+  </div>
+</div>
