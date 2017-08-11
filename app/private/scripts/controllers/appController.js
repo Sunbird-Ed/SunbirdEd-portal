@@ -196,8 +196,9 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
                     _.forEach(res.result.concepts, function (value) {
                         $scope.concepts.push(value);
                     });
-                    if ((res.result.count > offset) && res.result.count >= (offset + limit)) {
+                    if ((res.result.count > offset) && res.result.count > (offset + limit)) {
                         offset += limit;
+                        limit = res.result.count-limit;
                         $rootScope.getConcept(offset, limit, callback);
                     } else {
                         callback(false, $scope.concepts);
