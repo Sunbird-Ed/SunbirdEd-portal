@@ -396,6 +396,9 @@ th {
 .padding-top-20 {
   padding-top: 20px !important;
 }
+.padding-top-30 {
+  padding-top: 30px !important;
+}
 .padding-topBottom-20 {
   padding: 10px 0px!important;
 }
@@ -1520,6 +1523,9 @@ ul.fancytree-container li {
 .filtercolmntext {
   z-index: 11;
 }
+.conceptSelector.ui.form .treepicker-parent input {
+  color: #908e90;
+}
 .resource-padding.ui.grid > .column:not(.row) {
   padding-top: 0;
   margin-bottom: 1em;
@@ -2079,6 +2085,16 @@ ul.fancytree-container li {
 }
 #updateBatchModal .date-select {
   padding: 1em 0 1em 2em !important;
+}
+.batch-list-items .item .ui.avatar.image {
+  width: 4em;
+  height: 4em;
+}
+.member label {
+  color: #979797;
+  font-size: 13px;
+  font-weight: bold;
+  line-height: 14px;
 }
 span.dashBoardMenuItem.active {
   color: #0076FE !important;
