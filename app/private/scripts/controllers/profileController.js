@@ -25,6 +25,7 @@ angular.module('playerApp')// add those all values
             profile.isError = false;
             profile.contentSortBy = 'desc';
             profile.quantityOfContent = 4;
+            profile.orgDetails = $rootScope.organisations;
 
              // Get user profile
             profile.processProfileData = function (userProfile) { // setProfileData
