@@ -21,5 +21,6 @@ angular.module('playerApp', [
         'pascalprecht.translate',
         'ngSanitize',
         'ui.router.state.events',
-        'uuid4'
+        'uuid4',
+        'chart.js'
     ]);

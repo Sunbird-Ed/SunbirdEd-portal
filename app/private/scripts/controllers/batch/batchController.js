@@ -10,9 +10,9 @@
 
 angular.module('playerApp')
     .controller('BatchController', ['$rootScope', '$timeout', '$state','$scope', '$stateParams', 
-    'batchService', '$filter', 'permissionsService', 'errorMessages', 'toasterService', 
+    'batchService', '$filter', 'permissionsService', 'errorMessages', 'toasterService', 'courseService',
     function($rootScope, $timeout, $state, $scope, $stateParams, batchService, $filter, 
-    permissionsService, errorMessages, toasterService) {
+    permissionsService, errorMessages, toasterService, courseService) {
             var batch = this;
             batch.userList = [];
             batch.menterList = [];
@@ -21,7 +21,6 @@ angular.module('playerApp')
             batch.submitted = false;
             batch.showBatchCard = $scope.showbatchcard;
             batch.quantityOfBatchs = 3;
-            batch.userName = $rootScope.firstName + ' ' + $rootScope.lastName;
             batch.showBatchDetailsPage = false;
             batch.isMentor = false;
             batch.status = 1;
@@ -174,7 +173,30 @@ angular.module('playerApp')
                 console.log(JSON.stringify(request));
                 batchService.getAllBatchs(request).then(function (response) {
                     if (response && response.responseCode === 'OK') {
-                        console.log(response.result.response.count, response.result.response);
+                        batch.userList = [];
+                        batch.userNames = [];
+                        _.forEach(response.result.response.content, function(val){
+                            batch.userList.push(val.createdBy);
+                        });
+                        batch.userList = _.compact(_.uniq(batch.userList));
+                        var req = {
+                            "request": {
+                                "filters":{
+                                    "identifier": batch.userList 
+                                }
+                            }
+                        }
+                        batchService.getUserList(req).then(function (res) {
+                            if (res && res.responseCode === 'OK') {
+                                _.forEach(res.result.response.content, function(val){
+                                    batch.userNames[val.userId] = val.firstName +' '+ val.lastName;
+                                });
+                            }else{
+                               toasterService.error(errorMessages.BATCH.GET_USERS.FAILED); 
+                            }
+                        }).catch(function () {
+                            toasterService.error(errorMessages.BATCH.GET_USERS.FAILED);
+                        });
                         batch.batchList = response.result.response.content || [];
                     } else {
                         toasterService.error(errorMessages.BATCH.SEARCH.FAILED);
@@ -227,7 +249,27 @@ angular.module('playerApp')
             batch.showBatchDetails = function(batchData){
                 $('#batchDetails').iziModal('open');
                 $rootScope.$broadcast('batch.view', batchData);    
-            }
+            };
+
+            batch.enrollUserToCourse = function(batchId){
+                var req = {
+                    "request":{
+                        courseId: batch.courseId,
+                        userId: batch.userId,
+                        batchId: batchId
+                    }
+                }
+
+                courseService.enrollUserToCourse(req).then(function (response) {
+                    if (response && response.responseCode === 'OK') {
+                        
+                    }else{
+                        toasterService.error(errorMessages.Courses.ENROLL.ERROR);
+                    }
+                }).catch(function () {
+                    toasterService.error(errorMessages.Courses.ENROLL.ERROR);
+                });
+            };
 
             $rootScope.$on('batch.view', function (e, batch) {
                     batch.batchInfo = batch;    

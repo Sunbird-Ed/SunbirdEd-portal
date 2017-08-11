@@ -1,0 +1,51 @@
+<div class="ui grid">
+  <div class="one wide column"></div>
+  <div class="ten wide column">
+    <div class="ui grid">
+      <div class="five wide column">
+        <span class="dashBoardSectionHeading"><i class="bar chart icon"></i> &nbsp;  Organisation Admin Dashboard</span></div>
+      <div class="right floated four wide column"></div>
+      <div class="right floated three wide column padding-right-dropdown">
+        <div class="ui dropdown float-ContentRight" id="dropdownMenu">
+          <div class="text dashBoardSectionHeading">Creation</div>
+          <i class="dropdown icon"></i>
+          <div class="menu">
+            <div class="active item" ng-click="dashboardData.onAfterDatasetChange('creation')" data-dataset="creation">Creation</div>
+            <div class="item" ng-click="dashboardData.onAfterDatasetChange('consumption')" data-dataset="consumption">Consumption</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="one wide column"></div>
+</div>
+
+<div id="orgCreationDiv" class="margin-top-30">
+  <div class="resource-padding ui grid">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+      <div class="ui grid column margin-bottom-10">
+        <span class="dashBoardMenuItem cursor-pointer" ng-click="dashboardData.onAfterFilterChange('14d')" id="14d" ng-class="{'active' : dashboardData.timePeriod === '14d'}">LAST 14 DAYS</span>
+        <span class="dashBoardMenuItem cursor-pointer" ng-click="dashboardData.onAfterFilterChange('7d')" ng-class="{'active' : dashboardData.timePeriod === '7d'}">LAST 7 DAYS</span>
+        <span class="dashBoardMenuItem cursor-pointer" ng-click="dashboardData.onAfterFilterChange('5w')" id="5w" ng-class="{'active' : dashboardData.timePeriod === '5w'}">LAST 5 WEEKS</span>
+      </div>
+      <div class="tweleve wide column" ng-if="dashboardData.showLoader">
+        <app-loader></app-loader>
+      </div>
+      <div class="ui three cards" ng-show="dashboardData.showDataDiv">
+        <div class="card" ng-repeat="item in dashboardData.numericStatArray">
+          <div class="content center aligned">
+            <div class="meta dashBoardCardText">{{item.name}}</div>
+            <h2 class="description dashboardCardSubText">{{item.value}}</h2>
+          </div>
+        </div>
+      </div>
+      <div class="ui one column grid" ng-show="dashboardData.showDataDiv">
+        <div class="column">
+          <canvas height="{{dashboardData.height}}" id="bar" class="chart chart-line adminCanvasPadding adminCanvasBorder" chart-data="dashboardData.data" chart-labels="dashboardData.labels" chart-series="dashboardData.series" chart-colors="dashboardData.colors" chart-options="dashboardData.options">
+          </canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
