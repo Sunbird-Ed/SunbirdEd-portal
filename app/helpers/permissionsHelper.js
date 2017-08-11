@@ -29,7 +29,9 @@ let PERMISSIONS_HELPER = {
         ],
         "user/v1/upload":["ORG_ADMIN","SYSTEM_ADMIN"],
         "org/v1/role/assign":["ORG_ADMIN","SYSTEM_ADMIN"],
-        "user/v1/block":["ORG_ADMIN","SYSTEM_ADMIN"]
+        "user/v1/block":["ORG_ADMIN","SYSTEM_ADMIN"],
+        "org/v1/upload":["SYSTEM_ADMIN"],
+        "data/v1/upload/status/":["ORG_ADMIN","SYSTEM_ADMIN"]
     },
 
     getPermissions: function() {
