@@ -32,8 +32,8 @@
   </div>
   <div class="content">
     <!-- USERS upload -->
-    <form class="ui form" sb-permissions permission-only="SYSTEM_ADMIN,ORG_ADMIN" ng-if="admin.formKey==='users'">
-      <div class="ui grid">
+    <form   class="ui form" sb-permissions permission-only="SYSTEM_ADMIN,ORG_ADMIN" ng-if="admin.formKey==='users'">
+      <div class="ui grid" ng-if="!admin.bulkUsersProcessId">
         <div class="six wide column">
           <div class="required field">
             <label>Provider</label>
@@ -47,10 +47,10 @@
           </div>
         </div>
       </div>
-      <div class="ui horizontal divider margin-top-40">
+      <div class="ui horizontal divider margin-top-40" ng-if="!admin.bulkUsersProcessId">
         Or
       </div>
-      <div class="ui grid">
+      <div class="ui grid" ng-if="!admin.bulkUsersProcessId">
         <div class="six wide column">
           <div class="one field">
             <div class=" required field">
@@ -60,66 +60,55 @@
           </div>
         </div>
       </div>
-      <div class="ui grid">
+      <div class="ui negative message" ng-if="admin.bulkUploadError">
+        <i class="close icon" ng-click="admin.closeBulkUploadError()"></i>
+        <p>{{admin.bulkUploadErrorMessage}}</p>
+      </div>
+      <div class="ui grid" ng-if="!admin.bulkUsersProcessId">
         <div class="four wide column">
-          <button class="ui primary left floated button">Download Sample CSV</button>
+          <button class="ui primary left floated button"ng-click="admin.downloadSample('users')">Download Sample CSV</button>
         </div>
         <div class="four wide column">
         </div>
         <div class="four wide column">
-          <button class="ui primary right floated button" ng-click="admin.openImageBrowser('organizations');">Upload Organizations CSV</button>
-          <input type="file" accept="file/csv,file/xlsx" class="content-input ui small " id="uploadOrgCSV" onchange="angular.element(this).scope().validateFile(this.files,'organizations');" required="" />
+       <button  class="ui primary left floated button" ng-click="admin.openImageBrowser('users');">upload CSV</button>
+								<input type="file" accept="file/csv,file/xlsx" class="content-input ui small "
+								id="uploadUsrsCSV" onchange="angular.element(this).scope().validateFile(this.files,'users');"
+								required="" /> 
+
         </div>
       </div>
-      <h5><i class="file outline icon"></i>Uploaded File ={{admin.bulkUsersProcessId}}</h5>
+      <h5><i class="file outline icon" ng-if="admin.fileName"></i>Uploaded File ={{admin.fileName}}</h5>
       <!-- show progress -->
+      <div ng-if="admin.bulkUsersProcessId">
       <h5>Process ID ={{admin.bulkUsersProcessId}}</h5>
       <h5>Please save the Process ID.You can track progress with Process ID</h5>
+      </div>
     </form>
     <!-- organization upload -->
     <form class="ui form" sb-permissions permission-only="SYSTEM_ADMIN" ng-if="admin.formKey==='organization'">
-      <div class="ui grid">
-        <div class="six wide column">
-          <div class="required field">
-            <label>Provider</label>
-            <input type="text" placeholder="Provider" ng-model="admin.bulkUsers.provider">
-          </div>
-        </div>
-        <div class="six wide column">
-          <div class="required field">
-            <label>External Id</label>
-            <input type="text" placeholder="External Id" ng-model="admin.bulkUsers.externalid">
-          </div>
-        </div>
-      </div>
-      <div class="ui horizontal divider margin-top-40">
-        Or
-      </div>
-      <div class="ui grid">
-        <div class="six wide column">
-          <div class="one field">
-            <div class=" required field">
-              <label>OrgId</label>
-              <input type="text" placeholder="OrgId" ng-model="admin.bulkUsers.OrgId">
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="ui grid">
+        <div class="ui grid" ng-if="!admin.bulkUsersProcessId">
         <div class="four wide column">
-          <button class="ui primary left floated button">Download Sample CSV</button>
+          <button class="ui primary left floated button"ng-click="admin.downloadSample('organizations')">Download Sample CSV</button>
         </div>
         <div class="four wide column">
         </div>
         <div class="four wide column">
-          <button class="ui primary right floated button" ng-click="admin.openImageBrowser('organizations');">Upload Organizations CSV</button>
-          <input type="file" accept="file/csv,file/xlsx" class="content-input ui small " id="uploadOrgCSV" onchange="angular.element(this).scope().validateFile(this.files,'organizations');" required="" />
-        </div>
+        <button  class="ui primary right floated button" ng-click="admin.openImageBrowser('organizations');">upload organizations CSV</button>
+								<input type="file" accept="file/csv,file/xlsx" class="content-input ui small "
+								id="uploadOrgCSV" onchange="angular.element(this).scope().validateFile(this.files,'organizations');"
+								required="" />
+              
       </div>
-      <h5><i class="file outline icon"></i>Uploaded File ={{admin.bulkUsersProcessId}}</h5>
+      </div>
+      <h5 ng-if="admin.fileName">
+        <i class="file outline icon"></i>Uploaded File ={{admin.fileName}}
+      </h5>
       <!-- show progress -->
+      <div ng-if="admin.bulkUsersProcessId">
       <h5>Process ID ={{admin.bulkUsersProcessId}}</h5>
       <h5>Please save the Process ID.You can track progress with process ID</h5>
+      </div>
     </form>
     <!-- check Status -->
     <form class="ui form" sb-permissions permission-only="SYSTEM_ADMIN,ORG_ADMIN" ng-if="admin.formKey==='status'">
@@ -135,9 +124,8 @@
         <div class="three wide column">
         </div>
       </div>
-      <h5>Status ={{ admin.statusResponse}}</h5>
-    </form>
-    <h5>Success Result Table</h5>
+<div ng-if="admin.bulkUploadStatus.success">
+       <h5>Success Result Table</h5>
     <table class="ui celled table">
         <thead>
             <tr>
@@ -155,28 +143,22 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-              <td>No Name Specified</td>
-              <td>Approved</td>
-              <td>None</td>
-            </tr>
-            <tr class="positive">
-              <td>Jimmy</td>
-              <td>Cannot pull data</td>
-              <td>None</td>
-            </tr>
-            <tr>
-              <td>Jamie</td>
-              <td>Approved</td>
-              <td></i> Classified</td>
-            </tr>
-            <tr>
-              <td>Jill</td>
-              <td>Approved</td>
-              <td>None</td>
-            </tr>
+                 <tr class="positive" ng-repeat="fields in admin.bulkUploadStatus.success" >
+              <td>{{fields.orgName}}</td>
+              <td>{{fields.provider}}</td>
+               <td>{{fields.channel}}</td>
+                <td>{{fields.externalId}}</td>
+                 <td>{{fields.description}}</td>
+                  <td>{{fields.isRootOrg}}</td>
+                   <td>{{fields.id}}</td>
+                    <td>{{fields.createdDate}}</td>
+                     <td>{{fields.status}}</td>
+                      <td>{{fields.createdBy}}</td>
+          
         </tbody>
     </table>
+</div>
+  <div ng-if="admin.bulkUploadStatus.failure">
     <h5>Failure Result Table</h5>
     <table class="ui celled table">
         <thead>
@@ -191,28 +173,22 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-              <td>No Name Specified</td>
-              <td>Approved</td>
-              <td>None</td>
+    
+            <tr class="error" ng-repeat="fields in admin.bulkUploadStatus.failure">
+              <td>{{fields.orgName}}</td>
+              <td>{{fields.provider}}</td>
+               <td>{{fields.channel}}</td>
+                <td>{{fields.externalId}}</td>
+                 <td>{{fields.description}}</td>
+                  <td>{{fields.isRootOrg}}</td>
+                  <td>{{fields.err_msg}}</td>
             </tr>
-            <tr class="error">
-              <td>Jimmy</td>
-              <td>Cannot pull data</td>
-              <td>None</td>
-            </tr>
-            <tr>
-              <td>Jamie</td>
-              <td>Approved</td>
-              <td class="error"><i class="attention icon"></i> Classified</td>
-            </tr>
-            <tr>
-              <td>Jill</td>
-              <td>Approved</td>
-              <td>None</td>
-            </tr>
-        </tbody>
+            </tbody>
     </table>
+  </div>
+   </div>
+    </form>
+   
   </div>
   <div class="actions">
   </div>
