@@ -9,7 +9,7 @@
                 </div>
                 <div class="four wide column margin-top-Negative30" ng-if="toc.courseType === 'ENROLLED_COURSE'">
                      <span ng-if="toc.courseTotal"><p class="text-align-right">Your Progress {{(toc.courseProgress * 100 / toc.courseTotal)| number: 0 || 0}}%</p></span>
-                     <div class="ui selection dropdown" id="dropdownId" ng-init="toc.initDropdownValues()" style="margin-left: 151px">
+                     <div class="ui selection dropdown" id="courseDropdownValues" ng-init="toc.initDropdownValues()" style="margin-left: 151px">
                          <input type="hidden" name="gender">
                          <i class="dropdown icon"></i>
                          <div class="default text">Select value</div>
