@@ -11,6 +11,15 @@
 .text-underline{
 	text-decoration: underline;"
 }
+.dashBoardMenuItem{
+	cursor: pointer;
+}
+.text-font{
+	font-size: small !important;
+}
+.ui.table tr td {
+	border-top: 0px !important;
+}
 
 </style>
 <div class="ui grid">
@@ -18,15 +27,17 @@
     	<p class="dashboard-label">Course creator dashboard</p>
   	</div>
   	<div class="ui text menu">
-		  <a href="Javascript:void(0);" data-timeperiod="7d" data-timeperiod-text="7 days"
-		  		ng-class="{active:courseDashboard.timePeriod == '7d'}"
-      			ng-click="courseDashboard.onAfterFilterChange($event.target)">LAST 7 DAYS</a>
+		  <span class="dashBoardMenuItem" data-timeperiod="7d" data-timeperiod-text="7 days"
+		  		ng-class="{active:courseDashboard.timePeriod === '7d'}"
+      			ng-click="courseDashboard.onAfterFilterChange($event.target)">LAST 7 DAYS</span>
       			&nbsp;&nbsp;&nbsp;&nbsp;
-		  <a href="Javascript:void(0);" data-timeperiod="14d" data-timeperiod-text="14 days"
-	      		ng-click="courseDashboard.onAfterFilterChange($event.target)">LAST 14 DAYS</a>
+		  <span class="dashBoardMenuItem" data-timeperiod="14d" data-timeperiod-text="14 days"
+		  		ng-class="{active:courseDashboard.timePeriod === '14d'}"
+	      		ng-click="courseDashboard.onAfterFilterChange($event.target)">LAST 14 DAYS</span>
 	      		&nbsp;&nbsp;&nbsp;&nbsp;
-		  <a href="Javascript:void(0);" data-timeperiod="5w" data-timeperiod-text="5 weeks"
-	      		ng-click="courseDashboard.onAfterFilterChange($event.target)">LAST 5 WEEKS</a>
+		  <span class="dashBoardMenuItem" data-timeperiod="5w" data-timeperiod-text="5 weeks"
+		  		ng-class="{active:courseDashboard.timePeriod === '5w'}"
+	      		ng-click="courseDashboard.onAfterFilterChange($event.target)">LAST 5 WEEKS</span>
 	      		&nbsp;&nbsp;&nbsp;&nbsp;
 	</div>
 	<div class="ui category search" style="position: relative;top: -1vh">
@@ -35,7 +46,8 @@
 		    <i class="search icon"></i>
 		</div>
 	</div>
-	<a class="ui item" href="Javascript:void(0);">
+	<a class="ui item basic icon circular" href="Javascript:void(0);"
+		data-tooltip="Close the dashboard">
 		<i class="ui remove icon" ng-click="toc.showCourseDashboard = false;courseDashboard.resetDropdown();"></i>
 	</a>
 
@@ -120,12 +132,29 @@
 	    	</thead>
 	    	<tbody>
 		      	<tr ng-repeat="student in courseDashboard.courseProgressArray|orderBy:courseDashboard.orderByField:courseDashboard.reverseSort | filter:courseDashboard.searchUser">
-		        	<td class="description">{{student.progress}}</td>
-			        <td>{{student.userName}}</td>
-			        <td style="color: #979797 !important">{{student.batchEndsOn}}</td>
-			        <td style="color: #979797 !important">{{student.org}}</td>
-			        <td style="color: #979797 !important">{{student.enrolledOn}}</td>
+		      		<!-- If course progress is 100%-->
+		        	<td ng-if="student.progress === 100">Done</td>
+
+		        	<td class="ui green header text-font"
+		        		ng-if="(student.progress !== 100 && student.progress > 90)">{{student.progress}}%</td>
+
+		        	<td class="ui orange header text-font"
+		        		ng-if="(student.progress !== 100 && student.progress > 30)">{{student.progress}}%</td>
+
+		        	<td class="ui red header text-font"
+		        		ng-if="(student.progress !== 100 && student.progress < 30)">{{student.progress}}%</td>
+
+			        <td>{{student.userName}}<!--<br>Last login: {{student.lastAccessTime | date:'shortTime'}}--></td>
+			        <td>{{student.batchEndsOn | date:'MMM d, y'}}</td>
+			        <td>{{student.org}}</td>
+			        <td>{{student.enrolledOn | date:'MMM d, y'}}</td>
+
 		      	</tr>
+		      	<tr ng-show="courseDashboard.courseProgressArray.length == 0">
+				   <td id="nofoundop">
+				      please select operator
+				   </td>
+				</tr>
 	    	</tbody>
 	  	</table>
 	</div>
@@ -144,7 +173,7 @@
     <app-loader></app-loader>
 </div>
 
-<div class="ui negative message" ng-if="courseDashboard.showError">
+<div class="ui negative message" ng-if="courseDashboard.showError && !courseDashboard.showLoader">
   	<div class="header">
     	Error while fetching data..
   	</div>
