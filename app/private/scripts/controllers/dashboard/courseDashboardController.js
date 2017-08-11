@@ -102,7 +102,7 @@ angular.module('playerApp')
 		 * @Return void
 		 */
 		courseDashboard.resetDropdown = function(){
-			$('#dropdownId').dropdown('restore defaults');
+			$('#courseDropdownValues').dropdown('restore defaults');
 		};
 
 		/**
