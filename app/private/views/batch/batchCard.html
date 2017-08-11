@@ -21,7 +21,7 @@
                     <span class="header padding-bottom-5">
                         {{batchdata.startDate | date: "dd MMM"}} - {{batchdata.endDate | date: "dd MMM"}}
                     </span>
-                    <div class="description">Created by {{batch.userName}}</div>
+                    <div class="description">Created by {{batch.userNames[batchdata.createdBy]}}</div>
                 </div>
             </div>
             <div ng-show="batch.batchList.length <= 0">
