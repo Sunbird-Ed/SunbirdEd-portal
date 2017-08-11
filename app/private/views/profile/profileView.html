@@ -33,6 +33,22 @@
                     </div>
                 </div>
             </div>
+            
+            <div class="twelve wide column" sb-permissions permission-only="ORG_ADMIN,SYSTEM_ADMIN">
+                <div class="workspacebutton workspacecontentProfile ui link card ">
+                    <div class="content ">
+                        <div class="WorkSpaceTextContent ">
+                            <i class='my-icon database icon '></i>
+                            <span class="my-text ">Dashboard</span>
+
+							<div class="ui bulleted list" ng-repeat="item in profileCtrl.orgDetails"  >
+							  <a class="item" ui-sref="orgDashboard({orgId: '{{item.organisationId}}'}) ">{{item.orgName || item.organisationId}}</a>
+							</div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="twelve wide column blur-content">
                 <div class="ui raised segment ">
                     <div class="header announcementCard-header ">
