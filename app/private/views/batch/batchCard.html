@@ -26,7 +26,7 @@
             </div>
             <div ng-show="batch.batchList.length <= 0">
                 <div class="ui success message">
-                    <div class="header">No Batches Avalible.</div>
+                    <div class="header">{{$root.errorMessages.BATCH.GET_LIST.NO_CONTENT}}</div>
                 </div>
             </div>
         </div>
@@ -37,6 +37,6 @@
   </div>
 </div>
 <div id="batchDetails">
-    <div ng-include="'views/batch/batchListCard.html'" ng-controller="BatchController as batch"></div>
+    <div ng-include="'views/batch/batchDetails.html'" ng-controller="BatchController as batch"></div>
 </div>
 <!-- sb-permissions permission-only="COURSE_MENTER" -->
