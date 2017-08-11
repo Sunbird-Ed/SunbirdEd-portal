@@ -46,3 +46,4 @@ angular.module('playerApp')
                 return httpServiceJava.get(url);
             };
         }]);
+
