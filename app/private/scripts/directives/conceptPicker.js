@@ -32,11 +32,7 @@ angular.module('playerApp').directive('conceptPicker', function () {
                     var req = {
                         filters: {
                             objectType: ['Dimension', 'Domain']
-                        },
-                        params: {
-                            cid: '12'
                         }
-
                     };
                         /** Get domains and dimensions data* */
                     searchService.search(req).then(function (resp) {
