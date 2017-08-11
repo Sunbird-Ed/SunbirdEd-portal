@@ -203,10 +203,7 @@ angular.module('playerApp').directive('search', function () {
             $scope.search.handleSearch = function () {
                 var req = {
                     query: $rootScope.search.searchKeyword,
-                    filters: $rootScope.search.filters,
-                    params: {
-                        cid: '12'
-                    },
+                    filters: $rootScope.search.filters,                   
                     limit: 20,
                     sort_by: $rootScope.search.sortBy
 

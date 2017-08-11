@@ -118,7 +118,7 @@
                             </div>
                         </div>
                         <div class="two fields">
-                            <div class="field">
+                            <div class="field" ng-if="$root.concepts">
                                 <label>{{$root.labels.WORKSPACE.common.concept}}</label>
                                 <concept-picker ng-if="editContent.contentData" selected-concepts="editContent.contentData.concepts"></concept-picker>
                             </div>
