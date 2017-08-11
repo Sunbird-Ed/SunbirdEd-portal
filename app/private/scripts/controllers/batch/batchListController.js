@@ -13,8 +13,9 @@ angular.module('playerApp')
   .controller('BatchListController', ['$rootScope', 'toasterService', 'batchService', '$state', 
     'userService', function($rootScope, toasterService, batchService, $state, userService) {
         var batch = this;
+        batch.userId = $rootScope.userId;
         batch.list = [];
-        batch.status = 0;
+        batch.status = 1;
         batch.statusOptions = [
             { name: 'Ongoing Batches', value: 1 },
             { name: 'Upcoming Batches', value: 0 },
@@ -26,12 +27,13 @@ angular.module('playerApp')
             var req = {
                 "request": {
                     "filters": {
-                      status: batch.status.toString(),
-                      createdFor: $rootScope.organisationIds,
+                        status: batch.status.toString(),
+                        createdFor: $rootScope.organisationIds,
+                        createdBy: batch.userId
                     },
-                    sort_by: { createdDate: 'desc' },
-                    offset: 0,
-                    limit: 30
+                    sort_by: { createdDate: 'desc' }
+                    // offset: 0,
+                    // limit: 30
                 }
             }
 
