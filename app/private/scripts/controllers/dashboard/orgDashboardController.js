@@ -77,7 +77,7 @@ angular.module('playerApp')
                     dashboardData.data.push(reviewArray);
                   }
 
-                  if (key === 'org.creation.content[@status=published].published_on.count') {
+                  if (key === 'org.creation.content[@status=published].count') {
                     var publishedArray = new Array();
                     angular.forEach(bucketData.buckets, function(bucketValue, bucketKey) {
                       publishedArray.push(bucketValue.value);
