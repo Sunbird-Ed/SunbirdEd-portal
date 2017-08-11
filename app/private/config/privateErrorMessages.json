@@ -266,6 +266,9 @@
             "GET": {
                 "FAILED": "Fetching batch detail is failed, please try again later..."
             },
+            "GET_LIST":{
+                "NO_CONTENT": "No batches found"
+            },
             "UPDATE": {
                 "FAILED": "Updating batch is failed, please try again later...",
                 "SUCCESS": "Batch updated successfully..."
