@@ -14,14 +14,15 @@ angular.module('playerApp')
   		courseDashboard.filterQueryTextMsg = '7 days'; // Default value
   		courseDashboard.timePeriod = '7d'; // Default value
 
-  		// Dataset
-  		courseDashboard.selectedDataset = 'progress';
+  		// Dataset - creation / consumption
+  		courseDashboard.selectedDataset = '';
 
   		// Search and sort table data
-  		courseDashboard.orderByField = 'progress'; // Default value
+  		courseDashboard.orderByField = ''; // Default value
   		courseDashboard.reverseSort  = false;
-  		courseDashboard.searchUser   = '';
+  		courseDashboard.searchUser   = ''; // Dafault value for free text search
 
+  		// Variables to show loader/errorMsg
   		courseDashboard.showLoader = true;
   		courseDashboard.showError  = false;
   		courseDashboard.errorMsg   = '';
@@ -34,13 +35,11 @@ angular.module('playerApp')
 		function getCourseDashboardData(timePeriod){
 			// Build request body
 			var request = {
-				courseId : 'do_1234',
-				period: timePeriod
+				courseId: $stateParams.courseId,
+				timePeriod: timePeriod
 			};
 
 			dashboardService.getCourseDashboardData(request, courseDashboard.selectedDataset).then(function (apiResponse) {
-				var apiResponse = apiResponse.data;
-
 				if (apiResponse && apiResponse.responseCode === 'OK'){
 					console.log('In response');
 					console.log(apiResponse.result.series);
@@ -55,19 +54,14 @@ angular.module('playerApp')
 					});
 
 					courseDashboard.showLoader = false;
-				} else{
-					courseDashboard.showError  = true;
-					courseDashboard.showLoader = false;
-					toasterService.error(apiResponse.params.errmsg);
+				} else {
+					// Show error div
+					courseDashboard.showErrors(apiResponse);
 				}
 				console.log('Response received');
 			}).catch(function (apiResponse) {
-				var apiResponse            = apiResponse.data;
-				courseDashboard.showError  = true;
-				courseDashboard.showLoader = false;
-				courseDashboard.errorMsg   = apiResponse.params.errmsg;
-
-				toasterService.error(apiResponse.params.errmsg);
+				// Show error div
+				courseDashboard.showErrors(apiResponse);
 			});
 		}
 
@@ -78,17 +72,16 @@ angular.module('playerApp')
 		 * @Return {[type]} [description]
 		 */
 		courseDashboard.onAfterFilterChange = function (item){
-			var newFilterValue = angular.element(item).data('timeperiod');
-
 			// Check old filter value. If old value and new filter value are same
-			if (courseDashboard.timePeriod === newFilterValue){
+			if (courseDashboard.timePeriod === angular.element(item).data('timeperiod')){
 				console.log('avoid same apis call twice');
 				return false;
 			}
 
-			courseDashboard.timePeriod = newFilterValue;
+			courseDashboard.timePeriod   = angular.element(item).data('timeperiod');
+			courseDashboard.showLoader   = true;
+			courseDashboard.orderByField = '';
 			courseDashboard.filterQueryTextMsg = angular.element(item).data('timeperiod-text');
-			courseDashboard.showLoader = true;
 			getCourseDashboardData(courseDashboard.timePeriod);
 		};
 
@@ -111,4 +104,17 @@ angular.module('playerApp')
 		courseDashboard.resetDropdown = function(){
 			$('#dropdownId').dropdown('restore defaults');
 		};
-	}]);
+
+		/**
+		 * @function showErrors
+		 * @description show error messages
+		 * @param {object} [apiResponse]
+		 */
+		courseDashboard.showErrors = function(apiResponse){
+			courseDashboard.showError  = true;
+			courseDashboard.showLoader = false;
+			courseDashboard.errorMsg   = apiResponse.params.errmsg;
+			console.log(apiResponse.params.errmsg);
+			toasterService.error(apiResponse.params.errmsg);
+		}
+	}])
