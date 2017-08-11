@@ -12,7 +12,7 @@
 <div class="ui three stackable cards">
     <div class="link card mouse-pointer" ng-repeat="batchdata in batch.batchList track by $index">
         <div class="image imageInCardsResponsive" ng-click="batch.showUpdateBatchModal(batchdata)">
-            <div class="ui top right attached black label">Batch of {{batchdata.users.length}}</div>
+            <div class="ui top right attached black label" data="batchdata.participant.length">Batch of {{batch.participants[batchdata.id]}}</div>
             <div class="ui fluid image">
                 <img ng-src="../images/sunbird_logo.png">
             </div>
@@ -21,40 +21,14 @@
             </div>
         </div>
         <div class="sliderCards content sliderCardSubDesc">
-            By User Name <br/>
-            {{batchdata.startdate | date: "dd MMM"}} - {{batchdata.enddate | date: "dd MMM"}}
+            By {{batch.userNames[batchdata.createdBy]}}<br/>
+            {{batchdata.startDate | date: "dd MMM"}} - {{batchdata.endDate | date: "dd MMM"}}
             <i class="right floated large unlock alternate icon" ng-show="batchdata.enrollmenttype == 'open'"></i>
         </div>
     </div>
-</div>
-<div class="ui grid padding-topBottom-35">
-    <div class="four wide column">
-    </div>
-    <div class="three wide column ">
-    </div>
-    <div class="five wide column">
-        <div class="ui pagination menu float-ContentRight">
-            <a class="icon item">
-                <i class="left arrow icon"></i>
-            </a>
-            <a class="active item">
-            1
-            </a>
-            <div class="disabled item">
-                ...
-            </div>
-            <a class="item">
-            10
-            </a>
-            <a class="item">
-            11
-            </a>
-            <a class="item">
-            12
-            </a>
-            <a class="icon item">
-               <i class="right arrow icon"></i>
-            </a>
+    <div class="ui segment" ng-show="batch.batchList.length <= 0">
+        <div class="ui success message">
+            <div class="header">{{$root.errorMessages.BATCH.GET_LIST.NO_CONTENT}}</div>
         </div>
     </div>
 </div>
