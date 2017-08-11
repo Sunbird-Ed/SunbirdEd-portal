@@ -187,7 +187,9 @@ angular.module('playerApp')
                     org.sunbird.portal.eventManager.dispatchEvent('sunbird:player:telemetry',
                                                     event.detail.telemetryData);
                 });
-                $('#dropdownId').dropdown('restore defaults');
+
+                // Restore default values(resume course, view dashboard) onAfterUser leave current state
+                $('#courseDropdownValues').dropdown('restore defaults');
             };
 
             $scope.updateContent = function (scope) {
