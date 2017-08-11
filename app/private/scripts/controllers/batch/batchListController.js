@@ -10,9 +10,10 @@
  */
 
 angular.module('playerApp')
-  .controller('BatchListController', ['$rootScope', 'toasterService', 'batchService', '$state',
-    function($rootScope, toasterService, batchService, $state) {
+  .controller('BatchListController', ['$rootScope', 'toasterService', 'batchService', '$state', 
+    'userService', function($rootScope, toasterService, batchService, $state, userService) {
         var batch = this;
+        batch.userId = $rootScope.userId;
         batch.list = [];
         batch.status = 1;
         batch.statusOptions = [
@@ -24,23 +25,57 @@ angular.module('playerApp')
 
         batch.listBatches = function() {
             var req = {
-                request: {
-                    filters: {
-                      status: batch.status,
-                      createdFor: $rootScope.organisationIds,
+                "request": {
+                    "filters": {
+                        status: batch.status.toString(),
+                        createdFor: $rootScope.organisationIds,
+                        createdBy: batch.userId
                     },
-                    sort_by: { createdOn: 'desc' },
-                    offset: 0,
-                    limit: 10
+                    sort_by: { createdDate: 'desc' }
+                    // offset: 0,
+                    // limit: 30
                 }
             }
-            //batchService.getAllBatchs(req).then()
-            console.log('req', JSON.stringify(req));
-            batch.batchList = [{"identifier":"do_123454","name":"Batch1","description":"description1","courseId":"do_212296625948319744173","createdBy":"89cf1a7e-dfd3-46c9-a428-d37e9a2bc001","enrollmenttype":"open","startdate":"2017-07-27","enddate":"2017-08-27","status":"1","users":["User1", "User2", "User3"],"mentors":["Mentor1","Mentor2"]},{"identifier":"do_123455","name":"Batch2","description":"description2","courseId":"do_212296625948319744173","createdBy":"89cf1a7e-dfd3-46c9-a428-d37e9a2bc001","enrollmenttype":"invite-only","startdate":"2017-08-27","enddate":"2017-09-27","status":"0","users":["User3","User4","User2","User5"],"mentors":["Mentor3","Mentor5"]},{"identifier":"do_123456","name":"Batch3","description":"description3","courseId":"do_212296625948319744173","createdBy":"89cf1a7e-dfd3-46c9-a428-d37e9a2bc001","enrollmenttype":"open","startdate":"2017-07-27","enddate":"2017-08-03","status":"2","users":["User3","User6"],"mentors":["Mentor5","Mentor3"]}];
+
+            batchService.getAllBatchs(req).then(function (response) {
+                if (response && response.responseCode === 'OK') {
+                    batch.userList = [];
+                    batch.userNames = [];
+                    batch.participants = [];
+                    _.forEach(response.result.response.content, function(val){
+                        batch.userList.push(val.createdBy);
+                        batch.participants[val.id] = !_.isUndefined(val.participant) ? _.size(val.participant) : 0;
+                    });
+                    batch.userList = _.compact(_.uniq(batch.userList));
+                    var req = {
+                        "request": {
+                            "filters":{
+                                "identifier": batch.userList 
+                            }
+                        }
+                    }
+                    batchService.getUserList(req).then(function (res) {
+                        if (res && res.responseCode === 'OK') {
+                            _.forEach(res.result.response.content, function(val){
+                                batch.userNames[val.userId] = val.firstName +' '+ val.lastName;
+                            });
+                        }else{
+                           toasterService.error(errorMessages.BATCH.GET_USERS.FAILED); 
+                        }
+                    }).catch(function () {
+                        toasterService.error(errorMessages.BATCH.GET_USERS.FAILED);
+                    });
+                    batch.batchList = response.result.response.content || [];
+                } else {
+                    toasterService.error(errorMessages.BATCH.SEARCH.FAILED);
+                }
+            }).catch(function () {
+                toasterService.error(errorMessages.BATCH.SEARCH.FAILED);
+            });
         };
 
         batch.listBatches();
-
+        
         batch.showUpdateBatchModal = function(batchData){
             batchService.setBatchData(batchData);
             $state.go('updateBatch', {batchId: batchData.identifier});

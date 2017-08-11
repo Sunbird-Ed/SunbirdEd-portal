@@ -158,8 +158,6 @@ angular.module('playerApp')
                 $('#updateBatchModal').modal('hide');
                 $('#updateBatchModal').modal('hide others');
                 $('#updateBatchModal').modal('hide dimmer');
-                var previousUrl = JSON.parse(window.localStorage.getItem('previousURl'));
-                $state.go(previousUrl.name, previousUrl.params);
             };
 
             batchUpdate.updateBatchDetails = function(data){
@@ -176,11 +174,12 @@ angular.module('playerApp')
                         }
                     }
                     if(data.enrollmentType != 'open'){
+                        data.mentors = $("#mentors").dropdown("get value").split(",");
                         var selected = []; 
                         _.forEach(batchUpdate.selectedMentors, function(value){
                             selected.push(value.id);
                         });
-                        request.request.mentors = _.concat(data.mentors, selected);
+                        request.request.mentors = _.concat(_.compact(data.mentors), selected);
                     }
                     batchService.update(request).then(function (response) {
                         if (response && response.responseCode === 'OK') {
@@ -192,7 +191,7 @@ angular.module('playerApp')
                                 }
                                 batchService.addUsers(userRequest, response.result.batchId).then(function (response) {
                                     if (response && response.responseCode === 'OK') {
-                                        batch.hideUpdateBatchModal();
+                                        batchUpdate.hideUpdateBatchModal();
                                     }else{
                                         toasterService.error(errorMessages.BATCH.ADD_USERS.FAILED);
                                     }
@@ -200,7 +199,7 @@ angular.module('playerApp')
                                     toasterService.error(errorMessages.BATCH.ADD_USERS.FAILED);
                                 });
                             }else{
-                                batch.hideUpdateBatchModal();
+                                batchUpdate.hideUpdateBatchModal();
                             }
                         }else{
                             toasterService.error(errorMessages.BATCH.UPDATE.FAILED);    

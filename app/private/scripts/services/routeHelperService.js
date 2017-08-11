@@ -2,7 +2,9 @@
 
 angular.module('playerApp')
         .service('routeHelperService', ['$rootScope', '$stateParams', '$timeout', 'sessionService',
-            function ($rootScope, $stateParams, $timeout, sessionService) {
+        'permissionsService','toasterService','$state',
+            function ($rootScope, $stateParams, $timeout, sessionService,permissionsService,
+            toasterService,$state) {
                 this.loadRouteConfig = function (stateName, $stateParamsData) {
                     $stateParams = $stateParamsData;
                     var searchEnabledStates = ['Home', 'Courses', 'Resources', 'CourseNote',
@@ -230,12 +232,35 @@ angular.module('playerApp')
                         }];
 
                         break;
+                     case 'orgDashboard':
+
+                        $rootScope.breadCrumbsData = [{
+                            name: 'Home',
+                            link: 'home'
+                        }, {
+                            name: 'Profile',
+                            link: 'profile'
+                        }, {
+                            name: 'Organisation Admin Dashboard',
+                            link: ''
+                        }];
+
+                        break;
                     default:
                         {
                             $rootScope.breadCrumbsData = null;
                         }
                     }
                 };
+                
+                this.checkStateAccess = function(data,flag,event){
+                     if (permissionsService.checkRolesPermissions(data, flag)) {
+                        toasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
+                        event.preventDefault();
+                        $state.go('Home');
+                     }
+                };
+                
                 this.clearSearchSettings = function () {
                     if ($rootScope.search) {
                         $rootScope.search.selectedLanguage = [];

@@ -22,8 +22,9 @@
     <a class="item" ui-sref="WorkSpace.UpForReviewContent" ui-sref-active="active" sb-permissions permission-only="CONTENT_REVIEWER,CONTENT_REVIEW">
         {{$root.labels.WORKSPACE.upForReview}}
     </a>
-    <a class="item" ui-sref="WorkSpace.BatchList" ui-sref-active="active">
+    <a class="item" ui-sref="WorkSpace.BatchList" ui-sref-active="active" sb-permissions permission-only="COURSE_MENTOR">
         {{$root.labels.BATCH.courseBatches}}
+    </a>
     <a class="item" ui-sref="WorkSpace.FlaggedContent" ui-sref-active="active" sb-permissions permission-only="FLAG_REVIEWER">
         {{$root.labels.WORKSPACE.flagged}}
     </a>
