@@ -2,9 +2,9 @@
 
 angular.module('playerApp')
   .controller('courseScheduleCtrl',
-    ['courseService', 'sessionService', '$stateParams', '$state', '$timeout', '$scope', '$rootScope', 
-    'toasterService', '$location', '$anchorScroll', 'contentStateService', '$window', 'batchService', 
-    function (courseService, sessionService, $stateParams, $state, $timeout, $scope, $rootScope, 
+    ['courseService', 'sessionService', '$stateParams', '$state', '$timeout', '$scope', '$rootScope',
+    'toasterService', '$location', '$anchorScroll', 'contentStateService', '$window', 'batchService',
+    function (courseService, sessionService, $stateParams, $state, $timeout, $scope, $rootScope,
         toasterService, $location, $anchorScroll, contentStateService, $window, batchService) {
             var toc = this;
             toc.playList = [];
@@ -494,8 +494,15 @@ angular.module('playerApp')
                 }
             };
 
+            /**
+             * @Function initDropdownValue
+             * @Description - values - resume course and view course dashboard
+             * @return  {[type]}  [description]
+             */
             toc.initDropdownValues = function (){
-                $('#dropdownId').dropdown();
+                $('#courseDropdownValues').dropdown();
             };
-            $('#dropdownId').dropdown('restore defaults');
+
+            // Restore default values onAfterUser leave current state
+            $('#courseDropdownValues').dropdown('restore defaults');
         }]);
