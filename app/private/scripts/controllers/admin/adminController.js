@@ -113,6 +113,7 @@ angular.module('playerApp')
                     onShow: function () {
                         admin.formKey = key;
                         admin.fileName = '';
+                        admin.statusResponse = '';
                     },
                     onHide: function () {
                         admin.formKey = '';
@@ -290,6 +291,16 @@ angular.module('playerApp')
                 admin.bulkUploadErrorMessage = '';
                 admin.bulkUsers = {};
             };
+            admin.getBulkUloadStatus = function (id) {
+                adminService.bulkUploadStatus(id).then(function (res) {
+                    console.log('res');
+                    if (res.responseCode === 'OK') {
+                        admin.statusResponse = '';
+                    } else { toasterService.error($rootScope.errorMessages.ADMIN.fail); }
+                }).catch(function (err) {
+                    toasterService.error($rootScope.errorMessages.ADMIN.fail);
+                });
+            };
 
                  // create org
             // admin.createOrg = function () {
@@ -311,6 +322,5 @@ angular.module('playerApp')
             //         }
             //     });
             // };
-            // checkStatus
         }]);
 
