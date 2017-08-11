@@ -102,8 +102,8 @@
                                     </div>
                                 </div>
                                 <div class="two wide column">
-                                    <div class="field" ng-if="$root.search.selectedSearchKey !== 'Users'">
-                                        <form class="ui form">
+                                    <div class="field" ng-if="$root.search.selectedSearchKey !== 'Users' && $root.concepts">
+                                        <form class="conceptSelector ui form ">
                                             <concept-picker  is-search-page="true"  selected-concepts="$root.search.selectedConcepts"></concept-picker>
                                         </form>
                                     </div>
