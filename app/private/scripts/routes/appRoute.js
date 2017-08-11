@@ -944,7 +944,9 @@ angular.module('playerApp')
           case 'WorkSpace.AllUploadedContent':
                 routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK,false,event);
                 break;   
-            
+          case 'WorkSpace.BatchList':
+                routeHelperService.checkStateAccess(['COURSE_MENTOR'],false,event);
+                break;  
           default:
               break;
           }
