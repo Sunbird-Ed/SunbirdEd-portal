@@ -27,27 +27,8 @@
                     </div>
                 </div>
             </div>
-            <div class="profilesettings four wide column">
-                <div class="ui grid">
-                    <div class="twelve wide column ">
-                        <h4 class="profilesttingheader ui header">
-                            <!--<div class="content">
-                                Profile settings
-                                <i class="setting icon"></i>
-                                <div class="ui inline dropdown">
-                                    <div class="text"></div>
-                                    <i class="dropdown icon"></i>
-                                    <div class="menu">
-
-                                    </div>
-                                </div>
-                            </div>-->
-                        </h4>
-                    </div>
-                    <div class="twelve wide column ">
-                        <!--<button apply-script class="ui primary basic button" id="openTreeModal">EDIT PROFILE</button>-->
-                    </div>
-                </div>
+            <div class="profilesettings four wide column"ng-if="!profileCtrl.isError && !profileCtrl.loader.showLoader" >
+                <bulk-upload></bulk-upload> 
             </div>
         </div>
     </div>
