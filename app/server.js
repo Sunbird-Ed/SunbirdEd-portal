@@ -31,7 +31,7 @@ const express = require('express'),
   md5 = require('js-md5'),
   sunbird_api_auth_token = envHelper.PORTAL_API_AUTH_TOKEN;
 
-const contentProxyUrl = contentURL.replace('/api/', '');
+const contentProxyUrl = contentURL.replace('/api', '');
 
 let mongoURL = (envHelper.PORTAL_MONGODB_IP && envHelper.PORTAL_MONGODB_PORT) ? ("mongodb://" + envHelper.PORTAL_MONGODB_IP + ":" + envHelper.PORTAL_MONGODB_PORT + "/portal") : 'mongodb://localhost/portal';
 let session_ttl = envHelper.PORTAL_MONGODB_TTL | 1; //in days
