@@ -181,6 +181,7 @@ app.use('/api/*', permissionsHelper.checkPermission(), proxy(contentProxyUrl, {
 
 app.use('/content-plugins/*', proxy(contentProxyUrl, {
   proxyReqPathResolver: function(req) {
+    console.log('player proxy path: ' + contentProxyUrl);
     return require('url').parse(contentProxyUrl + req.originalUrl).path;
   }
 }));
