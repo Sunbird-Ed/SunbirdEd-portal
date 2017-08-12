@@ -10,12 +10,13 @@ angular.module('playerApp')
     .controller('courseDashboardCtrl',
     	['$rootScope', '$scope', 'dashboardService', '$timeout', '$state', '$stateParams', 'toasterService', function ($rootScope, $scope, dashboardService, $timeout, $state, $stateParams, toasterService) {
 		var courseDashboard = this;
+		courseDashboard.chartHeight = 120;
   		courseDashboard.courseProgressArray = [];
   		courseDashboard.filterQueryTextMsg = '7 days'; // Default value
   		courseDashboard.timePeriod = '7d'; // Default value
 
-  		// Dataset - creation / consumption
-  		courseDashboard.selectedDataset = '';
+  		// Dataset - progress / consumption
+  		courseDashboard.selectedDataset = 'progress';
 
   		// Search and sort table data
   		courseDashboard.orderByField = ''; // Default value
@@ -34,26 +35,64 @@ angular.module('playerApp')
 		 */
 		function getCourseDashboardData(timePeriod){
 			// Build request body
+			courseDashboard.timePeriod = courseDashboard.timePeriod ? courseDashboard.timePeriod : '7d';
+
 			var request = {
 				courseId: $stateParams.courseId,
-				timePeriod: timePeriod
+				timePeriod: courseDashboard.timePeriod
 			};
 
 			dashboardService.getCourseDashboardData(request, courseDashboard.selectedDataset).then(function (apiResponse) {
+
+				courseDashboard.consumptionNumericData = [];
+				console.log('in controller');
+				console.log(apiResponse);
+
 				if (apiResponse && apiResponse.responseCode === 'OK'){
-					console.log('In response');
-					console.log(apiResponse.result.series);
-					angular.forEach(apiResponse.result.series, function(seriesData, key) {
-  						if(key === 'course.progress.course_progress_per_user.count'){
-  							angular.forEach(seriesData, function(bucketData, key){
-  								if (key === 'buckets'){
-  									courseDashboard.courseProgressArray = bucketData;
-  								}
-  							})
-  						}
-					});
+					if(courseDashboard.selectedDataset === 'progress'){
+						console.log('In progress......');
+						angular.forEach(apiResponse.result.series, function(seriesData, key) {
+	  						if(key === 'course.progress.course_progress_per_user.count'){
+	  							angular.forEach(seriesData, function(bucketData, key){
+	  								if (key === 'buckets'){
+	  									courseDashboard.courseProgressArray = bucketData;
+	  								}
+	  							})
+	  						}
+						});
+					}
+
+					if(courseDashboard.selectedDataset === 'consumption' && apiResponse.result.snapshot){
+						courseDashboard.labels = [];
+						courseDashboard.lineChartData = [];
+						courseDashboard.options = [];
+						courseDashboard.colors =[];
+						// To print block data
+						angular.forEach(apiResponse.result.snapshot,function(numericData, key){
+							courseDashboard.consumptionNumericData.push(numericData);
+						})
+						// To print line chart
+						angular.forEach(apiResponse.result.series,function(linechartData, key){
+							if(key === 'course.consumption.time_spent'){
+								var lineDataArray = new Array();
+								angular.forEach(linechartData.buckets, function(bucketValue, bucketKey){
+									lineDataArray.push(bucketValue.value);
+                     				courseDashboard.labels.push(bucketValue.key_name);
+								})
+
+								courseDashboard.data = lineDataArray;
+							}
+
+							courseDashboard.options = dashboardService.getChartOptions('consumption');
+                			courseDashboard.colors  = dashboardService.getChartColors('consumption');
+                			console.log(courseDashboard.data);
+                			//console.log(courseDashboard.labels);
+                			//console.log(courseDashboard.options);
+						})
+					}
 
 					courseDashboard.showLoader = false;
+					courseDashboard.showError  = false;
 				} else {
 					// Show error div
 					courseDashboard.showErrors(apiResponse);
@@ -83,6 +122,25 @@ angular.module('playerApp')
 			courseDashboard.orderByField = '';
 			courseDashboard.filterQueryTextMsg = angular.element(item).data('timeperiod-text');
 			getCourseDashboardData(courseDashboard.timePeriod);
+		};
+
+		/**
+		 * @Function onAfterDatasetChange
+		 * @Description load data based on selected filter
+		 * @Params timePeriod
+		 * @Return {[type]} [description]
+		 */
+		courseDashboard.onAfterDatasetChange = function (item){
+			// Check old filter value. If old value and new filter value are same
+			if (courseDashboard.selectedDataset === angular.element(item).data('dataset')){
+				console.log('avoid same apis call twice');
+				return false;
+			}
+
+			courseDashboard.selectedDataset = angular.element(item).data('dataset');
+			courseDashboard.showLoader   = true;
+			courseDashboard.orderByField = '';
+			getCourseDashboardData();
 		};
 
 		/**
@@ -116,5 +174,9 @@ angular.module('playerApp')
 			courseDashboard.errorMsg   = apiResponse.params.errmsg;
 			console.log(apiResponse.params.errmsg);
 			toasterService.error(apiResponse.params.errmsg);
-		}
+		};
+
+		courseDashboard.initDropdwon = function(){
+			$('#courseDropdownMenu').dropdown();
+		};
 	}])
