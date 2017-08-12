@@ -5,7 +5,7 @@
 }
 .dashboard-label{
 	font-family: 'sunbirdboldfont' !important;
-	font-size: 17.9px !important;
+	font-size: 1rem !important;
 	position: relative; top:-3vh;
 }
 .text-underline{
@@ -24,7 +24,7 @@
 </style>
 <div class="ui grid">
   	<div class="three wide column left floated">
-    	<p class="dashboard-label">Course creator dashboard</p>
+    	<p class="dashboard-label">Course {{courseDashboard.selectedDataset}} dashboard</p>
   	</div>
   	<div class="ui text menu">
 		  <span class="dashBoardMenuItem" data-timeperiod="7d" data-timeperiod-text="7 days"
@@ -40,7 +40,21 @@
 	      		ng-click="courseDashboard.onAfterFilterChange($event.target)">LAST 5 WEEKS</span>
 	      		&nbsp;&nbsp;&nbsp;&nbsp;
 	</div>
-	<div class="ui category search" style="position: relative;top: -1vh">
+	<!-- Dataset filter TODO remove inline css-->
+	<div class="" style="position: relative;top: -1vh">
+        <div class="ui selection dropdown" id="courseDropdownMenu" ng-init="courseDashboard.initDropdwon()">
+             <i class="dropdown icon"></i>
+             <div class="text">Progress</div>
+             <div class="menu">
+                <div class="active item" data-value="1" data-dataset="progress"
+                	ng-click="courseDashboard.onAfterDatasetChange($event.target)">Progress</div>
+                <div class="item" data-value="0" data-dataset="consumption"
+                	ng-click="courseDashboard.onAfterDatasetChange($event.target)">Consumption</div>
+             </div>
+        </div>
+    </div>
+	<!-- TODO remove inline css-->
+	<div class="ui category search" style="position: relative;top: -1vh;margin-right: -1em;">
 		<div class="ui icon input">
 			<input class="search-course-data" type="text" placeholder="Search ..." ng-model="courseDashboard.searchUser">
 		    <i class="search icon"></i>
@@ -50,37 +64,9 @@
 		data-tooltip="Close the dashboard">
 		<i class="ui remove icon" ng-click="toc.showCourseDashboard = false;courseDashboard.resetDropdown();"></i>
 	</a>
-
-  	<!--<div class="eight wide column right floated" ng-if="!courseDashboard.showError">
-    	<div class="ui secondary  menu">
-      		<a class="item"
-      			data-timeperiod="7d" data-timeperiod-text="7 days"
-      			ng-click="courseDashboard.onAfterFilterChange($event.target)">LAST 7 DAYS
-      		</a>
-	      	<a class="item"
-	      		data-timeperiod="14d" data-timeperiod-text="14 days"
-	      		ng-click="courseDashboard.onAfterFilterChange($event.target)" >LAST 14 DAYS
-	      	</a>
-	      	<a class="item"
-	      		data-timeperiod="5w" data-timeperiod-text="5 weeks"
-	      		ng-click="courseDashboard.onAfterFilterChange($event.target)">LAST 5 WEEKS
-	      	</a>
-	      	<div class="right menu">
-	        	<div class="item">
-	          		<div class="ui icon input">
-	            		<input type="text" placeholder="Search..." ng-model="courseDashboard.searchUser">
-	            		<i class="search link icon"></i>
-	          		</div>
-	        	</div>
-	        	<a class="ui item">
-	        		<i class="ui remove icon" ng-click="toc.showCourseDashboard = false;courseDashboard.resetDropdown();"></i>
-	        	</a>
-	      	</div>
-    	</div>
- 	 </div>-->
 </div>
 
-<div class="table-data-holder" ng-hide="courseDashboard.showLoader" ng-if="!courseDashboard.showError">
+<div class="table-data-holder" ng-hide="courseDashboard.showLoader" ng-if="!courseDashboard.showError && courseDashboard.selectedDataset === 'progress'">
 	<div class="ui raised segment">
 		<div class="eight wide column right floated">
 	    	<h3 style="color: #979797 !important">Stats for last {{courseDashboard.filterQueryTextMsg}} </h3>
@@ -168,6 +154,24 @@
 		</div>
 	</div>
 </div>
+<!-- Course consumption dashboard -->
+<div class="consumption-data-holder" ng-if="courseDashboard.selectedDataset == 'consumption'">
+	<div class="ui four cards">
+	    <div class="card" ng-repeat="item in courseDashboard.consumptionNumericData">
+	        <div class="content center aligned">
+	            <div class="meta dashBoardCardText">{{item.name}}</div>
+	            <h2 class="description dashboardCardSubText">{{item.value}}</h2>
+	        </div>
+	    </div>
+	</div>
+	<div class="ui one column grid">
+        <div class="column">
+          <canvas height="{{courseDashboard.chartHeight}}" id="bar" class="chart chart-line adminCanvasPadding adminCanvasBorder" chart-data="courseDashboard.data" chart-labels="courseDashboard.labels"  chart-colors="courseDashboard.colors" chart-options="courseDashboard.options">
+          </canvas>
+        </div>
+    </div>
+</div>
+<!-- End-->
 <!-- Show loader-->
 <div class="tweleve wide column" ng-if="courseDashboard.showLoader">
     <app-loader></app-loader>
