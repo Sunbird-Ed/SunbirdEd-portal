@@ -20,6 +20,7 @@ const express = require('express'),
   port = envHelper.PORTAL_PORT,
   learnerURL = envHelper.LEARNER_URL,
   contentURL = envHelper.CONTENT_URL,
+  contentProxyURL = envHelper.CONTENT_PROXY_URL,
   realm = envHelper.PORTAL_REALM,
   auth_server_url = envHelper.PORTAL_AUTH_SERVER_URL,
   keycloak_resource = envHelper.PORTAL_AUTH_SERVER_CLIENT,
@@ -30,8 +31,6 @@ const express = require('express'),
   default_tenant = envHelper.DEFAUULT_TENANT,
   md5 = require('js-md5'),
   sunbird_api_auth_token = envHelper.PORTAL_API_AUTH_TOKEN;
-
-const contentProxyUrl = contentURL.replace('/api', '');
 
 let mongoURL = (envHelper.PORTAL_MONGODB_IP && envHelper.PORTAL_MONGODB_PORT) ? ("mongodb://" + envHelper.PORTAL_MONGODB_IP + ":" + envHelper.PORTAL_MONGODB_PORT + "/portal") : 'mongodb://localhost/portal';
 let session_ttl = envHelper.PORTAL_MONGODB_TTL | 1; //in days
@@ -181,7 +180,6 @@ app.use('/api/*', permissionsHelper.checkPermission(), proxy(contentProxyUrl, {
 
 app.use('/content-plugins/*', proxy(contentProxyUrl, {
   proxyReqPathResolver: function(req) {
-    console.log('player proxy path: ' + contentProxyUrl);
     return require('url').parse(contentProxyUrl + req.originalUrl).path;
   }
 }));
