@@ -169,7 +169,8 @@ app.use('/api/*', permissionsHelper.checkPermission(), proxy(contentProxyUrl, {
 
 app.use('/content-plugins/*', proxy(contentProxyUrl, {
   proxyReqPathResolver: function(req) {
-    console.log('contentProxyUrl: ', contentProxyUrl);
+    console.log('contentProxyUrl:' + contentProxyUrl);
+    console.log('originalUrl:' + req.originalUrl);
     return require('url').parse(contentProxyUrl + req.originalUrl).path;
   }
 }));
@@ -204,7 +205,7 @@ app.all('/:tenantName', function(req, res) {
   tenantId = req.params.tenantName;
   if(tenantId && fs.existsSync(path.join(__dirname, 'tenant', tenantId, 'index.html'))){
     res.sendFile(path.join(__dirname, 'tenant', tenantId, 'index.html'));
-  }else if (default_tenant && fs.fileExistsSync(path.join(__dirname, 'tenant', default_tenant, 'index.html'))) {
+  }else if (default_tenant && fs.existsSync(path.join(__dirname, 'tenant', default_tenant, 'index.html'))) {
     res.sendFile(path.join(__dirname, 'tenant', default_tenant, 'index.html'));
   } else {
     res.sendFile(path.join(__dirname + '/public/index.html'));
