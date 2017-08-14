@@ -12,18 +12,23 @@
 angular.module('playerApp')
   .service('dashboardService', ['httpServiceJava', 'config', '$http', function(httpServiceJava, config, $http) {
     this.getAdminDashboardData = function(req, datasetType) {
-      return httpServiceJava.get('dashboard/v1/' + datasetType + '/org/' + req.org_id + '?period=' + req.period);
+     return httpServiceJava.get('dashboard/v1/' + datasetType + '/org/' + req.org_id + '?period=' + req.period);
     };
     this.getChartColors = function(datasetType) {
       if (datasetType == 'creation') {
         return [{
-            backgroundColor: '#0062ff',
-            borderColor: '#0062ff',
+            backgroundColor: '#292929',
+            borderColor: '#292929',
             fill: false
           },
           {
             backgroundColor: '#FF0000',
             borderColor: '#FF0000',
+            fill: false
+          },
+		  {
+            backgroundColor: '#0062ff',
+            borderColor: '#0062ff',
             fill: false
           },
           {
