@@ -1,7 +1,8 @@
-<div class="margin-top-20 ui raised segment">
+<div class="margin-top-20 ui raised segment" ng-init="profileCtrl.openDiscriptionEdit=false">
 	<div class="header announcementCard-header">
     	<span class="header cardsHeading ng-binding"> Description </span>
-    	<a class="addeditprofile cursor-pointer">Edit</a>
+		<a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.openDiscriptionEdit"ng-click="profileCtrl.openDiscriptionEdit=true">Edit</a>
+		<a class="addeditprofile cursor-pointer" ng-if="profileCtrl.openDiscriptionEdit"ng-click="profileCtrl.openDiscriptionEdit=false">Close</a>
  	</div>
     <div class="description"  ng-init="profileCtrl.readMore = false"> 
 	    <p ng-if="!profileCtrl.readMore"> {{profileCtrl.user.profileSummary | limitTo: 120 }}&nbsp;
@@ -10,7 +11,17 @@
 	    <p ng-if="profileCtrl.readMore"> {{profileCtrl.user.profileSummary}}&nbsp;
 	        <span class="ui cardsKnowMore mouse-pointer" ng-click="profileCtrl.readMore = false;">Read Less ...</span>
 	    </p>
-    </div>
+	</div>
+	<form class="ui form " ng-if="profileCtrl.openDiscriptionEdit">
+       <div class="field">
+           <textarea ng-model="profileCtrl.profileSummary"></textarea>
+		   </div>
+
+		<div class="ui button margin-top-15" ng-if="profileCtrl.openDiscriptionEdit" ng-disable="!profileCtrl.profileSummary"ng-click="profileCtrl.EditDetails(profileCtrl.profileSummary);">{{$root.labels.PROFILE.BUTTON.save}} </div>
+		
+	</form>
 </div>
+
+
 
                                 
