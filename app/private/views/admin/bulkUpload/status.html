@@ -15,22 +15,22 @@
        <div ng-if="admin.loader.showLoader">
         <app-loader data="{{admin.loader}}"></app-loader>
       </div>
-<form class="ui form" id= "statusForm" ng-if="!admin.loader.showLoader && !admin.bulkUploadStatus.processId">
-    <h4>You can track progress with process ID</h4>
-      <div class="ui grid">
-        <div class="six wide column">
-          <div class="field">
-            <label>Process ID</label>
-            <input type="text" placeholder="Process ID" ng-model="admin.processID">
-          </div>
-       </div>
-        <div class="three wide column">
-        </div>
-      </div>
-</form>
+      <form class="ui form" id= "statusForm" ng-if="!admin.loader.showLoader && !admin.bulkUploadStatus.processId">
+          <h4>You can track progress with process ID</h4>
+            <div class="ui grid">
+              <div class="six wide column">
+                <div class="field">
+                  <label>Process ID</label>
+                  <input type="text" placeholder="Process ID" ng-model="admin.processID">
+                </div>
+             </div>
+              <div class="three wide column">
+              </div>
+            </div>
+      </form>
     <div ng-if="admin.bulkUploadStatus.processId">
     <h5>showing result for {{admin.bulkUploadStatus.processId}}</h5>
-      <div  class= "margin-top-40 " ng-if="admin.bulkUploadStatus.success.length">
+      <div  class= "margin-top-40 overflowContentHorizontal" ng-if="admin.bulkUploadStatus.success.length">
             <h5>Success Results</h5>
           <table class="ui celled table" ng-if="admin.uploadStatusKey==='organizations'">
               <thead>
@@ -61,7 +61,7 @@
               </tbody>
           </table>
       </div>
-      <div class= "margin-top-40 " ng-if="admin.bulkUploadStatus.failure.length">
+      <div class= "margin-top-40 overflowContentHorizontal" ng-if="admin.bulkUploadStatus.failure.length">
           <h5>Failure Result</h5>
                 <table class="ui celled table"ng-if="admin.uploadStatusKey==='organizations' ">
                  <thead>
