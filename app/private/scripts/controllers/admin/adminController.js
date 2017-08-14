@@ -71,17 +71,17 @@ angular.module('playerApp')
             // modal init
             admin.addOrgNameToOrganizations = function () {
                 if ($rootScope.search.selectedSearchKey === 'Users') {
-                    admin.searchResult.forEach(function (user) {
-                        if (user.organisations) {
-                            admin.getOrgName(function (orgIdAndNames) {
+                    admin.getOrgName(function (orgIdAndNames) {
+                        admin.searchResult.forEach(function (user) {
+                            if (user.organisations) {
                                 user.organisations.forEach(function (userOrg) {
                                     var orgNameAndId = orgIdAndNames.find(function (org) {
                                         return org.orgId === userOrg.organisationId;
                                     });
                                     if (orgNameAndId) { userOrg.orgName = orgNameAndId.orgName; }
                                 });
-                            });
-                        }
+                            }
+                        });
                     });
                 }
             };
