@@ -18,10 +18,10 @@ angular.module('playerApp')
         '$scope',
         'contentService',
         'toasterService',
+        'permissionsService',
         function (adminService, $timeout, $state, config, $rootScope, $scope,
-            contentService, toasterService) {
+            contentService, toasterService, permissionsService) {
             var admin = this;
-            admin.userRoles = config.USER_ROLES;
             admin.searchResult = $scope.users;
             admin.bulkUsers = {};
 
@@ -367,6 +367,18 @@ angular.module('playerApp')
                 [admin.sampleOrgCSV]);
                 }
             };
+            admin.getUserRoles = function () {
+                permissionsService.getPermissionsData().then(function (res) {
+                    if (res.responseCode === 'OK') {
+                        admin.userRolesList = [];
+                        admin.userRoles = res.result.roles;
+                    } else { toasterService.error($rootScope.errorMessages.ADMIN.fail); }
+                }).catch(function (err) {
+                    admin.loader.showLoader = false;
+                    toasterService.error($rootScope.errorMessages.ADMIN.fail);
+                });
+            };
+            admin.getUserRoles();
                  // create org
             // admin.createOrg = function () {
             //     var orgRequest = {
