@@ -352,7 +352,7 @@ angular.module('playerApp')
               $rootScope.courseActive = $rootScope.resourcesActive = '';
               $rootScope.isSearchResultsPage = false;
               $rootScope.homeActive = '';
-               $rootScope.profileActive='';
+              $rootScope.profileActive = '';
           }
       })
       .state('TocPlayer', {
