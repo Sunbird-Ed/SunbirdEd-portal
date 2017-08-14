@@ -13,7 +13,7 @@ angular.module('playerApp')
             restrict: 'E',
             scope: {
                 showbatchcard: '=',
-                courseid: '='
+                coursecreatedby: '='
             },
             link: function (scope, element, attrs, batch) {
                 $('#batchStatusOptions').dropdown('set selected ', batch.status);
