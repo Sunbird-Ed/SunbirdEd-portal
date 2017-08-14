@@ -1,0 +1,71 @@
+<div class="ui large modal" id="statusBulkUpload" sb-permissions permission-only="SYSTEM_ADMIN,ORG_ADMIN">
+  <div class="header">
+    <div class="ui grid">
+      <div class="eleven wide column">
+         <span class="ui header" >Check Status</span> 
+      </div>
+      <div class="one wide column actions">
+        <h5 class="ui basic icon circular button deny">
+                <i class="ui remove icon"></i>
+        </h5>
+      </div>
+    </div>
+  </div> 
+    <div class="content"> 
+       <div ng-if="admin.loader.showLoader">
+        <app-loader data="{{admin.loader}}"></app-loader>
+      </div>
+      <form class="ui form" id= "statusForm" ng-if="!admin.loader.showLoader && !admin.bulkUploadStatus.processId">
+          <h4>You can track progress with process ID</h4>
+            <div class="ui grid">
+              <div class="six wide column">
+                <div class="field">
+                  <label>Process ID</label>
+                  <input type="text" placeholder="Process ID" ng-model="admin.processID">
+                </div>
+             </div>
+              <div class="three wide column">
+              </div>
+            </div>
+      </form>
+    <div ng-if="admin.bulkUploadStatus.processId">
+    <h5>showing result for {{admin.bulkUploadStatus.processId}}</h5>
+      <div  class= "margin-top-40 overflowContentHorizontal" ng-if="admin.bulkUploadStatus.success.length">
+            <h5>Success Results</h5>
+          <table class="ui celled table" >
+              <thead>
+                  <tr >
+                    <th ng-repeat="(col,val) in admin.bulkUploadStatus.success[0]" >{{col}}
+                    </th> </tr>
+              </thead>
+              <tbody>
+                  <tr class="positive" ng-repeat="row in admin.bulkUploadStatus.success"  >
+                    <td ng-repeat="(col,val) in row">{{ val || "empty"}}</td>
+              </tbody>
+          </table>
+      </div>
+      <div class= "margin-top-40 overflowContentHorizontal" ng-if="admin.bulkUploadStatus.failure.length">
+          <h5>Failure Result</h5>
+                <table class="ui celled table">
+                 <thead >
+                   <tr>
+                     <th ng-repeat="(col,val) in admin.bulkUploadStatus.failure[0]" >{{col}}
+                     </th> </tr>
+                 </thead>
+                <tbody>
+                    <tr class="error"  ng-repeat="row in admin.bulkUploadStatus.failure"  >
+                    <td ng-repeat="(col,val) in row">{{ val || "empty"}}</td>
+                  </tr>
+                  </tbody>
+             </table>
+           </div>
+    </div>
+ 
+    </div>
+  <div class="actions">
+       <div class="ui grid" >
+          <div class="twelve wide column" ng-if="!admin.bulkUploadStatus.processId">
+    <button ng-disabled="!admin.processID" sb-permissions permission-only="SYSTEM_ADMIN,ORG_ADMIN"  class="ui primary left floated button" ng-click="admin.getBulkUloadStatus(admin.processID)"> check Status</button>
+  </div>
+       </div></div>
+</div>
