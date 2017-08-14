@@ -9,7 +9,7 @@ angular.module('playerApp')
           section.pageTypeUrls = { resource: config.URL.RESOURCE.GET,
               course: config.URL.COURSE.GET_LEARN_OTHER_SECTION };
           section.playContent = function (item) {
-              $rootScope.search.searchKeyword="";
+              $rootScope.search.searchKeyword = '';
               var params = { content: item,
                   contentName: item.name,
                   contentId: item.identifier };
@@ -17,7 +17,7 @@ angular.module('playerApp')
           };
 
           section.openCourseView = function (course) {
-              $rootScope.search.searchKeyword="";
+              $rootScope.search.searchKeyword = '';
               var courseId = course.courseId || course.identifier;
               var courseType = ($rootScope.enrolledCourseIds[courseId] >= 0)
            ? 'ENROLLED_COURSE' : 'OTHER_COURSE';
@@ -103,10 +103,10 @@ angular.module('playerApp')
           });
           };
           section.sections();
-        var initSearchHandler = $rootScope.$on('initPageSearch', function (event, args) {
+          var initSearchHandler = $rootScope.$on('initPageSearch', function (event, args) {
               section.sections();
           });
-          $scope.$on('$destroy', function() {
-        initSearchHandler();
-  });
+          $scope.$on('$destroy', function () {
+              initSearchHandler();
+          });
       }]);
