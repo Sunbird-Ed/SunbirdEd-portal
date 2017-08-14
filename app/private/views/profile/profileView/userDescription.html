@@ -2,7 +2,7 @@
 	<div class="header announcementCard-header">
     	<span class="header cardsHeading ng-binding"> Description </span>
 		<a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.openDiscriptionEdit"ng-click="profileCtrl.openDiscriptionEdit=true">Edit</a>
-		<a class="addeditprofile cursor-pointer" ng-if="profileCtrl.openDiscriptionEdit"ng-click="profileCtrl.openDiscriptionEdit=true">Close</a>
+		<a class="addeditprofile cursor-pointer" ng-if="profileCtrl.openDiscriptionEdit"ng-click="profileCtrl.openDiscriptionEdit=false">Close</a>
  	</div>
     <div class="description"  ng-init="profileCtrl.readMore = false"> 
 	    <p ng-if="!profileCtrl.readMore"> {{profileCtrl.user.profileSummary | limitTo: 120 }}&nbsp;
