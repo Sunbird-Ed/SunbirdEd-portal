@@ -22,14 +22,13 @@ angular.module('playerApp')
             batch.submitted = false;
             batch.showBatchCard = $scope.showbatchcard;
             batch.quantityOfBatchs = 3;
-            batch.showBatchDetailsPage = false;
             batch.isMentor = false;
             batch.status = 1;
             batch.statusOptions = [
                 { name: 'Ongoing', value: 1 },
                 { name: 'New', value: 0 }
             ];
-            
+            batch.batchInfo = undefined;
             batch.showCreateBatchModal = function () {
                 batch.getUserList();
                 $timeout(function () {
@@ -249,8 +248,9 @@ angular.module('playerApp')
             };
 
             batch.showBatchDetails = function(batchData){
-                $('#batchDetails').iziModal('open');
-                $rootScope.$broadcast('batch.view', batchData);    
+                //$rootScope.batchInfo = angular.copy(batchData);
+                //$rootScope.$broadcast('batchDetails',batchData) 
+                $('#batchDetails').modal('show');
             };
 
             batch.enrollUserToCourse = function(batchId){
@@ -272,22 +272,5 @@ angular.module('playerApp')
                     toasterService.error(errorMessages.Courses.ENROLL.ERROR);
                 });
             };
-
-            $rootScope.$on('batch.view', function (e, batch) {
-                    batch.batchInfo = batch;    
-            })
-
-            $timeout(function () {
-                $('#batchDetails').iziModal({
-                    title: '',
-                    fullscreen: false,
-                    openFullscreen: true,
-                    closeOnEscape: false,
-                    overlayClose: false,
-                    overlay: false,
-                    overlayColor: ''
-                });        
-            },500);
-            
         }
     ]);
