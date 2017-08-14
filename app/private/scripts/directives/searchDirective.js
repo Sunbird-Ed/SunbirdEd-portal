@@ -308,8 +308,8 @@ angular.module('playerApp').directive('search', function () {
                 $rootScope.search.filters.contentType = $rootScope.search.selectedContentType;
                 $rootScope.search.filters.subject = $rootScope.search.selectedSubject;
                 if ($rootScope.search.selectedSearchKey === 'Users') {
-                    $rootScope.search.filters.education = {};
-                    $rootScope.search.filters.education.board = $rootScope.search.selectedBoard;
+                    $rootScope.search.filters.education = undefined;
+                    $rootScope.search.filters["education.board"] = $rootScope.search.selectedBoard;
                 } else {
                     $rootScope.search.filters.board = $rootScope.search.selectedBoard;
                 }
