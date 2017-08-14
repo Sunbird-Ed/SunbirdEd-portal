@@ -63,11 +63,15 @@ angular.module('playerApp')
 
             contentFlag.saveMetaData = function (data) {
                 var requestData = {
-                    flagReasons: [data.flagReasons],
                     flaggedBy: contentFlag.userFullName,
-                    versionKey: contentFlag.contentVersionKey,
-                    flags: [data.comment]
+                    versionKey: contentFlag.contentVersionKey
                 };
+                if (data.flagReasons) {
+                    requestData.flagReasons = [data.flagReasons];
+                }
+                if (data.comment) {
+                    requestData.flags = [data.comment];
+                }
                 contentFlag.createFlag(requestData);
             };
 
@@ -80,10 +84,5 @@ angular.module('playerApp')
                 } else {
                     $state.go($scope.redirect);
                 }
-            };
-
-            contentFlag.initEKStepCE = function (contentId) {
-                var params = { contentId: contentId, type: 'TextBook' };
-                $state.go('CollectionEditor', params);
             };
         }]);
