@@ -63,7 +63,7 @@
             <div class="four wide column">
             </div>
             <div class="four wide column">
-                <button ng-disabled="admin.bulkUsersProcessId" class="ui primary left floated button" ng-click="admin.openImageBrowser('users');">Upload Users CSV</button>
+                <button ng-disabled="admin.bulkUsersProcessId" class="ui primary right floated button" ng-click="admin.openImageBrowser('users');">Upload Users CSV</button>
                     <input type="file" accept="file/csv,file/xlsx" class="content-input ui small "
                     id="uploadUsrsCSV" onchange="angular.element(this).scope().validateFile(this.files,'users');"
                     required="" /> 
