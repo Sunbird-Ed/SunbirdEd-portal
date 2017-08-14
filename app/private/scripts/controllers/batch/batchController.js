@@ -18,6 +18,7 @@ angular.module('playerApp')
             batch.menterList = [];
             batch.userId = $rootScope.userId;
             batch.courseId = $stateParams.courseId;
+            batch.coursecreatedby = $stateParams.coursecreatedby;
             batch.submitted = false;
             batch.showBatchCard = $scope.showbatchcard;
             batch.quantityOfBatchs = 3;
@@ -32,9 +33,10 @@ angular.module('playerApp')
             batch.showCreateBatchModal = function () {
                 batch.getUserList();
                 $timeout(function () {
+                    batch.data = {enrollmentType : "invite-only"};
+                    $('input:radio[name="enrollmentType"]').filter('[value="invite-only"]').attr('checked', true);
                     $('#users,#mentors').dropdown({ forceSelection: false, fullTextSearch: true });
                     $('.ui.calendar').calendar({refresh: true});
-                    $('input:radio[name="enrollmentType"]').filter('[value="invite-only"]').attr('checked', true);
                     $("#createBatchModal").modal({
                         onShow: function () {
                             $('.ui.calendar#rangestartAdd').calendar({
@@ -206,9 +208,9 @@ angular.module('playerApp')
                 });
             };
 
-            batch.showUpdateBatchModal = function(batchData){
+            batch.showUpdateBatchModal = function(batchData, coursecreatedby){
                 batchService.setBatchData(batchData);
-                $state.go('updateBatch', {batchId: batchData.identifier});
+                $state.go('updateBatch', {batchId: batchData.identifier, coursecreatedby: coursecreatedby});
             };
 
             batch.getUserList = function(){

@@ -14,8 +14,8 @@
     <div class="description annannouncement-description">
         <div class="ui divided list">
             <div class="item padding-top-10" ng-repeat="batchdata in batch.batchList track by $index">
-                <i class="write icon float-ContentRight cursor-pointer" ng-click="batch.showUpdateBatchModal(batchdata)" ng-show="batch.isMentor"></i>
-                <button class="ui right floated blue basic button" ng-click="batch.showBatchDetails(batchdata)" ng-show="!batch.isMentor">Enroll</button>
+                <i class="write icon float-ContentRight cursor-pointer" ng-click="batch.showUpdateBatchModal(batchdata, batch.coursecreatedby)" ng-show="batch.isMentor"></i>
+                <button class="ui right floated blue basic button enrollBtn" ng-click="batch.showBatchDetails(batchdata)" ng-show="!batch.isMentor">Enroll</button>
                 <i class="calendar outline icon"></i>
                 <div class="content padding-bottom-15">
                     <span class="header padding-bottom-5">
@@ -32,7 +32,7 @@
         </div>
     </div>
   </div>
-  <div class="ui bottom attached batchCard button" ui-sref="CreateBatch({courseId: batch.courseId})" ng-show="batch.isMentor">
+  <div class="ui bottom attached batchCard button" ui-sref="CreateBatch({courseId: batch.courseId, coursecreatedby: batch.coursecreatedby})" ng-show="batch.isMentor">
     <a><i class="add icon"></i>Create Batch</a>
   </div>
 </div>
