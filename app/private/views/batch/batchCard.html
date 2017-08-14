@@ -36,7 +36,5 @@
     <a><i class="add icon"></i>Create Batch</a>
   </div>
 </div>
-<div id="batchDetails">
-    <div ng-include="'views/batch/batchDetails.html'" ng-controller="BatchController as batch"></div>
-</div>
+<batch-details batchinfo="batch.batchInfo"></batch-details>
 <!-- sb-permissions permission-only="COURSE_MENTER" -->
