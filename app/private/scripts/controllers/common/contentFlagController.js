@@ -63,11 +63,15 @@ angular.module('playerApp')
 
             contentFlag.saveMetaData = function (data) {
                 var requestData = {
-                    flagReasons: [data.flagReasons],
                     flaggedBy: contentFlag.userFullName,
-                    versionKey: contentFlag.contentVersionKey,
-                    flags: [data.comment]
+                    versionKey: contentFlag.contentVersionKey
                 };
+                if (data.flagReasons) {
+                    requestData.flagReasons = [data.flagReasons];
+                }
+                if (data.comment) {
+                    requestData.flags = [data.comment];
+                }
                 contentFlag.createFlag(requestData);
             };
 
