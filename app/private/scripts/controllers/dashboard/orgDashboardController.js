@@ -57,10 +57,10 @@ angular.module('playerApp')
                   if (key === 'org.creation.content[@status=review].count') {
                     dashboardData.series.push(numericData.value + ' IN REVIEW');
                   }
-                  
-                  if (key === 'org.creation.content.count'){
-					dashboardData.series.push(numericData.value + ' CREATED');
-				  }
+
+                  if (key === 'org.creation.content.count') {
+                    dashboardData.series.push(numericData.value + ' CREATED');
+                  }
                 });
 
                 angular.forEach(apiResponse.result.series, function(bucketData, key) {
@@ -88,7 +88,7 @@ angular.module('playerApp')
                     })
                     dashboardData.data.push(publishedArray);
                   }
-                  
+
                   if (key === 'org.creation.content.created_on.count') {
                     var createdArray = new Array();
                     angular.forEach(bucketData.buckets, function(bucketValue, bucketKey) {
