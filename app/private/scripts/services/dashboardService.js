@@ -17,13 +17,18 @@ angular.module('playerApp')
     this.getChartColors = function(datasetType) {
       if (datasetType == 'creation') {
         return [{
-            backgroundColor: '#0062ff',
-            borderColor: '#0062ff',
+            backgroundColor: '#292929',
+            borderColor: '#292929',
             fill: false
           },
           {
             backgroundColor: '#FF0000',
             borderColor: '#FF0000',
+            fill: false
+          },
+          {
+            backgroundColor: '#0062ff',
+            borderColor: '#0062ff',
             fill: false
           },
           {
