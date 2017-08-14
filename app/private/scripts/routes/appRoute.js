@@ -158,7 +158,7 @@ angular.module('playerApp')
           }
       })
       .state('ContentNote', {
-          url: '/resourse/note/:contentId/:contentName',
+          url: '/resource/note/:contentId/:contentName',
           views: {
               mainView: {
                   templateUrl: 'views/note/noteList.html',
@@ -175,7 +175,7 @@ angular.module('playerApp')
                   pageid: org.sunbird.portal.appid + '_ContentNote',
                   id: $stateParams.contentId,
                   name: $stateParams.contentName,
-                  url: '/private/index#!/resourse/note/' + $stateParams.contentId + '/' + $stateParams.contentName
+                  url: '/private/index#!/resource/note/' + $stateParams.contentId + '/' + $stateParams.contentName
               });
           },
           onExit: function ($rootScope) {
@@ -352,6 +352,7 @@ angular.module('playerApp')
               $rootScope.courseActive = $rootScope.resourcesActive = '';
               $rootScope.isSearchResultsPage = false;
               $rootScope.homeActive = '';
+              $rootScope.profileActive = '';
           }
       })
       .state('TocPlayer', {
@@ -778,28 +779,28 @@ angular.module('playerApp')
           }
       })
       .state('orgDashboard', {
-        url: '/org-dashboard/:orgId',
-        views: {
-          'mainView': {
-            templateUrl: '/views/dashboard/orgDashboard.html',
-            controller: 'orgDashboardController as dashboardData'
+          url: '/org-dashboard/:orgId',
+          views: {
+              mainView: {
+                  templateUrl: '/views/dashboard/orgDashboard.html',
+                  controller: 'orgDashboardController as dashboardData'
+              }
+          },
+          params: {
+              orgId: null
+          },
+          onEnter: function ($stateParams, $rootScope, routeHelperService) {
+              if ($stateParams.backState === 'Profile') {
+                  $rootScope.profileActive = 'active';
+              } else {
+                  $rootScope.resourcesActive = 'active';
+              }
+              $rootScope.isPlayerPage = true;
+              routeHelperService.loadRouteConfig('orgDashboard', null);
+          },
+          onExit: function ($rootScope) {
+              $rootScope.profileActive = '';
           }
-        },
-        params: {
-          orgId: null
-        },
-        onEnter: function($stateParams, $rootScope, routeHelperService) {
-          if ($stateParams.backState === 'Profile') {
-            $rootScope.profileActive = 'active';
-          } else {
-            $rootScope.resourcesActive = 'active';
-          }
-          $rootScope.isPlayerPage = true;
-          routeHelperService.loadRouteConfig('orgDashboard', null);
-        },
-        onExit: function($rootScope) {
-          $rootScope.profileActive = '';
-        }
       })
       .state('WorkSpace.ContentBatch', {
           url: '/content/batches',
@@ -885,8 +886,8 @@ angular.module('playerApp')
             }
         });
   })
-  .run(function ($urlRouter, $http, $state, permissionsService, $rootScope, $location, config, 
-      toasterService,routeHelperService) {
+  .run(function ($urlRouter, $http, $state, permissionsService, $rootScope, $location, config,
+      toasterService, routeHelperService) {
       permissionsService.getPermissionsData('/permissions').then(function (res) {
       var permissions = res.data; //eslint-disable-line
           if (res && res.responseCode === 'OK') {
@@ -916,64 +917,64 @@ angular.module('playerApp')
 
       $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState,
       fromParams) {
-          if(!_.isEmpty(fromState.name)){
-            window.localStorage.setItem('previousURl', JSON.stringify({ name: fromState.name, params: fromParams })); 
+          if (!_.isEmpty(fromState.name)) {
+              window.localStorage.setItem('previousURl', JSON.stringify({ name: fromState.name, params: fromParams }));
           }
           switch (toState.name) {
           case 'WorkSpace':
-                routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK,false,event);
-                break;
+              routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event);
+              break;
           case 'WorkSpace.ContentCreation':
-                routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK,false,event);
-                break;
+              routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event);
+              break;
           case 'CreateLesson':
-                routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK,false,event);
-                break;             
+              routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event);
+              break;
           case 'ContentEditor':
-                routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK,false,event);
-                break;
+              routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event);
+              break;
           case 'EditContent':
-                routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK,false,event);
-                break;
+              routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event);
+              break;
           case 'CreateTextbook':
-                routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK,false,event);
-                break;
+              routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event);
+              break;
           case 'CreateCollection':
-                routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK,false,event);
-                break;
+              routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event);
+              break;
           case 'CreateCourse':
-                routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK,false,event);
-                break;
+              routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event);
+              break;
           case 'CollectionEditor':
-                routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK,false,event);
-                break;
+              routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event);
+              break;
           case 'PreviewContent':
-                routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK,false,event);
-                break;
+              routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event);
+              break;
           case 'WorkSpace.UpForReviewContent':
-                routeHelperService.checkStateAccess(['CONTENT_REVIEWER', 'CONTENT_REVIEW'],false,event);
-                break;             
+              routeHelperService.checkStateAccess(['CONTENT_REVIEWER', 'CONTENT_REVIEW'], false, event);
+              break;
           case 'WorkSpace.FlaggedContent':
-                routeHelperService.checkStateAccess(['FLAG_REVIEWER'],false,event);
-                break;  
+              routeHelperService.checkStateAccess(['FLAG_REVIEWER'], false, event);
+              break;
 		      case 'orgDashboard':
-                routeHelperService.checkStateAccess(['ORG_ADMIN', 'SYSTEM_ADMIN'],false,event);
-                break;
+              routeHelperService.checkStateAccess(['ORG_ADMIN', 'SYSTEM_ADMIN'], false, event);
+              break;
           case 'WorkSpace.DraftContent':
-                routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK,false,event);
-                break; 
+              routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event);
+              break;
           case 'WorkSpace.ReviewContent':
-                routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK,false,event);
-                break;
+              routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event);
+              break;
           case 'WorkSpace.PublishedContent':
-                routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK,false,event);
-                break;
+              routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event);
+              break;
           case 'WorkSpace.AllUploadedContent':
-                routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK,false,event);
-                break;   
+              routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event);
+              break;
           case 'WorkSpace.BatchList':
-                routeHelperService.checkStateAccess(['COURSE_MENTOR'],false,event);
-                break;  
+              routeHelperService.checkStateAccess(['COURSE_MENTOR'], false, event);
+              break;
           default:
               break;
           }

@@ -1,5 +1,5 @@
-<div ng-init="admin.addOrgNameToOrganizations()" class="ui divided items">  
-      <div class="userSearchCardHover item "ng-if="$root.search.selectedSearchKey=='Users'" ng-repeat="user in admin.searchResult">
+<div ng-init="admin.addOrgNameToOrganizations()" class="ui divided searchListInfo items">  
+      <div class="userSearchCardHover item " ng-if="$root.search.selectedSearchKey=='Users'" ng-repeat="user in admin.searchResult">
         <div class="ui tiny image userSearchImage " >
           <img ng-src="{{user.avatar|| 'images/user_logo.png'}} ">
         </div>
