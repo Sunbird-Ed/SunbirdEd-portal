@@ -25,7 +25,7 @@ angular.module('playerApp').directive('search', function () {
             $rootScope.search.boards = config.FILTER.RESOURCES.boards;
             $scope.search.searchTypeKeys = config.searchTypeKeys;
             $rootScope.search.sortingOptions = config.sortingOptions;
-            $rootScope.search.sortBy = {createdOn: 'asc'};
+            $rootScope.search.sortBy = { createdOn: 'asc' };
             $scope.search.searchSelectionKeys = config.searchSelectionKeys;
             $rootScope.search.sortIcon = true;
             $rootScope.search.selectedLanguage = [];
@@ -125,24 +125,24 @@ angular.module('playerApp').directive('search', function () {
                 } else {
                     showLectureView = 'yes';
                 }
-                var params = {courseType: courseType,
+                var params = { courseType: courseType,
                     courseId: course.courseId || course.identifier,
                     lectureView: showLectureView,
                     progress: course.progress,
                     total: course.total,
                     courseName: course.courseName || course.name,
-                    lastReadContentId: course.lastReadContentId};
+                    lastReadContentId: course.lastReadContentId };
                 sessionService.setSessionData('COURSE_PARAMS', params);
                 $state.go('Toc', params);
             };
 
             $rootScope.search.playContent = function (item) {
                 if (item.mimeType === 'application/vnd.ekstep.content-collection') {
-                    $state.go('PreviewCollection', {Id: item.identifier, name: item.name});
+                    $state.go('PreviewCollection', { Id: item.identifier, name: item.name });
                 } else {
-                    $state.go('Player', {content: item,
+                    $state.go('Player', { content: item,
                         contentName: item.name,
-                        contentId: item.identifier});
+                        contentId: item.identifier });
                 }
             };
 
@@ -232,11 +232,11 @@ angular.module('playerApp').directive('search', function () {
                     $scope.search.resultType = 'content';
                 } else if ($rootScope.search.selectedSearchKey === 'Users') {
                     req.filters.objectType = ['user'];
-                    $scope.search.searchFn = adminService.userSearch({request: req});
+                    $scope.search.searchFn = adminService.userSearch({ request: req });
                     $scope.search.resultType = 'users';
                 } else if ($rootScope.search.selectedSearchKey === 'Organisations') {
                     req.filters.objectType = ['org'];
-                    $scope.search.searchFn = adminService.orgSearch({request: req});
+                    $scope.search.searchFn = adminService.orgSearch({ request: req });
                     $scope.search.resultType = 'organisations';
                 }
 
@@ -252,7 +252,7 @@ angular.module('playerApp').directive('search', function () {
                             if ($rootScope.search.autosuggest_data.length > 0) {
                                 $('#search-suggestions').addClass('visible').removeClass('hidden');
                             }
-                        } else {                            
+                        } else {
                             $('#search-suggestions').addClass('hidden').removeClass('visible');
                             $rootScope.search.autosuggest_data = [];
                             $rootScope.search.loader.showLoader = false;
@@ -272,7 +272,7 @@ angular.module('playerApp').directive('search', function () {
                             } else {
                                 $rootScope.search.error = {};
                                 $rootScope.search.searchResult = res.result;
-                            }                            
+                            }
                         }
                         $scope.search.autoSuggest = true;
                     } else {
@@ -346,7 +346,7 @@ angular.module('playerApp').directive('search', function () {
                 $state.go(closeUrl);
             };
             $rootScope.search.setSearchKey = function (key) {
-                $rootScope.$emit('setSearchKey', {key: key});
+                $rootScope.$emit('setSearchKey', { key: key });
             };
             $scope.$on('$destroy', function () {
                 conceptSelHandler();
