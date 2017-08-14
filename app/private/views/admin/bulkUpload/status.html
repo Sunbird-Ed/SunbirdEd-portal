@@ -1,0 +1,142 @@
+<div class="ui large modal" id="statusBulkUpload" sb-permissions permission-only="SYSTEM_ADMIN,ORG_ADMIN">
+  <div class="header">
+    <div class="ui grid">
+      <div class="eleven wide column">
+         <span class="ui header" >Check Status</span> 
+      </div>
+      <div class="one wide column actions">
+        <h5 class="ui basic icon circular button deny">
+                <i class="ui remove icon"></i>
+        </h5>
+      </div>
+    </div>
+  </div> 
+    <div class="content"> 
+       <div ng-if="admin.loader.showLoader">
+        <app-loader data="{{admin.loader}}"></app-loader>
+      </div>
+<form class="ui form" id= "statusForm" ng-if="!admin.loader.showLoader && !admin.bulkUploadStatus.processId">
+    <h4>You can track progress with process ID</h4>
+      <div class="ui grid">
+        <div class="six wide column">
+          <div class="field">
+            <label>Process ID</label>
+            <input type="text" placeholder="Process ID" ng-model="admin.processID">
+          </div>
+       </div>
+        <div class="three wide column">
+        </div>
+      </div>
+</form>
+    <div ng-if="admin.bulkUploadStatus.processId">
+    <h5>showing result for {{admin.bulkUploadStatus.processId}}</h5>
+      <div  class= "margin-top-40 " ng-if="admin.bulkUploadStatus.success.length">
+            <h5>Success Results</h5>
+          <table class="ui celled table" ng-if="admin.uploadStatusKey==='organizations'">
+              <thead>
+                  <tr >
+                    <th>OrgName</th>
+                    <th>Provider</th>
+                    <th>Channel</th>
+                    <th>ExternalId</th>
+                    <th>Description</th>
+                    <th>IsRootOrg</th>
+                    <th>RootOrgId</th>
+                    <th>Id</th>
+                    <th>Status</th>
+                 
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr class="positive" ng-repeat="fields in admin.bulkUploadStatus.success" >
+                    <td>{{fields.orgName}}</td>
+                    <td>{{fields.provider}}</td>
+                    <td>{{fields.channel}}</td>
+                    <td>{{fields.externalId}}</td>
+                    <td>{{fields.description}}</td>
+                    <td>{{fields.isRootOrg}}</td>
+                    <td>{{fields.id}}</td>
+                    <td>{{fields.status}}</td>
+                
+              </tbody>
+          </table>
+      </div>
+      <div class= "margin-top-40 " ng-if="admin.bulkUploadStatus.failure.length">
+          <h5>Failure Result</h5>
+                <table class="ui celled table"ng-if="admin.uploadStatusKey==='organizations' ">
+                 <thead>
+                   <tr>
+                    <th>orgName</th>
+                    <th>Provider</th>
+                    <th>Channel</th>
+                    <th>externalId</th>
+                    <th>Description</th>
+                    <th>isRootOrg</th>
+                    <th>err_msg</th>
+                  </tr>
+                 </thead>
+                <tbody>
+                    <tr class="error" ng-repeat="fields in admin.bulkUploadStatus.failure">
+                      {{fields}}
+                    <td>{{fields.orgName}}</td>
+                    <td>{{fields.provider}}</td>
+                    <td>{{fields.channel}}</td>
+                    <td>{{fields.externalId}}</td>
+                    <td>{{fields.description}}</td>
+                    <td>{{fields.isRootOrg}}</td>
+                    <td>{{fields.err_msg}}</td>
+                  </tr>
+                  </tbody>
+             </table>
+          <table class="ui celled table"ng-if="admin.uploadStatusKey==='users'">
+              <thead>
+              
+              <tr>
+                  <th>firstName</th>
+                  <th>lastName</th>
+                  <th>emailVerified</th>
+                  <th>phone</th>
+                  <th>provider</th>
+                  <th>phoneVerified</th>
+                  <th>regOrgId</th>
+                  <th>roles</th>
+                  <th>userName</th>
+                  <th>email</th>
+                  <th>loginId</th>
+                  <th>status</th>
+                  <th>rootOrgId</th>
+                  <th>err_msg</th>
+              </tr>
+                              </thead>
+              <tbody>
+          <tr class="error" ng-repeat="fields in admin.bulkUploadStatus.failure">
+            <td>{{fields.firstName}}</td>
+            <td>{{fields.lastName}}</td>
+            <td>{{fields.emailVerified}}</td>
+            <td>{{fields.phone}}</td>
+            <td>{{fields.provider}}</td>
+            <td>{{fields.phoneVerified}}</td>
+            <td>{{fields.regOrgId}}</td>
+            <td>{{fields.roles}}</td>
+            <td>{{fields.userName}}</td>
+            <td>{{fields.email}}</td>
+            <td>{{fields.loginId}}</td>
+            <td>{{fields.status}}</td>
+            <td>{{fields.rootOrgId}}</td>
+            <td>{{fields.err_msg}}</td>
+          </tr>
+                
+                  </tbody>
+          </table>
+      </div>
+    </div>
+ 
+    </div>
+  <div class="actions">
+       <div class="ui grid" >
+          <div class="twelve wide column" ng-if="!admin.bulkUploadStatus.processId">
+    <button ng-disabled="!admin.processID" sb-permissions permission-only="SYSTEM_ADMIN,ORG_ADMIN"  class="ui primary left floated button" ng-click="admin.getBulkUloadStatus(admin.processID,'users')"> check Users Status</button>
+    <button  ng-disabled="!admin.processID" sb-permissions permission-only="SYSTEM_ADMIN"  class="ui primary left floated button" ng-click="admin.getBulkUloadStatus(admin.processID,'organizations')"> check Organizations status</button>
+  </div>
+       </div></div>
+</div>
