@@ -1,0 +1,73 @@
+<div class="ui large modal" id="userBulkUpload" sb-permissions permission-only="SYSTEM_ADMIN,ORG_ADMIN">
+  <div class="header">
+    <div class="ui grid">
+      <div class="eleven wide column">
+         <span class="ui header" >Upload Users</span> 
+      </div>
+      <div class="one wide column actions">
+          <h5 class="ui basic icon circular button deny">
+              <i class="ui remove icon"></i>
+          </h5>
+      </div>
+    </div>
+  </div>
+  <div class="content"> 
+      <div ng-if="admin.loader.showLoader">
+        <app-loader data="{{admin.loader}}"></app-loader>
+      </div>
+      <form class="ui form" ng-if="!admin.loader.showLoader && !admin.bulkUsersProcessId">
+          <div class="ui grid" ng-if="!admin.bulkUsersProcessId">
+              <div class="six wide column">
+                <div class="required field">
+                  <label>Provider</label>
+                  <input type="text" placeholder="Provider" ng-model="admin.bulkUsers.provider">
+                </div>
+              </div>
+              <div class="six wide column">
+                <div class="required field">
+                  <label>External Id</label>
+                  <input type="text" placeholder="External Id" ng-model="admin.bulkUsers.externalid">
+                </div>
+              </div>
+          </div>
+          <div class="ui horizontal divider margin-top-40" ng-if="!admin.bulkUsersProcessId">
+            Or
+          </div>
+          <div class="ui grid" ng-if="!admin.bulkUsersProcessId">
+              <div class="six wide column">
+                  <div class="one field">
+                    <div class=" required field">
+                      <label>OrgId</label>
+                      <input type="text" placeholder="OrgId" ng-model="admin.bulkUsers.OrgId">
+                    </div>
+                  </div>
+                </div>
+          </div>
+          <div class="ui negative message" ng-if="admin.bulkUploadError">
+                <i class="close icon" ng-click="admin.closeBulkUploadError()"></i>
+                <p>{{admin.bulkUploadErrorMessage}}</p>
+          </div>
+      </form>
+      <h5 ng-if="admin.fileName"><i class="file outline icon" ></i>Uploaded File: {{admin.fileName}}</h5>
+      <!-- show progress -->
+      <div ng-if="admin.bulkUsersProcessId">
+      <h5>Process ID: {{admin.bulkUsersProcessId}}</h5>
+      <h5>Please save the Process ID for your reference.You can track progress with Process ID</h5>
+      </div>
+  </div>
+  <div class="actions">
+      <div class="ui grid" >
+            <div class="four wide column">
+              <button class="ui left floated button"ng-click="admin.downloadSample('users')">Download Sample CSV</button>
+            </div>
+            <div class="four wide column">
+            </div>
+            <div class="four wide column">
+                <button ng-disabled="admin.bulkUsersProcessId" class="ui primary left floated button" ng-click="admin.openImageBrowser('users');">Upload Users CSV</button>
+                    <input type="file" accept="file/csv,file/xlsx" class="content-input ui small "
+                    id="uploadUsrsCSV" onchange="angular.element(this).scope().validateFile(this.files,'users');"
+                    required="" /> 
+            </div>
+      </div>
+  </div>
+</div>

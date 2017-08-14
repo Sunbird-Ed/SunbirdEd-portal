@@ -1,0 +1,44 @@
+<div class="ui large modal" id="orgBulkUpload" sb-permissions permission-only="SYSTEM_ADMIN" >
+  <div class="header">
+    <div class="ui grid">
+      <div class="eleven wide column">
+       <span class="ui header">Upload Organizations</span> 
+       </div>
+      <div class="one wide column actions">
+        <h5 class="ui basic icon circular button deny">
+                <i class="ui remove icon"></i>
+        </h5>
+      </div>
+    </div>
+  </div> 
+  <div class="content"> 
+    <div ng-if="admin.loader.showLoader">
+        <app-loader data="{{admin.loader}}"></app-loader>
+      </div>
+        <!-- file name -->
+      <h5 ng-if="admin.fileName">
+        <i class="file outline icon"></i>Uploaded File: {{admin.fileName}}
+      </h5>
+      <!-- show progress -->
+      <div ng-if="admin.bulkOrgProcessId">
+          <p class="padding-top-bottom-0 ">Process ID: {{admin.bulkOrgProcessId}}</p>
+          <p>Please save the Process ID for your reference .You can track progress with process ID</p>
+      </div>
+  </div>
+  <div class="actions">
+      <div class="ui grid" >
+        <div class="four wide column">
+          <button class="ui  left floated button"ng-click="admin.downloadSample('organizations')">Download Sample CSV</button>
+        </div>
+        <div class="four wide column">
+        </div>
+        <div class="four wide column">
+        <button ng-disabled="admin.bulkOrgProcessId" class="ui primary right floated button" ng-click="admin.openImageBrowser('organizations');">Upload Organizations CSV</button>
+								<input type="file" accept="file/csv,file/xlsx" class="content-input ui small "
+								id="orgUploadCSV" onchange="angular.element(this).scope().validateFile(this.files,'organizations');"
+								required="" />
+        </div>
+      </div>
+  </div>
+</div>
+
