@@ -85,9 +85,4 @@ angular.module('playerApp')
                     $state.go($scope.redirect);
                 }
             };
-
-            contentFlag.initEKStepCE = function (contentId) {
-                var params = { contentId: contentId, type: 'TextBook' };
-                $state.go('CollectionEditor', params);
-            };
         }]);
