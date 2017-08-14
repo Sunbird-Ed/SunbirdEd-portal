@@ -19,6 +19,7 @@ angular.module('playerApp')
             batchUpdate.submitted = false;
             batchUpdate.batchData = '';
             batchUpdate.batchId = $stateParams.batchId;
+            batchUpdate.coursecreatedby = $stateParams.coursecreatedby;
 
             batchUpdate.init = function(){
                 batchUpdate.getUserList();
@@ -42,7 +43,7 @@ angular.module('playerApp')
                 }
             }
 
-            batchUpdate.showUpdateBatchModal = function () {
+            batchUpdate.showUpdateBatchModal = function (batchData, coursecreatedby) {
                 batchUpdate.selectedUsers = [];
                 batchUpdate.selectedMentors = [];
                 _.forEach(batchUpdate.batchData.participant, function(value, key){
