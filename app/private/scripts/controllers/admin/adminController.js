@@ -23,7 +23,6 @@ angular.module('playerApp')
             var admin = this;
             admin.userRoles = config.USER_ROLES;
             admin.searchResult = $scope.users;
-            // admin.userName = '';
             admin.bulkUsers = {};
 
             admin.sampleOrgCSV = [{ orgName: null,
@@ -341,7 +340,7 @@ angular.module('playerApp')
                 admin.bulkUsers = {};
             };
             admin.getBulkUloadStatus = function (id, key) {
-                admin.loader = toasterService.loader('', 'getting status ');
+                admin.loader = toasterService.loader('', 'Getting status ');
                 adminService.bulkUploadStatus(id).then(function (res) {
                     admin.loader.showLoader = false;
                     $('#statusBulkUpload').modal('refresh');
