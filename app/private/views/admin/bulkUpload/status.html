@@ -54,7 +54,7 @@
                  </thead>
                 <tbody>
                     <tr class="error"  ng-repeat="row in admin.bulkUploadStatus.failure"  >
-                    <td ng-repeat="(col,val) in row">{{ val || "empty"}}</td>
+                    <td ng-repeat="(col,val) in row">{{ val || "empty" | limitTo: 30}}</td>
                   </tr>
                   </tbody>
              </table>
