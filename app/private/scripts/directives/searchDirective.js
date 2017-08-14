@@ -227,9 +227,11 @@ angular.module('playerApp').directive('search', function () {
                 } else if ($rootScope.search.selectedSearchKey === 'Resources') {
                     $scope.search.searchFn = searchService.contentSearch(req);
                     $scope.search.resultType = 'content';
+                    req.filters.objectType = ['Content'];
                 } else if ($rootScope.search.selectedSearchKey === 'All') {
                     $scope.search.searchFn = searchService.search(req);
                     $scope.search.resultType = 'content';
+                    req.filters.objectType = ['Content'];
                 } else if ($rootScope.search.selectedSearchKey === 'Users') {
                     req.filters.objectType = ['user'];
                     $scope.search.searchFn = adminService.userSearch({ request: req });
