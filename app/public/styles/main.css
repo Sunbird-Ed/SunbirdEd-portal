@@ -577,6 +577,9 @@ th {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   background-color: #D8D8D8;
 }
+.overflowContentHorizontal {
+  overflow-x: scroll !important;
+}
 .header-container {
   margin-left: 1px !important;
   border-bottom: 5px solid #007AFF !important;
@@ -1742,6 +1745,9 @@ ul.fancytree-container li {
 .profileViewProgress {
   color: #979797 !important;
   font-size: 1em ;
+}
+.searchListInfo {
+  border-bottom: 1px solid rgba(34, 36, 38, 0.15) !important;
 }
 .workspaceicon.ui.header > .icon {
   padding-top: 0;
