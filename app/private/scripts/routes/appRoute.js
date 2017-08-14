@@ -825,6 +825,9 @@ angular.module('playerApp')
                   controller: 'BatchController as batch'
               }
           },
+          params: {
+              coursecreatedby: null
+          },
           onEnter: function ($rootScope, portalTelemetryService) {
               $rootScope.profileActive = 'active';
               portalTelemetryService.fireImpressions({
@@ -846,6 +849,9 @@ angular.module('playerApp')
                   templateUrl: '/views/batch/updateBatch.html',
                   controller: 'BatchUpdateController as batchUpdate'
               }
+          },
+          params: {
+              coursecreatedby: null
           },
           onEnter: function ($rootScope, portalTelemetryService) {
               $rootScope.profileActive = 'active';

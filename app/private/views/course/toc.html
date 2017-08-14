@@ -47,7 +47,7 @@
                                     <div>
                                         <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false" courseid="toc.courseParams.courseId"></note-card>
                                     </div>
-                                    <batch-card showbatchcard="true" courseid="toc.courseParams.courseId"></batch-card>
+                                    <batch-card showbatchcard="true" coursecreatedby="toc.courseHierachy.createdBy"></batch-card>
                                     <div class="ui divider"></div>
                                     <div>
                                         <div ng-include=" 'views/course/carriculumCard.html'"></div>
