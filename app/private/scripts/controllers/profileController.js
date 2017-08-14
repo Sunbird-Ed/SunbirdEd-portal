@@ -114,6 +114,7 @@ angular.module('playerApp')// add those all values
                         profile.addressForm = false;
                         profile.educationForm = false;
                         profile.loader.showLoader = false;
+                        profile.openDiscriptionEdit = false;
                         toasterService.success(apiMessages.SUCCESS.profileEdited);
                         profile.getProfile();
                     } else {
@@ -420,5 +421,8 @@ angular.module('playerApp')// add those all values
                     };
                     $state.go('PreviewContent', params);
                 }
+            };
+            profile.EditDetails = function (details) {
+                profile.updateProfile({ profileSummary: details });
             };
         }]);
