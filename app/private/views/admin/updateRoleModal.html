@@ -33,7 +33,7 @@
       </div>
     </div>
     <div class="actions">
-      <button class="ui primary right floated button margin-bottom-15 margin-top-10 " type="submit" ng-click="admin.updateRoles(admin.userId,admin.selectedOrgUserId,admin.selectedOrgUserRoles)">Update</button>
+      <button ng-disable="!admin.selectedOrgUserRoles"class="ui primary right floated button margin-bottom-15 margin-top-10 " type="submit" ng-click="admin.updateRoles(admin.userId,admin.selectedOrgUserId,admin.selectedOrgUserRoles)">Update</button>
     </div>
   </div>
 </div>
