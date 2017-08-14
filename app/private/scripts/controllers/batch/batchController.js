@@ -118,7 +118,7 @@ angular.module('playerApp')
                             "endDate": data.endDate,
                             "createdBy": batch.userId,
                             "createdFor": $rootScope.organisationIds,
-                            "mentors": data.mentors
+                            "mentors": _.compact(data.mentors)
                         }
                     }
                     batchService.create(request).then(function (response) {
@@ -126,7 +126,7 @@ angular.module('playerApp')
                             if(data.users && data.users.length > 0){
                                 var userRequest = {
                                     "request" : {
-                                        "userIds": data.users
+                                        "userIds": _.compact(data.users)
                                     }
                                 }
                                 batchService.addUsers(userRequest, response.result.batchId).then(function (response) {
