@@ -11,7 +11,14 @@
                     <span ng-if="toc.courseTotal"><p class="text-align-center">Your Progress {{(toc.courseProgress * 100 / toc.courseTotal)| number: 0 || 0}}%</p></span>
                     <button ng-if="toc.playList.length > 0" class="fluid blue right floated  ui button courseHeaderButton margin-top-0" ng-click="toc.resumeCourse()">
                         RESUME COURSE  <i class="caret right icon"></i>
-                    </button>
+                    </button><!-- 
+                    <div ng-show="!toc.batchCardShow">
+                        <div class="content text-align-center padding-bottom-15">
+                            <span class="header padding-bottom-5">
+                                {{toc.selectedBatchInfo.startDate | date: "dd MMM yyyy"}} - {{toc.selectedBatchInfo.endDate | date: "dd MMM yyyy"}}
+                            </span>
+                        </div>
+                    </div> -->
                 </div>
                 <!-- <div class="four wide column padding-top-none" ng-if="toc.courseType === 'OTHER_COURSE'">
                     <div class="ui dropdown fluid blue right floated  ui button courseHeaderButton margin-top-0" id="enrollToCourse" ng-init="toc.setEnrollDropdown()">

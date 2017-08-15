@@ -275,6 +275,9 @@
             },
             "GET_USERS": {
                 "FAILED": "Fetching users list failed, please try again later..."
+            },
+            "ENROLLED": {
+                "SUCCESS": "Course Enrolled for this batch successfully..."
             }
         }
     }
