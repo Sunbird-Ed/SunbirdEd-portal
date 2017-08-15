@@ -479,6 +479,7 @@ angular.module('playerApp')
                 toc.playItemIndex = undefined;
                 toc.getCourseToc();
                 contentStateService.init();
+                toc.showBatchCardList();
             };
 
             toc.loadData = function () {
@@ -488,6 +489,25 @@ angular.module('playerApp')
         // (to be implemented with progress and status params in API side)
                 } else {
                     toc.init();
+                }
+            };
+            toc.batchCardShow = true;
+            toc.showBatchCardList = function(){
+                var enroledCourses = $rootScope.enrolledCourses;
+                var isEnroled = _.find($rootScope.enrolledCourses, function(o) { 
+                    return o.courseId === toc.courseId; 
+                });
+                if(!_.isUndefined(isEnroled)){
+                    toc.batchCardShow = false;
+                    batchService.getBatchDetails({ "batchId" : isEnroled.batchId }).then(function (response) {
+                        if (response && response.responseCode === 'OK') {
+                            toc.selectedBatchInfo = response.result.response;
+                        }else{
+                            toasterService.error($rootScope.errorMessages.BATCH.GET.FAILED);    
+                        }
+                    }).catch(function () {
+                        toasterService.error($rootScope.errorMessages.BATCH.GET.FAILED);
+                    });
                 }
             };
         }]);
