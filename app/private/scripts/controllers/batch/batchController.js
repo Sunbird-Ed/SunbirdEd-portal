@@ -11,8 +11,8 @@
 angular.module('playerApp')
     .controller('BatchController', ['$rootScope', '$timeout', '$state','$scope', '$stateParams', 
     'batchService', '$filter', 'permissionsService', 'errorMessages', 'toasterService', 'courseService',
-    function($rootScope, $timeout, $state, $scope, $stateParams, batchService, $filter, 
-    permissionsService, errorMessages, toasterService, courseService) {
+    'learnService', function($rootScope, $timeout, $state, $scope, $stateParams, batchService, $filter, 
+    permissionsService, errorMessages, toasterService, courseService, learnService) {
             var batch = this;
             batch.userList = [];
             batch.menterList = [];
@@ -24,11 +24,12 @@ angular.module('playerApp')
             batch.quantityOfBatchs = 3;
             batch.isMentor = false;
             batch.status = 1;
+            batch.batchInfo = '';
             batch.statusOptions = [
                 { name: 'Ongoing', value: 1 },
                 { name: 'New', value: 0 }
             ];
-            batch.batchInfo = undefined;
+            batch.showEnroll = true;
             batch.showCreateBatchModal = function () {
                 batch.getUserList();
                 $timeout(function () {
@@ -171,7 +172,6 @@ angular.module('playerApp')
                     batch.isMentor = true;
                     request.request.filters.createdBy = batch.userId;
                 }
-                console.log(JSON.stringify(request));
                 batchService.getAllBatchs(request).then(function (response) {
                     if (response && response.responseCode === 'OK') {
                         batch.userList = [];
@@ -180,25 +180,29 @@ angular.module('playerApp')
                             batch.userList.push(val.createdBy);
                         });
                         batch.userList = _.compact(_.uniq(batch.userList));
-                        var req = {
-                            "request": {
-                                "filters":{
-                                    "identifier": batch.userList 
+                        if(batch.userList.length > 0){
+                            var req = {
+                                "request": {
+                                    "filters":{
+                                        "identifier": batch.userList 
+                                    }
                                 }
                             }
+                            batchService.getUserList(req).then(function (res) {
+                                if (res && res.responseCode === 'OK') {
+                                    _.forEach(res.result.response.content, function(val){
+                                        batch.userNames[val.userId] = val;
+                                    });
+                                    batch.batchList = response.result.response.content || [];
+                                }else{
+                                   toasterService.error(errorMessages.BATCH.GET_USERS.FAILED); 
+                                }
+                            }).catch(function () {
+                                toasterService.error(errorMessages.BATCH.GET_USERS.FAILED);
+                            });
+                        }else{
+                            batch.batchList = response.result.response.content || [];
                         }
-                        batchService.getUserList(req).then(function (res) {
-                            if (res && res.responseCode === 'OK') {
-                                _.forEach(res.result.response.content, function(val){
-                                    batch.userNames[val.userId] = val.firstName +' '+ val.lastName;
-                                });
-                            }else{
-                               toasterService.error(errorMessages.BATCH.GET_USERS.FAILED); 
-                            }
-                        }).catch(function () {
-                            toasterService.error(errorMessages.BATCH.GET_USERS.FAILED);
-                        });
-                        batch.batchList = response.result.response.content || [];
                     } else {
                         toasterService.error(errorMessages.BATCH.SEARCH.FAILED);
                     }
@@ -248,8 +252,7 @@ angular.module('playerApp')
             };
 
             batch.showBatchDetails = function(batchData){
-                //$rootScope.batchInfo = angular.copy(batchData);
-                //$rootScope.$broadcast('batchDetails',batchData) 
+                $rootScope.$broadcast('batchDetails', batchData);
                 $('#batchDetails').modal('show');
             };
 
@@ -261,10 +264,10 @@ angular.module('playerApp')
                         batchId: batchId
                     }
                 }
-
                 courseService.enrollUserToCourse(req).then(function (response) {
                     if (response && response.responseCode === 'OK') {
-                        
+                        batch.showEnroll = false;
+                        toasterService.error(errorMessages.BATCH.ENROLLED.SUCCESS);
                     }else{
                         toasterService.error(errorMessages.Courses.ENROLL.ERROR);
                     }
@@ -272,5 +275,7 @@ angular.module('playerApp')
                     toasterService.error(errorMessages.Courses.ENROLL.ERROR);
                 });
             };
+
+
         }
     ]);
