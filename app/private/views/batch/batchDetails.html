@@ -1,74 +1,83 @@
 <div id="batchDetails" class="ui modal">
-<i class="close icon"></i>
-  <div class="header">
-    <h5 class="padding-top-10">Batch Name {{batchInfo}}</h5>
-  </div>
-  <div class="scrolling content">
-    <div class="ui grid">
-      <div class="one wide column"></div>
-      <div class="ten wide column">
-        <div class="content">
-          <div class="ui grid padding-top-20">
-            <div class="two wide column ">
-              <div class="ui card float right">
-                <div class="ui fluid image">
-                  <img ng-src="../images/sunbird_logo.png">
-                </div>
-              </div>
+    <div class="header">
+        <div class="ui grid">
+            <div class="eleven wide column">
+               <span class="ui header">{{batch.batchInfo.name}}</span>
             </div>
-            <div class="ten wide column padding-left-25">
-              <div class="ui grid">
-                <div class="eight wide column">
-                  
-                </div>
-                <div class="four wide column">
-                  <div class="ui fluid blue right floated  ui button margin-top-0" id="enrollToCourse" ng-click="batch.enrollUserToCourse()">
-                    <span class="text">ENROLL TO COURSE</span>
-                  </div>
-                </div>
-              </div>
-              <div class="batch-des padding-top-30  ">
-                <label>DESCRIPTION OF BATCH</label>
-                <div class="des-content">Curabitur lobortis id lorem id bibendum. Ut id consectetur magna. Quisque volutpat augue enim, pulvinar lobortis nibh lacinia at. Vestibulum nec erat ut mi sollicitudin porttitor id sit amet risus… <span class="ui cardsKnowMore mouse-pointer">Read More ...</span> </div>
-              </div>
-              <div class="ui grid batch-date padding-top-30">
-                <div class="six wide column  start-date">
-                  <label>START DATE</label><span class="padding-left-10">12 July 2017</span></div>
-                <div class="six wide column  end-date">
-                  <label>END DATE</label><span class="padding-left-10">12 August 2017</span></div>
-              </div>
-              <div class="member padding-top-30 ">
-                <label>MEMBERS OF BATCH</label>
-              </div>
-              <div class="ui very relaxed list padding-top-10 batch-list-items">
-                <div class="item">
-                  <img class="ui avatar image" src="images/user_logo.png">
-                  <div class="content padding-top-10">
-                    <div class="header">Tom</div>
-                    National School for children, Pune
-                  </div>
-                </div>
-                <div class="item">
-                  <img class="ui avatar  image" src="images/user_logo.png">
-                  <div class="content padding-top-10">
-                    <div class="header">Christian Rocha</div>
-                    National School for children, Pune
-                  </div>
-                </div>
-                <div class="item">
-                  <img class="ui avatar  image" src="images/user_logo.png">
-                  <div class="content padding-top-10">
-                    <div class="header">Matt</div>
-                    National School for children, Pune
-                  </div>
-                </div>
-              </div>
+            <div class="one wide column actions">
+                <h5 class="ui basic icon circular button deny">
+                    <i class="ui remove icon"></i>
+                </h5>
             </div>
-            <!--  <div class="one wide column"></div> -->
-          </div>
         </div>
-      </div>
-      <div class="one wide column"></div>
     </div>
-  </div>
+    <div class="scrolling content">
+        <div class="ui grid">
+            <div class="twelve wide column">
+                <div class="content">
+                    <div class="ui grid padding-top-20">
+                        <div class="two wide column ">
+                            <div class="ui card float right">
+                                <div class="ui fluid image">
+                                    <img ng-src="../images/sunbird_logo.png">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ten wide column padding-left-25">
+                            <div class="ui grid">
+                                <div class="eight wide column batch-des">
+                                    <label>DESCRIPTION OF BATCH</label>
+                                    <div class="des-content" ng-if="!batch.readMore">
+                                    <p >
+                                        {{ batch.batchInfo.description | limitTo: 200 }}&nbsp;
+                                        <span class="ui cardsKnowMore mouse-pointer" ng-if="batch.batchInfo.description.length > 200 && batch.readMore === false" ng-click="batch.readMore = !batch.readMore;">Read More ...</span>
+                                    </p>
+                                    </div>
+                                </div>
+                                <div class="four wide column" ng-show="batch.showEnroll">
+                                    <div class="ui fluid blue right floated  ui button margin-top-0" id="enrollToCourse" ng-click="batch.enrollUserToCourse(batch.batchInfo.id)">
+                                        <span class="text">ENROLL TO COURSE</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui grid batch-date">
+                                <div class="six wide column  start-date">
+                                    <label>START DATE</label><span class="padding-left-10">{{batch.batchInfo.startDate | date: "dd MMM yyyy"}}</span>
+                                </div>
+                                <div class="six wide column  end-date">
+                                    <label>END DATE</label><span class="padding-left-10">{{batch.batchInfo.endDate | date: "dd MMM yyyy"}}</span>
+                                </div>
+                            </div>
+                            <div class="member padding-top-20">
+                                <label>MEMBERS OF BATCH</label>
+                            </div>
+                            <div class="ui very relaxed list padding-top-10 batch-list-items">
+                                <!-- <div class="item">
+                                    <img class="ui avatar  image" src="images/user_logo.png">
+                                    <div class="content padding-top-10">
+                                        <div class="header">Christian Rocha</div>
+                                        National School for children, Pune
+                                    </div>
+                                </div>
+                                 <div class="item">
+                                    <img class="ui avatar  image" src="images/user_logo.png">
+                                    <div class="content padding-top-10">
+                                        <div class="header">Christian Rocha</div>
+                                        National School for children, Pune
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <img class="ui avatar  image" src="images/user_logo.png">
+                                    <div class="content padding-top-10">
+                                        <div class="header">Matt</div>
+                                        National School for children, Pune
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
