@@ -253,7 +253,14 @@
         "ADMIN": {
             "fail": "Somthing went wrong, please try again later...",
             "roleUpdateSuccess":"Roles updated successfully",
-            "deleteSuccess":"User deleted successfully"
+            "deleteSuccess":"User deleted successfully",
+            "userUploadSuccess":"Users uploaded successfully",
+            "orgUploadSuccess":"Organizations uploaded successfully",
+            "uploadingOrgs":"Uploading Organizations",
+            "uploadingUsers":"Uploading users",
+            "notCSVFile":"Please upload file in csv formate only",
+            "bulkUploadErrorMessage":"you should enter Provider and External Id Or Organization Id",
+            "statusSuccess":"Status fetched successfully"
         },
         "BATCH":{
             "CREATE": {
@@ -279,6 +286,6 @@
             "ENROLLED": {
                 "SUCCESS": "Course Enrolled for this batch successfully..."
             }
-        }
+        }       
     }
 }
