@@ -33,17 +33,19 @@ angular.module('playerApp') // add those all values
       });
 
       // Get Organisation details
-      userService.getOrgDetails(orgIds).then(function(successResponse) {
-          if (successResponse.responseCode === 'OK') {
+      userService.getOrgDetails(orgIds).then(function(apiResponse) {
+          if (apiResponse.responseCode === 'OK') {
             var orgArray = [];
-            _.forEach(successResponse.result.response.content, function(org) {
+            _.forEach(apiResponse.result.response.content, function(org) {
               orgArray.push({ organisationId: org.id, orgName: org.orgName });
             });
             profile.orgDetails = orgArray;
-          }
+          } else {
+			  toasterService.error(apiResponse.params.errmsg);
+		  }
         })
         .catch(function() {
-          // error handler
+          toasterService.error('Process failed, please try again later.');
         });
 
       // Get user profile
