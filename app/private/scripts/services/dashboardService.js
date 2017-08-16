@@ -46,13 +46,7 @@ angular.module('playerApp')
       }
     };
 
-    this.getChartOptions = function(datasetType) {
-      var labelString = ''
-      if (datasetType == 'creation') {
-        labelString = 'Contents created per day'
-      } else if (datasetType == 'consumption') {
-        labelString = 'Time spent per day'
-      }
+    this.getChartOptions = function(labelString) {
       return {
         legend: { display: true },
         scales: {
