@@ -1,4 +1,4 @@
-<div class="ui large modal" id="statusBulkUpload" sb-permissions permission-only="SYSTEM_ADMIN,ORG_ADMIN">
+<div class="ui large modal" id="statusBulkUpload" sb-permissions permission-only="SYSTEM_ADMINISTRATION,ORG_ADMIN">
   <div class="header">
     <div class="ui grid">
       <div class="eleven wide column">
@@ -65,7 +65,7 @@
   <div class="actions">
        <div class="ui grid" >
           <div class="twelve wide column" ng-if="!admin.bulkUploadStatus.processId">
-    <button ng-disabled="!admin.processID" sb-permissions permission-only="SYSTEM_ADMIN,ORG_ADMIN"  class="ui primary left floated button" ng-click="admin.getBulkUloadStatus(admin.processID)"> check Status</button>
+    <button ng-disabled="!admin.processID" sb-permissions permission-only="SYSTEM_ADMINISTRATION,ORG_ADMIN"  class="ui primary left floated button" ng-click="admin.getBulkUloadStatus(admin.processID)"> check Status</button>
   </div>
        </div></div>
 </div>
