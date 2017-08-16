@@ -71,44 +71,40 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
             window.document.location.replace('/logout');
         };
     // get user profile
-        $scope.userProfile = function (userProfile) {
-            if (userProfile && userProfile.responseCode === 'OK') {
-                var profileData = userProfile.result.response;
-                $rootScope.avatar = profileData.avatar;
-                $rootScope.firstName = profileData.firstName;
-                $rootScope.lastName = profileData.lastName;
-                var userRoles = profileData.roles;
-                $rootScope.organisations = profileData.organisations;
-                var organisationNames = [];
+        $scope.userProfile = function (profileData) {
+            $rootScope.avatar = profileData.avatar;
+            $rootScope.firstName = profileData.firstName;
+            $rootScope.lastName = profileData.lastName;
+            var userRoles = profileData.roles;
+            $rootScope.organisations = profileData.organisations;
+            var organisationNames = [];
 
-                var rootOrg = (profileData.rootOrg && !_.isUndefined(profileData.rootOrg.id)) ? profileData.rootOrg.id : 'sunbird';
-                org.sunbird.portal.channel = md5(rootOrg);
-                var organisationIds = [];
+            var rootOrg = (profileData.rootOrg && !_.isUndefined(profileData.rootOrg.id)) ? profileData.rootOrg.id : 'sunbird';
+            org.sunbird.portal.channel = md5(rootOrg);
+            var organisationIds = [];
 
-                _.forEach(profileData.organisations, function (org) {
-                    if (org.roles && _.isArray(org.roles)) {
-                        userRoles = _.union(userRoles, org.roles);
-                    }
-                    if (org.organisationId) {
-                        organisationIds.push(org.organisationId);
-                    }
-                    if (org.orgName) {
-                        organisationNames.push(org.orgName);
-                    }
-                });
-                $rootScope.organisationNames = organisationNames;
-                $rootScope.organisationIds = angular.copy(organisationIds);
-                org.sunbird.portal.dims = organisationIds;
-                org.sunbird.portal.dims.forEach(function (value, index, arr) {
-                    arr[index] = md5(value);
-                });
-                permissionsService.setCurrentUserRoles(userRoles);
-                $rootScope.initializePermissionDirective = true;
-                $scope.getTelemetryConfigData(profileData);
-            } else {
-            // error handler
-            }
+            _.forEach(profileData.organisations, function (org) {
+                if (org.roles && _.isArray(org.roles)) {
+                    userRoles = _.union(userRoles, org.roles);
+                }
+                if (org.organisationId) {
+                    organisationIds.push(org.organisationId);
+                }
+                if (org.orgName) {
+                    organisationNames.push(org.orgName);
+                }
+            });
+            $rootScope.organisationNames = organisationNames;
+            $rootScope.organisationIds = angular.copy(organisationIds);
+            org.sunbird.portal.dims = organisationIds;
+            org.sunbird.portal.dims.forEach(function (value, index, arr) {
+                arr[index] = md5(value);
+            });
+            permissionsService.setCurrentUserRoles(userRoles);
+            $rootScope.initializePermissionDirective = true;
+            $scope.getTelemetryConfigData(profileData);
         };
+
         $scope.getTelemetryConfigData = function () {
             org.sunbird.portal.sid = $rootScope.sessionId;
             org.sunbird.portal.uid = $rootScope.userId;
@@ -128,12 +124,22 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
         };
 
         $scope.getProfile = function () {
-            userService.getUserProfile($rootScope.userId).then(function (successResponse) {
-                $scope.userProfile(successResponse);
-            })
-        .catch(function () {
-            // error handler
-        });
+            var userProfile = userService.getCurrentUserProfile();
+            if (!(_.isEmpty(userProfile))) {
+                $scope.userProfile(userProfile);
+            } else {
+                userService.getUserProfile($rootScope.userId).then(function (res) {
+                    if (res && res.responseCode === 'OK') {
+                        var profileData = res.result.response;
+                        userService.setCurrentUserProfile(profileData);
+                        $scope.userProfile(profileData);
+                    } else {
+                        // error handler
+                    }
+                }).catch(function () {
+                // error handler
+                });
+            }
         };
         $scope.getProfile();
 
@@ -198,7 +204,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
                     });
                     if ((res.result.count > offset) && res.result.count > (offset + limit)) {
                         offset += limit;
-                        limit = res.result.count-limit;
+                        limit = res.result.count - limit;
                         $rootScope.getConcept(offset, limit, callback);
                     } else {
                         callback(false, $scope.concepts);
