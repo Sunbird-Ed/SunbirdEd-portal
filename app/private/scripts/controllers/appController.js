@@ -79,7 +79,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
                 $rootScope.firstName = profileData.firstName;
                 $rootScope.lastName = profileData.lastName;
                 var userRoles = profileData.roles;
-                $rootScope.organisations = profileData.organisations;
+                var orgIds = [];
                 var organisationNames = [];
 
                 var rootOrg = (profileData.rootOrg && !_.isUndefined(profileData.rootOrg.id)) ? profileData.rootOrg.id : 'sunbird';
@@ -92,12 +92,28 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
                     }
                     if (org.organisationId) {
                         organisationIds.push(org.organisationId);
+                        orgIds.push(org.organisationId);
                     }
                     if (org.orgName) {
                         organisationNames.push(org.orgName);
                     }
                 });
                 $rootScope.organisationNames = organisationNames;
+                
+                // Get Organisation details
+                userService.getOrgDetails(orgIds).then(function (successResponse) {
+					if (successResponse.responseCode === 'OK') {
+						var orgArray = [];
+						_.forEach(successResponse.result.response.content, function (org) {
+							orgArray.push({ organisationId: org.id, orgName: org.orgName });
+						});
+						$rootScope.organisations = orgArray;
+					}
+				})
+				.catch(function () {
+					// error handler
+				});
+                
                 $rootScope.organisationIds = angular.copy(organisationIds);
                 org.sunbird.portal.dims = organisationIds;
                 org.sunbird.portal.dims.forEach(function (value, index, arr) {
