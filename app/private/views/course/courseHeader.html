@@ -7,6 +7,7 @@
                     <div class="courseStructureHeaderText courseStructureSectionHeading">{{toc.courseHierachy.name}}</div> <br>
                     <h6 class="ui small negative message" ng-if="toc.courseHierachy.status === 'Flagged'">{{$root.errorMessages.Courses.TOC.Flagged_COURSE}}</h6>
                 </div>
+                <!-- Show course stats if courseType is ENROLLED_COURSE -->
                 <div class="four wide column margin-top-Negative30" ng-if="toc.courseType === 'ENROLLED_COURSE'">
                      <span ng-if="toc.courseTotal"><p class="text-align-right">Your Progress {{(toc.courseProgress * 100 / toc.courseTotal)| number: 0 || 0}}%</p></span>
                      <div class="ui selection dropdown" id="courseDropdownValues" ng-init="toc.initDropdownValues()" style="margin-left: 151px">
@@ -15,6 +16,19 @@
                          <div class="default text">Select value</div>
                          <div class="menu">
                             <div class="item" data-value="1" ng-click="toc.resumeCourse()">Resume course</div>
+                            <div class="item" data-value="0"
+                              ng-click="toc.showCourseDashboard = 'true'"
+                              sb-permissions permission-only="COURSE_ADMIN,COURSE_CREATOR">View course stats</div>
+                         </div>
+                    </div>
+                </div>
+                <!-- Show course stats if courseType is other than ENROLLED_COURSE -->
+                <div class="four wide column margin-top-Negative30" ng-if="toc.courseType !== 'ENROLLED_COURSE'" sb-permissions permission-only="COURSE_ADMIN,COURSE_CREATOR">
+                     <div class="ui selection dropdown" id="courseDropdownValues" ng-init="toc.initDropdownValues()" style="margin-left: 151px">
+                         <input type="hidden" name="gender">
+                         <i class="dropdown icon"></i>
+                         <div class="default text">Select value</div>
+                         <div class="menu">
                             <div class="item" data-value="0" ng-click="toc.showCourseDashboard = 'true'">View course stats</div>
                          </div>
                     </div>
