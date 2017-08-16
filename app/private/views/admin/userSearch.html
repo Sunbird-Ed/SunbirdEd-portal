@@ -5,7 +5,7 @@
         </div>
         <div class="content ">
           <a class="header ">{{user.firstName}} &nbsp;{{user.lastName}}</a>
-            <a ng-if="user.status===1" sb-permissions permission-only="SYSTEM_ADMIN,ORG_ADMIN" class="float-ContentRight">
+            <a ng-if="user.status===1" sb-permissions permission-only="SYSTEM_ADMINISTRATION,ORG_ADMIN" class="float-ContentRight">
              <!-- update user roles -->
             <span ng-click="admin.showModal(user.userId,user.organisations);">
               <i class="edit icon trashIcon-fontSize"></i>
