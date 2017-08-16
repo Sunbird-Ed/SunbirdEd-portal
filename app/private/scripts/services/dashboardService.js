@@ -17,13 +17,18 @@ angular.module('playerApp')
     this.getChartColors = function(datasetType) {
       if (datasetType == 'creation') {
         return [{
-            backgroundColor: '#0062ff',
-            borderColor: '#0062ff',
+            backgroundColor: '#292929',
+            borderColor: '#292929',
             fill: false
           },
           {
             backgroundColor: '#FF0000',
             borderColor: '#FF0000',
+            fill: false
+          },
+          {
+            backgroundColor: '#0062ff',
+            borderColor: '#0062ff',
             fill: false
           },
           {
@@ -41,14 +46,8 @@ angular.module('playerApp')
       }
     };
 
-    this.getChartOptions = function(datasetType) {
-      var labelString = ''
-      if (datasetType == 'creation') {
-        labelString = 'Contents created per day'
-      } else if (datasetType == 'consumption') {
-        labelString = 'Timespent for content consumption'
-      }
-       return {
+    this.getChartOptions = function(labelString) {
+      return {
         legend: { display: true },
         scales: {
           xAxes: [{
@@ -63,10 +62,10 @@ angular.module('playerApp')
 
     /**
      * @Function time convertor
-     * @Description
+     * @Description convert seconds to min/hrs
+     * @Author nilesh
      */
     this.secondsToMin = function(numericData){
-        //return bucketValue.value;
         var iNum   = '';
         var result = '';
         if (numericData.value < 60) {
@@ -85,6 +84,7 @@ angular.module('playerApp')
 
         return numericData;
     }
+
     /**
      * @Function getCourseDashboard data
      * @Description [description]

@@ -55,7 +55,7 @@
 	        </div>
     	</div>
     </div>
-	<div class="ui grid margin-top-10">
+	<div class="ui grid margin-top-10" ng-if="!courseDashboard.showError">
   	    <div class="six wide column">
 		  	<div class="ui text menu float-ContentLeft padding-top-10">
 				  <span class="dashBoardMenuItem cursor-pointer active" data-timeperiod="7d" data-timeperiod-text="7 days" ng-class="{active:courseDashboard.timePeriod === '7d'}" ng-click="courseDashboard.onAfterFilterChange($event.target)">LAST 7 DAYS</span>
@@ -167,7 +167,7 @@
 	</div>
 </div>
 <!-- Course consumption dashboard -->
-<div class="consumption-data-holder" ng-if="courseDashboard.selectedDataset == 'consumption'">
+<div class="consumption-data-holder" ng-if="courseDashboard.selectedDataset == 'consumption' && !courseDashboard.showError">
 	<div class="ui four cards">
 	    <div class="card" ng-repeat="item in courseDashboard.consumptionNumericData">
 	        <div class="content center aligned">

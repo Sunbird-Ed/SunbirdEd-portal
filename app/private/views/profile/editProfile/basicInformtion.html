@@ -63,13 +63,7 @@
                                            </select>
         </div>
     </div>
-    <div class="field">
-        <label>{{$root.labels.PROFILE.BASIC_PROFILE.summary}}</label>
-        <div class="field">
-            <textarea ng-model="profileCtrl.profileSummary"></textarea>
-        </div>
-
-    </div>
+  
     <div class="ui error message">
     </div>
     <div class="ui button margin-top-15" ng-class="{ 'disabled' : profileCtrl.disableSave}" ng-click="profileCtrl.EditBasicProfile();">{{$root.labels.PROFILE.BUTTON.save}} </div>
