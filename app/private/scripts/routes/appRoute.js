@@ -915,6 +915,7 @@ angular.module('playerApp')
                       });
                       userService.setCurrentUserProfile(profileData);
                       permissionsService.setCurrentUserRoles(userRoles);
+                      $rootScope.initializePermissionDirective = true;
                   } else {
                 // TODO: allow only public permissions
                   }
