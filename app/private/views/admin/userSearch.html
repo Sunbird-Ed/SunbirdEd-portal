@@ -1,10 +1,10 @@
-<div ng-init="admin.addOrgNameToOrganizations()" class="ui divided searchListInfo items">  
-      <div class="userSearchCardHover item " ng-if="$root.search.selectedSearchKey=='Users'" ng-repeat="user in admin.searchResult">
+<div ng-if="$root.search.selectedSearchKey=='Users'"  ng-init="admin.addOrgNameToOrganizations();admin.getUserRoles()" class="ui divided searchListInfo items">  
+      <div class="userSearchCardHover item " ng-repeat="user in admin.searchResult">
         <div class="ui tiny image userSearchImage " >
           <img ng-src="{{user.avatar|| 'images/user_logo.png'}} ">
         </div>
         <div class="content ">
-          <a class="header ">{{user.firstName}}{{user.lastName}}</a>
+          <a class="header ">{{user.firstName}} &nbsp;{{user.lastName}}</a>
             <a ng-if="user.status===1" sb-permissions permission-only="SYSTEM_ADMIN,ORG_ADMIN" class="float-ContentRight">
              <!-- update user roles -->
             <span ng-click="admin.showModal(user.userId,user.organisations);">
@@ -27,8 +27,8 @@
             </span>
           </div>
           <div class="extra ">
-            <div class="ui label ">{{user.phone}}</div>
-            <div class="ui label ">{{user.email}}</div>
+            <div class="ui label " ng-if="user.phone">{{user.phone}}</div>
+            <div class="ui label " ng-if="user.email">{{user.email}}</div>
             <div class="ui label " ng-if="user.status===0">{{$root.labels.SEARCH.STATUS.INACTIVE}}</div>
             <div class="ui label " ng-if="user.status===1">{{$root.labels.SEARCH.STATUS.ACTIVE}}</div>
             <div class="ui label " ng-if="user.status===2">{{$root.labels.SEARCH.STATUS.BLOCKED}}</div>
