@@ -59,7 +59,6 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
             return objMerge;
         };
 
-        $rootScope.loadBundle('label');
 
         $('body').click(function (e) {
             if ($(e.target).closest('div.dropdown-menu-list').prop('id') === 'search-suggestions') {
