@@ -175,7 +175,7 @@ angular.module('playerApp')
                 batchService.getAllBatchs(request).then(function (response) {
                     if (response && response.responseCode === 'OK') {
                         batch.userList = [];
-                        batch.userNames = [];
+                        batch.userNames = {};
                         _.forEach(response.result.response.content, function(val){
                             batch.userList.push(val.createdBy);
                         });
@@ -252,6 +252,7 @@ angular.module('playerApp')
             };
 
             batch.showBatchDetails = function(batchData){
+                batchData.userList = batch.userNames;
                 $rootScope.$broadcast('batchDetails', batchData);
                 $('#batchDetails').modal('show');
             };
