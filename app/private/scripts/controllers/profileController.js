@@ -25,7 +25,27 @@ angular.module('playerApp')// add those all values
             profile.isError = false;
             profile.contentSortBy = 'desc';
             profile.quantityOfContent = 4;
-            profile.orgDetails = $rootScope.organisations;
+            
+			var orgIds = [];
+			_.forEach($rootScope.organisations, function(org) {
+				if (org.organisationId) {
+					orgIds.push(org.organisationId);
+				}
+			});
+            
+		    // Get Organisation details
+		    userService.getOrgDetails(orgIds).then(function(successResponse) {
+			  if (successResponse.responseCode === 'OK') {
+				var orgArray = [];
+				_.forEach(successResponse.result.response.content, function(org) {
+				  orgArray.push({ organisationId: org.id, orgName: org.orgName });
+				});
+				profile.orgDetails = orgArray;
+			  }
+			})
+			.catch(function() {
+			  // error handler
+			});
 
              // Get user profile
             profile.processProfileData = function (userProfile) { // setProfileData
