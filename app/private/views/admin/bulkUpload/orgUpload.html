@@ -1,4 +1,4 @@
-<div class="ui large modal" id="orgBulkUpload" sb-permissions permission-only="SYSTEM_ADMIN" >
+<div class="ui large modal" id="orgBulkUpload" sb-permissions permission-only="SYSTEM_ADMINISTRATION" >
   <div class="header">
     <div class="ui grid">
       <div class="eleven wide column">
@@ -15,7 +15,7 @@
     <div ng-if="admin.loader.showLoader">
         <app-loader data="{{admin.loader}}"></app-loader>
       </div>
-      <h5>Upload organization csv using Upload Organization CSV button, download sample csv for reference</h5>
+      <h5 ng-if="!admin.bulkOrgProcessId && !admin.loader.showLoader">Upload organization csv using Upload Organization CSV button, download sample csv for reference</h5>
         <!-- file name -->
       <h5 ng-if="admin.fileName">
         <i class="file outline icon"></i>Uploaded File: {{admin.fileName}}
@@ -35,7 +35,7 @@
         </div>
         <div class="four wide column">
         <button ng-disabled="admin.bulkOrgProcessId" class="ui primary right floated button" ng-click="admin.openImageBrowser('organizations');">Upload Organizations CSV</button>
-								<input type="file" accept="file/csv,file/xlsx" class="content-input ui small "
+								<input type="file" accept=".csv" class="content-input ui small "
 								id="orgUploadCSV" onchange="angular.element(this).scope().validateFile(this.files,'organizations');"
 								required="" />
         </div>
