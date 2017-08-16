@@ -309,7 +309,7 @@ angular.module('playerApp').directive('search', function () {
                 $rootScope.search.filters.subject = $rootScope.search.selectedSubject;
                 if ($rootScope.search.selectedSearchKey === 'Users') {
                     $rootScope.search.filters.education = undefined;
-                    $rootScope.search.filters["education.board"] = $rootScope.search.selectedBoard;
+                    $rootScope.search.filters['education.board'] = $rootScope.search.selectedBoard;
                 } else {
                     $rootScope.search.filters.board = $rootScope.search.selectedBoard;
                 }
@@ -340,7 +340,7 @@ angular.module('playerApp').directive('search', function () {
             };
             $rootScope.search.close = function () {
                 $rootScope.search.selectedSearchKey =
-                        $rootScope.search.selectedSearchKey === 'Users'
+                        $rootScope.search.selectedSearchKey === 'Users' || $rootScope.search.selectedSearchKey === 'Organisations'
                         ? 'Profile'
                         : $rootScope.search.selectedSearchKey;
                 var closeUrl = ($rootScope.search.selectedSearchKey === 'All')
