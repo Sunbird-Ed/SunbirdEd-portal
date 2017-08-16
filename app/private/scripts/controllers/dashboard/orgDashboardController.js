@@ -98,7 +98,7 @@ angular.module('playerApp')
                   }
                 });
 
-                dashboardData.options = dashboardService.getChartOptions(dashboardData.datasetPreviousValue);
+                dashboardData.options = dashboardService.getChartOptions('Contents created per day');
                 dashboardData.colors = dashboardService.getChartColors(dashboardData.datasetPreviousValue);
 
               } else if (dashboardData.datasetPreviousValue == 'consumption') {
@@ -139,7 +139,7 @@ angular.module('playerApp')
                 });
 
                 dashboardData.series = ['Time spent by day'];
-                dashboardData.options = dashboardService.getChartOptions(dashboardData.datasetPreviousValue);
+                dashboardData.options = dashboardService.getChartOptions('Time spent per day');
 
                 dashboardData.colors = dashboardService.getChartColors(dashboardData.datasetPreviousValue);
               }
