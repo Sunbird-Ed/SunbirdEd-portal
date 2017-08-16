@@ -45,7 +45,7 @@ angular.module('playerApp') // add those all values
           }
         })
         .catch(function() {
-          toasterService.error('Process failed, please try again later.');
+          toasterService.error(apiMessages.ERROR.get);
         });
 
       // Get user profile
