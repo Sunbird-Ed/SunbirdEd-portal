@@ -24,6 +24,7 @@ angular.module('playerApp')
             var admin = this;
             admin.searchResult = $scope.users;
             admin.bulkUsers = {};
+            // sample CSV
             admin.sampleOrgCSV = [{
                 orgName: 'orgName',
                 isRootOrg: 'isRootOrg',
@@ -71,8 +72,7 @@ angular.module('playerApp')
                     cb(orgIdAndNames);
                 });
             };
-
-            // modal init
+            // OVERRIDE USERS SEARCH RESULT AND ADD ORGNAME TO RESULT
             admin.addOrgNameToOrganizations = function () {
                 if ($rootScope.search.selectedSearchKey === 'Users') {
                     admin.getOrgName(function (orgIdAndNames) {
@@ -88,6 +88,13 @@ angular.module('playerApp')
                         });
                     });
                 }
+            };
+            // MODAL INIT
+            admin.modalInit = function () {
+                $timeout(function () {
+                    $('#userOrgs').dropdown();
+                }, 0);
+                $('.roleChckbox').checkbox();
             };
             // open editRoles modal
             admin.showModal = function (userId, orgs) {
@@ -106,12 +113,7 @@ angular.module('playerApp')
                     }
                 }).modal('show');
             };
-            admin.modalInit = function () {
-                $timeout(function () {
-                    $('#userOrgs').dropdown();
-                }, 0);
-                $('.roleChckbox').checkbox();
-            };
+
             // open delete modal
             admin.showdeleteModal = function (id, firstName, lastName) {
                 $('#deleteUserConfirmation').modal({
@@ -324,6 +326,7 @@ angular.module('playerApp')
                 }
             };
             admin.bulkUploadUsers = function () {
+                $('#uploadUsrsCSV').val('');
                 admin.loader = toasterService.loader('', $rootScope.errorMessages.ADMIN.uploadingUsers);
                 admin.fileToUpload.append('organisationId', admin.bulkUsers.OrgId);
                 admin.fileToUpload.append('externalid', admin.bulkUsers.externalid);
@@ -344,6 +347,7 @@ angular.module('playerApp')
                 });
             };
             admin.bulkUploadOrganizations = function () {
+                $('#orgUploadCSV').val('');
                 admin.loader = toasterService.loader('', $rootScope.errorMessages.ADMIN.uploadingOrgs);
                 adminService.bulkOrgrUpload(admin.fileToUpload).then(function (res) {
                     admin.loader.showLoader = false;
