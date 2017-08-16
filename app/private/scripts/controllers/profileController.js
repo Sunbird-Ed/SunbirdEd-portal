@@ -41,8 +41,8 @@ angular.module('playerApp') // add those all values
             });
             profile.orgDetails = orgArray;
           } else {
-			  toasterService.error(apiResponse.params.errmsg);
-		  }
+            toasterService.error(apiResponse.params.errmsg);
+          }
         })
         .catch(function() {
           toasterService.error('Process failed, please try again later.');
