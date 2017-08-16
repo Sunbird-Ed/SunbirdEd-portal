@@ -893,7 +893,7 @@ angular.module('playerApp')
         });
   })
   .run(function ($urlRouter, $http, $state, permissionsService, $rootScope, $location, config,
-      toasterService, routeHelperService) {
+      toasterService, routeHelperService, userService) {
       permissionsService.getPermissionsData('/permissions').then(function (res) {
       var permissions = res.data; //eslint-disable-line
           if (res && res.responseCode === 'OK') {
@@ -902,23 +902,30 @@ angular.module('playerApp')
         // TODO: allow only public permissions
           }
       }).then(function () {
-          permissionsService.getCurrentUserProfile().then(function (res) {
-              if (res && res.responseCode === 'OK') {
-                  var profileData = res.result.response;
-                  var userRoles = profileData.roles;
-                  _.forEach(profileData.organisations, function (org) {
-                      if (org.roles && _.isArray(org.roles)) {
-                          userRoles = _.union(userRoles, org.roles);
-                      }
-                  });
-                  permissionsService.setCurrentUserRoles(userRoles);
-              } else {
+          var userProfile = userService.getCurrentUserProfile();
+          if (_.isEmpty(userProfile)) {
+              userService.getUserProfile($rootScope.userId).then(function (res) {
+                  if (res && res.responseCode === 'OK') {
+                      var profileData = res.result.response;
+                      var userRoles = profileData.roles;
+                      _.forEach(profileData.organisations, function (org) {
+                          if (org.roles && _.isArray(org.roles)) {
+                              userRoles = _.union(userRoles, org.roles);
+                          }
+                      });
+                      userService.setCurrentUserProfile(profileData);
+                      permissionsService.setCurrentUserRoles(userRoles);
+                  } else {
                 // TODO: allow only public permissions
-              }
-          }).then(function () {
+                  }
+              }).then(function () {
+                  $urlRouter.sync();
+                  $urlRouter.listen();
+              });
+          } else {
               $urlRouter.sync();
               $urlRouter.listen();
-          });
+          }
       });
 
       $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState,
