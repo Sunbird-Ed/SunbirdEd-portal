@@ -504,10 +504,6 @@
         "MaxFileSizeToUpload": 25600000,
         "FileExtensionToUpload": "application/pdf, video/mp4, application/zip, video/webm",
         "AllowedFileExtension": ["mp4", "pdf", "zip"],
-        "USER_ROLES": ["ORG_ADMIN", "ORG_MEMBER", "CONTENT_REVIEW", "CONTENT_CURATION", "CONTENT_REVIEWER",
-            "CONTENT_CREATION", "CONTENT_CREATOR", "ORG_MODERATOR", "MEMBERSHIP_MANAGEMENT",
-            "ORG_MANAGEMENT", "SYSTEM_ADMINISTRATION", "ADMIN","SYSTEM_ADMIN"
-        ],
         "searchTypeKeys": ["Courses", "Resources", "Users", "Organisations"],
         "sortingOptions": [
             { "field": "lastUpdatedOn", "name": "Updated On" },

@@ -34,7 +34,7 @@
                             <label>Invite-only</label>
                         </div>
                     </div>
-                    <div class="field">
+                    <div class="field" ng-hide="batch.coursecreatedby == batch.userId">
                         <div class="ui radio checkbox">
                             <input type="radio" name="enrollmentType" value='open' ng-model="batch.data.enrollmentType" required>
                             <label>Open</label>
