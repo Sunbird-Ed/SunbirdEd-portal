@@ -25,8 +25,8 @@
         <div class="ui stackable four column grid">            
             <div class="field" ng-repeat="role in admin.userRoles">
                 <div class="ui checkbox">
-                  <input type="checkbox" value='{{role.id}}' ng-click="admin.editRoles(role,admin.selectedOrgUserRoles)"  ng-checked="admin.isUserRole(role.id,admin.selectedOrgUserRoles);">
-                  <label>{{role.name}}</label>
+                  <input type="checkbox" value='{{role.role}}' ng-click="admin.editRoles(role.role,admin.selectedOrgUserRoles)"  ng-checked="admin.isUserRole(role.role,admin.selectedOrgUserRoles);">
+                  <label>{{role.role}}</label>
                 </div>
             </div>
         </div>

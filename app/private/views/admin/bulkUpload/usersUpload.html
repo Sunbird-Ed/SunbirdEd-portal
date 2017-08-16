@@ -1,4 +1,4 @@
-<div class="ui large modal" id="userBulkUpload" sb-permissions permission-only="SYSTEM_ADMIN,ORG_ADMIN">
+<div class="ui large modal" id="userBulkUpload" sb-permissions permission-only="SYSTEM_ADMINISTRATION,ORG_ADMIN">
   <div class="header">
     <div class="ui grid">
       <div class="eleven wide column">
@@ -15,7 +15,7 @@
       <div ng-if="admin.loader.showLoader">
         <app-loader data="{{admin.loader}}"></app-loader>
       </div>
-      <form class="ui form" ng-if="!admin.loader.showLoader && !admin.bulkUsersProcessId">
+      <form class="ui form" id="bulkUsers"ng-if="!admin.loader.showLoader && !admin.bulkUsersProcessId">
           <div class="ui grid" ng-if="!admin.bulkUsersProcessId">
               <div class="six wide column">
                 <div class="required field">
@@ -43,11 +43,12 @@
                   </div>
                 </div>
           </div>
-          <div class="ui negative message" ng-if="admin.bulkUploadError">
+         
+      </form>
+         <div class="ui negative message" ng-if="admin.bulkUploadError">
                 <i class="close icon" ng-click="admin.closeBulkUploadError()"></i>
                 <p>{{admin.bulkUploadErrorMessage}}</p>
           </div>
-      </form>
       <h5 ng-if="admin.fileName"><i class="file outline icon" ></i>Uploaded File: {{admin.fileName}}</h5>
       <!-- show progress -->
       <div ng-if="admin.bulkUsersProcessId">
@@ -63,8 +64,8 @@
             <div class="four wide column">
             </div>
             <div class="four wide column">
-                <button ng-disabled="admin.bulkUsersProcessId" class="ui primary right floated button" ng-click="admin.openImageBrowser('users');">Upload Users CSV</button>
-                    <input type="file" accept="file/csv,file/xlsx" class="content-input ui small "
+                <button ng-disabled="admin.bulkUsersProcessId || admin.loader.showLoader" class="ui primary right floated button" ng-click="admin.openImageBrowser('users');">Upload Users CSV</button>
+                    <input type="file" accept=".csv" class="content-input ui small "
                     id="uploadUsrsCSV" onchange="angular.element(this).scope().validateFile(this.files,'users');"
                     required="" /> 
             </div>

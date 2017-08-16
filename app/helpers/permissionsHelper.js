@@ -27,13 +27,13 @@ let PERMISSIONS_HELPER = {
             "MEMBERSHIP_MANAGEMENT",
             "ORG_MODERATOR"
         ],
-        "user/v1/upload":["ORG_ADMIN","SYSTEM_ADMIN"],
-        "org/v1/role/assign":["ORG_ADMIN","SYSTEM_ADMIN"],
-        "user/v1/block":["ORG_ADMIN","SYSTEM_ADMIN"],
-        "dashboard/v1/creation":["ORG_ADMIN","SYSTEM_ADMIN"],
-        "dashboard/v1/consumption":["ORG_ADMIN","SYSTEM_ADMIN"],
-        "org/v1/upload":["SYSTEM_ADMIN"],
-        "data/v1/upload/status/":["ORG_ADMIN","SYSTEM_ADMIN"]
+        "user/v1/upload":["ORG_ADMIN","SYSTEM_ADMINISTRATION"],
+        "org/v1/role/assign":["ORG_ADMIN","SYSTEM_ADMINISTRATION"],
+        "user/v1/block":["ORG_ADMIN","SYSTEM_ADMINISTRATION"],
+        "dashboard/v1/creation":["ORG_ADMIN","SYSTEM_ADMINISTRATION"],
+        "dashboard/v1/consumption":["ORG_ADMIN","SYSTEM_ADMINISTRATION"],
+        "org/v1/upload":["SYSTEM_ADMINISTRATION"],
+        "data/v1/upload/status/":["ORG_ADMIN","SYSTEM_ADMINISTRATION"]
     },
 
     getPermissions: function() {
