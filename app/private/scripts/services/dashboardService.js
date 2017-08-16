@@ -10,7 +10,7 @@
  */
 
 angular.module('playerApp')
-  .service('dashboardService', ['httpServiceJava', 'config', '$http', function(httpServiceJava, config, $http) {
+  .service('dashboardService', ['httpServiceJava', 'config', '$http', 'httpService', function(httpServiceJava, config, $http, httpService) {
     this.getAdminDashboardData = function(req, datasetType) {
       return httpServiceJava.get('dashboard/v1/' + datasetType + '/org/' + req.org_id + '?period=' + req.period);
     };
@@ -34,9 +34,9 @@ angular.module('playerApp')
         ];
       } else if (datasetType == 'consumption') {
         return [{
-          backgroundColor: '#0062ff',
-          borderColor: '#0062ff',
-          fill: false
+            backgroundColor: '#FF0000',
+            borderColor: '#FF0000',
+            fill: false
         }];
       }
     };
@@ -46,9 +46,9 @@ angular.module('playerApp')
       if (datasetType == 'creation') {
         labelString = 'Contents created per day'
       } else if (datasetType == 'consumption') {
-        labelString = 'Time spent per day'
+        labelString = 'Timespent for content consumption'
       }
-      return {
+       return {
         legend: { display: true },
         scales: {
           xAxes: [{
@@ -62,12 +62,35 @@ angular.module('playerApp')
     };
 
     /**
+     * @Function time convertor
+     * @Description
+     */
+    this.secondsToMin = function(numericData){
+        //return bucketValue.value;
+        var iNum   = '';
+        var result = '';
+        if (numericData.value < 60) {
+            numericData.value = numericData.value + ' second';
+        } else if (numericData.value >= 60 && numericData.value <= 3600) {
+            iNum = numericData.value / 60;
+            result = iNum.toFixed(2)
+            numericData.value = result + ' min';
+        } else if (numericData.value >= 3600) {
+            iNum = numericData.value / 3600;
+            result = iNum.toFixed(2);
+            numericData.value = result + ' hour';
+        } else{
+            return numericData;
+        }
+
+        return numericData;
+    }
+    /**
      * @Function getCourseDashboard data
      * @Description [description]
      */
     this.getCourseDashboardData = function(req, datasetType){
-        // TODO - url will change based on datasetType
-        var apiUrl = 'dashboard/v1/progress/course/' + req.courseId + '?period='+ req.timePeriod;
+        var apiUrl = 'dashboard/v1/' + datasetType + '/course/' + req.courseId + '?period='+ req.timePeriod;
         return httpServiceJava.get(apiUrl);
     };
   }]);
