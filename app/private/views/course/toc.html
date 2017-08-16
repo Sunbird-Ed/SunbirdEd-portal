@@ -41,13 +41,37 @@
                                     <course-discussions showaskquestion="true"></course-discussions>
                                 </div>
                                 <div class='four wide column'>
+                                    <batch-card ng-show="toc.batchCardShow" showbatchcard="true" coursecreatedby="toc.courseHierachy.createdBy"></batch-card>
+                                    <div ng-show="!toc.batchCardShow">
+                                        <div class="rightSideSectionCards ui card">
+                                            <div class="content">
+                                                <div class="header">Selected Batch</div>
+                                                <div class="description">
+                                                    <div class="ui list">
+                                                        <div class="item">
+                                                            <div class="content">
+                                                                <span>Name: {{toc.selectedBatchInfo.name}}</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="item">
+                                                            <div class="content padding-bottom-15"">
+                                                                <span class="header padding-bottom-5">
+                                                                    {{toc.selectedBatchInfo.startDate | date: "dd MMM yyyy"}} - {{toc.selectedBatchInfo.startDate | date: "dd MMM yyyy"}}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="ui divider"></div>
+                                    </div>
                                     <div ng-if="toc.courseType === 'ENROLLED_COURSE'" class="margin-bottom-15">
                                         <add-note shownoteincourse="true" courseid="toc.courseParams.courseId"></add-note>
                                     </div>
                                     <div>
                                         <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false" courseid="toc.courseParams.courseId"></note-card>
                                     </div>
-                                    <batch-card showbatchcard="true" courseid="toc.courseParams.courseId"></batch-card>
                                     <div class="ui divider"></div>
                                     <div>
                                         <div ng-include=" 'views/course/carriculumCard.html'"></div>

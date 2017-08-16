@@ -19,6 +19,7 @@ angular.module('playerApp')
             batchUpdate.submitted = false;
             batchUpdate.batchData = '';
             batchUpdate.batchId = $stateParams.batchId;
+            batchUpdate.coursecreatedby = $stateParams.coursecreatedby;
 
             batchUpdate.init = function(){
                 batchUpdate.getUserList();
@@ -32,17 +33,17 @@ angular.module('playerApp')
                             batchUpdate.batchData = response.result.response;
                             batchUpdate.showUpdateBatchModal();
                         }else{
-                            toasterService.error('Error Message');    
+                            toasterService.error($rootScope.errorMessages.BATCH.GET.FAILED);
                         }
                     }).catch(function () {
-                        toasterService.error('Error Message');
+                        toasterService.error($rootScope.errorMessages.BATCH.GET.FAILED);
                     });
                 }else{
                     batchUpdate.showUpdateBatchModal();                    
                 }
             }
 
-            batchUpdate.showUpdateBatchModal = function () {
+            batchUpdate.showUpdateBatchModal = function (batchData, coursecreatedby) {
                 batchUpdate.selectedUsers = [];
                 batchUpdate.selectedMentors = [];
                 _.forEach(batchUpdate.batchData.participant, function(value, key){
@@ -92,7 +93,7 @@ angular.module('playerApp')
                                             }
                                         },
                                         onChange: function (date, text, mode) {
-                                            batchUpdate.batchData.enddate = text;
+                                            batchUpdate.batchData.endDate = text;
                                         }
                                     });
                                 }
@@ -107,9 +108,12 @@ angular.module('playerApp')
                                     }
                                 },
                                 startCalendar: $('.ui.calendar#rangestartAdd'),
+                                onChange: function (date, text, mode) {
+                                    batchUpdate.batchData.endDate = text;
+                                }
                             });
-                            $('.ui.calendar #startdate').val(batchUpdate.batchData.startDate);
-                            $('.ui.calendar #enddate').val(batchUpdate.batchData.endDate);
+                            $('.ui.calendar #startDate').val(batchUpdate.batchData.startDate);
+                            $('.ui.calendar #endDate').val(batchUpdate.batchData.endDate);
                         },
                         onHide: function () {
                             var previousUrl = JSON.parse(window.localStorage.getItem('previousURl'));
@@ -146,11 +150,10 @@ angular.module('playerApp')
                         });
                         batchUpdate.getBatchDetails();
                     }else{
-                        toasterService.error('Error Message');    
+                        toasterService.error($rootScope.errorMessages.BATCH.GET_USERS.FAILED);
                     }
-                    console.log('response ', response);
                 }).catch(function () {
-                    toasterService.error('Error Message');
+                    toasterService.error($rootScope.errorMessages.BATCH.GET_USERS.FAILED);
                 });
             };
 
