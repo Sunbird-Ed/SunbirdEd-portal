@@ -1,80 +1,92 @@
-<style>
-.table-header {
+<!--<style>
+.table-headerDashboard {
   color: #007AFF !important;
   font-family: 'sunbirdboldfont' !important;
 }
 .dashboard-label{
 	font-family: 'sunbirdboldfont' !important;
-	font-size: 1rem !important;
-	position: relative; top:-3vh;
+	font-size: 1.5rem !important;
 }
-.text-underline{
-	text-decoration: underline;"
+
+.CloseButtonFont{
+	font-size: 1.5rem !important;
 }
-.dashBoardMenuItem{
-	cursor: pointer;
-}
+
 .text-font{
 	font-size: small !important;
 }
-.ui.table tr td {
+.ui.courseDashBoardTable.table tr td {
 	border-top: 0px !important;
 }
-
+</style>-->
+<style>
+.text-font{
+	font-size: small !important;
+}
+.dashboard-label{
+	font-family: 'sunbirdboldfont' !important;
+	font-size: 1.5rem !important;
+}
 </style>
 <div class="ui grid">
-  	<div class="three wide column left floated">
-    	<p class="dashboard-label">Course {{courseDashboard.selectedDataset}} dashboard</p>
-  	</div>
-  	<div class="ui text menu">
-		  <span class="dashBoardMenuItem" data-timeperiod="7d" data-timeperiod-text="7 days"
-		  		ng-class="{active:courseDashboard.timePeriod === '7d'}"
-      			ng-click="courseDashboard.onAfterFilterChange($event.target)">LAST 7 DAYS</span>
-      			&nbsp;&nbsp;&nbsp;&nbsp;
-		  <span class="dashBoardMenuItem" data-timeperiod="14d" data-timeperiod-text="14 days"
-		  		ng-class="{active:courseDashboard.timePeriod === '14d'}"
-	      		ng-click="courseDashboard.onAfterFilterChange($event.target)">LAST 14 DAYS</span>
-	      		&nbsp;&nbsp;&nbsp;&nbsp;
-		  <span class="dashBoardMenuItem" data-timeperiod="5w" data-timeperiod-text="5 weeks"
-		  		ng-class="{active:courseDashboard.timePeriod === '5w'}"
-	      		ng-click="courseDashboard.onAfterFilterChange($event.target)">LAST 5 WEEKS</span>
-	      		&nbsp;&nbsp;&nbsp;&nbsp;
+    <div class="twelve wide column ">
+		<a class="ui item basic icon circular float-ContentRight" href="Javascript:void(0);" data-tooltip="Close the dashboard">
+			<i class="ui remove icon CloseButtonFont" ng-click="toc.showCourseDashboard = false;courseDashboard.resetDropdown();" ></i>
+		</a>
 	</div>
-	<!-- Dataset filter TODO remove inline css-->
-	<div class="" style="position: relative;top: -1vh">
-        <div class="ui selection dropdown" id="courseDropdownMenu" ng-init="courseDashboard.initDropdwon()">
-             <i class="dropdown icon"></i>
-             <div class="text">Progress</div>
-             <div class="menu">
-                <div class="active item" data-value="1" data-dataset="progress"
-                	ng-click="courseDashboard.onAfterDatasetChange($event.target)">Progress</div>
-                <div class="item" data-value="0" data-dataset="consumption"
-                	ng-click="courseDashboard.onAfterDatasetChange($event.target)">Consumption</div>
-             </div>
-        </div>
+</div>
+<div class="ui grid">
+  	<div class="five wide column left floated">
+    	<p class="dashboard-label ng-binding">Course progress dashboard</p>
+  	</div>
+    <div class="four wide column left floated"></div>
+    <div class="three wide column right floated">
+        <div class="ui selection dropdown float-ContentRight" id="courseDropdownMenu" ng-init="courseDashboard.initDropdwon()" tabindex="0">
+	        <i class="dropdown icon"></i>
+	            <div class="text">{{courseDashboard.selectedDataset}}</div>
+	            <div class="menu transition hidden" tabindex="-1">
+	                <div class="active item" data-value="1" data-dataset="progress"
+	                	ng-click="courseDashboard.onAfterDatasetChange($event.target)"
+	                	sb-permissions permission-only="COURSE_ADMIN">Progress</div>
+	                <div class="item" data-value="0" data-dataset="consumption"
+	                	ng-click="courseDashboard.onAfterDatasetChange($event.target)"
+	                	sb-permissions permission-only="COURSE_CREATOR">Consumption</div>
+	            </div>
+	        </div>
+    	</div>
     </div>
-	<!-- TODO remove inline css-->
-	<div class="ui category search" style="position: relative;top: -1vh;margin-right: -1em;">
-		<div class="ui icon input">
-			<input class="search-course-data" type="text" placeholder="Search ..." ng-model="courseDashboard.searchUser">
-		    <i class="search icon"></i>
+	<div class="ui grid margin-top-10">
+  	    <div class="six wide column">
+		  	<div class="ui text menu float-ContentLeft padding-top-10">
+				  <span class="dashBoardMenuItem cursor-pointer active" data-timeperiod="7d" data-timeperiod-text="7 days" ng-class="{active:courseDashboard.timePeriod === '7d'}" ng-click="courseDashboard.onAfterFilterChange($event.target)">LAST 7 DAYS</span>
+		      			&nbsp;&nbsp;&nbsp;&nbsp;
+				  <span class="dashBoardMenuItem cursor-pointer" data-timeperiod="14d" data-timeperiod-text="14 days" ng-class="{active:courseDashboard.timePeriod === '14d'}" ng-click="courseDashboard.onAfterFilterChange($event.target)">LAST 14 DAYS</span>
+			      		&nbsp;&nbsp;&nbsp;&nbsp;
+				  <span class="dashBoardMenuItem cursor-pointer" data-timeperiod="5w" data-timeperiod-text="5 weeks" ng-class="{active:courseDashboard.timePeriod === '5w'}" ng-click="courseDashboard.onAfterFilterChange($event.target)">LAST 5 WEEKS</span>
+			      		&nbsp;&nbsp;&nbsp;&nbsp;
+			</div>
+		</div>
+		<div class="two wide column"></div>
+		<div class="four wide column" ng-show="courseDashboard.selectedDataset == 'progress'">
+		<div class="ui category search float-ContentRight">
+			<div class="ui icon input">
+				<input class="search-course-data ng-pristine ng-valid ng-empty ng-touched" type="text" placeholder="Search ..." ng-model="courseDashboard.searchUser" autocomplete="off">
+			    <i class="search icon"></i>
+			</div>
 		</div>
 	</div>
-	<a class="ui item basic icon circular" href="Javascript:void(0);"
-		data-tooltip="Close the dashboard">
-		<i class="ui remove icon" ng-click="toc.showCourseDashboard = false;courseDashboard.resetDropdown();"></i>
-	</a>
 </div>
 
 <div class="table-data-holder" ng-hide="courseDashboard.showLoader" ng-if="!courseDashboard.showError && courseDashboard.selectedDataset === 'progress'">
 	<div class="ui raised segment">
 		<div class="eight wide column right floated">
-	    	<h3 style="color: #979797 !important">Stats for last {{courseDashboard.filterQueryTextMsg}} </h3>
+		<!-- Inline css-->
+	    	<h3>Stats for last {{courseDashboard.filterQueryTextMsg}} </h3>
 	    </div>
-	  	<table class="ui very basic table">
+	  	<table class="ui very basic courseDashBoardTable table">
 	    	<thead>
 	      		<tr>
-			        <th class="table-header">
+			        <th class="table-headerDashboard">
 			          	<a href="Javascript:void(0);" ng-click="courseDashboard.orderByField='progress'; courseDashboard.reverseSort = !courseDashboard.reverseSort">Status
 							<span ng-show="courseDashboard.orderByField == 'progress'">
 		        				<span ng-show="!courseDashboard.reverseSort">^</span>
@@ -147,9 +159,9 @@
 	<div class="ui grid">
 		<div class="twelve wide column right floated">
 			<p class="text-align-right">Download this view as:
-	  			<a href="Javascript:void(0);" class="item text-underline">CSV</a>
-	  			<a href="Javascript:void(0);" class="item text-underline">PDF</a>
-	  			<a href="Javascript:void(0);" class="item text-underline">DOC</a>
+	  			<a href="Javascript:void(0);" class="item text-decoration-underline">CSV</a>
+	  			<a href="Javascript:void(0);" class="item text-decoration-underline">PDF</a>
+	  			<a href="Javascript:void(0);" class="item text-decoration-underline">DOC</a>
 			</p>
 		</div>
 	</div>
@@ -166,8 +178,8 @@
 	</div>
 	<div class="ui one column grid">
         <div class="column">
-          <canvas height="{{courseDashboard.chartHeight}}" id="bar" class="chart chart-line adminCanvasPadding adminCanvasBorder" chart-data="courseDashboard.data" chart-labels="courseDashboard.labels"  chart-colors="courseDashboard.colors" chart-options="courseDashboard.options">
-          </canvas>
+          	<canvas height="{{courseDashboard.chartHeight}}" id="line" class="chart chart-line adminCanvasPadding adminCanvasBorder" chart-data="courseDashboard.data" chart-series="courseDashboard.series" chart-labels="courseDashboard.labels" chart-colors="colors" chart-options="courseDashboard.options">
+          	</canvas>
         </div>
     </div>
 </div>

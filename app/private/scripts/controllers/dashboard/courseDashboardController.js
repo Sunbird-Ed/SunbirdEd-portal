@@ -8,7 +8,8 @@
  */
 angular.module('playerApp')
     .controller('courseDashboardCtrl',
-    	['$rootScope', '$scope', 'dashboardService', '$timeout', '$state', '$stateParams', 'toasterService', function ($rootScope, $scope, dashboardService, $timeout, $state, $stateParams, toasterService) {
+    	['$rootScope', '$scope', 'dashboardService', '$timeout', '$state', '$stateParams', 'toasterService',
+    	'permissionsService', function ($rootScope, $scope, dashboardService, $timeout, $state, $stateParams, toasterService, permissionsService) {
 		var courseDashboard = this;
 		courseDashboard.chartHeight = 120;
   		courseDashboard.courseProgressArray = [];
@@ -17,6 +18,12 @@ angular.module('playerApp')
 
   		// Dataset - progress / consumption
   		courseDashboard.selectedDataset = 'progress';
+  		console.log(permissionsService.getCurrentUserRoles())
+  		angular.forEach(permissionsService.getCurrentUserRoles(), function(roleName, key){
+  			if (roleName === 'COURSE_CREATOR'){
+  				courseDashboard.selectedDataset = 'consumption';
+  			}
+  		})
 
   		// Search and sort table data
   		courseDashboard.orderByField = ''; // Default value
@@ -64,31 +71,35 @@ angular.module('playerApp')
 
 					if(courseDashboard.selectedDataset === 'consumption' && apiResponse.result.snapshot){
 						courseDashboard.labels = [];
-						courseDashboard.lineChartData = [];
-						courseDashboard.options = [];
-						courseDashboard.colors =[];
+						courseDashboard.data   = [];
+						courseDashboard.series = [];
+
 						// To print block data
 						angular.forEach(apiResponse.result.snapshot,function(numericData, key){
+							if (key != 'course.consumption.users_completed'){
+								dashboardService.secondsToMin(numericData)
+							}
 							courseDashboard.consumptionNumericData.push(numericData);
 						})
+
 						// To print line chart
 						angular.forEach(apiResponse.result.series,function(linechartData, key){
 							if(key === 'course.consumption.time_spent'){
+								// Push legend series label
+								courseDashboard.series.push(linechartData.name);
 								var lineDataArray = new Array();
+								// Iterate day/week/month wise data
 								angular.forEach(linechartData.buckets, function(bucketValue, bucketKey){
 									lineDataArray.push(bucketValue.value);
                      				courseDashboard.labels.push(bucketValue.key_name);
 								})
 
-								courseDashboard.data = lineDataArray;
+								courseDashboard.data.push(lineDataArray);
 							}
-
-							courseDashboard.options = dashboardService.getChartOptions('consumption');
-                			courseDashboard.colors  = dashboardService.getChartColors('consumption');
-                			console.log(courseDashboard.data);
-                			//console.log(courseDashboard.labels);
-                			//console.log(courseDashboard.options);
 						})
+
+						courseDashboard.options = dashboardService.getChartOptions('consumption');
+            			courseDashboard.colors  = dashboardService.getChartColors('consumption');
 					}
 
 					courseDashboard.showLoader = false;
@@ -137,9 +148,10 @@ angular.module('playerApp')
 				return false;
 			}
 
-			courseDashboard.selectedDataset = angular.element(item).data('dataset');
+			courseDashboard.timePeriod   = courseDashboard.timePeriod;
 			courseDashboard.showLoader   = true;
 			courseDashboard.orderByField = '';
+			courseDashboard.selectedDataset = angular.element(item).data('dataset');
 			getCourseDashboardData();
 		};
 
