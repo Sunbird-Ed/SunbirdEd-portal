@@ -15,6 +15,7 @@ angular.module('playerApp')
         '$rootScope',
         'portalTelemetryService',
         function(config, httpService, httpServiceJava, $rootScope, portalTelemetryService) {
+        this.currentUserProfile = {};
         this.resourceBundle = function(language, type) {
             var url = config.URL.CONFIG_BASE + config.URL.USER.RESOURCE_BUNDLE + '/' 
                     + type + '/' + language;
@@ -88,4 +89,12 @@ angular.module('playerApp')
         this.getTenantLogo = function () {
             return httpService.get(config.URL.USER.TENANT_LOGO);
         }
+
+        this.setCurrentUserProfile = function(userProfile) {
+            this.currentUserProfile = userProfile;
+        };
+
+        this.getCurrentUserProfile = function() {
+            return this.currentUserProfile;
+        };
     }]);

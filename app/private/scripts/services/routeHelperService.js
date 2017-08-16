@@ -2,15 +2,15 @@
 
 angular.module('playerApp')
         .service('routeHelperService', ['$rootScope', '$stateParams', '$timeout', 'sessionService',
-        'permissionsService','toasterService','$state',
-            function ($rootScope, $stateParams, $timeout, sessionService,permissionsService,
-            toasterService,$state) {
+            'permissionsService', 'toasterService', '$state',
+            function ($rootScope, $stateParams, $timeout, sessionService, permissionsService,
+            toasterService, $state) {
                 this.loadRouteConfig = function (stateName, $stateParamsData) {
                     $stateParams = $stateParamsData;
                     var searchEnabledStates = ['Home', 'Courses', 'Resources', 'CourseNote',
                         'ContentNote', 'CourseContentNote', 'Toc', 'Player',
                         'Search', 'TocPlayer', 'PreviewCollection', 'Profile'];
-                    var filterEnabledStates = ['Home', 'Courses', 'Resources', 'Search'];
+                    var filterEnabledStates = ['Courses', 'Resources', 'Search'];
                     var searchKey = {
                         Home: 'All',
                         Courses: 'Courses',
@@ -232,7 +232,7 @@ angular.module('playerApp')
                         }];
 
                         break;
-                     case 'orgDashboard':
+                    case 'orgDashboard':
 
                         $rootScope.breadCrumbsData = [{
                             name: 'Home',
@@ -252,15 +252,15 @@ angular.module('playerApp')
                         }
                     }
                 };
-                
-                this.checkStateAccess = function(data,flag,event){
-                     if (permissionsService.checkRolesPermissions(data, flag)) {
+
+                this.checkStateAccess = function (data, flag, event) {
+                    if (permissionsService.checkRolesPermissions(data, flag)) {
                         toasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
                         event.preventDefault();
                         $state.go('Home');
-                     }
+                    }
                 };
-                
+
                 this.clearSearchSettings = function () {
                     if ($rootScope.search) {
                         $rootScope.search.selectedLanguage = [];
