@@ -25,24 +25,24 @@ angular.module('playerApp')
             admin.searchResult = $scope.users;
             admin.bulkUsers = {};
             admin.sampleOrgCSV = [{
-                orgName: null,
-                isRootOrg: null,
-                channel: null,
-                externalId: null,
-                provider: null,
-                description: null
+                orgName: 'orgName',
+                isRootOrg: 'isRootOrg',
+                channel: 'channel',
+                externalId: 'externalId',
+                provider: 'provider',
+                description: 'description'
             }];
             admin.sampleUserCSV = [{
-                firstName: null,
-                lastName: null,
-                phone: null,
-                email: null,
-                userName: null,
-                password: null,
-                provider: null,
-                phoneVerified: null,
-                emailVerified: null,
-                roles: null
+                firstName: 'firstName',
+                lastName: 'lastName',
+                phone: 'phone',
+                email: 'email',
+                userName: 'userName',
+                password: 'password',
+                provider: 'provider',
+                phoneVerified: 'phoneVerified',
+                emailVerified: 'emailVerified',
+                roles: 'roles'
             }
             ];
               // getOrgnames
@@ -380,15 +380,14 @@ angular.module('playerApp')
                 }).catch(function (err) {
                     admin.loader.showLoader = false;
                     toasterService.error($rootScope.errorMessages.ADMIN.fail);
-                    console.log('some error');
                 });
             };
             admin.downloadSample = function (key) {
                 if (key === 'users') {
-                    alasql('SELECT * INTO CSV(\'Sample_Users.csv\', {headers: true}) FROM ?',
+                    alasql('SELECT * INTO CSV(\'Sample_Users.csv\', {headers: false}) FROM ?',
                 [admin.sampleUserCSV]);
                 } else if (key === 'organizations') {
-                    alasql(' SELECT *  INTO CSV(\'Sample_Organizations.csv\', {headers: true}) FROM ?',
+                    alasql(' SELECT *  INTO CSV(\'Sample_Organizations.csv\', {headers: false}) FROM ?',
                 [admin.sampleOrgCSV]);
                 }
             };
