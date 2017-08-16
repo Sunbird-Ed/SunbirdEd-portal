@@ -578,7 +578,8 @@ th {
   background-color: #D8D8D8;
 }
 .overflowContentHorizontal {
-  overflow-x: scroll !important;
+  overflow-x: auto;
+  max-width: 100%;
 }
 .header-container {
   margin-left: 1px !important;
