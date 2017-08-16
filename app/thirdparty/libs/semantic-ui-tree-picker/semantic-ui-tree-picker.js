@@ -39,7 +39,6 @@ var conceptModal;
         };
         $.extend(config, options);
         initialize = function() {
-            console.log('Concept selector initializing....');
             if (config.data) {
                 nodes = config.data;
             }
@@ -61,7 +60,6 @@ var conceptModal;
             }
             widget.unbind("click");
             widget.on('click', function(e) {
-                console.log('click event received', nodes);
                 modal.modal('show');
                 if (!nodes.length) {
                     if (config.url) {
@@ -103,7 +101,6 @@ var conceptModal;
             $('.menu .picked', modal).on('click', function(e) {
                 return showPicked();
             });
-            console.log('Concept selector initialized');
             return $('.search input', modal).on('keyup', function(e) {
                 return showSearch($(this).val());
             });
