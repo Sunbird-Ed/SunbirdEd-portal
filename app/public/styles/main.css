@@ -2109,6 +2109,9 @@ ul.fancytree-container li {
   font-weight: bold;
   line-height: 14px;
 }
+.batchDetailsChips {
+  padding: 5px 10px !important;
+}
 span.dashBoardMenuItem.active {
   color: #0076FE !important;
   font-family: 'sunbirdboldfont' !important;
