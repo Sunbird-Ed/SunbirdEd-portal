@@ -13,7 +13,7 @@ angular.module('playerApp')
     'dashboardService', '$timeout', '$state', '$stateParams', 'toasterService',
     function($rootScope, $scope, dashboardService, $timeout, $state, $stateParams, toasterService) {
       var dashboardData = this;
-      dashboardData.height = 120;
+      dashboardData.height = 110;
       dashboardData.showLoader = true;
       dashboardData.showDataDiv = false;
       dashboardData.datasetPreviousValue = 'creation';
@@ -57,6 +57,10 @@ angular.module('playerApp')
                   if (key === 'org.creation.content[@status=review].count') {
                     dashboardData.series.push(numericData.value + ' IN REVIEW');
                   }
+
+                  if (key === 'org.creation.content.count') {
+                    dashboardData.series.push(numericData.value + ' CREATED');
+                  }
                 });
 
                 angular.forEach(apiResponse.result.series, function(bucketData, key) {
@@ -84,9 +88,17 @@ angular.module('playerApp')
                     })
                     dashboardData.data.push(publishedArray);
                   }
+
+                  if (key === 'org.creation.content.created_on.count') {
+                    var createdArray = new Array();
+                    angular.forEach(bucketData.buckets, function(bucketValue, bucketKey) {
+                      createdArray.push(bucketValue.value);
+                    })
+                    dashboardData.data.push(createdArray);
+                  }
                 });
 
-                dashboardData.options = dashboardService.getChartOptions(dashboardData.datasetPreviousValue);
+                dashboardData.options = dashboardService.getChartOptions('Contents created per day');
                 dashboardData.colors = dashboardService.getChartColors(dashboardData.datasetPreviousValue);
 
               } else if (dashboardData.datasetPreviousValue == 'consumption') {
@@ -127,11 +139,10 @@ angular.module('playerApp')
                 });
 
                 dashboardData.series = ['Time spent by day'];
-                dashboardData.options = dashboardService.getChartOptions(dashboardData.datasetPreviousValue);
+                dashboardData.options = dashboardService.getChartOptions('Time spent per day');
 
                 dashboardData.colors = dashboardService.getChartColors(dashboardData.datasetPreviousValue);
               }
-              dashboardData.apiResponse = apiResponse;
               dashboardData.showDataDiv = true;
             } else {
               toasterService.error(apiResponse.params.errmsg);
@@ -144,7 +155,6 @@ angular.module('playerApp')
           .finally(function() {
             // Hide loading spinner whether our call succeeded or failed.
             dashboardData.showLoader = false;
-            // dashboardData.showDataDiv = true;
           });
       }
       $('#dropdownMenu').dropdown();

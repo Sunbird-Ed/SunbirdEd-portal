@@ -1,7 +1,6 @@
 <div ng-controller="SearchCtrl as search" class="ui grid " ng-init="search.initSearch()">
     <div class=" one wide column "></div>
-    <div class="ten wide column ">
-
+    <div class="ten wide column padding-top-none">
         <div ng-if="$root.search.selectedSearchKey=='Resources'" ng-include=" 'views/search/contentSearch.html' ">
         </div>
         <div ng-if="$root.search.selectedSearchKey=='Courses'" ng-include="'views/search/courseSearch.html'">

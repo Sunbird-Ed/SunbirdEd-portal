@@ -74,7 +74,9 @@ angular.module('playerApp')
             this.getPermissionsData = function () {
                 return httpServiceJava.get(config.URL.ROLES.READ);
             };
-
+            this.allRoles = function () {
+                return rolesAndPermissions;
+            };
             this.getCurrentUserRoles = function () {
                 return currentUserRoles;
             };

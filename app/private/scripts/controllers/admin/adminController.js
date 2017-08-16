@@ -18,28 +18,31 @@ angular.module('playerApp')
         '$scope',
         'contentService',
         'toasterService',
+        'permissionsService',
         function (adminService, $timeout, $state, config, $rootScope, $scope,
-            contentService, toasterService) {
+            contentService, toasterService, permissionsService) {
             var admin = this;
-            admin.userRoles = config.USER_ROLES;
             admin.searchResult = $scope.users;
-            // admin.userName = '';
             admin.bulkUsers = {};
-
-            admin.sampleOrgCSV = [{ orgName: null,
-                isRootOrg: null,
-                channel: null,
-                externalId: null,
-                provider: null,
-                description: null
+            admin.sampleOrgCSV = [{
+                orgName: 'orgName',
+                isRootOrg: 'isRootOrg',
+                channel: 'channel',
+                externalId: 'externalId',
+                provider: 'provider',
+                description: 'description'
             }];
             admin.sampleUserCSV = [{
-                firstName: null,
-                lastName: null,
-                phone: null,
-                email: null,
-                Organisations: null,
-                userName: null
+                firstName: 'firstName',
+                lastName: 'lastName',
+                phone: 'phone',
+                email: 'email',
+                userName: 'userName',
+                password: 'password',
+                provider: 'provider',
+                phoneVerified: 'phoneVerified',
+                emailVerified: 'emailVerified',
+                roles: 'roles'
             }
             ];
               // getOrgnames
@@ -72,17 +75,17 @@ angular.module('playerApp')
             // modal init
             admin.addOrgNameToOrganizations = function () {
                 if ($rootScope.search.selectedSearchKey === 'Users') {
-                    admin.searchResult.forEach(function (user) {
-                        if (user.organisations) {
-                            admin.getOrgName(function (orgIdAndNames) {
+                    admin.getOrgName(function (orgIdAndNames) {
+                        admin.searchResult.forEach(function (user) {
+                            if (user.organisations) {
                                 user.organisations.forEach(function (userOrg) {
                                     var orgNameAndId = orgIdAndNames.find(function (org) {
                                         return org.orgId === userOrg.organisationId;
                                     });
                                     if (orgNameAndId) { userOrg.orgName = orgNameAndId.orgName; }
                                 });
-                            });
-                        }
+                            }
+                        });
                     });
                 }
             };
@@ -124,16 +127,50 @@ angular.module('playerApp')
                 }).modal('show');
             };
              // open  upload csv modal
-            admin.openBulkUploadModal = function (key) {
-                $('#bulkUpload').modal('refresh');
-                $('#bulkUpload').modal({
+
+            admin.orgBulkUpload = function () {
+                $('#orgBulkUpload').modal('refresh');
+                $('#orgBulkUpload').modal({
                     onShow: function () {
-                        admin.formKey = key;
                         admin.fileName = '';
-                        admin.bulkUploadStatus = {};
+                        admin.bulkOrgProcessId = '';
+                        admin.loader = {};
                     },
                     onHide: function () {
-                        admin.formKey = '';
+                        admin.loader = {};
+                        return true;
+                    }
+                }).modal('show');
+            };
+            admin.userBulkUpload = function () {
+                $('#userBulkUpload').modal('refresh');
+                $('#userBulkUpload').modal({
+                    onShow: function () {
+                        admin.bulkUsers = {};
+                        admin.fileName = '';
+                        admin.bulkUsersProcessId = '';
+                        $('#bulkUsers').form('reset');
+                        admin.loader = {};
+                        admin.isUploadLoader = false;
+                    },
+                    onHide: function () {
+                        return true;
+                    }
+                }).modal('show');
+            };
+            admin.statusBulkUpload = function () {
+                $('#statusBulkUpload').modal('refresh');
+                $('#statusBulkUpload').modal({
+                    onShow: function () {
+                        $('#statusForm').form('reset');
+                        admin.uploadStatusKey = '';
+                        admin.bulkUploadStatus = {};
+                        admin.bulkUploadStatus.processId = '';
+                        admin.processID = '';
+                    },
+                    onHide: function () {
+                        admin.bulkUploadStatus = {};
+                        admin.bulkUploadStatus.processId = '';
                         return true;
                     }
                 }).modal('show');
@@ -236,28 +273,40 @@ angular.module('playerApp')
 
             admin.openImageBrowser = function (key) {
                 if (key === 'users') {
-                    console.log('uploadUsrsCSV', uploadUsrsCSV);
                     if (!((admin.bulkUsers.provider && admin.bulkUsers.externalid)
                     || admin.bulkUsers.OrgId)) {
                         admin.bulkUploadError = true;
                         admin.bulkUploadErrorMessage =
-                         'you should enter Provider and External Id Or Organization Id';
-
-                        $timeout(function () {
-                            admin.bulkUploadError = false;
-                            admin.bulkUploadErrorMessage = '';
-                            admin.bulkUsers = {};
-                        }, 2000);
-                    } else { $('#uploadUsrsCSV').click(); }
+                         $rootScope.errorMessages.ADMIN.bulkUploadErrorMessage;
+                        if (!admin.bulkUploadError) {
+                            $timeout(function () {
+                                admin.bulkUploadError = false;
+                                admin.bulkUploadErrorMessage = '';
+                                admin.bulkUsers = {};
+                            }, 5000);
+                        }
+                    } else if (!admin.bulkUploadError) {
+                        admin.isUploadLoader = true;
+                        $('#uploadUsrsCSV').click();
+                    }
                 } else if (key === 'organizations') {
-                    $('#uploadOrgCSV').click();
+                    admin.isUploadLoader = true;
+                    $('#orgUploadCSV').click();
                 }
+                // if (admin.isUploadLoader) {
+                //     admin.loader = toasterService.loader('', 'validating uploaded file');
+                //     if (admin.loader.showLoader) {
+                //         $timeout(function () {
+                //             admin.loader.showLoader = false;
+                //         }, 3000);
+                //     }
+                // }
             };
             $scope.validateFile = function (files, key) {
                 var fd = new FormData();
                 var reader = new FileReader();
-                if (files[0] && files[0].name.match(/.(csv|xlsx)$/i)
-                    && files[0].size < 4000000) {
+                if (files[0] && files[0].name.match(/.(csv)$/i)) {
+                    // && files[0].size < 4000000) {
                     reader.onload = function () {
                         if (key === 'users') {
                             fd.append('user', files[0]);
@@ -271,29 +320,42 @@ angular.module('playerApp')
                     reader.readAsDataURL(files[0]);
                     admin.fileToUpload = fd;
                 } else {
-                    toasterService.error(apiMessages.ERROR.get);
+                    toasterService.error($rootScope.errorMessages.ADMIN.notCSVFile);
                 }
             };
             admin.bulkUploadUsers = function () {
+                admin.loader = toasterService.loader('', $rootScope.errorMessages.ADMIN.uploadingUsers);
                 admin.fileToUpload.append('organisationId', admin.bulkUsers.OrgId);
                 admin.fileToUpload.append('externalid', admin.bulkUsers.externalid);
                 admin.fileToUpload.append('provider', admin.bulkUsers.provider);
+
                 adminService.bulkUserUpload(admin.fileToUpload).then(function (res) {
+                    admin.loader.showLoader = false;
                     if (res.responseCode === 'OK') {
                         admin.bulkUsersProcessId = res.result.processId;
                         admin.bulkUsersRes = res.result.response;
+                        toasterService.success($rootScope.errorMessages.ADMIN.userUploadSuccess);
+                    } else if (res.responseCode === 'CLIENT_ERROR') {
+                        toasterService.error(res.params.errmsg);
                     } else { toasterService.error($rootScope.errorMessages.ADMIN.fail); }
                 }).catch(function (err) {
+                    admin.loader.showLoader = false;
                     toasterService.error($rootScope.errorMessages.ADMIN.fail);
                 });
             };
             admin.bulkUploadOrganizations = function () {
+                admin.loader = toasterService.loader('', $rootScope.errorMessages.ADMIN.uploadingOrgs);
                 adminService.bulkOrgrUpload(admin.fileToUpload).then(function (res) {
+                    admin.loader.showLoader = false;
                     if (res.responseCode === 'OK') {
                         admin.bulkOrgProcessId = res.result.processId;
                         admin.bulkOrgRes = res.result.response;
+                        toasterService.success($rootScope.errorMessages.ADMIN.orgUploadSuccess);
+                    } else if (res.responseCode === 'CLIENT_ERROR') {
+                        toasterService.error(res.params.errmsg);
                     } else { toasterService.error($rootScope.errorMessages.ADMIN.fail); }
                 }).catch(function (err) {
+                    admin.loader.showLoader = false;
                     toasterService.error($rootScope.errorMessages.ADMIN.fail);
                 });
             };
@@ -302,46 +364,38 @@ angular.module('playerApp')
                 admin.bulkUploadErrorMessage = '';
                 admin.bulkUsers = {};
             };
-            admin.getBulkUloadStatus = function (id) {
+            admin.getBulkUloadStatus = function (id, key) {
+                admin.loader = toasterService.loader('', 'Getting status ');
                 adminService.bulkUploadStatus(id).then(function (res) {
-                    console.log('res');
+                    admin.loader.showLoader = false;
+                    $('#statusBulkUpload').modal({ observeChanges: true }).modal('refresh');
                     if (res.responseCode === 'OK') {
-                        $('#bulkUpload').modal('refresh');
+                        admin.uploadStatusKey = key;
                         admin.bulkUploadStatus.success = res.result.response[0].successResult;
                         admin.bulkUploadStatus.failure = res.result.response[0].failureResult;
-                    } else { toasterService.error($rootScope.errorMessages.ADMIN.fail); }
+                        admin.bulkUploadStatus.processId = res.result.response[0].processId;
+                        toasterService.success($rootScope.errorMessages.ADMIN.statusSuccess);
+                    } else {
+                        toasterService.error($rootScope.errorMessages.ADMIN.fail);
+                    }
                 }).catch(function (err) {
+                    admin.loader.showLoader = false;
                     toasterService.error($rootScope.errorMessages.ADMIN.fail);
                 });
             };
             admin.downloadSample = function (key) {
                 if (key === 'users') {
-                    alasql('SELECT * INTO CSV(\'Sample_Users.csv\', {headers: true}) FROM ?',
+                    alasql('SELECT * INTO CSV(\'Sample_Users.csv\', {headers: false}) FROM ?',
                 [admin.sampleUserCSV]);
                 } else if (key === 'organizations') {
-                    alasql(' SELECT *  INTO CSV(\'Sample_Organizations.csv\', {headers: true}) FROM ?',
+                    alasql(' SELECT *  INTO CSV(\'Sample_Organizations.csv\', {headers: false}) FROM ?',
                 [admin.sampleOrgCSV]);
                 }
             };
-                 // create org
-            // admin.createOrg = function () {
-            //     var orgRequest = {
-            //         params: { },
-            //         request: {
-            //             orgName: 'TamilNadu',
-            //             description: 'Tamil Nadu Board',
-            //             preferredLanguage: 'English',
-            //             orgCode: 'TN1',
-            //             source: 'testGov11',
-            //             externalId: 'QWE'
-
-            //         }
-            //     };
-            //     adminService.createOrg(orgRequest).then(function (res) {
-            //         if (res.responseCode === 'OK') {
-            //             admin.newOrgId = res.result.organisationId;
-            //         }
-            //     });
-            // };
+            admin.getUserRoles = function () {
+                admin.userRolesList = [];
+                admin.userRoles = permissionsService.allRoles();
+            };
+            admin.getUserRoles();
         }]);
 

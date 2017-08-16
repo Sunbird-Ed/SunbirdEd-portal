@@ -18,7 +18,6 @@ angular.module('playerApp')
 
   		// Dataset - progress / consumption
   		courseDashboard.selectedDataset = 'progress';
-  		console.log(permissionsService.getCurrentUserRoles())
   		angular.forEach(permissionsService.getCurrentUserRoles(), function(roleName, key){
   			if (roleName === 'COURSE_CREATOR'){
   				courseDashboard.selectedDataset = 'consumption';
@@ -73,6 +72,7 @@ angular.module('playerApp')
 						courseDashboard.labels = [];
 						courseDashboard.data   = [];
 						courseDashboard.series = [];
+						var yAxisLable         = 'Timespent for content consumption';
 
 						// To print block data
 						angular.forEach(apiResponse.result.snapshot,function(numericData, key){
@@ -87,6 +87,7 @@ angular.module('playerApp')
 							if(key === 'course.consumption.time_spent'){
 								// Push legend series label
 								courseDashboard.series.push(linechartData.name);
+								yAxisLable = linechartData.name;
 								var lineDataArray = new Array();
 								// Iterate day/week/month wise data
 								angular.forEach(linechartData.buckets, function(bucketValue, bucketKey){
@@ -98,7 +99,7 @@ angular.module('playerApp')
 							}
 						})
 
-						courseDashboard.options = dashboardService.getChartOptions('consumption');
+						courseDashboard.options = dashboardService.getChartOptions(yAxisLable);
             			courseDashboard.colors  = dashboardService.getChartColors('consumption');
 					}
 
