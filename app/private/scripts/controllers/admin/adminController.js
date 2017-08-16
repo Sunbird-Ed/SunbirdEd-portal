@@ -277,7 +277,7 @@ angular.module('playerApp')
                     || admin.bulkUsers.OrgId)) {
                         admin.bulkUploadError = true;
                         admin.bulkUploadErrorMessage =
-                         'you should enter Provider and External Id Or Organization Id';
+                         $rootScope.errorMessages.ADMIN.bulkUploadErrorMessage;
                         if (!admin.bulkUploadError) {
                             $timeout(function () {
                                 admin.bulkUploadError = false;
@@ -320,11 +320,11 @@ angular.module('playerApp')
                     reader.readAsDataURL(files[0]);
                     admin.fileToUpload = fd;
                 } else {
-                    toasterService.error('Please upload file in csv formate only ');
+                    toasterService.error($rootScope.errorMessages.ADMIN.notCSVFile);
                 }
             };
             admin.bulkUploadUsers = function () {
-                admin.loader = toasterService.loader('', 'uploading users');
+                admin.loader = toasterService.loader('', $rootScope.errorMessages.ADMIN.uploadingUsers);
                 admin.fileToUpload.append('organisationId', admin.bulkUsers.OrgId);
                 admin.fileToUpload.append('externalid', admin.bulkUsers.externalid);
                 admin.fileToUpload.append('provider', admin.bulkUsers.provider);
@@ -334,7 +334,7 @@ angular.module('playerApp')
                     if (res.responseCode === 'OK') {
                         admin.bulkUsersProcessId = res.result.processId;
                         admin.bulkUsersRes = res.result.response;
-                        toasterService.success('users uploaded successfully');
+                        toasterService.success($rootScope.errorMessages.ADMIN.userUploadSuccess);
                     } else if (res.responseCode === 'CLIENT_ERROR') {
                         toasterService.error(res.params.errmsg);
                     } else { toasterService.error($rootScope.errorMessages.ADMIN.fail); }
@@ -344,13 +344,13 @@ angular.module('playerApp')
                 });
             };
             admin.bulkUploadOrganizations = function () {
-                admin.loader = toasterService.loader('', 'uploading Organizations');
+                admin.loader = toasterService.loader('', $rootScope.errorMessages.ADMIN.uploadingOrgs);
                 adminService.bulkOrgrUpload(admin.fileToUpload).then(function (res) {
                     admin.loader.showLoader = false;
                     if (res.responseCode === 'OK') {
                         admin.bulkOrgProcessId = res.result.processId;
                         admin.bulkOrgRes = res.result.response;
-                        toasterService.success('Organizations uploaded successfully');
+                        toasterService.success($rootScope.errorMessages.ADMIN.orgUploadSuccess);
                     } else if (res.responseCode === 'CLIENT_ERROR') {
                         toasterService.error(res.params.errmsg);
                     } else { toasterService.error($rootScope.errorMessages.ADMIN.fail); }
@@ -374,6 +374,7 @@ angular.module('playerApp')
                         admin.bulkUploadStatus.success = res.result.response[0].successResult;
                         admin.bulkUploadStatus.failure = res.result.response[0].failureResult;
                         admin.bulkUploadStatus.processId = res.result.response[0].processId;
+                        toasterService.success($rootScope.errorMessages.ADMIN.statusSuccess);
                     } else {
                         toasterService.error($rootScope.errorMessages.ADMIN.fail);
                     }
@@ -396,25 +397,5 @@ angular.module('playerApp')
                 admin.userRoles = permissionsService.allRoles();
             };
             admin.getUserRoles();
-                 // create org
-            // admin.createOrg = function () {
-            //     var orgRequest = {
-            //         params: { },
-            //         request: {
-            //             orgName: 'TamilNadu',
-            //             description: 'Tamil Nadu Board',
-            //             preferredLanguage: 'English',
-            //             orgCode: 'TN1',
-            //             source: 'testGov11',
-            //             externalId: 'QWE'
-
-            //         }
-            //     };
-            //     adminService.createOrg(orgRequest).then(function (res) {
-            //         if (res.responseCode === 'OK') {
-            //             admin.newOrgId = res.result.organisationId;
-            //         }
-            //     });
-            // };
         }]);
 
