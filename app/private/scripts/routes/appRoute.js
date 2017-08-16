@@ -843,7 +843,7 @@ angular.module('playerApp')
               $rootScope.profileActive = '';
           }
       }).state('updateBatch', {
-          url: '/upadte/batch/:batchId',
+          url: '/update/batch/:batchId',
           views: {
               mainView: {
                   templateUrl: '/views/batch/updateBatch.html',
