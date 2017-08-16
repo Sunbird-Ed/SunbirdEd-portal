@@ -42,6 +42,18 @@ angular.module('playerApp')
             return httpServiceJava.patch(url, req);
         };
 
+        this.getOrgDetails = function(orgIds) {
+			var req =  {
+				"request": {
+					"filters":{
+					  "id":orgIds
+					}
+				}
+			}
+            var url = 'org/v1/search';
+            return httpServiceJava.post(url, req);
+        };
+
         this.prepareDataForTelemetry = function (req) {
             var data = [];
             var request = req.request;
