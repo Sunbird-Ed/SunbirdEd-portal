@@ -915,6 +915,10 @@ slick-prev:before,
 .slick-slider {
   margin-bottom: 0px !important;
 }
+/*align the cards in left in slicker slider*/
+.slick-track {
+  margin-left: initial !important;
+}
 .footer1 {
   position: fixed !important;
   bottom: 0 !important;
