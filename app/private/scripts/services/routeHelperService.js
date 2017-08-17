@@ -86,7 +86,7 @@ angular.module('playerApp')
                             link: 'resources'
                         }, {
                             name: $stateParams.contentName,
-                            link: 'player/' + $stateParams.contentId + '/' + $stateParams.contentName
+                            link: 'content/' + $stateParams.contentId + '/' + $stateParams.contentName
                         }, {
                             name: 'Notes',
                             link: ''
