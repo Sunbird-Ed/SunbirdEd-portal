@@ -191,6 +191,9 @@
                 "close": "Close",
                 "edit": "Edit",
                 "add": "Add"
+            },
+            "BADGES": {
+                "header": "Badges"
             }
         },
         "HEADER": {

@@ -10,9 +10,10 @@
 angular.module('playerApp')// add those all values
     .controller('ProfileController',
     ['$scope', '$rootScope', 'contentService', 'userService', 'toasterService', 'config',
-        '$timeout', '$filter', 'uuid4', 'formValidation', 'searchService', '$state',
+        '$timeout', '$filter', 'uuid4', 'formValidation', 'searchService', '$state', 'learnService',
         function ($scope, $rootScope, contentService, userService, toasterService, config,
-            $timeout, $filter, uuid4, formValidation, searchService, $state) {
+            $timeout, $filter, uuid4, formValidation, searchService, $state, learnService) {
+            console.log('enrolled courses', $rootScope.enrolledCourseIds)
             var profile = this;
             var apiMessages = $rootScope.errorMessages.PROFILE.API;
             profile.userId = $rootScope.userId;
@@ -26,6 +27,7 @@ angular.module('playerApp')// add those all values
             profile.contentSortBy = 'desc';
             profile.quantityOfContent = 4;
             profile.orgDetails = $rootScope.organisations;
+            profile.badges = [];
 
              // Get user profile
             profile.processProfileData = function (userProfile) { // setProfileData
@@ -425,4 +427,20 @@ angular.module('playerApp')// add those all values
             profile.EditDetails = function (details) {
                 profile.updateProfile({ profileSummary: details });
             };
+
+            profile.getbadges = function () {
+                learnService.enrolledCourses($rootScope.userId).then(function (res) {
+                    if (res && res.responseCode === 'OK') {
+                        var courses = res.result.courses;
+                        _.forEach(courses, function (course) {
+                            if (course.leafNodesCount && course.progress && course.leafNodesCount === course.progress) {
+                                profile.badges.push({
+                                    title: course.courseName
+                                });
+                            }
+                        })
+                    }
+                });
+            };
+            profile.getbadges();
         }]);
