@@ -8,7 +8,7 @@
  *
  * Main module of the application.
  */
-angular.module('loginApp', ['loginApp.labels', 'loginApp.errorMessages'])
+angular.module('loginApp', ['loginApp.labels', 'loginApp.errorMessages', 'uuid4'])
   .controller('loginCtrl', ['labels', '$rootScope', 'errorMessages', function(labels, $rootScope, errorMessages) {
     $rootScope.errorMessages = errorMessages;
     $rootScope.labels = labels;
