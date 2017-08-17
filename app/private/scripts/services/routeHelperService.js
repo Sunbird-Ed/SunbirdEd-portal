@@ -272,6 +272,7 @@ angular.module('playerApp')
                         $rootScope.search.filters = {};
                         $rootScope.search.sortBy = {};
                         $rootScope.search.sortByOption = {};
+                        $rootScope.search.selectedGrades = [];
                         $timeout(function () {
                             $('#multi-select-sort').dropdown('clear');
                             $('#content-search-filter-accordion').accordion('close', 0);
