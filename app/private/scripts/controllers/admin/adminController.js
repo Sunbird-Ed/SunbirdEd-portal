@@ -46,6 +46,7 @@ angular.module('playerApp')
                 roles: 'roles'
             }
             ];
+
               // getOrgnames
             admin.getOrgName = function (cb) {
                 var identifiers = [];
@@ -74,10 +75,19 @@ angular.module('playerApp')
             };
             // OVERRIDE USERS SEARCH RESULT AND ADD ORGNAME TO RESULT
             admin.addOrgNameToOrganizations = function () {
+                admin.currentUserRoles = permissionsService.getCurrentUserRoles();
                 if ($rootScope.search.selectedSearchKey === 'Users') {
                     admin.getOrgName(function (orgIdAndNames) {
                         admin.searchResult.forEach(function (user) {
                             if (user.organisations) {
+                                var isSystemAdminUser = user.organisations[0].roles
+                                                    .includes('SYSTEM_ADMINISTRATION');
+                                if (isSystemAdminUser === true) {
+                                    user.isEditableProfile = admin.currentUserRoles
+                                    .includes('SYSTEM_ADMINISTRATION');
+                                } else if (!isSystemAdminUser) {
+                                    user.isEditableProfile = true;
+                                }
                                 user.organisations.forEach(function (userOrg) {
                                     var orgNameAndId = orgIdAndNames.find(function (org) {
                                         return org.orgId === userOrg.organisationId;
@@ -119,7 +129,7 @@ angular.module('playerApp')
                 $('#deleteUserConfirmation').modal({
                     onShow: function () {
                         admin.deletingUserId = id;
-                        admin.deletingUserFullName = firstName + ' ' + lastName;
+                        admin.deletingUserFullName = firstName + ' ' + lastName || '';
                     },
                     onHide: function () {
                         admin.deletingUserId = '';
@@ -189,10 +199,12 @@ angular.module('playerApp')
                             });
                         }
                     });
+                    var nullReplacedToEmpty = JSON.stringify(list).replace(/null/g, '""');
+                    var users = JSON.parse(nullReplacedToEmpty);
                     alasql('SELECT firstName AS firstName,lastName AS lastName,phone AS phone,'
                     + 'email AS email,organisationsName AS Organisations,userName AS userName '
-                    + 'INTO CSV(\'Users.csv\',{headers:true}) FROM ?'
-                    , [list]);
+                    + 'INTO CSV(\'Users.csv\',{headers:true},{separator:","}) FROM ?'
+                    , [users]);
                 } else if (key === 'Organisations') {
                     list.forEach(function (org) {
                         switch (org.status) {
@@ -203,10 +215,12 @@ angular.module('playerApp')
                         default :break;
                         }
                     });
+                    var orgNullReplacedToEmpty = JSON.stringify(list).replace(/null/g, '""');
+                    var organizations = JSON.parse(orgNullReplacedToEmpty);
                     alasql('SELECT orgName AS orgName,orgType AS orgType,'
                     + 'noOfMembers AS noOfMembers,channel AS channel, '
                     + 'status AS Status INTO CSV(\'Organizations.csv\',{headers:true}) FROM ?'
-                    , [list]);
+                    , [organizations]);
                 }
             };
 
@@ -223,10 +237,13 @@ angular.module('playerApp')
                     if (res.result.response === 'SUCCESS') {
                         toasterService.success($rootScope.errorMessages.ADMIN.deleteSuccess);
                         admin.searchResult = admin.searchResult.filter(function (user) {
-                            return user.userId !== userId;
+                            if (user.userId === userId) {
+                                user.status = 0;
+                            }
+                            return user;
                         });
                     } else { toasterService.error($rootScope.errorMessages.ADMIN.fail); }
-                }).catch(function (err) {
+                }).catch(function (err) {// eslint-disable-line
                     toasterService.error($rootScope.errorMessages.ADMIN.fail);
                 });
             };
@@ -265,7 +282,7 @@ angular.module('playerApp')
                         // profile.isError = true;
                         toasterService.error($rootScope.errorMessages.ADMIN.fail);
                     }
-                }).catch(function (err) {
+                }).catch(function (err) {// eslint-disable-line
                     profile.isError = true;
                     toasterService.error($rootScope.errorMessages.ADMIN.fail);
                 });
@@ -295,14 +312,6 @@ angular.module('playerApp')
                     admin.isUploadLoader = true;
                     $('#orgUploadCSV').click();
                 }
-                // if (admin.isUploadLoader) {
-                //     admin.loader = toasterService.loader('', 'validating uploaded file');
-                //     if (admin.loader.showLoader) {
-                //         $timeout(function () {
-                //             admin.loader.showLoader = false;
-                //         }, 3000);
-                //     }
-                // }
             };
             $scope.validateFile = function (files, key) {
                 var fd = new FormData();
@@ -327,7 +336,8 @@ angular.module('playerApp')
             };
             admin.bulkUploadUsers = function () {
                 $('#uploadUsrsCSV').val('');
-                admin.loader = toasterService.loader('', $rootScope.errorMessages.ADMIN.uploadingUsers);
+                admin.loader = toasterService
+                                .loader('', $rootScope.errorMessages.ADMIN.uploadingUsers);
                 admin.fileToUpload.append('organisationId', admin.bulkUsers.OrgId);
                 admin.fileToUpload.append('externalid', admin.bulkUsers.externalid);
                 admin.fileToUpload.append('provider', admin.bulkUsers.provider);
@@ -341,14 +351,15 @@ angular.module('playerApp')
                     } else if (res.responseCode === 'CLIENT_ERROR') {
                         toasterService.error(res.params.errmsg);
                     } else { toasterService.error($rootScope.errorMessages.ADMIN.fail); }
-                }).catch(function (err) {
+                }).catch(function (err) {// eslint-disable-line
                     admin.loader.showLoader = false;
                     toasterService.error($rootScope.errorMessages.ADMIN.fail);
                 });
             };
             admin.bulkUploadOrganizations = function () {
                 $('#orgUploadCSV').val('');
-                admin.loader = toasterService.loader('', $rootScope.errorMessages.ADMIN.uploadingOrgs);
+                admin.loader = toasterService
+                .loader('', $rootScope.errorMessages.ADMIN.uploadingOrgs);
                 adminService.bulkOrgrUpload(admin.fileToUpload).then(function (res) {
                     admin.loader.showLoader = false;
                     if (res.responseCode === 'OK') {
@@ -358,7 +369,7 @@ angular.module('playerApp')
                     } else if (res.responseCode === 'CLIENT_ERROR') {
                         toasterService.error(res.params.errmsg);
                     } else { toasterService.error($rootScope.errorMessages.ADMIN.fail); }
-                }).catch(function (err) {
+                }).catch(function (err) {// eslint-disable-line
                     admin.loader.showLoader = false;
                     toasterService.error($rootScope.errorMessages.ADMIN.fail);
                 });
@@ -382,7 +393,7 @@ angular.module('playerApp')
                     } else {
                         toasterService.error($rootScope.errorMessages.ADMIN.fail);
                     }
-                }).catch(function (err) {
+                }).catch(function (err) {// eslint-disable-line
                     admin.loader.showLoader = false;
                     toasterService.error($rootScope.errorMessages.ADMIN.fail);
                 });
@@ -392,7 +403,8 @@ angular.module('playerApp')
                     alasql('SELECT * INTO CSV(\'Sample_Users.csv\', {headers: false}) FROM ?',
                 [admin.sampleUserCSV]);
                 } else if (key === 'organizations') {
-                    alasql(' SELECT *  INTO CSV(\'Sample_Organizations.csv\', {headers: false}) FROM ?',
+                    alasql(' SELECT *  INTO CSV(\'Sample_Organizations.csv\',' +
+                    ' {headers: false}) FROM ?',
                 [admin.sampleOrgCSV]);
                 }
             };

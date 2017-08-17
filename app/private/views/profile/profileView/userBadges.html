@@ -1,0 +1,13 @@
+<div class="ui raised segment" ng-if="profileCtrl.badges.length">
+    <div class="header announcementCard-header">
+        <span class="header cardsHeading">{{$root.labels.PROFILE.BADGES.header}} </span>
+    </div>
+    <div class="badgesItem ui relaxed items">
+        <div class="item" ng-repeat="badges in profileCtrl.badges">
+            <img class="badgesImage ui mini image" src="/images/badge.png">
+            <div class="content">
+                <p>{{badges.title}}</p>
+            </div>
+        </div>
+    </div>
+</div>
