@@ -72,7 +72,7 @@ angular.module('playerApp')
                             link: 'learn'
                         }, {
                             name: courseParams.courseName,
-                            link: '/toc/' + courseParams.courseId + '/' + courseParams.lectureView
+                            link: '/course/' + courseParams.courseId + '/' + courseParams.lectureView
                         }, {
                             name: 'Notes',
                             link: ''
@@ -86,7 +86,7 @@ angular.module('playerApp')
                             link: 'resources'
                         }, {
                             name: $stateParams.contentName,
-                            link: 'player/' + $stateParams.contentId + '/' + $stateParams.contentName
+                            link: 'content/' + $stateParams.contentId + '/' + $stateParams.contentName
                         }, {
                             name: 'Notes',
                             link: ''
@@ -96,7 +96,7 @@ angular.module('playerApp')
                     case 'CourseContentNote':
 
                         var courseParams = sessionService.getSessionData('COURSE_PARAMS');
-                        var courseLink = '/toc/' + courseParams.courseId + '/' + courseParams.lectureView;
+                        var courseLink = '/course/' + courseParams.courseId + '/' + courseParams.lectureView;
                         var contentLink = courseLink + '/' + courseParams.contentId + '/' + courseParams.contentIndex;
                         $rootScope.breadCrumbsData = [{
                             name: courseParams.courseName,

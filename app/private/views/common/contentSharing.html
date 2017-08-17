@@ -1,0 +1,41 @@
+<span ng-click="contentShare.initializeModal()" class="ui mouse-pointer">
+    <i class="share alternate icon"></i>&nbsp; {{$root.labels.CONTENT_SHARE.contentShareText}}
+</span>
+<div>
+    <div class="ui modal" id="contentShareModal" ng-if="contentShare.showContentShareModal">
+        <div class=" ui segment margin-top-10 padding-left-50 padding-right-50" ng-show="!contentShare.loader.showLoader">
+            <div class=" margin-bottom-15">
+                <div class="ui grid">
+                    <div class="row">
+                        <div class="eleven wide column">
+                            <span class="ui header">{{$root.labels.CONTENT_SHARE.contentShareText}}</span>
+                        </div>
+                        <div class="one wide column actions">
+                            <h5 class="ui basic icon circular button deny" ng-click="contentShare.hideContentShareModal();">
+                                <i class="ui remove icon"></i>
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <span class="ui tiny header">{{$root.labels.CONTENT_SHARE.shareByTheLink}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                <div class="ui input width-100" id="buttonPopUp">
+                    <input type="text" id="copyLinkData" name="title" readonly ng-model="contentShare.link" />
+                    <button class="ui primary basic button" ng-click="contentShare.success()">
+                        <div class="text">COPY LINK</div>
+                    </button>
+                </div>
+                <div class="ui custom popup top center transition hidden" id="LinkCopiedToClipboard" data-position="ui top center">
+                    Link copied to clipboard
+                </div>
+            </div>
+            <div class="actions margin-top-20 ">
+                <div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

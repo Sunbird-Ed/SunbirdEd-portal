@@ -17,9 +17,9 @@ angular.module('playerApp')
             this.setRolesAndPermissions = function (data) {
                 var rolePermissions = _.cloneDeep(data.roles);
                 _.forEach(rolePermissions, function (r, p) {
-                    var mainRole = { role: r.id, actions: [] };
+                    var mainRole = { role: r.id, actions: [], roleName: r.name };
                     _.forEach(r.actionGroups, function (ag) {
-                        var subRole = { role: ag.id, actions: ag.actions };
+                        var subRole = { role: ag.id, actions: ag.actions, roleName: ag.name };
                         mainRole.actions = _.concat(mainRole.actions, ag.actions);
                         rolesAndPermissions.push(subRole);
                     });
