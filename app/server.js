@@ -62,6 +62,13 @@ const decorateRequestHeaders = function() {
     return proxyReqOpts;
   };
 };
+const decoratePublicRequestHeaders = function() {
+  return function(proxyReqOpts, srcReq) {
+     proxyReqOpts.headers['X-App-Id'] = appId;
+    proxyReqOpts.headers.Authorization = 'Bearer '+sunbird_api_auth_token;
+    return proxyReqOpts;
+  };
+};
 
 app.use(session({
   secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
@@ -105,6 +112,7 @@ app.all('/collection-editor/telemetry', bodyParser.urlencoded({ extended: false 
   bodyParser.json({ limit: reqDataLimitOfContentEditor }), keycloak.protect(), telemetryHelper.logSessionEvents);
 
 app.all('/public/service/*', proxy(learnerURL, {
+ proxyReqOptDecorator: decoratePublicRequestHeaders(),
   proxyReqPathResolver: function(req) {
     let urlParam = req.params["0"];
     return require('url').parse(learnerURL + urlParam).path;
@@ -155,8 +163,8 @@ app.get('/get/envData', keycloak.protect(), function(req, res) {
 });
 
 //tenant Api's
-app.get('/api/tenant/logo/:tenantId', tenantHelper.getLogo);
-app.get('/api/tenant/favicon/:tenantId', tenantHelper.getFavicon);
+app.get('/v1/tenant/info/:tenantId', tenantHelper.getInfo);
+
 
 //proxy urls
 
