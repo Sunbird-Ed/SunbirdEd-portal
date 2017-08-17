@@ -430,7 +430,7 @@ angular.module('playerApp')
              { name: 'Home', link: 'home' },
              { name: 'Courses', link: 'learn' },
                     { name: toc.courseName,
-                        link: '/toc/'
+                        link: '/course/'
                    + '/' + toc.courseId + '/' + toc.lectureView }];
                 if ($scope.contentPlayer.isContentPlayerEnabled) {
                     var curContentName = toc.playListContent[toc.itemIndex].name;
