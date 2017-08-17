@@ -800,6 +800,7 @@ angular.module('playerApp')
           },
           onExit: function ($rootScope) {
               $rootScope.profileActive = '';
+              $rootScope.resourcesActive = '';
           }
       })
       .state('WorkSpace.ContentBatch', {
