@@ -43,4 +43,17 @@ angular.module('playerApp')
         this.getCurrentUserProfile = function() {
             return this.currentUserProfile;
         };
+        
+		this.getOrgDetails = function(orgIds) {
+			var req = {
+			  "request": {
+				"filters": {
+				  "id": orgIds
+				}
+			  }
+			}
+			var url = 'org/v1/search';
+			return httpServiceJava.post(url, req);
+		};
+
     }]);
