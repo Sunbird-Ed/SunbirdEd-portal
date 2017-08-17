@@ -11,9 +11,9 @@
             <img class="ui avatar image" src="/images/businessman.png">
             <div class="content">
                 <a class=" header">{{education.degree}}</a>
-                <div class="description"> {{education.yearOfPassing}}<span ng-if="education.percentage">,</span>{{education.percentage}}
+                <div class="description"> {{education.yearOfPassing}}<span ng-if="education.percentage">,&nbsp</span>{{education.percentage}}
                     <br/>
-                    <p>{{education.grade}}<span ng-if="education.name && education.grade">,</span>{{education.name}}<span ng-if="education.boardOrUniversity && eduction.name">,</span>{{education.boardOrUniversity}}
+                    <p>{{education.grade}}<span ng-if="education.name ">,&nbsp</span>{{education.name}}<span ng-if="education.boardOrUniversity">,&nbsp</span>{{education.boardOrUniversity}}
 
                 </div>
             </div>
@@ -28,7 +28,7 @@
     <div ng-if="profileCtrl.educationForm" class="profileitems ui relaxed divided items">
         <div class="edit-education-form" ng-if="!profileCtrl.isNewEducation ">
             <div class=" ui " ng-repeat="education in profileCtrl.user.education track by $index " ng-include=" 'views/profile/editProfile/education.html' "></div>
-            <div class="ui button margin-top-15" ng-class="{ 'disabled' : profileCtrl.disableSave}" ng-click="profileCtrl.editEducation(profileCtrl.education)" ;>{{$root.labels.PROFILE.BUTTON.save}} </div>
+            <div class="ui button margin-top-15" ng-class="{ 'disabled' : profileCtrl.disableSave}" ng-click="profileCtrl.editEducation(profileCtrl.user.education)" ;>{{$root.labels.PROFILE.BUTTON.save}} </div>
         </div>
         <div class="add-education-form" ng-if="profileCtrl.isNewEducation ">
             <div class="ui " ng-include=" 'views/profile/editProfile/addEducation.html' "></div>
