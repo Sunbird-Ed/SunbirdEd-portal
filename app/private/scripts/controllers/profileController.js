@@ -455,11 +455,11 @@ angular.module('playerApp') // add those all values
           if (res && res.responseCode === 'OK') {
             var courses = res.result.courses;
             _.forEach(courses, function(course) {
-              //if (course.leafNodesCount && course.progress && course.leafNodesCount === course.progress) {
-              profile.badges.push({
-                title: course.courseName
-              });
-              //}
+                if (course.leafNodesCount && course.progress && course.leafNodesCount === course.progress) {
+                    profile.badges.push({
+                        title: course.courseName
+                      });
+                }
             })
           }
         });
