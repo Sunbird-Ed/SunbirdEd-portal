@@ -280,7 +280,7 @@ angular.module('playerApp')
           }
       })
       .state('Player', {
-          url: '/player/:contentId/:contentName',
+          url: '/content/:contentId/:contentName',
           views: {
               mainView: {
                   templateUrl: 'views/common/player.html',
@@ -302,7 +302,7 @@ angular.module('playerApp')
                   pageid: org.sunbird.portal.appid + '_Player',
                   id: $stateParams.contentId,
                   name: $stateParams.contentName,
-                  url: '/private/index#!/player/' + $stateParams.contentId + '/' + $stateParams.contentName
+                  url: '/private/index#!/content/' + $stateParams.contentId + '/' + $stateParams.contentName
               });
           },
           onExit: function ($rootScope) {
