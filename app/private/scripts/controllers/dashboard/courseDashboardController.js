@@ -18,11 +18,18 @@ angular.module('playerApp')
 
   		// Dataset - progress / consumption
   		courseDashboard.selectedDataset = 'progress';
-  		angular.forEach(permissionsService.getCurrentUserRoles(), function(roleName, key){
-  			if (roleName === 'COURSE_CREATOR'){
-  				courseDashboard.selectedDataset = 'consumption';
-  			}
-  		})
+  		var currentUserRoles = permissionsService.getCurrentUserRoles();
+		var userRolesLookup  = ['COURSE_ADMIN','COURSE_CREATOR'];
+		// Check logged user has both roles to show progress, and consumption dropdwon values
+		courseDashboard.bothRolesUser    = _.every(userRolesLookup, _.partial(_.includes, currentUserRoles));
+
+		if(!courseDashboard.bothRolesUser){
+	  		angular.forEach(currentUserRoles, function(roleName, key){
+	  			if (roleName === 'COURSE_CREATOR'){
+	  				courseDashboard.selectedDataset = 'consumption';
+	  			}
+	  		})
+  		}
 
   		// Search and sort table data
   		courseDashboard.orderByField = ''; // Default value
