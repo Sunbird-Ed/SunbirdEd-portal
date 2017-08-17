@@ -153,8 +153,7 @@ angular.module('playerApp')
             };
 
             batch.clearBatchData = function(){
-                $('#users,#mentors').dropdown('restore defaults');  
-                $('#createBatch').form('reset');
+                  $('#createBatch').form('clear');
             }
 
             batch.getCouserBatchesList = function () {

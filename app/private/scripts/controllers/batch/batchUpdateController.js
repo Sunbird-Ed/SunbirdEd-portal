@@ -10,8 +10,8 @@
 
 angular.module('playerApp')
     .controller('BatchUpdateController', ['$rootScope', '$timeout', '$state','$scope', '$stateParams', 
-    'config', 'batchService', '$filter' ,function($rootScope, $timeout, $state, $scope, 
-        $stateParams, config, batchService, $filter) {
+    'config', 'batchService', '$filter','toasterService' ,function($rootScope, $timeout, $state, $scope, 
+        $stateParams, config, batchService, $filter,toasterService) {
             var batchUpdate = this;
             batchUpdate.userList = [];
             batchUpdate.menterList = [];
@@ -122,7 +122,9 @@ angular.module('playerApp')
                     }).modal("show");
                 }, 10);
             };
-
+            batchUpdate.clearForm = function(){
+                $('#updateBatch').form('clear');
+            }
             batchUpdate.getUserList = function(){
                 var request = {
                     "request": {
@@ -186,29 +188,30 @@ angular.module('playerApp')
                     }
                     batchService.update(request).then(function (response) {
                         if (response && response.responseCode === 'OK') {
+                            data.users = $('#users').dropdown('get value').split(",");
                             if(data.users && data.users.length > 0){
                                 var userRequest = {
                                     "request" : {
                                         "userIds": data.users
                                     }
                                 }
-                                batchService.addUsers(userRequest, response.result.batchId).then(function (response) {
+                                batchService.addUsers(userRequest, data.id).then(function (response) {
                                     if (response && response.responseCode === 'OK') {
                                         batchUpdate.hideUpdateBatchModal();
                                     }else{
-                                        toasterService.error(errorMessages.BATCH.ADD_USERS.FAILED);
+                                        toasterService.error($rootScope.errorMessages.BATCH.ADD_USERS.FAILED);
                                     }
                                 }).catch(function () {
-                                    toasterService.error(errorMessages.BATCH.ADD_USERS.FAILED);
+                                    toasterService.error($rootScope.errorMessages.BATCH.ADD_USERS.FAILED);
                                 });
                             }else{
                                 batchUpdate.hideUpdateBatchModal();
                             }
                         }else{
-                            toasterService.error(errorMessages.BATCH.UPDATE.FAILED);    
+                            toasterService.error($rootScope.errorMessages.BATCH.UPDATE.FAILED);    
                         }
-                    }).catch(function () {
-                        toasterService.error(errorMessages.BATCH.UPDATE.FAILED);
+                    }).catch(function (ex) {
+                        toasterService.error($rootScope.errorMessages.BATCH.UPDATE.FAILED);
                     });
                 }
             }
