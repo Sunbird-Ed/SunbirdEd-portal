@@ -1,0 +1,125 @@
+<div id="contentPlayer" ng-init="init()">
+    <div class='videosegment ui segment' ng-if="visibility">
+
+        <div class='content-player-body'>
+            <div class="videosegment  ui clearing segment" ng-if="isHeader || isClose">
+                <h1 class="ui HomeAccordianHeading left floated header margin-auto" ng-if="isHeader">
+                    {{contentData.name}}
+                </h1>
+            </div>
+
+            <div class="ui stackable twelve column grid">
+
+                <div class="twelve wide column">
+                    <div class="content-player" ng-if="(contentData.mimeType === 'application/vnd.ekstep.ecml-archive' || contentData.mimeType === 'application/vnd.ekstep.html-archive') && showIFrameContent">
+                        <iframe id="contentViewerIframe" class="contentViewerIframeShadow" height='100%' width='100%'></iframe>
+                    </div>
+                    <div apply-script id="content-video-player-holder" class="content-player" videosrc="{{contentData.artifactUrl}}" videotype="{{contentData.mimeType}}" ng-if="contentData.mimeType !== 'video/youtube' && contentData.mimeType.indexOf('video') > -1">
+                        <video height='100%' width='100%' id="content-video-player" class="video-js vjs-default-skin player-video" controls preload="auto" data-setup='{"controls":true}'>
+                            <source src="{{contentData.artifactUrl}}" type='{{contentData.mimeType}}' />
+
+                        </video>
+                    </div>
+                    <div class="content-player" ng-if="contentData.mimeType === 'video/youtube'" apply-script id="content-video-player-youtube-holder" videosrc="{{contentData.artifactUrl}}">
+
+                        <video height='100%' width='100%' id="content-video-player-youtube"></video>
+                    </div>
+                    <div ng-if="contentData.mimeType === 'application/pdf'" class="pdf-editor content-player">
+                        <div ng-include="'views/contentplayer/pdfToolBar.html'"></div>
+                        <pdf-viewer delegate-handle="content-player" url="contentData.artifactUrl" scale="1.5" show-toolbar="false"></pdf-viewer>
+                    </div>
+                    <div class="content-player" ng-if="contentData.mimeType.indexOf('image') > -1">
+                        <img height='100%' width='100%' ng-src="{{contentData.artifactUrl}}" />
+                    </div>
+
+                </div>
+                <div class="twelve wide column">
+                    <!-- <div ng-include="'views/contentplayer/contentMeta.html'"></div> -->
+                    <h2 class="ui header">
+                        {{contentData.description}}
+                    </h2>
+                    <div class="ui clearing divider"></div>
+                    <div class="ui grid margin-top-15">
+                        <div class="row">
+                            <div class="three wide column">
+                                <div class="ui list">
+                                    <div class="item">
+                                        <div class="content">
+                                            <div class="header">{{$root.labels.previewContent.author}}</div>
+                                            <div class="description padding-top-1rem">{{contentData.author}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="three wide column">
+                                <div class="ui list">
+                                    <div class="item">
+                                        <div class="content">
+                                            <div class="header">{{$root.labels.previewContent.language}}</div>
+                                            <div class="description padding-top-1rem">{{contentData.language.toString()}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="three wide column">
+                                <div class="ui list">
+                                    <div class="item">
+                                        <div class="content">
+                                            <div class="header">{{$root.labels.previewContent.grades}}</div>
+                                            <div class="description padding-top-1rem">{{contentData.gradeLevel.toString()}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="three wide column">
+                                <div class="ui list">
+                                    <div class="item">
+                                        <div class="content">
+                                            <div class="header">{{$root.labels.previewContent.subject}}</div>
+                                            <div class="description padding-top-1rem">{{contentData.subject}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="three wide column">
+                                <div class="ui list">
+                                    <div class="item">
+                                        <div class="content">
+                                            <div class="header">{{$root.labels.previewContent.lastUpdate}}</div>
+                                            <div class="description padding-top-1rem">{{contentData.lastUpdatedOn | dateFilterWithMDY}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="three wide column">
+                                <div class="ui list">
+                                    <div class="item">
+                                        <div class="content">
+                                            <div class="header">{{$root.labels.previewContent.createdOn}}</div>
+                                            <div class="description padding-top-1rem">{{contentData.createdOn | dateFilterWithMDY}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-if="errorObject.showError">
+                <div class="ui active dimmer inverted">
+                    <div class="content">
+                        <div class="center" ng-if="!errorObject.showMetaLoader">
+                            <h2 class="ui header {{errorObject.messageClass}}">
+                                {{errorObject.message}}
+                            </h2>
+                            <span ng-if="errorObject.showTryAgainButton"><button class="ui button" ng-click="init()">{{$root.labels.previewContent.tryAgain}}</button></span>
+                            <span ng-if="errorObject.showCloseButton"><button class="ui red button" ng-click="close()">{{$root.labels.previewContent.close}}</button></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
