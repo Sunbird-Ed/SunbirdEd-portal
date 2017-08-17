@@ -233,7 +233,18 @@ angular.module('playerApp').directive('search', function () {
                     $scope.search.resultType = 'content';
                     req.filters.objectType = ['Content'];
                 } else if ($rootScope.search.selectedSearchKey === 'Users') {
+                    var emailValidator = /\S+@\S+\.\S+/;
+                    var isEmail = emailValidator.test(req.query);
+                    if (isEmail === true) {
+                        req.filters.email = req.query;
+                    }
+                    if (isEmail === false && req.filters.email) {
+                        delete req.filters.email;
+                    }
                     req.filters.objectType = ['user'];
+                    if ($rootScope.organisationIds) {
+                        req.filters['organisations.organisationId'] = $rootScope.organisationIds[0];
+                    }
                     $scope.search.searchFn = adminService.userSearch({ request: req });
                     $scope.search.resultType = 'users';
                 } else if ($rootScope.search.selectedSearchKey === 'Organisations') {
@@ -340,7 +351,8 @@ angular.module('playerApp').directive('search', function () {
             };
             $rootScope.search.close = function () {
                 $rootScope.search.selectedSearchKey =
-                        $rootScope.search.selectedSearchKey === 'Users' || $rootScope.search.selectedSearchKey === 'Organisations'
+                        $rootScope.search.selectedSearchKey === 'Users'
+                        || $rootScope.search.selectedSearchKey === 'Organisations'
                         ? 'Profile'
                         : $rootScope.search.selectedSearchKey;
                 var closeUrl = ($rootScope.search.selectedSearchKey === 'All')
