@@ -287,7 +287,7 @@
             </form>
         </div>
         <div class="actions" ng-hide="batchUpdate.batchData.status == 2">
-            <div class="ui secondary button" >Clear</div>
+            <div class="ui secondary button" ng-click='batchUpdate.clearForm()'>Clear</div>
             <div class="ui primary button" ng-click="batchUpdate.submitted = true; batchUpdate.updateBatchDetails(batchUpdate.batchData)">Update</div>
         </div>
     </div>
