@@ -163,8 +163,8 @@ app.get('/get/envData', keycloak.protect(), function(req, res) {
 });
 
 //tenant Api's
-app.get('/api/tenant/logo/:tenantId', tenantHelper.getLogo);
-app.get('/api/tenant/favicon/:tenantId', tenantHelper.getFavicon);
+app.get('/v1/tenant/info/:tenantId', tenantHelper.getInfo);
+
 
 //proxy urls
 
