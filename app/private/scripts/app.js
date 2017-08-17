@@ -17,7 +17,6 @@ angular.module('playerApp', [
     'ui.router',
     'ngStorage',
     'ui.pagedown',
-    'pdf',
     'pascalprecht.translate',
     'ngSanitize',
     'ui.router.state.events',

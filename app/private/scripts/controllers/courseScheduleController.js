@@ -2,28 +2,28 @@
 
 angular.module('playerApp')
   .controller('courseScheduleCtrl',
-    ['courseService', 'sessionService', '$stateParams', '$state', '$timeout', '$scope', '$rootScope', 
-    'toasterService', '$location', '$anchorScroll', 'contentStateService', '$window', 'batchService', 
-    function (courseService, sessionService, $stateParams, $state, $timeout, $scope, $rootScope, 
+    ['courseService', 'sessionService', '$stateParams', '$state', '$timeout', '$scope', '$rootScope',
+        'toasterService', '$location', '$anchorScroll', 'contentStateService', '$window', 'batchService',
+        function (courseService, sessionService, $stateParams, $state, $timeout, $scope, $rootScope,
         toasterService, $location, $anchorScroll, contentStateService, $window, batchService) {
-            var toc = this;
-            toc.playList = [];
-            toc.playListContent = [];
-            toc.loading = false;
-            toc.courseParams = sessionService.getSessionData('COURSE_PARAMS');
-            $scope.contentList = [];
-            toc.contentList = [];
-            toc.showNoteInLecture = true;
-            toc.enrollErrorMessage = '';
-            toc.fancyTree = [];
-            toc.treeKey = 0;
-            toc.uid = $rootScope.userId;
-            toc.statusClass = {
+        var toc = this;
+        toc.playList = [];
+        toc.playListContent = [];
+        toc.loading = false;
+        toc.courseParams = sessionService.getSessionData('COURSE_PARAMS');
+        $scope.contentList = [];
+        toc.contentList = [];
+        toc.showNoteInLecture = true;
+        toc.enrollErrorMessage = '';
+        toc.fancyTree = [];
+        toc.treeKey = 0;
+        toc.uid = $rootScope.userId;
+        toc.statusClass = {
                 0: 'grey',
                 1: 'blue',
                 2: 'green'
             };
-            toc.enrollUserToCourse = function (courseId) {
+        toc.enrollUserToCourse = function (courseId) {
                 var req = {
                     request: {
                         courseId: courseId,
@@ -73,20 +73,20 @@ angular.module('playerApp')
                 }
             };
 
-            toc.scrollToPlayer = function () {
+        toc.scrollToPlayer = function () {
                 $location.hash(toc.hashId);
                 $timeout(function () {
                     $anchorScroll();
                 }, 500);
             };
-            toc.showError = function (message) {
+        toc.showError = function (message) {
                 toc.loader.showLoader = false;
                 toc.error.showError = true;
                 toc.error.message = message;
             };
 
     // $scope.contentPlayer.contentData=};
-            toc.getCourseToc = function () {
+        toc.getCourseToc = function () {
                 toc.loader = toasterService.loader(''
            , $rootScope.errorMessages.Courses.TOC.START);
                 courseService.courseHierarchy(toc.courseId).then(function (res) {
@@ -123,7 +123,7 @@ angular.module('playerApp')
                     toasterService.error($rootScope.errorMessages.Courses.TOC.ERROR);
                 });
             };
-            toc.getContentState = function () {
+        toc.getContentState = function () {
                 var req = {
                     request: {
                         userId: toc.uid,
@@ -179,7 +179,7 @@ angular.module('playerApp')
                     });
                 });
             };
-            toc.expandMe = function (index, item) {
+        toc.expandMe = function (index, item) {
                 if (item && item.mimeType
             && item.mimeType !== 'application/vnd.ekstep.content-collection') {
                     toc.itemIndex = toc.playList.indexOf(item.identifier);
@@ -191,14 +191,14 @@ angular.module('playerApp')
                     toc.updateIcon(accIcon, !$(accIcon).hasClass('plus'));
                 }
             };
-            toc.updateIcon = function (icon, isPlus) {
+        toc.updateIcon = function (icon, isPlus) {
                 if (isPlus) {
                     $(icon).addClass('plus').removeClass('minus');
                 } else {
                     $(icon).addClass('minus').removeClass('plus');
                 }
             };
-            toc.checkAndAddToPlaylist = function (item) {
+        toc.checkAndAddToPlaylist = function (item) {
                 if (item.mimeType !== 'application/vnd.ekstep.content-collection'
              && toc.playList.indexOf(item.identifier) === -1) {
                     toc.playList.push(item.identifier);
@@ -206,7 +206,7 @@ angular.module('playerApp')
                 }
             };
 
-            toc.playPlaylistContent = function (contentId, trigger) {
+        toc.playPlaylistContent = function (contentId, trigger) {
                 var curItemIndex = toc.playList.indexOf(contentId);
                 toc.playItemIndex = curItemIndex;
                 if (trigger === 'prev') {
@@ -234,12 +234,12 @@ angular.module('playerApp')
                 toc.updateBreadCrumbs();
             };
 
-            toc.getAllChildrenCount = function (index) {
+        toc.getAllChildrenCount = function (index) {
                 var childCount = toc.getChildNodeCount(
              toc.courseHierachy.children[index], 0);
                 return childCount;
             };
-            toc.getChildNodeCount = function (obj, cnt) {
+        toc.getChildNodeCount = function (obj, cnt) {
                 if (obj.children === undefined || obj.children.length === 0) {
                     return cnt;
                 }
@@ -251,7 +251,7 @@ angular.module('playerApp')
 
                 return cnt;
             };
-            toc.getAllContentsFromCourse = function (contentData) {
+        toc.getAllContentsFromCourse = function (contentData) {
                 if (contentData.mimeType !==
              'application/vnd.ekstep.content-collection') {
                     toc.playList.push(contentData.identifier);
@@ -264,7 +264,7 @@ angular.module('playerApp')
                 return toc.playList;
             };
 
-            toc.getTreeData = function (contentData, parent) {
+        toc.getTreeData = function (contentData, parent) {
                 if (contentData.mimeType
             !== 'application/vnd.ekstep.content-collection') {
                     parent.push({
@@ -300,7 +300,7 @@ angular.module('playerApp')
                 return toc.fancyTree;
             };
 
-            toc.getContentClass = function (contentId) {
+        toc.getContentClass = function (contentId) {
                 var statusClass = {
                     0: 'grey',
                     1: 'blue',
@@ -312,7 +312,7 @@ angular.module('playerApp')
                 return 0;
             };
 
-            toc.getContentIcon = function (contentMimeType) {
+        toc.getContentIcon = function (contentMimeType) {
                 var contentIcons = {
                     'application/pdf': 'large file pdf outline icon',
                     'image/jpeg': 'large file image outline icon',
@@ -321,6 +321,7 @@ angular.module('playerApp')
                     'video/mp4': 'large file video outline icon',
                     'video/ogg': 'large file video outline icon',
                     'video/youtube': 'large youtube square icon',
+                    'video/x-youtube': 'large youtube square icon',
                     'application/vnd.ekstep.html-archive': 'large html5 icon',
                     'application/vnd.ekstep.ecml-archive': 'large file'
                + ' archive outline icon',
@@ -330,7 +331,7 @@ angular.module('playerApp')
                 };
                 return contentIcons[contentMimeType];
             };
-            toc.applyAccordion = function () {
+        toc.applyAccordion = function () {
                 $timeout(function () {
                     $('.ui.accordion').accordion({
                         exclusive: false
@@ -346,14 +347,14 @@ angular.module('playerApp')
                     $('#tocProgress').progress({ percent: progPercent });
                 }, 100);
             };
-            toc.constructTree = function (pos, tocData) {
+        toc.constructTree = function (pos, tocData) {
                 toc.fancyTree = [];
                 angular.forEach(tocData, function (item, child) {
                     toc.getTreeData(item, toc.fancyTree);
                 });
                 toc.initializeFancyTree('#FT_' + pos, toc.fancyTree);
             };
-            toc.initializeFancyTree = function (id, src) {
+        toc.initializeFancyTree = function (id, src) {
                 $timeout(function () {
                     $(id).fancytree({
                         checkbox: false,
@@ -374,7 +375,7 @@ angular.module('playerApp')
                 }, 0);
             };
 
-            toc.fetchObjectAttributeAsArrayOrObject
+        toc.fetchObjectAttributeAsArrayOrObject
        = function (objArray, objKey, valueKey, isKeyBasedObj) {
            var attributeArr = (isKeyBasedObj === true) ? {} : [];
            for (var obj in objArray) {
@@ -389,7 +390,7 @@ angular.module('playerApp')
            }
            return attributeArr;
        };
-            $scope.$watch('contentPlayer.isContentPlayerEnabled'
+        $scope.$watch('contentPlayer.isContentPlayerEnabled'
        , function (newValue, oldValue) {
            $('.toc-resume-button').addClass('contentVisibility-hidden');
            if (oldValue === true && newValue === false) {
@@ -426,7 +427,7 @@ angular.module('playerApp')
     // this logic is for breadcrumbs in this page only.
     // dont use for other pages breadcrumbs
     // instead use state route breadcrumbs logic
-            toc.updateBreadCrumbs = function () {
+        toc.updateBreadCrumbs = function () {
                 $rootScope.breadCrumbsData = [
              { name: 'Home', link: 'home' },
              { name: 'Courses', link: 'learn' },
@@ -448,7 +449,7 @@ angular.module('playerApp')
                 }
             };
 
-            toc.init = function () {
+        toc.init = function () {
                 toc.lectureView = toc.courseParams.lectureView;
                 toc.courseId = toc.courseParams.courseId;
                 toc.courseType = ($rootScope.enrolledCourseIds[toc.courseId])
@@ -484,7 +485,7 @@ angular.module('playerApp')
                 toc.showBatchCardList();
             };
 
-            toc.loadData = function () {
+        toc.loadData = function () {
                 if (toc.courseParams.courseId !== $stateParams.courseId) {
         // if both courseIds are different call
         // to get course by id API and update data
