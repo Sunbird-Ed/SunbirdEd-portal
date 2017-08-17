@@ -35,7 +35,7 @@
                                 <label>Invite-only</label>
                             </div>
                         </div>
-                        <div class="field" ng-hide="batchUpdate.coursecreatedby == batchUpdate.userId">
+                        <div class="field" ng-show="batchUpdate.coursecreatedby == batchUpdate.userId">
                             <div class="ui radio checkbox">
                                 <input type="radio" name="enrollmentType" value='open' ng-model="batchUpdate.batchData.enrollmentType" required>
                                 <label>Open</label>
