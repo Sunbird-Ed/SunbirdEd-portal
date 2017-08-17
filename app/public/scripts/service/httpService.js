@@ -47,4 +47,9 @@ angular.module('loginApp')
             var request = httpCall(url, data, 'POST', headers);
             return (request.then(handleSuccess, handleError));
         };
+
+        this.get = function (url, data, headers) {
+            var request = httpCall(url, data, 'GET', headers);
+            return (request.then(handleSuccess, handleError));
+        };
     });
