@@ -8,17 +8,15 @@
  * Service in the playerApp.
  */
 angular.module('loginApp')
-    .service('httpService', function ($http) {
+    .service('httpService', function ($http, $filter, uuid4) {
         function getHeader() {
             var headers = {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
                 'X-Consumer-ID': 'X-Consumer-ID',
                 'X-Device-ID': 'X-Device-ID',
-                'X-msgid': '8e27cbf5-e299-43b0-bca7-8347f7e5abcf',
-                ts: '2017-05-25 10:18:56:578+0530',
-                'X-Authenticated-Userid': '',
-                authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkMTc1MDIwNDdlODc0ODZjOTM0ZDQ1ODdlYTQ4MmM3MyJ9.7LWocwCn5rrCScFQYOne8_Op2EOo-xTCK5JCFarHKSs'
+                'X-msgid': uuid4.generate(),
+                ts: $filter('date')(new Date(), 'yyyy-MM-dd HH:mm:ss:sssZ')
 
             };
         headers.Accept = 'text/html,application/xhtml+xml,application/xml,application/json;q=0.9,image/webp,*/*;q=0.8';// eslint-disable-line
