@@ -37,6 +37,7 @@ angular.module('playerApp')
             dashboardData.labels = [];
             dashboardData.numericStatArray = [];
             dashboardData.data = [];
+            dashboardData.secondChart = false;
 
             if (apiResponse && apiResponse.responseCode === 'OK') {
               if (dashboardData.datasetPreviousValue == 'creation') {
@@ -128,21 +129,38 @@ angular.module('playerApp')
                 });
 
                 angular.forEach(apiResponse.result.series, function(bucketData, key) {
-                  if (key === 'org.consumption.content.time_spent.sum') {
-                    var draftArray = new Array();
+
+                  if (key === 'org.consumption.content.users.count' && bucketData.group_id === 'users.count') {
+                    var draftArray = [];
                     angular.forEach(bucketData.buckets, function(bucketValue, bucketKey) {
                       draftArray.push(bucketValue.value);
                       dashboardData.labels.push(bucketValue.key_name);
                     })
                     dashboardData.data.push(draftArray);
+                    dashboardData.series = ['Number of users by day'];
+                    dashboardData.options = dashboardService.getChartOptions('Number of users by day');
+                    dashboardData.colors = dashboardService.getChartColors(dashboardData.datasetPreviousValue);
+                  }
+
+                  if (key === 'org.consumption.content.time_spent.sum' && bucketData.group_id === 'timespent.sum') {
+                    var dataArray = [];
+                    dashboardData.series1 = [];
+                    dashboardData.labels1 = [];
+                    dashboardData.data1 = [];
+
+                    angular.forEach(bucketData.buckets, function(bucketValue, bucketKey) {
+                      dataArray.push(bucketValue.value);
+                      dashboardData.labels1.push(bucketValue.key_name);
+                    })
+                    dashboardData.data1.push(dataArray);
+                    dashboardData.series1 = ['Time spent by day'];
+                    dashboardData.options1 = dashboardService.getChartOptions('Time spent per day (' + bucketData.time_unit + ')');
+                    dashboardData.colors1 = dashboardService.getChartColors(dashboardData.datasetPreviousValue);
+                    dashboardData.secondChart = true;
                   }
                 });
-
-                dashboardData.series = ['Time spent by day'];
-                dashboardData.options = dashboardService.getChartOptions('Time spent per day');
-
-                dashboardData.colors = dashboardService.getChartColors(dashboardData.datasetPreviousValue);
               }
+              dashboardData.orgName = apiResponse.result.org.orgName;
               dashboardData.showDataDiv = true;
             } else {
               toasterService.error(apiResponse.params.errmsg);
