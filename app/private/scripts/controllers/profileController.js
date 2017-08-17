@@ -13,7 +13,7 @@ angular.module('playerApp')// add those all values
         '$timeout', '$filter', 'uuid4', 'formValidation', 'searchService', '$state', 'learnService',
         function ($scope, $rootScope, contentService, userService, toasterService, config,
             $timeout, $filter, uuid4, formValidation, searchService, $state, learnService) {
-            console.log('enrolled courses', $rootScope.enrolledCourseIds)
+            console.log('enrolled courses', $rootScope.enrolledCourseIds);
             var profile = this;
             var apiMessages = $rootScope.errorMessages.PROFILE.API;
             profile.userId = $rootScope.userId;
@@ -23,6 +23,7 @@ angular.module('playerApp')// add those all values
             profile.profileSummary = '';
             profile.languages = config.DROPDOWN.COMMON.languages;
             profile.subjects = config.DROPDOWN.COMMON.subjects;
+            profile.grades = config.DROPDOWN.COMMON.grades;
             profile.isError = false;
             profile.contentSortBy = 'desc';
             profile.quantityOfContent = 4;
@@ -184,7 +185,10 @@ angular.module('playerApp')// add those all values
                         aadhaarNo: profile.basicProfile.aadhaarNo,
                         language: [profile.basicProfile.language],
                         profileSummary: profile.profileSummary,
-                        subjects: profile.basicProfile.subjects
+                        subject: profile.basicProfile.subject,
+                        grade: profile.basicProfile.grade,
+                        location: profile.basicProfile.location
+
                     };
                     profile.updateProfile(updateReq);
                 } else return false;
@@ -438,9 +442,16 @@ angular.module('playerApp')// add those all values
                                     title: course.courseName
                                 });
                             }
-                        })
+                        });
                     }
                 });
             };
             profile.getbadges();
+            profile.setSelectedGrades = function () {
+                $timeout(function () {
+                    $('#selectGrades').dropdown();
+                    $('#selectGrades').dropdown('refresh');
+                    $('#selectGrades').dropdown('set selected', profile.basicProfile.grade);
+                }, 100);
+            };
         }]);
