@@ -3,7 +3,7 @@
   <div class="ten wide column">
     <div class="ui grid">
       <div class="five wide column">
-        <span class="dashBoardSectionHeading"><i class="bar chart icon"></i> &nbsp;  Organisation Admin Dashboard</span></div>
+        <span class="dashBoardSectionHeading"><i class="bar chart icon"></i> &nbsp;  {{dashboardData.orgName}} Dashboard</span></div>
       <div class="right floated four wide column"></div>
       <div class="right floated three wide column padding-right-dropdown">
         <div class="ui dropdown float-ContentRight" id="dropdownMenu">
@@ -19,14 +19,13 @@
   </div>
   <div class="one wide column"></div>
 </div>
-
-<div id="orgCreationDiv" class="margin-top-30">
+<div id="orgCreationDiv" class="margin-top-40">
   <div class="resource-padding ui grid">
     <div class="one wide column"></div>
     <div class="ten wide column">
-      <div class="ui grid column margin-bottom-10">
-        <span class="dashBoardMenuItem cursor-pointer" ng-click="dashboardData.onAfterFilterChange('14d')" id="14d" ng-class="{'active' : dashboardData.timePeriod === '14d'}">LAST 14 DAYS</span>
+      <div class="ui grid column margin-bottom-20">
         <span class="dashBoardMenuItem cursor-pointer" ng-click="dashboardData.onAfterFilterChange('7d')" ng-class="{'active' : dashboardData.timePeriod === '7d'}">LAST 7 DAYS</span>
+        <span class="dashBoardMenuItem cursor-pointer" ng-click="dashboardData.onAfterFilterChange('14d')" id="14d" ng-class="{'active' : dashboardData.timePeriod === '14d'}">LAST 14 DAYS</span>
         <span class="dashBoardMenuItem cursor-pointer" ng-click="dashboardData.onAfterFilterChange('5w')" id="5w" ng-class="{'active' : dashboardData.timePeriod === '5w'}">LAST 5 WEEKS</span>
       </div>
       <div class="tweleve wide column" ng-if="dashboardData.showLoader">
@@ -41,9 +40,15 @@
         </div>
       </div>
       <div class="ui one column grid" ng-show="dashboardData.showDataDiv">
-        <div class="column">
-          <canvas height="{{dashboardData.height}}" id="bar" class="chart chart-line adminCanvasPadding adminCanvasBorder" chart-data="dashboardData.data" chart-labels="dashboardData.labels" chart-series="dashboardData.series" chart-colors="dashboardData.colors" chart-options="dashboardData.options">
-          </canvas>
+        <div class="regular slider padding-top-30">
+          <div>
+            <canvas height="{{dashboardData.height}}" class="chart chart-line adminCanvasPadding adminCanvasBorder" chart-data="dashboardData.data" chart-labels="dashboardData.labels" chart-series="dashboardData.series" chart-colors="dashboardData.colors" chart-options="dashboardData.options">
+            </canvas>
+          </div>
+          <div ng-if="dashboardData.secondChart" class="padding-top-30">
+            <canvas height="{{dashboardData.height}}" class="chart chart-line adminCanvasPadding adminCanvasBorder" chart-data="dashboardData.data1" chart-labels="dashboardData.labels1" chart-series="dashboardData.series1" chart-colors="dashboardData.colors1" chart-options="dashboardData.options1">
+            </canvas>
+          </div>
         </div>
       </div>
     </div>
