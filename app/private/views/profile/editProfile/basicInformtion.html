@@ -43,15 +43,26 @@
         </div>
 
     </div>
-
+<div class="two fields">
     <div class="field">
         <label>{{$root.labels.PROFILE.BASIC_PROFILE.aadhar}}</label>
         <input type="text" name="aadhar" ng-model="profileCtrl.basicProfile.aadhaarNo">
     </div>
+     <div class="field">
+        <label>{{$root.labels.PROFILE.BASIC_PROFILE.currentLocation}}</label>
+        <input type="text" name="location" ng-model="profileCtrl.basicProfile.location">
+    </div>
+</div>
+  <div class=" field" ng-init=" profileCtrl.setSelectedGrades()">
+        <label>{{$root.labels.PROFILE.BASIC_PROFILE.grades}}</label>
+        <select name="grades" multiple=""  id=selectGrades class="ui fluid dropdown" ng-value="option.value" ng-options=" language for language in profileCtrl.grades" ng-model="profileCtrl.basicProfile.grade">
+             <option value="" >{{$root.labels.PROFILE.BASIC_PROFILE.grades}}</option>
+            </select>
+    </div>
     <div class="required field" ng-init=" profileCtrl.setDropdownValue()">
         <label>{{$root.labels.PROFILE.BASIC_PROFILE.language}}</label>
-        <select name="language" id=languageSelect class="ui fluid dropdown" ng-value="option.value" ng-options=" language for language in ::profileCtrl.languages" ng-model="profileCtrl.basicProfile.language">
-             <option value="" translate="languages">Languages</option>
+        <select name="language" id=languageSelect class="ui fluid dropdown" ng-value="option.value" ng-options=" language for language in profileCtrl.languages" ng-model="profileCtrl.basicProfile.language">
+             <option value="" translate="languages">{{$root.labels.PROFILE.BASIC_PROFILE.language}}</option>
             </select>
     </div>
 
@@ -59,7 +70,7 @@
     <div class="field">
         <label>{{$root.labels.PROFILE.BASIC_PROFILE.subjects}}</label>
         <div class="field" ng-init=" profileCtrl.setSubject()">
-            <select id="setSubjects" class="ui fluid dropdown " multiple="" ng-model="profileCtrl.basicProfile.subject" ng-value="option.value" ng-options=" subject for subject in ::profileCtrl.subjects">
+            <select id="setSubjects" class="ui fluid dropdown " multiple="" ng-model="profileCtrl.basicProfile.subject" ng-value="option.value" ng-options=" subject for subject in profileCtrl.subjects">
                                            </select>
         </div>
     </div>

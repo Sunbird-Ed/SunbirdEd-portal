@@ -184,7 +184,9 @@
                 "subjects": "Subjects",
                 "summary": "Summary",
                 "contributions": "Contributions",
-                "contents": "Contents"
+                "contents": "Contents",
+                "currentLocation":"Current Location",
+                "grades":"Grades"
             },
             "BUTTON": {
                 "save": "Save",
