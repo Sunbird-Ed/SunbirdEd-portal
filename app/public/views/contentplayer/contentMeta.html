@@ -82,16 +82,6 @@
                 </div>
             </div>
         </div>
-        <div class="three wide column" ng-if="$root.concepts && contentData.concepts">
-            <div class="ui list">
-                <div class="item">
-                    <div class="content">
-                        <div class="header">{{$root.labels.WORKSPACE.common.concept}}</div>
-                        <div class="description padding-top-1rem">{{getConceptsNames(contentData.concepts)}}</div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 <div class="ui grid">
@@ -105,10 +95,6 @@
             </div>
             <div class="row">
                 <content-flag contentid="contentData.identifier" contentname="contentData.name" versionkey="contentData.versionKey" redirect="closeurl"></content-flag>
-            </div>
-            <div class="ui divider"></div>
-            <div class="row">
-                <content-share type=" 'content' " id="contentData.identifier"></content-share>
             </div>
         </div>
     </div>
