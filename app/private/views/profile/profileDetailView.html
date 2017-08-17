@@ -1,0 +1,111 @@
+<div class="ui grid">
+  <div class="one wide column"></div>
+  <div class="ten wide column">
+    <div class="ui grid">
+      <div class="twelve wide column">
+        <div class="margin-top-20 ui raised segment" ng-init="profileCtrl.openDiscriptionEdit=false">
+          <div class="header announcementCard-header">
+            <span class="header cardsHeading ng-binding"> Description </span>
+          </div>
+          <div class="description">
+            <p ng-if="!profileCtrl.readMore">
+              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+              <span class="ui cardsKnowMore mouse-pointer"> ... Read More</span>
+            </p>
+            <p ng-if="profileCtrl.readMore"> {{profileCtrl.user.profileSummary}}&nbsp;
+              <span class="ui cardsKnowMore mouse-pointer" ng-click="profileCtrl.readMore = false;">Read Less ...</span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="twelve wide column">
+        <div class="ui raised segment">
+          <div class="header announcementCard-header">
+            <span class="header cardsHeading">{{$root.labels.PROFILE.ADDRESS.header}} </span>
+          </div>
+          <div class="profileitems ui relaxed divided items">
+            <div class="item">
+              <img class="ui avatar image" src="/images/location.png">
+              <div class="content">
+                <p class=" header">Address Header</p>
+                <div class="description"> Address Description1<span> , </span>Address Description2
+                  <p>City<span> , </span>State
+                    <span>, </span>Country
+                    <span>, </span>Zipcode</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="twelve wide column">
+        <div class="ui raised segment ">
+          <div class="header announcementCard-header ">
+            <span class="header cardsHeading "> Basic Profile</span>
+          </div>
+          <div class="profileitems ui relaxed aligned list ">
+            <div class="item ">
+              <div class="right floated content ">
+                <span translate="edit ">abc@gmail.com</span>
+              </div>
+              <div class="iniformationcontent content ">
+                Email
+              </div>
+            </div>
+            <div class="item ">
+              <div class="right floated content ">
+                <span translate="edit ">8877828993</span>
+              </div>
+              <div class="iniformationcontent content ">
+                Phone No
+              </div>
+            </div>
+            <div class="item ">
+              <div class="right floated content ">
+                <span translate="edit ">Male</span>
+              </div>
+              <div class="iniformationcontent content ">
+                Gender
+              </div>
+            </div>
+            <div class="item ">
+              <div class="right floated content ">
+                <span translate="edit ">1233445556</span>
+              </div>
+              <div class="iniformationcontent content ">
+                Aadhar No
+              </div>
+            </div>
+            <div class="item ">
+              <div class="right floated content ">
+                <span translate="edit ">12/09/90</span>
+              </div>
+              <div class="iniformationcontent content ">
+               DOB
+              </div>
+            </div>
+            <div class="item ">
+              <div class="right floated content ">
+                <span translate="edit "><span>Hindi,English</span>
+                </span>
+              </div>
+              <div class="iniformationcontent content ">
+                Language
+              </div>
+            </div>
+            <div class="item ">
+              <div class="right floated content ">
+                <span><span>Hindi<span>,English</span></span>
+                </span>
+              </div>
+              <div class="iniformationcontent content ">
+                Subject
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="one wide column"></div>
+</div>
