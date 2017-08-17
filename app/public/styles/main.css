@@ -581,6 +581,10 @@ th {
   overflow-x: auto;
   max-width: 100%;
 }
+.badgesImage.ui.mini.image {
+  width: 16px !important;
+  height: 16px !important;
+}
 .header-container {
   margin-left: 1px !important;
   border-bottom: 5px solid #007AFF !important;
@@ -1747,14 +1751,22 @@ ul.fancytree-container li {
 }
 .profileViewSubHeader {
   color: #979797 !important;
-  font-size: 1.2em ;
+  font-size: 1.2em;
 }
 .profileViewProgress {
   color: #979797 !important;
-  font-size: 1em ;
+  font-size: 1em;
 }
 .searchListInfo {
   border-bottom: 1px solid rgba(34, 36, 38, 0.15) !important;
+}
+.badgesItem.ui.items > .item > .image + .content {
+  padding-left: 0.8em !important;
+}
+.badgesItem.ui.items > .item > .image + .content p {
+  font-size: 1.05em!important;
+  line-height: 16px!important;
+  color: #333333 !important;
 }
 .workspaceicon.ui.header > .icon {
   padding-top: 0;
