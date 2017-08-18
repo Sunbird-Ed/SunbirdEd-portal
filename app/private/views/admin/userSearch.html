@@ -3,7 +3,7 @@
         <div class="ui tiny image userSearchImage " >
           <img ng-src="{{user.avatar|| 'images/user_logo.png'}} ">
         </div>
-        <div class="content ">
+        <div class="content " ng-click="user.status===1 && admin.openPublicProfile(user.identifier,user)">
           <a class="header ">{{user.firstName}} &nbsp;{{user.lastName}}</a>
             <a ng-if="user.status===1 && user.isEditableProfile " sb-permissions permission-only="SYSTEM_ADMINISTRATION,ORG_ADMIN" class="float-ContentRight">
              <!-- update user roles -->

@@ -498,12 +498,17 @@
         "COMMON_ROLES_CHECK": ["CONTENT_CREATOR", "CONTENT_REVIEW", "CONTENT_CREATION", "CONTENT_REVIEWER"],
         "CreateLessonMimeType": "application/vnd.ekstep.ecml-archive",
         "CreateCollectionMimeType": "application/vnd.ekstep.content-collection",
-        "MimeTypeExceptCollection": ["application/pdf", "video/mp4",
-            "application/vnd.ekstep.html-archive", "video/youtube", "application/vnd.ekstep.ecml-archive"
+        "MimeTypeExceptCollection": ["application/pdf", "video/mp4", "video/x-youtube",
+            "application/vnd.ekstep.html-archive", "video/youtube", "application/vnd.ekstep.ecml-archive",
+            "application/epub", "application/vnd.ekstep.h5p-archive"
         ],
         "MaxFileSizeToUpload": 25600000,
         "FileExtensionToUpload": "application/pdf, video/mp4, application/zip, video/webm",
-        "AllowedFileExtension": ["mp4", "pdf", "zip"],
+        "AllowedFileExtension": ["mp4", "pdf", "zip", "epub", "h5p"],
+        "USER_ROLES": ["ORG_ADMIN", "ORG_MEMBER", "CONTENT_REVIEW", "CONTENT_CURATION", "CONTENT_REVIEWER",
+            "CONTENT_CREATION", "CONTENT_CREATOR", "ORG_MODERATOR", "MEMBERSHIP_MANAGEMENT",
+            "ORG_MANAGEMENT", "SYSTEM_ADMINISTRATION", "ADMIN", "SYSTEM_ADMIN"
+        ],
         "searchTypeKeys": ["Courses", "Resources", "Users", "Organisations"],
         "sortingOptions": [
             { "field": "lastUpdatedOn", "name": "Updated On" },
@@ -516,6 +521,16 @@
             { "id": "Organisations", "name": "Organisations" },
             { "id": "Users", "name": "Users" }
         ],
-        "contributeContentType": ["Collection", "Story", "Worksheet", "TextBook", "Course", "LessonPlan"]
+        "contributeContentType": ["Collection", "Story", "Worksheet", "TextBook", "Course", "LessonPlan"],
+        "MIME_TYPE": {
+            "pdf": "application/pdf",
+            "mp4": "video/mp4",
+            "youtube": "video/x-youtube",
+            "pYoutube": "video/youtube",
+            "html": "application/vnd.ekstep.html-archive",
+            "ecml": "application/vnd.ekstep.ecml-archive",
+            "ePub": "application/epub",
+            "h5p": "application/vnd.ekstep.h5p-archive"
+        }
     }
 }
