@@ -13,7 +13,10 @@ module.exports = {
       headers: module.exports.getHeaders(),
       body: {
         request: {
-          filters: { objectType: ['org'] },
+          filters: { 
+            objectType: ['org'],
+            isRootOrg: true
+          },
           sort_by: { updatedDate: 'asc' }
         }
       },
