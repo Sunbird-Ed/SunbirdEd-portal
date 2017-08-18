@@ -16,6 +16,7 @@ const express = require('express'),
   permissionsHelper = require('./helpers/permissionsHelper.js'),
   tenantHelper = require('./helpers/tenantHelper.js'),
   envHelper = require('./helpers/environmentVariablesHelper.js'),
+  publicServicehelper = require('./helpers/publicServicehelper.js'),
   fs = require('fs'),
   port = envHelper.PORTAL_PORT,
   learnerURL = envHelper.LEARNER_URL,
@@ -105,6 +106,7 @@ app.get('/private/service/get/tenant/logo', function(req, res) {
   res.end();
 });
 
+app.get('/api/public/service/orgs', publicServicehelper.getOrgs)
 app.all('/content-editor/telemetry', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: reqDataLimitOfContentEditor }), keycloak.protect(), telemetryHelper.logSessionEvents);
 
