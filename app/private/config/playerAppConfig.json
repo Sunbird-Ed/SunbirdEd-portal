@@ -48,7 +48,8 @@
                 "REJECT": "content/v1/reject",
                 "FLAG": "content/v1/flag",
                 "ACCEPT_FLAG": "content/v1/flag/accept",
-                "DISCARD_FLAG": "content/v1/flag/reject"
+                "DISCARD_FLAG": "content/v1/flag/reject",
+                "UPLOAD_URL": "content/v1/upload/url/read"
             },
             "NOTES": {
                 "SEARCH": "notes/v1/search",
