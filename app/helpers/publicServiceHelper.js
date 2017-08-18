@@ -14,14 +14,18 @@ module.exports = {
       body: {
         request: {
           filters: { objectType: ['org'] },
-          sort_by: { updatedDate: 'asc' }
+          sort_by: { udatedDate: 'asc' }
         }
       },
       json: true
     };
     request(options, function(error, response, body) {
-      if (body.responseCode === 'OK') {
+      if (body  && body.responseCode === 'OK') {
         body.result.response.content = _.map(body.result.response.content, _.partial(_.pick, _, ['orgName', 'contactDetails']));
+      } else{
+        if (response && response.statusCode) {
+          res.status(response.statusCode)
+        }
       }
       res.send(body);
       res.end();
