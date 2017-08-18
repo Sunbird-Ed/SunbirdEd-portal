@@ -11,8 +11,8 @@
 angular.module('playerApp')
     .controller('BatchController', ['$rootScope', '$timeout', '$state','$scope', '$stateParams', 
     'batchService', '$filter', 'permissionsService', 'errorMessages', 'toasterService', 'courseService',
-    'learnService', function($rootScope, $timeout, $state, $scope, $stateParams, batchService, $filter, 
-    permissionsService, errorMessages, toasterService, courseService, learnService) {
+    'learnService','$window', function($rootScope, $timeout, $state, $scope, $stateParams, batchService, $filter, 
+    permissionsService, errorMessages, toasterService, courseService, learnService,$window) {
             var batch = this;
             batch.userList = [];
             batch.menterList = [];
@@ -296,7 +296,11 @@ angular.module('playerApp')
                 courseService.enrollUserToCourse(req).then(function (response) {
                     if (response && response.responseCode === 'OK') {
                         batch.showEnroll = false;
-                        toasterService.error(errorMessages.BATCH.ENROLLED.SUCCESS);
+                        toasterService.success(errorMessages.BATCH.ENROLLED.SUCCESS);
+                        $timeout(function(){
+                          $window.location.reload();  
+                        },2000);
+                        
                     }else{
                         toasterService.error(errorMessages.Courses.ENROLL.ERROR);
                     }
