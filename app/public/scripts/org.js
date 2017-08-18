@@ -36,15 +36,19 @@ var openModal = function () {
 };
 
 var emptyTable = function (table) {
-    table.getElementsByTagName('tbody')[0].innerHTML = '';
+    table.getElementsByTagName('tbody')[0].innerHTML = '<tr><td col-span="3">Loading...</td></tr>';
 }
 var loadData = function () {
     var table = document.getElementById('orgList');
+    var error = document.createElement('p');
+    error.textContent = 'Unable to Load Organizations';
+    error.style.color = 'red';
     emptyTable(table);
     var client = new HttpClient();
     client.get('/api/public/service/orgs', function (res) {
         res = JSON.parse(res);
         if (res && res.responseCode == "OK") {
+            table.style.display = 'table';
             var data = res.result.response.content;
             var tblHtml = '';
             data.forEach(function (item, index) {
@@ -56,6 +60,9 @@ var loadData = function () {
                 }
             });
             table.getElementsByTagName('tbody')[0].innerHTML = tblHtml;
+        } else {
+            table.style.display = 'none';
+            insertAfter(error, table)
         }
     });
 }
@@ -69,7 +76,7 @@ var HttpClient = function () {
     this.get = function (aUrl, aCallback) {
         var anHttpRequest = new XMLHttpRequest();
         anHttpRequest.onreadystatechange = function () {
-            if (anHttpRequest.readyState == 4 && anHttpRequest.status == 200)
+            if (anHttpRequest.readyState == 4)
                 aCallback(anHttpRequest.responseText);
         }
 
@@ -78,3 +85,6 @@ var HttpClient = function () {
     }
 }
 
+function insertAfter(newNode, referenceNode) {
+    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+}
