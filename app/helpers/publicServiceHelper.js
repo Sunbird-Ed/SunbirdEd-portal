@@ -14,7 +14,7 @@ module.exports = {
       body: {
         request: {
           filters: { objectType: ['org'] },
-          sort_by: { udatedDate: 'asc' }
+          sort_by: { updatedDate: 'asc' }
         }
       },
       json: true
