@@ -19,8 +19,10 @@ angular.module('playerApp')
         'contentService',
         'toasterService',
         'permissionsService',
+        'searchService',
         function (adminService, $timeout, $state, config, $rootScope, $scope,
-            contentService, toasterService, permissionsService) {
+            contentService, toasterService, permissionsService, searchService
+        ) {
             var admin = this;
             admin.searchResult = $scope.users;
             admin.bulkUsers = {};
@@ -43,7 +45,16 @@ angular.module('playerApp')
                 provider: 'provider',
                 phoneVerified: 'phoneVerified',
                 emailVerified: 'emailVerified',
-                roles: 'roles'
+                roles: 'roles',
+                position: 'position',
+                grade: 'grade',
+                location: 'location',
+                dob: 'dob',
+                aadhaarNo: 'aadhaarNo',
+                gender: 'gender',
+                language: 'language',
+                profileSummary: 'profileSummary',
+                subject: 'subject'
             }
             ];
 
@@ -201,9 +212,10 @@ angular.module('playerApp')
                     });
                     var nullReplacedToEmpty = JSON.stringify(list).replace(/null/g, '""');
                     var users = JSON.parse(nullReplacedToEmpty);
-                    alasql('SELECT firstName AS firstName,lastName AS lastName,phone AS phone,'
-                    + 'email AS email,organisationsName AS Organisations,userName AS userName '
-                    + 'INTO CSV(\'Users.csv\',{headers:true},{separator:","}) FROM ?'
+                    alasql('SELECT firstName AS firstName,lastName AS lastName, '
+                    + ' organisationsName AS Organisations ,location AS Location, grade AS Grades, '
+                    + 'language AS Language ,subject as Subjects '
+                    + ' INTO CSV(\'Users.csv\',{headers:true ,separator:","}) FROM ?'
                     , [users]);
                 } else if (key === 'Organisations') {
                     list.forEach(function (org) {
@@ -219,7 +231,7 @@ angular.module('playerApp')
                     var organizations = JSON.parse(orgNullReplacedToEmpty);
                     alasql('SELECT orgName AS orgName,orgType AS orgType,'
                     + 'noOfMembers AS noOfMembers,channel AS channel, '
-                    + 'status AS Status INTO CSV(\'Organizations.csv\',{headers:true}) FROM ?'
+                    + 'status AS Status INTO CSV(\'Organizations.csv\',{headers:true,separator:","}) FROM ?'
                     , [organizations]);
                 }
             };
@@ -400,17 +412,21 @@ angular.module('playerApp')
             };
             admin.downloadSample = function (key) {
                 if (key === 'users') {
-                    alasql('SELECT * INTO CSV(\'Sample_Users.csv\', {headers: false}) FROM ?',
+                    alasql('SELECT * INTO CSV(\'Sample_Users.csv\', {headers: false,separator:","}) FROM ?',
                 [admin.sampleUserCSV]);
                 } else if (key === 'organizations') {
                     alasql(' SELECT *  INTO CSV(\'Sample_Organizations.csv\',' +
-                    ' {headers: false}) FROM ?',
+                    ' {headers: false,separator:","}) FROM ?',
                 [admin.sampleOrgCSV]);
                 }
             };
             admin.getUserRoles = function () {
                 admin.userRolesList = [];
                 admin.userRoles = permissionsService.allRoles();
+            };
+            admin.openPublicProfile = function (id, user) {
+                searchService.setPublicUserProfile(user);
+                $state.go('PublicProfile', { userId: window.btoa(id), userName: user.firstName });
             };
             admin.getUserRoles();
         }]);

@@ -17,35 +17,8 @@
                     </div>
                     <div class="ui stackable twelve column grid">
                         <div class="twelve wide column">
-                            <div class="content-player" ng-if="(previewContent.contentData.mimeType === 'application/vnd.ekstep.ecml-archive' || previewContent.contentData.mimeType === 'application/vnd.ekstep.html-archive') && previewContent.showIFrameContent">
+                            <div class="content-player" ng-if="previewContent.showIFrameContent">
                                 <iframe id="contentViewerIframe" class="contentViewerIframeShadow" height='100%' width='100%'></iframe>
-                            </div>
-                            <div apply-script id="content-video-player-holder" class="content-player" videosrc="{{previewContent.contentData.artifactUrl}}" videotype="{{previewContent.contentData.mimeType}}" ng-if="previewContent.contentData.mimeType !== 'video/youtube' && previewContent.contentData.mimeType.indexOf('video') > -1">
-                                <video height='100%' width='100%' id="content-video-player" class="video-js vjs-default-skin player-video" controls preload="auto" data-setup='{"controls":true}'>
-                                    <source src="{{previewContent.contentData.artifactUrl}}" type='{{previewContent.contentData.mimeType}}' />
-
-                                </video>
-                            </div>
-                            <div class="content-player" ng-if="previewContent.contentData.mimeType === 'video/youtube'" apply-script id="content-video-player-youtube-holder" videosrc="{{previewContent.contentData.artifactUrl}}">
-
-                                <video height='100%' width='100%' id="content-video-player-youtube" class="video-js vjs-default-skin player-video" controls data-setup='{ "techOrder": ["youtube"], "sources": [{ "type": "video/youtube", "src": ""}] }'></video>
-                            </div>
-                            <div ng-if="previewContent.contentData.mimeType === 'application/pdf'" class="pdf-editor content-player">
-                                <div class="ui segment margin-auto pdf-toolbar-padding" ng-init="previewContent.getTotalPage();">
-                                    <span class="ui six wide column">
-
-                                        <i class="large arrow left icon link" ng-click="previewContent.previous()"></i>
-                                        <i class="large arrow right icon link" ng-click="previewContent.next()"></i>
-                                        <i class="large plus icon link" ng-click="previewContent.zoomIn()"></i>
-                                        <i class="large minus icon link" ng-click="previewContent.zoomOut()"></i>
-                                        <i class="large repeat icon link" ng-click="previewContent.rotate()"></i>
-                                    </span>
-                                    <span class="right-float">
-                                        {{$root.labels.WORKSPACE.previewContent.page}}
-                                        <input type="number" min="1" max="{{previewContent.totalPageNumber}}" ng-value="previewContent.getCurrentPage" ng-model="previewContent.inputPageNumber" class="ui input" ng-change="previewContent.goToPage(inputPageNumber)"> Of {{previewContent.totalPageNumber}}
-                                    </span>
-                                </div>
-                                <pdf-viewer delegate-handle="content-player" url="previewContent.contentData.artifactUrl" scale="1.5" show-toolbar="false"></pdf-viewer>
                             </div>
                             <div class="content-player" ng-if="previewContent.contentData.mimeType.indexOf('image') > -1">
                                 <img height='100%' width='100%' ng-src="{{previewContent.contentData.artifactUrl}}" />
