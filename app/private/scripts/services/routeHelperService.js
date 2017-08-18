@@ -9,7 +9,7 @@ angular.module('playerApp')
                     $stateParams = $stateParamsData;
                     var searchEnabledStates = ['Home', 'Courses', 'Resources', 'CourseNote',
                         'ContentNote', 'CourseContentNote', 'Toc', 'Player',
-                        'Search', 'TocPlayer', 'PreviewCollection', 'Profile'];
+                        'Search', 'TocPlayer', 'PreviewCollection', 'Profile', 'PublicProfile'];
                     var filterEnabledStates = ['Courses', 'Resources', 'Search'];
                     var searchKey = {
                         Home: 'All',
@@ -23,7 +23,8 @@ angular.module('playerApp')
                         Search: $stateParams ? $stateParams.type : 'All',
                         TocPlayer: 'Courses',
                         PreviewCollection: 'Resources',
-                        Profile: 'Users' };
+                        Profile: 'Users',
+                        PublicProfile: 'Users' };
                     if (searchEnabledStates.indexOf(stateName) >= 0) {
                         $rootScope.isSearchPage = true;
                         $rootScope.searchKey = searchKey[stateName];
@@ -242,6 +243,20 @@ angular.module('playerApp')
                             link: 'profile'
                         }, {
                             name: 'Organisation Admin Dashboard',
+                            link: ''
+                        }];
+
+                        break;
+                    case 'PublicProfile':
+
+                        $rootScope.breadCrumbsData = [{
+                            name: 'Home',
+                            link: 'home'
+                        }, {
+                            name: 'Profile',
+                            link: 'profile'
+                        }, {
+                            name: $stateParams.userName,
                             link: ''
                         }];
 
