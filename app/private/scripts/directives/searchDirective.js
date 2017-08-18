@@ -250,6 +250,7 @@ angular.module('playerApp').directive('search', function () {
                     $scope.search.searchFn = adminService.userSearch({ request: req });
                     $scope.search.resultType = 'users';
                 } else if ($rootScope.search.selectedSearchKey === 'Organisations') {
+                    req.filters = {};
                     req.filters.objectType = ['org'];
                     $scope.search.searchFn = adminService.orgSearch({ request: req });
                     $scope.search.resultType = 'organisations';
