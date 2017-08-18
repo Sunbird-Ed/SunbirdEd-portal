@@ -45,7 +45,16 @@ angular.module('playerApp')
                 provider: 'provider',
                 phoneVerified: 'phoneVerified',
                 emailVerified: 'emailVerified',
-                roles: 'roles'
+                roles: 'roles',
+                position: 'position',
+                grade: 'grade',
+                location: 'location',
+                dob: 'dob',
+                aadhaarNo: 'aadhaarNo',
+                gender: 'gender',
+                language: 'language',
+                profileSummary: 'profileSummary',
+                subject: 'subject'
             }
             ];
 
@@ -402,11 +411,11 @@ angular.module('playerApp')
             };
             admin.downloadSample = function (key) {
                 if (key === 'users') {
-                    alasql('SELECT * INTO CSV(\'Sample_Users.csv\', {headers: false}) FROM ?',
+                    alasql('SELECT * INTO CSV(\'Sample_Users.csv\', {headers: false,separator:","}) FROM ?',
                 [admin.sampleUserCSV]);
                 } else if (key === 'organizations') {
                     alasql(' SELECT *  INTO CSV(\'Sample_Organizations.csv\',' +
-                    ' {headers: false}) FROM ?',
+                    ' {headers: false,separator:","}) FROM ?',
                 [admin.sampleOrgCSV]);
                 }
             };
