@@ -60,7 +60,7 @@ angular.module('playerApp')
                                 responseJSON.success = true;
                                 var artifactUrl = xhr.responseURL.split('?')[0];
                                 contentCreation.manualUploader.cancel(id);
-                                contentCreation.updateContent(id, artifactUrl, contentCreation.contentId);
+                                contentCreation.uploadContent(id, artifactUrl, contentCreation.contentId);
                                 // contentCreation.editContent(contentCreation.contentId);
                             }
                         },
@@ -68,6 +68,7 @@ angular.module('playerApp')
                             contentCreation.youtubeVideoUrl = '';
                             contentCreation.uploadedFileId = id;
                             contentCreation.selectedFileName = name;
+                            contentCreation.selectedFile = this.getFile(id);
                             contentCreation.initializeModal();
                             document.getElementById('hide-section-with-button')
                                                     .style.display = 'none';
@@ -190,7 +191,7 @@ angular.module('playerApp')
                 contentCreation.createContent(requestData);
             };
 
-            contentCreation.uploadContent = function (endpoint) {
+            contentCreation.uploadContentInS3 = function (endpoint) {
                 contentCreation.manualUploader.setEndpoint(endpoint,
                                                                 contentCreation.uploadedFileId);
                 contentCreation.manualUploader.setParams({
@@ -228,7 +229,7 @@ angular.module('playerApp')
                 };
                 contentService.uploadURL(requestBody, contentId).then(function (res) {
                     if (res && res.responseCode === 'OK') {
-                        contentCreation.uploadContent(res.result.pre_signed_url);
+                        contentCreation.uploadContentInS3(res.result.pre_signed_url);
                     } else {
                         toasterService.error($rootScope.errorMessages
                                                                 .WORKSPACE.UPLOAD_CONTENT.FAILED);
@@ -240,26 +241,22 @@ angular.module('playerApp')
                 });
             };
 
-            contentCreation.updateContent = function (id, url, contentId) {
-                var requestBody = {
-                    content: {
-                        artifactUrl: url,
-                        versionKey: contentCreation.versionKey
-                    }
-                };
+            contentCreation.uploadContent = function (id, url, contentId) {
+                var requestBody = {};
                 contentCreation.loader = toasterService.loader('', $rootScope.errorMessages
-                                                                        .WORKSPACE.UPDATE.START);
-                contentService.update(requestBody, contentId).then(function (res) {
+                                                                        .WORKSPACE.UPLOAD_CONTENT.START);
+                var qs = { fileUrl: url };
+                contentService.upload(requestBody, contentId, qs).then(function (res) {
                     if (res && res.responseCode === 'OK') {
                         contentCreation.loader.showLoader = false;
                         contentCreation.editContent(contentCreation.contentId);
                     } else {
                         contentCreation.loader.showLoader = false;
-                        toasterService.error($rootScope.errorMessages.WORKSPACE.UPDATE.FAILED);
+                        toasterService.error($rootScope.errorMessages.WORKSPACE.UPLOAD_CONTENT.FAILED);
                     }
                 }).catch(function () {
                     contentCreation.loader.showLoader = false;
-                    toasterService.error($rootScope.errorMessages.WORKSPACE.UPDATE.FAILED);
+                    toasterService.error($rootScope.errorMessages.WORKSPACE.UPLOAD_CONTENT.FAILED);
                 });
             };
         }]);
