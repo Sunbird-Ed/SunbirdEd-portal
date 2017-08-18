@@ -11,9 +11,9 @@
 
 angular.module('playerApp')
     .controller('PreviewContentController', ['$stateParams', 'playerTelemetryUtilsService',
-        '$rootScope', '$state', '$sce', 'contentService', 'pdfDelegate', '$timeout', 'config',
-        'toasterService', '$scope', function ($stateParams, playerTelemetryUtilsService, $rootScope,
-             $state, $sce, contentService, pdfDelegate, $timeout, config, toasterService, $scope) {
+        '$rootScope', '$state', 'contentService', '$timeout', 'config',
+        'toasterService', function ($stateParams, playerTelemetryUtilsService, $rootScope,
+             $state, contentService, $timeout, config, toasterService) {
             var previewContent = this;
             previewContent.contentProgress = 0;
             previewContent.contentId = $stateParams.contentId;
@@ -86,112 +86,61 @@ angular.module('playerApp')
                         progress: previewContent.contentProgress
                     });
                 };
-
-                if (previewContent.contentData.mimeType === 'application/vnd.ekstep.ecml-archive'
-                || previewContent.contentData.mimeType === 'application/vnd.ekstep.html-archive') {
-                    previewContent.showIFrameContent = true;
-                    var iFrameSrc = config.ekstep_CP_config.baseURL;
-                    $timeout(function () {
-                        var previewContentIframe = $('#contentViewerIframe')[0];
-                        previewContentIframe.src = iFrameSrc;
-                        previewContentIframe.onload = function () {
-                            var configuration = {};
-                            configuration.context = config.ekstep_CP_config.context;
-                            configuration.context.contentId = previewContent.contentData.identifier;
-                            // TODO: sid,uid,channel
-                            configuration.context.sid = 'Sunbird_sid';
-                            configuration.context.uid = 'Sunbird_uid';
-                            configuration.context.channel = 'Sunbird_channel';
-                            configuration.context.dimension = 'Sunbird_dimension';
-                            configuration.context.appid = 'Sunbird_appId';
-                            configuration.config = config.ekstep_CP_config.config;
-                            configuration.context.cdata = {
-                                id: $stateParams.courseId, type: 'course'
-                            };
-                            configuration.plugins = config.ekstep_CP_config.config.plugins;
-                            configuration.repos = config.ekstep_CP_config.config.repos;
-                            previewContentIframe.contentWindow.initializePreview(configuration);
-                        };
-                    }, 1000);
-                } else {
-                    previewContent.showIFrameContent = false;
-                    var telemetryInitData = {
-                        contentId: previewContent.contentData.identifier
+                previewContent.showIFrameContent = true;
+                var iFrameSrc = config.ekstep_CP_config.baseURL;
+                $timeout(function () {
+                    var previewContentIframe = $('#contentViewerIframe')[0];
+                    previewContentIframe.src = iFrameSrc;
+                    previewContentIframe.onload = function () {
+                        var configuration = {};
+                        configuration.context = config.ekstep_CP_config.context;
+                        configuration.context.contentId = previewContent.contentData.identifier;
+                        configuration.context.sid = $rootScope.sessionId;
+                        configuration.context.uid = $rootScope.userId;
+                        configuration.context.channel = org.sunbird.portal.channel;
+                        if (_.isUndefined($stateParams.courseId)) {
+                            configuration.context.dims = org.sunbird.portal.dims;
+                        } else {
+                            var cloneDims = _.cloneDeep(org.sunbird.portal.dims);
+                            cloneDims.push($stateParams.courseId);
+                            configuration.context.dims = cloneDims;
+                        }
+                        configuration.context.app = [org.sunbird.portal.appid];
+                        configuration.context.partner = [];
+                        configuration.context.cdata = [{
+                            id: $stateParams.courseId,
+                            type: 'course'
+                        }];
+                        configuration.config = config.ekstep_CP_config.config;
+                        configuration.config.plugins = config.ekstep_CP_config.config.plugins;
+                        configuration.config.repos = config.ekstep_CP_config.config.repos;
+                        configuration.metadata = previewContent.contentData;
+                        if (previewContent.contentData.mimeType !== config.MIME_TYPE.ecml) {
+                            configuration.data = {};
+                        }
+                        previewContentIframe.contentWindow.initializePreview(configuration);
                     };
-                    playerTelemetryUtilsService.init(telemetryInitData);
-                }
+                }, 1000);
             }
 
-            $scope.initVideoEvents = function (video) {
-                var telemetryData = {};
-                video.on('play', function () {
-                    if (parseInt(this.currentTime(), 10) === 0) {
-                        telemetryData = {
-                            id: previewContent._instance.id,
-                            ver: previewContent._instance.ver,
-                            data: { mode: 'play' }
-                        };
-                        playerTelemetryUtilsService.startTelemetry(telemetryData);
-                    } else {
-                        telemetryData = {
-                            id: previewContent._instance.id,
-                            ver: previewContent._instance.ver,
-                            type: 'TOUCH',
-                            data: { subtype: 'RESUME' } };
-                        playerTelemetryUtilsService.updateTelemetry(telemetryData);
-                    }
-                });
-                video.on('pause', function () {
-                    telemetryData = {
-                        id: previewContent._instance.id,
-                        ver: previewContent._instance.ver,
-                        type: 'TOUCH',
-                        data: { subtype: 'PAUSE' } };
-                    playerTelemetryUtilsService.updateTelemetry(telemetryData);
-                });
-                video.on('timeupdate', function () {
-                    previewContent.contentProgress = parseInt(this.currentTime()
-                    * 100 / this.duration(), 10);
-                });
-                video.on('ended', function () {
-                    previewContent.contentProgress = 100;
-                    playerTelemetryUtilsService.endTelemetry({
-                        progress: previewContent.contentProgress });
-                });
-                video.on('volumechange', function () {
-                    telemetryData = { id: previewContent._instance.id,
-                        ver: previewContent._instance.ver,
-                        type: 'TOUCH',
-                        data: { subtype: 'VOLUME' } };
-                    playerTelemetryUtilsService.updateTelemetry(telemetryData);
-                });
-                video.on('fullscreenchange', function () {
-                    telemetryData = {
-                        id: previewContent._instance.id,
-                        ver: previewContent._instance.ver,
-                        type: 'TOUCH',
-                        data: { subtype: 'FULLSCREEN' } };
-                    playerTelemetryUtilsService.updateTelemetry(telemetryData);
-                });
-            };
-
-        function showLoaderWithMessage(showMetaLoader, messageClass, message, closeButton, tryAgainButton) { //eslint-disable-line
-            var error = {};
-            error.showError = true;
-            error.showMetaLoader = showMetaLoader;
-            error.messageClass = messageClass;
-            error.message = message;
-            error.showCloseButton = closeButton;
-            error.showTryAgainButton = tryAgainButton;
-            previewContent.errorObject = error;
-        }
+            function showLoaderWithMessage(showMetaLoader, messageClass, message, closeButton, tryAgainButton) { //eslint-disable-line
+                var error = {};
+                error.showError = true;
+                error.showMetaLoader = showMetaLoader;
+                error.messageClass = messageClass;
+                error.message = message;
+                error.showCloseButton = closeButton;
+                error.showTryAgainButton = tryAgainButton;
+                previewContent.errorObject = error;
+            }
 
             function getContent(contentId) {
                 var req = { contentId: contentId };
                 var qs = {
                     fields: 'name,description,appIcon,contentType,mimeType,artifactUrl,' +
                             ',versionKey,audience,language,gradeLevel,ageGroup,subject,' +
-                            'medium,author,domain,createdBy,flagReasons,flaggedBy,flags,status'
+                            'medium,author,domain,createdBy,flagReasons,flaggedBy,flags,status,' +
+                            'createdOn,lastUpdatedOn,body'
                 };
 
                 contentService.getById(req, qs).then(function (response) {
@@ -220,136 +169,6 @@ angular.module('playerApp')
             previewContent.tryAgain = function () {
                 previewContent.errorObject = {};
                 getContent(previewContent.contentId);
-            };
-
-            previewContent.zoomIn = function () {
-                pdfDelegate.$getByHandle('content-player').zoomIn();
-                var telemetryData = {
-                    id: previewContent._instance.id,
-                    ver: previewContent._instance.ver,
-                    type: 'ZOOM',
-                    subtype: '',
-                    data: { stageId: previewContent.getCurrentPage }
-                };
-                playerTelemetryUtilsService.updateTelemetry(telemetryData);
-            };
-
-            previewContent.zoomOut = function () {
-                pdfDelegate.$getByHandle('content-player').zoomOut();
-                var telemetryData = {
-                    id: previewContent._instance.id,
-                    ver: previewContent._instance.ver,
-                    type: 'ZOOM',
-                    subtype: '',
-                    data: { stageId: previewContent.getCurrentPage }
-                };
-                playerTelemetryUtilsService.updateTelemetry(telemetryData);
-            };
-
-            previewContent.previous = function () {
-                var telemetryData = {};
-                pdfDelegate.$getByHandle('content-player').prev();
-                previewContent.getCurrentPage = previewContent.getCurrentPage > 1 ?
-                                previewContent.getCurrentPage - 1 : previewContent.getCurrentPage;
-                telemetryData = {
-                    id: previewContent._instance.id,
-                    ver: previewContent._instance.ver,
-                    type: 'TOUCH',
-                    subtype: '',
-                    data: { stageId: previewContent.getCurrentPage }
-                };
-                playerTelemetryUtilsService.updateTelemetry(telemetryData);
-                telemetryData = {
-                    id: previewContent._instance.id,
-                    ver: previewContent._instance.ver,
-                    stageid: previewContent.getCurrentPage + 1,
-                    stageto: previewContent.getCurrentPage,
-                    data: {}
-                };
-                playerTelemetryUtilsService.navigateTelemetry(telemetryData);
-            };
-
-            previewContent.next = function () {
-                var telemetryData = {};
-                pdfDelegate.$getByHandle('content-player').next();
-                previewContent.getCurrentPage = previewContent.getCurrentPage <
-                                previewContent.totalPageNumber ? previewContent.getCurrentPage + 1
-                                : previewContent.getCurrentPage;
-                telemetryData = {
-                    id: previewContent._instance.id,
-                    ver: previewContent._instance.ver,
-                    type: 'TOUCH',
-                    subtype: '',
-                    data: { stageId: previewContent.getCurrentPage }
-                };
-                playerTelemetryUtilsService.updateTelemetry(telemetryData);
-                telemetryNavData = {
-                    id: previewContent._instance.id,
-                    ver: previewContent._instance.ver,
-                    stageid: previewContent.getCurrentPage - 1,
-                    stageto: previewContent.getCurrentPage,
-                    data: {}
-                };
-                playerTelemetryUtilsService.navigateTelemetry(telemetryNavData);
-                previewContent.contentProgress = previewContent.getCurrentPage *
-                                                 100 / previewContent.totalPageNumber;
-                if (previewContent.getCurrentPage === previewContent.totalPageNumber) {
-                    playerTelemetryUtilsService.endTelemetry({
-                        progress: previewContent.contentProgress
-                    });
-                }
-            };
-
-            previewContent.rotate = function () {
-                pdfDelegate.$getByHandle('content-player').rotate();
-                var telemetryData = {
-                    id: previewContent._instance.id,
-                    ver: previewContent._instance.ver,
-                    type: 'ROTATE',
-                    subtype: '',
-                    data: { stageId: previewContent.getCurrentPage }
-                };
-                playerTelemetryUtilsService.updateTelemetry(telemetryData);
-            };
-
-            previewContent.goToPage = function (pageNumber) {
-                if (pageNumber > previewContent.getCurrentPage) {
-                    previewContent.contentProgress = previewContent.getCurrentPage *
-                                                        100 / previewContent.totalPageNumber;
-                }
-                var telemetryNavData = {
-                    id: previewContent._instance.id,
-                    ver: previewContent._instance.ver,
-                    stageid: previewContent.getCurrentPage,
-                    stageto: pageNumber,
-                    data: {}
-                };
-                pdfDelegate.$getByHandle('content-player').goToPage(pageNumber);
-                previewContent.getCurrentPage = pageNumber;
-                var telemetryData = {
-                    id: previewContent._instance.id,
-                    ver: previewContent._instance.ver,
-                    type: 'TOUCH',
-                    subtype: '',
-                    data: { stageId: previewContent.getCurrentPage }
-                };
-                playerTelemetryUtilsService.updateTelemetry(telemetryData);
-                playerTelemetryUtilsService.navigateTelemetry(telemetryNavData);
-            };
-
-            previewContent.getTotalPage = function () {
-                $timeout(function () {
-                    previewContent.totalPageNumber =
-                    pdfDelegate.$getByHandle('content-player').getPageCount();
-                    previewContent.getCurrentPage =
-                    pdfDelegate.$getByHandle('content-player').getCurrentPage();
-                    var telemetryData = {
-                        id: previewContent._instance.id,
-                        ver: previewContent._instance.ver,
-                        data: { mode: 'play', stageid: 1 }
-                    };
-                    playerTelemetryUtilsService.startTelemetry(telemetryData);
-                }, 1000);
             };
 
             getContent(previewContent.contentId);
@@ -471,7 +290,7 @@ angular.module('playerApp')
                     toasterService.error(previewContent.message.DISCARD_CONTENT_FLAG.FAILED);
                 });
             };
-            
+
             previewContent.getConceptsNames = function (concepts) {
                 var conceptNames = _.map(concepts, 'name').toString();
                 if (conceptNames.length < concepts.length) {

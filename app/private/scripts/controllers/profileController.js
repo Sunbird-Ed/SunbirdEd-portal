@@ -388,6 +388,25 @@ angular.module('playerApp') // add those all values
           profile.setJobProfileCheckbox = function (experience, value) {
               experience.isCurrentJob = value;
           };
+          profile.getContentLogo = function (content) {
+              var contentIcon = content.appIcon;
+              var mimeType = content.mimeType;
+              if (contentIcon) {
+                  return content.appIcon;
+              }
+              switch (mimeType) {
+              case 'application/pdf':
+                  return '/images/pdf.png';
+              case 'video/mp4':
+                  return '/images/mp4.png';
+              case 'video/youtube':
+                  return '/images/youtubeFileIcon.jpg';
+              case 'video/x-youtube':
+                  return '/images/youtubeFileIcon.jpg';
+              default:
+                  return '/images/zipFileIcon.png';
+              }
+          };
 
           profile.getProfile();
 

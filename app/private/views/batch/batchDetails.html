@@ -1,4 +1,4 @@
-<div id="batchDetails" class="ui modal">
+<div id="batchDetails" class="ui modal" style="top: 72px !important">
     <div class="header">
         <div class="ui grid">
             <div class="eleven wide column">
@@ -48,18 +48,16 @@
                                     <label>END DATE</label><span class="padding-left-10">{{batch.batchInfo.endDate | date: "dd MMM yyyy"}}</span>
                                 </div>
                             </div>
-                            <div class="ui accordion" apply-script ng-if="batch.batchInfo.participant && batch.batchInfo.participant.length > 0">
-                                <div class="title active">
+                            <div>
+                                <div class="member padding-top-20">
                                     <label>MEMBERS OF BATCH</label>
-                                    <i class="dropdown icon"></i>
                                 </div>
-                                <div class="content active">
-                                    <div class="ui horizontal list padding-top-10 batch-list-items">
-                                        <div class="ui label item batchDetailsChips" ng-repeat='user in batch.batchInfo.participant'>
-                                            <img class="ui avatar tiny image" ng-src="{{batch.batchInfo.userList[user].thumbnail || 'images/user_logo.png'}}">
-                                            <div class="content">
-                                                <div class="header">{{batch.batchInfo.userList[user].firstName}}</div>
-                                            </div>
+                                <div class="ui very relaxed list padding-top-10 batch-list-items">
+                                    <div class="item" ng-repeat='user in batch.batchInfo.userList'>
+                                        <img class="ui avatar  image" ng-src="{{user.thumbnail || 'images/user_logo.png'}}">
+                                        <div class="content padding-top-10">
+                                            <div class="header">{{user.firstName}} {{user.lastName}}</div>
+                                            <!-- National School for children, Pune -->
                                         </div>
                                     </div>
                                 </div>
