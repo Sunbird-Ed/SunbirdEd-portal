@@ -212,9 +212,10 @@ angular.module('playerApp')
                     });
                     var nullReplacedToEmpty = JSON.stringify(list).replace(/null/g, '""');
                     var users = JSON.parse(nullReplacedToEmpty);
-                    alasql('SELECT firstName AS firstName,lastName AS lastName,phone AS phone,'
-                    + 'email AS email,organisationsName AS Organisations,userName AS userName '
-                    + 'INTO CSV(\'Users.csv\',{headers:true},{separator:","}) FROM ?'
+                    alasql('SELECT firstName AS firstName,lastName AS lastName, '
+                    + ' organisationsName AS Organisations ,location AS Location, grade AS Grades, '
+                    + 'language AS Language ,subject as Subjects '
+                    + ' INTO CSV(\'Users.csv\',{headers:true ,separator:","}) FROM ?'
                     , [users]);
                 } else if (key === 'Organisations') {
                     list.forEach(function (org) {
@@ -230,7 +231,7 @@ angular.module('playerApp')
                     var organizations = JSON.parse(orgNullReplacedToEmpty);
                     alasql('SELECT orgName AS orgName,orgType AS orgType,'
                     + 'noOfMembers AS noOfMembers,channel AS channel, '
-                    + 'status AS Status INTO CSV(\'Organizations.csv\',{headers:true}) FROM ?'
+                    + 'status AS Status INTO CSV(\'Organizations.csv\',{headers:true,separator:","}) FROM ?'
                     , [organizations]);
                 }
             };
