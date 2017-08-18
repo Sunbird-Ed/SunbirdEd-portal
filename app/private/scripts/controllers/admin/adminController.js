@@ -19,8 +19,10 @@ angular.module('playerApp')
         'contentService',
         'toasterService',
         'permissionsService',
+        'searchService',
         function (adminService, $timeout, $state, config, $rootScope, $scope,
-            contentService, toasterService, permissionsService) {
+            contentService, toasterService, permissionsService, searchService
+        ) {
             var admin = this;
             admin.searchResult = $scope.users;
             admin.bulkUsers = {};
@@ -411,6 +413,10 @@ angular.module('playerApp')
             admin.getUserRoles = function () {
                 admin.userRolesList = [];
                 admin.userRoles = permissionsService.allRoles();
+            };
+            admin.openPublicProfile = function (id, user) {
+                searchService.setPublicUserProfile(user);
+                $state.go('PublicProfile', { userId: window.btoa(id), userName: user.firstName });
             };
             admin.getUserRoles();
         }]);
