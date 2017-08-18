@@ -1,8 +1,8 @@
 const request = require('request'),
   _ = require('lodash'),
-  learnerURL = envHelper.LEARNER_URL,
   dateFormat = require('dateformat'),
   envHelper = require('./environmentVariablesHelper.js'),
+  learnerURL = envHelper.LEARNER_URL,
   appId = envHelper.APPID,
   sunbird_api_auth_token = envHelper.PORTAL_API_AUTH_TOKEN;
 module.exports = {
@@ -14,7 +14,7 @@ module.exports = {
       body: {
         request: {
           filters: { objectType: ['org'] },
-          sort_by: { pdatedDate: 'asc' }
+          sort_by: { updatedDate: 'asc' }
         }
       },
       json: true
