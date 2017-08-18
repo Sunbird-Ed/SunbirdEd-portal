@@ -70,4 +70,9 @@ angular.module('playerApp')
                 var url = config.URL.CONTENT.DISCARD_FLAG + '/' + contentId;
                 return httpService.post(url, req);
             };
+
+            this.uploadURL = function (req, contentId) {
+                var url = config.URL.CONTENT.UPLOAD + '/' + contentId;
+                return httpService.post(url, req);
+            };
         }]);
