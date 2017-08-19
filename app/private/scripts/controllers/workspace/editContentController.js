@@ -342,8 +342,7 @@ angular.module('playerApp')
                             element: document.getElementById('fine-uploader-manual-trigger'),
                             template: 'qq-template-manual-trigger',
                             request: {
-                                method: 'PUT',
-                                processData: false
+                                endpoint: editContent.contentUploadUrl + '/' + editContent.contentId
                             },
                             autoUpload: false,
                             debug: true,
@@ -359,26 +358,23 @@ angular.module('playerApp')
                             },
                             callbacks: {
                                 onComplete: function (id, name, responseJSON, xhr) {
-                                    if (xhr.statusText === 'OK') {
-                                        responseJSON.success = true;
-                                        var artifactUrl = xhr.responseURL.split('?')[0];
-                                        editContent.manualUploader.cancel(id);
-                                        var requestBody = {
-                                            content: {
-                                                artifactUrl: artifactUrl,
-                                                versionKey: editContent.contentData.versionKey
-                                            }
-                                        };
-                                        editContent.updateContent(requestBody, false);
-                                        // editContent.editContent(editContent.contentId);
+                                    if (responseJSON.success) {
+                                        editContent.initializeData(false);
+                                        editContent.showUploadFileForm = false;
                                     }
+                                    // if (xhr.statusText === 'OK') {
+                                    //     responseJSON.success = true;
+                                    //     var artifactUrl = xhr.responseURL.split('?')[0];
+                                    //     editContent.manualUploader.cancel(id);
+                                    //     editContent.uploadContent(artifactUrl);
+                                    // }
                                 },
                                 onSubmitted: function (id, name) {
                                     editContent.youtubeFileLink = '';
                                     editContent.uploadedFileId = id;
                                     editContent.selectedFileName = name;
+                                    editContent.selectedFile = this.getFile(id);
                                     editContent.getContentUploadUrl(editContent.contentId);
-                                    // editContent.uploadContent();
                                     document.getElementById('hide-section-with-button')
                                             .style.display = 'none';
                                 },
@@ -404,12 +400,43 @@ angular.module('playerApp')
                     editContent.contentPlayer = {};
                 };
 
-                editContent.uploadContent = function (endpoint) {
+                editContent.uploadContentInS3 = function () {
+                    var endpoint = editContent.contentUploadUrl + '/' + editContent.contentId;
                     editContent.manualUploader.setEndpoint(endpoint, editContent.uploadedFileId);
-                    editContent.manualUploader.setParams({
-                        contentType: editContent.contentData.mimeType
-                    });
                     editContent.manualUploader.uploadStoredFiles();
+                    // editContent.manualUploader.setParams({
+                    //     paramsInBody: true,
+                    //     contentType: editContent.contentData.mimeType,
+                    //     processData: false,
+                    //     data: editContent.selectedFile,
+                    //     method: 'PUT'
+                    // });
+                    // editContent.manualUploader.setCustomHeaders({
+                    //     'Content-Type': editContent.contentData.mimeType,
+                    //     Accept: '*/*'
+                    // });
+                    // editContent.manualUploader.setDeleteFileParams('data', editContent.uploadedFileId);
+                    // $.ajax({
+                    //     type: 'PUT',
+                    //     url: endpoint,
+                    //     // Content type must much with the parameter you signed your URL with
+                    //     contentType: editContent.contentData.mimeType,
+                    //     // this flag is important, if not set, it will try to send data as a form
+                    //     processData: false,
+                    //     // the actual file is sent raw
+                    //     data: editContent.selectedFile
+                    // })
+                    //   .success(function () {
+                    //       var artifactUrl = endpoint.split('?')[0];
+                    //       editContent.manualUploader.cancel(editContent.uploadedFileId);
+                    //       editContent.uploadContent(artifactUrl);
+                    //   })
+                    //   .error(function () {
+                    //       alert('File NOT uploaded');
+                    //       console.log(arguments);
+                    //   });
+
+                    // console.log('editContent.contentData.mimeType', editContent.contentData.mimeType);
                 };
 
                 editContent.uploadYoutubeFile = function (contentData) {
@@ -467,7 +494,7 @@ angular.module('playerApp')
                     };
                     contentService.uploadURL(requestBody, contentId).then(function (res) {
                         if (res && res.responseCode === 'OK') {
-                            editContent.uploadContent(res.result.pre_signed_url);
+                            editContent.uploadContentInS3(res.result.pre_signed_url);
                         } else {
                             toasterService.error($rootScope.errorMessages
                                                                 .WORKSPACE.UPLOAD_CONTENT.FAILED);
@@ -476,6 +503,29 @@ angular.module('playerApp')
                     }).catch(function () {
                         toasterService.error($rootScope.errorMessages.WORKSPACE.UPLOAD_CONTENT.FAILED);
                         // handle error
+                    });
+                };
+
+                editContent.uploadContent = function (url) {
+                    var requestBody = {};
+                    editContent.loader = toasterService.loader('', $rootScope.errorMessages
+                                                                    .WORKSPACE.UPLOAD_CONTENT.START);
+                    var qs = { fileUrl: url };
+                    contentService.upload(requestBody, editContent.contentId, qs).then(function (res) {
+                        if (res && res.responseCode === 'OK') {
+                            editContent.loader.showLoader = false;
+                            editContent.showUploadFileForm = false;
+                            editContent.contentData.artifactUrl = res.result.content_url;
+                            toasterService.success('Uploaded successfully');
+                        } else {
+                            editContent.loader.showLoader = false;
+                            toasterService.error($rootScope.errorMessages.WORKSPACE
+                                                                .UPLOAD_CONTENT.FAILED);
+                        }
+                    }).catch(function () {
+                        editContent.loader.showLoader = false;
+                        toasterService.error($rootScope.errorMessages.WORKSPACE
+                                                                .UPLOAD_CONTENT.FAILED);
                     });
                 };
             }]);
