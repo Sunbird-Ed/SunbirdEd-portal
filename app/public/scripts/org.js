@@ -50,7 +50,7 @@ var loadData = function () {
     table.style.display = 'none';
     loader.style.display = 'block';
     var client = new HttpClient();
-    client.get('/api/public/service/orgs', function (res) {
+    client.get('/public/service/orgs', function (res) {
         res = JSON.parse(res);
         if (res && res.responseCode == "OK") {
             table.style.display = 'table';
