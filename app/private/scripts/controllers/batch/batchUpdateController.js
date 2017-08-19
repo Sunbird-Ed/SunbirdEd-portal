@@ -59,6 +59,7 @@ angular.module('playerApp')
                     }
                 })
                 $timeout(function () {
+                     
                     $('#users').dropdown();
                     $('#mentors').dropdown();
                     if(batchUpdate.batchData.enrollmentType == 'open'){
@@ -114,10 +115,10 @@ angular.module('playerApp')
                             });
                             $('.ui.calendar #startDate').val(batchUpdate.batchData.startDate);
                             $('.ui.calendar #endDate').val(batchUpdate.batchData.endDate);
+                            $(".ui.modal.transition.hidden").remove();
                         },
-                        onHide: function () {
-                            var previousUrl = JSON.parse(window.localStorage.getItem('previousURl'));
-                            $state.go(previousUrl.name, previousUrl.params);
+                        onHide: function () {                            
+                           $state.go('Toc', {courseId:batchUpdate.batchData.courseId,lectureView:'yes'});
                         }
                     }).modal("show");
                 }, 10);
@@ -162,7 +163,7 @@ angular.module('playerApp')
             batchUpdate.hideUpdateBatchModal = function () {
                 $('#updateBatchModal').modal('hide');
                 $('#updateBatchModal').modal('hide others');
-                $('#updateBatchModal').modal('hide dimmer');
+                $('#updateBatchModal').modal('hide dimmer');               
             };
 
             batchUpdate.updateBatchDetails = function(data){
@@ -188,7 +189,7 @@ angular.module('playerApp')
                     }
                     batchService.update(request).then(function (response) {
                         if (response && response.responseCode === 'OK') {
-                            data.users = $('#users').dropdown('get value').split(",");
+                            data.users = $('#userSelList').val().split(",");
                             if(data.users && data.users.length > 0){
                                 var userRequest = {
                                     "request" : {
