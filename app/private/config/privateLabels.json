@@ -51,7 +51,7 @@
                 "fileUploadOptions": "File accepted only pdf, mp4, epub, h5p and html zip (Max size 25mb).",
                 "uploadContent": "Upload Content",
                 "upload": "Upload",
-                "lessonPlanDescription": "lesson Plan Description",
+                "lessonPlanDescription": "Lesson plan description",
                 "lessonPlan": "LESSON PLAN"
             },
             "createLesson": {
@@ -185,8 +185,8 @@
                 "summary": "Summary",
                 "contributions": "Contributions",
                 "contents": "Contents",
-                "currentLocation":"Current Location",
-                "grades":"Grades"
+                "currentLocation": "Current Location",
+                "grades": "Grades"
             },
             "BUTTON": {
                 "save": "Save",
