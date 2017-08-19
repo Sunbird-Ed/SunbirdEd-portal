@@ -118,10 +118,10 @@ angular.module('playerApp')
                 $('.roleChckbox').checkbox();
             };
             // open editRoles modal
-            admin.showModal = function (userId, orgs) {
+            admin.showModal = function (identifier, orgs) {
                 $('#changeUserRoles').modal({
                     onShow: function () {
-                        admin.userId = userId;
+                        admin.identifier = identifier;
                         admin.userOrganisations = orgs;
                         admin.selectedOrgUserRoles = [];
                         $('#userOrgs').dropdown('restore defaults');
@@ -139,7 +139,7 @@ angular.module('playerApp')
             admin.showdeleteModal = function (id, firstName, lastName) {
                 $('#deleteUserConfirmation').modal({
                     onShow: function () {
-                        admin.deletingUserId = id;
+                        admin.deletingIdentifier = id;
                         admin.deletingUserFullName = firstName + ' ' + lastName || '';
                     },
                     onHide: function () {
@@ -237,11 +237,11 @@ angular.module('playerApp')
             };
 
             // delete user
-            admin.deleteUser = function (userId) {
+            admin.deleteUser = function (identifier) {
                 var removeReq = {
                     params: { },
                     request: {
-                        userId: userId
+                        userId: identifier
                     }
                 };
 
@@ -249,7 +249,7 @@ angular.module('playerApp')
                     if (res.result.response === 'SUCCESS') {
                         toasterService.success($rootScope.errorMessages.ADMIN.deleteSuccess);
                         admin.searchResult = admin.searchResult.filter(function (user) {
-                            if (user.userId === userId) {
+                            if (user.identifier === identifier) {
                                 user.status = 0;
                             }
                             return user;
@@ -271,10 +271,10 @@ angular.module('playerApp')
                     admin.selectedOrgUserRoles.push(role);
                 }
             };
-            admin.updateRoles = function (userId, orgId, roles) {
+            admin.updateRoles = function (identifier, orgId, roles) {
                 var req = {
                     request: {
-                        userId: userId,
+                        userId: identifier,
                         organisationId: orgId,
                         roles: roles
 
