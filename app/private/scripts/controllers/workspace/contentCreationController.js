@@ -160,8 +160,7 @@ angular.module('playerApp')
                             contentCreation.youtubeVideoUrl = '';
                             contentCreation.editContent(res.result.content_id);
                         } else {
-                            contentCreation.uploadContentInS3();
-                            // contentCreation.getContentUploadUrl(res.result.content_id);
+                            contentCreation.getContentUploadUrl(res.result.content_id);
                         }
                     } else {
                         contentCreation.loader.showLoader = false;

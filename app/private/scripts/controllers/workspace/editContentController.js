@@ -374,8 +374,7 @@ angular.module('playerApp')
                                     editContent.uploadedFileId = id;
                                     editContent.selectedFileName = name;
                                     editContent.selectedFile = this.getFile(id);
-                                    editContent.uploadContentInS3();
-                                    // editContent.getContentUploadUrl(editContent.contentId);
+                                    editContent.getContentUploadUrl(editContent.contentId);
                                     document.getElementById('hide-section-with-button')
                                             .style.display = 'none';
                                 },
