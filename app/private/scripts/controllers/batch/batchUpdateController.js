@@ -68,8 +68,9 @@ angular.module('playerApp')
                         $('input:radio[name="enrollmentType"]').filter('[value="invite-only"]').attr('checked', true);
                     }
                     $('.ui.calendar').calendar({refresh: true});
+                    var today = new Date();
                     var startDate = new Date(batchUpdate.batchData.startDate),
-                        currentDate = new Date();
+                        currentDate =  new Date(today.setDate(today.getDate() + 1));
                     if(currentDate < startDate){
                         startDate = currentDate;
                     }
@@ -117,9 +118,14 @@ angular.module('playerApp')
                             $('.ui.calendar #endDate').val(batchUpdate.batchData.endDate);
                             $(".ui.modal.transition.hidden").remove();
                         },
-                        onHide: function () {                            
+                        onHide: function () {
+                            var previousUrl = JSON.parse(window.localStorage.getItem('previousURl'));
+                            if($stateParams.name != previousUrl.name){
+                            $state.go(previousUrl.name, previousUrl.params);
+                        }else{
                            $state.go('Toc', {courseId:batchUpdate.batchData.courseId,lectureView:'yes'});
-                        }
+                       }
+                     }
                     }).modal("show");
                 }, 10);
             };
@@ -189,6 +195,7 @@ angular.module('playerApp')
                     }
                     batchService.update(request).then(function (response) {
                         if (response && response.responseCode === 'OK') {
+                            if(data.enrollmentType != 'open'){
                             data.users = $('#userSelList').val().split(",");
                             if(data.users && data.users.length > 0){
                                 var userRequest = {
@@ -206,6 +213,10 @@ angular.module('playerApp')
                                     toasterService.error($rootScope.errorMessages.BATCH.ADD_USERS.FAILED);
                                 });
                             }else{
+                                batchUpdate.hideUpdateBatchModal();
+                            }
+                         }
+                         else{
                                 batchUpdate.hideUpdateBatchModal();
                             }
                         }else{
