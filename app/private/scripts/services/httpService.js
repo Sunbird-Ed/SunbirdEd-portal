@@ -66,13 +66,13 @@ angular.module('playerApp')
                 return (request.then(handleSuccess, handleError));
             };
 
-            this.upload = function (url, data) {
+            this.upload = function (url, data, header, qs) {
                 var request = $http.post(config.URL.BASE_PREFIX + config.URL.CONTENT_PREFIX + url, data, {
                     //                    transformRequest: angular.identity,
                     headers: {
-                        'Content-Type': undefined,
-                        cid: 'sunbird'
-                    }
+                        'Content-Type': undefined
+                    },
+                    params: qs
                 });
                 return (request.then(handleSuccess, handleError));
             };
