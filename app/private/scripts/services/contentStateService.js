@@ -18,11 +18,11 @@ angular.module('playerApp')
             // getContentState
 
             this.getContentsStateFromAPI = function (req) {
-                return httpServiceJava.post(config.URL.COURSE.USER_CONTENT_STATE, req);
+                return httpServiceJava.post(config.URL.COURSE.USER_CONTENT_STATE_READ, req);
             };
 
             this.updateContentStateInServer = function (req) {
-                return httpServiceJava.patch(config.URL.COURSE.USER_CONTENT_STATE, req);
+                return httpServiceJava.patch(config.URL.COURSE.USER_CONTENT_STATE_UPDATE, req);
             };
             this.prepareContentObject = function (data) {
                 var content = {
