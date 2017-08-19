@@ -96,6 +96,8 @@ app.use('/private/index', function(req, res, next) {
   next();
 });
 
+app.get('/api/public/service/orgs', publicServicehelper.getOrgs);
+
 app.get('/private/service/get/tenant/logo', function(req, res) {
   res.status(200);
   var data = { 'logo': '' };
@@ -106,7 +108,7 @@ app.get('/private/service/get/tenant/logo', function(req, res) {
   res.end();
 });
 
-app.get('/api/public/service/orgs', publicServicehelper.getOrgs)
+
 app.all('/content-editor/telemetry', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: reqDataLimitOfContentEditor }), keycloak.protect(), telemetryHelper.logSessionEvents);
 
