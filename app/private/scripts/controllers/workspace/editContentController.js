@@ -342,8 +342,7 @@ angular.module('playerApp')
                             element: document.getElementById('fine-uploader-manual-trigger'),
                             template: 'qq-template-manual-trigger',
                             request: {
-                                method: 'PUT',
-                                processData: false
+                                endpoint: editContent.contentUploadUrl + '/' + editContent.contentId
                             },
                             autoUpload: false,
                             debug: true,
@@ -359,12 +358,16 @@ angular.module('playerApp')
                             },
                             callbacks: {
                                 onComplete: function (id, name, responseJSON, xhr) {
-                                    if (xhr.statusText === 'OK') {
-                                        responseJSON.success = true;
-                                        var artifactUrl = xhr.responseURL.split('?')[0];
-                                        editContent.manualUploader.cancel(id);
-                                        editContent.uploadContent(artifactUrl);
+                                    if (responseJSON.success) {
+                                        editContent.initializeData(false);
+                                        editContent.showUploadFileForm = false;
                                     }
+                                    // if (xhr.statusText === 'OK') {
+                                    //     responseJSON.success = true;
+                                    //     var artifactUrl = xhr.responseURL.split('?')[0];
+                                    //     editContent.manualUploader.cancel(id);
+                                    //     editContent.uploadContent(artifactUrl);
+                                    // }
                                 },
                                 onSubmitted: function (id, name) {
                                     editContent.youtubeFileLink = '';
@@ -397,20 +400,22 @@ angular.module('playerApp')
                     editContent.contentPlayer = {};
                 };
 
-                editContent.uploadContentInS3 = function (endpoint) {
+                editContent.uploadContentInS3 = function () {
+                    var endpoint = editContent.contentUploadUrl + '/' + editContent.contentId;
                     editContent.manualUploader.setEndpoint(endpoint, editContent.uploadedFileId);
-                    editContent.manualUploader.setParams({
-                        paramsInBody: true,
-                        contentType: editContent.contentData.mimeType,
-                        processData: false,
-                        data: editContent.selectedFile,
-                        method: 'PUT'
-                    });
-                    editContent.manualUploader.setCustomHeaders({
-                        'Content-Type': editContent.contentData.mimeType,
-                        Accept: '*/*'
-                    });
-                    editContent.manualUploader.setDeleteFileParams('data', editContent.uploadedFileId);
+                    editContent.manualUploader.uploadStoredFiles();
+                    // editContent.manualUploader.setParams({
+                    //     paramsInBody: true,
+                    //     contentType: editContent.contentData.mimeType,
+                    //     processData: false,
+                    //     data: editContent.selectedFile,
+                    //     method: 'PUT'
+                    // });
+                    // editContent.manualUploader.setCustomHeaders({
+                    //     'Content-Type': editContent.contentData.mimeType,
+                    //     Accept: '*/*'
+                    // });
+                    // editContent.manualUploader.setDeleteFileParams('data', editContent.uploadedFileId);
                     // $.ajax({
                     //     type: 'PUT',
                     //     url: endpoint,
@@ -432,7 +437,6 @@ angular.module('playerApp')
                     //   });
 
                     // console.log('editContent.contentData.mimeType', editContent.contentData.mimeType);
-                    editContent.manualUploader.uploadStoredFiles();
                 };
 
                 editContent.uploadYoutubeFile = function (contentData) {
