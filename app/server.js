@@ -96,7 +96,7 @@ app.use('/private/index', function(req, res, next) {
   next();
 });
 
-app.get('/api/public/service/orgs', publicServicehelper.getOrgs);
+app.get('/public/service/orgs', publicServicehelper.getOrgs);
 
 app.get('/private/service/get/tenant/logo', function(req, res) {
   res.status(200);
