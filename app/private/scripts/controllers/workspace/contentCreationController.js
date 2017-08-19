@@ -39,8 +39,7 @@ angular.module('playerApp')
                     element: document.getElementById('fine-uploader-manual-trigger'),
                     template: 'qq-template-manual-trigger',
                     request: {
-                        method: 'PUT',
-                        processData: false
+                        endpoint: contentCreation.contentUploadUrl + '/' + contentCreation.contentId
                     },
                     autoUpload: false,
                     debug: true,
@@ -56,13 +55,16 @@ angular.module('playerApp')
                     },
                     callbacks: {
                         onComplete: function (id, name, responseJSON, xhr) {
-                            if (xhr.statusText === 'OK') {
-                                responseJSON.success = true;
-                                var artifactUrl = xhr.responseURL.split('?')[0];
-                                contentCreation.manualUploader.cancel(id);
-                                contentCreation.uploadContent(id, artifactUrl, contentCreation.contentId);
-                                // contentCreation.editContent(contentCreation.contentId);
+                            if (responseJSON.success) {
+                                contentCreation.editContent(contentCreation.contentId);
                             }
+                            // if (xhr.statusText === 'OK') {
+                            //     responseJSON.success = true;
+                            //     var artifactUrl = xhr.responseURL.split('?')[0];
+                            //     contentCreation.manualUploader.cancel(id);
+                            //     contentCreation.uploadContent(id, artifactUrl, contentCreation.contentId);
+                            //     // contentCreation.editContent(contentCreation.contentId);
+                            // }
                         },
                         onSubmitted: function (id, name) {
                             contentCreation.youtubeVideoUrl = '';
@@ -191,12 +193,10 @@ angular.module('playerApp')
                 contentCreation.createContent(requestData);
             };
 
-            contentCreation.uploadContentInS3 = function (endpoint) {
+            contentCreation.uploadContentInS3 = function () {
+                var endpoint = contentCreation.contentUploadUrl + '/' + contentCreation.contentId;
                 contentCreation.manualUploader.setEndpoint(endpoint,
                                                                 contentCreation.uploadedFileId);
-                contentCreation.manualUploader.setParams({
-                    contentType: contentCreation.selectedFileMimeType
-                });
                 contentCreation.manualUploader.uploadStoredFiles();
             };
 
