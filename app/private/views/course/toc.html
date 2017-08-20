@@ -154,9 +154,7 @@
         </div>
         <!-- Load dashboard controller.Added by Nilesh-->
         <div class="ten wide column" ng-if="toc.showCourseDashboard">
-            <div ng-controller="courseDashboardCtrl as courseDashboard" ng-init="courseDashboard.loadData()">
-                <div ng-include="'views/course/courseDashboard.html'"></div>
-            </div>
+            <div ng-include="'views/dashboard/course/courseProgressDashboard.html'"></div>
             <div class="one wide column"></div>
         </div>
         <!-- End-->

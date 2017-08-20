@@ -1,0 +1,59 @@
+<div id="dashoardFiltersHolder" ng-hide="courseDashboard.showError">
+  <div class="ui grid" ng-if="courseDashboard.dataset == 'progress'">
+    <div class="twelve wide column ">
+      <a class="ui item basic icon circular float-ContentRight" href="Javascript:void(0);"
+      	data-tooltip="Close the dashboard">
+  			<i class="ui remove icon CloseButtonFont"
+          ng-click="toc.showCourseDashboard = false;courseDashboard.resetDropdown();" >
+        </i>
+  		</a>
+    </div>
+  </div>
+  <div class="ui grid">
+    <div class="five wide column left floated">
+      <p class="dashboard-label ng-binding"><i class="bar chart icon"></i>&nbsp; Course {{courseDashboard.dataset}} dashboard</p>
+    </div>
+    <div class="four wide column right floated" ng-if="courseDashboard.dataset == 'consumption'">
+      <div class="ui fluid search selection dropdown" id="myCoursesListFilter">
+        <input type="hidden" name="course">
+        <i class="dropdown icon"></i>
+        <div class="default text" id="selectCourse">Select course</div>
+        <div class="menu">
+          <div class="item" ng-repeat="course in courseDashboard.myCoursesList" title="{{course.courseName}}"
+            ng-click="courseDashboard.onAfterCourseChange(course.courseId)"
+            data-value="{{course.courseId}}"
+            ng-init="$last && courseDashboard.initDropdwon()">
+            <img class="ui circular image mini" ng-src=" {{course.courseLogoUrl ? course.courseLogoUrl : '../images/sunbird_logo.png'}} ">{{course.courseName}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ui grid margin-top-10" ng-if="!courseDashboard.showError">
+    <div class="six wide column">
+      <div class="ui text menu float-ContentLeft padding-top-10">
+        <span class="dashBoardMenuItem cursor-pointer active"
+          data-timeperiod="7d" data-timeperiod-text="7 days"
+          ng-class="{active:courseDashboard.filterTimePeriod === '7d'}"
+          ng-click="courseDashboard.onAfterFilterChange($event.target)">LAST 7 DAYS</span>&nbsp;&nbsp;&nbsp;&nbsp;
+        <span class="dashBoardMenuItem cursor-pointer"
+          data-timeperiod="14d" data-timeperiod-text="14 days"
+          ng-class="{active:courseDashboard.filterTimePeriod === '14d'}"
+          ng-click="courseDashboard.onAfterFilterChange($event.target)">LAST 14 DAYS</span>&nbsp;&nbsp;&nbsp;&nbsp;
+        <span class="dashBoardMenuItem cursor-pointer"
+          data-timeperiod="5w" data-timeperiod-text="5 weeks"
+          ng-class="{active:courseDashboard.filterTimePeriod === '5w'}"
+          ng-click="courseDashboard.onAfterFilterChange($event.target)">LAST 5 WEEKS</span>&nbsp;&nbsp;&nbsp;&nbsp;
+      </div>
+    </div>
+    <div class="two wide column"></div>
+    <!-- Course admin filter-->
+    <div class="four wide column" ng-show="courseDashboard.dataset === 'progress'">
+      <div class="ui category search float-ContentRight">
+        <div class="ui icon input">
+          <input class="search-course-data ng-pristine ng-valid ng-empty ng-touched" type="text" placeholder="Search ..." ng-model="courseDashboard.searchUser" autocomplete="off">
+          <i class="search icon"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
