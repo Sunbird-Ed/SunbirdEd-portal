@@ -39,8 +39,8 @@ angular.module('playerApp')
         ];
       } else if (datasetType == 'consumption') {
         return [{
-            backgroundColor: '#FF0000',
-            borderColor: '#FF0000',
+            backgroundColor: '#292929',
+            borderColor: '#292929',
             fill: false
         }];
       }
@@ -51,7 +51,12 @@ angular.module('playerApp')
         legend: { display: true },
         scales: {
           xAxes: [{
-            gridLines: { display: false }
+            gridLines: { display: false },
+            ticks: {
+              autoSkip: true,
+              maxRotation: 30,
+              minRotation: 30
+            }
           }],
           yAxes: [{
             scaleLabel: { display: true, labelString: labelString }
