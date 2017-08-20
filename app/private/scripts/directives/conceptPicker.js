@@ -67,14 +67,14 @@ angular.module('playerApp').directive('conceptPicker', function () {
                 $scope.selectedConcepts = $scope.selectedConcepts || [];
                 $scope.contentConcepts = _.map($scope.selectedConcepts, 'identifier');
                 $scope.pickerMessage = $scope.contentConcepts.length + ' concepts selected';
-                $('#treePicker').val($scope.pickerMessage);
+                $('.tree-picker-selector').val($scope.pickerMessage);
                 $timeout(function () {
-                    $('#treePicker').treePicker({
+                    $('.tree-picker-selector').treePicker({
                         data: $rootScope.conceptData,
                         name: 'Concepts',
                         picked: $scope.contentConcepts,
                         onSubmit: function (nodes) {
-                            $('#treePicker').val(nodes.length + ' concepts selected');
+                            $('.tree-picker-selector').val(nodes.length + ' concepts selected');
                             _.defer(function () {
                                 $scope.$apply();
                             });
