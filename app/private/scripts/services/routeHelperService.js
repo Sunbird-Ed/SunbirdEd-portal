@@ -22,7 +22,7 @@ angular.module('playerApp')
                         Player: 'Resources',
                         Search: $stateParams ? $stateParams.type : 'All',
                         TocPlayer: 'Courses',
-                        PreviewCollection: 'Resources',
+                        PreviewCollection: 'Courses',
                         Profile: 'Users',
                         PublicProfile: 'Users' };
                     if (searchEnabledStates.indexOf(stateName) >= 0) {
@@ -225,8 +225,8 @@ angular.module('playerApp')
                             name: 'Home',
                             link: 'home'
                         }, {
-                            name: 'Resources',
-                            link: 'resources'
+                            name: 'Courses',
+                            link: 'learn'
                         }, {
                             name: $stateParams.name,
                             link: ''
