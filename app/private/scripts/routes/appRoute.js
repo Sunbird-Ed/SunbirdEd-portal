@@ -890,7 +890,31 @@ angular.module('playerApp')
             onExit: function ($rootScope) {
                 $rootScope.profileActive = '';
             }
-        });
+        })
+        .state('MyActivity', {
+          url: '/course-creator-dashboard',
+          views: {
+              mainView: {
+                  templateUrl: '/views/dashboard/course/courseConsumptionDashboard.html',
+                  controller: 'courseCreatorDashboardCtrl as courseDashboard'
+              }
+          },
+          params: {
+              orgId: null
+          },
+          onEnter: function ($stateParams, $rootScope, routeHelperService) {
+              if ($stateParams.backState === 'Profile') {
+                  $rootScope.profileActive = 'active';
+              } else {
+                  $rootScope.courseActive = 'active';
+              }
+              $rootScope.isPlayerPage = false;
+              routeHelperService.loadRouteConfig('MyActivity', null);
+          },
+          onExit: function ($rootScope) {
+              $rootScope.courseActive = '';
+          }
+      });
   })
   .run(function ($urlRouter, $http, $state, permissionsService, $rootScope, $location, config,
       toasterService, routeHelperService, userService) {
