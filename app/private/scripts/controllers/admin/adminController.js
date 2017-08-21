@@ -152,7 +152,6 @@ angular.module('playerApp')
              // open  upload csv modal
 
             admin.orgBulkUpload = function () {
-                $('#orgBulkUpload').modal('refresh');
                 $('#orgBulkUpload').modal({
                     onShow: function () {
                         admin.fileName = '';
@@ -161,9 +160,13 @@ angular.module('playerApp')
                     },
                     onHide: function () {
                         admin.loader = {};
+                        admin.fileName = '';
+                        admin.bulkOrgProcessId = '';
                         return true;
                     }
                 }).modal('show');
+                $('#orgBulkUpload').modal('refresh');
+                $('.ui.modal.hidden').remove();
             };
             admin.userBulkUpload = function () {
                 $('#userBulkUpload').modal('refresh');
@@ -424,6 +427,7 @@ angular.module('playerApp')
                 admin.userRolesList = [];
                 admin.userRoles = permissionsService.allRoles();
             };
+
             admin.openPublicProfile = function (id, user) {
                 searchService.setPublicUserProfile(user);
                 $state.go('PublicProfile', { userId: window.btoa(id), userName: user.firstName });

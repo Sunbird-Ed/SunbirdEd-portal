@@ -123,6 +123,7 @@ angular.module('playerApp') // add those all values
                   },
                   request: updateReq
               };
+
               profile.disableSave = true;
               profile.loader = toasterService.loader('', apiMessages.SUCCESS.editingProfile);
               userService.updateUserProfile(
@@ -234,8 +235,11 @@ angular.module('playerApp') // add those all values
           };
 
           profile.deleteAddress = function (address) {
-              var req = { address: address };
+              address.isDeleted = true;
+
+              var req = { address: [address] };
               req.userId = $rootScope.userId;
+
               profile.updateProfile(req);
           };
 
@@ -259,6 +263,11 @@ angular.module('playerApp') // add those all values
               var isValid = formValidation.validate('.educationForm');
 
               if (isValid === true || !isValid.includes(false)) {
+                  education.forEach(function (edu) {
+                      edu.percentage = edu.percentage ? parseFloat(edu.percentage) : edu.percentage;
+                      edu.yearOfPassing = edu.yearOfPassing ? parseInt(edu.yearOfPassing) :
+                                             edu.yearOfPassing;
+                  });
                   var req = { education: education };
                   profile.updateProfile(req);
               } else return false;
@@ -327,7 +336,7 @@ angular.module('playerApp') // add those all values
           };
 
           profile.deleteExperience = function (experiences) {
-              var req = { jobProfile: experiences };
+              var req = { jobProfile: [experiences] };
               req.userId = $rootScope.userId;
               profile.updateProfile(req);
           };
