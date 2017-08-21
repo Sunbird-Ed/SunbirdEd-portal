@@ -111,9 +111,7 @@ angular.module('playerApp')
                         $rootScope.courseName = toc.courseHierachy.name;
                         if ($rootScope.isTocPage) {
                             toc.applyAccordion();
-                        } else {
-                            toc.courseProgress = 0;
-                        }
+                        } 
                     } else {
                         toc.loader.showLoader = false;
                         toasterService.error($rootScope.errorMessages.Courses.TOC.ERROR);
