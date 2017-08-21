@@ -3,8 +3,8 @@
 angular.module('playerApp')
   .controller('courseScheduleCtrl',
     ['courseService', 'sessionService', '$stateParams', '$state', '$timeout', '$scope', '$rootScope',
-    'toasterService', '$location', '$anchorScroll', 'contentStateService', '$window', 'batchService',
-    function (courseService, sessionService, $stateParams, $state, $timeout, $scope, $rootScope,
+        'toasterService', '$location', '$anchorScroll', 'contentStateService', '$window', 'batchService',
+        function (courseService, sessionService, $stateParams, $state, $timeout, $scope, $rootScope,
         toasterService, $location, $anchorScroll, contentStateService, $window, batchService) {
             var toc = this;
             toc.playList = [];
@@ -146,47 +146,52 @@ angular.module('playerApp')
                             }
                         }
                     });
-                    if (toc.courseProgress > (
-                 toc.courseParams.progress || !toc.courseParams.progress
-                )) {
-                        $timeout(function () {
-                            var progPercent = parseInt(
-                         toc.courseProgress * 100 / toc.courseTotal, 10
-                        );
-                            $('#tocProgress').progress({ percent: progPercent });
-                        }, 100);
-                        var curCourse = _.find(
-                     $rootScope.enrolledCourses, { courseId: toc.courseId }
-                    );
-                        if (curCourse) {
-                            curCourse.lastReadContentId =
-                       toc.playList[toc.itemIndex];
-                            $rootScope.enrolledCourseIds[toc.courseId]
-                       .lastReadContentId = curCourse.lastReadContentId;
-                            curCourse.progress = toc.courseProgress;
-                            $rootScope.enrolledCourseIds[toc.courseId]
-                       .progress = curCourse.progress;
-                        }
+                    if (toc.courseProgress > (toc.courseParams.progress || 0)) {
+                        toc.updateCourseProgress();
                     }
-        // update status of content items
-                    toc.playList.forEach(function (item, index) {
-                        if (
-                     index >= 0 && toc.contentStatusList[toc.playList[index]]
-                    ) {
-                            $('#node' + index).find('.icon')
-                       .removeClass('grey blue green')
-                       .addClass(toc.contentStatusList[toc.playList[index]]);
-                        }
-                    });
                 });
             };
+
+            toc.updateCourseProgress = function () {
+                if (toc.courseProgress || toc.courseParams.progress) {
+                    toc.courseProgress = toc.courseProgress || toc.courseParams.progress;
+                    $timeout(function () {
+                        var progPercent = parseInt(
+                         toc.courseProgress * 100 / toc.courseTotal, 10
+                        );
+                        $('#tocProgress').progress({ percent: progPercent });
+                    }, 500);
+                    var curCourse = _.find(
+                     $rootScope.enrolledCourses, { courseId: toc.courseId }
+                    );
+                    if (curCourse) {
+                        curCourse.lastReadContentId =
+                       toc.playList[toc.itemIndex];
+                        $rootScope.enrolledCourseIds[toc.courseId]
+                       .lastReadContentId = curCourse.lastReadContentId;
+                        curCourse.progress = toc.courseProgress;
+                        $rootScope.enrolledCourseIds[toc.courseId]
+                       .progress = curCourse.progress;
+                    }
+                }
+
+                        // update status of content items
+                toc.playList.forEach(function (item, index) {
+                    if (index >= 0 && toc.contentStatusList[toc.playList[index]]) {
+                        $('#node' + index).find('.icon')
+                       .removeClass('grey blue green')
+                       .addClass(toc.contentStatusList[toc.playList[index]]);
+                    }
+                });
+            };
+
             toc.expandMe = function (index, item) {
                 if (item && item.mimeType
             && item.mimeType !== 'application/vnd.ekstep.content-collection') {
                     toc.itemIndex = toc.playList.indexOf(item.identifier);
-                    if(toc.playContent) {
-                    toc.playPlaylistContent(item.identifier, '');
-                  }
+                    if (toc.playContent) {
+                        toc.playPlaylistContent(item.identifier, '');
+                    }
                 } else {
                     var accIcon = $(index.target).closest('.title').find('i');
                     toc.updateIcon(accIcon, !$(accIcon).hasClass('plus'));
@@ -495,24 +500,24 @@ angular.module('playerApp')
             };
 
             toc.batchCardShow = true;
-            toc.showBatchCardList = function(){
+            toc.showBatchCardList = function () {
                 var enroledCourses = $rootScope.enrolledCourses;
-                var isEnroled = _.find($rootScope.enrolledCourses, function(o) {
+                var isEnroled = _.find($rootScope.enrolledCourses, function (o) {
                     return o.courseId === toc.courseId;
                 });
-                if(!_.isUndefined(isEnroled)){
+                if (!_.isUndefined(isEnroled)) {
                     toc.batchCardShow = false;
-                    batchService.getBatchDetails({ "batchId" : isEnroled.batchId }).then(function (response) {
+                    batchService.getBatchDetails({ batchId: isEnroled.batchId }).then(function (response) {
                         if (response && response.responseCode === 'OK') {
                             toc.selectedBatchInfo = response.result.response;
                             toc.batchStatus = toc.selectedBatchInfo.status;
-                            if(toc.batchStatus && toc.batchStatus> 0) {
+                            if (toc.batchStatus && toc.batchStatus > 0) {
                                 toc.playContent = true;
-                                if(toc.batchStatus < 2){
-                                   contentStateService.init();
-                               }
+                                if (toc.batchStatus < 2) {
+                                    contentStateService.init();
+                                }
                             }
-                        }else{
+                        } else {
                             toasterService.error($rootScope.errorMessages.BATCH.GET.FAILED);
                         }
                     }).catch(function () {

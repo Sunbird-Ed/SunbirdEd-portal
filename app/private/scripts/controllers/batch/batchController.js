@@ -156,6 +156,7 @@ angular.module('playerApp')
 
             batch.clearBatchData = function(){
                   $('#createBatch').form('clear');
+                  $('#createBatch').find('.search').val('');
             }
 
             batch.getCouserBatchesList = function () {
