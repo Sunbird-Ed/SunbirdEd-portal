@@ -17,7 +17,7 @@
                                 ng-if="toc.playList.length > 0 && toc.playContent"
                                 ng-click="toc.resumeCourse()">Resume course</div>
                             <div class="item" data-value="0"
-                                sb-permissions permission-only="COURSE_ADMIN,COURSE_CREATOR"
+                                sb-permissions permission-only="COURSE_ADMIN"
                                 ng-click="toc.showCourseDashboard = 'true'" >View course stats</div>
                         </div>
                     </div>
@@ -29,10 +29,8 @@
                         </div>
                     </div> -->
                 </div>
-                <div class="four wide column margin-top-Negative30">
+                <div class="four wide column margin-top-Negative30" ng-if="toc.courseType != 'ENROLLED_COURSE'" sb-permissions permission-only="COURSE_ADMIN">
                     <div class="ui selection dropdown" id="courseDropdownValues"
-                        ng-if="toc.courseType !== 'ENROLLED_COURSE'"
-                        sb-permissions permission-only="COURSE_ADMIN, COURSE_CREATOR"
                         ng-init="toc.initDropdownValues()">
                         <i class="dropdown icon"></i>
                         <div class="default text">Select option</div>
