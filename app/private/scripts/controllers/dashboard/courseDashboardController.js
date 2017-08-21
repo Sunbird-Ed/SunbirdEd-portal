@@ -19,17 +19,17 @@ angular.module('playerApp')
   		// Dataset - progress / consumption
   		courseDashboard.dataset = 'progress';
   		var currentUserRoles = permissionsService.getCurrentUserRoles();
-		var userRolesLookup  = ['COURSE_ADMIN','COURSE_CREATOR'];
-		// Check logged user has both roles to show progress, and consumption dropdwon values
+  		console.log(currentUserRoles);
+		/*var userRolesLookup  = ['COURSE_ADMIN','COURSE_CREATOR'];
+		Check logged user has both roles to show progress, and consumption dropdwon values
 		courseDashboard.bothRolesUser    = _.every(userRolesLookup, _.partial(_.includes, currentUserRoles));
-
 		if(!courseDashboard.bothRolesUser){
 	  		angular.forEach(currentUserRoles, function(roleName, key){
 	  			if (roleName === 'COURSE_CREATOR'){
 	  				//courseDashboard.dataset = 'consumption';
 	  			}
 	  		})
-  		}
+  		}*/
 
   		// Search and sort table data
   		courseDashboard.orderByField = ''; // Default value
@@ -107,26 +107,6 @@ angular.module('playerApp')
 			courseDashboard.filterQueryTextMsg = angular.element(item).data('timeperiod-text');
 			getCourseDashboardData(courseDashboard.filterTimePeriod);
 		};
-
-		/**
-		 * @Function onAfterDatasetChange
-		 * @Description load data based on selected filter
-		 * @Params filterTimePeriod
-		 * @Return {[type]} [description]
-		 */
-		/*courseDashboard.onAfterDatasetChange = function (item){
-			// Check old filter value. If old value and new filter value are same
-			if (courseDashboard.dataset === angular.element(item).data('dataset')){
-				console.log('avoid same apis call twice');
-				return false;
-			}
-
-			courseDashboard.filterTimePeriod   = courseDashboard.filterTimePeriod;
-			courseDashboard.showLoader   = true;
-			courseDashboard.orderByField = '';
-			courseDashboard.dataset = angular.element(item).data('dataset');
-			getCourseDashboardData();
-		};*/
 
 		/**
 		 * @Function loadData
