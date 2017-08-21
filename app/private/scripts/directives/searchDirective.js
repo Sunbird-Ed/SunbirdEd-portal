@@ -22,6 +22,7 @@ angular.module('playerApp').directive('search', function () {
             $rootScope.search.contentTypes
                     = config.FILTER.RESOURCES.contentTypes;
             $rootScope.search.subjects = config.FILTER.RESOURCES.subjects;
+            $rootScope.search.grades = config.DROPDOWN.COMMON.grades;
             $rootScope.search.boards = config.FILTER.RESOURCES.boards;
             $scope.search.searchTypeKeys = config.searchTypeKeys;
             $rootScope.search.sortingOptions = config.sortingOptions;
@@ -109,6 +110,7 @@ angular.module('playerApp').directive('search', function () {
                 $rootScope.search.selectedContentType = $rootScope.search.filters.contentType || [];
                 $rootScope.search.selectedBoard = $rootScope.search.filters.board || [];
                 $rootScope.search.selectedSubject = $rootScope.search.filters.subject || [];
+                $rootScope.search.selectedGrades = $rootScope.search.filters.grade || [];
                 $rootScope.search.selectedConcepts = $rootScope.search.filters.concepts || [];
                 $rootScope.search.broadCastConcepts();
                 $rootScope.search.sortByOption = Object.keys($rootScope.search.sortBy).length > 0
@@ -233,10 +235,22 @@ angular.module('playerApp').directive('search', function () {
                     $scope.search.resultType = 'content';
                     req.filters.objectType = ['Content'];
                 } else if ($rootScope.search.selectedSearchKey === 'Users') {
+                    var emailValidator = /\S+@\S+\.\S+/;
+                    var isEmail = emailValidator.test(req.query);
+                    if (isEmail === true) {
+                        req.filters.email = req.query;
+                    }
+                    if (isEmail === false && req.filters.email) {
+                        delete req.filters.email;
+                    }
                     req.filters.objectType = ['user'];
+                    if ($rootScope.organisationIds) {
+                        req.filters['organisations.organisationId'] = $rootScope.organisationIds[0];
+                    }
                     $scope.search.searchFn = adminService.userSearch({ request: req });
                     $scope.search.resultType = 'users';
                 } else if ($rootScope.search.selectedSearchKey === 'Organisations') {
+                    req.filters = {};
                     req.filters.objectType = ['org'];
                     $scope.search.searchFn = adminService.orgSearch({ request: req });
                     $scope.search.resultType = 'organisations';
@@ -305,15 +319,18 @@ angular.module('playerApp').directive('search', function () {
             };
             $rootScope.search.applyFilter = function () {
                 $rootScope.search.filters.language = $rootScope.search.selectedLanguage;
-                $rootScope.search.filters.contentType = $rootScope.search.selectedContentType;
                 $rootScope.search.filters.subject = $rootScope.search.selectedSubject;
                 if ($rootScope.search.selectedSearchKey === 'Users') {
-                    $rootScope.search.filters.education = undefined;
-                    $rootScope.search.filters["education.board"] = $rootScope.search.selectedBoard;
+                    $rootScope.search.filters.board = undefined;
+                    $rootScope.search.filters.concepts = undefined;
+                    $rootScope.search.filters.contentType = undefined;
+                    $rootScope.search.filters.grade = $rootScope.search.selectedGrades;
                 } else {
                     $rootScope.search.filters.board = $rootScope.search.selectedBoard;
+                    $rootScope.search.filters.concepts = $rootScope.search.selectedConcepts;
+                    $rootScope.search.filters.contentType = $rootScope.search.selectedContentType;
                 }
-                $rootScope.search.filters.concepts = $rootScope.search.selectedConcepts;
+
                 $rootScope.isSearchResultsPage = false;
                 $scope.search.searchRequest();
             };
@@ -328,6 +345,7 @@ angular.module('playerApp').directive('search', function () {
                 $rootScope.search.filters = {};
                 $rootScope.isSearchResultsPage = false;
                 $rootScope.isSearchPage = true;
+                $rootScope.search.selectedGrades = [];
                 $scope.search.searchRequest();
                 // $state.go($rootScope.search.selectedSearchKey);
             };
@@ -341,6 +359,7 @@ angular.module('playerApp').directive('search', function () {
             $rootScope.search.close = function () {
                 $rootScope.search.selectedSearchKey =
                         $rootScope.search.selectedSearchKey === 'Users'
+                        || $rootScope.search.selectedSearchKey === 'Organisations'
                         ? 'Profile'
                         : $rootScope.search.selectedSearchKey;
                 var closeUrl = ($rootScope.search.selectedSearchKey === 'All')

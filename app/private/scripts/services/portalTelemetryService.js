@@ -8,9 +8,6 @@ angular.module('playerApp').service('portalTelemetryService', function($http, $f
     this.fireImpressions = function(data) {
         org.sunbird.portal.eventManager.dispatchEvent("sunbird:telemetery:portal:impression", data)
     };
-    this.fireupdateProfile = function(data) {
-        org.sunbird.portal.eventManager.dispatchEvent("sunbird:telemetry:portal:profileupdate", data);
-    };
     this.addTelemetryEvent = function(e, data) {
         telemetryEvents.push(data);
         if (telemetryEvents.length >= config.TELEMETRY.MAX_BATCH_SIZE) {
