@@ -922,11 +922,7 @@ angular.module('playerApp')
               }
           },
           onEnter: function ($stateParams, $rootScope, routeHelperService) {
-              if ($stateParams.backState === 'Profile') {
-                  $rootScope.profileActive = 'active';
-              } else {
-                  $rootScope.courseActive = 'active';
-              }
+              $rootScope.courseActive = 'active';
               $rootScope.isPlayerPage = false;
               routeHelperService.loadRouteConfig('MyActivity', null);
           },
