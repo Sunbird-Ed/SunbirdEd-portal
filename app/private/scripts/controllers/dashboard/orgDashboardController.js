@@ -32,14 +32,14 @@ angular.module('playerApp')
         };
 
         dashboardService.getAdminDashboardData(requestBody, dashboardData.datasetPreviousValue).then(function(apiResponse) {
-			dashboardData.graphShow = 0;
+            dashboardData.graphShow = 0;
             dashboardData.numericStatArray = [];
             var allKey = [];
             dashboardData.graphArray = [];
 
             if (apiResponse && apiResponse.responseCode === 'OK') {
               if (dashboardData.datasetPreviousValue == 'creation') {
-				var series = [];
+                var series = [];
                 angular.forEach(apiResponse.result.snapshot, function(numericData, key) {
                   if (key === 'org.creation.authors.count' ||
                     key === 'org.creation.reviewers.count' ||
