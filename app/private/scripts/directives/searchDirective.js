@@ -362,11 +362,10 @@ angular.module('playerApp').directive('search', function () {
                 $scope.search.searchRequest();
             };
             $rootScope.search.close = function () {
-                $rootScope.search.selectedSearchKey =
-                        $rootScope.search.selectedSearchKey === 'Users'
-                        || $rootScope.search.selectedSearchKey === 'Organisations'
-                        ? 'Profile'
-                        : $rootScope.search.selectedSearchKey;
+                if ($rootScope.search.selectedSearchKey === 'Users'
+                        || $rootScope.search.selectedSearchKey === 'Organisations') {
+                    $state.go('Profile');
+                }
                 var closeUrl = ($rootScope.search.selectedSearchKey === 'All')
                         ? 'Home' : $rootScope.search.selectedSearchKey;
                 $state.go(closeUrl);
