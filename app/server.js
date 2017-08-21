@@ -16,6 +16,7 @@ const express = require('express'),
   permissionsHelper = require('./helpers/permissionsHelper.js'),
   tenantHelper = require('./helpers/tenantHelper.js'),
   envHelper = require('./helpers/environmentVariablesHelper.js'),
+  publicServicehelper = require('./helpers/publicServiceHelper.js'),
   fs = require('fs'),
   port = envHelper.PORTAL_PORT,
   learnerURL = envHelper.LEARNER_URL,
@@ -95,6 +96,8 @@ app.use('/private/index', function(req, res, next) {
   next();
 });
 
+app.get('/public/service/orgs', publicServicehelper.getOrgs);
+
 app.get('/private/service/get/tenant/logo', function(req, res) {
   res.status(200);
   var data = { 'logo': '' };
@@ -104,6 +107,7 @@ app.get('/private/service/get/tenant/logo', function(req, res) {
   res.send(data)
   res.end();
 });
+
 
 app.all('/content-editor/telemetry', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: reqDataLimitOfContentEditor }), keycloak.protect(), telemetryHelper.logSessionEvents);
