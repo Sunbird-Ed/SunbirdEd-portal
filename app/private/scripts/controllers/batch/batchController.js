@@ -39,9 +39,10 @@ angular.module('playerApp')
                     $('.ui.calendar').calendar({refresh: true});
                     $("#createBatchModal").modal({
                         onShow: function () {
+                            var today=new Date();
                             $('.ui.calendar#rangestartAdd').calendar({
                                 type: 'date',
-                                minDate: new Date() ,
+                                minDate: new Date(today.setDate(today.getDate() + 1)),
                                 formatter: {
                                     date: function (date, settings) {
                                        return $filter('date')(date, "yyyy-MM-dd")
@@ -78,7 +79,7 @@ angular.module('playerApp')
                             });
                             $('.ui.calendar#rangeendAdd').calendar({
                                 type: 'date',
-                                minDate: new Date(),
+                                minDate:  new Date(today.setDate(today.getDate() + 1)),
                                 formatter: {
                                     date: function (date, settings) {
                                         return $filter('date')(date, "yyyy-MM-dd")
@@ -86,6 +87,7 @@ angular.module('playerApp')
                                 },
                                 startCalendar: $('.ui.calendar#rangestartAdd'),
                             });
+                             $(".ui.modal.transition.hidden").remove();
                         },
                         onHide: function () {
                             var previousUrl = JSON.parse(window.localStorage.getItem('previousURl'));
