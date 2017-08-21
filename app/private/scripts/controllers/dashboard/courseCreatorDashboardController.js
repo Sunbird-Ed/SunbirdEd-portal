@@ -13,20 +13,21 @@ angular.module('playerApp')
 
     	// Initialize variables
 		var courseDashboard = this;
-		courseDashboard.chartHeight = 120;
-  		courseDashboard.filterQueryTextMsg = '7 days';
-  		courseDashboard.filterTimePeriod = '7d';
+		courseDashboard.chartHeight   = 110;
   		courseDashboard.myCoursesList = [];
   		courseDashboard.courseIdentifier = '';
+  		courseDashboard.filterTimePeriod = '7d';
+  		courseDashboard.filterQueryTextMsg = '7 days';
 
   		// Dataset - consumption
-  		courseDashboard.dataset = 'consumption';
+  		courseDashboard.dataset   = 'consumption';
+  		courseDashboard.graphShow = 0;
 
-  		// Variables to show loader/errorMsg
+  		// Variables to show loader/errorMsg/warningMsg
   		courseDashboard.showLoader = true;
-  		courseDashboard.showWarningMsg = false;
   		courseDashboard.showError  = false;
   		courseDashboard.errorMsg   = '';
+  		courseDashboard.showWarningMsg = false;
 
 		/**
 		 * @Function to load dashboard
@@ -43,13 +44,9 @@ angular.module('playerApp')
 
 			// Call dashboard service
 			dashboardService.getCourseDashboardData(request, courseDashboard.dataset).then(function (apiResponse) {
-				courseDashboard.consumptionNumericData = [];
-
 				if (apiResponse && apiResponse.responseCode === 'OK'){
-					courseDashboard.labels = [];
+					courseDashboard.consumptionNumericData = [];
 					courseDashboard.data   = [];
-					courseDashboard.series = [];
-					var yAxisLable         = 'Timespent for content consumption';
 
 					// To print block data
 					angular.forEach(apiResponse.result.snapshot,function(numericData, key){
@@ -60,25 +57,40 @@ angular.module('playerApp')
 					})
 
 					// To print line chart
-					angular.forEach(apiResponse.result.series,function(linechartData, key){
-						if(key === 'course.consumption.time_spent'){
-							// Push legend series label
-							courseDashboard.series.push(linechartData.name);
-							yAxisLable = linechartData.name;
-							var lineDataArray = new Array();
-							// Iterate day/week/month wise data
-							angular.forEach(linechartData.buckets, function(bucketValue, bucketKey){
-								lineDataArray.push(bucketValue.value);
-                 				courseDashboard.labels.push(bucketValue.key_name);
-							})
+					var bucketkeys = [];
+					angular.forEach(apiResponse.result.series, function(bucketData, key) {
+	                  	if (bucketkeys.indexOf(key) == -1) {
+	                    	bucketkeys.push(key);
+	                    	var dataArray = [];
+	                   		var labels    = [];
+	                    	var data      = [];
 
-							courseDashboard.data.push(lineDataArray);
-						}
-					})
+	                   		angular.forEach(bucketData.buckets, function(bucketValue, bucketKey) {
+	                      		dataArray.push(bucketValue.value);
+	                      		labels.push(bucketValue.key_name);
+	                    	})
 
-					// Get chart options and colors
-					courseDashboard.options = dashboardService.getChartOptions(yAxisLable);
-        			courseDashboard.colors  = dashboardService.getChartColors('consumption');
+	                    	data.push(dataArray);
+	                    	var options = dashboardService.getChartOptions(bucketData.name);
+	                    	var colors  = dashboardService.getChartColors('consumption');
+	                    	var series  = [bucketData.name];
+
+	                   		var found = false;
+	                    	for (var j = 0; j < courseDashboard.data.length; j++) {
+	                      		if (courseDashboard.data[j][5] == bucketData.group_id) {
+	                        		found = true;
+	                        		break;
+	                      		}
+	                    	}
+	                    	if (found == true) {
+	                      		var d = courseDashboard.data[j][2];
+	                      		courseDashboard.data[j][2].push(dataArray);
+	                      		//courseDashboard.data.push
+	                    	} else {
+	                      		courseDashboard.data.push([series, labels, data, colors, options, bucketData.group_id]);
+	                    	}
+	                  	}
+	                });
 
 					courseDashboard.showLoader = false;
 					courseDashboard.showError  = false;
@@ -164,6 +176,7 @@ angular.module('playerApp')
 			courseDashboard.showLoader       = true;
 			getCourseDashboardData();
 		}
+
 		/**
 		 * @Function initMyCoursesDropdown
 		 * @Description show list my courses
@@ -174,4 +187,12 @@ angular.module('playerApp')
 				onChange: function(){}
 			});
 		};
+
+      	courseDashboard.nextGraph = function() {
+        	courseDashboard.graphShow++;
+      	}
+
+      	courseDashboard.previousGraph = function() {
+        	courseDashboard.graphShow--;
+      	}
 	}])
