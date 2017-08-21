@@ -44,7 +44,6 @@ angular.module('playerApp')
                     autoUpload: false,
                     debug: true,
                     validation: {
-                        acceptFiles: config.FileExtensionToUpload,
                         sizeLimit: config.MaxFileSizeToUpload,
                         allowedExtensions: config.AllowedFileExtension
                     },
@@ -160,7 +159,8 @@ angular.module('playerApp')
                             contentCreation.youtubeVideoUrl = '';
                             contentCreation.editContent(res.result.content_id);
                         } else {
-                            contentCreation.getContentUploadUrl(res.result.content_id);
+                            contentCreation.uploadContentInS3();
+                            // contentCreation.getContentUploadUrl(res.result.content_id);
                         }
                     } else {
                         contentCreation.loader.showLoader = false;
