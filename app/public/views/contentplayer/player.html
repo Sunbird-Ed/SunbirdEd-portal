@@ -11,30 +11,11 @@
             <div class="ui stackable twelve column grid">
 
                 <div class="twelve wide column">
-                    <div class="content-player" ng-if="(contentData.mimeType === 'application/vnd.ekstep.ecml-archive' || contentData.mimeType === 'application/vnd.ekstep.html-archive') && showIFrameContent">
+                    <div class="content-player" ng-if="showIFrameContent">
                         <iframe id="contentViewerIframe" class="contentViewerIframeShadow" height='100%' width='100%'></iframe>
                     </div>
-                    <div apply-script id="content-video-player-holder" class="content-player" videosrc="{{contentData.artifactUrl}}" videotype="{{contentData.mimeType}}" ng-if="contentData.mimeType !== 'video/youtube' && contentData.mimeType.indexOf('video') > -1">
-                        <video height='100%' width='100%' id="content-video-player" class="video-js vjs-default-skin player-video" controls preload="auto" data-setup='{"controls":true}'>
-                            <source src="{{contentData.artifactUrl}}" type='{{contentData.mimeType}}' />
-
-                        </video>
-                    </div>
-                    <div class="content-player" ng-if="contentData.mimeType === 'video/youtube'" apply-script id="content-video-player-youtube-holder" videosrc="{{contentData.artifactUrl}}">
-
-                        <video height='100%' width='100%' id="content-video-player-youtube"></video>
-                    </div>
-                    <div ng-if="contentData.mimeType === 'application/pdf'" class="pdf-editor content-player">
-                        <div ng-include="'views/contentplayer/pdfToolBar.html'"></div>
-                        <pdf-viewer delegate-handle="content-player" url="contentData.artifactUrl" scale="1.5" show-toolbar="false"></pdf-viewer>
-                    </div>
-                    <div class="content-player" ng-if="contentData.mimeType.indexOf('image') > -1">
-                        <img height='100%' width='100%' ng-src="{{contentData.artifactUrl}}" />
-                    </div>
-
                 </div>
                 <div class="twelve wide column">
-                    <!-- <div ng-include="'views/contentplayer/contentMeta.html'"></div> -->
                     <h2 class="ui header">
                         {{contentData.description}}
                     </h2>

@@ -46,10 +46,10 @@ angular.module('playerApp')
                 document.execCommand('copy');
                 $('#buttonPopUp')
                     .popup({
-                        popup: $('.custom.popup'),
+                        popup: $('#LinkCopiedToClipboard'),
                         on: 'click',
                         position: 'top center',
-                        color: '#FF0000'
+                        color: '#4183c4'
                     });
             };
         }]);

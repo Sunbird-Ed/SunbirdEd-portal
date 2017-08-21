@@ -790,17 +790,12 @@ angular.module('playerApp')
               orgId: null
           },
           onEnter: function ($stateParams, $rootScope, routeHelperService) {
-              if ($stateParams.backState === 'Profile') {
-                  $rootScope.profileActive = 'active';
-              } else {
-                  $rootScope.resourcesActive = 'active';
-              }
+              $rootScope.profileActive = 'active';
               $rootScope.isPlayerPage = true;
               routeHelperService.loadRouteConfig('orgDashboard', null);
           },
           onExit: function ($rootScope) {
               $rootScope.profileActive = '';
-              $rootScope.resourcesActive = '';
           }
       })
       .state('WorkSpace.ContentBatch', {
