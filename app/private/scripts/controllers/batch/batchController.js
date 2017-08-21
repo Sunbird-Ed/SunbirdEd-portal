@@ -11,8 +11,8 @@
 angular.module('playerApp')
     .controller('BatchController', ['$rootScope', '$timeout', '$state','$scope', '$stateParams', 
     'batchService', '$filter', 'permissionsService', 'errorMessages', 'toasterService', 'courseService',
-    'learnService', function($rootScope, $timeout, $state, $scope, $stateParams, batchService, $filter, 
-    permissionsService, errorMessages, toasterService, courseService, learnService) {
+    'learnService','$window', function($rootScope, $timeout, $state, $scope, $stateParams, batchService, $filter, 
+    permissionsService, errorMessages, toasterService, courseService, learnService,$window) {
             var batch = this;
             batch.userList = [];
             batch.menterList = [];
@@ -39,9 +39,10 @@ angular.module('playerApp')
                     $('.ui.calendar').calendar({refresh: true});
                     $("#createBatchModal").modal({
                         onShow: function () {
+                            var today=new Date();
                             $('.ui.calendar#rangestartAdd').calendar({
                                 type: 'date',
-                                minDate: new Date() ,
+                                minDate: new Date(today.setDate(today.getDate() + 1)),
                                 formatter: {
                                     date: function (date, settings) {
                                        return $filter('date')(date, "yyyy-MM-dd")
@@ -78,7 +79,7 @@ angular.module('playerApp')
                             });
                             $('.ui.calendar#rangeendAdd').calendar({
                                 type: 'date',
-                                minDate: new Date(),
+                                minDate:  new Date(today.setDate(today.getDate() + 1)),
                                 formatter: {
                                     date: function (date, settings) {
                                         return $filter('date')(date, "yyyy-MM-dd")
@@ -86,6 +87,7 @@ angular.module('playerApp')
                                 },
                                 startCalendar: $('.ui.calendar#rangestartAdd'),
                             });
+                             $(".ui.modal.transition.hidden").remove();
                         },
                         onHide: function () {
                             var previousUrl = JSON.parse(window.localStorage.getItem('previousURl'));
@@ -154,6 +156,7 @@ angular.module('playerApp')
 
             batch.clearBatchData = function(){
                   $('#createBatch').form('clear');
+                  $('#createBatch').find('.search').val('');
             }
 
             batch.getCouserBatchesList = function () {
@@ -296,7 +299,11 @@ angular.module('playerApp')
                 courseService.enrollUserToCourse(req).then(function (response) {
                     if (response && response.responseCode === 'OK') {
                         batch.showEnroll = false;
-                        toasterService.error(errorMessages.BATCH.ENROLLED.SUCCESS);
+                        toasterService.success(errorMessages.BATCH.ENROLLED.SUCCESS);
+                        $timeout(function(){
+                          $window.location.reload();  
+                        },2000);
+                        
                     }else{
                         toasterService.error(errorMessages.Courses.ENROLL.ERROR);
                     }

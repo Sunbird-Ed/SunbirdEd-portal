@@ -32,7 +32,6 @@ angular.module('playerApp')
         };
 
         dashboardService.getAdminDashboardData(requestBody, dashboardData.datasetPreviousValue).then(function(apiResponse) {
-            //var apiResponse = JSON.parse(apiResponse);
             var series = [];
             dashboardData.numericStatArray = [];
             var allKey = [];
