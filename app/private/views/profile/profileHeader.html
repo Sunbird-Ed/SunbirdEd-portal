@@ -19,7 +19,7 @@
                                     <div class="ui label">Username: {{profileCtrl.user.userName}}                                    
                                     </div>
                                     <a class="ui link label" ng-if="profileCtrl.user.rootOrg.contactDetail.length > 0 && profileCtrl.user.rootOrg.contactDetail[0].email && profileCtrl.user.rootOrg.orgName" 
-                                    ng-href="mailto:{{profileCtrl.user.rootOrg.contactDetail[0].email}}">{{profileCtrl.user.rootOrg.orgName}} <i class="mail outline icon"></i>
+                                    ng-href="mailto:{{profileCtrl.user.rootOrg.contactDetail[0].email}}" title="Contact Admin">{{profileCtrl.user.rootOrg.orgName}} <i class="mail outline icon"></i>
                                     </a>
                                 </div>
                             </div>
