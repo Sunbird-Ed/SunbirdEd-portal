@@ -776,6 +776,7 @@ angular.module('playerApp')
           },
           onExit: function ($rootScope) {
               $rootScope.resourcesActive = '';
+              $rootScope.profileActive = '';
           }
       })
       .state('orgDashboard', {
