@@ -693,7 +693,6 @@ th {
 .modal .ui.segment {
   box-shadow: none !important;
   border: none!important;
-  overflow-y: auto !important;
 }
 .breadcrumppadding.ui.breadcrumb,
 .breadcrumppadding.ui.breadcrumb:last-child,
