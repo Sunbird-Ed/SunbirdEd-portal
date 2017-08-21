@@ -48,10 +48,10 @@
                 "collection": "COLLECTION",
                 "collectionDescription": "You will be taken to an editor to create a course with assessments/quizzes.",
                 "enterYoutubeURL": "ENTER YOUTUBE URL",
-                "fileUploadOptions": "File accepted only pdf, mp4 and html zip (Max size 25mb).",
+                "fileUploadOptions": "File accepted only pdf, mp4, epub, h5p and html zip (Max size 25mb).",
                 "uploadContent": "Upload Content",
                 "upload": "Upload",
-                "lessonPlanDescription": "lesson Plan Description",
+                "lessonPlanDescription": "Lesson plan description",
                 "lessonPlan": "LESSON PLAN"
             },
             "createLesson": {
@@ -184,13 +184,18 @@
                 "subjects": "Subjects",
                 "summary": "Summary",
                 "contributions": "Contributions",
-                "contents": "Contents"
+                "contents": "Contents",
+                "currentLocation": "Current Location",
+                "grades": "Grades"
             },
             "BUTTON": {
                 "save": "Save",
                 "close": "Close",
                 "edit": "Edit",
                 "add": "Add"
+            },
+            "BADGES": {
+                "header": "Badges"
             }
         },
         "HEADER": {
@@ -213,7 +218,7 @@
             "copyLink": "COPY LINK",
             "linkCopyToClipboard": "link copy to clipboard"
         },
-        "BATCH":{
+        "BATCH": {
             "name": "NAME OF BATCH",
             "description": "ABOUT THIS BATCH",
             "startdate": "START DATE",
@@ -223,14 +228,14 @@
             "mentors": "MENTORS IN THE BATCH",
             "participants": "SELECTED PARTICIPANTS",
             "selectedmentors": "SELECTED MENTORS",
-            "courseBatches" : "COURSE BATCHES"            
+            "courseBatches": "COURSE BATCHES"
         },
-        "SEARCH":{
-            "STATUS":{
-                "INACTIVE":"Inactive",
-                "ACTIVE":"Active",
-                "BLOCKED":"Blocked",
-                "RETIRED":"Retired"
+        "SEARCH": {
+            "STATUS": {
+                "INACTIVE": "Inactive",
+                "ACTIVE": "Active",
+                "BLOCKED": "Blocked",
+                "RETIRED": "Retired"
             }
         }
     }

@@ -47,6 +47,11 @@ angular.module('playerApp')
                 return httpService.post(url, data);
             };
 
+            this.upload = function (req, contentId, qs) {
+                var url = config.URL.CONTENT.UPLOAD + '/' + contentId;
+                return httpService.upload(url, req, null, qs);
+            };
+
             this.uploadMedia = function (req) {
                 return httpService.upload(config.URL.CONTENT.UPLOAD_MEDIA, req);
             };
@@ -69,5 +74,10 @@ angular.module('playerApp')
             this.discardContentFlag = function (req, contentId) {
                 var url = config.URL.CONTENT.DISCARD_FLAG + '/' + contentId;
                 return httpService.post(url, req);
+            };
+
+            this.uploadURL = function (req, contentId) {
+                var url = config.URL.CONTENT.UPLOAD_URL + '/' + contentId;
+                return httpService.post(url, req, null);
             };
         }]);

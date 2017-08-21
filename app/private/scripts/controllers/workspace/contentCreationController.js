@@ -13,16 +13,18 @@ angular.module('playerApp')
         '$timeout', '$rootScope', 'toasterService', function (contentService, config, $scope,
             $state, $timeout, $rootScope, toasterService) {
             var contentCreation = this;
-            contentCreation.contentUploadUrl = config.URL.BASE_PREFIX + config.URL.CONTENT_PREFIX
-                                                                        + config.URL.CONTENT.UPLOAD;
+            contentCreation.contentUploadUrl = config.URL.BASE_PREFIX + config.URL.CONTENT_PREFIX +
+                                                config.URL.CONTENT.UPLOAD;
 
             contentCreation.mimeType = [
-                { name: 'Pdf', value: 'application/pdf' },
-                { name: 'Video', value: 'video/mp4' },
-                { name: 'Html Archive', value: 'application/vnd.ekstep.html-archive' }
+                { name: 'Pdf', value: config.MIME_TYPE.pdf },
+                { name: 'Video', value: config.MIME_TYPE.mp4 },
+                { name: 'Html Archive', value: config.MIME_TYPE.html },
+                { name: 'E-pub', value: config.MIME_TYPE.ePub },
+                { name: 'H5p', value: config.MIME_TYPE.h5p }
             ];
             contentCreation.youtubeVideoMimeType = {
-                name: 'Youtube Video', value: 'video/youtube'
+                name: 'Youtube Video', value: config.MIME_TYPE.youtube
             };
             contentCreation.lessonTypes = config.DROPDOWN.COMMON.lessonTypes;
             contentCreation.showContentCreationModal = false;
@@ -47,18 +49,28 @@ angular.module('playerApp')
                         allowedExtensions: config.AllowedFileExtension
                     },
                     messages: {
-                        sizeError: '{file}' + $rootScope.errorMessages.COMMON.INVALID_FILE_SIZE +
+                        sizeError: '{file} ' +
+                        $rootScope.errorMessages.COMMON.INVALID_FILE_SIZE + ' ' +
                                                 config.MaxFileSizeToUpload / (1000 * 1024) + ' MB.'
                     },
                     callbacks: {
-                        onComplete: function (id, name, responseJSON) {
+                        onComplete: function (id, name, responseJSON, xhr) {
                             if (responseJSON.success) {
                                 contentCreation.editContent(contentCreation.contentId);
                             }
+                            // if (xhr.statusText === 'OK') {
+                            //     responseJSON.success = true;
+                            //     var artifactUrl = xhr.responseURL.split('?')[0];
+                            //     contentCreation.manualUploader.cancel(id);
+                            //     contentCreation.uploadContent(id, artifactUrl, contentCreation.contentId);
+                            //     // contentCreation.editContent(contentCreation.contentId);
+                            // }
                         },
-                        onSubmitted: function (id) {
+                        onSubmitted: function (id, name) {
                             contentCreation.youtubeVideoUrl = '';
                             contentCreation.uploadedFileId = id;
+                            contentCreation.selectedFileName = name;
+                            contentCreation.selectedFile = this.getFile(id);
                             contentCreation.initializeModal();
                             document.getElementById('hide-section-with-button')
                                                     .style.display = 'none';
@@ -142,12 +154,14 @@ angular.module('playerApp')
                     if (res && res.responseCode === 'OK') {
                         contentCreation.loader.showLoader = false;
                         contentCreation.contentId = res.result.content_id;
+                        contentCreation.versionKey = res.result.versionKey;
                         contentCreation.hideContentCreationModal();
                         if (contentCreation.youtubeVideoUrl) {
                             contentCreation.youtubeVideoUrl = '';
                             contentCreation.editContent(res.result.content_id);
                         } else {
-                            contentCreation.uploadContent(res.result.content_id);
+                            contentCreation.uploadContentInS3();
+                            // contentCreation.getContentUploadUrl(res.result.content_id);
                         }
                     } else {
                         contentCreation.loader.showLoader = false;
@@ -173,14 +187,14 @@ angular.module('playerApp')
                 } else {
                     requestBody.mimeType = requestBody.mimeType.value;
                 }
-
+                contentCreation.selectedFileMimeType = requestBody.mimeType;
                 var requestData = {
                     content: requestBody
                 };
                 contentCreation.createContent(requestData);
             };
 
-            contentCreation.uploadContent = function () {
+            contentCreation.uploadContentInS3 = function () {
                 var endpoint = contentCreation.contentUploadUrl + '/' + contentCreation.contentId;
                 contentCreation.manualUploader.setEndpoint(endpoint,
                                                                 contentCreation.uploadedFileId);
@@ -206,5 +220,44 @@ angular.module('playerApp')
                 } else {
                     contentCreation.invalidYoutubeVideoUrl = true;
                 }
+            };
+
+            contentCreation.getContentUploadUrl = function (contentId) {
+                var requestBody = {
+                    content: {
+                        fileName: contentCreation.selectedFileName
+                    }
+                };
+                contentService.uploadURL(requestBody, contentId).then(function (res) {
+                    if (res && res.responseCode === 'OK') {
+                        contentCreation.uploadContentInS3(res.result.pre_signed_url);
+                    } else {
+                        toasterService.error($rootScope.errorMessages
+                                                                .WORKSPACE.UPLOAD_CONTENT.FAILED);
+                        // handle error
+                    }
+                }).catch(function () {
+                    toasterService.error($rootScope.errorMessages.WORKSPACE.UPLOAD_CONTENT.FAILED);
+                    // handle error
+                });
+            };
+
+            contentCreation.uploadContent = function (id, url, contentId) {
+                var requestBody = {};
+                contentCreation.loader = toasterService.loader('', $rootScope.errorMessages
+                                                                        .WORKSPACE.UPLOAD_CONTENT.START);
+                var qs = { fileUrl: url };
+                contentService.upload(requestBody, contentId, qs).then(function (res) {
+                    if (res && res.responseCode === 'OK') {
+                        contentCreation.loader.showLoader = false;
+                        contentCreation.editContent(contentCreation.contentId);
+                    } else {
+                        contentCreation.loader.showLoader = false;
+                        toasterService.error($rootScope.errorMessages.WORKSPACE.UPLOAD_CONTENT.FAILED);
+                    }
+                }).catch(function () {
+                    contentCreation.loader.showLoader = false;
+                    toasterService.error($rootScope.errorMessages.WORKSPACE.UPLOAD_CONTENT.FAILED);
+                });
             };
         }]);
