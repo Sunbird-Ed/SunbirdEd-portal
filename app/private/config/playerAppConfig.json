@@ -28,7 +28,9 @@
                 "GET": "course/v1/get",
                 "GET_MY_COURSE": "course/v1/get/mycourse",
                 "HIERARCHY": "course/v1/hierarchy",
-                "USER_CONTENT_STATE": "course/v1/content/state",
+                "USER_CONTENT_STATE" : "course/v1/content/state",
+                "USER_CONTENT_STATE_READ" : "course/v1/content/state/read",
+                "USER_CONTENT_STATE_UPDATE" : "course/v1/content/state/update",
                 "GET_ENROLLED_COURSES": "course/v1/user/enrollment/list",
                 "GET_LEARN_OTHER_SECTION": "Course",
                 "ENROLL_USER_COURSE": "course/v1/enrol",
@@ -48,7 +50,8 @@
                 "REJECT": "content/v1/reject",
                 "FLAG": "content/v1/flag",
                 "ACCEPT_FLAG": "content/v1/flag/accept",
-                "DISCARD_FLAG": "content/v1/flag/reject"
+                "DISCARD_FLAG": "content/v1/flag/reject",
+                "UPLOAD_URL": "content/v1/upload/url/read"
             },
             "NOTES": {
                 "SEARCH": "notes/v1/search",

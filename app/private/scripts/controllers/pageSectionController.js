@@ -88,20 +88,37 @@ angular.module('playerApp')
 
                   section.loader.showLoader = false;
                   if (section.page.length === 0) {
-                      toasterService.error(
-                         $rootScope.errorMessages.SEARCH.DATA.NO_CONTENT);
+                  section.error = showErrorMessage(true,
+                                        $rootScope.errorMessages.SEARCH.DATA.NO_CONTENT,
+                                        $rootScope.errorMessages.COMMON.INFO); 
                   }
               } else {
                   section.loader.showLoader = false;
-                  toasterService.error(
-                         $rootScope.errorMessages.RESOURCE.PAGE.FAILED);
+                 section.error = showErrorMessage(true,
+                                        $rootScope.errorMessages.SEARCH.DATA.NO_CONTENT,
+                                        $rootScope.errorMessages.COMMON.INFO); 
               }
           }).catch(function () {
               section.loader.showLoader = false;
-              toasterService.error(
-              $rootScope.errorMessages.RESOURCE.PAGE.FAILED);
+               section.error = showErrorMessage(true,
+                                        $rootScope.errorMessages.SEARCH.DATA.NO_CONTENT,
+                                        $rootScope.errorMessages.COMMON.INFO);           
           });
           };
+          
+                   /**
+             * This function called when api failed,
+             * and its show failed response for 2 sec.
+             * @param {String} message
+             */
+            function showErrorMessage(isClose, message, messageType) {
+                var error = {};
+                error.showError = true;
+                error.isClose = isClose;
+                error.message = message;
+                error.messageType = messageType;
+                return error;
+            }
           section.sections();
           var initSearchHandler = $rootScope.$on('initPageSearch', function (event, args) {
               section.sections();

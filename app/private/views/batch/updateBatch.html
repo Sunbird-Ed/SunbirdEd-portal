@@ -12,9 +12,12 @@
                 </div>
             </div>
         </div>
-        <div class="content" ng-switch="batchUpdate.batchData.status">
+        
+        <div class="content">
+
+        <div class="content">
             <form class="ui form batchAddUserForm" id="updateBatch" name="updateBatch" validate>
-                <div ng-switch-when="0">
+                <div ng-if="batchUpdate.batchData.status == 0">
                     <div class="one field" ng-class="{true: 'error'}[batchUpdate.submitted && updateBatch.name.$invalid]">
                         <div class="required field">
                           <label>{{$root.labels.BATCH.name}}</label>
@@ -62,7 +65,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="one field" ng-hide="batchUpdate.batchData.enrollmentType == 'open'">
+                    <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only'">
                         <label>{{$root.labels.BATCH.mentors}}</label>
                         <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="mentors" >
                             <input type="hidden" name="mentors" ng-init="" ng-model="batchUpdate.mentors">
@@ -75,17 +78,17 @@
                             </div>
                         </div>
                     </div>
-                    <div class="one field" ng-hide="batchUpdate.batchData.enrollmentType == 'open'">
+                    <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only'">
                         <label>{{$root.labels.BATCH.selectedmentors}}</label>
                         <a class="ui label" ng-hide="batchUpdate.selectedMentors.length < 0" ng-repeat="mentor in batchUpdate.selectedMentors">
                             <img class="ui right spaced avatar image" ng-src="{{mentor.avatar || 'images/user_logo.png'}}">
                             {{mentor.name}}
                         </a>
                     </div>
-                    <div class="one field" ng-hide="batchUpdate.batchData.enrollmentType == 'open'">
+                    <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only'">
                          <label>{{$root.labels.BATCH.users}}</label>
                         <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="users" >
-                            <input type="hidden" name="users" ng-init="" ng-model="batchUpdate.users">
+                            <input type="hidden" name="users" ng-init="" id="userSelList" ng-model="batchUpdate.users">
                             <i class="dropdown icon"></i>
                             <div class="default text padding-top-20">Select User</div>
                             <div class="menu">
@@ -96,7 +99,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="one field" ng-hide="batchUpdate.batchData.enrollmentType == 'open'">
+                    <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only'">
                         <label>{{$root.labels.BATCH.participants}}</label>
                         <a class="ui label" ng-hide="batchUpdate.selectedUsers.length < 0" ng-repeat="user in batchUpdate.selectedUsers">
                             <img class="ui right spaced avatar image" ng-src="{{user.avatar || 'images/user_logo.png'}}">
@@ -104,7 +107,7 @@
                         </a>
                     </div>
                 </div>
-                <div ng-switch-when="1">
+                <div ng-if="batchUpdate.batchData.status == 1">
                     <div class="one field" ng-class="{true: 'error'}[batchUpdate.submitted && updateBatch.name.$invalid]">
                         <div class="required field">
                           <label>{{$root.labels.BATCH.name}}</label>
@@ -152,7 +155,7 @@
                             </div>
                         </div>
                     </div>
-                   <div class="one field" ng-hide="batchUpdate.batchData.enrollmentType == 'open'">
+                   <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only'">
                         <label>{{$root.labels.BATCH.mentors}}</label>
                         <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="mentors" >
                             <input type="hidden" name="mentors" ng-init="" ng-model="batchUpdate.mentors">
@@ -165,17 +168,17 @@
                             </div>
                         </div>
                     </div>
-                    <div class="one field" ng-hide="batchUpdate.batchData.enrollmentType == 'open'">
+                    <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only'">
                         <label>{{$root.labels.BATCH.selectedmentors}}</label>
                         <a class="ui label" ng-hide="batchUpdate.selectedMentors.length > 0" ng-repeat="mentor in batchUpdate.selectedMentors">
                             <img class="ui right spaced avatar image" ng-src="{{mentor.avatar || 'images/user_logo.png'}}">
                             {{mentor.name}}
                         </a>
                     </div>
-                    <div class="one field" ng-hide="batchUpdate.batchData.enrollmentType == 'open'">
+                    <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only'">
                          <label>{{$root.labels.BATCH.users}}</label>
                         <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="users" >
-                            <input type="hidden" name="users" ng-init="" ng-model="batchUpdate.users">
+                            <input type="hidden" name="users" ng-init="" id="userSelList" ng-model="batchUpdate.users">
                             <i class="dropdown icon"></i>
                             <div class="default text padding-top-20">Select User</div>
                             <div class="menu">
@@ -186,7 +189,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="one field" ng-hide="batchUpdate.batchData.enrollmentType == 'open'">
+                    <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only'">
                         <label>{{$root.labels.BATCH.participants}}</label>
                         <a class="ui label" ng-hide="batchUpdate.selectedUsers.length > 0" ng-repeat="user in batchUpdate.selectedUsers">
                             <img class="ui right spaced avatar image" ng-src="{{user.avatar || 'images/user_logo.png'}}">
@@ -194,7 +197,7 @@
                         </a>
                     </div>
                 </div>
-                <div ng-switch-when="2">
+                <div ng-if="batchUpdate.batchData.status == 2">
                     <div class="one field" ng-class="{true: 'error'}[batchUpdate.submitted && updateBatch.name.$invalid]">
                         <div class="required field">
                           <label>{{$root.labels.BATCH.name}}</label>
@@ -242,7 +245,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="one field" ng-hide="batchUpdate.batchData.enrollmentType == 'open'">
+                    <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only'">
                         <label>{{$root.labels.BATCH.mentors}}</label>
                         <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="mentors" >
                             <input type="hidden" name="mentors" ng-init="" ng-model="batchUpdate.mentors">
@@ -255,17 +258,17 @@
                             </div>
                         </div>
                     </div>
-                    <div class="one field" ng-hide="batchUpdate.batchData.enrollmentType == 'open'">
+                    <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only'">
                         <label>{{$root.labels.BATCH.selectedmentors}}</label>
                         <a class="ui label" ng-hide="batchUpdate.selectedMentors.length > 0" ng-repeat="mentor in batchUpdate.selectedMentors">
                             <img class="ui right spaced avatar image" ng-src="{{mentor.avatar || 'images/user_logo.png'}}">
                             {{mentor.name}}
                         </a>
                     </div>
-                    <div class="one field" ng-hide="batchUpdate.batchData.enrollmentType == 'open'">
+                    <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only'">
                          <label>{{$root.labels.BATCH.users}}</label>
                         <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="users" >
-                            <input type="hidden" name="users" ng-init="" ng-model="batchUpdate.users">
+                            <input type="hidden" name="users" ng-init="" id="userSelList" id="userSelList" ng-model="batchUpdate.users">
                             <i class="dropdown icon"></i>
                             <div class="default text padding-top-20">Select User</div>
                             <div class="menu">
@@ -276,7 +279,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="one field" ng-hide="batchUpdate.batchData.enrollmentType == 'open'">
+                    <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only'">
                         <label>{{$root.labels.BATCH.participants}}</label>
                         <a class="ui label" ng-hide="batchUpdate.selectedUsers.length > 0" ng-repeat="user in batchUpdate.selectedUsers">
                             <img class="ui right spaced avatar image" ng-src="{{user.avatar || 'images/user_logo.png'}}">

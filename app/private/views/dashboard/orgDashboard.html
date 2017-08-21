@@ -41,7 +41,7 @@
       </div>
       <div class="ui one column grid" ng-show="dashboardData.showDataDiv">
         <div class="padding-top-30" ng-if="dashboardData.graphArray.length-1 > 0">
-          <button class="ui right labeled icon button" ng-click="dashboardData.previousGraph()"  ng-class="{'disabled' : dashboardData.graphShow <= 0}">
+          <button class="ui right labeled icon button" ng-click="dashboardData.previousGraph()" ng-class="{'disabled' : dashboardData.graphShow <= 0}">
             <i class="left arrow icon"></i>
           </button>
           <button class="ui right labeled icon button" ng-click="dashboardData.nextGraph()" ng-class="{'disabled' : dashboardData.graphShow >= (dashboardData.graphArray.length-1)}">
