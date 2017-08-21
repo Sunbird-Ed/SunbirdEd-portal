@@ -190,7 +190,7 @@ angular.module('playerApp')
                             batchService.getUserList(req).then(function (res) {
                                 if (res && res.responseCode === 'OK') {
                                     _.forEach(res.result.response.content, function(val){
-                                        batch.userNames[val.userId] = val;
+                                        batch.userNames[val.identifier] = val;
                                     });
                                     batch.batchList = response.result.response.content || [];
                                 }else{
@@ -251,9 +251,38 @@ angular.module('playerApp')
             };
 
             batch.showBatchDetails = function(batchData){
-                batchData.userList = batch.userNames;
-                $rootScope.$broadcast('batchDetails', batchData);
-                $('#batchDetails').modal('show');
+                batch.participants = {};
+                if(!_.isUndefined(batchData.participant)){
+                    var req = {
+                        "request": {
+                            "filters":{
+                                "identifier": _.keys(batchData.participant)
+                            }
+                        }
+                    }
+                    batchService.getUserList(req).then(function (res) {
+                        if (res && res.responseCode === 'OK') {
+                            _.forEach(res.result.response.content, function(val){
+                                batch.participants[val.identifier] = val;
+                            });
+                            batchData.userList = batch.participants;
+                            console.log('batchData ', batchData);
+                            $rootScope.$broadcast('batchDetails', batchData);
+                            $('#batchDetails').modal('show');
+                        }else{
+                           toasterService.error(errorMessages.BATCH.GET_USERS.FAILED); 
+                        }
+                    }).catch(function () {
+                        toasterService.error(errorMessages.BATCH.GET_USERS.FAILED);
+                    });
+                }else{
+                    $rootScope.$broadcast('batchDetails', batchData);
+                    $('#batchDetails').modal('show');
+                }
+                // batchData.userList = batch.userNames;
+                // console.log('batchData ', batchData);
+                // $rootScope.$broadcast('batchDetails', batchData);
+                // $('#batchDetails').modal('show');
             };
 
             batch.enrollUserToCourse = function(batchId){

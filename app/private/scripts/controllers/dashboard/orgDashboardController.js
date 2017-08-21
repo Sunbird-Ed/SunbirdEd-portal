@@ -32,12 +32,11 @@ angular.module('playerApp')
         };
 
         dashboardService.getAdminDashboardData(requestBody, dashboardData.datasetPreviousValue).then(function(apiResponse) {
-
-            dashboardData.series = [];
-            dashboardData.labels = [];
+            //var apiResponse = JSON.parse(apiResponse);
+            var series = [];
             dashboardData.numericStatArray = [];
-            dashboardData.data = [];
-            dashboardData.secondChart = false;
+            var allKey = [];
+            dashboardData.graphArray = [];
 
             if (apiResponse && apiResponse.responseCode === 'OK') {
               if (dashboardData.datasetPreviousValue == 'creation') {
@@ -48,59 +47,52 @@ angular.module('playerApp')
                     dashboardData.numericStatArray.push(numericData);
                   }
                   if (key === 'org.creation.content[@status=published].count') {
-                    dashboardData.series.push(numericData.value + ' LIVE');
+                    series.push(numericData.value + ' LIVE');
                   }
 
                   if (key === 'org.creation.content[@status=draft].count') {
-                    dashboardData.series.push(numericData.value + ' DRAFTS');
+                    series.push(numericData.value + ' DRAFTS');
                   }
 
                   if (key === 'org.creation.content[@status=review].count') {
-                    dashboardData.series.push(numericData.value + ' IN REVIEW');
+                    series.push(numericData.value + ' IN REVIEW');
                   }
 
                   if (key === 'org.creation.content.count') {
-                    dashboardData.series.push(numericData.value + ' CREATED');
+                    series.push(numericData.value + ' CREATED');
                   }
                 });
 
                 angular.forEach(apiResponse.result.series, function(bucketData, key) {
-                  if (key === 'org.creation.content[@status=draft].count') {
-                    var draftArray = new Array();
-                    angular.forEach(bucketData.buckets, function(bucketValue, bucketKey) {
-                      draftArray.push(bucketValue.value);
-                      dashboardData.labels.push(bucketValue.key_name);
-                    })
-                    dashboardData.data.push(draftArray);
-                  }
+                  if (allKey.indexOf(key) == -1) {
+                    allKey.push(key);
+                    var dataArray = [];
+                    var labels = [];
+                    var data = [];
 
-                  if (key === 'org.creation.content[@status=review].count') {
-                    var reviewArray = new Array();
                     angular.forEach(bucketData.buckets, function(bucketValue, bucketKey) {
-                      reviewArray.push(bucketValue.value);
+                      dataArray.push(bucketValue.value);
+                      labels.push(bucketValue.key_name);
                     })
-                    dashboardData.data.push(reviewArray);
-                  }
+                    data.push(dataArray);
+                    var options = dashboardService.getChartOptions(bucketData.name);
+                    var colors = dashboardService.getChartColors(dashboardData.datasetPreviousValue);
 
-                  if (key === 'org.creation.content[@status=published].count') {
-                    var publishedArray = new Array();
-                    angular.forEach(bucketData.buckets, function(bucketValue, bucketKey) {
-                      publishedArray.push(bucketValue.value);
-                    })
-                    dashboardData.data.push(publishedArray);
-                  }
-
-                  if (key === 'org.creation.content.created_on.count') {
-                    var createdArray = new Array();
-                    angular.forEach(bucketData.buckets, function(bucketValue, bucketKey) {
-                      createdArray.push(bucketValue.value);
-                    })
-                    dashboardData.data.push(createdArray);
+                    var found = false;
+                    for (var j = 0; j < dashboardData.graphArray.length; j++) {
+                      if (dashboardData.graphArray[j][5] == bucketData.group_id) {
+                        found = true;
+                        break;
+                      }
+                    }
+                    if (found == true) {
+                      var d = dashboardData.graphArray[j][2];
+                      dashboardData.graphArray[j][2].push(dataArray);
+                    } else {
+                      dashboardData.graphArray.push([series, labels, data, colors, options, bucketData.group_id]);
+                    }
                   }
                 });
-
-                dashboardData.options = dashboardService.getChartOptions('Contents created per day');
-                dashboardData.colors = dashboardService.getChartColors(dashboardData.datasetPreviousValue);
 
               } else if (dashboardData.datasetPreviousValue == 'consumption') {
                 angular.forEach(apiResponse.result.snapshot, function(numericData, key) {
@@ -129,34 +121,34 @@ angular.module('playerApp')
                 });
 
                 angular.forEach(apiResponse.result.series, function(bucketData, key) {
-
-                  if (key === 'org.consumption.content.users.count' && bucketData.group_id === 'users.count') {
-                    var draftArray = [];
-                    angular.forEach(bucketData.buckets, function(bucketValue, bucketKey) {
-                      draftArray.push(bucketValue.value);
-                      dashboardData.labels.push(bucketValue.key_name);
-                    })
-                    dashboardData.data.push(draftArray);
-                    dashboardData.series = ['Number of users by day'];
-                    dashboardData.options = dashboardService.getChartOptions('Number of users by day');
-                    dashboardData.colors = dashboardService.getChartColors(dashboardData.datasetPreviousValue);
-                  }
-
-                  if (key === 'org.consumption.content.time_spent.sum' && bucketData.group_id === 'timespent.sum') {
+                  if (allKey.indexOf(key) == -1) {
+                    allKey.push(key);
                     var dataArray = [];
-                    dashboardData.series1 = [];
-                    dashboardData.labels1 = [];
-                    dashboardData.data1 = [];
+                    var labels = [];
+                    var data = [];
 
                     angular.forEach(bucketData.buckets, function(bucketValue, bucketKey) {
                       dataArray.push(bucketValue.value);
-                      dashboardData.labels1.push(bucketValue.key_name);
+                      labels.push(bucketValue.key_name);
                     })
-                    dashboardData.data1.push(dataArray);
-                    dashboardData.series1 = ['Time spent by day'];
-                    dashboardData.options1 = dashboardService.getChartOptions('Time spent per day (' + bucketData.time_unit + ')');
-                    dashboardData.colors1 = dashboardService.getChartColors(dashboardData.datasetPreviousValue);
-                    dashboardData.secondChart = true;
+                    data.push(dataArray);
+                    var series = [bucketData.name];
+                    var options = dashboardService.getChartOptions(bucketData.name);
+                    var colors = dashboardService.getChartColors(dashboardData.datasetPreviousValue);
+
+                    var found = false;
+                    for (var j = 0; j < dashboardData.graphArray.length; j++) {
+                      if (dashboardData.graphArray[j][5] == bucketData.group_id) {
+                        found = true;
+                        break;
+                      }
+                    }
+                    if (found == true) {
+                      var d = dashboardData.graphArray[j][2];
+                      dashboardData.graphArray[j][2].push(dataArray);
+                    } else {
+                      dashboardData.graphArray.push([series, labels, data, colors, options, bucketData.group_id]);
+                    }
                   }
                 });
               }
@@ -205,6 +197,14 @@ angular.module('playerApp')
         dashboardData.datasetPreviousValue = dataset;
         dashboardData.getAdminDashboardData();
       };
+
+      dashboardData.graphShow = 0;
+      dashboardData.nextGraph = function() {
+        dashboardData.graphShow++;
+      }
+      dashboardData.previousGraph = function() {
+        dashboardData.graphShow--;
+      }
       dashboardData.getAdminDashboardData();
     }
   ]);

@@ -125,14 +125,16 @@
                         </div>
                     </form>
                 </div>
-                <div class="row margin-top-10 margin-bottom-15" ng-if="contentPlayer.isContentPlayerEnabled">
-                    <content-player visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="false" height="8" width="100" ispercentage="true"></content-player>
+                <div class="row margin-top-10 margin-bottom-15" ng-if="editContent.contentPlayer.isContentPlayerEnabled">
+                    <content-player visibility="editContent.contentPlayer.isContentPlayerEnabled" body="editContent.contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="false" height="8" width="100" ispercentage="true"></content-player>
                 </div>
                 <div class="twelve wide column margin-bottom-15" ng-if="editContent.showUploadFileForm">
                     <h3>
                         Upload file
                     </h3>
-                    <div fine-uploader ng-if="editContent.mimeTypeForPdfVideoHtml.indexOf(editContent.contentData.mimeType) > -1"></div>
+                    <div ng-if="editContent.mimeTypeForPdfVideoHtmlEPUBH5P.indexOf(editContent.contentData.mimeType) > -1">
+                        <div ng-init="editContent.initializeFineUploader()" fine-uploader></div>
+                    </div>
                     <div class="ui grid fileUploadDivider margin-bottom-15" ng-if="editContent.mimeTypeForYoutubeVideo === editContent.contentData.mimeType">
                         <div class="one wide column"></div>
                         <div class="uploadicon four wide column">
@@ -155,8 +157,8 @@
                     </div>
                 </div>
                 <div class="row margin-top-10" id="content-player-bottom-edit">
-                    <button class="ui primary basic button" ng-if="!contentPlayer.isContentPlayerEnabled" ng-click="editContent.previewContent(editContent.contentData)">{{$root.labels.WORKSPACE.common.preview}}</button>
-                    <button class="ui primary basic button" ng-if="contentPlayer.isContentPlayerEnabled" ng-click="contentPlayer.isContentPlayerEnabled = !contentPlayer.isContentPlayerEnabled">{{$root.labels.WORKSPACE.common.closePreview}}</button>
+                    <button class="ui primary basic button" ng-if="!editContent.contentPlayer.isContentPlayerEnabled" ng-click="editContent.previewContent(editContent.contentData)">{{$root.labels.WORKSPACE.common.preview}}</button>
+                    <button class="ui primary basic button" ng-if="editContent.contentPlayer.isContentPlayerEnabled" ng-click="editContent.contentPlayer.isContentPlayerEnabled = !editContent.contentPlayer.isContentPlayerEnabled">{{$root.labels.WORKSPACE.common.closePreview}}</button>
                     <button class="ui primary basic button" ng-click="editContent.saveMetaContent(editContent.contentData)" ng-disabled="editContent.loader.showLoader">{{$root.labels.WORKSPACE.common.save}}</button>
                     <button class="ui primary basic button" ng-click="editContent.submitForReview(editContent.contentData)" ng-disabled="editContent.loader.showLoader">{{$root.labels.WORKSPACE.common.submitForReview}}</button>
                     <button class="ui primary basic button" ng-if="editContent.contentData.mimeType === 'application/vnd.ekstep.ecml-archive'" ng-click="editContent.openContentEditor(editContent.contentData.identifier)">{{$root.labels.WORKSPACE.common.launchEditor}}</button>

@@ -27,19 +27,23 @@ angular.module('playerApp')
                 editContent.userId = $rootScope.userId;
                 editContent.showUploadFileForm = false;
                 editContent.selectedConcepts = [];
-                $scope.contentPlayer = { isContentPlayerEnabled: false };
+                editContent.contentPlayer = { isContentPlayerEnabled: false };
                 editContent.contentUploadUrl = config.URL.BASE_PREFIX + config.URL.CONTENT_PREFIX +
                         config.URL.CONTENT.UPLOAD;
+                var mimeType = config.MIME_TYPE;
                 editContent.checkMimeTypeForEditContent = [
-                    'application/pdf', 'video/mp4', 'application/vnd.ekstep.html-archive',
-                    'video/youtube', 'application/vnd.ekstep.ecml-archive'
+                    mimeType.pdf, mimeType.mp4, mimeType.youtube, mimeType.pYoutube,
+                    mimeType.html, mimeType.ecml, mimeType.ePub, mimeType.h5p
                 ];
-                editContent.checkMimeTypeForUploadContent = ['application/pdf', 'video/mp4',
-                    'application/vnd.ekstep.html-archive', 'video/youtube'];
-                editContent.mimeTypeForPdfVideoHtml = ['application/pdf', 'video/mp4',
-                    'application/vnd.ekstep.html-archive'];
-                editContent.mimeTypeForYoutubeVideo = 'video/youtube';
+                editContent.checkMimeTypeForUploadContent = [
+                    mimeType.pdf, mimeType.mp4, mimeType.youtube, mimeType.pYoutube,
+                    mimeType.html, mimeType.ePub, mimeType.h5p
+                ];
+                editContent.mimeTypeForPdfVideoHtmlEPUBH5P = [mimeType.pdf, mimeType.mp4,
+                    mimeType.html, mimeType.ePub, mimeType.h5p];
+                editContent.mimeTypeForYoutubeVideo = mimeType.youtube;
                 editContent.message = $rootScope.errorMessages.WORKSPACE;
+                var commonMessage = $rootScope.errorMessages.COMMON;
 
                 editContent.initializeDropDown = function () {
                     $timeout(function () {
@@ -52,26 +56,35 @@ angular.module('playerApp')
 
                 function checkMimeType() {
                     editContent.uploadedContentMimeType = editContent.contentData.mimeType;
-                    if (editContent.uploadedContentMimeType === 'application/pdf') {
-                        editContent.fileUploadOptions = $rootScope.errorMessages.COMMON.PDF_MESSAGE;
+                    if (editContent.uploadedContentMimeType === mimeType.pdf) {
+                        editContent.fileUploadOptions = ' ' + commonMessage.PDF_MESSAGE;
                         editContent.allowedExtensions = ['pdf'];
                         editContent.acceptFiles = 'application/pdf';
-                        editContent.invalidFileMessage = $rootScope.errorMessages.COMMON
-                                .INVALID_PDF_FILE;
+                        editContent.invalidFileMessage = ' ' + commonMessage.INVALID_PDF_FILE;
                     }
-                    if (editContent.uploadedContentMimeType === 'video/mp4') {
-                        editContent.fileUploadOptions = $rootScope.errorMessages.COMMON.MP4_MESSAGE;
+                    if (editContent.uploadedContentMimeType === mimeType.mp4) {
+                        editContent.fileUploadOptions = ' ' + commonMessage.MP4_MESSAGE;
                         editContent.allowedExtensions = ['mp4'];
                         editContent.acceptFiles = 'video/mp4';
-                        editContent.invalidFileMessage = $rootScope.errorMessages.COMMON
-                                .INVALID_MP4_FILE;
+                        editContent.invalidFileMessage = ' ' + commonMessage.INVALID_MP4_FILE;
                     }
-                    if (editContent.uploadedContentMimeType === 'application/vnd.ekstep.html-archive') {
-                        editContent.fileUploadOptions = $rootScope.errorMessages.COMMON.ZIP_MESSAGE;
+                    if (editContent.uploadedContentMimeType === mimeType.html) {
+                        editContent.fileUploadOptions = ' ' + commonMessage.ZIP_MESSAGE;
                         editContent.allowedExtensions = ['zip'];
+                        editContent.acceptFiles = '';
+                        editContent.invalidFileMessage = ' ' + commonMessage.INVALID_ZIP_FILE;
+                    }
+                    if (editContent.uploadedContentMimeType === mimeType.ePub) {
+                        editContent.fileUploadOptions = ' ' + commonMessage.EPUB_MESSAGE;
+                        editContent.allowedExtensions = ['epub'];
+                        editContent.acceptFiles = 'application/epub+zip';
+                        editContent.invalidFileMessage = ' ' + commonMessage.INVALID_EPUB_FILE;
+                    }
+                    if (editContent.uploadedContentMimeType === mimeType.h5p) {
+                        editContent.fileUploadOptions = ' ' + commonMessage.H5P_MESSAGE;
+                        editContent.allowedExtensions = ['h5p'];
                         editContent.acceptFiles = 'application/zip';
-                        editContent.invalidFileMessage = $rootScope.errorMessages.COMMON
-                                .INVALID_ZIP_FILE;
+                        editContent.invalidFileMessage = ' ' + commonMessage.INVALID_H5P_FILE;
                     }
                 }
 
@@ -85,7 +98,7 @@ angular.module('playerApp')
                     var qs = {
                         mode: 'edit',
                         fields: 'name,description,appIcon,contentType,mimeType,artifactUrl,' +
-                                ',versionKey,audience,language,gradeLevel,ageGroup,subject,' +
+                                'versionKey,audience,language,gradeLevel,ageGroup,subject,' +
                                 'medium,author,domain,createdBy'
                     };
 
@@ -117,7 +130,7 @@ angular.module('playerApp')
                     contentService.getById(req, qs).then(function (response) {
                         if (response && response.responseCode === 'OK') {
                             if (!editContent.checkContentAccess(response.result.content)) {
-                                toasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
+                                toasterService.warning(commonMessage.UN_AUTHORIZED);
                                 $state.go('Home');
                             }
                             editContent.contentData = {};
@@ -131,17 +144,17 @@ angular.module('playerApp')
                             }
                         } else {
                             editContent.loader.showLoader = false;
-                            toasterService.error($rootScope.errorMessages.WORKSPACE.GET.FAILED);
+                            toasterService.error(editContent.message.GET.FAILED);
                         }
                     }).catch(function () {
                         editContent.loader.showLoader = false;
-                        toasterService.error($rootScope.errorMessages.WORKSPACE.GET.FAILED);
+                        toasterService.error(editContent.message.GET.FAILED);
                     });
                 };
 
                 editContent.checkContentAccess = function (data) {
                     if (data.createdBy === $rootScope.userId &&
-                            _.indexOf(editContent.checkMimeTypeForEditContent, data.mimeType) > -1) {
+                        _.indexOf(editContent.checkMimeTypeForEditContent, data.mimeType) > -1) {
                         return true;
                     }
                     return false;
@@ -152,7 +165,8 @@ angular.module('playerApp')
                 };
 
                 $scope.updateIcon = function (files) {
-                    if (files && files[0].name.match(/.(jpg|jpeg|png)$/i) && files[0].size < 4000000) {
+                    if (files &&
+                            files[0].name.match(/.(jpg|jpeg|png)$/i) && files[0].size < 4000000) {
                         var fd = new FormData();
                         fd.append('file', files[0]);
                         var reader = new FileReader();
@@ -164,13 +178,13 @@ angular.module('playerApp')
                         editContent.icon = fd;
                         editContent.iconUpdate = true;
                     } else {
-                        alert($rootScope.errorMessages.COMMON.INVALID_IMAGE);
+                        alert(commonMessage.INVALID_IMAGE);
                     }
                 };
 
                 editContent.uploadContentIcon = function (requestBody, isReviewContent) {
-                    editContent.loader = toasterService.loader('', $rootScope.errorMessages.WORKSPACE
-                            .UPLOAD_ICON.START);
+                    editContent.loader = toasterService.loader('', editContent.message
+                                                                                .UPLOAD_ICON.START);
                     contentService.uploadMedia(editContent.icon).then(function (res) {
                         if (res && res.responseCode === 'OK') {
                             editContent.iconUpdate = false;
@@ -179,43 +193,44 @@ angular.module('playerApp')
                             editContent.updateContent(requestBody, isReviewContent);
                         } else {
                             editContent.loader.showLoader = false;
-                            toasterService.error($rootScope.errorMessages.WORKSPACE.UPLOAD_ICON.FAILED);
+                            toasterService.error(editContent.message.UPLOAD_ICON.FAILED);
                         }
                     }).catch(function () {
                         editContent.loader.showLoader = false;
-                        toasterService.error($rootScope.errorMessages.WORKSPACE.UPLOAD_ICON.FAILED);
+                        toasterService.error(editContent.message.UPLOAD_ICON.FAILED);
                     });
                 };
 
                 editContent.updateContent = function (requestBody, isReviewContent) {
                     editContent.loader = toasterService.loader('', $rootScope.errorMessages
-                            .WORKSPACE.UPDATE.START);
-
+                                                                        .WORKSPACE.UPDATE.START);
                     contentService.update(requestBody, editContent.contentId).then(function (res) {
                         if (res && res.responseCode === 'OK') {
                             editContent.loader.showLoader = false;
-                            toasterService.success($rootScope.errorMessages.WORKSPACE.UPDATE.SUCCESS);
+                            toasterService.success(editContent.message.UPDATE.SUCCESS);
+                            editContent.contentData.artifactUrl = requestBody.content.artifactUrl;
                             if (editContent.youtubeFileLink) {
                                 editContent.youtubeFileLink = '';
-                                editContent.contentData.artifactUrl = requestBody.content.artifactUrl;
                             }
                             if (isReviewContent) {
                                 editContent.callReviewApi();
                             }
                         } else {
                             editContent.loader.showLoader = false;
-                            toasterService.error($rootScope.errorMessages.WORKSPACE.UPDATE.FAILED);
+                            toasterService.error(editContent.message.UPDATE.FAILED);
                         }
                     }).catch(function () {
                         editContent.loader.showLoader = false;
-                        toasterService.error($rootScope.errorMessages.WORKSPACE.UPDATE.FAILED);
+                        toasterService.error(editContent.message.UPDATE.FAILED);
                     });
                 };
 
                 editContent.saveMetaContent = function (data, isReviewContent) {
                     editContent.requiredFieldsMessage = [];
+                    delete data.body;
                     var newData = angular.copy(data);
                     newData.createdBy = editContent.userId;
+                    delete newData.languageCode;
                     var requestBody = {
                         content: newData
                     };
@@ -228,7 +243,7 @@ angular.module('playerApp')
 
                 function checkAllRequiredField(contentData) {
                     var requiredFieldsMessage = [];
-                    var messages = $rootScope.errorMessages.WORKSPACE.REQUIRED_FIELDS;
+                    var messages = editContent.message.REQUIRED_FIELDS;
                     if (!contentData.name) {
                         requiredFieldsMessage.push(messages.TITLE);
                     }
@@ -264,23 +279,21 @@ angular.module('playerApp')
                 };
 
                 editContent.callReviewApi = function () {
-                    editContent.loader = toasterService.loader('', $rootScope.errorMessages.WORKSPACE
+                    editContent.loader = toasterService.loader('', editContent.message
                             .REVIEW_CONTENT.START);
                     var req = { content: {} };
                     contentService.review(req, editContent.contentId).then(function (res) {
                         if (res && res.responseCode === 'OK') {
                             editContent.loader.showLoader = false;
-                            toasterService.success($rootScope.errorMessages.WORKSPACE.REVIEW_CONTENT
-                                    .SUCCESS);
+                            toasterService.success(editContent.message.REVIEW_CONTENT.SUCCESS);
 //                        $state.go("WorkSpace.ReviewContent");
                         } else {
                             editContent.loader.showLoader = false;
-                            toasterService.error($rootScope.errorMessages.WORKSPACE.REVIEW_CONTENT
-                                    .FAILED);
+                            toasterService.error(editContent.message.REVIEW_CONTENT.FAILED);
                         }
                     }).catch(function () {
                         editContent.loader.showLoader = false;
-                        toasterService.error($rootScope.errorMessages.WORKSPACE.REVIEW_CONTENT.FAILED);
+                        toasterService.error(editContent.message.REVIEW_CONTENT.FAILED);
                     });
                 };
 
@@ -294,8 +307,8 @@ angular.module('playerApp')
 
                 editContent.previewContent = function (requestData) {
                     editContent.showUploadFileForm = false;
-                    $scope.contentPlayer.contentData = requestData;
-                    $scope.contentPlayer.isContentPlayerEnabled = true;
+                    editContent.contentPlayer.contentData = requestData;
+                    editContent.contentPlayer.isContentPlayerEnabled = true;
                     editContent.scrollUpToButton();
                 };
 
@@ -323,16 +336,14 @@ angular.module('playerApp')
                     editContent.initializeData(false);
                 }
 
-                editContent.uploadFileForm = function () {
-                    editContent.scrollUpToButton();
-                    editContent.showUploadFileForm = true;
-                    $scope.contentPlayer = {};
+                editContent.initializeFineUploader = function () {
                     $timeout(function () {
                         editContent.manualUploader = new qq.FineUploader({
                             element: document.getElementById('fine-uploader-manual-trigger'),
                             template: 'qq-template-manual-trigger',
                             request: {
-                                endpoint: editContent.contentUploadUrl + '/' + editContent.contentId
+                                method: 'PUT',
+                                processData: false
                             },
                             autoUpload: false,
                             debug: true,
@@ -342,21 +353,32 @@ angular.module('playerApp')
                                 allowedExtensions: editContent.allowedExtensions
                             },
                             messages: {
-                                sizeError: '{file}' + $rootScope.errorMessages.COMMON.INVALID_FILE_SIZE
-                                        + config.MaxFileSizeToUpload / (1000 * 1024) + ' MB.',
-                                typeError: '{file}' + editContent.invalidFileMessage
+                                sizeError: '{file} ' + commonMessage.INVALID_FILE_SIZE + ' ' +
+                                        config.MaxFileSizeToUpload / (1000 * 1024) + ' MB.',
+                                typeError: '{file} ' + editContent.invalidFileMessage
                             },
                             callbacks: {
-                                onComplete: function (id, name, responseJSON) {
-                                    if (responseJSON.success) {
-                                        editContent.initializeData(false);
-                                        editContent.showUploadFileForm = false;
+                                onComplete: function (id, name, responseJSON, xhr) {
+                                    if (xhr.statusText === 'OK') {
+                                        responseJSON.success = true;
+                                        var artifactUrl = xhr.responseURL.split('?')[0];
+                                        editContent.manualUploader.cancel(id);
+                                        var requestBody = {
+                                            content: {
+                                                artifactUrl: artifactUrl,
+                                                versionKey: editContent.contentData.versionKey
+                                            }
+                                        };
+                                        editContent.updateContent(requestBody, false);
+                                        // editContent.editContent(editContent.contentId);
                                     }
                                 },
-                                onSubmitted: function (id) {
+                                onSubmitted: function (id, name) {
                                     editContent.youtubeFileLink = '';
                                     editContent.uploadedFileId = id;
-                                    editContent.uploadContent();
+                                    editContent.selectedFileName = name;
+                                    editContent.getContentUploadUrl(editContent.contentId);
+                                    // editContent.uploadContent();
                                     document.getElementById('hide-section-with-button')
                                             .style.display = 'none';
                                 },
@@ -376,9 +398,17 @@ angular.module('playerApp')
                     }, 100);
                 };
 
-                editContent.uploadContent = function () {
-                    var endpoint = editContent.contentUploadUrl + '/' + editContent.contentId;
+                editContent.uploadFileForm = function () {
+                    editContent.scrollUpToButton();
+                    editContent.showUploadFileForm = true;
+                    editContent.contentPlayer = {};
+                };
+
+                editContent.uploadContent = function (endpoint) {
                     editContent.manualUploader.setEndpoint(endpoint, editContent.uploadedFileId);
+                    editContent.manualUploader.setParams({
+                        contentType: editContent.contentData.mimeType
+                    });
                     editContent.manualUploader.uploadStoredFiles();
                 };
 
@@ -397,8 +427,8 @@ angular.module('playerApp')
                         var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/; //eslint-disable-line
                         var match = url.match(regExp);
                         if (match && match.length > 1 && match[2].length === 11) {
-                            editContent.youtubeFileLink = 'https://www.youtube.com/embed/' + match[2] +
-                                    '?autoplay=1&enablejsapi=1';
+                            editContent.youtubeFileLink = 'https://www.youtube.com/embed/' +
+                                                            match[2] + '?autoplay=1&enablejsapi=1';
                             editContent.invalidYoutubeUrl = false;
                         } else {
                             editContent.invalidYoutubeUrl = true;
@@ -409,8 +439,8 @@ angular.module('playerApp')
                 };
 
                 editContent.deleteContent = function (requestData) {
-                    editContent.loader = toasterService.loader('', editContent.message.RETIRE_CONTENT
-                            .START);
+                    editContent.loader = toasterService.loader('', editContent.message
+                                                                            .RETIRE_CONTENT.START);
                     var request = {
                         contentIds: [requestData.identifier]
                     };
@@ -428,4 +458,24 @@ angular.module('playerApp')
                 $scope.$on('selectedConcepts', function (event, args) {
                     editContent.contentData.concepts = args.selectedConcepts;
                 });
+
+                editContent.getContentUploadUrl = function (contentId) {
+                    var requestBody = {
+                        content: {
+                            fileName: editContent.selectedFileName
+                        }
+                    };
+                    contentService.uploadURL(requestBody, contentId).then(function (res) {
+                        if (res && res.responseCode === 'OK') {
+                            editContent.uploadContent(res.result.pre_signed_url);
+                        } else {
+                            toasterService.error($rootScope.errorMessages
+                                                                .WORKSPACE.UPLOAD_CONTENT.FAILED);
+                            // handle error
+                        }
+                    }).catch(function () {
+                        toasterService.error($rootScope.errorMessages.WORKSPACE.UPLOAD_CONTENT.FAILED);
+                        // handle error
+                    });
+                };
             }]);
