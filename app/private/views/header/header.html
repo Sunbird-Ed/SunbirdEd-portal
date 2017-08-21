@@ -25,7 +25,7 @@
                 <a class="item" href="#" ui-sref-active="active" ui-sref="Profile">{{$root.labels.HEADER.profile}}</a>
                 <a class="item" href="#" ui-sref-active="active" ui-sref="WorkSpace" ng-if="initializePermissionDirective" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW,FLAG_REVIEWER">{{$root.labels.HEADER.workSpace}}</a>
                 <a class="item" href="#" sb-permissions permission-only="COURSE_CREATOR" ui-sref-active="active"
-                    ui-sref="MyActivity">{{$root.labels.HEADER.myActivity}}</a>
+                    ng-if="initializePermissionDirective" ui-sref="MyActivity">{{$root.labels.HEADER.myActivity}}</a>
                 <a class="item" ng-click="logout();">{{$root.labels.HEADER.logout}}</a>
             </div>
         </div>
