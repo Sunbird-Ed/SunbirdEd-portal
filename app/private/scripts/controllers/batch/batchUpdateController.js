@@ -131,6 +131,7 @@ angular.module('playerApp')
             };
             batchUpdate.clearForm = function(){
                 $('#updateBatch').form('clear');
+                 $('#updateBatch').find('.search').val('');
             }
             batchUpdate.getUserList = function(){
                 var request = {
