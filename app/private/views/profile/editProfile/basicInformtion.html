@@ -56,13 +56,13 @@
   <div class=" field" ng-init=" profileCtrl.setSelectedGrades()">
         <label>{{$root.labels.PROFILE.BASIC_PROFILE.grades}}</label>
         <select name="grades" multiple=""  id=selectGrades class="ui fluid dropdown" ng-value="option.value" ng-options=" language for language in profileCtrl.grades" ng-model="profileCtrl.basicProfile.grade">
-             <option value="" >{{$root.labels.PROFILE.BASIC_PROFILE.grades}}</option>
+             <option value="" >Grade</option>
             </select>
     </div>
     <div class="required field" ng-init=" profileCtrl.setDropdownValue()">
         <label>{{$root.labels.PROFILE.BASIC_PROFILE.language}}</label>
         <select name="language" id=languageSelect class="ui fluid dropdown" ng-value="option.value" ng-options=" language for language in profileCtrl.languages" ng-model="profileCtrl.basicProfile.language">
-             <option value="" translate="languages">{{$root.labels.PROFILE.BASIC_PROFILE.language}}</option>
+             <option value="" translate="languages">Language</option>
             </select>
     </div>
 
