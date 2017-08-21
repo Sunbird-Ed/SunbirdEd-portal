@@ -121,6 +121,7 @@
                     'video/mp4': 'large file video outline icon',
                     'video/ogg': 'large file video outline icon',
                     'video/youtube': 'large youtube square icon',
+                    'video/x-youtube': 'large youtube square icon',
                     'application/vnd.ekstep.html-archive': 'large html5 icon',
                     'application/vnd.ekstep.ecml-archive': 'large file archive outline icon',
                     'application/vnd.ekstep.content-collection': 'large folder open outline icon grey icon'
