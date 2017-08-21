@@ -9,9 +9,9 @@
 angular.module('playerApp').directive('search', function () {
     var controller = ['$scope', '$rootScope', 'config', '$timeout',
         '$state', '$stateParams', 'searchService', 'toasterService', '$location',
-        'sessionService', 'adminService', function ($scope, $rootScope,
+        'sessionService', 'adminService', 'permissionsService', function ($scope, $rootScope,
                 config, $timeout, $state, $stateParams, searchService, toasterService,
-                $location, sessionService, adminService) {
+                $location, sessionService, adminService, permissionsService) {
             $scope.search = {};
             $rootScope.search = {};
             $rootScope.search.searchKeyword = '';
@@ -244,7 +244,12 @@ angular.module('playerApp').directive('search', function () {
                         delete req.filters.email;
                     }
                     req.filters.objectType = ['user'];
-                    if ($rootScope.organisationIds) {
+
+                    $scope.search.currentUserRoles = permissionsService.getCurrentUserRoles();
+                    var isSystemAdmin = $scope.search.currentUserRoles
+                                        .includes('SYSTEM_ADMINISTRATION');
+
+                    if (isSystemAdmin === false && $rootScope.organisationIds) {
                         req.filters['organisations.organisationId'] = $rootScope.organisationIds[0];
                     }
                     $scope.search.searchFn = adminService.userSearch({ request: req });
