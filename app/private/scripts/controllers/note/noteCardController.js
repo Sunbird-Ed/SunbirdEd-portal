@@ -70,9 +70,11 @@ angular.module('playerApp')
             };
 
             noteCard.hideAddNoteModal = function () {
-                $('#addNoteModal').modal('hide');
-                $('#addNoteModal').modal('hide others');
-                $('#addNoteModal').modal('hide dimmer');
+                $timeout(function () {
+                    $('#addNoteModal').modal('hide');
+                    $('#addNoteModal').modal('hide dimmer');
+                    $('#addNoteModal').modal('hide others');
+                }, 0);
             };
 
             noteCard.createNote = function (noteData) {

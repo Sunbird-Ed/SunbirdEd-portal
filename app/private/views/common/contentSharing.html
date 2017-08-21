@@ -16,14 +16,14 @@
             </div>
         </div>
         <div class="content">
-            <span class="ui tiny header">{{$root.labels.CONTENT_SHARE.shareByTheLink}}</span>
-            <div class="ui input width-100" id="buttonPopUp">
+            <p class="meta">{{$root.labels.CONTENT_SHARE.shareByTheLink}}</p>
+            <div class="ui action input shareContent width-100" id="buttonPopUp">
               <input type="text" id="copyLinkData" name="title" readonly ng-model="contentShare.link" />
-              <button class="ui primary button" ng-click="contentShare.success()">
+              <button class="ui basic primary button" ng-click="contentShare.success()">
                 COPY LINK
               </button>
             </div>
-            <div class="ui custom popup top center transition hidden" id="LinkCopiedToClipboard" data-position="ui top center">
+            <div class="ui custom popup contentSharing top center transition hidden" id="LinkCopiedToClipboard" data-position="ui top center">
                 Link copied to clipboard
             </div>
         </div>

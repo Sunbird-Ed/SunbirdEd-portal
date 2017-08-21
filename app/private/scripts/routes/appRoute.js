@@ -776,6 +776,7 @@ angular.module('playerApp')
           },
           onExit: function ($rootScope) {
               $rootScope.resourcesActive = '';
+              $rootScope.profileActive = '';
           }
       })
       .state('orgDashboard', {
@@ -882,6 +883,26 @@ angular.module('playerApp')
                     name: '',
                     url: '/private/index#!/create/lessonPlan'
                 });
+            },
+            onExit: function ($rootScope) {
+                $rootScope.profileActive = '';
+            }
+        })
+        .state('PublicProfile', {
+            url: '/profile/:userName/:userId',
+            views: {
+                mainView: {
+                    templateUrl: '/views/search/searchedUserProfile.html',
+                    controller: 'PubilicProfileController as publicProfile'
+                }
+            },
+            params: {
+                userId: null,
+                userName: null
+            },
+            onEnter: function ($rootScope, routeHelperService, $stateParams) {
+                $rootScope.profileActive = 'active';
+                routeHelperService.loadRouteConfig('PublicProfile', $stateParams);
             },
             onExit: function ($rootScope) {
                 $rootScope.profileActive = '';
