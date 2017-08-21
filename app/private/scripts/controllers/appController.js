@@ -23,6 +23,14 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
         $rootScope.searchKey = '';
         $rootScope.enrolledCourseIds = {};
 
+        /**
+         * This condition is for public content to private content after login
+         */
+        if (window.localStorage.redirectUrl) {
+            $location.path(window.localStorage.redirectUrl);
+            delete window.localStorage.redirectUrl;
+        }
+
         $rootScope.openLink = function (url) {
             $location.path(url);
         };
@@ -34,8 +42,8 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
             $q.all(promises).then(function (results) {
                 results.forEach(function (res) {
                     if (res && res.responseCode === 'OK' && res.result) {
-                        $rootScope.translationBundle = $rootScope.mergeObjects($rootScope.translationBundle, res.result[$rootScope.language]);
-                        $rootScope.addTranslation($rootScope.language, $rootScope.translationBundle);
+                        $rootScope.translationBundle = $rootScope.mergeObjects($rootScope.translationBundle, res.result[$rootScope.language]); //eslint-disable-line
+                        $rootScope.addTranslation($rootScope.language, $rootScope.translationBundle); //eslint-disable-line
                     }
                 });
             });
@@ -79,9 +87,9 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
             $rootScope.organisations = profileData.organisations;
             var organisationNames = [];
 
-            var rootOrg = (profileData.rootOrg && !_.isUndefined(profileData.rootOrg.id)) ? profileData.rootOrg.id : 'sunbird';
-            org.sunbird.portal.channel = md5(rootOrg);
-            var organisationIds = [];
+                var rootOrg = (profileData.rootOrg && !_.isUndefined(profileData.rootOrg.id)) ? profileData.rootOrg.id : 'sunbird'; //eslint-disable-line
+                org.sunbird.portal.channel = md5(rootOrg);
+                var organisationIds = [];
 
             _.forEach(profileData.organisations, function (org) {
                 if (org.roles && _.isArray(org.roles)) {
@@ -151,7 +159,8 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
             learnService.enrolledCourses($rootScope.userId).then(function (successResponse) {
                 if (successResponse && successResponse.responseCode === 'OK') {
                     $rootScope.enrolledCourses = successResponse.result.courses;
-                    $rootScope.enrolledCourseIds = $rootScope.arrObjsToObject($rootScope.enrolledCourses, 'courseId');
+                    $rootScope.enrolledCourseIds =
+                                $rootScope.arrObjsToObject($rootScope.enrolledCourses, 'courseId');
                     sessionService.setSessionData('ENROLLED_COURSES', {
                         uid: $rootScope.userId,
                         courseArr: $rootScope.enrolledCourses,

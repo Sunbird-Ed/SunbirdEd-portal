@@ -65,6 +65,24 @@
                 {{$root.labels.PROFILE.BASIC_PROFILE.subjects}}
             </div>
         </div>
+          <div class="item ">
+            <div class="right floated content ">
+                <span><span ng-repeat="grade in profileCtrl.basicProfile.grade">{{grade}}<span ng-show="!$last">,</span></span>
+                </span>
+            </div>
+            <div class="iniformationcontent content ">
+               {{$root.labels.PROFILE.BASIC_PROFILE.grades}}
+            </div>
+        </div>
+         <div class="item ">
+            <div class="right floated content ">
+                <span>{{profileCtrl.basicProfile.location}}</span>
+               
+            </div>
+            <div class="iniformationcontent content ">
+              {{$root.labels.PROFILE.BASIC_PROFILE.currentLocation}}
+            </div>
+        </div>
     </div>
     <div class="ui" ng-if="profileCtrl.basicProfileForm" ng-include=" 'views/profile/editProfile/basicInformtion.html' "></div>
 </div>

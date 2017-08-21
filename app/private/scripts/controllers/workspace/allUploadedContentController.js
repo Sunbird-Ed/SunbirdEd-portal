@@ -16,8 +16,9 @@ angular.module('playerApp')
             var allUploadedContent = this;
             allUploadedContent.userId = $rootScope.userId;
             allUploadedContent.contentStatus = ['Draft'];
-            allUploadedContent.contentMimeType = ['application/vnd.ekstep.html-archive',
-                'video/youtube', 'video/mp4', 'application/pdf'];
+            var mimeType = config.MIME_TYPE;
+            allUploadedContent.contentMimeType = [mimeType.pdf, mimeType.youtube, mimeType.html,
+                mimeType.ePub, mimeType.h5p, mimeType.mp4];
             allUploadedContent.sortBy = 'desc';
             $scope.isSelected = false;
             allUploadedContent.selectedContentItem = [];
