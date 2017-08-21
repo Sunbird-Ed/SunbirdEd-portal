@@ -43,6 +43,10 @@
           data-timeperiod="5w" data-timeperiod-text="5 weeks"
           ng-class="{active:courseDashboard.filterTimePeriod === '5w'}"
           ng-click="courseDashboard.onAfterFilterChange($event.target)">LAST 5 WEEKS</span>&nbsp;&nbsp;&nbsp;&nbsp;
+          <span class="dashBoardMenuItem cursor-pointer" ng-hide="courseDashboard.dataset == 'consumption'"
+          data-timeperiod="fromBegining" data-timeperiod-text="from begining"
+          ng-class="{active:courseDashboard.filterTimePeriod === 'fromBegining'}"
+          ng-click="courseDashboard.onAfterFilterChange($event.target)">FROM BEGINING</span>&nbsp;&nbsp;&nbsp;&nbsp;
       </div>
     </div>
     <div class="two wide column"></div>
