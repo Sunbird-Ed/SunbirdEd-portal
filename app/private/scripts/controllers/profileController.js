@@ -237,7 +237,7 @@ angular.module('playerApp') // add those all values
           profile.deleteAddress = function (address) {
               address.isDeleted = true;
 
-              var req = { address: address };
+              var req = { address: [address] };
               req.userId = $rootScope.userId;
 
               profile.updateProfile(req);
@@ -336,7 +336,7 @@ angular.module('playerApp') // add those all values
           };
 
           profile.deleteExperience = function (experiences) {
-              var req = { jobProfile: experiences };
+              var req = { jobProfile: [experiences] };
               req.userId = $rootScope.userId;
               profile.updateProfile(req);
           };
