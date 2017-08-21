@@ -424,6 +424,7 @@ angular.module('playerApp')
                 admin.userRolesList = [];
                 admin.userRoles = permissionsService.allRoles();
             };
+
             admin.openPublicProfile = function (id, user) {
                 searchService.setPublicUserProfile(user);
                 $state.go('PublicProfile', { userId: window.btoa(id), userName: user.firstName });
