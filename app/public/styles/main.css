@@ -585,6 +585,9 @@ th {
   width: 16px !important;
   height: 16px !important;
 }
+.content-font {
+  font-size: 1.1em !important;
+}
 .header-container {
   margin-left: 1px !important;
   border-bottom: 5px solid #007AFF !important;
@@ -693,7 +696,6 @@ th {
 .modal .ui.segment {
   box-shadow: none !important;
   border: none!important;
-  overflow-y: auto !important;
 }
 .breadcrumppadding.ui.breadcrumb,
 .breadcrumppadding.ui.breadcrumb:last-child,
