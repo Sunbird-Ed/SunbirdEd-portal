@@ -9,7 +9,7 @@ angular.module('playerApp')
                     $stateParams = $stateParamsData;
                     var searchEnabledStates = ['Home', 'Courses', 'Resources', 'CourseNote',
                         'ContentNote', 'CourseContentNote', 'Toc', 'Player',
-                        'Search', 'TocPlayer', 'PreviewCollection', 'Profile'];
+                        'Search', 'TocPlayer', 'PreviewCollection', 'Profile', 'PublicProfile'];
                     var filterEnabledStates = ['Courses', 'Resources', 'Search'];
                     var searchKey = {
                         Home: 'All',
@@ -22,8 +22,9 @@ angular.module('playerApp')
                         Player: 'Resources',
                         Search: $stateParams ? $stateParams.type : 'All',
                         TocPlayer: 'Courses',
-                        PreviewCollection: 'Resources',
-                        Profile: 'Users' };
+                        PreviewCollection: 'Courses',
+                        Profile: 'Users',
+                        PublicProfile: 'Users' };
                     if (searchEnabledStates.indexOf(stateName) >= 0) {
                         $rootScope.isSearchPage = true;
                         $rootScope.searchKey = searchKey[stateName];
@@ -72,7 +73,7 @@ angular.module('playerApp')
                             link: 'learn'
                         }, {
                             name: courseParams.courseName,
-                            link: '/toc/' + courseParams.courseId + '/' + courseParams.lectureView
+                            link: '/course/' + courseParams.courseId + '/' + courseParams.lectureView
                         }, {
                             name: 'Notes',
                             link: ''
@@ -86,7 +87,7 @@ angular.module('playerApp')
                             link: 'resources'
                         }, {
                             name: $stateParams.contentName,
-                            link: 'player/' + $stateParams.contentId + '/' + $stateParams.contentName
+                            link: 'content/' + $stateParams.contentId + '/' + $stateParams.contentName
                         }, {
                             name: 'Notes',
                             link: ''
@@ -96,7 +97,7 @@ angular.module('playerApp')
                     case 'CourseContentNote':
 
                         var courseParams = sessionService.getSessionData('COURSE_PARAMS');
-                        var courseLink = '/toc/' + courseParams.courseId + '/' + courseParams.lectureView;
+                        var courseLink = '/course/' + courseParams.courseId + '/' + courseParams.lectureView;
                         var contentLink = courseLink + '/' + courseParams.contentId + '/' + courseParams.contentIndex;
                         $rootScope.breadCrumbsData = [{
                             name: courseParams.courseName,
@@ -224,8 +225,8 @@ angular.module('playerApp')
                             name: 'Home',
                             link: 'home'
                         }, {
-                            name: 'Resources',
-                            link: 'resources'
+                            name: 'Courses',
+                            link: 'learn'
                         }, {
                             name: $stateParams.name,
                             link: ''
@@ -242,6 +243,20 @@ angular.module('playerApp')
                             link: 'profile'
                         }, {
                             name: 'Organisation Admin Dashboard',
+                            link: ''
+                        }];
+
+                        break;
+                    case 'PublicProfile':
+
+                        $rootScope.breadCrumbsData = [{
+                            name: 'Home',
+                            link: 'home'
+                        }, {
+                            name: 'Profile',
+                            link: 'profile'
+                        }, {
+                            name: $stateParams.userName,
                             link: ''
                         }];
 
@@ -286,6 +301,7 @@ angular.module('playerApp')
                         $rootScope.search.filters = {};
                         $rootScope.search.sortBy = {};
                         $rootScope.search.sortByOption = {};
+                        $rootScope.search.selectedGrades = [];
                         $timeout(function () {
                             $('#multi-select-sort').dropdown('clear');
                             $('#content-search-filter-accordion').accordion('close', 0);

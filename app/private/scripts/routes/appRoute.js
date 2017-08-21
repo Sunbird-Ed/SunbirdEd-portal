@@ -210,7 +210,7 @@ angular.module('playerApp')
           }
       })
       .state('Toc', {
-          url: '/toc/:courseId/:lectureView',
+          url: '/course/:courseId/:lectureView',
           views: {
               mainView: {
                   templateUrl: 'views/course/toc.html',
@@ -226,7 +226,7 @@ angular.module('playerApp')
                   pageid: org.sunbird.portal.appid + '_Toc',
                   id: '',
                   name: '',
-                  url: '/private/index#!/toc/' + $stateParams.courseId + '/' + $stateParams.lectureView
+                  url: '/private/index#!/course/' + $stateParams.courseId + '/' + $stateParams.lectureView
               });
               routeHelperService.loadRouteConfig('Toc', $stateParams);
           },
@@ -280,7 +280,7 @@ angular.module('playerApp')
           }
       })
       .state('Player', {
-          url: '/player/:contentId/:contentName',
+          url: '/content/:contentId/:contentName',
           views: {
               mainView: {
                   templateUrl: 'views/common/player.html',
@@ -302,7 +302,7 @@ angular.module('playerApp')
                   pageid: org.sunbird.portal.appid + '_Player',
                   id: $stateParams.contentId,
                   name: $stateParams.contentName,
-                  url: '/private/index#!/player/' + $stateParams.contentId + '/' + $stateParams.contentName
+                  url: '/private/index#!/content/' + $stateParams.contentId + '/' + $stateParams.contentName
               });
           },
           onExit: function ($rootScope) {
@@ -356,7 +356,7 @@ angular.module('playerApp')
           }
       })
       .state('TocPlayer', {
-          url: '/toc/:courseId/:lectureView/:contentId/:contentIndex',
+          url: '/course/:courseId/:lectureView/:contentId/:contentIndex',
           views: {
               mainView: {
                   templateUrl: 'views/course/toc.html',
@@ -373,7 +373,7 @@ angular.module('playerApp')
                   pageid: org.sunbird.portal.appid + '_TocPlayer',
                   id: '',
                   name: '',
-                  url: '/private/index#!/toc/' + $stateParams.courseId + '/' + $stateParams.lectureView + '/' + $stateParams.contentId + '/' + $stateParams.contentIndex
+                  url: '/private/index#!/course/' + $stateParams.courseId + '/' + $stateParams.lectureView + '/' + $stateParams.contentId + '/' + $stateParams.contentIndex
               });
           },
           onExit: function ($rootScope) {
@@ -776,6 +776,7 @@ angular.module('playerApp')
           },
           onExit: function ($rootScope) {
               $rootScope.resourcesActive = '';
+              $rootScope.profileActive = '';
           }
       })
       .state('orgDashboard', {
@@ -800,6 +801,7 @@ angular.module('playerApp')
           },
           onExit: function ($rootScope) {
               $rootScope.profileActive = '';
+              $rootScope.resourcesActive = '';
           }
       })
       .state('WorkSpace.ContentBatch', {
@@ -891,6 +893,26 @@ angular.module('playerApp')
                 $rootScope.profileActive = '';
             }
         })
+        .state('PublicProfile', {
+            url: '/profile/:userName/:userId',
+            views: {
+                mainView: {
+                    templateUrl: '/views/search/searchedUserProfile.html',
+                    controller: 'PubilicProfileController as publicProfile'
+                }
+            },
+            params: {
+                userId: null,
+                userName: null
+            },
+            onEnter: function ($rootScope, routeHelperService, $stateParams) {
+                $rootScope.profileActive = 'active';
+                routeHelperService.loadRouteConfig('PublicProfile', $stateParams);
+            },
+            onExit: function ($rootScope) {
+                $rootScope.profileActive = '';
+            }
+        })
         .state('MyActivity', {
           url: '/course-creator-dashboard',
           views: {
@@ -898,9 +920,6 @@ angular.module('playerApp')
                   templateUrl: '/views/dashboard/course/courseConsumptionDashboard.html',
                   controller: 'courseCreatorDashboardCtrl as courseDashboard'
               }
-          },
-          params: {
-              orgId: null
           },
           onEnter: function ($stateParams, $rootScope, routeHelperService) {
               if ($stateParams.backState === 'Profile') {
@@ -1012,6 +1031,9 @@ angular.module('playerApp')
               break;
           case 'WorkSpace.BatchList':
               routeHelperService.checkStateAccess(['COURSE_MENTOR'], false, event);
+              break;
+          case 'MyActivity':
+              routeHelperService.checkStateAccess(['COURSE_CREATOR'], false, event);
               break;
           default:
               break;

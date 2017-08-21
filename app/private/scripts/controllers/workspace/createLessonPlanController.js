@@ -23,7 +23,7 @@ angular.module('playerApp')
             lessonPlan.mimeType = 'application/vnd.ekstep.content-collection';
             lessonPlan.defaultName = 'Untitled lesson plan';
             lessonPlan.contentType = 'LessonPlan';
-            lessonPlan.message = '$rootScope.errorMessages.WORKSPACE';
+            lessonPlan.message = $rootScope.errorMessages.WORKSPACE;
 
             lessonPlan.hideCreateLessonPlanModal = function () {
                 $('#createLessonPlanModal').modal('hide');

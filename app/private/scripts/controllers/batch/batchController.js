@@ -11,8 +11,8 @@
 angular.module('playerApp')
     .controller('BatchController', ['$rootScope', '$timeout', '$state','$scope', '$stateParams', 
     'batchService', '$filter', 'permissionsService', 'errorMessages', 'toasterService', 'courseService',
-    'learnService', function($rootScope, $timeout, $state, $scope, $stateParams, batchService, $filter, 
-    permissionsService, errorMessages, toasterService, courseService, learnService) {
+    'learnService','$window', function($rootScope, $timeout, $state, $scope, $stateParams, batchService, $filter, 
+    permissionsService, errorMessages, toasterService, courseService, learnService,$window) {
             var batch = this;
             batch.userList = [];
             batch.menterList = [];
@@ -39,9 +39,10 @@ angular.module('playerApp')
                     $('.ui.calendar').calendar({refresh: true});
                     $("#createBatchModal").modal({
                         onShow: function () {
+                            var today=new Date();
                             $('.ui.calendar#rangestartAdd').calendar({
                                 type: 'date',
-                                minDate: new Date() ,
+                                minDate: new Date(today.setDate(today.getDate() + 1)),
                                 formatter: {
                                     date: function (date, settings) {
                                        return $filter('date')(date, "yyyy-MM-dd")
@@ -78,7 +79,7 @@ angular.module('playerApp')
                             });
                             $('.ui.calendar#rangeendAdd').calendar({
                                 type: 'date',
-                                minDate: new Date(),
+                                minDate:  new Date(today.setDate(today.getDate() + 1)),
                                 formatter: {
                                     date: function (date, settings) {
                                         return $filter('date')(date, "yyyy-MM-dd")
@@ -86,6 +87,7 @@ angular.module('playerApp')
                                 },
                                 startCalendar: $('.ui.calendar#rangestartAdd'),
                             });
+                             $(".ui.modal.transition.hidden").remove();
                         },
                         onHide: function () {
                             var previousUrl = JSON.parse(window.localStorage.getItem('previousURl'));
@@ -153,8 +155,7 @@ angular.module('playerApp')
             };
 
             batch.clearBatchData = function(){
-                $('#users,#mentors').dropdown('restore defaults');  
-                $('#createBatch').form('reset');
+                  $('#createBatch').form('clear');
             }
 
             batch.getCouserBatchesList = function () {
@@ -175,7 +176,7 @@ angular.module('playerApp')
                 batchService.getAllBatchs(request).then(function (response) {
                     if (response && response.responseCode === 'OK') {
                         batch.userList = [];
-                        batch.userNames = [];
+                        batch.userNames = {};
                         _.forEach(response.result.response.content, function(val){
                             batch.userList.push(val.createdBy);
                         });
@@ -191,7 +192,7 @@ angular.module('playerApp')
                             batchService.getUserList(req).then(function (res) {
                                 if (res && res.responseCode === 'OK') {
                                     _.forEach(res.result.response.content, function(val){
-                                        batch.userNames[val.userId] = val;
+                                        batch.userNames[val.identifier] = val;
                                     });
                                     batch.batchList = response.result.response.content || [];
                                 }else{
@@ -252,8 +253,38 @@ angular.module('playerApp')
             };
 
             batch.showBatchDetails = function(batchData){
-                $rootScope.$broadcast('batchDetails', batchData);
-                $('#batchDetails').modal('show');
+                batch.participants = {};
+                if(!_.isUndefined(batchData.participant)){
+                    var req = {
+                        "request": {
+                            "filters":{
+                                "identifier": _.keys(batchData.participant)
+                            }
+                        }
+                    }
+                    batchService.getUserList(req).then(function (res) {
+                        if (res && res.responseCode === 'OK') {
+                            _.forEach(res.result.response.content, function(val){
+                                batch.participants[val.identifier] = val;
+                            });
+                            batchData.userList = batch.participants;
+                            console.log('batchData ', batchData);
+                            $rootScope.$broadcast('batchDetails', batchData);
+                            $('#batchDetails').modal('show');
+                        }else{
+                           toasterService.error(errorMessages.BATCH.GET_USERS.FAILED); 
+                        }
+                    }).catch(function () {
+                        toasterService.error(errorMessages.BATCH.GET_USERS.FAILED);
+                    });
+                }else{
+                    $rootScope.$broadcast('batchDetails', batchData);
+                    $('#batchDetails').modal('show');
+                }
+                // batchData.userList = batch.userNames;
+                // console.log('batchData ', batchData);
+                // $rootScope.$broadcast('batchDetails', batchData);
+                // $('#batchDetails').modal('show');
             };
 
             batch.enrollUserToCourse = function(batchId){
@@ -267,7 +298,11 @@ angular.module('playerApp')
                 courseService.enrollUserToCourse(req).then(function (response) {
                     if (response && response.responseCode === 'OK') {
                         batch.showEnroll = false;
-                        toasterService.error(errorMessages.BATCH.ENROLLED.SUCCESS);
+                        toasterService.success(errorMessages.BATCH.ENROLLED.SUCCESS);
+                        $timeout(function(){
+                          $window.location.reload();  
+                        },2000);
+                        
                     }else{
                         toasterService.error(errorMessages.Courses.ENROLL.ERROR);
                     }

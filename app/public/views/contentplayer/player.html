@@ -1,0 +1,106 @@
+<div id="contentPlayer" ng-init="init()">
+    <div class='videosegment ui segment' ng-if="visibility">
+
+        <div class='content-player-body'>
+            <div class="videosegment  ui clearing segment" ng-if="isHeader || isClose">
+                <h1 class="ui HomeAccordianHeading left floated header margin-auto" ng-if="isHeader">
+                    {{contentData.name}}
+                </h1>
+            </div>
+
+            <div class="ui stackable twelve column grid">
+
+                <div class="twelve wide column">
+                    <div class="content-player" ng-if="showIFrameContent">
+                        <iframe id="contentViewerIframe" class="contentViewerIframeShadow" height='100%' width='100%'></iframe>
+                    </div>
+                </div>
+                <div class="twelve wide column">
+                    <h2 class="ui header">
+                        {{contentData.description}}
+                    </h2>
+                    <div class="ui clearing divider"></div>
+                    <div class="ui grid margin-top-15">
+                        <div class="row">
+                            <div class="three wide column">
+                                <div class="ui list">
+                                    <div class="item">
+                                        <div class="content">
+                                            <div class="header">{{$root.labels.previewContent.author}}</div>
+                                            <div class="description padding-top-1rem">{{contentData.author}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="three wide column">
+                                <div class="ui list">
+                                    <div class="item">
+                                        <div class="content">
+                                            <div class="header">{{$root.labels.previewContent.language}}</div>
+                                            <div class="description padding-top-1rem">{{contentData.language.toString()}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="three wide column">
+                                <div class="ui list">
+                                    <div class="item">
+                                        <div class="content">
+                                            <div class="header">{{$root.labels.previewContent.grades}}</div>
+                                            <div class="description padding-top-1rem">{{contentData.gradeLevel.toString()}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="three wide column">
+                                <div class="ui list">
+                                    <div class="item">
+                                        <div class="content">
+                                            <div class="header">{{$root.labels.previewContent.subject}}</div>
+                                            <div class="description padding-top-1rem">{{contentData.subject}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="three wide column">
+                                <div class="ui list">
+                                    <div class="item">
+                                        <div class="content">
+                                            <div class="header">{{$root.labels.previewContent.lastUpdate}}</div>
+                                            <div class="description padding-top-1rem">{{contentData.lastUpdatedOn | dateFilterWithMDY}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="three wide column">
+                                <div class="ui list">
+                                    <div class="item">
+                                        <div class="content">
+                                            <div class="header">{{$root.labels.previewContent.createdOn}}</div>
+                                            <div class="description padding-top-1rem">{{contentData.createdOn | dateFilterWithMDY}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-if="errorObject.showError">
+                <div class="ui active dimmer inverted">
+                    <div class="content">
+                        <div class="center" ng-if="!errorObject.showMetaLoader">
+                            <h2 class="ui header {{errorObject.messageClass}}">
+                                {{errorObject.message}}
+                            </h2>
+                            <span ng-if="errorObject.showTryAgainButton"><button class="ui button" ng-click="init()">{{$root.labels.previewContent.tryAgain}}</button></span>
+                            <span ng-if="errorObject.showCloseButton"><button class="ui red button" ng-click="close()">{{$root.labels.previewContent.close}}</button></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

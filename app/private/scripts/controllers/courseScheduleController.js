@@ -58,7 +58,7 @@ angular.module('playerApp')
 
             toc.resumeCourse = function () {
                 toc.showCourseDashboard = false;
-                if ($rootScope.isTocPage) {
+                if ($rootScope.isTocPage && toc.playContent) {
                     if ($location.hash().indexOf('tocPlayer') < 0) {
           // once last played index is given assign it for now zero
                         $('#course-toc').find('.content').first().addClass('active');
@@ -114,8 +114,6 @@ angular.module('playerApp')
                         $rootScope.courseName = toc.courseHierachy.name;
                         if ($rootScope.isTocPage) {
                             toc.applyAccordion();
-                        } else {
-                            toc.courseProgress = 0;
                         }
                     } else {
                         toc.loader.showLoader = false;
@@ -184,10 +182,11 @@ angular.module('playerApp')
             };
             toc.expandMe = function (index, item) {
                 if (item && item.mimeType
-            && item.mimeType !== 'application/vnd.ekstep.content-collection'
-          ) {
+            && item.mimeType !== 'application/vnd.ekstep.content-collection') {
                     toc.itemIndex = toc.playList.indexOf(item.identifier);
+                    if(toc.playContent) {
                     toc.playPlaylistContent(item.identifier, '');
+                  }
                 } else {
                     var accIcon = $(index.target).closest('.title').find('i');
                     toc.updateIcon(accIcon, !$(accIcon).hasClass('plus'));
@@ -433,7 +432,7 @@ angular.module('playerApp')
              { name: 'Home', link: 'home' },
              { name: 'Courses', link: 'learn' },
                     { name: toc.courseName,
-                        link: '/toc/'
+                        link: '/course/'
                    + '/' + toc.courseId + '/' + toc.lectureView }];
                 if ($scope.contentPlayer.isContentPlayerEnabled) {
                     var curContentName = toc.playListContent[toc.itemIndex].name;
@@ -463,6 +462,7 @@ angular.module('playerApp')
             ? 'false' : 'true';
                 toc.nightMode = true;
                 toc.itemIndex = parseInt($stateParams.contentIndex, 0) || 0;
+                toc.playContent = false;
                 $scope.contentPlayer = {
                     isContentPlayerEnabled: false
 
@@ -481,7 +481,6 @@ angular.module('playerApp')
                 };
                 toc.playItemIndex = undefined;
                 toc.getCourseToc();
-                contentStateService.init();
                 toc.showBatchCardList();
             };
 
@@ -506,6 +505,13 @@ angular.module('playerApp')
                     batchService.getBatchDetails({ "batchId" : isEnroled.batchId }).then(function (response) {
                         if (response && response.responseCode === 'OK') {
                             toc.selectedBatchInfo = response.result.response;
+                            toc.batchStatus = toc.selectedBatchInfo.status;
+                            if(toc.batchStatus && toc.batchStatus> 0) {
+                                toc.playContent = true;
+                                if(toc.batchStatus < 2){
+                                   contentStateService.init();
+                               }
+                            }
                         }else{
                             toasterService.error($rootScope.errorMessages.BATCH.GET.FAILED);
                         }
