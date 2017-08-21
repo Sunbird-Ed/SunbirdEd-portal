@@ -40,8 +40,6 @@ var paths = {
         player.app + '/thirdparty/bower_components/angular-route/angular-route.js',
         player.app + '/thirdparty/bower_components/angular-ui-router/release/angular-ui-router.min.js',// eslint-disable-line
         player.app + '/thirdparty/semantic/semantic.min.js',
-        player.app + '/thirdparty/bower_components/video.js/dist/video.js',
-        player.app + '/thirdparty/bower_components/videojs-youtube/dist/Youtube.js',
         player.app + '/thirdparty/bower_components/ngstorage/ngStorage.js',
         player.app + '/thirdparty/bower_components/moment/min/moment-with-locales.min.js',
         player.app + '/thirdparty/bower_components/angular-pagedown/angular-pagedown.min.js',// eslint-disable-line
@@ -51,8 +49,6 @@ var paths = {
         player.app + '/thirdparty/bower_components/pagedown/Markdown.Editor.js',
         player.app + '/thirdparty/bower_components/angular-slick/dist/slick.js',
         player.app + '/thirdparty/bower_components/slick-carousel/slick/slick.js',
-        player.app + '/thirdparty/bower_components/pdfjs-dist/build/pdf.js',
-        player.app + '/thirdparty/bower_components/angular-pdf-viewer/dist/angular-pdf-viewer.min.js',// eslint-disable-line
         player.app + '/thirdparty/bower_components/angular-translate/angular-translate.js',// eslint-disable-line
         player.app + '/thirdparty/bower_components/angular-sanitize/angular-sanitize.js',
         player.app + '/thirdparty/bower_components/file-upload/fine-uploader/fine-uploader.js',// eslint-disable-line

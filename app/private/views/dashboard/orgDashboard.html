@@ -40,13 +40,17 @@
         </div>
       </div>
       <div class="ui one column grid" ng-show="dashboardData.showDataDiv">
+        <div class="padding-top-30" ng-if="dashboardData.graphArray.length-1 > 0">
+          <button class="ui right labeled icon button" ng-click="dashboardData.previousGraph()"  ng-class="{'disabled' : dashboardData.graphShow <= 0}">
+            <i class="left arrow icon"></i>
+          </button>
+          <button class="ui right labeled icon button" ng-click="dashboardData.nextGraph()" ng-class="{'disabled' : dashboardData.graphShow >= (dashboardData.graphArray.length-1)}">
+            <i class="right arrow icon"></i>
+          </button>
+        </div>
         <div class="regular slider padding-top-30">
-          <div>
-            <canvas height="{{dashboardData.height}}" class="chart chart-line adminCanvasPadding adminCanvasBorder" chart-data="dashboardData.data" chart-labels="dashboardData.labels" chart-series="dashboardData.series" chart-colors="dashboardData.colors" chart-options="dashboardData.options">
-            </canvas>
-          </div>
-          <div ng-if="dashboardData.secondChart" class="padding-top-30">
-            <canvas height="{{dashboardData.height}}" class="chart chart-line adminCanvasPadding adminCanvasBorder" chart-data="dashboardData.data1" chart-labels="dashboardData.labels1" chart-series="dashboardData.series1" chart-colors="dashboardData.colors1" chart-options="dashboardData.options1">
+          <div ng-repeat="graph in dashboardData.graphArray">
+            <canvas height="{{dashboardData.height}}" class="chart chart-line adminCanvasPadding adminCanvasBorder" chart-data="graph[2]" chart-labels="graph[1]" chart-series="graph[0]" chart-colors="graph[3]" chart-options="graph[4]" ng-if="$index == dashboardData.graphShow">
             </canvas>
           </div>
         </div>

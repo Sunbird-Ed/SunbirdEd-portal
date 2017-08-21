@@ -13,7 +13,6 @@ angular.module('loginApp', [
     'ui.router',
     'loginApp.labels',
     'loginApp.errorMessages',
-    'pdf',
     'loginApp.config',
     'uuid4'
 ])
