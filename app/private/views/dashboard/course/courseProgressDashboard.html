@@ -84,7 +84,8 @@
 	<div class="tweleve wide column" ng-if="courseDashboard.showLoader">
   		<app-loader></app-loader>
 	</div>
-	<div class="ui negative message" ng-if="courseDashboard.showError && !courseDashboard.showLoader">
+	<div class="ui negative message" ng-hide="courseDashboard.showWarningMsg"
+		ng-if="courseDashboard.showError && !courseDashboard.showLoader">
   		<div class="header">Error while fetching data..</div>
   		<p>{{courseDashboard.errorMsg}}</p>
 	</div>

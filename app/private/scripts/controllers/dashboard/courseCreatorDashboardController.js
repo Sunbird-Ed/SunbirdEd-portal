@@ -24,6 +24,7 @@ angular.module('playerApp')
 
   		// Variables to show loader/errorMsg
   		courseDashboard.showLoader = true;
+  		courseDashboard.showWarningMsg = false;
   		courseDashboard.showError  = false;
   		courseDashboard.errorMsg   = '';
 
@@ -120,11 +121,17 @@ angular.module('playerApp')
 		courseDashboard.loadData = function(){
 			// Get list of my courses
 			learnService.enrolledCourses($rootScope.userId).then(function (apiResponse) {
-	            if (apiResponse && apiResponse.responseCode === 'OK' && apiResponse.result.courses.length > 0) {
-               		courseDashboard.myCoursesList = apiResponse.result.courses;
-	               	var firstChild = _.first(_.values(courseDashboard.myCoursesList), 1);
-	               	courseDashboard.courseIdentifier = firstChild.courseId;
-	               	getCourseDashboardData('7d');
+	            if (apiResponse && apiResponse.responseCode === 'OK') {
+	            	if (apiResponse.result.courses.length > 0){
+	            		courseDashboard.myCoursesList = apiResponse.result.courses;
+	               		var firstChild = _.first(_.values(courseDashboard.myCoursesList), 1);
+	               		courseDashboard.courseIdentifier = firstChild.courseId;
+	               		getCourseDashboardData('7d');
+	            	}else {
+	            		courseDashboard.showLoader = false;
+	            		courseDashboard.showWarningMsg = true;
+	            	}
+
 	            } else {
 	            	// Show error div
 					courseDashboard.showErrors(apiResponse);
