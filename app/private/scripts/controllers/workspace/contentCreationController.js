@@ -44,7 +44,6 @@ angular.module('playerApp')
                     autoUpload: false,
                     debug: true,
                     validation: {
-                        acceptFiles: config.FileExtensionToUpload,
                         sizeLimit: config.MaxFileSizeToUpload,
                         allowedExtensions: config.AllowedFileExtension
                     },
