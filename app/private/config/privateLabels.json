@@ -46,12 +46,12 @@
                 "lesson": "LESSON",
                 "lessonDescription": "You can create stuff here. You must try it, it's magical!.",
                 "collection": "COLLECTION",
-                "collectionDescription": "You will be taken to an editor to create a course with assessments/quizzes.",
+                "collectionDescription": "You can create a collection with structured sections.",
                 "enterYoutubeURL": "ENTER YOUTUBE URL",
                 "fileUploadOptions": "File accepted only pdf, mp4, epub, h5p and html zip (Max size 25mb).",
                 "uploadContent": "Upload Content",
                 "upload": "Upload",
-                "lessonPlanDescription": "Lesson plan description",
+                "lessonPlanDescription": "You can create a lesson plan with structured sections.",
                 "lessonPlan": "LESSON PLAN"
             },
             "createLesson": {

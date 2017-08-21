@@ -13,14 +13,14 @@
                                 <div class="sectionHeading header">{{profileCtrl.user.firstName}} &nbsp;{{::profileCtrl.user.lastName}}</div>
                                 <div class="meta profileViewSubHeader padding-bottom-10">
                                     <span ng-if="profileCtrl.currentJobLocation">{{profileCtrl.currentJobLocation.orgName}},</span>
-                                    <span  ng-if="profileCtrl.currentAddressLocation">{{profileCtrl.currentAddressLocation.city}}</span>
+                                    <span  ng-if="profileCtrl.currentAddressLocation">{{profileCtrl.user.location}}</span>
                                 </div>
                                 <div class="meta">
                                     <div class="ui label">Username: {{profileCtrl.user.userName}}                                    
                                     </div>
-                                    <div class="ui label">
-                                        <i class="mail outline icon"></i> {{profileCtrl.user.email}}
-                                    </div>
+                                    <a class="ui link label" ng-if="profileCtrl.user.rootOrg.contactDetail.length > 0 && profileCtrl.user.rootOrg.contactDetail[0].email && profileCtrl.user.rootOrg.orgName" 
+                                    ng-href="mailto:{{profileCtrl.user.rootOrg.contactDetail[0].email}}">{{profileCtrl.user.rootOrg.orgName}} <i class="mail outline icon"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
