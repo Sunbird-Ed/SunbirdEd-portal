@@ -173,6 +173,8 @@ angular.module('playerApp')
                            ['COURSE_MENTOR']).length > 0){
                     batch.isMentor = true;
                     request.request.filters.createdBy = batch.userId;
+                }else{
+                    request.request.filters.enrollmentType = 'open';
                 }
                 batchService.getAllBatchs(request).then(function (response) {
                     if (response && response.responseCode === 'OK') {

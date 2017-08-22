@@ -1,45 +1,66 @@
-<div class="ui large modal" id="orgBulkUpload" sb-permissions permission-only="SYSTEM_ADMINISTRATION" >
-  <div class="header">
-    <div class="ui grid">
-      <div class="eleven wide column">
-       <span class="ui header">Upload Organizations</span> 
-       </div>
-      <div class="one wide column actions">
-        <h5 class="ui basic icon circular button deny">
-                <i class="ui remove icon"></i>
-        </h5>
-      </div>
+<div class="ui large modal" id="orgBulkUpload" sb-permissions permission-only="SYSTEM_ADMINISTRATION" ng-if="admin.showUploadOrgModal">
+    <div class="header">
+        <div class="ui grid">
+            <div class="eleven wide column">
+                <span class="ui header">Upload Organizations</span>
+            </div>
+            <div class="one wide column actions">
+                <h5 class="ui basic icon circular button deny">
+                    <i class="ui remove icon"></i>
+                </h5>
+            </div>
+        </div>
     </div>
-  </div> 
-  <div class="content"> 
-    <div ng-if="admin.loader.showLoader">
-        <app-loader data="{{admin.loader}}"></app-loader>
-      </div>
-      <h5 ng-if="!admin.bulkOrgProcessId && !admin.loader.showLoader">Upload organization csv using Upload Organization CSV button, download sample csv for reference</h5>
+    <div class="content">
+        <div ng-if="admin.loader.showLoader">
+            <app-loader data="{{admin.loader}}"></app-loader>
+        </div>
         <!-- file name -->
-      <h5 ng-if="admin.fileName">
-        <i class="file outline icon"></i>Uploaded File: {{admin.fileName}}
-      </h5>
-      <!-- show progress -->
-      <div ng-if="admin.bulkOrgProcessId">
-          <p class="padding-top-bottom-0 ">Process ID: {{admin.bulkOrgProcessId}}</p>
-          <p>Please save the Process ID for your reference .You can track progress with process ID</p>
-      </div>
-  </div>
-  <div class="actions">
-      <div class="ui grid" >
-        <div class="four wide column">
-          <button class="ui  left floated button"ng-click="admin.downloadSample('organizations')">Download Sample CSV</button>
+        <h5 ng-if="admin.fileName">
+            <i class="file outline icon"></i>Uploaded File: {{admin.fileName}}
+        </h5>
+        <!-- show progress -->
+        <div ng-if="admin.bulkOrgProcessId">
+            <p class="padding-top-bottom-0 ">Process ID: {{admin.bulkOrgProcessId}}</p>
+            <p>Please save the Process ID for your reference .You can track progress with process ID</p>
         </div>
-        <div class="four wide column">
-        </div>
-        <div class="four wide column">
-        <button ng-disabled="admin.bulkOrgProcessId" class="ui primary right floated button" ng-click="admin.openImageBrowser('organizations');">Upload Organizations CSV</button>
-								<input type="file" accept=".csv" class="content-input ui small "
-								id="orgUploadCSV" onchange="angular.element(this).scope().validateFile(this.files,'organizations');"
-								required="" />
-        </div>
-      </div>
-  </div>
-</div>
+        <div class="ui info message" ng-if="!admin.bulkOrgProcessId && !admin.loader.showLoader">
+            <!-- <i class="close icon"></i> -->
+            <div class="header">
 
+                {{$root.labels.INSTRUCTIONS.HEADER}}
+            </div>
+            <ol class="ui list">
+                <li>{{$root.labels.INSTRUCTIONS.SAMPLE}}</li>
+                <li>{{$root.labels.INSTRUCTIONS.COLUMNS}}
+                    <ol>
+                        <li>
+                            {{$root.labels.INSTRUCTIONS.MAX_COUNT_ORGS}}
+                        </li>
+                        <li>{{$root.labels.INSTRUCTIONS.ORGANIZATIONS.ONE}}</li>
+                        <li>
+                            {{$root.labels.INSTRUCTIONS.ORGANIZATIONS.TWO}}
+                            <li>
+                                {{$root.labels.INSTRUCTIONS.ORGANIZATIONS.THREE}}
+                                <li>
+                                    {{$root.labels.INSTRUCTIONS.ORGANIZATIONS.FOUR}}
+                                </li>
+                    </ol>
+                    </li>
+            </ol>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui grid">
+            <div class="four wide column">
+                <button class="ui  left floated button" ng-click="admin.downloadSample('organizations')">Download Sample CSV</button>
+            </div>
+            <div class="four wide column">
+            </div>
+            <div class="four wide column">
+                <button ng-disabled="admin.bulkOrgProcessId" class="ui primary right floated button" ng-click="admin.openImageBrowser('organizations');">Upload Organizations CSV</button>
+                <input type="file" accept=".csv" class="content-input ui small " id="orgUploadCSV" onchange="angular.element(this).scope().validateFile(this.files,'organizations');" required="" />
+            </div>
+        </div>
+    </div>
+</div>
