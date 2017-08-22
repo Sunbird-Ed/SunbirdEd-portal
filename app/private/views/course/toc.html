@@ -8,7 +8,7 @@
           <div class="content">
             <div class='ui grid'>
               <div class="row">
-                <div class='eight wide column'>
+                <div class='nine wide column'>
                   <div class="ui header">
                     <span class="content courseStructureHeading">
                                             About the course
@@ -27,8 +27,8 @@
                                             Course Structure
                                         </b>
                   </div>
-                  <div id="course-toc{{$index}}" class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100"   ng-repeat="item in  toc.courseHierachy.children track by $index" ng-click="toc.expandMe($event, item)" ng-class="{'cursor-pointerText':item.children.length == 0}">
-                    <div class="courseAccordianHeading title title-padding-left accordian-left-text" ng-class="{'cursor-pointerText':(toc.playContent == false && item.mimeType !== 'application/vnd.ekstep.content-collection')}" name="{{item.identifier}}">
+                  <div id="course-toc{{$index}}" class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100" ng-repeat="item in  toc.courseHierachy.children track by $index" ng-click="toc.expandMe($event, item)">
+                    <div class="courseAccordianHeading title title-padding-left accordian-left-text" name="{{item.identifier}}">
                       <i ng-class="[toc.contentStatusList[item.identifier],toc.getContentIcon(item.mimeType)]"></i> {{item.name}}
                       <i ng-if='item.children && item.children.length > 0' class="plus icon down-arrow-accordion"></i>
                     </div>
@@ -39,37 +39,33 @@
                   <div class="ui fitted divider margin-bottom-20 margin-top-30"></div>
                   <course-discussions showaskquestion="true"></course-discussions>
                 </div>
-                <div class='four wide column'>
+                <div class='three wide column'>
                   <batch-card ng-show="toc.batchCardShow" showbatchcard="true" coursecreatedby="toc.courseHierachy.createdBy"></batch-card>
                   <div ng-show="!toc.batchCardShow">
                     <div class="rightSideSectionCards ui card">
                       <div class="content">
                         <div class="header">Your Batch Details</div>
-                        <div class="description">
-                          <div class="batchSelectedDetails ui list">
+                        <div class="description padding-top-10">
+                          <div class="ui list">
                             <div class="item">
-                              <div class="content">
-                                <span>Name: {{toc.selectedBatchInfo.name}}</span>
+                              <div class="header">
+                                <span>Name <span class="float-ContentRight batch-card-desc">{{toc.selectedBatchInfo.name}}</span></span>
                               </div>
                             </div>
-                           <!--  <div class="item">
-                              <div class="content">
-                                <span>Created By: Harish Kumar</span>
+                            <div class="item padding-top-10">
+                              <div class="header">
+                                <span>Mentors | learners <span class="float-ContentRight batch-card-desc">{{toc.selectedBatchInfo.mentors.length}} | {{toc.selectedParticipants}} </span>
+                                </span>
                               </div>
                             </div>
-                            <div class="item">
-                              <div class="content">
-                                <span>3 Mentors | 12 learners</span>
-                              </div>
-                            </div> -->
-                            <div class="item">
-                              <div class="content">
-                                <span>Starts on: {{toc.selectedBatchInfo.startDate | date: "dd MMM yyyy"}}</span>
+                            <div class="item padding-top-10">
+                              <div class="header">
+                                <span>Starts on <span class="float-ContentRight batch-card-desc">{{toc.selectedBatchInfo.startDate | date: "dd MMM yyyy"}}</span></span>
                               </div>
                             </div>
-                            <div class="item">
-                              <div class="content">
-                                <span>Closes on: {{toc.selectedBatchInfo.endDate | date: "dd MMM yyyy"}}</span>
+                            <div class="item padding-top-10">
+                              <div class="header">
+                                <span>Closes on <span class="float-ContentRight batch-card-desc">{{toc.selectedBatchInfo.endDate | date: "dd MMM yyyy"}}</span></span>
                               </div>
                             </div>
                             <!--  <div class="item">
