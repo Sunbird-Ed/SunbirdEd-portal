@@ -4,8 +4,8 @@
  * @ngdoc service
  * @name playerApp.dashboardService
  * @description
- * @author Nilesh More
- * # notesService
+ * @author nilesh_m@tekditechnologies.com
+ * # dashboardService
  * Service in the playerApp.
  */
 
@@ -14,6 +14,7 @@ angular.module('playerApp')
     this.getAdminDashboardData = function(req, datasetType) {
       return httpServiceJava.get('dashboard/v1/' + datasetType + '/org/' + req.org_id + '?period=' + req.period);
     };
+
     this.getChartColors = function(datasetType) {
       if (datasetType == 'creation') {
         return [{
@@ -74,15 +75,15 @@ angular.module('playerApp')
         var iNum   = '';
         var result = '';
         if (numericData.value < 60) {
-            numericData.value = numericData.value + ' second';
+            numericData.value = numericData.value + ' second(s)';
         } else if (numericData.value >= 60 && numericData.value <= 3600) {
             iNum = numericData.value / 60;
             result = iNum.toFixed(2)
-            numericData.value = result + ' min';
+            numericData.value = result + ' min(s)';
         } else if (numericData.value >= 3600) {
             iNum = numericData.value / 3600;
             result = iNum.toFixed(2);
-            numericData.value = result + ' hour';
+            numericData.value = result + ' hour(s)';
         } else{
             return numericData;
         }
@@ -93,6 +94,7 @@ angular.module('playerApp')
     /**
      * @Function getCourseDashboard data
      * @Description [description]
+     * @return object
      */
     this.getCourseDashboardData = function(req, datasetType){
         var apiUrl = 'dashboard/v1/' + datasetType + '/course/' + req.courseId + '?period='+ req.timePeriod;

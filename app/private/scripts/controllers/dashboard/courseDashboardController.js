@@ -2,7 +2,7 @@
 
 /**
  * @ngdoc function
- * @name playerApp.controller: courseAdminCreationDashboard
+ * @name playerApp.controller: courseDashboardCtrl
  * @description: courseDashboardCtrl controller of the playerApp
  * @author: nilesh_m@tekditechnologies.com
  */
@@ -20,16 +20,6 @@ angular.module('playerApp')
   		courseDashboard.dataset = 'progress';
   		var currentUserRoles = permissionsService.getCurrentUserRoles();
   		console.log(currentUserRoles);
-		/*var userRolesLookup  = ['COURSE_ADMIN','COURSE_CREATOR'];
-		Check logged user has both roles to show progress, and consumption dropdwon values
-		courseDashboard.bothRolesUser    = _.every(userRolesLookup, _.partial(_.includes, currentUserRoles));
-		if(!courseDashboard.bothRolesUser){
-	  		angular.forEach(currentUserRoles, function(roleName, key){
-	  			if (roleName === 'COURSE_CREATOR'){
-	  				//courseDashboard.dataset = 'consumption';
-	  			}
-	  		})
-  		}*/
 
   		// Search and sort table data
   		courseDashboard.orderByField = ''; // Default value
@@ -56,11 +46,7 @@ angular.module('playerApp')
 			};
 
 			dashboardService.getCourseDashboardData(request, courseDashboard.dataset).then(function (apiResponse) {
-
 				courseDashboard.consumptionNumericData = [];
-				console.log('in controller');
-				console.log(apiResponse);
-
 				if (apiResponse && apiResponse.responseCode === 'OK'){
 					if(courseDashboard.dataset === 'progress'){
 						console.log('In progress......');
@@ -137,7 +123,6 @@ angular.module('playerApp')
 			courseDashboard.showError  = true;
 			courseDashboard.showLoader = false;
 			courseDashboard.errorMsg   = apiResponse.params.errmsg;
-			console.log(apiResponse.params.errmsg);
 			toasterService.error(apiResponse.params.errmsg);
 		};
 
