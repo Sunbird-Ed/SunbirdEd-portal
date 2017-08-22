@@ -186,7 +186,7 @@ angular.module('playerApp')
                         }
                     };
                     if (data.enrollmentType != 'open') {
-                        data.mentors = $('#mentors').dropdown('get value').split(',');
+                        data.mentors = $('#mentorSelList').val().split(',');
                         var selected = [];
                         _.forEach(batchUpdate.selectedMentors, function (value) {
                             selected.push(value.id);
@@ -196,7 +196,7 @@ angular.module('playerApp')
                     batchService.update(request).then(function (response) {
                         if (response && response.responseCode === 'OK') {
                             if (data.enrollmentType != 'open') {
-                                data.users = $('#userSelList').val().split(',');
+                                data.users = _.compact($('#userSelList').val().split(','));
                                 if (data.users && data.users.length > 0) {
                                     var userRequest = {
                                         request: {
