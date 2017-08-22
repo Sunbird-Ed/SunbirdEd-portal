@@ -9,10 +9,10 @@
  */
 
 angular.module('playerApp')
-    .controller('BatchController', ['$rootScope', '$timeout', '$state','$scope', '$stateParams', 
-    'batchService', '$filter', 'permissionsService', 'errorMessages', 'toasterService', 'courseService',
-    'learnService','$window', function($rootScope, $timeout, $state, $scope, $stateParams, batchService, $filter, 
-    permissionsService, errorMessages, toasterService, courseService, learnService,$window) {
+    .controller('BatchController', ['$rootScope', '$timeout', '$state', '$scope', '$stateParams',
+        'batchService', '$filter', 'permissionsService', 'errorMessages', 'toasterService', 'courseService',
+        'learnService', '$window', function ($rootScope, $timeout, $state, $scope, $stateParams, batchService, $filter,
+    permissionsService, errorMessages, toasterService, courseService, learnService, $window) {
             var batch = this;
             batch.userList = [];
             batch.menterList = [];
@@ -27,33 +27,33 @@ angular.module('playerApp')
             batch.batchInfo = '';
             batch.statusOptions = [
                 { name: 'Ongoing', value: 1 },
-                { name: 'New', value: 0 }
+                { name: 'Upcoming', value: 0 }
             ];
             batch.showEnroll = true;
             batch.showCreateBatchModal = function () {
                 batch.getUserList();
                 $timeout(function () {
-                    batch.data = {enrollmentType : "invite-only"};
+                    batch.data = { enrollmentType: 'invite-only' };
                     $('input:radio[name="enrollmentType"]').filter('[value="invite-only"]').attr('checked', true);
                     $('#users,#mentors').dropdown({ forceSelection: false, fullTextSearch: true });
-                    $('.ui.calendar').calendar({refresh: true});
-                    $("#createBatchModal").modal({
+                    $('.ui.calendar').calendar({ refresh: true });
+                    $('#createBatchModal').modal({
                         onShow: function () {
-                            var today=new Date();
+                            var today = new Date();
                             $('.ui.calendar#rangestartAdd').calendar({
                                 type: 'date',
-                                minDate: new Date(today.setDate(today.getDate() + 1)),
+                                minDate: today,
                                 formatter: {
                                     date: function (date, settings) {
-                                       return $filter('date')(date, "yyyy-MM-dd")
+                                        return $filter('date')(date, 'yyyy-MM-dd');
                                     }
                                 },
                                 onChange: function (date, text, mode) {
-                                    if(_.isUndefined(batch)){
-                                        batch = { data : { startDate : text } }; 
-                                    }else if(_.isUndefined(batch.data)){
-                                        batch.data = { startDate : text };
-                                    }else{
+                                    if (_.isUndefined(batch)) {
+                                        batch = { data: { startDate: text } };
+                                    } else if (_.isUndefined(batch.data)) {
+                                        batch.data = { startDate: text };
+                                    } else {
                                         batch.data.startDate = text;
                                     }
                                     $('.ui.calendar#rangeendAdd').calendar({
@@ -61,15 +61,15 @@ angular.module('playerApp')
                                         minDate: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1),
                                         formatter: {
                                             date: function (date, settings) {
-                                                return $filter('date')(date, "yyyy-MM-dd")
+                                                return $filter('date')(date, 'yyyy-MM-dd');
                                             }
                                         },
                                         onChange: function (date, text, mode) {
-                                            if(_.isUndefined(batch)){
-                                                batch = { data : { endDate : text } };
-                                            }else if(_.isUndefined(batch.data)){
-                                                batch.data = { endDate : text };
-                                            }else{
+                                            if (_.isUndefined(batch)) {
+                                                batch = { data: { endDate: text } };
+                                            } else if (_.isUndefined(batch.data)) {
+                                                batch.data = { endDate: text };
+                                            } else {
                                                 batch.data.endDate = text;
                                             }
                                         }
@@ -79,21 +79,21 @@ angular.module('playerApp')
                             });
                             $('.ui.calendar#rangeendAdd').calendar({
                                 type: 'date',
-                                minDate:  new Date(today.setDate(today.getDate() + 1)),
+                                minDate: today,
                                 formatter: {
                                     date: function (date, settings) {
-                                        return $filter('date')(date, "yyyy-MM-dd")
+                                        return $filter('date')(date, 'yyyy-MM-dd');
                                     }
                                 },
-                                startCalendar: $('.ui.calendar#rangestartAdd'),
+                                startCalendar: $('.ui.calendar#rangestartAdd')
                             });
-                             $(".ui.modal.transition.hidden").remove();
+                            $('.ui.modal.transition.hidden').remove();
                         },
                         onHide: function () {
                             var previousUrl = JSON.parse(window.localStorage.getItem('previousURl'));
                             $state.go(previousUrl.name, previousUrl.params);
                         }
-                    }).modal("show");
+                    }).modal('show');
                 }, 10);
             };
 
@@ -103,50 +103,50 @@ angular.module('playerApp')
                 $('#createBatchModal').modal('hide dimmer');
             };
 
-            batch.addBatch = function(data){
-                if($scope.createBatch.$valid){
-                    if(data.enrollmentType != 'open'){
-                        data.users = $("#users").dropdown("get value").split(",");
-                        data.mentors = $("#mentors").dropdown("get value").split(",");
-                    }else{
+            batch.addBatch = function (data) {
+                if ($scope.createBatch.$valid) {
+                    if (data.enrollmentType != 'open') {
+                        data.users = $('#users').dropdown('get value').split(',');
+                        data.mentors = $('#mentors').dropdown('get value').split(',');
+                    } else {
                         data.users = [];
                         data.mentors = [];
                     }
                     var request = {
-                        "request" : {
-                            "courseId": batch.courseId,
-                            "name": data.name,
-                            "description": data.description,
-                            "enrollmentType": data.enrollmentType,
-                            "startDate": data.startDate,
-                            "endDate": data.endDate,
-                            "createdBy": batch.userId,
-                            "createdFor": $rootScope.organisationIds,
-                            "mentors": _.compact(data.mentors)
+                        request: {
+                            courseId: batch.courseId,
+                            name: data.name,
+                            description: data.description,
+                            enrollmentType: data.enrollmentType,
+                            startDate: data.startDate,
+                            endDate: data.endDate,
+                            createdBy: batch.userId,
+                            createdFor: $rootScope.organisationIds,
+                            mentors: _.compact(data.mentors)
                         }
-                    }
+                    };
                     batchService.create(request).then(function (response) {
                         if (response && response.responseCode === 'OK') {
-                            if(data.users && data.users.length > 0){
+                            if (data.users && data.users.length > 0) {
                                 var userRequest = {
-                                    "request" : {
-                                        "userIds": _.compact(data.users)
+                                    request: {
+                                        userIds: _.compact(data.users)
                                     }
-                                }
+                                };
                                 batchService.addUsers(userRequest, response.result.batchId).then(function (response) {
                                     if (response && response.responseCode === 'OK') {
                                         batch.hideCreateBatchModal();
-                                    }else{
+                                    } else {
                                         toasterService.error(errorMessages.BATCH.ADD_USERS.FAILED);
                                     }
                                 }).catch(function () {
                                     toasterService.error(errorMessages.BATCH.ADD_USERS.FAILED);
                                 });
-                            }else{
+                            } else {
                                 batch.hideCreateBatchModal();
                             }
-                        }else{
-                            toasterService.error(errorMessages.BATCH.CREATE.FAILED);  
+                        } else {
+                            toasterService.error(errorMessages.BATCH.CREATE.FAILED);
                         }
                     }).catch(function () {
                         toasterService.error(errorMessages.BATCH.CREATE.FAILED);
@@ -154,57 +154,57 @@ angular.module('playerApp')
                 }
             };
 
-            batch.clearBatchData = function(){
-                  $('#createBatch').form('clear');
-                  $('#createBatch').find('.search').val('');
-            }
+            batch.clearBatchData = function () {
+                $('#createBatch').form('clear');
+                $('#createBatch').find('.search').val('');
+            };
 
             batch.getCouserBatchesList = function () {
                 var request = {
-                    "request": {
-                        "filters": {
+                    request: {
+                        filters: {
                             courseId: batch.courseId
                         },
-                        "sort_by": { createdDate: 'desc' }
+                        sort_by: { createdDate: 'desc' }
                     }
                 };
-                request.request.filters.status = (_.isUndefined(batch.status)) ? "1" : batch.status.toString();
-                if(_.intersection(permissionsService.getCurrentUserRoles(),
-                           ['COURSE_MENTOR']).length > 0){
+                request.request.filters.status = (_.isUndefined(batch.status)) ? '1' : batch.status.toString();
+                if (_.intersection(permissionsService.getCurrentUserRoles(),
+                           ['COURSE_MENTOR']).length > 0) {
                     batch.isMentor = true;
                     request.request.filters.createdBy = batch.userId;
-                }else{
+                } else {
                     request.request.filters.enrollmentType = 'open';
                 }
                 batchService.getAllBatchs(request).then(function (response) {
                     if (response && response.responseCode === 'OK') {
                         batch.userList = [];
                         batch.userNames = {};
-                        _.forEach(response.result.response.content, function(val){
+                        _.forEach(response.result.response.content, function (val) {
                             batch.userList.push(val.createdBy);
                         });
                         batch.userList = _.compact(_.uniq(batch.userList));
-                        if(batch.userList.length > 0){
+                        if (batch.userList.length > 0) {
                             var req = {
-                                "request": {
-                                    "filters":{
-                                        "identifier": batch.userList 
+                                request: {
+                                    filters: {
+                                        identifier: batch.userList
                                     }
                                 }
-                            }
+                            };
                             batchService.getUserList(req).then(function (res) {
                                 if (res && res.responseCode === 'OK') {
-                                    _.forEach(res.result.response.content, function(val){
+                                    _.forEach(res.result.response.content, function (val) {
                                         batch.userNames[val.identifier] = val;
                                     });
                                     batch.batchList = response.result.response.content || [];
-                                }else{
-                                   toasterService.error(errorMessages.BATCH.GET_USERS.FAILED); 
+                                } else {
+                                    toasterService.error(errorMessages.BATCH.GET_USERS.FAILED);
                                 }
                             }).catch(function () {
                                 toasterService.error(errorMessages.BATCH.GET_USERS.FAILED);
                             });
-                        }else{
+                        } else {
                             batch.batchList = response.result.response.content || [];
                         }
                     } else {
@@ -215,38 +215,38 @@ angular.module('playerApp')
                 });
             };
 
-            batch.showUpdateBatchModal = function(batchData, coursecreatedby){
+            batch.showUpdateBatchModal = function (batchData, coursecreatedby) {
                 batchService.setBatchData(batchData);
-                $state.go('updateBatch', {batchId: batchData.identifier, coursecreatedby: coursecreatedby});
+                $state.go('updateBatch', { batchId: batchData.identifier, coursecreatedby: coursecreatedby });
             };
 
-            batch.getUserList = function(){
+            batch.getUserList = function () {
                 var request = {
-                    "request": {
-                        "filters" : {
-                            "organisations.organisationId": [$rootScope.organisationIds.toString()]
+                    request: {
+                        filters: {
+                            'organisations.organisationId': [$rootScope.organisationIds.toString()]
                         }
                     }
                 };
 
                 batchService.getUserList(request).then(function (response) {
                     if (response && response.responseCode === 'OK') {
-                        _.forEach(response.result.response.content, function(userData){
-                            if(userData.identifier != $rootScope.userId){
+                        _.forEach(response.result.response.content, function (userData) {
+                            if (userData.identifier != $rootScope.userId) {
                                 var user = {
                                     id: userData.identifier,
-                                    name:  userData.firstName +' '+ userData.lastName,
+                                    name: userData.firstName + ' ' + userData.lastName,
                                     avatar: userData.avatar
-                                }
-                                _.forEach(userData.organisations, function(userOrgData){
-                                    if(_.indexOf(userOrgData.roles, "COURSE_MENTOR") != -1){
-                                        batch.menterList.push(user);   
+                                };
+                                _.forEach(userData.organisations, function (userOrgData) {
+                                    if (_.indexOf(userOrgData.roles, 'COURSE_MENTOR') != -1) {
+                                        batch.menterList.push(user);
                                     }
                                 });
                                 batch.userList.push(user);
                             }
                         });
-                    }else{
+                    } else {
                         toasterService.error(errorMessages.BATCH.GET_USERS.FAILED);
                     }
                     console.log('response ', response);
@@ -255,32 +255,32 @@ angular.module('playerApp')
                 });
             };
 
-            batch.showBatchDetails = function(batchData){
+            batch.showBatchDetails = function (batchData) {
                 batch.participants = {};
-                if(!_.isUndefined(batchData.participant)){
+                if (!_.isUndefined(batchData.participant)) {
                     var req = {
-                        "request": {
-                            "filters":{
-                                "identifier": _.keys(batchData.participant)
+                        request: {
+                            filters: {
+                                identifier: _.keys(batchData.participant)
                             }
                         }
-                    }
+                    };
                     batchService.getUserList(req).then(function (res) {
                         if (res && res.responseCode === 'OK') {
-                            _.forEach(res.result.response.content, function(val){
+                            _.forEach(res.result.response.content, function (val) {
                                 batch.participants[val.identifier] = val;
                             });
                             batchData.userList = batch.participants;
                             console.log('batchData ', batchData);
                             $rootScope.$broadcast('batchDetails', batchData);
                             $('#batchDetails').modal('show');
-                        }else{
-                           toasterService.error(errorMessages.BATCH.GET_USERS.FAILED); 
+                        } else {
+                            toasterService.error(errorMessages.BATCH.GET_USERS.FAILED);
                         }
                     }).catch(function () {
                         toasterService.error(errorMessages.BATCH.GET_USERS.FAILED);
                     });
-                }else{
+                } else {
                     $rootScope.$broadcast('batchDetails', batchData);
                     $('#batchDetails').modal('show');
                 }
@@ -290,30 +290,27 @@ angular.module('playerApp')
                 // $('#batchDetails').modal('show');
             };
 
-            batch.enrollUserToCourse = function(batchId){
+            batch.enrollUserToCourse = function (batchId) {
                 var req = {
-                    "request":{
+                    request: {
                         courseId: batch.courseId,
                         userId: batch.userId,
                         batchId: batchId
                     }
-                }
+                };
                 courseService.enrollUserToCourse(req).then(function (response) {
                     if (response && response.responseCode === 'OK') {
                         batch.showEnroll = false;
                         toasterService.success(errorMessages.BATCH.ENROLLED.SUCCESS);
-                        $timeout(function(){
-                          $window.location.reload();  
-                        },2000);
-                        
-                    }else{
+                        $timeout(function () {
+                            $window.location.reload();
+                        }, 2000);
+                    } else {
                         toasterService.error(errorMessages.Courses.ENROLL.ERROR);
                     }
                 }).catch(function () {
                     toasterService.error(errorMessages.Courses.ENROLL.ERROR);
                 });
             };
-
-
         }
     ]);

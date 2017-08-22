@@ -13,7 +13,7 @@
                     <div ng-if="mimeType.indexOf('video')!=-1">
                         <div class="content">
                             <i class="file video outline icon"></i>
-                            <span> {{count}}&nbsp;Pdfs</span>
+                            <span> {{count}}&nbsp;Videos</span>
                         </div>
                     </div>
                     <div ng-if="mimeType.indexOf('image')!=-1">
@@ -32,6 +32,18 @@
                         <div class="content">
                             <i class="file archive outline icon"></i>
                             <span> {{count}}&nbsp;Ecml Archives</span>
+                        </div>
+                    </div>
+                    <div ng-if="mimeType=='application/epub'">
+                        <div class="content">
+                            <i class="file archive outline icon"></i>
+                            <span> {{count}}&nbsp;Epub Archives</span>
+                        </div>
+                    </div>
+                    <div ng-if="mimeType=='application/vnd.ekstep.h5p-archive'">
+                        <div class="content">
+                            <i class="file archive outline icon"></i>
+                            <span> {{count}}&nbsp;H5p Archives</span>
                         </div>
                     </div>
                 </div>
