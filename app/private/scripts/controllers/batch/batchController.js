@@ -133,16 +133,18 @@ angular.module('playerApp')
                                         "userIds": _.compact(data.users)
                                     }
                                 }
-                                batchService.addUsers(userRequest, response.result.batchId).then(function (response) {
-                                    if (response && response.responseCode === 'OK') {
-                                        batch.getCouserBatchesList();
-                                        batch.hideCreateBatchModal();
-                                    }else{
+                                $timeout(function(){
+                                    batchService.addUsers(userRequest, response.result.batchId).then(function (response) {
+                                        if (response && response.responseCode === 'OK') {
+                                            batch.getCouserBatchesList();
+                                            batch.hideCreateBatchModal();
+                                        }else{
+                                            toasterService.error(errorMessages.BATCH.ADD_USERS.FAILED);
+                                        }
+                                    }).catch(function () {
                                         toasterService.error(errorMessages.BATCH.ADD_USERS.FAILED);
-                                    }
-                                }).catch(function () {
-                                    toasterService.error(errorMessages.BATCH.ADD_USERS.FAILED);
-                                });
+                                    });
+                                }, 100);
                             }else{
                                 batch.hideCreateBatchModal();
                             }
