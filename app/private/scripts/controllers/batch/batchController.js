@@ -42,7 +42,7 @@ angular.module('playerApp')
                             var today=new Date();
                             $('.ui.calendar#rangestartAdd').calendar({
                                 type: 'date',
-                                minDate: new Date(today.setDate(today.getDate() + 1)),
+                                minDate: new Date(today.setDate(today.getDate())),
                                 formatter: {
                                     date: function (date, settings) {
                                        return $filter('date')(date, "yyyy-MM-dd")
