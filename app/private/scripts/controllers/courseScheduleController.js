@@ -520,6 +520,7 @@ angular.module('playerApp')
                     batchService.getBatchDetails({ batchId: isEnroled.batchId }).then(function (response) {
                         if (response && response.responseCode === 'OK') {
                             toc.selectedBatchInfo = response.result.response;
+                            toc.selectedParticipants = _.isUndefined(toc.selectedBatchInfo.participant) ? 0 : _.keys(toc.selectedBatchInfo.participant).length;
                             toc.batchStatus = toc.selectedBatchInfo.status;
                             if (toc.batchStatus && toc.batchStatus > 0) {
                                 toc.playContent = true;
