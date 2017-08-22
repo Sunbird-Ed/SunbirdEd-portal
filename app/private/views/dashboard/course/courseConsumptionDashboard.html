@@ -16,7 +16,7 @@
           <div class="column">
             <div class="regular slider padding-top-30 course-graph-holder">
               <div ng-repeat="graph in courseDashboard.data">
-                <canvas height="{{courseDashboard.height}}" class="chart chart-line adminCanvasPadding adminCanvasBorder" chart-data="graph[2]" chart-labels="graph[1]" chart-series="graph[0]" chart-colors="graph[3]" chart-options="graph[4]" ng-if="$index == courseDashboard.graphShow">
+                <canvas height="{{courseDashboard.chartHeight}}" class="chart chart-line adminCanvasPadding adminCanvasBorder" chart-data="graph[2]" chart-labels="graph[1]" chart-series="graph[0]" chart-colors="graph[3]" chart-options="graph[4]" ng-if="$index == courseDashboard.graphShow">
                 </canvas>
               </div>
               <div class="corse-graph-navigation-btn" ng-if="courseDashboard.data.length-1 > 0">
