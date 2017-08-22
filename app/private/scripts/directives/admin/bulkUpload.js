@@ -16,6 +16,6 @@ angular.module('playerApp').directive('bulkUpload', function () {
         },
         link: function (scope, element, attrs) {
         },
-        controller: 'adminController as admin'
+        controller: 'bulkUploadController as admin'
     };
 });
