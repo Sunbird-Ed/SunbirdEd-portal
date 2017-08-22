@@ -424,6 +424,9 @@ th {
 .padding-bottom-none {
   padding-bottom: 0px!important;
 }
+.padding-right-10 {
+  padding-right: 10px!important;
+}
 .padding-right-28 {
   padding-right: 28px!important;
 }
@@ -2157,8 +2160,8 @@ span.dashBoardMenuItem.active {
 }
 .chart-slider {
   position: relative;
-  left: 969px;
-  top: -328px;
+  float: right;
+  top: 40px;
 }
 body {
   position: relative !important;
