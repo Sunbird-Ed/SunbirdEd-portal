@@ -35,21 +35,26 @@ angular.module('playerApp')
                         }
                     }).modal('show');
                 }, 10);
+                $timeout(function () {
+                    $('#copyLinkButton').trigger('click', function () {
+                        contentShare.copyLink();
+                    });
+                }, 1000);
             };
 
             contentShare.close = function () {
                 contentShare.hideContentShareModal();
             };
 
-            contentShare.success = function () {
+            contentShare.copyLink = function () {
                 $('#copyLinkData').select();
                 document.execCommand('copy');
                 $('#buttonPopUp')
-                    .popup({
-                        popup: $('#LinkCopiedToClipboard'),
-                        on: 'click',
-                        position: 'top center',
-                        color: '#4183c4'
-                    });
+                        .popup({
+                            popup: $('#LinkCopiedToClipboard'),
+                            on: 'click',
+                            position: 'top center',
+                            color: '#4183c4'
+                        });
             };
         }]);
