@@ -213,7 +213,7 @@
             "submit": "SUBMIT"
         },
         "CONTENT_SHARE": {
-            "contentShareText": "Share this",
+            "contentShareText": "Share",
             "shareByTheLink": "Share by the link - ",
             "copyLink": "COPY LINK",
             "linkCopyToClipboard": "link copy to clipboard"
