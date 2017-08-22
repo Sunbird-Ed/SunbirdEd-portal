@@ -540,6 +540,10 @@ th {
 .cursor-pointer {
   cursor: pointer;
 }
+.cursor-pointerText {
+  cursor: text;
+  pointer-events: none !important;
+}
 .mouse-pointer {
   cursor: pointer;
 }
