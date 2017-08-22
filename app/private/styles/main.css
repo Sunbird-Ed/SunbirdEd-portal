@@ -540,6 +540,10 @@ th {
 .cursor-pointer {
   cursor: pointer;
 }
+.cursor-pointerText {
+  cursor: text;
+  pointer-events: none !important;
+}
 .mouse-pointer {
   cursor: pointer;
 }
@@ -2142,6 +2146,9 @@ ul.fancytree-container li {
 }
 .batchDetailsChips {
   padding: 5px 10px !important;
+}
+.batchSelectedDetails.ui.list > .item {
+  color: #333;
 }
 span.dashBoardMenuItem.active {
   color: #0076FE !important;
