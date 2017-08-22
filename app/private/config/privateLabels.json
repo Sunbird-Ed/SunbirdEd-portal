@@ -201,7 +201,8 @@
         "HEADER": {
             "profile": "Profile",
             "workSpace": "Workspace",
-            "logout": "Logout"
+            "logout": "Logout",
+            "dashboard": "Admin dashboard"
         },
         "CONTENT_FLAG": {
             "contentFlagText": "Flag content as inappropriate",
