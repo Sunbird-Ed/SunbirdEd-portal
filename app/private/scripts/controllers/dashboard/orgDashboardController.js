@@ -19,6 +19,7 @@ angular.module('playerApp')
       dashboardData.getAdminDashboardData = function(timePeriod) {
         dashboardData.showLoader = true;
         dashboardData.showDataDiv = false;
+        dashboardData.showOrgWarningDiv = false;
         dashboardData.timePeriod = timePeriod || '7d';
 
         var requestBody = {
@@ -194,25 +195,28 @@ angular.module('playerApp')
       }
 
       dashboardData.showData = function() {
-        var orgIds = $rootScope.organisationIds;
-        dashboardData.orgId = orgIds[0];
-        dashboardData.getAdminDashboardData();
-
-        // Get Organisation details
-        userService.getOrgDetails(orgIds).then(function(apiResponse) {
-            if (apiResponse.responseCode === 'OK') {
-              var orgArray = [];
-              _.forEach(apiResponse.result.response.content, function(org) {
-                orgArray.push({ organisationId: org.id, orgName: org.orgName });
-              });
-              dashboardData.orgDetails = orgArray;
-            } else {
-              toasterService.error(apiResponse.params.errmsg);
-            }
-          })
-          .catch(function() {
-            toasterService.error(apiMessages.ERROR.get);
-          });
+        dashboardData.orgIds = $rootScope.organisationIds;
+        if (dashboardData.orgIds.length === 1) {
+          dashboardData.orgId = dashboardData.orgIds[0];
+          dashboardData.getAdminDashboardData();
+        } else {
+          dashboardData.showOrgWarningDiv = true;
+          // Get Organisation details
+          userService.getOrgDetails(dashboardData.orgIds).then(function(apiResponse) {
+              if (apiResponse.responseCode === 'OK') {
+                var orgArray = [];
+                _.forEach(apiResponse.result.response.content, function(org) {
+                  orgArray.push({ organisationId: org.id, orgName: org.orgName });
+                });
+                dashboardData.orgDetails = orgArray;
+              } else {
+                toasterService.error(apiResponse.params.errmsg);
+              }
+            })
+            .catch(function() {
+              toasterService.error(apiMessages.ERROR.get);
+            });
+        }
       }
 
       dashboardData.initDropdwon = function() {
