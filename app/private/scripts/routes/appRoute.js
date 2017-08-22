@@ -780,7 +780,7 @@ angular.module('playerApp')
           }
       })
       .state('orgDashboard', {
-          url: '/org-dashboard/:orgId',
+          url: '/org-dashboard',
           views: {
               mainView: {
                   templateUrl: '/views/dashboard/orgDashboard.html',
