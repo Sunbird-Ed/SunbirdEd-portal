@@ -1006,7 +1006,7 @@ angular.module('playerApp')
               routeHelperService.checkStateAccess(['FLAG_REVIEWER'], false, event);
               break;
 		      case 'orgDashboard':
-              routeHelperService.checkStateAccess(['ORG_ADMIN', 'SYSTEM_ADMIN'], false, event);
+              routeHelperService.checkStateAccess(['ORG_ADMIN', 'SYSTEM_ADMINISTRATION'], false, event);
               break;
           case 'WorkSpace.DraftContent':
               routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event);
