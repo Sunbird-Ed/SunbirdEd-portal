@@ -58,58 +58,72 @@ angular.module('playerApp')
               // open  upload csv modal
 
             admin.orgBulkUpload = function () {
-                $('#orgBulkUpload').modal({
-                    onShow: function () {
-                        admin.fileName = '';
-                        admin.bulkOrgProcessId = '';
-                        admin.loader = {};
-                    },
-                    onHide: function () {
-                        admin.loader = {};
-                        admin.fileName = '';
-                        admin.bulkOrgProcessId = '';
-                        $('#orgBulkUpload').modal({ detachable: false });
-                        // $('#orgBulkUpload').modal('hide');
-                        // $('#orgBulkUpload').modal('hide others');
-                        // $('#orgBulkUpload').modal('hide dimmer');
-                        return true;
-                    }
-                }).modal('show');
+                admin.showUploadOrgModal = true;
+                $timeout(function () {
+                    $('#orgBulkUpload').modal({
+                        onShow: function () {
+                            admin.fileName = '';
+                            admin.bulkOrgProcessId = '';
+                            admin.loader = {};
+                        },
+                        onHide: function () {
+                            admin.loader = {};
+                            admin.fileName = '';
+                            admin.bulkOrgProcessId = '';
+                            $timeout(function () {
+                                admin.showUploadOrgModal = false;
+                            }, 0);
+                            return true;
+                        }
+                    }).modal('show');
+                }, 0);
                 $('#orgBulkUpload').modal('refresh');
-                $('.ui.modal.hidden').remove();
             };
             admin.userBulkUpload = function () {
+                admin.showUploadUserModal = true;
+                $timeout(function () {
+                    $('#userBulkUpload').modal({
+                        onShow: function () {
+                            admin.bulkUsers = {};
+                            admin.fileName = '';
+                            admin.bulkUsersProcessId = '';
+                            $('#bulkUsers').form('reset');
+                            admin.loader = {};
+                            admin.isUploadLoader = false;
+                        },
+                        onHide: function () {
+                            $timeout(function () {
+                                admin.showUploadUserModal = false;
+                            }, 0);
+                            return true;
+                        }
+                    }).modal('show');
+                }, 0);
                 $('#userBulkUpload').modal('refresh');
-                $('#userBulkUpload').modal({
-                    onShow: function () {
-                        admin.bulkUsers = {};
-                        admin.fileName = '';
-                        admin.bulkUsersProcessId = '';
-                        $('#bulkUsers').form('reset');
-                        admin.loader = {};
-                        admin.isUploadLoader = false;
-                    },
-                    onHide: function () {
-                        return true;
-                    }
-                }).modal('show');
             };
+
             admin.statusBulkUpload = function () {
+                admin.showStatusModal = true;
+                $timeout(function () {
+                    $('#statusBulkUpload').modal({
+                        onShow: function () {
+                            $('#statusForm').form('reset');
+                            admin.uploadStatusKey = '';
+                            admin.bulkUploadStatus = {};
+                            admin.bulkUploadStatus.processId = '';
+                            admin.processID = '';
+                        },
+                        onHide: function () {
+                            admin.bulkUploadStatus = {};
+                            admin.bulkUploadStatus.processId = '';
+                            $timeout(function () {
+                                admin.showStatusModal = false;
+                            }, 0);
+                            return true;
+                        }
+                    }).modal('show');
+                }, 0);
                 $('#statusBulkUpload').modal('refresh');
-                $('#statusBulkUpload').modal({
-                    onShow: function () {
-                        $('#statusForm').form('reset');
-                        admin.uploadStatusKey = '';
-                        admin.bulkUploadStatus = {};
-                        admin.bulkUploadStatus.processId = '';
-                        admin.processID = '';
-                    },
-                    onHide: function () {
-                        admin.bulkUploadStatus = {};
-                        admin.bulkUploadStatus.processId = '';
-                        return true;
-                    }
-                }).modal('show');
             };
 
               // bulk upload
