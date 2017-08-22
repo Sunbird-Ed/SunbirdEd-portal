@@ -27,8 +27,8 @@
                                             Course Structure
                                         </b>
                   </div>
-                  <div id="course-toc{{$index}}" class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100"   ng-repeat="item in  toc.courseHierachy.children track by $index" ng-click="toc.expandMe($event, item)" ng-class="{'cursor-pointerText':item.children.length == 0}">
-                    <div class="courseAccordianHeading title title-padding-left accordian-left-text" ng-class="{'cursor-pointerText':(toc.playContent == false && item.mimeType !== 'application/vnd.ekstep.content-collection')}" name="{{item.identifier}}">
+                  <div id="course-toc{{$index}}" class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100" ng-repeat="item in  toc.courseHierachy.children track by $index" ng-click="toc.expandMe($event, item)">
+                    <div class="courseAccordianHeading title title-padding-left accordian-left-text" name="{{item.identifier}}">
                       <i ng-class="[toc.contentStatusList[item.identifier],toc.getContentIcon(item.mimeType)]"></i> {{item.name}}
                       <i ng-if='item.children && item.children.length > 0' class="plus icon down-arrow-accordion"></i>
                     </div>
@@ -52,7 +52,7 @@
                                 <span>Name: {{toc.selectedBatchInfo.name}}</span>
                               </div>
                             </div>
-                           <!--  <div class="item">
+                            <div class="item">
                               <div class="content">
                                 <span>Created By: Harish Kumar</span>
                               </div>
@@ -61,7 +61,7 @@
                               <div class="content">
                                 <span>3 Mentors | 12 learners</span>
                               </div>
-                            </div> -->
+                            </div>
                             <div class="item">
                               <div class="content">
                                 <span>Starts on: {{toc.selectedBatchInfo.startDate | date: "dd MMM yyyy"}}</span>
@@ -121,7 +121,7 @@
                     <!--                                        <content-player ng-if="toc.lectureView == 'yes'" visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="false" height="10" width="100" ispercentage="true"></content-player>-->
                   </div>
                 </div>
-                <div class="ui row tocNavigationRow">
+                <div class="ui row">
                   <div class="three wide column ">
                     <button class="ui blue button left floated  fluid  tocbutton" ng-click="toc.playPlaylistContent(toc.prevPlaylistItem, 'prev')" ng-disabled="(toc.prevPlaylistItem < 0)">
                       <div class="toc-left-nav-btn-content">
