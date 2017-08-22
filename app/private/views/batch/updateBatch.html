@@ -12,8 +12,8 @@
                 </div>
             </div>
         </div>
-        
-        <div class="content">
+
+
 
         <div class="content">
             <form class="ui form batchAddUserForm" id="updateBatch" name="updateBatch" validate>
@@ -170,7 +170,7 @@
                     </div>
                     <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only'">
                         <label>{{$root.labels.BATCH.selectedmentors}}</label>
-                        <a class="ui label" ng-hide="batchUpdate.selectedMentors.length > 0" ng-repeat="mentor in batchUpdate.selectedMentors">
+                        <a class="ui label" ng-show="batchUpdate.selectedMentors.length > 0" ng-repeat="mentor in batchUpdate.selectedMentors">
                             <img class="ui right spaced avatar image" ng-src="{{mentor.avatar || 'images/user_logo.png'}}">
                             {{mentor.name}}
                         </a>
@@ -191,7 +191,7 @@
                     </div>
                     <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only'">
                         <label>{{$root.labels.BATCH.participants}}</label>
-                        <a class="ui label" ng-hide="batchUpdate.selectedUsers.length > 0" ng-repeat="user in batchUpdate.selectedUsers">
+                        <a class="ui label" ng-show="batchUpdate.selectedUsers.length > 0" ng-repeat="user in batchUpdate.selectedUsers">
                             <img class="ui right spaced avatar image" ng-src="{{user.avatar || 'images/user_logo.png'}}">
                             {{user.name}}
                         </a>
@@ -260,7 +260,7 @@
                     </div>
                     <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only'">
                         <label>{{$root.labels.BATCH.selectedmentors}}</label>
-                        <a class="ui label" ng-hide="batchUpdate.selectedMentors.length > 0" ng-repeat="mentor in batchUpdate.selectedMentors">
+                        <a class="ui label" ng-show="batchUpdate.selectedMentors.length > 0" ng-repeat="mentor in batchUpdate.selectedMentors">
                             <img class="ui right spaced avatar image" ng-src="{{mentor.avatar || 'images/user_logo.png'}}">
                             {{mentor.name}}
                         </a>
@@ -281,7 +281,7 @@
                     </div>
                     <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only'">
                         <label>{{$root.labels.BATCH.participants}}</label>
-                        <a class="ui label" ng-hide="batchUpdate.selectedUsers.length > 0" ng-repeat="user in batchUpdate.selectedUsers">
+                        <a class="ui label" ng-show="batchUpdate.selectedUsers.length > 0" ng-repeat="user in batchUpdate.selectedUsers">
                             <img class="ui right spaced avatar image" ng-src="{{user.avatar || 'images/user_logo.png'}}">
                             {{user.name}}
                         </a>
