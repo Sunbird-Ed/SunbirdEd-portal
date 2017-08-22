@@ -258,6 +258,8 @@ th {
 .sliderCardHeading {
   font-family: 'sunbirdboldfont' !important;
   font-size: 1.1875em !important;
+  float: left;
+  padding-left: 10px;
 }
 .sliderCardDesc {
   font-family: 'sunbirdregularfont' !important;
