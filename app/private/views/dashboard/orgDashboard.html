@@ -1,53 +1,68 @@
-<div class="ui grid">
-  <div class="one wide column"></div>
-  <div class="ten wide column">
-    <div class="ui grid">
-      <div class="five wide column">
-        <span class="dashBoardSectionHeading"><i class="bar chart icon"></i> &nbsp;  {{dashboardData.orgName}} Dashboard</span></div>
-      <div class="right floated four wide column"></div>
-      <div class="right floated three wide column padding-right-dropdown">
-        <div class="ui dropdown float-ContentRight" id="dropdownMenu">
-          <div class="text dashBoardSectionHeading">Creation</div>
-          <i class="dropdown icon"></i>
-          <div class="menu">
-            <div class="active item" ng-click="dashboardData.onAfterDatasetChange('creation')" data-dataset="creation">Creation</div>
-            <div class="item" ng-click="dashboardData.onAfterDatasetChange('consumption')" data-dataset="consumption">Consumption</div>
+<div ng-init="dashboardData.showData()">
+  <div class="ui grid">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+      <div class="ui grid">
+        <div class="one wide column"><span class="dashBoardSectionHeading"><i class="bar chart icon"></i></span>
+        </div>
+        <div class="six wide column">
+          <!--
+        <span class="dashBoardSectionHeading"><i class="bar chart icon"></i> &nbsp;  {{dashboardData.orgName}} Dashboard</span>
+-->
+          <div class="ui dropdown" id="dashboardMenu">
+            <div class="text dashBoardSectionHeading">{{dashboardData.orgDetails[0].orgName}}</div>
+            <i class="dropdown icon"></i>
+            <div class="menu">
+              <div class="item" data-dataset="consumption" ng-repeat="item in dashboardData.orgDetails" ng-init="dashboardData.initDropdwon()" ng-click="dashboardData.onAfterOrgChange(item.organisationId)" ng-class="{'active' : dashboardData.orgDetails[0].orgName === item.orgName}">{{item.orgName}}</div>
+            </div>
+          </div>
+        </div>
+        <div class="two wide column"><span class="dashBoardSectionHeading">Dashboard</span>
+        </div>
+        <div class="right floated three wide column padding-right-dropdown">
+          <div class="ui dropdown float-ContentRight" id="dropdownMenu">
+            <div class="text dashBoardSectionHeading">Creation</div>
+            <i class="dropdown icon"></i>
+            <div class="menu">
+              <div class="active item" ng-click="dashboardData.onAfterDatasetChange('creation')" data-dataset="creation">Creation</div>
+              <div class="item" ng-click="dashboardData.onAfterDatasetChange('consumption')" data-dataset="consumption">Consumption</div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="one wide column"></div>
-</div>
-<div id="orgCreationDiv" class="margin-top-40">
-  <div class="resource-padding ui grid">
     <div class="one wide column"></div>
-    <div class="ten wide column">
-      <div class="ui grid column margin-bottom-20">
-        <span class="dashBoardMenuItem cursor-pointer" ng-click="dashboardData.onAfterFilterChange('7d')" ng-class="{'active' : dashboardData.timePeriod === '7d'}">LAST 7 DAYS</span>
-        <span class="dashBoardMenuItem cursor-pointer" ng-click="dashboardData.onAfterFilterChange('14d')" id="14d" ng-class="{'active' : dashboardData.timePeriod === '14d'}">LAST 14 DAYS</span>
-        <span class="dashBoardMenuItem cursor-pointer" ng-click="dashboardData.onAfterFilterChange('5w')" id="5w" ng-class="{'active' : dashboardData.timePeriod === '5w'}">LAST 5 WEEKS</span>
-      </div>
-      <div class="tweleve wide column" ng-if="dashboardData.showLoader">
-        <app-loader></app-loader>
-      </div>
-      <div class="ui three cards" ng-show="dashboardData.showDataDiv">
-        <div class="card" ng-repeat="item in dashboardData.numericStatArray">
-          <div class="content center aligned">
-            <div class="meta dashBoardCardText">{{item.name}}</div>
-            <h2 class="description dashboardCardSubText">{{item.value}}</h2>
+  </div>
+  <div id="orgCreationDiv" class="margin-top-40">
+    <div class="resource-padding ui grid">
+      <div class="one wide column"></div>
+      <div class="ten wide column">
+        <div class="ui grid column margin-bottom-20">
+          <span class="dashBoardMenuItem cursor-pointer" ng-click="dashboardData.onAfterFilterChange('7d')" ng-class="{'active' : dashboardData.timePeriod === '7d'}">LAST 7 DAYS</span>
+          <span class="dashBoardMenuItem cursor-pointer" ng-click="dashboardData.onAfterFilterChange('14d')" id="14d" ng-class="{'active' : dashboardData.timePeriod === '14d'}">LAST 14 DAYS</span>
+          <span class="dashBoardMenuItem cursor-pointer" ng-click="dashboardData.onAfterFilterChange('5w')" id="5w" ng-class="{'active' : dashboardData.timePeriod === '5w'}">LAST 5 WEEKS</span>
+        </div>
+        <div class="tweleve wide column" ng-if="dashboardData.showLoader">
+          <app-loader></app-loader>
+        </div>
+        <div class="ui three cards" ng-show="dashboardData.showDataDiv">
+          <div class="card" ng-repeat="item in dashboardData.numericStatArray">
+            <div class="content center aligned">
+              <div class="meta dashBoardCardText">{{item.name}}</div>
+              <h2 class="description dashboardCardSubText">{{item.value}}</h2>
+            </div>
           </div>
         </div>
-      </div>
-      <div ng-show="dashboardData.showDataDiv">
-        <div class="regular slider padding-top-30">
-          <div ng-repeat="graph in dashboardData.graphArray">
-            <canvas height="{{dashboardData.height}}" class="chart chart-line adminCanvasPadding adminCanvasBorder" chart-data="graph[2]" chart-labels="graph[1]" chart-series="graph[0]" chart-colors="graph[3]" chart-options="graph[4]" ng-if="$index == dashboardData.graphShow">
-            </canvas>
-          </div>
-          <div class="chart-slider" ng-if="dashboardData.graphArray.length-1 > 0" style="">
-            <button class="ui primary basic compact icon button" ng-click="dashboardData.previousGraph()" ng-class="{'disabled' : dashboardData.graphShow <= 0}"><i class="left arrow icon"></i></button>
-            <button class="ui primary basic compact icon button" ng-click="dashboardData.nextGraph()" ng-class="{'disabled' : dashboardData.graphShow >= (dashboardData.graphArray.length-1)}"><i class="right arrow icon"></i></button>
+        <div ng-show="dashboardData.showDataDiv">
+          <div class="regular slider padding-top-30">
+            <div ng-repeat="graph in dashboardData.graphArray">
+              <canvas height="{{dashboardData.height}}" class="chart chart-line adminCanvasPadding adminCanvasBorder" chart-data="graph[2]" chart-labels="graph[1]" chart-series="graph[0]" chart-colors="graph[3]" chart-options="graph[4]" ng-if="$index == dashboardData.graphShow">
+              </canvas>
+            </div>
+            <div class="chart-slider" ng-if="dashboardData.graphArray.length-1 > 0" style="">
+              <button class="ui primary basic compact icon button" ng-click="dashboardData.previousGraph()" ng-class="{'disabled' : dashboardData.graphShow <= 0}"><i class="left arrow icon"></i></button>
+              <button class="ui primary basic compact icon button" ng-click="dashboardData.nextGraph()" ng-class="{'disabled' : dashboardData.graphShow >= (dashboardData.graphArray.length-1)}"><i class="right arrow icon"></i></button>
+            </div>
           </div>
         </div>
       </div>

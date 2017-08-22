@@ -10,24 +10,19 @@
 
 angular.module('playerApp')
   .controller('orgDashboardController', ['$rootScope', '$scope',
-    'dashboardService', '$timeout', '$state', '$stateParams', 'toasterService',
-    function($rootScope, $scope, dashboardService, $timeout, $state, $stateParams, toasterService) {
+    'dashboardService', '$timeout', '$state', '$stateParams', 'toasterService', 'userService',
+    function($rootScope, $scope, dashboardService, $timeout, $state, $stateParams, toasterService, userService) {
       var dashboardData = this;
       dashboardData.height = 110;
-      dashboardData.showLoader = true;
-      dashboardData.showDataDiv = false;
       dashboardData.datasetPreviousValue = 'creation';
 
-      /**
-       * @Function to load dashboard
-       * @params apis request body
-       * @return void
-       */
       dashboardData.getAdminDashboardData = function(timePeriod) {
+        dashboardData.showLoader = true;
+        dashboardData.showDataDiv = false;
         dashboardData.timePeriod = timePeriod || '7d';
 
         var requestBody = {
-          org_id: $stateParams.orgId,
+          org_id: dashboardData.orgId,
           period: dashboardData.timePeriod
         };
 
@@ -169,10 +164,6 @@ angular.module('playerApp')
       }
       $('#dropdownMenu').dropdown();
 
-      /**
-       * @Trigger onAfterFilterChange
-       * @Params timePeriod
-       */
       dashboardData.onAfterFilterChange = function(timePeriod) {
         // To avoid same
         if (dashboardData.timePeriod === timePeriod) {
@@ -183,10 +174,6 @@ angular.module('playerApp')
         dashboardData.getAdminDashboardData(timePeriod);
       };
 
-      /**
-       * @Trigger onAfterFilterChange
-       * @Params timePeriod
-       */
       dashboardData.onAfterDatasetChange = function(dataset) {
         // To avoid same
         if (dashboardData.datasetPreviousValue === dataset) {
@@ -205,6 +192,38 @@ angular.module('playerApp')
       dashboardData.previousGraph = function() {
         dashboardData.graphShow--;
       }
-      dashboardData.getAdminDashboardData();
+
+      dashboardData.showData = function() {
+        var orgIds = $rootScope.organisationIds;
+        dashboardData.orgId = orgIds[0];
+        dashboardData.getAdminDashboardData();
+
+        // Get Organisation details
+        userService.getOrgDetails(orgIds).then(function(apiResponse) {
+            if (apiResponse.responseCode === 'OK') {
+              var orgArray = [];
+              _.forEach(apiResponse.result.response.content, function(org) {
+                orgArray.push({ organisationId: org.id, orgName: org.orgName });
+              });
+              dashboardData.orgDetails = orgArray;
+            } else {
+              toasterService.error(apiResponse.params.errmsg);
+            }
+          })
+          .catch(function() {
+            toasterService.error(apiMessages.ERROR.get);
+          });
+      }
+
+      dashboardData.initDropdwon = function() {
+        $('#dashboardMenu').dropdown({
+          onChange: function() {}
+        });
+      };
+
+      dashboardData.onAfterOrgChange = function(orgId) {
+        dashboardData.orgId = orgId;
+        dashboardData.getAdminDashboardData();
+      };
     }
   ]);
