@@ -426,6 +426,9 @@ th {
 .padding-bottom-none {
   padding-bottom: 0px!important;
 }
+.padding-right-10 {
+  padding-right: 10px!important;
+}
 .padding-right-28 {
   padding-right: 28px!important;
 }
@@ -2164,30 +2167,10 @@ span.dashBoardMenuItem.active {
   border: 1px solid #D4D4D5 ;
   border-radius: 5px;
 }
-.table-headerDashboard {
-  color: #007AFF !important;
-  font-family: 'sunbirdboldfont' !important;
-}
-.dashboard-label {
-  font-family: 'sunbirdboldfont' !important;
-  font-size: 1.4rem !important;
-}
-.CloseButtonFont {
-  font-size: 1.5rem !important;
-}
-.text-font {
-  font-size: small !important;
-}
-.ui.courseDashBoardTable.table tr td {
-  border-top: 0px !important;
-}
-.corse-graph-navigation-btn {
-  position: absolute;
-  right: 1.6em;
-  top: 1.6em;
-}
-.course-graph-holder {
-  display: inline;
+.chart-slider {
+  position: relative;
+  float: right;
+  top: 40px;
 }
 body {
   position: relative !important;
