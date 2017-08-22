@@ -1,4 +1,4 @@
-<div class="rightSideSectionCards ui card margin-bottom-15" ng-if="noteCard.showNoteCard">
+<div class="rightSideSectionCards ui card margin-bottom-15" ng-if="noteCard.showNoteCard && noteCard.notesList.length > 0">
     <div class="content" ng-if="!noteCard.searchApi.loader.showLoader && noteCard.notesList.length > 0">
         <div class="header">
             <span>{{$root.labels.Notes.myNoteBook}}</span>
