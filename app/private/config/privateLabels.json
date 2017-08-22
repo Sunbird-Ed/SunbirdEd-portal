@@ -239,24 +239,24 @@
                 "RETIRED": "Retired"
             }
         },
-        "INSTRUCTIONS":{
-            "HEADER":"Instructions :",
-            "SAMPLE":"Download the sample csv for reference.",
-            "COLUMNS":"CSV Columns:",
-            "MAX_COUNT_UESER":"Only upto 200 users can be uploaded with each csv file ",
-            "MAX_COUNT_ORGS":"Only upto 200 organizations can be uploaded with each csv file ",
-            "USERS":{
-              
-                "ONE":"'firstName', 'email', 'userName', 'password' fields are mandatory.",
-                "TWO":"If 'provider' is given, 'emailVerified' and 'phoneVerified' should be set to true. Else, they should be set to false.",
-                "THREE":"'roles', 'grade', 'language' and 'subject' can take multiple values. Sample format of list field is \"ENGLISH,HINDI\".",
-                "FOUR":"Date of birth ('dob') field format is YYYY-MM-DD, e.g.: 1992-10-12."
+        "INSTRUCTIONS": {
+            "HEADER": "Instructions :",
+            "SAMPLE": "Download the sample csv for reference.",
+            "COLUMNS": "CSV Columns:",
+            "MAX_COUNT_UESER": "Only upto 200 users can be uploaded with each csv file ",
+            "MAX_COUNT_ORGS": "Only upto 200 organizations can be uploaded with each csv file ",
+            "USERS": {
+
+                "ONE": "'firstName', 'email', 'userName', 'password' fields are mandatory.",
+                "TWO": "If 'provider' is given, 'emailVerified' and 'phoneVerified' should be set to true. Else, they should be set to false.",
+                "THREE": "'roles', 'grade', 'language' and 'subject' can take multiple values. Sample format of list fields:  ENGLISH,HINDI .",
+                "FOUR": "Date of birth ('dob') field format is YYYY-MM-DD, e.g.: 1992-10-12."
             },
-            "ORGANIZATIONS":{
-                "ONE":"Organisation name ('orgName') is mandatory",
-                "TWO":"If the organisation is a tenant (like state), then it should be marked as a root org. I.e. 'isRootOrg' should be set as true, else it should be false.",
-                "THREE":"'channel' value is required if 'isRootOrg' is true.",
-                "FOUR":"'externalId' and 'provider' are mutually necessary, i.e. either both the values should be provided or not provided together." 
+            "ORGANIZATIONS": {
+                "ONE": "Organisation name ('orgName') is mandatory",
+                "TWO": "If the organisation is a tenant (like state), then it should be marked as a root org. I.e. 'isRootOrg' should be set as true, else it should be false.",
+                "THREE": "'channel' value is required if 'isRootOrg' is true.",
+                "FOUR": "'externalId' and 'provider' are mutually necessary, i.e. either both the values should be provided or not provided together."
             }
 
         }
