@@ -3,9 +3,9 @@
 angular.module('playerApp')
   .controller('courseScheduleCtrl',
     ['courseService', 'sessionService', '$stateParams', '$state', '$timeout', '$scope', '$rootScope',
-        'toasterService', '$location', '$anchorScroll', 'contentStateService', '$window', 'batchService',
+        'toasterService', '$location', '$anchorScroll', 'contentStateService', '$window', 'batchService','permissionsService',
         function (courseService, sessionService, $stateParams, $state, $timeout, $scope, $rootScope,
-        toasterService, $location, $anchorScroll, contentStateService, $window, batchService) {
+        toasterService, $location, $anchorScroll, contentStateService, $window, batchService, permissionsService) {
             var toc = this;
             toc.playList = [];
             toc.playListContent = [];
@@ -24,7 +24,6 @@ angular.module('playerApp')
                 2: 'green'
             };
             toc.showCourseDashboard = false;
-
             toc.enrollUserToCourse = function (courseId) {
                 var req = {
                     request: {
@@ -543,4 +542,10 @@ angular.module('playerApp')
 
             // Restore default values onAfterUser leave current state
             $('#courseDropdownValues').dropdown('restore defaults');
+
+            toc.isCourseAdmin = false;
+            var currentUserRoles = permissionsService.getCurrentUserRoles();
+            if(currentUserRoles.indexOf("COURSE_ADMIN") !== -1) {
+                toc.isCourseAdmin = true;
+            }
         }]);
