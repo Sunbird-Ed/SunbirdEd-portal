@@ -42,6 +42,7 @@ angular.module('playerApp')
                 $('.singleSelectDropDown')
                     .dropdown();
                 $('#createSlideShowModal').modal({
+                    allowMultiple: true,
                     onHide: function () {
                         contentLesson.clearCreateSlideShowData();
                         if (!contentLesson.slideShowCreated) {

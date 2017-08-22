@@ -23,7 +23,7 @@ angular.module('playerApp')
         ) {
             var admin = this;
             admin.bulkUsers = {};
-               // sample CSV
+            // sample CSV
             admin.sampleOrgCSV = [{
                 orgName: 'orgName',
                 isRootOrg: 'isRootOrg',
@@ -52,10 +52,9 @@ angular.module('playerApp')
                 language: 'language',
                 profileSummary: 'profileSummary',
                 subject: 'subject'
-            }
-            ];
+            }];
 
-              // open  upload csv modal
+            // open  upload csv modal
 
             admin.orgBulkUpload = function () {
                 admin.showUploadOrgModal = true;
@@ -126,15 +125,15 @@ angular.module('playerApp')
                 $('#statusBulkUpload').modal('refresh');
             };
 
-              // bulk upload
+            // bulk upload
 
             admin.openImageBrowser = function (key) {
                 if (key === 'users') {
-                    if (!((admin.bulkUsers.provider && admin.bulkUsers.externalid)
-                    || admin.bulkUsers.OrgId)) {
+                    if (!((admin.bulkUsers.provider && admin.bulkUsers.externalid) ||
+                            admin.bulkUsers.OrgId)) {
                         admin.bulkUploadError = true;
                         admin.bulkUploadErrorMessage =
-                         $rootScope.errorMessages.ADMIN.bulkUploadErrorMessage;
+                            $rootScope.errorMessages.ADMIN.bulkUploadErrorMessage;
                         if (!admin.bulkUploadError) {
                             $timeout(function () {
                                 admin.bulkUploadError = false;
@@ -175,9 +174,9 @@ angular.module('playerApp')
             admin.bulkUploadUsers = function () {
                 $('#uploadUsrsCSV').val('');
                 admin.loader = toasterService
-                                .loader('', $rootScope.errorMessages.ADMIN.uploadingUsers);
-                admin.fileToUpload.append('organisationId', admin.bulkUsers.OrgId);
-                admin.fileToUpload.append('externalid', admin.bulkUsers.externalid);
+                    .loader('', $rootScope.errorMessages.ADMIN.uploadingUsers);
+                admin.fileToUpload.append('organisationId', admin.bulkUsers.OrgId || '');
+                admin.fileToUpload.append('externalId', admin.bulkUsers.externalid);
                 admin.fileToUpload.append('provider', admin.bulkUsers.provider);
 
                 adminService.bulkUserUpload(admin.fileToUpload).then(function (res) {
@@ -189,7 +188,7 @@ angular.module('playerApp')
                     } else if (res.responseCode === 'CLIENT_ERROR') {
                         toasterService.error(res.params.errmsg);
                     } else { toasterService.error($rootScope.errorMessages.ADMIN.fail); }
-                }).catch(function (err) {// eslint-disable-line
+                }).catch(function(err) { // eslint-disable-line
                     admin.loader.showLoader = false;
                     toasterService.error($rootScope.errorMessages.ADMIN.fail);
                 });
@@ -197,7 +196,7 @@ angular.module('playerApp')
             admin.bulkUploadOrganizations = function () {
                 $('#orgUploadCSV').val('');
                 admin.loader = toasterService
-                .loader('', $rootScope.errorMessages.ADMIN.uploadingOrgs);
+                    .loader('', $rootScope.errorMessages.ADMIN.uploadingOrgs);
                 adminService.bulkOrgrUpload(admin.fileToUpload).then(function (res) {
                     admin.loader.showLoader = false;
                     if (res.responseCode === 'OK') {
@@ -207,7 +206,7 @@ angular.module('playerApp')
                     } else if (res.responseCode === 'CLIENT_ERROR') {
                         toasterService.error(res.params.errmsg);
                     } else { toasterService.error($rootScope.errorMessages.ADMIN.fail); }
-                }).catch(function (err) {// eslint-disable-line
+                }).catch(function(err) { // eslint-disable-line
                     admin.loader.showLoader = false;
                     toasterService.error($rootScope.errorMessages.ADMIN.fail);
                 });
@@ -231,19 +230,18 @@ angular.module('playerApp')
                     } else {
                         toasterService.error($rootScope.errorMessages.ADMIN.fail);
                     }
-                }).catch(function (err) {// eslint-disable-line
+                }).catch(function(err) { // eslint-disable-line
                     admin.loader.showLoader = false;
                     toasterService.error($rootScope.errorMessages.ADMIN.fail);
                 });
             };
             admin.downloadSample = function (key) {
                 if (key === 'users') {
-                    alasql('SELECT * INTO CSV(\'Sample_Users.csv\', {headers: false,separator:","}) FROM ?',
-                [admin.sampleUserCSV]);
+                    alasql('SELECT * INTO CSV(\'Sample_Users.csv\', {headers: false,separator:","}) FROM ?', [admin.sampleUserCSV]);
                 } else if (key === 'organizations') {
                     alasql(' SELECT *  INTO CSV(\'Sample_Organizations.csv\',' +
-                    ' {headers: false,separator:","}) FROM ?',
-                [admin.sampleOrgCSV]);
+                        ' {headers: false,separator:","}) FROM ?', [admin.sampleOrgCSV]);
                 }
             };
-        }]);
+        }
+    ]);
