@@ -55,6 +55,31 @@
       <h5>Process ID: {{admin.bulkUsersProcessId}}</h5>
       <h5>Please save the Process ID for your reference.You can track progress with Process ID</h5>
       </div>
+    <div class="ui horizontal divider margin-top-40" ng-if="!admin.loader.showLoader && !admin.bulkUsersProcessId">
+        
+          </div>
+       <div class="ui info message" ng-if="!admin.loader.showLoader && !admin.bulkUsersProcessId">
+        <!-- <i class="close icon"></i> -->
+        <div class="header">
+        {{$root.labels.INSTRUCTIONS.HEADER}}
+        </div>
+          <ol class="ui list">
+             <li>{{$root.labels.INSTRUCTIONS.SAMPLE}}</li>
+              <li>{{$root.labels.INSTRUCTIONS.COLUMNS}}
+              <ol>
+                <li>{{$root.labels.INSTRUCTIONS.USERS.ONE}}</li>
+                <li>
+                  {{$root.labels.INSTRUCTIONS.USERS.TWO}}
+                <li>
+                  {{$root.labels.INSTRUCTIONS.USERS.THREE}}           
+                <li>
+                  {{$root.labels.INSTRUCTIONS.USERS.FOUR}}
+                </li> 
+              </ol>
+            </li>
+          </ol>
+      </div>
+       
   </div>
   <div class="actions">
       <div class="ui grid" >
