@@ -202,7 +202,7 @@
             "profile": "Profile",
             "workSpace": "Workspace",
             "logout": "Logout",
-            "dashboard": "Organisation dashboard"
+            "dashboard": "Admin dashboard"
         },
         "CONTENT_FLAG": {
             "contentFlagText": "Flag content as inappropriate",
