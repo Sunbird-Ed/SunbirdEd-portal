@@ -16,8 +16,6 @@
         </div>
         <div class="ui one column grid">
           <div class="column">
-            <!--<canvas height="{{courseDashboard.chartHeight}}" id="line" class="chart chart-line adminCanvasPadding adminCanvasBorder" chart-data="courseDashboard.data" chart-series="courseDashboard.series" chart-labels="courseDashboard.labels" chart-colors="colors" chart-options="courseDashboard.options">
-            </canvas>-->
             <div class="regular slider padding-top-30">
               <div ng-repeat="graph in courseDashboard.data">
                 <canvas height="{{courseDashboard.height}}" class="chart chart-line adminCanvasPadding adminCanvasBorder" chart-data="graph[2]" chart-labels="graph[1]" chart-series="graph[0]" chart-colors="graph[3]" chart-options="graph[4]" ng-if="$index == courseDashboard.graphShow">
