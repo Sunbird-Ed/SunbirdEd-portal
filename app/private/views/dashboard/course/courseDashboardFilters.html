@@ -11,7 +11,7 @@
   </div>
   <div class="ui grid">
     <div class="five wide column left floated">
-      <p class="dashboard-label ng-binding"><i class="bar chart icon"></i>&nbsp; Course {{courseDashboard.dataset}} dashboard</p>
+      <p class="dashboard-label ng-binding"><i class="bar chart icon"></i>&nbsp; {{courseDashboard.courseName}} dashboard</p>
     </div>
     <div class="four wide column right floated" ng-if="courseDashboard.dataset == 'consumption'">
       <div class="ui fluid search selection dropdown" id="myCoursesListFilter">
@@ -20,7 +20,7 @@
         <div class="default text" id="selectCourse">Select course</div>
         <div class="menu">
           <div class="item" ng-repeat="course in courseDashboard.myCoursesList" title="{{course.courseName}}"
-            ng-click="courseDashboard.onAfterCourseChange(course.courseId)"
+            ng-click="courseDashboard.onAfterCourseChange(course.courseId, course.courseName)"
             data-value="{{course.courseId}}"
             ng-init="$last && courseDashboard.initDropdwon()">
             <img class="ui circular image mini" ng-src=" {{course.courseLogoUrl ? course.courseLogoUrl : '../images/sunbird_logo.png'}} ">{{course.courseName}}</div>
