@@ -92,6 +92,11 @@ angular.module('playerApp')
                     var previewContentIframe = $('#contentViewerIframe')[0];
                     previewContentIframe.src = iFrameSrc;
                     previewContentIframe.onload = function () {
+                        var playerWidth = $('#contentViewerIframe').width();
+                        if (playerWidth) {
+                            var height = playerWidth * (9 / 16);
+                            $('#contentViewerIframe').css('height', height + 'px');
+                        }
                         var configuration = {};
                         configuration.context = config.ekstep_CP_config.context;
                         configuration.context.contentId = previewContent.contentData.identifier;
