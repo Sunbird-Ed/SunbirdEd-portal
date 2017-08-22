@@ -24,6 +24,12 @@ angular.module('playerApp')
                 2: 'green'
             };
             toc.showCourseDashboard = false;
+            toc.isCourseAdmin = false;
+            var currentUserRoles = permissionsService.getCurrentUserRoles();
+            if(currentUserRoles.indexOf("COURSE_ADMIN") !== -1) {
+                toc.isCourseAdmin = true;
+            }
+
             toc.enrollUserToCourse = function (courseId) {
                 var req = {
                     request: {
@@ -542,10 +548,4 @@ angular.module('playerApp')
 
             // Restore default values onAfterUser leave current state
             $('#courseDropdownValues').dropdown('restore defaults');
-
-            toc.isCourseAdmin = false;
-            var currentUserRoles = permissionsService.getCurrentUserRoles();
-            if(currentUserRoles.indexOf("COURSE_ADMIN") !== -1) {
-                toc.isCourseAdmin = true;
-            }
         }]);
