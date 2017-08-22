@@ -45,26 +45,27 @@
                     <div class="rightSideSectionCards ui card">
                       <div class="content">
                         <div class="header">Your Batch Details</div>
-                        <div class="description">
-                          <div class="batchSelectedDetails ui list">
+                        <div class="description padding-top-10">
+                          <div class="ui list">
                             <div class="item">
-                              <div class="content">
-                                <span>Name: {{toc.selectedBatchInfo.name}}</span>
+                              <div class="header">
+                                <span>Name <span class="float-ContentRight batch-card-desc">{{toc.selectedBatchInfo.name}}</span></span>
                               </div>
                             </div>
-                            <div class="item">
-                              <div class="content">
-                                <span>{{toc.selectedBatchInfo.mentors.length}} Mentors | {{toc.selectedParticipants}} learners</span>
+                            <div class="item padding-top-10">
+                              <div class="header">
+                                <span>Mentors | learners <span class="float-ContentRight batch-card-desc">{{toc.selectedBatchInfo.mentors.length}} | {{toc.selectedParticipants}} </span>
+                                </span>
                               </div>
                             </div>
-                            <div class="item">
-                              <div class="content">
-                                <span>Starts on: {{toc.selectedBatchInfo.startDate | date: "dd MMM yyyy"}}</span>
+                            <div class="item padding-top-10">
+                              <div class="header">
+                                <span>Starts on <span class="float-ContentRight batch-card-desc">{{toc.selectedBatchInfo.startDate | date: "dd MMM yyyy"}}</span></span>
                               </div>
                             </div>
-                            <div class="item">
-                              <div class="content">
-                                <span>Closes on: {{toc.selectedBatchInfo.endDate | date: "dd MMM yyyy"}}</span>
+                            <div class="item padding-top-10">
+                              <div class="header">
+                                <span>Closes on <span class="float-ContentRight batch-card-desc">{{toc.selectedBatchInfo.endDate | date: "dd MMM yyyy"}}</span></span>
                               </div>
                             </div>
                             <!--  <div class="item">
