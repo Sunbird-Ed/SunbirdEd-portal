@@ -64,7 +64,14 @@ endPage.controller("endPageController", function($scope, $rootScope, $state,$ele
         }, 1000);
         EkstepRendererAPI.dispatchEvent("renderer:splash:hide");
         $scope.setTotalTimeSpent();
-        EkstepRendererAPI.getTelemetryService().end(100);
+        if (TelemetryService.instance.telemetryStartActive()) {
+                var telemetryEndData = {};
+                telemetryEndData.stageid = getCurrentStageId();
+                telemetryEndData.progress = logContentProgress();
+                TelemetryService.end(telemetryEndData);
+        } else {
+              console.warn('Telemetry service end is already logged Please log start telemetry again');
+        }
     }
     $scope.initEndpage = function() {
         // TODO: Need to clean this code becoz canvas currentlty having some issue with metadata object(circular object)
