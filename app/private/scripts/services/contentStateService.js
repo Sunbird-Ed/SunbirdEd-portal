@@ -36,8 +36,11 @@ angular.module('playerApp')
                 if (contentStatusData && contentStatusData.status > content.status) {
                     content.status = contentStatusData.status;
                 }
-                if (data.eid === 'OE_END') {                    
+                if (data.eid === 'OE_END' && data.edata && data.edata.eks && data.edata.eks.progress) {
+                    content.progress = parseInt(data.edata.eks.progress);
+                    if (data.edata.eks.progress == 100) {
                         content.status = 2;
+                    }
                 }
                 return content;
             };
