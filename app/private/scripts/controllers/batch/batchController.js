@@ -106,8 +106,8 @@ angular.module('playerApp')
             batch.addBatch = function (data) {
                 if ($scope.createBatch.$valid) {
                     if (data.enrollmentType != 'open') {
-                        data.users = $('#users').dropdown('get value').split(',');
-                        data.mentors = $('#mentors').dropdown('get value').split(',');
+                        data.users = _.compact($('#userSelList').val().split(','));
+                        data.mentors = _.compact($('#mentorSelList').val().split(','));
                     } else {
                         data.users = [];
                         data.mentors = [];

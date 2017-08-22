@@ -65,7 +65,7 @@
                     <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only'">
                         <label>{{$root.labels.BATCH.mentors}}</label>
                         <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="mentors" >
-                            <input type="hidden" name="mentors" ng-init="" ng-model="batchUpdate.mentors">
+                            <input type="hidden" name="mentors" ng-init="" ng-model="batchUpdate.mentors" id="mentorSelList">
                             <i class="dropdown icon"></i>
                             <div class="default text padding-top-20">Start searching by name</div>
                             <div class="menu">
@@ -155,7 +155,7 @@
                    <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only'">
                         <label>{{$root.labels.BATCH.mentors}}</label>
                         <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="mentors" >
-                            <input type="hidden" name="mentors" ng-init="" ng-model="batchUpdate.mentors">
+                            <input type="hidden" name="mentors" ng-init="" ng-model="batchUpdate.mentors" id="mentorSelList">
                             <i class="dropdown icon"></i>
                             <div class="default text padding-top-20">Start searching by name</div>
                             <div class="menu">
@@ -245,7 +245,7 @@
                     <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only'">
                         <label>{{$root.labels.BATCH.mentors}}</label>
                         <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="mentors" >
-                            <input type="hidden" name="mentors" ng-init="" ng-model="batchUpdate.mentors">
+                            <input type="hidden" name="mentors" ng-init="" ng-model="batchUpdate.mentors" id="mentorSelList">
                             <i class="dropdown icon "></i>
                             <div class="default text padding-top-20">Start searching by name</div>
                             <div class="menu">
@@ -265,7 +265,7 @@
                     <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only'">
                          <label>{{$root.labels.BATCH.users}}</label>
                         <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="users" >
-                            <input type="hidden" name="users" ng-init="" id="userSelList" id="userSelList" ng-model="batchUpdate.users">
+                            <input type="hidden" name="users" ng-init="" id="userSelList" ng-model="batchUpdate.users">
                             <i class="dropdown icon"></i>
                             <div class="default text padding-top-20">Select User</div>
                             <div class="menu">
