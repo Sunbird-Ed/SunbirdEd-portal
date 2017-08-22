@@ -27,7 +27,7 @@ angular.module('playerApp')
             batch.batchInfo = '';
             batch.statusOptions = [
                 { name: 'Ongoing', value: 1 },
-                { name: 'New', value: 0 }
+                { name: 'Upcoming', value: 0 }
             ];
             batch.showEnroll = true;
             batch.showCreateBatchModal = function () {
