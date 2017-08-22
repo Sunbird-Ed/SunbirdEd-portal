@@ -537,6 +537,9 @@ th {
 .cursor-pointer {
   cursor: pointer;
 }
+.cursor-pointerText {
+  cursor: text;
+}
 .mouse-pointer {
   cursor: pointer;
 }
@@ -2180,7 +2183,7 @@ span.dashBoardMenuItem.active {
   right: 1.6em;
   top: 1.6em;
 }
-course-graph-holder {
+.course-graph-holder {
   display: inline;
 }
 body {
