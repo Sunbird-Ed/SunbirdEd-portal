@@ -280,7 +280,7 @@ angular.module('playerApp')
                       + '</span><button id="resume-button-'
                       + toc.treeKey
                       + '" class="toc-resume-button contentVisibility-hidden' +
-                      ' blue right floated ui button">RESUME</button',
+                      ' blue right floated ui small button">RESUME</button',
                         key: toc.treeKey,
                         data: contentData,
                         icon: false
@@ -318,15 +318,14 @@ angular.module('playerApp')
             toc.getContentIcon = function (contentMimeType) {
                 var contentIcons = {
                     'application/pdf': 'large file pdf outline icon',
-                    'image/jpeg': 'large file image outline icon',
-                    'image/jpg': 'large file image outline icon',
-                    'image/png': 'large file image outline icon',
                     'video/mp4': 'large file video outline icon',
-                    'video/ogg': 'large file video outline icon',
+                    'video/x-youtube': 'large youtube square icon',
                     'video/youtube': 'large youtube square icon',
                     'application/vnd.ekstep.html-archive': 'large html5 icon',
-                    'application/vnd.ekstep.ecml-archive': 'large file'
-               + ' archive outline icon',
+                    'application/vnd.ekstep.ecml-archive': 'large file archive outline icon',
+                    'application/epub': 'large file archive outline icon',
+                    'application/vnd.ekstep.h5p-archive': 'large file archive outline icon',
+
                     'application/vnd.ekstep.content-collection': 'large folder'
                + ' open outline icon grey icon'
 
@@ -366,6 +365,9 @@ angular.module('playerApp')
                             if (nodeData.key !== -1) {
                                 toc.expandMe(nodeData.key, nodeData.data);
                             }
+                            if (toc.playContent == false) {
+                                return false;
+                            }
                         },
                         create: function (event, data) {
                             if (toc.courseType === 'OTHER_COURSE') {
@@ -374,6 +376,9 @@ angular.module('playerApp')
                         }
                     });
                     $('.fancytree-container').addClass('fancytree-connectors');
+                    if (toc.playContent == false) {
+                        $(id).find('.fancytree-title').addClass('cursor-pointerText');
+                    }
                 }, 0);
             };
 
@@ -509,8 +514,9 @@ angular.module('playerApp')
                             toc.batchStatus = toc.selectedBatchInfo.status;
                             if (toc.batchStatus && toc.batchStatus > 0) {
                                 toc.playContent = true;
-                                if (toc.batchStatus < 2) {
+                                if (toc.batchStatus < 2 && !$rootScope.contentStateInit && $rootScope.isTocPage) {
                                     contentStateService.init();
+                                    $rootScope.contentStateInit = true;
                                 }
                             }
                         } else {
