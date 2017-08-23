@@ -206,6 +206,7 @@
         },
         "CONTENT_FLAG": {
             "contentFlagText": "Flag content as inappropriate",
+            "courseFlagText": "Flag course as inappropriate",
             "heading": "What went wrong?",
             "description": "Let us know what went wrong, please mention the exact reasons so that we review this as soon as possible and address this issue super fast. Thanks for your feedback!",
             "contentName": "CONTENT NAME",
