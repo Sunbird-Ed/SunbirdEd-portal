@@ -8,8 +8,7 @@
  */
 angular.module('playerApp')
   .controller('courseDashboardCtrl', ['$rootScope', '$scope', 'dashboardService', '$timeout', '$state', '$stateParams', 'toasterService',
-    'permissionsService',
-    function($rootScope, $scope, dashboardService, $timeout, $state, $stateParams, toasterService, permissionsService) {
+    function($rootScope, $scope, dashboardService, $timeout, $state, $stateParams, toasterService) {
       var courseDashboard = this;
       courseDashboard.chartHeight = 120;
       courseDashboard.courseProgressArray = [];
@@ -19,8 +18,6 @@ angular.module('playerApp')
       // Dataset - progress / consumption
       courseDashboard.dataset = 'progress';
       courseDashboard.courseName = 'progress';
-      var currentUserRoles = permissionsService.getCurrentUserRoles();
-      console.log(currentUserRoles);
 
       // Search and sort table data
       courseDashboard.orderByField = ''; // Default value
@@ -50,7 +47,6 @@ angular.module('playerApp')
           courseDashboard.consumptionNumericData = [];
           if (apiResponse && apiResponse.responseCode === 'OK') {
             if (courseDashboard.dataset === 'progress') {
-              console.log('In progress......');
               angular.forEach(apiResponse.result.series, function(seriesData, key) {
                 if (key === 'course.progress.course_progress_per_user.count') {
                   angular.forEach(seriesData, function(bucketData, key) {
@@ -68,7 +64,6 @@ angular.module('playerApp')
             // Show error div
             courseDashboard.showErrors(apiResponse);
           }
-          console.log('Response received');
         }).catch(function(apiResponse) {
           // Show error div
           courseDashboard.showErrors(apiResponse);

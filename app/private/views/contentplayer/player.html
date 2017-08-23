@@ -3,15 +3,32 @@
 
         <div class='content-player-body'>
             <div class="videosegment  ui clearing segment" ng-if="isHeader || isClose">
-                <h1 class="ui HomeAccordianHeading left floated header margin-auto" ng-if="isHeader">
-                    {{contentData.name}}
-                </h1>
-                <h5 class="ui right floated basic icon circular button" ng-if="isClose" ng-click="close()">
-                    <i class="ui remove icon"></i>
-                </h5>
+                <div class="ui grid">
+                    <div class="row margin-auto padding-bottom-none">
+                        <div class="twelve wide column">
+                            <div class="ten wide column">
+                                <span class="ui HomeAccordianHeading left floated header" ng-if="isHeader">
+                                            {{contentData.name}}
+                                </span>
+                            </div>
+                            <div class="two wide column" ng-if="isClose">
+                                <h5 class="ui right floated basic icon circular button margin-auto mouse-pointer" ng-click="close()">
+                                    <i class="ui remove icon"></i>
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row margin-auto padding-top-none" ng-if="showMetaData && contentData.name">
+                        <div class="twelve wide column">
+                            <span apply-script class="courseHeader-rating ui star rating course-header-divider" data-rating="{{contentData.me_averageRating |number:0}}" data-max-rating="5"></span>&nbsp;&nbsp;
+                            <content-share type=" 'content' " id="contentData.identifier"></content-share>&nbsp;
+                            <content-flag contentid="contentData.identifier" contentname="contentData.name" versionkey="contentData.versionKey" redirect="closeurl"></content-flag>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="ui stackable twelve column grid" ng-if="!showNoteList">
+            <div class="ui stackable twelve column grid padding-top-10" ng-if="!showNoteList">
 
                 <div class="twelve wide column">
                     <div class="content-player" ng-if="showIFrameContent">
