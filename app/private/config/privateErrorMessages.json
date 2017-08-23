@@ -293,6 +293,11 @@
             "ENROLLED": {
                 "SUCCESS": "Course Enrolled for this batch successfully..."
             }
-        }       
+        },
+        "TENANT":{
+            "GET_INFO":{
+                "FAILED": "Fetching tenant details failed, please try again later..."
+            }
+        }  
     }
 }

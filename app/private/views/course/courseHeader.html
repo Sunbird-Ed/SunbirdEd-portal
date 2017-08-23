@@ -46,11 +46,11 @@
         <div class="one wide column"></div>
     </div>
 </div>
-<div class="ui grid margin-bottom-20">
+<div class="ui grid margin-bottom-20" ng-if="toc.courseHierachy">
     <div class="row">
         <div class="twelve wide column padding-none">
             <div ng-if="toc.courseTotal && toc.courseProgress > 0">
-                <div id="tocProgress" class="ui tiny progress course-progress orange" ng-init="toc.updateCourseProgress()">
+                <div  id="tocProgress" class="ui tiny progress course-progress orange" ng-init="toc.updateCourseProgress()">
                     <div class="bar"></div>
                 </div>
             </div>
