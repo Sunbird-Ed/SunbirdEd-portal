@@ -1,17 +1,27 @@
 <!--notes start-->
-<div class="ui row">
-    <div class="three wide column ">
+<div class="ui grid">
+    <div class="row">
+        <div class="three wide column "></div>
+        <div class="six wide column center aligned" ng-if="showModalInLectureView">
+            <div class="ui grid">
+                <div class="row">
+                    <div class="four wide column "></div>
+                    <div class="four wide column ">
+                        <h2 class="ui centered aligned icon tiny header toc-note">
+                            <add-note shownoteinlecture="true" contentid="contentData.identifier" visibility="showModalInLectureView"></add-note>
+                        </h2>
+                    </div>
+                </div>
+                <div class="four wide column "></div>
+            </div>
+        </div>
     </div>
-    <div class="six wide column center aligned" ng-if="showModalInLectureView">
-        <h2 class="ui center aligned icon tiny header toc-note">
-            <add-note shownoteinlecture="true" contentid="contentData.identifier" visibility="showModalInLectureView"></add-note>
-        </h2>
-    </div>
-    <div class="three wide column ">
-    </div>
-    <div class="twelve wide column ">
-        <div class="ui divider"></div>
-    </div>
+</div>
+</div>
+<div class="three wide column "></div>
+<div class="twelve wide column ">
+    <div class="ui divider"></div>
+</div>
 </div>
 <!--notes End-->
 <h4 class="ui">
@@ -102,13 +112,6 @@
         <div class="four wide column toc-note-content">
             <div class="row">
                 <note-card shownotecard="true" contentid="contentData.identifier"></note-card>
-            </div>
-            <div class="row">
-                <content-flag contentid="contentData.identifier" contentname="contentData.name" versionkey="contentData.versionKey" redirect="closeurl"></content-flag>
-            </div>
-            <div class="ui divider"></div>
-            <div class="row">
-                <content-share type=" 'content' " id="contentData.identifier"></content-share>
             </div>
         </div>
     </div>

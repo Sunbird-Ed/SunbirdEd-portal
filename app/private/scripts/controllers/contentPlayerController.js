@@ -40,7 +40,7 @@ angular.module('playerApp')
                     previewContentIframe.onload = function () {
                         var playerWidth = $('#contentViewerIframe').width();
                         if (playerWidth) {
-                            var height = playerWidth * (9/16);
+                            var height = playerWidth * (9 / 16);
                             $('#contentViewerIframe').css('height', height + 'px');
                         }
                         var configuration = {};
@@ -71,7 +71,7 @@ angular.module('playerApp')
                         }
                         previewContentIframe.contentWindow.initializePreview(configuration);
                     };
-                }, 1000);
+                }, 0);
             }
 
             function showLoaderWithMessage(showMetaLoader, message, closeButton, tryAgainButton) {
