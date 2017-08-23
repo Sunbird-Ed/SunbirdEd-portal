@@ -24,7 +24,7 @@ Plugin.extend({
                         }
                     });
                     window.parent.dispatchEvent(custTelemetryEvent);
-                    console.info('OE_END Event is sending..');
+                    //console.info('OE_END Event is sending..');
             }
         }
     }
