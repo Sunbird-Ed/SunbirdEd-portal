@@ -23,8 +23,8 @@ Plugin.extend({
                             "telemetryData": parsedData
                         }
                     });
-                    window.parent.dispatchEvent(custTelemetryEvent);
-                    console.info('OE_END Event is sending..');
+                    window.parent.document.getElementById('contentPlayer').dispatchEvent(custTelemetryEvent);
+                  //  console.info('OE_END Event is sending..');
             }
         }
     }

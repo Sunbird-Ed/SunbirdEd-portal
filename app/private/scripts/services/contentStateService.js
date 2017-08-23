@@ -8,7 +8,7 @@
  * Service in the playerApp.
  */
 angular.module('playerApp')
-        .service('contentStateService', function ($filter, $rootScope, httpServiceJava, config, uuid4) {
+        .service('contentStateService', function ($filter, $rootScope, httpServiceJava, config, uuid4, dataService) {
             var localContentState = localContentState || {};
             var self = this;
             this.init = function () {
@@ -30,7 +30,7 @@ angular.module('playerApp')
                     status: 1,
                     lastAccessTime: $filter('date')(new Date(data.ets), 'yyyy-MM-dd HH:mm:ss:sssZ'),
                     courseId: _.find(data.cdata, { type: 'course' }).id,
-                    batchId:$rootScope.enrolledCourseIds[_.find(data.cdata, { type: 'course' }).id].batchId
+                    batchId: $rootScope.enrolledCourseIds[_.find(data.cdata, { type: 'course' }).id].batchId
                 };
                 var contentStatusData = _.find(localContentState[content.courseId].contents, { contentId: content.contentId });
                 if (contentStatusData && contentStatusData.status > content.status) {
@@ -69,6 +69,7 @@ angular.module('playerApp')
             self.updateContentState = function (e, data) {
                 if (data && (data.eid === 'OE_START' || data.eid === 'OE_END')) {
                     var content = self.prepareContentObject(data);
+                    var prevContentStatus = -1;
                     // local updated
                     if (localContentState[content.courseId] && localContentState[content.courseId].contents) {
                         var obj = _.find(localContentState[content.courseId].contents, { contentId: content.contentId, courseId: content.courseId });
@@ -76,6 +77,7 @@ angular.module('playerApp')
                         if (obj) {
                             localContentState[content.courseId].contents[i].progress = (content.progress && obj.progress && parseInt(obj.progress) < content.progress) ? content.progress : localContentState[content.courseId].contents[i].progress;
                             localContentState[content.courseId].contents[i].lastAccessTime = content.lastAccessTime;
+                            prevContentStatus = localContentState[content.courseId].contents[i].status;
                             localContentState[content.courseId].contents[i].status = content.status;
                         } else if (i === -1) {
                             localContentState[content.courseId].contents.push(content);
@@ -96,7 +98,9 @@ angular.module('playerApp')
                     };
                     console.log('called flush');
                     // dont check response for now
-                    self.updateContentStateInServer(req).then(function (res) {});
+                    if (prevContentStatus < content.status && dataService.getData('contentStateInit') == true) {
+                        self.updateContentStateInServer(req).then(function (res) {});
+                    }
                 }
             };
         });
