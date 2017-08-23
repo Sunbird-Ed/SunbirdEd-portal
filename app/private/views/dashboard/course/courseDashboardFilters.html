@@ -10,9 +10,9 @@
   </div>
   <div class="ui grid">
     <div class="five wide column left floated">
-      <p class="dashboard-label ng-binding"><i class="bar chart icon"></i>&nbsp; {{courseDashboard.courseName ? courseDashboard.courseName : 'select course to see'}} dashboard</p>
+      <p class="dashboard-label ng-binding"><i class="bar chart icon"></i>&nbsp; {{courseDashboard.courseName ? courseDashboard.courseName : 'Select course to see'}} dashboard</p>
     </div>
-    <div class="four wide column right floated" ng-if="courseDashboard.dataset == 'consumption'" ng-hide="courseDashboard.myCoursesList.length === '0'">
+    <div class="four wide column right floated" ng-if="courseDashboard.dataset == 'consumption'" ng-hide="courseDashboard.myCoursesList.length <= '1' ">
       <div class="ui fluid search selection dropdown" id="myCoursesListFilter">
         <input type="hidden" name="course">
         <i class="dropdown icon"></i>
