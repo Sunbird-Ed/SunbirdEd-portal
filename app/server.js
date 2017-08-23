@@ -181,8 +181,6 @@ app.use('/api/*', permissionsHelper.checkPermission(), proxy(contentProxyUrl, {
 
 app.use('/content-plugins/*', proxy(contentProxyUrl, {
   proxyReqPathResolver: function(req) {
-    console.log('contentProxyUrl:' + contentProxyUrl);
-    console.log('originalUrl:' + req.originalUrl);
     return require('url').parse(contentProxyUrl + req.originalUrl).path;
   }
 }));
@@ -242,7 +240,9 @@ keycloak.authenticated = function(request) {
       telemetryHelper.logSessionStart(request, callback);
     }
   }, function(err, results) {
-    console.log('res', results);
+    if (err) {
+      console.log('err', err);
+    }
   });
 
 
