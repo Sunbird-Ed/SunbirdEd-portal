@@ -143,7 +143,7 @@ angular.module('playerApp')
           courseDashboard.myCoursesList.push(value);
         });
 
-        if (courseDashboard.myCoursesList.length === "0") {
+        if (courseDashboard.myCoursesList.length == "0") {
           // Make api call to get list of my courses
           learnService.enrolledCourses($rootScope.userId).then(function(apiResponse) {
             if (apiResponse && apiResponse.responseCode === 'OK') {
