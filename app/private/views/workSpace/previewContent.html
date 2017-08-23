@@ -4,63 +4,31 @@
         <div class="row" ng-if="previewContent.loader.showLoader">
             <app-loader data="{{previewContent.loader}}"></app-loader>
         </div>
-        <div class="row margin-top-10">
-            <div class='videosegment ui segment'>
-                <div class='content-player-body'>
-                    <div class="videosegment  ui clearing segment">
-                        <h1 class="ui HomeAccordianHeading left floated header margin-auto">
-                            {{previewContent.contentData.name}}
-                        </h1>
-                        <h5 class="ui right floated basic icon circular button" ng-click="previewContent.closePreview()">
-                            <i class="ui remove icon"></i>
-                        </h5>
-                    </div>
-                    <div class="ui stackable twelve column grid">
-                        <div class="twelve wide column">
-                            <div class="content-player" ng-if="previewContent.showIFrameContent">
-                                <iframe id="contentViewerIframe" class="contentViewerIframeShadow" height='100%' width='100%'></iframe>
-                            </div>
-                            <div class="content-player" ng-if="previewContent.contentData.mimeType.indexOf('image') > -1">
-                                <img height='100%' width='100%' ng-src="{{previewContent.contentData.artifactUrl}}" />
-                            </div>
-                            <div class="videosegment  ui clearing segment" ng-if="previewContent.contentData.status === 'Review' && previewContent.isShowPublishRejectButton">
-                                <button sb-permissions permission-only="CONTENT_REVIEWER" ng-if="previewContent.isShowPublishRejectButton" ng-disabled="previewContent.loader.showLoader" class="ui right floated primary button mouse-pointer" ng-click="previewContent.publishContent()">
-                                    {{$root.labels.WORKSPACE.previewContent.publish}}
-                                </button>
-                                <button sb-permissions permission-only="CONTENT_REVIEWER" ng-if="previewContent.isShowPublishRejectButton" ng-disabled="previewContent.loader.showLoader" class="ui right floated primary button mouse-pointer" ng-click="previewContent.rejectContent()">
-                                    {{$root.labels.WORKSPACE.previewContent.reject}}
-                                </button>
-                            </div>
-                            <div class="videosegment  ui clearing segment" ng-if="previewContent.contentData.status === 'Flagged' && previewContent.isShowFlagActionButton">
-                                <button sb-permissions permission-only="FLAG_REVIEWER" ng-if="previewContent.isShowFlagActionButton" ng-disabled="previewContent.loader.showLoader" class="ui right floated primary button mouse-pointer" ng-click="previewContent.deleteContent()">
-                                    {{$root.labels.WORKSPACE.previewContent.delete}}
-                                </button>
-                                <button sb-permissions permission-only="FLAG_REVIEWER" ng-if="previewContent.isShowFlagActionButton" ng-disabled="previewContent.loader.showLoader" class="ui right floated primary button mouse-pointer" ng-click="previewContent.acceptContentFlag(previewContent.contentData)">
-                                    {{$root.labels.WORKSPACE.previewContent.accept}}
-                                </button>
-                                <button sb-permissions permission-only="FLAG_REVIEWER" ng-if="previewContent.isShowFlagActionButton" ng-disabled="previewContent.loader.showLoader" class="ui right floated primary button mouse-pointer" ng-click="previewContent.discardContentFlag(previewContent.contentData)">
-                                    {{$root.labels.WORKSPACE.previewContent.discard}}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div ng-if="previewContent.errorObject.showError">
-                        <div class="ui active dimmer inverted">
-                            <div class="content">
-                                <div class="ui center aligned header" ng-if="!previewContent.errorObject.showMetaLoader">
-                                    <h2 class="ui header {{previewContent.errorObject.messageClass}}">
-                                        {{previewContent.errorObject.message}}
-                                    </h2>
-                                    <button class="ui button margin-bottom-15" ng-if="previewContent.errorObject.showTryAgainButton" ng-click="previewContent.tryAgain()">{{$root.labels.WORKSPACE.previewContent.tryAgain}}</button>
-                                    <button class="ui red button margin-bottom-15" ng-if="previewContent.errorObject.showCloseButton" ng-click="previewContent.closePreview()">{{$root.labels.WORKSPACE.previewContent.close}}</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div class="row margin-top-10" ng-show="!previewContent.loader.showLoader">
+            <content-player visibility="previewContent.contentPlayer.isContentPlayerEnabled" body="previewContent.contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="true" height="10" width="100" ispercentage="true" closeurl="previewContent.redirectUrl"></content-player>
+        </div>
+        <div class="row margin-top-10" ng-show="!previewContent.loader.showLoader">
+            <div class="videosegment  ui clearing segment" ng-if="previewContent.contentData.status === 'Review' && previewContent.isShowPublishRejectButton">
+                <button sb-permissions permission-only="CONTENT_REVIEWER" ng-if="previewContent.isShowPublishRejectButton" ng-disabled="previewContent.loader.showLoader" class="ui right floated primary button mouse-pointer" ng-click="previewContent.publishContent()">
+                            {{$root.labels.WORKSPACE.previewContent.publish}}
+                </button>
+                <button sb-permissions permission-only="CONTENT_REVIEWER" ng-if="previewContent.isShowPublishRejectButton" ng-disabled="previewContent.loader.showLoader" class="ui right floated primary button mouse-pointer" ng-click="previewContent.rejectContent()">
+                            {{$root.labels.WORKSPACE.previewContent.reject}}
+                </button>
+            </div>
+            <div class="videosegment  ui clearing segment" ng-if="previewContent.contentData.status === 'Flagged' && previewContent.isShowFlagActionButton">
+                <button sb-permissions permission-only="FLAG_REVIEWER" ng-if="previewContent.isShowFlagActionButton" ng-disabled="previewContent.loader.showLoader" class="ui right floated primary button mouse-pointer" ng-click="previewContent.deleteContent()">
+                            {{$root.labels.WORKSPACE.previewContent.delete}}
+                </button>
+                <button sb-permissions permission-only="FLAG_REVIEWER" ng-if="previewContent.isShowFlagActionButton" ng-disabled="previewContent.loader.showLoader" class="ui right floated primary button mouse-pointer" ng-click="previewContent.acceptContentFlag(previewContent.contentData)">
+                            {{$root.labels.WORKSPACE.previewContent.accept}}
+                </button>
+                <button sb-permissions permission-only="FLAG_REVIEWER" ng-if="previewContent.isShowFlagActionButton" ng-disabled="previewContent.loader.showLoader" class="ui right floated primary button mouse-pointer" ng-click="previewContent.discardContentFlag(previewContent.contentData)">
+                            {{$root.labels.WORKSPACE.previewContent.discard}}
+                </button>
             </div>
         </div>
-        <div class="row margin-top-15" ng-if="!previewContent.errorObject.showError">
+        <div class="row margin-top-15" ng-if="!previewContent.loader.showLoader">
             <h2 class="ui header" title="Description">
                 {{previewContent.contentData.description}}
             </h2>

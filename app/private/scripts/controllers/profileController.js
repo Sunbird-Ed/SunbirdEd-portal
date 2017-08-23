@@ -494,6 +494,7 @@ angular.module('playerApp') // add those all values
               });
           };
           profile.getbadges();
+          
           profile.setSelectedGrades = function () {
               $timeout(function () {
                   $('#selectGrades').dropdown();
