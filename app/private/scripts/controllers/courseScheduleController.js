@@ -3,9 +3,10 @@
 angular.module('playerApp')
   .controller('courseScheduleCtrl',
     ['courseService', 'sessionService', '$stateParams', '$state', '$timeout', '$scope', '$rootScope',
-        'toasterService', '$location', '$anchorScroll', 'contentStateService', '$window', 'batchService','permissionsService',
+        'toasterService', '$location', '$anchorScroll', 'contentStateService', '$window', 'batchService',
+        'dataService', 'permissionsService',
         function (courseService, sessionService, $stateParams, $state, $timeout, $scope, $rootScope,
-        toasterService, $location, $anchorScroll, contentStateService, $window, batchService, permissionsService) {
+        toasterService, $location, $anchorScroll, contentStateService, $window, batchService, dataService, permissionsService) {
             var toc = this;
             toc.playList = [];
             toc.playListContent = [];
@@ -151,14 +152,13 @@ angular.module('playerApp')
                             }
                         }
                     });
-                    if (toc.courseProgress > (toc.courseParams.progress || 0)) {
-                        toc.updateCourseProgress();
-                    }
+
+                    toc.updateCourseProgress();
                 });
             };
 
             toc.updateCourseProgress = function () {
-                if (toc.courseProgress || toc.courseParams.progress) {
+                if (toc.courseProgress > (toc.courseParams.progress || 0)) {
                     toc.courseProgress = toc.courseProgress || toc.courseParams.progress;
                     $timeout(function () {
                         var progPercent = parseInt(
@@ -524,9 +524,10 @@ angular.module('playerApp')
                             toc.batchStatus = toc.selectedBatchInfo.status;
                             if (toc.batchStatus && toc.batchStatus > 0) {
                                 toc.playContent = true;
-                                if (toc.batchStatus < 2 && !$rootScope.contentStateInit && $rootScope.isTocPage) {
+                                if (toc.batchStatus < 2 && !dataService.getData('contentStateInit') && $rootScope.isTocPage) {
                                     contentStateService.init();
-                                    $rootScope.contentStateInit = true;
+                                    dataService.setData('contentStateInit', true);
+                                    dataService.setData('isTrackingEnabled', true);
                                 }
                             }
                         } else {
