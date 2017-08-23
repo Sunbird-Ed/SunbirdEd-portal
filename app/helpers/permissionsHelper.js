@@ -114,6 +114,7 @@ let PERMISSIONS_HELPER = {
             }
             if (body.result.response.rootOrg && body.result.response.rootOrg.id) {
               reqObj.session.rootOrgId = body.result.response.rootOrg.id;
+              reqObj.session.rootOrghashTagId = body.result.response.rootOrg.hashTagId;
             }
           }
         } catch (e) {
