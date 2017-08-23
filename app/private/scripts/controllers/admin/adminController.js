@@ -78,21 +78,15 @@ angular.module('playerApp')
                     });
                 }
             };
-            // MODAL INIT
-            admin.modalInit = function () {
-                $timeout(function () {
-                    $('#userOrgs').dropdown();
-                }, 0);
-                $('.roleChckbox').checkbox();
-            };
-            // open editRoles modal
+                      // open editRoles modal
             admin.showModal = function (identifier, orgs) {
+                admin.setDefaultSelected(orgs);
                 $('#changeUserRoles').modal({
                     onShow: function () {
                         admin.identifier = identifier;
                         admin.userOrganisations = orgs;
                         admin.selectedOrgUserRoles = [];
-                        $('#userOrgs').dropdown('restore defaults');
+                        $('.roleChckbox').checkbox();
                     },
                     onHide: function () {
                         admin.userId = '';
@@ -228,6 +222,18 @@ angular.module('playerApp')
             admin.openPublicProfile = function (id, user) {
                 searchService.setPublicUserProfile(user);
                 $state.go('PublicProfile', { userId: window.btoa(id), userName: user.firstName });
+            };
+
+            admin.setDefaultSelected = function (organizations) {
+                if (organizations) {
+                    $timeout(function () {
+                        var orgDropdown = $('#userOrgs').dropdown();
+                        orgDropdown.dropdown('set text', organizations[0].orgName);
+                        orgDropdown.dropdown({ allowTab: false });
+                        admin.selectedOrgUserRoles = organizations[0].roles;
+                        admin.selectedOrgUserId = organizations[0].organisationId;
+                    }, 0);
+                }
             };
             admin.getUserRoles();
         }]);
