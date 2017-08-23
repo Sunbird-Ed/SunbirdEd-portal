@@ -87,9 +87,9 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
             $rootScope.organisations = profileData.organisations;
             var organisationNames = [];
 
-                var rootOrg = (profileData.rootOrg && !_.isUndefined(profileData.rootOrg.id)) ? profileData.rootOrg.id : 'sunbird'; //eslint-disable-line
-                org.sunbird.portal.channel = md5(rootOrg);
-                var organisationIds = [];
+            var rootOrg = (profileData.rootOrg && !_.isUndefined(profileData.rootOrg.id)) ? profileData.rootOrg.id : 'sunbird'; //eslint-disable-line
+            org.sunbird.portal.channel = md5(rootOrg);
+            var organisationIds = [];
 
             _.forEach(profileData.organisations, function (org) {
                 if (org.roles && _.isArray(org.roles)) {
@@ -111,6 +111,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
             permissionsService.setCurrentUserRoles(userRoles);
             $rootScope.initializePermissionDirective = true;
             $scope.getTelemetryConfigData(profileData);
+            $scope.setRootOrgInfo(profileData);
         };
 
         $scope.getTelemetryConfigData = function () {
@@ -121,14 +122,37 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
                 org.sunbird.portal.appid = res.data.appId;
                 org.sunbird.portal.ekstep_env = res.data.ekstep_env;
             })
-        .catch(function () {
-            org.sunbird.portal.appid = 'sunbird.portal';
-            org.sunbird.portal.ekstep_env = 'qa';
-        })
-        .finally(function () {
-            org.sunbird.portal.init();
-            portalTelemetryService.init();
-        });
+            .catch(function () {
+                org.sunbird.portal.appid = 'sunbird.portal';
+                org.sunbird.portal.ekstep_env = 'qa';
+            })
+            .finally(function () {
+                org.sunbird.portal.init();
+                portalTelemetryService.init();
+            });
+        };
+
+        $scope.setRootOrgInfo = function (profileData) {
+            if(profileData.rootOrg){
+                //set Page Title
+                document.title = (!_.isUndefined(profileData.rootOrg.orgName)) ? profileData.rootOrg.orgName : 'Sunbird';
+                $http.get('/v1/tenant/info/'+profileData.rootOrg.channel).then(function (res) {
+                    if(res && res.statusText == 'OK'){
+                        $rootScope.orgLogo = res.data.result.logo;
+                        var link = document.createElement('link'),
+                        oldLink = document.getElementById('dynamic-favicon');
+                        link.id = 'dynamic-favicon';
+                        link.rel = 'icon';
+                        link.href = res.data.result.favicon;
+                        if (oldLink) {
+                          document.head.removeChild(oldLink);
+                        }
+                        document.head.appendChild(link);
+                    }
+                }).catch(function () {
+                    toasterService.error($rootScope.errorMessages.TENANT.GET_INFO.FAILED);
+                });
+            }
         };
 
         $scope.getProfile = function () {
