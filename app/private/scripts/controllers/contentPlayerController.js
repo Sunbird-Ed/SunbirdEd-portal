@@ -25,7 +25,7 @@ angular.module('playerApp')
              * from renderer
              * Player controller dispatching the event sunbird
              */
-                window.addEventListener('renderer:telemetry:event',function (event, data) { // eslint-disable-line
+                document.getElementById('contentPlayer').addEventListener('renderer:telemetry:event',function (event, data) { // eslint-disable-line
                     org.sunbird.portal.eventManager.dispatchEvent('sunbird:player:telemetry',
                     event.detail.telemetryData);
                 });
@@ -121,10 +121,10 @@ angular.module('playerApp')
 
                 $scope.visibility = false;
                 playerTelemetryUtilsService.endTelemetry({ progress: $scope.contentProgress });
-                window.removeEventListener('renderer:telemetry:event', function () {
+                document.getElementById('contentPlayer').removeEventListener('renderer:telemetry:event', function () {
                     org.sunbird.portal.eventManager.dispatchEvent('sunbird:player:telemetry',
                                                     event.detail.telemetryData);
-                });
+                },false);
             };
 
             $scope.updateContent = function (scope) {
