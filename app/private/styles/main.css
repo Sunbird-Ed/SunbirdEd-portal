@@ -609,6 +609,9 @@ th {
   padding-right: 15px !important;
   border-right: 1px solid black !important;
 }
+.capitalizeTextInfo {
+  text-transform: capitalize;
+}
 .header-container {
   margin-left: 1px !important;
   border-bottom: 5px solid #007AFF !important;
