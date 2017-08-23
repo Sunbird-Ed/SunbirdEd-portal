@@ -38,6 +38,12 @@
         </div>
         <p>{{courseDashboard.errorMsg}}</p>
       </div>
+      <div class="ui warning message tweleve wide column" ng-show="courseDashboard.isMultipleCourses">
+        <div class="header">
+          No course selected!
+        </div>
+        Please select a course from the above list
+      </div>
       <div class="ui info message" ng-if="courseDashboard.showWarningMsg">
         <i class="close icon"></i>
         <div class="header">
