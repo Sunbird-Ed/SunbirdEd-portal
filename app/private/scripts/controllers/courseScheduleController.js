@@ -144,14 +144,13 @@ angular.module('playerApp')
                             }
                         }
                     });
-                   
-                        toc.updateCourseProgress();
-                    
+
+                    toc.updateCourseProgress();
                 });
             };
 
             toc.updateCourseProgress = function () {
-                 if (toc.courseProgress > (toc.courseParams.progress || 0)) {
+                if (toc.courseProgress > (toc.courseParams.progress || 0)) {
                     toc.courseProgress = toc.courseProgress || toc.courseParams.progress;
                     $timeout(function () {
                         var progPercent = parseInt(
