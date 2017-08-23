@@ -375,11 +375,19 @@ th {
   font-size: 1.6em !important;
   color: #232425 !important;
 }
+/*note card font*/
+.batch-card-desc {
+  font-family: 'sunbirdregularfont' !important;
+  font-size: 0.8em !important;
+}
 .padding-none {
   padding: 0px !important;
 }
 .padding-top-none {
   padding-top: 0px !important;
+}
+.padding-bottom-none {
+  padding-bottom: 0px !important;
 }
 .padding-left-right-0 {
   padding-left: 0px !important;
@@ -596,6 +604,10 @@ th {
 }
 .content-font {
   font-size: 1.1em !important;
+}
+.course-header-divider {
+  padding-right: 15px !important;
+  border-right: 1px solid black !important;
 }
 .header-container {
   margin-left: 1px !important;
@@ -1225,8 +1237,7 @@ span.fancytree-title {
 .courseupdate {
   color: #a5a5ad;
   line-height: 1.6;
-  padding-left: 15px;
-  font-size: 1.1em;
+  font-size: 1em;
 }
 .courseupdate b {
   font-weight: 400;
