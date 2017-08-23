@@ -1,25 +1,32 @@
 const fs = require('fs'),
   path = require('path'),
-  async = require('async');
+  async = require('async'),
+  default_tenant = envHelper.DEFAUULT_TENANT;
 
 module.exports = {
   getInfo: function(req, res) {
     var tenantId = req.params.tenantId;
     var responseObj = {
-      logo: null,
-      favicon: null,
-      poster: null
+      logo: (req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') + '/images/sunbird_logo.png',
+      favicon: (req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') +'/images/favicon.ico',
+      poster: (req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') +'/images/sunbird_logo.png',
     }
     //TODO: make file checking async for performance
     if (tenantId) {
       if (fs.existsSync(path.join(__dirname, '../tenant', tenantId, 'logo.png'))) {
         responseObj.logo = (req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') + '/tenant/' + tenantId + '/logo.png';
+      }else if (default_tenant && fs.existsSync(path.join(__dirname, '../tenant', default_tenant, 'logo.png'))) {
+        responseObj.logo = (req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') + '/tenant/' + default_tenant + '/logo.png';
       }
       if (fs.existsSync(path.join(__dirname, '../tenant', tenantId, 'favicon.ico'))) {
         responseObj.favicon = (req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') + '/tenant/' + tenantId + '/favicon.ico';
+      }else if (default_tenant && fs.existsSync(path.join(__dirname, '../tenant', default_tenant, 'favicon.ico'))) {
+        responseObj.favicon = (req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') + '/tenant/' + default_tenant + '/favicon.ico';
       }
       if (fs.existsSync(path.join(__dirname, '../tenant', tenantId, 'poster.png'))) {
         responseObj.poster = (req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') + '/tenant/' + tenantId + '/poster.png';
+      }else if (default_tenant && fs.existsSync(path.join(__dirname, '../tenant', default_tenant, 'poster.png'))) {
+        responseObj.poster = (req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') + '/tenant/' + default_tenant + '/poster.png';
       }
       module.exports.getSucessResponse(res, "api.tenant.info", responseObj);
     } else {
