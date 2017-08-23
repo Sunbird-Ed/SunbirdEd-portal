@@ -158,7 +158,7 @@ angular.module('playerApp')
             };
 
             toc.updateCourseProgress = function () {
-                if (toc.courseProgress > (toc.courseParams.progress || 0)) {
+                if (toc.courseProgress >= (toc.courseParams.progress || 0)) {
                     toc.courseProgress = toc.courseProgress || toc.courseParams.progress;
                     $timeout(function () {
                         var progPercent = parseInt(
@@ -520,6 +520,7 @@ angular.module('playerApp')
                     batchService.getBatchDetails({ batchId: isEnroled.batchId }).then(function (response) {
                         if (response && response.responseCode === 'OK') {
                             toc.selectedBatchInfo = response.result.response;
+                            $rootScope.batchHashTagId = response.result.response.hashtagid;
                             toc.selectedParticipants = _.isUndefined(toc.selectedBatchInfo.participant) ? 0 : _.keys(toc.selectedBatchInfo.participant).length;
                             toc.batchStatus = toc.selectedBatchInfo.status;
                             if (toc.batchStatus && toc.batchStatus > 0) {
