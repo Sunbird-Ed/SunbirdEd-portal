@@ -12,14 +12,11 @@ telemetry_packet_size = envHelper.PORTAL_TELEMETRY_PACKET_SIZE;
 module.exports = {
   logSessionStart: function(req, callback) {
     var ua = parser(req.headers['user-agent']);
-    req.session.orgs.push(req.session.rootOrgId);
     req.session.orgs = _.compact(req.session.orgs);
     req.session.save();
+    var channel = req.session.rootOrghashTagId || md5('sunbird');
     var dims = _.clone(req.session.orgs);
-    dims.forEach(function(value, index, arr) {
-      arr[index] = md5(value);
-    });
-    var channel = md5(req.session.rootOrgId || 'sunbird');
+    dims = _.concat(dims, channel);
     var event = {
       "ver": "2.1",
       "uid": req.kauth.grant.access_token.content.sub,
@@ -55,7 +52,6 @@ module.exports = {
     };
     event.mid = 'SB:' + md5(JSON.stringify(event));
     this.sendTelemetry(req, [event], function(status) {
-      console.log(status)
       callback(null, status)
     })
   },

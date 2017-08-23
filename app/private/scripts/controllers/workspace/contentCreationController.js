@@ -16,13 +16,14 @@ angular.module('playerApp')
             contentCreation.contentUploadUrl = config.URL.BASE_PREFIX + config.URL.CONTENT_PREFIX +
                                                 config.URL.CONTENT.UPLOAD;
 
-            contentCreation.mimeType = [
-                { name: 'Pdf', value: config.MIME_TYPE.pdf },
-                { name: 'Video', value: config.MIME_TYPE.mp4 },
-                { name: 'Html Archive', value: config.MIME_TYPE.html },
-                { name: 'E-pub', value: config.MIME_TYPE.ePub },
-                { name: 'H5p', value: config.MIME_TYPE.h5p }
-            ];
+            contentCreation.objMimeType = {
+                pdf: { name: 'Pdf', value: config.MIME_TYPE.pdf },
+                mp4: { name: 'Video', value: config.MIME_TYPE.mp4 },
+                webm: { name: 'Video', value: config.MIME_TYPE.webm },
+                epub: { name: 'E-pub', value: config.MIME_TYPE.ePub },
+                h5p: { name: 'H5p', value: config.MIME_TYPE.h5p },
+                zip: { name: 'Html Archive', value: config.MIME_TYPE.html }
+            };
             contentCreation.youtubeVideoMimeType = {
                 name: 'Youtube Video', value: config.MIME_TYPE.youtube
             };
@@ -34,66 +35,79 @@ angular.module('playerApp')
             contentCreation.defaultContentType = 'Story';
             contentCreation.youtubeVideoUrl = '';
 
-            $timeout(function () {
-                contentCreation.manualUploader = new qq.FineUploader({
-                    element: document.getElementById('fine-uploader-manual-trigger'),
-                    template: 'qq-template-manual-trigger',
-                    request: {
-                        endpoint: contentCreation.contentUploadUrl + '/' + contentCreation.contentId
-                    },
-                    autoUpload: false,
-                    debug: true,
-                    validation: {
-                        sizeLimit: config.MaxFileSizeToUpload,
-                        allowedExtensions: config.AllowedFileExtension
-                    },
-                    messages: {
-                        sizeError: '{file} ' +
-                        $rootScope.errorMessages.COMMON.INVALID_FILE_SIZE + ' ' +
-                                                config.MaxFileSizeToUpload / (1000 * 1024) + ' MB.'
-                    },
-                    callbacks: {
-                        onComplete: function (id, name, responseJSON, xhr) {
-                            if (responseJSON.success) {
-                                contentCreation.editContent(contentCreation.contentId);
-                            }
-                            // if (xhr.statusText === 'OK') {
-                            //     responseJSON.success = true;
-                            //     var artifactUrl = xhr.responseURL.split('?')[0];
-                            //     contentCreation.manualUploader.cancel(id);
-                            //     contentCreation.uploadContent(id, artifactUrl, contentCreation.contentId);
-                            //     // contentCreation.editContent(contentCreation.contentId);
-                            // }
+            contentCreation.initializeFileUploader = function () {
+                $timeout(function () {
+                    contentCreation.manualUploader = new qq.FineUploader({
+                        element: document.getElementById('fine-uploader-manual-trigger'),
+                        template: 'qq-template-manual-trigger',
+                        request: {
+                            endpoint: contentCreation.contentUploadUrl + '/' + contentCreation.contentId
                         },
-                        onSubmitted: function (id, name) {
-                            contentCreation.youtubeVideoUrl = '';
-                            contentCreation.uploadedFileId = id;
-                            contentCreation.selectedFileName = name;
-                            contentCreation.selectedFile = this.getFile(id);
-                            contentCreation.initializeModal();
-                            document.getElementById('hide-section-with-button')
-                                                    .style.display = 'none';
+                        autoUpload: false,
+                        debug: true,
+                        validation: {
+                            sizeLimit: config.MaxFileSizeToUpload,
+                            allowedExtensions: config.AllowedFileExtension
                         },
-                        onCancel: function () {
-                            document.getElementById('hide-section-with-button')
-                                                    .style.display = 'block';
+                        messages: {
+                            sizeError: '{file} ' +
+                            $rootScope.errorMessages.COMMON.INVALID_FILE_SIZE + ' ' +
+                                                    config.MaxFileSizeToUpload / (1000 * 1024) + ' MB.'
                         },
-                        onStatusChange: function (id, oldStatus, newStatus) {
-                            if (newStatus === 'rejected') {
-                                document.getElementById('hide-progress-bar-on-reject')
-                                                    .style.display = 'none';
-                                contentCreation.data = {};
+                        callbacks: {
+                            onComplete: function (id, name, responseJSON, xhr) {
+                                if (responseJSON.success) {
+                                    contentCreation.editContent(contentCreation.contentId);
+                                } else if (responseJSON.params.err === 'ERR_CONTENT_UPLOAD_FILE') {
+                                    $('.qq-upload-status-text').text($rootScope.errorMessages.COMMON
+                                        .REQUIRED_FILE_MISSING);
+                                }
+                                // if (xhr.statusText === 'OK') {
+                                //     responseJSON.success = true;
+                                //     var artifactUrl = xhr.responseURL.split('?')[0];
+                                //     contentCreation.manualUploader.cancel(id);
+                                //     contentCreation.uploadContent(id, artifactUrl, contentCreation.contentId);
+                                //     // contentCreation.editContent(contentCreation.contentId);
+                                // }
+                            },
+                            onSubmitted: function (id, name) {
+                                contentCreation.youtubeVideoUrl = '';
+                                contentCreation.uploadedFileId = id;
+                                contentCreation.selectedFileName = name;
+                                contentCreation.selectedFile = this.getFile(id);
+                                contentCreation.getSelectedFileMime(name);
+                                contentCreation.initializeModal();
+                                document.getElementById('hide-section-with-button')
+                                                        .style.display = 'none';
+                            },
+                            onCancel: function () {
+                                document.getElementById('hide-section-with-button')
+                                                        .style.display = 'block';
+                            },
+                            onStatusChange: function (id, oldStatus, newStatus) {
+                                if (newStatus === 'rejected') {
+                                    document.getElementById('hide-progress-bar-on-reject')
+                                                        .style.display = 'none';
+                                    contentCreation.data = {};
+                                }
                             }
                         }
-                    }
-                });
-                $('#fileUploadOptions').text($rootScope.labels.WORKSPACE.startCreating
-                                                                    .fileUploadOptions);
+                    });
+                    $('#fileUploadOptions').text($rootScope.labels.WORKSPACE.startCreating
+                                                                        .fileUploadOptions);
 
-                window.cancelUploadFile = function () {
-                    document.getElementById('hide-section-with-button').style.display = 'block';
-                };
-            }, 300);
+                    window.cancelUploadFile = function () {
+                        document.getElementById('hide-section-with-button').style.display = 'block';
+                    };
+                }, 300);
+            };
+
+            contentCreation.getSelectedFileMime = function (fileName) {
+                var array = fileName.split('.');
+                var ext = array.reverse()[0];
+                contentCreation.data.mimeType = contentCreation.objMimeType[ext];
+                contentCreation.selectedFileMimeType = contentCreation.objMimeType[ext];
+            };
 
             contentCreation.editContent = function (contentId) {
                 var params = { contentId: contentId };
@@ -118,12 +132,12 @@ angular.module('playerApp')
                 var lessonDD = $('#lessonTypeDropDown').dropdown();
                 var mimeTypeDD = $('#mimeTypeDropDown').dropdown();
                 if (contentCreation.youtubeVideoUrl) {
-                    mimeTypeDD.dropdown('set text', 'Youtube Video');
+                    mimeTypeDD.dropdown('set text', contentCreation.youtubeVideoMimeType.name);
                     mimeTypeDD.dropdown('destroy');
                     lessonDD.dropdown('clear');
                 } else {
-                    mimeTypeDD.dropdown('set text', 'Mime Type');
-                    mimeTypeDD.dropdown('clear');
+                    mimeTypeDD.dropdown('set text', contentCreation.selectedFileMimeType.name);
+                    mimeTypeDD.dropdown('destroy');
                     lessonDD.dropdown('clear');
                 }
                 $timeout(function () {
@@ -186,7 +200,6 @@ angular.module('playerApp')
                 } else {
                     requestBody.mimeType = requestBody.mimeType.value;
                 }
-                contentCreation.selectedFileMimeType = requestBody.mimeType;
                 var requestData = {
                     content: requestBody
                 };

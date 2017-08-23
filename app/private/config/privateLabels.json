@@ -255,8 +255,8 @@
                 "FOUR": "Date of birth ('dob') field format is YYYY-MM-DD, e.g.: 1992-10-12."
             },
             "ORGANIZATIONS": {
-                "ONE": "Organisation name ('orgName') is mandatory",
-                "TWO": "If the organisation is a tenant (like state), then it should be marked as a root org. I.e. 'isRootOrg' should be set as true, else it should be false.",
+                "ONE": "Organization name ('orgName') is mandatory",
+                "TWO": "If the organization is a tenant (like state), then it should be marked as a root org. I.e. 'isRootOrg' should be set as true, else it should be false.",
                 "THREE": "'channel' value is required if 'isRootOrg' is true.",
                 "FOUR": "'externalId' and 'provider' are mutually necessary, i.e. either both the values should be provided or not provided together."
             }
