@@ -170,7 +170,7 @@ angular.module('playerApp')
       };
 
       courseDashboard.buildMyCoursesDropdown = function() {
-        if (courseDashboard.myCoursesList.length === "1") {
+        if (courseDashboard.myCoursesList.length == "1") {
           var firstChild = _.first(_.values(courseDashboard.myCoursesList), 1);
           courseDashboard.courseIdentifier = firstChild.courseId;
           courseDashboard.courseName = firstChild.courseName;
