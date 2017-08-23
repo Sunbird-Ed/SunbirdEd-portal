@@ -47,10 +47,10 @@
                                                 <div class="header">Your Batch Details</div>
                                                 <div class="description padding-top-10">
                                                     <div class="ui list">
-                                                        <div class="item">
+                                                       <div class="item">
                                                             <div class="header">
-                                                                <span>Name <span class="float-ContentRight batch-card-desc">{{toc.selectedBatchInfo.name}}</span></span>
-                                                            </div>
+                                                                <span>Name <span class="float-ContentRight batch-card-desc">{{toc.selectedBatchInfo.name | limitTo: 20}}&nbsp;<i ng-show="toc.selectedBatchInfo.name.length >= 20" class="ellipsis horizontal icon popup-button link" data-content="{{toc.selectedBatchInfo.name}}" data-variation="wide"></i></span></span>
+                                                             </div>
                                                         </div>
                                                         <div class="item padding-top-10">
                                                             <div class="header">
