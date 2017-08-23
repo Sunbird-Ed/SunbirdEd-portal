@@ -99,7 +99,6 @@ angular.module('playerApp')
             // Show error div
             courseDashboard.showErrors(apiResponse);
           }
-          console.log('Response received');
         }).catch(function(apiResponse) {
           // Show error div
           courseDashboard.showErrors(apiResponse);
@@ -118,53 +117,64 @@ angular.module('playerApp')
           console.log('avoid same apis call twice');
           return false;
         }
-
+        courseDashboard.showLoader = true;
         courseDashboard.filterTimePeriod = angular.element(item).data('timeperiod');
         courseDashboard.filterQueryTextMsg = angular.element(item).data('timeperiod-text');
-        courseDashboard.showLoader = true;
+        courseDashboard.isMultipleCourses = false;
         getCourseDashboardData();
       };
 
       /**
        * @Function loadData
-       * @Description load data
+       * @Description Load logged in user data.
+       * On page laod show graph - if user has enrolled for only 1 class else show my course dropdwon
        * @Params
        * @Return void
        */
       courseDashboard.loadData = function() {
-      	// Check list of my courses
-      	if($rootScope.enrolledCourseIds[0]){
-      		courseDashboard.myCoursesList = $rootScope.enrolledCourseIds;
-      		var firstChild = _.first(_.values($rootScope.enrolledCourseIds), 1);
-	        courseDashboard.courseIdentifier = firstChild.courseId;
-	        courseDashboard.courseName = firstChild.courseName;
-	        getCourseDashboardData('7d');
-	    } else {
-      		// Make api call to get list of my courses
-	        learnService.enrolledCourses($rootScope.userId).then(function(apiResponse) {
-	          if (apiResponse && apiResponse.responseCode === 'OK') {
-	            if (apiResponse.result.courses.length > 0) {
-	              courseDashboard.myCoursesList = apiResponse.result.courses;
-	              $rootScope.enrolledCourseIds = apiResponse.result.courses
-	              var firstChild = _.first(_.values(courseDashboard.myCoursesList), 1);
-	              courseDashboard.courseIdentifier = firstChild.courseId;
-	              courseDashboard.courseName = firstChild.courseName;
-	              getCourseDashboardData('7d');
-	            } else {
-	              courseDashboard.showLoader = false;
-	              courseDashboard.showWarningMsg = true;
-	            }
+        // Check list of my courses
+        angular.forEach($rootScope.enrolledCourseIds, function(value, key) {
+          courseDashboard.myCoursesList.push(value);
+        });
 
-	          } else {
-	            // Show error div
-	            courseDashboard.showErrors(apiResponse);
-	          }
-	        }).catch(function(apiResponse) {
-	          // Show error div
-	          courseDashboard.showErrors(apiResponse);
-	        });
-      	}
-     };
+        if (courseDashboard.myCoursesList.length === "0") {
+          // Make api call to get list of my courses
+          learnService.enrolledCourses($rootScope.userId).then(function(apiResponse) {
+            if (apiResponse && apiResponse.responseCode === 'OK') {
+              if (apiResponse.result.courses.length > 0) {
+                courseDashboard.myCoursesList = apiResponse.result.courses;
+                $rootScope.enrolledCourseIds = apiResponse.result.courses;
+                courseDashboard.buildMyCoursesDropdown();
+              } else {
+                courseDashboard.showLoader = false;
+                courseDashboard.showWarningMsg = true;
+              }
+
+            } else {
+              // Show error div
+              courseDashboard.showErrors(apiResponse);
+            }
+          }).catch(function(apiResponse) {
+            // Show error div
+            courseDashboard.showErrors(apiResponse);
+          });
+        } else {
+          courseDashboard.buildMyCoursesDropdown();
+        }
+      };
+
+      courseDashboard.buildMyCoursesDropdown = function() {
+        if (courseDashboard.myCoursesList.length === "1") {
+          var firstChild = _.first(_.values(courseDashboard.myCoursesList), 1);
+          courseDashboard.courseIdentifier = firstChild.courseId;
+          courseDashboard.courseName = firstChild.courseName;
+          getCourseDashboardData('7d');
+        } else {
+          courseDashboard.showLoader = false;
+          //courseDashboard.showError = true;
+          courseDashboard.isMultipleCourses = courseDashboard.myCoursesList.length > 1 ? true : false;
+        }
+      };
 
       /**
        * @function showErrors
@@ -183,10 +193,10 @@ angular.module('playerApp')
           console.log('avoid same apis call twice');
           return false;
         }
-
+        courseDashboard.showLoader = true;
         courseDashboard.courseIdentifier = courseId;
         courseDashboard.courseName = courseName;
-        courseDashboard.showLoader = true;
+        courseDashboard.isMultipleCourses = false;
         getCourseDashboardData();
       }
 
