@@ -1,4 +1,4 @@
-<div ng-controller="courseScheduleCtrl as toc" ng-init="toc.loadData()">
+<div ng-init="toc.loadData()">
     <div ng-include="'views/course/courseHeader.html'"></div>
     <div class="ui grid">
         <div class="one wide column"></div>
@@ -27,8 +27,8 @@
                                             Course Structure
                                         </b>
                                     </div>
-                                    <div id="course-toc{{$index}}" class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100" ng-repeat="item in  toc.courseHierachy.children track by $index" ng-click="toc.expandMe($event, item)">
-                                        <div class="courseAccordianHeading title title-padding-left accordian-left-text" name="{{item.identifier}}">
+                                    <div id="course-toc{{$index}}" class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100"   ng-repeat="item in  toc.courseHierachy.children track by $index" ng-click="toc.expandMe($event, item)" ng-class="{'cursor-pointerText':item.children.length == 0 && item.mimeType == 'application/vnd.ekstep.content-collection'}">
+                                        <div class="courseAccordianHeading title title-padding-left accordian-left-text" ng-class="{'cursor-pointerText':(toc.playContent == false && item.mimeType !== 'application/vnd.ekstep.content-collection')}" name="{{item.identifier}}">
                                             <i ng-class="[toc.contentStatusList[item.identifier],toc.getContentIcon(item.mimeType)]"></i> {{item.name}}
                                             <i ng-if='item.children && item.children.length > 0' class="plus icon down-arrow-accordion"></i>
                                         </div>
@@ -47,10 +47,10 @@
                                                 <div class="header">Your Batch Details</div>
                                                 <div class="description padding-top-10">
                                                     <div class="ui list">
-                                                       <div class="item">
+                                                        <div class="item">
                                                             <div class="header">
                                                                 <span>Name <span class="float-ContentRight batch-card-desc">{{toc.selectedBatchInfo.name | limitTo: 20}}&nbsp;<i ng-show="toc.selectedBatchInfo.name.length >= 20" class="ellipsis horizontal icon popup-button link" data-content="{{toc.selectedBatchInfo.name}}" data-variation="wide"></i></span></span>
-                                                             </div>
+                                                            </div>
                                                         </div>
                                                         <div class="item padding-top-10">
                                                             <div class="header">
