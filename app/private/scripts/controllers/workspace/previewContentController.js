@@ -32,6 +32,8 @@ angular.module('playerApp')
                 status: ['Review', 'Live', 'Flagged'],
                 mimeType: config.MimeTypeExceptCollection
             };
+            previewContent.contentPlayer = { isContentPlayerEnabled: false };
+            previewContent.redirectUrl = $stateParams.backState;
 
             function checkContentAccess(reqData, validateData) {
                 var status = reqData.status;
@@ -66,80 +68,13 @@ angular.module('playerApp')
                     $state.go('Home');
                 }
                 previewContent.contentData = data;
-                previewContent._instance = {
-                    id: previewContent.contentData.identifier,
-                    ver: previewContent.contentData.pkgVersion
-                };
-
-                /**
-                 * @event 'sunbird:portal:telemetryend'
-                 * Listen for this event to get the telemetry OE_END event from renderer
-                 * Player controller dispatching the event subird
-                 */
-                window.addEventListener('renderer:telemetry:event', function (event) {
-                    org.sunbird.portal.eventManager.dispatchEvent('sunbird:player:telemetry',
-                                                                    event.detail.telemetryData);
-                });
-
-                window.onbeforeunload = function () {
-                    playerTelemetryUtilsService.endTelemetry({
-                        progress: previewContent.contentProgress
-                    });
-                };
-                previewContent.showIFrameContent = true;
-                var iFrameSrc = config.ekstep_CP_config.baseURL;
-                $timeout(function () {
-                    var previewContentIframe = $('#contentViewerIframe')[0];
-                    previewContentIframe.src = iFrameSrc;
-                    previewContentIframe.onload = function () {
-                        var playerWidth = $('#contentViewerIframe').width();
-                        if (playerWidth) {
-                            var height = playerWidth * (9 / 16);
-                            $('#contentViewerIframe').css('height', height + 'px');
-                        }
-                        var configuration = {};
-                        configuration.context = config.ekstep_CP_config.context;
-                        configuration.context.contentId = previewContent.contentData.identifier;
-                        configuration.context.sid = $rootScope.sessionId;
-                        configuration.context.uid = $rootScope.userId;
-                        configuration.context.channel = org.sunbird.portal.channel;
-                        if (_.isUndefined($stateParams.courseId)) {
-                            configuration.context.dims = org.sunbird.portal.dims;
-                        } else {
-                            var cloneDims = _.cloneDeep(org.sunbird.portal.dims);
-                            cloneDims.push($stateParams.courseId);
-                            configuration.context.dims = cloneDims;
-                        }
-                        configuration.context.app = [org.sunbird.portal.appid];
-                        configuration.context.partner = [];
-                        configuration.context.cdata = [{
-                            id: $stateParams.courseId,
-                            type: 'course'
-                        }];
-                        configuration.config = config.ekstep_CP_config.config;
-                        configuration.config.plugins = config.ekstep_CP_config.config.plugins;
-                        configuration.config.repos = config.ekstep_CP_config.config.repos;
-                        configuration.metadata = previewContent.contentData;
-                        if (previewContent.contentData.mimeType !== config.MIME_TYPE.ecml) {
-                            configuration.data = {};
-                        }
-                        previewContentIframe.contentWindow.initializePreview(configuration);
-                    };
-                }, 1000);
-            }
-
-            function showLoaderWithMessage(showMetaLoader, messageClass, message, closeButton, tryAgainButton) { //eslint-disable-line
-                var error = {};
-                error.showError = true;
-                error.showMetaLoader = showMetaLoader;
-                error.messageClass = messageClass;
-                error.message = message;
-                error.showCloseButton = closeButton;
-                error.showTryAgainButton = tryAgainButton;
-                previewContent.errorObject = error;
+                previewContent.contentPlayer.contentData = data;
+                previewContent.contentPlayer.isContentPlayerEnabled = true;
             }
 
             function getContent(contentId) {
+                previewContent.loader = toasterService.loader('', previewContent.message
+                                                                        .GET.START);
                 var req = { contentId: contentId };
                 var qs = {
                     fields: 'name,description,appIcon,contentType,mimeType,artifactUrl,' +
@@ -151,30 +86,17 @@ angular.module('playerApp')
                 contentService.getById(req, qs).then(function (response) {
                     if (response && response.responseCode === 'OK') {
                         previewContent.errorObject = {};
+                        previewContent.loader.showLoader = false;
                         showPlayer(response.result.content);
                     } else {
-                        var message = $rootScope.errorMessages.COMMON.UNABLE_TO_PLAY;
-                        showLoaderWithMessage(false, 'red', message, true, true);
+                        previewContent.loader.showLoader = false;
+                        toasterService.error(previewContent.message.GET.FAILED);
                     }
                 }).catch(function () {
-                    var message = $rootScope.errorMessages.COMMON.UNABLE_TO_PLAY;
-                    showLoaderWithMessage(false, 'red', message, true, true);
+                    previewContent.loader.showLoader = false;
+                    toasterService.error(previewContent.message.GET.FAILED);
                 });
             }
-
-            previewContent.closePreview = function () {
-                previewContent.errorObject = {};
-                playerTelemetryUtilsService.endTelemetry({
-                    progress: previewContent.contentProgress
-                });
-                window.removeEventListener('renderer:telemetry:event', function () {});
-                $state.go($stateParams.backState);
-            };
-
-            previewContent.tryAgain = function () {
-                previewContent.errorObject = {};
-                getContent(previewContent.contentId);
-            };
 
             getContent(previewContent.contentId);
 
