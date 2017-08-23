@@ -7,7 +7,7 @@
                     <div class="courseStructureHeaderText courseStructureSectionHeading">{{toc.courseHierachy.name}}</div> <br>
                     <span apply-script class="courseHeader-rating ui star rating course-header-divider" data-rating="{{toc.courseHierachy.me_averageRating |number:0}}" data-max-rating="5"></span>&nbsp;&nbsp;
                     <content-share type=" 'course' " id="toc.courseParams.courseId"></content-share>&nbsp;
-                    <content-flag ng-if="toc.courseType === 'ENROLLED_COURSE'" contentid="toc.courseParams.courseId" contentname="toc.courseHierachy.name" versionkey="toc.courseHierachy.versionKey" redirect=" 'Courses' "></content-flag>
+                    <content-flag type=" 'course' " ng-if="toc.courseType === 'ENROLLED_COURSE'" contentid="toc.courseParams.courseId" contentname="toc.courseHierachy.name" versionkey="toc.courseHierachy.versionKey" redirect=" 'Courses' "></content-flag>
                     <h6 class="ui small negative message" ng-if="toc.courseHierachy.status === 'Flagged'">{{$root.errorMessages.Courses.TOC.Flagged_COURSE}}</h6>
                 </div>
                 <div class="four wide column margin-top-Negative30" ng-if="toc.courseType === 'ENROLLED_COURSE' && !toc.isCourseAdmin">
