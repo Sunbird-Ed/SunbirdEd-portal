@@ -54,6 +54,7 @@ angular.module('playerApp')
                         } else {
                             var cloneDims = _.cloneDeep(org.sunbird.portal.dims);
                             cloneDims.push($stateParams.courseId);
+                            cloneDims.push($rootScope.batchHashTagId);
                             configuration.context.dims = cloneDims;
                         }
                         configuration.context.app = [org.sunbird.portal.appid];
