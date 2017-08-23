@@ -33,8 +33,10 @@ angular.module('playerApp')
                     $('#contentPlayer').css('width', scope.width + 'px');
                 }
 
-                scope.$watch('body', function () {
+                scope.$watch('body', function (newValue, oldValue) {
+                    if(newValue.identifier && newValue.identifier!=oldValue.identifier){
                     scope.updateContent(scope);
+                }
                 });
                 scope.$watch('id', function () {
                     scope.updateContent(scope);
