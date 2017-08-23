@@ -72,7 +72,13 @@ angular.module('playerApp')
                 })
 
                 data.push(dataArray);
-                var options = dashboardService.getChartOptions(bucketData.name);
+                if (bucketData.time_unit != undefined) {
+                  var name = bucketData.name + ' (' + bucketData.time_unit + ')';
+                } else {
+                  var name = bucketData.name;
+                }
+
+                var options = dashboardService.getChartOptions(name);
                 var colors = dashboardService.getChartColors('consumption');
                 var series = [bucketData.name];
 
