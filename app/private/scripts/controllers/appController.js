@@ -210,14 +210,6 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
                 $('.course-progress').progress();
             }, 100);
         };
-        $scope.getTenantLogo = function () {
-            userService.getTenantLogo().then(function (res) {
-                if (res && res.logo !== '') {
-                    $rootScope.orgLogo = res.logo;
-                }
-            });
-        };
-        $scope.getTenantLogo();
 
         $rootScope.getConcept = function (offset, limit, callback) {
             var req = {
