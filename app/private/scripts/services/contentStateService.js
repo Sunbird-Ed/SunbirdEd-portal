@@ -67,7 +67,7 @@ angular.module('playerApp')
             // Listen to the Events
 
             self.updateContentState = function (e, data) {
-                if (data && (data.eid === 'OE_START' || data.eid === 'OE_END')) {
+                if (data && (data.eid === 'OE_START' || data.eid === 'OE_END') && dataService.getData('isTrackingEnabled') == true) {
                     var content = self.prepareContentObject(data);
                     var prevContentStatus = -1;
                     // local updated
@@ -98,7 +98,7 @@ angular.module('playerApp')
                     };
                     console.log('called flush');
                     // dont check response for now
-                    if (prevContentStatus < content.status && dataService.getData('contentStateInit') == true) {
+                    if (prevContentStatus < content.status) {
                         self.updateContentStateInServer(req).then(function (res) {});
                     }
                 }
