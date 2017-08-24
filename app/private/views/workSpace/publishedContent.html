@@ -12,7 +12,7 @@
             <a class="mouse-pointer" ng-click="publishedContent.applyAction()">{{$root.labels.WORKSPACE.common.apply}}</a>
         </div>
     </div>
-    <div class="eight wide column right-floated padding-bottom-15 " ng-if="!publishedContent.loader.showLoader && publishedContent.publishedContentData.length > 0">
+    <div class="eight wide column right-floated padding-bottom-15 " ng-if="!publishedContent.loader.showLoader && publishedContent.totalCount > publishedContent.pageLimit">
         <div ng-init="pegination = publishedContent" ng-include=" 'views/common/pagination.html' "></div>
     </div>
     <div class="twelve wide column ">
