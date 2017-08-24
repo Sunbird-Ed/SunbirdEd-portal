@@ -510,6 +510,7 @@ angular.module('playerApp')
             };
 
             toc.batchCardShow = true;
+            toc.batchDetailsShow = false;
             toc.showBatchCardList = function () {
                 var enroledCourses = $rootScope.enrolledCourses;
                 var isEnroled = _.find($rootScope.enrolledCourses, function (o) {
@@ -518,7 +519,8 @@ angular.module('playerApp')
                 if (!_.isUndefined(isEnroled)) {
                     toc.batchCardShow = false;
                     batchService.getBatchDetails({ batchId: isEnroled.batchId }).then(function (response) {
-                        if (response && response.responseCode === 'OK') {
+                        if (response && response.responseCode === 'OK' && !_.isEmpty(response.result.response)) {
+                            toc.batchDetailsShow = true;
                             toc.selectedBatchInfo = response.result.response;
                             $rootScope.batchHashTagId = response.result.response.hashtagid;
                             toc.selectedParticipants = _.isUndefined(toc.selectedBatchInfo.participant) ? 0 : _.keys(toc.selectedBatchInfo.participant).length;
@@ -531,8 +533,6 @@ angular.module('playerApp')
                                     dataService.setData('isTrackingEnabled', true);
                                 }
                             }
-                        } else {
-                            toasterService.error($rootScope.errorMessages.BATCH.GET.FAILED);
                         }
                     }).catch(function () {
                         toasterService.error($rootScope.errorMessages.BATCH.GET.FAILED);
