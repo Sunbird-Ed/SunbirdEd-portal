@@ -828,6 +828,12 @@ div:focus {
   width: calc(33.33333333% - 3.3em) !important;
   margin-right: 0.2em !important;
 }
+/* rating card */
+.fixedRatingCard {
+  max-height: 2.8em;
+  overflow: hidden;
+  height: 2.8em;
+}
 .content-input {
   display: none;
 }
