@@ -16,7 +16,7 @@ angular.module('playerApp')
             flaggedContent.userId = $rootScope.userId;
             flaggedContent.contentStatus = ['Flagged'];
             flaggedContent.sortBy = 'desc';
-            flaggedContent.pageLimit = 10;
+            flaggedContent.pageLimit = 9;
             flaggedContent.pager = {};
 
             flaggedContent.getAllFlaggedContent = function (pageNumber) {
@@ -45,6 +45,7 @@ angular.module('playerApp')
                             res.result.content.filter(function (contentData) {
                                 return contentData.createdBy !== flaggedContent.userId;
                             });
+                            flaggedContent.totalCount = res.result.count;
                             flaggedContent.pager = PaginationService.GetPager(res.result.count,
                                 pageNumber, flaggedContent.pageLimit);
                         }
