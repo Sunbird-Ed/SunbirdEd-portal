@@ -23,7 +23,7 @@ angular.module('playerApp')
             $scope.isSelected = false;
             allUploadedContent.selectedContentItem = [];
             allUploadedContent.message = $rootScope.errorMessages.WORKSPACE;
-            allUploadedContent.pageLimit = 10;
+            allUploadedContent.pageLimit = 9;
             allUploadedContent.pager = {};
 
             allUploadedContent.getAllUploadedContent = function (pageNumber) {
