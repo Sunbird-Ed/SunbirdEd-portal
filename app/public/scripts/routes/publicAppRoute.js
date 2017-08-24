@@ -62,4 +62,16 @@ angular.module('loginApp')
               name: null
           }
       });
+  })
+  .run(function ($urlRouter, $http, $state, $rootScope, toasterService) {
+      $http.get('/v1/tenant/info').then(function (res) {
+          if (res && res.statusText === 'OK') {
+              $rootScope.orgLogo = res.data.result.logo;
+              $rootScope.faviconIcon = res.data.result.favicon;
+          } else {
+              toasterService.error($rootScope.errorMessages.TENANT.GET_INFO.FAILED);
+          }
+      }).catch(function () {
+          toasterService.error($rootScope.errorMessages.TENANT.GET_INFO.FAILED);
+      });
   });
