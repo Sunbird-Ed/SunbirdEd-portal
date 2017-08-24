@@ -11,7 +11,8 @@
 
 angular.module('playerApp')
   .controller('BatchListController', ['$rootScope', 'toasterService', 'batchService', '$state',
-      'userService', function ($rootScope, toasterService, batchService, $state, userService) {
+      'userService', 'PaginationService', function ($rootScope, toasterService, batchService,
+         $state, userService, PaginationService) {
           var batch = this;
           batch.userId = $rootScope.userId;
           batch.list = [];
@@ -22,8 +23,11 @@ angular.module('playerApp')
             { name: 'Previous Batches', value: 2 }
           ];
           $('#batchStatusOptions').dropdown();
+          batch.pageLimit = 9;
+          batch.pager = {};
 
-          batch.listBatches = function () {
+          batch.listBatches = function (pageNumber) {
+              pageNumber = pageNumber || 1;
               var req = {
                   request: {
                       filters: {
@@ -31,9 +35,9 @@ angular.module('playerApp')
                           createdFor: $rootScope.organisationIds,
                           createdBy: batch.userId
                       },
-                      sort_by: { createdDate: 'desc' }
-                    // offset: 0,
-                    // limit: 30
+                      sort_by: { createdDate: 'desc' },
+                      offset: (pageNumber - 1) * batch.pageLimit,
+                      limit: batch.pageLimit
                   }
               };
 
@@ -57,7 +61,7 @@ angular.module('playerApp')
                       batchService.getUserList(req).then(function (res) {
                           if (res && res.responseCode === 'OK') {
                               _.forEach(res.result.response.content, function (val) {
-                                  batch.userNames[val.userId] = val.firstName + ' ' + val.lastName;
+                                  batch.userNames[val.identifier] = val.firstName + ' ' + val.lastName;
                               });
                           } else {
                               toasterService.error(errorMessages.BATCH.GET_USERS.FAILED);
@@ -66,6 +70,9 @@ angular.module('playerApp')
                           toasterService.error(errorMessages.BATCH.GET_USERS.FAILED);
                       });
                       batch.batchList = response.result.response.content || [];
+                      batch.totalCount = response.result.response.count;
+                      batch.pager = PaginationService.GetPager(response.result.response.count,
+                        pageNumber, batch.pageLimit);
                   } else {
                       toasterService.error(errorMessages.BATCH.SEARCH.FAILED);
                   }
@@ -79,6 +86,13 @@ angular.module('playerApp')
           batch.showUpdateBatchModal = function (batchData) {
               batchService.setBatchData(batchData);
               $state.go('updateBatch', { batchId: batchData.identifier });
+          };
+
+          batch.setPage = function (page) {
+              if (page < 1 || page > batch.pager.totalPages) {
+                  return;
+              }
+              batch.listBatches(page);
           };
       }
   ]);
