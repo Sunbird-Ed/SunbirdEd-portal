@@ -1,5 +1,5 @@
 <div class="ui grid">
-    <div class="twelve wide column" ng-if="!draftContent.loader.showLoader && draftContent.draftContentData.length > 0">
+    <div class="four wide column padding-top-30" ng-if="!draftContent.loader.showLoader && draftContent.draftContentData.length > 0">
         <div class="content" ng-init="draftContent.initializeUIElement()">
             {{$root.labels.WORKSPACE.common.action}}:&nbsp;
             <div class="ui inline dropdown" id="actionDropDown" name="global">
@@ -11,6 +11,9 @@
             </div>&nbsp;
             <a class="mouse-pointer" ng-click="draftContent.applyAction()">{{$root.labels.WORKSPACE.common.apply}}</a>
         </div>
+    </div>
+    <div class="eight wide column right-floated padding-bottom-15 " ng-if="!draftContent.loader.showLoader && draftContent.totalCount > draftContent.pageLimit">
+        <div ng-init="pegination = draftContent" ng-include=" 'views/common/pagination.html' "></div>
     </div>
     <div class="twelve wide column">
         <div ng-init="draftContent.getDraftContent()">
@@ -27,7 +30,7 @@
                             </div>
                             <div class="cardImageText center aligned mouse-pointer " ng-click="draftContent.openContentEditor(item) ">
                                 <span class="sliderCardHeading text-cencapitalize ">
-                            {{ item.name | limitTo: 15 }}&nbsp;<i ng-show="item.name.length>= 15" class="ellipsis horizontal icon popup-button link" data-content="{{item.name}}" data-variation="wide"></i>
+                                    {{ item.name | limitTo: 15 }}&nbsp;<i ng-show="item.name.length>= 15" class="ellipsis horizontal icon popup-button link" data-content="{{item.name}}" data-variation="wide"></i>
                                 </span>
                             </div>
                         </div>
