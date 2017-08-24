@@ -1,12 +1,12 @@
 <!doctype html>
-<html ng-app="loginApp">
+<html>
 
 <head>
     <meta charset="utf-8">
     <title>Sunbird</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link ng-if="{{faviconIcon}}" rel="icon" type="image/ico" href="{{faviconIcon || '/images/favicon.ico'}}">
+    <link rel="icon" type="image/ico" href="./images/favicon.ico">
     <link rel="stylesheet" href="/styles/main.css">
     <link rel="stylesheet" href="/thirdparty/semantic/styles/semantic.min.css">
     <link rel="stylesheet" href="/thirdparty/bower_components/semantic-ui-calendar/dist/calendar.min.css" />
@@ -14,7 +14,7 @@
     <base href="/">
 </head>
 
-<body ng-controller="loginCtrl">
+<body ng-app="loginApp" ng-controller="loginCtrl">
     <div ng-include="'views/header/publicHeader.html'"></div>
     <div class="ui top attached fluid container">
         <div class="ui padded grid">
