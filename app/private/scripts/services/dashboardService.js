@@ -52,12 +52,7 @@ angular.module('playerApp')
         legend: { display: true },
         scales: {
           xAxes: [{
-            gridLines: { display: false },
-            ticks: {
-              autoSkip: true,
-              maxRotation: 30,
-              minRotation: 30
-            }
+            gridLines: { display: false }
           }],
           yAxes: [{
             scaleLabel: { display: true, labelString: labelString }
