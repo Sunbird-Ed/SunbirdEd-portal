@@ -18,7 +18,7 @@ angular.module('playerApp')
             $scope.contentPlayer = { isContentPlayerEnabled: false };
             reviewContent.status = ['Review'];
             reviewContent.sortBy = 'desc';
-            reviewContent.pageLimit = 10;
+            reviewContent.pageLimit = 9;
             reviewContent.pager = {};
 
             reviewContent.getReviewContent = function (pageNumber) {
@@ -41,6 +41,7 @@ angular.module('playerApp')
                     if (res && res.responseCode === 'OK') {
                         reviewContent.loader.showLoader = false;
                         reviewContent.reviewContentData = res.result.content || [];
+                        reviewContent.totalCount = res.result.count;
                         reviewContent.pager = PaginationService.GetPager(res.result.count,
                             pageNumber, reviewContent.pageLimit);
                     } else {

@@ -1,5 +1,5 @@
 <div class="ui grid">
-    <div class="twelve wide column right-floated padding-bottom-15" ng-if="!reviewContent.loader.showLoader && reviewContent.reviewContentData.length > 0">
+    <div class="twelve wide column right-floated padding-bottom-15" ng-if="!reviewContent.loader.showLoader && reviewContent.totalCount > reviewContent.pageLimit">
         <div ng-init="pegination = reviewContent" ng-include=" 'views/common/pagination.html' "></div>
     </div>
     <div class="twelve wide column ">
@@ -14,8 +14,8 @@
                             </div>
                             <div class="cardImageText center aligned ">
                                 <span class="sliderCardHeading text-cencapitalize">
-                            {{ item.name | limitTo: 15 }}&nbsp;<i ng-show="item.name.length >= 15" class="ellipsis horizontal icon popup-button link" data-content="{{item.name}}" data-variation="wide"></i>
-                        </span>
+                                    {{ item.name | limitTo: 15 }}&nbsp;<i ng-show="item.name.length >= 15" class="ellipsis horizontal icon popup-button link" data-content="{{item.name}}" data-variation="wide"></i>
+                                </span>
                             </div>
                         </div>
                         <div class="sliderCards content">
