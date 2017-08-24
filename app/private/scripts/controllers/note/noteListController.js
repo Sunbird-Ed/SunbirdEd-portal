@@ -29,7 +29,7 @@ angular.module('playerApp')
             function searchNote(request) {
                 var api = 'searchApi';
                 noteList[api] = {};
-                noteList[api].loader = toasterService.loader(api, '', noteList.messages.SEARCH
+                noteList[api].loader = toasterService.loader('', noteList.messages.SEARCH
                                                     .START);
                 noteService.search(request).then(function (response) {
                     if (response && response.responseCode === noteList.successResponseCode) {
@@ -63,7 +63,7 @@ angular.module('playerApp')
             noteList.createNote = function (noteData) {
                 var api = 'createApi';
                 noteList[api] = {};
-                noteList[api].loader = toasterService.loader(api, '', noteList.messages.CREATE
+                noteList[api].loader = toasterService.loader('', noteList.messages.CREATE
                                                     .START);
 
                 var requestData = {
@@ -96,7 +96,7 @@ angular.module('playerApp')
             noteList.removeNote = function (noteId) {
                 var api = 'removeApi';
                 noteList[api] = {};
-                noteList[api].loader = toasterService.loader(api, '', noteList.messages.REMOVE
+                noteList[api].loader = toasterService.loader('', noteList.messages.REMOVE
                                                     .START);
                 var requestData = {
                     noteId: noteId
@@ -147,7 +147,7 @@ angular.module('playerApp')
 
                 var api = 'updateApi';
                 noteList[api] = {};
-                noteList[api].loader = toasterService.loader(api, '', noteList.messages.UPDATE
+                noteList[api].loader = toasterService.loader('', noteList.messages.UPDATE
                                                     .START);
 
                 noteService.update(requestData).then(function (response) {
