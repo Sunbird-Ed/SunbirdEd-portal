@@ -61,7 +61,7 @@ angular.module('playerApp')
                       batchService.getUserList(req).then(function (res) {
                           if (res && res.responseCode === 'OK') {
                               _.forEach(res.result.response.content, function (val) {
-                                  batch.userNames[val.userId] = val.firstName + ' ' + val.lastName;
+                                  batch.userNames[val.identifier] = val.firstName + ' ' + val.lastName;
                               });
                           } else {
                               toasterService.error(errorMessages.BATCH.GET_USERS.FAILED);
