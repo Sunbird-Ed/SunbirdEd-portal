@@ -23,21 +23,8 @@ angular.module('loginApp')
               delete $window.localStorage.redirectUrl;
           }
       })
-      .state('Public', {
-          url: '/public/:hashId',
-          views: {
-              mainView: {
-                  controller: function ($location, $stateParams) {
-                      $location.path('public/' + $stateParams.hashId);
-                  }
-              }
-          },
-          params: {
-              hashId: null
-          }
-      })
       .state('PublicContent', {
-          url: '/public/content/:id',
+          url: '/content/:id',
           views: {
               mainView: {
                   templateUrl: '/views/content/content.html',
@@ -51,7 +38,7 @@ angular.module('loginApp')
           }
       })
       .state('PublicCourse', {
-          url: '/public/course/:courseId',
+          url: '/course/:courseId',
           views: {
               mainView: {
                   templateUrl: '/views/course/toc.html'
