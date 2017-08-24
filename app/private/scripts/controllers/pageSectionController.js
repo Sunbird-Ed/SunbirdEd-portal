@@ -45,6 +45,9 @@ angular.module('playerApp')
               if ($rootScope.search === undefined) {
                   $rootScope.search = {};
               }
+              if ($rootScope.search && $rootScope.search.sortBy) {
+                 delete $rootScope.search.sortBy.null;
+             }
               var request = {
                   request: {
                       source: 'web',
