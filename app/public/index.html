@@ -1,12 +1,12 @@
 <!doctype html>
-<html>
+<html ng-app="loginApp">
 
 <head>
     <meta charset="utf-8">
     <title>Sunbird</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="icon" type="image/ico" href="./images/favicon.ico">
+    <link ng-if="{{faviconIcon}}" rel="icon" type="image/ico" href="{{faviconIcon || '/images/favicon.ico'}}">
     <link rel="stylesheet" href="/styles/main.css">
     <link rel="stylesheet" href="/thirdparty/semantic/styles/semantic.min.css">
     <link rel="stylesheet" href="/thirdparty/bower_components/semantic-ui-calendar/dist/calendar.min.css" />
@@ -14,7 +14,7 @@
     <base href="/">
 </head>
 
-<body ng-app="loginApp" ng-controller="loginCtrl">
+<body ng-controller="loginCtrl">
     <div ng-include="'views/header/publicHeader.html'"></div>
     <div class="ui top attached fluid container">
         <div class="ui padded grid">
@@ -31,7 +31,7 @@
     <script src="./private/scripts/utils/util.js"></script>
 
     <script src="./private/scripts/managers/eventManager.js"></script>
-    <script src="/scripts/org.js"></script>
+    <script src="/public/scripts/org.js"></script>
     <!-- Telemetry service -->
     <script src="/scripts/telemetry/TelemetryEvent.js"></script>
     <script src="/scripts/telemetry/TelemetryService.js"></script>
@@ -56,31 +56,31 @@
     <script src="/thirdparty/bower_components/jquery.fancytree/dist/jquery.fancytree.min.js"></script>
     <script src="/thirdparty/jquery.fancytree/dist/jquery.fancytree.min.js"></script>
 
-    <script src="scripts/application.js"></script>
-    <script src="scripts/routes/publicAppRoute.js"></script>
+    <script src="/public/scripts/application.js"></script>
+    <script src="/public/scripts/routes/publicAppRoute.js"></script>
 
-    <script src="scripts/publicLabels.js"></script>
-    <script src="scripts/publicErrorMessages.js"></script>
-    <script src="scripts/publicAppConfig.js"></script>
+    <script src="/public/scripts/publicLabels.js"></script>
+    <script src="/public/scripts/publicErrorMessages.js"></script>
+    <script src="/public/scripts/publicAppConfig.js"></script>
 
-    <script src="scripts/service/httpService.js"></script>
-    <script src="scripts/service/signUpService.js"></script>
-    <script src="scripts/service/toasterService.js"></script>
-    <script src="scripts/service/publicPlayerTelemetryUtilsService.js"></script>
-    <script src="scripts/service/contentService.js"></script>
+    <script src="/public/scripts/service/httpService.js"></script>
+    <script src="/public/scripts/service/signUpService.js"></script>
+    <script src="/public/scripts/service/toasterService.js"></script>
+    <script src="/public/scripts/service/publicPlayerTelemetryUtilsService.js"></script>
+    <script src="/public/scripts/service/contentService.js"></script>
 
-    <script src="scripts/directive/error.js"></script>
-    <script src="scripts/directive/loader.js"></script>
-    <script src="scripts/directive/courseDiscussions.js"></script>
-    <script src="scripts/directive/applyScript.js"></script>
-    <script src="scripts/directive/publicContentPlayer.js"></script>
+    <script src="/public/scripts/directive/error.js"></script>
+    <script src="/public/scripts/directive/loader.js"></script>
+    <script src="/public/scripts/directive/courseDiscussions.js"></script>
+    <script src="/public/scripts/directive/applyScript.js"></script>
+    <script src="/public/scripts/directive/publicContentPlayer.js"></script>
 
-    <script src="scripts/controllers/signUpController.js"></script>
-    <script src="scripts/controllers/publicContentPlayerController.js"></script>
-    <script src="scripts/controllers/courseScheduleController.js"></script>
-    <script src="scripts/controllers/collectionPlayerController.js"></script>
+    <script src="/public/scripts/controllers/signUpController.js"></script>
+    <script src="/public/scripts/controllers/publicContentPlayerController.js"></script>
+    <script src="/public/scripts/controllers/courseScheduleController.js"></script>
+    <script src="/public/scripts/controllers/collectionPlayerController.js"></script>
 
-    <script src="scripts/filters/dateFilter.js"></script>
+    <script src="/public/scripts/filters/dateFilter.js"></script>
 
 
 

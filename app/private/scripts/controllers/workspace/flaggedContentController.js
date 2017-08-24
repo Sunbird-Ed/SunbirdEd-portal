@@ -10,14 +10,17 @@
  */
 angular.module('playerApp')
     .controller('FlaggedContentController', ['contentService', 'searchService', 'config',
-        '$rootScope', '$state', 'toasterService', function (contentService, searchService, config,
-            $rootScope, $state, toasterService) {
+        '$rootScope', '$state', 'toasterService', 'PaginationService', function (contentService,
+            searchService, config, $rootScope, $state, toasterService, PaginationService) {
             var flaggedContent = this;
             flaggedContent.userId = $rootScope.userId;
             flaggedContent.contentStatus = ['Flagged'];
             flaggedContent.sortBy = 'desc';
+            flaggedContent.pageLimit = 9;
+            flaggedContent.pager = {};
 
-            flaggedContent.getAllFlaggedContent = function () {
+            flaggedContent.getAllFlaggedContent = function (pageNumber) {
+                pageNumber = pageNumber || 1;
                 flaggedContent.loader = toasterService.loader('', $rootScope.errorMessages
                                                             .WORKSPACE.FLAGGED.START);
 
@@ -28,7 +31,9 @@ angular.module('playerApp')
                     },
                     sort_by: {
                         lastUpdatedOn: flaggedContent.sortBy
-                    }
+                    },
+                    offset: (pageNumber - 1) * flaggedContent.pageLimit,
+                    limit: flaggedContent.pageLimit
                 };
 
                 searchService.search(request).then(function (res) {
@@ -40,6 +45,9 @@ angular.module('playerApp')
                             res.result.content.filter(function (contentData) {
                                 return contentData.createdBy !== flaggedContent.userId;
                             });
+                            flaggedContent.totalCount = res.result.count;
+                            flaggedContent.pager = PaginationService.GetPager(res.result.count,
+                                pageNumber, flaggedContent.pageLimit);
                         }
                         flaggedContent.flaggedContentData = res.result.content || [];
                     } else {
@@ -67,5 +75,12 @@ angular.module('playerApp')
                     };
                     $state.go('PreviewContent', params);
                 }
+            };
+
+            flaggedContent.setPage = function (page) {
+                if (page < 1 || page > flaggedContent.pager.totalPages) {
+                    return;
+                }
+                flaggedContent.getAllFlaggedContent(page);
             };
         }]);

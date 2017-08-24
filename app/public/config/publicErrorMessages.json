@@ -38,6 +38,11 @@
                 "START": "Fetching data for you....",
                 "FAILED": "Unable to load data."
             }
+        },
+        "TENANT": {
+            "GET_INFO": {
+                "FAILED": "Fetching tenant details failed, please try again later..."
+            }
         }
     }
 }
