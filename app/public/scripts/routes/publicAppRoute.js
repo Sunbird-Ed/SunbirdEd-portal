@@ -69,9 +69,9 @@ angular.module('loginApp')
               $rootScope.orgLogo = res.data.result.logo;
               $rootScope.faviconIcon = res.data.result.favicon;
           } else {
-              toasterService.error($rootScope.errorMessages.TENANT.GET_INFO.FAILED);
+            //   toasterService.error($rootScope.errorMessages.TENANT.GET_INFO.FAILED);
           }
       }).catch(function () {
-          toasterService.error($rootScope.errorMessages.TENANT.GET_INFO.FAILED);
+        //   toasterService.error($rootScope.errorMessages.TENANT.GET_INFO.FAILED);
       });
   });
