@@ -19,7 +19,7 @@ angular.module('playerApp')
             upForReviewContent.channelId = 'sunbird';
             upForReviewContent.sortBy = 'desc';
             $scope.contentPlayer = { isContentPlayerEnabled: false };
-            upForReviewContent.pageLimit = 10;
+            upForReviewContent.pageLimit = 9;
             upForReviewContent.pager = {};
 
             upForReviewContent.getUpForReviewContent = function (pageNumber) {
@@ -46,6 +46,7 @@ angular.module('playerApp')
                             res.result.content.filter(function (contentData) {
                                 return contentData.createdBy !== upForReviewContent.userId;
                             });
+                            upForReviewContent.totalCount = res.result.count;
                             upForReviewContent.pager = PaginationService.GetPager(res.result.count,
                                                          pageNumber, upForReviewContent.pageLimit);
                         }

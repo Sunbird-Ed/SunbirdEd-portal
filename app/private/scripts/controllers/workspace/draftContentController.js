@@ -25,7 +25,7 @@ angular.module('playerApp')
             $scope.isSelected = false;
             draftContent.selectedContentItem = [];
             draftContent.message = $rootScope.errorMessages.WORKSPACE;
-            draftContent.pageLimit = 10;
+            draftContent.pageLimit = 9;
             draftContent.pager = {};
 
             draftContent.getDraftContent = function (pageNumber) {
