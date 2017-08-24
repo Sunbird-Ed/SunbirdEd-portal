@@ -168,6 +168,7 @@ app.get('/get/envData', keycloak.protect(), function(req, res) {
 });
 
 //tenant Api's
+app.get('/v1/tenant/info', tenantHelper.getInfo);
 app.get('/v1/tenant/info/:tenantId', tenantHelper.getInfo);
 
 
