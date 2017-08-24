@@ -11,8 +11,8 @@
 angular.module('playerApp')
     .controller('PublishedContentController', ['contentService', 'searchService', 'config',
         '$rootScope', '$state', 'toasterService', '$scope', 'workSpaceUtilsService',
-        function (contentService, searchService, config, $rootScope, $state,
-            toasterService, $scope, workSpaceUtilsService) {
+        'PaginationService', function (contentService, searchService, config, $rootScope, $state,
+            toasterService, $scope, workSpaceUtilsService, PaginationService) {
             var publishedContent = this;
             publishedContent.userId = $rootScope.userId;
             publishedContent.status = ['Live'];
@@ -20,8 +20,11 @@ angular.module('playerApp')
             $scope.isSelected = false;
             publishedContent.selectedContentItem = [];
             publishedContent.message = $rootScope.errorMessages.WORKSPACE;
+            publishedContent.pageLimit = 10;
+            publishedContent.pager = {};
 
-            publishedContent.getPublishedContent = function () {
+            publishedContent.getPublishedContent = function (pageNumber) {
+                pageNumber = pageNumber || 1;
                 publishedContent.loader = toasterService.loader('', publishedContent.message
                                                         .PUBLISHED.START);
                 var request = {
@@ -31,13 +34,19 @@ angular.module('playerApp')
                     },
                     sort_by: {
                         lastUpdatedOn: publishedContent.sortBy
-                    }
+                    },
+                    offset: (pageNumber - 1) * publishedContent.pageLimit,
+                    limit: publishedContent.pageLimit
                 };
 
                 searchService.search(request).then(function (res) {
                     if (res && res.responseCode === 'OK') {
                         publishedContent.loader.showLoader = false;
+                        publishedContent.pager = PaginationService.GetPager(res.result.count,
+                                                            pageNumber, publishedContent.pageLimit);
                         publishedContent.publishedContentData = res.result.content || [];
+                        publishedContent.totalCount = res.result.count;
+                        publishedContent.pageNumber = pageNumber;
                     } else {
                         publishedContent.loader.showLoader = false;
                         toasterService.error(publishedContent.message.PUBLISHED.FAILED);
@@ -114,6 +123,9 @@ angular.module('playerApp')
                         toasterService.success(publishedContent.message.RETIRE_CONTENT.SUCCESS);
                         publishedContent.publishedContentData = workSpaceUtilsService
                         .removeContentLocal(publishedContent.publishedContentData, requestData);
+                        publishedContent.pager = PaginationService
+                        .GetPager(publishedContent.totalCount - requestData.length,
+                            publishedContent.pageNumber, publishedContent.pageLimit);
                     } else {
                         publishedContent.loader.showLoader = false;
                         publishedContent.handleFailedResponse(res, requestData);
@@ -136,5 +148,14 @@ angular.module('playerApp')
                     publishedContent.selectedContentItem, deletedContentIds);
                 toasterService.error(length + ' ' + publishedContent.message.RETIRE_CONTENT
                                                                                 .NOT_DELETE);
+                publishedContent.pager = PaginationService.GetPager(publishedContent.totalCount - length,
+                                publishedContent.pageNumber, publishedContent.pageLimit);
+            };
+
+            publishedContent.setPage = function (page) {
+                if (page < 1 || page > publishedContent.pager.totalPages) {
+                    return;
+                }
+                publishedContent.getPublishedContent(page);
             };
         }]);

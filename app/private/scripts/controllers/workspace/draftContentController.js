@@ -12,8 +12,8 @@
 angular.module('playerApp')
     .controller('DraftContentController', ['contentService', 'searchService', 'config',
         '$rootScope', '$state', 'toasterService', '$scope', 'workSpaceUtilsService',
-        function (contentService, searchService, config, $rootScope, $state,
-        toasterService, $scope, workSpaceUtilsService) {
+        'PaginationService', function (contentService, searchService, config, $rootScope, $state,
+        toasterService, $scope, workSpaceUtilsService, PaginationService) {
             var draftContent = this;
             draftContent.userId = $rootScope.userId;
             draftContent.status = ['Draft'];
@@ -25,8 +25,11 @@ angular.module('playerApp')
             $scope.isSelected = false;
             draftContent.selectedContentItem = [];
             draftContent.message = $rootScope.errorMessages.WORKSPACE;
+            draftContent.pageLimit = 10;
+            draftContent.pager = {};
 
-            draftContent.getDraftContent = function () {
+            draftContent.getDraftContent = function (pageNumber) {
+                pageNumber = pageNumber || 1;
                 draftContent.loader = toasterService.loader('', draftContent.message.DRAFT.START);
 
                 var request = {
@@ -37,13 +40,19 @@ angular.module('playerApp')
                     },
                     sort_by: {
                         lastUpdatedOn: draftContent.sortBy
-                    }
+                    },
+                    offset: (pageNumber - 1) * draftContent.pageLimit,
+                    limit: draftContent.pageLimit
                 };
 
                 searchService.search(request).then(function (res) {
                     if (res && res.responseCode === 'OK') {
                         draftContent.loader.showLoader = false;
+                        draftContent.totalCount = res.result.count;
+                        draftContent.pageNumber = pageNumber;
                         draftContent.draftContentData = res.result.content || [];
+                        draftContent.pager = PaginationService.GetPager(res.result.count,
+                            pageNumber, draftContent.pageLimit);
                     } else {
                         draftContent.loader.showLoader = false;
                         toasterService.error(draftContent.message.DRAFT.FAILED);
@@ -116,6 +125,9 @@ angular.module('playerApp')
                         toasterService.success(draftContent.message.RETIRE_CONTENT.SUCCESS);
                         draftContent.draftContentData = workSpaceUtilsService
                         .removeContentLocal(draftContent.draftContentData, requestData);
+                        draftContent.pager = PaginationService
+                        .GetPager(draftContent.totalCount - requestData.length,
+                            draftContent.pageNumber, draftContent.pageLimit);
                     } else {
                         draftContent.loader.showLoader = false;
                         draftContent.handleFailedResponse(res, requestData);
@@ -138,5 +150,14 @@ angular.module('playerApp')
                         .removeContentLocal(draftContent.selectedContentItem, deletedContentIds);
                 toasterService.error(length + ' ' + draftContent.message.RETIRE_CONTENT
                                                                                     .NOT_DELETE);
+                draftContent.pager = PaginationService.GetPager(draftContent.totalCount - length,
+                                    draftContent.pageNumber, draftContent.pageLimit);
+            };
+
+            draftContent.setPage = function (page) {
+                if (page < 1 || page > draftContent.pager.totalPages) {
+                    return;
+                }
+                draftContent.getDraftContent(page);
             };
         }]);
