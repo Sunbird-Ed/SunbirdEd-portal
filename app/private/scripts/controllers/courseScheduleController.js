@@ -507,7 +507,7 @@ angular.module('playerApp')
                 var isEnroled = _.find($rootScope.enrolledCourses, function (o) {
                     return o.courseId === toc.courseId;
                 });
-                if (!_.isUndefined(isEnroled) && !_.isUndefined(isEnroled.batchId)) {
+                if (!_.isUndefined(isEnroled)) {
                     toc.batchCardShow = false;
                     batchService.getBatchDetails({ batchId: isEnroled.batchId }).then(function (response) {
                         if (response && response.responseCode === 'OK' && !_.isEmpty(response.result.response)) {
