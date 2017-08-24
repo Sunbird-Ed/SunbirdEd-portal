@@ -45,11 +45,10 @@ angular.module('playerApp')
                             res.result.content.filter(function (contentData) {
                                 return contentData.createdBy !== flaggedContent.userId;
                             });
-                            flaggedContent.totalCount = res.result.count;
-                            flaggedContent.pager = PaginationService.GetPager(res.result.count,
-                                pageNumber, flaggedContent.pageLimit);
                         }
-                        flaggedContent.flaggedContentData = res.result.content || [];
+                        flaggedContent.totalCount = res.result.count;
+                        flaggedContent.pager = PaginationService.GetPager(res.result.count,
+                            pageNumber, flaggedContent.pageLimit);
                     } else {
                         flaggedContent.loader.showLoader = false;
                         toasterService.error($rootScope.errorMessages.WORKSPACE.FLAGGED
