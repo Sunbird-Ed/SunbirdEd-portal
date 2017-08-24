@@ -16,7 +16,7 @@ angular.module('playerApp')
             contentShare.showContentShareModal = false;
             contentShare.id = $scope.id;
             contentShare.type = $scope.type;
-            contentShare.baseUrl = new $window.URL($location.absUrl()).origin + '/#!/public/';
+            contentShare.baseUrl = new $window.URL($location.absUrl()).origin + '/public/#!/';
             var link = contentShare.baseUrl + contentShare.type + '/' + contentShare.id;
             contentShare.link = link;
 
