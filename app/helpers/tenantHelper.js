@@ -1,11 +1,12 @@
 const fs = require('fs'),
   path = require('path'),
   async = require('async'),
+  envHelper = require('./environmentVariablesHelper.js'),
   default_tenant = envHelper.DEFAUULT_TENANT;
 
 module.exports = {
   getInfo: function(req, res) {
-    var tenantId = req.params.tenantId;
+    var tenantId = req.params.tenantId || envHelper.DEFAUULT_TENANT;
     var responseObj = {
       logo: (req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') + '/images/sunbird_logo.png',
       favicon: (req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') +'/images/favicon.ico',
