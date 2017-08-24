@@ -230,9 +230,10 @@ angular.module('playerApp')
               });
               routeHelperService.loadRouteConfig('Toc', $stateParams);
           },
-          onExit: function ($rootScope) {
+          onExit: function ($rootScope,dataService) {
               $rootScope.isTocPage = false;
               $rootScope.courseActive = '';
+              dataService.setData('isTrackingEnabled',false);
           }
       })
       .state('Community', {
@@ -376,9 +377,10 @@ angular.module('playerApp')
                   url: '/private/index#!/course/' + $stateParams.courseId + '/' + $stateParams.lectureView + '/' + $stateParams.contentId + '/' + $stateParams.contentIndex
               });
           },
-          onExit: function ($rootScope) {
+          onExit: function ($rootScope,dataService) {
               $rootScope.isTocPage = false;
               $rootScope.courseActive = '';
+              dataService.setData('isTrackingEnabled',false);
           }
       })
       .state('WorkSpace', {
