@@ -83,6 +83,7 @@ app.set('view engine', 'ejs');
 
 app.use(express.static(path.join(__dirname, '/')));
 app.use(express.static(path.join(__dirname, 'tenant', tenantId)));
+app.use('/public/*', express.static(path.join(__dirname, 'public')))
 if (default_tenant) {
   app.use(express.static(path.join(__dirname, 'tenant', default_tenant)));
 }
