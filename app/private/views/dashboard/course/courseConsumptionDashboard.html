@@ -3,7 +3,7 @@
   <div class="ten wide column">
     <div ng-controller="courseCreatorDashboardCtrl as courseDashboard" ng-init="courseDashboard.loadData()">
       <div ng-include="'views/dashboard/course/courseDashboardFilters.html'"></div>
-      <div class="consumption-data-holder" ng-hide="courseDashboard.showLoader || courseDashboard.showWarningMsg" ng-if="courseDashboard.dataset == 'consumption' && !courseDashboard.showError">
+      <div class="consumption-data-holder" ng-hide="courseDashboard.showLoader || courseDashboard.showWarningMsg || courseDashboard.isMultipleCourses" ng-if="courseDashboard.dataset == 'consumption' && !courseDashboard.showError">
         <div class="ui four cards">
           <div class="card" ng-repeat="item in courseDashboard.consumptionNumericData">
             <div class="content center aligned">
@@ -12,7 +12,7 @@
             </div>
           </div>
         </div>
-        <div class="ui one column grid">
+        <div class="ui one column grid margin-top-20">
           <div class="column">
             <div class="regular slider padding-top-30 course-graph-holder">
               <div ng-repeat="graph in courseDashboard.data">
@@ -25,6 +25,13 @@
               </div>
             </div>
           </div>
+        </div>
+        <div class="margin-top-20" ng-hide="courseDashboard.data.length == 0">
+            <div class="twelve wide column">
+              <p class="text-align-right dashBoardCardText">Download this view as:
+                <a href="Javascript:void(0);" class="item text-decoration-underline padding-left-10 cursor-pointer">CSV</a>
+              </p>
+            </div>
         </div>
       </div>
       <!-- Show loader-->
