@@ -11,8 +11,8 @@
 angular.module('playerApp')
     .controller('AllUploadedContentController', ['contentService', 'searchService', 'config',
         '$rootScope', '$state', 'toasterService', '$scope', 'workSpaceUtilsService',
-        function (contentService, searchService, config, $rootScope, $state,
-            toasterService, $scope, workSpaceUtilsService) {
+        'PaginationService', function (contentService, searchService, config, $rootScope, $state,
+            toasterService, $scope, workSpaceUtilsService, PaginationService) {
             var allUploadedContent = this;
             allUploadedContent.userId = $rootScope.userId;
             allUploadedContent.contentStatus = ['Draft'];
@@ -23,8 +23,11 @@ angular.module('playerApp')
             $scope.isSelected = false;
             allUploadedContent.selectedContentItem = [];
             allUploadedContent.message = $rootScope.errorMessages.WORKSPACE;
+            allUploadedContent.pageLimit = 10;
+            allUploadedContent.pager = {};
 
-            allUploadedContent.getAllUploadedContent = function () {
+            allUploadedContent.getAllUploadedContent = function (pageNumber) {
+                pageNumber = pageNumber || 1;
                 allUploadedContent.loader = toasterService.loader('', allUploadedContent.message
                                             .ALL_UPLOADED.START);
                 var request = {
@@ -35,13 +38,19 @@ angular.module('playerApp')
                     },
                     sort_by: {
                         lastUpdatedOn: allUploadedContent.sortBy
-                    }
+                    },
+                    offset: (pageNumber - 1) * allUploadedContent.pageLimit,
+                    limit: allUploadedContent.pageLimit
                 };
 
                 searchService.search(request).then(function (res) {
                     if (res && res.responseCode === 'OK') {
                         allUploadedContent.loader.showLoader = false;
+                        allUploadedContent.totalCount = res.result.count;
+                        allUploadedContent.pageNumber = pageNumber;
                         allUploadedContent.allUploadedContentData = res.result.content || [];
+                        allUploadedContent.pager = PaginationService.GetPager(res.result.count,
+                                                        pageNumber, allUploadedContent.pageLimit);
                     } else {
                         allUploadedContent.loader.showLoader = false;
                         toasterService.error(allUploadedContent.message.ALL_UPLOADED.FAILED);
@@ -115,6 +124,9 @@ angular.module('playerApp')
                         toasterService.success(allUploadedContent.message.RETIRE_CONTENT.SUCCESS);
                         allUploadedContent.allUploadedContentData = workSpaceUtilsService
                         .removeContentLocal(allUploadedContent.allUploadedContentData, requestData);
+                        allUploadedContent.pager = PaginationService
+                        .GetPager(allUploadedContent.totalCount - requestData.length,
+                            allUploadedContent.pageNumber, allUploadedContent.pageLimit);
                     } else {
                         allUploadedContent.loader.showLoader = false;
                         allUploadedContent.handleFailedResponse(res, requestData);
@@ -137,5 +149,15 @@ angular.module('playerApp')
                 .removeContentLocal(allUploadedContent.selectedContentItem, deletedContentIds);
                 toasterService.error(length + ' ' + allUploadedContent.message
                                     .RETIRE_CONTENT.NOT_DELETE);
+                allUploadedContent.pager =
+                PaginationService.GetPager(allUploadedContent.totalCount - length,
+                                    allUploadedContent.pageNumber, allUploadedContent.pageLimit);
+            };
+
+            allUploadedContent.setPage = function (page) {
+                if (page < 1 || page > allUploadedContent.pager.totalPages) {
+                    return;
+                }
+                allUploadedContent.getAllUploadedContent(page);
             };
         }]);
