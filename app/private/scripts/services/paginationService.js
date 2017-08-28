@@ -19,19 +19,19 @@ angular.module('playerApp')
             var startPage;
             var endPage;
             if (totalPages <= 5) {
-                // less than 10 total pages so show all
+                // less than 5 total pages so show all
                 startPage = 1;
                 endPage = totalPages;
             } else {
-                // more than 10 total pages so calculate start and end pages
+                // more than 5 total pages so calculate start and end pages
                 if (currentPage <= 1) {
                     startPage = 1;
                     endPage = 5;
-                } else if (currentPage + 1 >= totalPages) {
+                } else if (currentPage + 4 >= totalPages) {
                     startPage = totalPages - 4;
                     endPage = totalPages;
                 } else {
-                    startPage = currentPage - 0;
+                    startPage = currentPage;
                     endPage = currentPage + 4;
                 }
             }

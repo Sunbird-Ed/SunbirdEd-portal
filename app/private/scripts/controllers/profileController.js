@@ -404,15 +404,17 @@ angular.module('playerApp') // add those all values
                   return content.appIcon;
               }
               switch (mimeType) {
-              case 'application/pdf':
+              case config.MIME_TYPE.pdf:
                   return '/images/pdf.png';
-              case 'video/mp4':
+              case config.MIME_TYPE.mp4:
                   return '/images/mp4.png';
-              case 'video/youtube':
+              case config.MIME_TYPE.pYoutube:
                   return '/images/youtubeFileIcon.jpg';
-              case 'video/x-youtube':
+              case config.MIME_TYPE.youtube:
                   return '/images/youtubeFileIcon.jpg';
-              default:
+              case config.MIME_TYPE.h5p || config.MIME_TYPE.ePub:
+                  return '/images/zipFileIcon.png';
+              default :
                   return '/images/zipFileIcon.png';
               }
           };
@@ -440,24 +442,6 @@ angular.module('playerApp') // add those all values
               }).catch(function () {
           // toasterService.error(profile.message.DRAFT.FAILED);
               });
-          };
-
-          profile.getContentLogo = function (content) {
-              var contentIcon = content.appIcon;
-              var mimeType = content.mimeType;
-              if (contentIcon) {
-                  return content.appIcon;
-              }
-              switch (mimeType) {
-              case 'application/pdf':
-                  return '/images/pdf.png';
-              case 'video/mp4':
-                  return '/images/mp4.png';
-              case 'video/youtube':
-                  return '/images/youtubeFileIcon.jpg';
-              default:
-                  return '/images/zipFileIcon.png';
-              }
           };
 
           profile.openContentPlayer = function (item) {
@@ -494,7 +478,7 @@ angular.module('playerApp') // add those all values
               });
           };
           profile.getbadges();
-          
+
           profile.setSelectedGrades = function () {
               $timeout(function () {
                   $('#selectGrades').dropdown();
