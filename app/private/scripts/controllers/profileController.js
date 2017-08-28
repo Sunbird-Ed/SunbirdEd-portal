@@ -378,11 +378,12 @@ angular.module('playerApp') // add those all values
               }, 100);
           };
 
-          profile.setEditSubject = function (subjects) {
+          profile.setEditSubject = function (name, index, subjects) {
               $timeout(function () {
-                  $('.editSubjects').dropdown();
-                  $('.editSubjects').dropdown('refresh');
-                  $('.editSubjects').dropdown('set selected', subjects);
+                  var id = '#' + name + index;
+                  $(id).dropdown();
+                  $(id).dropdown('refresh');
+                  $(id).dropdown('set selected', subjects);
               }, 100);
           };
 
