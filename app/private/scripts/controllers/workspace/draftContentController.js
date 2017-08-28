@@ -11,9 +11,9 @@
 
 angular.module('playerApp')
     .controller('DraftContentController', ['contentService', 'searchService', 'config',
-        '$rootScope', '$state', 'toasterService', '$scope', 'workSpaceUtilsService',
+        '$rootScope', '$state', 'toasterService', '$scope', 'workSpaceUtilsService', '$timeout',
         'PaginationService', function (contentService, searchService, config, $rootScope, $state,
-        toasterService, $scope, workSpaceUtilsService, PaginationService) {
+        toasterService, $scope, workSpaceUtilsService, $timeout, PaginationService) {
             var draftContent = this;
             draftContent.userId = $rootScope.userId;
             draftContent.status = ['Draft'];
@@ -75,44 +75,27 @@ angular.module('playerApp')
                 }
             };
 
-            draftContent.initializeUIElement = function () {
-                $('#actionDropDown').dropdown();
+            draftContent.openRemoveContentModel = function (ContentId) {
+                draftContent.removeContentId = ContentId;
+                draftContent.showRemoveContentModel = true;
+                $timeout(function () {
+                    $('#removeContentModel').modal({
+                    }).modal('show');
+                }, 10);
             };
 
-            $scope.addContentOnSelect = function (content, add) {
-                if (add) {
-                    draftContent.selectedContentItem.push(content);
-                } else {
-                    draftContent.selectedContentItem = draftContent.selectedContentItem.filter(
-                    function (data) {
-                        return data.identifier !== content.identifier;
-                    });
-                }
+            draftContent.hideRemoveContentModel = function () {
+                $('#removeContentModel').modal('hide');
+                $('#removeContentModel').modal('hide all');
+                $('#removeContentModel').modal('hide other');
+                $('#removeContentModel').modal('hide dimmer');
+                draftContent.removeContentId = '';
+                draftContent.showRemoveContentModel = false;
             };
 
-            draftContent.applyAction = function () {
-                var action = $('#actionDropDown').dropdown('get value');
-                if (!action) {
-                    toasterService.warning(draftContent.message.RETIRE_CONTENT.SELECT_ACTION);
-                    return;
-                }
-                if (draftContent.selectedContentItem.length === 0) {
-                    toasterService.warning(draftContent.message.RETIRE_CONTENT.SELECT_CONTENT +
-                                        ' ' + action);
-                } else {
-                    switch (action) {
-                    case 'delete':
-                        draftContent.deleteContent();
-                        break;
-                    default:
-                        break;
-                    }
-                }
-            };
-
-            draftContent.deleteContent = function () {
-                var requestData = workSpaceUtilsService.reduceObjectIntoArray(draftContent
-                                                        .selectedContentItem, 'identifier');
+            draftContent.deleteContent = function (contentId) {
+                var requestData = [contentId];
+                draftContent.hideRemoveContentModel();
                 draftContent.loader = toasterService.loader('', draftContent.message.RETIRE_CONTENT
                                                     .START);
                 var request = {

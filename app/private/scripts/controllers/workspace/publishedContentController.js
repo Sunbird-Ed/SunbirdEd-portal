@@ -10,9 +10,9 @@
  */
 angular.module('playerApp')
     .controller('PublishedContentController', ['contentService', 'searchService', 'config',
-        '$rootScope', '$state', 'toasterService', '$scope', 'workSpaceUtilsService',
+        '$rootScope', '$state', 'toasterService', '$scope', 'workSpaceUtilsService', '$timeout',
         'PaginationService', function (contentService, searchService, config, $rootScope, $state,
-            toasterService, $scope, workSpaceUtilsService, PaginationService) {
+            toasterService, $scope, workSpaceUtilsService, $timeout, PaginationService) {
             var publishedContent = this;
             publishedContent.userId = $rootScope.userId;
             publishedContent.status = ['Live'];
@@ -77,40 +77,27 @@ angular.module('playerApp')
                 $('#actionDropDown').dropdown();
             };
 
-            $scope.addContentOnSelect = function (content, add) {
-                if (add) {
-                    publishedContent.selectedContentItem.push(content);
-                } else {
-                    publishedContent.selectedContentItem = publishedContent.selectedContentItem
-                    .filter(function (data) {
-                        return data.identifier !== content.identifier;
-                    });
-                }
+            publishedContent.openRemoveContentModel = function (ContentId) {
+                publishedContent.removeContentId = ContentId;
+                publishedContent.showRemoveContentModel = true;
+                $timeout(function () {
+                    $('#removeContentModel').modal({
+                    }).modal('show');
+                }, 10);
             };
 
-            publishedContent.applyAction = function () {
-                var action = $('#actionDropDown').dropdown('get value');
-                if (!action) {
-                    toasterService.warning(publishedContent.message.RETIRE_CONTENT.SELECT_ACTION);
-                    return;
-                }
-                if (publishedContent.selectedContentItem.length === 0) {
-                    toasterService.warning(publishedContent.message.RETIRE_CONTENT.SELECT_CONTENT +
-                                                        ' ' + action);
-                } else {
-                    switch (action) {
-                    case 'delete':
-                        publishedContent.deleteContent();
-                        break;
-                    default:
-                        break;
-                    }
-                }
+            publishedContent.hideRemoveContentModel = function () {
+                $('#removeContentModel').modal('hide');
+                $('#removeContentModel').modal('hide all');
+                $('#removeContentModel').modal('hide other');
+                $('#removeContentModel').modal('hide dimmer');
+                publishedContent.removeContentId = '';
+                publishedContent.showRemoveContentModel = false;
             };
 
-            publishedContent.deleteContent = function () {
-                var requestData = workSpaceUtilsService.reduceObjectIntoArray(
-                                            publishedContent.selectedContentItem, 'identifier');
+            publishedContent.deleteContent = function (contentId) {
+                var requestData = [contentId];
+                publishedContent.hideRemoveContentModel();
                 publishedContent.loader = toasterService.loader('', publishedContent.message
                                             .RETIRE_CONTENT.START);
                 var request = {
@@ -128,28 +115,12 @@ angular.module('playerApp')
                             publishedContent.pageNumber, publishedContent.pageLimit);
                     } else {
                         publishedContent.loader.showLoader = false;
-                        publishedContent.handleFailedResponse(res, requestData);
+                        toasterService.error(publishedContent.message.RETIRE_CONTENT.NOT_DELETE);
                     }
                 }).catch(function () {
                     publishedContent.loader.showLoader = false;
-                    toasterService.error(publishedContent.message.RETIRE_CONTENT.FAILED);
+                    toasterService.error(publishedContent.message.RETIRE_CONTENT.NOT_DELETE);
                 });
-            };
-
-            publishedContent.handleFailedResponse = function (res, requestData) {
-                var length = res && res.result ? res.result.length : requestData.length;
-                var failedContentIds = res && res.result ? workSpaceUtilsService
-                .reduceObjectIntoArray(res.result, 'contentId') : requestData;
-                var deletedContentIds = workSpaceUtilsService.getDeletedContentIds(requestData,
-                                                                                failedContentIds);
-                publishedContent.publishedContentData = workSpaceUtilsService.removeContentLocal(
-                    publishedContent.publishedContentData, deletedContentIds);
-                publishedContent.selectedContentItem = workSpaceUtilsService.removeContentLocal(
-                    publishedContent.selectedContentItem, deletedContentIds);
-                toasterService.error(length + ' ' + publishedContent.message.RETIRE_CONTENT
-                                                                                .NOT_DELETE);
-                publishedContent.pager = PaginationService.GetPager(publishedContent.totalCount - length,
-                                publishedContent.pageNumber, publishedContent.pageLimit);
             };
 
             publishedContent.setPage = function (page) {

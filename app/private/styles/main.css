@@ -551,7 +551,7 @@ th {
   text-transform: lowercase !important;
 }
 .cursor-pointer {
-  cursor: pointer;
+  cursor: pointer !important;
 }
 .cursor-pointerText {
   cursor: text;
