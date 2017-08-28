@@ -197,18 +197,18 @@ angular.module('playerApp') // add those all values
               if (isValid === true) {
                   var dob = $('#editDob').calendar('get date');
                   var updateReq = {
-                      firstName: profile.basicProfile.firstName,
-                      lastName: profile.basicProfile.lastName,
-                      phone: profile.basicProfile.phone,
-                      email: profile.basicProfile.email,
-                      gender: profile.basicProfile.gender,
+                      firstName: profile.user.firstName,
+                      lastName: profile.user.lastName,
+                      phone: profile.user.phone,
+                      email: profile.user.email,
+                      gender: profile.user.gender,
                       dob: dob instanceof Date ? $filter('date')(dob, 'yyyy-MM-dd') : null,
-                      aadhaarNo: profile.basicProfile.aadhaarNo,
-                      language: [profile.basicProfile.language],
+                      aadhaarNo: profile.user.aadhaarNo,
+                      language: [profile.user.language],
                       profileSummary: profile.profileSummary,
-                      subject: profile.basicProfile.subject,
-                      grade: profile.basicProfile.grade,
-                      location: profile.basicProfile.location
+                      subject: profile.user.subject,
+                      grade: profile.user.grade,
+                      location: profile.user.location
                   };
                   profile.updateProfile(updateReq);
               } else return false;
@@ -366,7 +366,7 @@ angular.module('playerApp') // add those all values
               $timeout(function () {
                   $('#languageSelect').dropdown();
                   $('#languageSelect').dropdown('refresh');
-                  $('#languageSelect').dropdown('set selected', profile.basicProfile.language[0]);
+                  $('#languageSelect').dropdown('set selected', profile.user.language[0]);
               }, 100);
           };
 
@@ -374,15 +374,16 @@ angular.module('playerApp') // add those all values
               $timeout(function () {
                   $('#setSubjects').dropdown();
                   $('#setSubjects').dropdown('refresh');
-                  $('#setSubjects').dropdown('set selected', profile.basicProfile.subjects);
+                  $('#setSubjects').dropdown('set selected', profile.user.subjects);
               }, 100);
           };
 
-          profile.setEditSubject = function (subjects) {
+          profile.setEditSubject = function (name, index, subjects) {
               $timeout(function () {
-                  $('.editSubjects').dropdown();
-                  $('.editSubjects').dropdown('refresh');
-                  $('.editSubjects').dropdown('set selected', subjects);
+                  var id = '#' + name + index;
+                  $(id).dropdown();
+                  $(id).dropdown('refresh');
+                  $(id).dropdown('set selected', subjects);
               }, 100);
           };
 
@@ -483,8 +484,19 @@ angular.module('playerApp') // add those all values
               $timeout(function () {
                   $('#selectGrades').dropdown();
                   $('#selectGrades').dropdown('refresh');
-                  $('#selectGrades').dropdown('set selected', profile.basicProfile.grade);
+                  $('#selectGrades').dropdown('set selected', profile.user.grade);
               }, 100);
+          };
+
+           // cancel
+          profile.cancelEditExperience = function () {
+              profile.experienceForm = false;
+              profile.isCurrentJobExist = false;
+              profile.experience = profile.getProfileObject(profile.user.jobProfile);
+          };
+
+          profile.getProfileObject = function (profileData) {
+              return angular.copy(profileData);
           };
       }
   ]);

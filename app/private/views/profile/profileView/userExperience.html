@@ -3,7 +3,7 @@
         <span class="header cardsHeading"> {{$root.labels.PROFILE.JOB_PROFILE.header}} </span>
         <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.experienceForm && profileCtrl.user.jobProfile.length" ng-click="profileCtrl.experienceForm=true ;profileCtrl.isNewExperience=false ;">{{$root.labels.PROFILE.BUTTON.edit}}</a>
         <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.experienceForm  " ng-click="profileCtrl.experienceForm=true ; profileCtrl.isNewExperience=true ;profileCtrl.newExperience={} ">{{$root.labels.PROFILE.BUTTON.add}}</a>
-        <a class="addeditprofile cursor-pointer" ng-if="profileCtrl.experienceForm" ng-click="profileCtrl.experienceForm=false;profileCtrl.isCurrentJobExist=false;">{{$root.labels.PROFILE.BUTTON.close}}</a>
+        <a class="addeditprofile cursor-pointer" ng-if="profileCtrl.experienceForm" ng-click="profileCtrl.cancelEditExperience()">{{$root.labels.PROFILE.BUTTON.close}}</a>
     </div>
     <div ng-if="!profileCtrl.experienceForm " class="profileitems ui relaxed divided items ">
         <div class="item " ng-repeat="experience in profileCtrl.user.jobProfile">
@@ -20,7 +20,7 @@
             </div>
             <div class="right-floated ">
                 <div class="metadata ">
-                    <a  ng-click="experience.isDeleted=true;profileCtrl.deleteExperience(experience) "> <i class="trash outline icon trashIcon-fontSize "></i></a>
+                    <a  ng-click="experience.isDeleted=true;profileCtrl.deleteExperience(experience)"> <i class="trash outline icon trashIcon-fontSize "></i></a>
                 </div>
             </div>
         </div>
