@@ -21,9 +21,13 @@ angular.module('playerApp')
             contentShare.link = link;
 
             contentShare.hideContentShareModal = function () {
-                $('#contentShareModal').modal('hide');
-                $('#contentShareModal').modal('hide others');
-                $('#contentShareModal').modal('hide dimmer');
+                $timeout(function () {
+                    contentShare.showContentShareModal = false;
+                    $('#contentShareModal').modal('hide');
+                    $('#contentShareModal').modal('hide others');
+                    $('#contentShareModal').modal('hide all');
+                    $('#contentShareModal').modal('hide dimmer');
+                }, 0);
             };
 
             contentShare.initializeModal = function () {
@@ -31,7 +35,7 @@ angular.module('playerApp')
                 $timeout(function () {
                     $('#contentShareModal').modal({
                         onHide: function () {
-                            contentShare.showContentShareModal = false;
+                            contentShare.hideContentShareModal();
                         }
                     }).modal('show');
                 }, 10);
@@ -43,6 +47,7 @@ angular.module('playerApp')
             };
 
             contentShare.close = function () {
+                contentShare.showContentShareModal = false;
                 contentShare.hideContentShareModal();
             };
 
