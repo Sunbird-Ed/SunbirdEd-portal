@@ -2041,6 +2041,10 @@ ul.fancytree-container li {
 .youTubeFileUploadForm {
   max-width: 90% !important;
 }
+/*draft content pagination positioning */
+.paginationAlignment {
+  padding-right: 6.3em !important;
+}
 .addnotes i.circular.icon {
   padding: .6em .6em!important;
   position: absolute;
