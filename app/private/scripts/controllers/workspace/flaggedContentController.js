@@ -27,7 +27,8 @@ angular.module('playerApp')
                 var request = {
                     filters: {
                         status: flaggedContent.contentStatus,
-                        createdFor: $rootScope.organisationIds
+                        createdFor: $rootScope.organisationIds,
+                        objectType: 'content'
                     },
                     sort_by: {
                         lastUpdatedOn: flaggedContent.sortBy

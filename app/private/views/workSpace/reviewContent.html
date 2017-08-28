@@ -1,7 +1,4 @@
 <div class="ui grid">
-    <div class="twelve wide column right-floated padding-bottom-15" ng-if="!reviewContent.loader.showLoader && reviewContent.totalCount > reviewContent.pageLimit">
-        <div ng-init="pegination = reviewContent" ng-include=" 'views/common/pagination.html' "></div>
-    </div>
     <div class="twelve wide column ">
         <div ng-init="reviewContent.getReviewContent()">
             <div ng-if="!reviewContent.loader.showLoader">
@@ -34,6 +31,15 @@
             <div class="twelve wide column" ng-if="reviewContent.loader.showLoader">
                 <app-loader data="{{reviewContent.loader}}"></app-loader>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="ui grid">
+    <div class="two wide column"></div>
+    <div class="ten wide column paginationAlignment">
+        <div class="padding-bottom-15" ng-if="!reviewContent.loader.showLoader && reviewContent.totalCount > reviewContent.pageLimit">
+            <div ng-init="pegination = reviewContent" ng-include=" 'views/common/pagination.html' "></div>
         </div>
     </div>
 </div>
