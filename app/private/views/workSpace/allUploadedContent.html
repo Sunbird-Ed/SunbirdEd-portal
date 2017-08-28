@@ -1,45 +1,25 @@
 <div class="ui grid">
-    <div class="four wide column padding-top-30" ng-if="!allUploadedContent.loader.showLoader && allUploadedContent.allUploadedContentData.length > 0">
-        <div class="content" ng-init="allUploadedContent.initializeUIElement()">
-            {{$root.labels.WORKSPACE.common.action}}:&nbsp;
-            <div class="ui inline dropdown" id="actionDropDown" name="global">
-                <div class="text">{{$root.labels.WORKSPACE.common.actionName}}</div>
-                <i class="dropdown icon"></i>
-                <div class="menu">
-                    <div class="active item" value="default" data-text="Delete">{{$root.labels.WORKSPACE.common.delete}}</div>
-                </div>
-            </div>&nbsp;
-            <a class="mouse-pointer" ng-click="allUploadedContent.applyAction()">{{$root.labels.WORKSPACE.common.apply}}</a>
-        </div>
-    </div>
-    <div class="eight wide column right-floated padding-bottom-15 " ng-if="!allUploadedContent.loader.showLoader && allUploadedContent.totalCount > allUploadedContent.pageLimit">
-        <div ng-init="pegination = allUploadedContent" ng-include=" 'views/common/pagination.html' "></div>
-    </div>
     <div class="twelve wide column">
         <div ng-init="allUploadedContent.getAllUploadedContent()">
             <div ng-if="!allUploadedContent.loader.showLoader">
                 <div class="ui three stackable cards" ng-if="allUploadedContent.allUploadedContentData.length > 0">
                     <div class="card" ng-repeat="item in allUploadedContent.allUploadedContentData track by $index">
-                        <div class="image imageInCardsResponsive ">
-                            <div class="ui fluid image ">
-                                <span class="ui large left corner label"> 
-                                    <i class="ui link large icon mouse-pointer" title="Select" ng-click="isSelected = !isSelected; addContentOnSelect(item, isSelected)" ng-class="isSelected ? 'checkmark box green' : 'square outline' "></i> 
-                                </span>
+                        <div class="image imageInCardsResponsive " ng-click="allUploadedContent.editContent(item)">
+                            <div class="ui fluid image mouse-pointer">
                                 <span class="ui black right ribbon label">{{item.contentType}}</span>
                                 <img ng-src=" {{item.appIcon ? item.appIcon : '../images/sunbird_logo.png'}} ">
                             </div>
-                            <div class="cardImageText center aligned mouse-pointer" ng-click="allUploadedContent.editContent(item) ">
+                            <div class="cardImageText center aligned mouse-pointer">
                                 <span class="sliderCardHeading text-cencapitalize ">
                                     {{ item.name | limitTo: 15 }}&nbsp;<i ng-show="item.name.length>= 15" class="ellipsis horizontal icon popup-button link" data-content="{{item.name}}" data-variation="wide"></i>
                                 </span>
                             </div>
                         </div>
-                        <div class="sliderCards content mouse-pointer" ng-click="allUploadedContent.editContent(item)">
-                            <span class="sliderCardSubDesc">
-                                <span>
-                                    {{ item.description | limitTo: 70 }}&nbsp;<i ng-show="item.description.length >= 70" class="ellipsis horizontal icon popup-button link" data-content="{{item.description}}" data-variation="wide"></i>
-                                </span>
-                            </span>
+                        <div class="sliderCards content">
+                            <div class="sliderCardDesc">
+                                {{ item.description | limitTo: 45 }}&nbsp;<i ng-show="item.description.length >= 45" class="ui ellipsis horizontal icon popup-button link"></i>
+                            </div>
+                            <button class="ui blue basic right floated button margin-top-10" ng-click="allUploadedContent.openRemoveContentModel(item.identifier)">{{$root.labels.WORKSPACE.common.DELETE}}</button>
                         </div>
                     </div>
                 </div>
@@ -50,6 +30,32 @@
             <div ng-if="allUploadedContent.loader.showLoader">
                 <app-loader data="{{allUploadedContent.loader}}"></app-loader>
             </div>
+        </div>
+    </div>
+</div>
+
+<div ng-if="allUploadedContent.showRemoveContentModel">
+    <div class="ui mini modal" id="removeContentModel">
+        <div class="header">
+            {{$root.labels.WORKSPACE.common.deleteContent}}
+        </div>
+        <div class="content">
+            <div class="description">
+                {{$root.labels.WORKSPACE.common.deleteConfirmMessage}}
+            </div>
+        </div>
+        <div class="actions">
+            <div class="ui negative button" ng-click="allUploadedContent.hideRemoveNoteModel">{{$root.labels.WORKSPACE.common.no}}</div>
+            <div class="ui primary button " ng-click="allUploadedContent.deleteContent(allUploadedContent.removeContentId)">{{$root.labels.WORKSPACE.common.yes}}</div>
+        </div>
+    </div>
+</div>
+
+<div class="ui grid">
+    <div class="two wide column"></div>
+    <div class="ten wide column paginationAlignment">
+        <div class="padding-bottom-15" ng-if="!allUploadedContent.loader.showLoader && allUploadedContent.totalCount > allUploadedContent.pageLimit">
+            <div ng-init="pegination = allUploadedContent" ng-include=" 'views/common/pagination.html' "></div>
         </div>
     </div>
 </div>
