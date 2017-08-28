@@ -486,5 +486,12 @@ angular.module('playerApp') // add those all values
                   $('#selectGrades').dropdown('set selected', profile.basicProfile.grade);
               }, 100);
           };
+
+           // cancel
+          profile.cancelEditExperience = function () {
+              profile.experienceForm = false;
+              profile.isCurrentJobExist = false;
+              profile.experience = profile.user.jobProfile;
+          };
       }
   ]);

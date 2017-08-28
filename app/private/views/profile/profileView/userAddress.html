@@ -3,7 +3,7 @@
         <span class="header cardsHeading">{{$root.labels.PROFILE.ADDRESS.header}} </span>
         <a  class="addeditprofile cursor-pointer" ng-if="!profileCtrl.addressForm && profileCtrl.address.length" ng-click="profileCtrl.addressForm=true ;profileCtrl.isNewAddress=false ">{{$root.labels.PROFILE.BUTTON.edit}}</a>
         <a  class="addeditprofile cursor-pointer" ng-if="!profileCtrl.addressForm " ng-click="profileCtrl.addressForm=true ;profileCtrl.isNewAddress=true ;profileCtrl.newAddress={} ">{{$root.labels.PROFILE.BUTTON.add}}</a>
-        <a  class="addeditprofile cursor-pointer" ng-if="profileCtrl.addressForm" ng-click="profileCtrl.addressForm=false">{{$root.labels.PROFILE.BUTTON.close}}</a>
+        <a  class="addeditprofile cursor-pointer" ng-if="profileCtrl.addressForm" ng-click="profileCtrl.addressForm=false;profileCtrl.address=profileCtrl.user.address">{{$root.labels.PROFILE.BUTTON.close}}</a>
     </div>
     <div ng-if="!profileCtrl.addressForm" class="profileitems ui relaxed divided items">
         <div class="item" ng-repeat="address in profileCtrl.user.address">
