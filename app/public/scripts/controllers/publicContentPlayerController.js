@@ -73,6 +73,7 @@ angular.module('loginApp')
             }
 
             function getContent(contentId) {
+                var req = { contentId: contentId };
                 var qs = {
                     fields: 'body,editorState,stageIcons,templateId,languageCode,template,' +
                         'gradeLevel,status,concepts,versionKey,name,appIcon,contentType,owner,' +
