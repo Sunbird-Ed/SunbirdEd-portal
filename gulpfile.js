@@ -285,7 +285,14 @@ gulp.task('production', ['clean:dist'], function () {
 });
 
 gulp.task('minifyJS', ['production'], function() {
-    return gulp.src(['dist/private/**/*.js', 'dist/public/**/*.js', '!dist/public/**/publicAppRoute.js',  '!dist/private/**/appRoute.js'], {base: "dist/"}).pipe(minify({
+    return gulp.src(['dist/private/**/*.js', 
+            'dist/public/**/*.js', 
+            'dist/thirdparty/libs/semantic-ui-tree-picker/semantic-ui-tree-picker.js',
+            'dist/thirdparty/bower_components/pagedown/Markdown.Converter.js',
+            'dist/thirdparty/bower_components/pagedown/Markdown.Sanitizer.js',
+            'dist/thirdparty/bower_components/pagedown/Markdown.Editor.js',
+            '!dist/public/**/publicAppRoute.js',  
+            '!dist/private/**/appRoute.js',], {base: "dist/"}).pipe(minify({
         minify: true,
         collapseWhitespace: true,
         minifyJS: true
