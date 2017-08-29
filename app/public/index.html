@@ -9,8 +9,10 @@
     <link rel="icon" type="image/ico" ng-href="{{faviconIcon || '/images/favicon.ico'}}">
     <link rel="stylesheet" href="/styles/main.css">
     <link rel="stylesheet" href="/thirdparty/semantic/styles/semantic.min.css">
+    <!-- inject:css -->
     <link rel="stylesheet" href="/thirdparty/bower_components/semantic-ui-calendar/dist/calendar.min.css" />
     <link rel="stylesheet" href="/thirdparty/bower_components/izitoast/dist/css/iziToast.min.css" />
+    <!-- endinject -->
     <base href="/">
 </head>
 
@@ -26,28 +28,14 @@
             </div>
         </div>
     </div>
-    <script src="../thirdparty/libs/eventbus.min.js"></script>
-    <!-- utils -->
-    <script src="./private/scripts/utils/util.js"></script>
-
-    <script src="./private/scripts/managers/eventManager.js"></script>
-    <script src="/public/scripts/org.js"></script>
-    <!-- Telemetry service -->
-    <script src="/scripts/telemetry/TelemetryEvent.js"></script>
-    <script src="/scripts/telemetry/TelemetryService.js"></script>
-    <script src="/scripts/telemetry/TelemetryV2Manager.js"></script>
-    <script src="/scripts/telemetry/TelemetryServiceUtil.js"></script>
-    <script src="/scripts/telemetry/InActiveEvent.js"></script>
-
-
-
+    <!-- inject:js -->
+    <script src="/thirdparty/libs/eventbus.min.js"></script>
     <script src="/thirdparty/bower_components/jquery/dist/jquery.min.js"></script>
     <script src="/thirdparty/bower_components/jquery-ui/jquery-ui.min.js"></script>
     <script src="/thirdparty/bower_components/angular/angular.min.js"></script>
     <script src="/thirdparty/bower_components/angular-cookies/angular-cookies.min.js"></script>
     <script src="/thirdparty/bower_components/angular-route/angular-route.min.js"></script>
     <script src="/thirdparty/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
-    <script src="/thirdparty/semantic/semantic.min.js"></script>
     <script src="/thirdparty/bower_components/semantic-ui-calendar/dist/calendar.min.js"></script>
     <script src="/thirdparty/bower_components/izitoast/dist/js/iziToast.min.js"></script>
     <script src="/thirdparty/bower_components/angular-uuid4/angular-uuid4.min.js"></script>
@@ -55,6 +43,18 @@
     <script src="/thirdparty/bower_components/moment/min/moment-with-locales.min.js"></script>
     <script src="/thirdparty/bower_components/jquery.fancytree/dist/jquery.fancytree.min.js"></script>
     <script src="/thirdparty/jquery.fancytree/dist/jquery.fancytree.min.js"></script>
+    <!-- endinject -->
+    <script src="/thirdparty/semantic/semantic.min.js"></script>
+    <!-- utils -->
+    <script src="/private/scripts/utils/util.js"></script>
+    <script src="/private/scripts/managers/eventManager.js"></script>
+    <script src="/public/scripts/org.js"></script>
+    <!-- Telemetry service -->
+    <script src="/scripts/telemetry/TelemetryEvent.js"></script>
+    <script src="/scripts/telemetry/TelemetryService.js"></script>
+    <script src="/scripts/telemetry/TelemetryV2Manager.js"></script>
+    <script src="/scripts/telemetry/TelemetryServiceUtil.js"></script>
+    <script src="/scripts/telemetry/InActiveEvent.js"></script>
 
     <script src="/public/scripts/publicLabels.js"></script>
     <script src="/public/scripts/publicErrorMessages.js"></script>
