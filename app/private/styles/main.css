@@ -502,6 +502,9 @@ th {
 .margin-right-15 {
   margin-right: 15px !important;
 }
+.margin-left-10 {
+  margin-left: 10px !important;
+}
 .margin-left-20 {
   margin-left: 20px !important;
 }
@@ -1035,8 +1038,9 @@ slick-prev:before,
   border: 0!important;
   border-bottom: 1px solid #979797!important;
   border-radius: 0!important;
-  padding: 1em 0 !important;
-  margin: 0 !important;
+}
+.ui.modal .ui.dropdown > .text {
+  margin-left: -1.1em !important;
 }
 .ui.modal .ui.multiple.dropdown > .text {
   margin: 0 !important;
@@ -1346,6 +1350,10 @@ ul.fancytree-container li {
 .cardtakenote span {
   display: block;
   padding-top: 8px;
+}
+.tocCourseStructureImg {
+  padding-right: 10px;
+  margin-bottom: -4px;
 }
 .homeCard.ui.card {
   max-width: 100%;
@@ -2065,6 +2073,12 @@ ul.fancytree-container li {
   cursor: pointer;
   border-top: 0!important;
 }
+.notelistrightscroll {
+  max-height: 600px;
+  overflow-y: scroll;
+  cursor: pointer;
+  border-top: 0!important;
+}
 .notelistborder {
   border: 2px solid #d9d9d9!important;
   padding: 10px!important;
@@ -2124,7 +2138,7 @@ ul.fancytree-container li {
   margin: -0.2em -0.2em 0em 0em;
 }
 .selectOrgRoles {
-  padding: 20px 11px 10px 0!important;
+  padding: 20px 11px 10px 10px !important;
   height: 200px;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -2156,7 +2170,8 @@ ul.fancytree-container li {
   padding-top: 20px;
 }
 .headerBatchCard {
-  font-size: 1.3em;
+  font-weight: 700;
+  font-size: 1.18em;
   padding-left: 12px;
 }
 .ui.attached.batchCard.button {

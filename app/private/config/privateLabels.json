@@ -95,7 +95,9 @@
                 "flaggedReasons": "Flagged reason",
                 "flaggedBy": "Flagged by",
                 "flaggedDescription": "Flagged Description",
-                "medium": "Medium"
+                "medium": "Medium",
+                "description": "Description",
+                "contentInformation": "Content Information"
             },
             "common": {
                 "concept": "Concepts",
