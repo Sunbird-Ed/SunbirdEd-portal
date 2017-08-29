@@ -8,7 +8,7 @@
  * # contentPlayer
  */
 angular.module('loginApp')
-    .directive('contentPlayer', function () {
+    .directive('contentPlayer', [function () {
         return {
             templateUrl: 'views/contentplayer/player.html',
             restrict: 'E',
@@ -35,4 +35,4 @@ angular.module('loginApp')
             },
             controller: 'contentPlayerCtrl'
         };
-    });
+    }]);
