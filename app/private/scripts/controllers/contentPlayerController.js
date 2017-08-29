@@ -157,4 +157,7 @@ angular.module('playerApp')
                 }
                 return conceptNames;
             };
+
+            // Restore default values(resume course, view dashboard) onAfterUser leave current state
+            $('#courseDropdownValues').dropdown('restore defaults');
         }]);
