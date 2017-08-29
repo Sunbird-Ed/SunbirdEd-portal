@@ -2,7 +2,7 @@
   <div ng-include="'views/course/courseHeader.html'"></div>
   <div class="ui grid">
     <div class="one wide column"></div>
-    <div class="ten wide column">
+    <div class="ten wide column" ng-show="!toc.showCourseDashboard">
       <div ng-if="toc.courseHierachy">
         <div id="course-toc-list" ng-show="!contentPlayer.isContentPlayerEnabled && !toc.showAllNoteList">
           <div class="content">
@@ -57,7 +57,7 @@
                            {{toc.selectedParticipants}} Learners
                         </span>
                         <span>
-                          {{toc.selectedBatchInfo.mentors.length}} Mentors 
+                          {{toc.selectedBatchInfo.mentors.length}} Mentors
                         </span>
                       </div>
                     </div>
@@ -142,6 +142,11 @@
         <error-message data="{{toc.error}}" visibility="toc.error.showError"></error-message>
       </div>
       <div class="one wide column"></div>
+    </div>
+    <!-- Show course dashboard-->
+    <div class="ten wide column" ng-if="toc.showCourseDashboard">
+        <div ng-include="'views/dashboard/course/courseProgressDashboard.html'"></div>
+        <div class="one wide column"></div>
     </div>
   </div>
 </div>

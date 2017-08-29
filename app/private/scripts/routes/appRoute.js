@@ -909,7 +909,24 @@ angular.module('playerApp')
             onExit: function ($rootScope) {
                 $rootScope.profileActive = '';
             }
-        });
+        })
+        .state('MyActivity', {
+          url: '/course-creator-dashboard',
+          views: {
+              mainView: {
+                  templateUrl: '/views/dashboard/course/courseConsumptionDashboard.html',
+                  controller: 'courseCreatorDashboardCtrl as courseDashboard'
+              }
+          },
+          onEnter: function ($stateParams, $rootScope, routeHelperService) {
+              $rootScope.courseActive = 'active';
+              $rootScope.isPlayerPage = false;
+              routeHelperService.loadRouteConfig('MyActivity', null);
+          },
+          onExit: function ($rootScope) {
+              $rootScope.courseActive = '';
+          }
+      });
   })
   .run(function ($urlRouter, $http, $state, permissionsService, $rootScope, $location, config,
       toasterService, routeHelperService, userService) {
@@ -1007,6 +1024,9 @@ angular.module('playerApp')
               break;
           case 'WorkSpace.BatchList':
               routeHelperService.checkStateAccess(['COURSE_MENTOR'], false, event);
+              break;
+          case 'MyActivity':
+              routeHelperService.checkStateAccess(['COURSE_CREATOR'], false, event);
               break;
           default:
               break;
