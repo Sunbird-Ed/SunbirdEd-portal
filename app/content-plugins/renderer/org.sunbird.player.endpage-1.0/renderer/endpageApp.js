@@ -74,12 +74,8 @@ endPage.controller("endPageController", function($scope, $rootScope, $state,$ele
         }
     }
     $scope.initEndpage = function() {
-        // TODO: Need to clean this code becoz canvas currentlty having some issue with metadata object(circular object)
-        if(content.mimeType === "application/vnd.ekstep.ecml-archive" || content.mimeType === undefined){
-            $scope.playerMetadata = content.localData.localData;
-        } else {
-            $scope.playerMetadata = content;
-        }
+        
+        $scope.playerMetadata = content;
         $scope.genieIcon = EkstepRendererAPI.resolvePluginResource("org.sunbird.player.endpage", "1.0", "renderer/assets/home.png");
         $scope.replayIcon = EkstepRendererAPI.resolvePluginResource("org.sunbird.player.endpage", "1.0", "renderer/assets/icn_replay.png");
         $scope.endpageBackground = EkstepRendererAPI.resolvePluginResource("org.sunbird.player.endpage", "1.0", "renderer/assets/endpageBackground.png");
