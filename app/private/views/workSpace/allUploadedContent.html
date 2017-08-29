@@ -18,8 +18,11 @@
                         <div class="sliderCards content">
                             <div class="sliderCardDesc">
                                 {{ item.description | limitTo: 45 }}&nbsp;<i ng-show="item.description.length >= 45" class="ui ellipsis horizontal icon popup-button link"></i>
-                            </div>
-                            <button class="ui blue basic right floated button margin-top-10" ng-click="allUploadedContent.openRemoveContentModel(item.identifier)">{{$root.labels.WORKSPACE.common.DELETE}}</button>
+                            </div>                            
+                        </div>
+                        <div class="extra content">
+                            <a href="javascript:void(0);" 
+                            ng-click="allUploadedContent.openRemoveContentModel(item.identifier)"><i class="trash big icon float-ContentRight"></i></a>
                         </div>
                     </div>
                 </div>
