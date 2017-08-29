@@ -177,6 +177,7 @@ angular.module('playerApp') // add those all values
 
           profile.uploadAvatar = function () {
               profile.loader = toasterService.loader('', apiMessages.SUCCESS.editingProfile);
+              profile.icon.append('container', 'user/' + profile.userId);
               contentService.uploadMedia(profile.icon).then(function (res) {
                   if (res && res.responseCode === 'OK') {
                       profile.updateProfile({ avatar: res.result.url });
