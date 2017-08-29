@@ -185,6 +185,8 @@ angular.module('playerApp')
                 editContent.uploadContentIcon = function (requestBody, isReviewContent) {
                     editContent.loader = toasterService.loader('', editContent.message
                                                                                 .UPLOAD_ICON.START);
+
+                    editContent.icon.append('container', 'content/' + editContent.contentId);
                     contentService.uploadMedia(editContent.icon).then(function (res) {
                         if (res && res.responseCode === 'OK') {
                             editContent.iconUpdate = false;
@@ -302,7 +304,7 @@ angular.module('playerApp')
                         $location.hash('content-player-bottom-edit');
                         // call $anchorScroll()
                         $anchorScroll();
-                    }, 300);
+                    }, 500);
                 };
 
                 editContent.previewContent = function (requestData) {
