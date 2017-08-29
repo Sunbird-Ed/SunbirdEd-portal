@@ -17,6 +17,7 @@ var less = require('gulp-less');
 var historyApiFallback = require('connect-history-api-fallback');
 var minifyHTML = require('gulp-minify-html');
 var minify = require('gulp-minifier');
+var imagemin = require('gulp-imagemin');
 
 var player = {
     app: 'app/private/',
@@ -305,7 +306,12 @@ gulp.task('minifyHTML', ['minifyCSS'], function() {
         .pipe(minifyHTML(opts))
         .pipe(gulp.dest('dist'))
 });
-gulp.task('packageNodeModules', ['minifyHTML'], function(){
+gulp.task('minifyIMG', ['minifyHTML'], function(){
+    gulp.src('dist/private/images/*', {base: "dist/"})
+        .pipe(imagemin())
+        .pipe(gulp.dest('dist'))
+});
+gulp.task('packageNodeModules', ['minifyIMG'], function(){
     return gulp.src(['node_modules/**/*'])
         .pipe(gulp.dest(player.dist + '/node_modules'));
 });
