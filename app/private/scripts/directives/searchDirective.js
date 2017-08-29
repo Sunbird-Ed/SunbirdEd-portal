@@ -289,7 +289,7 @@ angular.module('playerApp').directive('search', function () {
                             } else if (res.result.count === 0) {
                                 $rootScope.search.error = showErrorMessage(true,
                                         $rootScope.errorMessages.SEARCH.DATA.NO_CONTENT,
-                                        $rootScope.errorMessages.COMMON.INFO);
+                                        $rootScope.errorMessages.COMMON.NO_RESULTS);
                             } else {
                                 $rootScope.search.error = {};
                                 $rootScope.search.searchResult = res.result;
