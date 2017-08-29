@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('loginApp')
-    .controller('SignUpCtrl',
-        function (signUpService, $timeout, $filter, $location, labels,
-          $rootScope, errorMessages, toasterService) {
+    .controller('SignUpCtrl', ['signUpService', '$timeout', '$filter', '$location', 'labels',
+          '$rootScope', 'errorMessages', 'toasterService', function (signUpService, $timeout, 
+            $filter, $location, labels, $rootScope, errorMessages, toasterService) {
             var newUser = this;
             var today = new Date();
             newUser.languages = labels.languages;
@@ -184,4 +184,4 @@ angular.module('loginApp')
                     toasterService.error(errorMessages.SIGNUP.apiError);
                 });
             };
-        });
+        }]);
