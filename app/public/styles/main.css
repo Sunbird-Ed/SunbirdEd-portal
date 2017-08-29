@@ -1351,6 +1351,10 @@ ul.fancytree-container li {
   display: block;
   padding-top: 8px;
 }
+.tocCourseStructureImg {
+  padding-right: 10px;
+  margin-bottom: -4px;
+}
 .homeCard.ui.card {
   max-width: 100%;
   position: relative;
@@ -2069,6 +2073,12 @@ ul.fancytree-container li {
   cursor: pointer;
   border-top: 0!important;
 }
+.notelistrightscroll {
+  max-height: 600px;
+  overflow-y: scroll;
+  cursor: pointer;
+  border-top: 0!important;
+}
 .notelistborder {
   border: 2px solid #d9d9d9!important;
   padding: 10px!important;
@@ -2150,6 +2160,12 @@ ul.fancytree-container li {
 }
 .orgRolesListView {
   margin: 0 10px 20px 0;
+}
+.badgeIconAlignment {
+  height: 20px !important;
+  width: 20px !important;
+  padding-top: 3px;
+  margin-right: 15px;
 }
 .batchCardDropDown {
   float: right;
