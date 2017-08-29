@@ -7,7 +7,7 @@
  * # permissionsDirective
  */
 angular.module('playerApp')
-.directive('sbPermissions', function (permissionsService) {
+.directive('sbPermissions', ['permissionsService', function (permissionsService) {
     return {
         restrict: 'A',
         scope: {},
@@ -26,4 +26,4 @@ angular.module('playerApp')
             }
         }
     };
-});
+}]);

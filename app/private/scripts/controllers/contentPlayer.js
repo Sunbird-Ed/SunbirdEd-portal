@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('playerApp')
-    .controller('playerCtrl', function ($stateParams, $log, $scope, $rootScope,
+    .controller('playerCtrl', ['$stateParams', '$log', '$scope', '$rootScope', '$sessionStorage', 
+        '$timeout', '$location', '$anchorScroll', function ($stateParams, $log, $scope, $rootScope,
         $sessionStorage, $timeout, $location, $anchorScroll) {
         var player = this;
         player.contentPlayer = {
@@ -30,5 +31,5 @@ angular.module('playerApp')
                 $anchorScroll();
             }, 500);
         };
-    });
+    }]);
 

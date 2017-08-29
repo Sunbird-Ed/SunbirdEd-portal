@@ -284,10 +284,9 @@ gulp.task('production', ['clean:dist'], function () {
 });
 
 gulp.task('minifyJS', ['production'], function() {
-    return gulp.src(['dist/private/**/*.js', 'dist/public/**/*.js'], {base: "dist/"}).pipe(minify({
+    return gulp.src(['dist/private/**/*.js', 'dist/public/**/*.js', '!dist/public/**/publicAppRoute.js',  '!dist/private/**/appRoute.js'], {base: "dist/"}).pipe(minify({
         minify: true,
         collapseWhitespace: true,
-        conservativeCollapse: true,
         minifyJS: true
     })).pipe(gulp.dest('dist'));
 });
@@ -301,8 +300,8 @@ gulp.task('minifyCSS', ['minifyJS'], function() {
     })).pipe(gulp.dest('dist'));
 });
 gulp.task('minify-html', ['minifyCSS'], function() {
-    var opts = {comments:true,spare:true};
-    return gulp.src(['dist/private/views/**/*.html', 'dist/public/views/**/*.html', 'dist/public/*.html'], {base: "dist/"})
+    var opts = { empty: true, comments:false, spare:false };
+    return gulp.src(['dist/private/views/**/*.html', 'dist/public/views/**/*.html'], {base: "dist/"})
         .pipe(minifyHTML(opts))
         .pipe(gulp.dest('dist'))
 });
