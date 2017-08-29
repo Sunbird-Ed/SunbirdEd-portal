@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('loginApp')
-    .directive('appLoader', function () {
+    .directive('appLoader', [function () {
         return {
             templateUrl: 'views/errorhandler/loaderWithMessage.html',
             restrict: 'E',
@@ -16,4 +16,4 @@ angular.module('loginApp')
                  : 'We are fetching details';
             }
         };
-    });
+    }]);
