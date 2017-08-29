@@ -24,7 +24,8 @@
                                 </div>
                             </div> -->
                 </div>
-                <div class="four wide column margin-top-Negative30" ng-if="(toc.courseType === 'ENROLLED_COURSE' || toc.courseType !== 'ENROLLED_COURSE') && toc.isCourseAdmin">
+                <!-- Course admin should not be able to see other courses progress dashboard -->
+                <div class="four wide column margin-top-Negative30" ng-if="toc.courseType === 'ENROLLED_COURSE' && toc.isCourseAdmin">
                   <span ng-if="toc.courseTotal"><p class="text-align-center">Your Progress {{(toc.courseProgress * 100 / toc.courseTotal)| number: 0 || 0}}%</p></span>
                   <div class="ui selection dropdown float-ContentRight" id="courseDropdownValues" ng-init="toc.initDropdownValues()">
                     <i class="dropdown icon"></i>
