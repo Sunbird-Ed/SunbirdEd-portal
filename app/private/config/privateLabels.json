@@ -207,7 +207,8 @@
             "profile": "Profile",
             "workSpace": "Workspace",
             "logout": "Logout",
-            "dashboard": "Admin dashboard"
+            "dashboard": "Admin dashboard",
+            "myActivity": "My Activity"
         },
         "CONTENT_FLAG": {
             "contentFlagText": "Flag content as inappropriate",

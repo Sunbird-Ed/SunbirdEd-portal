@@ -261,6 +261,20 @@ angular.module('playerApp')
                         }];
 
                         break;
+                    case 'MyActivity':
+
+                        $rootScope.breadCrumbsData = [{
+                            name: 'Home',
+                            link: 'home'
+                        }, {
+                            name: 'Profile',
+                            link: 'profile'
+                        }, {
+                            name: 'Course Creation Dashboard',
+                            link: ''
+                        }];
+
+                        break;
                     default:
                         {
                             $rootScope.breadCrumbsData = null;

@@ -4,9 +4,9 @@ angular.module('playerApp')
   .controller('courseScheduleCtrl',
     ['courseService', 'sessionService', '$stateParams', '$state', '$timeout', '$scope', '$rootScope',
         'toasterService', '$location', '$anchorScroll', 'contentStateService', '$window', 'batchService',
-        'dataService',
+        'dataService', 'permissionsService',
         function (courseService, sessionService, $stateParams, $state, $timeout, $scope, $rootScope,
-        toasterService, $location, $anchorScroll, contentStateService, $window, batchService, dataService) {
+        toasterService, $location, $anchorScroll, contentStateService, $window, batchService, dataService, permissionsService) {
             var toc = this;
             toc.playList = [];
             toc.playListContent = [];
@@ -24,6 +24,13 @@ angular.module('playerApp')
                 1: 'blue',
                 2: 'green'
             };
+            toc.showCourseDashboard = false;
+            toc.isCourseAdmin = false;
+            var currentUserRoles = permissionsService.getCurrentUserRoles();
+            if(currentUserRoles.indexOf("COURSE_ADMIN") !== -1) {
+                toc.isCourseAdmin = true;
+            }
+
             toc.enrollUserToCourse = function (courseId) {
                 var req = {
                     request: {
@@ -56,6 +63,7 @@ angular.module('playerApp')
             };
 
             toc.resumeCourse = function () {
+                toc.showCourseDashboard = false;
                 if ($rootScope.isTocPage && toc.playContent) {
                     if ($location.hash().indexOf('tocPlayer') < 0) {
           // once last played index is given assign it for now zero
@@ -500,6 +508,7 @@ angular.module('playerApp')
                     toc.init();
                 }
             };
+
             toc.batchCardShow = true;
             toc.batchDetailsShow = false;
             toc.showBatchCardList = function () {
@@ -530,4 +539,16 @@ angular.module('playerApp')
                     });
                 }
             };
+
+            /**
+             * @Function initDropdownValue
+             * @Description - values - resume course and view course dashboard
+             * @return  {[type]}  [description]
+             */
+            toc.initDropdownValues = function (){
+                $('#courseDropdownValues').dropdown();
+            };
+
+            // Restore default values onAfterUser leave current state
+            $('#courseDropdownValues').dropdown('restore defaults');
         }]);

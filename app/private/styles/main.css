@@ -27,7 +27,7 @@
 23 px   1.438em
 24 px   1.500em
 25 px   1.5625 em
-30 px   1.875 em 
+30 px   1.875 em
 40 px   2.5 em
 50 px   3.125 em
 
@@ -2281,6 +2281,31 @@ span.dashBoardMenuItem.active {
   position: relative;
   float: right;
   top: 40px;
+}
+.table-headerDashboard {
+  color: #007AFF !important;
+  font-family: 'sunbirdboldfont' !important;
+}
+.dashboard-label {
+  font-family: 'sunbirdboldfont' !important;
+  font-size: 1.4rem !important;
+}
+.CloseButtonFont {
+  font-size: 1.5rem !important;
+}
+.text-font {
+  font-size: small !important;
+}
+.ui.courseDashBoardTable.table tr td {
+  border-top: 0px !important;
+}
+.corse-graph-navigation-btn {
+  position: absolute;
+  right: 1.6em;
+  top: 1.6em;
+}
+.course-graph-holder {
+  display: inline;
 }
 body {
   position: relative !important;
