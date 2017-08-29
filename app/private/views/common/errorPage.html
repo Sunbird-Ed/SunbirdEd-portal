@@ -1,4 +1,4 @@
-<div class="ui grid">
+<div class="ui grid" ng-if="errorClass=='no-results'">
   <div class="one wide column"></div>
   <div class="ten wide column">
     <div class="ui two column centered grid noResultContainer">
@@ -10,4 +10,8 @@
     </div>
   </div>
   <div class="one wide column"></div>
+</div>
+<div class="ui huge {{errorClass}} message" ng-if="message && errorClass!='no-results'">
+  <i ng-if="isClose" class="close icon" ng-click="closeErrorMessage()"></i>
+  <span translate="messageType">{{message}}</span>
 </div>
