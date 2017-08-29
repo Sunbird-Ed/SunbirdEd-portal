@@ -182,11 +182,11 @@ angular.module('playerApp')
 
                         // update status of content items
                 toc.playList.forEach(function (item, index) {
-                    if (index >= 0 && toc.contentStatusList[toc.playList[index]]) {
-                        $('#node' + index).find('.icon')
-                       .removeClass('grey blue green')
-                       .addClass(toc.contentStatusList[toc.playList[index]]);
+                 if (index >= 0 && toc.contentStatusList[toc.playList[index]]) {
+                        $('#node' + index).find('img').attr('src',
+                            toc.getContentIcon(toc.playListContent[index].mimeType,toc.contentStatusList[toc.playList[index]]));
                     }
+                    
                 });
             };
 
@@ -275,16 +275,14 @@ angular.module('playerApp')
                 return toc.playList;
             };
 
-            toc.getTreeData = function (contentData, parent) {
+                toc.getTreeData = function (contentData, parent) {
                 if (contentData.mimeType
             !== 'application/vnd.ekstep.content-collection') {
                     parent.push({
                         title: '<span id="node' + toc.treeKey + '" class="padded">' +
-                    '<i class="' + toc.getContentIcon(contentData.mimeType)
-                    + ' '
-                    + (toc.contentStatusList[contentData.identifier]
-                      ? toc.contentStatusList[contentData.identifier] : 'grey')
-                      + '"></i>' + contentData.name
+                    '<img src="' + toc.getContentIcon(contentData.mimeType,(toc.contentStatusList[contentData.identifier]
+                      ? toc.contentStatusList[contentData.identifier] : ''))
+                    + '" class="tocCourseStructureImg">' + contentData.name
                       + '</span><button id="resume-button-'
                       + toc.treeKey
                       + '" class="toc-resume-button contentVisibility-hidden' +
@@ -311,9 +309,9 @@ angular.module('playerApp')
                 return toc.fancyTree;
             };
 
-            toc.getContentClass = function (contentId) {
+          toc.getContentClass = function (contentId) {
                 var statusClass = {
-                    0: 'grey',
+                    0: '',
                     1: 'blue',
                     2: 'green'
                 };
@@ -323,16 +321,17 @@ angular.module('playerApp')
                 return 0;
             };
 
-            toc.getContentIcon = function (contentMimeType) {
+               toc.getContentIcon = function (contentMimeType,stsClass) {
+                stsClass=stsClass||'';
                 var contentIcons = {
-                    'application/pdf': 'large file pdf outline icon',
-                    'video/mp4': 'large file video outline icon',
-                    'video/x-youtube': 'large youtube square icon',
-                    'video/youtube': 'large youtube square icon',
-                    'application/vnd.ekstep.html-archive': 'large html5 icon',
-                    'application/vnd.ekstep.ecml-archive': 'large file archive outline icon',
-                    'application/epub': 'large file archive outline icon',
-                    'application/vnd.ekstep.h5p-archive': 'large file archive outline icon',
+                    'application/pdf': '/images/pdf'+stsClass+'.png',
+                    'video/mp4': '/images/video'+stsClass+'.png',
+                    'video/x-youtube':  '/images/video'+stsClass+'.png',
+                    'video/youtube':  '/images/video'+stsClass+'.png',
+                    'application/vnd.ekstep.html-archive':  '/images/app'+stsClass+'.png',
+                    'application/vnd.ekstep.ecml-archive': '/images/app'+stsClass+'.png',
+                    'application/epub': '/images/app'+stsClass+'.png',
+                    'application/vnd.ekstep.h5p-archive':  '/images/video'+stsClass+'.png',
 
                     'application/vnd.ekstep.content-collection': 'large folder'
                + ' open outline icon grey icon'
