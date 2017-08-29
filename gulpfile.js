@@ -299,13 +299,13 @@ gulp.task('minifyCSS', ['minifyJS'], function() {
         minifyCSS: true
     })).pipe(gulp.dest('dist'));
 });
-gulp.task('minify-html', ['minifyCSS'], function() {
+gulp.task('minifyHTML', ['minifyCSS'], function() {
     var opts = { empty: true, comments:false, spare:false };
     return gulp.src(['dist/private/views/**/*.html', 'dist/public/views/**/*.html'], {base: "dist/"})
         .pipe(minifyHTML(opts))
         .pipe(gulp.dest('dist'))
 });
-gulp.task('packageNodeModules', ['minify-html'], function(){
+gulp.task('packageNodeModules', ['minifyHTML'], function(){
     return gulp.src(['node_modules/**/*'])
         .pipe(gulp.dest(player.dist + '/node_modules'));
 });
