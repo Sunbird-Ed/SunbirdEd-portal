@@ -872,6 +872,7 @@ div:focus {
 .content-player {
   position: relative;
   width: 99.8%;
+  z-index: 11 !important;
 }
 .player-video {
   width: 100% !important;
@@ -909,6 +910,7 @@ div:focus {
 }
 .contentMetaSection {
   top: -40px;
+  z-index: 10 !important;
 }
 .slick-prev,
 .slick-next {
