@@ -1072,25 +1072,25 @@ slick-prev:before,
   margin-top: -12px !important;
 }
 .noResultContainer {
-  margin-top: 15% !important;
+  margin-top: 12% !important;
 }
 .noresult.column img {
-  width: 5em;
-  height: 5em;
+  width: 9em;
+  height: 9em;
   display: block;
   margin: auto;
 }
 .noResultText {
   text-align: center;
   padding-top: 20px;
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 600;
   color: #979797;
 }
 .noResultSearchText {
   text-align: center;
   padding-top: 5px;
-  font-size: 13px;
+  font-size: 16px;
   /* font-weight: 600; */
   color: #979797;
 }
