@@ -1351,6 +1351,10 @@ ul.fancytree-container li {
   display: block;
   padding-top: 8px;
 }
+.tocCourseStructureImg {
+  padding-right: 10px;
+  margin-bottom: -4px;
+}
 .homeCard.ui.card {
   max-width: 100%;
   position: relative;
@@ -2065,6 +2069,12 @@ ul.fancytree-container li {
 }
 .notelistscroll {
   height: 600px;
+  overflow-y: scroll;
+  cursor: pointer;
+  border-top: 0!important;
+}
+.notelistrightscroll {
+  max-height: 600px;
   overflow-y: scroll;
   cursor: pointer;
   border-top: 0!important;
