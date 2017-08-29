@@ -10,9 +10,9 @@
  */
 angular.module('playerApp')
     .controller('AllUploadedContentController', ['contentService', 'searchService', 'config',
-        '$rootScope', '$state', 'toasterService', '$scope', 'workSpaceUtilsService',
+        '$rootScope', '$state', 'toasterService', '$scope', 'workSpaceUtilsService', '$timeout',
         'PaginationService', function (contentService, searchService, config, $rootScope, $state,
-            toasterService, $scope, workSpaceUtilsService, PaginationService) {
+            toasterService, $scope, workSpaceUtilsService, $timeout, PaginationService) {
             var allUploadedContent = this;
             allUploadedContent.userId = $rootScope.userId;
             allUploadedContent.contentStatus = ['Draft'];
@@ -89,29 +89,27 @@ angular.module('playerApp')
                 }
             };
 
-            allUploadedContent.applyAction = function () {
-                var action = $('#actionDropDown').dropdown('get value');
-                if (!action) {
-                    toasterService.warning(allUploadedContent.message.RETIRE_CONTENT.SELECT_ACTION);
-                    return;
-                }
-                if (allUploadedContent.selectedContentItem.length === 0) {
-                    toasterService.warning(allUploadedContent.message.RETIRE_CONTENT
-                                                                    .SELECT_CONTENT + ' ' + action);
-                } else {
-                    switch (action) {
-                    case 'delete':
-                        allUploadedContent.deleteContent();
-                        break;
-                    default:
-                        break;
-                    }
-                }
+            allUploadedContent.openRemoveContentModel = function (ContentId) {
+                allUploadedContent.removeContentId = ContentId;
+                allUploadedContent.showRemoveContentModel = true;
+                $timeout(function () {
+                    $('#removeContentModel').modal({
+                    }).modal('show');
+                }, 10);
             };
 
-            allUploadedContent.deleteContent = function () {
-                var requestData = workSpaceUtilsService.reduceObjectIntoArray(
-                                            allUploadedContent.selectedContentItem, 'identifier');
+            allUploadedContent.hideRemoveContentModel = function () {
+                $('#removeContentModel').modal('hide');
+                $('#removeContentModel').modal('hide all');
+                $('#removeContentModel').modal('hide other');
+                $('#removeContentModel').modal('hide dimmer');
+                allUploadedContent.removeContentId = '';
+                allUploadedContent.showRemoveContentModel = false;
+            };
+
+            allUploadedContent.deleteContent = function (contentId) {
+                var requestData = [contentId];
+                allUploadedContent.hideRemoveContentModel();
                 allUploadedContent.loader = toasterService.loader('', allUploadedContent.message
                                             .RETIRE_CONTENT.START);
                 var request = {
@@ -129,29 +127,12 @@ angular.module('playerApp')
                             allUploadedContent.pageNumber, allUploadedContent.pageLimit);
                     } else {
                         allUploadedContent.loader.showLoader = false;
-                        allUploadedContent.handleFailedResponse(res, requestData);
+                        toasterService.error(allUploadedContent.message.RETIRE_CONTENT.NOT_DELETE);
                     }
                 }).catch(function () {
                     allUploadedContent.loader.showLoader = false;
-                    toasterService.error(allUploadedContent.message.RETIRE_CONTENT.FAILED);
+                    toasterService.error(allUploadedContent.message.RETIRE_CONTENT.NOT_DELETE);
                 });
-            };
-
-            allUploadedContent.handleFailedResponse = function (res, requestData) {
-                var length = res && res.result ? res.result.length : requestData.length;
-                var failedContentIds = res && res.result ? workSpaceUtilsService
-                                    .reduceObjectIntoArray(res.result, 'contentId') : requestData;
-                var deletedContentIds = workSpaceUtilsService
-                                    .getDeletedContentIds(requestData, failedContentIds);
-                allUploadedContent.allUploadedContentData = workSpaceUtilsService
-                .removeContentLocal(allUploadedContent.allUploadedContentData, deletedContentIds);
-                allUploadedContent.selectedContentItem = workSpaceUtilsService
-                .removeContentLocal(allUploadedContent.selectedContentItem, deletedContentIds);
-                toasterService.error(length + ' ' + allUploadedContent.message
-                                    .RETIRE_CONTENT.NOT_DELETE);
-                allUploadedContent.pager =
-                PaginationService.GetPager(allUploadedContent.totalCount - length,
-                                    allUploadedContent.pageNumber, allUploadedContent.pageLimit);
             };
 
             allUploadedContent.setPage = function (page) {

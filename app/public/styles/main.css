@@ -293,15 +293,15 @@ th {
 /*course structure page fonts*/
 .courseStructureSectionHeading {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 1.9em !important;
+  font-size: 1.67em !important;
 }
 .courseStructureHeading {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 0.955em !important;
+  font-size: 0.85em !important;
 }
 .courseStructureDesc {
   font-family: 'sunbirdregularfont' !important;
-  font-size: 0.75em !important;
+  font-size: 0.7em !important;
 }
 /*course structure accordian fonts*/
 .courseAccordianHeading {
@@ -428,6 +428,9 @@ th {
 .padding-bottom-5 {
   padding-bottom: 5px!important;
 }
+.padding-top-5 {
+  padding-top: 5px!important;
+}
 .padding-bottom-10 {
   padding-bottom: 10px!important;
 }
@@ -548,7 +551,7 @@ th {
   text-transform: lowercase !important;
 }
 .cursor-pointer {
-  cursor: pointer;
+  cursor: pointer !important;
 }
 .cursor-pointerText {
   cursor: text;
@@ -608,6 +611,10 @@ th {
 .course-header-divider {
   padding-right: 15px !important;
   border-right: 1px solid black !important;
+}
+.ui.blue.button,
+.ui.blue.buttons .button {
+  background-color: #006CFF !important;
 }
 .capitalizeTextInfo {
   text-transform: capitalize;
@@ -744,6 +751,9 @@ th {
   height: auto;
   width: 57px !important;
   position: absolute !important;
+}
+.rightSideSectionCards.ui.card > .content > .header {
+  font-size: 1.18em !important;
 }
 .ui.card > .sliderCards.content {
   -webkit-box-flex: 1;
@@ -1215,6 +1225,7 @@ span.fancytree-title {
   padding: 2% !important;
   font-size: 16px !important;
   color: black !important;
+  font-family: 'sunbirdregularfont' !important;
 }
 .toc-left-nav-btn-content {
   text-align: left;
@@ -1229,8 +1240,8 @@ span.fancytree-title {
   margin-bottom: 2px;
 }
 .toc-note {
-  font-size: 10px !important;
-  margin: 15px !important;
+  font-size: 15px !important;
+  margin: 0px !important;
 }
 .toc-note-content {
   margin-top: 46px !important;
@@ -1258,6 +1269,7 @@ span.fancytree-title {
   color: #a5a5ad;
   line-height: 1.6;
   font-size: 1em;
+  padding-left: 12px;
 }
 .courseupdate b {
   font-weight: 400;
@@ -1297,9 +1309,41 @@ ul.fancytree-container li {
 }
 .rightSideSectionCards .content .header a {
   color: #007AFF !important;
+  font-size: 0.9em !important;
 }
 .tocNavigationRow {
   top: -25px;
+}
+.takenoteicon {
+  font-size: 2em !important;
+  margin: 0 auto 0.8rem !important;
+}
+.curriculum-content {
+  font-size: 15px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.contentdetail {
+  color: #979797;
+  font-size: 13px;
+}
+.cardtakenote {
+  color: #0076FE;
+  vertical-align: top;
+  display: inline-block;
+  text-align: center;
+  width: 120px;
+  font-family: 'sunbirdregularfont' !important;
+  font-size: 1em;
+  text-decoration: underline;
+}
+.cardtakenote img {
+  width: 40px;
+  height: 50px;
+}
+.cardtakenote span {
+  display: block;
+  padding-top: 8px;
 }
 .homeCard.ui.card {
   max-width: 100%;
@@ -1997,6 +2041,10 @@ ul.fancytree-container li {
 .youTubeFileUploadForm {
   max-width: 90% !important;
 }
+/*draft content pagination positioning */
+.paginationAlignment {
+  padding-right: 6.3em !important;
+}
 .addnotes i.circular.icon {
   padding: .6em .6em!important;
   position: absolute;
@@ -2094,13 +2142,10 @@ ul.fancytree-container li {
   margin-left: 30px;
   float: left;
   background: #F5F5F5;
-  height: 250px;
+  max-height: 250px;
   overflow-y: auto;
   border-top: none !important;
   margin-right: 5px !important;
-}
-.batchcardListContent {
-  min-height: 150px;
 }
 #batchcardList::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
@@ -2182,6 +2227,14 @@ ul.fancytree-container li {
 }
 .batchSelectedDetails.ui.list > .item {
   color: #333;
+}
+.selectedBatchMeta.meta {
+  color: rgba(0, 0, 0, 0.7) !important;
+  font-size: 0.89em !important;
+  line-height: 2;
+}
+.selectedBatchContent {
+  color: rgba(0, 0, 0, 0.7) !important;
 }
 span.dashBoardMenuItem.active {
   color: #0076FE !important;
