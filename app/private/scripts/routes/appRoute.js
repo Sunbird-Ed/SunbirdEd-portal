@@ -230,10 +230,10 @@ angular.module('playerApp')
               });
               routeHelperService.loadRouteConfig('Toc', $stateParams);
           },
-          onExit: function ($rootScope,dataService) {
+          onExit: function ($rootScope, dataService) {
               $rootScope.isTocPage = false;
               $rootScope.courseActive = '';
-              dataService.setData('isTrackingEnabled',false);
+              dataService.setData('isTrackingEnabled', false);
           }
       })
       .state('Community', {
@@ -377,10 +377,10 @@ angular.module('playerApp')
                   url: '/private/index#!/course/' + $stateParams.courseId + '/' + $stateParams.lectureView + '/' + $stateParams.contentId + '/' + $stateParams.contentIndex
               });
           },
-          onExit: function ($rootScope,dataService) {
+          onExit: function ($rootScope, dataService) {
               $rootScope.isTocPage = false;
               $rootScope.courseActive = '';
-              dataService.setData('isTrackingEnabled',false);
+              dataService.setData('isTrackingEnabled', false);
           }
       })
       .state('WorkSpace', {
@@ -972,10 +972,10 @@ angular.module('playerApp')
           }
           switch (toState.name) {
           case 'WorkSpace':
-              routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event);
+              routeHelperService.checkStateAccess(config.WORKSPACE_ACCESS_ROLES, false, event);
               break;
           case 'WorkSpace.ContentCreation':
-              routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event);
+              routeHelperService.checkStateAccess(config.WORKSPACE_ACCESS_ROLES, false, event);
               break;
           case 'CreateLesson':
               routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event);
@@ -996,10 +996,10 @@ angular.module('playerApp')
               routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event);
               break;
           case 'CollectionEditor':
-              routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event);
+              routeHelperService.checkStateAccess(config.WORKSPACE_ACCESS_ROLES, false, event);
               break;
           case 'PreviewContent':
-              routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event);
+              routeHelperService.checkStateAccess(config.WORKSPACE_ACCESS_ROLES, false, event);
               break;
           case 'WorkSpace.UpForReviewContent':
               routeHelperService.checkStateAccess(['CONTENT_REVIEWER', 'CONTENT_REVIEW'], false, event);
@@ -1007,7 +1007,7 @@ angular.module('playerApp')
           case 'WorkSpace.FlaggedContent':
               routeHelperService.checkStateAccess(['FLAG_REVIEWER'], false, event);
               break;
-		      case 'orgDashboard':
+		  case 'orgDashboard':
               routeHelperService.checkStateAccess(['ORG_ADMIN', 'SYSTEM_ADMINISTRATION'], false, event);
               break;
           case 'WorkSpace.DraftContent':
