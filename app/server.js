@@ -80,6 +80,9 @@ app.use(session({
 }));
 app.use(keycloak.middleware({ admin: '/callback', logout: '/logout' }));
 
+/*the below line will be replaced while creating the deployment package. this line must not be deleted*/
+app.use(staticGzip(/(invalid)/));
+
 app.set('view engine', 'ejs');
 
 app.use(express.static(path.join(__dirname, '/')));
