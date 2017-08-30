@@ -40,7 +40,7 @@ angular.module('playerApp')
         courseDashboard.filterTimePeriod = courseDashboard.filterTimePeriod ? courseDashboard.filterTimePeriod : '7d';
 
         var request = {
-          courseId: courseDashboard.courseIdentifier,
+          courseId: courseDashboard.batchIdentifier,
           timePeriod: courseDashboard.filterTimePeriod
         };
 
@@ -138,7 +138,7 @@ angular.module('playerApp')
       courseDashboard.buildMyBatchesDropdown = function() {
         if (courseDashboard.myBatches.length === 1) {
           var firstChild = _.first(_.values(courseDashboard.myBatches), 1);
-          courseDashboard.courseIdentifier = firstChild.id;
+          courseDashboard.batchIdentifier = firstChild.id;
           courseDashboard.courseName = firstChild.name;
           getCourseDashboardData('7d');
         } else {
@@ -188,12 +188,12 @@ angular.module('playerApp')
        * @param string batchName
        */
       courseDashboard.onAfterBatchChange = function(batchId, batchName) {
-        if (courseDashboard.courseIdentifier == batchId) {
+        if (courseDashboard.batchIdentifier == batchId) {
           console.log('avoid same apis call twice');
           return false;
         }
         courseDashboard.showLoader = true;
-        courseDashboard.courseIdentifier = batchId;
+        courseDashboard.batchIdentifier = batchId;
         courseDashboard.courseName = batchName;
         courseDashboard.isMultipleCourses = false;
         getCourseDashboardData();
