@@ -14,7 +14,7 @@
             </div>
           </div>
         </div>
-        <div class="right floated three wide column padding-right-dropdown" ng-hide="dashboardData.showOrgWarningDiv">
+        <div class="right floated three wide column padding-right-dropdown padding-right-10" ng-hide="dashboardData.showOrgWarningDiv">
           <div class="ui dropdown float-ContentRight" id="dropdownMenu">
             <div class="text dashBoardSectionHeading">Creation</div>
             <span class="dashBoardSectionHeading"><i class="dropdown icon"></i></span>
@@ -46,11 +46,13 @@
           </div>
           Please select a organisation from the above list
         </div>
-        <div class="ui three cards" ng-show="dashboardData.showDataDiv">
-          <div class="card" ng-repeat="item in dashboardData.numericStatArray">
-            <div class="content center aligned">
-              <div class="meta dashBoardCardText">{{item.name}}</div>
-              <h2 class="description dashboardCardSubText">{{item.value}}</h2>
+        <div class="ui grid" ng-show="dashboardData.showDataDiv">
+          <div class="four wide column" ng-repeat="item in dashboardData.numericStatArray">
+            <div class="ui card adminDashboardCard">
+              <div class="content center aligned">
+                <div class="meta dashBoardCardText">{{item.name}}</div>
+                <h2 class="description dashboardCardSubText">{{item.value}}</h2>
+              </div>
             </div>
           </div>
         </div>
@@ -63,6 +65,11 @@
             <canvas height="{{dashboardData.height}}" class="chart chart-line adminCanvasPadding adminCanvasBorder" chart-data="graph[2]" chart-labels="graph[1]" chart-series="graph[0]" chart-colors="graph[3]" chart-options="graph[4]" ng-if="$index == dashboardData.graphShow">
             </canvas>
           </div>
+        </div>
+        <div class="twelve wide column margin-top-20" ng-show="dashboardData.showDataDiv">
+          <p class="text-align-right dashBoardCardText">Download this view as:
+            <a href="Javascript:void(0);" class="item text-decoration-underline padding-left-10 cursor-pointer">CSV</a>
+          </p>
         </div>
       </div>
     </div>
