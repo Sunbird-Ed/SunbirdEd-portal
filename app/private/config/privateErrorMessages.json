@@ -23,7 +23,8 @@
             "DATA": {
                 "START": "We are fetching data",
                 "FAILED": "Fetching data failed, please try again later...",
-                "NO_CONTENT": "No results found"
+                "NO_CONTENT": "No results found",
+                "NO_CONTENT_TEXT":"Please search for something else."
             },
             "USER": {
                 "PROFILE_FAILED": "Fetching profile failed, please try again later..."

@@ -17,15 +17,15 @@
                         </div>
                         <div class="sliderCards content">
                             <span class="sliderCardSubDesc">
-                        <span>
-                            {{ item.description | limitTo: 70 }}&nbsp;<i ng-show="item.description.length >= 70" class="ellipsis horizontal icon popup-button link" data-content="{{item.description}}" data-variation="wide"></i>
-                        </span>
+                                <span>
+                                    {{ item.description | limitTo: 70 }}&nbsp;<i ng-show="item.description.length >= 70" class="ellipsis horizontal icon popup-button link" data-content="{{item.description}}" data-variation="wide"></i>
+                                </span>
                             </span>
                         </div>
                     </div>
                 </div>
-                <div class="ui huge positive message" ng-if="upForReviewContent.upForReviewContentData.length === 0">
-                    <p>{{$root.errorMessages.WORKSPACE.UP_FOR_REVIEW.NO_CONTENT}}</p>
+                <div ng-if="upForReviewContent.error.showError">
+                    <error-message data="{{upForReviewContent.error}}" visibility="upForReviewContent.error.showError"></error-message>
                 </div>
             </div>
             <div class="twelve wide column" ng-if="upForReviewContent.loader.showLoader">
