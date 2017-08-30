@@ -63,7 +63,7 @@
             "BATCH": {
                 "CREATE": "course/batch/create",
                 "UPDATE": "course/batch/update",
-                "ADD_USERS": "course/batch/user/add",
+                "ADD_USERS": "course/batch/users/add",
                 "GET_DETAILS": "course/batch/read",
                 "GET_BATCHS": "course/batch/search"
             },
