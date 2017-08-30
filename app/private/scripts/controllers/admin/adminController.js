@@ -235,6 +235,58 @@ angular.module('playerApp')
                     }, 0);
                 }
             };
+
+            admin.assignBadgeModal = function (id, badges) {
+                $('#assignBadge').modal({
+                    onShow: function () {
+                        admin.userIdentifier = id;
+                        admin.userBadges = badges;
+                        admin.disableAsignButton = false;
+                        $timeout(function () {
+                            $('#badgeDropdown').dropdown();
+                        }, 100);
+                    },
+                    onHide: function () {
+                        admin.userIdentifier = '';
+                        admin.userBadges = [];
+                        return true;
+                    }
+                }).modal('show');
+            };
+
+            admin.badges = adminService.getBadgesList();
+
+            admin.assignBadge = function (badge, identifier) {
+                var newBadge =
+                    {
+                        params: { },
+                        request: {
+                            badgeTypeId: badge.id,
+                            receiverId: identifier
+                        }
+                    };
+
+                adminService.addBadges(newBadge).then(function (res) {
+                    if (res.responseCode === 'OK') {
+                        admin.assignedBadgeId = res.result.id;
+                        admin.assigedBadgeName = badge.name;
+                        toasterService.success(badge.name + ' assigned successfully');
+                    } else { toasterService.error(res.params.errmsg); }
+                }).catch(function (err) {
+                    toasterService.error('Some thing went wrong. please try again later..');
+                });
+            };
+            // admin.getBadgeName = function (user) {
+            //     if (user.badges) {
+            //         admin.userBadgeS = [];
+            //         userBadges.forEach(function (badge) {
+            //             var userBadge = admin.badges.find(function (badgE) {
+            //                 return badgE.id === badge.badgeTypeId;
+            //             });
+            //             userBadgeS.push(userBadge);
+            //         });
+            //     }
+            // };
             admin.getUserRoles();
         }]);
 

@@ -9,9 +9,9 @@
  */
 angular.module('playerApp') // add those all values
   .controller('ProfileController', ['$scope', '$rootScope', 'contentService', 'userService', 'toasterService', 'config',
-      '$timeout', '$filter', 'uuid4', 'formValidation', 'searchService', '$state', 'learnService',
+      '$timeout', '$filter', 'uuid4', 'formValidation', 'searchService', '$state', 'learnService', 'adminService',
       function ($scope, $rootScope, contentService, userService, toasterService, config,
-      $timeout, $filter, uuid4, formValidation, searchService, $state, learnService) {
+      $timeout, $filter, uuid4, formValidation, searchService, $state, learnService, adminService) {
           var profile = this;
           var apiMessages = $rootScope.errorMessages.PROFILE.API;
           profile.userId = $rootScope.userId;
@@ -94,6 +94,20 @@ angular.module('playerApp') // add those all values
                   profile.basicProfile = angular.copy(profile.user);
                   profile.education = angular.copy(profileData.education);
                   profile.experience = angular.copy(profileData.jobProfile);
+                  if (profile.user.badges) {
+                      var badges = adminService.getBadgesList();
+                      if (profile.user.badges.length) {
+                          profile.user.badges.forEach(function (badge) {
+                              var userBadge = badges.find(function (badgE) {
+                                  return badgE.id === badge.badgeTypeId;
+                              });
+
+                              profile.badges.push({
+                                  title: userBadge.name
+                              });
+                          });
+                      }
+                  }
               } else {
                   profile.loader.showLoader = false;
                   profile.isError = true;
