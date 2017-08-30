@@ -8,7 +8,7 @@
  * Service in the playerApp.
  */
 angular.module('loginApp')
-    .service('httpService', function ($http, $filter, uuid4) {
+    .service('httpService', ['$http', '$filter', 'uuid4', function ($http, $filter, uuid4) {
         function getHeader() {
             var headers = {
                 'Content-Type': 'application/json',
@@ -52,4 +52,4 @@ angular.module('loginApp')
             var request = httpCall(url, data, 'GET', headers);
             return (request.then(handleSuccess, handleError));
         };
-    });
+    }]);

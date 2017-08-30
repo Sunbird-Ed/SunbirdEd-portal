@@ -34,6 +34,7 @@
             "INFO": "info",
             "WARNING": "warning",
             "SUCCESS": "success",
+            "NO_RESULTS":"no-results",
             "UN_AUTHORIZED": "You are not authorized to access this resource",
             "INVALID_IMAGE": "Please upload a valid image file. Supported formats: JPG, PNG, JPEG. Max size: 4MB.",
             "INVALID_FILE_SIZE": "is too large, maximum file size is",

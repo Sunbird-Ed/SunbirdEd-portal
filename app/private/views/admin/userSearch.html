@@ -7,16 +7,19 @@
           <a class="header "ng-click="user.status===1 && admin.openPublicProfile(user.identifier,user)">{{user.firstName}} &nbsp;{{user.lastName}}</a>
             <a ng-if="user.status===1 && user.isEditableProfile " sb-permissions permission-only="SYSTEM_ADMINISTRATION,ORG_ADMIN" class="float-ContentRight">
              <!-- update user roles -->
-            <span ng-click="admin.showModal(user.identifier,user.organisations);">
-              <i class="edit icon trashIcon-fontSize"></i>
-            </span>
-              <!-- delete user -->
-            <span>
-              <i class="trash outline icon trashIcon-fontSize"  
-              ng-click="admin.showdeleteModal(user.identifier,user.firstName,user.lastName);">
-                </i>
-            <span>
-              </a>
+              <span ng-click="admin.showModal(user.identifier,user.organisations);">
+                <i class="edit icon trashIcon-fontSize"></i>
+              </span>
+                <!-- delete user -->
+              <span>
+                <i class="trash outline icon trashIcon-fontSize"  
+                ng-click="admin.showdeleteModal(user.identifier,user.firstName,user.lastName);">
+                  </i>
+              <span>
+            </a>
+            <a class="float-ContentRight">
+                <img class="ui mini image badgeIconAlignment" src="images/badgeblue.png">
+            </a>
             <!-- organization Name -->
           <div class="meta ">
             <span class="cinema ">

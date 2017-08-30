@@ -1071,6 +1071,29 @@ slick-prev:before,
 .ui.tree-picker.modal .header .menu {
   margin-top: -12px !important;
 }
+.noResultContainer {
+  margin-top: 12% !important;
+}
+.noresult.column img {
+  width: 9em;
+  height: 9em;
+  display: block;
+  margin: auto;
+}
+.noResultText {
+  text-align: center;
+  padding-top: 20px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #979797;
+}
+.noResultSearchText {
+  text-align: center;
+  padding-top: 5px;
+  font-size: 16px;
+  /* font-weight: 600; */
+  color: #979797;
+}
 .down-arrow-accordion {
   float: right !important;
   font-size: large !important;
@@ -1350,6 +1373,10 @@ ul.fancytree-container li {
 .cardtakenote span {
   display: block;
   padding-top: 8px;
+}
+.tocCourseStructureImg {
+  padding-right: 10px;
+  margin-bottom: -4px;
 }
 .homeCard.ui.card {
   max-width: 100%;
@@ -2069,6 +2096,12 @@ ul.fancytree-container li {
   cursor: pointer;
   border-top: 0!important;
 }
+.notelistrightscroll {
+  max-height: 600px;
+  overflow-y: scroll;
+  cursor: pointer;
+  border-top: 0!important;
+}
 .notelistborder {
   border: 2px solid #d9d9d9!important;
   padding: 10px!important;
@@ -2150,6 +2183,12 @@ ul.fancytree-container li {
 }
 .orgRolesListView {
   margin: 0 10px 20px 0;
+}
+.badgeIconAlignment {
+  height: 20px !important;
+  width: 20px !important;
+  padding-top: 3px;
+  margin-right: 15px;
 }
 .batchCardDropDown {
   float: right;
