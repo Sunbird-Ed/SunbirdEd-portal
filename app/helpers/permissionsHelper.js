@@ -14,12 +14,14 @@ let PERMISSIONS_HELPER = {
     "course/update": ["CONTENT_CREATOR", "CONTENT_CREATION", "CONTENT_REVIEWER"],
     "course/review": ["CONTENT_CREATOR", "CONTENT_CREATION", "CONTENT_REVIEWER", "CONTENT_REVIEW"],
     "course/publish": ["CONTENT_REVIEWER", "CONTENT_REVIEW"],
-    "content/retire": ["CONTENT_REVIEWER", "CONTENT_REVIEW"],
+    "content/retire": ["CONTENT_REVIEWER", "CONTENT_REVIEW", "FLAG_REVIEWER"],
     "content/reject": ["CONTENT_REVIEWER", "CONTENT_REVIEW"],
     "content/create": ["CONTENT_CREATOR", "CONTENT_CREATION", "CONTENT_REVIEWER"],
     "content/update": ["CONTENT_CREATOR", "CONTENT_CREATION", "CONTENT_REVIEWER"],
     "content/review": ["CONTENT_CREATOR", "CONTENT_CREATION", "CONTENT_REVIEWER", "CONTENT_REVIEW"],
     "content/publish": ["CONTENT_REVIEWER", "CONTENT_REVIEW"],
+    "content/flag/accept": ["FLAG_REVIEWER"],
+    "content/flag/reject": ["FLAG_REVIEWER"],
     "organisation/update": ["ADMIN", "ORG_MANAGEMENT"],
     "user/create": ["ADMIN",
       "ORG_MANAGEMENT",
@@ -27,14 +29,14 @@ let PERMISSIONS_HELPER = {
       "MEMBERSHIP_MANAGEMENT",
       "ORG_MODERATOR"
     ],
-    "user/v1/upload": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION"],
-    "org/v1/role/assign": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION"],
-    "user/v1/block": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION"],
+    "user/upload": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION"],
+    "user/assign/role": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION"],
+    "user/block": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION"],
     "dashboard/v1/creation": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION"],
     "dashboard/v1/progress":["COURSE_MENTOR"],
     "dashboard/v1/consumption": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION", "COURSE_CREATOR"],
-    "org/v1/upload": ["SYSTEM_ADMINISTRATION"],
-    "data/v1/upload/status/": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION"]
+    "org/upload": ["SYSTEM_ADMINISTRATION"],
+    "upload/status/": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION"]
   },
 
   getPermissions: function() {
