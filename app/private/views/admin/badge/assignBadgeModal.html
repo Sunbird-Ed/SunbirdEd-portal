@@ -15,10 +15,10 @@
         <p>Do you want to assign {{admin.badges[0].name}}?</p>
      </div>
     <div class="actions">
-        <button class="ui primary  button"  ng-disabled="admin.disableAsignButton" type="submit" 
+        <div class="ui primary approve button"  ng-disabled="admin.disableAsignButton" type="submit" 
                 ng-click="admin.assignBadge(admin.badges[0],admin.userIdentifier);admin.disableAsignButton=true;">
               YES
-            </button>
+            </div>
    <div class="ui negative cancel button">No</div>
             </div>
 </div>
