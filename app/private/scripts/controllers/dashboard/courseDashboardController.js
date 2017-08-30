@@ -102,7 +102,7 @@ angular.module('playerApp')
           "request": {
             "filters": {
               courseId: $stateParams.courseId,
-              status: [1,2,3],
+              status: ['1','2','3'],
               createdBy: $rootScope.userId
             },
             "sort_by": { createdDate: 'desc' }
