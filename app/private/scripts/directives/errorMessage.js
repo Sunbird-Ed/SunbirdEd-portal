@@ -11,7 +11,7 @@
 angular.module('playerApp')
     .directive('errorMessage', function () {
         return {
-            template: '<div class="ui huge {{errorClass}} message" ng-if="message"><i ng-if="isClose" class="close icon" ng-click="closeErrorMessage()"></i><span translate="messageType">{{message}}</span></div>',// eslint-disable-line
+            templateUrl: 'views/common/errorPage.html',// eslint-disable-line
             restrict: 'E',
             scope: {
                 visibility: '='
@@ -41,6 +41,11 @@ angular.module('playerApp')
                     ? attrs.data.message
                     : 'Success.';
                     scope.errorClass = 'success';
+                }
+                else if (attrs.data && attrs.data.messageType === 'no-results') {
+                    scope.message = attrs.data.message ? attrs.data.message : '';
+                    scope.messageText = attrs.data.messageText;
+                    scope.errorClass = 'no-results';
                 }
 
                 scope.closeErrorMessage = function () {

@@ -21,6 +21,9 @@ angular.module('playerApp')
             contentFlag.contentVersionKey = $scope.versionkey;
             contentFlag.reasons = ['Inappropriate content', 'Copyright violation',
                 'Privacy violation', 'Other'];
+            var message = $rootScope.labels.CONTENT_FLAG;
+            contentFlag.flagMessage = $scope.type === 'course' ? message.courseFlagText
+                                                                    : message.contentFlagText;
 
             contentFlag.hideContentFlagModal = function () {
                 $('#contentFlagModal').modal('hide');

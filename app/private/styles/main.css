@@ -27,7 +27,7 @@
 23 px   1.438em
 24 px   1.500em
 25 px   1.5625 em
-30 px   1.875 em 
+30 px   1.875 em
 40 px   2.5 em
 50 px   3.125 em
 
@@ -293,15 +293,15 @@ th {
 /*course structure page fonts*/
 .courseStructureSectionHeading {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 1.9em !important;
+  font-size: 1.67em !important;
 }
 .courseStructureHeading {
   font-family: 'sunbirdboldfont' !important;
-  font-size: 0.955em !important;
+  font-size: 0.85em !important;
 }
 .courseStructureDesc {
   font-family: 'sunbirdregularfont' !important;
-  font-size: 0.75em !important;
+  font-size: 0.7em !important;
 }
 /*course structure accordian fonts*/
 .courseAccordianHeading {
@@ -428,6 +428,9 @@ th {
 .padding-bottom-5 {
   padding-bottom: 5px!important;
 }
+.padding-top-5 {
+  padding-top: 5px!important;
+}
 .padding-bottom-10 {
   padding-bottom: 10px!important;
 }
@@ -499,6 +502,9 @@ th {
 .margin-right-15 {
   margin-right: 15px !important;
 }
+.margin-left-10 {
+  margin-left: 10px !important;
+}
 .margin-left-20 {
   margin-left: 20px !important;
 }
@@ -548,7 +554,7 @@ th {
   text-transform: lowercase !important;
 }
 .cursor-pointer {
-  cursor: pointer;
+  cursor: pointer !important;
 }
 .cursor-pointerText {
   cursor: text;
@@ -608,6 +614,13 @@ th {
 .course-header-divider {
   padding-right: 15px !important;
   border-right: 1px solid black !important;
+}
+.ui.blue.button,
+.ui.blue.buttons .button {
+  background-color: #006CFF !important;
+}
+.capitalizeTextInfo {
+  text-transform: capitalize;
 }
 .header-container {
   margin-left: 1px !important;
@@ -742,6 +755,9 @@ th {
   width: 57px !important;
   position: absolute !important;
 }
+.rightSideSectionCards.ui.card > .content > .header {
+  font-size: 1.18em !important;
+}
 .ui.card > .sliderCards.content {
   -webkit-box-flex: 1;
   -ms-flex-positive: 1;
@@ -777,7 +793,8 @@ th {
   z-index: '';
 }
 .sliderCards.ui.card:hover {
-  box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5 !important;
+  transition: all .3s ease 0s;
+  box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.5) !important;
 }
 .sliderCards.ui.card > .content > .description {
   clear: both;
@@ -818,6 +835,22 @@ div:focus {
 .ui.cards > .card > .content {
   padding-right: 3px !important;
 }
+/*three staackable cards width reduced to match design*/
+/*using ~ in calc because of Less issue with clac function */
+.ui.three.cards > .card {
+  width: calc(33.33333333% - 3.3em) !important;
+  margin-right: 0.2em !important;
+}
+.ui.three.cards > .card:hover {
+  transition: all .3s ease 0s;
+  box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.5) !important;
+}
+/* rating card */
+.fixedRatingCard {
+  max-height: 2.8em;
+  overflow: hidden;
+  height: 2.8em;
+}
 .content-input {
   display: none;
 }
@@ -842,6 +875,7 @@ div:focus {
 .content-player {
   position: relative;
   width: 99.8%;
+  z-index: 11 !important;
 }
 .player-video {
   width: 100% !important;
@@ -879,6 +913,7 @@ div:focus {
 }
 .contentMetaSection {
   top: -40px;
+  z-index: 10 !important;
 }
 .slick-prev,
 .slick-next {
@@ -1003,8 +1038,9 @@ slick-prev:before,
   border: 0!important;
   border-bottom: 1px solid #979797!important;
   border-radius: 0!important;
-  padding: 1em 0 !important;
-  margin: 0 !important;
+}
+.ui.modal .ui.dropdown > .text {
+  margin-left: -1.1em !important;
 }
 .ui.modal .ui.multiple.dropdown > .text {
   margin: 0 !important;
@@ -1034,6 +1070,29 @@ slick-prev:before,
 }
 .ui.tree-picker.modal .header .menu {
   margin-top: -12px !important;
+}
+.noResultContainer {
+  margin-top: 12% !important;
+}
+.noresult.column img {
+  width: 9em;
+  height: 9em;
+  display: block;
+  margin: auto;
+}
+.noResultText {
+  text-align: center;
+  padding-top: 20px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #979797;
+}
+.noResultSearchText {
+  text-align: center;
+  padding-top: 5px;
+  font-size: 16px;
+  /* font-weight: 600; */
+  color: #979797;
 }
 .down-arrow-accordion {
   float: right !important;
@@ -1195,6 +1254,7 @@ span.fancytree-title {
   padding: 2% !important;
   font-size: 16px !important;
   color: black !important;
+  font-family: 'sunbirdregularfont' !important;
 }
 .toc-left-nav-btn-content {
   text-align: left;
@@ -1209,8 +1269,8 @@ span.fancytree-title {
   margin-bottom: 2px;
 }
 .toc-note {
-  font-size: 10px !important;
-  margin: 15px !important;
+  font-size: 15px !important;
+  margin: 0px !important;
 }
 .toc-note-content {
   margin-top: 46px !important;
@@ -1238,6 +1298,7 @@ span.fancytree-title {
   color: #a5a5ad;
   line-height: 1.6;
   font-size: 1em;
+  padding-left: 12px;
 }
 .courseupdate b {
   font-weight: 400;
@@ -1277,9 +1338,45 @@ ul.fancytree-container li {
 }
 .rightSideSectionCards .content .header a {
   color: #007AFF !important;
+  font-size: 0.9em !important;
 }
 .tocNavigationRow {
   top: -25px;
+}
+.takenoteicon {
+  font-size: 2em !important;
+  margin: 0 auto 0.8rem !important;
+}
+.curriculum-content {
+  font-size: 15px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.contentdetail {
+  color: #979797;
+  font-size: 13px;
+}
+.cardtakenote {
+  color: #0076FE;
+  vertical-align: top;
+  display: inline-block;
+  text-align: center;
+  width: 120px;
+  font-family: 'sunbirdregularfont' !important;
+  font-size: 1em;
+  text-decoration: underline;
+}
+.cardtakenote img {
+  width: 40px;
+  height: 50px;
+}
+.cardtakenote span {
+  display: block;
+  padding-top: 8px;
+}
+.tocCourseStructureImg {
+  padding-right: 10px;
+  margin-bottom: -4px;
 }
 .homeCard.ui.card {
   max-width: 100%;
@@ -1977,6 +2074,10 @@ ul.fancytree-container li {
 .youTubeFileUploadForm {
   max-width: 90% !important;
 }
+/*draft content pagination positioning */
+.paginationAlignment {
+  padding-right: 6.3em !important;
+}
 .addnotes i.circular.icon {
   padding: .6em .6em!important;
   position: absolute;
@@ -1991,6 +2092,12 @@ ul.fancytree-container li {
 }
 .notelistscroll {
   height: 600px;
+  overflow-y: scroll;
+  cursor: pointer;
+  border-top: 0!important;
+}
+.notelistrightscroll {
+  max-height: 600px;
   overflow-y: scroll;
   cursor: pointer;
   border-top: 0!important;
@@ -2053,6 +2160,36 @@ ul.fancytree-container li {
 .trashIconAlign {
   margin: -0.2em -0.2em 0em 0em;
 }
+.selectOrgRoles {
+  padding: 20px 11px 10px 10px !important;
+  height: 200px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: flex-start;
+  -ms-flex-line-pack: start;
+  align-content: flex-start;
+  white-space: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.orgRolesListView {
+  margin: 0 10px 20px 0;
+}
+.badgeIconAlignment {
+  height: 20px !important;
+  width: 20px !important;
+  padding-top: 3px;
+  margin-right: 15px;
+}
 .batchCardDropDown {
   float: right;
   font-size: 13px !important;
@@ -2062,7 +2199,8 @@ ul.fancytree-container li {
   padding-top: 20px;
 }
 .headerBatchCard {
-  font-size: 1.3em;
+  font-weight: 700;
+  font-size: 1.18em;
   padding-left: 12px;
 }
 .ui.attached.batchCard.button {
@@ -2074,13 +2212,10 @@ ul.fancytree-container li {
   margin-left: 30px;
   float: left;
   background: #F5F5F5;
-  height: 250px;
+  max-height: 250px;
   overflow-y: auto;
   border-top: none !important;
   margin-right: 5px !important;
-}
-.batchcardListContent {
-  min-height: 150px;
 }
 #batchcardList::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
@@ -2163,6 +2298,14 @@ ul.fancytree-container li {
 .batchSelectedDetails.ui.list > .item {
   color: #333;
 }
+.selectedBatchMeta.meta {
+  color: rgba(0, 0, 0, 0.7) !important;
+  font-size: 0.89em !important;
+  line-height: 2;
+}
+.selectedBatchContent {
+  color: rgba(0, 0, 0, 0.7) !important;
+}
 span.dashBoardMenuItem.active {
   color: #0076FE !important;
   font-family: 'sunbirdboldfont' !important;
@@ -2182,6 +2325,31 @@ span.dashBoardMenuItem.active {
   position: relative;
   float: right;
   top: 40px;
+}
+.table-headerDashboard {
+  color: #007AFF !important;
+  font-family: 'sunbirdboldfont' !important;
+}
+.dashboard-label {
+  font-family: 'sunbirdboldfont' !important;
+  font-size: 1.4rem !important;
+}
+.CloseButtonFont {
+  font-size: 1.5rem !important;
+}
+.text-font {
+  font-size: small !important;
+}
+.ui.courseDashBoardTable.table tr td {
+  border-top: 0px !important;
+}
+.corse-graph-navigation-btn {
+  position: absolute;
+  right: 1.6em;
+  top: 1.6em;
+}
+.course-graph-holder {
+  display: inline;
 }
 body {
   position: relative !important;
