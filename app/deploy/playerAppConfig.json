@@ -77,6 +77,11 @@
                 },
                 "DELETE_USER": "user/block",
                 "UPDATE_USER_ORG_ROLES": "user/assign/role"
+            },
+            "BADGE":{
+                "GET":"badges/list",
+                "ASSIGN":"user/badges/add"
+
             }
         },
         "FILTER": {
