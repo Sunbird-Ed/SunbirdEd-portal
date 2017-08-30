@@ -572,7 +572,7 @@ gulp.task('compress', ['injectFiles'], function() {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('inject_staticGzip', function() {
+gulp.task('inject_staticGzip', ['compress'], function() {
   return gulp.src('dist/server.js')
     .pipe(map(function(file, cb) {
       var fileContents = file.contents.toString();
@@ -584,7 +584,7 @@ gulp.task('inject_staticGzip', function() {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('packageNodeModules', function(){
+gulp.task('packageNodeModules', ['inject_staticGzip'], function(){
     return gulp.src(['node_modules/**/*'])
         .pipe(gulp.dest(player.dist + '/node_modules'));
 });
