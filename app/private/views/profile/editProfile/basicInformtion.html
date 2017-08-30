@@ -68,7 +68,7 @@
 
 
     <div class="field">
-        <label>{{$root.labels.PROFILE.BASIC_PROFILE.subjects}}</label>{{profileCtrl.basicProfile.subject}}
+        <label>{{$root.labels.PROFILE.BASIC_PROFILE.subjects}}</label>
         <div class="field" ng-init=" profileCtrl.setSubject()">
             <select id="setSubjects" class="ui fluid dropdown " multiple="" ng-model="profileCtrl.user.subject" ng-value="option.value" ng-options=" subject for subject in profileCtrl.subjects">
                                            </select>
