@@ -40,8 +40,8 @@ angular.module('playerApp')
         ];
       } else if (datasetType == 'consumption') {
         return [{
-            backgroundColor: '#292929',
-            borderColor: '#292929',
+            backgroundColor: '#0062ff',
+            borderColor: '#0062ff',
             fill: false
         }];
       }
