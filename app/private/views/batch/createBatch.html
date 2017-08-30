@@ -1,5 +1,5 @@
 <div ng-init="batch.showCreateBatchModal()">
-    <div class="ui modal" id="createBatchModal">
+    <div class="ui longer modal" id="createBatchModal">
         <div class="header">
             <div class="ui grid">
                 <div class="eleven wide column">
@@ -12,7 +12,7 @@
                 </div>
             </div>
         </div>
-        <div class="content">
+        <div class="scrolling content">
             <form class="ui form" id="createBatch" name="createBatch" validate>
                 <div class="one field" ng-class="{true: 'error'}[batch.submitted && createBatch.name.$invalid]">
                     <div class="required field">

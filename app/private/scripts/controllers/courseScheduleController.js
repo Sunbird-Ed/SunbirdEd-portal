@@ -4,9 +4,9 @@ angular.module('playerApp')
   .controller('courseScheduleCtrl',
     ['courseService', 'sessionService', '$stateParams', '$state', '$timeout', '$scope', '$rootScope',
         'toasterService', '$location', '$anchorScroll', 'contentStateService', '$window', 'batchService',
-        'dataService',
+        'dataService', 'permissionsService',
         function (courseService, sessionService, $stateParams, $state, $timeout, $scope, $rootScope,
-        toasterService, $location, $anchorScroll, contentStateService, $window, batchService, dataService) {
+        toasterService, $location, $anchorScroll, contentStateService, $window, batchService, dataService, permissionsService) {
             var toc = this;
             toc.playList = [];
             toc.playListContent = [];
@@ -24,6 +24,13 @@ angular.module('playerApp')
                 1: 'blue',
                 2: 'green'
             };
+            toc.showCourseDashboard = false;
+            toc.isCourseAdmin = false;
+            var currentUserRoles = permissionsService.getCurrentUserRoles();
+            if(currentUserRoles.indexOf("COURSE_ADMIN") !== -1) {
+                toc.isCourseAdmin = true;
+            }
+
             toc.enrollUserToCourse = function (courseId) {
                 var req = {
                     request: {
@@ -56,6 +63,7 @@ angular.module('playerApp')
             };
 
             toc.resumeCourse = function () {
+                toc.showCourseDashboard = false;
                 if ($rootScope.isTocPage && toc.playContent) {
                     if ($location.hash().indexOf('tocPlayer') < 0) {
           // once last played index is given assign it for now zero
@@ -174,11 +182,11 @@ angular.module('playerApp')
 
                         // update status of content items
                 toc.playList.forEach(function (item, index) {
-                    if (index >= 0 && toc.contentStatusList[toc.playList[index]]) {
-                        $('#node' + index).find('.icon')
-                       .removeClass('grey blue green')
-                       .addClass(toc.contentStatusList[toc.playList[index]]);
+                 if (index >= 0 && toc.contentStatusList[toc.playList[index]]) {
+                        $('#node' + index).find('img').attr('src',
+                            toc.getContentIcon(toc.playListContent[index].mimeType,toc.contentStatusList[toc.playList[index]]));
                     }
+                    
                 });
             };
 
@@ -267,16 +275,14 @@ angular.module('playerApp')
                 return toc.playList;
             };
 
-            toc.getTreeData = function (contentData, parent) {
+                toc.getTreeData = function (contentData, parent) {
                 if (contentData.mimeType
             !== 'application/vnd.ekstep.content-collection') {
                     parent.push({
                         title: '<span id="node' + toc.treeKey + '" class="padded">' +
-                    '<i class="' + toc.getContentIcon(contentData.mimeType)
-                    + ' '
-                    + (toc.contentStatusList[contentData.identifier]
-                      ? toc.contentStatusList[contentData.identifier] : 'grey')
-                      + '"></i>' + contentData.name
+                    '<img src="' + toc.getContentIcon(contentData.mimeType,(toc.contentStatusList[contentData.identifier]
+                      ? toc.contentStatusList[contentData.identifier] : ''))
+                    + '" class="tocCourseStructureImg">' + contentData.name
                       + '</span><button id="resume-button-'
                       + toc.treeKey
                       + '" class="toc-resume-button contentVisibility-hidden' +
@@ -303,9 +309,9 @@ angular.module('playerApp')
                 return toc.fancyTree;
             };
 
-            toc.getContentClass = function (contentId) {
+          toc.getContentClass = function (contentId) {
                 var statusClass = {
-                    0: 'grey',
+                    0: '',
                     1: 'blue',
                     2: 'green'
                 };
@@ -315,16 +321,17 @@ angular.module('playerApp')
                 return 0;
             };
 
-            toc.getContentIcon = function (contentMimeType) {
+               toc.getContentIcon = function (contentMimeType,stsClass) {
+                stsClass=stsClass||'';
                 var contentIcons = {
-                    'application/pdf': 'large file pdf outline icon',
-                    'video/mp4': 'large file video outline icon',
-                    'video/x-youtube': 'large youtube square icon',
-                    'video/youtube': 'large youtube square icon',
-                    'application/vnd.ekstep.html-archive': 'large html5 icon',
-                    'application/vnd.ekstep.ecml-archive': 'large file archive outline icon',
-                    'application/epub': 'large file archive outline icon',
-                    'application/vnd.ekstep.h5p-archive': 'large file archive outline icon',
+                    'application/pdf': '/images/pdf'+stsClass+'.png',
+                    'video/mp4': '/images/video'+stsClass+'.png',
+                    'video/x-youtube':  '/images/video'+stsClass+'.png',
+                    'video/youtube':  '/images/video'+stsClass+'.png',
+                    'application/vnd.ekstep.html-archive':  '/images/app'+stsClass+'.png',
+                    'application/vnd.ekstep.ecml-archive': '/images/app'+stsClass+'.png',
+                    'application/epub': '/images/app'+stsClass+'.png',
+                    'application/vnd.ekstep.h5p-archive':  '/images/video'+stsClass+'.png',
 
                     'application/vnd.ekstep.content-collection': 'large folder'
                + ' open outline icon grey icon'
@@ -500,6 +507,7 @@ angular.module('playerApp')
                     toc.init();
                 }
             };
+
             toc.batchCardShow = true;
             toc.batchDetailsShow = false;
             toc.showBatchCardList = function () {
@@ -530,4 +538,16 @@ angular.module('playerApp')
                     });
                 }
             };
+
+            /**
+             * @Function initDropdownValue
+             * @Description - values - resume course and view course dashboard
+             * @return  {[type]}  [description]
+             */
+            toc.initDropdownValues = function (){
+                $('#courseDropdownValues').dropdown();
+            };
+
+            // Restore default values onAfterUser leave current state
+            $('#courseDropdownValues').dropdown('restore defaults');
         }]);

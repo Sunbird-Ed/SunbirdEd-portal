@@ -9,8 +9,8 @@
  * Service in the playerApp.
  */
 angular.module('playerApp')
-    .service('contentService', ['httpService', 'config', '$rootScope',
-        function (httpService, config, $rootScope) {
+    .service('contentService', ['httpService', 'config', '$rootScope', 'httpServiceJava',
+        function (httpService, config, $rootScope, httpServiceJava) {
             this.search = function (req) {
                 return httpService.post(config.URL.CONTENT.SEARCH, req);
             };
@@ -53,7 +53,7 @@ angular.module('playerApp')
             };
 
             this.uploadMedia = function (req) {
-                return httpService.upload(config.URL.CONTENT.UPLOAD_MEDIA, req);
+                return httpServiceJava.upload(config.URL.CONTENT.UPLOAD_MEDIA, req);
             };
 
             this.getById = function (req, qs) {

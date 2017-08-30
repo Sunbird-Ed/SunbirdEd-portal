@@ -1,7 +1,4 @@
 <div class="ui grid">
-    <div class="twelve wide column right-floated padding-bottom-15" ng-if="flaggedContent.totalCount > flaggedContent.pageLimit">
-        <div ng-init="pegination = flaggedContent" ng-include=" 'views/common/pagination.html' "></div>
-    </div>
     <div class="twelve wide column ">
         <div ng-init="flaggedContent.getAllFlaggedContent()">
             <div ng-if="!flaggedContent.loader.showLoader">
@@ -20,20 +17,29 @@
                         </div>
                         <div class="sliderCards content">
                             <span class="sliderCardSubDesc">
-                        <span>
-                            {{ item.description | limitTo: 70 }}&nbsp;<i ng-show="item.description.length >= 70" class="ellipsis horizontal icon popup-button link" data-content="{{item.description}}" data-variation="wide"></i>
-                        </span>
+                                <span>
+                                    {{ item.description | limitTo: 70 }}&nbsp;<i ng-show="item.description.length >= 70" class="ellipsis horizontal icon popup-button link" data-content="{{item.description}}" data-variation="wide"></i>
+                                </span>
                             </span>
                         </div>
                     </div>
                 </div>
-                <div class="ui huge positive message" ng-if="flaggedContent.flaggedContentData.length === 0">
-                    <p>{{$root.errorMessages.WORKSPACE.FLAGGED.NO_CONTENT}}</p>
+                <div ng-if="flaggedContent.error.showError">
+                    <error-message data="{{flaggedContent.error}}" visibility="flaggedContent.error.showError"></error-message>
                 </div>
             </div>
             <div ng-if="flaggedContent.loader.showLoader">
                 <app-loader data="{{flaggedContent.loader}}"></app-loader>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="ui grid">
+    <div class="two wide column"></div>
+    <div class="ten wide column paginationAlignment">
+        <div class="padding-bottom-15" ng-if="!flaggedContent.loader.showLoader && flaggedContent.totalCount > flaggedContent.pageLimit">
+            <div ng-init="pegination = flaggedContent" ng-include=" 'views/common/pagination.html' "></div>
         </div>
     </div>
 </div>

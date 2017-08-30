@@ -1,5 +1,5 @@
 <div class="ui modal" id="changeUserRoles" ng-init="admin.modalInit()">
-    <div class="ui segment">
+    <div class="header">
         <div class="ui grid">
             <div class="eleven wide column">
                 <span class="ui header">Select Role</span>
@@ -10,30 +10,32 @@
                 </h5>
             </div>
         </div>
+    </div>
 
-        <div class="content">
-            <div class="ui  selection  dropdown margin-bottom-30 margin-top-20" id="userOrgs">
-                <!-- <input type="hidden" name="gender"tabindex="0">  -->
-                <i class="dropdown icon"></i>
-                <div class="default text">Org</div>
-                <div class="menu">
-                    <div class="item" ng-repeat="org in admin.userOrganisations" ng-click="admin.selectedIrg(org.organisationId);admin.selectedOrgUserRoles=org.roles;admin.selectedOrgUserId=org.organisationId" value="{{org.organisationId}}">{{org.orgName}}</div>
-                </div>
+    <div class="content">
+        <div class="ui selection dropdown margin-left-10" id="userOrgs">
+            <!-- <input type="hidden" name="gender"tabindex="0">  -->
+            <i class="dropdown icon"></i>
+            <div class="default text">Org</div>
+            <div class="menu">
+                <div class="item" ng-repeat="org in admin.userOrganisations" ng-click="admin.selectedIrg(org.organisationId);admin.selectedOrgUserRoles=org.roles;admin.selectedOrgUserId=org.organisationId" value="{{org.organisationId}}">{{org.orgName}}</div>
             </div>
+        </div>
 
-            <div class="ui form margin-top-40" ng-if="admin.selectedOrgUserRoles">
-                <div class="ui stackable four column grid">
-                    <div class="field" ng-repeat="role in admin.userRoles">
+        <div class="ui form margin-top-40" ng-if="admin.selectedOrgUserRoles">
+            <ul class="selectOrgRoles">       
+                
+                    <li class="orgRolesListView" ng-repeat="role in admin.userRoles">
                         <div class="ui checkbox">
                             <input type="checkbox" value='{{role.role}}' ng-click="admin.editRoles(role.role,admin.selectedOrgUserRoles)" ng-checked="admin.isUserRole(role.role,admin.selectedOrgUserRoles);">
                             <label>{{role.roleName || role.role}}</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                        </div>                   
+                    </li>
+                      
+             </ul>           
         </div>
-        <div class="actions">
-            <button ng-disable="!admin.selectedOrgUserRoles" class="ui primary right floated button margin-bottom-15 margin-top-10 " type="submit" ng-click="admin.updateRoles(admin.identifier,admin.selectedOrgUserId,admin.selectedOrgUserRoles)">Update</button>
-        </div>
+    </div>
+    <div class="actions">
+        <button ng-disable="!admin.selectedOrgUserRoles" class="ui primary button" type="submit" ng-click="admin.updateRoles(admin.identifier,admin.selectedOrgUserId,admin.selectedOrgUserRoles)">Update</button>
     </div>
 </div>
