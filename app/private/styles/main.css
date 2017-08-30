@@ -1013,7 +1013,6 @@ slick-prev:before,
   font-weight: bold !important;
 }
 .flag-description {
-  padding-left: 1em !important;
   color: #979797 !important;
   font-size: 14px !important;
   font-weight: 600 !important;
@@ -1024,6 +1023,7 @@ slick-prev:before,
   font-size: 12px !important;
   font-weight: bold !important;
   line-height: 14px !important;
+  padding-top: 20px !important;
 }
 .radiomargin {
   margin: 1em 0 !important;
@@ -2353,6 +2353,9 @@ span.dashBoardMenuItem.active {
 }
 .course-graph-holder {
   display: inline;
+}
+.courseProgressBoardPadding {
+  margin-top: -20px !important;
 }
 body {
   position: relative !important;
