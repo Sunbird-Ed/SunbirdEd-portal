@@ -4,6 +4,7 @@ const request = require('request'),
   uuidv1 = require('uuid/v1'),
   envHelper = require('./environmentVariablesHelper.js'),
   learnerURL = envHelper.LEARNER_URL,
+  enablePermissionCheck = envHelper.ENABLE_PERMISSION_CHECK,
   api_auth_token = envHelper.PORTAL_API_AUTH_TOKEN;
 
 
@@ -33,7 +34,7 @@ let PERMISSIONS_HELPER = {
     "user/assign/role": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION"],
     "user/block": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION"],
     "dashboard/v1/creation": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION"],
-    "dashboard/v1/progress":["COURSE_MENTOR"],
+    "dashboard/v1/progress": ["COURSE_MENTOR"],
     "dashboard/v1/consumption": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION", "COURSE_CREATOR"],
     "org/upload": ["SYSTEM_ADMINISTRATION"],
     "upload/status/": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION"]
@@ -133,30 +134,34 @@ let PERMISSIONS_HELPER = {
   },
   checkPermission: function() {
     return function(req, res, next) {
-      var roles = module.exports.checkURLMatch(req.originalUrl);
-      if (_.isArray(roles)) {
-        if (_.intersection(roles, req.session['roles']).length > 0) {
-          next();
+      if (enablePermissionCheck) {
+        var roles = module.exports.checkURLMatch(req.originalUrl);
+        if (_.isArray(roles)) {
+          if (_.intersection(roles, req.session['roles']).length > 0) {
+            next();
+          } else {
+            res.status(401);
+            res.send({
+              "id": "api.error",
+              "ver": "1.0",
+              "ts": dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo"),
+              "params": {
+                "resmsgid": uuidv1(),
+                "msgid": null,
+                "status": "failed",
+                "err": "UNAUTHORIZED_ERROR",
+                "errmsg": "Unauthorized: Access is denied"
+              },
+              "responseCode": "UNAUTHORIZED",
+              "result": {}
+            });
+            res.end();
+          }
         } else {
-          res.status(401);
-          res.send({
-            "id": "api.error",
-            "ver": "1.0",
-            "ts": dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo"),
-            "params": {
-              "resmsgid": uuidv1(),
-              "msgid": null,
-              "status": "failed",
-              "err": "UNAUTHORIZED_ERROR",
-              "errmsg": "Unauthorized: Access is denied"
-            },
-            "responseCode": "UNAUTHORIZED",
-            "result": {}
-          });
-          res.end();
+          next();
         }
       } else {
-        next()
+        next();
       }
     }
   },
