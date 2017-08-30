@@ -2326,6 +2326,9 @@ span.dashBoardMenuItem.active {
   float: right;
   top: 40px;
 }
+.adminDashboardCard {
+  width: 330px !important;
+}
 .table-headerDashboard {
   color: #007AFF !important;
   font-family: 'sunbirdboldfont' !important;

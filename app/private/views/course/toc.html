@@ -31,7 +31,7 @@
                     <div class="courseAccordianHeading title title-padding-left accordian-left-text" ng-class="{'cursor-pointerText':(toc.playContent == false && item.mimeType !== 'application/vnd.ekstep.content-collection')}" name="{{item.identifier}}">
                       <i ng-if="item.mimeType == 'application/vnd.ekstep.content-collection'" ng-class="[toc.contentStatusList[item.identifier],toc.getContentIcon(item.mimeType)]"></i>
                       <img ng-if="item.mimeType != 'application/vnd.ekstep.content-collection'" ng-src="{{toc.getContentIcon(item.mimeType,toc.contentStatusList[item.identifier])}}" class="tocCourseStructureImg">  {{item.name}}
-                      
+
                       <i ng-if='item.children && item.children.length > 0' class="plus icon down-arrow-accordion"></i>
                     </div>
                     <div ng-if='item.children && item.children.length > 0' class="content">
@@ -146,7 +146,7 @@
       <div class="one wide column"></div>
     </div>
     <!-- Show course dashboard-->
-    <div class="ten wide column" ng-if="toc.showCourseDashboard">
+    <div class="ten wide column padding-top-10" ng-if="toc.showCourseDashboard">
         <div ng-include="'views/dashboard/course/courseProgressDashboard.html'"></div>
         <div class="one wide column"></div>
     </div>
