@@ -25,14 +25,11 @@
                 "UPDATE": "course/v1/update",
                 "REVIEW": "course/v1/review",
                 "PUBLISH": "course/v1/publish",
-                "GET": "course/v1/get",
-                "GET_MY_COURSE": "course/v1/get/mycourse",
                 "HIERARCHY": "course/v1/hierarchy",
                 "USER_CONTENT_STATE": "course/v1/content/state",
                 "USER_CONTENT_STATE_READ": "course/v1/content/state/read",
                 "USER_CONTENT_STATE_UPDATE": "course/v1/content/state/update",
                 "GET_ENROLLED_COURSES": "course/v1/user/enrollment/list",
-                "GET_LEARN_OTHER_SECTION": "Course",
                 "ENROLL_USER_COURSE": "course/v1/enrol",
                 "RECOMMENDED_COURSE": "recommended/courses"
             },
@@ -59,9 +56,6 @@
                 "UPDATE": "notes/v1/update",
                 "GET": "notes/v1/read",
                 "DELETE": "notes/v1/delete"
-            },
-            "RESOURCE": {
-                "GET": "Resource"
             },
             "ROLES": {
                 "READ": "data/v1/role/read"
