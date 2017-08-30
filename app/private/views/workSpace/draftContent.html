@@ -25,8 +25,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="ui huge positive message" ng-if="draftContent.draftContentData.length === 0">
-                    <p>{{$root.errorMessages.WORKSPACE.DRAFT.NO_CONTENT}}</p>
+                <div ng-if="draftContent.error.showError">
+                    <error-message data="{{draftContent.error}}" visibility="draftContent.error.showError"></error-message>
                 </div>
             </div>
             <div ng-if="draftContent.loader.showLoader">

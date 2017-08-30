@@ -90,12 +90,15 @@ angular.module('playerApp').directive('search', function () {
              * and its show failed response for 2 sec.
              * @param {String} message
              */
-            function showErrorMessage(isClose, message, messageType) {
+            function showErrorMessage(isClose, message, messageType,messageText) {
                 var error = {};
                 error.showError = true;
                 error.isClose = isClose;
                 error.message = message;
                 error.messageType = messageType;
+                if(messageText){
+                error.messageText=messageText;
+              }
                 return error;
             }
 
@@ -281,7 +284,7 @@ angular.module('playerApp').directive('search', function () {
                                 if (res.result.response.count === 0) {
                                     $rootScope.search.error = showErrorMessage(true,
                                             $rootScope.errorMessages.SEARCH.DATA.NO_CONTENT,
-                                            $rootScope.errorMessages.COMMON.INFO);
+                                            $rootScope.errorMessages.COMMON.NO_RESULTS,$rootScope.errorMessages.SEARCH.DATA.NO_CONTENT_TEXT);
                                 } else {
                                     $rootScope.search.error = {};
                                     $rootScope.search.searchResult = res.result;
@@ -289,7 +292,7 @@ angular.module('playerApp').directive('search', function () {
                             } else if (res.result.count === 0) {
                                 $rootScope.search.error = showErrorMessage(true,
                                         $rootScope.errorMessages.SEARCH.DATA.NO_CONTENT,
-                                        $rootScope.errorMessages.COMMON.NO_RESULTS);
+                                        $rootScope.errorMessages.COMMON.NO_RESULTS,$rootScope.errorMessages.SEARCH.DATA.NO_CONTENT_TEXT);
                             } else {
                                 $rootScope.search.error = {};
                                 $rootScope.search.searchResult = res.result;
