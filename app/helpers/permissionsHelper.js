@@ -31,7 +31,8 @@ let PERMISSIONS_HELPER = {
     "org/v1/role/assign": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION"],
     "user/v1/block": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION"],
     "dashboard/v1/creation": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION"],
-    "dashboard/v1/consumption": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION"],
+    "dashboard/v1/progress":["COURSE_ADMIN"],
+    "dashboard/v1/consumption": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION", "COURSE_CREATOR"],
     "org/v1/upload": ["SYSTEM_ADMINISTRATION"],
     "data/v1/upload/status/": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION"]
   },

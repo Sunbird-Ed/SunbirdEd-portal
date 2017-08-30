@@ -9,9 +9,9 @@
  */
 angular.module('playerApp') // add those all values
   .controller('ProfileController', ['$scope', '$rootScope', 'contentService', 'userService', 'toasterService', 'config',
-      '$timeout', '$filter', 'uuid4', 'formValidation', 'searchService', '$state', 'learnService',
+      '$timeout', '$filter', 'uuid4', 'formValidation', 'searchService', '$state', 'learnService', 'adminService',
       function ($scope, $rootScope, contentService, userService, toasterService, config,
-      $timeout, $filter, uuid4, formValidation, searchService, $state, learnService) {
+      $timeout, $filter, uuid4, formValidation, searchService, $state, learnService, adminService) {
           var profile = this;
           var apiMessages = $rootScope.errorMessages.PROFILE.API;
           profile.userId = $rootScope.userId;
@@ -94,6 +94,20 @@ angular.module('playerApp') // add those all values
                   profile.basicProfile = angular.copy(profile.user);
                   profile.education = angular.copy(profileData.education);
                   profile.experience = angular.copy(profileData.jobProfile);
+                  if (profile.user.badges) {
+                      var badges = adminService.getBadgesList();
+                      if (profile.user.badges.length) {
+                          profile.user.badges.forEach(function (badge) {
+                              var userBadge = badges.find(function (badgE) {
+                                  return badgE.id === badge.badgeTypeId;
+                              });
+
+                              profile.badges.push({
+                                  title: userBadge.name
+                              });
+                          });
+                      }
+                  }
               } else {
                   profile.loader.showLoader = false;
                   profile.isError = true;
@@ -177,6 +191,7 @@ angular.module('playerApp') // add those all values
 
           profile.uploadAvatar = function () {
               profile.loader = toasterService.loader('', apiMessages.SUCCESS.editingProfile);
+              profile.icon.append('container', 'user/' + profile.userId);
               contentService.uploadMedia(profile.icon).then(function (res) {
                   if (res && res.responseCode === 'OK') {
                       profile.updateProfile({ avatar: res.result.url });
@@ -197,18 +212,18 @@ angular.module('playerApp') // add those all values
               if (isValid === true) {
                   var dob = $('#editDob').calendar('get date');
                   var updateReq = {
-                      firstName: profile.basicProfile.firstName,
-                      lastName: profile.basicProfile.lastName,
-                      phone: profile.basicProfile.phone,
-                      email: profile.basicProfile.email,
-                      gender: profile.basicProfile.gender,
+                      firstName: profile.user.firstName,
+                      lastName: profile.user.lastName,
+                      phone: profile.user.phone,
+                      email: profile.user.email,
+                      gender: profile.user.gender,
                       dob: dob instanceof Date ? $filter('date')(dob, 'yyyy-MM-dd') : null,
-                      aadhaarNo: profile.basicProfile.aadhaarNo,
-                      language: [profile.basicProfile.language],
+                      aadhaarNo: profile.user.aadhaarNo,
+                      language: [profile.user.language],
                       profileSummary: profile.profileSummary,
-                      subject: profile.basicProfile.subject,
-                      grade: profile.basicProfile.grade,
-                      location: profile.basicProfile.location
+                      subject: profile.user.subject,
+                      grade: profile.user.grade,
+                      location: profile.user.location
                   };
                   profile.updateProfile(updateReq);
               } else return false;
@@ -366,7 +381,7 @@ angular.module('playerApp') // add those all values
               $timeout(function () {
                   $('#languageSelect').dropdown();
                   $('#languageSelect').dropdown('refresh');
-                  $('#languageSelect').dropdown('set selected', profile.basicProfile.language[0]);
+                  $('#languageSelect').dropdown('set selected', profile.user.language[0]);
               }, 100);
           };
 
@@ -374,15 +389,16 @@ angular.module('playerApp') // add those all values
               $timeout(function () {
                   $('#setSubjects').dropdown();
                   $('#setSubjects').dropdown('refresh');
-                  $('#setSubjects').dropdown('set selected', profile.basicProfile.subjects);
+                  $('#setSubjects').dropdown('set selected', profile.user.subjects);
               }, 100);
           };
 
-          profile.setEditSubject = function (subjects) {
+          profile.setEditSubject = function (name, index, subjects) {
               $timeout(function () {
-                  $('.editSubjects').dropdown();
-                  $('.editSubjects').dropdown('refresh');
-                  $('.editSubjects').dropdown('set selected', subjects);
+                  var id = '#' + name + index;
+                  $(id).dropdown();
+                  $(id).dropdown('refresh');
+                  $(id).dropdown('set selected', subjects);
               }, 100);
           };
 
@@ -404,15 +420,17 @@ angular.module('playerApp') // add those all values
                   return content.appIcon;
               }
               switch (mimeType) {
-              case 'application/pdf':
+              case config.MIME_TYPE.pdf:
                   return '/images/pdf.png';
-              case 'video/mp4':
+              case config.MIME_TYPE.mp4:
                   return '/images/mp4.png';
-              case 'video/youtube':
+              case config.MIME_TYPE.pYoutube:
                   return '/images/youtubeFileIcon.jpg';
-              case 'video/x-youtube':
+              case config.MIME_TYPE.youtube:
                   return '/images/youtubeFileIcon.jpg';
-              default:
+              case config.MIME_TYPE.h5p || config.MIME_TYPE.ePub:
+                  return '/images/zipFileIcon.png';
+              default :
                   return '/images/zipFileIcon.png';
               }
           };
@@ -440,24 +458,6 @@ angular.module('playerApp') // add those all values
               }).catch(function () {
           // toasterService.error(profile.message.DRAFT.FAILED);
               });
-          };
-
-          profile.getContentLogo = function (content) {
-              var contentIcon = content.appIcon;
-              var mimeType = content.mimeType;
-              if (contentIcon) {
-                  return content.appIcon;
-              }
-              switch (mimeType) {
-              case 'application/pdf':
-                  return '/images/pdf.png';
-              case 'video/mp4':
-                  return '/images/mp4.png';
-              case 'video/youtube':
-                  return '/images/youtubeFileIcon.jpg';
-              default:
-                  return '/images/zipFileIcon.png';
-              }
           };
 
           profile.openContentPlayer = function (item) {
@@ -494,13 +494,24 @@ angular.module('playerApp') // add those all values
               });
           };
           profile.getbadges();
-          
+
           profile.setSelectedGrades = function () {
               $timeout(function () {
                   $('#selectGrades').dropdown();
                   $('#selectGrades').dropdown('refresh');
-                  $('#selectGrades').dropdown('set selected', profile.basicProfile.grade);
+                  $('#selectGrades').dropdown('set selected', profile.user.grade);
               }, 100);
+          };
+
+           // cancel
+          profile.cancelEditExperience = function () {
+              profile.experienceForm = false;
+              profile.isCurrentJobExist = false;
+              profile.experience = profile.getProfileObject(profile.user.jobProfile);
+          };
+
+          profile.getProfileObject = function (profileData) {
+              return angular.copy(profileData);
           };
       }
   ]);

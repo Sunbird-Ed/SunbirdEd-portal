@@ -140,17 +140,14 @@ angular.module('loginApp')
             toc.getTreeData = function (contentData, parent) {
                 if (contentData.mimeType
             !== 'application/vnd.ekstep.content-collection') {
-                    parent.push({
+                  parent.push({
                         title: '<span id="node' + toc.treeKey + '" class="padded">' +
-                    '<i class="' + toc.getContentIcon(contentData.mimeType)
-                    + ' '
-                    + (toc.contentStatusList[contentData.identifier]
-                      ? toc.contentStatusList[contentData.identifier] : 'grey')
-                      + '"></i>' + contentData.name
+                    '<img src="' + toc.getContentIcon(contentData.mimeType)
+                    + '" class="tocCourseStructureImg">' + contentData.name
                       + '</span><button id="resume-button-'
                       + toc.treeKey
                       + '" class="toc-resume-button contentVisibility-hidden' +
-                      ' blue right floated ui button">RESUME</button',
+                      ' blue right floated ui small button">RESUME</button',
                         key: toc.treeKey,
                         data: contentData,
                         icon: false
@@ -185,18 +182,18 @@ angular.module('loginApp')
                 return 0;
             };
 
-            toc.getContentIcon = function (contentMimeType) {
+                 toc.getContentIcon = function (contentMimeType,stsClass) {
+                stsClass=stsClass||'';
                 var contentIcons = {
-                    'application/pdf': 'large file pdf outline icon',
-                    'image/jpeg': 'large file image outline icon',
-                    'image/jpg': 'large file image outline icon',
-                    'image/png': 'large file image outline icon',
-                    'video/mp4': 'large file video outline icon',
-                    'video/ogg': 'large file video outline icon',
-                    'video/youtube': 'large youtube square icon',
-                    'application/vnd.ekstep.html-archive': 'large html5 icon',
-                    'application/vnd.ekstep.ecml-archive': 'large file'
-               + ' archive outline icon',
+                    'application/pdf': '/images/pdf'+stsClass+'.png',
+                    'video/mp4': '/images/video'+stsClass+'.png',
+                    'video/x-youtube':  '/images/video'+stsClass+'.png',
+                    'video/youtube':  '/images/video'+stsClass+'.png',
+                    'application/vnd.ekstep.html-archive':  '/images/app'+stsClass+'.png',
+                    'application/vnd.ekstep.ecml-archive': '/images/app'+stsClass+'.png',
+                    'application/epub': '/images/app'+stsClass+'.png',
+                    'application/vnd.ekstep.h5p-archive':  '/images/video'+stsClass+'.png',
+
                     'application/vnd.ekstep.content-collection': 'large folder'
                + ' open outline icon grey icon'
 
