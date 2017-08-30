@@ -84,7 +84,8 @@ angular.module('playerApp')
             // open editRoles modal
             admin.showModal = function (identifier, orgs) {
                 admin.setDefaultSelected(orgs);
-                $('#changeUserRoles').modal({
+                setTimeout(function(){ 
+                    $('#changeUserRoles').modal({
                     onShow: function () {
                         admin.identifier = identifier;
                         admin.userOrganisations = orgs;
@@ -97,7 +98,8 @@ angular.module('playerApp')
                         admin.selectedOrgUserRoles = [];
                         return true;
                     }
-                }).modal('show');
+                }).modal('show'); }, 100);
+               
             };
 
             // open delete modal
