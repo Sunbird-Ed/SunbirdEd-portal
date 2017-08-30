@@ -22,6 +22,7 @@ var concat = require('gulp-concat');
 var inject = require('gulp-inject');
 var merge = require('merge-stream');
 var gzip = require('gulp-gzip');
+var map = require('map-stream');
 
 var player = {
     app: 'app/private/',
@@ -571,7 +572,19 @@ gulp.task('compress', ['injectFiles'], function() {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('packageNodeModules', ['compress'], function(){
+gulp.task('inject_staticGzip', function() {
+  return gulp.src('dist/server.js')
+    .pipe(map(function(file, cb) {
+      var fileContents = file.contents.toString();
+      fileContents = fileContents.replace('\/(invalid)\/', '/(\.html|\.js|\.css)$/');
+      fileContents = 'First line\n' + fileContents;
+      file.contents = new Buffer(fileContents);
+      cb(null, file);
+    }))
+    .pipe(gulp.dest('dist'));
+});
+
+gulp.task('packageNodeModules', function(){
     return gulp.src(['node_modules/**/*'])
         .pipe(gulp.dest(player.dist + '/node_modules'));
 });
