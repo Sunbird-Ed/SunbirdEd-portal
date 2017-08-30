@@ -8,7 +8,7 @@
  */
 
 angular.module('playerApp')
-  .directive('batchDetails', function($rootScope) {
+  .directive('batchDetails', ['$rootScope', function($rootScope) {
     return {
       restrict: 'E',
       controller: 'BatchController',
@@ -25,4 +25,4 @@ angular.module('playerApp')
       replace: true,
       templateUrl: 'views/batch/batchDetails.html'
     };
-  });
+  }]);
