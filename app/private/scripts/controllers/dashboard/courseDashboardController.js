@@ -8,8 +8,7 @@
  */
 angular.module('playerApp')
   .controller('courseDashboardCtrl', ['$rootScope', '$scope', 'dashboardService', '$timeout', '$state', '$stateParams', 'toasterService',
-    'batchService',
-    function($rootScope, $scope, dashboardService, $timeout, $state, $stateParams, toasterService, batchService) {
+    'batchService', function($rootScope, $scope, dashboardService, $timeout, $state, $stateParams, toasterService, batchService) {
       var courseDashboard = this;
       courseDashboard.chartHeight = 120;
       courseDashboard.courseProgressArray = [];
