@@ -7,7 +7,7 @@
             <img ng-src="{{item.appIcon || item.courseLogoUrl || '../images/sunbird_logo.png'}}">
             <div class="cardImageText center aligned ">
                 <span class="sliderCardHeading text-cencapitalize">{{item.courseName | limitTo:14}}
-                    &nbsp;<i ng-show="item.name.length >= 14" class="ellipsis horizontal icon popup-button link" data-content="{{item.courseName}}" data-variation="wide">
+                    &nbsp;<i ng-show="item.courseName.length >= 14" class="ellipsis horizontal icon popup-button link" data-content="{{item.courseName}}" data-variation="wide">
                     </i>
                 </span>
                 <span class="sliderCardHeading text-cencapitalize ">{{item.grade}}</span>
@@ -17,8 +17,8 @@
              <div class="sliderCardDesc">
                 {{ item.description | limitTo: 55 }}&nbsp;<i ng-show="item.description.length >= 55" class="ellipsis horizontal icon popup-button link" data-content="{{item.description}}" data-variation="wide"></i>
             </div>
-            <button class="ui blue basic right floated button">RESUME</button>
-           <div apply-script class="courseHeader-rating ui  star rating" data-rating="{{item.me_averageRating |number:0}}" data-max-rating="5"></div>
+            <button class="ui blue basic right floated button margin-top-10">RESUME</button>
+           <div apply-script class="courseHeader-rating ui  star rating padding-top-20" data-rating="{{item.me_averageRating |number:0}}" data-max-rating="5"></div>
         </div>
     </div>
 </div>

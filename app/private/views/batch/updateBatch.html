@@ -126,7 +126,7 @@
                             </div>
                         </div>
                         <div class="field">
-                            <div class="ui read-only radio checkbox">
+                            <div class="ui read-only radio checkbox" ng-show="batchUpdate.coursecreatedby == batchUpdate.userId">
                                 <input type="radio" name="enrollmentType" value='open' ng-model="batchUpdate.batchData.enrollmentType" required disabled="true">
                                 <label>Open</label>
                             </div>
@@ -216,7 +216,7 @@
                             </div>
                         </div>
                         <div class="field">
-                            <div class="ui read-only radio checkbox">
+                            <div class="ui read-only radio checkbox" ng-show="batchUpdate.coursecreatedby == batchUpdate.userId">
                                 <input type="radio" name="enrollmentType" value='open' ng-model="batchUpdate.batchData.enrollmentType" required disabled="true">
                                 <label>Open</label>
                             </div>

@@ -1,6 +1,5 @@
 <div ng-controller="courseScheduleCtrl as toc" ng-init="toc.loadData()">
     <div ng-include="'views/course/courseHeader.html'"></div>
-
     <div class="ui grid">
         <div class="one wide column"></div>
         <div class="ten wide column">
@@ -30,7 +29,8 @@
                                     </div>
                                     <div id="course-toc{{$index}}" class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100" ng-repeat="item in  toc.courseHierachy.children track by $index" ng-click="toc.expandMe($event, item)">
                                         <div class="courseAccordianHeading title title-padding-left accordian-left-text" name="{{item.identifier}}">
-                                            <i ng-class="[toc.contentStatusList[item.identifier],toc.getContentIcon(item.mimeType)]"></i> {{item.name}}
+                                            <i ng-if="item.mimeType == 'application/vnd.ekstep.content-collection'" ng-class="[toc.contentStatusList[item.identifier],toc.getContentIcon(item.mimeType)]"></i>
+                      <img ng-if="item.mimeType != 'application/vnd.ekstep.content-collection'" ng-src="{{toc.getContentIcon(item.mimeType)}}" class="tocCourseStructureImg">  {{item.name}}
                                             <i ng-if='item.children && item.children.length > 0' class="plus icon down-arrow-accordion"></i>
                                         </div>
                                         <div ng-if='item.children && item.children.length > 0' class="content">

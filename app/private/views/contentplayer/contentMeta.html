@@ -1,5 +1,5 @@
 <!--notes start-->
-<div class="ui grid">
+<div class="ui grid margin-top-10">
     <div class="row">
         <div class="three wide column "></div>
         <div class="six wide column center aligned" ng-if="showModalInLectureView">
@@ -24,11 +24,101 @@
 </div>
 </div>
 <!--notes End-->
-<h4 class="ui">
-    {{contentData.description}}
-</h4>
-<div class="ui clearing divider"></div>
-<div class="ui grid margin-top-15">
+<div class="ui grid">
+    <div class="eight wide column">
+        <div class="row">
+            <div class="twelve wide column" ng-if="contentData.description">
+                <div class="ui raised segment">
+                    <div class="header announcementCard-header">
+                        <span class="header cardsHeading ng-binding"> {{$root.labels.WORKSPACE.previewContent.description}} </span>
+                    </div>
+                    <div class="description padding-top-5">
+                        <p ng-bind-html="{{contentData.description }}">
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="twelve wide column margin-top-20">
+                <course-discussions showaskquestion="false"></course-discussions>
+            </div>
+        </div>
+    </div>
+    <div class="four wide column">
+        <div class="row">
+            <div class="twelve wide column">
+                <div class="ui segment">
+                    <div class="header announcementCard-header">
+                        <span class="header cardsHeading ng-binding">{{$root.labels.WORKSPACE.previewContent.contentInformation}}</span>
+                    </div>
+                    <div class="ui middle aligned list margin-top-0">
+                        <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.author">
+                            <div class="right floated content contentdetail">
+                                <div class="ui ">{{contentData.author}}</div>
+                            </div>
+                            <div class="content">
+                                {{$root.labels.WORKSPACE.previewContent.author}}
+                            </div>
+                        </div>
+                        <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.language">
+                            <div class="right floated content contentdetail">
+                                <div class="ui ">{{contentData.language.toString()}}</div>
+                            </div>
+                            <div class="content">
+                                {{$root.labels.WORKSPACE.previewContent.language}}
+                            </div>
+                        </div>
+                        <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.gradeLevel">
+                            <div class="right floated content contentdetail">
+                                <div class="ui ">{{contentData.gradeLevel.toString()}}</div>
+                            </div>
+                            <div class="content ">
+                                {{$root.labels.WORKSPACE.previewContent.grades}}
+                            </div>
+                        </div>
+                        <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.subject">
+                            <div class="right floated content contentdetail">
+                                <div class="ui ">{{contentData.subject}}</div>
+                            </div>
+                            <div class="content">
+                                {{$root.labels.WORKSPACE.previewContent.subject}}
+                            </div>
+                        </div>
+                        <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.createdOn">
+                            <div class="right floated content contentdetail">
+                                <div class="ui ">{{contentData.createdOn| dateFilterWithMDY}}</div>
+                            </div>
+                            <div class="content">
+                                {{$root.labels.WORKSPACE.previewContent.createdOn}}
+                            </div>
+                        </div>
+                        <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.lastUpdatedOn">
+                            <div class="right floated content contentdetail">
+                                <div class="ui ">{{contentData.lastUpdatedOn| dateFilterWithMDY}}</div>
+                            </div>
+                            <div class="content">
+                                {{$root.labels.WORKSPACE.previewContent.lastUpdate}}
+                            </div>
+                        </div>
+                        <div class="item padding-top-10 padding-bottom-5" ng-if="getConceptsNames(contentData.concepts)">
+                            <div class="right floated content contentdetail">
+                                <div class="ui">{{getConceptsNames(contentData.concepts)}}</div>
+                            </div>
+                            <div class="content">
+                                {{$root.labels.WORKSPACE.common.concept}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="twelve wide column margin-top-20">
+                <div class="row">
+                    <note-card shownotecard="true" contentid="contentData.identifier"></note-card>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div class="ui grid margin-top-15">
     <div class="row">
         <div class="three wide column">
             <div class="ui list">
@@ -104,15 +194,10 @@
         </div>
     </div>
 </div>
-<div class="ui grid">
-    <div class="row">
-        <div class="eight wide column">
-            <course-discussions showaskquestion="false"></course-discussions>
-        </div>
-        <div class="four wide column toc-note-content">
-            <div class="row">
-                <note-card shownotecard="true" contentid="contentData.identifier"></note-card>
-            </div>
-        </div>
-    </div>
 </div>
+</div> -->
+<!-- <div class="ui clearing divider"></div> -->
+<!-- <div class="ui grid">
+  <div class="row">
+  </div>
+</div> -->

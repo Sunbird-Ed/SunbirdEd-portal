@@ -1,4 +1,5 @@
-angular.module('playerApp').service('portalTelemetryService', function($http, $filter, $rootScope, uuid4, config) {
+angular.module('playerApp').service('portalTelemetryService', ['$http', '$filter', '$rootScope', 
+    'uuid4', 'config', function($http, $filter, $rootScope, uuid4, config) {
     var self = this;
     var telemetryEvents = telemetryEvents || [];
     this.init = function() {
@@ -47,4 +48,4 @@ angular.module('playerApp').service('portalTelemetryService', function($http, $f
         });
     };
 
-});
+}]);
