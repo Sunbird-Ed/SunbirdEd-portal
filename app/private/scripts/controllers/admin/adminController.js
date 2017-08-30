@@ -84,22 +84,22 @@ angular.module('playerApp')
             // open editRoles modal
             admin.showModal = function (identifier, orgs) {
                 admin.setDefaultSelected(orgs);
-                $timeout(function(){ 
+                $timeout(function () {
                     $('#changeUserRoles').modal({
-                    onShow: function () {
-                        admin.identifier = identifier;
-                        admin.userOrganisations = orgs;
-                        admin.selectedOrgUserRoles = [];
-                        $('.roleChckbox').checkbox();
-                    },
-                    onHide: function () {
-                        admin.userId = '';
-                        admin.userOrganisations = [];
-                        admin.selectedOrgUserRoles = [];
-                        return true;
-                    }
-                }).modal('show'); }, 100);
-               
+                        onShow: function () {
+                            admin.identifier = identifier;
+                            admin.userOrganisations = orgs;
+                            admin.selectedOrgUserRoles = [];
+                            $('.roleChckbox').checkbox();
+                        },
+                        onHide: function () {
+                            admin.userId = '';
+                            admin.userOrganisations = [];
+                            admin.selectedOrgUserRoles = [];
+                            return true;
+                        }
+                    }).modal('show');
+                }, 100);
             };
 
             // open delete modal
@@ -248,11 +248,10 @@ angular.module('playerApp')
                 }
             };
 
-            admin.assignBadgeModal = function (id, badges) {
+            admin.assignBadgeModal = function (id) {
                 $('#assignBadge').modal({
                     onShow: function () {
                         admin.userIdentifier = id;
-                        admin.userBadges = badges;
                         admin.disableAsignButton = false;
                         $timeout(function () {
                             $('#badgeDropdown').dropdown();
@@ -277,8 +276,8 @@ angular.module('playerApp')
 
                 adminService.addBadges(newBadge).then(function (res) {
                     if (res.responseCode === 'OK') {
-                        admin.assignedBadgeId = res.result.id;
-                        admin.assigedBadgeName = badge.name;
+                        admin.recievedBadge.name = badge.name;
+                        admin.recievedBadge.userId = identifier;
                         toasterService.success(badge.name + ' assigned successfully');
                     } else {
                         toasterService.error(res.params.errmsg);
