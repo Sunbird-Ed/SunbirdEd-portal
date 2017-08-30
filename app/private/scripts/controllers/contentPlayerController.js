@@ -149,7 +149,7 @@ angular.module('playerApp')
 
             $scope.getConceptsNames = function (concepts) {
                 var conceptNames = _.map(concepts, 'name').toString();
-                if (conceptNames.length < concepts.length) {
+                if (concepts && conceptNames.length < concepts.length) {
                     var filteredConcepts = _.filter($rootScope.concepts, function (p) {
                         return _.includes(concepts, p.identifier);
                     });
