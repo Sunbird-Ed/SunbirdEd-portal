@@ -9,7 +9,7 @@
  * Main module of the application.
  */
 angular.module('loginApp')
-  .config(function ($stateProvider, $urlRouterProvider) {
+  .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
       $urlRouterProvider.otherwise('/');
       $stateProvider
       .state('Landing', {
@@ -23,21 +23,8 @@ angular.module('loginApp')
               delete $window.localStorage.redirectUrl;
           }
       })
-      .state('Public', {
-          url: '/public/:hashId',
-          views: {
-              mainView: {
-                  controller: function ($location, $stateParams) {
-                      $location.path('public/' + $stateParams.hashId);
-                  }
-              }
-          },
-          params: {
-              hashId: null
-          }
-      })
       .state('PublicContent', {
-          url: '/public/content/:id',
+          url: '/content/:id',
           views: {
               mainView: {
                   templateUrl: '/views/content/content.html',
@@ -51,7 +38,7 @@ angular.module('loginApp')
           }
       })
       .state('PublicCourse', {
-          url: '/public/course/:courseId',
+          url: '/course/:courseId',
           views: {
               mainView: {
                   templateUrl: '/views/course/toc.html'
@@ -75,4 +62,16 @@ angular.module('loginApp')
               name: null
           }
       });
-  });
+  }])
+  .run(['$http', '$rootScope', function ($http, $rootScope) {
+      $http.get('/v1/tenant/info').then(function (res) {
+          if (res && res.statusText === 'OK') {
+              $rootScope.orgLogo = res.data.result.logo;
+              $rootScope.faviconIcon = res.data.result.favicon;
+          } else {
+            //   toasterService.error($rootScope.errorMessages.TENANT.GET_INFO.FAILED);
+          }
+      }).catch(function () {
+        //   toasterService.error($rootScope.errorMessages.TENANT.GET_INFO.FAILED);
+      });
+  }]);

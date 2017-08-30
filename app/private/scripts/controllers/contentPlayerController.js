@@ -25,7 +25,7 @@ angular.module('playerApp')
              * from renderer
              * Player controller dispatching the event sunbird
              */
-                window.addEventListener('renderer:telemetry:event',function (event, data) { // eslint-disable-line
+                document.getElementById('contentPlayer').addEventListener('renderer:telemetry:event',function (event, data) { // eslint-disable-line
                     org.sunbird.portal.eventManager.dispatchEvent('sunbird:player:telemetry',
                     event.detail.telemetryData);
                 });
@@ -54,6 +54,7 @@ angular.module('playerApp')
                         } else {
                             var cloneDims = _.cloneDeep(org.sunbird.portal.dims);
                             cloneDims.push($stateParams.courseId);
+                            cloneDims.push($rootScope.batchHashTagId);
                             configuration.context.dims = cloneDims;
                         }
                         configuration.context.app = [org.sunbird.portal.appid];
@@ -66,9 +67,8 @@ angular.module('playerApp')
                         configuration.config.plugins = config.ekstep_CP_config.config.plugins;
                         configuration.config.repos = config.ekstep_CP_config.config.repos;
                         configuration.metadata = $scope.contentData;
-                        if ($scope.contentData.mimeType !== config.MIME_TYPE.ecml) {
-                            configuration.data = {};
-                        }
+                        configuration.data = $scope.contentData.mimeType !== config.MIME_TYPE.ecml ?
+                                            {} : data.body;
                         previewContentIframe.contentWindow.initializePreview(configuration);
                     };
                 }, 0);
@@ -87,7 +87,14 @@ angular.module('playerApp')
 
             function getContent(contentId) {
                 var req = { contentId: contentId };
-                contentService.getById(req).then(function (response) {
+                var qs = {
+                    fields: 'body,editorState,stageIcons,templateId,languageCode,template,' +
+                        'gradeLevel,status,concepts,versionKey,name,appIcon,contentType,owner,' +
+                        'domain,code,visibility,createdBy,description,language,mediaType,' +
+                        'osId,languageCode,createdOn,lastUpdatedOn,audience,ageGroup,' +
+                        'attributions,artifactUrl,mimeType'
+                };
+                contentService.getById(req, qs).then(function (response) {
                     if (response && response.responseCode === 'OK') {
                         $scope.errorObject = {};
                         showPlayer(response.result.content);
@@ -121,15 +128,15 @@ angular.module('playerApp')
 
                 $scope.visibility = false;
                 playerTelemetryUtilsService.endTelemetry({ progress: $scope.contentProgress });
-                window.removeEventListener('renderer:telemetry:event', function () {
+                document.getElementById('contentPlayer').removeEventListener('renderer:telemetry:event', function () {
                     org.sunbird.portal.eventManager.dispatchEvent('sunbird:player:telemetry',
                                                     event.detail.telemetryData);
-                });
+                }, false);
             };
 
             $scope.updateContent = function (scope) {
                 if (scope.body) {
-                    showPlayer(scope.body);
+                    getContent(scope.body.identifier);
                 } else if (scope.id) {
                     getContent(scope.id);
                 }
@@ -150,4 +157,7 @@ angular.module('playerApp')
                 }
                 return conceptNames;
             };
+
+            // Restore default values(resume course, view dashboard) onAfterUser leave current state
+            $('#courseDropdownValues').dropdown('restore defaults');
         }]);

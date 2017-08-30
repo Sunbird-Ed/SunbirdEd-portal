@@ -39,7 +39,7 @@ angular.module('loginApp')
                     previewContentIframe.onload = function () {
                         var playerWidth = $('#contentViewerIframe').width();
                         if (playerWidth) {
-                            var height = playerWidth * (9/16);
+                            var height = playerWidth * (9 / 16);
                             $('#contentViewerIframe').css('height', height + 'px');
                         }
                         var configuration = {};
@@ -65,9 +65,8 @@ angular.module('loginApp')
                         configuration.config.plugins = config.ekstep_CP_config.config.plugins;
                         configuration.config.repos = config.ekstep_CP_config.config.repos;
                         configuration.metadata = $scope.contentData;
-                        if ($scope.contentData.mimeType !== config.MIME_TYPE.ecml) {
-                            configuration.data = {};
-                        }
+                        configuration.data = $scope.contentData.mimeType !== config.MIME_TYPE.ecml ?
+                                        {} : data.body;
                         previewContentIframe.contentWindow.initializePreview(configuration);
                     };
                 }, 1000);
@@ -75,7 +74,14 @@ angular.module('loginApp')
 
             function getContent(contentId) {
                 var req = { contentId: contentId };
-                contentService.getById(req).then(function (response) {
+                var qs = {
+                    fields: 'body,editorState,stageIcons,templateId,languageCode,template,' +
+                        'gradeLevel,status,concepts,versionKey,name,appIcon,contentType,owner,' +
+                        'domain,code,visibility,createdBy,description,language,mediaType,' +
+                        'osId,languageCode,createdOn,lastUpdatedOn,audience,ageGroup,' +
+                        'attributions,artifactUrl,mimeType'
+                };
+                contentService.getById(req, qs).then(function (response) {
                     if (response && response.responseCode === 'OK') {
                         if (config.CONTENT_TYPE.resource.indexOf(response.result.content.contentType) === -1) {
                             toasterService.warning('Invalid content access');

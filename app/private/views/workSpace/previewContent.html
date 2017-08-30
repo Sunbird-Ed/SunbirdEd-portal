@@ -28,142 +28,234 @@
                 </button>
             </div>
         </div>
-        <div class="row margin-top-15" ng-if="!previewContent.loader.showLoader">
-            <h2 class="ui header" title="Description">
-                {{previewContent.contentData.description}}
-            </h2>
-            <div class="ui clearing divider"></div>
-            <div class="ui grid margin-top-15">
-                <div class="row">
-                    <div class="three wide column">
-                        <div class="ui list">
-                            <div class="item">
-                                <div class="content">
-                                    <div class="header">{{$root.labels.WORKSPACE.previewContent.author}}</div>
-                                    <div class="description padding-top-1rem">{{previewContent.contentData.author}}</div>
-                                </div>
-                            </div>
-                        </div>
+    </div>
+</div>
+
+<div class="ui grid">
+    <div class="one wide column"></div>
+    <div class="six wide column">
+        <div class="row">
+            <div class="twelve wide column" ng-if="previewContent.contentData.description">
+                <div class="ui raised segment">
+                    <div class="header announcementCard-header">
+                        <span class="header cardsHeading ng-binding"> {{$root.labels.WORKSPACE.previewContent.description}} </span>
                     </div>
-                    <div class="three wide column">
-                        <div class="ui list">
-                            <div class="item">
-                                <div class="content">
-                                    <div class="header">{{$root.labels.WORKSPACE.previewContent.language}}</div>
-                                    <div class="description padding-top-1rem">{{previewContent.contentData.language.toString()}}</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="three wide column">
-                        <div class="ui list">
-                            <div class="item">
-                                <div class="content">
-                                    <div class="header">{{$root.labels.WORKSPACE.previewContent.grades}}</div>
-                                    <div class="description padding-top-1rem">{{previewContent.contentData.gradeLevel.toString()}}</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="three wide column">
-                        <div class="ui list">
-                            <div class="item">
-                                <div class="content">
-                                    <div class="header">{{$root.labels.WORKSPACE.previewContent.subject}}</div>
-                                    <div class="description padding-top-1rem">{{previewContent.contentData.subject}}</div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="description padding-top-5">
+                        <p ng-bind-html="contentData.description"></p>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="three wide column">
-                        <div class="ui list">
-                            <div class="item">
-                                <div class="content">
-                                    <div class="header">{{$root.labels.WORKSPACE.previewContent.lastUpdate}}</div>
-                                    <div class="description padding-top-1rem">{{previewContent.contentData.lastUpdatedOn| dateFilterWithMDY}}</div>
-                                </div>
+            </div>
+        </div>
+    </div>
+    <div class="four wide column">
+        <div class="row">
+            <div class="twelve wide column">
+                <div class="ui segment">
+                    <div class="header announcementCard-header">
+                        <span class="header cardsHeading ng-binding">{{$root.labels.WORKSPACE.previewContent.contentInformartion}}</span>
+                    </div>
+                    <div class="ui middle aligned list margin-top-0">
+                        <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.author">
+                            <div class="right floated content contentdetail">
+                                <div class="ui ">{{previewContent.contentData.author}}</div>
+                            </div>
+                            <div class="content">
+                                {{$root.labels.WORKSPACE.previewContent.author}}
                             </div>
                         </div>
-                    </div>
-                    <div class="three wide column">
-                        <div class="ui list">
-                            <div class="item">
-                                <div class="content">
-                                    <div class="header">{{$root.labels.WORKSPACE.previewContent.createdOn}}</div>
-                                    <div class="description padding-top-1rem">{{previewContent.contentData.createdOn| dateFilterWithMDY}}</div>
-                                </div>
+                        <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.language">
+                            <div class="right floated content contentdetail">
+                                <div class="ui ">{{previewContent.contentData.language.toString()}}</div>
+                            </div>
+                            <div class="content">
+                                {{$root.labels.WORKSPACE.previewContent.language}}
                             </div>
                         </div>
-                    </div>
-                    <div class="three wide column">
-                        <div class="ui list">
-                            <div class="item">
-                                <div class="content">
-                                    <div class="header">{{$root.labels.WORKSPACE.previewContent.status}}</div>
-                                    <div class="description padding-top-1rem">{{previewContent.contentData.status}}</div>
-                                </div>
+                        <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.gradeLevel">
+                            <div class="right floated content contentdetail">
+                                <div class="ui ">{{previewContent.contentData.gradeLevel.toString()}}</div>
+                            </div>
+                            <div class="content ">
+                                {{$root.labels.WORKSPACE.previewContent.grades}}
                             </div>
                         </div>
-                    </div>
-                    <div class="three wide column">
-                        <div class="ui list">
-                            <div class="item">
-                                <div class="content">
-                                    <div class="header">{{$root.labels.WORKSPACE.previewContent.medium}}</div>
-                                    <div class="description padding-top-1rem">{{previewContent.contentData.medium}}</div>
-                                </div>
+                        <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.subject">
+                            <div class="right floated content contentdetail">
+                                <div class="ui ">{{previewContent.contentData.subject}}</div>
+                            </div>
+                            <div class="content">
+                                {{$root.labels.WORKSPACE.previewContent.subject}}
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="three wide column" ng-if="previewContent.contentData.concepts">
-                        <div class="ui list">
-                            <div class="item">
-                                <div class="content">
-                                    <div class="header">{{$root.labels.WORKSPACE.common.concept}}</div>
-                                    <div class="description padding-top-1rem">{{previewContent.getConceptsNames(previewContent.contentData.concepts)}}</div>
-                                </div>
+                        <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.createdOn">
+                            <div class="right floated content contentdetail">
+                                <div class="ui ">{{previewContent.contentData.createdOn| dateFilterWithMDY}}</div>
+                            </div>
+                            <div class="content">
+                                {{$root.labels.WORKSPACE.previewContent.createdOn}}
                             </div>
                         </div>
-                    </div>
-                    <div class="three wide column" ng-if="previewContent.contentData.status === 'Flagged'">
-                        <div class="ui list">
-                            <div class="item">
-                                <div class="content">
-                                    <div class="header">{{$root.labels.WORKSPACE.previewContent.flaggedReasons}}</div>
-                                    <div class="description padding-top-1rem">{{previewContent.contentData.flagReasons.toString()}}</div>
-                                </div>
+                        <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.lastUpdatedOn">
+                            <div class="right floated content contentdetail">
+                                <div class="ui ">{{previewContent.contentData.lastUpdatedOn| dateFilterWithMDY}}</div>
+                            </div>
+                            <div class="content">
+                                {{$root.labels.WORKSPACE.previewContent.lastUpdate}}
                             </div>
                         </div>
-                    </div>
-                    <div class="three wide column" ng-if="previewContent.contentData.status === 'Flagged'">
-                        <div class="ui list">
-                            <div class="item">
-                                <div class="content">
-                                    <div class="header">{{$root.labels.WORKSPACE.previewContent.flaggedBy}}</div>
-                                    <div class="description padding-top-1rem">{{previewContent.contentData.flaggedBy.toString()}}</div>
-                                </div>
+                        <div class="item padding-top-10 padding-bottom-5" ng-if="getConceptsNames(previewContent.contentData.concepts)">
+                            <div class="right floated content contentdetail">
+                                <div class="ui">{{getConceptsNames(previewContent.contentData.concepts)}}</div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row" ng-if="previewContent.contentData.status === 'Flagged' && previewContent.contentData.flags">
-                    <div class="twelve wide column">
-                        <div class="ui list">
-                            <div class="item">
-                                <div class="content">
-                                    <div class="header">{{$root.labels.WORKSPACE.previewContent.flaggedDescription}}</div>
-                                    <div class="description padding-top-1rem">{{previewContent.contentData.flags.toString()}}</div>
-                                </div>
+                            <div class="content">
+                                {{$root.labels.WORKSPACE.common.concept}}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class=" one wide column "></div>
+    </div>
+    <div class="one wide column"></div>
+</div>
+
+<!-- 
+<div class="row margin-top-15" ng-if="!previewContent.loader.showLoader">
+    <h2 class="ui header" title="Description">
+        {{previewContent.contentData.description}}
+    </h2>
+    <div class="ui clearing divider"></div>
+    <div class="ui grid margin-top-15">
+        <div class="row">
+            <div class="three wide column">
+                <div class="ui list">
+                    <div class="item">
+                        <div class="content">
+                            <div class="header">{{$root.labels.WORKSPACE.previewContent.author}}</div>
+                            <div class="description padding-top-1rem">{{previewContent.contentData.author}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="three wide column">
+                <div class="ui list">
+                    <div class="item">
+                        <div class="content">
+                            <div class="header">{{$root.labels.WORKSPACE.previewContent.language}}</div>
+                            <div class="description padding-top-1rem">{{previewContent.contentData.language.toString()}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="three wide column">
+                <div class="ui list">
+                    <div class="item">
+                        <div class="content">
+                            <div class="header">{{$root.labels.WORKSPACE.previewContent.grades}}</div>
+                            <div class="description padding-top-1rem">{{previewContent.contentData.gradeLevel.toString()}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="three wide column">
+                <div class="ui list">
+                    <div class="item">
+                        <div class="content">
+                            <div class="header">{{$root.labels.WORKSPACE.previewContent.subject}}</div>
+                            <div class="description padding-top-1rem">{{previewContent.contentData.subject}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="three wide column">
+                <div class="ui list">
+                    <div class="item">
+                        <div class="content">
+                            <div class="header">{{$root.labels.WORKSPACE.previewContent.lastUpdate}}</div>
+                            <div class="description padding-top-1rem">{{previewContent.contentData.lastUpdatedOn| dateFilterWithMDY}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="three wide column">
+                <div class="ui list">
+                    <div class="item">
+                        <div class="content">
+                            <div class="header">{{$root.labels.WORKSPACE.previewContent.createdOn}}</div>
+                            <div class="description padding-top-1rem">{{previewContent.contentData.createdOn| dateFilterWithMDY}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="three wide column">
+                <div class="ui list">
+                    <div class="item">
+                        <div class="content">
+                            <div class="header">{{$root.labels.WORKSPACE.previewContent.status}}</div>
+                            <div class="description padding-top-1rem">{{previewContent.contentData.status}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="three wide column">
+                <div class="ui list">
+                    <div class="item">
+                        <div class="content">
+                            <div class="header">{{$root.labels.WORKSPACE.previewContent.medium}}</div>
+                            <div class="description padding-top-1rem">{{previewContent.contentData.medium}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="three wide column" ng-if="previewContent.contentData.concepts">
+                <div class="ui list">
+                    <div class="item">
+                        <div class="content">
+                            <div class="header">{{$root.labels.WORKSPACE.common.concept}}</div>
+                            <div class="description padding-top-1rem">{{previewContent.getConceptsNames(previewContent.contentData.concepts)}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="three wide column" ng-if="previewContent.contentData.status === 'Flagged'">
+                <div class="ui list">
+                    <div class="item">
+                        <div class="content">
+                            <div class="header">{{$root.labels.WORKSPACE.previewContent.flaggedReasons}}</div>
+                            <div class="description padding-top-1rem">{{previewContent.contentData.flagReasons.toString()}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="three wide column" ng-if="previewContent.contentData.status === 'Flagged'">
+                <div class="ui list">
+                    <div class="item">
+                        <div class="content">
+                            <div class="header">{{$root.labels.WORKSPACE.previewContent.flaggedBy}}</div>
+                            <div class="description padding-top-1rem">{{previewContent.contentData.flaggedBy.toString()}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" ng-if="previewContent.contentData.status === 'Flagged' && previewContent.contentData.flags">
+            <div class="twelve wide column">
+                <div class="ui list">
+                    <div class="item">
+                        <div class="content">
+                            <div class="header">{{$root.labels.WORKSPACE.previewContent.flaggedDescription}}</div>
+                            <div class="description padding-top-1rem">{{previewContent.contentData.flags.toString()}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+<div class=" one wide column "></div>
+</div>
+</div> -->

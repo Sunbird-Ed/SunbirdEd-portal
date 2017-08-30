@@ -7,7 +7,7 @@
  * # applyScript
  */
 angular.module('playerApp')
-    .directive('applyScript', function ($timeout) {
+    .directive('applyScript', [ '$timeout', function ($timeout) {
         return {
             restrict: 'A',
             link: function (scope, element, attrs) {
@@ -261,4 +261,4 @@ angular.module('playerApp')
                 ];
             }
         };
-    });
+    }]);

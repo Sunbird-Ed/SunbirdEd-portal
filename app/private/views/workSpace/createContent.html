@@ -1,151 +1,153 @@
-<div class="ui grid" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW">
-    <div class="twelve wide column ">
-        <div class="ui grid">
-            <div class="three wide column">
-                <div class="workspacecontent link ui card" ui-sref="CreateTextbook">
-                    <div class="content">
-                        <div class="textcontent">
-                            <i class='my-icon file text outline icon '></i>
-                            <span class="my-text">{{$root.labels.WORKSPACE.startCreating.textbook}}</span>
+<div sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW">
+    <div class="ui grid">
+        <div class="twelve wide column ">
+            <div class="ui grid">
+                <div class="three wide column">
+                    <div class="workspacecontent link ui card" ui-sref="CreateTextbook">
+                        <div class="content">
+                            <div class="textcontent">
+                                <i class='my-icon file text outline icon '></i>
+                                <span class="my-text">{{$root.labels.WORKSPACE.startCreating.textbook}}</span>
+                            </div>
                         </div>
                     </div>
+                    <p class="workspaceinstuction">{{$root.labels.WORKSPACE.startCreating.textbookDescription}}</p>
                 </div>
-                <p class="workspaceinstuction">{{$root.labels.WORKSPACE.startCreating.textbookDescription}}</p>
-            </div>
-            <div class="three wide column">
-                <div class="workspacecontent ui link card" ui-sref="CreateCourse">
-                    <div class="content">
-                        <div class="textcontent">
-                            <i class='my-icon file text outline icon'></i>
-                            <span class="my-text">{{$root.labels.WORKSPACE.startCreating.course}}</span>
+                <div class="three wide column">
+                    <div class="workspacecontent ui link card" ui-sref="CreateCourse">
+                        <div class="content">
+                            <div class="textcontent">
+                                <i class='my-icon file text outline icon'></i>
+                                <span class="my-text">{{$root.labels.WORKSPACE.startCreating.course}}</span>
+                            </div>
                         </div>
                     </div>
+                    <p class="workspaceinstuction">{{$root.labels.WORKSPACE.startCreating.courseDescription}}</p>
                 </div>
-                <p class="workspaceinstuction">{{$root.labels.WORKSPACE.startCreating.courseDescription}}</p>
-            </div>
-            <div class="three wide column">
-                <div class="workspacecontent ui link card" ui-sref="CreateLesson">
-                    <div class="content">
-                        <div class="textcontent">
-                            <i class='my-icon file text icon'></i>
-                            <span class="my-text">{{$root.labels.WORKSPACE.startCreating.lesson}}</span>
+                <div class="three wide column">
+                    <div class="workspacecontent ui link card" ui-sref="CreateLesson">
+                        <div class="content">
+                            <div class="textcontent">
+                                <i class='my-icon file text icon'></i>
+                                <span class="my-text">{{$root.labels.WORKSPACE.startCreating.lesson}}</span>
+                            </div>
                         </div>
                     </div>
+                    <p class="workspaceinstuction">{{$root.labels.WORKSPACE.startCreating.lessonDescription}}</p>
                 </div>
-                <p class="workspaceinstuction">{{$root.labels.WORKSPACE.startCreating.lessonDescription}}</p>
-            </div>
-            <div class="three wide column">
-                <div class="workspacecontent ui link card" ui-sref="CreateCollection">
-                    <div class="content">
-                        <div class="textcontent">
-                            <i class='my-icon folder open outline icon'></i>
-                            <span class="my-text">{{$root.labels.WORKSPACE.startCreating.collection}}</span>
+                <div class="three wide column">
+                    <div class="workspacecontent ui link card" ui-sref="CreateCollection">
+                        <div class="content">
+                            <div class="textcontent">
+                                <i class='my-icon folder open outline icon'></i>
+                                <span class="my-text">{{$root.labels.WORKSPACE.startCreating.collection}}</span>
+                            </div>
                         </div>
                     </div>
+                    <p class="workspaceinstuction">{{$root.labels.WORKSPACE.startCreating.collectionDescription}}</p>
                 </div>
-                <p class="workspaceinstuction">{{$root.labels.WORKSPACE.startCreating.collectionDescription}}</p>
-            </div>
-        </div>
-    </div>
-    <div class="twelve wide column ">
-        <div class="ui grid">
-            <div class="three wide column">
-                <div class="workspacecontent ui link card" ui-sref="CreateLessonPlan">
-                    <div class="content">
-                        <div class="textcontent">
-                            <i class='my-icon file text outline icon'></i>
-                            <span class="my-text">{{$root.labels.WORKSPACE.startCreating.lessonPlan}}</span>
-                        </div>
-                    </div>
-                </div>
-                <p class="workspaceinstuction">{{$root.labels.WORKSPACE.startCreating.lessonPlanDescription}}</p>
             </div>
         </div>
-    </div>
-    <div class="twelve wide column dividerInFileUploader">
-        <div class="ui divider"></div>
-    </div>
-    <div class="twelve wide column">
-        <div fine-uploader>
+        <div class="twelve wide column ">
+            <div class="ui grid">
+                <div class="three wide column">
+                    <div class="workspacecontent ui link card" ui-sref="CreateLessonPlan">
+                        <div class="content">
+                            <div class="textcontent">
+                                <i class='my-icon file text outline icon'></i>
+                                <span class="my-text">{{$root.labels.WORKSPACE.startCreating.lessonPlan}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="workspaceinstuction">{{$root.labels.WORKSPACE.startCreating.lessonPlanDescription}}</p>
+                </div>
+            </div>
         </div>
+        <div class="twelve wide column dividerInFileUploader">
+            <div class="ui divider"></div>
+        </div>
+        <div class="twelve wide column" ng-init="contentCreation.initializeFileUploader()">
+            <div fine-uploader>
+            </div>
 
-        <div class="ui grid fileUploadDivider">
-            <div class="one wide column"></div>
-            <div class="uploadicon four wide column">
-                <p class="padding-top-10 dropfile textIndentForUploadFile">{{$root.labels.WORKSPACE.startCreating.enterYoutubeURL}}</p>
-            </div>
-            <div class="six wide column">
-                <div class="ui form youtubeupload youTubeFileUploadForm">
-                    <div class="inline fields">
-                        <div class="eight wide field">
-                            <input type="text" ng-model="contentCreation.youtubeVideoUrl" placeholder={{$root.labels.WORKSPACE.startCreating.enterYoutubeURL}} ng-model-options="{ debounce: 1000 }" ng-change="contentCreation.validateYouTubeUrl(contentCreation.youtubeVideoUrl)">
-                        </div>
-                        <div class="two wide field">
-                            <button class="ui primary basic button text-align-center padding-left-25 qq-upload-button-selector" ng-click="contentCreation.uploadYoutubeFile()" ng-disabled="!contentCreation.youtubeVideoUrl || contentCreation.invalidYoutubeVideoUrl">UPLOAD</button>
+            <div class="ui grid fileUploadDivider">
+                <div class="one wide column"></div>
+                <div class="uploadicon four wide column">
+                    <p class="padding-top-10 dropfile textIndentForUploadFile">{{$root.labels.WORKSPACE.startCreating.enterYoutubeURL}}</p>
+                </div>
+                <div class="six wide column">
+                    <div class="ui form youtubeupload youTubeFileUploadForm">
+                        <div class="inline fields">
+                            <div class="eight wide field">
+                                <input type="text" ng-model="contentCreation.youtubeVideoUrl" placeholder={{$root.labels.WORKSPACE.startCreating.enterYoutubeURL}} ng-model-options="{ debounce: 1000 }" ng-change="contentCreation.validateYouTubeUrl(contentCreation.youtubeVideoUrl)">
+                            </div>
+                            <div class="two wide field">
+                                <button class="ui primary basic button text-align-center padding-left-25 qq-upload-button-selector" ng-click="contentCreation.uploadYoutubeFile()" ng-disabled="!contentCreation.youtubeVideoUrl || contentCreation.invalidYoutubeVideoUrl">UPLOAD</button>
+                            </div>
                         </div>
                     </div>
+                    <div class="ui negative message" ng-if="contentCreation.invalidYoutubeVideoUrl && contentCreation.youtubeVideoUrl.length !== 0">{{$root.errorMessages.WORKSPACE.ContentCreation.invalidYoutubeVideoUrl}}</div>
                 </div>
-                <div class="ui negative message" ng-if="contentCreation.invalidYoutubeVideoUrl && contentCreation.youtubeVideoUrl.length !== 0">{{$root.errorMessages.WORKSPACE.ContentCreation.invalidYoutubeVideoUrl}}</div>
+                <div class="one wide column"></div>
             </div>
-            <div class="one wide column"></div>
         </div>
     </div>
-</div>
-<div ng-show="contentCreation.showContentCreationModal">
-    <div class="ui long modal" id="contentCreationModal" ng-init="contentCreation.data = {}">
-        <div class=" ui segment margin-top-10" ng-show="!contentCreation.loader.showLoader">
-            <div class=" margin-bottom-15">
-                <div class="ui grid">
-                    <div class="eleven wide column">
-                        <span class="ui header">{{$root.labels.WORKSPACE.startCreating.uploadContent}}</span>
-                    </div>
-                    <div class="one wide column actions">
-                        <h5 class="ui basic icon circular button deny">
-                            <i class="ui remove icon"></i>
-                        </h5>
+    <div ng-show="contentCreation.showContentCreationModal">
+        <div class="ui long modal" id="contentCreationModal" ng-init="contentCreation.data = {}">
+            <div class=" ui segment margin-top-10" ng-show="!contentCreation.loader.showLoader">
+                <div class=" margin-bottom-15">
+                    <div class="ui grid">
+                        <div class="eleven wide column">
+                            <span class="ui header">{{$root.labels.WORKSPACE.startCreating.uploadContent}}</span>
+                        </div>
+                        <div class="one wide column actions">
+                            <h5 class="ui basic icon circular button deny">
+                                <i class="ui remove icon"></i>
+                            </h5>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="content">
-                <form class="ui form" name="Create">
-                    <div class="field">
-                        <label>{{$root.labels.WORKSPACE.common.title}}</label>
+                <div class="content">
+                    <form class="ui form" name="Create">
                         <div class="field">
-                            <input type="text" name="title" placeholder={{$root.labels.WORKSPACE.common.title}} ng-model="contentCreation.data.name">
+                            <label>{{$root.labels.WORKSPACE.common.title}}</label>
+                            <div class="field">
+                                <input type="text" name="title" placeholder={{$root.labels.WORKSPACE.common.title}} ng-model="contentCreation.data.name">
+                            </div>
                         </div>
-                    </div>
-                    <div class="field">
-                        <label>{{$root.labels.WORKSPACE.common.description}}</label>
                         <div class="field">
-                            <input type="text" name="description" placeholder={{$root.labels.WORKSPACE.common.description}} ng-model="contentCreation.data.description">
+                            <label>{{$root.labels.WORKSPACE.common.description}}</label>
+                            <div class="field">
+                                <input type="text" name="description" placeholder={{$root.labels.WORKSPACE.common.description}} ng-model="contentCreation.data.description">
+                            </div>
                         </div>
-                    </div>
-                    <div class="two fields">
-                        <div class="field">
-                            <label>{{$root.labels.WORKSPACE.common.lessonType}}</label>
-                            <select name="lessonType" class="ui fluid dropdown" id="lessonTypeDropDown" ng-options=" lesson for lesson in contentCreation.lessonTypes" ng-model="contentCreation.data.contentType">
+                        <div class="two fields">
+                            <div class="field">
+                                <label>{{$root.labels.WORKSPACE.common.lessonType}}</label>
+                                <select name="lessonType" class="ui fluid dropdown" id="lessonTypeDropDown" ng-options=" lesson for lesson in contentCreation.lessonTypes" ng-model="contentCreation.data.contentType">
                                 <option value="" >{{$root.labels.WORKSPACE.common.lessonType}}</option>
                             </select>
-                        </div>
-                        <div class="required field">
-                            <label>{{$root.labels.WORKSPACE.common.mimeType}}</label>
-                            <select name="mimeType" class="ui fluid dropdown" id="mimeTypeDropDown" ng-options=" mimeType.name for mimeType in contentCreation.mimeType" ng-model="contentCreation.data.mimeType">
+                            </div>
+                            <div class="required field">
+                                <label>{{$root.labels.WORKSPACE.common.mimeType}}</label>
+                                <select name="mimeType" class="ui fluid dropdown" id="mimeTypeDropDown" ng-options=" mimeType.name for mimeType in contentCreation.mimeType" ng-model="contentCreation.data.mimeType">
                                 <option value="">{{$root.labels.WORKSPACE.common.mimeType}}</option>
                             </select>
+                            </div>
                         </div>
-                    </div>
-                </form>
-            </div>
-            <div class="actions">
-                <p class="text-align-center">
-                    <button class="ui primary text-align-center icon button" ng-click="contentCreation.saveMetaData(contentCreation.data)" ng-disabled="!contentCreation.data.mimeType && !contentCreation.youtubeVideoUrl">
+                    </form>
+                </div>
+                <div class="actions">
+                    <p class="text-align-center">
+                        <button class="ui primary text-align-center icon button" ng-click="contentCreation.saveMetaData(contentCreation.data)" ng-disabled="!contentCreation.data.mimeType && !contentCreation.youtubeVideoUrl">
                         {{$root.labels.WORKSPACE.startCreating.upload}}
                     </button>
-                </p>
+                    </p>
+                </div>
             </div>
-        </div>
-        <div class=" ui segment margin-top-10" ng-if="contentCreation.loader.showLoader">
-            <app-loader data="{{contentCreation.loader}}"></app-loader>
+            <div class=" ui segment margin-top-10" ng-if="contentCreation.loader.showLoader">
+                <app-loader data="{{contentCreation.loader}}"></app-loader>
+            </div>
         </div>
     </div>
 </div>
