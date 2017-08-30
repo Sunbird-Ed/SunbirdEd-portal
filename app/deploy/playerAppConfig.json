@@ -11,84 +11,72 @@
             "PAGE_PREFIX": "data/v1/page/assemble",
             "USER": {
                 "RESOURCE_BUNDLE": "resourcebundle",
-                "SIGNUP": "user/v1/create",
-                "UPDATE_USER_PROFILE": "user/v1/update",
-                "GET_PROFILE": "user/v1/read",
+                "SIGNUP": "user/create",
+                "UPDATE_USER_PROFILE": "user/update",
+                "GET_PROFILE": "user/read",
                 "TENANT_LOGO": "get/tenant/logo"
             },
             "COMPOSITE": {
-                "SEARCH": "composite/v1/search"
+                "SEARCH": "search"
             },
             "COURSE": {
-                "SEARCH": "course/v1/search",
-                "CREATE": "course/v1/create",
-                "UPDATE": "course/v1/update",
-                "REVIEW": "course/v1/review",
-                "PUBLISH": "course/v1/publish",
-                "GET": "course/v1/get",
-                "GET_MY_COURSE": "course/v1/get/mycourse",
-                "HIERARCHY": "course/v1/hierarchy",
-                "USER_CONTENT_STATE": "course/v1/content/state",
-                "USER_CONTENT_STATE_READ": "course/v1/content/state/read",
-                "USER_CONTENT_STATE_UPDATE": "course/v1/content/state/update",
-                "GET_ENROLLED_COURSES": "course/v1/user/enrollment/list",
-                "GET_LEARN_OTHER_SECTION": "Course",
-                "ENROLL_USER_COURSE": "course/v1/enrol",
-                "RECOMMENDED_COURSE": "recommended/courses"
+                "SEARCH": "course/search",
+                "CREATE": "course/create",
+                "UPDATE": "course/update",
+                "REVIEW": "course/review",
+                "PUBLISH": "course/publish",
+                "HIERARCHY": "course/hierarchy",
+                "USER_CONTENT_STATE_READ": "content/state/read",
+                "USER_CONTENT_STATE_UPDATE": "content/state/update",
+                "GET_ENROLLED_COURSES": "user/course/list",
+                "ENROLL_USER_COURSE": "course/enrol"
             },
             "CONTENT": {
-                "SEARCH": "content/v1/search",
-                "CREATE": "content/v1/create",
-                "UPDATE": "content/v1/update",
-                "REVIEW": "content/v1/review",
-                "PUBLISH": "content/v1/publish",
-                "UPLOAD_MEDIA": "content/v1/media/upload",
-                "GET": "content/v1/read",
-                "GET_MY_COURSE": "content/v1/get/mycontent",
-                "UPLOAD": "content/v1/upload",
-                "RETIRE": "content/v1/retire",
-                "REJECT": "content/v1/reject",
-                "FLAG": "content/v1/flag",
-                "ACCEPT_FLAG": "content/v1/flag/accept",
-                "DISCARD_FLAG": "content/v1/flag/reject",
-                "UPLOAD_URL": "content/v1/upload/url/read"
+                "SEARCH": "content/search",
+                "CREATE": "content/create",
+                "UPDATE": "content/update",
+                "REVIEW": "content/review",
+                "PUBLISH": "content/publish",
+                "UPLOAD_MEDIA": "file/upload",
+                "GET": "content/read",
+                "UPLOAD": "content/upload",
+                "RETIRE": "content/retire",
+                "REJECT": "content/reject",
+                "FLAG": "content/flag",
+                "ACCEPT_FLAG": "content/flag/accept",
+                "DISCARD_FLAG": "content/flag/reject",
+                "UPLOAD_URL": "content/upload/url"
             },
             "NOTES": {
-                "SEARCH": "notes/v1/search",
-                "CREATE": "notes/v1/create",
-                "UPDATE": "notes/v1/update",
-                "GET": "notes/v1/read",
-                "DELETE": "notes/v1/delete"
+                "SEARCH": "notes/search",
+                "CREATE": "notes/create",
+                "UPDATE": "notes/update",
+                "GET": "notes/read",
+                "DELETE": "notes/delete"
             },
             "RESOURCE": {
                 "GET": "Resource"
             },
             "ROLES": {
-                "READ": "data/v1/role/read"
+                "READ": "role/read"
             },
             "BATCH": {
-                "CREATE": "course/v1/batch/create",
-                "UPDATE": "course/v1/batch/update",
-                "ADD_USERS": "course/v1/batch/user/add",
-                "REMOVE_USERS": "course/v1/batch/users/remove",
-                "GET_DETAILS": "course/v1/batch/read",
-                "GET_BATCHS": "course/v1/batch/list"
+                "CREATE": "course/batch/create",
+                "UPDATE": "course/batch/update",
+                "ADD_USERS": "course/batch/user/add",
+                "GET_DETAILS": "course/batch/read",
+                "GET_BATCHS": "course/batch/list"
             },
             "ADMIN": {
-                "USER_SEARCH": "user/v1/search",
-                "ORG_SEARCH": "org/v1/search",
+                "USER_SEARCH": "user/search",
+                "ORG_SEARCH": "org/search",
                 "BULK": {
-                    "USERS_UPLOAD": "user/v1/upload",
-                    "ORGANIZATIONS_UPLOAD": "org/v1/upload",
-                    "STATUS": "data/v1/upload/status"
+                    "USERS_UPLOAD": "user/upload",
+                    "ORGANIZATIONS_UPLOAD": "org/upload",
+                    "STATUS": "upload/status"
                 },
-                "DELETE_USER": "user/v1/block",
-                "UPDATE_USER_ORG_ROLES": "org/v1/role/assign"
-            },
-            "BADGE":{
-                "GET":"org/v1/badges/list",
-                "ASSIGN":"user/v1/badges/add"
-
+                "DELETE_USER": "user/block",
+                "UPDATE_USER_ORG_ROLES": "user/assign/role"
             }
         },
         "FILTER": {
