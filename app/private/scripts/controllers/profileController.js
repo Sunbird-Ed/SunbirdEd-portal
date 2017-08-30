@@ -34,22 +34,6 @@ angular.module('playerApp') // add those all values
               }
           });
 
-      // Get Organisation details
-          userService.getOrgDetails(orgIds).then(function (apiResponse) {
-              if (apiResponse.responseCode === 'OK') {
-                  var orgArray = [];
-                  _.forEach(apiResponse.result.response.content, function (org) {
-                      orgArray.push({ organisationId: org.id, orgName: org.orgName });
-                  });
-                  profile.orgDetails = orgArray;
-              } else {
-                  toasterService.error(apiResponse.params.errmsg);
-              }
-          })
-        .catch(function () {
-            toasterService.error(apiMessages.ERROR.get);
-        });
-
       // Get user profile
           profile.processProfileData = function (userProfile) { // setProfileData
               profile.loader.showLoader = false;
