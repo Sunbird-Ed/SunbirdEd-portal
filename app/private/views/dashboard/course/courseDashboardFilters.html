@@ -3,6 +3,7 @@
     <!--<div class="five wide column left floated">
       <p class="dashboard-label ng-binding"><i class="bar chart icon"></i>&nbsp; {{courseDashboard.courseName ? courseDashboard.courseName : 'Select Course To See'}} Dashboard</p>
     </div>-->
+    <span class="dashBoardSectionHeading top-17" ng-if="courseDashboard.dataset == 'consumption'"><i class="large bar chart icon margin-top-16"></i></span>
     <div class="four wide column left floated" ng-if="courseDashboard.dataset == 'consumption'" ng-hide="courseDashboard.myCoursesList.length <= '1' ">
       <div class="ui fluid search selection dropdown" id="myCoursesListFilter">
         <input type="hidden" name="course">
@@ -14,6 +15,7 @@
         </div>
       </div>
     </div>
+    <span class="dashBoardSectionHeading top-17" ng-if="courseDashboard.dataset == 'progress'"><i class="large bar chart icon margin-top-16"></i></span>
     <div class="four wide column left floated" ng-if="courseDashboard.dataset == 'progress'">
       <div class="ui fluid search selection dropdown" id="myBatchesListFilter">
         <input type="hidden" name="course">
