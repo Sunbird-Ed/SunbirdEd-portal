@@ -90,15 +90,15 @@ angular.module('playerApp').directive('search', function () {
              * and its show failed response for 2 sec.
              * @param {String} message
              */
-            function showErrorMessage(isClose, message, messageType,messageText) {
+            function showErrorMessage(isClose, message, messageType, messageText) {
                 var error = {};
                 error.showError = true;
                 error.isClose = isClose;
                 error.message = message;
                 error.messageType = messageType;
-                if(messageText){
-                error.messageText=messageText;
-              }
+                if (messageText) {
+                    error.messageText = messageText;
+                }
                 return error;
             }
 
@@ -246,6 +246,9 @@ angular.module('playerApp').directive('search', function () {
                     if (isEmail === false && req.filters.email) {
                         delete req.filters.email;
                     }
+                    if (req.sort_by) {
+                        delete req.sort_by;
+                    }
                     req.filters.objectType = ['user'];
 
                     $scope.search.currentUserRoles = permissionsService.getCurrentUserRoles();
@@ -259,6 +262,9 @@ angular.module('playerApp').directive('search', function () {
                     $scope.search.resultType = 'users';
                 } else if ($rootScope.search.selectedSearchKey === 'Organisations') {
                     req.filters = {};
+                    if (req.sort_by) {
+                        delete req.sort_by;
+                    }
                     req.filters.objectType = ['org'];
                     $scope.search.searchFn = adminService.orgSearch({ request: req });
                     $scope.search.resultType = 'organisations';
@@ -284,7 +290,7 @@ angular.module('playerApp').directive('search', function () {
                                 if (res.result.response.count === 0) {
                                     $rootScope.search.error = showErrorMessage(true,
                                             $rootScope.errorMessages.SEARCH.DATA.NO_CONTENT,
-                                            $rootScope.errorMessages.COMMON.NO_RESULTS,$rootScope.errorMessages.SEARCH.DATA.NO_CONTENT_TEXT);
+                                            $rootScope.errorMessages.COMMON.NO_RESULTS, $rootScope.errorMessages.SEARCH.DATA.NO_CONTENT_TEXT);
                                 } else {
                                     $rootScope.search.error = {};
                                     $rootScope.search.searchResult = res.result;
@@ -292,7 +298,7 @@ angular.module('playerApp').directive('search', function () {
                             } else if (res.result.count === 0) {
                                 $rootScope.search.error = showErrorMessage(true,
                                         $rootScope.errorMessages.SEARCH.DATA.NO_CONTENT,
-                                        $rootScope.errorMessages.COMMON.NO_RESULTS,$rootScope.errorMessages.SEARCH.DATA.NO_CONTENT_TEXT);
+                                        $rootScope.errorMessages.COMMON.NO_RESULTS, $rootScope.errorMessages.SEARCH.DATA.NO_CONTENT_TEXT);
                             } else {
                                 $rootScope.search.error = {};
                                 $rootScope.search.searchResult = res.result;
