@@ -33,7 +33,7 @@
                         <span class="header cardsHeading ng-binding"> {{$root.labels.WORKSPACE.previewContent.description}} </span>
                     </div>
                     <div class="description padding-top-5">
-                        <p ng-bind-html="{{contentData.description }}">
+                        <p ng-bind-html="contentData.description">
                         </p>
                     </div>
                 </div>
@@ -99,7 +99,7 @@
                                 {{$root.labels.WORKSPACE.previewContent.lastUpdate}}
                             </div>
                         </div>
-                        <div class="item padding-top-10 padding-bottom-5" ng-if="getConceptsNames(contentData.concepts)">
+                        <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.concepts">
                             <div class="right floated content contentdetail">
                                 <div class="ui">{{getConceptsNames(contentData.concepts)}}</div>
                             </div>

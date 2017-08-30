@@ -21,6 +21,8 @@ var imagemin = require('gulp-imagemin');
 var concat = require('gulp-concat');
 var inject = require('gulp-inject');
 var merge = require('merge-stream');
+var gzip = require('gulp-gzip');
+var map = require('map-stream');
 
 var player = {
     app: 'app/private/',
@@ -113,6 +115,24 @@ var public_bower_css = [
     "dist/thirdparty/bower_components/izitoast/dist/css/iziToast.min.css"
 ];
 
+var public_scripts = [
+    "dist/public/scripts/service/httpService.js",
+    "dist/public/scripts/service/signUpService.js",
+    "dist/public/scripts/service/toasterService.js",
+    "dist/public/scripts/service/publicPlayerTelemetryUtilsService.js",
+    "dist/public/scripts/service/contentService.js",
+    "dist/public/scripts/directive/error.js",
+    "dist/public/scripts/directive/loader.js",
+    "dist/public/scripts/directive/courseDiscussions.js",
+    "dist/public/scripts/directive/applyScript.js",
+    "dist/public/scripts/directive/publicContentPlayer.js",
+    "dist/public/scripts/controllers/signUpController.js",
+    "dist/public/scripts/controllers/publicContentPlayerController.js",
+    "dist/public/scripts/controllers/courseScheduleController.js",
+    "dist/public/scripts/controllers/collectionPlayerController.js",
+    "dist/public/scripts/filters/dateFilter.js"
+];
+
 var private_bower_js = [
     "dist/thirdparty/libs/eventbus.min.js",
     "dist/thirdparty/libs/md5.js",
@@ -158,6 +178,104 @@ var private_bower_css = [
     "dist/thirdparty/bower_components/file-upload/fine-uploader/fine-uploader-new.min.css",
     "dist/thirdparty/bower_components/semantic-ui-calendar/dist/calendar.min.css",
     "dist/thirdparty/bower_components/izitoast/dist/css/iziToast.min.css"
+];
+
+var private_scripts = [
+    "dist/private/scripts/factories/sessionFactory.js",
+    "dist/private/scripts/services/httpService.js",
+    "dist/private/scripts/services/httpServiceJava.js",
+    "dist/private/scripts/services/contentService.js",
+    "dist/private/scripts/services/noteService.js",
+    "dist/private/scripts/services/courseService.js",
+    "dist/private/scripts/services/learnService.js",
+    "dist/private/scripts/services/userService.js",
+    "dist/private/scripts/services/pageSectionService.js",
+    "dist/private/scripts/services/searchService.js",
+    "dist/private/scripts/services/permissionsService.js",
+    "dist/private/scripts/services/playerTelemetryUtilsService.js",
+    "dist/private/scripts/services/contentStateService.js",
+    "dist/private/scripts/services/portalTelemetryService.js",
+    "dist/private/scripts/services/toasterService.js",
+    "dist/private/scripts/services/routeHelperService.js",
+    "dist/private/scripts/services/formValidation.js",
+    "dist/private/scripts/services/adminService.js",
+    "dist/private/scripts/services/batchService.js",
+    "dist/private/scripts/services/workSpaceUtilsService.js",
+    "dist/private/scripts/services/dashboardService.js",
+    "dist/private/scripts/services/dataService.js",
+    "dist/private/scripts/services/paginationService.js",
+    "dist/private/scripts/controllers/searchController.js",
+    "dist/private/scripts/controllers/appController.js",
+    "dist/private/scripts/controllers/note/noteListController.js",
+    "dist/private/scripts/controllers/courseScheduleController.js",
+    "dist/private/scripts/controllers/learnController.js",
+    "dist/private/scripts/controllers/resourceController.js",
+    "dist/private/scripts/controllers/communityController.js",
+    "dist/private/scripts/controllers/homeController.js",
+    "dist/private/scripts/controllers/profileController.js",
+    "dist/private/scripts/controllers/contentPlayer.js",
+    "dist/private/scripts/controllers/note/noteCardController.js",
+    "dist/private/scripts/controllers/contentPlayerController.js",
+    "dist/private/scripts/controllers/workspace/createLessonController.js",
+    "dist/private/scripts/controllers/workspace/draftContentController.js",
+    "dist/private/scripts/controllers/workspace/reviewContentController.js",
+    "dist/private/scripts/controllers/workspace/publishedContentController.js",
+    "dist/private/scripts/controllers/workspace/allUploadedContentController.js",
+    "dist/private/scripts/controllers/workspace/contentCreationController.js",
+    "dist/private/scripts/controllers/workspace/editContentController.js",
+    "dist/private/scripts/controllers/contentEditorController.js",
+    "dist/private/scripts/controllers/collectionEditorController.js",
+    "dist/private/scripts/controllers/workspace/TextBookController.js",
+    "dist/private/scripts/controllers/workspace/CollectionController.js",
+    "dist/private/scripts/controllers/workspace/previewContentController.js",
+    "dist/private/scripts/controllers/workspace/upForReviewContentController.js",
+    "dist/private/scripts/controllers/collectionPlayerController.js",
+    "dist/private/scripts/controllers/pageSectionController.js",
+    "dist/private/scripts/controllers/workspace/CourseController.js",
+    "dist/private/scripts/controllers/admin/adminController.js",
+    "dist/private/scripts/controllers/common/contentFlagController.js",
+    "dist/private/scripts/controllers/workspace/flaggedContentController.js",
+    "dist/private/scripts/controllers/batch/batchListController.js",
+    "dist/private/scripts/controllers/batch/batchController.js",
+    "dist/private/scripts/controllers/batch/batchUpdateController.js",
+    "dist/private/scripts/controllers/workspace/createLessonPlanController.js",
+    "dist/private/scripts/controllers/dashboard/orgDashboardController.js",
+    "dist/private/scripts/controllers/common/contentSharingController.js",
+    "dist/private/scripts/controllers/dashboard/orgDashboardController.js",
+    "dist/private/scripts/controllers/search/publicProfileController.js",
+    "dist/private/scripts/controllers/dashboard/courseDashboardController.js",
+    "dist/private/scripts/controllers/dashboard/courseCreatorDashboardController.js",
+    "dist/private/scripts/controllers/admin/bulkUploadController.js",
+    "dist/private/scripts/filters/dateFilter.js",
+    "dist/private/scripts/filters/noteListFilter.js",
+    "dist/private/scripts/directives/applyScript.js",
+    "dist/private/scripts/directives/appLoader.js",
+    "dist/private/scripts/directives/errorMessage.js",
+    "dist/private/scripts/directives/contentPlayer.js",
+    "dist/private/scripts/directives/angular-translate.js",
+    "dist/private/scripts/directives/noteCardDirective.js",
+    "dist/private/scripts/directives/courseDiscussions.js",
+    "dist/private/scripts/directives/slickDirective.js",
+    "dist/private/scripts/directives/addNoteDirective.js",
+    "dist/private/scripts/directives/permissionsDirective.js",
+    "dist/private/scripts/directives/pageSectionDirective.js",
+    "dist/private/scripts/directives/fileUpload.js",
+    "dist/private/scripts/directives/searchDirective.js",
+    "dist/private/scripts/directives/contentFlagDirective.js",
+    "dist/private/scripts/directives/batchCardDirective.js",
+    "dist/private/scripts/directives/conceptPicker.js",
+    "dist/private/scripts/directives/admin/searchedUser.js",
+    "dist/private/scripts/directives/admin/bulkUpload.js",
+    "dist/private/scripts/directives/batchDetailsDirective.js",
+    "dist/private/scripts/directives/contentSharingDirective.js"
+];
+
+var telemetry_js = [
+    "dist/private/scripts/telemetry/TelemetryEvent.js",
+    "dist/private/scripts/telemetry/TelemetryService.js",
+    "dist/private/scripts/telemetry/TelemetryV2Manager.js",
+    "dist/private/scripts/telemetry/TelemetryServiceUtil.js",
+    "dist/private/scripts/telemetry/InActiveEvent.js"
 ];
 
 // //////////////////////
@@ -381,24 +499,29 @@ gulp.task('minifyCSS', ['minifyJS'], function() {
 });
 
 gulp.task('minifyThirdparty', ['minifyCSS'], function() {
-    var public_js = gulp.src(public_bower_js).pipe(concat('external.min.js')).pipe(gulp.dest('dist/public/'));
-    var public_css = gulp.src(public_bower_css).pipe(concat('external.min.css')).pipe(gulp.dest('dist/public/'));
-    var private_js = gulp.src(private_bower_js).pipe(concat('external.min.js')).pipe(gulp.dest('dist/private/'));
-    var private_css = gulp.src(private_bower_css).pipe(concat('external.min.css')).pipe(gulp.dest('dist/private/'));
-    return merge(public_js, public_css, private_js, private_css);
+    var publicBowerJs = gulp.src(public_bower_js).pipe(concat('external.min.js')).pipe(gulp.dest('dist/public/'));
+    var publicBowerCss = gulp.src(public_bower_css).pipe(concat('external.min.css')).pipe(gulp.dest('dist/public/'));
+    var privateBowerJs = gulp.src(private_bower_js).pipe(concat('external.min.js')).pipe(gulp.dest('dist/private/'));
+    var privateBowerCss = gulp.src(private_bower_css).pipe(concat('external.min.css')).pipe(gulp.dest('dist/private/'));
+    var privateScripts = gulp.src(private_scripts).pipe(concat('script.min.js')).pipe(gulp.dest('dist/private/'));
+    var publicScripts = gulp.src(public_scripts).pipe(concat('script.min.js')).pipe(gulp.dest('dist/public/'));
+    var telemetry = gulp.src(telemetry_js).pipe(concat('telemetry.min.js')).pipe(gulp.dest('dist/public/'));
+    return merge(publicBowerJs, publicBowerCss, privateBowerJs, privateBowerCss, privateScripts, publicScripts, telemetry);
 });
 
-gulp.task('injectFiles', ['minifyThirdparty'], function() {
-    var x = gulp.src('dist/public/index.html')
-            .pipe(inject(gulp.src(['dist/public/external.min.js', 'dist/public/external.min.css'], { read: false }), { ignorePath: '/dist', addRootSlash: true }))
-            .pipe(gulp.dest('dist/public/'));
-    var y = gulp.src('dist/private/index.ejs')
-            .pipe(inject(gulp.src(['dist/private/external.min.js', 'dist/private/external.min.css'], { read: false }), { ignorePath: '/dist', addRootSlash: true }))
-            .pipe(gulp.dest('dist/private/'));
-    return merge(x, y);
+gulp.task('deploy_private_config', ['minifyThirdparty'], function () {
+    gulp.src('dist/deploy/playerAppConfig.json')
+        .pipe(gulpNgConfig('playerApp.config'))
+        .pipe(gulp.dest(dist.path  + 'private/' + dist.scripts));
 });
 
-gulp.task('minifyHTML', ['injectFiles'], function() {
+gulp.task('deploy_public_config', ['deploy_private_config'], function () {
+    gulp.src('dist/deploy/publicAppConfig.json')
+        .pipe(gulpNgConfig('loginApp.config'))
+        .pipe(gulp.dest(dist.path + 'public/' + dist.scripts));
+});
+
+gulp.task('minifyHTML', ['deploy_public_config'], function() {
     var opts = { empty: true, comments:false, spare:false };
     return gulp.src(['dist/private/views/**/*.html', 'dist/public/views/**/*.html'], {base: "dist/"})
         .pipe(minifyHTML(opts))
@@ -410,7 +533,58 @@ gulp.task('minifyIMG', ['minifyHTML'], function(){
         .pipe(gulp.dest('dist'))
 });
 
-gulp.task('packageNodeModules', ['minifyIMG', 'deploy_private_config', 'deploy_public_config'], function(){
+gulp.task('injectFiles', ['minifyIMG'], function() {
+    var x = gulp.src('dist/public/index.html')
+            .pipe(inject(gulp.src(["dist/public/external.min.js", 
+                "dist/thirdparty/semantic/semantic.min.js", 
+                "dist/private/scripts/utils/util.js",
+                "dist/private/scripts/managers/eventManager.js",
+                "dist/public/scripts/org.js",
+                "dist/public/telemetry.min.js",
+                "dist/public/scripts/publicLabels.js",
+                "dist/public/scripts/publicErrorMessages.js",
+                "dist/public/scripts/publicAppConfig.js",
+                "dist/public/scripts/application.js",
+                "dist/public/scripts/routes/publicAppRoute.js",
+                "dist/public/script.min.js", 
+                "dist/public/external.min.css"], { read: false }), { ignorePath: '/dist', addRootSlash: true }))
+            .pipe(gulp.dest('dist/public/'));
+    var y = gulp.src('dist/private/index.ejs')
+            .pipe(inject(gulp.src(["dist/private/external.min.js", 
+                "dist/thirdparty/semantic/semantic.min.js",
+                "dist/private/scripts/utils/util.js",
+                "dist/public/telemetry.min.js",
+                "dist/private/scripts/playerAppConfig.js",
+                "dist/private/scripts/privateLabels.js",
+                "dist/private/scripts/privateErrorMessages.js",
+                "dist/private/scripts/managers/eventManager.js",
+                "dist/private/scripts/app.js",
+                "dist/private/scripts/routes/appRoute.js",
+                "dist/private/script.min.js", 
+                "dist/private/external.min.css"], { read: false }), { ignorePath: '/dist', addRootSlash: true }))
+            .pipe(gulp.dest('dist/private/'));
+    return merge(x, y);
+});
+
+gulp.task('compress', ['injectFiles'], function() {
+    gulp.src(["dist/**"], {base: "dist/"})
+    .pipe(gzip())
+    .pipe(gulp.dest('dist'));
+});
+
+gulp.task('inject_staticGzip', ['compress'], function() {
+  return gulp.src('dist/server.js')
+    .pipe(map(function(file, cb) {
+      var fileContents = file.contents.toString();
+      fileContents = fileContents.replace('\/(invalid)\/', '/(\.html|\.js|\.css)$/');
+      fileContents = 'First line\n' + fileContents;
+      file.contents = new Buffer(fileContents);
+      cb(null, file);
+    }))
+    .pipe(gulp.dest('dist'));
+});
+
+gulp.task('packageNodeModules', ['inject_staticGzip'], function(){
     return gulp.src(['node_modules/**/*'])
         .pipe(gulp.dest(player.dist + '/node_modules'));
 });
@@ -423,17 +597,6 @@ gulp.task('config', function () {
             .pipe(gulp.dest(player.app + 'scripts'))
             .pipe(gulp.dest(dist.path + dist.scripts));
     });
-});
-gulp.task('deploy_private_config', ['minifyHTML'], function () {
-    gulp.src('dist/deploy/playerAppConfig.json')
-        .pipe(gulpNgConfig('playerApp.config'))
-        .pipe(gulp.dest(dist.path  + 'private/' + dist.scripts));
-});
-
-gulp.task('deploy_public_config', ['minifyHTML'], function () {
-    gulp.src('dist/deploy/publicAppConfig.json')
-        .pipe(gulpNgConfig('loginApp.config'))
-        .pipe(gulp.dest(dist.path + 'public/' + dist.scripts));
 });
 
 gulp.task('config-public-const', function () {
