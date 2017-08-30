@@ -1071,6 +1071,29 @@ slick-prev:before,
 .ui.tree-picker.modal .header .menu {
   margin-top: -12px !important;
 }
+.noResultContainer {
+  margin-top: 12% !important;
+}
+.noresult.column img {
+  width: 9em;
+  height: 9em;
+  display: block;
+  margin: auto;
+}
+.noResultText {
+  text-align: center;
+  padding-top: 20px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #979797;
+}
+.noResultSearchText {
+  text-align: center;
+  padding-top: 5px;
+  font-size: 16px;
+  /* font-weight: 600; */
+  color: #979797;
+}
 .down-arrow-accordion {
   float: right !important;
   font-size: large !important;
@@ -2160,6 +2183,12 @@ ul.fancytree-container li {
 }
 .orgRolesListView {
   margin: 0 10px 20px 0;
+}
+.badgeIconAlignment {
+  height: 20px !important;
+  width: 20px !important;
+  padding-top: 3px;
+  margin-right: 15px;
 }
 .batchCardDropDown {
   float: right;

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('playerApp')
-    .service('learnService', function (httpServiceJava, config) {
+    .service('learnService', ['httpServiceJava', 'config', function (httpServiceJava, config) {
         this.enrolledCourses = function (uid) {
             var url = config.URL.COURSE.GET_ENROLLED_COURSES + '/' + uid;
             return httpServiceJava.get(url);
@@ -13,4 +13,4 @@ angular.module('playerApp')
         this.recommendedCourses = function () {
             return httpServiceJava.get(config.URL.COURSE.RECOMMENDED_COURSE);
         };
-    });
+    }]);
