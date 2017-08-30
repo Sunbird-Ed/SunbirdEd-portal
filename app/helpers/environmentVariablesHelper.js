@@ -21,5 +21,6 @@ module.exports = {
   PORTAL_ECHO_API_URL: env.sunbird_echo_api_url || 'https://dev.open-sunbird.org/api/echo/',
   PORTAL_AUTOCREATE_TRAMPOLINE_USER: env.sunbird_autocreate_trampoline_user || 'true',
   PORTAL_TRAMPOLINE_CLIENT_ID: env.sunbird_trampoline_client_id || 'trampoline',
-  PORTAL_TRAMPOLINE_SECRET: env.sunbird_trampoline_secret || '36c4277f-d59b-4ea2-b788-964b96bd47d1'
+  PORTAL_TRAMPOLINE_SECRET: env.sunbird_trampoline_secret || '36c4277f-d59b-4ea2-b788-964b96bd47d1',
+  ENABLE_PERMISSION_CHECK: env.sunbird_enable_permission_check || 0
 }
