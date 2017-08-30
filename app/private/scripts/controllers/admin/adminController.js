@@ -25,8 +25,9 @@ angular.module('playerApp')
         ) {
             var admin = this;
             admin.searchResult = $scope.users;
+            admin.badges = adminService.getBadgesList();
 
-              // getOrgnames
+            // getOrgnames
             admin.getOrgName = function (cb) {
                 var identifiers = [];
                 admin.searchResult.forEach(function (user) {
@@ -37,11 +38,13 @@ angular.module('playerApp')
                         identifiers = _.union(identifiers, ids);
                     }
                 });
-                var req = { request: {
-                    filters: {
-                        identifier: identifiers
+                var req = {
+                    request: {
+                        filters: {
+                            identifier: identifiers
+                        }
                     }
-                } };
+                };
                 adminService.orgSearch(req).then(function (res) {
                     var orgIdAndNames = res.result.response.content.map(function (org) {
                         return {
@@ -60,10 +63,10 @@ angular.module('playerApp')
                         admin.searchResult.forEach(function (user) {
                             if (user.organisations) {
                                 var isSystemAdminUser = user.organisations[0].roles
-                                                    .includes('SYSTEM_ADMINISTRATION');
+                                    .includes('SYSTEM_ADMINISTRATION');
                                 if (isSystemAdminUser === true) {
                                     user.isEditableProfile = admin.currentUserRoles
-                                    .includes('SYSTEM_ADMINISTRATION');
+                                        .includes('SYSTEM_ADMINISTRATION');
                                 } else if (!isSystemAdminUser) {
                                     user.isEditableProfile = true;
                                 }
@@ -78,7 +81,7 @@ angular.module('playerApp')
                     });
                 }
             };
-                      // open editRoles modal
+            // open editRoles modal
             admin.showModal = function (identifier, orgs) {
                 admin.setDefaultSelected(orgs);
                 $('#changeUserRoles').modal({
@@ -125,34 +128,41 @@ angular.module('playerApp')
                     });
                     var nullReplacedToEmpty = JSON.stringify(list).replace(/null/g, '""');
                     var users = JSON.parse(nullReplacedToEmpty);
-                    alasql('SELECT firstName AS firstName,lastName AS lastName, '
-                    + ' organisationsName AS Organisations ,location AS Location, grade AS Grades, '
-                    + 'language AS Language ,subject as Subjects '
-                    + ' INTO CSV(\'Users.csv\',{headers:true ,separator:","}) FROM ?'
-                    , [users]);
+                    alasql('SELECT firstName AS firstName,lastName AS lastName, ' +
+                        ' organisationsName AS Organisations ,location AS Location, grade AS Grades, ' +
+                        'language AS Language ,subject as Subjects ' +
+                        ' INTO CSV(\'Users.csv\',{headers:true ,separator:","}) FROM ?', [users]);
                 } else if (key === 'Organisations') {
                     list.forEach(function (org) {
                         switch (org.status) {
-                        case 0:org.status = 'INACTIVE'; break;
-                        case 1:org.status = 'ACTIVE'; break;
-                        case 2:org.status = 'BLOCKED'; break;
-                        case 3:org.status = 'RETIRED'; break;
-                        default :break;
+                        case 0:
+                            org.status = 'INACTIVE';
+                            break;
+                        case 1:
+                            org.status = 'ACTIVE';
+                            break;
+                        case 2:
+                            org.status = 'BLOCKED';
+                            break;
+                        case 3:
+                            org.status = 'RETIRED';
+                            break;
+                        default:
+                            break;
                         }
                     });
                     var orgNullReplacedToEmpty = JSON.stringify(list).replace(/null/g, '""');
                     var organizations = JSON.parse(orgNullReplacedToEmpty);
-                    alasql('SELECT orgName AS orgName,orgType AS orgType,'
-                    + 'noOfMembers AS noOfMembers,channel AS channel, '
-                    + 'status AS Status INTO CSV(\'Organizations.csv\',{headers:true,separator:","}) FROM ?'
-                    , [organizations]);
+                    alasql('SELECT orgName AS orgName,orgType AS orgType,' +
+                        'noOfMembers AS noOfMembers,channel AS channel, ' +
+                        'status AS Status INTO CSV(\'Organizations.csv\',{headers:true,separator:","}) FROM ?', [organizations]);
                 }
             };
 
             // delete user
             admin.deleteUser = function (identifier) {
                 var removeReq = {
-                    params: { },
+                    params: {},
                     request: {
                         userId: identifier
                     }
@@ -168,12 +178,12 @@ angular.module('playerApp')
                             return user;
                         });
                     } else { toasterService.error($rootScope.errorMessages.ADMIN.fail); }
-                }).catch(function (err) {// eslint-disable-line
+                }).catch(function(err) { // eslint-disable-line
                     toasterService.error($rootScope.errorMessages.ADMIN.fail);
                 });
             };
 
-               // edit roles
+            // edit roles
             admin.isUserRole = function (role, list) {
                 return list.includes(role);
             };
@@ -207,7 +217,7 @@ angular.module('playerApp')
                         // profile.isError = true;
                         toasterService.error($rootScope.errorMessages.ADMIN.fail);
                     }
-                }).catch(function (err) {// eslint-disable-line
+                }).catch(function(err) { // eslint-disable-line
                     profile.isError = true;
                     toasterService.error($rootScope.errorMessages.ADMIN.fail);
                 });
@@ -254,39 +264,40 @@ angular.module('playerApp')
                 }).modal('show');
             };
 
-            admin.badges = adminService.getBadgesList();
-
             admin.assignBadge = function (badge, identifier) {
-                var newBadge =
-                    {
-                        params: { },
-                        request: {
-                            badgeTypeId: badge.id,
-                            receiverId: identifier
-                        }
-                    };
+                var newBadge = {
+                    params: {},
+                    request: {
+                        badgeTypeId: badge.id,
+                        receiverId: identifier
+                    }
+                };
 
                 adminService.addBadges(newBadge).then(function (res) {
                     if (res.responseCode === 'OK') {
                         admin.assignedBadgeId = res.result.id;
                         admin.assigedBadgeName = badge.name;
                         toasterService.success(badge.name + ' assigned successfully');
-                    } else { toasterService.error(res.params.errmsg); }
+                    } else {
+                        toasterService.error(res.params.errmsg);
+                        admin.disableAsignButton = false;
+                    }
                 }).catch(function (err) {
+                    admin.disableAsignButton = false;
                     toasterService.error('Some thing went wrong. please try again later..');
                 });
             };
-            // admin.getBadgeName = function (user) {
-            //     if (user.badges) {
-            //         admin.userBadgeS = [];
-            //         userBadges.forEach(function (badge) {
-            //             var userBadge = admin.badges.find(function (badgE) {
-            //                 return badgE.id === badge.badgeTypeId;
-            //             });
-            //             userBadgeS.push(userBadge);
-            //         });
-            //     }
-            // };
+            admin.getBadgeName = function (user) {
+                user.userBadgeS = [];
+                if (user.badges) {
+                    user.badges.forEach(function (badge) {
+                        var userBadge = admin.badges.find(function (badgE) {
+                            return badgE.id === badge.badgeTypeId;
+                        });
+                        user.userBadgeS.push(userBadge);
+                    });
+                }
+            };
             admin.getUserRoles();
-        }]);
-
+        }
+    ]);
