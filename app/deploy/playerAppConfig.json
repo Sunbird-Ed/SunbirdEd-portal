@@ -8,7 +8,7 @@
             "LEARNER_PREFIX": "v1/learner/",
             "CONTENT_PREFIX": "v1/content/",
             "CONFIG_BASE": "http://localhost:4000/api/sb/v1/",
-            "PAGE_PREFIX": "data/v1/page/assemble",
+            "PAGE_PREFIX": "page/assemble",
             "USER": {
                 "RESOURCE_BUNDLE": "resourcebundle",
                 "SIGNUP": "user/create",
@@ -28,7 +28,7 @@
                 "HIERARCHY": "course/hierarchy",
                 "USER_CONTENT_STATE_READ": "content/state/read",
                 "USER_CONTENT_STATE_UPDATE": "content/state/update",
-                "GET_ENROLLED_COURSES": "user/course/list",
+                "GET_ENROLLED_COURSES": "user/courses/list",
                 "ENROLL_USER_COURSE": "course/enrol"
             },
             "CONTENT": {
@@ -77,6 +77,11 @@
                 },
                 "DELETE_USER": "user/block",
                 "UPDATE_USER_ORG_ROLES": "user/assign/role"
+            },
+            "BADGE":{
+                "GET":"badges/list",
+                "ASSIGN":"user/badges/add"
+
             }
         },
         "FILTER": {
@@ -488,7 +493,7 @@
         },
         "TELEMETRY": {
             "MAX_BATCH_SIZE": 20,
-            "SYNC": "data/v1/telemetry"
+            "SYNC": "telemetry"
         },
         "CURRENT_USER_ROLES": ["CONTENT_REVIEWER"],
         "COMMON_ROLES_CHECK": ["CONTENT_CREATOR", "CONTENT_REVIEW", "CONTENT_CREATION", "CONTENT_REVIEWER"],
