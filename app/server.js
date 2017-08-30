@@ -83,6 +83,7 @@ app.set('view engine', 'ejs');
 
 app.use(express.static(path.join(__dirname, '/')));
 app.use(express.static(path.join(__dirname, 'tenant', tenantId)));
+app.use('/public/*', express.static(path.join(__dirname, 'public')))
 if (default_tenant) {
   app.use(express.static(path.join(__dirname, 'tenant', default_tenant)));
 }
@@ -167,6 +168,7 @@ app.get('/get/envData', keycloak.protect(), function(req, res) {
 });
 
 //tenant Api's
+app.get('/v1/tenant/info', tenantHelper.getInfo);
 app.get('/v1/tenant/info/:tenantId', tenantHelper.getInfo);
 
 
@@ -181,8 +183,6 @@ app.use('/api/*', permissionsHelper.checkPermission(), proxy(contentProxyUrl, {
 
 app.use('/content-plugins/*', proxy(contentProxyUrl, {
   proxyReqPathResolver: function(req) {
-    console.log('contentProxyUrl:' + contentProxyUrl);
-    console.log('originalUrl:' + req.originalUrl);
     return require('url').parse(contentProxyUrl + req.originalUrl).path;
   }
 }));
@@ -242,7 +242,9 @@ keycloak.authenticated = function(request) {
       telemetryHelper.logSessionStart(request, callback);
     }
   }, function(err, results) {
-    console.log('res', results);
+    if (err) {
+      console.log('err', err);
+    }
   });
 
 

@@ -15,6 +15,12 @@ var runSequence = require('run-sequence');
 var gulpNgConfig = require('gulp-ng-config');
 var less = require('gulp-less');
 var historyApiFallback = require('connect-history-api-fallback');
+var minifyHTML = require('gulp-minify-html');
+var minify = require('gulp-minifier');
+var imagemin = require('gulp-imagemin');
+var concat = require('gulp-concat');
+var inject = require('gulp-inject');
+var merge = require('merge-stream');
 
 var player = {
     app: 'app/private/',
@@ -83,6 +89,75 @@ var jsonConfigPublic = [
     { name: 'config', path: 'config/publicAppConfig.json' },
     { name: 'labels', path: 'config/publicLabels.json' },
     { name: 'errorMessages', path: 'config/publicErrorMessages.json' }
+];
+
+var public_bower_js = [
+    "dist/thirdparty/libs/eventbus.min.js",
+    "dist/thirdparty/bower_components/jquery/dist/jquery.min.js",
+    "dist/thirdparty/bower_components/jquery-ui/jquery-ui.min.js",
+    "dist/thirdparty/bower_components/angular/angular.min.js",
+    "dist/thirdparty/bower_components/angular-cookies/angular-cookies.min.js",
+    "dist/thirdparty/bower_components/angular-route/angular-route.min.js",
+    "dist/thirdparty/bower_components/angular-ui-router/release/angular-ui-router.min.js",
+    "dist/thirdparty/bower_components/semantic-ui-calendar/dist/calendar.min.js",
+    "dist/thirdparty/bower_components/izitoast/dist/js/iziToast.min.js",
+    "dist/thirdparty/bower_components/angular-uuid4/angular-uuid4.min.js",
+    "dist/thirdparty/bower_components/lodash/lodash.js",
+    "dist/thirdparty/bower_components/moment/min/moment-with-locales.min.js",
+    "dist/thirdparty/bower_components/jquery.fancytree/dist/jquery.fancytree.min.js",
+    "dist/thirdparty/jquery.fancytree/dist/jquery.fancytree.min.js"
+];
+
+var public_bower_css = [
+    "dist/thirdparty/bower_components/semantic-ui-calendar/dist/calendar.min.css",
+    "dist/thirdparty/bower_components/izitoast/dist/css/iziToast.min.css"
+];
+
+var private_bower_js = [
+    "dist/thirdparty/libs/eventbus.min.js",
+    "dist/thirdparty/libs/md5.js",
+    "dist/thirdparty/bower_components/jquery/dist/jquery.min.js",
+    "dist/thirdparty/bower_components/jquery-ui/jquery-ui.min.js",
+    "dist/thirdparty/bower_components/angular/angular.min.js",
+    "dist/thirdparty/bower_components/angular-cookies/angular-cookies.min.js",
+    "dist/thirdparty/bower_components/angular-route/angular-route.min.js",
+    "dist/thirdparty/bower_components/semantic-ui-calendar/dist/calendar.min.js",
+    "dist/thirdparty/bower_components/angular-ui-router/release/angular-ui-router.min.js",
+    "dist/thirdparty/bower_components/angular-ui-router/release/stateEvents.min.js",
+    "dist/thirdparty/libs/semantic-ui-tree-picker/semantic-ui-tree-picker.js",
+    "dist/thirdparty/bower_components/ngstorage/ngStorage.min.js",
+    "dist/thirdparty/bower_components/moment/min/moment-with-locales.min.js",
+    "dist/thirdparty/bower_components/angular-pagedown/angular-pagedown.min.js",
+    "dist/thirdparty/bower_components/pagedown/Markdown.Converter.js",
+    "dist/thirdparty/bower_components/pagedown/Markdown.Sanitizer.js",
+    "dist/thirdparty/bower_components/pagedown/Markdown.Extra.js",
+    "dist/thirdparty/bower_components/pagedown/Markdown.Editor.js",
+    "dist/thirdparty/bower_components/slick-carousel/slick/slick.min.js",
+    "dist/thirdparty/bower_components/angular-sanitize/angular-sanitize.min.js",
+    "dist/thirdparty/bower_components/izimodal/js/iziModal.min.js",
+    "dist/thirdparty/bower_components/jquery.fancytree/dist/jquery.fancytree.min.js",
+    "dist/thirdparty/bower_components/lodash/dist/lodash.min.js",
+    "dist/thirdparty/bower_components/file-upload/fine-uploader/fine-uploader.min.js",
+    "dist/thirdparty/bower_components/angular-uuid4/angular-uuid4.min.js",
+    "dist/thirdparty/bower_components/js-md5/build/md5.min.js",
+    "dist/thirdparty/bower_components/izitoast/dist/js/iziToast.min.js",
+    "dist/thirdparty/bower_components/chart.js/dist/Chart.min.js",
+    "dist/thirdparty/bower_components/angular-chart.js/dist/angular-chart.min.js",
+    "dist/thirdparty/jquery.fancytree/dist/jquery.fancytree.min.js",
+    "dist/thirdparty/semantic-tree-picker/semantic-ui-tree-picker.js",
+    "dist/thirdparty/libs/generateAndDownloadCSV.min.js"
+];
+
+var private_bower_css = [
+    "dist/thirdparty/libs/semantic-ui-tree-picker/semantic-ui-tree-picker.css",
+    "dist/thirdparty/bower_components/angular-pagedown/angular-pagedown.min.css",
+    "dist/thirdparty/bower_components/slick-carousel/slick/slick.css",
+    "dist/thirdparty/bower_components/slick-carousel/slick/slick-theme.css",
+    "dist/thirdparty/bower_components/jquery.fancytree/dist/skin-win8/ui.fancytree.min.css",
+    "dist/thirdparty/bower_components/izimodal/css/iziModal.min.css",
+    "dist/thirdparty/bower_components/file-upload/fine-uploader/fine-uploader-new.min.css",
+    "dist/thirdparty/bower_components/semantic-ui-calendar/dist/calendar.min.css",
+    "dist/thirdparty/bower_components/izitoast/dist/css/iziToast.min.css"
 ];
 
 // //////////////////////
@@ -277,12 +352,69 @@ gulp.task('build', ['clean:dist'], function () {
 });
 
 gulp.task('production', ['clean:dist'], function () {
-    gulp.src(['app/**/*'])
+    return gulp.src(['app/**/*', '!app/private/scripts/playerAppConfig.js', '!app/public/scripts/publicAppConfig.js'])
         .pipe(gulp.dest(player.dist));
-    gulp.src(['node_modules/**/*'])
+});
+
+gulp.task('minifyJS', ['production'], function() {
+    return gulp.src(['dist/private/**/*.js', 
+            'dist/public/**/*.js', 
+            'dist/thirdparty/libs/semantic-ui-tree-picker/semantic-ui-tree-picker.js',
+            'dist/thirdparty/bower_components/pagedown/Markdown.Converter.js',
+            'dist/thirdparty/bower_components/pagedown/Markdown.Sanitizer.js',
+            'dist/thirdparty/bower_components/pagedown/Markdown.Editor.js',
+            '!dist/public/**/publicAppRoute.js',  
+            '!dist/private/**/appRoute.js',], {base: "dist/"}).pipe(minify({
+        minify: true,
+        collapseWhitespace: true,
+        minifyJS: true
+    })).pipe(gulp.dest('dist'));
+});
+
+gulp.task('minifyCSS', ['minifyJS'], function() {
+    return gulp.src(['dist/private/styles/**/*.css', 'dist/public/styles/**/*.css'], {base: "dist/"}).pipe(minify({
+        minify: true,
+        collapseWhitespace: true,
+        conservativeCollapse: true,
+        minifyCSS: true
+    })).pipe(gulp.dest('dist'));
+});
+
+gulp.task('minifyThirdparty', ['minifyCSS'], function() {
+    var public_js = gulp.src(public_bower_js).pipe(concat('external.min.js')).pipe(gulp.dest('dist/public/'));
+    var public_css = gulp.src(public_bower_css).pipe(concat('external.min.css')).pipe(gulp.dest('dist/public/'));
+    var private_js = gulp.src(private_bower_js).pipe(concat('external.min.js')).pipe(gulp.dest('dist/private/'));
+    var private_css = gulp.src(private_bower_css).pipe(concat('external.min.css')).pipe(gulp.dest('dist/private/'));
+    return merge(public_js, public_css, private_js, private_css);
+});
+
+gulp.task('injectFiles', ['minifyThirdparty'], function() {
+    var x = gulp.src('dist/public/index.html')
+            .pipe(inject(gulp.src(['dist/public/external.min.js', 'dist/public/external.min.css'], { read: false }), { ignorePath: '/dist', addRootSlash: true }))
+            .pipe(gulp.dest('dist/public/'));
+    var y = gulp.src('dist/private/index.ejs')
+            .pipe(inject(gulp.src(['dist/private/external.min.js', 'dist/private/external.min.css'], { read: false }), { ignorePath: '/dist', addRootSlash: true }))
+            .pipe(gulp.dest('dist/private/'));
+    return merge(x, y);
+});
+
+gulp.task('minifyHTML', ['injectFiles'], function() {
+    var opts = { empty: true, comments:false, spare:false };
+    return gulp.src(['dist/private/views/**/*.html', 'dist/public/views/**/*.html'], {base: "dist/"})
+        .pipe(minifyHTML(opts))
+        .pipe(gulp.dest('dist'))
+});
+gulp.task('minifyIMG', ['minifyHTML'], function(){
+    gulp.src('dist/private/images/*', {base: "dist/"})
+        .pipe(imagemin())
+        .pipe(gulp.dest('dist'))
+});
+
+gulp.task('packageNodeModules', ['minifyIMG', 'deploy_private_config', 'deploy_public_config'], function(){
+    return gulp.src(['node_modules/**/*'])
         .pipe(gulp.dest(player.dist + '/node_modules'));
 });
-gulp.task('default', ['production']);
+gulp.task('default', ['packageNodeModules']);
 
 gulp.task('config', function () {
     jsonConfigArr.forEach(function (item) {
@@ -292,6 +424,18 @@ gulp.task('config', function () {
             .pipe(gulp.dest(dist.path + dist.scripts));
     });
 });
+gulp.task('deploy_private_config', ['minifyHTML'], function () {
+    gulp.src('dist/deploy/playerAppConfig.json')
+        .pipe(gulpNgConfig('playerApp.config'))
+        .pipe(gulp.dest(dist.path  + 'private/' + dist.scripts));
+});
+
+gulp.task('deploy_public_config', ['minifyHTML'], function () {
+    gulp.src('dist/deploy/publicAppConfig.json')
+        .pipe(gulpNgConfig('loginApp.config'))
+        .pipe(gulp.dest(dist.path + 'public/' + dist.scripts));
+});
+
 gulp.task('config-public-const', function () {
     jsonConfigPublic.forEach(function (item) {
         gulp.src(player.public + item.path)

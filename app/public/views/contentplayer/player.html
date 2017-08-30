@@ -1,4 +1,4 @@
-<div id="contentPlayer" ng-init="init()">
+<div id="contentPlayer" ng-init="init()" class="padding-top-30">
     <div class='videosegment ui segment' ng-if="visibility">
 
         <div class='content-player-body'>
@@ -16,70 +16,85 @@
                     </div>
                 </div>
                 <div class="twelve wide column">
-                    <h4 class="ui">
-                        {{contentData.description}}
-                    </h4>
-                    <div class="ui clearing divider"></div>
-                    <div class="ui grid margin-top-15">
-                        <div class="row">
-                            <div class="three wide column">
-                                <div class="ui list">
-                                    <div class="item">
-                                        <div class="content">
-                                            <div class="header">{{$root.labels.previewContent.author}}</div>
-                                            <div class="description padding-top-1rem">{{contentData.author}}</div>
+                    <div class="ui grid">
+                        <div class="eight wide column">
+                            <div class="row">
+                                <div class="twelve wide column" ng-if="contentData.description">
+                                    <div class="ui raised segment">
+                                        <div class="header announcementCard-header">
+                                            <span class="header cardsHeading ng-binding"> Description </span>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="three wide column">
-                                <div class="ui list">
-                                    <div class="item">
-                                        <div class="content">
-                                            <div class="header">{{$root.labels.previewContent.language}}</div>
-                                            <div class="description padding-top-1rem">{{contentData.language.toString()}}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="three wide column">
-                                <div class="ui list">
-                                    <div class="item">
-                                        <div class="content">
-                                            <div class="header">{{$root.labels.previewContent.grades}}</div>
-                                            <div class="description padding-top-1rem">{{contentData.gradeLevel.toString()}}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="three wide column">
-                                <div class="ui list">
-                                    <div class="item">
-                                        <div class="content">
-                                            <div class="header">{{$root.labels.previewContent.subject}}</div>
-                                            <div class="description padding-top-1rem">{{contentData.subject}}</div>
+                                        <div class="description padding-top-5">
+                                            <p ng-bind-html="contentData.description"></p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="three wide column">
-                                <div class="ui list">
-                                    <div class="item">
-                                        <div class="content">
-                                            <div class="header">{{$root.labels.previewContent.lastUpdate}}</div>
-                                            <div class="description padding-top-1rem">{{contentData.lastUpdatedOn | dateFilterWithMDY}}</div>
+                        <div class="four wide column">
+                            <div class="row">
+                                <div class="twelve wide column">
+                                    <div class="ui segment">
+                                        <div class="header announcementCard-header">
+                                            <span class="header cardsHeading ng-binding">Content Information</span>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="three wide column">
-                                <div class="ui list">
-                                    <div class="item">
-                                        <div class="content">
-                                            <div class="header">{{$root.labels.previewContent.createdOn}}</div>
-                                            <div class="description padding-top-1rem">{{contentData.createdOn | dateFilterWithMDY}}</div>
+                                        <div class="ui middle aligned list margin-top-0">
+                                            <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.author">
+                                                <div class="right floated content contentdetail">
+                                                    <div class="ui ">{{contentData.author}}</div>
+                                                </div>
+                                                <div class="content">
+                                                    {{$root.labels.previewContent.author}}
+                                                </div>
+                                            </div>
+                                            <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.language">
+                                                <div class="right floated content contentdetail">
+                                                    <div class="ui ">{{contentData.language.toString()}}</div>
+                                                </div>
+                                                <div class="content">
+                                                    {{$root.labels.previewContent.language}}
+                                                </div>
+                                            </div>
+                                            <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.gradeLevel">
+                                                <div class="right floated content contentdetail">
+                                                    <div class="ui ">{{contentData.gradeLevel.toString()}}</div>
+                                                </div>
+                                                <div class="content ">
+                                                    {{$root.labels.previewContent.grades}}
+                                                </div>
+                                            </div>
+                                            <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.subject">
+                                                <div class="right floated content contentdetail">
+                                                    <div class="ui ">{{contentData.subject}}</div>
+                                                </div>
+                                                <div class="content">
+                                                    {{$root.labels.previewContent.subject}}
+                                                </div>
+                                            </div>
+                                            <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.createdOn">
+                                                <div class="right floated content contentdetail">
+                                                    <div class="ui ">{{contentData.createdOn| dateFilterWithMDY}}</div>
+                                                </div>
+                                                <div class="content">
+                                                    {{$root.labels.previewContent.createdOn}}
+                                                </div>
+                                            </div>
+                                            <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.lastUpdatedOn">
+                                                <div class="right floated content contentdetail">
+                                                    <div class="ui ">{{contentData.lastUpdatedOn| dateFilterWithMDY}}</div>
+                                                </div>
+                                                <div class="content">
+                                                    {{$root.labels.previewContent.lastUpdate}}
+                                                </div>
+                                            </div>
+                                            <div class="item padding-top-10 padding-bottom-5" ng-if="getConceptsNames(contentData.concepts)">
+                                                <div class="right floated content contentdetail">
+                                                    <div class="ui">{{getConceptsNames(contentData.concepts)}}</div>
+                                                </div>
+                                                <div class="content">
+                                                    {{$root.labels.WORKSPACE.common.concept}}
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
