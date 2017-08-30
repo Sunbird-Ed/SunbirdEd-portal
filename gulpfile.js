@@ -577,7 +577,6 @@ gulp.task('inject_staticGzip', ['compress'], function() {
     .pipe(map(function(file, cb) {
       var fileContents = file.contents.toString();
       fileContents = fileContents.replace('\/(invalid)\/', '/(\.html|\.js|\.css)$/');
-      fileContents = 'First line\n' + fileContents;
       file.contents = new Buffer(fileContents);
       cb(null, file);
     }))
