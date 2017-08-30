@@ -43,9 +43,8 @@ angular.module('playerApp')
                     scope.errorClass = 'success';
                 }
                 else if (attrs.data && attrs.data.messageType === 'no-results') {
-                    scope.message = attrs.data.message
-                    ? attrs.data.message
-                    : '';
+                    scope.message = attrs.data.message ? attrs.data.message : '';
+                    scope.messageText = attrs.data.messageText;
                     scope.errorClass = 'no-results';
                 }
 

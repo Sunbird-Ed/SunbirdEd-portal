@@ -352,7 +352,7 @@ gulp.task('build', ['clean:dist'], function () {
 });
 
 gulp.task('production', ['clean:dist'], function () {
-    return gulp.src(['app/**/*'])
+    return gulp.src(['app/**/*', '!app/private/scripts/playerAppConfig.js', '!app/public/scripts/publicAppConfig.js'])
         .pipe(gulp.dest(player.dist));
 });
 
@@ -410,7 +410,7 @@ gulp.task('minifyIMG', ['minifyHTML'], function(){
         .pipe(gulp.dest('dist'))
 });
 
-gulp.task('packageNodeModules', ['minifyIMG'], function(){
+gulp.task('packageNodeModules', ['minifyIMG', 'deploy_private_config', 'deploy_public_config'], function(){
     return gulp.src(['node_modules/**/*'])
         .pipe(gulp.dest(player.dist + '/node_modules'));
 });
@@ -424,6 +424,18 @@ gulp.task('config', function () {
             .pipe(gulp.dest(dist.path + dist.scripts));
     });
 });
+gulp.task('deploy_private_config', ['minifyHTML'], function () {
+    gulp.src('dist/deploy/playerAppConfig.json')
+        .pipe(gulpNgConfig('playerApp.config'))
+        .pipe(gulp.dest(dist.path  + 'private/' + dist.scripts));
+});
+
+gulp.task('deploy_public_config', ['minifyHTML'], function () {
+    gulp.src('dist/deploy/publicAppConfig.json')
+        .pipe(gulpNgConfig('loginApp.config'))
+        .pipe(gulp.dest(dist.path + 'public/' + dist.scripts));
+});
+
 gulp.task('config-public-const', function () {
     jsonConfigPublic.forEach(function (item) {
         gulp.src(player.public + item.path)
