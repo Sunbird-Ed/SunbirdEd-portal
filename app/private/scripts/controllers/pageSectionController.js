@@ -93,7 +93,7 @@ angular.module('playerApp')
                   if (section.page.length === 0) {
                       section.error = showErrorMessage(true,
                                         $rootScope.errorMessages.SEARCH.DATA.NO_CONTENT,
-                                        $rootScope.errorMessages.COMMON.NO_RESULTS);
+                                        $rootScope.errorMessages.COMMON.NO_RESULTS,$rootScope.errorMessages.SEARCH.DATA.NO_CONTENT_TEXT);
                   }
               } else {
                   section.loader.showLoader = false;
@@ -114,12 +114,15 @@ angular.module('playerApp')
              * and its show failed response for 2 sec.
              * @param {String} message
              */
-          function showErrorMessage(isClose, message, messageType) {
+          function showErrorMessage(isClose, message, messageType,messageText) {
               var error = {};
               error.showError = true;
               error.isClose = isClose;
               error.message = message;
               error.messageType = messageType;
+              if(messageText){
+                error.messageText=messageText;
+              }
               return error;
           }
           section.sections();
