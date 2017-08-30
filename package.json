@@ -55,6 +55,7 @@
     "karma-jasmine": "^1.1.0",
     "karma-phantomjs-launcher": "^1.0.4",
     "lazypipe": "^0.2.4",
+    "map-stream": "0.0.7",
     "merge-stream": "^1.0.1",
     "open": "0.0.5",
     "path": "^0.12.7",
