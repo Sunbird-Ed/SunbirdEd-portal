@@ -1,22 +1,27 @@
 <div ng-if="$root.search.selectedSearchKey=='Users'"  ng-init="admin.addOrgNameToOrganizations();admin.getUserRoles()" class="ui divided searchListInfo items">  
       <div class="userSearchCardHover item " ng-repeat="user in admin.searchResult">
-        <div class="ui tiny image userSearchImage " >
+        <div class="ui tiny image userSearchImage " ng-init="admin.getBadgeName(user)" >
           <img ng-src="{{user.avatar|| 'images/user_logo.png'}} ">
         </div>
         <div class="content " >
           <a class="header "ng-click="user.status===1 && admin.openPublicProfile(user.identifier,user)">{{user.firstName}} &nbsp;{{user.lastName}}</a>
             <a ng-if="user.status===1 && user.isEditableProfile " sb-permissions permission-only="SYSTEM_ADMINISTRATION,ORG_ADMIN" class="float-ContentRight">
              <!-- update user roles -->
-            <span ng-click="admin.showModal(user.identifier,user.organisations);">
-              <i class="edit icon trashIcon-fontSize"></i>
-            </span>
-              <!-- delete user -->
-            <span>
-              <i class="trash outline icon trashIcon-fontSize"  
-              ng-click="admin.showdeleteModal(user.identifier,user.firstName,user.lastName);">
-                </i>
-            <span>
-              </a>
+              <span ng-click="admin.showModal(user.identifier,user.organisations);">
+                <i class="edit icon trashIcon-fontSize"></i>
+              </span>
+                <!-- delete user -->
+              <span>
+                <i class="trash outline icon trashIcon-fontSize"  
+                ng-click="admin.showdeleteModal(user.identifier,user.firstName,user.lastName);">
+                  </i>
+              <span>
+            </a>
+                <!-- assign badge user -->
+            <a class="float-ContentRight" sb-permissions permission-only="SYSTEM_ADMINISTRATION,ORG_ADMIN">
+                <img class="ui mini image badgeIconAlignment" src="images/badgeblue.png"
+                ng-click="admin.assignBadgeModal(user.identifier);">
+            </a>
             <!-- organization Name -->
           <div class="meta ">
             <span class="cinema ">
@@ -27,9 +32,9 @@
             </span>
           </div>
           <div class="extra ">
-            <div class="ui label " ng-if="user.phone">{{user.phone}}</div>
-            <div class="ui label " ng-if="user.email">{{user.email}}</div>
-            <div class="ui label " ng-if="user.status===0">{{$root.labels.SEARCH.STATUS.INACTIVE}}</div>
+       <span class="" ng-if="admin.userBadgeS">
+              <span ng-repeat="badge in  admin.userBadgeS ">{{badge,name}}<span ng-if=!$last>,</span></span></span>
+             <div class="ui label " ng-if="user.status===0">{{$root.labels.SEARCH.STATUS.INACTIVE}}</div>
             <div class="ui label " ng-if="user.status===1">{{$root.labels.SEARCH.STATUS.ACTIVE}}</div>
             <div class="ui label " ng-if="user.status===2">{{$root.labels.SEARCH.STATUS.BLOCKED}}</div>
             <div class="ui label " ng-if="user.status===3">{{$root.labels.SEARCH.STATUS.RETIRED}}</div>
@@ -38,5 +43,6 @@
      </div>
       <div ng-include=" 'views/admin/updateRoleModal.html' "></div>  
       <div ng-include=" 'views/admin/deleteUser.html' "></div>  
+       <div ng-include=" 'views/admin/badge/assignBadgeModal.html' "></div> 
     
   </div>  

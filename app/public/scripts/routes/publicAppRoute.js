@@ -9,7 +9,7 @@
  * Main module of the application.
  */
 angular.module('loginApp')
-  .config(function ($stateProvider, $urlRouterProvider) {
+  .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
       $urlRouterProvider.otherwise('/');
       $stateProvider
       .state('Landing', {
@@ -62,8 +62,8 @@ angular.module('loginApp')
               name: null
           }
       });
-  })
-  .run(function ($urlRouter, $http, $state, $rootScope, toasterService) {
+  }])
+  .run(['$http', '$rootScope', function ($http, $rootScope) {
       $http.get('/v1/tenant/info').then(function (res) {
           if (res && res.statusText === 'OK') {
               $rootScope.orgLogo = res.data.result.logo;
@@ -74,4 +74,4 @@ angular.module('loginApp')
       }).catch(function () {
         //   toasterService.error($rootScope.errorMessages.TENANT.GET_INFO.FAILED);
       });
-  });
+  }]);

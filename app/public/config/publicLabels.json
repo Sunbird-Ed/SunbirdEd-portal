@@ -38,7 +38,9 @@
             "lastUpdate": "Last update",
             "createdOn": "Created On",
             "status": "Status",
-            "medium": "Medium"
+            "medium": "Medium",
+            "description": "Description",
+            "contentInformation": "Content Information"
         }
 
     }

@@ -7,7 +7,7 @@
  * # errorMessage
  */
 angular.module('loginApp')
-    .directive('errorMessage', function () {
+    .directive('errorMessage', [function () {
         return {
             template: '<div class="ui huge {{errorClass}} message" ng-if="message"><i ng-if="isClose" class="close icon" ng-click="closeErrorMessage()"></i><span translate="messageType">{{message}}</span></div>',
             restrict: 'E',
@@ -36,4 +36,4 @@ angular.module('loginApp')
                 };
             }
         };
-    });
+    }]);

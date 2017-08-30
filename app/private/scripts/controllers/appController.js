@@ -10,10 +10,10 @@
 angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService', '$rootScope',
     '$translate', 'userService', '$q', 'config', '$location', '$timeout',
     'portalTelemetryService', 'setResourceBundle', 'errorMessages', 'labels', 'sessionService',
-    'learnService', '$http', 'searchService', 'toasterService',
+    'learnService', '$http', 'searchService', 'toasterService', 'adminService',
     function ($scope, permissionsService, $rootScope, $translate, userService, $q, config,
     $location, $timeout, portalTelemetryService, setResourceBundle, errorMessages, labels,
-    sessionService, learnService, $http, searchService, toasterService) {
+    sessionService, learnService, $http, searchService, toasterService, adminService) {
         $rootScope.userId = $('#userId').attr('value');
         $rootScope.sessionId = $('#sessionId').attr('value');
         $rootScope.language = $rootScope.userLanguage || config.SITE.DEFAULT_LANGUAGE;
@@ -247,4 +247,13 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
                 }
             });
         }
+        // badges
+        $scope.getBadges = function () {
+            adminService.getBadges().then(function (res) {
+                if (res.responseCode === 'OK') {
+                    adminService.setBadges(res);
+                }
+            });
+        };
+        $scope.getBadges();
     }]);

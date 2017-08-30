@@ -8,7 +8,7 @@
  * Service in the playerApp.
  */
 angular.module('playerApp')
-    .service('courseService', function (httpServiceJava, config, $sessionStorage, httpService) {
+    .service('courseService', ['httpServiceJava', 'config', '$sessionStorage', 'httpService', function (httpServiceJava, config, $sessionStorage, httpService) {
         this.search = function (req) {
             return httpService.post(config.URL.COURSE.SEARCH, req);
         };
@@ -29,4 +29,4 @@ angular.module('playerApp')
         this.enrollUserToCourse = function (req) {
             return httpServiceJava.post(config.URL.COURSE.ENROLL_USER_COURSE, req);
         };
-    });
+    }]);
