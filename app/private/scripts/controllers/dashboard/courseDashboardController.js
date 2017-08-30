@@ -18,7 +18,7 @@ angular.module('playerApp')
 
       // Dataset - progress / consumption
       courseDashboard.dataset = 'progress';
-      courseDashboard.courseName = 'progress';
+      courseDashboard.courseName = 'Progress';
 
       // Search and sort table data
       courseDashboard.orderByField = ''; // Default value
@@ -102,7 +102,7 @@ angular.module('playerApp')
           "request": {
             "filters": {
               courseId: $stateParams.courseId,
-              status: ["0", "1", "2"],
+              status: [1,2,3],
               createdBy: $rootScope.userId
             },
             "sort_by": { createdDate: 'desc' }
