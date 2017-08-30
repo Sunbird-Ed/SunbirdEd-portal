@@ -1,6 +1,7 @@
 <span ng-if="noteCard.showModalInLectureView" class="ui center aligned icon tiny header toc-note">
-    <span class="ui cardsKnowMore cursor-pointer" ng-click="noteCard.showAddNoteModal();">
-        <i class="file text outline icon font-dark-blue"></i>{{$root.labels.Notes.takeNote}}
+    <span class="ui cardtakenote cursor-pointer" ng-click="noteCard.showAddNoteModal();">
+        <img ng-src="../images/takenote.png">
+        <span>{{$root.labels.Notes.takeNote}}</span>
     </span>
 </span>
 <span ng-if="noteCard.showModalInCourseView">

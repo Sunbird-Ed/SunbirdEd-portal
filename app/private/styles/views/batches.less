@@ -9,7 +9,8 @@
 }
 
 .headerBatchCard {
-	font-size: 1.3em;
+	font-weight: 700;
+    font-size: 1.18em;
     padding-left: 12px;
  }
 
@@ -24,15 +25,12 @@
 	margin-left: 30px;
 	float: left;
 	background: #F5F5F5;
-	height: 250px;
+	max-height: 250px;
 	overflow-y: auto;
 	border-top: none !important;
 	margin-right: 5px !important;
 }
 
-.batchcardListContent{
-	min-height: 150px;
-}
 
 #batchcardList::-webkit-scrollbar-track
 {
@@ -131,4 +129,14 @@
 
 .batchSelectedDetails.ui.list>.item{
 	color: #333;
+}
+
+.selectedBatchMeta.meta{
+	color: rgba(0,0,0,.7) !important;
+    font-size: 0.89em !important;
+    line-height: 2;
+}
+
+.selectedBatchContent{
+	color: rgba(0, 0, 0, 0.7) !important;
 }
