@@ -1,6 +1,6 @@
 <div ng-controller="courseDashboardCtrl as courseDashboard" ng-init="courseDashboard.loadData()">
   <div ng-include="'views/dashboard/course/courseDashboardFilters.html'"></div>
-  <div class="table-data-holder" ng-hide="courseDashboard.showLoader || courseDashboard.isMultipleCourses" ng-if="!courseDashboard.showError">
+  <div class="table-data-holder" ng-hide="courseDashboard.showLoader || courseDashboard.isMultipleCourses || courseDashboard.showWarningMsg" ng-if="!courseDashboard.showError">
     <div class="ui raised segment">
       <div class="eight wide column right floated dashBoardCardText">
         <h3>Stats for last {{courseDashboard.filterQueryTextMsg}} </h3>
@@ -25,7 +25,7 @@
 					  		</a>
             </th>
             <th>
-              <a href="Javascript:void(0);" ng-click="courseDashboard.orderByField='batchEndsOn'; courseDashboard.reverseSort = !courseDashboard.reverseSort">batch end on
+              <a href="Javascript:void(0);" ng-click="courseDashboard.orderByField='batchEndsOn'; courseDashboard.reverseSort = !courseDashboard.reverseSort">Batch End On
 					          	<span ng-show="courseDashboard.orderByField == 'batchEndsOn'">
 					          		<span ng-show="!courseDashboard.reverseSort">^</span>
 					          		<span ng-show="courseDashboard.reverseSort">v</span>
@@ -41,7 +41,7 @@
 							</a>
             </th>
             <th>
-              <a href="Javascript:void(0);" ng-click="courseDashboard.orderByField='enrolledOn'; courseDashboard.reverseSort = !courseDashboard.reverseSort">Enrolled on
+              <a href="Javascript:void(0);" ng-click="courseDashboard.orderByField='enrolledOn'; courseDashboard.reverseSort = !courseDashboard.reverseSort">Enrolled On
 		          				<span ng-show="courseDashboard.orderByField == 'enrolledOn'">
 		          					<span ng-show="!courseDashboard.reverseSort">^</span>
 		          					<span ng-show="courseDashboard.reverseSort">v</span>
