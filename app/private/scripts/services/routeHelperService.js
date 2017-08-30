@@ -270,7 +270,7 @@ angular.module('playerApp')
                             name: 'Profile',
                             link: 'profile'
                         }, {
-                            name: 'Course Creation Dashboard',
+                            name: 'Course Creator Dashboard',
                             link: ''
                         }];
 
