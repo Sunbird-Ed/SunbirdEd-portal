@@ -48,11 +48,11 @@
                 "UPLOAD_URL": "content/upload/url"
             },
             "NOTES": {
-                "SEARCH": "notes/search",
-                "CREATE": "notes/create",
-                "UPDATE": "notes/update",
-                "GET": "notes/read",
-                "DELETE": "notes/delete"
+                "SEARCH": "note/search",
+                "CREATE": "note/create",
+                "UPDATE": "note/update",
+                "GET": "note/read",
+                "DELETE": "note/delete"
             },
             "RESOURCE": {
                 "GET": "Resource"
