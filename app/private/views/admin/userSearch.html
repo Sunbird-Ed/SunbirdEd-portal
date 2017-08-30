@@ -1,5 +1,5 @@
 <div ng-if="$root.search.selectedSearchKey=='Users' && admin.searchResult" ng-init="admin.addOrgNameToOrganizations();admin.getUserRoles()"   class="ui divided searchListInfo items">
-    <div class="userSearchCardHover item " ng-repeat="user in admin.searchResult">
+    <div class="userSearchCardHover item " ng-repeat="user in admin.searchResult" ng-init="admin.recievedBadge={}">
         <div class="ui tiny image userSearchImage " ng-init="admin.getBadgeName(user)">
             <img ng-src="{{user.avatar|| 'images/user_logo.png'}} ">
         </div>
@@ -18,10 +18,10 @@
               <span>
             </a>
                 <!-- assign badge user -->
-            <!-- <a class="float-ContentRight" ng-if="!user.userBadgeS.length && user.status===1" sb-permissions permission-only="SYSTEM_ADMINISTRATION,ORG_ADMIN">
+             <a class="float-ContentRight" ng-if="!user.userBadgeS.length && user.status===1" sb-permissions permission-only="SYSTEM_ADMINISTRATION,ORG_ADMIN">
                 <img class="ui mini image badgeIconAlignment" src="images/badgeblue.png"
                 ng-click="admin.assignBadgeModal(user.identifier);">
-            </a> -->
+            </a> 
             <!-- organization Name -->
           <div class="meta ">
             <span class="cinema ">
@@ -37,6 +37,9 @@
                 {{badge.name}}
               </div>
         </span>
+           <div class="ui label " ng-if="admin.recievedBadge.name && admin.recievedBadge.userId===user.identifier">
+               {{admin.recievedBadge.name }}</div>
+
             <div class="ui label " ng-if="user.status===0">{{$root.labels.SEARCH.STATUS.INACTIVE}}</div>
             <div class="ui label " ng-if="user.status===1">{{$root.labels.SEARCH.STATUS.ACTIVE}}</div>
             <div class="ui label " ng-if="user.status===2">{{$root.labels.SEARCH.STATUS.BLOCKED}}</div>
