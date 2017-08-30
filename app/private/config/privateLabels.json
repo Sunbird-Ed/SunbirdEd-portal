@@ -8,7 +8,7 @@
             "description": "Description",
             "clear": "Clear",
             "save": "Save",
-            "takeNote": "Take Note",
+            "takeNote": "TAKE NOTE",
             "addNote": "ADD NOTE",
             "takeANote": "Take a note",
             "update": "Update",
@@ -95,7 +95,9 @@
                 "flaggedReasons": "Flagged reason",
                 "flaggedBy": "Flagged by",
                 "flaggedDescription": "Flagged Description",
-                "medium": "Medium"
+                "medium": "Medium",
+                "description": "Description",
+                "contentInformation": "Content Information"
             },
             "common": {
                 "concept": "Concepts",
@@ -131,7 +133,12 @@
                 "byProceedYouAgreedLessonPlan": "By proceeding you agreed to make all lesson plan created through authoring tool or uploaded on the Ek Step platform to be available under licence CC-BY 4.0",
                 "action": "Action",
                 "actionName": "Action Name",
-                "apply": "Apply"
+                "apply": "Apply",
+                "deleteContent": "Delete Content",
+                "deleteConfirmMessage": "Are you sure to delete this content?",
+                "no": "No",
+                "yes": "Yes",
+                "DELETE": "DELETE"
             }
         },
         "PROFILE": {
@@ -202,10 +209,12 @@
             "profile": "Profile",
             "workSpace": "Workspace",
             "logout": "Logout",
-            "dashboard": "Admin dashboard"
+            "dashboard": "Admin dashboard",
+            "myActivity": "My Activity"
         },
         "CONTENT_FLAG": {
             "contentFlagText": "Flag content as inappropriate",
+            "courseFlagText": "Flag course as inappropriate",
             "heading": "What went wrong?",
             "description": "Let us know what went wrong, please mention the exact reasons so that we review this as soon as possible and address this issue super fast. Thanks for your feedback!",
             "contentName": "CONTENT NAME",
@@ -253,8 +262,8 @@
                 "FOUR": "Date of birth ('dob') field format is YYYY-MM-DD, e.g.: 1992-10-12."
             },
             "ORGANIZATIONS": {
-                "ONE": "Organisation name ('orgName') is mandatory",
-                "TWO": "If the organisation is a tenant (like state), then it should be marked as a root org. I.e. 'isRootOrg' should be set as true, else it should be false.",
+                "ONE": "Organization name ('orgName') is mandatory",
+                "TWO": "If the organization is a tenant (like state), then it should be marked as a root org. I.e. 'isRootOrg' should be set as true, else it should be false.",
                 "THREE": "'channel' value is required if 'isRootOrg' is true.",
                 "FOUR": "'externalId' and 'provider' are mutually necessary, i.e. either both the values should be provided or not provided together."
             }

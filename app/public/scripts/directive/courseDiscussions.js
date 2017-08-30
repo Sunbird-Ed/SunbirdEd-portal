@@ -6,7 +6,7 @@
  * @description
  * # CourseDiscussions
  */
-angular.module('loginApp').directive('courseDiscussions', function () {
+angular.module('loginApp').directive('courseDiscussions', [function () {
     return {
         templateUrl: 'views/course/courseDiscussions.html',
         restrict: 'E',
@@ -17,4 +17,4 @@ angular.module('loginApp').directive('courseDiscussions', function () {
             scope.showAskQuestion = scope.showaskquestion;
         }
     };
-});
+}]);

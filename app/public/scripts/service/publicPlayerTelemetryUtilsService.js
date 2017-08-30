@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('loginApp')
-        .service('playerTelemetryUtilsService', function ($rootScope, $stateParams) {
+        .service('playerTelemetryUtilsService', ['$rootScope', '$stateParams', function ($rootScope, $stateParams) {
             this.startTelemetry = function (data) {
                 org.sunbird.portal.eventManager.dispatchEvent('sunbird:telemetry:start', data);
             };
@@ -33,4 +33,4 @@ angular.module('loginApp')
                 }
                 org.sunbird.portal.eventManager.dispatchEvent('sunbird:telemetry:init', _instance);
             };
-        });
+        }]);

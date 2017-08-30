@@ -2,7 +2,7 @@
     <div class="header announcementCard-header ">
         <span class="header cardsHeading " > {{$root.labels.PROFILE.BASIC_PROFILE.header}}</span>
         <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.basicProfileForm"  ng-click="profileCtrl.basicProfileForm=true">{{$root.labels.PROFILE.BUTTON.edit}}</a>
-        <a class="addeditprofile cursor-pointer" ng-if="profileCtrl.basicProfileForm"  ng-click="profileCtrl.basicProfileForm=false">{{$root.labels.PROFILE.BUTTON.close}}</a>
+        <a class="addeditprofile cursor-pointer" ng-if="profileCtrl.basicProfileForm"  ng-click="profileCtrl.basicProfileForm=false;profileCtrl.user=profileCtrl.getProfileObject(profileCtrl.basicProfile);">{{$root.labels.PROFILE.BUTTON.close}}</a>
 
     </div>
     <div class="profileitems ui relaxed aligned list " ng-if="!profileCtrl.basicProfileForm && profileCtrl.basicProfile">
@@ -24,7 +24,7 @@
             </div>
         </div>
         <div class="item ">
-            <div class="right floated content ">
+            <div class="right floated content capitalizeTextInfo">
                 <span >{{profileCtrl.basicProfile.gender}}</span>
             </div>
             <div class="iniformationcontent content ">
