@@ -25,10 +25,10 @@ angular.module('playerApp')
                 2: 'green'
             };
             toc.showCourseDashboard = false;
-            toc.isCourseAdmin = false;
+            toc.isCourseMentor = false;
             var currentUserRoles = permissionsService.getCurrentUserRoles();
-            if(currentUserRoles.indexOf("COURSE_ADMIN") !== -1) {
-                toc.isCourseAdmin = true;
+            if(currentUserRoles.indexOf("COURSE_MENTOR") !== -1) {
+                toc.isCourseMentor = true;
             }
 
             toc.enrollUserToCourse = function (courseId) {
@@ -186,7 +186,7 @@ angular.module('playerApp')
                         $('#node' + index).find('img').attr('src',
                             toc.getContentIcon(toc.playListContent[index].mimeType,toc.contentStatusList[toc.playList[index]]));
                     }
-                    
+
                 });
             };
 
