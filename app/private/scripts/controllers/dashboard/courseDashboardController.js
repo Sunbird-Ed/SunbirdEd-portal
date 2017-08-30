@@ -8,7 +8,8 @@
  */
 angular.module('playerApp')
   .controller('courseDashboardCtrl', ['$rootScope', '$scope', 'dashboardService', '$timeout', '$state', '$stateParams', 'toasterService',
-    function($rootScope, $scope, dashboardService, $timeout, $state, $stateParams, toasterService) {
+    'batchService',
+    function($rootScope, $scope, dashboardService, $timeout, $state, $stateParams, toasterService, batchService) {
       var courseDashboard = this;
       courseDashboard.chartHeight = 120;
       courseDashboard.courseProgressArray = [];
@@ -17,7 +18,7 @@ angular.module('playerApp')
 
       // Dataset - progress / consumption
       courseDashboard.dataset = 'progress';
-      courseDashboard.courseName = 'progress';
+      courseDashboard.courseName = 'Progress';
 
       // Search and sort table data
       courseDashboard.orderByField = ''; // Default value
@@ -39,7 +40,7 @@ angular.module('playerApp')
         courseDashboard.filterTimePeriod = courseDashboard.filterTimePeriod ? courseDashboard.filterTimePeriod : '7d';
 
         var request = {
-          courseId: $stateParams.courseId,
+          courseId: courseDashboard.batchIdentifier,
           timePeriod: courseDashboard.filterTimePeriod
         };
 
@@ -97,7 +98,53 @@ angular.module('playerApp')
        * @Return void
        */
       courseDashboard.loadData = function() {
-        getCourseDashboardData('7d');
+        var request = {
+          "request": {
+            "filters": {
+              courseId: $stateParams.courseId,
+              status: [1,2,3],
+              createdBy: $rootScope.userId
+            },
+            "sort_by": { createdDate: 'desc' }
+          }
+        };
+
+        courseDashboard.myBatches = [];
+        batchService.getAllBatchs(request).then(function(response) {
+          if (response && response.responseCode === 'OK') {
+            if (response.result.response.content.length > 0) {
+              courseDashboard.myBatches = response.result.response.content;
+              courseDashboard.buildMyBatchesDropdown();
+            } else {
+              courseDashboard.showLoader = false;
+              courseDashboard.showWarningMsg = true;
+            }
+          } else {
+            // Show error div
+            courseDashboard.showErrors(apiResponse);
+          }
+        }).catch(function() {
+          courseDashboard.showErrors(apiResponse);
+        });
+      };
+
+      /**
+       * @Function buildMyBatchesDropdown
+       * @Description check dropdown length
+       * @Params
+       * @Return void
+       */
+      courseDashboard.buildMyBatchesDropdown = function() {
+        if (courseDashboard.myBatches.length === 1) {
+          var firstChild = _.first(_.values(courseDashboard.myBatches), 1);
+          courseDashboard.batchIdentifier = firstChild.id;
+          courseDashboard.courseName = firstChild.name;
+          getCourseDashboardData('7d');
+        } else {
+          courseDashboard.showLoader = false;
+          //courseDashboard.showError = true;
+          courseDashboard.isMultipleCourses = courseDashboard.myBatches.length > 1 ? true : false;
+        }
       };
 
       /**
@@ -122,8 +169,33 @@ angular.module('playerApp')
         toasterService.error(apiResponse.params.errmsg);
       };
 
+      /**
+       * @function initDropdwon
+       * @description Initialize dropdwon values
+       * @param
+       */
       courseDashboard.initDropdwon = function() {
-        $('#courseDropdownMenu').dropdown();
-      };
+        $('#myBatchesListFilter').dropdown({
+          onChange: function() {}
+        });
+      }
+
+      /**
+       * @function onAfterBatchChange
+       * @description load selected batch data
+       * @param string batchId
+       * @param string batchName
+       */
+      courseDashboard.onAfterBatchChange = function(batchId, batchName) {
+        if (courseDashboard.batchIdentifier == batchId) {
+          console.log('avoid same apis call twice');
+          return false;
+        }
+        courseDashboard.showLoader = true;
+        courseDashboard.batchIdentifier = batchId;
+        courseDashboard.courseName = batchName;
+        courseDashboard.isMultipleCourses = false;
+        getCourseDashboardData();
+      }
     }
   ])
