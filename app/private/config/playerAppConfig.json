@@ -28,9 +28,9 @@
                 "GET": "course/v1/get",
                 "GET_MY_COURSE": "course/v1/get/mycourse",
                 "HIERARCHY": "course/v1/hierarchy",
-                "USER_CONTENT_STATE" : "course/v1/content/state",
-                "USER_CONTENT_STATE_READ" : "course/v1/content/state/read",
-                "USER_CONTENT_STATE_UPDATE" : "course/v1/content/state/update",
+                "USER_CONTENT_STATE": "course/v1/content/state",
+                "USER_CONTENT_STATE_READ": "course/v1/content/state/read",
+                "USER_CONTENT_STATE_UPDATE": "course/v1/content/state/update",
                 "GET_ENROLLED_COURSES": "course/v1/user/enrollment/list",
                 "GET_LEARN_OTHER_SECTION": "Course",
                 "ENROLL_USER_COURSE": "course/v1/enrol",
@@ -84,6 +84,11 @@
                 },
                 "DELETE_USER": "user/v1/block",
                 "UPDATE_USER_ORG_ROLES": "org/v1/role/assign"
+            },
+            "BADGE":{
+                "GET":"org/v1/badges/list",
+                "ASSIGN":"user/v1/badges/add"
+
             }
         },
         "FILTER": {
@@ -499,6 +504,7 @@
         },
         "CURRENT_USER_ROLES": ["CONTENT_REVIEWER"],
         "COMMON_ROLES_CHECK": ["CONTENT_CREATOR", "CONTENT_REVIEW", "CONTENT_CREATION", "CONTENT_REVIEWER"],
+        "WORKSPACE_ACCESS_ROLES": ["CONTENT_CREATOR", "CONTENT_REVIEW", "CONTENT_CREATION", "CONTENT_REVIEWER", "FLAG_REVIEWER"],
         "CreateLessonMimeType": "application/vnd.ekstep.ecml-archive",
         "CreateCollectionMimeType": "application/vnd.ekstep.content-collection",
         "MimeTypeExceptCollection": ["application/pdf", "video/mp4", "video/x-youtube",

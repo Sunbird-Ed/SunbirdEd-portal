@@ -14,10 +14,10 @@
 	</div>
 	<form class="ui form " ng-if="profileCtrl.openDiscriptionEdit">
        <div class="field">
-           <textarea ng-model="profileCtrl.user.profileSummary"></textarea>
+           <textarea ng-model="profileCtrl.basicProfile.profileSummary"></textarea>
 		   </div>
 
-		<div class="ui button margin-top-15" ng-if="profileCtrl.openDiscriptionEdit" ng-disable="!profileCtrl.profileSummary"ng-click="profileCtrl.EditDetails(profileCtrl.user.profileSummary);">{{$root.labels.PROFILE.BUTTON.save}} </div>
+		<div class="ui button margin-top-15" ng-if="profileCtrl.openDiscriptionEdit" ng-disable="!profileCtrl.profileSummary"ng-click="profileCtrl.EditDetails(profileCtrl.basicProfile.profileSummary);">{{$root.labels.PROFILE.BUTTON.save}} </div>
 		
 	</form>
 </div>

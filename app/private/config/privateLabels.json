@@ -8,7 +8,7 @@
             "description": "Description",
             "clear": "Clear",
             "save": "Save",
-            "takeNote": "Take Note",
+            "takeNote": "TAKE NOTE",
             "addNote": "ADD NOTE",
             "takeANote": "Take a note",
             "update": "Update",
@@ -95,7 +95,9 @@
                 "flaggedReasons": "Flagged reason",
                 "flaggedBy": "Flagged by",
                 "flaggedDescription": "Flagged Description",
-                "medium": "Medium"
+                "medium": "Medium",
+                "description": "Description",
+                "contentInformation": "Content Information"
             },
             "common": {
                 "concept": "Concepts",
@@ -131,7 +133,12 @@
                 "byProceedYouAgreedLessonPlan": "By proceeding you agreed to make all lesson plan created through authoring tool or uploaded on the Ek Step platform to be available under licence CC-BY 4.0",
                 "action": "Action",
                 "actionName": "Action Name",
-                "apply": "Apply"
+                "apply": "Apply",
+                "deleteContent": "Delete Content",
+                "deleteConfirmMessage": "Are you sure to delete this content?",
+                "no": "No",
+                "yes": "Yes",
+                "DELETE": "DELETE"
             }
         },
         "PROFILE": {
@@ -202,7 +209,8 @@
             "profile": "Profile",
             "workSpace": "Workspace",
             "logout": "Logout",
-            "dashboard": "Admin dashboard"
+            "dashboard": "Admin dashboard",
+            "myActivity": "My Activity"
         },
         "CONTENT_FLAG": {
             "contentFlagText": "Flag content as inappropriate",
