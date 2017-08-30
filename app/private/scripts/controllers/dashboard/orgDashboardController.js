@@ -95,20 +95,7 @@ angular.module('playerApp')
                   if (key === 'org.consumption.content.session.count' || key === 'org.consumption.content.time_spent.sum' || key === 'org.consumption.content.time_spent.average') {
 
                     if (key === 'org.consumption.content.time_spent.sum' || key === 'org.consumption.content.time_spent.average') {
-                      var result = '';
-                      var iNum = '';
-
-                      if (numericData.value < 60) {
-                        numericData.value = numericData.value + ' second';
-                      } else if (numericData.value >= 60 && numericData.value <= 3600) {
-                        iNum = numericData.value / 60;
-                        result = iNum.toFixed(2)
-                        numericData.value = result + ' min';
-                      } else if (numericData.value >= 3600) {
-                        iNum = numericData.value / 3600;
-                        result = iNum.toFixed(2);
-                        numericData.value = result + ' hour';
-                      }
+                      numericData = dashboardService.secondsToMin(numericData);
                       dashboardData.numericStatArray.push(numericData);
                     } else {
                       dashboardData.numericStatArray.push(numericData);
