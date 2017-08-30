@@ -8,7 +8,8 @@
  * Service in the playerApp.
  */
 angular.module('playerApp')
-        .service('contentStateService', function ($filter, $rootScope, httpServiceJava, config, uuid4, dataService) {
+        .service('contentStateService', ['$filter', '$rootScope', 'httpServiceJava', 'config', 
+            'uuid4', 'dataService', function ($filter, $rootScope, httpServiceJava, config, uuid4, dataService) {
             var localContentState = localContentState || {};
             var self = this;
             this.init = function () {
@@ -103,4 +104,4 @@ angular.module('playerApp')
                     }
                 }
             };
-        });
+        }]);

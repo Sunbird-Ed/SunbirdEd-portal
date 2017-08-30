@@ -9,7 +9,8 @@
  * Controller of the playerApp
  */
 angular.module('playerApp')
-    .controller('ContentLessonController', function (contentService, $timeout,
+    .controller('ContentLessonController', ['contentService', '$timeout', '$state', 'config', 
+        '$rootScope', 'toasterService', '$scope', function (contentService, $timeout,
         $state, config, $rootScope, toasterService, $scope) {
         var contentLesson = this;
         contentLesson.lessonTypes = config.DROPDOWN.COMMON.lessonTypes;
@@ -104,4 +105,4 @@ angular.module('playerApp')
         $scope.$on('selectedConcepts', function (event, args) {
             contentLesson.data.concepts = args.selectedConcepts;
         });
-    });
+    }]);

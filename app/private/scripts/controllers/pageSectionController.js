@@ -93,19 +93,19 @@ angular.module('playerApp')
                   if (section.page.length === 0) {
                       section.error = showErrorMessage(true,
                                         $rootScope.errorMessages.SEARCH.DATA.NO_CONTENT,
-                                        $rootScope.errorMessages.COMMON.INFO);
+                                        $rootScope.errorMessages.COMMON.NO_RESULTS);
                   }
               } else {
                   section.loader.showLoader = false;
                   section.error = showErrorMessage(true,
-                                        $rootScope.errorMessages.SEARCH.DATA.NO_CONTENT,
-                                        $rootScope.errorMessages.COMMON.INFO);
+                                        $rootScope.errorMessages.SEARCH.DATA.FAILED,
+                                        $rootScope.errorMessages.COMMON.ERROR);
               }
           }).catch(function () {
               section.loader.showLoader = false;
               section.error = showErrorMessage(true,
-                                        $rootScope.errorMessages.SEARCH.DATA.NO_CONTENT,
-                                        $rootScope.errorMessages.COMMON.INFO);
+                                        $rootScope.errorMessages.SEARCH.DATA.FAILED,
+                                        $rootScope.errorMessages.COMMON.ERROR);
           });
           };
 
