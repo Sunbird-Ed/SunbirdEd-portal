@@ -21,13 +21,13 @@
                             </div>
                         </div>
                         <div class="extra content">
-                            <a href="javascript:void(0);" 
-                            ng-click="publishedContent.openRemoveContentModel(item.identifier)"><i class="trash big icon float-ContentRight"></i></a>
+                            <a href="javascript:void(0);"
+                               ng-click="publishedContent.openRemoveContentModel(item.identifier)"><i class="trash big icon float-ContentRight"></i></a>
                         </div>
                     </div>
                 </div>
-                <div class="ui huge positive message" ng-if="publishedContent.publishedContentData.length === 0">
-                    <p>{{$root.errorMessages.WORKSPACE.PUBLISHED.NO_CONTENT}}</p>
+                <div ng-if="publishedContent.error.showError">
+                    <error-message data="{{publishedContent.error}}" visibility="publishedContent.error.showError"></error-message>
                 </div>
             </div>
             <div ng-if="publishedContent.loader.showLoader">
