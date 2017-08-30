@@ -65,7 +65,7 @@
                 "UPDATE": "course/batch/update",
                 "ADD_USERS": "course/batch/user/add",
                 "GET_DETAILS": "course/batch/read",
-                "GET_BATCHS": "course/batch/list"
+                "GET_BATCHS": "course/batch/search"
             },
             "ADMIN": {
                 "USER_SEARCH": "user/search",
