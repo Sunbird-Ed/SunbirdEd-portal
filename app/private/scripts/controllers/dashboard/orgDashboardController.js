@@ -10,8 +10,8 @@
 
 angular.module('playerApp')
   .controller('orgDashboardController', ['$rootScope', '$scope',
-    'dashboardService', '$timeout', '$state', '$stateParams', 'toasterService', 'userService',
-    function($rootScope, $scope, dashboardService, $timeout, $state, $stateParams, toasterService, userService) {
+    'dashboardService', '$timeout', '$state', '$stateParams', 'toasterService', 'adminService',
+    function($rootScope, $scope, dashboardService, $timeout, $state, $stateParams, toasterService, adminService) {
       var dashboardData = this;
       dashboardData.height = 110;
       dashboardData.datasetPreviousValue = 'creation';
@@ -194,7 +194,8 @@ angular.module('playerApp')
         } else {
           dashboardData.showOrgWarningDiv = true;
           // Get Organisation details
-          userService.getOrgDetails(dashboardData.orgIds).then(function(apiResponse) {
+          var req = {"request": {"filters": {"id": dashboardData.orgIds}}};
+          adminService.orgSearch(req).then(function(apiResponse) {
               if (apiResponse.responseCode === 'OK') {
                 var orgArray = [];
                 _.forEach(apiResponse.result.response.content, function(org) {
