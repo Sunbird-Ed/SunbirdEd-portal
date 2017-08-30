@@ -79,7 +79,7 @@ app.use(session({
   store: memoryStore
 }));
 app.use(keycloak.middleware({ admin: '/callback', logout: '/logout' }));
-app.use(staticGzip(/(\.html|\.js|\.css)$/));
+
 app.set('view engine', 'ejs');
 
 app.use(express.static(path.join(__dirname, '/')));
