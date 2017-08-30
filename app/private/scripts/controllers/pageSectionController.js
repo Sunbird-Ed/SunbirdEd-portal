@@ -6,8 +6,8 @@ angular.module('playerApp')
       function (pageSectionService, $scope,
     $state, config, sessionService, $rootScope, toasterService) {
           var section = this;
-          section.pageTypeUrls = { resource: config.URL.RESOURCE.GET,
-              course: config.URL.COURSE.GET_LEARN_OTHER_SECTION };
+          section.pageTypeUrls = { resource: 'Resource',
+              course: 'Course' };
           section.playContent = function (item) {
               $rootScope.search.searchKeyword = '';
               var params = { content: item,
