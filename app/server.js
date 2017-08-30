@@ -31,7 +31,8 @@ const express = require('express'),
   appId = envHelper.APPID,
   default_tenant = envHelper.DEFAUULT_TENANT,
   md5 = require('js-md5'),
-  sunbird_api_auth_token = envHelper.PORTAL_API_AUTH_TOKEN;
+  sunbird_api_auth_token = envHelper.PORTAL_API_AUTH_TOKEN,
+  staticGzip =  require('http-static-gzip-regexp');
 
 let mongoURL = (envHelper.PORTAL_MONGODB_IP && envHelper.PORTAL_MONGODB_PORT) ? ("mongodb://" + envHelper.PORTAL_MONGODB_IP + ":" + envHelper.PORTAL_MONGODB_PORT + "/portal") : 'mongodb://localhost/portal';
 let session_ttl = envHelper.PORTAL_MONGODB_TTL | 1; //in days
@@ -78,7 +79,7 @@ app.use(session({
   store: memoryStore
 }));
 app.use(keycloak.middleware({ admin: '/callback', logout: '/logout' }));
-
+app.use(staticGzip(/(\.html|\.js|\.css)$/));
 app.set('view engine', 'ejs');
 
 app.use(express.static(path.join(__dirname, '/')));
