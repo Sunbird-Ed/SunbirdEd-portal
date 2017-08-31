@@ -47,6 +47,10 @@
                 "DISCARD_FLAG": "content/flag/reject",
                 "UPLOAD_URL": "content/upload/url"
             },
+            "DASHBOARD": {
+                "CREATION": "dashboard/creation/org",
+                "CONSUMPTION": "dashboard/consumption/org"
+            },
             "NOTES": {
                 "SEARCH": "note/search",
                 "CREATE": "note/create",
