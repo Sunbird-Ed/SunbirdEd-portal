@@ -29,7 +29,9 @@
                 "USER_CONTENT_STATE_READ": "content/state/read",
                 "USER_CONTENT_STATE_UPDATE": "content/state/update",
                 "GET_ENROLLED_COURSES": "user/courses/list",
-                "ENROLL_USER_COURSE": "course/enrol"
+                "ENROLL_USER_COURSE": "course/enrol",
+                "PROGRESS": "course/enrol",
+                "CONSUMPTION": "course/enrol"
             },
             "CONTENT": {
                 "SEARCH": "content/search",
@@ -48,8 +50,10 @@
                 "UPLOAD_URL": "content/upload/url"
             },
             "DASHBOARD": {
-                "CREATION": "dashboard/creation/org",
-                "CONSUMPTION": "dashboard/consumption/org"
+                "ORG_CREATION": "dashboard/creation/org",
+                "ORG_CONSUMPTION": "dashboard/consumption/org",
+                "COURSE_PROGRESS": "dashboard/progress/course",
+                "COURSE_CONSUMPTION": "dashboard/consumption/course"
             },
             "NOTES": {
                 "SEARCH": "note/search",
