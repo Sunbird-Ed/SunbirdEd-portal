@@ -6,7 +6,7 @@
  	</div>
     <div class="description" ng-if="!profileCtrl.openDiscriptionEdit" ng-init="profileCtrl.readMore = false"> 
 	    <p ng-if="!profileCtrl.readMore"> {{profileCtrl.user.profileSummary | limitTo: 120 }}&nbsp;
-	        <span class="ui cardsKnowMore mouse-pointer" ng-if="profileCtrl.summary.length > 120 && profileCtrl.readMore === false" ng-click="profileCtrl.readMore = !profileCtrl.readMore;"> ... Read More</span>
+	        <span class="ui cardsKnowMore mouse-pointer" ng-if="profileCtrl.user.profileSummary.length > 120 && profileCtrl.readMore === false" ng-click="profileCtrl.readMore = !profileCtrl.readMore;"> ... Read More</span>
 	    </p>
 	    <p ng-if="profileCtrl.readMore"> {{profileCtrl.user.profileSummary}}&nbsp;
 	        <span class="ui cardsKnowMore mouse-pointer" ng-click="profileCtrl.readMore = false;">Read Less ...</span>
