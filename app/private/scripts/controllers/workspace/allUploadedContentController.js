@@ -55,7 +55,7 @@ angular.module('playerApp')
             allUploadedContent.allUploadedContentData = res.result.content || [];
             allUploadedContent.pager = PaginationService.GetPager(res.result.count,
               pageNumber, allUploadedContent.pageLimit);
-            if (allUploadedContent.totalCount === 0) {
+            if (allUploadedContent.allUploadedContentData.length === 0) {
               allUploadedContent.error = showErrorMessage(true,
                 $rootScope.errorMessages.WORKSPACE.ALL_UPLOADED.NO_CONTENT,
                 $rootScope.errorMessages.COMMON.NO_RESULTS);
