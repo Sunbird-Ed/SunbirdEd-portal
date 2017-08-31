@@ -11,9 +11,20 @@
             <img class="ui avatar image" src="/images/businessman.png">
             <div class="content">
                 <a class=" header">{{education.degree}}</a>
-                <div class="description"> {{education.yearOfPassing}}<span ng-if="education.percentage">,&nbsp</span>{{education.percentage}}
+                <div class="description">
+                    {{education.grade}}
+                    <span ng-if="education.name && education.grade ">,&nbsp</span>
+                    {{education.name}}
+                    <span ng-if="education.boardOrUniversity">,&nbsp</span>
+                    {{education.boardOrUniversity}}
                     <br/>
-                    <p>{{education.grade}}<span ng-if="education.name ">,&nbsp</span>{{education.name}}<span ng-if="education.boardOrUniversity">,&nbsp</span>{{education.boardOrUniversity}}
+                   
+                    <span ng-if="education.yearOfPassing"> {{education.yearOfPassing}}</span>
+                    <span ng-if="education.percentage">,&nbsp</span>
+                    <span ng-if="education.percentage">{{education.percentage}}</span>
+                  
+                 
+                   
 
                 </div>
             </div>
