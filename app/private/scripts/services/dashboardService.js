@@ -12,7 +12,11 @@
 angular.module('playerApp')
   .service('dashboardService', ['httpServiceJava', 'config', '$http', function(httpServiceJava, config, $http) {
     this.getAdminDashboardData = function(req, datasetType) {
-      return httpServiceJava.get('dashboard/v1/' + datasetType + '/org/' + req.org_id + '?period=' + req.period);
+      if (datasetType == 'creation') {
+        return httpServiceJava.get(config.URL.DASHBOARD.CREATION + '/' + req.org_id + '?period=' + req.period);
+      } else if (datasetType == 'consumption') {
+        return httpServiceJava.get(config.URL.DASHBOARD.CONSUMPTION + '/' + req.org_id + '?period=' + req.period);
+      }
     };
 
     this.getChartColors = function(datasetType) {
@@ -40,9 +44,9 @@ angular.module('playerApp')
         ];
       } else if (datasetType == 'consumption') {
         return [{
-            backgroundColor: '#0062ff',
-            borderColor: '#0062ff',
-            fill: false
+          backgroundColor: '#0062ff',
+          borderColor: '#0062ff',
+          fill: false
         }];
       }
     };
@@ -66,24 +70,24 @@ angular.module('playerApp')
      * @Description convert seconds to min/hrs
      * @Author nilesh
      */
-    this.secondsToMin = function(numericData){
-        var iNum   = '';
-        var result = '';
-        if (numericData.value < 60) {
-            numericData.value = numericData.value + ' second(s)';
-        } else if (numericData.value >= 60 && numericData.value <= 3600) {
-            iNum = numericData.value / 60;
-            result = iNum.toFixed(2)
-            numericData.value = result + ' min(s)';
-        } else if (numericData.value >= 3600) {
-            iNum = numericData.value / 3600;
-            result = iNum.toFixed(2);
-            numericData.value = result + ' hour(s)';
-        } else{
-            return numericData;
-        }
-
+    this.secondsToMin = function(numericData) {
+      var iNum = '';
+      var result = '';
+      if (numericData.value < 60) {
+        numericData.value = numericData.value + ' second(s)';
+      } else if (numericData.value >= 60 && numericData.value <= 3600) {
+        iNum = numericData.value / 60;
+        result = iNum.toFixed(2)
+        numericData.value = result + ' min(s)';
+      } else if (numericData.value >= 3600) {
+        iNum = numericData.value / 3600;
+        result = iNum.toFixed(2);
+        numericData.value = result + ' hour(s)';
+      } else {
         return numericData;
+      }
+
+      return numericData;
     }
 
     /**
@@ -91,8 +95,8 @@ angular.module('playerApp')
      * @Description [description]
      * @return object
      */
-    this.getCourseDashboardData = function(req, datasetType){
-        var apiUrl = 'dashboard/v1/' + datasetType + '/course/' + req.courseId + '?period='+ req.timePeriod;
-        return httpServiceJava.get(apiUrl);
+    this.getCourseDashboardData = function(req, datasetType) {
+      var apiUrl = 'dashboard/v1/' + datasetType + '/course/' + req.courseId + '?period=' + req.timePeriod;
+      return httpServiceJava.get(apiUrl);
     };
   }]);
