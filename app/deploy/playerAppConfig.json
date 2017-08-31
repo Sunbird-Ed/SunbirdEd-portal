@@ -29,9 +29,7 @@
                 "USER_CONTENT_STATE_READ": "content/state/read",
                 "USER_CONTENT_STATE_UPDATE": "content/state/update",
                 "GET_ENROLLED_COURSES": "user/courses/list",
-                "ENROLL_USER_COURSE": "course/enrol",
-                "PROGRESS": "course/enrol",
-                "CONSUMPTION": "course/enrol"
+                "ENROLL_USER_COURSE": "course/enrol"
             },
             "CONTENT": {
                 "SEARCH": "content/search",
