@@ -278,6 +278,7 @@ angular.module('playerApp')
                     if (res.responseCode === 'OK') {
                         admin.recievedBadge.name = badge.name;
                         admin.recievedBadge.userId = identifier;
+                        admin.newBadgeAssigned = false;
                         toasterService.success(badge.name + ' assigned successfully');
                     } else {
                         toasterService.error(res.params.errmsg);
