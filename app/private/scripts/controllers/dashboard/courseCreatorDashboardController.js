@@ -154,7 +154,7 @@ angular.module('playerApp')
         searchService.search(request).then(function(apiResponse) {
           console.log(apiResponse);
           if (apiResponse && apiResponse.responseCode === 'OK') {
-            if (apiResponse.result.content.length > 0) {
+            if (apiResponse.result.content && apiResponse.result.content.length > 0) {
               courseDashboard.myCoursesList = apiResponse.result.content;
               courseDashboard.buildMyCoursesDropdown();
             } else {
