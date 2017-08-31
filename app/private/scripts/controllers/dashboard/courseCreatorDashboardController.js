@@ -8,8 +8,8 @@
  */
 angular.module('playerApp')
   .controller('courseCreatorDashboardCtrl', ['$rootScope', '$scope', 'dashboardService', '$timeout', '$state', '$stateParams', 'toasterService',
-    'permissionsService', 'learnService',
-    function($rootScope, $scope, dashboardService, $timeout, $state, $stateParams, toasterService, permissionsService, learnService) {
+    'permissionsService', 'searchService',
+    function($rootScope, $scope, dashboardService, $timeout, $state, $stateParams, toasterService, permissionsService, searchService) {
 
       // Initialize variables
       var courseDashboard = this;
@@ -27,6 +27,7 @@ angular.module('playerApp')
       // Variables to show loader/errorMsg/warningMsg
       courseDashboard.showLoader = true;
       courseDashboard.showError = false;
+      courseDashboard.showLabelFlag = false;
       courseDashboard.errorMsg = '';
       courseDashboard.showWarningMsg = false;
 
@@ -138,42 +139,44 @@ angular.module('playerApp')
        * @Return void
        */
       courseDashboard.loadData = function() {
-        // Check list of my courses
-        angular.forEach($rootScope.enrolledCourseIds, function(value, key) {
-          courseDashboard.myCoursesList.push(value);
-        });
+        var request = {
+          filters: {
+            status: ["Live"],
+            createdBy: $rootScope.userId,
+            contentType: ["Course"]
+          },
+          sort_by: {
+            lastUpdatedOn: "desc"
+          }
+        };
 
-        if (courseDashboard.myCoursesList.length == "0") {
-          // Make api call to get list of my courses
-          learnService.enrolledCourses($rootScope.userId).then(function(apiResponse) {
-            if (apiResponse && apiResponse.responseCode === 'OK') {
-              if (apiResponse.result.courses.length > 0) {
-                courseDashboard.myCoursesList = apiResponse.result.courses;
-                $rootScope.enrolledCourseIds = apiResponse.result.courses;
-                courseDashboard.buildMyCoursesDropdown();
-              } else {
-                courseDashboard.showLoader = false;
-                courseDashboard.showWarningMsg = true;
-              }
-
+        // Make api call to get list of my courses
+        searchService.search(request).then(function(apiResponse) {
+          console.log(apiResponse);
+          if (apiResponse && apiResponse.responseCode === 'OK') {
+            if (apiResponse.result.content.length > 0) {
+              courseDashboard.myCoursesList = apiResponse.result.content;
+              courseDashboard.buildMyCoursesDropdown();
             } else {
-              // Show error div
-              courseDashboard.showErrors(apiResponse);
+              courseDashboard.showLoader = false;
+              courseDashboard.showWarningMsg = true;
             }
-          }).catch(function(apiResponse) {
+          } else {
             // Show error div
             courseDashboard.showErrors(apiResponse);
-          });
-        } else {
-          courseDashboard.buildMyCoursesDropdown();
-        }
+          }
+        }).catch(function(apiResponse) {
+          // Show error div
+          courseDashboard.showErrors(apiResponse);
+        });
       };
 
       courseDashboard.buildMyCoursesDropdown = function() {
-        if (courseDashboard.myCoursesList.length == "1") {
+        if (courseDashboard.myCoursesList.length === 1) {
+          courseDashboard.showLabelFlag = true;
           var firstChild = _.first(_.values(courseDashboard.myCoursesList), 1);
-          courseDashboard.courseIdentifier = firstChild.courseId;
-          courseDashboard.courseName = firstChild.courseName;
+          courseDashboard.courseIdentifier = firstChild.identifier;
+          courseDashboard.courseName = firstChild.name;
           getCourseDashboardData('7d');
         } else {
           courseDashboard.showLoader = false;

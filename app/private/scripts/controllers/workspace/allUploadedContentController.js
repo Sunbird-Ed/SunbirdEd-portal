@@ -55,7 +55,7 @@ angular.module('playerApp')
             allUploadedContent.allUploadedContentData = res.result.content || [];
             allUploadedContent.pager = PaginationService.GetPager(res.result.count,
               pageNumber, allUploadedContent.pageLimit);
-            if (allUploadedContent.totalCount === 0) {
+            if (allUploadedContent.allUploadedContentData.length === 0) {
               allUploadedContent.error = showErrorMessage(true,
                 $rootScope.errorMessages.WORKSPACE.ALL_UPLOADED.NO_CONTENT,
                 $rootScope.errorMessages.COMMON.NO_RESULTS);
@@ -135,6 +135,11 @@ angular.module('playerApp')
             allUploadedContent.pager = PaginationService
               .GetPager(allUploadedContent.totalCount - requestData.length,
                 allUploadedContent.pageNumber, allUploadedContent.pageLimit);
+            if (allUploadedContent.allUploadedContentData.length === 0) {
+                allUploadedContent.error = showErrorMessage(true,
+                $rootScope.errorMessages.WORKSPACE.ALL_UPLOADED.NO_CONTENT,
+                $rootScope.errorMessages.COMMON.NO_RESULTS);
+            }
           } else {
             allUploadedContent.loader.showLoader = false;
             toasterService.error(allUploadedContent.message.RETIRE_CONTENT.NOT_DELETE);
