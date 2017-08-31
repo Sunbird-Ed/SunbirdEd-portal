@@ -22,7 +22,7 @@ angular.module('playerApp')
         ];
         var basicInfoFields = [
             { fieldName: 'firstName',
-                type: 'regExp[^[a-zA-Z -]+$]',
+                type: 'regExp[^[0-9]*[A-Za-z][0-9A-Za-z]*$]',
                 prompt: basicProfileValidation.firstName
             },
             { fieldName: 'phone',

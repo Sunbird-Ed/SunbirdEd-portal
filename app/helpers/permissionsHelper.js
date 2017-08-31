@@ -33,9 +33,9 @@ let PERMISSIONS_HELPER = {
     "user/upload": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION"],
     "user/assign/role": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION"],
     "user/block": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION"],
-    "dashboard/v1/creation": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION"],
-    "dashboard/v1/progress": ["COURSE_MENTOR"],
-    "dashboard/v1/consumption": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION", "COURSE_CREATOR"],
+    "dashboard/creation": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION"],
+    "dashboard/progress": ["COURSE_MENTOR"],
+    "dashboard/consumption": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION", "COURSE_CREATOR"],
     "org/upload": ["SYSTEM_ADMINISTRATION"],
     "upload/status/": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION"]
   },
@@ -134,7 +134,7 @@ let PERMISSIONS_HELPER = {
   },
   checkPermission: function() {
     return function(req, res, next) {
-      if (enablePermissionCheck) {
+      if (enablePermissionCheck && req.session['roles']) {
         var roles = module.exports.checkURLMatch(req.originalUrl);
         if (_.isArray(roles)) {
           if (_.intersection(roles, req.session['roles']).length > 0) {
