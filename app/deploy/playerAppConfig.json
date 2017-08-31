@@ -48,8 +48,10 @@
                 "UPLOAD_URL": "content/upload/url"
             },
             "DASHBOARD": {
-                "CREATION": "dashboard/creation/org",
-                "CONSUMPTION": "dashboard/consumption/org"
+                "ORG_CREATION": "dashboard/creation/org",
+                "ORG_CONSUMPTION": "dashboard/consumption/org",
+                "COURSE_PROGRESS": "dashboard/progress/course",
+                "COURSE_CONSUMPTION": "dashboard/consumption/course"
             },
             "NOTES": {
                 "SEARCH": "note/search",
