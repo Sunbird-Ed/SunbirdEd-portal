@@ -12,10 +12,15 @@
 angular.module('playerApp')
   .service('dashboardService', ['httpServiceJava', 'config', '$http', function(httpServiceJava, config, $http) {
     this.getAdminDashboardData = function(req, datasetType) {
-      if (datasetType == 'creation') {
-        return httpServiceJava.get(config.URL.DASHBOARD.CREATION + '/' + req.org_id + '?period=' + req.period);
-      } else if (datasetType == 'consumption') {
-        return httpServiceJava.get(config.URL.DASHBOARD.CONSUMPTION + '/' + req.org_id + '?period=' + req.period);
+      switch (datasetType) {
+        case 'creation':
+          return httpServiceJava.get(config.URL.DASHBOARD.CREATION + '/' + req.org_id + '?period=' + req.period);
+          break;
+        case 'consumption':
+          return httpServiceJava.get(config.URL.DASHBOARD.CONSUMPTION + '/' + req.org_id + '?period=' + req.period);
+          break;
+        default:
+          return httpServiceJava.get(config.URL.DASHBOARD.CREATION + '/' + req.org_id + '?period=' + req.period);
       }
     };
 
