@@ -508,19 +508,19 @@ gulp.task('minifyThirdparty', ['minifyCSS'], function() {
     return merge(publicBowerJs, publicBowerCss, privateBowerJs, privateBowerCss, privateScripts, publicScripts, telemetry);
 });
 
-gulp.task('deploy_private_config', ['minifyThirdparty'], function () {
-    gulp.src('dist/deploy/playerAppConfig.json')
-        .pipe(gulpNgConfig('playerApp.config'))
-        .pipe(gulp.dest(dist.path  + 'private/' + dist.scripts));
-});
+// gulp.task('deploy_private_config', ['minifyThirdparty'], function () {
+//     gulp.src('dist/deploy/playerAppConfig.json')
+//         .pipe(gulpNgConfig('playerApp.config'))
+//         .pipe(gulp.dest(dist.path  + 'private/' + dist.scripts));
+// });
 
-gulp.task('deploy_public_config', ['deploy_private_config'], function () {
-    gulp.src('dist/deploy/publicAppConfig.json')
-        .pipe(gulpNgConfig('loginApp.config'))
-        .pipe(gulp.dest(dist.path + 'public/' + dist.scripts));
-});
+// gulp.task('deploy_public_config', ['deploy_private_config'], function () {
+//     gulp.src('dist/deploy/publicAppConfig.json')
+//         .pipe(gulpNgConfig('loginApp.config'))
+//         .pipe(gulp.dest(dist.path + 'public/' + dist.scripts));
+// });
 
-gulp.task('minifyHTML', ['deploy_public_config'], function() {
+gulp.task('minifyHTML', ['minifyThirdparty'], function() {
     var opts = { empty: true, comments:false, spare:false };
     return gulp.src(['dist/private/views/**/*.html', 'dist/public/views/**/*.html'], {base: "dist/"})
         .pipe(minifyHTML(opts))
