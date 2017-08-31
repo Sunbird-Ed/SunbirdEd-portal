@@ -386,11 +386,16 @@ angular.module('playerApp') // add those all values
               }, 100);
           };
 
-          profile.checkCurrentJob = function (experience) {
-              if (profile.currentJobLocation) {
-                  profile.isCurrentJobExist = !(profile.currentJobLocation.id !== experience.id &&
-            profile.currentJobLocation.isCurrentJob === true &&
-            experience.isCurrentJob === 'true');
+          profile.checkCurrentJob = function (experience, value) {
+              var currentjob = profile.experience.find(function (currentJob) {
+                  return currentJob.isCurrentJob === true;
+              });
+
+              if (currentjob && currentjob.id !== experience.id && value === true) {
+                  profile.isCurrentJobExist = true;
+              } else {
+                  profile.isCurrentJobExist = false;
+                  experience.isCurrentJob = value;
               }
           };
 
