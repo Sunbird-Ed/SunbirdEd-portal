@@ -134,7 +134,7 @@ let PERMISSIONS_HELPER = {
   },
   checkPermission: function() {
     return function(req, res, next) {
-      if (enablePermissionCheck) {
+      if (enablePermissionCheck && req.session['roles']) {
         var roles = module.exports.checkURLMatch(req.originalUrl);
         if (_.isArray(roles)) {
           if (_.intersection(roles, req.session['roles']).length > 0) {
