@@ -70,11 +70,6 @@ angular.module('playerApp')
       };
     };
 
-    /**
-     * @Function time convertor
-     * @Description convert seconds to min/hrs
-     * @Author nilesh
-     */
     this.secondsToMin = function(numericData) {
       var iNum = '';
       var result = '';
@@ -95,11 +90,6 @@ angular.module('playerApp')
       return numericData;
     }
 
-    /**
-     * @Function getCourseDashboard data
-     * @Description [description]
-     * @return object
-     */
     this.getCourseDashboardData = function(req, datasetType) {
       var apiUrl = 'dashboard/v1/' + datasetType + '/course/' + req.courseId + '?period=' + req.timePeriod;
       return httpServiceJava.get(apiUrl);
