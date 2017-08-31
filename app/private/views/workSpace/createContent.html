@@ -61,34 +61,17 @@
                     </div>
                     <p class="workspaceinstuction">{{$root.labels.WORKSPACE.startCreating.lessonPlanDescription}}</p>
                 </div>
-            </div>
-        </div>
-        <div class="twelve wide column dividerInFileUploader">
-            <div class="ui divider"></div>
-        </div>
-        <div class="twelve wide column" ng-init="contentCreation.initializeFileUploader()">
-            <div fine-uploader>
-            </div>
-
-            <div class="ui grid fileUploadDivider">
-                <div class="one wide column"></div>
-                <div class="uploadicon four wide column">
-                    <p class="padding-top-10 dropfile textIndentForUploadFile">{{$root.labels.WORKSPACE.startCreating.enterYoutubeURL}}</p>
-                </div>
-                <div class="six wide column">
-                    <div class="ui form youtubeupload youTubeFileUploadForm">
-                        <div class="inline fields">
-                            <div class="eight wide field">
-                                <input type="text" ng-model="contentCreation.youtubeVideoUrl" placeholder={{$root.labels.WORKSPACE.startCreating.enterYoutubeURL}} ng-model-options="{ debounce: 1000 }" ng-change="contentCreation.validateYouTubeUrl(contentCreation.youtubeVideoUrl)">
-                            </div>
-                            <div class="two wide field">
-                                <button class="ui primary basic button text-align-center padding-left-25 qq-upload-button-selector" ng-click="contentCreation.uploadYoutubeFile()" ng-disabled="!contentCreation.youtubeVideoUrl || contentCreation.invalidYoutubeVideoUrl">UPLOAD</button>
+                <div class="three wide column">
+                    <div class="workspacecontent ui link card" ui-sref="UploadContent">
+                        <div class="content">
+                            <div class="textcontent">
+                                <i class='my-icon upload icon'></i>
+                                <span class="my-text">{{$root.labels.WORKSPACE.startCreating.contentUpload}}</span>
                             </div>
                         </div>
                     </div>
-                    <div class="ui negative message" ng-if="contentCreation.invalidYoutubeVideoUrl && contentCreation.youtubeVideoUrl.length !== 0">{{$root.errorMessages.WORKSPACE.ContentCreation.invalidYoutubeVideoUrl}}</div>
+                    <p class="workspaceinstuction">{{$root.labels.WORKSPACE.startCreating.contentUploadDescription}}</p>
                 </div>
-                <div class="one wide column"></div>
             </div>
         </div>
     </div>
