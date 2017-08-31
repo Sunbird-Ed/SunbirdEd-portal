@@ -46,7 +46,7 @@ angular.module('playerApp')
             reviewContent.totalCount = res.result.count;
             reviewContent.pager = PaginationService.GetPager(res.result.count,
               pageNumber, reviewContent.pageLimit);
-            if (reviewContent.totalCount === 0) {
+            if (reviewContent.reviewContentData.length === 0) {
               reviewContent.error = showErrorMessage(true,
                 $rootScope.errorMessages.WORKSPACE.REVIEW.NO_CONTENT,
                 $rootScope.errorMessages.COMMON.NO_RESULTS);
