@@ -40,7 +40,7 @@ angular.module('playerApp')
                         org.sunbird.portal.ekstep_env + '.s3-ap-south-1.amazonaws.com/'],
                     plugins: [
                         {
-                            id: 'org.ekstep.sunbirdheader',
+                            id: 'org.ekstep.sunbirdcommonheader',
                             ver: '1.0',
                             type: 'plugin'
                         }
@@ -100,7 +100,7 @@ angular.module('playerApp')
 
             contentService.getContentData = function () {
                 var req = { contentId: contentEditor.contentId };
-                var qs = { fields: 'createdBy,status,mimeType' };
+                var qs = { fields: 'createdBy,status,mimeType', mode: 'edit' };
 
                 contentService.getById(req, qs).then(function (response) {
                     if (response && response.responseCode === 'OK') {
