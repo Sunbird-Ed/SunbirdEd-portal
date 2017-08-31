@@ -82,10 +82,10 @@ angular.module('playerApp')
                             'medium,author,domain,createdBy,flagReasons,flaggedBy,flags,status,' +
                             'createdOn,lastUpdatedOn,body'
                 };
-                if ($stateParams.backState !== 'WorkSpace.FlaggedContent') {
+
+                if ($stateParams.backState === 'WorkSpace.UpForReviewContent') {
                     qs.mode = 'edit';
                 }
-
                 contentService.getById(req, qs).then(function (response) {
                     if (response && response.responseCode === 'OK') {
                         previewContent.errorObject = {};
