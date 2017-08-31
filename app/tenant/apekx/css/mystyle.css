@@ -1,0 +1,160 @@
+.logo-header {
+	margin-top: 5px;
+}
+
+.logo-header .row > div{
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.logo-right {
+	text-align: right;
+}
+
+.logo-apekx {
+	width: 300px;
+	height: auto;
+}
+
+@media (max-width: 768px) {
+	.logo-left, .logo-right {
+		text-align: center;
+	}
+}
+
+.navbar, .navbar .container {
+	padding: 0;
+}
+
+.navbar ul {
+	padding: 15px 0;
+    font-size: 20px;
+}
+
+.navbar ul li{
+	padding-right: 20px;
+}
+
+.navbar-brand {
+	background-color: #f7a047;
+    padding: 23px 65px;
+    text-align: right;
+    margin: 0;
+}
+
+.top-banner {
+	height: 325px;
+	margin-bottom: 250px;
+	background-image: url('../images/banner.png');
+	background-repeat: no-repeat;
+}
+
+.top-banner > div.container {
+	padding: 0;
+	border: 1px solid transparent;
+}
+
+#carousel {
+	margin-top: 80px;
+    width: 700px;
+    height: 450px;
+}
+
+#carousel .carousel-inner {
+    height: 100%;
+    border-radius: 5px;
+}
+
+.carousel-item {
+    height: 540px;
+    min-height: 250px;
+    background: no-repeat center center scroll;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.intro-container, .vision-container, .objectives-container {
+	margin-top: 30px;
+	text-align: justify;
+}
+
+.intro-title, .objectives-title {
+	color: #f7a047;
+	font-weight: bold;
+}
+
+.vision-container {
+	background-color: #f7a047;
+	color: #FFFFFF;
+	padding: 5px 0;
+}
+
+.vision-content h1 {
+	margin-top: 60px;
+	font-weight: bold;
+	font-size: 64px;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+}
+
+.vision-content p {
+	text-align: left;
+	font-size: 22px;
+}
+
+.vision-content img {
+	width: 85%;
+    height: auto;
+}
+
+.slider2-container > .container {
+	padding: 0;
+}
+
+#carousel2 .carousel-caption {
+    top: 30px;
+}
+
+#carousel2 img {
+	border-radius: 50%;
+    border: 2px solid #dedede;
+    width: 300px;
+}
+
+#carousel2 .carousel-caption .dignitary-name{
+    color: #002A55;
+    margin-top: 30px;
+    font-size: 20px;
+    margin-bottom: 0;
+}
+
+#carousel2 .carousel-caption .dignitary-designation{
+    color: #777777;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#carousel2 .carousel-indicators li {
+	background-color: rgba(120, 120, 120, 0.5);
+}
+
+#carousel2 .carousel-indicators li.active {
+	background-color: rgba(120, 120, 120, 1);
+}
+
+.objectives-container {
+	margin-bottom: 70px;
+}
+
+.objectives-content ul li {
+	color: #787878;
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+footer {
+	background-color: #f7a047;
+	color: #FFFFFF;
+}
