@@ -24,7 +24,7 @@
         <p ng-if="courseDashboard.showLabelFlag">{{courseDashboard.courseName}}</p>
       </span>
     </div>
-    <div class="four wide column left floated" ng-if="courseDashboard.dataset == 'progress'">
+    <div class="four wide column left floated" ng-if="courseDashboard.dataset == 'progress'" ng-hide="courseDashboard.myBatches.length <= '1' ">
       <div class="ui fluid search selection dropdown" id="myBatchesListFilter">
         <input type="hidden" name="course">
         <i class="dropdown icon"></i>
