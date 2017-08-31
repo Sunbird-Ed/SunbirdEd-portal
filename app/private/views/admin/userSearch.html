@@ -1,6 +1,6 @@
 <div ng-if="$root.search.selectedSearchKey=='Users' && admin.searchResult" ng-init="admin.addOrgNameToOrganizations();admin.getUserRoles()"   class="ui divided searchListInfo items">
     <div class="userSearchCardHover item " ng-repeat="user in admin.searchResult" ng-init="admin.recievedBadge={}">
-        <div class="ui tiny image userSearchImage " ng-init="admin.getBadgeName(user)">
+        <div class="ui tiny image userSearchImage " ng-init="admin.getBadgeName(user);admin.newBadgeAssigned=true">
             <img ng-src="{{user.avatar|| 'images/user_logo.png'}} ">
         </div>
         <div class="content ">
@@ -18,7 +18,7 @@
               <span>
             </a>
                 <!-- assign badge user -->
-             <a class="float-ContentRight" ng-if="!user.userBadgeS.length && user.status===1" sb-permissions permission-only="SYSTEM_ADMINISTRATION,ORG_ADMIN">
+             <a class="float-ContentRight" ng-if="!user.userBadgeS.length && user.status===1 && admin.newBadgeAssigned===true" sb-permissions permission-only="SYSTEM_ADMINISTRATION,ORG_ADMIN">
                 <img class="ui mini image badgeIconAlignment" src="images/badgeblue.png"
                 ng-click="admin.assignBadgeModal(user.identifier);">
             </a> 
