@@ -12,6 +12,7 @@ angular.module('playerApp')
         function (httpServiceJava, config, $rootScope) {
             var self = this;
             var rolesAndPermissions = [];
+            var currentUserRoleMap = {};
             var currentUserRoles = [];
             var currentRoleActions = [];
             this.setRolesAndPermissions = function (data) {
@@ -26,6 +27,9 @@ angular.module('playerApp')
                     rolesAndPermissions.push(mainRole);
                 });
                 rolesAndPermissions = _.uniqBy(rolesAndPermissions, 'role');
+            },
+            this.setCurrentUserRoleMap = function (orgRoleMap) {
+                currentUserRoleMap = orgRoleMap;
             },
             this.setCurrentUserRoles = function (roles) {
                 currentUserRoles = roles;
@@ -76,6 +80,9 @@ angular.module('playerApp')
             };
             this.allRoles = function () {
                 return rolesAndPermissions;
+            };
+            this.getCurrentUserRoleMap = function () {
+                return currentUserRoleMap;
             };
             this.getCurrentUserRoles = function () {
                 return currentUserRoles;
