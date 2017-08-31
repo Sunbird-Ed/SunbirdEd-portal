@@ -469,7 +469,7 @@ gulp.task('build', ['clean:dist'], function () {
 });
 
 gulp.task('production', ['clean:dist'], function () {
-    return gulp.src(['app/**/*', '!app/private/scripts/playerAppConfig.js', '!app/public/scripts/publicAppConfig.js'])
+    return gulp.src(['app/**/*'])
         .pipe(gulp.dest(player.dist));
 });
 
