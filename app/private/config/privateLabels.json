@@ -52,7 +52,9 @@
                 "uploadContent": "Upload Content",
                 "upload": "Upload",
                 "lessonPlanDescription": "You can create a lesson plan with structured sections.",
-                "lessonPlan": "LESSON PLAN"
+                "lessonPlan": "LESSON PLAN",
+                "contentUpload": "UPLOAD",
+                "contentUploadDescription": "You can upload content here."
             },
             "createLesson": {
                 "createLessonText": "Create Lesson",
