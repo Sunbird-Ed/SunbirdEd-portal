@@ -890,6 +890,32 @@ angular.module('playerApp')
                 $rootScope.profileActive = '';
             }
         })
+        .state('UploadContent', {
+            url: '/generic/editor/:contentId',
+            views: {
+                mainView: {
+                    templateUrl: 'views/common/genericEditor.html',
+                  controller: 'GenericEditorController as genericEditor'
+                }
+            },
+            params: {
+              contentId: null
+            },
+            onEnter: function ($rootScope, portalTelemetryService) {
+              $rootScope.profileActive = 'active';
+              portalTelemetryService.fireImpressions({
+                  env: 'genericeditor',
+                  type: 'edit',
+                  pageid: org.sunbird.portal.appid + '_GenericEditor',
+                  id: '',
+                  name: '',
+                  url: '/private/index#!/generic/editor/'
+              });
+            },
+            onExit: function ($rootScope) {
+                $rootScope.profileActive = '';
+            }
+        })
         .state('PublicProfile', {
             url: '/profile/:userName/:userId',
             views: {
