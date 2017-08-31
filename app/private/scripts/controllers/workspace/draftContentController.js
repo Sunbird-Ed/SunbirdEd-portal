@@ -134,6 +134,11 @@ angular.module('playerApp')
             draftContent.pager = PaginationService
               .GetPager(draftContent.totalCount - requestData.length,
                 draftContent.pageNumber, draftContent.pageLimit);
+            if (draftContent.draftContentData.length === 0) {
+                draftContent.error = showErrorMessage(true,
+                $rootScope.errorMessages.WORKSPACE.DRAFT.NO_CONTENT,
+                $rootScope.errorMessages.COMMON.NO_RESULTS);
+            }
           } else {
             draftContent.loader.showLoader = false;
             draftContent.handleFailedResponse(res, requestData);
