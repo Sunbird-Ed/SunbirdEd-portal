@@ -29,13 +29,13 @@
         <label for="address">{{$root.labels.PROFILE.JOB_PROFILE.isCurrentJob}}</label>
         <div class="field">
             <div class="ui radio checkbox ">
-                <input type="radio" name="radio" value='true' ng-model="experience.isCurrentJob" ng-checked="experience.isCurrentJob===true" ng-change="profileCtrl.checkCurrentJob(experience);profileCtrl.setJobProfileCheckbox(experience,true)">
+                <input type="radio" name="radio" value='true'  ng-checked="experience.isCurrentJob===true" ng-click="profileCtrl.checkCurrentJob(experience,true);">
                 <label>{{$root.labels.PROFILE.JOB_PROFILE.currentJobOptionYes}}</label>
             </div>
         </div>
         <div class="field">
             <div class="ui radio checkbox ">
-                <input type="radio" name="radio" value=null ng-model="experience.isCurrentJob" ng-checked="experience.isCurrentJob!==true" ng-change="profileCtrl.checkCurrentJob(experience);profileCtrl.setJobProfileCheckbox(experience,false)">
+                <input type="radio" name="radio" value='false'  ng-checked="experience.isCurrentJob!==true" ng-click="profileCtrl.checkCurrentJob(experience,false);">
                 <label>{{$root.labels.PROFILE.JOB_PROFILE.currentJobOptionNo}}</label>
             </div>
         </div>
@@ -61,6 +61,4 @@
         </div>
     </div>
 
-    <div class="ui error message">
-    </div>
-</form>
+    </form>
