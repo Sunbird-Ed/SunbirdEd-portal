@@ -140,7 +140,7 @@ angular.module('playerApp')
       courseDashboard.loadData = function() {
         var request = {
           filters: {
-            status: ["Draft"],
+            status: ["Live"],
             createdBy: $rootScope.userId,
             contentType: ["Course"]
           },
