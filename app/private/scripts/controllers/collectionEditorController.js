@@ -57,7 +57,7 @@ angular.module('playerApp')
                   headerLogo: !_.isUndefined($rootScope.orgLogo) ? $rootScope.orgLogo : '',
                   loadingImage: '',
                   plugins: [{
-                      id: 'org.ekstep.sunbirdcollectionheader',
+                      id: 'org.ekstep.sunbirdcommonheader',
                       ver: '1.0',
                       type: 'plugin'
                   }],
@@ -79,7 +79,7 @@ angular.module('playerApp')
                             _.intersection(permissionsService.getCurrentUserRoles(),
                            ['CONTENT_REVIEWER', 'CONTENT_REVIEW']).length > 0) {
                   window.config.editorConfig.publishMode = true;
-              }else if ($stateParams.state === 'WorkSpace.FlaggedContent' &&
+              } else if ($stateParams.state === 'WorkSpace.FlaggedContent' &&
                             _.intersection(permissionsService.getCurrentUserRoles(),
                            ['FLAG_REVIEWER']).length > 0) {
                   window.config.editorConfig.isFalgReviewer = true;
@@ -87,13 +87,13 @@ angular.module('playerApp')
 
               var validateModal = {
                   state: ['WorkSpace.UpForReviewContent', 'WorkSpace.ReviewContent',
-                      'WorkSpace.PublishedContents', 'WorkSpace.FlaggedContent'],
+                      'WorkSpace.PublishedContent', 'WorkSpace.FlaggedContent'],
                   status: ['Review', 'Draft', 'Live', 'Flagged'],
                   mimeType: 'application/vnd.ekstep.content-collection'
               };
 
               var req = { contentId: collectionEditor.contentId };
-              var qs = { fields: 'createdBy,status,mimeType' };
+              var qs = { fields: 'createdBy,status,mimeType', mode: 'edit' };
 
               contentService.getById(req, qs).then(function (response) {
                   if (response && response.responseCode === 'OK') {
