@@ -12,7 +12,8 @@
                             <div class="content padding-top-10">
                                 <div class="sectionHeading header">{{profileCtrl.user.firstName}} &nbsp;{{::profileCtrl.user.lastName}}</div>
                                 <div class="meta profileViewSubHeader padding-bottom-10">
-                                    <span ng-if="profileCtrl.currentJobLocation">{{profileCtrl.currentJobLocation.orgName}},</span>
+                                    <span ng-if="profileCtrl.currentJobLocation">{{profileCtrl.currentJobLocation.orgName}}</span>
+                                    <span  ng-if="profileCtrl.currentAddressLocation.length">,</span>
                                     <span  ng-if="profileCtrl.currentAddressLocation">{{profileCtrl.user.location}}</span>
                                 </div>
                                 <div class="meta">
