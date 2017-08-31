@@ -35,7 +35,7 @@ let PERMISSIONS_HELPER = {
     "user/block": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION"],
     "dashboard/creation": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION"],
     "dashboard/progress": ["COURSE_MENTOR"],
-    "dashboard/consumption": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION", "COURSE_CREATOR"],
+    "dashboard/consumption": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION", "CONTENT_CREATOR"],
     "org/upload": ["SYSTEM_ADMINISTRATION"],
     "upload/status/": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION"]
   },

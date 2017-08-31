@@ -1901,6 +1901,10 @@ ul.fancytree-container li {
   line-height: 16px!important;
   color: #333333 !important;
 }
+.profile-des .item .right.floated.content {
+  width: 50% !important;
+  text-align: right !important;
+}
 .workspaceicon.ui.header > .icon {
   padding-top: 0;
   float: left;
@@ -2359,7 +2363,7 @@ span.dashBoardMenuItem.active {
 }
 .top-17 {
   position: relative;
-  top: 17px;
+  top: 3px;
 }
 body {
   position: relative !important;

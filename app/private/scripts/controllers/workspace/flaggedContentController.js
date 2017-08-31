@@ -51,7 +51,7 @@ angular.module('playerApp')
                 });
             }
             flaggedContent.totalCount = res.result.count;
-            if (flaggedContent.totalCount === 0) {
+            if (flaggedContent.flaggedContentData.length === 0) {
               flaggedContent.error = showErrorMessage(true,
                 $rootScope.errorMessages.WORKSPACE.FLAGGED.NO_CONTENT,
                 $rootScope.errorMessages.COMMON.NO_RESULTS);
