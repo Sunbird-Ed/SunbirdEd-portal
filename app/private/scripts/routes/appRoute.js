@@ -1026,7 +1026,7 @@ angular.module('playerApp')
               routeHelperService.checkStateAccess(['COURSE_MENTOR'], false, event);
               break;
           case 'MyActivity':
-              routeHelperService.checkStateAccess(['COURSE_CREATOR'], false, event);
+              routeHelperService.checkStateAccess(['CONTENT_CREATOR'], false, event);
               break;
           default:
               break;
