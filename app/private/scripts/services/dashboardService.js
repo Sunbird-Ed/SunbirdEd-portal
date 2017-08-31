@@ -14,13 +14,13 @@ angular.module('playerApp')
     this.getAdminDashboardData = function(req, datasetType) {
       switch (datasetType) {
         case 'creation':
-          return httpServiceJava.get(config.URL.DASHBOARD.CREATION + '/' + req.org_id + '?period=' + req.period);
+          return httpServiceJava.get(config.URL.DASHBOARD.ORG_CREATION + '/' + req.org_id + '?period=' + req.period);
           break;
         case 'consumption':
-          return httpServiceJava.get(config.URL.DASHBOARD.CONSUMPTION + '/' + req.org_id + '?period=' + req.period);
+          return httpServiceJava.get(config.URL.DASHBOARD.ORG_CONSUMPTION + '/' + req.org_id + '?period=' + req.period);
           break;
         default:
-          return httpServiceJava.get(config.URL.DASHBOARD.CREATION + '/' + req.org_id + '?period=' + req.period);
+          return httpServiceJava.get(config.URL.DASHBOARD.ORG_CREATION + '/' + req.org_id + '?period=' + req.period);
       }
     };
 
@@ -91,7 +91,15 @@ angular.module('playerApp')
     }
 
     this.getCourseDashboardData = function(req, datasetType) {
-      var apiUrl = 'dashboard/v1/' + datasetType + '/course/' + req.courseId + '?period=' + req.timePeriod;
-      return httpServiceJava.get(apiUrl);
+      switch (datasetType) {
+        case 'progress':
+          return httpServiceJava.get(config.URL.DASHBOARD.COURSE_PROGRESS + '/' + req.courseId + '?period=' + req.timePeriod);
+          break;
+        case 'consumption':
+          return httpServiceJava.get(config.URL.DASHBOARD.COURSE_CONSUMPTION + '/' + req.courseId + '?period=' + req.timePeriod);
+          break;
+        default:
+          return httpServiceJava.get(config.URL.DASHBOARD.COURSE_PROGRESS + '/' + req.courseId + '?period=' + req.timePeriod);
+      }
     };
   }]);
