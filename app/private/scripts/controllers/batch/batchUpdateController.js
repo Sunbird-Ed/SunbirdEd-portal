@@ -46,6 +46,7 @@ angular.module('playerApp')
             batchUpdate.showUpdateBatchModal = function (batchData, coursecreatedby) {
                 batchUpdate.selectedUsers = [];
                 batchUpdate.selectedMentors = [];
+                batchUpdate.coursecreatedby = batchUpdate.coursecreatedby || batchUpdate.batchData.courseCreator;
                 _.forEach(batchUpdate.batchData.participant, function (value, key) {
                     if (!_.isUndefined(_.find(batchUpdate.userList, ['id', key]))) {
                         batchUpdate.selectedUsers.push(_.find(batchUpdate.userList, ['id', key]));
