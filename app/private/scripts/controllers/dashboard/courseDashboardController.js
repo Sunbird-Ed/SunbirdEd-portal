@@ -136,12 +136,14 @@ angular.module('playerApp')
        */
       courseDashboard.buildMyBatchesDropdown = function() {
         if (courseDashboard.myBatches.length === 1) {
+          courseDashboard.showLabelFlag = true;
           var firstChild = _.first(_.values(courseDashboard.myBatches), 1);
           courseDashboard.batchIdentifier = firstChild.id;
           courseDashboard.courseName = firstChild.name;
           getCourseDashboardData('7d');
         } else {
           courseDashboard.showLoader = false;
+          courseDashboard.showLabelFlag = false;
           //courseDashboard.showError = true;
           courseDashboard.isMultipleCourses = courseDashboard.myBatches.length > 1 ? true : false;
         }
