@@ -47,6 +47,12 @@
                 "DISCARD_FLAG": "content/flag/reject",
                 "UPLOAD_URL": "content/upload/url"
             },
+            "DASHBOARD": {
+                "ORG_CREATION": "dashboard/creation/org",
+                "ORG_CONSUMPTION": "dashboard/consumption/org",
+                "COURSE_PROGRESS": "dashboard/progress/course",
+                "COURSE_CONSUMPTION": "dashboard/consumption/course"
+            },
             "NOTES": {
                 "SEARCH": "note/search",
                 "CREATE": "note/create",
