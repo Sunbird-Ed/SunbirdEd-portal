@@ -133,6 +133,11 @@ angular.module('playerApp')
             publishedContent.pager = PaginationService
               .GetPager(publishedContent.totalCount - requestData.length,
                 publishedContent.pageNumber, publishedContent.pageLimit);
+            if (publishedContent.publishedContentData.length === 0) {
+                publishedContent.error = showErrorMessage(true,
+                $rootScope.errorMessages.WORKSPACE.PUBLISHED.NO_CONTENT,
+                $rootScope.errorMessages.COMMON.NO_RESULTS);
+            }
           } else {
             publishedContent.loader.showLoader = false;
             toasterService.error(publishedContent.message.RETIRE_CONTENT.NOT_DELETE);
