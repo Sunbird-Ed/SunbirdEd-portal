@@ -2,7 +2,7 @@
 
 angular.module('loginApp')
     .controller('SignUpCtrl', ['signUpService', '$timeout', '$filter', '$location', 'labels',
-          '$rootScope', 'errorMessages', 'toasterService', function (signUpService, $timeout, 
+        '$rootScope', 'errorMessages', 'toasterService', function (signUpService, $timeout,
             $filter, $location, labels, $rootScope, errorMessages, toasterService) {
             var newUser = this;
             var today = new Date();
@@ -24,7 +24,7 @@ angular.module('loginApp')
                         },
                         firstName: {
                             rules: [{
-                                type: 'regExp[^[a-zA-Z -]+$]',
+                                type: 'regExp[^[0-9]*[A-Za-z][0-9A-Za-z]*$]',
                                 prompt: errorMessages.FORM_VALIDATION.name
                             }]
                         },
