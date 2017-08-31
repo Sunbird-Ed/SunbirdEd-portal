@@ -582,7 +582,7 @@ gulp.task('inject_staticGzip', ['compress'], function() {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('packageNodeModules', ['compress'], function(){
+gulp.task('packageNodeModules', ['injectFiles'], function(){
     return gulp.src(['node_modules/**/*'])
         .pipe(gulp.dest(player.dist + '/node_modules'));
 });
