@@ -77,12 +77,14 @@ angular.module('playerApp')
                                                                         .GET.START);
                 var req = { contentId: contentId };
                 var qs = {
-                    mode: 'edit',
                     fields: 'name,description,appIcon,contentType,mimeType,artifactUrl,' +
                             ',versionKey,audience,language,gradeLevel,ageGroup,subject,' +
                             'medium,author,domain,createdBy,flagReasons,flaggedBy,flags,status,' +
                             'createdOn,lastUpdatedOn,body'
                 };
+                if ($stateParams.backState !== 'WorkSpace.FlaggedContent') {
+                    qs.mode = 'edit';
+                }
 
                 contentService.getById(req, qs).then(function (response) {
                     if (response && response.responseCode === 'OK') {
