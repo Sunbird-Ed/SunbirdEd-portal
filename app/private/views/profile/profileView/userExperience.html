@@ -15,7 +15,7 @@
                         </span>
                     </p>
                     <p ng-if="experience.joiningDate ">{{$root.labels.PROFILE.JOB_PROFILE.joiningDate}} : {{experience.joiningDate}} &nbsp;
-                        <span ng-if="experience.endDate ">, &nbsp;{{$root.labels.PROFILE.JOB_PROFILE.endDate}} : {{experience.endDate}}</span></p>
+                        <span ng-if="experience.endDate && experience.isCurrentJob!==true">, &nbsp;{{$root.labels.PROFILE.JOB_PROFILE.endDate}} : {{experience.endDate}}</span></p>
                 </div>
             </div>
             <div class="right-floated ">
