@@ -27,6 +27,7 @@ angular.module('playerApp')
       // Variables to show loader/errorMsg/warningMsg
       courseDashboard.showLoader = true;
       courseDashboard.showError = false;
+      courseDashboard.showLabelFlag = false;
       courseDashboard.errorMsg = '';
       courseDashboard.showWarningMsg = false;
 
@@ -179,7 +180,6 @@ angular.module('playerApp')
           getCourseDashboardData('7d');
         } else {
           courseDashboard.showLoader = false;
-          courseDashboard.showLabelFlag = false;
           //courseDashboard.showError = true;
           courseDashboard.isMultipleCourses = courseDashboard.myCoursesList.length > 1 ? true : false;
         }

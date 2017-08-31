@@ -28,6 +28,7 @@ angular.module('playerApp')
       // Variables to show loader/errorMsg
       courseDashboard.showLoader = true;
       courseDashboard.showError = false;
+      courseDashboard.showLabelFlag = false;
       courseDashboard.errorMsg = '';
 
       /**
@@ -143,7 +144,6 @@ angular.module('playerApp')
           getCourseDashboardData('7d');
         } else {
           courseDashboard.showLoader = false;
-          courseDashboard.showLabelFlag = false;
           //courseDashboard.showError = true;
           courseDashboard.isMultipleCourses = courseDashboard.myBatches.length > 1 ? true : false;
         }
