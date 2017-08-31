@@ -255,8 +255,8 @@ angular.module('playerApp').directive('search', function () {
                     var isSystemAdmin = $scope.search.currentUserRoles
                                         .includes('SYSTEM_ADMINISTRATION');
 
-                    if (isSystemAdmin === false && $rootScope.organisationIds) {
-                        req.filters['organisations.organisationId'] = $rootScope.organisationIds[0];
+                    if (isSystemAdmin === false) {
+                        req.filters['rootOrgId'] = $rootScope.rootOrgId;
                     }
                     $scope.search.searchFn = adminService.userSearch({ request: req });
                     $scope.search.resultType = 'users';
