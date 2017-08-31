@@ -50,7 +50,7 @@ angular.module('playerApp')
             publishedContent.publishedContentData = res.result.content || [];
             publishedContent.totalCount = res.result.count;
             publishedContent.pageNumber = pageNumber;
-            if (publishedContent.totalCount === 0) {
+            if (publishedContent.publishedContentData.length === 0) {
               publishedContent.error = showErrorMessage(true,
                 $rootScope.errorMessages.WORKSPACE.PUBLISHED.NO_CONTENT,
                 $rootScope.errorMessages.COMMON.NO_RESULTS);
