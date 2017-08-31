@@ -81,7 +81,7 @@ angular.module('playerApp')
           });
         } else {
           var params = { contentId: item.identifier };
-          $state.go('EditContent', params);
+          $state.go('UploadContent', params);
         }
       };
 
