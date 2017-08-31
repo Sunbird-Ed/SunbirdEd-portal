@@ -3,15 +3,15 @@
     <!--<div class="five wide column left floated">
       <p class="dashboard-label ng-binding"><i class="bar chart icon"></i>&nbsp; {{courseDashboard.courseName ? courseDashboard.courseName : 'Select Course To See'}} Dashboard</p>
     </div>-->
-    <span class="dashBoardSectionHeading top-17" ng-if="courseDashboard.dataset == 'consumption'"><i class="large bar chart icon"></i></span>
+    <span class="dashBoardSectionHeading top-17" ng-if="courseDashboard.dataset == 'consumption'"><i class="large bar chart icon"></i><p ng-if="courseDashboard.showLabelFlag">{{courseDashboard.courseName}}</p></span>
     <div class="four wide column left floated" ng-if="courseDashboard.dataset == 'consumption'" ng-hide="courseDashboard.myCoursesList.length <= '1' ">
       <div class="ui fluid search selection dropdown" id="myCoursesListFilter">
         <input type="hidden" name="course">
         <i class="dropdown icon"></i>
         <div class="default text" id="selectCourse">Select Course To See Dashboard</div>
         <div class="menu">
-          <div class="item" ng-repeat="course in courseDashboard.myCoursesList" title="{{course.courseName}}" ng-click="courseDashboard.onAfterCourseChange(course.courseId, course.courseName)" data-value="{{course.courseId}}" ng-init="$last && courseDashboard.initDropdwon()">
-            <img class="ui circular image mini" ng-src=" {{course.courseLogoUrl ? course.courseLogoUrl : '../images/sunbird_logo.png'}} ">{{course.courseName}}</div>
+          <div class="item" ng-repeat="course in courseDashboard.myCoursesList" title="{{course.courseName}}" ng-click="courseDashboard.onAfterCourseChange(course.identifier, course.name)" data-value="{{course.identifier}}" ng-init="$last && courseDashboard.initDropdwon()">
+            <img class="ui circular image mini" ng-src=" {{course.courseLogoUrl ? course.courseLogoUrl : '../images/sunbird_logo.png'}} ">{{course.name}}</div>
         </div>
       </div>
     </div>
