@@ -170,7 +170,6 @@ var private_bower_js = [
 
 var private_bower_css = [
     "dist/thirdparty/libs/semantic-ui-tree-picker/semantic-ui-tree-picker.css",
-    "dist/thirdparty/bower_components/angular-pagedown/angular-pagedown.min.css",
     "dist/thirdparty/bower_components/slick-carousel/slick/slick.css",
     "dist/thirdparty/bower_components/slick-carousel/slick/slick-theme.css",
     "dist/thirdparty/bower_components/jquery.fancytree/dist/skin-win8/ui.fancytree.min.css",
@@ -583,7 +582,7 @@ gulp.task('inject_staticGzip', ['compress'], function() {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('packageNodeModules', ['inject_staticGzip'], function(){
+gulp.task('packageNodeModules', ['compress'], function(){
     return gulp.src(['node_modules/**/*'])
         .pipe(gulp.dest(player.dist + '/node_modules'));
 });
