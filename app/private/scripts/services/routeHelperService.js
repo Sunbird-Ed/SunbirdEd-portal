@@ -242,7 +242,7 @@ angular.module('playerApp')
                             name: 'Profile',
                             link: 'profile'
                         }, {
-                            name: 'Organisation Admin Dashboard',
+                            name: 'Organization Admin Dashboard',
                             link: ''
                         }];
 
