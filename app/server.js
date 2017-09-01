@@ -129,6 +129,7 @@ app.all('/public/service/*', proxy(learnerURL, {
 }))
 
 app.all('/private/service/v1/learner/*', verifyToken(), permissionsHelper.checkPermission(), proxy(learnerURL, {
+  limit: reqDataLimitOfContentUpload,
   proxyReqOptDecorator: decorateRequestHeaders(),
   proxyReqPathResolver: function(req) {
     let urlParam = req.params["0"];

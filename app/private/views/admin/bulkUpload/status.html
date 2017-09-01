@@ -69,7 +69,8 @@
     <div class="actions">
         <div class="ui grid">
             <div class="twelve wide column" ng-if="!admin.bulkUploadStatus.processId">
-                <button ng-disabled="!admin.processID" sb-permissions permission-only="SYSTEM_ADMINISTRATION,ORG_ADMIN" class="ui primary left floated button" ng-click="admin.getBulkUloadStatus(admin.processID)"> Check status</button>
+                <button ng-disabled="!admin.processID" sb-permissions permission-only="SYSTEM_ADMINISTRATION,ORG_ADMIN" class="ui primary left floated button" ng-click="admin.getBulkUloadStatus(admin.processID)">
+                    {{$root.labels.BULK_UPLOAD.BUTTONS.STATUS}}</button>
             </div>
         </div>
     </div>
