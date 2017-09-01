@@ -569,7 +569,7 @@ angular.module('playerApp')
           }
       })
       .state('ContentEditor', {
-          url: '/content/editor/:contentId',
+          url: '/content/editor/:contentId/:state',
           views: {
               mainView: {
                   templateUrl: 'views/common/contentEditor.html',
@@ -577,7 +577,8 @@ angular.module('playerApp')
               }
           },
           params: {
-              contentId: null
+              contentId: null,
+              state: null
           },
           onEnter: function ($state, $rootScope, portalTelemetryService, $stateParams) {
               $rootScope.profileActive = 'active';
@@ -890,8 +891,8 @@ angular.module('playerApp')
                 $rootScope.profileActive = '';
             }
         })
-        .state('UploadContent', {
-            url: '/generic/editor/:contentId',
+        .state('GenericEditor', {
+            url: '/generic/editor/:contentId/:state',
             views: {
                 mainView: {
                     templateUrl: 'views/common/genericEditor.html',
@@ -899,7 +900,8 @@ angular.module('playerApp')
                 }
             },
             params: {
-              contentId: null
+              contentId: null,
+              state: null
             },
             onEnter: function ($rootScope, portalTelemetryService) {
               $rootScope.profileActive = 'active';

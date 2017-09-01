@@ -85,12 +85,18 @@ angular.module('playerApp')
             type: item.contentType,
             state: 'WorkSpace.PublishedContent'
           });
+        } else if (item.mimeType === 'application/vnd.ekstep.ecml-archive') {
+          var params = {
+            contentId: item.identifier,
+            state: 'WorkSpace.PublishedContent'
+          };
+          $state.go('ContentEditor', params);
         } else {
           var params = {
             contentId: item.identifier,
-            backState: $state.current.name
+            state: 'WorkSpace.PublishedContent'
           };
-          $state.go('PreviewContent', params);
+          $state.go('GenericEditor', params);
         }
       };
 
