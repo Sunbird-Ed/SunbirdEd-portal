@@ -517,15 +517,15 @@
             "CONTENT_CREATION", "CONTENT_CREATOR", "ORG_MODERATOR", "MEMBERSHIP_MANAGEMENT",
             "ORG_MANAGEMENT", "SYSTEM_ADMINISTRATION", "ADMIN", "SYSTEM_ADMIN"
         ],
-        "searchTypeKeys": ["Courses", "Resources", "Users", "Organisations"],
+        "searchTypeKeys": ["Courses", "Library", "Users", "Organisations"],
         "sortingOptions": [
-            { "field": "lastUpdatedOn", "name": "Updated On" },
+            { "field": "lastUpdatedOn", "name": "Modified on" },
             { "field": "createdOn", "name": "Created On" }
         ],
         "searchSelectionKeys": [
             { "id": "All", "name": "All" },
             { "id": "Courses", "name": "Courses" },
-            { "id": "Resources", "name": "Resources" },
+            { "id": "Library", "name": "Library" },
             { "id": "Organisations", "name": "Organisations" },
             { "id": "Users", "name": "Users" }
         ],
