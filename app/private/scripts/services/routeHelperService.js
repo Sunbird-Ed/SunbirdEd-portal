@@ -14,12 +14,12 @@ angular.module('playerApp')
                     var searchKey = {
                         Home: 'All',
                         Courses: 'Courses',
-                        Resources: 'Resources',
+                        Resources: 'Library',
                         CourseNote: 'Courses',
-                        ContentNote: 'Resources',
+                        ContentNote: 'Library',
                         CourseContentNote: 'Courses',
                         Toc: 'Courses',
-                        Player: 'Resources',
+                        Player: 'Library',
                         Search: $stateParams ? $stateParams.type : 'All',
                         TocPlayer: 'Courses',
                         PreviewCollection: 'Courses',
@@ -60,7 +60,7 @@ angular.module('playerApp')
                             name: 'Home',
                             link: 'home'
                         }, {
-                            name: 'Resources',
+                            name: 'Library',
                             link: 'resources'
                         }];
 
@@ -83,7 +83,7 @@ angular.module('playerApp')
                     case 'ContentNote':
 
                         $rootScope.breadCrumbsData = [{
-                            name: 'Resources',
+                            name: 'Library',
                             link: 'resources'
                         }, {
                             name: $stateParams.contentName,
@@ -143,7 +143,7 @@ angular.module('playerApp')
                             name: 'Home',
                             link: 'home'
                         }, {
-                            name: 'Resources',
+                            name: 'Library',
                             link: 'resources'
                         }, {
                             name: $stateParams.contentName,
@@ -197,7 +197,7 @@ angular.module('playerApp')
                             name: 'Profile',
                             link: 'profile'
                         }, {
-                            name: 'Workspace',
+                            name: $rootScope.labels.WORKSPACE.myWorkSpaceText,
                             link: 'workspace/content/create'
                         }];
 
@@ -211,7 +211,7 @@ angular.module('playerApp')
                             name: 'Profile',
                             link: 'profile'
                         }, {
-                            name: 'Workspace',
+                            name: $rootScope.labels.WORKSPACE.myWorkSpaceText,
                             link: 'workspace/content/create'
                         }, {
                             name: 'Edit Content',
@@ -242,7 +242,7 @@ angular.module('playerApp')
                             name: 'Profile',
                             link: 'profile'
                         }, {
-                            name: 'Organisation Admin Dashboard',
+                            name: 'Organization Admin Dashboard',
                             link: ''
                         }];
 

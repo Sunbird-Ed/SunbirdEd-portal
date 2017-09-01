@@ -24,6 +24,18 @@ angular.module('playerApp')
       publishedContent.pageLimit = 9;
       publishedContent.pager = {};
 
+      function showErrorMessage(isClose, message, messageType, messageText) {
+        var error = {};
+        error.showError = true;
+        error.isClose = isClose;
+        error.message = message;
+        error.messageType = messageType;
+        if (messageText) {
+          error.messageText = messageText;
+        }
+        return error;
+      }
+
       publishedContent.getPublishedContent = function(pageNumber) {
         pageNumber = pageNumber || 1;
         publishedContent.loader = toasterService.loader('', publishedContent.message
@@ -32,7 +44,9 @@ angular.module('playerApp')
         var request = {
           filters: {
             status: publishedContent.status,
-            createdBy: publishedContent.userId
+            createdBy: publishedContent.userId,
+            objectType: 'Content',
+            contentType: config.contributeContentType
           },
           sort_by: {
             lastUpdatedOn: publishedContent.sortBy
@@ -139,6 +153,11 @@ angular.module('playerApp')
             publishedContent.pager = PaginationService
               .GetPager(publishedContent.totalCount - requestData.length,
                 publishedContent.pageNumber, publishedContent.pageLimit);
+            if (publishedContent.publishedContentData.length === 0) {
+              publishedContent.error = showErrorMessage(true,
+                $rootScope.errorMessages.WORKSPACE.PUBLISHED.NO_CONTENT,
+                $rootScope.errorMessages.COMMON.NO_RESULTS);
+            }
           } else {
             publishedContent.loader.showLoader = false;
             toasterService.error(publishedContent.message.RETIRE_CONTENT.NOT_DELETE);

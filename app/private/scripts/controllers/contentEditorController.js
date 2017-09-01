@@ -102,7 +102,7 @@ angular.module('playerApp')
 
             contentService.getContentData = function () {
                 var req = { contentId: contentEditor.contentId };
-                var qs = { fields: 'createdBy,status,mimeType' };
+                var qs = { fields: 'createdBy,status,mimeType', mode: 'edit' };
 
                 contentService.getById(req, qs).then(function (response) {
                     if (response && response.responseCode === 'OK') {
