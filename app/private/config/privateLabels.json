@@ -264,6 +264,9 @@
                 "BLOCKED": "Blocked",
                 "RETIRED": "Retired"
             },
+            "BUTTONS":{    
+             "DELETE":"DELETE"
+            },
             "FILTERS":"Filters",
             "FILTER_BY":"Filter by",
             "SORT":"Sort",
