@@ -7,7 +7,7 @@
           <span class="dashBoardSectionHeading" ng-show="dashboardData.orgIds.length === 1"><i class="bar chart icon"></i> &nbsp;  {{dashboardData.orgName}}</span>
           <div class="ui dropdown" id="dashboardMenu" ng-show="dashboardData.orgIds.length > 1">
             <span class="dashBoardSectionHeading padding-right-10"><i class="bar chart icon"></i></span>
-            <div class="text dashBoardSectionHeading">Select Organisation</div>
+            <div class="text dashBoardSectionHeading">Select Organization</div>
             <span class="dashBoardSectionHeading"><i class="dropdown icon"></i></span>
             <div class="menu">
               <div class="item" data-dataset="consumption" ng-repeat="item in dashboardData.orgDetails" ng-init="dashboardData.initDropdwon()" ng-click="dashboardData.onAfterOrgChange(item.organisationId)">{{item.orgName}}</div>
@@ -42,9 +42,9 @@
         </div>
         <div class="ui warning message tweleve wide column" ng-show="dashboardData.showOrgWarningDiv">
           <div class="header">
-            No organisation selected!
+            No organization selected!
           </div>
-          Please select a organisation from the above list
+          Please select a organization from the above list
         </div>
         <div class="ui grid" ng-show="dashboardData.showDataDiv">
           <div class="four wide column" ng-repeat="item in dashboardData.numericStatArray">
