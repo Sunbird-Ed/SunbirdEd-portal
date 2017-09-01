@@ -53,7 +53,7 @@
                 "uploadContent": "Upload Content",
                 "upload": "Upload",
                 "lessonPlanDescription": "Frame lesson plans with structured sections for an efficient learning experience.",
-                "lessonPlan": "Lesson plan unit"
+                "lessonPlan": "Lesson plan"
             },
             "createLesson": {
                 "createLessonText": "Create Lesson",
@@ -295,34 +295,34 @@
                 "HELP_MESSAGE": "Please save the Process ID for your reference .You can track progress with process ID"
             },
 
-            "BUTTONS":{
-                 "DOWNLOAD_SAMPLE":"DOWNLOAD SAMPLE CSV",
-                "UPLOAD_ORG":"UPLOAD ORGANIZATIONS CSV",
-                "UPLOAD_USERS":"UPLOAD USERS CSV",
-                "STATUS":"CHECK STATUS"
-                            }
+            "BUTTONS": {
+                "DOWNLOAD_SAMPLE": "DOWNLOAD SAMPLE CSV",
+                "UPLOAD_ORG": "UPLOAD ORGANIZATIONS CSV",
+                "UPLOAD_USERS": "UPLOAD USERS CSV",
+                "STATUS": "CHECK STATUS"
+            }
         },
-            "ADMIN":{
-              "BUTTONS":{
-                  "YES":"YES",
-                  "NO":"NO",
-                  "UPDATE":"UPDATE"
-             },
-                "BLOCK":{
-                    "HEADER":"Block User",
-                    "CONTENT":" Are you sure to Block  "
-                    
-                },
-            "UPDATE_ROLE":{
-                "HEADER":"Select Role",
-                "ORG":"Org"
+        "ADMIN": {
+            "BUTTONS": {
+                "YES": "YES",
+                "NO": "NO",
+                "UPDATE": "UPDATE"
+            },
+            "BLOCK": {
+                "HEADER": "Block User",
+                "CONTENT": " Are you sure to Block  "
 
             },
-        "BADGE":{
-            "HEADER":"Assign Badge",
-            "CONTENT":"Do you want to assign  "
+            "UPDATE_ROLE": {
+                "HEADER": "Select Role",
+                "ORG": "Org"
+
+            },
+            "BADGE": {
+                "HEADER": "Assign Badge",
+                "CONTENT": "Do you want to assign  "
+            }
         }
-    }
-         
+
     }
 }
