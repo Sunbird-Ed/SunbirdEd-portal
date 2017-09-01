@@ -84,9 +84,9 @@
                 "DELETE_USER": "user/v1/block",
                 "UPDATE_USER_ORG_ROLES": "org/v1/role/assign"
             },
-            "BADGE":{
-                "GET":"org/v1/badges/list",
-                "ASSIGN":"user/v1/badges/add"
+            "BADGE": {
+                "GET": "org/v1/badges/list",
+                "ASSIGN": "user/v1/badges/add"
 
             }
         },
@@ -96,22 +96,22 @@
                     "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Marathi", "Punjabi", "Tamil", "Telugu"
                 ],
                 "contentTypes": [
-                    "Collection", "Story", "TextBook", "Worksheet","Resource"
+                    "Collection", "Story", "TextBook", "Worksheet", "Resource"
                 ],
                 "subjects": [
                     "Assamese",
                     "Bengali",
-                    "English", 
+                    "English",
                     "Gujarati",
                     "Hindi",
-                    "Kannada", 
+                    "Kannada",
                     "Malayalam",
                     "Marathi",
                     "Nepali",
-                    "Oriya", 
-                    "Punjabi", 
+                    "Oriya",
+                    "Punjabi",
                     "Tamil",
-                    "Telugu", 
+                    "Telugu",
                     "Urdu",
                     "Biology",
                     "Chemistry",
@@ -125,9 +125,9 @@
                     "Sanskrit"
                 ],
                 "boards": [
-                    "CBSE", 
-                    "ICSE", 
-                    "MSCERT", 
+                    "CBSE",
+                    "ICSE",
+                    "MSCERT",
                     "NCERT",
                     "UP Board",
                     "AP Board",
@@ -360,17 +360,17 @@
                 "subjects": [
                     "Assamese",
                     "Bengali",
-                    "English", 
+                    "English",
                     "Gujarati",
                     "Hindi",
-                    "Kannada", 
+                    "Kannada",
                     "Malayalam",
                     "Marathi",
                     "Nepali",
-                    "Oriya", 
-                    "Punjabi", 
+                    "Oriya",
+                    "Punjabi",
                     "Tamil",
-                    "Telugu", 
+                    "Telugu",
                     "Urdu",
                     "Biology",
                     "Chemistry",
@@ -409,9 +409,9 @@
                     "Assamese", "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Malayalam", "Marathi", "Nepali", "Oriya", "Other", "Punjabi", "Tamil", "Telugu", "Urdu"
                 ],
                 "boards": [
-                    "CBSE", 
-                    "ICSE", 
-                    "MSCERT", 
+                    "CBSE",
+                    "ICSE",
+                    "MSCERT",
                     "NCERT",
                     "UP Board",
                     "AP Board",
@@ -589,7 +589,7 @@
             { "id": "Organisations", "name": "Organisations" },
             { "id": "Users", "name": "Users" }
         ],
-        "contributeContentType": ["Collection", "Story", "Worksheet", "TextBook", "Course", "LessonPlan"],
+        "contributeContentType": ["Collection", "Story", "Worksheet", "TextBook", "Course", "LessonPlan", "Resource"],
         "MIME_TYPE": {
             "pdf": "application/pdf",
             "mp4": "video/mp4",
