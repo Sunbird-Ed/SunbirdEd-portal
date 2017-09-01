@@ -2,7 +2,7 @@
     <div class="header">
         <div class="ui grid">
             <div class="eleven wide column">
-                <span class="ui header">Select Role</span>
+                <span class="ui header">{{$root.labels.ADMIN.UPDATE_ROLE.HEADER}}</span>
             </div>
             <div class="one wide column actions">
                 <h5 class="ui basic icon circular button deny">
@@ -16,7 +16,7 @@
         <div class="ui selection dropdown margin-left-10" id="userOrgs">
             <!-- <input type="hidden" name="gender"tabindex="0">  -->
             <i class="dropdown icon"></i>
-            <div class="default text">Org</div>
+            <div class="default text">{{$root.labels.ADMIN.UPDATE_ROLE.ORG}} </div>
             <div class="menu">
                 <div class="item" ng-repeat="org in admin.userOrganisations" ng-click="admin.selectedIrg(org.organisationId);admin.selectedOrgUserRoles=org.roles;admin.selectedOrgUserId=org.organisationId" value="{{org.organisationId}}">{{org.orgName}}</div>
             </div>
@@ -36,6 +36,8 @@
         </div>
     </div>
     <div class="actions">
-        <button ng-disable="!admin.selectedOrgUserRoles" class="ui primary button" type="submit" ng-click="admin.updateRoles(admin.identifier,admin.selectedOrgUserId,admin.selectedOrgUserRoles)">Update</button>
+        <button ng-disable="!admin.selectedOrgUserRoles" class="ui primary button" type="submit"
+         ng-click="admin.updateRoles(admin.identifier,admin.selectedOrgUserId,admin.selectedOrgUserRoles)">
+        {{$root.labels.ADMIN.BUTTONS.UPDATE}}</button>
     </div>
 </div>
