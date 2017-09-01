@@ -53,10 +53,6 @@ angular.module('playerApp')
                   if (key === 'org.creation.content[@status=review].count') {
                     series.push(numericData.value + ' IN REVIEW');
                   }
-
-                  if (key === 'org.creation.content.count') {
-                    series.push(numericData.value + ' CREATED');
-                  }
                 });
 
                 angular.forEach(apiResponse.result.series, function(bucketData, key) {
@@ -71,7 +67,13 @@ angular.module('playerApp')
                       labels.push(bucketValue.key_name);
                     })
                     data.push(dataArray);
-                    var options = dashboardService.getChartOptions(bucketData.name);
+                    
+                    if (dashboardData.timePeriod == '5w') {
+                      var name = 'Content created per week';
+                    } else {
+                      var name = 'Content created per day';
+                    }
+                    var options = dashboardService.getChartOptions(name);
                     var colors = dashboardService.getChartColors(dashboardData.datasetPreviousValue);
 
                     var found = false;
