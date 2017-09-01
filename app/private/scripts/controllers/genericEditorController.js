@@ -36,7 +36,8 @@ angular.module('playerApp')
               window.context = {
                   user: {
                       id: $rootScope.userId,
-                      name: $rootScope.firstName + ' ' + $rootScope.lastName
+                      name: $rootScope.firstName + ' ' + $rootScope.lastName,
+                      orgIds: $rootScope.organisationIds
                   },
                   sid: $rootScope.sessionId,
                   contentId: genericEditor.contentId,
