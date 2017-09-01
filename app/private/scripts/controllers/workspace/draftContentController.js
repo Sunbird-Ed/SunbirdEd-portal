@@ -95,7 +95,7 @@ angular.module('playerApp')
             state: 'WorkSpace.DraftContent'
           });
         } else {
-          $state.go('EditContent', { contentId: item.identifier });
+          $state.go('ContentEditor', { contentId: item.identifier });
         }
       };
 

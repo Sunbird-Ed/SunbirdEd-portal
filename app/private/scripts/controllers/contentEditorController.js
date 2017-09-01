@@ -40,7 +40,7 @@ angular.module('playerApp')
                         org.sunbird.portal.ekstep_env + '.s3-ap-south-1.amazonaws.com/'],
                     plugins: [
                         {
-                            id: 'org.ekstep.sunbirdheader',
+                            id: 'org.ekstep.sunbirdcommonheader',
                             ver: '1.0',
                             type: 'plugin'
                         }
@@ -61,9 +61,11 @@ angular.module('playerApp')
                     overlay: false,
                     overlayColor: '',
                     onClosed: function () {
-                        $state.go('EditContent', {
-                            contentId: contentEditor.contentId
-                        });
+                        if ($stateParams.state) {
+                            $state.go($stateParams.state);
+                        } else {
+                            $state.go('WorkSpace.DraftContent');
+                        }
                     }
                 });
                 $timeout(function () {
@@ -72,7 +74,7 @@ angular.module('playerApp')
             };
 
             var validateModal = {
-                state: ['WorkSpace.UpForReviewContent', 'WorkSpace.ReviewContent'],
+                state: ['WorkSpace.UpForReviewContent', 'WorkSpace.ReviewContent', 'WorkSpace.PublishedContent'],
                 status: ['Review', 'Draft', 'Live'],
                 mimeType: config.CreateLessonMimeType
             };
@@ -122,24 +124,23 @@ angular.module('playerApp')
             };
 
             contentEditor.init = function () {
-                org.sunbird.portal.eventManager.addEventListener('sunbird:portal:editor:editmeta',
-                function () {
-                    var params = { contentId: contentEditor.contentId };
-                    $state.go('EditContent', params);
-                });
 
                 org.sunbird.portal.eventManager.addEventListener('sunbird:portal:editor:close',
                 function () {
-                    $state.go('WorkSpace.DraftContent');
+                    if ($stateParams.state) {
+                        $state.go($stateParams.state);
+                    } else {
+                        $state.go('WorkSpace.DraftContent');
+                    }
                 });
 
                 org.sunbird.portal.eventManager.addEventListener('sunbird:portal:content:review',
                 function (event, data) { //eslint-disable-line
-                    var params = {
-                        contentId: contentEditor.contentId,
-                        backState: $state.current.name
-                    };
-                    $state.go('EditContent', params);
+                    if ($stateParams.state) {
+                        $state.go($stateParams.state);
+                    } else {
+                        $state.go('WorkSpace.DraftContent');
+                    }
                 });
 
                 window.addEventListener('editor:metadata:edit', function (event, data) {
