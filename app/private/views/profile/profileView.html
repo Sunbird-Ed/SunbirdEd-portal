@@ -30,7 +30,27 @@
                     <div class="content ">
                         <div class="WorkSpaceTextContent ">
                             <i class='my-icon database icon '></i>
-                            <span class="my-text ">View your workspace</span>
+                            <span class="my-text ">{{$root.labels.WORKSPACE.common.viewYourWorkspace}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="twelve wide column" ng-if="profileCtrl.contentList.length > 0">
+                <div class="ui raised segment">
+                    <div class="header announcementCard-header ">
+                        <span class="header cardsHeading">{{$root.labels.PROFILE.BASIC_PROFILE.contributions}}</span>
+                        <span class="addeditprofile">{{profileCtrl.contentList.length}} {{$root.labels.PROFILE.BASIC_PROFILE.contents}}</span>
+                    </div>
+                    <div class="profileitems contributionsListScroll ui relaxed divided items padding-right-20" id="custom-scroll">
+                        <div class="item" ng-repeat="item in profileCtrl.contentList track by $index" ng-click="profileCtrl.openContentPlayer(item)">
+                            <img class="ui avatar image " src="{{profileCtrl.getContentLogo(item)}}">
+                            <div class="content ">
+                                <a class=" header ">{{item.name}}</a>
+                                <div class="metadata ">
+                                    <span ng-if="item.me_averageRating" apply-script class="courseHeader-rating ui star rating" data-rating="{{item.me_averageRating |number:0}}" data-max-rating="5"></span>
+                                    <span ng-if="!item.me_averageRating" class="date">{{item.createdOn | dateFilterWithMDY}}</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -87,26 +107,6 @@
                                 <a class="header ">Maharashtra Chemistry Teachers Only</a>
                                 <div class="meta ">
                                     <span class="cinema ">(250 Members)</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="twelve wide column" ng-if="profileCtrl.contentList.length > 0">
-                <div class="ui raised segment">
-                    <div class="header announcementCard-header ">
-                        <span class="header cardsHeading">{{$root.labels.PROFILE.BASIC_PROFILE.contributions}}</span>
-                        <span class="addeditprofile">{{profileCtrl.contentList.length}} {{$root.labels.PROFILE.BASIC_PROFILE.contents}}</span>
-                    </div>
-                    <div class="profileitems contributionsListScroll ui relaxed divided items padding-right-20" id="custom-scroll">
-                        <div class="item" ng-repeat="item in profileCtrl.contentList track by $index" ng-click="profileCtrl.openContentPlayer(item)">
-                            <img class="ui avatar image " src="{{profileCtrl.getContentLogo(item)}}">
-                            <div class="content ">
-                                <a class=" header ">{{item.name}}</a>
-                                <div class="metadata ">
-                                    <span ng-if="item.me_averageRating" apply-script class="courseHeader-rating ui star rating" data-rating="{{item.me_averageRating |number:0}}" data-max-rating="5"></span>
-                                    <span ng-if="!item.me_averageRating" class="date">{{item.createdOn | dateFilterWithMDY}}</span>
                                 </div>
                             </div>
                         </div>
