@@ -2,7 +2,7 @@
     <div class="header">
         <div class="ui grid">
             <div class="eleven wide column">
-                <span class="ui header">Assign Badge</span>
+                <span class="ui header">{{$root.labels.ADMIN.BADGE.HEADER}}</span>
             </div>
             <div class="one wide column actions">
                 <h5 class="ui basic icon circular button deny">
@@ -12,13 +12,13 @@
         </div>
     </div>
     <div class="content">
-        <p>Do you want to assign {{admin.badges[0].name}}?</p>
+        <p>{{$root.labels.ADMIN.BADGE.CONTENT}} {{admin.badges[0].name}}?</p>
      </div>
     <div class="actions">
         <div class="ui primary approve button"  ng-disabled="admin.disableAsignButton" type="submit" 
                 ng-click="admin.assignBadge(admin.badges[0],admin.userIdentifier);admin.disableAsignButton=true;">
-              YES
+             {{$root.labels.ADMIN.BUTTONS.YES}}
             </div>
-   <div class="ui negative cancel button">No</div>
+   <div class="ui negative cancel button">{{$root.labels.ADMIN.BUTTONS.NO}}</div>
             </div>
 </div>

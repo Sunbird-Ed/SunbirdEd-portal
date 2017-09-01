@@ -16,7 +16,7 @@
     <div class="two fields">
         <div class="required field">
             <label>{{$root.labels.PROFILE.BASIC_PROFILE.phone}}</label>
-            <input type="text" name="phone" ng-model="profileCtrl.user.phone">
+            <input type="text" name="phone" placeholder="{{$root.labels.PROFILE.BASIC_PROFILE.phone_Prompt}}"ng-model="profileCtrl.user.phone">
         </div>
         <div class=" required  field"  ng-class="{'disabled':profileCtrl.user.email.length?true:false }" >
             <label>{{$root.labels.PROFILE.BASIC_PROFILE.email}}</label>
@@ -43,11 +43,7 @@
         </div>
 
     </div>
-<div class="two fields">
-    <div class="field">
-        <label>{{$root.labels.PROFILE.BASIC_PROFILE.aadhar}}</label>
-        <input type="text" name="aadhar" ng-model="profileCtrl.user.aadhaarNo">
-    </div>
+<div class="one field">
      <div class="field">
         <label>{{$root.labels.PROFILE.BASIC_PROFILE.currentLocation}}</label>
         <input type="text" name="location" ng-model="profileCtrl.user.location">

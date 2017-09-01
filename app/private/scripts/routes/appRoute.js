@@ -331,7 +331,7 @@ angular.module('playerApp')
               routeHelperService.loadRouteConfig('Search', $stateParams);
               if ($stateParams.type === 'Courses') {
                   $rootScope.courseActive = 'active';
-              } else if ($stateParams.type === 'Resources') {
+              } else if ($stateParams.type === 'Library') {
                   $rootScope.resourcesActive = 'active';
               } else if ($stateParams.type === 'Users') {
                   $rootScope.profileActive = 'active';
@@ -1035,7 +1035,7 @@ angular.module('playerApp')
           case 'WorkSpace.FlaggedContent':
               routeHelperService.checkStateAccess(['FLAG_REVIEWER'], false, event);
               break;
-		  case 'orgDashboard':
+      case 'orgDashboard':
               routeHelperService.checkStateAccess(['ORG_ADMIN', 'SYSTEM_ADMINISTRATION'], false, event);
               break;
           case 'WorkSpace.DraftContent':
@@ -1054,7 +1054,7 @@ angular.module('playerApp')
               routeHelperService.checkStateAccess(['COURSE_MENTOR'], false, event);
               break;
           case 'MyActivity':
-              routeHelperService.checkStateAccess(['COURSE_CREATOR'], false, event);
+              routeHelperService.checkStateAccess(['CONTENT_CREATOR'], false, event);
               break;
           default:
               break;
