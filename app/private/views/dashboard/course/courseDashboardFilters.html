@@ -3,7 +3,7 @@
     <!--<div class="five wide column left floated">
       <p class="dashboard-label ng-binding"><i class="bar chart icon"></i>&nbsp; {{courseDashboard.courseName ? courseDashboard.courseName : 'Select Course To See'}} Dashboard</p>
     </div>-->
-    <div class="five wide column left floated" ng-if="courseDashboard.dataset == 'consumption'"
+    <div class="five wide column float-ContentLeft" ng-if="courseDashboard.dataset == 'consumption'"
       ng-show="courseDashboard.myCoursesList.length == '1' ">
       <span class="dashBoardSectionHeading"><i class="large bar chart icon"></i></span>
       <span ng-if="courseDashboard.showLabelFlag" class="dashBoardSectionHeading">{{courseDashboard.courseName}}</span>
@@ -12,7 +12,7 @@
     <div class="one wide column" ng-if="courseDashboard.dataset == 'consumption'" ng-hide="courseDashboard.myCoursesList.length <= '1'">
       <span class="dashBoardSectionHeading"><i class="large bar chart icon"></i></span>
     </div>
-    <div class="four wide column left floated" ng-if="courseDashboard.dataset == 'consumption'" ng-hide="courseDashboard.myCoursesList.length <= '1'">
+    <div class="four wide column float-ContentLeft" ng-if="courseDashboard.dataset == 'consumption'" ng-hide="courseDashboard.myCoursesList.length <= '1'">
       <div class="ui fluid search selection dropdown" id="myCoursesListFilter">
         <input type="hidden" name="course">
         <i class="dropdown icon"></i>
@@ -24,7 +24,7 @@
       </div>
     </div>
 
-    <div class="five wide column left floated" ng-if="courseDashboard.dataset == 'progress'"
+    <div class="five wide column float-ContentLeft" ng-if="courseDashboard.dataset == 'progress'"
       ng-show="courseDashboard.myBatches.length == '1'">
       <span class="dashBoardSectionHeading top-17"><i class="large bar chart icon"></i></span>
       <span ng-if="courseDashboard.showLabelFlag" class="dashBoardSectionHeading">{{courseDashboard.courseName}}</span>
@@ -33,7 +33,7 @@
     <div class="one wide column" ng-if="courseDashboard.dataset == 'progress'" ng-hide="courseDashboard.myBatches.length <= '1'">
       <span class="dashBoardSectionHeading"><i class="large bar chart icon"></i></span>
     </div>
-    <div class="four wide column left floated" ng-if="courseDashboard.dataset == 'progress'" ng-hide="courseDashboard.myBatches.length <= '1'">
+    <div class="four wide column float-ContentLeft" ng-if="courseDashboard.dataset == 'progress'" ng-hide="courseDashboard.myBatches.length <= '1'">
       <div class="ui fluid search selection dropdown" id="myBatchesListFilter">
         <input type="hidden" name="course">
         <i class="dropdown icon"></i>
