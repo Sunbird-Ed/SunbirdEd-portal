@@ -79,9 +79,18 @@ angular.module('playerApp')
             type: item.contentType,
             state: 'WorkSpace.AllUploadedContent'
           });
+        } else if (item.mimeType === 'application/vnd.ekstep.ecml-archive') {
+          var params = {
+            contentId: item.identifier,
+            state: 'WorkSpace.PublishedContent'
+          };
+          $state.go('ContentEditor', params);
         } else {
-          var params = { contentId: item.identifier };
-          $state.go('UploadContent', params);
+          var params = { 
+            contentId: item.identifier ,
+            state: 'WorkSpace.AllUploadedContent'
+          };
+          $state.go('GenericEditor', params);
         }
       };
 
