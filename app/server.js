@@ -88,6 +88,8 @@ app.set('view engine', 'ejs');
 
 app.use(express.static(path.join(__dirname, '/')));
 app.use(express.static(path.join(__dirname, 'tenant', tenantId)));
+//this line should be above middleware please don't change
+app.get('/public/service/orgs', publicServicehelper.getOrgs);
 app.use('/public/*', express.static(path.join(__dirname, 'public')))
 if (default_tenant) {
   app.use(express.static(path.join(__dirname, 'tenant', default_tenant)));
@@ -102,7 +104,7 @@ app.use('/private/index', function(req, res, next) {
   next();
 });
 
-app.get('/public/service/orgs', publicServicehelper.getOrgs);
+
 
 app.all('/content-editor/telemetry', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: reqDataLimitOfContentEditor }), keycloak.protect(), telemetryHelper.logSessionEvents);
