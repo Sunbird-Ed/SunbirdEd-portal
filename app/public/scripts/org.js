@@ -7,7 +7,7 @@ var openModal = function () {
         document.getElementsByTagName('body')[0].appendChild(modal);
         var styleNode = document.createElement('style');
         styleNode.type = "text/css";
-        var cssText = ".modal{display:none;position:fixed;z-index:1;padding-top:100px;left:0;top:0;width:100%;height:100%;background-color:#000;background-color:rgba(0,0,0,.4)}.modal-content{position:relative;background-color:#fefefe;margin:auto;padding:0;border:1px solid #888;width:80%;box-shadow:0 4px 8px 0 rgba(0,0,0,.2),0 6px 20px 0 rgba(0,0,0,.19);-webkit-animation-name:animatetop;-webkit-animation-duration:.4s;animation-name:animatetop;animation-duration:.4sborder-radius:6px;}@-webkit-keyframes animatetop{from{top:-300px;opacity:0}to{top:0;opacity:1}}@keyframes animatetop{from{top:-300px;opacity:0}to{top:0;opacity:1}}.close{color:#333;float:right;font-size:28px;font-weight:700}.close:focus,.close:hover{color:#000;text-decoration:none;cursor:pointer}.modal-footer,.modal-header{padding:2px 16px;background-color:#fff;color:#222;border-radius:7px;;}.modal-body{padding:25px 16px 25px;height:400px;overflow-y:auto;}table{font-family:arial,sans-serif;border-collapse:collapse;width:100%;}td,th{border:1px solid #dddddd;text-align:left;padding:8px;}";
+        var cssText = ".modal{display:none;position:fixed;z-index:1;padding-top:100px;left:0;top:0;width:100%;height:100%;background-color:#000;background-color:rgba(0,0,0,.4)}.modal-content{position:relative;background-color:#fefefe;margin:auto;padding:0;border:1px solid #888;width:80%;box-shadow:0 4px 8px 0 rgba(0,0,0,.2),0 6px 20px 0 rgba(0,0,0,.19);-webkit-animation-name:animatetop;-webkit-animation-duration:.4s;animation-name:animatetop;animation-duration:.4sborder-radius: 6px}@-webkit-keyframes animatetop{from{top:-300px;opacity:0}to{top:0;opacity:1}}@keyframes animatetop{from{top:-300px;opacity:0}to{top:0;opacity:1}}.close{color:#333;float:right;font-size:28px;font-weight:700}.close:focus,.close:hover{color:#000;text-decoration:none;cursor:pointer}.modal-footer,.modal-header{padding:2px 16px;background-color:#fff;color:#222;border-radius:7px}.modal-body{padding:16px 16px;height:400px;overflow-y:auto}.organizationListDataHome{padding:0px 11px 10px 10px!important;height:350px;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;-ms-flex-wrap:wrap;flex-wrap:wrap;-webkit-box-align:start;-ms-flex-align:start;align-items:flex-start;-ms-flex-line-pack:start;align-content:space-between;white-space:nowrap;overflow-x:auto;overflow-y:hidden}.organizationListViewHome{margin:0 10px 20px 0};";
         // browser detection (based on prototype.js)
         if (!!(window.attachEvent && !window.opera)) {
             styleNode.styleSheet.cssText = cssText;
@@ -17,7 +17,7 @@ var openModal = function () {
         }
         document.getElementsByTagName('head')[0].appendChild(styleNode);
         modal.innerHTML = '<div class="modal-content"> <div class="modal-header"><span class="close" onclick="closeModal()">×</span><h2>Organizations List</h2></div>' +
-                '<div class="modal-body"><p id="org-error"></p><div id="org-loader" align="center"></div><div id="orgContainer"></div></div><div class="modal-footer"></div></div>';
+                '<div class="modal-body"><p id="org-error"></p><div id="org-loader" align="center"></div><ul id="orgContainer" class="organizationListDataHome"></ul></div><div class="modal-footer"></div></div>';
         modal.setAttribute("class", "modal");
 
     }
@@ -45,13 +45,13 @@ var loadData = function () {
     error.textContent = 'Unable to Load Organizations';
     error.style.color = 'red';
     emptyTable(table);
-    table.style.display = 'none';
+    table.style.visibility = 'hidden';
     loader.style.display = 'block';
     var client = new HttpClient();
     client.get('/public/service/orgs', function (res) {
         res = JSON.parse(res);
         if (res && res.responseCode == "OK") {
-            table.style.display = 'block';
+            table.style.visibility = 'visible';
             var data = res.result.response.content;
             if (data.length > 0)
             {
@@ -61,19 +61,19 @@ var loadData = function () {
                     
 
                     if (item.orgName != '') {
-                        html += '<p><a href="/'+item.slug+'">'+item.orgName+'</a></p>';
+                        html += '<li class="organizationListViewHome"><a href="/'+item.slug+'">'+item.orgName+'</a></li>';
                     }
                 });
                 table.innerHTML = html;
-                loader.style.display = 'none';
-                table.style.display = 'block';
+                loader.style.visibility = 'hidden';
+                table.style.visibility = 'visible';
             } else {
                 loader.innerHTML = '<h5>No Organisations found</h5>';
                 table.style.display = 'none';
             }
 
         } else {
-            table.style.display = 'none';
+            table.style.visibility = 'hidden';
             loader.style.display = 'none';
             error.style.display = 'block';
         }
