@@ -201,7 +201,6 @@ angular.module('playerApp') // add those all values
                       phone: profile.user.phone,
                       gender: profile.user.gender,
                       dob: dob instanceof Date ? $filter('date')(dob, 'yyyy-MM-dd') : null,
-                      aadhaarNo: profile.user.aadhaarNo,
                       language: [profile.user.language],
                       subject: profile.user.subject,
                       grade: profile.user.grade,

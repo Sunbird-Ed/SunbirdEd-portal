@@ -30,7 +30,12 @@ angular.module('playerApp')
                 channel: 'channel',
                 externalId: 'externalId',
                 provider: 'provider',
-                description: 'description'
+                description: 'description',
+                homeUrl: 'homeUrl',
+                orgCode: 'orgCode',
+                orgType: 'orgType',
+                preferredLanguage: 'preferredLanguage',
+                contactDetail: 'contactDetail'
             }];
             admin.sampleUserCSV = [{
                 firstName: 'firstName',
