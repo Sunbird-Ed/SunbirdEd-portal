@@ -2,7 +2,7 @@
     <div class="header">
         <div class="ui grid">
             <div class="eleven wide column">
-                <span class="ui header">Upload Organizations</span>
+                <span class="ui header">{{$root.labels.BULK_UPLOAD.HEADERS.UPLOAD_ORG}}</span>
             </div>
             <div class="one wide column actions">
                 <h5 class="ui basic icon circular button deny">
@@ -17,12 +17,12 @@
         </div>
         <!-- file name -->
         <h5 ng-if="admin.fileName">
-            <i class="file outline icon"></i>Uploaded File: {{admin.fileName}}
+            <i class="file outline icon"></i>{{$root.labels.BULK_UPLOAD.CONTENT.FILE}}: {{admin.fileName}}
         </h5>
         <!-- show progress -->
         <div ng-if="admin.bulkOrgProcessId">
-            <p class="padding-top-bottom-0 ">Process ID: {{admin.bulkOrgProcessId}}</p>
-            <p>Please save the Process ID for your reference .You can track progress with process ID</p>
+            <p class="padding-top-bottom-0 ">{{$root.labels.BULK_UPLOAD.CONTENT.PROCESS_ID}}: {{admin.bulkOrgProcessId}}</p>
+            <p>{{$root.labels.BULK_UPLOAD.CONTENT.HELP_MESSAGE}}</p>
         </div>
         <div class="ui info message" ng-if="!admin.bulkOrgProcessId && !admin.loader.showLoader">
             <!-- <i class="close icon"></i> -->
@@ -47,18 +47,19 @@
                                 </li>
                     </ol>
                     </li>
+                <li>{{$root.labels.INSTRUCTIONS.ORGANIZATIONS.contactDetails}}</li>
             </ol>
         </div>
     </div>
     <div class="actions">
         <div class="ui grid">
             <div class="four wide column">
-                <button class="ui  left floated button" ng-click="admin.downloadSample('organizations')">Download Sample CSV</button>
+                <button class="ui  left floated button" ng-click="admin.downloadSample('organizations')">{{$root.labels.BULK_UPLOAD.BUTTONS.DOWNLOAD_SAMPLE}}</button>
             </div>
             <div class="four wide column">
             </div>
             <div class="four wide column">
-                <button ng-disabled="admin.bulkOrgProcessId" class="ui primary right floated button" ng-click="admin.openImageBrowser('organizations');">Upload Organizations CSV</button>
+                <button ng-disabled="admin.bulkOrgProcessId" class="ui primary right floated button" ng-click="admin.openImageBrowser('organizations');">{{$root.labels.BULK_UPLOAD.BUTTONS.UPLOAD_ORG}}</button>
                 <input type="file" accept=".csv" class="content-input ui small " id="orgUploadCSV" onchange="angular.element(this).scope().validateFile(this.files,'organizations');" required="" />
             </div>
         </div>
