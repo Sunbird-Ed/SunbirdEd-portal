@@ -49,7 +49,8 @@ angular.module('playerApp')
                     filters: {
                         status: allUploadedContent.contentStatus,
                         createdBy: allUploadedContent.userId,
-                        mimeType: allUploadedContent.contentMimeType
+                        mimeType: allUploadedContent.contentMimeType,
+                        contentType: config.contributeContentType
                     },
                     sort_by: {
                         lastUpdatedOn: allUploadedContent.sortBy
