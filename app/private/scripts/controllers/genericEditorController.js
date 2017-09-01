@@ -11,7 +11,7 @@ angular.module('playerApp')
     $stateParams, toasterService, $sce, $state, $timeout, $rootScope, contentService,
     permissionsService) {
           var genericEditor = this;
-          genericEditor.contentId = _.isUndefined($stateParams.contentId) ? '' : $stateParams.contentId;
+          genericEditor.contentId = (_.isUndefined($stateParams.contentId) || _.isNull($stateParams.contentId)) ? '' : $stateParams.contentId;
           genericEditor.openGenericEditor = function () {
               $('#genericEditor').iziModal({
                   title: '',
@@ -56,6 +56,11 @@ angular.module('playerApp')
                   alertOnUnload: true,
                   headerLogo: !_.isUndefined($rootScope.orgLogo) ? $rootScope.orgLogo : '',
                   loadingImage: '',
+                  plugins: [{
+                      id: 'org.ekstep.sunbirdcommonheader',
+                      ver: '1.0',
+                      type: 'plugin'
+                  }]
               };
 
               $timeout(function () {

@@ -57,7 +57,7 @@ angular.module('playerApp')
                   headerLogo: !_.isUndefined($rootScope.orgLogo) ? $rootScope.orgLogo : '',
                   loadingImage: '',
                   plugins: [{
-                      id: 'org.ekstep.sunbirdcollectionheader',
+                      id: 'org.ekstep.sunbirdcommonheader',
                       ver: '1.0',
                       type: 'plugin'
                   }],
