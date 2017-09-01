@@ -197,7 +197,7 @@ angular.module('playerApp')
                             name: 'Profile',
                             link: 'profile'
                         }, {
-                            name: 'Workspace',
+                            name: $rootScope.labels.WORKSPACE.myWorkSpaceText,
                             link: 'workspace/content/create'
                         }];
 
@@ -211,7 +211,7 @@ angular.module('playerApp')
                             name: 'Profile',
                             link: 'profile'
                         }, {
-                            name: 'Workspace',
+                            name: $rootScope.labels.WORKSPACE.myWorkSpaceText,
                             link: 'workspace/content/create'
                         }, {
                             name: 'Edit Content',
