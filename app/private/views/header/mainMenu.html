@@ -1,16 +1,15 @@
-<a class="item"  ui-sref="Home" href="home" translate="home" translate-default="Home" ng-class="homeActive">
-      Home
+<a class="item"  ui-sref="Home" href="home"  ng-class="homeActive">
+    {{$root.labels.MAIN_MENU.HOME}}
     </a>
-<a class="item" ui-sref="Courses" href="learn" translate="courses" translate-default="Courses" ng-class="courseActive">
-      Courses
-
+<a class="item" ui-sref="Courses" href="learn" ng-class="courseActive">
+    {{$root.labels.MAIN_MENU.COURSES}}
     </a>
-<a class="item" ui-sref="Resources" href="resources" translate="resources" translate-default="Resources" ng-class="resourcesActive">
-      Resources
+<a class="item" ui-sref="Resources" href="resources" ng-class="resourcesActive">
+      {{$root.labels.MAIN_MENU.RESOURCES}}
     </a>
-<a class="item" href="#" ui-sref-active="active" ui-sref="Community" translate="community" translate-default="Community">
-      Community
+<a class="item" href="#" ui-sref-active="active" ui-sref="Community">
+      {{$root.labels.MAIN_MENU.COMMUNTIY}}
     </a>
-<a class="item" href="#" ui-sref="Profile" translate="profile" translate-default="Profile" ng-class="profileActive">
-      Profile
+<a class="item" href="#" ui-sref="Profile" ng-class="profileActive">
+      {{$root.labels.MAIN_MENU.PROFILE}}
     </a>

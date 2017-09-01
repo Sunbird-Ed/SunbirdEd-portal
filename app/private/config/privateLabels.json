@@ -1,7 +1,16 @@
 {
     "labels": {
+               "MAIN_MENU":{
+            "HOME":"Home",
+            "COURSES":"Courses",
+            "RESOURCES":"Library",
+            "COMMUNTIY":"Community",
+            "PROFILE":"Profile"
+        },        
         "Courses": {
-            "resume": "RESUME"
+            "resume": "RESUME",
+            "TODO":"To Do",
+            "COURSE_BADGE":"Course"
         },
         "Notes": {
             "title": "Title",
@@ -248,12 +257,31 @@
             "selectedmentors": "SELECTED MENTORS",
             "courseBatches": "COURSE BATCHES"
         },
-        "SEARCH": {
+      "SEARCH": {
             "STATUS": {
                 "INACTIVE": "Inactive",
                 "ACTIVE": "Active",
                 "BLOCKED": "Blocked",
                 "RETIRED": "Retired"
+            },
+            "BUTTONS":{    
+             "DELETE":"DELETE"
+            },
+            "FILTERS":"Filters",
+            "FILTER_BY":"Filter by",
+            "SORT":"Sort",
+            "APPLY":"APPLY",
+            "RESET":"RESET",
+            "SORT_BY_ALT":"Sort ascending or descending order",
+            "FILTER_ALT":"Filter",
+            "PROMPT": {
+             "SEARCH_BOX": "Search courses, library",
+             "BOARD": "Curriculum",
+             "LANGUAGE": "Medium",
+             "SUBJECT": "Subjects",
+             "GRADES": "Grades",
+             "CONTENT_TYPE":"Content Types",
+             "CONCEPT": "Concepts"   
             }
         },
         "INSTRUCTIONS": {
