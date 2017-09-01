@@ -144,15 +144,15 @@
         "PROFILE": {
             "JOB_PROFILE": {
                 "header": "Experience",
-                "jobName": "Job Name",
-                "position": "Position",
+                "jobName": "Occupation / Work Title",
+                "position": "Designation",
                 "organization": "Organization",
-                "subjects": "Subjects",
+                "subjects": "Subject(s) taught",
                 "isCurrentJob": "Is this your current job?",
                 "currentJobOptionYes": "Yes",
                 "currentJobOptionNo": "No",
-                "joiningDate": "Joining Date",
-                "endDate": "End Date"
+                "joiningDate": "From ",
+                "endDate": "To"
 
             },
             "ADDRESS": {
@@ -165,12 +165,12 @@
                 "city": "City",
                 "state": "State",
                 "country": "Country",
-                "pinCode": "Pin Code"
+                "pinCode": "Pin code"
             },
             "EDUCATION": {
                 "header": "Education",
                 "degree": "Degree",
-                "yearOfPassing": "Year Of Passing",
+                "yearOfPassing": "Year of passing",
                 "institute": "Institution Name",
                 "grade": "Grade",
                 "percentage": "Percentage",
@@ -179,21 +179,22 @@
             "BASIC_PROFILE": {
                 "header": "Additional Information",
                 "name": "Name",
-                "email": "Email",
+                "email": "Email ID",
                 "phone": "Phone",
-                "aadhar": "Aadhar Number",
+                "aadhar": "Aadhar number",
                 "gender": "Gender",
                 "male": "Male",
                 "female": "Female",
                 "transgender": "Transgender",
-                "language": "Language",
-                "dob": "Date Of Birth",
-                "subjects": "Subjects",
+                "language": "Language(s) known",
+                "dob": "Birthdate (dd/mm/yyyy)",
+                "subjects": "Subjects of expertise",
                 "summary": "Summary",
                 "contributions": "Contributions",
                 "contents": "Contents",
                 "currentLocation": "Current Location",
-                "grades": "Grades"
+                "grades": "Grades",
+                "phone_Prompt":"Enter 10 digit phone number with country code"
             },
             "BUTTON": {
                 "save": "Save",
@@ -265,9 +266,34 @@
                 "ONE": "Organization name ('orgName') is mandatory",
                 "TWO": "If the organization is a tenant (like state), then it should be marked as a root org. I.e. 'isRootOrg' should be set as true, else it should be false.",
                 "THREE": "'channel' value is required if 'isRootOrg' is true.",
-                "FOUR": "'externalId' and 'provider' are mutually necessary, i.e. either both the values should be provided or not provided together."
+                "FOUR": "'externalId' and 'provider' are mutually necessary, i.e. either both the values should be provided or not provided together.",
+            "contactDetails":"'contactDetail' should be in json format . eg:[{'address':'address','phone':'xxxxxxxx','fax':'xxxxx'}]."
             }
 
+        },
+        "BULK_UPLOAD":{
+            "HEADERS":{
+                "UPLOAD_ORG":"Upload Organizations",
+                "UPLOAD_USER":"Upload Users",
+                "STATUS":"Check Upload Status"
+            },
+            "CONTENT":{
+                "FILE":"Uploaded File",
+                "PROCESS_ID":"Process ID",
+                "PROVIDER":"Provider",
+                "EXTERNAL_ID":"External Id",
+                "ORG_ID":"OrgId",
+                "SUCCESS":"Success Results",
+                "FAILURE":"Failure Results",
+                "TRACK_MESSAGE":"You can track progress with process ID",
+                "HELP_MESSAGE":"Please save the Process ID for your reference .You can track progress with process ID"
+            },
+
+            "BUTTONS":{
+                "DOWNLOAD_SAMPLE":"Download Sample CSV",
+                "UPLOAD_ORG":"Upload Organizations CSV",
+                "UPLOAD_USERS":"Upload Users CSV"
+            }
         }
     }
 }

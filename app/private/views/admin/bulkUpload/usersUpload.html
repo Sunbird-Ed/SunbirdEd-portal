@@ -2,7 +2,7 @@
     <div class="header">
         <div class="ui grid">
             <div class="eleven wide column">
-                <span class="ui header">Upload Users</span>
+                <span class="ui header">{{$root.labels.BULK_UPLOAD.HEADERS.STATUS}}</span>
             </div>
             <div class="one wide column actions">
                 <h5 class="ui basic icon circular button deny">
@@ -19,13 +19,13 @@
             <div class="ui grid" ng-if="!admin.bulkUsersProcessId">
                 <div class="six wide column">
                     <div class="required field">
-                        <label>Provider</label>
+                        <label>{{$root.labels.BULK_UPLOAD.CONTENT.PROVIDER}}</label>
                         <input type="text" placeholder="Provider" ng-model="admin.bulkUsers.provider">
                     </div>
                 </div>
                 <div class="six wide column">
                     <div class="required field">
-                        <label>External Id</label>
+                        <label>{{$root.labels.BULK_UPLOAD.CONTENT.EXTERNAL_ID}}</label>
                         <input type="text" placeholder="External Id" ng-model="admin.bulkUsers.externalid">
                     </div>
                 </div>
@@ -37,7 +37,7 @@
                 <div class="six wide column">
                     <div class="one field">
                         <div class=" required field">
-                            <label>OrgId</label>
+                            <label>{{$root.labels.BULK_UPLOAD.CONTENT.ORG_ID}}</label>
                             <input type="text" placeholder="OrgId" ng-model="admin.bulkUsers.OrgId">
                         </div>
                     </div>
@@ -49,11 +49,11 @@
             <i class="close icon" ng-click="admin.closeBulkUploadError()"></i>
             <p>{{admin.bulkUploadErrorMessage}}</p>
         </div>
-        <h5 ng-if="admin.fileName"><i class="file outline icon"></i>Uploaded File: {{admin.fileName}}</h5>
+        <h5 ng-if="admin.fileName"><i class="file outline icon"></i>{{$root.labels.BULK_UPLOAD.CONTENT.FILE}}: {{admin.fileName}}</h5>
         <!-- show progress -->
         <div ng-if="admin.bulkUsersProcessId">
-            <h5>Process ID: {{admin.bulkUsersProcessId}}</h5>
-            <h5>Please save the Process ID for your reference.You can track progress with Process ID</h5>
+            <h5>{{$root.labels.BULK_UPLOAD.CONTENT.PROCESS_ID}}: {{admin.bulkUsersProcessId}}</h5>
+            <p>{{$root.labels.BULK_UPLOAD.CONTENT.HELP_MESSAGE}}</p>
         </div>
         <div class="ui horizontal divider margin-top-40" ng-if="!admin.loader.showLoader && !admin.bulkUsersProcessId">
 
@@ -87,12 +87,12 @@
     <div class="actions">
         <div class="ui grid">
             <div class="four wide column">
-                <button class="ui left floated button" ng-click="admin.downloadSample('users')">Download Sample CSV</button>
+                <button class="ui left floated button" ng-click="admin.downloadSample('users')">{{$root.labels.BULK_UPLOAD.BUTTONS.DOWNLOAD_SAMPLE}}</button>
             </div>
             <div class="four wide column">
             </div>
             <div class="four wide column">
-                <button ng-disabled="admin.bulkUsersProcessId || admin.loader.showLoader" class="ui primary right floated button" ng-click="admin.openImageBrowser('users');">Upload Users CSV</button>
+                <button ng-disabled="admin.bulkUsersProcessId || admin.loader.showLoader" class="ui primary right floated button" ng-click="admin.openImageBrowser('users');">{{$root.labels.BULK_UPLOAD.BUTTONS.UPLOAD_USERS}}</button>
                 <input type="file" accept=".csv" class="content-input ui small " id="uploadUsrsCSV" onchange="angular.element(this).scope().validateFile(this.files,'users');" required="" />
             </div>
         </div>
