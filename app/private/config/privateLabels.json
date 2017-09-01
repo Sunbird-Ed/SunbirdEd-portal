@@ -254,6 +254,9 @@
                 "ACTIVE": "Active",
                 "BLOCKED": "Blocked",
                 "RETIRED": "Retired"
+            },
+            "BUTTONS":{
+                 "DELETE":"DELETE"
             }
         },
         "INSTRUCTIONS": {
