@@ -24,7 +24,7 @@
                 "START": "We are fetching data",
                 "FAILED": "Fetching data failed, please try again later...",
                 "NO_CONTENT": "No results found",
-                "NO_CONTENT_TEXT":"Please search for something else."
+                "NO_CONTENT_TEXT": "Please search for something else."
             },
             "USER": {
                 "PROFILE_FAILED": "Fetching profile failed, please try again later..."
@@ -35,9 +35,9 @@
             "INFO": "info",
             "WARNING": "warning",
             "SUCCESS": "success",
-            "NO_RESULTS":"no-results",
+            "NO_RESULTS": "no-results",
             "UN_AUTHORIZED": "You are not authorized to access this resource",
-            "INVALID_IMAGE": "Please upload a valid image file. Supported formats: JPG, PNG, JPEG. Max size: 4MB.",
+            "INVALID_IMAGE": "Please upload a valid image file. Supported file types: jpeg, jpg, png. Max size: 4MB.",
             "INVALID_FILE_SIZE": "is too large, maximum file size is",
             "PDF_MESSAGE": "File accepted only pdf (Max size 25mb).",
             "MP4_MESSAGE": "File accepted only mp4 (Max size 25mb).",
@@ -60,23 +60,23 @@
             },
             "CREATE_LESSON": {
                 "START": "We are creating lesson...",
-                "FAILED": "Creating lesson failed, please try again later..."
+                "FAILED": "Creating lesson failed. Please login again to create lesson."
             },
             "CREATE_TEXTBOOK": {
-                "START": "We are creating textbook...",
-                "FAILED": "Creating textbook failed, please try again later..."
+                "START": "We are creating book...",
+                "FAILED": "Creating book failed. Please login again to create book."
             },
             "CREATE_COURSE": {
                 "START": "We are creating course...",
-                "FAILED": "Creating course failed, please try again later..."
+                "FAILED": "Creating course failed. Please login again to create course."
             },
             "CREATE_COLLECTION": {
                 "START": "We are creating collection...",
-                "FAILED": "Creating collection failed, please try again later..."
+                "FAILED": "Creating collection failed. Please login again to create collection."
             },
             "UPLOAD_CONTENT": {
                 "START": "We are uploading content...",
-                "FAILED": "Uploading content failed, please try again later..."
+                "FAILED": "Uploading content failed. Please login again to create collection."
             },
             "REVIEW": {
                 "START": "We are fetching review content...",
@@ -166,7 +166,7 @@
             },
             "CREATE_LESSON_PLAN": {
                 "START": "We are creating lesson plan...",
-                "FAILED": "Creating lesson plan failed, please try again later..."
+                "FAILED": "Creating lesson plan failed. Please login again to create lesson plan."
             }
         },
         "HOME": {
@@ -297,10 +297,10 @@
                 "SUCCESS": "Course Enrolled for this batch successfully..."
             }
         },
-        "TENANT":{
-            "GET_INFO":{
+        "TENANT": {
+            "GET_INFO": {
                 "FAILED": "Fetching tenant details failed, please try again later..."
             }
-        }  
+        }
     }
 }
