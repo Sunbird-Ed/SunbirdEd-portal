@@ -328,7 +328,30 @@
                     "Story", "Worksheet"
                 ],
                 "subjects": [
-                    "Assamese", "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Malayalam", "Marathi", "Maths", "Nepali", "Oriya", "Punjabi", "Tamil", "Telugu", "Urdu"
+                    "Assamese",
+                    "Bengali",
+                    "English", 
+                    "Gujarati",
+                    "Hindi",
+                    "Kannada", 
+                    "Malayalam",
+                    "Marathi",
+                    "Nepali",
+                    "Oriya", 
+                    "Punjabi", 
+                    "Tamil",
+                    "Telugu", 
+                    "Urdu",
+                    "Biology",
+                    "Chemistry",
+                    "Physics",
+                    "Mathematics",
+                    "Environmental Studies",
+                    "Geography",
+                    "History",
+                    "Political Science",
+                    "Economics",
+                    "Sanskrit"
                 ],
                 "grades": [
                     "Kindergarten",
@@ -356,7 +379,14 @@
                     "Assamese", "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Malayalam", "Marathi", "Nepali", "Oriya", "Other", "Punjabi", "Tamil", "Telugu", "Urdu"
                 ],
                 "boards": [
-                    "CBSE", "ICSE", "MSCERT", "NCERT"
+                    "CBSE", 
+                    "ICSE", 
+                    "MSCERT", 
+                    "NCERT",
+                    "UP Board",
+                    "AP Board",
+                    "TN Board",
+                    "NCTE"
                 ]
             }
         },
