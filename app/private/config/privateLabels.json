@@ -154,7 +154,7 @@
                 "position": "Designation",
                 "organization": "Organization",
                 "subjects": "Subject(s) taught",
-                "isCurrentJob": "Is this your current job?",
+                "isCurrentJob": "Is this your current job",
                 "currentJobOptionYes": "Yes",
                 "currentJobOptionNo": "No",
                 "joiningDate": "From ",
@@ -186,7 +186,7 @@
                 "header": "Additional Information",
                 "name": "Name",
                 "email": "Email ID",
-                "phone": "Phone",
+                "phone": "Phone number",
                 "aadhar": "Aadhar number",
                 "gender": "Gender",
                 "male": "Male",
@@ -295,11 +295,34 @@
                 "HELP_MESSAGE": "Please save the Process ID for your reference .You can track progress with process ID"
             },
 
-            "BUTTONS": {
-                "DOWNLOAD_SAMPLE": "Download Sample CSV",
-                "UPLOAD_ORG": "Upload Organizations CSV",
-                "UPLOAD_USERS": "Upload Users CSV"
-            }
+            "BUTTONS":{
+                 "DOWNLOAD_SAMPLE":"DOWNLOAD SAMPLE CSV",
+                "UPLOAD_ORG":"UPLOAD ORGANIZATIONS CSV",
+                "UPLOAD_USERS":"UPLOAD USERS CSV",
+                "STATUS":"CHECK STATUS"
+                            }
+        },
+            "ADMIN":{
+              "BUTTONS":{
+                  "YES":"YES",
+                  "NO":"NO",
+                  "UPDATE":"UPDATE"
+             },
+                "BLOCK":{
+                    "HEADER":"Block User",
+                    "CONTENT":" Are you sure to Block  "
+                    
+                },
+            "UPDATE_ROLE":{
+                "HEADER":"Select Role",
+                "ORG":"Org"
+
+            },
+        "BADGE":{
+            "HEADER":"Assign Badge",
+            "CONTENT":"Do you want to assign  "
         }
+    }
+         
     }
 }
