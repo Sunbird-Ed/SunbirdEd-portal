@@ -216,25 +216,25 @@
         "PROFILE": {
             "FORM_VALIDATION": {
                 "ADDRESS": {
-                    "address_type": "Please select address type",
-                    "addLine1": "Please enter address line 1",
-                    "city": "Please enter city",
-                    "pin_code": "Please enter a valid pin code"
+                    "address_type": "Select address type",
+                    "addLine1": "Enter Address line 1",
+                    "city": "Enter City",
+                    "pin_code": "Enter  valid pin code"
                 },
                 "BASIC_PROFILE": {
-                    "firstName": "Please enter a valid first name",
-                    "phone": "Please enter a valid mobile number",
-                    "email": "Please enter a valid email",
-                    "language": "Please select a language",
-                    "addhar": "Please enter a valid Aadhar Number"
+                    "firstName": "Enter First name",
+                    "phone": "Enter valid Mobile number",
+                    "email": "Enter valid Email ID",
+                    "language": "Select language",
+                    "addhar": "Enter valid Aadhar number"
                 },
                 "EDUCATION": {
-                    "institute": "Institution Name must have a value",
-                    "degree": "Degree must have a value"
+                    "institute": "Enter Instituition name",
+                    "degree": "Enter Degree details"
                 },
                 "JOB_PROFILE": {
-                    "jobName": "Job Name must have a value",
-                    "org": "Organization must have a value"
+                    "jobName": "Enter Occupation / Work Title ",
+                    "org": "Enter Organization "
                 }
             },
             "API": {

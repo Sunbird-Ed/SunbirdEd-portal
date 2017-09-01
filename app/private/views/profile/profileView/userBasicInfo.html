@@ -49,7 +49,8 @@
         </div>
         <div class="item ">
             <div class="right floated content ">
-                <span ><span ng-repeat="lan in profileCtrl.basicProfile.language">{{lan}}</span>
+                <span >
+                    <span ng-repeat="lan in profileCtrl.basicProfile.language">{{lan}}</span>
                 </span>
             </div>
             <div class="iniformationcontent content ">
@@ -58,8 +59,10 @@
         </div>
         <div class="item ">
             <div class="right floated content ">
-                <span><span ng-repeat="sub in profileCtrl.basicProfile.subject">{{sub}}<span ng-show="!$last">,</span></span>
-                </span>
+                                    <span ng-repeat="sub in profileCtrl.basicProfile.subject">{{sub}}
+                        <span ng-show="!$last">,</span>
+                    </span>
+               
             </div>
             <div class="iniformationcontent content ">
                 {{$root.labels.PROFILE.BASIC_PROFILE.subjects}}
