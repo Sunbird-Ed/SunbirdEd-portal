@@ -28,6 +28,7 @@ angular.module('playerApp')
       // Variables to show loader/errorMsg
       courseDashboard.showLoader = true;
       courseDashboard.showError = false;
+      courseDashboard.showLabelFlag = false;
       courseDashboard.errorMsg = '';
 
       /**
@@ -136,6 +137,7 @@ angular.module('playerApp')
        */
       courseDashboard.buildMyBatchesDropdown = function() {
         if (courseDashboard.myBatches.length === 1) {
+          courseDashboard.showLabelFlag = true;
           var firstChild = _.first(_.values(courseDashboard.myBatches), 1);
           courseDashboard.batchIdentifier = firstChild.id;
           courseDashboard.courseName = firstChild.name;
