@@ -170,8 +170,6 @@ var private_bower_js = [
 
 var private_bower_css = [
     "dist/thirdparty/libs/semantic-ui-tree-picker/semantic-ui-tree-picker.css",
-    "dist/thirdparty/bower_components/slick-carousel/slick/slick.css",
-    "dist/thirdparty/bower_components/slick-carousel/slick/slick-theme.css",
     "dist/thirdparty/bower_components/jquery.fancytree/dist/skin-win8/ui.fancytree.min.css",
     "dist/thirdparty/bower_components/izimodal/css/iziModal.min.css",
     "dist/thirdparty/bower_components/file-upload/fine-uploader/fine-uploader-new.min.css",
@@ -469,7 +467,7 @@ gulp.task('build', ['clean:dist'], function () {
 });
 
 gulp.task('production', ['clean:dist'], function () {
-    return gulp.src(['app/**/*', '!app/private/scripts/playerAppConfig.js', '!app/public/scripts/publicAppConfig.js'])
+    return gulp.src(['app/**/*'])
         .pipe(gulp.dest(player.dist));
 });
 
@@ -508,19 +506,19 @@ gulp.task('minifyThirdparty', ['minifyCSS'], function() {
     return merge(publicBowerJs, publicBowerCss, privateBowerJs, privateBowerCss, privateScripts, publicScripts, telemetry);
 });
 
-gulp.task('deploy_private_config', ['minifyThirdparty'], function () {
-    gulp.src('dist/deploy/playerAppConfig.json')
-        .pipe(gulpNgConfig('playerApp.config'))
-        .pipe(gulp.dest(dist.path  + 'private/' + dist.scripts));
-});
+// gulp.task('deploy_private_config', ['minifyThirdparty'], function () {
+//     gulp.src('dist/deploy/playerAppConfig.json')
+//         .pipe(gulpNgConfig('playerApp.config'))
+//         .pipe(gulp.dest(dist.path  + 'private/' + dist.scripts));
+// });
 
-gulp.task('deploy_public_config', ['deploy_private_config'], function () {
-    gulp.src('dist/deploy/publicAppConfig.json')
-        .pipe(gulpNgConfig('loginApp.config'))
-        .pipe(gulp.dest(dist.path + 'public/' + dist.scripts));
-});
+// gulp.task('deploy_public_config', ['deploy_private_config'], function () {
+//     gulp.src('dist/deploy/publicAppConfig.json')
+//         .pipe(gulpNgConfig('loginApp.config'))
+//         .pipe(gulp.dest(dist.path + 'public/' + dist.scripts));
+// });
 
-gulp.task('minifyHTML', ['deploy_public_config'], function() {
+gulp.task('minifyHTML', ['minifyThirdparty'], function() {
     var opts = { empty: true, comments:false, spare:false };
     return gulp.src(['dist/private/views/**/*.html', 'dist/public/views/**/*.html'], {base: "dist/"})
         .pipe(minifyHTML(opts))

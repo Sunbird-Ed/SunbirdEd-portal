@@ -57,10 +57,11 @@ const decorateRequestHeaders = function() {
       var channel = md5(srcReq.session.rootOrgId || 'sunbird');
       if (userId)
         proxyReqOpts.headers['X-Authenticated-Userid'] = userId;
-      proxyReqOpts.headers['X-Channel-Id'] = channel;
+        proxyReqOpts.headers['X-Channel-Id'] = channel;
     }
     proxyReqOpts.headers['X-App-Id'] = appId;
     proxyReqOpts.headers.Authorization = 'Bearer '+sunbird_api_auth_token;
+    proxyReqOpts.rejectUnauthorized = false;
     return proxyReqOpts;
   };
 };
@@ -71,13 +72,13 @@ const decoratePublicRequestHeaders = function() {
     return proxyReqOpts;
   };
 };
-
 app.use(session({
   secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   store: memoryStore
 }));
+
 app.use(keycloak.middleware({ admin: '/callback', logout: '/logout' }));
 
 /*the below line will be replaced while creating the deployment package. this line must not be deleted*/
@@ -87,6 +88,8 @@ app.set('view engine', 'ejs');
 
 app.use(express.static(path.join(__dirname, '/')));
 app.use(express.static(path.join(__dirname, 'tenant', tenantId)));
+//this line should be above middleware please don't change
+app.get('/public/service/orgs', publicServicehelper.getOrgs);
 app.use('/public/*', express.static(path.join(__dirname, 'public')))
 if (default_tenant) {
   app.use(express.static(path.join(__dirname, 'tenant', default_tenant)));
@@ -101,17 +104,6 @@ app.use('/private/index', function(req, res, next) {
   next();
 });
 
-app.get('/public/service/orgs', publicServicehelper.getOrgs);
-
-app.get('/private/service/get/tenant/logo', function(req, res) {
-  res.status(200);
-  var data = { 'logo': '' };
-  if (default_tenant && default_tenant !== 'sunbird') {
-    data.logo = (req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') + '/tenant/' + default_tenant + '/logo.png';
-  }
-  res.send(data)
-  res.end();
-});
 
 
 app.all('/content-editor/telemetry', bodyParser.urlencoded({ extended: false }),
@@ -129,6 +121,7 @@ app.all('/public/service/*', proxy(learnerURL, {
 }))
 
 app.all('/private/service/v1/learner/*', verifyToken(), permissionsHelper.checkPermission(), proxy(learnerURL, {
+  limit: reqDataLimitOfContentUpload,
   proxyReqOptDecorator: decorateRequestHeaders(),
   proxyReqPathResolver: function(req) {
     let urlParam = req.params["0"];
@@ -178,43 +171,45 @@ app.get('/v1/tenant/info/:tenantId', tenantHelper.getInfo);
 
 //proxy urls
 
+const proxyReqPathResolverMethod = function (req) {
+  return require('url').parse(contentProxyUrl + req.originalUrl).path;
+}
+
 app.use('/api/*', permissionsHelper.checkPermission(), proxy(contentProxyUrl, {
+  preserveHostHdr: true,
   proxyReqOptDecorator: decorateRequestHeaders(),
-  proxyReqPathResolver: function(req) {
-    return require('url').parse(contentProxyUrl + req.originalUrl).path;
-  }
+  proxyReqPathResolver: proxyReqPathResolverMethod
 }));
 
 app.use('/content-plugins/*', proxy(contentProxyUrl, {
-  proxyReqPathResolver: function(req) {
-    return require('url').parse(contentProxyUrl + req.originalUrl).path;
-  }
+  preserveHostHdr: true,
+  proxyReqOptDecorator: decorateRequestHeaders(),
+  proxyReqPathResolver: proxyReqPathResolverMethod
 }));
 
 app.use('/plugins/*', proxy(contentProxyUrl, {
-  proxyReqPathResolver: function(req) {
-    return require('url').parse(contentProxyUrl + req.originalUrl).path;
-  }
+  preserveHostHdr: true,
+  proxyReqOptDecorator: decorateRequestHeaders(),
+  proxyReqPathResolver: proxyReqPathResolverMethod
 }));
 
 app.use('/assets/public/*', proxy(contentProxyUrl, {
-  proxyReqPathResolver: function(req) {
-    return require('url').parse(contentProxyUrl + req.originalUrl).path;
-  }
+  preserveHostHdr: true,
+  proxyReqOptDecorator: decorateRequestHeaders(),
+  proxyReqPathResolver: proxyReqPathResolverMethod
 }));
 
 app.use('/content/preview/*', proxy(contentProxyUrl, {
-  proxyReqPathResolver: function(req) {
-    return require('url').parse(contentProxyUrl + req.originalUrl).path;
-  }
+  preserveHostHdr: true,
+  proxyReqOptDecorator: decorateRequestHeaders(),
+  proxyReqPathResolver: proxyReqPathResolverMethod
 }));
 
 app.use('/action/*', permissionsHelper.checkPermission(), proxy(contentProxyUrl, {
+  preserveHostHdr: true,
   limit: reqDataLimitOfContentUpload,
   proxyReqOptDecorator: decorateRequestHeaders(),
-  proxyReqPathResolver: function(req) {
-    return require('url').parse(contentProxyUrl + req.originalUrl).path;
-  }
+  proxyReqPathResolver: proxyReqPathResolverMethod
 }));
 
 app.all('/:tenantName', function(req, res) {

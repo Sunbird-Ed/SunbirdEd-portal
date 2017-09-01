@@ -86,14 +86,21 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
             var userRoles = profileData.roles;
             $rootScope.organisations = profileData.organisations;
             var organisationNames = [];
+            var orgRoleMap = {};
 
             var rootOrg = (profileData.rootOrg && !_.isUndefined(profileData.rootOrg.hashTagId)) ? profileData.rootOrg.hashTagId : md5('sunbird'); //eslint-disable-line
             org.sunbird.portal.channel = rootOrg;
+            $rootScope.rootOrgId = profileData.rootOrgId;
+            $rootScope.rootOrgAdmin = false;
             var organisationIds = [];
 
             _.forEach(profileData.organisations, function (org) {
                 if (org.roles && _.isArray(org.roles)) {
                     userRoles = _.union(userRoles, org.roles);
+                    if (org.organisationId == profileData.rootOrgId && _.indexOf(org.roles, 'ORG_ADMIN') > -1) {
+                        $rootScope.rootOrgAdmin = true;
+                    }
+                    orgRoleMap[org.organisationId] = org.roles;
                 }
                 if (org.organisationId) {
                     organisationIds.push(org.organisationId);
@@ -105,6 +112,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
             $rootScope.organisationNames = organisationNames;
             $rootScope.organisationIds = angular.copy(organisationIds);
             org.sunbird.portal.dims = _.concat(organisationIds, org.sunbird.portal.channel);
+            permissionsService.setCurrentUserRoleMap(orgRoleMap);
             permissionsService.setCurrentUserRoles(userRoles);
             $rootScope.initializePermissionDirective = true;
             $scope.getTelemetryConfigData(profileData);
