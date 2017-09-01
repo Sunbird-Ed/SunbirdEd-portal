@@ -99,10 +99,40 @@
                     "Collection", "Story", "TextBook", "Worksheet","Resource"
                 ],
                 "subjects": [
-                    "Assamese", "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Malayalam", "Marathi", "Maths", "Nepali", "Oriya", "Punjabi", "Tamil", "Telugu", "Urdu"
+                    "Assamese",
+                    "Bengali",
+                    "English", 
+                    "Gujarati",
+                    "Hindi",
+                    "Kannada", 
+                    "Malayalam",
+                    "Marathi",
+                    "Nepali",
+                    "Oriya", 
+                    "Punjabi", 
+                    "Tamil",
+                    "Telugu", 
+                    "Urdu",
+                    "Biology",
+                    "Chemistry",
+                    "Physics",
+                    "Mathematics",
+                    "Environmental Studies",
+                    "Geography",
+                    "History",
+                    "Political Science",
+                    "Economics",
+                    "Sanskrit"
                 ],
                 "boards": [
-                    "NCERT", "CBSE", "ICSE", "MSCERT"
+                    "CBSE", 
+                    "ICSE", 
+                    "MSCERT", 
+                    "NCERT",
+                    "UP Board",
+                    "AP Board",
+                    "TN Board",
+                    "NCTE"
                 ]
             }
         },
