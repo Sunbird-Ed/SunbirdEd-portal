@@ -52,7 +52,7 @@
                 "textbookDescription": "Build books using study material for an interesting learning experience.",
                 "course": "Course",
                 "courseDescription": "Design courses using books, collections and study material. Courses are for a duration, to achieve an objective.",
-                "lesson": "Study material",
+                "lesson": "Study Material",
                 "lessonDescription": "Create different study materials like story, game, activity, audio, video, using the inbuilt authoring tools.",
                 "collection": "Collection",
                 "collectionDescription": "Compile study material of your choice.",
@@ -62,8 +62,8 @@
                 "uploadContent": "Upload Content",
                 "upload": "Upload",
                 "lessonPlanDescription": "Frame lesson plans with structured sections for an efficient learning experience.",
-                "lessonPlan": "Lesson plan",
-                "contentUpload": "UPLOAD",
+                "lessonPlan": "Lesson Plan",
+                "contentUpload": "Upload Content",
                 "contentUploadDescription": "You can upload content here."
             },
             "createLesson": {
