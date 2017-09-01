@@ -144,15 +144,15 @@
         "PROFILE": {
             "JOB_PROFILE": {
                 "header": "Experience",
-                "jobName": "Job Name",
-                "position": "Position",
+                "jobName": "Occupation / Work Title",
+                "position": "Designation",
                 "organization": "Organization",
-                "subjects": "Subjects",
+                "subjects": "Subject(s) taught",
                 "isCurrentJob": "Is this your current job?",
                 "currentJobOptionYes": "Yes",
                 "currentJobOptionNo": "No",
-                "joiningDate": "Joining Date",
-                "endDate": "End Date"
+                "joiningDate": "From ",
+                "endDate": "To"
 
             },
             "ADDRESS": {
@@ -165,12 +165,12 @@
                 "city": "City",
                 "state": "State",
                 "country": "Country",
-                "pinCode": "Pin Code"
+                "pinCode": "Pin code"
             },
             "EDUCATION": {
                 "header": "Education",
                 "degree": "Degree",
-                "yearOfPassing": "Year Of Passing",
+                "yearOfPassing": "Year of passing",
                 "institute": "Institution Name",
                 "grade": "Grade",
                 "percentage": "Percentage",
@@ -179,21 +179,22 @@
             "BASIC_PROFILE": {
                 "header": "Additional Information",
                 "name": "Name",
-                "email": "Email",
+                "email": "Email ID",
                 "phone": "Phone",
-                "aadhar": "Aadhar Number",
+                "aadhar": "Aadhar number",
                 "gender": "Gender",
                 "male": "Male",
                 "female": "Female",
                 "transgender": "Transgender",
-                "language": "Language",
-                "dob": "Date Of Birth",
-                "subjects": "Subjects",
+                "language": "Language(s) known",
+                "dob": "Birthdate (dd/mm/yyyy)",
+                "subjects": "Subjects of expertise",
                 "summary": "Summary",
                 "contributions": "Contributions",
                 "contents": "Contents",
                 "currentLocation": "Current Location",
-                "grades": "Grades"
+                "grades": "Grades",
+                "phone_Prompt":"Enter 10 digit phone number with country code"
             },
             "BUTTON": {
                 "save": "Save",
