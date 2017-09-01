@@ -144,7 +144,8 @@
                 "deleteConfirmMessage": "Are you sure to delete this content?",
                 "no": "No",
                 "yes": "Yes",
-                "DELETE": "DELETE"
+                "DELETE": "DELETE",
+                "viewYourWorkspace": "View your workspace"
             }
         },
         "PROFILE": {
