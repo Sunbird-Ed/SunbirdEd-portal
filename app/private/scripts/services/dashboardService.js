@@ -64,7 +64,7 @@ angular.module('playerApp')
             gridLines: { display: false }
           }],
           yAxes: [{
-            scaleLabel: { display: true, labelString: labelString }
+            scaleLabel: { display: true, labelString: labelString }, ticks: { beginAtZero: true }
           }]
         }
       };
