@@ -17,9 +17,7 @@ var openModal = function () {
         }
         document.getElementsByTagName('head')[0].appendChild(styleNode);
         modal.innerHTML = '<div class="modal-content"> <div class="modal-header"><span class="close" onclick="closeModal()">×</span><h2>Organizations List</h2></div>' +
-                '<div class="modal-body"><p id="org-error"></p><div id="org-loader" align="center"></div><table id="orgList" border="1"><thead><tr>' +
-                '<th><h4>Name</h4></th><th><h4>Email</h4></th><th><h4>Phone</h4></th></tr></thead><tbody></tbody>' +
-                '</table></div><div class="modal-footer"></div></div>';
+                '<div class="modal-body"><p id="org-error"></p><div id="org-loader" align="center"></div><div id="orgContainer"></div></div><div class="modal-footer"></div></div>';
         modal.setAttribute("class", "modal");
 
     }
@@ -36,10 +34,10 @@ var openModal = function () {
 };
 
 var emptyTable = function (table) {
-    table.getElementsByTagName('tbody')[0].innerHTML = '';
+    table.innerHTML = '';
 }
 var loadData = function () {
-    var table = document.getElementById('orgList');
+    var table = document.getElementById('orgContainer');
     var error = document.getElementById('org-error');
     var loader = document.getElementById('org-loader');
     error.style.display = 'none';
@@ -53,34 +51,22 @@ var loadData = function () {
     client.get('/public/service/orgs', function (res) {
         res = JSON.parse(res);
         if (res && res.responseCode == "OK") {
-            table.style.display = 'table';
+            table.style.display = 'block';
             var data = res.result.response.content;
             if (data.length > 0)
             {
-                var tblHtml = '';
+                var html = '';
                 data.forEach(function (item, index) {
                     item.orgName = item.orgName || '';
-                    item.contactDetail = item.contactDetail || [];
-                    var emailList = '<ul style="list-style:none;">';
-                    var phoneList = '<ul style="list-style:none;">';
-                    item.contactDetail.forEach(function (contact, index) {
-                        if (contact.email) {
-                            emailList += '<li><a href="mailto:' + contact.email + '">'+contact.email+'</a></li>';
-                        }
-                        if (contact.phone) {
-                            phoneList += '<li>' + contact.phone + '</li>';
-                        }
-                    });
-                    emailList += '</ul>';
-                    phoneList += '</ul>';
+                    
 
                     if (item.orgName != '') {
-                        tblHtml += '<tr>' + '<td><h5>' + item.orgName + '</h5></td><td>'+emailList+'</td><td>'+phoneList+'</td></tr>';
+                        html += '<p><a href="/'+item.slug+'">'+item.orgName+'</a></p>';
                     }
                 });
-                table.getElementsByTagName('tbody')[0].innerHTML = tblHtml;
+                table.innerHTML = html;
                 loader.style.display = 'none';
-                table.style.display = 'table';
+                table.style.display = 'block';
             } else {
                 loader.innerHTML = '<h5>No Organisations found</h5>';
                 table.style.display = 'none';

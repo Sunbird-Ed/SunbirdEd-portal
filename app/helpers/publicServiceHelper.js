@@ -24,7 +24,7 @@ module.exports = {
     };
     request(options, function(error, response, body) {
       if (body  && body.responseCode === 'OK') {
-        body.result.response.content = _.map(body.result.response.content, _.partial(_.pick, _, ['orgName', 'contactDetail']));
+        body.result.response.content = _.map(body.result.response.content, _.partial(_.pick, _, ['orgName', 'contactDetail', 'slug']));
       } else{
         if (response && response.statusCode) {
           res.status(response.statusCode)
