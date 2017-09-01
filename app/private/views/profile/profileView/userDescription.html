@@ -1,9 +1,9 @@
 <div class="margin-top-20 ui raised segment" ng-init="profileCtrl.openDiscriptionEdit=false">
 	<div class="header announcementCard-header">
     	<span class="header cardsHeading ng-binding"> Description </span>
-		<a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.openDiscriptionEdit"ng-click="profileCtrl.openDiscriptionEdit=true">Edit</a>
+		<a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.openDiscriptionEdit"ng-click="profileCtrl.openDiscriptionEdit=true">{{$root.labels.PROFILE.BUTTON.edit}}</a>
 		<a class="addeditprofile cursor-pointer" ng-if="profileCtrl.openDiscriptionEdit"ng-click="profileCtrl.openDiscriptionEdit=false;
-		profileCtrl.basicProfile.profileSummary=profileCtrl.getProfileObject(profileCtrl.user.profileSummary)">Close</a>
+		profileCtrl.basicProfile.profileSummary=profileCtrl.getProfileObject(profileCtrl.user.profileSummary)">{{$root.labels.PROFILE.BUTTON.close}}</a>
  	</div>
     <div class="description" ng-if="!profileCtrl.openDiscriptionEdit" ng-init="profileCtrl.readMore = false"> 
 	    <p ng-if="!profileCtrl.readMore"> {{profileCtrl.user.profileSummary | limitTo: 120 }}&nbsp;
