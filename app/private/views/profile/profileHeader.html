@@ -28,8 +28,13 @@
                     </div>
                 </div>
             </div>
-            <div class="profilesettings four wide column"ng-if="!profileCtrl.isError && !profileCtrl.loader.showLoader" >
+            <div class="profilesettings four wide column" ng-if="!profileCtrl.isError && !profileCtrl.loader.showLoader" >
                 <bulk-upload></bulk-upload> 
+            </div>
+        </div>
+        <div class="ui grid">
+            <div class="two wide column padding-top-none">
+            <div class="profileImageSizeText">Max upload size 4MB</div>
             </div>
         </div>
     </div>
