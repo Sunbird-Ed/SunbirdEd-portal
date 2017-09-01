@@ -83,20 +83,27 @@
     <app-loader></app-loader>
   </div>
   <div class="ui negative message" ng-hide="courseDashboard.showWarningMsg" ng-if="courseDashboard.showError && !courseDashboard.showLoader">
-    <div class="header">Error while fetching data..</div>
+    <div class="header">Error while fetching data...</div>
     <p>{{courseDashboard.errorMsg}}</p>
   </div>
   <div class="ui warning message tweleve wide column" ng-show="courseDashboard.isMultipleCourses">
     <div class="header">No batch selected!</div>
-    Please select a batch from the above list
+    Please select a batch from the above list.
   </div>
-  <div class="ui info message" ng-if="courseDashboard.showWarningMsg">
-    <i class="close icon"></i>
-    <div class="header">
-      Opps..
+  <div class="ui grid" ng-if="courseDashboard.showWarningMsg">
+    <div class="twelve wide column">
+      <a class="ui item basic icon circular float-ContentRight" href="Javascript:void(0);" data-tooltip="Close the dashboard"><i class="ui remove icon CloseButtonFont" ng-click="toc.showCourseDashboard = false;courseDashboard.resetDropdown();"></i>
+      </a>
     </div>
-    <ul class="list">
-      <li>You haven't created any batch yet. Kindly, create new batch</li>
-    </ul>
+    <div class="twelve wide column">
+      <div class="ui info message">
+        <div class="header">
+          Opps..
+        </div>
+        <ul class="list">
+          <li>You haven't created a batch for this course yet. Create new batch and check the dasboard again.</li>
+        </ul>
+      </div>
+    </div>
   </div>
 </div>
