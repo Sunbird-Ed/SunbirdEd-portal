@@ -410,6 +410,8 @@ angular.module('playerApp') // add those all values
                   return '/images/pdf.png';
               case config.MIME_TYPE.mp4:
                   return '/images/mp4.png';
+              case config.MIME_TYPE.webm:
+                  return '/images/mp4.png';
               case config.MIME_TYPE.pYoutube:
                   return '/images/youtubeFileIcon.jpg';
               case config.MIME_TYPE.youtube:
