@@ -658,6 +658,7 @@ th {
 }
 .padding-top-circular-human-icon {
   padding-top: 0.9rem !important;
+  z-index: 88;
 }
 .loginForm {
   padding-bottom: 40px;
@@ -760,6 +761,14 @@ th {
 }
 .rightSideSectionCards.ui.card > .content > .header {
   font-size: 1.18em !important;
+}
+.header-logoBeforeLogin {
+  display: block;
+  max-width: 70px;
+  max-height: 70px;
+  width: auto;
+  height: auto;
+  left: 10% !important;
 }
 .ui.card > .sliderCards.content {
   -webkit-box-flex: 1;
@@ -1995,7 +2004,7 @@ ul.fancytree-container li {
 }
 .textcontent {
   display: inline-block;
-  margin: 5px;
+  margin: 5px 5px 5px -3px;
   white-space: nowrap;
 }
 @media only screen and (max-width: 1200px) {

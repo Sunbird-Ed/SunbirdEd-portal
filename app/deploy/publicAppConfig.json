@@ -40,7 +40,8 @@
                 "Collection",
                 "TextBook",
                 "TextBookUnit",
-                "LessonPlan"
+                "LessonPlan",
+                "Resource"
             ]
         }
     }
