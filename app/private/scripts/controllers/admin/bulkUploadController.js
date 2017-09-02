@@ -52,7 +52,6 @@ angular.module('playerApp')
                 grade: 'grade',
                 location: 'location',
                 dob: 'dob',
-                aadhaarNo: 'aadhaarNo',
                 gender: 'gender',
                 language: 'language',
                 profileSummary: 'profileSummary',
