@@ -19,7 +19,7 @@ angular.module('playerApp')
             allUploadedContent.contentStatus = ['Draft'];
             var mimeType = config.MIME_TYPE;
             allUploadedContent.contentMimeType = [mimeType.pdf, mimeType.youtube, mimeType.html,
-                mimeType.ePub, mimeType.h5p, mimeType.mp4
+                mimeType.ePub, mimeType.h5p, mimeType.mp4, mimeType.webm
             ];
             allUploadedContent.sortBy = 'desc';
             $scope.isSelected = false;
@@ -85,25 +85,25 @@ angular.module('playerApp')
                 });
             };
 
-            allUploadedContent.editContent = function(item) {
+            allUploadedContent.editContent = function (item) {
                 if (item.mimeType === 'application/vnd.ekstep.content-collection') {
-                  $state.go('CollectionEditor', {
-                    contentId: item.identifier,
-                    type: item.contentType,
-                    state: 'WorkSpace.AllUploadedContent'
-                  });
+                    $state.go('CollectionEditor', {
+                        contentId: item.identifier,
+                        type: item.contentType,
+                        state: 'WorkSpace.AllUploadedContent'
+                    });
                 } else if (item.mimeType === 'application/vnd.ekstep.ecml-archive') {
-                  var params = {
-                    contentId: item.identifier,
-                    state: 'WorkSpace.PublishedContent'
-                  };
-                  $state.go('ContentEditor', params);
+                    var params = {
+                        contentId: item.identifier,
+                        state: 'WorkSpace.PublishedContent'
+                    };
+                    $state.go('ContentEditor', params);
                 } else {
-                  var params = { 
-                    contentId: item.identifier ,
-                    state: 'WorkSpace.AllUploadedContent'
-                  };
-                  $state.go('GenericEditor', params);
+                    var params = {
+                        contentId: item.identifier,
+                        state: 'WorkSpace.AllUploadedContent'
+                    };
+                    $state.go('GenericEditor', params);
                 }
             };
 
