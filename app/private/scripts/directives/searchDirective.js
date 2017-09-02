@@ -230,10 +230,14 @@ angular.module('playerApp').directive('search', function () {
                     $scope.search.searchFn = searchService.courseSearch(req);
                     $scope.search.resultType = 'course';
                 } else if ($rootScope.search.selectedSearchKey === 'Library') {
+                    if (!req.filters['contentType']) {
+                        req.filters.contentType = ["Collection","Story","Worksheet","TextBook","LessonPlan","Resource"];    
+                    }
                     $scope.search.searchFn = searchService.contentSearch(req);
                     $scope.search.resultType = 'content';
                     req.filters.objectType = ['Content'];
                 } else if ($rootScope.search.selectedSearchKey === 'All') {
+                    req.filters.contentType = ["Collection","Story","Worksheet","TextBook","LessonPlan","Resource"];
                     $scope.search.searchFn = searchService.search(req);
                     $scope.search.resultType = 'content';
                     req.filters.objectType = ['Content'];

@@ -96,7 +96,7 @@
                     "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Marathi", "Punjabi", "Tamil", "Telugu"
                 ],
                 "contentTypes": [
-                    "Collection", "Story", "TextBook", "Worksheet", "Resource"
+                    "Collection", "Story", "TextBook", "Worksheet", "Resource", "LessonPlan"
                 ],
                 "subjects": [
                     "Assamese",
