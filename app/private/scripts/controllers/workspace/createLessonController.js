@@ -86,7 +86,7 @@ angular.module('playerApp')
             requestBody.name = requestBody.name
                 ? requestBody.name : 'Untitled lesson';
             requestBody.contentType = requestBody.contentType
-                ? requestBody.contentType : 'Story';
+                ? requestBody.contentType : 'Resource';
 
             var requestData = {
                 content: requestBody
