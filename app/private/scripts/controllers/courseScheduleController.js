@@ -326,6 +326,7 @@ angular.module('playerApp')
                 var contentIcons = {
                     'application/pdf': '/images/pdf'+stsClass+'.png',
                     'video/mp4': '/images/video'+stsClass+'.png',
+                    'video/webm': '/images/video'+stsClass+'.png',
                     'video/x-youtube':  '/images/video'+stsClass+'.png',
                     'video/youtube':  '/images/video'+stsClass+'.png',
                     'application/vnd.ekstep.html-archive':  '/images/app'+stsClass+'.png',

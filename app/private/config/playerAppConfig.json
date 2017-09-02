@@ -598,7 +598,8 @@
             "html": "application/vnd.ekstep.html-archive",
             "ecml": "application/vnd.ekstep.ecml-archive",
             "ePub": "application/epub",
-            "h5p": "application/vnd.ekstep.h5p-archive"
+            "h5p": "application/vnd.ekstep.h5p-archive",
+            "webm": "video/webm"
         }
     }
 }
