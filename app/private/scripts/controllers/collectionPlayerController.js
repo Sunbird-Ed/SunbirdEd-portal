@@ -119,6 +119,7 @@
                     'image/jpg': 'large file image outline icon',
                     'image/png': 'large file image outline icon',
                     'video/mp4': 'large file video outline icon',
+                    'video/webm': 'large file video outline icon',
                     'video/ogg': 'large file video outline icon',
                     'video/youtube': 'large youtube square icon',
                     'video/x-youtube': 'large youtube square icon',
