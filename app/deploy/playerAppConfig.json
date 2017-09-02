@@ -84,9 +84,9 @@
                 "DELETE_USER": "user/block",
                 "UPDATE_USER_ORG_ROLES": "user/assign/role"
             },
-            "BADGE":{
-                "GET":"badges/list",
-                "ASSIGN":"user/badges/add"
+            "BADGE": {
+                "GET": "badges/list",
+                "ASSIGN": "user/badges/add"
 
             }
         },
@@ -529,7 +529,7 @@
             { "id": "Organisations", "name": "Organisations" },
             { "id": "Users", "name": "Users" }
         ],
-        "contributeContentType": ["Collection", "Story", "Worksheet", "TextBook", "Course", "LessonPlan"],
+        "contributeContentType": ["Collection", "Story", "Worksheet", "TextBook", "Course", "LessonPlan", "Resource"],
         "MIME_TYPE": {
             "pdf": "application/pdf",
             "mp4": "video/mp4",
@@ -538,7 +538,8 @@
             "html": "application/vnd.ekstep.html-archive",
             "ecml": "application/vnd.ekstep.ecml-archive",
             "ePub": "application/epub",
-            "h5p": "application/vnd.ekstep.h5p-archive"
+            "h5p": "application/vnd.ekstep.h5p-archive",
+            "webm": "video/webm"
         }
     }
 }

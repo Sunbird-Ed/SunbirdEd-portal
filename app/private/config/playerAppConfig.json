@@ -84,9 +84,9 @@
                 "DELETE_USER": "user/v1/block",
                 "UPDATE_USER_ORG_ROLES": "org/v1/role/assign"
             },
-            "BADGE":{
-                "GET":"org/v1/badges/list",
-                "ASSIGN":"user/v1/badges/add"
+            "BADGE": {
+                "GET": "org/v1/badges/list",
+                "ASSIGN": "user/v1/badges/add"
 
             }
         },
@@ -96,13 +96,43 @@
                     "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Marathi", "Punjabi", "Tamil", "Telugu"
                 ],
                 "contentTypes": [
-                    "Collection", "Story", "TextBook", "Worksheet"
+                    "Collection", "Story", "TextBook", "Worksheet", "Resource"
                 ],
                 "subjects": [
-                    "Assamese", "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Malayalam", "Marathi", "Maths", "Nepali", "Oriya", "Punjabi", "Tamil", "Telugu", "Urdu"
+                    "Assamese",
+                    "Bengali",
+                    "English",
+                    "Gujarati",
+                    "Hindi",
+                    "Kannada",
+                    "Malayalam",
+                    "Marathi",
+                    "Nepali",
+                    "Oriya",
+                    "Punjabi",
+                    "Tamil",
+                    "Telugu",
+                    "Urdu",
+                    "Biology",
+                    "Chemistry",
+                    "Physics",
+                    "Mathematics",
+                    "Environmental Studies",
+                    "Geography",
+                    "History",
+                    "Political Science",
+                    "Economics",
+                    "Sanskrit"
                 ],
                 "boards": [
-                    "NCERT", "CBSE", "ICSE", "MSCERT"
+                    "CBSE",
+                    "ICSE",
+                    "MSCERT",
+                    "NCERT",
+                    "UP Board",
+                    "AP Board",
+                    "TN Board",
+                    "NCTE"
                 ]
             }
         },
@@ -328,7 +358,30 @@
                     "Story", "Worksheet"
                 ],
                 "subjects": [
-                    "Assamese", "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Malayalam", "Marathi", "Maths", "Nepali", "Oriya", "Punjabi", "Tamil", "Telugu", "Urdu"
+                    "Assamese",
+                    "Bengali",
+                    "English",
+                    "Gujarati",
+                    "Hindi",
+                    "Kannada",
+                    "Malayalam",
+                    "Marathi",
+                    "Nepali",
+                    "Oriya",
+                    "Punjabi",
+                    "Tamil",
+                    "Telugu",
+                    "Urdu",
+                    "Biology",
+                    "Chemistry",
+                    "Physics",
+                    "Mathematics",
+                    "Environmental Studies",
+                    "Geography",
+                    "History",
+                    "Political Science",
+                    "Economics",
+                    "Sanskrit"
                 ],
                 "grades": [
                     "Kindergarten",
@@ -356,7 +409,14 @@
                     "Assamese", "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Malayalam", "Marathi", "Nepali", "Oriya", "Other", "Punjabi", "Tamil", "Telugu", "Urdu"
                 ],
                 "boards": [
-                    "CBSE", "ICSE", "MSCERT", "NCERT"
+                    "CBSE",
+                    "ICSE",
+                    "MSCERT",
+                    "NCERT",
+                    "UP Board",
+                    "AP Board",
+                    "TN Board",
+                    "NCTE"
                 ]
             }
         },
@@ -529,7 +589,7 @@
             { "id": "Organisations", "name": "Organisations" },
             { "id": "Users", "name": "Users" }
         ],
-        "contributeContentType": ["Collection", "Story", "Worksheet", "TextBook", "Course", "LessonPlan"],
+        "contributeContentType": ["Collection", "Story", "Worksheet", "TextBook", "Course", "LessonPlan", "Resource"],
         "MIME_TYPE": {
             "pdf": "application/pdf",
             "mp4": "video/mp4",
@@ -538,7 +598,8 @@
             "html": "application/vnd.ekstep.html-archive",
             "ecml": "application/vnd.ekstep.ecml-archive",
             "ePub": "application/epub",
-            "h5p": "application/vnd.ekstep.h5p-archive"
+            "h5p": "application/vnd.ekstep.h5p-archive",
+            "webm": "video/webm"
         }
     }
 }

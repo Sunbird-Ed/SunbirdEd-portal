@@ -222,6 +222,7 @@ var private_scripts = [
     "dist/private/scripts/controllers/workspace/editContentController.js",
     "dist/private/scripts/controllers/contentEditorController.js",
     "dist/private/scripts/controllers/collectionEditorController.js",
+    "dist/private/scripts/controllers/genericEditorController.js",
     "dist/private/scripts/controllers/workspace/TextBookController.js",
     "dist/private/scripts/controllers/workspace/CollectionController.js",
     "dist/private/scripts/controllers/workspace/previewContentController.js",
