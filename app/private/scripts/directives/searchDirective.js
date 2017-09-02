@@ -230,7 +230,7 @@ angular.module('playerApp').directive('search', function () {
                     $scope.search.searchFn = searchService.courseSearch(req);
                     $scope.search.resultType = 'course';
                 } else if ($rootScope.search.selectedSearchKey === 'Library') {
-                    if (!req.filters['contentType']) {
+                    if (!req.filters['contentType'] || (_.isArray(req.filters['contentType'])  && req.filters['contentType'].length == 0)) {
                         req.filters.contentType = ["Collection","Story","Worksheet","TextBook","LessonPlan","Resource"];    
                     }
                     $scope.search.searchFn = searchService.contentSearch(req);
