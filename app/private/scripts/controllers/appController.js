@@ -109,6 +109,10 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
                     organisationNames.push(org.orgName);
                 }
             });
+            if ($rootScope.rootOrgId) {
+                organisationIds.push($rootScope.rootOrgId);
+            }
+            organisationIds = _.uniq(organisationIds);
             $rootScope.organisationNames = organisationNames;
             $rootScope.organisationIds = angular.copy(organisationIds);
             org.sunbird.portal.dims = _.concat(organisationIds, org.sunbird.portal.channel);

@@ -569,7 +569,7 @@ angular.module('playerApp')
           }
       })
       .state('ContentEditor', {
-          url: '/content/editor/:contentId',
+          url: '/content/editor/:contentId/:state',
           views: {
               mainView: {
                   templateUrl: 'views/common/contentEditor.html',
@@ -577,7 +577,8 @@ angular.module('playerApp')
               }
           },
           params: {
-              contentId: null
+              contentId: null,
+              state: null
           },
           onEnter: function ($state, $rootScope, portalTelemetryService, $stateParams) {
               $rootScope.profileActive = 'active';
@@ -885,6 +886,33 @@ angular.module('playerApp')
                     name: '',
                     url: '/private/index#!/create/lessonPlan'
                 });
+            },
+            onExit: function ($rootScope) {
+                $rootScope.profileActive = '';
+            }
+        })
+        .state('GenericEditor', {
+            url: '/generic/editor/:contentId/:state',
+            views: {
+                mainView: {
+                    templateUrl: 'views/common/genericEditor.html',
+                  controller: 'GenericEditorController as genericEditor'
+                }
+            },
+            params: {
+              contentId: null,
+              state: null
+            },
+            onEnter: function ($rootScope, portalTelemetryService) {
+              $rootScope.profileActive = 'active';
+              portalTelemetryService.fireImpressions({
+                  env: 'genericeditor',
+                  type: 'edit',
+                  pageid: org.sunbird.portal.appid + '_GenericEditor',
+                  id: '',
+                  name: '',
+                  url: '/private/index#!/generic/editor/'
+              });
             },
             onExit: function ($rootScope) {
                 $rootScope.profileActive = '';

@@ -173,14 +173,15 @@
               </div>
             </div>
             <div class="item ">
+             <div class="iniformationcontent content ">
+             {{$root.labels.PROFILE.BASIC_PROFILE.subjects}}
+              </div>
               <div class="right floated content ">
                 <span ng-repeat="sub in publicProfile.user.subject">
                   <span>{{sub}}<span ng-if=!$last>,</span></span>
                 </span>
               </div>
-              <div class="iniformationcontent content ">
-             {{$root.labels.PROFILE.BASIC_PROFILE.subjects}}
-              </div>
+             
             </div>
             <div class="item ">
               <div class="right floated content ">
