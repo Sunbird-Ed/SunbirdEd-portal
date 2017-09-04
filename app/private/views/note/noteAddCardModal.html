@@ -2,7 +2,7 @@
     <span class="ui cardtakenote cursor-pointer" ng-click="noteCard.showAddNoteModal();">
         <img ng-src="../images/takenote.png">
         <span>{{$root.labels.Notes.takeNote}}</span>
-    </span>
+</span>
 </span>
 <span ng-if="noteCard.showModalInCourseView">
     <span ng-click="noteCard.showAddNoteModal(); " class="cursor-pointer">
@@ -10,8 +10,8 @@
     </span>
 </span>
 <div ng-if="noteCard.showCreateNote">
-    <div class="ui modal" id="addNoteModal" ng-if="!noteCard.createApi.loader.showLoader">
-        <div class="header">
+    <div class="ui modal" id="addNoteModal">
+        <div class="header" ng-if="!noteCard.createApi.loader.showLoader">
             <div class="ui grid">
                 <div class="eleven wide column">
                     <span class="ui header">{{$root.labels.Notes.takeANote}}</span>
@@ -23,7 +23,7 @@
                 </div>
             </div>
         </div>
-        <div class="content">
+        <div class="content" ng-if="!noteCard.createApi.loader.showLoader">
             <div class="ui fluid icon input">
                 <input type="text" placeholder={{$root.labels.Notes.title}} name="title" ng-model="noteCard.add.title" />
             </div>
@@ -31,7 +31,7 @@
                 <pagedown-editor content="noteCard.add.note" show-preview="false" placeholder={{$root.labels.Notes.description}}></pagedown-editor>
             </div>
         </div>
-        <div class="actions">
+        <div class="actions" ng-if="!noteCard.createApi.loader.showLoader">
             <button class="ui primary right floated button margin-bottom-15 margin-top-10 " type="submit" ng-class="noteCard.denyModalClass" ng-disabled="!noteCard.add.title || !noteCard.add.note" tabindex="4" ng-click="noteCard.createNote(noteCard.add)">{{$root.labels.Notes.save}}</button>
             <button class="ui secondary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="noteCard.clearAddNoteData()">{{$root.labels.Notes.clear}}</button>
         </div>
