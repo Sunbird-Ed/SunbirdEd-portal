@@ -3,9 +3,16 @@
 
         <div class='content-player-body'>
             <div class="videosegment  ui clearing segment" ng-if="isHeader || isClose">
-                <h1 class="ui HomeAccordianHeading left floated header margin-auto" ng-if="isHeader">
-                    {{contentData.name}}
-                </h1>
+                <div class="ten wide column">
+                    <span class="ui HomeAccordianHeading left floated header" ng-if="isHeader">
+                                        {{contentData.name}}
+                            </span>
+                </div>
+                <div class="two wide column" ng-if="isClose">
+                    <h5 class="ui right floated basic icon circular button margin-auto mouse-pointer" ng-click="close()">
+                        <i class="ui remove icon"></i>
+                    </h5>
+                </div>
             </div>
 
             <div class="ui stackable twelve column grid">
