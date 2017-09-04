@@ -45,6 +45,8 @@
     
     <!-- Owl Carousel CSS -->
     <link href="css/owl.carousel.min.css" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="css/custom.css" rel="stylesheet">
@@ -83,15 +85,15 @@
 				<nav class="navbar-collapse collapse menu" id="menu" aria-expanded="true">
 					<ul class="nav navbar-nav">
 						<li><a href="#about" title="About"><span>About</span></a></li>
-						<li><a href="#usecases" title="Usecases"><span>Usage Scenarios</span></a></li>
+						<li><a href="#usage" title="Usage Scenarios"><span>Usage Scenarios</span></a></li>
 						<li><a href="#journey" title="Journey so far"><span>Journey so far</span></a></li>
 						<li><a href="#documents" title="Documents"><span>Documents</span></a></li>
 						<li><a href="#media" title="Media"><span>Media</span></a></li>
 						<li><a href="#contact" title="Contact"><span>Contact</span></a></li>
-						
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-						<li class="pull-right"><a href="/private/index" title="Sign In"><span>Sign In</span></a></li>
+						<li><a href="/private/index" title="Sign In" class=""><span>Sign In</span></a></li>
+						<!-- Removed text-uppercase and login class-->
 					</ul>
 					
 				</nav>	
@@ -106,7 +108,7 @@
 					<div class="col-md-7">
 						<div class="responsive-video top-space">
 							<video controls poster="images/video-preview.png" id="introVideo" onClick="playPause();">
-								<source src="videos/Diksha_v4.2.mp4" type="video/mp4">
+								<source src="videos/Diksha_V5.mp4" type="video/mp4">
 								Your browser does not support the video tag.
 							</video>
 						</div>
@@ -124,24 +126,24 @@
     <!-- /Header -->
     
     <!-- Main Content -->
-    	<div class="container main-cont foo top-space text-gray" id="about">
+    	<div class="container main-cont foo top-space text-gray hash-fix" id="about">
         	<div class="row">
            	  <div class="col-md-12">
-                	<h2 class="text-brown">About Diksha</h2>
+                	<h2 class="text-brown">About DIKSHA</h2>
                     <p>DIKSHA is a unique initiative which leverages existing highly scalable and flexible digital infrastructures, while keeping teachers at the center. It is built considering the whole teacher’s life cycle - from the time student teachers enroll in Teacher Education Institutes (TEIs) to after they retire as teachers.</p>
-                    <p>In India, many teachers are creating & using innovative tech-based solutions in their classrooms. Some state governments have also initiated programs to support their teachers digitally. This inspired MHRD and NCTE to coordinate these efforts at a national level and build DIKSHA. <span class="readMore text-brown">Show more...</span></p>
+                    <p>In India, many teachers are creating & using innovative tech-based solutions in their classrooms. Some state governments have also initiated programs to support their teachers digitally. This inspired MHRD and NCTE to coordinate these efforts at a national level and build DIKSHA. <span class="readMore text-brown" title="Show more ...">Show more...</span></p>
                     <div class="more-text" style="display:none;">
 						<p>States, government bodies and even private organisations, can integrate DIKSHA into their respective teacher initiatives based on their goals, needs and capabilities. They can use DIKSHA’s features to create:</p>
 						<ul>
 							<li>In-class resources</li>
 							<li>Teacher training content</li>
 							<li>Assessment aids</li>
-							<li>Create teacher profile</li>
+							<li>Teacher profile</li>
 							<li>News and announcement</li>
-							<li>Create teacher community</li>
+							<li>Teacher community</li>
 						</ul>
 						<p>These features have emerged from consultations with multiple state governments, NGOs and more than 30 public and private organisations, who have collaborated in contributing to DIKSHA.</p>
-						<p><span class="readLess text-brown">Show less ...</span></p>
+						<p><span class="readLess text-brown" title="Show less ...">Show less ...</span></p>
 						<p></p>
 					</div>
                 </div>
@@ -149,14 +151,17 @@
         </div>
     <!-- /Main Content -->
     
-    <!-- Usecases -->
-		<div class="animations foo top-space" id="usecases">
-			<!--<img src="images/animation.jpg" />-->
+    <!-- Useage -->
+		<div class="animations foo top-space hash-fix" id="usage">
 			<div class="responsive-video">
-				<iframe src='https://onedrive.live.com/embed?cid=884ECA39ADA1E84B&resid=884ECA39ADA1E84B%21107&authkey=AKmdmlAJwfLWOrk&em=2&wdAr=1.7777777777777777' frameborder='0'>This is an embedded <a target='_blank' href='https://office.com'>Microsoft Office</a> presentation, powered by <a target='_blank' href='https://office.com/webapps'>Office Online</a>.</iframe>
+				<video controls poster="images/video-preview.png" id="presentation" onClick="playPausePresentation();">
+					<source src="videos/Diksha_v4.2.mp4" type="video/mp4">
+					Your browser does not support the video tag.
+				</video>
+				<!--<iframe src='https://onedrive.live.com/embed?cid=884ECA39ADA1E84B&resid=884ECA39ADA1E84B%21107&authkey=AKmdmlAJwfLWOrk&em=2&wdAr=1.7777777777777777&wdEaa=1' width='350px' height='221px' frameborder='0'>This is an embedded <a target='_blank' href='https://office.com'>Microsoft Office</a> presentation, powered by <a target='_blank' href='https://office.com/webapps'>Office Online</a>.</iframe>-->
 			</div>
 		</div>
-    <!-- /Usecases -->
+    <!-- /Useage -->
     
     <!-- Quotes -->
 		<div class="quotes container foo top-space">
@@ -164,61 +169,61 @@
 				<!-- Quote Item-->
 				<div class="quote">
 					<div class="quote-personImg">
-						<img alt="Mr. Prakash Javadekar" title="Mr. Prakash Javadekar" src="images/profiles/PrakashJavadekar.png" />
+						<img alt="Sh. Prakash Javadekar" title="Sh. Prakash Javadekar" src="images/profiles/PrakashJavadekar.png" />
 					</div>
-					<div class="quote-text text-gray">One of the main priorities of our Government is to improve the quality of teachers. DIKSHA will provide teachers with a credible digital presence that will allow them to be recognized, certified and celebrated, and to produce better learning outcomes for students. DIKSHA will help ‘Our Teachers, Our Heroes’ achieve their true potential.</div>
-					<h4 class="quote-personName text-blue">Mr. Prakash Javadekar</h4>
-					<div class="quote-personPosition text-gray"></div>
+					<div class="quote-text text-gray">DIKSHA is a customizable National Digital Infrastructure that States, Teacher Education Institutions (TEI) and Private Entities can use for their respective teacher centric initiatives. Teachers will be able to use DIKSHA to access and create high quality teaching, learning and assessment resources for all subjects and levels in all Indian languages. Teachers can use it from the time they join a Teacher Education Institute as a student teacher till after their retirement to capture, authenticate and share their work, contributions and achievements. DIKSHA will strengthen the hands of ‘Our Teachers Our Heroes’.</div>
+					<h4 class="quote-personName text-blue">Sh. Prakash Javadekar</h4>
+					<div class="quote-personPosition text-gray">Hon. Minister for Human Resource Development, Government of India</div>
 				</div>
 				<!-- /Quote Item-->
 				<!-- Quote Item-->
 				<div class="quote">
 					<div class="quote-personImg">
-						<img alt="Mr. Anil Swarup" title="Mr. Anil Swarup" src="images/profiles/AnilSwarup.png" />
+						<img alt="Sh. Anil Swarup" title="Sh. Anil Swarup" src="images/profiles/AnilSwarup.png" />
 					</div>
 					<div class="quote-text text-gray">DIKSHA is a multi-year, multi-stakeholder initiative that will continuously evolve and will make significant difference in the lives of teachers and their students across the country.</div>
-					<h4 class="quote-personName text-blue">Mr. Anil Swarup</h4>
-					<div class="quote-personPosition text-gray">Secretary, Department of School Education and Literacy, Ministry of Human Resource and Development </div>
+					<h4 class="quote-personName text-blue">Sh. Anil Swarup</h4>
+					<div class="quote-personPosition text-gray">Secretary , Department of School Education and Literacy , MHRD</div>
 				</div>
 				<!-- /Quote Item-->
 				<!-- Quote Item-->
 				<div class="quote">
 					<div class="quote-personImg">
-						<img alt="Dr A. Santhosh Mathew" title="Dr A. Santhosh Mathew" src="images/profiles/DrASanthoshMathew.png" />
+						<img alt="Sh. A. Santhosh Mathew" title="Sh. A. Santhosh Mathew" src="images/profiles/DrASanthoshMathew.png" />
 					</div>
 					<div class="quote-text text-gray">The role of ‘Our Teachers, Our Heroes’ is paramount in defining the quality of education. There have been many technological projects, initiated and implemented in the education sector. However, never before has the educational ecosystem come together in such a way. From its conception in March, DIKSHA has been proceeding fast and gathering collaborative momentum. DIKSHA has been created by a network of government, for-profit and non-profit organisations that are not only willing to participate, but also significantly help in making it sustainable. We envision every teacher in the country to be a part of DIKSHA by 2020.</div>
-					<h4 class="quote-personName text-blue">Dr A. Santhosh Mathew</h4>
+					<h4 class="quote-personName text-blue">Sh. A. Santhosh Mathew</h4>
 					<div class="quote-personPosition text-gray">Chairperson, National Council for Teacher Education</div>
 				</div>
 				<!-- /Quote Item-->
 				<!-- Quote Item-->
 				<div class="quote">
 					<div class="quote-personImg">
-						<img alt="K. Sandhya Rani" title="K. Sandhya Rani" src="images/profiles/KSandhyaRani.png" />
+						<img alt="Smt. K. Sandhya Rani" title="Smt. K. Sandhya Rani" src="images/profiles/KSandhyaRani.png" />
 					</div>
-					<div class="quote-text text-gray">Andhra Pradesh is the first state to integrate its APeKx portal with DIKSHA and also create a digital  Teacher Registry. We have also begun piloting courses for professional development of teachers and are excited about the potential of content creation tools offered by DIKSHA.</div>
-					<h4 class="quote-personName text-blue">K. Sandhya Rani</h4>
-					<div class="quote-personPosition text-gray">I.Po.S., Commissioner of School Education, Andhra Pradesh </div>
+					<div class="quote-text text-gray">Andhra Pradesh is the first state to integrate its APeKX portal with DIKSHA and also create a digital  Teacher Registry. We have also begun piloting courses for professional development of teachers and are excited about the potential of content creation tools offered by DIKSHA.</div>
+					<h4 class="quote-personName text-blue">Smt. K. Sandhya Rani</h4>
+					<div class="quote-personPosition text-gray">Commissioner of School Education , Andhra Pradesh</div>
 				</div>
 				<!-- /Quote Item-->
 				<!-- Quote Item-->
 				<div class="quote">
 					<div class="quote-personImg">
-						<img alt="Mr. Nand Kumar" title="Mr. Nand Kumar" src="images/profiles/NandKumar.png" />
+						<img alt="Sh. Nand Kumar" title="Sh. Nand Kumar" src="images/profiles/NandKumar.png" />
 					</div>
 					<div class="quote-text text-gray">Maharashtra has over 1,00,000 tech-savvy teachers who have been instrumental in creating an on ground movement of technology innovation for teacher education and for improving student learning. The teachers have supported the development of MITRA with more than 5000 videos - through which now, the Maharashtra State is helping shape DIKSHA! The DIKSHA platform would provide world-class technological infrastructure for Maharashtra’s MITRA initiative to create local content and provide need-based training to all its teachers.</div>
-					<h4 class="quote-personName text-blue">Mr. Nand Kumar</h4>
-					<div class="quote-personPosition text-gray">Principal Secretary - Education, Maharashtra</div>
+					<h4 class="quote-personName text-blue">Sh. Nand Kumar</h4>
+					<div class="quote-personPosition text-gray">Principal Secretary, School Education & Sport Department, Maharashtra</div>
 				</div>
 				<!-- /Quote Item-->
 				<!-- Quote Item-->
 				<div class="quote">
 					<div class="quote-personImg">
-						<img alt="Mr. Nanthakumar" title="Mr. Nanthakumar" src="images/profiles/Nanthakumar.png" />
+						<img alt="Sh. Thiru K. Nanthakumar" title="Sh. Thiru K. Nanthakumar" src="images/profiles/Nanthakumar.png" />
 					</div>
 					<div class="quote-text text-gray">DIKSHA has grown and evolved with a momentum I have rarely seen in government. Tamil Nadu will ensure all its teachers have access to assessments, lesson plans and energized textbooks using this infrastructure.</div>
-					<h4 class="quote-personName text-blue">Mr. Nanthakumar</h4>
-					<div class="quote-personPosition text-gray">SPD SSA , Tamil Nadu</div>
+					<h4 class="quote-personName text-blue">Sh. Thiru K. Nanthakumar</h4>
+					<div class="quote-personPosition text-gray">State Project Director , Sarva Shiksha Abhiyan , Tamil Nadu</div>
 				</div>
 				<!-- /Quote Item-->
 			</div>
@@ -226,7 +231,7 @@
     <!-- /Quotes -->
     
     <!-- Journey -->
-		<div class="journey top-space foo" id="journey">
+		<div class="journey top-space foo hash-fix" id="journey">
 			<div class="container">
 				<div class="row">
 					<div class="col-xs-12">
@@ -240,16 +245,16 @@
 					<img alt="" title="" src="images/journey/9thMarch2017.JPG" />
 					<div class="milestone-details">
 						<div class="milestone-date">9 March 2017</div>
-						<div class="milestone-desc"><strong>The Start:</strong> Education ecosystem convening hosted by MHRD to invite contributions from potential state and content partners in building DIKSHA</div>
+						<div class="milestone-desc"><strong>The Start</strong>: Education ecosystem convening hosted by MHRD to invite contributions from potential state and content partners in building DIKSHA</div>
 					</div>
 				</div>
 				<!-- /Journey Item-->
 				<!-- Journey Item-->
 				<div class="milestone">
-					<img alt="" title="" src="images/journey/april-march.png" />
+					<img alt="" title="" src="images/journey/roadshow.png" />
 					<div class="milestone-details">
 						<div class="milestone-date">April - May</div>
-						<div class="milestone-desc">MHRD roadshow - MHRD regional workshops on vision of DIKSHA in Raipur , Pune, Guwhati, Bengaluru and Chandigarh</div>
+						<div class="milestone-desc"><strong>MHRD roadshow</strong> - MHRD regional workshops on vision of DIKSHA in Raipur , Pune, Guwhati, Bengaluru and Chandigarh</div>
 					</div>
 				</div>
 				<!-- /Journey Item-->
@@ -258,7 +263,7 @@
 					<img alt="" title="" src="images/journey/13May2017.png" />
 					<div class="milestone-details">
 						<div class="milestone-date">13 May 2017</div>
-						<div class="milestone-desc"><strong>Our Teachers Our Heroes -</strong> Launch of DIKSHA Strategy & Approach Paper by Hon . Minister of Human Resource and Development , Shri Prakash Javadekar in Bengaluru</div>
+						<div class="milestone-desc"><strong>Our Teachers Our Heroes</strong> - Launch of DIKSHA Strategy & Approach Paper by Hon . Minister of Human Resource and Development , Shri Prakash Javadekar in Bengaluru</div>
 					</div>
 				</div>
 				<!-- /Journey Item-->
@@ -267,7 +272,7 @@
 					<img alt="" title="" src="images/journey/2ndJune2017.png" />
 					<div class="milestone-details">
 						<div class="milestone-date">2nd June 2017</div>
-						<div class="milestone-desc">DIKSHA- Webpage launch on MHRD website</div>
+						<div class="milestone-desc"><strong>DIKSHA </strong> - Webpage launch on MHRD website</div>
 					</div>
 				</div>
 				<!-- /Journey Item-->
@@ -276,7 +281,7 @@
 					<img alt="" title="" src="images/journey/16thJune2017.png" />
 					<div class="milestone-details">
 						<div class="milestone-date">16th June 2017</div>
-						<div class="milestone-desc">Workshop on DIKSHA for Pilot states - Andhra Pradesh , Tamil Nadu & Maharashtra</div>
+						<div class="milestone-desc"><strong>Workshop on DIKSHA for Pilot states</strong> - Andhra Pradesh , Tamil Nadu & Maharashtra</div>
 					</div>
 				</div>
 				<!-- /Journey Item-->
@@ -294,7 +299,7 @@
 					<img alt="" title="" src="images/journey/3rdAugust2017.png" />
 					<div class="milestone-details">
 						<div class="milestone-date">3rd August, 2017</div>
-						<div class="milestone-desc">Champion States- Letter of Participation signing </div>
+						<div class="milestone-desc"><strong>Champion States</strong> - Letter of Participation signing </div>
 					</div>
 				</div>
 				<!-- /Journey Item-->
@@ -321,10 +326,10 @@
     <!-- /Journey -->
     
     <!-- Downloads and Reports -->
-		<div class="downloads-section container top-space foo" id="documents">
+		<div class="downloads-section container top-space foo hash-fix" id="documents">
 			<div class="row">
 				<div class="col-xs-12">
-					<h2 class="text-brown">Downloads and Reports</h2>
+					<h2 class="text-brown">Documents</h2>
 				</div>
 				<div class="col-sm-7">
 					<div class="responsive-video top-space" id="videoPlayer">
@@ -346,27 +351,27 @@
 							<!-- /Playlist Item -->
 							<!-- Playlist Item -->
 								<div class="playlist-list-item" >
-									<a href="docs/DIKSHA -Strategy _ Approach_Paper.pdf" download><i class="fa fa-download"></i> NTP Strategy & Approach Document</a>
+									<a href="docs/DIKSHA -Strategy _ Approach_Paper.pdf" target="_blank"><i class="fa fa-download"></i> NTP Strategy & Approach Document</a>
 								</div>
 							<!-- /Playlist Item -->
 							<!-- Playlist Item -->
 								<div class="playlist-list-item" >
-									<a href="docs/Andhra_Pradesh-DIKSHA-Vision_and_Roadmap.pptx" download><i class="fa fa-download"></i> Andhra Pradesh- DIKSHA - Vision and Roadmap</a>
+									<a href="docs/Andhra_Pradesh-DIKSHA-Vision_and_Roadmap.pptx" target="_blank"><i class="fa fa-download"></i> Andhra Pradesh- DIKSHA - Vision and Roadmap</a>
 								</div>
 							<!-- /Playlist Item -->
 							<!-- Playlist Item -->
 								<div class="playlist-list-item" >
-									<a href="docs/Maharashtra-DIKSHA-Vision_and_Roadmap.pptx" download><i class="fa fa-download"></i> Maharashtra- DIKSHA - Vision and Roadmap</a>
+									<a href="docs/Maharashtra-DIKSHA-Vision_and_Roadmap.pptx" target="_blank"><i class="fa fa-download"></i> Maharashtra- DIKSHA - Vision and Roadmap</a>
 								</div>
 							<!-- /Playlist Item -->
 							<!-- Playlist Item -->
 								<div class="playlist-list-item" >
-									<a href="docs/TN-Vision.pptx" download><i class="fa fa-download"></i> Tamil Nadu- DIKSHA - Vision and Roadmap</a>
+									<a href="docs/TN-Vision.pptx" target="_blank"><i class="fa fa-download"></i> Tamil Nadu- DIKSHA - Vision and Roadmap</a>
 								</div>
 							<!-- /Playlist Item -->
 							<!-- Playlist Item -->
 								<div class="playlist-list-item" >
-									<a href="docs/MHRD-Roadshow-DIKSHA.pptx" download><i class="fa fa-download"></i> MHRD Roadshow - DIKSHA</a>
+									<a href="docs/MHRD-Roadshow-DIKSHA.pptx" target="_blank"><i class="fa fa-download"></i> MHRD Roadshow - DIKSHA</a>
 								</div>
 							<!-- /Playlist Item -->
 							
@@ -378,15 +383,29 @@
     <!-- /Downloads and Reports -->
     
     <!-- Media Section -->
-		<div class="media-section container top-space foo" id="media">
+		<div class="media-section container top-space foo hash-fix" id="media">
 			<div class="row">
 				<div class="col-xs-12">
-					<h2 class="text-brown">Media</h2>
+					<h2 class="text-brown">DIKSHA in News</h2>
 				</div>
 				<!-- News Item-->
 				<div class="col-xs-12 news-item">
 					<a title="Visit Link" class="no-underline" target="_blank" href="http://www.thehindu.com/news/national/hrd-ministry-will-now-help-teachers-learn/article18448410.ece">
 						<h4>Hon. Minister Shri Prakash Javadekar launches the strategy and approach document to build a National Teacher Platform for teachers on 13th May 2017 in Bengaluru</h4>
+					</a>
+				</div>
+				<!-- /News Item-->
+				<!-- News Item-->
+				<div class="col-xs-12 news-item">
+					<a title="Visit Link" class="no-underline" target="_blank" href="https://theprint.in/2017/09/01/measures-needed-ensure-every-indian-school-trained-teachers-2019/">
+						<h4>What measures are needed to ensure that every Indian school has trained teachers by 2019?</h4>
+					</a>
+				</div>
+				<!-- /News Item-->
+				<!-- News Item-->
+				<div class="col-xs-12 news-item">
+					<a title="Visit Link" class="no-underline" target="_blank" href="http://www.livemint.com/Education/azxYcQZa3xQ7osUYebYeeI/Govt-plans-to-build-content-depository-for-improving-teachin.html">
+						<h4>Govt plans to build content depository for improving teaching standards</h4>
 					</a>
 				</div>
 				<!-- /News Item-->
@@ -397,31 +416,38 @@
     <hr />
     
     <!--Gov Sites-->
-		<div class="gov-sites container text-center top-space foo">
-			<div class="row">
+		<div class="gov-sites container text-center  foo">
+			<div class="sites-list top-space">
 				<!--Site Item-->
-					<div class="col-xs-3 col-xxxs-6">
+					<div class="site-item">
 						<a href="https://india.gov.in/" title="india.gov.in" target="_blank">
 							<img alt="india.gov.in" src="images/logos/india_gov_logo.png"/>
 						</a>
 					</div>
 				<!--/Site Item-->
 				<!--Site Item-->
-					<div class="col-xs-3 col-xxxs-6">
+					<div class="site-item">
 						<a href="http://mygov.in/" title="MyGov.in" target="_blank">
 							<img alt="MyGov.in" src="images/logos/my_gov_logo.png"/>
 						</a>
 					</div>
 				<!--/Site Item-->
 				<!--Site Item-->
-					<div class="col-xs-3 col-xxxs-6">
+					<div class="site-item">
 						<a href="http://mhrd.gov.in/" title="MHRD" target="_blank">
 							<img alt="MHRD" src="images/logos/mhrd-icon.png"/>
 						</a>
 					</div>
+				<!--Site Item-->
+				<!--/Site Item-->
+					<div class="site-item">
+						<a href="http://ncte-india.org/" title="ncte-india.org" target="_blank">
+							<img alt="ncte-india.org" src="images/logos/ncte.png"/>
+						</a>
+					</div>
 				<!--/Site Item-->
 				<!--Site Item-->
-					<div class="col-xs-3 col-xxxs-6">
+					<div class="site-item">
 						<a href="https://data.gov.in/" title="data.gov.in" target="_blank">
 							<img alt="data.gov.in" src="images/logos/datagov_logo.png"/>
 						</a>
@@ -433,44 +459,54 @@
     
     <hr class="top-space" />
     
-    <!--Partners-->
-		<div class="partners container top-space foo">
+    <!--Champion States-->
+		<div class="champions container top-space foo">
 			<div class="row">
 				<div class="col-xs-12">
-					<h3 class="text-uppercase text-center">Our Partners</h3>
+					<h3 class="text-uppercase text-center">Champion States</h3>
 				</div>
 				<div class="col-xs-12">
-					<div class="owl-carousel parter-carousel text-center">
-						<div class="partner"><img alt="Akshara Foundation" src="images/partners/AksharaFoundation.png" /></div>
-						<div class="partner"><img alt="British Council" src="images/partners/British_Council.png" /></div>
-						<div class="partner"><img alt="Centa" src="images/partners/Centa.jpg" /></div>
-						<div class="partner"><img alt="Clix" src="images/partners/Clix.png" /></div>
-						<div class="partner"><img alt="Educational Initiatives" src="images/partners/EducationalInitiatives.png" /></div>
-						<div class="partner"><img alt="Firki" src="images/partners/Firki.png" /></div>
-						<div class="partner"><img alt="Meghshala" src="images/partners/Meghshala.png" /></div>
-						<div class="partner"><img alt="Study Hall" src="images/partners/study-hall.png" /></div>
-						<div class="partner"><img alt="Teacher App" src="images/partners/TeacherApp.png" /></div>						
+					<div class="sites-list top-space">
+						<!--Site Item-->
+							<div class="site-item site-1">
+								<img alt="APEKX" src="images/championpartners/APEKX.png"/>
+							</div>
+						<!--/Site Item-->
+						<!--Site Item-->
+							<div class="site-item site-2">
+								<img alt="Andhra Pradesh Govt" src="images/championpartners/APGovt.png"/>
+							</div>
+						<!--/Site Item-->
+						<!--Site Item-->
+							<div class="site-item site-3">
+								<img alt="Maharashtra Govt" src="images/championpartners/MH.png"/>
+							</div>
+						<!--/Site Item-->
+						<!--Site Item-->
+							<div class="site-item site-4">
+								<img alt="Tamil Nadu Govt" src="images/championpartners/TNGovt.png"/>
+							</div>
+						<!--/Site Item-->
 					</div>
 				</div>
 			</div>
 		</div>
-    <!--/Partners-->
+    <!--/Champion States-->
     
     <!-- Footer -->
-		<footer class="bg-blue text-white foo" id="contact">
+		<footer class="bg-blue text-white top-space foo" id="contact">
 			<div class="container">
 				<div class="row">
-					<div class="col-xs-6 col-xxxs-12 padding10">
-						<span>Contact for queries: <a href="mailto:info@diksha.gov.in" class="text-white">info@diksha.gov.in</a></span>
+					<div class="col-xs-8 col-xxxs-12 padding10">
+						<address><span>Contact for queries: <a href="mailto:ntp@ncte-india.org" class="text-white" target="_top" title="Contact Us">ntp@ncte-india.org</a></span></address>
 					</div>
-					<div class="col-xs-6 col-xxxs-12 text-right padding10">
+					<div class="col-xs-4 col-xxxs-12 text-right padding10">
 						<span>&copy; 2017, DIKSHA</span>
 					</div>
 				</div>
 			</div>
 		</footer>
     <!-- /Footer -->
-    
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
