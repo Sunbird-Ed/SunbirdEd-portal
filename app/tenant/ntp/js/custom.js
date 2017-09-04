@@ -63,7 +63,7 @@ $('.parter-carousel').owlCarousel({
 function changeVideo(videoid) {
 	$("#videoPlayer iframe").remove();
 	$('<iframe frameborder="0" allowfullscreen></iframe>')
-		.attr("src", "https://www.youtube.com/embed/" + videoid + "?rel=0")
+		.attr("src", "https://www.youtube.com/embed/" + videoid + "?rel=0&amp;showinfo=0")
 		.appendTo("#videoPlayer");
 	}
 	$('.playlist-cover').delegate('.playlist-list-item', 'click', function() {
