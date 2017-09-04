@@ -225,7 +225,7 @@ angular.module('playerApp')
                             name: 'Home',
                             link: 'home'
                         }, {
-                            name: 'Courses',
+                            name: 'Library',
                             link: 'learn'
                         }, {
                             name: $stateParams.name,
