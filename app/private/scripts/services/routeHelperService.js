@@ -22,7 +22,7 @@ angular.module('playerApp')
                         Player: 'Library',
                         Search: $stateParams ? $stateParams.type : 'All',
                         TocPlayer: 'Courses',
-                        PreviewCollection: 'Courses',
+                        PreviewCollection: 'Library',
                         Profile: 'Users',
                         PublicProfile: 'Users' };
                     if (searchEnabledStates.indexOf(stateName) >= 0) {
