@@ -379,9 +379,19 @@ angular.module('playerApp').directive('search', function () {
                         || $rootScope.search.selectedSearchKey === 'Organisations') {
                     $state.go('Profile');
                 }
-                var closeUrl = ($rootScope.search.selectedSearchKey === 'All')
-                        ? 'Home' : $rootScope.search.selectedSearchKey;
-                $state.go(closeUrl);
+               
+               if($rootScope.search.selectedSearchKey === 'All')
+               {
+                $state.go('Home');
+               }
+               else if($rootScope.search.selectedSearchKey === 'Library'){
+                  $state.go('Resources'); 
+               }
+               else
+               {
+                   $state.go($rootScope.search.selectedSearchKey);
+               }
+                
             };
             $rootScope.search.setSearchKey = function (key) {
                 $rootScope.$emit('setSearchKey', { key: key });
