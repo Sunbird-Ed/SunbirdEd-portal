@@ -84,13 +84,20 @@ $(document).ready(function(){
 });
 
 var introVideo=document.getElementById("introVideo"); 
-
 function playPause(){ 
 	if (introVideo.paused) 
 		introVideo.play(); 
 	else 
 		introVideo.pause(); 
 } 
+
+var presentation=document.getElementById("presentation");
+function playPausePresentation(){ 
+	if (presentation.paused) 
+		presentation.play(); 
+	else 
+		presentation.pause(); 
+}
 
 
 jQuery(window).on('scroll',function(e) {
@@ -104,3 +111,31 @@ jQuery(window).on('scroll',function(e) {
 		jQuery('#nav-bar').removeClass('nav-fix');
     }
 });
+
+
+
+$(document).ready(function(){
+  // Add smooth scrolling to all links
+  $("a").on('click', function(event) {
+
+    // Make sure this.hash has a value before overriding default behavior
+    if (this.hash !== "") {
+      // Prevent default anchor click behavior
+      event.preventDefault();
+
+      // Store hash
+      var hash = this.hash;
+
+      // Using jQuery's animate() method to add smooth page scroll
+      // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+      $('html, body').animate({
+        scrollTop: $(hash).offset().top
+      }, 800, function(){
+   
+        // Add hash (#) to URL when done scrolling (default click behavior)
+        window.location.hash = hash;
+      });
+    } // End if
+  });
+});
+
