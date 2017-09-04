@@ -106,13 +106,14 @@ var public_bower_js = [
     "dist/thirdparty/bower_components/angular-uuid4/angular-uuid4.min.js",
     "dist/thirdparty/bower_components/lodash/lodash.js",
     "dist/thirdparty/bower_components/moment/min/moment-with-locales.min.js",
-    "dist/thirdparty/bower_components/jquery.fancytree/dist/jquery.fancytree.min.js",
-    "dist/thirdparty/jquery.fancytree/dist/jquery.fancytree.min.js"
+    "dist/thirdparty/bower_components/angular-sanitize/angular-sanitize.min.js",
+    "dist/thirdparty/bower_components/jquery.fancytree/dist/jquery.fancytree.min.js"
 ];
 
 var public_bower_css = [
     "dist/thirdparty/bower_components/semantic-ui-calendar/dist/calendar.min.css",
-    "dist/thirdparty/bower_components/izitoast/dist/css/iziToast.min.css"
+    "dist/thirdparty/bower_components/izitoast/dist/css/iziToast.min.css",
+    "dist/thirdparty/bower_components/jquery.fancytree/dist/skin-win8/ui.fancytree.min.css"
 ];
 
 var public_scripts = [
@@ -163,7 +164,6 @@ var private_bower_js = [
     "dist/thirdparty/bower_components/izitoast/dist/js/iziToast.min.js",
     "dist/thirdparty/bower_components/chart.js/dist/Chart.min.js",
     "dist/thirdparty/bower_components/angular-chart.js/dist/angular-chart.min.js",
-    "dist/thirdparty/jquery.fancytree/dist/jquery.fancytree.min.js",
     "dist/thirdparty/semantic-tree-picker/semantic-ui-tree-picker.js",
     "dist/thirdparty/libs/generateAndDownloadCSV.min.js"
 ];
