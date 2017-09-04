@@ -14,7 +14,8 @@ angular.module('loginApp', [
     'loginApp.labels',
     'loginApp.errorMessages',
     'loginApp.config',
-    'uuid4'
+    'uuid4',
+    'ngSanitize'
 ])
   .controller('loginCtrl', ['labels', '$rootScope', 'errorMessages',
       function (labels, $rootScope, errorMessages) {
