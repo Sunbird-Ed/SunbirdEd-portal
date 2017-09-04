@@ -319,11 +319,21 @@ h1.logo {
 }
 footer a:hover,
 footer a:active,
-footer afocus{
+footer a:focus,
+footer a:visited{
 	color:#fff;
 	text-decoration:underline;
 }
 address{margin:0;}
+.alpha-list{
+	list-style-type: lower-alpha;
+}
+.lower-roman{
+	list-style-type: lower-roman;
+}
+.list-circle{
+	list-style-type: circle;
+}
 /*Above 768px*/
 @media only screen and (min-width: 768px){
 	.owl-dots{
