@@ -99,13 +99,16 @@
                             if (nodeData.key !== -1) {
                                 cpvm.expandMe(nodeData.key, nodeData.data);
                             }
+                        },
+                        create:function(evt,data){
+                            $('.fancytree-container').addClass('fancytree-connectors');
                         }
                     });
-                    $('.fancytree-container').addClass('fancytree-connectors');
+                   
                 }, 0);
             };
             cpvm.expandMe = function (index, item) {
-                if (item && item.mimeType !== 'application/vnd.ekstep.content-collection') {
+                if (item && item.mimeType && item.mimeType !== 'application/vnd.ekstep.content-collection') {
                     cpvm.playContent(item);
                 } else {
                     var accIcon = $(index.target).closest('.title').find('i');
