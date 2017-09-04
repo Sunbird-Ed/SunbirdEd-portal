@@ -53,6 +53,7 @@ angular.module('loginApp')
                             $state.go('Landing');
                             return;
                         }
+                        $rootScope.titleName = res.result.content.name;
                         window.localStorage.setItem('redirectUrl', '/course/' + toc.courseId + '/yes');
                         toc.loader.showLoader = false;
                         res.result.content.children = _.sortBy(
@@ -140,7 +141,7 @@ angular.module('loginApp')
             toc.getTreeData = function (contentData, parent) {
                 if (contentData.mimeType
             !== 'application/vnd.ekstep.content-collection') {
-                  parent.push({
+                    parent.push({
                         title: '<span id="node' + toc.treeKey + '" class="padded">' +
                     '<img src="' + toc.getContentIcon(contentData.mimeType)
                     + '" class="tocCourseStructureImg">' + contentData.name
@@ -182,17 +183,17 @@ angular.module('loginApp')
                 return 0;
             };
 
-                 toc.getContentIcon = function (contentMimeType,stsClass) {
-                stsClass=stsClass||'';
+            toc.getContentIcon = function (contentMimeType, stsClass) {
+                stsClass = stsClass || '';
                 var contentIcons = {
-                    'application/pdf': '/images/pdf'+stsClass+'.png',
-                    'video/mp4': '/images/video'+stsClass+'.png',
-                    'video/x-youtube':  '/images/video'+stsClass+'.png',
-                    'video/youtube':  '/images/video'+stsClass+'.png',
-                    'application/vnd.ekstep.html-archive':  '/images/app'+stsClass+'.png',
-                    'application/vnd.ekstep.ecml-archive': '/images/app'+stsClass+'.png',
-                    'application/epub': '/images/app'+stsClass+'.png',
-                    'application/vnd.ekstep.h5p-archive':  '/images/video'+stsClass+'.png',
+                    'application/pdf': '/images/pdf' + stsClass + '.png',
+                    'video/mp4': '/images/video' + stsClass + '.png',
+                    'video/x-youtube': '/images/video' + stsClass + '.png',
+                    'video/youtube': '/images/video' + stsClass + '.png',
+                    'application/vnd.ekstep.html-archive': '/images/app' + stsClass + '.png',
+                    'application/vnd.ekstep.ecml-archive': '/images/app' + stsClass + '.png',
+                    'application/epub': '/images/app' + stsClass + '.png',
+                    'application/vnd.ekstep.h5p-archive': '/images/video' + stsClass + '.png',
 
                     'application/vnd.ekstep.content-collection': 'large folder'
                + ' open outline icon grey icon'
