@@ -137,7 +137,7 @@
           <div class="header announcementCard-header ">
             <span class="header cardsHeading "> Basic Profile</span>
           </div>
-          <div class="profileitems ui relaxed aligned list ">
+          <div class="profileitems profile-des ui relaxed aligned list ">
                <div class="item ">
               <div class="right floated content ">
                 <span >{{publicProfile.user.location}}</span>
@@ -173,15 +173,14 @@
               </div>
             </div>
             <div class="item ">
-             <div class="iniformationcontent content ">
-             {{$root.labels.PROFILE.BASIC_PROFILE.subjects}}
-              </div>
               <div class="right floated content ">
                 <span ng-repeat="sub in publicProfile.user.subject">
                   <span>{{sub}}<span ng-if=!$last>,</span></span>
                 </span>
               </div>
-             
+             <div class="iniformationcontent content ">
+             {{$root.labels.PROFILE.BASIC_PROFILE.subjects}}
+              </div>             
             </div>
             <div class="item ">
               <div class="right floated content ">
