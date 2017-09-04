@@ -25,6 +25,18 @@ angular.module('playerApp')
           $('#batchStatusOptions').dropdown();
           batch.pageLimit = 9;
           batch.pager = {};
+          
+          function showErrorMessage(isClose, message, messageType, messageText) {
+              var error = {};
+              error.showError = true;
+              error.isClose = isClose;
+              error.message = message;
+              error.messageType = messageType;
+              if (messageText) {
+                  error.messageText = messageText;
+              }
+              return error;
+          }
 
           batch.listBatches = function (pageNumber) {
               pageNumber = pageNumber || 1;
@@ -73,6 +85,11 @@ angular.module('playerApp')
                       batch.totalCount = response.result.response.count;
                       batch.pager = PaginationService.GetPager(response.result.response.count,
                         pageNumber, batch.pageLimit);
+                      if (batch.batchList.length === 0) {
+                              batch.error = showErrorMessage(true,
+                                $rootScope.errorMessages.WORKSPACE.BATCHES.NO_CONTENT,
+                                $rootScope.errorMessages.COMMON.NO_RESULTS);
+                          }
                   } else {
                       toasterService.error(errorMessages.BATCH.SEARCH.FAILED);
                   }
