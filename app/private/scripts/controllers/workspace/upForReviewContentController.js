@@ -12,7 +12,7 @@ angular.module('playerApp')
   .controller('UpForReviewContentController', ['contentService', 'searchService', 'config',
       '$rootScope', '$scope', '$state', 'toasterService', 'PaginationService',
       function (contentService, searchService, config, $rootScope, $scope, $state, toasterService,
-      PaginationService) {
+        PaginationService) {
           var upForReviewContent = this;
           upForReviewContent.userId = $rootScope.userId;
           upForReviewContent.contentStatus = ['Review'];
@@ -59,17 +59,17 @@ angular.module('playerApp')
                       upForReviewContent.upForReviewContentData = [];
                       if (res.result.content) {
                           upForReviewContent.upForReviewContentData =
-                res.result.content.filter(function (contentData) {
-                    return contentData.createdBy !== upForReviewContent.userId;
-                });
-                          upForReviewContent.totalCount = res.result.count;
-                          upForReviewContent.pager = PaginationService.GetPager(res.result.count,
-                pageNumber, upForReviewContent.pageLimit);
-                          if (upForReviewContent.upForReviewContentData.length === 0) {
-                              upForReviewContent.error = showErrorMessage(true,
+                            res.result.content.filter(function (contentData) {
+                                return contentData.createdBy !== upForReviewContent.userId;
+                            });
+                      }
+                      upForReviewContent.totalCount = res.result.count;
+                      upForReviewContent.pager = PaginationService.GetPager(res.result.count,
+                            pageNumber, upForReviewContent.pageLimit);
+                      if (upForReviewContent.upForReviewContentData.length === 0) {
+                          upForReviewContent.error = showErrorMessage(true,
                   $rootScope.errorMessages.WORKSPACE.UP_FOR_REVIEW.NO_CONTENT,
                   $rootScope.errorMessages.COMMON.NO_RESULTS);
-                          }
                       }
                   } else {
                       upForReviewContent.loader.showLoader = false;
