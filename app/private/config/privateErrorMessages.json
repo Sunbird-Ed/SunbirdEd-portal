@@ -83,6 +83,9 @@
                 "FAILED": "Fetching review content failed, please try again later...",
                 "NO_CONTENT": "You don't have any content in review..."
             },
+            "BATCHES": {
+                "NO_CONTENT": "You don't have any batches..."
+            },
             "PUBLISHED": {
                 "START": "We are fetching published content...",
                 "FAILED": "Fetching published content failed, please try again later...",
