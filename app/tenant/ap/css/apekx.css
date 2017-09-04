@@ -7,18 +7,35 @@
 	padding-right: 0;
 }
 
+.logo-header img {
+	max-width: 95%;
+}
+
 .logo-right {
 	text-align: right;
 }
 
-.logo-apekx {
+.logo-partner {
 	width: 300px;
 	height: auto;
+}
+
+img.logo-diksha {
+    margin-top: 10px;
+}
+
+@media (max-width: 992px) {
+	.logo-right {
+		margin-top: 45px;
+	}
 }
 
 @media (max-width: 768px) {
 	.logo-left, .logo-right {
 		text-align: center;
+	}
+	.logo-right {
+		margin-top: 40px;
 	}
 }
 
@@ -27,24 +44,24 @@
 }
 
 .navbar ul {
-	padding: 15px 0;
+	padding: 7px 0;
     font-size: 20px;
 }
 
 .navbar ul li{
-	padding-right: 20px;
+	padding-right: 50px;
 }
 
 .navbar-brand {
 	background-color: #f7a047;
-    padding: 23px 65px;
+    padding: 15px 35px;
     text-align: right;
     margin: 0;
 }
 
 .top-banner {
 	height: 325px;
-	margin-bottom: 250px;
+	margin-bottom: 220px;
 	background-image: url('../images/banner.png');
 	background-repeat: no-repeat;
 }
@@ -55,24 +72,34 @@
 }
 
 #carousel {
-	margin-top: 80px;
+	margin-top: 50px;
     width: 700px;
     height: 450px;
 }
 
 #carousel .carousel-inner {
     height: 100%;
-    border-radius: 5px;
+    -webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
 }
 
 .carousel-item {
-    height: 540px;
+    height: 565px;
     min-height: 250px;
     background: no-repeat center center scroll;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
+}
+
+.carousel-control-next-icon {
+	background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23333' viewBox='0 0 8 8'%3E%3Cpath d='M1.5 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E");
+}
+
+.carousel-control-prev-icon {
+	background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23333' viewBox='0 0 8 8'%3E%3Cpath d='M4 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E");
 }
 
 .intro-container, .vision-container, .objectives-container {
@@ -83,6 +110,11 @@
 .intro-title, .objectives-title {
 	color: #f7a047;
 	font-weight: bold;
+}
+
+.ext-link-icon {
+	font-size: 10px;
+	margin-left: 5px;
 }
 
 .vision-container {
@@ -118,14 +150,39 @@
 }
 
 #carousel2 img {
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
 	border-radius: 50%;
     border: 2px solid #dedede;
     width: 300px;
+    -webkit-box-shadow: 0px 10px 25px 0px #666666;
+	-moz-box-shadow: 0px 10px 25px 0px #666666;
+	box-shadow: 0px 10px 25px 0px #666666;
+}
+
+.dignitary-designation-inline {
+	font-size: 14px;
+}
+
+#carousel2 .carousel-caption .quote-text {
+	color: #777777;
+	margin-top: 25px;
+}
+
+#carousel2 .carousel-caption .quote-text .fa-quote-left {
+	margin-right: 10px;
+	font-size: 30px;
+}
+
+#carousel2 .carousel-caption .quote-text .fa-quote-right {
+	margin-left: 10px;
+	font-size: 30px;
+	position: absolute;
 }
 
 #carousel2 .carousel-caption .dignitary-name{
     color: #002A55;
-    margin-top: 30px;
+    margin-top: 15px;
     font-size: 20px;
     margin-bottom: 0;
 }
@@ -152,6 +209,18 @@
 	color: #787878;
     font-size: 18px;
     margin: 10px 0;
+}
+
+#scrollTop {
+	position: fixed;
+    right: 50px;
+    font-size: 55px;
+    bottom: 30px;
+    color: #777777;
+    z-index: 100;
+	display: none;
+	text-decoration: none;
+	cursor: pointer;
 }
 
 footer {
