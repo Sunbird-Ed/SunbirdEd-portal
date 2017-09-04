@@ -113,7 +113,6 @@ var public_bower_js = [
 var public_bower_css = [
     "dist/thirdparty/bower_components/semantic-ui-calendar/dist/calendar.min.css",
     "dist/thirdparty/bower_components/izitoast/dist/css/iziToast.min.css",
-    "dist/thirdparty/bower_components/jquery.fancytree/dist/skin-win8/ui.fancytree.min.css"
 ];
 
 var public_scripts = [
@@ -170,7 +169,6 @@ var private_bower_js = [
 
 var private_bower_css = [
     "dist/thirdparty/libs/semantic-ui-tree-picker/semantic-ui-tree-picker.css",
-    "dist/thirdparty/bower_components/jquery.fancytree/dist/skin-win8/ui.fancytree.min.css",
     "dist/thirdparty/bower_components/izimodal/css/iziModal.min.css",
     "dist/thirdparty/bower_components/file-upload/fine-uploader/fine-uploader-new.min.css",
     "dist/thirdparty/bower_components/semantic-ui-calendar/dist/calendar.min.css",
