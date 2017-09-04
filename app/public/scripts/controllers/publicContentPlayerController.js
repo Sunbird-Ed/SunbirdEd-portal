@@ -6,6 +6,7 @@ angular.module('loginApp')
         function (playerTelemetryUtilsService, $state, $scope,
         $timeout, $stateParams, $rootScope, config, contentService, toasterService) {
             $scope.isHeader = $scope.isheader;
+            $scope.isClose = $scope.isclose;
             $scope.showModalInLectureView = true;
             $scope.contentProgress = 0;
 
@@ -94,7 +95,10 @@ angular.module('loginApp')
                             $state.go('PublicCollection', { contentId: contentData.identifier, name: contentData.name });
                         } else {
                             showPlayer(response.result.content);
-                            window.localStorage.setItem('redirectUrl', '/content/' + contentId + '/' + response.result.content.name);
+                            if (!$scope.isClose) {
+                                $rootScope.titleName = response.result.content.name;
+                                window.localStorage.setItem('redirectUrl', '/content/' + contentId + '/' + response.result.content.name);
+                            }
                         }
                     } else {
                         toasterService.error($rootScope.errorMessages.Content.Failed);
@@ -107,14 +111,12 @@ angular.module('loginApp')
             }
 
             $scope.close = function () {
-                $state.go('Landing');
-
                 $scope.visibility = false;
-                playerTelemetryUtilsService.endTelemetry({ progress: $scope.contentProgress });
-                window.removeEventListener('renderer:telemetry:event', function () {
-                    org.sunbird.portal.eventManager.dispatchEvent('sunbird:player:telemetry',
-                                                    event.detail.telemetryData);
-                });
+                // playerTelemetryUtilsService.endTelemetry({ progress: $scope.contentProgress });
+                // window.removeEventListener('renderer:telemetry:event', function () {
+                //     org.sunbird.portal.eventManager.dispatchEvent('sunbird:player:telemetry',
+                //                                     event.detail.telemetryData);
+                // });
             };
 
             $scope.init = function () {

@@ -29,6 +29,7 @@
             };
             cpvm.showPlayer = false;
             cpvm.name = $state.params.name;
+            cpvm.closeUrl = $stateParams.backState || 'Resources';
             cpvm.loadData = function () {
                 cpvm.loader.showLoader = true;
                 cpvm.loader.loaderMessage = $rootScope.errorMessages.COLLECTION.PREVIEW.START;
