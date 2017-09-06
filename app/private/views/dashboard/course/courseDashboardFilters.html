@@ -45,7 +45,7 @@
     </div>
     <!-- Blank six wide column-->
     <div ng-if="courseDashboard.dataset == 'progress'" class="six wide column padding-top-20 ng-scope"></div>
-    <div class="one wide column padding-top-20" ng-if="courseDashboard.dataset == 'progress' && !courseDashboard.showLoader">
+    <div class="one wide column padding-top-20 padding-right-5" ng-if="courseDashboard.dataset == 'progress' && !courseDashboard.showLoader">
       <a class="ui item basic icon circular float-ContentRight" href="Javascript:void(0);" data-tooltip="Close the dashboard">
         <i class="ui remove icon CloseButtonFont" ng-click="toc.showCourseDashboard = false;courseDashboard.resetDropdown();"></i>
       </a>
