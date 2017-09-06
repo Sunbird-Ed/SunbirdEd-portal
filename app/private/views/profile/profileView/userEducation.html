@@ -15,12 +15,12 @@
                     {{education.grade}}
                     <span ng-if="education.name && education.grade ">,&nbsp</span>
                     {{education.name}}
-                    <span ng-if="education.boardOrUniversity">,&nbsp</span>
+                    <span ng-if="education.boardOrUniversity &&education.yearOfPassing">,&nbsp</span>
                     {{education.boardOrUniversity}}
                     <br/>
                    
-                    <span ng-if="education.yearOfPassing"> {{education.yearOfPassing}}</span>
-                    <span ng-if="education.percentage">,&nbsp</span>
+                    <span ng-if="education.yearOfPassing "> {{education.yearOfPassing}}</span>
+                    <span ng-if="education.percentage && education.yearOfPassing">,&nbsp</span>
                     <span ng-if="education.percentage">{{education.percentage}}</span>
                   
                  
