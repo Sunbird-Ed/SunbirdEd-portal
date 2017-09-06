@@ -26,6 +26,9 @@ angular.module('playerApp') // add those all values
                   publicProfile.loader.showLoader = false;
                   if (res.responseCode === 'OK') {
                       publicProfile.user = res.result.response;
+                      publicProfile.user.dob = publicProfile.user.dob
+                                                ? new Date(publicProfile.user.dob)
+                                                : publicProfile.user.dob;
                   } else {
                       toasterService.error($rootScope.errorMessages.SEARCH.USER.PROFILE_FAILED);
                   }
