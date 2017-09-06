@@ -166,7 +166,7 @@
            
             <div class="item ">
               <div class="right floated content ">
-                <span >{{publicProfile.user.dob}}</span>
+                <span >{{publicProfile.user.dob | date : "dd/MM/y"}}</}}</span>
               </div>
               <div class="iniformationcontent content ">
                {{$root.labels.PROFILE.BASIC_PROFILE.dob}}

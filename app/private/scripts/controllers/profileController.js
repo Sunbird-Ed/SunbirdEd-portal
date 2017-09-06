@@ -41,6 +41,7 @@ angular.module('playerApp') // add those all values
                   var profileData = angular.copy(userProfile.result.response);
                   profile.fullName = profileData.firstName + ' ' + profileData.lastName;
                   profile.email = profileData.email;
+                  profileData.dob = profileData.dob ? new Date(profileData.dob) : profileData.dob;
                   profile.user = profileData;
 
                   if (profileData.jobProfile.length) {
