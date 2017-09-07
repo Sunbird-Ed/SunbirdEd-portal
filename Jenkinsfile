@@ -22,16 +22,16 @@ node('build-slave') {
          env.NODE_ENV = "build"
 
          print "Environment will be : ${env.NODE_ENV}"
-         sh('sudo ./player/build.sh')
+         sh('sudo ./build.sh')
 
        }
 
        stage('Publish'){
 
          echo 'Push to Repo'
-         dir('./player') {
+         dir('.') {
           sh 'ARTIFACT_LABEL=bronze ./dockerPushToRepo.sh'
-          sh './app/metadata.sh > metadata.json'
+          sh './src/metadata.sh > metadata.json'
           sh 'cat metadata.json'
           archive includes: "metadata.json"
          }
