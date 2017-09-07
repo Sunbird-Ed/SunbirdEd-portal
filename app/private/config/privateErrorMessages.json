@@ -272,7 +272,7 @@
             "uploadingOrgs": "Uploading Organizations",
             "uploadingUsers": "Uploading users",
             "notCSVFile": "Please upload file in csv formate only",
-            "bulkUploadErrorMessage": "you should enter Provider and External Id Or Organization Id",
+            "bulkUploadErrorMessage": "You should enter Provider and External Id Or Organization Id",
             "statusSuccess": "Status fetched successfully"
         },
         "BATCH": {
