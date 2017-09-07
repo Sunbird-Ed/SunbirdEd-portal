@@ -932,22 +932,22 @@ div:focus {
 }
 .slick-prev,
 .slick-next {
-  right: -20px !important;
-  top: 37% !important;
+  right: -10px !important;
+  top: 40% !important;
   border-top-left-radius: 2px !important;
   border-bottom-left-radius: 2px !important;
   position: absolute !important;
   font-size: 24px !important;
   z-index: 3 !important;
   transition: .3s !important;
-  height: auto !important;
-  width: 46px !important;
-  padding: 30px 10px !important;
-  border-radius: 0 !important;
+  height: 40px !important;
+  width: 40px !important;
+  padding: 10px 10px !important;
+  border-radius: 50% !important;
   background: rgba(255, 255, 255, 0.9) !important;
-  box-shadow: -2px 0 3px -1px rgba(0, 0, 0, 0.2) !important;
+  box-shadow: 0px 1px 2px 2px rgba(0, 0, 0, 0.3) !important;
   top: 80px;
-  opacity: .8;
+  opacity: 1;
   line-height: 0;
   display: block;
   margin-top: -10px;
@@ -956,8 +956,9 @@ div:focus {
   border: none;
   outline: none;
 }
-slick-prev:before,
-.slick-next:before {
+.slick-prev:before {
+  left: -20px !important;
+  content: url(../images/Backword.png) !important;
   font-family: 'slick';
   font-size: 20px;
   line-height: 1;
@@ -966,8 +967,8 @@ slick-prev:before,
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-.slick-prev:before,
 .slick-next:before {
+  content: url(../images/Forward.png) !important;
   font-family: 'slick';
   font-size: 20px;
   line-height: 1;
@@ -1090,6 +1091,11 @@ slick-prev:before,
 }
 .ui.tree-picker.modal .header .menu {
   margin-top: -12px !important;
+}
+/*it is a quick fix need to updated with semantic libray*/
+.ui.modal .scrolling.content {
+  max-height: calc(70vh);
+  overflow: auto;
 }
 .noResultContainer {
   margin-top: 12% !important;
