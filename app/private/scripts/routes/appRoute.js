@@ -947,12 +947,12 @@ angular.module('playerApp')
               }
           },
           onEnter: function ($stateParams, $rootScope, routeHelperService) {
-              $rootScope.courseActive = 'active';
+              $rootScope.profileActive = 'active';
               $rootScope.isPlayerPage = false;
               routeHelperService.loadRouteConfig('MyActivity', null);
           },
           onExit: function ($rootScope) {
-              $rootScope.courseActive = '';
+              $rootScope.profileActive = '';
           }
       });
   })
