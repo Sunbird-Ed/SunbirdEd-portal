@@ -59,7 +59,6 @@ var paths = {
         player.app + '/thirdparty/bower_components/slick-carousel/slick/slick.js',
         player.app + '/thirdparty/bower_components/angular-translate/angular-translate.js',// eslint-disable-line
         player.app + '/thirdparty/bower_components/angular-sanitize/angular-sanitize.js',
-        player.app + '/thirdparty/bower_components/file-upload/fine-uploader/fine-uploader.js',// eslint-disable-line
         player.app + '/thirdparty/bower_components/semantic-tree-picker/semantic-ui-tree-picker.js',// eslint-disable-line
         player.app + '/thirdparty/bower_components/angular-ui-router/release/stateEvents.min.jss',// eslint-disable-line
         player.app + '/thirdparty/bower_components/izitoast/dist/js/iziToast.min.js'
@@ -157,7 +156,6 @@ var private_bower_js = [
     "dist/thirdparty/bower_components/izimodal/js/iziModal.min.js",
     "dist/thirdparty/bower_components/jquery.fancytree/dist/jquery.fancytree.min.js",
     "dist/thirdparty/bower_components/lodash/dist/lodash.min.js",
-    "dist/thirdparty/bower_components/file-upload/fine-uploader/fine-uploader.min.js",
     "dist/thirdparty/bower_components/angular-uuid4/angular-uuid4.min.js",
     "dist/thirdparty/bower_components/js-md5/build/md5.min.js",
     "dist/thirdparty/bower_components/izitoast/dist/js/iziToast.min.js",
@@ -170,7 +168,6 @@ var private_bower_js = [
 var private_bower_css = [
     "dist/thirdparty/libs/semantic-ui-tree-picker/semantic-ui-tree-picker.css",
     "dist/thirdparty/bower_components/izimodal/css/iziModal.min.css",
-    "dist/thirdparty/bower_components/file-upload/fine-uploader/fine-uploader-new.min.css",
     "dist/thirdparty/bower_components/semantic-ui-calendar/dist/calendar.min.css",
     "dist/thirdparty/bower_components/izitoast/dist/css/iziToast.min.css"
 ];
@@ -216,8 +213,6 @@ var private_scripts = [
     "dist/private/scripts/controllers/workspace/reviewContentController.js",
     "dist/private/scripts/controllers/workspace/publishedContentController.js",
     "dist/private/scripts/controllers/workspace/allUploadedContentController.js",
-    "dist/private/scripts/controllers/workspace/contentCreationController.js",
-    "dist/private/scripts/controllers/workspace/editContentController.js",
     "dist/private/scripts/controllers/contentEditorController.js",
     "dist/private/scripts/controllers/collectionEditorController.js",
     "dist/private/scripts/controllers/genericEditorController.js",
@@ -255,7 +250,6 @@ var private_scripts = [
     "dist/private/scripts/directives/addNoteDirective.js",
     "dist/private/scripts/directives/permissionsDirective.js",
     "dist/private/scripts/directives/pageSectionDirective.js",
-    "dist/private/scripts/directives/fileUpload.js",
     "dist/private/scripts/directives/searchDirective.js",
     "dist/private/scripts/directives/contentFlagDirective.js",
     "dist/private/scripts/directives/batchCardDirective.js",
