@@ -2120,13 +2120,13 @@ ul.fancytree-container li {
 }
 .notelistscroll {
   height: 600px;
-  overflow-y: auto;
+  overflow-y: scroll;
   cursor: pointer;
   border-top: 0!important;
 }
 .notelistrightscroll {
   max-height: 600px;
-  overflow-y: scroll;
+  overflow-y: auto;
   cursor: pointer;
   border-top: 0!important;
 }
