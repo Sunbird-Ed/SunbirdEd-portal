@@ -10,8 +10,6 @@ org=$(e "${m}" "org")
 name=$(e "${m}" "name")
 version=$(e "${m}" "version")
 
-cp player/Dockerfile.Build .
-cp player/Dockerfile .
 
 docker build -f ./Dockerfile.Build -t ${org}/${name}:${version}-build . && \
 docker run --name=${name}-${version}-build ${org}/${name}:${version}-build && \
