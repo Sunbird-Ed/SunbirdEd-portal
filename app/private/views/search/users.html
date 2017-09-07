@@ -1,0 +1,58 @@
+<div ng-if="$root.search.selectedSearchKey=='Users' && admin.searchResult" ng-init="admin.addOrgNameToOrganizations();admin.getUserRoles()"   class="ui divided searchListInfo items">
+    <div class="userSearchCardHover item " ng-repeat="user in admin.searchResult" ng-init="admin.recievedBadge={}">
+        <div class="ui tiny image userSearchImage " ng-init="admin.getBadgeName(user);admin.newBadgeAssigned=true;user.hideBadge=false">
+            <img ng-src="{{user.avatar|| 'images/user_logo.png'}} ">
+        </div>
+        <div class="content ">
+            <a class="header " ng-click="user.status===1 && admin.openPublicProfile(user.identifier,user)">{{user.firstName}} &nbsp;{{user.lastName}}</a>
+            <a ng-if="user.status===1 && user.isEditableProfile " sb-permissions permission-only="SYSTEM_ADMINISTRATION,ORG_ADMIN" class="float-ContentRight">
+                <!-- update user roles -->
+                <span ng-click="admin.showModal(user.identifier,user.organisations);">
+                <i class="edit icon trashIcon-fontSize"></i>
+              </span>
+                <!-- delete user -->
+                <span>
+                <i class="trash outline icon trashIcon-fontSize"  
+                ng-click="admin.showdeleteModal(user.identifier,user.firstName,user.lastName);">
+                  </i>
+              <span>
+            </a>
+                <!-- assign badge user -->
+             <a class="float-ContentRight"
+              ng-if="!user.userBadgeS.length && user.status===1 && user.isEditableProfile" 
+              ng-hide="user.hideBadge"
+              sb-permissions permission-only="SYSTEM_ADMINISTRATION,ORG_ADMIN">
+                <img class="ui mini image badgeIconAlignment" src="images/badgeblue.png"
+                ng-click="admin.assignBadgeModal(user.identifier);">
+            </a> 
+            <!-- organization Name -->
+          <div class="meta ">
+            <span class="cinema ">
+              <span ng-repeat="org in user.organisations">
+                {{org.orgName}}
+                <span ng-if="!$last">,</span>
+                </span>
+                </span>
+        </div>
+        <div class="extra ">
+            <span class="" ng-if="user.userBadgeS">
+              <div class="ui label "  ng-repeat="badge in  user.userBadgeS track by $index">
+                {{badge.name}}
+              </div>
+        </span>
+           <div class="ui label " ng-if="admin.recievedBadge.name && admin.recievedBadge.userId===user.identifier">
+              <span ng-init= "user.hideBadge=true"> {{admin.recievedBadge.name }}</span>
+            </div>
+
+            <div class="ui label " ng-if="user.status===0">{{$root.labels.SEARCH.STATUS.INACTIVE}}</div>
+            <div class="ui label " ng-if="user.status===1">{{$root.labels.SEARCH.STATUS.ACTIVE}}</div>
+            <div class="ui label " ng-if="user.status===2">{{$root.labels.SEARCH.STATUS.BLOCKED}}</div>
+            <div class="ui label " ng-if="user.status===3">{{$root.labels.SEARCH.STATUS.RETIRED}}</div>
+        </div>
+    </div>
+</div>
+<div ng-include=" 'views/admin/updateRoleModal.html' "></div>
+<div ng-include=" 'views/admin/deleteUser.html' "></div>
+<div ng-include=" 'views/admin/badge/assignBadgeModal.html' "></div>
+
+</div>
