@@ -1,0 +1,29 @@
+{
+  "name": "semantic-ui-calendar",
+  "version": "0.0.8",
+  "main": [
+    "./dist/calendar.css",
+    "./dist/calendar.js"
+  ],
+  "ignore": [
+    "node_modules",
+    ".bowerrc",
+    ".gitignore",
+    ".jshintignore",
+    ".jshintrc",
+    "bower.json",
+    "gulpfile.js",
+    "package.json",
+    "README.md"
+  ],
+  "homepage": "https://github.com/mdehoog/semantic-ui-calendar",
+  "_release": "0.0.8",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.0.8",
+    "commit": "3830a10a05eec38c9b54a8d4c67e221a526addaf"
+  },
+  "_source": "https://github.com/mdehoog/semantic-ui-calendar.git",
+  "_target": "^0.0.8",
+  "_originalSource": "semantic-ui-calendar"
+}
