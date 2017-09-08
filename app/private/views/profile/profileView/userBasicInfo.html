@@ -33,7 +33,7 @@
         </div>
         <div class="item ">
             <div class="right floated content ">
-                <span >{{profileCtrl.basicProfile.dob}}</span>
+                <span >{{profileCtrl.basicProfile.dob | date : "dd/MM/y"}}</span>
             </div>
             <div class="iniformationcontent content ">
                 {{$root.labels.PROFILE.BASIC_PROFILE.dob}}
@@ -42,7 +42,7 @@
         <div class="item ">
             <div class="right floated content ">
                 <span >
-                    <span ng-repeat="lan in profileCtrl.basicProfile.language">{{lan}}</span>
+                    <span ng-repeat="lan in profileCtrl.basicProfile.language | orderBy:'toString()'">{{lan}}</span>
                 </span>
             </div>
             <div class="iniformationcontent content ">
@@ -51,7 +51,7 @@
         </div>
         <div class="item ">
             <div class="right floated content ">
-                                    <span ng-repeat="sub in profileCtrl.basicProfile.subject">{{sub}}
+                                    <span ng-repeat="sub in profileCtrl.basicProfile.subject | orderBy:'toString()'">{{sub}}
                         <span ng-show="!$last">,</span>
                     </span>
                

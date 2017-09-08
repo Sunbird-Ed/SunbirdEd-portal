@@ -8,7 +8,7 @@
  */
 angular.module('playerApp').directive('userSearch', function () {
     return {
-        templateUrl: 'views/admin/search.html',
+        templateUrl: 'views/search/userSearch.html',
         restrict: 'E',
         scope: {
             users: '=',

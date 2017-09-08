@@ -41,6 +41,7 @@ angular.module('playerApp') // add those all values
                   var profileData = angular.copy(userProfile.result.response);
                   profile.fullName = profileData.firstName + ' ' + profileData.lastName;
                   profile.email = profileData.email;
+                  profileData.dob = profileData.dob ? new Date(profileData.dob) : profileData.dob;
                   profile.user = profileData;
 
                   if (profileData.jobProfile.length) {
@@ -91,6 +92,9 @@ angular.module('playerApp') // add those all values
                               });
                           });
                       }
+                  }
+                  if (profile.isAvatarUpdate) {
+                      $rootScope.avatar = profileData.avatar;
                   }
               } else {
                   profile.loader.showLoader = false;
@@ -178,6 +182,7 @@ angular.module('playerApp') // add those all values
               profile.icon.append('container', 'user/' + profile.userId);
               contentService.uploadMedia(profile.icon).then(function (res) {
                   if (res && res.responseCode === 'OK') {
+                      profile.isAvatarUpdate = true;
                       profile.updateProfile({ avatar: res.result.url });
                   } else {
                       profile.loader.showLoader = false;
