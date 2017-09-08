@@ -57,7 +57,7 @@
     </div>
     <div class="required field" ng-init=" profileCtrl.setDropdownValue()">
         <label>{{$root.labels.PROFILE.BASIC_PROFILE.language}}</label>
-        <select name="language" id=languageSelect class="ui fluid dropdown" ng-value="option.value" ng-options=" language for language in profileCtrl.languages" ng-model="profileCtrl.user.language">
+        <select name="language" id=languageSelect class="ui fluid dropdown" ng-value="option.value" ng-options=" language for language in profileCtrl.languages | orderBy:'toString()'" ng-model="profileCtrl.user.language">
              <option value="" translate="languages">Language</option>
             </select>
     </div>
@@ -66,7 +66,7 @@
     <div class="field">
         <label>{{$root.labels.PROFILE.BASIC_PROFILE.subjects}}</label>
         <div class="field" ng-init=" profileCtrl.setSubject()">
-            <select id="setSubjects" class="ui fluid dropdown " multiple="" ng-model="profileCtrl.user.subject" ng-value="option.value" ng-options=" subject for subject in profileCtrl.subjects">
+            <select id="setSubjects" class="ui fluid dropdown " multiple="" ng-model="profileCtrl.user.subject" ng-value="option.value" ng-options=" subject for subject in profileCtrl.subjects | orderBy:'toString()'">
                                            </select>
         </div>
     </div>
