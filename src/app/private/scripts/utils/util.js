@@ -2,58 +2,53 @@
  * @author Manjunath Davanam <manjunathd@ilimi.in>
  */
 
-
 /**
  * Namespace for the sunbird portal
  */
-var content_portal = function() {};
+var content_portal = function () {};// eslint-disable-line
 window.org = { sunbird: {} };
-org.sunbird.portal = new content_portal();
+org.sunbird.portal = new content_portal();// eslint-disable-line
 
-org.sunbird.portal.init = function() {
-    console.info("Sunbrid portal init..");
+org.sunbird.portal.init = function () {
     org.sunbird.portal.addUnloadEvent();
     TelemetryService.registerEvents();
     org.sunbird.portal.telemetryInit();
 };
 
-
 /**
  * To add the any window unload events
  */
-org.sunbird.portal.addUnloadEvent = function() {
-    console.info("unload is registerd")
-    window.onbeforeunload = function(e) {
-        console.info("window unload is calling..")
+org.sunbird.portal.addUnloadEvent = function () {
+    window.onbeforeunload = function (e) {
         e = e || window.event;
         var y = e.pageY || e.clientY;
-        !y && org.sunbird.portal.eventManager.dispatchEvent("sunbird:window:unload", {
+        !y && org.sunbird.portal.eventManager.dispatchEvent('sunbird:window:unload', {// eslint-disable-line
             TelemetryData: TelemetryService._data
         });
     };
 };
 
-org.sunbird.portal.telemetryInit = function() {
+org.sunbird.portal.telemetryInit = function () {
     var _instance = {
-        correlationData: [{ "id": "", "type": "" }],
+        correlationData: [{ id: '', type: '' }],
         user: {
-            "uid": org.sunbird.portal.uid 
+            uid: org.sunbird.portal.uid
         },
-        otherData:{
+        otherData: {
             channel: org.sunbird.portal.channel,
-            pdata:{
-                "id": org.sunbird.portal.appid,
-                "ver": "1.0"
+            pdata: {
+                id: org.sunbird.portal.appid,
+                ver: '1.0'
             },
-            "etags": {
-                "app": [],
-                "partner": [],
-                "dims": org.sunbird.portal.dims
+            etags: {
+                app: [],
+                partner: [],
+                dims: org.sunbird.portal.dims
             },
-            "sid": org.sunbird.portal.sid,
-            "did": "",
-            "mid": ""
+            sid: org.sunbird.portal.sid,
+            did: '',
+            mid: ''
         }
-    }
-    org.sunbird.portal.eventManager.dispatchEvent('sunbird:telemetry:init', _instance);
-}
+    };
+    org.sunbird.portal.eventManager.dispatchEvent('sunbird:telemetry:init', _instance);// eslint-disable-line
+};

@@ -9,17 +9,17 @@
  * Main module of the application.
  */
 angular.module('playerApp', [
-        'ngCookies',
-        'ngRoute',
-        'playerApp.config',
-        'playerApp.errorMessages',
-        'playerApp.labels',
-        'ui.router',
-        'ngStorage',
-        'ui.pagedown',
-        'pdf',
-        'pascalprecht.translate',
-        'ngSanitize',
-        'ui.router.state.events',
-        'uuid4'
-    ]);
+    'ngCookies',
+    'ngRoute',
+    'playerApp.config',
+    'playerApp.errorMessages',
+    'playerApp.labels',
+    'ui.router',
+    'ngStorage',
+    'ui.pagedown',
+    'pascalprecht.translate',
+    'ngSanitize',
+    'ui.router.state.events',
+    'uuid4',
+    'chart.js'
+]);
