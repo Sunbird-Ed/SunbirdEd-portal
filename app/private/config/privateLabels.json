@@ -67,7 +67,7 @@
                 "contentUploadDescription": "You can upload content here."
             },
             "createLesson": {
-                "createLessonText": "Create Study material",
+                "createLessonText": "Create Study Material",
                 "lessonTitle": "Name",
                 "youCanFillThisDL": "These details can be filled when adding content to study material."
             },
