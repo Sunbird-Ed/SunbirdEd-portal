@@ -1,0 +1,200 @@
+<div ng-if="publicProfile.loader.showLoader">
+  <div class="ui grid" >
+  <div class="one wide column"></div>
+  <div class="ten wide column">
+    <app-loader data="{{publicProfile.loader}}"></app-loader>
+  </div>
+    <div class="one wide column"></div>
+  </div>
+  
+</div>
+<!-- header -->
+<div class="ui grid padding-topBottom-10 courseStructureHeader" ng-if="!publicProfile.loader.showLoader">
+    <div class="one wide column"></div>
+    <div class=" ten wide column">
+        <div class="ui grid">
+            <div class="eight wide column">
+                <div class="profileheader ui link items">
+                    <div class="ui grid">
+                        <div class="two wide column padding-top-none">
+                            <div class="userAvtarWrap field link ui small circular image header-image-profile" >
+                                 <img class="ui small circular image header-image-profile" src="{{publicProfile.user.avatar || 'images/user_logo.png'}}" >
+                            </div>
+                        </div>
+                        <div class="ten wide column profile-header-text padding-top-none">
+                            <div class="content padding-top-10">
+                                <div class="sectionHeading header">{{publicProfile.user.firstName}} &nbsp;{{publicProfile.user.lastName}}</div>
+                                <div class="meta profileViewSubHeader padding-bottom-10">
+                                    <span ng-if="publicProfile.user.location">{{publicProfile.user.location}}</span>
+                                </div>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="profilesettings four wide column">
+               <h5 class="ui right floated basic icon circular button" ng-click="publicProfile.close()">
+          <i class="ui remove icon"></i>
+      </h5>
+            </div>
+        </div>
+    </div>
+    <div class="one wide column"></div>
+</div>
+
+<!-- discription of profile -->
+<div class="ui grid" ng-if="!publicProfile.loader.showLoader">
+  <div class="one wide column"></div>
+  <div class="ten wide column">
+    <div class="ui grid">
+      <div class="twelve wide column">
+        <div class="margin-top-20 ui raised segment" >
+          <div class="header announcementCard-header">
+            <span class="header cardsHeading ng-binding"> Description </span>
+          </div>
+          <div class="description">
+            <p ng-if="!publicProfile.readMore">
+                {{publicProfile.user.profileSummary| limitTo: 120 }} &nbsp;
+              <span class="ui cardsKnowMore mouse-pointer"
+              ng-if="profileCtrl.summary.length > 120 && profileCtrl.readMore === false"
+              ng-click="publicProfile.readMore = true;"> ... Read More</span>
+            </p>
+            <p ng-if="publicProfile.readMore"> {{publicProfile.user.profileSummary}}&nbsp;
+              <span class="ui cardsKnowMore mouse-pointer" ng-click="publicProfile.readMore = false;">Read Less ...</span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="twelve wide column">
+        <div class="ui raised segment">
+          <div class="header announcementCard-header">
+            <span class="header cardsHeading">{{$root.labels.PROFILE.ADDRESS.header}} </span>
+          </div>
+          <div class="profileitems ui relaxed divided items" >
+            <div class="item" ng-repeat="address in publicProfile.user.address">
+              <img class="ui avatar image" src="/images/location.png">
+               <div class="content">
+                <p class=" header">{{address.addType}}</p>
+                <div class="description"> {{address.addressLine1}}<span ng-if="address.addressLine2"> , </span>{{address.addressLine2}}
+
+                    <p>{{address.city}}<span ng-if="address.state"> , </span>{{address.state}}
+                        <span ng-if="address.country">, </span>{{address.country}}
+                        <span ng-if="address.zipcode">, </span>{{address.zipcode}}</p>
+                </div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- experience -->
+       <div class="twelve wide column">
+        <div class="ui raised segment">
+          <div class="header announcementCard-header">
+            <span class="header cardsHeading">{{$root.labels.PROFILE.JOB_PROFILE.header}}</span>
+          </div>
+        <div class="profileitems ui relaxed divided items ">
+        <div class="item " ng-repeat="experience in publicProfile.user.jobProfile">
+            <img class="ui avatar image" src="/images/businessman.png">
+            <div class="content ">
+                <a class=" header ">{{experience.jobName}}</a>
+                <div class="description ">{{experience.role}}<span ng-if="experience.role">&nbsp;,&nbsp;</span>{{experience.orgName}}
+                    <p class="margin-bottom-0 " ng-if="experience.subject.length ">{{$root.labels.PROFILE.JOB_PROFILE.subjects}} : <span><span ng-repeat="sub in experience.subject ">{{sub}}<span ng-if="!$last ">,</span></span>
+                        </span>
+                    </p>
+                    <p ng-if="experience.joiningDate ">{{$root.labels.PROFILE.JOB_PROFILE.joiningDate}} : {{experience.joiningDate}} &nbsp;
+                        <span ng-if="experience.endDate ">, &nbsp;{{$root.labels.PROFILE.JOB_PROFILE.endDate}} : {{experience.endDate}}</span></p>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+      <!-- education -->
+      <div class="twelve wide column">
+        <div class="ui raised segment">
+          <div class="header announcementCard-header">
+            <span class="header cardsHeading">{{$root.labels.PROFILE.EDUCATION.header}}</span>
+          </div>
+        <div class="profileitems ui relaxed divided items ">
+       <div class="item" ng-repeat="education in publicProfile.user.education">
+
+            <img class="ui avatar image" src="/images/businessman.png">
+            <div class="content">
+                <a class=" header">{{education.degree}}</a>
+                <div class="description"> {{education.yearOfPassing}}<span ng-if="education.percentage">,&nbsp</span>{{education.percentage}}
+                    <br/>
+                    <p>{{education.grade}}<span ng-if="education.name ">,&nbsp</span>{{education.name}}<span ng-if="education.boardOrUniversity">,&nbsp</span>{{education.boardOrUniversity}}
+
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+      
+      <div class="twelve wide column">
+        <div class="ui raised segment ">
+          <div class="header announcementCard-header ">
+            <span class="header cardsHeading "> Basic Profile</span>
+          </div>
+          <div class="profileitems profile-des ui relaxed aligned list ">
+               <div class="item ">
+              <div class="right floated content ">
+                <span >{{publicProfile.user.location}}</span>
+              </div>
+              <div class="iniformationcontent content ">
+                {{$root.labels.PROFILE.BASIC_PROFILE.currentLocation}} 
+              </div>
+            </div>   
+             <div class="item ">
+              <div class="right floated content ">
+                  <span ng-repeat="grade in publicProfile.user.grade">
+                  <span>{{grade}}<span ng-if=!$last>,</span></span>
+              </div>
+              <div class="iniformationcontent content ">
+              {{$root.labels.PROFILE.BASIC_PROFILE.grades}}
+              </div>
+            </div>      
+            <div class="item ">
+              <div class="right floated content ">
+                <span >{{publicProfile.user.gender}}</span>
+              </div>
+              <div class="iniformationcontent content ">
+               {{$root.labels.PROFILE.BASIC_PROFILE.gender}}
+              </div>
+            </div>
+           
+            <div class="item ">
+              <div class="right floated content ">
+                <span >{{publicProfile.user.dob | date : "dd/MM/y"}}</}}</span>
+              </div>
+              <div class="iniformationcontent content ">
+               {{$root.labels.PROFILE.BASIC_PROFILE.dob}}
+              </div>
+            </div>
+            <div class="item ">
+              <div class="right floated content ">
+                <span ng-repeat="sub in publicProfile.user.subject">
+                  <span>{{sub}}<span ng-if=!$last>,</span></span>
+                </span>
+              </div>
+             <div class="iniformationcontent content ">
+             {{$root.labels.PROFILE.BASIC_PROFILE.subjects}}
+              </div>             
+            </div>
+            <div class="item ">
+              <div class="right floated content ">
+                <span ng-repeat="lan in publicProfile.user.language">
+                  <span>{{lan}}<span ng-if=!$last>
+              </div>
+              <div class="iniformationcontent content ">
+                {{$root.labels.PROFILE.BASIC_PROFILE.language}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="one wide column"></div>
+</div>

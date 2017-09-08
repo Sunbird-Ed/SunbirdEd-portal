@@ -18,6 +18,7 @@
 15. sunbird_appid (string Eg. sunbird.portal or ntp.portal)
 16. ekstep_env (string Eg. qa or prod)
 17. sunbird_default_tenant (string Eg: ntp)
+18. sunbird_api_auth_token (string Token to call learner apis)
 
 ##Pre Requirements
 1. Node

@@ -1,0 +1,41 @@
+<div class="ui content">
+    <div class="ui grid">
+        <div class="four wide column padding-top-30">
+            <div class="ui dropdown">
+                <div class="text">Ongoing Batches</div>
+                <i class="dropdown icon"></i>
+                <select ng-options="option.value as option.name for option in batch.statusOptions" ng-model="batch.status" ng-change="batch.listBatches()" id="batchStatusOptions">
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="ui three stackable cards">
+        <div class="link card mouse-pointer" ng-repeat="batchdata in batch.batchList track by $index">
+            <div class="image imageInCardsResponsive" ng-click="batch.showUpdateBatchModal(batchdata)">
+                <div class="ui top right attached black label" data="batchdata.participant.length">Batch of {{batch.participants[batchdata.id]}}</div>
+                <div class="ui fluid image">
+                    <img ng-src="../images/sunbird_logo.png">
+                </div>
+                <div class="cardImageText center aligned sliderCardHeading text-cencapitalize">
+                    {{batchdata.name}}
+                </div>
+            </div>
+            <div class="sliderCards content sliderCardSubDesc">
+                By {{batch.userNames[batchdata.createdBy]}}<br/> {{batchdata.startDate | date: "dd MMM"}} - {{batchdata.endDate | date: "dd MMM"}}
+                <i class="right floated large unlock alternate icon" ng-show="batchdata.enrollmenttype == 'open'"></i>
+            </div>
+        </div>
+    </div>
+    <div ng-if="batch.error.showError" class="ui margin-top-10">
+        <error-message data="{{batch.error}}" visibility="batch.error.showError"></error-message>
+    </div>
+</div>
+
+<div class="ui grid">
+    <div class="two wide column"></div>
+    <div class="ten wide column paginationAlignment">
+        <div class="padding-bottom-15" ng-if="batch.totalCount > batch.pageLimit">
+            <div ng-init="pegination = batch" ng-include=" 'views/common/pagination.html' "></div>
+        </div>
+    </div>
+</div>
