@@ -13,7 +13,7 @@ node('build-slave') {
 
        stage('Pre-Build'){
 
-         sh('./player/installDeps.sh')
+         sh('./installDeps.sh')
 
        }
 
