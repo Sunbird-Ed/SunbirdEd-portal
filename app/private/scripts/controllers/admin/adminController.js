@@ -74,7 +74,7 @@ angular.module('playerApp')
                                 user.organisations.forEach(function (userOrg) {
                                     var adminRoles = admin.currentUserRoleMap[userOrg.organisationId];
                                     // if user belongs to an org in which the current logged in user is ORG_ADMIN, set editable to true
-                                    if (typeof(user.isEditableProfile) == 'undefined' && _.indexOf(adminRoles, 'ORG_ADMIN') > -1) {
+                                    if (typeof (user.isEditableProfile) === 'undefined' && _.indexOf(adminRoles, 'ORG_ADMIN') > -1) {
                                         user.isEditableProfile = true;
                                     }
                                     var orgNameAndId = orgIdAndNames.find(function (org) {
@@ -84,7 +84,7 @@ angular.module('playerApp')
                                 });
                             }
                             // if current logged in user is ORG_ADMIN of the root org of the user, set editable to true
-                            if (typeof(user.isEditableProfile) == 'undefined' && user.rootOrgId == $rootScope.rootOrgId 
+                            if (typeof (user.isEditableProfile) === 'undefined' && user.rootOrgId == $rootScope.rootOrgId
                                     && $rootScope.rootOrgAdmin === true) {
                                 user.isEditableProfile = true;
                             }
@@ -141,8 +141,8 @@ angular.module('playerApp')
                     });
                     var nullReplacedToEmpty = JSON.stringify(list).replace(/null/g, '""');
                     var users = JSON.parse(nullReplacedToEmpty);
-                    alasql('SELECT firstName AS firstName,lastName AS lastName, ' +
-                        ' organisationsName AS Organisations ,location AS Location, grade AS Grades, ' +
+                    alasql('SELECT firstName AS [First Name],lastName AS [Last Name], ' +
+                        ' organisationsName AS Organizations ,location AS Location, grade AS Grades, ' +
                         'language AS Language ,subject as Subjects ' +
                         ' INTO CSV(\'Users.csv\',{headers:true ,separator:","}) FROM ?', [users]);
                 } else if (key === 'Organisations') {
