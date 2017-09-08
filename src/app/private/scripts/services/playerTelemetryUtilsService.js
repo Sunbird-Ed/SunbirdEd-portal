@@ -1,6 +1,6 @@
 'use strict';
 angular.module('playerApp')
-        .service('playerTelemetryUtilsService', function ($rootScope, $stateParams) {
+        .service('playerTelemetryUtilsService', ['$rootScope', '$stateParams', function ($rootScope, $stateParams) {
             this.startTelemetry = function (data) {
                 org.sunbird.portal.eventManager.dispatchEvent("sunbird:telemetry:start", data);
             };
@@ -17,12 +17,17 @@ angular.module('playerApp')
                 org.sunbird.portal.eventManager.dispatchEvent("sunbird:telemetry:navigate", data);
             };
             this.init = function (data) {
-                var _instance = {
-                    correlationData: [{"id": $stateParams.tocId || data.contentId, "type": "course"}],
+                var _instance = {                   
                     user: {"sid": "", "did": "", "uid": $rootScope.userId},
                     gameData: {"id": "org.sunbird.player", "ver": "1.0"}
                 }
-                var courseId = $stateParams.tocId || data.contentId;
+                if($stateParams.courseId){
+                     _instance.correlationData= [{"id": $stateParams.courseId || data.contentId, "type": "course"}];
+                }
+                else{
+                     _instance.correlationData= [{"id": data.contentId, "type": "content"}];
+                }
+                var courseId = $stateParams.courseId || data.contentId;
                 if(_.isUndefined(courseId)){
                     _instance.context.dims = { dims : org.sunbird.portal.dims };
                 }else{
@@ -33,4 +38,4 @@ angular.module('playerApp')
                 org.sunbird.portal.eventManager.dispatchEvent('sunbird:telemetry:init', _instance);
             };
 
-        });
+        }]);

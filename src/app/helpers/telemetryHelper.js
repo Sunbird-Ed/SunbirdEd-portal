@@ -2,22 +2,21 @@ const request = require("request"),
   parser = require('ua-parser-js'),
   _ = require('lodash'),
   uuidv1 = require('uuid/v1'),
-  appId = process.env.sunbird_appid || 'sunbird.portal',
-  contentURL = process.env.sunbird_content_player_url || 'http://localhost:5000/v1/',
-  md5 = require('js-md5');
-telemetry_packet_size = process.env.sunbird_telemetry_packet_size || 20;
+  envHelper = require('./environmentVariablesHelper.js'),
+  appId = envHelper.APPID,
+contentURL = envHelper.CONTENT_URL,
+  learner_authorization = envHelper.PORTAL_API_AUTH_TOKEN,
+  md5 = require('js-md5'),
+telemetry_packet_size = envHelper.PORTAL_TELEMETRY_PACKET_SIZE;
 
 module.exports = {
   logSessionStart: function(req, callback) {
     var ua = parser(req.headers['user-agent']);
-    req.session.orgs.push(req.session.rootOrgId);
     req.session.orgs = _.compact(req.session.orgs);
     req.session.save();
+    var channel = req.session.rootOrghashTagId || md5('sunbird');
     var dims = _.clone(req.session.orgs);
-    dims.forEach(function(value, index, arr) {
-      arr[index] = md5(value);
-    });
-    var channel = md5(req.session.rootOrgId || 'sunbird');
+    dims = _.concat(dims, channel);
     var event = {
       "ver": "2.1",
       "uid": req.kauth.grant.access_token.content.sub,
@@ -53,7 +52,6 @@ module.exports = {
     };
     event.mid = 'SB:' + md5(JSON.stringify(event));
     this.sendTelemetry(req, [event], function(status) {
-      console.log(status)
       callback(null, status)
     })
   },
@@ -95,9 +93,10 @@ module.exports = {
     var data = this.prepareTelemetryRequestBody(req, eventsData)
     var options = {
       method: 'POST',
-      url: contentURL + 'telemetry',
+      url: contentURL + 'data/v1/telemetry',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + learner_authorization
       },
       body: data,
       json: true

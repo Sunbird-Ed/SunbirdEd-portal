@@ -11,10 +11,10 @@ angular.module('playerApp').directive('pageSection', function () {
         templateUrl: 'views/common/pageSection.html',
         restrict: 'E',
         scope: {
-            type: '=',           
+            type: '='
         },
-        link: function (scope, element, attrs) {
-           
+        link: function (scope, element, attrs) {// eslint-disable-line
+
         },
         controller: 'pageSectionCtrl as section'
     };

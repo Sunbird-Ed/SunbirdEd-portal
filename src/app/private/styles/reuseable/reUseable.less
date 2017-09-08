@@ -6,6 +6,14 @@
     padding: 0px !important;
 }
 
+.padding-top-none {
+    padding-top: 0px !important;
+}
+
+.padding-bottom-none {
+    padding-bottom: 0px !important;
+}
+
 .padding-left-right-0 {
     padding-left: 0px !important;
     padding-right: 0px !important;
@@ -26,6 +34,9 @@
 .padding-top-20 {
     padding-top: 20px !important;
 }
+.padding-top-30 {
+    padding-top: 30px !important;
+}
 .padding-topBottom-20 {
     padding: 10px 0px!important;
 }
@@ -35,7 +46,7 @@
 }
 
 .padding-topBottom-35 {
-    padding: 35px 0px!important;   
+    padding: 35px 0px!important;
 }
 
 .padding-topBottomNone {
@@ -50,7 +61,38 @@
 .padding-bottom-5{
     padding-bottom:5px!important;
 }
+.padding-top-5{
+    padding-top:5px!important;
+}
+.padding-bottom-10{
+    padding-bottom:10px!important;
+}
 
+.padding-bottom-none {
+    padding-bottom: 0px!important;
+}
+
+.padding-right-5{
+    padding-right:5px!important;
+}
+
+.padding-right-10{
+    padding-right:10px!important;
+}
+
+.padding-right-28{
+    padding-right:28px!important;
+}
+.padding-right-20{
+    padding-right:20px!important;
+}
+.padding-left-10{
+    padding-left:10px!important;
+}
+
+.padding-right-none {
+    padding-right: 0px!important;
+}
 // ----------------------------------------------------------------------
   // margin
 // ---
@@ -89,6 +131,10 @@
     margin-top: 15px !important;
 }
 
+.margin-bottom-10 {
+    margin-bottom: 10px !important;
+}
+
 .margin-bottom-15 {
     margin-bottom: 15px !important;
 }
@@ -117,6 +163,10 @@
     margin-right: 15px !important;
 }
 
+.margin-left-10 {
+    margin-left: 10px !important;
+}
+
 .margin-left-20 {
     margin-left: 20px !important;
 }
@@ -135,6 +185,11 @@
     margin-top: 30px !important;
 }
 
+.margin-bottom-30 {
+    margin-bottom: 30px !important;
+}
+
+
 .margin-top-3rem {
     margin-top: -3rem !important;
 }
@@ -142,6 +197,12 @@
 .margin-top-40 {
     margin-top: 40px !important;
 }
+
+
+.margin-top-Negative30 {
+    margin-top: -30px !important;
+}
+
 
 // ----------------------------------------------------------------------
   // alignment
@@ -168,7 +229,7 @@
 }
 
 .width-100 {
-    width: 100% !important;    
+    width: 100% !important;
 }
 
 .height-100 {
@@ -180,7 +241,12 @@
 }
 
 .cursor-pointer{
-    cursor:pointer;
+    cursor:pointer !important;
+}
+
+.cursor-pointerText{
+    cursor:text;
+    pointer-events: none !important;
 }
 
 .mouse-pointer {
@@ -189,6 +255,14 @@
 
 .text-align-center {
     text-align: center !important;
+}
+
+.padding-left-50 {
+    padding-left: 3rem !important;
+}
+
+.padding-right-50 {
+    padding-right: 3rem !important;
 }
 
 
@@ -206,7 +280,7 @@
 // ---
 
 .right-floated{
-    float:right;
+    float:right !important;
 }
 
 // ----------------------------------------------------------------------
@@ -223,4 +297,52 @@
 // ---
 .searchdropdown.ui.disabled.button{
     box-shadow: 0 0 0 1px rgba(51, 51, 51, 0.33) inset !important;
+}
+// ----------------------------------------------------------------------
+    // Scroll css changes
+// ---
+#custom-scroll::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    background-color: #F5F5F5;
+}
+
+#custom-scroll::-webkit-scrollbar
+{
+    width: 8px;
+    background-color: #F5F5F5;
+}
+
+#custom-scroll::-webkit-scrollbar-thumb
+{
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #D8D8D8;
+}
+
+.overflowContentHorizontal {
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+.badgesImage.ui.mini.image{
+    width: 16px !important;
+    height:16px !important;
+}
+
+.content-font{
+    font-size:1.1em !important;
+}
+
+.course-header-divider{
+    padding-right: 15px !important;
+    border-right: 1px solid black !important;
+}
+.ui.blue.button, .ui.blue.buttons .button {
+    background-color: #006CFF !important;
+}
+
+.capitalizeTextInfo {
+    text-transform:capitalize
 }
