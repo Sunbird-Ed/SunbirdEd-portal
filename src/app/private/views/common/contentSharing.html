@@ -1,0 +1,33 @@
+<span ng-click="contentShare.initializeModal()" class="ui mouse-pointer content-font" title="Share">
+    <i class="large blue share alternate icon"></i>&nbsp;
+</span>
+<div class="ui modal" id="contentShareModal" ng-if="contentShare.showContentShareModal">
+    <div class="header">
+        <div class="ui grid">
+            <div class="eleven wide column">
+                <span class="ui header">{{$root.labels.CONTENT_SHARE.contentShareText}}</span>
+            </div>
+            <div class="one wide column actions">
+                <h5 class="ui basic icon circular button deny">
+                    <i class="ui remove icon"></i>
+                </h5>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <p class="meta">{{$root.labels.CONTENT_SHARE.shareByTheLink}}</p>
+        <div class="ui action input shareContent width-100" id="buttonPopUp">
+            <input type="text" id="copyLinkData" name="title" readonly ng-model="contentShare.link" />
+            <button class="ui basic primary button" ng-click="contentShare.copyLink()" id="copyLinkButton">
+                COPY LINK
+              </button>
+        </div>
+        <div class="ui custom popup contentSharing top center transition hidden" id="LinkCopiedToClipboard" data-position="ui top center">
+            Link copied to clipboard
+        </div>
+    </div>
+    <div class="actions margin-top-20 ">
+        <div>
+        </div>
+    </div>
+</div>

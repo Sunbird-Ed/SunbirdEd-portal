@@ -1,0 +1,28 @@
+<div class="margin-top-20 ui raised segment" ng-init="profileCtrl.openDiscriptionEdit=false">
+	<div class="header announcementCard-header">
+    	<span class="header cardsHeading ng-binding"> Description </span>
+		<a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.openDiscriptionEdit"ng-click="profileCtrl.openDiscriptionEdit=true">{{$root.labels.PROFILE.BUTTON.edit}}</a>
+		<a class="addeditprofile cursor-pointer" ng-if="profileCtrl.openDiscriptionEdit"ng-click="profileCtrl.openDiscriptionEdit=false;
+		profileCtrl.basicProfile.profileSummary=profileCtrl.getProfileObject(profileCtrl.user.profileSummary)">{{$root.labels.PROFILE.BUTTON.close}}</a>
+ 	</div>
+    <div class="description" ng-if="!profileCtrl.openDiscriptionEdit" ng-init="profileCtrl.readMore = false"> 
+	    <p ng-if="!profileCtrl.readMore"> {{profileCtrl.user.profileSummary | limitTo: 120 }}&nbsp;
+	        <span class="ui cardsKnowMore mouse-pointer" ng-if="profileCtrl.user.profileSummary.length > 120 && profileCtrl.readMore === false" ng-click="profileCtrl.readMore = !profileCtrl.readMore;"> ... Read More</span>
+	    </p>
+	    <p ng-if="profileCtrl.readMore"> {{profileCtrl.user.profileSummary}}&nbsp;
+	        <span class="ui cardsKnowMore mouse-pointer" ng-click="profileCtrl.readMore = false;">Read Less ...</span>
+	    </p>
+	</div>
+	<form class="ui form margin-top-20 " ng-if="profileCtrl.openDiscriptionEdit">
+       <div class="field">
+           <textarea ng-model="profileCtrl.basicProfile.profileSummary"></textarea>
+		   </div>
+
+		<div class="ui button margin-top-15" ng-if="profileCtrl.openDiscriptionEdit" ng-disable="!profileCtrl.profileSummary"ng-click="profileCtrl.EditDetails(profileCtrl.basicProfile.profileSummary);">{{$root.labels.PROFILE.BUTTON.save}} </div>
+		
+	</form>
+</div>
+
+
+
+                                

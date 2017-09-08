@@ -16,7 +16,7 @@
             <div class="content">
                 <form class="ui form" ng-init="contentLesson.data = {}">
                     <div class="field">
-                        <label>{{$root.labels.WORKSPACE.common.title}}</label>
+                        <label>{{$root.labels.WORKSPACE.createLesson.lessonTitle}}</label>
                         <div class="field">
                             <input type="text" name="title" placeholder={{$root.labels.WORKSPACE.createLesson.lessonTitle}} ng-model="contentLesson.data.name">
                         </div>
@@ -49,16 +49,21 @@
                             </select>
                         </div>
                     </div>
+                    <div class="two fields">
+                        <div class="field" ng-if="$root.concepts">
+                            <label>{{$root.labels.WORKSPACE.common.concept}}</label>
+                            <concept-picker selected-concepts="[]"></concept-picker>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="actions">
                 <p class="text-align-center padding-top-20">
-                    <button class="ui primary text-align-center icon button" ng-click="contentLesson.saveMetaData(contentLesson.data)"
-                            ng-disabled="contentLesson.loader.showLoader">
+                    <button class="ui primary text-align-center icon button" ng-click="contentLesson.saveMetaData(contentLesson.data)" ng-disabled="contentLesson.loader.showLoader">
                         {{$root.labels.WORKSPACE.common.startCreating}}
                     </button>
                 </p>
-                <h4 class="text-align-center">{{$root.labels.WORKSPACE.common.youCanFillThisDL}}</h4>
+                <h4 class="text-align-center">{{$root.labels.WORKSPACE.createLesson.youCanFillThisDL}}</h4>
                 <div>
                     <label>
                         <p class="text-align-center">{{$root.labels.WORKSPACE.common.byProceedYouAgreedLesson}}</p>

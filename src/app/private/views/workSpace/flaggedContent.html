@@ -1,0 +1,45 @@
+<div class="ui grid">
+    <div class="twelve wide column ">
+        <div ng-init="flaggedContent.getAllFlaggedContent()">
+            <div ng-if="!flaggedContent.loader.showLoader">
+                <div class="ui three stackable cards" ng-if="!flaggedContent.loader.showLoader && flaggedContent.flaggedContentData.length > 0">
+                    <div class=" link card mouse-pointer " ng-repeat="item in flaggedContent.flaggedContentData track by $index " ng-click="flaggedContent.openContentPlayer(item) ">
+                        <div class="image imageInCardsResponsive ">
+                            <div class="ui fluid image ">
+                                <a class="ui black right ribbon label ">{{item.contentType}}</a>
+                                <img ng-src=" {{item.appIcon ? item.appIcon : '../images/sunbird_logo.png'}} ">
+                            </div>
+                            <div class="cardImageText center aligned ">
+                                <span class="sliderCardHeading text-cencapitalize ">
+                                    {{ item.name | limitTo: 15 }}&nbsp;<i ng-show="item.name.length>= 15" class="ellipsis horizontal icon popup-button link" data-content="{{item.name}}" data-variation="wide"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="sliderCards content">
+                            <span class="sliderCardSubDesc">
+                                <span>
+                                    {{ item.description | limitTo: 70 }}&nbsp;<i ng-show="item.description.length >= 70" class="ellipsis horizontal icon popup-button link" data-content="{{item.description}}" data-variation="wide"></i>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="flaggedContent.error.showError">
+                    <error-message data="{{flaggedContent.error}}" visibility="flaggedContent.error.showError"></error-message>
+                </div>
+            </div>
+            <div ng-if="flaggedContent.loader.showLoader">
+                <app-loader data="{{flaggedContent.loader}}"></app-loader>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ui grid">
+    <div class="two wide column"></div>
+    <div class="ten wide column paginationAlignment">
+        <div class="padding-bottom-15" ng-if="!flaggedContent.loader.showLoader && flaggedContent.totalCount > flaggedContent.pageLimit">
+            <div ng-init="pegination = flaggedContent" ng-include=" 'views/common/pagination.html' "></div>
+        </div>
+    </div>
+</div>
