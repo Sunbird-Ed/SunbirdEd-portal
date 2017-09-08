@@ -35,9 +35,9 @@
 }
 
 .sliderCards.ui.card:hover {
-    box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5 !important;
+    transition: all .3s ease 0s;
+    box-shadow: 0 3px 5px 0 rgba(0,0,0,.5 ) !important;
 }
-
 .sliderCards.ui.card>.content>.description {
     clear: both;
     color: #b5b5b5 !important;
@@ -77,13 +77,32 @@
     line-height: 1.5;
 }
 
-div:focus{
-    
+div:focus{    
     outline: none;
-   
 }
 
 .ui.cards>.card>.content {
     padding-right:3px !important;
 }
 
+
+/*three staackable cards width reduced to match design*/
+/*using ~ in calc because of Less issue with clac function */
+
+.ui.three.cards>.card {
+    width: ~"calc(33.33333333% - 3.3em)" !important;
+    margin-right: 0.2em !important;
+}
+.ui.three.cards>.card:hover {
+    transition: all .3s ease 0s;
+    box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.5) !important;
+}
+
+
+/* rating card */
+
+.fixedRatingCard {
+    max-height: 2.8em;
+    overflow: hidden;
+    height: 2.8em;
+}

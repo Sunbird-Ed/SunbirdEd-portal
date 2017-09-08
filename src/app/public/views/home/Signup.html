@@ -1,7 +1,15 @@
-<div id="signupModal" class="ui modal">
-    <i class="close icon"></i>
-    <div class="header">
-        {{labels.Headers.signUp}}
+<div id="signupModal" class="ui modal">   
+    <div class="header">      
+        <div class="ui grid">
+            <div class="eleven wide column">
+               <span class="ui header">{{labels.Headers.signUp}}</span>
+            </div>
+            <div class="one wide column actions">
+                <h5 class="ui basic icon circular button deny">
+                    <i class="ui remove icon"></i>
+                </h5>
+            </div>
+        </div>
     </div>
     <div class="content">
         <form autocomplete="off" ng-init="newUser.formInit();" id="signUpForm" class="ui form" ng-if="!newUser.loader.showLoader && !newUser.error.showError ">
@@ -49,9 +57,6 @@
 
             <div class="ui error message">
             </div>
-            <div class="actions">
-                <div class="ui primary button" ng-click="newUser.submitForm()" ;>{{labels.Button.signUp}}</div>
-            </div>
         </form>
         <div ng-if="newUser.loader.showLoader">
             <app-loader data="{{newUser.loader}}"></app-loader>
@@ -60,5 +65,7 @@
             <error-message data="{{newUser.error}}" visibility="newUser.error.showError"></error-message>
         </div>
     </div>
-
+    <div class="actions">
+        <div class="ui primary button" ng-click="newUser.submitForm()" ;>{{labels.Button.signUp}}</div>
+    </div>
 </div>

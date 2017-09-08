@@ -1,0 +1,294 @@
+<div ng-init="batchUpdate.init()">
+    <div class="ui modal" id="updateBatchModal">
+        <div class="header">
+            <div class="ui grid">
+                <div class="eleven wide column">
+                   <span class="ui header">Update Batch Details</span>
+                </div>
+                <div class="one wide column actions">
+                    <h5 class="ui basic icon circular button deny">
+                        <i class="ui remove icon"></i>
+                    </h5>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <form class="ui form batchAddUserForm" id="updateBatch" name="updateBatch" validate>
+                <div ng-if="batchUpdate.batchData.status == 0">
+                    <div class="one field" ng-class="{true: 'error'}[batchUpdate.submitted && updateBatch.name.$invalid]">
+                        <div class="required field">
+                          <label>{{$root.labels.BATCH.name}}</label>
+                          <input type="text" name="name" ng-model="batchUpdate.batchData.name" required>
+                        </div>
+                    </div>
+                    <div class="one field">
+                        <div class="field">
+                            <label>{{$root.labels.BATCH.description}}</label>
+                            <input rows="2" name="description" id="description" ng-model="batchUpdate.batchData.description">
+                        </div>
+                    </div>
+                    <div class="inline fields" ng-class="{true: 'error'}[batchUpdate.submitted && updateBatch.enrollmentType.$invalid]">
+                        <label for="Enrollment Type">{{$root.labels.BATCH.enrollment}}</label>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="enrollmentType" value='invite-only' ng-model="batchUpdate.batchData.enrollmentType" required>
+                                <label>Invite-only</label>
+                            </div>
+                        </div>
+                        <div class="field" ng-show="batchUpdate.coursecreatedby == batchUpdate.userId">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="enrollmentType" value='open' ng-model="batchUpdate.batchData.enrollmentType" required>
+                                <label>Open</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="two fields" >
+                        <div class="required field" ng-class="{true: 'error'}[batchUpdate.submitted && updateBatch.startdate.$invalid]">
+                           <label>{{$root.labels.BATCH.startdate}}</label>
+                            <div class="ui calendar rangestartAdd" id="rangestartAdd">
+                                <div class="ui input left icon">
+                                    <i class="calendar icon date-calendar"></i>
+                                     <input class="date-select" type="text" id="startDate" name="startDate" ng-model="batchUpdate.batchData.startDate" required >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label>{{$root.labels.BATCH.enddate}}</label>
+                            <div apply-script class="ui calendar rangeendAdd" id="rangeendAdd">
+                                <div class="ui input left icon">
+                                    <i class="calendar icon date-calendar"></i>
+                                    <input class="date-select" type="text" name="endDate" id="endDate" ng-model="batchUpdate.batchData.endDate">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only'">
+                        <label>{{$root.labels.BATCH.mentors}}</label>
+                        <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="mentors" >
+                            <input type="hidden" name="mentors" ng-init="" ng-model="batchUpdate.mentors" id="mentorSelList">
+                            <i class="dropdown icon"></i>
+                            <div class="default text padding-top-20">Start searching by name</div>
+                            <div class="menu">
+                                <div class="item" data-value="{{mentor.id}}" ng-repeat="mentor in batchUpdate.menterList">
+                                    <img class="ui mini avatar image" ng-src="{{mentor.avatar || 'images/user_logo.png'}}">{{mentor.name}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only' && batchUpdate.selectedMentors.length > 0">
+                        <label>{{$root.labels.BATCH.selectedmentors}}</label>
+                        <a class="ui label" ng-hide="batchUpdate.selectedMentors.length < 0" ng-repeat="mentor in batchUpdate.selectedMentors">
+                            <img class="ui right spaced avatar image" ng-src="{{mentor.avatar || 'images/user_logo.png'}}">
+                            {{mentor.name}}
+                        </a>
+                    </div>
+                    <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only'">
+                         <label>{{$root.labels.BATCH.users}}</label>
+                        <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="users" >
+                            <input type="hidden" name="users" ng-init="" id="userSelList" ng-model="batchUpdate.users">
+                            <i class="dropdown icon"></i>
+                            <div class="default text padding-top-20">Select User</div>
+                            <div class="menu">
+                                <div class="item" data-value="{{user.id}}" ng-repeat="user in batchUpdate.userList">
+                                    <img class="ui mini avatar image" ng-src="{{user.avatar || 'images/user_logo.png'}}">
+                                    {{user.name}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only' && batchUpdate.selectedUsers.length > 0">
+                        <label>{{$root.labels.BATCH.participants}}</label>
+                        <a class="ui label" ng-hide="batchUpdate.selectedUsers.length < 0" ng-repeat="user in batchUpdate.selectedUsers">
+                            <img class="ui right spaced avatar image" ng-src="{{user.avatar || 'images/user_logo.png'}}">
+                            {{user.name}}
+                        </a>
+                    </div>
+                </div>
+                <div ng-if="batchUpdate.batchData.status == 1">
+                    <div class="one field" ng-class="{true: 'error'}[batchUpdate.submitted && updateBatch.name.$invalid]">
+                        <div class="required field">
+                          <label>{{$root.labels.BATCH.name}}</label>
+                          <input type="text" name="name" ng-model="batchUpdate.batchData.name" required>
+                        </div>
+                    </div>
+                    <div class="one field">
+                        <div class="field">
+                            <label>{{$root.labels.BATCH.description}}</label>
+                            <input rows="2" name="description" id="description" ng-model="batchUpdate.batchData.description">
+                        </div>
+                    </div>
+                    <div class="inline fields" ng-class="{true: 'error'}[batchUpdate.submitted && updateBatch.enrollmentType.$invalid]">
+                        <label for="Enrollment Type">{{$root.labels.BATCH.enrollment}}</label>
+                        <div class="field">
+                            <div class="ui read-only radio checkbox">
+                                <input type="radio" name="enrollmentType" value='invite-only' ng-model="batchUpdate.batchData.enrollmentType" required disabled="true">
+                                <label>Invite-only</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui read-only radio checkbox" ng-show="batchUpdate.coursecreatedby == batchUpdate.userId">
+                                <input type="radio" name="enrollmentType" value='open' ng-model="batchUpdate.batchData.enrollmentType" required disabled="true">
+                                <label>Open</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="two fields" >
+                        <div class="required field" ng-class="{true: 'error'}[batchUpdate.submitted && updateBatch.startdate.$invalid]">
+                           <label>{{$root.labels.BATCH.startdate}}</label>
+                            <div class="ui read-only calendar rangestartAdd" id="rangestartAdd">
+                                <div class="ui input left icon">
+                                    <i class="calendar icon date-calendar"></i>
+                                     <input class="date-select" type="text" id="startDate" name="startDate" ng-model="batchUpdate.batchData.startDate" required disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label>{{$root.labels.BATCH.enddate}}</label>
+                            <div apply-script class="ui calendar rangeendAdd" id="rangeendAdd">
+                                <div class="ui input left icon">
+                                    <i class="calendar icon date-calendar"></i>
+                                    <input class="date-select" type="text" name="endDate" id="endDate" ng-model="batchUpdate.batchData.endDate">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only'">
+                        <label>{{$root.labels.BATCH.mentors}}</label>
+                        <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="mentors" >
+                            <input type="hidden" name="mentors" ng-init="" ng-model="batchUpdate.mentors" id="mentorSelList">
+                            <i class="dropdown icon"></i>
+                            <div class="default text padding-top-20">Start searching by name</div>
+                            <div class="menu">
+                                <div class="item" data-value="{{mentor.id}}" ng-repeat="mentor in batchUpdate.menterList">
+                                    <img class="ui mini avatar image" ng-src="{{mentor.avatar || 'images/user_logo.png'}}">{{mentor.name}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only' && batchUpdate.selectedMentors.length > 0">
+                        <label>{{$root.labels.BATCH.selectedmentors}}</label>
+                        <a class="ui label" ng-show="batchUpdate.selectedMentors.length > 0" ng-repeat="mentor in batchUpdate.selectedMentors">
+                            <img class="ui right spaced avatar image" ng-src="{{mentor.avatar || 'images/user_logo.png'}}">
+                            {{mentor.name}}
+                        </a>
+                    </div>
+                    <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only'">
+                         <label>{{$root.labels.BATCH.users}}</label>
+                        <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="users" >
+                            <input type="hidden" name="users" ng-init="" id="userSelList" ng-model="batchUpdate.users">
+                            <i class="dropdown icon"></i>
+                            <div class="default text padding-top-20">Select User</div>
+                            <div class="menu">
+                                <div class="item" data-value="{{user.id}}" ng-repeat="user in batchUpdate.userList">
+                                    <img class="ui mini avatar image" ng-src="{{user.avatar || 'images/user_logo.png'}}">
+                                    {{user.name}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only' && batchUpdate.selectedUsers.length > 0">
+                        <label>{{$root.labels.BATCH.participants}}</label>
+                        <a class="ui label" ng-show="batchUpdate.selectedUsers.length > 0" ng-repeat="user in batchUpdate.selectedUsers">
+                            <img class="ui right spaced avatar image" ng-src="{{user.avatar || 'images/user_logo.png'}}">
+                            {{user.name}}
+                        </a>
+                    </div>
+                </div>
+                <div ng-if="batchUpdate.batchData.status == 2">
+                    <div class="one field" ng-class="{true: 'error'}[batchUpdate.submitted && updateBatch.name.$invalid]">
+                        <div class="required field">
+                          <label>{{$root.labels.BATCH.name}}</label>
+                          <input type="text" name="name" ng-model="batchUpdate.batchData.name" required disabled="true">
+                        </div>
+                    </div>
+                    <div class="one field">
+                        <div class="field">
+                            <label>{{$root.labels.BATCH.description}}</label>
+                            <textarea rows="2" name="description" id="description" ng-model="batchUpdate.batchData.description" disabled="true"></textarea>
+                        </div>
+                    </div>
+                    <div class="inline fields" ng-class="{true: 'error'}[batchUpdate.submitted && updateBatch.enrollmentType.$invalid]">
+                        <label for="Enrollment Type">{{$root.labels.BATCH.enrollment}}</label>
+                        <div class="field">
+                            <div class="ui read-only radio checkbox">
+                                <input type="radio" name="enrollmentType" value='invite-only' ng-model="batchUpdate.batchData.enrollmentType" required disabled="true">
+                                <label>Invite-only</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui read-only radio checkbox" ng-show="batchUpdate.coursecreatedby == batchUpdate.userId">
+                                <input type="radio" name="enrollmentType" value='open' ng-model="batchUpdate.batchData.enrollmentType" required disabled="true">
+                                <label>Open</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="two fields" >
+                        <div class="required field" ng-class="{true: 'error'}[batchUpdate.submitted && updateBatch.startdate.$invalid]">
+                           <label>{{$root.labels.BATCH.startdate}}</label>
+                            <div class="ui read-only calendar rangestartAdd" id="rangestartAdd">
+                                <div class="ui input left icon">
+                                    <i class="calendar icon date-calendar"></i>
+                                     <input class="date-select" type="text" id="startDate" name="startDate" ng-model="batchUpdate.batchData.startDate" required disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label>{{$root.labels.BATCH.enddate}}</label>
+                            <div apply-script class="ui calendar rangeendAdd" id="rangeendAdd">
+                                <div class="ui input left icon">
+                                    <i class="calendar icon date-calendar"></i>
+                                    <input class="date-select" type="text" name="endDate" id="endDate" ng-model="batchUpdate.batchData.endDate" disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only'">
+                        <label>{{$root.labels.BATCH.mentors}}</label>
+                        <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="mentors" >
+                            <input type="hidden" name="mentors" ng-init="" ng-model="batchUpdate.mentors" id="mentorSelList">
+                            <i class="dropdown icon "></i>
+                            <div class="default text padding-top-20">Start searching by name</div>
+                            <div class="menu">
+                                <div class="item" data-value="{{mentor.id}}" ng-repeat="mentor in batchUpdate.menterList">
+                                    <img class="ui mini avatar image" ng-src="{{mentor.avatar || 'images/user_logo.png'}}">{{mentor.name}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only' && batchUpdate.selectedMentors.length > 0">
+                        <label>{{$root.labels.BATCH.selectedmentors}}</label>
+                        <a class="ui label" ng-show="batchUpdate.selectedMentors.length > 0" ng-repeat="mentor in batchUpdate.selectedMentors">
+                            <img class="ui right spaced avatar image" ng-src="{{mentor.avatar || 'images/user_logo.png'}}">
+                            {{mentor.name}}
+                        </a>
+                    </div>
+                    <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only'">
+                         <label>{{$root.labels.BATCH.users}}</label>
+                        <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="users" >
+                            <input type="hidden" name="users" ng-init="" id="userSelList" ng-model="batchUpdate.users">
+                            <i class="dropdown icon"></i>
+                            <div class="default text padding-top-20">Select User</div>
+                            <div class="menu">
+                                <div class="item" data-value="{{user.id}}" ng-repeat="user in batchUpdate.userList">
+                                    <img class="ui mini avatar image" ng-src="{{user.avatar || 'images/user_logo.png'}}">
+                                    {{user.name}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only' && batchUpdate.selectedUsers.length > 0">
+                        <label>{{$root.labels.BATCH.participants}}</label>
+                        <a class="ui label" ng-show="batchUpdate.selectedUsers.length > 0" ng-repeat="user in batchUpdate.selectedUsers">
+                            <img class="ui right spaced avatar image" ng-src="{{user.avatar || 'images/user_logo.png'}}">
+                            {{user.name}}
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="actions" ng-hide="batchUpdate.batchData.status == 2">
+            <div class="ui secondary button" ng-click='batchUpdate.clearForm()'>Clear</div>
+            <div class="ui primary button" ng-click="batchUpdate.submitted = true; batchUpdate.updateBatchDetails(batchUpdate.batchData)">Update</div>
+        </div>
+    </div>
+</div>

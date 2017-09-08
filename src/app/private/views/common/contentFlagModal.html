@@ -1,0 +1,57 @@
+<span ng-click="contentFlag.initializeModal()" class="ui mouse-pointer content-font" title="{{contentFlag.flagMessage}}">
+    <i class="ui large blue flag outline icon"></i>
+</span>
+<div class="ui modal" id="contentFlagModal" ng-if="contentFlag.showContentFlagModal">
+    <div class="header" ng-show="!contentFlag.loader.showLoader">
+        <div class="ui grid">
+            <div class="eleven wide column">
+                <span class="ui header">{{$root.labels.CONTENT_FLAG.heading}}</span>
+            </div>
+            <div class="one wide column actions">
+                <h5 class="ui basic icon circular button deny">
+                    <i class="ui remove icon"></i>
+                </h5>
+            </div>
+        </div>
+    </div>
+    <div class="content" ng-show="!contentFlag.loader.showLoader">
+        <div class="row">
+            <span class="ui tiny header flag-description">{{$root.labels.CONTENT_FLAG.description}}</span>
+        </div>
+        <form class="ui form">
+            <div class="field">
+                <label class="flag-form">{{$root.labels.CONTENT_FLAG.contentName}}</label>
+                <div class="eight wide field">
+                    <input type="text" name="title" readonly ng-model="contentFlag.contentName">
+                </div>
+            </div>
+            <div class="grouped fields">
+                <label class="flag-form">{{$root.labels.CONTENT_FLAG.selectAReason}}</label>
+                <div ng-repeat="reason in contentFlag.reasons">
+                    <div class="field radiomargin">
+                        <div class="ui radio checkbox">
+                            <input type="radio" name="radio" ng-model="contentFlag.data.flagReasons" value="{{reason}}">
+                            <label>{{reason}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <!-- <label>{{$root.labels.CONTENT_FLAG.addYourComment}}</label> -->
+                    <div class="eight wide field">
+                        <input rows="2" name="addYourComment" placeholder="ADD YOUR COMMENT" ng-model="contentFlag.data.comment" required="">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="actions" ng-show="!contentFlag.loader.showLoader">
+
+        <button class="ui primary button " ng-click="contentFlag.saveMetaData(contentFlag.data) " ng-disabled="contentFlag.loader.showLoader || !contentFlag.data.flagReasons ">
+          {{$root.labels.CONTENT_FLAG.submit}}
+        </button>
+
+    </div>
+    <div class=" ui segment margin-top-10 " ng-if="contentFlag.loader.showLoader ">
+        <app-loader data="{{contentFlag.loader}} "></app-loader>
+    </div>
+</div>

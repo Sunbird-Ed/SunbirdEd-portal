@@ -1,0 +1,15 @@
+ <div class="twelve wide column padding-top-none ">
+    <a class="ui cursor-pointer " sb-permissions permission-only="SYSTEM_ADMINISTRATION,ORG_ADMIN" ng-click="admin.orgBulkUpload()">
+        {{$root.labels.BULK_UPLOAD.HEADERS.UPLOAD_ORG}}
+        </a>
+  </div>
+  <div class="twelve wide column padding-top-none ">
+    <a class="ui  cursor-pointer" sb-permissions permission-only="SYSTEM_ADMINISTRATION,ORG_ADMIN" ng-click="admin.userBulkUpload()">
+            {{$root.labels.BULK_UPLOAD.HEADERS.UPLOAD_USER}}
+        </a>
+  </div>
+  <div class="twelve wide column padding-top-none ">
+    <a class="ui cursor-pointer " sb-permissions permission-only="SYSTEM_ADMINISTRATION,ORG_ADMIN" ng-click=" admin.statusBulkUpload()">
+          {{$root.labels.BULK_UPLOAD.HEADERS.STATUS}}
+        </a>
+  </div>
