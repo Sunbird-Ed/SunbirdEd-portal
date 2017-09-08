@@ -47,7 +47,7 @@ angular.module('playerApp')
                   }
 
                   if (key === 'org.creation.content[@status=draft].count') {
-                    series.push(numericData.value + ' DRAFTS');
+                    series.push(numericData.value + ' CREATED');
                   }
 
                   if (key === 'org.creation.content[@status=review].count') {
