@@ -2,10 +2,10 @@
     "errorMessages": {
         "SIGNUP": {
             "loading": "Requesting sign up , please wait....",
-            "success": "Please login...",
+            "success": "Sign up successfully, Please login...",
             "apiError": "Something went wrong, please try in some time.... ",
-            "userExist": "User name already exist, sign up with different username.",
-            "emailExist": "Email already exist, please login..."
+            "userExist": "User name already exist, sign up with different username...",
+            "emailExist": "Email already exist, sign up with different email..."
         },
         "FORM_VALIDATION": {
             "userName": "Please enter a valid user name, must have minimum 5 character",
@@ -19,7 +19,30 @@
             "ERROR": "error",
             "INFO": "info",
             "WARNING": "warning",
-            "SUCCESS": "success"
+            "SUCCESS": "success",
+            "UNABLE_TO_PLAY": "Unable to play, please try again or close."
+        },
+        "Content": {
+            "START": "Fetching data for you....",
+            "FAILED": "Unable to load data."
+        },
+        "Courses": {
+            "TOC": {
+                "START": "We are fetching course details...",
+                "ERROR": "Unable to get course schedule details.",
+                "Flagged_COURSE": "This course is flagged as inappropriate and is currently under review."
+            }
+        },
+        "COLLECTION": {
+            "PREVIEW": {
+                "START": "Fetching data for you....",
+                "FAILED": "Unable to load data."
+            }
+        },
+        "TENANT": {
+            "GET_INFO": {
+                "FAILED": "Fetching tenant details failed, please try again later..."
+            }
         }
     }
 }

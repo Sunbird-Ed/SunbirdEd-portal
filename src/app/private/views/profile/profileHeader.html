@@ -5,51 +5,36 @@
             <div class="eight wide column">
                 <div class="profileheader ui link items">
                     <div class="ui grid">
-                        <div class="two wide column">
+                        <div class="two wide column padding-top-none">
                             <div ng-include="'views/profile/editProfile/userAvtar.html'"></div>
                         </div>
-                        <div class="ten wide column">
-                            <div class="content padding-top-10 ">
+                        <div class="ten wide column profile-header-text padding-top-none">
+                            <div class="content padding-top-10">
                                 <div class="sectionHeading header">{{profileCtrl.user.firstName}} &nbsp;{{::profileCtrl.user.lastName}}</div>
-                                <div class="meta">
-                                    <span class="cinema">
-                                        <span ng-if="profileCtrl.currentJobLocation">{{profileCtrl.currentJobLocation.orgName}}</span>
-                                    <span ng-if="profileCtrl.currentAddressLocation">{{profileCtrl.currentAddressLocation.city}}</span>
+                                <div class="meta profileViewSubHeader padding-bottom-10">
+                                    <span ng-if="profileCtrl.currentJobLocation">{{profileCtrl.currentJobLocation.orgName}}</span>
+                                    <span  ng-if="profileCtrl.user.location.length && profileCtrl.currentJobLocation">,</span>
+                                    <span  ng-if="profileCtrl.user.location">{{profileCtrl.user.location}}</span>
                                 </div>
-                                <div class="description" ng-init="profileCtrl.readMore = false">
-                                    <p ng-if="!profileCtrl.readMore"> {{profileCtrl.user.profileSummary | limitTo: 120 }}&nbsp;
-                                        <span class="ui cardsKnowMore mouse-pointer" ng-if="profileCtrl.summary.length > 120 && profileCtrl.readMore === false" ng-click="profileCtrl.readMore = !profileCtrl.readMore;"> ... Read More</span>
-                                    </p>
-                                    <p ng-if="profileCtrl.readMore"> {{profileCtrl.user.profileSummary}}&nbsp;
-                                        <span class="ui cardsKnowMore mouse-pointer" ng-click="profileCtrl.readMore = false;">Read Less ...</span>
-                                    </p>
+                                <div class="meta">
+                                    <div class="ui label">Username: {{profileCtrl.user.userName}}                                    
+                                    </div>
+                                    <a class="ui link label" ng-if="profileCtrl.user.rootOrg.contactDetail.length > 0 && profileCtrl.user.rootOrg.contactDetail[0].email && profileCtrl.user.rootOrg.orgName" 
+                                    ng-href="mailto:{{profileCtrl.user.rootOrg.contactDetail[0].email}}" title="Contact Admin">{{profileCtrl.user.rootOrg.orgName}} <i class="mail outline icon"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="profilesettings four wide column">
-                <div class="ui grid">
-                    <div class="twelve wide column ">
-                        <h4 class="profilesttingheader ui header">
-                            <!--<div class="content">
-                                Profile settings
-                                <i class="setting icon"></i>
-                                <div class="ui inline dropdown">
-                                    <div class="text"></div>
-                                    <i class="dropdown icon"></i>
-                                    <div class="menu">
-
-                                    </div>
-                                </div>
-                            </div>-->
-                        </h4>
-                    </div>
-                    <div class="twelve wide column ">
-                        <!--<button apply-script class="ui primary basic button" id="openTreeModal">EDIT PROFILE</button>-->
-                    </div>
-                </div>
+            <div class="profilesettings four wide column" ng-if="!profileCtrl.isError && !profileCtrl.loader.showLoader" >
+                <bulk-upload></bulk-upload> 
+            </div>
+        </div>
+        <div class="ui grid">
+            <div class="two wide column padding-top-none">
+            <div class="profileImageSizeText">Max upload size 4MB</div>
             </div>
         </div>
     </div>

@@ -1,0 +1,13 @@
+{
+  "name": "collection-editor-iframe",
+  "_cacheHeaders": {
+    "ETag": "\"0f365157ab364eaf1d00d57e25285918\"",
+    "Last-Modified": "Tue, 22 Aug 2017 11:41:52 GMT",
+    "Content-Length": "2012415",
+    "Content-Type": "application/zip"
+  },
+  "_release": "e-tag:0f365157a",
+  "_source": "https://s3.ap-south-1.amazonaws.com/ekstep-public-qa/artefacts/editor/collection-editor-iframe-1.0.0.zip",
+  "_target": "*",
+  "_originalSource": "https://s3.ap-south-1.amazonaws.com/ekstep-public-qa/artefacts/editor/collection-editor-iframe-1.0.0.zip"
+}
