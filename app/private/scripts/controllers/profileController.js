@@ -93,6 +93,9 @@ angular.module('playerApp') // add those all values
                           });
                       }
                   }
+                  if (profile.isAvatarUpdate) {
+                      $rootScope.avatar = profileData.avatar;
+                  }
               } else {
                   profile.loader.showLoader = false;
                   profile.isError = true;
@@ -179,6 +182,7 @@ angular.module('playerApp') // add those all values
               profile.icon.append('container', 'user/' + profile.userId);
               contentService.uploadMedia(profile.icon).then(function (res) {
                   if (res && res.responseCode === 'OK') {
+                      profile.isAvatarUpdate = true;
                       profile.updateProfile({ avatar: res.result.url });
                   } else {
                       profile.loader.showLoader = false;
