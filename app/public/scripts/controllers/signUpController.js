@@ -24,7 +24,7 @@ angular.module('loginApp')
                         },
                         firstName: {
                             rules: [{
-                                type: 'regExp[^[0-9]*[A-Za-z][0-9A-Za-z]*$]',
+                                type: 'regExp[^[0-9]*[A-Za-z\\s][0-9A-Za-z\\s]*$]',
                                 prompt: errorMessages.FORM_VALIDATION.name
                             }]
                         },
