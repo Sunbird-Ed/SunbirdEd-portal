@@ -416,8 +416,7 @@ angular.module('playerApp')
           url: '/content/create',
           views: {
               contentView: {
-                  templateUrl: 'views/workSpace/createContent.html',
-                  controller: 'ContentCreationController as contentCreation'
+                  templateUrl: 'views/workSpace/createContent.html'
               }
           },
           onEnter: function (portalTelemetryService) {
@@ -896,23 +895,23 @@ angular.module('playerApp')
             views: {
                 mainView: {
                     templateUrl: 'views/common/genericEditor.html',
-                  controller: 'GenericEditorController as genericEditor'
+                    controller: 'GenericEditorController as genericEditor'
                 }
             },
             params: {
-              contentId: null,
-              state: null
+                contentId: null,
+                state: null
             },
             onEnter: function ($rootScope, portalTelemetryService) {
-              $rootScope.profileActive = 'active';
-              portalTelemetryService.fireImpressions({
-                  env: 'genericeditor',
-                  type: 'edit',
-                  pageid: org.sunbird.portal.appid + '_GenericEditor',
-                  id: '',
-                  name: '',
-                  url: '/private/index#!/generic/editor/'
-              });
+                $rootScope.profileActive = 'active';
+                portalTelemetryService.fireImpressions({
+                    env: 'genericeditor',
+                    type: 'edit',
+                    pageid: org.sunbird.portal.appid + '_GenericEditor',
+                    id: '',
+                    name: '',
+                    url: '/private/index#!/generic/editor/'
+                });
             },
             onExit: function ($rootScope) {
                 $rootScope.profileActive = '';
@@ -922,7 +921,7 @@ angular.module('playerApp')
             url: '/profile/:userName/:userId',
             views: {
                 mainView: {
-                    templateUrl: '/views/search/searchedUserProfile.html',
+                    templateUrl: '/views/search/userProfile.html',
                     controller: 'PubilicProfileController as publicProfile'
                 }
             },
@@ -1035,7 +1034,7 @@ angular.module('playerApp')
           case 'WorkSpace.FlaggedContent':
               routeHelperService.checkStateAccess(['FLAG_REVIEWER'], false, event);
               break;
-      case 'orgDashboard':
+          case 'orgDashboard':
               routeHelperService.checkStateAccess(['ORG_ADMIN', 'SYSTEM_ADMINISTRATION'], false, event);
               break;
           case 'WorkSpace.DraftContent':
