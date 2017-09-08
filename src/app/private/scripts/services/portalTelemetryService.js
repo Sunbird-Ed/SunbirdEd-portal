@@ -1,4 +1,5 @@
-angular.module('playerApp').service('portalTelemetryService', function($http, $filter, $rootScope, uuid4, config) {
+angular.module('playerApp').service('portalTelemetryService', ['$http', '$filter', '$rootScope', 
+    'uuid4', 'config', function($http, $filter, $rootScope, uuid4, config) {
     var self = this;
     var telemetryEvents = telemetryEvents || [];
     this.init = function() {
@@ -7,9 +8,6 @@ angular.module('playerApp').service('portalTelemetryService', function($http, $f
     };
     this.fireImpressions = function(data) {
         org.sunbird.portal.eventManager.dispatchEvent("sunbird:telemetery:portal:impression", data)
-    };
-    this.fireupdateProfile = function(data) {
-        org.sunbird.portal.eventManager.dispatchEvent("sunbird:telemetry:portal:profileupdate", data);
     };
     this.addTelemetryEvent = function(e, data) {
         telemetryEvents.push(data);
@@ -50,4 +48,4 @@ angular.module('playerApp').service('portalTelemetryService', function($http, $f
         });
     };
 
-});
+}]);

@@ -27,7 +27,12 @@ endPage.controller("endPageController", function($scope, $rootScope, $state,$ele
     };
     
     $scope.setTotalTimeSpent = function() {
-        var startTime = (TelemetryService && TelemetryService.instance && TelemetryService.instance._end[TelemetryService.instance._end.length - 1]) ? TelemetryService.instance._end[TelemetryService.instance._end.length - 1].startTime : 0;
+        var endEvent = _.filter(TelemetryService._data, function(event) {
+            if (event) {
+                return event.name == "OE_END";
+            }
+        })
+        var startTime = endEvent.length > 0 ? endEvent[0].startTime : 0;
         if (startTime) {
             var totalTime = Math.round((new Date().getTime() - startTime) / 1000);
             var mm = Math.floor(totalTime / 60);
@@ -59,10 +64,18 @@ endPage.controller("endPageController", function($scope, $rootScope, $state,$ele
         }, 1000);
         EkstepRendererAPI.dispatchEvent("renderer:splash:hide");
         $scope.setTotalTimeSpent();
-        EkstepRendererAPI.getTelemetryService().end(100);
+        if (TelemetryService.instance.telemetryStartActive()) {
+                var telemetryEndData = {};
+                telemetryEndData.stageid = getCurrentStageId();
+                telemetryEndData.progress = logContentProgress();
+                TelemetryService.end(telemetryEndData);
+        } else {
+              console.warn('Telemetry service end is already logged Please log start telemetry again');
+        }
     }
     $scope.initEndpage = function() {
-        $scope.playerMetadata = content.localData.localData;
+        
+        $scope.playerMetadata = content;
         $scope.genieIcon = EkstepRendererAPI.resolvePluginResource("org.sunbird.player.endpage", "1.0", "renderer/assets/home.png");
         $scope.replayIcon = EkstepRendererAPI.resolvePluginResource("org.sunbird.player.endpage", "1.0", "renderer/assets/icn_replay.png");
         $scope.endpageBackground = EkstepRendererAPI.resolvePluginResource("org.sunbird.player.endpage", "1.0", "renderer/assets/endpageBackground.png");
