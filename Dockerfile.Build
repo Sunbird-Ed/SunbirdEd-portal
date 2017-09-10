@@ -21,6 +21,7 @@ RUN apt-get install -y zip \
 WORKDIR /opt/player/
 RUN npm install --unsafe-perm
 RUN bower cache clean
+RUN bower prune -f 
 RUN bower install /opt/player/bower.json  --force
 RUN gulp
 WORKDIR /opt/player
