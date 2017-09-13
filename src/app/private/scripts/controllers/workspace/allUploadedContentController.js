@@ -86,25 +86,7 @@ angular.module('playerApp')
             };
 
             allUploadedContent.editContent = function (item) {
-                if (item.mimeType === 'application/vnd.ekstep.content-collection') {
-                    $state.go('CollectionEditor', {
-                        contentId: item.identifier,
-                        type: item.contentType,
-                        state: 'WorkSpace.AllUploadedContent'
-                    });
-                } else if (item.mimeType === 'application/vnd.ekstep.ecml-archive') {
-                    var params = {
-                        contentId: item.identifier,
-                        state: 'WorkSpace.PublishedContent'
-                    };
-                    $state.go('ContentEditor', params);
-                } else {
-                    var params = {
-                        contentId: item.identifier,
-                        state: 'WorkSpace.AllUploadedContent'
-                    };
-                    $state.go('GenericEditor', params);
-                }
+                workSpaceUtilsService.openContentEditor(item, $state.current.name);
             };
 
             allUploadedContent.initializeUIElement = function () {
