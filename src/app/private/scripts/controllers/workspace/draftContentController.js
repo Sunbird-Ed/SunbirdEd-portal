@@ -14,7 +14,7 @@ angular.module('playerApp')
         '$rootScope', '$state', 'toasterService', '$scope', 'workSpaceUtilsService', '$timeout',
         'PaginationService',
         function (contentService, searchService, config, $rootScope, $state,
-      toasterService, $scope, workSpaceUtilsService, $timeout, PaginationService) {
+        toasterService, $scope, workSpaceUtilsService, $timeout, PaginationService) {
             var draftContent = this;
             draftContent.userId = $rootScope.userId;
             draftContent.status = ['Draft'];
@@ -92,15 +92,7 @@ angular.module('playerApp')
             };
 
             draftContent.openContentEditor = function (item) {
-                if (item.mimeType === 'application/vnd.ekstep.content-collection') {
-                    $state.go('CollectionEditor', {
-                        contentId: item.identifier,
-                        type: item.contentType,
-                        state: 'WorkSpace.DraftContent'
-                    });
-                } else {
-                    $state.go('ContentEditor', { contentId: item.identifier });
-                }
+                workSpaceUtilsService.openContentEditor(item, $state.current.name); 
             };
 
             draftContent.openRemoveContentModel = function (ContentId) {
