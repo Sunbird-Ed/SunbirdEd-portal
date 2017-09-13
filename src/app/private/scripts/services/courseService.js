@@ -8,7 +8,8 @@
  * Service in the playerApp.
  */
 angular.module('playerApp')
-    .service('courseService', ['httpServiceJava', 'config', '$sessionStorage', 'httpService', function (httpServiceJava, config, $sessionStorage, httpService) {
+.service('courseService', ['httpServiceJava', 'config', '$sessionStorage', 'httpService',
+    function (httpServiceJava, config, $sessionStorage, httpService) {
         this.search = function (req) {
             return httpService.post(config.URL.COURSE.SEARCH, req);
         };
