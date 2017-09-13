@@ -12,8 +12,7 @@ module.exports = {
   DEFAUULT_TENANT: env.sunbird_default_tenant,
   EKSTEP_ENV: env.ekstep_env || 'qa',
   PORTAL_PORT: env.sunbird_port || 3000,
-  PORTAL_API_AUTH_TOKEN: env.sunbird_api_auth_token || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkMTc1MDI' +
-    'wNDdlODc0ODZjOTM0ZDQ1ODdlYTQ4MmM3MyJ9.7LWocwCn5rrCScFQYOne8_Op2EOo-xTCK5JCFarHKSs',
+  PORTAL_API_AUTH_TOKEN: env.sunbird_api_auth_token,
   PORTAL_MONGODB_IP: env.sunbird_mongodb_ip,
   PORTAL_MONGODB_PORT: env.sunbird_mongodb_port,
   PORTAL_MONGODB_TTL: env.sunbird_mongodb_ttl,
@@ -21,6 +20,6 @@ module.exports = {
   PORTAL_ECHO_API_URL: env.sunbird_echo_api_url || 'https://dev.open-sunbird.org/api/echo/',
   PORTAL_AUTOCREATE_TRAMPOLINE_USER: env.sunbird_autocreate_trampoline_user || 'true',
   PORTAL_TRAMPOLINE_CLIENT_ID: env.sunbird_trampoline_client_id || 'trampoline',
-  PORTAL_TRAMPOLINE_SECRET: env.sunbird_trampoline_secret || '36c4277f-d59b-4ea2-b788-964b96bd47d1',
+  PORTAL_TRAMPOLINE_SECRET: env.sunbird_trampoline_secret,
   ENABLE_PERMISSION_CHECK: env.sunbird_enable_permission_check || 0
 }
