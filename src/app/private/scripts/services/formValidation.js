@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('playerApp')
-    .service('formValidation', ['$rootScope', '$q', function ($rootScope, $q) {
+    .service('formValidation', ['$rootScope', function ($rootScope) {
         var basicProfileValidation = $rootScope.errorMessages.PROFILE.FORM_VALIDATION.BASIC_PROFILE;
         var addressValidation = $rootScope.errorMessages.PROFILE.FORM_VALIDATION.ADDRESS;
         var educationValidation = $rootScope.errorMessages.PROFILE.FORM_VALIDATION.EDUCATION;
