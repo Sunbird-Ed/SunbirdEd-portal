@@ -1,10 +1,7 @@
-/nbproject/private/
-/node_modules
-/dist
+/src/node_modules
+/src/dist
 /.tmp
 /.sass-cache
-/bower_components
-/app/thirdparty/bower_components
-/coverage
+/src/app/thirdparty/bower_components
+/src/coverage
 /npm-debug.log
-nbproject/
