@@ -11,8 +11,8 @@
 
 angular.module('playerApp')
     .controller('NoteCardCtrl', ['$rootScope', '$scope', 'noteService', '$timeout',
-        '$state', '$stateParams', 'toasterService', function ($rootScope, $scope, noteService,
-            $timeout, $state, $stateParams, toasterService) {
+        '$state', '$stateParams', '$q', 'toasterService', function ($rootScope, $scope, noteService,
+            $timeout, $state, $stateParams, $q, toasterService) {
             var noteCard = this;
             noteCard.userId = $rootScope.userId;
             noteCard.showNoteCard = $scope.shownotecard;
@@ -75,6 +75,55 @@ angular.module('playerApp')
                     $('#addNoteModal').modal('hide dimmer');
                     $('#addNoteModal').modal('hide others');
                 }, 0);
+            };
+            noteCard.insertImage = function () {
+                var defer = $q.defer();
+                noteCard.openAddImageModal(function (response) {
+                    if (!response) {
+                        defer.reject();
+                    } else {
+                        defer.resolve(response);
+                    }
+                });
+                return defer.promise;
+            };
+
+            noteCard.openAddImageModal = function (callback) {
+                noteCard.showAddImageModal = true;
+                $('.wmd-prompt-background').css('z-index', 0);
+                $('.wmd-prompt-background').css('position', 'initial');
+                $timeout(function () {
+                    $('#showAddImageModal').modal({
+                        allowMultiple: true,
+                        onShow: function () {
+                            noteCard.imageLink = 'http://';
+                        },
+                        onHide: function () {
+                            noteCard.showAddImageModal = false;
+                            return callback(noteCard.imageLink);
+                        }
+                    }).modal('show');
+                }, 10);
+            };
+
+            noteCard.closeAddImageModal = function (isCancel) {
+                noteCard.isCancel = false;
+                noteCard.showUpdateModal = false;
+                if (isCancel) {
+                    noteCard.imageLink = '';
+                    noteCard.isCancel = true;
+                }
+                if (noteCard.showCreateNote) {
+                    noteCard.showAddNoteModal();
+                } else if (noteCard.showUpdateNote) {
+                    noteCard.showUpdateModal = true;
+                    noteCard.showUpdateNoteModal(noteCard.update.metaData);
+                }
+                $('#showAddImageModal').modal('hide');
+                $('#showAddImageModal').modal('hide others');
+                $('#showAddImageModal').modal('hide all');
+                $('#showAddImageModal').modal('hide dimmer');
+                $('.ui.coupled.modal.transition.hidden').remove();
             };
 
             noteCard.createNote = function (noteData) {
@@ -150,18 +199,22 @@ angular.module('playerApp')
             };
 
             noteCard.showUpdateNoteModal = function (note) {
-                if ($rootScope.videoElem) {
-                    $rootScope.videoElem.pause();
-                }
                 noteCard.showUpdateNote = true;
                 $timeout(function () {
                     $('#updateNoteModal').modal({
+                        allowMultiple: true,
                         onShow: function () {
                             noteCard.update.metaData = angular.copy(note);
+                            if (noteCard.isCancel) {
+                                noteCard.imageLink = '';
+                                noteCard.isCancel = false;
+                            }
                         },
                         onHide: function () {
-                            noteCard.clearUpdateNoteData();
-                            noteCard.closeUpdateNoteModal();
+                            if (!noteCard.imageLink && !noteCard.isCancel && !noteCard.showUpdateModal) {
+                                noteCard.clearUpdateNoteData();
+                                noteCard.closeUpdateNoteModal();
+                            }
                             return true;
                         }
                     }).modal('show');
@@ -181,17 +234,23 @@ angular.module('playerApp')
 
             noteCard.showAddNoteModal = function () {
                 noteCard.showCreateNote = true;
-                if ($rootScope.videoElem) {
-                    $rootScope.videoElem.pause();
-                }
                 $timeout(function () {
                     $('#addNoteModal').modal({
+                        allowMultiple: true,
                         onShow: function () {
-                            noteCard.clearAddNoteData();
+                            if (!noteCard.imageLink && !noteCard.isCancel) {
+                                $('.ui.coupled.modal.transition.hidden').remove();
+                                noteCard.clearAddNoteData();
+                            } else {
+                                noteCard.imageLink = '';
+                                noteCard.isCancel = false;
+                            }
                         },
                         onHide: function () {
-                            noteCard.clearAddNoteData();
-                            noteCard.closeAddNoteModal();
+                            if (!noteCard.imageLink && !noteCard.isCancel) {
+                                noteCard.clearAddNoteData();
+                                noteCard.closeAddNoteModal();
+                            }
                             return true;
                         }
                     }).modal('show');

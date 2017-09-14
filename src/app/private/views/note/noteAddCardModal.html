@@ -2,7 +2,7 @@
     <span class="ui cardtakenote cursor-pointer" ng-click="noteCard.showAddNoteModal();">
         <img ng-src="../images/takenote.png">
         <span>{{$root.labels.Notes.takeNote}}</span>
-</span>
+    </span>
 </span>
 <span ng-if="noteCard.showModalInCourseView">
     <span ng-click="noteCard.showAddNoteModal(); " class="cursor-pointer">
@@ -10,7 +10,7 @@
     </span>
 </span>
 <div ng-if="noteCard.showCreateNote">
-    <div class="ui modal" id="addNoteModal">
+    <div class="ui coupled modal" id="addNoteModal">
         <div class="header" ng-if="!noteCard.createApi.loader.showLoader">
             <div class="ui grid">
                 <div class="eleven wide column">
@@ -28,7 +28,7 @@
                 <input type="text" placeholder={{$root.labels.Notes.title}} name="title" ng-model="noteCard.add.title" />
             </div>
             <div class="editor">
-                <pagedown-editor content="noteCard.add.note" show-preview="false" placeholder={{$root.labels.Notes.description}}></pagedown-editor>
+                <pagedown-editor content="noteCard.add.note" show-preview="false" insert-image="noteCard.insertImage()" placeholder={{$root.labels.Notes.description}}></pagedown-editor>
             </div>
         </div>
         <div class="actions" ng-if="!noteCard.createApi.loader.showLoader">
@@ -37,6 +37,31 @@
         </div>
         <div class=" ui segment margin-top-10" ng-if="noteCard.createApi.loader.showLoader">
             <app-loader data="{{noteCard.createApi.loader}}"></app-loader>
+        </div>
+    </div>
+    <div ng-if="noteCard.showAddImageModal">
+        <div class="ui coupled modal" id="showAddImageModal">
+            <div class=" ui segment margin-top-10">
+                <div class=" margin-bottom-15">
+                    <div class="ui grid">
+                        <div class="eleven wide column">
+                            <span class="ui header">{{$root.labels.Notes.insertImage}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="content">
+                    <div>
+                        <p>{{$root.labels.Notes.imageLinkMessage}}</p>
+                    </div>
+                    <div class="ui fluid icon input">
+                        <input type="text" placeholder="Title" name="title" ng-model="noteCard.imageLink" />
+                    </div>
+                </div>
+                <div class="actions">
+                    <button class="ui primary right floated button margin-bottom-15 margin-top-10 " type="submit" tabindex="3" ng-click="noteCard.closeAddImageModal()">{{$root.labels.Notes.ok}}</button>
+                    <button class="ui secondary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="noteCard.closeAddImageModal(true)">{{$root.labels.Notes.cancel}}</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
