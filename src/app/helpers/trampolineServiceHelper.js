@@ -162,7 +162,7 @@ module.exports = {
         'x-device-id': 'trampoline',
         'x-msgid': uuidv1(),
         'ts': dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo"),
-        'x-consumer-id': '7c03ca2e78326957afbb098044a3f60783388d5cc731a37821a20d95ad497ca8',
+        'x-consumer-id': learner_authorization,
         'content-type': 'application/json',
         accept: 'application/json',
         'Authorization': 'Bearer '+learner_authorization
@@ -193,7 +193,7 @@ module.exports = {
         ts: dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo"),
         'x-msgid': uuidv1(),
         'x-device-id': 'trampoline',
-        'x-consumer-id': '7c03ca2e78326957afbb098044a3f60783388d5cc731a37821a20d95ad497ca8',
+        'x-consumer-id': learner_authorization,
         id: 'id',
         'content-type': 'application/json',
         accept: 'application/json',
