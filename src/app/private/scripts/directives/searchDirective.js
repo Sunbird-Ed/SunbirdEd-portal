@@ -36,6 +36,8 @@ angular.module('playerApp').directive('search', function () {
             $rootScope.search.selectedConcepts = [];
             $rootScope.search.sortByOption = {};
             $scope.search.autoSuggest = true;
+            $rootScope.search.orgType = config.DROPDOWN.COMMON.orgType;
+            $rootScope.search.selectedOrgType = [];
             // search select dropdown changes
             $rootScope.$watch('searchKey', function () {
                 $timeout(function () {
@@ -119,6 +121,7 @@ angular.module('playerApp').directive('search', function () {
                 $rootScope.search.sortByOption = Object.keys($rootScope.search.sortBy).length > 0
                         ? Object.keys($rootScope.search.sortBy)[0] : '';
                 $rootScope.search.searchFromSuggestion = $stateParams.autoSuggestSearch;
+                $rootScope.search.selectedOrgType = $rootScope.search.filters.selectedOrgType || [];
                 // $rootScope.search.sortBy=$rootScope.search.sortBy;
                 $scope.search.searchRequest();
             };
@@ -230,14 +233,14 @@ angular.module('playerApp').directive('search', function () {
                     $scope.search.searchFn = searchService.courseSearch(req);
                     $scope.search.resultType = 'course';
                 } else if ($rootScope.search.selectedSearchKey === 'Library') {
-                    if (!req.filters['contentType'] || (_.isArray(req.filters['contentType'])  && req.filters['contentType'].length == 0)) {
-                        req.filters.contentType = ["Collection","Story","Worksheet","TextBook","LessonPlan","Resource"];    
+                    if (!req.filters.contentType || (_.isArray(req.filters.contentType) && req.filters.contentType.length == 0)) {
+                        req.filters.contentType = ['Collection', 'Story', 'Worksheet', 'TextBook', 'LessonPlan', 'Resource'];
                     }
                     $scope.search.searchFn = searchService.contentSearch(req);
                     $scope.search.resultType = 'content';
                     req.filters.objectType = ['Content'];
                 } else if ($rootScope.search.selectedSearchKey === 'All') {
-                    req.filters.contentType = ["Collection","Story","Worksheet","TextBook","LessonPlan","Resource"];
+                    req.filters.contentType = ['Collection', 'Story', 'Worksheet', 'TextBook', 'LessonPlan', 'Resource'];
                     $scope.search.searchFn = searchService.search(req);
                     $scope.search.resultType = 'content';
                     req.filters.objectType = ['Content'];
@@ -260,16 +263,16 @@ angular.module('playerApp').directive('search', function () {
                                         .includes('SYSTEM_ADMINISTRATION');
 
                     if (isSystemAdmin === false) {
-                        req.filters['rootOrgId'] = $rootScope.rootOrgId;
+                        req.filters.rootOrgId = $rootScope.rootOrgId;
                     }
                     $scope.search.searchFn = adminService.userSearch({ request: req });
                     $scope.search.resultType = 'users';
                 } else if ($rootScope.search.selectedSearchKey === 'Organisations') {
-                    req.filters = {};
+                    // req.filters = {};
                     if (req.sort_by) {
                         delete req.sort_by;
                     }
-                    req.filters.objectType = ['org'];
+                    // req.filters.objectType = ['org'];
                     $scope.search.searchFn = adminService.orgSearch({ request: req });
                     $scope.search.resultType = 'organisations';
                 }
@@ -343,6 +346,9 @@ angular.module('playerApp').directive('search', function () {
                     $rootScope.search.filters.concepts = undefined;
                     $rootScope.search.filters.contentType = undefined;
                     $rootScope.search.filters.grade = $rootScope.search.selectedGrades;
+                } else if ($rootScope.search.selectedSearchKey === 'Organisations') {
+                    $rootScope.search.filters = {};
+                    $rootScope.search.filters.orgType = $rootScope.search.selectedOrgType;
                 } else {
                     $rootScope.search.filters.board = $rootScope.search.selectedBoard;
                     $rootScope.search.filters.concepts = $rootScope.search.selectedConcepts;
@@ -364,6 +370,7 @@ angular.module('playerApp').directive('search', function () {
                 $rootScope.isSearchResultsPage = false;
                 $rootScope.isSearchPage = true;
                 $rootScope.search.selectedGrades = [];
+                $rootScope.search.selectedOrgType = [];
                 $scope.search.searchRequest();
                 // $state.go($rootScope.search.selectedSearchKey);
             };
@@ -379,19 +386,14 @@ angular.module('playerApp').directive('search', function () {
                         || $rootScope.search.selectedSearchKey === 'Organisations') {
                     $state.go('Profile');
                 }
-               
-               if($rootScope.search.selectedSearchKey === 'All')
-               {
-                $state.go('Home');
-               }
-               else if($rootScope.search.selectedSearchKey === 'Library'){
-                  $state.go('Resources'); 
-               }
-               else
-               {
-                   $state.go($rootScope.search.selectedSearchKey);
-               }
-                
+
+                if ($rootScope.search.selectedSearchKey === 'All') {
+                    $state.go('Home');
+                } else if ($rootScope.search.selectedSearchKey === 'Library') {
+                    $state.go('Resources');
+                } else {
+                    $state.go($rootScope.search.selectedSearchKey);
+                }
             };
             $rootScope.search.setSearchKey = function (key) {
                 $rootScope.$emit('setSearchKey', { key: key });

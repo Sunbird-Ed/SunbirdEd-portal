@@ -302,6 +302,7 @@ angular.module('playerApp')
                         $rootScope.search.sortBy = {};
                         $rootScope.search.sortByOption = {};
                         $rootScope.search.selectedGrades = [];
+                        $rootScope.search.selectedOrgType = [];
                         $timeout(function () {
                             $('#multi-select-sort').dropdown('clear');
                             $('#content-search-filter-accordion').accordion('close', 0);

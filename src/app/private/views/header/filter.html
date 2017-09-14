@@ -61,6 +61,13 @@
                                         <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedConcepts',concept.identifier)"></i>
                                     </a>
                                 </span>
+                                <span class="padded chip margin-top--5" ng-if='$root.search.selectedOrgType.length > 0'>
+                                        {{$root.labels.SEARCH.PROMPT.ORG_TYPE}}:
+                                         <a class="ui label margin-top--5" ng-repeat="orgType in $root.search.selectedOrgType">
+                                             {{orgType}}
+                                             <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedConcepts',concept.identifier)"></i>
+                                         </a>
+                                     </span>
 
                             </div>
                             <div class="filtercolmntext ui grid">
@@ -80,7 +87,7 @@
                                     </div>
                                 </div>
                                 <!-- boards -->
-                                <div class="two wide column"ng-if="$root.search.selectedSearchKey !== 'Users'">
+                                <div class="two wide column"ng-if="$root.search.selectedSearchKey !== 'Users' && $root.search.selectedSearchKey !== 'Organisations'">
                                     <div id="filterBoard" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
                                         <i class="dropdown icon"></i>
                                         <div class="filter-sel-text" ng-if="$root.search.selectedBoard.length > 0 ">{{$root.search.selectedBoard.length+' '+$root.labels.SEARCH.PROMPT.BOARD}}</div>
@@ -101,7 +108,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="two wide column">
+                                <!-- language -->
+                                <div class="two wide column" ng-if="$root.search.selectedSearchKey !== 'Organisations'">
                                     <div id="filterLang" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
                                         <input type='hidden' ng-value='{{}}' />
                                         <i class="dropdown icon"></i>
@@ -112,7 +120,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="two wide column">
+                                <!-- subjects -->
+                                <div class="two wide column" ng-if="$root.search.selectedSearchKey !== 'Organisations'">
                                     <div id="filterSub" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
                                         <i class="dropdown icon"></i>
                                         <div class="filter-sel-text" ng-if="$root.search.selectedSubject.length > 0 ">{{$root.search.selectedSubject.length+' '+$root.labels.SEARCH.PROMPT.SUBJECT}}</div>
@@ -122,13 +131,26 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="two wide column">
-                                    <div class="field" ng-if="$root.search.selectedSearchKey !== 'Users' && $root.concepts">
+                                <div class="two wide column"  ng-if="$root.search.selectedSearchKey !== 'Users' && $root.concepts && $root.search.selectedSearchKey !== 'Organisations'">
+                                    <div class="field">
                                         <form class="conceptSelector ui form ">
                                             <concept-picker  is-search-page="true"  selected-concepts="$root.search.selectedConcepts"></concept-picker>
                                         </form>
                                     </div>
                                 </div>
+                                <!-- org type -->
+                                <div class="two wide column" ng-if="$root.search.selectedSearchKey === 'Organisations'">
+                                    <div id="orgTypeFilter" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
+                                        <input type='hidden' ng-value='{{}}' />
+                                        <i class="dropdown icon"></i>
+                                        <div class="filter-sel-text" ng-if="$root.search.selectedOrgType.length > 0 ">{{$root.search.selectedOrgType.length+' '+$root.labels.SEARCH.PROMPT.ORG_TYPE}}</div>
+                                        <div class="filter-sel-text" ng-if="$root.search.selectedOrgType.length == 0 ">{{$root.labels.SEARCH.PROMPT.ORG_TYPE}}</div>
+                                        <div class="menu">
+                                            <div ng-click="$root.search.selectFilter('selectedOrgType',orgType,$event)" ng-repeat="orgType in $root.search.orgType  | orderBy:'toString()'" class="item dropdown-item" ng-class="{'active':($root.search.selectedOrgType.indexOf(orgType)>=0)}" data-value="{{orgType}}">{{orgType}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- buttons -->
                                 <div class="three wide column filter-button">
                                     <a class="searchfilterbutton ui blue tiny  button" ng-click="$root.search.applyFilter()">{{$root.labels.SEARCH.APPLY}}</a>
                                     <a class="searchfilterbutton ui primary tiny basic button" ng-click="$root.search.resetFilter()">{{$root.labels.SEARCH.RESET}}</a>
@@ -138,7 +160,7 @@
                     </div>
 
                     <div class="two wide column">
-                        <div class="field" ng-if="$root.search.selectedSearchKey !== 'Users'">
+                        <div class="field" ng-if="$root.search.selectedSearchKey !== 'Users'&& $root.search.selectedSearchKey === 'Organisations'">
                             <div class="content dropdown-content">
                                 <span class="ShowFilterSubTitle">{{$root.labels.SEARCH.SORT}}&nbsp;</span>
                                 <div apply-script class="ui inline dropdown search-dropdown" id="multi-select-sort">
