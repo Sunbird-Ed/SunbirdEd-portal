@@ -773,6 +773,7 @@ th {
   height: auto;
   left: 10% !important;
 }
+/*css for all the cards used in site*/
 .ui.card > .sliderCards.content {
   -webkit-box-flex: 1;
   -ms-flex-positive: 1;
@@ -815,6 +816,17 @@ th {
   clear: both;
   color: #b5b5b5 !important;
 }
+/*blue rating star in card */
+.sliderCards .ui.mini.rating {
+  font-size: 0.78571429em;
+  padding-top: 12px;
+}
+.sliderCards > .description {
+  clear: both;
+  color: rgba(16, 16, 16, 0.88) !important;
+  line-height: 1.5;
+}
+/*for the text on image in card */
 .cardImageText {
   position: absolute;
   bottom: 0;
@@ -835,15 +847,6 @@ th {
   overflow: hidden !important;
   height: 150px !important;
 }
-.sliderCards .ui.mini.rating {
-  font-size: 0.78571429em;
-  padding-top: 12px;
-}
-.sliderCards > .description {
-  clear: both;
-  color: rgba(16, 16, 16, 0.88) !important;
-  line-height: 1.5;
-}
 div:focus {
   outline: none;
 }
@@ -860,7 +863,7 @@ div:focus {
   transition: all .3s ease 0s;
   box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.5) !important;
 }
-/* rating card */
+/*text description height fixed in card*/
 .fixedRatingCard {
   max-height: 2.8em;
   overflow: hidden;
@@ -944,7 +947,7 @@ div:focus {
   width: 40px !important;
   padding: 10px 10px !important;
   border-radius: 50% !important;
-  background: rgba(255, 255, 255, 0.9) !important;
+  background: #ffffff !important;
   box-shadow: 0px 1px 2px 2px rgba(0, 0, 0, 0.3) !important;
   top: 80px;
   opacity: 1;
@@ -999,30 +1002,6 @@ div:focus {
   bottom: 0 !important;
   width: 100% !important;
 }
-.userProfilePic {
-  width: 200px !important;
-}
-.userProfilePic .image {
-  background: white !important;
-  width: 100% !important;
-  height: 140px !important;
-}
-.userProfilePic .image.iconProfilePic {
-  text-align: center;
-  line-height: 140px;
-}
-.userProfilePic .image.iconProfilePic i {
-  vertical-align: middle;
-}
-.userProfilePic .image.landscapeImgUser img {
-  border-radius: 0 !important;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-  width: 100% !important;
-  height: 120px !important;
-}
 .profileImageSizeText {
   font-size: 10px;
   color: #000000;
@@ -1049,6 +1028,7 @@ div:focus {
 .radiomargin {
   margin: 1em 0 !important;
 }
+/*semantic ui modal form field changes*/
 .ui.modal .ui.form input {
   border: 0!important;
   border-bottom: 1px solid #979797!important;
@@ -1069,7 +1049,6 @@ div:focus {
 }
 .ui.modal .ui.form .field > label {
   color: #979797;
-  /* font-size: 14px; */
   font-weight: bold;
   line-height: 14px;
 }
@@ -1089,13 +1068,14 @@ div:focus {
 .ui.modal .ui.header {
   font-size: 1.5em;
 }
-.ui.tree-picker.modal .header .menu {
-  margin-top: -12px !important;
-}
-/*it is a quick fix need to updated with semantic libray*/
+/*it is a quick fix to make modal content scrollable need to updated with semantic libray*/
 .ui.modal .scrolling.content {
   max-height: calc(70vh);
   overflow: auto;
+}
+/*concept selector pop up */
+.ui.tree-picker.modal .header .menu {
+  margin-top: -12px !important;
 }
 .noResultContainer {
   margin-top: 12% !important;
