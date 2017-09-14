@@ -11,6 +11,7 @@ const express = require('express'),
   bodyParser = require('body-parser'),
   MongoStore = require('connect-mongo')(session),
   async = require('async'),
+  helmet = require('helmet'),
   trampolineServiceHelper = require('./helpers/trampolineServiceHelper.js'),
   telemetryHelper = require('./helpers/telemetryHelper.js'),
   permissionsHelper = require('./helpers/permissionsHelper.js'),
@@ -72,6 +73,7 @@ const decoratePublicRequestHeaders = function() {
     return proxyReqOpts;
   };
 };
+app.use(helmet());
 app.use(session({
   secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
   resave: false,
