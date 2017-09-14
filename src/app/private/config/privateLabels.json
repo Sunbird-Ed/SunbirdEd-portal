@@ -283,7 +283,8 @@
                 "SUBJECT": "Subjects",
                 "GRADES": "Grades",
                 "CONTENT_TYPE": "Content Types",
-                "CONCEPT": "Concepts"
+                "CONCEPT": "Concepts",
+                "ORG_TYPE":"Org Type"
             }
         },
         "INSTRUCTIONS": {
