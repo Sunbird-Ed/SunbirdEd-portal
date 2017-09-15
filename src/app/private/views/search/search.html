@@ -9,6 +9,14 @@
         </div>
         <div ng-if="$root.search.selectedSearchKey=='Users' || $root.search.selectedSearchKey=='Organisations'" ng-include="'views/search/profileSearch.html'">
         </div>
+        <div class="ui top padded grid">
+            <div class="two wide column"></div>
+            <div class="ten wide column paginationAlignment">
+                <div class="padding-bottom-15" ng-if="$root.search.searchResult.count > $root.search.pageLimit">
+                    <div ng-init="pegination = $root.search" ng-include=" 'views/common/pagination.html' "></div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="one wide column "></div>
 </div>
