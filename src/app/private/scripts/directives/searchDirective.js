@@ -9,9 +9,9 @@
 angular.module('playerApp').directive('search', function () {
     var controller = ['$scope', '$rootScope', 'config', '$timeout',
         '$state', '$stateParams', 'searchService', 'toasterService', '$location',
-        'sessionService', 'adminService', 'permissionsService', function ($scope, $rootScope,
+        'sessionService', 'adminService', 'permissionsService', 'PaginationService', function ($scope, $rootScope,
                 config, $timeout, $state, $stateParams, searchService, toasterService,
-                $location, sessionService, adminService, permissionsService) {
+                $location, sessionService, adminService, permissionsService, PaginationService) {
             $scope.search = {};
             $rootScope.search = {};
             $rootScope.search.searchKeyword = '';
@@ -38,6 +38,8 @@ angular.module('playerApp').directive('search', function () {
             $scope.search.autoSuggest = true;
             $rootScope.search.orgType = config.DROPDOWN.COMMON.orgType;
             $rootScope.search.selectedOrgType = [];
+            $rootScope.search.pageLimit = 20;
+            $rootScope.search.pager = {};
             // search select dropdown changes
             $rootScope.$watch('searchKey', function () {
                 $timeout(function () {
@@ -207,15 +209,23 @@ angular.module('playerApp').directive('search', function () {
                     }
                 }
             };
-            $scope.search.handleSearch = function () {
+            $scope.search.handleSearch = function (pageNumber) {
+                pageNumber = pageNumber || 1;
                 var req = {
                     query: $rootScope.search.searchKeyword,
                     filters: $rootScope.search.filters,
-                    limit: 20,
-                    sort_by: $rootScope.search.sortBy
+                    sort_by: $rootScope.search.sortBy,
+                    offset: (pageNumber - 1) * $rootScope.search.pageLimit,
+                    limit: $rootScope.search.pageLimit
 
                 };
-
+                if (!$scope.search.autoSuggest || $scope.search.autoSuggest == false) {
+                    if (!$rootScope.search.loader) {
+                        $rootScope.search.loader = toasterService.loader(''
+                                    , $rootScope.errorMessages.SEARCH.DATA.START);
+                    }
+                    $rootScope.search.loader.showLoader = true;
+                }
                 // if any concept is selected then pass array of ids
                 if (req.filters.concepts && req.filters.concepts.length > 0) {
                     req.filters.concepts = _.map(req.filters.concepts, 'identifier');
@@ -278,46 +288,48 @@ angular.module('playerApp').directive('search', function () {
                 }
 
                 $scope.search.searchFn.then(function (res) {
-                    $rootScope.search.searchResultKeyword = $rootScope.search.searchKeyword;
                     if (res !== null && res.responseCode === 'OK') {
                         $rootScope.search.autosuggest_data = [];
+                        var responseResult = {};
+                        if ($rootScope.search.selectedSearchKey === 'Organisations' || $rootScope.search.selectedSearchKey === 'Users') {
+                            responseResult = res.result.response;
+                        } else {
+                            responseResult = res.result;
+                        }
+                        // check if search is happening through autosuggest then autosuggest popup
+                        // should appear else load search results
                         if ($scope.search.autoSuggest
                                 && $rootScope.search.searchKeyword !== $stateParams.query) {
-                            $rootScope.search.autosuggest_data = res.result[
+                            $rootScope.search.autosuggest_data = responseResult[
                                     $scope.search.resultType
-                            ];
+                            ] || [];
                             if ($rootScope.search.autosuggest_data.length > 0) {
                                 $('#search-suggestions').addClass('visible').removeClass('hidden');
                             }
                         } else {
+                            $rootScope.search.searchResultKeyword = $rootScope.search.searchKeyword;
                             $('#search-suggestions').addClass('hidden').removeClass('visible');
-                            $rootScope.search.autosuggest_data = [];
                             $rootScope.search.loader.showLoader = false;
-                            if ($rootScope.search.selectedSearchKey === 'Organisations' || $rootScope.search.selectedSearchKey === 'Users') {
-                                if (res.result.response.count === 0) {
-                                    $rootScope.search.error = showErrorMessage(true,
-                                            $rootScope.errorMessages.SEARCH.DATA.NO_CONTENT,
-                                            $rootScope.errorMessages.COMMON.NO_RESULTS, $rootScope.errorMessages.SEARCH.DATA.NO_CONTENT_TEXT);
-                                } else {
-                                    $rootScope.search.error = {};
-                                    $rootScope.search.searchResult = res.result;
-                                }
-                            } else if (res.result.count === 0) {
+                            if (responseResult.count === 0) {
                                 $rootScope.search.error = showErrorMessage(true,
                                         $rootScope.errorMessages.SEARCH.DATA.NO_CONTENT,
                                         $rootScope.errorMessages.COMMON.NO_RESULTS, $rootScope.errorMessages.SEARCH.DATA.NO_CONTENT_TEXT);
                             } else {
                                 $rootScope.search.error = {};
-                                $rootScope.search.searchResult = res.result;
+                                $rootScope.search.searchResult = responseResult;
+                                $rootScope.search.pager = PaginationService.GetPager(responseResult.count,
+                            pageNumber, $rootScope.search.pageLimit);
                             }
                         }
                         $scope.search.autoSuggest = true;
+                        clearTimeout($rootScope.search.typingTimer);
                     } else {
                         $rootScope.search.loader.showLoader = false;
                         $rootScope.search.error = showErrorMessage(true,
                                 $rootScope.errorMessages.SEARCH.DATA.FAILED,
                                 $rootScope.errorMessages.COMMON.ERROR);
                         $scope.search.autoSuggest = true;
+                        clearTimeout($rootScope.search.typingTimer);
                         throw new Error('');
                     }
                 }).catch(function (e) {
@@ -403,6 +415,13 @@ angular.module('playerApp').directive('search', function () {
                 initSearchHandler();
                 searchKeyHandler();
             });
+            $rootScope.search.setPage = function (page) {
+                $scope.search.autoSuggest = false;
+                if (page < 1 || page > $rootScope.search.pager.totalPages) {
+                    return;
+                }
+                $scope.search.handleSearch(page);
+            };
         }];
     return {
         templateUrl: 'views/header/search.html',
