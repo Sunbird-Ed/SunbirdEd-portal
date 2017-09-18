@@ -357,32 +357,7 @@
                 "lessonTypes": [
                     "Story", "Worksheet"
                 ],
-                "subjects": [
-                    "Assamese",
-                    "Bengali",
-                    "English",
-                    "Gujarati",
-                    "Hindi",
-                    "Kannada",
-                    "Malayalam",
-                    "Marathi",
-                    "Nepali",
-                    "Oriya",
-                    "Punjabi",
-                    "Tamil",
-                    "Telugu",
-                    "Urdu",
-                    "Biology",
-                    "Chemistry",
-                    "Physics",
-                    "Mathematics",
-                    "Environmental Studies",
-                    "Geography",
-                    "History",
-                    "Political Science",
-                    "Economics",
-                    "Sanskrit"
-                ],
+                "subjects": ["Assamese", "Bengali", "Biology", "Chemistry", "Economics", "English", "Environmental Studies", "Geography", "Gujarati", "Hindi", "History", "Kannada", "Malayalam", "Marathi", "Mathematics", "Nepali", "Oriya", "Physics", "Political Science", "Punjabi", "Sanskrit", "Tamil", "Telugu", "Urdu"],
                 "grades": [
                     "Kindergarten",
                     "Grade 1",
@@ -409,7 +384,7 @@
                     "Assamese", "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Malayalam", "Marathi", "Nepali", "Oriya", "Other", "Punjabi", "Tamil", "Telugu", "Urdu"
                 ],
                 "boards": ["AP Board", "CBSE", "ICSE", "MSCERT", "NCERT", "NCTE", "TN Board", "UP Board"],
-                "orgType":["technical"]
+                "orgType": ["technical"]
             }
         },
         "collection_Editor_Config": {
