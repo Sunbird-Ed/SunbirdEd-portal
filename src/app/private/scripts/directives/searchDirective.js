@@ -199,10 +199,7 @@ angular.module('playerApp').directive('search', function () {
                                 sort: btoa(JSON.stringify($rootScope.search.sortBy)),
                                 autoSuggestSearch: $rootScope.search.searchFromSuggestion || false
                             };
-                            // $state.go('Search', searchParams);
-                            $location.path('search/' + searchParams.type + '/'
-                                    + searchParams.query + '/' + searchParams.filters + '/'
-                                    + searchParams.sort + '/' + searchParams.autoSuggestSearch);
+                            $state.go('Search', searchParams, {reload: true});                        
                         }
                     } else {
                         $rootScope.$broadcast('initPageSearch', {});
