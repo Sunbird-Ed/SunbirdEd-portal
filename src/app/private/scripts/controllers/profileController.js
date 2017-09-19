@@ -23,9 +23,10 @@ angular.module('playerApp') // add those all values
         '$state',
         'learnService',
         'adminService',
-        'workSpaceUtilsService', function ($scope, $rootScope, contentService, userService,
+        'workSpaceUtilsService',
+        '$q', function ($scope, $rootScope, contentService, userService,
             toasterService, config, $timeout, $filter, uuid4, formValidation, searchService,
-            $state, learnService, adminService, workSpaceUtilsService) {
+            $state, learnService, adminService, workSpaceUtilsService, $q) {
             var profile = this;
             var apiMessages = $rootScope.errorMessages.PROFILE.API;
             profile.userId = $rootScope.userId;
@@ -119,82 +120,82 @@ angular.module('playerApp') // add those all values
                 profile.updateProfileRequest = {
                     id: uuid4.generate(),
                     ts: $filter('date')(new Date(), 'yyyy-MM-dd HH:mm:ss:sssZ'),
-                    params: {
-
-                    },
+                    params: {},
                     request: updateReq
                 };
-
                 profile.disableSave = true;
                 profile.loader = toasterService.loader('', apiMessages.SUCCESS.editingProfile);
-                userService.updateUserProfile(
-        profile.updateProfileRequest,
-        profile.fullName,
-        profile.email).then(function (successResponse) {
-            profile.disableSave = false;
-            if (successResponse &&
-        successResponse.responseCode === 'OK') {
-                profile.experienceForm = false;
-                profile.basicProfileForm = false;
-                profile.addressForm = false;
-                profile.educationForm = false;
-                profile.loader.showLoader = false;
-                profile.openDiscriptionEdit = false;
-                toasterService.success(apiMessages.SUCCESS.profileEdited);
-                profile.getProfile();
-            } else {
-                profile.loader.showLoader = false;
-                toasterService.error(apiMessages.ERROR.update);
-            }
-        }).catch(function () {
-            profile.experienceForm = false;
-            profile.basicProfileForm = false;
-            profile.loader.showLoader = false;
-            toasterService.error(apiMessages.ERROR.update);
-        });
+                userService
+                .updateUserProfile(profile.updateProfileRequest, profile.fullName, profile.email)
+                .then(function (successResponse) {
+                    profile.disableSave = false;
+                    if (successResponse && successResponse.responseCode === 'OK') {
+                        profile.experienceForm = false;
+                        profile.basicProfileForm = false;
+                        profile.addressForm = false;
+                        profile.educationForm = false;
+                        profile.loader.showLoader = false;
+                        profile.openDiscriptionEdit = false;
+                        toasterService.success(apiMessages.SUCCESS.profileEdited);
+                        profile.getProfile();
+                    } else {
+                        profile.loader.showLoader = false;
+                        toasterService.error(apiMessages.ERROR.update);
+                    }
+                }).catch(function () {
+                    profile.experienceForm = false;
+                    profile.basicProfileForm = false;
+                    profile.loader.showLoader = false;
+                    toasterService.error(apiMessages.ERROR.update);
+                });
             };
 
     // update avatar
             profile.openImageBrowser = function () {
                 $('#iconImageInput').click();
             };
-
             profile.validateAvatar = function (files) {
-                var fd = new FormData();
+                var deferred = $q.defer();
+                var formData = new FormData();
                 var reader = new FileReader();
-                if (files[0] && files[0].name.match(/.(jpg|jpeg|png)$/i) &&
-        files[0].size < 4000000) {
-                    fd.append('file', files[0]);
-                    reader.onload = function () {
-                        profile.uploadAvatar();
-                    };
+                if (files[0]
+                    && files[0].name.match(/.(jpg|jpeg|png)$/i)
+                    && files[0].size < 4000000) {
+                    formData.append('file', files[0]);
                     reader.readAsDataURL(files[0]);
-                    profile.icon = fd;
+                    profile.icon = formData;
                     profile.iconUpdate = true;
-                } else {
-                    toasterService.warning($rootScope.errorMessages.COMMON.INVALID_IMAGE);
+                    deferred.resolve(true);
+                    return deferred.promise;
+                }
+                toasterService.warning($rootScope.errorMessages.COMMON.INVALID_IMAGE);
+                throw new Error('');
+            };
+
+            profile.updateAvatar = function (files) {
+                try {
+                    profile.validateAvatar(files)
+                        .then(function () {
+                            profile.icon.append('container', 'user/' + profile.userId);
+                            contentService.uploadMedia(profile.icon)
+                        .then(function (res) {
+                            if (res && res.responseCode === 'OK') {
+                                profile.isAvatarUpdate = true;
+                                profile.updateProfile({ avatar: res.result.url });
+                            } else {
+                                profile.error = toasterService.error(apiMessages.ERROR.update);
+                            }
+                        }).catch(function () {
+                            profile.loader.showLoader = false;
+                            profile.error = toasterService.error(apiMessages.ERROR.update);
+                        });
+                        });
+                } catch (e) {
+                    //
                 }
             };
 
-            profile.uploadAvatar = function () {
-                profile.loader = toasterService.loader('', apiMessages.SUCCESS.editingProfile);
-                profile.icon.append('container', 'user/' + profile.userId);
-                contentService.uploadMedia(profile.icon).then(function (res) {
-                    if (res && res.responseCode === 'OK') {
-                        profile.isAvatarUpdate = true;
-                        profile.updateProfile({ avatar: res.result.url });
-                    } else {
-                        profile.loader.showLoader = false;
-                        profile.error = toasterService
-                                        .error(apiMessages.ERROR.update);
-                    }
-                }).catch(function () {
-                    profile.loader.showLoader = false;
-                    profile.error = toasterService.error(apiMessages.ERROR.update);
-                });
-            };
-
-    // update basic Info
+              // update basic Info
             profile.EditBasicProfile = function () {
                 var isValid = formValidation.validate('#basicInfoForm');
                 if (isValid === true) {
