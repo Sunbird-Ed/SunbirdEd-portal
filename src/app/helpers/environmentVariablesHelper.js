@@ -1,7 +1,7 @@
 'use strict';
 const env = process.env;
 
-module.exports = {
+let envVariables = {
   LEARNER_URL: env.sunbird_learner_player_url || 'https://staging.open-sunbird.org/api/',
   CONTENT_URL: env.sunbird_content_player_url || 'https://staging.open-sunbird.org/api/',
   CONTENT_PROXY_URL: env.sunbird_content_proxy_url || 'https://staging.open-sunbird.org',
@@ -23,3 +23,7 @@ module.exports = {
   PORTAL_TRAMPOLINE_SECRET: env.sunbird_trampoline_secret,
   ENABLE_PERMISSION_CHECK: env.sunbird_enable_permission_check || 0
 }
+
+envVariables.PORTAL_CASSANDRA_URLS =  (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '') ? env.sunbird_cassandra_urls.split(",") : ["localhost"];
+
+module.exports = envVariables;
