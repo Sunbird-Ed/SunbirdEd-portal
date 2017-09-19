@@ -37,17 +37,27 @@ const express = require('express'),
 
 
 let cassandraCP = envHelper.PORTAL_CASSANDRA_URLS;
-let memoryStore = new CassandraStore({
-                                        "table": "sessions",
-                                        "client": null,
-                                        "clientOptions": {
-                                          "contactPoints": cassandraCP,
-                                          "keyspace": "portal",
-                                          "queryOptions": {
-                                            "prepare": true
-                                          }
-                                        }
-                                      });
+
+
+let memoryStore = null;
+
+if (envHelper.PORTAL_SESSION_STORE_TYPE === 'in-memory') {
+    memoryStore = new session.MemoryStore();
+} else {
+    memoryStore = new CassandraStore({
+                      "table": "sessions",
+                      "client": null,
+                      "clientOptions": {
+                        "contactPoints": cassandraCP,
+                        "keyspace": "portal",
+                        "queryOptions": {
+                          "prepare": true
+                        }
+                      }
+                    });
+}
+
+
 let keycloak = new Keycloak({ store: memoryStore }, {
   "realm": realm,
   "auth-server-url": auth_server_url,

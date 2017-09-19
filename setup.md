@@ -17,13 +17,14 @@
 14. sunbird_default_tenant (string Eg: ntp)
 15. sunbird_api_auth_token (string Token to call learner apis)
 16. sunbird_cassandra_urls (String coma seperated values Eg: "locahost:3000,locahost:5000")
+17. sunbird_session_store_type (String Eg:cassandra)
 
 ## Pre Requirements
 
 1. [Node](https://nodejs.org/en/download/) v6.11.3 
 2. [gulp](https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md) (npm install -g gulp)
 3. [bower](https://bower.io/) (npm install -g bower)
-4. [Cassandra](http://cassandra.apache.org/download/)
+4. [Cassandra](http://cassandra.apache.org/download/) (optional if not installed and configured it uses in-memory for session store)
 
 ## Setup Instructions
 * Clone the project.
