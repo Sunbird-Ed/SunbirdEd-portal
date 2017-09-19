@@ -21,7 +21,8 @@ let envVariables = {
   PORTAL_AUTOCREATE_TRAMPOLINE_USER: env.sunbird_autocreate_trampoline_user || 'true',
   PORTAL_TRAMPOLINE_CLIENT_ID: env.sunbird_trampoline_client_id || 'trampoline',
   PORTAL_TRAMPOLINE_SECRET: env.sunbird_trampoline_secret,
-  ENABLE_PERMISSION_CHECK: env.sunbird_enable_permission_check || 0
+  ENABLE_PERMISSION_CHECK: env.sunbird_enable_permission_check || 0,
+  PORTAL_SESSION_STORE_TYPE: env.sunbird_session_store_type || 'in-memory'
 }
 
 envVariables.PORTAL_CASSANDRA_URLS =  (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '') ? env.sunbird_cassandra_urls.split(",") : ["localhost"];
