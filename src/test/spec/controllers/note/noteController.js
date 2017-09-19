@@ -1,5 +1,5 @@
 'use strict';
-describe('Controller: NoteCtrl', function() {
+xdescribe('Controller: NoteCtrl', function() {
 
     // load the controller's module
     beforeEach(module('playerApp'));
