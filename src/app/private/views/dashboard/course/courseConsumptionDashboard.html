@@ -40,24 +40,17 @@
       </div>
       <!-- Show error message-->
       <div class="ui negative message" ng-hide="courseDashboard.showWarningMsg" ng-if="courseDashboard.showError && !courseDashboard.showLoader">
-        <div class="header">
-          Error while fetching data..
-        </div>
+        <div class="header">{{courseDashboard.errorLbl}}</div>
         <p>{{courseDashboard.errorMsg}}</p>
       </div>
-      <div class="ui warning message tweleve wide column" ng-show="courseDashboard.isMultipleCourses">
-        <div class="header">
-          No course selected!
-        </div>
-        Please select a course from the above list.
+      <div class="ui info message tweleve wide column" ng-show="courseDashboard.isMultipleCourses">
+        <div class="header">{{$root.labels.DASHBOARD.COURSE.CREATION_DASHBOARD.COURSE_NOT_SELECTED_LBL}}</div>
+        {{$root.labels.DASHBOARD.COURSE.CREATION_DASHBOARD.COURSE_NOT_SELECTED_MSG}}
       </div>
       <div class="ui info message" ng-if="courseDashboard.showWarningMsg">
         <i class="close icon"></i>
-        <div class="header">
-          Oops...
-        </div>
-        <ul class="list">
-          <li>You haven't created any course yet. Create new course and check the dashboard again.</li>
+        <div class="header">{{$root.labels.DASHBOARD.COURSE.LIST_EMPTY_LBL}}</div>
+        <ul class="list"><li>{{$root.labels.DASHBOARD.COURSE.CREATION_DASHBOARD.LIST_EMPTY_MSG}}</li>
         </ul>
       </div>
     </div>

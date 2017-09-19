@@ -3,57 +3,58 @@
   <div class="table-data-holder" ng-hide="courseDashboard.showLoader || courseDashboard.isMultipleCourses || courseDashboard.showWarningMsg" ng-if="!courseDashboard.showError">
     <div class="ui raised segment">
       <div class="eight wide column right floated dashBoardCardText">
-        <h3>Stats for last {{courseDashboard.filterQueryTextMsg}} </h3>
+        <h3>{{$root.labels.DASHBOARD.COURSE.PROGRESS_DASHBOARD.STATS_FOR}} {{courseDashboard.filterQueryTextMsg}} </h3>
       </div>
       <table class="ui very basic courseDashBoardTable table">
         <thead>
           <tr>
             <th class="table-headerDashboard">
-              <a href="Javascript:void(0);" ng-click="courseDashboard.orderByField='progress'; courseDashboard.reverseSort = !courseDashboard.reverseSort">Status
-								<span ng-show="courseDashboard.orderByField == 'progress'">
-			        				<span ng-show="!courseDashboard.reverseSort">^</span>
-			        				<span ng-show="courseDashboard.reverseSort">v</span>
-								</span>
-							</a>
+              <a href="Javascript:void(0);" ng-click="courseDashboard.orderByField='progress'; courseDashboard.reverseSort = !courseDashboard.reverseSort">{{$root.labels.DASHBOARD.COMMON.SORT_BY.STATUS}}
+                <span ng-show="courseDashboard.orderByField == 'progress'">
+                  <span ng-show="!courseDashboard.reverseSort">^</span>
+                  <span ng-show="courseDashboard.reverseSort">v</span>
+                </span>
+              </a>
             </th>
             <th>
-              <a href="Javascript:void(0);" ng-click="courseDashboard.orderByField='user'; courseDashboard.reverseSort = !courseDashboard.reverseSort">User Name
-			        			<span ng-show="courseDashboard.orderByField == 'user'">
-			        				<span ng-show="!courseDashboard.reverseSort">^</span>
-			        				<span ng-show="courseDashboard.reverseSort">v</span>
-			        			</span>
-					  		</a>
+              <a href="Javascript:void(0);" ng-click="courseDashboard.orderByField='user'; courseDashboard.reverseSort = !courseDashboard.reverseSort">
+              {{$root.labels.DASHBOARD.COMMON.SORT_BY.USER_NAME}}
+                <span ng-show="courseDashboard.orderByField == 'user'">
+                  <span ng-show="!courseDashboard.reverseSort">^</span>
+                  <span ng-show="courseDashboard.reverseSort">v</span>
+                </span>
+              </a>
             </th>
             <th>
-              <a href="Javascript:void(0);" ng-click="courseDashboard.orderByField='batchEndsOn'; courseDashboard.reverseSort = !courseDashboard.reverseSort">Batch End On
-					          	<span ng-show="courseDashboard.orderByField == 'batchEndsOn'">
-					          		<span ng-show="!courseDashboard.reverseSort">^</span>
-					          		<span ng-show="courseDashboard.reverseSort">v</span>
-					          	</span>
-							</a>
+              <a href="Javascript:void(0);" ng-click="courseDashboard.orderByField='batchEndsOn'; courseDashboard.reverseSort = !courseDashboard.reverseSort">{{$root.labels.DASHBOARD.COMMON.SORT_BY.BATCH_END}}
+                <span ng-show="courseDashboard.orderByField == 'batchEndsOn'">
+                  <span ng-show="!courseDashboard.reverseSort">^</span>
+                  <span ng-show="courseDashboard.reverseSort">v</span>
+                </span>
+              </a>
             </th>
             <th>
-              <a href="Javascript:void(0);" ng-click="courseDashboard.orderByField='org'; courseDashboard.reverseSort = !courseDashboard.reverseSort">ORG
-				          		<span ng-show="courseDashboard.orderByField == 'org'">
-				          			<span ng-show="!courseDashboard.reverseSort">^</span>
-				          			<span ng-show="courseDashboard.reverseSort">v</span>
-				          		</span>
-							</a>
+              <a href="Javascript:void(0);" ng-click="courseDashboard.orderByField='org'; courseDashboard.reverseSort = !courseDashboard.reverseSort">{{$root.labels.DASHBOARD.COMMON.SORT_BY.ORG}}
+                <span ng-show="courseDashboard.orderByField == 'org'">
+                  <span ng-show="!courseDashboard.reverseSort">^</span>
+                  <span ng-show="courseDashboard.reverseSort">v</span>
+                </span>
+              </a>
             </th>
             <th>
-              <a href="Javascript:void(0);" ng-click="courseDashboard.orderByField='enrolledOn'; courseDashboard.reverseSort = !courseDashboard.reverseSort">Enrolled On
-		          				<span ng-show="courseDashboard.orderByField == 'enrolledOn'">
-		          					<span ng-show="!courseDashboard.reverseSort">^</span>
-		          					<span ng-show="courseDashboard.reverseSort">v</span>
-		          				</span>
-					  		</a>
+              <a href="Javascript:void(0);" ng-click="courseDashboard.orderByField='enrolledOn'; courseDashboard.reverseSort = !courseDashboard.reverseSort">{{$root.labels.DASHBOARD.COMMON.SORT_BY.ENROLLED_ON}}
+                <span ng-show="courseDashboard.orderByField == 'enrolledOn'">
+                  <span ng-show="!courseDashboard.reverseSort">^</span>
+                  <span ng-show="courseDashboard.reverseSort">v</span>
+                </span>
+              </a>
             </th>
           </tr>
         </thead>
         <tbody>
           <tr ng-repeat="student in courseDashboard.courseProgressArray|orderBy:courseDashboard.orderByField:courseDashboard.reverseSort | filter:courseDashboard.searchUser">
             <!-- If course progress is 100%-->
-            <td ng-if="student.progress === 100">Done</td>
+            <td ng-if="student.progress === 100">{{$root.labels.DASHBOARD.COURSE.PROGRESS_DASHBOARD.BATCH_DONE_STATUS}}</td>
             <td class="ui green header text-font" ng-if="(student.progress !== 100 && student.progress > 90)">{{student.progress}}%</td>
             <td class="ui orange header text-font" ng-if="(student.progress !== 100 && student.progress > 30)">{{student.progress}}%</td>
             <td class="ui red header text-font" ng-if="(student.progress !== 100 && student.progress < 30)">{{student.progress}}%</td>
@@ -65,30 +66,30 @@
             <td>{{student.enrolledOn | dateFilterWithMDY}}</td>
           </tr>
           <tr ng-show="courseDashboard.courseProgressArray.length == 0">
-            <td id="noRecordsFound">No data found</td>
+            <td id="noRecordsFound">{{$root.labels.DASHBOARD.COURSE.PROGRESS_DASHBOARD.NO_DATA_MSG}}</td>
           </tr>
         </tbody>
       </table>
     </div>
     <!--<div class="ui grid margin-top-20" ng-hide="courseDashboard.courseProgressArray.length == 0">
-	    	<div class="twelve wide column right floated">
-		      	<p class="text-align-right dashBoardCardText">Download this view as:
-		        	<a href="Javascript:void(0);" class="item text-decoration-underline padding-left-10 cursor-pointer">CSV</a>
-		      	</p>
-	    	</div>
-		</div>-->
+        <div class="twelve wide column right floated">
+            <p class="text-align-right dashBoardCardText">Download this view as:
+              <a href="Javascript:void(0);" class="item text-decoration-underline padding-left-10 cursor-pointer">CSV</a>
+            </p>
+        </div>
+    </div>-->
   </div>
   <!-- Show loader-->
   <div class="tweleve wide column" ng-if="courseDashboard.showLoader">
     <app-loader></app-loader>
   </div>
   <div class="ui negative message" ng-hide="courseDashboard.showWarningMsg" ng-if="courseDashboard.showError && !courseDashboard.showLoader">
-    <div class="header">Error while fetching data...</div>
+    <div class="header">{{courseDashboard.errorLbl}}</div>
     <p>{{courseDashboard.errorMsg}}</p>
   </div>
-  <div class="ui warning message tweleve wide column" ng-show="courseDashboard.isMultipleCourses">
-    <div class="header">No batch selected!</div>
-    Please select a batch from the above list.
+  <div class="ui info message tweleve wide column" ng-show="courseDashboard.isMultipleCourses">
+    <div class="header">{{$root.labels.DASHBOARD.COURSE.PROGRESS_DASHBOARD.BATCH_NOT_SELECTED}}</div>
+    {{$root.labels.DASHBOARD.COURSE.PROGRESS_DASHBOARD.BATCH_NOT_SELECTED_MSG}}
   </div>
   <div class="ui grid" ng-if="courseDashboard.showWarningMsg">
     <div class="twelve wide column">
@@ -97,11 +98,9 @@
     </div>
     <div class="twelve wide column">
       <div class="ui info message">
-        <div class="header">
-          Oops...
-        </div>
+        <div class="header">{{$root.labels.DASHBOARD.COURSE.LIST_EMPTY_LBL}}</div>
         <ul class="list">
-          <li>You haven't created a batch for this course yet. Create new batch and check the dashboard again.</li>
+          <li>{{$root.labels.DASHBOARD.COURSE.PROGRESS_DASHBOARD.LIST_EMPTY_MSG}}</li>
         </ul>
       </div>
     </div>

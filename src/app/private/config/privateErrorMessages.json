@@ -304,6 +304,11 @@
             "GET_INFO": {
                 "FAILED": "Fetching tenant details failed, please try again later..."
             }
+        },
+        "DASHBOARD":{
+            "COURSE":{
+                "FAILED":"Unable to load data..."
+            }
         }
     }
 }
