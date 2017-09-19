@@ -62,7 +62,7 @@ module.exports = function (config) {
 
         // preprocess matching files before serving them to the browser
         preprocessors: {
-            'app/scripts/**/*.js': ['coverage']
+            'app/private/scripts/**/*.js': ['coverage']
         },
 
         reporters: ['dots', 'coverage'],
