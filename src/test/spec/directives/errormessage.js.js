@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Directive: errorMessage.js', function () {
+xdescribe('Directive: errorMessage.js', function () {
 
   // load the directive's module
   beforeEach(module('playerApp'));
