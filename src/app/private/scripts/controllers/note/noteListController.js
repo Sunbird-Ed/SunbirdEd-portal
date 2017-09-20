@@ -15,6 +15,7 @@ angular.module('playerApp')
             $stateParams, $timeout, $q, toasterService) {
             var noteList = this;
             noteList.userId = $rootScope.userId;
+            noteList.userName = $rootScope.firstName + ' ' + $rootScope.lastName;
             noteList.courseId = $stateParams.courseId;
             noteList.contentId = $stateParams.contentId;
             noteList.contentName = $stateParams.contentName;
@@ -34,8 +35,9 @@ angular.module('playerApp')
                 noteService.search(request).then(function (response) {
                     if (response && response.responseCode === noteList.successResponseCode) {
                         noteList[api].loader.showLoader = false;
-                        noteList.notesList = response.result.note || [];
+                        noteList.notesList = response.result.response.note || [];
                         noteList.selectedNoteData = noteList.notesList[0];
+                        noteList.showNoteList(noteList.notesList[0]);
                     } else {
                         noteList[api].loader.showLoader = false;
                         toasterService.error(noteList.messages.SEARCH.FAILED);
@@ -47,17 +49,19 @@ angular.module('playerApp')
             }
 
             noteList.getAllNotes = function () {
-                var request = {
-                    filters: {
-                        userId: noteList.userId,
-                        courseId: noteList.courseId,
-                        contentId: noteList.contentId
-                    },
-                    sort_by: {
-                        lastUpdatedOn: noteList.sortBy
+                var requestData = {
+                    request: {
+                        filters: {
+                            userId: noteList.userId,
+                            courseId: noteList.courseId,
+                            contentId: noteList.contentId
+                        },
+                        sort_by: {
+                            updatedDate: noteList.sortBy
+                        }
                     }
                 };
-                searchNote(request);
+                searchNote(requestData);
             };
 
             noteList.createNote = function (noteData) {
@@ -67,22 +71,29 @@ angular.module('playerApp')
                                                     .START);
 
                 var requestData = {
-                    note: {
+                    request: {
                         note: noteData.note,
                         userId: noteList.userId,
                         title: noteData.title,
                         courseId: noteList.courseId,
-                        contentId: noteList.contentId
+                        contentId: noteList.contentId,
+                        createdBy: noteList.userName,
+                        updatedBy: noteList.userId
                     }
                 };
 
                 noteService.create(requestData).then(function (response) {
                     if (response && response.responseCode === noteList.successResponseCode) {
-                        noteList.notesList.push(response.result.note);
+                        
                         noteList.add.showCreateNote = false;
                         noteList[api].loader.showLoader = false;
+                        var addNoteData = angular.copy(requestData.request);
+                        addNoteData.createdDate = new Date().toISOString();
+                        addNoteData.updatedDate = new Date().toISOString();
+                        addNoteData.id = response.result.id;
                         noteList.add = {};
-                        noteList.showNoteList(response.result.note);
+                        noteList.notesList.push(addNoteData);
+                        noteList.showNoteList(addNoteData);
                     } else {
                         noteList[api].loader.showLoader = false;
                         toasterService.error(noteList.messages.CREATE.FAILED);
@@ -106,7 +117,7 @@ angular.module('playerApp')
                     if (response && response.responseCode === noteList.successResponseCode) {
                         noteList.hideRemoveNoteModel();
                         noteList.notesList = noteList.notesList.filter(function (note) {
-                            return note.identifier !== noteId;
+                            return note.id !== noteId;
                         });
                         noteList[api].loader.showLoader = false;
                         noteList.showNoteList(noteList.notesList[noteList.notesList.length - 1],
@@ -141,8 +152,13 @@ angular.module('playerApp')
 
             noteList.updateNote = function (noteData) {
                 var requestData = {
-                    noteId: noteData.identifier,
-                    note: noteData
+                    noteId: noteData.id,
+                    request: {
+                        note: noteData.note,
+                        title: noteData.title,
+                        tags: noteData.tags,
+                        updatedBy: noteList.userId
+                    }
                 };
 
                 var api = 'updateApi';
@@ -153,12 +169,14 @@ angular.module('playerApp')
                 noteService.update(requestData).then(function (response) {
                     if (response && response.responseCode === noteList.successResponseCode) {
                         noteList.notesList = noteList.notesList.filter(function (note) {
-                            return note.identifier !== noteData.identifier;
+                            return note.id !== noteData.id;
                         });
-                        noteList.notesList.push(response.result.note);
+                        var addNoteData = angular.copy(noteData);
+                        addNoteData.updatedDate = new Date().toISOString();
+                        noteList.notesList.push(addNoteData);
                         noteList[api].loader.showLoader = false;
                         noteList.update = {};
-                        noteList.showNoteList(response.result.note);
+                        noteList.showNoteList(addNoteData);
                     } else {
                         noteList[api].loader.showLoader = false;
                         toasterService.error(noteList.messages.UPDATE.FAILED);
