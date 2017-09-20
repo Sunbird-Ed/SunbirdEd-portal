@@ -1,94 +1,94 @@
 <div class="rightSideSectionCards ui card margin-bottom-15" ng-if="noteCard.showNoteCard && noteCard.notesList.length > 0">
-  <div class="content" ng-if="!noteCard.searchApi.loader.showLoader && noteCard.notesList.length > 0">
-    <div class="header">
-      <span>{{$root.labels.Notes.myNoteBook}}</span>
-      <a class="ui right floated font-dark-blue" ng-click="noteCard.viewAllNotes()">{{$root.labels.Notes.viewAll}}</a>
-    </div>
-    <div class="description">
-      <div class="ui list" ng-repeat="note in noteCard.notesList| orderBy : '-lastUpdatedOn' | limitTo: noteCard.quantityOfNotes track by $index">
-        <div class="item">
-          <div class="content">
-            <span class="ui tiny header">
+    <div class="content" ng-if="!noteCard.searchApi.loader.showLoader && noteCard.notesList.length > 0">
+        <div class="header">
+            <span>{{$root.labels.Notes.myNoteBook}}</span>
+            <a class="ui right floated font-dark-blue" ng-click="noteCard.viewAllNotes()">{{$root.labels.Notes.viewAll}}</a>
+        </div>
+        <div class="description">
+            <div class="ui list" ng-repeat="note in noteCard.notesList| orderBy : '-updatedDate' | limitTo: noteCard.quantityOfNotes track by $index">
+                <div class="item">
+                    <div class="content">
+                        <span class="ui tiny header">
                             <span class="cardsKnowMore mouse-pointer" ng-click="noteCard.showUpdateNoteModal(note)"> {{ note.title | limitTo: 15 }}
                                 <i ng-show="note.title.length > 15" class="ellipsis horizontal icon popup-button" data-content="{{note.titles}}"
                                    data-variation="wide"></i>
                             </span>
-            <span class="note-card-timeStamp right floated">{{note.lastUpdatedOn| dateFilterXTimeAgo}}</span>
-            </span>
-            <div class="description" ng-init="noteData = note.note.length > 20 ? note.note.substring(0,20) : note.note">
-              <pagedown-viewer content="note.note.length > 20 ? note.note.substring(0,20) : note.note"></pagedown-viewer>
-              <i ng-if="note.note.length > 20" class="ellipsis horizontal icon popup-button" data-content="{{note.note}}" data-variation="wide">
+                        <span class="note-card-timeStamp right floated">{{note.updatedDate| dateFilterXTimeAgo}}</span>
+                        </span>
+                        <div class="description" ng-init="noteData = note.note.length > 20 ? note.note.substring(0,20) : note.note">
+                            <pagedown-viewer content="note.note.length > 20 ? note.note.substring(0,20) : note.note"></pagedown-viewer>
+                            <i ng-if="note.note.length > 20" class="ellipsis horizontal icon popup-button" data-content="{{note.note}}" data-variation="wide">
                             </i>
+                        </div>
+                    </div>
+                    <div ng-if="($index < noteCard.quantityOfNotes - 1) && noteCard.notesList.length > 1" class="ui clearing divider"></div>
+                </div>
             </div>
-          </div>
-          <div ng-if="($index < noteCard.quantityOfNotes - 1) && noteCard.notesList.length > 1" class="ui clearing divider"></div>
         </div>
-      </div>
     </div>
-  </div>
-  <div class="description">
-    <div class="ui list" ng-if="noteCard.searchApi.loader.showLoader">
-      <app-loader data="{{noteCard.searchApi.loader}}"></app-loader>
-    </div>
-    <div class="ui list" ng-if="!noteCard.searchApi.loader.showLoader && noteCard.notesList.length === 0">
-      <div class="ui huge positive message">
-        <p>{{noteCard.messages.SEARCH.NO_RESULT}}</p>
-      </div>
-    </div>
-  </div>
-  <div ng-if="noteCard.showUpdateNote">
-    <div class="ui coupled modal" id="updateNoteModal">
-      <div class="ui segment margin-top-10" ng-if="!noteCard.updateApi.loader.showLoader && !noteCard.updateApi.error.showError">
-        <div class="margin-bottom-15">
-          <div class="ui grid">
-            <div class="eleven wide column">
-              <span class="ui header">{{noteCard.update.metaData.title}}</span>
+    <div class="description">
+        <div class="ui list" ng-if="noteCard.searchApi.loader.showLoader">
+            <app-loader data="{{noteCard.searchApi.loader}}"></app-loader>
+        </div>
+        <div class="ui list" ng-if="!noteCard.searchApi.loader.showLoader && noteCard.notesList.length === 0">
+            <div class="ui huge positive message">
+                <p>{{noteCard.messages.SEARCH.NO_RESULT}}</p>
             </div>
-            <div class="one wide column actions">
-              <h5 class="ui basic icon circular button deny" ng-click="noteCard.updateApi.error.showError = false;">
+        </div>
+    </div>
+    <div ng-if="noteCard.showUpdateNote">
+        <div class="ui coupled modal" id="updateNoteModal">
+            <div class="ui segment margin-top-10" ng-if="!noteCard.updateApi.loader.showLoader && !noteCard.updateApi.error.showError">
+                <div class="margin-bottom-15">
+                    <div class="ui grid">
+                        <div class="eleven wide column">
+                            <span class="ui header">{{noteCard.update.metaData.title}}</span>
+                        </div>
+                        <div class="one wide column actions">
+                            <h5 class="ui basic icon circular button deny" ng-click="noteCard.updateApi.error.showError = false;">
                                 <i class="ui remove icon"></i>
                             </h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui fluid icon input">
+                    <input type="text" placeholder={{$root.labels.Notes.title}} name="title" ng-model="noteCard.update.metaData.title" tabindex="1" />
+                </div>
+                <div class="content editor">
+                    <pagedown-editor content="noteCard.update.metaData.note" show-preview="false" insert-image="noteCard.insertImage()" tabindex="2" placeholder={{$root.labels.Notes.description}}></pagedown-editor>
+                </div>
+                <div class="actions">
+                    <button class="ui primary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="noteCard.updateNote(noteCard.update.metaData)" ng-disabled="!noteCard.update.metaData.title || !noteCard.update.metaData.note" tabindex="4" ng-class="noteCard.denyModalClass">{{$root.labels.Notes.update}}</button>
+                </div>
             </div>
-          </div>
+            <div class=" ui segment margin-top-10" ng-if="noteCard.updateApi.loader.showLoader">
+                <app-loader data="{{noteCard.updateApi.loader}}"></app-loader>
+            </div>
         </div>
-        <div class="ui fluid icon input">
-          <input type="text" placeholder={{$root.labels.Notes.title}} name="title" ng-model="noteCard.update.metaData.title" tabindex="1" />
+        <div ng-if="noteCard.showAddImageModal">
+            <div class="ui coupled modal" id="showAddImageModal">
+                <div class=" ui segment margin-top-10">
+                    <div class=" margin-bottom-15">
+                        <div class="ui grid">
+                            <div class="eleven wide column">
+                                <span class="ui header">{{$root.labels.Notes.insertImage}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div>
+                            <p>{{$root.labels.Notes.imageLinkMessage}}</p>
+                        </div>
+                        <div class="ui fluid icon input">
+                            <input type="text" placeholder="Title" name="title" ng-model="noteCard.imageLink" />
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <button class="ui primary right floated button margin-bottom-15 margin-top-10 " type="submit" tabindex="3" ng-click="noteCard.closeAddImageModal()">{{$root.labels.Notes.ok}}</button>
+                        <button class="ui secondary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="noteCard.closeAddImageModal(true)">{{$root.labels.Notes.cancel}}</button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="content editor">
-          <pagedown-editor content="noteCard.update.metaData.note" show-preview="false" insert-image="noteCard.insertImage()" tabindex="2" placeholder={{$root.labels.Notes.description}}></pagedown-editor>
-        </div>
-        <div class="actions">
-          <button class="ui primary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="noteCard.updateNote(noteCard.update.metaData)" ng-disabled="!noteCard.update.metaData.title || !noteCard.update.metaData.note" tabindex="4" ng-class="noteCard.denyModalClass">{{$root.labels.Notes.update}}</button>
-        </div>
-      </div>
-      <div class=" ui segment margin-top-10" ng-if="noteCard.updateApi.loader.showLoader">
-        <app-loader data="{{noteCard.updateApi.loader}}"></app-loader>
-      </div>
     </div>
-    <div ng-if="noteCard.showAddImageModal">
-      <div class="ui coupled modal" id="showAddImageModal">
-        <div class=" ui segment margin-top-10">
-          <div class=" margin-bottom-15">
-            <div class="ui grid">
-              <div class="eleven wide column">
-                <span class="ui header">{{$root.labels.Notes.insertImage}}</span>
-              </div>
-            </div>
-          </div>
-          <div class="content">
-            <div>
-              <p>{{$root.labels.Notes.imageLinkMessage}}</p>
-            </div>
-            <div class="ui fluid icon input">
-              <input type="text" placeholder="Title" name="title" ng-model="noteCard.imageLink" />
-            </div>
-          </div>
-          <div class="actions">
-            <button class="ui primary right floated button margin-bottom-15 margin-top-10 " type="submit" tabindex="3" ng-click="noteCard.closeAddImageModal()">{{$root.labels.Notes.ok}}</button>
-            <button class="ui secondary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="noteCard.closeAddImageModal(true)">{{$root.labels.Notes.cancel}}</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
