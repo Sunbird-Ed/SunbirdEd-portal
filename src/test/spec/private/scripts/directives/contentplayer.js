@@ -102,7 +102,7 @@ xdescribe('Directive: contentPlayer', function () {
     
     
     
-    it("Shouls called get content detail service", function() {
+    it("Should called get content detail service", function() {
         var req = {contentId :  "do_112240792137957376167"};
         spyOn(contentService, 'getById').and.callThrough();
         contentService.getById(req);
