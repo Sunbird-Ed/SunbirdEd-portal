@@ -15,6 +15,7 @@ angular.module('playerApp')
             $timeout, $state, $stateParams, $q, toasterService) {
             var noteCard = this;
             noteCard.userId = $rootScope.userId;
+            noteCard.userName = $rootScope.firstName + ' ' + $rootScope.lastName;
             noteCard.showNoteCard = $scope.shownotecard;
             noteCard.showModalInLectureView = $scope.shownoteinlecture;
             noteCard.showModalInCourseView = $scope.shownoteincourse;
@@ -38,7 +39,7 @@ angular.module('playerApp')
                 noteService.search(request).then(function (response) {
                     if (response && response.responseCode === 'OK') {
                         noteCard[api].loader.showLoader = false;
-                        noteCard.notesList = response.result.note || [];
+                        noteCard.notesList = response.result.response.note || [];
                     } else {
                         noteCard[api].loader.showLoader = false;
                         toasterService.error(noteCard.messages.SEARCH.FAILED);
@@ -56,17 +57,19 @@ angular.module('playerApp')
             $scope.updateNoteMetaData = function (contentId) {
                 noteCard.contentId = contentId;
 
-                var request = {
-                    filters: {
-                        userId: noteCard.userId,
-                        courseId: noteCard.courseId,
-                        contentId: noteCard.contentId
-                    },
-                    sort_by: {
-                        lastUpdatedOn: noteCard.sortBy
+                var requestData = {
+                    request: {
+                        filters: {
+                            userId: noteCard.userId,
+                            courseId: noteCard.courseId,
+                            contentId: noteCard.contentId
+                        },
+                        sort_by: {
+                            updatedDate: noteCard.sortBy
+                        }
                     }
                 };
-                searchNote(request);
+                searchNote(requestData);
             };
 
             noteCard.hideAddNoteModal = function () {
@@ -128,12 +131,14 @@ angular.module('playerApp')
 
             noteCard.createNote = function (noteData) {
                 var requestData = {
-                    note: {
+                    request: {
                         note: noteData.note,
                         userId: noteCard.userId,
                         title: noteData.title,
                         courseId: noteCard.courseId,
-                        contentId: noteCard.contentId
+                        contentId: noteCard.contentId,
+                        createdBy: noteCard.userName,
+                        updatedBy: noteCard.userId
                     }
                 };
 
@@ -144,8 +149,12 @@ angular.module('playerApp')
                 noteService.create(requestData).then(function (response) {
                     if (response && response.responseCode === 'OK') {
                         noteCard[api].loader.showLoader = false;
+                        var addNoteData = angular.copy(requestData.request);
+                        addNoteData.createdDate = new Date().toISOString();
+                        addNoteData.updatedDate = new Date().toISOString();
+                        addNoteData.id = response.result.id;
                         noteCard.hideAddNoteModal();
-                        $rootScope.$emit('updateNotesListData', response.result.note);
+                        $rootScope.$emit('updateNotesListData', addNoteData);
                     } else {
                         noteCard[api].loader.showLoader = false;
                         toasterService.error(noteCard.messages.CREATE.FAILED);
@@ -164,8 +173,13 @@ angular.module('playerApp')
 
             noteCard.updateNote = function (noteData) {
                 var requestData = {
-                    noteId: noteData.identifier,
-                    note: noteData
+                    noteId: noteData.id,
+                    request: {
+                        note: noteData.note,
+                        title: noteData.title,
+                        tags: noteData.tags,
+                        updatedBy: noteCard.userId
+                    }
                 };
 
                 var api = 'updateApi';
@@ -174,9 +188,11 @@ angular.module('playerApp')
 
                 noteService.update(requestData).then(function (response) {
                     if (response && response.responseCode === 'OK') {
-                        noteCard.hideUpdateNoteModal();
                         noteCard[api].loader.showLoader = false;
-                        $rootScope.$emit('updateNotesListData', response.result.note, true);
+                        var addNoteData = angular.copy(noteData);
+                        addNoteData.updatedDate = new Date().toISOString();
+                        noteCard.hideUpdateNoteModal();
+                        $rootScope.$emit('updateNotesListData', addNoteData, true);
                     } else {
                         noteCard[api].loader.showLoader = false;
                         toasterService.error(noteCard.messages.UPDATE.FAILED);
@@ -257,10 +273,10 @@ angular.module('playerApp')
                 }, 10);
             };
 
-            $rootScope.$on('updateNotesListData', function (e, content, status) {
-                if (status) {
+            $rootScope.$on('updateNotesListData', function (e, content, isUpdate) {
+                if (isUpdate && noteCard.notesList) {
                     noteCard.notesList = noteCard.notesList.filter(function (note) {
-                        return note.identifier !== content.identifier;
+                        return note.id !== content.id;
                     });
                     noteCard.notesList.push(content);
                 } else {
