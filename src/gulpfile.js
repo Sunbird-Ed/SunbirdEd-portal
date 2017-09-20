@@ -23,6 +23,8 @@ var gzip = require('gulp-gzip');
 var map = require('map-stream');
 var file = require('gulp-file');
 var angularFileSort = require('gulp-angular-filesort');
+var jasmineNode = require('gulp-jasmine-node');
+var istanbul = require('gulp-istanbul');
 var private_js_files = [];
 var public_js_files = [];
 
@@ -83,7 +85,10 @@ var paths = {
     views: {
         main: player.app + '/index.html',
         files: [player.app + '/views/**/*.html']
-    }
+    },
+    nodeScripts:['app/server.js', 'app/helpers/*.js'],
+    nodeSpecs: ['test/spec/app/serverSpec.js'],
+    nodeCoverage: 'coverage/node'
 };
 
 var dist = {
@@ -613,4 +618,29 @@ gulp.task('config-public-const', function () {
             .pipe(gulp.dest(player.public + 'scripts'))
             .pipe(gulp.dest(dist.path + dist.scripts));
     });
+});
+
+/* below tasks for node js code testcases to run 
+ use test-node to run all the testcase for node js files
+ */
+
+//Below task is to clean up the reports
+gulp.task('clean-coverage-node', function (cb) {
+    rimraf(paths.nodeCoverage, cb);
+});
+
+//Below task is used setup source files 
+gulp.task('pre-test-node', function () {
+  return gulp.src(paths.nodeScripts)
+    .pipe(istanbul({includeUntested: true}))
+    .pipe(istanbul.hookRequire());
+});
+
+ //Below task used to run the test cases
+gulp.task('test-node', ["clean-coverage-node", 'pre-test-node'], function () {
+  return gulp.src(paths.nodeSpecs)
+    .pipe(jasmineNode({
+            timeout: 10000
+        }))
+    .pipe(istanbul.writeReports({dir: paths.nodeCoverage, reporters:['html','text-summary']}));
 });
