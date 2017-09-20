@@ -24,6 +24,7 @@ var map = require('map-stream');
 var file = require('gulp-file');
 var angularFileSort = require('gulp-angular-filesort');
 var private_js_files = [];
+var public_js_files = [];
 
 var player = {
     app: 'app/private/',
@@ -35,7 +36,7 @@ var paths = {
     scripts: [player.app + '/scripts/*.js', player.app + '/scripts/**/*.js'],
     styles: [player.app + 'app/styles/**/main.less'],
     images: player.app + '/images/*.*',
-    test: ['test/spec/**/*.js'],
+    test: ['test/spec/private/**/*.js', 'test/spec/public/**/*.js'],
     thirdparty: [player.app + '/thirdparty/**/*.js',
         player.app + '/thirdparty/**/**/**/*.css',
         player.app + '/thirdparty/**/**/**/**/*.*'],
@@ -387,8 +388,24 @@ gulp.task('inject-private-script', function (callback) {
     }));
 });
 
+gulp.task('inject-public-script', function (callback) {
+    file(player.public + 'index.html', '<html><body></body></html>')
+    .pipe(inject(gulp.src(player.public + '/**/*.js', { read: true }).pipe(angularFileSort()), {
+        addRootSlash: false,
+        name: 'fix-inject',
+        starttag: '<body>',
+        endtag: '</body>',
+        transform: function (filePath, file, index, length) {
+            public_js_files.push(filePath);
+            if (index === length - 1) {
+                callback();
+            }
+        }
+    }));
+});
+
 gulp.task('run-test', ['start:server:test'], function () {
-    var testToFiles = paths.testRequire.concat(private_js_files, paths.test);
+    var testToFiles = paths.testRequire.concat(private_js_files, public_js_files, paths.test);
     return gulp.src(testToFiles)
         .pipe($.karma({
             configFile: paths.karma,
@@ -397,7 +414,7 @@ gulp.task('run-test', ['start:server:test'], function () {
 });
 
 gulp.task('test', function (callback) {
-    runSequence('inject-private-script', 'run-test', callback);
+    runSequence('inject-private-script', 'inject-public-script', 'run-test', callback);
 });
 
 // /////////
