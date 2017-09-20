@@ -305,5 +305,10 @@ function verifyToken() {
   }
 }
 
-app.listen(port);
-console.log('app running on port ' + port);
+this.server = app.listen(port, function () {
+    console.log('app running on port ' + port);
+});
+
+exports.close = function() {
+    this.server.close();
+};
