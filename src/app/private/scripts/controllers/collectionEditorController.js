@@ -48,30 +48,39 @@ angular.module('playerApp')
                   channel: org.sunbird.portal.channel
               };
 
-              window.config = {
-                  corePluginsPackaged: true,
-                  modalId: 'collectionEditor',
-                  dispatcher: 'local',
-                  apislug: '/action',
-                  alertOnUnload: true,
-                  headerLogo: !_.isUndefined($rootScope.orgLogo) ? $rootScope.orgLogo : '',
-                  loadingImage: '',
-                  plugins: [{
-                      id: 'org.ekstep.sunbirdcommonheader',
-                      ver: '1.0',
-                      type: 'plugin'
-                  }],
-                  localDispatcherEndpoint: '/collection-editor/telemetry',
-                  editorConfig: {
-                      mode: 'Edit',
-                      contentStatus: 'draft',
-                      rules: {
-                          levels: 3,
-                          objectTypes: collectionEditor.getTreeNodes(data.type)
-                      },
-                      defaultTemplate: {}
-                  }
-              };
+            window.config = {
+                corePluginsPackaged: true,
+                modalId: 'collectionEditor',
+                dispatcher: 'local',
+                apislug: '/action',
+                alertOnUnload: true,
+                headerLogo: !_.isUndefined($rootScope.orgLogo) ? $rootScope.orgLogo : '',
+                loadingImage: '',
+                plugins: [{
+                    id: 'org.ekstep.sunbirdcommonheader',
+                    ver: '1.0',
+                    type: 'plugin'
+                }],
+                localDispatcherEndpoint: '/collection-editor/telemetry',
+                editorConfig: {
+                    mode: 'Edit',
+                    contentStatus: 'draft',
+                    rules: {
+                        levels: 3,
+                        objectTypes: collectionEditor.getTreeNodes(data.type)
+                    },
+                    defaultTemplate: {}
+                },
+                previewConfig: {
+                    "repos": ["/content-plugins/renderer"],
+                    "plugins": [{
+                        "id": "org.sunbird.player.endpage",
+                        "ver": 1.0,
+                        "type": "plugin"
+                    }],
+                    showEndPage: false
+                }
+            };
 
               window.config.editorConfig.publishMode = false;
               window.config.editorConfig.isFalgReviewer = false;
