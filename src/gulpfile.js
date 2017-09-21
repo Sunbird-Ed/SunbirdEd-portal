@@ -38,7 +38,7 @@ var paths = {
     scripts: [player.app + '/scripts/*.js', player.app + '/scripts/**/*.js'],
     styles: [player.app + 'app/styles/**/main.less'],
     images: player.app + '/images/*.*',
-    test: ['test/spec/private/**/*.js', 'test/spec/public/**/*.js'],
+    test: ['test/spec/app/private/**/**/*.js', 'test/spec/app/public/**/**/*.js'],
     thirdparty: [player.app + '/thirdparty/**/*.js',
         player.app + '/thirdparty/**/**/**/*.css',
         player.app + '/thirdparty/**/**/**/**/*.*'],
@@ -86,9 +86,10 @@ var paths = {
         main: player.app + '/index.html',
         files: [player.app + '/views/**/*.html']
     },
-    nodeScripts:['app/server.js', 'app/helpers/*.js'],
+    nodeScripts: ['app/server.js', 'app/helpers/*.js'],
     nodeSpecs: ['test/spec/app/serverSpec.js'],
-    nodeCoverage: 'coverage/node'
+    nodeCoverage: 'coverage/node',
+    portalCoverage: 'coverage/portal'
 };
 
 var dist = {
@@ -377,6 +378,11 @@ gulp.task('watch', function () {
     gulp.watch('bower.json', ['bower']);
 });
 
+// Below task is to clean up the portal coverage report
+gulp.task('clean-coverage-portal', function (cb) {
+    rimraf(paths.portalCoverage, cb);
+});
+
 gulp.task('inject-private-script', function (callback) {
     file(player.app + 'index.ejs', '<html><body></body></html>')
     .pipe(inject(gulp.src(player.app + '/**/*.js', { read: true }).pipe(angularFileSort()), {
@@ -419,7 +425,8 @@ gulp.task('run-test', ['start:server:test'], function () {
 });
 
 gulp.task('test', function (callback) {
-    runSequence('inject-private-script', 'inject-public-script', 'run-test', callback);
+    runSequence('clean-coverage-portal', 'inject-private-script', 'inject-public-script',
+                'run-test', callback);
 });
 
 // /////////
@@ -620,27 +627,27 @@ gulp.task('config-public-const', function () {
     });
 });
 
-/* below tasks for node js code testcases to run 
+/* below tasks for node js code testcases to run
  use test-node to run all the testcase for node js files
  */
 
-//Below task is to clean up the reports
+// Below task is to clean up the reports
 gulp.task('clean-coverage-node', function (cb) {
     rimraf(paths.nodeCoverage, cb);
 });
 
-//Below task is used setup source files 
+// Below task is used setup source files
 gulp.task('pre-test-node', function () {
-  return gulp.src(paths.nodeScripts)
-    .pipe(istanbul({includeUntested: true}))
+    return gulp.src(paths.nodeScripts)
+    .pipe(istanbul({ includeUntested: true }))
     .pipe(istanbul.hookRequire());
 });
 
- //Below task used to run the test cases
-gulp.task('test-node', ["clean-coverage-node", 'pre-test-node'], function () {
-  return gulp.src(paths.nodeSpecs)
+ // Below task used to run the test cases
+gulp.task('test-node', ['clean-coverage-node', 'pre-test-node'], function () {
+    return gulp.src(paths.nodeSpecs)
     .pipe(jasmineNode({
-            timeout: 10000
-        }))
-    .pipe(istanbul.writeReports({dir: paths.nodeCoverage, reporters:['html','text-summary']}));
+        timeout: 10000
+    }))
+    .pipe(istanbul.writeReports({ dir: paths.nodeCoverage, reporters: ['html', 'text-summary'] }));
 });
