@@ -1835,6 +1835,10 @@ ul.fancytree-container li {
     padding-left: 40px !important;
   }
 }
+.profile-headerLabelCard {
+  margin-left: 0px !important;
+  margin-top: 5px !important;
+}
 .profilesegmentmargin.ui.segment:first-child {
   margin-top: 20px;
 }
