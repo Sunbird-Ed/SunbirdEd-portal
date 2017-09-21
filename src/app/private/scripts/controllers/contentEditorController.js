@@ -47,7 +47,16 @@ angular.module('playerApp')
                     ],
                     dispatcher: 'local',
                     localDispatcherEndpoint: '/content-editor/telemetry',
-                    showHelp: false
+                    showHelp: false,
+                    previewConfig: {
+                        "repos": ["/content-plugins/renderer"],
+                        "plugins": [{
+                            "id": "org.sunbird.player.endpage",
+                            "ver": 1.0,
+                            "type": "plugin"
+                        }],
+                        showEndPage: false
+                    }
                 };
                 $('#contentEditor').iziModal({
                     title: '',
