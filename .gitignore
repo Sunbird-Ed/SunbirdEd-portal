@@ -5,3 +5,4 @@
 /src/app/thirdparty/bower_components
 /src/coverage
 /npm-debug.log
+.coverrun

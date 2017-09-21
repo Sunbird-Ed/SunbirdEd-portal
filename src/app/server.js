@@ -9,9 +9,9 @@ const express = require('express'),
   path = require('path'),
   request = require('request'),
   bodyParser = require('body-parser'),
-  MongoStore = require('connect-mongo')(session),
   async = require('async'),
   helmet = require('helmet'),
+  CassandraStore = require("cassandra-store"),
   trampolineServiceHelper = require('./helpers/trampolineServiceHelper.js'),
   telemetryHelper = require('./helpers/telemetryHelper.js'),
   permissionsHelper = require('./helpers/permissionsHelper.js'),
@@ -33,15 +33,30 @@ const express = require('express'),
   default_tenant = envHelper.DEFAUULT_TENANT,
   md5 = require('js-md5'),
   sunbird_api_auth_token = envHelper.PORTAL_API_AUTH_TOKEN;
-  
 
-let mongoURL = (envHelper.PORTAL_MONGODB_IP && envHelper.PORTAL_MONGODB_PORT) ? ("mongodb://" + envHelper.PORTAL_MONGODB_IP + ":" + envHelper.PORTAL_MONGODB_PORT + "/portal") : 'mongodb://localhost/portal';
-let session_ttl = envHelper.PORTAL_MONGODB_TTL | 1; //in days
-let memoryStore = new MongoStore({
-  url: mongoURL,
-  autoRemove: 'native',
-  ttl: session_ttl * 24 * 60 * 60
-});
+
+let cassandraCP = envHelper.PORTAL_CASSANDRA_URLS;
+
+
+let memoryStore = null;
+
+if (envHelper.PORTAL_SESSION_STORE_TYPE === 'in-memory') {
+    memoryStore = new session.MemoryStore();
+} else {
+    memoryStore = new CassandraStore({
+                      "table": "sessions",
+                      "client": null,
+                      "clientOptions": {
+                        "contactPoints": cassandraCP,
+                        "keyspace": "portal",
+                        "queryOptions": {
+                          "prepare": true
+                        }
+                      }
+                    });
+}
+
+
 let keycloak = new Keycloak({ store: memoryStore }, {
   "realm": realm,
   "auth-server-url": auth_server_url,
@@ -58,18 +73,18 @@ const decorateRequestHeaders = function() {
       var channel = md5(srcReq.session.rootOrgId || 'sunbird');
       if (userId)
         proxyReqOpts.headers['X-Authenticated-Userid'] = userId;
-        proxyReqOpts.headers['X-Channel-Id'] = channel;
+      proxyReqOpts.headers['X-Channel-Id'] = channel;
     }
     proxyReqOpts.headers['X-App-Id'] = appId;
-    proxyReqOpts.headers.Authorization = 'Bearer '+sunbird_api_auth_token;
+    proxyReqOpts.headers.Authorization = 'Bearer ' + sunbird_api_auth_token;
     proxyReqOpts.rejectUnauthorized = false;
     return proxyReqOpts;
   };
 };
 const decoratePublicRequestHeaders = function() {
   return function(proxyReqOpts, srcReq) {
-     proxyReqOpts.headers['X-App-Id'] = appId;
-    proxyReqOpts.headers.Authorization = 'Bearer '+sunbird_api_auth_token;
+    proxyReqOpts.headers['X-App-Id'] = appId;
+    proxyReqOpts.headers.Authorization = 'Bearer ' + sunbird_api_auth_token;
     return proxyReqOpts;
   };
 };
@@ -115,7 +130,7 @@ app.all('/collection-editor/telemetry', bodyParser.urlencoded({ extended: false 
   bodyParser.json({ limit: reqDataLimitOfContentEditor }), keycloak.protect(), telemetryHelper.logSessionEvents);
 
 app.all('/public/service/*', proxy(learnerURL, {
- proxyReqOptDecorator: decoratePublicRequestHeaders(),
+  proxyReqOptDecorator: decoratePublicRequestHeaders(),
   proxyReqPathResolver: function(req) {
     let urlParam = req.params["0"];
     return require('url').parse(learnerURL + urlParam).path;
@@ -173,7 +188,7 @@ app.get('/v1/tenant/info/:tenantId', tenantHelper.getInfo);
 
 //proxy urls
 
-const proxyReqPathResolverMethod = function (req) {
+const proxyReqPathResolverMethod = function(req) {
   return require('url').parse(contentProxyUrl + req.originalUrl).path;
 }
 
@@ -216,9 +231,9 @@ app.use('/action/*', permissionsHelper.checkPermission(), proxy(contentProxyUrl,
 
 app.all('/:tenantName', function(req, res) {
   tenantId = req.params.tenantName;
-  if(tenantId && fs.existsSync(path.join(__dirname, 'tenant', tenantId, 'index.html'))){
+  if (tenantId && fs.existsSync(path.join(__dirname, 'tenant', tenantId, 'index.html'))) {
     res.sendFile(path.join(__dirname, 'tenant', tenantId, 'index.html'));
-  }else if (default_tenant && fs.existsSync(path.join(__dirname, 'tenant', default_tenant, 'index.html'))) {
+  } else if (default_tenant && fs.existsSync(path.join(__dirname, 'tenant', default_tenant, 'index.html'))) {
     res.sendFile(path.join(__dirname, 'tenant', default_tenant, 'index.html'));
   } else {
     res.sendFile(path.join(__dirname + '/public/index.html'));
@@ -290,5 +305,10 @@ function verifyToken() {
   }
 }
 
-app.listen(port);
-console.log('app running on port ' + port);
+this.server = app.listen(port, function () {
+    console.log('app running on port ' + port);
+});
+
+exports.close = function() {
+    this.server.close();
+};
