@@ -40,8 +40,10 @@ module.exports = function (config) {
         ],
 
         // Which plugins to enable
+        // 'karma-phantomjs-launcher',
+        // 'karma-chrome-launcher',
         plugins: [
-            'karma-phantomjs-launcher', 
+            'karma-phantomjs-launcher',
             'karma-jasmine',
             'karma-coverage',
             'karma-spec-reporter'
@@ -75,9 +77,9 @@ module.exports = function (config) {
         // urlRoot: '_karma_'
         coverageReporter: {
             reporters: [
-                { type: 'html', dir: 'coverage/' },
-                { type: 'text-summary' },
-                { type: 'cobertura' } 
+                { type: 'html', dir: 'coverage/portal' },
+                { type: 'text-summary', dir: 'coverage/portal' },
+                { type: 'cobertura', dir: 'coverage/portal' }
             ]
         }
     });
