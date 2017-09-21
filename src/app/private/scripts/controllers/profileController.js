@@ -29,6 +29,12 @@ angular.module('playerApp') // add those all values
             $state, learnService, adminService, workSpaceUtilsService, $q) {
             var profile = this;
             var apiMessages = $rootScope.errorMessages.PROFILE.API;
+            var updateSuccess = $rootScope.errorMessages.PROFILE.API.UPDATE.SUCCESS;
+            var updateFailure = $rootScope.errorMessages.PROFILE.API.UPDATE.FAILURE;
+            var addSuccess = $rootScope.errorMessages.PROFILE.API.ADD.SUCCESS;
+            var addFailure = $rootScope.errorMessages.PROFILE.API.ADD.FAILURE;
+            var deleteSuccess = $rootScope.errorMessages.PROFILE.API.DELETE.SUCCESS;
+            var deleteFailure = $rootScope.errorMessages.PROFILE.API.DELETE.FAILURE;
             profile.userId = $rootScope.userId;
             profile.languages = config.DROPDOWN.COMMON.languages;
             profile.subjects = config.DROPDOWN.COMMON.subjects;
@@ -125,28 +131,27 @@ angular.module('playerApp') // add those all values
                 };
                 profile.disableSave = true;
                 profile.loader = toasterService.loader('', apiMessages.SUCCESS.editingProfile);
-                userService
+                return userService
                 .updateUserProfile(profile.updateProfileRequest, profile.fullName, profile.email)
                 .then(function (successResponse) {
                     profile.disableSave = false;
                     if (successResponse && successResponse.responseCode === 'OK') {
-                        profile.experienceForm = false;
-                        profile.basicProfileForm = false;
-                        profile.addressForm = false;
-                        profile.educationForm = false;
-                        profile.loader.showLoader = false;
-                        profile.openDiscriptionEdit = false;
-                        toasterService.success(apiMessages.SUCCESS.profileEdited);
-                        profile.getProfile();
-                    } else {
-                        profile.loader.showLoader = false;
-                        toasterService.error(apiMessages.ERROR.update);
+                        return true;
                     }
+                    throw new Error(apiMessages.ERROR.update);
                 }).catch(function () {
-                    profile.experienceForm = false;
-                    profile.basicProfileForm = false;
+                    throw new Error(apiMessages.ERROR.update);
+                });
+            };
+
+            profile.updateUserInfo = function (req, activeForm, successMessage, errMessage) {
+                profile.updateProfile(req).then(function () {
+                    profile[activeForm] = false;
+                    toasterService.success(successMessage);
+                    profile.getProfile();
+                }).catch(function () {
                     profile.loader.showLoader = false;
-                    toasterService.error(apiMessages.ERROR.update);
+                    toasterService.error(errMessage);
                 });
             };
 
@@ -182,6 +187,12 @@ angular.module('playerApp') // add those all values
                             if (res && res.responseCode === 'OK') {
                                 profile.isAvatarUpdate = true;
                                 profile.updateProfile({ avatar: res.result.url });
+                                var req = { avatar: res.result.url };
+                                profile.updateUserInfo(
+                                    req,
+                                     'basicProfileForm',
+                                      updateSuccess.avatar,
+                                      updateFailure.avatar);
                             } else {
                                 profile.error = toasterService.error(apiMessages.ERROR.update);
                             }
@@ -195,12 +206,12 @@ angular.module('playerApp') // add those all values
                 }
             };
 
-              // update basic Info
+         // update basic Info
             profile.EditBasicProfile = function () {
                 var isValid = formValidation.validate('#basicInfoForm');
                 if (isValid === true) {
                     var dob = $('#editDob').calendar('get date');
-                    var updateReq = {
+                    var basicInfo = {
                         firstName: profile.user.firstName,
                         lastName: profile.user.lastName,
                         phone: profile.user.phone,
@@ -211,17 +222,27 @@ angular.module('playerApp') // add those all values
                         grade: profile.user.grade,
                         location: profile.user.location
                     };
-                    profile.updateProfile(updateReq);
+
+                    profile.updateUserInfo(
+                        basicInfo,
+                         'basicProfileForm',
+                          updateSuccess.basicInfo,
+                          updateFailure.basicInfo);
                 } else return false;
             };
 
-    // edit address
+    // CURD address
             profile.addAddress = function (newAddress) {
                 var isValid = formValidation.validate('#addressForm');
                 if (isValid === true) {
                     profile.address.push(newAddress);
                     var req = { address: profile.address };
-                    profile.updateProfile(req);
+                    profile.updateUserInfo(
+                        req,
+                         'addressForm',
+                          addSuccess.address,
+                          addFailure.address
+                          );
                 } else return false;
             };
 
@@ -229,7 +250,12 @@ angular.module('playerApp') // add those all values
                 var isValid = formValidation.validate('.addressForm');
                 if (isValid === true || !isValid.includes(false)) {
                     var req = { address: address };
-                    profile.updateProfile(req);
+                    profile.updateUserInfo(
+                        req,
+                         'addressForm',
+                         updateSuccess.address,
+                         updateFailure.address
+                    );
                 } else {
                     return false;
                 }
@@ -237,26 +263,34 @@ angular.module('playerApp') // add those all values
 
             profile.deleteAddress = function (address) {
                 address.isDeleted = true;
-
                 var req = { address: [address] };
                 req.userId = $rootScope.userId;
-
-                profile.updateProfile(req);
+                profile.updateUserInfo(
+                    req,
+                     'addressForm',
+                     deleteSuccess.address,
+                     deleteFailure.address
+                    );
             };
 
-    // edit education
+    // CURD education
             profile.addEducation = function (newEducation) {
                 var isValid = formValidation.validate('.educationForm');
                 if (isValid === true) {
-                    newEducation.percentage = newEducation.percentage ?
-        parseFloat(newEducation.percentage) :
-        0;
-                    newEducation.yearOfPassing = newEducation.yearOfPassing ?
-        parseInt(newEducation.yearOfPassing) :
-        0;
+                    newEducation.percentage = newEducation.percentage
+                                            ? parseFloat(newEducation.percentage)
+                                            : 0;
+                    newEducation.yearOfPassing = newEducation.yearOfPassing
+                                                ? parseInt(newEducation.yearOfPassing)
+                                                : 0;
                     profile.education.push(newEducation);
                     var req = { education: profile.education };
-                    profile.updateProfile(req);
+                    profile.updateUserInfo(
+                        req,
+                         'educationForm',
+                          addSuccess.education,
+                          addFailure.education
+                          );
                 } else return false;
             };
 
@@ -270,19 +304,26 @@ angular.module('playerApp') // add those all values
                                             edu.yearOfPassing;
                     });
                     var req = { education: education };
-                    profile.updateProfile(req);
+                    profile.updateUserInfo(
+                        req,
+                         'educationForm',
+                          updateSuccess.education,
+                          updateFailure.education);
                 } else return false;
             };
 
             profile.deleteEducation = function (education) {
                 var req = { education: education };
                 req.userId = $rootScope.userId;
-                profile.updateProfile(req);
+                profile.updateUserInfo(
+                    req,
+                     'educationForm',
+                      deleteSuccess.education,
+                      deleteFailure.education);
             };
 
     // edit experience
             profile.addExperience = function (newExperience) {
-    // class because multiple form validation required for same form
                 var isValid = formValidation.validate('.jobProfileForm');
                 if (isValid === true) {
                     var startDate = $('#rangestartAdd').calendar('get date');
@@ -300,7 +341,12 @@ angular.module('playerApp') // add those all values
                     profile.experience.push(newExperience);
                     var req = { jobProfile: profile.experience };
                     req.email = profile.user.email;
-                    profile.updateProfile(req);
+                    profile.updateUserInfo(
+                        req,
+                         'experienceForm',
+                         addSuccess.experience,
+                         addFailure.experience
+                         );
                 } else return false;
             };
 
@@ -330,14 +376,31 @@ angular.module('playerApp') // add those all values
                     }
 
                     var req = { jobProfile: experiences };
-                    profile.updateProfile(req);
+                    profile.updateUserInfo(
+                        req,
+                         'experienceForm',
+                          updateSuccess.experience,
+                        updateFailure.experience);
                 } else return false;
             };
 
             profile.deleteExperience = function (experiences) {
                 var req = { jobProfile: [experiences] };
                 req.userId = $rootScope.userId;
-                profile.updateProfile(req);
+                profile.updateUserInfo(
+                    req,
+                     'experienceForm',
+                      deleteSuccess.experience,
+                      deleteFailure.experience);
+            };
+            // update Description
+            profile.EditDetails = function (details) {
+                var req = { profileSummary: details };
+                profile.updateUserInfo(
+                    req,
+                     'openDiscriptionEdit',
+                      updateSuccess.description,
+                      updateFailure.description);
             };
 
             profile.setEditStart = function (id, index, joinDate) {
@@ -457,9 +520,6 @@ angular.module('playerApp') // add those all values
                 } else {
                     workSpaceUtilsService.previewContent(item, $state.current.name);
                 }
-            };
-            profile.EditDetails = function (details) {
-                profile.updateProfile({ profileSummary: details });
             };
 
             profile.getbadges = function () {
