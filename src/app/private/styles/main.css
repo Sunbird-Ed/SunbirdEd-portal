@@ -1568,6 +1568,24 @@ ul.fancytree-container li {
     width: 405px;
   }
 }
+.searchPaginationAlign {
+  margin-left: 7%;
+}
+@media only screen and (min-width: 1600px) {
+  .searchPaginationAlign {
+    margin-left: 5%;
+  }
+}
+@media only screen and (min-width: 1700px) {
+  .searchPaginationAlign {
+    margin-left: 6%;
+  }
+}
+@media only screen and (min-width: 1824px) {
+  .searchPaginationAlign {
+    margin-left: 2%;
+  }
+}
 .filtersearch.ui.selection.dropdown {
   min-width: 108%;
 }
