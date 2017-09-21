@@ -22,6 +22,7 @@
                                     <a class="ui link label" ng-if="profileCtrl.user.rootOrg.contactDetail.length > 0 && profileCtrl.user.rootOrg.contactDetail[0].email && profileCtrl.user.rootOrg.orgName" 
                                     ng-href="mailto:{{profileCtrl.user.rootOrg.contactDetail[0].email}}" title="Contact Admin">{{profileCtrl.user.rootOrg.orgName}} <i class="mail outline icon"></i>
                                     </a>
+                                    <div class="ui label" ng-if="profileCtrl.user.lastLoginTime"> Last login time: {{profileCtrl.user.lastLoginTime | date:'medium'}}</div>
                                 </div>
                             </div>
                         </div>
