@@ -49,20 +49,30 @@ angular.module('playerApp')
                   channel: org.sunbird.portal.channel
               };
 
-              window.config = {
-                  corePluginsPackaged: true,
-                  modalId: 'genericEditor',
-                  dispatcher: 'local',
-                  apislug: '/action',
-                  alertOnUnload: true,
-                  headerLogo: !_.isUndefined($rootScope.orgLogo) ? $rootScope.orgLogo : '',
-                  loadingImage: '',
-                  plugins: [{
-                      id: 'org.ekstep.sunbirdcommonheader',
-                      ver: '1.0',
-                      type: 'plugin'
-                  }]
-              };
+            window.config = {
+                corePluginsPackaged: true,
+                modalId: 'genericEditor',
+                dispatcher: 'local',
+                apislug: '/action',
+                alertOnUnload: true,
+                headerLogo: !_.isUndefined($rootScope.orgLogo) ? $rootScope.orgLogo : '',
+                loadingImage: '',
+                plugins: [{
+                    id: 'org.ekstep.sunbirdcommonheader',
+                    ver: '1.0',
+                    type: 'plugin'
+                }],
+                previewConfig: {
+                    "repos": ["/content-plugins/renderer"],
+                    "plugins": [{
+                        "id": "org.sunbird.player.endpage",
+                        "ver": 1.0,
+                        "type": "plugin"
+                    }],
+                    showEndPage: false
+                }
+
+            };
 
               $timeout(function () {
                   $('#genericEditor').iziModal('open');
