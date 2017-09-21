@@ -109,9 +109,9 @@ angular.module('playerApp') // add those all values
                 }
             };
             // fetch profile
-            profile.getProfile = function () {
+            profile.getProfile = function (fields) {
                 profile.loader = toasterService.loader('', apiMessages.SUCCESS.loadingProfile);
-                userService.getUserProfile(profile.userId).then(function (successResponse) {
+                userService.getUserProfile(profile.userId, fields).then(function (successResponse) {
                     profile.processProfileData(successResponse);
                 }).catch(function () {
                     profile.loader.showLoader = false;
@@ -489,7 +489,7 @@ angular.module('playerApp') // add those all values
                 }
             };
 
-            profile.getProfile();
+            profile.getProfile('lastLoginTime');
 
             profile.getCreatedContentList = function () {
                 var request = {
