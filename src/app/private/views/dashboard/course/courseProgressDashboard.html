@@ -70,13 +70,22 @@
         </tbody>
       </table>
     </div>
-    <!--<div class="ui grid margin-top-20" ng-hide="courseDashboard.courseProgressArray.length == 0">
+    <div class="ui grid margin-top-20" ng-hide="courseDashboard.courseProgressArray.length == 0">
 	    	<div class="twelve wide column right floated">
 		      	<p class="text-align-right dashBoardCardText">Download this view as:
-		        	<a href="Javascript:void(0);" class="item text-decoration-underline padding-left-10 cursor-pointer">CSV</a>
+		        	<a class="item text-decoration-underline padding-left-10 cursor-pointer" ng-click="courseDashboard.downloadReport({{$root.labels.DASHBOARD.COURSE_DOWNLOAD_REPORTS.COURSES_CSV_MSG;}});">CSV</a>
 		      	</p>
 	    	</div>
-		</div>-->
+		</div>
+    <div class="ui modal course-progress-report" id="#course-progress-report">
+      <div class="header">Thank you!</div>
+      <div class="content">
+        <p>{{courseDashboard.downloadReportText}}</p>
+      </div>
+      <div class="actions">
+        <div class="ui cancel button">Close</div>
+      </div>
+    </div>
   </div>
   <!-- Show loader-->
   <div class="tweleve wide column" ng-if="courseDashboard.showLoader">

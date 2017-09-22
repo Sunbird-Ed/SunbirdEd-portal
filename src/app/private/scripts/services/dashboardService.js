@@ -97,4 +97,14 @@ angular.module('playerApp')
             return httpServiceJava.get(config.URL.DASHBOARD.COURSE_PROGRESS + '/' + req.courseId + '?period=' + req.timePeriod);
         }
     };
+
+    /**
+     * @function downloadReport
+     * @description make export csv api call
+     * @param object req - api request params
+     * @return array
+     */
+    this.downloadReport = function(req){
+        return httpServiceJava.get(config.URL.DASHBOARD.COURSE_PROGRESS + '/' + req.courseId + '/export?period=' + req.timePeriod + '&format=csv');
+    }
 }]);

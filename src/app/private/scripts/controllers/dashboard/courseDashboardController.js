@@ -199,5 +199,34 @@ angular.module('playerApp')
         courseDashboard.isMultipleCourses = false;
         getCourseDashboardData();
       }
+
+      /**
+       * /
+       *
+       * @param   {[type]}  str  [description]
+       *
+       * @return  {[type]}       [description]
+       */
+      courseDashboard.downloadReport = function (str){
+      	let request = {
+          courseId: courseDashboard.batchIdentifier,
+          timePeriod: courseDashboard.filterTimePeriod
+        };
+
+        // Call service
+      	dashboardService.downloadReport(request).then(function(apiResponse) {
+      		console.log(apiResponse);
+      		if (apiResponse && apiResponse.responseCode === 'OK') {
+      			//var str = $root.labels.DASHBOARD.COURSE_DOWNLOAD_REPORTS.COURSES_CSV_MSG;
+      			courseDashboard.requestIdText = str.replace("{courseDashboard.downloadReportId}", apiResponse.result.requestId).replace(/(\(.*\))/g, '');
+      			$('.course-progress-report.modal')
+      				.modal('setting', 'closable', true)
+      				.modal('show');
+      		}
+
+        }).catch(function(apiResponse) {
+          courseDashboard.showErrors(apiResponse);
+        });
+      }
     }
   ])
