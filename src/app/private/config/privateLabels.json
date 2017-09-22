@@ -354,11 +354,7 @@
                 "HEADER": "Assign Badge",
                 "CONTENT": "Do you want to assign  "
             }
-        },
-        "DASHBOARD":{
-            "DOWNLOAD_REPORTS":{
-                "COURSES_CSV_MSG":"Your request has been received successfully. Your request id is {courseDashboard.downloadReportId}, you can use this id to track your request status. The file will be sent to your registered email address. Please, do check your emails regularly"
-            }
         }
+
     }
 }

@@ -246,7 +246,7 @@
                     "editingProfile": "Updating profile ...",
                     "profileEdited": "Profile successfully updated"
                 },
-                "UPDATE":{ 
+                "UPDATE":{
                     "SUCCESS":{
                         "avatar":"Profile Image updated successfully",
                         "description":"Description updated successfully",
@@ -346,6 +346,11 @@
         "TENANT": {
             "GET_INFO": {
                 "FAILED": "Fetching tenant details failed, please try again later..."
+            }
+        },
+        "DASHBOARD":{
+            "DOWNLOAD_REPORTS":{
+                "COURSES_CSV_MSG":"Your request has been received successfully. Your request id is {courseDashboard.downloadReportId}, you can use this id to track your request status. The file will be sent to your registered email address. Please, do check your emails regularly"
             }
         }
     }
