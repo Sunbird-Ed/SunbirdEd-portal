@@ -142,19 +142,19 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
         };
 
         $scope.setRootOrgInfo = function (profileData) {
-            if(profileData.rootOrg){
-                //set Page Title
+            if (profileData.rootOrg) {
+                // set Page Title
                 document.title = (!_.isUndefined(profileData.rootOrg.orgName)) ? profileData.rootOrg.orgName : 'Sunbird';
-                $http.get('/v1/tenant/info/'+profileData.rootOrg.slug).then(function (res) {
-                    if(res && res.statusText == 'OK'){
+                $http.get('/v1/tenant/info/' + profileData.rootOrg.slug).then(function (res) {
+                    if (res && res.statusText == 'OK') {
                         $rootScope.orgLogo = res.data.result.logo;
                         var link = document.createElement('link'),
-                        oldLink = document.getElementById('dynamic-favicon');
+                            oldLink = document.getElementById('dynamic-favicon');
                         link.id = 'dynamic-favicon';
                         link.rel = 'icon';
                         link.href = res.data.result.favicon;
                         if (oldLink) {
-                          document.head.removeChild(oldLink);
+                            document.head.removeChild(oldLink);
                         }
                         document.head.appendChild(link);
                     }
@@ -267,5 +267,16 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
                 }
             });
         };
+        // orgTypes
+        $scope.getOrgTypes = function () {
+            searchService.getOrgTypes().then(function (res) {
+                if (res.responseCode === 'OK') {
+                    searchService.setOrgTypes(res.result.response);
+                }
+                // else throw new Error('');
+            });
+        };
+
         $scope.getBadges();
+        $scope.getOrgTypes();
     }]);

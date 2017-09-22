@@ -36,7 +36,6 @@ angular.module('playerApp').directive('search', function () {
             $rootScope.search.selectedConcepts = [];
             $rootScope.search.sortByOption = {};
             $scope.search.autoSuggest = true;
-            $rootScope.search.orgType = config.DROPDOWN.COMMON.orgType;
             $rootScope.search.selectedOrgType = [];
             $rootScope.search.pageLimit = 20;
             $rootScope.search.pager = {};
@@ -123,7 +122,7 @@ angular.module('playerApp').directive('search', function () {
                 $rootScope.search.sortByOption = Object.keys($rootScope.search.sortBy).length > 0
                         ? Object.keys($rootScope.search.sortBy)[0] : '';
                 $rootScope.search.searchFromSuggestion = $stateParams.autoSuggestSearch;
-                $rootScope.search.selectedOrgType = $rootScope.search.filters.selectedOrgType || [];
+                $rootScope.search.selectedOrgType = $rootScope.search.filters.orgType || [];
                 // $rootScope.search.sortBy=$rootScope.search.sortBy;
                 $scope.search.searchRequest();
             };
@@ -199,7 +198,7 @@ angular.module('playerApp').directive('search', function () {
                                 sort: btoa(JSON.stringify($rootScope.search.sortBy)),
                                 autoSuggestSearch: $rootScope.search.searchFromSuggestion || false
                             };
-                            $state.go('Search', searchParams, {reload: true});                        
+                            $state.go('Search', searchParams, { reload: true });
                         }
                     } else {
                         $rootScope.$broadcast('initPageSearch', {});
@@ -262,6 +261,10 @@ angular.module('playerApp').directive('search', function () {
                     }
                     if (req.sort_by) {
                         delete req.sort_by;
+                    }
+                    if ($rootScope.search.filters.orgType) {
+                        $rootScope.search.filters.orgType = undefined;
+                        $rootScope.search.selectedOrgType = undefined;
                     }
                     req.filters.objectType = ['user'];
 
@@ -354,6 +357,7 @@ angular.module('playerApp').directive('search', function () {
                     $rootScope.search.filters.board = undefined;
                     $rootScope.search.filters.concepts = undefined;
                     $rootScope.search.filters.contentType = undefined;
+                    $rootScope.search.filters.orgType = undefined;
                     $rootScope.search.filters.grade = $rootScope.search.selectedGrades;
                 } else if ($rootScope.search.selectedSearchKey === 'Organisations') {
                     $rootScope.search.filters = {};
@@ -419,6 +423,13 @@ angular.module('playerApp').directive('search', function () {
                 }
                 $scope.search.handleSearch(page);
             };
+            $rootScope.search.getOrgTypes = function () {
+                searchService.getOrgTypeS()
+                .then(function (res) {
+                    $rootScope.search.orgTypes = res;
+                });
+            };
+            $rootScope.search.getOrgTypes();
         }];
     return {
         templateUrl: 'views/header/search.html',

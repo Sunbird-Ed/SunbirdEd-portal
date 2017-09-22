@@ -2,7 +2,7 @@
     <div class="ui divider header-search-filters-divider"></div>
     <div class="filtercolumn ui grid">
         <div class="one wide column">
-        </div>
+         </div>
         <div class=" ten wide column ">
             <div apply-script class="ui accordion" id='content-search-filter-accordion'>
                 <div class="ui twelve column grid">
@@ -65,7 +65,7 @@
                                         {{$root.labels.SEARCH.PROMPT.ORG_TYPE}}:
                                          <a class="ui label margin-top--5" ng-repeat="orgType in $root.search.selectedOrgType">
                                              {{orgType}}
-                                             <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedConcepts',concept.identifier)"></i>
+                                             <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedOrgType',orgType)"></i>
                                          </a>
                                      </span>
 
@@ -98,7 +98,7 @@
                                     </div>
                                 </div>
                                 <div class='two wide column' ng-if="$root.search.selectedSearchKey === 'Library'">
-                                    <div id="filterContent" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
+                                    <div apply-script id="filterContent" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
                                         <input type='hidden' ng-value='{{}}' />
                                         <i class="dropdown icon"></i>
                                         <div class="filter-sel-text" ng-if="$root.search.selectedContentType.length > 0 ">{{$root.search.selectedContentType.length+' '+$root.labels.SEARCH.PROMPT.CONTENT_TYPE}}</div>
@@ -110,7 +110,7 @@
                                 </div>
                                 <!-- language -->
                                 <div class="two wide column" ng-if="$root.search.selectedSearchKey !== 'Organisations'">
-                                    <div id="filterLang" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
+                                    <div  apply-script  id="filterLang" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
                                         <input type='hidden' ng-value='{{}}' />
                                         <i class="dropdown icon"></i>
                                         <div class="filter-sel-text" ng-if="$root.search.selectedLanguage.length > 0 ">{{$root.search.selectedLanguage.length+' '+$root.labels.SEARCH.PROMPT.LANGUAGE}}</div>
@@ -122,7 +122,7 @@
                                 </div>
                                 <!-- subjects -->
                                 <div class="two wide column" ng-if="$root.search.selectedSearchKey !== 'Organisations'">
-                                    <div id="filterSub" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
+                                    <div apply-script id="filterSub" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
                                         <i class="dropdown icon"></i>
                                         <div class="filter-sel-text" ng-if="$root.search.selectedSubject.length > 0 ">{{$root.search.selectedSubject.length+' '+$root.labels.SEARCH.PROMPT.SUBJECT}}</div>
                                         <div class="filter-sel-text" ng-if="$root.search.selectedSubject.length == 0 ">{{$root.labels.SEARCH.PROMPT.SUBJECT}}</div>
@@ -139,14 +139,20 @@
                                     </div>
                                 </div>
                                 <!-- org type -->
+  
                                 <div class="two wide column" ng-if="$root.search.selectedSearchKey === 'Organisations'">
-                                    <div id="orgTypeFilter" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
+                                    <div apply-script id="orgTypeFilter" ng-if=" $root.search.orgTypes" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
                                         <input type='hidden' ng-value='{{}}' />
                                         <i class="dropdown icon"></i>
                                         <div class="filter-sel-text" ng-if="$root.search.selectedOrgType.length > 0 ">{{$root.search.selectedOrgType.length+' '+$root.labels.SEARCH.PROMPT.ORG_TYPE}}</div>
                                         <div class="filter-sel-text" ng-if="$root.search.selectedOrgType.length == 0 ">{{$root.labels.SEARCH.PROMPT.ORG_TYPE}}</div>
                                         <div class="menu">
-                                            <div ng-click="$root.search.selectFilter('selectedOrgType',orgType,$event)" ng-repeat="orgType in $root.search.orgType  | orderBy:'toString()'" class="item dropdown-item" ng-class="{'active':($root.search.selectedOrgType.indexOf(orgType)>=0)}" data-value="{{orgType}}">{{orgType}}</div>
+                                         <div ng-click="$root.search.selectFilter('selectedOrgType',orgType.name,$event)"
+                                             ng-repeat="orgType in $root.search.orgTypes  "
+                                              class="item dropdown-item" 
+                                              ng-class="{'active':($root.search.selectedOrgType.indexOf(orgType)>=0)}" 
+                                              data-value="{{orgType.name}}">{{orgType.name}}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
