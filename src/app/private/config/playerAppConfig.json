@@ -88,6 +88,9 @@
                 "GET": "org/v1/badges/list",
                 "ASSIGN": "user/v1/badges/add"
 
+            },
+            "ORG_TYPE":{
+                "GET":"org/v1/type/list"
             }
         },
         "FILTER": {
