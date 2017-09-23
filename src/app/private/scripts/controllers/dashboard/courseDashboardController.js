@@ -208,6 +208,7 @@ angular.module('playerApp')
        * @return  {[type]}       [description]
        */
       courseDashboard.downloadReport = function (){
+      	courseDashboard.showDownloadLoader = 'active';
       	var req = {
           courseId: courseDashboard.batchIdentifier,
           timePeriod: courseDashboard.filterTimePeriod
@@ -215,16 +216,19 @@ angular.module('playerApp')
 
         // Call service
       	dashboardService.downloadReport(req).then(function(apiResponse) {
+      		courseDashboard.showDownloadLoader = '';
       		if (apiResponse && apiResponse.responseCode === 'OK') {
-      			var str = $rootScope.errorMessages.DASHBOARD.COURSE_DOWNLOAD_REPORTS.COURSES_CSV_MSG;
+      			var str = $rootScope.errorMessages.DASHBOARD.DOWNLOAD_REPORTS.COURSES_CSV_MSG;
       			courseDashboard.downloadReportText = str.replace("{courseDashboard.downloadReportId}", apiResponse.result.requestId).replace(/(\(.*\))/g, '');
       			$('.course-progress-report.modal')
       				.modal('setting', 'closable', true)
       				.modal('show');
+      		} else{
+      			toasterService.error(apiResponse.params.errmsg);
       		}
-
         }).catch(function(apiResponse) {
-          courseDashboard.showErrors(apiResponse);
+        	courseDashboard.showDownloadLoader = '';
+          	courseDashboard.showErrors(apiResponse);
         });
       };
     }
