@@ -1,5 +1,5 @@
 /*!
- * # Semantic UI 2.2.10 - Accordion
+ * # Semantic UI 2.2.13 - Accordion
  * http://github.com/semantic-org/semantic-ui/
  *
  *
@@ -31,7 +31,7 @@
 /* Default Styling */
 .ui.accordion .title:not(.ui) {
   padding: 0.5em 0em;
-  font-family: 'HelveticaNeueLTStd-Lt', Helvetica, Arial, sans-serif;
+  font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
   font-size: 1em;
   color: rgba(0, 0, 0, 0.87);
 }
