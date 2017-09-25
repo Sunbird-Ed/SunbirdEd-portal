@@ -2,7 +2,7 @@
     <div class="sliderCards ui link card margin-right-20 margin-top-15 link">
         <div class="ui very relaxed list">
             <div class="item">
-                <div  class="c100 light small blue" ng-class="'p'+$root.profileCompleteness">
+                <div  class="c100 light small blue" ng-class="'p'+item.value">
                     <div class="profpic">
                         <img class="ui circular floated image" ng-src="{{ avatar || 'images/user_logo.png'}}" />
                     </div>
@@ -12,15 +12,15 @@
                     </div>
                 </div>
                 <div class="padding-top-20 padding-left-10 content">
-                    <div class="header"> {{ $root.errorMessages.PROFILE.UPDATE_REMINDER.TITLE}}</div>
-                    <div class="padding-top-5 description">{{$root.profileMissingFields[0] ? 'Add '+$root.profileMissingFields[0]+' now' : $root.errorMessages.PROFILE.UPDATE_REMINDER.DEFAULT_MESSAGE}}</div>
+                    <div class="header"> {{item.title}}</div>
+                    <div class="padding-top-5 description">{{item.description}}</div>
 
                 </div>
             </div>
         </div>
         <div class="sliderCards content">
             <button class="ui blue basic right floated button margin-top-10">{{$root.labels.Courses.update}}</button>
-            <div class="padding-top-20 sliderCardDesc"><span class="description">Your profile is {{$root.profileCompleteness}}% complete</span></div>
+            <div class="padding-top-20 sliderCardDesc"><span class="description">Your profile is {{item.value}}% complete</span></div>
 
         </div>
     </div>

@@ -24,9 +24,9 @@ angular.module('playerApp') // add those all values
         'learnService',
         'adminService',
         'workSpaceUtilsService',
-        '$q','$anchorScroll', function ($scope, $rootScope, contentService, userService,
+        '$q', '$anchorScroll', function ($scope, $rootScope, contentService, userService,
             toasterService, config, $timeout, $filter, uuid4, formValidation, searchService,
-            $state, learnService, adminService, workSpaceUtilsService, $q,$anchorScroll) {
+            $state, learnService, adminService, workSpaceUtilsService, $q, $anchorScroll) {
             var profile = this;
             var apiMessages = $rootScope.errorMessages.PROFILE.API;
             var updateSuccess = $rootScope.errorMessages.PROFILE.API.UPDATE.SUCCESS;
@@ -557,49 +557,49 @@ angular.module('playerApp') // add those all values
             profile.getProfileObject = function (profileData) {
                 return angular.copy(profileData);
             };
-            profile.updateAction = function(field){
-                switch(field){
-                    case 'education':
+            profile.updateAction = function (field) {
+                switch (field) {
+                case 'education':
                     {
-                     profile.educationForm=true ;
-                     profile.isNewEducation=true ;
-                     profile.newEducation={};
-                     $timeout(function () {$anchorScroll('educationForm')},100);
+                        profile.educationForm = true;
+                        profile.isNewEducation = true;
+                        profile.newEducation = {};
+                        $timeout(function () { $anchorScroll('educationForm'); }, 100);
                     }
                     break;
-                    case 'jobProfile':
+                case 'jobProfile':
                     {
-                     profile.experienceForm=true ;
-                     profile.isNewExperience=true ;
-                     profile.newExperience={};
-                     $timeout(function () {$anchorScroll('jobProfileForm')},100);
+                        profile.experienceForm = true;
+                        profile.isNewExperience = true;
+                        profile.newExperience = {};
+                        $timeout(function () { $anchorScroll('jobProfileForm'); }, 100);
                     }
                     break;
-                    case 'address':
+                case 'address':
                     {
-                     profile.addressForm=true ;
-                     profile.isNewAddress=true ;
-                     profile.newAddress={} ;
-                     $timeout(function () {$anchorScroll('addressForm')},100);
+                        profile.addressForm = true;
+                        profile.isNewAddress = true;
+                        profile.newAddress = {};
+                        $timeout(function () { $anchorScroll('addressForm'); }, 100);
                     }
                     break;
-                    case 'avatar':{
-                     profile.openImageBrowser();
-                    }
-                    break;
-                    case 'profileSummary':{
-                    profile.openDiscriptionEdit=true;    
-                    }
-                    break;
-                    case 'firstName' ||  'lastName' || 'email' || 'phone'  || 'dob' || 'gender' || 'grade' || 'language' || 'location':{
-                    profile.basicProfileForm=true;
-                     $timeout(function () {$anchorScroll('basicInfoForm')},100);
-                    }
-                    break;
-                    default:{
-                     return;       
-                 }
+                case 'avatar': {
+                    profile.openImageBrowser();
                 }
-            }
+                    break;
+                case 'profileSummary': {
+                    profile.openDiscriptionEdit = true;
+                }
+                    break;
+                case 'firstName' || 'lastName' || 'email' || 'phone' || 'dob' || 'gender' || 'grade' || 'language' || 'location': {
+                    profile.basicProfileForm = true;
+                    $timeout(function () { $anchorScroll('basicInfoForm'); }, 100);
+                }
+                    break;
+                default: {
+
+                }
+                }
+            };
         }
     ]);
