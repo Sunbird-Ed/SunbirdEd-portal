@@ -18,11 +18,11 @@
     <div class=" four wide column margin-top-20">
         <div class="ui grid ">
             <!--             <div class="twelve wide column">
-                <span class="profileViewProgress">Profile Completeness</span> 
-                <span class="profileViewProgress float-ContentRight">15%</span> 
+                <span class="profileViewProgress">Profile Completeness</span>
+                <span class="profileViewProgress float-ContentRight">15%</span>
                 <div class="ui small blue progress margin-top--5">
                     <div class="bar"></div>
-                </div>                  
+                </div>
             </div> -->
 
             <div class="twelve wide column" ng-if="initializePermissionDirective" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW,FLAG_REVIEWER">
@@ -63,16 +63,38 @@
                             <i class='my-icon database icon '></i>
                             <span class="my-text ">Dashboard</span>
 
-							<div class="ui bulleted list" ng-repeat="item in profileCtrl.orgDetails"  >
-							  <a class="item" ui-sref="orgDashboard({orgId: '{{item.organisationId}}'}) ">{{item.orgName || item.organisationId}}</a>
-							</div>
+                                                        <div class="ui bulleted list" ng-repeat="item in profileCtrl.orgDetails"  >
+                                                          <a class="item" ui-sref="orgDashboard({orgId: '{{item.organisationId}}'}) ">{{item.orgName || item.organisationId}}</a>
+                                                        </div>
 
                         </div>
                     </div>
                 </div>
             </div>-->
-            <div class="twelve wide column blur-content">
-                <div class="ui raised segment ">
+            <div class="twelve wide column">
+                <div class="ui raised segment" ng-if="$root.profileCompleteness">
+                    <div class="profileitems profile-des ui relaxed aligned list">
+                        <div class="item ">
+                            <div class="right floated content ">
+                                <span class="ng-binding">{{$root.profileCompleteness}}%</span>
+                            </div>
+                            <div class="iniformationcontent content">
+                                {{$root.errorMessages.PROFILE.UPDATE_REMINDER.COMPLETENESS_TITLE}}
+                            </div>
+                        </div>
+                        <div class="item ">
+                            <div  class="ui tiny progress course-progress progressBar-margin blue" data-percent="{{$root.profileCompleteness}}" apply-script>
+                                <div class="bar"></div>
+                            </div>
+                        </div>
+                        <div class="item" ng-repeat="field in $root.profileMissingFields | limitTo:3">
+                            <div class="iniformationcontent content">
+                                <a ng-click="profileCtrl.updateAction(field)"><h5 class="ui blue header profileUpdateAddDetails">+ Add {{$root.labels.PROFILE.COMPLETENESS[field] || field}}</h5></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui raised segment blur-content">
                     <div class="header announcementCard-header ">
                         <span class="header cardsHeading " translate="experiance ">Member of</span>
                     </div>
