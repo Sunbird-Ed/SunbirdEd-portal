@@ -10,7 +10,8 @@
         "Courses": {
             "resume": "RESUME",
             "TODO": "To Do",
-            "COURSE_BADGE": "Course"
+            "COURSE_BADGE": "Course",
+            "update":"UPDATE"
         },
         "Notes": {
             "title": "Title",
@@ -222,6 +223,13 @@
             },
             "BADGES": {
                 "header": "Badges"
+            },
+            "COMPLETENESS":{
+                "jobProfile":"experience",
+                "avatar":"profile picture",
+                "profileSummary":"profile description",
+                "firstName":"first name",
+                "lastName":"last name"
             }
         },
         "HEADER": {
