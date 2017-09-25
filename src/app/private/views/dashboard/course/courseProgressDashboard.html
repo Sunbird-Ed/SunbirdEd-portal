@@ -10,43 +10,43 @@
           <tr>
             <th class="table-headerDashboard">
               <a href="Javascript:void(0);" ng-click="courseDashboard.orderByField='progress'; courseDashboard.reverseSort = !courseDashboard.reverseSort">Status
-								<span ng-show="courseDashboard.orderByField == 'progress'">
-			        				<span ng-show="!courseDashboard.reverseSort">^</span>
-			        				<span ng-show="courseDashboard.reverseSort">v</span>
-								</span>
-							</a>
+                <span ng-show="courseDashboard.orderByField == 'progress'">
+                      <span ng-show="!courseDashboard.reverseSort">^</span>
+                      <span ng-show="courseDashboard.reverseSort">v</span>
+                </span>
+              </a>
             </th>
             <th>
               <a href="Javascript:void(0);" ng-click="courseDashboard.orderByField='user'; courseDashboard.reverseSort = !courseDashboard.reverseSort">User Name
-			        			<span ng-show="courseDashboard.orderByField == 'user'">
-			        				<span ng-show="!courseDashboard.reverseSort">^</span>
-			        				<span ng-show="courseDashboard.reverseSort">v</span>
-			        			</span>
-					  		</a>
+                    <span ng-show="courseDashboard.orderByField == 'user'">
+                      <span ng-show="!courseDashboard.reverseSort">^</span>
+                      <span ng-show="courseDashboard.reverseSort">v</span>
+                    </span>
+                </a>
             </th>
             <th>
               <a href="Javascript:void(0);" ng-click="courseDashboard.orderByField='batchEndsOn'; courseDashboard.reverseSort = !courseDashboard.reverseSort">Batch End On
-					          	<span ng-show="courseDashboard.orderByField == 'batchEndsOn'">
-					          		<span ng-show="!courseDashboard.reverseSort">^</span>
-					          		<span ng-show="courseDashboard.reverseSort">v</span>
-					          	</span>
-							</a>
+                      <span ng-show="courseDashboard.orderByField == 'batchEndsOn'">
+                        <span ng-show="!courseDashboard.reverseSort">^</span>
+                        <span ng-show="courseDashboard.reverseSort">v</span>
+                      </span>
+              </a>
             </th>
             <th>
               <a href="Javascript:void(0);" ng-click="courseDashboard.orderByField='org'; courseDashboard.reverseSort = !courseDashboard.reverseSort">ORG
-				          		<span ng-show="courseDashboard.orderByField == 'org'">
-				          			<span ng-show="!courseDashboard.reverseSort">^</span>
-				          			<span ng-show="courseDashboard.reverseSort">v</span>
-				          		</span>
-							</a>
+                      <span ng-show="courseDashboard.orderByField == 'org'">
+                        <span ng-show="!courseDashboard.reverseSort">^</span>
+                        <span ng-show="courseDashboard.reverseSort">v</span>
+                      </span>
+              </a>
             </th>
             <th>
               <a href="Javascript:void(0);" ng-click="courseDashboard.orderByField='enrolledOn'; courseDashboard.reverseSort = !courseDashboard.reverseSort">Enrolled On
-		          				<span ng-show="courseDashboard.orderByField == 'enrolledOn'">
-		          					<span ng-show="!courseDashboard.reverseSort">^</span>
-		          					<span ng-show="courseDashboard.reverseSort">v</span>
-		          				</span>
-					  		</a>
+                      <span ng-show="courseDashboard.orderByField == 'enrolledOn'">
+                        <span ng-show="!courseDashboard.reverseSort">^</span>
+                        <span ng-show="courseDashboard.reverseSort">v</span>
+                      </span>
+                </a>
             </th>
           </tr>
         </thead>
@@ -71,20 +71,28 @@
       </table>
     </div>
     <div class="ui grid margin-top-20" ng-hide="courseDashboard.courseProgressArray.length == 0">
-	    	<div class="twelve wide column right floated">
-		      	<p class="text-align-right dashBoardCardText">Download this view as:
-		        	<a class="item text-decoration-underline padding-left-10 cursor-pointer" ng-click="courseDashboard.downloadReport();">CSV</a>
-              <span class="ui mini {{courseDashboard.showDownloadLoader}} inline loader" id="reportDownloadLoader"></span>
-		      	</p>
-	    	</div>
-		</div>
-    <div class="ui modal course-progress-report" id="#course-progress-report">
-      <div class="header">Thank you!</div>
-      <div class="content">
-        <p>{{courseDashboard.downloadReportText}}</p>
+      <div class="twelve wide column right floated">
+        <p class="text-align-right dashBoardCardText">Download this view as:
+          <a class="item text-decoration-underline padding-left-10 cursor-pointer" ng-click="courseDashboard.downloadReport();">CSV</a>
+          <span class="ui mini {{courseDashboard.showDownloadLoader}} inline loader" id="reportDownloadLoader"></span>
+        </p>
       </div>
-      <div class="actions">
-        <div class="ui cancel button">Close</div>
+    </div>
+    <!-- Download reports success modal -->
+    <div class="ui modal" id="downloadReportModal">
+      <div class="header">
+        <div class="ui grid">
+          <div class="eleven wide column"><span class="ui header">Thank you!</span></div>
+          <div class="one wide column actions">
+            <h5 class="ui basic icon circular button deny"><i class="ui remove icon"></i></h5>
+          </div>
+        </div>
+      </div>
+      <div class="content">
+        <p class="meta">{{courseDashboard.downloadReportText}}</p>
+      </div>
+      <div class="actions margin-top-20 ">
+        <div></div>
       </div>
     </div>
   </div>

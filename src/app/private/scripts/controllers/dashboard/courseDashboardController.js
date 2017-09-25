@@ -103,7 +103,7 @@ angular.module('playerApp')
           "request": {
             "filters": {
               courseId: $stateParams.courseId,
-              status: ['1','2','3'],
+              status: ['1', '2', '3'],
               createdBy: $rootScope.userId
             },
             "sort_by": { createdDate: 'desc' }
@@ -201,34 +201,35 @@ angular.module('playerApp')
       };
 
       /**
-       * /
-       *
-       * @param   {[type]}  str  [description]
-       *
-       * @return  {[type]}       [description]
+       * @Function downloadReports
+       * @Description - make dowload csv api call
+       * @Return  void
        */
-      courseDashboard.downloadReport = function (){
-      	courseDashboard.showDownloadLoader = 'active';
-      	var req = {
+      courseDashboard.downloadReport = function() {
+        courseDashboard.showDownloadLoader = 'active';
+        let req = {
           courseId: courseDashboard.batchIdentifier,
           timePeriod: courseDashboard.filterTimePeriod
         };
 
         // Call service
-      	dashboardService.downloadReport(req).then(function(apiResponse) {
-      		courseDashboard.showDownloadLoader = '';
-      		if (apiResponse && apiResponse.responseCode === 'OK') {
-      			var str = $rootScope.errorMessages.DASHBOARD.DOWNLOAD_REPORTS.COURSES_CSV_MSG;
-      			courseDashboard.downloadReportText = str.replace("{courseDashboard.downloadReportId}", apiResponse.result.requestId).replace(/(\(.*\))/g, '');
-      			$('.course-progress-report.modal')
-      				.modal('setting', 'closable', true)
-      				.modal('show');
-      		} else{
-      			toasterService.error(apiResponse.params.errmsg);
-      		}
+        dashboardService.downloadReport(req).then(function(apiResponse) {
+          courseDashboard.showDownloadLoader = '';
+          if (apiResponse && apiResponse.responseCode === 'OK') {
+            var str = $rootScope.errorMessages.DASHBOARD.DOWNLOAD_REPORTS.COURSES_CSV_MSG;
+            courseDashboard.downloadReportText = str.replace("{courseDashboard.downloadReportId}", apiResponse.result.requestId).replace(/(\(.*\))/g, '');
+            $timeout(function() {
+              $('#downloadReportModal').modal({
+                closable: true
+              }).modal('show');
+            }, 10);
+          } else {
+            courseDashboard.showDownloadLoader = '';
+            toasterService.error(apiResponse.params.errmsg);
+          }
         }).catch(function(apiResponse) {
-        	courseDashboard.showDownloadLoader = '';
-          	courseDashboard.showErrors(apiResponse);
+          courseDashboard.showDownloadLoader = '';
+          courseDashboard.showErrors(apiResponse);
         });
       };
     }

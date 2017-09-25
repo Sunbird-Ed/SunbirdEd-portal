@@ -350,7 +350,7 @@
         },
         "DASHBOARD":{
             "DOWNLOAD_REPORTS":{
-                "COURSES_CSV_MSG":"Your request has been received successfully. Your request id is {courseDashboard.downloadReportId}, you can use this id to track your request status. The file will be sent to your registered email address. Please, do check your emails regularly"
+                "COURSES_CSV_MSG":"Your request has been received successfully. Your request id is {courseDashboard.downloadReportId}, You can use this id to track your request status. File will be sent to your registered email address later. Please, do check your emails regularly."
             }
         }
     }
