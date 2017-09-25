@@ -246,11 +246,54 @@
                     "editingProfile": "Updating profile ...",
                     "profileEdited": "Profile successfully updated"
                 },
+                "UPDATE":{ 
+                    "SUCCESS":{
+                        "avatar":"Profile Image updated successfully",
+                        "description":"Description updated successfully",
+                        "education":"Education updated successfully",
+                        "experience":"Experience updated successfully",
+                        "basicInfo":"Basic information  updated successfully",
+                        "address":"Address updated successfully"
+                    },
+                    "FAILURE":{
+                        "avatar":"Profile image  update failed. Please try again later...",
+                        "description":"Description update failed. Please try again later...",
+                        "education":"Education update failed. Please try again later...",
+                        "experience":"Experience update failed. Please try again later...",
+                        "basicInfo":"Basic information update failed. Please try again later...",
+                        "address":"Address update failed. Please try again later..."
+                    }
+            },
+                "DELETE":{
+                    "SUCCESS":{
+                        "education":"Education deleted successfully",
+                        "experience":"Experience deleted successfully",
+                        "address":"Address deleted successfully"
+                    },
+                    "FAILURE":{
+                        "education":"Education delete failed. Please try again later...",
+                        "experience":"Experience delete failed. Please try again later...",
+                        "address":"Address delete failed. Please try again later..."
+                    }
+                },
+                "ADD":{
+                    "SUCCESS":{
+                        "education":"New education added successfully",
+                        "experience":"New experience added successfully",
+                        "address":"New address added successfully"
+                    },
+                    "FAILURE":{
+                        "education":"Adding new education failed. Please try again later...",
+                        "experience":"Adding new experience failed. Please try again later...",
+                        "address":"Adding new address failed. Please try again later..."
+                    }
+                },
                 "ERROR": {
                     "get": "Fetching profile failed, please try again later...",
                     "update": "Updating user profile failed,please try again later..."
                 }
             }
+
         },
         "COLLECTION": {
             "PREVIEW": {

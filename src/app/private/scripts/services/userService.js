@@ -20,8 +20,11 @@ angular.module('playerApp')
                 return httpService.get(url);
             };
 
-            this.getUserProfile = function (uId) {
+            this.getUserProfile = function (uId, fields) {
                 var url = config.URL.USER.GET_PROFILE + '/' + uId;
+                if(fields && _.isString(fields)){
+                    url = url + '?fields=' + fields
+                }
                 return httpServiceJava.get(url);
             };
 
