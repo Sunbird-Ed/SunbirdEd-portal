@@ -938,22 +938,32 @@ angular.module('playerApp')
             }
         })
         .state('MyActivity', {
-          url: '/course-creator-dashboard',
-          views: {
-              mainView: {
-                  templateUrl: '/views/dashboard/course/courseConsumptionDashboard.html',
-                  controller: 'courseCreatorDashboardCtrl as courseDashboard'
-              }
-          },
-          onEnter: function ($stateParams, $rootScope, routeHelperService) {
-              $rootScope.profileActive = 'active';
-              $rootScope.isPlayerPage = false;
-              routeHelperService.loadRouteConfig('MyActivity', null);
-          },
-          onExit: function ($rootScope) {
-              $rootScope.profileActive = '';
-          }
-      });
+            url: '/course-creator-dashboard',
+            views: {
+                mainView: {
+                    templateUrl: '/views/dashboard/course/courseConsumptionDashboard.html',
+                    controller: 'courseCreatorDashboardCtrl as courseDashboard'
+                }
+            },
+            onEnter: function ($stateParams, $rootScope, routeHelperService) {
+                $rootScope.profileActive = 'active';
+                $rootScope.isPlayerPage = false;
+                routeHelperService.loadRouteConfig('MyActivity', null);
+            },
+            onExit: function ($rootScope) {
+                $rootScope.profileActive = '';
+            }
+        })
+        .state('Setup', {
+            url: '/setup',
+            views: {
+                mainView: {
+                    templateUrl: '/views/setup/setup.html',
+                    controller: 'setupController as setup'
+                }
+            }
+
+        });
   })
   .run(function ($urlRouter, $http, $state, permissionsService, $rootScope, $location, config,
       toasterService, routeHelperService, userService) {
