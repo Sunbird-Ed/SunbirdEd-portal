@@ -961,6 +961,9 @@ angular.module('playerApp')
                     templateUrl: '/views/setup/setup.html',
                     controller: 'setupController as setup'
                 }
+            },
+            onEnter: function (routeHelperService) {
+                routeHelperService.loadRouteConfig('Setup', null);
             }
 
         });
