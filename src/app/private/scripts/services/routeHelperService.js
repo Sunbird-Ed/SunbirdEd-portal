@@ -275,6 +275,17 @@ angular.module('playerApp')
                         }];
 
                         break;
+                    case 'Setup':
+
+                        $rootScope.breadCrumbsData = [{
+                            name: 'Home',
+                            link: 'home'
+                        }, {
+                            name: 'Setup',
+                            link: 'setup'
+                        }];
+
+                        break;
                     default:
                         {
                             $rootScope.breadCrumbsData = null;
