@@ -37,7 +37,9 @@ let PERMISSIONS_HELPER = {
     "dashboard/progress": ["COURSE_MENTOR"],
     "dashboard/consumption": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION", "CONTENT_CREATOR"],
     "org/upload": ["SYSTEM_ADMINISTRATION"],
-    "upload/status/": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION"]
+    "upload/status/": ["ORG_ADMIN", "SYSTEM_ADMINISTRATION"],
+    "type/create":["SYSTEM_ADMINISTRATION"],
+    "type/update":["SYSTEM_ADMINISTRATION"]
   },
 
   getPermissions: function() {

@@ -1,0 +1,23 @@
+<div class="ui grid">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+        <div class="ui raised segment">
+            <div class="header announcementCard-header">
+                <span class="header cardsHeading">Org Types</span>
+                <a class="addeditprofile cursor-pointer" ng-click="setup.openAddTypeModal()">
+                    <i class="big plus icon"></i></a>
+            </div>
+            <div class="margin-top-10 ">
+                <span class="padded chip margin-top--5">
+                <a class="ui label margin-top--5" ng-repeat="orgType in  setup.orgTypes">
+                  {{orgType.name}}
+                 <i class="large write icon  margin-none padding-left-10" ng-click="setup.openUpdateModal(orgType)" ></i>
+              </a>
+          </span>
+                <div ng-include=" 'views/setup/addNewModal.html' "></div>
+                <div ng-include=" 'views/setup/updateOrgType.html' "></div>
+            </div>
+        </div>
+    </div>
+    <div class="one wide column"></div>
+</div>

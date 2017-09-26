@@ -90,7 +90,9 @@
 
             },
             "ORG_TYPE":{
-                "GET":"org/v1/type/list"
+                "GET":"org/v1/type/list",
+                "ADD":"org/v1/type/create",
+                "UPDATE":"org/v1/type/update"
             }
         },
         "FILTER": {
