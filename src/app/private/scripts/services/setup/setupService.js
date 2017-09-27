@@ -17,4 +17,8 @@ angular.module('playerApp')
             var url = config.URL.ORG_TYPE.UPDATE;
             return httpServiceJava.patch(url, req);
         };
+        this.getOrgTypes = function () {
+            var url = config.URL.ORG_TYPE.GET;
+            return httpServiceJava.get(url);
+        };
     }]);
