@@ -10,17 +10,31 @@
  */
 angular.module('playerApp')
     .controller('setupController', [
-
         '$rootScope',
-        'searchService',
         'setupService',
         'toasterService',
 
-        function ($rootScope, searchService, setupService, toasterService) {
+        function ($rootScope, setupService, toasterService) {
             var setup = this;
+            var errorMessage = $rootScope.errorMessages.SETUP;
+
             setup.getOrgTypes = function () {
-                searchService.getOrgTypeS().then(function (res) {
-                    setup.orgTypes = res;
+                setup.loader = toasterService.loader('', 'loading please wait');
+                setupService.getOrgTypes().then(function (res) {
+                    setup.loader.showLoader = false;
+                    try {
+                        if (res.responseCode === 'OK') {
+                            setup.orgTypes = angular.copy(res.result.response);
+                        } else if (res.responseCode === 'CLIENT_ERROR') {
+                            throw new Error(res.params.errmsg);
+                        } else throw new Error('');
+                    } catch (err) {
+                        if (err.message) {
+                            toasterService.error(err.message);
+                        } else {
+                            toasterService.error(errorMessage.GET_FAILURE);
+                        }
+                    }
                 });
             };
             setup.openUpdateModal = function (orgType) {
@@ -34,6 +48,7 @@ angular.module('playerApp')
                         return true;
                     }
                 }).modal('show');
+                $('#updateOrgType').modal('refresh');
             };
             setup.openAddTypeModal = function () {
                 $('#addOrgType').modal({
@@ -57,13 +72,16 @@ angular.module('playerApp')
                 setupService.addOrgType(req).then(function (res) {
                     try {
                         if (res.responseCode === 'OK') {
-                            toasterService.success(orgType + ' added successfully');
-                        } else throw new Error(res.params.errmsg);
+                            toasterService.success(orgType + errorMessage.ADD_SUCCESS);
+                            setup.getOrgTypes();
+                        } else if (res.responseCode === 'CLIENT_ERROR') {
+                            throw new Error(res.params.errmsg);
+                        } else throw new Error('');
                     } catch (err) {
                         if (err.message) {
                             toasterService.error(err.message);
                         } else {
-                            toasterService.error('Adding a new org type failed, please try again later');
+                            toasterService.error(errorMessage.ADD_FAILURE);
                         }
                     }
                 });
@@ -76,23 +94,18 @@ angular.module('playerApp')
                 setupService.updateOrgType(req).then(function (res) {
                     try {
                         if (res.responseCode === 'OK') {
-                            toasterService.success(orgType.name + ' updated successfully');
-                        } else throw new Error(res.params.errmsg);
+                            toasterService.success(orgType.name + errorMessage.UPDATE_SUCCESS);
+                            setup.getOrgTypes();
+                        } else if (res.responseCode === 'CLIENT_ERROR') {
+                            throw new Error(res.params.errmsg);
+                        } else throw new Error('');
                     } catch (err) {
                         if (err.message) {
                             toasterService.error(err.message);
                         } else {
-                            toasterService.error('Org  type update failed, please try again later');
+                            toasterService.error(errorMessage.UPDATE_FAILURE);
                         }
                     }
-                });
-            };
-            setup.getOrgs = function () {
-                searchService.getOrgTypes().then(function (res) {
-                    if (res.responseCode === 'OK') {
-                        searchService.setOrgTypes(res.result.response);
-                    }
-                    // else throw new Error('');
                 });
             };
             setup.getOrgTypes();
