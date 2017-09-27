@@ -76,6 +76,7 @@ const decorateRequestHeaders = function() {
       proxyReqOpts.headers['X-Channel-Id'] = channel;
     }
     proxyReqOpts.headers['X-App-Id'] = appId;
+    proxyReqOpts.headers['X-Authenticated-User-Token'] = srcReq.kauth.grant.access_token.token;
     proxyReqOpts.headers.Authorization = 'Bearer ' + sunbird_api_auth_token;
     proxyReqOpts.rejectUnauthorized = false;
     return proxyReqOpts;
