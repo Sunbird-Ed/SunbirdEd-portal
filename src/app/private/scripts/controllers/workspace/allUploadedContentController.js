@@ -85,23 +85,12 @@ angular.module('playerApp')
                 });
             };
 
-            allUploadedContent.editContent = function (item) {
+            allUploadedContent.openContentEditor = function (item) {
                 workSpaceUtilsService.openContentEditor(item, $state.current.name);
             };
 
             allUploadedContent.initializeUIElement = function () {
                 $('#actionDropDown').dropdown();
-            };
-
-            $scope.addContentOnSelect = function (content, add) {
-                if (add) {
-                    allUploadedContent.selectedContentItem.push(content);
-                } else {
-                    allUploadedContent.selectedContentItem = allUploadedContent.selectedContentItem
-            .filter(function (data) {
-                return data.identifier !== content.identifier;
-            });
-                }
             };
 
             allUploadedContent.openRemoveContentModel = function (ContentId) {
@@ -146,11 +135,11 @@ angular.module('playerApp')
                         }
                     } else {
                         allUploadedContent.loader.showLoader = false;
-                        toasterService.error(allUploadedContent.message.RETIRE_CONTENT.NOT_DELETE);
+                        toasterService.error(allUploadedContent.message.RETIRE_CONTENT.FAILED);
                     }
                 }).catch(function () {
                     allUploadedContent.loader.showLoader = false;
-                    toasterService.error(allUploadedContent.message.RETIRE_CONTENT.NOT_DELETE);
+                    toasterService.error(allUploadedContent.message.RETIRE_CONTENT.FAILED);
                 });
             };
 

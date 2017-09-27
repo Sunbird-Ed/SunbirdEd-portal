@@ -142,11 +142,11 @@ angular.module('playerApp')
                     }
                 } else {
                     publishedContent.loader.showLoader = false;
-                    toasterService.error(publishedContent.message.RETIRE_CONTENT.NOT_DELETE);
+                    toasterService.error(publishedContent.message.RETIRE_CONTENT.FAILED);
                 }
             }).catch(function () {
                 publishedContent.loader.showLoader = false;
-                toasterService.error(publishedContent.message.RETIRE_CONTENT.NOT_DELETE);
+                toasterService.error(publishedContent.message.RETIRE_CONTENT.FAILED);
             });
         };
 
