@@ -351,6 +351,13 @@
             "GET_INFO": {
                 "FAILED": "Fetching tenant details failed, please try again later..."
             }
+        },
+        "SETUP":{
+            "ADD_SUCCESS":" added successfully",
+            "ADD_FAILURE":"Adding a new org type failed, please try again later",
+            "GET_FAILURE":"Fetching org type failed, please try again later",
+            "UPDATE_FAILURE":"Org  type update failed, please try again later",
+            "UPDATE_SUCCESS":"  updated successfully"
         }
     }
 }
