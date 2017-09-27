@@ -483,19 +483,19 @@ angular.module('playerApp') // add those all values
                 }
                 switch (mimeType) {
                 case config.MIME_TYPE.pdf:
-                    return '/images/pdf.png';
+                    return '/common/images/pdf.png';
                 case config.MIME_TYPE.mp4:
-                    return '/images/mp4.png';
+                    return '/common/images/mp4.png';
                 case config.MIME_TYPE.webm:
-                    return '/images/mp4.png';
+                    return '/common/images/mp4.png';
                 case config.MIME_TYPE.pYoutube:
-                    return '/images/youtubeFileIcon.jpg';
+                    return '/common/images/youtubeFileIcon.jpg';
                 case config.MIME_TYPE.youtube:
-                    return '/images/youtubeFileIcon.jpg';
+                    return '/common/images/youtubeFileIcon.jpg';
                 case config.MIME_TYPE.h5p || config.MIME_TYPE.ePub:
-                    return '/images/zipFileIcon.png';
+                    return '/common/images/zipFileIcon.png';
                 default:
-                    return '/images/zipFileIcon.png';
+                    return '/common/images/zipFileIcon.png';
                 }
             };
 
