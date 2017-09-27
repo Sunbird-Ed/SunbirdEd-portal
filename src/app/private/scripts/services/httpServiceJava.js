@@ -19,7 +19,6 @@ angular.module('playerApp')
                     'X-Device-ID': 'X-Device-ID',
                     'X-msgid': uuid4.generate(),
                     ts: $filter('date')(new Date(), 'yyyy-MM-dd HH:mm:ss:sssZ'),
-                    'X-Authenticated-Userid': $rootScope.userId,
                     'X-Source': 'web',
                     'X-Org-code': 'AP'
                 };
@@ -85,7 +84,6 @@ angular.module('playerApp')
                     'X-Device-ID': 'X-Device-ID',
                     'X-msgid': uuid4.generate(),
                     ts: $filter('date')(new Date(), 'yyyy-MM-dd HH:mm:ss:sssZ'),
-                    'X-Authenticated-Userid': $rootScope.userId,
                     'X-Source': 'web',
                     'X-Org-code': 'AP'
                 };
