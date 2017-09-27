@@ -964,7 +964,7 @@ div:focus {
 }
 .slick-prev:before {
   left: -20px !important;
-  content: url(../images/Backword.png) !important;
+  content: url(/common/images/Backword.png) !important;
   font-family: 'slick';
   font-size: 20px;
   line-height: 1;
@@ -974,7 +974,7 @@ div:focus {
   -moz-osx-font-smoothing: grayscale;
 }
 .slick-next:before {
-  content: url(../images/Forward.png) !important;
+  content: url(/common/images/Forward.png) !important;
   font-family: 'slick';
   font-size: 20px;
   line-height: 1;

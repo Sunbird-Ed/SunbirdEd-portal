@@ -19,7 +19,7 @@
                         <div class="two wide column ">
                             <div class="ui card float right">
                                 <div class="ui fluid image">
-                                    <img ng-src="../images/sunbird_logo.png">
+                                    <img ng-src="/common/images/default.png">
                                 </div>
                             </div>
                         </div>
@@ -28,7 +28,7 @@
                                 <div class="eight wide column batch-des">
                                     <label>DESCRIPTION OF BATCH</label>
                                     <div class="des-content" ng-if="!batch.readMore">
-                                        <p >
+                                        <p>
                                             {{ batch.batchInfo.description | limitTo: 200 }}&nbsp;
                                             <span class="ui cardsKnowMore mouse-pointer" ng-if="batch.batchInfo.description.length > 200 && batch.readMore === false" ng-click="batch.readMore = !batch.readMore;">Read More ...</span>
                                         </p>
@@ -54,7 +54,7 @@
                                 </div>
                                 <div class="ui very relaxed list padding-top-10 batch-list-items">
                                     <div class="item" ng-repeat='user in batch.batchInfo.userList'>
-                                        <img class="ui avatar  image" ng-src="{{user.thumbnail || 'images/user_logo.png'}}">
+                                        <img class="ui avatar  image" ng-src="{{user.thumbnail || '/common/images/user_logo.png'}}">
                                         <div class="content padding-top-10">
                                             <div class="header">{{user.firstName}} {{user.lastName}}</div>
                                             <!-- National School for children, Pune -->
