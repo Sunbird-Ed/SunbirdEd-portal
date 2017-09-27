@@ -97,7 +97,7 @@
                                     <div class="two wide column "></div>
                                     <div class="two wide column center aligned" ng-if="toc.showNoteInLecture">
                                         <h2 class="ui center aligned icon tiny header toc-note">
-                                            <add-note shownoteinlecture="true" visibility="toc.showNoteInLecture" courseid="toc.courseParams.courseId" contentid="contentPlayer.contentData.identifier"></add-note>
+                                            <add-note shownoteinlecture="true" visibility="toc.showNoteInLecture" courseid="toc.courseId" contentid="contentPlayer.contentData.identifier"></add-note>
                                         </h2>
                                     </div>
                                     <div class="two wide column "></div>
@@ -121,7 +121,7 @@
                                 <course-discussions showaskquestion="false"></course-discussions>
                             </div>
                             <div class="four wide column toc-note-content">
-                                <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false" courseid="toc.courseParams.courseId" contentid="contentPlayer.contentData.identifier"></note-card>
+                                <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false" courseid="toc.courseId" contentid="contentPlayer.contentData.identifier"></note-card>
                             </div>
                         </div>
                     </div>
