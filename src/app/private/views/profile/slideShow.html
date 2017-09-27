@@ -1,4 +1,3 @@
-
 <!--form validation example
 
 https://semantic-ui.com/behaviors/form.html#/usage -->
@@ -24,7 +23,7 @@ https://semantic-ui.com/behaviors/form.html#/usage -->
     <div class="ten wide column">
         <div class="ui grid">
             <div class="two wide column">
-                <img class="ui small left floated image" src="/images/wireframe/text-image.png">
+                <img class="ui small left floated image" ng-src="/images/wireframe/text-image.png">
             </div>
             <div class="ten wide column">
                 <form class="ui form">
@@ -226,153 +225,146 @@ https://semantic-ui.com/behaviors/form.html#/usage -->
 
 
 
- <!-- date picker example-->
+    <!-- date picker example-->
 
 
- <!--bower install --save semantic-ui-calendar -->
+    <!--bower install --save semantic-ui-calendar -->
 
 
 
-  <div class="ui container">
-  <h1>Calendar examples</h1>
-  
+    <div class="ui container">
+        <h1>Calendar examples</h1>
 
-  <br/>
-    
-  <h3>Range</h3>
-  <div class="ui form">
-    <div class="two fields">
-      <div class="field">
-        <label>Start date</label>
-        <div class="ui calendar" id="rangestart">
-          <div class="ui input left icon">
-            <i class="calendar icon"></i>
-            <input type="text" placeholder="Start">
-          </div>
+
+        <br/>
+
+        <h3>Range</h3>
+        <div class="ui form">
+            <div class="two fields">
+                <div class="field">
+                    <label>Start date</label>
+                    <div class="ui calendar" id="rangestart">
+                        <div class="ui input left icon">
+                            <i class="calendar icon"></i>
+                            <input type="text" placeholder="Start">
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>End date</label>
+                    <div class="ui calendar" id="rangeend">
+                        <div class="ui input left icon">
+                            <i class="calendar icon"></i>
+                            <input type="text" placeholder="End">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="field">
-        <label>End date</label>
-        <div class="ui calendar" id="rangeend">
-          <div class="ui input left icon">
-            <i class="calendar icon"></i>
-            <input type="text" placeholder="End">
-          </div>
+        <br/>
+
+
+
+
+
+        <h3>Month and year</h3>
+        <div class="ui calendar" id="example7">
+            <div class="ui input left icon">
+                <i class="time icon"></i>
+                <input type="text" placeholder="Time">
+            </div>
         </div>
-      </div>
+        <br/>
+
+        <h3>Year only</h3>
+        <div class="ui calendar" id="example8">
+            <div class="ui input left icon">
+                <i class="time icon"></i>
+                <input type="text" placeholder="Time">
+            </div>
+        </div>
+        <br/>
+
+        <h3>Custom format</h3>
+        <div class="ui calendar" id="example13">
+            <div class="ui input">
+                <input type="text" placeholder="Date">
+            </div>
+        </div>
+        <br/>
+
+
+
     </div>
-  </div>
-  <br/>
 
-    
+    <script>
+        $('#rangestart').calendar({
+            type: 'date',
+            endCalendar: $('#rangeend'),
+            formatter: {
+                date: function(date, settings) {
+                    if (!date) return '';
+                    var month = date.getMonth() + 1;
+                    var year = date.getFullYear();
+                    return month + '/' + year;
+                }
+            }
+        });
+        $('#rangeend').calendar({
+            type: 'date',
+            startCalendar: $('#rangestart'),
+            formatter: {
+                date: function(date, settings) {
+                    if (!date) return '';
+                    var month = date.getMonth() + 1;
+                    var year = date.getFullYear();
+                    return month + '/' + year;
+                }
+            }
+        });
+
+        $('#example7').calendar({
+            type: 'month',
+            formatter: {
+                date: function(date, settings) {
+                    if (!date) return '';
+                    var month = date.getMonth() + 1;
+                    var year = date.getFullYear();
+                    return month + '/' + year;
+                }
+            }
+        });
+        $('#example8').calendar({
+            type: 'year'
+        });
+    </script>
 
 
-    
-  <h3>Month and year</h3>
-  <div class="ui calendar" id="example7">
-    <div class="ui input left icon">
-      <i class="time icon"></i>
-      <input type="text" placeholder="Time">
+
+
+
+    <!-- radio button component -->
+
+
+    <div class="inline fields">
+        <label for="address">Select your Address</label>
+        <div class="field">
+            <div class="ui radio checkbox">
+                <input type="radio" name="address" checked="" tabindex="0" class="hidden">
+                <label>pernament</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui radio checkbox">
+                <input type="radio" name="address" tabindex="0" class="hidden">
+                <label>pernament 1</label>
+            </div>
+        </div>
     </div>
-  </div>
-  <br/>
-    
-  <h3>Year only</h3>
-  <div class="ui calendar" id="example8">
-    <div class="ui input left icon">
-      <i class="time icon"></i>
-      <input type="text" placeholder="Time">
-    </div>
-  </div>
-  <br/>
-  
- <h3>Custom format</h3>
-  <div class="ui calendar" id="example13">
-    <div class="ui input">
-      <input type="text" placeholder="Date">
-    </div>
-  </div>
-  <br/>
-  
-
-    
-  </div>
-
-<script>
-  $('#rangestart').calendar({
-  type: 'date',
-  endCalendar: $('#rangeend'),
-  formatter: {
-    date: function (date, settings) {
-      if (!date) return '';
-      var month = date.getMonth() + 1;
-      var year = date.getFullYear();
-      return  month + '/' + year;
-    }
-  }
-});
-$('#rangeend').calendar({
-  type: 'date',
-  startCalendar: $('#rangestart'),
-    formatter: {
-    date: function (date, settings) {
-      if (!date) return '';
-      var month = date.getMonth() + 1;
-      var year = date.getFullYear();
-      return  month + '/' + year;
-    }
-  }
-});
-
-$('#example7').calendar({
-  type: 'month',
-    formatter: {
-    date: function (date, settings) {
-      if (!date) return '';
-      var month = date.getMonth() + 1;
-      var year = date.getFullYear();
-      return  month + '/' + year;
-    }
-  }
-});
-$('#example8').calendar({
-  type: 'year'
-});
-
-</script>
 
 
-
-
-
-<!-- radio button component -->
-
-
- <div class="inline fields">
-    <label for="address">Select your Address</label>
-    <div class="field">
-      <div class="ui radio checkbox">
-        <input type="radio" name="address" checked="" tabindex="0" class="hidden">
-        <label>pernament</label>
-      </div>
-    </div>
-    <div class="field">
-      <div class="ui radio checkbox">
-        <input type="radio" name="address" tabindex="0" class="hidden">
-        <label>pernament 1</label>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- radio button component initialization -->
-<script>
-	 $('.ui.radio.checkbox')
-	  .checkbox()
-	;
-</script>
-
-
-
-
-
+    <!-- radio button component initialization -->
+    <script>
+        $('.ui.radio.checkbox')
+            .checkbox();
+    </script>

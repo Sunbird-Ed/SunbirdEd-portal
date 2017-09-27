@@ -22,7 +22,7 @@
               ng-if="!user.userBadgeS.length && user.status===1 && user.isEditableProfile" 
               ng-hide="user.hideBadge"
               sb-permissions permission-only="SYSTEM_ADMINISTRATION,ORG_ADMIN">
-                <img class="ui mini image badgeIconAlignment" src="/common/images/badgeblue.png"
+                <img class="ui mini image badgeIconAlignment" ng-src="/common/images/badgeblue.png"
                 ng-click="admin.assignBadgeModal(user.identifier);">
             </a> 
             <!-- organization Name -->
