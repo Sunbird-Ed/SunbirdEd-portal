@@ -1,12 +1,12 @@
 /**
- * name: noteListController
+ * name: noteCardController
  * author: Anuj Gupta
  * Date: 23-09-2017
  */
 
 'use strict';
 
-describe('Controller: NoteListCtrl', function() {
+describe('Controller: NoteCardCtrl', function() {
     // load the controller's module
     beforeEach(module('playerApp'));
 
@@ -170,11 +170,11 @@ describe('Controller: NoteListCtrl', function() {
     var noteService,
         scope,
         rootScope,
-        noteList,
+        noteCard,
         $q,
         deferred,
         timeout,
-        errorMessage;
+        stateParams;
 
     beforeEach(inject(function($rootScope, $controller) {
         $controller('AppCtrl', {
@@ -191,11 +191,14 @@ describe('Controller: NoteListCtrl', function() {
         $q = _$q_;
         timeout = _$timeout_;
         deferred = _$q_.defer();
-        noteList = $controller('NoteListCtrl', {
+        stateParams = { contentId: '12123123124324', courseId : '12123123124324' };
+
+        rootScope.userId = "rwerwerwerw";
+        noteCard = $controller('NoteCardCtrl', {
             $rootScope: rootScope,
             $scope: scope,
             noteService: noteService,
-            courseId: "53453453"
+            $stateParams: stateParams
         });
     }));
 
@@ -209,35 +212,93 @@ describe('Controller: NoteListCtrl', function() {
         it('failed due to invalid request', function(done) {
             spyOn(noteService, 'search').and.returnValue(deferred.promise);
             deferred.resolve(userNotesFailed);
-            spyOn(noteList, 'getAllNotes').and.callThrough();
-            noteList.getAllNotes();
+            spyOn(scope, 'updateNoteMetaData').and.callThrough();
+            scope.updateNoteMetaData('12123123124324');
             scope.$apply();
             var response = noteService.search().$$state.value;
             expect(response).not.toBe(undefined);
             done();
         });
 
-        it('failed due to external error', function() {
+        it('failed due to external error', function(done) {
             spyOn(noteService, 'search').and.returnValue(deferred.promise);
             deferred.reject({});
-            spyOn(noteList, 'getAllNotes').and.callThrough();
-            noteList.getAllNotes();
+            spyOn(scope, 'updateNoteMetaData').and.callThrough();
+            scope.updateNoteMetaData('12123123124324');
             scope.$apply();
             var response = noteService.search().$$state.value;
             expect(response).not.toBe(undefined);
+            done();
         });
 
-        it('success', function() {
+        it('success', function(done) {
             spyOn(noteService, 'search').and.returnValue(deferred.promise);
             deferred.resolve(userNotesSuccess);
-            spyOn(noteList, 'getAllNotes').and.callThrough();
-            noteList.getAllNotes();
+            spyOn(scope, 'updateNoteMetaData').and.callThrough();
+            scope.updateNoteMetaData('12123123124324');
             scope.$apply();
             var response = noteService.search().$$state.value;
             expect(response).not.toBe(undefined);
-            noteList.noteList = response.result.response.note;
-            expect(noteList.noteList).not.toBe(undefined);
+            done();
         });
+    });
+
+    it("Should update content id", function() {
+        var contentId  = '12123123124324';
+        spyOn(scope, 'updateContentId').and.callThrough();
+        scope.updateContentId(contentId);
+        expect(noteCard.contentId).toBe(contentId);
+    });
+
+    it("Should open and close add image model", function() {
+        spyOn(noteCard, 'insertImage').and.callThrough();
+        noteCard.insertImage();
+        spyOn(noteCard, 'openAddImageModal').and.callThrough();
+        noteCard.openAddImageModal(function(err, res) {
+            if(err) {
+
+            }
+        } );
+        timeout.flush(10);
+        noteCard.showCreateNote = true;
+        spyOn(noteCard, 'closeAddImageModal').and.callThrough();
+        noteCard.closeAddImageModal(true);
+    });
+
+    it("Should close model with update note", function() {
+        noteCard.showCreateNote = false;
+        noteCard.showUpdateNote = true;
+        spyOn(noteCard, 'closeAddImageModal').and.callThrough();
+        noteCard.closeAddImageModal(false);
+
+        // spyOn(noteCard, 'insertImage').and.returnValue(deferred.promise);
+        // deferred.resolve(userNotesSuccess);
+    });
+
+    it('Should call view all notes with course and content', function(done) {
+        spyOn(noteCard, 'viewAllNotes').and.callThrough();
+        noteCard.viewAllNotes();
+        done();
+    });
+
+    it('Should call view all notes with course', function(done) {
+        noteCard.contentId = '';
+        spyOn(noteCard, 'viewAllNotes').and.callThrough();
+        noteCard.viewAllNotes();
+        done();
+    });
+
+    it('Should call view all notes with content', function(done) {
+        noteCard.courseId = '';
+        spyOn(noteCard, 'viewAllNotes').and.callThrough();
+        noteCard.viewAllNotes();
+        done();
+    });
+
+    it("Should open create model", function() {
+        spyOn(noteCard, 'showAddNoteModal').and.callThrough();
+        noteCard.showAddNoteModal();
+        timeout.flush(10);
     });
 
     describe('Create note', function() {
@@ -265,12 +326,10 @@ describe('Controller: NoteListCtrl', function() {
 
             spyOn(noteService, 'create').and.returnValue(deferred.promise);
             deferred.resolve(createNoteSuccess);
-            spyOn(noteList, 'createNote').and.callThrough();
-            noteList.createNote(note);
+            spyOn(noteCard, 'createNote').and.callThrough();
+            noteCard.createNote(note);
             note.createdBy = new Date();
             note.updatedBy = new Date();
-            spyOn(noteList, 'showNoteList').and.callThrough();
-            noteList.showNoteList(note);
             scope.$apply();
             var response = noteService.create().$$state.value;
             expect(response.result).not.toBe(undefined);
@@ -278,14 +337,15 @@ describe('Controller: NoteListCtrl', function() {
 
         it('failed due to missing required field', function() {
             var note = {
-                title: 'test title',
-                note: 'test note'
+                note: "Test",
+                userId: "4234234234",
+                title: "Test",
             };
 
             spyOn(noteService, 'create').and.returnValue(deferred.promise);
             deferred.resolve(createNoteFailed);
-            spyOn(noteList, 'createNote').and.callThrough();
-            noteList.createNote(note);
+            spyOn(noteCard, 'createNote').and.callThrough();
+            noteCard.createNote(note);
             timeout.flush(2000);
             scope.$apply();
             var response = noteService.create().$$state.value;
@@ -299,56 +359,33 @@ describe('Controller: NoteListCtrl', function() {
             };
             spyOn(noteService, 'create').and.returnValue(deferred.promise);
             deferred.reject();
-            spyOn(noteList, 'createNote').and.callThrough();
-            noteList.createNote(note);
+            spyOn(noteCard, 'createNote').and.callThrough();
+            noteCard.createNote(note);
             timeout.flush(2000);
             scope.$apply();
+        });
+
+        it('failed due to invalid request', function(done) {
+            spyOn(noteCard, 'hideAddNoteModal').and.callThrough();
+            noteCard.hideAddNoteModal();
+            timeout.flush(0);
+            done();
+        });
+
+        it("Should clear and close add model", function() {
+            noteCard.add.metaData = {note: "note", title: "title"};
+            spyOn(noteCard, 'clearAddNoteData').and.callThrough();
+            noteCard.clearAddNoteData();
+            spyOn(noteCard, 'closeAddNoteModal').and.callThrough();
+            noteCard.closeAddNoteModal();
+            timeout.flush(0);
         });
     });
 
-    describe('Remove note', function() {
-        it('Should open remove note modal', function() {
-            spyOn(noteList, 'openRemoveNoteModel').and.callThrough();
-            noteList.openRemoveNoteModel('01233872295157760017');
-            timeout.flush(10);
-            scope.$apply();
-        });
-
-        it('Should called remove service', function() {
-            spyOn(noteService, 'remove').and.callThrough();
-            noteService.remove('01233872295157760017');
-            expect(noteService.remove).toBeDefined();
-        });
-
-        it('Should remove note', function() {
-            spyOn(noteService, 'remove').and.returnValue(deferred.promise);
-            deferred.resolve(removeNoteSuccess);
-            spyOn(noteList, 'removeNote').and.callThrough();
-            noteList.removeNote('01233872295157760017');
-            scope.$apply();
-            var response = noteService.remove().$$state.value;
-            expect(response).not.toBe(undefined);
-        });
-
-        it('Should not remove due to invalid node id', function() {
-            spyOn(noteService, 'remove').and.returnValue(deferred.promise);
-            deferred.resolve(removeNoteFailed);
-            spyOn(noteList, 'removeNote').and.callThrough();
-            noteList.removeNote('0123387229515776001');
-            timeout.flush(2000);
-            scope.$apply();
-            var response = noteService.remove().$$state.value;
-            expect(response).not.toBe(undefined);
-        });
-
-        it('Should failed due to external error', function() {
-            spyOn(noteService, 'create').and.returnValue(deferred.promise);
-            deferred.reject();
-            spyOn(noteList, 'removeNote').and.callThrough();
-            noteList.removeNote();
-            timeout.flush(2000);
-            scope.$apply();
-        });
+    it("Should open update model", function() {
+        spyOn(noteCard, 'showUpdateNoteModal').and.callThrough();
+        noteCard.showUpdateNoteModal();
+        timeout.flush(10);
     });
 
     describe('Update note', function() {
@@ -367,8 +404,8 @@ describe('Controller: NoteListCtrl', function() {
         it('failed due to invalid id', function() {
             spyOn(noteService, 'update').and.returnValue(deferred.promise);
             deferred.resolve(updateNoteFailed);
-            spyOn(noteList, 'updateNote').and.callThrough();
-            noteList.updateNote('592ab407693f230bbd2e287b');
+            spyOn(noteCard, 'updateNote').and.callThrough();
+            noteCard.updateNote(requestData);
             timeout.flush(2000);
             scope.$apply();
             var response = noteService.update().$$state.value;
@@ -378,8 +415,8 @@ describe('Controller: NoteListCtrl', function() {
         it('failed due to external error', function() {
             spyOn(noteService, 'update').and.returnValue(deferred.promise);
             deferred.reject();
-            spyOn(noteList, 'updateNote').and.callThrough();
-            noteList.updateNote(requestData);
+            spyOn(noteCard, 'updateNote').and.callThrough();
+            noteCard.updateNote(requestData);
             timeout.flush(2000);
             scope.$apply();
         });
@@ -387,77 +424,24 @@ describe('Controller: NoteListCtrl', function() {
         it('success', function() {
             spyOn(noteService, 'update').and.returnValue(deferred.promise);
             deferred.resolve(updateNoteSuccess);
-            spyOn(noteList, 'updateNote').and.callThrough();
-            noteList.updateNote(requestData);
+            spyOn(noteCard, 'updateNote').and.callThrough();
+            noteCard.updateNote(requestData);
             timeout.flush(2000);
             scope.$apply();
             var response = noteService.update().$$state.value;
             expect(response).not.toBe(undefined);
         });
-    });
 
-    describe("Close note list", function() {
-        it('with course id', function() {
-            spyOn(noteList, 'closeNoteList').and.callThrough();
-            noteList.closeNoteList();
-        });
-
-        it('with content id', function() {
-            spyOn(noteList, 'closeNoteList').and.callThrough();
-            noteList.closeNoteList({
-                contentId: "53534534",
-            });
-        });
-
-        it('with course id and content id', function() {
-            spyOn(noteList, 'closeNoteList').and.callThrough();
-            noteList.closeNoteList({
-                contentId: "53534534",
-                courseId: "53453453"
-            });
+        it("Should clear and close update model", function() {
+            noteCard.update.metaData = {note: "note", title: "title"};
+            spyOn(noteCard, 'clearUpdateNoteData').and.callThrough();
+            noteCard.clearUpdateNoteData();
+            spyOn(noteCard, 'closeUpdateNoteModal').and.callThrough();
+            noteCard.closeUpdateNoteModal();
+            timeout.flush(0);
         });
     });
 
-    it('Should called open remove note modal', function() {
-        spyOn(noteList, 'openRemoveNoteModel').and.callThrough();
-        noteList.openRemoveNoteModel();
-        timeout.flush(10);
-        expect(noteList.showRemoveNoteModel).toBe(true);
-    });
 
-    it('Should called open remove note modal', function() {
-        spyOn(noteList, 'hideRemoveNoteModel').and.callThrough();
-        noteList.hideRemoveNoteModel();
-        expect(noteList.showRemoveNoteModel).toBe(false);
-    });
-
-    it('Should called insert image', function() {
-        spyOn(noteList, 'insertImage').and.callThrough();
-        noteList.insertImage();
-    });
-
-    it('Should called update note data', function() {
-        spyOn(noteList, 'updateNoteData').and.callThrough();
-        noteList.updateNoteData();
-    });
-
-    it('Should called show note note', function() {
-        spyOn(noteList, 'showNoteList').and.callThrough();
-        noteList.showNoteList({}, 0);
-        scope.$apply();
-    });
-
-    it('Should called insert image', function() {
-        spyOn(noteList, 'openAddImageModal').and.callThrough();
-        noteList.openAddImageModal();
-        timeout.flush(10);
-        expect(noteList.showAddImageModal).toBe(true);
-    });
-
-    it('Should called close image model', function() {
-        spyOn(noteList, 'closeAddImageModal').and.callThrough();
-        noteList.closeAddImageModal(true);
-        timeout.flush(10);
-        // expect(noteList.closeAddImageModal).toBe(true);
-    });
+    
 });
