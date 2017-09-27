@@ -231,7 +231,7 @@ angular.module('playerApp')
                     var curCourse = _.find(
                             $rootScope.enrolledCourses, { courseId: toc.courseId }
                     );
-                    if (curCourse) {
+                    if (curCourse && toc.courseContents.length > 0) {
                         curCourse.lastReadContentId =
                                 toc.courseContents[toc.itemIndex].identifier;
                         $rootScope.enrolledCourseIds[toc.courseId]
