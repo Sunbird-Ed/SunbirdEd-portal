@@ -186,17 +186,15 @@ angular.module('loginApp')
             toc.getContentIcon = function (contentMimeType, stsClass) {
                 stsClass = stsClass || '';
                 var contentIcons = {
-                    'application/pdf': '/images/pdf' + stsClass + '.png',
-                    'video/mp4': '/images/video' + stsClass + '.png',
-                    'video/x-youtube': '/images/video' + stsClass + '.png',
-                    'video/youtube': '/images/video' + stsClass + '.png',
-                    'application/vnd.ekstep.html-archive': '/images/app' + stsClass + '.png',
-                    'application/vnd.ekstep.ecml-archive': '/images/app' + stsClass + '.png',
-                    'application/epub': '/images/app' + stsClass + '.png',
-                    'application/vnd.ekstep.h5p-archive': '/images/video' + stsClass + '.png',
-
-                    'application/vnd.ekstep.content-collection': 'large folder'
-               + ' open outline icon grey icon'
+                    'application/pdf': '/common/images/pdf' + stsClass + '.png',
+                    'video/mp4': '/common/images/video' + stsClass + '.png',
+                    'video/x-youtube': '/common/images/video' + stsClass + '.png',
+                    'video/youtube': '/common/images/video' + stsClass + '.png',
+                    'application/vnd.ekstep.html-archive': '/common/images/app' + stsClass + '.png',
+                    'application/vnd.ekstep.ecml-archive': '/common/images/app' + stsClass + '.png',
+                    'application/epub': '/common/images/app' + stsClass + '.png',
+                    'application/vnd.ekstep.h5p-archive': '/common/images/video' + stsClass + '.png',
+                    'application/vnd.ekstep.content-collection': '/common/images/folder.png'
 
                 };
                 return contentIcons[contentMimeType];
