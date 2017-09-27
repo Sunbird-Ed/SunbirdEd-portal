@@ -233,7 +233,7 @@ angular.module('playerApp')
                     );
                     if (curCourse) {
                         curCourse.lastReadContentId =
-                                toc.playList[toc.itemIndex];
+                                toc.courseContents[toc.itemIndex].identifier;
                         $rootScope.enrolledCourseIds[toc.courseId]
                                 .lastReadContentId = curCourse.lastReadContentId;
                         curCourse.progress = toc.courseProgress;
