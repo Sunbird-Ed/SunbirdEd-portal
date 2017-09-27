@@ -1,7 +1,10 @@
 <div class="ui grid">
     <div class="one wide column"></div>
     <div class="ten wide column">
-        <div class="ui raised segment">
+         <div class="ui raised segment " ng-if="setup.loader.showLoader">
+               <app-loader data="{{setup.loader}}"></app-loader>
+         </div>
+        <div class="ui raised segment" ng-if="!setup.loader.showLoader">
             <div class="header announcementCard-header">
                 <span class="header cardsHeading">Org Types</span>
                 <a class="addeditprofile cursor-pointer" ng-click="setup.openAddTypeModal()">
