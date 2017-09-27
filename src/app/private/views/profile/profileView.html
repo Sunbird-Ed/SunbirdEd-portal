@@ -83,13 +83,15 @@
                             </div>
                         </div>
                         <div class="item ">
-                            <div  class="ui tiny progress course-progress progressBar-margin blue" data-percent="{{$root.profileCompleteness}}" apply-script>
+                            <div class="ui tiny progress course-progress progressBar-margin blue" data-percent="{{$root.profileCompleteness}}" apply-script>
                                 <div class="bar"></div>
                             </div>
                         </div>
                         <div class="item" ng-repeat="field in $root.profileMissingFields | limitTo:3">
                             <div class="iniformationcontent content">
-                                <a ng-click="profileCtrl.updateAction(field)"><h5 class="ui blue header profileUpdateAddDetails">+ Add {{$root.labels.PROFILE.COMPLETENESS[field] || field}}</h5></a>
+                                <a ng-click="profileCtrl.updateAction(field)">
+                                    <h5 class="ui blue header profileUpdateAddDetails">+ Add {{$root.labels.PROFILE.COMPLETENESS[field] || field}}</h5>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -101,7 +103,7 @@
                     <div class="profileitems ui relaxed divided items ">
                         <div class="item ">
                             <div class="ui avatar image ">
-                                <img src="/images/school.png ">
+                                <img src="/common/images/school.png ">
                             </div>
                             <div class="content ">
                                 <a class="header ">Maharashtra Teachers Association</a>
@@ -112,7 +114,7 @@
                         </div>
                         <div class="item ">
                             <div class="ui avatar image ">
-                                <img src="/images/school.png ">
+                                <img src="/common/images/school.png ">
                             </div>
                             <div class="content ">
                                 <a class="header ">Maharashtra Chemistry Teachers Only</a>
@@ -123,7 +125,7 @@
                         </div>
                         <div class="item ">
                             <div class="ui avatar image ">
-                                <img src="/images/school.png ">
+                                <img src="/common/images/school.png ">
                             </div>
                             <div class="content ">
                                 <a class="header ">Maharashtra Chemistry Teachers Only</a>
@@ -143,7 +145,7 @@
                     <div class="profileitems ui relaxed divided items ">
                         <div class="item ">
                             <div class="ui avatar image ">
-                                <img src="/images/school.png ">
+                                <img src="/common/images/school.png ">
                             </div>
                             <div class="content ">
                                 <a class="header ">Organic Chemistry for Std VII</a>
@@ -154,7 +156,7 @@
                         </div>
                         <div class="item ">
                             <div class="ui avatar image ">
-                                <img src="/images/school.png ">
+                                <img src="/common/images/school.png ">
                             </div>
                             <div class="content ">
                                 <a class="header ">Organic Chemistry for Std VII</a>
@@ -165,7 +167,7 @@
                         </div>
                         <div class="item ">
                             <div class="ui avatar image ">
-                                <img src="/images/school.png ">
+                                <img src="/common/images/school.png ">
                             </div>
                             <div class="content ">
                                 <a class="header ">Organic Chemistry for Std VII</a>

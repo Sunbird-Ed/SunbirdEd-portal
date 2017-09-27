@@ -1,10 +1,10 @@
 <div class="ui link cards">
     <div class="sliderCards ui card margin-right-20 margin-top-15">
         <div class="image imageInCardsResponsive">
-            <div  ng-if="item.leafNodesCount && item.progress > 0" class="ui tiny progress course-progress progressBar-margin orange" data-value="{{item.progress}}" data-total="{{item.leafNodesCount}}" >
+            <div ng-if="item.leafNodesCount && item.progress > 0" class="ui tiny progress course-progress progressBar-margin orange" data-value="{{item.progress}}" data-total="{{item.leafNodesCount}}">
                 <div class="bar"></div>
             </div>
-            <img ng-src=" {{item.appIcon ? item.appIcon : '../images/sunbird_logo.png'}} ">
+            <img ng-src=" {{item.appIcon ? item.appIcon : '/common/images/default.png'}} ">
             <div class="cardImageText center aligned ">
                 <span class="sliderCardHeading text-cencapitalize">{{item.name||item.courseName}}</span>
             </div>
