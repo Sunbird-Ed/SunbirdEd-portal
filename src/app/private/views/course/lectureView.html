@@ -1,24 +1,27 @@
 <script type="text/ng-template" id="courseTree">
     {{ &nbsp; content.name }}
     <ul ng-if="content.children">
-    <li id="{{content.identifier}}" ng-repeat="content in content.children"  ng-class="{'cursor-pointerText':(toc.playContent == false && content.mimeType !== 'application/vnd.ekstep.content-collection')}"  data-icon="{{toc.getContentIcon(content.mimeType,toc.contentStatusList[content.identifier])}}"   ng-include="'courseTree'">
-    </li>
+        <li id="{{content.identifier}}" ng-repeat="content in content.children" ng-class="{'cursor-pointerText':(toc.playContent == false && content.mimeType !== 'application/vnd.ekstep.content-collection')}" data-icon="{{toc.getContentIcon(content.mimeType,toc.contentStatusList[content.identifier])}}"
+            ng-include="'courseTree'">
+        </li>
     </ul>
 </script>
-<div id="course-toc{{$index}}" class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100" ng-repeat="item in  toc.courseHierarchy.children track by $index"  ng-class="{'cursor-pointerText':item.children.length == 0 && item.mimeType == 'application/vnd.ekstep.content-collection'}" ng-init="$last && toc.initTocView()">
-    <div ng-if="item.mimeType == 'application/vnd.ekstep.content-collection'" class="courseAccordianHeading title title-padding-left accordian-left-text"  ng-click="toc.expandAccordion($event)">
-        <img src="{{toc.getContentIcon(item.mimeType)}}" class="ui mini floated image">
-          {{item.name}}
+<div id="course-toc{{$index}}" class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100" ng-repeat="item in  toc.courseHierarchy.children track by $index" ng-class="{'cursor-pointerText':item.children.length == 0 && item.mimeType == 'application/vnd.ekstep.content-collection'}"
+    ng-init="$last && toc.initTocView()">
+    <div ng-if="item.mimeType == 'application/vnd.ekstep.content-collection'" class="courseAccordianHeading title title-padding-left accordian-left-text" ng-click="toc.expandAccordion($event)">
+        <img ng-src="{{toc.getContentIcon(item.mimeType)}}" class="ui mini floated image"> {{item.name}}
         <i ng-if='item.children && item.children.length > 0' class="plus icon down-arrow-accordion"></i>
     </div>
-    <div ng-if="item.mimeType != 'application/vnd.ekstep.content-collection'" class="courseAccordianHeading title title-padding-left accordian-left-text" ng-class="{'cursor-pointerText':(toc.playContent == false && item.mimeType !== 'application/vnd.ekstep.content-collection')}" ng-click="toc.openContent(item.identifier)">
-        <img src="{{toc.getContentIcon(item.mimeType,toc.contentStatusList[item.identifier])}}">
-        <img  class="tocCourseStructureImg">  {{item.name}}
+    <div ng-if="item.mimeType != 'application/vnd.ekstep.content-collection'" class="courseAccordianHeading title title-padding-left accordian-left-text" ng-class="{'cursor-pointerText':(toc.playContent == false && item.mimeType !== 'application/vnd.ekstep.content-collection')}"
+        ng-click="toc.openContent(item.identifier)">
+        <img ng-src="{{toc.getContentIcon(item.mimeType,toc.contentStatusList[item.identifier])}}">
+        <img class="tocCourseStructureImg"> {{item.name}}
     </div>
     <div ng-if='item.children && item.children.length > 0' class="content">
         <div id="FT_{{$index}}" class="toc-tree-item fancy-tree-container">
             <ul id="treeData">
-                <li  ng-repeat="content in item.children" id="{{content.identifier}}" ng-class="{'cursor-pointerText':(toc.playContent == false && content.mimeType !== 'application/vnd.ekstep.content-collection')}"  data-icon="{{toc.getContentIcon(content.mimeType,toc.contentStatusList[content.identifier])}}"  ng-include="'courseTree'" >
+                <li ng-repeat="content in item.children" id="{{content.identifier}}" ng-class="{'cursor-pointerText':(toc.playContent == false && content.mimeType !== 'application/vnd.ekstep.content-collection')}" data-icon="{{toc.getContentIcon(content.mimeType,toc.contentStatusList[content.identifier])}}"
+                    ng-include="'courseTree'">
                 </li>
             </ul>
         </div>

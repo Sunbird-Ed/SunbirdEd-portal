@@ -43,7 +43,7 @@
                     </div>
                     <div class="profileitems contributionsListScroll ui relaxed divided items padding-right-20" id="custom-scroll">
                         <div class="item" ng-repeat="item in profileCtrl.contentList track by $index" ng-click="profileCtrl.openContentPlayer(item)">
-                            <img class="ui avatar image " src="{{profileCtrl.getContentLogo(item)}}">
+                            <img class="ui avatar image " ng-src="{{profileCtrl.getContentLogo(item)}}">
                             <div class="content ">
                                 <a class=" header ">{{item.name}}</a>
                                 <div class="metadata ">
@@ -103,7 +103,7 @@
                     <div class="profileitems ui relaxed divided items ">
                         <div class="item ">
                             <div class="ui avatar image ">
-                                <img src="/common/images/school.png ">
+                                <img ng-src="/common/images/school.png ">
                             </div>
                             <div class="content ">
                                 <a class="header ">Maharashtra Teachers Association</a>
@@ -114,7 +114,7 @@
                         </div>
                         <div class="item ">
                             <div class="ui avatar image ">
-                                <img src="/common/images/school.png ">
+                                <img ng-src="/common/images/school.png ">
                             </div>
                             <div class="content ">
                                 <a class="header ">Maharashtra Chemistry Teachers Only</a>
@@ -125,7 +125,7 @@
                         </div>
                         <div class="item ">
                             <div class="ui avatar image ">
-                                <img src="/common/images/school.png ">
+                                <img ng-src="/common/images/school.png ">
                             </div>
                             <div class="content ">
                                 <a class="header ">Maharashtra Chemistry Teachers Only</a>
@@ -145,7 +145,7 @@
                     <div class="profileitems ui relaxed divided items ">
                         <div class="item ">
                             <div class="ui avatar image ">
-                                <img src="/common/images/school.png ">
+                                <img ng-src="/common/images/school.png ">
                             </div>
                             <div class="content ">
                                 <a class="header ">Organic Chemistry for Std VII</a>
@@ -156,7 +156,7 @@
                         </div>
                         <div class="item ">
                             <div class="ui avatar image ">
-                                <img src="/common/images/school.png ">
+                                <img ng-src="/common/images/school.png ">
                             </div>
                             <div class="content ">
                                 <a class="header ">Organic Chemistry for Std VII</a>
@@ -167,7 +167,7 @@
                         </div>
                         <div class="item ">
                             <div class="ui avatar image ">
-                                <img src="/common/images/school.png ">
+                                <img ng-src="/common/images/school.png ">
                             </div>
                             <div class="content ">
                                 <a class="header ">Organic Chemistry for Std VII</a>

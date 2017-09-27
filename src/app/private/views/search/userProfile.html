@@ -18,7 +18,7 @@
                     <div class="ui grid">
                         <div class="two wide column padding-top-none">
                             <div class="userAvtarWrap field link ui small circular image header-image-profile">
-                                <img class="ui small circular image header-image-profile" src="{{publicProfile.user.avatar || '/common/images/user_logo.png'}}">
+                                <img class="ui small circular image header-image-profile" ng-src="{{publicProfile.user.avatar || '/common/images/user_logo.png'}}">
                             </div>
                         </div>
                         <div class="ten wide column profile-header-text padding-top-none">
@@ -70,7 +70,7 @@
                     </div>
                     <div class="profileitems ui relaxed divided items">
                         <div class="item" ng-repeat="address in publicProfile.user.address">
-                            <img class="ui avatar image" src="/common/images/location.png">
+                            <img class="ui avatar image" ng-src="/common/images/location.png">
                             <div class="content">
                                 <p class=" header">{{address.addType}}</p>
                                 <div class="description"> {{address.addressLine1}}<span ng-if="address.addressLine2"> , </span>{{address.addressLine2}}
@@ -92,7 +92,7 @@
                     </div>
                     <div class="profileitems ui relaxed divided items ">
                         <div class="item " ng-repeat="experience in publicProfile.user.jobProfile">
-                            <img class="ui avatar image" src="/common/images/businessman.png">
+                            <img class="ui avatar image" ng-src="/common/images/businessman.png">
                             <div class="content ">
                                 <a class=" header ">{{experience.jobName}}</a>
                                 <div class="description ">{{experience.role}}<span ng-if="experience.role">&nbsp;,&nbsp;</span>{{experience.orgName}}
@@ -116,7 +116,7 @@
                     <div class="profileitems ui relaxed divided items ">
                         <div class="item" ng-repeat="education in publicProfile.user.education">
 
-                            <img class="ui avatar image" src="/common/images/businessman.png">
+                            <img class="ui avatar image" ng-src="/common/images/businessman.png">
                             <div class="content">
                                 <a class=" header">{{education.degree}}</a>
                                 <div class="description"> {{education.yearOfPassing}}<span ng-if="education.percentage">,&nbsp</span>{{education.percentage}}
