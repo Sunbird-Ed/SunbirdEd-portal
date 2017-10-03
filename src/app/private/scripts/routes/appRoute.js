@@ -9,7 +9,8 @@
  * Main module of the application.
  */
 angular.module('playerApp')
-  .config(function ($stateProvider, $urlRouterProvider, $translateProvider, $provide) {
+  .config(function ($stateProvider, $urlRouterProvider, $translateProvider, $provide, $qProvider) {
+      $qProvider.errorOnUnhandledRejections(false); // To handle error rejection
       $provide.provider('setResourceBundle', function () {
           this.$get = function () {
               return function (language, resourceBundle) {
@@ -938,23 +939,35 @@ angular.module('playerApp')
             }
         })
         .state('MyActivity', {
-          url: '/course-creator-dashboard',
-          views: {
-              mainView: {
-                  //templateUrl: '/views/dashboard/course/courseConsumptionDashboard.html',
-                  templateUrl: 'views/dashboard/myactivity/myActivity.html',
-                  //controller: 'courseCreatorDashboardCtrl as courseDashboard'
-              }
-          },
-          onEnter: function ($stateParams, $rootScope, routeHelperService) {
-              $rootScope.profileActive = 'active';
-              $rootScope.isPlayerPage = false;
-              routeHelperService.loadRouteConfig('MyActivity', null);
-          },
-          onExit: function ($rootScope) {
-              $rootScope.profileActive = '';
-          }
-      });
+            url: '/course-creator-dashboard',
+            views: {
+                mainView: {
+                    templateUrl: '/views/dashboard/course/courseConsumptionDashboard.html',
+                    controller: 'courseCreatorDashboardCtrl as courseDashboard'
+                }
+            },
+            onEnter: function ($stateParams, $rootScope, routeHelperService) {
+                $rootScope.profileActive = 'active';
+                $rootScope.isPlayerPage = false;
+                routeHelperService.loadRouteConfig('MyActivity', null);
+            },
+            onExit: function ($rootScope) {
+                $rootScope.profileActive = '';
+            }
+        })
+        .state('Setup', {
+            url: '/setup',
+            views: {
+                mainView: {
+                    templateUrl: '/views/setup/setup.html',
+                    controller: 'setupController as setup'
+                }
+            },
+            onEnter: function (routeHelperService) {
+                routeHelperService.loadRouteConfig('Setup', null);
+            }
+
+        });
   })
   .run(function ($urlRouter, $http, $state, permissionsService, $rootScope, $location, config,
       toasterService, routeHelperService, userService) {

@@ -217,6 +217,11 @@
             }
         },
         "PROFILE": {
+            "UPDATE_REMINDER": {
+                "TITLE": "Strengthen your profile",
+                "COMPLETENESS_TITLE":"Profile Completeness",
+                "DEFAULT_MESSAGE": "Add more details now"
+            },
             "FORM_VALIDATION": {
                 "ADDRESS": {
                     "address_type": "Select address type",
@@ -246,46 +251,46 @@
                     "editingProfile": "Updating profile ...",
                     "profileEdited": "Profile successfully updated"
                 },
-                "UPDATE":{ 
-                    "SUCCESS":{
-                        "avatar":"Profile Image updated successfully",
-                        "description":"Description updated successfully",
-                        "education":"Education updated successfully",
-                        "experience":"Experience updated successfully",
-                        "basicInfo":"Basic information  updated successfully",
-                        "address":"Address updated successfully"
+                "UPDATE": {
+                    "SUCCESS": {
+                        "avatar": "Profile Image updated successfully",
+                        "description": "Description updated successfully",
+                        "education": "Education updated successfully",
+                        "experience": "Experience updated successfully",
+                        "basicInfo": "Basic information  updated successfully",
+                        "address": "Address updated successfully"
                     },
-                    "FAILURE":{
-                        "avatar":"Profile image  update failed. Please try again later...",
-                        "description":"Description update failed. Please try again later...",
-                        "education":"Education update failed. Please try again later...",
-                        "experience":"Experience update failed. Please try again later...",
-                        "basicInfo":"Basic information update failed. Please try again later...",
-                        "address":"Address update failed. Please try again later..."
-                    }
-            },
-                "DELETE":{
-                    "SUCCESS":{
-                        "education":"Education deleted successfully",
-                        "experience":"Experience deleted successfully",
-                        "address":"Address deleted successfully"
-                    },
-                    "FAILURE":{
-                        "education":"Education delete failed. Please try again later...",
-                        "experience":"Experience delete failed. Please try again later...",
-                        "address":"Address delete failed. Please try again later..."
+                    "FAILURE": {
+                        "avatar": "Profile image  update failed. Please try again later...",
+                        "description": "Description update failed. Please try again later...",
+                        "education": "Education update failed. Please try again later...",
+                        "experience": "Experience update failed. Please try again later...",
+                        "basicInfo": "Basic information update failed. Please try again later...",
+                        "address": "Address update failed. Please try again later..."
                     }
                 },
-                "ADD":{
-                    "SUCCESS":{
-                        "education":"New education added successfully",
-                        "experience":"New experience added successfully",
-                        "address":"New address added successfully"
+                "DELETE": {
+                    "SUCCESS": {
+                        "education": "Education deleted successfully",
+                        "experience": "Experience deleted successfully",
+                        "address": "Address deleted successfully"
                     },
-                    "FAILURE":{
-                        "education":"Adding new education failed. Please try again later...",
-                        "experience":"Adding new experience failed. Please try again later...",
-                        "address":"Adding new address failed. Please try again later..."
+                    "FAILURE": {
+                        "education": "Education delete failed. Please try again later...",
+                        "experience": "Experience delete failed. Please try again later...",
+                        "address": "Address delete failed. Please try again later..."
+                    }
+                },
+                "ADD": {
+                    "SUCCESS": {
+                        "education": "New education added successfully",
+                        "experience": "New experience added successfully",
+                        "address": "New address added successfully"
+                    },
+                    "FAILURE": {
+                        "education": "Adding new education failed. Please try again later...",
+                        "experience": "Adding new experience failed. Please try again later...",
+                        "address": "Adding new address failed. Please try again later..."
                     }
                 },
                 "ERROR": {
@@ -293,7 +298,6 @@
                     "update": "Updating user profile failed,please try again later..."
                 }
             }
-
         },
         "COLLECTION": {
             "PREVIEW": {
@@ -347,6 +351,13 @@
             "GET_INFO": {
                 "FAILED": "Fetching tenant details failed, please try again later..."
             }
+        },
+        "SETUP":{
+            "ADD_SUCCESS":" added successfully",
+            "ADD_FAILURE":"Adding a new org type failed, please try again later",
+            "GET_FAILURE":"Fetching org type failed, please try again later",
+            "UPDATE_FAILURE":"Org  type update failed, please try again later",
+            "UPDATE_SUCCESS":"  updated successfully"
         },
         "DASHBOARD":{
             "COURSE":{

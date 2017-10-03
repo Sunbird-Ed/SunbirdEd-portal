@@ -137,28 +137,12 @@ angular.module('playerApp')
                         }
                     } else {
                         draftContent.loader.showLoader = false;
-                        draftContent.handleFailedResponse(res, requestData);
+                        toasterService.error(draftContent.message.RETIRE_CONTENT.FAILED);
                     }
                 }).catch(function () {
                     draftContent.loader.showLoader = false;
                     toasterService.error(draftContent.message.RETIRE_CONTENT.FAILED);
                 });
-            };
-
-            draftContent.handleFailedResponse = function (res, requestData) {
-                var length = res && res.result ? res.result.length : requestData.length;
-                var failedContentIds = res && res.result ? workSpaceUtilsService
-          .reduceObjectIntoArray(res.result, 'contentId') : requestData;
-                var deletedContentIds =
-          workSpaceUtilsService.getDeletedContentIds(requestData, failedContentIds);
-                draftContent.draftContentData = workSpaceUtilsService
-          .removeContentLocal(draftContent.draftContentData, deletedContentIds);
-                draftContent.selectedContentItem = workSpaceUtilsService
-          .removeContentLocal(draftContent.selectedContentItem, deletedContentIds);
-                toasterService.error(length + ' ' + draftContent.message.RETIRE_CONTENT
-          .NOT_DELETE);
-                draftContent.pager = PaginationService.GetPager(draftContent.totalCount - length,
-          draftContent.pageNumber, draftContent.pageLimit);
             };
 
             draftContent.setPage = function (page) {

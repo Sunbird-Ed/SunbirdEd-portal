@@ -8,9 +8,9 @@ module.exports = {
   getInfo: function(req, res) {
     var tenantId = req.params.tenantId || envHelper.DEFAUULT_TENANT;
     var responseObj = {
-      logo: (req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') + '/images/sunbird_logo.png',
-      favicon: (req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') +'/images/favicon.ico',
-      poster: (req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') +'/images/sunbird_logo.png',
+      logo: (req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') + '/common/images/sunbird_logo.png',
+      favicon: (req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') +'/common/images/favicon.ico',
+      poster: (req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') +'/common/images/sunbird_logo.png',
     }
     //TODO: make file checking async for performance
     if (tenantId) {

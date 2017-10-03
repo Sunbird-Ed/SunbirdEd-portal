@@ -1,7 +1,7 @@
-<div ng-if="$root.search.selectedSearchKey=='Users' && admin.searchResult" ng-init="admin.addOrgNameToOrganizations();admin.getUserRoles()"   class="ui divided searchListInfo items">
+<div ng-if="$root.search.selectedSearchKey=='Users' && admin.searchResult" ng-init="admin.addOrgNameToOrganizations();admin.getUserRoles()" class="ui divided searchListInfo items">
     <div class="userSearchCardHover item " ng-repeat="user in admin.searchResult" ng-init="admin.recievedBadge={}">
         <div class="ui tiny image userSearchImage " ng-init="admin.getBadgeName(user);admin.newBadgeAssigned=true;user.hideBadge=false">
-            <img ng-src="{{user.avatar|| 'images/user_logo.png'}} ">
+            <img ng-src="{{user.avatar|| '/common/images/user_logo.png'}} ">
         </div>
         <div class="content ">
             <a class="header " ng-click="user.status===1 && admin.openPublicProfile(user.identifier,user)">{{user.firstName}} &nbsp;{{user.lastName}}</a>
@@ -22,7 +22,7 @@
               ng-if="!user.userBadgeS.length && user.status===1 && user.isEditableProfile" 
               ng-hide="user.hideBadge"
               sb-permissions permission-only="SYSTEM_ADMINISTRATION,ORG_ADMIN">
-                <img class="ui mini image badgeIconAlignment" src="images/badgeblue.png"
+                <img class="ui mini image badgeIconAlignment" ng-src="/common/images/badgeblue.png"
                 ng-click="admin.assignBadgeModal(user.identifier);">
             </a> 
             <!-- organization Name -->
@@ -40,8 +40,8 @@
                 {{badge.name}}
               </div>
         </span>
-           <div class="ui label " ng-if="admin.recievedBadge.name && admin.recievedBadge.userId===user.identifier">
-              <span ng-init= "user.hideBadge=true"> {{admin.recievedBadge.name }}</span>
+            <div class="ui label " ng-if="admin.recievedBadge.name && admin.recievedBadge.userId===user.identifier">
+                <span ng-init="user.hideBadge=true"> {{admin.recievedBadge.name }}</span>
             </div>
 
             <div class="ui label " ng-if="user.status===0">{{$root.labels.SEARCH.STATUS.INACTIVE}}</div>

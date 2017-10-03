@@ -11,14 +11,16 @@ angular.module('playerApp')
         return {
             restrict: 'A',
             link: function (scope, element, attrs) {
-                $('.ui .progress').progress();
-                $('.course-progress').progress();
+               
                 $('.popup-button').popup();
                 $('#content-search-filter-accordion').accordion();
                 $('.ui.accordion').accordion({ exclusive: false });
                 $timeout(function () {
                     $('.courseHeader-rating')
                     .rating('disable');
+                    $('.ui .progress').progress();
+                    $('.course-progress').progress();
+            
                 }, 0);
                 $('.dropdown.resource-search-filter').dropdown({
                     useLabels: false,

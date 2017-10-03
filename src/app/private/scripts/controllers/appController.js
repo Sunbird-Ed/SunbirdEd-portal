@@ -10,10 +10,10 @@
 angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService', '$rootScope',
     '$translate', 'userService', '$q', 'config', '$location', '$timeout',
     'portalTelemetryService', 'setResourceBundle', 'errorMessages', 'labels', 'sessionService',
-    'learnService', '$http', 'searchService', 'toasterService', 'adminService',
+    'learnService', '$http', 'searchService', 'toasterService', 'adminService', '$state',
     function ($scope, permissionsService, $rootScope, $translate, userService, $q, config,
     $location, $timeout, portalTelemetryService, setResourceBundle, errorMessages, labels,
-    sessionService, learnService, $http, searchService, toasterService, adminService) {
+    sessionService, learnService, $http, searchService, toasterService, adminService, $state) {
         $rootScope.userId = $('#userId').attr('value');
         $rootScope.sessionId = $('#sessionId').attr('value');
         $rootScope.language = $rootScope.userLanguage || config.SITE.DEFAULT_LANGUAGE;
@@ -67,7 +67,6 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
             return objMerge;
         };
 
-
         $('body').click(function (e) {
             if ($(e.target).closest('div.dropdown-menu-list').prop('id') === 'search-suggestions') {
                 return false;
@@ -85,6 +84,8 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
             $rootScope.lastName = profileData.lastName;
             var userRoles = profileData.roles;
             $rootScope.organisations = profileData.organisations;
+            $rootScope.profileCompleteness = profileData.completeness;
+            $rootScope.profileMissingFields = profileData.missingFields || [];
             var organisationNames = [];
             var orgRoleMap = {};
 
@@ -164,12 +165,12 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
             }
         };
 
-        $scope.getProfile = function () {
+        $scope.getProfile = function (fields) {
             var userProfile = userService.getCurrentUserProfile();
             if (!(_.isEmpty(userProfile))) {
                 $scope.userProfile(userProfile);
             } else {
-                userService.getUserProfile($rootScope.userId).then(function (res) {
+                userService.getUserProfile($rootScope.userId, fields).then(function (res) {
                     if (res && res.responseCode === 'OK') {
                         var profileData = res.result.response;
                         userService.setCurrentUserProfile(profileData);
@@ -182,7 +183,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
                 });
             }
         };
-        $scope.getProfile();
+        $scope.getProfile('completeness,lastLoginTime,missingFields');
 
         $rootScope.closeRoleAccessError = function () {
             $rootScope.accessDenied = '';
@@ -275,6 +276,10 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
                 }
                 // else throw new Error('');
             });
+        };
+
+        $scope.openProfileView = function () {
+            $state.go('Profile');
         };
 
         $scope.getBadges();
