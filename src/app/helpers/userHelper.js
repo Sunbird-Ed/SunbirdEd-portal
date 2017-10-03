@@ -7,7 +7,7 @@ const request = require("request"),
 module.exports = {
     updateLoginTime: function (req, callback) {
         var data = this.prepareRequestBody(req);
-        var token =req.kauth.grant.access_token.content.sub; //req.kauth.grant.access_token.token;
+        var token = req.kauth.grant.access_token.token;
         this.sendUpdateTimeReq(token,data, function (status) {
             callback(null, status);
         });
