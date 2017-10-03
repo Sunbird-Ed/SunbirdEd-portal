@@ -72,7 +72,7 @@ angular.module('playerApp')
                 previewContent.contentPlayer.isContentPlayerEnabled = true;
             }
 
-            function getContent(contentId) {
+            previewContent.getContent = function (contentId) {
                 previewContent.loader = toasterService.loader('', previewContent.message
                                                                         .GET.START);
                 var req = { contentId: contentId };
@@ -101,7 +101,7 @@ angular.module('playerApp')
                 });
             }
 
-            getContent(previewContent.contentId);
+            previewContent.getContent(previewContent.contentId);
 
             previewContent.publishContent = function () {
                 var request = {
