@@ -7,20 +7,20 @@ const request = require("request"),
 module.exports = {
     updateLoginTime: function (req, callback) {
         var data = this.prepareRequestBody(req);
-        this.sendUpdateTimeReq(req, data, function (status) {
+        var token = req.kauth.grant.access_token.token;
+        this.sendUpdateTimeReq(token,data, function (status) {
             callback(null, status);
         });
     },
     prepareRequestBody: function (req) {
-        var userId = req.kauth.grant.access_token.content.sub;
-        var token = req.kauth.grant.access_token.token;
+        var userId = req.kauth.grant.access_token.content.sub;        
         var data = {
             "params": {},
             "request": {"userId": userId}
         };
         return data;
     },
-    sendUpdateTimeReq: function (req,token, data, callback) {
+    sendUpdateTimeReq: function (token, data, callback) {
         var options = {
             method: 'PATCH',
             url: learnerURL + 'user/v1/update/logintime',
@@ -33,7 +33,7 @@ module.exports = {
             json: true
         };
         request(options, function (error, response, body) {
-            console.log(options,"\n",body);
+            console.log(options);
             if (callback) {
                 if (error) {
                     callback(false);
