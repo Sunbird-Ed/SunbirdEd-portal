@@ -28,6 +28,7 @@ angular.module('playerApp')
       courseDashboard.showLoader = true;
       courseDashboard.showError = false;
       courseDashboard.showLabelFlag = false;
+      courseDashboard.errorLbl = '';
       courseDashboard.errorMsg = '';
       courseDashboard.showWarningMsg = false;
 
@@ -52,7 +53,7 @@ angular.module('playerApp')
 
             // To print block data
             angular.forEach(apiResponse.result.snapshot, function(numericData, key) {
-              if (key != 'course.consumption.users_completed') {
+              if (key == 'course.consumption.time_spent.count' || key == 'course.consumption.time_spent_completion_count') {
                 dashboardService.secondsToMin(numericData)
               }
               courseDashboard.consumptionNumericData.push(numericData);
@@ -193,6 +194,7 @@ angular.module('playerApp')
       courseDashboard.showErrors = function(apiResponse) {
         courseDashboard.showError = true;
         courseDashboard.showLoader = false;
+        courseDashboard.errorLbl = $rootScope.errorMessages.DASHBOARD.COURSE.FAILED;
         courseDashboard.errorMsg = apiResponse.params.errmsg;
         toasterService.error(apiResponse.params.errmsg);
       };

@@ -251,7 +251,7 @@
                     "editingProfile": "Updating profile ...",
                     "profileEdited": "Profile successfully updated"
                 },
-                "UPDATE": { 
+                "UPDATE": {
                     "SUCCESS": {
                         "avatar": "Profile Image updated successfully",
                         "description": "Description updated successfully",
@@ -358,6 +358,11 @@
             "GET_FAILURE":"Fetching org type failed, please try again later",
             "UPDATE_FAILURE":"Org  type update failed, please try again later",
             "UPDATE_SUCCESS":"  updated successfully"
+        },
+        "DASHBOARD":{
+            "COURSE":{
+                "FAILED":"Unable to load data..."
+            }
         }
     }
 }
