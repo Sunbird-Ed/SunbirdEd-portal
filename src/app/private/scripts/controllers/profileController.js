@@ -7,7 +7,7 @@
  * # profileController
  * Controller of the playerApp
  */
-angular.module('playerApp') // add those all values
+angular.module('playerApp')
     .controller('ProfileController', [
         '$scope',
         '$rootScope',
@@ -97,12 +97,28 @@ angular.module('playerApp') // add those all values
                         $rootScope.avatar = profileData.avatar;
                     }
                     profile.address = angular.copy(profileData.address);
-                    profile.basicProfile = angular.copy(profile.user);
+
                     profile.education = angular.copy(profileData.education);
                     profile.experience = angular.copy(profileData.jobProfile);
                     if (profile.user.badges) {
                         profile.getUserBadges();
                     }
+                    if (profile.user.webPages) {
+                        var socialMedia = {};
+
+                        socialMedia.fb = profile.user.webPages.find(function (webLink) {
+                            return webLink.type === 'fb';
+                        }) || { type: 'fb', url: '' };
+
+                        socialMedia.twitter = profile.user.webPages.find(function (webLink) {
+                            return webLink.type === 'twitter';
+                        }) || { type: 'twitter', url: '' };
+                        socialMedia.in = profile.user.webPages.find(function (webLink) {
+                            return webLink.type === 'in';
+                        }) || { type: 'in', url: '' };
+                        profile.user.socialMedia = socialMedia;
+                    }
+                    profile.basicProfile = angular.copy(profile.user);
                 } else {
                     profile.loader.showLoader = false;
                     profile.isError = true;
@@ -140,7 +156,7 @@ angular.module('playerApp') // add those all values
                             return true;
                         } else if (successResponse.responseCode === 'CLIENT_ERROR') {
                             throw new Error(successResponse.params.errmsg);
-                        }
+                        } else throw new Error('');
                     }).catch(function (err) {
                         if (err.message) {
                             throw new Error(err.message);
@@ -213,6 +229,28 @@ angular.module('playerApp') // add those all values
             };
 
             // update basic Info
+            profile.webLink = function () {
+                if (profile.user.webPages) {
+                    var isSocialMedia = _.isEqual(
+                                                    profile.basicProfile.socialMedia,
+                                                    profile.user.socialMedia
+                                                  );
+                    if (!isSocialMedia) {
+                        var socialMediaLinks = [];
+                        Object.keys(profile.user.socialMedia).forEach(function (key) {
+                            if (profile.user.socialMedia[key].url.length) {
+                                socialMediaLinks.push({
+                                    type: key,
+                                    url: profile.user.socialMedia[key].url
+                                });
+                            }
+                        });
+
+                        return socialMediaLinks;
+                    }
+                    return [];
+                } return [];
+            };
             profile.EditBasicProfile = function () {
                 var isValid = formValidation.validate('#basicInfoForm');
                 if (isValid === true) {
@@ -233,7 +271,10 @@ angular.module('playerApp') // add those all values
                     if (!profile.user.email) {
                         basicInfo.email = profile.user.email;
                     }
-
+                    profile.webPages = profile.webLink();
+                    if (profile.webPages.length) {
+                        basicInfo.webPages = profile.webPages;
+                    }
                     profile.updateUserInfo(
                         basicInfo,
                         'basicProfileForm',
@@ -275,7 +316,7 @@ angular.module('playerApp') // add those all values
             profile.deleteAddress = function (address) {
                 address.isDeleted = true;
                 var req = { address: [address] };
-                req.userId = $rootScope.userId;
+                // req.userId = $rootScope.userId;
                 profile.updateUserInfo(
                     req,
                     'addressForm',
