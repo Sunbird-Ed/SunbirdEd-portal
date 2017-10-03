@@ -32,11 +32,6 @@ angular.module('playerApp')
               $rootScope.toDoList = [];
     // if profile is incomplete append profile update details to ToDo list
               if ($rootScope.profileCompleteness < 100) {
-//                 // show first 2 fields in profile-update tile
-//                  var missingFields = _.map($rootScope.profileMissingFields, _.clone).slice(0,2);
-//                  missingFields.forEach(function(field,index){
-//                      missingFields[index] = $rootScope.labels.PROFILE.COMPLETENESS[field] || field;
-//                  });
                   $rootScope.toDoList = [{
                       title: $rootScope.errorMessages.PROFILE.UPDATE_REMINDER.TITLE,
                       missingFields: $rootScope.profileMissingFields,
