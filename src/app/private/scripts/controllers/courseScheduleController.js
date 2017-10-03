@@ -421,9 +421,9 @@ angular.module('playerApp')
                     toc.courseId = $stateParams.courseId;
                     toc.courseType = ($rootScope.enrolledCourseIds[toc.courseId]) ?
                             'ENROLLED_COURSE' : 'OTHER_COURSE';
-                    toc.playContent = false; // to store status of each content of course by content ID
+                    toc.playContent = false; 
 
-                    toc.contentStatusList = {};
+                    toc.contentStatusList = {};// to store status of each content of course by content ID
                     toc.contentStatusClass = {
                         0: 'grey',
                         1: 'blue',

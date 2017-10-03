@@ -127,6 +127,13 @@
                     </div>
                 </div>
             </div>
+            <div ng-if="toc.loader.showLoader">
+                <app-loader data="{{toc.loader}}"></app-loader>
+            </div>
+            <div ng-if="toc.error.showError">
+                <error-message data="{{toc.error}}" visibility="toc.error.showError"></error-message>
+            </div>
+            <div class="one wide column"></div>
         </div>
         <!-- Show course dashboard-->
         <div class="ten wide column" ng-if="toc.showCourseDashboard">
