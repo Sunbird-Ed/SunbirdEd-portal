@@ -16,9 +16,9 @@
     <div class="two fields">
         <div class="required field">
             <label>{{$root.labels.PROFILE.BASIC_PROFILE.phone}}</label>
-            <input type="text" name="phone" placeholder="{{$root.labels.PROFILE.BASIC_PROFILE.phone_Prompt}}"ng-model="profileCtrl.user.phone">
+            <input type="text" name="phone" placeholder="{{$root.labels.PROFILE.BASIC_PROFILE.phone_Prompt}}" ng-model="profileCtrl.user.phone">
         </div>
-        <div class=" required  field"  ng-class="{'disabled':profileCtrl.user.email.length?true:false }" >
+        <div class=" required  field" ng-class="{'disabled':profileCtrl.user.email.length?true:false }">
             <label>{{$root.labels.PROFILE.BASIC_PROFILE.email}}</label>
             <input type="email" name="email" ng-model="profileCtrl.user.email">
         </div>
@@ -43,15 +43,15 @@
         </div>
 
     </div>
-<div class="one field">
-     <div class="field">
-        <label>{{$root.labels.PROFILE.BASIC_PROFILE.currentLocation}}</label>
-        <input type="text" name="location" ng-model="profileCtrl.user.location">
+    <div class="one field">
+        <div class="field">
+            <label>{{$root.labels.PROFILE.BASIC_PROFILE.currentLocation}}</label>
+            <input type="text" name="location" ng-model="profileCtrl.user.location">
+        </div>
     </div>
-</div>
-  <div class=" field" ng-init=" profileCtrl.setSelectedGrades()">
+    <div class=" field" ng-init=" profileCtrl.setSelectedGrades()">
         <label>{{$root.labels.PROFILE.BASIC_PROFILE.grades}}</label>
-        <select name="grades" multiple=""  id=selectGrades class="ui fluid dropdown" ng-value="option.value" ng-options=" language for language in profileCtrl.grades" ng-model="profileCtrl.user.grade">
+        <select name="grades" multiple="" id=selectGrades class="ui fluid dropdown" ng-value="option.value" ng-options=" language for language in profileCtrl.grades" ng-model="profileCtrl.user.grade">
              <option value="" >Grade</option>
             </select>
     </div>
@@ -61,8 +61,6 @@
              <option value="" translate="languages">Language</option>
             </select>
     </div>
-
-
     <div class="field">
         <label>{{$root.labels.PROFILE.BASIC_PROFILE.subjects}}</label>
         <div class="field" ng-init=" profileCtrl.setSubject()">
@@ -70,7 +68,8 @@
                                            </select>
         </div>
     </div>
-  
+    <div ng-include="'views/profile/editProfile/socialMediaHelper.html'"></div>
+
     <div class="ui error message">
     </div>
     <div class="ui button margin-top-15" ng-class="{ 'disabled' : profileCtrl.disableSave}" ng-click="profileCtrl.EditBasicProfile();">{{$root.labels.PROFILE.BUTTON.save}} </div>
