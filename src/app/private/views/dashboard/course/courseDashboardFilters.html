@@ -1,17 +1,10 @@
 <span id="dashoardFiltersHolder" ng-hide="courseDashboard.showWarningMsg">
     <div class="ui grid">
-        <div class="five wide column float-ContentLeft"
-            ng-if="courseDashboard.dataset == 'consumption'"
-            ng-show="courseDashboard.myCoursesList.length == '1' ">
-            <span class="dashBoardSectionHeading">
-                <i class="large bar chart icon"></i>
-            </span>
+        <div class="five wide column float-ContentLeft" ng-if="courseDashboard.dataset == 'consumption'" ng-show="courseDashboard.myCoursesList.length == '1' "><span class="dashBoardSectionHeading"><i class="large bar chart icon"></i></span>
 <span ng-if="courseDashboard.showLabelFlag" class="dashBoardSectionHeading">{{courseDashboard.courseName}}</span>
 </div>
 <div class="one wide column" ng-if="courseDashboard.dataset == 'consumption'" ng-hide="courseDashboard.myCoursesList.length <= '1'">
-  <span class="dashBoardSectionHeading">
-                <i class="large bar chart icon padding-top-5"></i>
-            </span>
+  <span class="dashBoardSectionHeading"><i class="large bar chart icon padding-top-5"></i></span>
 </div>
 <div class="four wide column float-ContentLeft" ng-if="courseDashboard.dataset == 'consumption'" ng-hide="courseDashboard.myCoursesList.length <= '1'">
   <div class="ui fluid search selection dropdown" id="myCoursesListFilter">
@@ -45,9 +38,7 @@
 <!-- Blank six wide column-->
 <div ng-if="courseDashboard.dataset == 'progress'" class="six wide column padding-top-20 ng-scope"></div>
 <div class="one wide column padding-top-20 padding-right-5" ng-if="courseDashboard.dataset == 'progress' && !courseDashboard.showLoader">
-  <a class="ui item basic icon circular float-ContentRight" href="Javascript:void(0);" data-tooltip="{{$root.labels.DASHBOARD.COURSE.PROGRESS_DASHBOARD.REMOVE_ICON_TOOLTIP}}">
-            <i class="ui remove icon CloseButtonFont" ng-click="toc.showCourseDashboard = false;courseDashboard.resetDropdown();"></i>
-          </a>
+  <a class="ui item basic icon circular float-ContentRight" href="Javascript:void(0);" data-tooltip="{{$root.labels.DASHBOARD.COURSE.PROGRESS_DASHBOARD.REMOVE_ICON_TOOLTIP}}"><i class="ui remove icon CloseButtonFont" ng-click="toc.showCourseDashboard = false;courseDashboard.resetDropdown();"></i></a>
 </div>
 </div>
 <div class="ui grid margin-top-10" ng-if="!courseDashboard.showError" ng-hide="courseDashboard.isMultipleCourses">
@@ -64,8 +55,7 @@
   <div class="four wide column" ng-show="courseDashboard.dataset === 'progress'">
     <div class="ui category search float-ContentRight">
       <div class="ui icon input">
-        <input class="search-course-data ng-pristine ng-valid ng-empty ng-touched" type="text" placeholder="Search ..." ng-model="courseDashboard.searchUser" autocomplete="off">
-        <i class="search icon"></i>
+        <input class="search-course-data ng-pristine ng-valid ng-empty ng-touched" type="text" placeholder="Search ..." ng-model="courseDashboard.searchUser" autocomplete="off"><i class="search icon"></i>
       </div>
     </div>
   </div>
