@@ -1,15 +1,15 @@
 <div class="ui raised segment " ng-init="profileCtrl.basicProfileForm=false">
     <div class="header announcementCard-header ">
-        <span class="header cardsHeading " > {{$root.labels.PROFILE.BASIC_PROFILE.header}}</span>
-        <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.basicProfileForm"  ng-click="profileCtrl.basicProfileForm=true">{{$root.labels.PROFILE.BUTTON.edit}}</a>
-        <a class="addeditprofile cursor-pointer" ng-if="profileCtrl.basicProfileForm"  ng-click="profileCtrl.basicProfileForm=false;profileCtrl.user=profileCtrl.getProfileObject(profileCtrl.basicProfile);">{{$root.labels.PROFILE.BUTTON.close}}</a>
+        <span class="header cardsHeading "> {{$root.labels.PROFILE.BASIC_PROFILE.header}}</span>
+        <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.basicProfileForm" ng-click="profileCtrl.basicProfileForm=true">{{$root.labels.PROFILE.BUTTON.edit}}</a>
+        <a class="addeditprofile cursor-pointer" ng-if="profileCtrl.basicProfileForm" ng-click="profileCtrl.basicProfileForm=false;profileCtrl.user=profileCtrl.getProfileObject(profileCtrl.basicProfile);">{{$root.labels.PROFILE.BUTTON.close}}</a>
 
     </div>
     <div class="profileitems profile-des ui relaxed aligned list " ng-if="!profileCtrl.basicProfileForm && profileCtrl.basicProfile">
 
         <div class="item ">
             <div class="right floated content ">
-                <span >{{profileCtrl.basicProfile.email}}</span>
+                <span>{{profileCtrl.basicProfile.email}}</span>
             </div>
             <div class="iniformationcontent content ">
                 {{$root.labels.PROFILE.BASIC_PROFILE.email}}
@@ -17,7 +17,7 @@
         </div>
         <div class="item ">
             <div class="right floated content ">
-                <span >{{profileCtrl.basicProfile.phone}}</span>
+                <span>{{profileCtrl.basicProfile.phone}}</span>
             </div>
             <div class="iniformationcontent content ">
                 {{$root.labels.PROFILE.BASIC_PROFILE.phone}}
@@ -25,7 +25,7 @@
         </div>
         <div class="item ">
             <div class="right floated content capitalizeTextInfo">
-                <span >{{profileCtrl.basicProfile.gender}}</span>
+                <span>{{profileCtrl.basicProfile.gender}}</span>
             </div>
             <div class="iniformationcontent content ">
                 {{$root.labels.PROFILE.BASIC_PROFILE.gender}}
@@ -33,7 +33,7 @@
         </div>
         <div class="item ">
             <div class="right floated content ">
-                <span >{{profileCtrl.basicProfile.dob | date : "dd/MM/y"}}</span>
+                <span>{{profileCtrl.basicProfile.dob | date : "dd/MM/y"}}</span>
             </div>
             <div class="iniformationcontent content ">
                 {{$root.labels.PROFILE.BASIC_PROFILE.dob}}
@@ -41,7 +41,7 @@
         </div>
         <div class="item ">
             <div class="right floated content ">
-                <span >
+                <span>
                     <span ng-repeat="lan in profileCtrl.basicProfile.language | orderBy:'toString()'">{{lan}}</span>
                 </span>
             </div>
@@ -51,33 +51,50 @@
         </div>
         <div class="item ">
             <div class="right floated content ">
-                                    <span ng-repeat="sub in profileCtrl.basicProfile.subject | orderBy:'toString()'">{{sub}}
+                <span ng-repeat="sub in profileCtrl.basicProfile.subject | orderBy:'toString()'">{{sub}}
                         <span ng-show="!$last">,</span>
-                    </span>
-               
+                </span>
+
             </div>
             <div class="iniformationcontent content ">
                 {{$root.labels.PROFILE.BASIC_PROFILE.subjects}}
             </div>
         </div>
-          <div class="item ">
+        <div class="item ">
             <div class="right floated content ">
                 <span><span ng-repeat="grade in profileCtrl.basicProfile.grade">{{grade}}<span ng-show="!$last">,</span></span>
                 </span>
             </div>
             <div class="iniformationcontent content ">
-               {{$root.labels.PROFILE.BASIC_PROFILE.grades}}
+                {{$root.labels.PROFILE.BASIC_PROFILE.grades}}
             </div>
         </div>
-         <div class="item ">
+        <div class="item ">
             <div class="right floated content ">
                 <span>{{profileCtrl.basicProfile.location}}</span>
-               
+
             </div>
             <div class="iniformationcontent content ">
-              {{$root.labels.PROFILE.BASIC_PROFILE.currentLocation}}
+                {{$root.labels.PROFILE.BASIC_PROFILE.currentLocation}}
             </div>
         </div>
+        <div class="item ">
+                <div class="right floated content ">
+            <a ng-if="profileCtrl.basicProfile.socialMedia.fb.url"
+            href="{{profileCtrl.basicProfile.socialMedia.fb.url}}"
+            target="_blank"><i class="large facebook f icon"></i></a>
+            <a ng-if="profileCtrl.basicProfile.socialMedia.twitter.url"
+            href="{{profileCtrl.basicProfile.socialMedia.twitter.url}}"target="_blank">
+            <i class="large twitter icon"></i></a>
+            <a ng-if="profileCtrl.basicProfile.socialMedia.in.url"
+            href="{{profileCtrl.basicProfile.socialMedia.in.url}}" target="_blank">
+            <i class="large linkedin icon"></i></a>
+        </div>
+        <div class="iniformationcontent content ">
+            social Media
+        </div>
+        </div>
+
     </div>
     <div class="ui" ng-if="profileCtrl.basicProfileForm" ng-include=" 'views/profile/editProfile/basicInformtion.html' "></div>
 </div>
