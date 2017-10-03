@@ -38,7 +38,7 @@ angular.module('playerApp')
                             toasterService.error($rootScope.errorMessages.Courses.TOC.ERROR);
                         }
                         toc.loader.showLoader = false;
-                    }, function () {
+                    }).catch(function () {
                         toc.loader.showLoader = false;
                         toasterService.error($rootScope.errorMessages.Courses.TOC.ERROR);
                     });
@@ -305,7 +305,7 @@ angular.module('playerApp')
                  * @Function openContent
                  * @Inputs - contentId : identifier of the content to be played ,
                  *           trigger : 'prev' clicked by previous button of player , 'next' clicked by next button of player
-                 * @Description - load batch details and status
+                 * @Description - open content in conten player
                  *
                  */
                 toc.openContent = function (contentId, trigger) {

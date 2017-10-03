@@ -103,6 +103,15 @@ angular.module('playerApp')
                     if (profile.user.badges) {
                         profile.getUserBadges();
                     }
+                    if (profileData.completeness) {
+                        $rootScope.profileCompleteness = profileData.completeness;
+                        $('.profile-progress').progress({
+                            percent: $rootScope.profileCompleteness
+                        });
+                    }
+                    if (profileData.missingFields) {
+                        $rootScope.profileMissingFields = profileData.missingFields;
+                    }
                     if (profile.user.webPages) {
                         var socialMedia = {};
 
@@ -168,7 +177,7 @@ angular.module('playerApp')
                 profile.updateProfile(req).then(function () {
                     profile[activeForm] = false;
                     toasterService.success(successMessage);
-                    profile.getProfile();
+                    profile.getProfile('completeness,missingFields');
                 }).catch(function (err) {
                     profile.loader.showLoader = false;
                     if (err.message) {
@@ -644,7 +653,15 @@ angular.module('playerApp')
                         profile.openDiscriptionEdit = true;
                     }
                     break;
-                case 'firstName' || 'lastName' || 'email' || 'phone' || 'dob' || 'gender' || 'grade' || 'language' || 'location':
+                case 'lastName':
+                case 'email':
+                case 'phone':
+                case 'dob':
+                case 'gender':
+                case 'grade':
+                case 'language':
+                case 'location':
+                case 'subject':
                     {
                         profile.basicProfileForm = true;
                         $timeout(function () { $anchorScroll('basicInfoForm'); }, 100);
