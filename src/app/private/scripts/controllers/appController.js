@@ -183,7 +183,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
                 });
             }
         };
-        $scope.getProfile('completeness,lastLoginTime,missingFields');
+        $scope.getProfile('completeness,missingFields');
 
         $rootScope.closeRoleAccessError = function () {
             $rootScope.accessDenied = '';

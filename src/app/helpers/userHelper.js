@@ -7,13 +7,13 @@ const request = require("request"),
 module.exports = {
     updateLoginTime: function (req, callback) {
         var data = this.prepareRequestBody(req);
-        var token = req.kauth.grant.access_token.token;
+        var token =req.kauth.grant.access_token.content.sub; //req.kauth.grant.access_token.token;
         this.sendUpdateTimeReq(token,data, function (status) {
             callback(null, status);
         });
     },
     prepareRequestBody: function (req) {
-        var userId = req.kauth.grant.access_token.content.sub;        
+        var userId = req.kauth.grant.access_token.content.sub;  
         var data = {
             "params": {},
             "request": {"userId": userId}
@@ -33,7 +33,6 @@ module.exports = {
             json: true
         };
         request(options, function (error, response, body) {
-            console.log(options);
             if (callback) {
                 if (error) {
                     callback(false);
