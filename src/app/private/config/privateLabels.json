@@ -212,7 +212,7 @@
                 "summary": "Summary",
                 "contributions": "Contributions",
                 "contents": "Contents",
-                "currentLocation": "Current Location",
+                "currentLocation": "Current location",
                 "grades": "Grades",
                 "phone_Prompt": "Enter 10 digit phone number with country code"
             },
@@ -231,6 +231,12 @@
                 "profileSummary":"profile description",
                 "firstName":"first name",
                 "lastName":"last name"
+            },
+            "SOCIAL_MEDIA":{
+                "title":"Social media",
+                "facebook":"Facebook",
+                "twitter":"Twitter",
+                "linkedIn":"LinkedIn"
             }
         },
         "HEADER": {
