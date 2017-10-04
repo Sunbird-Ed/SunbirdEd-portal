@@ -232,10 +232,10 @@
                 "lastName":"last name"
             },
             "SOCIAL_MEDIA":{
-                "tittle":"Social media",
-                "fb":"Facebook",
+                "title":"Social media",
+                "facebook":"Facebook",
                 "twitter":"Twitter",
-                "in":"LinkedIn"
+                "linkedIn":"LinkedIn"
             }
         },
         "HEADER": {
