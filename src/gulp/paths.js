@@ -6,8 +6,15 @@ var player = {
     dist: 'dist',
     common: 'app/common/'
 };
+
+var build_themes = {
+    dist: 'app/themes/',
+    themes:'semantic/src/themes'
+};
+
 var paths = {
     player: player,
+    build_themes:build_themes,
     src: {
         scripts: [player.app + '/scripts/*.js', player.app + '/scripts/**/*.js'],
         styles: [player.app + 'app/styles/**/main.less'],
