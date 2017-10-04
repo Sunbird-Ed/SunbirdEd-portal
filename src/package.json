@@ -78,7 +78,7 @@
   "dependencies": {
     "async": "^2.5.0",
     "body-parser": "^1.17.2",
-    "cassandra-store": "4.1.4",
+    "cassandra-session-store": "1.0.6",
     "dateformat": "^2.0.0",
     "eslint": "^3.19.0",
     "express": "^4.15.3",
