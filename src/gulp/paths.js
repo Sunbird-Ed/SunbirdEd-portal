@@ -244,7 +244,9 @@ var paths = {
         'dist/private/scripts/directives/admin/searchedUser.js',
         'dist/private/scripts/directives/admin/bulkUpload.js',
         'dist/private/scripts/directives/batchDetailsDirective.js',
-        'dist/private/scripts/directives/contentSharingDirective.js'
+        'dist/private/scripts/directives/contentSharingDirective.js',
+        'dist/private/scripts/services/setup/setupService.js',
+        'dist/private/scripts/controllers/setup/setupController.js'
     ],
     telemetry_js: [
         'dist/private/scripts/telemetry/TelemetryEvent.js',
