@@ -234,6 +234,7 @@ angular.module('playerApp')
           onExit: function ($rootScope, dataService) {
               $rootScope.isTocPage = false;
               $rootScope.courseActive = '';
+              dataService.setData('contentStateInit', false);
               dataService.setData('isTrackingEnabled', false);
           }
       })
