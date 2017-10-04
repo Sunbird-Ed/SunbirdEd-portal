@@ -157,7 +157,8 @@
                 "no": "No",
                 "yes": "Yes",
                 "DELETE": "DELETE",
-                "viewYourWorkspace": "View your workspace"
+                "viewYourWorkspace": "View your workspace",
+                "resourceType": "Resource Type"
             }
         },
         "PROFILE": {
