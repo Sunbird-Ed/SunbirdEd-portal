@@ -54,6 +54,12 @@
                             <label>{{$root.labels.WORKSPACE.common.concept}}</label>
                             <concept-picker selected-concepts="[]"></concept-picker>
                         </div>
+                        <div class="field">
+                            <label>{{$root.labels.WORKSPACE.common.resourceType}}</label>
+                            <select name="resourceType" class="ui fluid dropdown singleSelectDropDown margin-top-10" ng-options=" resourceType for resourceType in contentLesson.resourceType" ng-model="contentLesson.data.resourceType">
+                                <option value="">{{$root.labels.WORKSPACE.common.resourceType}}</option>
+                            </select>
+                        </div>
                     </div>
                 </form>
             </div>

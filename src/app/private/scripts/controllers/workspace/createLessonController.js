@@ -21,6 +21,7 @@ angular.module('playerApp')
             contentLesson.mediums = config.DROPDOWN.COMMON.medium;
             contentLesson.subjects = config.DROPDOWN.COMMON.subjects;
             contentLesson.boards = config.DROPDOWN.COMMON.boards;
+            contentLesson.resourceType = config.FILTER.RESOURCES.resourceType;
             contentLesson.showCreateSlideShowModal = false;
             contentLesson.slideShowCreated = false;
             contentLesson.userId = $rootScope.userId;
