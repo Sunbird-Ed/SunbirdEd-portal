@@ -11,7 +11,7 @@ const express = require('express'),
   bodyParser = require('body-parser'),
   async = require('async'),
   helmet = require('helmet'),
-  CassandraStore = require("cassandra-store"),
+  CassandraStore = require("cassandra-session-store"),
   trampolineServiceHelper = require('./helpers/trampolineServiceHelper.js'),
   telemetryHelper = require('./helpers/telemetryHelper.js'),
   permissionsHelper = require('./helpers/permissionsHelper.js'),
@@ -314,6 +314,7 @@ function verifyToken() {
 
 this.server = app.listen(port, function () {
     console.log('app running on port ' + port);
+    permissionsHelper.getPermissions();
 });
 
 exports.close = function() {
