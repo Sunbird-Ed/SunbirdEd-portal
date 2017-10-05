@@ -872,6 +872,12 @@ div:focus {
   overflow: hidden;
   height: 2.8em;
 }
+/*rating responsive*/
+@media screen and (max-width: 1100px) and (min-width: 1024px) {
+  .ui.rating {
+    font-size: 0.8em !important;
+  }
+}
 .content-input {
   display: none;
 }
@@ -1843,7 +1849,7 @@ div:focus {
   line-height: 1.2;
 }
 .profileUpdateCardPadding {
-  padding: 45px 15px 15px 10px;
+  padding: 45px 15px 6px 10px;
 }
 .ui.card > .sliderCards.content.CardcontentTopPadding {
   padding-top: 50px !important;
@@ -1853,6 +1859,10 @@ div:focus {
   border: 0.5px solid rgba(151, 151, 151, 0.54) !important;
   border-radius: 4px !important;
 }
+.profileUpdateCardContentHeight {
+  height: 100px;
+  max-height: 100px;
+}
 @media screen and (max-width: 1100px) and (min-width: 1024px) {
   .profileUpdateCardHeading {
     margin-top: -10px;
@@ -1861,7 +1871,7 @@ div:focus {
     line-height: 1.2;
   }
   .profileUpdateCardPadding {
-    padding: 4px 15px 1px 10px;
+    padding: 3px 15px 60px 10px;
   }
   .ui.card > .sliderCards.content.CardcontentTopPadding {
     padding-top: 40px !important;
@@ -1875,7 +1885,7 @@ div:focus {
     line-height: 1.2;
   }
   .profileUpdateCardPadding {
-    padding: 45px 15px 27px 10px;
+    padding: 45px 15px 6px 10px;
   }
 }
 .down-arrow-accordion {
