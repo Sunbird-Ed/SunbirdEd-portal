@@ -191,7 +191,8 @@
         Grid
 --------------------*/
 
-@columnCount: 16;
+@columnCount: 12;
+
 
 /*-------------------
      Transitions
