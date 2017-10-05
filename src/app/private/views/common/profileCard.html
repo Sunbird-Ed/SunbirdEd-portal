@@ -11,7 +11,7 @@
                         <div class="fill"></div>
                     </div>
                 </div>
-                <div class="padding-top-10 padding-left-10 content">
+                <div class="padding-top-10 padding-left-10 content profileUpdateCardContentHeight">
                     <div class="profileUpdateCardHeading"> {{item.title}}</div>
                     <div ng-repeat="field in item.missingFields | limitTo:2" ng-init="field = $root.labels.PROFILE.COMPLETENESS[field] || field" class="padding-top-5 profileUpdateCardSubDesc">{{$first ? 'Add ' + field + ( item.missingFields.length > 1 ? ',' : ''  ) :  field + ($last ? ' now' : '') }}</div>
                 </div>
