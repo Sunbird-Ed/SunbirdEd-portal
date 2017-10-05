@@ -23,6 +23,7 @@ angular.module('playerApp')
                   closeOnEscape: false,
                   overlayClose: false,
                   overlay: false,
+                  history: false,
                   overlayColor: '',
                   onClosed: function () {
                       if ($stateParams.state) {

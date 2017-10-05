@@ -69,6 +69,7 @@ angular.module('playerApp')
                     overlayClose: false,
                     overlay: false,
                     overlayColor: '',
+                    history: false,
                     onClosed: function () {
                         if ($stateParams.state) {
                             $state.go($stateParams.state);
