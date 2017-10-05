@@ -126,3 +126,13 @@
 /* 4px @ default em */
 @relativeBorderRadius: @relative4px;
 @absoluteBorderRadius: 4px;
+
+
+/*******************************
+     User Global Variables
+*******************************/
+@columnCount: 12;
+@headerFont        : 'HelveticaNeueLTStd-Lt', Helvetica, Arial, sans-serif;
+@pageFont          : 'HelveticaNeueLTStd-Lt', Helvetica, Arial, sans-serif;
+@fontSmoothing     : antialiased;
+@googleProtocol    : 'https://';
