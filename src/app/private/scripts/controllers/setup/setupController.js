@@ -62,6 +62,7 @@ angular.module('playerApp')
                         return true;
                     }
                 }).modal('show');
+                $('#addOrgType').modal('refresh');
             };
 
             setup.addOrgType = function (orgType) {
