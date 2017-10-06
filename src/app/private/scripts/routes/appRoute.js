@@ -924,7 +924,7 @@ angular.module('playerApp')
             views: {
                 mainView: {
                     templateUrl: '/views/search/userProfile.html',
-                    controller: 'PubilicProfileController as publicProfile'
+                    controller: 'PublicProfileController as publicProfile'
                 }
             },
             params: {
