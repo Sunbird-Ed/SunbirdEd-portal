@@ -42,9 +42,11 @@ angular.module('playerApp')
                     onShow: function () {
                         setup.selectedOrg = {};
                         setup.selectedOrg.orgType = orgType;
+                        setup.isUpdated = false;
                     },
                     onHide: function () {
                         setup.selectedOrg = {};
+                        setup.isUpdated = false;
                         return true;
                     }
                 }).modal('show');
