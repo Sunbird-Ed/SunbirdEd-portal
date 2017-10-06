@@ -2,13 +2,13 @@
 
 /**
  * @ngdoc function
- * @name playerApp.controller:PubilicProfileController
+ * @name playerApp.controller:PublicProfileController
  * @description display public profile
- * # PubilicProfileController
+ * # PublicProfileController
  * Controller of the playerApp
  */
 angular.module('playerApp') // add those all values
-  .controller('PubilicProfileController', ['$scope',
+  .controller('PublicProfileController', ['$scope',
       '$rootScope',
       '$stateParams',
       'searchService',
