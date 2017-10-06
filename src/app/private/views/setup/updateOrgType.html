@@ -6,7 +6,7 @@
         </div>
     </div>
     <div class="actions">
-        <div class="ui primary approve button" ng-click="setup.updateOrgType(setup.selectedOrg.orgType)">Update
+        <div class="ui primary approve button" ng-class="{ 'disabled' : setup.isUpdated}" ng-click="setup.updateOrgType(setup.selectedOrg.orgType);setup.isUpdated=true">Update
         </div>
         <div class="ui negative cancel button">cancel</div>
     </div>
