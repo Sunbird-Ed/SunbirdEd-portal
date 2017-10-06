@@ -11,7 +11,8 @@ module.exports = {
       logo: (req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') + '/common/images/sunbird_logo.png',
       favicon: (req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') +'/common/images/favicon.ico',
       poster: (req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') +'/common/images/sunbird_logo.png',
-    }
+      titleName: envHelper.PORTAL_TITLE_NAME
+    };
     //TODO: make file checking async for performance
     if (tenantId) {
       if (fs.existsSync(path.join(__dirname, '../tenant', tenantId, 'logo.png'))) {
@@ -31,7 +32,7 @@ module.exports = {
       }
       module.exports.getSucessResponse(res, "api.tenant.info", responseObj);
     } else {
-      module.exports.getErrorResponse(res);
+      module.exports.getSucessResponse(res, "api.tenant.info", responseObj);
     }
   },
   getSucessResponse: function(res, id, result) {
