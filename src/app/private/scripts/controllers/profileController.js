@@ -86,6 +86,7 @@ angular.module('playerApp')
                 profile.loader.showLoader = false;
                 if (userProfile && userProfile.responseCode === 'OK') {
                     var profileData = angular.copy(userProfile.result.response);
+                    
                     profile.user = profileData;
                     profile.fullName = profileData.firstName + ' ' + profileData.lastName;
                     profile.email = profileData.email;
@@ -100,6 +101,9 @@ angular.module('playerApp')
 
                     profile.education = angular.copy(profileData.education);
                     profile.experience = angular.copy(profileData.jobProfile);
+                    if(profile.user.lastLoginTime > 0){
+                        profile.lastLoginTime = angular.copy(profile.user.lastLoginTime);
+                    }
                     if (profile.user.badges) {
                         profile.getUserBadges();
                     }
