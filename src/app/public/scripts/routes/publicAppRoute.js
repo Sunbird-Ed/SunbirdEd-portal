@@ -2,9 +2,9 @@
 
 /**
  * @ngdoc overview
- * @name playerApp
+ * @name loginApp
  * @description
- * # playerApp
+ * # loginApp
  *
  * Main module of the application.
  */

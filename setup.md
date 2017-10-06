@@ -18,6 +18,7 @@
 15. sunbird_api_auth_token (string Token to call learner apis)
 16. sunbird_cassandra_urls (String coma seperated values Eg: "locahost:3000,locahost:5000")
 17. sunbird_session_store_type (String Eg:cassandra)
+18. sunbird_portal_title_name (String Eg:Sunbird)
 
 ## Pre Requirements
 
