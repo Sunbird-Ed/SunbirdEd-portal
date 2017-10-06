@@ -24,7 +24,8 @@ angular.module('playerApp')
                     setup.loader.showLoader = false;
                     try {
                         if (res.responseCode === 'OK') {
-                            setup.orgTypes = angular.copy(res.result.response);
+                            var orgTypes = angular.copy(res.result.response);
+                            setup.orgTypes = _.sortBy(orgTypes, ['name']);
                         } else if (res.responseCode === 'CLIENT_ERROR') {
                             throw new Error(res.params.errmsg);
                         } else throw new Error('');
