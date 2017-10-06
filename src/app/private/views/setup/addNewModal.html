@@ -1,13 +1,15 @@
 <div class="ui modal" id="addOrgType">
-    <div class="header">Add Org Type</div>
+    <div class="header">{{$root.labels.SETUP.addOrgType}}</div>
     <div class="content">
         <div class="ui fluid icon input">
             <input type="text" placeholder="Enter org type name" ng-model="setup.newOrgType">
         </div>
     </div>
     <div class="actions">
-        <div class="ui primary approve button" ng-click="setup.addOrgType(setup.newOrgType)">Add
+        <div class="ui primary approve button"
+         ng-click="setup.addOrgType(setup.newOrgType)">
+         {{$root.labels.SETUP.add}}
         </div>
-        <div class="ui negative cancel button">Cancel</div>
+        <div class="ui negative cancel button">{{$root.labels.SETUP.cancel}}</div>
     </div>
 </div>
