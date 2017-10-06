@@ -1,13 +1,15 @@
 <div class="ui modal" id="updateOrgType">
-    <div class="header">Update Org Type</div>
+    <div class="header">{{$root.labels.SETUP.updateOrg}}</div>
     <div class="content">
         <div class="ui fluid icon input">
             <input type="text" ng-model="setup.selectedOrg.orgType.name">
         </div>
     </div>
     <div class="actions">
-        <div class="ui primary approve button" ng-class="{ 'disabled' : setup.isUpdated}" ng-click="setup.updateOrgType(setup.selectedOrg.orgType);setup.isUpdated=true">Update
+        <div class="ui primary approve button" ng-class="{ 'disabled' : setup.isUpdated}"
+         ng-click="setup.updateOrgType(setup.selectedOrg.orgType);setup.isUpdated=true">
+         {{$root.labels.SETUP.update}}
         </div>
-        <div class="ui negative cancel button">cancel</div>
+        <div class="ui negative cancel button">{{$root.labels.SETUP.cancel}}</div>
     </div>
 </div>
