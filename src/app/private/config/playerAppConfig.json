@@ -568,7 +568,7 @@
         "CreateCollectionMimeType": "application/vnd.ekstep.content-collection",
         "MimeTypeExceptCollection": ["application/pdf", "video/mp4", "video/x-youtube",
             "application/vnd.ekstep.html-archive", "video/youtube", "application/vnd.ekstep.ecml-archive",
-            "application/epub", "application/vnd.ekstep.h5p-archive"
+            "application/epub", "application/vnd.ekstep.h5p-archive", "video/webm"
         ],
         "USER_ROLES": ["ORG_ADMIN", "ORG_MEMBER", "CONTENT_REVIEW", "CONTENT_CURATION", "CONTENT_REVIEWER",
             "CONTENT_CREATION", "CONTENT_CREATOR", "ORG_MODERATOR", "MEMBERSHIP_MANAGEMENT",
