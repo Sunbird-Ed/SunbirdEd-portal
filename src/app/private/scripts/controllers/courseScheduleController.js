@@ -327,7 +327,7 @@ angular.module('playerApp')
                             // load details needed for previous and next items in player
                             toc.prevPlaylistItem = (toc.itemIndex - 1) > -1
                                     ? toc.courseContents[toc.itemIndex - 1].identifier : -1;
-                            toc.nextPlaylistItem = (toc.itemIndex + 1) <= toc.courseContents.length
+                            toc.nextPlaylistItem = (toc.itemIndex + 1) < toc.courseContents.length
                                     ? toc.courseContents[toc.itemIndex + 1].identifier : -1;
                             toc.previousPlayListName = (toc.itemIndex - 1) > -1
                                     ? toc.courseContents[toc.itemIndex - 1].name : 'No content to play';
