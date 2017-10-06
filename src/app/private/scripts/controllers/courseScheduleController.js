@@ -317,13 +317,7 @@ angular.module('playerApp')
                         var contentData = toc.courseContents[toc.itemIndex];
 
                         // if content is not collection type then  only its can be played
-                        if (contentData.mimeType !== 'application/vnd.ekstep.content-collection') {
-                            if (trigger === 'prev') {
-                                toc.itemIndex -= 1;
-                            } else if (trigger === 'next') {
-                                toc.itemIndex += 1;
-                            }
-
+                        if (contentData && contentData.mimeType !== 'application/vnd.ekstep.content-collection') {
                             // load details needed for previous and next items in player
                             toc.prevPlaylistItem = (toc.itemIndex - 1) > -1
                                     ? toc.courseContents[toc.itemIndex - 1].identifier : -1;
@@ -395,20 +389,22 @@ angular.module('playerApp')
                  */
                 toc.resumeCourse = function () {
                     toc.showCourseDashboard = false;
+                    if (toc.courseContents.length > 0) {
                     // if current page is TOC then load 'contentID' through Url Hash or lastReadContentId value.Else play first content by default
-                    if ($rootScope.isTocPage) {
-                        if ($location.hash().indexOf('tocPlayer') < 0) {
-                            var lastReadContentId = $stateParams.lastReadContentId || toc.courseContents[0].identifier;
-                            toc.openContent(lastReadContentId);
+                        if ($rootScope.isTocPage) {
+                            if ($location.hash().indexOf('tocPlayer') < 0) {
+                                var lastReadContentId = $stateParams.lastReadContentId || toc.courseContents[0].identifier;
+                                toc.openContent(lastReadContentId);
+                            } else {
+                                var currentHash = $location.hash().toString().split('/');
+                                toc.openContent(currentHash[1]);
+                            }
                         } else {
-                            var currentHash = $location.hash().toString().split('/');
-                            toc.openContent(currentHash[1]);
-                        }
-                    } else {
                         // else if 'RESUME COURSE' button of course-header is clicked from Notes or other pages goto 'TOC' state and resume player
-                        var params = sessionService.getSessionData('COURSE_PARAMS');
-                        sessionService.setSessionData('COURSE_PARAMS', params);
-                        $state.go('Toc', params);
+                            var params = sessionService.getSessionData('COURSE_PARAMS');
+                            sessionService.setSessionData('COURSE_PARAMS', params);
+                            $state.go('Toc', params);
+                        }
                     }
                 };
 
@@ -421,7 +417,7 @@ angular.module('playerApp')
                     toc.courseId = $stateParams.courseId;
                     toc.courseType = ($rootScope.enrolledCourseIds[toc.courseId]) ?
                             'ENROLLED_COURSE' : 'OTHER_COURSE';
-                    toc.playContent = false; 
+                    toc.playContent = false;
 
                     toc.contentStatusList = {};// to store status of each content of course by content ID
                     toc.contentStatusClass = {
