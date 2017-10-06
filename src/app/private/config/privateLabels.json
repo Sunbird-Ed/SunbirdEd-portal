@@ -369,6 +369,14 @@
                 "HEADER": "Assign Badge",
                 "CONTENT": "Do you want to assign  "
             }
+        },
+        "SETUP":{
+            "header":"Org Types",
+            "addOrgType":"Add Org Type",
+            "add":"ADD",
+            "cancel":"CANCEL",
+            "update":"UPDATE",
+            "updateOrg":"Update Org Type"
         }
 
     }
