@@ -257,7 +257,7 @@
                         "description": "Description updated successfully",
                         "education": "Education updated successfully",
                         "experience": "Experience updated successfully",
-                        "basicInfo": "Basic information  updated successfully",
+                        "basicInfo": "Additional information  updated successfully",
                         "address": "Address updated successfully"
                     },
                     "FAILURE": {
