@@ -44,10 +44,20 @@
 <div class="ui grid margin-top-10" ng-if="!courseDashboard.showError" ng-hide="courseDashboard.isMultipleCourses">
   <div class="six wide column">
     <div class="ui text menu float-ContentLeft padding-top-10">
-      <span class="dashBoardMenuItem cursor-pointer active" data-timeperiod="7d" data-timeperiod-text="7 days" ng-class="{active:courseDashboard.filterTimePeriod === '7d'}" ng-click="courseDashboard.onAfterFilterChange($event.target)">{{$root.labels.DASHBOARD.COMMON.FILTERS.SEVEN_DAYS}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-      <span class="dashBoardMenuItem cursor-pointer" data-timeperiod="14d" data-timeperiod-text="14 days" ng-class="{active:courseDashboard.filterTimePeriod === '14d'}" ng-click="courseDashboard.onAfterFilterChange($event.target)">{{$root.labels.DASHBOARD.COMMON.FILTERS.FOURTEEN_DAYS}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-      <span class="dashBoardMenuItem cursor-pointer" data-timeperiod="5w" data-timeperiod-text="5 weeks" ng-class="{active:courseDashboard.filterTimePeriod === '5w'}" ng-click="courseDashboard.onAfterFilterChange($event.target)">{{$root.labels.DASHBOARD.COMMON.FILTERS.FIVE_WEEKS}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-      <span class="dashBoardMenuItem cursor-pointer" ng-hide="courseDashboard.dataset == 'consumption'" data-timeperiod="fromBegining" data-timeperiod-text="from begining" ng-class="{active:courseDashboard.filterTimePeriod === 'fromBegining'}" ng-click="courseDashboard.onAfterFilterChange($event.target)">{{$root.labels.DASHBOARD.COMMON.FILTERS.FROM_BEGINING}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+      <span class="dashBoardMenuItem cursor-pointer active"
+      data-timeperiod="7d" data-timeperiod-text="{{$root.labels.DASHBOARD.COURSE.PROGRESS_DASHBOARD.SEVEN_DAYS}}"
+      ng-class="{active:courseDashboard.filterTimePeriod === '7d'}"
+      ng-click="courseDashboard.onAfterFilterChange($event.target)">{{$root.labels.DASHBOARD.COMMON.FILTERS.SEVEN_DAYS}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+      <span class="dashBoardMenuItem cursor-pointer"
+      data-timeperiod="14d" data-timeperiod-text="{{$root.labels.DASHBOARD.COURSE.PROGRESS_DASHBOARD.FOURTEEN_DAYS}}"
+      ng-class="{active:courseDashboard.filterTimePeriod === '14d'}"
+      ng-click="courseDashboard.onAfterFilterChange($event.target)">{{$root.labels.DASHBOARD.COMMON.FILTERS.FOURTEEN_DAYS}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+      <span class="dashBoardMenuItem cursor-pointer" data-timeperiod="5w"
+        data-timeperiod-text="{{$root.labels.DASHBOARD.COURSE.PROGRESS_DASHBOARD.FIVE_WEEKS}}" ng-class="{active:courseDashboard.filterTimePeriod === '5w'}"
+        ng-click="courseDashboard.onAfterFilterChange($event.target)">{{$root.labels.DASHBOARD.COMMON.FILTERS.FIVE_WEEKS}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+      <span class="dashBoardMenuItem cursor-pointer" ng-hide="courseDashboard.dataset == 'consumption'" data-timeperiod="fromBegining"
+        data-timeperiod-text="{{$root.labels.DASHBOARD.COURSE.PROGRESS_DASHBOARD.BEGINING}}"
+        ng-class="{active:courseDashboard.filterTimePeriod === 'fromBegining'}" ng-click="courseDashboard.onAfterFilterChange($event.target)">{{$root.labels.DASHBOARD.COMMON.FILTERS.FROM_BEGINING}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
     </div>
   </div>
   <div class="two wide column"></div>

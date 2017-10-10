@@ -394,7 +394,11 @@
                     "BATCH_NOT_SELECTED_MSG":"Please select a batch from the above list.",
                     "LIST_EMPTY_MSG":"You haven't created a batch for this course yet. Create new batch and check the dashboard again.",
                     "REMOVE_ICON_TOOLTIP":"Close the dashboard",
-                    "DROPDOWN_PLACEHOLDER":"Select Batch To See Dashboard"
+                    "DROPDOWN_PLACEHOLDER":"Select Batch To See Dashboard",
+                    "SEVEN_DAYS":"Stats for last 7 days",
+                    "FOURTEEN_DAYS":"Stats for last 14 days",
+                    "FIVE_WEEKS":"Stats for last 5 weeks",
+                    "BEGINING": "Stats from begining"
                 },
                 "LIST_EMPTY_LBL":"Oops..."
             },

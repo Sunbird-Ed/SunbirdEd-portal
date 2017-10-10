@@ -361,6 +361,7 @@
         },
         "DASHBOARD":{
             "COURSE":{
+                "SEVEN_DAYS_STATS":"Stats for last 7 days",
                 "FAILED":"Unable to load data..."
             }
         }

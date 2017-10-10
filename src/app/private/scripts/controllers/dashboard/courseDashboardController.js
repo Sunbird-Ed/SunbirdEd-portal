@@ -13,7 +13,7 @@ angular.module('playerApp')
       var courseDashboard = this;
       courseDashboard.chartHeight = 120;
       courseDashboard.courseProgressArray = [];
-      courseDashboard.filterQueryTextMsg = '7 days'; // Default value
+      courseDashboard.filterQueryTextMsg = $rootScope.errorMessages.DASHBOARD.COURSE.SEVEN_DAYS_STATS; // Default value
       courseDashboard.filterTimePeriod = '7d'; // Default value
 
       // Dataset - progress / consumption
