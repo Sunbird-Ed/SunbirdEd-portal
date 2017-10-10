@@ -236,7 +236,8 @@
                 "title":"Social media",
                 "facebook":"Facebook",
                 "twitter":"Twitter",
-                "linkedIn":"LinkedIn"
+                "linkedIn":"LinkedIn",
+                "blog":"Blog"
             }
         },
         "HEADER": {
