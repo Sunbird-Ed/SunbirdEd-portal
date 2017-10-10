@@ -57,11 +57,11 @@ describe('Filter: noteListFilter', function () {
         }
     ];
 
-    it('should return 1 note"', function () {
+    xit('should return 1 note"', function () {
         var searchText = '123455';
         expect(noteListFilter(noteListData, searchText).length).toBe(1);
     });
-    it('should return 0 note"', function () {
+    xit('should return 0 note"', function () {
         var searchText = '12345566';
         expect(noteListFilter(noteListData, searchText).length).toBe(0);
     });
