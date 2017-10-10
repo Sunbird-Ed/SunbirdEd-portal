@@ -29,6 +29,7 @@ angular.module('playerApp')
       courseDashboard.showLoader = true;
       courseDashboard.showError = false;
       courseDashboard.showLabelFlag = false;
+      courseDashboard.errorLbl = '';
       courseDashboard.errorMsg = '';
 
       /**
@@ -167,6 +168,7 @@ angular.module('playerApp')
       courseDashboard.showErrors = function(apiResponse) {
         courseDashboard.showError = true;
         courseDashboard.showLoader = false;
+        courseDashboard.errorLbl = $rootScope.errorMessages.DASHBOARD.COURSE.FAILED;
         courseDashboard.errorMsg = apiResponse.params.errmsg;
         toasterService.error(apiResponse.params.errmsg);
       };
