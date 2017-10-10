@@ -10,46 +10,15 @@ describe('Controller: LessonPlanController', function() {
     // load the controller's module
     beforeEach(module('playerApp'));
 
-    var failedResponce = {
-        "id": "api.content.create",
-        "ver": "1.0",
-        "ts": "2017-09-26T18:36:56.047Z",
-        "params": {
-            "resmsgid": "ac55bff0-a2e9-11e7-bec3-f181544afb13",
-            "msgid": null,
-            "status": "failed",
-            "err": "ERR_CONTENT_CREATE_FIELDS_MISSING",
-            "errmsg": "Required fields for create content are missing"
-        },
-        "responseCode": "CLIENT_ERROR",
-        "result": {}
-    };
-
-    var successResponce = {
-        "id": "api.content.create",
-        "ver": "1.0",
-        "ts": "2017-09-26T18:36:08.221Z",
-        "params": {
-            "resmsgid": "8fd414d0-a2e9-11e7-bec3-f181544afb13",
-            "msgid": "8fca50d0-a2e9-11e7-bfa6-ef4d4c0ba89e",
-            "status": "successful",
-            "err": null,
-            "errmsg": null
-        },
-        "responseCode": "OK",
-        "result": {
-            "content_id": "do_2123408457949265921231",
-            "versionKey": "1506450902701"
-        }
-    };
-
     var contentService,
         scope,
         rootScope,
         lessonPlanController,
         $q,
         deferred,
-        timeout;
+        timeout,
+        failedResponce = testData.createContent.failedResponce,
+        successResponce = testData.createContent.successResponce;
 
     beforeEach(inject(function($rootScope, $controller) {
         $controller('AppCtrl', {
