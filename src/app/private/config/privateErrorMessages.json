@@ -353,7 +353,7 @@
             }
         },
         "SETUP":{
-            "ADD_SUCCESS":" added successfully",
+            "ADD_SUCCESS":" Org type added successfully",
             "ADD_FAILURE":"Adding a new org type failed, please try again later",
             "GET_FAILURE":"Fetching org type failed, please try again later",
             "UPDATE_FAILURE":"Org  type update failed, please try again later",
