@@ -13,7 +13,7 @@ angular.module('playerApp')
       var courseDashboard = this;
       courseDashboard.chartHeight = 120;
       courseDashboard.courseProgressArray = [];
-      courseDashboard.filterQueryTextMsg = '7 days'; // Default value
+      courseDashboard.filterQueryTextMsg = $rootScope.errorMessages.DASHBOARD.COURSE.SEVEN_DAYS_STATS; // Default value
       courseDashboard.filterTimePeriod = '7d'; // Default value
 
       // Dataset - progress / consumption
@@ -29,6 +29,7 @@ angular.module('playerApp')
       courseDashboard.showLoader = true;
       courseDashboard.showError = false;
       courseDashboard.showLabelFlag = false;
+      courseDashboard.errorLbl = '';
       courseDashboard.errorMsg = '';
 
       /**
@@ -167,6 +168,7 @@ angular.module('playerApp')
       courseDashboard.showErrors = function(apiResponse) {
         courseDashboard.showError = true;
         courseDashboard.showLoader = false;
+        courseDashboard.errorLbl = $rootScope.errorMessages.DASHBOARD.COURSE.FAILED;
         courseDashboard.errorMsg = apiResponse.params.errmsg;
         toasterService.error(apiResponse.params.errmsg);
       };

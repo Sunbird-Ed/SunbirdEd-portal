@@ -377,7 +377,46 @@
             "cancel":"CANCEL",
             "update":"UPDATE",
             "updateOrg":"Update Org Type"
+        },
+        "DASHBOARD":{
+            "COURSE":{
+                "CREATION_DASHBOARD":{
+                    "COURSE_NOT_SELECTED_LBL":"Course not selected!",
+                    "COURSE_NOT_SELECTED_MSG":"Please select a course from the above list.",
+                    "LIST_EMPTY_MSG":"You haven't created any course yet. Create new course and check the dashboard again.",
+                    "DROPDOWN_PLACEHOLDER":"Select Course To See Dashboard"
+                },
+                "PROGRESS_DASHBOARD":{
+                    "NO_DATA_MSG":"No data found",
+                    "STATS_FOR":"Stats for last",
+                    "BATCH_DONE_STATUS":"Completed",
+                    "BATCH_NOT_SELECTED":"Batch not selected!",
+                    "BATCH_NOT_SELECTED_MSG":"Please select a batch from the above list.",
+                    "LIST_EMPTY_MSG":"You haven't created a batch for this course yet. Create new batch and check the dashboard again.",
+                    "REMOVE_ICON_TOOLTIP":"Close the dashboard",
+                    "DROPDOWN_PLACEHOLDER":"Select Batch To See Dashboard",
+                    "SEVEN_DAYS":"Stats for last 7 days",
+                    "FOURTEEN_DAYS":"Stats for last 14 days",
+                    "FIVE_WEEKS":"Stats for last 5 weeks",
+                    "BEGINING": "Stats from begining"
+                },
+                "LIST_EMPTY_LBL":"Oops..."
+            },
+            "COMMON":{
+                "FILTERS":{
+                    "SEVEN_DAYS":"LAST 7 DAYS",
+                    "FOURTEEN_DAYS":"LAST 14 DAYS",
+                    "FIVE_WEEKS":"LAST 5 WEEKS",
+                    "FROM_BEGINING":"FROM BEGINING"
+                },
+                "SORT_BY":{
+                    "STATUS":"Status",
+                    "USER_NAME":"User Name",
+                    "BATCH_END":"Batch End On",
+                    "ORG":"ORG",
+                    "ENROLLED_ON":"Enrolled On"
+                }
+            }
         }
-
     }
 }
