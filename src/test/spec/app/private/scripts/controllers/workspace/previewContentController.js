@@ -96,6 +96,12 @@ describe('Controller:PreviewContentController', function(){
 
     describe("Published content", function() {
 
+        it('Should called publish content service', function(){
+            spyOn(contentService, 'publish').and.callThrough();
+            contentService.publish({}, stateParams.contentId);
+            expect(contentService.publish).toBeDefined();
+        });
+
         it('Success', function(){
             spyOn(contentService, 'publish').and.returnValue(deferred.promise);
             deferred.resolve(publishSuccessResp);
@@ -128,6 +134,12 @@ describe('Controller:PreviewContentController', function(){
     });
 
     describe("Reject content", function() {
+
+        it('Should called reject content service', function(){
+            spyOn(contentService, 'reject').and.callThrough();
+            contentService.reject({}, stateParams.contentId);
+            expect(contentService.reject).toBeDefined();
+        });
 
         it('Success', function(){
             spyOn(contentService, 'reject').and.returnValue(deferred.promise);
@@ -199,6 +211,12 @@ describe('Controller:PreviewContentController', function(){
                 "versionKey": "150167687998"
         };
 
+        it('Should called accept content flag service', function(){
+            spyOn(contentService, 'acceptContentFlag').and.callThrough();
+            contentService.acceptContentFlag(request, stateParams.contentId);
+            expect(contentService.acceptContentFlag).toBeDefined();
+        });
+
         it('Success', function(){
             spyOn(contentService, 'acceptContentFlag').and.returnValue(deferred.promise);
             deferred.resolve(acceptFlagSuccessResp);
@@ -234,6 +252,12 @@ describe('Controller:PreviewContentController', function(){
         var request = {
                     "versionKey": "150167687998"
             };
+
+        it('Should called accept content flag service', function(){
+            spyOn(contentService, 'discardContentFlag').and.callThrough();
+            contentService.discardContentFlag(request, stateParams.contentId);
+            expect(contentService.discardContentFlag).toBeDefined();
+        });
 
         it('Success', function(){
             spyOn(contentService, 'discardContentFlag').and.returnValue(deferred.promise);

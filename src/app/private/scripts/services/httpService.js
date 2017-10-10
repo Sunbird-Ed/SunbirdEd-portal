@@ -55,25 +55,4 @@ angular.module('playerApp')
                 var request = httpCall(url, data, 'DELETE', headers);
                 return (request.then(handleSuccess, handleError));
             };
-
-            this.put = function (url, data, headers) {
-                var request = httpCall(url, data, 'PUT', headers);
-                return (request.then(handleSuccess, handleError));
-            };
-
-            this.patch = function (url, data, headers) {
-                var request = httpCall(url, data, 'PATCH', headers);
-                return (request.then(handleSuccess, handleError));
-            };
-
-            this.upload = function (url, data, header, qs) {
-                var request = $http.post(config.URL.BASE_PREFIX + config.URL.CONTENT_PREFIX + url, data, {
-                    //                    transformRequest: angular.identity,
-                    headers: {
-                        'Content-Type': undefined
-                    },
-                    params: qs
-                });
-                return (request.then(handleSuccess, handleError));
-            };
         }]);

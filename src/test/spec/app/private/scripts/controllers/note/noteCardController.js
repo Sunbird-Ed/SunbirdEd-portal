@@ -203,6 +203,7 @@ describe('Controller: NoteCardCtrl', function() {
     }));
 
     describe('Search note service', function() {
+        
         it('Should called search service', function () {
             spyOn(noteService, 'search').and.callThrough();
             noteService.search();
@@ -400,6 +401,13 @@ describe('Controller: NoteCardCtrl', function() {
                 contentId: "w2323423423423"
             }
         };
+
+        it('Should called search service', function () {
+            spyOn(noteService, 'update').and.callThrough();
+            noteService.update(requestData);
+            expect(noteService.update).toBeDefined();
+        });
+
 
         it('failed due to invalid id', function() {
             spyOn(noteService, 'update').and.returnValue(deferred.promise);
