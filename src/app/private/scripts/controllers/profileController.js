@@ -86,7 +86,7 @@ angular.module('playerApp')
                 profile.loader.showLoader = false;
                 if (userProfile && userProfile.responseCode === 'OK') {
                     var profileData = angular.copy(userProfile.result.response);
-                    
+
                     profile.user = profileData;
                     profile.fullName = profileData.firstName + ' ' + profileData.lastName;
                     profile.email = profileData.email;
@@ -101,7 +101,7 @@ angular.module('playerApp')
 
                     profile.education = angular.copy(profileData.education);
                     profile.experience = angular.copy(profileData.jobProfile);
-                    if(profile.user.lastLoginTime > 0){
+                    if (profile.user.lastLoginTime > 0) {
                         profile.lastLoginTime = angular.copy(profile.user.lastLoginTime);
                     }
                     if (profile.user.badges) {
@@ -129,6 +129,10 @@ angular.module('playerApp')
                         socialMedia.in = profile.user.webPages.find(function (webLink) {
                             return webLink.type === 'in';
                         }) || { type: 'in', url: '' };
+                        socialMedia.blog = profile.user.webPages.find(function (webLink) {
+                            return webLink.type === 'blog';
+                        }) || { type: 'blog', url: '' };
+
                         profile.user.socialMedia = socialMedia;
                     }
                     profile.basicProfile = angular.copy(profile.user);
