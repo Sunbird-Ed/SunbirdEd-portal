@@ -28,7 +28,7 @@ angular.module('playerApp')
             admin.badges = adminService.getBadgesList();
 
             // getOrgnames
-            admin.getOrgName = function (cb) {
+            admin.getOrgName = function () {
                 var identifiers = [];
                 admin.searchResult.forEach(function (user) {
                     if (user.organisations) {
@@ -45,14 +45,14 @@ angular.module('playerApp')
                         }
                     }
                 };
-                adminService.orgSearch(req).then(function (res) {
+                return adminService.orgSearch(req).then(function (res) {
                     var orgIdAndNames = res.result.response.content.map(function (org) {
                         return {
                             orgName: org.orgName,
                             orgId: org.identifier
                         };
                     });
-                    cb(orgIdAndNames);
+                    return orgIdAndNames;
                 });
             };
             // OVERRIDE USERS SEARCH RESULT AND ADD ORGNAME TO RESULT
@@ -60,7 +60,7 @@ angular.module('playerApp')
                 admin.currentUserRoles = permissionsService.getCurrentUserRoles();
                 admin.currentUserRoleMap = permissionsService.getCurrentUserRoleMap();
                 if ($rootScope.search.selectedSearchKey === 'Users') {
-                    admin.getOrgName(function (orgIdAndNames) {
+                    admin.getOrgName().then(function (orgIdAndNames) {
                         admin.searchResult.forEach(function (user) {
                             if (user.roles) {
                                 // if user is sys admin, only a sys admin can edit
@@ -84,7 +84,7 @@ angular.module('playerApp')
                                 });
                             }
                             // if current logged in user is ORG_ADMIN of the root org of the user, set editable to true
-                            if (typeof (user.isEditableProfile) === 'undefined' && user.rootOrgId == $rootScope.rootOrgId
+                            if (typeof (user.isEditableProfile) === 'undefined' && user.rootOrgId === $rootScope.rootOrgId
                                     && $rootScope.rootOrgAdmin === true) {
                                 user.isEditableProfile = true;
                             }
