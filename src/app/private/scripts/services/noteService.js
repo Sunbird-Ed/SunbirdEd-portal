@@ -24,11 +24,6 @@ angular.module('playerApp')
             return httpServiceJava.patch(url, req);
         };
 
-        this.get = function (req) {
-            var url = config.URL.NOTES.GET + '/' + req.noteId;
-            return httpServiceJava.get(url, req);
-        };
-
         this.remove = function (req) {
             var url = config.URL.NOTES.DELETE + '/' + req.noteId;
             return httpServiceJava.remove(url, req);
