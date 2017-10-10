@@ -9,18 +9,14 @@
 describe('Controller: contentFlagController', function() {
     // load the controller's module
     beforeEach(module('playerApp'));
-
-    var successResp = {"id":"api.content.flag","ver":"1.0","ts":"2017-10-05T10:51:39.708Z","params":{"resmsgid":"2a9e37c0-a9bb-11e7-affe-27e6e844e45f","msgid":"2a92ed20-a9bb-11e7-b58c-c39ec8dc8ee7","status":"successful","err":null,"errmsg":null},"responseCode":"OK","result":{"node_id":"do_2123347975635599361299","versionKey":"1507200631520"}}
-    var failedResp = {"id":"api.content.flag","ver":"1.0","ts":"2017-10-05T10:50:48.801Z","params":{"resmsgid":"0c466d10-a9bb-11e7-8938-e1607b8b88ae","msgid":null,"status":"failed","err":"ERR_GRAPH_SEARCH_UNKNOWN_ERROR","errmsg":"Error! Node(s) doesn't Exists. | [Invalid Node Id.]: do_212346255651921920113"},"responseCode":"RESOURCE_NOT_FOUND","result":{}}
-
-
-    var contentService,
+     var contentService,
         scope,
         rootScope,
         contentFlagCtrl,
         $q,
         deferred,
-        timeout;
+        timeout,
+        contentFlagTestData = testData.contentFlag;
 
     beforeEach(inject(function($rootScope, $controller) {
         $controller('AppCtrl', {
@@ -70,7 +66,7 @@ describe('Controller: contentFlagController', function() {
             var data = {flagReasons : ["Reason"], comment : ["Comment"]};
             rootScope.search.searchKeyword = 'some value';
             spyOn(contentService, 'flag').and.returnValue(deferred.promise);
-            deferred.resolve(successResp);
+            deferred.resolve(contentFlagTestData.successResp);
             spyOn(contentFlagCtrl, 'saveMetaData').and.callThrough();
             contentFlagCtrl.saveMetaData(data);
             scope.$apply();
@@ -84,7 +80,7 @@ describe('Controller: contentFlagController', function() {
             var data = {flagReasons : ["Reason"], comment : ["Comment"]};
             rootScope.search.searchKeyword = '';
             spyOn(contentService, 'flag').and.returnValue(deferred.promise);
-            deferred.resolve(successResp);
+            deferred.resolve(contentFlagTestData.successResp);
             spyOn(contentFlagCtrl, 'saveMetaData').and.callThrough();
             contentFlagCtrl.saveMetaData(data);
             scope.$apply();
@@ -98,7 +94,7 @@ describe('Controller: contentFlagController', function() {
             var data = {flagReasons : ["Reason"], comment : ["Comment"]};
             rootScope.search = {};
             spyOn(contentService, 'flag').and.returnValue(deferred.promise);
-            deferred.resolve(failedResp);
+            deferred.resolve(contentFlagTestData.failedResp);
             spyOn(contentFlagCtrl, 'saveMetaData').and.callThrough();
             contentFlagCtrl.saveMetaData(data);
             scope.$apply();

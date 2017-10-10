@@ -103,7 +103,7 @@ describe('Controller: contentPlayerCtrl', function() {
         scope.getConceptsNames(concepts);
     });
 
-    it("Call close function", function() {
+    xit("Call close function", function() {
         scope.closeurl  = "Content";
         scope.id = "do_2123463136997294081163";
         rootScope.search = {};
@@ -114,7 +114,7 @@ describe('Controller: contentPlayerCtrl', function() {
         timeout.flush(0);
     });
 
-    it("Call close function with search keyword", function() {
+    xit("Call close function with search keyword", function() {
         scope.closeurl  = "Content";
         scope.id = "do_2123463136997294081163";
         rootScope.search = {};
