@@ -10,163 +10,6 @@ describe('Controller: NoteCardCtrl', function() {
     // load the controller's module
     beforeEach(module('playerApp'));
 
-    var userNotesSuccess = {
-        id: '',
-        ver: '',
-        ts: '2017-09-23 18:06:03:821+0000',
-        params: {
-            resmsgid: null,
-            msgid: '21263be3-befb-4e8a-9040-07b170fe7439',
-            err: null,
-            status: 'success',
-            errmsg: null
-        },
-        responseCode: 'OK',
-        result: {
-            response: {
-                count: 7,
-                note: [{
-                    note: 'Test',
-                    identifier: '01233623626456268818',
-                    updatedBy: 'be7efb23-6af9-4d92-82b3-a4d78fcfa2f6',
-                    createdDate: '2017-09-20 06:15:07:401+0000',
-                    createdBy: 'be7efb23-6af9-4d92-82b3-a4d78fcfa2f6',
-                    contentId: 'do_2123215064116756481869',
-                    id: '01233623626456268818',
-                    updatedDate: '2017-09-20 06:15:07:401+0000',
-                    title: 'Test',
-                    userId: 'be7efb23-6af9-4d92-82b3-a4d78fcfa2f6'
-                }, {
-                    note: 'Test update',
-                    identifier: '0123362158323384320',
-                    createdDate: '2017-09-20 05:24:03:013+0000',
-                    updatedBy: 'be7efb23-6af9-4d92-82b3-a4d78fcfa2f6',
-                    createdBy: 'be7efb23-6af9-4d92-82b3-a4d78fcfa2f6',
-                    contentId: 'do_2123215064116756481869',
-                    id: '0123362158323384320',
-                    updatedDate: '2017-09-20 05:24:15:166+0000',
-                    title: 'Test',
-                    userId: 'be7efb23-6af9-4d92-82b3-a4d78fcfa2f6'
-                }, {
-                    note: 'My notes 3',
-                    identifier: '0123362128603217920',
-                    createdDate: '2017-09-20 05:21:22:358+0000',
-                    contentId: 'do_2123215064116756481869',
-                    id: '0123362128603217920',
-                    updatedDate: '2017-09-20 05:21:22:358+0000',
-                    title: ' title 3 without tag',
-                    userId: 'be7efb23-6af9-4d92-82b3-a4d78fcfa2f6'
-                }]
-            }
-        }
-    };
-    var userNotesFailed = {
-        id: 'api.notes.get',
-        ver: '1.0',
-        ts: '2017-05-29T08:27:23.675Z',
-        params: {
-            resmsgid: 'a3eea6b0-4448-11e7-a70e-5760c232cdfc',
-            msgid: null,
-            status: 'failed',
-            err: 'ERR_NOTE_GET_FAILED',
-            errmsg: 'Get note detail failed'
-        },
-        responseCode: 'RESOURCE_NOT_FOUND',
-        result: {}
-    };
-
-    var createNoteFailed = {
-        id: 'api.note.create',
-        ver: 'v1',
-        ts: '2017-09-23 18:27:21:246+0000',
-        params: {
-            resmsgid: null,
-            msgid: 'f2196ea1-c326-415d-b094-ae528830623d',
-            err: 'CONTENT_ID_OR_COURSE_ID_REQUIRED',
-            status: 'CONTENT_ID_OR_COURSE_ID_REQUIRED',
-            errmsg: 'Please provide content id or course id'
-        },
-        responseCode: 'CLIENT_ERROR',
-        result: {}
-    };
-
-    var createNoteSuccess = {
-        id: '',
-        ver: '',
-        ts: '2017-09-23 18:28:52:350+0000',
-        params: {
-            resmsgid: null,
-            msgid: '17bee712-7a81-44b8-bd94-97d114f38bcb',
-            err: null,
-            status: 'success',
-            errmsg: null
-        },
-        responseCode: 'OK',
-        result: {
-            id: '01233872295157760017'
-        }
-    };
-
-    var removeNoteSuccess = {
-        id: '',
-        ver: '',
-        ts: '2017-09-23 18:33:23:643+0000',
-        params: {
-            resmsgid: null,
-            msgid: '09add251-82e3-4405-8068-20594fb32dc8',
-            err: null,
-            status: 'success',
-            errmsg: null
-        },
-        responseCode: 'OK',
-        result: {}
-    };
-
-    var removeNoteFailed = {
-        id: 'api.note.delete',
-        ver: 'v1',
-        ts: '2017-09-23 18:34:53:297+0000',
-        params: {
-            resmsgid: null,
-            msgid: 'ea3a60c8-7fd5-4852-9e3a-91fdae40ed74',
-            err: 'NOTE_ID_INVALID',
-            status: 'NOTE_ID_INVALID',
-            errmsg: 'Invalid note id'
-        },
-        responseCode: 'CLIENT_ERROR',
-        result: {}
-    };
-
-    var updateNoteSuccess = {
-        id: 'api.note.update',
-        ver: 'v1',
-        ts: '2017-09-23 18:33:23:643+0000',
-        params: {
-            resmsgid: null,
-            msgid: '09add251-82e3-4405-8068-20594fb32dc8',
-            err: null,
-            status: 'success',
-            errmsg: null
-        },
-        responseCode: 'OK',
-        result: {}
-    };
-
-    var updateNoteFailed = {
-        id: 'api.note.update',
-        ver: 'v1',
-        ts: '2017-09-23 18:34:53:297+0000',
-        params: {
-            resmsgid: null,
-            msgid: 'ea3a60c8-7fd5-4852-9e3a-91fdae40ed74',
-            err: 'NOTE_ID_INVALID',
-            status: 'NOTE_ID_INVALID',
-            errmsg: 'Invalid note id'
-        },
-        responseCode: 'CLIENT_ERROR',
-        result: {}
-    };
-
     var noteService,
         scope,
         rootScope,
@@ -174,7 +17,8 @@ describe('Controller: NoteCardCtrl', function() {
         $q,
         deferred,
         timeout,
-        stateParams;
+        stateParams,
+        notesTestData = testData.notes;
 
     beforeEach(inject(function($rootScope, $controller) {
         $controller('AppCtrl', {
@@ -212,7 +56,7 @@ describe('Controller: NoteCardCtrl', function() {
 
         it('failed due to invalid request', function(done) {
             spyOn(noteService, 'search').and.returnValue(deferred.promise);
-            deferred.resolve(userNotesFailed);
+            deferred.resolve(notesTestData.userNotesFailed);
             spyOn(scope, 'updateNoteMetaData').and.callThrough();
             scope.updateNoteMetaData('12123123124324');
             scope.$apply();
@@ -234,7 +78,7 @@ describe('Controller: NoteCardCtrl', function() {
 
         it('success', function(done) {
             spyOn(noteService, 'search').and.returnValue(deferred.promise);
-            deferred.resolve(userNotesSuccess);
+            deferred.resolve(notesTestData.userNotesSuccess);
             spyOn(scope, 'updateNoteMetaData').and.callThrough();
             scope.updateNoteMetaData('12123123124324');
             scope.$apply();
@@ -273,7 +117,7 @@ describe('Controller: NoteCardCtrl', function() {
         noteCard.closeAddImageModal(false);
 
         // spyOn(noteCard, 'insertImage').and.returnValue(deferred.promise);
-        // deferred.resolve(userNotesSuccess);
+        // deferred.resolve(notesTestData.userNotesSuccess);
     });
 
     it('Should call view all notes with course and content', function(done) {
@@ -326,7 +170,7 @@ describe('Controller: NoteCardCtrl', function() {
             };
 
             spyOn(noteService, 'create').and.returnValue(deferred.promise);
-            deferred.resolve(createNoteSuccess);
+            deferred.resolve(notesTestData.createNoteSuccess);
             spyOn(noteCard, 'createNote').and.callThrough();
             noteCard.createNote(note);
             note.createdBy = new Date();
@@ -344,7 +188,7 @@ describe('Controller: NoteCardCtrl', function() {
             };
 
             spyOn(noteService, 'create').and.returnValue(deferred.promise);
-            deferred.resolve(createNoteFailed);
+            deferred.resolve(notesTestData.createNoteFailed);
             spyOn(noteCard, 'createNote').and.callThrough();
             noteCard.createNote(note);
             timeout.flush(2000);
@@ -411,7 +255,7 @@ describe('Controller: NoteCardCtrl', function() {
 
         it('failed due to invalid id', function() {
             spyOn(noteService, 'update').and.returnValue(deferred.promise);
-            deferred.resolve(updateNoteFailed);
+            deferred.resolve(notesTestData.updateNoteFailed);
             spyOn(noteCard, 'updateNote').and.callThrough();
             noteCard.updateNote(requestData);
             timeout.flush(2000);
@@ -431,7 +275,7 @@ describe('Controller: NoteCardCtrl', function() {
 
         it('success', function() {
             spyOn(noteService, 'update').and.returnValue(deferred.promise);
-            deferred.resolve(updateNoteSuccess);
+            deferred.resolve(notesTestData.updateNoteSuccess);
             spyOn(noteCard, 'updateNote').and.callThrough();
             noteCard.updateNote(requestData);
             timeout.flush(2000);
