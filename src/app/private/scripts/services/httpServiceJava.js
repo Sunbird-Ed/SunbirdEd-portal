@@ -66,11 +66,6 @@ angular.module('playerApp')
                 return (request.then(handleSuccess, handleError));
             };
 
-            this.put = function (url, data, headers) {
-                var request = httpCall(url, data, 'PUT', headers);
-                return (request.then(handleSuccess, handleError));
-            };
-
             this.patch = function (url, data, headers) {
                 var request = httpCall(url, data, 'PATCH', headers);
                 return (request.then(handleSuccess, handleError));
