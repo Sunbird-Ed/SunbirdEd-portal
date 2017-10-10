@@ -89,6 +89,11 @@
             <a ng-if="profileCtrl.basicProfile.socialMedia.in.url"
             href="{{profileCtrl.basicProfile.socialMedia.in.url}}" target="_blank">
             <i class="large linkedin icon"></i></a>
+            <a ng-if="profileCtrl.basicProfile.socialMedia.blog.url"
+            href="{{profileCtrl.basicProfile.socialMedia.blog.url}}" target="_blank">
+            <i class="large book icon"></i>
+        </a>
+            
         </div>
         <div class="iniformationcontent content ">
             {{$root.labels.PROFILE.SOCIAL_MEDIA.title}}
