@@ -59,6 +59,13 @@ describe('Controller: contentFlagController', function() {
     });
 
     describe("Create flag", function() {
+
+        it('Should called get content service', function(){
+            spyOn(contentService, 'flag').and.callThrough();
+            contentService.flag({request : {}}, "do_2123347975635599361299");
+            expect(contentService.flag).toBeDefined();
+        });
+
         it('Success', function(done){
             var data = {flagReasons : ["Reason"], comment : ["Comment"]};
             rootScope.search.searchKeyword = 'some value';
