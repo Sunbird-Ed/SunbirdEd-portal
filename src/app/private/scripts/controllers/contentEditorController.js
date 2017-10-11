@@ -110,7 +110,7 @@ angular.module('playerApp')
                 return false;
             };
 
-            contentService.getContentData = function () {
+            contentEditor.getContentData = function () {
                 var req = { contentId: contentEditor.contentId };
                 var qs = { fields: 'createdBy,status,mimeType', mode: 'edit' };
 
@@ -168,5 +168,5 @@ angular.module('playerApp')
             };
 
             contentEditor.init();
-            contentService.getContentData();
+            contentEditor.getContentData();
         }]);
