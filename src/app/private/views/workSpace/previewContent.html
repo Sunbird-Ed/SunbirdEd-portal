@@ -17,9 +17,6 @@
                 </button>
             </div>
             <div class="videosegment  ui clearing segment" ng-if="previewContent.contentData.status === 'Flagged' && previewContent.isShowFlagActionButton">
-                <button sb-permissions permission-only="FLAG_REVIEWER" ng-if="previewContent.isShowFlagActionButton" ng-disabled="previewContent.loader.showLoader" class="ui right floated primary button mouse-pointer" ng-click="previewContent.deleteContent()">
-                            {{$root.labels.WORKSPACE.previewContent.delete}}
-                </button>
                 <button sb-permissions permission-only="FLAG_REVIEWER" ng-if="previewContent.isShowFlagActionButton" ng-disabled="previewContent.loader.showLoader" class="ui right floated primary button mouse-pointer" ng-click="previewContent.acceptContentFlag(previewContent.contentData)">
                             {{$root.labels.WORKSPACE.previewContent.accept}}
                 </button>
