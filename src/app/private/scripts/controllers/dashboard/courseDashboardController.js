@@ -207,7 +207,7 @@ angular.module('playerApp')
        */
       courseDashboard.downloadReport = function() {
         courseDashboard.showDownloadLoader = 'active';
-        let req = {
+        var req = {
           courseId: courseDashboard.batchIdentifier,
           timePeriod: courseDashboard.filterTimePeriod
         };

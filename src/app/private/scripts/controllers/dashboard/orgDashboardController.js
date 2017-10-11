@@ -232,7 +232,7 @@ angular.module('playerApp')
        */
       dashboardData.downloadReport = function() {
         dashboardData.showDownloadLoader = 'active';
-        let req = {
+        var req = {
           org_id: dashboardData.orgId,
           period: dashboardData.timePeriod
         };
