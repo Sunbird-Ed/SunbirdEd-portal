@@ -66,11 +66,30 @@
             </canvas>
           </div>
         </div>
-        <!--<div class="twelve wide column margin-top-20" ng-show="dashboardData.showDataDiv">
+        <!-- Download csv-->
+        <div class="twelve wide column margin-top-20" ng-show="dashboardData.showDataDiv">
           <p class="text-align-right dashBoardCardText">Download this view as:
-            <a href="Javascript:void(0);" class="item text-decoration-underline padding-left-10 cursor-pointer">CSV</a>
+            <a href="Javascript:void(0);" class="item text-decoration-underline padding-left-10 cursor-pointer" ng-click="dashboardData.downloadReport();">CSV</a>
+            <span class="ui mini {{dashboardData.showDownloadLoader}} inline loader" id="reportDownloadLoader"></span>
           </p>
-        </div>-->
+        </div>
+        <!-- Download report popup-->
+        <div class="ui modal" id="downloadReportModal">
+          <div class="header">
+            <div class="ui grid">
+              <div class="eleven wide column"><span class="ui header">Thank you!</span></div>
+              <div class="one wide column actions">
+                <h5 class="ui basic icon circular button deny"><i class="ui remove icon"></i></h5>
+              </div>
+            </div>
+          </div>
+          <div class="content">
+            <p class="meta">{{dashboardData.downloadReportText}}</p>
+          </div>
+          <div class="actions margin-top-20 ">
+            <div></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

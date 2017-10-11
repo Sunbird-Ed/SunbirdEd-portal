@@ -217,7 +217,7 @@ angular.module('playerApp')
           courseDashboard.showDownloadLoader = '';
           if (apiResponse && apiResponse.responseCode === 'OK') {
             var str = $rootScope.errorMessages.DASHBOARD.DOWNLOAD_REPORTS.COURSES_CSV_MSG;
-            courseDashboard.downloadReportText = str.replace("{courseDashboard.downloadReportId}", apiResponse.result.requestId).replace(/(\(.*\))/g, '');
+            courseDashboard.downloadReportText = str.replace("{acknowledgementId}", apiResponse.result.requestId).replace(/(\(.*\))/g, '');
             $timeout(function() {
               $('#downloadReportModal').modal({
                 closable: true

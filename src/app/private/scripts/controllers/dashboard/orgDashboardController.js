@@ -67,7 +67,7 @@ angular.module('playerApp')
                       labels.push(bucketValue.key_name);
                     })
                     data.push(dataArray);
-                    
+
                     if (dashboardData.timePeriod == '5w') {
                       var name = 'Content created per week';
                     } else {
@@ -223,6 +223,40 @@ angular.module('playerApp')
       dashboardData.onAfterOrgChange = function(orgId) {
         dashboardData.orgId = orgId;
         dashboardData.getAdminDashboardData();
+      };
+
+      /**
+       * @Function downloadReports
+       * @Description - make dowload csv api call
+       * @Return  void
+       */
+      dashboardData.downloadReport = function() {
+        dashboardData.showDownloadLoader = 'active';
+        let req = {
+          org_id: dashboardData.orgId,
+          period: dashboardData.timePeriod
+        };
+
+        // Call service
+        dashboardService.downloadReport(req, dashboardData.datasetPreviousValue).then(function(apiResponse) {
+          dashboardData.showDownloadLoader = '';
+          if (apiResponse && apiResponse.responseCode === 'OK') {
+            var str = $rootScope.errorMessages.DASHBOARD.DOWNLOAD_REPORTS.COURSES_CSV_MSG;
+            dashboardData.downloadReportText = str.replace("{acknowledgementId}", apiResponse.result.requestId).replace(/(\(.*\))/g, '');
+            $timeout(function() {
+              $('#downloadReportModal').modal({
+                closable: true,
+                observeChanges: true
+              }).modal('show');
+            }, 10);
+          } else {
+            dashboardData.showDownloadLoader = '';
+            toasterService.error(apiResponse.params.errmsg);
+          }
+        }).catch(function(apiResponse) {
+          dashboardData.showDownloadLoader = '';
+          toasterService.error(apiResponse.params.errmsg);
+        });
       };
     }
   ]);

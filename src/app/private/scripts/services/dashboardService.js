@@ -102,9 +102,19 @@ angular.module('playerApp')
      * @function downloadReport
      * @description make export csv api call
      * @param object req - api request params
+     * @param datasetType
      * @return array
      */
-    this.downloadReport = function(req){
-        return httpServiceJava.get(config.URL.DASHBOARD.COURSE_PROGRESS + '/' + req.courseId + '/export?period=' + req.timePeriod + '&format=csv');
+    this.downloadReport = function(req, datasetType){
+        switch (datasetType) {
+            case 'creation':
+                return httpServiceJava.get(config.URL.DASHBOARD.ORG_CREATION + '/' + req.org_id + '/export?period=' + req.period + '&format=csv');
+                break;
+            case 'consumption':
+                return httpServiceJava.get(config.URL.DASHBOARD.ORG_CONSUMPTION + '/' + req.org_id + '/export?period=' + req.period + '&format=csv');
+                break;
+            default:
+                return httpServiceJava.get(config.URL.DASHBOARD.COURSE_PROGRESS + '/' + req.courseId + '/export?period=' + req.timePeriod + '&format=csv');
+        }
     }
 }]);
