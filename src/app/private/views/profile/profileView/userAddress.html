@@ -1,14 +1,14 @@
 <div class="ui raised segment">
     <div class="header announcementCard-header">
         <span class="header cardsHeading">{{$root.labels.PROFILE.ADDRESS.header}} </span>
-        <a  class="addeditprofile cursor-pointer" ng-if="!profileCtrl.addressForm && profileCtrl.address.length" ng-click="profileCtrl.addressForm=true ;profileCtrl.isNewAddress=false ">{{$root.labels.PROFILE.BUTTON.edit}}</a>
-        <a  class="addeditprofile cursor-pointer" ng-if="!profileCtrl.addressForm " ng-click="profileCtrl.addressForm=true ;profileCtrl.isNewAddress=true ;profileCtrl.newAddress={} ">{{$root.labels.PROFILE.BUTTON.add}}</a>
-        <a  class="addeditprofile cursor-pointer" ng-if="profileCtrl.addressForm" ng-click="profileCtrl.addressForm=false;profileCtrl.address=profileCtrl.getProfileObject(profileCtrl.user.address)">{{$root.labels.PROFILE.BUTTON.close}}</a>
+        <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.addressForm && profileCtrl.address.length" ng-click="profileCtrl.addressForm=true ;profileCtrl.isNewAddress=false ">{{$root.labels.PROFILE.BUTTON.edit}}</a>
+        <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.addressForm " ng-click="profileCtrl.addressForm=true ;profileCtrl.isNewAddress=true ;profileCtrl.newAddress={} ">{{$root.labels.PROFILE.BUTTON.add}}</a>
+        <a class="addeditprofile cursor-pointer" ng-if="profileCtrl.addressForm" ng-click="profileCtrl.addressForm=false;profileCtrl.address=profileCtrl.getProfileObject(profileCtrl.user.address)">{{$root.labels.PROFILE.BUTTON.close}}</a>
     </div>
     <div ng-if="!profileCtrl.addressForm" class="profileitems ui relaxed divided items">
         <div class="item" ng-repeat="address in profileCtrl.user.address">
 
-            <img class="ui avatar image" src="/images/location.png">
+            <img class="ui avatar image" ng-src="/common/images/location.png">
             <div class="content">
                 <p class=" header">{{address.addType}}</p>
                 <div class="description"> {{address.addressLine1}}<span ng-if="address.addressLine2"> , </span>{{address.addressLine2}}
@@ -20,7 +20,7 @@
             </div>
             <div class="right-floated">
                 <div class="metadata">
-                    <a  ng-click="address.isDeleted=true;profileCtrl.deleteAddress(address)"> <i class="trash outline icon trashIcon-fontSize"></i></a>
+                    <a ng-click="address.isDeleted=true;profileCtrl.deleteAddress(address)"> <i class="trash outline icon trashIcon-fontSize"></i></a>
                 </div>
             </div>
         </div>

@@ -10,10 +10,10 @@
 angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService', '$rootScope',
     '$translate', 'userService', '$q', 'config', '$location', '$timeout',
     'portalTelemetryService', 'setResourceBundle', 'errorMessages', 'labels', 'sessionService',
-    'learnService', '$http', 'searchService', 'toasterService', 'adminService','$state',
+    'learnService', '$http', 'searchService', 'toasterService', 'adminService', '$state',
     function ($scope, permissionsService, $rootScope, $translate, userService, $q, config,
     $location, $timeout, portalTelemetryService, setResourceBundle, errorMessages, labels,
-    sessionService, learnService, $http, searchService, toasterService, adminService,$state) {
+    sessionService, learnService, $http, searchService, toasterService, adminService, $state) {
         $rootScope.userId = $('#userId').attr('value');
         $rootScope.sessionId = $('#sessionId').attr('value');
         $rootScope.language = $rootScope.userLanguage || config.SITE.DEFAULT_LANGUAGE;
@@ -66,7 +66,6 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
             }
             return objMerge;
         };
-
 
         $('body').click(function (e) {
             if ($(e.target).closest('div.dropdown-menu-list').prop('id') === 'search-suggestions') {
@@ -171,7 +170,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
             if (!(_.isEmpty(userProfile))) {
                 $scope.userProfile(userProfile);
             } else {
-                userService.getUserProfile($rootScope.userId,fields).then(function (res) {
+                userService.getUserProfile($rootScope.userId, fields).then(function (res) {
                     if (res && res.responseCode === 'OK') {
                         var profileData = res.result.response;
                         userService.setCurrentUserProfile(profileData);
@@ -184,7 +183,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
                 });
             }
         };
-         $scope.getProfile('completeness,lastLoginTime,missingFields');
+        $scope.getProfile('completeness,missingFields');
 
         $rootScope.closeRoleAccessError = function () {
             $rootScope.accessDenied = '';
@@ -278,11 +277,10 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
                 // else throw new Error('');
             });
         };
-        
-        $scope.openProfileView = function(){
+
+        $scope.openProfileView = function () {
             $state.go('Profile');
-        }
-        
+        };
 
         $scope.getBadges();
         $scope.getOrgTypes();

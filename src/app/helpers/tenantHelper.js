@@ -8,10 +8,11 @@ module.exports = {
   getInfo: function(req, res) {
     var tenantId = req.params.tenantId || envHelper.DEFAUULT_TENANT;
     var responseObj = {
-      logo: (req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') + '/images/sunbird_logo.png',
-      favicon: (req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') +'/images/favicon.ico',
-      poster: (req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') +'/images/sunbird_logo.png',
-    }
+      logo: (req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') + '/common/images/sunbird_logo.png',
+      favicon: (req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') +'/common/images/favicon.ico',
+      poster: (req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') +'/common/images/sunbird_logo.png',
+      titleName: envHelper.PORTAL_TITLE_NAME
+    };
     //TODO: make file checking async for performance
     if (tenantId) {
       if (fs.existsSync(path.join(__dirname, '../tenant', tenantId, 'logo.png'))) {
@@ -31,7 +32,7 @@ module.exports = {
       }
       module.exports.getSucessResponse(res, "api.tenant.info", responseObj);
     } else {
-      module.exports.getErrorResponse(res);
+      module.exports.getSucessResponse(res, "api.tenant.info", responseObj);
     }
   },
   getSucessResponse: function(res, id, result) {

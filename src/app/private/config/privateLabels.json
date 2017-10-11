@@ -157,7 +157,8 @@
                 "no": "No",
                 "yes": "Yes",
                 "DELETE": "DELETE",
-                "viewYourWorkspace": "View your workspace"
+                "viewYourWorkspace": "View your workspace",
+                "resourceType": "Resource Type"
             }
         },
         "PROFILE": {
@@ -211,7 +212,7 @@
                 "summary": "Summary",
                 "contributions": "Contributions",
                 "contents": "Contents",
-                "currentLocation": "Current Location",
+                "currentLocation": "Current location",
                 "grades": "Grades",
                 "phone_Prompt": "Enter 10 digit phone number with country code"
             },
@@ -230,6 +231,13 @@
                 "profileSummary":"profile description",
                 "firstName":"first name",
                 "lastName":"last name"
+            },
+            "SOCIAL_MEDIA":{
+                "title":"Social media",
+                "facebook":"Facebook",
+                "twitter":"Twitter",
+                "linkedIn":"LinkedIn",
+                "blog":"Blog"
             }
         },
         "HEADER": {
@@ -362,6 +370,14 @@
                 "HEADER": "Assign Badge",
                 "CONTENT": "Do you want to assign  "
             }
+        },
+        "SETUP":{
+            "header":"Org Types",
+            "addOrgType":"Add Org Type",
+            "add":"ADD",
+            "cancel":"CANCEL",
+            "update":"UPDATE",
+            "updateOrg":"Update Org Type"
         }
     }
 }

@@ -19,7 +19,6 @@ angular.module('playerApp')
                     'X-Device-ID': 'X-Device-ID',
                     'X-msgid': uuid4.generate(),
                     ts: $filter('date')(new Date(), 'yyyy-MM-dd HH:mm:ss:sssZ'),
-                    'X-Authenticated-Userid': $rootScope.userId,
                     'X-Source': 'web',
                     'X-Org-code': 'AP'
                 };
@@ -67,11 +66,6 @@ angular.module('playerApp')
                 return (request.then(handleSuccess, handleError));
             };
 
-            this.put = function (url, data, headers) {
-                var request = httpCall(url, data, 'PUT', headers);
-                return (request.then(handleSuccess, handleError));
-            };
-
             this.patch = function (url, data, headers) {
                 var request = httpCall(url, data, 'PATCH', headers);
                 return (request.then(handleSuccess, handleError));
@@ -85,7 +79,6 @@ angular.module('playerApp')
                     'X-Device-ID': 'X-Device-ID',
                     'X-msgid': uuid4.generate(),
                     ts: $filter('date')(new Date(), 'yyyy-MM-dd HH:mm:ss:sssZ'),
-                    'X-Authenticated-Userid': $rootScope.userId,
                     'X-Source': 'web',
                     'X-Org-code': 'AP'
                 };

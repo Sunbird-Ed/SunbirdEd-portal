@@ -6,13 +6,20 @@ var player = {
     dist: 'dist',
     common: 'app/common/'
 };
+
+var build_themes = {
+    dist: 'app/themes/',
+    themes:'semantic/src/themes'
+};
+
 var paths = {
     player: player,
+    build_themes:build_themes,
     src: {
         scripts: [player.app + '/scripts/*.js', player.app + '/scripts/**/*.js'],
         styles: [player.app + 'app/styles/**/main.less'],
         images: player.app + '/images/*.*',
-        test: ['test/spec/app/private/**/**/*.js', 'test/spec/app/public/**/**/*.js'],
+        test: ['test/testData/testData.js', 'test/spec/app/private/**/**/*.js', 'test/spec/app/public/**/**/*.js'],
         thirdparty: [player.app + '/thirdparty/**/*.js',
             player.app + '/thirdparty/**/**/**/*.css',
             player.app + '/thirdparty/**/**/**/**/*.*'
@@ -244,7 +251,9 @@ var paths = {
         'dist/private/scripts/directives/admin/searchedUser.js',
         'dist/private/scripts/directives/admin/bulkUpload.js',
         'dist/private/scripts/directives/batchDetailsDirective.js',
-        'dist/private/scripts/directives/contentSharingDirective.js'
+        'dist/private/scripts/directives/contentSharingDirective.js',
+        'dist/private/scripts/services/setup/setupService.js',
+        'dist/private/scripts/controllers/setup/setupController.js'
     ],
     telemetry_js: [
         'dist/private/scripts/telemetry/TelemetryEvent.js',

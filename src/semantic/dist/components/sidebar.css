@@ -1,5 +1,5 @@
 /*!
- * # Semantic UI 2.2.10 - Sidebar
+ * # Semantic UI 2.2.13 - Sidebar
  * http://github.com/semantic-org/semantic-ui/
  *
  *
@@ -244,14 +244,6 @@ body.pushable > .pusher {
        iOS
 ---------------*/
 
-/*
-  iOS incorrectly sizes document when content
-  is presented outside of view with 2Dtranslate
-*/
-html.ios {
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-}
 
 
 /*******************************

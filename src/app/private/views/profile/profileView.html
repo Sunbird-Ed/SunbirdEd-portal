@@ -24,8 +24,33 @@
                     <div class="bar"></div>
                 </div>
             </div> -->
-
-            <div class="twelve wide column" ng-if="initializePermissionDirective" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW,FLAG_REVIEWER">
+            <div class="twelve wide column" ng-if="$root.profileCompleteness">
+                <div class="ui raised segment" >
+                    <div class="profileitems profile-des ui relaxed aligned list">
+                        <div class="item ">
+                            <div class="right floated content ">
+                                <span class="ng-binding">{{$root.profileCompleteness}}%</span>
+                            </div>
+                            <div class="iniformationcontent content">
+                                {{$root.errorMessages.PROFILE.UPDATE_REMINDER.COMPLETENESS_TITLE}}
+                            </div>
+                        </div>
+                        <div class="item ">
+                            <div class="ui tiny progress profile-progress progressBar-margin blue" data-percent="{{$root.profileCompleteness}}" apply-script>
+                                <div class="bar"></div>
+                            </div>
+                        </div>
+                        <div class="item" ng-repeat="field in $root.profileMissingFields | limitTo:3">
+                            <div class="iniformationcontent content">
+                                <a ng-click="profileCtrl.updateAction(field)">
+                                    <h5 class="ui blue header profileUpdateAddDetails">+ Add {{$root.labels.PROFILE.COMPLETENESS[field] || field}}</h5>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="twelve wide column" ng-if="initializePermissionDirective" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW,FLAG_REVIEWER,COURSE_MENTOR">
                 <div class="workspacebutton workspacecontentProfile ui link card " ui-sref="WorkSpace ">
                     <div class="content ">
                         <div class="WorkSpaceTextContent ">
@@ -43,7 +68,7 @@
                     </div>
                     <div class="profileitems contributionsListScroll ui relaxed divided items padding-right-20" id="custom-scroll">
                         <div class="item" ng-repeat="item in profileCtrl.contentList track by $index" ng-click="profileCtrl.openContentPlayer(item)">
-                            <img class="ui avatar image " src="{{profileCtrl.getContentLogo(item)}}">
+                            <img class="ui avatar image " ng-src="{{profileCtrl.getContentLogo(item)}}">
                             <div class="content ">
                                 <a class=" header ">{{item.name}}</a>
                                 <div class="metadata ">
@@ -72,28 +97,6 @@
                 </div>
             </div>-->
             <div class="twelve wide column">
-                <div class="ui raised segment" ng-if="$root.profileCompleteness">
-                    <div class="profileitems profile-des ui relaxed aligned list">
-                        <div class="item ">
-                            <div class="right floated content ">
-                                <span class="ng-binding">{{$root.profileCompleteness}}%</span>
-                            </div>
-                            <div class="iniformationcontent content">
-                                {{$root.errorMessages.PROFILE.UPDATE_REMINDER.COMPLETENESS_TITLE}}
-                            </div>
-                        </div>
-                        <div class="item ">
-                            <div  class="ui tiny progress course-progress progressBar-margin blue" data-percent="{{$root.profileCompleteness}}" apply-script>
-                                <div class="bar"></div>
-                            </div>
-                        </div>
-                        <div class="item" ng-repeat="field in $root.profileMissingFields | limitTo:3">
-                            <div class="iniformationcontent content">
-                                <a ng-click="profileCtrl.updateAction(field)"><h5 class="ui blue header profileUpdateAddDetails">+ Add {{$root.labels.PROFILE.COMPLETENESS[field] || field}}</h5></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="ui raised segment blur-content">
                     <div class="header announcementCard-header ">
                         <span class="header cardsHeading " translate="experiance ">Member of</span>
@@ -101,7 +104,7 @@
                     <div class="profileitems ui relaxed divided items ">
                         <div class="item ">
                             <div class="ui avatar image ">
-                                <img src="/images/school.png ">
+                                <img ng-src="/common/images/school.png ">
                             </div>
                             <div class="content ">
                                 <a class="header ">Maharashtra Teachers Association</a>
@@ -112,7 +115,7 @@
                         </div>
                         <div class="item ">
                             <div class="ui avatar image ">
-                                <img src="/images/school.png ">
+                                <img ng-src="/common/images/school.png ">
                             </div>
                             <div class="content ">
                                 <a class="header ">Maharashtra Chemistry Teachers Only</a>
@@ -123,7 +126,7 @@
                         </div>
                         <div class="item ">
                             <div class="ui avatar image ">
-                                <img src="/images/school.png ">
+                                <img ng-src="/common/images/school.png ">
                             </div>
                             <div class="content ">
                                 <a class="header ">Maharashtra Chemistry Teachers Only</a>
@@ -143,7 +146,7 @@
                     <div class="profileitems ui relaxed divided items ">
                         <div class="item ">
                             <div class="ui avatar image ">
-                                <img src="/images/school.png ">
+                                <img ng-src="/common/images/school.png ">
                             </div>
                             <div class="content ">
                                 <a class="header ">Organic Chemistry for Std VII</a>
@@ -154,7 +157,7 @@
                         </div>
                         <div class="item ">
                             <div class="ui avatar image ">
-                                <img src="/images/school.png ">
+                                <img ng-src="/common/images/school.png ">
                             </div>
                             <div class="content ">
                                 <a class="header ">Organic Chemistry for Std VII</a>
@@ -165,7 +168,7 @@
                         </div>
                         <div class="item ">
                             <div class="ui avatar image ">
-                                <img src="/images/school.png ">
+                                <img ng-src="/common/images/school.png ">
                             </div>
                             <div class="content ">
                                 <a class="header ">Organic Chemistry for Std VII</a>

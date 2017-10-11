@@ -26,7 +26,7 @@ angular.module('playerApp')
                 prompt: basicProfileValidation.firstName
             },
             { fieldName: 'phone',
-                type: 'regExp[^(?:(?:\\+|0{0,2})91(\\s*[\\-]\\s*)?|[0]?)?[789]\\d{9}$]',
+                type: 'regExp[(^(?:(?:\\+|0{0,2})91(\\s*[\\-]\\s*)?|[0]?)?[789]\\d{9}$)|(([*]*)[0-9]{4})]',
                 prompt: basicProfileValidation.phone
             },
             { fieldName: 'email',

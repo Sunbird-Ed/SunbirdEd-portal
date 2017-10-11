@@ -1,7 +1,7 @@
 <div class="ui link cards">
-    <div  class="sliderCards ui card  margin-left-right-10 margin-top-15 link">
+    <div class="sliderCards ui card  margin-left-right-10 margin-top-15 link">
         <div class="image imageInCardsResponsive">
-            <img ng-src=" {{item.appIcon ? item.appIcon : '../images/sunbird_logo.png'}} ">
+            <img ng-src=" {{item.appIcon ? item.appIcon : '/common/images/default.png'}} ">
             <div class="cardImageText center aligned">
                 <span class="text-cencapitalize ">
                     {{item.name}}</span> <span ng-if="item.gradeLevel"> for</span>
@@ -13,7 +13,7 @@
             <div class="description ">
                 {{ item.description | limitTo: 55 }}&nbsp;<i ng-show="item.description.length >= 80" class="ellipsis horizontal icon popup-button link" data-content="{{item.description}}" data-variation="wide"></i>
             </div>
-            <div  class="courseHeader-rating ui mini star rating" data-rating="3"></div>
+            <div class="courseHeader-rating ui mini star rating" data-rating="3"></div>
         </div>
         <!--  <div class="extra rating-container">
         <div class="ui mini  star rating card-rating " data-rating=4></div>

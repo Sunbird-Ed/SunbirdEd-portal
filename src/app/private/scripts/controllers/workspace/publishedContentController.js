@@ -80,18 +80,6 @@ angular.module('playerApp')
             });
         };
 
-        function showErrorMessage(isClose, message, messageType, messageText) {
-            var error = {};
-            error.showError = true;
-            error.isClose = isClose;
-            error.message = message;
-            error.messageType = messageType;
-            if (messageText) {
-                error.messageText = messageText;
-            }
-            return error;
-        }
-
         publishedContent.openContentPlayer = function (item) {
             workSpaceUtilsService.openContentEditor(item, $state.current.name); 
         };
@@ -142,11 +130,11 @@ angular.module('playerApp')
                     }
                 } else {
                     publishedContent.loader.showLoader = false;
-                    toasterService.error(publishedContent.message.RETIRE_CONTENT.NOT_DELETE);
+                    toasterService.error(publishedContent.message.RETIRE_CONTENT.FAILED);
                 }
             }).catch(function () {
                 publishedContent.loader.showLoader = false;
-                toasterService.error(publishedContent.message.RETIRE_CONTENT.NOT_DELETE);
+                toasterService.error(publishedContent.message.RETIRE_CONTENT.FAILED);
             });
         };
 

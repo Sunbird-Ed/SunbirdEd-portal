@@ -7,7 +7,7 @@
     </div>
     <div ng-if="!profileCtrl.experienceForm " class="profileitems ui relaxed divided items ">
         <div class="item " ng-repeat="experience in profileCtrl.user.jobProfile">
-            <img class="ui avatar image" src="/images/businessman.png">
+            <img class="ui avatar image" ng-src="/common/images/businessman.png">
             <div class="content ">
                 <a class=" header ">{{experience.jobName}}</a>
                 <div class="description ">{{experience.role}}<span ng-if="experience.role">&nbsp;,&nbsp;</span>{{experience.orgName}}
@@ -20,7 +20,7 @@
             </div>
             <div class="right-floated ">
                 <div class="metadata ">
-                    <a  ng-click="experience.isDeleted=true;profileCtrl.deleteExperience(experience)"> <i class="trash outline icon trashIcon-fontSize "></i></a>
+                    <a ng-click="experience.isDeleted=true;profileCtrl.deleteExperience(experience)"> <i class="trash outline icon trashIcon-fontSize "></i></a>
                 </div>
             </div>
         </div>

@@ -11,13 +11,14 @@ const express = require('express'),
   bodyParser = require('body-parser'),
   async = require('async'),
   helmet = require('helmet'),
-  CassandraStore = require("cassandra-store"),
+  CassandraStore = require("cassandra-session-store"),
   trampolineServiceHelper = require('./helpers/trampolineServiceHelper.js'),
   telemetryHelper = require('./helpers/telemetryHelper.js'),
   permissionsHelper = require('./helpers/permissionsHelper.js'),
   tenantHelper = require('./helpers/tenantHelper.js'),
   envHelper = require('./helpers/environmentVariablesHelper.js'),
   publicServicehelper = require('./helpers/publicServiceHelper.js'),
+  userHelper = require('./helpers/userHelper.js'),
   fs = require('fs'),
   port = envHelper.PORTAL_PORT,
   learnerURL = envHelper.LEARNER_URL,
@@ -53,7 +54,7 @@ if (envHelper.PORTAL_SESSION_STORE_TYPE === 'in-memory') {
                           "prepare": true
                         }
                       }
-                    });
+                    }, function () {});
 }
 
 
@@ -76,6 +77,9 @@ const decorateRequestHeaders = function() {
       proxyReqOpts.headers['X-Channel-Id'] = channel;
     }
     proxyReqOpts.headers['X-App-Id'] = appId;
+    if(srcReq.kauth && srcReq.kauth.grant && srcReq.kauth.grant.access_token && srcReq.kauth.grant.access_token.token) {
+      proxyReqOpts.headers['x-authenticated-user-token'] = srcReq.kauth.grant.access_token.token;
+    }
     proxyReqOpts.headers.Authorization = 'Bearer ' + sunbird_api_auth_token;
     proxyReqOpts.rejectUnauthorized = false;
     return proxyReqOpts;
@@ -246,8 +250,8 @@ app.all('*', function(req, res) {
   res.redirect('/');
 });
 
-/*
- * Method called after successful authentication and it will log the telemetry for CP_SESSION_START
+  /*
+ * Method called after successful authentication and it will log the telemetry for CP_SESSION_START and updates the login time
  */
 keycloak.authenticated = function(request) {
   async.series({
@@ -256,6 +260,9 @@ keycloak.authenticated = function(request) {
     },
     logSession: function(callback) {
       telemetryHelper.logSessionStart(request, callback);
+    },
+    updateLoginTime:function(callback){
+        userHelper.updateLoginTime(request, callback);
     }
   }, function(err, results) {
     if (err) {
@@ -307,6 +314,7 @@ function verifyToken() {
 
 this.server = app.listen(port, function () {
     console.log('app running on port ' + port);
+    permissionsHelper.getPermissions();
 });
 
 exports.close = function() {

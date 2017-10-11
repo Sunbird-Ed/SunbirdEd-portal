@@ -28,38 +28,20 @@ angular.module('playerApp')
             maxRating: 5
         }).rating('disable', true);
           };
-
-          homeCtrl.courses = function () {
-              var api = 'enrollCourseApi';
-              homeCtrl[api] = {};
-              homeCtrl[api].loader = toasterService.loader('',
-            $rootScope.errorMessages.HOME.ENROLLED.START);
-              learnService.enrolledCourses(uid).then(function (successResponse) {
-                  if (successResponse && successResponse.responseCode === 'OK') {
-                      homeCtrl[api].loader.showLoader = false;
-                      $rootScope.enrolledCourses = successResponse.result.courses;
-                      $rootScope.enrolledCourseIds = $rootScope.arrObjsToObject(
-                     $rootScope.enrolledCourses, 'courseId'
-                    );
-                      homeCtrl.enrolledCourses = $rootScope.enrolledCourses;
-                  } else {
-                      homeCtrl[api].loader.showLoader = false;
-                      toasterService.error(
-                     $rootScope.errorMessages.HOME.ENROLLED.FAILED
-                    );
-                  }
-              }).catch(function () {
-                  homeCtrl[api].loader.showLoader = false;
-                  toasterService.error(
-                 $rootScope.errorMessages.HOME.ENROLLED.FAILED);
-              });
+          homeCtrl.getToDoList = function () {
+              $rootScope.toDoList = [];
+    // if profile is incomplete append profile update details to ToDo list
+              if ($rootScope.profileCompleteness < 100) {
+                  $rootScope.toDoList = [{
+                      title: $rootScope.errorMessages.PROFILE.UPDATE_REMINDER.TITLE,
+                      missingFields: $rootScope.profileMissingFields,
+                      value: $rootScope.profileCompleteness,
+                      type: 'profile'
+                  }];
+              }
+           // merge todo list with enrolled courses (both are to be shown in TO-DO section
+              Array.prototype.push.apply($rootScope.toDoList, $rootScope.enrolledCourses);
           };
-          if ($rootScope.enrolledCourseIds
-               && !_.isEmpty($rootScope.enrolledCourseIds)) {
-              homeCtrl.enrolledCourses = $rootScope.enrolledCourses;
-          } else {
-              homeCtrl.courses();
-          }
 
           homeCtrl.otherSection = function () {
               var req = {

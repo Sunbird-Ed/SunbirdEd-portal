@@ -258,7 +258,7 @@
                         "description": "Description updated successfully",
                         "education": "Education updated successfully",
                         "experience": "Experience updated successfully",
-                        "basicInfo": "Basic information  updated successfully",
+                        "basicInfo": "Additional information  updated successfully",
                         "address": "Address updated successfully"
                     },
                     "FAILURE": {
@@ -312,7 +312,7 @@
             "SUCCESS": "Request submitted successfully..."
         },
         "ADMIN": {
-            "fail": "Somthing went wrong, please try again later...",
+            "fail": "Something went wrong, please try again later...",
             "roleUpdateSuccess": "Roles updated successfully",
             "deleteSuccess": "User deleted successfully",
             "userUploadSuccess": "Users uploaded successfully",
@@ -352,6 +352,13 @@
             "GET_INFO": {
                 "FAILED": "Fetching tenant details failed, please try again later..."
             }
+        },
+        "SETUP":{
+            "ADD_SUCCESS":" Org type added successfully",
+            "ADD_FAILURE":"Adding a new org type failed, please try again later",
+            "GET_FAILURE":"Fetching org type failed, please try again later",
+            "UPDATE_FAILURE":"Org  type update failed, please try again later",
+            "UPDATE_SUCCESS":"  updated successfully"
         },
         "DASHBOARD":{
             "DOWNLOAD_REPORTS":{

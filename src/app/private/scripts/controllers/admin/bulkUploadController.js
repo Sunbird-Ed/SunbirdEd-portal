@@ -235,6 +235,9 @@ angular.module('playerApp')
                             }
                         });
                         admin.bulkUploadStatus.success = res.result.response[0].successResult;
+                        admin.headings = res.result.response[0].successResult.reduce(function (acc, cur) {
+                            return Object.keys(acc).length > Object.keys(cur).length ? acc : cur;
+                        });
                         admin.bulkUploadStatus.failure = res.result.response[0].failureResult;
                         admin.bulkUploadStatus.processId = res.result.response[0].processId;
                         toasterService.success($rootScope.errorMessages.ADMIN.statusSuccess);

@@ -90,7 +90,9 @@
 
             },
             "ORG_TYPE":{
-                "GET":"org/v1/type/list"
+                "GET":"org/v1/type/list",
+                "ADD":"org/v1/type/create",
+                "UPDATE":"org/v1/type/update"
             }
         },
         "FILTER": {
@@ -99,7 +101,35 @@
                     "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Marathi", "Punjabi", "Tamil", "Telugu"
                 ],
                 "contentTypes": [
-                    "Collection", "Story", "TextBook", "Worksheet", "Resource", "LessonPlan"
+                    "Collection", "LessonPlan", "Resource", "TextBook"
+                ],
+                "resourceType": [ 
+                    "(Annual / Half-yearly / Semester) Examination",
+                    "Academic calendar",
+                    "Activity",
+                    "Article",
+                    "Benchmark assessment",
+                    "Book",
+                    "Classroom assessments",
+                    "Course",
+                    "Daily test",
+                    "Diagnostic",
+                    "E-resources for Professional Development",
+                    "Game",
+                    "Learning / Study material",
+                    "Lesson plan",
+                    "Micro practice videos",
+                    "Puzzle",
+                    "Quiz",
+                    "Reference material",
+                    "Reflective journals",
+                    "Simulation",
+                    "Story",
+                    "Summative exam",
+                    "Teaching resources",
+                    "Timed worksheets",
+                    "Unit plan",
+                    "Worksheet" 
                 ],
                 "subjects": [
                     "Assamese",
@@ -533,16 +563,13 @@
         },
         "CURRENT_USER_ROLES": ["CONTENT_REVIEWER"],
         "COMMON_ROLES_CHECK": ["CONTENT_CREATOR", "CONTENT_REVIEW", "CONTENT_CREATION", "CONTENT_REVIEWER"],
-        "WORKSPACE_ACCESS_ROLES": ["CONTENT_CREATOR", "CONTENT_REVIEW", "CONTENT_CREATION", "CONTENT_REVIEWER", "FLAG_REVIEWER"],
+        "WORKSPACE_ACCESS_ROLES": ["CONTENT_CREATOR", "CONTENT_REVIEW", "CONTENT_CREATION", "CONTENT_REVIEWER", "FLAG_REVIEWER", "COURSE_MENTOR"],
         "CreateLessonMimeType": "application/vnd.ekstep.ecml-archive",
         "CreateCollectionMimeType": "application/vnd.ekstep.content-collection",
         "MimeTypeExceptCollection": ["application/pdf", "video/mp4", "video/x-youtube",
             "application/vnd.ekstep.html-archive", "video/youtube", "application/vnd.ekstep.ecml-archive",
-            "application/epub", "application/vnd.ekstep.h5p-archive"
+            "application/epub", "application/vnd.ekstep.h5p-archive", "video/webm"
         ],
-        "MaxFileSizeToUpload": 25600000,
-        "FileExtensionToUpload": "application/pdf, video/mp4, application/zip, video/webm",
-        "AllowedFileExtension": ["mp4", "pdf", "zip", "epub", "h5p"],
         "USER_ROLES": ["ORG_ADMIN", "ORG_MEMBER", "CONTENT_REVIEW", "CONTENT_CURATION", "CONTENT_REVIEWER",
             "CONTENT_CREATION", "CONTENT_CREATOR", "ORG_MODERATOR", "MEMBERSHIP_MANAGEMENT",
             "ORG_MANAGEMENT", "SYSTEM_ADMINISTRATION", "ADMIN", "SYSTEM_ADMIN"
@@ -559,7 +586,7 @@
             { "id": "Organisations", "name": "Organisations" },
             { "id": "Users", "name": "Users" }
         ],
-        "contributeContentType": ["Collection", "Story", "Worksheet", "TextBook", "Course", "LessonPlan", "Resource"],
+        "contributeContentType": ["Collection", "TextBook", "Course", "LessonPlan", "Resource"],
         "MIME_TYPE": {
             "pdf": "application/pdf",
             "mp4": "video/mp4",
