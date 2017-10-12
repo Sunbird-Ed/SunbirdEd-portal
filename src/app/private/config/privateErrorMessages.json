@@ -251,7 +251,8 @@
                     "editingProfile": "Updating profile ...",
                     "profileEdited": "Profile successfully updated"
                 },
-                "UPDATE": { 
+
+                "UPDATE": {
                     "SUCCESS": {
                         "avatar": "Profile Image updated successfully",
                         "description": "Description updated successfully",
@@ -358,6 +359,11 @@
             "GET_FAILURE":"Fetching org type failed, please try again later",
             "UPDATE_FAILURE":"Org  type update failed, please try again later",
             "UPDATE_SUCCESS":"  updated successfully"
+        },
+        "DASHBOARD":{
+            "DOWNLOAD_REPORTS":{
+                "COURSES_CSV_MSG":"Your request has been received successfully. Your request id is {acknowledgementId}, You can use this id to track your request status. File will be sent to your registered email address later. Please, do check your emails regularly."
+            }
         }
     }
 }

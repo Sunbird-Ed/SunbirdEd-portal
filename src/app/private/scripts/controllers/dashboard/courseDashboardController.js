@@ -103,7 +103,7 @@ angular.module('playerApp')
           "request": {
             "filters": {
               courseId: $stateParams.courseId,
-              status: ['1','2','3'],
+              status: ['1', '2', '3'],
               createdBy: $rootScope.userId
             },
             "sort_by": { createdDate: 'desc' }
@@ -180,7 +180,7 @@ angular.module('playerApp')
         $('#myBatchesListFilter').dropdown({
           onChange: function() {}
         });
-      }
+      };
 
       /**
        * @function onAfterBatchChange
@@ -198,6 +198,39 @@ angular.module('playerApp')
         courseDashboard.courseName = batchName;
         courseDashboard.isMultipleCourses = false;
         getCourseDashboardData();
-      }
+      };
+
+      /**
+       * @Function downloadReports
+       * @Description - make dowload csv api call
+       * @Return  void
+       */
+      courseDashboard.downloadReport = function() {
+        courseDashboard.showDownloadLoader = 'active';
+        var req = {
+          courseId: courseDashboard.batchIdentifier,
+          timePeriod: courseDashboard.filterTimePeriod
+        };
+
+        // Call service
+        dashboardService.downloadReport(req).then(function(apiResponse) {
+          courseDashboard.showDownloadLoader = '';
+          if (apiResponse && apiResponse.responseCode === 'OK') {
+            var str = $rootScope.errorMessages.DASHBOARD.DOWNLOAD_REPORTS.COURSES_CSV_MSG;
+            courseDashboard.downloadReportText = str.replace("{acknowledgementId}", apiResponse.result.requestId).replace(/(\(.*\))/g, '');
+            $timeout(function() {
+              $('#downloadReportModal').modal({
+                closable: true
+              }).modal('show');
+            }, 10);
+          } else {
+            courseDashboard.showDownloadLoader = '';
+            toasterService.error(apiResponse.params.errmsg);
+          }
+        }).catch(function(apiResponse) {
+          courseDashboard.showDownloadLoader = '';
+          courseDashboard.showErrors(apiResponse);
+        });
+      };
     }
   ])
