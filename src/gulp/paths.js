@@ -267,7 +267,7 @@ var paths = {
     'app/private/**/*.js',
     'app/public/**/*.js'
   ],
-  jsdocs_config: './config/jsdocConfig.json'
+  jsdocs_config: './configs/jsdocConfig.json'
 }
 
 module.exports = paths
