@@ -49,7 +49,7 @@ gulp.task('injectFiles', ['minifyIMG'], function() {
 });
 
 gulp.task('minifyIMG', ['minifyHTML'], function() {
-  gulp.src('dist/private/images/*', { base: 'dist/' })
+  gulp.src('common/images/*', { base: 'dist/' })
     .pipe(imagemin())
     .pipe(gulp.dest('dist'));
 });
@@ -73,7 +73,7 @@ gulp.task('minifyThirdparty', ['minifyCSS'], function() {
 });
 
 gulp.task('minifyCSS', ['minifyJS'], function() {
-  return gulp.src(['dist/private/styles/**/*.css', 'dist/public/styles/**/*.css'], { base: 'dist/' }).pipe(minify({
+  return gulp.src(['dist/common/styles/**/*.css'], { base: 'dist/' }).pipe(minify({
     minify: true,
     collapseWhitespace: true,
     conservativeCollapse: true,
