@@ -8,18 +8,17 @@
  * Controller of the playerApp
  */
 angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService', '$rootScope',
-    '$translate', 'userService', '$q', 'config', '$location', '$timeout',
-    'portalTelemetryService', 'setResourceBundle', 'errorMessages', 'labels', 'sessionService',
+    'userService', '$q', 'config', '$location', '$timeout',
+    'portalTelemetryService', 'errorMessages', 'labels', 'sessionService',
     'learnService', '$http', 'searchService', 'toasterService', 'adminService', '$state',
-    function ($scope, permissionsService, $rootScope, $translate, userService, $q, config,
-    $location, $timeout, portalTelemetryService, setResourceBundle, errorMessages, labels,
+    function ($scope, permissionsService, $rootScope, userService, $q, config,
+    $location, $timeout, portalTelemetryService, errorMessages, labels,
     sessionService, learnService, $http, searchService, toasterService, adminService, $state) {
         $rootScope.userId = $('#userId').attr('value');
         $rootScope.sessionId = $('#sessionId').attr('value');
         $rootScope.language = $rootScope.userLanguage || config.SITE.DEFAULT_LANGUAGE;
         $rootScope.errorMessages = errorMessages;
         $rootScope.labels = labels;
-        $rootScope.translationBundle = {};
         $rootScope.searchKey = '';
         $rootScope.enrolledCourseIds = {};
 
@@ -33,26 +32,6 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
 
         $rootScope.openLink = function (url) {
             $location.path(url);
-        };
-
-        $rootScope.loadBundle = function () {
-            var promises = [];
-            promises.push(userService.resourceBundle($rootScope.language, 'label'));
-            promises.push(userService.resourceBundle($rootScope.language, 'error'));
-            $q.all(promises).then(function (results) {
-                results.forEach(function (res) {
-                    if (res && res.responseCode === 'OK' && res.result) {
-                        $rootScope.translationBundle = $rootScope.mergeObjects($rootScope.translationBundle, res.result[$rootScope.language]); //eslint-disable-line
-                        $rootScope.addTranslation($rootScope.language, $rootScope.translationBundle); //eslint-disable-line
-                    }
-                });
-            });
-        };
-
-        $rootScope.addTranslation = function (language, translationBundle) {
-            if (setResourceBundle(language, translationBundle)) {
-                $translate.use(language);
-            }
         };
 
         $rootScope.mergeObjects = function (obj1, obj2) {
