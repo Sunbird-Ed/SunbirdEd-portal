@@ -9,18 +9,8 @@
  * Main module of the application.
  */
 angular.module('playerApp')
-  .config(function ($stateProvider, $urlRouterProvider, $translateProvider, $provide, $qProvider) {
+  .config(function ($stateProvider, $urlRouterProvider, $qProvider) {
     $qProvider.errorOnUnhandledRejections(false) // To handle error rejection
-    $provide.provider('setResourceBundle', function () {
-      this.$get = function () {
-        return function (language, resourceBundle) {
-          $translateProvider.translations(language, resourceBundle)
-          $translateProvider.preferredLanguage(language)
-          $translateProvider.useSanitizeValueStrategy('sanitize')
-          return true
-        }
-      }
-    })
     $urlRouterProvider.deferIntercept()
     $urlRouterProvider.otherwise('/home')
     $stateProvider
