@@ -1,11 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc directive
- * @name playerApp.directive:errorMessage
- * @description
- * # errorMessage
- */
 angular.module('loginApp')
     .directive('errorMessage', [function () {
         return {
