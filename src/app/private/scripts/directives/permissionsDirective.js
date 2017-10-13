@@ -1,11 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc directive
- * @name playerApp.directive:permissionsDirective
- * @description
- * # permissionsDirective
- */
 angular.module('playerApp')
 .directive('sbPermissions', ['permissionsService', function (permissionsService) {
     return {

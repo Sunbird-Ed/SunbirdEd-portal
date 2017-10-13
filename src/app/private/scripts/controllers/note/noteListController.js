@@ -1,14 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name playerApp.controller.note:NoteListCtrl
- * @author Anuj Gupta
- * @description
- * # NoteListCtrl
- * Controller of the playerApp
- */
-
 angular.module('playerApp')
     .controller('NoteListCtrl', ['$rootScope', 'noteService', '$state', '$stateParams',
         '$timeout', '$q', 'toasterService', function ($rootScope, noteService, $state,
@@ -84,7 +75,6 @@ angular.module('playerApp')
 
                 noteService.create(requestData).then(function (response) {
                     if (response && response.responseCode === noteList.successResponseCode) {
-                        
                         noteList.add.showCreateNote = false;
                         noteList[api].loader.showLoader = false;
                         var addNoteData = angular.copy(requestData.request);

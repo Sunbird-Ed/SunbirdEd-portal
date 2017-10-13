@@ -1,12 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc service
- * @name playerApp.contentService
- * @description
- * # contentService
- * Service in the playerApp.
- */
 angular.module('playerApp')
 .service('courseService', ['httpServiceJava', 'config', '$sessionStorage', 'httpService',
     function (httpServiceJava, config, $sessionStorage, httpService) {

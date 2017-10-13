@@ -1,18 +1,10 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name playerApp.controller:UpForReviewContentController
- * @description
- * @author Anuj Gupta
- * # UpForReviewContentController
- * Controller of the playerApp
- */
 angular.module('playerApp')
 .controller('UpForReviewContentController', ['contentService', 'searchService', 'config',
     '$rootScope', '$scope', '$state', 'toasterService', 'PaginationService',
-    'workSpaceUtilsService', function (contentService, searchService, config, $rootScope, 
-    $scope, $state, toasterService, PaginationService, workSpaceUtilsService) { 
+    'workSpaceUtilsService', function (contentService, searchService, config, $rootScope,
+    $scope, $state, toasterService, PaginationService, workSpaceUtilsService) {
         var upForReviewContent = this;
         upForReviewContent.userId = $rootScope.userId;
         upForReviewContent.contentStatus = ['Review'];

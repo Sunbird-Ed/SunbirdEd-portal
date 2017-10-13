@@ -1,12 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc service
- * @name playerApp.setupService
- * @description
- * # setupService
- * Service in the playerApp.
- */
 angular.module('playerApp')
     .service('setupService', ['config', 'httpServiceJava', function (config, httpServiceJava) {
         this.addOrgType = function (req) {

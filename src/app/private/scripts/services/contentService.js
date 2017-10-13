@@ -1,17 +1,8 @@
 'use strict';
 
-/**
- * @ngdoc service
- * @name playerApp.contentService
- * @description
- * @author Anuj Gupta
- * # contentService
- * Service in the playerApp.
- */
 angular.module('playerApp')
     .service('contentService', ['httpService', 'config', '$rootScope', 'httpServiceJava',
         function (httpService, config, $rootScope, httpServiceJava) {
-
             this.create = function (req) {
                 req.content.organization = $rootScope.organisationNames;
                 req.content.createdFor = $rootScope.organisationIds;

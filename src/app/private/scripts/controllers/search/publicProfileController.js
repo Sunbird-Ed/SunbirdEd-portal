@@ -1,12 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name playerApp.controller:PublicProfileController
- * @description display public profile
- * # PublicProfileController
- * Controller of the playerApp
- */
 angular.module('playerApp') // add those all values
   .controller('PublicProfileController', ['$scope',
       '$rootScope',

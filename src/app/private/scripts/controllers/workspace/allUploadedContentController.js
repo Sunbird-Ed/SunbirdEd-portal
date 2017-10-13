@@ -1,13 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name playerApp.controller:AllUploadedContentController
- * @author Anuj Gupta
- * @description
- * # AllUploadedContentController
- * Controller of the playerApp
- */
 angular.module('playerApp')
     .controller('AllUploadedContentController', ['contentService', 'searchService', 'config',
         '$rootScope', '$state', 'toasterService', '$scope', 'workSpaceUtilsService', '$timeout',

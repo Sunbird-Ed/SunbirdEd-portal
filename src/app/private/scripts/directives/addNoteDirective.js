@@ -1,12 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc directive
- * @name playerApp.directive:addNote
- * @author Anuj Gupta
- * @description
- */
-
 angular.module('playerApp')
     .directive('addNote', function () {
         return {

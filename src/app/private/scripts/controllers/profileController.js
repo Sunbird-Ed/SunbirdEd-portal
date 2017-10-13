@@ -1,12 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name playerApp.controller:profileController
- * @description lifecycle of profile update, add
- * # profileController
- * Controller of the playerApp
- */
 angular.module('playerApp')
     .controller('ProfileController', [
         '$scope',
