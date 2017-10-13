@@ -4,7 +4,7 @@
             <div class="twelve wide column title">
                 <div class="ui grid">
                     <div class="ten wide column">
-                        <i class="icon filter"></i> <span class="ShowFilterTitle" translate="showfilter">Show Filters</span>
+                        <i class="icon filter"></i> <span class="ShowFilterTitle">Show Filters</span>
                         <i class="dropdown icon"></i>
                     </div>
                 </div>
@@ -12,31 +12,31 @@
             <div class="twelve wide column content">
                 <div class="filtercolmntext ui grid">
                     <div class="one wide column filter-text">
-                        <span class="ShowFilterSubTitle" translate="filterby">Filter by:</span>
+                        <span class="ShowFilterSubTitle">Filter by:</span>
                     </div>
                     <div class="two wide column">
                         <select name="language" class="filtersearch ui selection resource-search-filter dropdown" multiple="" id="multi-select" ng-value="option.value" ng-options=" language for language in search.languages" ng-model="search.selectedLanguage">
-                                        <option value="" translate="languages">Languages</option>
+                                        <option value="">Languages</option>
                                     </select>
                     </div>
                     <div class="two wide column">
                         <select name="Lesson Type" class="filtersearch ui selection resource-search-filter dropdown" multiple="" id="multi-select" ng-value="option.value" ng-options=" contentType for contentType in search.contentTypes" ng-model="search.selectedContentType">
-                                        <option value="" translate="types">Types</option>
+                                        <option value="">Types</option>
                                     </select>
                     </div>
                     <div class="two wide column">
                         <select name="Subject" class="filtersearch ui selection resource-search-filter dropdown" multiple="" id="multi-select" ng-value="option.value" ng-options=" subject for subject in search.subjects" ng-model="search.selectedSubject">
-                                        <option value="" translate="subjects">Subjects</option>
+                                        <option value="">Subjects</option>
                                     </select>
                     </div>
                     <div class="two wide column">
                         <select name="Board" class="filtersearch ui selection resource-search-filter dropdown" multiple="" id="multi-select" ng-value="option.value" ng-options="board for board in search.boards" ng-model="search.selectedBoard">
-                                        <option value="" translate="boards">Boards</option>
+                                        <option value="">Boards</option>
                                     </select>
                     </div>
                     <div class="three wide column filter-button">
-                        <button class="searchfilterbutton ui blue tiny  button" ng-click="search.applyFilter()" translate="apply">APPLY</button>
-                        <button class="searchfilterbutton ui primary tiny basic button" ng-click="search.resetFilter()" translate="reset">RESET</button>
+                        <button class="searchfilterbutton ui blue tiny  button" ng-click="search.applyFilter()" >APPLY</button>
+                        <button class="searchfilterbutton ui primary tiny basic button" ng-click="search.resetFilter()" >RESET</button>
                     </div>
                 </div>
             </div>
@@ -44,7 +44,7 @@
         <div class="two wide column">
             <div class="field">
                 <div class="content dropdown-content">
-                    <span class="ShowFilterSubTitle" translate="sortby"> Sort by:&nbsp;</span>
+                    <span class="ShowFilterSubTitle"> Sort by:&nbsp;</span>
                     <div apply-script class="ui inline dropdown search-dropdown" id="multi-select-sort">
                         <div class="text"></div>
                         <i class="dropdown icon"></i>
