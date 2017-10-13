@@ -1,13 +1,8 @@
 'use strict';
 
 /**
- * @ngdoc overview
- * @name playerApp
- * @description
- * # playerApp
- *
- * Main module of the application.
- */
+  * @module playerApp
+  */
 angular.module('playerApp', [
     'ngCookies',
     'ngRoute',
