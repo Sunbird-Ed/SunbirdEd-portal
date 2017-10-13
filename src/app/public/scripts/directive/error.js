@@ -9,7 +9,7 @@
 angular.module('loginApp')
     .directive('errorMessage', [function () {
         return {
-            template: '<div class="ui huge {{errorClass}} message" ng-if="message"><i ng-if="isClose" class="close icon" ng-click="closeErrorMessage()"></i><span translate="messageType">{{message}}</span></div>',
+            template: '<div class="ui huge {{errorClass}} message" ng-if="message"><i ng-if="isClose" class="close icon" ng-click="closeErrorMessage()"></i><span>{{message}}</span></div>',
             restrict: 'E',
             scope: {
                 visibility: '='
