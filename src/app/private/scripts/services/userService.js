@@ -1,12 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc service
- * @name playerApp.userService
- * @description
- * # userService
- * Service in the playerApp.
- */
 angular.module('playerApp')
     .service('userService', [
         'config',
@@ -22,8 +15,8 @@ angular.module('playerApp')
 
             this.getUserProfile = function (uId, fields) {
                 var url = config.URL.USER.GET_PROFILE + '/' + uId;
-                if(fields && _.isString(fields)){
-                    url = url + '?fields=' + fields
+                if (fields && _.isString(fields)) {
+                    url = url + '?fields=' + fields;
                 }
                 return httpServiceJava.get(url);
             };

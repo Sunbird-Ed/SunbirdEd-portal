@@ -1,14 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc service
- * @name loginApp.toasterService
- * @description
- * @author Anuj Gupta
- * # toasterService
- * Service in the loginApp.
- */
-
 angular.module('loginApp')
     .service('toasterService', [function () {
         iziToast.settings({

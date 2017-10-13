@@ -1,10 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name playerApp.controller:genericEditorController
- * @description
- */
 angular.module('playerApp')
   .controller('GenericEditorController', ['config', '$stateParams', 'toasterService', '$sce',
       '$state', '$timeout', '$rootScope', 'contentService', 'permissionsService', function (config,
@@ -50,7 +45,7 @@ angular.module('playerApp')
                   channel: org.sunbird.portal.channel
               };
 
-            window.config = {
+              window.config = {
                 corePluginsPackaged: true,
                 modalId: 'genericEditor',
                 dispatcher: 'local',
@@ -64,11 +59,11 @@ angular.module('playerApp')
                     type: 'plugin'
                 }],
                 previewConfig: {
-                    "repos": ["/content-plugins/renderer"],
-                    "plugins": [{
-                        "id": "org.sunbird.player.endpage",
-                        "ver": 1.0,
-                        "type": "plugin"
+                    'repos': ['/content-plugins/renderer'],
+                    plugins: [{
+                        'id': 'org.sunbird.player.endpage',
+                        ver: 1.0,
+                        type: 'plugin'
                     }],
                     showEndPage: false
                 }

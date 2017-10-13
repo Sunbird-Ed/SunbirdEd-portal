@@ -1,12 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc directive
- * @name playerApp.directive:noteCard
- * @author Anuj Gupta
- * @description
- */
-
 angular.module('playerApp')
     .directive('noteCard', function () {
         return {

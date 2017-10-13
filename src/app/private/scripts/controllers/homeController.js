@@ -1,12 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name playerApp.controller:communityController
- * @description
- * # communityController
- * Controller of the playerApp
- */
 angular.module('playerApp')
   .controller('HomeController', ['$state', 'learnService', '$rootScope',
       'sessionService', 'toasterService',

@@ -1,13 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc service
- * @name playerApp.contentService
- * @description
- * @author Anuj Gupta
- * # contentService
- * Service in the playerApp.
- */
 angular.module('loginApp')
     .service('contentService', ['httpService', 'config',
         function (httpService, config) {

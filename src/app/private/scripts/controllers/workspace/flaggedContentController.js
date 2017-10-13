@@ -1,18 +1,10 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name playerApp.controller:FlaggedContentController
- * @author Anuj Gupta
- * @description
- * # AllUploadedContentController
- * Controller of the playerApp
- */
 angular.module('playerApp')
 .controller('FlaggedContentController', ['contentService', 'searchService', 'config',
-    '$rootScope', '$state', 'toasterService', 'PaginationService', 'workSpaceUtilsService', 
-    function (contentService, searchService, config, $rootScope, $state, toasterService, 
-    PaginationService, workSpaceUtilsService) { 
+    '$rootScope', '$state', 'toasterService', 'PaginationService', 'workSpaceUtilsService',
+    function (contentService, searchService, config, $rootScope, $state, toasterService,
+    PaginationService, workSpaceUtilsService) {
         var flaggedContent = this;
         flaggedContent.userId = $rootScope.userId;
         flaggedContent.contentStatus = ['Flagged'];
@@ -60,8 +52,8 @@ angular.module('playerApp')
                     if (res.result.content) {
                         flaggedContent.flaggedContentData =
                                 res.result.content.filter(function (contentData) {
-                            return contentData.createdBy !== flaggedContent.userId;
-                        });
+                                    return contentData.createdBy !== flaggedContent.userId;
+                                });
                     }
                     flaggedContent.totalCount = res.result.count;
                     if (flaggedContent.flaggedContentData.length === 0) {
@@ -94,4 +86,4 @@ angular.module('playerApp')
             flaggedContent.getAllFlaggedContent(page);
         };
     }
-  ]);
+]);

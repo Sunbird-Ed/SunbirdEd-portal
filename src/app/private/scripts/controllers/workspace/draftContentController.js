@@ -1,14 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name playerApp.controller:DraftContentController
- * @description
- * @author Anuj Gupta
- * # DraftContentController
- * Controller of the playerApp
- */
-
 angular.module('playerApp')
     .controller('DraftContentController', ['contentService', 'searchService', 'config',
         '$rootScope', '$state', 'toasterService', '$scope', 'workSpaceUtilsService', '$timeout',
@@ -92,7 +83,7 @@ angular.module('playerApp')
             };
 
             draftContent.openContentEditor = function (item) {
-                workSpaceUtilsService.openContentEditor(item, $state.current.name); 
+                workSpaceUtilsService.openContentEditor(item, $state.current.name);
             };
 
             draftContent.openRemoveContentModel = function (ContentId) {

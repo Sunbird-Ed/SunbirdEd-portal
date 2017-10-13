@@ -442,7 +442,7 @@ angular.module('playerApp')
                 /**
                  * @Function initDropdownValue
                  * @Description - values - resume course and view course dashboard
-                 * @return  {[type]}  [description]
+
                  */
                 toc.initDropdownValues = function () {
                     $('#courseDropdownValues').dropdown();

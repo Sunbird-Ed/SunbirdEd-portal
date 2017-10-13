@@ -1,12 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc service
- * @name playerApp.adminService
- * @description
- * # adminService
- * Service in the playerApp.
- */
 angular.module('playerApp')
     .service('adminService', ['config', 'httpServiceJava', function (config, httpServiceJava) {
         this.userSearch = function (req) {
