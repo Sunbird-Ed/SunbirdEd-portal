@@ -59,6 +59,21 @@ describe('Controller:BatchListController', function () {
     expect(batch.listBatches).not.toBe(undefined)
   })
 
+  it('Should return empty batch list on listBatches call', function () {
+    batch = createContoller()
+    spyOn(batchService, 'getAllBatchs').and.returnValue(deferred.promise)
+    deferred.resolve(batchTestData.emptybatchlist)
+    spyOn(batchService, 'getUserList').and.returnValue(deferred.promise)
+    deferred.resolve(batchTestData.userData)
+    spyOn(batch, 'listBatches').and.callThrough()
+    batch.listBatches()
+    scope.$apply()
+    var response = batchService.getAllBatchs().$$state.value
+    expect(response).not.toBe(undefined)
+    batch.listBatches = response.result
+    expect(batch.listBatches).not.toBe(undefined)
+  })
+
   xit('Should not return batch user list on listBatches call', function () {
     spyOn(batchService, 'getAllBatchs').and.returnValue(deferred.promise)
     deferred.resolve(batchTestData.batchlist)
