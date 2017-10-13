@@ -1,12 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc service
- * @name playerApp.httpService
- * @description
- * # httpService
- * Service in the playerApp.
- */
 angular.module('playerApp')
         .service('httpService', ['$http', 'config', function ($http, config) {
             function getHeader() {

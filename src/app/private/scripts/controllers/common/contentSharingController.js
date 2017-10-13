@@ -1,13 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name playerApp.controller.common:contentSharingController
- * @author Anuj Gupta
- * @description
- * # contentSharingController
- * Controller of the playerApp
- */
 angular.module('playerApp')
     .controller('contentSharingController', ['contentService', '$timeout', '$state', 'config',
         '$rootScope', 'toasterService', '$scope', '$location', '$window', function (contentService,

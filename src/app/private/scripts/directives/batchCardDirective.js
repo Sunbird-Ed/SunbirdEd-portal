@@ -1,11 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc directive
- * @name playerApp.directive:batchCard
- * @description
- */
-
 angular.module('playerApp')
     .directive('batchCard', function () {
         return {

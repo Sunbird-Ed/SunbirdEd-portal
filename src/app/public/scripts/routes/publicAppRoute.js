@@ -1,15 +1,7 @@
 'use strict';
 
-/**
- * @ngdoc overview
- * @name loginApp
- * @description
- * # loginApp
- *
- * Main module of the application.
- */
 angular.module('loginApp')
-    .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise('/');
         $stateProvider
             .state('Landing', {
@@ -19,7 +11,7 @@ angular.module('loginApp')
                         templateUrl: '/views/home/landingPage.html'
                     }
                 },
-                onEnter: function($window) {
+                onEnter: function ($window) {
                     delete $window.localStorage.redirectUrl;
                 }
             })
@@ -28,7 +20,7 @@ angular.module('loginApp')
                 views: {
                     mainView: {
                         templateUrl: '/views/content/content.html',
-                        controller: function($scope, $stateParams) {
+                        controller: function ($scope, $stateParams) {
                             $scope.contentId = $stateParams.id;
                         }
                     },
@@ -63,8 +55,8 @@ angular.module('loginApp')
                 }
             });
     }])
-    .run(['$http', '$rootScope', function($http, $rootScope) {
-        $http.get('/v1/tenant/info').then(function(res) {
+    .run(['$http', '$rootScope', function ($http, $rootScope) {
+        $http.get('/v1/tenant/info').then(function (res) {
             if (res && res.statusText === 'OK') {
                 $rootScope.orgLogo = res.data.result.logo;
                 $rootScope.faviconIcon = res.data.result.favicon;
@@ -72,7 +64,7 @@ angular.module('loginApp')
             } else {
                 //   toasterService.error($rootScope.errorMessages.TENANT.GET_INFO.FAILED);
             }
-        }).catch(function() {
+        }).catch(function () {
             //   toasterService.error($rootScope.errorMessages.TENANT.GET_INFO.FAILED);
         });
     }]);

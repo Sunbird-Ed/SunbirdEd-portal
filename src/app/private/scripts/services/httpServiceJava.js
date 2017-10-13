@@ -1,12 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc service
- * @name playerApp.httpService
- * @description
- * # httpService
- * Service in the playerApp.
- */
 angular.module('playerApp')
     .service('httpServiceJava', ['$http', '$rootScope', '$filter', 'config', 'uuid4',
         function ($http, $rootScope, $filter, config, uuid4) {

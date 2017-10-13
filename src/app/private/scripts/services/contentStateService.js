@@ -1,31 +1,24 @@
 'use strict';
 
-/**
- * @ngdoc service
- * @name playerApp.contentStateService
- * @description
- * # contentStateService
- * Service in the playerApp.
- */
 angular.module('playerApp')
-        .service('contentStateService', ['$filter', '$rootScope', 'httpServiceJava', 'config', 
+        .service('contentStateService', ['$filter', '$rootScope', 'httpServiceJava', 'config',
             'uuid4', 'dataService', function ($filter, $rootScope, httpServiceJava, config, uuid4, dataService) {
-            var localContentState = localContentState || {};
-            var self = this;
-            this.init = function () {
+                var localContentState = localContentState || {};
+                var self = this;
+                this.init = function () {
                 org.sunbird.portal.eventManager.addEventListener('sunbird:telemetry:flush', self.updateContentState);
                 org.sunbird.portal.eventManager.addEventListener('sunbird:player:telemetry', self.updateContentState);
             };
             // getContentState
 
-            this.getContentsStateFromAPI = function (req) {
+                this.getContentsStateFromAPI = function (req) {
                 return httpServiceJava.post(config.URL.COURSE.USER_CONTENT_STATE_READ, req);
             };
 
-            this.updateContentStateInServer = function (req) {
+                this.updateContentStateInServer = function (req) {
                 return httpServiceJava.patch(config.URL.COURSE.USER_CONTENT_STATE_UPDATE, req);
             };
-            this.prepareContentObject = function (data) {
+                this.prepareContentObject = function (data) {
                 var content = {
                     contentId: $rootScope.contentId, // data['gdata']['id'],
                     status: 1,
@@ -46,7 +39,7 @@ angular.module('playerApp')
                 return content;
             };
 
-            this.getContentsState = function (req, callback) {
+                this.getContentsState = function (req, callback) {
                 // accepts only one course id and multiple contentids
 
                 if (_.isEmpty(localContentState) || !localContentState[req.request.courseIds[0]]) {
@@ -67,7 +60,7 @@ angular.module('playerApp')
             };
             // Listen to the Events
 
-            self.updateContentState = function (e, data) {
+                self.updateContentState = function (e, data) {
                 if (data && (data.eid === 'OE_START' || data.eid === 'OE_END') && dataService.getData('isTrackingEnabled') == true) {
                     var content = self.prepareContentObject(data);
                     var prevContentStatus = -1;
@@ -104,4 +97,4 @@ angular.module('playerApp')
                     }
                 }
             };
-        }]);
+            }]);

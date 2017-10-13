@@ -1,12 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc directive
- * @name playerApp.directive:contentShare
- * @author Anuj Gupta
- * @description
- */
-
 angular.module('playerApp')
     .directive('contentShare', function () {
         return {

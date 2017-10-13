@@ -1,13 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name playerApp.controller:ContentEditorController
- * @description
- * @author Anuj Gupta
- * # ContentEditorController
- * Controller of the playerApp
- */
 angular.module('playerApp')
     .controller('ContentEditorController', ['config', '$stateParams', 'toasterService',
         '$state', 'contentService', '$timeout', '$rootScope', function (config, $stateParams,
@@ -49,11 +41,11 @@ angular.module('playerApp')
                     localDispatcherEndpoint: '/content-editor/telemetry',
                     showHelp: false,
                     previewConfig: {
-                        "repos": ["/content-plugins/renderer"],
-                        "plugins": [{
-                            "id": "org.sunbird.player.endpage",
-                            "ver": 1.0,
-                            "type": "plugin"
+                        repos: ['/content-plugins/renderer'],
+                        plugins: [{
+                            id: 'org.sunbird.player.endpage',
+                            ver: 1.0,
+                            type: 'plugin'
                         }],
                         showEndPage: false
                     }
@@ -134,7 +126,6 @@ angular.module('playerApp')
             };
 
             contentEditor.init = function () {
-
                 org.sunbird.portal.eventManager.addEventListener('sunbird:portal:editor:close',
                 function () {
                     if ($stateParams.state) {
@@ -157,11 +148,11 @@ angular.module('playerApp')
                     org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:editor:editmeta');
                 });
 
-                window.addEventListener('editor:window:close',function (event, data) { 
+                window.addEventListener('editor:window:close', function (event, data) {
                     org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:editor:close');
                 });
 
-                window.addEventListener('editor:content:review',function (event, data) { 
+                window.addEventListener('editor:content:review', function (event, data) {
                     org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:content:review',
                                                                     event.detail.contentId);
                 });

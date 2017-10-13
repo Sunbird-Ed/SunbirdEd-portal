@@ -1,13 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name playerApp.controller:adminController
- * @author Poonam Sharma
- * @description
- * # adminController
- * Controller of the playerApp
- */
 angular.module('playerApp')
     .controller('bulkUploadController', [
         'adminService',

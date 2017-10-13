@@ -1,14 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc service
- * @name playerApp.noteService
- * @description
- * @author Anuj Gupta
- * # notesService
- * Service in the playerApp.
- */
-
 angular.module('playerApp')
     .service('noteService', ['httpServiceJava', 'config', function (httpServiceJava, config) {
         this.search = function (req) {

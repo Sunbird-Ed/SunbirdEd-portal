@@ -1,13 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name playerApp.controller.common:contentFlagController
- * @author Anuj Gupta
- * @description
- * # contentFlagController
- * Controller of the playerApp
- */
 angular.module('playerApp')
     .controller('contentFlagController', ['contentService', '$timeout', '$state', 'config',
         '$rootScope', 'toasterService', '$scope', function (contentService, $timeout, $state,

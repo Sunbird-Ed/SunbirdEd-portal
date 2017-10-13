@@ -1,11 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc directive
- * @name playerApp.directive:applyScript
- * @description
- * # applyScript
- */
 angular.module('loginApp')
     .directive('applyScript', ['$timeout', function ($timeout) {
         return {

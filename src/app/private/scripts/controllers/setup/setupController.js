@@ -1,13 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name playerApp.controller:setupController
- * @author Poonam Sharma
- * @description
- * # setupController
- * Controller of the playerApp
- */
 angular.module('playerApp')
     .controller('setupController', [
         '$rootScope',

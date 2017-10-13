@@ -1,15 +1,7 @@
 'use strict';
 
-/**
- * @ngdoc service
- * @name playerApp.batchService
- * @description
- * # batchService
- * Service in the playerApp.
- */
-
 angular.module('playerApp')
-    .service('batchService', ['httpServiceJava', 'config', function(httpServiceJava, config){
+    .service('batchService', ['httpServiceJava', 'config', function (httpServiceJava, config) {
         var batchDetails = '';
         this.create = function (req) {
             return httpServiceJava.post(config.URL.BATCH.CREATE, req);
@@ -35,15 +27,15 @@ angular.module('playerApp')
             return httpServiceJava.post(config.URL.BATCH.GET_BATCHS, req);
         };
 
-        this.getUserList = function(req){
+        this.getUserList = function (req) {
             return httpServiceJava.post(config.URL.ADMIN.USER_SEARCH, req);
-        }
+        };
 
         this.setBatchData = function (batchData) {
             this.batchDetails = batchData;
         };
 
-        this.getBatchData = function(){
+        this.getBatchData = function () {
             return this.batchDetails;
         };
     }]);

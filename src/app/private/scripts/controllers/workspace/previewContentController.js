@@ -1,14 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name playerApp.controller:PreviewContentController
- * @description
- * @author Anuj Gupta
- * # PreviewContentController
- * Controller of the playerApp
- */
-
 angular.module('playerApp')
     .controller('PreviewContentController', ['$stateParams', 'playerTelemetryUtilsService',
         '$rootScope', '$state', 'contentService', '$timeout', 'config',
@@ -99,7 +90,7 @@ angular.module('playerApp')
                     previewContent.loader.showLoader = false;
                     toasterService.error(previewContent.message.GET.FAILED);
                 });
-            }
+            };
 
             previewContent.getContent(previewContent.contentId);
 
