@@ -11,13 +11,6 @@ describe('Directive: errorMessage', function() {
     // load the main module
     beforeEach(module('playerApp'));
 
-    beforeEach(inject(function($rootScope, $controller) {
-        $controller('AppCtrl', {
-            $rootScope: $rootScope,
-            $scope: $rootScope.$new()
-        });
-    }));
-
     var element, compile, templateCache, scope,
         fileName = 'views/common/errorPage.html';
     var error = {};
