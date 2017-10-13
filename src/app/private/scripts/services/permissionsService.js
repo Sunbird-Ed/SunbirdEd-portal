@@ -1,12 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc service
- * @name playerApp.permissionsService
- * @description
- * # permissionsService
- * Service in the playerApp.
- */
 angular.module('playerApp')
     .service('permissionsService', ['httpServiceJava', 'config', '$rootScope',
         function (httpServiceJava, config, $rootScope) {

@@ -1,13 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name playerApp.controller:collectionController
- * @author Harish Kumar Gangula
- * @description
- * # collectionController
- * Controller of the playerApp
- */
 angular.module('playerApp')
     .controller('CollectionController', ['contentService', '$timeout', '$state', 'config',
         '$rootScope', 'toasterService', function (contentService, $timeout, $state, config,

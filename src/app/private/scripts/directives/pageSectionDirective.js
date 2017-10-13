@@ -1,11 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc directive
- * @name playerApp.directive:contentPlayer
- * @description
- * # contentPlayer
- */
 angular.module('playerApp').directive('pageSection', function () {
     return {
         templateUrl: 'views/common/pageSection.html',

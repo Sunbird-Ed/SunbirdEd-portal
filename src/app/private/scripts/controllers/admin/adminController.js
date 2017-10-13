@@ -1,13 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name playerApp.controller:adminController
- * @author Poonam Sharma
- * @description
- * # adminController
- * Controller of the playerApp
- */
 angular.module('playerApp')
     .controller('adminController', [
         'adminService',
@@ -27,7 +19,6 @@ angular.module('playerApp')
             admin.searchResult = $scope.users;
             admin.badges = adminService.getBadgesList();
 
-            // getOrgnames
             admin.getOrgName = function () {
                 var identifiers = [];
                 admin.searchResult.forEach(function (user) {

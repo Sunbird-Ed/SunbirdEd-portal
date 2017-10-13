@@ -1,13 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name playerApp.controller.batch:BatchUpdateController
- * @description
- * # BatchController
- * Controller of the playerApp
- */
-
 angular.module('playerApp')
     .controller('BatchUpdateController', ['$rootScope', '$timeout', '$state', '$scope', '$stateParams',
         'config', 'batchService', '$filter', 'toasterService', function ($rootScope, $timeout, $state, $scope,

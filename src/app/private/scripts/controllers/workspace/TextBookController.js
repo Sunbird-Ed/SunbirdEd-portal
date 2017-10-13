@@ -1,13 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name playerApp.controller:TextBookController
- * @author Harish Kumar Gangula
- * @description
- * # TextBookController
- * Controller of the playerApp
- */
 angular.module('playerApp')
     .controller('TextBookController', ['contentService', '$timeout', '$state', 'config',
         '$rootScope', 'toasterService', function (contentService, $timeout, $state, config,

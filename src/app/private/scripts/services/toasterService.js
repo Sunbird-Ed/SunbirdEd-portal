@@ -1,14 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc service
- * @name playerApp.toasterService
- * @description
- * @author Anuj Gupta
- * # toasterService
- * Service in the playerApp.
- */
-
 angular.module('playerApp')
     .service('toasterService', [function () {
         iziToast.settings({

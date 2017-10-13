@@ -1,14 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc service
- * @name playerApp.dashboardService
- * @description
- * @author nilesh_m@tekditechnologies.com
- * # dashboardService
- * Service in the playerApp.
- */
-
 angular.module('playerApp')
 .service('dashboardService', ['httpServiceJava', 'config', function (httpServiceJava, config) {
     this.getAdminDashboardData = function (req, datasetType) {

@@ -1,14 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc filter
- * @name playerApp.filter:noteListFilter
- * @function
- * @description
- * @author Anuj Gupta
- * # noteListFilter
- * Filter in the playerApp.
- */
 angular.module('playerApp')
     .filter('noteListFilter', function () {
         return function (noteList, searchText) {

@@ -1,12 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc directive
- * @name playerApp.directive:contentPlayer
- * @description
- * @author Anuj Gupta
- * # contentPlayer
- */
 angular.module('playerApp')
     .directive('contentPlayer', function () {
         return {
@@ -34,13 +27,12 @@ angular.module('playerApp')
                 }
 
                 scope.$watch('body', function (newValue, oldValue) {
-                    if(oldValue) {
-                        if(newValue.identifier && newValue.identifier!=oldValue.identifier){
-                        scope.updateContent(scope);
-                     }
-                   }
-                   else if(oldValue==undefined){
-                        scope.updateContent(scope);
+                    if (oldValue) {
+                        if (newValue.identifier && newValue.identifier != oldValue.identifier) {
+                            scope.updateContent(scope);
+                        }
+                    }                   else if (oldValue == undefined) {
+                       scope.updateContent(scope);
                    }
                 });
                 scope.$watch('id', function () {

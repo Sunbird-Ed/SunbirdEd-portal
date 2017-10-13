@@ -1,12 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc directive
- * @name playerApp.directive:bulkUpload
- * @author:Poonam sharma
- * @description
- * # bulkUpload
- */
 angular.module('playerApp').directive('bulkUpload', function () {
     return {
         templateUrl: 'views/admin/uploadFile.html',

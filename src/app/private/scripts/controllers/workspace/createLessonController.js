@@ -1,13 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name playerApp.controller:ContentLessonController
- * @author Anuj Gupta
- * @description
- * # ContentLessonController
- * Controller of the playerApp
- */
 angular.module('playerApp')
     .controller('ContentLessonController', ['contentService', '$timeout', '$state', 'config',
         '$rootScope', 'toasterService', '$scope', function (contentService, $timeout,
