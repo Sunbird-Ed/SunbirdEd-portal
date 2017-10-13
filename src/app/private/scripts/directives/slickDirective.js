@@ -1,11 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc directive
- * @name playerApp.directive:contentPlayer
- * @description
- * # contentPlayer
- */
 angular.module('playerApp').directive('addSlick', function () {
     return {
         restrict: 'A',
@@ -13,57 +7,57 @@ angular.module('playerApp').directive('addSlick', function () {
             if (scope.$last) {
                 $(element).parent().not('.slick-initialized').slick({
                     infinite: false,
-                      slidesToShow: 4,
-                      slidesToScroll: 4,
-                      responsive: [
-                        {
-                          breakpoint: 2800,
-                          settings: {
-                            slidesToShow: 8,
-                            slidesToScroll: 4
+                    slidesToShow: 4,
+                    slidesToScroll: 4,
+                    responsive: [
+                          {
+                              breakpoint: 2800,
+                              settings: {
+                              slidesToShow: 8,
+                              slidesToScroll: 4
                           }
-                        },
-                        {
-                          breakpoint: 2200,
-                          settings: {
-                            slidesToShow: 6,
-                            slidesToScroll: 4
+                          },
+                          {
+                              breakpoint: 2200,
+                              settings: {
+                              slidesToShow: 6,
+                              slidesToScroll: 4
                           }
-                        },
-                        {
-                          breakpoint: 2000,
-                          settings: {
-                            slidesToShow: 5,
-                            slidesToScroll: 4
+                          },
+                          {
+                              breakpoint: 2000,
+                              settings: {
+                              slidesToShow: 5,
+                              slidesToScroll: 4
                           }
-                        },
-                        {
-                          breakpoint: 1400,
-                          settings: {
-                            slidesToShow: 4,
-                            slidesToScroll: 4
+                          },
+                          {
+                              breakpoint: 1400,
+                              settings: {
+                              slidesToShow: 4,
+                              slidesToScroll: 4
                           }
-                        },
-                        {
-                          breakpoint: 1024,
-                          settings: {
-                            unslick: true
+                          },
+                          {
+                              breakpoint: 1024,
+                              settings: {
+                              unslick: true
                           }
-                        },
-                        {
-                          breakpoint: 600,
-                          settings: {
-                            slidesToShow: 2,
-                            slidesToScroll: 2
+                          },
+                          {
+                              breakpoint: 600,
+                              settings: {
+                              slidesToShow: 2,
+                              slidesToScroll: 2
                           }
-                        },
-                        {
-                          breakpoint: 480,
-                          settings: {
-                            slidesToShow: 1,
-                            slidesToScroll: 1
+                          },
+                          {
+                              breakpoint: 480,
+                              settings: {
+                              slidesToShow: 1,
+                              slidesToScroll: 1
                           }
-                        }
+                          }
                       ]
                 });
             }

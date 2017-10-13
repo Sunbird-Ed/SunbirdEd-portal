@@ -1,10 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name playerApp.controller:collectionEditorController
- * @description
- */
 angular.module('playerApp')
   .controller('CollectionEditorController', ['config', '$stateParams', 'toasterService', '$sce',
       '$state', '$timeout', '$rootScope', 'contentService', 'permissionsService', function (config,
@@ -49,21 +44,21 @@ angular.module('playerApp')
                   channel: org.sunbird.portal.channel
               };
 
-            window.config = {
-                corePluginsPackaged: true,
-                modalId: 'collectionEditor',
-                dispatcher: 'local',
-                apislug: '/action',
-                alertOnUnload: true,
-                headerLogo: !_.isUndefined($rootScope.orgLogo) ? $rootScope.orgLogo : '',
-                loadingImage: '',
-                plugins: [{
+              window.config = {
+                  corePluginsPackaged: true,
+                  modalId: 'collectionEditor',
+                  dispatcher: 'local',
+                  apislug: '/action',
+                  alertOnUnload: true,
+                  headerLogo: !_.isUndefined($rootScope.orgLogo) ? $rootScope.orgLogo : '',
+                  loadingImage: '',
+                  plugins: [{
                     id: 'org.ekstep.sunbirdcommonheader',
                     ver: '1.0',
                     type: 'plugin'
                 }],
-                localDispatcherEndpoint: '/collection-editor/telemetry',
-                editorConfig: {
+                  localDispatcherEndpoint: '/collection-editor/telemetry',
+                  editorConfig: {
                     mode: 'Edit',
                     contentStatus: 'draft',
                     rules: {
@@ -72,16 +67,16 @@ angular.module('playerApp')
                     },
                     defaultTemplate: {}
                 },
-                previewConfig: {
-                    "repos": ["/content-plugins/renderer"],
-                    "plugins": [{
-                        "id": "org.sunbird.player.endpage",
-                        "ver": 1.0,
-                        "type": "plugin"
+                  previewConfig: {
+                    repos: ['/content-plugins/renderer'],
+                    plugins: [{
+                        id: 'org.sunbird.player.endpage',
+                        ver: 1.0,
+                        type: 'plugin'
                     }],
                     showEndPage: false
                 }
-            };
+              };
 
               window.config.editorConfig.publishMode = false;
               window.config.editorConfig.isFalgReviewer = false;

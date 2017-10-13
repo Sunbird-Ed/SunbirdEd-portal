@@ -1,17 +1,9 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name playerApp.controller:ReviewContentController
- * @description
- * @author Anuj Gupta
- * # ReviewContentController
- * Controller of the playerApp
- */
 angular.module('playerApp')
 .controller('ReviewContentController', ['contentService', 'searchService', 'config',
     '$rootScope', '$scope', '$state', 'toasterService', 'PaginationService',
-    'workSpaceUtilsService', function (contentService, searchService, config, $rootScope, $scope, 
+    'workSpaceUtilsService', function (contentService, searchService, config, $rootScope, $scope,
     $state, toasterService, PaginationService, workSpaceUtilsService) {
         var reviewContent = this;
         reviewContent.userId = $rootScope.userId;

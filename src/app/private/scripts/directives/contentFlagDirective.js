@@ -1,12 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc directive
- * @name playerApp.directive:contentFlag
- * @author Anuj Gupta
- * @description
- */
-
 angular.module('playerApp')
     .directive('contentFlag', function () {
         return {

@@ -1,12 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc directive
- * @name playerApp.directive:contentPlayer
- * @description
- * @author Anuj Gupta
- * # contentPlayer
- */
 angular.module('loginApp')
     .directive('contentPlayer', [function () {
         return {

@@ -1,14 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name playerApp.controller.batch:BatchListController
- * @author Harish Kumar Gangula
- * @description
- * # BatchListController
- * Controller of the playerApp
- */
-
 angular.module('playerApp')
   .controller('BatchListController', ['$rootScope', 'toasterService', 'batchService', '$state',
       'userService', 'PaginationService', function ($rootScope, toasterService, batchService,
@@ -25,7 +16,7 @@ angular.module('playerApp')
           $('#batchStatusOptions').dropdown();
           batch.pageLimit = 9;
           batch.pager = {};
-          
+
           function showErrorMessage(isClose, message, messageType, messageText) {
               var error = {};
               error.showError = true;
@@ -86,10 +77,10 @@ angular.module('playerApp')
                       batch.pager = PaginationService.GetPager(response.result.response.count,
                         pageNumber, batch.pageLimit);
                       if (batch.batchList.length === 0) {
-                              batch.error = showErrorMessage(true,
+                          batch.error = showErrorMessage(true,
                                 $rootScope.errorMessages.WORKSPACE.BATCHES.NO_CONTENT,
                                 $rootScope.errorMessages.COMMON.NO_RESULTS);
-                          }
+                      }
                   } else {
                       toasterService.error(errorMessages.BATCH.SEARCH.FAILED);
                   }

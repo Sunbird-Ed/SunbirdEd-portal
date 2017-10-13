@@ -1,13 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name playerApp.controller:PublishedContentController
- * @description
- * @author Anuj Gupta
- * # PublishedContentController
- * Controller of the playerApp
- */
 angular.module('playerApp')
 .controller('PublishedContentController', ['contentService', 'searchService', 'config',
     '$rootScope', '$state', 'toasterService', '$scope', 'workSpaceUtilsService', '$timeout',
@@ -81,7 +73,7 @@ angular.module('playerApp')
         };
 
         publishedContent.openContentPlayer = function (item) {
-            workSpaceUtilsService.openContentEditor(item, $state.current.name); 
+            workSpaceUtilsService.openContentEditor(item, $state.current.name);
         };
 
         publishedContent.initializeUIElement = function () {
@@ -120,7 +112,7 @@ angular.module('playerApp')
                     toasterService.success(publishedContent.message.RETIRE_CONTENT.SUCCESS);
                     publishedContent.publishedContentData = workSpaceUtilsService
                             .removeContentLocal(publishedContent.publishedContentData, requestData);
-                    publishedContent.pager = PaginationService.GetPager(publishedContent.totalCount 
+                    publishedContent.pager = PaginationService.GetPager(publishedContent.totalCount
                             - requestData.length,
                     publishedContent.pageNumber, publishedContent.pageLimit);
                     if (publishedContent.publishedContentData.length === 0) {

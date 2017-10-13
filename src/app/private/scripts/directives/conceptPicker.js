@@ -1,11 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc directive
- * @name playerApp.directive:conceptPicker
- * @description
- * # conceptPicker
- */
 angular.module('playerApp').directive('conceptPicker', function () {
     var controller = ['$scope', '$rootScope', '$timeout',
         'searchService', 'toasterService',

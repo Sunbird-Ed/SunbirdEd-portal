@@ -1,14 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc filter
- * @name studioApp.filter:dateFilter
- * @function
- * @description filter related to date
- * @author Anuj Gupta
- * # dateFilter
- * Filter in the studioApp.
- */
 angular.module('playerApp')
     .filter('dateFilterWithMDY', function () {
         return function (date) {

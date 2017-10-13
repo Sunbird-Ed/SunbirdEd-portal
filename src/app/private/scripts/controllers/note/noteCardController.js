@@ -1,14 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name playerApp.controller.note:NoteCardCtrl
- * @author Anuj Gupta
- * @description
- * # NoteCardCtrl
- * Controller of the playerApp
- */
-
 angular.module('playerApp')
     .controller('NoteCardCtrl', ['$rootScope', '$scope', 'noteService', '$timeout',
         '$state', '$stateParams', '$q', 'toasterService', function ($rootScope, $scope, noteService,

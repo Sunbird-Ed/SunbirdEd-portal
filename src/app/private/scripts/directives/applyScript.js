@@ -1,17 +1,10 @@
 'use strict';
 
-/**
- * @ngdoc directive
- * @name playerApp.directive:applyScript
- * @description
- * # applyScript
- */
 angular.module('playerApp')
-    .directive('applyScript', [ '$timeout', function ($timeout) {
+    .directive('applyScript', ['$timeout', function ($timeout) {
         return {
             restrict: 'A',
             link: function (scope, element, attrs) {
-               
                 $('.popup-button').popup();
                 $('#content-search-filter-accordion').accordion();
                 $('.ui.accordion').accordion({ exclusive: false });
@@ -20,7 +13,6 @@ angular.module('playerApp')
                     .rating('disable');
                     $('.ui .progress').progress();
                     $('.course-progress').progress();
-            
                 }, 0);
                 $('.dropdown.resource-search-filter').dropdown({
                     useLabels: false,
