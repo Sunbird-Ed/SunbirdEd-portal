@@ -15,10 +15,20 @@ angular.module('playerApp')
         function (adminService, $timeout, $state, config, $rootScope, $scope,
             contentService, toasterService, permissionsService, searchService
         ) {
+     /**
+     * @class adminController
+     * @desc change user settings
+     * @memberOf Controllers
+     */
             var admin = this;
             admin.searchResult = $scope.users;
             admin.badges = adminService.getBadgesList();
-
+   /**
+         * @method getOrgName
+         * @desc get organizations name
+         * @memberOf Controllers.adminController
+         * @inner
+         */
             admin.getOrgName = function () {
                 var identifiers = [];
                 admin.searchResult.forEach(function (user) {
