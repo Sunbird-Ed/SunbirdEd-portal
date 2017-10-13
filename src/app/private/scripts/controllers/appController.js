@@ -1,12 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name playerApp.controller:AppCtrl
- * @description
- * # AppCtrl
- * Controller of the playerApp
- */
 angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService', '$rootScope',
     'userService', '$q', 'config', '$location', '$timeout',
     'portalTelemetryService', 'errorMessages', 'labels', 'sessionService',
