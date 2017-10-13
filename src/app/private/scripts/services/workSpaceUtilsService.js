@@ -2,6 +2,12 @@
 
 angular.module('playerApp')
     .service('workSpaceUtilsService', ['$state', function ($state) {
+            
+        this.removeContentLocal = function (contentList, requestData) {		
+            return contentList.filter(function (content) {		
+                return requestData.indexOf(content.identifier) === -1;		
+           });		
+        };
 
         this.collectionEditor = function (item, state) {
             $state.go('CollectionEditor', {
