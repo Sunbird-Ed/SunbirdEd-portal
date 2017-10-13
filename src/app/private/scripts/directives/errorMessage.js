@@ -1,15 +1,7 @@
 'use strict';
 
-/**
- * @ngdoc directive
- * @name playerApp.directive:errorMessage
- * @author Anuj Gupta
- * @description
- * # errorMessage
- */
-
 angular.module('playerApp')
-    .directive('errorMessage', function() {
+    .directive('errorMessage', function () {
         return {
             templateUrl: 'views/common/errorPage.html', // eslint-disable-line
             restrict: 'E',
@@ -45,7 +37,7 @@ angular.module('playerApp')
                     scope.errorClass = 'no-results';
                 }
 
-                scope.closeErrorMessage = function() {
+                scope.closeErrorMessage = function () {
                     scope.visibility = false;
                 };
             }

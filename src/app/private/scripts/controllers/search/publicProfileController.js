@@ -1,3 +1,7 @@
+/**
+  * @namespace Controllers
+ */
+
 'use strict';
 
 angular.module('playerApp') // add those all values
@@ -9,8 +13,19 @@ angular.module('playerApp') // add those all values
       '$timeout',
       '$state',
       function ($scope, $rootScope, $stateParams, searchService, toasterService, $timeout, $state) {
+    /**
+     * @class PublicProfileController
+     * @desc to display users public profile
+     * @memberOf Controllers
+     */
           var publicProfile = this;
           var userIdentifier = window.atob($stateParams.userId);
+           /**
+         * @method profile
+         * @desc Get user profile
+         * @memberOf Controllers.PublicProfileController
+         * @inner
+         */
           publicProfile.profile = function () {
               publicProfile.loader = toasterService
                                     .loader('', $rootScope.errorMessages.SEARCH.DATA.START);
