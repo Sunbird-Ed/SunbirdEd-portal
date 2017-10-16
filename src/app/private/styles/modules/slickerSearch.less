@@ -1,3 +1,10 @@
+
+// Slider
+//
+// Overriding css changes in slicker slider and is used in Home, Courses, Library page.
+//
+// Style guide: Modules.Slider
+
 .slick-prev, .slick-next {
     right: -10px !important;
     top: 40% !important;
@@ -24,7 +31,14 @@
     outline: none;  
 }
 
-.slick-prev:before{
+
+// SlickPrevButton
+// 
+//.slick-prev:before - Override previous button icon in slick slider.
+//
+// Style guide: Modules.Slider.slickPreviousButton
+
+.slick-prev:before {
     left: -20px !important;
     content: url(/common/images/Backword.png) !important;
     font-family: 'slick';
@@ -35,6 +49,13 @@
     -webkit-font-smoothing: antialiased; 
     -moz-osx-font-smoothing: grayscale;
 }
+
+
+// SlickNextButton
+//
+//.slick-next:before  - Override next button icon in slick slider.
+//
+// Style guide: Modules.Slider.SlickNextButton
 
 .slick-next:before {
     content: url(/common/images/Forward.png) !important;
@@ -50,12 +71,6 @@
 .slider {
     width: 100%;
     margin: 0 auto;
-}
-
-.courseHeader-rating.ui.star.rating .active.icon {
-    background: 0 0!important;
-    color: @blue-dark !important;
-    text-shadow:none !important;
 }
 
 /*slick slider margin bottom removed*/
