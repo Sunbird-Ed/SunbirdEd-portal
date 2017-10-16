@@ -8,11 +8,6 @@ angular.module('playerApp')
                     $scope, $location, batchService, dataService, sessionService, $anchorScroll, permissionsService, $state) {
                 var toc = this;
 
-                /**
-                 * @Function getCourseToc
-                 * @Description - to load course hierarchy - content status - batch details
-                 *
-                 */
                 toc.getCourseToc = function () {
                     toc.loader = toasterService.loader('', $rootScope.errorMessages.Courses.TOC.START);
                     courseService.courseHierarchy(toc.courseId).then(function (res) {
@@ -44,12 +39,6 @@ angular.module('playerApp')
                     });
                 };
 
-                /**
-                 * @Function getContentState
-                 * @Input - cb : Callback function after getting status of course contents
-                 * @Description - load status of each course content and calculate course progress
-                 *
-                 */
                 toc.getContentState = function (cb) {
                     var req = {
                         request: {
@@ -73,13 +62,6 @@ angular.module('playerApp')
                     });
                 };
 
-                /**
-                 * @Function getCourseContents
-                 * @Inputs - contentData : content item with children elements , contentList : target element to store extracted content children
-                 * @Description - extract all playable contents from course hierarchy recursively
-                 *
-                 *
-                 */
                 toc.getCourseContents = function (contentData, contentList) {
                     if (contentData.mimeType !==
                             'application/vnd.ekstep.content-collection') {
@@ -92,11 +74,6 @@ angular.module('playerApp')
                     return contentList;
                 };
 
-                /**
-                 * @Function scrollToPlayers
-                 * @Description - moves the focus to content Player (#tocPlayer)
-                 *
-                 */
                 toc.scrollToPlayer = function () {
                     $location.hash(toc.hashId);
                     $timeout(function () {
@@ -104,12 +81,6 @@ angular.module('playerApp')
                     }, 500);
                 };
 
-                /**
-                 * @Function initTocView
-                 * @Description - once all the accordion and fancy tree elements are ready
-                 * in view file this function will be called to apply jquery fns
-                 *
-                 */
                 toc.initTocView = function () {
                     $timeout(function () {
                         $('.toc-tree-item').fancytree({
@@ -127,12 +98,6 @@ angular.module('playerApp')
                     }, 100);
                 };
 
-                /**
-                 * @Function openRecentCollection
-                 * @Description - find the fancy tree and Accordion parent of recent played content
-                 * and expand it
-                 *
-                 */
                 toc.openRecentCollection = function () {
                     $timeout(function () {
                         if (toc.itemIndex >= 0) {
@@ -163,13 +128,6 @@ angular.module('playerApp')
                     }, 100);
                 };
 
-                /**
-                 * @Function getContentIcon
-                 * @Input - contentMimeType : mime type of the content, stsClass :  object 'contentStatusList' value for respective content
-                 *          to show the content progress (grey,blue,green)
-                 * @Description - returns the resepctive image path for content's mimetype and status
-                 *
-                 */
                 toc.getContentIcon = function (contentMimeType, stsClass) {
                     stsClass = stsClass || '';
                     var contentIcons = {
@@ -188,23 +146,11 @@ angular.module('playerApp')
                     return contentIcons[contentMimeType];
                 };
 
-                /**
-                 * @Function expandAccordion
-                 * @Input - $event : event of the control which triggers it
-                 * @Description - expand the collection accordion to display its contents
-                 *
-                 */
                 toc.expandAccordion = function ($event) {
                     var accIcon = $($event.target).closest('.title').find('i');
                     toc.updateAccordionIcon(accIcon, !$(accIcon).hasClass('plus'));
                 };
 
-                /**
-                 * @Function updateAccordionIcon
-                 * @Input - icon : target element for which icon-class is to be updated, isPlus : if already plus then minus else plus
-                 * @Description - change the accordion icon on expand and collapse
-                 *
-                 */
                 toc.updateAccordionIcon = function (icon, isPlus) {
                     if (isPlus) {
                         $(icon).addClass('plus').removeClass('minus');
@@ -213,12 +159,6 @@ angular.module('playerApp')
                     }
                 };
 
-                /**
-                 * @Function updateCourseProgress
-                 * @Description - updates course header progress bar value and lastreadcontentid of enrolled courses
-                 *                after content state changes
-                 *
-                 */
                 toc.updateCourseProgress = function () {
                     $timeout(function () {
                         var progPercent = parseInt(
@@ -260,11 +200,6 @@ angular.module('playerApp')
                 toc.batchCardShow = true;
                 toc.batchDetailsShow = false;
 
-                /**
-                 * @Function showBatchCardList
-                 * @Description - load batch details and status
-                 *
-                 */
                 toc.showBatchCardList = function () {
                     var isEnroled = _.find($rootScope.enrolledCourses, function (o) {
                         return o.courseId === toc.courseId;
@@ -301,13 +236,6 @@ angular.module('playerApp')
                     }
                 };
 
-                /**
-                 * @Function openContent
-                 * @Inputs - contentId : identifier of the content to be played ,
-                 *           trigger : 'prev' clicked by previous button of player , 'next' clicked by next button of player
-                 * @Description - open content in conten player
-                 *
-                 */
                 toc.openContent = function (contentId, trigger) {
                     if (toc.playContent == true) {
                         // find index of current content from course contents list
@@ -382,11 +310,6 @@ angular.module('playerApp')
                     }
                 };
 
-                /**
-                 * @Function resumeCourse
-                 * @Description - load the contentID and resume the player
-                 *
-                 */
                 toc.resumeCourse = function () {
                     toc.showCourseDashboard = false;
                     if (toc.courseContents.length > 0) {
@@ -408,11 +331,6 @@ angular.module('playerApp')
                     }
                 };
 
-                /**
-                 * @Function init
-                 * @Description - loads details needed for course Lecture view  and content player (course)
-                 *
-                 */
                 toc.init = function () {
                     toc.courseId = $stateParams.courseId;
                     toc.courseType = ($rootScope.enrolledCourseIds[toc.courseId]) ?
@@ -439,11 +357,7 @@ angular.module('playerApp')
                     }
                     toc.getCourseToc();
                 };
-                /**
-                 * @Function initDropdownValue
-                 * @Description - values - resume course and view course dashboard
 
-                 */
                 toc.initDropdownValues = function () {
                     $('#courseDropdownValues').dropdown();
                 };
