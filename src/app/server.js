@@ -254,6 +254,7 @@ app.all('*', function(req, res) {
  * Method called after successful authentication and it will log the telemetry for CP_SESSION_START and updates the login time
  */
 keycloak.authenticated = function(request) {
+  console.log('after authentication',request);
   async.series({
     getUserData: function(callback) {
       permissionsHelper.getCurrentUserRoles(request, callback);
