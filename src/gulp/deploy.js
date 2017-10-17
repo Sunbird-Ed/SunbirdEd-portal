@@ -8,6 +8,12 @@ var minifyHTML = require('gulp-minify-html');
 var imagemin = require('gulp-imagemin');
 var inject = require('gulp-inject');
 
+gulp.task('addCDNFiles', ['packageNodeModules'], function () {
+  return gulp
+    .src(paths.cdnFiles, {base: 'dist/'})
+    .pipe(gulp.dest(paths.cdnDest));
+});
+
 gulp.task('packageNodeModules', ['injectFiles'], function() {
   return gulp.src(['node_modules/**/*'])
     .pipe(gulp.dest(paths.player.dist + '/node_modules'));
