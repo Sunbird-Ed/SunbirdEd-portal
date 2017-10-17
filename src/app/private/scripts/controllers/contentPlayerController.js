@@ -59,10 +59,12 @@ angular.module('playerApp')
                         }
                         configuration.context.app = [org.sunbird.portal.appid];
                         configuration.context.partner = [];
+                        if($rootScope.isTocPage){
                         configuration.context.cdata = [{
                             id: $stateParams.courseId,
                             type: 'course'
                         }];
+                       }
                         configuration.config = config.ekstep_CP_config.config;
                         configuration.config.plugins = config.ekstep_CP_config.config.plugins;
                         configuration.config.repos = config.ekstep_CP_config.config.repos;
