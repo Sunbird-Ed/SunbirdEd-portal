@@ -19,6 +19,8 @@
 16. sunbird_cassandra_urls (String coma seperated values Eg: "locahost:3000,locahost:5000")
 17. sunbird_session_store_type (String Eg:cassandra)
 18. sunbird_portal_title_name (String Eg:Sunbird)
+19. sunbird_cdn_url (String Eg:https://dev-sunbird-temp.azureedge.net)
+20. sunbird_theme (String Eg:default)
 
 ## Pre Requirements
 

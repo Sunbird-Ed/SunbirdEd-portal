@@ -1,5 +1,5 @@
-'use strict';
-const env = process.env;
+'use strict'
+const env = process.env
 
 let envVariables = {
   LEARNER_URL: env.sunbird_learner_player_url || 'https://staging.open-sunbird.org/api/',
@@ -7,7 +7,7 @@ let envVariables = {
   CONTENT_PROXY_URL: env.sunbird_content_proxy_url || 'https://staging.open-sunbird.org',
   PORTAL_REALM: env.sunbird_portal_realm || 'sunbird',
   PORTAL_AUTH_SERVER_URL: env.sunbird_portal_auth_server_url || 'https://staging.open-sunbird.org/auth',
-  PORTAL_AUTH_SERVER_CLIENT: env.sunbird_portal_auth_server_client || "portal",
+  PORTAL_AUTH_SERVER_CLIENT: env.sunbird_portal_auth_server_client || 'portal',
   APPID: env.sunbird_appid || 'sunbird.portal',
   DEFAUULT_TENANT: env.sunbird_default_tenant,
   EKSTEP_ENV: env.ekstep_env || 'qa',
@@ -18,11 +18,13 @@ let envVariables = {
   PORTAL_AUTOCREATE_TRAMPOLINE_USER: env.sunbird_autocreate_trampoline_user || 'true',
   PORTAL_TRAMPOLINE_CLIENT_ID: env.sunbird_trampoline_client_id || 'trampoline',
   PORTAL_TRAMPOLINE_SECRET: env.sunbird_trampoline_secret,
-  ENABLE_PERMISSION_CHECK: env.sunbird_enable_permission_check || 0,
+  ENABLE_PERMISSION_CHECK: env.sunbird_enabless_permission_check || 0,
   PORTAL_SESSION_STORE_TYPE: env.sunbird_session_store_type || 'in-memory',
-  PORTAL_TITLE_NAME: env.sunbird_portal_title_name || 'Sunbird'
-};
+  PORTAL_TITLE_NAME: env.sunbird_portal_title_name || 'Sunbird',
+  PORTAL_CDN_URL: env.sunbird_cdn_url || '',
+  PORTAL_THEME: env.sunbird_theme || 'default'
+}
 
-envVariables.PORTAL_CASSANDRA_URLS =  (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '') ? env.sunbird_cassandra_urls.split(",") : ["localhost"];
+envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '') ? env.sunbird_cassandra_urls.split(',') : ['localhost']
 
-module.exports = envVariables;
+module.exports = envVariables
