@@ -68,6 +68,7 @@
     "require-dot-file": "^0.4.0",
     "rimraf": "^2.4.0",
     "run-sequence": "^1.1.1",
+    "standard": "10.0.3",
     "wiredep": "^2.2.2"
   },
   "engines": {
