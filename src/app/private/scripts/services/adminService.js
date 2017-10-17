@@ -11,7 +11,7 @@ angular.module('playerApp')
              * @method userSearch
              * @desc Search a user
              * @memberOf Services.adminService
-             * @param {Object}  request - request object
+             * @param {Object}  request - Request object
              * @param {string} request.query - Search query.
              * @param {Object} request.filter - Filter applied on search:- ie. Grades,Medium,Subject.
              * @returns {Promise} Promise object represents the list of users
