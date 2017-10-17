@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html ng-app="playerApp">
 
 <head>
     <meta charset="utf-8">
@@ -7,8 +7,8 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link id="dynamic-favicon" rel="icon" type="image/ico" href="/common/images/favicon.ico">
-    <link rel="stylesheet" href="/themes/default/assets/styles/main.css">
-    <link rel="stylesheet" href="/themes/default/semantic.min.css">
+    <link rel="stylesheet" ng-href="/themes/{{theme}}/assets/styles/main.css">
+    <link rel="stylesheet" ng-href="/themes/{{theme}}/semantic.min.css">
     <link rel="stylesheet" href="/thirdparty/bower_components/angular-pagedown/angular-pagedown.min.css">
     <link rel="stylesheet" href="/thirdparty/bower_components/slick-carousel/slick/slick.css" />
     <link rel="stylesheet" href="/thirdparty/bower_components/slick-carousel/slick/slick-theme.css" />
@@ -23,9 +23,11 @@
     <base href="/private/index">
 </head>
 
-<body ng-app="playerApp" ng-controller="AppCtrl">
+<body  ng-controller="AppCtrl">
     <input type="hidden" id="userId" value="<%=userId%>" />
     <input type="hidden" id="sessionId" value="<%=sessionId%>" />
+    <input type="hidden" id="cdnUrl" value="<%=cdnUrl%>" />
+    <input type="hidden" id="theme" value="<%=theme%>" />
     <div ng-include="'views/common/topHeader.html'"></div>
     <div class="ui top attached fluid container">
         <div class="ui padded grid">
@@ -39,7 +41,7 @@
             </div>
         </div>
     </div>
-    <script src="../common/js/org.js"></script>
+    <script src="/common/js/org.js"></script>
     <!-- inject:js -->
     <script src="/thirdparty/libs/eventbus.min.js"></script>
     <script src="/thirdparty/libs/md5.js"></script>
@@ -74,16 +76,16 @@
 
     <script src="/thirdparty/semantic/semantic.min.js"></script>
 
-    <script src="/scripts/utils/util.js"></script>
-    <script src="/scripts/telemetry/TelemetryEvent.js"></script>
-    <script src="/scripts/telemetry/TelemetryService.js"></script>
-    <script src="/scripts/telemetry/TelemetryV2Manager.js"></script>
-    <script src="/scripts/telemetry/TelemetryServiceUtil.js"></script>
-    <script src="/scripts/telemetry/InActiveEvent.js"></script>
+    <script src="scripts/utils/util.js"></script>
+    <script src="scripts/telemetry/TelemetryEvent.js"></script>
+    <script src="scripts/telemetry/TelemetryService.js"></script>
+    <script src="scripts/telemetry/TelemetryV2Manager.js"></script>
+    <script src="scripts/telemetry/TelemetryServiceUtil.js"></script>
+    <script src="scripts/telemetry/InActiveEvent.js"></script>
     <script src="scripts/playerAppConfig.js"></script>
     <script src="scripts/privateLabels.js"></script>
     <script src="scripts/privateErrorMessages.js"></script>
-    <script src="/scripts/managers/eventManager.js"></script>
+    <script src="scripts/managers/eventManager.js"></script>
     <script src="scripts/app.js"></script>
     <script src="scripts/routes/appRoute.js"></script>
     <script src="scripts/factories/sessionFactory.js"></script>

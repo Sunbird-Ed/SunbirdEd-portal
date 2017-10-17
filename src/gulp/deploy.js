@@ -20,7 +20,7 @@ gulp.task('packageNodeModules', ['injectFiles'], function() {
 });
 
 gulp.task('injectFiles', ['minifyIMG'], function() {
-  var x = gulp.src('dist/public/index.html')
+  var x = gulp.src('dist/public/index.ejs')
     .pipe(inject(gulp.src(['dist/public/external.min.js',
       'dist/thirdparty/semantic/semantic.min.js',
       'dist/private/scripts/utils/util.js',
