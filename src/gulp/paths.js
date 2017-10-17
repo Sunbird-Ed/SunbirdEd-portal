@@ -267,7 +267,40 @@ var paths = {
     'app/private/**/*.js',
     'app/public/**/*.js'
   ],
-  jsdocs_config: './configs/jsdocConfig.json'
+  jsdocs_config: './configs/jsdocConfig.json',
+    cdnFiles: [
+    'dist/common/js/org.js',
+    'dist/private/external.min.js',
+    'dist/thirdparty/semantic/semantic.min.js',
+    'dist/private/scripts/utils/util.js',
+    'dist/public/telemetry.min.js',
+    'dist/private/scripts/playerAppConfig.js',
+    'dist/private/scripts/privateLabels.js',
+    'dist/private/scripts/privateErrorMessages.js',
+    'dist/private/scripts/managers/eventManager.js',
+    'dist/private/scripts/app.js',
+    'dist/private/scripts/routes/appRoute.js',
+    'dist/private/script.min.js',
+    'dist/common/fonts/**',
+    'dist/common/images/**',
+    'dist/themes/**',
+    'dist/common/styles/main.css',
+    'dist/thirdparty/semantic/**/*',
+    'dist/private/external.min.css',
+    'dist/thirdparty/bower_components/**/*',
+    'dist/public/external.min.js',
+    'dist/private/scripts/utils/util.js',
+    'dist/private/scripts/managers/eventManager.js',
+    'dist/public/scripts/publicLabels.js',
+    'dist/public/scripts/publicErrorMessages.js',
+    'dist/public/scripts/publicAppConfig.js',
+    'dist/public/scripts/application.js',
+    'dist/public/scripts/routes/publicAppRoute.js',
+    'dist/public/script.min.js',
+    'dist/public/external.min.css'
+  ],
+  cdnDest: 'dist/cdn/'
+
 }
 
 module.exports = paths
