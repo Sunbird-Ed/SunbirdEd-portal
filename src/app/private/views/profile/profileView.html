@@ -11,7 +11,7 @@
             </div>
             <div class="twelve wide column" ng-include=" 'views/profile/profileView/userEducation.html' ">
             </div>
-            <div class="twelve wide column" ng-include=" 'views/profile/profileView/userSkills.html' ">
+            <!-- <div class="twelve wide column" ng-include=" 'views/profile/profileView/userSkills.html' "> -->
             </div>
             <div class="twelve wide column" ng-include=" 'views/profile/profileView/userBasicInfo.html' ">
             </div>
@@ -19,13 +19,7 @@
     </div>
     <div class=" four wide column margin-top-20">
         <div class="ui grid ">
-            <!--             <div class="twelve wide column">
-                <span class="profileViewProgress">Profile Completeness</span>
-                <span class="profileViewProgress float-ContentRight">15%</span>
-                <div class="ui small blue progress margin-top--5">
-                    <div class="bar"></div>
-                </div>
-            </div> -->
+           
             <div class="twelve wide column" ng-if="$root.profileCompleteness">
                 <div class="ui raised segment" >
                     <div class="profileitems profile-des ui relaxed aligned list">
@@ -82,22 +76,6 @@
                     </div>
                 </div>
             </div>
-
-            <!--<div class="twelve wide column" sb-permissions permission-only="ORG_ADMIN,SYSTEM_ADMINISTRATION">
-                <div class="workspacebutton workspacecontentProfile ui link card ">
-                    <div class="content ">
-                        <div class="WorkSpaceTextContent ">
-                            <i class='my-icon database icon '></i>
-                            <span class="my-text ">Dashboard</span>
-
-                                                        <div class="ui bulleted list" ng-repeat="item in profileCtrl.orgDetails"  >
-                                                          <a class="item" ui-sref="orgDashboard({orgId: '{{item.organisationId}}'}) ">{{item.orgName || item.organisationId}}</a>
-                                                        </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>-->
             <div class="twelve wide column">
                 <div class="ui raised segment blur-content">
                     <div class="header announcementCard-header ">
