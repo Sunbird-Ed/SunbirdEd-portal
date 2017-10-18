@@ -5,7 +5,7 @@
     <div class="header">
         <div class="ui grid">
             <div class="eleven wide column">
-                <span class="ui header">{{$root.labels.CONTENT_SHARE.contentShareText}}</span>
+                <span class="ui header">{{$root.frmelmnts.lbl.share}}</span>
             </div>
             <div class="one wide column actions">
                 <h5 class="ui basic icon circular button deny">
@@ -15,7 +15,7 @@
         </div>
     </div>
     <div class="content">
-        <p class="meta">{{$root.labels.CONTENT_SHARE.shareByTheLink}}</p>
+        <p class="meta">{{$root.frmelmnts.lbl.sharelink}}</p>
         <div class="ui action input shareContent width-100" id="buttonPopUp">
             <input type="text" id="copyLinkData" name="title" readonly ng-model="contentShare.link" />
             <button class="ui basic primary button" ng-click="contentShare.copyLink()" id="copyLinkButton">
