@@ -7,11 +7,9 @@ const path = require('path'),
 envHelper = require('./environmentVariablesHelper.js'),
   appName = 'playerApp',
   resBundlesArr = [
-    { name: 'frmelmnts', path: './resourcebundles/data/formElements/', dest: './common/js/' },
-    { name: 'messagess', path: './resourcebundles/data/messages/', dest: './common/js/' },
+    { name: 'frmelmnts', path: __dirname + '/./../resourcebundles/data/formElements/', dest: __dirname + '/./../common/js/' },
+    { name: 'messagess', path: __dirname + '/./../resourcebundles/data/messages/', dest: __dirname + '/./../common/js/' },
   ];
-
-
 
 
 const readFiles = function(dirname) {
@@ -94,8 +92,8 @@ var buildBundle = function(item) {
 
 
       _.forEach(resObj, function(langObj, langKey) {
-        if (resObj[envHelper.PORTAL_DEFAULT_LANGUAGE] && langKey !== envHelper.PORTAL_DEFAULT_LANGUAGE) {
-          fillObject(resObj[envHelper.PORTAL_DEFAULT_LANGUAGE], resObj[langKey]);
+        if (resObj[envHelper.PORTAL_PRIMARY_BUNDLE_LANGUAGE] && langKey !== envHelper.PORTAL_PRIMARY_BUNDLE_LANGUAGE) {
+          fillObject(resObj[envHelper.PORTAL_PRIMARY_BUNDLE_LANGUAGE], resObj[langKey]);
         }
       });
 
