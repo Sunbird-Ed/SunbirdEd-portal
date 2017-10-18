@@ -2,6 +2,11 @@
 
 angular.module('playerApp')
     .service('formValidation', ['$rootScope', function ($rootScope) {
+     /**
+     * @class formValidation
+     * @desc Service for validating forms.
+     * @memberOf Services
+     */
         var basicProfileValidation = $rootScope.errorMessages.PROFILE.FORM_VALIDATION.BASIC_PROFILE;
         var addressValidation = $rootScope.errorMessages.PROFILE.FORM_VALIDATION.ADDRESS;
         var educationValidation = $rootScope.errorMessages.PROFILE.FORM_VALIDATION.EDUCATION;
@@ -40,6 +45,14 @@ angular.module('playerApp')
                 type: 'regExp[^[0-9]*$]',
                 prompt: basicProfileValidation.addhar }
         ];
+        /**
+             * @method getFields
+             * @desc Get validation fields and rules for validations
+             * @memberOf Services.formValidation
+             * @param {string}  formName - Name attribute of form
+             * @returns {Object[]} Validation fields and rules for validations
+             * @instance
+             */
         function getFields(formName) {
             if (formName === '#basicInfoForm') {
                 return basicInfoFields;
@@ -51,6 +64,14 @@ angular.module('playerApp')
                 return jobProfileFields;
             }
         }
+        /**
+             * @method validate
+             * @desc Validate a form
+             * @memberOf Services.formValidation
+             * @param {string}  formName - Name attribute of form
+             * @returns {string} Boolean true if valid form otherwise error message and false
+             * @instance
+             */
         this.validate = function (formName) {
             var fieldNameTypePromt = {};
             fieldNameTypePromt = getFields(formName);
