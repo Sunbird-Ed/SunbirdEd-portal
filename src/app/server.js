@@ -19,6 +19,7 @@ const express = require('express'),
   envHelper = require('./helpers/environmentVariablesHelper.js'),
   publicServicehelper = require('./helpers/publicServiceHelper.js'),
   userHelper = require('./helpers/userHelper.js'),
+  resourcesBundlesHelper = require('./helpers/resourceBundlesHelper.js'),
   fs = require('fs'),
   port = envHelper.PORTAL_PORT,
   learnerURL = envHelper.LEARNER_URL,
@@ -33,7 +34,8 @@ const express = require('express'),
   appId = envHelper.APPID,
   default_tenant = envHelper.DEFAUULT_TENANT,
   md5 = require('js-md5'),
-  sunbird_api_auth_token = envHelper.PORTAL_API_AUTH_TOKEN
+  sunbird_api_auth_token = envHelper.PORTAL_API_AUTH_TOKEN,
+  portal = this
 
 let cassandraCP = envHelper.PORTAL_CASSANDRA_URLS
 
@@ -309,11 +311,20 @@ function verifyToken () {
   }
 }
 
-this.server = app.listen(port, function () {
-  console.log('app running on port ' + port)
-  permissionsHelper.getPermissions()
+resourcesBundlesHelper.buildResources(function(err, result) {
+  console.log('building resource bundles ......')
+  if (err) {
+    throw err;
+  } else {
+    portal.server = app.listen(port, function() {
+      console.log('completed resource bundles'+'\r\n'+'starting  server...')
+      console.log('app running on port ' + port)
+      permissionsHelper.getPermissions()
+    })
+  }
 })
 
-exports.close = function () {
-  this.server.close()
+
+exports.close = function() {
+ portal.server.close()
 }

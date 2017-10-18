@@ -5,7 +5,7 @@
                 <div class="ui grid">
                     <div class="eleven wide column">
                         <span class="ui header">
-                            {{$root.labels.WORKSPACE.createCourse.createCourseText}}
+                            {{$root.frmelmnts.lbl.designcourse}}
                         </span>
                     </div>
                     <div class="one wide column actions">
@@ -19,19 +19,19 @@
                 <form class="ui form" ng-init="course.data = {}">
                     <div class="field">
                         <label>
-                            {{$root.labels.WORKSPACE.createCourse.courseTitle}}
+                            {{$root.frmelmnts.lbl.name}}
                         </label>
                         <div class="field">
-                            <input type="text" name="title" placeholder={{$root.labels.WORKSPACE.createCourse.courseTitle}} ng-model="course.data.name">
+                            <input type="text" name="title" placeholder={{$root.frmelmnts.lbl.name}} ng-model="course.data.name">
                         </div>
                     </div>
                     <div class="field">
                         <div class="field">
                             <label>
-                                {{$root.labels.WORKSPACE.common.description}}
+                                {{$root.frmelmnts.lbl.description}}
                             </label>
                             <div class="field">
-                                <input name="description" name="title" placeholder={{$root.labels.WORKSPACE.createCourse.description}} ng-model="course.data.description">
+                                <input name="description" name="title" placeholder={{$root.frmelmnts.lbl.description}} ng-model="course.data.description">
                             </div>
                         </div>
                     </div>
@@ -40,16 +40,16 @@
             <div class="actions margin-top-10">
                 <p class="text-align-center padding-top-20">
                     <button class="ui primary text-align-center icon button" ng-click="course.saveMetaData(course.data)" ng-disabled="course.loader.showLoader">
-                        {{$root.labels.WORKSPACE.common.startCreating}}
+                        {{$root.frmelmnts.btn.startcreating}}
                     </button>
                 </p>
                 <h4 class="text-align-center">
-                    {{$root.labels.WORKSPACE.createCourse.youCanFillThisDL}}
+                    {{$root.frmelmnts.lbl.coursefilllater}}
                 </h4>
                 <div>
                     <label>
                         <p class="text-align-center">
-                            {{$root.labels.WORKSPACE.common.byProceedYouAgreedCourse}}
+                            {{$root.frmelmnts.lbl.agreeandproceedtext}}
                         </p>
                     </label>
                 </div>

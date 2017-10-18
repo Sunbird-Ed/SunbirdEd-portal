@@ -9,6 +9,7 @@ angular.module('playerApp', [
     'playerApp.config',
     'playerApp.errorMessages',
     'playerApp.labels',
+    'playerApp.frmelmnts',
     'ui.router',
     'ngStorage',
     'ui.pagedown',

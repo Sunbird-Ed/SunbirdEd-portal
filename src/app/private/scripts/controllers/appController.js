@@ -2,10 +2,10 @@
 
 angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService', '$rootScope',
   'userService', '$q', 'config', '$location', '$timeout',
-  'portalTelemetryService', 'errorMessages', 'labels', 'sessionService',
+  'portalTelemetryService', 'errorMessages', 'frmelmnts', 'sessionService',
   'learnService', '$http', 'searchService', 'toasterService', 'adminService', '$state',
   function ($scope, permissionsService, $rootScope, userService, $q, config,
-    $location, $timeout, portalTelemetryService, errorMessages, labels,
+    $location, $timeout, portalTelemetryService, errorMessages, frmelmnts,
     sessionService, learnService, $http, searchService, toasterService, adminService, $state) {
     $rootScope.userId = $('#userId').attr('value')
     $rootScope.sessionId = $('#sessionId').attr('value')
@@ -13,7 +13,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
     $rootScope.theme = $('#theme').attr('value') || 'default'
     $rootScope.language = $rootScope.userLanguage || config.SITE.DEFAULT_LANGUAGE
     $rootScope.errorMessages = errorMessages
-    $rootScope.labels = labels
+    $rootScope.frmelmnts = frmelmnts[$rootScope.language]
     $rootScope.searchKey = ''
     $rootScope.enrolledCourseIds = {}
 

@@ -1,9 +1,9 @@
 <div class="ui raised segment">
     <div class="header announcementCard-header">
-        <span class="header cardsHeading">{{$root.labels.PROFILE.EDUCATION.header}} </span>
-        <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.educationForm && profileCtrl.education.length" ng-click="profileCtrl.educationForm=true ;profileCtrl.isNewEducation=false ">{{$root.labels.PROFILE.BUTTON.edit}}</a>
-        <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.educationForm " ng-click="profileCtrl.educationForm=true ;profileCtrl.isNewEducation=true ;profileCtrl.newEducation={} ">{{$root.labels.PROFILE.BUTTON.add}}</a>
-        <a class="addeditprofile cursor-pointer" ng-if="profileCtrl.educationForm" ng-click="profileCtrl.educationForm=false;profileCtrl.user.education=profileCtrl.getProfileObject(profileCtrl.education)">{{$root.labels.PROFILE.BUTTON.close}}</a>
+        <span class="header cardsHeading">{{$root.frmelmnts.lbl.education}} </span>
+        <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.educationForm && profileCtrl.education.length" ng-click="profileCtrl.educationForm=true ;profileCtrl.isNewEducation=false ">{{$root.frmelmnts.btn.edit}}</a>
+        <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.educationForm " ng-click="profileCtrl.educationForm=true ;profileCtrl.isNewEducation=true ;profileCtrl.newEducation={} ">{{$root.frmelmnts.btn.add}}</a>
+        <a class="addeditprofile cursor-pointer" ng-if="profileCtrl.educationForm" ng-click="profileCtrl.educationForm=false;profileCtrl.user.education=profileCtrl.getProfileObject(profileCtrl.education)">{{$root.frmelmnts.btn.close}}</a>
     </div>
     <div ng-if="!profileCtrl.educationForm" class="profileitems ui relaxed divided items">
         <div class="item" ng-repeat="education in profileCtrl.education">
@@ -37,7 +37,7 @@
     <div ng-if="profileCtrl.educationForm" class="profileitems ui relaxed divided items">
         <div class="edit-education-form" ng-if="!profileCtrl.isNewEducation ">
             <div class=" ui " ng-repeat="education in profileCtrl.user.education track by $index " ng-include=" 'views/profile/editProfile/education.html' "></div>
-            <div class="ui button margin-top-15" ng-class="{ 'disabled' : profileCtrl.disableSave}" ng-click="profileCtrl.editEducation(profileCtrl.user.education)" ;>{{$root.labels.PROFILE.BUTTON.save}} </div>
+            <div class="ui button margin-top-15" ng-class="{ 'disabled' : profileCtrl.disableSave}" ng-click="profileCtrl.editEducation(profileCtrl.user.education)" ;>{{$root.frmelmnts.btn.save}} </div>
         </div>
         <div class="add-education-form" ng-if="profileCtrl.isNewEducation ">
             <div class="ui " ng-include=" 'views/profile/editProfile/addEducation.html' "></div>

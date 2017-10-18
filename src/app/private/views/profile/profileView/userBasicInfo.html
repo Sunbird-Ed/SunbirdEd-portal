@@ -1,8 +1,8 @@
 <div class="ui raised segment " ng-init="profileCtrl.basicProfileForm=false">
     <div class="header announcementCard-header ">
-        <span class="header cardsHeading "> {{$root.labels.PROFILE.BASIC_PROFILE.header}}</span>
-        <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.basicProfileForm" ng-click="profileCtrl.basicProfileForm=true">{{$root.labels.PROFILE.BUTTON.edit}}</a>
-        <a class="addeditprofile cursor-pointer" ng-if="profileCtrl.basicProfileForm" ng-click="profileCtrl.basicProfileForm=false;profileCtrl.user=profileCtrl.getProfileObject(profileCtrl.basicProfile);">{{$root.labels.PROFILE.BUTTON.close}}</a>
+        <span class="header cardsHeading "> {{$root.frmelmnts.lbl.addlInfo}}</span>
+        <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.basicProfileForm" ng-click="profileCtrl.basicProfileForm=true">{{$root.frmelmnts.btn.edit}}</a>
+        <a class="addeditprofile cursor-pointer" ng-if="profileCtrl.basicProfileForm" ng-click="profileCtrl.basicProfileForm=false;profileCtrl.user=profileCtrl.getProfileObject(profileCtrl.basicProfile);">{{$root.frmelmnts.btn.close}}</a>
 
     </div>
     <div class="profileitems profile-des ui relaxed aligned list " ng-if="!profileCtrl.basicProfileForm && profileCtrl.basicProfile">
@@ -12,7 +12,7 @@
                 <span>{{profileCtrl.basicProfile.email}}</span>
             </div>
             <div class="iniformationcontent content ">
-                {{$root.labels.PROFILE.BASIC_PROFILE.email}}
+                {{$root.frmelmnts.lbl.email}}
             </div>
         </div>
         <div class="item ">
@@ -20,7 +20,7 @@
                 <span>{{profileCtrl.basicProfile.phone}}</span>
             </div>
             <div class="iniformationcontent content ">
-                {{$root.labels.PROFILE.BASIC_PROFILE.phone}}
+                {{$root.frmelmnts.lbl.phone}}
             </div>
         </div>
         <div class="item ">
@@ -28,7 +28,7 @@
                 <span>{{profileCtrl.basicProfile.gender}}</span>
             </div>
             <div class="iniformationcontent content ">
-                {{$root.labels.PROFILE.BASIC_PROFILE.gender}}
+                {{$root.frmelmnts.lbl.gender}}
             </div>
         </div>
         <div class="item ">
@@ -36,7 +36,7 @@
                 <span>{{profileCtrl.basicProfile.dob | date : "dd/MM/y"}}</span>
             </div>
             <div class="iniformationcontent content ">
-                {{$root.labels.PROFILE.BASIC_PROFILE.dob}}
+                {{$root.frmelmnts.lbl.birthdate}}
             </div>
         </div>
         <div class="item ">
@@ -46,7 +46,7 @@
                 </span>
             </div>
             <div class="iniformationcontent content ">
-                {{$root.labels.PROFILE.BASIC_PROFILE.language}}
+                {{$root.frmelmnts.lbl.language}}
             </div>
         </div>
         <div class="item ">
@@ -57,7 +57,7 @@
 
             </div>
             <div class="iniformationcontent content ">
-                {{$root.labels.PROFILE.BASIC_PROFILE.subjects}}
+                {{$root.frmelmnts.lbl.subjects}}
             </div>
         </div>
         <div class="item ">
@@ -66,7 +66,7 @@
                 </span>
             </div>
             <div class="iniformationcontent content ">
-                {{$root.labels.PROFILE.BASIC_PROFILE.grades}}
+                {{$root.frmelmnts.lbl.grades}}
             </div>
         </div>
         <div class="item ">
@@ -75,7 +75,7 @@
 
             </div>
             <div class="iniformationcontent content ">
-                {{$root.labels.PROFILE.BASIC_PROFILE.currentLocation}}
+                {{$root.frmelmnts.lbl.currentlocation}}
             </div>
         </div>
         <div class="item ">
@@ -96,7 +96,7 @@
             
         </div>
         <div class="iniformationcontent content ">
-            {{$root.labels.PROFILE.SOCIAL_MEDIA.title}}
+            {{$root.frmelmnts.lbl.socialmedia}}
         </div>
         </div>
 
