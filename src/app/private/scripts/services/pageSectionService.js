@@ -7,7 +7,7 @@ angular.module('playerApp')
      * @desc Service to manage sections of page.
      * @memberOf Services
      */
-    /**
+        /**
          * @method getPageData
          * @desc Get page sections
          * @memberOf Services.pageSectionService
