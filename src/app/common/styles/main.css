@@ -420,18 +420,6 @@
   color: #006cff !important;
   text-shadow: none !important;
 }
-.header-container {
-  margin-left: 1px !important;
-  border-bottom: 5px solid #007AFF !important;
-}
-.header-user-icon {
-  margin-right: 0px !important;
-}
-.content-card-meta {
-  background: rgba(0, 0, 0, 0.5) !important;
-  color: #FFFFFF !important;
-  padding: 5px !important;
-}
 .ui.menu {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -486,9 +474,6 @@
 .header-user-container {
   float: right !important;
 }
-.padding-top-header-large-icons {
-  padding-top: 1.5rem;
-}
 .padding-top-1rem {
   padding-top: 1rem !important;
 }
@@ -506,9 +491,6 @@
 }
 .ui.breadcrumb .divider {
   color: #007AFF !important;
-}
-.headerSearchDropdown:hover {
-  background: #f9fafb !important;
 }
 .headerDropdownProfile {
   cursor: text !important;
@@ -2656,6 +2638,12 @@ ul.fancytree-container li {
 }
 .profileUpdateAddDetails {
   font-size: 1em !important;
+}
+.ui.basic.label {
+  border: 1px solid #979797 !important;
+}
+.ui.basic.label:hover {
+  border-color: #000000 !important;
 }
 .workspaceicon.ui.header > .icon {
   padding-top: 0;
