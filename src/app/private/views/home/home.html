@@ -4,7 +4,7 @@
         <div class="row">
             <div class="twelve wide column" ng-if="!homeCtrl.enrollCourseApi.loader.showLoader" ng-init="homeCtrl.getToDoList()">
                 <div ng-if="$root.toDoList.length > 0" class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100 homeHeaderPadding" apply-script>
-                    <span class="ui header HomeAccordianHeading">{{$root.labels.Courses.TODO}}</span><span class="todolabel ui red circular inline label ">{{$root.toDoList.length}}</span>
+                    <span class="ui header HomeAccordianHeading">{{$root.frmelmnts.scttl.todo}}</span><span class="todolabel ui red circular inline label ">{{$root.toDoList.length}}</span>
                     <span ng-init="expandAcc=true" class="removeline title title-padding-left accordian-HomeLeft-text active float-ContentRight" data-tooltip="{{expandAcc==true?'Collapse':'Expand'}}" data-inverted="">
                         <i class="angle down icon down-arrow-accordion float-ContentRight" ng-click="expandAcc=!expandAcc"></i>
                     </span>

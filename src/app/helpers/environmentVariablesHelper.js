@@ -22,7 +22,8 @@ let envVariables = {
   PORTAL_SESSION_STORE_TYPE: env.sunbird_session_store_type || 'in-memory',
   PORTAL_TITLE_NAME: env.sunbird_portal_title_name || 'Sunbird',
   PORTAL_CDN_URL: env.sunbird_cdn_url || '',
-  PORTAL_THEME: env.sunbird_theme || 'default'
+  PORTAL_THEME: env.sunbird_theme || 'default',
+  PORTAL_DEFAULT_LANGUAGE:env.sunbird_portal_default_language || 'en'  
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '') ? env.sunbird_cassandra_urls.split(',') : ['localhost']

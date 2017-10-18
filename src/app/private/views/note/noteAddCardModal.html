@@ -1,12 +1,12 @@
 <span ng-if="noteCard.showModalInLectureView" class="ui center aligned icon tiny header toc-note">
     <span class="ui cardtakenote cursor-pointer" ng-click="noteCard.showAddNoteModal();">
         <img ng-src="/common/images/takenote.png">
-        <span>{{$root.labels.Notes.takeNote}}</span>
+        <span>{{$root.frmelmnts.lbl.takenote}}</span>
 </span>
 </span>
 <span ng-if="noteCard.showModalInCourseView">
     <span ng-click="noteCard.showAddNoteModal(); " class="cursor-pointer">
-        <i class="circular icon margin-right-10 plus"></i>&nbsp;{{$root.labels.Notes.addNote}}
+        <i class="circular icon margin-right-10 plus"></i>&nbsp;{{$root.frmelmnts.lbl.addnote}}
     </span>
 </span>
 <div ng-if="noteCard.showCreateNote">
@@ -14,7 +14,7 @@
         <div class="header" ng-if="!noteCard.createApi.loader.showLoader">
             <div class="ui grid">
                 <div class="eleven wide column">
-                    <span class="ui header">{{$root.labels.Notes.takeANote}}</span>
+                    <span class="ui header">{{$root.frmelmnts.pgttl.takeanote}}</span>
                 </div>
                 <div class="one wide column actions">
                     <h5 class="ui basic icon circular button deny">
@@ -25,15 +25,15 @@
         </div>
         <div class="content" ng-if="!noteCard.createApi.loader.showLoader">
             <div class="ui fluid icon input">
-                <input type="text" placeholder={{$root.labels.Notes.title}} name="title" ng-model="noteCard.add.title" />
+                <input type="text" placeholder={{$root.frmelmnts.lbl.title}} name="title" ng-model="noteCard.add.title" />
             </div>
             <div class="editor">
-                <pagedown-editor content="noteCard.add.note" show-preview="false" insert-image="noteCard.insertImage()" placeholder={{$root.labels.Notes.description}}></pagedown-editor>
+                <pagedown-editor content="noteCard.add.note" show-preview="false" insert-image="noteCard.insertImage()" placeholder={{$root.frmelmnts.lbl.description}}></pagedown-editor>
             </div>
         </div>
         <div class="actions" ng-if="!noteCard.createApi.loader.showLoader">
-            <button class="ui primary right floated button margin-bottom-15 margin-top-10 " type="submit" ng-class="noteCard.denyModalClass" ng-disabled="!noteCard.add.title || !noteCard.add.note" tabindex="4" ng-click="noteCard.createNote(noteCard.add)">{{$root.labels.Notes.save}}</button>
-            <button class="ui secondary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="noteCard.clearAddNoteData()">{{$root.labels.Notes.clear}}</button>
+            <button class="ui primary right floated button margin-bottom-15 margin-top-10 " type="submit" ng-class="noteCard.denyModalClass" ng-disabled="!noteCard.add.title || !noteCard.add.note" tabindex="4" ng-click="noteCard.createNote(noteCard.add)">{{$root.frmelmnts.btn.save}}</button>
+            <button class="ui secondary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="noteCard.clearAddNoteData()">{{$root.frmelmnts.btn.clear}}</button>
         </div>
         <div class=" ui segment margin-top-10" ng-if="noteCard.createApi.loader.showLoader">
             <app-loader data="{{noteCard.createApi.loader}}"></app-loader>
@@ -45,21 +45,21 @@
                 <div class=" margin-bottom-15">
                     <div class="ui grid">
                         <div class="eleven wide column">
-                            <span class="ui header">{{$root.labels.Notes.insertImage}}</span>
+                            <span class="ui header">{{$root.frmelmnts.lbl.insertimage}}</span>
                         </div>
                     </div>
                 </div>
                 <div class="content">
                     <div>
-                        <p>{{$root.labels.Notes.imageLinkMessage}}</p>
+                        <p>{{$root.frmelmnts.Lnk.imglnkmsg}}</p>
                     </div>
                     <div class="ui fluid icon input">
                         <input type="text" placeholder="Title" name="title" ng-model="noteCard.imageLink" />
                     </div>
                 </div>
                 <div class="actions">
-                    <button class="ui primary right floated button margin-bottom-15 margin-top-10 " type="submit" tabindex="3" ng-click="noteCard.closeAddImageModal()">{{$root.labels.Notes.ok}}</button>
-                    <button class="ui secondary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="noteCard.closeAddImageModal(true)">{{$root.labels.Notes.cancel}}</button>
+                    <button class="ui primary right floated button margin-bottom-15 margin-top-10 " type="submit" tabindex="3" ng-click="noteCard.closeAddImageModal()">{{$root.frmelmnts.btn.ok}}</button>
+                    <button class="ui secondary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="noteCard.closeAddImageModal(true)">{{$root.frmelmnts.btn.cancel}}</button>
                 </div>
             </div>
         </div>

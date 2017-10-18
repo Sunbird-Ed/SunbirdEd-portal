@@ -2,7 +2,7 @@
     <div class="header">
         <div class="ui grid">
             <div class="eleven wide column">
-                <span class="ui header">{{$root.labels.BULK_UPLOAD.HEADERS.UPLOAD_ORG}}</span>
+                <span class="ui header">{{$root.frmelmnts.instn.t0015}}</span>
             </div>
             <div class="one wide column actions">
                 <h5 class="ui basic icon circular button deny">
@@ -17,49 +17,49 @@
         </div>
         <!-- file name -->
         <h5 ng-if="admin.fileName">
-            <i class="file outline icon"></i>{{$root.labels.BULK_UPLOAD.CONTENT.FILE}}: {{admin.fileName}}
+            <i class="file outline icon"></i>{{$root.frmelmnts.lbl.upldfile}}: {{admin.fileName}}
         </h5>
         <!-- show progress -->
         <div ng-if="admin.bulkOrgProcessId">
-            <p class="padding-top-bottom-0 ">{{$root.labels.BULK_UPLOAD.CONTENT.PROCESS_ID}}: {{admin.bulkOrgProcessId}}</p>
-            <p>{{$root.labels.BULK_UPLOAD.CONTENT.HELP_MESSAGE}}</p>
+            <p class="padding-top-bottom-0 ">{{$root.frmelmnts.lbl.processid}}: {{admin.bulkOrgProcessId}}</p>
+            <p>{{$root.frmelmnts.instn.t0012}}</p>
         </div>
         <div class="ui info message" ng-if="!admin.bulkOrgProcessId && !admin.loader.showLoader">
             <!-- <i class="close icon"></i> -->
             <div class="header">
 
-                {{$root.labels.INSTRUCTIONS.HEADER}}
+                {{$root.frmelmnts.scttl.instructions}}
             </div>
             <ol class="ui list">
-                <li>{{$root.labels.INSTRUCTIONS.SAMPLE}}</li>
-                <li>{{$root.labels.INSTRUCTIONS.COLUMNS}}
+                <li>{{$root.frmelmnts.instn.t0013}}</li>
+                <li>{{$root.frmelmnts.instn.t0014}}
                     <ol>
                         <li>
-                            {{$root.labels.INSTRUCTIONS.MAX_COUNT_ORGS}}
+                            {{$root.frmelmnts.instn.t0002}}
                         </li>
-                        <li>{{$root.labels.INSTRUCTIONS.ORGANIZATIONS.ONE}}</li>
+                        <li>{{$root.frmelmnts.instn.t0007}}</li>
                         <li>
-                            {{$root.labels.INSTRUCTIONS.ORGANIZATIONS.TWO}}
+                            {{$root.frmelmnts.instn.t0008}}
                             <li>
-                                {{$root.labels.INSTRUCTIONS.ORGANIZATIONS.THREE}}
+                                {{$root.frmelmnts.instn.t0009}}
                                 <li>
-                                    {{$root.labels.INSTRUCTIONS.ORGANIZATIONS.FOUR}}
+                                    {{$root.frmelmnts.instn.t0017}}
                                 </li>
                     </ol>
                     </li>
-                <li>{{$root.labels.INSTRUCTIONS.ORGANIZATIONS.contactDetails}}</li>
+                <li>{{$root.frmelmnts.instn.t0010}}</li>
             </ol>
         </div>
     </div>
     <div class="actions">
         <div class="ui grid">
             <div class="four wide column">
-                <button class="ui  left floated button" ng-click="admin.downloadSample('organizations')">{{$root.labels.BULK_UPLOAD.BUTTONS.DOWNLOAD_SAMPLE}}</button>
+                <button class="ui  left floated button" ng-click="admin.downloadSample('organizations')">{{$root.frmelmnts.btn.smplcsv}}</button>
             </div>
             <div class="four wide column">
             </div>
             <div class="four wide column">
-                <button ng-disabled="admin.bulkOrgProcessId" class="ui primary right floated button" ng-click="admin.openImageBrowser('organizations');">{{$root.labels.BULK_UPLOAD.BUTTONS.UPLOAD_ORG}}</button>
+                <button ng-disabled="admin.bulkOrgProcessId" class="ui primary right floated button" ng-click="admin.openImageBrowser('organizations');">{{$root.frmelmnts.btn.uploadorgscsv}}</button>
                 <input type="file" accept=".csv" class="content-input ui small " id="orgUploadCSV" onchange="angular.element(this).scope().validateFile(this.files,'organizations');" required="" />
             </div>
         </div>

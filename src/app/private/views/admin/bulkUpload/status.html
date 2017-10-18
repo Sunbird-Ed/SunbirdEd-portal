@@ -2,7 +2,7 @@
     <div class="header">
         <div class="ui grid">
             <div class="eleven wide column">
-                <span class="ui header">{{$root.labels.BULK_UPLOAD.HEADERS.STATUS}}</span>
+                <span class="ui header">{{$root.frmelmnts.lbl.chkuploadsts}}</span>
             </div>
             <div class="one wide column actions">
                 <h5 class="ui basic icon circular button deny">
@@ -16,11 +16,11 @@
             <app-loader data="{{admin.loader}}"></app-loader>
         </div>
         <form class="ui form" id="statusForm" ng-if="!admin.loader.showLoader && !admin.bulkUploadStatus.processId">
-            <h4>{{$root.labels.BULK_UPLOAD.CONTENT.TRACK_MESSAGE}}</h4>
+            <h4>{{$root.frmelmnts.instn.t0011}}</h4>
             <div class="ui grid">
                 <div class="six wide column">
                     <div class="field">
-                        <label>{{$root.labels.BULK_UPLOAD.CONTENT.PROCESS_ID}}</label>
+                        <label>{{$root.frmelmnts.lbl.processid}}</label>
                         <input type="text" placeholder="Process ID" ng-model="admin.processID">
                     </div>
                 </div>
@@ -30,10 +30,10 @@
         </form>
         <div ng-if="admin.bulkUploadStatus.processId">
             <div class="ui label">
-                <h5>{{$root.labels.BULK_UPLOAD.CONTENT.PROCESS_ID}}: {{admin.bulkUploadStatus.processId}}</h5>
+                <h5>{{$root.frmelmnts.lbl.processid}}: {{admin.bulkUploadStatus.processId}}</h5>
             </div>
             <div class="margin-top-40 overflowContentHorizontal" ng-if="admin.bulkUploadStatus.success.length">
-                <h5>{{$root.labels.BULK_UPLOAD.CONTENT.SUCCESS}}</h5>
+                <h5>{{$root.frmelmnts.lbl.successres}}</h5>
                 <table class="ui celled padded table">
                     <thead>
                         <tr>
@@ -48,7 +48,7 @@
                 </table>
             </div>
             <div class="margin-top-40 overflowContentHorizontal" ng-if="admin.bulkUploadStatus.failure.length">
-                <h5>{{$root.labels.BULK_UPLOAD.CONTENT.FAILURE}}</h5>
+                <h5>{{$root.frmelmnts.lbl.failres}}</h5>
                 <table class="ui celled table">
                     <thead>
                         <tr>
@@ -70,7 +70,7 @@
         <div class="ui grid">
             <div class="twelve wide column" ng-if="!admin.bulkUploadStatus.processId">
                 <button ng-disabled="!admin.processID" sb-permissions permission-only="SYSTEM_ADMINISTRATION,ORG_ADMIN" class="ui primary left floated button" ng-click="admin.getBulkUloadStatus(admin.processID)">
-                    {{$root.labels.BULK_UPLOAD.BUTTONS.STATUS}}</button>
+                    {{$root.frmelmnts.btn.chksts}}</button>
             </div>
         </div>
     </div>
