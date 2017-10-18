@@ -11,7 +11,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
     $rootScope.sessionId = $('#sessionId').attr('value')
     $rootScope.cdnUrl = $('#cdnUrl').attr('value') || ''
     $rootScope.theme = $('#theme').attr('value') || 'default'
-    $rootScope.language = $rootScope.userLanguage || $("#defaultPortalLanguage").attr('value')
+    $rootScope.language = $rootScope.userLanguage || $("#defaultPortalLanguage").attr('value') || 'en'
     $rootScope.errorMessages = errorMessages
     $rootScope.frmelmnts = frmelmnts[$rootScope.language]
     $rootScope.searchKey = ''
