@@ -30,7 +30,7 @@
             <div class="twelve wide column" ng-if="contentData.description">
                 <div class="ui raised segment">
                     <div class="header announcementCard-header">
-                        <span class="header cardsHeading ng-binding"> {{$root.labels.WORKSPACE.previewContent.description}} </span>
+                        <span class="header cardsHeading ng-binding"> {{$root.frmelmnts.lbl.description}} </span>
                     </div>
                     <div class="description padding-top-5">
                         <p ng-bind-html="contentData.description">
@@ -48,7 +48,7 @@
             <div class="twelve wide column">
                 <div class="ui segment">
                     <div class="header announcementCard-header">
-                        <span class="header cardsHeading ng-binding">{{$root.labels.WORKSPACE.previewContent.contentInformation}}</span>
+                        <span class="header cardsHeading ng-binding">{{$root.frmelmnts.lbl.contentinformation}}</span>
                     </div>
                     <div class="ui middle aligned list margin-top-0">
                         <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.author">
@@ -56,7 +56,7 @@
                                 <div class="ui ">{{contentData.author}}</div>
                             </div>
                             <div class="content">
-                                {{$root.labels.WORKSPACE.previewContent.author}}
+                                {{$root.frmelmnts.lbl.author}}
                             </div>
                         </div>
                         <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.language">
@@ -64,7 +64,7 @@
                                 <div class="ui ">{{contentData.language.toString()}}</div>
                             </div>
                             <div class="content">
-                                {{$root.labels.WORKSPACE.previewContent.language}}
+                                {{$root.frmelmnts.lbl.medium}}
                             </div>
                         </div>
                         <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.gradeLevel">
@@ -72,7 +72,7 @@
                                 <div class="ui ">{{contentData.gradeLevel.toString()}}</div>
                             </div>
                             <div class="content ">
-                                {{$root.labels.WORKSPACE.previewContent.grades}}
+                                {{$root.frmelmnts.lbl.class}}
                             </div>
                         </div>
                         <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.subject">
@@ -80,7 +80,7 @@
                                 <div class="ui ">{{contentData.subject}}</div>
                             </div>
                             <div class="content">
-                                {{$root.labels.WORKSPACE.previewContent.subject}}
+                                {{$root.frmelmnts.lbl.subject}}
                             </div>
                         </div>
                         <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.createdOn">
@@ -88,7 +88,7 @@
                                 <div class="ui ">{{contentData.createdOn| dateFilterWithMDY}}</div>
                             </div>
                             <div class="content">
-                                {{$root.labels.WORKSPACE.previewContent.createdOn}}
+                                {{$root.frmelmnts.lbl.createdon}}
                             </div>
                         </div>
                         <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.lastUpdatedOn">
@@ -96,7 +96,7 @@
                                 <div class="ui ">{{contentData.lastUpdatedOn| dateFilterWithMDY}}</div>
                             </div>
                             <div class="content">
-                                {{$root.labels.WORKSPACE.previewContent.lastUpdate}}
+                                {{$root.frmelmnts.lbl.lastupdate}}
                             </div>
                         </div>
                         <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.concepts">
@@ -104,7 +104,7 @@
                                 <div class="ui">{{getConceptsNames(contentData.concepts)}}</div>
                             </div>
                             <div class="content">
-                                {{$root.labels.WORKSPACE.common.concept}}
+                                {{$root.frmelmnts.lbl.concept}}
                             </div>
                         </div>
                     </div>
@@ -124,7 +124,7 @@
             <div class="ui list">
                 <div class="item">
                     <div class="content">
-                        <div class="header">{{$root.labels.WORKSPACE.previewContent.author}}</div>
+                        <div class="header">{{$root.frmelmnts.lbl.author}}</div>
                         <div class="description padding-top-1rem">{{contentData.author}}</div>
                     </div>
                 </div>
@@ -134,7 +134,7 @@
             <div class="ui list">
                 <div class="item">
                     <div class="content">
-                        <div class="header">{{$root.labels.WORKSPACE.previewContent.language}}</div>
+                        <div class="header">{{$root.frmelmnts.lbl.medium}}</div>
                         <div class="description padding-top-1rem">{{contentData.language.toString()}}</div>
                     </div>
                 </div>
@@ -144,7 +144,7 @@
             <div class="ui list">
                 <div class="item">
                     <div class="content">
-                        <div class="header">{{$root.labels.WORKSPACE.previewContent.grades}}</div>
+                        <div class="header">{{$root.frmelmnts.lbl.class}}</div>
                         <div class="description padding-top-1rem">{{contentData.gradeLevel.toString()}}</div>
                     </div>
                 </div>
@@ -154,7 +154,7 @@
             <div class="ui list">
                 <div class="item">
                     <div class="content">
-                        <div class="header">{{$root.labels.WORKSPACE.previewContent.subject}}</div>
+                        <div class="header">{{$root.frmelmnts.lbl.subject}}</div>
                         <div class="description padding-top-1rem">{{contentData.subject}}</div>
                     </div>
                 </div>
@@ -166,7 +166,7 @@
             <div class="ui list">
                 <div class="item">
                     <div class="content">
-                        <div class="header">{{$root.labels.WORKSPACE.previewContent.lastUpdate}}</div>
+                        <div class="header">{{$root.frmelmnts.lbl.lastupdate}}</div>
                         <div class="description padding-top-1rem">{{contentData.lastUpdatedOn| dateFilterWithMDY}}</div>
                     </div>
                 </div>
@@ -176,7 +176,7 @@
             <div class="ui list">
                 <div class="item">
                     <div class="content">
-                        <div class="header">{{$root.labels.WORKSPACE.previewContent.createdOn}}</div>
+                        <div class="header">{{$root.frmelmnts.lbl.createdon}}</div>
                         <div class="description padding-top-1rem">{{contentData.createdOn| dateFilterWithMDY}}</div>
                     </div>
                 </div>
@@ -186,7 +186,7 @@
             <div class="ui list">
                 <div class="item">
                     <div class="content">
-                        <div class="header">{{$root.labels.WORKSPACE.common.concept}}</div>
+                        <div class="header">{{$root.frmelmnts.lbl.concept}}</div>
                         <div class="description padding-top-1rem">{{getConceptsNames(contentData.concepts)}}</div>
                     </div>
                 </div>

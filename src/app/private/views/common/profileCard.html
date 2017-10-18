@@ -13,12 +13,12 @@
                 </div>
                 <div class="padding-top-10 padding-left-10 content profileUpdateCardContentHeight">
                     <div class="profileUpdateCardHeading"> {{item.title}}</div>
-                    <div ng-repeat="field in item.missingFields | limitTo:2" ng-init="field = $root.labels.PROFILE.COMPLETENESS[field] || field" class="padding-top-5 profileUpdateCardSubDesc">{{$first ? 'Add ' + field + ( item.missingFields.length > 1 ? ',' : ''  ) :  field + ($last ? ' now' : '') }}</div>
+                    <div ng-repeat="field in item.missingFields | limitTo:2" ng-init="field = $root.frmelmnts.lbl[field] || field" class="padding-top-5 profileUpdateCardSubDesc">{{$first ? 'Add ' + field + ( item.missingFields.length > 1 ? ',' : ''  ) :  field + ($last ? ' now' : '') }}</div>
                 </div>
             </div>
         </div>
         <div class="sliderCards content CardcontentTopPadding">
-            <button class="ui blue basic right floated button margin-top-10">{{$root.labels.Courses.update}}</button>
+            <button class="ui blue basic right floated button margin-top-10">{{$root.frmelmnts.btn.update}}</button>
             <div class="padding-top-10 sliderCardDesc"><span class="description profileUpdateCardSubDesc">Your profile is {{item.value}}% <br> complete</span></div>
         </div>
     </div>

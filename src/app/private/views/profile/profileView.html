@@ -43,7 +43,7 @@
                         <div class="item" ng-repeat="field in $root.profileMissingFields | limitTo:3">
                             <div class="iniformationcontent content">
                                 <a ng-click="profileCtrl.updateAction(field)">
-                                    <h5 class="ui blue header profileUpdateAddDetails">+ Add {{$root.labels.PROFILE.COMPLETENESS[field] || field}}</h5>
+                                    <h5 class="ui blue header profileUpdateAddDetails">+ Add {{$root.frmelmnts.lbl[field] || field}}</h5>
                                 </a>
                             </div>
                         </div>
@@ -55,7 +55,7 @@
                     <div class="content ">
                         <div class="WorkSpaceTextContent ">
                             <i class='my-icon database icon '></i>
-                            <span class="my-text ">{{$root.labels.WORKSPACE.common.viewYourWorkspace}}</span>
+                            <span class="my-text ">{{$root.frmelmnts.lbl.viewworkspace}}</span>
                         </div>
                     </div>
                 </div>
@@ -63,8 +63,8 @@
             <div class="twelve wide column" ng-if="profileCtrl.contentList.length > 0">
                 <div class="ui raised segment">
                     <div class="header announcementCard-header ">
-                        <span class="header cardsHeading">{{$root.labels.PROFILE.BASIC_PROFILE.contributions}}</span>
-                        <span class="addeditprofile">{{profileCtrl.contentList.length}} {{$root.labels.PROFILE.BASIC_PROFILE.contents}}</span>
+                        <span class="header cardsHeading">{{$root.frmelmnts.scttl.contributions}}</span>
+                        <span class="addeditprofile">{{profileCtrl.contentList.length}} {{$root.frmelmnts.lbl.contents}}</span>
                     </div>
                     <div class="profileitems contributionsListScroll ui relaxed divided items padding-right-20" id="custom-scroll">
                         <div class="item" ng-repeat="item in profileCtrl.contentList track by $index" ng-click="profileCtrl.openContentPlayer(item)">

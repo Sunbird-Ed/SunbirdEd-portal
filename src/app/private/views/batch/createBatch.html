@@ -16,18 +16,18 @@
             <form class="ui form" id="createBatch" name="createBatch" validate>
                 <div class="one field" ng-class="{true: 'error'}[batch.submitted && createBatch.name.$invalid]">
                     <div class="required field">
-                        <label>{{$root.labels.BATCH.name}}</label>
+                        <label>{{$root.frmelmnts.lbl.batchname}}</label>
                         <input type="text" name="name" ng-model="batch.data.name" required placeholder="Enter the name of your batch">
                     </div>
                 </div>
                 <div class="one field">
                     <div class="field">
-                        <label>{{$root.labels.BATCH.description}}</label>
+                        <label>{{$root.frmelmnts.lbl.aboutbatch}}</label>
                         <input rows="2" name="description" id="description" ng-model="batch.data.description" placeholder="Enter a description of your batch">
                     </div>
                 </div>
                 <div class="inline fields" ng-class="{true: 'error'}[batch.submitted && createBatch.enrollmentType.$invalid]">
-                    <label for="Enrollment Type">{{$root.labels.BATCH.enrollment}}</label>
+                    <label for="Enrollment Type">{{$root.frmelmnts.lbl.natureofbatch}}</label>
                     <div class="field">
                         <div class="ui radio checkbox">
                             <input type="radio" name="enrollmentType" value='invite-only' ng-model="batch.data.enrollmentType" required checked>
@@ -43,7 +43,7 @@
                 </div>
                 <div class="two fields">
                     <div class="required field" ng-class="{true: 'error'}[batch.submitted && createBatch.startdate.$invalid]">
-                        <label>{{$root.labels.BATCH.startdate}}</label>
+                        <label>{{$root.frmelmnts.lbl.startdate}}</label>
                         <div class="ui calendar rangestartAdd" id="rangestartAdd">
                             <div class="ui input left icon">
                                 <i class="calendar icon date-calendar"></i>
@@ -52,7 +52,7 @@
                         </div>
                     </div>
                     <div class="field">
-                        <label>{{$root.labels.BATCH.enddate}}</label>
+                        <label>{{$root.frmelmnts.lbl.enddate}}</label>
                         <div apply-script class="ui calendar rangeendAdd" id="rangeendAdd">
                             <div class="ui input left icon">
                                 <i class="calendar icon date-calendar"></i>
@@ -62,7 +62,7 @@
                     </div>
                 </div>
                 <div class="one field " ng-hide="batch.data.enrollmentType == 'open'">
-                    <label>{{$root.labels.BATCH.users}}</label>
+                    <label>{{$root.frmelmnts.lbl.bacthmembers}}</label>
                     <div class="createbatchdropdown ui fluid multiple search selection dropdown " id="users">
                         <input rows="1" type="hidden" name="users" id="userSelList" ng-init="" ng-model="batch.data.users">
                         <i class="dropdown icon"></i>
@@ -75,7 +75,7 @@
                     </div>
                 </div>
                 <div class="one field" ng-hide="batch.data.enrollmentType == 'open'">
-                    <label>{{$root.labels.BATCH.mentors}}</label>
+                    <label>{{$root.frmelmnts.lbl.batchmentors}}</label>
                     <div class="createbatchdropdown ui fluid multiple search selection dropdown " id="mentors">
                         <input rows="1" type="hidden" name="mentors" ng-init="" ng-model="batch.data.mentors" id="mentorSelList">
                         <i class="dropdown icon"></i>

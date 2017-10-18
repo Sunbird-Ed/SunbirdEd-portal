@@ -66,7 +66,7 @@
             <div class="twelve wide column">
                 <div class="ui raised segment">
                     <div class="header announcementCard-header">
-                        <span class="header cardsHeading">{{$root.labels.PROFILE.ADDRESS.header}} </span>
+                        <span class="header cardsHeading">{{$root.frmelmnts.lbl.address}} </span>
                     </div>
                     <div class="profileitems ui relaxed divided items">
                         <div class="item" ng-repeat="address in publicProfile.user.address">
@@ -88,7 +88,7 @@
             <div class="twelve wide column">
                 <div class="ui raised segment">
                     <div class="header announcementCard-header">
-                        <span class="header cardsHeading">{{$root.labels.PROFILE.JOB_PROFILE.header}}</span>
+                        <span class="header cardsHeading">{{$root.frmelmnts.lbl.experience}}</span>
                     </div>
                     <div class="profileitems ui relaxed divided items ">
                         <div class="item " ng-repeat="experience in publicProfile.user.jobProfile">
@@ -96,11 +96,11 @@
                             <div class="content ">
                                 <a class=" header ">{{experience.jobName}}</a>
                                 <div class="description ">{{experience.role}}<span ng-if="experience.role">&nbsp;,&nbsp;</span>{{experience.orgName}}
-                                    <p class="margin-bottom-0 " ng-if="experience.subject.length ">{{$root.labels.PROFILE.JOB_PROFILE.subjects}} : <span><span ng-repeat="sub in experience.subject ">{{sub}}<span ng-if="!$last ">,</span></span>
+                                    <p class="margin-bottom-0 " ng-if="experience.subject.length ">{{$root.frmelmnts.lbl.subjectstaught}} : <span><span ng-repeat="sub in experience.subject ">{{sub}}<span ng-if="!$last ">,</span></span>
                                         </span>
                                     </p>
-                                    <p ng-if="experience.joiningDate ">{{$root.labels.PROFILE.JOB_PROFILE.joiningDate}} : {{experience.joiningDate}} &nbsp;
-                                        <span ng-if="experience.endDate ">, &nbsp;{{$root.labels.PROFILE.JOB_PROFILE.endDate}} : {{experience.endDate}}</span></p>
+                                    <p ng-if="experience.joiningDate ">{{$root.frmelmnts.lbl.tcfrom}} : {{experience.joiningDate}} &nbsp;
+                                        <span ng-if="experience.endDate ">, &nbsp;{{$root.frmelmnts.lbl.tcto}} : {{experience.endDate}}</span></p>
                                 </div>
                             </div>
                         </div>
@@ -111,7 +111,7 @@
             <div class="twelve wide column">
                 <div class="ui raised segment">
                     <div class="header announcementCard-header">
-                        <span class="header cardsHeading">{{$root.labels.PROFILE.EDUCATION.header}}</span>
+                        <span class="header cardsHeading">{{$root.frmelmnts.lbl.education}}</span>
                     </div>
                     <div class="profileitems ui relaxed divided items ">
                         <div class="item" ng-repeat="education in publicProfile.user.education">
@@ -141,7 +141,7 @@
                                 <span>{{publicProfile.user.location}}</span>
                             </div>
                             <div class="iniformationcontent content ">
-                                {{$root.labels.PROFILE.BASIC_PROFILE.currentLocation}}
+                                {{$root.frmelmnts.lbl.currentlocation}}
                             </div>
                         </div>
                         <div class="item ">
@@ -150,7 +150,7 @@
                   <span>{{grade}}<span ng-if=!$last>,</span></span>
                             </div>
                             <div class="iniformationcontent content ">
-                                {{$root.labels.PROFILE.BASIC_PROFILE.grades}}
+                                {{$root.frmelmnts.lbl.grades}}
                             </div>
                         </div>
                         <div class="item ">
@@ -158,7 +158,7 @@
                                 <span>{{publicProfile.user.gender}}</span>
                             </div>
                             <div class="iniformationcontent content ">
-                                {{$root.labels.PROFILE.BASIC_PROFILE.gender}}
+                                {{$root.frmelmnts.lbl.gender}}
                             </div>
                         </div>
 
@@ -167,7 +167,7 @@
                                 <span>{{publicProfile.user.dob | date : "dd/MM/y"}}</}}</span>
                             </div>
                             <div class="iniformationcontent content ">
-                                {{$root.labels.PROFILE.BASIC_PROFILE.dob}}
+                                {{$root.frmelmnts.lbl.birthdate}}
                             </div>
                         </div>
                         <div class="item ">
@@ -177,7 +177,7 @@
                                 </span>
                             </div>
                             <div class="iniformationcontent content ">
-                                {{$root.labels.PROFILE.BASIC_PROFILE.subjects}}
+                                {{$root.frmelmnts.lbl.subjects}}
                             </div>
                         </div>
                         <div class="item ">
@@ -186,7 +186,7 @@
                   <span>{{lan}}<span ng-if=!$last>
               </div>
               <div class="iniformationcontent content ">
-                {{$root.labels.PROFILE.BASIC_PROFILE.language}}
+                {{$root.frmelmnts.lbl.language}}
               </div>
             </div>
           </div>
