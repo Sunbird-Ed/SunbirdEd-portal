@@ -282,9 +282,9 @@ angular.module('playerApp')
                         basicInfo.email = profile.user.email;
                     }
                     profile.webPages = profile.webLink();
-                    if (profile.webPages.length) {
-                        basicInfo.webPages = profile.webPages;
-                    }
+
+                    basicInfo.webPages = profile.webPages;
+
                     profile.updateUserInfo(
                         basicInfo,
                         'basicProfileForm',
