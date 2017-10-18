@@ -3,11 +3,11 @@
     <div class="two fields">
 
         <div class="  required field">
-            <label>{{$root.labels.PROFILE.JOB_PROFILE.jobName}}</label>
+            <label>{{$root.frmelmnts.lbl.worktitle}}</label>
             <input type="text" name="jobName" ng-model="profileCtrl.newExperience.jobName">
         </div>
         <div class=" field">
-            <label>{{$root.labels.PROFILE.JOB_PROFILE.position}}</label>
+            <label>{{$root.frmelmnts.lbl.designation}}</label>
             <input type="text" name="" ng-model="profileCtrl.newExperience.role">
         </div>
 
@@ -15,11 +15,11 @@
     </div>
     <div class="two fields">
         <div class="required  field">
-            <label>{{$root.labels.PROFILE.JOB_PROFILE.organization}}</label>
+            <label>{{$root.frmelmnts.lbl.organization}}</label>
             <input type="text" name="org" ng-model="profileCtrl.newExperience.orgName">
         </div>
         <div class=" field">
-            <label>{{$root.labels.PROFILE.JOB_PROFILE.subjects}}</label>
+            <label>{{$root.frmelmnts.lbl.subjectstaught}}</label>
             <div class="field">
                 <select apply-script class="ui fluid dropdown signupMultiple" multiple="" ng-model="profileCtrl.newExperience.subject" ng-value="option.value" ng-options=" subject for subject in ::profileCtrl.subjects">
             </select>
@@ -28,23 +28,23 @@
     </div>
 
     <div class="inline fields" ng-if="!profileCtrl.currentJobLocation">
-        <label for="address">{{$root.labels.PROFILE.JOB_PROFILE.isCurrentJob}}</label>
+        <label for="address">{{$root.frmelmnts.lbl.iscurrentjob}}</label>
         <div class="field">
             <div class="ui radio checkbox ">
                 <input type="radio" name="radio" value='true' ng-model="profileCtrl.newExperience.isCurrentJob">
-                <label>{{$root.labels.PROFILE.JOB_PROFILE.currentJobOptionYes}}</label>
+                <label>{{$root.frmelmnts.lbl.tcyes}}</label>
             </div>
         </div>
         <div class="field">
             <div class="ui radio checkbox ">
                 <input type="radio" name="radio" value='false' ng-model="profileCtrl.newExperience.isCurrentJob">
-                <label>{{$root.labels.PROFILE.JOB_PROFILE.currentJobOptionNo}}</label>
+                <label>{{$root.frmelmnts.lbl.tcno}}</label>
             </div>
         </div>
     </div>
     <div class="two fields" ng-init="profileCtrl.getDate()">
         <div apply-script class="field">
-            <label>{{$root.labels.PROFILE.JOB_PROFILE.joiningDate}}</label>
+            <label>{{$root.frmelmnts.lbl.tcfrom}}</label>
             <div class="ui calendar" id="rangestartAdd">
                 <div class="ui input left icon">
                     <i class="calendar icon"></i>
@@ -54,7 +54,7 @@
         </div>
 
         <div class="field" ng-if="!profileCtrl.newExperience.isCurrentJob">
-            <label>{{$root.labels.PROFILE.JOB_PROFILE.endDate}}</label>
+            <label>{{$root.frmelmnts.lbl.tcto}}</label>
             <div apply-script class="ui calendar" id="rangeendAdd">
                 <div class="ui input left icon">
                     <i class="calendar icon"></i>
@@ -65,6 +65,6 @@
     </div>
     <div class="ui error message">
     </div>
-    <div class="ui button " ng-class="{ 'disabled' : profileCtrl.disableSave}" ng-click="profileCtrl.addExperience(profileCtrl.newExperience) ;">{{$root.labels.PROFILE.BUTTON.save}}</div>
+    <div class="ui button " ng-class="{ 'disabled' : profileCtrl.disableSave}" ng-click="profileCtrl.addExperience(profileCtrl.newExperience) ;">{{$root.frmelmnts.btn.save}}</div>
 
 </form>

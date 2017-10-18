@@ -1,9 +1,9 @@
 <div class="margin-top-20 ui raised segment">
     <div class="header announcementCard-header">
-        <span class="header cardsHeading"> {{$root.labels.PROFILE.JOB_PROFILE.header}} </span>
-        <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.experienceForm && profileCtrl.user.jobProfile.length" ng-click="profileCtrl.experienceForm=true ;profileCtrl.isNewExperience=false ;">{{$root.labels.PROFILE.BUTTON.edit}}</a>
-        <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.experienceForm  " ng-click="profileCtrl.experienceForm=true ; profileCtrl.isNewExperience=true ;profileCtrl.newExperience={} ">{{$root.labels.PROFILE.BUTTON.add}}</a>
-        <a class="addeditprofile cursor-pointer" ng-if="profileCtrl.experienceForm" ng-click="profileCtrl.cancelEditExperience()">{{$root.labels.PROFILE.BUTTON.close}}</a>
+        <span class="header cardsHeading"> {{$root.frmelmnts.lbl.experience}} </span>
+        <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.experienceForm && profileCtrl.user.jobProfile.length" ng-click="profileCtrl.experienceForm=true ;profileCtrl.isNewExperience=false ;">{{$root.frmelmnts.btn.edit}}</a>
+        <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.experienceForm  " ng-click="profileCtrl.experienceForm=true ; profileCtrl.isNewExperience=true ;profileCtrl.newExperience={} ">{{$root.frmelmnts.btn.add}}</a>
+        <a class="addeditprofile cursor-pointer" ng-if="profileCtrl.experienceForm" ng-click="profileCtrl.cancelEditExperience()">{{$root.frmelmnts.btn.close}}</a>
     </div>
     <div ng-if="!profileCtrl.experienceForm " class="profileitems ui relaxed divided items ">
         <div class="item " ng-repeat="experience in profileCtrl.user.jobProfile">
@@ -11,11 +11,11 @@
             <div class="content ">
                 <a class=" header ">{{experience.jobName}}</a>
                 <div class="description ">{{experience.role}}<span ng-if="experience.role">&nbsp;,&nbsp;</span>{{experience.orgName}}
-                    <p class="margin-bottom-0 " ng-if="experience.subject.length ">{{$root.labels.PROFILE.JOB_PROFILE.subjects}} : <span><span ng-repeat="sub in experience.subject | orderBy:'toString()'">{{sub}}<span ng-if="!$last ">,</span></span>
+                    <p class="margin-bottom-0 " ng-if="experience.subject.length ">{{$root.frmelmnts.lbl.subjectstaught}} : <span><span ng-repeat="sub in experience.subject | orderBy:'toString()'">{{sub}}<span ng-if="!$last ">,</span></span>
                         </span>
                     </p>
-                    <p ng-if="experience.joiningDate ">{{$root.labels.PROFILE.JOB_PROFILE.joiningDate}} : {{experience.joiningDate}} &nbsp;
-                        <span ng-if="experience.endDate && experience.isCurrentJob!==true">, &nbsp;{{$root.labels.PROFILE.JOB_PROFILE.endDate}} : {{experience.endDate}}</span></p>
+                    <p ng-if="experience.joiningDate ">{{$root.frmelmnts.lbl.tcfrom}} : {{experience.joiningDate}} &nbsp;
+                        <span ng-if="experience.endDate && experience.isCurrentJob!==true">, &nbsp;{{$root.frmelmnts.lbl.tcto}} : {{experience.endDate}}</span></p>
                 </div>
             </div>
             <div class="right-floated ">
@@ -32,7 +32,7 @@
                 <i class="close icon "></i>
                 <p>You already have a current job, please change that to not a current job</p>
             </div>
-            <button ng-hide="profileCtrl.isCurrentJobExist " ng-class="{ 'disabled' : profileCtrl.disableSave}" class="ui button margin-top-15 " ng-click="profileCtrl.editExperience(profileCtrl.experience) " ;>{{$root.labels.PROFILE.BUTTON.save}}</button>
+            <button ng-hide="profileCtrl.isCurrentJobExist " ng-class="{ 'disabled' : profileCtrl.disableSave}" class="ui button margin-top-15 " ng-click="profileCtrl.editExperience(profileCtrl.experience) " ;>{{$root.frmelmnts.btn.save}}</button>
         </div>
         <div class="add-experience-form " ng-if="profileCtrl.isNewExperience ">
             <div class="ui " ng-include=" 'views/profile/editProfile/addExperience.html' "></div>

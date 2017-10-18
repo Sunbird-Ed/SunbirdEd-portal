@@ -9,7 +9,7 @@
         </div>
         <div class="searchfilterinput ui search">
             <div class="searchicon ui icon input ">
-                <input ng-disabled="!$root.isSearchPage" type="text" id="keyword" name="filter_search" ng-model="$root.search.searchKeyword" placeholder="{{$root.labels.SEARCH.PROMPT.SEARCH_BOX}}" ng-keypress="($event.charCode==13)?search.searchRequest($event):false"
+                <input ng-disabled="!$root.isSearchPage" type="text" id="keyword" name="filter_search" ng-model="$root.search.searchKeyword" placeholder="{{$root.frmelmnts.prmpt.search}}" ng-keypress="($event.charCode==13)?search.searchRequest($event):false"
                     title="Search" autocomplete="off" spellcheck="false" dir="auto" class="searchinput" ng-keyup="search.keyUp()" ng-keydown="search.keyDown()" />
                 <i class="circular search link icon" ng-click="search.searchRequest()"></i>
             </div>

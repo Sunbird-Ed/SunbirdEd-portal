@@ -39,16 +39,16 @@
 <div ng-if="allUploadedContent.showRemoveContentModel">
     <div class="ui mini modal" id="removeContentModel">
         <div class="header">
-            {{$root.labels.WORKSPACE.common.deleteContent}}
+            {{$root.frmelmnts.lbl.deletecontent}}
         </div>
         <div class="content">
             <div class="description">
-                {{$root.labels.WORKSPACE.common.deleteConfirmMessage}}
+                {{$root.frmelmnts.lbl.deleteconfirm}}
             </div>
         </div>
         <div class="actions">
-            <div class="ui negative button" ng-click="allUploadedContent.hideRemoveNoteModel">{{$root.labels.WORKSPACE.common.no}}</div>
-            <div class="ui primary button " ng-click="allUploadedContent.deleteContent(allUploadedContent.removeContentId)">{{$root.labels.WORKSPACE.common.yes}}</div>
+            <div class="ui negative button" ng-click="allUploadedContent.hideRemoveNoteModel">{{$root.frmelmnts.btn.tcno}}</div>
+            <div class="ui primary button " ng-click="allUploadedContent.deleteContent(allUploadedContent.removeContentId)">{{$root.frmelmnts.btn.tcyes}}</div>
         </div>
     </div>
 </div>

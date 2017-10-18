@@ -44,10 +44,10 @@
                 <span ng-init="user.hideBadge=true"> {{admin.recievedBadge.name }}</span>
             </div>
 
-            <div class="ui label " ng-if="user.status===0">{{$root.labels.SEARCH.STATUS.INACTIVE}}</div>
-            <div class="ui label " ng-if="user.status===1">{{$root.labels.SEARCH.STATUS.ACTIVE}}</div>
-            <div class="ui label " ng-if="user.status===2">{{$root.labels.SEARCH.STATUS.BLOCKED}}</div>
-            <div class="ui label " ng-if="user.status===3">{{$root.labels.SEARCH.STATUS.RETIRED}}</div>
+            <div class="ui label " ng-if="user.status===0">{{$root.frmelmnts.lbl.inactive}}</div>
+            <div class="ui label " ng-if="user.status===1">{{$root.frmelmnts.lbl.active}}</div>
+            <div class="ui label " ng-if="user.status===2">{{$root.frmelmnts.lbl.blocked}}</div>
+            <div class="ui label " ng-if="user.status===3">{{$root.frmelmnts.lbl.retired}}</div>
         </div>
     </div>
 </div>

@@ -5,7 +5,7 @@
                 <div class="ui grid">
                     <div class="eleven wide column">
                         <span class="ui header">
-                            {{$root.labels.WORKSPACE.createCollection.createCollectionText}}
+                            {{$root.frmelmnts.lbl.createcollection}}
                         </span>
                     </div>
                     <div class="one wide column actions">
@@ -19,17 +19,17 @@
                 <form class="ui form" ng-init="collection.data = {}">
                     <div class="field">
                         <label>
-                            {{$root.labels.WORKSPACE.createCollection.collectionTitle}}
+                            {{$root.frmelmnts.lbl.name}}
                         </label>
                         <div class="field">
-                            <input type="text" name="title" placeholder={{$root.labels.WORKSPACE.createCollection.collectionTitle}} ng-model="collection.data.name">
+                            <input type="text" name="title" placeholder={{$root.frmelmnts.lbl.name}} ng-model="collection.data.name">
                         </div>
                     </div>
                     <div class="field">
                         <div class="field">
-                            <label>{{$root.labels.WORKSPACE.common.description}}</label>
+                            <label>{{$root.frmelmnts.lbl.description}}</label>
                             <div class="field">
-                                <input name="description" name="title" placeholder={{$root.labels.WORKSPACE.createCollection.description}} ng-model="collection.data.description">
+                                <input name="description" name="title" placeholder={{$root.frmelmnts.lbl.description}} ng-model="collection.data.description">
                             </div>
                         </div>
                     </div>
@@ -38,16 +38,16 @@
             <div class="actions margin-top-10">
                 <p class="text-align-center padding-top-20">
                     <button class="ui primary text-align-center icon button" ng-click="collection.saveMetaData(collection.data)" ng-disabled="collection.loader.showLoader">
-                        {{$root.labels.WORKSPACE.common.startCreating}}
+                        {{$root.frmelmnts.btn.startcreating}}
                     </button>
                 </p>
                 <h4 class="text-align-center">
-                    {{$root.labels.WORKSPACE.createCollection.youCanFillThisDL}}
+                    {{$root.frmelmnts.lbl.collectionfillater}}
                 </h4>
                 <div>
                     <label>
                         <p class="text-align-center">
-                            {{$root.labels.WORKSPACE.common.byProceedYouAgreedCollection}}
+                            {{$root.frmelmnts.lbl.agreeandproceedtext}}
                         </p>
                     </label>
                 </div>
