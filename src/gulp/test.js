@@ -85,7 +85,11 @@ gulp.task('inject-public-script', function (callback) {
 
 // Below task is used to clean code coverage folder. and inject all private and public files
 gulp.task('pre-test', function () {
-    var testToFiles = paths.src.testRequire.concat(privateJsFiles, publicJsFiles, paths.src.test);
+    var resouceBundleFiles = [
+        'app/common/js/frmelmnts.js',
+        'app/common/js/messagess.js'
+      ]
+    var testToFiles = paths.src.testRequire.concat(resouceBundleFiles, privateJsFiles, publicJsFiles, paths.src.test);
     return gulp.src(testToFiles)
     .pipe($.karma({
         configFile: paths.src.karma,
