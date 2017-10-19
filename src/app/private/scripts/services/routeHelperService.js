@@ -306,6 +306,8 @@ angular.module('playerApp')
                         $rootScope.search.selectedLanguage = [];
                         $rootScope.search.selectedContentType = [];
                         $rootScope.search.selectedSubject = [];
+                        $rootScope.search.selectedLocation = "";
+                        $rootScope.search.selectedRoles = [];
                         $rootScope.search.selectedBoard = [];
                         $rootScope.search.selectedConcepts = [];
                         $rootScope.search.broadCastConcepts();

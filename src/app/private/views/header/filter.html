@@ -2,7 +2,7 @@
     <div class="ui divider header-search-filters-divider"></div>
     <div class="filtercolumn ui grid">
         <div class="one wide column">
-         </div>
+        </div>
         <div class=" ten wide column ">
             <div apply-script class="ui accordion" id='content-search-filter-accordion'>
                 <div class="ui twelve column grid">
@@ -33,7 +33,7 @@
                                     </a>
                                 </span>
                                 <!-- grades -->
-                                 <span class="padded chip margin-top--5" ng-if='$root.search.selectedGrades.length > 0'>
+                                <span class="padded chip margin-top--5" ng-if='$root.search.selectedGrades.length > 0'>
                                     {{$root.frmelmnts.prmpt.grades}}:
                                     <a class="ui label margin-top--5" ng-repeat="grade in $root.search.selectedGrades">
                                         {{grade}}
@@ -41,7 +41,7 @@
                                     </a>
                                 </span>
                                 <span class="padded chip" ng-if='$root.search.selectedLanguage.length > 0'>
-                                   {{$root.frmelmnts.prmpt.medium}}:
+                                    {{$root.frmelmnts.prmpt.medium}}:
                                     <a class="ui label margin-top--5" ng-repeat="language in $root.search.selectedLanguage">
                                         {{language}}
                                         <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedLanguage',language)"></i>
@@ -55,19 +55,27 @@
                                     </a>
                                 </span>
                                 <span class="padded chip margin-top--5" ng-if='$root.search.selectedConcepts.length > 0'>
-                                   {{$root.frmelmnts.prmpt.concepts}}:
+                                    {{$root.frmelmnts.prmpt.concepts}}:
                                     <a class="ui label margin-top--5" ng-repeat="concept in $root.search.selectedConcepts">
                                         {{concept.name}}
                                         <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedConcepts',concept.identifier)"></i>
                                     </a>
                                 </span>
                                 <span class="padded chip margin-top--5" ng-if='$root.search.selectedOrgType.length > 0'>
-                                        {{$root.frmelmnts.prmpt.orgtype}}:
-                                         <a class="ui label margin-top--5" ng-repeat="orgType in $root.search.selectedOrgType">
-                                             {{orgType}}
-                                             <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedOrgType',orgType)"></i>
-                                         </a>
-                                     </span>
+                                    {{$root.frmelmnts.prmpt.orgtype}}:
+                                    <a class="ui label margin-top--5" ng-repeat="orgType in $root.search.selectedOrgType">
+                                        {{orgType}}
+                                        <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedOrgType',orgType)"></i>
+                                    </a>
+                                </span>
+                                <span class="padded chip margin-top--5" ng-if='$root.search.userRoles && $root.search.selectedRoles.length > 0'>
+                                    {{$root.frmelmnts.prmpt.roles}}:
+                                    <a class="ui label margin-top--5" ng-repeat="role in $root.search.selectedRoles">
+                                        {{getRoleName(role)}}
+                                        <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedRoles',role)"></i>
+                                    </a>
+                                </span>
+
 
                             </div>
                             <div class="filtercolmntext ui grid">
@@ -75,14 +83,14 @@
                                     <span class="ShowFilterSubTitle">{{$root.frmelmnts.lbl.filterby}}</span>
                                 </div>
                                 <!-- grades for user search -->
-                                 <div class="two wide column" ng-show="$root.search.selectedSearchKey === 'Users'">
+                                <div class="two wide column" ng-show="$root.search.selectedSearchKey === 'Users'">
                                     <div id="" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
                                         <i class="dropdown icon"></i>
                                         <div class="filter-sel-text" ng-if="$root.search.selectedGrades.length > 0 ">{{$root.search.selectedGrades.length+' '+$root.frmelmnts.prmpt.grades}}</div>
                                         <div class="filter-sel-text" ng-if="$root.search.selectedGrades.length === 0 ">{{$root.frmelmnts.prmpt.grades}}</div>
                                         <div class="menu">
                                             <div ng-click="$root.search.selectFilter('selectedGrades',grade,$event)" ng-repeat="grade in $root.search.grades " class="item dropdown-item"
-                                            ng-class="{'active':($root.search.selectedGrades.indexOf(grade)>=0)}" data-value="{{grade}}">{{grade}}</div>
+                                                 ng-class="{'active':($root.search.selectedGrades.indexOf(grade)>=0)}" data-value="{{grade}}">{{grade}}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -131,6 +139,27 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- location -->
+                                <div class="two wide column" ng-if="$root.search.selectedSearchKey === 'Users'">
+                                    <div class="ui input">
+                                        <input type="text" placeholder="{{$root.frmelmnts.prmpt.userlocation}}" ng-model="$root.search.selectedLocation" />
+                                    </div>
+                                </div>
+                                <!-- roles -->
+                                <div class="two wide column" ng-if="$root.search.selectedSearchKey === 'Users'" ng-init="$root.search.getUserRoles()">
+                                    <div ng-if="$root.search.userRoles"  apply-script  id="filterLang" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
+                                        <input type='hidden' ng-value='{{}}' />
+                                        <i class="dropdown icon"></i>
+                                        <div class="filter-sel-text" ng-if="$root.search.selectedRoles.length > 0 ">{{$root.search.selectedRoles.length+' '+$root.frmelmnts.prmpt.roles}}</div>
+                                        <div class="filter-sel-text" ng-if="$root.search.selectedRoles.length == 0 ">{{$root.frmelmnts.prmpt.roles}}</div>
+                                        <div class="menu">
+                                            <div ng-click="$root.search.selectFilter('selectedRoles',role.role,$event)" ng-repeat="role in $root.search.userRoles  | orderBy:'toString()'" class="item dropdown-item" ng-class="{'active':($root.search.selectedRoles.indexOf(role.role)>=0)}" data-value="{{role.role}}">{{role.roleName}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
                                 <div class="two wide column"  ng-if="$root.search.selectedSearchKey !== 'Users' && $root.concepts && $root.search.selectedSearchKey !== 'Organisations'">
                                     <div class="field">
                                         <form class="conceptSelector ui form ">
@@ -139,7 +168,7 @@
                                     </div>
                                 </div>
                                 <!-- org type -->
-  
+
                                 <div class="two wide column" ng-if="$root.search.selectedSearchKey === 'Organisations'">
                                     <div apply-script id="orgTypeFilter" ng-if=" $root.search.orgTypes" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
                                         <input type='hidden' ng-value='{{}}' />
@@ -147,11 +176,11 @@
                                         <div class="filter-sel-text" ng-if="$root.search.selectedOrgType.length > 0 ">{{$root.search.selectedOrgType.length+' '+$root.frmelmnts.prmpt.orgtype}}</div>
                                         <div class="filter-sel-text" ng-if="$root.search.selectedOrgType.length == 0 ">{{$root.frmelmnts.prmpt.orgtype}}</div>
                                         <div class="menu">
-                                         <div ng-click="$root.search.selectFilter('selectedOrgType',orgType.name,$event)"
-                                             ng-repeat="orgType in $root.search.orgTypes  "
-                                              class="item dropdown-item" 
-                                              ng-class="{'active':($root.search.selectedOrgType.indexOf(orgType)>=0)}" 
-                                              data-value="{{orgType.name}}">{{orgType.name}}
+                                            <div ng-click="$root.search.selectFilter('selectedOrgType',orgType.name,$event)"
+                                                 ng-repeat="orgType in $root.search.orgTypes  "
+                                                 class="item dropdown-item"
+                                                 ng-class="{'active':($root.search.selectedOrgType.indexOf(orgType)>=0)}"
+                                                 data-value="{{orgType.name}}">{{orgType.name}}
                                             </div>
                                         </div>
                                     </div>
