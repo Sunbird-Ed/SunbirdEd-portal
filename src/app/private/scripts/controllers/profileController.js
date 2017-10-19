@@ -87,6 +87,12 @@ angular.module('playerApp')
                     profile.formateDate(profileData.jobProfile);
                     profile.formateDate(profileData.address);
                     profile.formateDate(profileData.education);
+                    if (profileData.education.length) {
+                        profileData.education.forEach(function (education) {
+                            education.yearOfPassing = education.yearOfPassing === 0 ? '' : education.yearOfPassing;
+                            education.percentage = education.percentage === 0 ? '' : education.percentage;
+                        });
+                    }
                     if (profile.isAvatarUpdate) {
                         $rootScope.avatar = profileData.avatar;
                     }
@@ -361,9 +367,9 @@ angular.module('playerApp')
 
                 if (isValid === true || !isValid.includes(false)) {
                     education.forEach(function (edu) {
-                        edu.percentage = edu.percentage ? parseFloat(edu.percentage) : edu.percentage;
+                        edu.percentage = edu.percentage ? parseFloat(edu.percentage) : 0;
                         edu.yearOfPassing = edu.yearOfPassing ? parseInt(edu.yearOfPassing) :
-                            edu.yearOfPassing;
+                            0;
                     });
                     var req = { education: education };
                     profile.updateUserInfo(
