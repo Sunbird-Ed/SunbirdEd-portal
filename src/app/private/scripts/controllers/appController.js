@@ -3,15 +3,15 @@
 angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService', '$rootScope',
   'userService', '$q', 'config', '$location', '$timeout',
   'portalTelemetryService', 'errorMessages', 'frmelmnts', 'sessionService',
-  'learnService', '$http', 'searchService', 'toasterService', 'adminService', '$state',
+  'learnService', '$http', 'searchService', 'toasterService', 'adminService', '$state','$window',
   function ($scope, permissionsService, $rootScope, userService, $q, config,
     $location, $timeout, portalTelemetryService, errorMessages, frmelmnts,
-    sessionService, learnService, $http, searchService, toasterService, adminService, $state) {
+    sessionService, learnService, $http, searchService, toasterService, adminService, $state,$window) {
     $rootScope.userId = $('#userId').attr('value')
     $rootScope.sessionId = $('#sessionId').attr('value')
     $rootScope.cdnUrl = $('#cdnUrl').attr('value') || ''
     $rootScope.theme = $('#theme').attr('value') || 'default'
-    $rootScope.language = $rootScope.userLanguage || $("#defaultPortalLanguage").attr('value') || 'en'
+    $rootScope.language = window.localStorage.language ||  $("#defaultPortalLanguage").attr('value') || 'en'    
     $rootScope.errorMessages = errorMessages
     $rootScope.frmelmnts = frmelmnts[$rootScope.language]
     $rootScope.searchKey = ''
@@ -28,6 +28,13 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
     $rootScope.openLink = function (url) {
       $location.path(url)
     }
+    
+    $scope.$watch('$root.language', function(newVal,oldVal) {
+        if(oldVal !== newVal){
+          window.localStorage.language = $rootScope.language
+          $window.location.reload();
+        } 
+    });
 
     $rootScope.mergeObjects = function (obj1, obj2) {
       var objMerge = ''
