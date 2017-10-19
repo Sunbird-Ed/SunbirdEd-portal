@@ -28,6 +28,8 @@ angular.module('playerApp').directive('search', function () {
         $rootScope.search.selectedSubject = [];
         $rootScope.search.selectedBoard = [];
         $rootScope.search.selectedConcepts = [];
+        $rootScope.search.selectedLocation = "";
+        $rootScope.search.selectedRoles = [];
         $rootScope.search.sortByOption = {};
         $scope.search.autoSuggest = true;
         $rootScope.search.selectedOrgType = [];
@@ -98,6 +100,11 @@ angular.module('playerApp').directive('search', function () {
           return error;
       }
 
+$rootScope.getRoleName=function(roleId){
+var roleObj = _.find($rootScope.search.userRoles,{role:roleId});
+return roleObj.roleName;
+}
+
         $scope.search.initSearch = function () {
           var searchParams = $stateParams;
           $rootScope.search.selectedSearchKey = $rootScope.searchKey || searchParams.type;
@@ -111,6 +118,8 @@ angular.module('playerApp').directive('search', function () {
           $rootScope.search.selectedSubject = $rootScope.search.filters.subject || [];
           $rootScope.search.selectedGrades = $rootScope.search.filters.grade || [];
           $rootScope.search.selectedConcepts = $rootScope.search.filters.concepts || [];
+          $rootScope.search.selectedLocation = $rootScope.search.filters.location || "";
+          $rootScope.search.selectedRoles = $rootScope.search.filters['organisations.roles'] || [];
           $rootScope.search.broadCastConcepts();
           $rootScope.search.sortByOption = Object.keys($rootScope.search.sortBy).length > 0
           ? Object.keys($rootScope.search.sortBy)[0] : '';
@@ -345,6 +354,12 @@ angular.module('playerApp').directive('search', function () {
             selectedConcepts: $rootScope.search.selectedConcepts
         });
       };
+      $rootScope.search.getUserRoles = function() {
+          if(!$rootScope.search.userRoles){
+           $rootScope.search.userRoles = permissionsService.allRoles();
+        }
+      }
+      
         $rootScope.search.applyFilter = function () {
           $rootScope.search.filters.language = $rootScope.search.selectedLanguage;
           $rootScope.search.filters.subject = $rootScope.search.selectedSubject;
@@ -354,6 +369,8 @@ angular.module('playerApp').directive('search', function () {
             $rootScope.search.filters.contentType = undefined;
             $rootScope.search.filters.orgType = undefined;
             $rootScope.search.filters.grade = $rootScope.search.selectedGrades;
+            $rootScope.search.filters.location = $rootScope.search.selectedLocation;
+            $rootScope.search.filters['organisations.roles'] = $rootScope.search.selectedRoles;
         } else if ($rootScope.search.selectedSearchKey === 'Organisations') {
             $rootScope.search.filters = {};
             $rootScope.search.filters.orgType = $rootScope.search.selectedOrgType;
@@ -373,6 +390,8 @@ angular.module('playerApp').directive('search', function () {
           $rootScope.search.selectedSubject = [];
           $rootScope.search.selectedBoard = [];
           $rootScope.search.selectedConcepts = [];
+          $rootScope.search.selectedLocation = "";
+          $rootScope.search.selectedRoles = [];
           $rootScope.search.broadCastConcepts();
           $rootScope.search.filters = {};
           $rootScope.isSearchResultsPage = false;
