@@ -576,7 +576,7 @@
         ],
         "searchTypeKeys": ["Courses", "Library", "Users", "Organisations"],
         "sortingOptions": [
-            { "field": "lastUpdatedOn", "name": "Modified on" },
+            { "field": "lastUpdatedOn", "name": "Modified On" },
             { "field": "createdOn", "name": "Created On" }
         ],
         "searchSelectionKeys": [
