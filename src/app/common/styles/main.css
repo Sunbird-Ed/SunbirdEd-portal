@@ -2643,7 +2643,15 @@ ul.fancytree-container li {
   border: 1px solid #979797 !important;
 }
 .ui.basic.label:hover {
-  border-color: #000000 !important;
+  border-color: #009fda !important;
+}
+.ui.bottom.attached.tabular.menu.userSkillMore {
+  height: 0.3em;
+  min-height: 1.28571429em !important;
+  margin-top: -0.1em !important;
+}
+.userSkillMoreIcon {
+  margin-right: -0.4em !important;
 }
 .workspaceicon.ui.header > .icon {
   padding-top: 0;
