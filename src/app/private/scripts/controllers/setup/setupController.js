@@ -17,7 +17,7 @@ angular.module('playerApp')
                     try {
                         if (res.responseCode === 'OK') {
                             var orgTypes = angular.copy(res.result.response);
-                            setup.orgTypes = _.sortBy(orgTypes, ['name']);
+                            setup.orgTypes = _.sortBy(orgTypes, function (i) { return i.name.toLowerCase(); });
                         } else if (res.responseCode === 'CLIENT_ERROR') {
                             throw new Error(res.params.errmsg);
                         } else throw new Error('');
