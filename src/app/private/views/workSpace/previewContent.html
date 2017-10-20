@@ -100,9 +100,9 @@
                                 {{$root.frmelmnts.lbl.lastupdate}}
                             </div>
                         </div>
-                        <div class="item padding-top-10 padding-bottom-5" ng-if="getConceptsNames(previewContent.contentData.concepts)">
+                        <div class="item padding-top-10 padding-bottom-5"  ng-if="previewContent.getConceptsNames(previewContent.contentData.concepts)">
                             <div class="right floated content contentdetail">
-                                <div class="ui">{{getConceptsNames(previewContent.contentData.concepts)}}</div>
+                                <div class="ui">{{previewContent.getConceptsNames(previewContent.contentData.concepts)}}</div>
                             </div>
                             <div class="content">
                                 {{$root.frmelmnts.lbl.concept}}
