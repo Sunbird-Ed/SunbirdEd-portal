@@ -2,6 +2,21 @@
 
 angular.module('playerApp')
 .service('dashboardService', ['httpServiceJava', 'config', function (httpServiceJava, config) {
+    /**
+     * @class dashboardService
+     * @desc Service to manage dashboard.
+     * @memberOf Services
+     */
+
+            /**
+             * @method getAdminDashboardData
+             * @desc Get admin dashboard data
+             * @memberOf Services.dashboardService
+             * @param {Object}   req - Request Object
+             * @param {string}  datasetType - Data type
+             * @returns {Promise} Promise object represents admin dashboard data
+             * @instance
+             */
     this.getAdminDashboardData = function (req, datasetType) {
         switch (datasetType) {
         case 'creation':
@@ -14,6 +29,14 @@ angular.module('playerApp')
             return httpServiceJava.get(config.URL.DASHBOARD.ORG_CREATION + '/' + req.org_id + '?period=' + req.period);
         }
     };
+     /**
+             * @method getChartColors
+             * @desc Get chart colors
+             * @memberOf Services.dashboardService
+             * @param {string}  datasetType - Data type
+             * @returns {Object[]} List of colors
+             * @instance
+             */
 
     this.getChartColors = function (datasetType) {
         if (datasetType == 'creation') {
@@ -42,6 +65,14 @@ angular.module('playerApp')
         }
     };
 
+    /**
+             * @method getChartOptions
+             * @desc Get chart options
+             * @memberOf Services.dashboardService
+             * @param {string}  labelString - Labels
+             * @returns {Object} Object contains chart options .
+             * @instance
+             */
     this.getChartOptions = function (labelString) {
         return {
             legend: { display: true },
@@ -55,7 +86,14 @@ angular.module('playerApp')
             }
         };
     };
-
+            /**
+             * @method secondsToMin
+             * @desc Convert seconds to min
+             * @memberOf Services.dashboardService
+             * @param {string}  numericData - Numeric data
+             * @returns {string} Seconds converted to min numeric value.
+             * @instance
+             */
     this.secondsToMin = function (numericData) {
         var iNum = '';
         var result = '';
@@ -75,7 +113,15 @@ angular.module('playerApp')
 
         return numericData;
     };
-
+     /**
+             * @method getCourseDashboardData
+             * @desc Convert seconds to min
+             * @memberOf Services.dashboardService
+             * @param {Object}  req - Request object
+             * @param {string}  datasetType - Data set type
+             * @returns {Promise} Promise object represents course dashboard data
+             * @instance
+             */
     this.getCourseDashboardData = function (req, datasetType) {
         switch (datasetType) {
         case 'progress':
