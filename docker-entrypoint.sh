@@ -1,9 +1,13 @@
 #!bin/sh
 set -e
 cd /home/sunbird/dist
-az storage container create  --name $CONTAINER_NAME
-az storage blob upload --name cdn --file /home/sunbird/dist/cdn --container-name $CONTAINER_NAME
+if [ ! -d cdn ];then
+    nohup node server.js &
+    exit 0
+fi
+azure storage container create $CONTAINER_NAME -p Blob || true
+azure storage container set -p Blob $CONTAINER_NAME
+find cdn -type f -exec azure storage blob upload {} $CONTAINER_NAME  {} \;
 python append.py ${sunbird_cdn_url}/ /home/sunbird/dist/private/index.ejs
 python append.py ${sunbird_cdn_url}/ /home/sunbird/dist/public/index.ejs
-node server.js &
-
+nohup node server.js &
