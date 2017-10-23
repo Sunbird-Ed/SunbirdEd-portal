@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('loginApp')
-    .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', '$qProvider', function ($stateProvider, $urlRouterProvider, $qProvider) {
+        $qProvider.errorOnUnhandledRejections(false) // To handle error rejection
         $urlRouterProvider.otherwise('/');
         $stateProvider
             .state('Landing', {
