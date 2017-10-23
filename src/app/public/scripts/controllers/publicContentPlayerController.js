@@ -25,13 +25,7 @@ angular.module('loginApp')
              * from renderer
              * Player controller dispatching the event sunbird
              */
-                window.addEventListener('renderer:telemetry:event',function (event, data) { // eslint-disable-line
-                    org.sunbird.portal.eventManager.dispatchEvent('sunbird:player:telemetry',
-                    event.detail.telemetryData);
-                });
-                window.onbeforeunload = function (e) { // eslint-disable-line
-                    playerTelemetryUtilsService.endTelemetry({ progress: $scope.contentProgress });
-                };
+                // x`
                 $scope.showIFrameContent = true;
                 var iFrameSrc = config.ekstep_CP_config.baseURL;
                 $timeout(function () {
