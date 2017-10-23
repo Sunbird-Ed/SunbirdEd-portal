@@ -6,19 +6,12 @@
 
 'use strict';
 
-describe('Directive: courseDiscussions', function() {
+describe('Directive: courseDiscussion', function() {
 
     // load the main module
-    beforeEach(module('playerApp'));
+    beforeEach(module('loginApp'));
 
-    beforeEach(inject(function($rootScope, $controller) {
-        $controller('AppCtrl', {
-            $rootScope: $rootScope,
-            $scope: $rootScope.$new()
-        });
-    }));
-
-    var element, manualCompiledElement, compile, templateCache, scope,
+    var element, compile, templateCache, scope,
         fileName = 'views/course/courseDiscussions.html';
 
 
@@ -30,8 +23,7 @@ describe('Directive: courseDiscussions', function() {
     }));
 
     it('initialize course discussions directive', function() {
-        element = compile("<course-discussions showaskquestion=false></course-discussions>")(scope);
-        manualCompiledElement = angular.element(templateCache.get(fileName));
+        element = compile("<course-discussions showaskquestion=true></course-discussions>")(scope);
         scope.$digest();
         expect(element.text()).toContain('course discussions');
     });
