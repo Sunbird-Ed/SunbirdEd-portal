@@ -1,8 +1,12 @@
 {
     "config": {
         "URL": {
-            "BASE_PREFIX": "private/service/",
-            "CONTENT_PREFIX": "v1/content/",
+            "BASE_PREFIX": "/public/service/",
+            "LEARNER_PREFIX": "v1/learner/",
+            "CONTENT_PREFIX": "v1/content/",    
+            "USER": {
+                "SIGNUP": "user/v1/create"
+            },
             "COURSE": {
                 "HIERARCHY": "course/v1/hierarchy"
             },
