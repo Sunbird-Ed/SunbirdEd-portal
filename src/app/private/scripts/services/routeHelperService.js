@@ -5,6 +5,20 @@ angular.module('playerApp')
             'permissionsService', 'toasterService', '$state',
             function ($rootScope, $stateParams, $timeout, sessionService, permissionsService,
             toasterService, $state) {
+                /**
+     * @class routeHelperService
+     * @desc Service to manages breadCrumb and route states.
+     * @memberOf Services
+     */
+
+            /**
+             * @method loadRouteConfig
+             * @desc Manage route states,search settings and breadCrumbs
+             * @memberOf Services.routeHelperService
+             * @param {string}  stateName - State name of route
+             * @param {object}  stateParamsData - StateParams passed from the route state
+             * @instance
+             */
                 this.loadRouteConfig = function (stateName, $stateParamsData) {
                     $stateParams = $stateParamsData;
                     var searchEnabledStates = ['Home', 'Courses', 'Resources', 'CourseNote',
@@ -39,6 +53,13 @@ angular.module('playerApp')
                     this.clearSearchSettings();
                     this.setBreaCrumbs(stateName);
                 };
+                /**
+             * @method setBreadCrumbs
+             * @desc Set breadCrumbs
+             * @memberOf Services.routeHelperService
+             * @param {string}  stateName - State name of route
+             * @instance
+             */
                 this.setBreaCrumbs = function (stateName) {
                     switch (stateName) {
                     case 'Home':
@@ -292,7 +313,15 @@ angular.module('playerApp')
                         }
                     }
                 };
-
+             /**
+             * @method checkStateAccess
+             * @desc Check if route state if user can access a particular state or not
+             * @memberOf Services.routeHelperService
+             * @param {Object}  data - Data
+             *  @param {string}  flag - Flag
+             *  @param {string}  event - Event
+             * @instance
+             */
                 this.checkStateAccess = function (data, flag, event) {
                     if (permissionsService.checkRolesPermissions(data, flag)) {
                         toasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
@@ -300,13 +329,18 @@ angular.module('playerApp')
                         $state.go('Home');
                     }
                 };
-
+            /**
+             * @method clearSearchSettings
+             * @desc Clear search settings from rootScope
+             * @memberOf Services.routeHelperService
+             * @instance
+             */
                 this.clearSearchSettings = function () {
                     if ($rootScope.search) {
                         $rootScope.search.selectedLanguage = [];
                         $rootScope.search.selectedContentType = [];
                         $rootScope.search.selectedSubject = [];
-                        $rootScope.search.selectedLocation = "";
+                        $rootScope.search.selectedLocation = '';
                         $rootScope.search.selectedRoles = [];
                         $rootScope.search.selectedBoard = [];
                         $rootScope.search.selectedConcepts = [];
