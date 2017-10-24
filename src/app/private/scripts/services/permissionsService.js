@@ -3,11 +3,23 @@
 angular.module('playerApp')
     .service('permissionsService', ['httpServiceJava', 'config', '$rootScope',
         function (httpServiceJava, config, $rootScope) {
+     /**
+     * @class permissionsService
+     * @desc Service to manages permissions for user.
+     * @memberOf Services
+     */
             var self = this;
             var rolesAndPermissions = [];
             var currentUserRoleMap = {};
             var currentUserRoles = [];
             var currentRoleActions = [];
+            /**
+             * @method setRolesAndPermissions
+             * @desc Set roles and permissions
+             * @memberOf Services.permissionsService
+             * @param {object}  data - Data object containing user roles
+             * @instance
+             */
             this.setRolesAndPermissions = function (data) {
                 var rolePermissions = _.cloneDeep(data.roles);
                 _.forEach(rolePermissions, function (r, p) {
@@ -20,14 +32,36 @@ angular.module('playerApp')
                     rolesAndPermissions.push(mainRole);
                 });
                 rolesAndPermissions = _.uniqBy(rolesAndPermissions, 'role');
-            },
+            };
+            /**
+             * @method setCurrentUserRoleMap
+             * @desc Set current user role map
+             * @memberOf Services.permissionsService
+             * @param {object}  orgRoleMap -Org role map
+
+             * @instance
+             */
             this.setCurrentUserRoleMap = function (orgRoleMap) {
                 currentUserRoleMap = orgRoleMap;
-            },
+            };
+             /**
+             * @method setCurrentUserRoles
+             * @desc Set current user roles
+             * @memberOf Services.permissionsService
+             * @param {object[]}  roles - List of user roles
+             * @instance
+             */
             this.setCurrentUserRoles = function (roles) {
                 currentUserRoles = roles;
                 this.setCurrentRoleActions(roles);
-            },
+            };
+             /**
+             * @method setCurrentRoleActions
+             * @desc Set current user role's actions
+             * @memberOf Services.permissionsService
+             * @param {object[]}  roles - List of user roles
+             * @instance
+             */
             this.setCurrentRoleActions = function (roles) {
                 _.forEach(roles, function (r) {
                     var roleActions = _.filter(rolesAndPermissions, { role: r });
@@ -36,10 +70,15 @@ angular.module('playerApp')
                                                         _.map(roleActions[0].actions, 'id'));
                     }
                 });
-            },
-
-            // if flag is true than and we check equality if data is string and
-            // if data is array check if it is array check role/actions exists in array
+            };
+            /**
+             * @method checkRolesPermissions
+             * @desc Check permissions for user role
+             * @memberOf Services.permissionsService
+             * @param {object[]}  data - User data
+             *  @param {string}  flag - Flag
+             * @instance
+             */
             this.checkRolesPermissions = function (data, flag) {
                 if (currentUserRoles && currentUserRoles.length > 0) {
                     if (!this.checkActionsPermissions(data, flag)) {
@@ -55,9 +94,14 @@ angular.module('playerApp')
                 }
                 return false;
             };
-
-        // if flag is true than and we check equality if data is string and
-        // if data is array check if it is array check role/actions exists in array
+            /**
+             * @method checkActionsPermissions
+             * @desc Check actions for user permissions
+             * @memberOf Services.permissionsService
+             * @param {object[]}  data - Data
+             *  @param {string}  flag - Flag
+             * @instance
+             */
             this.checkActionsPermissions = function (data, flag) {
                 if (_.isArray(data)) {
                     if ((_.intersection(data, currentRoleActions).length === 0) && !flag) {
@@ -68,19 +112,53 @@ angular.module('playerApp')
                 return false;
             };
 
+             /**
+             * @method getPermissionsData
+             * @desc Get permissions  data
+             * @memberOf Services.permissionsService
+             * @returns {Promise} Promise object represents permissions data
+             * @instance
+             */
             this.getPermissionsData = function () {
                 return httpServiceJava.get(config.URL.ROLES.READ);
             };
+            /**
+             * @method allRoles
+             * @desc Get all existing user roles
+             * @memberOf Services.permissionsService
+             * @returns {Object[]} List of all existing user roles
+             * @instance
+             */
             this.allRoles = function () {
                 return rolesAndPermissions;
             };
+            /**
+             * @method getCurrentUserRoleMap
+             * @desc Get current user role map
+             * @memberOf Services.permissionsService
+             * @returns {Object} Object of current user role map
+             * @instance
+             */
             this.getCurrentUserRoleMap = function () {
                 return currentUserRoleMap;
             };
+             /**
+             * @method getCurrentUserRoles
+             * @desc Get  current user roles
+             * @memberOf Services.permissionsService
+             * @returns {Object[]} Object of current user roles
+             * @instance
+             */
             this.getCurrentUserRoles = function () {
                 return currentUserRoles;
             };
-
+            /**
+             * @method getCurrentUserProfile
+             * @desc Get  current user profile
+             * @memberOf Services.permissionsService
+             * @returns {Promise} Promise object represents current user profile
+             * @instance
+             */
             this.getCurrentUserProfile = function () {
                 var url = config.URL.USER.GET_PROFILE + '/' + $rootScope.userId;
                 return httpServiceJava.get(url);

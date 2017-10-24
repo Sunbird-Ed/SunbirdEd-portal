@@ -3,6 +3,18 @@
 angular.module('playerApp')
     .service('httpServiceJava', ['$http', '$rootScope', '$filter', 'config', 'uuid4',
         function ($http, $rootScope, $filter, config, uuid4) {
+     /**
+     * @class httpServiceJava
+     * @desc Service to manages learner API calls.
+     * @memberOf Services
+     */
+             /**
+             * @method getHeader
+             * @desc Headers for api calls
+             * @memberOf Services.httpServiceJava
+             * @returns {Object} headers - Headers
+             * @instance
+             */
             function getHeader() {
                 $rootScope.userId = $rootScope.userId || $('#userId').attr('value');
                 var headers = {
@@ -19,7 +31,16 @@ angular.module('playerApp')
                              'application/json;q=0.9,image/webp,*/*;q=0.8';
                 return headers;
             }
-
+            /**
+             * @method httpCall
+             * @desc Http call
+             * @memberOf Services.httpServiceJava
+             * @param {string}  url - Url
+             * @param {Object}  data - Request
+             * @param {string}  method - Methods (CURD)
+             * @param {object}  header - Header
+             * @instance
+             */
             function httpCall(url, data, method, header) {
                 var headers = header || getHeader();
                 var URL = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + url;
@@ -31,10 +52,25 @@ angular.module('playerApp')
                     data: data
                 });
             }
-
+            /**
+             * @method handleSuccess
+             * @desc Http call
+             * @memberOf Services.httpServiceJava
+             * @param {object}  response - HTTP call response
+             * @returns {Object} response.data - Success Response data
+             * @instance
+             */
             function handleSuccess(response) {
                 return (response.data);
             }
+            /**
+             * @method handleError
+             * @desc Handle error response - session expire Or error message
+             * @memberOf Services.httpServiceJava
+             * @param {object}  response - HTTP call response
+             * @returns {Object} response.data - Error Response data
+             * @instance
+             */
 
             function handleError(response) {
                 if (response.data && response.status === 440) {
@@ -44,21 +80,58 @@ angular.module('playerApp')
                 return (response.data);
             }
 
+            /**
+             * @method post
+             * @desc HTTP POST method
+             * @memberOf Services.httpServiceJava
+             * @param {string}  url - API url
+             * @param {object}  data - Requested data
+             * @param {object}  headers - API headers
+             * @returns {Promise} Promise object represent response of api
+             * @instance
+             */
             this.post = function (url, data, headers) {
                 var request = httpCall(url, data, 'POST', headers);
                 return (request.then(handleSuccess, handleError));
             };
-
+            /**
+             * @method get
+             * @desc HTTP GET method
+             * @memberOf Services.httpServiceJava
+             * @param {string}  url - API url
+             * @param {object}  data - Requested data
+             * @param {object}  headers - API headers
+             * @returns {Promise} Promise object represent response of api
+             * @instance
+             */
             this.get = function (url, data, headers) {
                 var request = httpCall(url, data, 'GET', headers);
                 return (request.then(handleSuccess, handleError));
             };
-
+            /**
+             * @method remove
+             * @desc HTTP DELETE method
+             * @memberOf Services.httpServiceJava
+             * @param {string}  url - API url
+             * @param {object}  data - Requested data
+             * @param {object}  headers - API headers
+             * @returns {Promise} Promise object represent response of api
+             * @instance
+             */
             this.remove = function (url, data, headers) {
                 var request = httpCall(url, data, 'DELETE', headers);
                 return (request.then(handleSuccess, handleError));
             };
-
+            /**
+             * @method patch
+             * @desc HTTP PATCH method
+             * @memberOf Services.httpServiceJava
+             * @param {string}  url - API url
+             * @param {object}  data - Requested data
+             * @param {object}  headers - API headers
+             * @returns {Promise} Promise object represent response of api
+             * @instance
+             */
             this.patch = function (url, data, headers) {
                 var request = httpCall(url, data, 'PATCH', headers);
                 return (request.then(handleSuccess, handleError));
