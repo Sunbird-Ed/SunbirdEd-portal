@@ -21,6 +21,9 @@
 18. sunbird_portal_title_name (String Eg:Sunbird)
 19. sunbird_cdn_url (String Eg:https://dev-sunbird-temp.azureedge.net)
 20. sunbird_theme (String Eg:default)
+21. sunbird_portal_default_language (String Eg:en)
+22. sunbird_content_service_upstream_url (String Eg: http://localhost:5000/)
+22. sunbird_learner_service_upstream_url (String Eg: http://localhost:9000/)
 
 ## Pre Requirements
 
