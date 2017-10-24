@@ -1,10 +1,9 @@
 'use strict';
 
 angular.module('loginApp')
-    .service('signUpService', ['httpService', function (httpService) {
-        var signUpUrl = '/public/service/user/v1/create';
+    .service('signUpService', ['httpService', 'config', function (httpService, config) {
         this.signUp = function (req) {
-            var url = signUpUrl;
+            var url = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + config.URL.USER.SIGNUP;
             return httpService.post(url, req);
         };
     }]);
