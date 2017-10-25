@@ -29,6 +29,9 @@ angular.module('playerApp')
             var addFailure = $rootScope.errorMessages.PROFILE.API.ADD.FAILURE;
             var deleteSuccess = $rootScope.errorMessages.PROFILE.API.DELETE.SUCCESS;
             var deleteFailure = $rootScope.errorMessages.PROFILE.API.DELETE.FAILURE;
+            profile.defaultLimit = 4;
+            profile.limit = profile.defaultLimit;
+            profile.resetLimit = 0;
             profile.userId = $rootScope.userId;
             profile.languages = config.DROPDOWN.COMMON.languages;
             profile.subjects = config.DROPDOWN.COMMON.subjects;
@@ -680,5 +683,116 @@ angular.module('playerApp')
                     }
                 }
             };
+// get user skills
+            profile.getUserSkills = function () {
+                userService.getUserSkills({
+                    request: {
+                        endorsedUserId: profile.userId
+                    }
+                }).then(function (response) {
+                    if (response.responseCode === 'OK') {
+                        profile.userSkills = response.result.response[0].skills;
+                    }
+                });
+            };
+// get add default skills and filter users skills from list
+            profile.getSkills = function () {
+                userService.getSkills().then(function (response) {
+                    if (response.responseCode === 'OK') {
+                        profile.skills = response.result.skills;
+                    }
+                });
+            };
+            profile.getUserSkills();
+            profile.getSkills();
+
+            profile.openAddSkillModal = function () {
+                $timeout(function () {
+                    $('#addSkillModal').modal({
+                        onShow: function () {
+                            var excludeHasResults = false;
+                            $.fn.dropdown.settings.templates.addition = function (search) {
+                                var output = 'Add ';
+                                if (!excludeHasResults) {
+                                    output = 'Add ';
+                                }
+                                output += '" <strong>' + search + '</strong> "';
+                                return output;
+                            };
+
+                            $('#addSkill').dropdown({
+                                allowAdditions: true,
+                                // action: 'select',
+                                // debug: true,
+                                hideAdditions: false,
+                                minCharacters: 2,
+                                showNoResults: true,
+                                onChange: function (value) {
+                                    // profile.selectedSkills.push(value);
+                                    // profile.skills = profile.skills.filter(function (skill) {
+                                    //     return skill !== value;
+                                    // });
+                                    // $('#addSkillModal').modal('refresh');
+                                    // $scope.$apply();
+                                },
+                                message: {
+                                    addResult: '{term}'
+                                },
+                                onAdd: function (addedValue, addedText, $addedChoice) {
+                                    $(this).dropdown('remove selected', addedValue);
+                                },
+                                onLabelCreate: function (value, text) {
+                                    return $(this);
+                                },
+                                onNoResults: function (searchValue) {
+                                    excludeHasResults = false;
+                                    return true;
+                                }
+
+                            });
+                        },
+
+                        onHide: function () {
+                        }
+                    }).modal('show');
+                }, 50);
+                $('#addSkillModal').modal('refresh');
+            };
+            // profile.selectedSkills = [];
+            // profile.removeSelectedSkill = function (value) {
+            //     profile.selectedSkills = profile.selectedSkills.filter(function (skill) {
+            //         return skill !== value;
+            //     });
+            //     // profile.skills.push(value);
+            //     $('#addSkillModal').modal('refresh');
+            // };
+            profile.addSkills = function () {
+                var skills = $('#addSkill').dropdown('get value');
+                var newUserSkills = skills.split(',');
+                // newUserSkills.push(skills);
+                if (profile.userSkills.length) {
+                    profile.userSkills.forEach(function (userSkill) {
+                        newUserSkills = newUserSkills.filter(function (skill) {
+                            return skill !== userSkill.skillName;
+                        });
+                        console.log('newUserSkills', newUserSkills);
+                    });
+                }
+                console.log('newUserSkills without common skills', newUserSkills);
+                var req = { request: {
+                    endorsedUserId: profile.userId,
+                    skillName: newUserSkills
+                }
+                };
+                userService.addSkills(req).then(function (response) {
+                    profile.getUserSkills();
+                    console.log('resdd', response);
+                });
+            };
+
+            profile.setLimit = function (lim) {
+                profile.limit = (lim <= 0) ? profile.userSkills.length : lim;
+            };
         }
     ]);
+
