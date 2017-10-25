@@ -1,35 +1,41 @@
 <div class="ui raised segment margin-bottom-0">
     <div class="header announcementCard-header ">
         <span class="header cardsHeading">Skill Tags</span>
-        <a class="addeditprofile cursor-pointer">ADD</a>
+        <a class="addeditprofile cursor-pointer"ng-click="profileCtrl.openAddSkillModal()">ADD</a>
     </div>
     <div class="profileitems profile-des ui relaxed aligned list">
-        <div class="item ">
+        <div class="item " ng-repeat="skill in profileCtrl.userSkills |limitTo:profileCtrl.limit">
             <div class="ui label">
-                Leadership
-                <div class="detail">24</div>
+                    {{skill.skillName}}
+                <div class="detail">
+                    <span ng-if="skill.endorsementcount">|&nbsp;</span>
+                    <span>{{skill.endorsementcount}}</span>
+                </div>
             </div>  
-            <div class="ui circular labels float-ContentRight ">
-                  <a class="ui basic label">
-                    +1
+            <!-- <div class="ui circular labels float-ContentRight ">
+              <a class="ui basic label">
+               +1
                   </a>
-            </div>
+            </div> -->
         </div>
-        <div class="item ">
-            <div class="ui label">
-                Mastery in Organic  Chemistry
-                <div class="detail">4</div>
-            </div>
-            <div class="ui circular labels float-ContentRight ">
-                  <a class="ui basic label data1">
-                    +1
-                  </a>
-            </div>
-        </div>
+            
         
     </div>
     
 </div>
-<div class="ui bottom attached tabular menu userSkillMore ng-scope">
-    <div class="active item"><a>view more <span class="userSkillMoreIcon"><i class="chevron down icon"></i></span></a></div>
+<div class="ui bottom attached tabular menu userSkillMore ng-scope "ng-if="profileCtrl.userSkills.length > profileCtrl.defaultLimit ">
+    <div class="active item">
+        <a ng-click="profileCtrl.setLimit(profileCtrl.resetLimit);profileCtrl.isViewMore=true"
+            ng-if="profileCtrl.userSkills.length > profileCtrl.limit">view more
+         <span class="userSkillMoreIcon"><i class="chevron down icon"></i> </span>
+        </a>
+        <a ng-click="profileCtrl.setLimit(profileCtrl.defaultLimit);profileCtrl.isViewMore=false"
+         ng-if="profileCtrl.isViewMore">
+         view less
+         <span class="userSkillMoreIcon"><i class="chevron up icon"></i> </span>
+        </a>
+   </div>
+   
+</div>
+<div class="twelve wide column" ng-include=" 'views/profile/editProfile/addSkillsModal.html' ">
 </div>
