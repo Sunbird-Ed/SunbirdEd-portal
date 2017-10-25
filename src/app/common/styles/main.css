@@ -747,7 +747,7 @@ th {
 }
 .sliderCards.ui.card:hover {
   transition: all .3s ease 0s;
-  box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.5) !important;
+  box-shadow: none !important;
 }
 .sliderCards.ui.card > .content > .description {
   clear: both;
