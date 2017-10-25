@@ -12,16 +12,28 @@
         </div>
     </div>
     <div class="content">
-        <form class="margin-bottom-30">
-          <select class="ui fluid search dropdown" multiple="">
-            <option value="">State</option>
-            <option value="AL">Alabama</option>
-            <option value="AK">Alaska</option>
-          </select>
-        </form>
+            <div class="margin-bottom-15">
+            <span class="padded chip margin-top--5" ng-repeat="selectedSkill in profileCtrl.selectedSkills">
+                <a class="ui label margin-top--5" >
+                   {{selectedSkill}}
+                    <i class="delete icon"ng-click="profileCtrl.removeSelectedSkill(selectedSkill)" ></i>
+                </a>
+            </span>
+        </div>
+        <div class=" ui form" >
+                <div  id="addSkill" class="ui fluid multiple search selection dropdown">
+                       <input id="users" name="users" type="hidden"> <i class="dropdown icon"></i>
+                       <div class="default text">Start typing to add a skill</div>
+                       <div class="menu">
+                         <div class="item" ng-repeat="skill in profileCtrl.skills"data-value="{{skill}}">{{skill}}</div>
+                     </div>
+                       </div>
+                </div>
+
+        
     </div>
     <div class="actions margin-top-40">
-        <button class="ui primary basic left floated button">CANCEL</button>
-        <div class="ui primary button">FINISH</div>
+        <button class="ui cancel primary basic left floated button">CANCEL</button>
+        <div class="ui approve primary button" ng-click="profileCtrl.addSkills()">FINISH</div>
     </div>
 </div>
