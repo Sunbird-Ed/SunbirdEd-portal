@@ -1,3 +1,18 @@
+
+// Slider
+//
+// Overriding css changes in slicker slider and is used in Home, Courses, Library page.
+//
+// Style guide: Modules.Slider
+
+
+
+// SlickPrevNextButton
+//
+// .slick-prev, .slick-next - Change the shape of slider button using border-radius, change shadow of button using box-shadow .
+//
+// Style guide: Modules.Slider.SlickPrevNextButton
+
 .slick-prev, .slick-next {
     right: -10px !important;
     top: 40% !important;
@@ -25,9 +40,15 @@
 }
 
 
-.slick-prev:before{
+// SlickPrevButton
+// 
+//.slick-prev:before - Override previous button icon in slick slider, You can change the icon by repalcing the content url to your desired image url.
+//
+// Style guide: Modules.Slider.slickPreviousButton
+
+.slick-prev:before {
     left: -20px !important;
-    content: url(../images/Backword.png) !important;
+    content: url(/common/images/Backword.png) !important;
     font-family: 'slick';
     font-size: 20px;
     line-height: 1;
@@ -37,8 +58,15 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+
+// SlickNextButton
+//
+//.slick-next:before - Override next button icon in slick slider, You can change the icon by repalcing the content url to your desired image url.
+//
+// Style guide: Modules.Slider.SlickNextButton
+
 .slick-next:before {
-    content: url(../images/Forward.png) !important;
+    content: url(/common/images/Forward.png) !important;
     font-family: 'slick';
     font-size: 20px;
     line-height: 1;
@@ -51,12 +79,6 @@
 .slider {
     width: 100%;
     margin: 0 auto;
-}
-
-.courseHeader-rating.ui.star.rating .active.icon {
-    background: 0 0!important;
-    color: @blue-dark !important;
-    text-shadow:none !important;
 }
 
 /*slick slider margin bottom removed*/
