@@ -268,6 +268,17 @@ angular.module('playerApp')
                         }];
 
                         break;
+                    case 'announcement':
+
+                        $rootScope.breadCrumbsData = [{
+                            name: 'Home',
+                            link: 'home'
+                        }, {
+                            name: 'Announcement Dashboard',
+                            link: ''
+                        }];
+
+                        break;
                     case 'PublicProfile':
 
                         $rootScope.breadCrumbsData = [{

@@ -1,0 +1,121 @@
+<style>
+.bluetext {
+  color: #0076FE;
+}
+
+.redtext {
+  color: #fc002e;
+}
+
+</style>
+
+<div ng-init="announcementData.renderAnnouncementList()">
+  <div class="ui grid">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+      <div class="ui grid">
+        <div class="nine wide column">
+          <div class="ui">
+            <div class="text dashBoardSectionHeading"><i class="announcement icon padding-right-10"></i> My Announcements</div>
+          </div>
+        </div>
+        <div class="right floated three wide column padding-right-dropdown padding-right-10">
+          <div class="ui float-ContentRight">
+            <button class="ui primary basic button">CREATE ANNOUNCEMENT</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ui grid">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+      <div class="ui grid">
+        <div class="eight wide column">
+          <div class="ui">
+            <div class="text padding-top-5">Showing all sent announcements</div>
+          </div>
+        </div>
+        <div class="four wide column padding-right-10">
+          <div class="ui float-ContentRight">
+            <div class="text">Viewing 10 - 20
+              <button class="ui basic compact icon button"><i class="left chevron icon"></i></button>
+              <button class="ui basic compact icon button"><i class="right chevron icon"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ui grid">
+    <div class="one wide column"></div>
+    <div class="ten wide column" >
+          <app-loader></app-loader>
+        </div>
+  </div>
+  <div class="margin-top-10">
+    <div class="resource-padding ui grid">
+      <div class="one wide column"></div>
+      <div class="ten wide column">
+        <div class="ui tweleve wide column">
+          <table class="ui celled table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Published</th>
+                <th>Sent</th>
+                <th>Recieved <i class="star icon bluetext"></i></th>
+                <th>Seen <i class="star icon bluetext"></i></th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Exam Results announced</td>
+                <td>12 May 17</td>
+                <td>14,003</td>
+                <td>13,563</td>
+                <td>10,000</td>
+                <td class="redtext cursor-pointer"><i class="icon ban"></i> Cancel</td>
+              </tr>
+              <tr>
+                <td>Exam Results announced</td>
+                <td>12 May 17</td>
+                <td>14,003</td>
+                <td>13,563</td>
+                <td>10,000</td>
+                <td class="bluetext cursor-pointer"><i class="icon external share"></i> Resend</td>
+              </tr>
+              <tr>
+                <td>Exam Results announced</td>
+                <td>12 May 17</td>
+                <td>14,003</td>
+                <td>13,563</td>
+                <td>10,000</td>
+                <td class="redtext cursor-pointer"><i class="icon ban"></i> Cancel</td>
+              </tr>
+              <tr>
+                <td>Exam Results announced</td>
+                <td>12 May 17</td>
+                <td>14,003</td>
+                <td>13,563</td>
+                <td>10,000</td>
+                <td class="redtext cursor-pointer"><i class="icon ban"></i> Cancel</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ui grid">
+    <div class="one wide column"></div>
+    <div class="ui grid">
+      <div class="twelve wide column">
+        <div class="ui">
+          <div class="text"><i class="star icon bluetext"></i> Consumption data last updated on 13 May '17 at 6.45 PM</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
