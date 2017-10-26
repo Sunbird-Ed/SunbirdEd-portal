@@ -35,7 +35,8 @@ angular.module('playerApp')
           status: flaggedContent.contentStatus,
           createdFor: $rootScope.organisationIds,
           objectType: 'Content',
-          contentType: config.contributeContentType
+          contentType: config.contributeContentType,
+          createdBy: {'!=': flaggedContent.userId}
         },
         sort_by: {
           lastUpdatedOn: flaggedContent.sortBy
@@ -50,10 +51,7 @@ angular.module('playerApp')
           flaggedContent.error.showError = false
           flaggedContent.flaggedContentData = []
           if (res.result.content) {
-            flaggedContent.flaggedContentData =
-                                res.result.content.filter(function (contentData) {
-                                  return contentData.createdBy !== flaggedContent.userId
-                                })
+            flaggedContent.flaggedContentData = res.result.content
           }
           flaggedContent.totalCount = res.result.count
           if (flaggedContent.flaggedContentData.length === 0) {
