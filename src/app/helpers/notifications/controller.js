@@ -1,79 +1,33 @@
 let Joi = require('joi')
 let HttpStatus = require('http-status-codes')
 const _ = require('lodash')
-let MockNotificationData = {
-    "notifications": [{
-        "titile": "Notification 1",
-        "description": " This is about description of notification1",
-        "createdOn": "DD/MM/YYYY",
-        "from": "Author Name",
-        "status": "read",
-        "priority": "high",
-        "language": "English",
-        "resource": {
-            entity: "Announcement",
-            id: "AnnouncementId",
-            type: "AnnouncementType"
-        }
-    }]
-}
+let MockNotificationData = {"notifications": [{"titile": "Notification 1", "description": " This is about description of notification1", "createdOn": "DD/MM/YYYY", "from": "Author Name", "status": "read", "priority": "high", "language": "English", "resource": {entity: "Announcement", id: "AnnouncementId", type: "AnnouncementType"} }] }
 
 function pull(requestObj, callback) {
-    let mandtoryFields = {
-        'userId': Joi.string().required(),
-        'limit': Joi.string().required(),
-        'filters': Joi.object({
-            'status': Joi.string(),
-            'fromDate': Joi.string(),
-            'toDate': Joi.string(),
-            'from': Joi.string()
-        }).allow(null)
-    }
-    let req = validateRequestObj(requestObj, mandtoryFields);
+    let mandatoryFields = {'userId': Joi.string().required(), 'limit': Joi.string().required(), 'filters': Joi.object({'status': Joi.string(), 'fromDate': Joi.string(), 'toDate': Joi.string(), 'from': Joi.string() }).allow(null) }
+    let req = validateRequestObj(requestObj, mandatoryFields);
     if (!req.isValid) {
-        callback && callback({
-            message: req.error,
-            httpCode: HttpStatus.BAD_REQUEST
-        })
+        callback && callback({message: req.error, httpCode: HttpStatus.BAD_REQUEST }) 
         return
     } else {
         // fetch from the db
-        callback && callback(undefined, {
-            data: MockNotificationData
-        })
+        callback && callback(undefined, {data: MockNotificationData }) 
     }
 };
 
 
 function create(requestObj, callback) {
-    let mandtoryFields = {
-        'userId': Joi.string(),
-        'limit': Joi.string().required(),
-        'filters': Joi.object({
-            'status': Joi.string(),
-            'fromDate': Joi.string(),
-            'toDate': Joi.string(),
-            'from': Joi.string()
-        }).allow(null)
-    }
-    let req = validateRequestObj(requestObj, mandtoryFields);
+    let mandatoryFields = {'userId': Joi.string(), 'limit': Joi.string().required(), 'filters': Joi.object({'status': Joi.string(), 'fromDate': Joi.string(), 'toDate': Joi.string(), 'from': Joi.string() }).allow(null) }
+    let req = validateRequestObj(requestObj, mandatoryFields);
     if (!req.isValid) {
-        callback && callback({
-            message: req.error,
-            httpCode: HttpStatus.BAD_REQUEST
-        })
+        callback && callback({message: req.error, httpCode: HttpStatus.BAD_REQUEST }) 
         return
     } else {
-        callback && callback(undefined, {
-            data: {
-                status: "Sucessfully created."
-            }
-        })
-    }
+        callback && callback(undefined, {data: {status: "Sucessfully created."} }) }
 }
 
-function validateRequestObj(requestObj, mandtoryFields) {
-    let validation = Joi.validate(requestObj.body.request, mandtoryFields, {
+function validateRequestObj(requestObj, mandatoryFields) {
+    let validation = Joi.validate(requestObj.body.request, mandatoryFields, {
         abortEarly: false
     })
     if (validation.error != null) {
@@ -84,16 +38,8 @@ function validateRequestObj(requestObj, mandtoryFields) {
                 description: error.message
             })
         })
-        return {
-            error: messages,
-            isValid: false
-        }
+        return {error: messages, isValid: false } 
     }
-    return {
-        isValid: true
-    }
+    return {isValid: true } 
 }
-module.exports = {
-    pull,
-    create
-}
+module.exports = {pull, create }
