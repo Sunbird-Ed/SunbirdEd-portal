@@ -77,4 +77,41 @@ angular.module('playerApp')
             this.getCurrentUserProfile = function () {
                 return this.currentUserProfile;
             };
+            /**
+             * @method getSkills
+             * @desc Get default skills
+             * @memberOf Services.userService
+             * @returns {Object} Promise object represents list skills
+             * @instance
+             */
+            this.getSkills = function () {
+                var url = config.URL.USER.SKILLS;
+                return httpServiceJava.get(url);
+            };
+            /**
+             * @method getUserSkills
+             * @desc Get user's skills
+             * @memberOf Services.userService
+             * @param {Object}  req - Request Object
+             * @param {string} req.endorsedUserId - User Id
+             * @returns {Object} Promise object represents list of user's skills
+             * @instance
+             */
+            this.getUserSkills = function (req) {
+                var url = config.URL.USER.USER_SKILLS;
+                return httpServiceJava.post(url, req);
+            };
+             /**
+             * @method addSkills
+             * @desc Add skill to user's skills and add skill to default skills list
+             * @memberOf Services.userService
+             *  @param {string} req.endorsedUserId - User Id
+             * @param {Object[]} req.skillName - List of skill names
+             * @returns {Object} Promise object represents response and response code
+             * @instance
+             */
+            this.addSkills = function (req) {
+                var url = config.URL.USER.ADD_SKILLS;
+                return httpServiceJava.post(url, req);
+            };
         }]);

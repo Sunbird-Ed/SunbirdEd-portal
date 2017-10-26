@@ -55,7 +55,7 @@
                     <div class="description">
                         <p ng-if="!publicProfile.readMore">
                             {{publicProfile.user.profileSummary| limitTo: 120 }} &nbsp;
-                            <span class="ui cardsKnowMore mouse-pointer" ng-if="profileCtrl.summary.length > 120 && profileCtrl.readMore === false" ng-click="publicProfile.readMore = true;"> ... Read More</span>
+                            <span class="ui cardsKnowMore mouse-pointer" ng-if="publicProfile.summary.length > 120 && publicProfile.readMore === false" ng-click="publicProfile.readMore = true;"> ... Read More</span>
                         </p>
                         <p ng-if="publicProfile.readMore"> {{publicProfile.user.profileSummary}}&nbsp;
                             <span class="ui cardsKnowMore mouse-pointer" ng-click="publicProfile.readMore = false;">Read Less ...</span>
@@ -121,7 +121,7 @@
                                 <a class=" header">{{education.degree}}</a>
                                 <div class="description"> {{education.yearOfPassing}}<span ng-if="education.percentage">,&nbsp</span>{{education.percentage}}
                                     <br/>
-                                    <p>{{education.grade}}<span ng-if="education.name ">,&nbsp</span>{{education.name}}<span ng-if="education.boardOrUniversity">,&nbsp</span>{{education.boardOrUniversity}}
+                                    <p>{{education.grade}}<span ng-if="education.name && education.grade">,&nbsp</span>{{education.name}}<span ng-if="education.boardOrUniversity">,&nbsp</span>{{education.boardOrUniversity}}
 
                                 </div>
                             </div>
@@ -129,6 +129,48 @@
                     </div>
                 </div>
             </div>
+<!-- skills -->
+<div class="twelve wide column">
+<div class="ui raised segment margin-bottom-0">
+        <div class="header announcementCard-header ">
+            <span class="header cardsHeading">Skill Tags</span>
+        </div>
+        <div class="profileitems profile-des ui relaxed aligned list">
+            <div class="item " ng-repeat="skill in publicProfile.userSkills |limitTo:publicProfile.limit">
+                <div class="ui label">
+                        {{skill.skillName}}
+                    <div class="detail">
+                        <span ng-if="skill.endorsementcount">|&nbsp;</span>
+                        <span>{{skill.endorsementcount}}</span>
+                    </div>
+                </div>  
+                <div ng-if="skill.isEndorsable"class="ui circular labels float-ContentRight ">
+                  <a class="ui basic label"ng-click="publicProfile.endorsement(skill.skillName)">
+                   +1
+                      </a>
+                </div>
+            </div>
+                
+            
+        </div>
+        
+    </div>
+    <div class="ui bottom attached tabular menu userSkillMore ng-scope " 
+    ng-if="publicProfile.userSkills.length > publicProfile.defaultLimit">
+            <div class="active item">
+                <a ng-click="publicProfile.setLimit(publicProfile.resetLimit);publicProfile.isViewMore=true"
+                    ng-if="publicProfile.userSkills.length > publicProfile.limit">view more
+                 <span class="userSkillMoreIcon"><i class="chevron down icon"></i> </span>
+                </a>
+                <a ng-click="publicProfile.setLimit(publicProfile.defaultLimit);publicProfile.isViewMore=false"
+                 ng-if="publicProfile.isViewMore">
+                 view less
+                 <span class="userSkillMoreIcon"><i class="chevron up icon"></i> </span>
+                </a>
+           </div>
+           
+        </div>
+        </div>
 
             <div class="twelve wide column">
                 <div class="ui raised segment ">

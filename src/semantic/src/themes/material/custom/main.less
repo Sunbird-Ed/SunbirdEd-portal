@@ -1,5 +1,32 @@
+// Base
+//
+//Base contains fonts, variables etc .
+//
+// Weight: -1
+//
+// Style guide: Base
+@import 'base/fonts.less';
+
+// Reuseable
+//
+// Reusable components that can be used across the site.
+//
+// Style guide: Reuseable
+@import 'reuseable/reUseable.less';
+
+// Modules
+//
+// Covers styles used for card, header, etc.
+//
+//
+// Style guide: Modules
+@import 'modules/header.less';
+
+
+
 /*use percentage for images*/
 /*use em for fonts*/
+/*12 column grid is used instead of 16 column*/
 /*pixel to em conversition*/
 
 /*
@@ -68,6 +95,7 @@
 @import 'modules/circle-progress/circle.less';
 @import 'modules/circle-progress/mixins.less';
 @import 'modules/profileUpdateCard';
+@import 'modules/logo';
 
 
 // ----------------------------------------------------------------------
@@ -97,7 +125,7 @@ body {
     position: relative !important;
     min-height: 100% !important;
     min-width: 100% !important;
-    background: @websiteBody-color !important;
+    background: #fafafa !important;
 }
 
 html {
@@ -105,8 +133,17 @@ html {
     box-sizing: border-box !important;
 }
 
+.headerBackground {
+  background-color: #012b54 !important;
+}
 
+.searchdropdown.ui.basic.floating.dropdown.button{
+  background: #fff !important;
+}
 
+.alaramIconColor {
+  color: #fff !important;
+}
 
 
 

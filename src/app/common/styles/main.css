@@ -747,7 +747,7 @@ th {
 }
 .sliderCards.ui.card:hover {
   transition: all .3s ease 0s;
-  box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.5) !important;
+  box-shadow: none !important;
 }
 .sliderCards.ui.card > .content > .description {
   clear: both;
@@ -1801,6 +1801,21 @@ div:focus {
   width: auto;
   height: auto;
   left: 10% !important;
+}
+.announcementBlueText {
+  color: #0076FE;
+}
+.announcementRedText {
+  color: #fc002e;
+}
+.announcementCustomside {
+  min-width: 0em !important;
+  height: 7em !important;
+}
+.announcementCardLeftBorder {
+  border-radius: 10px !important;
+  border-left-color: #007AFF !important;
+  border-left-width: 11px !important;
 }
 .down-arrow-accordion {
   float: right !important;
