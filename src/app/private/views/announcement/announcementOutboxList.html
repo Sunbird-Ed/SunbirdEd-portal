@@ -1,9 +1,3 @@
-<style>
-.redtext {
-  color: #fc002e;
-}
-</style>
-
 <div ng-init="announcementOutboxData.renderAnnouncementList()">
   <div class="ui grid">
     <div class="one wide column"></div>
@@ -44,9 +38,9 @@
   </div>
   <div class="ui grid" ng-if="dashboardData.showLoader">
     <div class="one wide column"></div>
-    <div class="ten wide column" >
-          <app-loader></app-loader>
-        </div>
+    <div class="ten wide column">
+      <app-loader></app-loader>
+    </div>
   </div>
   <div class="margin-top-10">
     <div class="resource-padding ui grid">
@@ -61,17 +55,17 @@
                 <th>Sent</th>
                 <th>Recieved <i class="star icon announcementBlueText"></i></th>
                 <th>Seen <i class="star icon announcementBlueText"></i></th>
-				<!--<th>Actions</th>-->
+                <!--<th>Actions</th>-->
               </tr>
             </thead>
             <tbody>
               <tr ng-repeat="item in announcementOutboxData.listData">
                 <td>{{item.title}}</td>
-                <td>{{item.createdOn  | date : "dd MMM yyyy"}}</td>
+                <td>{{item.createdOn | date : "dd MMM yyyy"}}</td>
                 <td>N/A</td>
                 <td>N/A</td>
                 <td>N/A</td>
-				<!--<td class="redtext cursor-pointer"><i class="icon ban"></i> Cancel</td>-->
+                <!--<td class="announcementRedText cursor-pointer"><i class="icon ban"></i> Cancel</td>-->
               </tr>
             </tbody>
           </table>
