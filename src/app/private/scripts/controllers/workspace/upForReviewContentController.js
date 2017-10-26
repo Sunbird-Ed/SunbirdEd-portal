@@ -36,7 +36,8 @@ angular.module('playerApp')
           status: upForReviewContent.contentStatus,
           createdFor: $rootScope.organisationIds,
           objectType: 'Content',
-          contentType: config.contributeContentType
+          contentType: config.contributeContentType,
+          createdBy: {'!=': upForReviewContent.userId}
         },
         sort_by: {
           lastUpdatedOn: upForReviewContent.sortBy
@@ -50,10 +51,7 @@ angular.module('playerApp')
           upForReviewContent.error.showError = false
           upForReviewContent.upForReviewContentData = []
           if (res.result.content) {
-            upForReviewContent.upForReviewContentData =
-                        res.result.content.filter(function (contentData) {
-                          return contentData.createdBy !== upForReviewContent.userId
-                        })
+            upForReviewContent.upForReviewContentData = res.result.content
           }
           upForReviewContent.totalCount = res.result.count
           upForReviewContent.pager = PaginationService.GetPager(res.result.count,
