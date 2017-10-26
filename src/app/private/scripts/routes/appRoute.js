@@ -786,18 +786,35 @@ angular.module('playerApp')
           $rootScope.profileActive = ''
         }
       })
-      .state('announcement', {
-        url: '/announcement',
+      .state('announcementOutbox', {
+        url: '/announcement/outbox',
         views: {
           mainView: {
             templateUrl: '/views/announcement/announcementOutboxList.html',
-            controller: 'announcementListController as announcementData'
+            controller: 'announcementOutboxListController as announcementOutboxData'
           }
         },
         onEnter: function ($stateParams, $rootScope, routeHelperService) {
           $rootScope.homeActive = 'active'
           $rootScope.isPlayerPage = true
-          routeHelperService.loadRouteConfig('announcement', null)
+          routeHelperService.loadRouteConfig('announcementOutbox', null)
+        },
+        onExit: function ($rootScope) {
+          $rootScope.homeActive = ''
+        }
+      })
+      .state('announcementInbox', {
+        url: '/announcement/inbox',
+        views: {
+          mainView: {
+            templateUrl: '/views/announcement/announcementInboxList.html',
+            controller: 'announcementInboxListController as announcementInboxData'
+          }
+        },
+        onEnter: function ($stateParams, $rootScope, routeHelperService) {
+          $rootScope.homeActive = 'active'
+          $rootScope.isPlayerPage = true
+          routeHelperService.loadRouteConfig('announcementInbox', null)
         },
         onExit: function ($rootScope) {
           $rootScope.homeActive = ''
@@ -1052,7 +1069,10 @@ angular.module('playerApp')
         case 'orgDashboard':
           routeHelperService.checkStateAccess(['ORG_ADMIN', 'SYSTEM_ADMINISTRATION'], false, event)
           break
-        case 'announcement':
+        case 'announcementOutbox':
+          routeHelperService.checkStateAccess(['ORG_ADMIN', 'SYSTEM_ADMINISTRATION'], false, event)
+          break
+        case 'announcementInbox':
           routeHelperService.checkStateAccess(['ORG_ADMIN', 'SYSTEM_ADMINISTRATION'], false, event)
           break
         case 'WorkSpace.DraftContent':
