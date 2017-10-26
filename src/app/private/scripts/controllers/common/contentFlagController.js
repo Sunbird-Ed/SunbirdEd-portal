@@ -1,82 +1,102 @@
-'use strict';
+'use strict'
 
 angular.module('playerApp')
-    .controller('contentFlagController', ['contentService', '$timeout', '$state', 'config',
-        '$rootScope', 'toasterService', '$scope', function (contentService, $timeout, $state,
-             config, $rootScope, toasterService, $scope) {
-            var contentFlag = this;
-            contentFlag.showContentFlagModal = false;
-            contentFlag.userId = $rootScope.userId;
-            contentFlag.userFullName = $rootScope.firstName + ' ' + $rootScope.lastName;
-            contentFlag.contentId = $scope.contentid;
-            contentFlag.contentName = $scope.contentname;
-            contentFlag.contentVersionKey = $scope.versionkey;
-            contentFlag.reasons = ['Inappropriate content', 'Copyright violation',
-                'Privacy violation', 'Other'];
-            contentFlag.flagMessage = $scope.type === 'course' ? $rootScope.frmelmnts.instn.t0018
-                                                                    : $rootScope.frmelmnts.instn.t0019;
+  .controller('contentFlagController', ['contentService', '$timeout', '$state', 'config',
+    '$rootScope', 'toasterService', '$scope',
+    function (contentService, $timeout, $state,
+            config, $rootScope, toasterService, $scope) {
+      var contentFlag = this
+      contentFlag.showContentFlagModal = false
+      contentFlag.userId = $rootScope.userId
+      contentFlag.userFullName = $rootScope.firstName + ' ' + $rootScope.lastName
+      contentFlag.contentId = $scope.contentid
+      contentFlag.contentName = $scope.contentname
+      contentFlag.contentVersionKey = $scope.versionkey
+      contentFlag.reasons = [{
+        name: 'Inappropriate content',
+        description: 'Hateful, harmful or explicit lesson that is inappropriate for young learners'
+      }, {
+        name: 'Copyright violation',
+        description: 'Uses copyrighted work without permission'
+      }, {
+        name: 'Privacy violation',
+        description: 'Collects sensitive data or personal information about users, such as name, \n address, photo or other personally identifiable information'
+      }, {
+        name: 'Other'
+      }]
 
-            contentFlag.hideContentFlagModal = function () {
-                $('#contentFlagModal').modal('hide');
-                $('#contentFlagModal').modal('hide others');
-                $('#contentFlagModal').modal('hide dimmer');
-            };
+      contentFlag.reasonDescription = {
 
-            contentFlag.initializeModal = function () {
-                contentFlag.showContentFlagModal = true;
-                $timeout(function () {
-                    $('#contentFlagModal').modal({
-                        onHide: function () {
-                            contentFlag.showContentFlagModal = false;
-                            contentFlag.data = {};
-                        }
-                    }).modal('show');
-                }, 10);
-            };
+      }
+      contentFlag.flagMessage = $scope.type === 'course' ? $rootScope.frmelmnts.instn.t0018
+                : $rootScope.frmelmnts.instn.t0019
 
-            contentFlag.createFlag = function (requestData) {
-                contentFlag.loader = toasterService.loader('', $rootScope.errorMessages.CONTENT_FLAG
-                                                            .START);
-                contentService.flag(requestData, contentFlag.contentId).then(function (res) {
-                    if (res && res.responseCode === 'OK') {
-                        $timeout(function () {
-                            contentFlag.loader.showLoader = false;
-                            contentFlag.showContentFlagModal = false;
-                            contentFlag.hideContentFlagModal();
-                            contentFlag.close();
-                        }, 2000);
-                    } else {
-                        contentFlag.loader.showLoader = false;
-                        toasterService.error($rootScope.errorMessages.CONTENT_FLAG.FAILED);
-                    }
-                }).catch(function () {
-                    contentFlag.loader.showLoader = false;
-                    toasterService.error($rootScope.errorMessages.CONTENT_FLAG.FAILED);
-                });
-            };
+      contentFlag.hideContentFlagModal = function () {
+        $('#contentFlagModal').modal('hide')
+        $('#contentFlagModal').modal('hide others')
+        $('#contentFlagModal').modal('hide dimmer')
+      }
 
-            contentFlag.saveMetaData = function (data) {
-                var requestData = {
-                    flaggedBy: contentFlag.userFullName,
-                    versionKey: contentFlag.contentVersionKey
-                };
-                if (data.flagReasons) {
-                    requestData.flagReasons = [data.flagReasons];
-                }
-                if (data.comment) {
-                    requestData.flags = [data.comment];
-                }
-                contentFlag.createFlag(requestData);
-            };
+      contentFlag.initializeModal = function () {
+        contentFlag.showContentFlagModal = true
+        $timeout(function () {
+          $('#contentFlagModal').modal({
+            onShow: function () {
+              $('.helpPopup').popup({
+                inline: true
+              })
+            },
+            onHide: function () {
+              contentFlag.showContentFlagModal = false
+              contentFlag.data = {}
+            }
+          }).modal('show')
+        }, 10)
+      }
 
-            contentFlag.close = function () {
-                contentFlag.hideContentFlagModal();
-                if ($rootScope.search.searchKeyword !== '') {
-                    $timeout(function () {
-                        $rootScope.$emit('initSearch', {});
-                    }, 0);
-                } else {
-                    $state.go($scope.redirect);
-                }
-            };
-        }]);
+      contentFlag.createFlag = function (requestData) {
+        contentFlag.loader = toasterService.loader('', $rootScope.errorMessages.CONTENT_FLAG.START)
+        contentService.flag(requestData, contentFlag.contentId).then(function (res) {
+          if (res && res.responseCode === 'OK') {
+            $timeout(function () {
+              contentFlag.loader.showLoader = false
+              contentFlag.showContentFlagModal = false
+              contentFlag.hideContentFlagModal()
+              contentFlag.close()
+            }, 2000)
+          } else {
+            contentFlag.loader.showLoader = false
+            toasterService.error($rootScope.errorMessages.CONTENT_FLAG.FAILED)
+          }
+        }).catch(function () {
+          contentFlag.loader.showLoader = false
+          toasterService.error($rootScope.errorMessages.CONTENT_FLAG.FAILED)
+        })
+      }
+
+      contentFlag.saveMetaData = function (data) {
+        var requestData = {
+          flaggedBy: contentFlag.userFullName,
+          versionKey: contentFlag.contentVersionKey
+        }
+        if (data.flagReasons) {
+          requestData.flagReasons = [data.flagReasons]
+        }
+        if (data.comment) {
+          requestData.flags = [data.comment]
+        }
+        contentFlag.createFlag(requestData)
+      }
+
+      contentFlag.close = function () {
+        contentFlag.hideContentFlagModal()
+        if ($rootScope.search.searchKeyword !== '') {
+          $timeout(function () {
+            $rootScope.$emit('initSearch', {})
+          }, 0)
+        } else {
+          $state.go($scope.redirect)
+        }
+      }
+    }
+  ])
