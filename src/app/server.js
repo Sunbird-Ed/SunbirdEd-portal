@@ -81,6 +81,11 @@ app.set('view engine', 'ejs')
 
 app.use(express.static(path.join(__dirname, '/')))
 app.use(express.static(path.join(__dirname, 'tenant', tenantId)))
+
+// Announcement routing
+app.use('/api/plugin/announcement', bodyParser.urlencoded({ extended: false }),
+  bodyParser.json({limit: '10mb' }), require('./helpers/announcement'))
+
 // this line should be above middleware please don't change
 app.get('/public/service/orgs', publicServicehelper.getOrgs)
 app.use('/public/*', express.static(path.join(__dirname, 'public')))
