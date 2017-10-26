@@ -93,7 +93,7 @@
                 "contentTypes": [
                     "Collection", "LessonPlan", "Resource", "TextBook"
                 ],
-                "resourceType": [ 
+                "resourceType": [
                     "(Annual / Half-yearly / Semester) Examination",
                     "Academic calendar",
                     "Activity",
@@ -119,7 +119,7 @@
                     "Teaching resources",
                     "Timed worksheets",
                     "Unit plan",
-                    "Worksheet" 
+                    "Worksheet"
                 ],
                 "subjects": [
                     "Assamese",
@@ -560,6 +560,9 @@
             "application/vnd.ekstep.html-archive", "video/youtube", "application/vnd.ekstep.ecml-archive",
             "application/epub", "application/vnd.ekstep.h5p-archive", "video/webm"
         ],
+        "MaxFileSizeToUpload": 25600000,
+        "FileExtensionToUpload": "application/pdf, video/mp4, application/zip, video/webm",
+        "AllowedFileExtension": ["mp4", "pdf", "zip", "epub", "h5p"],
         "USER_ROLES": ["ORG_ADMIN", "ORG_MEMBER", "CONTENT_REVIEW", "CONTENT_CURATION", "CONTENT_REVIEWER",
             "CONTENT_CREATION", "CONTENT_CREATOR", "ORG_MODERATOR", "MEMBERSHIP_MANAGEMENT",
             "ORG_MANAGEMENT", "SYSTEM_ADMINISTRATION", "ADMIN", "SYSTEM_ADMIN"
