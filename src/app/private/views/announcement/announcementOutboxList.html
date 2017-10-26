@@ -47,7 +47,7 @@
       </div>
     </div>
   </div>
-  <div class="ui grid">
+  <div class="ui grid" ng-if="dashboardData.showLoader">
     <div class="one wide column"></div>
     <div class="ten wide column" >
           <app-loader></app-loader>
@@ -66,41 +66,17 @@
                 <th>Sent</th>
                 <th>Recieved <i class="star icon bluetext"></i></th>
                 <th>Seen <i class="star icon bluetext"></i></th>
-                <th>Actions</th>
+				<!--<th>Actions</th>-->
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Exam Results announced</td>
-                <td>12 May 17</td>
-                <td>14,003</td>
-                <td>13,563</td>
-                <td>10,000</td>
-                <td class="redtext cursor-pointer"><i class="icon ban"></i> Cancel</td>
-              </tr>
-              <tr>
-                <td>Exam Results announced</td>
-                <td>12 May 17</td>
-                <td>14,003</td>
-                <td>13,563</td>
-                <td>10,000</td>
-                <td class="bluetext cursor-pointer"><i class="icon external share"></i> Resend</td>
-              </tr>
-              <tr>
-                <td>Exam Results announced</td>
-                <td>12 May 17</td>
-                <td>14,003</td>
-                <td>13,563</td>
-                <td>10,000</td>
-                <td class="redtext cursor-pointer"><i class="icon ban"></i> Cancel</td>
-              </tr>
-              <tr>
-                <td>Exam Results announced</td>
-                <td>12 May 17</td>
-                <td>14,003</td>
-                <td>13,563</td>
-                <td>10,000</td>
-                <td class="redtext cursor-pointer"><i class="icon ban"></i> Cancel</td>
+              <tr ng-repeat="item in announcementData.listData">
+                <td>{{item.title}}</td>
+                <td>{{item.createdOn  | date : "dd MMM yyyy"}}</td>
+                <td>N/A</td>
+                <td>N/A</td>
+                <td>N/A</td>
+				<!--<td class="redtext cursor-pointer"><i class="icon ban"></i> Cancel</td>-->
               </tr>
             </tbody>
           </table>
