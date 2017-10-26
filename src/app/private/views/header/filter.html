@@ -64,7 +64,7 @@
                                 <span class="padded chip margin-top--5" ng-if='$root.search.selectedOrgType.length > 0'>
                                     {{$root.frmelmnts.prmpt.orgtype}}:
                                     <a class="ui label margin-top--5" ng-repeat="orgType in $root.search.selectedOrgType">
-                                        {{orgType}}
+                                        {{getOrgName(orgType)}}
                                         <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedOrgType',orgType)"></i>
                                     </a>
                                 </span>
@@ -176,11 +176,11 @@
                                         <div class="filter-sel-text" ng-if="$root.search.selectedOrgType.length > 0 ">{{$root.search.selectedOrgType.length+' '+$root.frmelmnts.prmpt.orgtype}}</div>
                                         <div class="filter-sel-text" ng-if="$root.search.selectedOrgType.length == 0 ">{{$root.frmelmnts.prmpt.orgtype}}</div>
                                         <div class="menu">
-                                            <div ng-click="$root.search.selectFilter('selectedOrgType',orgType.name,$event)"
+                                            <div ng-click="$root.search.selectFilter('selectedOrgType',orgType.id,$event)"
                                                  ng-repeat="orgType in $root.search.orgTypes  "
                                                  class="item dropdown-item"
                                                  ng-class="{'active':($root.search.selectedOrgType.indexOf(orgType)>=0)}"
-                                                 data-value="{{orgType.name}}">{{orgType.name}}
+                                                 data-value="{{orgType.id}}">{{orgType.name}}
                                             </div>
                                         </div>
                                     </div>
