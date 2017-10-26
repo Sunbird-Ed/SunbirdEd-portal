@@ -1,8 +1,22 @@
 let Joi = require('joi')
 let HttpStatus = require('http-status-codes')
 const _ = require('lodash')
-let MockNotificationData = {"notifications": [{"titile": "Notification 1", "description": " This is about description of notification1", "createdOn": "DD/MM/YYYY", "from": "Author Name", "status": "read", "priority": "high", "language": "English", "resource": {entity: "Announcement", id: "AnnouncementId", type: "AnnouncementType"} }] }
-
+let MockNotificationData = {
+    "notifications": [{
+        "titile": "Notification 1",
+        "description": " This is about description of notification1",
+        "createdOn": "DD/MM/YYYY",
+        "from": "Author Name",
+        "status": "read",
+        "priority": "high",
+        "language": "English",
+        "origin": {
+            entity: "Announcement",
+            id: "AnnouncementId",
+            type: "AnnouncementType"
+        }
+    }]
+}
 function pull(requestObj, callback) {
     let mandatoryFields = {
         'userId': Joi.string().required(),
@@ -14,7 +28,7 @@ function pull(requestObj, callback) {
             'from': Joi.string()
         }).allow(null)
     }
-    let req = validateRequestObj(requestObj, mandatoryFields);
+    let req = validateRequestObj(requestObj.body.request, mandatoryFields);
     if (!req.isValid) {
         callback && callback({message: req.error, httpCode: HttpStatus.BAD_REQUEST }) 
         return
@@ -46,7 +60,7 @@ function create(requestObj, callback) {
             'type':Joi.string()
         }).required())
     }
-    let req = validateRequestObj(requestObj, mandatoryFields);
+    let req = validateRequestObj(requestObj.body.request, mandatoryFields);
     if (!req.isValid) {
         callback && callback({
             message: req.error,
@@ -63,7 +77,7 @@ function create(requestObj, callback) {
 }
 
 function validateRequestObj(requestObj, mandatoryFields) {
-    let validation = Joi.validate(requestObj.body.request, mandatoryFields, {
+    let validation = Joi.validate(requestObj, mandatoryFields, {
         abortEarly: false
     })
     if (validation.error != null) {
@@ -78,4 +92,4 @@ function validateRequestObj(requestObj, mandatoryFields) {
     }
     return {isValid: true } 
 }
-module.exports = {pull, create }
+module.exports = {pull, create, validateRequestObj }
