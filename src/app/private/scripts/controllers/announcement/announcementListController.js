@@ -4,7 +4,8 @@ angular.module('playerApp')
   .controller('announcementListController', ['$rootScope', '$scope',
     'announcementService', '$timeout', '$state', '$stateParams', 'toasterService', 'adminService',
     function ($rootScope, $scope, announcementService, $timeout, $state, $stateParams, toasterService, adminService) {
-      var announcementData = this
+      var announcementData = this;
+      announcementData.showLoader = true;
 
       announcementData.renderAnnouncementList = function () {
        
@@ -32,8 +33,9 @@ angular.module('playerApp')
           
           
        announcementData.listData = announcementService.getAnnouncementList();
-       
-       console.log(announcementData.listData);
+       announcementData.listData = JSON.parse(announcementData.listData);
+       announcementData.listData = announcementData.listData.result.announcements;
+       announcementData.showLoader = false;
        
        
        
