@@ -1,0 +1,56 @@
+<div class="ui grid" ng-init="announcementInboxData.renderAnnouncementList()">
+  <div class="one wide column"></div>
+  <div class="ten wide column">
+    <div class="ui grid">
+      <div class="eight wide column">
+          <div class="ui">
+            <div class="text dashBoardSectionHeading margin-bottom-20"><i class=" arrow left icon padding-right-10"></i> All Announcements</div>
+          </div>
+        <div class="ui raised segment announcementCardLeftBorder" ng-repeat="item in announcementInboxData.listData">
+          <div>
+            <p class="ng-binding sliderCardDesc">{{item.createdBy}} - {{item.type}}</p>
+          </div>
+          <div class="header announcementCard-header padding-top-5">
+            <span class="header cardsHeading ng-binding"> {{item.title}} </span>
+          </div>
+          <div class="">
+            <p class="ng-binding">{{item.description}}</p>
+          </div>
+          <div class="padding-top-20">
+            <p class="ng-binding">Weblinks</p>
+          </div>
+          <div ng-repeat="links in item.links">
+            <p class="ng-binding announcementBlueText cursor-pointer ">{{links}}</p>
+          </div>
+
+          <div class="padding-top-20">
+            <p class="ng-binding">Attachments</p>
+          </div>
+          <div class="ui cube shape padding-top-10 padding-right-10" ng-repeat="attachments in item.attachments">
+            <div class="sides">
+              <div class="active announcementCustomside side">
+                <div class="content">
+                  <div class="center">
+                    PNG
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <p class="ng-binding sliderCardDesc">{{attachments.title}}</p>
+            </div>
+          </div>
+          <div class="ui divider"></div>
+          <div>
+            <span class="ng-binding sliderCardDesc">Sent on {{item.createdOn  | date : "dd MMM yyyy"}}</span>
+			<!--<span class="sliderCardDesc float-ContentRight"><i class="large share alternate icon"></i></span>-->
+          </div>
+        </div>
+        
+
+        
+        
+      </div>
+    </div>
+  </div>
+</div>

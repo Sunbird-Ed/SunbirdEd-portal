@@ -1,15 +1,10 @@
 <style>
-.bluetext {
-  color: #0076FE;
-}
-
 .redtext {
   color: #fc002e;
 }
-
 </style>
 
-<div ng-init="announcementData.renderAnnouncementList()">
+<div ng-init="announcementOutboxData.renderAnnouncementList()">
   <div class="ui grid">
     <div class="one wide column"></div>
     <div class="ten wide column">
@@ -64,13 +59,13 @@
                 <th>Name</th>
                 <th>Published</th>
                 <th>Sent</th>
-                <th>Recieved <i class="star icon bluetext"></i></th>
-                <th>Seen <i class="star icon bluetext"></i></th>
+                <th>Recieved <i class="star icon announcementBlueText"></i></th>
+                <th>Seen <i class="star icon announcementBlueText"></i></th>
 				<!--<th>Actions</th>-->
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="item in announcementData.listData">
+              <tr ng-repeat="item in announcementOutboxData.listData">
                 <td>{{item.title}}</td>
                 <td>{{item.createdOn  | date : "dd MMM yyyy"}}</td>
                 <td>N/A</td>
@@ -89,7 +84,7 @@
     <div class="ui grid">
       <div class="twelve wide column">
         <div class="ui">
-          <div class="text"><i class="star icon bluetext"></i> Consumption data last updated on 13 May '17 at 6.45 PM</div>
+          <div class="text"><i class="star icon announcementBlueText"></i> Consumption data last updated on 13 May '17 at 6.45 PM</div>
         </div>
       </div>
     </div>
