@@ -593,6 +593,6 @@
             "ePub": "application/epub",
             "h5p": "application/vnd.ekstep.h5p-archive",
             "webm": "video/webm"
-        }
+        }       
     }
 }
