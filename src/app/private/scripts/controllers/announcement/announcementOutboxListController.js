@@ -1,13 +1,13 @@
 'use strict'
 
 angular.module('playerApp')
-  .controller('announcementListController', ['$rootScope', '$scope',
+  .controller('announcementOutboxListController', ['$rootScope', '$scope',
     'announcementService', '$timeout', '$state', '$stateParams', 'toasterService', 'adminService',
     function ($rootScope, $scope, announcementService, $timeout, $state, $stateParams, toasterService, adminService) {
-      var announcementData = this;
-      announcementData.showLoader = true;
+      var announcementOutboxData = this;
+      announcementOutboxData.showLoader = true;
 
-      announcementData.renderAnnouncementList = function () {
+      announcementOutboxData.renderAnnouncementList = function () {
        
        
        
@@ -21,21 +21,21 @@ angular.module('playerApp')
             //~ if (apiResponse && apiResponse.responseCode === 'OK') {
             //~ } else {
                 //~ toasterService.error(apiResponse.params.errmsg);
-                //~ announcementData.showDataDiv = false;
+                //~ announcementOutboxData.showDataDiv = false;
             //~ }
         //~ })
           //~ .catch(function (err) {
               //~ console.log(err);
           //~ })
           //~ .finally(function () {
-              //~ announcementData.showLoader = false;
+              //~ announcementOutboxData.showLoader = false;
           //~ });
           
           
-       announcementData.listData = announcementService.getAnnouncementList();
-       announcementData.listData = JSON.parse(announcementData.listData);
-       announcementData.listData = announcementData.listData.result.announcements;
-       announcementData.showLoader = false;
+       announcementOutboxData.listData = announcementService.getOutBoxAnnouncementList();
+       announcementOutboxData.listData = JSON.parse(announcementOutboxData.listData);
+       announcementOutboxData.listData = announcementOutboxData.listData.result.announcements;
+       announcementOutboxData.showLoader = false;
        
        
        
