@@ -129,49 +129,43 @@
                     </div>
                 </div>
             </div>
-<!-- skills -->
-<div class="twelve wide column">
-<div class="ui raised segment margin-bottom-0">
-        <div class="header announcementCard-header ">
-            <span class="header cardsHeading">Skill Tags</span>
-        </div>
-        <div class="profileitems profile-des ui relaxed aligned list">
-            <div class="item " ng-repeat="skill in publicProfile.userSkills |limitTo:publicProfile.limit">
-                <div class="ui label">
-                        {{skill.skillName}}
-                    <div class="detail">
-                        <span ng-if="skill.endorsementcount">|&nbsp;</span>
-                        <span>{{skill.endorsementcount}}</span>
+            <!-- skills -->
+            <div class="twelve wide column">
+                <div class="ui raised segment margin-bottom-0">
+                    <div class="header announcementCard-header ">
+                        <span class="header cardsHeading">Skill Tags</span>
                     </div>
-                </div>  
-                <div ng-if="skill.isEndorsable"class="ui circular labels float-ContentRight ">
-                  <a class="ui basic label"ng-click="publicProfile.endorsement(skill.skillName)">
-                   +1
-                      </a>
+                    <div class="profileitems profile-des ui relaxed aligned list">
+                        <div class="item " ng-repeat="skill in publicProfile.userSkills |limitTo:publicProfile.limit">
+                            <div class="ui label">
+                                {{skill.skillName}}
+                                <div class="detail">
+                                    <span ng-if="skill.endorsementcount">|&nbsp;</span>
+                                    <span>{{skill.endorsementcount}}</span>
+                                </div>
+                            </div>
+                            <div ng-if="skill.isEndorsable" class="ui circular labels float-ContentRight ">
+                                <a class="ui basic label" ng-click="publicProfile.endorsement(skill.skillName)">
+                                +1
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui bottom attached tabular menu userSkillMore ng-scope " ng-if="publicProfile.userSkills.length > publicProfile.defaultLimit">
+                    <div class="active item">
+                        <a ng-click="publicProfile.setLimit(publicProfile.resetLimit);publicProfile.isViewMore=true" ng-if="publicProfile.userSkills.length > publicProfile.limit">
+                        view more
+                             <span class="userSkillMoreIcon"><i class="chevron down icon"></i> </span>
+                         </a>
+                        <a ng-click="publicProfile.setLimit(publicProfile.defaultLimit);publicProfile.isViewMore=false" ng-if="publicProfile.isViewMore">
+                            view less
+                            <span class="userSkillMoreIcon"><i class="chevron up icon"></i> </span>
+                        </a>
+                    </div>
                 </div>
             </div>
-                
-            
-        </div>
-        
-    </div>
-    <div class="ui bottom attached tabular menu userSkillMore ng-scope " 
-    ng-if="publicProfile.userSkills.length > publicProfile.defaultLimit">
-            <div class="active item">
-                <a ng-click="publicProfile.setLimit(publicProfile.resetLimit);publicProfile.isViewMore=true"
-                    ng-if="publicProfile.userSkills.length > publicProfile.limit">view more
-                 <span class="userSkillMoreIcon"><i class="chevron down icon"></i> </span>
-                </a>
-                <a ng-click="publicProfile.setLimit(publicProfile.defaultLimit);publicProfile.isViewMore=false"
-                 ng-if="publicProfile.isViewMore">
-                 view less
-                 <span class="userSkillMoreIcon"><i class="chevron up icon"></i> </span>
-                </a>
-           </div>
-           
-        </div>
-        </div>
-
+            <!-- aditional information -->
             <div class="twelve wide column">
                 <div class="ui raised segment ">
                     <div class="header announcementCard-header ">
