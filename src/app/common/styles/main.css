@@ -816,6 +816,13 @@ div:focus {
 .rightSideSectionCards.ui.card > .content > .header {
   font-size: 1.18em !important;
 }
+/*text description height fixed in card*/
+.limitedPublishingLinkIcon {
+  margin-left: -4px !important;
+  -webkit-transform: rotate(-43deg) !important;
+          transform: rotate(-43deg) !important;
+  font-size: 1.8em !important;
+}
 .content-input {
   display: none;
 }
