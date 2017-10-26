@@ -14,7 +14,10 @@
                 "SIGNUP": "user/v1/create",
                 "UPDATE_USER_PROFILE": "user/v1/update",
                 "GET_PROFILE": "user/v1/read",
-                "TENANT_LOGO": "get/tenant/logo"
+                "TENANT_LOGO": "get/tenant/logo",
+                "SKILLS":"data/v1/skills",
+                "ADD_SKILLS":"user/v1/skill/add",
+                "USER_SKILLS":"user/v1/skill/read"
             },
             "COMPOSITE": {
                 "SEARCH": "composite/v1/search"
