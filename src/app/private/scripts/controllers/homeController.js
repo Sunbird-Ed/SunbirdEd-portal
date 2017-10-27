@@ -26,7 +26,7 @@ angular.module('playerApp')
     // if profile is incomplete append profile update details to ToDo list
               if ($rootScope.profileCompleteness < 100) {
                   $rootScope.toDoList = [{
-                      title: $rootScope.errorMessages.PROFILE.UPDATE_REMINDER.TITLE,
+                      title: $rootScope.messages.stmsg.m0060,
                       missingFields: $rootScope.profileMissingFields,
                       value: $rootScope.profileCompleteness,
                       type: 'profile'
@@ -45,7 +45,7 @@ angular.module('playerApp')
               var api = 'pageApi';
               homeCtrl[api] = {};
               homeCtrl[api].loader = toasterService.loader(
-             '', $rootScope.errorMessages.HOME.PAGE_API.START);
+             '', $rootScope.messages.stmsg.m0002);
               learnService.recommendedCourses(req)
            .then(function (successResponse) {
                if (successResponse && successResponse.responseCode === 'OK') {
@@ -54,12 +54,12 @@ angular.module('playerApp')
                } else {
                    homeCtrl[api].loader.showLoader = false;
                    toasterService.error(
-                     $rootScope.errorMessages.HOME.PAGE_API.FAILED);
+                     $rootScope.messages.fmsg.m0002);
                }
            }).catch(function () {
                homeCtrl[api].loader.showLoader = false;
                toasterService.error(
-                 $rootScope.errorMessages.HOME.PAGE_API.FAILED);
+                 $rootScope.messages.fmsg.m0002);
            });
           };
     // hide recommended temporarily

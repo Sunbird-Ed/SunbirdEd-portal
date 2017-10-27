@@ -1,0 +1,67 @@
+<div class="ui grid">
+    <div class="twelve wide column">
+        <div ng-init="limitedPublishedContent.getlimitedpublishedContent()">
+            <div ng-if="!limitedPublishedContent.loader.showLoader ">
+                <div class="ui three stackable cards " ng-if="limitedPublishedContent.limitedpublishedContentData.length> 0">
+                    <div class="card" ng-repeat="item in limitedPublishedContent.limitedpublishedContentData track by $index">
+                        <div class="image imageInCardsResponsive" ng-click="limitedPublishedContent.openContentPlayer(item) ">
+                            <div class="ui fluid image mouse-pointer">
+                                <span class="ui black left ribbon label">{{item.contentType}}</span>
+                                <img ng-src=" {{item.appIcon ? item.appIcon : '/common/images/default.png'}} ">
+                            </div>
+                            <div class="cardImageText center aligned mouse-pointer">
+                                <span class="sliderCardHeading text-cencapitalize ">
+                                    {{ item.name | limitTo: 15 }}&nbsp;<i ng-show="item.name.length>= 15" class="ellipsis horizontal icon popup-button link"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="sliderCards content">
+                            <div class="sliderCardDesc">
+                                {{ item.description | limitTo: 45 }}&nbsp;<i ng-show="item.description.length >= 45" class="ui ellipsis horizontal icon popup-button link"></i>
+                            </div>
+                        </div>
+                        <div class="extra content">
+                            <a href="javascript:void(0);">
+                                <content-share data="item" id="item.identifier" icon=" 'linkify' "></content-share>
+                            </a>
+                            <a href="javascript:void(0);" ng-click="limitedPublishedContent.openRemoveContentModel(item.identifier)">
+                            <i class="trash large icon float-ContentRight" title="Delete"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="limitedPublishedContent.error.showError">
+                    <error-message data="{{limitedPublishedContent.error}}" visibility="limitedPublishedContent.error.showError"></error-message>
+                </div>
+            </div>
+            <div ng-if="limitedPublishedContent.loader.showLoader">
+                <app-loader data="{{limitedPublishedContent.loader}}"></app-loader>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div ng-if="limitedPublishedContent.showRemoveContentModel">
+    <div class="ui mini modal" id="removeContentModel">
+        <div class="header">
+            {{$root.frmelmnts.lbl.deletecontent}}
+        </div>
+        <div class="content">
+            <div class="description">
+                {{$root.frmelmnts.lbl.deleteconfirm}}
+            </div>
+        </div>
+        <div class="actions">
+            <div class="ui negative button" ng-click="limitedPublishedContent.hideRemoveNoteModel">{{$root.frmelmnts.btn.tcno}}</div>
+            <div class="ui primary button " ng-click="limitedPublishedContent.deleteContent(limitedPublishedContent.removeContentId)">{{$root.frmelmnts.btn.tcyes}}</div>
+        </div>
+    </div>
+</div>
+
+<div class="ui grid">
+    <div class="two wide column"></div>
+    <div class="ten wide column paginationAlignment">
+        <div class="padding-bottom-15" ng-if="!limitedPublishedContent.loader.showLoader && limitedPublishedContent.totalCount> limitedPublishedContent.pageLimit">
+            <div ng-init="pegination = limitedPublishedContent" ng-include=" 'views/common/pagination.html' "></div>
+        </div>
+    </div>
+</div>
