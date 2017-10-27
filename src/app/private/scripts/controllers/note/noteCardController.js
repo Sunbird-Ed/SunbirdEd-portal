@@ -20,12 +20,11 @@ angular.module('playerApp')
             noteCard.showUpdateNote = false;
             noteCard.visibility = $scope.visibility;
             noteCard.sortBy = 'desc';
-            noteCard.messages = $rootScope.errorMessages.NOTES;
 
             function searchNote(request) {
                 var api = 'searchApi';
                 noteCard[api] = {};
-                noteCard[api].loader = toasterService.loader('', noteCard.messages.SEARCH.START);
+                noteCard[api].loader = toasterService.loader('', $rootScope.messages.stmsg.m0057);
 
                 noteService.search(request).then(function (response) {
                     if (response && response.responseCode === 'OK') {
@@ -33,11 +32,11 @@ angular.module('playerApp')
                         noteCard.notesList = response.result.response.note || [];
                     } else {
                         noteCard[api].loader.showLoader = false;
-                        toasterService.error(noteCard.messages.SEARCH.FAILED);
+                        toasterService.error( $rootScope.messages.fmsg.m0033);
                     }
                 }).catch(function () {
                     noteCard[api].loader.showLoader = false;
-                    toasterService.error(noteCard.messages.SEARCH.FAILED);
+                    toasterService.error($rootScope.messages.fmsg.m0033);
                 });
             }
 
@@ -135,7 +134,7 @@ angular.module('playerApp')
 
                 var api = 'createApi';
                 noteCard[api] = {};
-                noteCard[api].loader = toasterService.loader('', noteCard.messages.CREATE.START);
+                noteCard[api].loader = toasterService.loader('', $rootScope.messages.stmsg.m0054);
 
                 noteService.create(requestData).then(function (response) {
                     if (response && response.responseCode === 'OK') {
@@ -148,11 +147,11 @@ angular.module('playerApp')
                         $rootScope.$emit('updateNotesListData', addNoteData);
                     } else {
                         noteCard[api].loader.showLoader = false;
-                        toasterService.error(noteCard.messages.CREATE.FAILED);
+                        toasterService.error($rootScope.messages.fmsg.m0030);
                     }
                 }).catch(function () {
                     noteCard[api].loader.showLoader = false;
-                    toasterService.error(noteCard.messages.CREATE.FAILED);
+                    toasterService.error($rootScope.messages.fmsg.m0030);
                 });
             };
 
@@ -175,7 +174,7 @@ angular.module('playerApp')
 
                 var api = 'updateApi';
                 noteCard[api] = {};
-                noteCard[api].loader = toasterService.loader('', noteCard.messages.UPDATE.START);
+                noteCard[api].loader = toasterService.loader('', $rootScope.messages.stmsg.m0059);
 
                 noteService.update(requestData).then(function (response) {
                     if (response && response.responseCode === 'OK') {
@@ -186,11 +185,11 @@ angular.module('playerApp')
                         $rootScope.$emit('updateNotesListData', addNoteData, true);
                     } else {
                         noteCard[api].loader.showLoader = false;
-                        toasterService.error(noteCard.messages.UPDATE.FAILED);
+                        toasterService.error($rootScope.messages.fmsg.m0034);
                     }
                 }).catch(function () {
                     noteCard[api].loader.showLoader = false;
-                    toasterService.error(noteCard.messages.UPDATE.FAILED);
+                    toasterService.error($rootScope.messages.fmsg.m0034);
                 });
             };
 
