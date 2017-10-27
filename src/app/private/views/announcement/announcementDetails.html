@@ -6,18 +6,18 @@
 </div>
 <div ng-if="(announcementDetails | isValidObjectFilter) === true">
   <div>
-    <p class="ng-binding sliderCardDesc">{{announcementDetails.sourceId}} - {{announcementDetails.type}}</p>
+    <p class="ng-binding announcement-description">{{announcementDetails.sourceId}} - {{announcementDetails.type}}</p>
   </div>
   <div class="header announcementCard-header padding-top-5">
      <div class="header cardsHeading padding-top-10"> 
       {{announcementDetails.title}}
       </div>
-     <div class="sliderCardDesc padding-top-10">
+     <div class="announcement-description padding-top-10">
       {{announcementDetails.description}}
      </div>
   </div>
   <div class="padding-top-20">
-     <strong class="header ng-binding">Weblinks</strong>
+     <strong class="annMediumText ng-binding">Weblinks</strong>
   </div>
   <div class="padding-top-10">
     <div ng-repeat="link in announcementDetails.links"> 
@@ -25,7 +25,7 @@
     </div>
   </div>
   <div class="padding-top-20">
-     <strong class="header ng-binding">Attachments</strong>
+     <strong class="annMediumText ng-binding">Attachments</strong>
   </div>
   <div class="sixteen wide column margin-bottom-20">
      <div class="box">
@@ -35,19 +35,21 @@
                  <img src="/common/images/default.png">
               </div>
               <div class="middle aligned content">
-                 <a href="{{attachment.downloadURL}}" class="ui basic blue button float-ContentRight" target="_blank"> VIEW </a>
+                 <div class="ui float-ContentRight">
+					<a href="{{attachment.downloadURL}}" target="_blank" class="ui primary basic button announcementButton"><span class="announcementButtonText">VIEW</span></a>
+				  </div>
                  <p>{{attachment.title}}</p>
-                 <p class="sliderCardDesc">{{attachment.filesize}}</p>
+                 <p class="announcement-description">120 KB</p>
               </div>
            </div>
         </div>
      </div>
   </div>
   <div class="gray-full-width margin-bottom-0">
-     <span class="ng-binding sliderCardDesc redtext">
+     <span class="ng-binding announcement-description redtext">
      Sent on {{announcementDetails.createdOn  | date : "dd MMM yyyy"}}</span>
      <!-- Sharing icon
-      <span class="sliderCardDesc float-ContentRight">
+      <span class="announcement-description float-ContentRight">
         <i class="large share alternate icon"></i>
       </span>
     -->
