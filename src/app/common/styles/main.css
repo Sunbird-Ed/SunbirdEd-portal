@@ -3207,6 +3207,11 @@ span.dashBoardMenuItem.active {
 .createAnnMargin4 {
   margin: 4px;
 }
+.sb-createAnnFineUploaderHolder {
+  padding: 10px;
+  overflow: hidden;
+  background-color: #f2f2f2;
+}
 body {
   position: relative !important;
   min-height: 100% !important;

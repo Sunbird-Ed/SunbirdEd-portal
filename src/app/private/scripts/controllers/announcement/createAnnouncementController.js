@@ -8,9 +8,10 @@ angular.module('playerApp')
       // Initialize variables
       var announcement = this;
 
-        // App config
+        // TODO - use api to get values
         announcement.org = ['Org 1', 'Org 2', 'Org 3'];
         announcement.announcementType = ['Type 1', 'Type 2', 'Type 3'];
+        announcement.desableBtn = 'disabled';
 
         // Initialize modal
         announcement.initializeModal = function(){
@@ -20,7 +21,8 @@ angular.module('playerApp')
 	        }, 10);
         }
 
-        announcement.open = function (){
+        // Open create announcement modal
+        announcement.createAnnouncement = function (){
           $('#createTextBookModal').modal({}).modal('show');
         }
 
@@ -52,15 +54,17 @@ angular.module('playerApp')
         	return;
         }
 
-        announcement.desableBtn = 'disabled';
+        // Detect input box change event
         announcement.detectChange = function (){
         	announcement.enableRecepientBtn();
     	}
 
+    	// Detect dropdwon value change event
     	announcement.detectDropdownChange = function (){
     		announcement.enableRecepientBtn();
     	}
 
+    	// Function to enable / disable RecepientBtn
     	announcement.enableRecepientBtn = function() {
 	        if (announcement.data.title && announcement.data.from
 	        	&& announcement.data.announcementType &&
@@ -89,7 +93,7 @@ angular.module('playerApp')
 	                },
 	                messages: {
 	                     sizeError: '{file} ' +
-	                     $rootScope.errorMessages.COMMON.INVALID_FILE_SIZE + ' ' +
+	                     $rootScope.messages.imsg.m0006 + ' ' +
 	                                             config.MaxFileSizeToUpload / (1000 * 1024) + ' MB.'
 	                },
 	                failedUploadTextDisplay: {
@@ -97,7 +101,6 @@ angular.module('playerApp')
         				responseProperty: 'error'
     				},
     				showMessage: function(message) {
-        				//either include an empty body, or some other code to display (error) messages
         				toasterService.error(message);
     				},
 	                callbacks: {
