@@ -33,8 +33,7 @@ angular.module('playerApp')
             };
 
             course.createContent = function (requestData) {
-                course.loader = toasterService.loader('', $rootScope.errorMessages.WORKSPACE
-                                                                    .CREATE_COURSE.START);
+                course.loader = toasterService.loader('', $rootScope.messages.stmsg.m0015);
                 contentService.create(requestData).then(function (res) {
                     if (res && res.responseCode === 'OK') {
                         course.isCourseCreated = true;
@@ -44,12 +43,11 @@ angular.module('playerApp')
                         course.initEKStepCE(res.result.content_id);
                     } else {
                         course.loader.showLoader = false;
-                        toasterService.error($rootScope.errorMessages.WORKSPACE.CREATE_COURSE
-                                                                                .FAILED);
+                        toasterService.error($rootScope.messages.fmsg.m0009);
                     }
                 }).catch(function () {
                     course.loader.showLoader = false;
-                    toasterService.error($rootScope.errorMessages.WORKSPACE.CREATE_COURSE.FAILED);
+                    toasterService.error($rootScope.messages.fmsg.m0009);
                 });
             };
 

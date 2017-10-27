@@ -15,7 +15,6 @@ angular.module('playerApp')
                                     $stateParams.backState === 'WorkSpace.PublishedContent';
             previewContent.isShowFlagActionButton =
                                     $stateParams.backState === 'WorkSpace.FlaggedContent';
-            previewContent.message = $rootScope.errorMessages.WORKSPACE;
 
             var validateModal = {
                 state: ['WorkSpace.UpForReviewContent', 'WorkSpace.ReviewContent',
@@ -55,7 +54,7 @@ angular.module('playerApp')
 
                 if (!checkContentAccess(rspData, validateModal)) {
                     toasterService
-                    .warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
+                    .warning($rootScope.messages.imsg.m0004);
                     $state.go('Home');
                 }
                 previewContent.contentData = data;
@@ -64,8 +63,7 @@ angular.module('playerApp')
             }
 
             previewContent.getContent = function (contentId) {
-                previewContent.loader = toasterService.loader('', previewContent.message
-                                                                        .GET.START);
+                previewContent.loader = toasterService.loader('', $rootScope.messages.stmsg.m0025);
                 var req = { contentId: contentId };
                 var qs = {
                     fields: 'name,description,appIcon,contentType,mimeType,artifactUrl,' +
@@ -84,11 +82,11 @@ angular.module('playerApp')
                         showPlayer(response.result.content);
                     } else {
                         previewContent.loader.showLoader = false;
-                        toasterService.error(previewContent.message.GET.FAILED);
+                        toasterService.error($rootScope.messages.fmsg.m0015);
                     }
                 }).catch(function () {
                     previewContent.loader.showLoader = false;
-                    toasterService.error(previewContent.message.GET.FAILED);
+                    toasterService.error($rootScope.messages.fmsg.m0015);
                 });
             };
 
@@ -100,50 +98,47 @@ angular.module('playerApp')
                         lastPublishedBy: previewContent.userId
                     }
                 };
-                previewContent.loader = toasterService.loader('', previewContent.message
-                                                      .PUBLISH_CONTENT.START);
+                previewContent.loader = toasterService.loader('', $rootScope.messages.stmsg.m0029);
 
                 contentService.publish(request, previewContent.contentId).then(function (res) {
                     if (res && res.responseCode === 'OK') {
                         previewContent.loader.showLoader = false;
                         previewContent.isShowPublishRejectButton = false;
                         previewContent.contentData.status = 'Live';
-                        toasterService.success(previewContent.message.PUBLISH_CONTENT.SUCCESS);
+                        toasterService.success($rootScope.messages.smsg.m0004);
 //                $state.go("WorkSpace.UpForReviewContent")
                     } else {
                         previewContent.loader.showLoader = false;
-                        toasterService.error(previewContent.message.PUBLISH_CONTENT.FAILED);
+                        toasterService.error($rootScope.messages.fmsg.m0019);
                     }
                 }).catch(function () {
                     previewContent.loader.showLoader = false;
-                    toasterService.error(previewContent.message.PUBLISH_CONTENT.FAILED);
+                    toasterService.error($rootScope.messages.fmsg.m0019);
                 });
             };
 
             previewContent.rejectContent = function () {
-                previewContent.loader = toasterService.loader('', previewContent.message
-                                                            .REJECT_CONTENT.START);
+                previewContent.loader = toasterService.loader('', $rootScope.messages.stmsg.m0030);
 
                 var request = {};
                 contentService.reject(request, previewContent.contentId).then(function (res) {
                     if (res && res.responseCode === 'OK') {
                         previewContent.loader.showLoader = false;
                         previewContent.isShowPublishRejectButton = false;
-                        toasterService.success(previewContent.message.REJECT_CONTENT.SUCCESS);
+                        toasterService.success($rootScope.messages.smsg.m0005);
 //                $state.go("WorkSpace.UpForReviewContent");
                     } else {
                         previewContent.loader.showLoader = false;
-                        toasterService.error(previewContent.message.REJECT_CONTENT.FAILED);
+                        toasterService.error($rootScope.messages.fmsg.m0020);
                     }
                 }).catch(function () {
                     previewContent.loader.showLoader = false;
-                    toasterService.error(previewContent.message.REJECT_CONTENT.FAILED);
+                    toasterService.error($rootScope.messages.fmsg.m0020);
                 });
             };
 
             previewContent.deleteContent = function () {
-                previewContent.loader = toasterService.loader('', previewContent.message
-                                                        .RETIRE_CONTENT.START);
+                previewContent.loader = toasterService.loader('', $rootScope.messages.stmsg.m0034);
                 var request = {
                     contentIds: [previewContent.contentId]
                 };
@@ -153,16 +148,16 @@ angular.module('playerApp')
                             previewContent.loader.showLoader = false;
                             previewContent.isShowDeleteButton = false;
                             previewContent.isShowFlagActionButton = false;
-                            toasterService.success(previewContent.message.RETIRE_CONTENT.SUCCESS);
+                            toasterService.success($rootScope.messages.smsg.m0006);
                             $state.go($stateParams.backState);
                         }, 2000);
                     } else {
                         previewContent.loader.showLoader = false;
-                        toasterService.error(previewContent.message.RETIRE_CONTENT.FAILED);
+                        toasterService.error($rootScope.messages.fmsg.m0022);
                     }
                 }).catch(function () {
                     previewContent.loader.showLoader = false;
-                    toasterService.error(previewContent.message.RETIRE_CONTENT.FAILED);
+                    toasterService.error($rootScope.messages.fmsg.m0022);
                 });
             };
 
@@ -170,45 +165,43 @@ angular.module('playerApp')
                 var request = {
                     versionKey: contentData.versionKey
                 };
-                previewContent.loader = toasterService.loader('', previewContent.message
-                                                  .ACCEPT_CONTENT_FLAG.START);
+                previewContent.loader = toasterService.loader('', $rootScope.messages.stmsg.m0040);
 
                 contentService.acceptContentFlag(request, contentData.identifier).then(function (res) {
                     if (res && res.responseCode === 'OK') {
                         previewContent.loader.showLoader = false;
                         previewContent.isShowFlagActionButton = false;
                         previewContent.contentData.status = 'FlagDraft';
-                        toasterService.success(previewContent.message.ACCEPT_CONTENT_FLAG.SUCCESS);
+                        toasterService.success($rootScope.messages.smsg.m0007);
                         //     $state.go($stateParams.backState);
                     } else {
                         previewContent.loader.showLoader = false;
-                        toasterService.error(previewContent.message.ACCEPT_CONTENT_FLAG.FAILED);
+                        toasterService.error($rootScope.messages.fmsg.m0024);
                     }
                 }).catch(function () {
                     previewContent.loader.showLoader = false;
-                    toasterService.error(previewContent.message.ACCEPT_CONTENT_FLAG.FAILED);
+                    toasterService.error($rootScope.messages.fmsg.m0024);
                 });
             };
 
             previewContent.discardContentFlag = function (contentData) {
                 var request = { };
-                previewContent.loader = toasterService.loader('', previewContent.message
-                                                     .DISCARD_CONTENT_FLAG.START);
+                previewContent.loader = toasterService.loader('', $rootScope.messages.stmsg.m0041);
 
                 contentService.discardContentFlag(request, contentData.identifier).then(function (res) {
                     if (res && res.responseCode === 'OK') {
                         previewContent.loader.showLoader = false;
                         previewContent.isShowFlagActionButton = false;
                         previewContent.contentData.status = 'Live';
-                        toasterService.success(previewContent.message.DISCARD_CONTENT_FLAG.SUCCESS);
+                        toasterService.success($rootScope.messages.smsg.m0008);
                         //     $state.go($stateParams.backState);
                     } else {
                         previewContent.loader.showLoader = false;
-                        toasterService.error(previewContent.message.DISCARD_CONTENT_FLAG.FAILED);
+                        toasterService.error($rootScope.messages.fmsg.m0025);
                     }
                 }).catch(function () {
                     previewContent.loader.showLoader = false;
-                    toasterService.error(previewContent.message.DISCARD_CONTENT_FLAG.FAILED);
+                    toasterService.error($rootScope.messages.fmsg.m0025);
                 });
             };
 
