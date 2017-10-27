@@ -1,0 +1,74 @@
+<script type="text/template" id="qq-template-manual-trigger">
+    <div class="qq-uploader-selector qq-uploader padding-bottom-5 sb-createAnnFineUploaderHolder" qq-drop-area-text="">
+        <!-- <div class="qq-total-progress-bar-container-selector qq-total-progress-bar-container" id="hide-progress-bar-on-reject">
+            <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" class="qq-total-progress-bar-selector qq-progress-bar qq-total-progress-bar"></div>
+        </div> -->
+        <div id="hide-section-with-button">
+            <ul class="qq-upload-list-selector qq-upload-list" aria-live="polite" aria-relevant="additions removals" style="overflow-x: hidden;overflow-y: hidden;">
+                <li class="qq-file-id-0 qq-upload-fail qq-upload-retryable" qq-file-id="0">
+                    <i class="qq-upload-cancel-selector qq-upload-cancel remove icon" id="qq-upload-cancel-manually" onclick=cancelUploadFile() style="float: right;"></i>
+                    <div class="qq-progress-bar-container-selector qq-hide" id="hide-progress-bar-on-reject" style="overflow: unset;">
+                        <div role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" class="qq-progress-bar-selector qq-progress-bar" style="width: 100%;">
+                        </div>
+                    </div>
+                    <!-- <span class="qq-upload-spinner-selector qq-upload-spinner qq-hide"></span> -->
+                    <!-- <img class="qq-thumbnail-selector qq-hide" qq-max-size="100" qq-server-scale=""> -->
+                    <span class="qq-upload-file-selector qq-upload-file" title=""
+                    style="margin-top: -30px !important;"></span>
+                    <!-- <span class="qq-edit-filename-icon-selector qq-edit-filename-icon" aria-label="Edit filename"></span> -->
+                    <input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text">
+                    <!-- <span class="qq-upload-size-selector qq-upload-size"></span> -->
+                    <!-- <button type="button" class="qq-btn qq-upload-cancel-selector qq-upload-cancel" id="qq-upload-cancel-manually" onclick=cancelUploadFile()>Cancel</button> -->
+                    <!-- <button type="button" class="qq-btn qq-upload-retry-selector qq-upload-retry">Retry</button> -->
+                    <!--  <button type="button" class="qq-btn qq-upload-delete-selector qq-upload-delete">Delete</button> -->
+                    <span role="status" class="qq-upload-status-text-selector qq-upload-status-text">Upload failed</span>
+                </li>
+            </ul>
+            <div class="qq-upload-drop-area-selector qq-upload-drop-area uploadicon twelve wide column" qq-hide-dropzone>
+                <span class="qq-upload-drop-area-text-selector"></span>
+            </div>
+            <div class="ui grid">
+                <div class="uploadicon twelve wide column text-align-center">
+                   <p class="dropfile" style="padding-top: 50px;">
+                        <span style="font-size: 1.2em;">Drop relevent attachment here </span><br>
+                        <span style="font-style: italic;"> (Format: .pdf, .png, .jpg. File Limit: 1MB)</span>
+                    </p>
+                </div>
+            </div>
+            <p class="orinstuction" style="margin-top: -3.5em;">or</p>
+            <div class="ui grid" style=" margin-bottom: -3em;">
+                <div class="twelve wide column text-align-center selectuploadfile" style="margin-top: -2.5em; padding-bottom: 75px;">
+                    <label class="qq-upload-button-selector ui primary basic button text-align-center padding-left-25" style="position: relative; overflow: hidden; direction: ltr;">UPLOAD ATTACHEMNT<input qq-button-id="abe6b3ad-947a-4bae-bd34-f51ab331a6bc" title="file input" multiple="" type="file" name="qqfile" style="position: absolute; right: 0px; top: 0px; font-family: Arial; font-size: 118px; margin: 0px; padding: 0px; cursor: pointer; opacity: 0; height: 100%;"></label>
+                </div>
+                <div class="one wide column"></div>
+            </div>
+            <!-- <p class="margin-top-20 workspaceinstuction" id="fileUploadOptions"></p> -->
+        </div>
+        <span class="qq-drop-processing-selector qq-drop-processing">
+            <span>Processing dropped files...</span>
+            <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
+        </span>
+        <dialog class="qq-alert-dialog-selector">
+            <div class="qq-dialog-message-selector"></div>
+            <div class="qq-dialog-buttons">
+                <button type="button" class="qq-cancel-button-selector">Close</button>
+            </div>
+        </dialog>
+        <dialog class="qq-confirm-dialog-selector">
+            <div class="qq-dialog-message-selector"></div>
+            <div class="qq-dialog-buttons">
+                <button type="button" class="qq-cancel-button-selector">No</button>
+                <button type="button" class="qq-ok-button-selector">Yes</button>
+            </div>
+        </dialog>
+        <dialog class="qq-prompt-dialog-selector">
+            <div class="qq-dialog-message-selector"></div>
+            <input type="text">
+            <div class="qq-dialog-buttons">
+                <button type="button" class="qq-cancel-button-selector">Cancel</button>
+                <button type="button" class="qq-ok-button-selector">Ok</button>
+            </div>
+        </dialog>
+    </div>
+</script>
+<div id="fine-uploader-manual-trigger"></div>
