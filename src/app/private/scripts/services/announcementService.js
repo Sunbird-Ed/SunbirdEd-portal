@@ -42,12 +42,24 @@ angular.module('playerApp')
      * @method getFileExtension
      * @desc Get file extension
      * @memberOf Services.announcementService
-     * @param {string}  datasetType - Data type
+     * @param {string}  mimeType - Mime type
      * @returns {string} returns extension of a file
      * @instance
      */
     this.getFileExtension = function (mimeType) {
       var extension = mimeType === 'application/pdf' ? 'PDF' : (mimeType === 'application/png' ? 'PNG' : 'JPEG')
-      return extension
+      return extension;
+    }
+    
+    /**
+     * @method createAnnouncement
+     * @desc Send announcement data to API
+     * @memberOf Services.announcementService
+     * @param {object}  req - Announcement form post value
+     * @returns {object} returns response of API
+     * @instance
+     */
+    this.createAnnouncement = function (req) {
+      
     }
   }])
