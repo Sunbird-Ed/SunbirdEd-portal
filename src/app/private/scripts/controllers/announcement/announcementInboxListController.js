@@ -32,6 +32,11 @@ angular.module('playerApp')
       announcementInboxData.getFileExtension = function (mimeType) {
         return announcementService.getFileExtension(mimeType)
       }
+      
+       announcementInboxData.showAnnouncementDetails = function (announcementDetails) {
+        $scope.announcementInboxData.announcementDetails = announcementDetails
+        $('#announcementDetailsModal').modal('show')
+      }
     }
 
   ])

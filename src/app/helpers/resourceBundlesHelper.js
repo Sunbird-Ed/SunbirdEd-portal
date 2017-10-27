@@ -8,7 +8,7 @@ envHelper = require('./environmentVariablesHelper.js'),
   appName = 'playerApp',
   resBundlesArr = [
     { name: 'frmelmnts', path: __dirname + '/./../resourcebundles/data/formElements/', dest: __dirname + '/./../common/js/' },
-    { name: 'messagess', path: __dirname + '/./../resourcebundles/data/messages/', dest: __dirname + '/./../common/js/' },
+    { name: 'messages', path: __dirname + '/./../resourcebundles/data/messages/', dest: __dirname + '/./../common/js/' },
   ];
 
 

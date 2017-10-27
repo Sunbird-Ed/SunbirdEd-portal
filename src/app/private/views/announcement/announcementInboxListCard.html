@@ -1,5 +1,5 @@
 <div></div>
-<div class="ui raised segment announcementCardLeftBorder annGridPadding" ng-repeat="item in announcementInboxData.listData">
+<div class="ui raised segment announcementCardLeftBorder annGridPadding cursor-pointer" ng-repeat="item in announcementInboxData.listData" ng-click="announcementInboxData.showAnnouncementDetails(item)">
   <div>
     <p class="ng-binding sliderCardDesc">{{item.createdBy}} - {{item.type}}</p>
   </div>
