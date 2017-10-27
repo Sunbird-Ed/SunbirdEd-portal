@@ -5,10 +5,10 @@ module.exports = Joi.object().keys({
   userid: Joi.string().required(), // part of primary key
   sourceid: Joi.string().required(), // part of primary key
   createddate: Joi.string().required(), // part of primary key
-  details: Joi.object().pattern(/\w/, Joi.string().required()), // any key/value with string
+  details: Joi.object().min(1).pattern(/\w/, Joi.string().required()), // any key/value with string
   links: Joi.array().items(Joi.string()),
-  attachments: Joi.array().items(Joi.object().pattern(/\w/, Joi.string().required())),
-  target: Joi.object().pattern(/\w/, Joi.string().required()),
+  attachments: Joi.array().items(Joi.object().min(1).pattern(/\w/, Joi.string().required())),
+  target: Joi.object().min(1).pattern(/\w/, Joi.string().required()),
   status: Joi.string(),
   sentcount: Joi.number(),
   priority: Joi.string(),
