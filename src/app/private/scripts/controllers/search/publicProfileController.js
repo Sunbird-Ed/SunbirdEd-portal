@@ -91,6 +91,8 @@ angular.module('playerApp') // add those all values
               userService.addSkills({ request: { skillName: [skill], endorsedUserId: userIdentifier } }).then(function (response) {
                   if (response && response.responseCode === 'OK') {
                       publicProfile.profile('endorsement')
+                  } else {
+                      toasterService.error($rootScope.messages.fmsg.m0063)
                   }
               })
           }

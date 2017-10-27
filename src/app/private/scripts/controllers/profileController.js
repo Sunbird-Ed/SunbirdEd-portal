@@ -135,18 +135,18 @@ angular.module('playerApp')
                 } else {
                     profile.loader.showLoader = false
                     profile.isError = true
-                    toasterService.error( $rootScope.messages.fmsg.m0005)
+                    toasterService.error($rootScope.messages.fmsg.m0005)
                 }
             }
                 // fetch profile
             profile.getProfile = function (fields) {
-                profile.loader = toasterService.loader('',  $rootScope.messages.stmsg.m0074)
+                profile.loader = toasterService.loader('', $rootScope.messages.stmsg.m0074)
                 userService.getUserProfile(profile.userId, fields).then(function (successResponse) {
                     profile.processProfileData(successResponse)
                 }).catch(function () {
                     profile.loader.showLoader = false
                     profile.isError = true
-                    toasterService.error( $rootScope.messages.fmsg.m0005)
+                    toasterService.error($rootScope.messages.fmsg.m0005)
                 })
             }
 
@@ -160,7 +160,7 @@ angular.module('playerApp')
                     request: updateReq
                 }
                 profile.disableSave = true
-                profile.loader = toasterService.loader('',  $rootScope.messages.stmsg.m0075)
+                profile.loader = toasterService.loader('', $rootScope.messages.stmsg.m0075)
                 return userService
                     .updateUserProfile(profile.updateProfileRequest, profile.fullName, profile.email)
                     .then(function (successResponse) {
@@ -173,7 +173,7 @@ angular.module('playerApp')
                     }).catch(function (err) {
                         if (err.message) {
                             throw new Error(err.message)
-                        } else { throw new Error( $rootScope.messages.fmsg.m0048) }
+                        } else { throw new Error($rootScope.messages.fmsg.m0048) }
                     })
             }
 
@@ -229,11 +229,11 @@ angular.module('playerApp')
                                              $rootScope.messages.smsg.m0018,
                                              $rootScope.messages.fmsg.m0035)
                                     } else {
-                                        profile.error = toasterService.error( $rootScope.messages.fmsg.m0048)
+                                        profile.error = toasterService.error($rootScope.messages.fmsg.m0048)
                                     }
                                 }).catch(function () {
                                     profile.loader.showLoader = false
-                                    profile.error = toasterService.error( $rootScope.messages.fmsg.m0048)
+                                    profile.error = toasterService.error($rootScope.messages.fmsg.m0048)
                                 })
                         })
                 } catch (e) {
@@ -695,6 +695,7 @@ angular.module('playerApp')
                 $timeout(function () {
                     $('#addSkillModal').modal({
                         onShow: function () {
+                            $('#addSkill').dropdown('clear')
                             var excludeHasResults = false
                             $.fn.dropdown.settings.templates.addition = function (search) {
                                 var output = 'Add '
