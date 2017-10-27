@@ -563,7 +563,7 @@
             "application/vnd.ekstep.html-archive", "video/youtube", "application/vnd.ekstep.ecml-archive",
             "application/epub", "application/vnd.ekstep.h5p-archive", "video/webm"
         ],
-        "MaxFileSizeToUpload": 1000000,
+        "MaxFileSizeToUpload": 1024000,
         "FileExtensionToUpload": "application/pdf, application/jpg, application/png",
         "AllowedFileExtension": ["png", "pdf", "jpg"],
         "USER_ROLES": ["ORG_ADMIN", "ORG_MEMBER", "CONTENT_REVIEW", "CONTENT_CURATION", "CONTENT_REVIEWER",
