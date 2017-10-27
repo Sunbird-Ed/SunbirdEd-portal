@@ -76,8 +76,8 @@ angular.module('playerApp')
         }
 
         var validateModal = {
-          state: ['WorkSpace.UpForReviewContent', 'WorkSpace.ReviewContent', 'WorkSpace.PublishedContent'],
-          status: ['Review', 'Draft', 'Live'],
+          state: ['WorkSpace.UpForReviewContent', 'WorkSpace.ReviewContent', 'WorkSpace.PublishedContent', 'LimitedPublishedContent'],
+          status: ['Review', 'Draft', 'Live', 'Unlisted'],
           mimeType: config.CreateLessonMimeType
         }
 
