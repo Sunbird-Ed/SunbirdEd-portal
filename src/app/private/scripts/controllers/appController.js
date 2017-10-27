@@ -2,17 +2,17 @@
 
 angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService', '$rootScope',
   'userService', '$q', 'config', '$location', '$timeout',
-  'portalTelemetryService', 'errorMessages', 'frmelmnts', 'sessionService',
+  'portalTelemetryService', 'messages', 'frmelmnts', 'sessionService',
   'learnService', '$http', 'searchService', 'toasterService', 'adminService', '$state', '$window',
   function ($scope, permissionsService, $rootScope, userService, $q, config,
-    $location, $timeout, portalTelemetryService, errorMessages, frmelmnts,
+    $location, $timeout, portalTelemetryService, messages, frmelmnts,
     sessionService, learnService, $http, searchService, toasterService, adminService, $state, $window) {
     $rootScope.userId = $('#userId').attr('value')
     $rootScope.sessionId = $('#sessionId').attr('value')
     $rootScope.cdnUrl = $('#cdnUrl').attr('value') || ''
     $rootScope.theme = $('#theme').attr('value') || 'default'
     $rootScope.language = window.localStorage.language || $('#defaultPortalLanguage').attr('value') || 'en'
-    $rootScope.errorMessages = errorMessages
+    $rootScope.messages = messages[$rootScope.language]
     $rootScope.frmelmnts = frmelmnts[$rootScope.language]
     $rootScope.searchKey = ''
     $rootScope.enrolledCourseIds = {}
@@ -141,7 +141,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
             document.head.appendChild(link)
           }
         }).catch(function () {
-          toasterService.error($rootScope.errorMessages.TENANT.GET_INFO.FAILED)
+          toasterService.error($rootScope.messages.fmsg.m0057)
         })
       }
     }
@@ -237,7 +237,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
       $scope.concepts = []
       $rootScope.getConcept(0, 200, function (err, conceptArr) {
         if (err) {
-          toasterService.error($rootScope.errorMessages.WORKSPACE.GET.FAILED)
+          toasterService.error($rootScope.messages.fmsg.m0015)
         } else {
           $rootScope.concepts = conceptArr
         }

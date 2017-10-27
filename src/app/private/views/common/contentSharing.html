@@ -1,5 +1,8 @@
-<span ng-click="contentShare.initializeModal()" class="ui mouse-pointer content-font" title="Share">
+<span ng-if="contentShare.icon !== 'linkify' " ng-click="contentShare.initializeModal()" class="ui mouse-pointer content-font" title="Share">
     <i class="large blue share alternate icon"></i>&nbsp;
+</span>
+<span  ng-if="contentShare.icon === 'linkify' "  ng-click="contentShare.initializeModal()" class="ui mouse-pointer content-font" title="View Link">
+    <i class="linkify large icon float-ContentLeft limitedPublishingLinkIcon"></i>&nbsp;
 </span>
 <div class="ui modal" id="contentShareModal" ng-if="contentShare.showContentShareModal">
     <div class="header">

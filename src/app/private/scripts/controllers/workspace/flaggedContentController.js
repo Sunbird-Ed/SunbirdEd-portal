@@ -26,8 +26,7 @@ angular.module('playerApp')
 
     flaggedContent.getAllFlaggedContent = function (pageNumber) {
       pageNumber = pageNumber || 1
-      flaggedContent.loader = toasterService.loader('', $rootScope.errorMessages
-        .WORKSPACE.FLAGGED.START)
+      flaggedContent.loader = toasterService.loader('', $rootScope.messages.stmsg.m0038)
       flaggedContent.error = {}
 
       var request = {
@@ -56,19 +55,19 @@ angular.module('playerApp')
           flaggedContent.totalCount = res.result.count
           if (flaggedContent.flaggedContentData.length === 0) {
             flaggedContent.error = showErrorMessage(true,
-                        $rootScope.errorMessages.WORKSPACE.FLAGGED.NO_CONTENT,
-                        $rootScope.errorMessages.COMMON.NO_RESULTS)
+                        $rootScope.messages.stmsg.m0039,
+                        $rootScope.messages.stmsg.m0008)
           }
           flaggedContent.pager = PaginationService.GetPager(res.result.count,
                     pageNumber, flaggedContent.pageLimit)
         } else {
           flaggedContent.loader.showLoader = false
-          toasterService.error($rootScope.errorMessages.WORKSPACE.FLAGGED.FAILED)
+          toasterService.error($rootScope.messages.fmsg.m0023)
           flaggedContent.error.showError = false
         }
       }).catch(function () {
         flaggedContent.loader.showLoader = false
-        toasterService.error($rootScope.errorMessages.WORKSPACE.FLAGGED.FAILED)
+        toasterService.error($rootScope.messages.fmsg.m0023)
         flaggedContent.error.showError = false
       })
     }
