@@ -88,10 +88,9 @@ angular.module('playerApp')
 	                    allowedExtensions: config.AllowedFileExtension
 	                },
 	                messages: {
-	                    // sizeError: '{file} ' +
-	                    // $rootScope.errorMessages.COMMON.INVALID_FILE_SIZE + ' ' +
-	                                            // config.MaxFileSizeToUpload / (1000 * 1024) + ' MB.'
-	                    sizeError : 'file'
+	                     sizeError: '{file} ' +
+	                     $rootScope.errorMessages.COMMON.INVALID_FILE_SIZE + ' ' +
+	                                             config.MaxFileSizeToUpload / (1000 * 1024) + ' MB.'
 	                },
 	                failedUploadTextDisplay: {
         				mode: 'default',
