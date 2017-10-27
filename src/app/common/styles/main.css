@@ -202,6 +202,9 @@
 .padding-left-25 {
   padding-left: 25px !important;
 }
+.padding-right-25 {
+  padding-right: 25px !important;
+}
 .padding-topBottom-35 {
   padding: 35px 0px!important;
 }
@@ -3183,6 +3186,11 @@ span.dashBoardMenuItem.active {
   max-height: 330px;
   overflow-y: auto;
 }
+.createAnnErrorMsg {
+  border-color: red !important;
+  color: red;
+  margin-top: 5px;
+}
 .createAnnErrorDiv {
   border-color: red !important;
   color: red;
@@ -3191,7 +3199,13 @@ span.dashBoardMenuItem.active {
   color: #f2f2f2;
 }
 .createAnnBlueClass {
-  color: #007AFF;
+  color: #007AFF !important;
+}
+.createAnnMargin5 {
+  margin: 5px;
+}
+.createAnnMargin4 {
+  margin: 4px;
 }
 body {
   position: relative !important;
