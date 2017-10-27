@@ -1849,6 +1849,11 @@ div:focus {
   border-left-color: #007AFF !important;
   border-left-width: 11px !important;
 }
+.announcement-description {
+  font-family: 'sunbirdregularfont' !important;
+  font-size: 1em !important;
+  color: #8b8b8c !important;
+}
 .showingAllSentAnn {
   color: #4A4A4A ;
   font-family: "Open Sans";
@@ -1904,6 +1909,39 @@ div:focus {
 }
 .annGridPadding {
   padding: 0.9em !important;
+}
+.gray-full-width {
+  background-color: #F5F5F5;
+  padding: 15px 20px;
+  margin: 10px -20px;
+}
+.box {
+  box-shadow: 0 1px 2px 0 rgba(34, 36, 38, 0.15);
+  margin: 1rem 0;
+  padding: 1em 1em;
+  border-radius: .28571429rem;
+  border: 1px solid rgba(34, 36, 38, 0.15);
+}
+.ui.modal .ui.input input.gray-background {
+  background-color: #F5F5F5 !important;
+  box-shadow: 1 1px 2px 0 rgba(34, 36, 38, 0.15) !important;
+  border: 1px solid #EEE!important;
+  border-radius: 0!important;
+  padding: 10px !important;
+}
+.margin-bottom-0 {
+  margin-bottom: -25px !important;
+}
+.width-100 {
+  width: 100%;
+}
+.borderBottom {
+  border-bottom: 1px solid #CCCCCC !important;
+  padding-bottom: 15px !important;
+}
+.borderBottom:last-child {
+  border-bottom: 0 !important;
+  padding-bottom: 0 !important;
 }
 .down-arrow-accordion {
   float: right !important;
