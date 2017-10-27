@@ -1,3 +1,4 @@
+<!--
 <div class="ui segment">
     <h4>What is the size of earth ?</h4>
     <div class="description">
@@ -29,3 +30,15 @@
         <p> I will write after this. this is second paragraph it can lead to long paragraph</p>
     </div>
 </div>
+-->
+<div class="ui grid ng-scope annMarginBottom">
+  <div class="nine wide column">
+    <div class="ui">
+      <div class="text dashBoardSectionHeading padding-top-10">Announcements</div>
+    </div>
+  </div>
+  <div class="right floated three wide column">
+    <button class="fluid ui primary basic button announcementButton announcementSeeAllBtn" ui-sref="announcementInbox"><span class="announcementButtonText">SEE ALL</span></button>
+  </div>
+</div>
+<div ng-include="'views/announcement/announcementInboxListCard.html'" ng-controller="announcementInboxListController as announcementInboxData" ng-init="announcementInboxData.renderAnnouncementList()"></div>
