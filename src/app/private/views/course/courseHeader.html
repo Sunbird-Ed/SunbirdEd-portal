@@ -9,7 +9,7 @@
           <span apply-script class="courseHeader-rating ui star rating course-header-divider" data-rating="{{toc.courseHierarchy.me_averageRating |number:0}}" data-max-rating="5"></span>&nbsp;&nbsp;
           <content-share type=" 'course' " id="toc.courseId"></content-share>&nbsp;
           <content-flag type=" 'course' " ng-if="toc.courseType === 'ENROLLED_COURSE'" contentid="toc.courseId" contentname="toc.courseHierarchy.name" versionkey="toc.courseHierarchy.versionKey" redirect=" 'Courses' "></content-flag>
-          <h6 class="ui small negative message" ng-if="toc.courseHierarchy.status === 'Flagged'">{{$root.errorMessages.Courses.TOC.Flagged_COURSE}}</h6>
+          <h6 class="ui small negative message" ng-if="toc.courseHierarchy.status === 'Flagged'">{{$root.messages.imsg.m0001}}</h6>
         </div>
         <div class="four wide column margin-top-Negative30" ng-if="toc.courseType === 'ENROLLED_COURSE'">
           <span ng-if="toc.courseTotal"><p class="text-align-center">Your Progress {{(toc.courseProgress * 100 / toc.courseTotal)| number: 0 || 0}}%</p></span>

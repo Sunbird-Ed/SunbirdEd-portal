@@ -45,7 +45,7 @@ angular.module('loginApp')
 
     // $scope.contentPlayer.contentData=};
             toc.getCourseToc = function () {
-                toc.loader = toasterService.loader('', $rootScope.errorMessages.Courses.TOC.START);
+                toc.loader = toasterService.loader('', $rootScope.messages.stmsg.m0003);
                 contentService.courseHierarchy(toc.courseId).then(function (res) {
                     if (res && res.responseCode === 'OK') {
                         if (config.CONTENT_TYPE.course !== res.result.content.contentType) {
@@ -72,12 +72,12 @@ angular.module('loginApp')
                         toc.storeCourseDetail($rootScope.courseName, toc.courseId);
                     } else {
                         toc.loader.showLoader = false;
-                        toasterService.error($rootScope.errorMessages.Courses.TOC.ERROR);
+                        toasterService.error($rootScope.messages.fmsg.m0003);
                         $state.go('Landing');
                     }
                 }, function () {
                     toc.loader.showLoader = false;
-                    toasterService.error($rootScope.errorMessages.Courses.TOC.ERROR);
+                    toasterService.error($rootScope.messages.fmsg.m0003);
                     $state.go('Landing');
                 });
             };
