@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 angular.module('playerApp')
     .service('searchService', ['httpService', 'config', '$q', 'httpServiceJava',
@@ -30,8 +30,8 @@ angular.module('playerApp')
              */
 
             this.contentSearch = function (req) {
-                return httpService.post(config.URL.CONTENT.SEARCH, req);
-            };
+                return httpService.post(config.URL.CONTENT.SEARCH, req)
+            }
             /**
              * @method courseSearch
              * @desc Search courses
@@ -53,8 +53,8 @@ angular.module('playerApp')
              */
 
             this.courseSearch = function (req) {
-                return httpService.post(config.URL.COURSE.SEARCH, req);
-            };
+                return httpService.post(config.URL.COURSE.SEARCH, req)
+            }
             /**
              * @method search
              * @desc Search All possible results of query.
@@ -75,8 +75,8 @@ angular.module('playerApp')
              */
 
             this.search = function (req) {
-                return httpService.post(config.URL.COMPOSITE.SEARCH, req);
-            };
+                return httpService.post(config.URL.COMPOSITE.SEARCH, req)
+            }
             /**
              * @method setPublicUserProfile
              * @desc Set user's public profile to local variable.
@@ -88,9 +88,9 @@ angular.module('playerApp')
                 this.publicUser = { responseCode: 'OK',
                     result: {
                         response: user }
-                };
-                return true;
-            };
+                }
+                return true
+            }
             /**
              * @method getPublicUserProfile
              * @desc Get user's public profile from local variable or api
@@ -99,14 +99,17 @@ angular.module('playerApp')
              * @returns {Promise} Promise object represents details of user available locally or api
              * @instance
              */
-            this.getPublicUserProfile = function (identifier) {
-                if (this.publicUser) {
-                    var deferred = $q.defer();
-                    deferred.resolve(this.publicUser);
-                    return deferred.promise;
+            this.getPublicUserProfile = function (identifier, endorsement) {
+                if (endorsement !== undefined) {
+                    return httpService.get(config.URL.USER.GET_PROFILE + '/' + identifier)
                 }
-                return httpService.get(config.URL.USER.GET_PROFILE + '/' + identifier);
-            };
+                if (this.publicUser) {
+                    var deferred = $q.defer()
+                    deferred.resolve(this.publicUser)
+                    return deferred.promise
+                }
+                return httpService.get(config.URL.USER.GET_PROFILE + '/' + identifier)
+            }
             /**
              * @method getOrgTypes
              * @desc Get all org types
@@ -115,9 +118,9 @@ angular.module('playerApp')
              * @instance
              */
             this.getOrgTypes = function () {
-                var url = config.URL.ORG_TYPE.GET;
-                return httpServiceJava.get(url);
-            };
+                var url = config.URL.ORG_TYPE.GET
+                return httpServiceJava.get(url)
+            }
             /**
              * @method setOrgTypes
              * @desc Set orgTypes api result to local variable
@@ -126,8 +129,8 @@ angular.module('playerApp')
              * @instance
              */
             this.setOrgTypes = function (orgTypes) {
-                this.orgTypes = orgTypes;
-            };
+                this.orgTypes = orgTypes
+            }
 
             /**
              * @method getOrgTypeS
@@ -138,14 +141,14 @@ angular.module('playerApp')
              */
             this.getOrgTypeS = function () {
                 if (this.orgTypes) {
-                    var deferred = $q.defer();
-                    deferred.resolve(this.orgTypes);
-                    return deferred.promise;
+                    var deferred = $q.defer()
+                    deferred.resolve(this.orgTypes)
+                    return deferred.promise
                 }
                 return this.getOrgTypes().then(function (res) {
                     if (res.responseCode === 'OK') {
-                        return res.result.response;
+                        return res.result.response
                     }
-                });
-            };
-        }]);
+                })
+            }
+        }])
