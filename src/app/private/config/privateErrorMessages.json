@@ -219,7 +219,7 @@
         "PROFILE": {
             "UPDATE_REMINDER": {
                 "TITLE": "Strengthen your profile",
-                "COMPLETENESS_TITLE":"Profile Completeness",
+                "COMPLETENESS_TITLE": "Profile Completeness",
                 "DEFAULT_MESSAGE": "Add more details now"
             },
             "FORM_VALIDATION": {
@@ -251,7 +251,7 @@
                     "editingProfile": "Updating profile ...",
                     "profileEdited": "Profile successfully updated"
                 },
-                "UPDATE": { 
+                "UPDATE": {
                     "SUCCESS": {
                         "avatar": "Profile Image updated successfully",
                         "description": "Description updated successfully",
@@ -285,12 +285,14 @@
                     "SUCCESS": {
                         "education": "New education added successfully",
                         "experience": "New experience added successfully",
-                        "address": "New address added successfully"
+                        "address": "New address added successfully",
+                        "skill": "New skill added successfully"
                     },
                     "FAILURE": {
                         "education": "Adding new education failed. Please try again later...",
                         "experience": "Adding new experience failed. Please try again later...",
-                        "address": "Adding new address failed. Please try again later..."
+                        "address": "Adding new address failed. Please try again later...",
+                        "skill": "Adding new skill failed. Please try again later..."
                     }
                 },
                 "ERROR": {
@@ -352,12 +354,12 @@
                 "FAILED": "Fetching tenant details failed, please try again later..."
             }
         },
-        "SETUP":{
-            "ADD_SUCCESS":" Org type added successfully",
-            "ADD_FAILURE":"Adding a new org type failed, please try again later",
-            "GET_FAILURE":"Fetching org type failed, please try again later",
-            "UPDATE_FAILURE":"Org  type update failed, please try again later",
-            "UPDATE_SUCCESS":"  updated successfully"
+        "SETUP": {
+            "ADD_SUCCESS": " Org type added successfully",
+            "ADD_FAILURE": "Adding a new org type failed, please try again later",
+            "GET_FAILURE": "Fetching org type failed, please try again later",
+            "UPDATE_FAILURE": "Org  type update failed, please try again later",
+            "UPDATE_SUCCESS": "  updated successfully"
         }
     }
 }

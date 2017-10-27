@@ -137,6 +137,7 @@ angular.module('playerApp')
 
                         profile.user.socialMedia = socialMedia
                     }
+                    profile.userSkills = profile.user.skills !== undefined ? profile.user.skills : []
                     profile.basicProfile = angular.copy(profile.user)
                 } else {
                     profile.loader.showLoader = false
@@ -291,7 +292,10 @@ angular.module('playerApp')
                     if (!profile.user.email) {
                         basicInfo.email = profile.user.email
                     }
-                    profile.webPages = profile.webLink()
+                    var webPages = profile.webLink()
+                    if (webPages.length) {
+                        profile.webPages = webPages
+                    }
 
                     basicInfo.webPages = profile.webPages
 
@@ -684,19 +688,6 @@ angular.module('playerApp')
                     }
                 }
             }
-                // get user skills
-            profile.getUserSkills = function () {
-                userService.getUserSkills({
-                    request: {
-                        endorsedUserId: profile.userId
-                    }
-                }).then(function (response) {
-                    if (response.responseCode === 'OK') {
-                        profile.userSkills = response.result.response[0].skills
-                    }
-                })
-            }
-                // get add default skills and filter users skills from list
             profile.getSkills = function () {
                 userService.getSkills().then(function (response) {
                     if (response.responseCode === 'OK') {
@@ -704,7 +695,7 @@ angular.module('playerApp')
                     }
                 })
             }
-            profile.getUserSkills()
+
             profile.getSkills()
 
             profile.openAddSkillModal = function () {
@@ -758,37 +749,39 @@ angular.module('playerApp')
                 }, 50)
                 $('#addSkillModal').modal('refresh')
             }
-                // profile.selectedSkills = [];
-                // profile.removeSelectedSkill = function (value) {
-                //     profile.selectedSkills = profile.selectedSkills.filter(function (skill) {
-                //         return skill !== value;
-                //     });
-                //     // profile.skills.push(value);
-                //     $('#addSkillModal').modal('refresh');
-                // };
+
             profile.addSkills = function () {
+                var isNoNewSkill = false
                 var skills = $('#addSkill').dropdown('get value')
+
                 var newUserSkills = skills.split(',')
-                    // newUserSkills.push(skills);
+
                 if (profile.userSkills.length) {
                     profile.userSkills.forEach(function (userSkill) {
                         newUserSkills = newUserSkills.filter(function (skill) {
                             return skill !== userSkill.skillName
                         })
-                        console.log('newUserSkills', newUserSkills)
                     })
                 }
-                console.log('newUserSkills without common skills', newUserSkills)
                 var req = {
                     request: {
                         endorsedUserId: profile.userId,
                         skillName: newUserSkills
                     }
                 }
-                userService.addSkills(req).then(function (response) {
-                    profile.getUserSkills()
-                    console.log('resdd', response)
-                })
+                if (newUserSkills.length === 1 && newUserSkills[0].length === 0) {
+                    isNoNewSkill = true
+                }
+                if (!isNoNewSkill) {
+                    userService.addSkills(req).then(function (response) {
+                        if (response && response.responseCode === 'OK') {
+                            toasterService.success(addSuccess.skill)
+                            profile.getProfile()
+                        } else {
+                            toasterService.error(addFailure.skill)
+                        }
+                    })
+                }
             }
 
             profile.setLimit = function (lim) {
