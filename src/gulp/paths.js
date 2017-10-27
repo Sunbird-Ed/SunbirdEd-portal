@@ -253,7 +253,8 @@ var paths = {
     'dist/private/scripts/directives/batchDetailsDirective.js',
     'dist/private/scripts/directives/contentSharingDirective.js',
     'dist/private/scripts/services/setup/setupService.js',
-    'dist/private/scripts/controllers/setup/setupController.js'
+    'dist/private/scripts/controllers/setup/setupController.js',
+    'dist/private/scripts/controllers/workspace/limitedPublishedContentController.js'
   ],
   telemetry_js: [
     'dist/private/scripts/telemetry/TelemetryEvent.js',
@@ -268,7 +269,7 @@ var paths = {
     'app/public/**/*.js'
   ],
   jsdocs_config: './configs/jsdocConfig.json',
-    cdnFiles: [
+  cdnFiles: [
     'dist/common/js/org.js',
     'dist/private/external.min.js',
     'dist/thirdparty/semantic/semantic.min.js',
