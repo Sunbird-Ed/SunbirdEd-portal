@@ -9,7 +9,7 @@ angular.module('playerApp')
                 var toc = this;
 
                 toc.getCourseToc = function () {
-                    toc.loader = toasterService.loader('', $rootScope.errorMessages.Courses.TOC.START);
+                    toc.loader = toasterService.loader('', $rootScope.messages.stmsg.m0003);
                     courseService.courseHierarchy(toc.courseId).then(function (res) {
                         if (res && res.responseCode === 'OK') {
                             res.result.content.children = _.sortBy(
@@ -30,12 +30,12 @@ angular.module('playerApp')
                                 toc.courseHierarchy = res.result.content;
                             }
                         } else {
-                            toasterService.error($rootScope.errorMessages.Courses.TOC.ERROR);
+                            toasterService.error($rootScope.messages.fmsg.m0003);
                         }
                         toc.loader.showLoader = false;
                     }).catch(function () {
                         toc.loader.showLoader = false;
-                        toasterService.error($rootScope.errorMessages.Courses.TOC.ERROR);
+                        toasterService.error($rootScope.messages.fmsg.m0003);
                     });
                 };
 
@@ -231,7 +231,7 @@ angular.module('playerApp')
                                 }
                             }
                         }).catch(function () {
-                            toasterService.error($rootScope.errorMessages.BATCH.GET.FAILED);
+                            toasterService.error($rootScope.messages.fmsg.m0054);
                         });
                     }
                 };

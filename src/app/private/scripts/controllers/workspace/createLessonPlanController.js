@@ -15,7 +15,6 @@ angular.module('playerApp')
             lessonPlan.mimeType = 'application/vnd.ekstep.content-collection';
             lessonPlan.defaultName = 'Untitled lesson plan';
             lessonPlan.contentType = 'LessonPlan';
-            lessonPlan.message = $rootScope.errorMessages.WORKSPACE;
 
             lessonPlan.hideCreateLessonPlanModal = function () {
                 $('#createLessonPlanModal').modal('hide');
@@ -42,8 +41,7 @@ angular.module('playerApp')
             };
 
             lessonPlan.createContent = function (requestData) {
-                lessonPlan.loader = toasterService.loader('', lessonPlan.message.CREATE_LESSON_PLAN
-                                                                        .START);
+                lessonPlan.loader = toasterService.loader('', $rootScope.messages.stmsg.m0050);
                 contentService.create(requestData).then(function (res) {
                     if (res && res.responseCode === 'OK') {
                         lessonPlan.isLessonPlanCreated = true;
@@ -53,11 +51,11 @@ angular.module('playerApp')
                         lessonPlan.initEKStepCE(res.result.content_id);
                     } else {
                         lessonPlan.loader.showLoader = false;
-                        toasterService.error(lessonPlan.message.CREATE_LESSON_PLAN.FAILED);
+                        toasterService.error($rootScope.messages.fmsg.m0026);
                     }
                 }).catch(function () {
                     lessonPlan.loader.showLoader = false;
-                    toasterService.error(lessonPlan.message.CREATE_LESSON_PLAN.FAILED);
+                    toasterService.error($rootScope.messages.fmsg.m0026);
                 });
             };
 
