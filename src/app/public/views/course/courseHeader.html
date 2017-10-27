@@ -6,7 +6,7 @@
                 <div class="eight wide column padding-top-none">
                     <div class="courseStructureHeaderText courseStructureSectionHeading">{{toc.courseHierachy.name}}</div> <br>
                     <span apply-script class="courseHeader-rating ui star rating" data-rating="{{toc.courseHierachy.me_averageRating |number:0}}" data-max-rating="5"></span>&nbsp;&nbsp;
-                    <h6 class="ui small negative message" ng-if="toc.courseHierachy.status === 'Flagged'">{{$root.errorMessages.Courses.TOC.Flagged_COURSE}}</h6>
+                    <h6 class="ui small negative message" ng-if="toc.courseHierachy.status === 'Flagged'">{{$root.messages.imsg.m0001}}</h6>
                 </div>
             </div>
         </div>
