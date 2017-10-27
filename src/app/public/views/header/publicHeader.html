@@ -11,22 +11,22 @@
         <div class="six wide column">
             <div class="beforelogin ui secondary pointing menu padding-top-1rem">
                 <a class="item " href="#">
-                   {{labels.MainMenu.home}}
+                   {{frmelmnts.tab.home}}
                 </a>
                 <a class="item " href="#">
-                     {{labels.MainMenu.courses}}
+                     {{frmelmnts.tab.courses}}
                      
                 </a>
                 <a class="item" href="#">
-                     {{labels.MainMenu.resources}}
+                     {{frmelmnts.tab.resources}}
                     
                 </a>
                 <a class="item" href="#">
-                     {{labels.MainMenu.community}}
+                     {{frmelmnts.tab.community}}
                     
                 </a>
                 <a class="item" href="#">
-                     {{labels.MainMenu.profile}}
+                     {{frmelmnts.tab.profile}}
                     
                 </a>
             </div>
@@ -34,8 +34,8 @@
         <div class="one wide column"></div>
         <div class="one wide column">
             <div class="beforelogin ui secondary pointing menu padding-top-1rem" ng-controller="SignUpCtrl as newUser">
-                <button class="ui item" ng-if="!isLoggedIn" ng-click="newUser.showModal();"> {{labels.Button.signUp}}</button>
-                <a href="/private/index" class="sunblogin"> <button class="ui item " ng-if="!isLoggedIn">{{labels.Button.login}}</button></a>
+                <button class="ui item" ng-if="!isLoggedIn" ng-click="newUser.showModal();"> {{frmelmnts.btn.signup}}</button>
+                <a href="/private/index" class="sunblogin"> <button class="ui item " ng-if="!isLoggedIn">{{frmelmnts.btn.login}}</button></a>
                 <div ng-include="'views/home/Signup.html'"></div>
             </div>
 

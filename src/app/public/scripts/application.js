@@ -4,15 +4,18 @@ angular.module('loginApp', [
   'ngRoute',
   'ui.router',
   'loginApp.labels',
-  'loginApp.errorMessages',
+  'playerApp.messages',
+  'playerApp.frmelmnts',
   'loginApp.config',
+  'loginApp.errorMessages',
   'uuid4',
   'ngSanitize'
 ])
-  .controller('loginCtrl', ['labels', '$rootScope', 'errorMessages',
-    function (labels, $rootScope, errorMessages) {
-      $rootScope.errorMessages = errorMessages
-      $rootScope.labels = labels
+  .controller('loginCtrl', ['labels', '$rootScope', 'messages','frmelmnts',
+    function (labels, $rootScope, messages,frmelmnts) {
+      $rootScope.language = window.localStorage.language || $('#defaultPortalLanguage').attr('value') || 'en'
+      $rootScope.messages = messages[$rootScope.language]
+      $rootScope.frmelmnts = frmelmnts[$rootScope.language]
       $rootScope.cdnUrl = $('#cdnUrl').attr('value') || ''
       $rootScope.theme = $('#theme').attr('value') || 'default'
       $rootScope.getQueryStringValue = function (key) {
