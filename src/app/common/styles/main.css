@@ -515,6 +515,12 @@
   background: none !important;
   font-weight: bold !important;
 }
+.searchfilterinput .ng-empty + .icon.search,
+.searchfilterinput .ng-empty + .icon.search:hover {
+  cursor: auto !important;
+  opacity: 0.3 !important;
+  pointer-events: none;
+}
 /*use percentage for images*/
 /*use em for fonts*/
 /*12 column grid is used instead of 16 column*/
@@ -2677,6 +2683,9 @@ ul.fancytree-container li {
   width: 50% !important;
   text-align: right !important;
   word-break: break-all !important;
+}
+.profile-des .item .right.floated.content span {
+  word-break: normal !important;
 }
 .profileUpdateAddDetails {
   font-size: 1em !important;
