@@ -2,9 +2,9 @@
 
 angular.module('playerApp')
     .controller('BatchController', ['$rootScope', '$timeout', '$state', '$scope', '$stateParams',
-        'batchService', '$filter', 'permissionsService', 'errorMessages', 'toasterService', 'courseService',
+        'batchService', '$filter', 'permissionsService',  'toasterService', 'courseService',
         'learnService', '$window', function ($rootScope, $timeout, $state, $scope, $stateParams, batchService, $filter,
-    permissionsService, errorMessages, toasterService, courseService, learnService, $window) {
+    permissionsService, toasterService, courseService, learnService, $window) {
             var batch = this;
             batch.userList = [];
             batch.menterList = [];
@@ -131,20 +131,20 @@ angular.module('playerApp')
                                             batch.getCouserBatchesList();
                                             batch.hideCreateBatchModal();
                                         } else {
-                                            toasterService.error(errorMessages.BATCH.ADD_USERS.FAILED);
+                                            toasterService.error($rootScope.messages.fmsg.m0053);
                                         }
                                     }).catch(function () {
-                                        toasterService.error(errorMessages.BATCH.ADD_USERS.FAILED);
+                                        toasterService.error($rootScope.messages.fmsg.m0053);
                                     });
                                 }, 100);
                             } else {
                                 batch.hideCreateBatchModal();
                             }
                         } else {
-                            toasterService.error(errorMessages.BATCH.CREATE.FAILED);
+                            toasterService.error($rootScope.messages.fmsg.m0052);
                         }
                     }).catch(function () {
-                        toasterService.error(errorMessages.BATCH.CREATE.FAILED);
+                        toasterService.error($rootScope.messages.fmsg.m0052);
                     });
                 }
         };
@@ -194,19 +194,19 @@ angular.module('playerApp')
                                     });
                                     batch.batchList = response.result.response.content || [];
                                 } else {
-                                    toasterService.error(errorMessages.BATCH.GET_USERS.FAILED);
+                                    toasterService.error($rootScope.messages.fmsg.m0056);
                                 }
                             }).catch(function () {
-                                toasterService.error(errorMessages.BATCH.GET_USERS.FAILED);
+                                toasterService.error($rootScope.messages.fmsg.m0056);
                             });
                         } else {
                             batch.batchList = response.result.response.content || [];
                         }
                     } else {
-                        toasterService.error(errorMessages.BATCH.SEARCH.FAILED);
+                        toasterService.error($rootScope.messages.fmsg.m0004);
                     }
                 }).catch(function () {
-                    toasterService.error(errorMessages.BATCH.SEARCH.FAILED);
+                    toasterService.error($rootScope.messages.fmsg.m0004);
                 });
         };
 
@@ -242,11 +242,11 @@ angular.module('playerApp')
                             }
                         });
                     } else {
-                        toasterService.error(errorMessages.BATCH.GET_USERS.FAILED);
+                        toasterService.error($rootScope.messages.fmsg.m0056);
                     }
                     console.log('response ', response);
                 }).catch(function () {
-                    toasterService.error(errorMessages.BATCH.GET_USERS.FAILED);
+                    toasterService.error($rootScope.messages.fmsg.m0056);
                 });
         };
 
@@ -270,10 +270,10 @@ angular.module('playerApp')
                             $rootScope.$broadcast('batchDetails', batchData);
                             $('#batchDetails').modal('show');
                         } else {
-                            toasterService.error(errorMessages.BATCH.GET_USERS.FAILED);
+                            toasterService.error($rootScope.messages.fmsg.m0056);
                         }
                     }).catch(function () {
-                        toasterService.error(errorMessages.BATCH.GET_USERS.FAILED);
+                        toasterService.error($rootScope.messages.fmsg.m0056);
                     });
                 } else {
                     $rootScope.$broadcast('batchDetails', batchData);
@@ -296,15 +296,15 @@ angular.module('playerApp')
             courseService.enrollUserToCourse(req).then(function (response) {
                     if (response && response.responseCode === 'OK') {
                         batch.showEnroll = false;
-                        toasterService.success(errorMessages.BATCH.ENROLLED.SUCCESS);
+                        toasterService.success($rootScope.messages.smsg.m0036);
                         $timeout(function () {
                             $window.location.reload();
                         }, 2000);
                     } else {
-                        toasterService.error(errorMessages.Courses.ENROLL.ERROR);
+                        toasterService.error($rootScope.messages.emsg.m0001);
                     }
                 }).catch(function () {
-                    toasterService.error(errorMessages.Courses.ENROLL.ERROR);
+                    toasterService.error($rootScope.messages.emsg.m0001);
                 });
         };
         }
