@@ -33,8 +33,7 @@ angular.module('playerApp')
             };
 
             collection.createCollection = function (requestData) {
-                collection.loader = toasterService.loader('', $rootScope.errorMessages.WORKSPACE
-                                                                    .CREATE_COLLECTION.START);
+                collection.loader = toasterService.loader('', $rootScope.messages.stmsg.m0016);
                 contentService.create(requestData).then(function (res) {
                     if (res && res.responseCode === 'OK') {
                         collection.isCollectionCreated = true;
@@ -44,13 +43,11 @@ angular.module('playerApp')
                         collection.initEKStepCE(res.result.content_id);
                     } else {
                         collection.loader.showLoader = false;
-                        toasterService.error($rootScope.errorMessages.WORKSPACE.CREATE_COLLECTION
-                                                                                .FAILED);
+                        toasterService.error($rootScope.messages.fmsg.m0010);
                     }
                 }).catch(function () {
                     collection.loader.showLoader = false;
-                    toasterService.error($rootScope.errorMessages.WORKSPACE.CREATE_COLLECTION
-                                                                                .FAILED);
+                    toasterService.error($rootScope.messages.fmsg.m0010);
                 });
             };
 

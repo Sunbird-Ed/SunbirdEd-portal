@@ -41,7 +41,7 @@ angular.module('playerApp')
           section.sections = function () {
               section.error = {};
               section.loader = toasterService.loader(''
-           , $rootScope.errorMessages.RESOURCE.PAGE.START);
+           , $rootScope.messages.stmsg.m0053);
               if ($rootScope.search === undefined) {
                   $rootScope.search = {};
               }
@@ -92,20 +92,20 @@ angular.module('playerApp')
                   section.loader.showLoader = false;
                   if (section.page.length === 0) {
                       section.error = showErrorMessage(true,
-                                        $rootScope.errorMessages.SEARCH.DATA.NO_CONTENT,
-                                        $rootScope.errorMessages.COMMON.NO_RESULTS,$rootScope.errorMessages.SEARCH.DATA.NO_CONTENT_TEXT);
+                                        $rootScope.messages.stmsg.m0006,
+                                        $rootScope.messages.stmsg.m0008,$rootScope.messages.stmsg.m0007);
                   }
               } else {
                   section.loader.showLoader = false;
                   section.error = showErrorMessage(true,
-                                        $rootScope.errorMessages.SEARCH.DATA.FAILED,
-                                        $rootScope.errorMessages.COMMON.ERROR);
+                                        $rootScope.messages.fmsg.m0004,
+                                        $rootScope.messages.emsg.m0002);
               }
           }).catch(function () {
               section.loader.showLoader = false;
               section.error = showErrorMessage(true,
-                                        $rootScope.errorMessages.SEARCH.DATA.FAILED,
-                                        $rootScope.errorMessages.COMMON.ERROR);
+                                        $rootScope.messages.fmsg.m0004,
+                                        $rootScope.messages.emsg.m0002);
           });
           };
 
