@@ -2,12 +2,10 @@
 
 const express = require('express'),
   app = express(),
-  router = express.Router(),
   proxy = require('express-http-proxy'),
   Keycloak = require('keycloak-connect'),
   session = require('express-session'),
   path = require('path'),
-  request = require('request'),
   bodyParser = require('body-parser'),
   async = require('async'),
   helmet = require('helmet'),
@@ -20,11 +18,11 @@ const express = require('express'),
   publicServicehelper = require('./helpers/publicServiceHelper.js'),
   userHelper = require('./helpers/userHelper.js'),
   resourcesBundlesHelper = require('./helpers/resourceBundlesHelper.js'),
+  proxyUtils = require('./proxy/proxyUtils.js'),
   fs = require('fs'),
   port = envHelper.PORTAL_PORT,
   learnerURL = envHelper.LEARNER_URL,
   contentURL = envHelper.CONTENT_URL,
-  contentProxyUrl = envHelper.CONTENT_PROXY_URL,
   realm = envHelper.PORTAL_REALM,
   auth_server_url = envHelper.PORTAL_AUTH_SERVER_URL,
   keycloak_resource = envHelper.PORTAL_AUTH_SERVER_CLIENT,
@@ -66,30 +64,6 @@ let keycloak = new Keycloak({ store: memoryStore }, {
 })
 let tenantId = ''
 
-const decorateRequestHeaders = function () {
-  return function (proxyReqOpts, srcReq) {
-    if (srcReq.session) {
-      var userId = srcReq.session.userId
-      var channel = md5(srcReq.session.rootOrgId || 'sunbird')
-      if (userId) { proxyReqOpts.headers['X-Authenticated-Userid'] = userId }
-      proxyReqOpts.headers['X-Channel-Id'] = channel
-    }
-    proxyReqOpts.headers['X-App-Id'] = appId
-    if (srcReq.kauth && srcReq.kauth.grant && srcReq.kauth.grant.access_token && srcReq.kauth.grant.access_token.token) {
-      proxyReqOpts.headers['x-authenticated-user-token'] = srcReq.kauth.grant.access_token.token
-    }
-    proxyReqOpts.headers.Authorization = 'Bearer ' + sunbird_api_auth_token
-    proxyReqOpts.rejectUnauthorized = false
-    return proxyReqOpts
-  }
-}
-const decoratePublicRequestHeaders = function () {
-  return function (proxyReqOpts, srcReq) {
-    proxyReqOpts.headers['X-App-Id'] = appId
-    proxyReqOpts.headers.Authorization = 'Bearer ' + sunbird_api_auth_token
-    return proxyReqOpts
-  }
-}
 app.use(helmet())
 app.use(session({
   secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
@@ -107,11 +81,6 @@ app.set('view engine', 'ejs')
 
 app.use(express.static(path.join(__dirname, '/')))
 app.use(express.static(path.join(__dirname, 'tenant', tenantId)))
-
-// Announcement routing
-app.use('/api/plugin/announcement', bodyParser.urlencoded({ extended: false }),
-  bodyParser.json({limit: '10mb' }), require('./helpers/announcement'))
-
 // this line should be above middleware please don't change
 app.get('/public/service/orgs', publicServicehelper.getOrgs)
 app.use('/public/*', express.static(path.join(__dirname, 'public')))
@@ -120,6 +89,14 @@ if (default_tenant) {
 }
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'private')))
+
+// Announcement routing
+app.use('/api/plugin/announcement', bodyParser.urlencoded({ extended: false }),
+  bodyParser.json({limit: '10mb' }), require('./helpers/announcement'))
+
+// Notification routing
+app.use('/api/notifications', bodyParser.urlencoded({ extended: false }),
+  bodyParser.json({limit: '10mb' }), require('./helpers/notifications'))
 
 app.use('/private/index', function (req, res, next) {
   res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate')
@@ -131,6 +108,7 @@ app.use('/private/index', function (req, res, next) {
 app.all('/', function (req, res) {
   res.locals.cdnUrl = envHelper.PORTAL_CDN_URL
   res.locals.theme = envHelper.PORTAL_THEME
+  res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
   res.render(__dirname + '/public/index.ejs')
 })
 
@@ -140,17 +118,30 @@ app.all('/content-editor/telemetry', bodyParser.urlencoded({ extended: false }),
 app.all('/collection-editor/telemetry', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: reqDataLimitOfContentEditor }), keycloak.protect(), telemetryHelper.logSessionEvents)
 
-app.all('/public/service/*', proxy(learnerURL, {
-  proxyReqOptDecorator: decoratePublicRequestHeaders(),
+app.all('/public/service/v1/learner/*', proxy(learnerURL, {
+  proxyReqOptDecorator: proxyUtils.decoratePublicRequestHeaders(),
   proxyReqPathResolver: function (req) {
     let urlParam = req.params['0']
     return require('url').parse(learnerURL + urlParam).path
   }
 }))
 
-app.all('/private/service/v1/learner/*', verifyToken(), permissionsHelper.checkPermission(), proxy(learnerURL, {
+app.all('/public/service/v1/content/*', proxy(contentURL, {
+  proxyReqOptDecorator: proxyUtils.decoratePublicRequestHeaders(),
+  proxyReqPathResolver: function (req) {
+    let urlParam = req.params['0']
+    let query = require('url').parse(req.url).query
+    if (query) {
+      return require('url').parse(contentURL + urlParam + '?' + query).path
+    } else {
+      return require('url').parse(contentURL + urlParam).path
+    }
+  }
+}))
+
+app.all('/private/service/v1/learner/*', proxyUtils.verifyToken(), permissionsHelper.checkPermission(), proxy(learnerURL, {
   limit: reqDataLimitOfContentUpload,
-  proxyReqOptDecorator: decorateRequestHeaders(),
+  proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
   proxyReqPathResolver: function (req) {
     let urlParam = req.params['0']
     let query = require('url').parse(req.url).query
@@ -162,9 +153,9 @@ app.all('/private/service/v1/learner/*', verifyToken(), permissionsHelper.checkP
   }
 }))
 
-app.all('/private/service/v1/content/*', verifyToken(), permissionsHelper.checkPermission(), proxy(contentURL, {
+app.all('/private/service/v1/content/*', proxyUtils.verifyToken(), permissionsHelper.checkPermission(), proxy(contentURL, {
   limit: reqDataLimitOfContentUpload,
-  proxyReqOptDecorator: decorateRequestHeaders(),
+  proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
   proxyReqPathResolver: function (req) {
     let urlParam = req.params['0']
     let query = require('url').parse(req.url).query
@@ -175,6 +166,9 @@ app.all('/private/service/v1/content/*', verifyToken(), permissionsHelper.checkP
     }
   }
 }))
+
+// Local proxy for content and learner service
+require('./proxy/localProxy.js')(app)
 
 app.all('/v1/user/session/create', function (req, res) {
   trampolineServiceHelper.handleRequest(req, res, keycloak)
@@ -200,54 +194,7 @@ app.get('/v1/tenant/info', tenantHelper.getInfo)
 app.get('/v1/tenant/info/:tenantId', tenantHelper.getInfo)
 
 // proxy urls
-
-const proxyReqPathResolverMethod = function (req) {
-  return require('url').parse(contentProxyUrl + req.originalUrl).path
-}
-
-// Announcement routing
-app.use('/api/plugin/announcement', bodyParser.urlencoded({ extended: false }),
-  bodyParser.json({limit: '10mb' }), require('./helpers/announcement'))
-
-app.use('/api/notifications', bodyParser.urlencoded({ extended: false }),
-  bodyParser.json({limit: '10mb' }), require('./helpers/notifications'))
-
-app.use('/api/*', permissionsHelper.checkPermission(), proxy(contentProxyUrl, {
-  preserveHostHdr: true,
-  proxyReqOptDecorator: decorateRequestHeaders(),
-  proxyReqPathResolver: proxyReqPathResolverMethod
-}))
-
-app.use('/content-plugins/*', proxy(contentProxyUrl, {
-  preserveHostHdr: true,
-  proxyReqOptDecorator: decorateRequestHeaders(),
-  proxyReqPathResolver: proxyReqPathResolverMethod
-}))
-
-app.use('/plugins/*', proxy(contentProxyUrl, {
-  preserveHostHdr: true,
-  proxyReqOptDecorator: decorateRequestHeaders(),
-  proxyReqPathResolver: proxyReqPathResolverMethod
-}))
-
-app.use('/assets/public/*', proxy(contentProxyUrl, {
-  preserveHostHdr: true,
-  proxyReqOptDecorator: decorateRequestHeaders(),
-  proxyReqPathResolver: proxyReqPathResolverMethod
-}))
-
-app.use('/content/preview/*', proxy(contentProxyUrl, {
-  preserveHostHdr: true,
-  proxyReqOptDecorator: decorateRequestHeaders(),
-  proxyReqPathResolver: proxyReqPathResolverMethod
-}))
-
-app.use('/action/*', permissionsHelper.checkPermission(), proxy(contentProxyUrl, {
-  preserveHostHdr: true,
-  limit: reqDataLimitOfContentUpload,
-  proxyReqOptDecorator: decorateRequestHeaders(),
-  proxyReqPathResolver: proxyReqPathResolverMethod
-}))
+require('./proxy/contentEditorProxy.js')(app, keycloak)
 
 app.all('/:tenantName', function (req, res) {
   tenantId = req.params.tenantName
@@ -299,45 +246,19 @@ keycloak.deauthenticated = function (request) {
   }
 }
 
-function verifyToken () {
-  return function (req, res, next) {
-    if (!req.session) {
-      res.status(440)
-      res.send({
-        'id': 'api.error',
-        'ver': '1.0',
-        'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
-        'params': {
-          'resmsgid': uuidv1(),
-          'msgid': null,
-          'status': 'failed',
-          'err': 'LOGIN_TIMEOUT',
-          'errmsg': 'Session Expired'
-        },
-        'responseCode': 'LOGIN_TIMEOUT',
-        'result': {}
-      })
-      res.end()
-    } else {
-      next()
-    }
-  }
-}
-
-resourcesBundlesHelper.buildResources(function(err, result) {
+resourcesBundlesHelper.buildResources(function (err, result) {
   console.log('building resource bundles ......')
   if (err) {
-    throw err;
+    throw err
   } else {
-    portal.server = app.listen(port, function() {
-      console.log('completed resource bundles'+'\r\n'+'starting  server...')
+    portal.server = app.listen(port, function () {
+      console.log('completed resource bundles' + '\r\n' + 'starting  server...')
       console.log('app running on port ' + port)
       permissionsHelper.getPermissions()
     })
   }
 })
 
-
-exports.close = function() {
- portal.server.close()
+exports.close = function () {
+  portal.server.close()
 }
