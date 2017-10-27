@@ -1,0 +1,62 @@
+<div class="ui grid" ng-init="announcementInboxData.renderAnnouncementList()">
+  <div class="one wide column"></div>
+  <div class="ten wide column">
+    <div class="ui grid">
+      <div class="eight wide column">
+        <div class="ui">
+          <div class="text dashBoardSectionHeading margin-bottom-20"><i class=" arrow left icon padding-right-10"></i> All Announcements</div>
+        </div>
+        <div ng-include="'views/announcement/announcementInboxListCard.html'"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style type="text/css">
+.bluetext {
+  color: #0076FE;
+}
+.gray-full-width{
+  background-color: #F5F5F5;
+  padding: 15px 20px;
+  margin: 10px -20px;
+}
+.box{
+    box-shadow: 0 1px 2px 0 rgba(34,36,38,.15);
+    margin: 1rem 0;
+    padding: 1em 1em;
+    border-radius: .28571429rem;
+    border: 1px solid rgba(34,36,38,.15);
+}
+.ui.modal .ui.input input.gray-background{
+  background-color: #F5F5F5 !important;
+  box-shadow: 1 1px 2px 0 rgba(34,36,38,.15) !important;
+  border: 1px solid #EEE!important;
+  border-radius: 0!important;
+  padding: 10px !important;
+}
+.margin-bottom-0{
+  margin-bottom: -25px !important;
+}
+.width-100{
+  width:100%;
+}
+.borderBottom {
+	border-bottom: 1px solid #CCCCCC !important;
+	padding-bottom: 15px !important;
+}
+.borderBottom:last-child {
+	border-bottom: 0 !important;
+	padding-bottom: 0 !important;
+}
+</style>
+<div id="announcementDetailsModal" class="ui modal"> 
+    <i class="close icon"></i>  
+    <div class="content">
+        <div class="ui right aligned grid">
+            <div class="ui raised segment width-100">
+            <announcement-details-directive announcement-details="announcementInboxData.announcementDetails"></announcement-details-directive>
+        </div>
+    </div>
+  </div>
+</div>  

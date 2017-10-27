@@ -1,0 +1,88 @@
+<div ng-init="announcementOutboxData.renderAnnouncementList()">
+  <div class="ui grid">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+      <div class="ui grid">
+        <div class="nine wide column">
+          <div class="ui">
+            <div class="text dashBoardSectionHeading padding-top-10"><i class="announcement icon padding-right-10"></i> My Announcements</div>
+          </div>
+        </div>
+        <div class="right floated three wide column padding-right-dropdown padding-right-10">
+          <div class="ui float-ContentRight">
+            <button class="ui primary basic button announcementButton"><span class="announcementButtonText">CREATE ANNOUNCEMENT</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ui grid">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+      <div class="ui grid">
+        <div class="eight wide column">
+          <div class="ui">
+            <div class="text padding-top-5 showingAllSentAnn">Showing all sent announcements</div>
+          </div>
+        </div>
+        <div class="four wide column">
+          <div class="ui float-ContentRight">
+            <div class="text showingAllSentAnn"><span class="margin-right-10">Viewing 10 - 20</span>
+              <div class="ui small basic icon buttons">
+                <button class="ui button"><i class="left chevron icon"></i></button>
+                <button class="ui  button"><i class="right chevron icon"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ui grid" ng-if="dashboardData.showLoader">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+      <app-loader></app-loader>
+    </div>
+  </div>
+  <div class="margin-top-10">
+    <div class="resource-padding ui grid">
+      <div class="one wide column"></div>
+      <div class="ten wide column">
+        <div class="ui tweleve wide column">
+          <table class="ui padded table">
+            <thead>
+              <tr class="announcementHeading">
+                <th>Name</th>
+                <th>Published</th>
+                <th>Sent</th>
+                <th>Recieved <span class="announcementBlueText">*</span></th>
+                <th>Seen <span class="announcementBlueText">*</span></th>
+                <!--<th>Actions</th>-->
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="item in announcementOutboxData.listData" class="tableListNameAnn">
+                <td>{{item.title}}</td>
+                <td>{{item.createdOn | date : "dd MMM yyyy"}}</td>
+                <td>N/A</td>
+                <td>N/A</td>
+                <td>N/A</td>
+                <!--<td class="announcementRedText cursor-pointer"><i class="icon ban"></i> Cancel</td>-->
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ui grid">
+    <div class="one wide column"></div>
+    <div class="ui grid">
+      <div class="twelve wide column">
+        <div class="ui">
+          <div class="text announcementDataText"> <span class="announcementBlueText">*</span> Consumption data last updated on 13 May '17 at 6.45 PM</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

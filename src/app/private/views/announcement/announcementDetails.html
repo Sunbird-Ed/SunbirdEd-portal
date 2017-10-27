@@ -1,0 +1,55 @@
+<div class="ui warning message tweleve wide column" ng-if="(announcementDetails | isValidObjectFilter) === false">
+  <div class="header">
+    Oops announcement details not found!
+  </div>
+  Please try again..
+</div>
+<div ng-if="(announcementDetails | isValidObjectFilter) === true">
+  <div>
+    <p class="ng-binding sliderCardDesc">{{announcementDetails.sourceId}} - {{announcementDetails.type}}</p>
+  </div>
+  <div class="header announcementCard-header padding-top-5">
+     <div class="header cardsHeading padding-top-10"> 
+      {{announcementDetails.title}}
+      </div>
+     <div class="sliderCardDesc padding-top-10">
+      {{announcementDetails.description}}
+     </div>
+  </div>
+  <div class="padding-top-20">
+     <strong class="header ng-binding">Weblinks</strong>
+  </div>
+  <div class="padding-top-10">
+    <div ng-repeat="link in announcementDetails.links"> 
+        <a href="{{link}}" target="_blank">{{link}}</a>
+    </div>
+  </div>
+  <div class="padding-top-20">
+     <strong class="header ng-binding">Attachments</strong>
+  </div>
+  <div class="sixteen wide column margin-bottom-20">
+     <div class="box">
+        <div class="ui items">
+           <div class="item borderBottom" ng-repeat="attachment in announcementDetails.attachments">
+              <div class="ui tiny image">
+                 <img src="/common/images/default.png">
+              </div>
+              <div class="middle aligned content">
+                 <a href="{{attachment.downloadURL}}" class="ui basic blue button float-ContentRight" target="_blank"> VIEW </a>
+                 <p>{{attachment.title}}</p>
+                 <p class="sliderCardDesc">{{attachment.filesize}}</p>
+              </div>
+           </div>
+        </div>
+     </div>
+  </div>
+  <div class="gray-full-width margin-bottom-0">
+     <span class="ng-binding sliderCardDesc redtext">
+     Sent on {{announcementDetails.createdOn  | date : "dd MMM yyyy"}}</span>
+     <!-- Sharing icon
+      <span class="sliderCardDesc float-ContentRight">
+        <i class="large share alternate icon"></i>
+      </span>
+    -->
+  </div>
+</div>

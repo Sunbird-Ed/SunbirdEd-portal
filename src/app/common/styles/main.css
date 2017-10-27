@@ -1844,12 +1844,69 @@ div:focus {
 }
 .announcementCustomside {
   min-width: 0em !important;
-  height: 7em !important;
+  height: 4em !important;
+  padding: 1em !important;
 }
 .announcementCardLeftBorder {
   border-radius: 10px !important;
   border-left-color: #007AFF !important;
   border-left-width: 11px !important;
+}
+.showingAllSentAnn {
+  color: #4A4A4A ;
+  font-family: "Open Sans";
+  font-size: 17px;
+  line-height: 19px;
+}
+.announcementHeading {
+  color: #9b9b9b  !important;
+  font-family: "Open Sans" !important;
+  font-size: 16px !important;
+  line-height: 19px !important;
+}
+.tableListNameAnn {
+  color: #4A4A4A ;
+  font-family: "Open Sans";
+  font-size: 16px;
+  line-height: 19px;
+}
+.announcementDataText {
+  color: #4A4A4A ;
+  font-family: "Open Sans";
+  font-size: 17px;
+  line-height: 19px;
+}
+.announcementButton {
+  border: 1px solid #007aff !important;
+  border-radius: 4px !important;
+}
+.announcementButtonText {
+  color: #007AFF !important;
+  font-family: 'sunbirdboldfont' !important;
+  font-size: 1em !important;
+  line-height: 17px;
+}
+.announcementSeeAllBtn {
+  padding: 8px;
+}
+.annMarginBottom {
+  margin-bottom: -1.2em !important;
+}
+.annAttText {
+  color: #4a4a4a !important;
+  padding: -7px !important;
+  font-size: 0.9em !important;
+}
+.annMediumText {
+  font-size: 1em !important;
+  font-weight: 600 !important;
+  font-family: sunbirdmediumfont !important;
+}
+.annSmallText {
+  font-size: 0.8em !important;
+}
+.annGridPadding {
+  padding: 0.9em !important;
 }
 .down-arrow-accordion {
   float: right !important;
