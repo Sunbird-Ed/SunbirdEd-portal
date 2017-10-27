@@ -16,7 +16,6 @@ angular.module('playerApp')
       draftContent.sortBy = 'desc'
       $scope.isSelected = false
       draftContent.selectedContentItem = []
-      draftContent.message = $rootScope.errorMessages.WORKSPACE
       draftContent.pageLimit = 9
       draftContent.pager = {}
       draftContent.error = {}
@@ -40,7 +39,7 @@ angular.module('playerApp')
 
       draftContent.getDraftContent = function (pageNumber) {
         pageNumber = pageNumber || 1
-        draftContent.loader = toasterService.loader('', draftContent.message.DRAFT.START)
+        draftContent.loader = toasterService.loader('', $rootScope.messages.stmsg.m0011)
 
         var request = {
           filters: {
@@ -67,18 +66,18 @@ angular.module('playerApp')
                         pageNumber, draftContent.pageLimit)
             if (draftContent.draftContentData.length === 0) {
               draftContent.error = showErrorMessage(true,
-                            $rootScope.errorMessages.WORKSPACE.DRAFT.NO_CONTENT,
-                            $rootScope.errorMessages.COMMON.NO_RESULTS)
+                            $rootScope.messages.stmsg.m0012,
+                            $rootScope.messages.stmsg.m0008)
             }
           } else {
             draftContent.loader.showLoader = false
             draftContent.error.showError = false
-            toasterService.error(draftContent.message.DRAFT.FAILED)
+            toasterService.error($rootScope.messages.fmsg.m0006)
           }
         }).catch(function () {
           draftContent.loader.showLoader = false
           draftContent.error.showError = false
-          toasterService.error(draftContent.message.DRAFT.FAILED)
+          toasterService.error($rootScope.messages.fmsg.m0006)
         })
       }
 
@@ -106,8 +105,7 @@ angular.module('playerApp')
       draftContent.deleteContent = function (contentId) {
         var requestData = [contentId]
         draftContent.hideRemoveContentModel()
-        draftContent.loader = toasterService.loader('', draftContent.message.RETIRE_CONTENT
-          .START)
+        draftContent.loader = toasterService.loader('', $rootScope.messages.stmsg.m0034)
         var request = {
           contentIds: requestData
         }
@@ -115,7 +113,7 @@ angular.module('playerApp')
           if (res && res.responseCode === 'OK') {
             draftContent.loader.showLoader = false
             draftContent.selectedContentItem = []
-            toasterService.success(draftContent.message.RETIRE_CONTENT.SUCCESS)
+            toasterService.success($rootScope.messages.smsg.m0006)
             draftContent.draftContentData = workSpaceUtilsService
               .removeContentLocal(draftContent.draftContentData, requestData)
             draftContent.pager = PaginationService
@@ -123,16 +121,16 @@ angular.module('playerApp')
                 draftContent.pageNumber, draftContent.pageLimit)
             if (draftContent.draftContentData.length === 0) {
               draftContent.error = showErrorMessage(true,
-                $rootScope.errorMessages.WORKSPACE.DRAFT.NO_CONTENT,
-                $rootScope.errorMessages.COMMON.NO_RESULTS)
+                $rootScope.messages.stmsg.m0012,
+                $rootScope.messages.stmsg.m0008)
             }
           } else {
             draftContent.loader.showLoader = false
-            toasterService.error(draftContent.message.RETIRE_CONTENT.FAILED)
+            toasterService.error($rootScope.messages.fmsg.m0022)
           }
         }).catch(function () {
           draftContent.loader.showLoader = false
-          toasterService.error(draftContent.message.RETIRE_CONTENT.FAILED)
+          toasterService.error($rootScope.messages.fmsg.m0022)
         })
       }
 

@@ -11,7 +11,7 @@
             </div>
             <div class="twelve wide column" ng-include=" 'views/profile/profileView/userEducation.html' ">
             </div>
-           <div ng-if="profileCtrl.userSkills!== undefined" class="twelve wide column" ng-include=" 'views/profile/profileView/userSkills.html' ">
+            <div class="twelve wide column" ng-include=" 'views/profile/profileView/userSkills.html' ">
             </div>
             <div class="twelve wide column" ng-include=" 'views/profile/profileView/userBasicInfo.html' ">
             </div>
@@ -21,14 +21,14 @@
         <div class="ui grid ">
 
             <div class="twelve wide column" ng-if="$root.profileCompleteness">
-                <div class="ui raised segment" >
+                <div class="ui raised segment">
                     <div class="profileitems profile-des ui relaxed aligned list">
                         <div class="item ">
                             <div class="right floated content ">
                                 <span class="ng-binding">{{$root.profileCompleteness}}%</span>
                             </div>
                             <div class="iniformationcontent content">
-                                {{$root.errorMessages.PROFILE.UPDATE_REMINDER.COMPLETENESS_TITLE}}
+                                {{$root.messages.imsg.m0017}}
                             </div>
                         </div>
                         <div class="item ">
@@ -68,7 +68,8 @@
                             <div class="content ">
                                 <a class=" header ">{{item.name}}</a>
                                 <div class="metadata ">
-                                    <span ng-if="item.me_averageRating" apply-script class="courseHeader-rating ui star rating" data-rating="{{item.me_averageRating |number:0}}" data-max-rating="5"></span>
+                                    <span ng-if="item.me_averageRating" apply-script class="courseHeader-rating ui star rating" data-rating="{{item.me_averageRating |number:0}}"
+                                        data-max-rating="5"></span>
                                     <span ng-if="!item.me_averageRating" class="date">{{item.createdOn | dateFilterWithMDY}}</span>
                                 </div>
                             </div>
@@ -131,7 +132,8 @@
                             <div class="content ">
                                 <a class="header ">Organic Chemistry for Std VII</a>
                                 <div class="meta ">
-                                    <span class="cinema "><div class="courseHeader-rating ui mini star rating " data-rating="3 "></div>(2,345)</span>
+                                    <span class="cinema ">
+                                        <div class="courseHeader-rating ui mini star rating " data-rating="3 "></div>(2,345)</span>
                                 </div>
                             </div>
                         </div>
@@ -142,7 +144,8 @@
                             <div class="content ">
                                 <a class="header ">Organic Chemistry for Std VII</a>
                                 <div class="meta ">
-                                    <span class="cinema "><div class="courseHeader-rating ui mini star rating " data-rating="3 "></div>(2,345)</span>
+                                    <span class="cinema ">
+                                        <div class="courseHeader-rating ui mini star rating " data-rating="3 "></div>(2,345)</span>
                                 </div>
                             </div>
                         </div>
@@ -153,7 +156,8 @@
                             <div class="content ">
                                 <a class="header ">Organic Chemistry for Std VII</a>
                                 <div class="meta ">
-                                    <span class="cinema "><div class="courseHeader-rating ui mini star rating " data-rating="3 "></div>(2,345)</span>
+                                    <span class="cinema ">
+                                        <div class="courseHeader-rating ui mini star rating " data-rating="3 "></div>(2,345)</span>
                                 </div>
                             </div>
                         </div>

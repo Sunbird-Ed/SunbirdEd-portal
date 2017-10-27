@@ -8,8 +8,6 @@ angular.module('playerApp')
 
         function ($rootScope, setupService, toasterService) {
             var setup = this;
-            var errorMessage = $rootScope.errorMessages.SETUP;
-
             setup.getOrgTypes = function () {
                 setup.loader = toasterService.loader('', 'loading please wait');
                 setupService.getOrgTypes().then(function (res) {
@@ -25,7 +23,7 @@ angular.module('playerApp')
                         if (err.message) {
                             toasterService.error(err.message);
                         } else {
-                            toasterService.error(errorMessage.GET_FAILURE);
+                            toasterService.error($rootScope.messages.fmsg.m0059);
                         }
                     }
                 });
@@ -68,7 +66,7 @@ angular.module('playerApp')
                 setupService.addOrgType(req).then(function (res) {
                     try {
                         if (res.responseCode === 'OK') {
-                            toasterService.success(errorMessage.ADD_SUCCESS);
+                            toasterService.success($rootScope.messages.smsg.m0035);
                             setup.getOrgTypes();
                         } else if (res.responseCode === 'CLIENT_ERROR') {
                             throw new Error(res.params.errmsg);
@@ -77,7 +75,7 @@ angular.module('playerApp')
                         if (err.message) {
                             toasterService.error(err.message);
                         } else {
-                            toasterService.error(errorMessage.ADD_FAILURE);
+                            toasterService.error($rootScope.messages.fmsg.m0058);
                         }
                     }
                 });
@@ -90,7 +88,7 @@ angular.module('playerApp')
                 setupService.updateOrgType(req).then(function (res) {
                     try {
                         if (res.responseCode === 'OK') {
-                            toasterService.success(orgType.name + errorMessage.UPDATE_SUCCESS);
+                            toasterService.success(orgType.name + $rootScope.messages.smsg.m0037);
                             setup.getOrgTypes();
                         } else if (res.responseCode === 'CLIENT_ERROR') {
                             throw new Error(res.params.errmsg);
@@ -99,7 +97,7 @@ angular.module('playerApp')
                         if (err.message) {
                             toasterService.error(err.message);
                         } else {
-                            toasterService.error(errorMessage.UPDATE_FAILURE);
+                            toasterService.error($rootScope.messages.fmsg.m0060);
                         }
                     }
                 });
