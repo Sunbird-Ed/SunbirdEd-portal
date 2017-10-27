@@ -2,7 +2,7 @@
     <div class="header">      
         <div class="ui grid">
             <div class="eleven wide column">
-               <span class="ui header">{{labels.Headers.signUp}}</span>
+               <span class="ui header">{{frmelmnts.scttl.signup}}</span>
             </div>
             <div class="one wide column actions">
                 <h5 class="ui basic icon circular button deny">
@@ -16,11 +16,11 @@
             <div class="  field">
                 <div class=" two fields">
                     <div class="required field ">
-                        <label>{{labels.SignUp.userName}}</label>
+                        <label>{{frmelmnts.lbl.username}}</label>
                         <input type="text" name="userName" placeholder="eg:user.name , min 5 character required" ng-model="newUser.userName">
                     </div>
                     <div class="required field">
-                        <label>{{labels.SignUp.password}}</label>
+                        <label>{{frmelmnts.lbl.password}}</label>
                         <input type="password" name="password" placeholder="Password" ng-model="newUser.password" />
                     </div>
                 </div>
@@ -28,7 +28,7 @@
             <div class="  field">
                 <div class=" two fields">
                     <div class=" required field">
-                        <label>{{labels.SignUp.name}}</label>
+                        <label>{{frmelmnts.lbl.name}}</label>
                         <input type="text" name="firstName" placeholder="First Name" ng-model="newUser.firstName">
                     </div>
                     <div class="field">
@@ -39,17 +39,17 @@
             </div>
             <div class="two fields">
                 <div class="required field">
-                    <label>{{labels.SignUp.phoneNumber}}</label>
+                    <label>{{frmelmnts.lbl.phonenumber}}</label>
                     <input type="text" name="phone" placeholder="eg:+91XXXXXXXXXX or XXXXXXXXXX" ng-model="newUser.phone">
                 </div>
                 <div class=" required field">
-                    <label>{{labels.SignUp.email}}</label>
+                    <label>{{frmelmnts.lbl.email}}</label>
                     <input type="text" name="email" placeholder="User@example.com" ng-model="newUser.email">
                 </div>
             </div>
 
             <div class=" required field" ng-init="newUser.formInit() ">
-                <label>{{labels.SignUp.language}}</label>
+                <label>{{frmelmnts.lbl.lang}}</label>
                 <select name="language" ng-selected="true" placeholder="Languages" class="ui fluid dropdown signupMultiple" ng-value="option.value" ng-options=" language for language in newUser.languages" ng-model="newUser.language">
                         <option value="">Languages</option>
                     </select>
@@ -66,6 +66,6 @@
         </div>
     </div>
     <div class="actions">
-        <div class="ui primary button" ng-click="newUser.submitForm()" ;>{{labels.Button.signUp}}</div>
+        <div class="ui primary button" ng-click="newUser.submitForm()" ;>{{frmelmnts.btn.signup}}</div>
     </div>
 </div>

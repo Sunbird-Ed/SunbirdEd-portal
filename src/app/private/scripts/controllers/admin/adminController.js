@@ -149,20 +149,20 @@ angular.module('playerApp')
           } else if (key === 'Organisations') {
             list.forEach(function (org) {
               switch (org.status) {
-              case 0:
-                org.status = 'INACTIVE'
-                break
-              case 1:
-                org.status = 'ACTIVE'
-                break
-              case 2:
-                org.status = 'BLOCKED'
-                break
-              case 3:
-                org.status = 'RETIRED'
-                break
-              default:
-                break
+                case 0:
+                  org.status = 'INACTIVE'
+                  break
+                case 1:
+                  org.status = 'ACTIVE'
+                  break
+                case 2:
+                  org.status = 'BLOCKED'
+                  break
+                case 3:
+                  org.status = 'RETIRED'
+                  break
+                default:
+                  break
               }
             })
             var orgNullReplacedToEmpty = JSON.stringify(list).replace(/null/g, '""')
@@ -184,16 +184,16 @@ angular.module('playerApp')
 
           adminService.deleteUser(removeReq).then(function (res) {
             if (res.result.response === 'SUCCESS') {
-              toasterService.success($rootScope.errorMessages.ADMIN.deleteSuccess)
+              toasterService.success($rootScope.messages.smsg.m0029)
               admin.searchResult = admin.searchResult.filter(function (user) {
                 if (user.identifier === identifier) {
                   user.status = 0
                 }
                 return user
               })
-            } else { toasterService.error($rootScope.errorMessages.ADMIN.fail) }
+            } else { toasterService.error($rootScope.messages.fmsg.m0051) }
                 }).catch(function(err) { // eslint-disable-line
-                  toasterService.error($rootScope.errorMessages.ADMIN.fail)
+                  toasterService.error($rootScope.messages.fmsg.m0051)
                 })
         }
 
@@ -203,7 +203,7 @@ angular.module('playerApp')
         }
         admin.editRoles = function (role, userRoles) {
           if (userRoles.includes(role) === true) {
-            admin.selectedOrgUserRoles = admin.selectedOrgUserRoles.filter(function (selectedRole) {
+             admin.selectedOrgUserRoles = admin.selectedOrgUserRoles.filter(function (selectedRole) {
               return selectedRole !== role
             })
           } else {
@@ -222,7 +222,7 @@ angular.module('playerApp')
 
           adminService.updateRoles(req).then(function (res) {
             if (res.responseCode === 'OK') {
-              toasterService.success($rootScope.errorMessages.ADMIN.roleUpdateSuccess)
+              toasterService.success($rootScope.messages.smsg.m0028)
               $('#changeUserRoles').modal('hide', function () {
                 $('#changeUserRoles').modal('hide')
               })
@@ -231,11 +231,11 @@ angular.module('playerApp')
                 $('#changeUserRoles').modal('hide')
               })
                         // profile.isError = true;
-              toasterService.error($rootScope.errorMessages.ADMIN.fail)
+              toasterService.error($rootScope.messages.fmsg.m0051)
             }
             }).catch(function(err) { // eslint-disable-line
               profile.isError = true
-              toasterService.error($rootScope.errorMessages.ADMIN.fail)
+              toasterService.error($rootScope.messages.fmsg.m0051)
             })
         }
 
