@@ -1,8 +1,8 @@
-<div id="addSkillModal" class="ui modal">   
-    <div class="header">      
+<div id="addSkillModal" class="ui modal">
+    <div class="header">
         <div class="ui grid">
             <div class="eleven wide column">
-               <span class="ui header">Add Skills</span>
+                <span class="ui header">{{$root.frmelmnts.lbl.addSkills}}</span>
             </div>
             <div class="one wide column actions">
                 <h5 class="ui basic icon circular button deny">
@@ -12,28 +12,35 @@
         </div>
     </div>
     <div class="content">
-            <div class="margin-bottom-15">
+        <div class="margin-bottom-15">
             <span class="padded chip margin-top--5" ng-repeat="selectedSkill in profileCtrl.selectedSkills">
-                <a class="ui label margin-top--5" >
-                   {{selectedSkill}}
-                    <i class="delete icon"ng-click="profileCtrl.removeSelectedSkill(selectedSkill)" ></i>
+                <a class="ui label margin-top--5">
+                    {{selectedSkill}}
+                    <i class="delete icon" ng-click="profileCtrl.removeSelectedSkill(selectedSkill)"></i>
                 </a>
             </span>
         </div>
-        <div class=" ui form" >
-                <div  id="addSkill" class="ui fluid multiple search selection dropdown">
-                       <input id="users" name="users" type="hidden"> <i class="dropdown icon"></i>
-                       <div class="default text">Start typing to add a skill</div>
-                       <div class="menu">
-                         <div class="item" ng-repeat="skill in profileCtrl.skills"data-value="{{skill}}">{{skill}}</div>
-                     </div>
-                       </div>
+        <div class=" ui form">
+            <div id="addSkill" class="ui fluid multiple search selection dropdown">
+                <input id="users" name="users" type="hidden">
+                <i class="dropdown icon"></i>
+                <div class="default text">
+                    {{$root.frmelmnts.instn.t0020}}
                 </div>
+                <div class="menu">
+                    <div class="item" ng-repeat="skill in profileCtrl.skills" data-value="{{skill}}">{{skill}}</div>
+                </div>
+            </div>
+        </div>
 
-        
+
     </div>
     <div class="actions margin-top-40">
-        <button class="ui cancel primary basic left floated button">CANCEL</button>
-        <div class="ui approve primary button" ng-click="profileCtrl.addSkills()">FINISH</div>
+        <button class="ui cancel primary basic left floated button">
+            {{$root.frmelmnts.btn.cancel}}
+        </button>
+        <div class="ui approve primary button" ng-click="profileCtrl.addSkills()">
+            {{$root.frmelmnts.btn.finish}}
+        </div>
     </div>
 </div>
