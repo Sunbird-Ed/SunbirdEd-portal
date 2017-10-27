@@ -9,8 +9,9 @@
           </div>
         </div>
         <div class="right floated three wide column padding-right-dropdown padding-right-10">
-          <div class="ui float-ContentRight">
-            <button class="ui primary basic button announcementButton"><span class="announcementButtonText">CREATE ANNOUNCEMENT</span></button>
+          <div class="ui float-ContentRight" ng-controller="createAnnouncementCtrl as createAnn">
+            <button class="ui primary basic button announcementButton" id="openmodal" ng-click="createAnn.createAnnouncement();"><span class="announcementButtonText">CREATE ANNOUNCEMENT</span></button>
+            <div ng-include="'views/announcement/createAnnouncement.html'"></div>
           </div>
         </div>
       </div>
