@@ -57,19 +57,16 @@ angular.module('playerApp')
                         contentLesson.initEKStepCE(res.result.content_id);
                     } else {
                         contentLesson.loader.showLoader = false;
-                        toasterService.error($rootScope
-                        .errorMessages.WORKSPACE.CREATE_LESSON.FAILED);
+                        toasterService.error($rootScope.messages.fmsg.m0007);
                     }
                 }).catch(function () {
                     contentLesson.loader.showLoader = false;
-                    toasterService.error($rootScope
-                    .errorMessages.WORKSPACE.CREATE_LESSON.FAILED);
+                    toasterService.error($rootScope.messages.fmsg.m0007);
                 });
             };
 
             contentLesson.saveMetaData = function (data) {
-                contentLesson.loader = toasterService.loader('', $rootScope
-            .errorMessages.WORKSPACE.CREATE_LESSON.START);
+                contentLesson.loader = toasterService.loader('', $rootScope.messages.stmsg.m0013);
 
                 var requestBody = angular.copy(data);
 
