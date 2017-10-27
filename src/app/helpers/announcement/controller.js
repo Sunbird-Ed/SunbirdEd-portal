@@ -17,7 +17,7 @@ class AnnouncementController {
       if (!request.isValid) throw { msg: request.error, statusCode: HttpStatus.BAD_REQUEST }
 
       try {
-        var userPermissions = await (this.__checkUserPermissions({ user: requestObj.request.createdBy }))
+        var userPermissions = await (this.__getUserPermissions({ user: requestObj.request.createdBy }))
       } catch (error) {
         throw { msg: 'user does not exist!', statusCode: HttpStatus.BAD_REQUEST }
       }
@@ -25,12 +25,20 @@ class AnnouncementController {
       if (!userPermissions.data.hasCreateAccess) throw { msg: 'user does not have create access', statusCode: HttpStatus.BAD_REQUEST }
 
       try {
-        let announcementObj = await (this.__createAnnouncement(requestObj.request))
-        if (announcementObj.data) return { data: announcementObj.data }
-        throw "unable to process the request!"
+        var newAnnouncementObj = await (this.__createAnnouncement(requestObj.request))               
       } catch (error) {
         throw { msg: 'unable to process the request!', statusCode: HttpStatus.BAD_REQUEST }
       }
+
+      try {
+        await(this.__createAnnouncementNotification(/*announcement data*/))
+        if (newAnnouncementObj.data) return { data: newAnnouncementObj.data }
+      } catch(e) {
+        // even if notification fails, it should still send annoucement in response
+        return { data: newAnnouncementObj.data }
+      }
+
+
     })
   }
 
@@ -59,7 +67,7 @@ class AnnouncementController {
     return { isValid: true }
   }
 
-  __checkUserPermissions(data) {
+  __getUserPermissions(data) {
     return new Promise((resolve, reject)  => {
       let query = { table: ObjectStore.MODEL.USERPERMISSIONS, query: { 'userid': data.user } }
 
@@ -85,6 +93,12 @@ class AnnouncementController {
         .catch((error) => {
           reject({ msg: 'unable to create announcement' })
         })
+    })
+  }
+
+  __createAnnouncementNotification() {
+    return new promise((resolve, reject) => {
+      resolve({ msg: 'notification sent!'})
     })
   }
 
