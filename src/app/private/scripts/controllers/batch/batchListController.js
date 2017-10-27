@@ -67,10 +67,10 @@ angular.module('playerApp')
                                   batch.userNames[val.identifier] = val.firstName + ' ' + val.lastName;
                               });
                           } else {
-                              toasterService.error(errorMessages.BATCH.GET_USERS.FAILED);
+                              toasterService.error($rootScope.messages.fmsg.m0056);
                           }
                       }).catch(function () {
-                          toasterService.error(errorMessages.BATCH.GET_USERS.FAILED);
+                          toasterService.error($rootScope.messages.fmsg.m0056);
                       });
                       batch.batchList = response.result.response.content || [];
                       batch.totalCount = response.result.response.count;
@@ -78,14 +78,14 @@ angular.module('playerApp')
                         pageNumber, batch.pageLimit);
                       if (batch.batchList.length === 0) {
                           batch.error = showErrorMessage(true,
-                                $rootScope.errorMessages.WORKSPACE.BATCHES.NO_CONTENT,
-                                $rootScope.errorMessages.COMMON.NO_RESULTS);
+                                $rootScope.messages.stmsg.m0020,
+                                $rootScope.messages.stmsg.m0008);
                       }
                   } else {
-                      toasterService.error(errorMessages.BATCH.SEARCH.FAILED);
+                      toasterService.error($rootScope.messages.fmsg.m0004);
                   }
               }).catch(function () {
-                  toasterService.error(errorMessages.BATCH.SEARCH.FAILED);
+                  toasterService.error($rootScope.messages.fmsg.m0004);
               });
           };
 
