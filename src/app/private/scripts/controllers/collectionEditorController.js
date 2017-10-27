@@ -115,7 +115,7 @@ angular.module('playerApp')
                 $('#collectionEditor').iziModal('open')
               }, 100)
             } else {
-              toasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED)
+              toasterService.warning($rootScope.messages.imsg.m0004)
               $state.go('Home')
             }
           }
