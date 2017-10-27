@@ -202,6 +202,9 @@
 .padding-left-25 {
   padding-left: 25px !important;
 }
+.padding-right-25 {
+  padding-right: 25px !important;
+}
 .padding-topBottom-35 {
   padding: 35px 0px!important;
 }
@@ -3257,6 +3260,52 @@ span.dashBoardMenuItem.active {
 }
 .cousreDashboardAlignIcon {
   margin-left: -30px !important;
+}
+.createAnnHeaderDesc {
+  font-size: small;
+  color: #979797;
+}
+.createAnnStepsIndicator {
+  margin-left: 75px;
+  background-color: #f2f2f2;
+  margin-bottom: auto;
+  padding: 10px  20px;
+}
+.createAnnFormScroller {
+  max-height: 400px;
+  overflow-y: auto;
+  height: 327px;
+}
+.createAnnAttchementHolder {
+  overflow-x: hidden;
+  max-height: 330px;
+  overflow-y: auto;
+}
+.createAnnErrorMsg {
+  border-color: red !important;
+  color: red;
+  margin-top: 5px;
+}
+.createAnnErrorDiv {
+  border-color: red !important;
+  color: red;
+}
+.createAnnColorGray {
+  color: #f2f2f2;
+}
+.createAnnBlueClass {
+  color: #007AFF !important;
+}
+.createAnnMargin5 {
+  margin: 5px;
+}
+.createAnnMargin4 {
+  margin: 4px;
+}
+.sb-createAnnFineUploaderHolder {
+  padding: 10px;
+  overflow: hidden;
+  background-color: #f2f2f2;
 }
 body {
   position: relative !important;
