@@ -90,6 +90,14 @@ if (default_tenant) {
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'private')))
 
+// Announcement routing
+app.use('/api/plugin/announcement', bodyParser.urlencoded({ extended: false }),
+  bodyParser.json({limit: '10mb' }), require('./helpers/announcement'))
+
+// Notification routing
+app.use('/api/notifications', bodyParser.urlencoded({ extended: false }),
+  bodyParser.json({limit: '10mb' }), require('./helpers/notifications'))
+
 app.use('/private/index', function (req, res, next) {
   res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate')
   res.header('Expires', '-1')
@@ -100,6 +108,7 @@ app.use('/private/index', function (req, res, next) {
 app.all('/', function (req, res) {
   res.locals.cdnUrl = envHelper.PORTAL_CDN_URL
   res.locals.theme = envHelper.PORTAL_THEME
+  res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
   res.render(__dirname + '/public/index.ejs')
 })
 

@@ -221,7 +221,7 @@ angular.module('playerApp').directive('search', function () {
                             $stateParams.query && $rootScope.search.selectedSearchKey ===
                             $stateParams.type) {
                             $rootScope.search.error = {}
-                            $rootScope.search.loader = toasterService.loader('', $rootScope.errorMessages.SEARCH.DATA.START)
+                            $rootScope.search.loader = toasterService.loader('', $rootScope.messages.stmsg.m0005)
                             $scope.search.handleSearch()
                         } else {
                             $scope.search.autoSuggest = false
@@ -249,7 +249,7 @@ angular.module('playerApp').directive('search', function () {
                 }
                 if (!$scope.search.autoSuggest || $scope.search.autoSuggest == false) {
                     if (!$rootScope.search.loader) {
-                        $rootScope.search.loader = toasterService.loader('', $rootScope.errorMessages.SEARCH.DATA.START)
+                        $rootScope.search.loader = toasterService.loader('', $rootScope.messages.stmsg.m0005)
                     }
                     $rootScope.search.loader.showLoader = true
                 }
@@ -364,8 +364,8 @@ angular.module('playerApp').directive('search', function () {
                             $rootScope.search.loader.showLoader = false
                             if (responseResult.count === 0) {
                                 $rootScope.search.error = showErrorMessage(true,
-                    $rootScope.errorMessages.SEARCH.DATA.NO_CONTENT,
-                    $rootScope.errorMessages.COMMON.NO_RESULTS, $rootScope.errorMessages.SEARCH.DATA.NO_CONTENT_TEXT)
+                    $rootScope.messages.stmsg.m0006,
+                    $rootScope.messages.stmsg.m0008, $rootScope.messages.stmsg.m0007)
                             } else {
                                 $rootScope.search.error = {}
                                 $rootScope.search.searchResult = responseResult
@@ -378,8 +378,8 @@ angular.module('playerApp').directive('search', function () {
                     } else {
                         $rootScope.search.loader.showLoader = false
                         $rootScope.search.error = showErrorMessage(true,
-                        $rootScope.errorMessages.SEARCH.DATA.FAILED,
-                        $rootScope.errorMessages.COMMON.ERROR)
+                        $rootScope.messages.fmsg.m0004,
+                        $rootScope.messages.emsg.m0002)
                         $scope.search.autoSuggest = true
                         clearTimeout($rootScope.search.typingTimer)
                         throw new Error('')
@@ -387,8 +387,8 @@ angular.module('playerApp').directive('search', function () {
                 }).catch(function (e) {
                     $rootScope.search.loader.showLoader = false
                     $rootScope.search.error = showErrorMessage(true,
-              $rootScope.errorMessages.SEARCH.DATA.FAILED,
-              $rootScope.errorMessages.COMMON.ERROR)
+              $rootScope.messages.fmsg.m0004,
+              $rootScope.messages.emsg.m0002)
                 })
             }
             var conceptSelHandler = $scope.$on('selectedConcepts', function (event, args) {
