@@ -16,7 +16,6 @@ angular.module('playerApp')
         allUploadedContent.sortBy = 'desc'
         $scope.isSelected = false
         allUploadedContent.selectedContentItem = []
-        allUploadedContent.message = $rootScope.errorMessages.WORKSPACE
         allUploadedContent.pageLimit = 9
         allUploadedContent.pager = {}
 
@@ -34,8 +33,7 @@ angular.module('playerApp')
 
         allUploadedContent.getAllUploadedContent = function (pageNumber) {
           pageNumber = pageNumber || 1
-          allUploadedContent.loader = toasterService.loader('', allUploadedContent.message
-                                        .ALL_UPLOADED.START)
+          allUploadedContent.loader = toasterService.loader('', $rootScope.messages.stmsg.m0023)
           allUploadedContent.error = {}
           var request = {
             filters: {
@@ -62,18 +60,18 @@ angular.module('playerApp')
               pageNumber, allUploadedContent.pageLimit)
               if (allUploadedContent.allUploadedContentData.length === 0) {
                 allUploadedContent.error = showErrorMessage(true,
-                $rootScope.errorMessages.WORKSPACE.ALL_UPLOADED.NO_CONTENT,
-                $rootScope.errorMessages.COMMON.NO_RESULTS)
+                $rootScope.messages.stmsg.m0024,
+                $rootScope.messages.stmsg.m0008)
               }
             } else {
               allUploadedContent.error.showError = false
               allUploadedContent.loader.showLoader = false
-              toasterService.error(allUploadedContent.message.ALL_UPLOADED.FAILED)
+              toasterService.error($rootScope.messages.fmsg.m0014)
             }
           }).catch(function () {
             allUploadedContent.error.showError = false
             allUploadedContent.loader.showLoader = false
-            toasterService.error(allUploadedContent.message.ALL_UPLOADED.FAILED)
+            toasterService.error($rootScope.messages.fmsg.m0014)
           })
         }
 
@@ -105,8 +103,7 @@ angular.module('playerApp')
         allUploadedContent.deleteContent = function (contentId) {
           var requestData = [contentId]
           allUploadedContent.hideRemoveContentModel()
-          allUploadedContent.loader = toasterService.loader('', allUploadedContent.message
-          .RETIRE_CONTENT.START)
+          allUploadedContent.loader = toasterService.loader('',$rootScope.messages.stmsg.m0034)
           var request = {
             contentIds: requestData
           }
@@ -114,7 +111,7 @@ angular.module('playerApp')
             if (res && res.responseCode === 'OK') {
               allUploadedContent.loader.showLoader = false
               allUploadedContent.selectedContentItem = []
-              toasterService.success(allUploadedContent.message.RETIRE_CONTENT.SUCCESS)
+              toasterService.success($rootScope.messages.smsg.m0006)
               allUploadedContent.allUploadedContentData = workSpaceUtilsService
               .removeContentLocal(allUploadedContent.allUploadedContentData, requestData)
               allUploadedContent.pager = PaginationService
@@ -122,16 +119,16 @@ angular.module('playerApp')
                 allUploadedContent.pageNumber, allUploadedContent.pageLimit)
               if (allUploadedContent.allUploadedContentData.length === 0) {
                 allUploadedContent.error = showErrorMessage(true,
-                $rootScope.errorMessages.WORKSPACE.ALL_UPLOADED.NO_CONTENT,
-                $rootScope.errorMessages.COMMON.NO_RESULTS)
+                $rootScope.messages.stmsg.m0024,
+                $rootScope.messages.stmsg.m0008)
               }
             } else {
               allUploadedContent.loader.showLoader = false
-              toasterService.error(allUploadedContent.message.RETIRE_CONTENT.FAILED)
+              toasterService.error($rootScope.messages.fmsg.m0022)
             }
           }).catch(function () {
             allUploadedContent.loader.showLoader = false
-            toasterService.error(allUploadedContent.message.RETIRE_CONTENT.FAILED)
+            toasterService.error($rootScope.messages.fmsg.m0022)
           })
         }
 

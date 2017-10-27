@@ -28,8 +28,7 @@ angular.module('playerApp')
 
     upForReviewContent.getUpForReviewContent = function (pageNumber) {
       pageNumber = pageNumber || 1
-      upForReviewContent.loader = toasterService.loader('', $rootScope.errorMessages
-        .WORKSPACE.UP_FOR_REVIEW.START)
+      upForReviewContent.loader = toasterService.loader('', $rootScope.messages.stmsg.m0032)
       upForReviewContent.error = {}
       var request = {
         filters: {
@@ -58,19 +57,18 @@ angular.module('playerApp')
                         pageNumber, upForReviewContent.pageLimit)
           if (upForReviewContent.upForReviewContentData.length === 0) {
             upForReviewContent.error = showErrorMessage(true,
-                $rootScope.errorMessages.WORKSPACE.UP_FOR_REVIEW.NO_CONTENT,
-                $rootScope.errorMessages.COMMON.NO_RESULTS)
+                $rootScope.messages.stmsg.m0033,
+                $rootScope.messages.stmsg.m0008)
           }
         } else {
           upForReviewContent.loader.showLoader = false
           upForReviewContent.error.showError = false
-          toasterService.error($rootScope.errorMessages.WORKSPACE.UP_FOR_REVIEW
-            .FAILED)
+          toasterService.error($rootScope.messages.fmsg.m0021)
         }
       }).catch(function () {
         upForReviewContent.loader.showLoader = false
         upForReviewContent.error.showError = false
-        toasterService.error($rootScope.errorMessages.WORKSPACE.UP_FOR_REVIEW.FAILED)
+        toasterService.error($rootScope.messages.fmsg.m0021)
       })
     }
 
