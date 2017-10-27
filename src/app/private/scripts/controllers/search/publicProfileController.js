@@ -39,7 +39,7 @@ angular.module('playerApp') // add those all values
          */
           publicProfile.profile = function (endorsement) {
               publicProfile.loader = toasterService
-                                    .loader('', $rootScope.errorMessages.SEARCH.DATA.START)
+                                    .loader('', $rootScope.messages.stmsg.m0005)
 
               searchService.getPublicUserProfile(userIdentifier, endorsement).then(function (res) {
                   publicProfile.loader.showLoader = false
@@ -64,11 +64,11 @@ angular.module('playerApp') // add those all values
 
                       publicProfile.userSkills = userSkills
                   } else {
-                      toasterService.error($rootScope.errorMessages.SEARCH.USER.PROFILE_FAILED)
+                      toasterService.error($rootScope.messages.fmsg.m0005)
                   }
               }).catch(function () {
                   publicProfile.loader.showLoader = false
-                  toasterService.error($rootScope.errorMessages.SEARCH.USER.PROFILE_FAILED)
+                  toasterService.error($rootScope.messages.fmsg.m0005)
               })
           }
           publicProfile.close = function () {
@@ -91,6 +91,8 @@ angular.module('playerApp') // add those all values
               userService.addSkills({ request: { skillName: [skill], endorsedUserId: userIdentifier } }).then(function (response) {
                   if (response && response.responseCode === 'OK') {
                       publicProfile.profile('endorsement')
+                  } else {
+                      toasterService.error($rootScope.messages.fmsg.m0063)
                   }
               })
           }

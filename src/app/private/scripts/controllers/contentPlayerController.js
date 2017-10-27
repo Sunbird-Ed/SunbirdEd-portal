@@ -101,11 +101,11 @@ angular.module('playerApp')
                         $scope.errorObject = {};
                         showPlayer(response.result.content);
                     } else {
-                        var message = $rootScope.errorMessages.COMMON.UNABLE_TO_PLAY;
+                        var message = $rootScope.messages.stmsg.m0009;
                         showLoaderWithMessage(false, message, true, true);
                     }
                 }).catch(function () {
-                    var message = $rootScope.errorMessages.COMMON.UNABLE_TO_PLAY;
+                    var message = $rootScope.messages.stmsg.m0009;
                     showLoaderWithMessage(false, message, true, true);
                 });
             }
