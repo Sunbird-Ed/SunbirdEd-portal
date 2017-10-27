@@ -7,43 +7,39 @@ angular.module('playerApp')
      * @desc Service for validating forms.
      * @memberOf Services
      */
-        var basicProfileValidation = $rootScope.errorMessages.PROFILE.FORM_VALIDATION.BASIC_PROFILE;
-        var addressValidation = $rootScope.errorMessages.PROFILE.FORM_VALIDATION.ADDRESS;
-        var educationValidation = $rootScope.errorMessages.PROFILE.FORM_VALIDATION.EDUCATION;
-        var JobProfileValidation = $rootScope.errorMessages.PROFILE.FORM_VALIDATION.JOB_PROFILE;
-        var addressFields = [
-          { fieldName: 'addressType', type: 'checked', prompt: addressValidation.address_type },
-          { fieldName: 'addLine1', type: 'empty', prompt: addressValidation.addLine1 },
-          { fieldName: 'city', type: 'empty', prompt: addressValidation.city },
-          { fieldName: 'pinCode', type: 'regExp[^[0-9]*$]', prompt: addressValidation.pin_code }
+        
+       var addressFields = [
+          { fieldName: 'addressType', type: 'checked', prompt: $rootScope.messages.stmsg.m0062 },
+          { fieldName: 'addLine1', type: 'empty', prompt: $rootScope.messages.stmsg.m0063 },
+          { fieldName: 'city', type: 'empty', prompt: $rootScope.messages.stmsg.m0064 },
+          { fieldName: 'pinCode', type: 'regExp[^[0-9]*$]', prompt: $rootScope.messages.stmsg.m0065 }
         ];
         var educationFields = [
-          { fieldName: 'degree', type: 'empty', prompt: educationValidation.address_type },
-          { fieldName: 'institute', type: 'empty', prompt: educationValidation.institute }
+          { fieldName: 'degree', type: 'empty', prompt: $rootScope.messages.stmsg.m0062 },
+          { fieldName: 'institute', type: 'empty', prompt: $rootScope.messages.stmsg.m0070 }
         ];
         var jobProfileFields = [
-          { fieldName: 'jobName', type: 'empty', prompt: JobProfileValidation.jobName },
-          { fieldName: 'org', type: 'empty', prompt: JobProfileValidation.org }
+          { fieldName: 'jobName', type: 'empty', prompt: $rootScope.messages.stmsg.m0072 },
+          { fieldName: 'org', type: 'empty', prompt: $rootScope.messages.stmsg.m0073 }
         ];
         var basicInfoFields = [
             { fieldName: 'firstName',
                 type: 'regExp[^[0-9]*[A-Za-z\\s][0-9A-Za-z\\s]*$]',
-                prompt: basicProfileValidation.firstName
+                prompt: $rootScope.messages.stmsg.m0066
             },
             { fieldName: 'phone',
                 type: 'regExp[(^(?:(?:\\+|0{0,2})91(\\s*[\\-]\\s*)?|[0]?)?[789]\\d{9}$)|(([*]*)[0-9]{4})]',
-                prompt: basicProfileValidation.phone
+                prompt: $rootScope.messages.stmsg.m0067
             },
             { fieldName: 'email',
                 type: 'email',
-                prompt: basicProfileValidation.email
+                prompt: $rootScope.messages.stmsg.m0068
             },
             { fieldName: 'language',
                 type: 'empty',
-                prompt: basicProfileValidation.language },
-            { fieldName: 'aadhar',
-                type: 'regExp[^[0-9]*$]',
-                prompt: basicProfileValidation.addhar }
+                prompt: $rootScope.messages.stmsg.m0069 
+            }
+            
         ];
         /**
              * @method getFields
