@@ -35,9 +35,7 @@ const express = require('express'),
   default_tenant = envHelper.DEFAUULT_TENANT,
   md5 = require('js-md5'),
   sunbird_api_auth_token = envHelper.PORTAL_API_AUTH_TOKEN,
-  portal = this,
-  requestLogStream = fs.createWriteStream(__dirname + '/appRequest.log', {flags: 'a'}),
-  morgan = require('morgan')
+  portal = this
 
 let cassandraCP = envHelper.PORTAL_CASSANDRA_URLS
 
@@ -99,7 +97,6 @@ app.use(session({
   saveUninitialized: false,
   store: memoryStore
 }))
-app.use(morgan('combined', { stream: requestLogStream }))
 
 app.use(keycloak.middleware({ admin: '/callback', logout: '/logout' }))
 
@@ -212,8 +209,8 @@ const proxyReqPathResolverMethod = function (req) {
 app.use('/api/plugin/announcement', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({limit: '10mb' }), require('./helpers/announcement'))
 
-app.use('/api/notifications',bodyParser.urlencoded({extend:false}),
-  bodyParser.json({limit: '10mb' }),require('./helpers/notifications'))
+app.use('/api/notifications', bodyParser.urlencoded({ extended: false }),
+  bodyParser.json({limit: '10mb' }), require('./helpers/notifications'))
 
 app.use('/api/*', permissionsHelper.checkPermission(), proxy(contentProxyUrl, {
   preserveHostHdr: true,
