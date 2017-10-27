@@ -147,6 +147,27 @@ angular.module('playerApp')
                   }]
 
                   break
+                case 'announcementOutbox':
+                  $rootScope.breadCrumbsData = [{
+                    name: 'Home',
+                    link: 'home'
+                  }, {
+                    name: 'Announcement Dashboard',
+                    link: ''
+                  }]
+
+                  break
+                case 'announcementInbox':
+
+                  $rootScope.breadCrumbsData = [{
+                    name: 'Home',
+                    link: 'home'
+                  }, {
+                    name: 'Announcement Dashboard',
+                    link: ''
+                  }]
+
+                  break
                 case 'Profile':
 
                   $rootScope.breadCrumbsData = [{
@@ -322,13 +343,13 @@ angular.module('playerApp')
              *  @param {string}  event - Event
              * @instance
              */
-                this.checkStateAccess = function (data, flag, event) {
-                    if (permissionsService.checkRolesPermissions(data, flag)) {
-                        toasterService.warning($rootScope.messages.imsg.m0004);
-                        event.preventDefault();
-                        $state.go('Home');
-                    }
-                };
+            this.checkStateAccess = function (data, flag, event) {
+              if (permissionsService.checkRolesPermissions(data, flag)) {
+                toasterService.warning($rootScope.messages.imsg.m0004)
+                event.preventDefault()
+                $state.go('Home')
+              }
+            }
             /**
              * @method clearSearchSettings
              * @desc Clear search settings from rootScope

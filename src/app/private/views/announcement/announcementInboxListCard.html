@@ -1,0 +1,40 @@
+<div></div>
+<div class="ui raised segment announcementCardLeftBorder annGridPadding cursor-pointer" ng-repeat="item in announcementInboxData.listData" ng-click="announcementInboxData.showAnnouncementDetails(item)">
+  <div>
+    <p class="ng-binding sliderCardDesc">{{item.createdBy}} - {{item.type}}</p>
+  </div>
+  <div class="header announcementCard-header padding-top-5">
+    <span class="header cardsHeading ng-binding"> {{item.title}} </span>
+  </div>
+  <div class="padding-top-5">
+    <span class="ng-binding">{{item.description | limitTo:180}}</span><span ng-show="item.description.length > 180"> ...<span class="announcementBlueText"> Read More</span></span>
+  </div>
+  <div class="padding-top-10">
+    <p class="ng-binding annMediumText">Weblinks</p>
+  </div>
+  <div ng-repeat="links in item.links">
+    <p class="ng-binding announcementBlueText cursor-pointer ">{{links}}</p>
+  </div>
+  <div class="padding-top-20">
+    <p class="ng-binding annMediumText">Attachments</p>
+  </div>
+  <div class="ui cube shape padding-top-10 padding-right-10" ng-repeat="attachments in item.attachments">
+    <div class="sides">
+      <div class="active announcementCustomside side">
+        <div class="content">
+          <div class="center annAttText" ng-init="fileExtension = announcementInboxData.getFileExtension(attachments.mimetype)">
+            <span ng-repeat="extension in fileExtension">{{extension}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="padding-top-5">
+      <span class="ng-binding sliderCardDesc annSmallText">{{attachments.title | limitTo:8}}</span><span ng-show="attachments.title.length > 10" class="sliderCardDesc"> ...</span>
+    </div>
+  </div>
+  <div class="ui divider"></div>
+  <div>
+    <span class="ng-binding sliderCardDesc">Sent on {{item.createdOn  | date : "dd MMM yyyy"}}</span>
+    <!--<span class="sliderCardDesc float-ContentRight"><i class="large share alternate icon"></i></span>-->
+  </div>
+</div>
