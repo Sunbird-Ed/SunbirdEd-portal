@@ -245,7 +245,6 @@
             "workSpace": "Workspace",
             "logout": "Logout",
             "dashboard": "Admin dashboard",
-            "announcement": "Announcement dashboard",
             "myActivity": "My Activity"
         },
         "CONTENT_FLAG": {
