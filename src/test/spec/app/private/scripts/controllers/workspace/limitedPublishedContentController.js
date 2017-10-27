@@ -1,12 +1,12 @@
 /**
- * name: allUploadedContentController.js
+ * name: limitedPublishedContentController.js
  * author: Anuj Gupta
  * Date: 26-09-2017
  */
 
 'use strict'
 
-describe('Controller: AllUploadedContentController', function () {
+describe('Controller: limitedPublishedContentController', function () {
     // load the controller's module
   beforeEach(module('playerApp'))
 
@@ -22,7 +22,7 @@ describe('Controller: AllUploadedContentController', function () {
     searchService,
     scope,
     rootScope,
-    allUploadedContent,
+    limitedPublishedContent,
     $q,
     deferred,
     timeout
@@ -44,7 +44,7 @@ describe('Controller: AllUploadedContentController', function () {
     timeout = _$timeout_
     deferred = _$q_.defer()
 
-    allUploadedContent = $controller('AllUploadedContentController', {
+    limitedPublishedContent = $controller('LimitedPublishedContentController', {
       $rootScope: rootScope,
       $scope: scope,
       contentService: contentService,
@@ -53,9 +53,9 @@ describe('Controller: AllUploadedContentController', function () {
   }))
 
   it('Should return when pass invalid page number', function () {
-    allUploadedContent.pager.totalPages = 5
-    spyOn(allUploadedContent, 'setPage').and.callThrough()
-    allUploadedContent.setPage(10)
+    limitedPublishedContent.pager.totalPages = 5
+    spyOn(limitedPublishedContent, 'setPage').and.callThrough()
+    limitedPublishedContent.setPage(10)
   })
 
   describe('Get all uploaded content', function () {
@@ -77,8 +77,8 @@ describe('Controller: AllUploadedContentController', function () {
     it('success', function () {
       spyOn(searchService, 'search').and.returnValue(deferred.promise)
       deferred.resolve(successResponce)
-      spyOn(allUploadedContent, 'setPage').and.callThrough()
-      allUploadedContent.setPage(1)
+      spyOn(limitedPublishedContent, 'setPage').and.callThrough()
+      limitedPublishedContent.setPage(1)
       scope.$apply()
       var response = searchService.search().$$state.value
       expect(response.result).not.toBe(undefined)
@@ -87,8 +87,8 @@ describe('Controller: AllUploadedContentController', function () {
     it('success with no content', function () {
       spyOn(searchService, 'search').and.returnValue(deferred.promise)
       deferred.resolve(successResponseWithNoResult)
-      spyOn(allUploadedContent, 'setPage').and.callThrough()
-      allUploadedContent.setPage(1)
+      spyOn(limitedPublishedContent, 'setPage').and.callThrough()
+      limitedPublishedContent.setPage(1)
       scope.$apply()
       var response = searchService.search().$$state.value
       expect(response.result).not.toBe(undefined)
@@ -97,8 +97,8 @@ describe('Controller: AllUploadedContentController', function () {
     it('failed due to missing required field', function () {
       spyOn(searchService, 'search').and.returnValue(deferred.promise)
       deferred.resolve(failedResponce)
-      spyOn(allUploadedContent, 'setPage').and.callThrough()
-      allUploadedContent.setPage(1)
+      spyOn(limitedPublishedContent, 'setPage').and.callThrough()
+      limitedPublishedContent.setPage(1)
       scope.$apply()
       var response = searchService.search().$$state.value
       expect(response).not.toBe(undefined)
@@ -107,34 +107,34 @@ describe('Controller: AllUploadedContentController', function () {
     it('failed due to external error', function () {
       spyOn(searchService, 'search').and.returnValue(deferred.promise)
       deferred.reject()
-      spyOn(allUploadedContent, 'setPage').and.callThrough()
-      allUploadedContent.setPage(1)
+      spyOn(limitedPublishedContent, 'setPage').and.callThrough()
+      limitedPublishedContent.setPage(1)
       scope.$apply()
     })
   })
 
   it('Should open content editor', function () {
-    spyOn(allUploadedContent, 'openContentEditor').and.callThrough()
-    allUploadedContent.openContentEditor({mimeType: 'video/mp4'})
+    spyOn(limitedPublishedContent, 'openContentPlayer').and.callThrough()
+    limitedPublishedContent.openContentPlayer({mimeType: 'video/mp4'})
   })
 
   it('Should initialize ui element', function () {
-    spyOn(allUploadedContent, 'initializeUIElement').and.callThrough()
-    allUploadedContent.initializeUIElement()
+    spyOn(limitedPublishedContent, 'initializeUIElement').and.callThrough()
+    limitedPublishedContent.initializeUIElement()
   })
 
   it('Should open remove content model', function () {
-    spyOn(allUploadedContent, 'openRemoveContentModel').and.callThrough()
-    allUploadedContent.openRemoveContentModel('223423423')
+    spyOn(limitedPublishedContent, 'openRemoveContentModel').and.callThrough()
+    limitedPublishedContent.openRemoveContentModel('223423423')
     timeout.flush(10)
-    expect(allUploadedContent.showRemoveContentModel).toBe(true)
+    expect(limitedPublishedContent.showRemoveContentModel).toBe(true)
   })
 
   it('Should remove content model', function () {
-    spyOn(allUploadedContent, 'openRemoveContentModel').and.callThrough()
-    allUploadedContent.openRemoveContentModel('223423423')
+    spyOn(limitedPublishedContent, 'openRemoveContentModel').and.callThrough()
+    limitedPublishedContent.openRemoveContentModel('223423423')
     timeout.flush(10)
-    expect(allUploadedContent.showRemoveContentModel).toBe(true)
+    expect(limitedPublishedContent.showRemoveContentModel).toBe(true)
   })
 
   describe('Remove content', function () {
@@ -150,8 +150,8 @@ describe('Controller: AllUploadedContentController', function () {
     it('success', function () {
       spyOn(contentService, 'retire').and.returnValue(deferred.promise)
       deferred.resolve(retireSuccessResponce)
-      spyOn(allUploadedContent, 'deleteContent').and.callThrough()
-      allUploadedContent.deleteContent('do_212342342342342')
+      spyOn(limitedPublishedContent, 'deleteContent').and.callThrough()
+      limitedPublishedContent.deleteContent('do_212342342342342')
       scope.$apply()
       var response = contentService.retire().$$state.value
       expect(response.result).not.toBe(undefined)
@@ -160,8 +160,8 @@ describe('Controller: AllUploadedContentController', function () {
     it('failed due to missing required field', function () {
       spyOn(contentService, 'retire').and.returnValue(deferred.promise)
       deferred.resolve(retireFailedResponce)
-      spyOn(allUploadedContent, 'deleteContent').and.callThrough()
-      allUploadedContent.deleteContent('do_212342342342342')
+      spyOn(limitedPublishedContent, 'deleteContent').and.callThrough()
+      limitedPublishedContent.deleteContent('do_212342342342342')
       scope.$apply()
       var response = contentService.retire().$$state.value
       expect(response).not.toBe(undefined)
@@ -170,8 +170,8 @@ describe('Controller: AllUploadedContentController', function () {
     it('failed due to external error', function () {
       spyOn(contentService, 'retire').and.returnValue(deferred.promise)
       deferred.reject({})
-      spyOn(allUploadedContent, 'deleteContent').and.callThrough()
-      allUploadedContent.deleteContent('do_212342342342342')
+      spyOn(limitedPublishedContent, 'deleteContent').and.callThrough()
+      limitedPublishedContent.deleteContent('do_212342342342342')
       scope.$apply()
     })
   })
@@ -179,16 +179,16 @@ describe('Controller: AllUploadedContentController', function () {
   it('Check condition after deleting content', function () {
     spyOn(contentService, 'retire').and.returnValue(deferred.promise)
     deferred.resolve(retireSuccessResponce)
-    allUploadedContent.allUploadedContentData = []
-    spyOn(allUploadedContent, 'deleteContent').and.callThrough()
-    allUploadedContent.deleteContent('12321312312')
+    limitedPublishedContent.limitedPublishedContentData = []
+    spyOn(limitedPublishedContent, 'deleteContent').and.callThrough()
+    limitedPublishedContent.deleteContent('12321312312')
     scope.$apply()
     var response = contentService.retire().$$state.value
     expect(response).not.toBe(undefined)
   })
 
   it('init the popup', function () {
-    spyOn(allUploadedContent, 'initTocPopup').and.callThrough()
-    allUploadedContent.initTocPopup()
+    spyOn(limitedPublishedContent, 'initTocPopup').and.callThrough()
+    limitedPublishedContent.initTocPopup()
   })
 })

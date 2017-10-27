@@ -22,13 +22,6 @@ angular.module('playerApp')
             toasterService, config, $timeout, $filter, uuid4, formValidation, searchService,
             $state, learnService, adminService, workSpaceUtilsService, $q, $anchorScroll) {
             var profile = this
-            var apiMessages = $rootScope.errorMessages.PROFILE.API
-            var updateSuccess = $rootScope.errorMessages.PROFILE.API.UPDATE.SUCCESS
-            var updateFailure = $rootScope.errorMessages.PROFILE.API.UPDATE.FAILURE
-            var addSuccess = $rootScope.errorMessages.PROFILE.API.ADD.SUCCESS
-            var addFailure = $rootScope.errorMessages.PROFILE.API.ADD.FAILURE
-            var deleteSuccess = $rootScope.errorMessages.PROFILE.API.DELETE.SUCCESS
-            var deleteFailure = $rootScope.errorMessages.PROFILE.API.DELETE.FAILURE
             profile.defaultLimit = 4
             profile.limit = profile.defaultLimit
             profile.resetLimit = 0
@@ -142,18 +135,18 @@ angular.module('playerApp')
                 } else {
                     profile.loader.showLoader = false
                     profile.isError = true
-                    toasterService.error(apiMessages.ERROR.get)
+                    toasterService.error($rootScope.messages.fmsg.m0005)
                 }
             }
                 // fetch profile
             profile.getProfile = function (fields) {
-                profile.loader = toasterService.loader('', apiMessages.SUCCESS.loadingProfile)
+                profile.loader = toasterService.loader('', $rootScope.messages.stmsg.m0074)
                 userService.getUserProfile(profile.userId, fields).then(function (successResponse) {
                     profile.processProfileData(successResponse)
                 }).catch(function () {
                     profile.loader.showLoader = false
                     profile.isError = true
-                    toasterService.error(apiMessages.ERROR.get)
+                    toasterService.error($rootScope.messages.fmsg.m0005)
                 })
             }
 
@@ -167,7 +160,7 @@ angular.module('playerApp')
                     request: updateReq
                 }
                 profile.disableSave = true
-                profile.loader = toasterService.loader('', apiMessages.SUCCESS.editingProfile)
+                profile.loader = toasterService.loader('', $rootScope.messages.stmsg.m0075)
                 return userService
                     .updateUserProfile(profile.updateProfileRequest, profile.fullName, profile.email)
                     .then(function (successResponse) {
@@ -180,7 +173,7 @@ angular.module('playerApp')
                     }).catch(function (err) {
                         if (err.message) {
                             throw new Error(err.message)
-                        } else { throw new Error(apiMessages.ERROR.update) }
+                        } else { throw new Error($rootScope.messages.fmsg.m0048) }
                     })
             }
 
@@ -215,7 +208,7 @@ angular.module('playerApp')
                     deferred.resolve(true)
                     return deferred.promise
                 }
-                toasterService.warning($rootScope.errorMessages.COMMON.INVALID_IMAGE)
+                toasterService.warning($rootScope.messages.imsg.m0005)
                 throw new Error('')
             }
 
@@ -233,14 +226,14 @@ angular.module('playerApp')
                                         profile.updateUserInfo(
                                             req,
                                             'basicProfileForm',
-                                            updateSuccess.avatar,
-                                            updateFailure.avatar)
+                                             $rootScope.messages.smsg.m0018,
+                                             $rootScope.messages.fmsg.m0035)
                                     } else {
-                                        profile.error = toasterService.error(apiMessages.ERROR.update)
+                                        profile.error = toasterService.error($rootScope.messages.fmsg.m0048)
                                     }
                                 }).catch(function () {
                                     profile.loader.showLoader = false
-                                    profile.error = toasterService.error(apiMessages.ERROR.update)
+                                    profile.error = toasterService.error($rootScope.messages.fmsg.m0048)
                                 })
                         })
                 } catch (e) {
@@ -302,8 +295,8 @@ angular.module('playerApp')
                     profile.updateUserInfo(
                         basicInfo,
                         'basicProfileForm',
-                        updateSuccess.basicInfo,
-                        updateFailure.basicInfo)
+                         $rootScope.messages.smsg.m0022,
+                         $rootScope.messages.fmsg.m0039)
                 } else return false
             }
 
@@ -316,8 +309,8 @@ angular.module('playerApp')
                     profile.updateUserInfo(
                         req,
                         'addressForm',
-                        addSuccess.address,
-                        addFailure.address
+                        $rootScope.messages.smsg.m0026,
+                        $rootScope.messages.fmsg.m0046
                     )
                 } else return false
             }
@@ -329,8 +322,8 @@ angular.module('playerApp')
                     profile.updateUserInfo(
                         req,
                         'addressForm',
-                        updateSuccess.address,
-                        updateFailure.address
+                         $rootScope.messages.smsg.m0023,
+                         $rootScope.messages.fmsg.m0040
                     )
                 } else {
                     return false
@@ -344,8 +337,8 @@ angular.module('playerApp')
                 profile.updateUserInfo(
                     req,
                     'addressForm',
-                    deleteSuccess.address,
-                    deleteFailure.address
+                    $rootScope.messages.smsg.m0016,
+                    $rootScope.messages.fmsg.m0043
                 )
             }
 
@@ -364,8 +357,8 @@ angular.module('playerApp')
                     profile.updateUserInfo(
                         req,
                         'educationForm',
-                        addSuccess.education,
-                        addFailure.education
+                        $rootScope.messages.smsg.m0024,
+                        $rootScope.messages.fmsg.m0044
                     )
                 } else return false
             }
@@ -383,8 +376,8 @@ angular.module('playerApp')
                     profile.updateUserInfo(
                         req,
                         'educationForm',
-                        updateSuccess.education,
-                        updateFailure.education)
+                         $rootScope.messages.smsg.m0020,
+                         $rootScope.messages.fmsg.m0037)
                 } else return false
             }
 
@@ -394,8 +387,8 @@ angular.module('playerApp')
                 profile.updateUserInfo(
                     req,
                     'educationForm',
-                    deleteSuccess.education,
-                    deleteFailure.education)
+                    $rootScope.messages.smsg.m0014,
+                    $rootScope.messages.fmsg.m0041)
             }
 
             // edit experience
@@ -419,8 +412,8 @@ angular.module('playerApp')
                     profile.updateUserInfo(
                         req,
                         'experienceForm',
-                        addSuccess.experience,
-                        addFailure.experience
+                        $rootScope.messages.smsg.m0025,
+                        $rootScope.messages.fmsg.m0045
                     )
                 } else return false
             }
@@ -454,8 +447,8 @@ angular.module('playerApp')
                     profile.updateUserInfo(
                         req,
                         'experienceForm',
-                        updateSuccess.experience,
-                        updateFailure.experience)
+                         $rootScope.messages.smsg.m0021,
+                         $rootScope.messages.fmsg.m0038)
                 } else return false
             }
 
@@ -465,8 +458,8 @@ angular.module('playerApp')
                 profile.updateUserInfo(
                         req,
                         'experienceForm',
-                        deleteSuccess.experience,
-                        deleteFailure.experience)
+                        $rootScope.messages.smsg.m0015,
+                        $rootScope.messages.fmsg.m0042)
             }
                 // update Description
             profile.EditDetails = function (details) {
@@ -474,8 +467,8 @@ angular.module('playerApp')
                 profile.updateUserInfo(
                     req,
                     'openDiscriptionEdit',
-                    updateSuccess.description,
-                    updateFailure.description)
+                     $rootScope.messages.smsg.m0019,
+                     $rootScope.messages.fmsg.m0061)
             }
 
             profile.setEditStart = function (id, index, joinDate) {
@@ -702,6 +695,7 @@ angular.module('playerApp')
                 $timeout(function () {
                     $('#addSkillModal').modal({
                         onShow: function () {
+                            $('#addSkill').dropdown('clear')
                             var excludeHasResults = false
                             $.fn.dropdown.settings.templates.addition = function (search) {
                                 var output = 'Add '
@@ -775,10 +769,10 @@ angular.module('playerApp')
                 if (!isNoNewSkill) {
                     userService.addSkills(req).then(function (response) {
                         if (response && response.responseCode === 'OK') {
-                            toasterService.success(addSuccess.skill)
+                            toasterService.success($rootScope.messages.smsg.m0038)
                             profile.getProfile()
                         } else {
-                            toasterService.error(addFailure.skill)
+                            toasterService.error($rootScope.messages.fmsg.m0062)
                         }
                     })
                 }

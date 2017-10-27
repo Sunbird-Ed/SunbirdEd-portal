@@ -92,8 +92,8 @@ angular.module('playerApp')
 
         var validateModal = {
           state: ['WorkSpace.UpForReviewContent', 'WorkSpace.ReviewContent',
-            'WorkSpace.PublishedContent', 'WorkSpace.FlaggedContent'],
-          status: ['Review', 'Draft', 'Live', 'Flagged'],
+            'WorkSpace.PublishedContent', 'WorkSpace.FlaggedContent', 'LimitedPublishedContent'],
+          status: ['Review', 'Draft', 'Live', 'Flagged', 'Unlisted'],
           mimeType: 'application/vnd.ekstep.content-collection'
         }
 
@@ -115,7 +115,7 @@ angular.module('playerApp')
                 $('#collectionEditor').iziModal('open')
               }, 100)
             } else {
-              toasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED)
+              toasterService.warning($rootScope.messages.imsg.m0004)
               $state.go('Home')
             }
           }

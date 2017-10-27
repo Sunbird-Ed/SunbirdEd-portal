@@ -87,7 +87,7 @@ gulp.task('inject-public-script', function (callback) {
 gulp.task('pre-test', function () {
     var resouceBundleFiles = [
         'app/common/js/frmelmnts.js',
-        'app/common/js/messagess.js'
+        'app/common/js/messages.js'
       ]
     var testToFiles = paths.src.testRequire.concat(resouceBundleFiles, privateJsFiles, publicJsFiles, paths.src.test);
     return gulp.src(testToFiles)
