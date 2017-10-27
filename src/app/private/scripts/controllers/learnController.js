@@ -34,8 +34,7 @@ angular.module('playerApp')
         learn.courses = function () {
           var api = 'enrollCourseApi'
           learn[api] = {}
-          learn[api].loader = toasterService.loader('', $rootScope
-                .errorMessages.Courses.ENROLLED.START)
+          learn[api].loader = toasterService.loader('', $rootScope.messages.stmsg.m0001)
 
           learnService.enrolledCourses(uid).then(function (successResponse) {
             if (successResponse && successResponse.responseCode === 'OK') {
@@ -47,13 +46,13 @@ angular.module('playerApp')
             } else {
               learn[api].loader.showLoader = false
               toasterService.error(
-                    $rootScope.errorMessages.Courses.ENROLLED.FAILED)
+                    $rootScope.messages.fmsg.m0001)
             }
           })
                 .catch(function () {
                   learn[api].loader.showLoader = false
                   toasterService.error(
-                            $rootScope.errorMessages.Courses.ENROLLED.FAILED)
+                            $rootScope.messages.fmsg.m0001)
                 })
         }
         if ($rootScope.enrolledCourseIds &&
