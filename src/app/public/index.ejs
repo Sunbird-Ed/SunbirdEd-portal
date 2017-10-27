@@ -20,6 +20,7 @@
 <body ng-controller="loginCtrl">
     <input type="hidden" id="cdnUrl" value="<%=cdnUrl%>" />
     <input type="hidden" id="theme" value="<%=theme%>" />
+    <input type="hidden" id="defaultPortalLanguage" value="<%=defaultPortalLanguage%>" />
     <div ng-include="'views/header/publicHeader.html'"></div>
     <div class="ui top attached fluid container">
         <div class="ui padded grid">
@@ -79,6 +80,8 @@
     <script src="/public/scripts/controllers/collectionPlayerController.js"></script>
     <script src="/public/scripts/filters/dateFilter.js"></script>
     <!-- endinject -->
+    <script src="../common/js/frmelmnts.js"></script>
+    <script src="../common/js/messages.js"></script>
 </body>
 
 </html>

@@ -66,7 +66,7 @@ angular.module('loginApp')
                       window.localStorage.setItem('redirectUrl', '/content/' + $stateParams.id + '/')
                       $window.location.href = '/private/index'
                     } else {
-                      toasterService.warning($rootScope.errorMessages.Content.INVALID)
+                      toasterService.warning($rootScope.messages.fmsg.m0065)
                       $state.go('Landing')
                     }
                   }
@@ -86,7 +86,7 @@ angular.module('loginApp')
                       window.localStorage.setItem('redirectUrl', '/course/' + $stateParams.id + '/yes')
                       $window.location.href = '/private/index'
                     } else {
-                      toasterService.warning($rootScope.errorMessages.Course.TOC.INVALID)
+                      toasterService.warning($rootScope.messages.fmsg.m0065)
                       $state.go('Landing')
                     }
                   }
@@ -106,7 +106,7 @@ angular.module('loginApp')
                       window.localStorage.setItem('redirectUrl', '/preview/collection/' + $stateParams.id + '/' + 'name' + '/')
                       $window.location.href = '/private/index'
                     } else {
-                      toasterService.warning($rootScope.errorMessages.Content.INVALID)
+                      toasterService.warning($rootScope.messages.fmsg.m0065)
                       $state.go('Landing')
                     }
                   }
@@ -125,9 +125,9 @@ angular.module('loginApp')
           $rootScope.faviconIcon = res.data.result.favicon
           $rootScope.titleName = res.data.result.titleName
         } else {
-                //   toasterService.error($rootScope.errorMessages.TENANT.GET_INFO.FAILED);
+                //   toasterService.error($rootScope.messages.fmsg.m0057);
         }
       }).catch(function () {
-            //   toasterService.error($rootScope.errorMessages.TENANT.GET_INFO.FAILED);
+            //   toasterService.error($rootScope.messages.fmsg.m0057);
       })
     }])
