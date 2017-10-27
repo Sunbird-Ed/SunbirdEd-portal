@@ -420,6 +420,18 @@
   color: #006cff !important;
   text-shadow: none !important;
 }
+.header-container {
+  margin-left: 1px !important;
+  border-bottom: 5px solid #007AFF !important;
+}
+.header-user-icon {
+  margin-right: 0px !important;
+}
+.content-card-meta {
+  background: rgba(0, 0, 0, 0.5) !important;
+  color: #FFFFFF !important;
+  padding: 5px !important;
+}
 .ui.menu {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -474,6 +486,9 @@
 .header-user-container {
   float: right !important;
 }
+.padding-top-header-large-icons {
+  padding-top: 1.5rem;
+}
 .padding-top-1rem {
   padding-top: 1rem !important;
 }
@@ -491,6 +506,9 @@
 }
 .ui.breadcrumb .divider {
   color: #007AFF !important;
+}
+.headerSearchDropdown:hover {
+  background: #f9fafb !important;
 }
 .headerDropdownProfile {
   cursor: text !important;
@@ -3135,6 +3153,36 @@ span.dashBoardMenuItem.active {
 }
 .cousreDashboardAlignIcon {
   margin-left: -30px !important;
+}
+.createAnnHeaderDesc {
+  font-size: small;
+  color: #979797;
+}
+.createAnnStepsIndicator {
+  margin-left: 75px;
+  background-color: #f2f2f2;
+  margin-bottom: auto;
+  padding: 10px  20px;
+}
+.createAnnFormScroller {
+  max-height: 400px;
+  overflow-y: auto;
+  height: 327px;
+}
+.createAnnAttchementHolder {
+  overflow-x: hidden;
+  max-height: 330px;
+  overflow-y: auto;
+}
+.createAnnErrorDiv {
+  border-color: red !important;
+  color: red;
+}
+.createAnnColorGray {
+  color: #f2f2f2;
+}
+.createAnnBlueClass {
+  color: #007AFF;
 }
 body {
   position: relative !important;
