@@ -29,13 +29,13 @@
             <div class="sides">
               <div class="active announcementCustomside side">
                 <div class="content">
-                  <div class="center">
-                    PNG
+                  <div class="center" ng-init="fileExtension = announcementInboxData.getFileExtension(attachments.mimetype)">
+                    <span ng-repeat="extension in fileExtension">{{extension}}</span>
                   </div>
                 </div>
               </div>
             </div>
-            <div>
+            <div class="padding-top-5">
               <span class="ng-binding sliderCardDesc">{{attachments.title | limitTo:10}}</span><span ng-show="attachments.title.length > 10" class="sliderCardDesc"> ...</span>
             </div>
           </div>
