@@ -76,8 +76,8 @@ angular.module('playerApp')
         }
 
         var validateModal = {
-          state: ['WorkSpace.UpForReviewContent', 'WorkSpace.ReviewContent', 'WorkSpace.PublishedContent'],
-          status: ['Review', 'Draft', 'Live'],
+          state: ['WorkSpace.UpForReviewContent', 'WorkSpace.ReviewContent', 'WorkSpace.PublishedContent', 'LimitedPublishedContent'],
+          status: ['Review', 'Draft', 'Live', 'Unlisted'],
           mimeType: config.CreateLessonMimeType
         }
 
@@ -115,11 +115,11 @@ angular.module('playerApp')
               if (contentEditor.checkContentAccess(rspData, validateModal)) {
                 contentEditor.openContentEditor()
               } else {
-                toasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED)
+                toasterService.warning($rootScope.messages.imsg.m0004)
                 $state.go('Home')
               }
             } else {
-              toasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED)
+              toasterService.warning($rootScope.messages.imsg.m0004)
               $state.go('Home')
             }
           })

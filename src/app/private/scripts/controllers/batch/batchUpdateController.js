@@ -25,10 +25,10 @@ angular.module('playerApp')
                             batchUpdate.batchData = response.result.response;
                             batchUpdate.showUpdateBatchModal();
                         } else {
-                            toasterService.error($rootScope.errorMessages.BATCH.GET.FAILED);
+                            toasterService.error($rootScope.messages.fmsg.m0054);
                         }
                     }).catch(function () {
-                        toasterService.error($rootScope.errorMessages.BATCH.GET.FAILED);
+                        toasterService.error($rootScope.messages.fmsg.m0054);
                     });
                 } else {
                     batchUpdate.showUpdateBatchModal();
@@ -152,10 +152,10 @@ angular.module('playerApp')
                         });
                         batchUpdate.getBatchDetails();
                     } else {
-                        toasterService.error($rootScope.errorMessages.BATCH.GET_USERS.FAILED);
+                        toasterService.error($rootScope.messages.fmsg.m0056);
                     }
                 }).catch(function () {
-                    toasterService.error($rootScope.errorMessages.BATCH.GET_USERS.FAILED);
+                    toasterService.error($rootScope.messages.fmsg.m0056);
                 });
             };
 
@@ -200,10 +200,10 @@ angular.module('playerApp')
                                         if (response && response.responseCode === 'OK') {
                                             batchUpdate.hideUpdateBatchModal();
                                         } else {
-                                            toasterService.error($rootScope.errorMessages.BATCH.ADD_USERS.FAILED);
+                                            toasterService.error($rootScope.messages.fmsg.m0053);
                                         }
                                     }).catch(function () {
-                                        toasterService.error($rootScope.errorMessages.BATCH.ADD_USERS.FAILED);
+                                        toasterService.error($rootScope.messages.fmsg.m0053);
                                     });
                                 } else {
                                     batchUpdate.hideUpdateBatchModal();
@@ -212,10 +212,10 @@ angular.module('playerApp')
                                 batchUpdate.hideUpdateBatchModal();
                             }
                         } else {
-                            toasterService.error($rootScope.errorMessages.BATCH.UPDATE.FAILED);
+                            toasterService.error($rootScope.messages.fmsg.m0055);
                         }
                     }).catch(function (ex) {
-                        toasterService.error($rootScope.errorMessages.BATCH.UPDATE.FAILED);
+                        toasterService.error($rootScope.messages.fmsg.m0055);
                     });
                 }
             };

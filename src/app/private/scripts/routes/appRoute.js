@@ -986,6 +986,25 @@ angular.module('playerApp')
           }
 
         })
+        .state('WorkSpace.LimitedPublishedContent', {
+          url: '/content/limited/publish',
+          views: {
+            contentView: {
+              templateUrl: 'views/workSpace/limitedPublishedContent.html',
+              controller: 'LimitedPublishedContentController as limitedPublishedContent'
+            }
+          },
+          onEnter: function (portalTelemetryService) {
+            portalTelemetryService.fireImpressions({
+              env: 'content',
+              type: 'list',
+              pageid: org.sunbird.portal.appid + '_WorkSpace.LimitedPublishedContent',
+              id: '',
+              name: '',
+              url: '/private/index#!/content/limited/published'
+            })
+          }
+        })
   })
   .run(function ($urlRouter, $http, $state, permissionsService, $rootScope, $location, config,
       toasterService, routeHelperService, userService) {
