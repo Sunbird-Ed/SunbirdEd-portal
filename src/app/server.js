@@ -100,6 +100,7 @@ app.use('/private/index', function (req, res, next) {
 app.all('/', function (req, res) {
   res.locals.cdnUrl = envHelper.PORTAL_CDN_URL
   res.locals.theme = envHelper.PORTAL_THEME
+  res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
   res.render(__dirname + '/public/index.ejs')
 })
 
