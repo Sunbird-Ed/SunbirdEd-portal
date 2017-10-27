@@ -80,7 +80,7 @@
   },
   "scripts": {
     "test": "karma start test/karma.conf.js",
-    "test-announcement": "mocha 'test-announcement/server/**/*.js'",
+    "test-notifications": "mocha 'test-notifications/server/**/*.js'",
     "lint": "eslint --ignore-path .eslintignore ."
   },
   "dependencies": {
