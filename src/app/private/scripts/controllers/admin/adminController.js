@@ -149,20 +149,20 @@ angular.module('playerApp')
           } else if (key === 'Organisations') {
             list.forEach(function (org) {
               switch (org.status) {
-                case 0:
-                  org.status = 'INACTIVE'
-                  break
-                case 1:
-                  org.status = 'ACTIVE'
-                  break
-                case 2:
-                  org.status = 'BLOCKED'
-                  break
-                case 3:
-                  org.status = 'RETIRED'
-                  break
-                default:
-                  break
+              case 0:
+                org.status = 'INACTIVE'
+                break
+              case 1:
+                org.status = 'ACTIVE'
+                break
+              case 2:
+                org.status = 'BLOCKED'
+                break
+              case 3:
+                org.status = 'RETIRED'
+                break
+              default:
+                break
               }
             })
             var orgNullReplacedToEmpty = JSON.stringify(list).replace(/null/g, '""')
@@ -203,7 +203,9 @@ angular.module('playerApp')
         }
         admin.editRoles = function (role, userRoles) {
           if (userRoles.includes(role) === true) {
-            admin.selectedOrgUserRoles.pop(role)
+            admin.selectedOrgUserRoles = admin.selectedOrgUserRoles.filter(function (selectedRole) {
+              return selectedRole !== role
+            })
           } else {
             admin.selectedOrgUserRoles.push(role)
           }
