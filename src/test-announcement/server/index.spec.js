@@ -29,7 +29,6 @@ describe('Announcement routing service', () => {
           expect(res.body.params.status).to.equal('successful')
           expect(res.body.params.err).to.equal('')
           expect(res.body.params.errmsg).to.equal('')
-
           expect(res.body.responseCode).to.eql('OK')
           expect(err).to.be.null
           expect(res).to.have.status(201)
@@ -58,7 +57,6 @@ describe('Announcement routing service', () => {
           expect(res.body.params.msgid).to.be.a('null')
           expect(res.body.params.status).to.equal('failed')
           expect(res.body.params.err).to.equal('')
-
           expect(res.body.responseCode).to.eql('ERROR')
           expect(res).to.have.status(404)
           expect(res.body.params.errmsg).to.eql('invalid request')
@@ -88,7 +86,6 @@ describe('Announcement routing service', () => {
           expect(res.body.params.status).to.equal('successful')
           expect(res.body.params.err).to.equal('')
           expect(res.body.params.errmsg).to.equal('')
-
           expect(res.body.responseCode).to.eql('OK')
           expect(res).to.have.status(200)
           expect(res.body.result).to.eql(responseData)
@@ -115,7 +112,6 @@ describe('Announcement routing service', () => {
           expect(res.body.params.status).to.equal('failed')
           expect(res.body.params.err).to.equal('')
           expect(res.body.params.errmsg).to.eql('record does not exist!')
-
           expect(res.body.responseCode).to.eql('ERROR')
           expect(res).to.have.status(404)
           expect(res.body.result).to.eql({})
