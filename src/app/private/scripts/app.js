@@ -8,6 +8,7 @@ angular.module('playerApp', [
     'ngRoute',
     'playerApp.config',
     'playerApp.errorMessages',
+    'playerApp.messages',
     'playerApp.labels',
     'playerApp.frmelmnts',
     'ui.router',
