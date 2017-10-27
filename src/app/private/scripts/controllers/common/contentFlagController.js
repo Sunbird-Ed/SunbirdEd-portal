@@ -55,7 +55,7 @@ angular.module('playerApp')
       }
 
       contentFlag.createFlag = function (requestData) {
-        contentFlag.loader = toasterService.loader('', $rootScope.errorMessages.CONTENT_FLAG.START)
+        contentFlag.loader = toasterService.loader('', $rootScope.messages.stmsg.m0077)
         contentService.flag(requestData, contentFlag.contentId).then(function (res) {
           if (res && res.responseCode === 'OK') {
             $timeout(function () {
@@ -66,11 +66,11 @@ angular.module('playerApp')
             }, 2000)
           } else {
             contentFlag.loader.showLoader = false
-            toasterService.error($rootScope.errorMessages.CONTENT_FLAG.FAILED)
+            toasterService.error($rootScope.messages.fmsg.m0050)
           }
         }).catch(function () {
           contentFlag.loader.showLoader = false
-          toasterService.error($rootScope.errorMessages.CONTENT_FLAG.FAILED)
+          toasterService.error($rootScope.messages.fmsg.m0050)
         })
       }
 

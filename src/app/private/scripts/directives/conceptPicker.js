@@ -10,7 +10,7 @@ angular.module('playerApp').directive('conceptPicker', function () {
              */
             $scope.loadConceptTree = function () {
                 $scope.conceptLoader = toasterService.loader(''
-                , $rootScope.errorMessages.WORKSPACE.CONCEPTS.START);
+                , $rootScope.messages.stmsg.m0049);
                 if ($rootScope.concepts) {
                     $scope.loadDomains(false, $rootScope.concepts);
                 } else {
@@ -19,7 +19,7 @@ angular.module('playerApp').directive('conceptPicker', function () {
             };
             $scope.loadDomains = function (err, conceptArr) {
                 if (err && err === true) {
-                    toasterService.error($rootScope.errorMessages.WORKSPACE.GET.FAILED);
+                    toasterService.error($rootScope.messages.fmsg.m0015);
                 } else {
                     $rootScope.concepts = conceptArr;
                     var domains = [];

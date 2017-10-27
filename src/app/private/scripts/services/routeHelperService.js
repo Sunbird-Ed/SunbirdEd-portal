@@ -324,7 +324,7 @@ angular.module('playerApp')
              */
                 this.checkStateAccess = function (data, flag, event) {
                     if (permissionsService.checkRolesPermissions(data, flag)) {
-                        toasterService.warning($rootScope.errorMessages.COMMON.UN_AUTHORIZED);
+                        toasterService.warning($rootScope.messages.imsg.m0004);
                         event.preventDefault();
                         $state.go('Home');
                     }

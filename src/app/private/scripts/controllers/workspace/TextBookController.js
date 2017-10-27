@@ -41,8 +41,7 @@ angular.module('playerApp')
             };
 
             textbook.createContent = function (requestData) {
-                textbook.loader = toasterService.loader('', $rootScope.errorMessages.WORKSPACE
-                                                                    .CREATE_TEXTBOOK.START);
+                textbook.loader = toasterService.loader('', $rootScope.messages.stmsg.m0014);
                 contentService.create(requestData).then(function (res) {
                     if (res && res.responseCode === 'OK') {
                         textbook.isTextBookCreated = true;
@@ -52,12 +51,11 @@ angular.module('playerApp')
                         textbook.initEKStepCE(res.result.content_id);
                     } else {
                         textbook.loader.showLoader = false;
-                        toasterService.error($rootScope.errorMessages.WORKSPACE.CREATE_TEXTBOOK
-                                                                                    .FAILED);
+                        toasterService.error($rootScope.messages.fmsg.m0008);
                     }
                 }).catch(function () {
                     textbook.loader.showLoader = false;
-                    toasterService.error($rootScope.errorMessages.WORKSPACE.CREATE_TEXTBOOK.FAILED);
+                    toasterService.error($rootScope.messages.fmsg.m0008);
                 });
             };
 
