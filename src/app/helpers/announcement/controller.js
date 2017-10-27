@@ -32,7 +32,7 @@ class AnnouncementController {
 
       try {
         await(this.__createAnnouncementNotification(/*announcement data*/))
-        if (newAnnouncementObj.data) return { data: newAnnouncementObj.data }
+        return { data: newAnnouncementObj.data }
       } catch(e) {
         // even if notification fails, it should still send annoucement in response
         return { data: newAnnouncementObj.data }

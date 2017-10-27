@@ -4,7 +4,7 @@ let AttachmentModel = require('./AttachmentModel.js')
 let MetricsModel = require('./MetricsModel.js')
 let UserPermissionsModel = require('./UserPermissionsModel.js')
 let Joi = require('joi')
-let request = require('request')
+let webService = require('request')
 let _ = require('lodash')
 let async = require('asyncawait/async')
 let await = require('asyncawait/await')
@@ -39,8 +39,8 @@ class ObjectStore {
 
   __createObject() {
     return async((data) => {
-      if (!this.__validateRequest(data)) throw { msg: 'invalid request!' }
-      if (!data.values) throw { msg: 'values required!' }
+      if (!this.__validateRequest(data)) throw { msg: 'invalid request!', status: 'error' }
+      if (!data.values) throw { msg: 'values required!', status: 'error' }
 
       let validation = Joi.validate(data.values, this.TableModelMapping[data.table], { abortEarly: false })
       if (validation.error != null) {
@@ -48,12 +48,17 @@ class ObjectStore {
         _.forEach(validation.error.details, (error, index) => {
           messages.push({ field: error.path[0], description: error.message })
         })
-        throw { msg: messages }
+        throw { msg: messages, status: 'error' }
       }
 
       //TODO: make API request to cassandra CRUD API
       //TODO: create document name same as table name
-      return { status: 'success' }
+      try {
+        let createdObject = await (this.__httpService({}))
+        return { data: createdObject, status: 'created' }
+      } catch (error) {
+      	throw { msg: 'unable to create object', status: 'error' }
+      }
     })
   }
 
@@ -137,6 +142,19 @@ class ObjectStore {
       return { status: 'success' }
     })
   }
+
+  __httpService(options) {
+    return new Promise((resolve, reject) => {
+      if (!options) reject('options required!')
+      resolve({ "column1": "data1" })
+      /*webService(options, (error, response, body) => {
+        if (error) reject(error)
+        if (response) resolve({ response, body })
+      })*/
+    })
+  }
+
+
 }
 
 module.exports = new ObjectStore()
