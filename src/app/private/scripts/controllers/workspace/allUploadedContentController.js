@@ -103,7 +103,7 @@ angular.module('playerApp')
         allUploadedContent.deleteContent = function (contentId) {
           var requestData = [contentId]
           allUploadedContent.hideRemoveContentModel()
-          allUploadedContent.loader = toasterService.loader('',$rootScope.messages.stmsg.m0034)
+          allUploadedContent.loader = toasterService.loader('', $rootScope.messages.stmsg.m0034)
           var request = {
             contentIds: requestData
           }
