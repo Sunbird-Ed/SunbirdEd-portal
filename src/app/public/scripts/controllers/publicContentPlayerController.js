@@ -79,7 +79,7 @@ angular.module('loginApp')
           contentService.getById(req, qs).then(function (response) {
             if (response && response.responseCode === 'OK') {
               if (config.CONTENT_TYPE.resource.indexOf(response.result.content.contentType) === -1) {
-                toasterService.warning($rootScope.errorMessages.Content.INVALID)
+                toasterService.warning($rootScope.messages.fmsg.m0065)
                 $state.go('Landing')
               }
               $scope.errorObject = {}
@@ -95,11 +95,11 @@ angular.module('loginApp')
                 }
               }
             } else {
-              toasterService.error($rootScope.errorMessages.Content.Failed)
+              toasterService.error($rootScope.messages.fmsg.m0049)
               $state.go('Landing')
             }
           }).catch(function () {
-            toasterService.error($rootScope.errorMessages.Content.Failed)
+            toasterService.error($rootScope.messages.fmsg.m0049)
             $state.go('Landing')
           })
         }
