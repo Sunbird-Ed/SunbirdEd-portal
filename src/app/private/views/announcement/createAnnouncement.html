@@ -6,15 +6,15 @@
                 <div class="ten wide column">
                     <span class="ui header">
                         Create New Announcement<br/>
-                        <span class="createAnnHeaderDesc" style="font-size:small;color: #979797;">
+                        <span class="createAnnHeaderDesc">
                             Fill in all the required fields to create the announcement.
                         </span>
                     </span>
                 </div>
                 <div class="two wide column">
-                    <div class="createAnnStepsIndicator" style=" margin-left: 75px; background-color: #f2f2f2;margin-bottom: auto;padding: 10px  20px;">
-                      <h6 style="margin: 5px;">STEP</h6>
-                      <span id="announcementSteps" style="margin: 4px;">1</span><span>/ 4</span>
+                    <div class="createAnnStepsIndicator">
+                      <h6 class="createAnnMargin5">STEP</h6>
+                      <span id="announcementSteps createAnnMargin4">1</span><span>/ 4</span>
                     </div>
                 </div>
             </div>
@@ -23,8 +23,8 @@
           <form class="ui form" ng-init="announcement.data = {}" name="announcementForm" >
             <div class="ui grid">
               <div class="eight wide column">
-                <div class="field createAnnFormScroller" style="max-height: 400px;overflow-y: auto; height: 327px">
-                  <div class="" style="padding-right: 25px;">
+                <div class="field createAnnFormScroller">
+                  <div class="padding-right-25">
                     <div class="field required">
                       <label>TITLE</label>
                       <div class="field form-group" ng-required="true">
@@ -33,8 +33,8 @@
                           placeholder="Please enter relevant title for this announcement (Max: 100 chars)"
                           ng-model="announcement.data.title" ng-maxlength="100" ng-change="announcement.detectChange()">
                           <section ng-if="announcement.data.title.length" class="float-ContentRight">{{announcement.data.title.length}} / 100</section>
-                          <p ng-show="announcementForm.title.$error.maxlength" class="error-div">Title is too long</p>
-                          <p ng-show="announcementForm.title.$error.pattern" class="error-div">Title cannot contain the following characters '^#'</p>
+                          <p ng-show="announcementForm.title.$error.maxlength" class="createAnnErrorMsg">Title is too long</p>
+                          <p ng-show="announcementForm.title.$error.pattern" class="createAnnErrorMsg">Title cannot contain the following characters '^#'</p>
                       </div>
                     </div>
                     <div class="field required">
@@ -56,7 +56,7 @@
                         <div class="field">
                             <input type="text" name="description" placeholder="Please enter description for this announcement (Max: 1200 chars)" ng-model="announcement.data.description" ng-maxlength="1200" ng-change="announcement.detectChange()">
                             <section ng-if="announcement.data.description.length" class="float-ContentRight">{{announcement.data.description.length}} / 1200</section>
-                            <p class="error-div"
+                            <p class="createAnnErrorMsg"
                               ng-show='announcementForm.description.$error.maxlength'>Description is too long.
                             </p>
                         </div>
@@ -69,7 +69,7 @@
                             <input type="url" ng-model="announcement.data.link[$index]" name="link" placeholder="Enter web url">
                             <i class="trash icon" ng-click="removeChoice()"></i>
                           </div>
-                          <section ng-show="announcementForm.link.$error.url" class="error-div">Not a valid URL</section>
+                          <section ng-show="announcementForm.link.$error.url" class="createAnnErrorMsg">Not a valid URL</section>
                         </div>
                     </div>
 
@@ -88,8 +88,7 @@
                 </div>
               </div>
               <div class="four wide column createAnnAttchementHolder"
-                ng-init="announcement.initializeFileUploader()"
-                style="overflow-x: hidden;max-height: 330px;overflow-y: auto;">
+                ng-init="announcement.initializeFileUploader()">
                 <div class="field">
                   <label>UPLOAD ATTACHMENT</label>
                   <div fine-uploader></div>
@@ -106,12 +105,6 @@
   </div>
 
     <style>
-
-    .error-div {
-      border-color: red !important;
-      color: red;
-    }
-
     .ui.modal .ui.form input.ng-invalid {
       border-color: red !important;
     }
