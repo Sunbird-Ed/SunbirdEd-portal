@@ -12,7 +12,6 @@ angular.module('playerApp')
         announcement.org = ['Org 1', 'Org 2', 'Org 3'];
         announcement.announcementType = ['Type 1', 'Type 2', 'Type 3'];
 
-
         // Initialize modal
         announcement.initializeModal = function(){
         	$timeout(function () {
@@ -63,8 +62,12 @@ angular.module('playerApp')
     	}
 
     	announcement.enableRecepientBtn = function() {
-	        if (announcement.data.title && announcement.data.from && announcement.data.announcementType && announcement.data.description){
+	        if (announcement.data.title && announcement.data.from
+	        	&& announcement.data.announcementType &&
+	        	(announcement.data.description || announcement.attachment.length)){
 	        	announcement.desableBtn = '';
+	        } else {
+	        	announcement.desableBtn = 'disabled';
 	        }
 	    }
 
@@ -99,21 +102,20 @@ angular.module('playerApp')
     				},
 	                callbacks: {
 	                    onComplete: function (id, name, responseJSON, xhr) {
-	                    	conosle.log(responseJSON);
+	                    	//conosle.log(responseJSON);
 	                        /*if (responseJSON.success) {
 	                        } else if (responseJSON.params.err === 'ERR_CONTENT_UPLOAD_FILE') {
 	                            $('.qq-upload-status-text').text($rootScope.errorMessages.COMMON
 	                                .REQUIRED_FILE_MISSING);
 	                        }*/
 	                        announcement.attachment.push('A', 'B');
+	                        announcement.enableRecepientBtn();
 	                    },
 	                    onSubmitted: function (id, name) {
-	                        announcement.youtubeVideoUrl = '';
 	                        announcement.uploadedFileId = id;
 	                        announcement.selectedFileName = name;
 	                        announcement.selectedFile = this.getFile(id);
 	                        announcement.getSelectedFileMime(name);
-	                        //announcement.initializeModal();
 	                        document.getElementById('hide-section-with-button')
 	                                                .style.display = 'none';
 	                    },
@@ -126,7 +128,6 @@ angular.module('playerApp')
 				        },
 	                }
 	            });
-	            //$('#fileUploadOptions').text($rootScope.labels.WORKSPACE.startCreating.fileUploadOptions);
 
 	            window.cancelUploadFile = function () {
 	                document.getElementById('hide-section-with-button').style.display = 'block';
