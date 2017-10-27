@@ -563,9 +563,9 @@
             "application/vnd.ekstep.html-archive", "video/youtube", "application/vnd.ekstep.ecml-archive",
             "application/epub", "application/vnd.ekstep.h5p-archive", "video/webm"
         ],
-        "MaxFileSizeToUpload": 25600000,
-        "FileExtensionToUpload": "application/pdf, video/mp4, application/zip, video/webm",
-        "AllowedFileExtension": ["mp4", "pdf", "zip", "epub", "h5p"],
+        "MaxFileSizeToUpload": 1000000,
+        "FileExtensionToUpload": "application/pdf, application/jpg, application/png",
+        "AllowedFileExtension": ["png", "pdf", "jpg"],
         "USER_ROLES": ["ORG_ADMIN", "ORG_MEMBER", "CONTENT_REVIEW", "CONTENT_CURATION", "CONTENT_REVIEWER",
             "CONTENT_CREATION", "CONTENT_CREATOR", "ORG_MODERATOR", "MEMBERSHIP_MANAGEMENT",
             "ORG_MANAGEMENT", "SYSTEM_ADMINISTRATION", "ADMIN", "SYSTEM_ADMIN"
@@ -593,6 +593,6 @@
             "ePub": "application/epub",
             "h5p": "application/vnd.ekstep.h5p-archive",
             "webm": "video/webm"
-        }       
+        }
     }
 }

@@ -1,14 +1,14 @@
-  <div class="ui modal large" id="createTextBookModal">
+  <div class="ui modal large" ng-init="announcement.initializeModal();" id="createTextBookModal">
     <i class="close icon"></i>
       <div class=" ui segment margin-top-10">
         <div class=" margin-bottom-15">
             <div class="ui grid">
-                <div class="eleven wide column">
+                <div class="ten wide column">
                     <span class="ui header">
                         Create New Announcement<br/>
-                        <p style="font-size:small;">
+                        <span style="font-size:small;color: #979797;">
                             Fill in all the required fields to create the announcement.
-                        </p>
+                        </span>
                     </span>
                 </div>
                 <!--<div class="one wide column actions">
@@ -16,9 +16,9 @@
                         <i class="ui remove icon"></i>
                     </h5>
                 </div>-->
-                <div class="one wide column">
-                    <span>STEP</span><br/>
-                    <span id="announcementSteps">1</span><span>/ 4</span>
+                <div class="" style="margin-left: 97px;background-color: #f2f2f2;margin-top: 18px;margin-bottom: auto;">
+                      <h6 style="margin: 5px;">STEP</h6>
+                      <span id="announcementSteps" style="margin: 4px;">1</span><span>/ 4</span>
                 </div>
             </div>
         </div>
@@ -26,7 +26,7 @@
           <form class="ui form" ng-init="announcement.data = {}" name="announcementForm" >
             <div class="ui grid">
               <div class="eight wide column">
-                <div class="field" style="max-height: 400px;overflow-y: auto;">
+                <div class="field" style="max-height: 400px;overflow-y: auto; height: 327px">
                   <div class="" style="padding-right: 25px;">
                     <div class="field required">
                       <label>TITLE</label>
@@ -44,13 +44,13 @@
                     </div>
                     <div class="field required">
                         <label>FROM</label>
-                        <select name="board" class="ui fluid dropdown" id="orgDropdown" ng-options=" board for board in announcement.org" ng-model="announcement.data.from" ng-change="announcement.detectChange()" ng-model-options="{updateOn: 'blur'}">
+                        <select name="board" class="ui fluid dropdown" id="orgDropdown" ng-options=" board for board in announcement.org" ng-model="announcement.data.from" ng-change="announcement.detectDropdownChange(announcement.data.from)">
                             <option value="">Select organization/department that has sent the announcement</option>
                         </select>
                     </div>
                     <div class="field required">
                         <label>ANNOUNCEMENT TYPE</label>
-                        <select name="medium" class="ui fluid dropdown" id="announcementType" ng-options=" audience for audience in announcement.announcementType" ng-model="announcement.data.announcementType" ng-change="announcement.detectChange()" ng-model-options="{updateOn: 'blur'}">
+                        <select name="medium" class="ui fluid dropdown" id="announcementType" ng-options=" audience for audience in announcement.announcementType" ng-model="announcement.data.announcementType" ng-change="announcement.detectDropdownChange(announcement.data.announcementType)">
                             <option value="">Announcement type</option>
                         </select>
                     </div>
@@ -80,13 +80,22 @@
                     </div>
 
                     <div class="field">
-                      <span ng-click="addNewChoice()" style="color:blue;"><i class="plus icon" style="color:blue;"></i>Add URL/web link</span> (For example, you can link a Google Form)
+                      <span ng-click="addNewChoice()">
+                        <i class="plus icon" style="color:#007AFF;"></i>
+                        <span ng-if="!showUrlField">
+                          <span style="color:#007AFF;">Add URL/web link</span><span> (For example, you can link a Google Form)</span>
+                        </span>
+                        <span ng-if="showUrlField">
+                          <span style="color:#007AFF;">Add Another URL/web link</span>
+                        </span>
+                      </span>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="four wide column"
-                ng-init="announcement.initializeFileUploader()">
+                ng-init="announcement.initializeFileUploader()"
+                style="overflow-x: hidden;max-height: 330px;overflow-y: auto;">
                 <div class="field">
                 <div fine-uploader></div>
                   <!--<label>UPLOAD ATTACHMENT</label>
@@ -106,7 +115,7 @@
         </div>
       </div>
     <div class="actions">
-      <div class="ui blue button {{announcement.desableBtn}}" ng-click="announcement.saveMetaData(announcement.data);">SELECT RECIPIENTS</div>
+      <div class="ui primary button {{announcement.desableBtn}}" ng-click="announcement.saveMetaData(announcement.data);">SELECT RECIPIENTS</div>
     </div>
   </div>
 
