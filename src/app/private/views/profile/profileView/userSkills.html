@@ -1,41 +1,38 @@
 <div class="ui raised segment margin-bottom-0">
     <div class="header announcementCard-header ">
-        <span class="header cardsHeading">Skill Tags</span>
-        <a class="addeditprofile cursor-pointer"ng-click="profileCtrl.openAddSkillModal()">ADD</a>
+        <span class="header cardsHeading">{{$root.frmelmnts.lbl.skillTags}} </span>
+        <a class="addeditprofile cursor-pointer" ng-click="profileCtrl.openAddSkillModal()">
+            {{$root.frmelmnts.btn.add}}
+        </a>
     </div>
     <div class="profileitems profile-des ui relaxed aligned list">
         <div class="item " ng-repeat="skill in profileCtrl.userSkills |limitTo:profileCtrl.limit">
             <div class="ui label">
-                    {{skill.skillName}}
+                {{skill.skillName}}
                 <div class="detail">
                     <span ng-if="skill.endorsementcount">|&nbsp;</span>
                     <span>{{skill.endorsementcount}}</span>
                 </div>
-            </div>  
-            <!-- <div class="ui circular labels float-ContentRight ">
-              <a class="ui basic label">
-               +1
-                  </a>
-            </div> -->
+            </div>
         </div>
-            
-        
     </div>
-    
 </div>
-<div class="ui bottom attached tabular menu userSkillMore ng-scope "ng-if="profileCtrl.userSkills.length > profileCtrl.defaultLimit ">
+<div class="ui bottom attached tabular menu userSkillMore ng-scope " ng-if="profileCtrl.userSkills.length > profileCtrl.defaultLimit ">
     <div class="active item">
-        <a ng-click="profileCtrl.setLimit(profileCtrl.resetLimit);profileCtrl.isViewMore=true"
-            ng-if="profileCtrl.userSkills.length > profileCtrl.limit">view more
-         <span class="userSkillMoreIcon"><i class="chevron down icon"></i> </span>
+        <a ng-click="profileCtrl.setLimit(profileCtrl.resetLimit);profileCtrl.isViewMore=true" ng-if="profileCtrl.userSkills.length > profileCtrl.limit">
+            {{$root.frmelmnts.btn.viewmore}}
+            <span class="userSkillMoreIcon">
+                <i class="chevron down icon"></i>
+            </span>
         </a>
-        <a ng-click="profileCtrl.setLimit(profileCtrl.defaultLimit);profileCtrl.isViewMore=false"
-         ng-if="profileCtrl.isViewMore">
-         view less
-         <span class="userSkillMoreIcon"><i class="chevron up icon"></i> </span>
+        <a ng-click="profileCtrl.setLimit(profileCtrl.defaultLimit);profileCtrl.isViewMore=false" ng-if="profileCtrl.isViewMore">
+            {{$root.frmelmnts.btn.viewless}}
+            <span class="userSkillMoreIcon">
+                <i class="chevron up icon"></i>
+            </span>
         </a>
-   </div>
-   
+    </div>
+
 </div>
 <div class="twelve wide column" ng-include=" 'views/profile/editProfile/addSkillsModal.html' ">
 </div>
