@@ -32,7 +32,7 @@
             $rootScope.titleName = cpvm.name;
             cpvm.loadData = function () {
                 cpvm.loader.showLoader = true;
-                cpvm.loader.loaderMessage = $rootScope.errorMessages.COLLECTION.PREVIEW.START;
+                cpvm.loader.loaderMessage = $rootScope.messages.stmsg.m0076;
                 contentService.courseHierarchy($state.params.contentId).then(function (res) {
                     if (res && res.responseCode === 'OK') {
                         cpvm.loader.showLoader = false;
@@ -48,10 +48,10 @@
                         cpvm.collectionMeta.createdOn = cpvm.courseHierachy.createdOn;
                         cpvm.applyAccordion();
                     } else {
-                        cpvm.showError($rootScope.errorMessages.COLLECTION.PREVIEW.ERROR);
+                        cpvm.showError($rootScope.messages.emsg.m0004);
                     }
                 }, function () {
-                    cpvm.showError($rootScope.errorMessages.COLLECTION.PREVIEW.ERROR);
+                    cpvm.showError($rootScope.messages.emsg.m0004);
                 });
             };
             cpvm.constructTree = function (pos, cpvmData) {
