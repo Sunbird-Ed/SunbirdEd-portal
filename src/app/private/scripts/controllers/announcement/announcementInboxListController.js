@@ -4,8 +4,8 @@ angular.module('playerApp')
   .controller('announcementInboxListController', ['$rootScope', '$scope',
     'announcementService', '$timeout', '$state', '$stateParams', 'toasterService', 'adminService',
     function ($rootScope, $scope, announcementService, $timeout, $state, $stateParams, toasterService, adminService) {
-      var announcementInboxData = this;
-      announcementInboxData.showLoader = true;
+      var announcementInboxData = this
+      announcementInboxData.showLoader = true
 
       announcementInboxData.renderAnnouncementList = function () {
         // ~ announcementService.getAnnouncementList().then(function (apiResponse) {
@@ -23,14 +23,14 @@ angular.module('playerApp')
         // ~ announcementInboxData.showLoader = false;
         // ~ });
 
-        announcementInboxData.listData = announcementService.getInboxAnnouncementList();
-        announcementInboxData.listData = JSON.parse(announcementInboxData.listData);
-        announcementInboxData.listData = announcementInboxData.listData.result.announcements;
-        announcementInboxData.showLoader = false;
+        announcementInboxData.listData = announcementService.getInboxAnnouncementList()
+        announcementInboxData.listData = JSON.parse(announcementInboxData.listData)
+        announcementInboxData.listData = announcementInboxData.listData.result.announcements
+        announcementInboxData.showLoader = false
       }
-      
+
       announcementInboxData.getFileExtension = function (mimeType) {
-		  return announcementService.getFileExtension(mimeType);
+        return announcementService.getFileExtension(mimeType)
       }
     }
 
