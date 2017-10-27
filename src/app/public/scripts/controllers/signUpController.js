@@ -1,49 +1,49 @@
 'use strict';
 
 angular.module('loginApp')
-    .controller('SignUpCtrl', ['signUpService', '$timeout', '$filter', '$location', 'labels',
-        '$rootScope', 'errorMessages', 'toasterService', function (signUpService, $timeout,
-            $filter, $location, labels, $rootScope, errorMessages, toasterService) {
+    .controller('SignUpCtrl', ['signUpService', '$timeout', '$filter', '$location',
+        '$rootScope', 'toasterService', function (signUpService, $timeout,
+            $filter, $location, $rootScope, toasterService) {
             var newUser = this;
             var today = new Date();
-            newUser.languages = labels.languages;
+            newUser.languages = $rootScope.frmelmnts.lbl.languages;
             newUser.formValidation = function () {
                 $('.ui.form').form({
                     fields: {
                         userName: {
                             rules: [{
                                 type: 'regExp[^[-\\w\.\\$@\*\\!]{5,256}$]', // eslint-disable-line no-useless-escape ,max-len
-                                prompt: errorMessages.FORM_VALIDATION.userName
+                                prompt: $rootScope.messages.stmsg.m0087
                             }]
                         },
                         password: {
                             rules: [{
                                 type: 'empty',
-                                prompt: errorMessages.FORM_VALIDATION.password
+                                prompt: $rootScope.messages.stmsg.m0088
                             }]
                         },
                         firstName: {
                             rules: [{
                                 type: 'regExp[^[0-9]*[A-Za-z\\s][0-9A-Za-z\\s]*$]',
-                                prompt: errorMessages.FORM_VALIDATION.name
+                                prompt: $rootScope.messages.stmsg.m0092
                             }]
                         },
                         phone: {
                             rules: [{
                                 type: 'regExp[^(?:(?:\\+|0{0,2})91(\\s*[\\-]\\s*)?|[0]?)?[789]\\d{9}$]', // eslint-disable-line  ,max-len
-                                prompt: errorMessages.FORM_VALIDATION.phone
+                                prompt: $rootScope.messages.stmsg.m0091
                             }]
                         },
                         email: {
                             rules: [{
                                 type: 'email',
-                                prompt: errorMessages.FORM_VALIDATION.email
+                                prompt: $rootScope.messages.stmsg.m0089
                             }]
                         },
                         language: {
                             rules: [{
                                 type: 'empty',
-                                prompt: errorMessages.FORM_VALIDATION.language
+                                prompt: $rootScope.messages.stmsg.m0090
                             }]
                         }
                     },
@@ -70,8 +70,8 @@ angular.module('loginApp')
                     $('.ui.form').trigger('reset');
                     // Resets form error messages and field styles
                     $('.ui.form .field.error')
-                        .removeClass(errorMessages.COMMON.ERROR);
-                    $('.ui.form.error').removeClass(errorMessages.COMMON.ERROR);
+                        .removeClass($rootScope.messages.emsg.m0002);
+                    $('.ui.form.error').removeClass($rootScope.messages.emsg.m0002);
                     $('.dropdown').dropdown('clear');
                     $('ui.fluid.dropdown.signupMultiple')
                         .dropdown({ placeholder: 'Languages' });
@@ -137,10 +137,10 @@ angular.module('loginApp')
             newUser.getErrorMsg = function (errorKey) {
                 var errorMessage = '';
                 if (errorKey === 'USER_ALREADY_EXIST') {
-                    errorMessage = errorMessages.SIGNUP.userExist;
+                    errorMessage = $rootScope.messages.stmsg.m0085;
                 } else if (errorKey === 'USERNAME_EMAIL_IN_USE') {
-                    errorMessage = errorMessages.SIGNUP.emailExist;
-                } else errorMessage = errorMessages.SIGNUP.apiError;
+                    errorMessage = $rootScope.messages.stmsg.m0086;
+                } else errorMessage = $rootScope.messages.emsg.m0005;
                 return errorMessage;
             };
             newUser.signUp = function () {
@@ -156,7 +156,7 @@ angular.module('loginApp')
                         language: [newUser.language]
                     }
                 };
-                newUser.loader = toasterService.loader('', errorMessages.SIGNUP.loading);
+                newUser.loader = toasterService.loader('',$rootScope.messages.stmsg.m0084);
                 var req = newUser.request;
                 $('.ui .modal').modal('show');
                 $('#signupModal').modal({
@@ -170,7 +170,7 @@ angular.module('loginApp')
 
                         $location.path('/private/index');
                         newUser.loader.showLoader = false;
-                        toasterService.success(errorMessages.SIGNUP.success);
+                        toasterService.success($rootScope.messages.smsg.m0039);
                         $timeout(function () {
                             $('.ui .modal').modal('hide');
                         }, 2000);
@@ -181,7 +181,7 @@ angular.module('loginApp')
                     }
                 }).catch(function () {
                     newUser.loader.showLoader = false;
-                    toasterService.error(errorMessages.SIGNUP.apiError);
+                    toasterService.error($rootScope.messages.emsg.m0005);
                 });
             };
         }]);
