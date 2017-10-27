@@ -27,8 +27,7 @@ angular.module('playerApp')
 
     reviewContent.getReviewContent = function (pageNumber) {
       pageNumber = pageNumber || 1
-      reviewContent.loader = toasterService.loader('', $rootScope.errorMessages.WORKSPACE
-        .REVIEW.START)
+      reviewContent.loader = toasterService.loader('', $rootScope.messages.stmsg.m0018)
       reviewContent.error = {}
       var request = {
         filters: {
@@ -54,18 +53,18 @@ angular.module('playerApp')
                     pageNumber, reviewContent.pageLimit)
           if (reviewContent.reviewContentData.length === 0) {
             reviewContent.error = showErrorMessage(true,
-            $rootScope.errorMessages.WORKSPACE.REVIEW.NO_CONTENT,
-            $rootScope.errorMessages.COMMON.NO_RESULTS)
+            $rootScope.messages.stmsg.m0019,
+            $rootScope.messages.stmsg.m0008)
           }
         } else {
           reviewContent.loader.showLoader = false
           reviewContent.error.showError = false
-          toasterService.error($rootScope.errorMessages.WORKSPACE.REVIEW.FAILED)
+          toasterService.error($rootScope.messages.fmsg.m0012)
         }
       }).catch(function () {
         reviewContent.loader.showLoader = false
         reviewContent.error.showError = false
-        toasterService.error($rootScope.errorMessages.WORKSPACE.REVIEW.FAILED)
+        toasterService.error($rootScope.messages.fmsg.m0012)
       })
     }
 

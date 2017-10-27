@@ -24,13 +24,17 @@
         },
         "Content": {
             "START": "Fetching data for you....",
-            "FAILED": "Unable to load data."
+            "FAILED": "Unable to load data.",
+            "INVALID": "Invalid content access",
+            "CONTENT_NOT_LIVE": "Content is not ready to play"
         },
         "Courses": {
             "TOC": {
                 "START": "We are fetching course details...",
                 "ERROR": "Unable to get course schedule details.",
-                "Flagged_COURSE": "This course is flagged as inappropriate and is currently under review."
+                "Flagged_COURSE": "This course is flagged as inappropriate and is currently under review.",
+                "INVALID": "Invalid content access",
+                "COURSE_NOT_LIVE": "Course is not ready to play"
             }
         },
         "COLLECTION": {
