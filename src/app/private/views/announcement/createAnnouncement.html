@@ -1,4 +1,4 @@
-  <div class="ui modal large" ng-init="announcement.initializeModal();" id="createTextBookModal">
+  <div class="ui modal large" ng-init="createAnn.initializeModal();" id="createTextBookModal">
     <i class="close icon"></i>
       <div class=" ui segment margin-top-10">
         <div class=" margin-bottom-15">
@@ -7,7 +7,7 @@
                     <span class="ui header">
                         Create New Announcement<br/>
                         <span class="createAnnHeaderDesc">
-                            Fill in all the required fields to create the announcement.
+                            Fill in all the required fields to create the createAnn.
                         </span>
                     </span>
                 </div>
@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="content">
-          <form class="ui form" ng-init="announcement.data = {}" name="announcementForm" >
+          <form class="ui form" ng-init="createAnn.data = {}" name="announcementForm" >
             <div class="ui grid">
               <div class="eight wide column">
                 <div class="field createAnnFormScroller">
@@ -31,21 +31,21 @@
                         <input type="text" name="title" id="announcementTitle"
                           ng-pattern="/^[ A-Za-z0-9_~`!$%*()=?/><.,|@./&+-]*$/"
                           placeholder="Please enter relevant title for this announcement (Max: 100 chars)"
-                          ng-model="announcement.data.title" ng-maxlength="100" ng-change="announcement.detectChange()">
-                          <section ng-if="announcement.data.title.length" class="float-ContentRight">{{announcement.data.title.length}} / 100</section>
+                          ng-model="createAnn.data.title" ng-maxlength="100" ng-change="createAnn.detectChange()">
+                          <section ng-if="createAnn.data.title.length" class="float-ContentRight">{{createAnn.data.title.length}} / 100</section>
                           <p ng-show="announcementForm.title.$error.maxlength" class="createAnnErrorMsg">Title is too long</p>
                           <p ng-show="announcementForm.title.$error.pattern" class="createAnnErrorMsg">Title cannot contain the following characters '^#'</p>
                       </div>
                     </div>
                     <div class="field required">
                         <label>FROM</label>
-                        <select name="board" class="ui fluid dropdown" id="orgDropdown" ng-options=" board for board in announcement.org" ng-model="announcement.data.from" ng-change="announcement.detectDropdownChange(announcement.data.from)">
+                        <select name="board" class="ui fluid dropdown" id="orgDropdown" ng-options=" board for board in createAnn.org" ng-model="createAnn.data.from" ng-change="createAnn.detectDropdownChange(createAnn.data.from)">
                             <option value="">Select organization/department that has sent the announcement</option>
                         </select>
                     </div>
                     <div class="field required">
                         <label>ANNOUNCEMENT TYPE</label>
-                        <select name="medium" class="ui fluid dropdown" id="announcementType" ng-options=" audience for audience in announcement.announcementType" ng-model="announcement.data.announcementType" ng-change="announcement.detectDropdownChange(announcement.data.announcementType)">
+                        <select name="medium" class="ui fluid dropdown" id="announcementType" ng-options=" audience for audience in createAnn.announcementType" ng-model="createAnn.data.announcementType" ng-change="createAnn.detectDropdownChange(createAnn.data.announcementType)">
                             <option value="">Announcement type</option>
                         </select>
                     </div>
@@ -54,8 +54,8 @@
                             DESCRIPTION (OPTIONAL)
                         </label>
                         <div class="field">
-                            <input type="text" name="description" placeholder="Please enter description for this announcement (Max: 1200 chars)" ng-model="announcement.data.description" ng-maxlength="1200" ng-change="announcement.detectChange()">
-                            <section ng-if="announcement.data.description.length" class="float-ContentRight">{{announcement.data.description.length}} / 1200</section>
+                            <input type="text" name="description" placeholder="Please enter description for this announcement (Max: 1200 chars)" ng-model="createAnn.data.description" ng-maxlength="1200" ng-change="createAnn.detectChange()">
+                            <section ng-if="createAnn.data.description.length" class="float-ContentRight">{{createAnn.data.description.length}} / 1200</section>
                             <p class="createAnnErrorMsg"
                               ng-show='announcementForm.description.$error.maxlength'>Description is too long.
                             </p>
@@ -66,7 +66,7 @@
                         <label>URL / WEB LINK</label>
                         <div class="field"  data-ng-repeat="choice in choices">
                           <div class="ui action input">
-                            <input type="url" ng-model="announcement.data.link[$index]" name="link" placeholder="Enter web url">
+                            <input type="url" ng-model="createAnn.data.link[$index]" name="link" placeholder="Enter web url">
                             <i class="trash icon" ng-click="removeChoice()"></i>
                           </div>
                           <section ng-show="announcementForm.link.$error.url" class="createAnnErrorMsg">Not a valid URL</section>
@@ -88,7 +88,7 @@
                 </div>
               </div>
               <div class="four wide column createAnnAttchementHolder"
-                ng-init="announcement.initializeFileUploader()">
+                ng-init="createAnn.initializeFileUploader()">
                 <div class="field">
                   <label>UPLOAD ATTACHMENT</label>
                   <div fine-uploader></div>
@@ -99,8 +99,8 @@
         </div>
       </div>
     <div class="actions">
-      <div class="ui primary button {{announcement.desableBtn}}"
-       ng-click="announcement.saveMetaData(announcement.data);">SELECT RECIPIENTS</div>
+      <div class="ui primary button {{createAnn.desableBtn}}"
+       ng-click="createAnn.saveMetaData(createAnn.data);">SELECT RECIPIENTS</div>
     </div>
   </div>
 

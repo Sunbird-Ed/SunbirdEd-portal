@@ -6,23 +6,23 @@ angular.module('playerApp')
     function($rootScope, $scope, $timeout, $state, $stateParams, config, toasterService, permissionsService, dashboardService) {
 
       // Initialize variables
-      var announcement = this;
+      var createAnn = this;
 
         // TODO - use api to get values
-        announcement.org = ['Org 1', 'Org 2', 'Org 3'];
-        announcement.announcementType = ['Type 1', 'Type 2', 'Type 3'];
-        announcement.desableBtn = 'disabled';
+        createAnn.org = ['Org 1', 'Org 2', 'Org 3'];
+        createAnn.announcementType = ['Type 1', 'Type 2', 'Type 3'];
+        createAnn.desableBtn = 'disabled';
 
         // Initialize modal
-        announcement.initializeModal = function(){
+        createAnn.initializeModal = function(){
         	$timeout(function () {
           		$('#announcementType').dropdown();
           		$('#orgDropdown').dropdown();
 	        }, 10);
         }
 
-        // Open create announcement modal
-        announcement.createAnnouncement = function (){
+        // Open create createAnn modal
+        createAnn.createAnnouncement = function (){
           $('#createTextBookModal').modal({}).modal('show');
         }
 
@@ -41,12 +41,12 @@ angular.module('playerApp')
         };
 
         // Function to post form data
-        announcement.saveMetaData = function(data){
+        createAnn.saveMetaData = function(data){
         	var requestBody = angular.copy(data);
         	requestBody.createdBy   = 101;
         	requestBody.createdOn   = '12/12/12';
-        	requestBody.attachments = announcement.attachment;
-        	console.log(announcement.attachment);
+        	requestBody.attachments = createAnn.attachment;
+        	console.log(createAnn.attachment);
         	console.log(requestBody);
         	var requestData = {
         		content: requestBody
@@ -55,31 +55,31 @@ angular.module('playerApp')
         }
 
         // Detect input box change event
-        announcement.detectChange = function (){
-        	announcement.enableRecepientBtn();
+        createAnn.detectChange = function (){
+        	createAnn.enableRecepientBtn();
     	}
 
     	// Detect dropdwon value change event
-    	announcement.detectDropdownChange = function (){
-    		announcement.enableRecepientBtn();
+    	createAnn.detectDropdownChange = function (){
+    		createAnn.enableRecepientBtn();
     	}
 
     	// Function to enable / disable RecepientBtn
-    	announcement.enableRecepientBtn = function() {
-	        if (announcement.data.title && announcement.data.from
-	        	&& announcement.data.announcementType &&
-	        	(announcement.data.description || announcement.attachment.length)){
-	        	announcement.desableBtn = '';
+    	createAnn.enableRecepientBtn = function() {
+	        if (createAnn.data.title && createAnn.data.from
+	        	&& createAnn.data.announcementType &&
+	        	(createAnn.data.description || createAnn.attachment.length)){
+	        	createAnn.desableBtn = '';
 	        } else {
-	        	announcement.desableBtn = 'disabled';
+	        	createAnn.desableBtn = 'disabled';
 	        }
 	    }
 
-		announcement.attachment = [];
-		announcement.index = 0;
-        announcement.initializeFileUploader = function () {
+		createAnn.attachment = [];
+		createAnn.index = 0;
+        createAnn.initializeFileUploader = function () {
 	        $timeout(function () {
-	            announcement.manualUploader = new qq.FineUploader({
+	            createAnn.manualUploader = new qq.FineUploader({
 	                element: document.getElementById('fine-uploader-manual-trigger'),
 	                template: 'qq-template-manual-trigger',
 	                request: {
@@ -111,14 +111,14 @@ angular.module('playerApp')
 	                            $('.qq-upload-status-text').text($rootScope.errorMessages.COMMON
 	                                .REQUIRED_FILE_MISSING);
 	                        }*/
-	                        announcement.attachment.push('A', 'B');
-	                        announcement.enableRecepientBtn();
+	                        createAnn.attachment.push('A', 'B');
+	                        createAnn.enableRecepientBtn();
 	                    },
 	                    onSubmitted: function (id, name) {
-	                        announcement.uploadedFileId = id;
-	                        announcement.selectedFileName = name;
-	                        announcement.selectedFile = this.getFile(id);
-	                        announcement.getSelectedFileMime(name);
+	                        createAnn.uploadedFileId = id;
+	                        createAnn.selectedFileName = name;
+	                        createAnn.selectedFile = this.getFile(id);
+	                        createAnn.getSelectedFileMime(name);
 	                        document.getElementById('hide-section-with-button')
 	                                                .style.display = 'none';
 	                    },
@@ -138,11 +138,11 @@ angular.module('playerApp')
 	        }, 300);
 	    };
 
-        announcement.getSelectedFileMime = function (fileName) {
+        createAnn.getSelectedFileMime = function (fileName) {
             var array = fileName.split('.');
             var ext = array.reverse()[0];
-            announcement.data.mimeType = announcement.objMimeType[ext];
-            announcement.selectedFileMimeType = announcement.objMimeType[ext];
+            createAnn.data.mimeType = createAnn.objMimeType[ext];
+            createAnn.selectedFileMimeType = createAnn.objMimeType[ext];
         };
     }
   ])
