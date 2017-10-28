@@ -7,7 +7,8 @@ angular.module('playerApp')
       var announcementInboxData = this
       announcementInboxData.showLoader = true
 
-      announcementInboxData.renderAnnouncementList = function () {
+      announcementInboxData.renderAnnouncementList = function (limit) {
+		announcementInboxData.limit = limit || 'all';
         // ~ announcementService.getAnnouncementList().then(function (apiResponse) {
 
         // ~ if (apiResponse && apiResponse.responseCode === 'OK') {
