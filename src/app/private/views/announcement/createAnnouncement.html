@@ -1,4 +1,4 @@
-  <div class="ui modal large" ng-init="createAnn.initializeModal();" id="createTextBookModal">
+  <div class="ui modal large" ng-init="createAnn.initializeModal();" id="createAnnouncementModal">
     <i class="close icon"></i>
       <div class=" ui segment margin-top-10">
         <div class=" margin-bottom-15">
@@ -41,7 +41,7 @@
             </div>
         </div>
         <div class="content">
-          <form class="ui form" ng-init="createAnn.data = {}" name="announcementForm" >
+          <form class="ui form announcementForm" ng-init="createAnn.data = {}" name="announcementForm" >
             <div class="ui grid" ng-show="createAnn.showStepOne">
               <div class="eight wide column">
                 <div class="field createAnnFormScroller">
@@ -87,16 +87,18 @@
                         <label>URL / WEB LINK</label>
                         <div class="field"  data-ng-repeat="weblink in repeatableWebLinks">
                           <div class="ui action input">
-                            <input type="url" ng-model="createAnn.data.link[$index]" name="link" placeholder="Enter web url">
-                            <i class="trash icon" ng-click="removeChoice()"></i>
+                            <input type="url" ng-model="createAnn.data.link[$index]"
+                              name="link_{{$index}}" placeholder="Enter web url">
+                            <i class="trash icon" ng-click="removeChoice(element)" value="Delete"></i>
                           </div>
-                          <section ng-show="announcementForm.link.$error.url" class="createAnnErrorMsg">Not a valid URL</section>
+                          <section ng-show="announcementForm['link_' + $index].$error.url"
+                          class="createAnnErrorMsg">Not a valid URL</section>
                         </div>
                     </div>
 
                     <div class="field">
                       <span ng-click="addNewChoice()">
-                        <i class="plus icon createAnnBlueClass"></i>
+                        <i class="plus icon createAnnBlueClass cursor-pointer"></i>
                         <span ng-if="!showUrlField">
                           <span class="cursor-pointer createAnnBlueClass">Add URL/web link</span><span> (For example, you can link a Google Form)</span>
                         </span>
@@ -116,19 +118,33 @@
                 </div>
               </div>
             </div>
+            <div ng-show="createAnn.showStepTwo">
+              <div class="ui info message">
+                <i class="close icon"></i>
+                <div class="header">
+                  Announcement Recipients coming soon...
+                </div>
+                <ul class="list">
+                  <li>Recipients 1</li>
+                  <li>Recipients 2</li>
+                  <li>Recipients 3</li>
+                  <li>Recipients 4</li>
+                </ul>
+              </div>
+            </div>
             <div ng-show="createAnn.showStepThree" class="ui list ui grid">
               <div class="eight wide column">
                 <div class="ui message">
                   <i class="close icon"></i>
-                  <span style="font-size: small;">Sangli, Maharashtra. </span>
+                  <span class="createAnnSelectedRecepient">Recipients 1</span>
+                </div>
+                <div class="ui message fon">
+                  <i class="close icon"></i>
+                  <span class="createAnnSelectedRecepient">Recipients 2</span>
                 </div>
                 <div class="ui message">
                   <i class="close icon"></i>
-                  <span style="font-size: small;">Satara, Maharashtra.</span>
-                </div>
-                <div class="ui message">
-                  <i class="close icon"></i>
-                  <span style="font-size: small;">Solapur, Maharashtra.</span>
+                  <span class="createAnnSelectedRecepient">Recipients 3</span>
                 </div>
               </div>
             </div>
@@ -141,27 +157,44 @@
         </div>
       </div>
     <div class="actions">
-      <button class="ui primary basic button announcementButton float-ContentLeft" id="annBackBtn"
-        ng-if="!createAnn.showStepOne" style="width: 15%"
+      <button class="ui primary basic button announcementButton createAnnBackBtnWidth float-ContentLeft"
+        id="annBackBtn"
+        ng-if="!createAnn.showStepOne"
         ng-click="createAnn.previousStep($event.target);"
         data-current-state="{{createAnn.stepNumber}}">
         <span class="announcementButtonText">BACK</span>
       </button>
       <div class="ui primary button {{createAnn.desableBtns}}" ng-if="createAnn.showStepTwo" ng-click="createAnn.confirmRecipients();">CONFIRM RECIPIENTS</div>
       <div class="ui primary button {{createAnn.desableBtn}}" ng-if="createAnn.showStepThree" ng-click="createAnn.previewAnn();">PREVIEW ANNOUNCEMENT</div>
-      <div class="ui primary button {{createAnn.desableBtn}}" ng-if="createAnn.showStepFour" ng-click="createAnn.previewAnn();">SEND ANNOUNCEMENT</div>
+      <div class="ui primary button {{createAnn.desableBtn}}" ng-if="createAnn.showStepFour" ng-click="createAnn.saveAnnouncement();">SEND ANNOUNCEMENT</div>
       <div ng-if="createAnn.showStepOne" class="ui primary button {{createAnn.desableBtn}}"
        ng-click="createAnn.selectRecipients();">SELECT RECIPIENTS</div>
     </div>
   </div>
 
-    <style>
-    .ui.modal .ui.form input.ng-invalid {
-      border-color: red !important;
-    }
-
-    .announcementHeadingSection{
-      font-family: 'sunbirdboldfont' !important;
-      font-size: smaller;
-    }
-    </style>
+  <!-- Announcement created success modal -->
+  <div class="ui modal small" id="announcementSuccessModal">
+    <i class="close icon"></i>
+      <div class=" ui segment margin-top-10">
+        <div class="content">
+          <div class="ui grid">
+            <div class="ui centered grid">
+              <div class="row">
+                <i class="checkmark icon"></i>
+              </div>
+              <div class="row">
+                <span class="dashBoardSectionHeading">Announcement sent!</span>
+              </div>
+              <div class="">
+                <span class="createAnnGrayShade line-height-20">Your announcement has been sent to all your recipients. View all your announcements from the Announcement Dashboard </span>
+              </div>
+            </div><br/>
+            <div class="row ui two column centered grid margin-top-20 actions">
+              <button class="ui primary basic button announcementButton btn-width-34">
+                <span class="announcementButtonText">GOT IT</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
