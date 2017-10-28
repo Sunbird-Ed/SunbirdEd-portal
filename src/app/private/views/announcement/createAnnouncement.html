@@ -4,24 +4,45 @@
         <div class=" margin-bottom-15">
             <div class="ui grid">
                 <div class="ten wide column">
-                    <span class="ui header">
-                        Create New Announcement<br/>
+                  <span class="ui header">
+                    <span class="ui" ng-show="createAnn.showStepOne">
+                         <span class="text announcementHeadingSection">Create New Announcement</span><br/>
                         <span class="createAnnHeaderDesc">
                             Fill in all the required fields to create the createAnn.
                         </span>
                     </span>
+
+                    <span class="ui" ng-show="createAnn.showStepTwo">
+                         <span class="text announcementHeadingSection"><i class="long arrow left icon"></i>Select Announcement Recipients</span><br/>
+                        <span class="createAnnHeaderDesc">
+                            Select groups who should receive the announcement
+                        </span>
+                    </span>
+                    <span ng-show="createAnn.showStepThree">
+                         <span class="text announcementHeadingSection"><i class="long arrow left icon"></i>Confirm Announcement Recipients</span><br/>
+                        <span class="createAnnHeaderDesc">
+                            Review and confirm your announcement recipients
+                        </span>
+                    </span>
+                    <span ng-show="createAnn.showStepFour">
+                         <span class="text announcementHeadingSection"><i class="long arrow left icon"></i>Preview Announcement</span><br/>
+                        <span class="createAnnHeaderDesc">
+                            This is how your announcement will look
+                        </span>
+                    </span>
+                  </span>
                 </div>
                 <div class="two wide column">
                     <div class="createAnnStepsIndicator">
-                      <h6 class="createAnnMargin5">STEP</h6>
-                      <span id="announcementSteps createAnnMargin4">1</span><span> / 4</span>
+                      <h6 class="createAnnMargin5 createAnnGrayShade">STEP</h6>
+                      &nbsp<span id="announcementSteps createAnnMargin4">{{createAnn.stepNumber}}</span><span class="createAnnGrayShade"> / 4</span>
                     </div>
                 </div>
             </div>
         </div>
         <div class="content">
           <form class="ui form" ng-init="createAnn.data = {}" name="announcementForm" >
-            <div class="ui grid">
+            <div class="ui grid" ng-show="createAnn.showStepOne">
               <div class="eight wide column">
                 <div class="field createAnnFormScroller">
                   <div class="padding-right-25">
@@ -64,7 +85,7 @@
 
                     <div class="field form-group" ng-if="showUrlField">
                         <label>URL / WEB LINK</label>
-                        <div class="field"  data-ng-repeat="choice in choices">
+                        <div class="field"  data-ng-repeat="weblink in repeatableWebLinks">
                           <div class="ui action input">
                             <input type="url" ng-model="createAnn.data.link[$index]" name="link" placeholder="Enter web url">
                             <i class="trash icon" ng-click="removeChoice()"></i>
@@ -95,12 +116,42 @@
                 </div>
               </div>
             </div>
+            <div ng-show="createAnn.showStepThree" class="ui list ui grid">
+              <div class="eight wide column">
+                <div class="ui message">
+                  <i class="close icon"></i>
+                  <span style="font-size: small;">This is a special notification which you can dismiss if you're bored with it.</span>
+                </div>
+                <div class="ui message">
+                  <i class="close icon"></i>
+                  <span style="font-size: small;">This is a special notification which you can dismiss if you're bored with it.</span>
+                </div>
+                <div class="ui message">
+                  <i class="close icon"></i>
+                  <span style="font-size: small;">This is a special notification which you can dismiss if you're bored with it.</span>
+                </div>
+              </div>
+            </div>
+            <div ng-show="createAnn.showStepFour" class="ui grid">
+              <div class="box width-100 eight wide column" style="margin-left: 17px;">
+                <announcement-details-directive announcement-details="createAnn.nitesh"></announcement-details-directive>
+              </div>
+            </div>
           </form>
         </div>
       </div>
     <div class="actions">
-      <div class="ui primary button {{createAnn.desableBtn}}"
-       ng-click="createAnn.saveMetaData(createAnn.data);">SELECT RECIPIENTS</div>
+      <button class="ui primary basic button announcementButton float-ContentLeft" id="annBackBtn"
+        ng-if="!createAnn.showStepOne" style="width: 15%"
+        ng-click="createAnn.previousStep($event.target);"
+        data-current-state="{{createAnn.stepNumber}}">
+        <span class="announcementButtonText">BACK</span>
+      </button>
+      <div class="ui primary button {{createAnn.desableBtns}}" ng-if="createAnn.showStepTwo" ng-click="createAnn.confirmRecipients();">CONFIRM RECIPIENTS</div>
+      <div class="ui primary button {{createAnn.desableBtn}}" ng-if="createAnn.showStepThree" ng-click="createAnn.previewAnn();">PREVIEW ANNOUNCEMENT</div>
+      <div class="ui primary button {{createAnn.desableBtn}}" ng-if="createAnn.showStepFour" ng-click="createAnn.previewAnn();">SEND ANNOUNCEMENT</div>
+      <div ng-if="createAnn.showStepOne" class="ui primary button {{createAnn.desableBtn}}"
+       ng-click="createAnn.selectRecipients();">SELECT RECIPIENTS</div>
     </div>
   </div>
 
@@ -109,4 +160,47 @@
       border-color: red !important;
     }
 
+    .announcementHeadingSection{
+      font-family: 'sunbirdboldfont' !important;
+      font-size: smaller;
+    }
     </style>
+
+    <style type="text/css">
+    .bluetext {
+      color: #0076FE;
+    }
+  .gray-full-width{
+    background-color: #F5F5F5;
+    padding: 15px 20px;
+    margin: 10px -20px;
+  }
+  .box{
+      box-shadow: 0 1px 2px 0 rgba(34,36,38,.15);
+      margin: 1rem 0;
+      padding: 1em 1em;
+      border-radius: .28571429rem;
+      border: 1px solid rgba(34,36,38,.15);
+  }
+  .ui.modal .ui.input input.gray-background{
+    background-color: #F5F5F5 !important;
+    box-shadow: 1 1px 2px 0 rgba(34,36,38,.15) !important;
+    border: 1px solid #EEE!important;
+    border-radius: 0!important;
+    padding: 10px !important;
+  }
+  .margin-bottom-0{
+    margin-bottom: -25px !important;
+  }
+  .width-100{
+    width:100%;
+  }
+  .borderBottom {
+      border-bottom: 1px solid #CCCCCC !important;
+      padding-bottom: 15px !important;
+  }
+  .borderBottom:last-child {
+      border-bottom: 0 !important;
+      padding-bottom: 0 !important;
+  }
+</style>
