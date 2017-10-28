@@ -11,12 +11,12 @@ angular.module('playerApp')
         // TODO - use api to get values
         createAnn.org = ['Org 1', 'Org 2', 'Org 3'];
         createAnn.announcementType = ['Type 1', 'Type 2', 'Type 3'];
-        createAnn.desableBtn   = 'disabledas';
+        createAnn.desableBtn   = 'disabled';
         createAnn.showStepOne  = true;
         createAnn.showStepTwo  = false;
         createAnn.showStepThree= false;
         createAnn.stepNumber = 1;
-        createAnn.nitesh = {"announcementId":"2344-1234-1234-12312","sourceId":"some-organisation-id","createdBy":"Creator1","createdOn":"2017-10-24","type":"announcement","links":["https://linksToOtheresources.com"],"title":"Monthy Status","description":"some description","target":["teachers"],"attachments":[{"title":"circular.pdf","downloadURL":"https://linktoattachment","mimetype":"application/pdf"}]};
+        createAnn.previewData = {"announcementId":"2344-1234-1234-12312","sourceId":"some-organisation-id","createdBy":"Creator1","createdOn":"2017-10-24","type":"announcement","links":["https://linksToOtheresources.com"],"title":"Monthy Status","description":"some description","target":["teachers"],"attachments":[{"title":"circular.pdf","downloadURL":"https://linktoattachment","mimetype":"application/pdf"}]};
 
         // Initialize modal
         createAnn.initializeModal = function(){
