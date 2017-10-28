@@ -11,7 +11,12 @@ angular.module('playerApp')
         // TODO - use api to get values
         createAnn.org = ['Org 1', 'Org 2', 'Org 3'];
         createAnn.announcementType = ['Type 1', 'Type 2', 'Type 3'];
-        createAnn.desableBtn = 'disabled';
+        createAnn.desableBtn   = 'disabled';
+        createAnn.showStepOne  = true;
+        createAnn.showStepTwo  = false;
+        createAnn.showStepThree= false;
+        createAnn.stepNumber = 1;
+        createAnn.previewData = {"announcementId":"2344-1234-1234-12312","sourceId":"some-organisation-id","createdBy":"Creator1","createdOn":"2017-10-24","type":"announcement","links":["https://linksToOtheresources.com"],"title":"Monthy Status","description":"some description","target":["teachers"],"attachments":[{"title":"circular.pdf","downloadURL":"https://linktoattachment","mimetype":"application/pdf"}]};
 
         // Initialize modal
         createAnn.initializeModal = function(){
@@ -23,45 +28,93 @@ angular.module('playerApp')
 
         // Open create createAnn modal
         createAnn.createAnnouncement = function (){
-          $('#createTextBookModal').modal({}).modal('show');
+          $('#createTextBookModal').modal({
+          	closable: false,
+          	onHide: function () {
+          		//return false;
+          	}
+          }).modal('show');
         }
 
-        $scope.choices = [];
+        $scope.repeatableWebLinks = [];
         $scope.showUrlField = false;
 
         $scope.addNewChoice = function() {
-          var newItemNo = $scope.choices.length+1;
-          $scope.choices.push({'id':'choice'+newItemNo});
+          var newItemNo = $scope.repeatableWebLinks.length+1;
+          $scope.repeatableWebLinks.push({'id':'choice'+newItemNo});
           $scope.showUrlField = true;
         };
 
         $scope.removeChoice = function() {
-          var lastItem = $scope.choices.length-1;
-          $scope.choices.splice(lastItem);
+          var lastItem = $scope.repeatableWebLinks.length-1;
+          $scope.repeatableWebLinks.splice(lastItem);
         };
 
         // Function to post form data
-        createAnn.saveMetaData = function(data){
-        	var requestBody = angular.copy(data);
-        	requestBody.createdBy   = 101;
-        	requestBody.createdOn   = '12/12/12';
-        	requestBody.attachments = createAnn.attachment;
-        	console.log(createAnn.attachment);
-        	console.log(requestBody);
-        	var requestData = {
-        		content: requestBody
-        	};
+        createAnn.selectRecipients = function(){
+        	createAnn.showStepOne = false;
+        	createAnn.showStepTwo = true;
+        	createAnn.stepNumber = 2;
         	return;
         }
 
-        // Detect input box change event
+        // Function to detect input box change event
         createAnn.detectChange = function (){
         	createAnn.enableRecepientBtn();
     	}
 
-    	// Detect dropdwon value change event
+    	// Function to detect dropdwon value change event
     	createAnn.detectDropdownChange = function (){
     		createAnn.enableRecepientBtn();
+    	}
+
+    	// Function to track back button change
+    	createAnn.previousStep = function(item){
+    		var state = $('#annBackBtn').attr('data-current-state');
+
+    		switch (state) {
+		        case "2":
+		        	createAnn.showStepOne   = true;
+    				createAnn.showStepThree = false;
+		        	createAnn.showStepTwo   = false;
+		        	createAnn.showStepFour  = false;
+		        	createAnn.stepNumber    = 1
+		            break;
+		        case "3":
+    				createAnn.showStepOne   = false;
+    				createAnn.showStepTwo   = true;
+    				createAnn.showStepThree = false;
+		        	createAnn.showStepFour  = false;
+    				createAnn.stepNumber    = 2;
+		            break;
+
+		        case "4":
+    				createAnn.showStepOne   = false;
+    				createAnn.showStepTwo   = false;
+    				createAnn.showStepThree = true;
+    				createAnn.showStepFour  = false;
+    				createAnn.stepNumber    = 3;
+		            break;
+		        default:
+
+		    }
+    	}
+
+    	// Function to preview announcement
+    	createAnn.previewAnn = function(){
+    		createAnn.showStepOne = false;
+			createAnn.showStepThree = false;
+			createAnn.showStepTwo = false;
+			createAnn.showStepFour = true;
+			createAnn.stepNumber = 4;
+    	}
+
+    	// Function to confirm recipients
+    	createAnn.confirmRecipients = function(){
+    		createAnn.showStepOne = false;
+    		createAnn.showStepTwo = false;
+    		createAnn.showStepThree = true;
+    		createAnn.stepNumber++;
     	}
 
     	// Function to enable / disable RecepientBtn

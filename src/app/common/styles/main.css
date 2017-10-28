@@ -3302,6 +3302,9 @@ span.dashBoardMenuItem.active {
 .createAnnMargin4 {
   margin: 4px;
 }
+.createAnnGrayShade {
+  color: #9b9b9b !important;
+}
 .sb-createAnnFineUploaderHolder {
   padding: 10px;
   overflow: hidden;
