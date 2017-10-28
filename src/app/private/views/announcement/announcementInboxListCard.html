@@ -1,7 +1,7 @@
 <div></div>
-<div class="ui raised segment announcementCardLeftBorder annGridPadding cursor-pointer" ng-repeat="item in announcementInboxData.listData" ng-click="announcementInboxData.showAnnouncementDetails(item)">
+<div class="ui raised segment announcementCardLeftBorder annGridPadding cursor-pointer" ng-repeat="item in announcementInboxData.listData" ng-click="announcementInboxData.showAnnouncementDetails(item)" ng-if="announcementInboxData.limit=='all' || announcementInboxData.limit>$index">
   <div>
-    <p class="ng-binding announcement-description">{{item.createdBy}} - {{item.type}}</p>
+    <p class="ng-binding announcement-description"> {{item.createdBy}} - {{item.type}}</p>
   </div>
   <div class="header announcementCard-header padding-top-5">
     <span class="header cardsHeading ng-binding"> {{item.title}} </span>
