@@ -18,9 +18,10 @@ angular.module('playerApp')
         $scope.showUrlField    = false;
         $scope.repeatableWebLinks = [];
         createAnn.stepNumber   = 1;
+        createAnn.isMetaModified = false;
 
         // TODO - show announcement preview
-        createAnn.previewData = {"announcementId":"2344-1234-1234-12312","sourceId":"some-organisation-id","createdBy":"Creator1","createdOn":"2017-10-24","type":"announcement","links":["https://linksToOtheresources.com"],"title":"Monthy Status","description":"some description","target":["teachers"],"attachments":[{"title":"circular.pdf","downloadURL":"https://linktoattachment","mimetype":"application/pdf"}]};
+        createAnn.previewData = {"announcementId":"2344-1234-1234-12312","sourceId":"some-organisation-id","createdBy":"Creator1","type":"announcement","links":["https://linksToOtheresources.com"],"title":"Monthy Status","description":"some description","target":["teachers"],"attachments":[{"title":"circular.pdf","downloadURL":"https://linktoattachment","mimetype":"application/pdf"}]};
 
         // Initialize modal
         createAnn.initializeModal = function(){
@@ -35,7 +36,15 @@ angular.module('playerApp')
           	closable: false,
           	onHide: function () {
           		// TODO - Show confirmation before closing modal
-          		createAnn.refreshFormValues();
+          		if (createAnn.isMetaModified && confirm("Changes that you made may not be saved.")) {
+        			createAnn.refreshFormValues();
+        			return true;
+          		}
+
+          		if (!createAnn.isMetaModified){
+          			return true;
+          		}
+          		return false;
           	}
           }).modal('show');
         }
@@ -130,6 +139,7 @@ angular.module('playerApp')
 	        } else {
 	        	createAnn.desableBtn = 'disabled';
 	        }
+	        createAnn.isMetaModified = true;
 	    }
 
 	    createAnn.refreshFormValues = function(){
@@ -144,6 +154,8 @@ angular.module('playerApp')
 			$('#createAnnouncementModal').modal('refresh');
 			$('#announcementForm').form('reset');
 			createAnn.data = {};
+			createAnn.isMetaModified = false;
+			createAnn.initializeFileUploader();
 	    }
 
 	    createAnn.saveAnnouncement = function(){
