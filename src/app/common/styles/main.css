@@ -3303,6 +3303,9 @@ span.dashBoardMenuItem.active {
 .ui.modal .dropdown-margin-left .ui.dropdown > .text {
   margin-left: -1em !important;
 }
+.dropdown-margin-left {
+  margin-left: 1px !important;
+}
 .createAnnSelectedRecepient {
   font-size: small;
 }
