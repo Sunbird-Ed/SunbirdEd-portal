@@ -1946,6 +1946,9 @@ div:focus {
   border-bottom: 0 !important;
   padding-bottom: 0 !important;
 }
+.announcementDetailsModal {
+  margin-top: -260px !important;
+}
 .down-arrow-accordion {
   float: right !important;
   font-size: large !important;
@@ -3296,6 +3299,9 @@ span.dashBoardMenuItem.active {
 }
 .ui.modal .announcementForm input.ng-invalid {
   border-color: red !important;
+}
+.ui.modal .dropdown-margin-left .ui.dropdown > .text {
+  margin-left: -1em !important;
 }
 .createAnnSelectedRecepient {
   font-size: small;
