@@ -58,13 +58,13 @@
                           <p ng-show="announcementForm.title.$error.pattern" class="createAnnErrorMsg">Title cannot contain the following characters '^#'</p>
                       </div>
                     </div>
-                    <div class="field required">
+                    <div class="field required dropdown-margin-left">
                         <label>FROM</label>
                         <select name="board" class="ui fluid dropdown" id="orgDropdown" ng-options=" board for board in createAnn.org" ng-model="createAnn.data.from" ng-change="createAnn.detectDropdownChange(createAnn.data.from)">
                             <option value="">Select organization/department that has sent the announcement</option>
                         </select>
                     </div>
-                    <div class="field required">
+                    <div class="field required dropdown-margin-left">
                         <label>ANNOUNCEMENT TYPE</label>
                         <select name="medium" class="ui fluid dropdown" id="announcementType" ng-options=" audience for audience in createAnn.announcementType" ng-model="createAnn.data.announcementType" ng-change="createAnn.detectDropdownChange(createAnn.data.announcementType)">
                             <option value="">Announcement type</option>
