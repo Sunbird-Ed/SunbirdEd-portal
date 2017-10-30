@@ -3,20 +3,19 @@ let chai = require('chai'),
   sinon = require('sinon'),
   expect = chai.expect,
   HttpStatus = require('http-status-codes'),
-  announcementController = require('../../app/helpers/announcement/controller.js'),
-  ObjectStore = require('../../app/helpers/announcement/model')
+  announcementController = require('../../app/helpers/announcement/controller.js')
 
 chai.use(chaiHttp)
 
 describe('Announcement controller', () => {
   describe('create method', () => {
     it('should throw errors when request structure is invalid', () => {
-      let ObjectStoreCreateObjectStub = sinon.stub(ObjectStore, 'createObject')
+      let ObjectStoreCreateObjectStub = sinon.stub(announcementController.objectStoreRest, 'createObject')
       ObjectStoreCreateObjectStub.returns(new Promise((resolve, reject) => {
         resolve({ data: {} })
       }))
 
-      let ObjectStoreFindObjectStub = sinon.stub(ObjectStore, 'findObject')
+      let ObjectStoreFindObjectStub = sinon.stub(announcementController.objectStoreRest, 'findObject')
       ObjectStoreFindObjectStub.returns(new Promise((resolve, reject) => {
         resolve({ data: {} })
       }))
@@ -63,8 +62,8 @@ describe('Announcement controller', () => {
           ])
         })
 
-      ObjectStore.createObject.restore()
-      ObjectStore.findObject.restore()
+      announcementController.objectStoreRest.createObject.restore()
+      announcementController.objectStoreRest.findObject.restore()
     })
 
     it('should create announcement if user exist and user has create access', (done) => {
@@ -86,7 +85,7 @@ describe('Announcement controller', () => {
         .then((data) => {
           expect(data).to.eql(newAnnouncement)
           announcementController.__getUserPermissions.restore()
-      	  announcementController.__createAnnouncement.restore()
+          announcementController.__createAnnouncement.restore()
           done()
         })
         .catch((error) => {})
@@ -103,9 +102,9 @@ describe('Announcement controller', () => {
       announcementController.create(validRequest)
         .then((data) => {})
         .catch((error) => {
-        	expect(error).to.eql({ msg: 'user does not exist!', statusCode: HttpStatus.BAD_REQUEST })
-        	announcementController.__getUserPermissions.restore()
-        	done()
+          expect(error).to.eql({ msg: 'user does not exist!', statusCode: HttpStatus.BAD_REQUEST })
+          announcementController.__getUserPermissions.restore()
+          done()
         })
     })
 
@@ -121,9 +120,9 @@ describe('Announcement controller', () => {
       announcementController.create(validRequest)
         .then((data) => {})
         .catch((error) => {
-        	expect(error).to.eql({ msg: 'user does not have create access', statusCode: HttpStatus.BAD_REQUEST })
-        	announcementController.__getUserPermissions.restore()
-        	done()
+          expect(error).to.eql({ msg: 'user does not have create access', statusCode: HttpStatus.BAD_REQUEST })
+          announcementController.__getUserPermissions.restore()
+          done()
         })
     })
 
@@ -147,7 +146,7 @@ describe('Announcement controller', () => {
         .catch((error) => {
           expect(error).to.eql({ msg: 'unable to process the request!', statusCode: HttpStatus.BAD_REQUEST })
           announcementController.__getUserPermissions.restore()
-      	  announcementController.__createAnnouncement.restore()
+          announcementController.__createAnnouncement.restore()
           done()
         })
     })
@@ -178,8 +177,8 @@ describe('Announcement controller', () => {
           expect(createAnnouncementNotificationStub.called).to.be.true
           expect(data).to.eql(newAnnouncement)
           announcementController.__getUserPermissions.restore()
-      	  announcementController.__createAnnouncement.restore()
-      	  announcementController.__createAnnouncementNotification.restore()
+          announcementController.__createAnnouncement.restore()
+          announcementController.__createAnnouncementNotification.restore()
           done()
         })
         .catch((error) => {})
@@ -210,8 +209,8 @@ describe('Announcement controller', () => {
           expect(createAnnouncementNotificationStub.called).to.be.true
           expect(data).to.eql(newAnnouncement)
           announcementController.__getUserPermissions.restore()
-      	  announcementController.__createAnnouncement.restore()
-      	  announcementController.__createAnnouncementNotification.restore()
+          announcementController.__createAnnouncement.restore()
+          announcementController.__createAnnouncementNotification.restore()
           done()
         })
         .catch((error) => {})
