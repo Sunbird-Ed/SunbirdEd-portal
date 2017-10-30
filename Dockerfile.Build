@@ -24,7 +24,5 @@ RUN bower cache clean
 RUN bower prune -f 
 RUN bower install /opt/player/bower.json  --force
 RUN gulp
-WORKDIR /opt/player/dist/public
-RUN rm index.html
 WORKDIR /opt/player
 CMD ["zip", "-r", "player-dist.zip",  "dist"]   
