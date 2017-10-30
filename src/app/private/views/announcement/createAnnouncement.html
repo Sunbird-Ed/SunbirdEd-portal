@@ -165,7 +165,7 @@
       <div class="ui primary button" ng-if="createAnn.showStepTwo" ng-click="createAnn.confirmRecipients();">CONFIRM RECIPIENTS</div>
       <div class="ui primary button" ng-if="createAnn.showStepThree" ng-click="createAnn.previewAnn();">PREVIEW ANNOUNCEMENT</div>
       <div class="ui primary button" ng-if="createAnn.showStepFour" id="sendAnnouncement">SEND ANNOUNCEMENT</div>
-      <div ng-if="createAnn.showStepOne" ng-disabled='announcementForm.$invalid' class="ui primary button {{createAnn.disableBtn}}"
+      <div ng-if="createAnn.showStepOne" class="ui primary button" ng-class="{'disabled': createAnn.disableBtn === true || announcementForm.$invalid}"
        ng-click="createAnn.selectRecipients();">SELECT RECIPIENTS</div>
     </div>
   </div>

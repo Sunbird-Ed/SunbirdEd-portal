@@ -11,7 +11,7 @@ angular.module('playerApp')
         // TODO - use api to get values
         createAnn.org = ['Org 1', 'Org 2', 'Org 3'];
         createAnn.announcementType = ['Type 1', 'Type 2', 'Type 3'];
-        createAnn.disableBtn = 'disabled';
+        createAnn.disableBtn = true;
         createAnn.showUrlField = false;
         createAnn.isLastStep = false;
         createAnn.repeatableWebLinks = [];
@@ -129,9 +129,9 @@ angular.module('playerApp')
 	        if (createAnn.data.title && createAnn.data.from
 	        	&& createAnn.data.announcementType &&
 	        	(createAnn.data.description || createAnn.attachment.length)){
-	        	createAnn.disableBtn = '';
+	        	createAnn.disableBtn = false;
 	        } else {
-	        	createAnn.disableBtn = 'disabled';
+	        	createAnn.disableBtn = true;
 	        }
 	        createAnn.isMetaModified = true;
 	    }
@@ -142,7 +142,7 @@ angular.module('playerApp')
 
 	    createAnn.refreshFormValues = function(){
 	    	stepsHandler(1, true, false, false, false);
-			createAnn.disableBtn    = 'disabled';
+			createAnn.disableBtn    = true;
 			$('#announcementType').dropdown('restore defaults');
 			$('#orgDropdown').dropdown('restore defaults');
 			$('#createAnnouncementModal').modal('refresh');
