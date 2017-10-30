@@ -13,19 +13,19 @@
                     </span>
 
                     <span class="ui" ng-show="createAnn.showStepTwo">
-                         <span class="text announcementHeadingSection"><i class="long arrow left icon"></i>Select Announcement Recipients</span><br/>
+                         <span class="text announcementHeadingSection">Select Announcement Recipients</span><br/>
                         <span class="createAnnHeaderDesc">
                             Select groups who should receive the announcement
                         </span>
                     </span>
                     <span ng-show="createAnn.showStepThree">
-                         <span class="text announcementHeadingSection"><i class="long arrow left icon"></i>Confirm Announcement Recipients</span><br/>
+                         <span class="text announcementHeadingSection">Confirm Announcement Recipients</span><br/>
                         <span class="createAnnHeaderDesc">
                             Review and confirm your announcement recipients
                         </span>
                     </span>
                     <span ng-show="createAnn.showStepFour">
-                         <span class="text announcementHeadingSection"><i class="long arrow left icon"></i>Preview Announcement</span><br/>
+                         <span class="text announcementHeadingSection">Preview Announcement</span><br/>
                         <span class="createAnnHeaderDesc">
                             This is how your announcement will look
                         </span>
@@ -49,13 +49,10 @@
                     <div class="field required">
                       <label>TITLE</label>
                       <div class="field form-group dropdown-margin-left" ng-required="true">
-                        <input type="text" name="title" id="announcementTitle"
-                          ng-pattern="/^[ A-Za-z0-9_~`!$%*()=?/><.,|@./&+-]*$/"
-                          placeholder="Please enter relevant title for this announcement (Max: 100 chars)"
+                        <input type="text" name="title" id="announcementTitle" placeholder="Please enter relevant title for this announcement (Max: 100 chars)"
                           ng-model="createAnn.data.title" ng-maxlength="100" ng-change="createAnn.detectChange()">
                           <section ng-if="createAnn.data.title.length" class="float-ContentRight">{{createAnn.data.title.length}} / 100</section>
                           <p ng-show="announcementForm.title.$error.maxlength" class="createAnnErrorMsg">Title is too long</p>
-                          <p ng-show="announcementForm.title.$error.pattern" class="createAnnErrorMsg">Title cannot contain the following characters '^#'</p>
                       </div>
                     </div>
                     <div class="field required dropdown-margin-left">
@@ -83,13 +80,15 @@
                         </div>
                     </div>
 
-                    <div class="field form-group dropdown-margin-left" ng-if="showUrlField">
+                    <div class="field form-group dropdown-margin-left" ng-if="createAnn.showUrlField">
                         <label>URL / WEB LINK</label>
-                        <div class="field"  data-ng-repeat="weblink in repeatableWebLinks">
+                        <div class="field"  data-ng-repeat="weblink in createAnn.repeatableWebLinks">
                           <div class="ui action input">
                             <input type="url" ng-model="createAnn.data.link[$index]"
-                              name="link_{{$index}}" placeholder="Enter web url">
-                            <i class="trash icon createAnnBlueClass" ng-click="removeChoice(element)" value="Delete"></i>
+                              name="link_{{$index}}" placeholder="Enter web url"
+                              ng-change="createAnn.detectUrlChange($index)"
+                              >
+                            <i class="trash icon createAnnBlueClass" ng-click="createAnn.removeLink($index)" value="Delete"></i>
                           </div>
                           <section ng-show="announcementForm['link_' + $index].$error.url"
                           class="createAnnErrorMsg">Not a valid URL</section>
@@ -97,12 +96,12 @@
                     </div>
 
                     <div class="field">
-                      <span ng-click="addNewChoice()">
+                      <span ng-click="createAnn.addNewLink()">
                         <i class="plus icon createAnnBlueClass cursor-pointer"></i>
-                        <span ng-if="!showUrlField">
+                        <span ng-if="!createAnn.showUrlField">
                           <span class="cursor-pointer createAnnBlueClass">Add URL/web link</span><span> (For example, you can link a Google Form)</span>
                         </span>
-                        <span ng-if="showUrlField">
+                        <span ng-if="createAnn.showUrlField">
                           <span class="cursor-pointer createAnnBlueClass">Add Another URL/web link</span>
                         </span>
                       </span>
@@ -164,10 +163,10 @@
         data-current-state="{{createAnn.stepNumber}}">
         <span class="announcementButtonText">BACK</span>
       </button>
-      <div class="ui primary button {{createAnn.desableBtns}}" ng-if="createAnn.showStepTwo" ng-click="createAnn.confirmRecipients();">CONFIRM RECIPIENTS</div>
-      <div class="ui primary button {{createAnn.desableBtn}}" ng-if="createAnn.showStepThree" ng-click="createAnn.previewAnn();">PREVIEW ANNOUNCEMENT</div>
-      <div class="ui primary button {{createAnn.desableBtn}}" ng-if="createAnn.showStepFour" ng-click="createAnn.saveAnnouncement();">SEND ANNOUNCEMENT</div>
-      <div ng-if="createAnn.showStepOne" class="ui primary button {{createAnn.desableBtn}}"
+      <div class="ui primary button" ng-if="createAnn.showStepTwo" ng-click="createAnn.confirmRecipients();">CONFIRM RECIPIENTS</div>
+      <div class="ui primary button" ng-if="createAnn.showStepThree" ng-click="createAnn.previewAnn();">PREVIEW ANNOUNCEMENT</div>
+      <div class="ui primary button" ng-if="createAnn.showStepFour" id="sendAnnouncement">SEND ANNOUNCEMENT</div>
+      <div ng-if="createAnn.showStepOne" class="ui primary button {{createAnn.disableBtn}}"
        ng-click="createAnn.selectRecipients();">SELECT RECIPIENTS</div>
     </div>
   </div>
@@ -180,7 +179,7 @@
           <div class="ui grid">
             <div class="ui centered grid">
               <div class="row">
-                <i class="checkmark icon"></i>
+                <i class="checkmark icon big circular createAnnGrayShade"></i>
               </div>
               <div class="row">
                 <span class="dashBoardSectionHeading">Announcement sent!</span>
