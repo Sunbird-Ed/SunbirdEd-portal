@@ -24,6 +24,66 @@ router.get('/get/:id', (requestObj, responseObj) => {
   })
 })
 
+router.get('/cancel/:announcementId', (requestObj, responseObj) => {
+  announcementController.cancelAnnouncementById(requestObj)
+  .then((data) => {
+    sendSuccessResponse(responseObj, 'cancel.id', data)
+  })
+  .catch((err) => {
+    sendErrorResponse(responseObj, 'cancel.id', err.msg)
+  })
+})
+
+router.post('/user/inbox', (requestObj, responseObj) => {
+  announcementController.getUserInbox(requestObj.body)
+  .then((data) => {
+    sendSuccessResponse(responseObj, 'user.inbox', data)
+  })
+  .catch((err) => {
+    sendErrorResponse(responseObj, 'user.inbox', err.msg)
+  })
+})
+
+router.post('/user/outbox', (requestObj, responseObj) => {
+  announcementController.getUserOutbox(requestObj.body)
+  .then((data) => {
+    sendSuccessResponse(responseObj, 'user.outbox', data)
+  })
+  .catch((err) => {
+    sendErrorResponse(responseObj, 'user.outbox', err.msg)
+  })
+})
+
+router.post('/attachment/upload', (requestObj, responseObj) => {
+  announcementController.uploadAttachment(requestObj.body)
+  .then((data) => {
+    sendSuccessResponse(responseObj, 'attachment.upload', data)
+  })
+  .catch((err) => {
+    sendErrorResponse(responseObj, 'attachment.upload', err.msg)
+  })
+})
+
+router.post('/attachment/download', (requestObj, responseObj) => {
+  announcementController.downloadAttachment(requestObj.body)
+  .then((data) => {
+    sendSuccessResponse(responseObj, 'attachment.download', data)
+  })
+  .catch((err) => {
+    sendErrorResponse(responseObj, 'attachment.download', err.msg)
+  })
+})
+
+router.get('/types', (requestObj, responseObj) => {
+  announcementController.getAnnouncementTypes(requestObj)
+  .then((data) => {
+    sendSuccessResponse(responseObj, 'types', data)
+  })
+  .catch((err) => {
+    sendErrorResponse(responseObj, 'types', err.msg)
+  })
+})
+
 function sendSuccessResponse (res, id, result, code) {
   res.status(code || HttpStatus.OK)
   res.send({
