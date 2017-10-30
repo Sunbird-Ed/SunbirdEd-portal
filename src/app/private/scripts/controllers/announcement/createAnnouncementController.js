@@ -89,7 +89,6 @@ angular.module('playerApp')
     	// Function to track back button change
     	createAnn.previousStep = function(item){
     		var step = $('#annBackBtn').attr('data-current-state');
-
     		switch (step) {
 		        case "2":
 		        	stepsHandler(1, true, false, false, false);
@@ -138,13 +137,6 @@ angular.module('playerApp')
 	    }
 
 	    createAnn.detectUrlChange = function(index){
-	    	var links = Object.keys(createAnn.data.link).map(e=>createAnn.data.link[e]);
-	    	if(typeof(links[index]) === undefined || links[index] == ''){
-	    		createAnn.disableBtn = 'disabled';
-	    	} else{
-	    		createAnn.enableRecepientBtn();
-	    	}
-
 	    	createAnn.isMetaModified = true;
 	    }
 
