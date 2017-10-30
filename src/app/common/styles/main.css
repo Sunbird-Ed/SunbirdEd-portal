@@ -420,6 +420,18 @@
   color: #006cff !important;
   text-shadow: none !important;
 }
+.header-container {
+  margin-left: 1px !important;
+  border-bottom: 5px solid #007AFF !important;
+}
+.header-user-icon {
+  margin-right: 0px !important;
+}
+.content-card-meta {
+  background: rgba(0, 0, 0, 0.5) !important;
+  color: #FFFFFF !important;
+  padding: 5px !important;
+}
 .ui.menu {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -474,6 +486,9 @@
 .header-user-container {
   float: right !important;
 }
+.padding-top-header-large-icons {
+  padding-top: 1.5rem;
+}
 .padding-top-1rem {
   padding-top: 1rem !important;
 }
@@ -492,10 +507,19 @@
 .ui.breadcrumb .divider {
   color: #007AFF !important;
 }
+.headerSearchDropdown:hover {
+  background: #f9fafb !important;
+}
 .headerDropdownProfile {
   cursor: text !important;
   background: none !important;
   font-weight: bold !important;
+}
+.searchfilterinput .ng-empty + .icon.search,
+.searchfilterinput .ng-empty + .icon.search:hover {
+  cursor: auto !important;
+  opacity: 0.3 !important;
+  pointer-events: none;
 }
 /*use percentage for images*/
 /*use em for fonts*/
@@ -1752,7 +1776,8 @@ div:focus {
   line-height: 1.2;
 }
 .profileUpdateCardPadding {
-  padding: 45px 15px 6px 10px;
+  padding: 25px 15px 17px 10px;
+  border: 0.5px solid rgba(151, 151, 151, 0.54) !important;
 }
 .ui.card > .sliderCards.content.CardcontentTopPadding {
   padding-top: 50px !important;
@@ -1774,7 +1799,7 @@ div:focus {
     line-height: 1.2;
   }
   .profileUpdateCardPadding {
-    padding: 3px 15px 60px 10px;
+    padding: 0px 0px 40px 0px;
   }
   .ui.card > .sliderCards.content.CardcontentTopPadding {
     padding-top: 40px !important;
@@ -1788,7 +1813,7 @@ div:focus {
     line-height: 1.2;
   }
   .profileUpdateCardPadding {
-    padding: 45px 15px 6px 10px;
+    padding: 20px 15px 22px 10px;
   }
 }
 .header-logo {
@@ -2659,6 +2684,9 @@ ul.fancytree-container li {
   width: 50% !important;
   text-align: right !important;
   word-break: break-all !important;
+}
+.profile-des .item .right.floated.content span {
+  word-break: normal !important;
 }
 .profileUpdateAddDetails {
   font-size: 1em !important;

@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 angular.module('playerApp')
     .service('formValidation', ['$rootScope', function ($rootScope) {
@@ -7,28 +7,28 @@ angular.module('playerApp')
      * @desc Service for validating forms.
      * @memberOf Services
      */
-        
-       var addressFields = [
+
+        var addressFields = [
           { fieldName: 'addressType', type: 'checked', prompt: $rootScope.messages.stmsg.m0062 },
           { fieldName: 'addLine1', type: 'empty', prompt: $rootScope.messages.stmsg.m0063 },
           { fieldName: 'city', type: 'empty', prompt: $rootScope.messages.stmsg.m0064 },
           { fieldName: 'pinCode', type: 'regExp[^[0-9]*$]', prompt: $rootScope.messages.stmsg.m0065 }
-        ];
+        ]
         var educationFields = [
           { fieldName: 'degree', type: 'empty', prompt: $rootScope.messages.stmsg.m0062 },
           { fieldName: 'institute', type: 'empty', prompt: $rootScope.messages.stmsg.m0070 }
-        ];
+        ]
         var jobProfileFields = [
           { fieldName: 'jobName', type: 'empty', prompt: $rootScope.messages.stmsg.m0072 },
           { fieldName: 'org', type: 'empty', prompt: $rootScope.messages.stmsg.m0073 }
-        ];
+        ]
         var basicInfoFields = [
             { fieldName: 'firstName',
                 type: 'regExp[^[0-9]*[A-Za-z\\s][0-9A-Za-z\\s]*$]',
                 prompt: $rootScope.messages.stmsg.m0066
             },
             { fieldName: 'phone',
-                type: 'regExp[(^(?:(?:\\+|0{0,2})91(\\s*[\\-]\\s*)?|[0]?)?[789]\\d{9}$)|(([*]*)[0-9]{4})]',
+                type: 'regExp[(^(\\+91[\\-\\s]?)?[0]?(91)?[789]\\d{9}$)|([*]{6,9}[0-9]{4})]',
                 prompt: $rootScope.messages.stmsg.m0067
             },
             { fieldName: 'email',
@@ -37,10 +37,10 @@ angular.module('playerApp')
             },
             { fieldName: 'language',
                 type: 'empty',
-                prompt: $rootScope.messages.stmsg.m0069 
+                prompt: $rootScope.messages.stmsg.m0069
             }
-            
-        ];
+
+        ]
         /**
              * @method getFields
              * @desc Get validation fields and rules for validations
@@ -51,13 +51,13 @@ angular.module('playerApp')
              */
         function getFields(formName) {
             if (formName === '#basicInfoForm') {
-                return basicInfoFields;
+                return basicInfoFields
             } else if (formName === '.educationForm') {
-                return educationFields;
+                return educationFields
             } else if (formName === '#addressForm' || formName === '.addressForm') {
-                return addressFields;
+                return addressFields
             } else if (formName === '.jobProfileForm') {
-                return jobProfileFields;
+                return jobProfileFields
             }
         }
         /**
@@ -69,9 +69,9 @@ angular.module('playerApp')
              * @instance
              */
         this.validate = function (formName) {
-            var fieldNameTypePromt = {};
-            fieldNameTypePromt = getFields(formName);
-            var rules = angular.copy(fieldNameTypePromt);
+            var fieldNameTypePromt = {}
+            fieldNameTypePromt = getFields(formName)
+            var rules = angular.copy(fieldNameTypePromt)
             var validationRules = rules.reduce(function (validation, field, index) {
                 field.fieldName = {
                     identifier: field.fieldName,
@@ -79,20 +79,20 @@ angular.module('playerApp')
                         type: field.type,
                         prompt: field.prompt
                     }]
-                };
-                validation[index] = field.fieldName;
-                return validation;
-            }, {});
+                }
+                validation[index] = field.fieldName
+                return validation
+            }, {})
 
             $(formName).form({
                 fields: validationRules,
                 onSuccess: function () {
-                    return true;
+                    return true
                 },
                 onFailure: function () {
-                    return false;
+                    return false
                 }
-            });
-            return $(formName).form('validate form');
-        };
-    }]);
+            })
+            return $(formName).form('validate form')
+        }
+    }])
