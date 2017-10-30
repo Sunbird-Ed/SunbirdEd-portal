@@ -12,13 +12,10 @@ angular.module('playerApp')
         createAnn.org = ['Org 1', 'Org 2', 'Org 3'];
         createAnn.announcementType = ['Type 1', 'Type 2', 'Type 3'];
         createAnn.desableBtn   = 'disabled';
-        createAnn.showStepOne  = true;
-        createAnn.showStepTwo  = false;
-        createAnn.showStepThree= false;
-        $scope.showUrlField    = false;
-        $scope.repeatableWebLinks = [];
-        createAnn.stepNumber   = 1;
+        createAnn.showUrlField    = false;
+        createAnn.repeatableWebLinks = [];
         createAnn.isMetaModified = false;
+        stepsHandler(1, true, false, false, false);
 
         // Initialize modal
         createAnn.initializeModal = function(){
@@ -46,24 +43,21 @@ angular.module('playerApp')
           }).modal('show');
         }
 
-        $scope.addNewChoice = function() {
-          var newItemNo = $scope.repeatableWebLinks.length+1;
-          $scope.repeatableWebLinks.push({'id':'choice'+newItemNo});
-          $scope.showUrlField = true;
+        createAnn.addNewLink = function() {
+          var newItemNo = createAnn.repeatableWebLinks.length+1;
+          createAnn.repeatableWebLinks.push({'id':'choice'+newItemNo});
+          createAnn.showUrlField = true;
         };
 
-        $scope.removeChoice = function(index) {
-          	$scope.repeatableWebLinks.splice(index, 1);
+        createAnn.removeLink = function(index) {
+          	createAnn.repeatableWebLinks.splice(index, 1);
           	delete createAnn.data.link[index];
-          	$scope.showUrlField = $scope.repeatableWebLinks.length == '0' ? false : true;
+          	createAnn.showUrlField = createAnn.repeatableWebLinks.length == '0' ? false : true;
         };
 
         // Function to post form data
         createAnn.selectRecipients = function(){
-        	createAnn.showStepOne = false;
-        	createAnn.showStepTwo = true;
-        	createAnn.stepNumber = 2;
-        	return;
+        	stepsHandler(2, false, true, false, false);
         }
 
         // Function to detect input box change event
@@ -82,57 +76,37 @@ angular.module('playerApp')
 
     		switch (step) {
 		        case "2":
-		        	createAnn.showStepOne   = true;
-    				createAnn.showStepThree = false;
-		        	createAnn.showStepTwo   = false;
-		        	createAnn.showStepFour  = false;
-		        	createAnn.stepNumber    = 1
+		        	stepsHandler(1, true, false, false, false);
 		            break;
 		        case "3":
-    				createAnn.showStepOne   = false;
-    				createAnn.showStepTwo   = true;
-    				createAnn.showStepThree = false;
-		        	createAnn.showStepFour  = false;
-    				createAnn.stepNumber    = 2;
+		        	stepsHandler(2, false, true, false, false);
 		            break;
-
 		        case "4":
-    				createAnn.showStepOne   = false;
-    				createAnn.showStepTwo   = false;
-    				createAnn.showStepThree = true;
-    				createAnn.showStepFour  = false;
-    				createAnn.stepNumber    = 3;
+		        	stepsHandler(3, false, false, true, false);
 		            break;
-
 		        default:
-
 		    }
+    	}
+
+    	function stepsHandler(stepNumber, step1, step2, step3, step4){
+    		createAnn.showStepOne   = step1;
+    		createAnn.showStepTwo   = step2;
+    		createAnn.showStepThree = step3;
+    		createAnn.showStepFour  = step4;
+    		createAnn.stepNumber    = stepNumber;
     	}
 
     	// Function to preview announcement
     	createAnn.previewAnn = function(){
-    		createAnn.showStepOne   = false;
-			createAnn.showStepThree = false;
-			createAnn.showStepTwo   = false;
-			createAnn.showStepFour  = true;
-			createAnn.stepNumber    = 4;
-			if (createAnn.data.link){
-				var linkArray = Object.keys(createAnn.data.link).map(e=>createAnn.data.link[e]);
-				console.log(linkArray);
-			} else{
-				var linkArray = [];
-			}
-
+    		stepsHandler(4, false, false, false, true);
+    		var linkArray = createAnn.data.link ? Object.keys(createAnn.data.link).map(e=>createAnn.data.link[e]) : [];
 			// TODO - show announcement preview
         	createAnn.previewData = {"sourceId":"some-organisation-id","type":createAnn.data.announcementType,"links":linkArray,"title":createAnn.data.title,"description":createAnn.data.description,"target":["teachers"],"attachments":[{"title":"circular.pdf","downloadURL":"https://linktoattachment","mimetype":"application/pdf"}]};
     	}
 
     	// Function to confirm recipients
     	createAnn.confirmRecipients = function(){
-    		createAnn.showStepOne = false;
-    		createAnn.showStepTwo = false;
-    		createAnn.showStepThree = true;
-    		createAnn.stepNumber = 3;
+    		stepsHandler(3, false, false, true, false);
     	}
 
     	// Function to enable / disable RecepientBtn
@@ -150,7 +124,6 @@ angular.module('playerApp')
 	    createAnn.detectUrlChange = function(index){
 	    	var links = Object.keys(createAnn.data.link).map(e=>createAnn.data.link[e]);
 	    	if(typeof(links[index]) === undefined || links[index] == ''){
-	    		alert(1212);
 	    		createAnn.desableBtn = 'disabled';
 	    	} else{
 	    		createAnn.enableRecepientBtn();
@@ -160,11 +133,7 @@ angular.module('playerApp')
 	    }
 
 	    createAnn.refreshFormValues = function(){
-	    	createAnn.showStepThree = false;
-			createAnn.showStepTwo   = false;
-			createAnn.showStepFour  = false;
-			createAnn.showStepOne   = true;
-			createAnn.stepNumber    = 1;
+	    	stepsHandler(1, true, false, false, false);
 			createAnn.desableBtn    = 'disabled';
 			$('#announcementType').dropdown('restore defaults');
 			$('#orgDropdown').dropdown('restore defaults');
@@ -172,8 +141,8 @@ angular.module('playerApp')
 			$('#announcementForm').form('reset');
 			createAnn.data = {};
 			createAnn.isMetaModified = false;
-			$scope.repeatableWebLinks.length = 0;
-			$scope.showUrlField = false;
+			createAnn.repeatableWebLinks.length = 0;
+			createAnn.showUrlField = false;
 			createAnn.initializeFileUploader();
 	    }
 
@@ -192,6 +161,7 @@ angular.module('playerApp')
 	                element: document.getElementById('fine-uploader-manual-trigger'),
 	                template: 'qq-template-manual-trigger',
 	                request: {
+	                	// TODO - use upload api url
 	                    endpoint: 'http://www.mocky.io/v2/59ef30b72e0000001d1c5e09'
 	                },
 	                autoUpload: true,
@@ -219,12 +189,6 @@ angular.module('playerApp')
 	                        createAnn.enableRecepientBtn();
 	                    },
 	                    onSubmitted: function (id, name) {
-	                        createAnn.uploadedFileId = id;
-	                        createAnn.selectedFileName = name;
-	                        createAnn.selectedFile = this.getFile(id);
-	                        createAnn.getSelectedFileMime(name);
-	                        document.getElementById('hide-section-with-button')
-	                                                .style.display = 'none';
 	                    },
 	                    onCancel: function () {
 	                        document.getElementById('hide-section-with-button')
@@ -241,12 +205,5 @@ angular.module('playerApp')
 	            };
 	        }, 300);
 	    };
-
-        createAnn.getSelectedFileMime = function (fileName) {
-            var array = fileName.split('.');
-            var ext = array.reverse()[0];
-            createAnn.data.mimeType = createAnn.objMimeType[ext];
-            createAnn.selectedFileMimeType = createAnn.objMimeType[ext];
-        };
     }
   ])
