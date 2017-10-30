@@ -34,7 +34,8 @@ angular.module('playerApp')
         return announcementService.getFileExtension(mimeType)
       }
       
-       announcementInboxData.showAnnouncementDetails = function (announcementDetails) {
+       announcementInboxData.showAnnouncementDetails = function (announcementDetails, id) {
+		angular.element(document.querySelector('#annInboxDiv-'+id)).removeClass("announcementCardLeftBorder");
         $scope.announcementInboxData.announcementDetails = announcementDetails
         $('#announcementDetailsModal').modal('show')
       }
