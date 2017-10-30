@@ -89,9 +89,9 @@
                           <div class="ui action input">
                             <input type="url" ng-model="createAnn.data.link[$index]"
                               name="link_{{$index}}" placeholder="Enter web url"
-                              ng-change="createAnn.detectUrlChange()"
+                              ng-change="createAnn.detectUrlChange($index)"
                               >
-                            <i class="trash icon createAnnBlueClass" ng-click="removeChoice(element)" value="Delete"></i>
+                            <i class="trash icon createAnnBlueClass" ng-click="removeChoice($index)" value="Delete"></i>
                           </div>
                           <section ng-show="announcementForm['link_' + $index].$error.url"
                           class="createAnnErrorMsg">Not a valid URL</section>
