@@ -1,11 +1,37 @@
+let AnnouncementModel = require('./model/AnnouncementModel.js')
+let AnnouncementTypeModel = require('./model/AnnouncementTypeModel.js')
+let AttachmentModel = require('./model/AttachmentModel.js')
+let MetricsModel = require('./model/MetricsModel.js')
+let UserPermissionsModel = require('./model/UserPermissionsModel.js')
 let Joi = require('joi')
 let HttpStatus = require('http-status-codes')
 const _ = require('lodash')
 let async = require('asyncawait/async')
 let await = require('asyncawait/await')
-const ObjectStore = require('./model')
+const ObjectStoreRest = require('./ObjectStore/ObjectStoreRest.js')
 
 class AnnouncementController {
+
+  constructor() {
+    let tableMapping = {
+      'Announcement': AnnouncementModel,
+      'AnnouncementType': AnnouncementTypeModel,
+      'Attachment': AttachmentModel,
+      'Metrics': MetricsModel,
+      'UserPermissions': UserPermissionsModel
+    }
+
+    let modelConstant = {
+      'ANNOUNCEMENT': 'Announcement',
+      'ANNOUNCEMENTTYPE': 'AnnouncementType',
+      'ATTACHMENT': 'Attachment',
+      'METRICS': 'Metrics',
+      'USERPERMISSIONS': 'UserPermissions'
+    }
+
+    this.objectStoreRest = new ObjectStoreRest(tableMapping, modelConstant)
+  }
+
   create(requestObj) {
     return this.__create()(requestObj)
   }
@@ -37,8 +63,6 @@ class AnnouncementController {
         // even if notification fails, it should still send annoucement in response
         return { data: newAnnouncementObj.data }
       }
-
-
     })
   }
 
@@ -69,9 +93,9 @@ class AnnouncementController {
 
   __getUserPermissions(data) {
     return new Promise((resolve, reject)  => {
-      let query = { table: ObjectStore.MODEL.USERPERMISSIONS, query: { 'userid': data.user } }
+      let query = { table: this.objectStoreRest.MODEL.USERPERMISSIONS, query: { 'userid': data.user } }
 
-      ObjectStore.findObject(query)
+      this.objectStoreRest.findObject(query)
         .then((data) => {
           resolve({ data: data })
         })
@@ -85,8 +109,8 @@ class AnnouncementController {
     return new Promise((resolve, reject) => {
       if (!data) reject({ msg: 'invalid request' })
 
-      let query = { table: ObjectStore.MODEL.ANNOUNCEMENT, values: { /*"id": "123-1-231-32-123", "sourceid": "bangalore.teachers.org", "createddate": "27-10-17", "userid": "123-123-12313-123"*/ } }
-      ObjectStore.createObject(query)
+      let query = { table: this.objectStoreRest.MODEL.ANNOUNCEMENT, values: { /*"id": "123-1-231-32-123", "sourceid": "bangalore.teachers.org", "createddate": "27-10-17", "userid": "123-123-12313-123"*/ } }
+      this.objectStoreRest.createObject(query)
         .then((data) => {
           resolve({ data: data })
         })
