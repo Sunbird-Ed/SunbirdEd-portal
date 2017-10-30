@@ -8,7 +8,7 @@
                     <span class="ui" ng-show="createAnn.showStepOne">
                          <span class="text announcementHeadingSection">Create New Announcement</span><br/>
                         <span class="createAnnHeaderDesc">
-                            Fill in all the required fields to create the createAnn.
+                            Fill in all the required fields to create the announcement.
                         </span>
                     </span>
 
@@ -86,8 +86,7 @@
                           <div class="ui action input">
                             <input type="url" ng-model="createAnn.data.link[$index]"
                               name="link_{{$index}}" placeholder="Enter web url"
-                              ng-change="createAnn.detectUrlChange($index)"
-                              >
+                              ng-change="createAnn.detectChange()">
                             <i class="trash icon createAnnBlueClass" ng-click="createAnn.removeLink($index)" value="Delete"></i>
                           </div>
                           <section ng-show="announcementForm['link_' + $index].$error.url"
@@ -166,7 +165,7 @@
       <div class="ui primary button" ng-if="createAnn.showStepTwo" ng-click="createAnn.confirmRecipients();">CONFIRM RECIPIENTS</div>
       <div class="ui primary button" ng-if="createAnn.showStepThree" ng-click="createAnn.previewAnn();">PREVIEW ANNOUNCEMENT</div>
       <div class="ui primary button" ng-if="createAnn.showStepFour" id="sendAnnouncement">SEND ANNOUNCEMENT</div>
-      <div ng-if="createAnn.showStepOne" class="ui primary button {{createAnn.disableBtn}}"
+      <div ng-if="createAnn.showStepOne" class="ui primary button" ng-class="{'disabled': createAnn.disableBtn === true || announcementForm.$invalid}"
        ng-click="createAnn.selectRecipients();">SELECT RECIPIENTS</div>
     </div>
   </div>
