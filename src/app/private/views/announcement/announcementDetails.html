@@ -12,7 +12,6 @@
     <div class="header cardsHeading padding-top-10">
       {{announcementDetails.title}}
     </div>
-    <div class="annDetailsFormScroller">
     <div class="announcement-description padding-top-10" ng-if="(announcementDetails.description | isValidObjectFilter) === true">
       {{announcementDetails.description}}
     </div>
@@ -22,8 +21,9 @@
       <strong class="annMediumText ng-binding">Weblinks</strong>
     </div>
     <div class="padding-top-7 tweleve wide column">
-      <div ng-repeat="link in announcementDetails.links track by $index"> 
-        <span><a href="{{link}}" target="_blank" class="margin-top-4 word-break">{{link}}</a></span>
+      <div ng-repeat="link in announcementDetails.links track by $index">
+        <p><a href="{{link}}" target="_blank">{{link | limitTo:100}} <span ng-show="link.length > 100" class="announcementBlueText">...</span></a>
+        </p>
       </div>
     </div>
   </div>
@@ -50,7 +50,6 @@
       </div>
     </div>
   </div>
-</div>
   <div class="gray-full-width margin-bottom-0" ng-if="(announcementDetails.createdOn | isValidObjectFilter) === true">
     <span class="ng-binding announcement-description">
        Sent on {{announcementDetails.createdOn  | date : "dd MMM yyyy"}}</span>
@@ -61,15 +60,3 @@
       -->
   </div>
 </div>
-<style type="text/css">
-.annDetailsFormScroller{
-    max-height: 100vh; 
-    overflow-y: auto;
-}
-.margin-top-4{
-  margin-top: 4px !important;
-}
-.word-break{
-  word-break: break-word;
-}
-</style>
