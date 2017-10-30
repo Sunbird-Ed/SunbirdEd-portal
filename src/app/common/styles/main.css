@@ -1949,6 +1949,10 @@ div:focus {
 .announcementDetailsModal {
   margin-top: -260px !important;
 }
+.annDetailsFormScroller {
+  max-height: 80vh;
+  overflow-y: auto;
+}
 .down-arrow-accordion {
   float: right !important;
   font-size: large !important;

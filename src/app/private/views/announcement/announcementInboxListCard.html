@@ -13,8 +13,8 @@
     <div class="padding-top-10">
       <p class="ng-binding annMediumText">Weblinks</p>
     </div>
-    <div ng-repeat="links in item.links">
-      <p class="ng-binding announcementBlueText cursor-pointer ">{{links}}</p>
+    <div ng-repeat="links in item.links track by $index">
+      <p class="ng-binding announcementBlueText cursor-pointer">{{links | limitTo:70}} <span ng-show="links.length > 70">...</span></p>
     </div>
     <div class="padding-top-20">
       <p class="ng-binding annMediumText">Attachments</p>
@@ -43,7 +43,7 @@
 <!-- Code for Popup-->
 <div id="announcementDetailsModal" class="ui modal announcementDetailsModal">
   <i class="close icon"></i>
-  <div class="content">
+  <div class="content annDetailsFormScroller">
     <div class="ui right aligned grid">
       <div class="ui raised segment width-100">
         <announcement-details-directive announcement-details="announcementInboxData.announcementDetails"></announcement-details-directive>
