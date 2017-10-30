@@ -165,8 +165,8 @@
       </button>
       <div class="ui primary button" ng-if="createAnn.showStepTwo" ng-click="createAnn.confirmRecipients();">CONFIRM RECIPIENTS</div>
       <div class="ui primary button" ng-if="createAnn.showStepThree" ng-click="createAnn.previewAnn();">PREVIEW ANNOUNCEMENT</div>
-      <div class="ui primary button" ng-if="createAnn.showStepFour" ng-click="createAnn.saveAnnouncement();">SEND ANNOUNCEMENT</div>
-      <div ng-if="createAnn.showStepOne" class="ui primary button {{createAnn.desableBtn}}"
+      <div class="ui primary button" ng-if="createAnn.showStepFour" id="sendAnnouncement">SEND ANNOUNCEMENT</div>
+      <div ng-if="createAnn.showStepOne" class="ui primary button {{createAnn.disableBtn}}"
        ng-click="createAnn.selectRecipients();">SELECT RECIPIENTS</div>
     </div>
   </div>
@@ -179,7 +179,7 @@
           <div class="ui grid">
             <div class="ui centered grid">
               <div class="row">
-                <i class="checkmark icon"></i>
+                <i class="checkmark icon big circular createAnnGrayShade"></i>
               </div>
               <div class="row">
                 <span class="dashBoardSectionHeading">Announcement sent!</span>
