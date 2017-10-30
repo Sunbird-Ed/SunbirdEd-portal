@@ -1,52 +1,53 @@
 <div></div>
-<div class="ui raised segment announcementCardLeftBorder annGridPadding cursor-pointer" ng-repeat="item in announcementInboxData.listData" ng-click="announcementInboxData.showAnnouncementDetails(item)" ng-if="announcementInboxData.limit=='all' || announcementInboxData.limit>$index">
-  <div>
-    <p class="ng-binding announcement-description"> {{item.createdBy}} - {{item.type}}</p>
-  </div>
-  <div class="header announcementCard-header padding-top-5">
-    <span class="header cardsHeading ng-binding"> {{item.title}} </span>
-  </div>
-  <div class="padding-top-5">
-    <span class="ng-binding">{{item.description | limitTo:180}}</span><span ng-show="item.description.length > 180"> ...<span class="announcementBlueText"> Read More</span></span>
-  </div>
-  <div class="padding-top-10">
-    <p class="ng-binding annMediumText">Weblinks</p>
-  </div>
-  <div ng-repeat="links in item.links">
-    <p class="ng-binding announcementBlueText cursor-pointer ">{{links}}</p>
-  </div>
-  <div class="padding-top-20">
-    <p class="ng-binding annMediumText">Attachments</p>
-  </div>
-  <div class="ui cube shape padding-top-10 padding-right-10" ng-repeat="attachments in item.attachments">
-    <div class="sides">
-      <div class="active announcementCustomside side">
-        <div class="content">
-          <div class="center annAttText" ng-init="fileExtension = announcementInboxData.getFileExtension(attachments.mimetype)">
-            <span ng-repeat="extension in fileExtension">{{extension}}</span>
+<div ng-repeat="item in announcementInboxData.listData" ng-click="announcementInboxData.showAnnouncementDetails(item, $index)" ng-if="announcementInboxData.limit=='all' || announcementInboxData.limit>$index">
+  <div class="announcementCardLeftBorder ui raised segment annGridPadding cursor-pointer margin-bottom-10" id="annInboxDiv-{{$index}}">
+    <div>
+      <p class="ng-binding announcement-description"> {{item.createdBy}} - {{item.type}}</p>
+    </div>
+    <div class="header announcementCard-header padding-top-5">
+      <span class="header cardsHeading ng-binding"> {{item.title}} </span>
+    </div>
+    <div class="padding-top-5">
+      <span class="ng-binding">{{item.description | limitTo:180}}</span><span ng-show="item.description.length > 180"> ...<span class="announcementBlueText"> Read More</span></span>
+    </div>
+    <div class="padding-top-10">
+      <p class="ng-binding annMediumText">Weblinks</p>
+    </div>
+    <div ng-repeat="links in item.links">
+      <p class="ng-binding announcementBlueText cursor-pointer ">{{links}}</p>
+    </div>
+    <div class="padding-top-20">
+      <p class="ng-binding annMediumText">Attachments</p>
+    </div>
+    <div class="ui cube shape padding-top-10 padding-right-10" ng-repeat="attachments in item.attachments">
+      <div class="sides">
+        <div class="active announcementCustomside side">
+          <div class="content">
+            <div class="center annAttText" ng-init="fileExtension = announcementInboxData.getFileExtension(attachments.mimetype)">
+              <span ng-repeat="extension in fileExtension">{{extension}}</span>
+            </div>
           </div>
         </div>
       </div>
+      <div class="padding-top-5">
+        <span class="ng-binding announcement-description annSmallText">{{attachments.title | limitTo:8}}</span><span ng-show="attachments.title.length > 10" class="announcement-description"> ...</span>
+      </div>
     </div>
-    <div class="padding-top-5">
-      <span class="ng-binding announcement-description annSmallText">{{attachments.title | limitTo:8}}</span><span ng-show="attachments.title.length > 10" class="announcement-description"> ...</span>
+    <div class="ui divider"></div>
+    <div>
+      <span class="ng-binding announcement-description">Sent on {{item.createdOn  | date : "dd MMM yyyy"}}</span>
+      <!--<span class="announcement-description float-ContentRight"><i class="large share alternate icon"></i></span>-->
     </div>
-  </div>
-  <div class="ui divider"></div>
-  <div>
-    <span class="ng-binding announcement-description">Sent on {{item.createdOn  | date : "dd MMM yyyy"}}</span>
-    <!--<span class="announcement-description float-ContentRight"><i class="large share alternate icon"></i></span>-->
   </div>
 </div>
-
 <!-- Code for Popup-->
-<div id="announcementDetailsModal" class="ui modal announcementDetailsModal"> 
-    <i class="close icon"></i>  
-    <div class="content">
-        <div class="ui right aligned grid">
-            <div class="ui raised segment width-100">
-            <announcement-details-directive announcement-details="announcementInboxData.announcementDetails"></announcement-details-directive>
-        </div>
+<div id="announcementDetailsModal" class="ui modal announcementDetailsModal">
+  <i class="close icon"></i>
+  <div class="content">
+    <div class="ui right aligned grid">
+      <div class="ui raised segment width-100">
+        <announcement-details-directive announcement-details="announcementInboxData.announcementDetails"></announcement-details-directive>
+      </div>
     </div>
   </div>
 </div>
