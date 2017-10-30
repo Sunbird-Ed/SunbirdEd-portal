@@ -20,9 +20,6 @@ angular.module('playerApp')
         createAnn.stepNumber   = 1;
         createAnn.isMetaModified = false;
 
-        // TODO - show announcement preview
-        createAnn.previewData = {"announcementId":"2344-1234-1234-12312","sourceId":"some-organisation-id","createdBy":"Creator1","type":"announcement","links":["https://linksToOtheresources.com"],"title":"Monthy Status","description":"some description","target":["teachers"],"attachments":[{"title":"circular.pdf","downloadURL":"https://linktoattachment","mimetype":"application/pdf"}]};
-
         // Initialize modal
         createAnn.initializeModal = function(){
         	$timeout(function () {
@@ -56,11 +53,9 @@ angular.module('playerApp')
         };
 
         $scope.removeChoice = function(index) {
-          //var lastItem = $scope.repeatableWebLinks.length-1;
-          $scope.repeatableWebLinks.splice(index, 1);
-          if ($scope.repeatableWebLinks.length == '0'){
-          	$scope.showUrlField = false;
-          }
+          	$scope.repeatableWebLinks.splice(index, 1);
+          	delete createAnn.data.link[index];
+          	$scope.showUrlField = $scope.repeatableWebLinks.length == '0' ? false : true;
         };
 
         // Function to post form data
@@ -108,6 +103,7 @@ angular.module('playerApp')
     				createAnn.showStepFour  = false;
     				createAnn.stepNumber    = 3;
 		            break;
+
 		        default:
 
 		    }
@@ -120,6 +116,15 @@ angular.module('playerApp')
 			createAnn.showStepTwo   = false;
 			createAnn.showStepFour  = true;
 			createAnn.stepNumber    = 4;
+			if (createAnn.data.link){
+				var linkArray = Object.keys(createAnn.data.link).map(e=>createAnn.data.link[e]);
+				console.log(linkArray);
+			} else{
+				var linkArray = [];
+			}
+
+			// TODO - show announcement preview
+        	createAnn.previewData = {"sourceId":"some-organisation-id","type":createAnn.data.announcementType,"links":linkArray,"title":createAnn.data.title,"description":createAnn.data.description,"target":["teachers"],"attachments":[{"title":"circular.pdf","downloadURL":"https://linktoattachment","mimetype":"application/pdf"}]};
     	}
 
     	// Function to confirm recipients
@@ -142,7 +147,15 @@ angular.module('playerApp')
 	        createAnn.isMetaModified = true;
 	    }
 
-	    createAnn.detectUrlChange = function(){
+	    createAnn.detectUrlChange = function(index){
+	    	var links = Object.keys(createAnn.data.link).map(e=>createAnn.data.link[e]);
+	    	if(typeof(links[index]) === undefined || links[index] == ''){
+	    		alert(1212);
+	    		createAnn.desableBtn = 'disabled';
+	    	} else{
+	    		createAnn.enableRecepientBtn();
+	    	}
+
 	    	createAnn.isMetaModified = true;
 	    }
 
