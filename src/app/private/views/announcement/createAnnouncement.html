@@ -88,7 +88,9 @@
                         <div class="field"  data-ng-repeat="weblink in repeatableWebLinks">
                           <div class="ui action input">
                             <input type="url" ng-model="createAnn.data.link[$index]"
-                              name="link_{{$index}}" placeholder="Enter web url">
+                              name="link_{{$index}}" placeholder="Enter web url"
+                              ng-change="createAnn.detectUrlChange()"
+                              >
                             <i class="trash icon createAnnBlueClass" ng-click="removeChoice(element)" value="Delete"></i>
                           </div>
                           <section ng-show="announcementForm['link_' + $index].$error.url"

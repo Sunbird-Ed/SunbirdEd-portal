@@ -142,6 +142,10 @@ angular.module('playerApp')
 	        createAnn.isMetaModified = true;
 	    }
 
+	    createAnn.detectUrlChange = function(){
+	    	createAnn.isMetaModified = true;
+	    }
+
 	    createAnn.refreshFormValues = function(){
 	    	createAnn.showStepThree = false;
 			createAnn.showStepTwo   = false;
@@ -155,6 +159,8 @@ angular.module('playerApp')
 			$('#announcementForm').form('reset');
 			createAnn.data = {};
 			createAnn.isMetaModified = false;
+			$scope.repeatableWebLinks.length = 0;
+			$scope.showUrlField = false;
 			createAnn.initializeFileUploader();
 	    }
 
