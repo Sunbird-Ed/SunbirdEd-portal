@@ -11,8 +11,9 @@ angular.module('playerApp')
         // TODO - use api to get values
         createAnn.org = ['Org 1', 'Org 2', 'Org 3'];
         createAnn.announcementType = ['Type 1', 'Type 2', 'Type 3'];
-        createAnn.desableBtn   = 'disabled';
-        createAnn.showUrlField    = false;
+        createAnn.disableBtn = 'disabled';
+        createAnn.showUrlField = false;
+        createAnn.isLastStep = false;
         createAnn.repeatableWebLinks = [];
         createAnn.isMetaModified = false;
         stepsHandler(1, true, false, false, false);
@@ -28,18 +29,33 @@ angular.module('playerApp')
         createAnn.createAnnouncement = function (){
           $('#createAnnouncementModal').modal({
           	closable: false,
+          	debug: true,
           	onHide: function () {
           		// TODO - Show confirmation before closing modal
-          		if (createAnn.isMetaModified && confirm("Changes that you made may not be saved.")) {
-        			createAnn.refreshFormValues();
-        			return true;
-          		}
+          		if (!createAnn.isLastStep) {
+	          		if (createAnn.isMetaModified && confirm("Changes that you made may not be saved.")) {
+	        			createAnn.refreshFormValues();
+	        			return true;
+	          		}
 
-          		if (!createAnn.isMetaModified){
-          			return true;
-          		}
-          		return false;
-          	}
+	          		if (!createAnn.isMetaModified){
+	          			return true;
+	          		}
+	          		return false;
+	          	}
+	          	return true;
+          	},
+          	onApprove : function a(){
+          		// Make api call to save data
+          		createAnn.isLastStep = true;
+          		createAnn.refreshFormValues();
+		    	$('#announcementSuccessModal').modal({
+		          	closable: false
+		        }).modal('show');
+		    },
+          	selector    : {
+        		approve  : '#sendAnnouncement'
+      		}
           }).modal('show');
         }
 
@@ -114,9 +130,9 @@ angular.module('playerApp')
 	        if (createAnn.data.title && createAnn.data.from
 	        	&& createAnn.data.announcementType &&
 	        	(createAnn.data.description || createAnn.attachment.length)){
-	        	createAnn.desableBtn = '';
+	        	createAnn.disableBtn = '';
 	        } else {
-	        	createAnn.desableBtn = 'disabled';
+	        	createAnn.disableBtn = 'disabled';
 	        }
 	        createAnn.isMetaModified = true;
 	    }
@@ -124,7 +140,7 @@ angular.module('playerApp')
 	    createAnn.detectUrlChange = function(index){
 	    	var links = Object.keys(createAnn.data.link).map(e=>createAnn.data.link[e]);
 	    	if(typeof(links[index]) === undefined || links[index] == ''){
-	    		createAnn.desableBtn = 'disabled';
+	    		createAnn.disableBtn = 'disabled';
 	    	} else{
 	    		createAnn.enableRecepientBtn();
 	    	}
@@ -134,7 +150,7 @@ angular.module('playerApp')
 
 	    createAnn.refreshFormValues = function(){
 	    	stepsHandler(1, true, false, false, false);
-			createAnn.desableBtn    = 'disabled';
+			createAnn.disableBtn    = 'disabled';
 			$('#announcementType').dropdown('restore defaults');
 			$('#orgDropdown').dropdown('restore defaults');
 			$('#createAnnouncementModal').modal('refresh');
@@ -147,10 +163,6 @@ angular.module('playerApp')
 	    }
 
 	    createAnn.saveAnnouncement = function(){
-	    	createAnn.refreshFormValues();
-	    	$('#announcementSuccessModal').modal({
-	          	closable: false
-	        }).modal('show');
 	    }
 
 		createAnn.attachment = [];
