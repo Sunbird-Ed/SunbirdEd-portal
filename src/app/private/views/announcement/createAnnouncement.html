@@ -48,7 +48,7 @@
                   <div class="padding-right-25">
                     <div class="field required">
                       <label>TITLE</label>
-                      <div class="field form-group" ng-required="true">
+                      <div class="field form-group dropdown-margin-left" ng-required="true">
                         <input type="text" name="title" id="announcementTitle"
                           ng-pattern="/^[ A-Za-z0-9_~`!$%*()=?/><.,|@./&+-]*$/"
                           placeholder="Please enter relevant title for this announcement (Max: 100 chars)"
@@ -70,7 +70,7 @@
                             <option value="">Announcement type</option>
                         </select>
                     </div>
-                    <div class="field">
+                    <div class="field dropdown-margin-left">
                         <label>
                             DESCRIPTION (OPTIONAL)
                         </label>
@@ -83,7 +83,7 @@
                         </div>
                     </div>
 
-                    <div class="field form-group" ng-if="showUrlField">
+                    <div class="field form-group dropdown-margin-left" ng-if="showUrlField">
                         <label>URL / WEB LINK</label>
                         <div class="field"  data-ng-repeat="weblink in repeatableWebLinks">
                           <div class="ui action input">
