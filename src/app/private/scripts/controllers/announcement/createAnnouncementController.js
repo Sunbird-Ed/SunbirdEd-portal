@@ -11,7 +11,7 @@ angular.module('playerApp')
         // TODO - use api to get values
         createAnn.org = ['Org 1', 'Org 2', 'Org 3'];
         createAnn.announcementType = ['Type 1', 'Type 2', 'Type 3'];
-        createAnn.disableBtn = 'disabled';
+        createAnn.disableBtn = true;
         createAnn.showUrlField = false;
         createAnn.isLastStep = false;
         createAnn.repeatableWebLinks = [];
@@ -89,7 +89,6 @@ angular.module('playerApp')
     	// Function to track back button change
     	createAnn.previousStep = function(item){
     		var step = $('#annBackBtn').attr('data-current-state');
-
     		switch (step) {
 		        case "2":
 		        	stepsHandler(1, true, false, false, false);
@@ -130,27 +129,20 @@ angular.module('playerApp')
 	        if (createAnn.data.title && createAnn.data.from
 	        	&& createAnn.data.announcementType &&
 	        	(createAnn.data.description || createAnn.attachment.length)){
-	        	createAnn.disableBtn = '';
+	        	createAnn.disableBtn = false;
 	        } else {
-	        	createAnn.disableBtn = 'disabled';
+	        	createAnn.disableBtn = true;
 	        }
 	        createAnn.isMetaModified = true;
 	    }
 
 	    createAnn.detectUrlChange = function(index){
-	    	var links = Object.keys(createAnn.data.link).map(e=>createAnn.data.link[e]);
-	    	if(typeof(links[index]) === undefined || links[index] == ''){
-	    		createAnn.disableBtn = 'disabled';
-	    	} else{
-	    		createAnn.enableRecepientBtn();
-	    	}
-
 	    	createAnn.isMetaModified = true;
 	    }
 
 	    createAnn.refreshFormValues = function(){
 	    	stepsHandler(1, true, false, false, false);
-			createAnn.disableBtn    = 'disabled';
+			createAnn.disableBtn    = true;
 			$('#announcementType').dropdown('restore defaults');
 			$('#orgDropdown').dropdown('restore defaults');
 			$('#createAnnouncementModal').modal('refresh');
