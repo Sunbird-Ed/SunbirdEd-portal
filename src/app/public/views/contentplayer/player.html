@@ -51,7 +51,7 @@
                                                     <div class="ui ">{{contentData.author}}</div>
                                                 </div>
                                                 <div class="content">
-                                                    {{$root.labels.previewContent.author}}
+                                                    {{$root.frmelmnts.lbl.author}}
                                                 </div>
                                             </div>
                                             <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.language">
@@ -59,7 +59,7 @@
                                                     <div class="ui ">{{contentData.language.toString()}}</div>
                                                 </div>
                                                 <div class="content">
-                                                    {{$root.labels.previewContent.language}}
+                                                    {{$root.frmelmnts.lbl.lang}}
                                                 </div>
                                             </div>
                                             <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.gradeLevel">
@@ -67,7 +67,7 @@
                                                     <div class="ui ">{{contentData.gradeLevel.toString()}}</div>
                                                 </div>
                                                 <div class="content ">
-                                                    {{$root.labels.previewContent.grades}}
+                                                    {{$root.frmelmnts.lbl.grades}}
                                                 </div>
                                             </div>
                                             <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.subject">
@@ -75,7 +75,7 @@
                                                     <div class="ui ">{{contentData.subject}}</div>
                                                 </div>
                                                 <div class="content">
-                                                    {{$root.labels.previewContent.subject}}
+                                                    {{$root.frmelmnts.lbl.subject}}
                                                 </div>
                                             </div>
                                             <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.createdOn">
@@ -83,7 +83,7 @@
                                                     <div class="ui ">{{contentData.createdOn| dateFilterWithMDY}}</div>
                                                 </div>
                                                 <div class="content">
-                                                    {{$root.labels.previewContent.createdOn}}
+                                                    {{$root.frmelmnts.lbl.createdon}}
                                                 </div>
                                             </div>
                                             <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.lastUpdatedOn">
@@ -91,7 +91,7 @@
                                                     <div class="ui ">{{contentData.lastUpdatedOn| dateFilterWithMDY}}</div>
                                                 </div>
                                                 <div class="content">
-                                                    {{$root.labels.previewContent.lastUpdate}}
+                                                    {{$root.frmelmnts.lbl.lastupdate}}
                                                 </div>
                                             </div>
                                             <div class="item padding-top-10 padding-bottom-5" ng-if="getConceptsNames(contentData.concepts)">
@@ -117,8 +117,8 @@
                             <h2 class="ui header {{errorObject.messageClass}}">
                                 {{errorObject.message}}
                             </h2>
-                            <span ng-if="errorObject.showTryAgainButton"><button class="ui button" ng-click="init()">{{$root.labels.previewContent.tryAgain}}</button></span>
-                            <span ng-if="errorObject.showCloseButton"><button class="ui red button" ng-click="close()">{{$root.labels.previewContent.close}}</button></span>
+                            <span ng-if="errorObject.showTryAgainButton"><button class="ui button" ng-click="init()">{{$root.frmelmnts.lbl.tryagain}}</button></span>
+                            <span ng-if="errorObject.showCloseButton"><button class="ui red button" ng-click="close()">{{$root.frmelmnts.lbl.close}}</button></span>
                         </div>
                     </div>
                 </div>

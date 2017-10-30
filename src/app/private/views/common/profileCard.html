@@ -1,14 +1,13 @@
-<div class="ui link cards">
+<div class="ui cards">
     <div class="sliderCards profilUpdateCards ui link card margin-right-20 margin-top-15 margin-left-10 link">
+                <div class="course-progress ui tiny progress  progressBar-margin orange" data-value="{{item.value}}" data-total="100">
+            <div class="bar"></div>
+        </div>
         <div class="profileUpdateCardPadding">
             <div class="item">
                 <div class="c100 light small blue margin-right-20" ng-class="'p'+item.value">
                     <div class="profpic">
                         <img class="ui circular floated image" ng-src="{{ avatar || '/common/images/user_logo.png'}}" />
-                    </div>
-                    <div class="slice">
-                        <div class="bar"></div>
-                        <div class="fill"></div>
                     </div>
                 </div>
                 <div class="padding-top-10 padding-left-10 content profileUpdateCardContentHeight">
