@@ -20,20 +20,21 @@
     <div class="padding-top-20">
       <strong class="annMediumText ng-binding">Weblinks</strong>
     </div>
-    <div class="padding-top-10">
-      <div ng-repeat="link in announcementDetails.links">
-        <a href="{{link}}" target="_blank">{{link}}</a>
+    <div class="padding-top-7 tweleve wide column">
+      <div ng-repeat="link in announcementDetails.links track by $index">
+        <p><a href="{{link}}" target="_blank">{{link | limitTo:100}} <span ng-show="link.length > 100" class="announcementBlueText">...</span></a>
+        </p>
       </div>
     </div>
   </div>
   <div ng-if="(announcementDetails.attachments | isValidObjectFilter) === true">
-    <div class="padding-top-20">
+    <div class="padding-top-10">
       <strong class="annMediumText ng-binding">Attachments</strong>
     </div>
     <div class="sixteen wide column margin-bottom-20">
       <div class="box">
         <div class="ui items">
-          <div class="item borderBottom" ng-repeat="attachment in announcementDetails.attachments">
+          <div class="item borderBottom" ng-repeat="attachment in announcementDetails.attachments track by $index">
             <div class="ui tiny image">
               <img src="/common/images/default.png">
             </div>
