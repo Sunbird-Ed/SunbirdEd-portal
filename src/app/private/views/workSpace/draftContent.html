@@ -1,6 +1,6 @@
 <div class="ui grid">
     <div class="twelve wide column">
-        <div ng-init="draftContent.getDraftContent()">
+        <div ng-init="draftContent.getDraftContent();contentModelSetBackLink();">
             <div ng-if="!draftContent.loader.showLoader">
                 <div class="ui three stackable cards" ng-if="draftContent.draftContentData.length > 0">
                     <div class="card" ng-repeat="item in draftContent.draftContentData track by $index">
