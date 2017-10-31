@@ -54,7 +54,7 @@ router.post('/user/outbox', (requestObj, responseObj) => {
   })
 })
 
-router.post('/attachment/upload', (requestObj, responseObj) => {
+/* router.post('/attachment/upload', (requestObj, responseObj) => {
   announcementController.uploadAttachment(requestObj.body)
   .then((data) => {
     sendSuccessResponse(responseObj, 'attachment.upload', data)
@@ -72,7 +72,7 @@ router.post('/attachment/download', (requestObj, responseObj) => {
   .catch((err) => {
     sendErrorResponse(responseObj, 'attachment.download', err.msg)
   })
-})
+}) */
 
 router.get('/types', (requestObj, responseObj) => {
   announcementController.getAnnouncementTypes(requestObj)
