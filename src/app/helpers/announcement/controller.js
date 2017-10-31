@@ -10,24 +10,26 @@ let async = require('asyncawait/async')
 let await = require('asyncawait/await')
 const ObjectStoreRest = require('./ObjectStore/ObjectStoreRest.js')
 let uuidv1 = require('uuid/v1')
+let dateFormat = require('dateformat')
 
 class AnnouncementController {
 
   constructor() {
+    //table name should be same as the name in database table    
     let tableMapping = {
-      'Announcement': AnnouncementModel,
-      'AnnouncementType': AnnouncementTypeModel,
-      'Attachment': AttachmentModel,
-      'Metrics': MetricsModel,
-      'UserPermissions': UserPermissionsModel
+      'announcement': AnnouncementModel,
+      'announcementtype': AnnouncementTypeModel,
+      'attachment': AttachmentModel,
+      'metrics': MetricsModel,
+      'userpermissions': UserPermissionsModel
     }
 
     let modelConstant = {
-      'ANNOUNCEMENT': 'Announcement',
-      'ANNOUNCEMENTTYPE': 'AnnouncementType',
-      'ATTACHMENT': 'Attachment',
-      'METRICS': 'Metrics',
-      'USERPERMISSIONS': 'UserPermissions'
+      'ANNOUNCEMENT': 'announcement',
+      'ANNOUNCEMENTTYPE': 'announcementtype',
+      'ATTACHMENT': 'attachment',
+      'METRICS': 'metrics',
+      'USERPERMISSIONS': 'userpermissions'
     }
 
     this.objectStoreRest = new ObjectStoreRest(tableMapping, modelConstant)
@@ -50,16 +52,9 @@ class AnnouncementController {
       let request = this.__validateCreateRequest(requestObj)
       if (!request.isValid) throw { msg: request.error, statusCode: HttpStatus.BAD_REQUEST }
 
-      try {
-        var userPermissions = await (this.__getUserPermissions({ user: requestObj.request.createdBy }))
-      } catch (error) {
-        throw { msg: 'user does not exist!', statusCode: HttpStatus.BAD_REQUEST }
-      }
-
-      // TODO: Uncomment below line after Sunbird roles and permissions API is integrated.
-      // if (!userPermissions.data.hasCreateAccess) throw { msg: 'user does not have create access', statusCode: HttpStatus.BAD_REQUEST }
-
-      try {
+      // TODO: validate user permission to create
+      
+      try {      
         var newAnnouncementObj = await (this.__createAnnouncement(requestObj.request))
       } catch (error) {
         throw { msg: 'unable to process the request!', statusCode: HttpStatus.BAD_REQUEST }
@@ -67,10 +62,10 @@ class AnnouncementController {
 
       try {
         await (this.__createAnnouncementNotification( /*announcement data*/ ))
-        return { data: newAnnouncementObj.data }
+        return newAnnouncementObj.data
       } catch (e) {
         // even if notification fails, it should still send annoucement in response
-        return { data: newAnnouncementObj.data }
+        return newAnnouncementObj.data
       }
     })
   }
@@ -131,14 +126,33 @@ class AnnouncementController {
 
   __createAnnouncement(data) {
     return new Promise((resolve, reject) => {
+      let announcementId = uuidv1()
       if (!data) reject({ msg: 'invalid request' })
+      let query = {
+        table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
+        values: {
+          'id': announcementId,
+          'sourceid': data.sourceId,
+          'createddate': dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo"),
+          'userid': data.createdBy,
+          'details': {
+            'title': data.title,
+            'type': data.type,
+            'description': data.description
+          },
+          'target': JSON.stringify(data.target),
+          'links': data.links
+        }
+      }
 
-      let query = { table: this.objectStoreRest.MODEL.ANNOUNCEMENT, values: { /*"id": "123-1-231-32-123", "sourceid": "bangalore.teachers.org", "createddate": "27-10-17", "userid": "123-123-12313-123"*/ } }
+      console.log(query)
+
       this.objectStoreRest.createObject(query)
-        .then((data) => {
-          resolve({ data: data })
+        .then((data) => {                    
+          resolve({ data: {announcementId} })
         })
         .catch((error) => {
+          console.log(error)
           reject({ msg: 'unable to create announcement' })
         })
     })
@@ -163,31 +177,26 @@ class AnnouncementController {
    * @return  {[type]}              [description]
    */
   getAnnouncementById(requestObj) {
-    return this.__getAnnouncementById()(requestObj)
-  }
+    return new Promise((resolve, reject) => {
+      let query = {
+        table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
+        query: {
+          'id': requestObj.params.id          
+        }
+      }
 
-  __getAnnouncementById() {
-    //TODO: complete implementation
-    return async((requestObj) => ({
-      "announcementId": requestObj.params.id,
-      "sourceId": "some-organisation-id",
-      "createdBy": "Creator1",
-      "createdOn": "2017-10-24",
-      "type": "announcement",
-      "links": [
-        "https://linksToOtheresources.com"
-      ],
-      "title": "Monthy Status",
-      "description": "some description",
-      "target": [
-        "teachers"
-      ],
-      "attachments": [{
-        "title": "circular.pdf",
-        "downloadURL": "https://linktoattachment",
-        "mimetype": "application/pdf"
-      }]
-    }))
+      this.objectStoreRest.findObject(query)
+        .then((data) => {
+          _.forEach(data.data, (announcementObj) => {
+            if(_.isString(announcementObj.target)) announcementObj.target = JSON.parse(announcementObj.target)  
+          })          
+          resolve(data.data)
+        })
+        .catch((error) => {
+          console.log(error)
+          reject({ msg: 'unable to fetch announcement' })
+        })
+    })
   }
 
   /**
@@ -234,7 +243,7 @@ class AnnouncementController {
   __getUserInbox() {
     //TODO: complete implementation
     return async((requestObj) => {
-      return {"announcements": [{"announcementId": "2344-1234-1234-12312", "sourceId": "some-organisation-id", "createdBy": "Creator1", "createdOn": "2017-10-24", "type": "announcement", "links": ["https://linksToOtheresources.com"], "title": "Monthy Status", "description": "some description", "target": ["teachers"], "attachments": [{"title": "circular.pdf", "downloadURL": "https://linktoattachment", "mimetype": "application/pdf"} ] } ]}
+      return { "announcements": [{ "announcementId": "2344-1234-1234-12312", "sourceId": "some-organisation-id", "createdBy": "Creator1", "createdOn": "2017-10-24", "type": "announcement", "links": ["https://linksToOtheresources.com"], "title": "Monthy Status", "description": "some description", "target": ["teachers"], "attachments": [{ "title": "circular.pdf", "downloadURL": "https://linktoattachment", "mimetype": "application/pdf" }] }] }
     })
   }
 
@@ -252,7 +261,7 @@ class AnnouncementController {
   __getUserOutbox() {
     //TODO: complete implementation
     return async((requestObj) => {
-      return {"announcements": [{"announcementId": "2344-1234-1234-12312", "sourceId": "some-organisation-id", "createdBy": "Creator1", "createdOn": "2017-10-24", "type": "announcement", "links": ["https://linksToOtheresources.com"], "title": "Monthy Status", "description": "some description", "target": ["teachers"], "attachments": [{"title": "circular.pdf", "downloadURL": "https://linktoattachment", "mimetype": "application/pdf"} ] } ]}
+      return { "announcements": [{ "announcementId": "2344-1234-1234-12312", "sourceId": "some-organisation-id", "createdBy": "Creator1", "createdOn": "2017-10-24", "type": "announcement", "links": ["https://linksToOtheresources.com"], "title": "Monthy Status", "description": "some description", "target": ["teachers"], "attachments": [{ "title": "circular.pdf", "downloadURL": "https://linktoattachment", "mimetype": "application/pdf" }] }] }
     })
   }
 
@@ -273,7 +282,7 @@ class AnnouncementController {
       let response = []
       _.forEach(requestObj.request.attachments, (attachment, index) => {
         attachment = _.omit(attachment, ["base64Data"])
-        attachment.downloadURL = "https://pathto"+attachment.title
+        attachment.downloadURL = "https://pathto" + attachment.title
         attachment.id = uuidv1()
         response.push(attachment)
       })
