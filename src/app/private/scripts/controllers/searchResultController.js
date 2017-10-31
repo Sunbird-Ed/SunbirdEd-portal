@@ -76,19 +76,20 @@ angular.module('playerApp').controller('SearchResultController', [
       $scope.search.searchRequest(false)
     })
 
-    $rootScope.search.selectFilter = function (filterType, value, $event) {
-      $timeout(function () {
-        var itemIndex = $rootScope.search[filterType]
+    $rootScope.search.selectFilter =
+            function (filterType, value, $event) {
+              $timeout(function () {
+                var itemIndex = $rootScope.search[filterType]
                     .indexOf(value)
-        if (itemIndex === -1) {
-          $rootScope.search[filterType].push(value)
-          $($event.target).addClass('active')
-        } else {
-          $rootScope.search[filterType].splice(itemIndex, 1)
-          $($event.target).removeClass('active')
-        }
-      }, 0)
-    }
+                if (itemIndex === -1) {
+                  $rootScope.search[filterType].push(value)
+                  $($event.target).addClass('active')
+                } else {
+                  $rootScope.search[filterType].splice(itemIndex, 1)
+                  $($event.target).removeClass('active')
+                }
+              }, 0)
+            }
     $rootScope.search.removeFilterSelection = function (filterType, value) {
       if (filterType === 'selectedConcepts') {
         $rootScope.search[filterType] = _.filter($rootScope.search[filterType],
@@ -219,7 +220,7 @@ angular.module('playerApp').controller('SearchResultController', [
                             $stateParams.query && $rootScope.search.selectedSearchKey ===
                             $stateParams.type) {
             $rootScope.search.error = {}
-            $rootScope.search.loader = toasterService.loader('', $rootScope.errorMessages.SEARCH.DATA.START)
+            $rootScope.search.loader = toasterService.loader('', $rootScope.messages.stmsg.m0005)
             $scope.search.handleSearch()
           } else {
             $scope.search.autoSuggest = false
@@ -247,7 +248,7 @@ angular.module('playerApp').controller('SearchResultController', [
       }
       if (!$scope.search.autoSuggest || $scope.search.autoSuggest == false) {
         if (!$rootScope.search.loader) {
-          $rootScope.search.loader = toasterService.loader('', $rootScope.errorMessages.SEARCH.DATA.START)
+          $rootScope.search.loader = toasterService.loader('', $rootScope.messages.stmsg.m0005)
         }
         $rootScope.search.loader.showLoader = true
       }
@@ -362,8 +363,8 @@ angular.module('playerApp').controller('SearchResultController', [
             $rootScope.search.loader.showLoader = false
             if (responseResult.count === 0) {
               $rootScope.search.error = showErrorMessage(true,
-                    $rootScope.errorMessages.SEARCH.DATA.NO_CONTENT,
-                    $rootScope.errorMessages.COMMON.NO_RESULTS, $rootScope.errorMessages.SEARCH.DATA.NO_CONTENT_TEXT)
+                    $rootScope.messages.stmsg.m0006,
+                    $rootScope.messages.stmsg.m0008, $rootScope.messages.stmsg.m0007)
             } else {
               $rootScope.search.error = {}
               $rootScope.search.searchResult = responseResult
@@ -376,8 +377,8 @@ angular.module('playerApp').controller('SearchResultController', [
         } else {
           $rootScope.search.loader.showLoader = false
           $rootScope.search.error = showErrorMessage(true,
-                        $rootScope.errorMessages.SEARCH.DATA.FAILED,
-                        $rootScope.errorMessages.COMMON.ERROR)
+                        $rootScope.messages.fmsg.m0004,
+                        $rootScope.messages.emsg.m0002)
           $scope.search.autoSuggest = true
           clearTimeout($rootScope.search.typingTimer)
           throw new Error('')
@@ -385,8 +386,8 @@ angular.module('playerApp').controller('SearchResultController', [
       }).catch(function (e) {
         $rootScope.search.loader.showLoader = false
         $rootScope.search.error = showErrorMessage(true,
-              $rootScope.errorMessages.SEARCH.DATA.FAILED,
-              $rootScope.errorMessages.COMMON.ERROR)
+              $rootScope.messages.fmsg.m0004,
+              $rootScope.messages.emsg.m0002)
       })
     }
     var conceptSelHandler = $scope.$on('selectedConcepts', function (event, args) {
