@@ -1,3 +1,11 @@
+// Header
+//
+// Override the value of header in semantic ui.
+//
+// Style guide: Modules.Header
+
+
+
 .header-container {
     margin-left: 1px !important;
     border-bottom: 5px solid @blue !important;
@@ -13,13 +21,11 @@
     padding: 5px !important;
 }
 
-.login-form {
-    .inline {
-        input {
-            width: 80% !important;
-        }
-    }
-}
+// Ui Menu
+//
+// .ui.menu - override css values of menu insemantic ui, it is added to the div tag as a class.
+//
+// Style guide: Modules.Header.UiMenu
 
 .ui.menu {
     display: -webkit-box;
@@ -40,13 +46,15 @@
     justify-content: center !important;
 }
 
+// circularIconPadding
+//
+// padding-top-circular-human-icon - padding added to circular human icon in header. it is added to the div tag as a class.
+//
+// Style guide: Modules.Header.HumanIconPadding
+
 .padding-top-circular-human-icon {
     padding-top: 0.9rem !important;
     z-index:88;
-}
-
-.loginForm {
-    padding-bottom: 40px;
 }
 
 .alarm-icon-header {
@@ -64,6 +72,12 @@
     background-color: @white;
 }
 
+// loggedInUserIcon
+//
+// logged-in-user - added width, height, margin to user icon. it is added to the div tag as a class.
+//
+// Style guide: Modules.Header.loggedInUserIcon
+
 /*loged in user icon*/
 
 .logged-in-user {
@@ -79,37 +93,11 @@
     vertical-align: middle !important;
 }
 
-/*login form */
-
-.login-modal-text-align {
-    text-align: center;
-    align-self: center;
-}
-
-.login-modal-title {
-    color: @dark-grey !important;
-    font-size: 1.5625em !important;
-    font-family: "FrutigerSerifLTW01-Medi 722257" !important;
-} 
-
-.login-modal-label-title {
-    color: @dark-grey !important;
-    font-size: 1.25em !important;
-    font-family: "FrutigerSerifLTW01-Medi 722257" !important;
-} 
-
 .beforelogin.ui.secondary.pointing.menu{
         border-bottom: 0;
 }
 .header-user-container {
     float: right !important;
-}
-
-/*close button css in sign in page */
-.signInPopUp{    
-    background: @white !important;
-    border: none;
-    padding: 1rem 1rem 0 0 !important;  
 }
 
 .padding-top-header-large-icons {
@@ -126,12 +114,7 @@
 .ui.secondary.pointing.menu{
     background: @websiteBody-color !important;
 }
-.modal{
-    .ui.segment{
-        box-shadow:none !important;
-        border:none!important;
-    }
-}
+
 .breadcrumppadding.ui.breadcrumb, .breadcrumppadding.ui.breadcrumb:last-child, .breadcrumppadding.ui.breadcrumb:first-child{
     margin-left:10px;
     line-height:1.5;
@@ -152,29 +135,9 @@
     font-weight: bold !important;
 }
 
-.header-logo {
-    display: block;
-    max-width: 200px;
-    max-height: 80px;
-    width: auto;
-    height: auto;
-    top: 14% !important;
-    left: 10% !important;
-    position: absolute !important;
+.searchfilterinput .ng-empty+.icon.search,
+.searchfilterinput .ng-empty+.icon.search:hover{
+	cursor:auto !important;
+	opacity:0.3 !important;
+	pointer-events: none;
 }
-
-.rightSideSectionCards.ui.card>.content>.header
-{
-    font-size: 1.18em !important;
-} 
-
-
-.header-logoBeforeLogin {
-    display: block;
-    max-width: 70px;
-    max-height: 70px;
-    width: auto;
-    height: auto;
-    left: 10% !important;
-}
-
