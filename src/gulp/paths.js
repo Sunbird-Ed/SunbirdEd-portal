@@ -35,8 +35,8 @@ var paths = {
       'app/thirdparty/bower_components/jquery-ui/jquery-ui.min.js',
       'app/thirdparty/bower_components/angular-cookies/angular-cookies.min.js',
       'app/thirdparty/bower_components/angular-resource/angular-resource.js',
-            'app/thirdparty/bower_components/angular-cookies/angular-cookies.js', // eslint-disable-line 
-            'app/thirdparty/bower_components/angular-sanitize/angular-sanitize.js', // eslint-disable-line 
+      'app/thirdparty/bower_components/angular-cookies/angular-cookies.js', // eslint-disable-line
+      'app/thirdparty/bower_components/angular-sanitize/angular-sanitize.js', // eslint-disable-line
       'app/thirdparty/bower_components/angular-route/angular-route.min.js',
       'app/thirdparty/bower_components/angular-mocks/angular-mocks.js',
       'app/thirdparty/bower_components/semantic-ui-calendar/dist/calendar.min.js',
@@ -158,7 +158,8 @@ var paths = {
     'dist/thirdparty/bower_components/chart.js/dist/Chart.min.js',
     'dist/thirdparty/bower_components/angular-chart.js/dist/angular-chart.min.js',
     'dist/thirdparty/semantic-tree-picker/semantic-ui-tree-picker.js',
-    'dist/thirdparty/libs/generateAndDownloadCSV.min.js'
+    'dist/thirdparty/libs/generateAndDownloadCSV.min.js',
+    'dist/thirdparty/bower_components/file-upload/fine-uploader/fine-uploader.js'
   ],
   private_bower_css: [
     'dist/thirdparty/libs/semantic-ui-tree-picker/semantic-ui-tree-picker.css',
@@ -254,7 +255,8 @@ var paths = {
     'dist/private/scripts/directives/contentSharingDirective.js',
     'dist/private/scripts/services/setup/setupService.js',
     'dist/private/scripts/controllers/setup/setupController.js',
-    'dist/private/scripts/controllers/workspace/limitedPublishedContentController.js'
+    'dist/private/scripts/controllers/workspace/limitedPublishedContentController.js',
+    'dist/private/scripts/directives/fileUpload.js'
   ],
   telemetry_js: [
     'dist/private/scripts/telemetry/TelemetryEvent.js',
