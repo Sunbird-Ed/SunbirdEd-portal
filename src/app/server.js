@@ -91,12 +91,8 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'private')))
 
 // Announcement routing
-app.use('/api/plugin/announcement', bodyParser.urlencoded({ extended: false }),
+app.use('/api/announcement/v1', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({limit: '10mb' }), require('./helpers/announcement'))
-
-// Notification routing
-app.use('/api/notifications', bodyParser.urlencoded({ extended: false }),
-  bodyParser.json({limit: '10mb' }), require('./helpers/notifications'))
 
 app.use('/private/index', function (req, res, next) {
   res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate')
