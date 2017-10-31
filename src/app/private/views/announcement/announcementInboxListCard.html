@@ -8,13 +8,13 @@
       <span class="header cardsHeading ng-binding"> {{item.title}} </span>
     </div>
     <div class="padding-top-5">
-      <span class="ng-binding">{{item.description | limitTo:180}}</span><span ng-show="item.description.length > 180"> ...<span class="announcementBlueText"> Read More</span></span>
+      <span class="ng-binding">{{item.description | limitTo:180}}</span><span ng-show="item.description.length > 180">...<span class="announcementBlueText"> Read More</span></span>
     </div>
     <div class="padding-top-10">
       <p class="ng-binding annMediumText">Weblinks</p>
     </div>
     <div ng-repeat="links in item.links track by $index">
-      <p class="ng-binding announcementBlueText cursor-pointer">{{links | limitTo:70}} <span ng-show="links.length > 70">...</span></p>
+      <p class="ng-binding announcementBlueText cursor-pointer">{{links | limitTo:70}}<span ng-show="links.length > 70">...</span></p>
     </div>
     <div class="padding-top-20">
       <p class="ng-binding annMediumText">Attachments</p>
@@ -30,7 +30,7 @@
         </div>
       </div>
       <div class="padding-top-5">
-        <span class="ng-binding announcement-description annSmallText">{{attachments.title | limitTo:8}}</span><span ng-show="attachments.title.length > 10" class="announcement-description"> ...</span>
+        <span class="ng-binding announcement-description annSmallText">{{attachments.title | limitTo:8}}</span><span ng-show="attachments.title.length > 10" class="announcement-description">...</span>
       </div>
     </div>
     <div class="ui divider"></div>
