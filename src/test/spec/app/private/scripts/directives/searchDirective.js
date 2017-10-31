@@ -264,7 +264,7 @@ describe('Directive: search', function () {
     scope.$apply()
   })
 
-  it('Should set search result page on setPage call', function () {
+  xit('Should set search result page on setPage call', function () {
     spyOn(rootScope.search, 'setPage').and.callThrough()
     rootScope.search.setPage('5')
     scope.$apply()
