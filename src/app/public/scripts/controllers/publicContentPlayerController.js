@@ -2,9 +2,9 @@
 
 angular.module('loginApp')
     .controller('contentPlayerCtrl', ['playerTelemetryUtilsService', '$state', '$scope',
-      '$timeout', '$stateParams', '$rootScope', 'config', 'contentService', 'toasterService',
+      '$timeout', '$stateParams', '$rootScope', 'config', 'contentService', 'toasterService', '$location', '$anchorScroll',
       function (playerTelemetryUtilsService, $state, $scope,
-        $timeout, $stateParams, $rootScope, config, contentService, toasterService) {
+        $timeout, $stateParams, $rootScope, config, contentService, toasterService, $location, $anchorScroll) {
         $scope.isHeader = $scope.isheader
         $scope.isClose = $scope.isclose
         $scope.showModalInLectureView = true
@@ -63,8 +63,9 @@ angular.module('loginApp')
               configuration.data = $scope.contentData.mimeType !== config.MIME_TYPE.ecml
                                         ? {} : data.body
               previewContentIframe.contentWindow.initializePreview(configuration)
+              $scope.gotoBottom()
             }
-          }, 1000)
+          }, 0)
         }
 
         function getContent (contentId) {
@@ -116,5 +117,14 @@ angular.module('loginApp')
         $scope.init = function () {
           $scope.errorObject = {}
           getContent($scope.id)
+        }
+
+        $scope.gotoBottom = function () {
+        // set the location.hash to the id of
+        // the element you wish to scroll to.
+          $location.hash('player-auto-scroll')
+
+        // call $anchorScroll()
+          $anchorScroll()
         }
       }])
