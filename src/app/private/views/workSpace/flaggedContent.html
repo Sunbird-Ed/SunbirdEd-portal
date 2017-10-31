@@ -1,6 +1,6 @@
 <div class="ui grid">
     <div class="twelve wide column ">
-        <div ng-init="flaggedContent.getAllFlaggedContent()">
+        <div ng-init="flaggedContent.getAllFlaggedContent();contentModelSetBackLink();">
             <div ng-if="!flaggedContent.loader.showLoader">
                 <div class="ui three stackable cards" ng-if="!flaggedContent.loader.showLoader && flaggedContent.flaggedContentData.length > 0">
                     <div class=" link card mouse-pointer " ng-repeat="item in flaggedContent.flaggedContentData track by $index " ng-click="flaggedContent.openContentPlayer(item)" ng-init="$last && flaggedContent.initTocPopup()">

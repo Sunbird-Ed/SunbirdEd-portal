@@ -21,8 +21,10 @@ angular.module('playerApp')
                   history: false,
                   overlayColor: '',
                   onClosed: function () {
-                      if ($stateParams.state) {
-                          $state.go($stateParams.state);
+					  if ($stateParams.state) {
+						  $state.go($stateParams.state);
+					  } else if ($rootScope.contentModelBackLinkName) {
+                          $state.go($rootScope.contentModelBackLinkName);
                       } else {
                           $state.go('WorkSpace.DraftContent');
                       }
