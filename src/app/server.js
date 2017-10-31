@@ -3,7 +3,6 @@
 const express = require('express'),
   app = express(),
   proxy = require('express-http-proxy'),
-  Keycloak = require('keycloak-connect'),
   session = require('express-session'),
   path = require('path'),
   bodyParser = require('body-parser'),
@@ -33,7 +32,22 @@ const express = require('express'),
   default_tenant = envHelper.DEFAUULT_TENANT,
   md5 = require('js-md5'),
   sunbird_api_auth_token = envHelper.PORTAL_API_AUTH_TOKEN,
-  portal = this
+  keycloakAuthProvider = require('./helpers/authprovider/keycloakAuthProvider.js'),
+  // localAuthProvider = require('./helpers/authprovider/localAuthProvider.js'),
+  portal = this,
+  portal_auth_provider = envHelper.PORTAL_AUTH_PROVIDER// 'keycloak'
+
+let Authprovider
+
+(function initializeAuthProvider () {
+  switch (portal_auth_provider) {
+    case 'localAuth':
+      Authprovider = new localAuthProvider()
+      break
+    default:
+      Authprovider = new keycloakAuthProvider()
+  }
+})()
 
 let cassandraCP = envHelper.PORTAL_CASSANDRA_URLS
 
@@ -55,13 +69,6 @@ if (envHelper.PORTAL_SESSION_STORE_TYPE === 'in-memory') {
   }, function () {})
 }
 
-let keycloak = new Keycloak({ store: memoryStore }, {
-  'realm': realm,
-  'auth-server-url': auth_server_url,
-  'ssl-required': 'none',
-  'resource': keycloak_resource,
-  'public-client': true
-})
 let tenantId = ''
 
 app.use(helmet())
@@ -72,8 +79,7 @@ app.use(session({
   store: memoryStore
 }))
 
-app.use(keycloak.middleware({ admin: '/callback', logout: '/logout' }))
-
+app.use(Authprovider.login())
 /* the below line will be replaced while creating the deployment package. this line must not be deleted */
 // app.use(staticGzip(/(invalid)/));
 
@@ -109,10 +115,10 @@ app.all('/', function (req, res) {
 })
 
 app.all('/content-editor/telemetry', bodyParser.urlencoded({ extended: false }),
-  bodyParser.json({ limit: reqDataLimitOfContentEditor }), keycloak.protect(), telemetryHelper.logSessionEvents)
+  bodyParser.json({ limit: reqDataLimitOfContentEditor }), Authprovider.protect(), telemetryHelper.logSessionEvents)
 
 app.all('/collection-editor/telemetry', bodyParser.urlencoded({ extended: false }),
-  bodyParser.json({ limit: reqDataLimitOfContentEditor }), keycloak.protect(), telemetryHelper.logSessionEvents)
+  bodyParser.json({ limit: reqDataLimitOfContentEditor }), Authprovider.protect(), telemetryHelper.logSessionEvents)
 
 app.all('/public/service/v1/learner/*', proxy(learnerURL, {
   proxyReqOptDecorator: proxyUtils.decoratePublicRequestHeaders(),
@@ -167,10 +173,10 @@ app.all('/private/service/v1/content/*', proxyUtils.verifyToken(), permissionsHe
 require('./proxy/localProxy.js')(app)
 
 app.all('/v1/user/session/create', function (req, res) {
-  trampolineServiceHelper.handleRequest(req, res, keycloak)
+  trampolineServiceHelper.handleRequest(req, res, Authprovider)
 })
 
-app.all('/private/*', keycloak.protect(), permissionsHelper.checkPermission(), function (req, res) {
+app.all('/private/*', Authprovider.protect(), permissionsHelper.checkPermission(), function (req, res) {
   res.locals.userId = req.kauth.grant.access_token.content.sub
   res.locals.sessionId = req.sessionID
   res.locals.cdnUrl = envHelper.PORTAL_CDN_URL
@@ -179,7 +185,7 @@ app.all('/private/*', keycloak.protect(), permissionsHelper.checkPermission(), f
   res.render(__dirname + '/private/index.ejs')
 })
 
-app.get('/get/envData', keycloak.protect(), function (req, res) {
+app.get('/get/envData', Authprovider.protect(), function (req, res) {
   res.status(200)
   res.send({ appId: appId, ekstep_env: ekstep_env })
   res.end()
@@ -190,7 +196,7 @@ app.get('/v1/tenant/info', tenantHelper.getInfo)
 app.get('/v1/tenant/info/:tenantId', tenantHelper.getInfo)
 
 // proxy urls
-require('./proxy/contentEditorProxy.js')(app, keycloak)
+require('./proxy/contentEditorProxy.js')(app, Authprovider)
 
 app.all('/:tenantName', function (req, res) {
   tenantId = req.params.tenantName
@@ -211,7 +217,7 @@ app.all('*', function (req, res) {
   /*
  * Method called after successful authentication and it will log the telemetry for CP_SESSION_START and updates the login time
  */
-keycloak.authenticated = function (request) {
+Authprovider.authenticated = function (request) {
   async.series({
     getUserData: function (callback) {
       permissionsHelper.getCurrentUserRoles(request, callback)
@@ -229,7 +235,7 @@ keycloak.authenticated = function (request) {
   })
 }
 
-keycloak.deauthenticated = function (request) {
+Authprovider.deauthenticated = function (request) {
   delete request.session['roles']
   delete request.session['rootOrgId']
   delete request.session['orgs']
