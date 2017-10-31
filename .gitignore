@@ -6,3 +6,4 @@
 /src/coverage
 /npm-debug.log
 .coverrun
+/src/mochawesome-report
