@@ -32,22 +32,23 @@
             </div>
             <ol class="ui list">
                 <li>{{$root.frmelmnts.instn.t0013}}</li>
-                <li>{{$root.frmelmnts.instn.t0014}}
+                <li>{{$root.frmelmnts.instn.t0002}}</li>
+                <li>{{$root.frmelmnts.instn.t0007}}</li>
+                <li>{{$root.frmelmnts.instn.t0021}}</li>
+                <li>{{$root.frmelmnts.instn.t0022}}
                     <ol>
-                        <li>
-                            {{$root.frmelmnts.instn.t0002}}
-                        </li>
-                        <li>{{$root.frmelmnts.instn.t0007}}</li>
-                        <li>
-                            {{$root.frmelmnts.instn.t0008}}
-                            <li>
-                                {{$root.frmelmnts.instn.t0009}}
-                                <li>
-                                    {{$root.frmelmnts.instn.t0017}}
-                                </li>
+                        <li>{{$root.frmelmnts.instn.t0023}}</li>
+                        <li>{{$root.frmelmnts.instn.t0024}}</li>
+                        <li>{{$root.frmelmnts.instn.t0025}}</li>
+                        <li>{{$root.frmelmnts.instn.t0026}}</li>
+                        <li>{{$root.frmelmnts.instn.t0027}}</li>
+                        <li>{{$root.frmelmnts.instn.t0028}}</li>
+                        <li>{{$root.frmelmnts.instn.t0029}}</li>
+                        <li>{{$root.frmelmnts.instn.t0030}}</li>
+                        <li>{{$root.frmelmnts.instn.t0031}}</li>
+                        <li>{{$root.frmelmnts.instn.t0032}}</li>
                     </ol>
-                    </li>
-                <li>{{$root.frmelmnts.instn.t0010}}</li>
+                </li>
             </ol>
         </div>
     </div>
@@ -60,7 +61,7 @@
             </div>
             <div class="four wide column">
                 <button ng-disabled="admin.bulkOrgProcessId" class="ui primary right floated button" ng-click="admin.openImageBrowser('organizations');">{{$root.frmelmnts.btn.uploadorgscsv}}</button>
-                <input type="file" accept=".csv" class="content-input ui small " id="orgUploadCSV" onchange="angular.element(this).scope().validateFile(this.files,'organizations');" required="" />
+                <input type="file" accept=".csv" class="content-input ui small " id="orgUploadCSV" onchange="angular.element(this).scope().validateFile(this.files, 'organizations');" required="" />
             </div>
         </div>
     </div>
