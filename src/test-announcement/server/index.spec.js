@@ -6,7 +6,7 @@ let announcementController = require('../../app/helpers/announcement/controller.
 
 const expect = chai.expect
 chai.use(chaiHttp)
-const HOST = 'http://localhost:3000/api/plugin/announcement'
+const HOST = 'http://localhost:3000/api/announcement/v1'
 
 describe('Announcement routing service', () => {
   describe('/create route', () => {
@@ -57,8 +57,8 @@ describe('Announcement routing service', () => {
           expect(res.body.params.msgid).to.be.a('null')
           expect(res.body.params.status).to.equal('failed')
           expect(res.body.params.err).to.equal('')
-          expect(res.body.responseCode).to.eql('ERROR')
-          expect(res).to.have.status(404)
+          expect(res.body.responseCode).to.eql('CLIENT_ERROR')
+          expect(res).to.have.status(400)
           expect(res.body.params.errmsg).to.eql('invalid request')
 
           announcementController.create.restore()
@@ -112,8 +112,8 @@ describe('Announcement routing service', () => {
           expect(res.body.params.status).to.equal('failed')
           expect(res.body.params.err).to.equal('')
           expect(res.body.params.errmsg).to.eql('record does not exist!')
-          expect(res.body.responseCode).to.eql('ERROR')
-          expect(res).to.have.status(404)
+          expect(res.body.responseCode).to.eql('CLIENT_ERROR')
+          expect(res).to.have.status(400)
           expect(res.body.result).to.eql({})
 
           announcementController.getAnnouncementById.restore()
