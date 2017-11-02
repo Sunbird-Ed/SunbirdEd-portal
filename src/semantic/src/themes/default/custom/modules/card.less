@@ -1,4 +1,10 @@
-/*css for all the cards used in site*/
+
+// Cards
+//
+// Cards used in the slider, search result and profile workspace .
+//
+// Style guide: Modules.Card
+
 
 .ui.card>.sliderCards.content {
     -webkit-box-flex: 1;
@@ -13,6 +19,13 @@
     font-size: 1em;
     border-radius: 0;
 }
+
+
+// SliderCards
+//
+//.sliderCards.ui.card - override the default values of semantic ui card through out the website it is added as class to div tag.
+//
+// Style guide: Modules.Card.SliderCards
 
 .sliderCards.ui.card {
     max-width: 100%;
@@ -36,16 +49,30 @@
     z-index: '';
 }
 
+
+// CardsHover
+//
+//:hover - Highlight card with shadow when hovered in all the cards used in the website, it is pseudo class.
+//
+// Style guide: Modules.Card.Hover
+
 .sliderCards.ui.card:hover {
     transition: all .3s ease 0s;
-    box-shadow: 0 3px 5px 0 rgba(0,0,0,.5 ) !important;
+    box-shadow: none !important;
 }
+
 .sliderCards.ui.card>.content>.description {
     clear: both;
     color: #b5b5b5 !important;
 }
 
 /*blue rating star in card */
+
+// sliderCardsMiniRating
+//
+//.sliderCards .ui.mini.rating - Rating on cards in the slider, this class is added span tag.
+//
+// Style guide: Modules.Card.sliderCardsMiniRating
 
 .sliderCards .ui.mini.rating {
     font-size: 0.78571429em;
@@ -78,6 +105,13 @@
     width: 100% !important;
 }
 
+
+// ImgCardResponsive
+// 
+//.imageInCardsResponsive - Adding responsiveness to the Image in all the cardsnused in website it is added as class to div tag.
+//
+// Style guide: Modules.Card.imgCardResponsive
+
 .imageInCardsResponsive {
     overflow: hidden !important;
     height: 150px !important;
@@ -92,8 +126,15 @@ div:focus{
 }
 
 
-/*three staackable cards width reduced to match design*/
+/*three stackable cards width reduced to match design*/
 /*using ~ in calc because of Less issue with clac function */
+
+// StackableCards
+//
+// ui.three.cards>.card - Three stackable cards width reduced to match design, by overiding default semantic values in the workspace section it is added to div tag.
+//
+// Style guide: Modules.Card.StackableCards
+
 
 .ui.three.cards>.card {
     width: ~"calc(33.33333333% - 3.3em)" !important;
@@ -107,6 +148,12 @@ div:focus{
 
 /*text description height fixed in card*/
 
+// FixedRatingCard
+//
+//.fixedRatingCard - Text description height fixed in card, it is added as a class to div tag.
+//
+// Style guide: Modules.Card.fixedRatingCard
+
 .fixedRatingCard {
     max-height: 2.8em;
     overflow: hidden;
@@ -114,11 +161,31 @@ div:focus{
 }
 
 
-
-/*rating responsive*/
+/*rating responsive in card*/
 
 @media screen and (max-width: 1100px) and (min-width: 1024px) {
     .ui.rating {        
         font-size: 0.8em !important;
     }
+}
+
+/*card font size for curriculum*/
+
+.rightSideSectionCards.ui.card>.content>.header {
+    font-size: 1.18em !important;
+} 
+
+
+/*text description height fixed in card*/
+
+// ContentSharingCard
+//
+//.limitedPublishingLinkIcon - Adding padding and rotating the icon in limited publising card.
+//
+// Style guide: Modules.Card.limitedPublishingLinkIcon
+
+.limitedPublishingLinkIcon {
+    margin-left: -4px !important;
+    transform: rotate(-43deg) !important;
+    font-size: 1.8em !important;
 }
