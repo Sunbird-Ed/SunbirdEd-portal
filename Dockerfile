@@ -8,7 +8,6 @@ COPY player-dist.zip  /home/sunbird/
 RUN unzip /home/sunbird/player-dist.zip \ 
     && chown -R sunbird:sunbird /home/sunbird
 WORKDIR /home/sunbird/dist/public
-RUN rm index.html
 USER sunbird
 WORKDIR /home/sunbird/dist
 EXPOSE 3000
