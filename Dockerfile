@@ -1,7 +1,7 @@
 FROM node:6-stretch
 MAINTAINER "Manojvv" "manojrpms@gmail.com"
-RUN apk update \
-    && apk add unzip
+RUN apt-get update \
+    && apt-get install unzip
 RUN adduser -u 1001 -h /home/sunbird/ -D sunbird
 WORKDIR /home/sunbird
 COPY player-dist.zip  /home/sunbird/
