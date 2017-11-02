@@ -1,4 +1,4 @@
-FROM node:6-wheezy
+FROM node:6-stretch
 MAINTAINER "Manojvv" "manojrpms@gmail.com"
 RUN apk update \
     && apk add unzip
