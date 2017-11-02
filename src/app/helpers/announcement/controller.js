@@ -53,19 +53,19 @@ class AnnouncementController {
       if (!request.isValid) throw { msg: request.error, statusCode: HttpStatus.BAD_REQUEST }
 
       // TODO: validate user permission to create
-      
-      try {      
+
+      try {
         var newAnnouncementObj = await (this.__createAnnouncement(requestObj.request))
       } catch (error) {
-        throw { msg: 'unable to process the request!', statusCode: HttpStatus.BAD_REQUEST }
+        throw { msg: 'unable to process the request!', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
       }
 
       try {
         await (this.__createAnnouncementNotification( /*announcement data*/ ))
-        return newAnnouncementObj.data
+        return { announcement: newAnnouncementObj.data }
       } catch (e) {
         // even if notification fails, it should still send annoucement in response
-        return newAnnouncementObj.data
+        return { announcement: newAnnouncementObj.data }
       }
     })
   }
@@ -148,11 +148,14 @@ class AnnouncementController {
       console.log(query)
 
       this.objectStoreRest.createObject(query)
-        .then((data) => {                    
-          resolve({ data: {announcementId} })
+        .then((data) => {
+          if (!_.isObject(data)) {
+            reject({ msg: 'unable to create announcement' })
+          } else {
+            resolve({ data: { id: announcementId } })
+          }
         })
         .catch((error) => {
-          console.log(error)
           reject({ msg: 'unable to create announcement' })
         })
     })
@@ -181,20 +184,24 @@ class AnnouncementController {
       let query = {
         table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
         query: {
-          'id': requestObj.params.id          
+          'id': requestObj.params.id
         }
       }
 
       this.objectStoreRest.findObject(query)
         .then((data) => {
-          _.forEach(data.data, (announcementObj) => {
-            if(_.isString(announcementObj.target)) announcementObj.target = JSON.parse(announcementObj.target)  
-          })          
-          resolve(data.data)
+          if (!_.isObject(data)) {
+            reject({ msg: 'unable to fetch announcement', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
+          } else {
+            _.forEach(data.data, (announcementObj) => {
+              if (_.isString(announcementObj.target)) announcementObj.target = JSON.parse(announcementObj.target)
+            })
+            resolve(data.data)
+          }
         })
         .catch((error) => {
           console.log(error)
-          reject({ msg: 'unable to fetch announcement' })
+          reject({ msg: 'unable to fetch announcement', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
         })
     })
   }
@@ -279,15 +286,41 @@ class AnnouncementController {
   __uploadAttachment() {
     //TODO: complete implementation
     return async((requestObj) => {
-      let response = []
-      _.forEach(requestObj.request.attachments, (attachment, index) => {
-        attachment = _.omit(attachment, ["base64Data"])
-        attachment.downloadURL = "https://pathto" + attachment.title
-        attachment.id = uuidv1()
-        response.push(attachment)
-      })
+      if (!_.isObject(requestObj.file)) throw { msg: 'invalid request!', statusCode: HttpStatus.BAD_REQUEST }
+      
+      let attachmentId = uuidv1()
+      let query = {
+        table: this.objectStoreRest.MODEL.ATTACHMENT,
+        values: {
+          'id': attachmentId,
+          'file': requestObj.file.buffer.toString('utf8'),
+          'filename': requestObj.file.originalname,
+          'mimetype': requestObj.file.mimetype,
+          'status': 'created',
+          'size': requestObj.file.size,
+          'createddate': dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo")
+        }
+      }
 
-      return response
+      if (!_.isEmpty(requestObj.body.createdBy)) query.values.createdBy = requestObj.body.createdBy
+
+      console.log(_.omit(requestObj.file, ['buffer']))
+    
+      try {
+        return await (this.objectStoreRest.createObject(query)
+          .then((data) => {
+            if (!_.isObject(data)) {
+              reject()
+            } else {
+              resolve({ attachment: { id: attachmentId } })
+            }
+          })
+          .catch((error) => {
+            reject(error)
+          }))
+      } catch (e) {
+        throw { msg: 'unable to upload!', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
+      }
     })
   }
 
