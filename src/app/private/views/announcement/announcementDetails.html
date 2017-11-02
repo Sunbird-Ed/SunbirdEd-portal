@@ -18,7 +18,7 @@
   </div>
   <div ng-if="(announcementDetails.links | isValidObjectFilter) === true">
     <div class="padding-top-20">
-      <strong class="annMediumText ng-binding">Weblinks</strong>
+      <strong class="annMediumText ng-binding">{{$root.frmelmnts.lbl.anncmntdtlsweblinks}}</strong>
     </div>
     <div class="padding-top-7 tweleve wide column">
       <div ng-repeat="link in announcementDetails.links track by $index">
@@ -29,7 +29,7 @@
   </div>
   <div ng-if="(announcementDetails.attachments | isValidObjectFilter) === true">
     <div class="padding-top-10">
-      <strong class="annMediumText ng-binding">Attachments</strong>
+      <strong class="annMediumText ng-binding">{{$root.frmelmnts.lbl.anncmntdtlsattachments}}</strong>
     </div>
     <div class="sixteen wide column margin-bottom-20">
       <div class="box">
@@ -40,7 +40,7 @@
             </div>
             <div class="middle aligned content">
               <div class="ui float-ContentRight">
-                <a href="{{attachment.downloadURL}}" target="_blank" class="ui primary basic button announcementButton"><span class="announcementButtonText">VIEW</span></a>
+                <a href="{{attachment.downloadURL}}" target="_blank" class="ui primary basic button announcementButton"><span class="announcementButtonText">{{$root.frmelmnts.btn.anncmntdtlsview}}</span></a>
               </div>
               <p>{{attachment.title}}</p>
               <p class="announcement-description">120 KB</p>
@@ -52,7 +52,7 @@
   </div>
   <div class="gray-full-width margin-bottom-0" ng-if="(announcementDetails.createdOn | isValidObjectFilter) === true">
     <span class="ng-binding announcement-description">
-       Sent on {{announcementDetails.createdOn  | date : "dd MMM yyyy"}}</span>
+       {{$root.frmelmnts.lbl.anncmntdtlssenton}} {{announcementDetails.createdOn  | date : "dd MMM yyyy"}}</span>
     <!-- Sharing icon
         <span class="announcement-description float-ContentRight">
           <i class="large share alternate icon"></i>
