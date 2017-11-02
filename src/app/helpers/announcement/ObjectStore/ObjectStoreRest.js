@@ -22,13 +22,12 @@ class ObjectStoreRest extends ObjectStore {
       let options = {
         method: 'POST',
         uri: envVariables.DATASERVICE_URL + 'data/v1/object/create',
-        headers: this.getRequestHeader(),
         body: {
-        	request: {
-        		'tableName': data.table,
-        		'documentName': data.table, // keeping tableName and documentName as same
-        		'payload': data.values
-        	}
+          request: {
+            'tableName': data.table,
+            'documentName': data.table, // keeping tableName and documentName as same
+            'payload': data.values
+          }
         },
         json: true
       }
@@ -37,7 +36,7 @@ class ObjectStoreRest extends ObjectStore {
         let result = await (this.httpService(options))
         return { data: result.body.result, status: 'created' }
       } catch (error) {
-      	console.log(error)
+        console.log(error)
         throw { msg: 'unable to create object', status: 'error' }
       }
     })
@@ -54,20 +53,22 @@ class ObjectStoreRest extends ObjectStore {
       let options = {
         method: 'POST',
         uri: envVariables.DATASERVICE_URL + 'data/v1/object/search',
-        headers: this.getRequestHeader(),
         body: {
-        	request: {        		
-        		'documentName': data.table,
-        		'filters': data.query
-        	}
+          request: {
+            'documentName': data.table,
+            'filters': data.query
+          }
         },
         json: true
       }
 
       try {
         let result = await (this.httpService(options))
-        if (result.body.result.response.count > 0) return { data: result.body.result.response.content, status: 'success' }
-        throw "not found!"
+        if (result.body.result.response.count > 0) {
+          return { data: result.body.result.response.content, status: 'success' }
+        } else {
+          return { data: [], status: 'success' }
+        }
       } catch (error) {
         throw { msg: 'unable to find object', status: 'error' }
       }
@@ -122,9 +123,13 @@ class ObjectStoreRest extends ObjectStore {
   httpService(options) {
     return new Promise((resolve, reject) => {
       if (!options) reject('options required!')
+      options.headers = options.headers || this.getRequestHeader()
       webService(options, (error, response, body) => {
-        if (error) reject(error)
-        if (response) resolve({ response, body })
+        if (error || response.statusCode >= 400) {
+          reject(error)
+        } else {
+          resolve({ response, body })
+        }
       })
     })
   }
