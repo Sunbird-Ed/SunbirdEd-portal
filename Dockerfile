@@ -1,4 +1,4 @@
-FROM node:6-alpine
+FROM node:8-alpine
 MAINTAINER "Manojvv" "manojrpms@gmail.com"
 RUN apk update \
     && apk add unzip
