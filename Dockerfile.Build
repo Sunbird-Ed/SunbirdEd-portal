@@ -1,5 +1,5 @@
 #Dockerfile for the player setup
-FROM node:6.11.0
+FROM node:8.9.0
 MAINTAINER "Manojvv" "manojv@ilimi.in"
 RUN apt update \
     && apt-get install -y python \
