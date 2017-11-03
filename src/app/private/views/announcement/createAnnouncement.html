@@ -5,22 +5,22 @@
       <div class="ui grid">
         <div class="ten wide column">
           <span class="ui header">
-            <span class="ui" ng-show="createAnn.showStepOne">
+            <span class="ui" ng-show="createAnn.stepNumber == 1">
               <span class="text announcementHeadingSection">{{$root.frmelmnts.lbl.createnewanncmnt}}</span>
               <br/>
             <span class="createAnnHeaderDesc">{{$root.frmelmnts.lbl.createnewanncmntdesc}}</span>
             </span>
-            <span class="ui" ng-show="createAnn.showStepTwo">
+            <span class="ui" ng-show="createAnn.stepNumber == 2">
               <span class="text announcementHeadingSection">{{$root.frmelmnts.lbl.selectrecipient}}</span>
               <br/>
               <span class="createAnnHeaderDesc">{{$root.frmelmnts.lbl.selectrecipientdesc}}</span>
             </span>
-            <span ng-show="createAnn.showStepThree">
+            <span ng-show="createAnn.stepNumber == 3">
               <span class="text announcementHeadingSection">{{$root.frmelmnts.lbl.confirmrecipient}}</span>
               <br/>
               <span class="createAnnHeaderDesc">{{$root.frmelmnts.lbl.confirmrecipientdesc}}</span>
             </span>
-            <span ng-show="createAnn.showStepFour">
+            <span ng-show="createAnn.stepNumber == 4">
               <span class="text announcementHeadingSection">{{$root.frmelmnts.lbl.previewanncmnt}}</span>
               <br/>
               <span class="createAnnHeaderDesc">{{$root.frmelmnts.lbl.previewanncmntdesc}}</span>
@@ -37,7 +37,7 @@
     </div>
     <div class="content">
       <form class="ui form announcementForm" ng-init="createAnn.data = {}" name="announcementForm">
-        <div class="ui grid" ng-show="createAnn.showStepOne">
+        <div class="ui grid" ng-show="createAnn.stepNumber == 1">
           <div class="eight wide column">
             <div class="field createAnnFormScroller">
               <div class="padding-right-25">
@@ -101,7 +101,7 @@
             </div>
           </div>
         </div>
-        <div ng-show="createAnn.showStepTwo">
+        <div ng-show="createAnn.stepNumber == 2">
           <div class="ui info message">
             <i class="close icon"></i>
             <div class="header">
@@ -115,7 +115,7 @@
             </ul>
           </div>
         </div>
-        <div ng-show="createAnn.showStepThree" class="ui list ui grid">
+        <div ng-show="createAnn.stepNumber == 3" class="ui list ui grid">
           <div class="eight wide column">
             <div class="ui message">
               <i class="close icon"></i>
@@ -131,7 +131,7 @@
             </div>
           </div>
         </div>
-        <div ng-show="createAnn.showStepFour" class="ui grid">
+        <div ng-show="createAnn.stepNumber == 4" class="ui grid">
           <div class="box width-100 eight wide column" style="margin-left: 17px;">
             <announcement-details-directive announcement-details="createAnn.previewData"></announcement-details-directive>
           </div>
@@ -140,13 +140,13 @@
     </div>
   </div>
   <div class="actions">
-    <button class="ui primary basic button announcementButton createAnnBackBtnWidth float-ContentLeft" id="annBackBtn" ng-if="!createAnn.showStepOne" ng-click="createAnn.previousStep($event.target);" data-current-state="{{createAnn.stepNumber}}">
+    <button class="ui primary basic button announcementButton createAnnBackBtnWidth float-ContentLeft" id="annBackBtn" ng-hide="createAnn.stepNumber == 1" ng-click="createAnn.previousStep();" data-current-state="{{createAnn.stepNumber}}">
       <span class="announcementButtonText">{{$root.frmelmnts.btn.back}}</span>
     </button>
-    <div class="ui primary button" ng-if="createAnn.showStepTwo" ng-click="createAnn.confirmRecipients();">{{$root.frmelmnts.btn.anncmntconfirmrecipients}}</div>
-    <div class="ui primary button" ng-if="createAnn.showStepThree" ng-click="createAnn.previewAnn();">{{$root.frmelmnts.btn.anncmntpreview}}</div>
-    <div class="ui primary button" ng-if="createAnn.showStepFour" id="sendAnnouncement">{{$root.frmelmnts.btn.anncmntsendanncmnt}}</div>
-    <div ng-if="createAnn.showStepOne" class="ui primary button" ng-class="{'disabled': createAnn.disableBtn === true || announcementForm.$invalid}" ng-click="createAnn.selectRecipients();">{{$root.frmelmnts.btn.anncmntselectrecipients}}</div>
+    <div class="ui primary button" ng-if="createAnn.stepNumber == 2" ng-click="createAnn.confirmRecipients();createAnn.stepNumber = 3">{{$root.frmelmnts.btn.anncmntconfirmrecipients}}</div>
+    <div class="ui primary button" ng-if="createAnn.stepNumber == 3" ng-click="createAnn.previewAnn();createAnn.stepNumber = 4;">{{$root.frmelmnts.btn.anncmntpreview}}</div>
+    <div class="ui primary button" ng-if="createAnn.stepNumber == 4" id="sendAnnouncement">{{$root.frmelmnts.btn.anncmntsendanncmnt}}</div>
+    <div ng-if="createAnn.stepNumber == 1" class="ui primary button" ng-class="{'disabled': createAnn.disableBtn === true || announcementForm.$invalid}" ng-click="createAnn.selectRecipients();createAnn.stepNumber = 2;">{{$root.frmelmnts.btn.anncmntselectrecipients}}</div>
   </div>
 </div>
 <!-- Announcement created success modal -->
