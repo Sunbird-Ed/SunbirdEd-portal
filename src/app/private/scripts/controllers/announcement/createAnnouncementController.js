@@ -15,6 +15,7 @@ angular.module('playerApp')
       createAnn.isLastStep = false
       createAnn.repeatableWebLinks = []
       createAnn.isMetaModified = false
+      createAnn.stepNumber = 1
 
         // Initialize modal
       createAnn.initializeModal = function () {
@@ -22,8 +23,6 @@ angular.module('playerApp')
           		$('#announcementType').dropdown()
           		$('#orgDropdown').dropdown()
 	        }, 100)
-
-	        createAnn.stepsHandler(1, true, false, false, false)
       }
 
       createAnn.createAnnouncement = function () {
@@ -71,11 +70,6 @@ angular.module('playerApp')
           	createAnn.showUrlField = createAnn.repeatableWebLinks.length != '0'
       }
 
-        // Function to post form data
-      createAnn.selectRecipients = function () {
-        	createAnn.stepsHandler(2, false, true, false, false)
-      }
-
         // Function to detect input box change event
       createAnn.detectChange = function () {
         	createAnn.enableRecepientBtn()
@@ -87,33 +81,12 @@ angular.module('playerApp')
     	}
 
     	// Function to track back button change
-    	createAnn.previousStep = function (item) {
-    		var step = $('#annBackBtn').attr('data-current-state')
-    		switch (step) {
-		        case '2':
-		        	createAnn.stepsHandler(1, true, false, false, false)
-		            break
-		        case '3':
-		        	createAnn.stepsHandler(2, false, true, false, false)
-		            break
-		        case '4':
-		        	createAnn.stepsHandler(3, false, false, true, false)
-		            break
-		        default:
-		    }
-    	}
-
-    	createAnn.stepsHandler = function (stepNumber, step1, step2, step3, step4) {
-    		createAnn.showStepOne = step1
-    		createAnn.showStepTwo = step2
-    		createAnn.showStepThree = step3
-    		createAnn.showStepFour = step4
-    		createAnn.stepNumber = stepNumber
+    	createAnn.previousStep = function () {
+    		createAnn.stepNumber--;
     	}
 
     	// Function to preview announcement
     	createAnn.previewAnn = function () {
-    		createAnn.stepsHandler(4, false, false, false, true)
     		var linkArray = createAnn.data.link ? Object.keys(createAnn.data.link).map(e => createAnn.data.link[e]) : []
 			// TODO - show announcement preview
         	createAnn.previewData = {'sourceId': 'some-organisation-id', 'type': createAnn.data.announcementType, 'links': linkArray, 'title': createAnn.data.title, 'description': createAnn.data.description, 'target': ['teachers'], 'attachments': [{'title': 'circular.pdf', 'downloadURL': 'https://linktoattachment', 'mimetype': 'application/pdf'}]}
@@ -121,7 +94,7 @@ angular.module('playerApp')
 
     	// Function to confirm recipients
     	createAnn.confirmRecipients = function () {
-    		createAnn.stepsHandler(3, false, false, true, false)
+    		// TODO - get select ricipients
     	}
 
     	// Function to enable / disable RecepientBtn
@@ -141,8 +114,8 @@ angular.module('playerApp')
 	    }
 
 	    createAnn.refreshFormValues = function () {
-	    	createAnn.stepsHandler(1, true, false, false, false)
       createAnn.disableBtn = true
+      createAnn.stepNumber = 1;
       $('#announcementType').dropdown('restore defaults')
       $('#orgDropdown').dropdown('restore defaults')
       $('#createAnnouncementModal').modal('refresh')
@@ -155,10 +128,10 @@ angular.module('playerApp')
 	    }
 
 	    createAnn.saveAnnouncement = function () {
+	    	// TODO - call save announcement api
 	    }
 
       createAnn.attachment = []
-      createAnn.index = 0
       createAnn.initializeFileUploader = function () {
 	        $timeout(function () {
 	            createAnn.manualUploader = new qq.FineUploader({
