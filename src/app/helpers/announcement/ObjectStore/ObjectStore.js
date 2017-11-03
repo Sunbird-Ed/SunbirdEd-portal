@@ -114,8 +114,8 @@ class ObjectStore {
   __validateUpdateObjectById() {
     return async((data) => {
       if (!this.__validateRequest(data)) throw { msg: 'table not found!', status: 'error' }
-      if (typeof data.data != 'object') throw { msg: 'invalid query!', status: 'error' }
-      if (typeof data.id != 'string') throw { msg: 'Id should be of type string!', status: 'error' }
+      if (!_.isObject(data.data)) throw { msg: 'invalid query!', status: 'error' }
+      if (!_.isString(data.id)) throw { msg: 'Id should be of type string!', status: 'error' }
 
       try {
         _.forIn(data.data, (value, key) => {
