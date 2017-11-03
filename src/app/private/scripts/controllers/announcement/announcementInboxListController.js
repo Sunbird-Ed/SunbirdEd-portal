@@ -8,7 +8,7 @@ angular.module('playerApp')
       announcementInboxData.showLoader = true
 
       announcementInboxData.renderAnnouncementList = function (limit) {
-		announcementInboxData.limit = limit || 'all';
+        announcementInboxData.limit = limit || 'all'
         // ~ announcementService.getAnnouncementList().then(function (apiResponse) {
 
         // ~ if (apiResponse && apiResponse.responseCode === 'OK') {
@@ -33,9 +33,9 @@ angular.module('playerApp')
       announcementInboxData.getFileExtension = function (mimeType) {
         return announcementService.getFileExtension(mimeType)
       }
-      
-       announcementInboxData.showAnnouncementDetails = function (announcementDetails, id) {
-		angular.element(document.querySelector('#annInboxDiv-'+id)).removeClass("announcementCardLeftBorder");
+
+      announcementInboxData.showAnnouncementDetails = function (announcementDetails, id) {
+        angular.element(document.querySelector('#annInboxDiv-' + id)).removeClass('announcementCardLeftBorder')
         $scope.announcementInboxData.announcementDetails = announcementDetails
         $('#announcementDetailsModal').modal('show')
       }
