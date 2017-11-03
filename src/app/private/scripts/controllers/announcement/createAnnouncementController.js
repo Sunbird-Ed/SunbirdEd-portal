@@ -16,6 +16,7 @@ angular.module('playerApp')
       createAnn.repeatableWebLinks = []
       createAnn.isMetaModified = false
       createAnn.stepNumber = 1
+      createAnn.data = {}
 
         // Initialize modal
       createAnn.initializeModal = function () {
@@ -23,6 +24,7 @@ angular.module('playerApp')
           		$('#announcementType').dropdown()
           		$('#orgDropdown').dropdown()
 	        }, 100)
+
       }
 
       createAnn.createAnnouncement = function () {
@@ -87,10 +89,14 @@ angular.module('playerApp')
 
     	// Function to preview announcement
     	createAnn.previewAnn = function () {
-    		var linkArray = createAnn.data.link ? Object.keys(createAnn.data.link).map(e => createAnn.data.link[e]) : []
-			// TODO - show announcement preview
-        	createAnn.previewData = {'sourceId': 'some-organisation-id', 'type': createAnn.data.announcementType, 'links': linkArray, 'title': createAnn.data.title, 'description': createAnn.data.description, 'target': ['teachers'], 'attachments': [{'title': 'circular.pdf', 'downloadURL': 'https://linktoattachment', 'mimetype': 'application/pdf'}]}
-    	}
+    		var linkArray = [];
+            angular.forEach(createAnn.data.link, function(value, key){
+                linkArray.push(value);
+            });
+
+            // TODO - show announcement preview
+            createAnn.previewData = {'sourceId': 'some-organisation-id', 'type': createAnn.data.announcementType, 'links': linkArray, 'title': createAnn.data.title, 'description': createAnn.data.description, 'target': ['teachers'], 'attachments': [{'title': 'circular.pdf', 'downloadURL': 'https://linktoattachment', 'mimetype': 'application/pdf'}]}
+		}
 
     	// Function to confirm recipients
     	createAnn.confirmRecipients = function () {
@@ -107,10 +113,6 @@ angular.module('playerApp')
 	        	createAnn.disableBtn = true
 	        }
 	        createAnn.isMetaModified = true
-	    }
-
-	    createAnn.detectUrlChange = function (index) {
-	    	createAnn.isMetaModified = true
 	    }
 
 	    createAnn.refreshFormValues = function () {
