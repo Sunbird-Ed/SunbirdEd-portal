@@ -68,7 +68,6 @@
     <script src="/thirdparty/bower_components/izimodal/js/iziModal.min.js"></script>
     <script src="/thirdparty/bower_components/jquery.fancytree/dist/jquery.fancytree.min.js"></script>
     <script src="/thirdparty/bower_components/lodash/dist/lodash.min.js"></script>
-    <script src="/thirdparty/bower_components/file-upload/fine-uploader/fine-uploader.js"></script>
     <script src="/thirdparty/bower_components/angular-uuid4/angular-uuid4.min.js"></script>
     <script src="/thirdparty/bower_components/js-md5/build/md5.min.js"></script>
     <script src="/thirdparty/bower_components/izitoast/dist/js/iziToast.min.js"></script>
@@ -112,7 +111,6 @@
     <script src="scripts/services/batchService.js"></script>
     <script src="scripts/services/workSpaceUtilsService.js"></script>
     <script src="scripts/services/dashboardService.js"></script>
-    <script src="scripts/services/announcementService.js"></script>
     <script src="scripts/services/dataService.js"></script>
     <script src="scripts/services/paginationService.js"></script>
     <script src="scripts/controllers/searchController.js"></script>
@@ -151,18 +149,14 @@
     <script src="scripts/controllers/batch/batchUpdateController.js"></script>
     <script src="scripts/controllers/workspace/createLessonPlanController.js"></script>
     <script src="scripts/controllers/dashboard/orgDashboardController.js"></script>
-    <script src="scripts/controllers/announcement/announcementOutboxListController.js"></script>
-    <script src="scripts/controllers/announcement/announcementInboxListController.js"></script>
     <script src="scripts/controllers/common/contentSharingController.js"></script>
     <script src="scripts/controllers/dashboard/orgDashboardController.js"></script>
     <script src="scripts/controllers/search/publicProfileController.js"></script>
     <script src="scripts/controllers/dashboard/courseDashboardController.js"></script>
     <script src="scripts/controllers/dashboard/courseCreatorDashboardController.js"></script>
-    <script src="scripts/controllers/announcement/createAnnouncementController.js"></script>
     <script src="scripts/controllers/admin/bulkUploadController.js"></script>
     <script src="scripts/filters/dateFilter.js"></script>
     <script src="scripts/filters/noteListFilter.js"></script>
-    <script src="scripts/filters/isValidObjectFilter.js"></script>
     <script src="scripts/directives/applyScript.js"></script>
     <script src="scripts/directives/appLoader.js"></script>
     <script src="scripts/directives/errorMessage.js"></script>
@@ -181,11 +175,20 @@
     <script src="scripts/directives/admin/bulkUpload.js"></script>
     <script src="scripts/directives/batchDetailsDirective.js"></script>
     <script src="scripts/directives/contentSharingDirective.js"></script>
-    <script src="scripts/directives/announcementDetailsDirective.js"></script>
     <script src="scripts/services/setup/setupService.js"></script>
     <script src="scripts/controllers/setup/setupController.js"></script>
-    <script src="scripts/directives/fileUpload.js"></script>
     <script src="scripts/controllers/workspace/limitedPublishedContentController.js"></script>
+
+    <!-- Announcement flow -->
+    <script src="/thirdparty/bower_components/file-upload/fine-uploader/fine-uploader.js"></script>
+    <script src="scripts/controllers/announcement/announcementOutboxListController.js"></script>
+    <script src="scripts/controllers/announcement/announcementInboxListController.js"></script>
+    <script src="scripts/controllers/announcement/createAnnouncementController.js"></script>
+    <script src="scripts/directives/announcementDetailsDirective.js"></script>
+    <script src="scripts/directives/fileUpload.js"></script>
+    <script src="scripts/filters/isValidObjectFilter.js"></script>
+    <script src="scripts/services/announcementService.js"></script>
+
     <!-- endinject -->
     <script src="../common/js/frmelmnts.js"></script>
     <script src="../common/js/messages.js"></script>
