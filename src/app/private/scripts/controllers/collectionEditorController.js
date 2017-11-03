@@ -180,4 +180,13 @@ angular.module('playerApp')
         }
       }
       collectionEditor.openCollectionEditor($stateParams)
+
+      $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState) {
+        if (fromState.name === 'CollectionEditor') {
+          var state = $('#collectionEditor').iziModal('getState')
+          if (state === 'opened') {
+            document.getElementById('collectionEditor').remove()
+          }
+        }
+      })
     }])
