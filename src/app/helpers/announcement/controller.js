@@ -108,8 +108,8 @@ class AnnouncementController {
       })
       return { error: messages, isValid: false }
     }
-    return { isValid: true }
-  }
+    return { isValid: true };
+  };
 
   /**
    * Get permissions list of the given user
@@ -224,11 +224,7 @@ class AnnouncementController {
    *
    * @return  {[type]}  [description]
    */
-  getAnnouncementTypes(requestObj) {
-    return this.__getAnnouncementTypes()(requestObj)
-  }
-
-  __getAnnouncementTypes() {
+  __getAnnounceTypes() {
     return new Promise((resolve, reject) => {
       let query = {
         table: this.objectStoreRest.MODEL.ANNOUNCEMENTTYPE,
@@ -282,21 +278,56 @@ class AnnouncementController {
   }
 
   __getUserInbox() {
-    //TODO: complete implementation
     return async((requestObj) => {
-      return { "announcements": [{ "announcementId": "2344-1234-1234-12312", "sourceId": "some-organisation-id", "createdBy": "Creator1", "createdOn": "2017-10-24", "type": "announcement", "links": ["https://linksToOtheresources.com"], "title": "Monthy Status", "description": "some description", "target": ["teachers"], "attachments": [{ "title": "circular.pdf", "downloadURL": "https://linktoattachment", "mimetype": "application/pdf" }] }] }
+      // return { "announcements": [{ "announcementId": "2344-1234-1234-12312", "sourceId": "some-organisation-id", "createdBy": "Creator1", "createdOn": "2017-10-24", "type": "announcement", "links": ["https://linksToOtheresources.com"], "title": "Monthy Status", "description": "some description", "target": ["teachers"], "attachments": [{ "title": "circular.pdf", "downloadURL": "https://linktoattachment", "mimetype": "application/pdf" }] }] }
 
-      // Get user id
+      let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || requestObj.headers['x-authenticated-user-token']
+      if (!authUserToken) throw { msg: 'UNAUTHORIZED', statusCode: HttpStatus.BAD_REQUEST }
 
-      // Fetch user profile from SB
+      // Get user id and profile
+      let userProfile = await(this.__getUserProfile({ id: _.get(requestObj, 'body.request.userid') }, authUserToken))
 
       // Parse the list of Geolocations (User > Orgs > Geolocations) from the response
+      let targetList = []
+      _.forEach(userProfile.organisations, function(userOrg) {
+          if(userOrg.locationId) targetList.push(userOrg.locationId)
+      });
+
+      //handle emty target list
+      if (_.isEmpty(targetList)) return { msg: {count:0, msg: 'No announcements found'}, statusCode: HttpStatus.OK }
 
       // Query announcements where target is listed Geolocations
+      let query = {
+        table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
+        query: {
+          'target': targetList
+        }
+      }
 
-      // Respond.
+      try {
+        let data = await (new Promise((resolve, reject) => {
+            this.objectStoreRest.findObject(query)
+            .then((data) => {
+              if (!_.isObject(data)) {
+                reject({ msg: 'unable to fetch announcement inbox', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
+              } else {
+                resolve(data.data)
+              }
+            })
+            .catch((error) => {
+              console.log(error)
+              reject({ msg: 'unable to fetch announcement inbox', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
+            })
+        }))
+
+        return  {msg: {announcements: data}, statusCode: HttpStatus.OK}
+
+        } catch(error) {
+            throw { msg: 'unable to process your request', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
+        }
     })
   }
+
 
   /**
    * Get outbox of announcements for a given user
@@ -306,13 +337,29 @@ class AnnouncementController {
    * @return  {[type]}              [description]
    */
   getUserOutbox(requestObj) {
-    return this.__getUserOutbox()(requestObj)
-  }
+    return new Promise((resolve, reject) => {
 
-  __getUserOutbox() {
-    //TODO: complete implementation
-    return async((requestObj) => {
-      return { "announcements": [{ "announcementId": "2344-1234-1234-12312", "sourceId": "some-organisation-id", "createdBy": "Creator1", "createdOn": "2017-10-24", "type": "announcement", "links": ["https://linksToOtheresources.com"], "title": "Monthy Status", "description": "some description", "target": ["teachers"], "attachments": [{ "title": "circular.pdf", "downloadURL": "https://linktoattachment", "mimetype": "application/pdf" }] }] }
+      //TODO: Input validation
+
+      let query = {
+        table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
+        query: {
+          'userid': _.get(requestObj, 'body.request.userid')
+        }
+      }
+
+      this.objectStoreRest.findObject(query)
+        .then((data) => {
+          if (!_.isObject(data)) {
+            reject({ msg: 'unable to fetch sent announcements', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
+          } else {
+            resolve(data.data)
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+          reject({ msg: 'unable to fetch sent announcements', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
+        })
     })
   }
 
