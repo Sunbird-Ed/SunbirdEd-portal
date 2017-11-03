@@ -24,7 +24,6 @@ angular.module('playerApp')
         // ~ });
 
         announcementOutboxData.listData = announcementService.getOutBoxAnnouncementList()
-        announcementOutboxData.listData = JSON.parse(announcementOutboxData.listData)
         announcementOutboxData.listData = announcementOutboxData.listData.result.announcements
         announcementOutboxData.showLoader = false
       }

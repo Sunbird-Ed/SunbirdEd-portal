@@ -6,8 +6,8 @@
 
 'use strict'
 
-describe('Controller: announcementInboxListController', function () {
-    // load the controller's module
+describe('Controller: announcementInboxListController', function() {
+  // load the controller's module
   beforeEach(module('playerApp'))
 
   var announcementService,
@@ -19,15 +19,15 @@ describe('Controller: announcementInboxListController', function () {
     timeout,
     annInboxTestData = testData.getAnnouncementInbox
 
-  beforeEach(inject(function ($rootScope, $controller) {
+  beforeEach(inject(function($rootScope, $controller) {
     $controller('AppCtrl', {
       $rootScope: $rootScope,
       $scope: $rootScope.$new()
     })
   }))
 
-    // Initialize the controller and a mock scope
-  beforeEach(inject(function ($rootScope, $controller, _announcementService_, _$q_, _$timeout_) {
+  // Initialize the controller and a mock scope
+  beforeEach(inject(function($rootScope, $controller, _announcementService_, _$q_, _$timeout_) {
     rootScope = $rootScope
     scope = $rootScope.$new()
     announcementService = _announcementService_
@@ -42,17 +42,19 @@ describe('Controller: announcementInboxListController', function () {
     })
   }))
 
-  describe('Get inbox announcements', function () {
-    it('success', function () {
+  describe('Get inbox announcements', function() {
+    it('success', function() {
       spyOn(announcementService, 'getInboxAnnouncementList').and.returnValue(deferred.promise)
       deferred.resolve(annInboxTestData.successResponce)
-     // spyOn(announcementInboxListController, 'renderAnnouncementList').and.callThrough()
-      //announcementInboxListController.renderAnnouncementList(2)
+
+      //spyOn(announcementInboxListController, 'renderAnnouncementList').and.callThrough()
+      //announcementInboxListController.renderAnnouncementList('2')
+
       var response = announcementService.getInboxAnnouncementList().$$state.value
       expect(response).toBe(annInboxTestData.successResponce)
     })
 
-    it('get file extension', function () {
+    it('get file extension', function() {
       spyOn(announcementService, 'getFileExtension').and.returnValue(deferred.promise)
       deferred.resolve('PDF')
       spyOn(announcementInboxListController, 'getFileExtension').and.callThrough()
@@ -61,12 +63,13 @@ describe('Controller: announcementInboxListController', function () {
       expect(response).toBe('PDF')
     })
 
-    it('Show details', function () {
-	  //spyOn(announcementInboxListController, 'showAnnouncementDetails').and.callThrough()
-      //announcementInboxListController.showAnnouncementDetails(successResponce1)
-      //expect(announcementInboxListController.showAnnouncementDetails).toBe(true)
+    it('Show details', function() {
+      spyOn(announcementInboxListController, 'showAnnouncementDetails').and.callThrough()
+      scope.announcementInboxData = {}
+      scope.announcementInboxData.announcementDetails = {}
+      announcementInboxListController.showAnnouncementDetails({}, 2)
     })
 
 
-})
+  })
 })
