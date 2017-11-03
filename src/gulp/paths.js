@@ -35,8 +35,8 @@ var paths = {
       'app/thirdparty/bower_components/jquery-ui/jquery-ui.min.js',
       'app/thirdparty/bower_components/angular-cookies/angular-cookies.min.js',
       'app/thirdparty/bower_components/angular-resource/angular-resource.js',
-            'app/thirdparty/bower_components/angular-cookies/angular-cookies.js', // eslint-disable-line 
-            'app/thirdparty/bower_components/angular-sanitize/angular-sanitize.js', // eslint-disable-line 
+            'app/thirdparty/bower_components/angular-cookies/angular-cookies.js', // eslint-disable-line
+            'app/thirdparty/bower_components/angular-sanitize/angular-sanitize.js', // eslint-disable-line
       'app/thirdparty/bower_components/angular-route/angular-route.min.js',
       'app/thirdparty/bower_components/angular-mocks/angular-mocks.js',
       'app/thirdparty/bower_components/semantic-ui-calendar/dist/calendar.min.js',
@@ -191,6 +191,7 @@ var paths = {
     'dist/private/scripts/services/dataService.js',
     'dist/private/scripts/services/paginationService.js',
     'dist/private/scripts/controllers/searchController.js',
+    'dist/private/scripts/controllers/searchResultController.js',
     'dist/private/scripts/controllers/appController.js',
     'dist/private/scripts/controllers/note/noteListController.js',
     'dist/private/scripts/controllers/courseScheduleController.js',
