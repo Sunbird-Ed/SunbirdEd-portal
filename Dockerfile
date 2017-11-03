@@ -1,14 +1,13 @@
-FROM node:6-alpine
+FROM node:6-stretch
 MAINTAINER "Manojvv" "manojrpms@gmail.com"
-RUN apk update \
-    && apk add unzip
-RUN adduser -u 1001 -h /home/sunbird/ -D sunbird
+RUN apt-get update \
+    && apt-get install unzip
+RUN adduser --uid 1001 --home /home/sunbird/ sunbird
 WORKDIR /home/sunbird
 COPY player-dist.zip  /home/sunbird/
 RUN unzip /home/sunbird/player-dist.zip \ 
     && chown -R sunbird:sunbird /home/sunbird
 WORKDIR /home/sunbird/dist/public
-RUN rm index.html
 USER sunbird
 WORKDIR /home/sunbird/dist
 EXPOSE 3000
