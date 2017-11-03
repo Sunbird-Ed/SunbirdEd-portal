@@ -192,6 +192,7 @@ var paths = {
     'dist/private/scripts/services/dataService.js',
     'dist/private/scripts/services/paginationService.js',
     'dist/private/scripts/controllers/searchController.js',
+    'dist/private/scripts/controllers/searchResultController.js',
     'dist/private/scripts/controllers/appController.js',
     'dist/private/scripts/controllers/note/noteListController.js',
     'dist/private/scripts/controllers/courseScheduleController.js',
