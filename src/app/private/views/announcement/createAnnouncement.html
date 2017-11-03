@@ -30,7 +30,7 @@
         <div class="two wide column">
           <div class="createAnnStepsIndicator">
             <h6 class="createAnnMargin5 createAnnGrayShade">{{$root.frmelmnts.lbl.anncmntstep}}</h6> &nbsp
-            <span id="announcementSteps createAnnMargin4">{{createAnn.stepNumber}}</span><span class="createAnnGrayShade"> / 4</span>
+            <span id="announcementSteps createAnnMargin4" class="announcementSteps">{{createAnn.stepNumber}}</span><span class="createAnnGrayShade"> / 4</span>
           </div>
         </div>
       </div>
@@ -132,7 +132,7 @@
           </div>
         </div>
         <div ng-show="createAnn.stepNumber == 4" class="ui grid">
-          <div class="box width-100 eight wide column" style="margin-left: 17px;">
+          <div class="box width-100 eight wide column margin-left-17">
             <announcement-details-directive announcement-details="createAnn.previewData"></announcement-details-directive>
           </div>
         </div>
