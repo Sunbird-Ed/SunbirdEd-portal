@@ -30,7 +30,6 @@ angular.module('playerApp')
       createAnn.createAnnouncement = function () {
         $('#createAnnouncementModal').modal({
           	closable: false,
-          	debug: true,
           	onHide: function () {
           		// TODO - Show confirmation before closing modal
           		if (!createAnn.isLastStep) {
@@ -46,7 +45,7 @@ angular.module('playerApp')
 	          	}
 	          	return true
           	},
-          	onApprove: function a () {
+          	onApprove: function() {
           		// Make api call to save data
           		createAnn.isLastStep = true
           		createAnn.refreshFormValues()
@@ -146,13 +145,13 @@ angular.module('playerApp')
 	                autoUpload: true,
 	                debug: true,
 	                validation: {
-	                    sizeLimit: config.MaxFileSizeToUpload,
-	                    allowedExtensions: config.AllowedFileExtension
+	                    sizeLimit: config.AnncmntMaxFileSizeToUpload,
+	                    allowedExtensions: config.AnncmntAllowedFileExtension
 	                },
 	                messages: {
 	                     sizeError: '{file} ' +
 	                     $rootScope.messages.imsg.m0006 + ' ' +
-	                                             config.MaxFileSizeToUpload / (1000 * 1024) + ' MB.'
+	                                             config.AnncmntMaxFileSizeToUpload / (1000 * 1024) + ' MB.'
 	                },
 	                failedUploadTextDisplay: {
         				mode: 'default',
