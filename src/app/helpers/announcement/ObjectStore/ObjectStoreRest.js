@@ -34,9 +34,8 @@ class ObjectStoreRest extends ObjectStore {
 
       try {
         let result = await (this.httpService(options))
-        return { data: result.body.result, status: 'created' }
+        return { data: _.get(result, 'body.result'), status: 'created' }
       } catch (error) {
-        console.log(error)
         throw { msg: 'unable to create object', status: 'error' }
       }
     })
@@ -64,8 +63,8 @@ class ObjectStoreRest extends ObjectStore {
 
       try {
         let result = await (this.httpService(options))
-        if (result.body.result.response.count > 0) {
-          return { data: result.body.result.response.content, status: 'success' }
+        if (_.get(result, 'body.result.response.count') > 0) {
+          return { data: _.get(result, 'body.result.response.content'), status: 'success' }
         } else {
           return { data: [], status: 'success' }
         }
