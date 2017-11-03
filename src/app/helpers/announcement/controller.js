@@ -2,7 +2,6 @@ let AnnouncementModel = require('./model/AnnouncementModel.js')
 let AnnouncementTypeModel = require('./model/AnnouncementTypeModel.js')
 let AttachmentModel = require('./model/AttachmentModel.js')
 let MetricsModel = require('./model/MetricsModel.js')
-let UserPermissionsModel = require('./model/UserPermissionsModel.js')
 let Joi = require('joi')
 let HttpStatus = require('http-status-codes')
 const _ = require('lodash')
@@ -11,6 +10,8 @@ let await = require('asyncawait/await')
 const ObjectStoreRest = require('./ObjectStore/ObjectStoreRest.js')
 let uuidv1 = require('uuid/v1')
 let dateFormat = require('dateformat')
+let webService = require('request')
+let envVariables = require('../environmentVariablesHelper.js')
 
 class AnnouncementController {
 
@@ -20,16 +21,14 @@ class AnnouncementController {
       'announcement': AnnouncementModel,
       'announcementtype': AnnouncementTypeModel,
       'attachment': AttachmentModel,
-      'metrics': MetricsModel,
-      'userpermissions': UserPermissionsModel
+      'metrics': MetricsModel
     }
 
     let modelConstant = {
       'ANNOUNCEMENT': 'announcement',
       'ANNOUNCEMENTTYPE': 'announcementtype',
       'ATTACHMENT': 'attachment',
-      'METRICS': 'metrics',
-      'USERPERMISSIONS': 'userpermissions'
+      'METRICS': 'metrics'
     }
 
     this.objectStoreRest = new ObjectStoreRest(tableMapping, modelConstant)
@@ -48,20 +47,32 @@ class AnnouncementController {
 
   __create() {
     return async((requestObj) => {
+      
+      const CREATE_ROLE = 'ANNOUNCEMENT_SENDER'
       // validate parameters
-      let request = this.__validateCreateRequest(requestObj)
+      let request = this.__validateCreateRequest(requestObj.body)
       if (!request.isValid) throw { msg: request.error, statusCode: HttpStatus.BAD_REQUEST }
 
-      // TODO: validate user permission to create
+      let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || requestObj.headers['x-authenticated-user-token']
+      if (!authUserToken) throw { msg: 'UNAUTHORIZED', statusCode: HttpStatus.BAD_REQUEST }
+
+      try{  
+        let userProfile = await(this.__getUserPermissions({ id: _.get(requestObj, 'body.request.createdBy'), orgId: _.get(requestObj, 'body.request.sourceId') }, authUserToken))
+        let organisation = _.find(userProfile.organisations, { organisationId: _.get(requestObj, 'body.request.sourceId') })
+        if (_.indexOf(organisation.roles, CREATE_ROLE) == -1) throw "user has no create access"
+      } catch(error) {
+        throw { msg: 'user has no create access', statusCode: HttpStatus.BAD_REQUEST }
+      }
 
       try {
-        var newAnnouncementObj = await (this.__createAnnouncement(requestObj.request))
+        var newAnnouncementObj = await (this.__createAnnouncement(requestObj.body.request))
       } catch (error) {
         throw { msg: 'unable to process the request!', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
       }
 
       try {
-        await (this.__createAnnouncementNotification( /*announcement data*/ ))
+        //TODO: call notification service
+        //await (this.__createAnnouncementNotification( /*announcement data*/ ))
         return { announcement: newAnnouncementObj.data }
       } catch (e) {
         // even if notification fails, it should still send annoucement in response
@@ -95,10 +106,8 @@ class AnnouncementController {
       _.forEach(validation.error.details, (error, index) => {
         messages.push({ field: error.path[0], description: error.message })
       })
-      //console.log('request has errors ',  messages)
       return { error: messages, isValid: false }
     }
-    //console.log('validation is passed')
     return { isValid: true }
   }
 
@@ -109,19 +118,26 @@ class AnnouncementController {
    *
    * @return  {[type]}        [description]
    */
-  __getUserPermissions(data) {
-    //TODO: Get the permissions from Sunbird
+  __getUserPermissions(data, authUserToken) {
     return new Promise((resolve, reject) => {
-      let query = { table: this.objectStoreRest.MODEL.USERPERMISSIONS, query: { 'userid': data.user } }
+      if (_.isEmpty(data.id)) {
+        reject('user id is required!')
+      }
 
-      this.objectStoreRest.findObject(query)
-        .then((data) => {
-          resolve({ data: data })
-        })
-        .catch((error) => {
-          reject({ msg: 'user does not exist!' })
-        })
-    })
+      let options = {
+        method: 'GET',
+        uri: envVariables.DATASERVICE_URL + 'user/v1/read/' + data.id,
+        headers: this.getRequestHeader({ xAuthUserToken: authUserToken })
+      }
+
+      this.httpService(options).then((data) => { 
+        data.body = JSON.parse(data.body)       
+        resolve(_.get(data, 'body.result.response'))
+      })
+      .catch((error) => {
+        reject(error)
+      })
+    })    
   }
 
   __createAnnouncement(data) {
@@ -144,8 +160,6 @@ class AnnouncementController {
           'links': data.links
         }
       }
-
-      console.log(query)
 
       this.objectStoreRest.createObject(query)
         .then((data) => {
@@ -196,11 +210,10 @@ class AnnouncementController {
             _.forEach(data.data, (announcementObj) => {
               if (_.isString(announcementObj.target)) announcementObj.target = JSON.parse(announcementObj.target)
             })
-            resolve(data.data)
+            resolve(_.get(data, 'data[0]'))
           }
         })
         .catch((error) => {
-          console.log(error)
           reject({ msg: 'unable to fetch announcement', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
         })
     })
@@ -296,18 +309,16 @@ class AnnouncementController {
           'file': requestObj.file.buffer.toString('utf8'),
           'filename': requestObj.file.originalname,
           'mimetype': requestObj.file.mimetype,
-          'status': 'created',
-          'size': requestObj.file.size,
+          'status': 'created',          
           'createddate': dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo")
         }
       }
 
-      if (!_.isEmpty(requestObj.body.createdBy)) query.values.createdBy = requestObj.body.createdBy
+      if (!_.isEmpty(requestObj.body.createdBy)) query.values.createdby = requestObj.body.createdBy
 
-      console.log(_.omit(requestObj.file, ['buffer']))
-    
       try {
-        return await (this.objectStoreRest.createObject(query)
+        return await (new Promise((resolve, reject) => {
+          this.objectStoreRest.createObject(query)
           .then((data) => {
             if (!_.isObject(data)) {
               reject()
@@ -317,7 +328,8 @@ class AnnouncementController {
           })
           .catch((error) => {
             reject(error)
-          }))
+          })
+        }))
       } catch (e) {
         throw { msg: 'unable to upload!', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
       }
@@ -358,6 +370,31 @@ class AnnouncementController {
     return async((requestObj) => {
       return {}
     })
+  }
+
+  httpService(options) {
+    return new Promise((resolve, reject) => {
+      if (!options) reject('options required!')
+      webService(options, (error, response, body) => {
+        if (error || response.statusCode >= 400) {
+          reject(error)
+        } else {
+          resolve({ response, body })
+        }
+      })
+    })
+  }
+
+  getRequestHeader(opt) {
+    return {
+      'x-device-id': 'x-device-id',
+      'ts': dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo"),
+      'x-consumer-id': envVariables.PORTAL_API_AUTH_TOKEN,
+      'content-type': 'application/json',
+      'accept': 'application/json',
+      'x-authenticated-user-token': opt.xAuthUserToken || '',
+      'Authorization': 'Bearer ' + envVariables.PORTAL_API_AUTH_TOKEN
+    }
   }
 }
 
