@@ -1878,25 +1878,25 @@ div:focus {
   color: #8b8b8c !important;
 }
 .showingAllSentAnn {
-  color: #4A4A4A ;
+  color: #4A4A4A;
   font-family: "Open Sans";
   font-size: 17px;
   line-height: 19px;
 }
 .announcementHeading {
-  color: #9b9b9b  !important;
+  color: #9b9b9b !important;
   font-family: "Open Sans" !important;
   font-size: 16px !important;
   line-height: 19px !important;
 }
 .tableListNameAnn {
-  color: #4A4A4A ;
+  color: #4A4A4A;
   font-family: "Open Sans";
   font-size: 16px;
   line-height: 19px;
 }
 .announcementDataText {
-  color: #4A4A4A ;
+  color: #4A4A4A;
   font-family: "Open Sans";
   font-size: 17px;
   line-height: 19px;
@@ -3296,7 +3296,7 @@ span.dashBoardMenuItem.active {
   margin-left: 75px;
   background-color: #f2f2f2;
   margin-bottom: auto;
-  padding: 10px  20px;
+  padding: 10px 20px;
 }
 .createAnnFormScroller {
   max-height: 400px;
@@ -3356,6 +3356,9 @@ span.dashBoardMenuItem.active {
 }
 .btn-width-34 {
   width: 34%;
+}
+.announcementSteps {
+  margin-left: -5px;
 }
 .sb-createAnnFineUploaderHolder {
   padding: 10px;
