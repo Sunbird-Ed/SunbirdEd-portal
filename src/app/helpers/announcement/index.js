@@ -10,7 +10,7 @@ let multer = require('multer')
 for file upload
 */
 const maxUploadFileSize = 1000000 // in bytes, 1MB
-const AllowableUploadFileTypes = /jpeg|jpg|pdf|doc|docx|xls|xlsx|ppt|pptx/
+const AllowableUploadFileTypes = /jpeg|jpg|png|gif|bmp|ico|pdf/ // images/pdf
 let storage = multer.memoryStorage()
 let upload = multer({ storage: storage, limits: { fileSize: maxUploadFileSize }, fileFilter: uploadFileFilter })
 let singleFileUpload = upload.single('document')
@@ -23,7 +23,7 @@ function uploadFileFilter (req, file, cb) {
 }
 
 router.post('/create', (requestObj, responseObj) => {
-  announcementController.create(requestObj.body)
+  announcementController.create(requestObj)
     .then((data) => {
       sendSuccessResponse(responseObj, 'create', data, HttpStatus.CREATED)
     })
