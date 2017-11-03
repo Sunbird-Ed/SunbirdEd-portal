@@ -10,6 +10,7 @@ const express = require('express'),
   async = require('async'),
   helmet = require('helmet'),
   CassandraStore = require('cassandra-session-store'),
+  _ = require('lodash'),
   trampolineServiceHelper = require('./helpers/trampolineServiceHelper.js'),
   telemetryHelper = require('./helpers/telemetryHelper.js'),
   permissionsHelper = require('./helpers/permissionsHelper.js'),
@@ -194,6 +195,9 @@ require('./proxy/contentEditorProxy.js')(app, keycloak)
 
 app.all('/:tenantName', function (req, res) {
   tenantId = req.params.tenantName
+  if (_.isString(tenantId)) {
+    tenantId = _.lowerCase(tenantId)
+  }
   if (tenantId && fs.existsSync(path.join(__dirname, 'tenant', tenantId, 'index.html'))) {
     res.sendFile(path.join(__dirname, 'tenant', tenantId, 'index.html'))
   } else if (default_tenant && fs.existsSync(path.join(__dirname, 'tenant', default_tenant, 'index.html'))) {
