@@ -47,7 +47,9 @@ module.exports = function (app) {
     proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
     proxyReqPathResolver: proxyReqPathResolverMethod,
     proxyReqBodyDecorator: function (bodyContent, srcReq) {
-      bodyContent.baseUrl = srcReq.protocol + '://' + srcReq.headers.host
+      if (bodyContent && bodyContent.request && bodyContent.request.content) {
+        bodyContent.request.content.baseUrl = srcReq.protocol + '://' + srcReq.headers.host
+      }
       return bodyContent
     }
   }))
