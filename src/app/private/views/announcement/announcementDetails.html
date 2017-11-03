@@ -1,22 +1,24 @@
-<div class="ui warning message tweleve wide column" ng-if="(announcementDetails | isValidObjectFilter) === false">
+<div class="ui warning message tweleve wide column" ng-hide="announcementDetails.title">
   <div class="header">
     Oops announcement details not found!
   </div>
   Please try again..
 </div>
-<div ng-if="(announcementDetails | isValidObjectFilter) === true">
+<div ng-show="announcementDetails.title">
   <div>
-    <p class="ng-binding announcement-description">{{announcementDetails.sourceId}} - {{announcementDetails.type}}</p>
+    <p class="ng-binding announcement-description" ng-show="announcementDetails.sourceId || announcementDetails.type">
+      {{announcementDetails.sourceId}} - {{announcementDetails.type}}
+    </p>
   </div>
   <div class="header announcementCard-header padding-top-5">
-    <div class="header cardsHeading padding-top-10">
+    <div class="header cardsHeading padding-top-10" ng-show="announcementDetails.title">
       {{announcementDetails.title}}
     </div>
-    <div class="announcement-description padding-top-10" ng-if="(announcementDetails.description | isValidObjectFilter) === true">
+    <div class="announcement-description padding-top-10" ng-show="announcementDetails.description">
       {{announcementDetails.description}}
     </div>
   </div>
-  <div ng-if="(announcementDetails.links | isValidObjectFilter) === true">
+  <div ng-show="announcementDetails.links">
     <div class="padding-top-20">
       <strong class="annMediumText ng-binding">{{$root.frmelmnts.lbl.anncmntdtlsweblinks}}</strong>
     </div>
@@ -27,7 +29,7 @@
       </div>
     </div>
   </div>
-  <div ng-if="(announcementDetails.attachments | isValidObjectFilter) === true">
+  <div ng-show="announcementDetails.attachments">
     <div class="padding-top-10">
       <strong class="annMediumText ng-binding">{{$root.frmelmnts.lbl.anncmntdtlsattachments}}</strong>
     </div>
@@ -50,7 +52,7 @@
       </div>
     </div>
   </div>
-  <div class="gray-full-width margin-bottom-0" ng-if="(announcementDetails.createdOn | isValidObjectFilter) === true">
+  <div class="gray-full-width margin-bottom-0" ng-show="announcementDetails.createdOn">
     <span class="ng-binding announcement-description">
        {{$root.frmelmnts.lbl.anncmntdtlssenton}} {{announcementDetails.createdOn  | date : "dd MMM yyyy"}}</span>
     <!-- Sharing icon
