@@ -7,7 +7,7 @@ angular.module('playerApp')
       // Initialize variables
       var createAnn = this
 
-        // TODO - use api to get values
+      // TODO - use api to get values
       createAnn.org = ['Org 1', 'Org 2', 'Org 3']
       createAnn.announcementType = ['Type 1', 'Type 2', 'Type 3']
       createAnn.disableBtn = true
@@ -18,7 +18,7 @@ angular.module('playerApp')
       createAnn.stepNumber = 1
       createAnn.data = {}
 
-        // Initialize modal
+      // Initialize modal
       createAnn.initializeModal = function () {
         $timeout(function () {
           $('#announcementType').dropdown()
@@ -30,7 +30,7 @@ angular.module('playerApp')
         $('#createAnnouncementModal').modal({
           closable: false,
           onHide: function () {
-              // TODO - Show confirmation before closing modal
+            // TODO - Show confirmation before closing modal
             if (!createAnn.isLastStep) {
               if (createAnn.isMetaModified && confirm('Changes that you made may not be saved.')) {
                 createAnn.refreshFormValues()
@@ -45,7 +45,7 @@ angular.module('playerApp')
             return true
           },
           onApprove: function () {
-              // Make api call to save data
+            // Make api call to save data
             createAnn.isLastStep = true
             createAnn.refreshFormValues()
             $('#announcementSuccessModal').modal({
@@ -60,7 +60,7 @@ angular.module('playerApp')
 
       createAnn.addNewLink = function () {
         var newItemNo = createAnn.repeatableWebLinks.length + 1
-        createAnn.repeatableWebLinks.push({'id': 'choice' + newItemNo})
+        createAnn.repeatableWebLinks.push({ 'id': 'choice' + newItemNo })
         createAnn.showUrlField = true
       }
 
@@ -70,7 +70,7 @@ angular.module('playerApp')
         createAnn.showUrlField = createAnn.repeatableWebLinks.length != '0'
       }
 
-        // Function to detect input box change event
+      // Function to detect input box change event
       createAnn.detectChange = function () {
         createAnn.enableRecepientBtn()
       }
@@ -92,8 +92,8 @@ angular.module('playerApp')
           linkArray.push(value)
         })
 
-            // TODO - show announcement preview
-        createAnn.previewData = {'sourceId': 'some-organisation-id', 'type': createAnn.data.announcementType, 'links': linkArray, 'title': createAnn.data.title, 'description': createAnn.data.description, 'target': ['teachers'], 'attachments': [{'title': 'circular.pdf', 'downloadURL': 'https://linktoattachment', 'mimetype': 'application/pdf'}]}
+        // TODO - show announcement preview
+        createAnn.previewData = { 'sourceId': 'some-organisation-id', 'type': createAnn.data.announcementType, 'links': linkArray, 'title': createAnn.data.title, 'description': createAnn.data.description, 'target': ['teachers'], 'attachments': [{ 'title': 'circular.pdf', 'downloadURL': 'https://linktoattachment', 'mimetype': 'application/pdf' }] }
       }
 
       // Function to confirm recipients
@@ -104,8 +104,8 @@ angular.module('playerApp')
       // Function to enable / disable RecepientBtn
       createAnn.enableRecepientBtn = function () {
         if (createAnn.data.title && createAnn.data.from &&
-            createAnn.data.announcementType &&
-            (createAnn.data.description || createAnn.attachment.length)) {
+          createAnn.data.announcementType &&
+          (createAnn.data.description || createAnn.attachment.length)) {
           createAnn.disableBtn = false
         } else {
           createAnn.disableBtn = true
@@ -119,7 +119,7 @@ angular.module('playerApp')
         $('#announcementType').dropdown('restore defaults')
         $('#orgDropdown').dropdown('restore defaults')
         $('#createAnnouncementModal').modal('refresh')
-      // $('#announcementForm').form('reset')
+        // $('#announcementForm').form('reset')
         createAnn.data = {}
         createAnn.isMetaModified = false
         createAnn.repeatableWebLinks.length = 0
@@ -138,7 +138,7 @@ angular.module('playerApp')
             element: document.getElementById('fine-uploader-manual-trigger'),
             template: 'qq-template-manual-trigger',
             request: {
-                    // TODO - use upload api url
+              // TODO - use upload api url
               endpoint: 'http://www.mocky.io/v2/59ef30b72e0000001d1c5e09'
             },
             autoUpload: true,
@@ -148,9 +148,7 @@ angular.module('playerApp')
               allowedExtensions: config.AnncmntAllowedFileExtension
             },
             messages: {
-              sizeError: '{file} ' +
-                       $rootScope.messages.imsg.m0006 + ' ' +
-                                               config.AnncmntMaxFileSizeToUpload / (1000 * 1024) + ' MB.'
+              sizeError: '{file} ' + $rootScope.messages.imsg.m0006 + ' ' + config.AnncmntMaxFileSizeToUpload / (1000 * 1024) + ' MB.'
             },
             failedUploadTextDisplay: {
               mode: 'default',
@@ -161,15 +159,13 @@ angular.module('playerApp')
             },
             callbacks: {
               onComplete: function (id, name, responseJSON, xhr) {
-                        // TODO - push attachement api success response
+                // TODO - push attachement api success response
                 createAnn.attachment.push('A', 'B')
                 createAnn.enableRecepientBtn()
               },
-              onSubmitted: function (id, name) {
-              },
+              onSubmitted: function (id, name) {},
               onCancel: function () {
-                document.getElementById('hide-section-with-button')
-                                                  .style.display = 'block'
+                document.getElementById('hide-section-with-button').style.display = 'block'
               },
               onError: function (id, name, errorReason, xhrOrXdr) {
                 toasterService.error(qq.format('Error on file number {} - {}.  Reason: {}', id, name, errorReason))
