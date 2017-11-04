@@ -35,21 +35,4 @@ describe('Directive: announcementDetailsDirective', function () {
     scope.$digest()
     expect(element.text()).toContain('Oops announcement details not found!')
   })
-  /*
-  // Test if announcement's weblinks are clickable and opens the clicked weblink in new tab
-  it('Should open the weblink in new tab', function () {
-    scope.announcementDetails = {'links': ['https://diksha.gov.in/#documents'], 'title': 'Exam dates announced for CBSE and state board exams'}
-    element = compile('<announcement-details-directive announcement-details="announcementDetails"></announcement-details-directive>')(scope)
-    scope.$digest()
-    expect(element.text()).toContain('Announcement')
-  })
-
-  // Test if announcement's attachements's view buttons are clickable and opens the clicked attachement in new tab
-  it('Should open the attachement in new tab', function () {
-    scope.announcementDetails = {'title': 'Exam dates announced for CBSE and state board exams', 'attachments': [{'title': 'Circular A1.pdf', 'downloadURL': 'https://linktoattachment.com', 'mimetype': 'application/pdf'}]}
-    element = compile('<announcement-details-directive announcement-details="announcementDetails"></announcement-details-directive>')(scope)
-    scope.$digest()
-    expect(element.text()).toContain('Announcement')
-  })
-  */
 })
