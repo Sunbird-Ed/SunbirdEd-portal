@@ -22,7 +22,7 @@ describe('Directive: announcementDetailsDirective', function () {
 
   // Test if directive shows correctly after passing the valid announcement object
   it('Should show announcement details', function () {
-    scope.announcementDetails = {'title': 'Exam dates announced for CBSE and state board exams'}
+    scope.announcementDetails = testData.announcementDetails.announcementObject
     element = compile('<announcement-details-directive announcement-details="announcementDetails"></announcement-details-directive>')(scope)
     scope.$digest()
     expect(element.text()).toContain('Exam dates announced for CBSE and state board exams')
