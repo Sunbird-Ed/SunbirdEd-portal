@@ -16,6 +16,7 @@ angular.module('playerApp')
       createAnn.repeatableWebLinks = []
       createAnn.isMetaModified = false
       createAnn.stepNumber = 1
+      createAnn.data = {}
 
         // Initialize modal
       createAnn.initializeModal = function () {
@@ -28,7 +29,6 @@ angular.module('playerApp')
       createAnn.createAnnouncement = function () {
         $('#createAnnouncementModal').modal({
           closable: false,
-          debug: true,
           onHide: function () {
               // TODO - Show confirmation before closing modal
             if (!createAnn.isLastStep) {
@@ -44,7 +44,7 @@ angular.module('playerApp')
             }
             return true
           },
-          onApprove: function a () {
+          onApprove: function () {
               // Make api call to save data
             createAnn.isLastStep = true
             createAnn.refreshFormValues()
@@ -92,7 +92,7 @@ angular.module('playerApp')
           linkArray.push(value)
         })
 
-        // TODO - show announcement preview
+            // TODO - show announcement preview
         createAnn.previewData = {'sourceId': 'some-organisation-id', 'type': createAnn.data.announcementType, 'links': linkArray, 'title': createAnn.data.title, 'description': createAnn.data.description, 'target': ['teachers'], 'attachments': [{'title': 'circular.pdf', 'downloadURL': 'https://linktoattachment', 'mimetype': 'application/pdf'}]}
       }
 
@@ -113,17 +113,13 @@ angular.module('playerApp')
         createAnn.isMetaModified = true
       }
 
-      createAnn.detectUrlChange = function (index) {
-        createAnn.isMetaModified = true
-      }
-
       createAnn.refreshFormValues = function () {
         createAnn.disableBtn = true
         createAnn.stepNumber = 1
         $('#announcementType').dropdown('restore defaults')
         $('#orgDropdown').dropdown('restore defaults')
         $('#createAnnouncementModal').modal('refresh')
-        $('#announcementForm').form('reset')
+      // $('#announcementForm').form('reset')
         createAnn.data = {}
         createAnn.isMetaModified = false
         createAnn.repeatableWebLinks.length = 0
@@ -148,13 +144,13 @@ angular.module('playerApp')
             autoUpload: true,
             debug: true,
             validation: {
-              sizeLimit: config.MaxFileSizeToUpload,
-              allowedExtensions: config.AllowedFileExtension
+              sizeLimit: config.AnncmntMaxFileSizeToUpload,
+              allowedExtensions: config.AnncmntAllowedFileExtension
             },
             messages: {
               sizeError: '{file} ' +
                        $rootScope.messages.imsg.m0006 + ' ' +
-                                               config.MaxFileSizeToUpload / (1000 * 1024) + ' MB.'
+                                               config.AnncmntMaxFileSizeToUpload / (1000 * 1024) + ' MB.'
             },
             failedUploadTextDisplay: {
               mode: 'default',
