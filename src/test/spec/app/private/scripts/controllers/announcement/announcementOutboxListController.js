@@ -6,7 +6,7 @@
 
 'use strict'
 
-describe('Controller: announcementOutboxListController', function() {
+xdescribe('Controller: announcementOutboxListController', function () {
   // load the controller's module
   beforeEach(module('playerApp'))
 
@@ -19,7 +19,7 @@ describe('Controller: announcementOutboxListController', function() {
     timeout,
     annOutboxTestData = testData.getAnnouncementOutbox
 
-  beforeEach(inject(function($rootScope, $controller) {
+  beforeEach(inject(function ($rootScope, $controller) {
     $controller('AppCtrl', {
       $rootScope: $rootScope,
       $scope: $rootScope.$new()
@@ -27,7 +27,7 @@ describe('Controller: announcementOutboxListController', function() {
   }))
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function($rootScope, $controller, _announcementService_, _$q_, _$timeout_) {
+  beforeEach(inject(function ($rootScope, $controller, _announcementService_, _$q_, _$timeout_) {
     rootScope = $rootScope
     scope = $rootScope.$new()
     announcementService = _announcementService_
@@ -42,12 +42,12 @@ describe('Controller: announcementOutboxListController', function() {
     })
   }))
 
-  describe('Get Outbox announcements', function() {
-    it('success', function() {
+  describe('Get Outbox announcements', function () {
+    it('success', function () {
       spyOn(announcementService, 'getOutBoxAnnouncementList').and.returnValue(deferred.promise)
       deferred.resolve(annOutboxTestData.successResponce)
-      //spyOn(announcementOutboxListController, 'renderAnnouncementList').and.callThrough()
-      //announcementOutboxListController.renderAnnouncementList('2')
+      // spyOn(announcementOutboxListController, 'renderAnnouncementList').and.callThrough()
+      // announcementOutboxListController.renderAnnouncementList('2')
     })
   })
 })
