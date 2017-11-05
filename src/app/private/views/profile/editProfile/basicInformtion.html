@@ -26,7 +26,7 @@
     <div class="two fields">
         <div class="field">
             <label>{{$root.frmelmnts.lbl.gender}}</label>
-            <select class="ui fluid dropdown" ng-model="profileCtrl.user.gender">
+            <select class="ui fluid dropdown genderSelectionDropDown" ng-model="profileCtrl.user.gender">
                         <option value="Female">{{$root.frmelmnts.drpdn.female}}</option>
                         <option value="Male">{{$root.frmelmnts.drpdn.male}}</option>
                          <option value="Transgender">{{$root.frmelmnts.drpdn.transgender}}</option>
@@ -46,14 +46,19 @@
     <div class="one field">
         <div class="field">
             <label>{{$root.frmelmnts.lbl.currentlocation}}</label>
-            <input type="text" name="location" ng-model="profileCtrl.user.location">
+            <div class="ui input right icon">
+                 <input type="text" name="location" ng-model="profileCtrl.user.location">
+            </div>           
         </div>
     </div>
     <div class=" field" ng-init=" profileCtrl.setSelectedGrades()">
         <label>{{$root.frmelmnts.lbl.grades}}</label>
-        <select name="grades" multiple="" id=selectGrades class="ui fluid dropdown" ng-value="option.value" ng-options=" language for language in profileCtrl.grades" ng-model="profileCtrl.user.grade">
-             <option value="" >Grade</option>
+        <div class="ui input right icon">
+            <i class="lock icon dropDownLockIcon"></i>
+            <select name="grades" multiple="" id=selectGrades class="ui fluid dropdown" ng-value="option.value" ng-options=" language for language in profileCtrl.grades" ng-model="profileCtrl.user.grade">
+            <option value="" >Grade</option>
             </select>
+        </div>  
     </div>
     <div class="required field" ng-init=" profileCtrl.setDropdownValue()">
         <label>{{$root.frmelmnts.lbl.language}}</label>
