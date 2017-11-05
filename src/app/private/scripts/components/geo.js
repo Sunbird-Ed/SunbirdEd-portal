@@ -108,7 +108,7 @@ angular.module('playerApp').component('geo', {
                 if (response && response.responseCode === 'OK') {
                     instance.renderItems(response.result.response);
                 } else {
-                    console.error("Locations are empty");
+                    console.error("Locations are not found");
                 }
             }).catch(function(error) {
                 console.error("Unable to fetch the locations",error);
