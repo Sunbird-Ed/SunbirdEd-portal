@@ -43,7 +43,9 @@ describe('ObjectStoreRest', () => {
           objectStoreRest.validateCreateObject.restore()
           done()
         })
-        .catch((error) => {})
+        .catch((error) => {
+          console.log(error)
+        })
     })
 
     it('should return error when query causes unexpected failure', (done) => {
@@ -201,17 +203,17 @@ describe('ObjectStoreRest', () => {
   })
 
   describe('deleteObjectById method', () => {
-  	it('should delete object and return success', (done) => {
-    let httpServiceStub = sinon.stub(objectStoreRest, 'httpService').returns(new Promise((resolve, reject) => {
-      resolve()
-    }))
+    it('should delete object and return success', (done) => {
+      let httpServiceStub = sinon.stub(objectStoreRest, 'httpService').returns(new Promise((resolve, reject) => {
+        resolve()
+      }))
 
-    let validateDeleteObjectByIdStub = sinon.stub(objectStoreRest, 'validateDeleteObjectById').returns(new Promise((resolve, reject) => {
-      resolve(true)
-    }))
+      let validateDeleteObjectByIdStub = sinon.stub(objectStoreRest, 'validateDeleteObjectById').returns(new Promise((resolve, reject) => {
+        resolve(true)
+      }))
 
-    let query = { table: 'TEST_MODEL', id: '123123-123123-123132-123123' }
-    objectStoreRest.deleteObjectById(query)
+      let query = { table: 'TEST_MODEL', id: '123123-123123-123132-123123' }
+      objectStoreRest.deleteObjectById(query)
         .then((data) => {
           expect(httpServiceStub.called).to.be.true
           expect(validateDeleteObjectByIdStub.called).to.be.true
@@ -223,7 +225,7 @@ describe('ObjectStoreRest', () => {
         .catch((error) => {
           console.log(error)
         })
-  })
+    })
 
     it('should return error when query cause unexpected failure', (done) => {
       let httpServiceStub = sinon.stub(objectStoreRest, 'httpService').returns(new Promise((resolve, reject) => {
