@@ -82,7 +82,6 @@
   "scripts": {
     "test": "karma start test/karma.conf.js",
     "test-announcement": "mocha 'test-announcement/server/**/*.js' --reporter mochawesome",
-    "test-notifications": "mocha 'test-notifications/server/**/*.js' --reporter mochawesome",
     "lint": "eslint --ignore-path .eslintignore ."
   },
   "dependencies": {
