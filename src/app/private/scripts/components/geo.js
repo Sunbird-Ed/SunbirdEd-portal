@@ -103,7 +103,6 @@ angular.module('playerApp').component('geo', {
         this.initializeServiceAdopter = function(config) {
             var instance = this;
             var service = $injector.get(config.service);
-            $rootScope.rootOrgId = 'ORG_001'
             var request = {id:$rootScope.rootOrgId}
             service.getItems(request).then(function(response) {
                 if (response && response.responseCode === 'OK') {
