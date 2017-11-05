@@ -1,0 +1,13 @@
+<div>
+  <div class='ui fluid icon input search-location-icon'> <i class='search icon'></i>
+    <input type='text' placeholder='Search for group' ng-model='search'> </div>
+  <div class='ui segment items-area'>
+    <label ng-repeat='item in $ctrl.items | filter : search'>
+      <div class='ui checkbox component_items'>
+        <input type='checkbox' name='example' ng-model='item.selected' class="checkBox-element">
+        <label ng-bind-html="item.location | highlight:search" >{{item.location}}</label>
+      </div>
+      </br>
+    </label>
+  </div>
+</div>
