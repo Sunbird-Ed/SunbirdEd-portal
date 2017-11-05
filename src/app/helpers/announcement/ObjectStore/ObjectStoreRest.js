@@ -92,12 +92,12 @@ class ObjectStoreRest extends ObjectStore {
   __updateObjectById() {
     return async((data) => {
       await (this.validateUpdateObjectById(data))
-
+        let options = {method: 'POST', uri: envVariables.DATASERVICE_URL + 'data/v1/object/update', body: {request: {'tableName': data.table, 'documentName': data.table, 'payload': data.values } }, json: true } 
       try {
-        let result = await (this.httpService({}))
+        let result = await (this.httpService(options))
         return { data: result, status: 'updated' }
       } catch (error) {
-        throw { msg: 'unable to update object', status: 'error' }
+        throw { msg: 'unable to update object', status: 'error', error: error }
       }
     })
   }
@@ -124,6 +124,7 @@ class ObjectStoreRest extends ObjectStore {
       if (!options) reject('options required!')
       options.headers = options.headers || this.getRequestHeader()
       webService(options, (error, response, body) => {
+        console.info("Code",response.statusCode);
         if (error || response.statusCode >= 400) {
           reject(error)
         } else {
