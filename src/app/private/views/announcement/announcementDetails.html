@@ -18,7 +18,7 @@
       {{announcementDetails.description}}
     </div>
   </div>
-  <div ng-show="announcementDetails.links">
+  <div ng-show="announcementDetails.links.length">
     <div class="padding-top-20">
       <strong class="annMediumText ng-binding">{{$root.frmelmnts.lbl.anncmntdtlsweblinks}}</strong>
     </div>
@@ -29,7 +29,7 @@
       </div>
     </div>
   </div>
-  <div ng-show="announcementDetails.attachments">
+  <div ng-show="announcementDetails.attachments.length">
     <div class="padding-top-10">
       <strong class="annMediumText ng-binding">{{$root.frmelmnts.lbl.anncmntdtlsattachments}}</strong>
     </div>
