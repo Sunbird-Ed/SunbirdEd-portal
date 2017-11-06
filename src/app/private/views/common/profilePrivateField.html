@@ -1,0 +1,10 @@
+<div class="ui inline dropdown right-floated">
+    <div class="hidden text" style="display:none"></div>
+    <i ng-class="{'unlock alternate icon':(visibility == 'public'),'lock icon':(visibility == 'private')}"></i>
+    <i class="dropdown icon"></i>
+    <div class="menu">
+        <div ng-class="{'active selected':(visibility == option.value)}" ng-repeat="option in profVisCtrl.options" class="item" ng-click="profVisCtrl.setProfileFieldLbl(option.value)" ng-init="$last && profVisCtrl.initDropdown()">
+            {{option.text}}
+        </div>
+    </div>
+</div>
