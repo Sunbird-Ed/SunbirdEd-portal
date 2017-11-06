@@ -22,12 +22,14 @@ angular.module('playerApp').component('geo', {
          * @desc Intialization of geo component when compounent is loaded.
          */
         this.$onInit = function() {
-            var config = this.getConfig();
-            if (_.has(config, this.keyName)) {
-                this.initialize(config);
-            }
+            var instance = this;
+            $rootScope.$on("component:init", function() {
+                var config = instance.getConfig();
+                if (_.has(config, instance.keyName)) {
+                    instance.initialize(config);
+                }
+            });
         };
-
         /**
          * @desc Validating the adoption from config object during initialization
          * @listens 'items:from:child'
