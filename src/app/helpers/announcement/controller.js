@@ -53,15 +53,21 @@ class AnnouncementController {
       let request = this.__validateCreateRequest(requestObj.body)
       if (!request.isValid) throw { msg: request.error, statusCode: HttpStatus.BAD_REQUEST }
 
-      let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || requestObj.headers['x-authenticated-user-token']
+      let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
       if (!authUserToken) throw { msg: 'UNAUTHORIZED', statusCode: HttpStatus.BAD_REQUEST }
 
-      try{
-        let userProfile = await(this.__getUserPermissions({ id: _.get(requestObj, 'body.request.createdBy'), orgId: _.get(requestObj, 'body.request.sourceId') }, authUserToken))
+      try{  
+        let userProfile = await(this.__getUserProfile({ id: _.get(requestObj, 'body.request.createdBy')}, authUserToken))
         let organisation = _.find(userProfile.organisations, { organisationId: _.get(requestObj, 'body.request.sourceId') })
-        if (_.indexOf(organisation.roles, CREATE_ROLE) == -1) throw "user has no create access"
+        if (_.isEmpty(organisation) || _.indexOf(organisation.roles, CREATE_ROLE) == -1) throw "user has no create access"
       } catch(error) {
-        throw { msg: 'user has no create access', statusCode: HttpStatus.BAD_REQUEST }
+        if(error === 'USER_NOT_FOUND') {
+          throw { msg: 'user not found', statusCode: HttpStatus.BAD_REQUEST }
+        } else if (error === 'UNAUTHORIZE_USER') {
+          throw { msg: 'user is not authorized', statusCode: HttpStatus.BAD_REQUEST }  
+        } else {
+          throw { msg: 'user has no create access', statusCode: HttpStatus.BAD_REQUEST }  
+        }        
       }
 
       try {
@@ -71,8 +77,8 @@ class AnnouncementController {
       }
 
       try {
-        //TODO: call notification service
-        //await (this.__createAnnouncementNotification( /*announcement data*/ ))
+        //TODO: notification: incomplete implementation 
+        await (this.__createAnnouncementNotification( /*announcement data*/ ))
         return { announcement: newAnnouncementObj.data }
       } catch (e) {
         // even if notification fails, it should still send annoucement in response
@@ -118,7 +124,7 @@ class AnnouncementController {
    *
    * @return  {[type]}        [description]
    */
-  __getUserPermissions(data, authUserToken) {
+  __getUserProfile(data, authUserToken) {
     return new Promise((resolve, reject) => {
       if (_.isEmpty(data.id)) {
         reject('user id is required!')
@@ -130,12 +136,18 @@ class AnnouncementController {
         headers: this.getRequestHeader({ xAuthUserToken: authUserToken })
       }
 
-      this.httpService(options).then((data) => {
-        data.body = JSON.parse(data.body)
+      this.httpService(options).then((data) => { 
+        data.body = JSON.parse(data.body)       
         resolve(_.get(data, 'body.result.response'))
       })
       .catch((error) => {
-        reject(error)
+        if (_.get(error, 'body.params.err') === 'USER_NOT_FOUND') {
+          reject('USER_NOT_FOUND')
+        } else if (_.get(error, 'body.params.err') === 'UNAUTHORIZE_USER') {
+          reject('UNAUTHORIZE_USER')
+        } else {
+          reject()  
+        }        
       })
     })
   }
@@ -455,7 +467,7 @@ class AnnouncementController {
       if (!options) reject('options required!')
       webService(options, (error, response, body) => {
         if (error || response.statusCode >= 400) {
-          reject(error)
+          reject({ response, body })
         } else {
           resolve({ response, body })
         }
