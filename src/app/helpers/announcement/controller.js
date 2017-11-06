@@ -16,7 +16,7 @@ let envVariables = require('../environmentVariablesHelper.js')
 class AnnouncementController {
 
   constructor() {
-    //table name should be same as the name in database table    
+    //table name should be same as the name in database table
     let tableMapping = {
       'announcement': AnnouncementModel,
       'announcementtype': AnnouncementTypeModel,
@@ -47,21 +47,27 @@ class AnnouncementController {
 
   __create() {
     return async((requestObj) => {
-      
+
       const CREATE_ROLE = 'ANNOUNCEMENT_SENDER'
       // validate parameters
       let request = this.__validateCreateRequest(requestObj.body)
       if (!request.isValid) throw { msg: request.error, statusCode: HttpStatus.BAD_REQUEST }
 
-      let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || requestObj.headers['x-authenticated-user-token']
+      let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
       if (!authUserToken) throw { msg: 'UNAUTHORIZED', statusCode: HttpStatus.BAD_REQUEST }
 
       try{  
-        let userProfile = await(this.__getUserPermissions({ id: _.get(requestObj, 'body.request.createdBy'), orgId: _.get(requestObj, 'body.request.sourceId') }, authUserToken))
+        let userProfile = await(this.__getUserProfile({ id: _.get(requestObj, 'body.request.createdBy')}, authUserToken))
         let organisation = _.find(userProfile.organisations, { organisationId: _.get(requestObj, 'body.request.sourceId') })
-        if (_.indexOf(organisation.roles, CREATE_ROLE) == -1) throw "user has no create access"
+        if (_.isEmpty(organisation) || _.indexOf(organisation.roles, CREATE_ROLE) == -1) throw "user has no create access"
       } catch(error) {
-        throw { msg: 'user has no create access', statusCode: HttpStatus.BAD_REQUEST }
+        if(error === 'USER_NOT_FOUND') {
+          throw { msg: 'user not found', statusCode: HttpStatus.BAD_REQUEST }
+        } else if (error === 'UNAUTHORIZE_USER') {
+          throw { msg: 'user is not authorized', statusCode: HttpStatus.BAD_REQUEST }  
+        } else {
+          throw { msg: 'user has no create access', statusCode: HttpStatus.BAD_REQUEST }  
+        }        
       }
 
       try {
@@ -71,8 +77,8 @@ class AnnouncementController {
       }
 
       try {
-        //TODO: call notification service
-        //await (this.__createAnnouncementNotification( /*announcement data*/ ))
+        //TODO: notification: incomplete implementation 
+        await (this.__createAnnouncementNotification( /*announcement data*/ ))
         return { announcement: newAnnouncementObj.data }
       } catch (e) {
         // even if notification fails, it should still send annoucement in response
@@ -108,8 +114,8 @@ class AnnouncementController {
       })
       return { error: messages, isValid: false }
     }
-    return { isValid: true }
-  }
+    return { isValid: true };
+  };
 
   /**
    * Get permissions list of the given user
@@ -118,7 +124,7 @@ class AnnouncementController {
    *
    * @return  {[type]}        [description]
    */
-  __getUserPermissions(data, authUserToken) {
+  __getUserProfile(data, authUserToken) {
     return new Promise((resolve, reject) => {
       if (_.isEmpty(data.id)) {
         reject('user id is required!')
@@ -135,9 +141,15 @@ class AnnouncementController {
         resolve(_.get(data, 'body.result.response'))
       })
       .catch((error) => {
-        reject(error)
+        if (_.get(error, 'body.params.err') === 'USER_NOT_FOUND') {
+          reject('USER_NOT_FOUND')
+        } else if (_.get(error, 'body.params.err') === 'UNAUTHORIZE_USER') {
+          reject('UNAUTHORIZE_USER')
+        } else {
+          reject()  
+        }        
       })
-    })    
+    })
   }
 
   __createAnnouncement(data) {
@@ -224,10 +236,27 @@ class AnnouncementController {
    *
    * @return  {[type]}  [description]
    */
-  getAnnouncementTypes() {
-    let announcementTypes = ['announcement', 'circular']
+  __getAnnounceTypes() {
     return new Promise((resolve, reject) => {
-      resolve({ types: announcementTypes })
+      let query = {
+        table: this.objectStoreRest.MODEL.ANNOUNCEMENTTYPE,
+        query: {
+          'rootorgid': _.get(requestObj, 'body.request.sourceId')
+        }
+      }
+
+      this.objectStoreRest.findObject(query)
+        .then((data) => {
+          if (!_.isObject(data)) {
+            reject({ msg: 'unable to fetch announcement types', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
+          } else {
+            resolve(data.data)
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+          reject({ msg: 'unable to fetch announcement types', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
+        })
     })
   }
 
@@ -261,11 +290,56 @@ class AnnouncementController {
   }
 
   __getUserInbox() {
-    //TODO: complete implementation
     return async((requestObj) => {
-      return { "announcements": [{ "announcementId": "2344-1234-1234-12312", "sourceId": "some-organisation-id", "createdBy": "Creator1", "createdOn": "2017-10-24", "type": "announcement", "links": ["https://linksToOtheresources.com"], "title": "Monthy Status", "description": "some description", "target": ["teachers"], "attachments": [{ "title": "circular.pdf", "downloadURL": "https://linktoattachment", "mimetype": "application/pdf" }] }] }
+      // return { "announcements": [{ "announcementId": "2344-1234-1234-12312", "sourceId": "some-organisation-id", "createdBy": "Creator1", "createdOn": "2017-10-24", "type": "announcement", "links": ["https://linksToOtheresources.com"], "title": "Monthy Status", "description": "some description", "target": ["teachers"], "attachments": [{ "title": "circular.pdf", "downloadURL": "https://linktoattachment", "mimetype": "application/pdf" }] }] }
+
+      let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || requestObj.headers['x-authenticated-user-token']
+      if (!authUserToken) throw { msg: 'UNAUTHORIZED', statusCode: HttpStatus.BAD_REQUEST }
+
+      // Get user id and profile
+      let userProfile = await(this.__getUserProfile({ id: _.get(requestObj, 'body.request.userid') }, authUserToken))
+
+      // Parse the list of Geolocations (User > Orgs > Geolocations) from the response
+      let targetList = []
+      _.forEach(userProfile.organisations, function(userOrg) {
+          if(userOrg.locationId) targetList.push(userOrg.locationId)
+      });
+
+      //handle emty target list
+      if (_.isEmpty(targetList)) return { msg: {count:0, msg: 'No announcements found'}, statusCode: HttpStatus.OK }
+
+      // Query announcements where target is listed Geolocations
+      let query = {
+        table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
+        query: {
+          'target': targetList
+        }
+      }
+
+      try {
+        let data = await (new Promise((resolve, reject) => {
+            this.objectStoreRest.findObject(query)
+            .then((data) => {
+              if (!_.isObject(data)) {
+                reject({ msg: 'unable to fetch announcement inbox', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
+              } else {
+                resolve(data.data)
+              }
+            })
+            .catch((error) => {
+              console.log(error)
+              reject({ msg: 'unable to fetch announcement inbox', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
+            })
+        }))
+
+        return  {msg: {announcements: data}, statusCode: HttpStatus.OK}
+
+        } catch(error) {
+            throw { msg: 'unable to process your request', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
+        }
     })
   }
+
 
   /**
    * Get outbox of announcements for a given user
@@ -275,13 +349,29 @@ class AnnouncementController {
    * @return  {[type]}              [description]
    */
   getUserOutbox(requestObj) {
-    return this.__getUserOutbox()(requestObj)
-  }
+    return new Promise((resolve, reject) => {
 
-  __getUserOutbox() {
-    //TODO: complete implementation
-    return async((requestObj) => {
-      return { "announcements": [{ "announcementId": "2344-1234-1234-12312", "sourceId": "some-organisation-id", "createdBy": "Creator1", "createdOn": "2017-10-24", "type": "announcement", "links": ["https://linksToOtheresources.com"], "title": "Monthy Status", "description": "some description", "target": ["teachers"], "attachments": [{ "title": "circular.pdf", "downloadURL": "https://linktoattachment", "mimetype": "application/pdf" }] }] }
+      //TODO: Input validation
+
+      let query = {
+        table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
+        query: {
+          'userid': _.get(requestObj, 'body.request.userid')
+        }
+      }
+
+      this.objectStoreRest.findObject(query)
+        .then((data) => {
+          if (!_.isObject(data)) {
+            reject({ msg: 'unable to fetch sent announcements', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
+          } else {
+            resolve(data.data)
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+          reject({ msg: 'unable to fetch sent announcements', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
+        })
     })
   }
 
@@ -300,7 +390,7 @@ class AnnouncementController {
     //TODO: complete implementation
     return async((requestObj) => {
       if (!_.isObject(requestObj.file)) throw { msg: 'invalid request!', statusCode: HttpStatus.BAD_REQUEST }
-      
+
       let attachmentId = uuidv1()
       let query = {
         table: this.objectStoreRest.MODEL.ATTACHMENT,
@@ -309,7 +399,7 @@ class AnnouncementController {
           'file': requestObj.file.buffer.toString('utf8'),
           'filename': requestObj.file.originalname,
           'mimetype': requestObj.file.mimetype,
-          'status': 'created',          
+          'status': 'created',
           'createddate': dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo")
         }
       }
@@ -377,7 +467,7 @@ class AnnouncementController {
       if (!options) reject('options required!')
       webService(options, (error, response, body) => {
         if (error || response.statusCode >= 400) {
-          reject(error)
+          reject({ response, body })
         } else {
           resolve({ response, body })
         }
