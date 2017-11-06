@@ -15,17 +15,18 @@
 
     <div class="two fields">
         <div class="required field">
-            <label>{{$root.frmelmnts.lbl.phone}}</label>
+            <label>{{$root.frmelmnts.lbl.phone}} &nbsp;<profile-visibility   update="'true'" field="'phone'"></profile-visibility></label>
+
             <input type="text" name="phone" placeholder="{{$root.frmelmnts.prmpt.enterphoneno}}" ng-model="profileCtrl.user.phone">
         </div>
         <div class=" required  field" ng-class="{'disabled':profileCtrl.user.email.length?true:false }">
-            <label>{{$root.frmelmnts.lbl.email}}</label>
+            <label>{{$root.frmelmnts.lbl.email}} &nbsp;<profile-visibility   update="'true'" field="'email'"></profile-visibility></label>
             <input type="email" name="email" ng-model="profileCtrl.user.email">
         </div>
     </div>
     <div class="two fields">
         <div class="field">
-            <label>{{$root.frmelmnts.lbl.gender}}</label>
+            <label>{{$root.frmelmnts.lbl.gender}} &nbsp;<profile-visibility   update="'true'" field="'gender'"></profile-visibility></label>
             <select class="ui fluid dropdown genderSelectionDropDown" ng-model="profileCtrl.user.gender">
                         <option value="Female">{{$root.frmelmnts.drpdn.female}}</option>
                         <option value="Male">{{$root.frmelmnts.drpdn.male}}</option>
@@ -33,7 +34,7 @@
                      </select>
         </div>
         <div class="field" apply-script>
-            <label>{{$root.frmelmnts.lbl.birthdate}} </label>
+            <label>{{$root.frmelmnts.lbl.birthdate}}  &nbsp;<profile-visibility   update="'true'" field="'birthdate'"></profile-visibility></label>
             <div ng-init="profileCtrl.setDob();" class="ui calendar" id="editDob">
                 <div class="ui input left icon">
                     <i class="calendar icon"></i>
@@ -45,29 +46,28 @@
     </div>
     <div class="one field">
         <div class="field">
-            <label>{{$root.frmelmnts.lbl.currentlocation}}</label>
+            <label>{{$root.frmelmnts.lbl.currentlocation}} &nbsp;<profile-visibility   update="'true'" field="'location'"></profile-visibility></label>
             <div class="ui input right icon">
                  <input type="text" name="location" ng-model="profileCtrl.user.location">
-            </div>           
+            </div>
         </div>
     </div>
     <div class=" field" ng-init=" profileCtrl.setSelectedGrades()">
-        <label>{{$root.frmelmnts.lbl.grades}}</label>
-        <div class="ui input right icon">
-            <i class="lock icon dropDownLockIcon"></i>
+        <label>{{$root.frmelmnts.lbl.grades}}&nbsp;<profile-visibility   update="'true'" field="'grades'"></profile-visibility></label>
+
             <select name="grades" multiple="" id=selectGrades class="ui fluid dropdown" ng-value="option.value" ng-options=" language for language in profileCtrl.grades" ng-model="profileCtrl.user.grade">
             <option value="" >Grade</option>
             </select>
-        </div>  
+       
     </div>
     <div class="required field" ng-init=" profileCtrl.setDropdownValue()">
-        <label>{{$root.frmelmnts.lbl.language}}</label>
+        <label>{{$root.frmelmnts.lbl.language}}&nbsp;<profile-visibility   update="'true'" field="'languages'"></profile-visibility></label>
         <select name="language" id=languageSelect class="ui fluid dropdown" ng-value="option.value" ng-options=" language for language in profileCtrl.languages | orderBy:'toString()'" ng-model="profileCtrl.user.language">
              <option value="">Language</option>
             </select>
     </div>
     <div class="field">
-        <label>{{$root.frmelmnts.lbl.subjects}}</label>
+        <label>{{$root.frmelmnts.lbl.subjects}}&nbsp;<profile-visibility   update="'true'" field="'subjects'"></profile-visibility></label>
         <div class="field" ng-init=" profileCtrl.setSubject()">
             <select id="setSubjects" class="ui fluid dropdown " multiple="" ng-model="profileCtrl.user.subject" ng-value="option.value" ng-options=" subject for subject in profileCtrl.subjects | orderBy:'toString()'">
                                            </select>
