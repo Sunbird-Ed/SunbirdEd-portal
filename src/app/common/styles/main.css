@@ -2739,6 +2739,14 @@ ul.fancytree-container li {
 .userSkillMoreIcon {
   margin-right: -0.4em !important;
 }
+.ProfilePagePermissionBtn {
+  border-radius: 3px !important;
+  font-size: 1.1em !important;
+  top: 17px !important;
+  height: 1.5em !important;
+  padding: 3px !important;
+  margin-left: 10px !important;
+}
 .workspaceicon.ui.header > .icon {
   padding-top: 0;
   float: left;
