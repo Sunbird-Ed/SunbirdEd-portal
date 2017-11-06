@@ -73,7 +73,8 @@
     "run-sequence": "^1.1.1",
     "sinon": "^4.0.1",
     "standard": "10.0.3",
-    "wiredep": "^2.2.2"
+    "wiredep": "^2.2.2",
+    "yargs": "^9.0.1"
   },
   "engines": {
     "node": ">=0.10.0"
@@ -106,7 +107,6 @@
     "properties": "^1.2.1",
     "request": "^2.81.0",
     "ua-parser-js": "^0.7.13",
-    "uuid": "^3.1.0",
-    "yargs": "^9.0.1"
+    "uuid": "^3.1.0"
   }
 }
