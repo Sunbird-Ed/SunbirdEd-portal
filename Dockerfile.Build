@@ -26,6 +26,6 @@ RUN bower install /opt/player/bower.json  --force
 RUN gulp
 RUN rm -rf node_modules
 RUN npm install --production  --unsafe-perm  
-RUN gulp node-modules
+RUN cp -R node-modules dist/
 WORKDIR /opt/player
 CMD ["zip", "-r", "player-dist.zip",  "dist"]   
