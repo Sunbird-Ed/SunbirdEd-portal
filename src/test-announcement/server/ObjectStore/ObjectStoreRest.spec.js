@@ -27,7 +27,7 @@ describe('ObjectStoreRest', () => {
       let columnData = { 'coulmn1': 'data1', 'coulmn2': 'data2', 'coulmn3': 'data3', 'coulmn4': 'data4', 'coulmn5': 'data5' }
       let query = { table: 'TEST_MODEL', values: columnData }
       let httpServiceStub = sinon.stub(objectStoreRest, 'httpService').returns(new Promise((resolve, reject) => {
-        resolve(columnData)
+        resolve({ body: { result: columnData }})
       }))
 
       let validateCreateObjectStub = sinon.stub(objectStoreRest, 'validateCreateObject').returns(new Promise((resolve, reject) => {
@@ -74,7 +74,7 @@ describe('ObjectStoreRest', () => {
     it('should find object and return data on success', (done) => {
       let queryResult = [{ 'column1': 'value1', 'column2': 'value2', 'column3': 'value3' }, { 'column1': 'value1', 'column2': 'value2', 'column3': 'value3' }]
       let httpServiceStub = sinon.stub(objectStoreRest, 'httpService').returns(new Promise((resolve, reject) => {
-        resolve(queryResult)
+        resolve({ body: { result: { response: { content: queryResult, count: 2 }}}})
       }))
 
       let validateFindObjectStub = sinon.stub(objectStoreRest, 'validateFindObject').returns(new Promise((resolve, reject) => {
@@ -85,7 +85,7 @@ describe('ObjectStoreRest', () => {
       objectStoreRest.findObject(query)
         .then((data) => {
           expect(httpServiceStub.called).to.be.true
-          expect(data).to.eql({ data: queryResult, status: 'found' })
+          expect(data).to.eql({ data: queryResult, status: 'success' })
           objectStoreRest.httpService.restore()
           objectStoreRest.validateFindObject.restore()
           done()

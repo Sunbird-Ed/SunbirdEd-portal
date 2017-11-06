@@ -259,7 +259,8 @@ var paths = {
     'dist/private/scripts/controllers/workspace/limitedPublishedContentController.js',
     'dist/private/scripts/directives/fileUpload.js',
     'dist/private/scripts/controllers/announcement/announcementInboxListController.js',
-    'dist/private/scripts/controllers/announcement/createAnnouncementController.js'
+    'dist/private/scripts/controllers/announcement/createAnnouncementController.js',
+    'dist/private/scripts/directives/announcementDetailsDirective.js'
   ],
   telemetry_js: [
     'dist/private/scripts/telemetry/TelemetryEvent.js',
