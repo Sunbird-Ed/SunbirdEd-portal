@@ -60,7 +60,7 @@ angular.module('playerApp')
      * @instance
      */
     this.createAnnouncement = function (req) {
-
+      return {'id': 'api.plugin.announcement.create', 'ver': '1.0', 'ts': '2017-10-24 17:30:23:540+0530', 'params': {'resmsgid': 'ea764b40-b8b2-11e7-ba5b-1991e583a6a8', 'msgid': null, 'status': 'successful', 'err': '', 'errmsg': ''}, 'responseCode': 'OK', 'result': {'announcementId': '2344-1234-1234-12312', 'sourceId': 'some-organisation-id', 'createdBy': 'Creator1', 'createdOn': '2017-10-24', 'type': 'announcement', 'links': ['https://linksToOtheresources.com'], 'title': 'Monthy Status', 'description': 'some description', 'target': ['teachers'], 'attachments': [{'title': 'circular.pdf', 'downloadURL': 'https://linktoattachment', 'mimetype': 'application/pdf'}]}}
     }
 
     /**
@@ -72,6 +72,6 @@ angular.module('playerApp')
      * @instance
      */
     this.uploadAttachment = function (req) {
-
+      return httpServiceJava.get('localhost:3000/api/announcement/v1/attachment/upload')
     }
   }])

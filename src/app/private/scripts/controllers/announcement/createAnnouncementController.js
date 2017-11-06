@@ -7,7 +7,7 @@ angular.module('playerApp')
       // Initialize variables
       var createAnn = this
 
-      // TODO - use api to get values
+      // todo - use api to get values
       createAnn.org = ['Org 1', 'Org 2', 'Org 3']
       createAnn.announcementType = ['Type 1', 'Type 2', 'Type 3']
       createAnn.disableBtn = true
@@ -18,19 +18,41 @@ angular.module('playerApp')
       createAnn.stepNumber = 1
       createAnn.data = {}
 
+      createAnn.config = {
+        'geo': {
+          'adopter': 'SERVICE',
+          'service': 'geoService'
+        }
+      }
+
+      createAnn.removeRicipients = function (item) {
+        _.remove(createAnn.selectedReciepeient, function (arg) {
+          if (arg.location == item.location) {
+            item.selected = false,
+            toasterService.info(item.location + ' location is removed sucessfully.')
+            return arg.location
+          }
+        })
+      }
+
       // Initialize modal
       createAnn.initializeModal = function () {
         $timeout(function () {
           $('#announcementType').dropdown()
           $('#orgDropdown').dropdown()
         }, 100)
+
+        $rootScope.$on('selected:items', function (evet, data) {
+          console.info('data', data)
+          createAnn.selectedReciepeient = data.geo
+        })
       }
 
       createAnn.createAnnouncement = function () {
         $('#createAnnouncementModal').modal({
           closable: false,
           onHide: function () {
-              // TODO - Show confirmation before closing modal
+              // todo - Show confirmation before closing modal
             if (!createAnn.isLastStep) {
               if (createAnn.isMetaModified && confirm('Changes that you made may not be saved.')) {
                 createAnn.refreshFormValues()
@@ -47,7 +69,7 @@ angular.module('playerApp')
           onApprove: function () {
               // Make api call to save data
             createAnn.isLastStep = true
-            createAnn.saveAnnouncement(createAnn.data);
+            createAnn.saveAnnouncement(createAnn.data)
             createAnn.refreshFormValues()
             $('#announcementSuccessModal').modal({
               closable: false
@@ -92,19 +114,20 @@ angular.module('playerApp')
         angular.forEach(createAnn.data.link, function (value, key) {
           linkArray.push(value)
         })
-        // TODO - show announcement preview
-        createAnn.previewData = {'sourceId': 'some-organisation-id', 'type': createAnn.data.announcementType, 'links': linkArray, 'title': createAnn.data.title, 'description': createAnn.data.description, 'target': ['teachers'], 'attachments': [{'title': 'circular.pdf', 'downloadURL': 'https://linktoattachment', 'mimetype': 'application/pdf'}]}
+        // todo - show announcement preview
+        createAnn.previewData = {'sourceId': 'some-organisation-id', 'type': createAnn.data.type, 'links': linkArray, 'title': createAnn.data.title, 'description': createAnn.data.description, 'target': ['teachers'], 'attachments': [{'title': 'circular.pdf', 'downloadURL': 'https://linktoattachment', 'mimetype': 'application/pdf'}]}
       }
 
       // Function to confirm recipients
       createAnn.confirmRecipients = function () {
-        // TODO - get select ricipients
+        $rootScope.$emit('get:selected:items')
+        // todo - get select ricipients
       }
 
       // Function to enable / disable RecepientBtn
       createAnn.enableRecepientBtn = function () {
         if (createAnn.data.title && createAnn.data.from &&
-            createAnn.data.announcementType &&
+            createAnn.data.type &&
             (createAnn.data.description || createAnn.attachment.length)) {
           createAnn.disableBtn = false
         } else {
@@ -127,14 +150,14 @@ angular.module('playerApp')
       }
 
       createAnn.saveAnnouncement = function (data) {
-        // TODO - call save announcement api
+        // todo - call save announcement api
         var requestBody = angular.copy(data)
-        requestBody.createdBy = $rootScope.userId;
+        requestBody.createdBy = $rootScope.userId
         var requestData = {
           content: requestBody
         }
 
-        var response = announcementService.createAnnouncement(requestData);
+        var response = announcementService.createAnnouncement(requestData)
       }
 
       createAnn.attachment = []
@@ -166,7 +189,7 @@ angular.module('playerApp')
             },
             callbacks: {
               onComplete: function (id, name, responseJSON, xhr) {
-                        // TODO - push attachement api success response
+                        // todo - push attachement api success response
                 createAnn.attachment.push('A', 'B')
                 createAnn.enableRecepientBtn()
               },
