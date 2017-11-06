@@ -7,7 +7,7 @@ angular.module('playerApp')
       // Initialize variables
       var createAnn = this
 
-        // TODO - use api to get values
+      // TODO - use api to get values
       createAnn.org = ['Org 1', 'Org 2', 'Org 3']
       createAnn.announcementType = ['Type 1', 'Type 2', 'Type 3']
       createAnn.disableBtn = true
@@ -18,7 +18,7 @@ angular.module('playerApp')
       createAnn.stepNumber = 1
       createAnn.data = {}
 
-        // Initialize modal
+      // Initialize modal
       createAnn.initializeModal = function () {
         $timeout(function () {
           $('#announcementType').dropdown()
@@ -61,7 +61,7 @@ angular.module('playerApp')
 
       createAnn.addNewLink = function () {
         var newItemNo = createAnn.repeatableWebLinks.length + 1
-        createAnn.repeatableWebLinks.push({'id': 'choice' + newItemNo})
+        createAnn.repeatableWebLinks.push({ 'id': 'choice' + newItemNo })
         createAnn.showUrlField = true
       }
 
@@ -71,7 +71,7 @@ angular.module('playerApp')
         createAnn.showUrlField = createAnn.repeatableWebLinks.length != '0'
       }
 
-        // Function to detect input box change event
+      // Function to detect input box change event
       createAnn.detectChange = function () {
         createAnn.enableRecepientBtn()
       }
@@ -92,8 +92,7 @@ angular.module('playerApp')
         angular.forEach(createAnn.data.link, function (value, key) {
           linkArray.push(value)
         })
-
-            // TODO - show announcement preview
+        // TODO - show announcement preview
         createAnn.previewData = {'sourceId': 'some-organisation-id', 'type': createAnn.data.announcementType, 'links': linkArray, 'title': createAnn.data.title, 'description': createAnn.data.description, 'target': ['teachers'], 'attachments': [{'title': 'circular.pdf', 'downloadURL': 'https://linktoattachment', 'mimetype': 'application/pdf'}]}
       }
 
@@ -120,7 +119,6 @@ angular.module('playerApp')
         $('#announcementType').dropdown('restore defaults')
         $('#orgDropdown').dropdown('restore defaults')
         $('#createAnnouncementModal').modal('refresh')
-      // $('#announcementForm').form('reset')
         createAnn.data = {}
         createAnn.isMetaModified = false
         createAnn.repeatableWebLinks.length = 0
@@ -146,7 +144,6 @@ angular.module('playerApp')
             element: document.getElementById('fine-uploader-manual-trigger'),
             template: 'qq-template-manual-trigger',
             request: {
-                    // TODO - use upload api url
               endpoint: 'http://www.mocky.io/v2/59ef30b72e0000001d1c5e09'
             },
             autoUpload: true,
@@ -177,7 +174,7 @@ angular.module('playerApp')
               },
               onCancel: function () {
                 document.getElementById('hide-section-with-button')
-                                                  .style.display = 'block'
+                                .style.display = 'block'
               },
               onError: function (id, name, errorReason, xhrOrXdr) {
                 toasterService.error(qq.format('Error on file number {} - {}.  Reason: {}', id, name, errorReason))
