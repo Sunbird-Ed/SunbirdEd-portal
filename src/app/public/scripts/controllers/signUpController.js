@@ -6,7 +6,7 @@ angular.module('loginApp')
             $filter, $location, $rootScope, toasterService) {
             var newUser = this;
             var today = new Date();
-            newUser.languages = $rootScope.frmelmnts.lbl.languages;
+            newUser.languages = $rootScope.frmelmnts.lbl.languages.split(',');
             newUser.formValidation = function () {
                 $('.ui.form').form({
                     fields: {
