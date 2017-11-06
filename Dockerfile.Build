@@ -19,10 +19,13 @@ RUN apt-get install -y zip \
     && npm install -g gulp \
     && npm install gulp --save-dev 
 WORKDIR /opt/player/
-RUN npm install --unsafe-perm
+RUN npm install --only=dev --unsafe-perm 
 RUN bower cache clean
 RUN bower prune -f 
 RUN bower install /opt/player/bower.json  --force
 RUN gulp
+RUN rm -rf node_modules
+RUN npm install --production  --unsafe-perm  
+RUN cp -R node_modules dist/
 WORKDIR /opt/player
 CMD ["zip", "-r", "player-dist.zip",  "dist"]   

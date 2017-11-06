@@ -114,4 +114,10 @@ angular.module('playerApp')
                 var url = config.URL.USER.ADD_SKILLS;
                 return httpServiceJava.post(url, req);
             };
+            
+            this.updateProfileFieldVisibility = function(req) {
+              var url =   config.URL.USER.UPDATE_PROF_VIS_FIELDS;
+              return httpServiceJava.post(url, req);
+            };
+            
         }]);
