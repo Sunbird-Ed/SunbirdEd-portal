@@ -39,6 +39,7 @@ angular.module('playerApp')
         $rootScope.privateProfileFields = []
         profile.privateProfileFields = []
         profile.publicProfileFields = []
+        profile.isViewMore = true
 
         var orgIds = []
         _.forEach($rootScope.organisations, function (org) {
