@@ -1,12 +1,31 @@
 'use strict'
 
 angular.module('playerApp')
-  .service('announcementService', ['httpServiceJava', 'config', function (httpServiceJava, config) {
+  .service('announcementService', ['httpServiceJava', 'config', '$http', function(httpServiceJava, config, $http) {
     /**
      * @class announcementService
      * @desc Service to manage announcement.
      * @memberOf Services
      */
+
+    /**
+     * @method httpCall
+     * @desc Http call
+     * @memberOf Services.httpServiceJava
+     * @param {string}  url - Url
+     * @param {Object}  data - Request
+     * @param {string}  method - Methods (CURD)
+     * @param {object}  header - Header
+     * @instance
+     */
+    this.httpCall = function httpCall(url, data, method, header) {
+      return $http({
+        method: method,
+        url: url,
+        headers: header,
+        data: data
+      });
+    }
 
     /**
      * @method getOutBoxAnnouncementList
@@ -17,10 +36,22 @@ angular.module('playerApp')
      * @returns {Promise} Promise object represents announcement outbox list dashboard data
      * @instance
      */
-    this.getOutBoxAnnouncementList = function () {
-      // return httpServiceJava.get(config.URL.DASHBOARD.ORG_CREATION + '/' + req.org_id + '?period=' + req.period);
+    this.getOutBoxAnnouncementList = function() {
+      var headers = {
+        'Content-Type': 'application/json',
+      };
 
-      return {"id":"api.plugin.announcement.user.outbox","ver":"1.0","ts":"2017-10-2417:30:23:540+0530","params":{"resmsgid":"ea764b40-b8b2-11e7-ba5b-1991e583a6a8","msgid":null,"status":"successful","err":"","errmsg":""},"responseCode":"OK","result":{"announcements":[{"announcementId":"1","sourceId":"National Council For Teacher Education","createdBy":"Creator1","createdOn":"2017-10-24","readBy":["1234-12341-12313-132123","1234-12341-12313-324234"],"type":"Circular","links":["https://www.google.co.in/?gfe_rd=cr&dcr=0&ei=D8r2WbjkOsKL8Qe4pJeACA","https://diksha.gov.in/#documents"],"title":"Exam dates announced for CBSE and state board exams","description":"Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams","target":["teachers"],"attachments":[{"title":"Circular A1.pdf","downloadURL":"https://linktoattachment.com/documents/Circular A1.pdf","mimetype":"application/pdf"}]},{"announcementId":"1","sourceId":"National Council For Teacher Education","createdBy":"Creator1","createdOn":"2017-10-24","readBy":["1234-12341-12313-132123","1234-12341-12313-324234"],"type":"Circular","links":["https://www.google.co.in/?gfe_rd=cr&dcr=0&ei=D8r2WbjkOsKL8Qe4pJeACA","https://diksha.gov.in/#documents"],"title":"Exam dates announced for CBSE and state board exams","description":"Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams","target":["teachers"],"attachments":[{"title":"Circular A1.pdf","downloadURL":"https://linktoattachment.com/documents/Circular A1.pdf","mimetype":"application/pdf"}]},{"announcementId":"1","sourceId":"National Council For Teacher Education","createdBy":"Creator1","createdOn":"2017-10-24","readBy":["1234-12341-12313-132123","1234-12341-12313-324234"],"type":"Circular","links":["https://www.google.co.in/?gfe_rd=cr&dcr=0&ei=D8r2WbjkOsKL8Qe4pJeACA","https://diksha.gov.in/#documents"],"title":"Exam dates announced for CBSE and state board exams","description":"Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams","target":["teachers"],"attachments":[{"title":"Circular A1.pdf","downloadURL":"https://linktoattachment.com/documents/Circular A1.pdf","mimetype":"application/pdf"}]},{"announcementId":"1","sourceId":"National Council For Teacher Education","createdBy":"Creator1","createdOn":"2017-10-24","readBy":["1234-12341-12313-132123","1234-12341-12313-324234"],"type":"Circular","links":["https://www.google.co.in/?gfe_rd=cr&dcr=0&ei=D8r2WbjkOsKL8Qe4pJeACA","https://diksha.gov.in/#documents"],"title":"Exam dates announced for CBSE and state board exams","description":"Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams","target":["teachers"],"attachments":[{"title":"Circular A1.pdf","downloadURL":"https://linktoattachment.com/documents/Circular A1.pdf","mimetype":"application/pdf"}]}]}}
+      var URL = 'http://localhost:3000/api/announcement/v1/user/outbox'
+      var data = {
+        "request": {
+          "userId": "1231-12313-132123-12313",
+          "limit": 10,
+          "status": "read"
+        }
+      };
+
+      //return httpServiceJava.post(URL, data, headers);
+      return this.httpCall(URL, data, 'POST', headers);
     }
 
     /**
@@ -32,10 +63,10 @@ angular.module('playerApp')
      * @returns {Promise} Promise object represents announcement inbox list dashboard data
      * @instance
      */
-    this.getInboxAnnouncementList = function () {
+    this.getInboxAnnouncementList = function() {
       // return httpServiceJava.get(config.URL.DASHBOARD.ORG_CREATION + '/' + req.org_id + '?period=' + req.period);
 
-      return {"id":"api.plugin.announcement.user.outbox","ver":"1.0","ts":"2017-10-2417:30:23:540+0530","params":{"resmsgid":"ea764b40-b8b2-11e7-ba5b-1991e583a6a8","msgid":null,"status":"successful","err":"","errmsg":""},"responseCode":"OK","result":{"announcements":[{"announcementId":"1","sourceId":"National Council For Teacher Education","createdBy":"Creator1","createdOn":"2017-10-24","readBy":["1234-12341-12313-132123","1234-12341-12313-324234"],"type":"Circular","links":["https://www.google.co.in/?gfe_rd=cr&dcr=0&ei=D8r2WbjkOsKL8Qe4pJeACA","https://diksha.gov.in/#documents"],"title":"Exam dates announced for CBSE and state board exams","description":"Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams. Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams. Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams. announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams","target":["teachers"],"attachments":[{"title":"Circular A1.pdf","downloadURL":"https://linktoattachment.com/documents/Circular A1.pdf","mimetype":"application/pdf"}]},{"announcementId":"1","sourceId":"National Council For Teacher Education","createdBy":"Creator1","createdOn":"2017-10-24","readBy":["1234-12341-12313-132123","1234-12341-12313-324234"],"type":"Circular","links":["https://www.google.co.in/?gfe_rd=cr&dcr=0&ei=D8r2WbjkOsKL8Qe4pJeACA","https://diksha.gov.in/#documents"],"title":"Exam dates announced for CBSE and state board exams","description":"Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams","target":["teachers"],"attachments":[{"title":"Circular A1.pdf","downloadURL":"https://linktoattachment.com/documents/Circular A1.pdf","mimetype":"application/pdf"}]},{"announcementId":"1","sourceId":"National Council For Teacher Education","createdBy":"Creator1","createdOn":"2017-10-24","readBy":["1234-12341-12313-132123","1234-12341-12313-324234"],"type":"Circular","links":["https://www.google.co.in/?gfe_rd=cr&dcr=0&ei=D8r2WbjkOsKL8Qe4pJeACA","https://diksha.gov.in/#documents"],"title":"Exam dates announced for CBSE and state board exams","description":"Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams","target":["teachers"],"attachments":[{"title":"Circular A1.pdf","downloadURL":"https://linktoattachment.com/documents/Circular A1.pdf","mimetype":"application/pdf"}]},{"announcementId":"1","sourceId":"National Council For Teacher Education","createdBy":"Creator1","createdOn":"2017-10-24","readBy":["1234-12341-12313-132123","1234-12341-12313-324234"],"type":"Circular","links":["https://docs.google.com/spreadsheets/d/1kvDc4mq_GSjd1lo8kKn3d6FGwMlV2QENmFy3EH8kvDc4mq_GSjd1lo8kKn3d6FGwMlV2QENmFy3EH8kvDc4mq_GSjd1lo8kKn3d6FGwMlV2QENmFy3EH8PBKI/edit?ts=58ff1efc#gid=1251924770","https://diksha.gov.in/#documents"],"title":"Exam dates announced for CBSE and state board exams","description":"Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams. Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams. Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams. Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams. announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams","target":["teachers"],"attachments":[{"title":"Circular A1.pdf","downloadURL":"https://linktoattachment.com/documents/Circular A1.pdf","mimetype":"application/pdf"},{"title":"Circular A1.pdf","downloadURL":"https://linktoattachment.com/documents/Circular A1.pdf","mimetype":"application/pdf"},{"title":"Circular A1.pdf","downloadURL":"https://linktoattachment.com/documents/Circular A1.pdf","mimetype":"application/pdf"}]}]}}
+      return { "id": "api.plugin.announcement.user.outbox", "ver": "1.0", "ts": "2017-10-2417:30:23:540+0530", "params": { "resmsgid": "ea764b40-b8b2-11e7-ba5b-1991e583a6a8", "msgid": null, "status": "successful", "err": "", "errmsg": "" }, "responseCode": "OK", "result": { "announcements": [{ "announcementId": "1", "sourceId": "National Council For Teacher Education", "createdBy": "Creator1", "createdOn": "2017-10-24", "readBy": ["1234-12341-12313-132123", "1234-12341-12313-324234"], "type": "Circular", "links": ["https://www.google.co.in/?gfe_rd=cr&dcr=0&ei=D8r2WbjkOsKL8Qe4pJeACA", "https://diksha.gov.in/#documents"], "title": "Exam dates announced for CBSE and state board exams", "description": "Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams. Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams. Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams. announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams", "target": ["teachers"], "attachments": [{ "title": "Circular A1.pdf", "downloadURL": "https://linktoattachment.com/documents/Circular A1.pdf", "mimetype": "application/pdf" }] }, { "announcementId": "1", "sourceId": "National Council For Teacher Education", "createdBy": "Creator1", "createdOn": "2017-10-24", "readBy": ["1234-12341-12313-132123", "1234-12341-12313-324234"], "type": "Circular", "links": ["https://www.google.co.in/?gfe_rd=cr&dcr=0&ei=D8r2WbjkOsKL8Qe4pJeACA", "https://diksha.gov.in/#documents"], "title": "Exam dates announced for CBSE and state board exams", "description": "Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams", "target": ["teachers"], "attachments": [{ "title": "Circular A1.pdf", "downloadURL": "https://linktoattachment.com/documents/Circular A1.pdf", "mimetype": "application/pdf" }] }, { "announcementId": "1", "sourceId": "National Council For Teacher Education", "createdBy": "Creator1", "createdOn": "2017-10-24", "readBy": ["1234-12341-12313-132123", "1234-12341-12313-324234"], "type": "Circular", "links": ["https://www.google.co.in/?gfe_rd=cr&dcr=0&ei=D8r2WbjkOsKL8Qe4pJeACA", "https://diksha.gov.in/#documents"], "title": "Exam dates announced for CBSE and state board exams", "description": "Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams", "target": ["teachers"], "attachments": [{ "title": "Circular A1.pdf", "downloadURL": "https://linktoattachment.com/documents/Circular A1.pdf", "mimetype": "application/pdf" }] }, { "announcementId": "1", "sourceId": "National Council For Teacher Education", "createdBy": "Creator1", "createdOn": "2017-10-24", "readBy": ["1234-12341-12313-132123", "1234-12341-12313-324234"], "type": "Circular", "links": ["https://docs.google.com/spreadsheets/d/1kvDc4mq_GSjd1lo8kKn3d6FGwMlV2QENmFy3EH8kvDc4mq_GSjd1lo8kKn3d6FGwMlV2QENmFy3EH8kvDc4mq_GSjd1lo8kKn3d6FGwMlV2QENmFy3EH8PBKI/edit?ts=58ff1efc#gid=1251924770", "https://diksha.gov.in/#documents"], "title": "Exam dates announced for CBSE and state board exams", "description": "Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams. Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams. Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams. Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams. announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams", "target": ["teachers"], "attachments": [{ "title": "Circular A1.pdf", "downloadURL": "https://linktoattachment.com/documents/Circular A1.pdf", "mimetype": "application/pdf" }, { "title": "Circular A1.pdf", "downloadURL": "https://linktoattachment.com/documents/Circular A1.pdf", "mimetype": "application/pdf" }, { "title": "Circular A1.pdf", "downloadURL": "https://linktoattachment.com/documents/Circular A1.pdf", "mimetype": "application/pdf" }] }] } }
     }
 
     /**
@@ -46,7 +77,7 @@ angular.module('playerApp')
      * @returns {string} returns extension of a file
      * @instance
      */
-    this.getFileExtension = function (mimeType) {
+    this.getFileExtension = function(mimeType) {
       var extension = mimeType === 'application/pdf' ? 'PDF' : (mimeType === 'application/png' ? 'PNG' : 'JPEG')
       return extension
     }
@@ -59,7 +90,7 @@ angular.module('playerApp')
      * @returns {object} returns response of API
      * @instance
      */
-    this.createAnnouncement = function (req) {
+    this.createAnnouncement = function(req) {
 
     }
   }])
