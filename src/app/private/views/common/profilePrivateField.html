@@ -1,0 +1,9 @@
+<div class="ui right pointing dropdown icon button">
+    <i class="lock icon"></i>
+    <div class="menu">
+        <div ng-class="{'active selected':(visibility == option.value)}" ng-repeat="option in profVisCtrl.options" class="item" ng-click="profVisCtrl.setProfileFieldLbl(option.value)" ng-init="$last && profVisCtrl.initDropdown()">
+            {{option.text}}
+        </div>
+    </div>
+</div>
+
