@@ -112,6 +112,10 @@ angular.module('playerApp')
         }
 
         $scope.close = function () {
+          if ($scope.closeurl === 'Profile') {
+            $state.go($scope.closeurl)
+            return
+          }
           if ($scope.closeurl) {
             if ($rootScope.search.searchKeyword !== '') {
               $timeout(function () {
