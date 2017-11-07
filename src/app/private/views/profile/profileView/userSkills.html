@@ -1,6 +1,7 @@
 <div class="ui raised segment margin-bottom-0">
     <div class="header announcementCard-header ">
         <span class="header cardsHeading">{{$root.frmelmnts.lbl.skillTags}} </span>
+        <a class="addeditprofile" ng-if='$root.privateProfileFields'><profile-visibility   update="'true'" field="'skills'"></profile-visibility></a>
         <a class="addeditprofile cursor-pointer" ng-click="profileCtrl.openAddSkillModal()">
             {{$root.frmelmnts.btn.add}}
         </a>
