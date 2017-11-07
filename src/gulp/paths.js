@@ -254,7 +254,9 @@ var paths = {
     'dist/private/scripts/directives/contentSharingDirective.js',
     'dist/private/scripts/services/setup/setupService.js',
     'dist/private/scripts/controllers/setup/setupController.js',
-    'dist/private/scripts/controllers/workspace/limitedPublishedContentController.js'
+    'dist/private/scripts/controllers/workspace/limitedPublishedContentController.js',
+    'dist/private/scripts/controllers/profileVisibilityController.js',    
+    'dist/private/scripts/directives/profileVisibility.js'
   ],
   telemetry_js: [
     'dist/private/scripts/telemetry/TelemetryEvent.js',
