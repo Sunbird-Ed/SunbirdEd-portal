@@ -6,7 +6,7 @@
         </a>
     </div>
     <div class="profileitems profile-des ui relaxed aligned list">
-        <div class="item " ng-repeat="skill in profileCtrl.userSkills |limitTo:profileCtrl.limit">
+        <div class="item " ng-repeat="skill in profileCtrl.userSkills |limitTo:profileCtrl.limit |orderBy : '-addedAt'">
             <div class="ui label">
                 {{skill.skillName}}
                 <div class="detail">
