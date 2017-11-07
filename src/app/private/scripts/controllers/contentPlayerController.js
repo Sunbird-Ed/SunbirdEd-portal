@@ -169,11 +169,8 @@ angular.module('playerApp')
         $('#courseDropdownValues').dropdown('restore defaults')
 
         $scope.gotoBottom = function () {
-        // set the location.hash to the id of
-        // the element you wish to scroll to.
-          $location.hash('player-auto-scroll')
-
-        // call $anchorScroll()
-          $anchorScroll()
+          $('html, body').animate({
+            scrollTop: $('#player-auto-scroll').offset().top
+          }, 1000)
         }
       }])
