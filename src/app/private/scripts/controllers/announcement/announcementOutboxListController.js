@@ -8,13 +8,12 @@ angular.module('playerApp')
       announcementOutboxData.showLoader = true
 
       announcementOutboxData.renderAnnouncementList = function() {
-        announcementService.getOutBoxAnnouncementList().then(function(apiResponse) {
+        announcementService.getOutBoxAnnouncementList($rootScope.userId).then(function(apiResponse) {
             apiResponse = apiResponse.data
 
             if (apiResponse && apiResponse.responseCode === 'OK') {
               announcementOutboxData.listData = apiResponse.result.announcements
             } else {
-              alert()
               toasterService.error(apiResponse.params.errmsg)
               // announcementOutboxData.showDataDiv = false
             }
