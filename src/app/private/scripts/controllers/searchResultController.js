@@ -272,8 +272,6 @@ angular.module('playerApp').controller('SearchResultController', [
         if (!req.filters.contentType || (_.isArray(req.filters.contentType) && req.filters.contentType.length == 0)) {
           req.filters.contentType = [
             'Collection',
-            'Story',
-            'Worksheet',
             'TextBook',
             'LessonPlan',
             'Resource'
@@ -285,8 +283,6 @@ angular.module('playerApp').controller('SearchResultController', [
       } else if ($rootScope.search.selectedSearchKey === 'All') {
         req.filters.contentType = [
           'Collection',
-          'Story',
-          'Worksheet',
           'TextBook',
           'LessonPlan',
           'Resource'
@@ -491,4 +487,11 @@ angular.module('playerApp').controller('SearchResultController', [
                 })
     }
     $rootScope.search.getOrgTypes()
+
+    $rootScope.search.getSelectedContentTypeValue = function (contentTypes, selectedContentType) {
+      var ct = _.filter(contentTypes, function (contentType) {
+        return contentType.key === selectedContentType
+      })
+      return ct[0].value
+    }
   }])

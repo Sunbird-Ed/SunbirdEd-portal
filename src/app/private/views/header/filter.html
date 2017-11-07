@@ -28,7 +28,7 @@
                                 <span class="padded chip margin-top--5" ng-if='$root.search.selectedContentType.length > 0'>
                                     {{$root.frmelmnts.prmpt.contenttypes}}:
                                     <a class="ui label margin-top--5" ng-repeat="contenttype in $root.search.selectedContentType">
-                                        {{contenttype}}
+                                        {{$root.search.getSelectedContentTypeValue($root.search.contentTypes, contenttype)}}
                                         <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedContentType',contenttype)"></i>
                                     </a>
                                 </span>
@@ -112,7 +112,7 @@
                                         <div class="filter-sel-text" ng-if="$root.search.selectedContentType.length > 0 ">{{$root.search.selectedContentType.length+' '+$root.frmelmnts.prmpt.contenttypes}}</div>
                                         <div class="filter-sel-text" ng-if="$root.search.selectedContentType.length == 0 ">{{$root.frmelmnts.prmpt.contenttypes}}</div>
                                         <div class="menu">
-                                            <div ng-click="$root.search.selectFilter('selectedContentType',contentType,$event,'Content Type')" ng-repeat="contentType in $root.search.contentTypes  | orderBy:'toString()'" class="item dropdown-item" ng-class="{'active':($root.search.selectedContentType.indexOf(contentType)>=0)}" data-value="{{contentType}}">{{contentType}}</div>
+                                            <div ng-click="$root.search.selectFilter('selectedContentType',contentType.key,$event,'Content Type')" ng-repeat="contentType in $root.search.contentTypes  | orderBy:'toString()'" class="item dropdown-item" ng-class="{'active':($root.search.selectedContentType.indexOf(contentType.key)>=0)}" data-value="{{contentType.key}}">{{contentType.value}}</div>
                                         </div>
                                     </div>
                                 </div>
