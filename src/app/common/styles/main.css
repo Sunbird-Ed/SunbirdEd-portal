@@ -3206,6 +3206,10 @@ span.dashBoardMenuItem.active {
 .cousreDashboardAlignIcon {
   margin-left: -30px !important;
 }
+.ui.ordered.list .list > .item:before,
+ol.ui.list ol li:before {
+  margin-left: -2.5em !important;
+}
 body {
   position: relative !important;
   min-height: 100% !important;
