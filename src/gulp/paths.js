@@ -120,7 +120,6 @@ var paths = {
     'dist/public/scripts/directive/error.js',
     'dist/public/scripts/directive/loader.js',
     'dist/public/scripts/directive/courseDiscussions.js',
-    'dist/public/scripts/directive/applyScript.js',
     'dist/public/scripts/directive/publicContentPlayer.js',
     'dist/public/scripts/controllers/signUpController.js',
     'dist/public/scripts/controllers/publicContentPlayerController.js',
