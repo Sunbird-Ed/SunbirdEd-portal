@@ -13,9 +13,10 @@ angular.module('playerApp')
             }
             ];
             $scope.visibility = ($rootScope.privateProfileFields.indexOf($scope.field) >= 0) ? 'private' : 'public';
+            console.log($scope.top);
             profVisCtrl.initDropdown = function () {
                 $timeout(function () {
-                    $('.ui.inline.dropdown').dropdown();
+                    $('.profile-privacy-drpdwn').dropdown();
                 }, 100);
             };
             profVisCtrl.setProfileFieldLbl = function (visibility) {
