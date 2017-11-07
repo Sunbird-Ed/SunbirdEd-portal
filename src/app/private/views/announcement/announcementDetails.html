@@ -1,59 +1,77 @@
 <div class="ui warning message tweleve wide column" ng-if="!announcementDetails.title">
-	<div class="header">
-		Oops announcement details not found!
-	</div>
-	Please try again..
+    <div class="header">
+        Oops announcement details not found!
+    </div>
+    Please try again..
 </div>
 <div ng-if="announcementDetails.title">
-	<div>
-		<p class="ng-binding announcement-description" ng-if="announcementDetails.sourceId || announcementDetails.type">
-			{{announcementDetails.sourceId}} - {{announcementDetails.type}}
-		</p>
-	</div>
-	<div class="header announcementCard-header padding-top-5">
-		<div class="header cardsHeading padding-top-10" ng-if="announcementDetails.title">
-			{{announcementDetails.title}}
-		</div>
-		<div class="announcement-description padding-top-10" ng-if="announcementDetails.description">
-			{{announcementDetails.description}}
-		</div>
-	</div>
-	<div ng-if="announcementDetails.links.length">
-		<div class="padding-top-20">
-			<strong class="annMediumText ng-binding">{{$root.frmelmnts.lbl.anncmntdtlsweblinks}}</strong>
-		</div>
-		<div class="padding-top-7 tweleve wide column">
-			<div ng-repeat="link in announcementDetails.links track by $index">
-				<p><a href="{{link}}" target="_blank">{{link | limitTo:70}}<span ng-if="link.length > 70" class="announcementBlueText">...</span></a>
-				</p>
-			</div>
-		</div>
-	</div>
-	<div ng-if="announcementDetails.attachments.length">
-		<div class="padding-top-10">
-			<strong class="annMediumText ng-binding">{{$root.frmelmnts.lbl.anncmntdtlsattachments}}</strong>
-		</div>
-		<div class="sixteen wide column margin-bottom-20">
-			<div class="box">
-				<div class="ui items">
-					<div class="item borderBottom" ng-repeat="attachment in announcementDetails.attachments track by $index">
-						<div class="ui tiny image">
-							<img src="/common/images/default.png">
-						</div>
-						<div class="middle aligned content">
-							<div class="ui float-ContentRight">
-								<a href="{{attachment.downloadURL}}" target="_blank" class="ui primary basic button announcementButton"><span class="announcementButtonText">{{$root.frmelmnts.btn.anncmntdtlsview}}</span></a>
-							</div>
-							<p>{{attachment.title}}</p>
-							<p class="announcement-description" ng-if="attachment.filesize">{{attachment.filesize}}</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="gray-full-width margin-bottom-0" ng-if="announcementDetails.createdOn">
-		<span class="ng-binding announcement-description">
-       {{$root.frmelmnts.lbl.anncmntdtlssenton}} {{announcementDetails.createdOn  | date : "dd MMM yyyy"}}</span>
-	</div>
+    <div>
+        <p class="ng-binding announcement-description" ng-if="announcementDetails.sourceId || announcementDetails.type">
+            {{announcementDetails.sourceId}} - {{announcementDetails.type}}
+        </p>
+    </div>
+    <div class="header announcementCard-header padding-top-5">
+        <div class="header cardsHeading padding-top-10" ng-if="announcementDetails.title">
+            {{announcementDetails.title}}
+        </div>
+        <div class="announcement-description padding-top-10" ng-if="announcementDetails.description">
+            {{announcementDetails.description}}
+        </div>
+    </div>
+    <div ng-if="announcementDetails.links.length">
+        <div class="padding-top-20">
+            <strong class="annMediumText ng-binding">
+                {{$root.frmelmnts.lbl.anncmntdtlsweblinks}}
+            </strong>
+        </div>
+        <div class="padding-top-7 tweleve wide column">
+            <div ng-repeat="link in announcementDetails.links track by $index">
+                <p>
+                    <a href="{{link}}" target="_blank">
+                        {{link | limitTo:70}}
+                        <span class="announcementBlueText" ng-if="link.length > 70">
+                            ...
+                        </span>
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div ng-if="announcementDetails.attachments.length">
+        <div class="padding-top-10">
+            <strong class="annMediumText ng-binding">
+                {{$root.frmelmnts.lbl.anncmntdtlsattachments}}
+            </strong>
+        </div>
+        <div class="sixteen wide column margin-bottom-20 padding-top-10">
+            <div class="ui items">
+                <div class="ui item box" ng-repeat="attachment in announcementDetails.attachments track by $index">
+                    <div class="ui tiny image">
+                        <img src="/common/images/default.png">
+                        </img>
+                    </div>
+                    <div class="middle aligned content">
+                        <div class="ui float-ContentRight">
+                            <a class="ui primary basic button announcementButton" href="{{attachment.downloadURL}}" target="_blank">
+                                <span class="announcementButtonText">
+                                    {{$root.frmelmnts.btn.anncmntdtlsview}}
+                                </span>
+                            </a>
+                        </div>
+                        <p>
+                            {{attachment.title}}
+                        </p>
+                        <p class="announcement-description" ng-if="attachment.filesize">
+                            {{attachment.filesize}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="gray-full-width margin-bottom-0" ng-if="announcementDetails.createdOn">
+        <span class="ng-binding announcement-description">
+            {{$root.frmelmnts.lbl.anncmntdtlssenton}} {{announcementDetails.createdOn  | date : "dd MMM yyyy"}}
+        </span>
+    </div>
 </div>
