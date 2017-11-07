@@ -38,8 +38,18 @@ angular.module('playerApp')
       // Initialize modal
       createAnn.initializeModal = function () {
         $timeout(function () {
-          $('#announcementType').dropdown()
-          $('#orgDropdown').dropdown()
+          $('#announcementType').dropdown({
+            onChange: function(value, text, $choice){
+              createAnn.enableRecepientBtn()
+            }
+          })
+
+          $('#orgDropdown').dropdown({
+            // allowAdditions: true,
+            onChange: function(value, text, $choice){
+              createAnn.enableRecepientBtn()
+            }
+          })
         }, 100)
 
         $rootScope.$on('selected:items', function (evet, data) {
@@ -49,6 +59,7 @@ angular.module('playerApp')
       }
 
       createAnn.createAnnouncement = function () {
+        $rootScope.$emit('component:init')
         $('#createAnnouncementModal').modal({
           closable: false,
           onHide: function () {
@@ -93,16 +104,6 @@ angular.module('playerApp')
         createAnn.showUrlField = createAnn.repeatableWebLinks.length != '0'
       }
 
-      // Function to detect input box change event
-      createAnn.detectChange = function () {
-        createAnn.enableRecepientBtn()
-      }
-
-      // Function to detect dropdwon value change event
-      createAnn.detectDropdownChange = function () {
-        createAnn.enableRecepientBtn()
-      }
-
       // Function to track back button change
       createAnn.previousStep = function () {
         createAnn.stepNumber--
@@ -124,8 +125,10 @@ angular.module('playerApp')
         // todo - get select ricipients
       }
 
+
       // Function to enable / disable RecepientBtn
       createAnn.enableRecepientBtn = function () {
+        console.log(createAnn.attachment);
         if (createAnn.data.title && createAnn.data.from &&
             createAnn.data.type &&
             (createAnn.data.description || createAnn.attachment.length)) {
@@ -166,11 +169,15 @@ angular.module('playerApp')
           createAnn.manualUploader = new qq.FineUploader({
             element: document.getElementById('fine-uploader-manual-trigger'),
             template: 'qq-template-manual-trigger',
-            request: {
-              endpoint: 'http://www.mocky.io/v2/59ef30b72e0000001d1c5e09'
-            },
             autoUpload: true,
             debug: true,
+            paramsInBody: true,
+            request: {
+              endpoint: 'http://localhost:3000/api/announcement/v1/attachment/upload',
+              inputName: 'document',
+              params: { 'createdBy': $rootScope.userId }
+            },
+
             validation: {
               sizeLimit: config.AnncmntMaxFileSizeToUpload,
               allowedExtensions: config.AnncmntAllowedFileExtension
@@ -189,15 +196,18 @@ angular.module('playerApp')
             },
             callbacks: {
               onComplete: function (id, name, responseJSON, xhr) {
-                        // todo - push attachement api success response
-                createAnn.attachment.push('A', 'B')
-                createAnn.enableRecepientBtn()
+                console.log('AAAA:', responseJSON)
+                if(responseJSON.responseCode === 'OK' && responseJSON.result.attachment){
+                  alert(responseJSON.result.attachment.id);
+                  createAnn.attachment.push(responseJSON.result.attachment.id)
+                  createAnn.enableRecepientBtn()
+                }
               },
               onSubmitted: function (id, name) {
+                this.setParams({ document: name, createdBy: $rootScope.userId})
               },
               onCancel: function () {
-                document.getElementById('hide-section-with-button')
-                                .style.display = 'block'
+                document.getElementById('hide-section-with-button').style.display = 'block'
               },
               onError: function (id, name, errorReason, xhrOrXdr) {
                 toasterService.error(qq.format('Error on file number {} - {}.  Reason: {}', id, name, errorReason))
