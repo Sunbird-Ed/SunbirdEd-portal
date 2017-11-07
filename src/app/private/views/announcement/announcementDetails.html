@@ -6,20 +6,23 @@
 </div>
 <div ng-if="announcementDetails.title">
     <div>
-        <p class="ng-binding announcement-description" ng-if="announcementDetails.sourceId || announcementDetails.type">
-            {{announcementDetails.sourceId}} - {{announcementDetails.type}}
+        <p class="ui grey label" ng-if="announcementDetails.type">
+            {{announcementDetails.type}}
         </p>
     </div>
     <div class="header announcementCard-header padding-top-5">
         <div class="header cardsHeading padding-top-10" ng-if="announcementDetails.title">
             {{announcementDetails.title}}
         </div>
-        <div class="announcement-description padding-top-10" ng-if="announcementDetails.description">
+        <div class="ng-binding announcement-description" ng-if="announcementDetails.sourceId">
+            {{announcementDetails.sourceId}}
+        </div>
+        <div class="padding-top-10" ng-if="announcementDetails.description">
             {{announcementDetails.description}}
         </div>
     </div>
     <div ng-if="announcementDetails.links.length">
-        <div class="padding-top-20">
+        <div class="padding-top-10">
             <strong class="annMediumText ng-binding">
                 {{$root.frmelmnts.lbl.anncmntdtlsweblinks}}
             </strong>
