@@ -86,6 +86,12 @@
                 "GET":"org/v1/type/list",
                 "ADD":"org/v1/type/create",
                 "UPDATE":"org/v1/type/update"
+            },
+            "ANNOUNCEMENT":{
+                "CREATE": "announcement/v1/create"
+            },
+            "ATTACHMENT":{
+                "UPLOAD": "announcement/v1/attachment/upload"
             }
         },
         "FILTER": {
