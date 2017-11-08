@@ -100,6 +100,7 @@ class AnnouncementController {
         'sourceId': Joi.string().required(),
         'createdBy': Joi.string().required(),
         'title': Joi.string().required(),
+        'from':Joi.string().required(),
         'type': Joi.string().required(),
         'description': Joi.string().required(),
         'target': Joi.object().min(1).pattern(/\w/, Joi.string().required()).required(),
@@ -166,7 +167,8 @@ class AnnouncementController {
           'details': {
             'title': data.title,
             'type': data.type,
-            'description': data.description
+            'description': data.description,
+            'from':data.from,
           },
           'target': JSON.stringify(data.target),
           'links': data.links
