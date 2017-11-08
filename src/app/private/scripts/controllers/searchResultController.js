@@ -66,7 +66,7 @@ angular.module('playerApp').controller('SearchResultController', [
         $('#headerSearch').dropdown('set selected',
                     $scope.search.isSearchTypeKey === true
                     ? $rootScope.search.selectedSearchKey : 'All')
-                    $rootScope.search.searchKeyword = ''
+        $rootScope.search.searchKeyword = ''
       }, 0)
     })
     var initSearchHandler = $rootScope.$on('initSearch', function (event, args) {
@@ -131,7 +131,11 @@ angular.module('playerApp').controller('SearchResultController', [
       var orgType = _.find($rootScope.search.orgTypes, { id: orgId })
       return orgType.name
     }
-
+    $rootScope.expandFilters = function () {
+      if ($('#filterIcon').parents('.active').length <= 0) {
+        $('#filterIcon').trigger('click')
+      }
+    }
     $scope.search.initSearch = function () {
       var searchParams = $stateParams
       $rootScope.search.selectedSearchKey = $rootScope.searchKey || searchParams.type

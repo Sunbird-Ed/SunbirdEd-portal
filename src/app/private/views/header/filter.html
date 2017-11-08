@@ -11,7 +11,7 @@
                             <div class="ui grid">
                                 <div class="ten wide column">
                                     <i alt="{{$root.frmelmnts.alt.filter}}" class="icon filter"></i> <span class="ShowFilterTitle" >{{$root.frmelmnts.lbl.filters}}</span>
-                                    <i class="dropdown icon"></i>
+                                    <i id='filterIcon' class="dropdown icon"></i>
                                 </div>
                             </div>
                         </div>
@@ -20,14 +20,14 @@
                             <div class="twelve wide column content margin-bottom-15">
                                 <span class="padded chip margin-top--5" ng-if='$root.search.selectedBoard.length > 0'>
                                     {{$root.frmelmnts.prmpt.curriculum}}:
-                                    <a class="ui label margin-top--5" ng-repeat="board in $root.search.selectedBoard">
+                                    <a class="ui label margin-top--5" ng-repeat="board in $root.search.selectedBoard" ng-init="$last && $root.expandFilters()">
                                         {{board}}
                                         <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedBoard',board)"></i>
                                     </a>
                                 </span>
                                 <span class="padded chip margin-top--5" ng-if='$root.search.selectedContentType.length > 0'>
                                     {{$root.frmelmnts.prmpt.contenttypes}}:
-                                    <a class="ui label margin-top--5" ng-repeat="contenttype in $root.search.selectedContentType">
+                                    <a class="ui label margin-top--5" ng-repeat="contenttype in $root.search.selectedContentType" ng-init="$last && $root.expandFilters()">
                                         {{$root.search.getSelectedContentTypeValue($root.search.contentTypes, contenttype)}}
                                         <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedContentType',contenttype)"></i>
                                     </a>
@@ -35,42 +35,42 @@
                                 <!-- grades -->
                                 <span class="padded chip margin-top--5" ng-if='$root.search.selectedGrades.length > 0'>
                                     {{$root.frmelmnts.prmpt.grades}}:
-                                    <a class="ui label margin-top--5" ng-repeat="grade in $root.search.selectedGrades">
+                                    <a class="ui label margin-top--5" ng-repeat="grade in $root.search.selectedGrades" ng-init="$last && $root.expandFilters()">
                                         {{grade}}
                                         <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedGrades',grade)"></i>
                                     </a>
                                 </span>
                                 <span class="padded chip" ng-if='$root.search.selectedLanguage.length > 0'>
                                     {{$root.frmelmnts.prmpt.medium}}:
-                                    <a class="ui label margin-top--5" ng-repeat="language in $root.search.selectedLanguage">
+                                    <a class="ui label margin-top--5" ng-repeat="language in $root.search.selectedLanguage" ng-init="$last && $root.expandFilters()">
                                         {{language}}
                                         <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedLanguage',language)"></i>
                                     </a>
                                 </span>
                                 <span class="padded chip margin-top--5" ng-if='$root.search.selectedSubject.length > 0'>
                                     {{$root.frmelmnts.prmpt.subject}}:
-                                    <a class="ui label margin-top--5" ng-repeat="subject in $root.search.selectedSubject">
+                                    <a class="ui label margin-top--5" ng-repeat="subject in $root.search.selectedSubject" ng-init="$last && $root.expandFilters()">
                                         {{subject}}
                                         <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedSubject',subject)"></i>
                                     </a>
                                 </span>
                                 <span class="padded chip margin-top--5" ng-if='$root.search.selectedConcepts.length > 0'>
                                     {{$root.frmelmnts.prmpt.concepts}}:
-                                    <a class="ui label margin-top--5" ng-repeat="concept in $root.search.selectedConcepts">
+                                    <a class="ui label margin-top--5" ng-repeat="concept in $root.search.selectedConcepts" ng-init="$last && $root.expandFilters()">
                                         {{concept.name}}
                                         <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedConcepts',concept.identifier)"></i>
                                     </a>
                                 </span>
                                 <span class="padded chip margin-top--5" ng-if='$root.search.selectedOrgType.length > 0'>
                                     {{$root.frmelmnts.prmpt.orgtype}}:
-                                    <a class="ui label margin-top--5" ng-repeat="orgType in $root.search.selectedOrgType">
+                                    <a class="ui label margin-top--5" ng-repeat="orgType in $root.search.selectedOrgType" ng-init="$last && $root.expandFilters()">
                                         {{getOrgName(orgType)}}
                                         <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedOrgType',orgType)"></i>
                                     </a>
                                 </span>
                                 <span class="padded chip margin-top--5" ng-if='$root.search.userRoles && $root.search.selectedRoles.length > 0'>
                                     {{$root.frmelmnts.prmpt.roles}}:
-                                    <a class="ui label margin-top--5" ng-repeat="role in $root.search.selectedRoles">
+                                    <a class="ui label margin-top--5" ng-repeat="role in $root.search.selectedRoles" ng-init="$last && $root.expandFilters()">
                                         {{getRoleName(role)}}
                                         <i class="delete icon" ng-click="$root.search.removeFilterSelection('selectedRoles',role)"></i>
                                     </a>
