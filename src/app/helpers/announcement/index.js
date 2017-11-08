@@ -105,14 +105,14 @@ router.post('/attachment/upload', (requestObj, responseObj) => {
   })
 }) */
 
-router.get('/types', (requestObj, responseObj) => {
-  announcementController.getAnnouncementTypes(requestObj)
-    .then((data) => {
-      sendSuccessResponse(responseObj, 'types', data, HttpStatus.OK)
-    })
-    .catch((err) => {
-      sendErrorResponse(responseObj, 'types', err.msg, err.statusCode)
-    })
+router.post('/definations', (requestObj, responseObj) => {
+    announcementController.getDefinitions(requestObj)
+        .then((data) => {
+            sendSuccessResponse(responseObj, 'getDefinitions', data, HttpStatus.OK)
+        })
+        .catch((err) => {
+            sendErrorResponse(responseObj, 'definations', err.msg, err.statusCode)
+    });
 })
 
 function sendSuccessResponse (res, id, result, code = HttpStatus.OK) {
