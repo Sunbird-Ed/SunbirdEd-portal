@@ -14,20 +14,20 @@
         <div class="header cardsHeading padding-top-10" ng-if="announcementDetails.title">
             {{announcementDetails.title}}
         </div>
-        <div class="ng-binding announcement-description" ng-if="announcementDetails.sourceId">
+        <div class="ng-binding announcement-description padding-top-10" ng-if="announcementDetails.sourceId">
             {{announcementDetails.sourceId}}
         </div>
-        <div class="padding-top-10" ng-if="announcementDetails.description">
+        <div class="padding-top-20" ng-if="announcementDetails.description">
             {{announcementDetails.description}}
         </div>
     </div>
     <div ng-if="announcementDetails.links.length">
-        <div class="padding-top-10">
+        <div class="padding-top-20">
             <strong class="annMediumText ng-binding">
                 {{$root.frmelmnts.lbl.anncmntdtlsweblinks}}
             </strong>
         </div>
-        <div class="padding-top-7 tweleve wide column">
+        <div class="padding-top-10 tweleve wide column">
             <div ng-repeat="link in announcementDetails.links track by $index">
                 <p>
                     <a href="{{link}}" target="_blank">
@@ -41,12 +41,12 @@
         </div>
     </div>
     <div ng-if="announcementDetails.attachments.length">
-        <div class="padding-top-10">
+        <div class="padding-top-20">
             <strong class="annMediumText ng-binding">
                 {{$root.frmelmnts.lbl.anncmntdtlsattachments}}
             </strong>
         </div>
-        <div class="sixteen wide column margin-bottom-20 padding-top-10">
+        <div class="sixteen wide column margin-bottom-20 padding-top-20">
             <div class="ui items">
                 <div class="ui item box" ng-repeat="attachment in announcementDetails.attachments track by $index">
                     <div class="ui tiny image">
