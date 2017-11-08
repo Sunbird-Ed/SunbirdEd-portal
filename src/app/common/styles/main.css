@@ -1816,11 +1816,6 @@ div:focus {
 .ui.card > .sliderCards.content.CardcontentTopPadding {
   padding-top: 50px !important;
 }
-.ui.card > :first-child,
-.ui.cards > .profilUpdateCards.card > :first-child {
-  border: 0.5px solid rgba(151, 151, 151, 0.54) !important;
-  border-radius: 4px !important;
-}
 .profileUpdateCardContentHeight {
   height: 100px;
   max-height: 100px;
@@ -2749,6 +2744,9 @@ ul.fancytree-container li {
 .ProfilePermissionBtnTop {
   top: 17px !important;
 }
+.ui.addSkillsMarginCursor.multiple.dropdown > .label {
+  margin: 1.1285714rem .28571429rem .14285714rem 0 !important;
+}
 .workspaceicon.ui.header > .icon {
   padding-top: 0;
   float: left;
@@ -3207,6 +3205,10 @@ span.dashBoardMenuItem.active {
 }
 .cousreDashboardAlignIcon {
   margin-left: -30px !important;
+}
+.ui.ordered.list .list > .item:before,
+ol.ui.list ol li:before {
+  margin-left: -2.5em !important;
 }
 body {
   position: relative !important;
