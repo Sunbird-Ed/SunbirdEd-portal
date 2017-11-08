@@ -1926,6 +1926,9 @@ div:focus {
   font-weight: 600 !important;
   font-family: sunbirdmediumfont !important;
 }
+.opacity04 {
+  opacity: 0.4 !important;
+}
 .annSmallText {
   font-size: 0.8em !important;
 }
