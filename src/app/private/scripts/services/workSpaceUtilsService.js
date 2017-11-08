@@ -169,4 +169,18 @@ angular.module('playerApp')
         return this.baseUrl + 'content' + '/' + cData.identifier + '/' + config.UNLISTED_CONTENT_TYPE
       }
     }
+
+    /**
+     * @method hideRemoveModel
+     * @desc hide the remove conetent model.
+     * @memberOf Services.workSpaceUtilsService
+     * @param {string}  modelId - Id of the model
+     * @instance
+     */
+    this.hideRemoveModel = function (modelId) {
+      $(modelId).modal('hide')
+      $(modelId).modal('hide all')
+      $(modelId).modal('hide other')
+      $(modelId).modal('hide dimmer')
+    }
   }])

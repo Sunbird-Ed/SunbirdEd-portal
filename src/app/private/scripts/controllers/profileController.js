@@ -117,7 +117,10 @@ angular.module('playerApp')
                         $rootScope.profileMissingFields = profileData.missingFields;
                     }
                     if (profile.user.profileVisibility) {
-                        $rootScope.privateProfileFields = Object.keys(profile.user.profileVisibility) || [];
+                        $rootScope.privateProfileFields = Object.keys(profile.user.profileVisibility);
+                    }
+                    else{
+                        $rootScope.privateProfileFields = []
                     }
 
                     if (profile.user.webPages) {
@@ -824,6 +827,8 @@ angular.module('playerApp')
                 }
                 userService.updateProfileFieldVisibility(req).then(function (response) {
                     if (response && response.responseCode === 'OK') {
+                        profile.privateProfileFields = []
+                        profile.publicProfileFields = []
                         toasterService.success($rootScope.messages.smsg.m0040);
                     } else {
                         toasterService.error($rootScope.messages.fmsg.m0048);
