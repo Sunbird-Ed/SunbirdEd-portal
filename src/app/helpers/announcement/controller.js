@@ -103,7 +103,7 @@ class AnnouncementController {
         'type': Joi.string().required(),
         'description': Joi.string().required(),
         'target': Joi.object().min(1).pattern(/\w/, Joi.string().required()).required(),
-        'links': Joi.array().items(Joi.string().required()) // optional
+        'links': Joi.array().items(Joi.string().required())
       }).required()
     }), { abortEarly: false })
 
@@ -214,7 +214,7 @@ class AnnouncementController {
         }
       }
 
-      this.objectStoreRest.findObject(query)
+      this.objectStoreRest.findObject(query, true)
         .then((data) => {
           if (!_.isObject(data)) {
             reject({ msg: 'unable to fetch announcement', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
@@ -245,7 +245,7 @@ class AnnouncementController {
         }
       }
 
-      this.objectStoreRest.findObject(query)
+      this.objectStoreRest.findObject(query, true)
         .then((data) => {
           if (!_.isObject(data)) {
             reject({ msg: 'unable to fetch announcement types', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
@@ -318,7 +318,7 @@ class AnnouncementController {
 
       try {
         let data = await (new Promise((resolve, reject) => {
-            this.objectStoreRest.findObject(query)
+            this.objectStoreRest.findObject(query, true)
             .then((data) => {
               if (!_.isObject(data)) {
                 reject({ msg: 'unable to fetch announcement inbox', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
@@ -360,7 +360,7 @@ class AnnouncementController {
         }
       }
 
-      this.objectStoreRest.findObject(query)
+      this.objectStoreRest.findObject(query, true)
         .then((data) => {
           if (!_.isObject(data)) {
             reject({ msg: 'unable to fetch sent announcements', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
@@ -396,19 +396,18 @@ class AnnouncementController {
         table: this.objectStoreRest.MODEL.ATTACHMENT,
         values: {
           'id': attachmentId,
-          'file': requestObj.file.buffer.toString('utf8'),
+          'file': requestObj.file.buffer.toString('base64'),
           'filename': requestObj.file.originalname,
           'mimetype': requestObj.file.mimetype,
           'status': 'created',
-          'createddate': dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo")
+          'createddate': dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo"),
         }
       }
-
       if (!_.isEmpty(requestObj.body.createdBy)) query.values.createdby = requestObj.body.createdBy
 
       try {
         return await (new Promise((resolve, reject) => {
-          this.objectStoreRest.createObject(query)
+          this.objectStoreRest.createObject(query, false)
           .then((data) => {
             if (!_.isObject(data)) {
               reject()
