@@ -3,29 +3,27 @@
 angular.module('playerApp')
   .controller('announcementOutboxListController', ['$rootScope', '$scope',
     'announcementService', '$timeout', '$state', '$stateParams', 'toasterService', 'adminService',
-    function ($rootScope, $scope, announcementService, $timeout, $state, $stateParams, toasterService, adminService) {
+    function($rootScope, $scope, announcementService, $timeout, $state, $stateParams, toasterService, adminService) {
       var announcementOutboxData = this
       announcementOutboxData.showLoader = true
 
-      announcementOutboxData.renderAnnouncementList = function () {
-        // ~ announcementService.getAnnouncementList().then(function (apiResponse) {
+      announcementOutboxData.renderAnnouncementList = function() {
+        announcementService.getOutBoxAnnouncementList($rootScope.userId).then(function(apiResponse) {
+            apiResponse = apiResponse.data
 
-        // ~ if (apiResponse && apiResponse.responseCode === 'OK') {
-        // ~ } else {
-        // ~ toasterService.error(apiResponse.params.errmsg);
-        // ~ announcementOutboxData.showDataDiv = false;
-        // ~ }
-        // ~ })
-        // ~ .catch(function (err) {
-        // ~ console.log(err);
-        // ~ })
-        // ~ .finally(function () {
-        // ~ announcementOutboxData.showLoader = false;
-        // ~ });
-
-        announcementOutboxData.listData = announcementService.getOutBoxAnnouncementList()
-        announcementOutboxData.listData = announcementOutboxData.listData.result.announcements
-        announcementOutboxData.showLoader = false
+            if (apiResponse && apiResponse.responseCode === 'OK') {
+              announcementOutboxData.listData = apiResponse.result.announcements
+            } else {
+              toasterService.error(apiResponse.params.errmsg)
+              // announcementOutboxData.showDataDiv = false
+            }
+          })
+          .catch(function(err) {
+            toasterService.error(err.data.params.errmsg)
+          })
+          .finally(function() {
+            announcementOutboxData.showLoader = false
+          });
       }
     }
 

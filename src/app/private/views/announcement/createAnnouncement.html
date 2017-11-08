@@ -51,7 +51,7 @@
                 </div>
                 <div class="field required dropdown-margin-left">
                   <label>{{$root.frmelmnts.lbl.anncmntfrom}}</label>
-                  <select name="announcementFrom" class="ui fluid search dropdown" id="orgDropdown" ng-options="org for org in createAnn.org" ng-model="createAnn.data.from">
+                  <select name="announcementFrom" class="ui fluid dropdown" id="orgDropdown" ng-options="org for org in createAnn.org" ng-model="createAnn.data.from">
                     <option value="">{{$root.frmelmnts.instn.t0050}}</option>
                   </select>
                 </div>
@@ -131,7 +131,7 @@
     </button>
     <div class="ui primary button" ng-if="createAnn.stepNumber == 2" ng-click="createAnn.confirmRecipients();createAnn.stepNumber = 3">{{$root.frmelmnts.btn.anncmntconfirmrecipients}}</div>
     <div class="ui primary button" ng-if="createAnn.stepNumber == 3" ng-click="createAnn.previewAnn();createAnn.stepNumber = 4;">{{$root.frmelmnts.btn.anncmntpreview}}</div>
-    <div class="ui primary button" ng-if="createAnn.stepNumber == 4" id="sendAnnouncement">{{$root.frmelmnts.btn.anncmntsendanncmnt}}</div>
+    <div class="ui primary button" ng-if="createAnn.stepNumber == 4" id="sendAnnouncement" ng-click=" createAnn.saveAnnouncement(createAnn.data)">{{$root.frmelmnts.btn.anncmntsendanncmnt}}</div>
     <div ng-if="createAnn.stepNumber == 1" class="ui primary button" ng-class="{'disabled': createAnn.disableBtn === true || announcementForm.$invalid}" ng-click="createAnn.selectRecipients();createAnn.stepNumber = 2;">{{$root.frmelmnts.btn.anncmntselectrecipients}}</div>
   </div>
 </div>
