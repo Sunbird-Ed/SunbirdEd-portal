@@ -1857,15 +1857,10 @@ div:focus {
   left: 10% !important;
 }
 .announcementBlueText {
-  color: #0076FE;
+  color: #009FDA;
 }
 .announcementRedText {
   color: #fc002e;
-}
-.announcementCustomside {
-  min-width: 0em !important;
-  height: 4em !important;
-  padding: 1em !important;
 }
 .announcementCardLeftBorder {
   border-radius: 10px !important;
@@ -1879,26 +1874,30 @@ div:focus {
 }
 .showingAllSentAnn {
   color: #4A4A4A;
-  font-family: "Open Sans";
-  font-size: 17px;
+  font-family: 'sunbirdregularfont' !important;
+  font-size: 15px;
   line-height: 19px;
 }
-.announcementHeading {
+.annSectionHeading {
+  font-family: 'sunbirdboldfont' !important;
+  font-size: 1.4em !important;
+}
+.announcementTableHeading {
   color: #9b9b9b !important;
-  font-family: "Open Sans" !important;
-  font-size: 16px !important;
+  font-family: 'sunbirdregularfont' !important;
+  font-size: 15px !important;
   line-height: 19px !important;
 }
 .tableListNameAnn {
   color: #4A4A4A;
-  font-family: "Open Sans";
-  font-size: 16px;
+  font-family: 'sunbirdregularfont' !important;
+  font-size: 14px;
   line-height: 19px;
 }
 .announcementDataText {
   color: #4A4A4A;
-  font-family: "Open Sans";
-  font-size: 17px;
+  font-family: 'sunbirdregularfont' !important;
+  font-size: 15px;
   line-height: 19px;
 }
 .announcementButton {
@@ -1941,9 +1940,9 @@ div:focus {
 .box {
   box-shadow: 0 1px 2px 0 rgba(34, 36, 38, 0.15);
   margin: 1rem 0;
-  padding: 1em 1em;
-  border-radius: .28571429rem;
-  border: 1px solid rgba(34, 36, 38, 0.15);
+  padding: 1em 1em !important;
+  border-radius: .28571429rem !important;
+  border: 1px solid rgba(34, 36, 38, 0.15) !important;
 }
 .ui.modal .ui.input input.gray-background {
   background-color: #F5F5F5 !important;
@@ -1957,14 +1956,6 @@ div:focus {
 }
 .width-100 {
   width: 100%;
-}
-.borderBottom {
-  border-bottom: 1px solid #CCCCCC !important;
-  padding-bottom: 15px !important;
-}
-.borderBottom:last-child {
-  border-bottom: 0 !important;
-  padding-bottom: 0 !important;
 }
 .announcementDetailsModal {
   margin-top: -260px !important;
