@@ -175,7 +175,7 @@ class AnnouncementController {
         }
       }
 
-      this.objectStoreRest.createObject(query, true)
+      this.objectStoreRest.createObject(query)
         .then((data) => {
           if (!_.isObject(data)) {
             reject({ msg: 'unable to create announcement' })
@@ -216,7 +216,7 @@ class AnnouncementController {
         }
       }
 
-      this.objectStoreRest.findObject(query, true)
+      this.objectStoreRest.findObject(query)
         .then((data) => {
           if (!_.isObject(data)) {
             reject({ msg: 'unable to fetch announcement', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
@@ -247,7 +247,7 @@ class AnnouncementController {
         }
       }
 
-      this.objectStoreRest.findObject(query, true)
+      this.objectStoreRest.findObject(query)
         .then((data) => {
           if (!_.isObject(data)) {
             reject({ msg: 'unable to fetch announcement types', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
@@ -320,7 +320,7 @@ class AnnouncementController {
 
       try {
         let data = await (new Promise((resolve, reject) => {
-            this.objectStoreRest.findObject(query, true)
+            this.objectStoreRest.findObject(query)
             .then((data) => {
               if (!_.isObject(data)) {
                 reject({ msg: 'unable to fetch announcement inbox', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
@@ -362,7 +362,7 @@ class AnnouncementController {
         }
       }
 
-      this.objectStoreRest.findObject(query, true)
+      this.objectStoreRest.findObject(query)
         .then((data) => {
           if (!_.isObject(data)) {
             reject({ msg: 'unable to fetch sent announcements', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
