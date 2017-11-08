@@ -402,14 +402,14 @@ class AnnouncementController {
           'filename': requestObj.file.originalname,
           'mimetype': requestObj.file.mimetype,
           'status': 'created',
-          'createddate': dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo"),
+          'createddate': dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo")
         }
       }
       if (!_.isEmpty(requestObj.body.createdBy)) query.values.createdby = requestObj.body.createdBy
-
+      let indexStore = false;
       try {
         return await (new Promise((resolve, reject) => {
-          this.objectStoreRest.createObject(query, false)
+          this.objectStoreRest.createObject(query, indexStore)
           .then((data) => {
             if (!_.isObject(data)) {
               reject()
