@@ -66,6 +66,7 @@ angular.module('playerApp').controller('SearchResultController', [
         $('#headerSearch').dropdown('set selected',
                     $scope.search.isSearchTypeKey === true
                     ? $rootScope.search.selectedSearchKey : 'All')
+                    $rootScope.search.searchKeyword = ''
       }, 0)
     })
     var initSearchHandler = $rootScope.$on('initSearch', function (event, args) {
@@ -493,6 +494,6 @@ angular.module('playerApp').controller('SearchResultController', [
       var ct = _.filter(contentTypes, function (contentType) {
         return contentType.key === selectedContentType
       })
-      return ct[0].value
+      return ct ? ct[0].value : ''
     }
   }])
