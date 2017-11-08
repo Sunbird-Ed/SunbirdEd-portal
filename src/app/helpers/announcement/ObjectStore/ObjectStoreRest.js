@@ -30,7 +30,7 @@ class ObjectStoreRest extends ObjectStore {
         },
         json: true
       }
-      if (!indexStore) {
+      if (indexStore) {
           options.body.request = _.omit(options.body.request, ['documentName']);
       }
       try {
