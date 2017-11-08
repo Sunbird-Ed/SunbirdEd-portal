@@ -7,24 +7,24 @@
           <span class="ui header">
             <span class="ui" ng-show="createAnn.stepNumber == 1">
               <span class="text announcementHeadingSection">{{$root.frmelmnts.lbl.createnewanncmnt}}</span>
-              <br/>
-            <span class="createAnnHeaderDesc">{{$root.frmelmnts.lbl.createnewanncmntdesc}}</span>
-            </span>
-            <span class="ui" ng-show="createAnn.stepNumber == 2">
+          <br/>
+          <span class="createAnnHeaderDesc">{{$root.frmelmnts.lbl.createnewanncmntdesc}}</span>
+          </span>
+          <span class="ui" ng-show="createAnn.stepNumber == 2">
               <span class="text announcementHeadingSection">{{$root.frmelmnts.lbl.selectrecipient}}</span>
-              <br/>
-              <span class="createAnnHeaderDesc">{{$root.frmelmnts.lbl.selectrecipientdesc}}</span>
-            </span>
-            <span ng-show="createAnn.stepNumber == 3">
+          <br/>
+          <span class="createAnnHeaderDesc">{{$root.frmelmnts.lbl.selectrecipientdesc}}</span>
+          </span>
+          <span ng-show="createAnn.stepNumber == 3">
               <span class="text announcementHeadingSection">{{$root.frmelmnts.lbl.confirmrecipient}}</span>
-              <br/>
-              <span class="createAnnHeaderDesc">{{$root.frmelmnts.lbl.confirmrecipientdesc}}</span>
-            </span>
-            <span ng-show="createAnn.stepNumber == 4">
+          <br/>
+          <span class="createAnnHeaderDesc">{{$root.frmelmnts.lbl.confirmrecipientdesc}}</span>
+          </span>
+          <span ng-show="createAnn.stepNumber == 4">
               <span class="text announcementHeadingSection">{{$root.frmelmnts.lbl.previewanncmnt}}</span>
-              <br/>
-              <span class="createAnnHeaderDesc">{{$root.frmelmnts.lbl.previewanncmntdesc}}</span>
-            </span>
+          <br/>
+          <span class="createAnnHeaderDesc">{{$root.frmelmnts.lbl.previewanncmntdesc}}</span>
+          </span>
           </span>
         </div>
         <div class="two wide column">
@@ -75,7 +75,7 @@
                   <div class="field" data-ng-repeat="weblink in createAnn.repeatableWebLinks">
                     <div class="ui action input">
                       <input type="url" ng-model="createAnn.data.link[$index]" name="link_{{$index}}" placeholder="{{$root.frmelmnts.instn.t0053}}" ng-change="createAnn.enableRecepientBtn()">
-                      <i class="trash icon createAnnBlueClass" ng-click="createAnn.removeLink($index)"></i>
+                      <i class="trash icon createAnnBlueClass margin-top-10" ng-click="createAnn.removeLink($index)"></i>
                     </div>
                     <section ng-show="announcementForm['link_' + $index].$error.url" class="createAnnErrorMsg">Not a valid URL</section>
                   </div>
@@ -105,17 +105,17 @@
           <div class="ui info message">
             <i class="close icon"></i>
             <parent config="createAnn.config">
-            	<geo></geo>
+              <geo></geo>
             </parent>
           </div>
         </div>
         <div ng-show="createAnn.stepNumber == 3" class="ui list ui grid">
-          	<div class="eight wide column">
-				<div class="ui message" ng-repeat= "item in createAnn.selectedReciepeient">
-	                <i class="close icon" ng-click = 'createAnn.removeRicipients(item)'></i>
-	                <span class="createAnnSelectedRecepient">{{item.location}}</span>
-	            </div>
-          	</div>
+          <div class="eight wide column">
+            <div class="ui message" ng-repeat="item in createAnn.selectedReciepeient">
+              <i class="close icon" ng-click='createAnn.removeRicipients(item)'></i>
+              <span class="createAnnSelectedRecepient">{{item.location}}</span>
+            </div>
+          </div>
         </div>
         <div ng-show="createAnn.stepNumber == 4" class="ui grid">
           <div class="box width-100 eight wide column margin-left-17 createAnnFormScroller">
@@ -126,10 +126,10 @@
     </div>
   </div>
   <div class="actions">
-    <button class="ui primary basic button announcementButton createAnnBackBtnWidth float-ContentLeft" id="annBackBtn" ng-hide="createAnn.stepNumber == 1" ng-click="createAnn.previousStep();" data-current-state="{{createAnn.stepNumber}}">
+    <button class="ui primary basic button announcementButton createAnnBackBtnWidth float-ContentLeft" id="annBackBtn" ng-hide="createAnn.stepNumber == 1" ng-click="createAnn.stepNumber = createAnn.stepNumber - 1 " data-current-state="{{createAnn.stepNumber}}">
       <span class="announcementButtonText">{{$root.frmelmnts.btn.back}}</span>
     </button>
-    <div class="ui primary button" ng-if="createAnn.stepNumber == 2" ng-click="createAnn.confirmRecipients();createAnn.stepNumber = 3">{{$root.frmelmnts.btn.anncmntconfirmrecipients}}</div>
+    <div class="ui primary button" ng-if="createAnn.stepNumber == 2" ng-click="createAnn.confirmRecipients();">{{$root.frmelmnts.btn.anncmntconfirmrecipients}}</div>
     <div class="ui primary button" ng-if="createAnn.stepNumber == 3" ng-click="createAnn.previewAnn();createAnn.stepNumber = 4;">{{$root.frmelmnts.btn.anncmntpreview}}</div>
     <div class="ui primary button" ng-if="createAnn.stepNumber == 4" id="sendAnnouncement" ng-click=" createAnn.saveAnnouncement(createAnn.data)">{{$root.frmelmnts.btn.anncmntsendanncmnt}}</div>
     <div ng-if="createAnn.stepNumber == 1" class="ui primary button" ng-class="{'disabled': createAnn.disableBtn === true || announcementForm.$invalid}" ng-click="createAnn.selectRecipients();createAnn.stepNumber = 2;">{{$root.frmelmnts.btn.anncmntselectrecipients}}</div>

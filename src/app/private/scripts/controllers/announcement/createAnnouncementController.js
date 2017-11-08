@@ -4,40 +4,19 @@ angular.module('playerApp')
   .controller('createAnnouncementCtrl', ['$rootScope', '$scope', '$timeout', '$state', '$stateParams', 'config', 'toasterService',
     'permissionsService', 'dashboardService', 'announcementService',
     function ($rootScope, $scope, $timeout, $state, $stateParams, config, toasterService, permissionsService, dashboardService, announcementService) {
-      // Initialize variables
       var createAnn = this
 
-      // todo - use api to get values
       createAnn.org = ['Org 1', 'Org 2', 'Org 3']
       createAnn.announcementType = ['Type 1', 'Type 2', 'Type 3']
       createAnn.disableBtn = true
       createAnn.showUrlField = false
-      createAnn.isLastStep = false
-      createAnn.saveMeta = false
       createAnn.errorFlag = false
       createAnn.repeatableWebLinks = []
       createAnn.isMetaModified = false
       createAnn.stepNumber = 1
+      createAnn.attachment = []
       createAnn.data = {}
 
-      createAnn.config = {
-        'geo': {
-          'adopter': 'SERVICE',
-          'service': 'geoService'
-        }
-      }
-
-      createAnn.removeRicipients = function (item) {
-        _.remove(createAnn.selectedReciepeient, function (arg) {
-          if (arg.location == item.location) {
-            item.selected = false,
-              toasterService.info(item.location + ' location is removed sucessfully.')
-            return arg.location
-          }
-        })
-      }
-
-      // Initialize modal
       createAnn.initializeModal = function () {
         $timeout(function () {
           $('#announcementType').dropdown({
@@ -58,6 +37,7 @@ angular.module('playerApp')
         $rootScope.$on('selected:items', function (evet, data) {
           console.info('data', data)
           createAnn.selectedReciepeient = data.geo
+          console.log(createAnn.selectedReciepeient.length)
         })
       }
 
@@ -65,19 +45,11 @@ angular.module('playerApp')
         $rootScope.$emit('component:init')
         $('#createAnnouncementModal').modal({
           closable: false,
+          allowMultiple: true,
           onHide: function () {
-            // todo - Show confirmation before closing modal
-            // if (!createAnn.isLastStep && !createAnn.saveMeta) {
-            	if (!createAnn.saveMeta) {
-              if (createAnn.isMetaModified && confirm('Changes that you made may not be saved.')) {
-                createAnn.refreshFormValues()
-                return true
-              }
-
-              if (!createAnn.isMetaModified) {
-                return true
-              }
-              return false
+            if (createAnn.isMetaModified && confirm('Changes that you made may not be saved.')) {
+              createAnn.refreshFormValues()
+              return true
             }
             return true
           }
@@ -96,28 +68,43 @@ angular.module('playerApp')
         createAnn.showUrlField = createAnn.repeatableWebLinks.length != '0'
       }
 
-      // Function to track back button change
-      createAnn.previousStep = function () {
-        createAnn.stepNumber--
-      }
-
-      // Function to preview announcement
       createAnn.previewAnn = function () {
         var linkArray = []
         angular.forEach(createAnn.data.link, function (value, key) {
           linkArray.push(value)
         })
-        // todo - show announcement preview
+
         createAnn.previewData = { 'type': createAnn.data.type, 'links': linkArray, 'title': createAnn.data.title, 'description': createAnn.data.description, 'target': ['teachers'], 'attachments': [{ 'title': 'circular.pdf', 'downloadURL': 'https://linktoattachment', 'mimetype': 'application/pdf' }] }
       }
 
-      // Function to confirm recipients
-      createAnn.confirmRecipients = function () {
-        $rootScope.$emit('get:selected:items')
-        // todo - get select ricipients
+      createAnn.removeRicipients = function (item) {
+        _.remove(createAnn.selectedReciepeient, function (arg) {
+          if (arg.location == item.location) {
+            item.selected = false,
+              toasterService.info(item.location + ' location is removed sucessfully.')
+            return arg.location
+          }
+        })
+        createAnn.confirmRecipients()
       }
 
-      // Function to enable / disable RecepientBtn
+      createAnn.config = {
+        'geo': {
+          'adopter': 'SERVICE',
+          'service': 'geoService'
+        }
+      }
+
+      createAnn.confirmRecipients = function () {
+        $rootScope.$emit('get:selected:items')
+        if (createAnn.selectedReciepeient.length == 0) {
+          createAnn.stepNumber = 2
+          toasterService.error('Select recipients')
+          return
+        }
+        createAnn.stepNumber = 3
+      }
+
       createAnn.enableRecepientBtn = function () {
         if (createAnn.data.title && createAnn.data.from &&
           createAnn.data.type &&
@@ -131,7 +118,6 @@ angular.module('playerApp')
 
       createAnn.refreshFormValues = function () {
         createAnn.disableBtn = true
-        createAnn.saveMeta = false
         createAnn.stepNumber = 1
         $('#announcementType').dropdown('restore defaults')
         $('#orgDropdown').dropdown('restore defaults')
@@ -144,11 +130,10 @@ angular.module('playerApp')
       }
 
       createAnn.saveAnnouncement = function (data) {
-        // todo - call save announcement api
-        createAnn.saveMeta = true
         var requestBody = angular.copy(data)
         requestBody.sourceId = $rootScope.rootOrgId
         requestBody.createdBy = $rootScope.userId
+        requestBody.target = _.fromPairs(_.map(createAnn.selectedReciepeient, i => [i.location, i.location]))
         if (requestBody.links) {
           requestBody.links = _.values(requestBody.links)
         }
@@ -158,31 +143,31 @@ angular.module('playerApp')
         console.log(requestData)
         announcementService.createAnnouncement(requestData).then(function (apiResponse) {
           console.log(apiResponse)
-          	if (apiResponse && apiResponse.responseCode === 'OK') {
-          		createAnn.refreshFormValues()
-          		$(createAnnouncementModal).modal('hide')
-            		$('#announcementSuccessModal').modal({
-              		closable: false
-            		}).modal('show')
+          if (apiResponse && apiResponse.responseCode === 'OK') {
+            createAnn.refreshFormValues()
+            $(createAnnouncementModal).modal('hide')
+            $('#announcementSuccessModal').modal({
+              closable: false
+            }).modal('show')
           } else {
-           	createAnn.showError(apiResponse)
+            createAnn.showError(apiResponse)
           }
         }).catch(function (apiResponse) {
-          	createAnn.showError(apiResponse)
+          createAnn.showError(apiResponse)
         })
       }
 
       createAnn.showError = function (apiResponse) {
-      	createAnn.errorFlag = true
-      	if (apiResponse.responseCode === 'CLIENT_ERROR' && angular.isArray(apiResponse.params.errmsg)) {
-      		angular.forEach(apiResponse.params.errmsg, function (value, key) {
-          			toasterService.error(value.description)
-        		})
-      	} else {
-      		toasterService.error(apiResponse.params.errmsg)
-      	}
+        createAnn.errorFlag = true
+        if (apiResponse.responseCode === 'CLIENT_ERROR' && angular.isArray(apiResponse.params.errmsg)) {
+          angular.forEach(apiResponse.params.errmsg, function (value, key) {
+            toasterService.error(value.description)
+          })
+        } else {
+          toasterService.error(apiResponse.params.errmsg)
+        }
       }
-      createAnn.attachment = []
+
       createAnn.initializeFileUploader = function () {
         $timeout(function () {
           createAnn.manualUploader = new qq.FineUploader({
