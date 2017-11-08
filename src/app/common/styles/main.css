@@ -1967,6 +1967,9 @@ div:focus {
   max-height: 80vh;
   overflow-y: auto;
 }
+.btn-width-26 {
+  width: 26%;
+}
 .down-arrow-accordion {
   float: right !important;
   font-size: large !important;
