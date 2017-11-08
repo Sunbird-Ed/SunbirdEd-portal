@@ -400,6 +400,7 @@ angular.module('playerApp').controller('SearchResultController', [
     $rootScope.search.getUserRoles = function () {
       if (!$rootScope.search.userRoles) {
         $rootScope.search.userRoles = permissionsService.allRoles()
+        $rootScope.search.userRoles = _.sortBy($rootScope.search.userRoles, 'roleName')
       }
     }
 
@@ -412,7 +413,7 @@ angular.module('playerApp').controller('SearchResultController', [
         $rootScope.search.filters.contentType = undefined
         $rootScope.search.filters.orgType = undefined
         $rootScope.search.filters.grade = $rootScope.search.selectedGrades
-        $rootScope.search.filters.location = $rootScope.search.selectedLocation
+        $rootScope.search.filters.location = ($rootScope.search.selectedLocation.trim() !== '') ? $rootScope.search.selectedLocation.trim() : undefined
         $rootScope.search.filters['organisations.roles'] = $rootScope.search.selectedRoles
       } else if ($rootScope.search.selectedSearchKey === 'Organisations') {
         $rootScope.search.filters = {}
