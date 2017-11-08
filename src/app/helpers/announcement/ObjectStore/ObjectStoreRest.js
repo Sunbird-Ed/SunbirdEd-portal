@@ -30,7 +30,7 @@ class ObjectStoreRest extends ObjectStore {
         },
         json: true
       }
-      if (!indexStore) {
+      if (indexStore == false) {
           options.body.request = _.omit(options.body.request, ['documentName']);
       }
       try {
@@ -55,19 +55,19 @@ class ObjectStoreRest extends ObjectStore {
         uri: envVariables.DATASERVICE_URL + 'data/v1/object/search',
         body: {
           request: {
-            'filters': data.query
+            'filters': data.query,
+            'documentName':data.table,
           }
         },
         json: true
       }
-      if (indexStore){
-          options.body.request.documentName = data.table;
-      } else {
+      if (indexStore == false) {
+          options.body.request = _.omit(options.body.request, ['documentName']);
           options.body.request.tableName = data.table;
       }
+
       try {
         let result = await (this.httpService(options))
-        console.log("body.result",result.body);
         if (_.get(result, 'body.result.response.count') > 0) {
           return { data: _.get(result, 'body.result.response.content'), status: 'success' }
         } else {
@@ -130,7 +130,6 @@ class ObjectStoreRest extends ObjectStore {
       if (!options) reject('options required!')
       options.headers = options.headers || this.getRequestHeader()
       webService(options, (error, response, body) => {
-        console.log("statusCode",response.statusCode)
         if (error || response.statusCode >= 400) {
           reject(error)
         } else {
