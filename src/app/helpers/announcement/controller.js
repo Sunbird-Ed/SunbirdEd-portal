@@ -175,7 +175,7 @@ class AnnouncementController {
         }
       }
 
-      this.objectStoreRest.createObject(query)
+      this.objectStoreRest.createObject(query, true)
         .then((data) => {
           if (!_.isObject(data)) {
             reject({ msg: 'unable to create announcement' })
