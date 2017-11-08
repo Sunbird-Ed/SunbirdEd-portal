@@ -12,6 +12,7 @@ angular.module('playerApp')
       createAnn.showUrlField = false
       createAnn.errorFlag = false
       createAnn.repeatableWebLinks = []
+      createAnn.attachmentEndPoint =  config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + config.URL.ATTACHMENT.UPLOAD
       createAnn.isMetaModified = false
       createAnn.stepNumber = 1
       createAnn.attachment = []
@@ -28,16 +29,13 @@ angular.module('playerApp')
           $('#orgDropdown').dropdown({
             // allowAdditions: true,
             onChange: function (value, text, $choice) {
-              console.log($choice)
               createAnn.enableRecepientBtn()
             }
           })
         }, 100)
 
         $rootScope.$on('selected:items', function (evet, data) {
-          console.info('data', data)
           createAnn.selectedReciepeient = data.geo
-          console.log(createAnn.selectedReciepeient.length)
         })
       }
 
@@ -140,9 +138,7 @@ angular.module('playerApp')
         var requestData = {
           request: requestBody
         }
-        console.log(requestData)
         announcementService.createAnnouncement(requestData).then(function (apiResponse) {
-          console.log(apiResponse)
           if (apiResponse && apiResponse.responseCode === 'OK') {
             createAnn.refreshFormValues()
             $(createAnnouncementModal).modal('hide')
@@ -177,7 +173,8 @@ angular.module('playerApp')
             debug: true,
             paramsInBody: true,
             request: {
-              endpoint: 'http://localhost:3000/api/announcement/v1/attachment/upload',
+              // endpoint: 'http://localhost:3000/api/announcement/v1/attachment/upload',
+              endpoint: createAnn.attachmentEndPoint,
               inputName: 'document',
               params: { 'createdBy': $rootScope.userId }
             },
@@ -200,7 +197,7 @@ angular.module('playerApp')
             },
             callbacks: {
               onComplete: function (id, name, responseJSON, xhr) {
-                console.log('AAAA:', responseJSON)
+                console.log('Upload response:', responseJSON)
                 if (responseJSON.responseCode === 'OK' && responseJSON.result.attachment) {
                   createAnn.attachment.push(responseJSON.result.attachment.id)
                   createAnn.enableRecepientBtn()
