@@ -31,7 +31,7 @@
         <div class="padding-top-20" ng-if="item.links.length > 0">
             <div ng-repeat="links in item.links track by $index">
                 <div ng-if="$first">
-                    <i class="linkify icon large contentFloatLeft">
+                    <i class="linkify icon opacity04">
                     </i>
                     <span class="ng-binding announcementBlueText cursor-pointer">
                         {{links | limitTo:70}}
@@ -41,30 +41,30 @@
                     </span>
                 </div>
                 <div ng-if="$last">
-                    <span class="margin-left-30 announcement-description" ng-if="(item.links.length - 1) > 0">
+                    <span class="margin-left-30 announcement-description annSmallText" ng-if="(item.links.length - 1) > 0">
                         +{{item.links.length - 1}} more weblink(s)
                     </span>
                 </div>
             </div>
         </div>
-        <div class="padding-top-20" ng-if="item.attachments.length > 0">
+        <div class="padding-top-10" ng-if="item.attachments.length > 0">
             <div ng-repeat="attachments in item.attachments track by $index">
                 <div ng-if="$first">
-                    <i class="file text outline icon large">
+                    <i class="file text outline icon opacity04">
                     </i>
                     <span class="ng-binding announcementBlueText cursor-pointer" ng-init="fileExtension = announcementInboxData.getFileExtension(attachments.mimetype)">
                         {{attachments.title | limitTo:30}}
                     </span>
                     <span class="announcement-description">
-                        ({{fileExtension}}, {{attachments.filesize}})
+                        <small>({{fileExtension}}, {{attachments.filesize}})</small>
                         <span ng-show="links.length > 30">
                             ...
                         </span>
                     </span>
                 </div>
                 <div ng-if="$last">
-                    <span class="margin-left-30 announcement-description" ng-if="(item.attachments.length - 1) > 0">
-                        +{{item.attachments.length - 1}} more attachment(s)
+                    <span class="margin-left-30 announcement-description annSmallText" ng-if="(item.attachments.length - 1) > 0">
+                        + {{item.attachments.length - 1}} more attachment(s)
                     </span>
                 </div>
             </div>
