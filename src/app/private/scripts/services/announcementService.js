@@ -88,6 +88,6 @@ angular.module('playerApp')
              * @instance
              */
             this.createAnnouncement = function(req) {
-                return httpServiceJava.post('announcement/v1/create', req)
+                return httpServiceJava.post(config.URL.ANNOUNCEMENT.CREATE, req)
             }
   }])
