@@ -36,9 +36,7 @@ angular.module('playerApp')
             profile.contentSortBy = 'desc';
             profile.quantityOfContent = 4;
             profile.badges = [];
-            $rootScope.privateProfileFields = [];
-            profile.privateProfileFields = [];
-            profile.publicProfileFields = [];
+            profile.isViewMore = true;
 
             var orgIds = [];
             _.forEach($rootScope.organisations, function (org) {
@@ -118,6 +116,8 @@ angular.module('playerApp')
                     }
                     if (profile.user.profileVisibility) {
                         $rootScope.privateProfileFields = Object.keys(profile.user.profileVisibility);
+                    } else {
+                        $rootScope.privateProfileFields = [];
                     }
 
                     if (profile.user.webPages) {
@@ -263,11 +263,10 @@ angular.module('playerApp')
                             if (profile.user.socialMedia[key].url.length) {
                                 socialMediaLinks.push({
                                     type: key,
-                                    url: profile.user.socialMedia[key].url
+                                    url: profile.user.socialMedia[key].url.replace('/', '')
                                 });
                             }
                         });
-
                         return socialMediaLinks;
                     }
                     return [];
@@ -355,12 +354,12 @@ angular.module('playerApp')
             profile.addEducation = function (newEducation) {
                 var isValid = formValidation.validate('.educationForm');
                 if (isValid === true) {
-                    newEducation.percentage = newEducation.percentage ?
-                        parseFloat(newEducation.percentage) :
-                        0;
-                    newEducation.yearOfPassing = newEducation.yearOfPassing ?
-                        parseInt(newEducation.yearOfPassing) :
-                        0;
+                    newEducation.percentage = newEducation.percentage
+                        ? parseFloat(newEducation.percentage)
+                        : 0;
+                    newEducation.yearOfPassing = newEducation.yearOfPassing
+                        ? parseInt(newEducation.yearOfPassing)
+                        : 0;
                     profile.education.push(newEducation);
                     var req = { education: profile.education };
                     profile.updateUserInfo(
@@ -378,8 +377,8 @@ angular.module('playerApp')
                 if (isValid === true || !isValid.includes(false)) {
                     education.forEach(function (edu) {
                         edu.percentage = edu.percentage ? parseFloat(edu.percentage) : 0;
-                        edu.yearOfPassing = edu.yearOfPassing ? parseInt(edu.yearOfPassing) :
-                            0;
+                        edu.yearOfPassing = edu.yearOfPassing ? parseInt(edu.yearOfPassing)
+                            : 0;
                     });
                     var req = { education: education };
                     profile.updateUserInfo(
@@ -406,15 +405,15 @@ angular.module('playerApp')
                 if (isValid === true) {
                     var startDate = $('#rangestartAdd').calendar('get date');
                     var endDate = $('#rangeendAdd').calendar('get date');
-                    newExperience.isCurrentJob = newExperience.isCurrentJob ?
-                        newExperience.isCurrentJob === 'true' : null;
+                    newExperience.isCurrentJob = newExperience.isCurrentJob
+                        ? newExperience.isCurrentJob === 'true' : null;
                     endDate = newExperience.isCurrentJob ? null : endDate;
-                    newExperience.joiningDate = startDate instanceof Date ?
-                        $filter('date')(startDate, 'yyyy-MM-dd') :
-                        null;
-                    newExperience.endDate = endDate instanceof Date ?
-                        $filter('date')(endDate, 'yyyy-MM-dd') :
-                        null;
+                    newExperience.joiningDate = startDate instanceof Date
+                        ? $filter('date')(startDate, 'yyyy-MM-dd')
+                        : null;
+                    newExperience.endDate = endDate instanceof Date
+                        ? $filter('date')(endDate, 'yyyy-MM-dd')
+                        : null;
                     newExperience.userId = $rootScope.userId;
                     profile.experience.push(newExperience);
                     var req = { jobProfile: profile.experience };
@@ -435,19 +434,19 @@ angular.module('playerApp')
                             var startDate = $('.rangeStart').calendar('get date');
                             var endDate = $('.rangeEnd').calendar('get date');
                             if (startDate instanceof Array && endDate instanceof Array) {
-                                element.joiningDate = startDate ?
-                                    $filter('date')(startDate[index], 'yyyy-MM-dd') :
-                                    element.joiningDate;
-                                element.endDate = endDate ?
-                                    $filter('date')(endDate[index], 'yyyy-MM-dd') :
-                                    element.endDate;
+                                element.joiningDate = startDate
+                                    ? $filter('date')(startDate[index], 'yyyy-MM-dd')
+                                    : element.joiningDate;
+                                element.endDate = endDate
+                                    ? $filter('date')(endDate[index], 'yyyy-MM-dd')
+                                    : element.endDate;
                             } else {
-                                element.joiningDate = startDate ?
-                                    $filter('date')(startDate, 'yyyy-MM-dd') :
-                                    element.joiningDate;
-                                element.endDate = endDate ?
-                                    $filter('date')(endDate, 'yyyy-MM-dd') :
-                                    element.endDate;
+                                element.joiningDate = startDate
+                                    ? $filter('date')(startDate, 'yyyy-MM-dd')
+                                    : element.joiningDate;
+                                element.endDate = endDate
+                                    ? $filter('date')(endDate, 'yyyy-MM-dd')
+                                    : element.endDate;
                             }
                         }, this);
                     }
@@ -492,6 +491,7 @@ angular.module('playerApp')
             };
             profile.setDob = function () {
                 $('#editDob').calendar('set date', profile.user.dob);
+                $timeout(function () { $scope.dobVis = true; }, 100);
             };
 
             $timeout(function () {
@@ -789,46 +789,6 @@ angular.module('playerApp')
 
             profile.setLimit = function (lim) {
                 profile.limit = (lim <= 0) ? profile.userSkills.length : lim;
-            };
-
-            $rootScope.$on('profileVisibilityChange', function (event, profVisInfo) {
-                if (profVisInfo.visibility === 'private') {
-                    if (profile.privateProfileFields.indexOf(profVisInfo.field) === -1) {
-                        profile.privateProfileFields.push(profVisInfo.field);
-                    }
-                    _.remove(profile.publicProfileFields, function (v) { return v === profVisInfo.field; });
-                } else if (profVisInfo.visibility === 'public') {
-                    if (profile.publicProfileFields.indexOf(profVisInfo.field) === -1) {
-                        profile.publicProfileFields.push(profVisInfo.field);
-                    }
-                    _.remove(profile.privateProfileFields, function (v) { return v === profVisInfo.field; });
-                }
-                if (profVisInfo.update) {
-                    profile.updateProfVisFields();
-                }
-            });
-
-            profile.updateProfVisFields = function () {
-                var req = {
-                    request: {
-                        userId: profile.userId
-
-                    }
-                };
-
-                if (profile.privateProfileFields.length > 0) {
-                    req.request.private = profile.privateProfileFields;
-                }
-                if (profile.publicProfileFields.length > 0) {
-                    req.request.public = profile.publicProfileFields;
-                }
-                userService.updateProfileFieldVisibility(req).then(function (response) {
-                    if (response && response.responseCode === 'OK') {
-                        toasterService.success($rootScope.messages.smsg.m0040);
-                    } else {
-                        toasterService.error($rootScope.messages.fmsg.m0048);
-                    }
-                });
             };
         }
     ]);

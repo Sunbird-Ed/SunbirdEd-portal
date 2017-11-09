@@ -31,7 +31,14 @@ class AnnouncementController {
       'METRICS': 'metrics'
     }
 
+    let statusConstant = {
+        'ACTIVE': 'active',
+        'CANCELLED': 'cancelled',
+        'DRAFT': 'draft'
+    }
+
     this.objectStoreRest = new ObjectStoreRest(tableMapping, modelConstant)
+    this.statusConstant = statusConstant
   }
 
   /**
@@ -49,7 +56,7 @@ class AnnouncementController {
     return async((requestObj) => {
 
       const CREATE_ROLE = 'ANNOUNCEMENT_SENDER'
-      // validate parameters
+      // validate request
       let request = this.__validateCreateRequest(requestObj.body)
       if (!request.isValid) throw { msg: request.error, statusCode: HttpStatus.BAD_REQUEST }
 
@@ -57,6 +64,7 @@ class AnnouncementController {
       if (!authUserToken) throw { msg: 'UNAUTHORIZED', statusCode: HttpStatus.BAD_REQUEST }
 
       try{  
+        // TODO: verify  Is logged in userid matching with senderid
         let userProfile = await(this.__getUserProfile({ id: _.get(requestObj, 'body.request.createdBy')}, authUserToken))
         let organisation = _.find(userProfile.organisations, { organisationId: _.get(requestObj, 'body.request.sourceId') })
         if (_.isEmpty(organisation) || _.indexOf(organisation.roles, CREATE_ROLE) == -1) throw "user has no create access"
@@ -72,6 +80,7 @@ class AnnouncementController {
 
       try {
         var newAnnouncementObj = await (this.__createAnnouncement(requestObj.body.request))
+        //TODO: sent count as async process
       } catch (error) {
         throw { msg: 'unable to process the request!', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
       }
@@ -95,6 +104,7 @@ class AnnouncementController {
    * @return  {[type]}              [description]
    */
   __validateCreateRequest(requestObj) {
+    // TODO: Add validation for targt data structure
     let validation = Joi.validate(requestObj, Joi.object().keys({
       "request": Joi.object().keys({
         'sourceId': Joi.string().required(),
@@ -103,7 +113,7 @@ class AnnouncementController {
         'from':Joi.string().required(),
         'type': Joi.string().required(),
         'description': Joi.string().required(),
-        'target': Joi.object().min(1).pattern(/\w/, Joi.string().required()).required(),
+        'target': Joi.object().min(1).required(),
         'links': Joi.array().items(Joi.string().required())
       }).required()
     }), { abortEarly: false })
@@ -170,8 +180,9 @@ class AnnouncementController {
             'description': data.description,
             'from':data.from,
           },
-          'target': JSON.stringify(data.target),
-          'links': data.links
+          'target': data.target,
+          'links': data.links,
+          'status': this.statusConstant.ACTIVE
         }
       }
 
@@ -299,14 +310,14 @@ class AnnouncementController {
       return new Promise((resolve, reject) => {
       let query = {
         table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
-        values:{id: requestObj.params.announcementId, status:'cancelled'}
+        values:{id: requestObj.params.announcementId, status:this.statusConstant.CANCELLED}
       }
       this.objectStoreRest.updateObjectById(query)
         .then((data) => {
           if (!_.isObject(data)) {
             reject({ msg: 'unable to cancel the announcement', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
           } else {
-            resolve({id: requestObj.params.announcementId, status:'cancelled'})
+            resolve({id: requestObj.params.announcementId, status:this.statusConstant.CANCELLED})
           }
         })
         .catch((error) => {
@@ -379,39 +390,72 @@ class AnnouncementController {
   }
 
 
+    /**
+     * Get outbox of announcements for a given user
+     *
+     * @param   {[type]}  requestObj  [description]
+     *
+     * @return  {[type]}              [description]
+     */
+    getUserOutbox(requestObj) {
+        return new Promise((resolve, reject) => {
+
+            // validate request
+            let request = this.__validateOutboxRequest(requestObj)
+            if (!request.isValid) throw { msg: request.error, statusCode: HttpStatus.BAD_REQUEST }
+
+            // build query
+            let query = {
+                table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
+                query: {
+                    'userid': _.get(requestObj, 'request.userId')
+                }
+            }
+
+            // execute query and process response
+            this.objectStoreRest.findObject(query)
+            .then((data) => {
+                if (!_.isObject(data)) {
+                    reject({ msg: 'unable to fetch sent announcements', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
+                } else {
+                    let announcementCount = _.size(data.data)
+                    let response = {
+                        count: announcementCount,
+                        announcements: data.data
+                    }
+                    resolve(response)
+                }
+            })
+            .catch((error) => {
+                console.log(error)
+                reject({ msg: 'unable to fetch sent announcements', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
+            })
+        })
+    }
+
   /**
-   * Get outbox of announcements for a given user
+   * Validate the incoming request for creating an announcement
    *
    * @param   {[type]}  requestObj  [description]
    *
    * @return  {[type]}              [description]
    */
-  getUserOutbox(requestObj) {
-    return new Promise((resolve, reject) => {
+  __validateOutboxRequest(requestObj) {
+    let validation = Joi.validate(requestObj, Joi.object().keys({
+      "request": Joi.object().keys({
+        'userId': Joi.string().required()
+      }).required()
+    }), { abortEarly: false })
 
-      //TODO: Input validation
-
-      let query = {
-        table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
-        query: {
-          'userid': _.get(requestObj, 'body.request.userid')
-        }
-      }
-
-      this.objectStoreRest.findObject(query)
-        .then((data) => {
-          if (!_.isObject(data)) {
-            reject({ msg: 'unable to fetch sent announcements', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
-          } else {
-            resolve(data.data)
-          }
-        })
-        .catch((error) => {
-          console.log(error)
-          reject({ msg: 'unable to fetch sent announcements', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
-        })
-    })
-  }
+    if (validation.error != null) {
+      let messages = []
+      _.forEach(validation.error.details, (error, index) => {
+        messages.push({ field: error.path[0], description: error.message })
+      })
+      return { error: messages, isValid: false }
+    }
+    return { isValid: true };
+  };
 
   /**
    * Process the uploaded file (while creating announcement)

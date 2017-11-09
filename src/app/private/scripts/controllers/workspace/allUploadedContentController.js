@@ -92,10 +92,7 @@ angular.module('playerApp')
         }
 
         allUploadedContent.hideRemoveContentModel = function () {
-          $('#removeContentModel').modal('hide')
-          $('#removeContentModel').modal('hide all')
-          $('#removeContentModel').modal('hide other')
-          $('#removeContentModel').modal('hide dimmer')
+          workSpaceUtilsService.hideRemoveModel('#removeContentModel')
           allUploadedContent.removeContentId = ''
           allUploadedContent.showRemoveContentModel = false
         }
