@@ -162,3 +162,32 @@
     </div>
   </div>
 </div>
+<div class="ui modal small" id="announcementCancelModal">
+  <i class="close icon"></i>
+  <div class=" ui segment margin-top-10">
+    <div class="content">
+      <div class="ui grid">
+        <div class="ui centered grid">
+          <div class="row">
+            <i class="checkmark help circle icon createAnnGrayShade"></i>
+          </div>
+          <div class="row">
+            <span class="dashBoardSectionHeading">{{$root.frmelmnts.lbl.anncmntcancel}}</span>
+          </div>
+          <div class="">
+            <span class="createAnnGrayShade line-height-20">{{$root.frmelmnts.lbl.anncmntcanceldesc}}</span>
+          </div>
+        </div>
+        <br/>
+        <div class="row ui two column centered grid margin-top-20 actions">
+          <button class="ui primary basic button announcementButton btn-width-34 approve">
+            <span class="announcementButtonText">{{$root.frmelmnts.btn.yes}}</span>
+          </button>
+          <button class="ui primary basic button announcementButton btn-width-34 deny">
+            <span class="announcementButtonText">{{$root.frmelmnts.btn.no}}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
