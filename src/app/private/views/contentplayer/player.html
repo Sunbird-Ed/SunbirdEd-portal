@@ -18,7 +18,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row margin-auto padding-top-none" ng-if="showMetaData && contentData.name">
+                    <div class="row margin-auto padding-top-none" ng-if="showMetaData && contentData.name  && 
+                        !(contentData.status === 'Unlisted' || contentData.status === 'Processing')">
                         <div class="twelve wide column">
                             <span apply-script class="courseHeader-rating ui star rating course-header-divider" data-rating="{{contentData.me_averageRating |number:0}}" data-max-rating="5"></span>&nbsp;&nbsp;
                             <content-share type=" 'content' " id="contentData.identifier"></content-share>&nbsp;
