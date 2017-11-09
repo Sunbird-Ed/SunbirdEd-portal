@@ -13,7 +13,7 @@ angular.module('playerApp')
               courseService.courseHierarchy(toc.courseId).then(function (res) {
                 if (res && res.responseCode === 'OK') {
                   if (res.result.content.status === 'Retired') {
-                    toasterService.warning($rootScope.messages.imsg.m0004)
+                    toasterService.warning($rootScope.messages.imsg.m0019)
                     $state.go('Home')
                     return
                   }
