@@ -37,7 +37,7 @@
           if (res && res.responseCode === 'OK') {
             cpvm.loader.showLoader = false
             if (res.result.content.status === 'Retired') {
-              toasterService.warning($rootScope.messages.imsg.m0004)
+              toasterService.warning($rootScope.messages.imsg.m0018)
               $state.go('Home')
               return
             }
