@@ -7,29 +7,31 @@ const defaultTenant = envHelper.DEFAUULT_TENANT
 
 module.exports = {
   getInfo: function (req, res) {
-    var tenantId = req.params.tenantId || envHelper.DEFAUULT_TENANT
-    var responseObj = {
-      logo: '/common/images/sunbird_logo.png',
-      favicon: '/common/images/favicon.ico',
-      poster: '/common/images/sunbird_logo.png',
+    let tenantId = req.params.tenantId || envHelper.DEFAUULT_TENANT
+    let host = req.hostname
+    let headerHost = req.headers.host.split(':')
+    let port = headerHost[1] || ''
+    let protocol = req.headers['x-forwarded-proto'] || req.protocol
+    let baseUrl = protocol + '://' + host + (port === '' ? '' : ':' + port)
+
+    let responseObj = {
+      logo: baseUrl + '/common/images/sunbird_logo.png',
+      favicon: baseUrl + '/common/images/favicon.ico',
+      poster: baseUrl + '/common/images/sunbird_logo.png',
       titleName: envHelper.PORTAL_TITLE_NAME
     }
+
+    console.log('baseUrl ', baseUrl)
     // TODO: make file checking async for performance
     if (tenantId) {
       if (fs.existsSync(path.join(__dirname, '../tenant', tenantId, 'logo.png'))) {
-        responseObj.logo = '/tenant/' + tenantId + '/logo.png'
-      } else if (defaultTenant && fs.existsSync(path.join(__dirname, '../tenant', defaultTenant, 'logo.png'))) {
-        responseObj.logo = '/tenant/' + defaultTenant + '/logo.png'
+        responseObj.logo = baseUrl + '/tenant/' + tenantId + '/logo.png'
       }
       if (fs.existsSync(path.join(__dirname, '../tenant', tenantId, 'favicon.ico'))) {
-        responseObj.favicon = '/tenant/' + tenantId + '/favicon.ico'
-      } else if (defaultTenant && fs.existsSync(path.join(__dirname, '../tenant', defaultTenant, 'favicon.ico'))) {
-        responseObj.favicon = '/tenant/' + defaultTenant + '/favicon.ico'
+        responseObj.favicon = baseUrl + '/tenant/' + tenantId + '/favicon.ico'
       }
       if (fs.existsSync(path.join(__dirname, '../tenant', tenantId, 'poster.png'))) {
-        responseObj.poster = '/tenant/' + tenantId + '/poster.png'
-      } else if (defaultTenant && fs.existsSync(path.join(__dirname, '../tenant', defaultTenant, 'poster.png'))) {
-        responseObj.poster = '/tenant/' + defaultTenant + '/poster.png'
+        responseObj.poster = baseUrl + '/tenant/' + tenantId + '/poster.png'
       }
       module.exports.getSucessResponse(res, 'api.tenant.info', responseObj)
     } else {

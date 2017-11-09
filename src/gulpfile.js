@@ -37,3 +37,6 @@ gulp.task('js-docs', ['build-js-docs'])
 
 // This task uploads static files to cdn and updates references
 gulp.task('cdn', ['cdn-files'])
+
+//This task will more node modules to dist folder
+gulp.task('node-modules',['packageNodeModules'])
