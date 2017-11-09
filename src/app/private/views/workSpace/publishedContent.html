@@ -42,15 +42,15 @@
 <div ng-if="publishedContent.showRemoveContentModel">
     <div class="ui mini modal" id="removeContentModel">
         <div class="header">
-            {{$root.frmelmnts.lbl.deletecontent}}
+            {{$root.frmelmnts.lbl.deletepublishedcontent}}
         </div>
         <div class="content">
             <div class="description">
-                {{$root.frmelmnts.lbl.deleteconfirm}}
+                {{$root.frmelmnts.lbl.deletepublishedconfirm}}
             </div>
         </div>
         <div class="actions">
-            <div class="ui negative button" ng-click="publishedContent.hideRemoveNoteModel">{{$root.frmelmnts.btn.tcno}}</div>
+            <div class="ui negative button" ng-click="publishedContent.hideRemoveContentModel()">{{$root.frmelmnts.btn.tcno}}</div>
             <div class="ui primary button " ng-click="publishedContent.deleteContent(publishedContent.removeContentId)">{{$root.frmelmnts.btn.tcyes}}</div>
         </div>
     </div>
