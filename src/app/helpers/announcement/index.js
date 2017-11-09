@@ -135,6 +135,26 @@ router.post('/read', (requestObj, responseObj) => {
     })
 })
 
+router.get('/resend/:announcementId', (requestObj, responseObj) => {
+  announcementController.getResend(requestObj)
+    .then((data) => {
+      sendSuccessResponse(responseObj, 'getresend.id', data, HttpStatus.OK)
+    })
+    .catch((err) => {
+      sendErrorResponse(responseObj, 'getresend.id', err.msg, err.statusCode)
+    })
+})
+
+router.post('/resend', (requestObj, responseObj) => {
+  announcementController.resend(requestObj)
+    .then((data) => {
+      sendSuccessResponse(responseObj, 'resend', data, HttpStatus.CREATED)
+    })
+    .catch((err) => {
+      sendErrorResponse(responseObj, 'resend', err.msg, err.statusCode)
+    })
+})
+
 function sendSuccessResponse (res, id, result, code = HttpStatus.OK) {
   res.status(code)
   res.send({
