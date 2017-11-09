@@ -6,18 +6,18 @@
 </div>
 <div ng-if="announcementDetails.title">
     <div>
-        <p class="ui grey label" ng-if="announcementDetails.type">
+        <p class="ui grey label annType" ng-if="announcementDetails.type">
             {{announcementDetails.type}}
         </p>
     </div>
-    <div class="header announcementCard-header padding-top-5">
-        <div class="header cardsHeading padding-top-10" ng-if="announcementDetails.title">
+    <div class="header padding-top-5">
+        <div class="header padding-top-10 announcementCard-header" ng-if="announcementDetails.title">
             {{announcementDetails.title}}
         </div>
-        <div class="ng-binding announcement-description padding-top-10" ng-if="announcementDetails.sourceId">
+        <div class="ng-binding annOrgName padding-top-10" ng-if="announcementDetails.sourceId">
             {{announcementDetails.sourceId}}
         </div>
-        <div class="padding-top-20" ng-if="announcementDetails.description">
+        <div class="padding-top-20 announcement-description" ng-if="announcementDetails.description">
             {{announcementDetails.description}}
         </div>
     </div>
@@ -30,7 +30,7 @@
         <div class="padding-top-10 tweleve wide column">
             <div ng-repeat="link in announcementDetails.links track by $index">
                 <p>
-                    <a href="{{link}}" target="_blank">
+                    <a class="annUrlLinks" href="{{link}}" target="_blank">
                         {{link | limitTo:70}}
                         <span class="announcementBlueText" ng-if="link.length > 70">
                             ...
@@ -61,10 +61,10 @@
                                 </span>
                             </a>
                         </div>
-                        <p>
+                        <p class="annAttaFilename">
                             {{attachment.title}}
                         </p>
-                        <p class="announcement-description" ng-if="attachment.filesize">
+                        <p class="annAttaFilesize" ng-if="attachment.filesize">
                             {{attachment.filesize}}
                         </p>
                     </div>

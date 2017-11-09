@@ -1089,10 +1089,7 @@ angular.module('playerApp')
           routeHelperService.checkStateAccess(['ORG_ADMIN', 'SYSTEM_ADMINISTRATION'], false, event)
           break
         case 'announcementOutbox':
-          routeHelperService.checkStateAccess(['ORG_ADMIN', 'SYSTEM_ADMINISTRATION'], false, event)
-          break
-        case 'announcementInbox':
-          routeHelperService.checkStateAccess(['ORG_ADMIN', 'SYSTEM_ADMINISTRATION'], false, event)
+          routeHelperService.checkStateAccess(['ANNOUNCEMENT_SENDER'], false, event)
           break
         case 'WorkSpace.DraftContent':
           routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
