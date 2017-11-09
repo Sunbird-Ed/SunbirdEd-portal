@@ -114,6 +114,45 @@ router.post('/definitions', (requestObj, responseObj) => {
           sendErrorResponse(responseObj, 'definitions', err.msg, err.statusCode)
         })
 })
+router.post('/received', (requestObj, responseObj) => {
+  announcementController.received(requestObj.body)
+    .then((data) => {
+      sendSuccessResponse(responseObj, 'received', data, HttpStatus.CREATED)
+    })
+    .catch((err) => {
+      sendErrorResponse(responseObj, 'received', err.msg, err.statusCode)
+    })
+})
+
+router.post('/read', (requestObj, responseObj) => {
+  announcementController.read(requestObj.body)
+    .then((data) => {
+      sendSuccessResponse(responseObj, 'read', data, HttpStatus.CREATED)
+    })
+    .catch((err) => {
+      sendErrorResponse(responseObj, 'read', err.msg, err.statusCode)
+    })
+})
+
+router.get('/resend/:announcementId', (requestObj, responseObj) => {
+  announcementController.getResend(requestObj)
+    .then((data) => {
+      sendSuccessResponse(responseObj, 'getresend.id', data, HttpStatus.OK)
+    })
+    .catch((err) => {
+      sendErrorResponse(responseObj, 'getresend.id', err.msg, err.statusCode)
+    })
+})
+
+router.post('/resend', (requestObj, responseObj) => {
+  announcementController.resend(requestObj)
+    .then((data) => {
+      sendSuccessResponse(responseObj, 'resend', data, HttpStatus.CREATED)
+    })
+    .catch((err) => {
+      sendErrorResponse(responseObj, 'resend', err.msg, err.statusCode)
+    })
+})
 
 function sendSuccessResponse (res, id, result, code = HttpStatus.OK) {
   res.status(code)
