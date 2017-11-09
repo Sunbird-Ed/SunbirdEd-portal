@@ -2,8 +2,8 @@
 
 angular.module('playerApp')
   .controller('createAnnouncementCtrl', ['$rootScope', '$scope', '$timeout', '$state', '$stateParams', 'config', 'toasterService',
-    'permissionsService', 'dashboardService', 'announcementService',
-    function ($rootScope, $scope, $timeout, $state, $stateParams, config, toasterService, permissionsService, dashboardService, announcementService) {
+    'permissionsService', 'announcementService',
+    function ($rootScope, $scope, $timeout, $state, $stateParams, config, toasterService, permissionsService, announcementService) {
       var createAnn = this
 
       createAnn.org = ['Org 1', 'Org 2', 'Org 3']
