@@ -100,7 +100,9 @@ angular.module('playerApp')
              * @instance
              */
             this.deleteAnnouncement = function(announcementId) {
-                var URL = '/api/announcement/v1/cancel/' + announcementId
+                // dev-> /api/announcement/v1/cancel/1
+                // local -> /api/v1/announcement/cancel/1
+                var URL = '/api/v1/announcement/cancel/' + announcementId
                 return httpCall(URL, {}, 'GET', {})
             }
   }])
