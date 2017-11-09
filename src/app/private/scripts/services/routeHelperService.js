@@ -135,17 +135,18 @@ angular.module('playerApp')
                 case 'Toc':
 
                   var courseParams = sessionService.getSessionData('COURSE_PARAMS')
-                  $rootScope.breadCrumbsData = [{
-                    name: 'Home',
-                    link: 'home'
-                  }, {
-                    name: 'Courses',
-                    link: 'learn'
-                  }, {
-                    name: courseParams ? courseParams.courseName : '',
-                    link: ''
-                  }]
-
+                  if (courseParams) {
+                    $rootScope.breadCrumbsData = [{
+                      name: 'Home',
+                      link: 'home'
+                    }, {
+                      name: 'Courses',
+                      link: 'learn'
+                    }, {
+                      name: courseParams ? courseParams.courseName : '',
+                      link: ''
+                    }]
+                  }
                   break
                 case 'Profile':
 
@@ -159,18 +160,18 @@ angular.module('playerApp')
 
                   break
                 case 'Player':
-
-                  $rootScope.breadCrumbsData = [{
-                    name: 'Home',
-                    link: 'home'
-                  }, {
-                    name: 'Library',
-                    link: 'resources'
-                  }, {
-                    name: $stateParams.contentName,
-                    link: ''
-                  }]
-
+                  if ($stateParams.contentName) {
+                    $rootScope.breadCrumbsData = [{
+                      name: 'Home',
+                      link: 'home'
+                    }, {
+                      name: 'Library',
+                      link: 'resources'
+                    }, {
+                      name: $stateParams.contentName,
+                      link: ''
+                    }]
+                  }
                   break
                 case 'Search':
                   if ($rootScope.searchKey === 'Users' ||
@@ -241,18 +242,18 @@ angular.module('playerApp')
 
                   break
                 case 'PreviewCollection':
-
-                  $rootScope.breadCrumbsData = [{
-                    name: 'Home',
-                    link: 'home'
-                  }, {
-                    name: 'Library',
-                    link: 'resources'
-                  }, {
-                    name: $stateParams.name,
-                    link: ''
-                  }]
-
+                  if ($stateParams.name) {
+                    $rootScope.breadCrumbsData = [{
+                      name: 'Home',
+                      link: 'home'
+                    }, {
+                      name: 'Library',
+                      link: 'resources'
+                    }, {
+                      name: $stateParams.name,
+                      link: ''
+                    }]
+                  }
                   break
                 case 'orgDashboard':
 
@@ -322,13 +323,13 @@ angular.module('playerApp')
              *  @param {string}  event - Event
              * @instance
              */
-                this.checkStateAccess = function (data, flag, event) {
-                    if (permissionsService.checkRolesPermissions(data, flag)) {
-                        toasterService.warning($rootScope.messages.imsg.m0004);
-                        event.preventDefault();
-                        $state.go('Home');
-                    }
-                };
+            this.checkStateAccess = function (data, flag, event) {
+              if (permissionsService.checkRolesPermissions(data, flag)) {
+                toasterService.warning($rootScope.messages.imsg.m0004)
+                event.preventDefault()
+                $state.go('Home')
+              }
+            }
             /**
              * @method clearSearchSettings
              * @desc Clear search settings from rootScope
