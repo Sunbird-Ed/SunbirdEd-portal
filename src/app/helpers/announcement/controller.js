@@ -31,7 +31,14 @@ class AnnouncementController {
       'METRICS': 'metrics'
     }
 
+    let statusConstant = {
+        'ACTIVE': 'active',
+        'CANCELLED': 'cancelled',
+        'DRAFT': 'draft'
+    }
+
     this.objectStoreRest = new ObjectStoreRest(tableMapping, modelConstant)
+    this.statusConstant = statusConstant
   }
 
   /**
@@ -173,7 +180,8 @@ class AnnouncementController {
             'from':data.from,
           },
           'target': JSON.stringify(data.target),
-          'links': data.links
+          'links': data.links,
+          'status': this.statusConstant.ACTIVE
         }
       }
 
@@ -301,14 +309,14 @@ class AnnouncementController {
       return new Promise((resolve, reject) => {
       let query = {
         table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
-        values:{id: requestObj.params.announcementId, status:'cancelled'}
+        values:{id: requestObj.params.announcementId, status:this.statusConstant.CANCELLED}
       }
       this.objectStoreRest.updateObjectById(query)
         .then((data) => {
           if (!_.isObject(data)) {
             reject({ msg: 'unable to cancel the announcement', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
           } else {
-            resolve({id: requestObj.params.announcementId, status:'cancelled'})
+            resolve({id: requestObj.params.announcementId, status:this.statusConstant.CANCELLED})
           }
         })
         .catch((error) => {
