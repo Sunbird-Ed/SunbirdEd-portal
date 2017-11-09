@@ -89,10 +89,8 @@
                 "UPDATE":"org/v1/type/update"
             },
             "ANNOUNCEMENT":{
-                "CREATE": "announcement/v1/create"
-            },
-            "ATTACHMENT":{
-                "UPLOAD": "announcement/v1/attachment/upload"
+                "CREATE": "announcement/v1/create",
+                "UPLOAD_ATTACHMENT": "announcement/v1/attachment/upload"
             }
         },
         "FILTER": {
