@@ -91,5 +91,105 @@ describe('courseScheduleCtrl', function () {
         toc.init();
     });
 
+    it('should expand the tree', function () {
+        spyOn(toc, 'expandMe').and.callThrough();
+        toc.expandMe("23423423423423423", '23');
+        scope.$apply();
+    });
+
+    it('should expand the tree', function () {
+        spyOn(toc, 'expandMe').and.callThrough();
+        toc.expandMe("2", {'mimeType' : 'application/vnd.ekstep.content-collection'});
+        scope.$apply();
+    });
+
+    it('should return related mimetype icon', function () {
+        spyOn(toc, 'getContentIcon').and.callThrough();
+        var icon = toc.getContentIcon('application/pdf');
+        expect(icon).toEqual('/common/images/pdf.png')
+        scope.$apply();
+    });
+
+    it('should update icon', function () {
+        spyOn(toc, 'updateIcon').and.callThrough();
+        toc.updateIcon('large file pdf outline icon', false);
+        scope.$apply();
+    });
+
+    it('should initialize fancy tree', function () {
+        spyOn(toc, 'initializeFancyTree').and.callThrough();
+        toc.initializeFancyTree("23423423423423423", '23');
+        $timeout.flush()
+        scope.$apply();
+    });
+
+    xit('should update breadcrumbs', function () {
+        spyOn(toc, 'updateBreadCrumbs').and.callThrough();
+        scope.contentPlayer = {}
+        scope.contentPlayer.isContentPlayerEnabled = true;
+        toc.updateBreadCrumbs("23423423423423423", '23');
+        $timeout.flush()
+        scope.$apply();
+    });
+
+    it('should apply accordian', function () {
+        spyOn(toc, 'applyAccordion').and.callThrough();
+        toc.applyAccordion();
+        $timeout.flush()
+        scope.$apply();
+    });
+
+    it('should construct tree', function () {
+        spyOn(toc, 'constructTree').and.callThrough();
+        toc.constructTree();
+        $timeout.flush()
+        scope.$apply();
+    });
+
+    xit('should show error', function () {
+        spyOn(toc, 'showError').and.callThrough();
+        toc.error = {}; 
+        toc.showError("sdfsdfds");
+        scope.$apply();
+    });
+
+    it('should add play list', function () {
+        spyOn(contentService, 'courseHierarchy').and.returnValue(deferred.promise);
+        deferred.resolve(courseHierarchyResponse);
+        spyOn(toc, 'getCourseToc').and.callThrough();
+        toc.getCourseToc();
+        scope.$apply();
+        console.log("toc.playe", toc.playlist)
+        spyOn(toc, 'checkAndAddToPlaylist').and.callThrough();
+        toc.checkAndAddToPlaylist({mimeType : 'application/vnd.ekstep.content-collection'});
+        $timeout.flush()
+        scope.$apply();
+    });
+
+    it('should get all children', function () {
+        spyOn(contentService, 'courseHierarchy').and.returnValue(deferred.promise);
+        deferred.resolve(courseHierarchyResponse);
+        spyOn(toc, 'getCourseToc').and.callThrough();
+        toc.getCourseToc();
+        scope.$apply();
+        spyOn(toc, 'getAllChildrenCount').and.callThrough();
+        toc.getAllChildrenCount(2);
+        $timeout.flush()
+        scope.$apply();
+    });
+
+    it('should get child node count', function () {
+        spyOn(contentService, 'courseHierarchy').and.returnValue(deferred.promise);
+        deferred.resolve(courseHierarchyResponse);
+        spyOn(toc, 'getCourseToc').and.callThrough();
+        toc.getCourseToc();
+        scope.$apply();
+        spyOn(toc, 'getChildNodeCount').and.callThrough();
+        toc.getChildNodeCount({children : ['assdada', 'sfsdfsd']}, 1   );
+        $timeout.flush()
+        scope.$apply();
+    });
+    
+
 });
         
