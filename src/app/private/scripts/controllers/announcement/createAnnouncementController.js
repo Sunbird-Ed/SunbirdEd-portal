@@ -12,10 +12,11 @@ angular.module('playerApp')
       createAnn.showUrlField = false
       createAnn.errorFlag = false
       createAnn.repeatableWebLinks = []
-      createAnn.attachmentEndPoint =  config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + config.URL.ATTACHMENT.UPLOAD
+      createAnn.attachmentEndPoint = config.URL.BASE_PREFIX + config.URL.ANNOUNCEMENT.UPLOAD_ATTACHMENT
       createAnn.isMetaModified = false
       createAnn.stepNumber = 1
       createAnn.attachment = []
+      createAnn.targetIds = []
       createAnn.data = {}
 
       createAnn.initializeModal = function () {
@@ -27,7 +28,6 @@ angular.module('playerApp')
           })
 
           $('#orgDropdown').dropdown({
-            // allowAdditions: true,
             onChange: function (value, text, $choice) {
               createAnn.enableRecepientBtn()
             }
@@ -43,15 +43,43 @@ angular.module('playerApp')
         $rootScope.$emit('component:init')
         $('#createAnnouncementModal').modal({
           closable: false,
-          allowMultiple: true,
           onHide: function () {
-            if (createAnn.isMetaModified && confirm('Changes that you made may not be saved.')) {
-              createAnn.refreshFormValues()
+            if (createAnn.isMetaModified) {
+              if (createAnn.confirmModel) {
+              	return true
+              } else {
+              	createAnn.confirmationModal()
+              	return false
+              }
+            } else {
               return true
             }
-            return true
           }
         }).modal('show')
+      }
+
+      createAnn.confirmationModal = function () {
+        $timeout(function () {
+          $('#announcementCancelModal').modal({
+            allowMultiple: true,
+            onDeny: function () {
+        	   return true
+            },
+            onApprove: function () {
+           	   createAnn.refreshFormValues()
+           	   createAnn.hideModel()
+        	   return true
+            }
+          }).modal('show')
+        }, 10)
+      }
+
+      createAnn.hideModel = function () {
+        $('#announcementCancelModal').modal('hide')
+        $('#announcementCancelModal').modal('hide others')
+        $('#announcementCancelModal').modal('hide all')
+        $('#announcementCancelModal').modal('hide dimmer')
+        createAnn.confirmModel = true
       }
 
       createAnn.addNewLink = function () {
@@ -131,13 +159,14 @@ angular.module('playerApp')
         var requestBody = angular.copy(data)
         requestBody.sourceId = $rootScope.rootOrgId
         requestBody.createdBy = $rootScope.userId
-        requestBody.target = _.fromPairs(_.map(createAnn.selectedReciepeient, i => [i.location, i.location]))
+        requestBody.target = { 'geo': { 'ids': _.map(createAnn.selectedReciepeient, 'location') } }
         if (requestBody.links) {
           requestBody.links = _.values(requestBody.links)
         }
         var requestData = {
           request: requestBody
         }
+
         announcementService.createAnnouncement(requestData).then(function (apiResponse) {
           if (apiResponse && apiResponse.responseCode === 'OK') {
             createAnn.refreshFormValues()
@@ -173,7 +202,7 @@ angular.module('playerApp')
             debug: true,
             paramsInBody: true,
             request: {
-              // endpoint: 'http://localhost:3000/api/announcement/v1/attachment/upload',
+              // endpoint: '/api/announcement/v1/attachment/upload',
               endpoint: createAnn.attachmentEndPoint,
               inputName: 'document',
               params: { 'createdBy': $rootScope.userId }
@@ -197,7 +226,6 @@ angular.module('playerApp')
             },
             callbacks: {
               onComplete: function (id, name, responseJSON, xhr) {
-                console.log('Upload response:', responseJSON)
                 if (responseJSON.responseCode === 'OK' && responseJSON.result.attachment) {
                   createAnn.attachment.push(responseJSON.result.attachment.id)
                   createAnn.enableRecepientBtn()
