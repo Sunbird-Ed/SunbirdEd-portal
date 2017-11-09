@@ -1,31 +1,24 @@
 'use strict'
-
-angular.module('playerApp')
-  .controller('announcementOutboxListController', ['$rootScope', '$scope',
-    'announcementService', '$timeout', '$state', '$stateParams', 'toasterService', 'adminService', 'PaginationService',
+angular.module('playerApp').controller('announcementOutboxListController', ['$rootScope', '$scope', 'announcementService', '$timeout', '$state', '$stateParams', 'toasterService', 'adminService', 'PaginationService',
     function($rootScope, $scope, announcementService, $timeout, $state, $stateParams, toasterService, adminService, PaginationService) {
-      var announcementOutboxData = this
-      announcementOutboxData.pager = {};
-      announcementOutboxData.setPage = setPage;
-      announcementOutboxData.showLoader = true
-
-      announcementOutboxData.renderAnnouncementList = function() {
-        announcementService.getOutBoxAnnouncementList($rootScope.userId).then(function(apiResponse) {
-            apiResponse = apiResponse.data
-
-            if (apiResponse && apiResponse.responseCode === 'OK') {
-              announcementOutboxData.listData = apiResponse.result.announcements
-              initController();
-            } else {
-              toasterService.error(apiResponse.params.errmsg)
-            }
-          })
-          .catch(function(err) {
-            toasterService.error(err.data.params.errmsg)
-          })
-          .finally(function() {
-            announcementOutboxData.showLoader = false
-            announcementOutboxData.listData = [{
+        var announcementOutboxData = this
+        announcementOutboxData.pager = {};
+        announcementOutboxData.setPage = setPage;
+        announcementOutboxData.showLoader = true
+        announcementOutboxData.renderAnnouncementList = function() {
+            announcementService.getOutBoxAnnouncementList($rootScope.userId).then(function(apiResponse) {
+                apiResponse = apiResponse.data
+                if (apiResponse && apiResponse.responseCode === 'OK') {
+                    announcementOutboxData.listData = apiResponse.result.announcements
+                    initController();
+                } else {
+                    toasterService.error(apiResponse.params.errmsg)
+                }
+            }).catch(function(err) {
+                toasterService.error(err.data.params.errmsg)
+            }).finally(function() {
+                announcementOutboxData.showLoader = false
+                announcementOutboxData.listData = [{
                     "announcementId": "1",
                     "sourceId": "National Council For Teacher Education",
                     "createdBy": "Creator1",
@@ -60,29 +53,30 @@ angular.module('playerApp')
                         "filesize": "120 Kb"
                     }]
                 }]
-          });
-      }
-
-      function initController() {
-        // initialize to page 1
-        announcementOutboxData.setPage(1);
-      }
-
-      function setPage(page) {
-        if (page < 1 || page > announcementOutboxData.pager.totalPages) {
-          return;
+            });
         }
-        // get pager object from service
-        announcementOutboxData.pager = PaginationService.GetPager(announcementOutboxData.listData.length, page);
-        // get current page of items
-        announcementOutboxData.items = announcementOutboxData.listData.slice(announcementOutboxData.pager.startIndex, announcementOutboxData.pager.endIndex + 1);
-      }
 
-      announcementOutboxData.doAction = function(announcement) {
+        function initController() {
+            // initialize to page 1
+            announcementOutboxData.setPage(1);
+        }
+
+        function setPage(page) {
+            if (page < 1 || page > announcementOutboxData.pager.totalPages) {
+                return;
+            }
+            // get pager object from service
+            announcementOutboxData.pager = PaginationService.GetPager(announcementOutboxData.listData.length, page);
+            // get current page of items
+            announcementOutboxData.items = announcementOutboxData.listData.slice(announcementOutboxData.pager.startIndex, announcementOutboxData.pager.endIndex + 1);
+        }
+        announcementOutboxData.doAction = function(announcement) {
+            // Get the actionBtnId
             var actionBtnId = 'actionBtn' + announcement.announcementId
             var actionText = $('#' + actionBtnId).text()
+            // Perform the appropriate action
             if (actionText == 'Delete') {
-                announcementOutboxData.deleteAnnouncementObj = announcement
+                announcementOutboxData.deleteAnnouncementId = announcement.announcementId
                 announcementOutboxData.actionBtnId = actionBtnId
                 announcementOutboxData.showModal('announcementDeleteModal')
             } else if (actionText == 'Resend') {
@@ -94,25 +88,37 @@ angular.module('playerApp')
             }
         }
         announcementOutboxData.showModal = function(modalId) {
-            alert('showModal')
             $('#' + modalId).modal('show')
         }
         announcementOutboxData.closeModal = function(modalId) {
-            alert('closeModal')
             $('#' + modalId).modal('hide')
         }
         announcementOutboxData.deleteAnnouncement = function() {
-            alert('deleteAnnouncement')
-            // TODO - call announcement delete api
-            var elementId = announcementOutboxData.actionBtnId;
-            $('#' + elementId).html('<i class="external share icon"></i>Resend')
-            $('#' + elementId).removeClass('announcementRedText')
-            $('#' + elementId).addClass('announcementBlueText')
-            announcementOutboxData.closeModal('announcementDeleteModal')
-            announcementOutboxData.deleteAnnouncementObj = {}
+            // Call the delete service
+            announcementService.deleteAnnouncement(announcementOutboxData.deleteAnnouncementId).then(function(apiResponse) {
+                apiResponse = apiResponse.data
+                // Check if response successful
+                if (apiResponse && apiResponse.responseCode === 'OK' && apiResponse.result.status === 'cancelled') {
+                    // Replace Delete but with Resend
+                    var elementId = announcementOutboxData.actionBtnId;
+                    $('#' + elementId).html('<i class="external share icon"></i>Resend')
+                    $('#' + elementId).removeClass('announcementRedText')
+                    $('#' + elementId).addClass('announcementBlueText')
+                    // Show success toaster
+                    toasterService.success('Announcement deleted successfully.')
+                } else {
+                    toasterService.error(apiResponse.params.errmsg)
+                }
+            }).catch(function(err) {
+                toasterService.error(err.data.params.errmsg)
+            }).finally(function() {
+                // Close the modal popup and reset v alue of deleteAnnouncementId
+                announcementOutboxData.closeModal('announcementDeleteModal')
+                announcementOutboxData.deleteAnnouncementId = {}
+            })
         }
         announcementOutboxData.resendAnnouncement = function() {
-            // TODO - call announcement delete api
+            // TODO - call announcement resend api
             var elementId = announcementOutboxData.actionBtnId
             $('#' + elementId).html('<i class="icon ban"></i>Delete')
             $('#' + elementId).removeClass('announcementBlueText')
@@ -121,4 +127,4 @@ angular.module('playerApp')
             announcementOutboxData.resendAnnouncementObj = {}
         }
     }
-  ])
+])
