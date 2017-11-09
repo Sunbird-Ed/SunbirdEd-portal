@@ -115,7 +115,7 @@ class ObjectStore {
     return async((data) => {
       if (!this.__validateRequest(data)) throw { msg: 'table not found!', status: 'error' }
       if(!data.values) throw {msg: 'Data required to update',status:'error'}
-      if(! data.values.id) throw { msg: 'Id should be of type string!', status: 'error' }
+      if(!data.values.id) throw { msg: 'Id should be of type string!', status: 'error' }
       try {
         _.forIn(data.data, (value, key) => {
           let subSchema = Joi.reach(this.TableModelMapping[data.table], key)

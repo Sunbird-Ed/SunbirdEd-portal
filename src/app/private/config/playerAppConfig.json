@@ -17,7 +17,8 @@
                 "TENANT_LOGO": "get/tenant/logo",
                 "SKILLS":"data/v1/skills",
                 "ADD_SKILLS":"user/v1/skill/add",
-                "USER_SKILLS":"user/v1/skill/read"
+                "USER_SKILLS":"user/v1/skill/read",
+                "UPDATE_PROF_VIS_FIELDS": "user/v1/profile/visibility"
             },
             "COMPOSITE": {
                 "SEARCH": "composite/v1/search"
