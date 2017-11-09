@@ -13,6 +13,7 @@ angular.module('playerApp')
       createAnn.errorFlag = false
       createAnn.repeatableWebLinks = []
       createAnn.attachmentEndPoint = config.URL.BASE_PREFIX + config.URL.ANNOUNCEMENT.UPLOAD_ATTACHMENT
+      alert(createAnn.attachmentEndPoint)
       createAnn.isMetaModified = false
       createAnn.stepNumber = 1
       createAnn.attachment = []
