@@ -136,12 +136,22 @@ router.post('/read', (requestObj, responseObj) => {
 })
 
 router.get('/resend/:announcementId', (requestObj, responseObj) => {
-  announcementController.resend(requestObj)
+  announcementController.getResend(requestObj)
     .then((data) => {
-      sendSuccessResponse(responseObj, 'resend.id', data, HttpStatus.OK)
+      sendSuccessResponse(responseObj, 'getresend.id', data, HttpStatus.OK)
     })
     .catch((err) => {
-      sendErrorResponse(responseObj, 'resend.id', err.msg, err.statusCode)
+      sendErrorResponse(responseObj, 'getresend.id', err.msg, err.statusCode)
+    })
+})
+
+router.post('/resend', (requestObj, responseObj) => {
+  announcementController.resend(requestObj)
+    .then((data) => {
+      sendSuccessResponse(responseObj, 'resend', data, HttpStatus.CREATED)
+    })
+    .catch((err) => {
+      sendErrorResponse(responseObj, 'resend', err.msg, err.statusCode)
     })
 })
 
