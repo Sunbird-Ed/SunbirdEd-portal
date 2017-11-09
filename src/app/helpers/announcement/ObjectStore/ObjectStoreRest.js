@@ -89,18 +89,29 @@ class ObjectStoreRest extends ObjectStore {
     return this.__updateObjectById()(data)
   }
 
-  __updateObjectById() {
-    return async((data) => {
-      await (this.validateUpdateObjectById(data))
-        let options = {method: 'POST', uri: envVariables.DATASERVICE_URL + 'data/v1/object/update', body: {request: {'tableName': data.table, 'documentName': data.table, 'payload': data.values } }, json: true } 
-      try {
-        let result = await (this.httpService(options))
-        return { data: result, status: 'updated' }
-      } catch (error) {
-        throw { msg: 'unable to update object', status: 'error', error: error }
-      }
-    })
-  }
+    __updateObjectById() {
+        return async((data) => {
+            await (this.validateUpdateObjectById(data))
+            let options = {
+                method: 'POST',
+                uri: envVariables.DATASERVICE_URL + 'data/v1/object/update',
+                body: {
+                    request: {
+                        'tableName': data.table,
+                        'documentName': data.table,
+                        'payload': data.values
+                    }
+                },
+                json: true
+            }
+            try {
+                let result = await (this.httpService(options))
+                return {data: result, status: 'updated'}
+            } catch (error) {
+                throw {msg: 'unable to update object', status: 'error', error: error }
+            }
+        })
+    }
 
   deleteObjectById(data) {
     return this.__deleteObjectById()(data)
