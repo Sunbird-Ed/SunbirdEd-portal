@@ -8,7 +8,7 @@ module.exports = Joi.object().keys({
   details: Joi.object().min(1).pattern(/\w/, Joi.string().required()), // any key/value with string
   links: Joi.array().items(Joi.string()),
   attachments: Joi.array().items(Joi.object().min(1).pattern(/\w/, Joi.string().required())),
-  target: Joi.object().min(1).pattern(/\w/, Joi.string().required()),
+  target: Joi.object().min(1).required(), // TODO: add validation for target format
   status: Joi.string(),
   sentcount: Joi.number(),
   priority: Joi.string(),
