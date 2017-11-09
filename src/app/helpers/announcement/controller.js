@@ -564,7 +564,7 @@ class AnnouncementController {
         return async((requestObj) => {
 
             // validate request
-            let request = this.__validateReceivedRequest(requestObj)
+            let request = this.__validateMetricsRequest(requestObj)
             if (!request.isValid) throw { msg: request.error, statusCode: HttpStatus.BAD_REQUEST }
 
             try {
@@ -578,13 +578,41 @@ class AnnouncementController {
     }
 
     /**
-     * Validate the incoming request for creating an announcement
+     * Mark announcement(s) read for a given user
      *
      * @param   {[type]}  requestObj  [description]
      *
      * @return  {[type]}              [description]
      */
-    __validateReceivedRequest(requestObj) {
+    read(requestObj) {
+        return this.__read()(requestObj)
+    }
+
+    __read(requestObj) {
+        return async((requestObj) => {
+
+            // validate request
+            let request = this.__validateMetricsRequest(requestObj)
+            if (!request.isValid) throw { msg: request.error, statusCode: HttpStatus.BAD_REQUEST }
+
+            try {
+                var metricsData = await (this.__createMetrics(requestObj.request, this.metricsActivityConstant.READ))
+                return {metrics: metricsData.data}
+            } catch (error) {
+                throw { msg: 'unable to update status!', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
+            }
+            
+        })      
+    }    
+
+    /**
+     * Validate the incoming request for creating a metrics
+     *
+     * @param   {[type]}  requestObj  [description]
+     *
+     * @return  {[type]}              [description]
+     */
+    __validateMetricsRequest(requestObj) {
         let validation = Joi.validate(requestObj, Joi.object().keys({
             "request": Joi.object().keys({
                 'userId': Joi.string().required(),
