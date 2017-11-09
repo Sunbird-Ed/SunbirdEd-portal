@@ -111,7 +111,7 @@ angular.module('playerApp')
           if (response && response.responseCode === 'OK') {
             if (response.result.content.status === 'Retired' && !count) {
               count += 1
-              toasterService.warning($rootScope.messages.imsg.m0004)
+              toasterService.warning($rootScope.messages.imsg.m0018)
               $state.go('Home')
               return
             }
