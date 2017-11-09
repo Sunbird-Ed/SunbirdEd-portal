@@ -74,7 +74,7 @@
                   <label>{{$root.frmelmnts.lbl.anncmntlink}}</label>
                   <div class="field" data-ng-repeat="weblink in createAnn.repeatableWebLinks">
                     <div class="ui action input">
-                      <input type="url" ng-model="createAnn.data.link[$index]" name="link_{{$index}}" placeholder="{{$root.frmelmnts.instn.t0053}}" ng-change="createAnn.enableRecepientBtn()">
+                      <input type="url" ng-model="createAnn.data.links[$index]" name="link_{{$index}}" placeholder="{{$root.frmelmnts.instn.t0053}}" ng-change="createAnn.enableRecepientBtn()">
                       <i class="trash icon createAnnBlueClass margin-top-10" ng-click="createAnn.removeLink($index)"></i>
                     </div>
                     <section ng-show="announcementForm['link_' + $index].$error.url" class="createAnnErrorMsg">Not a valid URL</section>
