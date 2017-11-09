@@ -17,7 +17,7 @@
       </div>
     </div>
   </div>
-  <div class="ui grid">
+  <div class="ui grid" ng-if="announcementOutboxData.showDataDiv">
     <div class="one wide column"></div>
     <div class="ten wide column">
       <div class="ui grid">
@@ -28,10 +28,10 @@
         </div>
         <div class="four wide column">
           <div class="ui float-ContentRight">
-            <div class="text showingAllSentAnn"><span class="margin-right-10">Viewing 10 - 20</span>
+            <div class="text showingAllSentAnn"><span class="margin-right-10">Viewing {{announcementOutboxData.pager.startIndex+1}} - {{announcementOutboxData.pager.endIndex+1}}</span>
               <div class="ui small basic icon buttons">
-                <button class="ui button"><i class="left chevron icon"></i></button>
-                <button class="ui button disabled"><i class="right chevron icon"></i></button>
+                <button class="ui button" ng-class="{'disabled' : announcementOutboxData.pager.startIndex === 0}" ng-click="announcementOutboxData.setPage(announcementOutboxData.pager.currentPage - 1)"><i class="left chevron icon"></i></button>
+                <button class="ui button" ng-class="{'disabled' : announcementOutboxData.pager.endIndex+1 === announcementOutboxData.listData.length}" ng-click="announcementOutboxData.setPage(announcementOutboxData.pager.currentPage + 1)"><i class="right chevron icon"></i></button>
               </div>
             </div>
           </div>
@@ -45,7 +45,16 @@
       <app-loader></app-loader>
     </div>
   </div>
-  <div class="margin-top-10">
+  <div class="ui grid" ng-hide="announcementOutboxData.showDataDiv">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+      <div class="ui warning message">
+        <div class="header">No announcement found!</div>
+        Please create announcement
+      </div>
+    </div>
+  </div>
+  <div class="margin-top-10" ng-if="announcementOutboxData.showDataDiv">
     <div class="resource-padding ui grid">
       <div class="one wide column"></div>
       <div class="ten wide column">
@@ -62,7 +71,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="item in announcementOutboxData.listData" class="tableListNameAnn">
+              <tr ng-repeat="item in announcementOutboxData.items" class="tableListNameAnn">
                 <td>{{item.title}}</td>
                 <td>{{item.createdOn | date : "dd MMM yyyy"}}</td>
                 <td>N/A</td>
@@ -76,7 +85,7 @@
       </div>
     </div>
   </div>
-  <div class="ui grid">
+  <div class="ui grid" ng-if="announcementOutboxData.showDataDiv">
     <div class="one wide column"></div>
     <div class="ui grid">
       <div class="twelve wide column">

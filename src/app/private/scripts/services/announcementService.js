@@ -44,9 +44,7 @@ angular.module('playerApp')
               var URL = '/api/announcement/v1/user/outbox'
               var data = {
                 "request": {
-                  "userId": userId,
-                  "limit": 10,
-                  "status": "read"
+                  "userId": userId
                 }
               };
               return httpCall(URL, data, 'POST', headers)
@@ -90,4 +88,6 @@ angular.module('playerApp')
             this.createAnnouncement = function(req) {
 
             }
+            
+            
   }])
