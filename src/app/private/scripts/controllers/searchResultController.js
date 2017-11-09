@@ -66,6 +66,7 @@ angular.module('playerApp').controller('SearchResultController', [
         $('#headerSearch').dropdown('set selected',
                     $scope.search.isSearchTypeKey === true
                     ? $rootScope.search.selectedSearchKey : 'All')
+        $rootScope.search.searchKeyword = ''
       }, 0)
     })
     var initSearchHandler = $rootScope.$on('initSearch', function (event, args) {
@@ -130,7 +131,11 @@ angular.module('playerApp').controller('SearchResultController', [
       var orgType = _.find($rootScope.search.orgTypes, { id: orgId })
       return orgType.name
     }
-
+    $rootScope.expandFilters = function () {
+      if ($('#filterIcon').parents('.active').length <= 0) {
+        $('#filterIcon').trigger('click')
+      }
+    }
     $scope.search.initSearch = function () {
       var searchParams = $stateParams
       $rootScope.search.selectedSearchKey = $rootScope.searchKey || searchParams.type
@@ -272,8 +277,6 @@ angular.module('playerApp').controller('SearchResultController', [
         if (!req.filters.contentType || (_.isArray(req.filters.contentType) && req.filters.contentType.length == 0)) {
           req.filters.contentType = [
             'Collection',
-            'Story',
-            'Worksheet',
             'TextBook',
             'LessonPlan',
             'Resource'
@@ -285,8 +288,6 @@ angular.module('playerApp').controller('SearchResultController', [
       } else if ($rootScope.search.selectedSearchKey === 'All') {
         req.filters.contentType = [
           'Collection',
-          'Story',
-          'Worksheet',
           'TextBook',
           'LessonPlan',
           'Resource'
@@ -404,6 +405,7 @@ angular.module('playerApp').controller('SearchResultController', [
     $rootScope.search.getUserRoles = function () {
       if (!$rootScope.search.userRoles) {
         $rootScope.search.userRoles = permissionsService.allRoles()
+        $rootScope.search.userRoles = _.sortBy($rootScope.search.userRoles, 'roleName')
       }
     }
 
@@ -416,7 +418,7 @@ angular.module('playerApp').controller('SearchResultController', [
         $rootScope.search.filters.contentType = undefined
         $rootScope.search.filters.orgType = undefined
         $rootScope.search.filters.grade = $rootScope.search.selectedGrades
-        $rootScope.search.filters.location = $rootScope.search.selectedLocation
+        $rootScope.search.filters.location = ($rootScope.search.selectedLocation.trim() !== '') ? $rootScope.search.selectedLocation.trim() : undefined
         $rootScope.search.filters['organisations.roles'] = $rootScope.search.selectedRoles
       } else if ($rootScope.search.selectedSearchKey === 'Organisations') {
         $rootScope.search.filters = {}
@@ -491,4 +493,11 @@ angular.module('playerApp').controller('SearchResultController', [
                 })
     }
     $rootScope.search.getOrgTypes()
+
+    $rootScope.search.getSelectedContentTypeValue = function (contentTypes, selectedContentType) {
+      var ct = _.filter(contentTypes, function (contentType) {
+        return contentType.key === selectedContentType
+      })
+      return ct ? ct[0].value : ''
+    }
   }])
