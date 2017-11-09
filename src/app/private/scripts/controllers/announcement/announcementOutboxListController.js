@@ -26,7 +26,7 @@ angular.module('playerApp').controller('announcementOutboxListController', ['$ro
                     "readBy": ["1234-12341-12313-132123", "1234-12341-12313-324234"],
                     "type": "Circular",
                     "links": ["https://www.google.co.in/?gfe_rd=cr&dcr=0&ei=D8r2WbjkOsKL8Qe4pJeACA", "https://diksha.gov.in/#documents"],
-                    "status":"active",
+                    "status": "active",
                     "title": "Exam dates announced for CBSE and state board exams",
                     "description": "Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams. Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams. Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams. announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams",
                     "target": ["teachers"],
@@ -44,7 +44,7 @@ angular.module('playerApp').controller('announcementOutboxListController', ['$ro
                     "readBy": ["1234-12341-12313-132123", "1234-12341-12313-324234"],
                     "type": "Circular",
                     "links": ["https://www.google.co.in/?gfe_rd=cr&dcr=0&ei=D8r2WbjkOsKL8Qe4pJeACA", "https://diksha.gov.in/#documents"],
-                    "status":"cancelled",
+                    "status": "cancelled",
                     "title": "Exam dates announced for CBSE and state board exams",
                     "description": "Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams. Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams. Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams. announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams",
                     "target": ["teachers"],
@@ -103,7 +103,6 @@ angular.module('playerApp').controller('announcementOutboxListController', ['$ro
                 if (apiResponse && apiResponse.responseCode === 'OK' && apiResponse.result.status === 'cancelled') {
                     // Show success toaster
                     toasterService.success('Announcement deleted successfully.')
-                    alert('refreshing the list')
                     announcementOutboxData.renderAnnouncementList()
                 } else {
                     toasterService.error(apiResponse.params.errmsg)
