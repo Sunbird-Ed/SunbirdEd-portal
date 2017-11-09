@@ -13,7 +13,6 @@ angular.module('playerApp')
       createAnn.errorFlag = false
       createAnn.repeatableWebLinks = []
       createAnn.attachmentEndPoint = config.URL.BASE_PREFIX + config.URL.ANNOUNCEMENT.UPLOAD_ATTACHMENT
-      alert(createAnn.attachmentEndPoint)
       createAnn.isMetaModified = false
       createAnn.stepNumber = 1
       createAnn.attachment = []
@@ -80,7 +79,6 @@ angular.module('playerApp')
         $('#announcementCancelModal').modal('hide others')
         $('#announcementCancelModal').modal('hide all')
         $('#announcementCancelModal').modal('hide dimmer')
-        createAnn.confirmModel = true
       }
 
       createAnn.addNewLink = function () {
@@ -91,17 +89,17 @@ angular.module('playerApp')
 
       createAnn.removeLink = function (index) {
         createAnn.repeatableWebLinks.splice(index, 1)
-        delete createAnn.data.link[index]
+        delete createAnn.data.links[index]
         createAnn.showUrlField = createAnn.repeatableWebLinks.length != '0'
       }
 
       createAnn.previewAnn = function () {
-        var linkArray = []
-        angular.forEach(createAnn.data.link, function (value, key) {
-          linkArray.push(value)
+        createAnn.linkArray = []
+        angular.forEach(createAnn.data.links, function (value, key) {
+        	console.log(value)
+          createAnn.linkArray.push(value)
         })
-
-        createAnn.previewData = { 'type': createAnn.data.type, 'links': linkArray, 'title': createAnn.data.title, 'description': createAnn.data.description, 'target': ['teachers'], 'attachments': [{ 'title': 'circular.pdf', 'downloadURL': 'https://linktoattachment', 'mimetype': 'application/pdf' }] }
+        createAnn.previewData = { 'type': createAnn.data.type, 'links': createAnn.linkArray, 'title': createAnn.data.title, 'description': createAnn.data.description, 'target': ['teachers'], 'attachments': createAnn.attachment }
       }
 
       createAnn.removeRicipients = function (item) {
@@ -162,12 +160,11 @@ angular.module('playerApp')
         requestBody.createdBy = $rootScope.userId
         requestBody.target = { 'geo': { 'ids': _.map(createAnn.selectedReciepeient, 'location') } }
         if (requestBody.links) {
-          requestBody.links = _.values(requestBody.links)
+          requestBody.links = createAnn.linkArray
         }
         var requestData = {
           request: requestBody
         }
-
         announcementService.createAnnouncement(requestData).then(function (apiResponse) {
           if (apiResponse && apiResponse.responseCode === 'OK') {
             createAnn.refreshFormValues()
@@ -203,8 +200,8 @@ angular.module('playerApp')
             debug: true,
             paramsInBody: true,
             request: {
-              // endpoint: '/api/announcement/v1/attachment/upload',
-              endpoint: createAnn.attachmentEndPoint,
+              endpoint: 'http://localhost:3000/api/announcement/v1/attachment/upload',
+              //endpoint: createAnn.attachmentEndPoint,
               inputName: 'document',
               params: { 'createdBy': $rootScope.userId }
             },
@@ -228,7 +225,8 @@ angular.module('playerApp')
             callbacks: {
               onComplete: function (id, name, responseJSON, xhr) {
                 if (responseJSON.responseCode === 'OK' && responseJSON.result.attachment) {
-                  createAnn.attachment.push(responseJSON.result.attachment.id)
+                  var attData = {"title":name, "downloadURL": ""}
+                  createAnn.attachment.push(attData)
                   createAnn.enableRecepientBtn()
                 }
               },
