@@ -85,15 +85,21 @@ class AnnouncementController {
         throw { msg: 'unable to process the request!', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
       }
 
-      try {
-        //TODO: notification: incomplete implementation 
-        await (this.__createAnnouncementNotification( /*announcement data*/ ))
-        return { announcement: newAnnouncementObj.data }
-      } catch (e) {
+    try {
+        if (!newAnnouncementObj.data.id) {
+            requestObj.body.request.announcementId = newAnnouncementObj.data.id
+            this.createNotification(requestObj)
+            return {
+                announcement: newAnnouncementObj.data
+            }
+        }
+    } catch (e) {
         // even if notification fails, it should still send annoucement in response
-        return { announcement: newAnnouncementObj.data }
-      }
-    })
+        return {
+            announcement: newAnnouncementObj.data
+        }
+    }
+})
   }
 
   /**
@@ -205,11 +211,45 @@ class AnnouncementController {
    *
    * @return  {[type]}  [description]
    */
-  __createAnnouncementNotification() {
-    return new promise((resolve, reject) => {
-      resolve({ msg: 'notification sent!' })
-    })
+  createNotification(data) {
+     return this.__createAnnouncementNotification()(data);
   }
+
+  __createAnnouncementNotification() {
+        return async((data) => {
+            let requestObj = {
+                "to": "",
+                "type": "fcm",
+                "data": {"notificationpayload": {"msgid": data.body.request.announcementId, "title": data.body.request.title, "msg": data.body.request.description, "icon": "", "time": "", "validity": "-1", "actionid": "1", "actiondata": "", "dispbehavior": "stack"} }
+            }
+            let options = {
+                "method": "POST",
+                "uri": envVariables.DATASERVICE_URL + "data/v1/notification/send",
+                "body": {
+                    "request": requestObj
+                },
+                "json": true
+            }
+            let authUserToken = _.get(data, 'kauth.grant.access_token.token') || data.headers['x-authenticated-user-token']
+            if (!authUserToken) throw { msg: 'UNAUTHORIZED', statusCode: HttpStatus.BAD_REQUEST }
+
+            options.headers =this.getRequestHeader({ xAuthUserToken: authUserToken });
+            var targetIds = [];
+            if (data.body.request.target) {
+                _.forIn(data.body.request.target, (value, key) => {
+                    if (_.isArray(value)) {
+                        _.forEach(value, (v, k) => {
+                            targetIds.push(v);
+                        });
+                    }
+                });
+            }
+            this.forEachPromise(data.body.request.target.geo.ids, this.sendNotification, options, this).then(() => {
+                console.log('done');
+            });
+        })
+
+    }
 
   /**
    * Get announcement
@@ -559,16 +599,16 @@ class AnnouncementController {
       });
   }
   httpService(options) {
-    return new Promise((resolve, reject) => {
-      if (!options) reject('options required!')
-      webService(options, (error, response, body) => {
-        if (error || response.statusCode >= 400) {
-          reject({ response, body })
-        } else {
-          resolve({ response, body })
-        }
+      return new Promise((resolve, reject) => {
+          if (!options) reject('options required!')
+          options.headers = options.headers || this.getRequestHeader()
+          webService(options, (error, response, body) => {
+              if (error || response.statusCode >= 400) {
+                  reject(error)
+              } else {
+                  resolve({response, body }) }
+          })
       })
-    })
   }
 
   getRequestHeader(opt) {
@@ -582,7 +622,24 @@ class AnnouncementController {
       'Authorization': 'Bearer ' + envVariables.PORTAL_API_AUTH_TOKEN
     }
   }
+
+  forEachPromise(items, fn, options, context) {
+    return items.reduce(function (promise, item) {
+        return promise.then(function () {
+            return fn(item, options, context);
+        });
+    }, Promise.resolve());
+  }
+
+  sendNotification(item, options, context) {
+      options.body.request.to = item;
+      return new Promise((resolve, reject) => {
+          context.httpService(options).then((data) => {
+            resolve(data);
+          }).catch((error) => {
+              reject(error);
+          })
+      });
+  }
 }
-
-
 module.exports = new AnnouncementController()
