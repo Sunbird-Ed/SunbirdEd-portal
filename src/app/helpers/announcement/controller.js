@@ -104,6 +104,7 @@ class AnnouncementController {
    * @return  {[type]}              [description]
    */
   __validateCreateRequest(requestObj) {
+    // TODO: Add validation for targt data structure
     let validation = Joi.validate(requestObj, Joi.object().keys({
       "request": Joi.object().keys({
         'sourceId': Joi.string().required(),
@@ -112,7 +113,7 @@ class AnnouncementController {
         'from':Joi.string().required(),
         'type': Joi.string().required(),
         'description': Joi.string().required(),
-        'target': Joi.object().min(1).pattern(/\w/, Joi.string().required()).required(),
+        'target': Joi.object().min(1).required(),
         'links': Joi.array().items(Joi.string().required())
       }).required()
     }), { abortEarly: false })
@@ -179,7 +180,7 @@ class AnnouncementController {
             'description': data.description,
             'from':data.from,
           },
-          'target': JSON.stringify(data.target),
+          'target': data.target,
           'links': data.links,
           'status': this.statusConstant.ACTIVE
         }
