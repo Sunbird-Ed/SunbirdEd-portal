@@ -74,7 +74,7 @@
             <select name="grades" multiple="" id=selectGrades class="ui fluid dropdown" ng-value="option.value" ng-options=" language for language in profileCtrl.grades" ng-model="profileCtrl.user.grade">
                 <option value="" >Grade</option>
             </select>
-            <profile-visibility  top="'true'"   update="'true'" field="'grades'"></profile-visibility>
+            <profile-visibility  top="'true'"   update="'true'" field="'grade'"></profile-visibility>
         </div>
 
     </div>
@@ -84,7 +84,7 @@
             <select name="language" id=languageSelect class="ui fluid dropdown" ng-value="option.value" ng-options=" language for language in profileCtrl.languages | orderBy:'toString()'" ng-model="profileCtrl.user.language">
                 <option value="">Language</option>
             </select>
-            <profile-visibility  top="'true'"   update="'true'" field="'languages'"></profile-visibility>
+            <profile-visibility  top="'true'"   update="'true'" field="'language'"></profile-visibility>
         </div>
     </div>
     <div class="field">

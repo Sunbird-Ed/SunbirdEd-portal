@@ -36,8 +36,6 @@ angular.module('playerApp')
             profile.contentSortBy = 'desc';
             profile.quantityOfContent = 4;
             profile.badges = [];
-            profile.privateProfileFields = [];
-            profile.publicProfileFields = [];
             profile.isViewMore = true;
 
             var orgIds = [];
@@ -118,9 +116,8 @@ angular.module('playerApp')
                     }
                     if (profile.user.profileVisibility) {
                         $rootScope.privateProfileFields = Object.keys(profile.user.profileVisibility);
-                    }
-                    else{
-                        $rootScope.privateProfileFields = []
+                    } else {
+                        $rootScope.privateProfileFields = [];
                     }
 
                     if (profile.user.webPages) {
@@ -792,48 +789,6 @@ angular.module('playerApp')
 
             profile.setLimit = function (lim) {
                 profile.limit = (lim <= 0) ? profile.userSkills.length : lim;
-            };
-
-            $rootScope.$on('profileVisibilityChange', function (event, profVisInfo) {
-                if (profVisInfo.visibility === 'private') {
-                    if (profile.privateProfileFields.indexOf(profVisInfo.field) === -1) {
-                        profile.privateProfileFields.push(profVisInfo.field);
-                    }
-                    _.remove(profile.publicProfileFields, function (v) { return v === profVisInfo.field; });
-                } else if (profVisInfo.visibility === 'public') {
-                    if (profile.publicProfileFields.indexOf(profVisInfo.field) === -1) {
-                        profile.publicProfileFields.push(profVisInfo.field);
-                    }
-                    _.remove(profile.privateProfileFields, function (v) { return v === profVisInfo.field; });
-                }
-                if (profVisInfo.update) {
-                    profile.updateProfVisFields();
-                }
-            });
-
-            profile.updateProfVisFields = function () {
-                var req = {
-                    request: {
-                        userId: profile.userId
-
-                    }
-                };
-
-                if (profile.privateProfileFields.length > 0) {
-                    req.request.private = profile.privateProfileFields;
-                }
-                if (profile.publicProfileFields.length > 0) {
-                    req.request.public = profile.publicProfileFields;
-                }
-                userService.updateProfileFieldVisibility(req).then(function (response) {
-                    if (response && response.responseCode === 'OK') {
-                        profile.privateProfileFields = []
-                        profile.publicProfileFields = []
-                        toasterService.success($rootScope.messages.smsg.m0040);
-                    } else {
-                        toasterService.error($rootScope.messages.fmsg.m0048);
-                    }
-                });
             };
         }
     ]);
