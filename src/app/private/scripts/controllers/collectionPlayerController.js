@@ -2,8 +2,8 @@
 
 (function () {
   angular.module('playerApp').controller('CollectionPlayerCtrl', ['$state', '$timeout',
-    'courseService', '$rootScope', '$stateParams',
-    function ($state, $timeout, courseService, $rootScope, $stateParams) {
+    'courseService', '$rootScope', '$stateParams', 'toasterService',
+    function ($state, $timeout, courseService, $rootScope, $stateParams, toasterService) {
       var cpvm = this
       cpvm.treeKey = 0
       cpvm.loader = {
@@ -36,6 +36,11 @@
         courseService.courseHierarchy($state.params.Id).then(function (res) {
           if (res && res.responseCode === 'OK') {
             cpvm.loader.showLoader = false
+            if (res.result.content.status === 'Retired') {
+              toasterService.warning($rootScope.messages.imsg.m0004)
+              $state.go('Home')
+              return
+            }
             res.result.content.children = _.sortBy(res.result.content.children,
                         ['index'])
             cpvm.courseHierachy = res.result.content

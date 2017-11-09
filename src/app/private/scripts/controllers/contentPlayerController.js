@@ -2,13 +2,14 @@
 
 angular.module('playerApp')
   .controller('contentPlayerCtrl', ['playerTelemetryUtilsService', '$state', '$scope',
-    'contentService', '$timeout', '$stateParams', 'config', '$rootScope', '$location', '$anchorScroll',
+    'contentService', '$timeout', '$stateParams', 'config', '$rootScope', '$location', '$anchorScroll', 'toasterService',
     function (playerTelemetryUtilsService, $state, $scope, contentService,
-        $timeout, $stateParams, config, $rootScope, $location, $anchorScroll) {
+        $timeout, $stateParams, config, $rootScope, $location, $anchorScroll, toasterService) {
       $scope.isClose = $scope.isclose
       $scope.isHeader = $scope.isheader
       $scope.showModalInLectureView = true
       $scope.contentProgress = 0
+      var count = 0
 
       $scope.getContentEditorConfig = function (data) {
         var configuration = {}
@@ -108,6 +109,12 @@ angular.module('playerApp')
         }
         contentService.getById(req, qs).then(function (response) {
           if (response && response.responseCode === 'OK') {
+            if (response.result.content.status === 'Retired' && !count) {
+              count += 1
+              toasterService.warning($rootScope.messages.imsg.m0004)
+              $state.go('Home')
+              return
+            }
             $scope.errorObject = {}
             showPlayer(response.result.content)
           } else {
