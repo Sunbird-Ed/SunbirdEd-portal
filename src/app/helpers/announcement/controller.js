@@ -233,17 +233,39 @@ class AnnouncementController {
     })
   }
 
-  /**
+  getDefinitions(requestObj){
+    return this.__getDefinitions()(requestObj)
+  }
+  __getDefinitions() {
+      return async((requestObj) => {
+          let responseObj = {};
+          if (requestObj.body.definitions) {
+              if (requestObj.body.definitions.includes('announcementtype')) {
+                  let announceMentTypes = await (this.__getAnnounceTypes(requestObj));
+                  responseObj["announcementtype"] = announceMentTypes;
+              }
+              if (requestObj.body.definitions.includes('senderlist')) {
+                  let senderlist = await (this.getSenderList(requestObj));
+                  responseObj["senderlist"]= senderlist;
+              }
+              return responseObj;
+          }else{
+             return { msg: 'unable to fetch ', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
+          }
+      });
+  }
+
+ /**
    * Get a list of announcement types
    *
    * @return  {[type]}  [description]
    */
-  __getAnnounceTypes() {
+  __getAnnounceTypes(requestObj) {
     return new Promise((resolve, reject) => {
       let query = {
         table: this.objectStoreRest.MODEL.ANNOUNCEMENTTYPE,
         query: {
-          'rootorgid': _.get(requestObj, 'body.request.sourceId')
+          'id': _.get(requestObj, 'body.id')
         }
       }
 
@@ -270,13 +292,27 @@ class AnnouncementController {
    * @return  {[type]}              [description]
    */
   cancelAnnouncementById(requestObj) {
-    return this.__cancelAnnouncementById()(requestObj)
+    return this.__cancelAnnouncementById(requestObj)
   }
 
-  __cancelAnnouncementById() {
-    return async((requestObj) => {
-      //TODO: complete implementation
-      return { announcementId: requestObj.params.announcementId, status: 'cancelled' }
+  __cancelAnnouncementById(requestObj) {
+      return new Promise((resolve, reject) => {
+      let query = {
+        table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
+        values:{id: requestObj.params.announcementId, status:'cancelled'}
+      }
+      this.objectStoreRest.updateObjectById(query)
+        .then((data) => {
+          if (!_.isObject(data)) {
+            reject({ msg: 'unable to cancel the announcement', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
+          } else {
+            resolve({id: requestObj.params.announcementId, status:'cancelled'})
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+          reject({ msg: 'unable to cancel the announcement', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
+        })
     })
   }
 
