@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+    - "6"
+
+before_script:
+    - npm install -g bower
+    - npm install -g gulp-cli
+    - cd src
+    - npm install
+    - bower cache clean
+    - bower install --force
+
+script:
+    - gulp test
