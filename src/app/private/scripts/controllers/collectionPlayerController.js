@@ -39,6 +39,7 @@
             res.result.content.children = _.sortBy(res.result.content.children,
                         ['index'])
             cpvm.courseHierachy = res.result.content
+            cpvm.name = cpvm.courseHierachy.name
             cpvm.collectionMeta.author = cpvm.courseHierachy.author
             cpvm.collectionMeta.language = cpvm.courseHierachy.language
             cpvm.collectionMeta.gradeLevel = cpvm.courseHierachy.gradeLevel
