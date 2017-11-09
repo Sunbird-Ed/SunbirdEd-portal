@@ -125,6 +125,16 @@ router.post('/received', (requestObj, responseObj) => {
     })
 })
 
+router.post('/read', (requestObj, responseObj) => {
+  announcementController.read(requestObj.body)
+    .then((data) => {
+      sendSuccessResponse(responseObj, 'read', data, HttpStatus.CREATED)
+    })
+    .catch((err) => {
+      sendErrorResponse(responseObj, 'read', err.msg, err.statusCode)
+    })
+})
+
 function sendSuccessResponse (res, id, result, code = HttpStatus.OK) {
   res.status(code)
   res.send({
