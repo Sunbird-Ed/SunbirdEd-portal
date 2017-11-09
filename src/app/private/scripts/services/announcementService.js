@@ -90,4 +90,17 @@ angular.module('playerApp')
             this.createAnnouncement = function(req) {
 
             }
+
+            /**
+             * @method deleteAnnouncement
+             * @desc Send announcementId to cancel annoucement API
+             * @memberOf Services.announcementService
+             * @param {string}  announcementId - Announcement Id
+             * @returns {object} returns response of API
+             * @instance
+             */
+            this.deleteAnnouncement = function(announcementId) {
+                var URL = '/api/announcement/v1/cancel/' + announcementId
+                return httpCall(URL, {}, 'GET', {})
+            }
   }])
