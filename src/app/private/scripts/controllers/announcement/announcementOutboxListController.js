@@ -5,12 +5,15 @@ angular.module('playerApp').controller('announcementOutboxListController', ['$ro
         announcementOutboxData.pager = {};
         announcementOutboxData.setPage = setPage;
         announcementOutboxData.showLoader = true
+        announcementOutboxData.showDataDiv = false
         announcementOutboxData.renderAnnouncementList = function() {
             announcementService.getOutBoxAnnouncementList($rootScope.userId).then(function(apiResponse) {
-                apiResponse = apiResponse.data
                 if (apiResponse && apiResponse.responseCode === 'OK') {
                     announcementOutboxData.listData = apiResponse.result.announcements
                     initController();
+                    if (announcementOutboxData.listData.length > 0) {
+                        announcementOutboxData.showDataDiv = true
+                    }
                 } else {
                     toasterService.error(apiResponse.params.errmsg)
                 }
@@ -18,43 +21,6 @@ angular.module('playerApp').controller('announcementOutboxListController', ['$ro
                 toasterService.error(err.data.params.errmsg)
             }).finally(function() {
                 announcementOutboxData.showLoader = false
-                announcementOutboxData.listData = [{
-                    "announcementId": "1",
-                    "sourceId": "National Council For Teacher Education",
-                    "createdBy": "Creator1",
-                    "createdOn": "2017-10-24",
-                    "readBy": ["1234-12341-12313-132123", "1234-12341-12313-324234"],
-                    "type": "Circular",
-                    "links": ["https://www.google.co.in/?gfe_rd=cr&dcr=0&ei=D8r2WbjkOsKL8Qe4pJeACA", "https://diksha.gov.in/#documents"],
-                    "status": "active",
-                    "title": "Exam dates announced for CBSE and state board exams",
-                    "description": "Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams. Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams. Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams. announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams",
-                    "target": ["teachers"],
-                    "attachments": [{
-                        "title": "Circular A1.pdf",
-                        "downloadURL": "https://linktoattachment.com/documents/Circular A1.pdf",
-                        "mimetype": "application/pdf",
-                        "filesize": "120 Kb"
-                    }]
-                }, {
-                    "announcementId": "2",
-                    "sourceId": "National Council For Teacher Education",
-                    "createdBy": "Creator1",
-                    "createdOn": "2017-10-24",
-                    "readBy": ["1234-12341-12313-132123", "1234-12341-12313-324234"],
-                    "type": "Circular",
-                    "links": ["https://www.google.co.in/?gfe_rd=cr&dcr=0&ei=D8r2WbjkOsKL8Qe4pJeACA", "https://diksha.gov.in/#documents"],
-                    "status": "cancelled",
-                    "title": "Exam dates announced for CBSE and state board exams",
-                    "description": "Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams. Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams. Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams. announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams",
-                    "target": ["teachers"],
-                    "attachments": [{
-                        "title": "Circular A1.pdf",
-                        "downloadURL": "https://linktoattachment.com/documents/Circular A1.pdf",
-                        "mimetype": "application/pdf",
-                        "filesize": "120 Kb"
-                    }]
-                }]
             });
         }
 
