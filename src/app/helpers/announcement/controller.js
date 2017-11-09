@@ -225,6 +225,10 @@ class AnnouncementController {
    * @return  {[type]}              [description]
    */
   getAnnouncementById(requestObj) {
+    return this.__getAnnouncementById(requestObj)
+  }
+
+  __getAnnouncementById(requestObj) {
     return new Promise((resolve, reject) => {
       let query = {
         table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
@@ -662,6 +666,32 @@ class AnnouncementController {
 
         })
     }
+
+    /**
+     * Get the announcement data to duplicate for resending
+     *
+     * @param   {[type]}  requestObj  [description]
+     *
+     * @return  {[type]}              [description]
+     */
+    getResend(requestObj) {
+        return this.__getAnnouncementById(requestObj)
+    }
+
+
+    /**
+     * Resend the edited announcement
+     * @param  {[type]} requestObj [description]
+     * @return {[type]}            [description]
+     */
+    resend(requestObj) {
+        // TODO: duplicate file data??
+
+        return this.__create()(requestObj)
+    }
+
+
+
 
 
   httpService(options) {
