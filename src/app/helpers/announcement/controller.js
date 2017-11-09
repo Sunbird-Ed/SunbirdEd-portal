@@ -37,8 +37,14 @@ class AnnouncementController {
         'DRAFT': 'draft'
     }
 
+    let metricsActivityConstant = {
+        'READ': 'read',
+        'RECEIVED': 'received'
+    }
+
     this.objectStoreRest = new ObjectStoreRest(tableMapping, modelConstant)
     this.statusConstant = statusConstant
+    this.metricsActivityConstant = metricsActivityConstant
   }
 
   /**
@@ -454,8 +460,8 @@ class AnnouncementController {
       })
       return { error: messages, isValid: false }
     }
-    return { isValid: true };
-  };
+    return { isValid: true }
+  }
 
   /**
    * Process the uploaded file (while creating announcement)
@@ -542,6 +548,93 @@ class AnnouncementController {
       return {}
     })
   }
+
+    /**
+     * Mark announcement(s) received for a given user
+     *
+     * @param   {[type]}  requestObj  [description]
+     *
+     * @return  {[type]}              [description]
+     */
+    received(requestObj) {
+        return this.__received()(requestObj)
+    }
+
+    __received(requestObj) {
+        return async((requestObj) => {
+
+            // validate request
+            let request = this.__validateReceivedRequest(requestObj)
+            if (!request.isValid) throw { msg: request.error, statusCode: HttpStatus.BAD_REQUEST }
+
+            try {
+                var metricsData = await (this.__createMetrics(requestObj.request, this.metricsActivityConstant.RECEIVED))
+                return {metrics: metricsData.data}
+            } catch (error) {
+                throw { msg: 'unable to update status!', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
+            }
+            
+        })      
+    }
+
+    /**
+     * Validate the incoming request for creating an announcement
+     *
+     * @param   {[type]}  requestObj  [description]
+     *
+     * @return  {[type]}              [description]
+     */
+    __validateReceivedRequest(requestObj) {
+        let validation = Joi.validate(requestObj, Joi.object().keys({
+            "request": Joi.object().keys({
+                'userId': Joi.string().required(),
+                'announcementId': Joi.string().required(),
+                'channel': Joi.string().required()
+            }).required()
+        }), { abortEarly: false })
+
+        if (validation.error != null) {
+            let messages = []
+            _.forEach(validation.error.details, (error, index) => {
+                messages.push({ field: error.path[0], description: error.message })
+            })
+            return { error: messages, isValid: false }
+        }
+        return { isValid: true }
+    }
+
+
+    __createMetrics(requestObj, metricsActivity) {
+        return new Promise((resolve, reject) => {
+            // build query
+            let metricsId = uuidv1()
+            let query = {
+                table: this.objectStoreRest.MODEL.METRICS,
+                values: {
+                    'id': metricsId,
+                    'userid': requestObj.userId,
+                    'announcementid': requestObj.announcementId,
+                    'channel': requestObj.channel,
+                    'activity': metricsActivity,
+                    'createddate': dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo"),
+                }
+            }
+
+            this.objectStoreRest.createObject(query)
+            .then((data) => {
+                if (!_.isObject(data)) {
+                    reject({ msg: 'unable to update metrics' })
+                } else {
+                    resolve({ data: { id: metricsId } })
+                }
+            })
+            .catch((error) => {
+                reject({ msg: 'unable to update metrics' })
+            })
+
+        })
+    }
+
 
   httpService(options) {
     return new Promise((resolve, reject) => {
