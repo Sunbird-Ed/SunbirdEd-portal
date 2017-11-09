@@ -106,13 +106,23 @@ router.post('/attachment/upload', (requestObj, responseObj) => {
 }) */
 
 router.post('/definations', (requestObj, responseObj) => {
-    announcementController.getDefinitions(requestObj)
+  announcementController.getDefinitions(requestObj)
         .then((data) => {
-            sendSuccessResponse(responseObj, 'getDefinitions', data, HttpStatus.OK)
+          sendSuccessResponse(responseObj, 'getDefinitions', data, HttpStatus.OK)
         })
         .catch((err) => {
-            sendErrorResponse(responseObj, 'definations', err.msg, err.statusCode)
-    });
+          sendErrorResponse(responseObj, 'definations', err.msg, err.statusCode)
+        })
+})
+
+router.post('/received', (requestObj, responseObj) => {
+  announcementController.received(requestObj.body)
+    .then((data) => {
+      sendSuccessResponse(responseObj, 'received', data, HttpStatus.CREATED)
+    })
+    .catch((err) => {
+      sendErrorResponse(responseObj, 'received', err.msg, err.statusCode)
+    })
 })
 
 function sendSuccessResponse (res, id, result, code = HttpStatus.OK) {
