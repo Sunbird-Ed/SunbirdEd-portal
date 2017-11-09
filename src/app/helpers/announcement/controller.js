@@ -674,9 +674,24 @@ class AnnouncementController {
      *
      * @return  {[type]}              [description]
      */
-    resend(requestObj) {
+    getResend(requestObj) {
         return this.__getAnnouncementById(requestObj)
     }
+
+
+    /**
+     * Resend the edited announcement
+     * @param  {[type]} requestObj [description]
+     * @return {[type]}            [description]
+     */
+    resend(requestObj) {
+        // TODO: duplicate file data??
+
+        return this.__create()(requestObj)
+    }
+
+
+
 
 
   httpService(options) {
