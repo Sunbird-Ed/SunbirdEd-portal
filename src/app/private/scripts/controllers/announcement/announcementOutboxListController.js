@@ -12,8 +12,6 @@ angular.module('playerApp')
 
       announcementOutboxData.renderAnnouncementList = function() {
         announcementService.getOutBoxAnnouncementList($rootScope.userId).then(function(apiResponse) {
-            apiResponse = apiResponse.data
-
             if (apiResponse && apiResponse.responseCode === 'OK') {
               announcementOutboxData.listData = apiResponse.result.announcements
               initController();
