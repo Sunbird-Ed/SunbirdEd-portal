@@ -80,13 +80,12 @@ class AnnouncementController {
 
       try {
         var newAnnouncementObj = await (this.__createAnnouncement(requestObj.body.request))
-        //TODO: sent count as async process
       } catch (error) {
         throw { msg: 'unable to process the request!', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
       }
 
     try {
-        if (!newAnnouncementObj.data.id) {
+        if (newAnnouncementObj.data.id) {
             requestObj.body.request.announcementId = newAnnouncementObj.data.id
             this.createNotification(requestObj)
             return {
@@ -217,34 +216,24 @@ class AnnouncementController {
 
   __createAnnouncementNotification() {
         return async((data) => {
-            let requestObj = {
-                "to": "",
-                "type": "fcm",
-                "data": {"notificationpayload": {"msgid": data.body.request.announcementId, "title": data.body.request.title, "msg": data.body.request.description, "icon": "", "time": "", "validity": "-1", "actionid": "1", "actiondata": "", "dispbehavior": "stack"} }
-            }
-            let options = {
-                "method": "POST",
-                "uri": envVariables.DATASERVICE_URL + "data/v1/notification/send",
-                "body": {
-                    "request": requestObj
-                },
-                "json": true
-            }
+            let requestObj = {"to": "", "type": "fcm", "data": {"notificationpayload": {"msgid": data.body.request.announcementId, "title": data.body.request.title, "msg": data.body.request.description, "icon": "", "time": dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo"), "validity": "-1", "actionid": "1", "actiondata": "", "dispbehavior": "stack"} } }
+            let options = {"method": "POST", "uri": envVariables.DATASERVICE_URL + "data/v1/notification/send", "body": {"request": requestObj }, "json": true }
             let authUserToken = _.get(data, 'kauth.grant.access_token.token') || data.headers['x-authenticated-user-token']
-            if (!authUserToken) throw { msg: 'UNAUTHORIZED', statusCode: HttpStatus.BAD_REQUEST }
-
+            if (!authUserToken){
+             throw {msg: 'UNAUTHORIZED', statusCode: HttpStatus.BAD_REQUEST } 
+            }
             options.headers =this.getRequestHeader({ xAuthUserToken: authUserToken });
             var targetIds = [];
             if (data.body.request.target) {
                 _.forIn(data.body.request.target, (value, key) => {
-                    if (_.isArray(value)) {
-                        _.forEach(value, (v, k) => {
+                    if (_.isObject(value)) {
+                        _.forEach(value.ids, (v, k) => {
                             targetIds.push(v);
                         });
                     }
                 });
             }
-            this.forEachPromise(data.body.request.target.geo.ids, this.sendNotification, options, this).then(() => {
+            this.forEachPromise(targetIds, this.sendNotification, options, this).then(() => {
                 console.log('done');
             });
         })
@@ -598,10 +587,11 @@ class AnnouncementController {
               throw {msg: 'Unable to fetch the senderlist', statusCode: HttpStatus.INTERNAL_SERVER_ERROR } }
       });
   }
+
   httpService(options) {
       return new Promise((resolve, reject) => {
           if (!options) reject('options required!')
-          options.headers = options.headers || this.getRequestHeader()
+          options.headers = options.headers || this.getRequestHeader();
           webService(options, (error, response, body) => {
               if (error || response.statusCode >= 400) {
                   reject(error)
