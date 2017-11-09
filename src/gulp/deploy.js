@@ -14,11 +14,6 @@ gulp.task('addCDNFiles', ['injectFiles'], function () {
     .pipe(gulp.dest(paths.cdnDest))
 })
 
-gulp.task('packageNodeModules', function () {
-  return gulp.src(['node_modules/**/*'])
-    .pipe(gulp.dest(paths.player.dist + '/node_modules'))
-})
-
 gulp.task('injectFiles', ['minifyIMG'], function () {
   var x = gulp.src('dist/public/index.ejs')
     .pipe(inject(gulp.src(['dist/public/external.min.js',
