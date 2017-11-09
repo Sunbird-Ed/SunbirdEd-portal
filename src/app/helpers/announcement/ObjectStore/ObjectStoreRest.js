@@ -11,14 +11,13 @@ class ObjectStoreRest extends ObjectStore {
     super(modelMapping, modelConstant)
   }
 
-  createObject(data) {
-    return this.__createObject()(data)
+  createObject(data, indexStore) {
+    return this.__createObject()(data, indexStore)
   }
 
   __createObject() {
-    return async((data) => {
+    return async((data, indexStore) => {
       await (this.validateCreateObject(data))
-
       let options = {
         method: 'POST',
         uri: envVariables.DATASERVICE_URL + 'data/v1/object/create',
@@ -31,7 +30,9 @@ class ObjectStoreRest extends ObjectStore {
         },
         json: true
       }
-
+      if (indexStore == false) {
+          options.body.request = _.omit(options.body.request, ['documentName']);
+      }
       try {
         let result = await (this.httpService(options))
         return { data: _.get(result, 'body.result'), status: 'created' }
@@ -41,12 +42,12 @@ class ObjectStoreRest extends ObjectStore {
     })
   }
 
-  findObject(data) {
-    return this.__findObject()(data)
+  findObject(data, indexStore) {
+    return this.__findObject()(data, indexStore)
   }
 
   __findObject() {
-    return async((data) => {
+    return async((data, indexStore) => {
       await (this.validateFindObject(data))
 
       let options = {
@@ -54,11 +55,15 @@ class ObjectStoreRest extends ObjectStore {
         uri: envVariables.DATASERVICE_URL + 'data/v1/object/search',
         body: {
           request: {
-            'documentName': data.table,
-            'filters': data.query
+            'filters': data.query,
+            'documentName':data.table,
           }
         },
         json: true
+      }
+      if (indexStore == false) {
+          options.body.request = _.omit(options.body.request, ['documentName']);
+          options.body.request.tableName = data.table;
       }
 
       try {
@@ -89,18 +94,29 @@ class ObjectStoreRest extends ObjectStore {
     return this.__updateObjectById()(data)
   }
 
-  __updateObjectById() {
-    return async((data) => {
-      await (this.validateUpdateObjectById(data))
-
-      try {
-        let result = await (this.httpService({}))
-        return { data: result, status: 'updated' }
-      } catch (error) {
-        throw { msg: 'unable to update object', status: 'error' }
-      }
-    })
-  }
+    __updateObjectById() {
+        return async((data) => {
+            await (this.validateUpdateObjectById(data))
+            let options = {
+                method: 'POST',
+                uri: envVariables.DATASERVICE_URL + 'data/v1/object/update',
+                body: {
+                    request: {
+                        'tableName': data.table,
+                        'documentName': data.table,
+                        'payload': data.values
+                    }
+                },
+                json: true
+            }
+            try {
+                let result = await (this.httpService(options))
+                return {data: result, status: 'updated'}
+            } catch (error) {
+                throw {msg: 'unable to update object', status: 'error', error: error }
+            }
+        })
+    }
 
   deleteObjectById(data) {
     return this.__deleteObjectById()(data)
@@ -119,11 +135,13 @@ class ObjectStoreRest extends ObjectStore {
     })
   }
 
+
   httpService(options) {
     return new Promise((resolve, reject) => {
       if (!options) reject('options required!')
       options.headers = options.headers || this.getRequestHeader()
       webService(options, (error, response, body) => {
+        console.info("Code",response.statusCode);
         if (error || response.statusCode >= 400) {
           reject(error)
         } else {

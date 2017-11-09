@@ -102,10 +102,11 @@ class AnnouncementController {
         'sourceId': Joi.string().required(),
         'createdBy': Joi.string().required(),
         'title': Joi.string().required(),
+        'from':Joi.string().required(),
         'type': Joi.string().required(),
         'description': Joi.string().required(),
         'target': Joi.object().min(1).pattern(/\w/, Joi.string().required()).required(),
-        'links': Joi.array().items(Joi.string().required()) // optional
+        'links': Joi.array().items(Joi.string().required())
       }).required()
     }), { abortEarly: false })
 
@@ -168,7 +169,8 @@ class AnnouncementController {
           'details': {
             'title': data.title,
             'type': data.type,
-            'description': data.description
+            'description': data.description,
+            'from':data.from,
           },
           'target': JSON.stringify(data.target),
           'links': data.links
@@ -233,17 +235,39 @@ class AnnouncementController {
     })
   }
 
-  /**
+  getDefinitions(requestObj){
+    return this.__getDefinitions()(requestObj)
+  }
+  __getDefinitions() {
+      return async((requestObj) => {
+          let responseObj = {};
+          if (requestObj.body.definitions) {
+              if (requestObj.body.definitions.includes('announcementtype')) {
+                  let announceMentTypes = await (this.__getAnnounceTypes(requestObj));
+                  responseObj["announcementtype"] = announceMentTypes;
+              }
+              if (requestObj.body.definitions.includes('senderlist')) {
+                  let senderlist = await (this.getSenderList(requestObj));
+                  responseObj["senderlist"]= senderlist;
+              }
+              return responseObj;
+          }else{
+             return { msg: 'unable to fetch ', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
+          }
+      });
+  }
+
+ /**
    * Get a list of announcement types
    *
    * @return  {[type]}  [description]
    */
-  __getAnnounceTypes() {
+  __getAnnounceTypes(requestObj) {
     return new Promise((resolve, reject) => {
       let query = {
         table: this.objectStoreRest.MODEL.ANNOUNCEMENTTYPE,
         query: {
-          'rootorgid': _.get(requestObj, 'body.request.sourceId')
+          'id': _.get(requestObj, 'body.id')
         }
       }
 
@@ -270,13 +294,27 @@ class AnnouncementController {
    * @return  {[type]}              [description]
    */
   cancelAnnouncementById(requestObj) {
-    return this.__cancelAnnouncementById()(requestObj)
+    return this.__cancelAnnouncementById(requestObj)
   }
 
-  __cancelAnnouncementById() {
-    return async((requestObj) => {
-      //TODO: complete implementation
-      return { announcementId: requestObj.params.announcementId, status: 'cancelled' }
+  __cancelAnnouncementById(requestObj) {
+      return new Promise((resolve, reject) => {
+      let query = {
+        table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
+        values:{id: requestObj.params.announcementId, status:'cancelled'}
+      }
+      this.objectStoreRest.updateObjectById(query)
+        .then((data) => {
+          if (!_.isObject(data)) {
+            reject({ msg: 'unable to cancel the announcement', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
+          } else {
+            resolve({id: requestObj.params.announcementId, status:'cancelled'})
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+          reject({ msg: 'unable to cancel the announcement', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
+        })
     })
   }
 
@@ -431,19 +469,18 @@ class AnnouncementController {
         table: this.objectStoreRest.MODEL.ATTACHMENT,
         values: {
           'id': attachmentId,
-          'file': requestObj.file.buffer.toString('utf8'),
+          'file': requestObj.file.buffer.toString('base64'),
           'filename': requestObj.file.originalname,
           'mimetype': requestObj.file.mimetype,
           'status': 'created',
           'createddate': dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo")
         }
       }
-
       if (!_.isEmpty(requestObj.body.createdBy)) query.values.createdby = requestObj.body.createdBy
-
+      let indexStore = false;
       try {
         return await (new Promise((resolve, reject) => {
-          this.objectStoreRest.createObject(query)
+          this.objectStoreRest.createObject(query, indexStore)
           .then((data) => {
             if (!_.isObject(data)) {
               reject()
