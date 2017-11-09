@@ -10,8 +10,8 @@
             <div class="ui label">
                 {{skill.skillName}}
                 <div class="detail">
-                    <span ng-if="skill.endorsementcount">|&nbsp;</span>
-                    <span>{{skill.endorsementcount}}</span>
+                    <span ng-if="skill.endorsementcount !== 0">|&nbsp;</span>
+                    <span ng-if="skill.endorsementcount !== 0">{{skill.endorsementcount}}</span>
                 </div>
             </div>
         </div>
