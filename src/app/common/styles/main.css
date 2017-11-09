@@ -1982,6 +1982,20 @@ div:focus {
   max-height: 80vh;
   overflow-y: auto;
 }
+.search-location-icon {
+  margin-top: 2%;
+}
+.component_items {
+  padding: 1%;
+}
+.items-area {
+  height: 200px;
+  overflow-y: auto;
+}
+.checkBox-element {
+  margin-top: 10px;
+  margin-left: 10px;
+}
 .down-arrow-accordion {
   float: right !important;
   font-size: large !important;
