@@ -31,7 +31,14 @@ class AnnouncementController {
       'METRICS': 'metrics'
     }
 
+    let statusConstant = {
+        'ACTIVE': 'active',
+        'CANCELLED': 'cancelled',
+        'DRAFT': 'draft'
+    }
+
     this.objectStoreRest = new ObjectStoreRest(tableMapping, modelConstant)
+    this.statusConstant = statusConstant
   }
 
   /**
@@ -97,6 +104,7 @@ class AnnouncementController {
    * @return  {[type]}              [description]
    */
   __validateCreateRequest(requestObj) {
+    // TODO: Add validation for targt data structure
     let validation = Joi.validate(requestObj, Joi.object().keys({
       "request": Joi.object().keys({
         'sourceId': Joi.string().required(),
@@ -105,7 +113,7 @@ class AnnouncementController {
         'from':Joi.string().required(),
         'type': Joi.string().required(),
         'description': Joi.string().required(),
-        'target': Joi.object().min(1).pattern(/\w/, Joi.string().required()).required(),
+        'target': Joi.object().min(1).required(),
         'links': Joi.array().items(Joi.string().required())
       }).required()
     }), { abortEarly: false })
@@ -172,8 +180,9 @@ class AnnouncementController {
             'description': data.description,
             'from':data.from,
           },
-          'target': JSON.stringify(data.target),
-          'links': data.links
+          'target': data.target,
+          'links': data.links,
+          'status': this.statusConstant.ACTIVE
         }
       }
 
@@ -301,14 +310,14 @@ class AnnouncementController {
       return new Promise((resolve, reject) => {
       let query = {
         table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
-        values:{id: requestObj.params.announcementId, status:'cancelled'}
+        values:{id: requestObj.params.announcementId, status:this.statusConstant.CANCELLED}
       }
       this.objectStoreRest.updateObjectById(query)
         .then((data) => {
           if (!_.isObject(data)) {
             reject({ msg: 'unable to cancel the announcement', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
           } else {
-            resolve({id: requestObj.params.announcementId, status:'cancelled'})
+            resolve({id: requestObj.params.announcementId, status:this.statusConstant.CANCELLED})
           }
         })
         .catch((error) => {
