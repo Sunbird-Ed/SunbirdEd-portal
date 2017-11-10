@@ -105,16 +105,15 @@ router.post('/attachment/upload', (requestObj, responseObj) => {
   })
 }) */
 
-router.post('/definations', (requestObj, responseObj) => {
+router.post('/definitions', (requestObj, responseObj) => {
   announcementController.getDefinitions(requestObj)
         .then((data) => {
-          sendSuccessResponse(responseObj, 'getDefinitions', data, HttpStatus.OK)
+          sendSuccessResponse(responseObj, 'definitions', data, HttpStatus.OK)
         })
         .catch((err) => {
-          sendErrorResponse(responseObj, 'definations', err.msg, err.statusCode)
+          sendErrorResponse(responseObj, 'definitions', err.msg, err.statusCode)
         })
 })
-
 router.post('/received', (requestObj, responseObj) => {
   announcementController.received(requestObj.body)
     .then((data) => {
