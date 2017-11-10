@@ -17,7 +17,7 @@ describe('Controller: announcementOutboxListController', function() {
     $q,
     deferred,
     timeout,
-    annOutboxTestData = testData.getAnnouncementOutbox
+    annOutboxTestData = announcementTestData.getAnnouncementOutbox
 
   beforeEach(inject(function($rootScope, $controller) {
     $controller('AppCtrl', {
@@ -47,6 +47,7 @@ describe('Controller: announcementOutboxListController', function() {
     it('success', function() {
       spyOn(announcementService, 'getOutBoxAnnouncementList').and.returnValue(deferred.promise)
       deferred.resolve(annOutboxTestData.successResponce)
+      annOutboxTestData.successResponce.data = annOutboxTestData.successResponce;
       spyOn(announcementOutboxListController, 'renderAnnouncementList').and.callThrough()
       announcementOutboxListController.renderAnnouncementList()
       scope.$apply();
