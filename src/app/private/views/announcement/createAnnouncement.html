@@ -7,24 +7,24 @@
           <span class="ui header">
             <span class="ui" ng-show="createAnn.stepNumber == 1">
               <span class="text announcementHeadingSection">{{$root.frmelmnts.lbl.createnewanncmnt}}</span>
-              <br/>
-            <span class="createAnnHeaderDesc">{{$root.frmelmnts.lbl.createnewanncmntdesc}}</span>
-            </span>
-            <span class="ui" ng-show="createAnn.stepNumber == 2">
+          <br/>
+          <span class="createAnnHeaderDesc">{{$root.frmelmnts.lbl.createnewanncmntdesc}}</span>
+          </span>
+          <span class="ui" ng-show="createAnn.stepNumber == 2">
               <span class="text announcementHeadingSection">{{$root.frmelmnts.lbl.selectrecipient}}</span>
-              <br/>
-              <span class="createAnnHeaderDesc">{{$root.frmelmnts.lbl.selectrecipientdesc}}</span>
-            </span>
-            <span ng-show="createAnn.stepNumber == 3">
+          <br/>
+          <span class="createAnnHeaderDesc">{{$root.frmelmnts.lbl.selectrecipientdesc}}</span>
+          </span>
+          <span ng-show="createAnn.stepNumber == 3">
               <span class="text announcementHeadingSection">{{$root.frmelmnts.lbl.confirmrecipient}}</span>
-              <br/>
-              <span class="createAnnHeaderDesc">{{$root.frmelmnts.lbl.confirmrecipientdesc}}</span>
-            </span>
-            <span ng-show="createAnn.stepNumber == 4">
+          <br/>
+          <span class="createAnnHeaderDesc">{{$root.frmelmnts.lbl.confirmrecipientdesc}}</span>
+          </span>
+          <span ng-show="createAnn.stepNumber == 4">
               <span class="text announcementHeadingSection">{{$root.frmelmnts.lbl.previewanncmnt}}</span>
-              <br/>
-              <span class="createAnnHeaderDesc">{{$root.frmelmnts.lbl.previewanncmntdesc}}</span>
-            </span>
+          <br/>
+          <span class="createAnnHeaderDesc">{{$root.frmelmnts.lbl.previewanncmntdesc}}</span>
+          </span>
           </span>
         </div>
         <div class="two wide column">
@@ -44,27 +44,27 @@
                 <div class="field required">
                   <label>{{$root.frmelmnts.lbl.anncmnttitle}}</label>
                   <div class="field form-group dropdown-margin-left" ng-required="true">
-                    <input type="text" name="title" id="announcementTitle" placeholder="{{$root.frmelmnts.instn.t0049}}" ng-model="createAnn.data.title" ng-maxlength="100" ng-change="createAnn.detectChange()" value="{{createAnn.data.title}}">
+                    <input type="text" name="title" id="announcementTitle" placeholder="{{$root.frmelmnts.instn.t0049}}" ng-model="createAnn.data.title" ng-maxlength="100" ng-change="createAnn.enableRecepientBtn()">
                     <section ng-if="createAnn.data.title.length" class="float-ContentRight">{{createAnn.data.title.length}} / 100</section>
                     <p ng-show="announcementForm.title.$error.maxlength" class="createAnnErrorMsg">Title is too long</p>
                   </div>
                 </div>
                 <div class="field required dropdown-margin-left">
                   <label>{{$root.frmelmnts.lbl.anncmntfrom}}</label>
-                  <select name="board" class="ui fluid dropdown" id="orgDropdown" ng-options=" board for board in createAnn.org" ng-model="createAnn.data.from" ng-change="createAnn.detectDropdownChange(createAnn.data.from)">
+                  <select name="announcementFrom" class="ui fluid dropdown" id="orgDropdown" ng-options="org for org in createAnn.org" ng-model="createAnn.data.from">
                     <option value="">{{$root.frmelmnts.instn.t0050}}</option>
                   </select>
                 </div>
                 <div class="field required dropdown-margin-left">
                   <label>{{$root.frmelmnts.lbl.anncmnttype}}</label>
-                  <select name="medium" class="ui fluid dropdown" id="announcementType" ng-options=" audience for audience in createAnn.announcementType" ng-model="createAnn.data.announcementType" ng-change="createAnn.detectDropdownChange(createAnn.data.announcementType)">
+                  <select name="medium" class="ui fluid dropdown" id="announcementType" ng-options=" audience for audience in createAnn.announcementType" ng-model="createAnn.data.type">
                     <option value="">{{$root.frmelmnts.instn.t0051}}</option>
                   </select>
                 </div>
                 <div class="field dropdown-margin-left">
                   <label>{{$root.frmelmnts.lbl.anncmntdesc}}</label>
                   <div class="field">
-                    <input type="text" name="description" placeholder="{{$root.frmelmnts.instn.t0052}}" ng-model="createAnn.data.description" ng-maxlength="1200" ng-change="createAnn.detectChange()">
+                    <input type="text" name="description" placeholder="{{$root.frmelmnts.instn.t0052}}" ng-model="createAnn.data.description" ng-maxlength="1200" ng-change="createAnn.enableRecepientBtn()">
                     <section ng-if="createAnn.data.description.length" class="float-ContentRight">{{createAnn.data.description.length}} / 1200</section>
                     <p class="createAnnErrorMsg" ng-show='announcementForm.description.$error.maxlength'>Description is too long.
                     </p>
@@ -74,8 +74,8 @@
                   <label>{{$root.frmelmnts.lbl.anncmntlink}}</label>
                   <div class="field" data-ng-repeat="weblink in createAnn.repeatableWebLinks">
                     <div class="ui action input">
-                      <input type="url" ng-model="createAnn.data.link[$index]" name="link_{{$index}}" placeholder="{{$root.frmelmnts.instn.t0053}}" ng-change="createAnn.detectChange()">
-                      <i class="trash icon createAnnBlueClass" ng-click="createAnn.removeLink($index)"></i>
+                      <input type="url" ng-model="createAnn.data.links[$index]" name="link_{{$index}}" placeholder="{{$root.frmelmnts.instn.t0053}}" ng-change="createAnn.enableRecepientBtn()">
+                      <i class="trash icon createAnnBlueClass margin-top-10" ng-click="createAnn.removeLink($index)"></i>
                     </div>
                     <section ng-show="announcementForm['link_' + $index].$error.url" class="createAnnErrorMsg">Not a valid URL</section>
                   </div>
@@ -104,30 +104,16 @@
         <div ng-show="createAnn.stepNumber == 2">
           <div class="ui info message">
             <i class="close icon"></i>
-            <div class="header">
-              Announcement Recipients coming soon...
-            </div>
-            <ul class="list">
-              <li>Recipients 1</li>
-              <li>Recipients 2</li>
-              <li>Recipients 3</li>
-              <li>Recipients 4</li>
-            </ul>
+            <parent config="createAnn.config">
+              <geo></geo>
+            </parent>
           </div>
         </div>
         <div ng-show="createAnn.stepNumber == 3" class="ui list ui grid">
           <div class="eight wide column">
-            <div class="ui message">
-              <i class="close icon"></i>
-              <span class="createAnnSelectedRecepient">Recipients 1</span>
-            </div>
-            <div class="ui message fon">
-              <i class="close icon"></i>
-              <span class="createAnnSelectedRecepient">Recipients 2</span>
-            </div>
-            <div class="ui message">
-              <i class="close icon"></i>
-              <span class="createAnnSelectedRecepient">Recipients 3</span>
+            <div class="ui message" ng-repeat="item in createAnn.selectedReciepeient">
+              <i class="close icon" ng-click='createAnn.removeRicipients(item)'></i>
+              <span class="createAnnSelectedRecepient">{{item.location}}</span>
             </div>
           </div>
         </div>
@@ -140,12 +126,12 @@
     </div>
   </div>
   <div class="actions">
-    <button class="ui primary basic button announcementButton createAnnBackBtnWidth float-ContentLeft" id="annBackBtn" ng-hide="createAnn.stepNumber == 1" ng-click="createAnn.previousStep();" data-current-state="{{createAnn.stepNumber}}">
+    <button class="ui primary basic button announcementButton createAnnBackBtnWidth float-ContentLeft" id="annBackBtn" ng-hide="createAnn.stepNumber == 1" ng-click="createAnn.stepNumber = createAnn.stepNumber - 1 " data-current-state="{{createAnn.stepNumber}}">
       <span class="announcementButtonText">{{$root.frmelmnts.btn.back}}</span>
     </button>
-    <div class="ui primary button" ng-if="createAnn.stepNumber == 2" ng-click="createAnn.confirmRecipients();createAnn.stepNumber = 3">{{$root.frmelmnts.btn.anncmntconfirmrecipients}}</div>
+    <div class="ui primary button" ng-if="createAnn.stepNumber == 2" ng-click="createAnn.confirmRecipients();">{{$root.frmelmnts.btn.anncmntconfirmrecipients}}</div>
     <div class="ui primary button" ng-if="createAnn.stepNumber == 3" ng-click="createAnn.previewAnn();createAnn.stepNumber = 4;">{{$root.frmelmnts.btn.anncmntpreview}}</div>
-    <div class="ui primary button" ng-if="createAnn.stepNumber == 4" id="sendAnnouncement">{{$root.frmelmnts.btn.anncmntsendanncmnt}}</div>
+    <div class="ui primary button" ng-if="createAnn.stepNumber == 4" id="sendAnnouncement" ng-click=" createAnn.saveAnnouncement(createAnn.data)">{{$root.frmelmnts.btn.anncmntsendanncmnt}}</div>
     <div ng-if="createAnn.stepNumber == 1" class="ui primary button" ng-class="{'disabled': createAnn.disableBtn === true || announcementForm.$invalid}" ng-click="createAnn.selectRecipients();createAnn.stepNumber = 2;">{{$root.frmelmnts.btn.anncmntselectrecipients}}</div>
   </div>
 </div>
@@ -170,6 +156,35 @@
         <div class="row ui two column centered grid margin-top-20 actions">
           <button class="ui primary basic button announcementButton btn-width-34 approve">
             <span class="announcementButtonText">{{$root.frmelmnts.btn.anncmntgotit}}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="ui modal small" id="announcementCancelModal">
+  <i class="close icon"></i>
+  <div class=" ui segment margin-top-10">
+    <div class="content">
+      <div class="ui grid">
+        <div class="ui centered grid">
+          <div class="row">
+            <i class="checkmark help circle icon createAnnGrayShade"></i>
+          </div>
+          <div class="row">
+            <span class="dashBoardSectionHeading">{{$root.frmelmnts.lbl.anncmntcancel}}</span>
+          </div>
+          <div class="">
+            <span class="createAnnGrayShade line-height-20">{{$root.frmelmnts.lbl.anncmntcanceldesc}}</span>
+          </div>
+        </div>
+        <br/>
+        <div class="row ui two column centered grid margin-top-20 actions">
+          <button class="ui primary basic button announcementButton btn-width-34 approve">
+            <span class="announcementButtonText">{{$root.frmelmnts.btn.yes}}</span>
+          </button>
+          <button class="ui primary basic button announcementButton btn-width-34 deny">
+            <span class="announcementButtonText">{{$root.frmelmnts.btn.no}}</span>
           </button>
         </div>
       </div>
