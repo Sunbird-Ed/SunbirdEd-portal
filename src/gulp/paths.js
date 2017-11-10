@@ -260,6 +260,7 @@ var paths = {
     'dist/private/scripts/directives/fileUpload.js',
     'dist/private/scripts/controllers/announcement/announcementInboxListController.js',
     'dist/private/scripts/controllers/announcement/announcementOutboxListController.js',
+    'dist/private/scripts/services/announcementService.js',
     'dist/private/scripts/controllers/announcement/createAnnouncementController.js',
     'dist/private/scripts/directives/announcementDetailsDirective.js'
   ],
