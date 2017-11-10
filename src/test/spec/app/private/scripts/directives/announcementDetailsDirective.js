@@ -17,28 +17,28 @@ describe('Directive: announcementDetailsDirective', function() {
     }))
     // Test if directive shows correctly after passing the valid announcement object
     it('Should show announcement details', function() {
-        scope.announcementDetails = testData.announcementDetails.annValidObj
+        scope.announcementDetails = announcementTestData.announcementDetails.annValidObj
         element = compile('<announcement-details-directive announcement-details="announcementDetails"></announcement-details-directive>')(scope)
         scope.$digest()
         expect(element.text()).toContain('Title')
     })
     // Test if directive shows error message after passing the invalid/blank announcement object
     it('Should show error message', function() {
-        scope.announcementDetails = testData.announcementDetails.annBlankObj
+        scope.announcementDetails = announcementTestData.announcementDetails.annBlankObj
         element = compile('<announcement-details-directive announcement-details="announcementDetails"></announcement-details-directive>')(scope)
         scope.$digest()
         expect(element.text()).toContain('Oops announcement details not found!')
     })
     // Test if directive do not shows Weblinks label if announcement does not have weblinks
     it('Should not show weblinks', function() {
-        scope.announcementDetails = testData.announcementDetails.annObjWithEmptyWeblinks
+        scope.announcementDetails = announcementTestData.announcementDetails.annObjWithEmptyWeblinks
         element = compile('<announcement-details-directive announcement-details="announcementDetails"></announcement-details-directive>')(scope)
         scope.$digest()
         expect(element.text()).not.toContain('Weblinks')
     })
     // Test if directive do not shows Attachments label if announcement does not have attachments
     it('Should not show attachments', function() {
-        scope.announcementDetails = testData.announcementDetails.annObjWithEmptyAttachments
+        scope.announcementDetails = announcementTestData.announcementDetails.annObjWithEmptyAttachments
         element = compile('<announcement-details-directive announcement-details="announcementDetails"></announcement-details-directive>')(scope)
         scope.$digest()
         expect(element.text()).not.toContain('Attachments')

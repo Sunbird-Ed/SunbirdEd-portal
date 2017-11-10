@@ -1,6 +1,7 @@
 <div class="ui raised segment">
     <div class="header announcementCard-header">
         <span class="header cardsHeading">{{$root.frmelmnts.lbl.address}} </span>
+        <a class="addeditprofile" ng-if='$root.privateProfileFields'><profile-visibility   update="'true'" field="'address'"></profile-visibility></a>
         <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.addressForm && profileCtrl.address.length" ng-click="profileCtrl.addressForm=true ;profileCtrl.isNewAddress=false ">{{$root.frmelmnts.btn.edit}}</a>
         <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.addressForm " ng-click="profileCtrl.addressForm=true ;profileCtrl.isNewAddress=true ;profileCtrl.newAddress={} ">{{$root.frmelmnts.btn.add}}</a>
         <a class="addeditprofile cursor-pointer" ng-if="profileCtrl.addressForm" ng-click="profileCtrl.addressForm=false;profileCtrl.address=profileCtrl.getProfileObject(profileCtrl.user.address)">{{$root.frmelmnts.btn.close}}</a>
@@ -28,7 +29,7 @@
     <div ng-if="profileCtrl.addressForm" class="addressheader ui relaxed divided list">
         <div class="edit-address-form" ng-if="!profileCtrl.isNewAddress ">
             <div class=" ui " ng-repeat="address in profileCtrl.address track by $index " ng-include=" 'views/profile/editProfile/address.html' "></div>
-            <div class="ui button margin-top-15" ng-class="{ 'disabled' : profileCtrl.disableSave}" ng-click="profileCtrl.editAddress(profileCtrl.address)" ;>{{$root.frmelmnts.btn.save}}</div>
+            <button class="ui button margin-top-15" ng-class="{ 'disabled' : profileCtrl.disableSave}" ng-click="profileCtrl.editAddress(profileCtrl.address)" ;>{{$root.frmelmnts.btn.save}}</button>
         </div>
         <div class="add-address-form" ng-if="profileCtrl.isNewAddress ">
             <div class="ui " ng-include=" 'views/profile/editProfile/addAddress.html' "></div>

@@ -6,8 +6,9 @@ angular.module('playerApp')
             templateUrl: 'views/common/profilePrivateField.html',
             restrict: 'E',
             scope: {
-               field:'=',
-               update:'='
+                field: '=',
+                update: '=',
+                top: '='
             },
         link: function (scope, element, attrs) {// eslint-disable-line
 
