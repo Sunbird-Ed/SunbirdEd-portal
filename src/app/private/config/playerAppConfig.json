@@ -17,7 +17,8 @@
                 "TENANT_LOGO": "get/tenant/logo",
                 "SKILLS":"data/v1/skills",
                 "ADD_SKILLS":"user/v1/skill/add",
-                "USER_SKILLS":"user/v1/skill/read"
+                "USER_SKILLS":"user/v1/skill/read",
+                "UPDATE_PROF_VIS_FIELDS": "user/v1/profile/visibility"
             },
             "COMPOSITE": {
                 "SEARCH": "composite/v1/search"
@@ -94,7 +95,22 @@
                     "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Marathi", "Punjabi", "Tamil", "Telugu"
                 ],
                 "contentTypes": [
-                    "Collection", "LessonPlan", "Resource", "TextBook"
+                  {
+                    "key": "Book",
+                    "value": "Book"
+                  },
+                  {
+                    "key": "Collection",
+                    "value": "Collection"
+                  },
+                  {
+                    "key": "LessonPlan",
+                    "value": "Lesson Plan"
+                  },
+                  {
+                    "key": "Resource",
+                    "value": "Resource"
+                  }
                 ],
                 "resourceType": [ 
                     "(Annual / Half-yearly / Semester) Examination",
