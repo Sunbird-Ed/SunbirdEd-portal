@@ -121,7 +121,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
             _.remove(createAnn.selectedReciepeient, function(arg) {
                 if (arg.location == item.location) {
                     item.selected = false,
-                        toasterService.info(item.location + $rootScope.messages.imsg.m0018)
+                        toasterService.info(item.location + $rootScope.messages.imsg.m0020)
                     return arg.location
                 }
             })
