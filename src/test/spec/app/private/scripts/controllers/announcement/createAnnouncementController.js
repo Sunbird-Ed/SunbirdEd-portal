@@ -6,6 +6,7 @@ describe('Controller: createAnnouncementCtrl', function () {
   var adminCtl
   var createAnn
   var dashboardService
+  var announcementService
   var timeout
   var state
   var config
@@ -24,6 +25,7 @@ describe('Controller: createAnnouncementCtrl', function () {
   beforeEach(inject(function ($rootScope,
        $controller,
        _dashboardService_,
+       _announcementService_,
        _toasterService_,
       _permissionsService_,
       _$timeout_,
@@ -32,6 +34,7 @@ describe('Controller: createAnnouncementCtrl', function () {
 
           ) {
     dashboardService = _dashboardService_
+    announcementService = _announcementService_
     toasterService = _toasterService_
     permissionsService = _permissionsService_
     scope = $rootScope.$new()
@@ -77,27 +80,23 @@ describe('Controller: createAnnouncementCtrl', function () {
     spyOn(createAnn, 'removeLink').and.callThrough()
     var index = 0
     createAnn.repeatableWebLinks.push({'id': 'choice' + 0})
-    createAnn.data.link = {'0': 'https;//google.co.in'}
+    createAnn.data.links = {'0': 'https;//google.co.in'}
     createAnn.removeLink(index)
     done()
   })
 
-  it('Detect URL change', function (done) {
-    spyOn(createAnn, 'detectChange').and.callThrough()
-    createAnn.detectChange()
+  it('preview announcement', function(done){
+    spyOn(createAnn, 'previewAnn').and.callThrough()
+    var index = 0
+    createAnn.repeatableWebLinks.push({'id': 'choice' + 0})
+    createAnn.data.links = {0: 'https;//google.co.in', 1: 'https://google.com'}
+    createAnn.previewAnn(index)
     done()
   })
 
-  it('Detect Dropdown change', function (done) {
-    spyOn(createAnn, 'detectDropdownChange').and.callThrough()
-    createAnn.detectDropdownChange()
-    done()
-  })
-
-  it('Track back button steps', function (done) {
-    spyOn(createAnn, 'previousStep').and.callThrough()
-    createAnn.pageNumber = 2
-    createAnn.previousStep()
+  it('Hide creation modal', function(done){
+    spyOn(createAnn, 'hideModel').and.callThrough()
+    createAnn.hideModel()
     done()
   })
 
@@ -123,6 +122,22 @@ describe('Controller: createAnnouncementCtrl', function () {
     createAnn.repeatableWebLinks.push({'id': 'choice' + 0})
     createAnn.data.link = {'0': 'https;//google.co.in'}
     createAnn.previewAnn()
+    done()
+  })
+
+  it('Select recipients', function(){
+  	createAnn.selectedReciepeient
+  })
+  it('Save announcement', function (done) {
+    var failedApiResponse = {"id":"api.plugin.announcement.create","ver":"1.0","ts":"2017-11-10 02:58:46:236+0000","params":{"resmsgid":"119520d0-c5c3-11e7-882c-23b3000f6c3b","msgid":null,"status":"failed","err":"","errmsg":"user has no create access"},"responseCode":"CLIENT_ERROR","result":{}}
+    spyOn(announcementService, 'createAnnouncement').and.returnValue(deferred.promise);
+    deferred.resolve(failedApiResponse);
+    spyOn(createAnn, 'saveAnnouncement').and.callThrough()
+    createAnn.data.title = 'test'
+    createAnn.data.from = 'test'
+    createAnn.data.link = {'0': 'https;//google.co.in'}
+    createAnn.data.description = 'test'
+    createAnn.saveAnnouncement(createAnn.data)
     done()
   })
 })
