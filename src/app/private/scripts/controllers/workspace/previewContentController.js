@@ -72,7 +72,7 @@ angular.module('playerApp')
                             'createdOn,lastUpdatedOn,body'
           }
 
-          if ($stateParams.backState === 'WorkSpace.UpForReviewContent') {
+          if ($stateParams.backState === 'WorkSpace.UpForReviewContent' || $stateParams.backState === 'WorkSpace.ReviewContent') {
             qs.mode = 'edit'
           }
           contentService.getById(req, qs).then(function (response) {

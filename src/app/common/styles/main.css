@@ -985,30 +985,35 @@ div:focus {
   margin: 1em 0 !important;
 }
 /*semantic ui modal form field changes*/
-.ui.modal .ui.form input {
+.ui.form input {
   border: 0!important;
   border-bottom: 1px solid #979797!important;
   border-radius: 0!important;
-  padding: 1em 0 !important;
+  padding: 0.8em 0 !important;
 }
-.ui.modal .ui.selection.dropdown {
+.ui.selection.dropdown {
   border: 0!important;
   border-bottom: 1px solid #979797!important;
   border-radius: 0!important;
 }
-.ui.modal .ui.dropdown > .text {
+.genderSelectionDropDown {
+  border: 0!important;
+  border-bottom: 1px solid #979797!important;
+  border-radius: 0!important;
+}
+.ui.modal.ui.dropdown > .text {
   margin-left: -1.1em !important;
 }
-.ui.modal .ui.multiple.dropdown > .text {
+.ui.modal.ui.multiple.dropdown > .text {
   margin: 0 !important;
   line-height: 0 !important;
 }
-.ui.modal .ui.form .field > label {
+.field > label {
   color: #979797;
   font-weight: bold;
   line-height: 14px;
 }
-.ui.modal .ui.form .inline.fields > label {
+.inline.fields > label {
   color: #979797;
 }
 .ui.modal .ui.radio.checkbox .box,
@@ -1031,6 +1036,17 @@ div:focus {
 .modal .ui.segment {
   box-shadow: none !important;
   border: none!important;
+}
+.dropDownLockIcon {
+  z-index: 10 !important;
+  margin-right: 10px !important;
+  font-size: 1.3em !important;
+}
+.filterLocationInput {
+  padding-top: 12px !important;
+  border: 0!important;
+  border-bottom: 1px solid #979797!important;
+  border-radius: 0!important;
 }
 .noResultContainer {
   margin-top: 12% !important;
@@ -1800,11 +1816,6 @@ div:focus {
 }
 .ui.card > .sliderCards.content.CardcontentTopPadding {
   padding-top: 50px !important;
-}
-.ui.card > :first-child,
-.ui.cards > .profilUpdateCards.card > :first-child {
-  border: 0.5px solid rgba(151, 151, 151, 0.54) !important;
-  border-radius: 4px !important;
 }
 .profileUpdateCardContentHeight {
   height: 100px;
@@ -2724,6 +2735,19 @@ ul.fancytree-container li {
 .userSkillMoreIcon {
   margin-right: -0.4em !important;
 }
+.ProfilePagePermissionBtn {
+  border-radius: 3px !important;
+  font-size: 1.1em !important;
+  height: 1.5em !important;
+  padding: 3px !important;
+  margin-left: 10px !important;
+}
+.ProfilePermissionBtnTop {
+  top: 17px !important;
+}
+.ui.addSkillsMarginCursor.multiple.dropdown > .label {
+  margin: 1.1285714rem .28571429rem .14285714rem 0 !important;
+}
 .workspaceicon.ui.header > .icon {
   padding-top: 0;
   float: left;
@@ -3182,6 +3206,10 @@ span.dashBoardMenuItem.active {
 }
 .cousreDashboardAlignIcon {
   margin-left: -30px !important;
+}
+.ui.ordered.list .list > .item:before,
+ol.ui.list ol li:before {
+  margin-left: -2.5em !important;
 }
 body {
   position: relative !important;
