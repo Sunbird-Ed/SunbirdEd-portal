@@ -12,27 +12,25 @@ angular.module('playerApp')
               toc.loader = toasterService.loader('', $rootScope.messages.stmsg.m0003)
               courseService.courseHierarchy(toc.courseId).then(function (res) {
                 if (res && res.responseCode === 'OK') {
-                  if (res.result.content.status === 'Retired') {
+                  if (res.result.content.status === 'Live' || res.result.content.status === 'Unlisted') {
+                    res.result.content.children = _.sortBy(res.result.content.children, ['index'])
+                    // fetch all avaliable contents from course data
+                    toc.courseContents = toc.getCourseContents(res.result.content, [])
+                    toc.courseTotal = toc.courseContents.length
+                    toc.contentCountByType = _.countBy(toc.courseContents, 'mimeType')
+                    // if enrolled course then load batch details also after content status
+                    if (toc.courseType === 'ENROLLED_COURSE') {
+                      toc.getContentState(function () {
+                        toc.courseHierarchy = res.result.content
+                        toc.showBatchCardList()
+                      })
+                    } else {
+                      toc.courseHierarchy = res.result.content
+                    }
+                  } else {
                     toasterService.warning($rootScope.messages.imsg.m0019)
                     $state.go('Home')
                     return
-                  }
-                  res.result.content.children = _.sortBy(
-                                    res.result.content.children, ['index'])
-                            // fetch all avaliable contents from course data
-                  toc.courseContents = toc.getCourseContents(res.result.content, [])
-                  toc.courseTotal = toc.courseContents.length
-                  toc.contentCountByType = _.countBy(
-                                    toc.courseContents, 'mimeType')
-
-                            // if enrolled course then load batch details also after content status
-                  if (toc.courseType === 'ENROLLED_COURSE') {
-                    toc.getContentState(function () {
-                      toc.courseHierarchy = res.result.content
-                      toc.showBatchCardList()
-                    })
-                  } else {
-                    toc.courseHierarchy = res.result.content
                   }
                 } else {
                   toasterService.error($rootScope.messages.fmsg.m0003)
