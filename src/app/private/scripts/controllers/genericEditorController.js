@@ -23,11 +23,9 @@ angular.module('playerApp')
           onClosed: function () {
             if ($stateParams.state) {
 			         $state.go($stateParams.state);
-		       	} 
-			      else if ($rootScope.contentModelBackLinkName) {
+		       	 } else if ($rootScope.contentModelBackLinkName) {
 			         $state.go($rootScope.contentModelBackLinkName);
-			      } 
-			      else {
+			       } else {
 			         $state.go('WorkSpace.AllUploadedContent')
              }
            }
