@@ -47,32 +47,17 @@ angular.module('playerApp')
         announcementOutboxData.items = announcementOutboxData.listData.slice(announcementOutboxData.pager.startIndex, announcementOutboxData.pager.endIndex + 1);
       }
 
-      announcementOutboxData.doAction = function(announcement) {
-            // Get the actionBtnId
-            var actionBtnId = 'actionBtn' + announcement.announcementId
-            announcementOutboxData.actionBtnId = actionBtnId
-            var actionText = $('#' + actionBtnId).text()
-            // Perform the appropriate action
-            if (actionText == 'Delete') {
-                announcementOutboxData.deleteAnnouncementId = announcement.announcementId
-                announcementOutboxData.showModal('announcementDeleteModal')
-            } else if (actionText == 'Resend') {
-                // TODO integrate the create announcement flow for edit and resend
-                announcementOutboxData.resendAnnouncement();
-                announcementOutboxData.resendAnnouncementObj = announcement
-                announcementOutboxData.showModal('announcementResendModal')
-            }
-        }
         announcementOutboxData.showModal = function(modalId) {
             $('#' + modalId).modal('show')
         }
         announcementOutboxData.closeModal = function(modalId) {
             $('#' + modalId).modal('hide')
         }
-        announcementOutboxData.deleteAnnouncement = function() {
+        announcementOutboxData.deleteAnnouncement = function(announcementId) {
             // Call the delete service
-            announcementService.deleteAnnouncement(announcementOutboxData.deleteAnnouncementId).then(function(apiResponse) {
+            announcementService.deleteAnnouncement(announcementId).then(function(apiResponse) {
                 apiResponse = apiResponse.data
+                console.log(apiResponse)
                 // Check if response successful
                 if (apiResponse && apiResponse.responseCode === 'OK' && apiResponse.result.status === 'cancelled') {
                     // Show success toaster
@@ -86,17 +71,7 @@ angular.module('playerApp')
             }).finally(function() {
                 // Close the modal popup and reset v alue of deleteAnnouncementId
                 announcementOutboxData.closeModal('announcementDeleteModal')
-                announcementOutboxData.deleteAnnouncementId = {}
             })
-        }
-        announcementOutboxData.resendAnnouncement = function() {
-            // TODO - call announcement resend api
-            var elementId = announcementOutboxData.actionBtnId
-            $('#' + elementId).html('<i class="icon ban"></i>Delete')
-            $('#' + elementId).removeClass('announcementBlueText')
-            $('#' + elementId).addClass('announcementRedText')
-            announcementOutboxData.closeModal('announcementResendModal')
-            announcementOutboxData.resendAnnouncementObj = {}
         }
     }
   ])
