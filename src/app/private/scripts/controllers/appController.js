@@ -19,7 +19,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
     /** 
      * This function contentModelSetBackLink is to store back link value for modal popup close dynamically. 
      * **/
-    $rootScope.contentModelSetBackLink = function(url){
+    $rootScope.contentModelSetBackLink = function(){
 		$rootScope.contentModelBackLinkName =  $state.current.name;
 	}
 
