@@ -27,7 +27,7 @@ angular.module('playerApp')
 			         $state.go($rootScope.contentModelBackLinkName);
 			       } else {
 			         $state.go('WorkSpace.AllUploadedContent')
-             }
+            }
            }
         })
 
