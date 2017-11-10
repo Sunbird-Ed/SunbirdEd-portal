@@ -229,6 +229,7 @@ angular.module('playerApp').controller('SearchResultController', [
             $scope.search.handleSearch()
           } else {
             $scope.search.autoSuggest = false
+            $rootScope.search.filters.concepts = $rootScope.search.selectedConcepts
             var searchParams = {
               type: $rootScope.search.selectedSearchKey,
               query: $rootScope.search.searchKeyword,
@@ -259,7 +260,8 @@ angular.module('playerApp').controller('SearchResultController', [
       }
         // if any concept is selected then pass array of ids
       if (req.filters.concepts && req.filters.concepts.length > 0) {
-        req.filters.concepts = _.map(req.filters.concepts, 'identifier')
+        req.filters.concepts = _.map($rootScope.search.selectedConcepts, 'identifier')
+
       }
 
         // if autosuggest option is clicked
@@ -277,7 +279,7 @@ angular.module('playerApp').controller('SearchResultController', [
         if (!req.filters.contentType || (_.isArray(req.filters.contentType) && req.filters.contentType.length == 0)) {
           req.filters.contentType = [
             'Collection',
-            'TextBook',
+            'Book',
             'LessonPlan',
             'Resource'
           ]
@@ -288,7 +290,7 @@ angular.module('playerApp').controller('SearchResultController', [
       } else if ($rootScope.search.selectedSearchKey === 'All') {
         req.filters.contentType = [
           'Collection',
-          'TextBook',
+          'Book',
           'LessonPlan',
           'Resource'
         ]
