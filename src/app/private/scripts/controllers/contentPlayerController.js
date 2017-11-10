@@ -109,14 +109,17 @@ angular.module('playerApp')
         }
         contentService.getById(req, qs).then(function (response) {
           if (response && response.responseCode === 'OK') {
-            if (response.result.content.status === 'Retired' && !count) {
-              count += 1
-              toasterService.warning($rootScope.messages.imsg.m0018)
-              $state.go('Home')
-              return
+            if (response.result.content.status === 'Live' || response.result.content.status === 'Unlisted' ||
+             $scope.isworkspace) {
+              $scope.errorObject = {}
+              showPlayer(response.result.content)
+            } else {
+              if (!count) {
+                count += 1
+                toasterService.warning($rootScope.messages.imsg.m0018)
+                $state.go('Home')
+              }
             }
-            $scope.errorObject = {}
-            showPlayer(response.result.content)
           } else {
             var message = $rootScope.messages.stmsg.m0009
             showLoaderWithMessage(false, message, true, true)
