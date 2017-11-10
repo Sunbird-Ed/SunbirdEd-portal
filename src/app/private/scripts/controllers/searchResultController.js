@@ -279,7 +279,7 @@ angular.module('playerApp').controller('SearchResultController', [
         if (!req.filters.contentType || (_.isArray(req.filters.contentType) && req.filters.contentType.length == 0)) {
           req.filters.contentType = [
             'Collection',
-            'Book',
+            'TextBook',
             'LessonPlan',
             'Resource'
           ]
@@ -290,7 +290,7 @@ angular.module('playerApp').controller('SearchResultController', [
       } else if ($rootScope.search.selectedSearchKey === 'All') {
         req.filters.contentType = [
           'Collection',
-          'Book',
+          'TextBook',
           'LessonPlan',
           'Resource'
         ]
