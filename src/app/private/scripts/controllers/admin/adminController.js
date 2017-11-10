@@ -203,7 +203,7 @@ angular.module('playerApp')
         }
         admin.editRoles = function (role, userRoles) {
           if (userRoles.includes(role) === true) {
-             admin.selectedOrgUserRoles = admin.selectedOrgUserRoles.filter(function (selectedRole) {
+            admin.selectedOrgUserRoles = admin.selectedOrgUserRoles.filter(function (selectedRole) {
               return selectedRole !== role
             })
           } else {
@@ -243,12 +243,9 @@ angular.module('playerApp')
         admin.getUserRoles = function () {
           admin.userRolesList = []
           var roles = permissionsService.getMainRoles()
-              // Remove ["ORG_ADMIN", "ADMIN"] role
-          console.log('role', roles)
           admin.userRoles = roles.filter(function (role) {
             return role.role !== 'ORG_ADMIN' && role.role !== 'SYSTEM_ADMINISTRATION' && role.role !== 'ADMIN'
           })
-          console.log('role', admin.userRoles)
         }
             // public profile
         admin.openPublicProfile = function (id, user) {
