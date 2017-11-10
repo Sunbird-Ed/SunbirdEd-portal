@@ -98,6 +98,26 @@ angular.module('playerApp')
              * @instance
              */
             this.deleteAnnouncement = function(announcementId) {
+                var URL = '/api/announcement/v1/get/' + announcementId
+
+                var headers = {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkMTc1MDIwNDdlODc0ODZjOTM0ZDQ1ODdlYTQ4MmM3MyJ9.7LWocwCn5rrCScFQYOne8_Op2EOo-xTCK5JCFarHKSs',
+                    'x-authenticated-user-token': 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ1WXhXdE4tZzRfMld5MG5PS1ZoaE5hU0gtM2lSSjdXU25ibFlwVVU0TFRrIn0.eyJqdGkiOiJhMDgwYjg5YS05YmI4LTQ2ZTAtYTJiZS1hNTYxNzBjNDg3YjMiLCJleHAiOjE1MTAyOTM1MzIsIm5iZiI6MCwiaWF0IjoxNTEwMjg5OTMyLCJpc3MiOiJodHRwczovL2Rldi5vcGVuLXN1bmJpcmQub3JnL2F1dGgvcmVhbG1zL3N1bmJpcmQiLCJhdWQiOiJhZG1pbi1jbGkiLCJzdWIiOiIyY2YwNTRiNS02MjI1LTQ5NTktODg5Zi1jMzYyOGE2MjAwMzgiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhZG1pbi1jbGkiLCJhdXRoX3RpbWUiOjAsInNlc3Npb25fc3RhdGUiOiIwODIxNWE4Yy01NWU0LTQ5NjQtODhkOC0yNjA1ODA5OTU4ZTIiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbXSwicmVzb3VyY2VfYWNjZXNzIjp7fSwibmFtZSI6Ik1hbmp1IERhdmFuYW0iLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJtYW5qdWRAaWxpbWkuaW4iLCJnaXZlbl9uYW1lIjoiTWFuanUiLCJmYW1pbHlfbmFtZSI6IkRhdmFuYW0iLCJlbWFpbCI6Im1hbmp1bmF0aGRAaWxpbWkuaW4ifQ.cLBI2GH0I_C5h-2Stqz6EOwBLWkZJzSYrFEWzln8GDTJVZSEz96KNNz2dIvH211oc0zK0z1-cgjr5JfsoLpvFIBCY_Jad8-McOUxrxM21l_2au9PZxf4O-II3PQxBW2Zn04d7WUnwEisXk8aT9ehiCbYLxX6ysbxCFi3PPQIqI7zkj7Zl3nHGq9qUY5WbD710GWET-ZApt2Tkaiu2nWQIqcYPEXFW31Y0iyq4r51Ms79f3thslp3VpJc182PtW6JdNAnO1volV8KEzCvSPkNKcl6iIf-CFySnkUIbFMSkFyN6m9tugEjioJSGd6SYNSjs2z46oOpw4FyVlGFyZCRzg'
+                }
+
+                return httpCall(URL, {}, 'GET', headers)
+            }
+
+            /**
+             * @method getAnnouncementDetailsFromId
+             * @desc Send announcementId to cancel annoucement API
+             * @memberOf Services.announcementService
+             * @param {string}  announcementId - Announcement Id
+             * @returns {object} returns response of API
+             * @instance
+             */
+            this.getAnnouncementDetailsFromId = function(announcementId) {
                 // dev-> /api/announcement/v1/cancel/1
                 // local -> /api/v1/announcement/cancel/1
                 var URL = '/api/v1/announcement/cancel/' + announcementId
