@@ -93,4 +93,16 @@ angular.module('playerApp')
             this.createAnnouncement = function(req) {
               return httpCall('/api/announcement/v1/create', req, 'POST')
             }
+
+            /**
+             * @method getDefinitions
+             * @desc get announcement type and sender list
+             * @memberOf Services.announcementService
+             * @param {object}  req - rootOrgId, userid and definition type array
+             * @returns {object} returns response of API
+             * @instance
+             */
+            this.getDefinitions = function(req) {
+              return httpCall('/api/announcement/v1/definitions', req, 'POST')
+            }
   }])
