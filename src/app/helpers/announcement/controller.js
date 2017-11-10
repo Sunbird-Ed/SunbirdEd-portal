@@ -86,20 +86,25 @@ class AnnouncementController {
 
       try {
         var newAnnouncementObj = await (this.__createAnnouncement(requestObj.body.request))
-        //TODO: sent count as async process
       } catch (error) {
         throw { msg: 'unable to process the request!', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
       }
 
-      try {
-        //TODO: notification: incomplete implementation 
-        await (this.__createAnnouncementNotification( /*announcement data*/ ))
-        return { announcement: newAnnouncementObj.data }
-      } catch (e) {
+    try {
+        if (newAnnouncementObj.data.id) {
+            requestObj.body.request.announcementId = newAnnouncementObj.data.id
+            this.createNotification(requestObj)
+            return {
+                announcement: newAnnouncementObj.data
+            }
+        }
+    } catch (e) {
         // even if notification fails, it should still send annoucement in response
-        return { announcement: newAnnouncementObj.data }
-      }
-    })
+        return {
+            announcement: newAnnouncementObj.data
+        }
+    }
+})
   }
 
   /**
@@ -152,11 +157,11 @@ class AnnouncementController {
         uri: envVariables.DATASERVICE_URL + 'user/v1/read/' + data.id,
         headers: this.getRequestHeader({ xAuthUserToken: authUserToken })
       }
-
       this.httpService(options).then((data) => { 
-        data.body = JSON.parse(data.body)       
+        data.body = JSON.parse(data.body)  
         resolve(_.get(data, 'body.result.response'))
       })
+
       .catch((error) => {
         if (_.get(error, 'body.params.err') === 'USER_NOT_FOUND') {
           reject('USER_NOT_FOUND')
@@ -211,11 +216,35 @@ class AnnouncementController {
    *
    * @return  {[type]}  [description]
    */
-  __createAnnouncementNotification() {
-    return new promise((resolve, reject) => {
-      resolve({ msg: 'notification sent!' })
-    })
+  createNotification(data) {
+     return this.__createAnnouncementNotification()(data);
   }
+
+  __createAnnouncementNotification() {
+        return async((data) => {
+            let requestObj = {"to": "", "type": "fcm", "data": {"notificationpayload": {"msgid": data.body.request.announcementId, "title": data.body.request.title, "msg": data.body.request.description, "icon": "", "time": dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo"), "validity": "-1", "actionid": "1", "actiondata": "", "dispbehavior": "stack"} } }
+            let options = {"method": "POST", "uri": envVariables.DATASERVICE_URL + "data/v1/notification/send", "body": {"request": requestObj }, "json": true }
+            let authUserToken = _.get(data, 'kauth.grant.access_token.token') || data.headers['x-authenticated-user-token']
+            if (!authUserToken){
+             throw {msg: 'UNAUTHORIZED', statusCode: HttpStatus.BAD_REQUEST } 
+            }
+            options.headers =this.getRequestHeader({ xAuthUserToken: authUserToken });
+            var targetIds = [];
+            if (data.body.request.target) {
+                _.forIn(data.body.request.target, (value, key) => {
+                    if (_.isObject(value)) {
+                        _.forEach(value.ids, (v, k) => {
+                            targetIds.push(v);
+                        });
+                    }
+                });
+            }
+            this.forEachPromise(targetIds, this.sendNotification, options, this).then(() => {
+                console.log('done');
+            });
+        })
+
+    }
 
   /**
    * Get announcement
@@ -261,12 +290,12 @@ class AnnouncementController {
       return async((requestObj) => {
           let responseObj = {};
           if (requestObj.body.definitions) {
-              if (requestObj.body.definitions.includes('announcementtype')) {
-                  let announceMentTypes = await (this.__getAnnounceTypes(requestObj));
-                  responseObj["announcementtype"] = announceMentTypes;
+              if (requestObj.body.definitions.includes('announcementtypes')) {
+                  let announcementTypes = await (this.__getAnnouncementTypes(requestObj));
+                  responseObj["announcementtypes"] = announcementTypes;
               }
               if (requestObj.body.definitions.includes('senderlist')) {
-                  let senderlist = await (this.getSenderList(requestObj));
+                  let senderlist = await (this.__getSenderList()(requestObj));
                   responseObj["senderlist"]= senderlist;
               }
               return responseObj;
@@ -281,21 +310,21 @@ class AnnouncementController {
    *
    * @return  {[type]}  [description]
    */
-  __getAnnounceTypes(requestObj) {
+  __getAnnouncementTypes(requestObj) {
     return new Promise((resolve, reject) => {
       let query = {
         table: this.objectStoreRest.MODEL.ANNOUNCEMENTTYPE,
         query: {
-          'id': _.get(requestObj, 'body.id')
+          'rootorgid': _.get(requestObj, 'body.rootorgid')
         }
       }
 
       this.objectStoreRest.findObject(query)
         .then((data) => {
           if (!_.isObject(data)) {
-            reject({ msg: 'unable to fetch announcement types', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
+            resolve({ msg: 'unable to fetch announcement types', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
           } else {
-            resolve(data.data)
+            resolve(data)
           }
         })
         .catch((error) => {
@@ -542,15 +571,31 @@ class AnnouncementController {
    *
    * @return  {[type]}              [description]
    */
-  getSenderList(requestObj) {
-    return this.__getSenderList()(requestObj)
-  }
 
   __getSenderList() {
-    //TODO: complete implementation
-    return async((requestObj) => {
-      return {}
-    })
+      return async((requestObj) => {
+          let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
+          let userData = {}
+          try {
+              return await (new Promise((resolve, reject) => {
+                  this.__getUserProfile({
+                          id: _.get(requestObj, 'body.userid')
+                      }, authUserToken)
+                      .then((data) => {
+                          if (!_.isObject(data)) {
+                              reject({ msg: 'unable to fetch senderlist', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
+                          } else {
+                              userData[data.id] = data.firstName + " " + data.lastName
+                              resolve(userData)
+                          }
+                      })
+                      .catch((error) => {
+                          reject(error)
+                      })
+              }))
+          } catch (e) {
+              throw {msg: 'Unable to fetch the senderlist', statusCode: HttpStatus.INTERNAL_SERVER_ERROR } }
+      });
   }
 
     /**
@@ -695,16 +740,16 @@ class AnnouncementController {
 
 
   httpService(options) {
-    return new Promise((resolve, reject) => {
-      if (!options) reject('options required!')
-      webService(options, (error, response, body) => {
-        if (error || response.statusCode >= 400) {
-          reject({ response, body })
-        } else {
-          resolve({ response, body })
-        }
+      return new Promise((resolve, reject) => {
+          if (!options) reject('options required!')
+          options.headers = options.headers || this.getRequestHeader();
+          webService(options, (error, response, body) => {
+              if (error || response.statusCode >= 400) {
+                  reject(error)
+              } else {
+                  resolve({response, body }) }
+          })
       })
-    })
   }
 
   getRequestHeader(opt) {
@@ -718,7 +763,24 @@ class AnnouncementController {
       'Authorization': 'Bearer ' + envVariables.PORTAL_API_AUTH_TOKEN
     }
   }
+
+  forEachPromise(items, fn, options, context) {
+    return items.reduce(function (promise, item) {
+        return promise.then(function () {
+            return fn(item, options, context);
+        });
+    }, Promise.resolve());
+  }
+
+  sendNotification(item, options, context) {
+      options.body.request.to = item;
+      return new Promise((resolve, reject) => {
+          context.httpService(options).then((data) => {
+            resolve(data);
+          }).catch((error) => {
+              reject(error);
+          })
+      });
+  }
 }
-
-
 module.exports = new AnnouncementController()
