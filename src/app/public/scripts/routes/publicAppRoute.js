@@ -83,7 +83,7 @@ angular.module('loginApp')
                 mainView: {
                   controller: function ($scope, $stateParams, $window, toasterService, $rootScope, $state) {
                     if ($stateParams.status === 'Unlisted') {
-                      window.localStorage.setItem('redirectUrl', '/course/' + $stateParams.id + '/yes')
+                      window.localStorage.setItem('redirectUrl', '/course/' + $stateParams.id + '/')
                       $window.location.href = '/private/index'
                     } else {
                       toasterService.warning($rootScope.messages.fmsg.m0065)
@@ -103,7 +103,7 @@ angular.module('loginApp')
                 mainView: {
                   controller: function ($scope, $stateParams, $window, toasterService, $rootScope, $state) {
                     if ($stateParams.status === 'Unlisted') {
-                      window.localStorage.setItem('redirectUrl', '/preview/collection/' + $stateParams.id + '/' + 'name' + '/')
+                      window.localStorage.setItem('redirectUrl', '/preview/collection/' + $stateParams.id + '/' + '/')
                       $window.location.href = '/private/index'
                     } else {
                       toasterService.warning($rootScope.messages.fmsg.m0065)

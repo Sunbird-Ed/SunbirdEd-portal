@@ -94,10 +94,7 @@ angular.module('playerApp')
       }
 
       draftContent.hideRemoveContentModel = function () {
-        $('#removeContentModel').modal('hide')
-        $('#removeContentModel').modal('hide all')
-        $('#removeContentModel').modal('hide other')
-        $('#removeContentModel').modal('hide dimmer')
+        workSpaceUtilsService.hideRemoveModel('#removeContentModel')
         draftContent.removeContentId = ''
         draftContent.showRemoveContentModel = false
       }
