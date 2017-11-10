@@ -130,4 +130,17 @@ angular.module('playerApp')
                 var URL = '/api/announcement/v1/get/' + announcementId
                 return httpCall(URL, {}, 'GET', {})
             }
+
+            /**
+             * @method resendAnnouncement
+             * @desc Resend announcement
+             * @memberOf Services.announcementService
+             * @param {object}  requestBody - Announcement object
+             * @returns {object} returns response of API
+             * @instance
+             */
+            this.resendAnnouncement = function(requestBody) {
+                var URL = '/api/announcement/v1/resend'
+                return httpCall(URL, requestBody, 'POST', {})
+            }
   }])
