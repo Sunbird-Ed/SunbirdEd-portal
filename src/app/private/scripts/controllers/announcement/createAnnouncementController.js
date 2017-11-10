@@ -96,7 +96,6 @@ angular.module('playerApp')
       createAnn.previewAnn = function () {
         createAnn.linkArray = []
         angular.forEach(createAnn.data.links, function (value, key) {
-        	console.log(value)
           createAnn.linkArray.push(value)
         })
         createAnn.previewData = { 'type': createAnn.data.type, 'links': createAnn.linkArray, 'title': createAnn.data.title, 'description': createAnn.data.description, 'target': ['teachers'], 'attachments': createAnn.attachment }
@@ -158,7 +157,7 @@ angular.module('playerApp')
         var requestBody = angular.copy(data)
         requestBody.sourceId = $rootScope.rootOrgId
         requestBody.createdBy = $rootScope.userId
-        requestBody.target = { 'geo': { 'ids': _.map(createAnn.selectedReciepeient, 'location') } }
+        requestBody.target = { 'geo': { 'ids': _.map(createAnn.selectedReciepeient, 'id') } }
         if (requestBody.links) {
           requestBody.links = createAnn.linkArray
         }
