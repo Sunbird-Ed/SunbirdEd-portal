@@ -28,7 +28,7 @@ angular.module('playerApp')
 			       } else {
 			         $state.go('WorkSpace.AllUploadedContent')
             }
-           }
+          }
         })
 
         window.context = {
