@@ -53,7 +53,7 @@ router.get('/cancel/:announcementId', (requestObj, responseObj) => {
 })
 
 router.post('/user/inbox', (requestObj, responseObj) => {
-  announcementController.getUserInbox(requestObj.body)
+  announcementController.getUserInbox(requestObj)
     .then((data) => {
       sendSuccessResponse(responseObj, 'user.inbox', data, HttpStatus.OK)
     })
