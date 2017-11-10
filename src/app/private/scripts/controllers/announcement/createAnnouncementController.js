@@ -105,7 +105,7 @@ angular.module('playerApp')
         _.remove(createAnn.selectedReciepeient, function (arg) {
           if (arg.location == item.location) {
             item.selected = false,
-              toasterService.info(item.location + ' location is removed sucessfully.')
+              toasterService.info(item.location + $rootScope.messages.imsg.m0018)
             return arg.location
           }
         })
@@ -123,7 +123,7 @@ angular.module('playerApp')
         $rootScope.$emit('get:selected:items')
         if (createAnn.selectedReciepeient.length == 0) {
           createAnn.stepNumber = 2
-          toasterService.error('Select recipients')
+          toasterService.error($rootScope.messages.emsg.m0006)
           return
         }
         createAnn.stepNumber = 3
