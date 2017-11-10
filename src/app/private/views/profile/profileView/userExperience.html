@@ -1,6 +1,7 @@
 <div class="margin-top-20 ui raised segment">
     <div class="header announcementCard-header">
         <span class="header cardsHeading"> {{$root.frmelmnts.lbl.experience}} </span>
+        <a class="addeditprofile" ng-if='$root.privateProfileFields'><profile-visibility   update="'true'" field="'jobProfile'"></profile-visibility></a>
         <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.experienceForm && profileCtrl.user.jobProfile.length" ng-click="profileCtrl.experienceForm=true ;profileCtrl.isNewExperience=false ;">{{$root.frmelmnts.btn.edit}}</a>
         <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.experienceForm  " ng-click="profileCtrl.experienceForm=true ; profileCtrl.isNewExperience=true ;profileCtrl.newExperience={} ">{{$root.frmelmnts.btn.add}}</a>
         <a class="addeditprofile cursor-pointer" ng-if="profileCtrl.experienceForm" ng-click="profileCtrl.cancelEditExperience()">{{$root.frmelmnts.btn.close}}</a>

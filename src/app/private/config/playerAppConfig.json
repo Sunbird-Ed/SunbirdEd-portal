@@ -95,7 +95,22 @@
                     "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Marathi", "Punjabi", "Tamil", "Telugu"
                 ],
                 "contentTypes": [
-                    "Collection", "LessonPlan", "Resource", "TextBook"
+                  {
+                    "key": "Book",
+                    "value": "Book"
+                  },
+                  {
+                    "key": "Collection",
+                    "value": "Collection"
+                  },
+                  {
+                    "key": "LessonPlan",
+                    "value": "Lesson Plan"
+                  },
+                  {
+                    "key": "Resource",
+                    "value": "Resource"
+                  }
                 ],
                 "resourceType": [
                     "(Annual / Half-yearly / Semester) Examination",

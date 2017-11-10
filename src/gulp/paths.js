@@ -120,7 +120,6 @@ var paths = {
     'dist/public/scripts/directive/error.js',
     'dist/public/scripts/directive/loader.js',
     'dist/public/scripts/directive/courseDiscussions.js',
-    'dist/public/scripts/directive/applyScript.js',
     'dist/public/scripts/directive/publicContentPlayer.js',
     'dist/public/scripts/controllers/signUpController.js',
     'dist/public/scripts/controllers/publicContentPlayerController.js',
@@ -262,7 +261,9 @@ var paths = {
     'dist/private/scripts/controllers/announcement/announcementOutboxListController.js',
     'dist/private/scripts/services/announcementService.js',
     'dist/private/scripts/controllers/announcement/createAnnouncementController.js',
-    'dist/private/scripts/directives/announcementDetailsDirective.js'
+    'dist/private/scripts/directives/announcementDetailsDirective.js',
+    'dist/private/scripts/controllers/profileVisibilityController.js',    
+    'dist/private/scripts/directives/profileVisibility.js'
   ],
   telemetry_js: [
     'dist/private/scripts/telemetry/TelemetryEvent.js',
