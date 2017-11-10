@@ -2,6 +2,14 @@
 
 angular.module('playerApp')
   .service('announcementService', ['httpServiceJava', 'config', '$http', function(httpServiceJava, config, $http) {
+
+    var  extensions = {
+        'application/png' : 'PNG',
+        'application/pdf' : 'PDF',
+        'application/jpeg' : 'JPEG'
+        'application/jpg' : 'JPEG'
+    }
+
     /**
      * @class announcementService
      * @desc Service to manage announcement.
@@ -73,8 +81,8 @@ angular.module('playerApp')
              * @instance
              */
             this.getFileExtension = function(mimeType) {
-              var extension = mimeType === 'application/pdf' ? 'PDF' : (mimeType === 'application/png' ? 'PNG' : 'JPEG')
-              return extension
+             // var extension = mimeType === 'application/pdf' ? 'PDF' : (mimeType === 'application/png' ? 'PNG' : 'JPEG')
+              return  extensions[mimeType];
             }
 
             /**
@@ -88,6 +96,6 @@ angular.module('playerApp')
             this.createAnnouncement = function(req) {
 
             }
-            
-            
+
+
   }])
