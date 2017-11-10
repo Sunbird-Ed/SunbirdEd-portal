@@ -2981,6 +2981,9 @@ ul.fancytree-container li {
   max-height: 300px;
   overflow-y: auto;
 }
+.wmd-input {
+  height: 150px !important;
+}
 .userSearchImage > img {
   min-height: 80px !important;
 }
