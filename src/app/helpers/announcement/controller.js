@@ -324,7 +324,7 @@ class AnnouncementController {
           if (!_.isObject(data)) {
             resolve({ msg: 'unable to fetch announcement types', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
           } else {
-            resolve(data)
+            resolve(data.data)
           }
         })
         .catch((error) => {
