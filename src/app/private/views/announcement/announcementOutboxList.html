@@ -79,8 +79,9 @@
                 <td>N/A</td>
                 <td id="actionBtn{{item.announcementId}}" class="cursor-pointer announcementRedText" ng-click="announcementOutboxData.doAction(item)"
                 ng-if="item.status == 'active'"><i class="icon ban"></i>Delete</td>
-                <td id="actionBtn{{item.announcementId}}" class="cursor-pointer announcementBlueText" ng-click="announcementOutboxData.doAction(item)"
-                ng-if="item.status == 'cancelled'"><i class="external share icon"></i>Resend</td>
+                <!--<td id="actionBtn{{item.announcementId}}" class="cursor-pointer announcementBlueText" ng-click="announcementOutboxData.doAction(item)"
+                ng-if="item.status == 'cancelled'"><i class="external share icon"></i>Resend</td> -->
+                <td ng-controller="createAnnouncementCtrl as createAnn" ng-click="createAnn.getAnnouncementDetailsFromId(item.announcementId);" ng-if="item.status == 'cancelled'" class="cursor-pointer announcementBlueText" ><i class="external share icon"></i>Resend</td>
               </tr>
             </tbody>
           </table>
