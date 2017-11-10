@@ -92,7 +92,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'private')))
 
 // Announcement routing
-app.use('/api/announcement/v1', bodyParser.urlencoded({ extended: false }),
+app.use('/api/v1/announcement', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({limit: '10mb' }), require('./helpers/announcement'))
 
 app.use('/private/index', function (req, res, next) {

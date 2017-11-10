@@ -11,7 +11,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
     $rootScope.sessionId = $('#sessionId').attr('value')
     $rootScope.cdnUrl = $('#cdnUrl').attr('value') || ''
     $rootScope.theme = $('#theme').attr('value') || 'default'
-    $rootScope.language = window.localStorage.language || $('#defaultPortalLanguage').attr('value') || 'en'
+    $rootScope.language = $('#defaultPortalLanguage').attr('value') || 'en'
     $rootScope.messages = messages[$rootScope.language]
     $rootScope.frmelmnts = frmelmnts[$rootScope.language]
     $rootScope.searchKey = ''
@@ -161,7 +161,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
           if (res && res.responseCode === 'OK') {
             var profileData = res.result.response
             // console.log(profileData.organisations[0].organisationId)
-            $rootScope.userOrganizationId = profileData.organisations[0].organisationId
+            $rootScope.userOrganizationId = profileData.organisations[0] && profileData.organisations[0].organisationId
             userService.setCurrentUserProfile(profileData)
             $scope.userProfile(profileData)
           } else {
