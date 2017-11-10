@@ -195,6 +195,15 @@
 .padding-bottom-none {
   padding-bottom: 0px !important;
 }
+.padding-right-none {
+  padding-right: 0px !important;
+}
+.padding-left-none {
+  padding-left: 0px !important;
+}
+.padding-10 {
+  padding: 10px !important;
+}
 .padding-left-right-0 {
   padding-left: 0px !important;
   padding-right: 0px !important;
@@ -3422,6 +3431,9 @@ span.dashBoardMenuItem.active {
 }
 .line-height-20 {
   line-height: 20px;
+}
+.annRecipientsSearchIcon {
+  margin-left: -10px !important;
 }
 .btn-width-34 {
   width: 34%;
