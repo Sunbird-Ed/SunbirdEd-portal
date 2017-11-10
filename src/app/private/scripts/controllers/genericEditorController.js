@@ -22,15 +22,15 @@ angular.module('playerApp')
           overlayColor: '',
           onClosed: function () {
             if ($stateParams.state) {
-			   $state.go($stateParams.state);
-			} 
-			else if ($rootScope.contentModelBackLinkName) {
-			   $state.go($rootScope.contentModelBackLinkName);
-			} 
-			else {
-			   $state.go('WorkSpace.AllUploadedContent')
-            }
-          }
+			         $state.go($stateParams.state);
+		       	} 
+			      else if ($rootScope.contentModelBackLinkName) {
+			         $state.go($rootScope.contentModelBackLinkName);
+			      } 
+			      else {
+			         $state.go('WorkSpace.AllUploadedContent')
+             }
+           }
         })
 
         window.context = {
