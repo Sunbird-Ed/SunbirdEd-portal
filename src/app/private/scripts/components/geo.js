@@ -59,7 +59,7 @@ angular.module('playerApp').component('geo', {
 
         /**
          * Items which is need to be render on web page
-         * @param  {object} items geo items from api 
+         * @param  {object} items geo items from api
          */
         this.renderItems = function(items) {
             this.items = items;
@@ -67,7 +67,7 @@ angular.module('playerApp').component('geo', {
 
         /**
          * @desc Returns the selected items
-         * @return {object} 
+         * @return {object}
          */
         this.getSelectedItems = function() {
             return _.filter(instance.items, ['selected', true])
@@ -90,9 +90,9 @@ angular.module('playerApp').component('geo', {
             }
         };
 
-        /** 
+        /**
          * Initializes the JSON adopter
-         * @param {object} config 
+         * @param {object} config
          */
         this.initializeJsonAdopter = function(config) {
             this.renderItems(config.json);
