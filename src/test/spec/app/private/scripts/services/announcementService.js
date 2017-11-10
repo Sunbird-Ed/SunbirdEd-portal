@@ -36,33 +36,32 @@ describe('Service: announcementService', function() {
 
     it('Outbox success', function() {
       spyOn(announcementService, 'getOutBoxAnnouncementList').and.callThrough();
-	  announcementService.getOutBoxAnnouncementList();
-	  expect(announcementService.getOutBoxAnnouncementList).toBeDefined();
+      announcementService.getOutBoxAnnouncementList();
+      expect(announcementService.getOutBoxAnnouncementList).toBeDefined();
     })
 
     it('Inbox success', function() {
       spyOn(announcementService, 'getInboxAnnouncementList').and.callThrough();
-	  announcementService.getInboxAnnouncementList();
-	  expect(announcementService.getInboxAnnouncementList).toBeDefined();
+      announcementService.getInboxAnnouncementList();
+      expect(announcementService.getInboxAnnouncementList).toBeDefined();
     })
 
     it('Get file extension', function() {
       spyOn(announcementService, 'getFileExtension').and.callThrough();
-	  announcementService.getFileExtension();
-	  expect(announcementService.getFileExtension).toBeDefined();
+      announcementService.getFileExtension();
+      expect(announcementService.getFileExtension).toBeDefined();
     })
 
     it('Create announcement', function() {
       spyOn(announcementService, 'createAnnouncement').and.callThrough();
-	  announcementService.createAnnouncement();
-	  expect(announcementService.createAnnouncement).toBeDefined();
+      announcementService.createAnnouncement();
+      expect(announcementService.createAnnouncement).toBeDefined();
     })
 
     it('Get definitions', function() {
       spyOn(announcementService, 'getDefinitions').and.callThrough();
-	  announcementService.getDefinitions();
-	  expect(announcementService.getDefinitions).toBeDefined();
+      announcementService.getDefinitions();
+      expect(announcementService.getDefinitions).toBeDefined();
     })
-
   })
 })
