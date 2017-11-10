@@ -22,7 +22,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
             response = response.data
             if (response && response.responseCode === 'OK') {
                 if (response.result.announcementtypes) {
-                    createAnn.announcementType = _.map(response.result.announcementtypes.data, 'name')
+                    createAnn.announcementType = _.map(response.result.announcementtypes, 'name')
                 }
                 if (response.result.senderlist) {
                     angular.forEach(response.result.senderlist, function(value, key) {
