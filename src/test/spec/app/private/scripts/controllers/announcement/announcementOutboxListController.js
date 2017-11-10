@@ -47,6 +47,7 @@ describe('Controller: announcementOutboxListController', function() {
     it('success', function() {
       spyOn(announcementService, 'getOutBoxAnnouncementList').and.returnValue(deferred.promise)
       deferred.resolve(annOutboxTestData.successResponce)
+      annOutboxTestData.successResponce.data = annOutboxTestData.successResponce;
       spyOn(announcementOutboxListController, 'renderAnnouncementList').and.callThrough()
       announcementOutboxListController.renderAnnouncementList()
       scope.$apply();
