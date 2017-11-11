@@ -105,9 +105,11 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
         }
         createAnn.previewAnn = function() {
             createAnn.linkArray = []
-            angular.forEach(createAnn.data.links, function(value, key) {
-                createAnn.linkArray.push(value)
-            })
+            if (createAnn.data.links){
+           		 angular.forEach(createAnn.data.links, function(value, key) {
+                		createAnn.linkArray.push(value)
+            	})
+           	}
             createAnn.previewData = {
                 'type': createAnn.data.type,
                 'links': createAnn.linkArray,
@@ -208,11 +210,9 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
                     element: document.getElementById('fine-uploader-manual-trigger'),
                     template: 'qq-template-manual-trigger',
                     autoUpload: true,
-                    debug: true,
                     paramsInBody: true,
                     request: {
                         endpoint: '/api/announcement/v1/attachment/upload',
-                        //endpoint: createAnn.attachmentEndPoint,
                         inputName: 'document',
                         params: {
                             'createdBy': $rootScope.userId
