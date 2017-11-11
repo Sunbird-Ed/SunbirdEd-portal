@@ -1,5 +1,6 @@
-<div class="ui right pointing dropdown icon button">
-    <i class="lock icon"></i>
+<div ng-if="!(profVisCtrl.loader[field] === true)" ng-class="{'ProfilePermissionBtnTop':(top=='true')}" class="ui top left pointing dropdown icon button profile-privacy-drpdwn ProfilePagePermissionBtn">
+    <i  ng-class="{'unlock alternate icon':(visibility == 'public'),'lock icon':(visibility == 'private')}"></i>
+
     <div class="menu">
         <div ng-class="{'active selected':(visibility == option.value)}" ng-repeat="option in profVisCtrl.options" class="item" ng-click="profVisCtrl.setProfileFieldLbl(option.value)" ng-init="$last && profVisCtrl.initDropdown()">
             {{option.text}}
@@ -7,3 +8,4 @@
     </div>
 </div>
 
+<div ng-if="(profVisCtrl.loader[field] === true)" class="ui active inline tiny loader"></div>
