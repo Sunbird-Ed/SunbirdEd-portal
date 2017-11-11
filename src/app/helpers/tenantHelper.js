@@ -21,7 +21,6 @@ module.exports = {
       titleName: envHelper.PORTAL_TITLE_NAME
     }
 
-    console.log('baseUrl ', baseUrl)
     // TODO: make file checking async for performance
     if (tenantId) {
       if (fs.existsSync(path.join(__dirname, '../tenant', tenantId, 'logo.png'))) {

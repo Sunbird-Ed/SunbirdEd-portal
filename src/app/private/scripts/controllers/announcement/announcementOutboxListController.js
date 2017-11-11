@@ -61,7 +61,7 @@ angular.module('playerApp')
                 // Check if response successful
                 if (apiResponse && apiResponse.responseCode === 'OK' && apiResponse.result.status === 'cancelled') {
                     // Show success toaster
-                    toasterService.success('Announcement deleted successfully.')
+                    toasterService.success('Announcement cancelled successfully.')
                     announcementOutboxData.renderAnnouncementList()
                 } else {
                     toasterService.error(apiResponse.params.errmsg)
@@ -73,5 +73,34 @@ angular.module('playerApp')
                 announcementOutboxData.closeModal('announcementDeleteModal')
             })
         }
+        announcementOutboxData.getAnnouncementDetailsFromId = function(announcementId) {
+	      announcementService.getAnnouncementDetailsFromId(announcementId).then(function(apiResponse) {
+	        apiResponse = apiResponse.data
+	        //console.log(apiResponse)
+	        if (apiResponse && apiResponse.responseCode === 'OK') {
+	          // TODO - open the create announcement with edit mode and prepopulated data
+	          announcementOutboxData.resendAnnouncement(apiResponse.result)
+	        } else {
+	          toasterService.error(apiResponse.params.errmsg)
+	        }
+	      }).catch(function(err) {
+	        toasterService.error(err.data.params.errmsg)
+	      }).finally(function() {});
+	    }
+	    announcementOutboxData.resendAnnouncement = function(announcement) {
+	      var requestBody = {"request": {"sourceId": announcement.sourceid, "createdBy": announcement.userid, "type": announcement.details.type, "links": announcement.links, "title": announcement.details.title, "description": announcement.details.description, "from": announcement.details.from, "target": announcement.target}}
+	      announcementService.resendAnnouncement(requestBody).then(function(apiResponse) {
+	        apiResponse = apiResponse.data
+	        //console.log(apiResponse)
+	        if (apiResponse && apiResponse.responseCode === 'OK') {
+	          toasterService.success('Announcement resent successfully.')
+	          announcementOutboxData.renderAnnouncementList()
+	        } else {
+	          toasterService.error(apiResponse.params.errmsg)
+	        }
+	      }).catch(function(err) {
+	        toasterService.error(err.data.params.errmsg)
+	      }).finally(function() {});
+	    }
     }
   ])
