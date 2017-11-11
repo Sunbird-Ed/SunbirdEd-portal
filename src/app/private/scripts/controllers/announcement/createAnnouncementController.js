@@ -211,6 +211,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
                     template: 'qq-template-manual-trigger',
                     autoUpload: true,
                     paramsInBody: true,
+                    debug:true,
                     request: {
                         endpoint: '/api/announcement/v1/attachment/upload',
                         inputName: 'document',
@@ -234,7 +235,8 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
                     },
                     callbacks: {
                         onComplete: function(id, name, responseJSON, xhr) {
-                            if (responseJSON.responseCode === 'OK' && responseJSON.result.attachment) {
+                            console.log('Upload response :', responseJSON)
+                            if (responseJSON.status && responseJSON.responseCode === 'OK') {
                                 var attData = {
                                     "title": name,
                                     "downloadURL": responseJSON.result.attachment.downloadURL ? responseJSON.result.attachment.downloadURL : ''
