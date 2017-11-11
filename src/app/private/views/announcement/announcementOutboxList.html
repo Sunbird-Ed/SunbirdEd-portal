@@ -79,7 +79,7 @@
                 <td>{{item.metrics.read ? item.metrics.read : "N/A"}}</td>
                 <td class="cursor-pointer announcementRedText" ng-click="announcementOutboxData.deleteAnnouncement(item.id)"
                 ng-if="item.status == 'active'"><i class="icon ban"></i>Delete</td>
-                <td ng-controller="createAnnouncementCtrl as createAnn" ng-click="createAnn.getAnnouncementDetailsFromId(item.id);" ng-if="item.status == 'cancelled'" class="cursor-pointer announcementBlueText" ><i class="external share icon"></i>Resend</td>
+                <td ng-click="announcementOutboxData.getAnnouncementDetailsFromId(item.id);" ng-if="item.status == 'cancelled'" class="cursor-pointer announcementBlueText" ><i class="external share icon"></i>Resend</td>
               </tr>
             </tbody>
           </table>
