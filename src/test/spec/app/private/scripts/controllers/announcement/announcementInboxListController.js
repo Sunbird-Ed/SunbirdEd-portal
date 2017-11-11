@@ -17,7 +17,7 @@ describe('Controller: announcementInboxListController', function() {
     $q,
     deferred,
     timeout,
-    annInboxTestData = testData.getAnnouncementInbox
+    annInboxTestData = announcementTestData.getAnnouncementInbox
 
   beforeEach(inject(function($rootScope, $controller) {
     $controller('AppCtrl', {
