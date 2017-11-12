@@ -450,6 +450,7 @@ class AnnouncementController {
                     'userid': _.get(requestObj, 'request.userId')
                 }
             }
+            let metrics_clone = undefined;
 
             // execute query and process response
             this.objectStoreRest.findObject(query)
@@ -471,14 +472,15 @@ class AnnouncementController {
                                     _.forEach(metricsData, (v, k) => {
                                         if (value.id == k) {
                                             _.forEach(v[0].values, (ele, indec) => {
-                                                if(ele.name === 'read'){
+                                                if (ele.name === 'read') {
                                                     metrics.read = ele.count;
                                                 }
-                                                if(ele.name === 'recevied'){
-                                                  metrics.recevied = ele.count;
+                                                if (ele.name === 'recevied') {
+                                                    metrics.recevied = ele.count;
                                                 }
                                             });
-                                            value['metrics'] = metrics;
+                                            metrics_clone = _.clone(metrics);
+                                            value['metrics'] = metrics_clone;
                                         }
                                     });
                                 });
