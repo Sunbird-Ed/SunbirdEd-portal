@@ -271,10 +271,10 @@ class AnnouncementController {
           if (!_.isObject(data)) {
             reject({ msg: 'unable to fetch announcement', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
           } else {
-            _.forEach(data.data, (announcementObj) => {
+            _.forEach(data.data.content, (announcementObj) => {
               if (_.isString(announcementObj.target)) announcementObj.target = JSON.parse(announcementObj.target)
             })
-            resolve(_.get(data, 'data[0]'))
+            resolve(_.get(data.data, 'content[0]'))
           }
         })
         .catch((error) => {
@@ -411,7 +411,7 @@ class AnnouncementController {
               if (!_.isObject(data)) {
                 reject({ msg: 'unable to fetch announcement inbox', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
               } else {
-                resolve(data.data)
+                resolve(data.data.content)
               }
             })
             .catch((error) => {
@@ -457,12 +457,36 @@ class AnnouncementController {
                 if (!_.isObject(data)) {
                     reject({ msg: 'unable to fetch sent announcements', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
                 } else {
-                    let announcementCount = _.size(data.data)
-                    let response = {
-                        count: announcementCount,
-                        announcements: data.data
-                    }
-                    resolve(response)
+                    var announcementIds = _.map(data.data.content,"id");
+                    this.getMetrics(announcementIds, query)
+                        .then((metricsData) => {
+                            let announcementCount = _.size(data.data)
+                            let response = {
+                                count: announcementCount,
+                                announcements: data.data
+                            }
+                            var metrics = {read:"",recevied:"", }
+                             if (metricsData) {
+                                _.forEach(response.announcements.content, (value, key) => {
+                                    _.forEach(metricsData, (v, k) => {
+                                        if (value.id == k) {
+                                            _.forEach(v[0].values, (ele, indec) => {
+                                                if(ele.name === 'read'){
+                                                    metrics.read = ele.count;
+                                                }
+                                                if(ele.name === 'recevied'){
+                                                  metrics.recevied = ele.count;
+                                                }
+                                            });
+                                            value['metrics'] = metrics;
+                                        }
+                                    });
+                                });
+                                resolve(response)
+                            } else {
+                                resolve(response);
+                            }
+                        })
                 }
             })
             .catch((error) => {
@@ -782,5 +806,34 @@ class AnnouncementController {
           })
       });
   }
-}
+
+   getMetrics(id, options){
+    return this.__getMetrics()(id, options)
+   }
+  __getMetrics() {
+  return async((id, options) =>{
+    let result = {};
+    let query = {table: this.objectStoreRest.MODEL.METRICS, query: {'announcementid': ""},facets:[{"activity":null}] }
+    var instance = this;
+        var awaitData = undefined;
+        for (let i = 0; i < id.length; i++) {
+            await (new Promise((resolve, reject) => {
+                query.query.announcementid = id[i];
+                instance.objectStoreRest.findObject(query)
+                    .then((data) => {
+                        if (!data.data.content) {
+                            resolve({msg: 'unable to fetch metrics', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
+                            } else {
+                              result[data.data.content[0].announcementid] = data.data.facets;
+                              resolve(data.data);
+                        }
+                    });
+            }));
+            if (i == id.length - 1) {
+                return result;
+            }
+        }
+    })
+  }
+ }
 module.exports = new AnnouncementController()
