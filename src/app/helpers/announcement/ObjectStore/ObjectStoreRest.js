@@ -48,8 +48,7 @@ class ObjectStoreRest extends ObjectStore {
 
   __findObject() {
     return async((data, indexStore) => {
-      await (this.validateFindObject(data))
-
+      //await (this.validateFindObject(data))
       let options = {
         method: 'POST',
         uri: envVariables.DATASERVICE_URL + 'data/v1/object/search',
@@ -57,19 +56,20 @@ class ObjectStoreRest extends ObjectStore {
           request: {
             'filters': data.query,
             'documentName':data.table,
+            "facets":data.facets,
           }
         },
         json: true
       }
+      options.body.request = _.pickBy(options.body.request, _.identity); // Removes all falsey values
       if (indexStore == false) {
           options.body.request = _.omit(options.body.request, ['documentName']);
           options.body.request.tableName = data.table;
       }
-
       try {
         let result = await (this.httpService(options))
         if (_.get(result, 'body.result.response.count') > 0) {
-          return { data: _.get(result, 'body.result.response.content'), status: 'success' }
+          return { data: _.get(result, 'body.result.response'), status: 'success' }
         } else {
           return { data: [], status: 'success' }
         }
@@ -134,14 +134,13 @@ class ObjectStoreRest extends ObjectStore {
       }
     })
   }
-
-
+  
   httpService(options) {
     return new Promise((resolve, reject) => {
       if (!options) reject('options required!')
       options.headers = options.headers || this.getRequestHeader()
       webService(options, (error, response, body) => {
-        console.info("Code",response.statusCode);
+        console.log("statusCode",response.statusCode);
         if (error || response.statusCode >= 400) {
           reject(error)
         } else {
