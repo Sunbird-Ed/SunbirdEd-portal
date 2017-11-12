@@ -57,7 +57,7 @@ angular.module('playerApp')
             // Call the delete service
             announcementService.deleteAnnouncement(announcementId).then(function(apiResponse) {
                 apiResponse = apiResponse.data
-                console.log(apiResponse)
+                //console.log(JSON.stringify(apiResponse))
                 // Check if response successful
                 if (apiResponse && apiResponse.responseCode === 'OK' && apiResponse.result.status === 'cancelled') {
                     // Show success toaster
@@ -76,7 +76,7 @@ angular.module('playerApp')
         announcementOutboxData.getAnnouncementDetailsFromId = function(announcementId) {
 	      announcementService.getAnnouncementDetailsFromId(announcementId).then(function(apiResponse) {
 	        apiResponse = apiResponse.data
-	        //console.log(apiResponse)
+	        //console.log(JSON.stringify(apiResponse))
 	        if (apiResponse && apiResponse.responseCode === 'OK') {
 	          // TODO - open the create announcement with edit mode and prepopulated data
 	          announcementOutboxData.resendAnnouncement(apiResponse.result)
@@ -85,13 +85,14 @@ angular.module('playerApp')
 	        }
 	      }).catch(function(err) {
 	        toasterService.error(err.data.params.errmsg)
-	      }).finally(function() {});
+	      }).finally(function() {})
 	    }
 	    announcementOutboxData.resendAnnouncement = function(announcement) {
 	      var requestBody = {"request": {"sourceId": announcement.sourceid, "createdBy": announcement.userid, "type": announcement.details.type, "links": announcement.links, "title": announcement.details.title, "description": announcement.details.description, "from": announcement.details.from, "target": announcement.target}}
-	      announcementService.resendAnnouncement(requestBody).then(function(apiResponse) {
+        //console.log(JSON.stringify(announcement))
+        announcementService.resendAnnouncement(requestBody).then(function(apiResponse) {
 	        apiResponse = apiResponse.data
-	        //console.log(apiResponse)
+          //console.log(JSON.stringify(apiResponse))
 	        if (apiResponse && apiResponse.responseCode === 'OK') {
 	          toasterService.success('Announcement resent successfully.')
 	          announcementOutboxData.renderAnnouncementList()
@@ -100,7 +101,7 @@ angular.module('playerApp')
 	        }
 	      }).catch(function(err) {
 	        toasterService.error(err.data.params.errmsg)
-	      }).finally(function() {});
+	      }).finally(function() {})
 	    }
     }
   ])
