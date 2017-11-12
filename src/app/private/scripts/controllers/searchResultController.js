@@ -404,7 +404,7 @@ angular.module('playerApp').controller('SearchResultController', [
     }
     $rootScope.search.getUserRoles = function () {
       if (!$rootScope.search.userRoles) {
-        $rootScope.search.userRoles = permissionsService.allRoles()
+        $rootScope.search.userRoles = permissionsService.getMainRoles()
         $rootScope.search.userRoles = _.sortBy($rootScope.search.userRoles, 'roleName')
       }
     }
