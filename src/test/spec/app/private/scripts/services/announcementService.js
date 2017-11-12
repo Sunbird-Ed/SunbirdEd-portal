@@ -63,5 +63,23 @@ describe('Service: announcementService', function() {
       announcementService.getDefinitions();
       expect(announcementService.getDefinitions).toBeDefined();
     })
+
+    it('Delete announcement', function() {
+      spyOn(announcementService, 'deleteAnnouncement').and.callThrough();
+      announcementService.deleteAnnouncement();
+      expect(announcementService.deleteAnnouncement).toBeDefined();
+    })
+
+    it('Resend announcement', function() {
+      spyOn(announcementService, 'resendAnnouncement').and.callThrough();
+      announcementService.resendAnnouncement();
+      expect(announcementService.resendAnnouncement).toBeDefined();
+    })
+
+    it('get announcement', function() {
+      spyOn(announcementService, 'getAnnouncementDetailsFromId').and.callThrough();
+      announcementService.getAnnouncementDetailsFromId();
+      expect(announcementService.getAnnouncementDetailsFromId).toBeDefined();
+    })
   })
 })
