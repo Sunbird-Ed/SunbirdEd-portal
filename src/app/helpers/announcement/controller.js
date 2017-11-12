@@ -168,7 +168,7 @@ class AnnouncementController {
         } else if (_.get(error, 'body.params.err') === 'UNAUTHORIZE_USER') {
           reject('UNAUTHORIZE_USER')
         } else {
-          reject()  
+          reject("UNKNOWN_ERROR")  
         }        
       })
     })
@@ -324,7 +324,7 @@ class AnnouncementController {
           if (!_.isObject(data)) {
             resolve({ msg: 'unable to fetch announcement types', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
           } else {
-            resolve(data)
+            resolve(data.data)
           }
         })
         .catch((error) => {
@@ -366,67 +366,67 @@ class AnnouncementController {
     })
   }
 
-  /**
-   * Get inbox of announcements for a given user
-   *
-   * @param   {[type]}  requestObj  [description]
-   *
-   * @return  {[type]}              [description]
-   */
-  getUserInbox(requestObj) {
-    return this.__getUserInbox()(requestObj)
-  }
+    /**
+    * Get inbox of announcements for a given user
+    *
+    * @param   {[type]}  requestObj  [description]
+    *
+    * @return  {[type]}              [description]
+    */
+    getUserInbox(requestObj) {
+        return this.__getUserInbox()(requestObj)
+    }
 
-  __getUserInbox() {
-    return async((requestObj) => {
-      // return { "announcements": [{ "announcementId": "2344-1234-1234-12312", "sourceId": "some-organisation-id", "createdBy": "Creator1", "createdOn": "2017-10-24", "type": "announcement", "links": ["https://linksToOtheresources.com"], "title": "Monthy Status", "description": "some description", "target": ["teachers"], "attachments": [{ "title": "circular.pdf", "downloadURL": "https://linktoattachment", "mimetype": "application/pdf" }] }] }
+    __getUserInbox() {
+        return async((requestObj) => {
+            let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
+            if (!authUserToken) throw { msg: 'UNAUTHORIZED..', statusCode: HttpStatus.BAD_REQUEST }
 
-      let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || requestObj.headers['x-authenticated-user-token']
-      if (!authUserToken) throw { msg: 'UNAUTHORIZED', statusCode: HttpStatus.BAD_REQUEST }
+            // Get user id and profile
+            let userProfile = await(this.__getUserProfile({ id: _.get(requestObj, 'body.request.userId') }, authUserToken))
 
-      // Get user id and profile
-      let userProfile = await(this.__getUserProfile({ id: _.get(requestObj, 'body.request.userid') }, authUserToken))
+            // Parse the list of Geolocations (User > Orgs > Geolocations) from the response
+            let targetList = []
+            _.forEach(userProfile.organisations, function(userOrg) {
+                if(userOrg.locationId) targetList.push(userOrg.locationId)
+            });
 
-      // Parse the list of Geolocations (User > Orgs > Geolocations) from the response
-      let targetList = []
-      _.forEach(userProfile.organisations, function(userOrg) {
-          if(userOrg.locationId) targetList.push(userOrg.locationId)
-      });
+            //handle emty target list
+            // TODO: add this validation back when data starts becoming available
+            // if (_.isEmpty(targetList)) return { count:1, announcements: [] }
 
-      //handle emty target list
-      if (_.isEmpty(targetList)) return { msg: {count:0, msg: 'No announcements found'}, statusCode: HttpStatus.OK }
+        // Query announcements where target is listed Geolocations
+            let query = {
+                table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
+                query: {
+                    // TODO: remove the below wildcard query and implement the commented specific query
+                    // 'target.geo.ids': targetList
+                    "wildcard" : { "target.geo.ids" : { "value" : "*" } }
+                }
+            }
+            try {
+                let data = await (new Promise((resolve, reject) => {
+                    this.objectStoreRest.findObject(query)
+                    .then((data) => {
+                        if (!_.isObject(data)) {
+                            reject({ msg: 'unable to fetch announcement inbox', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
+                        } else {
+                            resolve(data.data.content)
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                        reject({ msg: 'unable to fetch announcement inbox', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
+                    })
+                }))
 
-      // Query announcements where target is listed Geolocations
-      let query = {
-        table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
-        query: {
-          'target': targetList
-        }
-      }
+                return  {count:_.size(data), announcements: data}
 
-      try {
-        let data = await (new Promise((resolve, reject) => {
-            this.objectStoreRest.findObject(query)
-            .then((data) => {
-              if (!_.isObject(data)) {
-                reject({ msg: 'unable to fetch announcement inbox', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
-              } else {
-                resolve(data.data.content)
-              }
-            })
-            .catch((error) => {
-              console.log(error)
-              reject({ msg: 'unable to fetch announcement inbox', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
-            })
-        }))
-
-        return  {msg: {announcements: data}, statusCode: HttpStatus.OK}
-
-        } catch(error) {
-            throw { msg: 'unable to process your request', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
-        }
-    })
-  }
+            } catch(error) {
+                throw { msg: 'unable to process your request', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
+            }
+        })
+    }
 
 
     /**
