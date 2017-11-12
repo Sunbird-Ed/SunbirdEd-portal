@@ -458,14 +458,10 @@ class AnnouncementController {
                 if (!_.isObject(data)) {
                     reject({ msg: 'unable to fetch sent announcements', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
                 } else {
-                    var announcementIds = _.map(data.data.content,"id");
-                    this.getMetrics(announcementIds, query)
+                    this.getMetrics(_.map(data.data.content,"id"), query)
                         .then((metricsData) => {
                             let announcementCount = _.size(data.data)
-                            let response = {
-                                count: announcementCount,
-                                announcements: data.data
-                            }
+                            let response = {count: announcementCount, announcements: data.data }
                             var metrics = {read:"",recevied:"", }
                              if (metricsData) {
                                 _.forEach(response.announcements.content, (value, key) => {
