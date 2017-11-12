@@ -2,13 +2,14 @@
 
 angular.module('playerApp')
   .controller('contentPlayerCtrl', ['playerTelemetryUtilsService', '$state', '$scope',
-    'contentService', '$timeout', '$stateParams', 'config', '$rootScope', '$location', '$anchorScroll',
+    'contentService', '$timeout', '$stateParams', 'config', '$rootScope', '$location', '$anchorScroll', 'toasterService',
     function (playerTelemetryUtilsService, $state, $scope, contentService,
-        $timeout, $stateParams, config, $rootScope, $location, $anchorScroll) {
+        $timeout, $stateParams, config, $rootScope, $location, $anchorScroll, toasterService) {
       $scope.isClose = $scope.isclose
       $scope.isHeader = $scope.isheader
       $scope.showModalInLectureView = true
       $scope.contentProgress = 0
+      var count = 0
 
       $scope.getContentEditorConfig = function (data) {
         var configuration = {}
@@ -108,8 +109,17 @@ angular.module('playerApp')
         }
         contentService.getById(req, qs).then(function (response) {
           if (response && response.responseCode === 'OK') {
-            $scope.errorObject = {}
-            showPlayer(response.result.content)
+            if (response.result.content.status === 'Live' || response.result.content.status === 'Unlisted' ||
+             $scope.isworkspace) {
+              $scope.errorObject = {}
+              showPlayer(response.result.content)
+            } else {
+              if (!count) {
+                count += 1
+                toasterService.warning($rootScope.messages.imsg.m0018)
+                $state.go('Home')
+              }
+            }
           } else {
             var message = $rootScope.messages.stmsg.m0009
             showLoaderWithMessage(false, message, true, true)

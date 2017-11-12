@@ -2,8 +2,8 @@
 
 (function () {
   angular.module('playerApp').controller('CollectionPlayerCtrl', ['$state', '$timeout',
-    'courseService', '$rootScope', '$stateParams',
-    function ($state, $timeout, courseService, $rootScope, $stateParams) {
+    'courseService', '$rootScope', '$stateParams', 'toasterService',
+    function ($state, $timeout, courseService, $rootScope, $stateParams, toasterService) {
       var cpvm = this
       cpvm.treeKey = 0
       cpvm.loader = {
@@ -36,17 +36,23 @@
         courseService.courseHierarchy($state.params.Id).then(function (res) {
           if (res && res.responseCode === 'OK') {
             cpvm.loader.showLoader = false
-            res.result.content.children = _.sortBy(res.result.content.children,
+            if (res.result.content.status === 'Live' || res.result.content.status === 'Unlisted') {
+              res.result.content.children = _.sortBy(res.result.content.children,
                         ['index'])
-            cpvm.courseHierachy = res.result.content
-            cpvm.collectionMeta.author = cpvm.courseHierachy.author
-            cpvm.collectionMeta.language = cpvm.courseHierachy.language
-            cpvm.collectionMeta.gradeLevel = cpvm.courseHierachy.gradeLevel
-            cpvm.collectionMeta.subject = cpvm.courseHierachy.subject
-            cpvm.collectionMeta.medium = cpvm.courseHierachy.medium
-            cpvm.collectionMeta.lastUpdatedOn = cpvm.courseHierachy.lastUpdatedOn
-            cpvm.collectionMeta.createdOn = cpvm.courseHierachy.createdOn
-            cpvm.applyAccordion()
+              cpvm.courseHierachy = res.result.content
+              cpvm.name = cpvm.courseHierachy.name
+              cpvm.collectionMeta.author = cpvm.courseHierachy.author
+              cpvm.collectionMeta.language = cpvm.courseHierachy.language
+              cpvm.collectionMeta.gradeLevel = cpvm.courseHierachy.gradeLevel
+              cpvm.collectionMeta.subject = cpvm.courseHierachy.subject
+              cpvm.collectionMeta.medium = cpvm.courseHierachy.medium
+              cpvm.collectionMeta.lastUpdatedOn = cpvm.courseHierachy.lastUpdatedOn
+              cpvm.collectionMeta.createdOn = cpvm.courseHierachy.createdOn
+              cpvm.applyAccordion()
+            } else {
+              toasterService.warning($rootScope.messages.imsg.m0018)
+              $state.go('Home')
+            }
           } else {
             cpvm.showError($rootScope.messages.emsg.m0004)
           }

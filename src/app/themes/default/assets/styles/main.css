@@ -1001,10 +1001,10 @@ div:focus {
   border-bottom: 1px solid #979797!important;
   border-radius: 0!important;
 }
-.ui.dropdown > .text {
+.ui.modal.ui.dropdown > .text {
   margin-left: -1.1em !important;
 }
-.ui.multiple.dropdown > .text {
+.ui.modal.ui.multiple.dropdown > .text {
   margin: 0 !important;
   line-height: 0 !important;
 }
@@ -2748,6 +2748,9 @@ ul.fancytree-container li {
 .ui.addSkillsMarginCursor.multiple.dropdown > .label {
   margin: 1.1285714rem .28571429rem .14285714rem 0 !important;
 }
+.addSkillMoreBtn {
+  padding: 10px 10px 14px 15px !important;
+}
 .workspaceicon.ui.header > .icon {
   padding-top: 0;
   float: left;
@@ -2977,6 +2980,9 @@ ul.fancytree-container li {
 .contributionsListScroll {
   max-height: 300px;
   overflow-y: auto;
+}
+.wmd-input {
+  height: 150px !important;
 }
 .userSearchImage > img {
   min-height: 80px !important;
