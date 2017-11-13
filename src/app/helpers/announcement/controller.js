@@ -343,28 +343,64 @@ class AnnouncementController {
    * @return  {[type]}              [description]
    */
   cancelAnnouncementById(requestObj) {
-    return this.__cancelAnnouncementById(requestObj)
+    return this.__cancelAnnouncementById()(requestObj)
   }
 
-  __cancelAnnouncementById(requestObj) {
-      return new Promise((resolve, reject) => {
-      let query = {
-        table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
-        values:{id: requestObj.params.announcementId, status:this.statusConstant.CANCELLED}
-      }
-      this.objectStoreRest.updateObjectById(query)
-        .then((data) => {
-          if (!_.isObject(data)) {
-            reject({ msg: 'unable to cancel the announcement', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
-          } else {
-            resolve({id: requestObj.params.announcementId, status:this.statusConstant.CANCELLED})
+  __cancelAnnouncementById() {
+        return async((requestObj) => {
+            let query = {
+                table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
+                values: {
+                    id: _.get(requestObj, 'body.request.announcenmentid'),
+                    status: this.statusConstant.CANCELLED
+                }
+            }
+            var status = await (this.__checkPermisionForCancel()(requestObj));
+            return new Promise((resolve, reject) => {
+                if (status) {
+                    this.objectStoreRest.updateObjectById(query)
+                        .then((data) => {
+                            if (!_.isObject(data)) {
+                                reject({
+                                    msg: 'unable to cancel the announcement',
+                                    statusCode: HttpStatus.INTERNAL_SERVER_ERROR
+                                })
+                            } else {
+                                resolve({
+                                    id: requestObj.params.announcementId,
+                                    status: this.statusConstant.CANCELLED
+                                })
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                            reject({
+                                msg: 'unable to cancel the announcement',
+                                statusCode: HttpStatus.INTERNAL_SERVER_ERROR
+                            })
+                        })
+                } else {
+                    reject({
+                        msg: 'unable to cancel the announcement',
+                        statusCode: HttpStatus.INTERNAL_SERVER_ERROR
+                    })
+                }
+            })
+        })
+    }
+
+  __checkPermisionForCancel() {
+      return async((requestObj) => {
+          if (requestObj) {
+              requestObj.params = {};
+              let userId = _.get(requestObj, 'body.request.userid');
+              requestObj.params.id = _.get(requestObj, 'body.request.announcenmentid');
+              var response = await (this.getAnnouncementById(requestObj));
+              return response.userid === userId ? true : false
+          }else{
+            return false;
           }
-        })
-        .catch((error) => {
-          console.log(error)
-          reject({ msg: 'unable to cancel the announcement', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
-        })
-    })
+      });
   }
 
     /**
