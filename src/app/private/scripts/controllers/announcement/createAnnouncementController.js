@@ -67,10 +67,6 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
                     } else {
                         return true
                     }
-                },
-                onShow: function() {
-                    createAnn.data = createAnn.data
-                    alert(createAnn.data.title)
                 }
             }).modal('show')
         }
@@ -109,14 +105,18 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
         }
         createAnn.previewAnn = function() {
             createAnn.linkArray = []
-            if (createAnn.data.links){
-           		 angular.forEach(createAnn.data.links, function(value, key) {
-                		createAnn.linkArray.push(value)
-            	})
-           	}
+            if (createAnn.data.links) {
+                angular.forEach(createAnn.data.links, function(value, key) {
+                    createAnn.linkArray.push(value)
+                })
+            }
             createAnn.previewData = {
-                'details' : {'type': createAnn.data.type,'title': createAnn.data.title,'description': createAnn.data.description},
-                'sourceid' : $rootScope.rootOrgId,
+                'details': {
+                    'type': createAnn.data.type,
+                    'title': createAnn.data.title,
+                    'description': createAnn.data.description
+                },
+                'sourceid': $rootScope.rootOrgId,
                 'links': createAnn.linkArray,
                 'target': ['teachers'],
                 'attachments': createAnn.attachment
@@ -145,6 +145,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
                 toasterService.error($rootScope.messages.emsg.m0006)
                 return
             }
+            //console.log(JSON.stringify(createAnn.selectedReciepeient))
             createAnn.stepNumber = 3
         }
         createAnn.enableRecepientBtn = function() {
@@ -168,6 +169,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
             createAnn.initializeFileUploader()
         }
         createAnn.saveAnnouncement = function(data) {
+            console.log(JSON.stringify(data))
             var requestBody = angular.copy(data)
             requestBody.sourceId = $rootScope.rootOrgId
             requestBody.createdBy = $rootScope.userId
@@ -214,7 +216,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
                     template: 'qq-template-manual-trigger',
                     autoUpload: true,
                     paramsInBody: true,
-                    debug:true,
+                    debug: true,
                     request: {
                         endpoint: '/api/announcement/v1/attachment/upload',
                         inputName: 'document',
@@ -269,9 +271,52 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
                 }
             }, 300)
         }
-
-        $scope.$on('eventName', function (event, announcement) {
-            console.log(announcement)
+        $scope.$on('editAnnouncementBeforeResend', function(event, announcement) {
+            //console.log(JSON.stringify(announcement))
+            announcement = {
+                "sourceid": "0123673908687093760",
+                "createddate": "2017-11-10 12:04:04:348+0530",
+                "details": {
+                    "description": "Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams",
+                    "from": "test user",
+                    "title": "Exam dates announced for CBSE and state board exams",
+                    "type": "Circular"
+                },
+                "links": ["http://yahoo.com", "http://google.com", "http://gmail.com"],
+                "id": "256048b0-c5e1-11e7-b854-ff8d6e91227b",
+                "userid": "d56a1766-e138-45e9-bed2-a0db5eb9696a",
+                "target": {
+                    "geo": {
+                        "ids": ["0123668622585610242", "0123668627050987529"]
+                    }
+                },
+                "status": "cancelled"
+            }
+            createAnn.data.title = announcement.details.title
+            createAnn.data.description = announcement.details.description
+            angular.forEach(announcement.links, function(value, key) {
+                createAnn.addNewLink()
+            })
+            createAnn.data.links = announcement.links
+            $('#announcementType').dropdown('set text', announcement.details.type)
+            $('#orgDropdown').dropdown('set text', announcement.details.from)
+            $('#orgDropdown').dropdown('set text', announcement.details.from)
+            createAnn.selectedReciepeient = [{
+                "createdDate": "2017-11-02",
+                "updatedBy": null,
+                "createdBy": "16517913-ae66-4b78-be8a-325da74e561c",
+                "topic": "0123668622585610242",
+                "location": "East Godavari",
+                "id": "0123668622585610242",
+                "updatedDate": null,
+                "type": "District",
+                "rootOrgId": "ORG_001",
+                "$$hashKey": "object:133",
+                "selected": true
+            }]
+            createAnn.disableBtn = false
+            // TODO - check the recipients
+            createAnn.createAnnouncement()
         })
     }
 ])
