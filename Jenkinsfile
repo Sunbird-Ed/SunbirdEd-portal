@@ -9,6 +9,7 @@ node('build-slave') {
        stage('Checkout'){
 
           checkout scm
+          sh('git clone https://github.com/project-sunbird/sunbird-portal.git')
        }
 
        stage('Pre-Build'){
