@@ -67,6 +67,10 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
                     } else {
                         return true
                     }
+                },
+                onShow: function() {
+                    createAnn.data = createAnn.data
+                    alert(createAnn.data.title)
                 }
             }).modal('show')
         }
@@ -265,5 +269,9 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
                 }
             }, 300)
         }
+
+        $scope.$on('eventName', function (event, announcement) {
+            console.log(announcement)
+        })
     }
 ])
