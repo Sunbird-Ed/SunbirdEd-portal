@@ -54,6 +54,35 @@ describe('Controller: announcementInboxListController', function() {
       expect(response).toBe(annInboxTestData.successResponce)
     })
 
+
+    it('success', function() {
+      spyOn(announcementService, 'getInboxAnnouncementList').and.returnValue(deferred.promise)
+      deferred.resolve(annInboxTestData.successResponce)
+      annInboxTestData.successResponce.data = annInboxTestData.successResponce;
+      spyOn(announcementInboxListController, 'renderAnnouncementList').and.callThrough()
+      announcementInboxListController.renderAnnouncementList()
+      scope.$apply();
+    })
+
+    it('Fail', function() {
+      annInboxTestData.successResponce.responseCode = 'fail'
+      spyOn(announcementService, 'getInboxAnnouncementList').and.returnValue(deferred.promise)
+      deferred.resolve(annInboxTestData.successResponce)
+      spyOn(announcementInboxListController, 'renderAnnouncementList').and.callThrough()
+      announcementInboxListController.renderAnnouncementList()
+      scope.$apply();
+    })
+
+    it('Reject', function() {
+      spyOn(announcementService, 'getInboxAnnouncementList').and.returnValue(deferred.promise)
+      deferred.reject({})
+      spyOn(announcementInboxListController, 'renderAnnouncementList').and.callThrough()
+      announcementInboxListController.renderAnnouncementList()
+      scope.$apply();
+    })
+
+
+
     it('get file extension', function() {
       spyOn(announcementService, 'getFileExtension').and.returnValue(deferred.promise)
       deferred.resolve('PDF')
