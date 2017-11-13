@@ -20,7 +20,7 @@ describe('Controller: announcementOutboxListController', function() {
     annOutboxTestData = announcementTestData.getAnnouncementOutbox,
     annDeleteTestData = announcementTestData.deleteAnnoucement,
     annResendTestData = announcementTestData.resendAnnouncement,
-    annDetailsFromIdTestData = announcementTestData.getAnnouncementDetailsFromId
+    annGetResendTestData = announcementTestData.getResend
 
   beforeEach(inject(function($rootScope, $controller) {
     $controller('AppCtrl', {
@@ -93,12 +93,12 @@ describe('Controller: announcementOutboxListController', function() {
         scope.$apply()
 	    })
 	})
-   describe('Get announcement details from Id', function() {
+   describe('Get resend', function() {
       it('success', function() {
-        spyOn(announcementService, 'getAnnouncementDetailsFromId').and.returnValue(deferred.promise)
-        deferred.resolve(annDetailsFromIdTestData.successResponse)
-        annDetailsFromIdTestData.successResponse.data = annDetailsFromIdTestData.successResponse
-        var response = announcementOutboxListController.getAnnouncementDetailsFromId('90ae7cf0-c5e0-11e7-8744-852d6ada097c')
+        spyOn(announcementService, 'getResend').and.returnValue(deferred.promise)
+        deferred.resolve(annGetResendTestData.successResponse)
+        annGetResendTestData.successResponse.data = annGetResendTestData.successResponse
+        var response = announcementOutboxListController.getResend('90ae7cf0-c5e0-11e7-8744-852d6ada097c')
         scope.$apply()
 	    })
 	})

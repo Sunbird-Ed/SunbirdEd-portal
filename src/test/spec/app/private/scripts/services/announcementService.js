@@ -76,10 +76,10 @@ describe('Service: announcementService', function() {
       expect(announcementService.resendAnnouncement).toBeDefined();
     })
 
-    it('get announcement', function() {
-      spyOn(announcementService, 'getAnnouncementDetailsFromId').and.callThrough();
-      announcementService.getAnnouncementDetailsFromId();
-      expect(announcementService.getAnnouncementDetailsFromId).toBeDefined();
+    it('get resend announcement', function() {
+      spyOn(announcementService, 'getResend').and.callThrough();
+      announcementService.getResend();
+      expect(announcementService.getResend).toBeDefined();
     })
   })
 })
