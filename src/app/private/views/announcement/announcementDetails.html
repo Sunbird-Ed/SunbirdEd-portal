@@ -74,7 +74,7 @@
     </div>
     <div class="gray-full-width margin-bottom-0" ng-if="announcementDetails.createddate">
         <span class="ng-binding announcement-description">
-            {{$root.frmelmnts.lbl.anncmntdtlssenton}} {{announcementDetails.createddatee  | date : "dd MMM yyyy"}} 27 May 2017
+            {{$root.frmelmnts.lbl.anncmntdtlssenton}} {{announcementDetails.createddate | dateFilterWithDMY}}
         </span>
     </div>
 </div>
