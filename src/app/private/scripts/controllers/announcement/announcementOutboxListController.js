@@ -78,8 +78,12 @@ angular.module('playerApp')
 	        apiResponse = apiResponse.data
 	        //console.log(JSON.stringify(apiResponse))
 	        if (apiResponse && apiResponse.responseCode === 'OK') {
-	          // TODO - open the create announcement with edit mode and prepopulated data
-	          announcementOutboxData.resendAnnouncement(apiResponse.result)
+            if (apiResponse.hasOwnProperty('result')){
+  	          // TODO - open the create announcement with edit mode and prepopulated data
+  	          announcementOutboxData.resendAnnouncement(apiResponse.result)
+            } else {
+              toasterService.error('An unexpected error occured.')
+            }
 	        } else {
 	          toasterService.error(apiResponse.params.errmsg)
 	        }
