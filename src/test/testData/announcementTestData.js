@@ -17,7 +17,7 @@ var announcementTestData = {
   resendAnnouncement:{
     successResponse: {"id":"api.plugin.announcement.resend","ver":"1.0","ts":"2017-11-12 05:53:22:130+0000","params":{"resmsgid":"ca873230-c76d-11e7-8175-573a15bbe3f0","msgid":null,"status":"successful","err":"","errmsg":""},"responseCode":"OK","result":{"announcement":{"id":"ca7c83d0-c76d-11e7-8175-573a15bbe3f0"}}}
   },
-  getAnnouncementDetailsFromId:{
-    successResponse: {"id":"api.plugin.announcement.get.id","ver":"1.0","ts":"2017-11-12 06:45:50:882+0000","params":{"resmsgid":"1f547820-c775-11e7-a0fa-0d6c238048d7","msgid":null,"status":"successful","err":"","errmsg":""},"responseCode":"OK","result":{"sourceid":"0123673908687093760","createddate":"2017-11-10 11:59:54:879+0530","details":{"description":"Test description for announcement 87","from":"test user","title":"Test title for announcement 87","type":"Circular"},"links":["http://yahoo.com"],"id":"90ae7cf0-c5e0-11e7-8744-852d6ada097c","userid":"d56a1766-e138-45e9-bed2-a0db5eb9696a","target":{"geo":{"ids":["0123668622585610242","0123668627050987529"]}},"status":"cancelled"}}
+  getResend:{
+    successResponse: {"id":"api.plugin.announcement.getresend.id","ver":"1.0","ts":"2017-11-12 06:45:50:882+0000","params":{"resmsgid":"1f547820-c775-11e7-a0fa-0d6c238048d7","msgid":null,"status":"successful","err":"","errmsg":""},"responseCode":"OK","result":{"sourceid":"0123673908687093760","createddate":"2017-11-10 11:59:54:879+0530","details":{"description":"Test description for announcement 87","from":"test user","title":"Test title for announcement 87","type":"Circular"},"links":["http://yahoo.com"],"id":"90ae7cf0-c5e0-11e7-8744-852d6ada097c","userid":"d56a1766-e138-45e9-bed2-a0db5eb9696a","target":{"geo":{"ids":["0123668622585610242","0123668627050987529"]}},"status":"cancelled"}}
   }
 }
