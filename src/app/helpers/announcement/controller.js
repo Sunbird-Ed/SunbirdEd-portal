@@ -73,6 +73,7 @@ class AnnouncementController {
         // TODO: verify  Is logged in userid matching with senderid
         let userProfile = await(this.__getUserProfile({ id: _.get(requestObj, 'body.request.createdBy')}, authUserToken))
         let organisation = _.find(userProfile.organisations, { organisationId: _.get(requestObj, 'body.request.sourceId') })
+
         if (_.isEmpty(organisation) || _.indexOf(organisation.roles, CREATE_ROLE) == -1) throw "user has no create access"
       } catch(error) {
         if(error === 'USER_NOT_FOUND') {
@@ -460,23 +461,24 @@ class AnnouncementController {
                 } else {
                     this.getMetrics(_.map(data.data.content,"id"), query)
                         .then((metricsData) => {
-                            let announcementCount = _.size(data.data)
+                            let announcementCount = _.size(data.data);
+                            let metrics = {};
                             let response = {count: announcementCount, announcements: data.data }
-                            var metrics = {read:"",recevied:"", }
                              if (metricsData) {
-                                _.forEach(response.announcements.content, (value, key) => {
+                                _.map(response.announcements.content, (value, key) => {
+                                      metrics = {read:0,received:0}
                                     _.forEach(metricsData, (v, k) => {
-                                        if (value.id == k) {
+                                        if (response.announcements.content[key].id == k) {
                                             _.forEach(v[0].values, (ele, indec) => {
                                                 if (ele.name === 'read') {
                                                     metrics.read = ele.count;
                                                 }
-                                                if (ele.name === 'recevied') {
-                                                    metrics.recevied = ele.count;
+                                                if (ele.name === 'received') {
+                                                    metrics.received = ele.count;
                                                 }
                                             });
                                             metrics_clone = _.clone(metrics);
-                                            value['metrics'] = metrics_clone;
+                                            response.announcements.content[key]['metrics'] = metrics_clone;
                                         }
                                     });
                                 });
