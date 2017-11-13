@@ -122,15 +122,15 @@ angular.module('playerApp')
             }
 
             /**
-             * @method getAnnouncementDetailsFromId
-             * @desc Send announcementId to get annoucement details by id API
+             * @method getResend
+             * @desc Send announcementId to get resend API
              * @memberOf Services.announcementService
              * @param {string}  announcementId - Announcement Id
              * @returns {object} returns response of API
              * @instance
              */
-            this.getAnnouncementDetailsFromId = function(announcementId) {
-                var URL = '/api/announcement/v1/get/' + announcementId
+            this.getResend = function(announcementId) {
+                var URL = '/api/announcement/v1/resend/' + announcementId
                 return httpCall(URL, {}, 'GET', {})
             }
 
