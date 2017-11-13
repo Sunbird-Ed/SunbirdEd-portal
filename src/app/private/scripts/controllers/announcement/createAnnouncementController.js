@@ -111,10 +111,9 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
             	})
            	}
             createAnn.previewData = {
-                'type': createAnn.data.type,
+                'details' : {'type': createAnn.data.type,'title': createAnn.data.title,'description': createAnn.data.description},
+                'sourceid' : $rootScope.rootOrgId,
                 'links': createAnn.linkArray,
-                'title': createAnn.data.title,
-                'description': createAnn.data.description,
                 'target': ['teachers'],
                 'attachments': createAnn.attachment
             }
