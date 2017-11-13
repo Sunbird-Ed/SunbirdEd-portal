@@ -110,7 +110,7 @@ angular.module('playerApp')
 	    }
 
         announcementOutboxData.editPopup = function(announcement) {
-            $rootScope.$broadcast('eventName', announcement);
+            $rootScope.$broadcast('editAnnouncementBeforeResend', announcement);
         }
     }
   ])
