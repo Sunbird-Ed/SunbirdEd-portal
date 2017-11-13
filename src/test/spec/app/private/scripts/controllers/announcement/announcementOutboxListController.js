@@ -45,12 +45,12 @@ describe('Controller: announcementOutboxListController', function() {
   describe('Get Outbox announcements', function() {
 
     it('success', function() {
-      spyOn(announcementService, 'getOutBoxAnnouncementList').and.returnValue(deferred.promise)
-      deferred.resolve(annOutboxTestData.successResponce)
-      annOutboxTestData.successResponce.data = annOutboxTestData.successResponce;
-      spyOn(announcementOutboxListController, 'renderAnnouncementList').and.callThrough()
-      announcementOutboxListController.renderAnnouncementList()
-      scope.$apply();
+        spyOn(announcementService, 'getOutBoxAnnouncementList').and.returnValue(deferred.promise)
+        deferred.resolve(annOutboxTestData.successResponce)
+        annOutboxTestData.successResponce.data = annOutboxTestData.successResponce;
+        spyOn(announcementOutboxListController, 'renderAnnouncementList').and.callThrough()
+        announcementOutboxListController.renderAnnouncementList()
+        scope.$apply();
     })
 
     it('Fail', function() {
