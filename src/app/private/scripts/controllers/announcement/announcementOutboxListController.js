@@ -73,8 +73,8 @@ angular.module('playerApp')
                 announcementOutboxData.closeModal('announcementDeleteModal')
             })
         }
-        announcementOutboxData.getAnnouncementDetailsFromId = function(announcementId) {
-	      announcementService.getAnnouncementDetailsFromId(announcementId).then(function(apiResponse) {
+        announcementOutboxData.getResend = function(announcementId) {
+	      announcementService.getResend(announcementId).then(function(apiResponse) {
 	        apiResponse = apiResponse.data
 	        //console.log(JSON.stringify(apiResponse))
 	        if (apiResponse && apiResponse.responseCode === 'OK') {
