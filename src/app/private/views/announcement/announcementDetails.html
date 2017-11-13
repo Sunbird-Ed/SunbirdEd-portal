@@ -1,24 +1,24 @@
-<div class="ui warning message tweleve wide column" ng-if="!announcementDetails.title">
+<div class="ui warning message tweleve wide column" ng-if="!announcementDetails.details.title">
     <div class="header">
         Oops announcement details not found!
     </div>
     Please try again..
 </div>
-<div ng-if="announcementDetails.title">
+<div ng-if="announcementDetails.details.title">
     <div>
-        <p class="ui grey label annType" ng-if="announcementDetails.type">
-            {{announcementDetails.type}}
+        <p class="ui grey label annType" ng-if="announcementDetails.details.type">
+            {{announcementDetails.details.type}}
         </p>
     </div>
     <div class="header padding-top-5">
-        <div class="header padding-top-10 announcementCard-header" ng-if="announcementDetails.title">
-            {{announcementDetails.title}}
+        <div class="header padding-top-10 announcementCard-header" ng-if="announcementDetails.details.title">
+            {{announcementDetails.details.title}}
         </div>
-        <div class="ng-binding annOrgName padding-top-10" ng-if="announcementDetails.sourceId">
-            {{announcementDetails.sourceId}}
+        <div class="ng-binding annOrgName padding-top-10" ng-if="announcementDetails.sourceid">
+            {{announcementDetails.sourceid}}
         </div>
-        <div class="padding-top-20 announcement-description" ng-if="announcementDetails.description">
-            {{announcementDetails.description}}
+        <div class="padding-top-20 announcement-description" ng-if="announcementDetails.details.description">
+            {{announcementDetails.details.description}}
         </div>
     </div>
     <div ng-if="announcementDetails.links.length">
@@ -72,9 +72,9 @@
             </div>
         </div>
     </div>
-    <div class="gray-full-width margin-bottom-0" ng-if="announcementDetails.createdOn">
+    <div class="gray-full-width margin-bottom-0" ng-if="announcementDetails.createddate">
         <span class="ng-binding announcement-description">
-            {{$root.frmelmnts.lbl.anncmntdtlssenton}} {{announcementDetails.createdOn  | date : "dd MMM yyyy"}}
+            {{$root.frmelmnts.lbl.anncmntdtlssenton}} {{announcementDetails.createddatee  | date : "dd MMM yyyy"}} 27 May 2017
         </span>
     </div>
 </div>

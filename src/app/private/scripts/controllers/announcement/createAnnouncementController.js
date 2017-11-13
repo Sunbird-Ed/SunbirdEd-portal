@@ -11,7 +11,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
         createAnn.errorFlag = false
         createAnn.stepNumber = 1
         createAnn.isMetaModified = false
-        createAnn.announcementType = []
+        createAnn.announcementType = ['1', '2']
         createAnn.repeatableWebLinks = []
         var getDefinitionReq = {
             "rootorgid": $rootScope.rootOrgId,
