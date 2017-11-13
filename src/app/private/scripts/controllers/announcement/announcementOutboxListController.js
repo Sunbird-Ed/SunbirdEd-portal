@@ -80,7 +80,8 @@ angular.module('playerApp')
 	        if (apiResponse && apiResponse.responseCode === 'OK') {
             if (apiResponse.hasOwnProperty('result')){
   	          // TODO - open the create announcement with edit mode and prepopulated data
-  	          announcementOutboxData.resendAnnouncement(apiResponse.result)
+  	          announcementOutboxData.editPopup(apiResponse.result)
+              //announcementOutboxData.resendAnnouncement(apiResponse.result)
             } else {
               toasterService.error('An unexpected error occured.')
             }
@@ -107,5 +108,9 @@ angular.module('playerApp')
 	        toasterService.error(err.data.params.errmsg)
 	      }).finally(function() {})
 	    }
+
+        announcementOutboxData.editPopup = function(announcement) {
+            $rootScope.$broadcast('eventName', announcement);
+        }
     }
   ])
