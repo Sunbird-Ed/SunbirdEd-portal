@@ -9,24 +9,24 @@ angular.module('playerApp')
 
       announcementInboxData.renderAnnouncementList = function (limit) {
         announcementInboxData.limit = limit || 'all'
-        // ~ announcementService.getAnnouncementList().then(function (apiResponse) {
-
-        // ~ if (apiResponse && apiResponse.responseCode === 'OK') {
-        // ~ } else {
-        // ~ toasterService.error(apiResponse.params.errmsg);
-        // ~ announcementInboxData.showDataDiv = false;
-        // ~ }
-        // ~ })
-        // ~ .catch(function (err) {
-        // ~ console.log(err);
-        // ~ })
-        // ~ .finally(function () {
-        // ~ announcementInboxData.showLoader = false;
-        // ~ });
-
-        announcementInboxData.listData = announcementService.getInboxAnnouncementList()
-        announcementInboxData.listData = announcementInboxData.listData.result.announcements
-        announcementInboxData.showLoader = false
+        announcementService.getInboxAnnouncementList($rootScope.userId).then(function(apiResponse) {
+        	apiResponse = apiResponse.data;
+            if (apiResponse && apiResponse.responseCode === 'OK') {
+              announcementInboxData.result = apiResponse.result
+              announcementInboxData.listData = apiResponse.result.announcements
+              if (announcementInboxData.listData.length > 0) {
+                announcementInboxData.showDataDiv = true
+              }
+            } else {
+              toasterService.error(apiResponse.params.errmsg)
+            }
+          })
+          .catch(function(err) {
+            toasterService.error(err.data.params.errmsg)
+          })
+          .finally(function() {
+            announcementInboxData.showLoader = false
+          });
       }
 
       announcementInboxData.getFileExtension = function (mimeType) {
@@ -34,6 +34,14 @@ angular.module('playerApp')
       }
 
       announcementInboxData.showAnnouncementDetails = function (announcementDetails, id) {
+		var req = {
+			"request": {
+				"userId": $rootScope.userId,
+				"announcementId": announcementDetails.id,
+				"channel": "web"
+			}
+		}
+		announcementService.readAnnouncement(req);
         angular.element(document.querySelector('#annInboxDiv-' + id)).removeClass('announcementCardLeftBorder')
         $scope.announcementInboxData.announcementDetails = announcementDetails
         $('#announcementDetailsModal').modal('show')
