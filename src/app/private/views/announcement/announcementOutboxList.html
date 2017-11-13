@@ -72,8 +72,8 @@
             </thead>
             <tbody>
               <tr ng-repeat="item in announcementOutboxData.items" class="tableListNameAnn">
-                <td>{{item.details.title}}</td>
-                <td>{{item.createddate | date : "dd MMM yyyy"}}</td>
+                <td>{{item.details.title | limitTo:50}}<span ng-show="item.details.title.length > 50">...</span></td>
+                <td>{{item.createddate | dateFilterWithDMY}}</td>
                 <td>N/A</td>
                 <td>{{item.metrics.received ? item.metrics.received : "N/A"}}</td>
                 <td>{{item.metrics.read ? item.metrics.read : "N/A"}}</td>
@@ -90,7 +90,7 @@
     <div class="ui grid">
       <div class="twelve wide column">
         <div class="ui">
-          <div class="text announcementDataText" ng-if="announcementOutboxData.result.metricsupdateddate"> <span class="announcementBlueText">*</span> Consumption data last updated on {{announcementOutboxData.result.metricsupdateddate}}</div>
+          <div class="text announcementDataText" ng-if="announcementOutboxData.result.metricsupdateddate"> <span class="announcementBlueText">*</span> Consumption data last updated on {{announcementOutboxData.result.metricsupdateddate | dateFilterWithDMY}}</div>
         </div>
       </div>
     </div>

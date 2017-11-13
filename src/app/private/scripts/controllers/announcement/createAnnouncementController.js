@@ -93,7 +93,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
             	createAnn.repeatableWebLinks.push({
                 		'id': 'choice' + newItemNo
             	})
-            createAnn.showUrlField = true
+            	createAnn.showUrlField = true
         	}
        	createAnn.removeLink = function(index) {
            		createAnn.repeatableWebLinks.splice(index, 1)
@@ -108,10 +108,9 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
             		})
            		}
             	createAnn.previewData = {
-                		'type': createAnn.data.type,
+                		'details' : {'type': createAnn.data.type,'title': createAnn.data.title,'description': createAnn.data.description},
+                		'sourceid' : $rootScope.rootOrgId,
                 		'links': createAnn.linkArray,
-                		'title': createAnn.data.title,
-                		'description': createAnn.data.description,
                 		'target': ['teachers'],
                 		'attachments': createAnn.attachment
             	}
@@ -204,7 +203,8 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
                 	toasterService.error(apiResponse.params.errmsg)
             	}
         	}
-        createAnn.initializeFileUploader = function() {
+
+        	createAnn.initializeFileUploader = function() {
             $timeout(function() {
                 createAnn.manualUploader = new qq.FineUploader({
                     element: document.getElementById('fine-uploader-manual-trigger'),
