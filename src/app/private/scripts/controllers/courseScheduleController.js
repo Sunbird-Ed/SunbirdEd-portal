@@ -12,7 +12,7 @@ angular.module('playerApp')
               toc.loader = toasterService.loader('', $rootScope.messages.stmsg.m0003)
               courseService.courseHierarchy(toc.courseId).then(function (res) {
                 if (res && res.responseCode === 'OK') {
-                  if (res.result.content.status === 'Live' || res.result.content.status === 'Unlisted') {
+                  if (res.result.content.status === 'Live' || res.result.content.status === 'Unlisted' || res.result.content.status === 'Flagged') {
                     res.result.content.children = _.sortBy(res.result.content.children, ['index'])
                     // fetch all avaliable contents from course data
                     toc.courseContents = toc.getCourseContents(res.result.content, [])
