@@ -270,7 +270,6 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
         }
         $scope.$on('editAnnouncementBeforeResend', function(event, announcement) {
             console.log(JSON.stringify(announcement))
-
             createAnn.data.title = announcement.details.title
             createAnn.data.description = announcement.details.description
             angular.forEach(announcement.links, function(value, key) {
@@ -279,11 +278,8 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
             createAnn.data.links = announcement.links
             $('#announcementType').dropdown('set text', announcement.details.type)
             $('#orgDropdown').dropdown('set text', announcement.details.from)
-
             createAnn.data.from = announcement.details.from;
             createAnn.data.type = announcement.details.type;
-
-            createAnn.selectedReciepeient = [{"createdDate":"2017-11-02","updatedBy":null,"createdBy":"16517913-ae66-4b78-be8a-325da74e561c","topic":"0123668622585610242","location":"East Godavari","id":"0123668622585610242","updatedDate":null,"type":"District","rootOrgId":"ORG_001","$$hashKey":"object:125","selected":true},{"createdDate":"2017-11-02","updatedBy":null,"createdBy":"16517913-ae66-4b78-be8a-325da74e561c","topic":"0123668627050987529","location":"Visakhapatnam","id":"0123668627050987529","updatedDate":null,"type":"District","rootOrgId":"ORG_001","$$hashKey":"object:126","selected":true}]
             createAnn.disableBtn = false
             // TODO - check the recipients
             createAnn.createAnnouncement()

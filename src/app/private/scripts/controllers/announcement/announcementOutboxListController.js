@@ -76,7 +76,7 @@ angular.module('playerApp')
         announcementOutboxData.getResend = function(announcementId) {
 	      announcementService.getResend(announcementId).then(function(apiResponse) {
 	        apiResponse = apiResponse.data
-	        console.log(JSON.stringify(announcementId))
+	        //console.log(JSON.stringify(apiResponse))
 	        if (apiResponse && apiResponse.responseCode === 'OK') {
             if (apiResponse.hasOwnProperty('result')){
   	          // TODO - open the create announcement with edit mode and prepopulated data
