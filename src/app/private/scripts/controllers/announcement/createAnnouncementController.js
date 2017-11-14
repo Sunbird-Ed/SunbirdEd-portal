@@ -51,6 +51,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
             	}, 100)
             	$rootScope.$on('selected:items', function(evet, data) {
                 		createAnn.selectedReciepeient = data.geo
+                        console.log(JSON.stringify(createAnn.selectedReciepeient))
             	})
         	}
         	createAnn.createAnnouncement = function() {
@@ -280,19 +281,8 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
             $('#announcementType').dropdown('set value', announcement.details.type)
             $('#orgDropdown').dropdown('set text', announcement.details.from)
             $('#orgDropdown').dropdown('set value', announcement.details.from)
-            /*createAnn.selectedReciepeient = [{
-                "createdDate": "2017-11-02",
-                "updatedBy": null,
-                "createdBy": "16517913-ae66-4b78-be8a-325da74e561c",
-                "topic": "0123668622585610242",
-                "location": "East Godavari",
-                "id": "0123668622585610242",
-                "updatedDate": null,
-                "type": "District",
-                "rootOrgId": "ORG_001",
-                "$$hashKey": "object:133",
-                "selected": true
-            }]*/
+
+            createAnn.selectedReciepeient = [{"createdDate":"2017-11-02","updatedBy":null,"createdBy":"16517913-ae66-4b78-be8a-325da74e561c","topic":"0123668622585610242","location":"East Godavari","id":"0123668622585610242","updatedDate":null,"type":"District","rootOrgId":"ORG_001","$$hashKey":"object:125","selected":true},{"createdDate":"2017-11-02","updatedBy":null,"createdBy":"16517913-ae66-4b78-be8a-325da74e561c","topic":"0123668627050987529","location":"Visakhapatnam","id":"0123668627050987529","updatedDate":null,"type":"District","rootOrgId":"ORG_001","$$hashKey":"object:126","selected":true}]
             createAnn.disableBtn = false
             // TODO - check the recipients
             createAnn.createAnnouncement()
