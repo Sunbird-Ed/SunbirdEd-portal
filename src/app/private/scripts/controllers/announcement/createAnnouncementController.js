@@ -62,6 +62,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
                        			createAnn.confirmationModal()
                             			return false
                     			} else {
+                                    createAnn.refreshFormValues()
                         			return true
                     			}
                 		}
@@ -162,7 +163,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
        	createAnn.saveAnnouncement = function(data) {
         		createAnn.isMetaModified = false
             	var requestBody = angular.copy(data)
-            	requestBody.sourceId = $rootScope.rootOrgId
+            	requestBody.sourceId = '0123673689120112640' //$rootScope.rootOrgId
             	requestBody.createdBy = $rootScope.userId
             	requestBody.target = {
                 		'geo': {
@@ -267,26 +268,8 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
             }, 300)
         }
         $scope.$on('editAnnouncementBeforeResend', function(event, announcement) {
-            //console.log(JSON.stringify(announcement))
-            announcement = {
-                "sourceid": "0123673908687093760",
-                "createddate": "2017-11-10 12:04:04:348+0530",
-                "details": {
-                    "description": "Description goes here for the announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams announcement exam date announced for CBSC and state board exams",
-                    "from": "test user",
-                    "title": "Exam dates announced for CBSE and state board exams",
-                    "type": "Circular"
-                },
-                "links": ["http://yahoo.com", "http://google.com", "http://gmail.com"],
-                "id": "256048b0-c5e1-11e7-b854-ff8d6e91227b",
-                "userid": "d56a1766-e138-45e9-bed2-a0db5eb9696a",
-                "target": {
-                    "geo": {
-                        "ids": ["0123668622585610242", "0123668627050987529"]
-                    }
-                },
-                "status": "cancelled"
-            }
+            console.log(JSON.stringify(announcement))
+
             createAnn.data.title = announcement.details.title
             createAnn.data.description = announcement.details.description
             angular.forEach(announcement.links, function(value, key) {
@@ -294,9 +277,10 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
             })
             createAnn.data.links = announcement.links
             $('#announcementType').dropdown('set text', announcement.details.type)
+            $('#announcementType').dropdown('set value', announcement.details.type)
             $('#orgDropdown').dropdown('set text', announcement.details.from)
-            $('#orgDropdown').dropdown('set text', announcement.details.from)
-            createAnn.selectedReciepeient = [{
+            $('#orgDropdown').dropdown('set value', announcement.details.from)
+            /*createAnn.selectedReciepeient = [{
                 "createdDate": "2017-11-02",
                 "updatedBy": null,
                 "createdBy": "16517913-ae66-4b78-be8a-325da74e561c",
@@ -308,7 +292,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
                 "rootOrgId": "ORG_001",
                 "$$hashKey": "object:133",
                 "selected": true
-            }]
+            }]*/
             createAnn.disableBtn = false
             // TODO - check the recipients
             createAnn.createAnnouncement()
