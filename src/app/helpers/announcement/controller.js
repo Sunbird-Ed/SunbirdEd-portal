@@ -275,10 +275,10 @@ class AnnouncementController {
           if (!_.isObject(data)) {
             reject({ msg: 'unable to fetch announcement', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
           } else {
-            _.forEach(data.data, (announcementObj) => {
+            _.forEach(data.data.content, (announcementObj) => {
               if (_.isString(announcementObj.target)) announcementObj.target = JSON.parse(announcementObj.target)
             })
-            resolve(_.get(data, 'data[0]'))
+            resolve(_.get(data.data, 'content[0]'))
           }
         })
         .catch((error) => {
@@ -346,28 +346,64 @@ class AnnouncementController {
    * @return  {[type]}              [description]
    */
   cancelAnnouncementById(requestObj) {
-    return this.__cancelAnnouncementById(requestObj)
+    return this.__cancelAnnouncementById()(requestObj)
   }
 
-  __cancelAnnouncementById(requestObj) {
-      return new Promise((resolve, reject) => {
-      let query = {
-        table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
-        values:{id: requestObj.params.announcementId, status:this.statusConstant.CANCELLED}
-      }
-      this.objectStoreRest.updateObjectById(query)
-        .then((data) => {
-          if (!_.isObject(data)) {
-            reject({ msg: 'unable to cancel the announcement', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
-          } else {
-            resolve({id: requestObj.params.announcementId, status:this.statusConstant.CANCELLED})
+  __cancelAnnouncementById() {
+        return async((requestObj) => {
+            let query = {
+                table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
+                values: {
+                    id: _.get(requestObj, 'body.request.announcenmentid'),
+                    status: this.statusConstant.CANCELLED
+                }
+            }
+            var status = await (this.__checkPermisionForCancel()(requestObj));
+            return new Promise((resolve, reject) => {
+                if (status) {
+                    this.objectStoreRest.updateObjectById(query)
+                        .then((data) => {
+                            if (!_.isObject(data)) {
+                                reject({
+                                    msg: 'unable to cancel the announcement',
+                                    statusCode: HttpStatus.INTERNAL_SERVER_ERROR
+                                })
+                            } else {
+                                resolve({
+                                    id: requestObj.params.announcementId,
+                                    status: this.statusConstant.CANCELLED
+                                })
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                            reject({
+                                msg: 'unable to cancel the announcement',
+                                statusCode: HttpStatus.INTERNAL_SERVER_ERROR
+                            })
+                        })
+                } else {
+                    reject({
+                        msg: 'unable to cancel the announcement',
+                        statusCode: HttpStatus.INTERNAL_SERVER_ERROR
+                    })
+                }
+            })
+        })
+    }
+
+  __checkPermisionForCancel() {
+      return async((requestObj) => {
+          if (requestObj) {
+              requestObj.params = {};
+              let userId = _.get(requestObj, 'body.request.userid');
+              requestObj.params.id = _.get(requestObj, 'body.request.announcenmentid');
+              var response = await (this.getAnnouncementById(requestObj));
+              return response.userid === userId ? true : false
+          }else{
+            return false;
           }
-        })
-        .catch((error) => {
-          console.log(error)
-          reject({ msg: 'unable to cancel the announcement', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
-        })
-    })
+      });
   }
 
     /**
@@ -399,7 +435,7 @@ class AnnouncementController {
             // TODO: add this validation back when data starts becoming available
             // if (_.isEmpty(targetList)) return { count:1, announcements: [] }
 
-            // Query announcements where target is listed Geolocations
+        // Query announcements where target is listed Geolocations
             let query = {
                 table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
                 query: {
@@ -408,7 +444,6 @@ class AnnouncementController {
                     "wildcard" : { "target.geo.ids" : { "value" : "*" } }
                 }
             }
-
             try {
                 let data = await (new Promise((resolve, reject) => {
                     this.objectStoreRest.findObject(query)
@@ -416,7 +451,7 @@ class AnnouncementController {
                         if (!_.isObject(data)) {
                             reject({ msg: 'unable to fetch announcement inbox', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
                         } else {
-                            resolve(data.data)
+                            resolve(data.data.content)
                         }
                     })
                     .catch((error) => {
@@ -455,6 +490,7 @@ class AnnouncementController {
                     'userid': _.get(requestObj, 'request.userId')
                 }
             }
+            let metrics_clone = undefined;
 
             // execute query and process response
             this.objectStoreRest.findObject(query)
@@ -462,12 +498,34 @@ class AnnouncementController {
                 if (!_.isObject(data)) {
                     reject({ msg: 'unable to fetch sent announcements', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
                 } else {
-                    let announcementCount = _.size(data.data)
-                    let response = {
-                        count: announcementCount,
-                        announcements: data.data
-                    }
-                    resolve(response)
+                    this.getMetrics(_.map(data.data.content,"id"), query)
+                        .then((metricsData) => {
+                            let announcementCount = _.size(data.data);
+                            let metrics = {};
+                            let response = {count: announcementCount, announcements: data.data }
+                             if (metricsData) {
+                                _.map(response.announcements.content, (value, key) => {
+                                      metrics = {read:0,received:0}
+                                    _.forEach(metricsData, (v, k) => {
+                                        if (response.announcements.content[key].id == k) {
+                                            _.forEach(v[0].values, (ele, indec) => {
+                                                if (ele.name === 'read') {
+                                                    metrics.read = ele.count;
+                                                }
+                                                if (ele.name === 'received') {
+                                                    metrics.received = ele.count;
+                                                }
+                                            });
+                                            metrics_clone = _.clone(metrics);
+                                            response.announcements.content[key]['metrics'] = metrics_clone;
+                                        }
+                                    });
+                                });
+                                resolve(response)
+                            } else {
+                                resolve(response);
+                            }
+                        })
                 }
             })
             .catch((error) => {
@@ -787,5 +845,34 @@ class AnnouncementController {
           })
       });
   }
-}
+
+   getMetrics(id, options){
+    return this.__getMetrics()(id, options)
+   }
+  __getMetrics() {
+  return async((id, options) =>{
+    let result = {};
+    let query = {table: this.objectStoreRest.MODEL.METRICS, query: {'announcementid': ""},facets:[{"activity":null}] }
+    var instance = this;
+        var awaitData = undefined;
+        for (let i = 0; i < id.length; i++) {
+            await (new Promise((resolve, reject) => {
+                query.query.announcementid = id[i];
+                instance.objectStoreRest.findObject(query)
+                    .then((data) => {
+                        if (!data.data.content) {
+                            resolve({msg: 'unable to fetch metrics', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
+                            } else {
+                              result[data.data.content[0].announcementid] = data.data.facets;
+                              resolve(data.data);
+                        }
+                    });
+            }));
+            if (i == id.length - 1) {
+                return result;
+            }
+        }
+    })
+  }
+ }
 module.exports = new AnnouncementController()
