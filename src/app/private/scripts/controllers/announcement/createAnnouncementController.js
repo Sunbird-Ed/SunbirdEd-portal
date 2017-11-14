@@ -211,7 +211,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
         	}
 
            createAnn.convertFileSize = function(bytessize){
-                      var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+                      var sizes = ['Bytes', 'KB', 'MB'];
                       if (bytessize) {
                             var i = parseInt(Math.floor(Math.log(bytessize) / Math.log(1024)));
                             createAnn.convertedFileSize = Math.round(bytessize / Math.pow(1024, i), 2) + ' ' + sizes[i];
