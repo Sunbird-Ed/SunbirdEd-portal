@@ -159,8 +159,8 @@ describe('Service: announcementService', function() {
     it('Create announcement get success', function() {
       spyOn(announcementService, 'createAnnouncement').and.returnValue(deferred.promise)
       deferred.resolve(annTestData.createAnnouncement.successResponce)
-      var successData = { "id": "api.plugin.announcement.create", "ver": "1.0", "ts": "2017-11-13 12:31:09:794+0000", "params": { "resmsgid": "872d4c20-c86e-11e7-a0fa-0d6c238048d7", "msgid": null, "status": "successful", "err": "", "errmsg": "" }, "responseCode": "OK", "result": { "announcement": { "id": "87222890-c86e-11e7-a0fa-0d6c238048d7" } } }
-      var response = announcementService.createAnnouncement(successData).$$state.value
+      var successReq= {"request":{"sourceId":"0123673689120112640","createdBy":"159e93d1-da0c-4231-be94-e75b0c226d7c","type":"Circular","links":["http://yahoo.com"],"title":"Test title for announcement 9011111111111111111","description":"Test description for announcement 90","target":{"geo":{"ids":["0123668627050987529"]}},"from":"test user"}}
+      var response = announcementService.createAnnouncement(successReq).$$state.value
       expect(response).toBe(annTestData.createAnnouncement.successResponce)
     })
 
