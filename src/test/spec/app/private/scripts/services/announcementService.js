@@ -67,8 +67,16 @@ describe('Service: announcementService', function() {
     })
 
     it('Outbox failure', function() {
+      annTestData.getAnnouncementOutbox.failedResponse.responseCode = 'fail'
       spyOn(announcementService, 'getOutBoxAnnouncementList').and.returnValue(deferred.promise)
       deferred.resolve(annTestData.getAnnouncementOutbox.failedResponse)
+      var response = announcementService.getOutBoxAnnouncementList().$$state.value
+      expect(response).toBe(annTestData.getAnnouncementOutbox.failedResponse)
+    })
+
+    it('Outbox reject', function() {
+      spyOn(announcementService, 'getOutBoxAnnouncementList').and.returnValue(deferred.promise)
+      deferred.reject(annTestData.getAnnouncementOutbox.failedResponse)
       var response = announcementService.getOutBoxAnnouncementList().$$state.value
       expect(response).toBe(annTestData.getAnnouncementOutbox.failedResponse)
     })
@@ -81,8 +89,16 @@ describe('Service: announcementService', function() {
     })
 
     it('Inbox failure', function() {
+      annTestData.getAnnouncementInbox.failedResponse.responseCode = 'fail'
       spyOn(announcementService, 'getInboxAnnouncementList').and.returnValue(deferred.promise)
       deferred.resolve(annTestData.getAnnouncementInbox.failedResponse)
+      var response = announcementService.getInboxAnnouncementList().$$state.value
+      expect(response).toBe(annTestData.getAnnouncementInbox.failedResponse)
+    })
+
+    it('Inbox reject', function() {
+      spyOn(announcementService, 'getInboxAnnouncementList').and.returnValue(deferred.promise)
+      deferred.reject(annTestData.getAnnouncementInbox.failedResponse)
       var response = announcementService.getInboxAnnouncementList().$$state.value
       expect(response).toBe(annTestData.getAnnouncementInbox.failedResponse)
     })
@@ -102,10 +118,18 @@ describe('Service: announcementService', function() {
     })
 
     it('Read API failure', function() {
+      annTestData.receivedAPI.failedResponse.responseCode = 'fail'
       spyOn(announcementService, 'receivedAnnouncement').and.returnValue(deferred.promise)
       deferred.resolve(annTestData.receivedAPI.failedResponse)
       var failureData = { "request": { "userId": "d56a1766-e138-45e9-bed2-a0db5eb9696a", "channel": "web" } }
       var response = announcementService.receivedAnnouncement(failureData).$$state.value
+      expect(response).toBe(annTestData.receivedAPI.failedResponse)
+    })
+
+    it('Read API reject', function() {
+      spyOn(announcementService, 'receivedAnnouncement').and.returnValue(deferred.promise)
+      deferred.reject(annTestData.receivedAPI.failedResponse)
+      var response = announcementService.receivedAnnouncement().$$state.value
       expect(response).toBe(annTestData.receivedAPI.failedResponse)
     })
 
@@ -117,10 +141,18 @@ describe('Service: announcementService', function() {
     })
 
     it('Read API failure', function() {
+      annTestData.readAPI.failedResponse.responseCode = 'fail'
       spyOn(announcementService, 'readAnnouncement').and.returnValue(deferred.promise)
       deferred.resolve(annTestData.readAPI.failedResponse)
       var failureData = { "request": { "userId": "d56a1766-e138-45e9-bed2-a0db5eb9696a", "channel": "web" } }
       var response = announcementService.readAnnouncement(failureData).$$state.value
+      expect(response).toBe(annTestData.readAPI.failedResponse)
+    })
+
+    it('Read API reject', function() {
+      spyOn(announcementService, 'readAnnouncement').and.returnValue(deferred.promise)
+      deferred.reject(annTestData.readAPI.failedResponse)
+      var response = announcementService.readAnnouncement().$$state.value
       expect(response).toBe(annTestData.readAPI.failedResponse)
     })
 
@@ -132,9 +164,17 @@ describe('Service: announcementService', function() {
       expect(response).toBe(annTestData.createAnnouncement.successResponce)
     })
 
-    it('Create announcement auth error', function() {
+    it('Create announcement failure', function() {
+      annTestData.createAnnouncement.authErrorResponse.responseCode = 'fail'
       spyOn(announcementService, 'createAnnouncement').and.returnValue(deferred.promise)
       deferred.resolve(annTestData.createAnnouncement.authErrorResponse)
+      var response = announcementService.createAnnouncement().$$state.value
+      expect(response).toBe(annTestData.createAnnouncement.authErrorResponse)
+    })
+
+    it('Create announcement reject', function() {
+      spyOn(announcementService, 'createAnnouncement').and.returnValue(deferred.promise)
+      deferred.reject(annTestData.createAnnouncement.authErrorResponse)
       var response = announcementService.createAnnouncement().$$state.value
       expect(response).toBe(annTestData.createAnnouncement.authErrorResponse)
     })

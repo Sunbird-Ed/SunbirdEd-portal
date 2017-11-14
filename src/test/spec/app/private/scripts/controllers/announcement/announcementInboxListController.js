@@ -46,10 +46,6 @@ describe('Controller: announcementInboxListController', function() {
     it('success', function() {
       spyOn(announcementService, 'getInboxAnnouncementList').and.returnValue(deferred.promise)
       deferred.resolve(annInboxTestData.successResponce)
-
-      //spyOn(announcementInboxListController, 'renderAnnouncementList').and.callThrough()
-      //announcementInboxListController.renderAnnouncementList('2')
-
       var response = announcementService.getInboxAnnouncementList().$$state.value
       expect(response).toBe(annInboxTestData.successResponce)
     })
@@ -81,8 +77,6 @@ describe('Controller: announcementInboxListController', function() {
       scope.$apply();
     })
 
-
-
     it('get file extension', function() {
       spyOn(announcementService, 'getFileExtension').and.returnValue(deferred.promise)
       deferred.resolve('PDF')
@@ -98,7 +92,5 @@ describe('Controller: announcementInboxListController', function() {
       scope.announcementInboxData.announcementDetails = {}
       announcementInboxListController.showAnnouncementDetails({}, 2)
     })
-
-
   })
 })
