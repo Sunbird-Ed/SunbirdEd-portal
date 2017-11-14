@@ -786,6 +786,40 @@ angular.module('playerApp')
           $rootScope.profileActive = ''
         }
       })
+      .state('announcementOutbox', {
+        url: '/announcement/outbox',
+        views: {
+          mainView: {
+            templateUrl: '/views/announcement/announcementOutboxList.html',
+            controller: 'announcementOutboxListController as announcementOutboxData'
+          }
+        },
+        onEnter: function ($stateParams, $rootScope, routeHelperService) {
+          $rootScope.homeActive = 'active'
+          $rootScope.isPlayerPage = true
+          routeHelperService.loadRouteConfig('announcementOutbox', null)
+        },
+        onExit: function ($rootScope) {
+          $rootScope.homeActive = ''
+        }
+      })
+      .state('announcementInbox', {
+        url: '/announcement/inbox',
+        views: {
+          mainView: {
+            templateUrl: '/views/announcement/announcementInboxList.html',
+            controller: 'announcementInboxListController as announcementInboxData'
+          }
+        },
+        onEnter: function ($stateParams, $rootScope, routeHelperService) {
+          $rootScope.homeActive = 'active'
+          $rootScope.isPlayerPage = true
+          routeHelperService.loadRouteConfig('announcementInbox', null)
+        },
+        onExit: function ($rootScope) {
+          $rootScope.homeActive = ''
+        }
+      })
       .state('WorkSpace.ContentBatch', {
         url: '/content/batches',
         views: {
@@ -1053,6 +1087,9 @@ angular.module('playerApp')
           break
         case 'orgDashboard':
           routeHelperService.checkStateAccess(['ORG_ADMIN', 'SYSTEM_ADMINISTRATION'], false, event)
+          break
+        case 'announcementOutbox':
+          routeHelperService.checkStateAccess(['ANNOUNCEMENT_SENDER'], false, event)
           break
         case 'WorkSpace.DraftContent':
           routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
