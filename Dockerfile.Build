@@ -13,11 +13,11 @@ RUN apt update \
     && apt-get install nasm
 WORKDIR /opt/player
 COPY * /opt/player/
-RUN apt-get install -y zip \
-    && apt-get install -y  bzip2 \
-    && npm install -g bower \
-    && npm install -g gulp \
-    && npm install gulp --save-dev 
+RUN apt-get install -y zip 
+RUN apt-get install -y  bzip2 
+RUN npm install -g bower 
+RUN npm install -g gulp 
+RUN npm install gulp --save-dev 
 WORKDIR /opt/player/
 RUN npm install --only=dev --unsafe-perm 
 RUN bower cache clean
