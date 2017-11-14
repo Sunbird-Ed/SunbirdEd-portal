@@ -21,7 +21,7 @@ var announcementTestData = {
     fieldMissingResponse: { "id": "api.plugin.announcement.create", "ver": "1.0", "ts": "2017-11-13 12:45:24:184+0000", "params": { "resmsgid": "846f0490-c870-11e7-8175-573a15bbe3f0", "msgid": null, "status": "failed", "err": "", "errmsg": [{ "field": "request", "description": "\"from\" is required" }, { "field": "request", "description": "\"target\" is required" }] }, "responseCode": "CLIENT_ERROR", "result": {} }
   },
   announcementDetails: {
-    annValidObj: { 'sourceId': 'Org-Id', 'createdOn': 'Date', 'type': 'Org-Type', 'links': ['WebLink1'], 'title': 'Title', 'description': 'Description', 'attachments': [{ 'title': 'AttachementTitle1', 'downloadURL': 'AttachementDownloadURL1', 'filesize': '120 KB' }] },
+    annValidObj: {"sourceid":"0123673908687093760","createddate":"2017-11-10 12:04:04:348+0530","details":{"description":"Description","from":"test user","title":"Title","type":"Circular"},"links":["http://yahoo.com"],"id":"256048b0-c5e1-11e7-b854-ff8d6e91227b","userid":"d56a1766-e138-45e9-bed2-a0db5eb9696a","target":{"geo":{"ids":["0123668622585610242","0123668627050987529"]}},"status":"cancelled","$$hashKey":"object:48"},
     annBlankObj: {},
     annObjWithEmptyWeblinks: { 'links': [], 'title': 'Title' },
     annObjWithEmptyAttachments: { 'title': 'Title', 'attachments': [] }
