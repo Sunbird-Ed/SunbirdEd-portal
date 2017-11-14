@@ -93,7 +93,7 @@ app.use(express.static(path.join(__dirname, 'private')))
 
 // Announcement routing
 app.use('/api/v1/announcement', bodyParser.urlencoded({ extended: false }),
-  bodyParser.json({limit: '10mb' }), require('./helpers/announcement'))
+  bodyParser.json({limit: '10mb' }), require('./helpers/announcement')(keycloak))
 
 app.use('/private/index', function (req, res, next) {
   res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate')

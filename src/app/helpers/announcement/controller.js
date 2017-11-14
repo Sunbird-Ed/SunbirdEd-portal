@@ -67,24 +67,6 @@ class AnnouncementController {
       if (!request.isValid) throw { msg: request.error, statusCode: HttpStatus.BAD_REQUEST }
 
       let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
-      if (!authUserToken) throw { msg: 'UNAUTHORIZED', statusCode: HttpStatus.BAD_REQUEST }
-
-      try{  
-        // TODO: verify  Is logged in userid matching with senderid
-        let userProfile = await(this.__getUserProfile({ id: _.get(requestObj, 'body.request.createdBy')}, authUserToken))
-        let organisation = _.find(userProfile.organisations, { organisationId: _.get(requestObj, 'body.request.sourceId') })
-
-        if (_.isEmpty(organisation) || _.indexOf(organisation.roles, CREATE_ROLE) == -1) throw "user has no create access"
-      } catch(error) {
-        if(error === 'USER_NOT_FOUND') {
-          throw { msg: 'user not found', statusCode: HttpStatus.BAD_REQUEST }
-        } else if (error === 'UNAUTHORIZE_USER') {
-          throw { msg: 'user is not authorized', statusCode: HttpStatus.BAD_REQUEST }  
-        } else {
-          throw { msg: 'user has no create access', statusCode: HttpStatus.BAD_REQUEST }  
-        }        
-      }
-
       try {
         var newAnnouncementObj = await (this.__createAnnouncement(requestObj.body.request))
       } catch (error) {
@@ -226,9 +208,6 @@ class AnnouncementController {
             let requestObj = {"to": "", "type": "fcm", "data": {"notificationpayload": {"msgid": data.body.request.announcementId, "title": data.body.request.title, "msg": data.body.request.description, "icon": "", "time": dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo"), "validity": "-1", "actionid": "1", "actiondata": "", "dispbehavior": "stack"} } }
             let options = {"method": "POST", "uri": envVariables.DATASERVICE_URL + "data/v1/notification/send", "body": {"request": requestObj }, "json": true }
             let authUserToken = _.get(data, 'kauth.grant.access_token.token') || data.headers['x-authenticated-user-token']
-            if (!authUserToken){
-             throw {msg: 'UNAUTHORIZED', statusCode: HttpStatus.BAD_REQUEST } 
-            }
             options.headers =this.getRequestHeader({ xAuthUserToken: authUserToken });
             var targetIds = [];
             if (data.body.request.target) {
@@ -417,9 +396,7 @@ class AnnouncementController {
     __getUserInbox() {
         return async((requestObj) => {
             let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
-            if (!authUserToken) throw { msg: 'UNAUTHORIZED..', statusCode: HttpStatus.BAD_REQUEST }
 
-            // Get user id and profile
             let userProfile = await(this.__getUserProfile({ id: _.get(requestObj, 'body.request.userId') }, authUserToken))
 
             // Parse the list of Geolocations (User > Orgs > Geolocations) from the response
