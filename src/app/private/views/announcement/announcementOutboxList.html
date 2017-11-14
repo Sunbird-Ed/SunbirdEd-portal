@@ -45,7 +45,7 @@
       <app-loader></app-loader>
     </div>
   </div>
-  <div class="ui grid" ng-hide="announcementOutboxData.showDataDiv">
+  <div class="ui grid" ng-if="!announcementOutboxData.showLoader" ng-hide="announcementOutboxData.showDataDiv">
     <div class="one wide column"></div>
     <div class="ten wide column">
       <div class="ui warning message">
