@@ -114,8 +114,8 @@ var testData = {
       'startDate': '2017-10-09',
       'status': '1'},
     data: {'enrollmentType': 'open', 'name': '12th Oct 17 test', 'description': 'Testing batch', 'startDate': '2017-10-12', 'endDate': '2017-10-31', 'mentors': [], 'users': ['c6f02b71-4ef6-4450-96f8-0d173f67f33f']},
-    userData: {'id': 'api.course.batch.user.add', 'ver': 'v1', 'ts': '2017-10-10 11:48:18:862+0000', 'params': {'resmsgid': null, 'msgid': '5c2db363-87dd-4922-80cb-19b86b76bb73', 'err': null, 'status': 'success', 'errmsg': null}, 'responseCode': 'OK', 'result': {'c6f02b71-4ef6-4450-96f8-0d173f67f33f': 'SUCCESS', '9d76c081-fbf6-45e0-adb7-64013fe41a64': 'SUCCESS'}},
-    userDataFailed: {'id': 'api.course.batch.user.add', 'ver': 'v1', 'ts': '2017-10-10 11:48:18:862+0000', 'params': {'resmsgid': null, 'msgid': '5c2db363-87dd-4922-80cb-19b86b76bb73', 'err': 'BATCH.GET_USERS.FAILED', 'status': 'failed', 'errmsg': 'BATCH.GET_USERS.FAILED'}, 'responseCode': 'RESOURCE_NOT_FOUND', 'result': {}},
+    userData: {'id': 'api.course.batch.user.add', 'ver': 'v1', 'ts': '2017-10-10 11:48:18:862+0000', 'params': {'resmsgid': null, 'msgid': '5c2db363-87dd-4922-80cb-19b86b76bb73', 'err': null, 'status': 'success', 'errmsg': null}, 'responseCode': 'OK', 'result': {'c6f02b71-4ef6-4450-96f8-0d173f67f33f': 'SUCCESS', '9d76c081-fbf6-45e0-adb7-64013fe41a64': 'SUCCESS'}},
+    userDataFailed: {'id': 'api.course.batch.user.add', 'ver': 'v1', 'ts': '2017-10-10 11:48:18:862+0000', 'params': {'resmsgid': null, 'msgid': '5c2db363-87dd-4922-80cb-19b86b76bb73', 'err': 'BATCH.GET_USERS.FAILED', 'status': 'failed', 'errmsg': 'BATCH.GET_USERS.FAILED'}, 'responseCode': 'RESOURCE_NOT_FOUND', 'result': {}},
     batchId: {'batchId': '0123498048313507845'},
     userList: {'userList': {
       'c6f02b71-4ef6-4450-96f8-0d173f67f33f': 'SUCCESS',
