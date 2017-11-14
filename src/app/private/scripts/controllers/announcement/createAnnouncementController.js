@@ -62,7 +62,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
                                 createAnn.confirmationModal()
                                         return false
                                 } else {
-                         createAnn.refreshFormValues()
+                                    createAnn.refreshFormValues()
                                     return true
                                 }
                         }
@@ -161,7 +161,6 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
                 createAnn.showUrlField = false
                       createAnn.attachment = []
             }
-
         createAnn.saveAnnouncement = function(data) {
                 createAnn.isMetaModified = false
                 var requestBody = angular.copy(data)
@@ -212,6 +211,15 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
                 }
             }
 
+           createAnn.convertFileSize = function(bytessize){
+                      var sizes = ['Bytes', 'KB', 'MB'];
+                      if (bytessize) {
+                            var i = parseInt(Math.floor(Math.log(bytessize) / Math.log(1024)));
+                            createAnn.convertedFileSize = Math.round(bytessize / Math.pow(1024, i), 2) + ' ' + sizes[i];
+                      } else {
+                             createAnn.convertedFileSize= '0 Byte';
+                      }
+           }
             createAnn.initializeFileUploader = function() {
                 $timeout(function() {
                     createAnn.manualUploader = new qq.FineUploader({
@@ -251,16 +259,16 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
                                 onComplete: function(id, name, responseJSON, xhr) {
                                         console.log('Upload response :', responseJSON)
                                         if (responseJSON.responseCode === 'OK') {
-                                            var fileData = this.getFile(id)
+                                                                   createAnn.convertFileSize(this.getSize(id))
                                                 var attData = {
                                                     "name": name,
-                                                    "mimetype": fileData.type,
-                                                    "size": this.getSize(id),
+                                                    "mimetype": this.getFile(id).type,
+                                                    "size": createAnn.convertedFileSize,
                                                     "link": responseJSON.result.url
                                                 }
                                                                     attData = JSON.stringify(attData)
-                                                createAnn.attachment.push(attData)
-                                                createAnn.enableRecepientBtn()
+                                                 createAnn.attachment.push(attData)
+                                                 createAnn.enableRecepientBtn()
                                         }
                                 },
                                 onSubmitted: function(id, name) {
@@ -279,7 +287,8 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
                     }
            }, 300)
         }
-    $scope.$on('editAnnouncementBeforeResend', function(event, announcement) {
+
+        $scope.$on('editAnnouncementBeforeResend', function(event, announcement) {
             //console.log(JSON.stringify(announcement))
             createAnn.editAction = true
             createAnn.data.title = announcement.details.title
@@ -298,7 +307,6 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
             createAnn.createAnnouncement()
         })
         createAnn.resendAnnouncement = function(data) {
-            //var requestBody = {"request": {"sourceId": announcement.sourceid, "createdBy": announcement.userid, "type": announcement.details.type, "links": announcement.links, "title": announcement.details.title, "description": announcement.details.description, "from": announcement.details.from, "target": announcement.target}}
             var requestBody = angular.copy(data)
             requestBody.sourceId = '0123673689120112640' //$rootScope.rootOrgId
             requestBody.createdBy = $rootScope.userId
