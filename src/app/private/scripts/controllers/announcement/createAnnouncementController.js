@@ -163,7 +163,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
        	createAnn.saveAnnouncement = function(data) {
         		createAnn.isMetaModified = false
             	var requestBody = angular.copy(data)
-            	requestBody.sourceId = $rootOrgId
+            	requestBody.sourceId = $rootScope.rootOrgId
             	requestBody.createdBy = $rootScope.userId
             	requestBody.target = {
                 		'geo': {
@@ -210,6 +210,15 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
             	}
         	}
 
+           createAnn.convertFileSize = function(bytessize){
+                      var sizes = ['Bytes', 'KB', 'MB'];
+                      if (bytessize) {
+                            var i = parseInt(Math.floor(Math.log(bytessize) / Math.log(1024)));
+                            createAnn.convertedFileSize = Math.round(bytessize / Math.pow(1024, i), 2) + ' ' + sizes[i];
+                      } else {
+                             createAnn.convertedFileSize= '0 Byte';
+                      }
+           }
         	createAnn.initializeFileUploader = function() {
             	$timeout(function() {
                 	createAnn.manualUploader = new qq.FineUploader({
@@ -249,16 +258,16 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
                         		onComplete: function(id, name, responseJSON, xhr) {
                             			console.log('Upload response :', responseJSON)
                             			if (responseJSON.responseCode === 'OK') {
-                            				var fileData = this.getFile(id)
+                                                                   createAnn.convertFileSize(this.getSize(id))
                                 				var attData = {
                                     				"name": name,
-                                    				"mimetype": fileData.type,
-                                    				"size": this.getSize(id),
+                                    				"mimetype": this.getFile(id).type,
+                                    				"size": createAnn.convertedFileSize,
                                     				"link": responseJSON.result.url
                                 				}
                                                                     attData = JSON.stringify(attData)
-                                				createAnn.attachment.push(attData)
-                                				createAnn.enableRecepientBtn()
+                                				 createAnn.attachment.push(attData)
+                                				 createAnn.enableRecepientBtn()
                             			}
                         		},
                         		onSubmitted: function(id, name) {
