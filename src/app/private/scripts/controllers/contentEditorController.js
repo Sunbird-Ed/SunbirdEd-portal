@@ -2,8 +2,8 @@
 
 angular.module('playerApp')
   .controller('ContentEditorController', ['config', '$stateParams', 'toasterService',
-    '$state', 'contentService', '$timeout', '$rootScope', function (config, $stateParams,
-         toasterService, $state, contentService, $timeout, $rootScope) {
+    '$state', 'contentService', '$timeout', '$rootScope', 'workSpaceUtilsService', function (config, $stateParams,
+         toasterService, $state, contentService, $timeout, $rootScope, workSpaceUtilsService) {
       var contentEditor = this
       contentEditor.contentId = $stateParams.contentId
       contentEditor.openContentEditor = function () {
@@ -63,11 +63,7 @@ angular.module('playerApp')
           overlayColor: '',
           history: false,
           onClosed: function () {
-            if ($stateParams.state) {
-              $state.go($stateParams.state)
-            } else {
-              $state.go('WorkSpace.DraftContent')
-            }
+            contentEditor.openModel()
           }
         })
         $timeout(function () {
@@ -169,4 +165,22 @@ angular.module('playerApp')
           }
         }
       })
+
+      contentEditor.openModel = function () {
+        contentEditor.showModal = true
+        $('#modalContentEditor').modal('show')
+        $timeout(function () {
+          workSpaceUtilsService.hideRemoveModel('#modalContentEditor')
+          if (document.getElementById('contentEditor')) {
+            document.getElementById('contentEditor').remove()
+          }
+          document.getElementById('modalContentEditor').remove()
+          contentEditor.showModal = false
+          if ($stateParams.state) {
+            $state.go($stateParams.state)
+          } else {
+            $state.go('WorkSpace.DraftContent')
+          }
+        }, 2000)
+      }
     }])
