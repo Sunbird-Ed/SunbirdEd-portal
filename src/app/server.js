@@ -136,6 +136,18 @@ app.all('/public/service/v1/content/*', proxy(contentURL, {
   }
 }))
 
+app.post('/private/service/v1/learner/content/v1/media/upload', proxyUtils.verifyToken(), permissionsHelper.checkPermission(), proxy(learnerURL + "content/v1/media/upload", {
+  limit: reqDataLimitOfContentUpload,
+  proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+  userResDecorator: function(proxyRes, proxyResData, userReq, userRes) {
+    let data = JSON.parse(proxyResData.toString('utf8'));
+    if (data.responseCode === "OK") {
+        data.success = true
+    }
+    return JSON.stringify(data);
+  }
+}))
+
 app.all('/private/service/v1/learner/*', proxyUtils.verifyToken(), permissionsHelper.checkPermission(), proxy(learnerURL, {
   limit: reqDataLimitOfContentUpload,
   proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
