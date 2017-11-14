@@ -46,10 +46,6 @@ describe('Controller: announcementInboxListController', function() {
     it('success', function() {
       spyOn(announcementService, 'getInboxAnnouncementList').and.returnValue(deferred.promise)
       deferred.resolve(annInboxTestData.successResponce)
-
-      //spyOn(announcementInboxListController, 'renderAnnouncementList').and.callThrough()
-      //announcementInboxListController.renderAnnouncementList('2')
-
       var response = announcementService.getInboxAnnouncementList().$$state.value
       expect(response).toBe(annInboxTestData.successResponce)
     })
