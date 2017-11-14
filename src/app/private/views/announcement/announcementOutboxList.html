@@ -77,7 +77,7 @@
                 <td>N/A</td>
                 <td>{{item.metrics.received ? item.metrics.received : "N/A"}}</td>
                 <td>{{item.metrics.read ? item.metrics.read : "N/A"}}</td>
-                <td class="cursor-pointer announcementRedText" ng-click="announcementOutboxData.deleteAnnouncement(item.id)"
+                <td class="cursor-pointer announcementRedText" ng-click="announcementOutboxData.showModal('announcementDeleteModal')"
                 ng-if="item.status == 'active'"><i class="icon ban"></i>Delete</td>
                 <td ng-click="announcementOutboxData.getResend(item.id);" ng-if="item.status == 'cancelled'" class="cursor-pointer announcementBlueText" ><i class="external share icon"></i>Resend</td>
               </tr>
@@ -114,8 +114,8 @@
                 Users will not be able to see this announcement after this action.
             </div>
             <br/><br/>
-                <button type="submit" class="ui basic blue button announcementButton btn-width-26 announcementButtonText" ng-click="announcementOutboxData.deleteAnnouncement()"> YES </button>
-                <button type="submit" class="ui button primary announcementButton btn-width-26 close" ng-click="announcementOutboxData.closeModal('announcementDeleteModal')"> NO </button>
+                <button class="ui basic blue button announcementButton btn-width-26 announcementButtonText" ng-click="announcementOutboxData.deleteAnnouncement()"> YES </button>
+                <button class="ui button primary announcementButton btn-width-26 close" ng-click="announcementOutboxData.closeModal('announcementDeleteModal')"> NO </button>
         </div>
     </div>
 </div>
