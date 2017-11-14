@@ -378,7 +378,28 @@
             "cancel":"CANCEL",
             "update":"UPDATE",
             "updateOrg":"Update Org Type"
+        },
+        "ANNOUNCEMENT_CREATION":{
+            "HEADERS": {
+                "CREATE_ANN_TITLE": "Create New Announcement",
+                "CREATE_ANN_DESC": "Fill in all the required fields to create the announcement.",
+                "STATUS": "Check Upload Status"
+            },
+            "CONTENT": {
+                "TITLE": "TITLE",
+                "TITLE_DESC": "Please enter relevant title for this announcement (Max: 100 chars)",
+                "FROM": "FROM",
+                "FROM_DESC": "Select organization/department that has sent the announcement",
+                "TYPE": "ANNOUNCEMENT TYPE",
+                "TYPE_DESC": "Announcement type",
+                "DESCRIPTION": "DESCRIPTION (OPTIONAL)",
+                "WEB_URL": "URL / WEB LINK",
+                "WEB_URL_DESC": "Enter web URL",
+                "ADD_URL_TEXT": "Add URL/web link",
+                "ADD_URL_DESC": "For example, you can link a Google Form)",
+                "ADD_ANOTHER_URL": "Add Another URL/web link",
+                "UPLOAD_ATTACHMENT": "UPLOAD ATTACHEMNT"
+            }
         }
-
     }
 }
