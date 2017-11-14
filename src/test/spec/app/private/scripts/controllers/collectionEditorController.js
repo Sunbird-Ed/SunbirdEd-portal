@@ -211,4 +211,17 @@ describe('Controller: CollectionEditorController', function () {
     ceController.updateModeAndStatus('flagged')
     ceController.updateModeAndStatus('live')
   })
+
+  it('Should open model with state', function () {
+    spyOn(ceController, 'openModel').and.callThrough()
+    ceController.openModel()
+    timeout.flush(2000)
+  })
+
+  it('Should open model without state', function () {
+    stateParams.state = ''
+    spyOn(ceController, 'openModel').and.callThrough()
+    ceController.openModel()
+    timeout.flush(2000)
+  })
 })
