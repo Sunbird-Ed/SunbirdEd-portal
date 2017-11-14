@@ -153,7 +153,7 @@ angular.module('playerApp')
                     name: 'Home',
                     link: 'home'
                   }, {
-                    name: 'Announcement Dashboard',
+                    name: 'My Announcement',
                     link: ''
                   }]
 
