@@ -22,8 +22,8 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
         	announcementService.getDefinitions(getDefinitionReq).then(function(response) {
            		response = response.data
             	if (response && response.responseCode === 'OK') {
-                		if (response.result.announcementtypes) {
-                    			createAnn.announcementType = _.map(response.result.announcementtypes, 'name')
+                		if (response.result.announcementtypes.content) {
+                    			createAnn.announcementType = _.map(response.result.announcementtypes.content, 'name')
                 		}
                 		if (response.result.senderlist) {
                     			angular.forEach(response.result.senderlist, function(value, key) {
@@ -158,11 +158,12 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
             	createAnn.isMetaModified = false
             	createAnn.repeatableWebLinks.length = 0
             	createAnn.showUrlField = false
+                      createAnn.attachment = []
         	}
        	createAnn.saveAnnouncement = function(data) {
         		createAnn.isMetaModified = false
             	var requestBody = angular.copy(data)
-            	requestBody.sourceId = $rootScope.rootOrgId
+            	requestBody.sourceId = '0123673689120112640'
             	requestBody.createdBy = $rootScope.userId
             	requestBody.target = {
                 		'geo': {
@@ -174,7 +175,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
             	}
 
             	if(createAnn.attachment){
-            		requestBody.attachment = createAnn.attachment;
+            		requestBody.attachments = createAnn.attachment;
             	}
 
             	var requestData = {
@@ -255,6 +256,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
                                     				"size": this.getSize(id),
                                     				"link": responseJSON.result.url
                                 				}
+                                                                    attData = JSON.stringify(attData)
                                 				createAnn.attachment.push(attData)
                                 				createAnn.enableRecepientBtn()
                             			}
