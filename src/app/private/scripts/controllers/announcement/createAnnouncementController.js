@@ -161,6 +161,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
                 createAnn.showUrlField = false
                       createAnn.attachment = []
             }
+
         createAnn.saveAnnouncement = function(data) {
                 createAnn.isMetaModified = false
                 var requestBody = angular.copy(data)
@@ -292,6 +293,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
             createAnn.data.from = announcement.details.from;
             createAnn.data.type = announcement.details.type;
             createAnn.disableBtn = false
+            $rootScope.receipients =  announcement.target.geo.ids
             // TODO - check the recipients
             createAnn.createAnnouncement()
         })
