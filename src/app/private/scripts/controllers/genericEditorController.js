@@ -90,7 +90,9 @@ angular.module('playerApp')
           if (document.getElementById('genericEditor')) {
             document.getElementById('genericEditor').remove()
           }
-          document.getElementById('modalGenericEditor').remove()
+          if (document.getElementById('modalGenericEditor')) {
+            document.getElementById('modalGenericEditor').remove()
+          }
           genericEditor.showModal = false
           if ($stateParams.state) {
             $state.go($stateParams.state)

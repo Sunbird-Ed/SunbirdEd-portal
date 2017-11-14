@@ -435,13 +435,14 @@ class AnnouncementController {
             // TODO: add this validation back when data starts becoming available
             // if (_.isEmpty(targetList)) return { count:1, announcements: [] }
 
-        // Query announcements where target is listed Geolocations
+            // Query announcements where target is listed Geolocations
             let query = {
                 table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
                 query: {
                     // TODO: remove the below wildcard query and implement the commented specific query
                     // 'target.geo.ids': targetList
-                    "wildcard" : { "target.geo.ids" : { "value" : "*" } }
+                    "wildcard" : { "target.geo.ids" : { "value" : "*" } },
+                    "status": this.statusConstant.ACTIVE
                 }
             }
             try {
@@ -460,12 +461,59 @@ class AnnouncementController {
                     })
                 }))
 
+                //Get read and received status and append to response
+                let announcementIds = []
+                _.forEach(data, (announcement, k) => {
+                    announcementIds.push(announcement.id)
+                    announcement[this.metricsActivityConstant.READ] = false
+                    announcement[this.metricsActivityConstant.RECEIVED] = false
+                })
+                let metricsData = await(this.__getMetricsForInbox(announcementIds, userProfile.id))
+
+                if (metricsData) {
+                    _.forEach(metricsData, (metricsObj, k) => {
+                        let announcementObj = _.find(data, {"id": metricsObj.announcementid})
+                        announcementObj[metricsObj.activity] = true
+                    })
+                }
+
                 return  {count:_.size(data), announcements: data}
 
             } catch(error) {
                 throw { msg: 'unable to process your request', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
             }
         })
+    }
+
+    __getMetricsForInbox(announcementIds, userId) {
+        return new Promise((resolve, reject) => {
+        let query = {
+            table: this.objectStoreRest.MODEL.METRICS,
+            query: {
+                "announcementid" : announcementIds,
+                "userid": userId
+            }
+        }
+
+        this.objectStoreRest.findObject(query)
+        .then((data) => {
+            if (!_.isObject(data)) {
+                resolve(false)
+            } else {
+                let readData = []
+                _.forEach(data.data.content, (metricsObj) => {
+                    readData.push({'announcementid': metricsObj.announcementid, 'activity': metricsObj.activity})
+                })
+                resolve(readData)
+            }
+        })
+        .catch((error) => {
+            resolve(false)
+        })
+
+
+    })
+        
     }
 
 
@@ -557,74 +605,6 @@ class AnnouncementController {
       return { error: messages, isValid: false }
     }
     return { isValid: true }
-  }
-
-  /**
-   * Process the uploaded file (while creating announcement)
-   *
-   * @param   {[type]}  requestObj  [description]
-   *
-   * @return  {[type]}              [description]
-   */
-  uploadAttachment(requestObj) {
-    return this.__uploadAttachment()(requestObj)
-  }
-
-  __uploadAttachment() {
-    //TODO: complete implementation
-    return async((requestObj) => {
-      if (!_.isObject(requestObj.file)) throw { msg: 'invalid request!', statusCode: HttpStatus.BAD_REQUEST }
-
-      let attachmentId = uuidv1()
-      let query = {
-        table: this.objectStoreRest.MODEL.ATTACHMENT,
-        values: {
-          'id': attachmentId,
-          'file': requestObj.file.buffer.toString('base64'),
-          'filename': requestObj.file.originalname,
-          'mimetype': requestObj.file.mimetype,
-          'status': 'created',
-          'createddate': dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo")
-        }
-      }
-      if (!_.isEmpty(requestObj.body.createdBy)) query.values.createdby = requestObj.body.createdBy
-      let indexStore = false;
-      try {
-        return await (new Promise((resolve, reject) => {
-          this.objectStoreRest.createObject(query, indexStore)
-          .then((data) => {
-            if (!_.isObject(data)) {
-              reject()
-            } else {
-              resolve({ attachment: { id: attachmentId } })
-            }
-          })
-          .catch((error) => {
-            reject(error)
-          })
-        }))
-      } catch (e) {
-        throw { msg: 'unable to upload!', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
-      }
-    })
-  }
-
-  /**
-   * Process the attachment download request
-   *
-   * @param   {[type]}  requestObj  [description]
-   *
-   * @return  {[type]}              [description]
-   */
-  downloadAttachment(requestObj) {
-    return this.__downloadAttachment()(requestObj)
-  }
-
-  __downloadAttachment() {
-    //TODO: complete implementation
-    return async((requestObj) => {
-      return {}
-    })
   }
 
   /**
