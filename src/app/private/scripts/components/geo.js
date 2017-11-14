@@ -17,6 +17,7 @@ angular.module('playerApp').component('geo', {
         instance = this;
         this.keyName = 'geo';
         this.items = undefined;
+        this.receipients = [];
         var selectedItems = {key: 'geo', value: {} }
         /**
          * @desc Intialization of geo component when compounent is loaded.
@@ -25,6 +26,7 @@ angular.module('playerApp').component('geo', {
             var instance = this;
             $rootScope.$on("component:init", function() {
                 var config = instance.getConfig();
+                instance.receipients = $rootScope.receipients
                 if (_.has(config, instance.keyName)) {
                     instance.initialize(config);
                 }

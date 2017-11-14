@@ -2,9 +2,9 @@
   <div class='ui fluid left icon input search-location-icon'> <i class='search icon annRecipientsSearchIcon'></i>
     <input type='text' placeholder='Search for group' ng-model='search'> </div>
   <div class='ui segment items-area padding-top-none padding-left-none'>
-    <label ng-repeat='item in $ctrl.items | filter : search'>
-      <div class='ui checkbox component_items padding-left-none'>
-        <input type='checkbox' name='example' ng-model='item.selected' class="checkBox-element">
+    <label ng-repeat='item in $ctrl.items | filter : search' ng-init='checked = ($ctrl.receipients.indexOf(item.id) >= 0)'>
+      <div class='ui checkbox component_items padding-left-none' ng-class="{'checked':checked}">
+        <input ng-checked="{{checked}}" type='checkbox' name='example' class="checkBox-element">
         <label ng-bind-html="item.location | highlight:search" >{{item.location}}</label>
       </div>
       </br>
