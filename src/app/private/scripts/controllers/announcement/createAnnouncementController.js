@@ -1,6 +1,6 @@
 'use strict'
-angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', '$scope', '$timeout', '$state', '$stateParams', 'config', 'toasterService', 'permissionsService', 'announcementService',
-    function($rootScope, $scope, $timeout, $state, $stateParams, config, toasterService, permissionsService, announcementService) {
+angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', '$scope', '$timeout', 'config', 'toasterService', 'announcementService', '$filter', 'uuid4',
+    function($rootScope, $scope, $timeout, config, toasterService, announcementService, $filter, uuid4) {
         	var createAnn = this
         	createAnn.data = {}
         	createAnn.attachment = []
@@ -22,8 +22,8 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
         	announcementService.getDefinitions(getDefinitionReq).then(function(response) {
            		response = response.data
             	if (response && response.responseCode === 'OK') {
-                		if (response.result.announcementtypes) {
-                    			createAnn.announcementType = _.map(response.result.announcementtypes, 'name')
+                		if (response.result.announcementtypes.content) {
+                    			createAnn.announcementType = _.map(response.result.announcementtypes.content, 'name')
                 		}
                 		if (response.result.senderlist) {
                     			angular.forEach(response.result.senderlist, function(value, key) {
@@ -158,11 +158,12 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
             	createAnn.isMetaModified = false
             	createAnn.repeatableWebLinks.length = 0
             	createAnn.showUrlField = false
+                      createAnn.attachment = []
         	}
        	createAnn.saveAnnouncement = function(data) {
         		createAnn.isMetaModified = false
             	var requestBody = angular.copy(data)
-            	requestBody.sourceId = $rootScope.rootOrgId
+            	requestBody.sourceId = $rootOrgId
             	requestBody.createdBy = $rootScope.userId
             	requestBody.target = {
                 		'geo': {
@@ -172,6 +173,11 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
             	if (requestBody.links) {
                 		requestBody.links = createAnn.linkArray
             	}
+
+            	if(createAnn.attachment){
+            		requestBody.attachments = createAnn.attachment;
+            	}
+
             	var requestData = {
                 		request: requestBody
             	}
@@ -205,66 +211,71 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
         	}
 
         	createAnn.initializeFileUploader = function() {
-            $timeout(function() {
-                createAnn.manualUploader = new qq.FineUploader({
-                    element: document.getElementById('fine-uploader-manual-trigger'),
-                    template: 'qq-template-manual-trigger',
-                    autoUpload: true,
-                    paramsInBody: true,
-                    debug:true,
-                    request: {
-                        endpoint: '/api/announcement/v1/attachment/upload',
-                        inputName: 'document',
-                        params: {
-                            'createdBy': $rootScope.userId
-                        }
-                    },
-                    validation: {
-                        sizeLimit: config.AnncmntMaxFileSizeToUpload,
-                        allowedExtensions: config.AnncmntAllowedFileExtension
-                    },
-                    messages: {
-                        sizeError: '{file} ' + $rootScope.messages.imsg.m0006 + ' ' + config.AnncmntMaxFileSizeToUpload / (1000 * 1024) + ' MB.'
-                    },
-                    failedUploadTextDisplay: {
-                        mode: 'default',
-                        responseProperty: 'error'
-                    },
-                    showMessage: function(message) {
-                        toasterService.error(message)
-                    },
-                    callbacks: {
-                        onComplete: function(id, name, responseJSON, xhr) {
-                            console.log('Upload response :', responseJSON)
-                            if (responseJSON.status && responseJSON.responseCode === 'OK') {
-                                var attData = {
-                                    "title": name,
-                                    "downloadURL": responseJSON.result.attachment.downloadURL ? responseJSON.result.attachment.downloadURL : ''
-                                }
-                                createAnn.attachment.push(attData)
-                                createAnn.enableRecepientBtn()
-                            }
-                        },
-                        onSubmitted: function(id, name) {
-                            var fileSize = this.getSize(id)
-                            this.setParams({
-                                document: name,
-                                createdBy: $rootScope.userId,
-                                filesize: fileSize
-                            })
-                        },
-                        onCancel: function() {
-                            document.getElementById('hide-section-with-button').style.display = 'block'
-                        },
-                        onError: function(id, name, errorReason, xhrOrXdr) {
-                            toasterService.error(qq.format('Error on file number {} - {}.  Reason: {}', id, name, errorReason))
-                        }
-                    }
-                })
-                window.cancelUploadFile = function() {
-                    document.getElementById('hide-section-with-button').style.display = 'block'
-                }
-            }, 300)
+            	$timeout(function() {
+                	createAnn.manualUploader = new qq.FineUploader({
+                    		element: document.getElementById('fine-uploader-manual-trigger'),
+                    		template: 'qq-template-manual-trigger',
+                    		autoUpload: true,
+                    		paramsInBody: true,
+                    		debug:false,
+                    		request: {
+                       		endpoint: config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + config.URL.CONTENT.UPLOAD_MEDIA,
+                        		inputName: 'file',
+                      		  	customHeaders: {
+                    				Accept: 'application/json',
+                    				'X-Consumer-ID': 'X-Consumer-ID',
+                    				'X-Device-ID': 'X-Device-ID',
+                    				'X-msgid': uuid4.generate(),
+                    				ts: $filter('date')(new Date(), 'yyyy-MM-dd HH:mm:ss:sssZ'),
+                    				'X-Source': 'web',
+                    				'X-Org-code': 'AP'
+        				}
+                    		},
+                    		validation: {
+                        		sizeLimit: config.AnncmntMaxFileSizeToUpload,
+                        		allowedExtensions: config.AnncmntAllowedFileExtension
+                    		},
+                    		messages: {
+                        		sizeError: '{file} ' + $rootScope.messages.imsg.m0006 + ' ' + config.AnncmntMaxFileSizeToUpload / (1000 * 1024) + ' MB.'
+                    		},
+                    		failedUploadTextDisplay: {
+                        		mode: 'default',
+                        		responseProperty: 'error'
+                    		},
+                    		showMessage: function(message) {
+                        		toasterService.error(message)
+                    		},
+                    		callbacks: {
+                        		onComplete: function(id, name, responseJSON, xhr) {
+                            			console.log('Upload response :', responseJSON)
+                            			if (responseJSON.responseCode === 'OK') {
+                            				var fileData = this.getFile(id)
+                                				var attData = {
+                                    				"name": name,
+                                    				"mimetype": fileData.type,
+                                    				"size": this.getSize(id),
+                                    				"link": responseJSON.result.url
+                                				}
+                                                                    attData = JSON.stringify(attData)
+                                				createAnn.attachment.push(attData)
+                                				createAnn.enableRecepientBtn()
+                            			}
+                        		},
+                        		onSubmitted: function(id, name) {
+	                            		this.setParams({
+	                                			filename: name,
+	                                			container:"attachments/announcement"
+	                            		})
+                        		},
+	                        	onCancel: function() {
+	                            		document.getElementById('hide-section-with-button').style.display = 'block'
+	                        	}
+                    		}
+                	})
+               	window.cancelUploadFile = function() {
+                    		document.getElementById('hide-section-with-button').style.display = 'block'
+                	}
+           }, 300)
         }
     }
 ])
