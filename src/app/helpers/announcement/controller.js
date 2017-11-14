@@ -66,24 +66,23 @@ class AnnouncementController {
       let request = this.__validateCreateRequest(requestObj.body)
       if (!request.isValid) throw { msg: request.error, statusCode: HttpStatus.BAD_REQUEST }
 
-      let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
-      if (!authUserToken) throw { msg: 'UNAUTHORIZED', statusCode: HttpStatus.BAD_REQUEST }
+      // let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
+      // if (!authUserToken) throw { msg: 'UNAUTHORIZED', statusCode: HttpStatus.BAD_REQUEST }
 
-      try{  
-        // TODO: verify  Is logged in userid matching with senderid
-        let userProfile = await(this.__getUserProfile({ id: _.get(requestObj, 'body.request.createdBy')}, authUserToken))
-        let organisation = _.find(userProfile.organisations, { organisationId: _.get(requestObj, 'body.request.sourceId') })
-
-        if (_.isEmpty(organisation) || _.indexOf(organisation.roles, CREATE_ROLE) == -1) throw "user has no create access"
-      } catch(error) {
-        if(error === 'USER_NOT_FOUND') {
-          throw { msg: 'user not found', statusCode: HttpStatus.BAD_REQUEST }
-        } else if (error === 'UNAUTHORIZE_USER') {
-          throw { msg: 'user is not authorized', statusCode: HttpStatus.BAD_REQUEST }  
-        } else {
-          throw { msg: 'user has no create access', statusCode: HttpStatus.BAD_REQUEST }  
-        }        
-      }
+      // try{  
+      //   // TODO: verify  Is logged in userid matching with senderid
+      //   let userProfile = await(this.__getUserProfile({ id: _.get(requestObj, 'body.request.createdBy')}, authUserToken))
+      //   let organisation = _.find(userProfile.organisations, { organisationId: _.get(requestObj, 'body.request.sourceId') })
+      //   if (_.isEmpty(organisation) || _.indexOf(organisation.roles, CREATE_ROLE) == -1) throw "user has no create access"
+      // } catch(error) {
+      //   if(error === 'USER_NOT_FOUND') {
+      //     throw { msg: 'user not found', statusCode: HttpStatus.BAD_REQUEST }
+      //   } else if (error === 'UNAUTHORIZE_USER') {
+      //     throw { msg: 'user is not authorized', statusCode: HttpStatus.BAD_REQUEST }  
+      //   } else {
+      //     throw { msg: 'user has no create access', statusCode: HttpStatus.BAD_REQUEST }  
+      //   }        
+      // }
 
       try {
         var newAnnouncementObj = await (this.__createAnnouncement(requestObj.body.request))
@@ -124,9 +123,10 @@ class AnnouncementController {
         'title': Joi.string().required(),
         'from':Joi.string().required(),
         'type': Joi.string().required(),
-        'description': Joi.string().required(),
+        'description': Joi.string(),
         'target': Joi.object().min(1).required(),
-        'links': Joi.array().items(Joi.string().required())
+        'links': Joi.array().items(Joi.string()),
+        'attachments': Joi.array().items(Joi.string())
       }).required()
     }), { abortEarly: false })
 
@@ -175,41 +175,44 @@ class AnnouncementController {
     })
   }
 
-  __createAnnouncement(data) {
-    return new Promise((resolve, reject) => {
-      let announcementId = uuidv1()
-      if (!data) reject({ msg: 'invalid request' })
-      let query = {
-        table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
-        values: {
-          'id': announcementId,
-          'sourceid': data.sourceId,
-          'createddate': dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo"),
-          'userid': data.createdBy,
-          'details': {
-            'title': data.title,
-            'type': data.type,
-            'description': data.description,
-            'from':data.from,
-          },
-          'target': data.target,
-          'links': data.links,
-          'status': this.statusConstant.ACTIVE
-        }
-      }
+    __createAnnouncement(data) {
+        return new Promise((resolve, reject) => {
+            let announcementId = uuidv1()
+            
+            if (!data) reject({ msg: 'invalid request' })
 
-      this.objectStoreRest.createObject(query)
-        .then((data) => {
-          if (!_.isObject(data)) {
-            reject({ msg: 'unable to create announcement' })
-          } else {
-            resolve({ data: { id: announcementId } })
-          }
+            let query = {
+                table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
+                values: {
+                    'id': announcementId,
+                    'sourceid': data.sourceId,
+                    'createddate': dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo"),
+                    'userid': data.createdBy,
+                    'details': {
+                        'title': data.title,
+                        'type': data.type,
+                        'description': data.description,
+                        'from':data.from,
+                    },
+                    'target': data.target,
+                    'links': data.links,
+                    'status': this.statusConstant.ACTIVE,
+                    'attachments': data.attachments
+                }
+            }
+
+            this.objectStoreRest.createObject(query)
+            .then((data) => {
+                if (!_.isObject(data)) {
+                    reject({ msg: 'unable to create announcement' })
+                } else {
+                    resolve({ data: { id: announcementId } })
+                }
+            })
+            .catch((error) => {
+                reject({ msg: 'unable to create announcement' })
+            })
         })
-        .catch((error) => {
-          reject({ msg: 'unable to create announcement' })
-        })
-    })
   }
 
   /**
