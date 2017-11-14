@@ -10,7 +10,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
         	createAnn.showUrlField = false
         	createAnn.errorFlag = false
         	createAnn.stepNumber = 1
-        	createAnn.isMetaModified = false
+            createAnn.isMetaModified = false
         	createAnn.announcementType = []
         	createAnn.repeatableWebLinks = []
         	var getDefinitionReq = {
@@ -160,6 +160,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
             	createAnn.isMetaModified = false
             	createAnn.repeatableWebLinks.length = 0
             	createAnn.showUrlField = false
+                createAnn.editAction = false
         	}
        	createAnn.saveAnnouncement = function(data) {
         		createAnn.isMetaModified = false
@@ -270,6 +271,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
         }
         $scope.$on('editAnnouncementBeforeResend', function(event, announcement) {
             console.log(JSON.stringify(announcement))
+            createAnn.editAction = true
             createAnn.data.title = announcement.details.title
             createAnn.data.description = announcement.details.description
             angular.forEach(announcement.links, function(value, key) {
