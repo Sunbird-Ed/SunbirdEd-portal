@@ -81,8 +81,6 @@ describe('Controller: announcementInboxListController', function() {
       scope.$apply();
     })
 
-
-
     it('get file extension', function() {
       spyOn(announcementService, 'getFileExtension').and.returnValue(deferred.promise)
       deferred.resolve('PDF')
