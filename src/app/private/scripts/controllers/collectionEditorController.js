@@ -2,9 +2,9 @@
 
 angular.module('playerApp')
   .controller('CollectionEditorController', ['config', '$stateParams', 'toasterService', '$sce',
-    '$state', '$timeout', '$rootScope', 'contentService', 'permissionsService', function (config,
+    '$state', '$timeout', '$rootScope', 'contentService', 'permissionsService', 'workSpaceUtilsService', function (config,
     $stateParams, toasterService, $sce, $state, $timeout, $rootScope, contentService,
-    permissionsService) {
+    permissionsService, workSpaceUtilsService) {
       var collectionEditor = this
       collectionEditor.contentId = $stateParams.contentId
       collectionEditor.openCollectionEditor = function (data) {
@@ -21,11 +21,7 @@ angular.module('playerApp')
           history: false,
           overlayColor: '',
           onClosed: function () {
-            if ($stateParams.state) {
-              $state.go($stateParams.state)
-            } else {
-              $state.go('WorkSpace.DraftContent')
-            }
+            collectionEditor.openModel()
           }
         })
 
@@ -185,8 +181,28 @@ angular.module('playerApp')
         if (fromState.name === 'CollectionEditor') {
           var state = $('#collectionEditor').iziModal('getState')
           if (state === 'opened') {
-            document.getElementById('collectionEditor').remove()
+            if (document.getElementById('collectionEditor')) {
+              document.getElementById('collectionEditor').remove()
+            }
           }
         }
       })
+
+      collectionEditor.openModel = function () {
+        collectionEditor.showModal = true
+        $('#modalCollectionEditor').modal('show')
+        $timeout(function () {
+          workSpaceUtilsService.hideRemoveModel('#modalCollectionEditor')
+          if (document.getElementById('collectionEditor')) {
+            document.getElementById('collectionEditor').remove()
+          }
+          document.getElementById('modalCollectionEditor').remove()
+          collectionEditor.showModal = false
+          if ($stateParams.state) {
+            $state.go($stateParams.state)
+          } else {
+            $state.go('WorkSpace.DraftContent')
+          }
+        }, 2000)
+      }
     }])
