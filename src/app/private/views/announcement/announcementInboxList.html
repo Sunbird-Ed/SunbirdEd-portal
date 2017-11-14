@@ -6,6 +6,9 @@
         <div class="ui">
           <div class="text dashBoardSectionHeading margin-bottom-20"><i class=" arrow left icon padding-right-10"></i> All Announcements</div>
         </div>
+        <div ng-if="announcementInboxData.showLoader">
+          <app-loader></app-loader>
+        </div>
         <div ng-include="'views/announcement/announcementInboxListCard.html'"></div>
       </div>
     </div>
