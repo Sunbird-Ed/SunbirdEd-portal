@@ -163,7 +163,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
        	createAnn.saveAnnouncement = function(data) {
         		createAnn.isMetaModified = false
             	var requestBody = angular.copy(data)
-            	requestBody.sourceId = '0123673689120112640'
+            	requestBody.sourceId = $rootOrgId
             	requestBody.createdBy = $rootScope.userId
             	requestBody.target = {
                 		'geo': {
