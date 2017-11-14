@@ -579,34 +579,6 @@ angular.module('playerApp')
           $rootScope.profileActive = ''
         }
       })
-      .state('EditContent', {
-        url: '/content/edit/:contentId',
-        views: {
-          mainView: {
-            templateUrl: '/views/workSpace/editContent.html',
-            controller: 'EditContentController as editContent'
-          }
-        },
-        params: {
-          contentId: null,
-          backState: null
-        },
-        onEnter: function ($rootScope, portalTelemetryService, $state, $stateParams) {
-          $rootScope.profileActive = 'active'
-          portalTelemetryService.fireImpressions({
-            env: 'content',
-            type: 'edit',
-            pageid: org.sunbird.portal.appid + '_EditContent',
-            id: $stateParams.contentId,
-            name: '',
-            url: '/private/index#!/content/edit/' + $stateParams.contentId
-          })
-        },
-        onExit: function ($rootScope) {
-          $rootScope.profileActive = ''
-        }
-
-      })
       .state('CreateTextbook', {
         url: '/create/textbook',
         views: {
@@ -1025,9 +997,6 @@ angular.module('playerApp')
           routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
           break
         case 'ContentEditor':
-          routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
-          break
-        case 'EditContent':
           routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
           break
         case 'CreateTextbook':
