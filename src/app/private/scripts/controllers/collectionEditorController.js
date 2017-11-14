@@ -196,7 +196,9 @@ angular.module('playerApp')
           if (document.getElementById('collectionEditor')) {
             document.getElementById('collectionEditor').remove()
           }
-          document.getElementById('modalCollectionEditor').remove()
+          if (document.getElementById('modalCollectionEditor')) {
+            document.getElementById('modalCollectionEditor').remove()
+          }
           collectionEditor.showModal = false
           if ($stateParams.state) {
             $state.go($stateParams.state)
