@@ -92,25 +92,8 @@ angular.module('playerApp')
 	        toasterService.error(err.data.params.errmsg)
 	      }).finally(function() {})
 	    }
-	    announcementOutboxData.resendAnnouncement = function(announcement) {
-	      var requestBody = {"request": {"sourceId": announcement.sourceid, "createdBy": announcement.userid, "type": announcement.details.type, "links": announcement.links, "title": announcement.details.title, "description": announcement.details.description, "from": announcement.details.from, "target": announcement.target}}
-        //console.log(JSON.stringify(announcement))
-        announcementService.resendAnnouncement(requestBody).then(function(apiResponse) {
-	        apiResponse = apiResponse.data
-          //console.log(JSON.stringify(apiResponse))
-	        if (apiResponse && apiResponse.responseCode === 'OK') {
-	          toasterService.success('Announcement resent successfully.')
-	          announcementOutboxData.renderAnnouncementList()
-	        } else {
-	          toasterService.error(apiResponse.params.errmsg)
-	        }
-	      }).catch(function(err) {
-	        toasterService.error(err.data.params.errmsg)
-	      }).finally(function() {})
-	    }
-
-        announcementOutboxData.editPopup = function(announcement) {
+      announcementOutboxData.editPopup = function(announcement) {
             $rootScope.$broadcast('editAnnouncementBeforeResend', announcement);
-        }
+      }
     }
-  ])
+])
