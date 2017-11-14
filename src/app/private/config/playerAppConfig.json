@@ -96,7 +96,7 @@
                 ],
                 "contentTypes": [
                   {
-                    "key": "Book",
+                    "key": "TextBook",
                     "value": "Book"
                   },
                   {
@@ -112,7 +112,7 @@
                     "value": "Resource"
                   }
                 ],
-                "resourceType": [ 
+                "resourceType": [
                     "(Annual / Half-yearly / Semester) Examination",
                     "Academic calendar",
                     "Activity",
@@ -138,7 +138,7 @@
                     "Teaching resources",
                     "Timed worksheets",
                     "Unit plan",
-                    "Worksheet" 
+                    "Worksheet"
                 ],
                 "subjects": [
                     "Assamese",
