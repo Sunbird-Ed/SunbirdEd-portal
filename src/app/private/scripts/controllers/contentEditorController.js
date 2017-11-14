@@ -174,7 +174,9 @@ angular.module('playerApp')
           if (document.getElementById('contentEditor')) {
             document.getElementById('contentEditor').remove()
           }
-          document.getElementById('modalContentEditor').remove()
+          if (document.getElementById('modalContentEditor')) {
+            document.getElementById('modalContentEditor').remove()
+          }
           contentEditor.showModal = false
           if ($stateParams.state) {
             $state.go($stateParams.state)
