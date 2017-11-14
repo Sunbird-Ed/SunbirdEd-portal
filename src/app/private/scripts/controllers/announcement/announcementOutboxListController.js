@@ -15,7 +15,7 @@ angular.module('playerApp')
             apiResponse = apiResponse.data;
             if (apiResponse && apiResponse.responseCode === 'OK') {
               announcementOutboxData.result = apiResponse.result
-              announcementOutboxData.listData = apiResponse.result.announcements
+              announcementOutboxData.listData = apiResponse.result.announcements.content
               initController();
               if (announcementOutboxData.listData.length > 0) {
                 announcementOutboxData.showDataDiv = true
