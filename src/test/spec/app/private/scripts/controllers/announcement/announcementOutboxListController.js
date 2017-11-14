@@ -18,7 +18,7 @@ describe('Controller: announcementOutboxListController', function() {
     deferred,
     timeout,
     annOutboxTestData = announcementTestData.getAnnouncementOutbox,
-    annDeleteTestData = announcementTestData.deleteAnnoucement,
+    annDeleteTestData = announcementTestData.deleteAnnouncement,
     annResendTestData = announcementTestData.resendAnnouncement,
     annGetResendTestData = announcementTestData.getResend
 
@@ -78,7 +78,9 @@ describe('Controller: announcementOutboxListController', function() {
         spyOn(announcementService, 'deleteAnnouncement').and.returnValue(deferred.promise)
         deferred.resolve(annDeleteTestData.successResponse)
         annDeleteTestData.successResponse.data = annDeleteTestData.successResponse
+        expect(announcementOutboxListController.deleteAnnouncement).toBeDefined()
         announcementOutboxListController.deleteAnnouncement('9cfc4c90-c616-11e7-92f6-c50322845811')
+        expect(announcementService.deleteAnnouncement).toHaveBeenCalled()
         scope.$apply()
 	    })
 	})
@@ -89,7 +91,9 @@ describe('Controller: announcementOutboxListController', function() {
         deferred.resolve(annResendTestData.successResponse)
         annResendTestData.successResponse.data = annResendTestData.successResponse
         var requestBody = {"sourceid":"0123673908687093760","createddate":"2017-11-10 11:59:54:879+0530","details":{"description":"Test description for announcement 87","from":"test user","title":"Test title for announcement 87","type":"Circular"},"links":["http://yahoo.com"],"id":"90ae7cf0-c5e0-11e7-8744-852d6ada097c","userid":"d56a1766-e138-45e9-bed2-a0db5eb9696a","target":{"geo":{"ids":["0123668622585610242","0123668627050987529"]}},"status":"cancelled"}
+        expect(announcementOutboxListController.resendAnnouncement).toBeDefined()
         announcementOutboxListController.resendAnnouncement(requestBody)
+        expect(announcementService.resendAnnouncement).toHaveBeenCalled()
         scope.$apply()
 	    })
 	})
@@ -98,22 +102,26 @@ describe('Controller: announcementOutboxListController', function() {
         spyOn(announcementService, 'getResend').and.returnValue(deferred.promise)
         deferred.resolve(annGetResendTestData.successResponse)
         annGetResendTestData.successResponse.data = annGetResendTestData.successResponse
+        expect(announcementOutboxListController.getResend).toBeDefined()
         var response = announcementOutboxListController.getResend('90ae7cf0-c5e0-11e7-8744-852d6ada097c')
+        expect(announcementService.getResend).toHaveBeenCalled()
         scope.$apply()
 	    })
 	})
 
 	describe('Modal popup', function() {
       it('show modal popup', function() {
-        spyOn(announcementOutboxListController, 'showModal').and.callThrough();
-        announcementOutboxListController.showModal('announcementDeleteModal');
-        expect(announcementOutboxListController.showModal).toHaveBeenCalled();
+        spyOn(announcementOutboxListController, 'showModal').and.callThrough()
+        expect(announcementOutboxListController.showModal).toBeDefined()
+        announcementOutboxListController.showModal('announcementDeleteModal')
+        expect(announcementOutboxListController.showModal).toHaveBeenCalled()
       });
 
       it('close modal popup', function() {
-        spyOn(announcementOutboxListController, 'closeModal').and.callThrough();
-        announcementOutboxListController.closeModal('announcementDeleteModal');
-        expect(announcementOutboxListController.closeModal).toHaveBeenCalled();
+        spyOn(announcementOutboxListController, 'closeModal').and.callThrough()
+        expect(announcementOutboxListController.closeModal).toBeDefined()
+        announcementOutboxListController.closeModal('announcementDeleteModal')
+        expect(announcementOutboxListController.closeModal).toHaveBeenCalled()
       });
   })
 })

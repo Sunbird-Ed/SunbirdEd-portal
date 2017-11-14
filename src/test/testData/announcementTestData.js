@@ -26,7 +26,7 @@ var announcementTestData = {
     annObjWithEmptyWeblinks: { 'links': [], 'title': 'Title' },
     annObjWithEmptyAttachments: { 'title': 'Title', 'attachments': [] }
   },
-  deleteAnnoucement: {
+  deleteAnnouncement: {
     successResponse: {"id":"api.plugin.announcement.cancel.id","ver":"1.0","ts":"2017-11-11 09:58:09:409+0530","params":{"resmsgid":"b8b22220-c698-11e7-bff5-9ffed44487d9","msgid":null,"status":"successful","err":"","errmsg":""},"responseCode":"OK","result":{"id":"9cfc4c90-c616-11e7-92f6-c50322845811","status":"cancelled"}}
   },
   resendAnnouncement:{
