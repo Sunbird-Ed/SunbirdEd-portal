@@ -130,9 +130,8 @@
     <div class="ui primary button" ng-if="createAnn.stepNumber == 2" ng-click="createAnn.confirmRecipients();">{{$root.frmelmnts.btn.anncmntconfirmrecipients}}</div>
     <div class="ui primary button" ng-if="createAnn.stepNumber == 3" ng-click="createAnn.previewAnn();createAnn.stepNumber = 4;">{{$root.frmelmnts.btn.anncmntpreview}}</div>
     <div class="ui primary button" ng-if="createAnn.stepNumber == 4 && !createAnn.editAction" id="sendAnnouncement" ng-click="createAnn.saveAnnouncement(createAnn.data)">{{$root.frmelmnts.btn.anncmntsendanncmnt}}</div>
-    <div class="ui primary button" ng-if="createAnn.stepNumber == 4 && createAnn.editAction" id="resendAnnouncement" ng-click="createAnn.saveAnnouncement(createAnn.data)">RESEND ANNOUNCEMENT</div>
+    <div class="ui primary button" ng-if="createAnn.stepNumber == 4 && createAnn.editAction" id="resendAnnouncement" ng-click="createAnn.resendAnnouncement(createAnn.data)">RESEND ANNOUNCEMENT</div>
     <div ng-if="createAnn.stepNumber == 1" class="ui primary button" ng-class="{'disabled': createAnn.disableBtn === true || announcementForm.$invalid}" ng-click="createAnn.selectRecipients();createAnn.stepNumber = 2;">{{$root.frmelmnts.btn.anncmntselectrecipients}}</div>
-    {{createAnn.editAction}} {{createAnn.stepNumber}}
   </div>
 </div>
 <!-- Announcement created success modal -->
@@ -204,7 +203,7 @@
             <i class="checkmark icon big circular createAnnGrayShade"></i>
           </div>
           <div class="row">
-            <span class="dashBoardSectionHeading">Announcement Resent - Create Announcement</span>
+            <span class="dashBoardSectionHeading">Announcement Resent</span>
           </div>
           <div class="">
             <span class="createAnnGrayShade line-height-20">Your announcement has been resent to all the choosen recipients.</span>
