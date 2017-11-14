@@ -92,7 +92,5 @@ describe('Controller: announcementInboxListController', function() {
       scope.announcementInboxData.announcementDetails = {}
       announcementInboxListController.showAnnouncementDetails({}, 2)
     })
-
-
   })
 })
