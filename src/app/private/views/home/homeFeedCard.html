@@ -44,7 +44,7 @@
     <div class="twelve wide column" ng-if="announcementInboxData.showLoader">
       <app-loader></app-loader>
     </div>
-    <div class="twelve wide column" ng-hide="announcementInboxData.showDataDiv">
+    <div class="twelve wide column" ng-if="!announcementInboxData.showLoader" ng-hide="announcementInboxData.showDataDiv">
       <div class="ui warning message">
         <div class="header">{{$root.frmelmnts.lbl.anncmntnotfound}}</div>
         {{$root.frmelmnts.lbl.anncmntinboxmsg}}

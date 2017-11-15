@@ -96,6 +96,8 @@
 @import 'modules/circle-progress/mixins.less';
 @import 'modules/profileUpdateCard';
 @import 'modules/logo';
+@import 'modules/announcementCard';
+@import 'modules/geo';
 
 
 // ----------------------------------------------------------------------
@@ -119,13 +121,14 @@
 @import 'views/batches';
 @import 'views/adminDashboard';
 @import 'views/courseDashboard';
-
+@import 'views/semanticClassOverride';
+@import 'views/createAnnouncement';
 
 body {
     position: relative !important;
     min-height: 100% !important;
     min-width: 100% !important;
-    background: #fafafa !important;
+    background: @websiteBody-color !important;
 }
 
 html {
@@ -133,17 +136,8 @@ html {
     box-sizing: border-box !important;
 }
 
-.headerBackground {
-  background-color: #012b54 !important;
-}
 
-.searchdropdown.ui.basic.floating.dropdown.button{
-  background: #fff !important;
-}
 
-.alaramIconColor {
-  color: #fff !important;
-}
 
 
 

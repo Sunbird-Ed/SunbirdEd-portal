@@ -1,20 +1,20 @@
 'use strict'
 
 angular.module('playerApp')
-  .service('announcementService', ['$http', function($http) {
+	.service('announcementService', ['$http', function($http) {
 
-    var extensions = {
-      'application/png': 'PNG',
-      'application/pdf': 'PDF',
-      'application/jpeg': 'JPEG',
-      'application/jpg': 'JPEG'
-    }
+		var extensions = {
+			'application/png': 'PNG',
+			'application/pdf': 'PDF',
+			'application/jpeg': 'JPEG',
+			'application/jpg': 'JPEG'
+		}
 
-    /**
-     * @class announcementService
-     * @desc Service to manage announcement.
-     * @memberOf Services
-     */
+		/**
+		 * @class announcementService
+		 * @desc Service to manage announcement.
+		 * @memberOf Services
+		 */
 
 		/**
 		 * @method httpCall
@@ -27,15 +27,15 @@ angular.module('playerApp')
 		 * @instance
 		 */
 		function httpCall(url, data, method) {
-		  var headers = {
-			'Content-Type': 'application/json',
-		  };
-		  return $http({
-			method: method,
-			url: url,
-			headers: headers,
-			data: data
-		  });
+			var headers = {
+				'Content-Type': 'application/json',
+			};
+			return $http({
+				method: method,
+				url: url,
+				headers: headers,
+				data: data
+			});
 		}
 
 		/**
@@ -48,12 +48,12 @@ angular.module('playerApp')
 		 * @instance
 		 */
 		this.getOutBoxAnnouncementList = function(userId) {
-		  var data = {
-			"request": {
-			  "userId": userId
-			}
-		  };
-		  return httpCall('/api/announcement/v1/user/outbox', data, 'POST')
+			var data = {
+				"request": {
+					"userId": userId
+				}
+			};
+			return httpCall('/api/announcement/v1/user/outbox', data, 'POST')
 		}
 
 		/**
@@ -66,12 +66,12 @@ angular.module('playerApp')
 		 * @instance
 		 */
 		this.getInboxAnnouncementList = function(userId) {
-		  var data = {
-			"request": {
-			  "userId": userId
-			}
-		  };
-		  return httpCall('/api/announcement/v1/user/inbox', data, 'POST')
+			var data = {
+				"request": {
+					"userId": userId
+				}
+			};
+			return httpCall('/api/announcement/v1/user/inbox', data, 'POST')
 		}
 		/**
 		 * @method getFileExtension
@@ -82,7 +82,7 @@ angular.module('playerApp')
 		 * @instance
 		 */
 		this.getFileExtension = function(mimeType) {
-		  return extensions[mimeType];
+			return extensions[mimeType];
 		}
 
 		/**
@@ -94,7 +94,7 @@ angular.module('playerApp')
 		 * @instance
 		 */
 		this.createAnnouncement = function(req) {
-		  return httpCall('/api/announcement/v1/create', req, 'POST')
+			return httpCall('/api/announcement/v1/create', req, 'POST')
 		}
 
 		/**
@@ -106,7 +106,7 @@ angular.module('playerApp')
 		 * @instance
 		 */
 		this.getDefinitions = function(req) {
-		  return httpCall('/api/announcement/v1/definitions', req, 'POST')
+			return httpCall('/api/announcement/v1/definitions', req, 'POST')
 		}
 
 		/**
@@ -118,7 +118,7 @@ angular.module('playerApp')
 		 * @instance
 		 */
 		this.readAnnouncement = function(req) {
-		  return httpCall('/api/announcement/v1/read', req, 'POST')
+			return httpCall('/api/announcement/v1/read', req, 'POST')
 		}
 
 		/**
@@ -130,52 +130,52 @@ angular.module('playerApp')
 		 * @instance
 		 */
 		this.receivedAnnouncement = function(userId, AnnId) {
-		  var req = {
-			"request": {
-			  "userId": userId,
-			  "announcementId": AnnId,
-			  "channel": "web"
+			var req = {
+				"request": {
+					"userId": userId,
+					"announcementId": AnnId,
+					"channel": "web"
+				}
 			}
-		  }
-		  return httpCall('/api/announcement/v1/received', req, 'POST')
+			return httpCall('/api/announcement/v1/received', req, 'POST')
 		}
 
 		/**
-         * @method deleteAnnouncement
-         * @desc Send announcementId to cancel annoucement API
-         * @memberOf Services.announcementService
-         * @param {string}  announcementId - Announcement Id
-         * @returns {object} returns response of API
-         * @instance
-         */
-        this.deleteAnnouncement = function(announcementId) {
-            var URL = '/api/v1/announcement/cancel/' + announcementId
-            return httpCall(URL, {}, 'GET', {})
-        }
+		 * @method deleteAnnouncement
+		 * @desc Send announcementId to cancel annoucement API
+		 * @memberOf Services.announcementService
+		 * @param {string}  announcementId - Announcement Id
+		 * @returns {object} returns response of API
+		 * @instance
+		 */
+		this.deleteAnnouncement = function(announcementId) {
+			var URL = '/api/announcement/v1/cancel/' + announcementId
+			return httpCall(URL, {}, 'GET', {})
+		}
 
-        /**
-         * @method getResend
-         * @desc Send announcementId to get resend API
-         * @memberOf Services.announcementService
-         * @param {string}  announcementId - Announcement Id
-         * @returns {object} returns response of API
-         * @instance
-         */
-        this.getResend = function(announcementId) {
-            var URL = '/api/announcement/v1/resend/' + announcementId
-            return httpCall(URL, {}, 'GET', {})
-        }
+		/**
+		 * @method getResend
+		 * @desc Send announcementId to get resend API
+		 * @memberOf Services.announcementService
+		 * @param {string}  announcementId - Announcement Id
+		 * @returns {object} returns response of API
+		 * @instance
+		 */
+		this.getResend = function(announcementId) {
+			var URL = '/api/announcement/v1/resend/' + announcementId
+			return httpCall(URL, {}, 'GET', {})
+		}
 
-        /**
-         * @method resendAnnouncement
-         * @desc Resend announcement
-         * @memberOf Services.announcementService
-         * @param {object}  requestBody - Announcement object
-         * @returns {object} returns response of API
-         * @instance
-         */
-        this.resendAnnouncement = function(requestBody) {
-            var URL = '/api/announcement/v1/resend'
-            return httpCall(URL, requestBody, 'POST', {})
-        }
-  }])
+		/**
+		 * @method resendAnnouncement
+		 * @desc Resend announcement
+		 * @memberOf Services.announcementService
+		 * @param {object}  requestBody - Announcement object
+		 * @returns {object} returns response of API
+		 * @instance
+		 */
+		this.resendAnnouncement = function(requestBody) {
+			var URL = '/api/announcement/v1/resend'
+			return httpCall(URL, requestBody, 'POST', {})
+		}
+	}])
