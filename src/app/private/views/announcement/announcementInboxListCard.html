@@ -1,7 +1,8 @@
 <div>
 </div>
 <div ng-click="announcementInboxData.showAnnouncementDetails(item, $index)" ng-if="announcementInboxData.limit=='all' || announcementInboxData.limit>$index" ng-repeat="item in announcementInboxData.listData">
-    <div class="announcementCardLeftBorder ui raised segment annGridPadding cursor-pointer margin-bottom-10" id="annInboxDiv-{{$index}}">
+    <div class="ui raised segment annGridPadding cursor-pointer margin-bottom-10"
+        id="annInboxDiv-{{$index}}" ng-class="{'announcementCardLeftBorder': item.read === false}">
         <div>
             <p class="ui grey label annType" ng-if="item.details.type">
                 {{item.details.type}}
