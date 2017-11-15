@@ -96,7 +96,7 @@
                 ],
                 "contentTypes": [
                   {
-                    "key": "Book",
+                    "key": "TextBook",
                     "value": "Book"
                   },
                   {

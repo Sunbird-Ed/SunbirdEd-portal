@@ -66,23 +66,23 @@ class AnnouncementController {
       let request = this.__validateCreateRequest(requestObj.body)
       if (!request.isValid) throw { msg: request.error, statusCode: HttpStatus.BAD_REQUEST }
 
-      let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
-      if (!authUserToken) throw { msg: 'UNAUTHORIZED', statusCode: HttpStatus.BAD_REQUEST }
+      // let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
+      // if (!authUserToken) throw { msg: 'UNAUTHORIZED', statusCode: HttpStatus.BAD_REQUEST }
 
-      try{  
-        // TODO: verify  Is logged in userid matching with senderid
-        let userProfile = await(this.__getUserProfile({ id: _.get(requestObj, 'body.request.createdBy')}, authUserToken))
-        let organisation = _.find(userProfile.organisations, { organisationId: _.get(requestObj, 'body.request.sourceId') })
-        if (_.isEmpty(organisation) || _.indexOf(organisation.roles, CREATE_ROLE) == -1) throw "user has no create access"
-      } catch(error) {
-        if(error === 'USER_NOT_FOUND') {
-          throw { msg: 'user not found', statusCode: HttpStatus.BAD_REQUEST }
-        } else if (error === 'UNAUTHORIZE_USER') {
-          throw { msg: 'user is not authorized', statusCode: HttpStatus.BAD_REQUEST }  
-        } else {
-          throw { msg: 'user has no create access', statusCode: HttpStatus.BAD_REQUEST }  
-        }        
-      }
+      // try{  
+      //   // TODO: verify  Is logged in userid matching with senderid
+      //   let userProfile = await(this.__getUserProfile({ id: _.get(requestObj, 'body.request.createdBy')}, authUserToken))
+      //   let organisation = _.find(userProfile.organisations, { organisationId: _.get(requestObj, 'body.request.sourceId') })
+      //   if (_.isEmpty(organisation) || _.indexOf(organisation.roles, CREATE_ROLE) == -1) throw "user has no create access"
+      // } catch(error) {
+      //   if(error === 'USER_NOT_FOUND') {
+      //     throw { msg: 'user not found', statusCode: HttpStatus.BAD_REQUEST }
+      //   } else if (error === 'UNAUTHORIZE_USER') {
+      //     throw { msg: 'user is not authorized', statusCode: HttpStatus.BAD_REQUEST }  
+      //   } else {
+      //     throw { msg: 'user has no create access', statusCode: HttpStatus.BAD_REQUEST }  
+      //   }        
+      // }
 
       try {
         var newAnnouncementObj = await (this.__createAnnouncement(requestObj.body.request))
@@ -123,9 +123,10 @@ class AnnouncementController {
         'title': Joi.string().required(),
         'from':Joi.string().required(),
         'type': Joi.string().required(),
-        'description': Joi.string().required(),
+        'description': Joi.string(),
         'target': Joi.object().min(1).required(),
-        'links': Joi.array().items(Joi.string().required())
+        'links': Joi.array().items(Joi.string()),
+        'attachments': Joi.array().items(Joi.string())
       }).required()
     }), { abortEarly: false })
 
@@ -174,41 +175,44 @@ class AnnouncementController {
     })
   }
 
-  __createAnnouncement(data) {
-    return new Promise((resolve, reject) => {
-      let announcementId = uuidv1()
-      if (!data) reject({ msg: 'invalid request' })
-      let query = {
-        table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
-        values: {
-          'id': announcementId,
-          'sourceid': data.sourceId,
-          'createddate': dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo"),
-          'userid': data.createdBy,
-          'details': {
-            'title': data.title,
-            'type': data.type,
-            'description': data.description,
-            'from':data.from,
-          },
-          'target': data.target,
-          'links': data.links,
-          'status': this.statusConstant.ACTIVE
-        }
-      }
+    __createAnnouncement(data) {
+        return new Promise((resolve, reject) => {
+            let announcementId = uuidv1()
+            
+            if (!data) reject({ msg: 'invalid request' })
 
-      this.objectStoreRest.createObject(query)
-        .then((data) => {
-          if (!_.isObject(data)) {
-            reject({ msg: 'unable to create announcement' })
-          } else {
-            resolve({ data: { id: announcementId } })
-          }
+            let query = {
+                table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
+                values: {
+                    'id': announcementId,
+                    'sourceid': data.sourceId,
+                    'createddate': dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo"),
+                    'userid': data.createdBy,
+                    'details': {
+                        'title': data.title,
+                        'type': data.type,
+                        'description': data.description,
+                        'from':data.from,
+                    },
+                    'target': data.target,
+                    'links': data.links,
+                    'status': this.statusConstant.ACTIVE,
+                    'attachments': data.attachments
+                }
+            }
+
+            this.objectStoreRest.createObject(query)
+            .then((data) => {
+                if (!_.isObject(data)) {
+                    reject({ msg: 'unable to create announcement' })
+                } else {
+                    resolve({ data: { id: announcementId } })
+                }
+            })
+            .catch((error) => {
+                reject({ msg: 'unable to create announcement' })
+            })
         })
-        .catch((error) => {
-          reject({ msg: 'unable to create announcement' })
-        })
-    })
   }
 
   /**
@@ -271,10 +275,10 @@ class AnnouncementController {
           if (!_.isObject(data)) {
             reject({ msg: 'unable to fetch announcement', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
           } else {
-            _.forEach(data.data, (announcementObj) => {
+            _.forEach(data.data.content, (announcementObj) => {
               if (_.isString(announcementObj.target)) announcementObj.target = JSON.parse(announcementObj.target)
             })
-            resolve(_.get(data, 'data[0]'))
+            resolve(_.get(data.data, 'content[0]'))
           }
         })
         .catch((error) => {
@@ -342,28 +346,64 @@ class AnnouncementController {
    * @return  {[type]}              [description]
    */
   cancelAnnouncementById(requestObj) {
-    return this.__cancelAnnouncementById(requestObj)
+    return this.__cancelAnnouncementById()(requestObj)
   }
 
-  __cancelAnnouncementById(requestObj) {
-      return new Promise((resolve, reject) => {
-      let query = {
-        table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
-        values:{id: requestObj.params.announcementId, status:this.statusConstant.CANCELLED}
-      }
-      this.objectStoreRest.updateObjectById(query)
-        .then((data) => {
-          if (!_.isObject(data)) {
-            reject({ msg: 'unable to cancel the announcement', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
-          } else {
-            resolve({id: requestObj.params.announcementId, status:this.statusConstant.CANCELLED})
+  __cancelAnnouncementById() {
+        return async((requestObj) => {
+            let query = {
+                table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
+                values: {
+                    id: _.get(requestObj, 'body.request.announcenmentid'),
+                    status: this.statusConstant.CANCELLED
+                }
+            }
+            var status = await (this.__checkPermisionForCancel()(requestObj));
+            return new Promise((resolve, reject) => {
+                if (status) {
+                    this.objectStoreRest.updateObjectById(query)
+                        .then((data) => {
+                            if (!_.isObject(data)) {
+                                reject({
+                                    msg: 'unable to cancel the announcement',
+                                    statusCode: HttpStatus.INTERNAL_SERVER_ERROR
+                                })
+                            } else {
+                                resolve({
+                                    id: requestObj.params.announcementId,
+                                    status: this.statusConstant.CANCELLED
+                                })
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                            reject({
+                                msg: 'unable to cancel the announcement',
+                                statusCode: HttpStatus.INTERNAL_SERVER_ERROR
+                            })
+                        })
+                } else {
+                    reject({
+                        msg: 'unable to cancel the announcement',
+                        statusCode: HttpStatus.INTERNAL_SERVER_ERROR
+                    })
+                }
+            })
+        })
+    }
+
+  __checkPermisionForCancel() {
+      return async((requestObj) => {
+          if (requestObj) {
+              requestObj.params = {};
+              let userId = _.get(requestObj, 'body.request.userid');
+              requestObj.params.id = _.get(requestObj, 'body.request.announcenmentid');
+              var response = await (this.getAnnouncementById(requestObj));
+              return response.userid === userId ? true : false
+          }else{
+            return false;
           }
-        })
-        .catch((error) => {
-          console.log(error)
-          reject({ msg: 'unable to cancel the announcement', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
-        })
-    })
+      });
   }
 
     /**
@@ -401,10 +441,10 @@ class AnnouncementController {
                 query: {
                     // TODO: remove the below wildcard query and implement the commented specific query
                     // 'target.geo.ids': targetList
-                    "wildcard" : { "target.geo.ids" : { "value" : "*" } }
+                    "wildcard" : { "target.geo.ids" : { "value" : "*" } },
+                    "status": this.statusConstant.ACTIVE
                 }
             }
-
             try {
                 let data = await (new Promise((resolve, reject) => {
                     this.objectStoreRest.findObject(query)
@@ -412,7 +452,7 @@ class AnnouncementController {
                         if (!_.isObject(data)) {
                             reject({ msg: 'unable to fetch announcement inbox', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
                         } else {
-                            resolve(data.data)
+                            resolve(data.data.content)
                         }
                     })
                     .catch((error) => {
@@ -421,12 +461,59 @@ class AnnouncementController {
                     })
                 }))
 
+                //Get read and received status and append to response
+                let announcementIds = []
+                _.forEach(data, (announcement, k) => {
+                    announcementIds.push(announcement.id)
+                    announcement[this.metricsActivityConstant.READ] = false
+                    announcement[this.metricsActivityConstant.RECEIVED] = false
+                })
+                let metricsData = await(this.__getMetricsForInbox(announcementIds, userProfile.id))
+
+                if (metricsData) {
+                    _.forEach(metricsData, (metricsObj, k) => {
+                        let announcementObj = _.find(data, {"id": metricsObj.announcementid})
+                        announcementObj[metricsObj.activity] = true
+                    })
+                }
+
                 return  {count:_.size(data), announcements: data}
 
             } catch(error) {
                 throw { msg: 'unable to process your request', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
             }
         })
+    }
+
+    __getMetricsForInbox(announcementIds, userId) {
+        return new Promise((resolve, reject) => {
+        let query = {
+            table: this.objectStoreRest.MODEL.METRICS,
+            query: {
+                "announcementid" : announcementIds,
+                "userid": userId
+            }
+        }
+
+        this.objectStoreRest.findObject(query)
+        .then((data) => {
+            if (!_.isObject(data)) {
+                resolve(false)
+            } else {
+                let readData = []
+                _.forEach(data.data.content, (metricsObj) => {
+                    readData.push({'announcementid': metricsObj.announcementid, 'activity': metricsObj.activity})
+                })
+                resolve(readData)
+            }
+        })
+        .catch((error) => {
+            resolve(false)
+        })
+
+
+    })
+        
     }
 
 
@@ -451,6 +538,7 @@ class AnnouncementController {
                     'userid': _.get(requestObj, 'request.userId')
                 }
             }
+            let metrics_clone = undefined;
 
             // execute query and process response
             this.objectStoreRest.findObject(query)
@@ -458,12 +546,34 @@ class AnnouncementController {
                 if (!_.isObject(data)) {
                     reject({ msg: 'unable to fetch sent announcements', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
                 } else {
-                    let announcementCount = _.size(data.data)
-                    let response = {
-                        count: announcementCount,
-                        announcements: data.data
-                    }
-                    resolve(response)
+                    this.getMetrics(_.map(data.data.content,"id"), query)
+                        .then((metricsData) => {
+                            let announcementCount = _.size(data.data);
+                            let metrics = {};
+                            let response = {count: announcementCount, announcements: data.data }
+                             if (metricsData) {
+                                _.map(response.announcements.content, (value, key) => {
+                                      metrics = {read:0,received:0}
+                                    _.forEach(metricsData, (v, k) => {
+                                        if (response.announcements.content[key].id == k) {
+                                            _.forEach(v[0].values, (ele, indec) => {
+                                                if (ele.name === 'read') {
+                                                    metrics.read = ele.count;
+                                                }
+                                                if (ele.name === 'received') {
+                                                    metrics.received = ele.count;
+                                                }
+                                            });
+                                            metrics_clone = _.clone(metrics);
+                                            response.announcements.content[key]['metrics'] = metrics_clone;
+                                        }
+                                    });
+                                });
+                                resolve(response)
+                            } else {
+                                resolve(response);
+                            }
+                        })
                 }
             })
             .catch((error) => {
@@ -495,74 +605,6 @@ class AnnouncementController {
       return { error: messages, isValid: false }
     }
     return { isValid: true }
-  }
-
-  /**
-   * Process the uploaded file (while creating announcement)
-   *
-   * @param   {[type]}  requestObj  [description]
-   *
-   * @return  {[type]}              [description]
-   */
-  uploadAttachment(requestObj) {
-    return this.__uploadAttachment()(requestObj)
-  }
-
-  __uploadAttachment() {
-    //TODO: complete implementation
-    return async((requestObj) => {
-      if (!_.isObject(requestObj.file)) throw { msg: 'invalid request!', statusCode: HttpStatus.BAD_REQUEST }
-
-      let attachmentId = uuidv1()
-      let query = {
-        table: this.objectStoreRest.MODEL.ATTACHMENT,
-        values: {
-          'id': attachmentId,
-          'file': requestObj.file.buffer.toString('base64'),
-          'filename': requestObj.file.originalname,
-          'mimetype': requestObj.file.mimetype,
-          'status': 'created',
-          'createddate': dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo")
-        }
-      }
-      if (!_.isEmpty(requestObj.body.createdBy)) query.values.createdby = requestObj.body.createdBy
-      let indexStore = false;
-      try {
-        return await (new Promise((resolve, reject) => {
-          this.objectStoreRest.createObject(query, indexStore)
-          .then((data) => {
-            if (!_.isObject(data)) {
-              reject()
-            } else {
-              resolve({ attachment: { id: attachmentId } })
-            }
-          })
-          .catch((error) => {
-            reject(error)
-          })
-        }))
-      } catch (e) {
-        throw { msg: 'unable to upload!', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
-      }
-    })
-  }
-
-  /**
-   * Process the attachment download request
-   *
-   * @param   {[type]}  requestObj  [description]
-   *
-   * @return  {[type]}              [description]
-   */
-  downloadAttachment(requestObj) {
-    return this.__downloadAttachment()(requestObj)
-  }
-
-  __downloadAttachment() {
-    //TODO: complete implementation
-    return async((requestObj) => {
-      return {}
-    })
   }
 
   /**
@@ -783,5 +825,34 @@ class AnnouncementController {
           })
       });
   }
-}
+
+   getMetrics(id, options){
+    return this.__getMetrics()(id, options)
+   }
+  __getMetrics() {
+  return async((id, options) =>{
+    let result = {};
+    let query = {table: this.objectStoreRest.MODEL.METRICS, query: {'announcementid': ""},facets:[{"activity":null}] }
+    var instance = this;
+        var awaitData = undefined;
+        for (let i = 0; i < id.length; i++) {
+            await (new Promise((resolve, reject) => {
+                query.query.announcementid = id[i];
+                instance.objectStoreRest.findObject(query)
+                    .then((data) => {
+                        if (!data.data.content) {
+                            resolve({msg: 'unable to fetch metrics', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
+                            } else {
+                              result[data.data.content[0].announcementid] = data.data.facets;
+                              resolve(data.data);
+                        }
+                    });
+            }));
+            if (i == id.length - 1) {
+                return result;
+            }
+        }
+    })
+  }
+ }
 module.exports = new AnnouncementController()

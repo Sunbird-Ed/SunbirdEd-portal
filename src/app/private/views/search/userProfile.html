@@ -96,7 +96,7 @@
                             <div class="content ">
                                 <a class=" header ">{{experience.jobName}}</a>
                                 <div class="description ">{{experience.role}}<span ng-if="experience.role">&nbsp;,&nbsp;</span>{{experience.orgName}}
-                                    <p class="margin-bottom-0 " ng-if="experience.subject.length ">{{$root.frmelmnts.lbl.subjectstaught}} : <span><span ng-repeat="sub in experience.subject ">{{sub}}<span ng-if="!$last ">,</span></span>
+                                    <p class="margin-bottom-0 " ng-if="experience.subject.length ">{{$root.frmelmnts.lbl.subjectstaught}} : <span><span ng-repeat="sub in experience.subject ">{{sub}}<span ng-if="!$last ">, </span></span>
                                         </span>
                                     </p>
                                     <p ng-if="experience.joiningDate ">{{$root.frmelmnts.lbl.tcfrom}} : {{experience.joiningDate}} &nbsp;
@@ -153,14 +153,14 @@
                     </div>
                 </div>
                 <div class="ui bottom attached tabular menu userSkillMore ng-scope " ng-if="publicProfile.userSkills.length > publicProfile.defaultLimit">
-                    <div class="active item">
+                    <div class="active item addSkillMoreBtn">
                         <a ng-click="publicProfile.setLimit(publicProfile.resetLimit);publicProfile.isViewMore=true" ng-if="publicProfile.userSkills.length > publicProfile.limit">
-                        view more
-                             <span class="userSkillMoreIcon"><i class="chevron down icon"></i> </span>
+                        VIEW MORE
+                             <span ><i class="chevron down icon"></i> </span>
                          </a>
                         <a ng-click="publicProfile.setLimit(publicProfile.defaultLimit);publicProfile.isViewMore=false" ng-if="publicProfile.isViewMore">
-                            view less
-                            <span class="userSkillMoreIcon"><i class="chevron up icon"></i> </span>
+                            VIEW LESS
+                            <span ><i class="chevron up icon"></i> </span>
                         </a>
                     </div>
                 </div>
@@ -207,10 +207,8 @@
                             </div>
                         </div>
                         <div class="item ">
-                            <div class="right floated content ">
-                                <span ng-repeat="sub in publicProfile.user.subject">
-                  <span>{{sub}}<span ng-if=!$last>,</span></span>
-                                </span>
+                            <div class="right floated content" ng-if="publicProfile.user.subject">
+                                    {{publicProfile.user.subject.join(', ')}}
                             </div>
                             <div class="iniformationcontent content ">
                                 {{$root.frmelmnts.lbl.subjects}}

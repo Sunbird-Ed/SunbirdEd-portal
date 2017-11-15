@@ -20,6 +20,7 @@ const express = require('express'),
   userHelper = require('./helpers/userHelper.js'),
   resourcesBundlesHelper = require('./helpers/resourceBundlesHelper.js'),
   proxyUtils = require('./proxy/proxyUtils.js'),
+  announcements = require('./helpers/announcement'),
   fs = require('fs'),
   port = envHelper.PORTAL_PORT,
   learnerURL = envHelper.LEARNER_URL,
@@ -91,9 +92,22 @@ if (default_tenant) {
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'private')))
 
-// Announcement routing
-app.use('/api/v1/announcement', bodyParser.urlencoded({ extended: false }),
-  bodyParser.json({limit: '10mb' }), require('./helpers/announcement'))
+app.use('/api/v1/announcement', bodyParser.json({
+  limit: '10mb'
+}), bodyParser.urlencoded({
+  extended: false
+}), function (req, res, next) {
+  let authUserToken = _.get(req, "headers['x-authenticated-user-token']")
+  if (authUserToken) {
+    next()
+  } else {
+    if (keycloak) {
+      keycloak.protect()(req, res, next)
+    } else {
+      return res.status(400).json({'error': 'UNAUTHORIZED', statusCode: 400})
+    }
+  }
+}, require('./helpers/announcement'))
 
 app.use('/private/index', function (req, res, next) {
   res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate')
