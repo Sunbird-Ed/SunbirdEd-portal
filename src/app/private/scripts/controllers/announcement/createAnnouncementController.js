@@ -135,7 +135,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
            		$rootScope.$emit('get:selected:items')
             	if (createAnn.selectedReciepeient.length == 0) {
                 		createAnn.stepNumber = 2
-                		toasterService.error($rootScope.messages.emsg.m0006)
+                		toasterService.error($rootScope.messages.emsg.m0021)
                 		return
             	}
             	createAnn.stepNumber = 3
@@ -245,7 +245,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
                         		allowedExtensions: config.AnncmntAllowedFileExtension
                     		},
                     		messages: {
-                        		sizeError: '{file} ' + $rootScope.messages.imsg.m0006 + ' ' + config.AnncmntMaxFileSizeToUpload / (1000 * 1024) + ' MB.'
+                        		sizeError: '{file} ' + $rootScope.messages.imsg.m0021 + ' ' + config.AnncmntMaxFileSizeToUpload / (1000 * 1024) + ' MB.'
                     		},
                     		failedUploadTextDisplay: {
                         		mode: 'default',

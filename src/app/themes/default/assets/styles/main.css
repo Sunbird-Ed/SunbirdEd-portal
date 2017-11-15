@@ -2713,7 +2713,7 @@ ul.fancytree-container li {
 .profile-des .item .right.floated.content {
   width: 50% !important;
   text-align: right !important;
-  word-break: break-all !important;
+  word-break: normal !important;
 }
 .profile-des .item .right.floated.content span {
   word-break: normal !important;
