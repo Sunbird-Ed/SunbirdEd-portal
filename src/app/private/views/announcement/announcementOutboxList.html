@@ -67,7 +67,7 @@
                 <th>Sent</th>
                 <th>Recieved <span class="announcementBlueText">*</span></th>
                 <th>Seen <span class="announcementBlueText">*</span></th>
-                <!--<th>Actions</th>-->
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -77,7 +77,9 @@
                 <td>N/A</td>
                 <td>{{item.metrics.received ? item.metrics.received : "N/A"}}</td>
                 <td>{{item.metrics.read ? item.metrics.read : "N/A"}}</td>
-                <!--<td class="announcementRedText cursor-pointer"><i class="icon ban"></i> Cancel</td>-->
+                <td class="cursor-pointer announcementRedText" ng-click="announcementOutboxData.showModal('announcementDeleteModal')"
+                ng-if="item.status == 'active'"><i class="icon ban"></i>Delete</td>
+                <td ng-click="announcementOutboxData.getResend(item.id);" ng-if="item.status == 'cancelled'" class="cursor-pointer announcementBlueText" ><i class="external share icon"></i>Resend</td>
               </tr>
             </tbody>
           </table>
@@ -91,6 +93,55 @@
       <div class="twelve wide column">
         <div class="ui">
           <div class="text announcementDataText" ng-if="announcementOutboxData.result.metricsupdateddate"> <span class="announcementBlueText">*</span> Consumption data last updated on {{announcementOutboxData.result.metricsupdateddate | dateFilterWithDMY}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Announcement delete confirmation modal -->
+<div id="announcementDeleteModal" class="ui modal">
+     <i class="close icon"></i>
+    <div class="content">
+        <div class="ui center aligned segment">
+            <div class="ui basic icon circular button deny">
+                <i class="ui huge help outline icon"></i>
+            </div>
+            <br/><br/>
+            <div class="header cardsHeading">Are you sure you want to stop showing this announcement?</div>
+            <br/>
+            <div class="announcement-description">
+                Users will not be able to see this announcement after this action.
+            </div>
+            <br/><br/>
+                <button class="ui basic blue button announcementButton btn-width-26 announcementButtonText" ng-click="announcementOutboxData.deleteAnnouncement()"> YES </button>
+                <button class="ui button primary announcementButton btn-width-26 close" ng-click="announcementOutboxData.closeModal('announcementDeleteModal')"> NO </button>
+        </div>
+    </div>
+</div>
+
+<!-- Announcement resent success modal -->
+<div class="ui modal small" id="announcementResendModal">
+  <i class="close icon"></i>
+  <div class=" ui segment margin-top-10">
+    <div class="content">
+      <div class="ui grid">
+        <div class="ui centered grid">
+          <div class="row">
+            <i class="checkmark icon big circular createAnnGrayShade"></i>
+          </div>
+          <div class="row">
+            <span class="dashBoardSectionHeading">Announcement Resent - Outbox List</span>
+          </div>
+          <div class="">
+            <span class="createAnnGrayShade line-height-20">Your announcement has been resent to all the choosen recipients.</span>
+          </div>
+        </div>
+        <br/>
+        <div class="row ui two column centered grid margin-top-20 actions">
+          <button class="ui primary basic button announcementButton btn-width-34" ng-click="announcementOutboxData.closeModal('announcementResendModal')">
+            <span class="announcementButtonText">GOT IT</span>
+          </button>
         </div>
       </div>
     </div>
