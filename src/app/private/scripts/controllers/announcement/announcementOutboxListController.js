@@ -55,8 +55,8 @@ angular.module('playerApp')
         $('#' + modalId).modal('hide')
       }
       announcementOutboxData.deleteAnnouncement = function () {
-            // Call the delete service
-        announcementService.deleteAnnouncement(announcementOutboxData.announcementId).then(function (apiResponse) {
+        var requestBody = { "request": {"userid": $rootScope.userId,"announcenmentid": announcementOutboxData.announcementId}}
+        announcementService.deleteAnnouncement(requestBody).then(function (apiResponse) {
           apiResponse = apiResponse.data
                 // console.log(JSON.stringify(apiResponse))
                 // Check if response successful
