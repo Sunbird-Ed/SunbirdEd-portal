@@ -99,6 +99,12 @@ describe('SignUpCtrl', function () {
     scope.$apply()
   })
 
+  it('Should called signUp service', function () {
+    spyOn(signUpService, 'signUp').and.callThrough()
+    signUpService.signUp()
+    expect(signUpService.signUp).toBeDefined()
+  })
+
   it('should call signUp service', function () {
     spyOn(signUpService, 'signUp').and.returnValue(deferred.promise)
     deferred.resolve(signUpResponse)
