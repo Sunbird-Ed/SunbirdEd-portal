@@ -42,7 +42,7 @@ router.get('/get/:id', (requestObj, responseObj) => {
     })
 })
 
-router.get('/cancel/:announcementId', (requestObj, responseObj) => {
+router.delete('/cancel', (requestObj, responseObj) => {
   announcementController.cancelAnnouncementById(requestObj)
     .then((data) => {
       sendSuccessResponse(responseObj, 'cancel.id', data, HttpStatus.OK)
