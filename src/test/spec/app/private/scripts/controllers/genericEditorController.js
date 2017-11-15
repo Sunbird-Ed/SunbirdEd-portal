@@ -56,4 +56,17 @@ describe('Controller: GenericEditorController', function () {
     var spyEvent = spyOnEvent('#genericEditor', 'close')
     $('#genericEditor').trigger('close')
   })
+
+  it('Should open model with state', function () {
+    spyOn(geController, 'openModel').and.callThrough()
+    geController.openModel()
+    timeout.flush(2000)
+  })
+
+  it('Should open model without state', function () {
+    stateParams.state = ''
+    spyOn(geController, 'openModel').and.callThrough()
+    geController.openModel()
+    timeout.flush(2000)
+  })
 })
