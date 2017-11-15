@@ -269,12 +269,12 @@ class AnnouncementController {
   __getDefinitions() {
       return async((requestObj) => {
           let responseObj = {};
-          if (requestObj.body.definitions) {
-              if (requestObj.body.definitions.includes('announcementtypes')) {
+          if (requestObj.body.request.definitions) {
+              if (requestObj.body.request.definitions.includes('announcementtypes')) {
                   let announcementTypes = await (this.__getAnnouncementTypes(requestObj));
                   responseObj["announcementtypes"] = announcementTypes;
               }
-              if (requestObj.body.definitions.includes('senderlist')) {
+              if (requestObj.body.request.definitions.includes('senderlist')) {
                   let senderlist = await (this.__getSenderList()(requestObj));
                   responseObj["senderlist"]= senderlist;
               }
@@ -291,14 +291,15 @@ class AnnouncementController {
    * @return  {[type]}  [description]
    */
   __getAnnouncementTypes(requestObj) {
+    console.log("announcementTypes")
     return new Promise((resolve, reject) => {
       let query = {
         table: this.objectStoreRest.MODEL.ANNOUNCEMENTTYPE,
         query: {
-          'rootorgid': _.get(requestObj, 'body.rootorgid')
+          'rootorgid': _.get(requestObj, 'body.request.rootorgid')
         }
       }
-
+      console.log("query",query)
       this.objectStoreRest.findObject(query)
         .then((data) => {
           if (!_.isObject(data)) {
@@ -425,7 +426,7 @@ class AnnouncementController {
                         if (!_.isObject(data)) {
                             reject({ msg: 'unable to fetch announcement inbox', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
                         } else {
-                            resolve(data.data.content)
+                            resolve(data.data)
                         }
                     })
                     .catch((error) => {
@@ -616,7 +617,7 @@ class AnnouncementController {
           try {
               return await (new Promise((resolve, reject) => {
                   this.__getUserProfile({
-                          id: _.get(requestObj, 'body.userid')
+                          id: _.get(requestObj, 'body.request.userid')
                       }, authUserToken)
                       .then((data) => {
                           if (!_.isObject(data)) {
