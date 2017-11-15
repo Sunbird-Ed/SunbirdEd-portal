@@ -64,7 +64,7 @@
               <tr class="announcementTableHeading">
                 <th>Name</th>
                 <th>Published</th>
-                <th>Sent</th>
+                <!--<th>Sent</th>-->
                 <th>Recieved <span class="announcementBlueText">*</span></th>
                 <th>Seen <span class="announcementBlueText">*</span></th>
                 <!--<th>Actions</th>-->
@@ -74,7 +74,7 @@
               <tr ng-repeat="item in announcementOutboxData.items" class="tableListNameAnn">
                 <td>{{item.details.title | limitTo:50}}<span ng-show="item.details.title.length > 50">...</span></td>
                 <td>{{item.createddate | dateFilterWithDMY}}</td>
-                <td>N/A</td>
+                <!--<td>N/A</td>-->
                 <td>{{item.metrics.received ? item.metrics.received : "N/A"}}</td>
                 <td>{{item.metrics.read ? item.metrics.read : "N/A"}}</td>
                 <!--<td class="announcementRedText cursor-pointer"><i class="icon ban"></i> Cancel</td>-->
@@ -90,7 +90,7 @@
     <div class="ui grid">
       <div class="twelve wide column">
         <div class="ui">
-          <div class="text announcementDataText" ng-if="announcementOutboxData.result.metricsupdateddate"> <span class="announcementBlueText">*</span> Consumption data last updated on {{announcementOutboxData.result.metricsupdateddate | dateFilterWithDMY}}</div>
+          <div class="text announcementDataText" ng-if="announcementOutboxData.result.metricsupdateddate"> <span class="announcementBlueText">*</span> Consumption data last updated on {{announcementOutboxData.result.metrics.updatedat | dateFilterWithDMY}}</div>
         </div>
       </div>
     </div>
