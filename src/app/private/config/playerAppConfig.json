@@ -607,6 +607,9 @@
             "h5p": "application/vnd.ekstep.h5p-archive",
             "webm": "video/webm"
         },
-        "UNLISTED_CONTENT_TYPE" : "Unlisted"
+        "UNLISTED_CONTENT_TYPE" : "Unlisted",
+        "AnncmntMaxFileSizeToUpload": 1024000,
+        "AnncmntFileExtensionToUpload": "application/pdf, application/jpg, application/png",
+        "AnncmntAllowedFileExtension": ["png", "pdf", "jpg"]
     }
 }

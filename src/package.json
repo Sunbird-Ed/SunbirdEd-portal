@@ -74,7 +74,8 @@
     "sinon": "^4.0.1",
     "standard": "10.0.3",
     "wiredep": "^2.2.2",
-    "yargs": "^9.0.1"
+    "yargs": "^9.0.1",
+    "fine-uploader": "*"
   },
   "engines": {
     "node": ">=0.10.0"
