@@ -5,7 +5,6 @@ let announcementController = require('./controller.js')
 const API_ID = 'api.plugin.announcement'
 let path = require('path')
 let multer = require('multer')
-let ApiInterceptor = require('sb_api_interceptor')
 const _ = require('lodash')
 let await = require('asyncawait/await')
 let async = require('asyncawait/async')
@@ -91,23 +90,21 @@ function isCreateRolePresent(userProfile, sourceid) {
         }
     }
 }
+
 function validateRoles() {
     return async((requestObj, responseObj, next, config) => {
-        let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
-        console.log("validateRoles",config);
+        let authUserToken = _.get(requestObj, "headers['x-authenticated-user-token']")
         try {
             // TODO: verify  Is logged in userid matching with senderid
             let userProfile = await (announcementController.__getUserProfile({
                 id: config.userid
             }, authUserToken))
-            let isAuthorized =  isCreateRolePresent(userProfile,config.sourceid);
-            console.log("isAuthorized",isAuthorized);
-          if(isAuthorized){
-            next()
-          }else{
-             console.log("No create access");
-             throw "User has no create access"
-          }
+            let isAuthorized = isCreateRolePresent(userProfile, config.sourceid);
+            if (isAuthorized) {
+                next()
+            } else {
+                throw "User has no create access"
+            }
         } catch (error) {
             if (error === 'USER_NOT_FOUND') {
                 responseObj.status(400).json({
@@ -120,7 +117,7 @@ function validateRoles() {
                     statusCode: 400
                 })
             } else {
-               console.log("Error",error);
+                console.log("Error", error);
                 responseObj.status(400).json({
                     'error': 'NO_CREATE_ACCESS',
                     statusCode: 400
@@ -130,25 +127,12 @@ function validateRoles() {
     })
 }
 
-function validate(requestObj, responseObj, next, keycloak) {
-    let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
-    var keyCloak_config = {
-        'authServerUrl': process.env.sunbird_keycloak_auth_server_url ? process.env.sunbird_keycloak_auth_server_url : 'https://dev.open-sunbird.org/auth',
-        'realm': process.env.sunbird_keycloak_realm ? process.env.sunbird_keycloak_realm : 'sunbird',
-        'clientId': process.env.sunbird_keycloak_client_id ? process.env.sunbird_keycloak_client_id : 'portal',
-        'public': process.env.sunbird_keycloak_public ? process.env.sunbird_keycloak_public : true
-    }
-
-    var cache_config = {
-        stroe: process.env.sunbird_cache_store ? process.env.sunbird_cache_store : 'memory',
-        ttl: process.env.sunbird_cache_ttl ? process.env.sunbird_cache_ttl : 1800
-    }
-
-    if (authUserToken) {
-        var apiInterceptor = new ApiInterceptor(keyCloak_config, cache_config)
-        apiInterceptor.validateToken(authUserToken, function(err, token) {
-            if (token) {
-              console.log("authUserToken validation is sucess");
+function validate() {
+    return async((requestObj, responseObj, next, keycloak) => {
+        let authUserToken = _.get(requestObj, "headers['x-authenticated-user-token']")
+        if (authUserToken) {
+            var tokenDetails = await (announcementController.__getTokenDetails(authUserToken))
+            if (tokenDetails) {
                 next()
             } else {
                 responseObj.status(400).json({
@@ -156,26 +140,28 @@ function validate(requestObj, responseObj, next, keycloak) {
                     statusCode: 400
                 })
             }
-        })
-    } else {
-        console.log("keycloak validation")
-        if (keycloak) {
-            keycloak.protect()(requestObj, responseObj, next)
         } else {
-            responseObj.status(400).json({
-                'error': 'UNAUTHORIZED',
-                statusCode: 400
-            })
+            if (keycloak) {
+                keycloak.protect()(requestObj, responseObj, next)
+            } else {
+                responseObj.status(400).json({
+                    'error': 'UNAUTHORIZED',
+                    statusCode: 400
+                })
+            }
         }
-    }
+    });
 }
 
 module.exports = function(keycloak) {
         router.post('/create', (requestObj, responseObj, next) => {
-           validate(requestObj, responseObj, next, keycloak)
+            validate()(requestObj, responseObj, next, keycloak)
         }, (requestObj, responseObj, next) => {
-           let config = {userid: _.get(requestObj, 'body.request.createdBy'),sourceid:_.get(requestObj, 'body.request.sourceId') } 
-           validateRoles()(requestObj, responseObj, next, config)
+            let config = {
+                userid: _.get(requestObj, 'body.request.createdBy'),
+                sourceid: _.get(requestObj, 'body.request.sourceId')
+            }
+            validateRoles()(requestObj, responseObj, next, config)
         }, (requestObj, responseObj, next) => {
             announcementController.create(requestObj)
                 .then((data) => {
@@ -197,9 +183,11 @@ module.exports = function(keycloak) {
         })
 
         router.delete('/cancel', (requestObj, responseObj, next) => {
-            validate(requestObj, responseObj, next, keycloak)
+            validate()(requestObj, responseObj, next, keycloak)
         }, (requestObj, responseObj, next) => {
-           let config = {userid: _.get(requestObj, 'body.request.userid')} 
+            let config = {
+                userid: _.get(requestObj, 'body.request.userid')
+            }
             validateRoles()(requestObj, responseObj, next, config)
         }, (requestObj, responseObj, next) => {
             announcementController.cancelAnnouncementById(requestObj)
@@ -212,7 +200,7 @@ module.exports = function(keycloak) {
         })
 
         router.post('/user/inbox', (requestObj, responseObj, next) => {
-            validate(requestObj, responseObj, next, keycloak)
+            validate()(requestObj, responseObj, next, keycloak)
         }, (requestObj, responseObj, next) => {
             announcementController.getUserInbox(requestObj)
                 .then((data) => {
@@ -224,9 +212,9 @@ module.exports = function(keycloak) {
         })
 
         router.post('/user/outbox', (requestObj, responseObj, next) => {
-            validate(requestObj, responseObj, next, keycloak)
+            validate()(requestObj, responseObj, next, keycloak)
         }, (requestObj, responseObj, next) => {
-            announcementController.getUserOutbox(requestObj.body)
+            announcementController.getUserOutbox(requestObj)
                 .then((data) => {
                     sendSuccessResponse(responseObj, 'user.outbox', data, HttpStatus.OK)
                 })
@@ -236,9 +224,11 @@ module.exports = function(keycloak) {
         })
 
         router.post('/definitions', (requestObj, responseObj, next) => {
-            validate(requestObj, responseObj, next, keycloak)
+            validate()(requestObj, responseObj, next, keycloak)
         }, (requestObj, responseObj, next) => {
-           let config = {userid: _.get(requestObj, 'body.request.userid')} 
+            let config = {
+                userid: _.get(requestObj, 'body.request.userid')
+            }
             validateRoles()(requestObj, responseObj, next, config)
         }, (requestObj, responseObj, next) => {
             announcementController.getDefinitions(requestObj)
@@ -251,9 +241,9 @@ module.exports = function(keycloak) {
         })
 
         router.post('/received', (requestObj, responseObj, next) => {
-            validate(requestObj, responseObj, next, keycloak)
+            validate()(requestObj, responseObj, next, keycloak)
         }, (requestObj, responseObj, next) => {
-            announcementController.received(requestObj.body)
+            announcementController.received(requestObj)
                 .then((data) => {
                     sendSuccessResponse(responseObj, 'received', data, HttpStatus.CREATED)
                 })
@@ -263,9 +253,9 @@ module.exports = function(keycloak) {
         })
 
         router.post('/read', (requestObj, responseObj, next) => {
-            validate(requestObj, responseObj, next, keycloak)
+            validate()(requestObj, responseObj, next, keycloak)
         }, (requestObj, responseObj, next) => {
-            announcementController.read(requestObj.body)
+            announcementController.read(requestObj)
                 .then((data) => {
                     sendSuccessResponse(responseObj, 'read', data, HttpStatus.CREATED)
                 })
@@ -274,20 +264,26 @@ module.exports = function(keycloak) {
                 })
         })
 
-        router.get('/resend/:announcementId',(requestObj, responseObj, next) => {
-            announcementController.getResend(requestObj)
+        router.get('/resend/:announcementId', (requestObj, responseObj, next) => {
+            validate()(requestObj, responseObj, next, keycloak)
+        }, (requestObj, responseObj, next) => {
+            announcementController.getResend()(requestObj)
                 .then((data) => {
                     sendSuccessResponse(responseObj, 'getresend.id', data, HttpStatus.OK)
                 })
                 .catch((err) => {
                     sendErrorResponse(responseObj, 'getresend.id', err.msg, err.statusCode)
                 })
+
+
         })
 
         router.post('/resend', (requestObj, responseObj, next) => {
-            validate(requestObj, responseObj, next, keycloak)
+            validate()(requestObj, responseObj, next, keycloak)
         }, (requestObj, responseObj, next) => {
-           let config = {userid: _.get(requestObj, 'body.request.createdBy')} 
+            let config = {
+                userid: _.get(requestObj, 'body.request.createdBy')
+            }
             validateRoles()(requestObj, responseObj, next, config)
         }, (requestObj, responseObj, next) => {
             announcementController.resend(requestObj)
