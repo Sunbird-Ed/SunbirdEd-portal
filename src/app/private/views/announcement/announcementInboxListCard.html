@@ -49,16 +49,16 @@
             </div>
         </div>
         <div class="padding-top-10" ng-if="item.attachments.length > 0">
-            <div ng-repeat="attachments in item.attachments track by $index">
+            <div ng-repeat="attachmentJson in item.attachments track by $index" ng-init="attachment =  announcementInboxData.parJson(attachmentJson)">
                 <div ng-if="$first">
                     <i class="file text outline icon opacity04">
                     </i>
-                    <span class="ng-binding annAttachment cursor-pointer" ng-init="fileExtension = announcementInboxData.getFileExtension(attachments.mimetype)">
-                        {{attachments.title | limitTo:30}}
+                    <span class="ng-binding annAttachment cursor-pointer" ng-init="fileExtension = announcementInboxData.getFileExtension(attachment.mimetype)">
+                        {{attachment.name | limitTo:30}}
                     </span>
                     <span class="annLinksAttachmentsMore">
                         <small>
-                            ({{fileExtension}}, {{attachments.filesize}})
+                            ({{fileExtension}}, {{attachment.size}})
                         </small>
                         <span ng-show="links.length > 30">
                             ...
