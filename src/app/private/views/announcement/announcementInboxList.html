@@ -1,0 +1,16 @@
+<div class="ui grid" ng-init="announcementInboxData.renderAnnouncementList()">
+  <div class="one wide column"></div>
+  <div class="ten wide column">
+    <div class="ui grid">
+      <div class="eight wide column">
+        <div class="ui">
+          <div class="text dashBoardSectionHeading margin-bottom-20"><i class=" arrow left icon padding-right-10"></i> {{$root.frmelmnts.lbl.anncmntall}}</div>
+        </div>
+        <div ng-if="announcementInboxData.showLoader">
+          <app-loader></app-loader>
+        </div>
+        <div ng-include="'views/announcement/announcementInboxListCard.html'"></div>
+      </div>
+    </div>
+  </div>
+</div>
