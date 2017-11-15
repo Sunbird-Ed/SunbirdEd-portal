@@ -62,6 +62,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
             createAnn.confirmationModal()
             return false
           } else {
+            createAnn.refreshFormValues()
             return true
           }
         }
@@ -321,7 +322,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       var requestData = {
         request: requestBody
       }
-      console.log(JSON.stringify(requestData))
+      // console.log(JSON.stringify(requestData))
       announcementService.resendAnnouncement(requestData).then(function (apiResponse) {
         apiResponse = apiResponse.data
         // console.log(JSON.stringify(apiResponse))
