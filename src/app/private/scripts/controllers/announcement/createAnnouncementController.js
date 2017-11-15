@@ -159,6 +159,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       createAnn.repeatableWebLinks.length = 0
       createAnn.showUrlField = false
       createAnn.attachment = []
+      $('.qq-upload-list').children('li').remove()
     }
     createAnn.saveAnnouncement = function (data) {
       createAnn.isMetaModified = false
@@ -276,7 +277,12 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
                 container: 'attachments/announcement'
               })
             },
-            onCancel: function () {
+            onCancel: function (id, name) {
+              if (createAnn.attachment.splice(id, 1)) {
+	           console.log('attachement removed')
+	   }
+	   document.getElementById('hide-section-with-button').style.display = 'block'
+	    createAnn.enableRecepientBtn()
               document.getElementById('hide-section-with-button').style.display = 'block'
             }
           }
