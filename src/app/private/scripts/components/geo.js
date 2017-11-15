@@ -17,6 +17,7 @@ angular.module('playerApp').component('geo', {
         instance = this;
         this.keyName = 'geo';
         this.items = undefined;
+        this.receipients = [];
         var selectedItems = {key: 'geo', value: {} }
         /**
          * @desc Intialization of geo component when compounent is loaded.
@@ -25,9 +26,11 @@ angular.module('playerApp').component('geo', {
             var instance = this;
             $rootScope.$on("component:init", function() {
                 var config = instance.getConfig();
+                instance.receipients = $rootScope.receipients
                 if (_.has(config, instance.keyName)) {
                     instance.initialize(config);
                 }
+                $rootScope.$on("component:update", instance.updateItems)
             });
         };
         /**
@@ -42,6 +45,28 @@ angular.module('playerApp').component('geo', {
             });
             config[this.keyName].adopter ? this.validateAdopter(config[this.keyName]) : console.error("Adopter is required")
         };
+
+        this.updateItems = function(e, selItems){
+            var config = instance.getConfig()
+            var service = $injector.get(config.geo.service)
+            var request = {id:$rootScope.rootOrgId}
+            service.getItems(request).then(function(response) {
+                console.log(response)
+                if (response && response.responseCode === 'OK') {
+                    var items = response.result.response
+                    _.forEach(items,function(item){
+                        if(selItems.indexOf(item.id) !== -1){
+                            item.selected = true
+                        }
+                    })
+                    instance.renderItems(items);
+                } else {
+                    console.error("Locations are not found")
+                }
+            }).catch(function(error) {
+                console.error("Unable to fetch the locations",error)
+            })
+        }
 
 
         /**
@@ -59,7 +84,7 @@ angular.module('playerApp').component('geo', {
 
         /**
          * Items which is need to be render on web page
-         * @param  {object} items geo items from api 
+         * @param  {object} items geo items from api
          */
         this.renderItems = function(items) {
             this.items = items;
@@ -67,7 +92,7 @@ angular.module('playerApp').component('geo', {
 
         /**
          * @desc Returns the selected items
-         * @return {object} 
+         * @return {object}
          */
         this.getSelectedItems = function() {
             return _.filter(instance.items, ['selected', true])
@@ -90,9 +115,9 @@ angular.module('playerApp').component('geo', {
             }
         };
 
-        /** 
+        /**
          * Initializes the JSON adopter
-         * @param {object} config 
+         * @param {object} config
          */
         this.initializeJsonAdopter = function(config) {
             this.renderItems(config.json);
