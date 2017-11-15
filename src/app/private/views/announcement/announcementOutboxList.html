@@ -5,12 +5,12 @@
       <div class="ui grid">
         <div class="nine wide column">
           <div class="ui">
-            <div class="text dashBoardSectionHeading padding-top-10"><i class="announcement icon padding-right-10"></i> My Announcements</div>
+            <div class="text dashBoardSectionHeading padding-top-10"><i class="announcement icon padding-right-10"></i> {{$root.frmelmnts.lbl.anncmntmine}}</div>
           </div>
         </div>
         <div class="right floated three wide column padding-right-dropdown padding-right-10">
           <div class="ui float-ContentRight" ng-controller="createAnnouncementCtrl as createAnn">
-            <button class="ui primary basic button announcementButton" id="openmodal" ng-click="createAnn.createAnnouncement();"><span class="announcementButtonText">CREATE ANNOUNCEMENT</span></button>
+            <button class="ui primary basic button announcementButton" id="openmodal" ng-click="createAnn.createAnnouncement();"><span class="announcementButtonText">{{$root.frmelmnts.lbl.anncmntcreate}}</span></button>
             <div ng-include="'views/announcement/createAnnouncement.html'"></div>
           </div>
         </div>
@@ -23,7 +23,7 @@
       <div class="ui grid">
         <div class="eight wide column">
           <div class="ui">
-            <div class="text padding-top-5 showingAllSentAnn">Showing all sent announcements</div>
+            <div class="text padding-top-5 showingAllSentAnn">{{$root.frmelmnts.lbl.anncmntsent}}</div>
           </div>
         </div>
         <div class="four wide column">
@@ -49,8 +49,8 @@
     <div class="one wide column"></div>
     <div class="ten wide column">
       <div class="ui warning message">
-        <div class="header">No announcement found!</div>
-        Please create announcement
+        <div class="header">{{$root.frmelmnts.lbl.anncmntnotfound}}</div>
+        {{$root.frmelmnts.lbl.anncmntplzcreate}}
       </div>
     </div>
   </div>
@@ -62,12 +62,12 @@
           <table class="ui padded table">
             <thead>
               <tr class="announcementTableHeading">
-                <th>Name</th>
-                <th>Published</th>
-                <!--<th>Sent</th>-->
-                <th>Recieved <span class="announcementBlueText">*</span></th>
-                <th>Seen <span class="announcementBlueText">*</span></th>
-                <th>Actions</th>
+                <th>{{$root.frmelmnts.lbl.anncmnttblname}}</th>
+                <th>{{$root.frmelmnts.lbl.anncmnttblpublished}}</th>
+                <!--<th>{{$root.frmelmnts.lbl.anncmnttblsent}}</th>-->
+                <th>{{$root.frmelmnts.lbl.anncmnttblreceived}} <span class="announcementBlueText">*</span></th>
+                <th>{{$root.frmelmnts.lbl.anncmnttblseen}} <span class="announcementBlueText">*</span></th>
+                <th>{{$root.frmelmnts.lbl.anncmnttblactions}}</th>
               </tr>
             </thead>
             <tbody>
@@ -92,7 +92,7 @@
     <div class="ui grid">
       <div class="twelve wide column">
         <div class="ui">
-          <div class="text announcementDataText" ng-if="announcementOutboxData.result.metricsupdateddate"> <span class="announcementBlueText">*</span> Consumption data last updated on {{announcementOutboxData.result.metrics.updatedat | dateFilterWithDMY}}</div>
+          <div class="text announcementDataText" ng-if="announcementOutboxData.result.metricsupdateddate"> <span class="announcementBlueText">*</span> {{$root.frmelmnts.lbl.anncmntlastupdate}} {{announcementOutboxData.result.metrics.updatedat | dateFilterWithDMY}}</div>
         </div>
       </div>
     </div>
@@ -108,42 +108,14 @@
                 <i class="ui huge help outline icon"></i>
             </div>
             <br/><br/>
-            <div class="header cardsHeading">Are you sure you want to stop showing this announcement?</div>
+            <div class="header cardsHeading">{{$root.frmelmnts.lbl.anncmntcancelconfirm}}</div>
             <br/>
             <div class="announcement-description">
-                Users will not be able to see this announcement after this action.
+                {{$root.frmelmnts.lbl.anncmntcancelconfirmdescrption}}
             </div>
             <br/><br/>
-                <button class="ui basic blue button announcementButton btn-width-26 announcementButtonText" ng-click="announcementOutboxData.deleteAnnouncement()"> YES </button>
-                <button class="ui button primary announcementButton btn-width-26 close" ng-click="announcementOutboxData.closeModal('announcementDeleteModal')"> NO </button>
+                <button class="ui basic blue button announcementButton btn-width-26 announcementButtonText" ng-click="announcementOutboxData.deleteAnnouncement()"> {{$root.frmelmnts.btn.yes}} </button>
+                <button class="ui button primary announcementButton btn-width-26 close" ng-click="announcementOutboxData.closeModal('announcementDeleteModal')"> {{$root.frmelmnts.btn.no}} </button>
         </div>
     </div>
-</div>
-
-<!-- Announcement resent success modal -->
-<div class="ui modal small" id="announcementResendModal">
-  <i class="close icon"></i>
-  <div class=" ui segment margin-top-10">
-    <div class="content">
-      <div class="ui grid">
-        <div class="ui centered grid">
-          <div class="row">
-            <i class="checkmark icon big circular createAnnGrayShade"></i>
-          </div>
-          <div class="row">
-            <span class="dashBoardSectionHeading">Announcement Resent - Outbox List</span>
-          </div>
-          <div class="">
-            <span class="createAnnGrayShade line-height-20">Your announcement has been resent to all the choosen recipients.</span>
-          </div>
-        </div>
-        <br/>
-        <div class="row ui two column centered grid margin-top-20 actions">
-          <button class="ui primary basic button announcementButton btn-width-34" ng-click="announcementOutboxData.closeModal('announcementResendModal')">
-            <span class="announcementButtonText">GOT IT</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
