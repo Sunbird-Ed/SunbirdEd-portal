@@ -35,19 +35,19 @@
   <div class="ui grid ng-scope annMarginBottom">
     <div class="nine wide column">
       <div class="ui">
-        <div class="text dashBoardSectionHeading padding-top-10  margin-bottom-10">Announcements</div>
+        <div class="text dashBoardSectionHeading padding-top-10  margin-bottom-10">{{$root.frmelmnts.lbl.anncmntinboxannmsg}}</div>
       </div>
     </div>
     <div class="right floated three wide column" ng-if="announcementInboxData.listData.length > 2">
-      <button class="fluid ui primary basic button announcementButton announcementSeeAllBtn margin-bottom-10" ui-sref="announcementInbox"><span class="announcementButtonText">SEE ALL</span></button>
+      <button class="fluid ui primary basic button announcementButton announcementSeeAllBtn margin-bottom-10" ui-sref="announcementInbox"><span class="announcementButtonText">{{$root.frmelmnts.lbl.anncmntinboxseeall}}</span></button>
     </div>
     <div class="twelve wide column" ng-if="announcementInboxData.showLoader">
       <app-loader></app-loader>
     </div>
     <div class="twelve wide column" ng-hide="announcementInboxData.showDataDiv">
       <div class="ui warning message">
-        <div class="header">No announcement found!</div>
-        You will see announcement once you receive
+        <div class="header">{{$root.frmelmnts.lbl.anncmntnotfound}}</div>
+        {{$root.frmelmnts.lbl.anncmntinboxmsg}}
       </div>
     </div>
   </div>
