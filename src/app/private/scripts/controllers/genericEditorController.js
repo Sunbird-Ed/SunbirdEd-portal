@@ -2,9 +2,9 @@
 
 angular.module('playerApp')
   .controller('GenericEditorController', ['config', '$stateParams', 'toasterService', '$sce',
-    '$state', '$timeout', '$rootScope', 'contentService', 'permissionsService', function (config,
-    $stateParams, toasterService, $sce, $state, $timeout, $rootScope, contentService,
-    permissionsService) {
+    '$state', '$timeout', '$rootScope', 'contentService', 'permissionsService', 'workSpaceUtilsService',
+    function (config, $stateParams, toasterService, $sce, $state, $timeout, $rootScope, contentService,
+    permissionsService, workSpaceUtilsService) {
       var genericEditor = this
       genericEditor.contentId = (_.isUndefined($stateParams.contentId) || _.isNull($stateParams.contentId)) ? '' : $stateParams.contentId
       genericEditor.openGenericEditor = function () {
@@ -21,13 +21,7 @@ angular.module('playerApp')
           history: false,
           overlayColor: '',
           onClosed: function () {
-            if ($stateParams.state) {
-			         $state.go($stateParams.state);
-		       	 } else if ($rootScope.contentModelBackLinkName) {
-			         $state.go($rootScope.contentModelBackLinkName);
-			       } else {
-			         $state.go('WorkSpace.AllUploadedContent')
-            }
+            genericEditor.openModel()
           }
         })
 
@@ -87,4 +81,26 @@ angular.module('playerApp')
           }
         }
       })
+
+      genericEditor.openModel = function () {
+        genericEditor.showModal = true
+        $('#modalGenericEditor').modal('show')
+        $timeout(function () {
+          workSpaceUtilsService.hideRemoveModel('#modalGenericEditor')
+          if (document.getElementById('genericEditor')) {
+            document.getElementById('genericEditor').remove()
+          }
+          if (document.getElementById('modalGenericEditor')) {
+            document.getElementById('modalGenericEditor').remove()
+          }
+          genericEditor.showModal = false
+          if ($stateParams.state) {
+			         $state.go($stateParams.state);
+		       	 } else if ($rootScope.contentModelBackLinkName) {
+			         $state.go($rootScope.contentModelBackLinkName);
+			       } else {
+			         $state.go('WorkSpace.AllUploadedContent')
+            }
+        }, 2000)
+      }
     }])
