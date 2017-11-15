@@ -302,13 +302,14 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
             createAnn.data.from = announcement.details.from;
             createAnn.data.type = announcement.details.type;
             createAnn.disableBtn = false
-            $rootScope.receipients =  announcement.target.geo.ids
-            // TODO - check the recipients
             createAnn.createAnnouncement()
+            $timeout(function() {
+                $rootScope.$broadcast('component:update', announcement.target.geo.ids);
+            },100)
         })
         createAnn.resendAnnouncement = function(data) {
             var requestBody = angular.copy(data)
-            requestBody.sourceId = '0123673689120112640' //$rootScope.rootOrgId
+            requestBody.sourceId = $rootScope.rootOrgId
             requestBody.createdBy = $rootScope.userId
             requestBody.target = {
                 'geo': {
