@@ -21,10 +21,19 @@ angular.module('playerApp')
                     page = true;
                   }
                   // Call received API
-                  announcementService.receivedAnnouncement($rootScope.userId, value.id).then(function(apiResponse) {})
-                    .catch(function(err) {
-                      toasterService.error(err.data.params.errmsg)
-                    })
+                  if (value.received === false) {
+                    announcementService.receivedAnnouncement($rootScope.userId, value.id).then(function(response) {
+                        var response = response.data
+                        if (response && response.responseCode === 'OK') {
+                          console.log('Received success')
+                        } else {
+                          toasterService.error(response.params.errmsg)
+                        }
+                      })
+                      .catch(function(err) {
+                        toasterService.error(err.data.params.errmsg)
+                      })
+                  }
                 }
               });
               if (announcementInboxData.listData.length > 0) {
@@ -54,10 +63,13 @@ angular.module('playerApp')
             "channel": "web"
           }
         }
-        announcementService.readAnnouncement(req);
-        angular.element(document.querySelector('#annInboxDiv-' + id)).removeClass('announcementCardLeftBorder')
+        if (announcementDetails.read === false) {
+          announcementService.readAnnouncement(req);
+          angular.element(document.querySelector('#annInboxDiv-' + id)).removeClass('announcementCardLeftBorder')
+        }
         $scope.announcementInboxData.announcementDetails = announcementDetails
         $('#announcementDetailsModal').modal('show')
+
       }
     }
 
