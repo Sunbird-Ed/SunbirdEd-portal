@@ -3,7 +3,6 @@ const path = require('path')
 const dateFormat = require('dateformat')
 const uuidv1 = require('uuid/v1')
 const envHelper = require('./environmentVariablesHelper.js')
-const defaultTenant = envHelper.DEFAUULT_TENANT
 
 module.exports = {
   getInfo: function (req, res) {
@@ -15,24 +14,31 @@ module.exports = {
     let baseUrl = protocol + '://' + host + (port === '' ? '' : ':' + port)
 
     let responseObj = {
-      logo: baseUrl + '/common/images/sunbird_logo.png',
-      favicon: baseUrl + '/common/images/favicon.ico',
-      poster: baseUrl + '/common/images/sunbird_logo.png',
       titleName: envHelper.PORTAL_TITLE_NAME
     }
-
-    // TODO: make file checking async for performance
     if (tenantId) {
-      if (fs.existsSync(path.join(__dirname, '../tenant', tenantId, 'logo.png'))) {
-        responseObj.logo = baseUrl + '/tenant/' + tenantId + '/logo.png'
-      }
-      if (fs.existsSync(path.join(__dirname, '../tenant', tenantId, 'favicon.ico'))) {
-        responseObj.favicon = baseUrl + '/tenant/' + tenantId + '/favicon.ico'
-      }
-      if (fs.existsSync(path.join(__dirname, '../tenant', tenantId, 'poster.png'))) {
-        responseObj.poster = baseUrl + '/tenant/' + tenantId + '/poster.png'
-      }
-      module.exports.getSucessResponse(res, 'api.tenant.info', responseObj)
+      async.parallel({
+        logo: function (callback) {
+          fs.stat(path.join(__dirname, '../tenant', tenantId, 'logo.png'), function (err, stat) {
+            callback(null, stat)
+          })
+        },
+        poster: function (callback) {
+          fs.stat(path.join(__dirname, '../tenant', tenantId, 'poster.png'), function (err, stat) {
+            callback(null, stat)
+          })
+        },
+        favicon: function (callback) {
+          fs.stat(path.join(__dirname, '../tenant', tenantId, 'favicon.ico'), function (err, stat) {
+            callback(null, stat)
+          })
+        }
+      }, function (err, results) {
+        responseObj.logo = baseUrl + (results.logo ? '/tenant/' + tenantId + '/logo.png' : '/common/images/sunbird_logo.png')
+        responseObj.poster = baseUrl + (results.poster ? '/tenant/' + tenantId + '/poster.png' : '/common/images/sunbird_logo.png')
+        responseObj.favicon = baseUrl + (results.favicon ? '/tenant/' + tenantId + '/favicon.ico' : '/common/images/favicon.ico')
+        module.exports.getSucessResponse(res, 'api.tenant.info', responseObj)
+      })
     } else {
       module.exports.getSucessResponse(res, 'api.tenant.info', responseObj)
     }
@@ -52,24 +58,6 @@ module.exports = {
       },
       'responseCode': 'OK',
       'result': result
-    })
-    res.end()
-  },
-  getErrorResponse: function (res) {
-    res.status(404)
-    res.send({
-      'id': 'api.error',
-      'ver': '1.0',
-      'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
-      'params': {
-        'resmsgid': uuidv1(),
-        'msgid': null,
-        'status': 'failed',
-        'err': 'NOT_FOUND',
-        'errmsg': 'Unable to find resourse requested.'
-      },
-      'responseCode': 'NOT_FOUND',
-      'result': {}
     })
     res.end()
   }
