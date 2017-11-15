@@ -14,8 +14,8 @@
         <div class="header padding-top-10 announcementCard-header" ng-if="announcementDetails.details.title">
             {{announcementDetails.details.title}}
         </div>
-        <div class="ng-binding annOrgName padding-top-10" ng-if="announcementDetails.sourceid">
-            {{announcementDetails.sourceid}}
+        <div class="ng-binding annOrgName padding-top-10" ng-if="announcementDetails.details.from">
+            {{announcementDetails.details.from}}
         </div>
         <div class="padding-top-20 announcement-description" ng-if="announcementDetails.details.description">
             {{announcementDetails.details.description}}
@@ -48,24 +48,24 @@
         </div>
         <div class="sixteen wide column margin-bottom-20 padding-top-20">
             <div class="ui items">
-                <div class="ui item box" ng-repeat="attachment in announcementDetails.attachments track by $index">
+                <div class="ui item box" ng-repeat="attachmentJson in announcementDetails.attachments track by $index" ng-init="attachment =  parJson(attachmentJson)">
                     <div class="ui tiny image">
                         <img src="/common/images/default.png">
                         </img>
                     </div>
                     <div class="middle aligned content">
                         <div class="ui float-ContentRight">
-                            <a class="ui primary basic button announcementButton" href="{{attachment.downloadURL}}" target="_blank">
+                            <a class="ui primary basic button announcementButton" href="{{attachment.link}}" target="_blank">
                                 <span class="announcementButtonText">
                                     {{$root.frmelmnts.btn.anncmntdtlsview}}
                                 </span>
                             </a>
                         </div>
                         <p class="annAttaFilename">
-                            {{attachment.title}}
+                            {{attachment.name}}
                         </p>
-                        <p class="annAttaFilesize" ng-if="attachment.filesize">
-                            {{attachment.filesize}}
+                        <p class="annAttaFilesize" ng-if="attachment.size">
+                            {{attachment.size}}
                         </p>
                     </div>
                 </div>
