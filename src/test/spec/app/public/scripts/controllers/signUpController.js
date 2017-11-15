@@ -27,6 +27,12 @@ describe('SignUpCtrl', function () {
     signUpCtrl,
     signUpResponse = {'id': 'api.user.create', 'ver': 'v1', 'ts': '2017-11-14 06:04:00:499+0000', 'params': {'resmsgid': null, 'msgid': '00287764-3c50-41d8-8b6e-c2877cd03657', 'err': null, 'status': 'success', 'errmsg': null}, 'responseCode': 'OK', 'result': {'response': 'SUCCESS', 'accessToken': null, 'userId': '6220d9c2-79f5-4471-b3da-1d5082dedc4b'}},
     signUpResponseFail = {'id': 'api.content.flag', 'ver': '1.0', 'ts': '2017-10-05T10:50:48.801Z', 'params': {'resmsgid': '0c466d10-a9bb-11e7-8938-e1607b8b88ae', 'msgid': null, 'status': 'failed', 'err': 'ERR_GRAPH_SEARCH_UNKNOWN_ERROR', 'errmsg': 'Error'}, 'responseCode': 'RESOURCE_NOT_FOUND', 'result': {}}
+  beforeEach(function () {
+    setFixtures('<form autocomplete="off" id="signUpForm" class="ui form">' +
+        '<input type="text" name="userName" placeholder="eg:user.name , min 5 character required" ng-model="newUser.userName">' +
+        '<input type="password" name="password" placeholder="Password" ng-model="newUser.password" />' +
+        '</form>')
+  })
   beforeEach(inject(function ($rootScope, _$stateParams_, _signUpService_, _toasterService_, _$timeout_,
              _$state_, _$q_, $controller, $compile, $templateCache) {
     rootScope = $rootScope
