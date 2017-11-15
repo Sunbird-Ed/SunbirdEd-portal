@@ -12,6 +12,8 @@ let uuidv1 = require('uuid/v1')
 let dateFormat = require('dateformat')
 let webService = require('request')
 let envVariables = require('../environmentVariablesHelper.js')
+let ApiInterceptor = require('sb_api_interceptor')
+
 
 class AnnouncementController {
 
@@ -291,7 +293,6 @@ class AnnouncementController {
    * @return  {[type]}  [description]
    */
   __getAnnouncementTypes(requestObj) {
-    console.log("announcementTypes")
     return new Promise((resolve, reject) => {
       let query = {
         table: this.objectStoreRest.MODEL.ANNOUNCEMENTTYPE,
@@ -299,7 +300,6 @@ class AnnouncementController {
           'rootorgid': _.get(requestObj, 'body.request.rootorgid')
         }
       }
-      console.log("query",query)
       this.objectStoreRest.findObject(query)
         .then((data) => {
           if (!_.isObject(data)) {
@@ -335,7 +335,14 @@ class AnnouncementController {
                     status: this.statusConstant.CANCELLED
                 }
             }
-            var status = await (this.__checkPermisionForCancel()(requestObj));
+            let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
+            let tokenDetails = await(this.__getTokenDetails(authUserToken));
+            let status;
+            if (tokenDetails) {
+                status = await (this.__checkPermission()(requestObj, tokenDetails.userId, _.get(requestObj, 'body.request.announcenmentid')));
+            }else{
+                return {msg: 'UNAUTHORIZE_USER', status: 401 }
+            }
             return new Promise((resolve, reject) => {
                 if (status) {
                     this.objectStoreRest.updateObjectById(query)
@@ -361,7 +368,7 @@ class AnnouncementController {
                         })
                 } else {
                     reject({
-                        msg: 'unable to cancel the announcement',
+                        msg: 'UNAUTHORIZE_USER',
                         statusCode: HttpStatus.INTERNAL_SERVER_ERROR
                     })
                 }
@@ -369,19 +376,6 @@ class AnnouncementController {
         })
     }
 
-  __checkPermisionForCancel() {
-      return async((requestObj) => {
-          if (requestObj) {
-              requestObj.params = {};
-              let userId = _.get(requestObj, 'body.request.userid');
-              requestObj.params.id = _.get(requestObj, 'body.request.announcenmentid');
-              var response = await (this.getAnnouncementById(requestObj));
-              return response.userid === userId ? true : false
-          }else{
-            return false;
-          }
-      });
-  }
 
     /**
     * Get inbox of announcements for a given user
@@ -397,6 +391,11 @@ class AnnouncementController {
     __getUserInbox() {
         return async((requestObj) => {
             let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
+
+            let tokenDetails = await(this.__getTokenDetails(authUserToken));
+            if(tokenDetails){
+              requestObj.body.request.userId = tokenDetails.userId
+            }
 
             let userProfile = await(this.__getUserProfile({ id: _.get(requestObj, 'body.request.userId') }, authUserToken))
 
@@ -455,14 +454,22 @@ class AnnouncementController {
         return new Promise((resolve, reject) => {
 
             // validate request
-            let request = this.__validateOutboxRequest(requestObj)
+            let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
+            let tokenDetails = await (this.__getTokenDetails(authUserToken));
+            if (tokenDetails) {
+                requestObj.body.request.userId = tokenDetails.userId
+            }else{
+              reject({msg:'UNAUTHORIZE_USER', statusCode: 401})
+            }
+
+            let request = this.__validateOutboxRequest(requestObj.body)
             if (!request.isValid) throw { msg: request.error, statusCode: HttpStatus.BAD_REQUEST }
 
             // build query
             let query = {
                 table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
                 query: {
-                    'userid': _.get(requestObj, 'request.userId')
+                    'userid': _.get(requestObj, 'body.request.userId')
                 }
             }
             let metrics_clone = undefined;
@@ -650,12 +657,19 @@ class AnnouncementController {
     __received(requestObj) {
         return async((requestObj) => {
 
+            let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
+            let tokenDetails = await(this.__getTokenDetails(authUserToken));
+            if(tokenDetails){
+              requestObj.body.request.userId = tokenDetails.userId
+            }else{
+              return{'msg':'UNAUTHORIZE_USER', statusCode:401}
+            }
             // validate request
-            let request = this.__validateMetricsRequest(requestObj)
+            let request = this.__validateMetricsRequest(requestObj.body)
             if (!request.isValid) throw { msg: request.error, statusCode: HttpStatus.BAD_REQUEST }
 
             try {
-                var metricsData = await (this.__createMetrics(requestObj.request, this.metricsActivityConstant.RECEIVED))
+                var metricsData = await (this.__createMetrics(requestObj.body.request, this.metricsActivityConstant.RECEIVED))
                 return {metrics: metricsData.data}
             } catch (error) {
                 throw { msg: 'unable to update status!', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
@@ -679,11 +693,18 @@ class AnnouncementController {
         return async((requestObj) => {
 
             // validate request
-            let request = this.__validateMetricsRequest(requestObj)
+            let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
+            let tokenDetails = await(this.__getTokenDetails(authUserToken));
+            if(tokenDetails){
+              requestObj.body.request.userId = tokenDetails.userId
+            }else{
+              return{'msg':'UNAUTHORIZE_USER', statusCode:401}
+            }
+            let request = this.__validateMetricsRequest(requestObj.body)
             if (!request.isValid) throw { msg: request.error, statusCode: HttpStatus.BAD_REQUEST }
 
             try {
-                var metricsData = await (this.__createMetrics(requestObj.request, this.metricsActivityConstant.READ))
+                var metricsData = await (this.__createMetrics(requestObj.body.request, this.metricsActivityConstant.READ))
                 return {metrics: metricsData.data}
             } catch (error) {
                 throw { msg: 'unable to update status!', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
@@ -757,10 +778,26 @@ class AnnouncementController {
      *
      * @return  {[type]}              [description]
      */
-    getResend(requestObj) {
-        return this.__getAnnouncementById(requestObj)
+    getResend() {
+        return async((requestObj) => {
+            let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
+            let tokenDetails = await (this.__getTokenDetails(authUserToken));
+            let status;
+            if (tokenDetails) {
+                status = await (this.__checkPermission()(requestObj, tokenDetails.userId, requestObj.params.announcementId));
+                if (status) {
+                    return this.__getAnnouncementById(requestObj)
+                }else{
+                  return {msg:'UNAUTHORIZE_USER', statusCode:401}
+                }
+            } else {
+                return {
+                    msg: 'UNAUTHORIZE_USER',
+                    status: 401
+                }
+            }
+        })
     }
-
 
     /**
      * Resend the edited announcement
@@ -782,6 +819,7 @@ class AnnouncementController {
           if (!options) reject('options required!')
           options.headers = options.headers || this.getRequestHeader();
           webService(options, (error, response, body) => {
+            console.log("responseCode",response.statusCode)
               if (error || response.statusCode >= 400) {
                   reject(error)
               } else {
@@ -849,5 +887,48 @@ class AnnouncementController {
         }
     })
   }
+  __checkPermission() {
+      return async((requestObj, userid, announcementId) => {
+          if (requestObj) {
+              requestObj.params = {};
+              requestObj.params.id = announcementId
+              var response = await (this.getAnnouncementById(requestObj));
+              return response.userid === userid ? true : false
+          } else {
+              return false;
+          }
+      });
+  }
+
+    __getTokenDetails(authUserToken) {
+        return new Promise((resolve, reject) => {
+            var keyCloak_config = {
+                'authServerUrl': process.env.sunbird_keycloak_auth_server_url ? process.env.sunbird_keycloak_auth_server_url : 'https://dev.open-sunbird.org/auth',
+                'realm': process.env.sunbird_keycloak_realm ? process.env.sunbird_keycloak_realm : 'sunbird',
+                'clientId': process.env.sunbird_keycloak_client_id ? process.env.sunbird_keycloak_client_id : 'portal',
+                'public': process.env.sunbird_keycloak_public ? process.env.sunbird_keycloak_public : true
+            }
+
+            var cache_config = {
+                stroe: process.env.sunbird_cache_store ? process.env.sunbird_cache_store : 'memory',
+                ttl: process.env.sunbird_cache_ttl ? process.env.sunbird_cache_ttl : 1800
+            }
+            if (authUserToken) {
+                var apiInterceptor = new ApiInterceptor(keyCloak_config, cache_config)
+                apiInterceptor.validateToken(authUserToken, function(err, token) {
+                    if (token) {
+                        resolve(token)
+                    } else {
+                        resolve(false)
+                    }
+                })
+            } else {
+                resolve(false)
+            }
+        })
+    }
+
+
+
  }
 module.exports = new AnnouncementController()
