@@ -94,6 +94,7 @@ function isCreateRolePresent(userProfile, sourceid) {
 function validateRoles() {
     return async((requestObj, responseObj, next, config) => {
         let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
+        console.log("validateRoles",config);
         try {
             // TODO: verify  Is logged in userid matching with senderid
             let userProfile = await (announcementController.__getUserProfile({
@@ -157,6 +158,7 @@ function validate(requestObj, responseObj, next, keycloak) {
             }
         })
     } else {
+        console.log("keycloak validation")
         if (keycloak) {
             keycloak.protect()(requestObj, responseObj, next)
         } else {
@@ -285,7 +287,7 @@ module.exports = function(keycloak) {
         router.post('/resend', (requestObj, responseObj, next) => {
             validate(requestObj, responseObj, next, keycloak)
         }, (requestObj, responseObj, next) => {
-           let config = {userid: _.get(requestObj, 'body.request.userid')} 
+           let config = {userid: _.get(requestObj, 'body.request.createdBy')} 
             validateRoles()(requestObj, responseObj, next, config)
         }, (requestObj, responseObj, next) => {
             announcementController.resend(requestObj)
