@@ -30,6 +30,7 @@ angular.module('playerApp').component('geo', {
                 if (_.has(config, instance.keyName)) {
                     instance.initialize(config);
                 }
+                $rootScope.$on("component:update", instance.updateItems)
             });
         };
         /**
@@ -44,6 +45,28 @@ angular.module('playerApp').component('geo', {
             });
             config[this.keyName].adopter ? this.validateAdopter(config[this.keyName]) : console.error("Adopter is required")
         };
+
+        this.updateItems = function(e, selItems){
+            var config = instance.getConfig()
+            var service = $injector.get(config.geo.service)
+            var request = {id:$rootScope.rootOrgId}
+            service.getItems(request).then(function(response) {
+                console.log(response)
+                if (response && response.responseCode === 'OK') {
+                    var items = response.result.response
+                    _.forEach(items,function(item){
+                        if(selItems.indexOf(item.id) !== -1){
+                            item.selected = true
+                        }
+                    })
+                    instance.renderItems(items);
+                } else {
+                    console.error("Locations are not found")
+                }
+            }).catch(function(error) {
+                console.error("Unable to fetch the locations",error)
+            })
+        }
 
 
         /**
