@@ -139,4 +139,43 @@ angular.module('playerApp')
 		  }
 		  return httpCall('/api/announcement/v1/received', req, 'POST')
 		}
+
+		/**
+         * @method deleteAnnouncement
+         * @desc Send announcementId to cancel annoucement API
+         * @memberOf Services.announcementService
+         * @param {string}  announcementId - Announcement Id
+         * @returns {object} returns response of API
+         * @instance
+         */
+        this.deleteAnnouncement = function(announcementId) {
+            var URL = '/api/v1/announcement/cancel/' + announcementId
+            return httpCall(URL, {}, 'GET', {})
+        }
+
+        /**
+         * @method getResend
+         * @desc Send announcementId to get resend API
+         * @memberOf Services.announcementService
+         * @param {string}  announcementId - Announcement Id
+         * @returns {object} returns response of API
+         * @instance
+         */
+        this.getResend = function(announcementId) {
+            var URL = '/api/announcement/v1/resend/' + announcementId
+            return httpCall(URL, {}, 'GET', {})
+        }
+
+        /**
+         * @method resendAnnouncement
+         * @desc Resend announcement
+         * @memberOf Services.announcementService
+         * @param {object}  requestBody - Announcement object
+         * @returns {object} returns response of API
+         * @instance
+         */
+        this.resendAnnouncement = function(requestBody) {
+            var URL = '/api/announcement/v1/resend'
+            return httpCall(URL, requestBody, 'POST', {})
+        }
   }])
