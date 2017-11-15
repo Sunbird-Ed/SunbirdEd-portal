@@ -159,8 +159,8 @@ describe('Service: announcementService', function() {
     it('Create announcement get success', function() {
       spyOn(announcementService, 'createAnnouncement').and.returnValue(deferred.promise)
       deferred.resolve(annTestData.createAnnouncement.successResponce)
-      var successData = { "id": "api.plugin.announcement.create", "ver": "1.0", "ts": "2017-11-13 12:31:09:794+0000", "params": { "resmsgid": "872d4c20-c86e-11e7-a0fa-0d6c238048d7", "msgid": null, "status": "successful", "err": "", "errmsg": "" }, "responseCode": "OK", "result": { "announcement": { "id": "87222890-c86e-11e7-a0fa-0d6c238048d7" } } }
-      var response = announcementService.createAnnouncement(successData).$$state.value
+      var successReq= {"request":{"sourceId":"0123673689120112640","createdBy":"159e93d1-da0c-4231-be94-e75b0c226d7c","type":"Circular","links":["http://yahoo.com"],"title":"Test title for announcement 9011111111111111111","description":"Test description for announcement 90","target":{"geo":{"ids":["0123668627050987529"]}},"from":"test user"}}
+      var response = announcementService.createAnnouncement(successReq).$$state.value
       expect(response).toBe(annTestData.createAnnouncement.successResponce)
     })
 
@@ -191,6 +191,31 @@ describe('Service: announcementService', function() {
       spyOn(announcementService, 'getDefinitions').and.callThrough();
       announcementService.getDefinitions();
       expect(announcementService.getDefinitions).toBeDefined();
+    })
+
+    it('Delete announcement', function() {
+      spyOn(announcementService, 'deleteAnnouncement').and.returnValue(deferred.promise)
+      deferred.resolve(annTestData.deleteAnnouncement.successResponse)
+      expect(announcementService.deleteAnnouncement).toBeDefined()
+      var response = announcementService.deleteAnnouncement('9cfc4c90-c616-11e7-92f6-c50322845811').$$state.value
+      expect(response).toBe(annTestData.deleteAnnouncement.successResponse)
+    })
+
+    it('Resend announcement', function() {
+      spyOn(announcementService, 'resendAnnouncement').and.returnValue(deferred.promise)
+      deferred.resolve(annTestData.resendAnnouncement.successResponse)
+      var requestBody = {"request":{"sourceId":"0123673908687093760","createdBy":"d56a1766-e138-45e9-bed2-a0db5eb9696a","type":"Circular","links":["http://yahoo.com","http://google.com","http://gmail.com"],"title":"Test title for announcement 001","description":"Test description for announcement 001","target":{"geo":{"ids":["0123668622585610242","0123668627050987529"]}},"from":"test user"}}
+      expect(announcementService.resendAnnouncement).toBeDefined()
+      var response = announcementService.resendAnnouncement(requestBody).$$state.value
+      expect(response).toBe(annTestData.resendAnnouncement.successResponse)
+    })
+
+    it('get resend announcement', function() {
+      spyOn(announcementService, 'getResend').and.returnValue(deferred.promise)
+      deferred.resolve(annTestData.getResend.successResponse)
+      expect(announcementService.getResend).toBeDefined()
+      var response = announcementService.getResend('90ae7cf0-c5e0-11e7-8744-852d6ada097c').$$state.value
+      expect(response).toBe(annTestData.getResend.successResponse)
     })
   })
 })

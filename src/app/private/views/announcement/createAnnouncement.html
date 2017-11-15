@@ -6,7 +6,8 @@
         <div class="ten wide column">
           <span class="ui header">
             <span class="ui" ng-show="createAnn.stepNumber == 1">
-              <span class="text announcementHeadingSection">{{$root.frmelmnts.lbl.createnewanncmnt}}</span>
+              <span class="text announcementHeadingSection" ng-if="!createAnn.editAction">{{$root.frmelmnts.lbl.createnewanncmnt}} </span>
+              <span class="text announcementHeadingSection" ng-if="createAnn.editAction">{{'Edit Announcement'}} </span>
           <br/>
           <span class="createAnnHeaderDesc">{{$root.frmelmnts.lbl.createnewanncmntdesc}}</span>
           </span>
@@ -49,11 +50,17 @@
                     <p ng-show="announcementForm.title.$error.maxlength" class="createAnnErrorMsg">Title is too long</p>
                   </div>
                 </div>
-                <div class="field required dropdown-margin-left">
+                <!--<div class="field required dropdown-margin-left">
                   <label>{{$root.frmelmnts.lbl.anncmntfrom}}</label>
                   <select name="announcementFrom" class="ui fluid dropdown" id="orgDropdown" ng-options="sender for sender in createAnn.senderlist" ng-model="createAnn.data.from">
                     <option value="">{{$root.frmelmnts.instn.t0050}}</option>
                   </select>
+                </div>-->
+                 <div class="field dropdown-margin-left">
+                  <label>{{$root.frmelmnts.lbl.anncmntfrom}}</label>
+                  <div class="field">
+                    <input type="text" name="from" placeholder="{{$root.frmelmnts.lbl.anncmntfromDesc}}" ng-model="createAnn.data.from" ng-change="createAnn.enableRecepientBtn()">
+                  </div>
                 </div>
                 <div class="field required dropdown-margin-left">
                   <label>{{$root.frmelmnts.lbl.anncmnttype}}</label>
@@ -84,7 +91,7 @@
                   <span ng-click="createAnn.addNewLink()">
                         <i class="plus icon createAnnBlueClass cursor-pointer"></i>
                         <span ng-if="!createAnn.showUrlField">
-                          <span class="cursor-pointer createAnnBlueClass">{{$root.frmelmnts.lbl.anncmntaddlink}}</span><span>{{$root.frmelmnts.lbl.anncmntaddlinkdesc}}</span>
+                          <span class="cursor-pointer createAnnBlueClass">{{$root.frmelmnts.lbl.anncmntaddlink}} </span><span>{{$root.frmelmnts.lbl.anncmntaddlinkdesc}}</span>
                   </span>
                   <span ng-if="createAnn.showUrlField">
                           <span class="cursor-pointer createAnnBlueClass">{{$root.frmelmnts.lbl.anncmntaddmorelink}}</span>
@@ -128,7 +135,8 @@
     </button>
     <div class="ui primary button" ng-if="createAnn.stepNumber == 2" ng-click="createAnn.confirmRecipients();">{{$root.frmelmnts.btn.anncmntconfirmrecipients}}</div>
     <div class="ui primary button" ng-if="createAnn.stepNumber == 3" ng-click="createAnn.previewAnn();createAnn.stepNumber = 4;">{{$root.frmelmnts.btn.anncmntpreview}}</div>
-    <div class="ui primary button" ng-if="createAnn.stepNumber == 4" id="sendAnnouncement" ng-click=" createAnn.saveAnnouncement(createAnn.data)">{{$root.frmelmnts.btn.anncmntsendanncmnt}}</div>
+    <div class="ui primary button" ng-if="createAnn.stepNumber == 4 && !createAnn.editAction" id="sendAnnouncement" ng-click="createAnn.saveAnnouncement(createAnn.data)">{{$root.frmelmnts.btn.anncmntsendanncmnt}}</div>
+    <div class="ui primary button" ng-if="createAnn.stepNumber == 4 && createAnn.editAction" id="resendAnnouncement" ng-click="createAnn.resendAnnouncement(createAnn.data)">RESEND ANNOUNCEMENT</div>
     <div ng-if="createAnn.stepNumber == 1" class="ui primary button" ng-class="{'disabled': createAnn.disableBtn === true || announcementForm.$invalid}" ng-click="createAnn.selectRecipients();createAnn.stepNumber = 2;">{{$root.frmelmnts.btn.anncmntselectrecipients}}</div>
   </div>
 </div>
@@ -182,6 +190,35 @@
           </button>
           <button class="ui primary basic button announcementButton btn-width-34 deny">
             <span class="announcementButtonText">{{$root.frmelmnts.btn.no}}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Announcement resent success modal -->
+<div class="ui modal small" id="announcementResendModal">
+  <i class="close icon"></i>
+  <div class=" ui segment margin-top-10">
+    <div class="content">
+      <div class="ui grid">
+        <div class="ui centered grid">
+          <div class="row">
+            <i class="checkmark icon big circular createAnnGrayShade"></i>
+          </div>
+          <div class="row">
+            <span class="dashBoardSectionHeading">Announcement Resent</span>
+          </div>
+          <div class="">
+            <span class="createAnnGrayShade line-height-20">Your announcement has been resent to all the choosen recipients.</span>
+          </div>
+        </div>
+        <br/>
+        <div class="row ui two column centered grid margin-top-20 actions">
+          <button class="ui primary basic button announcementButton btn-width-34" ng-click="announcementOutboxData.closeModal('announcementResendModal')">
+            <span class="announcementButtonText">GOT IT</span>
           </button>
         </div>
       </div>
