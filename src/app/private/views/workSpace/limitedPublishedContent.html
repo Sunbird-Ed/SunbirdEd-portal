@@ -1,6 +1,6 @@
 <div class="ui grid">
     <div class="twelve wide column">
-        <div ng-init="limitedPublishedContent.getlimitedpublishedContent()">
+        <div ng-init="limitedPublishedContent.getlimitedpublishedContent();contentModelSetBackLink();">
             <div ng-if="!limitedPublishedContent.loader.showLoader ">
                 <div class="ui three stackable cards " ng-if="limitedPublishedContent.limitedpublishedContentData.length> 0">
                     <div class="card" ng-repeat="item in limitedPublishedContent.limitedpublishedContentData track by $index" ng-init="$last && limitedPublishedContent.initTocPopup()">
