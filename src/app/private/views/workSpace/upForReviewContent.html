@@ -1,6 +1,6 @@
 <div class="ui grid">
     <div class="twelve wide column ">
-        <div ng-init="upForReviewContent.getUpForReviewContent()">
+        <div ng-init="upForReviewContent.getUpForReviewContent();contentModelSetBackLink();">
             <div ng-if="!upForReviewContent.loader.showLoader">
                 <div class="ui three stackable cards" ng-if="!upForReviewContent.loader.showLoader && upForReviewContent.upForReviewContentData.length > 0">
                     <div class="link card mouse-pointer" ng-repeat="item in upForReviewContent.upForReviewContentData track by $index" ng-click="upForReviewContent.openContentPlayer(item)" ng-init="$last && upForReviewContent.initTocPopup()">
