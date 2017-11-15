@@ -250,26 +250,19 @@ angular.module('playerApp')
                 }
             };
 
-            // update basic Info
+          // update basic Info
             profile.webLink = function () {
                 if (profile.user.webPages) {
-                    var isSocialMedia = _.isEqual(
-                        profile.basicProfile.socialMedia,
-                        profile.user.socialMedia
-                    );
-                    if (!isSocialMedia) {
                         var socialMediaLinks = [];
                         Object.keys(profile.user.socialMedia).forEach(function (key) {
                             if (profile.user.socialMedia[key].url.length) {
                                 socialMediaLinks.push({
                                     type: key,
-                                    url: profile.user.socialMedia[key].url.replace('/', '')
+                                    url: profile.user.socialMedia[key].url
                                 });
                             }
                         });
                         return socialMediaLinks;
-                    }
-                    return [];
                 }
                 return [];
             };
@@ -294,9 +287,7 @@ angular.module('playerApp')
                         basicInfo.email = profile.user.email;
                     }
                     var webPages = profile.webLink();
-                    if (webPages.length) {
-                        profile.webPages = webPages;
-                    }
+                    profile.webPages = webPages;
 
                     basicInfo.webPages = profile.webPages;
 
