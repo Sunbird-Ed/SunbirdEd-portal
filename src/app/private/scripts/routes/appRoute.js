@@ -768,6 +768,7 @@ angular.module('playerApp')
         },
         onEnter: function ($stateParams, $rootScope, routeHelperService) {
           $rootScope.homeActive = 'active'
+          $rootScope.courseActive = ' '
           $rootScope.isPlayerPage = true
           routeHelperService.loadRouteConfig('announcementOutbox', null)
         },
@@ -786,6 +787,7 @@ angular.module('playerApp')
         onEnter: function ($stateParams, $rootScope, routeHelperService) {
           $rootScope.homeActive = 'active'
           $rootScope.isPlayerPage = true
+          $rootScope.courseActive = ' '
           routeHelperService.loadRouteConfig('announcementInbox', null)
         },
         onExit: function ($rootScope) {
