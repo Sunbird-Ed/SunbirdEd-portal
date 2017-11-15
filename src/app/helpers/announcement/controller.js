@@ -369,7 +369,7 @@ class AnnouncementController {
                 } else {
                     reject({
                         msg: 'UNAUTHORIZE_USER',
-                        statusCode: HttpStatus.INTERNAL_SERVER_ERROR
+                        statusCode: 401
                     })
                 }
             })

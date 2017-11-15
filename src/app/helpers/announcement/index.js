@@ -107,21 +107,12 @@ function validateRoles() {
             }
         } catch (error) {
             if (error === 'USER_NOT_FOUND') {
-                responseObj.status(400).json({
-                    'error': 'USER_NOT_FOUND',
-                    statusCode: 400
-                })
+                sendErrorResponse(responseObj, '', "USER_NOT_FOUND", 401)
             } else if (error === 'UNAUTHORIZE_USER') {
-                responseObj.status(400).json({
-                    'error': 'UNAUTHORIZE_USER',
-                    statusCode: 400
-                })
+                 sendErrorResponse(responseObj, '', "UNAUTHORIZE_USER", 401)
             } else {
                 console.log("Error", error);
-                responseObj.status(400).json({
-                    'error': 'NO_CREATE_ACCESS',
-                    statusCode: 400
-                })
+                 sendErrorResponse(responseObj, '', "UNAUTHORIZE_USER", 401)
             }
         }
     })
@@ -135,19 +126,13 @@ function validate() {
             if (tokenDetails) {
                 next()
             } else {
-                responseObj.status(400).json({
-                    'error': 'UNAUTHORIZED',
-                    statusCode: 400
-                })
+                sendErrorResponse(responseObj, '', "UNAUTHORIZE_USER", 401)
             }
         } else {
             if (keycloak) {
                 keycloak.protect()(requestObj, responseObj, next)
             } else {
-                responseObj.status(400).json({
-                    'error': 'UNAUTHORIZED',
-                    statusCode: 400
-                })
+                sendErrorResponse(responseObj, '', "UNAUTHORIZE_USER", 401)
             }
         }
     });
