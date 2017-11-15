@@ -213,4 +213,17 @@ describe('Controller: createAnnouncementCtrl', function () {
     createAnn.saveAnnouncement(createAnn.data)
     done()
   })
+
+    describe('Resend announcement', function() {
+      it('success', function() {
+        spyOn(announcementService, 'resendAnnouncement').and.returnValue(deferred.promise)
+        deferred.resolve(announcementTestData.resendAnnouncement.successResponse)
+        announcementTestData.resendAnnouncement.successResponse.data = announcementTestData.resendAnnouncement.successResponse
+        var requestBody = {"sourceid":"0123673908687093760","createddate":"2017-11-10 11:59:54:879+0530","details":{"description":"Test description for announcement 87","from":"test user","title":"Test title for announcement 87","type":"Circular"},"links":["http://yahoo.com"],"id":"90ae7cf0-c5e0-11e7-8744-852d6ada097c","userid":"d56a1766-e138-45e9-bed2-a0db5eb9696a","target":{"geo":{"ids":["0123668622585610242","0123668627050987529"]}},"status":"cancelled"}
+        expect(createAnn.resendAnnouncement).toBeDefined()
+        createAnn.resendAnnouncement(requestBody)
+        expect(announcementService.resendAnnouncement).toHaveBeenCalled()
+        scope.$apply()
+      })
+  })
 })
