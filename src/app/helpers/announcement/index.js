@@ -37,138 +37,6 @@ function uploadFileFilter(req, file, cb) {
     })
 }
 
-// router.post('/create', (requestObj, responseObj) => {
-//   announcementController.create(requestObj)
-//     .then((data) => {
-//       sendSuccessResponse(responseObj, 'create', data, HttpStatus.CREATED)
-//     })
-//     .catch((err) => {
-//       sendErrorResponse(responseObj, 'create', err.msg, err.statusCode)
-//     })
-// })
-
-// router.get('/get/:id', (requestObj, responseObj) => {
-//   announcementController.getAnnouncementById(requestObj)
-//     .then((data) => {
-//       sendSuccessResponse(responseObj, 'get.id', data, HttpStatus.OK)
-//     })
-//     .catch((err) => {
-//       sendErrorResponse(responseObj, 'get.id', err.msg, err.statusCode)
-//     })
-// })
-
-// router.delete('/cancel', (requestObj, responseObj) => {
-//   announcementController.cancelAnnouncementById(requestObj)
-//     .then((data) => {
-//       sendSuccessResponse(responseObj, 'cancel.id', data, HttpStatus.OK)
-//     })
-//     .catch((err) => {
-//       sendErrorResponse(responseObj, 'cancel.id', err.msg, err.statusCode)
-//     })
-// })
-
-// router.post('/user/inbox', (requestObj, responseObj) => {
-//   announcementController.getUserInbox(requestObj)
-//     .then((data) => {
-//       sendSuccessResponse(responseObj, 'user.inbox', data, HttpStatus.OK)
-//     })
-//     .catch((err) => {
-//       sendErrorResponse(responseObj, 'user.inbox', err.msg, err.statusCode)
-//     })
-// })
-
-// router.post('/user/outbox', (requestObj, responseObj) => {
-//   announcementController.getUserOutbox(requestObj.body)
-//     .then((data) => {
-//       sendSuccessResponse(responseObj, 'user.outbox', data, HttpStatus.OK)
-//     })
-//     .catch((err) => {
-//       sendErrorResponse(responseObj, 'user.outbox', err.msg, err.statusCode)
-//     })
-// })
-
-// router.post('/attachment/upload', (requestObj, responseObj) => {
-//   singleFileUpload(requestObj, responseObj, (error) => {
-//     if (error) {
-//       if (error.code == 'LIMIT_FILE_SIZE') {
-//         sendErrorResponse(responseObj, 'attachment.upload', 'file size too large! allowable max file size is ' + maxUploadFileSize, HttpStatus.BAD_REQUEST)
-//       } else if (error.code == 'INVALID_FILETYPE') {
-//         sendErrorResponse(responseObj, 'attachment.upload', error.msg, HttpStatus.BAD_REQUEST)
-//       } else {
-//         sendErrorResponse(responseObj, 'attachment.upload', 'error while uploading!', HttpStatus.INTERNAL_SERVER_ERROR)
-//       }
-//       return
-//     }
-
-//     announcementController.uploadAttachment(requestObj)
-//       .then((data) => {
-//         sendSuccessResponse(responseObj, 'attachment.upload', data, HttpStatus.OK)
-//       })
-//       .catch((err) => {
-//         sendErrorResponse(responseObj, 'attachment.upload', err.msg, err.statusCode)
-//       })
-//   })
-// })
-
-// /* router.post('/attachment/download', (requestObj, responseObj) => {
-//   announcementController.downloadAttachment(requestObj.body)
-//   .then((data) => {
-//     sendSuccessResponse(responseObj, 'attachment.download', data)
-//   })
-//   .catch((err) => {
-//     sendErrorResponse(responseObj, 'attachment.download', err.msg)
-//   })
-// }) */
-
-// router.post('/definitions', (requestObj, responseObj) => {
-//   announcementController.getDefinitions(requestObj)
-//         .then((data) => {
-//           sendSuccessResponse(responseObj, 'definitions', data, HttpStatus.OK)
-//         })
-//         .catch((err) => {
-//           sendErrorResponse(responseObj, 'definitions', err.msg, err.statusCode)
-//         })
-// })
-// router.post('/received', (requestObj, responseObj) => {
-//   announcementController.received(requestObj.body)
-//     .then((data) => {
-//       sendSuccessResponse(responseObj, 'received', data, HttpStatus.CREATED)
-//     })
-//     .catch((err) => {
-//       sendErrorResponse(responseObj, 'received', err.msg, err.statusCode)
-//     })
-// })
-
-// router.post('/read', (requestObj, responseObj) => {
-//   announcementController.read(requestObj.body)
-//     .then((data) => {
-//       sendSuccessResponse(responseObj, 'read', data, HttpStatus.CREATED)
-//     })
-//     .catch((err) => {
-//       sendErrorResponse(responseObj, 'read', err.msg, err.statusCode)
-//     })
-// })
-
-// router.get('/resend/:announcementId', (requestObj, responseObj) => {
-//   announcementController.getResend(requestObj)
-//     .then((data) => {
-//       sendSuccessResponse(responseObj, 'getresend.id', data, HttpStatus.OK)
-//     })
-//     .catch((err) => {
-//       sendErrorResponse(responseObj, 'getresend.id', err.msg, err.statusCode)
-//     })
-// })
-
-// router.post('/resend', (requestObj, responseObj) => {
-//   announcementController.resend(requestObj)
-//     .then((data) => {
-//       sendSuccessResponse(responseObj, 'resend', data, HttpStatus.CREATED)
-//     })
-//     .catch((err) => {
-//       sendErrorResponse(responseObj, 'resend', err.msg, err.statusCode)
-//     })
-// })
-
 function sendSuccessResponse(res, id, result, code = HttpStatus.OK) {
     res.status(code)
     res.send({
@@ -207,25 +75,38 @@ function sendErrorResponse(res, id, message, code = HttpStatus.BAD_REQUEST) {
     res.end()
 }
 
+function isCreateRolePresent(userProfile, sourceid) {
+    let organisationId = _.map(userProfile.organisations, "organisationId")
+    let organisation = undefined;
+    for (var i = 0; i <= organisationId.length; i++) {
+        if (organisationId[i]) {
+            organisation = _.find(userProfile.organisations, {
+                organisationId: organisationId[i]
+            })
+            if (organisation && _.indexOf(organisation.roles, CREATE_ROLE) == 1) {
+                return true
+            }
+        } else {
+            return false
+        }
+    }
+}
 function validateRoles() {
-    return async((requestObj, responseObj, next, role) => {
+    return async((requestObj, responseObj, next, config) => {
         let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
         try {
             // TODO: verify  Is logged in userid matching with senderid
             let userProfile = await (announcementController.__getUserProfile({
-                id: _.get(requestObj, 'body.request.createdBy')
+                id: config.userid
             }, authUserToken))
-            console.log("userProfile", userProfile);
-            let organisation = _.find(userProfile.organisations, {
-                organisationId: _.get(requestObj, 'body.request.sourceId')
-            })
-
-            if (_.isEmpty(organisation) || _.indexOf(organisation.roles, role) == -1) {
-                throw "User has no create access"
-            } else {
-               console.log("User have create access");
-                next()
-            }
+            let isAuthorized =  isCreateRolePresent(userProfile,config.sourceid);
+            console.log("isAuthorized",isAuthorized);
+          if(isAuthorized){
+            next()
+          }else{
+             console.log("No create access");
+             throw "User has no create access"
+          }
         } catch (error) {
             if (error === 'USER_NOT_FOUND') {
                 responseObj.status(400).json({
@@ -238,6 +119,7 @@ function validateRoles() {
                     statusCode: 400
                 })
             } else {
+               console.log("Error",error);
                 responseObj.status(400).json({
                     'error': 'NO_CREATE_ACCESS',
                     statusCode: 400
@@ -264,8 +146,8 @@ function validate(requestObj, responseObj, next, keycloak) {
     if (authUserToken) {
         var apiInterceptor = new ApiInterceptor(keyCloak_config, cache_config)
         apiInterceptor.validateToken(authUserToken, function(err, token) {
-            console.log('token', token)
             if (token) {
+              console.log("authUserToken validation is sucess");
                 next()
             } else {
                 responseObj.status(400).json({
@@ -288,9 +170,10 @@ function validate(requestObj, responseObj, next, keycloak) {
 
 module.exports = function(keycloak) {
         router.post('/create', (requestObj, responseObj, next) => {
-            validate(requestObj, responseObj, next, keycloak)
+           validate(requestObj, responseObj, next, keycloak)
         }, (requestObj, responseObj, next) => {
-            validateRoles()(requestObj, responseObj, next, CREATE_ROLE)
+           let config = {userid: _.get(requestObj, 'body.request.createdBy'),sourceid:_.get(requestObj, 'body.request.sourceId') } 
+           validateRoles()(requestObj, responseObj, next, config)
         }, (requestObj, responseObj, next) => {
             announcementController.create(requestObj)
                 .then((data) => {
@@ -314,7 +197,8 @@ module.exports = function(keycloak) {
         router.delete('/cancel', (requestObj, responseObj, next) => {
             validate(requestObj, responseObj, next, keycloak)
         }, (requestObj, responseObj, next) => {
-            validateRoles()(requestObj, responseObj, next, CREATE_ROLE)
+           let config = {userid: _.get(requestObj, 'body.request.userid')} 
+            validateRoles()(requestObj, responseObj, next, config)
         }, (requestObj, responseObj, next) => {
             announcementController.cancelAnnouncementById(requestObj)
                 .then((data) => {
@@ -352,7 +236,8 @@ module.exports = function(keycloak) {
         router.post('/definitions', (requestObj, responseObj, next) => {
             validate(requestObj, responseObj, next, keycloak)
         }, (requestObj, responseObj, next) => {
-            validateRoles()(requestObj, responseObj, next, CREATE_ROLE)
+           let config = {userid: _.get(requestObj, 'body.request.userid')} 
+            validateRoles()(requestObj, responseObj, next, config)
         }, (requestObj, responseObj, next) => {
             announcementController.getDefinitions(requestObj)
                 .then((data) => {
@@ -387,11 +272,7 @@ module.exports = function(keycloak) {
                 })
         })
 
-        router.get('/resend/:announcementId', (requestObj, responseObj, next) => {
-            validate(requestObj, responseObj, next, keycloak)
-        }, (requestObj, responseObj, next) => {
-            validateRoles()(requestObj, responseObj, next, CREATE_ROLE)
-        }, (requestObj, responseObj, next) => {
+        router.get('/resend/:announcementId',(requestObj, responseObj, next) => {
             announcementController.getResend(requestObj)
                 .then((data) => {
                     sendSuccessResponse(responseObj, 'getresend.id', data, HttpStatus.OK)
@@ -404,7 +285,8 @@ module.exports = function(keycloak) {
         router.post('/resend', (requestObj, responseObj, next) => {
             validate(requestObj, responseObj, next, keycloak)
         }, (requestObj, responseObj, next) => {
-            validateRoles()(requestObj, responseObj, next, CREATE_ROLE)
+           let config = {userid: _.get(requestObj, 'body.request.userid')} 
+            validateRoles()(requestObj, responseObj, next, config)
         }, (requestObj, responseObj, next) => {
             announcementController.resend(requestObj)
                 .then((data) => {
