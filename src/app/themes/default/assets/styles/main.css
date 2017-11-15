@@ -195,6 +195,15 @@
 .padding-bottom-none {
   padding-bottom: 0px !important;
 }
+.padding-right-none {
+  padding-right: 0px !important;
+}
+.padding-left-none {
+  padding-left: 0px !important;
+}
+.padding-10 {
+  padding: 10px !important;
+}
 .padding-left-right-0 {
   padding-left: 0px !important;
   padding-right: 0px !important;
@@ -220,6 +229,9 @@
 }
 .padding-left-25 {
   padding-left: 25px !important;
+}
+.padding-right-25 {
+  padding-right: 25px !important;
 }
 .padding-topBottom-35 {
   padding: 35px 0px!important;
@@ -1865,19 +1877,178 @@ div:focus {
   left: 10% !important;
 }
 .announcementBlueText {
-  color: #0076FE;
+  color: #009FDA;
 }
 .announcementRedText {
   color: #fc002e;
-}
-.announcementCustomside {
-  min-width: 0em !important;
-  height: 7em !important;
 }
 .announcementCardLeftBorder {
   border-radius: 10px !important;
   border-left-color: #007AFF !important;
   border-left-width: 11px !important;
+}
+.announcement-description {
+  font-family: 'sunbirdregularfont' !important;
+  font-size: 1em !important;
+}
+.annOrgName {
+  font-family: 'sunbirdregularfont' !important;
+  font-size: 1em !important;
+  color: #8b8b8c !important;
+}
+.annCreatedDate {
+  font-family: 'sunbirdregularfont' !important;
+  font-size: 1em !important;
+  color: #8b8b8c !important;
+}
+.annUrlLinks {
+  font-family: 'sunbirdregularfont' !important;
+  font-size: 0.9em !important;
+  color: #009FDA !important;
+}
+.annAttachment {
+  font-family: 'sunbirdregularfont' !important;
+  font-size: 0.9em !important;
+  color: #009FDA !important;
+}
+.annSmallText {
+  font-size: 0.8em !important;
+}
+.annType {
+  padding-top: 3px !important;
+  padding-bottom: 3px !important;
+}
+.announcementCard-header {
+  padding: 0 !important;
+  font-family: 'sunbirdboldfont' !important;
+  font-size: 1.25em !important;
+  padding-top: 5px !important;
+}
+.annLinksAttachmentsMore {
+  font-family: 'sunbirdregularfont' !important;
+  font-size: 1em !important;
+  color: #8b8b8c !important;
+}
+.annAttaFilesize {
+  font-family: 'sunbirdregularfont' !important;
+  font-size: 1em !important;
+  color: #8b8b8c !important;
+}
+.annAttaFilename {
+  font-family: 'sunbirdregularfont' !important;
+  font-size: 1.2em !important;
+}
+.showingAllSentAnn {
+  color: #4A4A4A;
+  font-family: 'sunbirdregularfont' !important;
+  font-size: 15px;
+  line-height: 19px;
+}
+.annSectionHeading {
+  font-family: 'sunbirdboldfont' !important;
+  font-size: 1.4em !important;
+}
+.announcementTableHeading {
+  color: #9b9b9b !important;
+  font-family: 'sunbirdregularfont' !important;
+  font-size: 15px !important;
+  line-height: 19px !important;
+}
+.tableListNameAnn {
+  color: #4A4A4A;
+  font-family: 'sunbirdregularfont' !important;
+  font-size: 14px;
+  line-height: 19px;
+}
+.announcementDataText {
+  color: #4A4A4A;
+  font-family: 'sunbirdregularfont' !important;
+  font-size: 15px;
+  line-height: 19px;
+}
+.announcementButton {
+  border: 1px solid #007aff !important;
+  border-radius: 4px !important;
+}
+.announcementButtonText {
+  color: #007AFF !important;
+  font-family: 'sunbirdboldfont' !important;
+  font-size: 1em !important;
+  line-height: 17px;
+}
+.announcementSeeAllBtn {
+  padding: 8px;
+}
+.annMarginBottom {
+  margin-bottom: -1.2em !important;
+}
+.annAttText {
+  color: #4a4a4a !important;
+  padding: -7px !important;
+  font-size: 0.9em !important;
+}
+.annMediumText {
+  font-size: 1em !important;
+  font-weight: 600 !important;
+  font-family: sunbirdmediumfont !important;
+}
+.opacity04 {
+  opacity: 0.4 !important;
+}
+.annSmallText {
+  font-size: 0.8em !important;
+}
+.annGridPadding {
+  padding: 0.9em !important;
+}
+.gray-full-width {
+  background-color: #F5F5F5;
+  padding: 15px 20px;
+  margin: 10px -20px;
+}
+.box {
+  box-shadow: 0 1px 2px 0 rgba(34, 36, 38, 0.15);
+  margin: 1rem 0;
+  padding: 1em 1em !important;
+  border-radius: .28571429rem !important;
+  border: 1px solid rgba(34, 36, 38, 0.15) !important;
+}
+.ui.modal .ui.input input.gray-background {
+  background-color: #F5F5F5 !important;
+  box-shadow: 1 1px 2px 0 rgba(34, 36, 38, 0.15) !important;
+  border: 1px solid #EEE!important;
+  border-radius: 0!important;
+  padding: 10px !important;
+}
+.margin-bottom-0 {
+  margin-bottom: -25px !important;
+}
+.width-100 {
+  width: 100%;
+}
+.announcementDetailsModal {
+  margin-top: -260px !important;
+}
+.annDetailsFormScroller {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.btn-width-26 {
+  width: 26% !important;
+}
+.search-location-icon {
+  margin-top: 2%;
+}
+.component_items {
+  padding: 1%;
+}
+.items-area {
+  height: 200px;
+  overflow-y: auto;
+}
+.checkBox-element {
+  margin-top: 10px;
+  margin-left: 10px;
 }
 .down-arrow-accordion {
   float: right !important;
@@ -3216,6 +3387,89 @@ span.dashBoardMenuItem.active {
 .ui.ordered.list .list > .item:before,
 ol.ui.list ol li:before {
   margin-left: -2.5em !important;
+}
+.createAnnHeaderDesc {
+  font-size: small;
+  color: #979797;
+}
+.createAnnStepsIndicator {
+  margin-left: 75px;
+  background-color: #f2f2f2;
+  margin-bottom: auto;
+  padding: 10px 20px;
+}
+.createAnnFormScroller {
+  max-height: 400px;
+  overflow-y: auto;
+  height: 327px;
+}
+.createAnnAttchementHolder {
+  overflow-x: hidden;
+  max-height: 330px;
+  overflow-y: auto;
+}
+.createAnnErrorMsg {
+  border-color: red !important;
+  color: red;
+  margin-top: 5px;
+}
+.createAnnErrorDiv {
+  border-color: red !important;
+  color: red;
+}
+.announcementHeadingSection {
+  font-family: 'sunbirdboldfont' !important;
+  font-size: smaller;
+}
+.ui.modal .announcementForm input.ng-invalid {
+  border-color: red !important;
+}
+.ui.modal .dropdown-margin-left .ui.dropdown > .text {
+  margin-left: -1em !important;
+}
+.dropdown-margin-left {
+  margin-left: 1px !important;
+}
+.createAnnSelectedRecepient {
+  font-size: small;
+}
+.createAnnBackBtnWidth {
+  width: 15%;
+}
+.createAnnColorGray {
+  color: #f2f2f2;
+}
+.createAnnBlueClass {
+  color: #007AFF !important;
+}
+.createAnnMargin5 {
+  margin: 5px;
+}
+.createAnnMargin4 {
+  margin: 4px;
+}
+.createAnnGrayShade {
+  color: #9b9b9b !important;
+}
+.line-height-20 {
+  line-height: 20px;
+}
+.annRecipientsSearchIcon {
+  margin-left: -10px !important;
+}
+.btn-width-34 {
+  width: 34%;
+}
+.announcementSteps {
+  margin-left: -5px;
+}
+.margin-left-17 {
+  margin-left: 17px;
+}
+.sb-createAnnFineUploaderHolder {
+  padding: 10px;
+  overflow: hidden;
+  background-color: #f2f2f2;
 }
 body {
   position: relative !important;
