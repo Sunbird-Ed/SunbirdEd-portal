@@ -5,7 +5,7 @@
         id="annInboxDiv-{{$index}}" ng-class="{'announcementCardLeftBorder': item.read === false}">
         <div>
             <p class="ui grey label annType" ng-if="item.details.type">
-                {{item.details.type}}
+                {{item.details.type | uppercase}}
             </p>
         </div>
         <div class="header announcementCard-header">

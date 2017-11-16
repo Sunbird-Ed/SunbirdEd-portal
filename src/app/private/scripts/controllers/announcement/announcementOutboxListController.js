@@ -60,7 +60,6 @@ angular.module('playerApp')
           apiResponse = apiResponse.data
           if (apiResponse && apiResponse.responseCode === 'OK' && apiResponse.result.status === 'cancelled') {
             toasterService.success('Announcement cancelled successfully.')
-            announcementOutboxData.renderAnnouncementList()
           } else {
             toasterService.error(apiResponse.params.errmsg)
           }
@@ -68,12 +67,12 @@ angular.module('playerApp')
           toasterService.error(err.data.params.errmsg)
         }).finally(function () {
           announcementOutboxData.closeModal('announcementDeleteModal')
+          announcementOutboxData.renderAnnouncementList()
         })
       }
       announcementOutboxData.getResend = function (announcementId) {
         announcementService.getResend(announcementId).then(function (apiResponse) {
           apiResponse = apiResponse.data
-          console.log(JSON.stringify(apiResponse))
           if (apiResponse && apiResponse.responseCode === 'OK') {
             if (apiResponse.hasOwnProperty('result')) {
               $rootScope.$broadcast('editAnnouncementBeforeResend', apiResponse.result)
