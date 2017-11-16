@@ -206,7 +206,7 @@ describe('Controller: createAnnouncementCtrl', function () {
     createAnn.data.title = 'test'
     createAnn.data.from = 'test'
     createAnn.data.type = 'test'
-    createAnn.data.links = {'0': 'https;//google.co.in'}
+    createAnn.linkArray = ['https;//google.co.in']
     createAnn.data.description = 'test'
     spyOn(announcementService, 'createAnnouncement').and.returnValue(deferred.promise)
     deferred.resolve(announcementTestData.createAnncmnt.saveAnncmntSuccessRes)
@@ -224,7 +224,7 @@ describe('Controller: createAnnouncementCtrl', function () {
     spyOn(createAnn, 'saveAnnouncement').and.callThrough()
     createAnn.data.title = 'test'
     createAnn.data.from = 'test'
-    createAnn.data.links = {'0': 'https;//google.co.in'}
+    createAnn.linkArray = ['https;//google.co.in']
     createAnn.data.description = 'test'
     createAnn.saveAnnouncement(createAnn.data)
     done()
@@ -247,7 +247,7 @@ describe('Controller: createAnnouncementCtrl', function () {
       expect(announcementService.resendAnnouncement).toHaveBeenCalled()
       scope.$apply()
     })
-    it('fail', function() {
+    it('fail', function () {
       spyOn(announcementService, 'resendAnnouncement').and.returnValue(deferred.promise)
       deferred.resolve(announcementTestData.resendAnnouncement.failedResponse)
       announcementTestData.resendAnnouncement.failedResponse.data = announcementTestData.resendAnnouncement.failedResponse
@@ -255,17 +255,17 @@ describe('Controller: createAnnouncementCtrl', function () {
       var response = createAnn.resendAnnouncement(announcementTestData.resendAnnouncement.requestBody)
       expect(createAnn.resendAnnouncement).toHaveBeenCalled()
       expect(response).not.toBe(announcementTestData.resendAnnouncement.failedResponse)
-      scope.$apply();
+      scope.$apply()
     })
     it('editAnnouncementBeforeResend', function () {
       scope.$broadcast('editAnnouncementBeforeResend', announcementTestData.getResend.successResponse.result)
       expect(createAnn.editAction).toBeTruthy()
-      scope.$apply();
+      scope.$apply()
     })
     it('should initialize geo component', function (done) {
-    scope.$broadcast('editAnnouncementBeforeResend', announcementTestData.getResend.successResponse.result)
-    timeout.flush(100)
-    done()
-  })
+      scope.$broadcast('editAnnouncementBeforeResend', announcementTestData.getResend.successResponse.result)
+      timeout.flush(100)
+      done()
+    })
   })
 })
