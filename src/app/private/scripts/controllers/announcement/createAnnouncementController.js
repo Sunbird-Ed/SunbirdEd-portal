@@ -153,6 +153,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
     }
     createAnn.refreshFormValues = function () {
       createAnn.disableBtn = true
+      createAnn.editAction = false
       createAnn.stepNumber = 1
       $('#announcementType').dropdown('restore defaults')
       $('#orgDropdown').dropdown('restore defaults')
@@ -333,10 +334,8 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       var requestData = {
         request: requestBody
       }
-      // console.log(JSON.stringify(requestData))
       announcementService.resendAnnouncement(requestData).then(function (apiResponse) {
         apiResponse = apiResponse.data
-        // console.log(JSON.stringify(apiResponse))
         if (apiResponse && apiResponse.responseCode === 'OK') {
           createAnn.isMetaModified = false
           createAnn.hideModel('createAnnouncementModal')
