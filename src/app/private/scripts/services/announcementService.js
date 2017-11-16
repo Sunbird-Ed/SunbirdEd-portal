@@ -1,14 +1,13 @@
 'use strict'
 
 angular.module('playerApp')
-	.service('announcementService', ['$http', function($http) {
-
-		var extensions = {
-			'application/png': 'PNG',
-			'application/pdf': 'PDF',
-			'application/jpeg': 'JPEG',
-			'application/jpg': 'JPEG'
-		}
+	.service('announcementService', ['$http', function ($http) {
+  var extensions = {
+    'application/png': 'PNG',
+    'application/pdf': 'PDF',
+    'application/jpeg': 'JPEG',
+    'application/jpg': 'JPEG'
+  }
 
 		/**
 		 * @class announcementService
@@ -26,17 +25,17 @@ angular.module('playerApp')
 		 * @param {object}  header - Header
 		 * @instance
 		 */
-		function httpCall(url, data, method) {
-			var headers = {
-				'Content-Type': 'application/json',
-			};
-			return $http({
-				method: method,
-				url: url,
-				headers: headers,
-				data: data
-			});
-		}
+  function httpCall (url, data, method) {
+    var headers = {
+      'Content-Type': 'application/json'
+    }
+    return $http({
+      method: method,
+      url: url,
+      headers: headers,
+      data: data
+    })
+  }
 
 		/**
 		 * @method getOutBoxAnnouncementList
@@ -47,14 +46,14 @@ angular.module('playerApp')
 		 * @returns {Promise} Promise object represents announcement outbox list dashboard data
 		 * @instance
 		 */
-		this.getOutBoxAnnouncementList = function(userId) {
-			var data = {
-				"request": {
-					"userId": userId
-				}
-			};
-			return httpCall('/api/announcement/v1/user/outbox', data, 'POST')
-		}
+  this.getOutBoxAnnouncementList = function (userId) {
+    var data = {
+      'request': {
+        'userId': userId
+      }
+    }
+    return httpCall('/announcement/v1/user/outbox', data, 'POST')
+  }
 
 		/**
 		 * @method getInboxAnnouncementList
@@ -65,14 +64,14 @@ angular.module('playerApp')
 		 * @returns {Promise} Promise object represents announcement inbox list dashboard data
 		 * @instance
 		 */
-		this.getInboxAnnouncementList = function(userId) {
-			var data = {
-				"request": {
-					"userId": userId
-				}
-			};
-			return httpCall('/api/announcement/v1/user/inbox', data, 'POST')
-		}
+  this.getInboxAnnouncementList = function (userId) {
+    var data = {
+      'request': {
+        'userId': userId
+      }
+    }
+    return httpCall('/announcement/v1/user/inbox', data, 'POST')
+  }
 		/**
 		 * @method getFileExtension
 		 * @desc Get file extension
@@ -81,9 +80,9 @@ angular.module('playerApp')
 		 * @returns {string} returns extension of a file
 		 * @instance
 		 */
-		this.getFileExtension = function(mimeType) {
-			return extensions[mimeType];
-		}
+  this.getFileExtension = function (mimeType) {
+    return extensions[mimeType]
+  }
 
 		/**
 		 * @method createAnnouncement
@@ -93,9 +92,9 @@ angular.module('playerApp')
 		 * @returns {object} returns response of API
 		 * @instance
 		 */
-		this.createAnnouncement = function(req) {
-			return httpCall('/api/announcement/v1/create', req, 'POST')
-		}
+  this.createAnnouncement = function (req) {
+    return httpCall('/announcement/v1/create', req, 'POST')
+  }
 
 		/**
 		 * @method getDefinitions
@@ -105,9 +104,9 @@ angular.module('playerApp')
 		 * @returns {object} returns response of API
 		 * @instance
 		 */
-		this.getDefinitions = function(req) {
-			return httpCall('/api/announcement/v1/definitions', req, 'POST')
-		}
+  this.getDefinitions = function (req) {
+    return httpCall('/announcement/v1/definitions', req, 'POST')
+  }
 
 		/**
 		 * @method readAnnouncement
@@ -117,9 +116,9 @@ angular.module('playerApp')
 		 * @returns {object} returns response of API
 		 * @instance
 		 */
-		this.readAnnouncement = function(req) {
-			return httpCall('/api/announcement/v1/read', req, 'POST')
-		}
+  this.readAnnouncement = function (req) {
+    return httpCall('/announcement/v1/read', req, 'POST')
+  }
 
 		/**
 		 * @method receivedAnnouncement
@@ -129,16 +128,16 @@ angular.module('playerApp')
 		 * @returns {object} returns response of API
 		 * @instance
 		 */
-		this.receivedAnnouncement = function(userId, AnnId) {
-			var req = {
-				"request": {
-					"userId": userId,
-					"announcementId": AnnId,
-					"channel": "web"
-				}
-			}
-			return httpCall('/api/announcement/v1/received', req, 'POST')
-		}
+  this.receivedAnnouncement = function (userId, AnnId) {
+    var req = {
+      'request': {
+        'userId': userId,
+        'announcementId': AnnId,
+        'channel': 'web'
+      }
+    }
+    return httpCall('/announcement/v1/received', req, 'POST')
+  }
 
 		/**
 		 * @method deleteAnnouncement
@@ -148,10 +147,10 @@ angular.module('playerApp')
 		 * @returns {object} returns response of API
 		 * @instance
 		 */
-		this.deleteAnnouncement = function(requestBody) {
-			var URL = '/api/announcement/v1/cancel'
-			return httpCall(URL, requestBody, 'DELETE', {})
-		}
+  this.deleteAnnouncement = function (requestBody) {
+    var URL = '/announcement/v1/cancel'
+    return httpCall(URL, requestBody, 'DELETE', {})
+  }
 
 		/**
 		 * @method getResend
@@ -161,10 +160,10 @@ angular.module('playerApp')
 		 * @returns {object} returns response of API
 		 * @instance
 		 */
-		this.getResend = function(announcementId) {
-			var URL = '/api/announcement/v1/resend/' + announcementId
-			return httpCall(URL, {}, 'GET', {})
-		}
+  this.getResend = function (announcementId) {
+    var URL = '/announcement/v1/resend/' + announcementId
+    return httpCall(URL, {}, 'GET', {})
+  }
 
 		/**
 		 * @method resendAnnouncement
@@ -174,8 +173,8 @@ angular.module('playerApp')
 		 * @returns {object} returns response of API
 		 * @instance
 		 */
-		this.resendAnnouncement = function(requestBody) {
-			var URL = '/api/announcement/v1/resend'
-			return httpCall(URL, requestBody, 'POST', {})
-		}
-	}])
+  this.resendAnnouncement = function (requestBody) {
+    var URL = '/announcement/v1/resend'
+    return httpCall(URL, requestBody, 'POST', {})
+  }
+}])
