@@ -415,7 +415,8 @@ class AnnouncementController {
                 query: {
                     // TODO: remove the below wildcard query and implement the commented specific query
                     // 'target.geo.ids': targetList
-                    "wildcard" : { "target.geo.ids" : { "value" : "*" } }
+                    "wildcard" : { "target.geo.ids" : { "value" : "*" } },
+                    "status": this.statusConstant.ACTIVE
                 }
             }
             try {
@@ -425,7 +426,7 @@ class AnnouncementController {
                         if (!_.isObject(data)) {
                             reject({ msg: 'unable to fetch announcement inbox', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
                         } else {
-                            resolve(data.data)
+                            resolve(data.data.content)
                         }
                     })
                     .catch((error) => {
