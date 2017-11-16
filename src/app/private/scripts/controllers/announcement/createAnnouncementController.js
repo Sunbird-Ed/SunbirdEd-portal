@@ -13,6 +13,8 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
     createAnn.isMetaModified = false
     createAnn.announcementType = []
     createAnn.repeatableWebLinks = []
+    createAnn.selectedReciepeient = []
+
     var getDefinitionReq = {
       'rootorgid': $rootScope.rootOrgId,
       'userid': $rootScope.userId,
@@ -136,7 +138,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       $rootScope.$emit('get:selected:items')
       if (createAnn.selectedReciepeient.length == 0) {
         createAnn.stepNumber = 2
-        toasterService.error($rootScope.messages.emsg.m0021)
+        toasterService.error($rootScope.messages.emsg.m0006)
         return
       }
       createAnn.stepNumber = 3
@@ -151,6 +153,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
     }
     createAnn.refreshFormValues = function () {
       createAnn.disableBtn = true
+      createAnn.editAction = false
       createAnn.stepNumber = 1
       $('#announcementType').dropdown('restore defaults')
       $('#orgDropdown').dropdown('restore defaults')
@@ -331,10 +334,8 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       var requestData = {
         request: requestBody
       }
-      // console.log(JSON.stringify(requestData))
       announcementService.resendAnnouncement(requestData).then(function (apiResponse) {
         apiResponse = apiResponse.data
-        // console.log(JSON.stringify(apiResponse))
         if (apiResponse && apiResponse.responseCode === 'OK') {
           createAnn.isMetaModified = false
           createAnn.hideModel('createAnnouncementModal')
