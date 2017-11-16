@@ -407,18 +407,19 @@ class AnnouncementController {
 
             //handle emty target list
             // TODO: add this validation back when data starts becoming available
-            // if (_.isEmpty(targetList)) return { count:1, announcements: [] }
+            if (_.isEmpty(targetList)) return { count:0, announcements: [] }
 
         // Query announcements where target is listed Geolocations
             let query = {
                 table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
                 query: {
                     // TODO: remove the below wildcard query and implement the commented specific query
-                    // 'target.geo.ids': targetList
-                    "wildcard" : { "target.geo.ids" : { "value" : "*" } },
+                    'target.geo.ids': targetList,
+                    // "wildcard" : { "target.geo.ids" : { "value" : "*" } },
                     "status": this.statusConstant.ACTIVE
                 }
             }
+
             try {
                 let data = await (new Promise((resolve, reject) => {
                     this.objectStoreRest.findObject(query)
@@ -435,11 +436,52 @@ class AnnouncementController {
                     })
                 }))
 
+                //Get read and received status and append to response
+                let announcementIds = []
+                _.forEach(data, (announcement, k) => {
+                    announcementIds.push(announcement.id)
+                    announcement[this.metricsActivityConstant.READ] = false
+                    announcement[this.metricsActivityConstant.RECEIVED] = false
+                })
+                let metricsData = await(this.__getMetricsForInbox(announcementIds, userProfile.id))
+
+                if (metricsData) {
+                    _.forEach(metricsData, (metricsObj, k) => {
+                        let announcementObj = _.find(data, {"id": metricsObj.announcementid})
+                        announcementObj[metricsObj.activity] = true
+                    })
+                }
+
                 return  {count:_.size(data), announcements: data}
 
             } catch(error) {
                 throw { msg: 'unable to process your request', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
             }
+        })
+    }
+
+    __getMetricsForInbox(announcementIds, userId) {
+        return new Promise((resolve, reject) => {
+            let query = {
+                table: this.objectStoreRest.MODEL.METRICS,
+                query: {
+                    "announcementid" : announcementIds,
+                    "userid": userId
+                },
+                limit: 10000
+            }
+
+            this.objectStoreRest.findObject(query)
+            .then((data) => {
+                if (!_.isObject(data)) {
+                    resolve(false)
+                } else {
+                    resolve(data.data.content)
+                }
+            })
+            .catch((error) => {
+                resolve(false)
+            })
         })
     }
 
