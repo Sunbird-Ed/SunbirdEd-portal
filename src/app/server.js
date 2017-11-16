@@ -92,7 +92,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'private')))
 
 // Announcement routing
-app.use('/api/v1/announcement', bodyParser.urlencoded({ extended: false }),
+app.use('/announcement/v1', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({limit: '10mb' }), require('./helpers/announcement')(keycloak))
 
 app.use('/private/index', function (req, res, next) {
@@ -136,15 +136,15 @@ app.all('/public/service/v1/content/*', proxy(contentURL, {
   }
 }))
 
-app.post('/private/service/v1/learner/content/v1/media/upload', proxyUtils.verifyToken(), permissionsHelper.checkPermission(), proxy(learnerURL + "content/v1/media/upload", {
+app.post('/private/service/v1/learner/content/v1/media/upload', proxyUtils.verifyToken(), permissionsHelper.checkPermission(), proxy(learnerURL + 'content/v1/media/upload', {
   limit: reqDataLimitOfContentUpload,
   proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
-  userResDecorator: function(proxyRes, proxyResData, userReq, userRes) {
-    let data = JSON.parse(proxyResData.toString('utf8'));
-    if (data.responseCode === "OK") {
-        data.success = true
+  userResDecorator: function (proxyRes, proxyResData, userReq, userRes) {
+    let data = JSON.parse(proxyResData.toString('utf8'))
+    if (data.responseCode === 'OK') {
+      data.success = true
     }
-    return JSON.stringify(data);
+    return JSON.stringify(data)
   }
 }))
 
