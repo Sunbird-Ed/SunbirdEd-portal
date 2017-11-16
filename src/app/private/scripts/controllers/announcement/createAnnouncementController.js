@@ -180,7 +180,8 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
           'ids': _.map(createAnn.selectedReciepeient, 'id')
         }
       }
-      if (requestBody.links) {
+
+      if (requestBody.links !== undefined && requestBody.links.length) {
         requestBody.links = createAnn.linkArray
       }
 
