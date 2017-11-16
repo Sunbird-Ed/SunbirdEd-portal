@@ -179,25 +179,22 @@ describe('Controller: createAnnouncementCtrl', function () {
 
   it('Shoud test single error', function (done) {
     spyOn(createAnn, 'showError').and.callThrough()
-    var showError = {'id': 'api.plugin.announcement.create', 'ver': '1.0', 'ts': '2017-11-12 14:02:11:368+0000', 'params': {'resmsgid': '141d9a80-c7b2-11e7-8175-573a15bbe3f0', 'msgid': null, 'status': 'failed', 'err': '', 'errmsg': 'UNAUTHORIZED'}, 'responseCode': 'CLIENT_ERROR', 'result': {}}
-    createAnn.showError(showError)
+    createAnn.showError(announcementTestData.createAnncmnt.showSingleError)
     done()
   })
 
   it('Shoud display multiple error message', function (done) {
     spyOn(createAnn, 'showError').and.callThrough()
-    var showError = {'id': 'api.plugin.announcement.create', 'ver': '1.0', 'ts': '2017-11-12 14:27:04:166+0000', 'params': {'resmsgid': '8de4a770-c7b5-11e7-8175-573a15bbe3f0', 'msgid': null, 'status': 'failed', 'err': '', 'errmsg': [{'field': 'request', 'description': 'sourceId is not allowed to be empty'}, {'field': 'request', 'description': 'createdBy is not allowed to be empty'}]}, 'responseCode': 'CLIENT_ERROR', 'result': {}}
-    createAnn.showError(showError)
+    createAnn.showError(announcementTestData.createAnncmnt.showMultipleErrors)
     done()
   })
 
   it('should get announcement type', function (done) {
-    var mockRes = {'id': 'api.plugin.announcement.definitions', 'ver': '1.0', 'ts': '2017-11-15 13:21:20:919+0000', 'params': {'resmsgid': 'dec60270-ca07-11e7-8b5d-b7dcc410578e', 'msgid': null, 'status': 'successful', 'err': '', 'errmsg': ''}, 'responseCode': 'OK', 'result': {'announcementtypes': {'count': 3, 'content': [{'createddate': '2017-11-07 13:10:04:797+0530', 'name': 'Circular', 'id': '9b20d566-c5db-11e7-abc4-cec278b6b50a', 'rootorgid': 'ORG_001', 'status': 'active'}, {'createddate': '2017-11-07 13:10:04:797+0530', 'name': 'Order', 'id': '9b20d8f4-c5db-11e7-abc4-cec278b6b50a', 'rootorgid': 'ORG_001', 'status': 'active'}, {'createddate': '2017-11-07 13:10:04:797+0530', 'name': 'News', 'id': '9b20d7f0-c5db-11e7-abc4-cec278b6b50a', 'rootorgid': 'ORG_001', 'status': 'active'}]}, 'senderlist': {'159e93d1-da0c-4231-be94-e75b0c226d7c': 'Sunil Pandith'}}}
+    var mockRes = announcementTestData.createAnncmnt.getAnncmntTypeRes
     deferred.resolve(mockRes)
     mockRes = mockRes.data = mockRes
     expect(announcementService.getDefinitions).toBeDefined()
-    var reqBody = {'rootorgid': 'ORG_001', 'userid': '159e93d1-da0c-4231-be94-e75b0c226d7c', 'definitions': ['announcementtypes', 'senderlist']}
-    createAnn.resendAnnouncement(reqBody)
+    createAnn.resendAnnouncement(announcementTestData.createAnncmnt.getAnncmntTypeReq)
     expect(announcementService.getDefinitions).toHaveBeenCalled()
 
     announcementService.getDefinitions()
@@ -211,10 +208,8 @@ describe('Controller: createAnnouncementCtrl', function () {
     createAnn.data.type = 'test'
     createAnn.data.links = {'0': 'https;//google.co.in'}
     createAnn.data.description = 'test'
-    var apiResponse = {'id': 'api.plugin.announcement.create', 'ver': '1.0', 'ts': '2017-11-10 02:58:46:236+0000', 'params': {'resmsgid': '119520d0-c5c3-11e7-882c-23b3000f6c3b', 'msgid': null, 'status': 'success', 'err': '', 'errmsg': 'user has no create access'}, 'responseCode': 'OK', 'result': {}}
     spyOn(announcementService, 'createAnnouncement').and.returnValue(deferred.promise)
-    deferred.resolve(apiResponse)
-
+    deferred.resolve(announcementTestData.createAnncmnt.saveAnncmntSuccessRes)
     spyOn(createAnn, 'saveAnnouncement').and.callThrough()
     createAnn.saveAnnouncement(createAnn.data)
     scope.$apply()
@@ -224,9 +219,8 @@ describe('Controller: createAnnouncementCtrl', function () {
   })
 
   it('should not create announcement', function (done) {
-    var failedApiResponse = {'id': 'api.plugin.announcement.create', 'ver': '1.0', 'ts': '2017-11-10 02:58:46:236+0000', 'params': {'resmsgid': '119520d0-c5c3-11e7-882c-23b3000f6c3b', 'msgid': null, 'status': 'failed', 'err': '', 'errmsg': 'user has no create access'}, 'responseCode': 'CLIENT_ERROR', 'result': {}}
     spyOn(announcementService, 'createAnnouncement').and.returnValue(deferred.promise)
-    deferred.resolve(failedApiResponse)
+    deferred.resolve(announcementTestData.createAnncmnt.failedAnncmntRes)
     spyOn(createAnn, 'saveAnnouncement').and.callThrough()
     createAnn.data.title = 'test'
     createAnn.data.from = 'test'
