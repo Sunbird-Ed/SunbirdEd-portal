@@ -181,7 +181,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
         }
       }
 
-      if (requestBody.links !== undefined && requestBody.links.length) {
+      if (createAnn.linkArray.length) {
         requestBody.links = createAnn.linkArray
       }
 
