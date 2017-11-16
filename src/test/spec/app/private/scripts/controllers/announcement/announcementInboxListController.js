@@ -6,7 +6,7 @@
 
 'use strict'
 
-describe('Controller: announcementInboxListController', function() {
+describe('Controller: announcementInboxListController', function () {
   // load the controller's module
   beforeEach(module('playerApp'))
 
@@ -19,7 +19,7 @@ describe('Controller: announcementInboxListController', function() {
     timeout,
     annInboxTestData = announcementTestData.getAnnouncementInbox
 
-  beforeEach(inject(function($rootScope, $controller) {
+  beforeEach(inject(function ($rootScope, $controller) {
     $controller('AppCtrl', {
       $rootScope: $rootScope,
       $scope: $rootScope.$new()
@@ -27,7 +27,7 @@ describe('Controller: announcementInboxListController', function() {
   }))
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function($rootScope, $controller, _announcementService_, _$q_, _$timeout_) {
+  beforeEach(inject(function ($rootScope, $controller, _announcementService_, _$q_, _$timeout_) {
     rootScope = $rootScope
     scope = $rootScope.$new()
     announcementService = _announcementService_
@@ -42,42 +42,41 @@ describe('Controller: announcementInboxListController', function() {
     })
   }))
 
-  describe('Get inbox announcements', function() {
-    it('success', function() {
+  describe('Get inbox announcements', function () {
+    it('success', function () {
       spyOn(announcementService, 'getInboxAnnouncementList').and.returnValue(deferred.promise)
       deferred.resolve(annInboxTestData.successResponce)
       var response = announcementService.getInboxAnnouncementList().$$state.value
       expect(response).toBe(annInboxTestData.successResponce)
     })
 
-
-    it('success', function() {
+    it('success', function () {
       spyOn(announcementService, 'getInboxAnnouncementList').and.returnValue(deferred.promise)
       deferred.resolve(annInboxTestData.successResponce)
-      annInboxTestData.successResponce.data = annInboxTestData.successResponce;
+      annInboxTestData.successResponce.data = annInboxTestData.successResponce
       spyOn(announcementInboxListController, 'renderAnnouncementList').and.callThrough()
       announcementInboxListController.renderAnnouncementList()
-      scope.$apply();
+      scope.$apply()
     })
 
-    it('Fail', function() {
+    it('Fail', function () {
       annInboxTestData.successResponce.responseCode = 'fail'
       spyOn(announcementService, 'getInboxAnnouncementList').and.returnValue(deferred.promise)
       deferred.resolve(annInboxTestData.successResponce)
       spyOn(announcementInboxListController, 'renderAnnouncementList').and.callThrough()
       announcementInboxListController.renderAnnouncementList()
-      scope.$apply();
+      scope.$apply()
     })
 
-    it('Reject', function() {
+    it('Reject', function () {
       spyOn(announcementService, 'getInboxAnnouncementList').and.returnValue(deferred.promise)
       deferred.reject({})
       spyOn(announcementInboxListController, 'renderAnnouncementList').and.callThrough()
       announcementInboxListController.renderAnnouncementList()
-      scope.$apply();
+      scope.$apply()
     })
 
-    it('get file extension', function() {
+    it('get file extension', function () {
       spyOn(announcementService, 'getFileExtension').and.returnValue(deferred.promise)
       deferred.resolve('PDF')
       spyOn(announcementInboxListController, 'getFileExtension').and.callThrough()
@@ -86,11 +85,12 @@ describe('Controller: announcementInboxListController', function() {
       expect(response).toBe('PDF')
     })
 
-    it('Show details', function() {
-      spyOn(announcementInboxListController, 'showAnnouncementDetails').and.callThrough()
+    it('Show details', function () {
       scope.announcementInboxData = {}
-      scope.announcementInboxData.announcementDetails = {}
-      announcementInboxListController.showAnnouncementDetails({}, 2)
+      scope.announcementInboxData.announcementDetails = annInboxTestData.detailsSuccess
+      spyOn(announcementInboxListController, 'showAnnouncementDetails').and.callThrough()
+      announcementInboxListController.showAnnouncementDetails(annInboxTestData.detailsSuccess, 2)
+      scope.$apply()
     })
   })
 })
