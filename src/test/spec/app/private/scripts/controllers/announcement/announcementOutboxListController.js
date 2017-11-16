@@ -76,12 +76,24 @@ describe('Controller: announcementOutboxListController', function() {
       it('success', function() {
         spyOn(announcementService, 'deleteAnnouncement').and.returnValue(deferred.promise)
         deferred.resolve(annDeleteTestData.successResponse)
+        var requestBody = { "request": {"userid": "159e93d1-da0c-4231-be94-e75b0c226d7c","announcenmentid": "430d95d0-c842-11e7-a0fa-0d6c238048d7"}}
         annDeleteTestData.successResponse.data = annDeleteTestData.successResponse
         expect(announcementOutboxListController.deleteAnnouncement).toBeDefined()
-        announcementOutboxListController.deleteAnnouncement('9cfc4c90-c616-11e7-92f6-c50322845811')
+        announcementOutboxListController.deleteAnnouncement(requestBody)
         expect(announcementService.deleteAnnouncement).toHaveBeenCalled()
         scope.$apply()
 	    })
+
+      it('fail', function() {
+        spyOn(announcementService, 'deleteAnnouncement').and.returnValue(deferred.promise)
+        deferred.resolve(annDeleteTestData.failedResponse)
+        var requestBody = { "request": {"userid": "159e93d1-da0c-4231-be94-e75b0c226d7c","announcenmentid": "430d95d0-c842-11e7-a0fa-0d6c238048d7"}}
+        annDeleteTestData.failedResponse.data = annDeleteTestData.failedResponse
+        expect(announcementOutboxListController.deleteAnnouncement).toBeDefined()
+        announcementOutboxListController.deleteAnnouncement(requestBody)
+        expect(announcementService.deleteAnnouncement).toHaveBeenCalled()
+        scope.$apply()
+      })
 	})
 
    describe('Get resend', function() {

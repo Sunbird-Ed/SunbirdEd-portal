@@ -1,0 +1,15 @@
+{
+  "name": "sb_api_interceptor",
+  "version": "1.0.0",
+  "description": "To validate the api request",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Anuj Gupta",
+  "license": "ISC",
+  "dependencies": {
+    "jwt-decode": "^2.2.0",
+    "keycloak-auth-utils": "^3.3.0-cr.2"
+  }
+}

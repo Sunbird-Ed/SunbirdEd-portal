@@ -75,14 +75,15 @@
     "standard": "10.0.3",
     "wiredep": "^2.2.2",
     "yargs": "^9.0.1",
-    "fine-uploader": "*"
+    "fine-uploader":"*"
   },
   "engines": {
     "node": ">=0.10.0"
   },
   "scripts": {
     "test-announcement": "mocha 'test-announcement/server/**/*.js' --reporter mochawesome",
-    "lint": "eslint --ignore-path .eslintignore ."
+    "lint": "eslint --ignore-path .eslintignore .",
+    "preinstall": "npm install ./app/thirdparty/libs/sb_api_interceptor && npm install ./app/thirdparty/libs/sb_cache_manager"
   },
   "dependencies": {
     "async": "^2.5.0",
