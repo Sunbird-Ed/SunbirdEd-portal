@@ -75,11 +75,7 @@
     "standard": "10.0.3",
     "wiredep": "^2.2.2",
     "yargs": "^9.0.1",
-<<<<<<< HEAD
     "fine-uploader":"*"
-=======
-    "fine-uploader": "*"
->>>>>>> 8edd4c464a52b50df00c214ab7974a4e766b7099
   },
   "engines": {
     "node": ">=0.10.0"

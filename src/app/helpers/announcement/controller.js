@@ -903,10 +903,10 @@ class AnnouncementController {
     __getTokenDetails(authUserToken) {
         return new Promise((resolve, reject) => {
             var keyCloak_config = {
-                'authServerUrl': process.env.sunbird_keycloak_auth_server_url ? process.env.sunbird_keycloak_auth_server_url : 'https://dev.open-sunbird.org/auth',
-                'realm': process.env.sunbird_keycloak_realm ? process.env.sunbird_keycloak_realm : 'sunbird',
-                'clientId': process.env.sunbird_keycloak_client_id ? process.env.sunbird_keycloak_client_id : 'portal',
-                'public': process.env.sunbird_keycloak_public ? process.env.sunbird_keycloak_public : true
+                'authServerUrl': envVariables.PORTAL_AUTH_SERVER_URL,
+                'realm': envVariables.KEY_CLOAK_REALM,
+                'clientId': envVariables.PORTAL_AUTH_SERVER_CLIENT,
+                'public': envVariables.KEY_CLOAK_PUBLIC
             }
 
             var cache_config = {
