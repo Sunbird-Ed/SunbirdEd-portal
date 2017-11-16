@@ -55,13 +55,10 @@ angular.module('playerApp')
         $('#' + modalId).modal('hide')
       }
       announcementOutboxData.deleteAnnouncement = function () {
-            // Call the delete service
-        announcementService.deleteAnnouncement(announcementOutboxData.announcementId).then(function (apiResponse) {
+        var requestBody = { "request": {"userid": $rootScope.userId,"announcenmentid": announcementOutboxData.announcementId}}
+        announcementService.deleteAnnouncement(requestBody).then(function (apiResponse) {
           apiResponse = apiResponse.data
-                // console.log(JSON.stringify(apiResponse))
-                // Check if response successful
           if (apiResponse && apiResponse.responseCode === 'OK' && apiResponse.result.status === 'cancelled') {
-                    // Show success toaster
             toasterService.success('Announcement cancelled successfully.')
             announcementOutboxData.renderAnnouncementList()
           } else {
@@ -70,19 +67,16 @@ angular.module('playerApp')
         }).catch(function (err) {
           toasterService.error(err.data.params.errmsg)
         }).finally(function () {
-                // Close the modal popup and reset v alue of deleteAnnouncementId
           announcementOutboxData.closeModal('announcementDeleteModal')
         })
       }
       announcementOutboxData.getResend = function (announcementId) {
         announcementService.getResend(announcementId).then(function (apiResponse) {
           apiResponse = apiResponse.data
-          // console.log(JSON.stringify(apiResponse))
+          console.log(JSON.stringify(apiResponse))
           if (apiResponse && apiResponse.responseCode === 'OK') {
             if (apiResponse.hasOwnProperty('result')) {
-              // TODO - open the create announcement with edit mode and prepopulated data
-              announcementOutboxData.editPopup(apiResponse.result)
-              // announcementOutboxData.resendAnnouncement(apiResponse.result)
+              $rootScope.$broadcast('editAnnouncementBeforeResend', apiResponse.result)
             } else {
               toasterService.error('An unexpected error occured.')
             }
@@ -92,9 +86,6 @@ angular.module('playerApp')
         }).catch(function (err) {
           toasterService.error(err.data.params.errmsg)
         }).finally(function () {})
-      }
-      announcementOutboxData.editPopup = function (announcement) {
-        $rootScope.$broadcast('editAnnouncementBeforeResend', announcement)
       }
     }
   ])
