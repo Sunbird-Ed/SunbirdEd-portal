@@ -23,6 +23,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       		'definitions': ['announcementtypes', 'senderlist']
     	}
     }
+
     announcementService.getDefinitions(getDefinitionReq).then(function (response) {
       response = response.data
       if (response && response.responseCode === 'OK') {
@@ -183,7 +184,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
         requestBody.links = createAnn.linkArray
       }
 
-      if (createAnn.attachment) {
+      if (createAnn.attachment.length) {
         requestBody.attachments = createAnn.attachment
       }
 
