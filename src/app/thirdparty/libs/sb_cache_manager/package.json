@@ -1,0 +1,14 @@
+{
+  "name": "sb_cache_manager",
+  "version": "1.0.0",
+  "description": "Handle cache",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Anuj Gupta",
+  "license": "ISC",
+  "dependencies": {
+    "cache-manager": "^2.4.0"
+  }
+}

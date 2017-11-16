@@ -71,6 +71,10 @@ angular.module('playerApp')
         $('#announcementDetailsModal').modal('show')
 
       }
+
+      announcementInboxData.parJson = function(announcement){
+        return JSON.parse(announcement)
+      }
     }
 
   ])
