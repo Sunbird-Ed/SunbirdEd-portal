@@ -1,0 +1,121 @@
+<div ng-init="announcementOutboxData.renderAnnouncementList()">
+  <div class="ui grid">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+      <div class="ui grid">
+        <div class="nine wide column">
+          <div class="ui">
+            <div class="text dashBoardSectionHeading padding-top-10"><i class="announcement icon padding-right-10"></i> {{$root.frmelmnts.lbl.anncmntmine}}</div>
+          </div>
+        </div>
+        <div class="right floated three wide column padding-right-dropdown padding-right-10">
+          <div class="ui float-ContentRight" ng-controller="createAnnouncementCtrl as createAnn">
+            <button class="ui primary basic button announcementButton" id="openmodal" ng-click="createAnn.createAnnouncement();"><span class="announcementButtonText">{{$root.frmelmnts.lbl.anncmntcreate}}</span></button>
+            <div ng-include="'views/announcement/createAnnouncement.html'"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ui grid" ng-if="announcementOutboxData.showDataDiv">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+      <div class="ui grid">
+        <div class="eight wide column">
+          <div class="ui">
+            <div class="text padding-top-5 showingAllSentAnn">{{$root.frmelmnts.lbl.anncmntsent}}</div>
+          </div>
+        </div>
+        <div class="four wide column">
+          <div class="ui float-ContentRight">
+            <div class="text showingAllSentAnn"><span class="margin-right-10">Viewing {{announcementOutboxData.pager.startIndex+1}} - {{announcementOutboxData.pager.endIndex+1}}</span>
+              <div class="ui small basic icon buttons">
+                <button class="ui button" ng-class="{'disabled' : announcementOutboxData.pager.startIndex === 0}" ng-click="announcementOutboxData.setPage(announcementOutboxData.pager.currentPage - 1)"><i class="left chevron icon"></i></button>
+                <button class="ui button" ng-class="{'disabled' : announcementOutboxData.pager.endIndex+1 === announcementOutboxData.listData.length}" ng-click="announcementOutboxData.setPage(announcementOutboxData.pager.currentPage + 1)"><i class="right chevron icon"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ui grid" ng-if="announcementOutboxData.showLoader">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+      <app-loader></app-loader>
+    </div>
+  </div>
+  <div class="ui grid" ng-if="!announcementOutboxData.showLoader" ng-hide="announcementOutboxData.showDataDiv">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+      <div class="ui warning message">
+        <div class="header">{{$root.frmelmnts.lbl.anncmntnotfound}}</div>
+        {{$root.frmelmnts.lbl.anncmntplzcreate}}
+      </div>
+    </div>
+  </div>
+  <div class="margin-top-10" ng-if="announcementOutboxData.showDataDiv">
+    <div class="resource-padding ui grid">
+      <div class="one wide column"></div>
+      <div class="ten wide column">
+        <div class="ui tweleve wide column">
+          <table class="ui padded table">
+            <thead>
+              <tr class="announcementTableHeading">
+                <th>{{$root.frmelmnts.lbl.anncmnttblname}}</th>
+                <th>{{$root.frmelmnts.lbl.anncmnttblpublished}}</th>
+                <!--<th>{{$root.frmelmnts.lbl.anncmnttblsent}}</th>-->
+                <th>{{$root.frmelmnts.lbl.anncmnttblreceived}} <span class="announcementBlueText">*</span></th>
+                <th>{{$root.frmelmnts.lbl.anncmnttblseen}} <span class="announcementBlueText">*</span></th>
+                <th>{{$root.frmelmnts.lbl.anncmnttblactions}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="item in announcementOutboxData.items" class="tableListNameAnn">
+                <td>{{item.details.title | limitTo:50}}<span ng-show="item.details.title.length > 50">...</span></td>
+                <td>{{item.createddate | dateFilterWithDMY}}</td>
+                <!--<td>N/A</td>-->
+                <td>{{item.metrics.received ? item.metrics.received : "N/A"}}</td>
+                <td>{{item.metrics.read ? item.metrics.read : "N/A"}}</td>
+                <td class="cursor-pointer announcementRedText" ng-click="announcementOutboxData.showModal('announcementDeleteModal', item.id)"
+                ng-if="item.status == 'active'"><i class="icon ban"></i>{{$root.frmelmnts.lbl.anncmntoutboxdelete}}</td>
+                <td ng-click="announcementOutboxData.getResend(item.id);" ng-if="item.status == 'cancelled'" class="cursor-pointer announcementBlueText" ><i class="external share icon"></i>{{$root.frmelmnts.lbl.anncmntoutboxresend}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ui grid" ng-if="announcementOutboxData.showDataDiv">
+    <div class="one wide column"></div>
+    <div class="ui grid">
+      <div class="twelve wide column">
+        <div class="ui">
+          <div class="text announcementDataText" ng-if="announcementOutboxData.result.metricsupdateddate"> <span class="announcementBlueText">*</span> {{$root.frmelmnts.lbl.anncmntlastupdate}} {{announcementOutboxData.result.metrics.updatedat | dateFilterWithDMY}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Announcement delete confirmation modal -->
+<div id="announcementDeleteModal" class="ui modal">
+     <i class="close icon"></i>
+    <div class="content">
+        <div class="ui center aligned segment">
+            <div class="ui basic icon circular button deny">
+                <i class="ui huge help outline icon"></i>
+            </div>
+            <br/><br/>
+            <div class="header cardsHeading">{{$root.frmelmnts.lbl.anncmntcancelconfirm}}</div>
+            <br/>
+            <div class="announcement-description">
+                {{$root.frmelmnts.lbl.anncmntcancelconfirmdescrption}}
+            </div>
+            <br/><br/>
+                <button class="ui basic blue button announcementButton btn-width-26 announcementButtonText" ng-click="announcementOutboxData.deleteAnnouncement()"> {{$root.frmelmnts.btn.yes}} </button>
+                <button class="ui button primary announcementButton btn-width-26 close" ng-click="announcementOutboxData.closeModal('announcementDeleteModal')"> {{$root.frmelmnts.btn.no}} </button>
+        </div>
+    </div>
+</div>
