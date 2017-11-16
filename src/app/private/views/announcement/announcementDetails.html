@@ -7,7 +7,7 @@
 <div ng-if="announcementDetails.details.title">
     <div>
         <p class="ui grey label annType" ng-if="announcementDetails.details.type">
-            {{announcementDetails.details.type}}
+            {{announcementDetails.details.type | uppercase}}
         </p>
     </div>
     <div class="header padding-top-5">
