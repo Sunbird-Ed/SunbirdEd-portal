@@ -115,7 +115,7 @@ angular.module('playerApp')
         courseDashboard.filterTimePeriod = angular.element(item).data('timeperiod')
         courseDashboard.filterQueryTextMsg = angular.element(item).data('timeperiod-text')
         courseDashboard.isMultipleCourses = false
-        courseDashboard.getCourseDashboardData
+        courseDashboard.getCourseDashboardData()
       }
 
       courseDashboard.loadData = function () {
@@ -181,7 +181,7 @@ angular.module('playerApp')
         courseDashboard.courseIdentifier = courseId
         courseDashboard.courseName = courseName
         courseDashboard.isMultipleCourses = false
-        courseDashboard.getCourseDashboardData
+        courseDashboard.getCourseDashboardData()
       }
 
       courseDashboard.initDropdwon = function () {
