@@ -14,11 +14,14 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
     createAnn.announcementType = []
     createAnn.repeatableWebLinks = []
     createAnn.selectedReciepeient = []
+    createAnn.hideAnncmntBtn = false
 
     var getDefinitionReq = {
-      'rootorgid': $rootScope.rootOrgId,
-      'userid': $rootScope.userId,
-      'definitions': ['announcementtypes', 'senderlist']
+      request: {
+      		'rootorgid': $rootScope.rootOrgId,
+      		'userid': $rootScope.userId,
+      		'definitions': ['announcementtypes', 'senderlist']
+    	}
     }
 
     announcementService.getDefinitions(getDefinitionReq).then(function (response) {
@@ -33,10 +36,12 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
           })
         }
       } else {
-        createAnn.showError(response)
+      	createAnn.hideAnncmntBtn = true
+        toasterService.error($rootScope.messages.fmsg.m0069)
       }
     }).catch(function (response) {
-      createAnn.showError(response.data)
+    	createAnn.hideAnncmntBtn = true
+      toasterService.error($rootScope.messages.fmsg.m0069)
     })
     createAnn.initializeModal = function () {
       $timeout(function () {
@@ -175,11 +180,12 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
           'ids': _.map(createAnn.selectedReciepeient, 'id')
         }
       }
-      if (requestBody.links) {
+
+      if (createAnn.linkArray.length) {
         requestBody.links = createAnn.linkArray
       }
 
-      if (createAnn.attachment) {
+      if (createAnn.attachment.length) {
         requestBody.attachments = createAnn.attachment
       }
 

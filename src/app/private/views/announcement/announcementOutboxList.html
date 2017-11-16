@@ -10,7 +10,7 @@
         </div>
         <div class="right floated three wide column padding-right-dropdown padding-right-10">
           <div class="ui float-ContentRight" ng-controller="createAnnouncementCtrl as createAnn">
-            <button class="ui primary basic button announcementButton" id="openmodal" ng-click="createAnn.createAnnouncement();"><span class="announcementButtonText">{{$root.frmelmnts.lbl.anncmntcreate}}</span></button>
+            <button class="ui primary basic button announcementButton" id="openmodal" ng-click="createAnn.createAnnouncement();" ng-hide="createAnn.hideAnncmntBtn"><span class="announcementButtonText">{{$root.frmelmnts.lbl.anncmntcreate}}</span></button>
             <div ng-include="'views/announcement/createAnnouncement.html'"></div>
           </div>
         </div>
