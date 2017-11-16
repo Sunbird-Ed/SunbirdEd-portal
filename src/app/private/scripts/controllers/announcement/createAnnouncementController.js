@@ -13,6 +13,8 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
     createAnn.isMetaModified = false
     createAnn.announcementType = []
     createAnn.repeatableWebLinks = []
+    createAnn.selectedReciepeient = []
+
     var getDefinitionReq = {
       'rootorgid': $rootScope.rootOrgId,
       'userid': $rootScope.userId,
@@ -136,7 +138,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       $rootScope.$emit('get:selected:items')
       if (createAnn.selectedReciepeient.length == 0) {
         createAnn.stepNumber = 2
-        toasterService.error($rootScope.messages.emsg.m0021)
+        toasterService.error($rootScope.messages.emsg.m0006)
         return
       }
       createAnn.stepNumber = 3
