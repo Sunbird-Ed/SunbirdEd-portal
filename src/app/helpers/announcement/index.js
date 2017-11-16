@@ -93,7 +93,7 @@ function isCreateRolePresent(userProfile, sourceid) {
 
 function validateRoles() {
     return async((requestObj, responseObj, next, config) => {
-        let authUserToken = _.get(data, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
+        let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
         try {
             // TODO: verify  Is logged in userid matching with senderid
             let userProfile = await (announcementController.__getUserProfile({
