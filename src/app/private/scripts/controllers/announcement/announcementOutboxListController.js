@@ -60,6 +60,10 @@ angular.module('playerApp')
           apiResponse = apiResponse.data
           if (apiResponse && apiResponse.responseCode === 'OK' && apiResponse.result.status === 'cancelled') {
             toasterService.success('Announcement cancelled successfully.')
+              var evens = _.remove(announcementOutboxData.listData, function(ann) {
+                return ann.id == announcementOutboxData.announcementId;
+              });
+              initController()
           } else {
             toasterService.error(apiResponse.params.errmsg)
           }
@@ -67,7 +71,6 @@ angular.module('playerApp')
           toasterService.error(err.data.params.errmsg)
         }).finally(function () {
           announcementOutboxData.closeModal('announcementDeleteModal')
-          announcementOutboxData.renderAnnouncementList()
         })
       }
       announcementOutboxData.getResend = function (announcementId) {
