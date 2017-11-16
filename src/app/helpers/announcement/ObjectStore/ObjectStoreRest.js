@@ -140,7 +140,6 @@ class ObjectStoreRest extends ObjectStore {
       if (!options) reject('options required!')
       options.headers = options.headers || this.getRequestHeader()
       webService(options, (error, response, body) => {
-        console.log("response",response.statusCode)
         if (error || response.statusCode >= 400) {
           reject(error)
         } else {
