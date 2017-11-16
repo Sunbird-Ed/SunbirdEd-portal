@@ -29,10 +29,12 @@ var announcementTestData = {
     annObjWithEmptyAttachments: { 'title': 'Title', 'attachments': [] }
   },
   deleteAnnouncement: {
+    requestBody: { "request": {"userid": "159e93d1-da0c-4231-be94-e75b0c226d7c","announcenmentid": "430d95d0-c842-11e7-a0fa-0d6c238048d7"}},
     successResponse: {'id': 'api.plugin.announcement.cancel.id', 'ver': '1.0', 'ts': '2017-11-15 13:22:46:418+0000', 'params': {'resmsgid': '11bc1f20-ca08-11e7-b553-0ffa8051c99e', 'msgid': null, 'status': 'successful', 'err': '', 'errmsg': ''}, 'responseCode': 'OK', 'result': {'status': 'cancelled'}},
     failedResponse: {'id': 'api.plugin.announcement.cancel.id', 'ver': '1.0', 'ts': '2017-11-15 13:21:44:588+0000', 'params': {'resmsgid': 'ece19cc0-ca07-11e7-8b5d-b7dcc410578e', 'msgid': null, 'status': 'failed', 'err': '', 'errmsg': 'unable to fetch announcement'}, 'responseCode': 'SERVER_ERROR', 'result': {}}
   },
   resendAnnouncement: {
+    requestBody: {'sourceid': '0123673908687093760', 'createddate': '2017-11-10 11:59:54:879+0530', 'details': {'description': 'Test description for announcement 87', 'from': 'test user', 'title': 'Test title for announcement 87', 'type': 'Circular'}, 'links': ['http://yahoo.com'], 'id': '90ae7cf0-c5e0-11e7-8744-852d6ada097c', 'userid': 'd56a1766-e138-45e9-bed2-a0db5eb9696a', 'target': {'geo': {'ids': ['0123668622585610242', '0123668627050987529']}}, 'status': 'cancelled'},
     successResponse: {'id': 'api.plugin.announcement.resend', 'ver': '1.0', 'ts': '2017-11-12 05:53:22:130+0000', 'params': {'resmsgid': 'ca873230-c76d-11e7-8175-573a15bbe3f0', 'msgid': null, 'status': 'successful', 'err': '', 'errmsg': ''}, 'responseCode': 'OK', 'result': {'announcement': {'id': 'ca7c83d0-c76d-11e7-8175-573a15bbe3f0'}}}
   },
   getResend: {
