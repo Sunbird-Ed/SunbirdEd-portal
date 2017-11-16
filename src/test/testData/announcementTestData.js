@@ -29,7 +29,8 @@ var announcementTestData = {
     annObjWithEmptyAttachments: { 'title': 'Title', 'attachments': [] }
   },
   deleteAnnouncement: {
-    successResponse: {'id': 'api.plugin.announcement.cancel.id', 'ver': '1.0', 'ts': '2017-11-11 09:58:09:409+0530', 'params': {'resmsgid': 'b8b22220-c698-11e7-bff5-9ffed44487d9', 'msgid': null, 'status': 'successful', 'err': '', 'errmsg': ''}, 'responseCode': 'OK', 'result': {'id': '9cfc4c90-c616-11e7-92f6-c50322845811', 'status': 'cancelled'}}
+    successResponse: {'id': 'api.plugin.announcement.cancel.id', 'ver': '1.0', 'ts': '2017-11-15 13:22:46:418+0000', 'params': {'resmsgid': '11bc1f20-ca08-11e7-b553-0ffa8051c99e', 'msgid': null, 'status': 'successful', 'err': '', 'errmsg': ''}, 'responseCode': 'OK', 'result': {'status': 'cancelled'}},
+    failedResponse: {'id': 'api.plugin.announcement.cancel.id', 'ver': '1.0', 'ts': '2017-11-15 13:21:44:588+0000', 'params': {'resmsgid': 'ece19cc0-ca07-11e7-8b5d-b7dcc410578e', 'msgid': null, 'status': 'failed', 'err': '', 'errmsg': 'unable to fetch announcement'}, 'responseCode': 'SERVER_ERROR', 'result': {}}
   },
   resendAnnouncement: {
     successResponse: {'id': 'api.plugin.announcement.resend', 'ver': '1.0', 'ts': '2017-11-12 05:53:22:130+0000', 'params': {'resmsgid': 'ca873230-c76d-11e7-8175-573a15bbe3f0', 'msgid': null, 'status': 'successful', 'err': '', 'errmsg': ''}, 'responseCode': 'OK', 'result': {'announcement': {'id': 'ca7c83d0-c76d-11e7-8175-573a15bbe3f0'}}}
