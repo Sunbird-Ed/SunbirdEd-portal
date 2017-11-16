@@ -819,7 +819,6 @@ class AnnouncementController {
           if (!options) reject('options required!')
           options.headers = options.headers || this.getRequestHeader();
           webService(options, (error, response, body) => {
-            console.log("responseCode",response.statusCode)
               if (error || response.statusCode >= 400) {
                   reject(error)
               } else {
@@ -910,8 +909,8 @@ class AnnouncementController {
             }
 
             var cache_config = {
-                stroe: process.env.sunbird_cache_store ? process.env.sunbird_cache_store : 'memory',
-                ttl: process.env.sunbird_cache_ttl ? process.env.sunbird_cache_ttl : 1800
+                stroe: envVariables.sunbird_cache_store,
+                ttl: envVariables.sunbird_cache_ttl
             }
             if (authUserToken) {
                 var apiInterceptor = new ApiInterceptor(keyCloak_config, cache_config)
