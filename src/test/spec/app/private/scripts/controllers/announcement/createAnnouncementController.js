@@ -66,7 +66,6 @@ describe('Controller: createAnnouncementCtrl', function () {
   it('should initialize create announcement Modal', function (done) {
     spyOn(createAnn, 'initializeModal').and.callThrough()
     createAnn.createAnnouncement()
-    // expect(modal.hide);
     done()
   })
 
@@ -91,6 +90,18 @@ describe('Controller: createAnnouncementCtrl', function () {
     createAnn.repeatableWebLinks.push({'id': 'choice' + 0})
     createAnn.data.links = {0: 'https;//google.co.in', 1: 'https://google.com'}
     createAnn.previewAnn(index)
+    done()
+  })
+
+  it('convert file size into KB / MB', function (done) {
+    spyOn(createAnn, 'convertFileSize').and.callThrough()
+    createAnn.convertFileSize(1234)
+    done()
+  })
+
+  it('should not convert file size into KB / MB', function (done) {
+    spyOn(createAnn, 'convertFileSize').and.callThrough()
+    createAnn.convertFileSize(0)
     done()
   })
 
@@ -133,6 +144,19 @@ describe('Controller: createAnnouncementCtrl', function () {
     done()
   })
 
+  it('Should not open form step number 3 ', function (done) {
+    spyOn(createAnn, 'confirmRecipients').and.callThrough()
+    createAnn.confirmRecipients()
+    done()
+  })
+
+  it('Should open confirmation modal ', function (done) {
+    spyOn(createAnn, 'confirmationModal').and.callThrough()
+    createAnn.confirmationModal()
+    timeout.flush(100)
+    done()
+  })
+
   it('should preview announcement', function (done) {
     spyOn(createAnn, 'previewAnn').and.callThrough()
     var index = 0
@@ -146,12 +170,12 @@ describe('Controller: createAnnouncementCtrl', function () {
 
   })
 
-  // it('Should remove recipient', function(done){
-  //       spyOn(createAnn, 'removeRicipients').and.callThrough()
-  //   createAnn.selectedReciepeient = [{'id':"12345", 'location': '12345'}];
-  //   createAnn.removeRicipients({'id':"12345", 'location': '12345'});
-  //    done()
-  // })
+  it('Should remove recipient', function (done) {
+    spyOn(createAnn, 'removeRicipients').and.callThrough()
+    createAnn.selectedReciepeient = [{id: '12345', location: '12345'}, {id: '456', location: '456'}]
+    createAnn.removeRicipients({id: '12345', location: '12345'})
+    done()
+  })
 
   it('Shoud test single error', function (done) {
     spyOn(createAnn, 'showError').and.callThrough()
@@ -168,16 +192,14 @@ describe('Controller: createAnnouncementCtrl', function () {
   })
 
   it('should get announcement type', function (done) {
-    var mockRes = {
-      responseCode: 'OK',
-      data: {
-        result: {
-          announcementtypes:
-                   [{ name: 'Circular'}, { name: 'Order' }, { name: 'News'}],
-          senderlist: { '159e93d1-da0c-4231-be94-e75b0c226d7c': 'Sunil Pandith'}
-        }}
-    }
+    var mockRes = {'id': 'api.plugin.announcement.definitions', 'ver': '1.0', 'ts': '2017-11-15 13:21:20:919+0000', 'params': {'resmsgid': 'dec60270-ca07-11e7-8b5d-b7dcc410578e', 'msgid': null, 'status': 'successful', 'err': '', 'errmsg': ''}, 'responseCode': 'OK', 'result': {'announcementtypes': {'count': 3, 'content': [{'createddate': '2017-11-07 13:10:04:797+0530', 'name': 'Circular', 'id': '9b20d566-c5db-11e7-abc4-cec278b6b50a', 'rootorgid': 'ORG_001', 'status': 'active'}, {'createddate': '2017-11-07 13:10:04:797+0530', 'name': 'Order', 'id': '9b20d8f4-c5db-11e7-abc4-cec278b6b50a', 'rootorgid': 'ORG_001', 'status': 'active'}, {'createddate': '2017-11-07 13:10:04:797+0530', 'name': 'News', 'id': '9b20d7f0-c5db-11e7-abc4-cec278b6b50a', 'rootorgid': 'ORG_001', 'status': 'active'}]}, 'senderlist': {'159e93d1-da0c-4231-be94-e75b0c226d7c': 'Sunil Pandith'}}}
     deferred.resolve(mockRes)
+    mockRes = mockRes.data = mockRes
+    expect(announcementService.getDefinitions).toBeDefined()
+    var reqBody = {'rootorgid': 'ORG_001', 'userid': '159e93d1-da0c-4231-be94-e75b0c226d7c', 'definitions': ['announcementtypes', 'senderlist']}
+    createAnn.resendAnnouncement(reqBody)
+    expect(announcementService.getDefinitions).toHaveBeenCalled()
+
     announcementService.getDefinitions()
     scope.$apply()
     done()
@@ -211,6 +233,13 @@ describe('Controller: createAnnouncementCtrl', function () {
     createAnn.data.links = {'0': 'https;//google.co.in'}
     createAnn.data.description = 'test'
     createAnn.saveAnnouncement(createAnn.data)
+    done()
+  })
+
+  it('should initialize fine uploader', function (done) {
+    spyOn(createAnn, 'initializeFileUploader').and.callThrough()
+    createAnn.initializeFileUploader()
+    timeout.flush(100)
     done()
   })
 
