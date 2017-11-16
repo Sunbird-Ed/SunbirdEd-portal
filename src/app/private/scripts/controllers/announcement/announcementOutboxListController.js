@@ -63,7 +63,7 @@ angular.module('playerApp')
               var evens = _.remove(announcementOutboxData.listData, function(ann) {
                 return ann.id == announcementOutboxData.announcementId;
               });
-              initController()
+              announcementOutboxData.setPage(announcementOutboxData.pager.currentPage)
           } else {
             toasterService.error(apiResponse.params.errmsg)
           }
