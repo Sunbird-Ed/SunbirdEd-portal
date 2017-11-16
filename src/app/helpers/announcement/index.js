@@ -111,7 +111,6 @@ function validateRoles() {
             } else if (error === 'UNAUTHORIZE_USER') {
                  sendErrorResponse(responseObj, '', "UNAUTHORIZE_USER", 401)
             } else {
-                console.log("Error", error);
                  sendErrorResponse(responseObj, '', "UNAUTHORIZE_USER", 401)
             }
         }
