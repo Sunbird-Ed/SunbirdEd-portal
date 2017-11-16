@@ -297,7 +297,6 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
     }
 
     $scope.$on('editAnnouncementBeforeResend', function (event, announcement) {
-      // console.log(JSON.stringify(announcement))
       createAnn.editAction = true
       createAnn.data.title = announcement.details.title
       createAnn.data.description = announcement.details.description
@@ -309,6 +308,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       $('#orgDropdown').dropdown('set text', announcement.details.from)
       createAnn.data.from = announcement.details.from
       createAnn.data.type = announcement.details.type
+      createAnn.attachment = announcement.attachments
       createAnn.disableBtn = false
       createAnn.createAnnouncement()
       $timeout(function () {
@@ -326,6 +326,9 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       }
       if (requestBody.links) {
         requestBody.links = createAnn.linkArray
+      }
+      if (createAnn.attachment) {
+        requestBody.attachments = createAnn.attachment
       }
       var requestData = {
         request: requestBody

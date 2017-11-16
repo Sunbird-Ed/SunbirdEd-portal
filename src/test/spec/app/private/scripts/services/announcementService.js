@@ -193,13 +193,27 @@ describe('Service: announcementService', function() {
       expect(announcementService.getDefinitions).toBeDefined();
     })
 
-    it('Delete announcement', function() {
-      spyOn(announcementService, 'deleteAnnouncement').and.returnValue(deferred.promise)
-      deferred.resolve(annTestData.deleteAnnouncement.successResponse)
-      expect(announcementService.deleteAnnouncement).toBeDefined()
-      var response = announcementService.deleteAnnouncement('9cfc4c90-c616-11e7-92f6-c50322845811').$$state.value
-      expect(response).toBe(annTestData.deleteAnnouncement.successResponse)
-    })
+    it('Delete annnouncement success', function() {
+        spyOn(announcementService, 'deleteAnnouncement').and.returnValue(deferred.promise)
+        deferred.resolve(annTestData.deleteAnnouncement.successResponse)
+        var requestBody = { "request": {"userid": "159e93d1-da0c-4231-be94-e75b0c226d7c","announcenmentid": "430d95d0-c842-11e7-a0fa-0d6c238048d7"}}
+        expect(announcementService.deleteAnnouncement).toBeDefined()
+        var response = announcementService.deleteAnnouncement(requestBody).$$state.value
+        expect(announcementService.deleteAnnouncement).toHaveBeenCalled()
+        expect(response).toBe(annTestData.deleteAnnouncement.successResponse)
+        scope.$apply()
+      })
+
+      it('Delete annnouncement fail', function() {
+        spyOn(announcementService, 'deleteAnnouncement').and.returnValue(deferred.promise)
+        deferred.resolve(annTestData.deleteAnnouncement.failedResponse)
+        var requestBody = { "request": {"userid": "159e93d1-da0c-4231-be94-e75b0c226d7c","announcenmentid": "430d95d0-c842-11e7-a0fa-0d6c238048d7"}}
+        expect(announcementService.deleteAnnouncement).toBeDefined()
+        var response = announcementService.deleteAnnouncement(requestBody).$$state.value
+        expect(announcementService.deleteAnnouncement).toHaveBeenCalled()
+        expect(response).toBe(annTestData.deleteAnnouncement.failedResponse)
+        scope.$apply()
+      })
 
     it('Resend announcement', function() {
       spyOn(announcementService, 'resendAnnouncement').and.returnValue(deferred.promise)
