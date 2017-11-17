@@ -8,8 +8,8 @@ angular.module('playerApp')
       announcementInboxData.showLoader = true
 
       announcementInboxData.renderAnnouncementList = function(limit) {
-        announcementInboxData.limit = limit || 'all'
-        announcementService.getInboxAnnouncementList($rootScope.userId).then(function(apiResponse) {
+        announcementInboxData.limit = limit || -1
+        announcementService.getInboxAnnouncementList($rootScope.userId,announcementInboxData.limit).then(function(apiResponse) {
             apiResponse = apiResponse.data;
             if (apiResponse && apiResponse.responseCode === 'OK') {
               announcementInboxData.result = apiResponse.result
