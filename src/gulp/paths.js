@@ -164,7 +164,8 @@ var paths = {
     'dist/thirdparty/libs/semantic-ui-tree-picker/semantic-ui-tree-picker.css',
     'dist/thirdparty/bower_components/izimodal/css/iziModal.min.css',
     'dist/thirdparty/bower_components/semantic-ui-calendar/dist/calendar.min.css',
-    'dist/thirdparty/bower_components/izitoast/dist/css/iziToast.min.css'
+    'dist/thirdparty/bower_components/izitoast/dist/css/iziToast.min.css',
+    'dist/thirdparty/bower_components/file-upload/fine-uploader/fine-uploader-new.min.css'
   ],
   private_scripts: [
     'dist/private/scripts/factories/sessionFactory.js',
@@ -262,7 +263,7 @@ var paths = {
     'dist/private/scripts/services/announcementService.js',
     'dist/private/scripts/controllers/announcement/createAnnouncementController.js',
     'dist/private/scripts/directives/announcementDetailsDirective.js',
-    'dist/private/scripts/controllers/profileVisibilityController.js',    
+    'dist/private/scripts/controllers/profileVisibilityController.js',
     'dist/private/scripts/directives/profileVisibility.js'
   ],
   telemetry_js: [
