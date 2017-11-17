@@ -195,7 +195,6 @@
   </div>
 </div>
 
-
 <!-- Announcement resent success modal -->
 <div class="ui modal small" id="announcementResendModal">
   <i class="close icon"></i>
@@ -207,16 +206,16 @@
             <i class="checkmark icon big circular createAnnGrayShade"></i>
           </div>
           <div class="row">
-            <span class="dashBoardSectionHeading">Announcement Resent</span>
+            <span class="dashBoardSectionHeading">{{$root.frmelmnts.lbl.anncmntresentmsg}}</span>
           </div>
           <div class="">
-            <span class="createAnnGrayShade line-height-20">Your announcement has been resent to all the choosen recipients.</span>
+            <span class="createAnnGrayShade line-height-20">{{$root.frmelmnts.lbl.anncmntresentmsgdesc}}</span>
           </div>
         </div>
         <br/>
         <div class="row ui two column centered grid margin-top-20 actions">
           <button class="ui primary basic button announcementButton btn-width-34" ng-click="announcementOutboxData.closeModal('announcementResendModal')">
-            <span class="announcementButtonText">GOT IT</span>
+            <span class="announcementButtonText">{{$root.frmelmnts.btn.anncmntgotit}}</span>
           </button>
         </div>
       </div>
