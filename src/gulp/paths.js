@@ -191,6 +191,7 @@ var paths = {
     'dist/private/scripts/services/paginationService.js',
     'dist/private/scripts/controllers/searchController.js',
     'dist/private/scripts/controllers/searchResultController.js',
+    'dist/private/scripts/controllers/conceptPickerController.js',
     'dist/private/scripts/controllers/appController.js',
     'dist/private/scripts/controllers/note/noteListController.js',
     'dist/private/scripts/controllers/courseScheduleController.js',
@@ -255,7 +256,7 @@ var paths = {
     'dist/private/scripts/services/setup/setupService.js',
     'dist/private/scripts/controllers/setup/setupController.js',
     'dist/private/scripts/controllers/workspace/limitedPublishedContentController.js',
-    'dist/private/scripts/controllers/profileVisibilityController.js',    
+    'dist/private/scripts/controllers/profileVisibilityController.js',
     'dist/private/scripts/directives/profileVisibility.js'
   ],
   telemetry_js: [
