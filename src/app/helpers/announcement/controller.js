@@ -179,7 +179,8 @@ class AnnouncementController {
           },
           'target': data.target,
           'links': data.links,
-          'status': this.statusConstant.ACTIVE
+          'status': this.statusConstant.ACTIVE,
+          'attachments': data.attachments
         }
       }
 
@@ -405,7 +406,6 @@ class AnnouncementController {
             })
             if (_.isEmpty(targetOrganisations)) return { count:0, announcements: [] }
 
-            
             // Parse the list of Geolocations (Orgs > Geolocations) from the response
             let targetGeolocations = []
             try {
