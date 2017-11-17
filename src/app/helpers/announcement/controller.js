@@ -108,9 +108,10 @@ class AnnouncementController {
         'title': Joi.string().required(),
         'from':Joi.string().required(),
         'type': Joi.string().required(),
-        'description': Joi.string().required(),
+        'description': Joi.string(),
         'target': Joi.object().min(1).required(),
-        'links': Joi.array().items(Joi.string().required())
+        'links': Joi.array().items(Joi.string()),
+        'attachments': Joi.array().items(Joi.string())
       }).required()
     }), { abortEarly: false })
 
@@ -341,7 +342,7 @@ class AnnouncementController {
             if (tokenDetails) {
                 status = await (this.__checkPermission()(requestObj, tokenDetails.userId, _.get(requestObj, 'body.request.announcenmentid')));
             }else{
-                return {msg: 'UNAUTHORIZE_USER', status: 401 }
+                return {msg: 'UNAUTHORIZE_USER', status: HttpStatus.UNAUTHORIZED }
             }
             return new Promise((resolve, reject) => {
                 if (status) {
@@ -369,7 +370,7 @@ class AnnouncementController {
                 } else {
                     reject({
                         msg: 'UNAUTHORIZE_USER',
-                        statusCode: 401
+                        statusCode: HttpStatus.UNAUTHORIZED
                     })
                 }
             })
@@ -502,7 +503,7 @@ class AnnouncementController {
             if (tokenDetails) {
                 requestObj.body.request.userId = tokenDetails.userId
             }else{
-              reject({msg:'UNAUTHORIZE_USER', statusCode: 401})
+              reject({msg:'UNAUTHORIZE_USER', statusCode: HttpStatus.UNAUTHORIZED})
             }
 
             let request = this.__validateOutboxRequest(requestObj.body)
@@ -637,7 +638,7 @@ class AnnouncementController {
             if(tokenDetails){
               requestObj.body.request.userId = tokenDetails.userId
             }else{
-              return{'msg':'UNAUTHORIZE_USER', statusCode:401}
+              return{'msg':'UNAUTHORIZE_USER', statusCode:HttpStatus.UNAUTHORIZED}
             }
             // validate request
             let request = this.__validateMetricsRequest(requestObj.body)
