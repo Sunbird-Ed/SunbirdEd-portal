@@ -569,34 +569,8 @@ class AnnouncementController {
                 if (!_.isObject(data)) {
                     reject({ msg: 'unable to fetch sent announcements', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
                 } else {
-                    this.getMetrics(_.map(data.data.content,"id"), query)
-                        .then((metricsData) => {
-                            let announcementCount = _.size(data.data);
-                            let metrics = {};
-                            let response = {count: announcementCount, announcements: data.data }
-                             if (metricsData) {
-                                _.map(response.announcements.content, (value, key) => {
-                                      metrics = {read:0,received:0}
-                                    _.forEach(metricsData, (v, k) => {
-                                        if (response.announcements.content[key].id == k) {
-                                            _.forEach(v[0].values, (ele, indec) => {
-                                                if (ele.name === 'read') {
-                                                    metrics.read = ele.count;
-                                                }
-                                                if (ele.name === 'received') {
-                                                    metrics.received = ele.count;
-                                                }
-                                            });
-                                            metrics_clone = _.clone(metrics);
-                                            response.announcements.content[key]['metrics'] = metrics_clone;
-                                        }
-                                    });
-                                });
-                                resolve(response)
-                            } else {
-                                resolve(response);
-                            }
-                        })
+                    let response = {count: _.size(data.data), announcements: data.data }
+                    resolve(response)
                 }
             })
             .catch((error) => {
@@ -930,34 +904,6 @@ class AnnouncementController {
       });
   }
 
-   getMetrics(id, options){
-    return this.__getMetrics()(id, options)
-   }
-  __getMetrics() {
-  return async((id, options) =>{
-    let result = {};
-    let query = {table: this.objectStoreRest.MODEL.METRICS, query: {'announcementid': ""},facets:[{"activity":null}] }
-    var instance = this;
-        var awaitData = undefined;
-        for (let i = 0; i < id.length; i++) {
-            await (new Promise((resolve, reject) => {
-                query.query.announcementid = id[i];
-                instance.objectStoreRest.findObject(query)
-                    .then((data) => {
-                        if (!data.data.content) {
-                            resolve({msg: 'unable to fetch metrics', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
-                            } else {
-                              result[data.data.content[0].announcementid] = data.data.facets;
-                              resolve(data.data);
-                        }
-                    });
-            }));
-            if (i == id.length - 1) {
-                return result;
-            }
-        }
-    })
-  }
   __checkPermission() {
       return async((requestObj, userid, announcementId) => {
           if (requestObj) {
