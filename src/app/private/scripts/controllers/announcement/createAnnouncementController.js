@@ -115,7 +115,9 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       createAnn.linkArray = []
       if (createAnn.data.links) {
         angular.forEach(createAnn.data.links, function (value, key) {
-          createAnn.linkArray.push(value)
+          if (value.trim().length) {
+        		createAnn.linkArray.push(value)
+        	}
         })
       }
       createAnn.previewData = {
@@ -184,8 +186,10 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
         }
       }
 
-      if (createAnn.linkArray.length) {
+      if (createAnn.linkArray.length > 0) {
         requestBody.links = createAnn.linkArray
+      } else {
+      	delete requestBody.links
       }
 
       if (createAnn.attachment.length) {
