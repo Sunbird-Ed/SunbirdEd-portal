@@ -57,6 +57,7 @@ class ObjectStoreRest extends ObjectStore {
             'filters': data.query,
             'documentName':data.table,
             "facets":data.facets,
+            "limit":data.limit
           }
         },
         json: true
