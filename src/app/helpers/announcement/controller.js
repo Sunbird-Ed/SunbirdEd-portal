@@ -556,6 +556,9 @@ class AnnouncementController {
                 table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
                 query: {
                     'userid': _.get(requestObj, 'body.request.userId')
+                },
+                sort_by: {
+                    "createddate":"desc"
                 }
             }
             let metrics_clone = undefined;
