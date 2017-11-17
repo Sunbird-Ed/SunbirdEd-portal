@@ -819,7 +819,11 @@ class AnnouncementController {
                 if (!_.isObject(data)) {
                     resolve(false)
                 } else {
-                    resolve(true)
+                    if (_.size(data.data)) {
+                        resolve(true)
+                    } else {
+                        resolve(false)
+                    }
                 }
             })
             .catch((error) => {
