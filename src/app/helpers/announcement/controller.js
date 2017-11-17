@@ -811,12 +811,12 @@ class AnnouncementController {
                 if (status) {
                     return this.__getAnnouncementById(requestObj)
                 }else{
-                  return {msg:'UNAUTHORIZE_USER', statusCode:401}
+                  return {msg:'UNAUTHORIZE_USER', statusCode:HttpStatus.UNAUTHORIZED}
                 }
             } else {
                 return {
                     msg: 'UNAUTHORIZE_USER',
-                    status: 401
+                    status: HttpStatus.UNAUTHORIZED
                 }
             }
         })
