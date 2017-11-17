@@ -61,7 +61,6 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       })
     }
     createAnn.createAnnouncement = function () {
-      createAnn.refreshFormValues()
       $rootScope.$emit('component:init')
       $('#createAnnouncementModal').modal({
         closable: false,
