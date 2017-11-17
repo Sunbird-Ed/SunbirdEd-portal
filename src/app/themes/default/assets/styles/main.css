@@ -314,6 +314,9 @@
 .margin-auto {
   margin: auto !important;
 }
+.margin-right-none {
+  margin-right: 0px !important;
+}
 .margin-right-10 {
   margin-right: 10px !important;
 }
@@ -2035,6 +2038,9 @@ div:focus {
 }
 .btn-width-26 {
   width: 26% !important;
+}
+.ui.dropdown .menu > .item.AnnDetailsModalDropDwn {
+  padding: 3px 5px 1px 5px!important;
 }
 .search-location-icon {
   margin-top: 2%;
