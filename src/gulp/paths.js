@@ -262,8 +262,10 @@ var paths = {
     'dist/private/scripts/services/announcementService.js',
     'dist/private/scripts/controllers/announcement/createAnnouncementController.js',
     'dist/private/scripts/directives/announcementDetailsDirective.js',
-    'dist/private/scripts/controllers/profileVisibilityController.js',    
-    'dist/private/scripts/directives/profileVisibility.js'
+    'dist/private/scripts/controllers/profileVisibilityController.js',
+    'dist/private/scripts/directives/profileVisibility.js',
+    'dist/private/scripts/services/geoService.js',
+    'dist/private/scripts/components/geo.js'
   ],
   telemetry_js: [
     'dist/private/scripts/telemetry/TelemetryEvent.js',
