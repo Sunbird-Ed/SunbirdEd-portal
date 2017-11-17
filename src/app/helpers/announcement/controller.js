@@ -211,19 +211,19 @@ class AnnouncementController {
             let requestObj = {"to": "", "type": "fcm", "data": {"notificationpayload": {"msgid": data.body.request.announcementId, "title": data.body.request.title, "msg": data.body.request.description, "icon": "", "time": dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo"), "validity": "-1", "actionid": "1", "actiondata": "", "dispbehavior": "stack"} } }
             let options = {"method": "POST", "uri": envVariables.DATASERVICE_URL + "data/v1/notification/send", "body": {"request": requestObj }, "json": true }
             let authUserToken = _.get(data, 'kauth.grant.access_token.token') || data.headers['x-authenticated-user-token']
-            options.headers =this.getRequestHeader({ xAuthUserToken: authUserToken });
-            var targetIds = [];
+            options.headers =this.getRequestHeader({ xAuthUserToken: authUserToken })
+            var targetIds = []
             if (data.body.request.target) {
                 _.forIn(data.body.request.target, (value, key) => {
                     if (_.isObject(value)) {
                         _.forEach(value.ids, (v, k) => {
-                            targetIds.push(v);
+                            targetIds.push(v)
                         });
                     }
                 });
             }
             this.forEachPromise(targetIds, this.sendNotification, options, this).then(() => {
-                console.log('done');
+                // console.log('done')
             });
         })
 
@@ -310,7 +310,6 @@ class AnnouncementController {
           }
         })
         .catch((error) => {
-          console.log(error)
           reject({ msg: 'unable to fetch announcement types', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
         })
     })
@@ -361,7 +360,6 @@ class AnnouncementController {
                             }
                         })
                         .catch((error) => {
-                            console.log(error)
                             reject({
                                 msg: 'unable to cancel the announcement',
                                 statusCode: HttpStatus.INTERNAL_SERVER_ERROR
@@ -400,23 +398,32 @@ class AnnouncementController {
 
             let userProfile = await(this.__getUserProfile({ id: _.get(requestObj, 'body.request.userId') }, authUserToken))
 
-            // Parse the list of Geolocations (User > Orgs > Geolocations) from the response
-            let targetList = []
+            // Parse the list of Organisations (User > Orgs) from the response
+            let targetOrganisations = []
             _.forEach(userProfile.organisations, function(userOrg) {
-                if(userOrg.locationId) targetList.push(userOrg.locationId)
-            });
+                targetOrganisations.push(userOrg.organisationId)
+            })
+            if (_.isEmpty(targetOrganisations)) return { count:0, announcements: [] }
 
-            //handle emty target list
-            // TODO: add this validation back when data starts becoming available
-            if (_.isEmpty(targetList)) return { count:0, announcements: [] }
+            
+            // Parse the list of Geolocations (Orgs > Geolocations) from the response
+            let targetGeolocations = []
+            try {
+                let geoData = await (this.__getGeolocations(targetOrganisations, authUserToken))
+                //handle emty target list
+                _.forEach(geoData.content, function(geo) {
+                    targetGeolocations.push(geo.locationId)
+                })
+
+                if (_.isEmpty(targetGeolocations)) return { count:0, announcements: [] }
+            } catch(error) {
+                return { count:0, announcements: [] }
+            }
 
             // Query announcements where target is listed Geolocations
             let query = {
                 table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
                 query: {
-                    // TODO: remove the below wildcard query and implement the commented specific query
-                    'target.geo.ids': targetList,
-                    // "wildcard" : { "target.geo.ids" : { "value" : "*" } },
                     "status": this.statusConstant.ACTIVE
                 }
             }
@@ -432,7 +439,6 @@ class AnnouncementController {
                         }
                     })
                     .catch((error) => {
-                        console.log(error)
                         reject({ msg: 'unable to fetch announcement inbox', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
                     })
                 }))
@@ -458,6 +464,34 @@ class AnnouncementController {
             } catch(error) {
                 throw { msg: 'unable to process your request', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
             }
+        })
+    }
+
+    __getGeolocations(orgIds, authUserToken) {
+        return new Promise((resolve, reject) => {
+            let requestObj = {
+                                "filters": {
+                                    "id": orgIds
+                                },
+                                "fields": ["id","locationId"]
+                            }
+
+            let options = {"method": "POST", "uri": envVariables.DATASERVICE_URL + "org/v1/search", "body": {"request": requestObj }, "json": true }
+            options.headers =this.getRequestHeader({ xAuthUserToken: authUserToken })
+
+            try {
+                let data = new Promise((resolve, reject) => {
+                    this.httpService(options).then((data) => {
+                        resolve(data.body.result.response)
+                    }).catch((error) => {
+                        reject(error)
+                    })
+                })
+                resolve(data)
+            } catch(error) {
+                reject(false)
+            }
+
         })
     }
 
@@ -555,7 +589,6 @@ class AnnouncementController {
                 }
             })
             .catch((error) => {
-                console.log(error)
                 reject({ msg: 'unable to fetch sent announcements', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
             })
         })
@@ -616,7 +649,7 @@ class AnnouncementController {
               }))
           } catch (e) {
               throw {msg: 'Unable to fetch the senderlist', statusCode: HttpStatus.INTERNAL_SERVER_ERROR } }
-      });
+      })
   }
 
     /**
@@ -786,7 +819,11 @@ class AnnouncementController {
                 if (!_.isObject(data)) {
                     resolve(false)
                 } else {
-                    resolve(true)
+                    if (_.size(data.data)) {
+                        resolve(true)
+                    } else {
+                        resolve(false)
+                    }
                 }
             })
             .catch((error) => {
