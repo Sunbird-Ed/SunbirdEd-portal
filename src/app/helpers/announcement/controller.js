@@ -424,6 +424,7 @@ class AnnouncementController {
             let query = {
                 table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
                 query: {
+                    "target.geo.ids": targetGeolocations,
                     "status": this.statusConstant.ACTIVE
                 }
             }
@@ -435,7 +436,7 @@ class AnnouncementController {
                         if (!_.isObject(data)) {
                             reject({ msg: 'unable to fetch announcement inbox', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
                         } else {
-                            resolve(data.data.content)
+                            resolve(data.data)
                         }
                     })
                     .catch((error) => {
@@ -443,9 +444,16 @@ class AnnouncementController {
                     })
                 }))
 
+                let announcements = []
+                if (_.size(data) <= 0) {
+                    return { count:0, announcements: [] }
+                } else {
+                    announcements = data.content
+                }
+
                 //Get read and received status and append to response
                 let announcementIds = []
-                _.forEach(data, (announcement, k) => {
+                _.forEach(announcements, (announcement, k) => {
                     announcementIds.push(announcement.id)
                     announcement[this.metricsActivityConstant.READ] = false
                     announcement[this.metricsActivityConstant.RECEIVED] = false
@@ -454,12 +462,12 @@ class AnnouncementController {
 
                 if (metricsData) {
                     _.forEach(metricsData, (metricsObj, k) => {
-                        let announcementObj = _.find(data, {"id": metricsObj.announcementid})
+                        let announcementObj = _.find(announcements, {"id": metricsObj.announcementid})
                         announcementObj[metricsObj.activity] = true
                     })
                 }
 
-                return  {count:_.size(data), announcements: data}
+                return  {count:_.size(announcements), announcements: announcements}
 
             } catch(error) {
                 throw { msg: 'unable to process your request', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
