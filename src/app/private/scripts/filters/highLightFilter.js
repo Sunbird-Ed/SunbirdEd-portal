@@ -14,6 +14,9 @@ angular.module('playerApp').filter('highlight', ['$sce', function ($sce) {
       text = text.replace(new RegExp('(' + phrase + ')', 'gi'),
             '<span id="highlighted" style = "color:#009fda">$1</span>')
     }
+    // Temp solution to initialize the checkboxes
+    $('.ui.checkbox').checkbox()
+
     return $sce.trustAsHtml(text)
   }
 }])
