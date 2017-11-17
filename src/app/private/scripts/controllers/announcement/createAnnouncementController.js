@@ -353,7 +353,6 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
           createAnn.isMetaModified = false
           createAnn.hideModel('createAnnouncementModal')
           $('#announcementResendModal').modal('show')
-          createAnn.refreshFormValues()
           announcementOutboxData.renderAnnouncementList()
         } else {
           toasterService.error(apiResponse.params.errmsg)
