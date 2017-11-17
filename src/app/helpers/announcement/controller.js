@@ -412,7 +412,7 @@ class AnnouncementController {
                 let geoData = await (this.__getGeolocations(targetOrganisations, authUserToken))
                 //handle emty target list
                 _.forEach(geoData.content, function(geo) {
-                    targetGeolocations.push(geo.locationId)
+                    if (geo.locationId) {targetGeolocations.push(geo.locationId)} 
                 })
 
                 if (_.isEmpty(targetGeolocations)) return { count:0, announcements: [] }
