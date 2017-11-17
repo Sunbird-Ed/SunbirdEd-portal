@@ -65,13 +65,15 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       $('#createAnnouncementModal').modal({
         closable: false,
         onHide: function () {
-          if (createAnn.isMetaModified) {
-            createAnn.confirmationModal()
-            return false
-          } else {
-            createAnn.refreshFormValues()
-            return true
-          }
+        	if (!createAnn.isMetaModified && createAnn.stepNumber == 4) {
+        		return true
+        	} else if (createAnn.isMetaModified) {
+          createAnn.confirmationModal()
+          return false
+        } else {
+          createAnn.refreshFormValues()
+          return true
+        }
         }
       }).modal('show')
     }
