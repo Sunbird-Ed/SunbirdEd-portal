@@ -310,6 +310,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
     }
 
     $scope.$on('editAnnouncementBeforeResend', function (event, announcement) {
+      createAnn.refreshFormValues()
       createAnn.editAction = true
       createAnn.data.title = announcement.details.title
       createAnn.data.description = announcement.details.description
@@ -352,7 +353,6 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
           createAnn.isMetaModified = false
           createAnn.hideModel('createAnnouncementModal')
           $('#announcementResendModal').modal('show')
-          // toasterService.success('Announcement resent successfully.')
           announcementOutboxData.renderAnnouncementList()
         } else {
           toasterService.error(apiResponse.params.errmsg)
