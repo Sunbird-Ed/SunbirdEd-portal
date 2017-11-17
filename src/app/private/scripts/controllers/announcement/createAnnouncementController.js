@@ -61,6 +61,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       })
     }
     createAnn.createAnnouncement = function () {
+      createAnn.refreshFormValues()
       $rootScope.$emit('component:init')
       $('#createAnnouncementModal').modal({
         closable: false,
@@ -306,6 +307,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
     }
 
     $scope.$on('editAnnouncementBeforeResend', function (event, announcement) {
+      createAnn.refreshFormValues()
       createAnn.editAction = true
       createAnn.data.title = announcement.details.title
       createAnn.data.description = announcement.details.description
