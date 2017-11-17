@@ -15,13 +15,14 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
     createAnn.repeatableWebLinks = []
     createAnn.selectedReciepeient = []
     createAnn.hideAnncmntBtn = false
+    createAnn.uploadAttchement = false
 
     var getDefinitionReq = {
       request: {
-      		'rootorgid': $rootScope.rootOrgId,
-      		'userid': $rootScope.userId,
-      		'definitions': ['announcementtypes', 'senderlist']
-    	}
+        'rootorgid': $rootScope.rootOrgId,
+        'userid': $rootScope.userId,
+        'definitions': ['announcementtypes', 'senderlist']
+      }
     }
 
     announcementService.getDefinitions(getDefinitionReq).then(function (response) {
@@ -36,11 +37,11 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
           })
         }
       } else {
-      	createAnn.hideAnncmntBtn = true
+        createAnn.hideAnncmntBtn = true
         toasterService.error($rootScope.messages.fmsg.m0069)
       }
     }).catch(function (response) {
-    	createAnn.hideAnncmntBtn = true
+      createAnn.hideAnncmntBtn = true
       toasterService.error($rootScope.messages.fmsg.m0069)
     })
     createAnn.initializeModal = function () {
@@ -65,15 +66,15 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       $('#createAnnouncementModal').modal({
         closable: false,
         onHide: function () {
-        	if (!createAnn.isMetaModified && createAnn.stepNumber == 4) {
-        		return true
-        	} else if (createAnn.isMetaModified) {
-          createAnn.confirmationModal()
-          return false
-        } else {
-          createAnn.refreshFormValues()
-          return true
-        }
+          if (!createAnn.isMetaModified && createAnn.stepNumber == 4) {
+            return true
+          } else if (createAnn.isMetaModified) {
+            createAnn.confirmationModal()
+            return false
+          } else {
+            createAnn.refreshFormValues()
+            return true
+          }
         }
       }).modal('show')
     }
@@ -107,14 +108,19 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
     }
     createAnn.removeLink = function (index) {
       createAnn.repeatableWebLinks.splice(index, 1)
-      delete createAnn.data.links[index]
-      createAnn.showUrlField = createAnn.repeatableWebLinks.length != '0'
+      if (createAnn.data.links) {
+        delete createAnn.data.links[index]
+      }
+      createAnn.showUrlField = !!createAnn.repeatableWebLinks.length
+      createAnn.enableRecepientBtn()
     }
     createAnn.previewAnn = function () {
       createAnn.linkArray = []
       if (createAnn.data.links) {
         angular.forEach(createAnn.data.links, function (value, key) {
-          createAnn.linkArray.push(value)
+          if (value.trim().length) {
+            createAnn.linkArray.push(value)
+          }
         })
       }
       createAnn.previewData = {
@@ -151,7 +157,16 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       createAnn.stepNumber = 3
     }
     createAnn.enableRecepientBtn = function () {
-      if (createAnn.data.title && createAnn.data.from && createAnn.data.type && (createAnn.data.description || createAnn.attachment.length)) {
+      var links = []
+      if (createAnn.data.links) {
+        angular.forEach(createAnn.data.links, function (value, key) {
+          if (value.trim().length) {
+            links.push(value)
+          }
+        })
+      }
+      if (createAnn.data.title && createAnn.data.from && createAnn.data.type &&
+        (createAnn.uploadAttchement || createAnn.data.description || links.length)) {
         createAnn.disableBtn = false
       } else {
         createAnn.disableBtn = true
@@ -183,8 +198,10 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
         }
       }
 
-      if (createAnn.linkArray.length) {
+      if (createAnn.linkArray.length > 0) {
         requestBody.links = createAnn.linkArray
+      } else {
+        delete requestBody.links
       }
 
       if (createAnn.attachment.length) {
@@ -280,6 +297,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
                 }
                 attData = JSON.stringify(attData)
                 createAnn.attachment.push(attData)
+                createAnn.uploadAttchement = true
                 createAnn.enableRecepientBtn()
               }
             },
@@ -291,11 +309,11 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
             },
             onCancel: function (id, name) {
               if (createAnn.attachment.splice(id, 1)) {
-	           console.log('attachement removed')
-	   }
-	   document.getElementById('hide-section-with-button').style.display = 'block'
-	    createAnn.enableRecepientBtn()
+                console.log('attachement removed')
+              }
               document.getElementById('hide-section-with-button').style.display = 'block'
+              createAnn.uploadAttchement = false
+              createAnn.enableRecepientBtn()
             }
           }
         })

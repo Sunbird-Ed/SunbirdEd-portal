@@ -64,12 +64,17 @@ angular.module('playerApp')
 		 * @returns {Promise} Promise object represents announcement inbox list dashboard data
 		 * @instance
 		 */
-  this.getInboxAnnouncementList = function (userId) {
+  this.getInboxAnnouncementList = function (userId,reqLimit) {
     var data = {
       'request': {
         'userId': userId
       }
     }
+
+		if(reqLimit > 0){
+			data.request.limit = reqLimit
+		}
+
     return httpCall('/announcement/v1/user/inbox', data, 'POST')
   }
 		/**

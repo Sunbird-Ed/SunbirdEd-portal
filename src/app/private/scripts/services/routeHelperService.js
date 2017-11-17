@@ -153,7 +153,10 @@ angular.module('playerApp')
                     name: 'Home',
                     link: 'home'
                   }, {
-                    name: 'My Announcement',
+                    name: 'Profile',
+                    link: ''
+                  }, {
+                    name: 'My Announcements',
                     link: ''
                   }]
 
@@ -164,7 +167,7 @@ angular.module('playerApp')
                     name: 'Home',
                     link: 'home'
                   }, {
-                    name: 'Announcement Dashboard',
+                    name: 'Announcements',
                     link: ''
                   }]
 

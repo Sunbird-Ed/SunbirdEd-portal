@@ -136,9 +136,12 @@ app.all('/public/service/v1/content/*', proxy(contentURL, {
   }
 }))
 
-app.post('/private/service/v1/learner/content/v1/media/upload', proxyUtils.verifyToken(), permissionsHelper.checkPermission(), proxy(learnerURL + 'content/v1/media/upload', {
+app.post('/private/service/v1/learner/content/v1/media/upload', proxyUtils.verifyToken(), permissionsHelper.checkPermission(), proxy(learnerURL, {
   limit: reqDataLimitOfContentUpload,
   proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+  proxyReqPathResolver: function (req) {
+    return require('url').parse(learnerURL + '/content/v1/media/upload').path
+  },
   userResDecorator: function (proxyRes, proxyResData, userReq, userRes) {
     let data = JSON.parse(proxyResData.toString('utf8'))
     if (data.responseCode === 'OK') {
