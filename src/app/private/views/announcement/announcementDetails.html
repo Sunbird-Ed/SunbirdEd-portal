@@ -9,6 +9,17 @@
         <p class="ui grey label annType" ng-if="announcementDetails.details.type">
             {{announcementDetails.details.type | uppercase}}
         </p>
+        <!--<div ng-if="announcementDetails.showActions" ng-click="initializeDropdown()" class="float-ContentRight">
+            <div class="ui dropdown">
+              <div class="text">Actions <i class="dropdown icon"></i></div>
+              <div class="menu" ng-if="announcementDetails.status == 'active'">
+                <div class="item AnnDetailsModalDropDwn"><i class="ban icon margin-right-none"></i> Delete</div>
+              </div>
+              <div class="menu" ng-if="announcementDetails.status == 'cancelled'">
+                <div class="item AnnDetailsModalDropDwn"><i class="external share icon margin-right-none"></i> Resend</div>
+              </div>
+            </div>
+        </div> -->
     </div>
     <div class="header padding-top-5">
         <div class="header padding-top-10 announcementHomeCard-header" ng-if="announcementDetails.details.title">
