@@ -6,7 +6,10 @@ angular.module('playerApp')
     'application/png': 'PNG',
     'application/pdf': 'PDF',
     'application/jpeg': 'JPEG',
-    'application/jpg': 'JPEG'
+    'application/jpg': 'JPEG',
+    'image/png': 'PNG',
+    'image/jpeg': 'JPEG',
+    'image/jpg': 'JPEG'
   }
 
 		/**
