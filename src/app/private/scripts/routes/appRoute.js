@@ -767,13 +767,13 @@ angular.module('playerApp')
           }
         },
         onEnter: function ($stateParams, $rootScope, routeHelperService) {
-          $rootScope.homeActive = 'active'
+          $rootScope.profileActive = 'active'
           $rootScope.courseActive = ' '
           $rootScope.isPlayerPage = true
           routeHelperService.loadRouteConfig('announcementOutbox', null)
         },
         onExit: function ($rootScope) {
-          $rootScope.homeActive = ''
+          $rootScope.profileActive = ''
         }
       })
       .state('announcementInbox', {
