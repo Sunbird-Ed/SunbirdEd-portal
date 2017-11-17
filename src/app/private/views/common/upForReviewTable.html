@@ -1,19 +1,20 @@
-<table class="ui upForReviewTable table">
+<table class="ui upForReviewTable table" ng-if="data.upForReviewContentData.length > 0">
   <thead>
     <tr>
-      <th>CONTENT</th>
-      <th>AUTHOR</th>
-      <th>STATUS</th>
+      <th class="six wide">{{$root.frmelmnts.lbl.contentCaps}}</th>
+      <th class="four wide">{{$root.frmelmnts.lbl.authorCaps}}</th>
+      <th class="two wide">{{$root.frmelmnts.lbl.statusCaps}}</th>
     </tr>
   </thead>
   <tbody>
-    <tr class="UpForReviewListHover">
+    <tr class="UpForReviewListHover cursor-pointer" ng-repeat="item in data.upForReviewContentData track by $index"
+     ng-click="data.openContentPlayer(item)" ng-init="$last && data.initTocPopup()">
       <td >
         <h4 class="ui image header">
-          <img src="https://www.w3schools.com/w3images/fjords.jpg" class="ui tiny image UpReviewTinyImage">
+          <img ng-src="{{item.appIcon  ? item.appIcon : '/common/images/default.png'}}" class="ui tiny image UpReviewTinyImage">
           <div class="content ">
-				 <div class="UpReviewHeader"> Name of the polygon</div>
-            <div class="UpReviewSubHeader">Lesson
+				 <div class="UpReviewHeader">{{item.name | limitTo: 40}}<i ng-if="item.name.length > 40">...</i></div>
+            <div class="UpReviewSubHeader">{{item.contentType}}
           	</div>
         		</div>
       	</h4>      	
@@ -21,35 +22,13 @@
       <td>  
 			<h4 class="ui image header">			
 				<div class="content">
-					 <div class="UpReviewHeader"> Glen Wagner</div>
-					<div class="UpReviewSubHeader">Pending since: yesterday
+					 <div class="UpReviewHeader">{{item.author}}</div>
+					<div class="UpReviewSubHeader">{{$root.frmelmnts.lbl.pendingSince}}: {{item.lastUpdatedOn | dateFilterXTimeAgo}}
 				 	</div>
        		 </div>
 			</h4>			
        </td>
-      <td  class="UpForReviewStatusOrange">IN REVIEW</td>
-    </tr>
-    <tr class="UpForReviewListHover">
-      <td>
-        <h4 class="ui image header">
-          <img src="https://www.w3schools.com/w3images/fjords.jpg" class="ui tiny image UpReviewTinyImage">
-          <div class="content">
-          				 <div class="UpReviewHeader"> Name of the polygon</div>
-            <div class="UpReviewSubHeader">Lesson
-          	</div>
-        		</div>
-      	</h4>      	
-      </td>
-      <td>  
-			<h4 class="ui image header">			
-				<div class="content">
-														 <div class="UpReviewHeader"> Glen Wagner</div>
-					<div class="UpReviewSubHeader">Pending since: yesterday
-				 	</div>
-       		 </div>
-			</h4>			
-       </td>
-      <td class="UpForReviewStatusGreen">PENDING</td>
+      <td  class="UpForReviewStatusOrange">{{item.status}}</td>
     </tr>
   </tbody>
 </table>
