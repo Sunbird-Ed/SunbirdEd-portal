@@ -426,7 +426,11 @@ class AnnouncementController {
                 query: {
                     "target.geo.ids": targetGeolocations,
                     "status": this.statusConstant.ACTIVE
-                }
+                },
+                sort_by: {
+                    "createddate":"desc"
+                },
+                limit: requestObj.body.request.limit
             }
 
             try {
