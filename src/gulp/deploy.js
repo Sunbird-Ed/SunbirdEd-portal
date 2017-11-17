@@ -41,6 +41,8 @@ gulp.task('injectFiles', ['minifyIMG'], function () {
       'dist/private/scripts/privateErrorMessages.js',
       'dist/private/scripts/managers/eventManager.js',
       'dist/private/scripts/app.js',
+      'dist/private/scripts/services/geoService.js',
+      'dist/private/scripts/components/geo.js',
       'dist/private/scripts/routes/appRoute.js',
       'dist/private/script.min.js',
       'dist/private/external.min.css'
