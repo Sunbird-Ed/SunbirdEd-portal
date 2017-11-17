@@ -108,7 +108,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
     }
     createAnn.removeLink = function (index) {
       createAnn.repeatableWebLinks.splice(index, 1)
-      if (createAnn.data.links !== undefined && createAnn.data.links.length) {
+      if (createAnn.data.links) {
         delete createAnn.data.links[index]
       }
       createAnn.showUrlField = !!createAnn.repeatableWebLinks.length
@@ -165,9 +165,8 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
           }
         })
       }
-
       if (createAnn.data.title && createAnn.data.from && createAnn.data.type &&
-        (createAnn.data.description || createAnn.uploadAttchement || links.length)) {
+        (createAnn.uploadAttchement || createAnn.data.description || links.length)) {
         createAnn.disableBtn = false
       } else {
         createAnn.disableBtn = true
@@ -299,7 +298,6 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
                 attData = JSON.stringify(attData)
                 createAnn.attachment.push(attData)
                 createAnn.uploadAttchement = true
-                console.log(createAnn.uploadAttchement)
                 createAnn.enableRecepientBtn()
               }
             },
@@ -326,7 +324,6 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
     }
 
     $scope.$on('editAnnouncementBeforeResend', function (event, announcement) {
-      createAnn.refreshFormValues()
       createAnn.editAction = true
       createAnn.data.title = announcement.details.title
       createAnn.data.description = announcement.details.description
@@ -369,6 +366,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
           createAnn.isMetaModified = false
           createAnn.hideModel('createAnnouncementModal')
           $('#announcementResendModal').modal('show')
+          // toasterService.success('Announcement resent successfully.')
           announcementOutboxData.renderAnnouncementList()
         } else {
           toasterService.error(apiResponse.params.errmsg)
