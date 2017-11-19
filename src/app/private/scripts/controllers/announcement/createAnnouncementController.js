@@ -210,7 +210,10 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       if (createAnn.attachment.length) {
         requestBody.attachments = createAnn.attachment
       }
-
+      
+      if (angular.isUndefined(requestBody.description)) {
+      	delete requestBody.description
+      }
       var requestData = {
         request: requestBody
       }
