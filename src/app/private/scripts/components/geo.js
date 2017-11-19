@@ -89,7 +89,7 @@ angular.module('playerApp').component('geo', {
          */
     this.renderItems = function (items) {
       this.items = items
-      this.initializeCheckBoxes();
+      //this.initializeCheckBoxes();
     }
 
         /**
@@ -145,12 +145,12 @@ angular.module('playerApp').component('geo', {
         console.error('Unable to fetch the locations', error)
       })
     }
-    this.initializeCheckBoxes = function(){
+    /*this.initializeCheckBoxes = function(){
       // Temp solution to initialize the checkboxes
       setTimeout(function(){
         $('.ui.checkbox').checkbox()
       },0)
-    }
+    }*/
   }],
   templateUrl: 'views/components/geo.html'
 })

@@ -165,11 +165,14 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
           }
         })
       }
+      var selectRecipientBtn = angular.element( document.querySelector('#selectRecipientBtn'));
       if (createAnn.data.title && createAnn.data.from && createAnn.data.type &&
         (createAnn.uploadAttchement || createAnn.data.description || links.length)) {
         createAnn.disableBtn = false
+    	selectRecipientBtn.removeClass('disabled')
       } else {
         createAnn.disableBtn = true
+        selectRecipientBtn.addClass('disabled')
       }
       createAnn.isMetaModified = true
     }
@@ -286,7 +289,6 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
           },
           callbacks: {
             onComplete: function (id, name, responseJSON, xhr) {
-              console.log('Upload response :', responseJSON)
               if (responseJSON.responseCode === 'OK') {
                 createAnn.convertFileSize(this.getSize(id))
                 var attData = {
@@ -308,12 +310,22 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
               })
             },
             onCancel: function (id, name) {
-              if (createAnn.attachment.splice(id, 1)) {
-                console.log('attachement removed')
+              var deleteFlag = createAnn.attachment.splice(id, 1);
+              if(deleteFlag.length === 0){
+	              angular.forEach(createAnn.attachment, function(value, key) {
+	              	var details = JSON.parse(value)
+	    			if(details.name === name){
+	    				createAnn.attachment.splice(key, 1);
+	    			}
+				  });
+			  }
+
+              if(createAnn.attachment.length === 0){
+              	createAnn.uploadAttchement = false
               }
-              document.getElementById('hide-section-with-button').style.display = 'block'
-              createAnn.uploadAttchement = false
+
               createAnn.enableRecepientBtn()
+              document.getElementById('hide-section-with-button').style.display = 'block'
             }
           }
         })
