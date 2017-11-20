@@ -5,7 +5,7 @@ module.exports = Joi.object().keys({
   userid: Joi.string().required(), // part of primary key
   sourceid: Joi.string().required(), // part of primary key
   createddate: Joi.string().required(), // part of primary key
-  details: Joi.object().min(1).pattern(/\w/, Joi.string().required()), // any key/value with string
+  details: Joi.object().min(1), // any key/value with string
   links: Joi.array().items(Joi.string()),
   attachments: Joi.array().items(Joi.string()),
   target: Joi.object().min(1).required(), // TODO: add validation for target format
