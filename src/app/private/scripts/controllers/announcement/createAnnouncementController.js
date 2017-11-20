@@ -108,7 +108,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
     }
     createAnn.removeLink = function (index) {
       createAnn.repeatableWebLinks.splice(index, 1)
-      if (createAnn.data.links !== undefined && createAnn.data.links.length) {
+      if (createAnn.data.links) {
         delete createAnn.data.links[index]
       }
       createAnn.showUrlField = !!createAnn.repeatableWebLinks.length
@@ -165,12 +165,14 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
           }
         })
       }
-
+      var selectRecipientBtn = angular.element( document.querySelector('#selectRecipientBtn'));
       if (createAnn.data.title && createAnn.data.from && createAnn.data.type &&
-        (createAnn.data.description || createAnn.uploadAttchement || links.length)) {
+        (createAnn.uploadAttchement || createAnn.data.description || links.length)) {
         createAnn.disableBtn = false
+    	selectRecipientBtn.removeClass('disabled')
       } else {
         createAnn.disableBtn = true
+        selectRecipientBtn.addClass('disabled')
       }
       createAnn.isMetaModified = true
     }
@@ -208,7 +210,10 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       if (createAnn.attachment.length) {
         requestBody.attachments = createAnn.attachment
       }
-
+      
+      if (angular.isUndefined(requestBody.description)) {
+      	delete requestBody.description
+      }
       var requestData = {
         request: requestBody
       }
@@ -287,7 +292,6 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
           },
           callbacks: {
             onComplete: function (id, name, responseJSON, xhr) {
-              console.log('Upload response :', responseJSON)
               if (responseJSON.responseCode === 'OK') {
                 createAnn.convertFileSize(this.getSize(id))
                 var attData = {
@@ -299,7 +303,6 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
                 attData = JSON.stringify(attData)
                 createAnn.attachment.push(attData)
                 createAnn.uploadAttchement = true
-                console.log(createAnn.uploadAttchement)
                 createAnn.enableRecepientBtn()
               }
             },
@@ -310,12 +313,22 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
               })
             },
             onCancel: function (id, name) {
-              if (createAnn.attachment.splice(id, 1)) {
-                console.log('attachement removed')
+              var deleteFlag = createAnn.attachment.splice(id, 1);
+              if(deleteFlag.length === 0){
+	              angular.forEach(createAnn.attachment, function(value, key) {
+	              	var details = JSON.parse(value)
+	    			if(details.name === name){
+	    				createAnn.attachment.splice(key, 1);
+	    			}
+				  });
+			  }
+
+              if(createAnn.attachment.length === 0){
+              	createAnn.uploadAttchement = false
               }
-              document.getElementById('hide-section-with-button').style.display = 'block'
-              createAnn.uploadAttchement = false
+
               createAnn.enableRecepientBtn()
+              document.getElementById('hide-section-with-button').style.display = 'block'
             }
           }
         })
@@ -326,7 +339,6 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
     }
 
     $scope.$on('editAnnouncementBeforeResend', function (event, announcement) {
-      createAnn.refreshFormValues()
       createAnn.editAction = true
       createAnn.data.title = announcement.details.title
       createAnn.data.description = announcement.details.description
@@ -369,6 +381,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
           createAnn.isMetaModified = false
           createAnn.hideModel('createAnnouncementModal')
           $('#announcementResendModal').modal('show')
+          // toasterService.success('Announcement resent successfully.')
           announcementOutboxData.renderAnnouncementList()
         } else {
           toasterService.error(apiResponse.params.errmsg)

@@ -138,7 +138,7 @@
     <div class="ui primary button" ng-if="createAnn.stepNumber == 3" ng-click="createAnn.previewAnn();createAnn.stepNumber = 4;">{{$root.frmelmnts.btn.anncmntpreview}}</div>
     <div class="ui primary button" ng-if="createAnn.stepNumber == 4 && !createAnn.editAction" id="sendAnnouncement" ng-click="createAnn.saveAnnouncement(createAnn.data)">{{$root.frmelmnts.btn.anncmntsendanncmnt}}</div>
     <div class="ui primary button" ng-if="createAnn.stepNumber == 4 && createAnn.editAction" id="resendAnnouncement" ng-click="createAnn.resendAnnouncement(createAnn.data)">{{$root.frmelmnts.btn.anncmntsendanncmnt}}</div>
-    <div ng-if="createAnn.stepNumber == 1" class="ui primary button" ng-class="{'disabled': createAnn.disableBtn === true}" ng-click="createAnn.selectRecipients();createAnn.stepNumber = 2;">{{ createAnn.editAction ? $root.frmelmnts.btn.anncmnteditrecipients : $root.frmelmnts.btn.anncmntselectrecipients}}</div>
+    <div ng-if="createAnn.stepNumber == 1" id="selectRecipientBtn" class="ui primary button" ng-class="{'disabled': createAnn.disableBtn === true || announcementForm.$invalid}" ng-click="createAnn.selectRecipients();createAnn.stepNumber = 2;">{{ createAnn.editAction ? $root.frmelmnts.btn.anncmnteditrecipients : $root.frmelmnts.btn.anncmntselectrecipients}}</div>
   </div>
 </div>
 <!-- Announcement created success modal -->

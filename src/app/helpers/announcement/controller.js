@@ -164,6 +164,12 @@ class AnnouncementController {
     return new Promise((resolve, reject) => {
       let announcementId = uuidv1()
       if (!data) reject({ msg: 'invalid request' })
+
+        if(!data.description) {data.description = ''}
+        if(!data.links) {data.links = []}
+        if (!data.attachments) {data.attachments = []}
+
+
       let query = {
         table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
         values: {

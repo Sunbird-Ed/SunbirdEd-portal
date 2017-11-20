@@ -89,5 +89,13 @@ angular.module('playerApp')
           toasterService.error(err.data.params.errmsg)
         }).finally(function () {})
       }
+
+      announcementOutboxData.showAnnouncementDetails = function(announcementDetails) {
+        $scope.announcementOutboxData.announcementDetails = announcementDetails
+        if(announcementDetails.userid == $rootScope.userId){
+          $scope.announcementOutboxData.announcementDetails.showActions = true
+        }
+        $('#annDetailsOutboxModal').modal('show')
+      }
     }
   ])
