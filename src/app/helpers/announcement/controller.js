@@ -190,6 +190,8 @@ class AnnouncementController {
         }
       }
 
+      console.log(query)
+
       this.objectStoreRest.createObject(query)
         .then((data) => {
           if (!_.isObject(data)) {
