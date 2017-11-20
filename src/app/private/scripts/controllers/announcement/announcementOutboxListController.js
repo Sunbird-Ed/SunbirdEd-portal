@@ -73,11 +73,7 @@ angular.module('playerApp')
         announcementService.getResend(announcementId).then(function (apiResponse) {
           apiResponse = apiResponse.data
           if (apiResponse && apiResponse.responseCode === 'OK') {
-            if (apiResponse.hasOwnProperty('result')) {
-              $rootScope.$broadcast('editAnnouncementBeforeResend', apiResponse.result)
-            } else {
-              toasterService.error($rootScope.messages.fmsg.m0071)
-            }
+            $rootScope.$broadcast('editAnnouncementBeforeResend', apiResponse.result)
           } else {
             toasterService.error(apiResponse.params.errmsg)
           }
@@ -87,9 +83,9 @@ angular.module('playerApp')
       }
 
       announcementOutboxData.showAnnouncementDetails = function(announcementDetails) {
-        $scope.announcementOutboxData.announcementDetails = announcementDetails
-        if(announcementDetails.userid == $rootScope.userId){
-          $scope.announcementOutboxData.announcementDetails.showActions = true
+        announcementOutboxData.announcementDetails = announcementDetails
+        if(announcementDetails.userid === $rootScope.userId){
+          announcementOutboxData.announcementDetails.showActions = true
         }
         $('#annDetailsOutboxModal').modal('show')
       }

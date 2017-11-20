@@ -9,7 +9,7 @@ angular.module('playerApp')
 
       announcementInboxData.renderAnnouncementList = function(limit) {
         announcementInboxData.limit = limit || -1
-        announcementService.getInboxAnnouncementList($rootScope.userId,announcementInboxData.limit).then(function(apiResponse) {
+        announcementService.getInboxAnnouncementList($rootScope.userId, announcementInboxData.limit).then(function(apiResponse) {
             apiResponse = apiResponse.data;
             if (apiResponse && apiResponse.responseCode === 'OK') {
               announcementInboxData.result = apiResponse.result
@@ -72,9 +72,8 @@ angular.module('playerApp')
 
       }
 
-      announcementInboxData.parJson = function(announcement){
-        return JSON.parse(announcement)
+      announcementInboxData.getJson = function(attachment) {
+        return JSON.parse(attachment)
       }
     }
-
   ])

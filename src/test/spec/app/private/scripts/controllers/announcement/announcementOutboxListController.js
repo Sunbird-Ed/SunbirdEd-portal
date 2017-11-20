@@ -92,6 +92,15 @@ describe('Controller: announcementOutboxListController', function() {
         expect(announcementService.deleteAnnouncement).toHaveBeenCalled()
         scope.$apply()
       })
+
+      it('Reject', function() {
+          spyOn(announcementService, 'deleteAnnouncement').and.returnValue(deferred.promise)
+          deferred.reject({})
+          expect(announcementOutboxListController.deleteAnnouncement).toBeDefined()
+          announcementOutboxListController.deleteAnnouncement(annDeleteTestData.requestBody)
+          expect(announcementService.deleteAnnouncement).toHaveBeenCalled()
+          scope.$apply()
+        })
 	})
 
    describe('Get resend', function() {
@@ -104,6 +113,15 @@ describe('Controller: announcementOutboxListController', function() {
         expect(announcementService.getResend).toHaveBeenCalled()
         scope.$apply()
 	    })
+      it('failed', function() {
+        spyOn(announcementService, 'getResend').and.returnValue(deferred.promise)
+        deferred.resolve(annGetResendTestData.failedResponse)
+        annGetResendTestData.failedResponse.data = annGetResendTestData.failedResponse
+        expect(announcementOutboxListController.getResend).toBeDefined()
+        var response = announcementOutboxListController.getResend('blah-blah')
+        expect(announcementService.getResend).toHaveBeenCalled()
+        scope.$apply()
+        })
 	})
 
 	describe('Modal popup', function() {
@@ -120,5 +138,32 @@ describe('Controller: announcementOutboxListController', function() {
         announcementOutboxListController.closeModal('announcementDeleteModal')
         expect(announcementOutboxListController.closeModal).toHaveBeenCalled()
       });
+  })
+
+  describe('Calling the announcement details directive', function() {
+      it('Show announcement details', function() {
+        spyOn(announcementOutboxListController, 'showAnnouncementDetails').and.callThrough()
+        expect(announcementOutboxListController.showAnnouncementDetails).toBeDefined()
+        var announcementDetails = annOutboxTestData.successResponce.result.announcements[0]
+        announcementOutboxListController.showAnnouncementDetails(announcementDetails)
+        expect(announcementDetails).toBe(announcementOutboxListController.announcementDetails)
+      })
+
+      it('User should not see the actions button', function() {
+        spyOn(announcementOutboxListController, 'showAnnouncementDetails').and.callThrough()
+        expect(announcementOutboxListController.showAnnouncementDetails).toBeDefined()
+        var announcementDetails = annOutboxTestData.successResponce.result.announcements[0]
+        announcementOutboxListController.showAnnouncementDetails(announcementDetails)
+        expect(announcementOutboxListController.announcementDetails.showActions).toBe(undefined)
+      })
+
+      it('User should see the actions button', function() {
+        spyOn(announcementOutboxListController, 'showAnnouncementDetails').and.callThrough()
+        expect(announcementOutboxListController.showAnnouncementDetails).toBeDefined()
+        var announcementDetails = annOutboxTestData.successResponce.result.announcements[0]
+        rootScope.userId = announcementDetails.userid
+        announcementOutboxListController.showAnnouncementDetails(announcementDetails)
+        expect(announcementOutboxListController.announcementDetails.showActions).toBeTruthy()
+      })
   })
 })

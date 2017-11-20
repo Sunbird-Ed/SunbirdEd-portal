@@ -93,4 +93,13 @@ describe('Controller: announcementInboxListController', function () {
       scope.$apply()
     })
   })
+
+   describe('Parse the stringified data', function () {
+    it('get json', function () {
+      spyOn(announcementInboxListController, 'getJson').and.callThrough()
+      expect(announcementInboxListController.getJson).toBeDefined()
+      var jsonAttachment = announcementInboxListController.getJson(annInboxTestData.annWithAttachments)
+      expect(jsonAttachment.constructor).toBe(Object)
+    })
+  })
 })
