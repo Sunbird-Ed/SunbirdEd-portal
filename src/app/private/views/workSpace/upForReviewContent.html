@@ -94,7 +94,7 @@
                         </div>
                     </div>
                 </div>
-                <div class='two wide column'>
+                <!-- <div class='two wide column'>
                     <div apply-script id="filterContent" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
                         <input type='hidden' ng-value='{{}}' />
                         <i class="dropdown icon"></i>
@@ -104,7 +104,7 @@
                             <div ng-click="upForReviewContent.search.selectFilter('selectedContentType',contentType.key,$event,'Content Type')" ng-repeat="contentType in upForReviewContent.search.contentTypes  | orderBy:'toString()'" class="item dropdown-item" ng-class="{'active':(upForReviewContent.search.selectedContentType.indexOf(contentType.key)>=0)}" data-value="{{contentType.key}}">{{contentType.value}}</div>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <!-- language -->
                 <div class="two wide column">
                     <div  apply-script  id="filterLang" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
@@ -118,7 +118,7 @@
                     </div>
                 </div>
                 <!-- subjects -->
-                <!-- <div class="two wide column" ng-if="upForReviewContent.search.selectedSearchKey !== 'Organisations'">
+                <div class="two wide column" ng-if="upForReviewContent.search.selectedSearchKey !== 'Organisations'">
                     <div apply-script id="filterSub" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
                         <i class="dropdown icon"></i>
                         <div class="filter-sel-text" ng-if="upForReviewContent.search.selectedSubject.length > 0 ">{{upForReviewContent.search.selectedSubject.length+' '+$root.frmelmnts.prmpt.subject}}</div>
@@ -127,7 +127,7 @@
                             <div ng-click="upForReviewContent.search.selectFilter('selectedSubject',subject,$event)" ng-repeat="subject in upForReviewContent.search.subjects  | orderBy:'toString()'" class="item dropdown-item" ng-class="{'active':(upForReviewContent.search.selectedSubject.indexOf(subject)>=0)}" data-value="{{subject}}">{{subject}}</div>
                         </div>
                     </div>
-                </div> -->
+                </div>
 
 
                 <!-- buttons -->
