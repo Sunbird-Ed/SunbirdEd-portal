@@ -56,185 +56,229 @@ describe('Controller: createAnnouncementCtrl', function () {
     })
   }))
 
-  it('should initialize create announcement Modal', function (done) {
+  it('should initialize create announcement Modal', function () {
     spyOn(createAnn, 'initializeModal').and.callThrough()
     createAnn.initializeModal()
     timeout.flush(100)
-    done()
+    expect(createAnn.initializeModal).toBeDefined()
   })
 
-  it('should initialize create announcement Modal', function (done) {
+  it('should initialize create announcement Modal', function () {
     spyOn(createAnn, 'initializeModal').and.callThrough()
     createAnn.createAnnouncement()
-    done()
+    expect(createAnn.createAnnouncement).toBeDefined()
   })
 
-  it('Add one more link', function (done) {
+  it('Add one more link', function () {
     spyOn(createAnn, 'addNewLink').and.callThrough()
     createAnn.addNewLink()
-    done()
+    expect(createAnn.repeatableWebLinks.length).toEqual(1)
+    expect(createAnn.showUrlField).toBeDefined()
   })
 
-  it('Remove link', function (done) {
+  it('Remove link', function () {
     spyOn(createAnn, 'removeLink').and.callThrough()
     var index = 0
     createAnn.repeatableWebLinks.push({'id': 'choice' + 0})
     createAnn.data.links = {'0': 'https;//google.co.in'}
     createAnn.removeLink(index)
-    done()
+    expect(createAnn.repeatableWebLinks.length).toEqual(0)
+    expect(createAnn.data.links).not.toBe(null)
   })
 
-  it('preview announcement', function (done) {
+  it('preview announcement', function () {
     spyOn(createAnn, 'previewAnn').and.callThrough()
     var index = 0
     createAnn.repeatableWebLinks.push({'id': 'choice' + 0})
     createAnn.data.links = {0: 'https;//google.co.in', 1: 'https://google.com'}
-    createAnn.previewAnn(index)
-    done()
+    createAnn.previewAnn()
+    expect(createAnn.previewData).toBeDefined()
   })
 
-  it('convert file size into KB / MB', function (done) {
+  it('convert file size into KB / MB', function () {
     spyOn(createAnn, 'convertFileSize').and.callThrough()
     createAnn.convertFileSize(1234)
-    done()
+    expect(createAnn.convertedFileSize).toBeDefined()
   })
 
-  it('should not convert file size into KB / MB', function (done) {
+  it('should not convert file size into KB / MB', function () {
     spyOn(createAnn, 'convertFileSize').and.callThrough()
     createAnn.convertFileSize(0)
-    done()
+    expect(createAnn.convertedFileSize).toEqual('0 Byte')
   })
 
-  it('Hide creation modal', function (done) {
+  it('Hide creation modal', function () {
     spyOn(createAnn, 'hideModel').and.callThrough()
     createAnn.hideModel()
-    done()
+    expect(createAnn.hideModel).toBeDefined()
   })
 
-  it('Should enable select ricipents button', function (done) {
+  it('Should enable select recipents button', function () {
     spyOn(createAnn, 'enableRecepientBtn').and.callThrough()
     createAnn.data.title = 'Test'
     createAnn.data.from = 'Test'
     createAnn.data.type = 'test'
-    createAnn.data.description = 'test'
-    createAnn.attachment = []
+    createAnn.data.description = 'test test'
+    createAnn.data.links = {'0': 'https;//google.co.in'}
     createAnn.enableRecepientBtn()
-    done()
+    expect(createAnn.disableBtn).toBeDefined()
+    expect(createAnn.disableBtn).toEqual(false)
   })
 
-  it('should not be able to enable button', function (done) {
+  it('should not be able to enable button', function () {
     spyOn(createAnn, 'enableRecepientBtn').and.callThrough()
     createAnn.data.title = 'Test'
     createAnn.data.from = 'Test'
     createAnn.data.description = 'test'
     createAnn.enableRecepientBtn()
-    done()
+    expect(createAnn.disableBtn).toBeDefined()
+    expect(createAnn.disableBtn).toEqual(true)
   })
 
-  it('should refresh form values', function (done) {
+  it('should refresh form values', function () {
     spyOn(createAnn, 'refreshFormValues').and.callThrough()
     createAnn.refreshFormValues()
-    done()
+    expect(createAnn.refreshFormValues).toBeDefined()
+    expect(createAnn.isMetaModified).toBeDefined()
+    expect(createAnn.isMetaModified).toEqual(false)
+    expect(createAnn.editAction).toEqual(false)
+    expect(createAnn.showUrlField).toEqual(false)
+    expect(createAnn.stepNumber).toEqual(1)
+    expect(createAnn.repeatableWebLinks.length).toEqual(0)
+    expect(createAnn.attachment.length).toEqual(0)
   })
 
-  it('Should open form step number 3 ', function (done) {
+  it('Should open form step number 3 ', function () {
     spyOn(createAnn, 'confirmRecipients').and.callThrough()
     createAnn.selectedReciepeient = [{name: 'Bangalore'}]
     createAnn.confirmRecipients()
-    done()
+    expect(createAnn.stepNumber).toBeDefined()
+    expect(createAnn.stepNumber).toEqual(3)
   })
 
-  it('Should not open form step number 3 ', function (done) {
+  it('Should not open form step number 3 ', function () {
     spyOn(createAnn, 'confirmRecipients').and.callThrough()
     createAnn.confirmRecipients()
-    done()
+    expect(createAnn.stepNumber).toBeDefined()
+    expect(createAnn.stepNumber).toEqual(2)
   })
 
-  it('Should open confirmation modal ', function (done) {
+  it('Should open confirmation modal ', function () {
+    createAnn.isMetaModified = true
     spyOn(createAnn, 'confirmationModal').and.callThrough()
     createAnn.confirmationModal()
     timeout.flush(100)
-    done()
+    expect(createAnn.confirmationModal).toBeDefined()
+    expect(createAnn.isMetaModified).toBeDefined()
+    expect(createAnn.isMetaModified).toEqual(true)
   })
 
-  it('should preview announcement', function (done) {
-    spyOn(createAnn, 'previewAnn').and.callThrough()
-    var index = 0
-    createAnn.repeatableWebLinks.push({'id': 'choice' + 0})
-    createAnn.data.link = {'0': 'https;//google.co.in'}
-    createAnn.previewAnn()
-    done()
+  it('Should not open confirmation modal ', function () {
+    createAnn.isMetaModified = false
+    spyOn(createAnn, 'confirmationModal').and.callThrough()
+    createAnn.confirmationModal()
+    timeout.flush(100)
+    expect(createAnn.confirmationModal).toBeDefined()
+    expect(createAnn.isMetaModified).toBeDefined()
+    expect(createAnn.isMetaModified).toEqual(false)
   })
 
-  xit('Select recipients', function (done) {
-
-  })
-
-  it('Should remove recipient', function (done) {
+  it('Should remove recipient', function () {
     spyOn(createAnn, 'removeRicipients').and.callThrough()
     createAnn.selectedReciepeient = [{id: '12345', location: '12345'}, {id: '456', location: '456'}]
     createAnn.removeRicipients({id: '12345', location: '12345'})
-    done()
+    expect(createAnn.selectedReciepeient).toBeDefined()
+    expect(createAnn.selectedReciepeient.length).toEqual(1)
+    createAnn.confirmRecipients()
+    expect(createAnn.stepNumber).toBeDefined()
+    expect(createAnn.stepNumber).toEqual(3)
   })
 
-  it('Shoud test single error', function (done) {
+  it('Shoud test single error', function () {
     spyOn(createAnn, 'showError').and.callThrough()
     createAnn.showError(announcementTestData.createAnncmnt.showSingleError)
-    done()
+    expect(createAnn.showError).toBeDefined()
+    expect(createAnn.errorFlag).toBeDefined()
+    expect(createAnn.errorFlag).toEqual(true)
+    expect(toasterService.error).toHaveBeenCalled()
   })
 
-  it('Shoud display multiple error message', function (done) {
+  it('Shoud display multiple error message', function () {
     spyOn(createAnn, 'showError').and.callThrough()
     createAnn.showError(announcementTestData.createAnncmnt.showMultipleErrors)
-    done()
+    expect(createAnn.showError).toBeDefined()
+    expect(createAnn.errorFlag).toBeDefined()
+    expect(createAnn.errorFlag).toEqual(true)
+    expect(toasterService.error).toHaveBeenCalled()
   })
 
-  it('should get announcement type', function (done) {
+  it('should get announcement type', function () {
     var mockRes = announcementTestData.createAnncmnt.getAnncmntTypeRes
     deferred.resolve(mockRes)
     mockRes = mockRes.data = mockRes
     expect(announcementService.getDefinitions).toBeDefined()
-    createAnn.resendAnnouncement(announcementTestData.createAnncmnt.getAnncmntTypeReq)
+    announcementService.getDefinitions(announcementTestData.createAnncmnt.getAnncmntTypeReq)
     expect(announcementService.getDefinitions).toHaveBeenCalled()
-
-    announcementService.getDefinitions()
     scope.$apply()
-    done()
+    expect(createAnn.errorFlag).toEqual(false)
   })
 
-  it('Save announcement', function (done) {
-    createAnn.data.title = 'test'
-    createAnn.data.from = 'test'
-    createAnn.data.type = 'test'
-    createAnn.linkArray = ['https;//google.co.in']
-    createAnn.data.description = 'test'
-    spyOn(announcementService, 'createAnnouncement').and.returnValue(deferred.promise)
-    deferred.resolve(announcementTestData.createAnncmnt.saveAnncmntSuccessRes)
-    spyOn(createAnn, 'saveAnnouncement').and.callThrough()
-    createAnn.saveAnnouncement(createAnn.data)
-    scope.$apply()
-    var response = announcementService.createAnnouncement().$$state.value
-    expect(response).not.toBe(undefined)
-    done()
-  })
-
-  it('should not create announcement', function (done) {
-    spyOn(announcementService, 'createAnnouncement').and.returnValue(deferred.promise)
-    deferred.resolve(announcementTestData.createAnncmnt.failedAnncmntRes)
-    spyOn(createAnn, 'saveAnnouncement').and.callThrough()
-    createAnn.data.title = 'test'
-    createAnn.data.from = 'test'
-    createAnn.linkArray = ['https;//google.co.in']
-    createAnn.data.description = 'test'
-    createAnn.saveAnnouncement(createAnn.data)
-    done()
-  })
-
-  it('should initialize fine uploader', function (done) {
+  it('should initialize fine uploader', function () {
     spyOn(createAnn, 'initializeFileUploader').and.callThrough()
     createAnn.initializeFileUploader()
     timeout.flush(100)
-    done()
+    expect(createAnn.initializeFileUploader).toBeDefined()
+    expect(createAnn.initializeFileUploader).toHaveBeenCalled()
+  })
+
+  it('should not create announcement', function () {
+    spyOn(announcementService, 'createAnnouncement').and.returnValue(deferred.promise)
+    deferred.resolve(announcementTestData.createAnncmnt.failedAnncmntRes)
+    announcementTestData.createAnncmnt.failedAnncmntRes.data = announcementTestData.createAnncmnt.failedAnncmntRes
+    spyOn(createAnn, 'saveAnnouncement').and.callThrough()
+    createAnn.data.from = 'test'
+    createAnn.linkArray = ['https;//google.co.in']
+    createAnn.data.description = 'test'
+    expect(createAnn.saveAnnouncement).toBeDefined()
+    var response = createAnn.saveAnnouncement(createAnn.data)
+    expect(createAnn.saveAnnouncement).toHaveBeenCalled()
+    spyOn(createAnn, 'showError').and.callThrough()
+    createAnn.showError(announcementTestData.createAnncmnt.failedAnncmntRes)
+    expect(createAnn.showError).toHaveBeenCalled()
+    expect(createAnn.errorFlag).toEqual(true)
+  })
+
+  it('Save announcement without title to handle error in catch block', function () {
+    createAnn.linkArray = []
+    createAnn.attachment = ['url']
+    spyOn(announcementService, 'createAnnouncement').and.returnValue(deferred.promise)
+    deferred.resolve(announcementTestData.createAnncmnt.saveAnncmntSuccessRes)
+    announcementTestData.createAnncmnt.createAnncmntWithoutTitleResponse.data = announcementTestData.createAnncmnt.createAnncmntWithoutTitleResponse
+    spyOn(createAnn, 'saveAnnouncement').and.callThrough()
+    expect(createAnn.saveAnnouncement).toBeDefined()
+    createAnn.saveAnnouncement(announcementTestData.createAnncmnt.createAnncmntWithoutTitleReq)
+    expect(announcementService.createAnnouncement).toHaveBeenCalled()
+    scope.$apply()
+    spyOn(createAnn, 'refreshFormValues').and.callThrough()
+    expect(createAnn.refreshFormValues).toBeDefined()
+    createAnn.refreshFormValues()
+    expect(createAnn.isMetaModified).toEqual(false)
+  })
+
+  it('Save announcement', function () {
+    createAnn.linkArray = []
+    spyOn(announcementService, 'createAnnouncement').and.returnValue(deferred.promise)
+    deferred.resolve(announcementTestData.createAnncmnt.saveAnncmntSuccessRes)
+    announcementTestData.createAnncmnt.saveAnncmntSuccessRes.data = announcementTestData.createAnncmnt.saveAnncmntSuccessRes
+    spyOn(createAnn, 'saveAnnouncement').and.callThrough()
+    expect(createAnn.saveAnnouncement).toBeDefined()
+    createAnn.saveAnnouncement(announcementTestData.createAnncmnt.createAnncmntRequest)
+    expect(announcementService.createAnnouncement).toHaveBeenCalled()
+    scope.$apply()
+    spyOn(createAnn, 'refreshFormValues').and.callThrough()
+    expect(createAnn.refreshFormValues).toBeDefined()
+    createAnn.refreshFormValues()
+    expect(createAnn.isMetaModified).toEqual(false)
   })
 
   describe('Resend announcement', function () {
