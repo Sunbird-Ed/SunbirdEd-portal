@@ -59,11 +59,7 @@ angular.module('playerApp')
         announcementService.deleteAnnouncement(requestBody).then(function (apiResponse) {
           apiResponse = apiResponse.data
           if (apiResponse && apiResponse.responseCode === 'OK' && apiResponse.result.status === 'cancelled') {
-            toasterService.success('Announcement cancelled successfully.')
-              var evens = _.remove(announcementOutboxData.listData, function(ann) {
-                return ann.id == announcementOutboxData.announcementId;
-              });
-              announcementOutboxData.setPage(announcementOutboxData.pager.currentPage)
+              toasterService.success($rootScope.messages.fmsg.m0070)
           } else {
             toasterService.error(apiResponse.params.errmsg)
           }
@@ -80,7 +76,7 @@ angular.module('playerApp')
             if (apiResponse.hasOwnProperty('result')) {
               $rootScope.$broadcast('editAnnouncementBeforeResend', apiResponse.result)
             } else {
-              toasterService.error('An unexpected error occured.')
+              toasterService.error($rootScope.messages.fmsg.m0071)
             }
           } else {
             toasterService.error(apiResponse.params.errmsg)
