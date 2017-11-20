@@ -2055,8 +2055,8 @@ div:focus {
   font-family: 'sunbirdmediumfont' !important;
 }
 .UpReviewSubHeader {
-  font-size: 0.6em !important;
-  opacity: 0.6 !important;
+  font-size: 0.7em !important;
+  opacity: 0.7 !important;
   font-family: 'sunbirdregularfont' !important;
 }
 .UpReviewHeader {
@@ -2077,16 +2077,19 @@ div:focus {
 }
 .UpForReviewStatusOrange {
   color: #ffb300;
-  font-size: 1em !important;
+  font-size: 1.1em !important;
   font-family: 'sunbirdregularfont' !important;
 }
 .UpForReviewStatusGreen {
   color: #47cf73;
-  font-size: 1em !important;
+  font-size: 1.1em !important;
   font-family: 'sunbirdregularfont' !important;
 }
 .ui.upForReviewTable.table {
   border: none !important;
+}
+h5.ui.header {
+  font-size: 1rem !important;
 }
 .down-arrow-accordion {
   float: right !important;
