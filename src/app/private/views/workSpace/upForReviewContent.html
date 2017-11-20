@@ -4,7 +4,7 @@
   <div class="ui fluid icon input left action float-ContentRight" id="search-input-container">
     <div class="searchfilterinput ui search">
       <div class="searchicon ui icon input ">
-          <input type="text" id="keyword" name="filter_search" ng-model="upForReviewContent.searchText" placeholder="{{$root.frmelmnts.prmpt.searchContent}}" 
+          <input class="upForReviewSearchBox" type="text" id="keyword" name="filter_search" ng-model="upForReviewContent.searchText" placeholder="{{$root.frmelmnts.prmpt.searchContent}}" 
               title="Search" autocomplete="off" spellcheck="false" dir="auto" class="searchinput" ng-keyup="upForReviewContent.keyUp()" ng-keydown="upForReviewContent.keyDown()" />
           <i class="circular search link icon" ng-click="upForReviewContent.getUpForReviewContent(1)"></i>
       </div>
@@ -118,7 +118,7 @@
                     </div>
                 </div>
                 <!-- subjects -->
-                <div class="two wide column" ng-if="upForReviewContent.search.selectedSearchKey !== 'Organisations'">
+                <!-- <div class="two wide column" ng-if="upForReviewContent.search.selectedSearchKey !== 'Organisations'">
                     <div apply-script id="filterSub" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
                         <i class="dropdown icon"></i>
                         <div class="filter-sel-text" ng-if="upForReviewContent.search.selectedSubject.length > 0 ">{{upForReviewContent.search.selectedSubject.length+' '+$root.frmelmnts.prmpt.subject}}</div>
@@ -127,7 +127,7 @@
                             <div ng-click="upForReviewContent.search.selectFilter('selectedSubject',subject,$event)" ng-repeat="subject in upForReviewContent.search.subjects  | orderBy:'toString()'" class="item dropdown-item" ng-class="{'active':(upForReviewContent.search.selectedSubject.indexOf(subject)>=0)}" data-value="{{subject}}">{{subject}}</div>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
 
                 <!-- buttons -->
@@ -174,9 +174,17 @@
 
 <div class="ui grid">
     <div class="two wide column"></div>
-    <div class="ten wide column paginationAlignment">
+    <div class="ten wide column">
         <div class="padding-bottom-15" ng-if="!upForReviewContent.loader.showLoader && upForReviewContent.totalCount > upForReviewContent.pageLimit">
-            <div ng-init="pegination = upForReviewContent" ng-include=" 'views/common/pagination.html' "></div>
+            <div ng-init="pegination = upForReviewContent">
+              <div class="ui pagination menu margin-top-10 right-floated padding-top-none " ng-if="pegination.pager.pages.length ">
+                <a ng-class="{disabled:pegination.pager.currentPage===1 }" class="item " ng-click="pegination.setPage(1) ">First</a>
+                <a ng-class="{disabled:pegination.pager.currentPage===1 }" class="item " ng-click="pegination.setPage(pegination.pager.currentPage - 1)">Previous</a>
+                <a ng-repeat="page in pegination.pager.pages" ng-class="{active:pegination.pager.currentPage===page}" ng-click="pegination.setPage(page)" class="item">{{page}}</a>
+                <a ng-class="{disabled:pegination.pager.currentPage=== pegination.pager.totalPages}" ng-click="pegination.setPage(pegination.pager.currentPage + 1)" class="item">Next</a>
+                <a ng-class="{disabled:pegination.pager.currentPage=== pegination.pager.totalPages}" ng-click="pegination.setPage(pegination.pager.totalPages)" class="item ">Last</a>
+              </div>
+            </div>
         </div>
     </div>
 </div>
