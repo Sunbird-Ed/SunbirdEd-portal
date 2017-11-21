@@ -156,7 +156,123 @@ describe('Controller:UpForReviewContentController', function () {
   })
 
   it('init the popup', function () {
+    upForReviewContent = createContoller()
     spyOn(upForReviewContent, 'initTocPopup').and.callThrough()
     upForReviewContent.initTocPopup()
+  })
+
+  it('On press keyup', function () {
+    upForReviewContent = createContoller()
+    spyOn(upForReviewContent, 'keyUp').and.callThrough()
+    upForReviewContent.keyUp()
+    timeout.flush(1000)
+  })
+
+  it('On press keyDown', function () {
+    upForReviewContent = createContoller()
+    spyOn(upForReviewContent, 'keyDown').and.callThrough()
+    upForReviewContent.keyDown()
+    timeout.flush(1000)
+  })
+
+  it('Should add active class for selected filter option', function () {
+    upForReviewContent = createContoller()
+    upForReviewContent.search.selectedLanguage = []
+    var itemIndex = -1
+    spyOn(upForReviewContent.search, 'selectFilter').and.callThrough()
+    upForReviewContent.search.selectFilter('selectedLanguage', 'English', '')
+    timeout.flush(0)
+    scope.$apply()
+  })
+
+  it('Should remove active class for unselected filter option', function () {
+    upForReviewContent = createContoller()
+    upForReviewContent.search.selectedLanguage = ['English']
+    var itemIndex = -1
+    spyOn(upForReviewContent.search, 'selectFilter').and.callThrough()
+    upForReviewContent.search.selectFilter('selectedLanguage', 'English', '')
+    timeout.flush(0)
+    scope.$apply()
+  })
+
+  it('Should remove filter selection', function () {
+    upForReviewContent = createContoller()
+    upForReviewContent.search.selectedConcepts = []
+    var itemIndex = -1
+    spyOn(upForReviewContent.search, 'removeFilterSelection').and.callThrough()
+    upForReviewContent.search.removeFilterSelection('selectedConcepts', 'Science')
+    scope.$apply()
+  })
+
+  it('Should remove filter selection for concepts', function () {
+    upForReviewContent = createContoller()
+    upForReviewContent.search.selectedConcepts = ['Science']
+    var itemIndex = -1
+    spyOn(upForReviewContent.search, 'removeFilterSelection').and.callThrough()
+    upForReviewContent.search.removeFilterSelection('selectedConcepts', 'Science')
+    scope.$apply()
+  })
+
+  it('Should remove filter selection except concepts', function () {
+    upForReviewContent = createContoller()
+    upForReviewContent.search.selectedLanguage = []
+    var itemIndex = -1
+    spyOn(upForReviewContent.search, 'removeFilterSelection').and.callThrough()
+    upForReviewContent.search.removeFilterSelection('selectedLanguage', 'English')
+    scope.$apply()
+  })
+
+  it('Should remove filter selection except concepts', function () {
+    upForReviewContent = createContoller()
+    upForReviewContent.search.selectedLanguage = ['English']
+    var itemIndex = -1
+    spyOn(upForReviewContent.search, 'removeFilterSelection').and.callThrough()
+    upForReviewContent.search.removeFilterSelection('selectedLanguage', 'English')
+    scope.$apply()
+  })
+
+  it('Should remove filter selection except concepts', function () {
+    upForReviewContent = createContoller()
+    upForReviewContent.search.selectedLanguage = ['English']
+    var itemIndex = -1
+    spyOn(upForReviewContent.search, 'removeFilterSelection').and.callThrough()
+    upForReviewContent.search.removeFilterSelection('selectedLanguage', 'English')
+    scope.$apply()
+  })
+
+  it('Should apply sorting on search result call applySorting', function () {
+    upForReviewContent = createContoller()
+    upForReviewContent.searchText = 'text'
+    upForReviewContent.search.selectedLanguage = ['Language']
+    upForReviewContent.search.selectedContentType = ['TextBook']
+    upForReviewContent.search.selectedBoard = ['ICSE']
+    upForReviewContent.search.selectedSubject = ['English']
+    upForReviewContent.search.selectedGrades = ['Grade1']
+    spyOn(upForReviewContent.search, 'applySorting').and.callThrough()
+    upForReviewContent.search.applySorting()
+    scope.$apply()
+  })
+
+  it('Should reset all the filters', function () {
+    upForReviewContent = createContoller()
+    spyOn(upForReviewContent.search, 'resetFilter').and.callThrough()
+    upForReviewContent.search.resetFilter()
+    scope.$apply()
+  })
+
+  it('Should get content Type values ', function () {
+    upForReviewContent = createContoller()
+    spyOn(upForReviewContent.search, 'getSelectedContentTypeValue').and.callThrough()
+    var value = upForReviewContent.search.getSelectedContentTypeValue([{key: 'Book', value: 'Book'}], 'Book')
+    expect(value).toBe('Book')
+    scope.$apply()
+  })
+
+  it('Should get defined show error', function () {
+    upForReviewContent = createContoller()
+    spyOn(upForReviewContent, 'showErrorMessage').and.callThrough()
+    var errorObj = upForReviewContent.showErrorMessage(true, 'message', 'error', 'User defined Message')
+    expect(errorObj.messageText).toBe('User defined Message')
+    scope.$apply()
   })
 })
