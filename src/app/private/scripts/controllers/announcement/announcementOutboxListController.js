@@ -55,15 +55,15 @@ angular.module('playerApp')
         $('#' + modalId).modal('hide')
       }
       announcementOutboxData.deleteAnnouncement = function () {
-        var requestBody = { "request": {"userid": $rootScope.userId,"announcenmentid": announcementOutboxData.announcementId}}
+        var requestBody = { 'request': {'userid': $rootScope.userId, 'announcenmentid': announcementOutboxData.announcementId}}
         announcementService.deleteAnnouncement(requestBody).then(function (apiResponse) {
           apiResponse = apiResponse.data
           if (apiResponse && apiResponse.responseCode === 'OK' && apiResponse.result.status === 'cancelled') {
             toasterService.success('Announcement cancelled successfully.')
-              var evens = _.remove(announcementOutboxData.listData, function(ann) {
-                return ann.id == announcementOutboxData.announcementId;
-              });
-              announcementOutboxData.setPage(announcementOutboxData.pager.currentPage)
+            var evens = _.remove(announcementOutboxData.listData, function (ann) {
+              return ann.id == announcementOutboxData.announcementId
+            })
+            announcementOutboxData.setPage(announcementOutboxData.pager.currentPage)
           } else {
             toasterService.error(apiResponse.params.errmsg)
           }
@@ -90,12 +90,8 @@ angular.module('playerApp')
         }).finally(function () {})
       }
 
-      announcementOutboxData.showAnnouncementDetails = function(announcementDetails) {
-        $scope.announcementOutboxData.announcementDetails = announcementDetails
-        if(announcementDetails.userid == $rootScope.userId){
-          $scope.announcementOutboxData.announcementDetails.showActions = true
-        }
-        $('#annDetailsOutboxModal').modal('show')
+      announcementOutboxData.showAnnouncementDetails = function (announcementDetails) {
+        $state.go('announcementDetails', {announcementId: announcementDetails.id})
       }
     }
   ])

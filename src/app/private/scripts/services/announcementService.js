@@ -67,16 +67,16 @@ angular.module('playerApp')
 		 * @returns {Promise} Promise object represents announcement inbox list dashboard data
 		 * @instance
 		 */
-  this.getInboxAnnouncementList = function (userId,reqLimit) {
+  this.getInboxAnnouncementList = function (userId, reqLimit) {
     var data = {
       'request': {
         'userId': userId
       }
     }
 
-		if(reqLimit > 0){
-			data.request.limit = reqLimit
-		}
+    if (reqLimit > 0) {
+      data.request.limit = reqLimit
+    }
 
     return httpCall('/announcement/v1/user/inbox', data, 'POST')
   }
@@ -184,5 +184,18 @@ angular.module('playerApp')
   this.resendAnnouncement = function (requestBody) {
     var URL = '/announcement/v1/resend'
     return httpCall(URL, requestBody, 'POST', {})
+  }
+
+		/**
+		 * @method getAnnouncementById
+		 * @desc get announcement
+		 * @memberOf Services.announcementService
+		 * @param {string}  requestBody - Announcement id
+		 * @returns {object} returns response of API
+		 * @instance
+		 */
+  this.getAnnouncementById = function (announcementId) {
+    var URL = '/announcement/v1/get/' + announcementId
+    return httpCall(URL, '', 'GET')
   }
 }])
