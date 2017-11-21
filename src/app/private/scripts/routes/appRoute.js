@@ -776,6 +776,24 @@ angular.module('playerApp')
           $rootScope.profileActive = ''
         }
       })
+      .state('announcementDetails', {
+        url: '/announcement/:announcementId',
+        views: {
+          mainView: {
+            templateUrl: '/views/announcement/announcementDetails.html',
+            controller: 'announcementDetailsController as announcementDetailsData'
+          }
+        },
+        onEnter: function ($stateParams, $rootScope, routeHelperService) {
+          $rootScope.profileActive = 'active'
+          $rootScope.courseActive = ' '
+          $rootScope.isPlayerPage = true
+          routeHelperService.loadRouteConfig('announcementDetails', null)
+        },
+        onExit: function ($rootScope) {
+          $rootScope.profileActive = ''
+        }
+      })
       .state('announcementInbox', {
         url: '/announcement/inbox',
         views: {
