@@ -20,7 +20,6 @@ const express = require('express'),
   userHelper = require('./helpers/userHelper.js'),
   resourcesBundlesHelper = require('./helpers/resourceBundlesHelper.js'),
   proxyUtils = require('./proxy/proxyUtils.js'),
-  announcements = require('./helpers/announcement'),
   fs = require('fs'),
   port = envHelper.PORTAL_PORT,
   learnerURL = envHelper.LEARNER_URL,
@@ -92,22 +91,9 @@ if (default_tenant) {
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'private')))
 
-app.use('/api/v1/announcement', bodyParser.json({
-  limit: '10mb'
-}), bodyParser.urlencoded({
-  extended: false
-}), function (req, res, next) {
-  let authUserToken = _.get(req, "headers['x-authenticated-user-token']")
-  if (authUserToken) {
-    next()
-  } else {
-    if (keycloak) {
-      keycloak.protect()(req, res, next)
-    } else {
-      return res.status(400).json({'error': 'UNAUTHORIZED', statusCode: 400})
-    }
-  }
-}, require('./helpers/announcement'))
+// Announcement routing
+app.use('/announcement/v1', bodyParser.urlencoded({ extended: false }),
+  bodyParser.json({limit: '10mb' }), require('./helpers/announcement')(keycloak))
 
 app.use('/private/index', function (req, res, next) {
   res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate')
@@ -147,6 +133,21 @@ app.all('/public/service/v1/content/*', proxy(contentURL, {
     } else {
       return require('url').parse(contentURL + urlParam).path
     }
+  }
+}))
+
+app.post('/private/service/v1/learner/content/v1/media/upload', proxyUtils.verifyToken(), permissionsHelper.checkPermission(), proxy(learnerURL, {
+  limit: reqDataLimitOfContentUpload,
+  proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+  proxyReqPathResolver: function (req) {
+    return require('url').parse(learnerURL + '/content/v1/media/upload').path
+  },
+  userResDecorator: function (proxyRes, proxyResData, userReq, userRes) {
+    let data = JSON.parse(proxyResData.toString('utf8'))
+    if (data.responseCode === 'OK') {
+      data.success = true
+    }
+    return JSON.stringify(data)
   }
 }))
 

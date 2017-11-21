@@ -12,6 +12,8 @@ let uuidv1 = require('uuid/v1')
 let dateFormat = require('dateformat')
 let webService = require('request')
 let envVariables = require('../environmentVariablesHelper.js')
+let ApiInterceptor = require('sb_api_interceptor')
+
 
 class AnnouncementController {
 
@@ -66,24 +68,7 @@ class AnnouncementController {
       let request = this.__validateCreateRequest(requestObj.body)
       if (!request.isValid) throw { msg: request.error, statusCode: HttpStatus.BAD_REQUEST }
 
-      // let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
-      // if (!authUserToken) throw { msg: 'UNAUTHORIZED', statusCode: HttpStatus.BAD_REQUEST }
-
-      // try{  
-      //   // TODO: verify  Is logged in userid matching with senderid
-      //   let userProfile = await(this.__getUserProfile({ id: _.get(requestObj, 'body.request.createdBy')}, authUserToken))
-      //   let organisation = _.find(userProfile.organisations, { organisationId: _.get(requestObj, 'body.request.sourceId') })
-      //   if (_.isEmpty(organisation) || _.indexOf(organisation.roles, CREATE_ROLE) == -1) throw "user has no create access"
-      // } catch(error) {
-      //   if(error === 'USER_NOT_FOUND') {
-      //     throw { msg: 'user not found', statusCode: HttpStatus.BAD_REQUEST }
-      //   } else if (error === 'UNAUTHORIZE_USER') {
-      //     throw { msg: 'user is not authorized', statusCode: HttpStatus.BAD_REQUEST }  
-      //   } else {
-      //     throw { msg: 'user has no create access', statusCode: HttpStatus.BAD_REQUEST }  
-      //   }        
-      // }
-
+      let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
       try {
         var newAnnouncementObj = await (this.__createAnnouncement(requestObj.body.request))
       } catch (error) {
@@ -175,44 +160,48 @@ class AnnouncementController {
     })
   }
 
-    __createAnnouncement(data) {
-        return new Promise((resolve, reject) => {
-            let announcementId = uuidv1()
-            
-            if (!data) reject({ msg: 'invalid request' })
+  __createAnnouncement(data) {
+    return new Promise((resolve, reject) => {
+      let announcementId = uuidv1()
+      if (!data) reject({ msg: 'invalid request' })
 
-            let query = {
-                table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
-                values: {
-                    'id': announcementId,
-                    'sourceid': data.sourceId,
-                    'createddate': dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo"),
-                    'userid': data.createdBy,
-                    'details': {
-                        'title': data.title,
-                        'type': data.type,
-                        'description': data.description,
-                        'from':data.from,
-                    },
-                    'target': data.target,
-                    'links': data.links,
-                    'status': this.statusConstant.ACTIVE,
-                    'attachments': data.attachments
-                }
-            }
+        if(!data.description) {data.description = ''}
+        if(!data.links) {data.links = []}
+        if (!data.attachments) {data.attachments = []}
 
-            this.objectStoreRest.createObject(query)
-            .then((data) => {
-                if (!_.isObject(data)) {
-                    reject({ msg: 'unable to create announcement' })
-                } else {
-                    resolve({ data: { id: announcementId } })
-                }
-            })
-            .catch((error) => {
-                reject({ msg: 'unable to create announcement' })
-            })
+
+      let query = {
+        table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
+        values: {
+          'id': announcementId,
+          'sourceid': data.sourceId,
+          'createddate': dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo"),
+          'userid': data.createdBy,
+          'details': {
+            'title': data.title,
+            'type': data.type,
+            'description': data.description,
+            'from':data.from,
+          },
+          'target': data.target,
+          'links': data.links,
+          'status': this.statusConstant.ACTIVE,
+          'attachments': data.attachments
+        }
+      }
+
+      this.objectStoreRest.createObject(query)
+        .then((data) => {
+          if (!_.isObject(data)) {
+            reject({ msg: 'unable to create announcement' })
+          } else {
+            resolve({ data: { id: announcementId } })
+          }
         })
+        .catch((error) => {
+          reject({ msg: 'unable to create announcement' })
+        })
+    })
   }
 
   /**
@@ -229,22 +218,19 @@ class AnnouncementController {
             let requestObj = {"to": "", "type": "fcm", "data": {"notificationpayload": {"msgid": data.body.request.announcementId, "title": data.body.request.title, "msg": data.body.request.description, "icon": "", "time": dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo"), "validity": "-1", "actionid": "1", "actiondata": "", "dispbehavior": "stack"} } }
             let options = {"method": "POST", "uri": envVariables.DATASERVICE_URL + "data/v1/notification/send", "body": {"request": requestObj }, "json": true }
             let authUserToken = _.get(data, 'kauth.grant.access_token.token') || data.headers['x-authenticated-user-token']
-            if (!authUserToken){
-             throw {msg: 'UNAUTHORIZED', statusCode: HttpStatus.BAD_REQUEST } 
-            }
-            options.headers =this.getRequestHeader({ xAuthUserToken: authUserToken });
-            var targetIds = [];
+            options.headers =this.getRequestHeader({ xAuthUserToken: authUserToken })
+            var targetIds = []
             if (data.body.request.target) {
                 _.forIn(data.body.request.target, (value, key) => {
                     if (_.isObject(value)) {
                         _.forEach(value.ids, (v, k) => {
-                            targetIds.push(v);
+                            targetIds.push(v)
                         });
                     }
                 });
             }
             this.forEachPromise(targetIds, this.sendNotification, options, this).then(() => {
-                console.log('done');
+                // console.log('done')
             });
         })
 
@@ -293,12 +279,12 @@ class AnnouncementController {
   __getDefinitions() {
       return async((requestObj) => {
           let responseObj = {};
-          if (requestObj.body.definitions) {
-              if (requestObj.body.definitions.includes('announcementtypes')) {
+          if (requestObj.body.request.definitions) {
+              if (requestObj.body.request.definitions.includes('announcementtypes')) {
                   let announcementTypes = await (this.__getAnnouncementTypes(requestObj));
                   responseObj["announcementtypes"] = announcementTypes;
               }
-              if (requestObj.body.definitions.includes('senderlist')) {
+              if (requestObj.body.request.definitions.includes('senderlist')) {
                   let senderlist = await (this.__getSenderList()(requestObj));
                   responseObj["senderlist"]= senderlist;
               }
@@ -319,10 +305,9 @@ class AnnouncementController {
       let query = {
         table: this.objectStoreRest.MODEL.ANNOUNCEMENTTYPE,
         query: {
-          'rootorgid': _.get(requestObj, 'body.rootorgid')
+          'rootorgid': _.get(requestObj, 'body.request.rootorgid')
         }
       }
-
       this.objectStoreRest.findObject(query)
         .then((data) => {
           if (!_.isObject(data)) {
@@ -332,7 +317,6 @@ class AnnouncementController {
           }
         })
         .catch((error) => {
-          console.log(error)
           reject({ msg: 'unable to fetch announcement types', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
         })
     })
@@ -358,7 +342,14 @@ class AnnouncementController {
                     status: this.statusConstant.CANCELLED
                 }
             }
-            var status = await (this.__checkPermisionForCancel()(requestObj));
+            let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
+            let tokenDetails = await(this.__getTokenDetails(authUserToken));
+            let status;
+            if (tokenDetails) {
+                status = await (this.__checkPermission()(requestObj, tokenDetails.userId, _.get(requestObj, 'body.request.announcenmentid')));
+            }else{
+                return {msg: 'UNAUTHORIZE_USER', status: HttpStatus.UNAUTHORIZED }
+            }
             return new Promise((resolve, reject) => {
                 if (status) {
                     this.objectStoreRest.updateObjectById(query)
@@ -376,7 +367,6 @@ class AnnouncementController {
                             }
                         })
                         .catch((error) => {
-                            console.log(error)
                             reject({
                                 msg: 'unable to cancel the announcement',
                                 statusCode: HttpStatus.INTERNAL_SERVER_ERROR
@@ -384,27 +374,14 @@ class AnnouncementController {
                         })
                 } else {
                     reject({
-                        msg: 'unable to cancel the announcement',
-                        statusCode: HttpStatus.INTERNAL_SERVER_ERROR
+                        msg: 'UNAUTHORIZE_USER',
+                        statusCode: HttpStatus.UNAUTHORIZED
                     })
                 }
             })
         })
     }
 
-  __checkPermisionForCancel() {
-      return async((requestObj) => {
-          if (requestObj) {
-              requestObj.params = {};
-              let userId = _.get(requestObj, 'body.request.userid');
-              requestObj.params.id = _.get(requestObj, 'body.request.announcenmentid');
-              var response = await (this.getAnnouncementById(requestObj));
-              return response.userid === userId ? true : false
-          }else{
-            return false;
-          }
-      });
-  }
 
     /**
     * Get inbox of announcements for a given user
@@ -420,31 +397,48 @@ class AnnouncementController {
     __getUserInbox() {
         return async((requestObj) => {
             let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
-            if (!authUserToken) throw { msg: 'UNAUTHORIZED..', statusCode: HttpStatus.BAD_REQUEST }
 
-            // Get user id and profile
+            let tokenDetails = await(this.__getTokenDetails(authUserToken));
+            if(tokenDetails){
+              requestObj.body.request.userId = tokenDetails.userId
+            }
+
             let userProfile = await(this.__getUserProfile({ id: _.get(requestObj, 'body.request.userId') }, authUserToken))
 
-            // Parse the list of Geolocations (User > Orgs > Geolocations) from the response
-            let targetList = []
+            // Parse the list of Organisations (User > Orgs) from the response
+            let targetOrganisations = []
             _.forEach(userProfile.organisations, function(userOrg) {
-                if(userOrg.locationId) targetList.push(userOrg.locationId)
-            });
+                targetOrganisations.push(userOrg.organisationId)
+            })
+            if (_.isEmpty(targetOrganisations)) return { count:0, announcements: [] }
 
-            //handle emty target list
-            // TODO: add this validation back when data starts becoming available
-            // if (_.isEmpty(targetList)) return { count:1, announcements: [] }
+            // Parse the list of Geolocations (Orgs > Geolocations) from the response
+            let targetGeolocations = []
+            try {
+                let geoData = await (this.__getGeolocations(targetOrganisations, authUserToken))
+                //handle emty target list
+                _.forEach(geoData.content, function(geo) {
+                    if (geo.locationId) {targetGeolocations.push(geo.locationId)} 
+                })
+
+                if (_.isEmpty(targetGeolocations)) return { count:0, announcements: [] }
+            } catch(error) {
+                return { count:0, announcements: [] }
+            }
 
             // Query announcements where target is listed Geolocations
             let query = {
                 table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
                 query: {
-                    // TODO: remove the below wildcard query and implement the commented specific query
-                    // 'target.geo.ids': targetList
-                    "wildcard" : { "target.geo.ids" : { "value" : "*" } },
+                    "target.geo.ids": targetGeolocations,
                     "status": this.statusConstant.ACTIVE
-                }
+                },
+                sort_by: {
+                    "createddate":"desc"
+                },
+                limit: requestObj.body.request.limit
             }
+
             try {
                 let data = await (new Promise((resolve, reject) => {
                     this.objectStoreRest.findObject(query)
@@ -452,18 +446,24 @@ class AnnouncementController {
                         if (!_.isObject(data)) {
                             reject({ msg: 'unable to fetch announcement inbox', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
                         } else {
-                            resolve(data.data.content)
+                            resolve(data.data)
                         }
                     })
                     .catch((error) => {
-                        console.log(error)
                         reject({ msg: 'unable to fetch announcement inbox', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
                     })
                 }))
 
+                let announcements = []
+                if (_.size(data) <= 0) {
+                    return { count:0, announcements: [] }
+                } else {
+                    announcements = data.content
+                }
+
                 //Get read and received status and append to response
                 let announcementIds = []
-                _.forEach(data, (announcement, k) => {
+                _.forEach(announcements, (announcement, k) => {
                     announcementIds.push(announcement.id)
                     announcement[this.metricsActivityConstant.READ] = false
                     announcement[this.metricsActivityConstant.RECEIVED] = false
@@ -472,12 +472,12 @@ class AnnouncementController {
 
                 if (metricsData) {
                     _.forEach(metricsData, (metricsObj, k) => {
-                        let announcementObj = _.find(data, {"id": metricsObj.announcementid})
+                        let announcementObj = _.find(announcements, {"id": metricsObj.announcementid})
                         announcementObj[metricsObj.activity] = true
                     })
                 }
 
-                return  {count:_.size(data), announcements: data}
+                return  {count:_.size(announcements), announcements: announcements}
 
             } catch(error) {
                 throw { msg: 'unable to process your request', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
@@ -485,35 +485,57 @@ class AnnouncementController {
         })
     }
 
+    __getGeolocations(orgIds, authUserToken) {
+        return new Promise((resolve, reject) => {
+            let requestObj = {
+                                "filters": {
+                                    "id": orgIds
+                                },
+                                "fields": ["id","locationId"]
+                            }
+
+            let options = {"method": "POST", "uri": envVariables.DATASERVICE_URL + "org/v1/search", "body": {"request": requestObj }, "json": true }
+            options.headers =this.getRequestHeader({ xAuthUserToken: authUserToken })
+
+            try {
+                let data = new Promise((resolve, reject) => {
+                    this.httpService(options).then((data) => {
+                        resolve(data.body.result.response)
+                    }).catch((error) => {
+                        reject(error)
+                    })
+                })
+                resolve(data)
+            } catch(error) {
+                reject(false)
+            }
+
+        })
+    }
+
     __getMetricsForInbox(announcementIds, userId) {
         return new Promise((resolve, reject) => {
-        let query = {
-            table: this.objectStoreRest.MODEL.METRICS,
-            query: {
-                "announcementid" : announcementIds,
-                "userid": userId
+            let query = {
+                table: this.objectStoreRest.MODEL.METRICS,
+                query: {
+                    "announcementid" : announcementIds,
+                    "userid": userId
+                },
+                limit: 10000
             }
-        }
 
-        this.objectStoreRest.findObject(query)
-        .then((data) => {
-            if (!_.isObject(data)) {
+            this.objectStoreRest.findObject(query)
+            .then((data) => {
+                if (!_.isObject(data)) {
+                    resolve(false)
+                } else {
+                    resolve(data.data.content)
+                }
+            })
+            .catch((error) => {
                 resolve(false)
-            } else {
-                let readData = []
-                _.forEach(data.data.content, (metricsObj) => {
-                    readData.push({'announcementid': metricsObj.announcementid, 'activity': metricsObj.activity})
-                })
-                resolve(readData)
-            }
+            })
         })
-        .catch((error) => {
-            resolve(false)
-        })
-
-
-    })
-        
     }
 
 
@@ -528,14 +550,25 @@ class AnnouncementController {
         return new Promise((resolve, reject) => {
 
             // validate request
-            let request = this.__validateOutboxRequest(requestObj)
+            let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
+            let tokenDetails = await (this.__getTokenDetails(authUserToken));
+            if (tokenDetails) {
+                requestObj.body.request.userId = tokenDetails.userId
+            }else{
+              reject({msg:'UNAUTHORIZE_USER', statusCode: HttpStatus.UNAUTHORIZED})
+            }
+
+            let request = this.__validateOutboxRequest(requestObj.body)
             if (!request.isValid) throw { msg: request.error, statusCode: HttpStatus.BAD_REQUEST }
 
             // build query
             let query = {
                 table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
                 query: {
-                    'userid': _.get(requestObj, 'request.userId')
+                    'userid': _.get(requestObj, 'body.request.userId')
+                },
+                sort_by: {
+                    "createddate":"desc"
                 }
             }
             let metrics_clone = undefined;
@@ -546,38 +579,11 @@ class AnnouncementController {
                 if (!_.isObject(data)) {
                     reject({ msg: 'unable to fetch sent announcements', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
                 } else {
-                    this.getMetrics(_.map(data.data.content,"id"), query)
-                        .then((metricsData) => {
-                            let announcementCount = _.size(data.data);
-                            let metrics = {};
-                            let response = {count: announcementCount, announcements: data.data }
-                             if (metricsData) {
-                                _.map(response.announcements.content, (value, key) => {
-                                      metrics = {read:0,received:0}
-                                    _.forEach(metricsData, (v, k) => {
-                                        if (response.announcements.content[key].id == k) {
-                                            _.forEach(v[0].values, (ele, indec) => {
-                                                if (ele.name === 'read') {
-                                                    metrics.read = ele.count;
-                                                }
-                                                if (ele.name === 'received') {
-                                                    metrics.received = ele.count;
-                                                }
-                                            });
-                                            metrics_clone = _.clone(metrics);
-                                            response.announcements.content[key]['metrics'] = metrics_clone;
-                                        }
-                                    });
-                                });
-                                resolve(response)
-                            } else {
-                                resolve(response);
-                            }
-                        })
+                    let response = {count: _.size(data.data), announcements: data.data }
+                    resolve(response)
                 }
             })
             .catch((error) => {
-                console.log(error)
                 reject({ msg: 'unable to fetch sent announcements', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
             })
         })
@@ -622,7 +628,7 @@ class AnnouncementController {
           try {
               return await (new Promise((resolve, reject) => {
                   this.__getUserProfile({
-                          id: _.get(requestObj, 'body.userid')
+                          id: _.get(requestObj, 'body.request.userid')
                       }, authUserToken)
                       .then((data) => {
                           if (!_.isObject(data)) {
@@ -638,7 +644,7 @@ class AnnouncementController {
               }))
           } catch (e) {
               throw {msg: 'Unable to fetch the senderlist', statusCode: HttpStatus.INTERNAL_SERVER_ERROR } }
-      });
+      })
   }
 
     /**
@@ -655,17 +661,36 @@ class AnnouncementController {
     __received(requestObj) {
         return async((requestObj) => {
 
+            let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
+            let tokenDetails = await(this.__getTokenDetails(authUserToken));
+            if(tokenDetails){
+              requestObj.body.request.userId = tokenDetails.userId
+            }else{
+              return{'msg':'UNAUTHORIZE_USER', statusCode:HttpStatus.UNAUTHORIZED}
+            }
             // validate request
-            let request = this.__validateMetricsRequest(requestObj)
+            let request = this.__validateMetricsRequest(requestObj.body)
             if (!request.isValid) throw { msg: request.error, statusCode: HttpStatus.BAD_REQUEST }
 
+
+            let metricsExists = false
             try {
-                var metricsData = await (this.__createMetrics(requestObj.request, this.metricsActivityConstant.RECEIVED))
-                return {metrics: metricsData.data}
+                metricsExists = await (this.__isMetricsExist(requestObj.body.request, this.metricsActivityConstant.RECEIVED))
             } catch (error) {
-                throw { msg: 'unable to update status!', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
+                // throw { msg: 'unable to update status!', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
             }
-            
+
+
+            if (metricsExists) {
+                return {'msg':'Entry exists', statusCode:HttpStatus.OK}
+            } else {
+                try {
+                    var metricsData = await (this.__createMetrics(requestObj.body.request, this.metricsActivityConstant.RECEIVED))
+                    return {metrics: metricsData.data}
+                } catch (error) {
+                    throw { msg: 'unable to update status!', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
+                }
+            }
         })      
     }
 
@@ -684,14 +709,33 @@ class AnnouncementController {
         return async((requestObj) => {
 
             // validate request
-            let request = this.__validateMetricsRequest(requestObj)
+            let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
+            let tokenDetails = await(this.__getTokenDetails(authUserToken));
+            if(tokenDetails){
+              requestObj.body.request.userId = tokenDetails.userId
+            }else{
+              return{'msg':'UNAUTHORIZE_USER', statusCode:HttpStatus.UNAUTHORIZED}
+            }
+            let request = this.__validateMetricsRequest(requestObj.body)
             if (!request.isValid) throw { msg: request.error, statusCode: HttpStatus.BAD_REQUEST }
 
+            let metricsExists = false
             try {
-                var metricsData = await (this.__createMetrics(requestObj.request, this.metricsActivityConstant.READ))
-                return {metrics: metricsData.data}
+                metricsExists = await (this.__isMetricsExist(requestObj.body.request, this.metricsActivityConstant.READ))
             } catch (error) {
-                throw { msg: 'unable to update status!', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
+                // throw { msg: 'unable to update status!', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
+            }
+
+
+            if (metricsExists) {
+                return {'msg':'Entry exists', statusCode:HttpStatus.OK}
+            } else {
+                try {
+                    var metricsData = await (this.__createMetrics(requestObj.body.request, this.metricsActivityConstant.READ))
+                    return {metrics: metricsData.data}
+                } catch (error) {
+                    throw { msg: 'unable to update status!', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
+                }
             }
             
         })      
@@ -755,6 +799,34 @@ class AnnouncementController {
         })
     }
 
+    __isMetricsExist(requestObj, metricsActivity) {
+        return new Promise((resolve, reject) => {
+            let query = {
+                table: this.objectStoreRest.MODEL.METRICS,
+                query: {
+                    "announcementid" : requestObj.announcementId,
+                    "userid": requestObj.userId,
+                    "activity": metricsActivity
+                }            }
+
+            this.objectStoreRest.findObject(query)
+            .then((data) => {
+                if (!_.isObject(data)) {
+                    resolve(false)
+                } else {
+                    if (_.size(data.data)) {
+                        resolve(true)
+                    } else {
+                        resolve(false)
+                    }
+                }
+            })
+            .catch((error) => {
+                resolve(false)
+            })
+        })
+    }
+
     /**
      * Get the announcement data to duplicate for resending
      *
@@ -762,10 +834,26 @@ class AnnouncementController {
      *
      * @return  {[type]}              [description]
      */
-    getResend(requestObj) {
-        return this.__getAnnouncementById(requestObj)
+    getResend() {
+        return async((requestObj) => {
+            let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
+            let tokenDetails = await (this.__getTokenDetails(authUserToken));
+            let status;
+            if (tokenDetails) {
+                status = await (this.__checkPermission()(requestObj, tokenDetails.userId, requestObj.params.announcementId));
+                if (status) {
+                    return this.__getAnnouncementById(requestObj)
+                }else{
+                  return {msg:'UNAUTHORIZE_USER', statusCode:HttpStatus.UNAUTHORIZED}
+                }
+            } else {
+                return {
+                    msg: 'UNAUTHORIZE_USER',
+                    status: HttpStatus.UNAUTHORIZED
+                }
+            }
+        })
     }
-
 
     /**
      * Resend the edited announcement
@@ -826,33 +914,48 @@ class AnnouncementController {
       });
   }
 
-   getMetrics(id, options){
-    return this.__getMetrics()(id, options)
-   }
-  __getMetrics() {
-  return async((id, options) =>{
-    let result = {};
-    let query = {table: this.objectStoreRest.MODEL.METRICS, query: {'announcementid': ""},facets:[{"activity":null}] }
-    var instance = this;
-        var awaitData = undefined;
-        for (let i = 0; i < id.length; i++) {
-            await (new Promise((resolve, reject) => {
-                query.query.announcementid = id[i];
-                instance.objectStoreRest.findObject(query)
-                    .then((data) => {
-                        if (!data.data.content) {
-                            resolve({msg: 'unable to fetch metrics', statusCode: HttpStatus.INTERNAL_SERVER_ERROR })
-                            } else {
-                              result[data.data.content[0].announcementid] = data.data.facets;
-                              resolve(data.data);
-                        }
-                    });
-            }));
-            if (i == id.length - 1) {
-                return result;
-            }
-        }
-    })
+  __checkPermission() {
+      return async((requestObj, userid, announcementId) => {
+          if (requestObj) {
+              requestObj.params = {};
+              requestObj.params.id = announcementId
+              var response = await (this.getAnnouncementById(requestObj));
+              return response.userid === userid ? true : false
+          } else {
+              return false;
+          }
+      });
   }
+
+    __getTokenDetails(authUserToken) {
+        return new Promise((resolve, reject) => {
+            var keyCloak_config = {
+                'authServerUrl': envVariables.PORTAL_AUTH_SERVER_URL,
+                'realm': envVariables.KEY_CLOAK_REALM,
+                'clientId': envVariables.PORTAL_AUTH_SERVER_CLIENT,
+                'public': envVariables.KEY_CLOAK_PUBLIC
+            }
+
+            var cache_config = {
+                stroe: envVariables.sunbird_cache_store,
+                ttl: envVariables.sunbird_cache_ttl
+            }
+            if (authUserToken) {
+                var apiInterceptor = new ApiInterceptor(keyCloak_config, cache_config)
+                apiInterceptor.validateToken(authUserToken, function(err, token) {
+                    if (token) {
+                        resolve(token)
+                    } else {
+                        resolve(false)
+                    }
+                })
+            } else {
+                resolve(false)
+            }
+        })
+    }
+
+
+
  }
 module.exports = new AnnouncementController()
