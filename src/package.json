@@ -10,7 +10,8 @@
     "eslint": "^4.3.0",
     "eslint-config-airbnb-base": "^11.3.1",
     "eslint-plugin-import": "^2.7.0",
-    "gulp": "3.9.1",
+    "fine-uploader": "*",
+    "gulp": "^3.9.1",
     "gulp-angular-filesort": "^1.1.1",
     "gulp-autoprefixer": "2.3.1",
     "gulp-cache": "^0.2.10",
@@ -74,8 +75,7 @@
     "sinon": "^4.0.1",
     "standard": "10.0.3",
     "wiredep": "^2.2.2",
-    "yargs": "^9.0.1",
-    "fine-uploader":"*"
+    "yargs": "^9.0.1"
   },
   "engines": {
     "node": ">=0.10.0"

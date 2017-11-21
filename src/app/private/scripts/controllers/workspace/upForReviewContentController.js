@@ -3,8 +3,8 @@
 angular.module('playerApp')
 .controller('UpForReviewContentController', ['contentService', 'searchService', 'config',
   '$rootScope', '$scope', '$state', 'toasterService', 'PaginationService',
-  'workSpaceUtilsService', function (contentService, searchService, config, $rootScope,
-    $scope, $state, toasterService, PaginationService, workSpaceUtilsService) {
+  'workSpaceUtilsService', '$timeout', function (contentService, searchService, config, $rootScope,
+    $scope, $state, toasterService, PaginationService, workSpaceUtilsService, $timeout) {
     var upForReviewContent = this
     upForReviewContent.userId = $rootScope.userId
     upForReviewContent.contentStatus = ['Review']
@@ -13,8 +13,24 @@ angular.module('playerApp')
     $scope.contentPlayer = { isContentPlayerEnabled: false }
     upForReviewContent.pageLimit = 9
     upForReviewContent.pager = {}
+    upForReviewContent.typingTimer = -1 // timer identifier
+    upForReviewContent.doneTypingInterval = 1000
+    upForReviewContent.search = {}
+    upForReviewContent.search.languages = config.FILTER.RESOURCES.languages
+    upForReviewContent.search.contentTypes = config.FILTER.RESOURCES.contentTypes
+    upForReviewContent.search.subjects = config.FILTER.RESOURCES.subjects
+    upForReviewContent.search.grades = config.DROPDOWN.COMMON.grades
+    upForReviewContent.search.boards = config.FILTER.RESOURCES.boards
+    upForReviewContent.search.sortingOptions = config.sortingOptions
+    upForReviewContent.search.sortIcon = true
 
-    function showErrorMessage (isClose, message, messageType, messageText) {
+    upForReviewContent.search.selectedLanguage = []
+    upForReviewContent.search.selectedContentType = []
+    upForReviewContent.search.selectedBoard = []
+    upForReviewContent.search.selectedSubject = []
+    upForReviewContent.search.selectedGrades = []
+
+    upForReviewContent.showErrorMessage = function (isClose, message, messageType, messageText) {
       var error = {}
       error.showError = true
       error.isClose = isClose
@@ -26,11 +42,56 @@ angular.module('playerApp')
       return error
     }
 
-    upForReviewContent.getUpForReviewContent = function (pageNumber) {
-      pageNumber = pageNumber || 1
-      upForReviewContent.loader = toasterService.loader('', $rootScope.messages.stmsg.m0032)
-      upForReviewContent.error = {}
-      var request = {
+    upForReviewContent.keyUp = function () {
+      clearTimeout(upForReviewContent.typingTimer)
+      upForReviewContent.typingTimer = setTimeout(upForReviewContent.getUpForReviewContent,
+          upForReviewContent.doneTypingInterval)
+        // $scope.search.autoSuggest=true;
+    }
+
+    upForReviewContent.keyDown = function () {
+      clearTimeout(upForReviewContent.typingTimer)
+    }
+
+    upForReviewContent.search.selectFilter = function (filterType, value, $event) {
+      $timeout(function () {
+        var itemIndex = upForReviewContent.search[filterType].indexOf(value)
+        if (itemIndex === -1) {
+          upForReviewContent.search[filterType].push(value)
+          $($event.target).addClass('active')
+        } else {
+          upForReviewContent.search[filterType].splice(itemIndex, 1)
+          $($event.target).removeClass('active')
+        }
+      }, 0)
+    }
+
+    upForReviewContent.search.removeFilterSelection = function (filterType, value) {
+      var itemIndex = upForReviewContent.search[filterType].indexOf(value)
+      if (itemIndex !== -1) {
+        upForReviewContent.search[filterType].splice(itemIndex, 1)
+      }
+    }
+
+    upForReviewContent.search.applySorting = function () {
+      var sortByField = upForReviewContent.search.sortByOption
+      upForReviewContent.search.sortBy = {}
+      upForReviewContent.search.sortBy[sortByField] = (upForReviewContent.search.sortIcon === true)
+                ? 'asc' : 'desc'
+      upForReviewContent.getUpForReviewContent(1)
+    }
+
+    upForReviewContent.search.resetFilter = function () {
+      upForReviewContent.search.selectedLanguage = []
+      upForReviewContent.search.selectedContentType = []
+      upForReviewContent.search.selectedBoard = []
+      upForReviewContent.search.selectedSubject = []
+      upForReviewContent.search.selectedGrades = []
+      upForReviewContent.getUpForReviewContent(1)
+    }
+
+    upForReviewContent.getRequestObject = function (pageNumber) {
+      var req = {
         filters: {
           status: upForReviewContent.contentStatus,
           createdFor: $rootScope.organisationIds,
@@ -44,6 +105,43 @@ angular.module('playerApp')
         offset: (pageNumber - 1) * upForReviewContent.pageLimit,
         limit: upForReviewContent.pageLimit
       }
+
+      if (upForReviewContent.searchText) {
+        req.query = upForReviewContent.searchText
+      }
+
+      if (upForReviewContent.search.selectedLanguage && upForReviewContent.search.selectedLanguage.length > 0) {
+        req.filters.language = upForReviewContent.search.selectedLanguage
+      }
+
+      if (upForReviewContent.search.selectedContentType && upForReviewContent.search.selectedContentType.length > 0) {
+        req.filters.contentType = upForReviewContent.search.selectedContentType
+      }
+
+      if (upForReviewContent.search.selectedBoard && upForReviewContent.search.selectedBoard.length > 0) {
+        req.filters.board = upForReviewContent.search.selectedBoard
+      }
+
+      if (upForReviewContent.search.selectedSubject && upForReviewContent.search.selectedSubject.length > 0) {
+        req.filters.subject = upForReviewContent.search.selectedSubject
+      }
+
+      if (upForReviewContent.search.selectedGrades && upForReviewContent.search.selectedGrades.length > 0) {
+        req.filters.gradeLevel = upForReviewContent.search.selectedGrades
+      }
+
+      if (upForReviewContent.search.sortBy) {
+        req.sort_by = upForReviewContent.search.sortBy
+      }
+
+      return req
+    }
+
+    upForReviewContent.getUpForReviewContent = function (pageNumber) {
+      pageNumber = pageNumber || 1
+      upForReviewContent.loader = toasterService.loader('', $rootScope.messages.stmsg.m0032)
+      upForReviewContent.error = {}
+      var request = upForReviewContent.getRequestObject(pageNumber)
       searchService.search(request).then(function (res) {
         if (res && res.responseCode === 'OK') {
           upForReviewContent.loader.showLoader = false
@@ -56,7 +154,7 @@ angular.module('playerApp')
           upForReviewContent.pager = PaginationService.GetPager(res.result.count,
                         pageNumber, upForReviewContent.pageLimit)
           if (upForReviewContent.upForReviewContentData.length === 0) {
-            upForReviewContent.error = showErrorMessage(true,
+            upForReviewContent.error = upForReviewContent.showErrorMessage(true,
                 $rootScope.messages.stmsg.m0033,
                 $rootScope.messages.stmsg.m0008)
           }
@@ -85,6 +183,13 @@ angular.module('playerApp')
 
     upForReviewContent.initTocPopup = function () {
       $('.cardTitleEllipse').popup({inline: true})
+    }
+
+    upForReviewContent.search.getSelectedContentTypeValue = function (contentTypes, selectedContentType) {
+      var ct = _.filter(contentTypes, function (contentType) {
+        return contentType.key === selectedContentType
+      })
+      return ct ? ct[0].value : ''
     }
   }
 ])

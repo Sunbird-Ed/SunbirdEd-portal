@@ -275,4 +275,10 @@ describe('Directive: search', function () {
     rootScope.search.setPage('0')
     scope.$apply()
   })
+
+  it('Should reset all the filters', function () {
+    spyOn(rootScope.search, 'getSelectedContentTypeValue').and.callThrough()
+    rootScope.search.getSelectedContentTypeValue([{key: 'Book', value: 'Book'}], 'Book')
+    scope.$apply()
+  })
 })
