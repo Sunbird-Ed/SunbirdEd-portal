@@ -10,18 +10,17 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
     $rootScope.userId = $('#userId').attr('value')
     $rootScope.sessionId = $('#sessionId').attr('value')
     $rootScope.cdnUrl = $('#cdnUrl').attr('value') || ''
-    $rootScope.theme = $('#theme').attr('value') || 'default'
     $rootScope.language = $('#defaultPortalLanguage').attr('value') || 'en'
     $rootScope.messages = messages[$rootScope.language]
     $rootScope.frmelmnts = frmelmnts[$rootScope.language]
     $rootScope.searchKey = ''
     $rootScope.enrolledCourseIds = {}
-    /** 
-     * This function contentModelSetBackLink is to store back link value for modal popup close dynamically. 
+    /**
+     * This function contentModelSetBackLink is to store back link value for modal popup close dynamically.
      * **/
-    $rootScope.contentModelSetBackLink = function(){
-		$rootScope.contentModelBackLinkName =  $state.current.name;
-	}
+    $rootScope.contentModelSetBackLink = function () {
+      $rootScope.contentModelBackLinkName = $state.current.name
+    }
 
         /**
          * This condition is for public content to private content after login
