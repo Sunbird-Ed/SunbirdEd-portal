@@ -223,7 +223,7 @@ app.all('/:tenantName', function (req, res) {
 })
 
 // Handle content share request
-require('./helpers/shareUrlHelpers.js')(app)
+require('./helpers/shareUrlHelper.js')(app)
 
 // redirect to home if nothing found
 app.all('*', function (req, res) {
