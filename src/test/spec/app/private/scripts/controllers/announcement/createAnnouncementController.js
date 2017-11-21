@@ -5,7 +5,6 @@ describe('Controller: createAnnouncementCtrl', function () {
   beforeEach(module('playerApp'))
   var adminCtl
   var createAnn
-  var dashboardService
   var announcementService
   var timeout
   var state
@@ -24,7 +23,6 @@ describe('Controller: createAnnouncementCtrl', function () {
   }))
   beforeEach(inject(function ($rootScope,
        $controller,
-       _dashboardService_,
        _announcementService_,
        _toasterService_,
       _permissionsService_,
@@ -33,7 +31,6 @@ describe('Controller: createAnnouncementCtrl', function () {
       _$state_
 
           ) {
-    dashboardService = _dashboardService_
     announcementService = _announcementService_
     toasterService = _toasterService_
     permissionsService = _permissionsService_
@@ -48,7 +45,6 @@ describe('Controller: createAnnouncementCtrl', function () {
     createAnn = $controller('createAnnouncementCtrl', {
       $scope: scope,
       $rootScope: $rootScope,
-      dashboardService: dashboardService,
       toasterService: toasterService,
       permissionsService: permissionsService,
       $state: $state,
