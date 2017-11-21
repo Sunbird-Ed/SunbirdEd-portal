@@ -94,14 +94,14 @@ describe('Controller: createAnnouncementCtrl', function () {
   })
 
   it('convert file size into KB / MB', function (done) {
-    spyOn(createAnn, 'convertFileSize').and.callThrough()
-    createAnn.convertFileSize(1234)
+    spyOn(createAnn, 'getReadableFileSize').and.callThrough()
+    createAnn.getReadableFileSize(1234)
     done()
   })
 
   it('should not convert file size into KB / MB', function (done) {
-    spyOn(createAnn, 'convertFileSize').and.callThrough()
-    createAnn.convertFileSize(0)
+    spyOn(createAnn, 'getReadableFileSize').and.callThrough()
+    createAnn.getReadableFileSize(0)
     done()
   })
 
