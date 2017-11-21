@@ -7,8 +7,7 @@ angular.module('playerApp')
      * @desc Service to manage workspace.
      * @memberOf Services
      */
-    this.baseUri = '/public/#!/'
-    this.baseUrl = new $window.URL($location.absUrl()).origin + this.baseUri
+    this.baseUrl = new $window.URL($location.absUrl()).origin + '/'
 
     /**
      * @method removeContentLocal

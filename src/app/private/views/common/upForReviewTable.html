@@ -1,0 +1,34 @@
+<table class="ui upForReviewTable table" ng-if="data.upForReviewContentData.length > 0">
+  <thead>
+    <tr>
+      <th class="six wide UpReviewTableHeader">{{$root.frmelmnts.lbl.contentCaps}}</th>
+      <th class="four wide UpReviewTableHeader">{{$root.frmelmnts.lbl.authorCaps}}</th>
+      <th class="two wide UpReviewTableHeader">{{$root.frmelmnts.lbl.statusCaps}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="UpForReviewListHover cursor-pointer" ng-repeat="item in data.upForReviewContentData track by $index"
+     ng-click="data.openContentPlayer(item)" ng-init="$last && data.initTocPopup()">
+      <td >
+        <h5 class="ui image header">
+          <img ng-src="{{item.appIcon  ? item.appIcon : '/common/images/default.png'}}" class="ui tiny image UpReviewTinyImage">
+          <div class="content ">
+				 <div class="UpReviewHeader">{{item.name | limitTo: 40}}<i ng-if="item.name.length > 40">...</i></div>
+            <div class="UpReviewSubHeader">{{item.contentType}}
+          	</div>
+        		</div>
+      	</h5>      	
+      </td>
+      <td>  
+			<h5 class="ui image header">			
+				<div class="content">
+					 <div class="UpReviewHeader">{{item.author}}</div>
+					<div class="UpReviewSubHeader">{{$root.frmelmnts.lbl.pendingSince}}: {{item.lastUpdatedOn | dateFilterXTimeAgo}}
+				 	</div>
+       		 </div>
+			</h5>			
+       </td>
+      <td  class="UpForReviewStatusOrange">{{item.status}}</td>
+    </tr>
+  </tbody>
+</table>
