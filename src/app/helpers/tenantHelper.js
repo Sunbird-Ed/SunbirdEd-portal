@@ -2,6 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const dateFormat = require('dateformat')
 const uuidv1 = require('uuid/v1')
+const async = require('async')
 const envHelper = require('./environmentVariablesHelper.js')
 
 module.exports = {
