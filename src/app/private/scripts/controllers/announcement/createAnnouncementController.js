@@ -1,6 +1,6 @@
 'use strict'
-angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', '$scope', '$timeout', 'config', 'toasterService', 'announcementService', '$filter', 'uuid4', 'fileUpload',
-  function ($rootScope, $scope, $timeout, config, toasterService, announcementService, $filter, uuid4, fileUpload) {
+angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', '$scope', '$timeout', 'config', 'toasterService', 'announcementService', 'fileUpload',
+  function ($rootScope, $scope, $timeout, config, toasterService, announcementService, fileUpload) {
     var createAnn = this
     createAnn.data = {}
     createAnn.attachment = []
@@ -348,22 +348,12 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
     createAnn.initializeFileUploader = function () {
       var apiUrl = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + config.URL.CONTENT.UPLOAD_MEDIA
       var options = {
-        endpoint: apiUrl,
         fileSizeLimit: config.AnncmntMaxFileSizeToUpload,
         allowedExtensions: config.AnncmntAllowedFileExtension,
         fileSizeErrorText: $rootScope.messages.imsg.m0021,
         containerName: 'attachments/announcement',
         uploadSuccess: createAnn.onUploadComplete,
-        onCancel: createAnn.onUploadCancel,
-        customHeaders: {
-          Accept: 'application/json',
-          'X-Consumer-ID': 'X-Consumer-ID',
-          'X-Device-ID': 'X-Device-ID',
-          'X-msgid': uuid4.generate(),
-          ts: $filter('date')(new Date(), 'yyyy-MM-dd HH:mm:ss:sssZ'),
-          'X-Source': 'web',
-          'X-Org-code': 'AP'
-        }
+        onCancel: createAnn.onUploadCancel
       }
       fileUpload.createFineUploadInstance(options)
     }
