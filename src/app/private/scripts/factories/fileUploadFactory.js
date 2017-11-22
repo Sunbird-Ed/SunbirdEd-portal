@@ -63,7 +63,7 @@ angular.module('playerApp')
           window.cancelUploadFile = function () {
             document.getElementById('hide-section-with-button').style.display = 'block'
           }
-        }, 3000)
+        }, 2000)
       }
     }
   }])
