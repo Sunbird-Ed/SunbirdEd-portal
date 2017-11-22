@@ -275,7 +275,7 @@ angular.module('playerApp')
                         lastName: profile.user.lastName,
                         gender: profile.user.gender,
                         dob: dob instanceof Date ? $filter('date')(dob, 'yyyy-MM-dd') : null,
-                        language: [profile.user.language],
+                        language: profile.user.language,
                         subject: profile.user.subject,
                         grade: profile.user.grade,
                         location: profile.user.location
@@ -496,7 +496,7 @@ angular.module('playerApp')
                 $timeout(function () {
                     $('#languageSelect').dropdown();
                     $('#languageSelect').dropdown('refresh');
-                    $('#languageSelect').dropdown('set selected', profile.user.language[0]);
+                    $('#languageSelect').dropdown('set selected', profile.user.languages);
                 }, 100);
             };
 
