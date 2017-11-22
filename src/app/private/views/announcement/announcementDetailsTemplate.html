@@ -10,8 +10,6 @@
             {{announcementDetails.details.type | uppercase}}
         </p>
 
-
-
         <div ng-if="announcementDetails.showActions" class="float-ContentRight" ng-controller="announcementOutboxListController as annOutboxCtrl">
             <div class="ui dropdown">
               <div class="text annOrgName" ng-click="announcementDetailsData.initializeDropdown()" >{{$root.frmelmnts.lbl.anncmnttblactions}} <i class="dropdown icon"></i></div>
@@ -23,25 +21,6 @@
               </div>
             </div>
         </div>
-
-
-
-<!-- <div ng-if="announcementDetails.showActions" class="float-ContentRight" ng-controller="announcementOutboxListController as annOutboxCtrl">
-            <div class="ui dropdown">
-              <div class="text">{{$root.frmelmnts.lbl.anncmntdtlsactions}} <i class="dropdown icon"></i></div>
-              <div class="menu" ng-if="announcementDetails.status == 'active'" ng-click="annOutboxCtrl.showModal('announcementDeleteModal', announcementDetails.id)">
-                <div class="item AnnDetailsModalDropDwn"><i class="ban icon margin-right-none"></i> {{$root.frmelmnts.lbl.anncmntoutboxdelete}}</div>
-              </div>
-              <div class="menu" ng-if="announcementDetails.status == 'cancelled'" ng-click="annOutboxCtrl.getResend(announcementDetails.id)">
-                <div class="item AnnDetailsModalDropDwn"><i class="external share icon margin-right-none"></i> {{$root.frmelmnts.lbl.anncmntoutboxresend}}</div>
-              </div>
-            </div>
-        </div> -->
-
-
-
-
-
 
     </div>
     <div class="header padding-top-5">
