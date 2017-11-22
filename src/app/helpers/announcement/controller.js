@@ -14,7 +14,7 @@ let webService = require('request')
 let envVariables = require('../environmentVariablesHelper.js')
 let ApiInterceptor = require('sb_api_interceptor')
 let notificationService = require('./services/notification/notificationService.js')
-let notificationPayloadService = require('./services/notification/payloadService.js')
+let payloadService = require('./services/notification/payloadService.js')
 let targetService = require('./services/notification/targetService.js')
 
 
@@ -223,9 +223,9 @@ class AnnouncementController {
                 body: undefined // by default notification service will consider like this format example: {request: {data: {notificationpayload: {} } } }
             }
             let payload = {"msgid": data.body.request.announcementId, "title": data.body.request.title, "msg": data.body.request.description, "icon": "", "validity": "-1", "actionid": "1", "actiondata": "", "dispbehavior": "stack"} 
-            let paylodInstance = new notificationPayloadService(payload);
-            let payloadStatus = paylodInstance.get();
+            let paylodInstance = new payloadService(payload);
             let targetInstance = new targetService(_.get(data, 'body.request.target'))
+            let payloadStatus = paylodInstance.get();
             let targetStatus = targetInstance.get();
             if (payloadStatus.isValid && targetStatus.isValid) {
                 let notificationInstance = new notificationService(config)
