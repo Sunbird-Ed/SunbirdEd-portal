@@ -152,6 +152,19 @@ angular.module('playerApp')
     }
 
     /**
+     * @method getBase64Url
+     * @desc generate the base url to play unlisted content for public users.
+     * @memberOf Services.getBase64Url
+     * @param {string}  identifier - content or course identifier
+     * @param {string}  type - content or course type
+     * @returns {string} base64url to share.
+     * @instance
+     */
+    this.getBase64Url = function (type, identifier) {
+      return btoa(type + '/' + identifier)
+    }
+
+    /**
      * @method getUnlistedShareUrl
      * @desc generate the url to play unlisted content for other users.
      * @memberOf Services.workSpaceUtilsService
@@ -161,11 +174,11 @@ angular.module('playerApp')
      */
     this.getUnlistedShareUrl = function (cData) {
       if (cData.contentType === 'Course') {
-        return this.baseUrl + 'course' + '/' + cData.identifier + '/' + config.UNLISTED_CONTENT_TYPE
+        return this.baseUrl + 'unlisted' + '/' + this.getBase64Url('course', cData.identifier)
       } else if (cData.mimeType === 'application/vnd.ekstep.content-collection') {
-        return this.baseUrl + 'content' + '/' + cData.identifier + '/' + config.UNLISTED_CONTENT_TYPE + '/'
+        return this.baseUrl + 'unlisted' + '/' + this.getBase64Url('collection', cData.identifier)
       } else {
-        return this.baseUrl + 'content' + '/' + cData.identifier + '/' + config.UNLISTED_CONTENT_TYPE
+        return this.baseUrl + 'unlisted' + '/' + this.getBase64Url('content', cData.identifier)
       }
     }
 
