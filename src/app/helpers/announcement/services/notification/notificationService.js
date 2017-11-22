@@ -95,7 +95,6 @@ class notificationService {
   __httpService (options) {
     return new Promise((resolve, reject) => {
       if (!options) reject('options required!')
-      console.log('options', options.body.request)
       webService(options, (error, response, body) => {
         if (error || response.statusCode >= 400) {
           reject(response)

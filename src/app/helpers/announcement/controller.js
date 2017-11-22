@@ -13,6 +13,9 @@ let dateFormat = require('dateformat')
 let webService = require('request')
 let envVariables = require('../environmentVariablesHelper.js')
 let ApiInterceptor = require('sb_api_interceptor')
+let notificationService = require('./services/notification/notificationService.js')
+let notificationPayloadService = require('./services/notification/payloadService.js')
+let targetService = require('./services/notification/targetService.js')
 
 
 class AnnouncementController {
@@ -78,7 +81,7 @@ class AnnouncementController {
     try {
         if (newAnnouncementObj.data.id) {
             requestObj.body.request.announcementId = newAnnouncementObj.data.id
-            this.createNotification(requestObj)
+            this.__createAnnouncementNotification()(requestObj)
             return {
                 announcement: newAnnouncementObj.data
             }
@@ -204,36 +207,36 @@ class AnnouncementController {
     })
   }
 
-  /**
-   * Call the notification service to send notifications about the announcement.
-   *
-   * @return  {[type]}  [description]
-   */
-  createNotification(data) {
-     return this.__createAnnouncementNotification()(data);
-  }
+  
 
-  __createAnnouncementNotification() {
+    /**
+     * Call the notification service to send notifications about the announcement.
+     *
+     * @return  {[type]}  [description]
+     */
+    __createAnnouncementNotification() {
         return async((data) => {
-            let requestObj = {"to": "", "type": "fcm", "data": {"notificationpayload": {"msgid": data.body.request.announcementId, "title": data.body.request.title, "msg": data.body.request.description, "icon": "", "time": dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo"), "validity": "-1", "actionid": "1", "actiondata": "", "dispbehavior": "stack"} } }
-            let options = {"method": "POST", "uri": envVariables.DATASERVICE_URL + "data/v1/notification/send", "body": {"request": requestObj }, "json": true }
             let authUserToken = _.get(data, 'kauth.grant.access_token.token') || data.headers['x-authenticated-user-token']
-            options.headers =this.getRequestHeader({ xAuthUserToken: authUserToken })
-            var targetIds = []
-            if (data.body.request.target) {
-                _.forIn(data.body.request.target, (value, key) => {
-                    if (_.isObject(value)) {
-                        _.forEach(value.ids, (v, k) => {
-                            targetIds.push(v)
-                        });
-                    }
-                });
+            let config = {
+                userAccessToken: authUserToken,
+                uri: 'data/v1/notification/send',
+                body: undefined // by default notification service will consider like this format example: {request: {data: {notificationpayload: {} } } }
             }
-            this.forEachPromise(targetIds, this.sendNotification, options, this).then(() => {
-                // console.log('done')
-            });
-        })
+            let payload = {"msgid": data.body.request.announcementId, "title": data.body.request.title, "msg": data.body.request.description, "icon": "", "validity": "-1", "actionid": "1", "actiondata": "", "dispbehavior": "stack"} 
+            let paylodInstance = new notificationPayloadService(payload);
+            let payloadStatus = paylodInstance.get();
+            let targetInstance = new targetService(_.get(data, 'body.request.target'))
+            let targetStatus = targetInstance.get();
+            if (payloadStatus.isValid && targetStatus.isValid) {
+                let notificationInstance = new notificationService(config)
+                notificationInstance.send(targetStatus.target, payloadStatus.payload).then(() => {
+                    console.log("Notification has been sent")
+                })
+            } else {
+                console.error("Invalid notification object structure", status.error)
+            }
 
+        })
     }
 
   /**
