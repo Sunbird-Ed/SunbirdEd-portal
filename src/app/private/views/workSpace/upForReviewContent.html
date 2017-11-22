@@ -1,14 +1,14 @@
 
 <div class="ui grid">
-<div class=" twelve wide column padding-bottom-none">
-  <div class="ui fluid icon input left action float-ContentRight" id="search-input-container">
-    <div class="searchfilterinput ui search">
-      <div class="searchicon ui icon input ">
+  <div class=" twelve wide column padding-bottom-none">
+    <div class="ui fluid icon input left action float-ContentRight" id="search-input-container">
+      <div class="searchfilterinput ui search">
+        <div class="searchicon ui icon input ">
           <input class="upForReviewSearchBox" type="text" id="keyword" name="filter_search" ng-model="upForReviewContent.searchText" placeholder="{{$root.frmelmnts.prmpt.searchContent}}" 
               title="Search" autocomplete="off" spellcheck="false" dir="auto" class="searchinput" ng-keyup="upForReviewContent.keyUp()" ng-keydown="upForReviewContent.keyDown()" />
           <i class="circular search link icon" ng-click="upForReviewContent.getUpForReviewContent(1)"></i>
+        </div>
       </div>
-    </div>
     </div>
   </div>
 </div>
@@ -26,9 +26,9 @@
               </div>
             </div>
           </div>
-
           <div class="ten wide column content">
             <div class="twelve wide column content margin-bottom-15">
+            <!-- curriculum -->
               <span class="padded chip margin-top--5" ng-if='upForReviewContent.search.selectedBoard.length > 0'>
                 {{$root.frmelmnts.prmpt.curriculum}}:
                 <a class="ui label margin-top--5" ng-repeat="board in upForReviewContent.search.selectedBoard"
@@ -37,6 +37,7 @@
                   </i>
                 </a>
               </span>
+              <!-- Content type -->
               <span class="padded chip margin-top--5" ng-if='upForReviewContent.search.selectedContentType.length > 0'>
                   {{$root.frmelmnts.prmpt.contenttypes}}:
                   <a class="ui label margin-top--5" ng-repeat="contenttype in upForReviewContent.search.selectedContentType" ng-init="$last && $root.expandFilters()">
@@ -52,6 +53,7 @@
                       <i class="delete icon" ng-click="upForReviewContent.search.removeFilterSelection('selectedGrades',grade)"></i>
                   </a>
               </span>
+              <!-- language -->
               <span class="padded chip" ng-if='upForReviewContent.search.selectedLanguage.length > 0'>
                   {{$root.frmelmnts.prmpt.medium}}:
                   <a class="ui label margin-top--5" ng-repeat="language in upForReviewContent.search.selectedLanguage" ng-init="$last && $root.expandFilters()">
@@ -59,6 +61,7 @@
                       <i class="delete icon" ng-click="upForReviewContent.search.removeFilterSelection('selectedLanguage',language)"></i>
                   </a>
               </span>
+              <!-- subject -->
               <span class="padded chip margin-top--5" ng-if='upForReviewContent.search.selectedSubject.length > 0'>
                   {{$root.frmelmnts.prmpt.subject}}:
                   <a class="ui label margin-top--5" ng-repeat="subject in upForReviewContent.search.selectedSubject" ng-init="$last && $root.expandFilters()">
@@ -71,7 +74,29 @@
               <div class="one wide column filter-text">
                 <span class="ShowFilterSubTitle">{{$root.frmelmnts.lbl.filterby}}</span>
               </div>
-              <!-- grades for user search -->
+                <!-- Curriculum -->
+              <div class="two wide column">
+                  <div id="filterBoard" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
+                      <i class="dropdown icon"></i>
+                      <div class="filter-sel-text" ng-if="upForReviewContent.search.selectedBoard.length > 0 ">{{upForReviewContent.search.selectedBoard.length+' '+$root.frmelmnts.prmpt.curriculum}}</div>
+                      <div class="filter-sel-text" ng-if="upForReviewContent.search.selectedBoard.length === 0 ">{{$root.frmelmnts.prmpt.curriculum}}</div>
+                      <div class="menu">
+                          <div ng-click="upForReviewContent.search.selectFilter('selectedBoard',board,$event)" ng-repeat="board in upForReviewContent.search.boards | orderBy:'toString()'" class="item dropdown-item" ng-class="{'active':($root.search.selectedBoard.indexOf(board)>=0)}" data-value="{{board}}">{{board}}</div>
+                      </div>
+                  </div>
+              </div>
+              <!-- subjects -->
+              <div class="two wide column" ng-if="upForReviewContent.search.selectedSearchKey !== 'Organisations'">
+                  <div apply-script id="filterSub" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
+                      <i class="dropdown icon"></i>
+                      <div class="filter-sel-text" ng-if="upForReviewContent.search.selectedSubject.length > 0 ">{{upForReviewContent.search.selectedSubject.length+' '+$root.frmelmnts.prmpt.subject}}</div>
+                      <div class="filter-sel-text" ng-if="upForReviewContent.search.selectedSubject.length == 0 ">{{$root.frmelmnts.prmpt.subject}}</div>
+                      <div class="menu">
+                          <div ng-click="upForReviewContent.search.selectFilter('selectedSubject',subject,$event)" ng-repeat="subject in upForReviewContent.search.subjects  | orderBy:'toString()'" class="item dropdown-item" ng-class="{'active':(upForReviewContent.search.selectedSubject.indexOf(subject)>=0)}" data-value="{{subject}}">{{subject}}</div>
+                      </div>
+                  </div>
+              </div>
+              <!-- grades-->
               <div class="two wide column">
                     <div id="" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
                         <i class="dropdown icon"></i>
@@ -83,77 +108,53 @@
                         </div>
                     </div>
               </div>
-                <!-- boards -->
-                <div class="two wide column">
-                    <div id="filterBoard" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
-                        <i class="dropdown icon"></i>
-                        <div class="filter-sel-text" ng-if="upForReviewContent.search.selectedBoard.length > 0 ">{{upForReviewContent.search.selectedBoard.length+' '+$root.frmelmnts.prmpt.curriculum}}</div>
-                        <div class="filter-sel-text" ng-if="upForReviewContent.search.selectedBoard.length === 0 ">{{$root.frmelmnts.prmpt.curriculum}}</div>
-                        <div class="menu">
-                            <div ng-click="upForReviewContent.search.selectFilter('selectedBoard',board,$event)" ng-repeat="board in upForReviewContent.search.boards | orderBy:'toString()'" class="item dropdown-item" ng-class="{'active':($root.search.selectedBoard.indexOf(board)>=0)}" data-value="{{board}}">{{board}}</div>
-                        </div>
-                    </div>
-                </div>
-                <!-- <div class='two wide column'>
-                    <div apply-script id="filterContent" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
-                        <input type='hidden' ng-value='{{}}' />
-                        <i class="dropdown icon"></i>
-                        <div class="filter-sel-text" ng-if="upForReviewContent.search.selectedContentType.length > 0 ">{{upForReviewContent.search.selectedContentType.length+' '+$root.frmelmnts.prmpt.contenttypes}}</div>
-                        <div class="filter-sel-text" ng-if="upForReviewContent.search.selectedContentType.length == 0 ">{{$root.frmelmnts.prmpt.contenttypes}}</div>
-                        <div class="menu">
-                            <div ng-click="upForReviewContent.search.selectFilter('selectedContentType',contentType.key,$event,'Content Type')" ng-repeat="contentType in upForReviewContent.search.contentTypes  | orderBy:'toString()'" class="item dropdown-item" ng-class="{'active':(upForReviewContent.search.selectedContentType.indexOf(contentType.key)>=0)}" data-value="{{contentType.key}}">{{contentType.value}}</div>
-                        </div>
-                    </div>
-                </div> -->
-                <!-- language -->
-                <div class="two wide column">
-                    <div  apply-script  id="filterLang" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
-                        <input type='hidden' ng-value='{{}}' />
-                        <i class="dropdown icon"></i>
-                        <div class="filter-sel-text" ng-if="upForReviewContent.search.selectedLanguage.length > 0 ">{{upForReviewContent.search.selectedLanguage.length+' '+$root.frmelmnts.prmpt.medium}}</div>
-                        <div class="filter-sel-text" ng-if="upForReviewContent.search.selectedLanguage.length == 0 ">{{$root.frmelmnts.prmpt.medium}}</div>
-                        <div class="menu">
-                            <div ng-click="upForReviewContent.search.selectFilter('selectedLanguage',language,$event)" ng-repeat="language in upForReviewContent.search.languages  | orderBy:'toString()'" class="item dropdown-item" ng-class="{'active':(upForReviewContent.search.selectedLanguage.indexOf(language)>=0)}" data-value="{{language}}">{{language}}</div>
-                        </div>
-                    </div>
-                </div>
-                <!-- subjects -->
-                <div class="two wide column" ng-if="upForReviewContent.search.selectedSearchKey !== 'Organisations'">
-                    <div apply-script id="filterSub" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
-                        <i class="dropdown icon"></i>
-                        <div class="filter-sel-text" ng-if="upForReviewContent.search.selectedSubject.length > 0 ">{{upForReviewContent.search.selectedSubject.length+' '+$root.frmelmnts.prmpt.subject}}</div>
-                        <div class="filter-sel-text" ng-if="upForReviewContent.search.selectedSubject.length == 0 ">{{$root.frmelmnts.prmpt.subject}}</div>
-                        <div class="menu">
-                            <div ng-click="upForReviewContent.search.selectFilter('selectedSubject',subject,$event)" ng-repeat="subject in upForReviewContent.search.subjects  | orderBy:'toString()'" class="item dropdown-item" ng-class="{'active':(upForReviewContent.search.selectedSubject.indexOf(subject)>=0)}" data-value="{{subject}}">{{subject}}</div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <!-- buttons -->
-                <div class="three wide column filter-button">
-                    <a class="searchfilterbutton ui blue tiny  button" ng-click="upForReviewContent.getUpForReviewContent()">{{$root.frmelmnts.btn.apply}}</a>
-                    <a class="searchfilterbutton ui primary tiny basic button" ng-click="upForReviewContent.search.resetFilter()">{{$root.frmelmnts.btn.reset}}</a>
-                </div>
+              <!-- Language -->
+              <div class="two wide column">
+                  <div  apply-script  id="filterLang" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
+                      <input type='hidden' ng-value='{{}}' />
+                      <i class="dropdown icon"></i>
+                      <div class="filter-sel-text" ng-if="upForReviewContent.search.selectedLanguage.length > 0 ">{{upForReviewContent.search.selectedLanguage.length+' '+$root.frmelmnts.prmpt.medium}}</div>
+                      <div class="filter-sel-text" ng-if="upForReviewContent.search.selectedLanguage.length == 0 ">{{$root.frmelmnts.prmpt.medium}}</div>
+                      <div class="menu">
+                          <div ng-click="upForReviewContent.search.selectFilter('selectedLanguage',language,$event)" ng-repeat="language in upForReviewContent.search.languages  | orderBy:'toString()'" class="item dropdown-item" ng-class="{'active':(upForReviewContent.search.selectedLanguage.indexOf(language)>=0)}" data-value="{{language}}">{{language}}</div>
+                      </div>
+                  </div>
+              </div>
+              <!-- Content Type -->
+              <div class='two wide column'>
+                  <div apply-script id="filterContent" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
+                      <input type='hidden' ng-value='{{}}' />
+                      <i class="dropdown icon"></i>
+                      <div class="filter-sel-text" ng-if="upForReviewContent.search.selectedContentType.length > 0 ">{{upForReviewContent.search.selectedContentType.length+' '+$root.frmelmnts.prmpt.contenttypes}}</div>
+                      <div class="filter-sel-text" ng-if="upForReviewContent.search.selectedContentType.length == 0 ">{{$root.frmelmnts.prmpt.contenttypes}}</div>
+                      <div class="menu">
+                          <div ng-click="upForReviewContent.search.selectFilter('selectedContentType',contentType.key,$event,'Content Type')" ng-repeat="contentType in upForReviewContent.search.contentTypes  | orderBy:'toString()'" class="item dropdown-item" ng-class="{'active':(upForReviewContent.search.selectedContentType.indexOf(contentType.key)>=0)}" data-value="{{contentType.key}}">{{contentType.value}}</div>
+                      </div>
+                  </div>
+              </div>
+              <!-- buttons -->
+              <div class="three wide column filter-button">
+                  <a class="searchfilterbutton ui blue tiny  button" ng-click="upForReviewContent.getUpForReviewContent()">{{$root.frmelmnts.btn.apply}}</a>
+                  <a class="searchfilterbutton ui primary tiny basic button" ng-click="upForReviewContent.search.resetFilter()">{{$root.frmelmnts.btn.reset}}</a>
+              </div>
             </div>
+          </div>
         </div>
+        <div class="three wide column">
+          <div class="field">
+            <div class="content dropdown-content">
+              <span class="ShowFilterSubTitle">{{$root.frmelmnts.lbl.sortby}}&nbsp;</span>
+              <div apply-script class="ui inline dropdown search-dropdown" id="multi-select-sort">
+                  <div class="text"></div>
+                  <i  class="dropdown icon"></i>
+                  <select ng-options="sortingOption.field as sortingOption.name for sortingOption in upForReviewContent.search.sortingOptions" ng-model="upForReviewContent.search.sortByOption" ng-change="upForReviewContent.search.applySorting()">
+                      <option value=""></option>
+                  </select>
+              </div>
 
-        </div>
-          <div class="three wide column">
-            <div class="field">
-                <div class="content dropdown-content">
-                    <span class="ShowFilterSubTitle">{{$root.frmelmnts.lbl.sortby}}&nbsp;</span>
-                    <div apply-script class="ui inline dropdown search-dropdown" id="multi-select-sort">
-                        <div class="text"></div>
-                        <i  class="dropdown icon"></i>
-                        <select ng-options="sortingOption.field as sortingOption.name for sortingOption in upForReviewContent.search.sortingOptions" ng-model="upForReviewContent.search.sortByOption" ng-change="upForReviewContent.search.applySorting()">
-                            <option value=""></option>
-                        </select>
-                    </div>
-
-                    <i alt="{{$root.frmelmnts.alt.sortby}}" class="link" ng-if="upForReviewContent.search.sortByOption && upForReviewContent.search.sortByOption.length > 0" ng-class="{'sort content ascending icon':(upForReviewContent.search.sortIcon===true),'sort content descending icon':(upForReviewContent.search.sortIcon===false)}" ng-click="upForReviewContent.search.sortIcon=!upForReviewContent.search.sortIcon;upForReviewContent.search.applySorting()"></i>
-                </div>
+              <i alt="{{$root.frmelmnts.alt.sortby}}" class="link" ng-if="upForReviewContent.search.sortByOption && upForReviewContent.search.sortByOption.length > 0" ng-class="{'sort content ascending icon':(upForReviewContent.search.sortIcon===true),'sort content descending icon':(upForReviewContent.search.sortIcon===false)}" ng-click="upForReviewContent.search.sortIcon=!upForReviewContent.search.sortIcon;upForReviewContent.search.applySorting()"></i>
             </div>
+          </div>
         </div>
       </div>
     </div>
