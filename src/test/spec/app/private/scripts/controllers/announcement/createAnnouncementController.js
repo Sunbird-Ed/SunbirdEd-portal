@@ -208,6 +208,22 @@ describe('Controller: createAnnouncementCtrl', function () {
     expect(toasterService.error).toHaveBeenCalled()
   })
 
+  it('on announcement upload complete', function () {
+    spyOn(createAnn, 'onUploadComplete').and.callThrough()
+    createAnn.onUploadComplete(1, 'abc.png', {name: 'abc.png', size: 1027})
+    expect(createAnn.onUploadComplete).toBeDefined()
+    expect(createAnn.uploadAttchement).toEqual(true)
+  })
+
+  it('on announcement cancel', function () {
+    createAnn.attachment = ['{"name":"swing-846077_960_720.jpg","mimetype":"ima…chments/announcement/File-012380339474472960127"}']
+    spyOn(createAnn, 'onUploadCancel').and.callThrough()
+    createAnn.onUploadCancel(1, 'swing-846077_960_720.jpg')
+    expect(createAnn.onUploadCancel).toBeDefined()
+    expect(createAnn.uploadAttchement).toEqual(false)
+    expect(createAnn.attachment.length).toEqual(0)
+  })
+
   it('should get announcement type', function () {
     var mockRes = announcementTestData.createAnncmnt.getAnncmntTypeRes
     deferred.resolve(mockRes)

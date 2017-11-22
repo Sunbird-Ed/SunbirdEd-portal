@@ -405,7 +405,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
         createAnn.uploadAttchement = false
       }
       createAnn.enableRecepientBtn()
-      document.getElementById('hide-section-with-button').style.display = 'block'
+      $('#hide-section-with-button').css('style.display', 'block')
     }
 
     $scope.$on('editAnnouncementBeforeResend', function (event, announcement) {
