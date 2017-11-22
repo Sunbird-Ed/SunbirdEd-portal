@@ -297,6 +297,7 @@ var paths = {
     'dist/private/scripts/managers/eventManager.js',
     'dist/private/scripts/app.js',
     'dist/private/scripts/routes/appRoute.js',
+    'dist/private/scripts/routes/announcementRoute.js',
     'dist/private/script.min.js',
     'dist/common/fonts/**',
     'dist/common/images/**',
