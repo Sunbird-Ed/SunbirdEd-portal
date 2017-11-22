@@ -13,7 +13,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
     createAnn.isMetaModified = false
     createAnn.announcementType = []
     createAnn.repeatableWebLinks = []
-    createAnn.selectedReciepeient = []
+    createAnn.selectedRecipients = []
     createAnn.hideAnncmntBtn = false
     createAnn.uploadAttchement = false
 
@@ -59,7 +59,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
         })
       }, 100)
       $rootScope.$on('selected:items', function (evet, data) {
-        createAnn.selectedReciepeient = data.geo
+        createAnn.selectedRecipients = data.geo
       })
     }
 
@@ -177,8 +177,8 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
      * @memberOf Controllers.createAnnouncementCtrl
      * @param {object} [item] [current selected item]
      */
-    createAnn.removeRicipients = function (item) {
-      _.remove(createAnn.selectedReciepeient, function (arg) {
+    createAnn.removeRecipients = function (item) {
+      _.remove(createAnn.selectedRecipients, function (arg) {
         if (arg.location == item.location) {
           item.selected = false,
             toasterService.info(item.location + ' ' + $rootScope.messages.imsg.m0020)
@@ -201,7 +201,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
      */
     createAnn.confirmRecipients = function () {
       $rootScope.$emit('get:selected:items')
-      if (createAnn.selectedReciepeient.length == 0) {
+      if (createAnn.selectedRecipients.length === 0) {
         createAnn.stepNumber = 2
         toasterService.error($rootScope.messages.emsg.m0006)
         return
@@ -267,7 +267,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       requestBody.createdBy = $rootScope.userId
       requestBody.target = {
         'geo': {
-          'ids': _.map(createAnn.selectedReciepeient, 'id')
+          'ids': _.map(createAnn.selectedRecipients, 'id')
         }
       }
 
@@ -432,7 +432,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       requestBody.createdBy = $rootScope.userId
       requestBody.target = {
         'geo': {
-          'ids': _.map(createAnn.selectedReciepeient, 'id')
+          'ids': _.map(createAnn.selectedRecipients, 'id')
         }
       }
       if (requestBody.links) {

@@ -110,8 +110,8 @@
         </div>
         <div ng-show="createAnn.stepNumber == 3" class="ui list ui grid">
           <div class="eight wide column createAnnFormScroller">
-            <div class="ui message padding-10" ng-repeat="item in createAnn.selectedReciepeient">
-              <i class="close icon" ng-click='createAnn.removeRicipients(item)'></i>
+            <div class="ui message padding-10" ng-repeat="item in createAnn.selectedRecipients">
+              <i class="close icon" ng-click='createAnn.removeRecipients(item)'></i>
               <span class="createAnnSelectedRecepient">{{item.location}}</span>
             </div>
           </div>
