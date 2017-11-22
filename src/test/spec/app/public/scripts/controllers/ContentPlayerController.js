@@ -142,7 +142,8 @@ describe('Controller: contentPlayerCtrl', function () {
     scope.init(scope)
     scope.$apply()
     scope.contentData = testData.previewContent.getContentSuccess.result.content
-    scope.getContentEditorConfig(testData.previewContent.getContentSuccess)
+    var res = scope.getContentEditorConfig(testData.previewContent.getContentSuccess)
+    expect(res.context).toBeDefined()
   })
 
   xit('Call close function with search keyword', function () {

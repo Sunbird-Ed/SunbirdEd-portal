@@ -86,9 +86,12 @@ angular.module('playerApp')
 
             toc.initTocView = function () {
               $timeout(function () {
-                $('.toc-tree-item').fancytree({
+                $('.toc-tree-item').fancytree({ 
                   click: function (event, data) {
-                    toc.openContent(data.node.key)
+                    if(data.targetType === "title") {
+                      data.targetType = "expander";  
+                      toc.openContent(data.node.key)                    
+                    } 
                   }
                 })
                 $('.ui.accordion').accordion({

@@ -2,8 +2,8 @@ const fs = require('fs')
 const path = require('path')
 const dateFormat = require('dateformat')
 const uuidv1 = require('uuid/v1')
-const envHelper = require('./environmentVariablesHelper.js')
 const async = require('async')
+const envHelper = require('./environmentVariablesHelper.js')
 
 module.exports = {
   getInfo: function (req, res) {
@@ -33,17 +33,11 @@ module.exports = {
           fs.stat(path.join(__dirname, '../tenant', tenantId, 'favicon.ico'), function (err, stat) {
             callback(null, stat)
           })
-        },
-        appLogo: function (callback) {
-          fs.stat(path.join(__dirname, '../tenant', tenantId, 'appLogo.png'), function (err, stat) {
-            callback(null, stat)
-          })
         }
       }, function (err, results) {
         responseObj.logo = baseUrl + (results.logo ? '/tenant/' + tenantId + '/logo.png' : '/common/images/sunbird_logo.png')
         responseObj.poster = baseUrl + (results.poster ? '/tenant/' + tenantId + '/poster.png' : '/common/images/sunbird_logo.png')
         responseObj.favicon = baseUrl + (results.favicon ? '/tenant/' + tenantId + '/favicon.ico' : '/common/images/favicon.ico')
-        responseObj.appLogo = results.appLogo ? baseUrl + '/tenant/' + tenantId + '/appLogo.png' : responseObj.logo
         module.exports.getSucessResponse(res, 'api.tenant.info', responseObj)
       })
     } else {

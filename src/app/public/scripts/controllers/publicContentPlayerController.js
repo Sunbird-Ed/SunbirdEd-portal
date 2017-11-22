@@ -26,6 +26,7 @@ angular.module('loginApp')
           configuration.config.repos = config.ekstep_CP_config.config.repos
           configuration.metadata = $scope.contentData
           configuration.data = $scope.contentData.mimeType !== config.MIME_TYPE.ecml ? {} : data.body
+          return configuration
         }
 
         $scope.adjustPlayerHeight = function () {
@@ -52,7 +53,6 @@ angular.module('loginApp')
             previewContentIframe.onload = function () {
               $scope.adjustPlayerHeight()
               var configuration = $scope.getContentEditorConfig(data)
-              previewContentIframe.contentWindow.initializePreview(configuration)
               previewContentIframe.contentWindow.initializePreview(configuration)
               $scope.gotoBottom()
             }
