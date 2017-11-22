@@ -43,7 +43,8 @@ gulp.task('injectFiles', ['minifyIMG'], function () {
       'dist/private/scripts/app.js',
       'dist/private/scripts/routes/appRoute.js',
       'dist/private/script.min.js',
-      'dist/private/external.min.css'
+      'dist/private/external.min.css',
+      'dist/private/scripts/routes/announcementRoute.js'
     ], { read: false }), { ignorePath: '/dist', addRootSlash: true }))
     .pipe(gulp.dest('dist/private/'))
   return merge(x, y)
@@ -90,7 +91,8 @@ gulp.task('minifyJS', ['production'], function () {
     'dist/thirdparty/bower_components/pagedown/Markdown.Sanitizer.js',
     'dist/thirdparty/bower_components/pagedown/Markdown.Editor.js',
     '!dist/public/**/publicAppRoute.js',
-    '!dist/private/**/appRoute.js'
+    '!dist/private/**/appRoute.js',
+    '!dist/private/**/announcementRoute.js'
   ], { base: 'dist/' }).pipe(minify({
     minify: true,
     collapseWhitespace: true,
