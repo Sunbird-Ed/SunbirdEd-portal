@@ -52,7 +52,7 @@ angular.module('playerApp')
 
           var today = new Date()
 
-          var getDate = function (date) {
+          scope.getDate = function (date) {
             if (!date) { return '' }
             var day = date.getDate()
             var month = date.getMonth() + 1
@@ -64,7 +64,7 @@ angular.module('playerApp')
             type: 'date',
             maxDate: today,
             formatter: {
-              date: getDate
+              date: scope.getDate
             }
           })
 
@@ -73,7 +73,7 @@ angular.module('playerApp')
             maxDate: today,
             endCalendar: $('#start'),
             formatter: {
-              date: getDate
+              date: scope.getDate
             }
           })
           $('#end').calendar({
@@ -81,7 +81,7 @@ angular.module('playerApp')
             maxDate: today,
             startCalendar: $('#end'),
             formatter: {
-              date: getDate
+              date: scope.getDate
             },
             onChange: function (date, text) {
               angular.element($('#endDateInput')
@@ -94,7 +94,7 @@ angular.module('playerApp')
             maxDate: today,
             endCalendar: $('#rangeendAdd'),
             formatter: {
-              date: getDate
+              date: scope.getDate
             }
           })
           $('#rangeendAdd').calendar({
@@ -102,7 +102,7 @@ angular.module('playerApp')
             maxDate: today,
             startCalendar: $('#rangestartAdd'),
             formatter: {
-              date: getDate
+              date: scope.getDate
             }
           })
 
@@ -111,7 +111,7 @@ angular.module('playerApp')
             maxDate: today,
             endCalendar: $('.rangeEnd'),
             formatter: {
-              date: getDate
+              date: scope.getDate
             }
           })
           $('.rangeEnd').calendar({
@@ -119,7 +119,7 @@ angular.module('playerApp')
             maxDate: today,
             startCalendar: $('.rangeStart'),
             formatter: {
-              date: getDate
+              date: scope.getDate
             }
           })
 
@@ -127,7 +127,7 @@ angular.module('playerApp')
             type: 'date',
             maxDate: today,
             formatter: {
-              date: getDate
+              date: scope.getDate
             }
           })
         }

@@ -28,23 +28,23 @@ angular.module('playerApp')
        * @returns {Promise} Promise object represents announcement outbox list dashboard data
        * @instance
        */
-      this.getOutBoxAnnouncementList = function (userId) {
+      this.getOutBoxAnnouncementList = function () {
         var data = {
           'request': {
-            'userId': userId
+            'userId': $rootScope.userId
           }
         }
-        return handleHttpRequest(config.URL.ANNOUNCEMENT.OUTBOX_LIST, data, 'POST')
+        return handleHttpRequest(config.URL.ANNOUNCEMENT.OUTBOX_LIST, data, 'POST', $rootScope.messages.fmsg.m0070)
       }
 
-      function handleHttpRequest (url, data, type) {
+      function handleHttpRequest (url, data, type, errMsg) {
         var deferred = $q.defer()
         var response = httpAdapter.httpCall(url, data, type)
         response.then(function (res) {
           if (res && res.responseCode === 'OK') {
             deferred.resolve(res)
           } else {
-            toasterService.error(res.params.errmsg)
+            toasterService.error(errMsg)
             deferred.reject(res)
           }
         }, function (err) {
@@ -84,7 +84,7 @@ angular.module('playerApp')
         if (reqLimit > 0) {
           data.request.limit = reqLimit
         }
-        return handleHttpRequest(config.URL.ANNOUNCEMENT.INBOX_LIST, data, 'POST')
+        return handleHttpRequest(config.URL.ANNOUNCEMENT.INBOX_LIST, data, 'POST', $rootScope.messages.fmsg.m0072)
       }
 
       /**
@@ -158,7 +158,7 @@ angular.module('playerApp')
             'channel': 'web'
           }
         }
-        return handleHttpRequest(config.URL.ANNOUNCEMENT.READ, data, 'POST')
+        return handleHttpRequest(config.URL.ANNOUNCEMENT.READ, data, 'POST', $rootScope.messages.fmsg.m0073)
       }
 
       /**
@@ -188,15 +188,15 @@ angular.module('playerApp')
        * @returns {object} returns response of API
        * @instance
        */
-      this.deleteAnnouncement = function (userId, AnnId) {
+      this.deleteAnnouncement = function (announcementId) {
         var data = {
           'request': {
-            'userId': userId,
-            'announcementid': AnnId
+            'userId': $rootScope.userId,
+            'announcementid': announcementId
           }
         }
         var URL = config.URL.ANNOUNCEMENT.CANCEL
-        return handleHttpRequest(URL, data, 'DELETE')
+        return handleHttpRequest(URL, data, 'DELETE', $rootScope.messages.fmsg.m0071)
       }
 
       /**

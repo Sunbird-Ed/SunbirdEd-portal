@@ -12,10 +12,6 @@ describe('Directive: applyScript', function () {
 
   var element, ctrl, compile, templateCache, scope, timeout
 
-  beforeEach(function () {
-    setFixtures('<div class="ui calendar" id="rangestart"></div>')
-  })
-
   beforeEach(inject(function ($rootScope, $templateCache, $compile, _$timeout_) {
     scope = $rootScope.$new()
     scope.$last
@@ -25,7 +21,7 @@ describe('Directive: applyScript', function () {
     templateCache = $templateCache
   }))
 
-  it('link to slick', function (done) {
+  it('link to apply script', function (done) {
     scope.visibility = true
     scope.isclose = true
     scope.$last = true
@@ -33,18 +29,5 @@ describe('Directive: applyScript', function () {
     timeout.flush(0)
     scope.$digest()
     done()
-  })
-
-  it('should call afterChange', function () {
-    scope.visibility = true
-    scope.isclose = true
-    scope.$last = true
-    var slick = {'slideCount': '8'}
-    var currentSlide = '10'
-    var event = 'click'
-    element = compile('<div apply-script class="ui inline dropdown search-dropdown"></div>')(scope)
-    scope.$digest()
-    // do whatever triggers the "$emit" call
-    // expect(scope.emit).toBeDefined()
   })
 })
