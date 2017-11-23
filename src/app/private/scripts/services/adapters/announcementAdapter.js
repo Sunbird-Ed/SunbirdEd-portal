@@ -34,17 +34,17 @@ angular.module('playerApp')
             'userId': $rootScope.userId
           }
         }
-        return handleHttpRequest(config.URL.ANNOUNCEMENT.OUTBOX_LIST, data, 'POST')
+        return handleHttpRequest(config.URL.ANNOUNCEMENT.OUTBOX_LIST, data, 'POST', $rootScope.messages.emsg.m0070)
       }
 
-      function handleHttpRequest (url, data, type) {
+      function handleHttpRequest (url, data, type, errMsg) {
         var deferred = $q.defer()
         var response = httpAdapter.httpCall(url, data, type)
         response.then(function (res) {
           if (res && res.responseCode === 'OK') {
             deferred.resolve(res)
           } else {
-            toasterService.error(res.params.errmsg)
+            toasterService.error(errMsg)
             deferred.reject(res)
           }
         }, function (err) {
@@ -192,7 +192,7 @@ angular.module('playerApp')
           }
         }
         var URL = config.URL.ANNOUNCEMENT.CANCEL
-        return handleHttpRequest(URL, data, 'DELETE')
+        return handleHttpRequest(URL, data, 'DELETE', $rootScope.messages.emsg.m0071)
       }
 
       /**
