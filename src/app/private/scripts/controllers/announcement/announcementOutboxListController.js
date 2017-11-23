@@ -1,43 +1,50 @@
 'use strict'
 
 angular.module('playerApp')
-  .controller('announcementOutboxListController', ['$rootScope', '$scope',
-    'announcementService', '$timeout', '$state', '$stateParams', 'toasterService', 'adminService', 'PaginationService',
-    function ($rootScope, $scope, announcementService, $timeout, $state, $stateParams, toasterService, adminService, PaginationService) {
+  .controller('announcementOutboxListController', ['$rootScope', '$scope', '$timeout', '$state', '$stateParams', 'toasterService', 'announcementAdapter', 'PaginationService',
+    function ($rootScope, $scope, $timeout, $state, $stateParams, toasterService, announcementAdapter, PaginationService) {
       var announcementOutboxData = this
       announcementOutboxData.pager = {}
       announcementOutboxData.setPage = setPage
       announcementOutboxData.showLoader = true
       announcementOutboxData.showDataDiv = false
 
+    /**
+     * @method renderAnnouncementList
+     * @desc - function to get announcement outbox data
+     * @memberOf Controllers.announcementOutboxListController
+     */
       announcementOutboxData.renderAnnouncementList = function () {
-        announcementService.getOutBoxAnnouncementList($rootScope.userId).then(function (apiResponse) {
-          apiResponse = apiResponse.data
-          if (apiResponse && apiResponse.responseCode === 'OK') {
-            announcementOutboxData.result = apiResponse.result
-            announcementOutboxData.listData = apiResponse.result.announcements.content
-            initController()
-            if (announcementOutboxData.listData.length > 0) {
-              announcementOutboxData.showDataDiv = true
-            }
-          } else {
-            toasterService.error(apiResponse.params.errmsg)
+        announcementAdapter.getOutBoxAnnouncementList().then(function (apiResponse) {
+          announcementOutboxData.showLoader = false
+          announcementOutboxData.result = apiResponse.result
+          announcementOutboxData.listData = apiResponse.result.announcements.content
+          initController()
+          if (announcementOutboxData.listData.length > 0) {
+            announcementOutboxData.showDataDiv = true
           }
+        }, function (err) {
+          announcementOutboxData.showLoader = false
         })
-          .catch(function (err) {
-            toasterService.error(err.data.params.errmsg)
-          })
-          .finally(function () {
-            announcementOutboxData.showLoader = false
-          })
       }
 
+    /**
+     * @method initController
+     * @desc - function to set page
+     * @memberOf Controllers.announcementOutboxListController
+     */
       function initController () {
-        // initialize to page 1
         announcementOutboxData.setPage(1)
       }
 
+    /**
+     * @method setPage
+     * @desc - function to setPager
+     * @memberOf Controllers.announcementOutboxListController
+     * @param {int} [page] [page number]
+     */
       function setPage (page) {
+        announcementOutboxData.pager = {}
         if (page < 1 || page > announcementOutboxData.pager.totalPages) {
           return
         }
@@ -47,18 +54,36 @@ angular.module('playerApp')
         announcementOutboxData.items = announcementOutboxData.listData.slice(announcementOutboxData.pager.startIndex, announcementOutboxData.pager.endIndex + 1)
       }
 
+    /**
+     * @method showModal
+     * @desc - function to show modal popup
+     * @memberOf Controllers.announcementOutboxListController
+     * @param {int} [modalId] [unique modal id]
+     * @param {string} [annId] [announcement id]
+     */
       announcementOutboxData.showModal = function (modalId, annId) {
         announcementOutboxData.announcementId = annId
         $('#' + modalId).modal('show')
       }
+
+    /**
+     * @method closeModal
+     * @desc - function to close modal popup
+     * @memberOf Controllers.announcementOutboxListController
+     * @param {int} [modalId] [unique modal id]
+     */
       announcementOutboxData.closeModal = function (modalId) {
         $('#' + modalId).modal('hide')
       }
+
+    /**
+     * @method deleteAnnouncement
+     * @desc - function to delete announcement
+     * @memberOf Controllers.announcementOutboxListController
+     */
       announcementOutboxData.deleteAnnouncement = function () {
-        var requestBody = { 'request': {'userid': $rootScope.userId, 'announcenmentid': announcementOutboxData.announcementId}}
-        announcementService.deleteAnnouncement(requestBody).then(function (apiResponse) {
-          apiResponse = apiResponse.data
-          if (apiResponse && apiResponse.responseCode === 'OK' && apiResponse.result.status === 'cancelled') {
+        announcementAdapter.deleteAnnouncement(announcementOutboxData.announcementId).then(function (apiResponse) {
+          if (apiResponse.result.status === 'cancelled') {
             toasterService.success('Announcement cancelled successfully.')
             var evens = _.remove(announcementOutboxData.listData, function (ann) {
               return ann.id == announcementOutboxData.announcementId
@@ -66,32 +91,37 @@ angular.module('playerApp')
             announcementOutboxData.setPage(announcementOutboxData.pager.currentPage)
           } else {
             toasterService.error(apiResponse.params.errmsg)
+            announcementOutboxData.closeModal('announcementDeleteModal')
           }
-        }).catch(function (err) {
-          toasterService.error(err.data.params.errmsg)
-        }).finally(function () {
+        }, function (err) {
           announcementOutboxData.closeModal('announcementDeleteModal')
         })
       }
+
+    /**
+     * @method getResend
+     * @desc - function to resend announcement
+     * @memberOf Controllers.announcementOutboxListController
+     * @param {int} [announcementId] [to make getResend api call]
+     */
       announcementOutboxData.getResend = function (announcementId) {
-        announcementService.getResend(announcementId).then(function (apiResponse) {
-          apiResponse = apiResponse.data
-          if (apiResponse && apiResponse.responseCode === 'OK') {
-            if (apiResponse.hasOwnProperty('result')) {
-              $rootScope.$broadcast('editAnnouncementBeforeResend', apiResponse.result)
-            } else {
-              toasterService.error('An unexpected error occured.')
-            }
+        announcementAdapter.getResend(announcementId).then(function (apiResponse) {
+          if (apiResponse.hasOwnProperty('result')) {
+            $rootScope.$broadcast('editAnnouncementBeforeResend', apiResponse.result)
           } else {
-            toasterService.error(apiResponse.params.errmsg)
+            toasterService.error('An unexpected error occured.')
           }
-        }).catch(function (err) {
-          toasterService.error(err.data.params.errmsg)
-        }).finally(function () {})
+        })
       }
 
-      announcementOutboxData.showAnnouncementDetails = function (announcementDetails) {
-        $state.go('announcementDetails', {announcementId: announcementDetails.id})
+    /**
+     * @method showAnnouncementDetails
+     * @desc - function to show announcement details
+     * @memberOf Controllers.announcementOutboxListController
+     * @param {string} [annId] [show details based on announcement id]
+     */
+      announcementOutboxData.showAnnouncementDetails = function (annId) {
+        $state.go('announcementDetails', {announcementId: annId})
       }
     }
   ])
