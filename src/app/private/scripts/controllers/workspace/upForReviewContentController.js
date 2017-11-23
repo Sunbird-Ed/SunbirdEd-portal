@@ -23,7 +23,7 @@ angular.module('playerApp')
     upForReviewContent.search.grades = upForReviewContent.filterDropDown.grades
     upForReviewContent.search.boards = upForReviewContent.filterDropDown.boards
     upForReviewContent.search.medium = upForReviewContent.filterDropDown.medium
-    upForReviewContent.search.sortingOptions = config.sortingOptions
+    upForReviewContent.search.sortingOptions = config.upForReviewSortingOptions
     upForReviewContent.search.sortIcon = true
 
     upForReviewContent.search.selectedLanguage = []
