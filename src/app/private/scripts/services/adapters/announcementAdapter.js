@@ -2,7 +2,7 @@
 
 angular.module('playerApp')
   .service('announcementAdapter', ['$rootScope', '$http', 'httpAdapter', 'config', '$q', 'toasterService',
-    function($rootScope, $http, httpAdapter, config, $q, toasterService) {
+    function ($rootScope, $http, httpAdapter, config, $q, toasterService) {
       var extensions = {
         'application/png': 'PNG',
         'application/pdf': 'PDF',
@@ -19,9 +19,6 @@ angular.module('playerApp')
        * @memberOf Services
        */
 
-
-
-
       /**
        * @method getOutBoxAnnouncementList
        * @desc Get announcement outbox list data
@@ -31,31 +28,30 @@ angular.module('playerApp')
        * @returns {Promise} Promise object represents announcement outbox list dashboard data
        * @instance
        */
-      this.getOutBoxAnnouncementList = function(userId) {
+      this.getOutBoxAnnouncementList = function (userId) {
         var data = {
           'request': {
             'userId': userId
           }
         }
         return handleHttpRequest(config.URL.ANNOUNCEMENT.OUTBOX_LIST, data, 'POST')
-
       }
 
-      function handleHttpRequest(url, data, type) {
+      function handleHttpRequest (url, data, type) {
         var deferred = $q.defer()
         var response = httpAdapter.httpCall(url, data, type)
-        response.then(function(res) {
+        response.then(function (res) {
           if (res && res.responseCode === 'OK') {
             deferred.resolve(res)
           } else {
             toasterService.error(res.params.errmsg)
             deferred.reject(res)
           }
-        }, function(err) {
+        }, function (err) {
           toasterService.error($rootScope.messages.emsg.m0005)
           deferred.reject(err)
         })
-        return deferred.promise;
+        return deferred.promise
       }
       /**
        * @method getAnnouncementById
@@ -65,10 +61,9 @@ angular.module('playerApp')
        * @returns {object} returns response of API
        * @instance
        */
-      this.getAnnouncementById = function(announcementId) {
+      this.getAnnouncementById = function (announcementId) {
         return handleHttpRequest(config.URL.ANNOUNCEMENT.GET_BY_ID + announcementId, '', 'GET')
       }
-
 
       /**
        * @method getInboxAnnouncementList
@@ -79,15 +74,18 @@ angular.module('playerApp')
        * @returns {Promise} Promise object represents announcement inbox list dashboard data
        * @instance
        */
-      this.getInboxAnnouncementList = function(userId) {
+      this.getInboxAnnouncementList = function (reqLimit) {
         var data = {
           'request': {
-            'userId': userId
+            'userId': $rootScope.userId
           }
+        }
+
+        if (reqLimit > 0) {
+          data.request.limit = reqLimit
         }
         return handleHttpRequest(config.URL.ANNOUNCEMENT.INBOX_LIST, data, 'POST')
       }
-
 
       /**
        * @method getFileExtension
@@ -97,7 +95,7 @@ angular.module('playerApp')
        * @returns {string} returns extension of a file
        * @instance
        */
-      this.getFileExtension = function(mimeType) {
+      this.getFileExtension = function (mimeType) {
         return extensions[mimeType]
       }
 
@@ -109,7 +107,7 @@ angular.module('playerApp')
        * @returns {object} returns response of API
        * @instance
        */
-      this.createAnnouncement = function(annoucement) {
+      this.createAnnouncement = function (annoucement) {
         var data = {
           request: {
             title: annoucement.details.title,
@@ -133,7 +131,7 @@ angular.module('playerApp')
        * @returns {object} returns response of API
        * @instance
        */
-      this.getDefinitions = function(rootOrgId,userId) {
+      this.getDefinitions = function (rootOrgId, userId) {
         var data = {
           request: {
             'rootorgid': rootOrgId,
@@ -152,11 +150,11 @@ angular.module('playerApp')
        * @returns {object} returns response of API
        * @instance
        */
-      this.readAnnouncement = function(announcementId, userId) {
+      this.readAnnouncement = function (annId) {
         var data = {
           request: {
-            'userId': userId,
-            'announcementId': announcementId,
+            'userId': $rootScope.userId,
+            'announcementId': annId,
             'channel': 'web'
           }
         }
@@ -171,11 +169,11 @@ angular.module('playerApp')
        * @returns {object} returns response of API
        * @instance
        */
-      this.receivedAnnouncement = function(userId, AnnId) {
+      this.receivedAnnouncement = function (annId) {
         var data = {
           'request': {
-            'userId': userId,
-            'announcementId': AnnId,
+            'userId': $rootScope.userId,
+            'announcementId': annId,
             'channel': 'web'
           }
         }
@@ -190,7 +188,7 @@ angular.module('playerApp')
        * @returns {object} returns response of API
        * @instance
        */
-      this.deleteAnnouncement = function(userId, AnnId) {
+      this.deleteAnnouncement = function (userId, AnnId) {
         var data = {
           'request': {
             'userId': userId,
@@ -209,7 +207,7 @@ angular.module('playerApp')
        * @returns {object} returns response of API
        * @instance
        */
-      this.getResend = function(announcementId) {
+      this.getResend = function (announcementId) {
         var URL = config.URL.ANNOUNCEMENT.RESEND + announcementId
         return handleHttpRequest(URL, {}, 'GET')
       }
@@ -222,7 +220,7 @@ angular.module('playerApp')
        * @returns {object} returns response of API
        * @instance
        */
-      this.resendAnnouncement = function(annoucement) {
+      this.resendAnnouncement = function (annoucement) {
         var data = {
           request: {
             title: annoucement.details.title,
