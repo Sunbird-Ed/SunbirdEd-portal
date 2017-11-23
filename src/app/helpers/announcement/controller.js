@@ -20,7 +20,7 @@ let NotificationTarget = require('./services/notification/notificationTarget.js'
 
 class AnnouncementController {
 
-  constructor(notificationSeriviceInstance) {
+  constructor() {
     //table name should be same as the name in database table
     let tableMapping = {
       'announcement': AnnouncementModel,
@@ -46,7 +46,6 @@ class AnnouncementController {
         'READ': 'read',
         'RECEIVED': 'received'
     }
-    this.notificationSerivce = notificationSeriviceInstance
     this.objectStoreRest = new ObjectStoreRest(tableMapping, modelConstant)
     this.statusConstant = statusConstant
     this.metricsActivityConstant = metricsActivityConstant

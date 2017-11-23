@@ -14,7 +14,6 @@ class HttpWrapper {
             if (!options) reject('options required!')
             options.headers = options.headers || HttpWrapper.getRequestHeader()
             webService(options, (error, response, body) => {
-	        	console.log("statusCode",response.statusCode)
                 if (error || response.statusCode >= 400) {
                     reject(error)
                 } else {
