@@ -1,4 +1,3 @@
-
 describe('controller test', function () {
   var $compile, $state, scope, httpMock, $location, $rootScope, $templateCache, $stateParams, $httpBackend
 
@@ -15,11 +14,13 @@ describe('controller test', function () {
   }))
 
   function goFrom (url) {
-    return {toState: function (state, params) {
-      $location.replace().url(url) // Don't actually trigger a reload
-      $state.go(state, params)
-      $rootScope.$digest()
-    }}
+    return {
+      toState: function (state, params) {
+        $location.replace().url(url) // Don't actually trigger a reload
+        $state.go(state, params)
+        $rootScope.$digest()
+      }
+    }
   }
 
   describe('OnEnter', function () {
