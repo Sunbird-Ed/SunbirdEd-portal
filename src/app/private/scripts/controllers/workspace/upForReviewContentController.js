@@ -3,9 +3,10 @@
 angular.module('playerApp')
 .controller('UpForReviewContentController', ['contentService', 'searchService', 'config',
   '$rootScope', '$scope', '$state', 'toasterService', 'PaginationService',
-  'workSpaceUtilsService', '$timeout', function (contentService, searchService, config, $rootScope,
-    $scope, $state, toasterService, PaginationService, workSpaceUtilsService, $timeout) {
+  'workSpaceUtilsService', '$timeout', 'configService', function (contentService, searchService, config, $rootScope,
+    $scope, $state, toasterService, PaginationService, workSpaceUtilsService, $timeout, configService) {
     var upForReviewContent = this
+    upForReviewContent.filterDropDown = configService.getWorkspaceUpforReviewdrpdwn()
     upForReviewContent.userId = $rootScope.userId
     upForReviewContent.contentStatus = ['Review']
     upForReviewContent.channelId = 'sunbird'
@@ -16,12 +17,13 @@ angular.module('playerApp')
     upForReviewContent.typingTimer = -1 // timer identifier
     upForReviewContent.doneTypingInterval = 1000
     upForReviewContent.search = {}
-    upForReviewContent.search.languages = config.FILTER.RESOURCES.languages
-    upForReviewContent.search.contentTypes = config.FILTER.RESOURCES.contentTypes
-    upForReviewContent.search.subjects = config.FILTER.RESOURCES.subjects
-    upForReviewContent.search.grades = config.DROPDOWN.COMMON.grades
-    upForReviewContent.search.boards = config.FILTER.RESOURCES.boards
-    upForReviewContent.search.sortingOptions = config.sortingOptions
+    upForReviewContent.search.languages = upForReviewContent.filterDropDown.languages
+    upForReviewContent.search.contentTypes = upForReviewContent.filterDropDown.contentTypes
+    upForReviewContent.search.subjects = upForReviewContent.filterDropDown.subjects
+    upForReviewContent.search.grades = upForReviewContent.filterDropDown.grades
+    upForReviewContent.search.boards = upForReviewContent.filterDropDown.boards
+    upForReviewContent.search.medium = upForReviewContent.filterDropDown.medium
+    upForReviewContent.search.sortingOptions = config.upForReviewSortingOptions
     upForReviewContent.search.sortIcon = true
 
     upForReviewContent.search.selectedLanguage = []

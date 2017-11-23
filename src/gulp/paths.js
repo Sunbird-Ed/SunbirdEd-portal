@@ -191,6 +191,7 @@ var paths = {
     'dist/private/scripts/services/adminService.js',
     'dist/private/scripts/services/batchService.js',
     'dist/private/scripts/services/workSpaceUtilsService.js',
+    'dist/private/scripts/services/configService.js',
     'dist/private/scripts/services/dashboardService.js',
     'dist/private/scripts/services/dataService.js',
     'dist/private/scripts/services/paginationService.js',

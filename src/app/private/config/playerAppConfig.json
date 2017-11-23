@@ -599,6 +599,11 @@
             { "field": "lastUpdatedOn", "name": "Modified On" },
             { "field": "createdOn", "name": "Created On" }
         ],
+        "upForReviewSortingOptions": [
+            { "field": "lastUpdatedOn", "name": "Updated On" },
+            { "field": "createdOn", "name": "Created On" },
+            { "field": "name", "name": "Name A-Z"}
+        ],
         "searchSelectionKeys": [
             { "id": "All", "name": "All" },
             { "id": "Courses", "name": "Courses" },
