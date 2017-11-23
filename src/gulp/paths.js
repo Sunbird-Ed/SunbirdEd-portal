@@ -169,6 +169,9 @@ var paths = {
   ],
   private_scripts: [
     'dist/private/scripts/factories/sessionFactory.js',
+    'dist/private/scripts/factories/announcementModel.js',
+    'dist/private/scripts/services/adapters/httpAdapter.js',
+    'dist/private/scripts/services/adapters/announcementAdapter.js',
     'dist/private/scripts/services/httpService.js',
     'dist/private/scripts/services/httpServiceJava.js',
     'dist/private/scripts/services/contentService.js',
