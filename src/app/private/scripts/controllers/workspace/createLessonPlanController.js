@@ -2,13 +2,14 @@
 
 angular.module('playerApp')
   .controller('LessonPlanController', ['contentService', '$timeout', '$state', 'config',
-    '$rootScope', 'toasterService', function (contentService, $timeout, $state, config,
-            $rootScope, toasterService) {
+    '$rootScope', 'toasterService', 'configService', function (contentService, $timeout, $state, config,
+            $rootScope, toasterService, configService) {
       var lessonPlan = this
-      lessonPlan.boards = config.DROPDOWN.COMMON.boards
-      lessonPlan.mediums = config.DROPDOWN.COMMON.medium
-      lessonPlan.subjects = config.DROPDOWN.COMMON.subjects
-      lessonPlan.grades = config.DROPDOWN.COMMON.grades
+      lessonPlan.formDropdown = configService.getWorkspaceFormDropdown()
+      lessonPlan.boards = lessonPlan.formDropdown.boards
+      lessonPlan.mediums = lessonPlan.formDropdown.medium
+      lessonPlan.subjects = lessonPlan.formDropdown.subjects
+      lessonPlan.grades = lessonPlan.formDropdown.grades
       lessonPlan.showCreateLessonPlanModal = false
       lessonPlan.isLessonPlanCreated = false
       lessonPlan.userId = $rootScope.userId
