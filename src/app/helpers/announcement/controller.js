@@ -13,14 +13,14 @@ let dateFormat = require('dateformat')
 let webService = require('request')
 let envVariables = require('../environmentVariablesHelper.js')
 let ApiInterceptor = require('sb_api_interceptor')
-let notificationService = require('./services/notification/notificationService.js')
-let payloadService = require('./services/notification/payloadService.js')
-let targetService = require('./services/notification/targetService.js')
+let NotificationService = require('./services/notification/notificationService.js')
+let NotificationPayload = require('./services/notification/notificationPayload.js')
+let NotificationTarget = require('./services/notification/notificationTarget.js')
 
 
 class AnnouncementController {
 
-  constructor() {
+  constructor(notificationSeriviceInstance) {
     //table name should be same as the name in database table
     let tableMapping = {
       'announcement': AnnouncementModel,
@@ -46,7 +46,7 @@ class AnnouncementController {
         'READ': 'read',
         'RECEIVED': 'received'
     }
-
+    this.notificationSerivce = notificationSeriviceInstance
     this.objectStoreRest = new ObjectStoreRest(tableMapping, modelConstant)
     this.statusConstant = statusConstant
     this.metricsActivityConstant = metricsActivityConstant
@@ -81,7 +81,7 @@ class AnnouncementController {
     try {
         if (newAnnouncementObj.data.id) {
             requestObj.body.request.announcementId = newAnnouncementObj.data.id
-            this.__createAnnouncementNotification()(requestObj)
+            this.__createAnnouncementNotification(requestObj)()
             return {
                 announcement: newAnnouncementObj.data
             }
@@ -207,36 +207,53 @@ class AnnouncementController {
     })
   }
 
-  
-
+    
     /**
-     * Call the notification service to send notifications about the announcement.
-     *
-     * @return  {[type]}  [description]
+     * Which is used to create a announcements notification
+     * @param  {object} annoucement - Request object 
      */
-    __createAnnouncementNotification() {
-        return async((data) => {
-            let authUserToken = _.get(data, 'kauth.grant.access_token.token') || data.headers['x-authenticated-user-token']
-            let config = {
-                userAccessToken: authUserToken,
-                uri: 'data/v1/notification/send',
-                body: undefined // by default notification service will consider like this format example: {request: {data: {notificationpayload: {} } } }
-            }
-            let payload = {"msgid": data.body.request.announcementId, "title": data.body.request.title, "msg": data.body.request.description, "icon": "", "validity": "-1", "actionid": "1", "actiondata": "", "dispbehavior": "stack"} 
-            let paylodInstance = new payloadService(payload);
-            let targetInstance = new targetService(_.get(data, 'body.request.target'))
-            let payloadStatus = paylodInstance.get();
-            let targetStatus = targetInstance.get();
-            if (payloadStatus.isValid && targetStatus.isValid) {
-                let notificationInstance = new notificationService(config)
-                notificationInstance.send(targetStatus.target, payloadStatus.payload).then(() => {
-                    console.log("Notification has been sent")
+    __createAnnouncementNotification(annoucement) {
+        try {
+            return async(() => {
+                let authUserToken = _.get(annoucement, 'kauth.grant.access_token.token') || annoucement.headers['x-authenticated-user-token']
+                let payload = new NotificationPayload({
+                    "msgid": annoucement.body.request.announcementId,
+                    "title": annoucement.body.request.title,
+                    "msg": annoucement.body.request.description,
+                    "icon": "",
+                    "validity": "-1",
+                    "actionid": "1",
+                    "actiondata": "",
+                    "dispbehavior": "stack"
                 })
-            } else {
-                console.error("Invalid notification object structure", status.error)
-            }
 
-        })
+                // TODO : notificationServiceInstance should be outside of this method,once session service implemented
+                // then it should be outside of this method
+                let notifier = new NotificationService({
+                    userAccessToken: authUserToken
+                })
+                let target = new NotificationTarget({
+                    target: _.get(annoucement, 'body.request.target')
+                })
+                let targetValidation = target.validate();
+                if (!targetValidation.isValid) {
+                    return {
+                        msg: targetValidation.error
+                    }
+                }
+                let payloadValidation = payload.validate();
+                if (!payloadValidation.isValid) {
+                    return {
+                        msg: payloadValidation.error
+                    }
+                }
+                notifier.send(target, payload)
+            })
+        } catch (error) {
+            throw {
+                msg: error
+            }
+        }
     }
 
   /**
@@ -896,25 +913,6 @@ class AnnouncementController {
       'x-authenticated-user-token': opt.xAuthUserToken || '',
       'Authorization': 'Bearer ' + envVariables.PORTAL_API_AUTH_TOKEN
     }
-  }
-
-  forEachPromise(items, fn, options, context) {
-    return items.reduce(function (promise, item) {
-        return promise.then(function () {
-            return fn(item, options, context);
-        });
-    }, Promise.resolve());
-  }
-
-  sendNotification(item, options, context) {
-      options.body.request.to = item;
-      return new Promise((resolve, reject) => {
-          context.httpService(options).then((data) => {
-            resolve(data);
-          }).catch((error) => {
-              reject(error);
-          })
-      });
   }
 
   __checkPermission() {
