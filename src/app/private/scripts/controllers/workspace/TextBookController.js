@@ -2,13 +2,14 @@
 
 angular.module('playerApp')
     .controller('TextBookController', ['contentService', '$timeout', '$state', 'config',
-      '$rootScope', 'toasterService', function (contentService, $timeout, $state, config,
-            $rootScope, toasterService) {
+      '$rootScope', 'toasterService', 'configService', function (contentService, $timeout, $state, config,
+            $rootScope, toasterService, configService) {
         var textbook = this
-        textbook.boards = config.DROPDOWN.COMMON.boards
-        textbook.mediums = config.DROPDOWN.COMMON.medium
-        textbook.subjects = config.DROPDOWN.COMMON.subjects
-        textbook.grades = config.DROPDOWN.COMMON.grades
+        textbook.formDropdown = configService.getWorkspaceFormDropdown()
+        textbook.boards = textbook.formDropdown.boards
+        textbook.mediums = textbook.formDropdown.medium
+        textbook.subjects = textbook.formDropdown.subjects
+        textbook.grades = textbook.formDropdown.grades
         textbook.showCreateTextBookModal = false
         textbook.isTextBookCreated = false
         textbook.userId = $rootScope.userId

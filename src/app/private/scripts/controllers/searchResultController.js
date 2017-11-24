@@ -14,6 +14,7 @@ angular.module('playerApp').controller('SearchResultController', [
   'adminService',
   'permissionsService',
   'PaginationService',
+  'configService',
   function (
       $scope,
       $rootScope,
@@ -27,7 +28,8 @@ angular.module('playerApp').controller('SearchResultController', [
       sessionService,
       adminService,
       permissionsService,
-      PaginationService
+      PaginationService,
+      configService
     ) {
     $scope.search = {}
     $rootScope.search = {}
@@ -35,15 +37,16 @@ angular.module('playerApp').controller('SearchResultController', [
     $rootScope.search.filters = {}
     $rootScope.search.typingTimer = -1 // timer identifier
     $rootScope.search.doneTypingInterval = 1000
-    $rootScope.search.languages = config.FILTER.RESOURCES.languages
-    $rootScope.search.contentTypes = config.FILTER.RESOURCES.contentTypes
-    $rootScope.search.subjects = config.FILTER.RESOURCES.subjects
-    $rootScope.search.grades = config.DROPDOWN.COMMON.grades
-    $rootScope.search.boards = config.FILTER.RESOURCES.boards
-    $scope.search.searchTypeKeys = config.searchTypeKeys
-    $rootScope.search.sortingOptions = config.sortingOptions
+    $rootScope.search.filterSearchdrpdwn = configService.getFilterSearchdrpdwn()
+    $rootScope.search.languages = $rootScope.search.filterSearchdrpdwn.languages
+    $rootScope.search.contentTypes = $rootScope.search.filterSearchdrpdwn.contentTypes
+    $rootScope.search.subjects = $rootScope.search.filterSearchdrpdwn.subjects
+    $rootScope.search.grades = $rootScope.search.filterSearchdrpdwn.grades
+    $rootScope.search.boards = $rootScope.search.filterSearchdrpdwn.boards
+    $scope.search.searchTypeKeys = $rootScope.search.filterSearchdrpdwn.searchTypeKeys
+    $rootScope.search.sortingOptions = $rootScope.search.filterSearchdrpdwn.sortingOptions
     $rootScope.search.sortBy = { createdOn: 'asc' }
-    $scope.search.searchSelectionKeys = config.searchSelectionKeys
+    $scope.search.searchSelectionKeys = $rootScope.search.filterSearchdrpdwn.searchSelectionKeys
     $rootScope.search.sortIcon = true
     $rootScope.search.selectedLanguage = []
     $rootScope.search.selectedContentType = []
@@ -261,7 +264,6 @@ angular.module('playerApp').controller('SearchResultController', [
         // if any concept is selected then pass array of ids
       if (req.filters.concepts && req.filters.concepts.length > 0) {
         req.filters.concepts = _.map($rootScope.search.selectedConcepts, 'identifier')
-
       }
 
         // if autosuggest option is clicked

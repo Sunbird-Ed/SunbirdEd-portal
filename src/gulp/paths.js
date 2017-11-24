@@ -169,6 +169,9 @@ var paths = {
   ],
   private_scripts: [
     'dist/private/scripts/factories/sessionFactory.js',
+    'dist/private/scripts/factories/announcementModel.js',
+    'dist/private/scripts/services/adapters/httpAdapter.js',
+    'dist/private/scripts/services/adapters/announcementAdapter.js',
     'dist/private/scripts/services/httpService.js',
     'dist/private/scripts/services/httpServiceJava.js',
     'dist/private/scripts/services/contentService.js',
@@ -188,6 +191,7 @@ var paths = {
     'dist/private/scripts/services/adminService.js',
     'dist/private/scripts/services/batchService.js',
     'dist/private/scripts/services/workSpaceUtilsService.js',
+    'dist/private/scripts/services/configService.js',
     'dist/private/scripts/services/dashboardService.js',
     'dist/private/scripts/services/dataService.js',
     'dist/private/scripts/services/paginationService.js',
