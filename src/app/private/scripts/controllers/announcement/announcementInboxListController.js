@@ -1,77 +1,73 @@
 'use strict'
 
 angular.module('playerApp')
-  .controller('announcementInboxListController', ['$rootScope', '$scope',
-    'announcementService', '$timeout', '$state', '$stateParams', 'toasterService', 'adminService',
-    function ($rootScope, $scope, announcementService, $timeout, $state, $stateParams, toasterService, adminService) {
+  .controller('announcementInboxListController', ['$rootScope', '$scope', '$timeout', '$state', '$stateParams', '$q', 'toasterService', 'announcementAdapter',
+    function ($rootScope, $scope, $timeout, $state, $stateParams, $q, toasterService, announcementAdapter) {
       var announcementInboxData = this
       announcementInboxData.showLoader = true
 
+      /**
+       * @method renderAnnouncementList
+       * @desc - function to render inbox announcement
+       * @memberOf Controllers.announcementInboxListController
+       * @param {string} [user id]
+       * @param {int} [limit]
+       */
       announcementInboxData.renderAnnouncementList = function (limit) {
         announcementInboxData.limit = limit || -1
-        announcementService.getInboxAnnouncementList($rootScope.userId, announcementInboxData.limit).then(function (apiResponse) {
-          apiResponse = apiResponse.data
-          if (apiResponse && apiResponse.responseCode === 'OK') {
-            announcementInboxData.result = apiResponse.result
-            announcementInboxData.listData = apiResponse.result.announcements
-            var page = false
-            angular.forEach(announcementInboxData.listData, function (value, key) {
-              if (!page) {
-                if (key + 1 === announcementInboxData.limit) {
-                  page = true
-                }
-                  // Call received API
-                if (value.received === false) {
-                  announcementService.receivedAnnouncement($rootScope.userId, value.id).then(function (response) {
-                    var response = response.data
-                    if (response && response.responseCode === 'OK') {
-                      console.log('Received success')
-                    } else {
-                      toasterService.error(response.params.errmsg)
-                    }
-                  })
-                      .catch(function (err) {
-                        toasterService.error(err.data.params.errmsg)
-                      })
-                }
-              }
-            })
-            if (announcementInboxData.listData.length > 0) {
-              announcementInboxData.showDataDiv = true
+        announcementAdapter.getInboxAnnouncementList($rootScope.userId, announcementInboxData.limit).then(function (apiResponse) {
+          announcementInboxData.result = apiResponse.result
+          announcementInboxData.listData = apiResponse.result.announcements
+
+          // Converting attachment to object from string
+          _.forEach(announcementInboxData.listData, function (announcement) {
+            // Call received API
+            if (announcement.received === false) {
+              announcementAdapter.receivedAnnouncement($rootScope.userId, announcement.id).then(function (response) {
+                console.log('Received success')
+              })
             }
-          } else {
-            toasterService.error(apiResponse.params.errmsg)
+
+            _.forEach(announcement.attachments, function (attachment, index) {
+              attachment = JSON.parse(attachment)
+              announcement.attachments[index] = attachment
+              return attachment
+            })
+            return announcement
+          })
+
+          if (announcementInboxData.listData.length > 0) {
+            announcementInboxData.showDataDiv = true
           }
+          announcementInboxData.showLoader = false
+        }, function (err) {
+          announcementInboxData.showLoader = false
         })
-          .catch(function (err) {
-            toasterService.error(err.data.params.errmsg)
-          })
-          .finally(function () {
-            announcementInboxData.showLoader = false
-          })
       }
 
+      /**
+       * @method getFileExtension
+       * @desc - function to get extensions from mimetype
+       * @memberOf Controllers.announcementInboxListController
+       * @param {string} [mimeType]
+       */
       announcementInboxData.getFileExtension = function (mimeType) {
-        return announcementService.getFileExtension(mimeType)
+        return announcementAdapter.getFileExtension(mimeType)
       }
 
+      /**
+       * @method showAnnouncementDetails
+       * @desc - function to get announcement by id,  call read api
+       * @memberOf Controllers.announcementInboxListController
+       * @param {string} [user id]
+       * @param {string} [announcementid]
+       */
       announcementInboxData.showAnnouncementDetails = function (announcementDetails, id) {
-        var req = {
-          'request': {
-            'userId': $rootScope.userId,
-            'announcementId': announcementDetails.id,
-            'channel': 'web'
-          }
-        }
         if (announcementDetails.read === false) {
-          announcementService.readAnnouncement(req)
+          announcementAdapter.readAnnouncement($rootScope.userId, announcementDetails.id)
           angular.element(document.querySelector('#annInboxDiv-' + id)).removeClass('announcementCardLeftBorder')
         }
-        $state.go('announcementDetails', {announcementId: announcementDetails.id})
-      }
-
-      announcementInboxData.parJson = function (announcement) {
-        return JSON.parse(announcement)
+        $state.go('announcementDetails', { announcementId: announcementDetails.id })
       }
     }
 
