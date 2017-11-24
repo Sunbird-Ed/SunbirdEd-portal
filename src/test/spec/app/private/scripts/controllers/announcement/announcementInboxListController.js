@@ -92,11 +92,5 @@ describe('Controller: announcementInboxListController', function () {
       var response = announcementInboxListController.showAnnouncementDetails('')
       expect(response).toBe(undefined)
     })
-
-    it('Parse json', function () {
-      spyOn(announcementInboxListController, 'parJson').and.callThrough()
-      var jsonAttachment = announcementInboxListController.parJson(annInboxTestData.annWithAttachments)
-      expect(jsonAttachment.constructor).toBe(Object)
-    })
   })
 })

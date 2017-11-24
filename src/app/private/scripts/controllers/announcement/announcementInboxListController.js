@@ -1,8 +1,8 @@
 'use strict'
 
 angular.module('playerApp')
-  .controller('announcementInboxListController', ['$rootScope', '$scope', '$timeout', '$state', '$stateParams', 'toasterService', 'announcementAdapter',
-    function ($rootScope, $scope, $timeout, $state, $stateParams, toasterService, announcementAdapter) {
+  .controller('announcementInboxListController', ['$rootScope', '$scope', '$timeout', '$state', '$stateParams', '$q', 'toasterService', 'announcementAdapter',
+    function ($rootScope, $scope, $timeout, $state, $stateParams, $q, toasterService, announcementAdapter) {
       var announcementInboxData = this
       announcementInboxData.showLoader = true
 
@@ -10,22 +10,32 @@ angular.module('playerApp')
        * @method renderAnnouncementList
        * @desc - function to render inbox announcement
        * @memberOf Controllers.announcementInboxListController
+       * @param {string} [user id]
        * @param {int} [limit]
        */
       announcementInboxData.renderAnnouncementList = function (limit) {
         announcementInboxData.limit = limit || -1
-        announcementAdapter.getInboxAnnouncementList(announcementInboxData.limit).then(function (apiResponse) {
+        announcementAdapter.getInboxAnnouncementList($rootScope.userId, announcementInboxData.limit).then(function (apiResponse) {
           announcementInboxData.result = apiResponse.result
           announcementInboxData.listData = apiResponse.result.announcements
 
-          angular.forEach(announcementInboxData.listData, function (value, key) {
+          // Converting attachment to object from string
+          _.forEach(announcementInboxData.listData, function (announcement) {
             // Call received API
-            if (value.received === false) {
-              announcementAdapter.receivedAnnouncement(value.id).then(function (response) {
+            if (announcement.received === false) {
+              announcementAdapter.receivedAnnouncement($rootScope.userId, announcement.id).then(function (response) {
                 console.log('Received success')
               })
             }
+
+            _.forEach(announcement.attachments, function (attachment, index) {
+              attachment = JSON.parse(attachment)
+              announcement.attachments[index] = attachment
+              return attachment
+            })
+            return announcement
           })
+
           if (announcementInboxData.listData.length > 0) {
             announcementInboxData.showDataDiv = true
           }
@@ -49,24 +59,15 @@ angular.module('playerApp')
        * @method showAnnouncementDetails
        * @desc - function to get announcement by id,  call read api
        * @memberOf Controllers.announcementInboxListController
+       * @param {string} [user id]
        * @param {string} [announcementid]
        */
       announcementInboxData.showAnnouncementDetails = function (announcementDetails, id) {
         if (announcementDetails.read === false) {
-          announcementAdapter.readAnnouncement(announcementDetails.id)
+          announcementAdapter.readAnnouncement($rootScope.userId, announcementDetails.id)
           angular.element(document.querySelector('#annInboxDiv-' + id)).removeClass('announcementCardLeftBorder')
         }
         $state.go('announcementDetails', { announcementId: announcementDetails.id })
-      }
-
-      /**
-       * @method parJson
-       * @desc - function to parse a string to object
-       * @memberOf Controllers.announcementInboxListController
-       * @param {string} [announcement]
-       */
-      announcementInboxData.parJson = function (announcement) {
-        return JSON.parse(announcement)
       }
     }
 

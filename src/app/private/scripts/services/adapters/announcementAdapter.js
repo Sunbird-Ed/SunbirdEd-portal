@@ -28,10 +28,10 @@ angular.module('playerApp')
        * @returns {Promise} Promise object represents announcement outbox list dashboard data
        * @instance
        */
-      this.getOutBoxAnnouncementList = function () {
+      this.getOutBoxAnnouncementList = function (userId) {
         var data = {
           'request': {
-            'userId': $rootScope.userId
+            'userId': userId
           }
         }
         return handleHttpRequest(config.URL.ANNOUNCEMENT.OUTBOX_LIST, data, 'POST', $rootScope.messages.fmsg.m0070)
@@ -62,7 +62,7 @@ angular.module('playerApp')
        * @instance
        */
       this.getAnnouncementById = function (announcementId) {
-        return handleHttpRequest(config.URL.ANNOUNCEMENT.GET_BY_ID + announcementId, '', 'GET')
+        return handleHttpRequest(config.URL.ANNOUNCEMENT.GET_BY_ID + announcementId, '', 'GET', $rootScope.messages.fmsg.m0074)
       }
 
       /**
@@ -74,10 +74,10 @@ angular.module('playerApp')
        * @returns {Promise} Promise object represents announcement inbox list dashboard data
        * @instance
        */
-      this.getInboxAnnouncementList = function (reqLimit) {
+      this.getInboxAnnouncementList = function (userId, reqLimit) {
         var data = {
           'request': {
-            'userId': $rootScope.userId
+            'userId': userId
           }
         }
 
@@ -150,10 +150,10 @@ angular.module('playerApp')
        * @returns {object} returns response of API
        * @instance
        */
-      this.readAnnouncement = function (annId) {
+      this.readAnnouncement = function (userId, annId) {
         var data = {
           request: {
-            'userId': $rootScope.userId,
+            'userId': userId,
             'announcementId': annId,
             'channel': 'web'
           }
@@ -169,10 +169,10 @@ angular.module('playerApp')
        * @returns {object} returns response of API
        * @instance
        */
-      this.receivedAnnouncement = function (annId) {
+      this.receivedAnnouncement = function (userId, annId) {
         var data = {
           'request': {
-            'userId': $rootScope.userId,
+            'userId': userId,
             'announcementId': annId,
             'channel': 'web'
           }
@@ -188,10 +188,10 @@ angular.module('playerApp')
        * @returns {object} returns response of API
        * @instance
        */
-      this.deleteAnnouncement = function (announcementId) {
+      this.deleteAnnouncement = function (userId, announcementId) {
         var data = {
           'request': {
-            'userId': $rootScope.userId,
+            'userId': userId,
             'announcementid': announcementId
           }
         }
