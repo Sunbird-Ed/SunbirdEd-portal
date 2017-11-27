@@ -165,14 +165,13 @@ module.exports = {
 
     request(options, function (error, response, body) {
       console.log('check user exists', JSON.stringify(body))
-      if (error || response.statusCode !== 200) {
-        var err = error || body
-        callback(err, null)
-      }
       if (body.responseCode === 'RESOURCE_NOT_FOUND') {
         callback(null, false)
       } else if (body.responseCode === 'OK') {
         callback(null, true)
+      } else if (error || response.statusCode !== 200) {
+        var err = error || body
+        callback(err, false)
       }
     })
   },
