@@ -140,5 +140,11 @@ describe('Controller: announcementOutboxListController', function () {
       announcementOutboxListController.closeModal('announcementDeleteModal')
       expect(announcementOutboxListController.closeModal).toHaveBeenCalled()
     })
+
+    it('Show details undefined', function () {
+      spyOn(announcementOutboxListController, 'showAnnouncementDetails').and.callThrough()
+      var response = announcementOutboxListController.showAnnouncementDetails('')
+      expect(response).toBe(undefined)
+    })
   })
 })
