@@ -42,7 +42,7 @@ class AnnouncementController {
     this.objectStoreRest = new ObjectStoreRest({
         metrics: this.metrics,
         announcement: this.announcementCreate,
-        announcementType: this.announcementType
+        announcementtype: this.announcementType
     })
     this.statusConstant = statusConstant
     this.metricsActivityConstant = metricsActivityConstant
@@ -165,7 +165,6 @@ class AnnouncementController {
           }
         })
         .catch((error) => {
-          console.log("error",error)
           reject({ msg: 'unable to create announcement' })
         })
     })
@@ -270,7 +269,7 @@ class AnnouncementController {
   __getAnnouncementTypes(requestObj) {
     return new Promise((resolve, reject) => {
       let query = {
-        table: this.objectStoreRest.MODEL.ANNOUNCEMENTTYPE,
+        table: 'announcement',
         query: {
           'rootorgid': _.get(requestObj, 'body.request.rootorgid')
         }
@@ -303,7 +302,7 @@ class AnnouncementController {
   __cancelAnnouncementById() {
         return async((requestObj) => {
             let query = {
-                table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
+                table: 'announcement',
                 values: {
                     id: _.get(requestObj, 'body.request.announcenmentid'),
                     status: this.statusConstant.CANCELLED
@@ -395,7 +394,7 @@ class AnnouncementController {
 
             // Query announcements where target is listed Geolocations
             let query = {
-                table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
+                table: 'announcements',
                 query: {
                     "target.geo.ids": targetGeolocations,
                     "status": this.statusConstant.ACTIVE
@@ -530,7 +529,7 @@ class AnnouncementController {
 
             // build query
             let query = {
-                table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
+                table: 'announcements',
                 query: {
                     'userid': _.get(requestObj, 'body.request.userId')
                 },
@@ -627,38 +626,40 @@ class AnnouncementController {
 
     __received(requestObj) {
         return async((requestObj) => {
-
-            let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
-            let tokenDetails = await(this.__getTokenDetails(authUserToken));
-            if(tokenDetails){
-              requestObj.body.request.userId = tokenDetails.userId
-            }else{
-              return{'msg':'UNAUTHORIZE_USER', statusCode:HttpStatus.UNAUTHORIZED}
-            }
-            // validate request
-            let request = this.__validateMetricsRequest(requestObj.body)
-            if (!request.isValid) throw { msg: request.error, statusCode: HttpStatus.BAD_REQUEST }
-
-
-            let metricsExists = false
             try {
-                metricsExists = await (this.__isMetricsExist(requestObj.body.request, this.metricsActivityConstant.RECEIVED))
-            } catch (error) {
-                // throw { msg: 'unable to update status!', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
-            }
-
-
-            if (metricsExists) {
-                return {'msg':'Entry exists', statusCode:HttpStatus.OK}
-            } else {
-                try {
-                    var metricsData = await (this.__createMetrics(requestObj.body.request, this.metricsActivityConstant.RECEIVED))
-                    return {metrics: metricsData.data}
-                } catch (error) {
-                    throw { msg: 'unable to update status!', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
+                let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
+                let tokenDetails = await (this.__getTokenDetails(authUserToken));
+                if (tokenDetails) {
+                    requestObj.body.request.userId = tokenDetails.userId
+                } else {
+                    return {
+                        'msg': 'UNAUTHORIZE_USER',
+                        statusCode: HttpStatus.UNAUTHORIZED
+                    }
                 }
+                // validate request
+                let request = this.metrics.validateApi(requestObj.body)
+                if (!request.isValid) throw {
+                    msg: request.error,
+                    statusCode: HttpStatus.BAD_REQUEST
+                }
+                let metricsExists = false
+                metricsExists = await (this.__isMetricsExist(requestObj.body.request, this.metricsActivityConstant.RECEIVED))
+                if (metricsExists) {
+                    return {
+                        'msg': 'Entry exists',
+                        statusCode: HttpStatus.OK
+                    }
+                } else {
+                    var metricsData = await (this.__createMetrics(requestObj.body.request, this.metricsActivityConstant.RECEIVED))
+                    return {
+                        metrics: metricsData.data
+                    }
+                }
+            } catch (error) {
+                throw { msg: 'unable to update status!', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
             }
-        })      
+        })
     }
 
     /**
@@ -683,14 +684,12 @@ class AnnouncementController {
               return {'msg':'UNAUTHORIZE_USER', statusCode:HttpStatus.UNAUTHORIZED}
             }
             let request = this.metrics.validateApi(requestObj.body)
-            console.log("request",request)
             if (!request.isValid) throw { msg: request.error, statusCode: HttpStatus.BAD_REQUEST }
 
             let metricsExists = false
             try {
                 metricsExists = await (this.__isMetricsExist(requestObj.body.request, this.metricsActivityConstant.READ))
             } catch (error) {
-               console.log("Error",error)
                 // throw { msg: 'unable to update status!', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
             }
 
@@ -700,10 +699,8 @@ class AnnouncementController {
             } else {
                 try {
                     var metricsData = await (this.__createMetrics(requestObj.body.request, this.metricsActivityConstant.READ))
-                    console.log("metricsData",metricsData)
                     return {metrics: metricsData.data}
                 } catch (error) {
-                    console.log("error",error)
                     throw { msg: 'unable to update status!', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
                 }
             }
@@ -890,7 +887,11 @@ class AnnouncementController {
               requestObj.params = {};
               requestObj.params.id = announcementId
               var response = await (this.getAnnouncementById(requestObj));
-              return response.userid === userid ? true : false
+              if(response){
+                return response.userid === userid ? true : false
+              }else{
+                return false
+              }
           } else {
               return false;
           }

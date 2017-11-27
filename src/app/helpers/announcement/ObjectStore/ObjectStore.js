@@ -5,10 +5,26 @@ let async = require('asyncawait/async')
 let await = require('asyncawait/await')
 
 class ObjectStore {
-    constructor({metrics, announcement, announcementType } = {}) {
+    constructor({metrics, announcement, announcementtype } = {}) {
+        /**
+         * @property {class} - Metrics model instance, Which is used to validate the metrics model object.
+         */
         this.metrics = metrics;
+        /**
+         * @property {class} - Announcement Create instance, Which is used to validate the model object.
+         */
         this.announcementCreate = announcement;
-        this.announcementType = announcementType;
+
+        /**
+         * @property {class} - Announcement type instance, Which is used to validate the announcement Type object.
+         * @type {[type]}
+         */
+        this.announcementType = announcementtype;
+
+        /**
+         * @property {object} - Which is having map of instance of all model classes.
+         */
+        this.modelMap = {announcement, metrics, announcementtype}
     }
 
     get MODEL() {
@@ -42,103 +58,6 @@ class ObjectStore {
     deleteObjectById() {
         return new Promise((resolve, reject) => {
             reject('cannot call abstract method')
-        })
-    }
-
-    __validateRequest(data) {
-        if (data && this.TableModelMapping[data.table]) return true
-        return false
-    }
-
-    validateFindObject(data) {
-        return this.__validateFindObject()(data)
-    }
-
-    __validateFindObject() {
-        return async((data) => {
-            if (!this.__validateRequest(data)) throw {
-                msg: 'table not found!',
-                status: 'error'
-            }
-            if (!data.query) throw {
-                msg: 'invalid query!',
-                status: 'error'
-            }
-            return true
-        })
-    }
-
-    validateGetObjectById(data) {
-        return this.__validateGetObjectById()(data)
-    }
-
-    __validateGetObjectById() {
-        return async((data) => {
-            if (!this.__validateRequest(data)) throw {
-                msg: 'table not found!',
-                status: 'error'
-            }
-            if (typeof data.id != 'string') throw {
-                msg: 'Id should be of type string!',
-                status: 'error'
-            }
-            return true
-        })
-    }
-
-    validateUpdateObjectById(data) {
-        return this.__validateUpdateObjectById()(data)
-    }
-
-    __validateUpdateObjectById() {
-        return async((data) => {
-            if (!this.__validateRequest(data)) throw {
-                msg: 'table not found!',
-                status: 'error'
-            }
-            if (!data.values) throw {
-                msg: 'Data required to update',
-                status: 'error'
-            }
-            if (!data.values.id) throw {
-                msg: 'Id should be of type string!',
-                status: 'error'
-            }
-            try {
-                _.forIn(data.data, (value, key) => {
-                    let subSchema = Joi.reach(this.TableModelMapping[data.table], key)
-                    let validation = Joi.validate(value, subSchema)
-                    if (validation.error) throw {
-                        msg: 'invalid query fields!',
-                        status: 'error'
-                    }
-                })
-            } catch (error) {
-                throw {
-                    msg: 'invalid query fields!',
-                    status: 'error'
-                }
-            }
-
-            return true
-        })
-    }
-
-    validateDeleteObjectById(data) {
-        return this.__validateDeleteObjectById()(data)
-    }
-
-    __validateDeleteObjectById() {
-        return async((data) => {
-            if (!this.__validateRequest(data)) throw {
-                msg: 'table not found!',
-                status: 'error'
-            }
-            if (!data.id) throw {
-                msg: 'Id should be of type string!',
-                status: 'error'
-            }
-            return true
         })
     }
 }
