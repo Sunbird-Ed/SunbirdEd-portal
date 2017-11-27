@@ -1,7 +1,10 @@
 let express = require('express')
 let router = express.Router()
 let HttpStatus = require('http-status-codes')
-let announcementController = require('./controller.js')
+let controller = require('./controller.js')
+let metricsModel = require('./model/MetricsModel.js')
+let announcementCreateModel = require('./model/AnnouncementCreateModel.js')
+let announcementTypeModel = require('./model/AnnouncementTypeModel.js')
 const API_ID = 'api.plugin.announcement'
 let path = require('path')
 let multer = require('multer')
@@ -10,7 +13,11 @@ let await = require('asyncawait/await')
 let async = require('asyncawait/async')
 const CREATE_ROLE = 'ANNOUNCEMENT_SENDER'
 
-
+let announcementController = new controller({
+    metrics: metricsModel,
+    announcement: announcementCreateModel,
+    announcementtype: announcementTypeModel
+})
 /*
 for file upload
 */
