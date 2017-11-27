@@ -443,27 +443,32 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
             }).finally(function() {})
         }
 
+        /**
+         * @method init
+         * @desc - invoked when page is loaded
+         * @memberOf Controllers.createAnnouncementCtrl
+         */
         createAnn.init = function() {
             createAnn.stepNumber = parseInt($stateParams.stepNumber) || 1
             createAnn.announcement = $stateParams.announcement
-            if (createAnn.stepNumber !== undefined) {
-
-                if(createAnn.stepNumber === 1) {
-                    createAnn.initializeModal()
-                }
-
-                createAnn.createAnnouncement()
-
-                // Create new data modal only when if its not already present
-                if(createAnn.stepNumber === 1 && createAnn.announcement === undefined) {
-                    createAnn.announcement = new AnnouncementModel.Announcement({})
-                } else {
-                    createAnn.announcement = $stateParams.announcement
-                }
+            if(createAnn.stepNumber === 1) {
+                createAnn.initializeModal()
+            }
+            createAnn.createAnnouncement()
+            // Create new data modal only when if its not already present
+            if(createAnn.stepNumber === 1 && createAnn.announcement === undefined) {
+                createAnn.announcement = new AnnouncementModel.Announcement({})
+            } else {
+                createAnn.announcement = $stateParams.announcement
             }
         }
+
+        /**
+         * @method goToNextStep
+         * @desc - Used to swtch to next step of announcement creation
+         * @memberOf Controllers.createAnnouncementCtrl
+         */
         createAnn.goToNextStep = function () {
-            alert(createAnn.stepNumber)
             // Current step is confirm recipients
             if(createAnn.stepNumber !== 1) {
                 if(createAnn.confirmRecipients()){
@@ -475,9 +480,14 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
                 }
             }
 
-console.log(createAnn.announcement)
             $state.go('announcementCreate', {stepNumber: ++createAnn.stepNumber, announcement: createAnn.announcement}, {reload: true} )
         }
+
+        /**
+         * @method goToBackStep
+         * @desc - Used to switch one step back to announcement creation
+         * @memberOf Controllers.createAnnouncementCtrl
+         */
         createAnn.goToBackStep = function () {
             $state.go('announcementCreate', {stepNumber: --createAnn.stepNumber, announcement: createAnn.announcement}, {reload: true} )
         }
