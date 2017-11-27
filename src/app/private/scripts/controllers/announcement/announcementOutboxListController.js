@@ -121,5 +121,14 @@ angular.module('playerApp')
       announcementOutboxData.showAnnouncementDetails = function (annId) {
         $state.go('announcementDetails', {announcementId: annId})
       }
+
+    /**
+     * @method gotToAnnouncementCreateState
+     * @desc - function to change the current state to announcement create
+     * @memberOf Controllers.announcementOutboxListController
+     */
+      announcementOutboxData.gotToAnnouncementCreateState = function () {
+        $state.go('announcementCreate', {stepNumber: '1'})
+      }
     }
   ])

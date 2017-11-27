@@ -60,4 +60,25 @@ angular.module('playerApp')
           $rootScope.homeActive = ''
         }
       })
+      .state('announcementCreate', {
+        url: '/announcement/create/:stepNumber',
+        views: {
+          mainView: {
+            templateUrl: '/views/announcement/createAnnouncement.html',
+            controller: 'createAnnouncementCtrl as createAnn'
+          }
+        },
+        params:{
+            announcement: undefined
+        },
+        onEnter: function ($stateParams, $rootScope, routeHelperService) {
+          $rootScope.profileActive = 'active'
+          $rootScope.courseActive = ' '
+          $rootScope.isPlayerPage = true
+          routeHelperService.loadRouteConfig('announcementCreate', null)
+        },
+        onExit: function ($rootScope) {
+          $rootScope.profileActive = ''
+        }
+      })
   })
