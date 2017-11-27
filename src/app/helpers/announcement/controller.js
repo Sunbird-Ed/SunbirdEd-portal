@@ -1,6 +1,5 @@
-let AnnouncementModel = require('./model/AnnouncementModel.js')
 let AnnouncementTypeModel = require('./model/AnnouncementTypeModel.js')
-let AttachmentModel = require('./model/AttachmentModel.js')
+//let AttachmentModel = require('./model/AttachmentModel.js')
 let MetricsModel = require('./model/MetricsModel.js')
 let Joi = require('joi')
 let HttpStatus = require('http-status-codes')
@@ -17,14 +16,11 @@ let ApiInterceptor = require('sb_api_interceptor')
 
 class AnnouncementController {
 
-  constructor() {
-    //table name should be same as the name in database table
-    let tableMapping = {
-      'announcement': AnnouncementModel,
-      'announcementtype': AnnouncementTypeModel,
-      'attachment': AttachmentModel,
-      'metrics': MetricsModel
-    }
+  constructor({metrics, announcement, announcementtype } = {}) {
+    this.metrics = metrics;
+    this.announcementCreate = announcement;
+    this.announcementType = announcementtype;
+
 
     let modelConstant = {
       'ANNOUNCEMENT': 'announcement',
@@ -43,8 +39,11 @@ class AnnouncementController {
         'READ': 'read',
         'RECEIVED': 'received'
     }
-
-    this.objectStoreRest = new ObjectStoreRest(tableMapping, modelConstant)
+    this.objectStoreRest = new ObjectStoreRest({
+        metrics: this.metrics,
+        announcement: this.announcementCreate,
+        announcementtype: this.announcementType
+    })
     this.statusConstant = statusConstant
     this.metricsActivityConstant = metricsActivityConstant
   }
@@ -61,70 +60,37 @@ class AnnouncementController {
   }
 
   __create() {
-    return async((requestObj) => {
-
-      const CREATE_ROLE = 'ANNOUNCEMENT_SENDER'
-      // validate request
-      let request = this.__validateCreateRequest(requestObj.body)
-      if (!request.isValid) throw { msg: request.error, statusCode: HttpStatus.BAD_REQUEST }
-
-      let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
-      try {
-        var newAnnouncementObj = await (this.__createAnnouncement(requestObj.body.request))
-      } catch (error) {
-        throw { msg: 'unable to process the request!', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
-      }
-
-    try {
-        if (newAnnouncementObj.data.id) {
-            requestObj.body.request.announcementId = newAnnouncementObj.data.id
-            this.createNotification(requestObj)
-            return {
-                announcement: newAnnouncementObj.data
-            }
-        }
-    } catch (e) {
-        // even if notification fails, it should still send annoucement in response
-        return {
-            announcement: newAnnouncementObj.data
-        }
-    }
-})
-  }
-
-  /**
-   * Validate the incoming request for creating an announcement
-   *
-   * @param   {[type]}  requestObj  [description]
-   *
-   * @return  {[type]}              [description]
-   */
-  __validateCreateRequest(requestObj) {
-    // TODO: Add validation for targt data structure
-    let validation = Joi.validate(requestObj, Joi.object().keys({
-      "request": Joi.object().keys({
-        'sourceId': Joi.string().required(),
-        'createdBy': Joi.string().required(),
-        'title': Joi.string().required(),
-        'from':Joi.string().required(),
-        'type': Joi.string().required(),
-        'description': Joi.string(),
-        'target': Joi.object().min(1).required(),
-        'links': Joi.array().items(Joi.string()),
-        'attachments': Joi.array().items(Joi.string())
-      }).required()
-    }), { abortEarly: false })
-
-    if (validation.error != null) {
-      let messages = []
-      _.forEach(validation.error.details, (error, index) => {
-        messages.push({ field: error.path[0], description: error.message })
+      return async((requestObj) => {
+          const CREATE_ROLE = 'ANNOUNCEMENT_SENDER'
+          let validation = this.announcementCreate.validateApi(requestObj.body)
+          if (!validation.isValid) throw {
+              msg: validation.error,
+              statusCode: HttpStatus.BAD_REQUEST
+          }
+          let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
+          try {
+              var newAnnouncementObj = await (this.__createAnnouncement(requestObj.body.request))
+          } catch (error) {
+              throw {
+                  msg: 'unable to process the request!',
+                  statusCode: HttpStatus.INTERNAL_SERVER_ERROR
+              }
+          }
+          try {
+              if (newAnnouncementObj.data.id) {
+                  requestObj.body.request.announcementId = newAnnouncementObj.data.id
+                  this.createNotification(requestObj)
+                  return {
+                      announcement: newAnnouncementObj.data
+                  }
+              }
+          } catch (e) {
+              return {
+                  announcement: newAnnouncementObj.data
+              }
+          }
       })
-      return { error: messages, isValid: false }
-    }
-    return { isValid: true };
-  };
-
+  }
   /**
    * Get permissions list of the given user
    *
@@ -171,7 +137,7 @@ class AnnouncementController {
 
 
       let query = {
-        table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
+        table: 'announcement',
         values: {
           'id': announcementId,
           'sourceid': data.sourceId,
@@ -250,7 +216,7 @@ class AnnouncementController {
   __getAnnouncementById(requestObj) {
     return new Promise((resolve, reject) => {
       let query = {
-        table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
+        table: 'announcement',
         query: {
           'id': requestObj.params.id
         }
@@ -303,7 +269,7 @@ class AnnouncementController {
   __getAnnouncementTypes(requestObj) {
     return new Promise((resolve, reject) => {
       let query = {
-        table: this.objectStoreRest.MODEL.ANNOUNCEMENTTYPE,
+        table: 'announcement',
         query: {
           'rootorgid': _.get(requestObj, 'body.request.rootorgid')
         }
@@ -336,7 +302,7 @@ class AnnouncementController {
   __cancelAnnouncementById() {
         return async((requestObj) => {
             let query = {
-                table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
+                table: 'announcement',
                 values: {
                     id: _.get(requestObj, 'body.request.announcenmentid'),
                     status: this.statusConstant.CANCELLED
@@ -428,7 +394,7 @@ class AnnouncementController {
 
             // Query announcements where target is listed Geolocations
             let query = {
-                table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
+                table: 'announcement',
                 query: {
                     "target.geo.ids": targetGeolocations,
                     "status": this.statusConstant.ACTIVE
@@ -516,7 +482,7 @@ class AnnouncementController {
     __getMetricsForInbox(announcementIds, userId) {
         return new Promise((resolve, reject) => {
             let query = {
-                table: this.objectStoreRest.MODEL.METRICS,
+                table: 'metrics',
                 query: {
                     "announcementid" : announcementIds,
                     "userid": userId
@@ -563,7 +529,7 @@ class AnnouncementController {
 
             // build query
             let query = {
-                table: this.objectStoreRest.MODEL.ANNOUNCEMENT,
+                table: 'announcement',
                 query: {
                     'userid': _.get(requestObj, 'body.request.userId')
                 },
@@ -660,38 +626,40 @@ class AnnouncementController {
 
     __received(requestObj) {
         return async((requestObj) => {
-
-            let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
-            let tokenDetails = await(this.__getTokenDetails(authUserToken));
-            if(tokenDetails){
-              requestObj.body.request.userId = tokenDetails.userId
-            }else{
-              return{'msg':'UNAUTHORIZE_USER', statusCode:HttpStatus.UNAUTHORIZED}
-            }
-            // validate request
-            let request = this.__validateMetricsRequest(requestObj.body)
-            if (!request.isValid) throw { msg: request.error, statusCode: HttpStatus.BAD_REQUEST }
-
-
-            let metricsExists = false
             try {
-                metricsExists = await (this.__isMetricsExist(requestObj.body.request, this.metricsActivityConstant.RECEIVED))
-            } catch (error) {
-                // throw { msg: 'unable to update status!', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
-            }
-
-
-            if (metricsExists) {
-                return {'msg':'Entry exists', statusCode:HttpStatus.OK}
-            } else {
-                try {
-                    var metricsData = await (this.__createMetrics(requestObj.body.request, this.metricsActivityConstant.RECEIVED))
-                    return {metrics: metricsData.data}
-                } catch (error) {
-                    throw { msg: 'unable to update status!', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
+                let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
+                let tokenDetails = await (this.__getTokenDetails(authUserToken));
+                if (tokenDetails) {
+                    requestObj.body.request.userId = tokenDetails.userId
+                } else {
+                    return {
+                        'msg': 'UNAUTHORIZE_USER',
+                        statusCode: HttpStatus.UNAUTHORIZED
+                    }
                 }
+                // validate request
+                let request = this.metrics.validateApi(requestObj.body)
+                if (!request.isValid) throw {
+                    msg: request.error,
+                    statusCode: HttpStatus.BAD_REQUEST
+                }
+                let metricsExists = false
+                metricsExists = await (this.__isMetricsExist(requestObj.body.request, this.metricsActivityConstant.RECEIVED))
+                if (metricsExists) {
+                    return {
+                        'msg': 'Entry exists',
+                        statusCode: HttpStatus.OK
+                    }
+                } else {
+                    var metricsData = await (this.__createMetrics(requestObj.body.request, this.metricsActivityConstant.RECEIVED))
+                    return {
+                        metrics: metricsData.data
+                    }
+                }
+            } catch (error) {
+                throw { msg: 'unable to update status!', statusCode: HttpStatus.INTERNAL_SERVER_ERROR }
             }
-        })      
+        })
     }
 
     /**
@@ -707,16 +675,15 @@ class AnnouncementController {
 
     __read(requestObj) {
         return async((requestObj) => {
-
             // validate request
             let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
             let tokenDetails = await(this.__getTokenDetails(authUserToken));
             if(tokenDetails){
               requestObj.body.request.userId = tokenDetails.userId
             }else{
-              return{'msg':'UNAUTHORIZE_USER', statusCode:HttpStatus.UNAUTHORIZED}
+              return {'msg':'UNAUTHORIZE_USER', statusCode:HttpStatus.UNAUTHORIZED}
             }
-            let request = this.__validateMetricsRequest(requestObj.body)
+            let request = this.metrics.validateApi(requestObj.body)
             if (!request.isValid) throw { msg: request.error, statusCode: HttpStatus.BAD_REQUEST }
 
             let metricsExists = false
@@ -741,31 +708,31 @@ class AnnouncementController {
         })      
     }    
 
-    /**
-     * Validate the incoming request for creating a metrics
-     *
-     * @param   {[type]}  requestObj  [description]
-     *
-     * @return  {[type]}              [description]
-     */
-    __validateMetricsRequest(requestObj) {
-        let validation = Joi.validate(requestObj, Joi.object().keys({
-            "request": Joi.object().keys({
-                'userId': Joi.string().required(),
-                'announcementId': Joi.string().required(),
-                'channel': Joi.string().required()
-            }).required()
-        }), { abortEarly: false })
+    // /**
+    //  * Validate the incoming request for creating a metrics
+    //  *
+    //  * @param   {[type]}  requestObj  [description]
+    //  *
+    //  * @return  {[type]}              [description]
+    //  */
+    // __validateMetricsRequest(requestObj) {
+    //     let validation = Joi.validate(requestObj, Joi.object().keys({
+    //         "request": Joi.object().keys({
+    //             'userId': Joi.string().required(),
+    //             'announcementId': Joi.string().required(),
+    //             'channel': Joi.string().required()
+    //         }).required()
+    //     }), { abortEarly: false })
 
-        if (validation.error != null) {
-            let messages = []
-            _.forEach(validation.error.details, (error, index) => {
-                messages.push({ field: error.path[0], description: error.message })
-            })
-            return { error: messages, isValid: false }
-        }
-        return { isValid: true }
-    }
+    //     if (validation.error != null) {
+    //         let messages = []
+    //         _.forEach(validation.error.details, (error, index) => {
+    //             messages.push({ field: error.path[0], description: error.message })
+    //         })
+    //         return { error: messages, isValid: false }
+    //     }
+    //     return { isValid: true }
+    // }
 
 
     __createMetrics(requestObj, metricsActivity) {
@@ -773,7 +740,7 @@ class AnnouncementController {
             // build query
             let metricsId = uuidv1()
             let query = {
-                table: this.objectStoreRest.MODEL.METRICS,
+                table: 'metrics',
                 values: {
                     'id': metricsId,
                     'userid': requestObj.userId,
@@ -802,7 +769,7 @@ class AnnouncementController {
     __isMetricsExist(requestObj, metricsActivity) {
         return new Promise((resolve, reject) => {
             let query = {
-                table: this.objectStoreRest.MODEL.METRICS,
+                table: 'metrics',
                 query: {
                     "announcementid" : requestObj.announcementId,
                     "userid": requestObj.userId,
@@ -920,7 +887,11 @@ class AnnouncementController {
               requestObj.params = {};
               requestObj.params.id = announcementId
               var response = await (this.getAnnouncementById(requestObj));
-              return response.userid === userid ? true : false
+              if(response){
+                return response.userid === userid ? true : false
+              }else{
+                return false
+              }
           } else {
               return false;
           }
@@ -954,8 +925,6 @@ class AnnouncementController {
             }
         })
     }
-
-
-
  }
-module.exports = new AnnouncementController()
+
+module.exports = AnnouncementController
