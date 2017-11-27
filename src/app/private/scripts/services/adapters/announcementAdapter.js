@@ -28,13 +28,13 @@ angular.module('playerApp')
        * @returns {Promise} Promise object represents announcement outbox list dashboard data
        * @instance
        */
-      this.getOutBoxAnnouncementList = function () {
+      this.getOutBoxAnnouncementList = function (userId) {
         var data = {
           'request': {
-            'userId': $rootScope.userId
+            'userId': userId
           }
         }
-        return handleHttpRequest(config.URL.ANNOUNCEMENT.OUTBOX_LIST, data, 'POST', $rootScope.messages.emsg.m0070)
+        return handleHttpRequest(config.URL.ANNOUNCEMENT.OUTBOX_LIST, data, 'POST', $rootScope.messages.fmsg.m0070)
       }
 
       function handleHttpRequest (url, data, type, errMsg) {
@@ -62,7 +62,7 @@ angular.module('playerApp')
        * @instance
        */
       this.getAnnouncementById = function (announcementId) {
-        return handleHttpRequest(config.URL.ANNOUNCEMENT.GET_BY_ID + announcementId, '', 'GET')
+        return handleHttpRequest(config.URL.ANNOUNCEMENT.GET_BY_ID + announcementId, '', 'GET', $rootScope.messages.fmsg.m0074)
       }
 
       /**
@@ -74,13 +74,17 @@ angular.module('playerApp')
        * @returns {Promise} Promise object represents announcement inbox list dashboard data
        * @instance
        */
-      this.getInboxAnnouncementList = function (userId) {
+      this.getInboxAnnouncementList = function (userId, reqLimit) {
         var data = {
           'request': {
             'userId': userId
           }
         }
-        return handleHttpRequest(config.URL.ANNOUNCEMENT.INBOX_LIST, data, 'POST')
+
+        if (reqLimit > 0) {
+          data.request.limit = reqLimit
+        }
+        return handleHttpRequest(config.URL.ANNOUNCEMENT.INBOX_LIST, data, 'POST', $rootScope.messages.fmsg.m0072)
       }
 
       /**
@@ -146,15 +150,15 @@ angular.module('playerApp')
        * @returns {object} returns response of API
        * @instance
        */
-      this.readAnnouncement = function (announcementId, userId) {
+      this.readAnnouncement = function (userId, annId) {
         var data = {
           request: {
             'userId': userId,
-            'announcementId': announcementId,
+            'announcementId': annId,
             'channel': 'web'
           }
         }
-        return handleHttpRequest(config.URL.ANNOUNCEMENT.READ, data, 'POST')
+        return handleHttpRequest(config.URL.ANNOUNCEMENT.READ, data, 'POST', $rootScope.messages.fmsg.m0073)
       }
 
       /**
@@ -165,11 +169,11 @@ angular.module('playerApp')
        * @returns {object} returns response of API
        * @instance
        */
-      this.receivedAnnouncement = function (userId, AnnId) {
+      this.receivedAnnouncement = function (userId, annId) {
         var data = {
           'request': {
             'userId': userId,
-            'announcementId': AnnId,
+            'announcementId': annId,
             'channel': 'web'
           }
         }
@@ -184,15 +188,15 @@ angular.module('playerApp')
        * @returns {object} returns response of API
        * @instance
        */
-      this.deleteAnnouncement = function (announcementId) {
+      this.deleteAnnouncement = function (userId, announcementId) {
         var data = {
           'request': {
-            'userId': $rootScope.userId,
+            'userId': userId,
             'announcementid': announcementId
           }
         }
         var URL = config.URL.ANNOUNCEMENT.CANCEL
-        return handleHttpRequest(URL, data, 'DELETE', $rootScope.messages.emsg.m0071)
+        return handleHttpRequest(URL, data, 'DELETE', $rootScope.messages.fmsg.m0071)
       }
 
       /**
