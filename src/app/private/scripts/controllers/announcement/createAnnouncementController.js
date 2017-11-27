@@ -9,12 +9,9 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
         createAnn.disableBtn = true
         createAnn.showUrlField = false
         createAnn.errorFlag = false
-        createAnn.stepNumber = parseInt($stateParams.stepNumber) || 1
-        createAnn.announcement = $stateParams.announcement
         createAnn.isMetaModified = false
         createAnn.announcementType = []
         createAnn.repeatableWebLinks = []
-        createAnn.selectedRecipients = []
         createAnn.hideAnncmntBtn = false
         createAnn.uploadAttchement = false
 
@@ -60,7 +57,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
                 })
             }, 100)
             $rootScope.$on('selected:items', function(evet, data) {
-                createAnn.selectedRecipients = data.geo
+                createAnn.announcement.selTar = _.clone(data.geo)
             })
         }
 
@@ -70,9 +67,11 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
          * @memberOf Controllers.createAnnouncementCtrl
          */
         createAnn.createAnnouncement = function() {
-            $rootScope.$emit('component:init')
             $('#createAnnouncementModal').modal({
-                closable: false
+                closable: false,
+                onShow: function(){
+                    $('.ui.modal.transition.hidden').remove()
+                }
                 // onHide: function() {
                 //     if (!createAnn.isMetaModified && createAnn.stepNumber == 4) {
                 //         return true
@@ -173,7 +172,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
          * @param {object} [item] [current selected item]
          */
         createAnn.removeRecipients = function(item) {
-            _.remove(createAnn.selectedRecipients, function(arg) {
+            _.remove(createAnn.announcement.selTar, function(arg) {
                 if (arg.location == item.location) {
                     item.selected = false,
                         toasterService.info(item.location + ' ' + $rootScope.messages.imsg.m0020)
@@ -195,13 +194,13 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
          * @memberOf Controllers.createAnnouncementCtrl
          */
         createAnn.confirmRecipients = function() {
-            // $rootScope.$emit('get:selected:items')
-            // if (createAnn.selectedRecipients.length === 0) {
-            //     createAnn.stepNumber = 2
-            //     toasterService.error($rootScope.messages.emsg.m0006)
-            //     return
-            // }
-            createAnn.stepNumber = 3
+            $rootScope.$emit('get:selected:items')
+            if (createAnn.announcement.selTar && createAnn.announcement.selTar.length === 0) {
+                toasterService.error($rootScope.messages.emsg.m0006)
+                return false
+            }
+
+            return true
         }
 
         /**
@@ -262,7 +261,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
             requestBody.createdBy = $rootScope.userId
             requestBody.target = {
                 'geo': {
-                    'ids': _.map(createAnn.selectedRecipients, 'id')
+                    'ids': _.map(createAnn.announcement.selTar, 'id')
                 }
             }
 
@@ -417,7 +416,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
             requestBody.createdBy = $rootScope.userId
             requestBody.target = {
                 'geo': {
-                    'ids': _.map(createAnn.selectedRecipients, 'id')
+                    'ids': _.map(createAnn.announcement.selTar, 'id')
                 }
             }
             if (requestBody.links) {
@@ -435,7 +434,6 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
                     createAnn.isMetaModified = false
                     createAnn.hideModel('createAnnouncementModal')
                     $('#announcementResendModal').modal('show')
-                    // toasterService.success('Announcement resent successfully.')
                     announcementOutboxData.renderAnnouncementList()
                 } else {
                     toasterService.error(apiResponse.params.errmsg)
@@ -446,6 +444,8 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
         }
 
         createAnn.init = function() {
+            createAnn.stepNumber = parseInt($stateParams.stepNumber) || 1
+            createAnn.announcement = $stateParams.announcement
             if (createAnn.stepNumber !== undefined) {
 
                 if(createAnn.stepNumber === 1) {
@@ -463,21 +463,23 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
             }
         }
         createAnn.goToNextStep = function () {
-            // If stepNumber 3 then add target and sourceId
-            if(createAnn.stepNumber === 3) {
-                createAnn.announcement.sourceId = $rootScope.rootOrgId
-                createAnn.announcement.target = {
-                    'geo': {
-                        'ids': ['0123668627050987529']
+            alert(createAnn.stepNumber)
+            // Current step is confirm recipients
+            if(createAnn.stepNumber !== 1) {
+                if(createAnn.confirmRecipients()){
+                    if(_.isEmpty(createAnn.announcement.sourceId)){
+                        createAnn.announcement.sourceId = $rootScope.rootOrgId
                     }
+                }else{
+                    return false
                 }
             }
 
-            $state.go('announcementCreate', {stepNumber: ++createAnn.stepNumber, announcement: createAnn.announcement})
+console.log(createAnn.announcement)
+            $state.go('announcementCreate', {stepNumber: ++createAnn.stepNumber, announcement: createAnn.announcement}, {reload: true} )
         }
-
         createAnn.goToBackStep = function () {
-            $state.go('announcementCreate', {stepNumber: --createAnn.stepNumber, announcement: createAnn.announcement})
+            $state.go('announcementCreate', {stepNumber: --createAnn.stepNumber, announcement: createAnn.announcement}, {reload: true} )
         }
     }
 ])
