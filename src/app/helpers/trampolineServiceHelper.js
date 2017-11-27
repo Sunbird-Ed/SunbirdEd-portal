@@ -197,7 +197,7 @@ module.exports = {
           emailVerified: payload['email_verified'],
           userName: payload['sub'],
           phone: payload['phone_number'],
-          phoneNumberVerified: payload['phone_number_verified'],
+          phoneVerified: payload['phone_number_verified'],
           provider: payload['iss']
         }
       },
