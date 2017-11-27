@@ -394,7 +394,7 @@ class AnnouncementController {
 
             // Query announcements where target is listed Geolocations
             let query = {
-                table: 'announcements',
+                table: 'announcement',
                 query: {
                     "target.geo.ids": targetGeolocations,
                     "status": this.statusConstant.ACTIVE
@@ -529,7 +529,7 @@ class AnnouncementController {
 
             // build query
             let query = {
-                table: 'announcements',
+                table: 'announcement',
                 query: {
                     'userid': _.get(requestObj, 'body.request.userId')
                 },
