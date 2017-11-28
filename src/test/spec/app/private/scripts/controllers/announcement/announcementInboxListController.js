@@ -57,6 +57,7 @@ describe('Controller: announcementInboxListController', function () {
       spyOn(announcementInboxListController, 'renderAnnouncementList').and.callThrough()
       announcementInboxListController.renderAnnouncementList()
       scope.$apply()
+      expect(announcementInboxListController.showLoader).toEqual(false)
     })
 
     it('Reject', function () {
@@ -65,6 +66,7 @@ describe('Controller: announcementInboxListController', function () {
       spyOn(announcementInboxListController, 'renderAnnouncementList').and.callThrough()
       announcementInboxListController.renderAnnouncementList()
       scope.$apply()
+      expect(announcementInboxListController.showLoader).toEqual(false)
     })
 
     it('get file extension success', function () {
@@ -83,8 +85,9 @@ describe('Controller: announcementInboxListController', function () {
       scope.announcementInboxData = {}
       scope.announcementInboxData.announcementDetails = annInboxTestData.detailsSuccess
       spyOn(announcementInboxListController, 'showAnnouncementDetails').and.callThrough()
-      announcementInboxListController.showAnnouncementDetails(annInboxTestData.detailsSuccess, 2)
+      var response = announcementInboxListController.showAnnouncementDetails(annInboxTestData.detailsSuccess, 2)
       scope.$apply()
+      expect(response).toBeUndefined()
     })
 
     it('Show details undefined', function () {
