@@ -61,7 +61,7 @@
         </div>
         <div class="sixteen wide column margin-bottom-20 padding-top-20">
             <div class="ui items">
-                <div class="ui item box" ng-repeat="attachmentJson in announcementDetails.attachments track by $index" ng-init="attachment =  parJson(attachmentJson)">
+                <div class="ui item box" ng-repeat="attachment in announcementDetails.attachments track by $index">
                     <div class="ui tiny image">
                         <img src="/common/images/default.png">
                         </img>

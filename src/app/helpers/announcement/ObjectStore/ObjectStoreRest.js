@@ -6,9 +6,10 @@ let ObjectStore = require('./ObjectStore.js')
 let envVariables = require('../../environmentVariablesHelper.js')
 let dateFormat = require('dateformat')
 
+
 class ObjectStoreRest extends ObjectStore {
-  constructor(modelMapping, modelConstant) {
-    super(modelMapping, modelConstant)
+  constructor(options = {}) {
+      super(options)
   }
 
   createObject(data, indexStore) {
@@ -16,30 +17,37 @@ class ObjectStoreRest extends ObjectStore {
   }
 
   __createObject() {
-    return async((data, indexStore) => {
-      await (this.validateCreateObject(data))
-      let options = {
-        method: 'POST',
-        uri: envVariables.DATASERVICE_URL + 'data/v1/object/create',
-        body: {
-          request: {
-            'tableName': data.table,
-            'documentName': data.table, // keeping tableName and documentName as same
-            'payload': data.values
+      return async((data, indexStore) => {
+          let validation = await (this.modelMap[data.table].validateModel(data.values))
+          if (!validation.isValid) return false
+          let options = {
+              method: 'POST',
+              uri: envVariables.DATASERVICE_URL + 'data/v1/object/create',
+              body: {
+                  request: {
+                      'tableName': data.table,
+                      'documentName': data.table, // keeping tableName and documentName as same
+                      'payload': data.values
+                  }
+              },
+              json: true
           }
-        },
-        json: true
-      }
-      if (indexStore == false) {
-          options.body.request = _.omit(options.body.request, ['documentName']);
-      }
-      try {
-        let result = await (this.httpService(options))
-        return { data: _.get(result, 'body.result'), status: 'created' }
-      } catch (error) {
-        throw { msg: 'unable to create object', status: 'error' }
-      }
-    })
+          if (indexStore == false) {
+              options.body.request = _.omit(options.body.request, ['documentName']);
+          }
+          try {
+              let result = await (this.httpService(options))
+              return {
+                  data: _.get(result, 'body.result'),
+                  status: 'created'
+              }
+          } catch (error) {
+              throw {
+                  msg: 'unable to create object',
+                  status: 'error'
+              }
+          }
+      })
   }
 
   findObject(data, indexStore) {
@@ -48,7 +56,6 @@ class ObjectStoreRest extends ObjectStore {
 
   __findObject() {
     return async((data, indexStore) => {
-      //await (this.validateFindObject(data))
       let options = {
         method: 'POST',
         uri: envVariables.DATASERVICE_URL + 'data/v1/object/search',
@@ -80,63 +87,41 @@ class ObjectStoreRest extends ObjectStore {
       }
     })
   }
-
-  getObjectById(data) {
-    return this.__getObjectById()(data)
-  }
-
-  __getObjectById() {
-    return async((data) => {
-      await (this.validateGetObjectById(data))
-      return await (this.findObject({ table: data.table, query: { id: data.id } }))
-    })
-  }
-
   updateObjectById(data) {
     return this.__updateObjectById()(data)
   }
 
     __updateObjectById() {
         return async((data) => {
-            await (this.validateUpdateObjectById(data))
-            let options = {
-                method: 'POST',
-                uri: envVariables.DATASERVICE_URL + 'data/v1/object/update',
-                body: {
-                    request: {
-                        'tableName': data.table,
-                        'documentName': data.table,
-                        'payload': data.values
-                    }
-                },
-                json: true
-            }
             try {
+                if (!data.values) throw {msg: 'Values required to update', status: 'error'}
+                if (!data.values.id) throw {msg: 'Id should be of type string!', status: 'error'}
+                let options = {
+                    method: 'POST',
+                    uri: envVariables.DATASERVICE_URL + 'data/v1/object/update',
+                    body: {
+                        request: {
+                            'tableName': data.table,
+                            'documentName': data.table,
+                            'payload': data.values
+                        }
+                    },
+                    json: true
+                }
                 let result = await (this.httpService(options))
-                return {data: result, status: 'updated'}
+                return {
+                    data: result,
+                    status: 'updated'
+                }
             } catch (error) {
-                throw {msg: 'unable to update object', status: 'error', error: error }
+                throw {
+                    msg: 'unable to update object',
+                    status: 'error',
+                    error: error
+                }
             }
         })
     }
-
-  deleteObjectById(data) {
-    return this.__deleteObjectById()(data)
-  }
-
-  __deleteObjectById() {
-    return async((data) => {
-      await (this.validateDeleteObjectById(data))
-
-      try {
-        let result = await (this.httpService({}))
-        return { status: 'deleted' }
-      } catch (error) {
-        throw { msg: 'unable to delete object', status: 'error' }
-      }
-    })
-  }
-  
   httpService(options) {
     return new Promise((resolve, reject) => {
       if (!options) reject('options required!')
