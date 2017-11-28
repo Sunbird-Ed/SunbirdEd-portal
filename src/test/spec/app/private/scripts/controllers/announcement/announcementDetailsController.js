@@ -10,27 +10,28 @@ describe('Controller: announcementDetailsController', function () {
   // load the controller's module
   beforeEach(module('playerApp'))
 
-  var announcementService,
+  var announcementAdapter,
     scope,
     rootScope,
     announcementDetailsController,
     $q,
     deferred,
     timeout,
-    annInboxTestData = announcementTestData.getAnnouncementInbox
+    annDetailsTestData = announcementTestData.announcementDetails
 
-  beforeEach(inject(function ($rootScope, $controller) {
-    $controller('AppCtrl', {
-      $rootScope: $rootScope,
-      $scope: $rootScope.$new()
-    })
-  }))
+  beforeEach
+(inject(function ($rootScope, $controller) {
+  $controller('AppCtrl', {
+    $rootScope: $rootScope,
+    $scope: $rootScope.$new()
+  })
+}))
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($rootScope, $controller, _announcementService_, _$q_, _$timeout_) {
+  beforeEach(inject(function ($rootScope, $controller, _announcementAdapter_, _$q_, _$timeout_) {
     rootScope = $rootScope
     scope = $rootScope.$new()
-    announcementService = _announcementService_
+    announcementAdapter = _announcementAdapter_
     $q = _$q_
     timeout = _$timeout_
     deferred = _$q_.defer()
@@ -38,11 +39,35 @@ describe('Controller: announcementDetailsController', function () {
     announcementDetailsController = $controller('announcementDetailsController', {
       $rootScope: rootScope,
       $scope: scope,
-      announcementService: announcementService
+      announcementAdapter: announcementAdapter
     })
   }))
 
   describe('Get announcement by id', function () {
+    it('success', function () {
+      spyOn(announcementAdapter, 'getAnnouncementById').and.returnValue(deferred.promise)
+      deferred.resolve(annDetailsTestData.successResponce)
+      var response = announcementAdapter.getAnnouncementById().$$state.value
+      expect(response).toBe(annDetailsTestData.successResponce)
+    })
 
+    it('Fail', function () {
+      annDetailsTestData.successResponce.responseCode = 'fail'
+      spyOn(announcementAdapter, 'getAnnouncementById').and.returnValue(deferred.promise)
+      deferred.resolve(annDetailsTestData.successResponce)
+      spyOn(announcementDetailsController, 'renderAnnouncement').and.callThrough()
+      announcementDetailsController.renderAnnouncement()
+      scope.$apply()
+      expect(announcementDetailsController.showLoader).toEqual(false)
+    })
+
+    it('Reject', function () {
+      spyOn(announcementAdapter, 'getAnnouncementById').and.returnValue(deferred.promise)
+      deferred.reject({})
+      spyOn(announcementDetailsController, 'renderAnnouncement').and.callThrough()
+      announcementDetailsController.renderAnnouncement()
+      scope.$apply()
+      expect(announcementDetailsController.showLoader).toEqual(false)
+    })
   })
 })

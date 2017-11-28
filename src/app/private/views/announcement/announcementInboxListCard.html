@@ -49,7 +49,7 @@
             </div>
         </div>
         <div class="padding-top-10" ng-if="item.attachments.length > 0">
-            <div ng-repeat="attachmentJson in item.attachments track by $index" ng-init="attachment =  announcementInboxData.parJson(attachmentJson)">
+            <div ng-repeat="attachment in item.attachments track by $index">
                 <div ng-if="$first">
                     <i class="file text outline icon opacity04">
                     </i>

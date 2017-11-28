@@ -169,6 +169,9 @@ var paths = {
   ],
   private_scripts: [
     'dist/private/scripts/factories/sessionFactory.js',
+    'dist/private/scripts/factories/announcementModel.js',
+    'dist/private/scripts/services/adapters/httpAdapter.js',
+    'dist/private/scripts/services/adapters/announcementAdapter.js',
     'dist/private/scripts/services/httpService.js',
     'dist/private/scripts/services/httpServiceJava.js',
     'dist/private/scripts/services/contentService.js',
@@ -188,6 +191,7 @@ var paths = {
     'dist/private/scripts/services/adminService.js',
     'dist/private/scripts/services/batchService.js',
     'dist/private/scripts/services/workSpaceUtilsService.js',
+    'dist/private/scripts/services/configService.js',
     'dist/private/scripts/services/dashboardService.js',
     'dist/private/scripts/services/dataService.js',
     'dist/private/scripts/services/paginationService.js',
@@ -265,11 +269,14 @@ var paths = {
     'dist/private/scripts/components/geo.js',
     'dist/private/scripts/controllers/announcement/announcementInboxListController.js',
     'dist/private/scripts/controllers/announcement/announcementOutboxListController.js',
+    'dist/private/scripts/controllers/announcement/announcementDetailsController.js',
     'dist/private/scripts/services/announcementService.js',
     'dist/private/scripts/controllers/announcement/createAnnouncementController.js',
     'dist/private/scripts/directives/announcementDetailsDirective.js',
     'dist/private/scripts/controllers/profileVisibilityController.js',
-    'dist/private/scripts/directives/profileVisibility.js'
+    'dist/private/scripts/directives/profileVisibility.js',
+    'dist/private/scripts/factories/fileUploadFactory.js',
+    'dist/private/scripts/controllers/announcement/announcementDetailsController.js'
   ],
   telemetry_js: [
     'dist/private/scripts/telemetry/TelemetryEvent.js',
@@ -296,6 +303,7 @@ var paths = {
     'dist/private/scripts/managers/eventManager.js',
     'dist/private/scripts/app.js',
     'dist/private/scripts/routes/appRoute.js',
+    'dist/private/scripts/routes/announcementRoute.js',
     'dist/private/script.min.js',
     'dist/common/fonts/**',
     'dist/common/images/**',

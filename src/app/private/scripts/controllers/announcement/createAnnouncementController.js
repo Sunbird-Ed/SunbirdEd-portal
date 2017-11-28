@@ -1,6 +1,6 @@
 'use strict'
-angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', '$scope', '$timeout', 'config', 'toasterService', 'announcementService', '$filter', 'uuid4',
-  function ($rootScope, $scope, $timeout, config, toasterService, announcementService, $filter, uuid4) {
+angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', '$scope', '$timeout', 'config', 'toasterService', 'announcementService', 'fileUpload',
+  function ($rootScope, $scope, $timeout, config, toasterService, announcementService, fileUpload) {
     var createAnn = this
     createAnn.data = {}
     createAnn.attachment = []
@@ -13,7 +13,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
     createAnn.isMetaModified = false
     createAnn.announcementType = []
     createAnn.repeatableWebLinks = []
-    createAnn.selectedReciepeient = []
+    createAnn.selectedRecipients = []
     createAnn.hideAnncmntBtn = false
     createAnn.uploadAttchement = false
 
@@ -44,6 +44,12 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       createAnn.hideAnncmntBtn = true
       toasterService.error($rootScope.messages.fmsg.m0069)
     })
+
+    /**
+     * @method initializeModal
+     * @desc - function to initialize semantic dropdowns
+     * @memberOf Controllers.createAnnouncementCtrl
+     */
     createAnn.initializeModal = function () {
       $timeout(function () {
         $('#announcementType').dropdown({
@@ -51,16 +57,17 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
             createAnn.enableRecepientBtn()
           }
         })
-        $('#orgDropdown').dropdown({
-          onChange: function (value, text, $choice) {
-            createAnn.enableRecepientBtn()
-          }
-        })
       }, 100)
       $rootScope.$on('selected:items', function (evet, data) {
-        createAnn.selectedReciepeient = data.geo
+        createAnn.selectedRecipients = data.geo
       })
     }
+
+    /**
+     * @method createAnnouncement
+     * @desc - function to initialize create announcement modal
+     * @memberOf Controllers.createAnnouncementCtrl
+     */
     createAnn.createAnnouncement = function () {
       $rootScope.$emit('component:init')
       $('#createAnnouncementModal').modal({
@@ -78,6 +85,12 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
         }
       }).modal('show')
     }
+
+    /**
+     * @method confirmationModal
+     * @desc - display confirmation modal when user click on close icon
+     * @memberOf Controllers.createAnnouncementCtrl
+     */
     createAnn.confirmationModal = function () {
       $timeout(function () {
         $('#announcementCancelModal').modal({
@@ -93,12 +106,25 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
         }).modal('show')
       }, 10)
     }
+
+    /**
+     * @method hideModel
+     * @desc - hide semantic modal
+     * @memberOf Controllers.createAnnouncementCtrl
+     * @param {string} [modalId] [description]
+     */
     createAnn.hideModel = function (modalId) {
       $('#' + modalId).modal('hide')
       $('#' + modalId).modal('hide others')
       $('#' + modalId).modal('hide all')
       $('#' + modalId).modal('hide dimmer')
     }
+
+    /**
+     * @method addNewLink
+     * @desc - add new url input box
+     * @memberOf Controllers.createAnnouncementCtrl
+     */
     createAnn.addNewLink = function () {
       var newItemNo = createAnn.repeatableWebLinks.length + 1
       createAnn.repeatableWebLinks.push({
@@ -106,6 +132,13 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       })
       createAnn.showUrlField = true
     }
+
+    /**
+     * @method removeLink
+     * @desc - remove / delete url
+     * @memberOf Controllers.createAnnouncementCtrl
+     * @param {int} [index] [description]
+     */
     createAnn.removeLink = function (index) {
       createAnn.repeatableWebLinks.splice(index, 1)
       if (createAnn.data.links) {
@@ -114,6 +147,12 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       createAnn.showUrlField = !!createAnn.repeatableWebLinks.length
       createAnn.enableRecepientBtn()
     }
+
+    /**
+     * @method previewAnn
+     * @desc - preview announcement
+     * @memberOf Controllers.createAnnouncementCtrl
+     */
     createAnn.previewAnn = function () {
       createAnn.linkArray = []
       if (createAnn.data.links) {
@@ -131,8 +170,15 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
         'attachments': createAnn.attachment
       }
     }
-    createAnn.removeRicipients = function (item) {
-      _.remove(createAnn.selectedReciepeient, function (arg) {
+
+    /**
+     * @method removeRicipients
+     * @desc - remove selected recipients
+     * @memberOf Controllers.createAnnouncementCtrl
+     * @param {object} [item] [current selected item]
+     */
+    createAnn.removeRecipients = function (item) {
+      _.remove(createAnn.selectedRecipients, function (arg) {
         if (arg.location == item.location) {
           item.selected = false,
             toasterService.info(item.location + ' ' + $rootScope.messages.imsg.m0020)
@@ -147,15 +193,27 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
         'service': 'geoService'
       }
     }
+
+    /**
+     * @method confirmRecipients
+     * @desc - enforce user to select recipients
+     * @memberOf Controllers.createAnnouncementCtrl
+     */
     createAnn.confirmRecipients = function () {
       $rootScope.$emit('get:selected:items')
-      if (createAnn.selectedReciepeient.length == 0) {
+      if (createAnn.selectedRecipients.length === 0) {
         createAnn.stepNumber = 2
         toasterService.error($rootScope.messages.emsg.m0006)
         return
       }
       createAnn.stepNumber = 3
     }
+
+    /**
+     * @method enableRecepientBtn
+     * @desc - enable select recipients btn if all required fields are selected
+     * @memberOf Controllers.createAnnouncementCtrl
+     */
     createAnn.enableRecepientBtn = function () {
       var links = []
       if (createAnn.data.links) {
@@ -165,23 +223,28 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
           }
         })
       }
-      var selectRecipientBtn = angular.element( document.querySelector('#selectRecipientBtn'));
+      var selectRecipientBtn = angular.element(document.querySelector('#selectRecipientBtn'))
       if (createAnn.data.title && createAnn.data.from && createAnn.data.type &&
         (createAnn.uploadAttchement || createAnn.data.description || links.length)) {
         createAnn.disableBtn = false
-    	selectRecipientBtn.removeClass('disabled')
+        selectRecipientBtn.removeClass('disabled')
       } else {
         createAnn.disableBtn = true
         selectRecipientBtn.addClass('disabled')
       }
       createAnn.isMetaModified = true
     }
+
+    /**
+     * @method refreshFormValues
+     * @desc - reset form values
+     * @memberOf Controllers.createAnnouncementCtrl
+     */
     createAnn.refreshFormValues = function () {
       createAnn.disableBtn = true
       createAnn.editAction = false
       createAnn.stepNumber = 1
       $('#announcementType').dropdown('restore defaults')
-      $('#orgDropdown').dropdown('restore defaults')
       $('#createAnnouncementModal').modal('refresh')
       createAnn.data = {}
       createAnn.isMetaModified = false
@@ -190,6 +253,13 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       createAnn.attachment = []
       $('.qq-upload-list').children('li').remove()
     }
+
+    /**
+     * @method saveAnnouncement
+     * @desc - prepare api request object and make create api call
+     * @memberOf Controllers.createAnnouncementCtrl
+     * @param {object} [data] [form data]
+     */
     createAnn.saveAnnouncement = function (data) {
       createAnn.isMetaModified = false
       var requestBody = angular.copy(data)
@@ -197,7 +267,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       requestBody.createdBy = $rootScope.userId
       requestBody.target = {
         'geo': {
-          'ids': _.map(createAnn.selectedReciepeient, 'id')
+          'ids': _.map(createAnn.selectedRecipients, 'id')
         }
       }
 
@@ -210,9 +280,9 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       if (createAnn.attachment.length) {
         requestBody.attachments = createAnn.attachment
       }
-      
+
       if (angular.isUndefined(requestBody.description)) {
-      	delete requestBody.description
+        delete requestBody.description
       }
       var requestData = {
         request: requestBody
@@ -235,6 +305,13 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
         createAnn.showError(apiResponse.data)
       })
     }
+
+    /**
+     * @method showError
+     * @desc - display error message(s) when apis get fails
+     * @memberOf Controllers.createAnnouncementCtrl
+     * @param {object} [apiResponse] [api response along with error message]
+     */
     createAnn.showError = function (apiResponse) {
       createAnn.errorFlag = true
       if (apiResponse.responseCode === 'CLIENT_ERROR' && angular.isArray(apiResponse.params.errmsg)) {
@@ -246,96 +323,79 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       }
     }
 
-    createAnn.convertFileSize = function (bytessize) {
+    /**
+     * @method getReadableFileSize
+     * @desc - convert byteSize into KB, MB
+     * @memberOf Controllers.createAnnouncementCtrl
+     * @param {int} [byteSize] [file size]
+     * @return {string} [return readable file size]
+     */
+    createAnn.getReadableFileSize = function (byteSize) {
       var sizes = ['Bytes', 'KB', 'MB']
-      if (bytessize) {
-        var i = parseInt(Math.floor(Math.log(bytessize) / Math.log(1024)))
-        createAnn.convertedFileSize = Math.round(bytessize / Math.pow(1024, i), 2) + ' ' + sizes[i]
+      if (byteSize) {
+        var i = parseInt(Math.floor(Math.log(byteSize) / Math.log(1024)))
+        return createAnn.convertedFileSize = Math.round(byteSize / Math.pow(1024, i), 2) + ' ' + sizes[i]
       } else {
-        createAnn.convertedFileSize = '0 Byte'
+        return createAnn.convertedFileSize = '0 Byte'
       }
     }
+
+    /**
+     * @method initializeFileUploader
+     * @desc - create fine uploader instance by passing required params
+     * @memberOf Controllers.createAnnouncementCtrl
+     */
     createAnn.initializeFileUploader = function () {
-      $timeout(function () {
-        createAnn.manualUploader = new qq.FineUploader({
-          element: document.getElementById('fine-uploader-manual-trigger'),
-          template: 'qq-template-manual-trigger',
-          autoUpload: true,
-          paramsInBody: true,
-          debug: false,
-          request: {
-            endpoint: config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + config.URL.CONTENT.UPLOAD_MEDIA,
-            inputName: 'file',
-            customHeaders: {
-              Accept: 'application/json',
-              'X-Consumer-ID': 'X-Consumer-ID',
-              'X-Device-ID': 'X-Device-ID',
-              'X-msgid': uuid4.generate(),
-              ts: $filter('date')(new Date(), 'yyyy-MM-dd HH:mm:ss:sssZ'),
-              'X-Source': 'web',
-              'X-Org-code': 'AP'
-            }
-          },
-          validation: {
-            sizeLimit: config.AnncmntMaxFileSizeToUpload,
-            allowedExtensions: config.AnncmntAllowedFileExtension
-          },
-          messages: {
-            sizeError: '{file} ' + $rootScope.messages.imsg.m0021 + ' ' + config.AnncmntMaxFileSizeToUpload / (1000 * 1024) + ' MB.'
-          },
-          failedUploadTextDisplay: {
-            mode: 'default',
-            responseProperty: 'error'
-          },
-          showMessage: function (message) {
-            toasterService.error(message)
-          },
-          callbacks: {
-            onComplete: function (id, name, responseJSON, xhr) {
-              if (responseJSON.responseCode === 'OK') {
-                createAnn.convertFileSize(this.getSize(id))
-                var attData = {
-                  'name': name,
-                  'mimetype': this.getFile(id).type,
-                  'size': createAnn.convertedFileSize,
-                  'link': responseJSON.result.url
-                }
-                attData = JSON.stringify(attData)
-                createAnn.attachment.push(attData)
-                createAnn.uploadAttchement = true
-                createAnn.enableRecepientBtn()
-              }
-            },
-            onSubmitted: function (id, name) {
-              this.setParams({
-                filename: name,
-                container: 'attachments/announcement'
-              })
-            },
-            onCancel: function (id, name) {
-              var deleteFlag = createAnn.attachment.splice(id, 1);
-              if(deleteFlag.length === 0){
-	              angular.forEach(createAnn.attachment, function(value, key) {
-	              	var details = JSON.parse(value)
-	    			if(details.name === name){
-	    				createAnn.attachment.splice(key, 1);
-	    			}
-				  });
-			  }
+      var apiUrl = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + config.URL.CONTENT.UPLOAD_MEDIA
+      var options = {
+        fileSizeLimit: config.AnncmntMaxFileSizeToUpload,
+        allowedExtensions: config.AnncmntAllowedFileExtension,
+        fileSizeErrorText: $rootScope.messages.imsg.m0021,
+        containerName: 'attachments/announcement',
+        uploadSuccess: createAnn.onUploadComplete,
+        onCancel: createAnn.onUploadCancel
+      }
+      fileUpload.createFineUploadInstance(options)
+    }
 
-              if(createAnn.attachment.length === 0){
-              	createAnn.uploadAttchement = false
-              }
+    /**
+     * @method onUploadComplete
+     * @desc - invoked after attachement uploaded
+     * @memberOf Controllers.createAnnouncementCtrl
+     * @param {int} [id] [uploaded file count]
+     * @param {string} [name] [selected fine name]
+     * @param {object} [uploadDetails] [uploaded file details - name,mimeType,downloadUrl,and file size]
+     */
+    createAnn.onUploadComplete = function (id, name, uploadDetails) {
+      uploadDetails.size = createAnn.getReadableFileSize(uploadDetails.size)
+      createAnn.attachment.push(JSON.stringify(uploadDetails))
+      createAnn.uploadAttchement = true
+      createAnn.enableRecepientBtn()
+    }
 
-              createAnn.enableRecepientBtn()
-              document.getElementById('hide-section-with-button').style.display = 'block'
-            }
+    /**
+     * @method onUploadCancel
+     * @desc - invoked when user cancel uploaded attachement
+     * @memberOf Controllers.createAnnouncementCtrl
+     * @param {int} [id] [uploaded file count]
+     * @param {string} [name] [selected fine name]
+     */
+    createAnn.onUploadCancel = function (id, name) {
+      var deleteFlag = createAnn.attachment.splice(id, 1)
+      if (deleteFlag.length === 0) {
+        angular.forEach(createAnn.attachment, function (value, key) {
+          var details = JSON.parse(value)
+          if (details.name === name) {
+            createAnn.attachment.splice(key, 1)
           }
         })
-        window.cancelUploadFile = function () {
-          document.getElementById('hide-section-with-button').style.display = 'block'
-        }
-      }, 300)
+      }
+
+      if (createAnn.attachment.length === 0) {
+        createAnn.uploadAttchement = false
+      }
+      createAnn.enableRecepientBtn()
+      $('#hide-section-with-button').css('style.display', 'block')
     }
 
     $scope.$on('editAnnouncementBeforeResend', function (event, announcement) {
@@ -347,7 +407,6 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       })
       createAnn.data.links = announcement.links
       $('#announcementType').dropdown('set text', announcement.details.type)
-      $('#orgDropdown').dropdown('set text', announcement.details.from)
       createAnn.data.from = announcement.details.from
       createAnn.data.type = announcement.details.type
       createAnn.attachment = announcement.attachments
@@ -363,7 +422,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       requestBody.createdBy = $rootScope.userId
       requestBody.target = {
         'geo': {
-          'ids': _.map(createAnn.selectedReciepeient, 'id')
+          'ids': _.map(createAnn.selectedRecipients, 'id')
         }
       }
       if (requestBody.links) {

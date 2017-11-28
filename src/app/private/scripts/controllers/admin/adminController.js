@@ -12,8 +12,9 @@ angular.module('playerApp')
       'toasterService',
       'permissionsService',
       'searchService',
+      '$stateParams',
       function (adminService, $timeout, $state, config, $rootScope, $scope,
-            contentService, toasterService, permissionsService, searchService
+            contentService, toasterService, permissionsService, searchService, $stateParams
         ) {
      /**
      * @class adminController
@@ -131,6 +132,33 @@ angular.module('playerApp')
 
             // download list of user or organization
         admin.downloadUsers = function (key, list) {
+          var searchParams = $stateParams
+          var query = searchParams.query
+          var filters = JSON.parse(atob(searchParams.filters || btoa('{}')))
+          var sortBy = JSON.parse(atob(searchParams.sort || btoa('{}')))
+
+          var req = {
+            query: query,
+            filters: filters,
+            sort_by: sortBy
+          }
+
+          if (key === 'Users') {
+            adminService.userSearch({ request: req }).then(function (res) {
+              if (res !== null && res.responseCode === 'OK') {
+                admin.addSearchResultInExcel(key, res.result.response.content)
+              }
+            })
+          } else if (key === 'Organisations') {
+            adminService.orgSearch({ request: req }).then(function (res) {
+              if (res !== null && res.responseCode === 'OK') {
+                admin.addSearchResultInExcel(key, res.result.response.content)
+              }
+            })
+          }
+        }
+
+        admin.addSearchResultInExcel = function (key, list) {
           if (key === 'Users') {
             list.forEach(function (user) {
               user.organisationsName = []
