@@ -269,11 +269,12 @@ class AnnouncementController {
   __getAnnouncementTypes(requestObj) {
     return new Promise((resolve, reject) => {
       let query = {
-        table: 'announcement',
+        table: 'announcementtype',
         query: {
           'rootorgid': _.get(requestObj, 'body.request.rootorgid')
         }
       }
+
       this.objectStoreRest.findObject(query)
         .then((data) => {
           if (!_.isObject(data)) {
