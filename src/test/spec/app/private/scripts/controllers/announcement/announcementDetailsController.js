@@ -49,7 +49,6 @@ describe('Controller: announcementDetailsController', function () {
       deferred.resolve(annDetailsTestData.successResponce)
       var response = announcementAdapter.getAnnouncementById().$$state.value
       expect(response).toBe(annDetailsTestData.successResponce)
-      scope.$apply()
     })
 
     it('Fail', function () {
@@ -59,6 +58,7 @@ describe('Controller: announcementDetailsController', function () {
       spyOn(announcementDetailsController, 'renderAnnouncement').and.callThrough()
       announcementDetailsController.renderAnnouncement()
       scope.$apply()
+      expect(announcementDetailsController.showLoader).toEqual(false)
     })
 
     it('Reject', function () {
@@ -67,6 +67,7 @@ describe('Controller: announcementDetailsController', function () {
       spyOn(announcementDetailsController, 'renderAnnouncement').and.callThrough()
       announcementDetailsController.renderAnnouncement()
       scope.$apply()
+      expect(announcementDetailsController.showLoader).toEqual(false)
     })
   })
 })
