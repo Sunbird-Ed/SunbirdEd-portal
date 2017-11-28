@@ -218,7 +218,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
                 })
             }
             var selectRecipientBtn = angular.element(document.querySelector('#selectRecipientBtn'))
-            if (createAnn.announcement.details.title && createAnn.announcement.details.from && createAnn.announcement.details.type &&
+            if (createAnn.announcement.details.title && createAnn.announcement.details.from && ( true || createAnn.announcement.details.type) &&
                 (createAnn.uploadAttchement || createAnn.announcement.details.description || links.length)) {
                 createAnn.disableBtn = false
                 selectRecipientBtn.removeClass('disabled')
@@ -475,10 +475,20 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
                     if(_.isEmpty(createAnn.announcement.sourceId)){
                         createAnn.announcement.sourceId = $rootScope.rootOrgId
                     }
+                    if(_.isEmpty(createAnn.announcement.createdBy)){
+                        createAnn.announcement.sourceId = $rootScope.userId
+                    }
                 }else{
                     return false
                 }
             }
+
+            var geoIds = _.map(createAnn.announcement.selTar, 'id')
+            $timeout(function() {
+                $rootScope.$broadcast('component:update', geoIds )
+            }, 100)
+            console.log(geoIds)
+
 
             $state.go('announcementCreate', {stepNumber: ++createAnn.stepNumber, announcement: createAnn.announcement}, {reload: true} )
         }
