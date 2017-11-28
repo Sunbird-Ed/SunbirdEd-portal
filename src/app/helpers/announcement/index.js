@@ -44,6 +44,7 @@ function uploadFileFilter(req, file, cb) {
 }
 
 function sendSuccessResponse(res, id, result, code = HttpStatus.OK) {
+    console.log("sucess resp")
     res.status(code)
     res.send({
         'id': API_ID + '.' + id,
@@ -75,7 +76,7 @@ function sendErrorResponse(res, id, message, code = HttpStatus.BAD_REQUEST) {
             'err': '',
             'errmsg': message
         },
-        'responseCode': (code <= 499) ? 'CLIENT_ERROR' : 'SERVER_ERROR',
+        'responseCode': code,
         'result': {}
     })
     res.end()
@@ -159,7 +160,7 @@ module.exports = function(keycloak) {
                     sendSuccessResponse(responseObj, 'create', data, HttpStatus.CREATED)
                 })
                 .catch((err) => {
-                    sendErrorResponse(responseObj, 'create', err.msg, err.statusCode)
+                    sendErrorResponse(responseObj, 'create', err.message, err.status)
                 })
         })
 
@@ -169,7 +170,8 @@ module.exports = function(keycloak) {
                     sendSuccessResponse(responseObj, 'get.id', data, HttpStatus.OK)
                 })
                 .catch((err) => {
-                    sendErrorResponse(responseObj, 'get.id', err.msg, err.statusCode)
+                    console.log("IndexError",err)
+                    sendErrorResponse(responseObj, 'get.id', err.message, err.status)
                 })
         })
 
@@ -177,7 +179,7 @@ module.exports = function(keycloak) {
             validate()(requestObj, responseObj, next, keycloak)
         }, (requestObj, responseObj, next) => {
             let config = {
-                userid: _.get(requestObj, 'body.request.userid')
+                userid: _.get(requestObj, 'body.request.userId')
             }
             validateRoles()(requestObj, responseObj, next, config)
         }, (requestObj, responseObj, next) => {
@@ -186,7 +188,7 @@ module.exports = function(keycloak) {
                     sendSuccessResponse(responseObj, 'cancel.id', data, HttpStatus.OK)
                 })
                 .catch((err) => {
-                    sendErrorResponse(responseObj, 'cancel.id', err.msg, err.statusCode)
+                    sendErrorResponse(responseObj, 'cancel.id', err.message, err.status)
                 })
         })
 
@@ -198,7 +200,7 @@ module.exports = function(keycloak) {
                     sendSuccessResponse(responseObj, 'user.inbox', data, HttpStatus.OK)
                 })
                 .catch((err) => {
-                    sendErrorResponse(responseObj, 'user.inbox', err.msg, err.statusCode)
+                    sendErrorResponse(responseObj, 'user.inbox', err.message, err.status)
                 })
         })
 
@@ -210,7 +212,7 @@ module.exports = function(keycloak) {
                     sendSuccessResponse(responseObj, 'user.outbox', data, HttpStatus.OK)
                 })
                 .catch((err) => {
-                    sendErrorResponse(responseObj, 'user.outbox', err.msg, err.statusCode)
+                    sendErrorResponse(responseObj, 'user.outbox', err.message, err.status)
                 })
         })
 
@@ -227,7 +229,7 @@ module.exports = function(keycloak) {
                     sendSuccessResponse(responseObj, 'definitions', data, HttpStatus.OK)
                 })
                 .catch((err) => {
-                    sendErrorResponse(responseObj, 'definitions', err.msg, err.statusCode)
+                    sendErrorResponse(responseObj, 'definitions', err.message, err.status)
                 })
         })
 
@@ -239,7 +241,7 @@ module.exports = function(keycloak) {
                     sendSuccessResponse(responseObj, 'received', data, HttpStatus.CREATED)
                 })
                 .catch((err) => {
-                    sendErrorResponse(responseObj, 'received', err.msg, err.statusCode)
+                    sendErrorResponse(responseObj, 'received', err.message, err.status)
                 })
         })
 
@@ -251,7 +253,7 @@ module.exports = function(keycloak) {
                     sendSuccessResponse(responseObj, 'read', data, HttpStatus.CREATED)
                 })
                 .catch((err) => {
-                    sendErrorResponse(responseObj, 'read', err.msg, err.statusCode)
+                    sendErrorResponse(responseObj, 'read', err.message, err.status)
                 })
         })
 
@@ -263,7 +265,7 @@ module.exports = function(keycloak) {
                     sendSuccessResponse(responseObj, 'getresend.id', data, HttpStatus.OK)
                 })
                 .catch((err) => {
-                    sendErrorResponse(responseObj, 'getresend.id', err.msg, err.statusCode)
+                    sendErrorResponse(responseObj, 'getresend.id', err.message, err.status)
                 })
 
 
@@ -282,7 +284,7 @@ module.exports = function(keycloak) {
                     sendSuccessResponse(responseObj, 'resend', data, HttpStatus.CREATED)
                 })
                 .catch((err) => {
-                    sendErrorResponse(responseObj, 'resend', err.msg, err.statusCode)
+                    sendErrorResponse(responseObj, 'resend', err.message, err.status)
                 })
         })
 
