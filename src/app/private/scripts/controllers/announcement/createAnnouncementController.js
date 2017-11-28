@@ -255,31 +255,34 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
          * @param {object} [data] [form data]
          */
         createAnn.saveAnnouncement = function(data) {
-            createAnn.isMetaModified = false
-            var requestBody = angular.copy(data)
-            requestBody.sourceId = $rootScope.rootOrgId
-            requestBody.createdBy = $rootScope.userId
-            requestBody.target = {
-                'geo': {
-                    'ids': _.map(createAnn.announcement.selTar, 'id')
-                }
-            }
+            // createAnn.isMetaModified = false
+            // var requestBody = angular.copy(data)
+            // requestBody.sourceId = $rootScope.rootOrgId
+            // requestBody.createdBy = $rootScope.userId
+            // requestBody.target = {
+            //     'geo': {
+            //         'ids': _.map(createAnn.announcement.selTar, 'id')
+            //     }
+            // }
 
-            if (createAnn.linkArray.length > 0) {
-                requestBody.links = createAnn.linkArray
-            } else {
-                delete requestBody.links
-            }
+            // if (createAnn.linkArray.length > 0) {
+            //     requestBody.links = createAnn.linkArray
+            // } else {
+            //     delete requestBody.links
+            // }
 
-            if (createAnn.attachment.length) {
-                requestBody.attachments = createAnn.attachment
-            }
+            // if (createAnn.attachment.length) {
+            //     requestBody.attachments = createAnn.attachment
+            // }
 
-            if (angular.isUndefined(requestBody.description)) {
-                delete requestBody.description
-            }
+            // if (angular.isUndefined(requestBody.description)) {
+            //     delete requestBody.description
+            // }
+            console.log(createAnn.announcement)
+            delete createAnn.announcement.selTar;
+            console.log(createAnn.announcement)
             var requestData = {
-                request: requestBody
+                request: createAnn.announcement
             }
             announcementService.createAnnouncement(requestData).then(function(apiResponse) {
                 apiResponse = apiResponse.data
@@ -476,20 +479,21 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
                         createAnn.announcement.sourceId = $rootScope.rootOrgId
                     }
                     if(_.isEmpty(createAnn.announcement.createdBy)){
-                        createAnn.announcement.sourceId = $rootScope.userId
+                        createAnn.announcement.createdBy = $rootScope.userId
                     }
                 }else{
                     return false
                 }
             }
 
+            createAnn.announcement.target.geo.ids = _.map(createAnn.announcement.selTar, 'id')
             var geoIds = _.map(createAnn.announcement.selTar, 'id')
             $timeout(function() {
                 $rootScope.$broadcast('component:update', geoIds )
             }, 100)
             console.log(geoIds)
 
-
+            //createAnn.announcement = new AnnouncementModel.Announcement(createAnn.announcement)
             $state.go('announcementCreate', {stepNumber: ++createAnn.stepNumber, announcement: createAnn.announcement}, {reload: true} )
         }
 
@@ -499,6 +503,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
          * @memberOf Controllers.createAnnouncementCtrl
          */
         createAnn.goToBackStep = function () {
+            //createAnn.announcement = new AnnouncementModel.Announcement(createAnn.announcement)
             $state.go('announcementCreate', {stepNumber: --createAnn.stepNumber, announcement: createAnn.announcement}, {reload: true} )
         }
     }
