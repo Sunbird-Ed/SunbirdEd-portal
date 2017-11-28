@@ -125,7 +125,7 @@ function validate() {
                 sendErrorResponse(responseObj, config.apiid, "UNAUTHORIZED_USER", HttpStatus.UNAUTHORIZED)
             }
         } else {
-            if (!keycloak) {
+            if (keycloak) {
                 keycloak.protect()(requestObj, responseObj, next)
             } else {
                 sendErrorResponse(responseObj, config.apiid, "UNAUTHORIZED_USER", HttpStatus.UNAUTHORIZED)
