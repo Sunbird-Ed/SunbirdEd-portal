@@ -1,7 +1,10 @@
 let express = require('express')
 let router = express.Router()
 let HttpStatus = require('http-status-codes')
-let announcementController = require('./controller.js')
+let controller = require('./controller.js')
+let metricsModel = require('./model/MetricsModel.js')
+let announcementCreateModel = require('./model/AnnouncementCreateModel.js')
+let announcementTypeModel = require('./model/AnnouncementTypeModel.js')
 let path = require('path')
 let multer = require('multer')
 const _ = require('lodash')
@@ -21,6 +24,13 @@ const API_IDS = {
     getresend: 'getresend.id',
     resend: 'resend'
 }
+
+let announcementController = new controller({
+    metrics: metricsModel,
+    announcement: announcementCreateModel,
+    announcementtype: announcementTypeModel
+})
+
 const API_VERSION = '1.0'
 
 function sendSuccessResponse(res, id, result, code = HttpStatus.OK) {
@@ -63,7 +73,7 @@ function sendErrorResponse(res, id, message, code = HttpStatus.BAD_REQUEST) {
 
 function isCreateRolePresent(userProfile, sourceid) {
     let organisationId = _.map(userProfile.organisations, "organisationId")
-    console.log(userProfile.organisations)
+    // console.log(userProfile.organisations)
     let organisation = undefined;
     for (var i = 0; i <= organisationId.length; i++) {
         if (organisationId[i]) {
@@ -177,7 +187,7 @@ module.exports = function(keycloak) {
         router.post('/user/inbox', (requestObj, responseObj, next) => {
             let config = {apiid: API_IDS.userinbox}
             validate()(requestObj, responseObj, next, keycloak, config)
-        }, (requestObj, responseObj, next, config) => {
+        }, (requestObj, responseObj, next) => {
             announcementController.getUserInbox(requestObj)
                 .then((data) => {
                     sendSuccessResponse(responseObj, API_IDS.userinbox, data, HttpStatus.OK)

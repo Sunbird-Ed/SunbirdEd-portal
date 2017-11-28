@@ -92,14 +92,14 @@ describe('Controller: createAnnouncementCtrl', function () {
   })
 
   it('convert file size into KB / MB', function () {
-    spyOn(createAnn, 'convertFileSize').and.callThrough()
-    createAnn.convertFileSize(1234)
+    spyOn(createAnn, 'getReadableFileSize').and.callThrough()
+    createAnn.getReadableFileSize(1234)
     expect(createAnn.convertedFileSize).toBeDefined()
   })
 
   it('should not convert file size into KB / MB', function () {
-    spyOn(createAnn, 'convertFileSize').and.callThrough()
-    createAnn.convertFileSize(0)
+    spyOn(createAnn, 'getReadableFileSize').and.callThrough()
+    createAnn.getReadableFileSize(0)
     expect(createAnn.convertedFileSize).toEqual('0 Byte')
   })
 
@@ -146,7 +146,7 @@ describe('Controller: createAnnouncementCtrl', function () {
 
   it('Should open form step number 3 ', function () {
     spyOn(createAnn, 'confirmRecipients').and.callThrough()
-    createAnn.selectedReciepeient = [{name: 'Bangalore'}]
+    createAnn.selectedRecipients = [{name: 'Bangalore'}]
     createAnn.confirmRecipients()
     expect(createAnn.stepNumber).toBeDefined()
     expect(createAnn.stepNumber).toEqual(3)
@@ -180,11 +180,11 @@ describe('Controller: createAnnouncementCtrl', function () {
   })
 
   it('Should remove recipient', function () {
-    spyOn(createAnn, 'removeRicipients').and.callThrough()
-    createAnn.selectedReciepeient = [{id: '12345', location: '12345'}, {id: '456', location: '456'}]
-    createAnn.removeRicipients({id: '12345', location: '12345'})
-    expect(createAnn.selectedReciepeient).toBeDefined()
-    expect(createAnn.selectedReciepeient.length).toEqual(1)
+    spyOn(createAnn, 'removeRecipients').and.callThrough()
+    createAnn.selectedRecipients = [{id: '12345', location: '12345'}, {id: '456', location: '456'}]
+    createAnn.removeRecipients({id: '12345', location: '12345'})
+    expect(createAnn.selectedRecipients).toBeDefined()
+    expect(createAnn.selectedRecipients.length).toEqual(1)
     createAnn.confirmRecipients()
     expect(createAnn.stepNumber).toBeDefined()
     expect(createAnn.stepNumber).toEqual(3)
@@ -206,6 +206,22 @@ describe('Controller: createAnnouncementCtrl', function () {
     expect(createAnn.errorFlag).toBeDefined()
     expect(createAnn.errorFlag).toEqual(true)
     expect(toasterService.error).toHaveBeenCalled()
+  })
+
+  it('on announcement upload complete', function () {
+    spyOn(createAnn, 'onUploadComplete').and.callThrough()
+    createAnn.onUploadComplete(1, 'abc.png', {name: 'abc.png', size: 1027})
+    expect(createAnn.onUploadComplete).toBeDefined()
+    expect(createAnn.uploadAttchement).toEqual(true)
+  })
+
+  it('on announcement cancel', function () {
+    createAnn.attachment = ['{"name":"swing-846077_960_720.jpg","mimetype":"ima…chments/announcement/File-012380339474472960127"}']
+    spyOn(createAnn, 'onUploadCancel').and.callThrough()
+    createAnn.onUploadCancel(1, 'swing-846077_960_720.jpg')
+    expect(createAnn.onUploadCancel).toBeDefined()
+    expect(createAnn.uploadAttchement).toEqual(false)
+    expect(createAnn.attachment.length).toEqual(0)
   })
 
   it('should get announcement type', function () {

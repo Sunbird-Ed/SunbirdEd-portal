@@ -2,18 +2,19 @@
 
 angular.module('playerApp')
   .controller('ContentLessonController', ['contentService', '$timeout', '$state', 'config',
-    '$rootScope', 'toasterService', '$scope', function (contentService, $timeout,
-        $state, config, $rootScope, toasterService, $scope) {
+    '$rootScope', 'toasterService', '$scope', 'configService', function (contentService, $timeout,
+        $state, config, $rootScope, toasterService, $scope, configService) {
       var contentLesson = this
-      contentLesson.lessonTypes = config.DROPDOWN.COMMON.lessonTypes
-      contentLesson.audiences = config.DROPDOWN.COMMON.audiences
-      contentLesson.languages = config.DROPDOWN.COMMON.languages
-      contentLesson.grades = config.DROPDOWN.COMMON.grades
-      contentLesson.ageGroup = config.DROPDOWN.COMMON.ageGroup
-      contentLesson.mediums = config.DROPDOWN.COMMON.medium
-      contentLesson.subjects = config.DROPDOWN.COMMON.subjects
-      contentLesson.boards = config.DROPDOWN.COMMON.boards
-      contentLesson.resourceType = config.FILTER.RESOURCES.resourceType
+      contentLesson.formDropdown = configService.getWorkspaceStdMtrlDrpdown()
+      // contentLesson.lessonTypes = config.DROPDOWN.COMMON.lessonTypes
+      // contentLesson.audiences = config.DROPDOWN.COMMON.audiences
+      // contentLesson.ageGroup = config.DROPDOWN.COMMON.ageGroup
+      contentLesson.languages = contentLesson.formDropdown.languages
+      contentLesson.grades = contentLesson.formDropdown.grades
+      contentLesson.mediums = contentLesson.formDropdown.medium
+      contentLesson.subjects = contentLesson.formDropdown.subjects
+      contentLesson.boards = contentLesson.formDropdown.boards
+      contentLesson.resourceType = contentLesson.formDropdown.resourceType
       contentLesson.showCreateSlideShowModal = false
       contentLesson.slideShowCreated = false
       contentLesson.userId = $rootScope.userId

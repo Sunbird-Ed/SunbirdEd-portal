@@ -2652,9 +2652,9 @@ ul.fancytree-container li {
   position: static;
   padding: 0;
   max-width: 100%;
-  margin: .45238095em 0 .45238095em .64285714em;
+  margin: .55238095em 0 .45238095em .64285714em;
   line-height: 1.21428571em;
-  color: #908e90;
+  color: #c7c7c7;
 }
 .dropdown-items.ui.selection.dropdown .menu > .item {
   border-top: none;
@@ -2683,6 +2683,11 @@ ul.fancytree-container li {
   z-index: 11;
 }
 .conceptSelector.ui.form .treepicker-parent input {
+  color: #c7c7c7;
+  font-family: Roboto;
+  font-size: 13px;
+}
+.profileLocationFilter input {
   color: #908e90;
   font-family: Roboto;
   font-size: 13px;
@@ -2956,7 +2961,7 @@ ul.fancytree-container li {
 .ui.bottom.attached.tabular.menu.userSkillMore {
   height: 0.3em;
   min-height: 1.28571429em !important;
-  margin-top: -0.1em !important;
+  margin-top: 1.7em !important;
 }
 .userSkillMoreIcon {
   margin-right: -0.4em !important;
