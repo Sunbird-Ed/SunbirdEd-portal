@@ -1,3 +1,7 @@
+/**
+ * @author Manjunath Davanam <manjunathd@ilimi.in>
+ */
+
 const _ = require('lodash')
 let Joi = require('joi')
     /**
@@ -5,9 +9,9 @@ let Joi = require('joi')
      */
 class Model {
   constructor () {
-  	/**
-  	 * @property {Object}  - Model schema object by default it's empty, Child class should define the strucutre of modelSchema object.
-  	 */
+    /**
+     * @property {Object}  - Model schema object by default it's empty, Child class should define the strucutre of modelSchema object.
+     */
     this.modelSchema = {}
 
     /**
@@ -20,7 +24,7 @@ class Model {
      * @param  {Object} object - The object which is need to be validate.
      * @param  {Object} schema - Defined schema which defines the structure or format of object.
      * @return {object}        - Example: 1) Success Validation: {isValid:true, object:{}}
-     *                           		  2) Failure validation: {isValid:false, error:"string", object:{}}
+     *                                2) Failure validation: {isValid:false, error:"string", object:{}}
      */
   validate (object = {}, schema = {}) {
     let validation = Joi.validate(object, schema, {
@@ -59,7 +63,7 @@ class Model {
    * @param {string} property - Name of the property, Using this we can get the apiSubschema object from the apiSchema
    */
   ApiSubSchema (property) {
-  	return Joi.reach(this.apiSchema, property)
+    return Joi.reach(this.apiSchema, property)
   }
 }
 module.exports = Model
