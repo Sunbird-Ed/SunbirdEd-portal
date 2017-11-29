@@ -21,6 +21,11 @@ class ObjectStoreRest extends ObjectStore {
          * @property {class} - Defines the model instance ex: MetricsModel, AnnouncementModel
          */
         this.model = model;
+
+        /**
+         * @property {class} - Defines the service which is used to invoke http calls ex: Httpservice, casandra service.
+         * @type {[type]}
+         */
         this.service = service;
     }
 
