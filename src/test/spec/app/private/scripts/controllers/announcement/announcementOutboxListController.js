@@ -45,8 +45,19 @@ describe('Controller: announcementOutboxListController', function () {
   }))
 
   describe('Get Outbox announcements', function () {
+    it('Should called announcement service', function () {
+      spyOn(announcementAdapter, 'getOutBoxAnnouncementList').and.callThrough()
+      announcementAdapter.getOutBoxAnnouncementList()
+      expect(announcementAdapter.getOutBoxAnnouncementList).toBeDefined()
+
+      spyOn(announcementAdapter, 'deleteAnnouncement').and.callThrough()
+      announcementAdapter.deleteAnnouncement()
+      expect(announcementAdapter.deleteAnnouncement).toBeDefined()
+    })
+
     it('success', function () {
       announcementOutboxListController.result = undefined
+      // spyOn(announcementAdapter, 'getOutBoxAnnouncementList').and.callThrough()
       spyOn(announcementAdapter, 'getOutBoxAnnouncementList').and.returnValue(deferred.promise)
       deferred.resolve(announcementTestData.getAnnouncementOutbox.successResponce)
       spyOn(announcementOutboxListController, 'renderAnnouncementList').and.callThrough()
