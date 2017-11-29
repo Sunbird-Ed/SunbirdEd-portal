@@ -7,3 +7,4 @@
 /npm-debug.log
 .coverrun
 /src/mochawesome-report
+/src/app/common/js/frmelmnts.js

@@ -75,7 +75,7 @@
     "standard": "10.0.3",
     "wiredep": "^2.2.2",
     "yargs": "^9.0.1",
-    "fine-uploader":"*"
+    "fine-uploader": "*"
   },
   "engines": {
     "node": ">=0.10.0"
@@ -107,6 +107,8 @@
     "ng-config": "^1.0.0",
     "properties": "^1.2.1",
     "request": "^2.81.0",
+    "sb_api_interceptor": "file:app/thirdparty/libs/sb_api_interceptor",
+    "sb_cache_manager": "file:app/thirdparty/libs/sb_cache_manager",
     "ua-parser-js": "^0.7.13",
     "uuid": "^3.1.0"
   }

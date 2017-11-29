@@ -20,6 +20,7 @@ const express = require('express'),
   userHelper = require('./helpers/userHelper.js'),
   resourcesBundlesHelper = require('./helpers/resourceBundlesHelper.js'),
   proxyUtils = require('./proxy/proxyUtils.js'),
+  announcements = require('./helpers/announcement'),
   fs = require('fs'),
   port = envHelper.PORTAL_PORT,
   learnerURL = envHelper.LEARNER_URL,
@@ -84,6 +85,14 @@ app.use(express.static(path.join(__dirname, '/')))
 app.use(express.static(path.join(__dirname, 'tenant', tenantId)))
 // this line should be above middleware please don't change
 app.get('/public/service/orgs', publicServicehelper.getOrgs)
+
+app.all('/public', function (req, res) {
+  res.locals.cdnUrl = envHelper.PORTAL_CDN_URL
+  res.locals.theme = envHelper.PORTAL_THEME
+  res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
+  res.render(__dirname + '/public/index.ejs')
+})
+
 app.use('/public/*', express.static(path.join(__dirname, 'public')))
 if (default_tenant) {
   app.use(express.static(path.join(__dirname, 'tenant', default_tenant)))

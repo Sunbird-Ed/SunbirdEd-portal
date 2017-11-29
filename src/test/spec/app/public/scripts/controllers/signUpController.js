@@ -15,8 +15,8 @@ describe('SignUpCtrl', function () {
     })
   }))
 
-  var rootScope, $stateParams, signUpService, toasterService, $timeout,
-    scope, $state, $q, deferred, element
+  var rootScope, $stateParams, signUpService, toasterService, $timeout, compile,
+    scope, templateCache, $state, $q, deferred, element
   var req = {
       firstName: 'ntptest101',
       lastName: 'ntptest101',
@@ -31,12 +31,13 @@ describe('SignUpCtrl', function () {
     signUpResponseFail = {'id': 'api.content.flag', 'ver': '1.0', 'ts': '2017-10-05T10:50:48.801Z', 'params': {'resmsgid': '0c466d10-a9bb-11e7-8938-e1607b8b88ae', 'msgid': null, 'status': 'failed', 'err': 'ERR_GRAPH_SEARCH_UNKNOWN_ERROR', 'errmsg': 'Error'}, 'responseCode': 'RESOURCE_NOT_FOUND', 'result': {}}
   beforeEach(function () {
     setFixtures('<form autocomplete="off" id="signUpForm" class="ui form">' +
-      '<input type="text" name="userName" placeholder="eg:user.name , min 5 character required" ng-model="newUser.userName">' +
-      '<input type="password" name="password" placeholder="Password" ng-model="newUser.password" />' +
-      '</form>')
+
+        '<input type="text" name="userName" placeholder="eg:user.name , min 5 character required" ng-model="newUser.userName">' +
+        '<input type="password" name="password" placeholder="Password" ng-model="newUser.password" />' +
+        '</form>')
   })
   beforeEach(inject(function ($rootScope, _$stateParams_, _signUpService_, _toasterService_, _$timeout_,
-             _$state_, _$q_, $controller) {
+             _$state_, _$q_, $controller, $compile, $templateCache) {
     rootScope = $rootScope
     $stateParams = _$stateParams_
     signUpService = _signUpService_
@@ -47,6 +48,9 @@ describe('SignUpCtrl', function () {
     $q = _$q_
     deferred = _$q_.defer()
     signUpCtrl = new $controller('SignUpCtrl', {$scope: scope, $rootScope: rootScope})
+    $templateCache.put('views/home/Signup.html', '<div>signUp</div>')
+    compile = $compile
+    templateCache = $templateCache
     signUpCtrl.userName = 'ntptest101'
   }))
 
@@ -78,9 +82,9 @@ describe('SignUpCtrl', function () {
   it('should call submitForm', function () {
     spyOn(signUpCtrl, 'submitForm').and.callThrough()
     var isValid = true
+    element = compile('<div id="signupModal" class="ui modal"><form autocomplete="off" id="signUpForm" class="ui form"></form></div>')(scope)
     signUpCtrl.submitForm()
     scope.$apply()
-    // expect(signUpCtrl.submitForm).toHaveBeenCalled()
   })
 
   it('should show error message on getErrorMsg call', function () {
