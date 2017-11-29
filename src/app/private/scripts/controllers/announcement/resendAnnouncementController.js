@@ -42,11 +42,40 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
             createAnn.addNewLink()
           })
         })
+
+        announcementAdapter.getDefinitions($rootScope.rootOrgId, $rootScope.userId)
+                .then(function (response) {
+                  if (response.result.announcementtypes.content) {
+                    createAnn.announcementType = _.map(response.result.announcementtypes.content, 'name')
+                  }
+                  if (response.result.senderlist) {
+                    angular.forEach(response.result.senderlist, function (value, key) {
+                      createAnn.senderlist.push(value)
+                    })
+                  }
+
+                  $('#announcementType').dropdown('set text', createAnn.announcement.details.type)
+                }, function (err) {
+                  createAnn.hideAnncmntBtn = true
+                  toasterService.error($rootScope.messages.fmsg.m0069)
+                })
       } else {
         createAnn.announcement = $stateParams.announcement
       }
 
       createAnn.resendAnnouncement()
+
+      console.log('000', createAnn.announcement)
+
+      // angular.forEach(createAnn.announcement.links, function (value, key) {
+      //   createAnn.addNewLink()
+      // })
+
+      if (createAnn.stepNumber === 2) {
+        $timeout(function () {
+          $rootScope.$broadcast('component:update', createAnn.announcement.target.geo.ids)
+        }, 100)
+      }
     }
 
             /**
@@ -255,6 +284,81 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
       }, function (err) {
         toasterService.error(err.data.params.errmsg)
       })
+    }
+
+        /**
+         * @method getReadableFileSize
+         * @desc - convert byteSize into KB, MB
+         * @memberOf Controllers.createAnnouncementCtrl
+         * @param {int} [byteSize] [file size]
+         * @return {string} [return readable file size]
+         */
+    createAnn.getReadableFileSize = function (byteSize) {
+      var sizes = ['Bytes', 'KB', 'MB']
+      if (byteSize) {
+        var i = parseInt(Math.floor(Math.log(byteSize) / Math.log(1024)))
+        return createAnn.convertedFileSize = Math.round(byteSize / Math.pow(1024, i), 2) + ' ' + sizes[i]
+      } else {
+        return createAnn.convertedFileSize = '0 Byte'
+      }
+    }
+
+        /**
+         * @method initializeFileUploader
+         * @desc - create fine uploader instance by passing required params
+         * @memberOf Controllers.createAnnouncementCtrl
+         */
+    createAnn.initializeFileUploader = function () {
+      var apiUrl = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + config.URL.CONTENT.UPLOAD_MEDIA
+      var options = {
+        fileSizeLimit: config.AnncmntMaxFileSizeToUpload,
+        allowedExtensions: config.AnncmntAllowedFileExtension,
+        fileSizeErrorText: $rootScope.messages.imsg.m0021,
+        containerName: 'attachments/announcement',
+        uploadSuccess: createAnn.onUploadComplete,
+        onCancel: createAnn.onUploadCancel
+      }
+      fileUpload.createFineUploadInstance(options)
+    }
+
+        /**
+         * @method onUploadComplete
+         * @desc - invoked after attachement uploaded
+         * @memberOf Controllers.createAnnouncementCtrl
+         * @param {int} [id] [uploaded file count]
+         * @param {string} [name] [selected fine name]
+         * @param {object} [uploadDetails] [uploaded file details - name,mimeType,downloadUrl,and file size]
+         */
+    createAnn.onUploadComplete = function (id, name, uploadDetails) {
+      uploadDetails.size = createAnn.getReadableFileSize(uploadDetails.size)
+      createAnn.announcement.attachment.push(JSON.stringify(uploadDetails))
+      createAnn.uploadAttchement = true
+      createAnn.enableRecepientBtn()
+    }
+
+        /**
+         * @method onUploadCancel
+         * @desc - invoked when user cancel uploaded attachement
+         * @memberOf Controllers.createAnnouncementCtrl
+         * @param {int} [id] [uploaded file count]
+         * @param {string} [name] [selected fine name]
+         */
+    createAnn.onUploadCancel = function (id, name) {
+      var deleteFlag = createAnn.attachment.splice(id, 1)
+      if (deleteFlag.length === 0) {
+        angular.forEach(createAnn.attachment, function (value, key) {
+          var details = JSON.parse(value)
+          if (details.name === name) {
+            createAnn.attachment.splice(key, 1)
+          }
+        })
+      }
+
+      if (createAnn.attachment.length === 0) {
+        createAnn.uploadAttchement = false
+      }
+      createAnn.enableRecepientBtn()
+      $('#hide-section-with-button').css('style.display', 'block')
     }
   }
 ])
