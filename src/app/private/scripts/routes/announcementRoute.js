@@ -14,11 +14,19 @@ angular.module('playerApp')
             controller: 'announcementOutboxListController as announcementOutboxData'
           }
         },
-        onEnter: function ($stateParams, $rootScope, routeHelperService) {
+        onEnter: function ($stateParams, $rootScope, routeHelperService, portalTelemetryService) {
           $rootScope.profileActive = 'active'
           $rootScope.courseActive = ' '
           $rootScope.isPlayerPage = true
           routeHelperService.loadRouteConfig('announcementOutbox', null)
+          portalTelemetryService.fireImpressions({
+            env: 'community.announcements',
+            type: 'list',
+            pageid: 'announcement_outbox_list',
+            id: '',
+            name: '',
+            url: '/private/index#!/announcement/outbox/list'
+          })
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''
@@ -32,14 +40,27 @@ angular.module('playerApp')
             controller: 'announcementDetailsController as announcementDetailsData'
           }
         },
-        onEnter: function ($stateParams, $rootScope, routeHelperService) {
+        params: {
+          announcementName: undefined,
+          pageId: undefined
+        },
+        onEnter: function ($stateParams, $rootScope, routeHelperService, portalTelemetryService) {
           $rootScope.profileActive = 'active'
           $rootScope.courseActive = ' '
           $rootScope.isPlayerPage = true
           routeHelperService.loadRouteConfig('announcementDetails', null)
+          portalTelemetryService.fireImpressions({
+            env: 'community.announcements',
+            type: 'view',
+            pageid: $stateParams.pageId,
+            id: $stateParams.announcementId,
+            name: $stateParams.announcementName,
+            url: '/private/index#!/announcement/view/' + $stateParams.announcementId
+          })
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''
+          $('#annDetailsModal').modal('hide')
         }
       })
       .state('announcementInbox', {
@@ -50,11 +71,19 @@ angular.module('playerApp')
             controller: 'announcementInboxListController as announcementInboxData'
           }
         },
-        onEnter: function ($stateParams, $rootScope, routeHelperService) {
+        onEnter: function ($stateParams, $rootScope, routeHelperService, portalTelemetryService) {
           $rootScope.homeActive = 'active'
           $rootScope.isPlayerPage = true
           $rootScope.courseActive = ' '
           routeHelperService.loadRouteConfig('announcementInbox', null)
+          portalTelemetryService.fireImpressions({
+            env: 'community.announcements',
+            type: 'list',
+            pageid: 'announcement_inbox_list',
+            id: '',
+            name: '',
+            url: '/private/index#!/announcement/inbox/list'
+          })
         },
         onExit: function ($rootScope) {
           $rootScope.homeActive = ''
