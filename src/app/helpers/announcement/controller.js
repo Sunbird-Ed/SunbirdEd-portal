@@ -46,10 +46,15 @@ class AnnouncementController {
         this.announcementCreate = announcement;
 
         /**
-         * @property {class} announcement type class to validate the object
+         * @property {class}  - announcement type class to validate the object
          * @type {[type]}
          */
         this.announcementType = announcementtype;
+
+        /**
+         * @property {class} - Http Service instance used ot make a http request calls
+         */
+        this.httpService = httpWrapper;
 
         /**
          * Creating a instance of ObjectStoreRest with metrics,announcement,announcementType model classes
@@ -106,11 +111,9 @@ class AnnouncementController {
                 let options = {
                     method: 'GET',
                     uri: envVariables.DATASERVICE_URL + 'user/v1/read/' + data.id,
-                    headers: this.getRequestHeader({
-                        xAuthUserToken: authUserToken
-                    })
+                    headers: this.httpService.getRequestHeader(authUserToken)
                 }
-                this.httpService(options).then((data) => {
+                this.httpService.call(options).then((data) => {
                         data.body = JSON.parse(data.body)
                         resolve(_.get(data, 'body.result.response'))
                     })
@@ -223,9 +226,7 @@ class AnnouncementController {
                 "json": true
             }
             let authUserToken = _.get(data, 'kauth.grant.access_token.token') || data.headers['x-authenticated-user-token']
-            options.headers = this.getRequestHeader({
-                xAuthUserToken: authUserToken
-            })
+            options.headers = this.httpService.getRequestHeader(authUserToken)
             var targetIds = []
             if (data.body.request.target) {
                 _.forIn(data.body.request.target, (value, key) => {
@@ -542,12 +543,10 @@ class AnnouncementController {
                 },
                 "json": true
             }
-            options.headers = this.getRequestHeader({
-                xAuthUserToken: authUserToken
-            })
+            options.headers = this.httpService.getRequestHeader(authUserToken)
             try {
                 let data = new Promise((resolve, reject) => {
-                    this.httpService(options).then((data) => {
+                    this.httpService.call(options).then((data) => {
                         resolve(data.body.result.response)
                     }).catch((error) => {
                         reject(this.customError(error))
@@ -931,34 +930,6 @@ class AnnouncementController {
         return this.__create()(requestObj)
     }
 
-    httpService(options) {
-        return new Promise((resolve, reject) => {
-            if (!options) reject('options required!')
-            options.headers = options.headers || this.getRequestHeader();
-            webService(options, (error, response, body) => {
-                if (error || response.statusCode >= 400) {
-                    reject(error)
-                } else {
-                    resolve({
-                        response,
-                        body
-                    })
-                }
-            })
-        })
-    }
-
-    getRequestHeader(opt) {
-        return {
-            'x-device-id': 'x-device-id',
-            'ts': dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo"),
-            'x-consumer-id': envVariables.PORTAL_API_AUTH_TOKEN,
-            'content-type': 'application/json',
-            'accept': 'application/json',
-            'x-authenticated-user-token': opt.xAuthUserToken || '',
-            'Authorization': 'Bearer ' + envVariables.PORTAL_API_AUTH_TOKEN
-        }
-    }
 
     forEachPromise(items, fn, options, context) {
         return items.reduce(function(promise, item) {
@@ -971,7 +942,7 @@ class AnnouncementController {
     sendNotification(item, options, context) {
         options.body.request.to = item;
         return new Promise((resolve, reject) => {
-            context.httpService(options).then((data) => {
+            context.httpService.call(options).then((data) => {
                 resolve(data);
             }).catch((error) => {
                 reject(error);
