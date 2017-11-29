@@ -1,5 +1,5 @@
-<div class="ui modal large" ng-init="createAnn.init();" id="createAnnouncementModal">
-  <i class="close icon"></i>
+<div class="ui modal large announcementDetailsModal" ng-init="createAnn.init();" id="createAnnouncementModal">
+  <i class="close icon" ng-click="closePopup()"></i>
   <div class=" ui segment margin-top-10">
     <div class=" margin-bottom-15">
       <div class="ui grid">
@@ -37,7 +37,7 @@
         </div>
       </div>
     </div>
-    <div class="content">
+    <div class="content">{{createAnn.isMetaModified}}
       <form class="ui form announcementForm" name="announcementForm">
         <div class="ui grid" ng-if="createAnn.stepNumber === 1">
           <div class="eight wide column">
@@ -132,7 +132,7 @@
     <div class="ui primary button" ng-if="createAnn.stepNumber === 3" ng-click="createAnn.goToNextStep()">{{$root.frmelmnts.btn.anncmntpreview}}</div>
     <div class="ui primary button" ng-if="createAnn.stepNumber === 4 && !createAnn.editAction" id="sendAnnouncement" ng-click="createAnn.saveAnnouncement(createAnn.data)">{{$root.frmelmnts.btn.anncmntsendanncmnt}}</div>
     <div class="ui primary button" ng-if="createAnn.stepNumber === 4 && createAnn.editAction" id="resendAnnouncement" ng-click="createAnn.resendAnnouncement(createAnn.data)">{{$root.frmelmnts.btn.anncmntsendanncmnt}}</div>
-    <div ng-if="createAnn.stepNumber === 1" id="selectRecipientBtn" class="ui primary button" ng-class="{'disabled': createAnn.disableBtn === true || announcementForm.$invalid}" ng-click="createAnn.goToNextStep()" ng-init="createAnn.enableRecepientBtn()">{{ createAnn.editAction ? $root.frmelmnts.btn.anncmnteditrecipients : $root.frmelmnts.btn.anncmntselectrecipients}}</div>
+    <div ng-if="createAnn.stepNumber === 1" id="selectRecipientBtn" class="ui primary button" ng-class="{'disabled': createAnn.disableBtn === true || announcementForm.$invalid}" ng-click="createAnn.goToNextStep()" >{{ createAnn.editAction ? $root.frmelmnts.btn.anncmnteditrecipients : $root.frmelmnts.btn.anncmntselectrecipients}}</div>
   </div>
 </div>
 <!-- Announcement created success modal -->

@@ -68,14 +68,35 @@ angular.module('playerApp')
             controller: 'createAnnouncementCtrl as createAnn'
           }
         },
-        params:{
-            announcement: undefined
+        params: {
+          announcement: undefined
         },
         onEnter: function ($stateParams, $rootScope, routeHelperService) {
           $rootScope.profileActive = 'active'
           $rootScope.courseActive = ' '
           $rootScope.isPlayerPage = true
           routeHelperService.loadRouteConfig('announcementCreate', null)
+        },
+        onExit: function ($rootScope) {
+          $rootScope.profileActive = ''
+        }
+      })
+      .state('announcementResend', {
+        url: '/announcement/resend/:announcementId/:stepNumber',
+        views: {
+          mainView: {
+            templateUrl: '/views/announcement/createAnnouncement.html',
+            controller: 'resendAnnouncementCtrl as createAnn'
+          }
+        },
+        params: {
+          announcement: undefined
+        },
+        onEnter: function ($stateParams, $rootScope, routeHelperService) {
+          $rootScope.profileActive = 'active'
+          $rootScope.courseActive = ' '
+          $rootScope.isPlayerPage = true
+          routeHelperService.loadRouteConfig('announcementResend', null)
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''
