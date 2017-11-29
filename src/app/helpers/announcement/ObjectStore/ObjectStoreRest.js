@@ -52,8 +52,8 @@ class ObjectStoreRest extends ObjectStore {
                     uri: envVariables.DATASERVICE_URL + 'data/v1/object/create',
                     body: {
                         request: {
-                            'tableName': this.model.table,
-                            'documentName':this.model.table,
+                            'entityName': this.model.table,
+                            'indexed': true,
                             'payload': data.values
                         }
                     },
@@ -88,7 +88,6 @@ class ObjectStoreRest extends ObjectStore {
 
     __findObject() {
             return async((data, indexStore) => {
-                console.log("tables",this.model.table)
                 try {
                     let options = {
                         method: 'POST',
@@ -96,7 +95,7 @@ class ObjectStoreRest extends ObjectStore {
                         body: {
                             request: {
                                 'filters': data.query,
-                                'documentName':this.model.table,
+                                'entityName': this.model.table,
                                 "facets": data.facets,
                                 "limit": data.limit,
                                 "sort_by": data.sort_by
@@ -148,8 +147,8 @@ class ObjectStoreRest extends ObjectStore {
                     uri: envVariables.DATASERVICE_URL + 'data/v1/object/update',
                     body: {
                         request: {
-                            'tableName': this.model.table,
-                            'documentName': this.model.table,
+                            'entityName':this.model.table,
+                            'indexed': true,
                             'payload': data.values
                         }
                     },
