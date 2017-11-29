@@ -122,6 +122,7 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
          * @memberOf Controllers.resendAnnouncementCtrl
          */
     createAnn.closePopup = function () {
+      alert()
       if (createAnn.isMetaModified) {
         createAnn.confirmationModal()
         return false
