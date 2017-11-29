@@ -1,5 +1,9 @@
 <div class="ui modal large announcementDetailsModal" ng-init="createAnn.init();" id="createAnnouncementModal">
+<<<<<<< HEAD
   <i class="close icon" ng-click="closePopup()"></i>
+=======
+  <i class="close icon"></i>
+>>>>>>> nit-origin/SB-867-announcement-refactor
   <div class=" ui segment margin-top-10">
     <div class=" margin-bottom-15">
       <div class="ui grid">
@@ -135,85 +139,9 @@
     <div ng-if="createAnn.stepNumber === 1" id="selectRecipientBtn" class="ui primary button" ng-class="{'disabled': createAnn.disableBtn === true || announcementForm.$invalid}" ng-click="createAnn.goToNextStep()" >{{ createAnn.editAction ? $root.frmelmnts.btn.anncmnteditrecipients : $root.frmelmnts.btn.anncmntselectrecipients}}</div>
   </div>
 </div>
-<!-- Announcement created success modal -->
-<div class="ui modal small" id="announcementSuccessModal">
-  <i class="close icon"></i>
-  <div class=" ui segment margin-top-10">
-    <div class="content">
-      <div class="ui grid">
-        <div class="ui centered grid">
-          <div class="row">
-            <i class="checkmark icon big circular createAnnGrayShade"></i>
-          </div>
-          <div class="row">
-            <span class="dashBoardSectionHeading">{{$root.frmelmnts.lbl.anncmntsentsuccess}}</span>
-          </div>
-          <div class="">
-            <span class="createAnnGrayShade line-height-20">{{$root.frmelmnts.lbl.anncmntsentdesc}}</span>
-          </div>
-        </div>
-        <br/>
-        <div class="row ui two column centered grid margin-top-20 actions">
-          <button class="ui primary basic button announcementButton btn-width-34 approve">
-            <span class="announcementButtonText">{{$root.frmelmnts.btn.anncmntgotit}}</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="ui modal small" id="announcementCancelModal">
-  <i class="close icon"></i>
-  <div class=" ui segment margin-top-10">
-    <div class="content">
-      <div class="ui grid">
-        <div class="ui centered grid">
-          <div class="row">
-            <div class="ui basic icon circular button cursor-pointer">
-               <i class="ui huge help outline icon"></i>
-           </div>
-          </div>
-          <div class="row">
-            <span class="dashBoardSectionHeading">{{$root.frmelmnts.lbl.anncmntcancel}}</span>
-          </div>
-          <div class="">
-            <span class="createAnnGrayShade line-height-20">{{$root.frmelmnts.lbl.anncmntcanceldesc}}</span>
-          </div>
-        </div>
-        <br/>
-        <div class="row ui two column centered grid margin-top-20 actions">
-          <div class="ui primary basic button announcementButton btn-width-34 approve">{{$root.frmelmnts.btn.yes}}</div>
-          <div class="ui primary button announcementButton btn-width-34 deny">{{$root.frmelmnts.btn.no}}</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<ng-include="'views/announcement/announcementResendSuccess.html'">
+<ng-include="'views/announcement/announcementCreateSuccess.html'">
+<ng-include="'views/announcement/announcementCancel.html'">
 
-<!-- Announcement resent success modal -->
-<div class="ui modal small" id="announcementResendModal">
-  <i class="close icon"></i>
-  <div class=" ui segment margin-top-10">
-    <div class="content">
-      <div class="ui grid">
-        <div class="ui centered grid">
-          <div class="row">
-            <i class="checkmark icon big circular createAnnGrayShade"></i>
-          </div>
-          <div class="row">
-            <span class="dashBoardSectionHeading">{{$root.frmelmnts.lbl.anncmntresentmsg}}</span>
-          </div>
-          <div class="">
-            <span class="createAnnGrayShade line-height-20">{{$root.frmelmnts.lbl.anncmntresentmsgdesc}}</span>
-          </div>
-        </div>
-        <br/>
-        <div class="row ui two column centered grid margin-top-20 actions">
-          <button class="ui primary basic button announcementButton btn-width-34" ng-click="announcementOutboxData.closeModal('announcementResendModal')">
-            <span class="announcementButtonText">{{$root.frmelmnts.btn.anncmntgotit}}</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+
+

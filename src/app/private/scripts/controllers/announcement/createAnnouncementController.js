@@ -23,26 +23,6 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       }
     }
 
-    announcementService.getDefinitions(getDefinitionReq).then(function (response) {
-      response = response.data
-      if (response && response.responseCode === 'OK') {
-        if (response.result.announcementtypes.content) {
-          createAnn.announcementType = _.map(response.result.announcementtypes.content, 'name')
-        }
-        if (response.result.senderlist) {
-          angular.forEach(response.result.senderlist, function (value, key) {
-            createAnn.senderlist.push(value)
-          })
-        }
-      } else {
-        createAnn.hideAnncmntBtn = true
-        toasterService.error($rootScope.messages.fmsg.m0069)
-      }
-    }).catch(function (response) {
-      createAnn.hideAnncmntBtn = true
-      toasterService.error($rootScope.messages.fmsg.m0069)
-    })
-
         /**
          * @method initializeModal
          * @desc - function to initialize semantic dropdowns
@@ -149,23 +129,6 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
     }
 
         /**
-         * @method previewAnn
-         * @desc - preview announcement
-         * @memberOf Controllers.createAnnouncementCtrl
-         */
-    createAnn.previewAnn = function () {
-            // createAnn.linkArray = []
-            // if (createAnn.announcement.links) {
-            //     angular.forEach(createAnn.announcement.links, function(value, key) {
-            //         if (value.trim().length) {
-            //             createAnn.linkArray.push(value)
-            //         }
-            //     })
-            // }
-      createAnn.previewData = createAnn.announcement
-    }
-
-        /**
          * @method removeRicipients
          * @desc - remove selected recipients
          * @memberOf Controllers.createAnnouncementCtrl
@@ -218,7 +181,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
         })
       }
       var selectRecipientBtn = angular.element(document.querySelector('#selectRecipientBtn'))
-      if (createAnn.announcement.details.title && createAnn.announcement.details.from && createAnn.announcement.details.type &&
+      if (createAnn.announcement.details.title && createAnn.announcement.details.from && (true || createAnn.announcement.details.type) &&
                 (createAnn.uploadAttchement || createAnn.announcement.details.description || links.length)) {
         createAnn.disableBtn = false
         selectRecipientBtn.removeClass('disabled')
@@ -255,49 +218,24 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
          * @param {object} [data] [form data]
          */
     createAnn.saveAnnouncement = function (data) {
-      createAnn.isMetaModified = false
-      var requestBody = angular.copy(data)
-      requestBody.sourceId = $rootScope.rootOrgId
-      requestBody.createdBy = $rootScope.userId
-      requestBody.target = {
-        'geo': {
-          'ids': _.map(createAnn.announcement.selTar, 'id')
-        }
-      }
-
-      if (createAnn.linkArray.length > 0) {
-        requestBody.links = createAnn.linkArray
-      } else {
-        delete requestBody.links
-      }
-
-      if (createAnn.attachment.length) {
-        requestBody.attachments = createAnn.attachment
-      }
-
-      if (angular.isUndefined(requestBody.description)) {
-        delete requestBody.description
-      }
+            // createAnn.isMetaModified = false
       var requestData = {
-        request: requestBody
+        request: createAnn.announcement
       }
-      announcementService.createAnnouncement(requestData).then(function (apiResponse) {
-        apiResponse = apiResponse.data
-        if (apiResponse && apiResponse.responseCode === 'OK') {
-          $timeout(function () {
-            createAnn.refreshFormValues()
-          })
-          $('#announcementSuccessModal').modal({
-            closable: false
-          }).modal('show')
-        } else {
-          createAnn.isMetaModified = true
-          createAnn.showError(apiResponse)
-        }
-      }).catch(function (apiResponse) {
-        createAnn.isMetaModified = true
-        createAnn.showError(apiResponse.data)
-      })
+
+      announcementAdapter.createAnnouncement(createAnn.announcement)
+            .then(function (apiResponse) {
+              $timeout(function () {
+                createAnn.refreshFormValues()
+              })
+              $('#announcementSuccessModal').modal({
+                closable: false
+              }).modal('show')
+              $state.go('announcementOutbox')
+            }, function (err) {
+              createAnn.isMetaModified = true
+              createAnn.showError(apiResponse.data)
+            })
     }
 
         /**
@@ -362,7 +300,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
          */
     createAnn.onUploadComplete = function (id, name, uploadDetails) {
       uploadDetails.size = createAnn.getReadableFileSize(uploadDetails.size)
-      createAnn.attachment.push(JSON.stringify(uploadDetails))
+      createAnn.announcement.attachment.push(JSON.stringify(uploadDetails))
       createAnn.uploadAttchement = true
       createAnn.enableRecepientBtn()
     }
@@ -461,6 +399,23 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       } else {
         createAnn.announcement = $stateParams.announcement
       }
+
+      if (createAnn.stepNumber === 1) {
+        announcementAdapter.getDefinitions($rootScope.rootOrgId, $rootScope.userId)
+                .then(function (response) {
+                  if (response.result.announcementtypes.content) {
+                    createAnn.announcementType = _.map(response.result.announcementtypes.content, 'name')
+                  }
+                  if (response.result.senderlist) {
+                    angular.forEach(response.result.senderlist, function (value, key) {
+                      createAnn.senderlist.push(value)
+                    })
+                  }
+                }, function (err) {
+                  createAnn.hideAnncmntBtn = true
+                  toasterService.error($rootScope.messages.fmsg.m0069)
+                })
+      }
     }
 
         /**
@@ -475,11 +430,21 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
           if (_.isEmpty(createAnn.announcement.sourceId)) {
             createAnn.announcement.sourceId = $rootScope.rootOrgId
           }
+          if (_.isEmpty(createAnn.announcement.createdBy)) {
+            createAnn.announcement.createdBy = $rootScope.userId
+          }
         } else {
           return false
         }
       }
 
+      createAnn.announcement.target.geo.ids = _.map(createAnn.announcement.selTar, 'id')
+      var geoIds = _.map(createAnn.announcement.selTar, 'id')
+      $timeout(function () {
+        $rootScope.$broadcast('component:update', geoIds)
+      }, 100)
+
+            // createAnn.announcement = new AnnouncementModel.Announcement(createAnn.announcement)
       $state.go('announcementCreate', {stepNumber: ++createAnn.stepNumber, announcement: createAnn.announcement}, {reload: true})
     }
 
@@ -489,6 +454,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
          * @memberOf Controllers.createAnnouncementCtrl
          */
     createAnn.goToBackStep = function () {
+            // createAnn.announcement = new AnnouncementModel.Announcement(createAnn.announcement)
       $state.go('announcementCreate', {stepNumber: --createAnn.stepNumber, announcement: createAnn.announcement}, {reload: true})
     }
   }

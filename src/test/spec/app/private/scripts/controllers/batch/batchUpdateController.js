@@ -101,11 +101,21 @@ describe('Controller:BatchUpdateController', function () {
     batchUpdate = createContoller()
     batchUpdate.batchData = batchTestData.batchData
     batchUpdate.userList = batchTestData.userList
-
     spyOn(batchUpdate, 'showUpdateBatchModal').and.callThrough()
     batchUpdate.showUpdateBatchModal()
+    setFixtures('<div class="createbatchdropdown ui fluid multiple search selection dropdown " id="mentors">')
     scope.$apply()
     expect(batchUpdate.showUpdateBatchModal).not.toBe(undefined)
+    timeout.flush(10)
+  })
+
+  it('Should clear form on clearForm call', function () {
+    batchUpdate = createContoller()
+    setFixtures('<form class="ui form batchAddUserForm" id="updateBatch" name="updateBatch" validate></form')
+    spyOn(batchUpdate, 'clearForm').and.callThrough()
+    batchUpdate.clearForm()
+    scope.$apply()
+    expect(batchUpdate.getBatchDetails).not.toBe(undefined)
   })
 
   it('Should load user list', function () {
@@ -141,13 +151,6 @@ describe('Controller:BatchUpdateController', function () {
     spyOn(batchUpdate, 'hideUpdateBatchModal').and.callThrough()
     batchUpdate.hideUpdateBatchModal()
     expect(batchUpdate.hideUpdateBatchModal).not.toBe(undefined)
-  })
-
-  it('Should clear batch form data', function () {
-    batchUpdate = createContoller()
-    spyOn(batchUpdate, 'clearForm').and.callThrough()
-//    batchUpdate.clearForm()
-//    expect(batchUpdate.clearForm).toBeDefined()
   })
 
   it('Should update batch details', function () {
