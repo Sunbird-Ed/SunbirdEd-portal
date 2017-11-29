@@ -42,8 +42,8 @@ class ObjectStoreRest extends ObjectStore {
                     uri: envVariables.DATASERVICE_URL + 'data/v1/object/create',
                     body: {
                         request: {
-                            'tableName': data.table,
-                            'documentName': data.table,
+                            'entityName': data.table,
+                            'indexed': true,
                             'payload': data.values
                         }
                     },
@@ -85,7 +85,7 @@ class ObjectStoreRest extends ObjectStore {
                         body: {
                             request: {
                                 'filters': data.query,
-                                'documentName': data.table,
+                                'entityName': data.table,
                                 "facets": data.facets,
                                 "limit": data.limit,
                                 "sort_by": data.sort_by
@@ -137,8 +137,8 @@ class ObjectStoreRest extends ObjectStore {
                     uri: envVariables.DATASERVICE_URL + 'data/v1/object/update',
                     body: {
                         request: {
-                            'tableName': data.table,
-                            'documentName': data.table,
+                            'entityName': data.table,
+                            'indexed': true,
                             'payload': data.values
                         }
                     },
