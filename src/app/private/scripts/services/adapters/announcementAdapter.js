@@ -225,6 +225,10 @@ angular.module('playerApp')
        * @instance
        */
       this.resendAnnouncement = function (annoucement) {
+        // Convert attachment object to string
+          _.forEach(annoucement.attachments, function (attachment, index) {
+          annoucement.attachments[index] = JSON.stringify(attachment)
+        })
         var data = {
           request: {
             title: annoucement.details.title,

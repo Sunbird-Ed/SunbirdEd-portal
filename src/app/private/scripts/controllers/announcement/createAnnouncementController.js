@@ -15,14 +15,6 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
         createAnn.hideAnncmntBtn = false
         createAnn.uploadAttchement = false
 
-        var getDefinitionReq = {
-            request: {
-                'rootorgid': $rootScope.rootOrgId,
-                'userid': $rootScope.userId,
-                'definitions': ['announcementtypes', 'senderlist']
-            }
-        }
-
         /**
          * @method initializeModal
          * @desc - function to initialize semantic dropdowns
