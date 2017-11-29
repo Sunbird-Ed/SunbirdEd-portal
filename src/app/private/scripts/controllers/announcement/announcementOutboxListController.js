@@ -106,11 +106,6 @@ angular.module('playerApp')
      */
       announcementOutboxData.getResend = function (announcementId) {
         $state.go('announcementResend', {announcementId: announcementId, stepNumber: '1'})
-        // announcementAdapter.getResend(announcementId).then(function (apiResponse) {
-        //   if (apiResponse.hasOwnProperty('result')) {
-        //     $rootScope.$broadcast('editAnnouncementBeforeResend', apiResponse.result)
-        //   }
-        // })
       }
 
     /**
