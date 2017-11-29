@@ -4,7 +4,7 @@
 
 let webService = require('request')
 let envVariables = require('../../environmentVariablesHelper.js')
-let AppError = require('../ErrorConstructor.js')
+let AppError = require('./ErrorInterface.js')
 
 /**
  * It used to invoke http request calls

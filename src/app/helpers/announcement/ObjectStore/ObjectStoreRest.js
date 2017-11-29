@@ -3,12 +3,11 @@ let async = require('asyncawait/async')
 let await = require('asyncawait/await')
 let ObjectStore = require('./ObjectStore.js')
 let envVariables = require('../../environmentVariablesHelper.js')
-let AppError = require('../ErrorConstructor.js')
+let AppError = require('../services/ErrorInterface.js')
 let HttpStatus = require('http-status-codes')
 
-
-
 class ObjectStoreRest extends ObjectStore {
+
     /**
      * Create Object store instance.
      * Call can instantiate the ObjectStore as follows
@@ -16,23 +15,30 @@ class ObjectStoreRest extends ObjectStore {
      * let ObjectStore = new ObjectStoreRest({metrics:metricsModelInst, announcement: announcmentModelInst, announcementtype: announcmentTypeModelInst, httpWrapper:httpWrapperInstance})
      */
 
-    constructor(options = {}) {
-            super(options)
-        }
+    constructor({model, service } = {}) {
+        super() 
         /**
-         * Which is used to create a announcemet.
-         * @param  {object} data        - Query object which is used to interact with casandra/elastic search.
-         * @param  {Boolean} indexStore - It defines weather object should create in elastic search or not.
-         *                                If indexStore is FALSE then Object will not create in the elastic search.
-         * @return {obejct}             - Response object.
+         * @property {class} - Defines the model instance ex: MetricsModel, AnnouncementModel
          */
+        this.model = model;
+        this.service = service;
+    }
+
+    /**
+     * Which is used to create a announcemet.
+     * @param  {object} data        - Query object which is used to interact with casandra/elastic search.
+     * @param  {Boolean} indexStore - It defines weather object should create in elastic search or not.
+     *                                If indexStore is FALSE then Object will not create in the elastic search.
+     * @return {object}             - Response object.
+     */
     createObject(data, indexStore) {
         return this.__createObject()(data, indexStore)
     }
+
     __createObject() {
         return async((data, indexStore) => {
             try {
-                let validation = await (this.modelMap[data.table].validateModel(data.values))
+                let validation = await (this.model.validateModel(data.values))
                 if (!validation.isValid) throw {
                     message: 'Invalid model request!',
                     status: HttpStatus.BAD_REQUEST
@@ -42,8 +48,8 @@ class ObjectStoreRest extends ObjectStore {
                     uri: envVariables.DATASERVICE_URL + 'data/v1/object/create',
                     body: {
                         request: {
-                            'tableName': data.table,
-                            'documentName': data.table,
+                            'tableName': this.model.table,
+                            'documentName':this.model.table,
                             'payload': data.values
                         }
                     },
@@ -52,7 +58,7 @@ class ObjectStoreRest extends ObjectStore {
                 if (indexStore == false) {
                     options.body.request = _.omit(options.body.request, ['documentName']);
                 }
-                let result = await (this.httpService.call(options))
+                let result = await (this.service.call(options))
                 return {
                     data: _.get(result, 'body.result'),
                 }
@@ -78,6 +84,7 @@ class ObjectStoreRest extends ObjectStore {
 
     __findObject() {
             return async((data, indexStore) => {
+                console.log("tables",this.model.table)
                 try {
                     let options = {
                         method: 'POST',
@@ -85,7 +92,7 @@ class ObjectStoreRest extends ObjectStore {
                         body: {
                             request: {
                                 'filters': data.query,
-                                'documentName': data.table,
+                                'documentName':this.model.table,
                                 "facets": data.facets,
                                 "limit": data.limit,
                                 "sort_by": data.sort_by
@@ -96,9 +103,9 @@ class ObjectStoreRest extends ObjectStore {
                     options.body.request = _.pickBy(options.body.request, _.identity); // Removes all falsey values
                     if (indexStore == false) {
                         options.body.request = _.omit(options.body.request, ['documentName']);
-                        options.body.request.tableName = data.table;
+                        options.body.request.tableName = this.model.table;
                     }
-                    let result = await (this.httpService.call(options))
+                    let result = await (this.service.call(options))
                     return _.get(result, 'body.result.response.count') > 0 ? {
                         data: _.get(result, 'body.result.response')
                     } : {
@@ -137,14 +144,14 @@ class ObjectStoreRest extends ObjectStore {
                     uri: envVariables.DATASERVICE_URL + 'data/v1/object/update',
                     body: {
                         request: {
-                            'tableName': data.table,
-                            'documentName': data.table,
+                            'tableName': this.model.table,
+                            'documentName': this.model.table,
                             'payload': data.values
                         }
                     },
                     json: true
                 }
-                let result = await (this.httpService.call(options))
+                let result = await (this.service.call(options))
                 return {
                     data: result
                 }

@@ -9,14 +9,10 @@ let dateFormat = require('dateformat')
 let webService = require('request')
 let envVariables = require('../environmentVariablesHelper.js')
 let ApiInterceptor = require('sb_api_interceptor')
-let httpWrapper = require('./ObjectStore/httpWrapper.js')
-let AppError = require('./ErrorConstructor.js')
+let httpWrapper = require('./services/httpWrapper.js')
+let AppError = require('./services/ErrorInterface.js')
 
-const model = {
-    'ANNOUNCEMENT': 'announcement',
-    'ANNOUNCEMENTTYPE': 'announcementtype',
-    'METRICS': 'metrics'
-}
+
 const statusConstant = {
     'ACTIVE': 'active',
     'CANCELLED': 'cancelled',
@@ -29,42 +25,35 @@ const metricsActivityConstant = {
 }
 class AnnouncementController {
 
-    constructor({
-        metrics,
-        announcement,
-        announcementtype
-    } = {}) {
+    constructor({metricsModel, announcementModel, announcementTypeModel, service } = {}) {
         /**
          * @property {class}  - Metrics model class to validate the metrics object
          */
-        this.metrics = metrics;
+        this.metricsModel = metricsModel;
 
         /**
          * @property {class} - announcment model class to validate the object
          * @type {[type]}
          */
-        this.announcementCreate = announcement;
+        this.announcementModel = announcementModel;
 
         /**
          * @property {class}  - announcement type class to validate the object
          * @type {[type]}
          */
-        this.announcementType = announcementtype;
+        this.announcementTypeModel = announcementTypeModel;
 
         /**
          * @property {class} - Http Service instance used ot make a http request calls
          */
-        this.httpService = httpWrapper;
+        this.httpService = service || httpWrapper;
 
         /**
          * Creating a instance of ObjectStoreRest with metrics,announcement,announcementType model classes
          */
-        this.objectStoreRest = new ObjectStoreRest({
-            metrics: this.metrics,
-            announcement: this.announcementCreate,
-            announcementtype: this.announcementType,
-            httpWrapper: httpWrapper
-        })
+        this.announcementStore = new ObjectStoreRest({model: this.announcementModel, service:this.httpService});
+        this.announcementMetricsStore = new ObjectStoreRest({model:this.metricsModel, service:this.httpService});
+        this.announcementTypeStore = new ObjectStoreRest({model:this.announcementTypeModel, service:this.httpService})
     }
 
     /**
@@ -79,7 +68,7 @@ class AnnouncementController {
         return async((requestObj) => {
             try {
                 const CREATE_ROLE = 'ANNOUNCEMENT_SENDER'
-                let validation = this.announcementCreate.validateApi(requestObj.body)
+                let validation = this.announcementModel.validateApi(requestObj.body)
                 if (!validation.isValid) throw this.customError({
                     message: validation.error,
                     status: HttpStatus.BAD_REQUEST
@@ -149,7 +138,6 @@ class AnnouncementController {
                 statusCode: HttpStatus.BAD_REQUEST
             }))
             let query = {
-                table: model.ANNOUNCEMENT,
                 values: {
                     'id': announcementId,
                     'sourceid': data.sourceId,
@@ -168,7 +156,7 @@ class AnnouncementController {
                 }
             }
 
-            this.objectStoreRest.createObject(query)
+            this.announcementStore.createObject(query)
                 .then((data) => {
                     if (data) {
                         resolve({
@@ -258,12 +246,11 @@ class AnnouncementController {
     __getAnnouncementById(requestObj) {
         return new Promise((resolve, reject) => {
             let query = {
-                table: model.ANNOUNCEMENT,
                 query: {
                     'id': requestObj.params.id
                 }
             }
-            this.objectStoreRest.findObject(query)
+            this.announcementStore.findObject(query)
                 .then((data) => {
                     if (data) {
                         _.forEach(data.data.content, (announcementObj) => {
@@ -320,12 +307,11 @@ class AnnouncementController {
     __getAnnouncementTypes(requestObj) {
         return new Promise((resolve, reject) => {
             let query = {
-                table: model.ANNOUNCEMENTTYPE,
                 query: {
                     'rootorgid': _.get(requestObj, 'body.request.rootOrgId')
                 }
             }
-            this.objectStoreRest.findObject(query)
+            this.announcementTypeStore.findObject(query)
                 .then((data) => {
                     if (data) {
                         resolve(data.data)
@@ -353,7 +339,6 @@ class AnnouncementController {
     __cancelAnnouncementById() {
         return async((requestObj) => {
             let query = {
-                table: model.ANNOUNCEMENT,
                 values: {
                     id: _.get(requestObj, 'body.request.announcenmentId'),
                     status: statusConstant.CANCELLED
@@ -372,7 +357,7 @@ class AnnouncementController {
             }
             return new Promise((resolve, reject) => {
                 if (status) {
-                    this.objectStoreRest.updateObjectById(query)
+                    this.announcementStore.updateObjectById(query)
                         .then((data) => {
                             if (data) {
                                 resolve({
@@ -458,7 +443,6 @@ class AnnouncementController {
 
             // Query announcements where target is listed Geolocations
             let query = {
-                table: model.ANNOUNCEMENT,
                 query: {
                     "target.geo.ids": targetGeolocations,
                     "status": statusConstant.ACTIVE
@@ -471,7 +455,7 @@ class AnnouncementController {
 
             try {
                 let data = await (new Promise((resolve, reject) => {
-                    this.objectStoreRest.findObject(query)
+                    this.announcementStore.findObject(query)
                         .then((data) => {
                             if (!data) {
                                 throw {
@@ -562,7 +546,6 @@ class AnnouncementController {
     __getMetricsForInbox(announcementIds, userId) {
         return new Promise((resolve, reject) => {
             let query = {
-                table: model.METRICS,
                 query: {
                     "announcementid": announcementIds,
                     "userid": userId
@@ -570,7 +553,7 @@ class AnnouncementController {
                 limit: 10000
             }
 
-            this.objectStoreRest.findObject(query)
+            this.announcementMetricsStore.findObject(query)
                 .then((data) => {
                     if (!data) {
                         resolve(false)
@@ -612,7 +595,6 @@ class AnnouncementController {
 
             // build query
             let query = {
-                table: model.ANNOUNCEMENT,
                 query: {
                     'userid': _.get(requestObj, 'body.request.userId')
                 },
@@ -623,7 +605,7 @@ class AnnouncementController {
             let metrics_clone = undefined;
 
             // execute query and process response
-            this.objectStoreRest.findObject(query)
+            this.announcementStore.findObject(query)
                 .then((data) => {
                     if (!data) {
                         throw {
@@ -737,7 +719,7 @@ class AnnouncementController {
                     })
                 }
                 // validate request
-                let request = this.metrics.validateApi(requestObj.body)
+                let request = this.metricsModel.validateApi(requestObj.body)
                 if (!request.isValid) throw new AppError({
                     message: 'Invalid request',
                     statusCode: HttpStatus.BAD_REQUEST
@@ -785,7 +767,7 @@ class AnnouncementController {
                     status: HttpStatus.UNAUTHORIZED
                 })
             }
-            let request = this.metrics.validateApi(requestObj.body)
+            let request = this.metricsModel.validateApi(requestObj.body)
             if (!request.isValid) throw {
                 message: 'Invalid request!',
                 status: HttpStatus.BAD_REQUEST
@@ -823,7 +805,6 @@ class AnnouncementController {
             // build query
             let metricsId = uuidv1()
             let query = {
-                table: model.METRICS,
                 values: {
                     'id': metricsId,
                     'userid': requestObj.userId,
@@ -833,7 +814,7 @@ class AnnouncementController {
                     'createddate': dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo"),
                 }
             }
-            this.objectStoreRest.createObject(query)
+            this.announcementMetricsStore.createObject(query)
                 .then((data) => {
                     if (!data) {
                         throw {
@@ -857,7 +838,6 @@ class AnnouncementController {
     __isMetricsExist(requestObj, metricsActivity) {
         return new Promise((resolve, reject) => {
             let query = {
-                table: model.METRICS,
                 query: {
                     "announcementid": requestObj.announcementId,
                     "userid": requestObj.userId,
@@ -865,7 +845,7 @@ class AnnouncementController {
                 }
             }
 
-            this.objectStoreRest.findObject(query)
+            this.announcementMetricsStore.findObject(query)
                 .then((data) => {
                     if (!data.status) {
                         resolve(false)
