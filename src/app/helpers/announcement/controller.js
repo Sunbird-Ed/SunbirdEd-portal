@@ -89,7 +89,7 @@ class AnnouncementController {
                 var newAnnouncementObj = await (this.__createAnnouncement(requestObj.body.request))
                 if (newAnnouncementObj.data.id) {
                     requestObj.body.request.announcementId = newAnnouncementObj.data.id
-                    this.__createAnnouncementNotification(requestObj)
+                    this.__createAnnouncementNotification(requestObj)()
                     return {
                         announcement: newAnnouncementObj.data
                     }
