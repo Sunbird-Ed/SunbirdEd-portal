@@ -3,13 +3,13 @@
 describe('Factory: fileUpload', function () {
   beforeEach(module('playerApp'))
 
-  var fileUpload,
+  var fileUploadObj,
     scope,
     rootScope,
     $q,
     deferred,
     timeout,
-    annTestData = announcementTestData
+    annTestData = announcementTestData.createAnncmnt.fileUploadSuccessData
 
   beforeEach(inject(function ($rootScope, $controller) {
     $controller('AppCtrl', {
@@ -21,15 +21,43 @@ describe('Factory: fileUpload', function () {
   beforeEach(inject(function ($rootScope, _fileUpload_, _$q_, _$timeout_) {
     rootScope = $rootScope
     scope = $rootScope.$new()
-    fileUpload = _fileUpload_
+    fileUploadObj = _fileUpload_
     $q = _$q_
     timeout = _$timeout_
     deferred = _$q_.defer()
+    this.onFileUploadCancel = function (a, b) { return a + b }
+    this.onFileUploadSuccess = function (a, b, c) { return true }
   }))
 
-  it('should create model instance for Announcement based on input data', function () {
-    var announcement = new fileUpload.createFineUploadInstance({})
-    timeout.flush(100)
+  it('should create fine uploader instance', function () {
+    var announcement = new fileUploadObj.createFineUploadInstance({})
     expect(announcement).toBeDefined()
+  })
+
+  it('on announcement upload complete', function () {
+    var options = {
+      uploadSuccess: this.onFileUploadSuccess,
+      onCancel: this.onFileUploadCancel
+    }
+    var createAnncmntInstance = new fileUploadObj.createFineUploadInstance(options)
+    expect(createAnncmntInstance).toBeDefined()
+    var onFileUploadSuccess = new fileUploadObj.onFileUploadSuccess(1, 'swing-846077_960_720.jpg', announcementTestData.createAnncmnt.fileUploadSuccessData, {'type': 'AA', 'size': 123})
+    expect(onFileUploadSuccess).toBeDefined()
+  })
+
+  it('on announcement upload cancel', function () {
+    var options = {
+      uploadSuccess: this.onFileUploadSuccess,
+      onCancel: this.onFileUploadCancel
+    }
+    var createAnncmntInstance = new fileUploadObj.createFineUploadInstance(options)
+    expect(createAnncmntInstance).toBeDefined()
+    var onFileUploadCancel = new fileUploadObj.onFileUploadCancel(1, 'swing-846077_960_720.jpg')
+    expect(onFileUploadCancel).toBeDefined()
+  })
+
+  it('should show error message', function () {
+    var showErrorMessage = new fileUploadObj.showErrorMessage('swing-846077_960_720.jpg')
+    expect(showErrorMessage).toBeDefined()
   })
 })
