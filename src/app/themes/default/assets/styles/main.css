@@ -454,6 +454,10 @@
   color: #006cff !important;
   text-shadow: none !important;
 }
+.disabledButton {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
 .header-container {
   margin-left: 1px !important;
   border-bottom: 5px solid #007AFF !important;
