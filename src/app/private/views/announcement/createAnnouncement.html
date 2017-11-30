@@ -22,7 +22,7 @@
           <br/>
           <span class="createAnnHeaderDesc">{{createAnn.editAction ? $root.frmelmnts.lbl.editrecipientdesc : $root.frmelmnts.lbl.confirmrecipientdesc}}</span>
           </span>
-          <span ng-show="createAnn.stepNumber === 4">
+          <span ng-if="createAnn.stepNumber === 4">
               <span class="text announcementHeadingSection">{{$root.frmelmnts.lbl.previewanncmnt}}</span>
           <br/>
           <span class="createAnnHeaderDesc">{{$root.frmelmnts.lbl.previewanncmntdesc}}</span>

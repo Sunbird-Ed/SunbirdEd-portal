@@ -138,9 +138,9 @@ angular.module('playerApp')
       this.getDefinitions = function (rootOrgId, userId) {
         var data = {
           request: {
-            'rootorgid': rootOrgId,
+            'rootOrgId': rootOrgId,
             'userid': userId,
-            'definitions': ['announcementtypes', 'senderlist']
+            'definitions':['senderList','announcementTypes']
           }
         }
         return handleHttpRequest(config.URL.ANNOUNCEMENT.DEFINITIONS, data, 'POST')
