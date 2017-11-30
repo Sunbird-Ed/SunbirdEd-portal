@@ -154,7 +154,7 @@ describe('Controller: announcementOutboxListController', function () {
 
     it('Show details undefined', function () {
       spyOn(announcementOutboxListController, 'showAnnouncementDetails').and.callThrough()
-      var response = announcementOutboxListController.showAnnouncementDetails('')
+      var response = announcementOutboxListController.showAnnouncementDetails('', {details: {title: 'test'}})
       expect(response).toBe(undefined)
     })
   })

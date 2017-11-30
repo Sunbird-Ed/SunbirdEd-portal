@@ -118,8 +118,8 @@ angular.module('playerApp')
      * @memberOf Controllers.announcementOutboxListController
      * @param {string} [annId] [show details based on announcement id]
      */
-      announcementOutboxData.showAnnouncementDetails = function (annId) {
-        $state.go('announcementDetails', {announcementId: annId})
+      announcementOutboxData.showAnnouncementDetails = function (annId, item) {
+        $state.go('announcementDetails', {announcementId: annId, announcementName: item.details.title, pageId: 'announcement_outbox_view'})
       }
     }
   ])

@@ -98,7 +98,7 @@ describe('Controller: announcementInboxListController', function () {
 
     it('Show details undefined', function () {
       spyOn(announcementInboxListController, 'showAnnouncementDetails').and.callThrough()
-      var response = announcementInboxListController.showAnnouncementDetails('')
+      var response = announcementInboxListController.showAnnouncementDetails(annInboxTestData.detailsSuccess, '')
       expect(response).toBe(undefined)
     })
   })
