@@ -67,13 +67,18 @@ class AnnouncementController {
     __create() {
         return async((requestObj) => {
             try {
-                const CREATE_ROLE = 'ANNOUNCEMENT_SENDER'
                 let validation = this.announcementModel.validateApi(requestObj.body)
                 if (!validation.isValid) throw this.customError({
                     message: validation.error,
                     status: HttpStatus.BAD_REQUEST
                 })
                 let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
+                let tokenDetails = await(this.__getTokenDetails(authUserToken))
+                if(tokenDetails){
+                    requestObj.body.request.userId = tokenDetails.userId
+                }else{
+                    throw this.customError({message:'Unauthorized', status: HttpStatus.UNAUTHORIZED})
+                }
                 var newAnnouncementObj = await (this.__createAnnouncement(requestObj.body.request))
                 if (newAnnouncementObj.data.id) {
                     requestObj.body.request.announcementId = newAnnouncementObj.data.id
@@ -88,18 +93,16 @@ class AnnouncementController {
         })
     }
 
-    __getUserProfile(data, authUserToken) {
+    __getUserProfile(authUserToken) {
         return new Promise((resolve, reject) => {
             try {
-                if (_.isEmpty(data.id)) {
-                    throw {
-                        message: 'User identifier is required!',
-                        status: HttpStatus.BAD_REQUEST
-                    }
+                let tokenDetails = await(this.__getTokenDetails(authUserToken))
+                if (!tokenDetails) {
+                    throw {message: 'Unauthorized User!', status: HttpStatus.UNAUTHORIZED } 
                 }
                 let options = {
                     method: 'GET',
-                    uri: envVariables.DATASERVICE_URL + 'user/v1/read/' + data.id,
+                    uri: envVariables.DATASERVICE_URL + 'user/v1/read/' + tokenDetails.userId,
                     headers: this.httpService.getRequestHeader(authUserToken)
                 }
                 this.httpService.call(options).then((data) => {
@@ -142,7 +145,7 @@ class AnnouncementController {
                     'id': announcementId,
                     'sourceid': data.sourceId,
                     'createddate': dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo"),
-                    'userid': data.createdBy,
+                    'userid': data.userId,
                     'details': {
                         'title': data.title,
                         'type': data.type,
@@ -405,9 +408,7 @@ class AnnouncementController {
                 requestObj.body.request.userId = tokenDetails.userId
             }
 
-            let userProfile = await (this.__getUserProfile({
-                id: _.get(requestObj, 'body.request.userId')
-            }, authUserToken))
+            let userProfile = await (this.__getUserProfile(authUserToken))
 
             // Parse the list of Organisations (User > Orgs) from the response
             let targetOrganisations = []
@@ -590,10 +591,6 @@ class AnnouncementController {
                 })
             }
 
-            let request = this.__validateOutboxRequest(requestObj.body)
-            if (!request.isValid) throw 'Unable to fetch'
-
-            // build query
             let query = {
                 query: {
                     'userid': _.get(requestObj, 'body.request.userId')
@@ -626,40 +623,7 @@ class AnnouncementController {
         })
     }
 
-    /**
-     * Validate the incoming request for creating an announcement
-     *
-     * @param   {[type]}  requestObj  [description]
-     *
-     * @return  {[type]}              [description]
-     */
-    __validateOutboxRequest(requestObj) {
-        let validation = Joi.validate(requestObj, Joi.object().keys({
-            "request": Joi.object().keys({
-                'userId': Joi.string().required()
-            }).required()
-        }), {
-            abortEarly: false
-        })
-
-        if (validation.error != null) {
-            let messages = []
-            _.forEach(validation.error.details, (error, index) => {
-                messages.push({
-                    field: error.path[0],
-                    description: error.message
-                })
-            })
-            return {
-                error: messages,
-                isValid: false
-            }
-        }
-        return {
-            isValid: true
-        }
-    }
-
+    
     /**
      * Get a list of senders on whose behalf the user can send announcement
      *
@@ -673,9 +637,7 @@ class AnnouncementController {
             let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
             let userData = {}
             return await (new Promise((resolve, reject) => {
-                this.__getUserProfile({
-                        id: _.get(requestObj, 'body.request.userid')
-                    }, authUserToken)
+                this.__getUserProfile(authUserToken)
                     .then((data) => {
                         if (!data) {
                             throw {
@@ -710,6 +672,7 @@ class AnnouncementController {
             try {
                 let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
                 let tokenDetails = await (this.__getTokenDetails(authUserToken));
+                let request = this.metricsModel.validateApi(requestObj.body)
                 if (tokenDetails) {
                     requestObj.body.request.userId = tokenDetails.userId
                 } else {
@@ -719,9 +682,8 @@ class AnnouncementController {
                     })
                 }
                 // validate request
-                let request = this.metricsModel.validateApi(requestObj.body)
                 if (!request.isValid) throw new AppError({
-                    message: 'Invalid request',
+                    message: request.error,
                     statusCode: HttpStatus.BAD_REQUEST
                 })
                 let metricsExists = false
@@ -759,6 +721,7 @@ class AnnouncementController {
             // validate request
             let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
             let tokenDetails = await (this.__getTokenDetails(authUserToken));
+            let request = this.metricsModel.validateApi(requestObj.body)
             if (tokenDetails) {
                 requestObj.body.request.userId = tokenDetails.userId
             } else {
@@ -767,7 +730,6 @@ class AnnouncementController {
                     status: HttpStatus.UNAUTHORIZED
                 })
             }
-            let request = this.metricsModel.validateApi(requestObj.body)
             if (!request.isValid) throw {
                 message: 'Invalid request!',
                 status: HttpStatus.BAD_REQUEST

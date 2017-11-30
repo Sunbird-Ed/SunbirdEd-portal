@@ -75,7 +75,6 @@ function sendErrorResponse(res, id, message, code = HttpStatus.BAD_REQUEST) {
 
 function isCreateRolePresent(userProfile, sourceid) {
     let organisationId = _.map(userProfile.organisations, "organisationId")
-    // console.log(userProfile.organisations)
     let organisation = undefined;
     for (var i = 0; i <= organisationId.length; i++) {
         if (organisationId[i]) {
@@ -93,11 +92,13 @@ function isCreateRolePresent(userProfile, sourceid) {
 
 function validateRoles() {
     return async((requestObj, responseObj, next, config) => {
+        let userProfile = undefined
         let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
         try {
-            let userProfile = await (announcementController.__getUserProfile({
-                id: config.userid
-            }, authUserToken))
+            var tokenDetails = await (announcementController.__getTokenDetails(authUserToken))
+            if(tokenDetails){
+                userProfile = await (announcementController.__getUserProfile(authUserToken))
+            }
             let isAuthorized = isCreateRolePresent(userProfile, config.sourceid);
             if (isAuthorized) {
                 next()
@@ -121,6 +122,7 @@ function validate() {
         let authUserToken = _.get(requestObj, "headers['x-authenticated-user-token']")
         if (authUserToken) {
             var tokenDetails = await (announcementController.__getTokenDetails(authUserToken))
+            console.log("tokenDetails",tokenDetails)
             if (tokenDetails) {
                 next()
             } else {
@@ -142,7 +144,6 @@ module.exports = function(keycloak) {
             validate()(requestObj, responseObj, next, keycloak, config)
         }, (requestObj, responseObj, next) => {
             let config = {
-                userid: _.get(requestObj, 'body.request.createdBy'),
                 sourceid: _.get(requestObj, 'body.request.sourceId'),
                 apiid: API_IDS.create
             }
@@ -172,7 +173,6 @@ module.exports = function(keycloak) {
             validate()(requestObj, responseObj, next, keycloak, config)
         }, (requestObj, responseObj, next) => {
             let config = {
-                userid: _.get(requestObj, 'body.request.userId'),
                 apiid: API_IDS.cancel
             }
             validateRoles()(requestObj, responseObj, next, config)
@@ -217,7 +217,6 @@ module.exports = function(keycloak) {
             validate()(requestObj, responseObj, next, keycloak, config)
         }, (requestObj, responseObj, next) => {
             let config = {
-                userid: _.get(requestObj, 'body.request.userid'),
                 apiid: API_IDS.definitions
             }
             validateRoles()(requestObj, responseObj, next, config)
@@ -276,7 +275,6 @@ module.exports = function(keycloak) {
             validate()(requestObj, responseObj, next, keycloak, config)
         }, (requestObj, responseObj, next) => {
             let config = {
-                userid: _.get(requestObj, 'body.request.createdBy'),
                 apiid: API_IDS.resend
             }
             validateRoles()(requestObj, responseObj, next, config)
