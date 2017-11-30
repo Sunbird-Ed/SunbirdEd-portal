@@ -12,7 +12,9 @@ describe('Controller: adminController', function () {
   var permissionsService
   var searchService
   var deferred
-  var $state
+  var $state,
+    modal,
+    spyEvent
   beforeEach(inject(function ($rootScope, $controller) {
     $controller('AppCtrl', {
       $rootScope: $rootScope,
@@ -43,6 +45,7 @@ describe('Controller: adminController', function () {
     deferred = _$q_.defer()
     spyOn(toasterService, 'success').and.callThrough()
     spyOn(toasterService, 'error').and.callThrough()
+    setFixtures('<div class="ui modal" id="changeUserRoles"></div>')
     adminCtl = $controller('adminController', {
       $scope: scope,
       $rootScope: $rootScope,
@@ -50,6 +53,7 @@ describe('Controller: adminController', function () {
       contentService: contentService,
       toasterService: toasterService,
       permissionsService: permissionsService,
+      $modal: modal,
       $state: $state
 
     })
@@ -101,7 +105,7 @@ describe('Controller: adminController', function () {
     expect(adminService.orgSearch).toHaveBeenCalled()
     done()
   })
-  it('should add  org name to organization', function (done) {
+  it('should add org name to organization', function (done) {
     spyOn(adminCtl, 'addOrgNameToOrganizations').and.callThrough()
     spyOn(permissionsService, 'getCurrentUserRoles').and.callThrough()
     spyOn(permissionsService, 'getCurrentUserRoleMap').and.callThrough()
@@ -115,21 +119,56 @@ describe('Controller: adminController', function () {
     expect(adminCtl.getOrgName).toHaveBeenCalled()
     done()
   })
-  xit('should download users', function (done) {
+  it('should download users', function (done) {
     spyOn(adminCtl, 'downloadUsers').and.callThrough()
-    adminCtl.downloadUsers('Users', [
+    spyOn(adminService, 'userSearch').and.returnValue(deferred.promise)
+    var res = {result: {response: {content: [
             { organisations: [{ organisationsName: 'organisationsName' }] },
-             { organisations: [{ organisationsName: 'organisationsName' }] }])
+             { organisations: [{ organisationsName: 'organisationsName' }] }] }}}// {responseCode: 'OK', { result: { response: { content: [{ lastName: 'xyz', identifier: 1213 },{ lastName: 'ABC', identifier: 18913 }] }}}}
+    deferred.resolve(res)
+    adminCtl.downloadUsers('Users', res.result.response.content)
+    adminService.userSearch()
     scope.$apply()
+    var response = adminService.userSearch().$$state.value
+    expect(response).not.toBe(undefined)
+    adminCtl.adminService = response.result.response.content
+    expect(adminCtl.adminService).not.toBe(undefined)
+    expect(adminCtl.downloadUsers).toHaveBeenCalled()
     done()
   })
-  xit('should download Organizations', function (done) {
+  it('should download Organizations', function (done) {
     spyOn(adminCtl, 'downloadUsers').and.callThrough()
+    spyOn(adminService, 'orgSearch').and.returnValue(deferred.promise)
+    var res = {org: {status: ['INACTIVE', 'ACTIVE', 'BLOCKED', 'RETIRED']}}
+    deferred.resolve(res)
     adminCtl.downloadUsers('Organisations', [
             { status: 'INACTIVE' },
             { status: 'ACTIVE' },
             { status: 'BLOCKED' },
             { status: 'RETIRED' }])
+    adminService.orgSearch()
+    scope.$apply()
+    var response = adminService.orgSearch().$$state.value
+    expect(response).not.toBe(undefined)
+    adminCtl.adminService = response.org.status
+    expect(adminCtl.adminService).not.toBe(undefined)
+    expect(adminCtl.downloadUsers).toHaveBeenCalled()
+    done()
+  })
+  xit('should add user search result in csv to download', function (done) {
+    spyOn(adminCtl, 'addSearchResultInExcel').and.callThrough()
+    var res = {result: {response: {content: [
+            { organisations: [{ organisationsName: 'organisationsName' }] },
+             { organisations: [{ organisationsName: 'organisationsName' }] }] }}}
+    adminCtl.addSearchResultInExcel('Users', res.result.response.content)
+    scope.$apply()
+    expect(adminCtl.addSearchResultInExcel).toHaveBeenCalled()
+    done()
+  })
+  xit('should add org search result in csv to download', function (done) {
+    spyOn(adminCtl, 'addSearchResultInExcel').and.callThrough()
+    var res = {org: {status: ['INACTIVE', 'ACTIVE', 'BLOCKED', 'RETIRED']}}
+    adminCtl.addSearchResultInExcel('Organisations', res.org.status)
     scope.$apply()
     done()
   })
@@ -193,6 +232,7 @@ describe('Controller: adminController', function () {
     deferred.resolve(res)
     adminCtl.updateRoles()
     adminService.updateRoles()
+    setFixtures('<div class="ui modal" id="changeUserRoles"></div>')
     scope.$apply()
     expect(toasterService.error).toHaveBeenCalled()
     done()
@@ -204,6 +244,7 @@ describe('Controller: adminController', function () {
     deferred.reject(res)
     adminCtl.updateRoles()
     adminService.updateRoles()
+    setFixtures('<div class="ui modal" id="changeUserRoles"></div>')
     scope.$apply()
     expect(toasterService.error).toHaveBeenCalled()
     done()
@@ -227,6 +268,15 @@ describe('Controller: adminController', function () {
     searchService.setPublicUserProfile()
     scope.$apply()
     expect($state.go).toHaveBeenCalledWith('PublicProfile', { userId: window.btoa(123), userName: 'avd' })
+    done()
+  })
+
+  it('should call assignBadgeModal', function (done) {
+    setFixtures('<div class="ui modal" id="assignBadge"></div>')
+    spyOn(adminCtl, 'assignBadgeModal').and.callThrough()
+    adminCtl.assignBadgeModal(123)
+    expect(adminCtl.assignBadgeModal).toHaveBeenCalled()
+    timeout.flush(100)
     done()
   })
 
@@ -266,10 +316,20 @@ describe('Controller: adminController', function () {
   })
   it('should show modal', function (done) {
     spyOn(adminCtl, 'showModal').and.callThrough()
-    adminCtl.showModal()
+    adminCtl.showModal(123, 'AP')
+    expect(adminCtl.showModal).toHaveBeenCalled()
     timeout.flush(100)
     done()
   })
+
+  it('should call showdeleteModal', function (done) {
+    setFixtures('<div class="ui modal" id="deleteUserConfirmation"></div>')
+    spyOn(adminCtl, 'showdeleteModal').and.callThrough()
+    adminCtl.showdeleteModal(123, 'ntp102', 'ntpuser')
+    expect(adminCtl.showdeleteModal).toHaveBeenCalled()
+    done()
+  })
+
   it('should edit user roles modal', function (done) {
     spyOn(adminCtl, 'editRoles').and.callThrough()
     spyOn(Array.prototype, 'includes').and.callThrough()
@@ -277,6 +337,14 @@ describe('Controller: adminController', function () {
     adminCtl.editRoles('abc', ['abc', 'cdf'])
     done()
   })
+  it('should edit user roles modal', function (done) {
+    spyOn(adminCtl, 'editRoles').and.callThrough()
+    spyOn(Array.prototype, 'includes').and.callThrough()
+    adminCtl.selectedOrgUserRoles = []
+    adminCtl.editRoles('abc', [])
+    done()
+  })
+
   it('should set Default Selected roles', function (done) {
     spyOn(adminCtl, 'setDefaultSelected').and.callThrough()
     adminCtl.setDefaultSelected([{}, {}])
