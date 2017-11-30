@@ -54,7 +54,7 @@ class Model {
    * Which is used to get the modelSubSchema
    * @param {string} property - Name of property, Using this property we can get the modelSubschema object from the modelSchema
    */
-  ModelSubSchema (property) {
+  modelSubSchema (property) {
     return Joi.reach(this.modelSchema, property)
   }
 
@@ -62,7 +62,7 @@ class Model {
    * Which is used to get the apiSubSchema.
    * @param {string} property - Name of the property, Using this we can get the apiSubschema object from the apiSchema
    */
-  ApiSubSchema (property) {
+  apiSubSchema (property) {
     return Joi.reach(this.apiSchema, property)
   }
 }

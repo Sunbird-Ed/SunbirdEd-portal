@@ -47,7 +47,7 @@ class AnnouncementTypeModel extends BaseModel {
      * @param  {string} key
      */
   getModelSubSchema (property) {
-    return this.ModelSubSchema(property)
+    return this.modelSubSchema(property)
   }
 
     /**
@@ -55,7 +55,7 @@ class AnnouncementTypeModel extends BaseModel {
      * @param  {string} key
      */
   getApiSubSchema (property) {
-    return this.ApiSubSchema(property)
+    return this.apiSubSchema(property)
   }
 }
 module.exports = new AnnouncementTypeModel()
