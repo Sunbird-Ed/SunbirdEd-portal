@@ -69,17 +69,17 @@ angular.module('playerApp')
           }
         },
         params: {
-          announcement: undefined
+          announcement: undefined,
+          isMetaModifiedSteps : true
         },
         onEnter: function ($stateParams, $rootScope, $state, routeHelperService, portalTelemetryService, announcementAdapter) {
             //alert('onEnter')
             var stepNumber = parseInt($stateParams.stepNumber)
             var announcement = $stateParams.announcement
 
-
+            if(stepNumber !== 1) {
                 var status = announcementAdapter.verifyAnnouncementData(stepNumber, announcement)
                 if(status){
-                    alert('if')
                     $rootScope.profileActive = 'active'
                     $rootScope.courseActive = ' '
                     $rootScope.isPlayerPage = true
@@ -93,11 +93,22 @@ angular.module('playerApp')
                         url: '/private/index#!/announcement/create/' + stepNumber
                     })
                 } else {
-                    alert('else')
-                    stepNumber = ((--stepNumber) > 0)? stepNumber : 1
-                    $state.go('announcementCreate', {stepNumber: stepNumber, announcement: announcement}, {reload: true})
+                    $state.go('announcementCreate', {stepNumber: 1, isMetaModifiedSteps: true}, {reload: true})
                 }
-
+            } else {
+                $rootScope.profileActive = 'active'
+                $rootScope.courseActive = ' '
+                $rootScope.isPlayerPage = true
+                routeHelperService.loadRouteConfig('announcementCreate', null)
+                portalTelemetryService.fireImpressions({
+                    env: 'community.announcements',
+                    type: 'form',
+                    pageid: 'annoucement_form_details',
+                    id: '',
+                    name: '',
+                    url: '/private/index#!/announcement/create/' + stepNumber
+                })
+            }
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''

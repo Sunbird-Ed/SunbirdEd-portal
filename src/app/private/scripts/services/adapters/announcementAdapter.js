@@ -258,19 +258,26 @@ angular.module('playerApp')
       this.verifyAnnouncementData = function (stepNumber, announcement) {
             var status = true
 
-            if (stepNumber === 2 && announcement !== undefined){
-                if (!(announcement.details.title && announcement.details.type && announcement.details.from && (announcement.details.description || announcement.links || announcement.attachments))){
-                    status = false
-                }
-            } else if ((stepNumber === 3 || stepNumber === 4) && announcement !== undefined){
-                $rootScope.$emit('get:selected:items')
-                if (announcement.selTar && announcement.selTar.length === 0) {
+            if (announcement === undefined) {
+                if (stepNumber === 1) {
+                    status = true
+                } else {
                     status = false
                 }
             }
+            else{
+                if (stepNumber === 2){
+                    if (!(announcement.details.title && announcement.details.type && announcement.details.from && (announcement.details.description || announcement.links || announcement.attachments))){
+                        status = false
+                    }
+                } else if (stepNumber === 3 || stepNumber === 4){
+                    $rootScope.$emit('get:selected:items')
+                    if (announcement.selTar && announcement.selTar.length === 0) {
+                        status = false
+                    }
+                }
 
-            if (stepNumber === 1) {
-                status = true
+
             }
 
             return status

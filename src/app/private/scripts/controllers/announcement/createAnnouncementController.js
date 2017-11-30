@@ -40,8 +40,8 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
      * @memberOf Controllers.createAnnouncementCtrl
      */
     createAnn.createAnnouncement = function () {
-      if ($stateParams.announcement) {
-        createAnn.isMetaModified = true
+      if ($stateParams.announcement === undefined) {
+        createAnn.isMetaModified = false
       }
       $('#createAnnouncementModal').modal({
         closable: false,
@@ -49,7 +49,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
           $('.ui.modal.transition.hidden').remove()
         },
         onHide: function () {
-          if (createAnn.isMetaModified && createAnn.isMetaModifiedSteps !== true) {
+          if (createAnn.isMetaModified === true && createAnn.isMetaModifiedSteps !== true) {
             createAnn.confirmationModal()
             return false
           }
@@ -72,6 +72,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
           onApprove: function () {
             createAnn.refreshFormValues()
             createAnn.hideModel('announcementCancelModal')
+            $state.go('announcementOutbox')
             return true
           }
         }).modal('show')
@@ -322,6 +323,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       createAnn.isMetaModifiedSteps = false
       createAnn.stepNumber = parseInt($stateParams.stepNumber) || 1
       createAnn.announcement = $stateParams.announcement
+      createAnn.isMetaModifiedSteps = $stateParams.isMetaModifiedSteps
       if (createAnn.stepNumber === 1) {
         createAnn.initializeModal()
       }
@@ -372,7 +374,6 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
      * @memberOf Controllers.createAnnouncementCtrl
      */
     createAnn.goToNextStep = function () {
-      createAnn.isMetaModifiedSteps = true
       // Current step is confirm recipients
       if (createAnn.stepNumber !== 1) {
         if (createAnn.confirmRecipients()) {
@@ -386,7 +387,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
           return false
         }
       }
-      $state.go('announcementCreate', { stepNumber: ++createAnn.stepNumber, announcement: createAnn.announcement }, { reload: true })
+      $state.go('announcementCreate', { stepNumber: ++createAnn.stepNumber, announcement: createAnn.announcement, isMetaModifiedSteps: createAnn.isMetaModifiedSteps }, { reload: true })
     }
 
     /**
@@ -395,8 +396,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
      * @memberOf Controllers.createAnnouncementCtrl
      */
     createAnn.goToBackStep = function () {
-      createAnn.isMetaModifiedSteps = true
-      $state.go('announcementCreate', { stepNumber: --createAnn.stepNumber, announcement: createAnn.announcement }, { reload: true })
+      $state.go('announcementCreate', { stepNumber: --createAnn.stepNumber, announcement: createAnn.announcement,isMetaModifiedSteps: createAnn.isMetaModifiedSteps }, { reload: true })
     }
   }
 ])
