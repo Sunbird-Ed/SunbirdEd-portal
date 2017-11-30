@@ -40,7 +40,7 @@ describe('Controller: resendAnnouncementCtrl', function () {
     deferred = _$q_.defer()
     spyOn(toasterService, 'success').and.callThrough()
     spyOn(toasterService, 'error').and.callThrough()
-   //  spyOn(announcementAdapter, 'getDefinitions').and.returnValue(deferred.promise)
+    //  spyOn(announcementAdapter, 'getDefinitions').and.returnValue(deferred.promise)
     createAnn = $controller('resendAnnouncementCtrl', {
       $scope: scope,
       $rootScope: $rootScope,
@@ -110,7 +110,7 @@ describe('Controller: resendAnnouncementCtrl', function () {
   })
 
   it('enableRecepientBtn else part', function () {
-    createAnn.announcement = {'details': {'description': '', 'from': '', 'title': '', 'type': ''}}
+    createAnn.announcement = { 'details': { 'description': '', 'from': '', 'title': '', 'type': '' } }
     spyOn(createAnn, 'enableRecepientBtn').and.callThrough()
     createAnn.enableRecepientBtn()
     scope.$apply()
@@ -206,7 +206,7 @@ describe('Controller: resendAnnouncementCtrl', function () {
   })
 
   it('Should remove recipient', function () {
-    createAnn.announcement = announcementTestData.createAnncmnt.annTarObject
+    createAnn.announcement = announcementTestData.createAnncmnt.annObject
     createAnn.stepNumber = 3
     createAnn.stepNumber = 3
     spyOn(createAnn, 'removeRecipients').and.callThrough()
@@ -241,9 +241,6 @@ describe('Controller: resendAnnouncementCtrl', function () {
     var mockRes = announcementTestData.createAnncmnt.getAnncmntTypeRes
     deferred.resolve(mockRes)
     mockRes = mockRes.data = mockRes
-    // expect(announcementAdapter.getDefinitions).toBeDefined()
-    // announcementAdapter.getDefinitions(announcementTestData.createAnncmnt.getAnncmntTypeReq)
-    // expect(announcementAdapter.getDefinitions).toHaveBeenCalled()
     scope.$apply()
     expect(createAnn.errorFlag).toEqual(false)
   })
@@ -321,36 +318,4 @@ describe('Controller: resendAnnouncementCtrl', function () {
     createAnn.goToNextStep()
     scope.$apply()
   })
-
-  // describe('Resend announcement', function () {
-  //   it('success', function () {
-  //     spyOn(announcementAdapter, 'resendAnnouncement').and.returnValue(deferred.promise)
-  //     deferred.resolve(announcementTestData.resendAnnouncement.successResponse)
-  //     announcementTestData.resendAnnouncement.successResponse.data = announcementTestData.resendAnnouncement.successResponse
-  //     expect(createAnn.resendAnnouncement).toBeDefined()
-  //     createAnn.resendAnnouncement(announcementTestData.resendAnnouncement.requestBody)
-  //     expect(announcementAdapter.resendAnnouncement).toHaveBeenCalled()
-  //     scope.$apply()
-  //   })
-  //   it('fail', function () {
-  //     spyOn(announcementAdapter, 'resendAnnouncement').and.returnValue(deferred.promise)
-  //     deferred.resolve(announcementTestData.resendAnnouncement.failedResponse)
-  //     announcementTestData.resendAnnouncement.failedResponse.data = announcementTestData.resendAnnouncement.failedResponse
-  //     spyOn(createAnn, 'resendAnnouncement').and.callThrough()
-  //     var response = createAnn.resendAnnouncement(announcementTestData.resendAnnouncement.requestBody)
-  //     expect(createAnn.resendAnnouncement).toHaveBeenCalled()
-  //     expect(response).not.toBe(announcementTestData.resendAnnouncement.failedResponse)
-  //     scope.$apply()
-  //   })
-  //   it('editAnnouncementBeforeResend', function () {
-  //     scope.$broadcast('editAnnouncementBeforeResend', announcementTestData.getResend.successResponse.result)
-  //     expect(createAnn.editAction).toBeTruthy()
-  //     scope.$apply()
-  //   })
-  //   it('should initialize geo component', function (done) {
-  //     scope.$broadcast('editAnnouncementBeforeResend', announcementTestData.getResend.successResponse.result)
-  //     timeout.flush(100)
-  //     done()
-  //   })
-  // })
 })
