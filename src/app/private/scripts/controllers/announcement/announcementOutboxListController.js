@@ -105,11 +105,7 @@ angular.module('playerApp')
      * @param {int} [announcementId] [to make getResend api call]
      */
       announcementOutboxData.getResend = function (announcementId) {
-        announcementAdapter.getResend(announcementId).then(function (apiResponse) {
-          if (apiResponse.hasOwnProperty('result')) {
-            $rootScope.$broadcast('editAnnouncementBeforeResend', apiResponse.result)
-          }
-        })
+        $state.go('announcementResend', {announcementId: announcementId, stepNumber: '1'})
       }
 
     /**
@@ -120,6 +116,15 @@ angular.module('playerApp')
      */
       announcementOutboxData.showAnnouncementDetails = function (annId, item) {
         $state.go('announcementDetails', {announcementId: annId, announcementName: item.details.title, pageId: 'announcement_outbox_view'})
+      }
+
+    /**
+     * @method gotToAnnouncementCreateState
+     * @desc - function to change the current state to announcement create
+     * @memberOf Controllers.announcementOutboxListController
+     */
+      announcementOutboxData.gotToAnnouncementCreateState = function () {
+        $state.go('announcementCreate', {stepNumber: '1'})
       }
     }
   ])

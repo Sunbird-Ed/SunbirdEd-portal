@@ -89,4 +89,62 @@ angular.module('playerApp')
           $rootScope.homeActive = ''
         }
       })
+      .state('announcementCreate', {
+        url: '/announcement/create/:stepNumber',
+        views: {
+          mainView: {
+            templateUrl: '/views/announcement/createAnnouncement.html',
+            controller: 'createAnnouncementCtrl as createAnn'
+          }
+        },
+        params: {
+          announcement: undefined
+        },
+        onEnter: function ($stateParams, $rootScope, routeHelperService, portalTelemetryService) {
+          $rootScope.profileActive = 'active'
+          $rootScope.courseActive = ' '
+          $rootScope.isPlayerPage = true
+          routeHelperService.loadRouteConfig('announcementCreate', null)
+          portalTelemetryService.fireImpressions({
+            env: 'community.announcements',
+            type: 'form',
+            pageid: 'annoucement_form_details',
+            id: '',
+            name: '',
+            url: '/private/index#!/announcement/create/' + $stateParams.stepNumber
+          })
+        },
+        onExit: function ($rootScope) {
+          $rootScope.profileActive = ''
+        }
+      })
+      .state('announcementResend', {
+        url: '/announcement/resend/:announcementId/:stepNumber',
+        views: {
+          mainView: {
+            templateUrl: '/views/announcement/createAnnouncement.html',
+            controller: 'resendAnnouncementCtrl as createAnn'
+          }
+        },
+        params: {
+          announcement: undefined
+        },
+        onEnter: function ($stateParams, $rootScope, routeHelperService, portalTelemetryService) {
+          $rootScope.profileActive = 'active'
+          $rootScope.courseActive = ' '
+          $rootScope.isPlayerPage = true
+          routeHelperService.loadRouteConfig('announcementResend', null)
+          portalTelemetryService.fireImpressions({
+            env: 'community.announcements',
+            type: 'form',
+            pageid: 'annoucement_form_details',
+            id: $stateParams.announcementId,
+            name: '',
+            url: '/private/index#!/announcement/resend/' + $stateParams.announcementId + '/' + $stateParams.stepNumber
+          })
+        },
+        onExit: function ($rootScope) {
+          $rootScope.profileActive = ''
+        }
+      })
   })

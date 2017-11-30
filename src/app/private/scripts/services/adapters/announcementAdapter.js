@@ -108,6 +108,10 @@ angular.module('playerApp')
        * @instance
        */
       this.createAnnouncement = function (annoucement) {
+        // Convert attachment object to string
+          _.forEach(annoucement.attachments, function (attachment, index) {
+          annoucement.attachments[index] = JSON.stringify(attachment)
+        })
         var data = {
           request: {
             title: annoucement.details.title,
@@ -134,9 +138,9 @@ angular.module('playerApp')
       this.getDefinitions = function (rootOrgId, userId) {
         var data = {
           request: {
-            'rootorgid': rootOrgId,
+            'rootOrgId': rootOrgId,
             'userid': userId,
-            'definitions': ['announcementtypes', 'senderlist']
+            'definitions':['senderList','announcementTypes']
           }
         }
         return handleHttpRequest(config.URL.ANNOUNCEMENT.DEFINITIONS, data, 'POST')
@@ -221,6 +225,10 @@ angular.module('playerApp')
        * @instance
        */
       this.resendAnnouncement = function (annoucement) {
+        // Convert attachment object to string
+          _.forEach(annoucement.attachments, function (attachment, index) {
+          annoucement.attachments[index] = JSON.stringify(attachment)
+        })
         var data = {
           request: {
             title: annoucement.details.title,
