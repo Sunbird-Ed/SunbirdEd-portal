@@ -53,7 +53,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
             createAnn.confirmationModal()
             return false
           }
-          $state.go('announcementOutbox')
+          //$state.go('announcementOutbox')
         }
       }).modal('show')
     }
@@ -207,16 +207,16 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
      * @method saveAnnouncement
      * @desc - prepare api request object and make create api call
      * @memberOf Controllers.createAnnouncementCtrl
-     * @param {object} [data] [form data]
      */
-    createAnn.saveAnnouncement = function (data) {
+    createAnn.saveAnnouncement = function () {
+      createAnn.announcement.target.geo.ids = _.map(createAnn.announcement.selTar, 'id')
       announcementAdapter.createAnnouncement(createAnn.announcement)
         .then(function (apiResponse) {
           createAnn.hideModel('createAnnouncementModal')
           $('#announcementSuccessModal').modal({
             closable: false
           }).modal('show')
-          $state.go('announcementOutbox')
+          //$state.go('announcementOutbox')
         }, function (err) {
           createAnn.isMetaModified = true
           createAnn.showError(apiResponse.data)
