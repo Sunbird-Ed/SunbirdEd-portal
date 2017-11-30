@@ -38,7 +38,6 @@ class AnnouncementModel extends BaseModel {
     this.apiSchema = Joi.object().keys({
       request: Joi.object().keys({
         sourceId: Joi.string().required(),
-        createdBy: Joi.string().required(),
         title: Joi.string().required(),
         from: Joi.string().required(),
         type: Joi.string().required(),

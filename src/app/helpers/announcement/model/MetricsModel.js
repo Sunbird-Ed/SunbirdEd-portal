@@ -30,7 +30,6 @@ class MetricsModel extends BaseModel {
      */
     this.apiSchema = Joi.object().keys({
       request: Joi.object().keys({
-        userId: Joi.string().required(),
         announcementId: Joi.string().required(),
         channel: Joi.string().required()
       }).required()

@@ -4,10 +4,10 @@
 
 class AppError extends Error {
   constructor ({message, status, stack } = {}) {
-  	/**
-  	 * Calling Parent class constructor
-  	 */
-  	super(message)
+    /**
+     * Calling Parent class constructor
+     */
+    super(message)
 
     /**
      * @property {string}  - Error Message which is need to be log.
