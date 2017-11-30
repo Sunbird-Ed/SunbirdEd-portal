@@ -7,6 +7,12 @@ let Joi = require('joi')
 class MetricsModel extends BaseModel {
   constructor () {
     super()
+
+    /**
+     * Which defines the name of the table
+     */
+    this.table = 'metrics'
+
     /**
      * @property {} modelSchema - Defines the structure of model object.
      */

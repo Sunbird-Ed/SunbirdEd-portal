@@ -12,6 +12,8 @@ let Joi = require('joi')
 class AnnouncementModel extends BaseModel {
   constructor () {
     super()
+
+    this.table = 'announcement'
       /**
        * Defined schema which is used to validate the model object structure.
        */

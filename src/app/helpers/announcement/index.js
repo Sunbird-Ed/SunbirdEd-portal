@@ -3,8 +3,9 @@ let router = express.Router()
 let HttpStatus = require('http-status-codes')
 let controller = require('./controller.js')
 let metricsModel = require('./model/MetricsModel.js')
-let announcementCreateModel = require('./model/AnnouncementCreateModel.js')
+let announcementModel = require('./model/AnnouncementModel.js')
 let announcementTypeModel = require('./model/AnnouncementTypeModel.js')
+let httpService = require('./services/httpWrapper.js')
 let path = require('path')
 let multer = require('multer')
 const _ = require('lodash')
@@ -26,9 +27,10 @@ const API_IDS = {
 }
 
 let announcementController = new controller({
-    metrics: metricsModel,
-    announcement: announcementCreateModel,
-    announcementtype: announcementTypeModel
+    metricsModel: metricsModel,
+    announcementModel: announcementModel,
+    announcementTypeModel: announcementTypeModel,
+    service:httpService
 })
 
 const API_VERSION = '1.0'
