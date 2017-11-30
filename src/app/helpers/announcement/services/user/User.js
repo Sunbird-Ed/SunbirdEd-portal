@@ -34,7 +34,7 @@ class User {
 		/**
 		 * @property {string} lastName - last name of the user
 		 */
-		this.firstName = lastName
+		this.lastName = lastName
 
 		/**
 		 * @property {string} email - email id of the user

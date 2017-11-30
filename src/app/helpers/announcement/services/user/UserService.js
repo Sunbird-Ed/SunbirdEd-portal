@@ -59,7 +59,10 @@ class UserService {
 	getUserProfile() {
 		return new Promise((resolve, reject) => {
 			if (_.isEmpty(this.userId)) {
-				reject('user id is required!')
+				reject(new AppError({
+					message: 'user id is required!',
+					status: HttpStatus.BAD_REQUEST
+				}))
 			}
 			let options = {
 				method: 'GET',
@@ -99,7 +102,7 @@ class UserService {
 				} else {
 					reject(new AppError({
 						message: 'Unknown error',
-						status: 500
+						status: HttpStatus.INTERNAL_SERVER_ERROR
 					}))
 				}
 			})
