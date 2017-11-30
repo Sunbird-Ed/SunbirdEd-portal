@@ -357,7 +357,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
         })
       }
 
-      if (createAnn.stepNumber === 2) {
+      if (createAnn.stepNumber === 2 && createAnn.announcement !== undefined && createAnn.announcement.target !== undefined) {
         createAnn.announcement.target.geo.ids = _.map(createAnn.announcement.selTar, 'id')
         var geoIds = _.map(createAnn.announcement.selTar, 'id')
         $timeout(function () {
