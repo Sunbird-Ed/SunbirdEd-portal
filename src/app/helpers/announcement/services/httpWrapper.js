@@ -5,6 +5,7 @@
 let webService = require('request')
 let envVariables = require('../../environmentVariablesHelper.js')
 let AppError = require('./ErrorInterface.js')
+let HttpStatus = require('http-status-codes')
 
 /**
  * It used to invoke http request calls
@@ -20,15 +21,14 @@ class HttpWrapper {
         if (!options) reject('options required!')
         options.headers = options.headers || this.getRequestHeader()
         webService(options, (error, response, body) => {
-          console.log('response', body)
           if (error || response.statusCode >= 400) {
-            reject(new AppError({message: response.statusMessage, status: response.statusCode }))
+            reject(new AppError({message: 'Internal Server Error', status: HttpStatus.INTERNAL_SERVER_ERROR}))
           } else {
             resolve({ response, body })
           }
         })
       } catch (error) {
-        reject(new AppError({message: 'Unable to fetch from server!', status: 500}))
+        reject(new AppError({message: 'Unable to fetch from server!', status: HttpStatus.INTERNAL_SERVER_ERROR}))
       }
     })
   }
