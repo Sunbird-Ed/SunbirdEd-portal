@@ -320,7 +320,6 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
      * @memberOf Controllers.createAnnouncementCtrl
      */
     createAnn.init = function () {
-      createAnn.isMetaModifiedSteps = false
       createAnn.stepNumber = parseInt($stateParams.stepNumber) || 1
       createAnn.announcement = $stateParams.announcement
       createAnn.isMetaModifiedSteps = $stateParams.isMetaModifiedSteps
