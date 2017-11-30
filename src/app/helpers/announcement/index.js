@@ -122,7 +122,6 @@ function validate() {
         let authUserToken = _.get(requestObj, "headers['x-authenticated-user-token']")
         if (authUserToken) {
             var tokenDetails = await (announcementController.__getTokenDetails(authUserToken))
-            console.log("tokenDetails",tokenDetails)
             if (tokenDetails) {
                 next()
             } else {
