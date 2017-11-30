@@ -172,7 +172,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
         })
       }
       var selectRecipientBtn = angular.element(document.querySelector('#selectRecipientBtn'))
-      if (createAnn.announcement.details.title && createAnn.announcement.details.from && (true || createAnn.announcement.details.type) &&
+      if (createAnn.announcement.details.title && createAnn.announcement.details.from && createAnn.announcement.details.type &&
         (createAnn.uploadAttchement || createAnn.announcement.details.description || links.length)) {
         createAnn.disableBtn = false
         selectRecipientBtn.removeClass('disabled')
@@ -344,7 +344,9 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
                 createAnn.senderlist.push(value)
               })
             }
-            $('#announcementType').dropdown('set text', createAnn.announcement.details.type)
+            if (createAnn.announcement.details.type !== '') {
+              $('#announcementType').dropdown('set text', createAnn.announcement.details.type)
+            }
           }, function (err) {
             createAnn.hideAnncmntBtn = true
             toasterService.error($rootScope.messages.fmsg.m0069)
