@@ -16,7 +16,7 @@ class ObjectStoreRest extends ObjectStore {
      */
 
     constructor({model, service } = {}) {
-        super() 
+        super({model:model, service: service}) 
         /**
          * @property {class} - Defines the model instance ex: MetricsModel, AnnouncementModel
          */

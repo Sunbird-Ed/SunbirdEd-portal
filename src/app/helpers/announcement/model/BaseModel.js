@@ -8,16 +8,16 @@ let Joi = require('joi')
      * Which is used schema validation any child schema can overide.
      */
 class Model {
-  constructor () {
+  constructor (modelSchema, apiSchema) {
     /**
      * @property {Object}  - Model schema object by default it's empty, Child class should define the strucutre of modelSchema object.
      */
-    this.modelSchema = {}
+    this.modelSchema = modelSchema
 
     /**
      * @property {Object}  - Api schema object by default it's empty, Child class should define the strucutre of apiSchema object.
      */
-    this.apiSchema = {}
+    this.apiSchema = apiSchema
   }
     /**
      * It validates the object based on the respective schema
