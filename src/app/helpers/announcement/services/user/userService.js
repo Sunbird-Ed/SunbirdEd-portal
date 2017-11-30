@@ -7,6 +7,7 @@ let envVariables = require('../../../environmentVariablesHelper.js')
 let httpWrapper = require('./httpWrapper.js')
 let async = require('async')
 const _ = require('lodash')
+let UserPayload = require('./userPayload.js')
 /**
  * Class provides services for user related requests */
 
@@ -43,29 +44,11 @@ class UserService {
 		 */
 		this.profileUri = 'user/v1/read/'
 
-		/**
-		 * @property {object} userProfile - object used to store user profile data
-		 */
-		this.userProfile = {}
+
 	}
 
 
-	/**
-	 * map the profile service response values to user profile object keys
-	 */
-	__mapProfileResponse(profileResponse) {
-        this.userProfile.userId = profileResponse.userId
-		this.userProfile.name = profileResponse.firstName + ' ' + profileResponse.lastName
-        this.userProfile.loginId = profileResponse.userName
-        this.userProfile.email = profileResponse.email
-        this.userProfile.phone = profileResponse.phone
-        this.userProfile.dob = profileResponse.dob
-        this.userProfile.location = profileResponse.location
-        this.userProfile.rootOrg = profileResponse.rootOrg
-        this.userProfile.regOrgId = profileResponse.regOrgId
-        this.userProfile.organisations = profileResponse.organisations
-        this.userProfile.roles = profileResponse.roles
-	}
+
 
 	/**
 	 * Get user profile of given user
@@ -81,9 +64,9 @@ class UserService {
 				headers: this.httpService.getRequestHeader(this.userAccessToken)
 			}
 			this.httpService.call(options).then((data) => {
-				var res = JSON.parse(data);
-				__mapProfileResponse(res.result.response)
-				resolve(this.userProfile)
+				let res = JSON.parse(data);
+				let user = new UserPayload(res.result.response)
+				resolve(user)
 			}).catch((error) => {
 				console.log(error)
 				if (_.get(error, 'body.params.err') === 'USER_NOT_FOUND') {
