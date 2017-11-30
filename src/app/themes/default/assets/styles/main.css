@@ -454,6 +454,10 @@
   color: #006cff !important;
   text-shadow: none !important;
 }
+.disabledButton {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
 .header-container {
   margin-left: 1px !important;
   border-bottom: 5px solid #007AFF !important;
@@ -3011,8 +3015,8 @@ ul.fancytree-container li {
 .workspacecontent {
   line-height: 45px;
 }
-.workspacecontent.ui.card {
-  border: 1px solid #333333;
+ui.link.card.workspacecontent {
+  border: 1px solid #000000 !important;
   box-shadow: 0 1px 0px 0 #d4d4d5, 0 0 0 1px #d4d4d5 !important;
 }
 .workspacetitle.title {
@@ -3092,7 +3096,6 @@ ul.fancytree-container li {
   line-height: 22px;
 }
 .workspacecontentProfile.ui.card {
-  border: 1px solid #333333;
   box-shadow: 0 1px 0px 0 #d4d4d5, 0 0 0 1px #d4d4d5 !important;
 }
 .WorkSpaceTextContent {
