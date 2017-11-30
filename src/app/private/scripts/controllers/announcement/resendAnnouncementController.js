@@ -41,6 +41,7 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
                     createAnn.addNewLink()
                 })
                 createAnn.enableRecepientBtn()
+                //console.log(createAnn.announcement.attachments)
             })
         } else {
             createAnn.announcement = $stateParams.announcement
@@ -145,6 +146,7 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
             createAnn.confirmationModal()
             return false
           }
+          $state.go('announcementOutbox')
         }
       }).modal('show')
     }

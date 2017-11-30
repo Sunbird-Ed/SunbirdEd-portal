@@ -53,6 +53,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
             createAnn.confirmationModal()
             return false
           }
+          $state.go('announcementOutbox')
         }
       }).modal('show')
     }
