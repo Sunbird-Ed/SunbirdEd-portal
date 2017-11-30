@@ -6,6 +6,11 @@ class AnnouncementTypeModel extends BaseModel {
     super()
 
     /**
+     * Which defines the name of the table
+     */
+    this.table = 'announcementtype'
+
+    /**
      * Defined schema which is used to validate the api request object structure.
      */
     this.apiSchema = {}
