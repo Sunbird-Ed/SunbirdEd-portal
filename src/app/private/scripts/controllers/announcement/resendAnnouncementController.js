@@ -29,11 +29,12 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
      * @param {int} [announcementId] [to make getResend api call]
      */
     createAnn.init = function () {
-      if (createAnn.stepNumber === 1) {
+      if ($stateParams.announcement === undefined && createAnn.stepNumber === 1) {
+        console.log('if')
         announcementAdapter.getResend($stateParams.announcementId).then(function (apiResponse) {
           createAnn.announcement = new AnnouncementModel.Announcement(apiResponse.result)
 
-          $rootScope.$broadcast('component:update', createAnn.announcement.target.geo.ids)
+          // $rootScope.$broadcast('component:update', createAnn.announcement.target.geo.ids)
 
           createAnn.stepNumber = parseInt($stateParams.stepNumber) || 1
           createAnn.initializeModal()
@@ -41,15 +42,16 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
           angular.forEach(createAnn.announcement.links, function (value, key) {
             createAnn.addNewLink()
           })
+          createAnn.enableRecepientBtn()
         })
 
         announcementAdapter.getDefinitions($rootScope.rootOrgId, $rootScope.userId)
           .then(function (response) {
-            if (response.result.announcementtypes.content) {
-              createAnn.announcementType = _.map(response.result.announcementtypes.content, 'name')
+            if (response.result.announcementTypes.content) {
+              createAnn.announcementType = _.map(response.result.announcementTypes.content, 'name')
             }
-            if (response.result.senderlist) {
-              angular.forEach(response.result.senderlist, function (value, key) {
+            if (response.result.senderList) {
+              angular.forEach(response.result.senderList, function (value, key) {
                 createAnn.senderlist.push(value)
               })
             }
@@ -66,9 +68,11 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
 
       createAnn.resendAnnouncement()
 
-      console.log('nnnnn', createAnn.announcement.selTar)
-
-     // $rootScope.$broadcast('component:update', createAnn.announcement.target.geo.ids)
+      if(createAnn.stepNumber === 2) {
+          $timeout(function() {
+              $rootScope.$broadcast('component:update', createAnn.announcement.target.geo.ids )
+          }, 100)
+        }
     }
 
     /**
@@ -145,7 +149,7 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
      */
     createAnn.enableRecepientBtn = function () {
       var links = []
-      if (createAnn.announcement.links) {
+      if (createAnn.announcement && createAnn.announcement.links) {
         angular.forEach(createAnn.announcement.links, function (value, key) {
           if (value.trim().length) {
             links.push(value)
@@ -154,7 +158,7 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
       }
 
       var selectRecipientBtn = angular.element(document.querySelector('#selectRecipientBtn'))
-      if (createAnn.announcement.details.title && createAnn.announcement.details.from && (true || createAnn.announcement.details.type) &&
+      if (createAnn.announcement && createAnn.announcement.details.title && createAnn.announcement.details.from && (true || createAnn.announcement.details.type) &&
         (createAnn.uploadAttchement || createAnn.announcement.details.description || links.length)) {
         createAnn.disableBtn = false
         selectRecipientBtn.removeClass('disabled')
@@ -253,6 +257,7 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
         createAnn.isMetaModified = false
         createAnn.hideModel('createAnnouncementModal')
         $('#announcementResendModal').modal('show')
+        $state.go('announcementOutbox')
       }, function (err) {
         toasterService.error(err.data.params.errmsg)
       })
@@ -301,11 +306,11 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
      * @param {string} [name] [selected fine name]
      * @param {object} [uploadDetails] [uploaded file details - name,mimeType,downloadUrl,and file size]
      */
-    createAnn.onUploadComplete = function (id, name, uploadDetails) {
-      uploadDetails.size = createAnn.getReadableFileSize(uploadDetails.size)
-      createAnn.announcement.attachment.push(JSON.stringify(uploadDetails))
-      createAnn.uploadAttchement = true
-      createAnn.enableRecepientBtn()
+    createAnn.onUploadComplete = function(id, name, uploadDetails) {
+        uploadDetails.size = createAnn.getReadableFileSize(uploadDetails.size)
+        createAnn.announcement.attachments.push(uploadDetails)
+        createAnn.uploadAttchement = true
+        createAnn.enableRecepientBtn()
     }
 
     /**
@@ -331,6 +336,23 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
       }
       createAnn.enableRecepientBtn()
       $('#hide-section-with-button').css('style.display', 'block')
+    }
+
+    /**
+     * @method removeRicipients
+     * @desc - remove selected recipients
+     * @memberOf Controllers.createAnnouncementCtrl
+     * @param {object} [item] [current selected item]
+     */
+    createAnn.removeRecipients = function(item) {
+        _.remove(createAnn.announcement.selTar, function(arg) {
+            if (arg.location == item.location) {
+                item.selected = false
+                toasterService.info(item.location + ' ' + $rootScope.messages.imsg.m0020)
+                return arg.location
+            }
+        })
+        createAnn.confirmRecipients()
     }
   }
 ])

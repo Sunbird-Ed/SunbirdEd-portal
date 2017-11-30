@@ -15,14 +15,6 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
         createAnn.hideAnncmntBtn = false
         createAnn.uploadAttchement = false
 
-        var getDefinitionReq = {
-            request: {
-                'rootorgid': $rootScope.rootOrgId,
-                'userid': $rootScope.userId,
-                'definitions': ['announcementtypes', 'senderlist']
-            }
-        }
-
         /**
          * @method initializeModal
          * @desc - function to initialize semantic dropdowns
@@ -346,11 +338,11 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
             if(createAnn.stepNumber === 1) {
                 announcementAdapter.getDefinitions($rootScope.rootOrgId, $rootScope.userId)
                 .then(function (response) {
-                    if (response.result.announcementtypes.content) {
-                        createAnn.announcementType = _.map(response.result.announcementtypes.content, 'name')
+                    if (response.result.announcementTypes.content) {
+                        createAnn.announcementType = _.map(response.result.announcementTypes.content, 'name')
                     }
-                    if (response.result.senderlist) {
-                        angular.forEach(response.result.senderlist, function(value, key) {
+                    if (response.result.senderList) {
+                        angular.forEach(response.result.senderList, function(value, key) {
                             createAnn.senderlist.push(value)
                         })
                     }
