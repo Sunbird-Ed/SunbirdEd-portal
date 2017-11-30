@@ -92,19 +92,21 @@ function isCreateRolePresent(userProfile, sourceid) {
 
 function validateRoles() {
     return async((requestObj, responseObj, next, config) => {
-        let userProfile = undefined
         let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
         try {
             var tokenDetails = await (announcementController.__getTokenDetails(authUserToken))
-            if(tokenDetails){
-                userProfile = await (announcementController.__getUserProfile(authUserToken))
+            let userProfile = await (announcementController.__getUserProfile(authUserToken))
+            if(userProfile){
+                var isAuthorized = isCreateRolePresent(userProfile, config.sourceid);
+                if (isAuthorized) {
+                    next()
+                } else {
+                    throw "UNAUTHORIZED_USER"
+                }
+            }else{
+                throw 'UNAUTHORIZED_USER'
             }
-            let isAuthorized = isCreateRolePresent(userProfile, config.sourceid);
-            if (isAuthorized) {
-                next()
-            } else {
-                throw "User has no create access"
-            }
+            
         } catch (error) {
             if (error === 'USER_NOT_FOUND') {
                 sendErrorResponse(responseObj, config.apiid, "USER_NOT_FOUND", HttpStatus.BAD_REQUEST)
