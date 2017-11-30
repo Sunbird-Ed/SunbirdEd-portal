@@ -9,9 +9,11 @@ let dateFormat = require('dateformat')
 let webService = require('request')
 let envVariables = require('../environmentVariablesHelper.js')
 let ApiInterceptor = require('sb_api_interceptor')
+let NotificationService = require('./services/notification/notificationService.js')
+let NotificationPayload = require('./services/notification/notificationPayload.js')
+let NotificationTarget = require('./services/notification/notificationTarget.js')
 let httpWrapper = require('./services/httpWrapper.js')
 let AppError = require('./services/ErrorInterface.js')
-
 
 const statusConstant = {
     'ACTIVE': 'active',
@@ -24,7 +26,6 @@ const metricsActivityConstant = {
     'RECEIVED': 'received'
 }
 class AnnouncementController {
-
     constructor({metricsModel, announcementModel, announcementTypeModel, service } = {}) {
         /**
          * @property {class}  - Metrics model class to validate the metrics object
@@ -63,7 +64,6 @@ class AnnouncementController {
     create(requestObj) {
         return this.__create()(requestObj)
     }
-
     __create() {
         return async((requestObj) => {
             try {
@@ -82,7 +82,7 @@ class AnnouncementController {
                 var newAnnouncementObj = await (this.__createAnnouncement(requestObj.body.request))
                 if (newAnnouncementObj.data.id) {
                     requestObj.body.request.announcementId = newAnnouncementObj.data.id
-                    this.createNotification(requestObj)
+                    this.__createAnnouncementNotification(requestObj)()
                     return {
                         announcement: newAnnouncementObj.data
                     }
@@ -178,61 +178,53 @@ class AnnouncementController {
                     reject(this.customError(error))
                 })
         })
-    }
+  }
 
+    
     /**
-     * Call the notification service to send notifications about the announcement.
-     *
-     * @return  {[type]}  [description]
+     * Which is used to create a announcements notification
+     * @param  {object} annoucement - Request object 
      */
-    createNotification(data) {
-        return this.__createAnnouncementNotification()(data);
-    }
+    __createAnnouncementNotification(annoucement) {
+        try {
+            return async(() => {
+                let authUserToken = _.get(annoucement, 'kauth.grant.access_token.token') || annoucement.headers['x-authenticated-user-token']
+                let payload = new NotificationPayload({
+                    "msgid": annoucement.body.request.announcementId,
+                    "title": annoucement.body.request.title,
+                    "msg": annoucement.body.request.description,
+                    "icon": "",
+                    "validity": "-1",
+                    "actionid": "1",
+                    "actiondata": "",
+                    "dispbehavior": "stack"
+                })
 
-    __createAnnouncementNotification() {
-        return async((data) => {
-            let requestObj = {
-                "to": "",
-                "type": "fcm",
-                "data": {
-                    "notificationpayload": {
-                        "msgid": data.body.request.announcementId,
-                        "title": data.body.request.title,
-                        "msg": data.body.request.description,
-                        "icon": "",
-                        "time": dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo"),
-                        "validity": "-1",
-                        "actionid": "1",
-                        "actiondata": "",
-                        "dispbehavior": "stack"
+                // TODO : notificationServiceInstance should be outside of this method,once session service implemented
+                // then it should be outside of this method
+                let notifier = new NotificationService({
+                    userAccessToken: authUserToken
+                })
+                let target = new NotificationTarget({
+                    target: _.get(annoucement, 'body.request.target')
+                })
+                let targetValidation = target.validate();
+                if (!targetValidation.isValid) {
+                    return {
+                        msg: targetValidation.error
                     }
                 }
-            }
-            let options = {
-                "method": "POST",
-                "uri": envVariables.DATASERVICE_URL + "data/v1/notification/send",
-                "body": {
-                    "request": requestObj
-                },
-                "json": true
-            }
-            let authUserToken = _.get(data, 'kauth.grant.access_token.token') || data.headers['x-authenticated-user-token']
-            options.headers = this.httpService.getRequestHeader(authUserToken)
-            var targetIds = []
-            if (data.body.request.target) {
-                _.forIn(data.body.request.target, (value, key) => {
-                    if (_.isObject(value)) {
-                        _.forEach(value.ids, (v, k) => {
-                            targetIds.push(v)
-                        });
+                let payloadValidation = payload.validate();
+                if (!payloadValidation.isValid) {
+                    return {
+                        msg: payloadValidation.error
                     }
-                });
-            }
-            this.forEachPromise(targetIds, this.sendNotification, options, this).then(() => {
-                // console.log('done')
-            });
-        })
-
+                }
+                notifier.send(target, payload)
+            })
+        } catch (error) {
+            throw {message:'Internal Server Error', status: HttpStatus.INTERNAL_SERVER_ERROR}
+        }
     }
 
     /**
@@ -872,43 +864,22 @@ class AnnouncementController {
         return this.__create()(requestObj)
     }
 
-
-    forEachPromise(items, fn, options, context) {
-        return items.reduce(function(promise, item) {
-            return promise.then(function() {
-                return fn(item, options, context);
-            });
-        }, Promise.resolve());
-    }
-
-    sendNotification(item, options, context) {
-        options.body.request.to = item;
-        return new Promise((resolve, reject) => {
-            context.httpService.call(options).then((data) => {
-                resolve(data);
-            }).catch((error) => {
-                reject(error);
-            })
-        });
-    }
-
-    __checkPermission() {
-        return async((requestObj, userid, announcementId) => {
-            if (requestObj) {
-                requestObj.params = {};
-                requestObj.params.id = announcementId
-                var response = await (this.getAnnouncementById(requestObj));
-                if (response) {
-                    return response.userid === userid ? true : false
-                } else {
-                    return false
-                }
-            } else {
-                return false;
-            }
-        });
-    }
-
+  __checkPermission() {
+      return async((requestObj, userid, announcementId) => {
+          if (requestObj) {
+              requestObj.params = {};
+              requestObj.params.id = announcementId
+              var response = await (this.getAnnouncementById(requestObj));
+              if(response){
+                return response.userid === userid ? true : false
+              }else{
+                return false
+              }
+          } else {
+              return false;
+          }
+      });
+  }
     __getTokenDetails(authUserToken) {
         return new Promise((resolve, reject) => {
             var keyCloak_config = {
