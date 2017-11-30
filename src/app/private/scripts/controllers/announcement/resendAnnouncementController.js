@@ -184,6 +184,7 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
       }, 100)
       $rootScope.$on('selected:items', function (evet, data) {
         createAnn.announcement.selTar = _.clone(data.geo)
+        createAnn.announcement.target.geo.ids = _.map(createAnn.announcement.selTar, 'id')
       })
     }
 

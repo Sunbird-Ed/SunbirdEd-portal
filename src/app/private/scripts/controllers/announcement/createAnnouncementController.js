@@ -346,7 +346,9 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
                             createAnn.senderlist.push(value)
                         })
                     }
-                    $('#announcementType').dropdown('set text', createAnn.announcement.details.type)
+                    if(createAnn.announcement.details.type !== '') {
+                      $('#announcementType').dropdown('set text', createAnn.announcement.details.type)
+                    }
                 }, function (err) {
                     createAnn.hideAnncmntBtn = true
                     toasterService.error($rootScope.messages.fmsg.m0069)
