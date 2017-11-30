@@ -335,7 +335,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       }
 
       if (createAnn.stepNumber === 1) {
-        announcementAdapter.getDefinitions($rootScope.rootOrgId, $rootScope.userId)
+        announcementAdapter.getDefinitions($rootScope.rootOrgId)
           .then(function (response) {
             if (response.result.announcementTypes.content) {
               createAnn.announcementType = _.map(response.result.announcementTypes.content, 'name')
@@ -378,9 +378,6 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
         if (createAnn.confirmRecipients()) {
           if (_.isEmpty(createAnn.announcement.sourceId)) {
             createAnn.announcement.sourceId = $rootScope.rootOrgId
-          }
-          if (_.isEmpty(createAnn.announcement.createdBy)) {
-            createAnn.announcement.createdBy = $rootScope.userId
           }
         } else {
           return false
