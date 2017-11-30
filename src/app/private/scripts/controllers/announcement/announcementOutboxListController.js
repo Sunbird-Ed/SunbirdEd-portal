@@ -15,7 +15,7 @@ angular.module('playerApp')
      * @memberOf Controllers.announcementOutboxListController
      */
       announcementOutboxData.renderAnnouncementList = function () {
-        announcementAdapter.getOutBoxAnnouncementList($rootScope.userId).then(function (apiResponse) {
+        announcementAdapter.getOutBoxAnnouncementList().then(function (apiResponse) {
           announcementOutboxData.showLoader = false
           announcementOutboxData.result = apiResponse.result
           announcementOutboxData.listData = apiResponse.result.announcements.content
@@ -82,7 +82,7 @@ angular.module('playerApp')
      * @memberOf Controllers.announcementOutboxListController
      */
       announcementOutboxData.deleteAnnouncement = function () {
-        announcementAdapter.deleteAnnouncement($rootScope.userId, announcementOutboxData.announcementId).then(function (apiResponse) {
+        announcementAdapter.deleteAnnouncement(announcementOutboxData.announcementId).then(function (apiResponse) {
           if (apiResponse.result.status === 'cancelled') {
             toasterService.success($rootScope.messages.smsg.moo41)
             var evens = _.remove(announcementOutboxData.listData, function (ann) {

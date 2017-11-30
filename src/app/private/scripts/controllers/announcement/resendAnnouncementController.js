@@ -30,40 +30,43 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
      * @param {int} [announcementId] [to make getResend api call]
      */
     createAnn.init = function () {
-      createAnn.isMetaModifiedSteps = false
-      if ($stateParams.announcement === undefined && createAnn.stepNumber === 1) {
-        announcementAdapter.getResend($stateParams.announcementId).then(function (apiResponse) {
-          createAnn.announcement = new AnnouncementModel.Announcement(apiResponse.result)
-          createAnn.stepNumber = parseInt($stateParams.stepNumber) || 1
-          createAnn.initializeModal()
+        createAnn.isMetaModifiedSteps = $stateParams.isMetaModifiedSteps
+        createAnn.stepNumber = parseInt($stateParams.stepNumber) || 1
+        if ($stateParams.announcement === undefined && createAnn.stepNumber === 1) {
+            announcementAdapter.getResend($stateParams.announcementId).then(function (apiResponse) {
+                createAnn.announcement = new AnnouncementModel.Announcement(apiResponse.result)
+                createAnn.initializeModal()
 
-          angular.forEach(createAnn.announcement.links, function (value, key) {
-            createAnn.addNewLink()
-          })
-          createAnn.enableRecepientBtn()
-        })
-
-        announcementAdapter.getDefinitions($rootScope.rootOrgId, $rootScope.userId)
-          .then(function (response) {
-            if (response.result.announcementTypes.content) {
-              createAnn.announcementType = _.map(response.result.announcementTypes.content, 'name')
-            }
-            if (response.result.senderList) {
-              angular.forEach(response.result.senderList, function (value, key) {
-                createAnn.senderlist.push(value)
-              })
-            }
-
-            $('#announcementType').dropdown('set text', createAnn.announcement.details.type)
-          }, function (err) {
-            createAnn.hideAnncmntBtn = true
-            toasterService.error($rootScope.messages.fmsg.m0069)
-          })
-      } else {
-        createAnn.announcement = $stateParams.announcement
-      }
+                angular.forEach(createAnn.announcement.links, function (value, key) {
+                    createAnn.addNewLink()
+                })
+                createAnn.enableRecepientBtn()
+                //console.log(createAnn.announcement.attachments)
+            })
+        } else {
+            createAnn.announcement = $stateParams.announcement
+        }
 
       createAnn.resendAnnouncement()
+
+      if (createAnn.stepNumber === 1) {
+            announcementAdapter.getDefinitions($rootScope.rootOrgId)
+            .then(function (response) {
+                if (response.result.announcementTypes.content) {
+                    createAnn.announcementType = _.map(response.result.announcementTypes.content, 'name')
+                }
+                if (response.result.senderList) {
+                    angular.forEach(response.result.senderList, function (value, key) {
+                    createAnn.senderlist.push(value)
+                    })
+                }
+
+                $('#announcementType').dropdown('set text', createAnn.announcement.details.type)
+            }, function (err) {
+                createAnn.hideAnncmntBtn = true
+                toasterService.error($rootScope.messages.fmsg.m0069)
+            })
+        }
 
       if (createAnn.stepNumber === 2) {
         $timeout(function () {
@@ -139,10 +142,11 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
           $('.ui.modal.transition.hidden').remove()
         },
         onHide: function () {
-          if (createAnn.isMetaModified && createAnn.isMetaModifiedSteps !== true) {
+          if (createAnn.isMetaModified === true && createAnn.isMetaModifiedSteps !== true) {
             createAnn.confirmationModal()
             return false
           }
+          $state.go('announcementOutbox')
         }
       }).modal('show')
     }
@@ -198,7 +202,6 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
      * @memberOf Controllers.createAnnouncementCtrl
      */
     createAnn.goToNextStep = function () {
-      createAnn.isMetaModifiedSteps = true
       // Current step is confirm recipients
       if (createAnn.stepNumber !== 1) {
         if (createAnn.confirmRecipients()) {
@@ -216,7 +219,7 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
         $rootScope.$broadcast('component:update', geoIds)
       }, 100)
 
-      $state.go('announcementResend', { stepNumber: ++createAnn.stepNumber, announcement: createAnn.announcement }, { reload: true })
+      $state.go('announcementResend', { stepNumber: ++createAnn.stepNumber, announcement: createAnn.announcement, isMetaModifiedSteps: createAnn.isMetaModifiedSteps  }, { reload: true })
     }
 
     /**
@@ -225,15 +228,14 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
      * @memberOf Controllers.createAnnouncementCtrl
      */
     createAnn.goToBackStep = function () {
-      createAnn.isMetaModifiedSteps = true
-      $state.go('announcementResend', { stepNumber: --createAnn.stepNumber, announcement: createAnn.announcement }, { reload: true })
+      $state.go('announcementResend', { stepNumber: --createAnn.stepNumber, announcement: createAnn.announcement, isMetaModifiedSteps: createAnn.isMetaModifiedSteps}, { reload: true })
     }
 
     createAnn.confirmRecipients = function () {
       $rootScope.$emit('get:selected:items')
-
       if (createAnn.announcement.selTar && createAnn.announcement.selTar.length === 0) {
         toasterService.error($rootScope.messages.emsg.m0006)
+        $state.go('announcementResend', { stepNumber: 2, announcement: createAnn.announcement, isMetaModifiedSteps: createAnn.isMetaModifiedSteps}, { reload: true })
         return false
       }
 
@@ -352,6 +354,12 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
      * @param {object} [item] [current selected item]
      */
     createAnn.removeRecipients = function (item) {
+         _.remove(createAnn.announcement.target.geo.ids, function (arg) {
+            if(arg == item.id) {
+                return true
+            }
+         })
+        createAnn.announcement.target.geo.ids
       _.remove(createAnn.announcement.selTar, function (arg) {
         if (arg.location == item.location) {
           item.selected = false

@@ -23,16 +23,12 @@ angular.module('playerApp')
        * @method getOutBoxAnnouncementList
        * @desc Get announcement outbox list data
        * @memberOf Services.announcementService
-       * @param {Object}   req - Request Object
-       * @param {string}  datasetType - Data type
        * @returns {Promise} Promise object represents announcement outbox list dashboard data
        * @instance
        */
-      this.getOutBoxAnnouncementList = function (userId) {
+      this.getOutBoxAnnouncementList = function () {
         var data = {
-          'request': {
-            'userId': userId
-          }
+          'request': { }
         }
         return handleHttpRequest(config.URL.ANNOUNCEMENT.OUTBOX_LIST, data, 'POST', $rootScope.messages.fmsg.m0070)
       }
@@ -69,16 +65,13 @@ angular.module('playerApp')
        * @method getInboxAnnouncementList
        * @desc Get announcement inbox list data
        * @memberOf Services.announcementService
-       * @param {Object}   req - Request Object
-       * @param {string}  datasetType - Data type
+       * @param {Number}  reqLimit - Request Limit
        * @returns {Promise} Promise object represents announcement inbox list dashboard data
        * @instance
        */
-      this.getInboxAnnouncementList = function (userId, reqLimit) {
+      this.getInboxAnnouncementList = function (reqLimit) {
         var data = {
-          'request': {
-            'userId': userId
-          }
+          'request': { }
         }
 
         if (reqLimit > 0) {
@@ -120,7 +113,6 @@ angular.module('playerApp')
             description: annoucement.details.description,
             links: annoucement.links,
             sourceId: annoucement.sourceId,
-            createdBy: annoucement.createdBy,
             target: annoucement.target,
             attachments: annoucement.attachments
           }
@@ -131,15 +123,14 @@ angular.module('playerApp')
        * @method getDefinitions
        * @desc get announcement type and sender list
        * @memberOf Services.announcementService
-       * @param {object}  req - rootOrgId, userid and definition type array
+       * @param {String}  rootOrgId - rootOrgId
        * @returns {object} returns response of API
        * @instance
        */
-      this.getDefinitions = function (rootOrgId, userId) {
+      this.getDefinitions = function (rootOrgId) {
         var data = {
           request: {
             'rootOrgId': rootOrgId,
-            'userid': userId,
             'definitions':['senderList','announcementTypes']
           }
         }
@@ -150,14 +141,13 @@ angular.module('playerApp')
        * @method readAnnouncement
        * @desc read announcement
        * @memberOf Services.announcementService
-       * @param {object}  req - announcementid, userid
+       * @param {String}  annId - announcementid
        * @returns {object} returns response of API
        * @instance
        */
-      this.readAnnouncement = function (userId, annId) {
+      this.readAnnouncement = function (annId) {
         var data = {
           request: {
-            'userId': userId,
             'announcementId': annId,
             'channel': 'web'
           }
@@ -169,14 +159,13 @@ angular.module('playerApp')
        * @method receivedAnnouncement
        * @desc received announcement
        * @memberOf Services.announcementService
-       * @param {string}  req - userId, AnnId
+       * @param {String}  annId - announcementid
        * @returns {object} returns response of API
        * @instance
        */
-      this.receivedAnnouncement = function (userId, annId) {
+      this.receivedAnnouncement = function (annId) {
         var data = {
           'request': {
-            'userId': userId,
             'announcementId': annId,
             'channel': 'web'
           }
@@ -188,14 +177,13 @@ angular.module('playerApp')
        * @method deleteAnnouncement
        * @desc Send requestBody to cancel annoucement API
        * @memberOf Services.announcementService
-       * @param {string}  requestBody - request body
+       * @param {String}  announcementId - announcementid
        * @returns {object} returns response of API
        * @instance
        */
-      this.deleteAnnouncement = function (userId, announcementId) {
+      this.deleteAnnouncement = function (announcementId) {
         var data = {
           'request': {
-            'userId': userId,
             'announcementid': announcementId
           }
         }
@@ -237,7 +225,6 @@ angular.module('playerApp')
             description: annoucement.details.description,
             links: annoucement.links,
             sourceId: annoucement.sourceId,
-            createdBy: annoucement.createdBy,
             target: annoucement.target,
             attachments: annoucement.attachments
           }
@@ -245,5 +232,42 @@ angular.module('playerApp')
         var URL = config.URL.ANNOUNCEMENT.RESEND
         return handleHttpRequest(URL, data, 'POST')
       }
+
+     /**
+       * @method verifyAnnouncementData
+       * @desc Verify announcement data is filled before heading to next step
+       * @memberOf Services.announcementService
+       * @param {string}  stepNumber - step number
+       * @param {object}  announcement - announcement
+       * @returns {boolean} returns boolean
+       * @instance
+       */
+      this.verifyAnnouncementData = function (stepNumber, announcement) {
+            var status = true
+
+            if (announcement === undefined) {
+                if (stepNumber === 1) {
+                    status = true
+                } else {
+                    status = false
+                }
+            }
+            else{
+                if (stepNumber === 2){
+                    if (!(announcement.details.title && announcement.details.type && announcement.details.from && (announcement.details.description || announcement.links || announcement.attachments))){
+                        status = false
+                    }
+                } else if (stepNumber === 3 || stepNumber === 4){
+                    $rootScope.$emit('get:selected:items')
+                    if (announcement.selTar && announcement.selTar.length === 0) {
+                        status = false
+                    }
+                }
+
+
+            }
+
+            return status
+        }
     }
   ])
