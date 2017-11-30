@@ -19,7 +19,7 @@ class UserService {
 	 *
 	 * Callers of the constructor can invoke as follows:
 	 *
-	 * let notifier = new UserService({userAccessToken: 135-5435-6456, httpService:instance })
+	 * let userService = new UserService({userAccessToken: 135-5435-6456,userId:5343434-67676-135-5, httpService:instance })
 	 */
 	constructor({
 		userAccessToken,
@@ -49,10 +49,6 @@ class UserService {
 
 
 	}
-
-
-
-
 	/**
 	 * Get user profile of given user
 	 */
@@ -97,7 +93,7 @@ class UserService {
 				} else if (_.get(error, 'body.params.err') === 'UNAUTHORIZE_USER') {
 					reject(new AppError({
 						message: 'Unauthorised user',
-						status: HttpStatus.HttpStatus.UNAUTHORIZED
+						status: HttpStatus.UNAUTHORIZED
 					}))
 				} else {
 					reject(new AppError({
