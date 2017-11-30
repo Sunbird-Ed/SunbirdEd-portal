@@ -1,6 +1,6 @@
 'use strict'
-angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$timeout', 'config', 'toasterService', 'announcementService', 'fileUpload', 'AnnouncementModel', 'announcementAdapter',
-  function ($rootScope, $scope, $state, $stateParams, $timeout, config, toasterService, announcementService, fileUpload, AnnouncementModel, announcementAdapter) {
+angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$timeout', 'config', 'toasterService', 'fileUpload', 'AnnouncementModel', 'announcementAdapter',
+  function ($rootScope, $scope, $state, $stateParams, $timeout, config, toasterService, fileUpload, AnnouncementModel, announcementAdapter) {
     var createAnn = this
     createAnn.data = {}
     createAnn.attachment = []
@@ -14,6 +14,7 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
     createAnn.repeatableWebLinks = []
     createAnn.hideAnncmntBtn = false
     createAnn.uploadAttchement = false
+    createAnn.editAction = true
     createAnn.stepNumber = parseInt($stateParams.stepNumber) || 1
     createAnn.config = {
       'geo': {
@@ -29,50 +30,48 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
      * @param {int} [announcementId] [to make getResend api call]
      */
     createAnn.init = function () {
-      if ($stateParams.announcement === undefined && createAnn.stepNumber === 1) {
-        console.log('if')
-        announcementAdapter.getResend($stateParams.announcementId).then(function (apiResponse) {
-          createAnn.announcement = new AnnouncementModel.Announcement(apiResponse.result)
+        createAnn.isMetaModifiedSteps = $stateParams.isMetaModifiedSteps
+        createAnn.stepNumber = parseInt($stateParams.stepNumber) || 1
+        if ($stateParams.announcement === undefined && createAnn.stepNumber === 1) {
+            announcementAdapter.getResend($stateParams.announcementId).then(function (apiResponse) {
+                createAnn.announcement = new AnnouncementModel.Announcement(apiResponse.result)
+                createAnn.initializeModal()
 
-          // $rootScope.$broadcast('component:update', createAnn.announcement.target.geo.ids)
+                angular.forEach(createAnn.announcement.links, function (value, key) {
+                    createAnn.addNewLink()
+                })
+                createAnn.enableRecepientBtn()
+            })
 
-          createAnn.stepNumber = parseInt($stateParams.stepNumber) || 1
-          createAnn.initializeModal()
+            if (createAnn.stepNumber === 1) {
+                announcementAdapter.getDefinitions($rootScope.rootOrgId, $rootScope.userId)
+                .then(function (response) {
+                    if (response.result.announcementTypes.content) {
+                        createAnn.announcementType = _.map(response.result.announcementTypes.content, 'name')
+                    }
+                    if (response.result.senderList) {
+                        angular.forEach(response.result.senderList, function (value, key) {
+                        createAnn.senderlist.push(value)
+                        })
+                    }
 
-          angular.forEach(createAnn.announcement.links, function (value, key) {
-            createAnn.addNewLink()
-          })
-          createAnn.enableRecepientBtn()
-        })
-
-        announcementAdapter.getDefinitions($rootScope.rootOrgId, $rootScope.userId)
-          .then(function (response) {
-            if (response.result.announcementTypes.content) {
-              createAnn.announcementType = _.map(response.result.announcementTypes.content, 'name')
+                    $('#announcementType').dropdown('set text', createAnn.announcement.details.type)
+                }, function (err) {
+                    createAnn.hideAnncmntBtn = true
+                    toasterService.error($rootScope.messages.fmsg.m0069)
+                })
             }
-            if (response.result.senderList) {
-              angular.forEach(response.result.senderList, function (value, key) {
-                createAnn.senderlist.push(value)
-              })
-            }
-
-            $('#announcementType').dropdown('set text', createAnn.announcement.details.type)
-          }, function (err) {
-            createAnn.hideAnncmntBtn = true
-            toasterService.error($rootScope.messages.fmsg.m0069)
-          })
-      } else {
-        createAnn.announcement = $stateParams.announcement
-        console.log('else', createAnn.announcement)
-      }
+        } else {
+            createAnn.announcement = $stateParams.announcement
+        }
 
       createAnn.resendAnnouncement()
 
-      if(createAnn.stepNumber === 2) {
-          $timeout(function() {
-              $rootScope.$broadcast('component:update', createAnn.announcement.target.geo.ids )
-          }, 100)
-        }
+      if (createAnn.stepNumber === 2) {
+        $timeout(function () {
+          $rootScope.$broadcast('component:update', createAnn.announcement.target.geo.ids)
+        }, 100)
+      }
     }
 
     /**
@@ -116,7 +115,6 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
      */
     createAnn.refreshFormValues = function () {
       createAnn.disableBtn = true
-      createAnn.editAction = false
       createAnn.stepNumber = 1
       $('#announcementType').dropdown('restore defaults')
       $('#createAnnouncementModal').modal('refresh')
@@ -134,10 +132,19 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
      * @memberOf Controllers.resendAnnouncementCtrl
      */
     createAnn.resendAnnouncement = function () {
+      if ($stateParams.announcement) {
+        createAnn.isMetaModified = true
+      }
       $('#createAnnouncementModal').modal({
         closable: false,
         onShow: function () {
           $('.ui.modal.transition.hidden').remove()
+        },
+        onHide: function () {
+          if (createAnn.isMetaModified === true && createAnn.isMetaModifiedSteps !== true) {
+            createAnn.confirmationModal()
+            return false
+          }
         }
       }).modal('show')
     }
@@ -184,7 +191,6 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
       }, 100)
       $rootScope.$on('selected:items', function (evet, data) {
         createAnn.announcement.selTar = _.clone(data.geo)
-        createAnn.announcement.target.geo.ids = _.map(createAnn.announcement.selTar, 'id')
       })
     }
 
@@ -211,7 +217,7 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
         $rootScope.$broadcast('component:update', geoIds)
       }, 100)
 
-      $state.go('announcementResend', { stepNumber: ++createAnn.stepNumber, announcement: createAnn.announcement }, { reload: true })
+      $state.go('announcementResend', { stepNumber: ++createAnn.stepNumber, announcement: createAnn.announcement, isMetaModifiedSteps: createAnn.isMetaModifiedSteps  }, { reload: true })
     }
 
     /**
@@ -220,14 +226,14 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
      * @memberOf Controllers.createAnnouncementCtrl
      */
     createAnn.goToBackStep = function () {
-      $state.go('announcementResend', { stepNumber: --createAnn.stepNumber, announcement: createAnn.announcement }, { reload: true })
+      $state.go('announcementResend', { stepNumber: --createAnn.stepNumber, announcement: createAnn.announcement, isMetaModifiedSteps: createAnn.isMetaModifiedSteps}, { reload: true })
     }
 
     createAnn.confirmRecipients = function () {
       $rootScope.$emit('get:selected:items')
-
       if (createAnn.announcement.selTar && createAnn.announcement.selTar.length === 0) {
         toasterService.error($rootScope.messages.emsg.m0006)
+        $state.go('announcementResend', { stepNumber: 2, announcement: createAnn.announcement, isMetaModifiedSteps: createAnn.isMetaModifiedSteps}, { reload: true })
         return false
       }
 
@@ -307,11 +313,11 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
      * @param {string} [name] [selected fine name]
      * @param {object} [uploadDetails] [uploaded file details - name,mimeType,downloadUrl,and file size]
      */
-    createAnn.onUploadComplete = function(id, name, uploadDetails) {
-        uploadDetails.size = createAnn.getReadableFileSize(uploadDetails.size)
-        createAnn.announcement.attachments.push(uploadDetails)
-        createAnn.uploadAttchement = true
-        createAnn.enableRecepientBtn()
+    createAnn.onUploadComplete = function (id, name, uploadDetails) {
+      uploadDetails.size = createAnn.getReadableFileSize(uploadDetails.size)
+      createAnn.announcement.attachments.push(uploadDetails)
+      createAnn.uploadAttchement = true
+      createAnn.enableRecepientBtn()
     }
 
     /**
@@ -345,15 +351,21 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
      * @memberOf Controllers.createAnnouncementCtrl
      * @param {object} [item] [current selected item]
      */
-    createAnn.removeRecipients = function(item) {
-        _.remove(createAnn.announcement.selTar, function(arg) {
-            if (arg.location == item.location) {
-                item.selected = false
-                toasterService.info(item.location + ' ' + $rootScope.messages.imsg.m0020)
-                return arg.location
+    createAnn.removeRecipients = function (item) {
+         _.remove(createAnn.announcement.target.geo.ids, function (arg) {
+            if(arg == item.id) {
+                return true
             }
-        })
-        createAnn.confirmRecipients()
+         })
+        createAnn.announcement.target.geo.ids
+      _.remove(createAnn.announcement.selTar, function (arg) {
+        if (arg.location == item.location) {
+          item.selected = false
+          toasterService.info(item.location + ' ' + $rootScope.messages.imsg.m0020)
+          return arg.location
+        }
+      })
+      createAnn.confirmRecipients()
     }
   }
 ])
