@@ -2,16 +2,13 @@
  * @author Loganathan Shanmugam <loganathan.shanmugam@tarento.com>
  */
 
-
-
-
 /**
- * Class provides user object for user related services */
+ * Class provides user details for user related services
+ */
 
-class UserPayload {
+class User {
 	constructor({
-		userId,
-		userName,
+		id,
 		firstName,
 		lastName,
 		email,
@@ -23,20 +20,21 @@ class UserPayload {
 		organisations,
 		roles
 	} = {}) {
+
 		/**
 		 * @property {string} userId - a unqiue id for the user
 		 */
-		this.userId = userId
+		this.id = id
 
 		/**
-		 * @property {string} name - combination of firstname and lastname for the user
+		 * @property {string} firstName - first name of the user
 		 */
-		this.name = firstName + ' ' + lastName
+		this.firstName = firstName
 
 		/**
-		 * @property {string} loginId - login username of the user
+		 * @property {string} lastName - last name of the user
 		 */
-		this.loginId = userName
+		this.firstName = lastName
 
 		/**
 		 * @property {string} email - email id of the user
@@ -79,3 +77,4 @@ class UserPayload {
 		this.roles = roles
 	}
 }
+module.exports = User

@@ -4,10 +4,13 @@
 
 let webService = require('request')
 let envVariables = require('../../../environmentVariablesHelper.js')
-let httpWrapper = require('./httpWrapper.js')
+let httpWrapper = require('../httpWrapper.js')
 let async = require('async')
 const _ = require('lodash')
-let UserPayload = require('./userPayload.js')
+let User = require('./User.js')
+let AppError = require('../ErrorInterface.js')
+
+let HttpStatus = require('http-status-codes')
 /**
  * Class provides services for user related requests */
 
@@ -64,17 +67,40 @@ class UserService {
 				headers: this.httpService.getRequestHeader(this.userAccessToken)
 			}
 			this.httpService.call(options).then((data) => {
-				let res = JSON.parse(data);
-				let user = new UserPayload(res.result.response)
-				resolve(user)
+				let res = JSON.parse(data.body)
+				let profileData = res.result.response
+				let userData = {
+					id: profileData.identifier,
+					firstName: profileData.firstName,
+					lastName: profileData.lastName,
+					email: profileData.email,
+					phone: profileData.phone,
+					dob: profileData.dob,
+					location: profileData.location,
+					rootOrg: profileData.rootOrg,
+					regOrgId: profileData.regOrgId,
+					organisations: profileData.organisations,
+					roles: profileData.roles
+				}
+
+				let userObj = new User(userData)
+				resolve(userObj)
 			}).catch((error) => {
-				console.log(error)
 				if (_.get(error, 'body.params.err') === 'USER_NOT_FOUND') {
-					reject('USER_NOT_FOUND')
+					reject(new AppError({
+						message: 'User not found',
+						status: HttpStatus.NOT_FOUND
+					}))
 				} else if (_.get(error, 'body.params.err') === 'UNAUTHORIZE_USER') {
-					reject('UNAUTHORIZE_USER')
+					reject(new AppError({
+						message: 'Unauthorised user',
+						status: HttpStatus.HttpStatus.UNAUTHORIZED
+					}))
 				} else {
-					reject("UNKNOWN_ERROR")
+					reject(new AppError({
+						message: 'Unknown error',
+						status: 500
+					}))
 				}
 			})
 		})
