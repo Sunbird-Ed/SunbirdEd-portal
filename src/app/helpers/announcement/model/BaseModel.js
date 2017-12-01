@@ -8,16 +8,16 @@ let Joi = require('joi')
      * Which is used schema validation any child schema can overide.
      */
 class Model {
-  constructor () {
+  constructor (modelSchema, apiSchema) {
     /**
      * @property {Object}  - Model schema object by default it's empty, Child class should define the strucutre of modelSchema object.
      */
-    this.modelSchema = {}
+    this.modelSchema = modelSchema
 
     /**
      * @property {Object}  - Api schema object by default it's empty, Child class should define the strucutre of apiSchema object.
      */
-    this.apiSchema = {}
+    this.apiSchema = apiSchema
   }
     /**
      * It validates the object based on the respective schema
@@ -54,7 +54,7 @@ class Model {
    * Which is used to get the modelSubSchema
    * @param {string} property - Name of property, Using this property we can get the modelSubschema object from the modelSchema
    */
-  ModelSubSchema (property) {
+  modelSubSchema (property) {
     return Joi.reach(this.modelSchema, property)
   }
 
@@ -62,7 +62,7 @@ class Model {
    * Which is used to get the apiSubSchema.
    * @param {string} property - Name of the property, Using this we can get the apiSubschema object from the apiSchema
    */
-  ApiSubSchema (property) {
+  apiSubSchema (property) {
     return Joi.reach(this.apiSchema, property)
   }
 }

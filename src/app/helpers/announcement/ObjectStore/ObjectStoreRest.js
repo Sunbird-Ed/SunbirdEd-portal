@@ -12,11 +12,11 @@ class ObjectStoreRest extends ObjectStore {
      * Create Object store instance.
      * Call can instantiate the ObjectStore as follows
      *
-     * let ObjectStore = new ObjectStoreRest({metrics:metricsModelInst, announcement: announcmentModelInst, announcementtype: announcmentTypeModelInst, httpWrapper:httpWrapperInstance})
+     * let ObjectStore = new ObjectStoreRest({model:MetricsModel, service:httpService})
      */
 
     constructor({model, service } = {}) {
-        super() 
+        super({model:model, service: service}) 
         /**
          * @property {class} - Defines the model instance ex: MetricsModel, AnnouncementModel
          */
