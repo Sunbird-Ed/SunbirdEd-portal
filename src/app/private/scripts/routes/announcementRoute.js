@@ -114,7 +114,6 @@ angular.module('playerApp')
           } else {
             userIdHashTag = $stateParams.userIdHashTag
           }
-
           if (stepNumber !== 1) {
             var status = announcementAdapter.verifyAnnouncementData(stepNumber, announcement)
             if (status) {
@@ -131,7 +130,8 @@ angular.module('playerApp')
                 url: '/private/index#!/announcement/create/' + stepNumber
               }, userIdHashTag)
             } else {
-              $state.go('announcementCreate', {stepNumber: 1, isMetaModifiedSteps: true}, {reload: true})
+              $state.go('announcementOutbox')
+              // $state.go('announcementCreate', {stepNumber: 1, isMetaModifiedSteps: true}, {reload: true})
             }
           } else {
             $rootScope.profileActive = 'active'
@@ -162,7 +162,7 @@ angular.module('playerApp')
         },
         params: {
           announcement: undefined,
-          isMetaModifiedSteps: true,
+          isMetaModifiedSteps: false,
           userIdHashTag: undefined,
           telemetryPageId: 'annoucement_form_details',
           telemetryPageType: 'form',
@@ -172,7 +172,6 @@ angular.module('playerApp')
           var stepNumber = parseInt($stateParams.stepNumber)
           var announcement = $stateParams.announcement
           var announcementId = $stateParams.announcementId
-
           var userIdHashTag = ''
           if ($stateParams.userIdHashTag === undefined) {
             var str = (Math.floor(new Date().getTime() / 1000)) + ($rootScope.userId) + (Math.floor(Math.random() * 90000) + 10000)

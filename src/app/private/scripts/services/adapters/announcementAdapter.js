@@ -28,7 +28,9 @@ angular.module('playerApp')
        */
       this.getOutBoxAnnouncementList = function () {
         var data = {
-          'request': { }
+          'request': {
+            'limit': 25
+          }
         }
         return handleHttpRequest(config.URL.ANNOUNCEMENT.OUTBOX_LIST, data, 'POST', $rootScope.messages.fmsg.m0070)
       }
@@ -102,7 +104,7 @@ angular.module('playerApp')
        */
       this.createAnnouncement = function (annoucement) {
         // Convert attachment object to string
-          _.forEach(annoucement.attachments, function (attachment, index) {
+        _.forEach(annoucement.attachments, function (attachment, index) {
           annoucement.attachments[index] = JSON.stringify(attachment)
         })
         var data = {
@@ -131,7 +133,7 @@ angular.module('playerApp')
         var data = {
           request: {
             'rootOrgId': rootOrgId,
-            'definitions':['senderList','announcementTypes']
+            'definitions': ['senderList', 'announcementTypes']
           }
         }
         return handleHttpRequest(config.URL.ANNOUNCEMENT.DEFINITIONS, data, 'POST')
@@ -214,7 +216,7 @@ angular.module('playerApp')
        */
       this.resendAnnouncement = function (annoucement) {
         // Convert attachment object to string
-          _.forEach(annoucement.attachments, function (attachment, index) {
+        _.forEach(annoucement.attachments, function (attachment, index) {
           annoucement.attachments[index] = JSON.stringify(attachment)
         })
         var data = {
@@ -243,31 +245,28 @@ angular.module('playerApp')
        * @instance
        */
       this.verifyAnnouncementData = function (stepNumber, announcement) {
-            var status = true
+        var status = true
 
-            if (announcement === undefined) {
-                if (stepNumber === 1) {
-                    status = true
-                } else {
-                    status = false
-                }
+        if (announcement === undefined) {
+          if (stepNumber === 1) {
+            status = true
+          } else {
+            status = false
+          }
+        } else {
+          if (stepNumber === 2) {
+            if (!(announcement.details.title && announcement.details.type && announcement.details.from && (announcement.details.description || announcement.links || announcement.attachments))) {
+              status = false
             }
-            else{
-                if (stepNumber === 2){
-                    if (!(announcement.details.title && announcement.details.type && announcement.details.from && (announcement.details.description || announcement.links || announcement.attachments))){
-                        status = false
-                    }
-                } else if (stepNumber === 3 || stepNumber === 4){
-                    $rootScope.$emit('get:selected:items')
-                    if (announcement.selTar && announcement.selTar.length === 0) {
-                        status = false
-                    }
-                }
-
-
+          } else if (stepNumber === 3 || stepNumber === 4) {
+            $rootScope.$emit('get:selected:items')
+            if (announcement.selTar && announcement.selTar.length === 0) {
+              status = false
             }
-
-            return status
+          }
         }
+
+        return status
+      }
     }
   ])
