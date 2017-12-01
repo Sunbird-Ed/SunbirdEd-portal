@@ -5,7 +5,6 @@ let chai = require('chai'),
   httpService = require('../../../../app/helpers/announcement/services/httpWrapper.js')
 
 describe('ObjectStore', () => {
-  ``
   before(() => {
     objectStore = new ObjectStore(announcementModel, httpService)
   })
