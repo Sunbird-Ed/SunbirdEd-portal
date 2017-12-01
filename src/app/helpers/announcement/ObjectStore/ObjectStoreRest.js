@@ -31,16 +31,15 @@ class ObjectStoreRest extends ObjectStore {
     /**
      * Which is used to create a announcemet.
      * @param  {object} data        - Query object which is used to interact with casandra/elastic search.
-     * @param  {Boolean} indexStore - It defines weather object should create in elastic search or not.
-     *                                If indexStore is FALSE then Object will not create in the elastic search.
+     *
      * @return {object}             - Response object.
      */
-    createObject(data, indexStore) {
-        return this.__createObject()(data, indexStore)
+    createObject(data) {
+        return this.__createObject()(data)
     }
 
     __createObject() {
-        return async((data, indexStore) => {
+        return async((data) => {
             try {
                 let validation = await (this.model.validateModel(data.values))
                 if (!validation.isValid) throw {
@@ -59,9 +58,7 @@ class ObjectStoreRest extends ObjectStore {
                     },
                     json: true
                 }
-                if (indexStore == false) {
-                    options.body.request = _.omit(options.body.request, ['documentName']);
-                }
+                
                 let result = await (this.service.call(options))
                 return {
                     data: _.get(result, 'body.result'),
@@ -78,16 +75,15 @@ class ObjectStoreRest extends ObjectStore {
     /**
      * Which is used to find a model from the casandra/elastic search.
      * @param  {Object} data       - Query object which is need to interact with casandra/elastic search.
-     * @param  {Boolean} indexStore - It defines wheather object should create in elastic search or not.
-     *                                If indexStore is FALSE then Object will not create in the elastic search.
+     *
      * @return {Object}             - Response object.
      */
-    findObject(data, indexStore) {
-        return this.__findObject()(data, indexStore)
+    findObject(data) {
+        return this.__findObject()(data)
     }
 
     __findObject() {
-            return async((data, indexStore) => {
+            return async((data) => {
                 try {
                     let options = {
                         method: 'POST',
@@ -98,16 +94,14 @@ class ObjectStoreRest extends ObjectStore {
                                 'entityName': this.model.table,
                                 "facets": data.facets,
                                 "limit": data.limit,
+                                "offset": data.offset,
                                 "sort_by": data.sort_by
                             }
                         },
                         json: true
                     }
                     options.body.request = _.pickBy(options.body.request, _.identity); // Removes all falsey values
-                    if (indexStore == false) {
-                        options.body.request = _.omit(options.body.request, ['documentName']);
-                        options.body.request.tableName = this.model.table;
-                    }
+                    
                     let result = await (this.service.call(options))
                     return _.get(result, 'body.result.response.count') > 0 ? {
                         data: _.get(result, 'body.result.response')

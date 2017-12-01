@@ -25,6 +25,11 @@ const metricsActivityConstant = {
     'READ': 'read',
     'RECEIVED': 'received'
 }
+
+const LIMIT_DEFAULT = 10
+const LIMIT_MAX = 25
+const OFFSET_DEFAULT = 0
+
 class AnnouncementController {
     constructor({metricsModel, announcementModel, announcementTypeModel, service } = {}) {
         /**
@@ -589,9 +594,10 @@ class AnnouncementController {
                 },
                 sort_by: {
                     "createddate": "desc"
-                }
+                },
+                limit: this.__getLimit(requestObj.body.request.limit),
+                offset: this.__getOffset(requestObj.body.request.offset)
             }
-            let metrics_clone = undefined;
 
             // execute query and process response
             this.announcementStore.findObject(query)
@@ -603,8 +609,8 @@ class AnnouncementController {
                         }
                     } else {
                         let response = {
-                            count: _.size(data.data),
-                            announcements: data.data
+                            count: _.size(data.data.content),
+                            announcements: data.data.content
                         }
                         resolve(response)
                     }
@@ -613,6 +619,17 @@ class AnnouncementController {
                     reject(this.customError(error))
                 })
         })
+    }
+
+    __getLimit(requestedLimit) {
+        let limit = requestedLimit || LIMIT_DEFAULT
+        limit = limit > LIMIT_MAX ? LIMIT_MAX : limit
+        return limit
+    }
+
+    __getOffset(requestedOffset) {
+        let offset = requestedOffset || OFFSET_DEFAULT
+        return offset
     }
 
     
