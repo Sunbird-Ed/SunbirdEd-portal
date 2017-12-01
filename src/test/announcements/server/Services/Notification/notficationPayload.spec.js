@@ -2,9 +2,9 @@ let chai = require('chai'),
   sinon = require('sinon'),
   HttpStatus = require('http-status-codes'),
   expect = chai.expect,
-  NotificationSerivce = require('../../../../app/helpers/announcement/services/notification/notificationService.js'),
-  NotificationPayload = require('../../../../app/helpers/announcement/services/notification/notificationPayload.js'),
-  NotificationTarget = require('../../../../app/helpers/announcement/services/notification/notificationTarget.js'),
+  NotificationSerivce = require('../../../../../app/helpers/announcement/services/notification/notificationService.js'),
+  NotificationPayload = require('../../../../../app/helpers/announcement/services/notification/notificationPayload.js'),
+  NotificationTarget = require('../../../../../app/helpers/announcement/services/notification/notificationTarget.js'),
   Joi = require('joi')
 
 describe('Notification Payload', () => {
@@ -22,7 +22,6 @@ describe('Notification Payload', () => {
         'dispbehavior': 'stack'
       })
       let payloadValidation = payload.validate()
-      console.log('validate', payloadValidation.error)
       expect(payloadValidation.isValid).to.be.equal(true)
       done()
     })
