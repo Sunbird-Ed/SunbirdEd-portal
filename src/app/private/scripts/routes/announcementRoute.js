@@ -196,7 +196,8 @@ angular.module('playerApp')
                 url: '/private/index#!/announcement/resend/' + announcementId + '/' + stepNumber
               }, userIdHashTag)
             } else {
-              $state.go('announcementResend', {stepNumber: 1, isMetaModifiedSteps: true}, {reload: true})
+              $state.go('announcementOutbox')
+              // $state.go('announcementResend', {stepNumber: 1, isMetaModifiedSteps: true}, {reload: true})
             }
           } else {
             $rootScope.profileActive = 'active'
