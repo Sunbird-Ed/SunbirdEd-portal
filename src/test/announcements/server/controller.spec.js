@@ -3,7 +3,7 @@ let chai = require('chai'),
   sinon = require('sinon'),
   expect = chai.expect,
   HttpStatus = require('http-status-codes'),
-  announcementController = require('../../app/helpers/announcement/controller.js')
+  announcementController = require('../../../app/helpers/announcement/controller.js')
 
 chai.use(chaiHttp)
 

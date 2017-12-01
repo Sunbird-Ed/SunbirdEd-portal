@@ -42,9 +42,7 @@
         <div class="item ">
             <div class="right floated content ">
                 <span>
-                    <span ng-repeat="lan in profileCtrl.basicProfile.language | orderBy:'toString()'">{{lan}}
-                        <span ng-show="!$last">,</span>
-                    </span>
+                    <span ng-repeat="lan in profileCtrl.basicProfile.language | orderBy:'toString()'">{{lan}}</span>
                 </span>
             </div>
             <div class="iniformationcontent content ">
