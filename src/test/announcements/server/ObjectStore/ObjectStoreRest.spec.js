@@ -163,17 +163,71 @@ Joi = require('joi'),
           }
           let httpServiceStub = sinon.stub(httpService, 'call').returns(new Promise((resolve, reject) => {
             resolve({
-              body: {result: {response: {content: {}, count: 0 } } }
+              body: {
+                result: {
+                  response: {
+                    content: {},
+                    count: 0
+                  }
+                }
+              }
             })
           }))
           announcementStore.findObject(query)
                     .then((data) => {
                       expect(data.data).to.be.an('array').that.is.empty
+                      httpService.call.restore()
+
                       done()
                     })
-                    .catch((error) => {
-                      console.log('Erro is', error)
-                    })
+                    .catch((error) => {})
+        })
+      })
+
+      describe('UpdateObject Method', () => {
+        it('Should update the object, When valid query is passed', (done) => {
+          let query = {
+            values: {
+              id: 'c17ae6d0-d67e-11e7-9fb8-0da59cda0b8a',
+              status: 'Cancelled'
+            }
+          }
+          let httpServiceStub = sinon.stub(httpService, 'call').returns(new Promise((resolve, reject) => {
+            resolve({
+              body: {
+                'result': {
+                  'response': 'SUCCESS'
+                }
+              }
+            })
+          }))
+          announcementStore.updateObjectById(query).then((data) => {
+            expect(data.data.body.result.response).to.eql('SUCCESS')
+            expect(data.data.body.result).to.be.an('object')
+            httpService.call.restore()
+            done()
+          }).catch((error) => {
+
+          })
+        })
+        it('Should throw an error,When ivalid query is passed', (done) => {
+          let query = {
+            values: {
+              id: '32-543-43-543-543-534'
+            },
+            status: 'Cancelled'
+          }
+          let httpServiceStub = sinon.stub(httpService, 'call').returns(new Promise((resolve, reject) => {
+            reject({
+              message: 'Invalid request',
+              status: HttpStatus.BAD_REQUEST
+            })
+          }))
+          announcementStore.updateObjectById(query).then((data) => {}).catch((error) => {
+            expect(error instanceof Error).to.eql(true)
+            expect(error.status).to.eql(HttpStatus.BAD_REQUEST)
+            done()
+          })
         })
       })
     })
