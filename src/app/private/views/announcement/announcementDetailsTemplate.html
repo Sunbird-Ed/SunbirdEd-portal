@@ -63,10 +63,10 @@
             <div class="ui items">
                 <div class="ui item box" ng-repeat="attachment in announcementDetails.attachments track by $index">
                     <div class="ui tiny image">
-                        <img src="/common/images/default.png">
+                        <img class="announcementAttachmentsIcon" src="/common/images/default.png">
                         </img>
                     </div>
-                    <div class="middle aligned content">
+                    <div class="middle aligned content padding-left-none">
                         <div class="ui float-ContentRight">
                             <a class="ui primary basic button announcementButton" href="{{attachment.link}}" target="_blank">
                                 <span class="announcementButtonText">
@@ -74,10 +74,10 @@
                                 </span>
                             </a>
                         </div>
-                        <p class="annAttaFilename">
+                        <p class="annAttaFilename annAttaFileName">
                             {{attachment.name}}
                         </p>
-                        <p class="annAttaFilesize" ng-if="attachment.size">
+                        <p class="annAttaFilesize annAttaFileSize" ng-if="attachment.size">
                             {{attachment.size}}
                         </p>
                     </div>
