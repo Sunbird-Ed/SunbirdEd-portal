@@ -209,7 +209,7 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
      * @desc - Used to swtch to next step of announcement creation
      * @memberOf Controllers.createAnnouncementCtrl
      */
-    createAnn.goToNextStep = function () {
+    createAnn.goToNextStep = function (telemetryPageId, telemetryPageType) {
       // Current step is confirm recipients
       if (createAnn.stepNumber !== 1) {
         if (createAnn.confirmRecipients()) {
@@ -274,6 +274,14 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
       announcementAdapter.resendAnnouncement(createAnn.announcement).then(function (apiResponse) {
         createAnn.isMetaModified = false
         createAnn.hideModel('createAnnouncementModal')
+        portalTelemetryService.fireAnnouncementImpressions({
+          env: 'community.announcements',
+          type: 'view',
+          pageid: 'announcement_form_complete',
+          id: $stateParams.announcementId,
+          name: $stateParams.telemetryAnnTitle,
+          url: '/private/index#!/announcement/create/4'
+        }, $stateParams.userIdHashTag)
         $('#announcementResendModal').modal('show')
         $state.go('announcementOutbox')
       }, function (err) {
