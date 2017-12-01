@@ -2,7 +2,7 @@ let chai = require('chai'),
   sinon = require('sinon'),
   HttpStatus = require('http-status-codes'),
   expect = chai.expect,
-  NotificationTarget = require('../../../../app/helpers/announcement/services/notification/notificationTarget.js'),
+  NotificationTarget = require('../../../../../app/helpers/announcement/services/notification/notificationTarget.js'),
   Joi = require('joi')
 
 describe('Notification Target', () => {
