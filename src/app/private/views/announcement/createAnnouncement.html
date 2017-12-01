@@ -131,7 +131,7 @@
     <div class="ui primary button" ng-if="createAnn.stepNumber === 2" ng-click="createAnn.goToNextStep('receipients_confirm_view', 'list')">{{$root.frmelmnts.btn.anncmntconfirmrecipients}}</div>
     <div class="ui primary button" ng-if="createAnn.stepNumber === 3" ng-click="createAnn.goToNextStep('announcement_form_preview', 'view')">{{$root.frmelmnts.btn.anncmntpreview}}</div>
     <div class="ui primary button" ng-if="createAnn.stepNumber === 4" id="sendAnnouncement" ng-click="createAnn.saveAnnouncement()">{{$root.frmelmnts.btn.anncmntsendanncmnt}}</div>
-    <div ng-if="createAnn.stepNumber === 1" id="selectRecipientBtn" class="ui primary button" ng-class="{'disabled': createAnn.disableBtn === true || announcementForm.$invalid}" ng-click="createAnn.goToNextStep('community_explorer_view', 'list')" ng-init="createAnn.enableRecepientBtn()">{{ createAnn.editAction ? $root.frmelmnts.btn.anncmnteditrecipients : $root.frmelmnts.btn.anncmntselectrecipients}}</div>
+    <div ng-if="createAnn.stepNumber === 1" id="selectRecipientBtn" class="ui primary button" ng-class="{'disabled': createAnn.disableBtn === true || announcementForm.$invalid}" ng-click="createAnn.goToNextStep('community_explorer_view', 'list')" ng-init="createAnn.enableRecepientBtn(false)">{{ createAnn.editAction ? $root.frmelmnts.btn.anncmnteditrecipients : $root.frmelmnts.btn.anncmntselectrecipients}}</div>
   </div>
 </div>
 

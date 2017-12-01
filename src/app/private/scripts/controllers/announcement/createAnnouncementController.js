@@ -53,6 +53,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
             createAnn.confirmationModal()
             return false
           }
+          // $state.go('announcementOutbox')
         }
       }).modal('show')
     }
@@ -163,7 +164,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
      * @desc - enable select recipients btn if all required fields are selected
      * @memberOf Controllers.createAnnouncementCtrl
      */
-    createAnn.enableRecepientBtn = function () {
+    createAnn.enableRecepientBtn = function (status = true) {
       var links = []
       if (createAnn.announcement.links) {
         angular.forEach(createAnn.announcement.links, function (value, key) {
@@ -181,7 +182,11 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
         createAnn.disableBtn = true
         selectRecipientBtn.addClass('disabled')
       }
-      createAnn.isMetaModified = true
+      if (status === false) {
+        createAnn.isMetaModified = false
+      } else {
+        createAnn.isMetaModified = true
+      }
     }
 
     /**
@@ -206,9 +211,9 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
      * @method saveAnnouncement
      * @desc - prepare api request object and make create api call
      * @memberOf Controllers.createAnnouncementCtrl
-     * @param {object} [data] [form data]
      */
-    createAnn.saveAnnouncement = function (data) {
+    createAnn.saveAnnouncement = function () {
+      createAnn.announcement.target.geo.ids = _.map(createAnn.announcement.selTar, 'id')
       announcementAdapter.createAnnouncement(createAnn.announcement)
         .then(function (apiResponse) {
           createAnn.hideModel('createAnnouncementModal')
@@ -223,7 +228,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
           $('#announcementSuccessModal').modal({
             closable: false
           }).modal('show')
-          $state.go('announcementOutbox')
+          // $state.go('announcementOutbox')
         }, function (err) {
           createAnn.isMetaModified = true
           createAnn.showError(apiResponse.data)
@@ -343,7 +348,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       }
 
       if (createAnn.stepNumber === 1) {
-        announcementAdapter.getDefinitions($rootScope.rootOrgId, $rootScope.userId)
+        announcementAdapter.getDefinitions($rootScope.rootOrgId)
           .then(function (response) {
             if (response.result.announcementTypes.content) {
               createAnn.announcementType = _.map(response.result.announcementTypes.content, 'name')
@@ -387,14 +392,12 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
           if (_.isEmpty(createAnn.announcement.sourceId)) {
             createAnn.announcement.sourceId = $rootScope.rootOrgId
           }
-          if (_.isEmpty(createAnn.announcement.createdBy)) {
-            createAnn.announcement.createdBy = $rootScope.userId
-          }
         } else {
           return false
         }
       }
-      $state.go('announcementCreate', { stepNumber: ++createAnn.stepNumber, announcement: createAnn.announcement, isMetaModifiedSteps: createAnn.isMetaModifiedSteps, telemetryPageId: telemetryPageId, telemetryPageType: telemetryPageType}, { reload: true })
+      createAnn.isMetaModifiedSteps = true
+      $state.go('announcementCreate', { stepNumber: ++createAnn.stepNumber, announcement: createAnn.announcement, isMetaModifiedSteps: true, telemetryPageId: telemetryPageId, telemetryPageType: telemetryPageType }, { reload: true })
     }
 
     /**
@@ -403,7 +406,8 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
      * @memberOf Controllers.createAnnouncementCtrl
      */
     createAnn.goToBackStep = function () {
-      $state.go('announcementCreate', { stepNumber: --createAnn.stepNumber, announcement: createAnn.announcement, isMetaModifiedSteps: createAnn.isMetaModifiedSteps }, { reload: true })
+      createAnn.isMetaModifiedSteps = true
+      $state.go('announcementCreate', { stepNumber: --createAnn.stepNumber, announcement: createAnn.announcement, isMetaModifiedSteps: true }, { reload: true })
     }
   }
 ])

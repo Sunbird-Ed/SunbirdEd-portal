@@ -41,31 +41,32 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
                     createAnn.addNewLink()
                 })
                 createAnn.enableRecepientBtn()
+                //console.log(createAnn.announcement.attachments)
             })
-
-            if (createAnn.stepNumber === 1) {
-                announcementAdapter.getDefinitions($rootScope.rootOrgId, $rootScope.userId)
-                .then(function (response) {
-                    if (response.result.announcementTypes.content) {
-                        createAnn.announcementType = _.map(response.result.announcementTypes.content, 'name')
-                    }
-                    if (response.result.senderList) {
-                        angular.forEach(response.result.senderList, function (value, key) {
-                        createAnn.senderlist.push(value)
-                        })
-                    }
-
-                    $('#announcementType').dropdown('set text', createAnn.announcement.details.type)
-                }, function (err) {
-                    createAnn.hideAnncmntBtn = true
-                    toasterService.error($rootScope.messages.fmsg.m0069)
-                })
-            }
         } else {
             createAnn.announcement = $stateParams.announcement
         }
 
       createAnn.resendAnnouncement()
+
+      if (createAnn.stepNumber === 1) {
+            announcementAdapter.getDefinitions($rootScope.rootOrgId)
+            .then(function (response) {
+                if (response.result.announcementTypes.content) {
+                    createAnn.announcementType = _.map(response.result.announcementTypes.content, 'name')
+                }
+                if (response.result.senderList) {
+                    angular.forEach(response.result.senderList, function (value, key) {
+                    createAnn.senderlist.push(value)
+                    })
+                }
+
+                $('#announcementType').dropdown('set text', createAnn.announcement.details.type)
+            }, function (err) {
+                createAnn.hideAnncmntBtn = true
+                toasterService.error($rootScope.messages.fmsg.m0069)
+            })
+        }
 
       if (createAnn.stepNumber === 2) {
         $timeout(function () {
@@ -145,6 +146,7 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
             createAnn.confirmationModal()
             return false
           }
+          $state.go('announcementOutbox')
         }
       }).modal('show')
     }

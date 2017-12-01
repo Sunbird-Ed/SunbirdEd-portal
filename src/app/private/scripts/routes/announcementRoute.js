@@ -99,11 +99,10 @@ angular.module('playerApp')
         },
         params: {
           announcement: undefined,
-          isMetaModifiedSteps: true,
+          isMetaModifiedSteps: false,
           userIdHashTag: undefined,
           telemetryPageId: 'annoucement_form_details',
           telemetryPageType: 'form'
-
         },
         onEnter: function ($stateParams, $rootScope, $state, routeHelperService, portalTelemetryService, announcementAdapter) {
           var stepNumber = parseInt($stateParams.stepNumber)

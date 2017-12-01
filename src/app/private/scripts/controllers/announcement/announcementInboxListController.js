@@ -10,12 +10,11 @@ angular.module('playerApp')
        * @method renderAnnouncementList
        * @desc - function to render inbox announcement
        * @memberOf Controllers.announcementInboxListController
-       * @param {string} [user id]
        * @param {int} [limit]
        */
       announcementInboxData.renderAnnouncementList = function (limit) {
         announcementInboxData.limit = limit || -1
-        announcementAdapter.getInboxAnnouncementList($rootScope.userId, announcementInboxData.limit).then(function (apiResponse) {
+        announcementAdapter.getInboxAnnouncementList(announcementInboxData.limit).then(function (apiResponse) {
           announcementInboxData.result = apiResponse.result
           announcementInboxData.listData = apiResponse.result.announcements
 
@@ -23,7 +22,7 @@ angular.module('playerApp')
           _.forEach(announcementInboxData.listData, function (announcement) {
             // Call received API
             if (announcement.received === false) {
-              announcementAdapter.receivedAnnouncement($rootScope.userId, announcement.id).then(function (response) {
+              announcementAdapter.receivedAnnouncement(announcement.id).then(function (response) {
                 console.log('Received success')
               })
             }
@@ -64,7 +63,7 @@ angular.module('playerApp')
        */
       announcementInboxData.showAnnouncementDetails = function (announcementDetails, id) {
         if (announcementDetails.read === false) {
-          announcementAdapter.readAnnouncement($rootScope.userId, announcementDetails.id)
+          announcementAdapter.readAnnouncement(announcementDetails.id)
           angular.element(document.querySelector('#annInboxDiv-' + id)).removeClass('announcementCardLeftBorder')
         }
         $state.go('announcementDetails', {announcementId: announcementDetails.id, announcementName: announcementDetails.details.title, pageId: 'announcement_inbox_list'})
