@@ -304,7 +304,13 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
         uploadSuccess: createAnn.onUploadComplete,
         onCancel: createAnn.onUploadCancel
       }
-      fileUpload.createFineUploadInstance(options)
+      fileUpload.createFineUploadInstance(options,function(data){
+        angular.forEach(createAnn.announcement.attachments, function (announcement, key) {
+          announcement = JSON.parse(announcement)
+          $('.qq-upload-list').append('<li class="qq-file-id-0 qq-upload-retryable w3-container w3-border w3-round-xlarge qq-upload-success" qq-file-id="'+key+'"><i class="qq-upload-cancel-selector cursor-pointer remove icon qq-hide" id="qq-upload-cancel-manually" onclick="cancelUploadFile()" style="float: right;"></i><span class="qq-upload-file-selector qq-upload-file" title="logo.png" style="margin-top: -30px !important;width: 222px;">'+announcement.name+'</span><input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text"><span role="status" class="qq-upload-status-text-selector qq-upload-status-text"></span></li>');
+
+        })
+      })
     }
 
     /**
