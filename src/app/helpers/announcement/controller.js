@@ -448,7 +448,8 @@ class AnnouncementController {
                 sort_by: {
                     "createddate": "desc"
                 },
-                limit: requestObj.body.request.limit
+                limit: this.__getLimit(requestObj.body.request.limit),
+                offset: this.__getOffset(requestObj.body.request.offset)
             }
 
             try {
