@@ -66,7 +66,7 @@ angular.module('playerApp')
           announcementAdapter.readAnnouncement(announcementDetails.id)
           angular.element(document.querySelector('#annInboxDiv-' + id)).removeClass('announcementCardLeftBorder')
         }
-        $state.go('announcementDetails', { announcementId: announcementDetails.id })
+        $state.go('announcementDetails', {announcementId: announcementDetails.id, announcementName: announcementDetails.details.title, pageId: 'announcement_inbox_list'})
       }
     }
 

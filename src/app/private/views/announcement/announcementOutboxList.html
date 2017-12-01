@@ -71,7 +71,7 @@
             </thead>
             <tbody>
               <tr ng-repeat="item in announcementOutboxData.items" class="tableListNameAnn">
-                <td ng-click="announcementOutboxData.showAnnouncementDetails(item.id)" class="cursor-pointer">{{item.details.title | limitTo:50}}<span ng-show="item.details.title.length > 50">...</span></td>
+                <td ng-click="announcementOutboxData.showAnnouncementDetails(item.id, item)" class="cursor-pointer">{{item.details.title | limitTo:50}}<span ng-show="item.details.title.length > 50">...</span></td>
                 <td>{{item.createddate | dateFilterWithDMY}}</td>
                 <td>{{item.metrics.sent ? item.metrics.sent : "N/A"}}</td>
                 <td>{{item.metrics.received ? item.metrics.received : "N/A"}}</td>
