@@ -3,250 +3,231 @@ let chai = require('chai'),
   sinon = require('sinon'),
   expect = chai.expect,
   ObjectStoreRest = require('../../../../app/helpers/announcement/ObjectStore/ObjectStoreRest.js'),
-  Joi = require('joi'),
-  objectStoreRest
+  announcementModel = require('../../../../app/helpers/announcement/model/AnnouncementModel.js'),
+  httpService = require('../../../../app/helpers/announcement/services/httpWrapper.js'),
+  HttpStatus = require('http-status-codes')
 
-const TEST_MODEL = Joi.object().keys({
-  coulmn1: Joi.string().required(),
-  coulmn2: Joi.string().required(),
-  coulmn3: Joi.string().required(),
-  coulmn4: Joi.string(),
-  coulmn5: Joi.string(),
-  coulmn6: Joi.string()
-})
+Joi = require('joi'),
 
-describe('ObjectStoreRest', () => {
-  before(() => {
-    let tableModelMapping = { 'TEST_MODEL': TEST_MODEL }
-    let modelConstant = { 'TEST_MODEL': 'TEST_MODEL' }
-    objectStoreRest = new ObjectStoreRest(tableModelMapping, modelConstant)
-  })
-
-  describe('createObject method', () => {
-    it('should create object and return data on success', (done) => {
-      let columnData = { 'coulmn1': 'data1', 'coulmn2': 'data2', 'coulmn3': 'data3', 'coulmn4': 'data4', 'coulmn5': 'data5' }
-      let query = { table: 'TEST_MODEL', values: columnData }
-      let httpServiceStub = sinon.stub(objectStoreRest, 'httpService').returns(new Promise((resolve, reject) => {
-        resolve({ body: { result: columnData }})
-      }))
-
-      let validateCreateObjectStub = sinon.stub(objectStoreRest, 'validateCreateObject').returns(new Promise((resolve, reject) => {
-        resolve(true)
-      }))
-
-      objectStoreRest.createObject(query)
-        .then((data) => {
-          expect(httpServiceStub.called).to.be.true
-          expect(validateCreateObjectStub.called).to.be.true
-          expect(data).to.eql({ data: columnData, status: 'created' })
-          objectStoreRest.httpService.restore()
-          objectStoreRest.validateCreateObject.restore()
-          done()
+    describe('ObjectStoreRest', () => {
+      let announcementStore
+      before(() => {
+        announcementStore = new ObjectStoreRest({
+          model: announcementModel,
+          service: httpService
         })
-        .catch((error) => {
-          console.log(error)
+      })
+
+      describe('CreateObject Method', () => {
+        it('should create object and return data on success', (done) => {
+          let query = {
+            values: {
+              'id': '324-432-432-43-234-324',
+              'sourceid': '0123673689120112640',
+              'createddate': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
+              'userid': '159e93d1-da0c-4231-be94-e75b0c226d7c',
+              'details': {
+                'title': 'Test-Title',
+                'type': 'type1',
+                'description': 'description',
+                'from': 'Manju'
+              },
+              'target': {
+                geo: {
+                  ids: []
+                }
+              },
+              'links': ['www.ekstep.in'],
+              'status': 'active',
+              'attachments': ['https://sample.pdf']
+            }
+          }
+          let queryResult = [{
+            'column1': 'value1',
+            'column2': 'value2',
+            'column3': 'value3'
+          }, {
+            'column1': 'value1',
+            'column2': 'value2',
+            'column3': 'value3'
+          }]
+          let httpServiceStub = sinon.stub(httpService, 'call').returns(new Promise((resolve, reject) => {
+            resolve({
+              body: {
+                result: {
+                  response: {
+                    content: queryResult,
+                    count: 2,
+                    statuCode: 'SUCCESS'
+                  }
+                }
+              }
+            })
+          }))
+          announcementStore.createObject(query)
+                    .then((data) => {
+                      expect(httpServiceStub.called).to.be.true
+                      expect(data.data.response.statuCode).to.eql('SUCCESS')
+                      httpService.call.restore()
+                      done()
+                    })
+                    .catch((error) => {})
         })
+        it('should return error when query causes failure', (done) => {
+          let query = {}
+          let httpServiceStub = sinon.stub(httpService, 'call').returns(new Promise((resolve, reject) => {
+            reject({
+              message: 'INTERNAL_SERVER_ERROR',
+              status: HttpStatus.INTERNAL_SERVER_ERROR
+            })
+          }))
+          announcementStore.createObject(query)
+                    .then((data) => {})
+                    .catch((error) => {
+                      expect(error instanceof Error).to.eql(true)
+                      expect(error.status).to.eql(HttpStatus.BAD_REQUEST)
+                      httpService.call.restore()
+                      done()
+                    })
+        })
+      })
+
+      describe('FindObject Method', () => {
+        it('Should find object and return data on success', (done) => {
+          let query = {
+            'filters': {
+              'id': '8e27cbf5-e299-43b0-bca7-8347f7e5abcf'
+            },
+            'entityName': 'announcement',
+            'limit': 10,
+            'sort_by': 'desc'
+          }
+          let httpServiceStub = sinon.stub(httpService, 'call').returns(new Promise((resolve, reject) => {
+            resolve({
+              body: {
+                result: {
+                  response: {
+                    content: {
+                      'data': {
+                        'id': '8e27cbf5-e299-43b0-bca7-8347f7e5abcf',
+                        'userid': '8e27cbf5-e299-43b0-bca7',
+                        'sourceid': 'sourceId',
+                        'details': {
+                          'filename': 'name'
+                        },
+                        'links': ['asd', 'asdf'],
+                        'attachments': ['kjaslkdlk'],
+                        'sentcount': 1,
+                        'identifier': '8e27cbf5-e299-43b0-bca7-8347f7e5abcf'
+                      }
+                    },
+                    count: 2
+                  }
+                }
+              }
+            })
+          }))
+          announcementStore.findObject(query)
+                    .then((data) => {
+                      expect(data.data.count).to.eql(2)
+                      expect(data).to.be.an('object')
+                      httpService.call.restore()
+                      done()
+                    })
+                    .catch((error) => {})
+        })
+        it('Should throw an error , When invalid query is passed', (done) => {
+          let query = {}
+          let httpServiceStub = sinon.stub(httpService, 'call').returns(new Promise((resolve, reject) => {
+            reject({
+              message: 'INTERNAL_SERVER_ERROR',
+              status: HttpStatus.INTERNAL_SERVER_ERROR
+            })
+          }))
+          announcementStore.findObject(query)
+                    .then((data) => {})
+                    .catch((error) => {
+                      expect(error.status).to.eql(HttpStatus.INTERNAL_SERVER_ERROR)
+                      httpService.call.restore()
+                      done()
+                    })
+        })
+        it('Should return empty object, When response count is less than zero', (done) => {
+          let query = {
+            'filters': {
+              'id': '8e27cbf5-e299-43b0-bca7-8347f7e5abcf'
+            },
+            'entityName': 'announcement',
+            'limit': 10,
+            'sort_by': 'desc'
+          }
+          let httpServiceStub = sinon.stub(httpService, 'call').returns(new Promise((resolve, reject) => {
+            resolve({
+              body: {
+                result: {
+                  response: {
+                    content: {},
+                    count: 0
+                  }
+                }
+              }
+            })
+          }))
+          announcementStore.findObject(query)
+                    .then((data) => {
+                      expect(data.data).to.be.an('array').that.is.empty
+                      httpService.call.restore()
+
+                      done()
+                    })
+                    .catch((error) => {})
+        })
+      })
+
+      describe('UpdateObject Method', () => {
+        it('Should update the object, When valid query is passed', (done) => {
+          let query = {
+            values: {
+              id: 'c17ae6d0-d67e-11e7-9fb8-0da59cda0b8a',
+              status: 'Cancelled'
+            }
+          }
+          let httpServiceStub = sinon.stub(httpService, 'call').returns(new Promise((resolve, reject) => {
+            resolve({
+              body: {
+                'result': {
+                  'response': 'SUCCESS'
+                }
+              }
+            })
+          }))
+          announcementStore.updateObjectById(query).then((data) => {
+            expect(data.data.body.result.response).to.eql('SUCCESS')
+            expect(data.data.body.result).to.be.an('object')
+            httpService.call.restore()
+            done()
+          }).catch((error) => {
+
+          })
+        })
+        it('Should throw an error,When ivalid query is passed', (done) => {
+          let query = {
+            values: {
+              id: '32-543-43-543-543-534'
+            },
+            status: 'Cancelled'
+          }
+          let httpServiceStub = sinon.stub(httpService, 'call').returns(new Promise((resolve, reject) => {
+            reject({
+              message: 'Invalid request',
+              status: HttpStatus.BAD_REQUEST
+            })
+          }))
+          announcementStore.updateObjectById(query).then((data) => {}).catch((error) => {
+            expect(error instanceof Error).to.eql(true)
+            expect(error.status).to.eql(HttpStatus.BAD_REQUEST)
+            done()
+          })
+        })
+      })
     })
-
-    it('should return error when query causes unexpected failure', (done) => {
-      let httpServiceStub = sinon.stub(objectStoreRest, 'httpService').returns(new Promise((resolve, reject) => {
-        reject({ msg: 'unable to create object', status: 'error' })
-      }))
-
-      let validateCreateObjectStub = sinon.stub(objectStoreRest, 'validateCreateObject').returns(new Promise((resolve, reject) => {
-        resolve(true)
-      }))
-
-      let query = { table: 'TEST_MODEL', values: { 'coulmn1': 'data1', 'coulmn2': 'data2', 'coulmn3': 'data3', 'coulmn4': 'data4', 'coulmn5': 'data5' } }
-      objectStoreRest.createObject(query)
-        .then((data) => {})
-        .catch((error) => {
-          expect(httpServiceStub.called).to.be.true
-          expect(error).to.eql({ msg: 'unable to create object', status: 'error' })
-          objectStoreRest.httpService.restore()
-          objectStoreRest.validateCreateObject.restore()
-          done()
-        })
-    })
-  })
-
-  describe('findObject method', () => {
-    it('should find object and return data on success', (done) => {
-      let queryResult = [{ 'column1': 'value1', 'column2': 'value2', 'column3': 'value3' }, { 'column1': 'value1', 'column2': 'value2', 'column3': 'value3' }]
-      let httpServiceStub = sinon.stub(objectStoreRest, 'httpService').returns(new Promise((resolve, reject) => {
-        resolve({ body: { result: { response: { content: queryResult, count: 2 }}}})
-      }))
-
-      let validateFindObjectStub = sinon.stub(objectStoreRest, 'validateFindObject').returns(new Promise((resolve, reject) => {
-        resolve(true)
-      }))
-
-      let query = { table: 'TEST_MODEL', query: { 'coulmn1': 'data1', 'coulmn2': 'data2', 'coulmn3': 'data3', 'coulmn4': 'data4', 'coulmn5': 'data5' } }
-      objectStoreRest.findObject(query)
-        .then((data) => {
-          expect(httpServiceStub.called).to.be.true
-          expect(data).to.eql({ data: queryResult, status: 'success' })
-          objectStoreRest.httpService.restore()
-          objectStoreRest.validateFindObject.restore()
-          done()
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-    })
-
-    it('should return error when query cause unexpected failure', (done) => {
-      let httpServiceStub = sinon.stub(objectStoreRest, 'httpService').returns(new Promise((resolve, reject) => {
-        reject()
-      }))
-
-      let validateFindObjectStub = sinon.stub(objectStoreRest, 'validateFindObject').returns(new Promise((resolve, reject) => {
-        resolve(true)
-      }))
-
-      let query = { table: 'TEST_MODEL', query: { 'coulmn1': 'data1' } }
-      objectStoreRest.findObject(query)
-        .then((data) => {})
-        .catch((error) => {
-          expect(httpServiceStub.called).to.be.true
-          expect(error).to.eql({ msg: 'unable to find object', status: 'error' })
-          objectStoreRest.httpService.restore()
-          objectStoreRest.validateFindObject.restore()
-          done()
-        })
-    })
-  })
-
-  describe('getObjectById method', () => {
-    it('should get object and return data on success', (done) => {
-      let queryResult = { 'column1': 'value1', 'column2': 'value2', 'column3': 'value3' }
-      let findObjectStub = sinon.stub(objectStoreRest, 'findObject').returns(new Promise((resolve, reject) => {
-        resolve(queryResult)
-      }))
-
-      let query = { table: 'TEST_MODEL', id: '123123-123123-132123-123' }
-      objectStoreRest.getObjectById(query)
-        .then((data) => {
-          expect(findObjectStub.called).to.be.true
-          expect(data).to.eql(queryResult)
-          objectStoreRest.findObject.restore()
-          done()
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-    })
-
-    it('should return error when query cause unexpected failure', (done) => {
-      let findObjectStub = sinon.stub(objectStoreRest, 'findObject')
-      findObjectStub.returns(new Promise((resolve, reject) => {
-        reject({ msg: 'unable to query!', status: 'error' })
-      }))
-
-      let query = { table: 'TEST_MODEL', id: '123123-123123-132123-123' }
-      objectStoreRest.getObjectById(query)
-        .then((data) => {})
-        .catch((error) => {
-          expect(error).to.eql({ msg: 'unable to query!', status: 'error' })
-          objectStoreRest.findObject.restore()
-          done()
-        })
-    })
-  })
-  describe('updateObjectById method', () => {
-    it('should update object and return data on success', (done) => {
-      let queryResult = [{ 'column1': 'value1', 'column2': 'value2', 'column3': 'value3' }, { 'column1': 'value1', 'column2': 'value2', 'column3': 'value3' }]
-      let httpServiceStub = sinon.stub(objectStoreRest, 'httpService').returns(new Promise((resolve, reject) => {
-        resolve(queryResult)
-      }))
-
-      let validateUpdateObjectByIdStub = sinon.stub(objectStoreRest, 'validateUpdateObjectById').returns(new Promise((resolve, reject) => {
-        resolve(true)
-      }))
-
-      let query = { table: 'TEST_MODEL', id: '123123-123123-123132-123123', data: { 'coulmn1': 'data1', 'coulmn2': 'data2', 'coulmn3': 'data3', 'coulmn4': 'data4', 'coulmn5': 'data5' } }
-      objectStoreRest.updateObjectById(query)
-        .then((data) => {
-          expect(httpServiceStub.called).to.be.true
-          expect(validateUpdateObjectByIdStub.called).to.be.true
-          expect(data).to.eql({ data: queryResult, status: 'updated' })
-          objectStoreRest.httpService.restore()
-          objectStoreRest.validateUpdateObjectById.restore()
-          done()
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-    })
-
-    it('should return error when query cause unexpected failure', (done) => {
-      let httpServiceStub = sinon.stub(objectStoreRest, 'httpService').returns(new Promise((resolve, reject) => {
-        reject()
-      }))
-
-      let validateUpdateObjectByIdStub = sinon.stub(objectStoreRest, 'validateUpdateObjectById').returns(new Promise((resolve, reject) => {
-        resolve(true)
-      }))
-
-      let query = { table: 'TEST_MODEL', id: '123123-123123-123132-123123', data: { 'coulmn1': 'data1' } }
-      objectStoreRest.updateObjectById(query)
-        .then((data) => {})
-        .catch((error) => {
-          expect(httpServiceStub.called).to.be.true
-          expect(validateUpdateObjectByIdStub.called).to.be.true
-          expect(error).to.eql({ msg: 'unable to update object', status: 'error' })
-          objectStoreRest.httpService.restore()
-          objectStoreRest.validateUpdateObjectById.restore()
-          done()
-        })
-    })
-  })
-
-  describe('deleteObjectById method', () => {
-    it('should delete object and return success', (done) => {
-      let httpServiceStub = sinon.stub(objectStoreRest, 'httpService').returns(new Promise((resolve, reject) => {
-        resolve()
-      }))
-
-      let validateDeleteObjectByIdStub = sinon.stub(objectStoreRest, 'validateDeleteObjectById').returns(new Promise((resolve, reject) => {
-        resolve(true)
-      }))
-
-      let query = { table: 'TEST_MODEL', id: '123123-123123-123132-123123' }
-      objectStoreRest.deleteObjectById(query)
-        .then((data) => {
-          expect(httpServiceStub.called).to.be.true
-          expect(validateDeleteObjectByIdStub.called).to.be.true
-          expect(data).to.eql({ status: 'deleted' })
-          objectStoreRest.httpService.restore()
-          objectStoreRest.validateDeleteObjectById.restore()
-          done()
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-    })
-
-    it('should return error when query cause unexpected failure', (done) => {
-      let httpServiceStub = sinon.stub(objectStoreRest, 'httpService').returns(new Promise((resolve, reject) => {
-        reject()
-      }))
-
-      let validateDeleteObjectByIdStub = sinon.stub(objectStoreRest, 'validateDeleteObjectById').returns(new Promise((resolve, reject) => {
-        resolve(true)
-      }))
-
-      let query = { table: 'TEST_MODEL', id: '123123-123123-123132-123123' }
-      objectStoreRest.deleteObjectById(query)
-        .then((data) => {})
-        .catch((error) => {
-          expect(httpServiceStub.called).to.be.true
-          expect(validateDeleteObjectByIdStub.called).to.be.true
-          expect(error).to.eql({ msg: 'unable to delete object', status: 'error' })
-          objectStoreRest.httpService.restore()
-          objectStoreRest.validateDeleteObjectById.restore()
-          done()
-        })
-    })
-  })
-})

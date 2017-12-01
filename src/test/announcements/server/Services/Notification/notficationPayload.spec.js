@@ -22,7 +22,6 @@ describe('Notification Payload', () => {
         'dispbehavior': 'stack'
       })
       let payloadValidation = payload.validate()
-      console.log('validate', payloadValidation.error)
       expect(payloadValidation.isValid).to.be.equal(true)
       done()
     })
