@@ -117,22 +117,16 @@ describe('Controller: announcementOutboxListController', function () {
     })
   })
 
-  describe('Get resend', function () {
-    it('success', function () {
-      spyOn(announcementAdapter, 'getResend').and.returnValue(deferred.promise)
-      deferred.resolve(annGetResendTestData.successResponse)
-      annGetResendTestData.successResponse.data = annGetResendTestData.successResponse
-      expect(announcementOutboxListController.getResend).toBeDefined()
-      var response = announcementOutboxListController.getResend('90ae7cf0-c5e0-11e7-8744-852d6ada097c')
-      expect(announcementAdapter.getResend).toHaveBeenCalled()
+  describe('State change create/resend', function () {
+    it('Resend', function () {
+      spyOn(announcementOutboxListController, 'getResend').and.callThrough()
+      announcementOutboxListController.getResend('90ae7cf0-c5e0-11e7-8744-852d6ada097c')
       scope.$apply()
     })
-    it('failed', function () {
-      spyOn(announcementAdapter, 'getResend').and.returnValue(deferred.promise)
-      deferred.resolve(annGetResendTestData.failedResponse)
-      expect(announcementOutboxListController.getResend).toBeDefined()
-      var response = announcementOutboxListController.getResend('blah-blah')
-      expect(announcementAdapter.getResend).toHaveBeenCalled()
+
+    it('Create', function () {
+      spyOn(announcementOutboxListController, 'gotToAnnouncementCreateState').and.callThrough()
+      announcementOutboxListController.gotToAnnouncementCreateState('90ae7cf0-c5e0-11e7-8744-852d6ada097c')
       scope.$apply()
     })
   })
