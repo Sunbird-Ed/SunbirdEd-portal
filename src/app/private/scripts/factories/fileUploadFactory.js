@@ -76,7 +76,7 @@ angular.module('playerApp')
        * @param {Object}  option - Option object to invoke controller callback function
        * @returns {Callback} Trigger callback function
        */
-      createFineUploadInstance: function (ctrlOption) {
+      createFineUploadInstance: function (ctrlOption,cb) {
         controllerOption = _.merge({}, ctrlOption, options)
         $timeout(function () {
           var objFineUploader = new qq.FineUploader({
@@ -105,6 +105,7 @@ angular.module('playerApp')
               onCancel: onFileUploadCancel
             }
           })
+          cb(true)
           window.cancelUploadFile = function () {
             document.getElementById('hide-section-with-button').style.display = 'block'
           }

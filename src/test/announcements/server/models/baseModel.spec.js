@@ -2,7 +2,7 @@ let chai = require('chai'),
   sinon = require('sinon'),
   HttpStatus = require('http-status-codes'),
   expect = chai.expect,
-  BaseModel = require('../../../app/helpers/announcement/model/BaseModel.js'),
+  BaseModel = require('../../../../app/helpers/announcement/model/BaseModel.js'),
   Joi = require('joi')
 
 describe('Base Metrics Model', () => {

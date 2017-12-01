@@ -2,11 +2,11 @@ let chai = require('chai'),
   sinon = require('sinon'),
   HttpStatus = require('http-status-codes'),
   expect = chai.expect,
-  NotificationTarget = require('../../../../app/helpers/announcement/services/notification/notificationTarget.js'),
+  NotificationTarget = require('../../../../../app/helpers/announcement/services/notification/notificationTarget.js'),
   Joi = require('joi')
 
 describe('Notification Target', () => {
-  describe('Validate Schema', () => {
+  describe('Validate Schema', (done) => {
     it('Should not throw an error, When valid object is passed.', (done) => {
       let targetObj = {geo: {ids: ['1235-3454']}}
       let target = new NotificationTarget({target: targetObj})
