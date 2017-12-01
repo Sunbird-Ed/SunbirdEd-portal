@@ -62,7 +62,7 @@ angular.module('loginApp')
               views: {
                 mainView: {
                   controller: function ($scope, $stateParams, $window, toasterService, $rootScope, $state) {
-                    if ($stateParams.status === 'Unlisted' || $stateParams.status === 'unlisted') {
+                    if ($stateParams.status.toLowerCase() === 'unlisted') {
                       window.localStorage.setItem('redirectUrl', '/content/' + $stateParams.id + '/')
                       $window.location.href = '/private/index'
                     } else {
@@ -82,7 +82,7 @@ angular.module('loginApp')
               views: {
                 mainView: {
                   controller: function ($scope, $stateParams, $window, toasterService, $rootScope, $state) {
-                    if ($stateParams.status === 'Unlisted' || $stateParams.status === 'unlisted') {
+                    if ($stateParams.status.toLowerCase() === 'unlisted') {
                       window.localStorage.setItem('redirectUrl', '/course/' + $stateParams.id + '/')
                       $window.location.href = '/private/index'
                     } else {
@@ -102,7 +102,7 @@ angular.module('loginApp')
               views: {
                 mainView: {
                   controller: function ($scope, $stateParams, $window, toasterService, $rootScope, $state) {
-                    if ($stateParams.status === 'Unlisted' || $stateParams.status === 'unlisted') {
+                    if ($stateParams.status.toLowerCase() === 'unlisted') {
                       window.localStorage.setItem('redirectUrl', '/preview/collection/' + $stateParams.id + '/' + '/')
                       $window.location.href = '/private/index'
                     } else {
