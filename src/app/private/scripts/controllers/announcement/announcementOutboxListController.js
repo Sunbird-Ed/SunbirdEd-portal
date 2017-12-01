@@ -18,7 +18,7 @@ angular.module('playerApp')
         announcementAdapter.getOutBoxAnnouncementList().then(function (apiResponse) {
           announcementOutboxData.showLoader = false
           announcementOutboxData.result = apiResponse.result
-          announcementOutboxData.listData = apiResponse.result.announcements.content
+          announcementOutboxData.listData = apiResponse.result.announcements
           initController()
           if (announcementOutboxData.listData.length > 0) {
             announcementOutboxData.showDataDiv = true
@@ -104,8 +104,15 @@ angular.module('playerApp')
      * @memberOf Controllers.announcementOutboxListController
      * @param {int} [announcementId] [to make getResend api call]
      */
-      announcementOutboxData.getResend = function (announcementId) {
-        $state.go('announcementResend', {announcementId: announcementId, stepNumber: '1'})
+      announcementOutboxData.getResend = function (announcementId, announcementTitle) {
+        var hashTagId = ''
+        if ($stateParams.userIdHashTag === undefined) {
+          hashTagId = (Math.floor(new Date().getTime() / 1000)) + ($rootScope.userId) + (Math.floor(Math.random() * 90000) + 10000)
+          hashTagId = md5(hashTagId)
+        } else {
+          hashTagId = $stateParams.userIdHashTag
+        }
+        $state.go('announcementResend', {announcementId: announcementId, stepNumber: '1', userIdHashTag: hashTagId, telemetryAnnTitle: announcementTitle})
       }
 
     /**
@@ -124,7 +131,14 @@ angular.module('playerApp')
      * @memberOf Controllers.announcementOutboxListController
      */
       announcementOutboxData.gotToAnnouncementCreateState = function () {
-        $state.go('announcementCreate', {stepNumber: '1'})
+        var hashTagId = ''
+        if ($stateParams.userIdHashTag === undefined) {
+          hashTagId = (Math.floor(new Date().getTime() / 1000)) + ($rootScope.userId) + (Math.floor(Math.random() * 90000) + 10000)
+          hashTagId = md5(hashTagId)
+        } else {
+          hashTagId = $stateParams.userIdHashTag
+        }
+        $state.go('announcementCreate', {stepNumber: '1', userIdHashTag: hashTagId})
       }
     }
   ])
