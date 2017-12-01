@@ -70,7 +70,7 @@ angular.module('playerApp')
         },
         params: {
           announcement: undefined,
-          isMetaModifiedSteps : true
+          isMetaModifiedSteps : false
         },
         onEnter: function ($stateParams, $rootScope, $state, routeHelperService, portalTelemetryService, announcementAdapter) {
             var stepNumber = parseInt($stateParams.stepNumber)

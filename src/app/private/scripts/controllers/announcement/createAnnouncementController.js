@@ -164,7 +164,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
      * @desc - enable select recipients btn if all required fields are selected
      * @memberOf Controllers.createAnnouncementCtrl
      */
-    createAnn.enableRecepientBtn = function () {
+    createAnn.enableRecepientBtn = function (status = true) {
       var links = []
       if (createAnn.announcement.links) {
         angular.forEach(createAnn.announcement.links, function (value, key) {
@@ -182,7 +182,11 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
         createAnn.disableBtn = true
         selectRecipientBtn.addClass('disabled')
       }
-      createAnn.isMetaModified = true
+        if(status === false){
+            createAnn.isMetaModified = false
+        } else {
+            createAnn.isMetaModified = true
+        }
     }
 
     /**
@@ -384,7 +388,8 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
           return false
         }
       }
-      $state.go('announcementCreate', { stepNumber: ++createAnn.stepNumber, announcement: createAnn.announcement, isMetaModifiedSteps: createAnn.isMetaModifiedSteps }, { reload: true })
+       createAnn.isMetaModifiedSteps = true
+      $state.go('announcementCreate', { stepNumber: ++createAnn.stepNumber, announcement: createAnn.announcement, isMetaModifiedSteps: true }, { reload: true })
     }
 
     /**
@@ -393,7 +398,8 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
      * @memberOf Controllers.createAnnouncementCtrl
      */
     createAnn.goToBackStep = function () {
-      $state.go('announcementCreate', { stepNumber: --createAnn.stepNumber, announcement: createAnn.announcement,isMetaModifiedSteps: createAnn.isMetaModifiedSteps }, { reload: true })
+        createAnn.isMetaModifiedSteps = true
+      $state.go('announcementCreate', { stepNumber: --createAnn.stepNumber, announcement: createAnn.announcement,isMetaModifiedSteps: true }, { reload: true })
     }
   }
 ])
