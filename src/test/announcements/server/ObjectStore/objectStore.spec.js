@@ -1,7 +1,7 @@
 let chai = require('chai'),
   sinon = require('sinon'),
   expect = chai.expect,
-  ObjectStore = require('../../../app/helpers/announcement/ObjectStore/ObjectStore.js'),
+  ObjectStore = require('../../../../app/helpers/announcement/ObjectStore/ObjectStore.js'),
   Joi = require('joi'),
   objectStore
 

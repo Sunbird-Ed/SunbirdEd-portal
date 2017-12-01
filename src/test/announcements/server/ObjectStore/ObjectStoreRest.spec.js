@@ -2,7 +2,7 @@ let chai = require('chai'),
   chaiHttp = require('chai-http'),
   sinon = require('sinon'),
   expect = chai.expect,
-  ObjectStoreRest = require('../../../app/helpers/announcement/ObjectStore/ObjectStoreRest.js'),
+  ObjectStoreRest = require('../../../../app/helpers/announcement/ObjectStore/ObjectStoreRest.js'),
   Joi = require('joi'),
   objectStoreRest
 

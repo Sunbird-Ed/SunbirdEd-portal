@@ -1,8 +1,8 @@
 let chai = require('chai')
 let chaiHttp = require('chai-http')
-let app = require('../../app/server.js')
+let app = require('../../../app/server.js')
 let sinon = require('sinon')
-let announcementController = require('../../app/helpers/announcement/controller.js')
+let announcementController = require('../../../app/helpers/announcement/controller.js')
 
 const expect = chai.expect
 chai.use(chaiHttp)

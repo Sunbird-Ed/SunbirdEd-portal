@@ -81,7 +81,7 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test-announcement": "mocha 'test-announcement/server/**/*.js' --reporter mochawesome",
+    "test-announcements": "mocha 'test/announcements/server/**/*.js' --reporter mochawesome",
     "lint": "eslint --ignore-path .eslintignore .",
     "preinstall": "npm install ./app/thirdparty/libs/sb_api_interceptor && npm install ./app/thirdparty/libs/sb_cache_manager"
   },
