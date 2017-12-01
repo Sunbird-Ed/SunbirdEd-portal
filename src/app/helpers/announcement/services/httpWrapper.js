@@ -6,6 +6,7 @@ let webService = require('request')
 let envVariables = require('../../environmentVariablesHelper.js')
 let AppError = require('./ErrorInterface.js')
 let HttpStatus = require('http-status-codes')
+let dateFormat = require('dateformat')
 
 /**
  * It used to invoke http request calls
