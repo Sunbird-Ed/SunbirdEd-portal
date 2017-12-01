@@ -15,6 +15,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
     createAnn.hideAnncmntBtn = false
     createAnn.uploadAttchement = false
     createAnn.editAction = false
+    createAnn.isApprove = false
 
     /**
      * @method initializeModal
@@ -40,20 +41,31 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
      * @memberOf Controllers.createAnnouncementCtrl
      */
     createAnn.createAnnouncement = function () {
-      if ($stateParams.announcement === undefined) {
-        createAnn.isMetaModified = false
-      }
       $('#createAnnouncementModal').modal({
         closable: false,
         onShow: function () {
           $('.ui.modal.transition.hidden').remove()
         },
         onHide: function () {
+          // alert('createAnn.isMetaModified = ' + createAnn.isMetaModified)
+          // alert('createAnn.isMetaModifiedSteps = ' + createAnn.isMetaModifiedSteps)
+
+          if ($stateParams.announcement === undefined && createAnn.isMetaModified !== true) {
+            createAnn.isMetaModified = false
+          } else if (createAnn.isApprove === true) {
+            createAnn.isMetaModified = false
+          } else {
+            createAnn.isMetaModified = true
+          }
+
           if (createAnn.isMetaModified === true && createAnn.isMetaModifiedSteps !== true) {
             createAnn.confirmationModal()
             return false
+          } else if (createAnn.isMetaModified == false && createAnn.stepNumber === 1) {
+            createAnn.refreshFormValues()
+            $state.go('announcementOutbox')
+            // createAnn.hideModel('createAnnouncementModal')
           }
-          //$state.go('announcementOutbox')
         }
       }).modal('show')
     }
@@ -71,6 +83,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
             return true
           },
           onApprove: function () {
+            createAnn.isApprove = true
             createAnn.refreshFormValues()
             createAnn.hideModel('announcementCancelModal')
             $state.go('announcementOutbox')
@@ -164,7 +177,10 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
      * @desc - enable select recipients btn if all required fields are selected
      * @memberOf Controllers.createAnnouncementCtrl
      */
-    createAnn.enableRecepientBtn = function (status = true) {
+    createAnn.enableRecepientBtn = function (status) {
+      if (status === undefined) {
+        status = true
+      }
       var links = []
       if (createAnn.announcement.links) {
         angular.forEach(createAnn.announcement.links, function (value, key) {
@@ -182,11 +198,11 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
         createAnn.disableBtn = true
         selectRecipientBtn.addClass('disabled')
       }
-        if(status === false){
-            createAnn.isMetaModified = false
-        } else {
-            createAnn.isMetaModified = true
-        }
+      if (status === false) {
+        createAnn.isMetaModified = false
+      } else {
+        createAnn.isMetaModified = true
+      }
     }
 
     /**
@@ -213,6 +229,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
      * @memberOf Controllers.createAnnouncementCtrl
      */
     createAnn.saveAnnouncement = function () {
+      createAnn.isMetaModifiedSteps = true
       createAnn.announcement.target.geo.ids = _.map(createAnn.announcement.selTar, 'id')
       announcementAdapter.createAnnouncement(createAnn.announcement)
         .then(function (apiResponse) {
@@ -220,7 +237,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
           $('#announcementSuccessModal').modal({
             closable: false
           }).modal('show')
-          //$state.go('announcementOutbox')
+          // $state.go('announcementOutbox')
         }, function (err) {
           createAnn.isMetaModified = true
           createAnn.showError(apiResponse.data)
@@ -388,8 +405,8 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
           return false
         }
       }
-       createAnn.isMetaModifiedSteps = true
-      $state.go('announcementCreate', { stepNumber: ++createAnn.stepNumber, announcement: createAnn.announcement, isMetaModifiedSteps: true }, { reload: true })
+      createAnn.isMetaModifiedSteps = true
+      $state.go('announcementCreate', { stepNumber: ++createAnn.stepNumber, announcement: createAnn.announcement, isMetaModifiedSteps: false }, { reload: true })
     }
 
     /**
@@ -398,8 +415,8 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
      * @memberOf Controllers.createAnnouncementCtrl
      */
     createAnn.goToBackStep = function () {
-        createAnn.isMetaModifiedSteps = true
-      $state.go('announcementCreate', { stepNumber: --createAnn.stepNumber, announcement: createAnn.announcement,isMetaModifiedSteps: true }, { reload: true })
+      createAnn.isMetaModifiedSteps = true
+      $state.go('announcementCreate', { stepNumber: --createAnn.stepNumber, announcement: createAnn.announcement, isMetaModifiedSteps: false }, { reload: true })
     }
   }
 ])

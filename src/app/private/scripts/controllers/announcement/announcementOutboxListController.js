@@ -18,7 +18,7 @@ angular.module('playerApp')
         announcementAdapter.getOutBoxAnnouncementList().then(function (apiResponse) {
           announcementOutboxData.showLoader = false
           announcementOutboxData.result = apiResponse.result
-          announcementOutboxData.listData = apiResponse.result.announcements.content
+          announcementOutboxData.listData = apiResponse.result.announcements
           initController()
           if (announcementOutboxData.listData.length > 0) {
             announcementOutboxData.showDataDiv = true

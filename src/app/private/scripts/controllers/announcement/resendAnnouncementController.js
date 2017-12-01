@@ -30,43 +30,43 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
      * @param {int} [announcementId] [to make getResend api call]
      */
     createAnn.init = function () {
-        createAnn.isMetaModifiedSteps = $stateParams.isMetaModifiedSteps
-        createAnn.stepNumber = parseInt($stateParams.stepNumber) || 1
-        if ($stateParams.announcement === undefined && createAnn.stepNumber === 1) {
-            announcementAdapter.getResend($stateParams.announcementId).then(function (apiResponse) {
-                createAnn.announcement = new AnnouncementModel.Announcement(apiResponse.result)
-                createAnn.initializeModal()
+      createAnn.isMetaModifiedSteps = $stateParams.isMetaModifiedSteps
+      createAnn.stepNumber = parseInt($stateParams.stepNumber) || 1
+      if ($stateParams.announcement === undefined && createAnn.stepNumber === 1) {
+        announcementAdapter.getResend($stateParams.announcementId).then(function (apiResponse) {
+          createAnn.announcement = new AnnouncementModel.Announcement(apiResponse.result)
+          createAnn.initializeModal()
 
-                angular.forEach(createAnn.announcement.links, function (value, key) {
-                    createAnn.addNewLink()
-                })
-                createAnn.enableRecepientBtn()
-                //console.log(createAnn.announcement.attachments)
-            })
-        } else {
-            createAnn.announcement = $stateParams.announcement
-        }
+          angular.forEach(createAnn.announcement.links, function (value, key) {
+            createAnn.addNewLink()
+          })
+          createAnn.enableRecepientBtn()
+                // console.log(createAnn.announcement.attachments)
+        })
+      } else {
+        createAnn.announcement = $stateParams.announcement
+      }
 
       createAnn.resendAnnouncement()
 
       if (createAnn.stepNumber === 1) {
-            announcementAdapter.getDefinitions($rootScope.rootOrgId)
+        announcementAdapter.getDefinitions($rootScope.rootOrgId)
             .then(function (response) {
-                if (response.result.announcementTypes.content) {
-                    createAnn.announcementType = _.map(response.result.announcementTypes.content, 'name')
-                }
-                if (response.result.senderList) {
-                    angular.forEach(response.result.senderList, function (value, key) {
-                    createAnn.senderlist.push(value)
-                    })
-                }
+              if (response.result.announcementTypes.content) {
+                createAnn.announcementType = _.map(response.result.announcementTypes.content, 'name')
+              }
+              if (response.result.senderList) {
+                angular.forEach(response.result.senderList, function (value, key) {
+                  createAnn.senderlist.push(value)
+                })
+              }
 
-                $('#announcementType').dropdown('set text', createAnn.announcement.details.type)
+              $('#announcementType').dropdown('set text', createAnn.announcement.details.type)
             }, function (err) {
-                createAnn.hideAnncmntBtn = true
-                toasterService.error($rootScope.messages.fmsg.m0069)
+              createAnn.hideAnncmntBtn = true
+              toasterService.error($rootScope.messages.fmsg.m0069)
             })
-        }
+      }
 
       if (createAnn.stepNumber === 2) {
         $timeout(function () {
@@ -103,6 +103,7 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
           onApprove: function () {
             createAnn.refreshFormValues()
             createAnn.hideModel('announcementCancelModal')
+            $state.go('announcementOutbox')
             return true
           }
         }).modal('show')
@@ -133,20 +134,27 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
      * @memberOf Controllers.resendAnnouncementCtrl
      */
     createAnn.resendAnnouncement = function () {
-      if ($stateParams.announcement) {
-        createAnn.isMetaModified = true
-      }
       $('#createAnnouncementModal').modal({
         closable: false,
         onShow: function () {
           $('.ui.modal.transition.hidden').remove()
         },
         onHide: function () {
+          console.log('$stateParams.announcement', JSON.stringify($stateParams.announcement))
+          console.log(' createAnn.announcement', JSON.stringify(createAnn.announcement))
+
+          if ($stateParams.announcement === undefined) {
+            createAnn.isMetaModified = false
+          } else {
+            createAnn.isMetaModified = true
+          }
+
+          // alert('createAnn.isMetaModified = ' + createAnn.isMetaModified)
+          // alert('createAnn.isMetaModifiedSteps = ' + createAnn.isMetaModifiedSteps)
           if (createAnn.isMetaModified === true && createAnn.isMetaModifiedSteps !== true) {
             createAnn.confirmationModal()
             return false
-          }
-          $state.go('announcementOutbox')
+          } else if (createAnn.isMetaModified == false && createAnn.stepNumber === 1) { $state.go('announcementOutbox') }
         }
       }).modal('show')
     }
@@ -218,8 +226,8 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
       $timeout(function () {
         $rootScope.$broadcast('component:update', geoIds)
       }, 100)
-
-      $state.go('announcementResend', { stepNumber: ++createAnn.stepNumber, announcement: createAnn.announcement, isMetaModifiedSteps: createAnn.isMetaModifiedSteps  }, { reload: true })
+      createAnn.isMetaModifiedSteps = true
+      $state.go('announcementResend', { stepNumber: ++createAnn.stepNumber, announcement: createAnn.announcement, isMetaModifiedSteps: false }, { reload: true })
     }
 
     /**
@@ -228,7 +236,8 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
      * @memberOf Controllers.createAnnouncementCtrl
      */
     createAnn.goToBackStep = function () {
-      $state.go('announcementResend', { stepNumber: --createAnn.stepNumber, announcement: createAnn.announcement, isMetaModifiedSteps: createAnn.isMetaModifiedSteps}, { reload: true })
+      createAnn.isMetaModifiedSteps = true
+      $state.go('announcementResend', { stepNumber: --createAnn.stepNumber, announcement: createAnn.announcement, isMetaModifiedSteps: false}, { reload: true })
     }
 
     createAnn.confirmRecipients = function () {
@@ -354,12 +363,12 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
      * @param {object} [item] [current selected item]
      */
     createAnn.removeRecipients = function (item) {
-         _.remove(createAnn.announcement.target.geo.ids, function (arg) {
-            if(arg == item.id) {
-                return true
-            }
-         })
-        createAnn.announcement.target.geo.ids
+      _.remove(createAnn.announcement.target.geo.ids, function (arg) {
+        if (arg == item.id) {
+          return true
+        }
+      })
+      createAnn.announcement.target.geo.ids
       _.remove(createAnn.announcement.selTar, function (arg) {
         if (arg.location == item.location) {
           item.selected = false
