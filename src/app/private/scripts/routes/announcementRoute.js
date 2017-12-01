@@ -99,43 +99,55 @@ angular.module('playerApp')
         },
         params: {
           announcement: undefined,
-          isMetaModifiedSteps : true
+          isMetaModifiedSteps: true,
+          userIdHashTag: undefined,
+          telemetryPageId: 'annoucement_form_details',
+          telemetryPageType: 'form'
+
         },
         onEnter: function ($stateParams, $rootScope, $state, routeHelperService, portalTelemetryService, announcementAdapter) {
-            var stepNumber = parseInt($stateParams.stepNumber)
-            var announcement = $stateParams.announcement
-            if(stepNumber !== 1) {
-                var status = announcementAdapter.verifyAnnouncementData(stepNumber, announcement)
-                if(status){
-                    $rootScope.profileActive = 'active'
-                    $rootScope.courseActive = ' '
-                    $rootScope.isPlayerPage = true
-                    routeHelperService.loadRouteConfig('announcementCreate', null)
-                    portalTelemetryService.fireImpressions({
-                        env: 'community.announcements',
-                        type: 'form',
-                        pageid: 'annoucement_form_details',
-                        id: '',
-                        name: '',
-                        url: '/private/index#!/announcement/create/' + stepNumber
-                    })
-                } else {
-                    $state.go('announcementCreate', {stepNumber: 1, isMetaModifiedSteps: true}, {reload: true})
-                }
+          var stepNumber = parseInt($stateParams.stepNumber)
+          var announcement = $stateParams.announcement
+          var userIdHashTag = ''
+          if ($stateParams.userIdHashTag === undefined) {
+            var str = (Math.floor(new Date().getTime() / 1000)) + ($rootScope.userId) + (Math.floor(Math.random() * 90000) + 10000)
+            userIdHashTag = md5(str)
+          } else {
+            userIdHashTag = $stateParams.userIdHashTag
+          }
+
+          if (stepNumber !== 1) {
+            var status = announcementAdapter.verifyAnnouncementData(stepNumber, announcement)
+            if (status) {
+              $rootScope.profileActive = 'active'
+              $rootScope.courseActive = ' '
+              $rootScope.isPlayerPage = true
+              routeHelperService.loadRouteConfig('announcementCreate', null)
+              portalTelemetryService.fireAnnouncementImpressions({
+                env: 'community.announcements',
+                type: $stateParams.telemetryPageType,
+                pageid: $stateParams.telemetryPageId,
+                id: '',
+                name: '',
+                url: '/private/index#!/announcement/create/' + stepNumber
+              }, userIdHashTag)
             } else {
-                $rootScope.profileActive = 'active'
-                $rootScope.courseActive = ' '
-                $rootScope.isPlayerPage = true
-                routeHelperService.loadRouteConfig('announcementCreate', null)
-                portalTelemetryService.fireImpressions({
-                    env: 'community.announcements',
-                    type: 'form',
-                    pageid: 'annoucement_form_details',
-                    id: '',
-                    name: '',
-                    url: '/private/index#!/announcement/create/' + stepNumber
-                })
+              $state.go('announcementCreate', {stepNumber: 1, isMetaModifiedSteps: true}, {reload: true})
             }
+          } else {
+            $rootScope.profileActive = 'active'
+            $rootScope.courseActive = ' '
+            $rootScope.isPlayerPage = true
+            routeHelperService.loadRouteConfig('announcementCreate', null)
+            portalTelemetryService.fireAnnouncementImpressions({
+              env: 'community.announcements',
+              type: 'form',
+              pageid: 'annoucement_form_details',
+              id: '',
+              name: '',
+              url: '/private/index#!/announcement/create/' + stepNumber
+            }, userIdHashTag)
+          }
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''
@@ -151,44 +163,44 @@ angular.module('playerApp')
         },
         params: {
           announcement: undefined,
-          isMetaModifiedSteps : true
+          isMetaModifiedSteps: true
         },
         onEnter: function ($stateParams, $rootScope, $state, routeHelperService, portalTelemetryService, announcementAdapter) {
-            var stepNumber = parseInt($stateParams.stepNumber)
-            var announcement = $stateParams.announcement
-            var announcementId = $stateParams.announcementId
-            if(stepNumber !== 1) {
-                var status = announcementAdapter.verifyAnnouncementData(stepNumber, announcement)
-                if(status){
-                    $rootScope.profileActive = 'active'
-                    $rootScope.courseActive = ' '
-                    $rootScope.isPlayerPage = true
-                    routeHelperService.loadRouteConfig('announcementResend', null)
-                    portalTelemetryService.fireImpressions({
-                        env: 'community.announcements',
-                        type: 'form',
-                        pageid: 'annoucement_form_details',
-                        id: announcementId,
-                        name: '',
-                        url: '/private/index#!/announcement/resend/' + announcementId + '/' + stepNumber
-                    })
-                } else {
-                    $state.go('announcementResend', {stepNumber: 1, isMetaModifiedSteps: true}, {reload: true})
-                }
+          var stepNumber = parseInt($stateParams.stepNumber)
+          var announcement = $stateParams.announcement
+          var announcementId = $stateParams.announcementId
+          if (stepNumber !== 1) {
+            var status = announcementAdapter.verifyAnnouncementData(stepNumber, announcement)
+            if (status) {
+              $rootScope.profileActive = 'active'
+              $rootScope.courseActive = ' '
+              $rootScope.isPlayerPage = true
+              routeHelperService.loadRouteConfig('announcementResend', null)
+              portalTelemetryService.fireImpressions({
+                env: 'community.announcements',
+                type: 'form',
+                pageid: 'annoucement_form_details',
+                id: announcementId,
+                name: '',
+                url: '/private/index#!/announcement/resend/' + announcementId + '/' + stepNumber
+              })
             } else {
-                $rootScope.profileActive = 'active'
-                $rootScope.courseActive = ' '
-                $rootScope.isPlayerPage = true
-                routeHelperService.loadRouteConfig('announcementResend', null)
-                portalTelemetryService.fireImpressions({
-                    env: 'community.announcements',
-                    type: 'form',
-                    pageid: 'annoucement_form_details',
-                    id: $stateParams.announcementId,
-                    name: '',
-                    url: '/private/index#!/announcement/resend/' + announcementId + '/' + stepNumber
-                })
+              $state.go('announcementResend', {stepNumber: 1, isMetaModifiedSteps: true}, {reload: true})
             }
+          } else {
+            $rootScope.profileActive = 'active'
+            $rootScope.courseActive = ' '
+            $rootScope.isPlayerPage = true
+            routeHelperService.loadRouteConfig('announcementResend', null)
+            portalTelemetryService.fireImpressions({
+              env: 'community.announcements',
+              type: 'form',
+              pageid: 'annoucement_form_details',
+              id: $stateParams.announcementId,
+              name: '',
+              url: '/private/index#!/announcement/resend/' + announcementId + '/' + stepNumber
+            })
+          }
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''

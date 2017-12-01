@@ -1,6 +1,6 @@
 'use strict'
-angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$timeout', 'config', 'toasterService', 'announcementService', 'fileUpload', 'AnnouncementModel', 'announcementAdapter',
-  function ($rootScope, $scope, $state, $stateParams, $timeout, config, toasterService, announcementService, fileUpload, AnnouncementModel, announcementAdapter) {
+angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$timeout', 'config', 'toasterService', 'announcementService', 'fileUpload', 'AnnouncementModel', 'announcementAdapter', 'portalTelemetryService',
+  function ($rootScope, $scope, $state, $stateParams, $timeout, config, toasterService, announcementService, fileUpload, AnnouncementModel, announcementAdapter, portalTelemetryService) {
     var createAnn = this
     createAnn.data = {}
     createAnn.attachment = []
@@ -212,6 +212,14 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       announcementAdapter.createAnnouncement(createAnn.announcement)
         .then(function (apiResponse) {
           createAnn.hideModel('createAnnouncementModal')
+          portalTelemetryService.fireAnnouncementImpressions({
+            env: 'community.announcements',
+            type: 'view',
+            pageid: 'announcement_form_complete',
+            id: '',
+            name: '',
+            url: '/private/index#!/announcement/create/4'
+          }, $stateParams.userIdHashTag)
           $('#announcementSuccessModal').modal({
             closable: false
           }).modal('show')
@@ -372,7 +380,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
      * @desc - Used to swtch to next step of announcement creation
      * @memberOf Controllers.createAnnouncementCtrl
      */
-    createAnn.goToNextStep = function () {
+    createAnn.goToNextStep = function (telemetryPageId, telemetryPageType) {
       // Current step is confirm recipients
       if (createAnn.stepNumber !== 1) {
         if (createAnn.confirmRecipients()) {
@@ -386,7 +394,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
           return false
         }
       }
-      $state.go('announcementCreate', { stepNumber: ++createAnn.stepNumber, announcement: createAnn.announcement, isMetaModifiedSteps: createAnn.isMetaModifiedSteps }, { reload: true })
+      $state.go('announcementCreate', { stepNumber: ++createAnn.stepNumber, announcement: createAnn.announcement, isMetaModifiedSteps: createAnn.isMetaModifiedSteps, telemetryPageId: telemetryPageId, telemetryPageType: telemetryPageType}, { reload: true })
     }
 
     /**
@@ -395,7 +403,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
      * @memberOf Controllers.createAnnouncementCtrl
      */
     createAnn.goToBackStep = function () {
-      $state.go('announcementCreate', { stepNumber: --createAnn.stepNumber, announcement: createAnn.announcement,isMetaModifiedSteps: createAnn.isMetaModifiedSteps }, { reload: true })
+      $state.go('announcementCreate', { stepNumber: --createAnn.stepNumber, announcement: createAnn.announcement, isMetaModifiedSteps: createAnn.isMetaModifiedSteps }, { reload: true })
     }
   }
 ])
