@@ -93,8 +93,8 @@ angular.module('playerApp')
         url: '/announcement/create/:stepNumber',
         views: {
           mainView: {
-            templateUrl: '/views/announcement/createAnnouncement.html',
-            controller: 'createAnnouncementCtrl as createAnn'
+            templateUrl: '/views/announcement/composeAnnouncement.html',
+            controller: 'createAnnouncementCtrl as composeAnn'
           }
         },
         params: {
@@ -156,8 +156,8 @@ angular.module('playerApp')
         url: '/announcement/resend/:announcementId/:stepNumber',
         views: {
           mainView: {
-            templateUrl: '/views/announcement/createAnnouncement.html',
-            controller: 'resendAnnouncementCtrl as createAnn'
+            templateUrl: '/views/announcement/composeAnnouncement.html',
+            controller: 'resendAnnouncementCtrl as composeAnn'
           }
         },
         params: {
