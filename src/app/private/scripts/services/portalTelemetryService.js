@@ -1,22 +1,22 @@
 angular.module('playerApp').service('portalTelemetryService', ['$http', '$filter', '$rootScope',
-  'uuid4', 'config', function ($http, $filter, $rootScope, uuid4, config) {
+    'uuid4', 'config', function ($http, $filter, $rootScope, uuid4, config) {
     /**
      * @class portalTelemetryService
      * @desc Service to manages portal telemetry  events.
      * @memberOf Services
      */
-    var self = this
-    var telemetryEvents = telemetryEvents || []
+        var self = this;
+        var telemetryEvents = telemetryEvents || [];
         /**
              * @method init
              * @desc Initiate the telemetry
              * @memberOf Services.portalTelemetryService
              * @instance
              */
-    this.init = function () {
-      org.sunbird.portal.eventManager.addEventListener('sunbird:window:unload', self.sendTelementrySync)
-      org.sunbird.portal.eventManager.addEventListener('sunbird:telemetry:flush', self.addTelemetryEvent)
-    }
+        this.init = function () {
+            org.sunbird.portal.eventManager.addEventListener('sunbird:window:unload', self.sendTelementrySync);
+            org.sunbird.portal.eventManager.addEventListener('sunbird:telemetry:flush', self.addTelemetryEvent);
+        };
             /**
              * @method fireImpressions
              * @desc Dispatch event
@@ -24,21 +24,9 @@ angular.module('playerApp').service('portalTelemetryService', ['$http', '$filter
              * @param {object}  data - Telemetry data
              * @instance
              */
-    this.fireImpressions = function (data) {
-      org.sunbird.portal.eventManager.dispatchEvent('sunbird:telemetery:portal:impression', data)
-    }
-            /**
-             * @method fireAnnouncementImpressions
-             * @desc Dispatch event
-             * @memberOf Services.portalTelemetryService
-             * @param {object}  data - Telemetry data
-             * @instance
-             */
-    this.fireAnnouncementImpressions = function (data, userIdHashTag) {
-      // userIdHashTag to build cData
-      data.userIdHashTag = userIdHashTag
-      org.sunbird.portal.eventManager.dispatchEvent('sunbird:telemetry:announcement:impression', data)
-    }
+        this.fireImpressions = function (data) {
+            org.sunbird.portal.eventManager.dispatchEvent('sunbird:telemetery:portal:impression', data);
+        };
         /**
              * @method addTelemetryEvent
              * @desc Add new event
@@ -46,16 +34,16 @@ angular.module('playerApp').service('portalTelemetryService', ['$http', '$filter
              * @param {object}  data - Telemetry data
              * @instance
              */
-    this.addTelemetryEvent = function (e, data) {
-      telemetryEvents.push(data)
-      if (telemetryEvents.length >= config.TELEMETRY.MAX_BATCH_SIZE) {
-        self.sendTelementry(true)
-      }
-    }
+        this.addTelemetryEvent = function (e, data) {
+            telemetryEvents.push(data);
+            if (telemetryEvents.length >= config.TELEMETRY.MAX_BATCH_SIZE) {
+                self.sendTelementry(true);
+            }
+        };
 
-    this.sendTelementrySync = function () {
-      self.sendTelementry(false)
-    }
+        this.sendTelementrySync = function () {
+            self.sendTelementry(false);
+        };
         /**
              * @method sendTelementry
              * @desc Send telemetry records

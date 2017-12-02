@@ -1,14 +1,14 @@
-const request = require('request'),
-  parser = require('ua-parser-js'),
-  _ = require('lodash'),
-  uuidv1 = require('uuid/v1'),
-  dateFormat = require('dateformat'),
-  envHelper = require('./environmentVariablesHelper.js'),
-  appId = envHelper.APPID,
-  contentURL = envHelper.CONTENT_URL,
-  learner_authorization = envHelper.PORTAL_API_AUTH_TOKEN,
-  md5 = require('js-md5'),
-  telemetry_packet_size = envHelper.PORTAL_TELEMETRY_PACKET_SIZE
+const request = require('request')
+const parser = require('ua-parser-js')
+const _ = require('lodash')
+const uuidv1 = require('uuid/v1')
+const dateFormat = require('dateformat')
+const envHelper = require('./environmentVariablesHelper.js')
+const appId = envHelper.APPID
+const contentURL = envHelper.CONTENT_URL
+const learnerAuthorization = envHelper.PORTAL_API_AUTH_TOKEN
+const md5 = require('js-md5')
+const telemetryPacketSize = envHelper.PORTAL_TELEMETRY_PACKET_SIZE
 
 module.exports = {
   logSessionStart: function (req, callback) {
@@ -52,8 +52,8 @@ module.exports = {
       'ets': new Date().getTime()
     }
     event.mid = 'SB:' + md5(JSON.stringify(event))
-    this.sendTelemetry(req, [event], function (status) {
-      callback(null, status)
+    this.sendTelemetry(req, [event], function (err, status) {
+      callback(err, status)
     })
   },
   logSessionEvents: function (req, res) {
