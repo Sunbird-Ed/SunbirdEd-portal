@@ -1,24 +1,24 @@
-const jwt = require('jsonwebtoken'),
-  async = require('async'),
-  request = require('request'),
-  Keycloak = require('keycloak-connect'),
-  session = require('express-session'),
-  uuidv1 = require('uuid/v1'),
-  dateFormat = require('dateformat'),
-  permissionsHelper = require('./permissionsHelper.js'),
-  telemetryHelper = require('./telemetryHelper.js'),
-  envHelper = require('./environmentVariablesHelper.js'),
-  echoAPI = envHelper.PORTAL_ECHO_API_URL,
-  createUserFlag = envHelper.PORTAL_AUTOCREATE_TRAMPOLINE_USER,
-  learnerURL = envHelper.LEARNER_URL,
-  trampoline_clientId = envHelper.PORTAL_TRAMPOLINE_CLIENT_ID,
-  trampoline_server_url = envHelper.PORTAL_AUTH_SERVER_URL,
-  trampoline_realm = envHelper.PORTAL_REALM,
-  trampoline_secret = envHelper.PORTAL_TRAMPOLINE_SECRET
-learner_authorization = envHelper.PORTAL_API_AUTH_TOKEN
+const jwt = require('jsonwebtoken')
+const async = require('async')
+const request = require('request')
+const Keycloak = require('keycloak-connect')
+const session = require('express-session')
+const uuidv1 = require('uuid/v1')
+const dateFormat = require('dateformat')
+const permissionsHelper = require('./permissionsHelper.js')
+const telemetryHelper = require('./telemetryHelper.js')
+const envHelper = require('./environmentVariablesHelper.js')
+const echoAPI = envHelper.PORTAL_ECHO_API_URL
+const createUserFlag = envHelper.PORTAL_AUTOCREATE_TRAMPOLINE_USER
+const learnerURL = envHelper.LEARNER_URL
+const trampolineClientId = envHelper.PORTAL_TRAMPOLINE_CLIENT_ID
+const trampolineServerUrl = envHelper.PORTAL_AUTH_SERVER_URL
+const trampolineRealm = envHelper.PORTAL_REALM
+const trampolineSecret = envHelper.PORTAL_TRAMPOLINE_SECRET
+const learnerAuthorization = envHelper.PORTAL_API_AUTH_TOKEN
 let memoryStore = new session.MemoryStore()
-var keycloak = new Keycloak({ store: memoryStore }, {
-  clientId: trampoline_clientId,
+let keycloak = new Keycloak({ store: memoryStore }, {
+  clientId: trampolineClientId,
   bearerOnly: true,
   serverUrl: trampolineServerUrl,
   realm: trampolineRealm,
@@ -152,7 +152,7 @@ module.exports = {
         'x-device-id': 'trampoline',
         'x-msgid': uuidv1(),
         'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
-        'x-consumer-id': learner_authorization,
+        'x-consumer-id': learnerAuthorization,
         'content-type': 'application/json',
         accept: 'application/json',
         'Authorization': 'Bearer ' + learnerAuthorization
