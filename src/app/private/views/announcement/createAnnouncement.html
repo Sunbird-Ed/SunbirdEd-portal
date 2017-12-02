@@ -46,7 +46,7 @@
                 <div class="field required">
                   <label>{{$root.frmelmnts.lbl.anncmnttitle}}</label>
                   <div class="field form-group dropdown-margin-left" ng-required="true">
-                    <input type="text" name="title" id="announcementTitle" placeholder="{{$root.frmelmnts.instn.t0049}}" ng-model="createAnn.announcement.details.title" ng-maxlength="100" ng-change="createAnn.enableRecepientBtn()">
+                    <input type="text" name="title" id="announcementTitle" placeholder="{{$root.frmelmnts.instn.t0057}}" ng-model="createAnn.announcement.details.title" ng-maxlength="100" ng-change="createAnn.enableRecepientBtn()">
                     <section ng-if="createAnn.announcement.details.title.length" class="float-ContentRight">{{createAnn.announcement.details.title.length}} / 100</section>
                     <p ng-show="announcementForm.title.$error.maxlength" class="createAnnErrorMsg">Title is too long</p>
                   </div>

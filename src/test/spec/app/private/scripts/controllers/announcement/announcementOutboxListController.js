@@ -117,7 +117,7 @@ describe('Controller: announcementOutboxListController', function () {
     })
   })
 
-  describe('State change create/resend', function () {
+  xdescribe('State change create/resend', function () {
     it('Resend', function () {
       spyOn(announcementOutboxListController, 'getResend').and.callThrough()
       announcementOutboxListController.getResend('90ae7cf0-c5e0-11e7-8744-852d6ada097c')

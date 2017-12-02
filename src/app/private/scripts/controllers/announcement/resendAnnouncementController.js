@@ -15,6 +15,7 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
     createAnn.hideAnncmntBtn = false
     createAnn.uploadAttchement = false
     createAnn.editAction = true
+    createAnn.isApprove = false
     createAnn.stepNumber = parseInt($stateParams.stepNumber) || 1
     createAnn.config = {
       'geo': {
@@ -40,8 +41,10 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
           angular.forEach(createAnn.announcement.links, function (value, key) {
             createAnn.addNewLink()
           })
-          createAnn.enableRecepientBtn()
-                // console.log(createAnn.announcement.attachments)
+
+          _.forEach(createAnn.announcement.attachments, function (attachment, index) {
+            createAnn.announcement.attachments[index] = JSON.parse(attachment)
+          })
         })
       } else {
         createAnn.announcement = $stateParams.announcement
@@ -51,21 +54,21 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
 
       if (createAnn.stepNumber === 1) {
         announcementAdapter.getDefinitions($rootScope.rootOrgId)
-            .then(function (response) {
-              if (response.result.announcementTypes.content) {
-                createAnn.announcementType = _.map(response.result.announcementTypes.content, 'name')
-              }
-              if (response.result.senderList) {
-                angular.forEach(response.result.senderList, function (value, key) {
-                  createAnn.senderlist.push(value)
-                })
-              }
+          .then(function (response) {
+            if (response.result.announcementTypes.content) {
+              createAnn.announcementType = _.map(response.result.announcementTypes.content, 'name')
+            }
+            if (response.result.senderList) {
+              angular.forEach(response.result.senderList, function (value, key) {
+                createAnn.senderlist.push(value)
+              })
+            }
 
-              $('#announcementType').dropdown('set text', createAnn.announcement.details.type)
-            }, function (err) {
-              createAnn.hideAnncmntBtn = true
-              toasterService.error($rootScope.messages.fmsg.m0069)
-            })
+            $('#announcementType').dropdown('set text', createAnn.announcement.details.type)
+          }, function (err) {
+            createAnn.hideAnncmntBtn = true
+            toasterService.error($rootScope.messages.fmsg.m0069)
+          })
       }
 
       if (createAnn.stepNumber === 2) {
@@ -101,6 +104,7 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
             return true
           },
           onApprove: function () {
+            createAnn.isApprove = true
             createAnn.refreshFormValues()
             createAnn.hideModel('announcementCancelModal')
             $state.go('announcementOutbox')
@@ -140,17 +144,13 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
           $('.ui.modal.transition.hidden').remove()
         },
         onHide: function () {
-          console.log('$stateParams.announcement', JSON.stringify($stateParams.announcement))
-          console.log(' createAnn.announcement', JSON.stringify(createAnn.announcement))
-
-          if ($stateParams.announcement === undefined) {
+          if ($stateParams.announcement === undefined && createAnn.isMetaModified !== true) {
+            createAnn.isMetaModified = false
+          } else if (createAnn.isApprove === true) {
             createAnn.isMetaModified = false
           } else {
             createAnn.isMetaModified = true
           }
-
-          // alert('createAnn.isMetaModified = ' + createAnn.isMetaModified)
-          // alert('createAnn.isMetaModifiedSteps = ' + createAnn.isMetaModifiedSteps)
           if (createAnn.isMetaModified === true && createAnn.isMetaModifiedSteps !== true) {
             createAnn.confirmationModal()
             return false
@@ -164,7 +164,10 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
      * @desc - enable select recipients btn if all required fields are selected
      * @memberOf Controllers.createAnnouncementCtrl
      */
-    createAnn.enableRecepientBtn = function () {
+    createAnn.enableRecepientBtn = function (status) {
+      if (status === undefined) {
+        status = true
+      }
       var links = []
       if (createAnn.announcement && createAnn.announcement.links) {
         angular.forEach(createAnn.announcement.links, function (value, key) {
@@ -183,7 +186,11 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
         createAnn.disableBtn = true
         selectRecipientBtn.addClass('disabled')
       }
-      createAnn.isMetaModified = true
+      if (status === false) {
+        createAnn.isMetaModified = false
+      } else {
+        createAnn.isMetaModified = true
+      }
     }
 
     /**
@@ -237,14 +244,14 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
      */
     createAnn.goToBackStep = function () {
       createAnn.isMetaModifiedSteps = true
-      $state.go('announcementResend', { stepNumber: --createAnn.stepNumber, announcement: createAnn.announcement, isMetaModifiedSteps: false}, { reload: true })
+      $state.go('announcementResend', { stepNumber: --createAnn.stepNumber, announcement: createAnn.announcement, isMetaModifiedSteps: false }, { reload: true })
     }
 
     createAnn.confirmRecipients = function () {
       $rootScope.$emit('get:selected:items')
       if (createAnn.announcement.selTar && createAnn.announcement.selTar.length === 0) {
         toasterService.error($rootScope.messages.emsg.m0006)
-        $state.go('announcementResend', { stepNumber: 2, announcement: createAnn.announcement, isMetaModifiedSteps: createAnn.isMetaModifiedSteps}, { reload: true })
+        $state.go('announcementResend', { stepNumber: 2, announcement: createAnn.announcement, isMetaModifiedSteps: createAnn.isMetaModifiedSteps }, { reload: true })
         return false
       }
 
@@ -271,8 +278,12 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
      * @param {object} [data] [form data]
      */
     createAnn.saveAnnouncement = function () {
+      createAnn.isMetaModifiedSteps = true
       announcementAdapter.resendAnnouncement(createAnn.announcement).then(function (apiResponse) {
-        createAnn.isMetaModified = false
+        $('#announcementResendModal').modal({
+          closable: false
+        }).modal('show')
+        $state.go('announcementOutbox')
         createAnn.hideModel('createAnnouncementModal')
         portalTelemetryService.fireAnnouncementImpressions({
           env: 'community.announcements',
@@ -282,8 +293,6 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
           name: $stateParams.telemetryAnnTitle,
           url: '/private/index#!/announcement/create/4'
         }, $stateParams.userIdHashTag)
-        $('#announcementResendModal').modal('show')
-        $state.go('announcementOutbox')
       }, function (err) {
         toasterService.error(err.data.params.errmsg)
       })
@@ -321,7 +330,13 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
         uploadSuccess: createAnn.onUploadComplete,
         onCancel: createAnn.onUploadCancel
       }
-      fileUpload.createFineUploadInstance(options)
+      fileUpload.createFineUploadInstance(options,function(data){
+        angular.forEach(createAnn.announcement.attachments, function (announcement, key) {
+          announcement = JSON.parse(announcement)
+          $('.qq-upload-list').append('<li class="qq-file-id-0 qq-upload-retryable w3-container w3-border w3-round-xlarge qq-upload-success" qq-file-id="'+key+'"><i class="qq-upload-cancel-selector cursor-pointer remove icon qq-hide" id="qq-upload-cancel-manually" onclick="cancelUploadFile()" style="float: right;"></i><span class="qq-upload-file-selector qq-upload-file" title="logo.png" style="margin-top: -30px !important;width: 222px;">'+announcement.name+'</span><input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text"><span role="status" class="qq-upload-status-text-selector qq-upload-status-text"></span></li>');
+
+        })
+      })
     }
 
     /**

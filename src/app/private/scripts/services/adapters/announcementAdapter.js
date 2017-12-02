@@ -186,7 +186,7 @@ angular.module('playerApp')
       this.deleteAnnouncement = function (announcementId) {
         var data = {
           'request': {
-            'announcementid': announcementId
+            'announcenmentId': announcementId
           }
         }
         var URL = config.URL.ANNOUNCEMENT.CANCEL
