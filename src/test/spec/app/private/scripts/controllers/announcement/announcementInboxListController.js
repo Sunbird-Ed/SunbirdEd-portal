@@ -43,6 +43,12 @@ describe('Controller: announcementInboxListController', function () {
   }))
 
   describe('Get inbox announcements', function () {
+    it('Should called announcement service', function () {
+      spyOn(announcementAdapter, 'getInboxAnnouncementList').and.callThrough()
+      announcementAdapter.getInboxAnnouncementList()
+      expect(announcementAdapter.getInboxAnnouncementList).toBeDefined()
+    })
+
     it('Success', function () {
       spyOn(announcementAdapter, 'getInboxAnnouncementList').and.returnValue(deferred.promise)
       deferred.resolve(annInboxTestData.successResponce)
@@ -92,7 +98,7 @@ describe('Controller: announcementInboxListController', function () {
 
     it('Show details undefined', function () {
       spyOn(announcementInboxListController, 'showAnnouncementDetails').and.callThrough()
-      var response = announcementInboxListController.showAnnouncementDetails('')
+      var response = announcementInboxListController.showAnnouncementDetails(annInboxTestData.detailsSuccess, '')
       expect(response).toBe(undefined)
     })
   })

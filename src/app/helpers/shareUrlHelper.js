@@ -12,13 +12,13 @@ module.exports = function (app) {
   })
 
   app.all('/unlisted/:hash', function (req, res) {
-  	let hash = req.params.hash
-  	let uri = Buffer.from(hash, 'base64').toString()
-  	let redirectUrl = publicUri + '/' + uri + '/unlisted'
-  	if (redirectUrl.indexOf('collection') > -1) {
-  		redirectUrl = redirectUrl.replace('collection', 'content')
-  		redirectUrl = redirectUrl + '/'
-  	}
+    let hash = req.params.hash
+    let uri = Buffer.from(hash, 'base64').toString()
+    let redirectUrl = publicUri + '/' + uri + '/unlisted'
+    if (redirectUrl.indexOf('collection') > -1) {
+      redirectUrl = redirectUrl.replace('collection', 'content')
+      redirectUrl = redirectUrl + '/'
+    }
     res.redirect(redirectUrl)
   })
 }

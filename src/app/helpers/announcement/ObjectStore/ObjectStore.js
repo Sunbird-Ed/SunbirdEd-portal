@@ -1,65 +1,64 @@
-let Joi = require('joi')
-let webService = require('request')
-let _ = require('lodash')
-let async = require('asyncawait/async')
-let await = require('asyncawait/await')
-
 class ObjectStore {
-    constructor({metrics, announcement, announcementtype } = {}) {
-        /**
-         * @property {class} - Metrics model instance, Which is used to validate the metrics model object.
-         */
-        this.metrics = metrics;
-        /**
-         * @property {class} - Announcement Create instance, Which is used to validate the model object.
-         */
-        this.announcementCreate = announcement;
+  constructor ({ model, service } = {}) {
+    /**
+     * @property {class} - Defines the model instance ex: MetricsModel, AnnouncementModel
+     */
+    this.model = model
 
-        /**
-         * @property {class} - Announcement type instance, Which is used to validate the announcement Type object.
-         * @type {[type]}
-         */
-        this.announcementType = announcementtype;
+    /**
+     * @property {class} - Defines the service which is used to invoke http calls ex: Httpservice, casandra service.
+     */
+    this.service = service
+  }
 
-        /**
-         * @property {object} - Which is having map of instance of all model classes.
-         */
-        this.modelMap = {announcement, metrics, announcementtype}
-    }
+    /**
+     * Abstract method, Child class should implement.
+     */
+  createObject () {
+    return new Promise((resolve, reject) => {
+      reject('cannot call abstract method')
+    })
+  }
 
-    get MODEL() {
-        return this.__MODEL
-    }
+    /**
+     * Abstract method, Child class should implement.
+     * @return {[type]} [description]
+     */
+  findObject () {
+    return new Promise((resolve, reject) => {
+      reject('cannot call abstract method')
+    })
+  }
 
-    createObject() {
-        return new Promise((resolve, reject) => {
-            reject('cannot call abstract method')
-        })
-    }
+    /**
+     * Abstract method,Child class should implement to get the object by identifier.
+     * @return {[type]} [description]
+     */
+  getObjectById () {
+    return new Promise((resolve, reject) => {
+      reject('cannot call abstract method')
+    })
+  }
 
-    findObject() {
-        return new Promise((resolve, reject) => {
-            reject('cannot call abstract method')
-        })
-    }
+    /**
+     * Abstract method, Child class should implement to update the object by identifier.
+     * @return {[type]} [description]
+     */
+  updateObjectById () {
+    return new Promise((resolve, reject) => {
+      reject('cannot call abstract method')
+    })
+  }
 
-    getObjectById() {
-        return new Promise((resolve, reject) => {
-            reject('cannot call abstract method')
-        })
-    }
-
-    updateObjectById() {
-        return new Promise((resolve, reject) => {
-            reject('cannot call abstract method')
-        })
-    }
-
-    deleteObjectById() {
-        return new Promise((resolve, reject) => {
-            reject('cannot call abstract method')
-        })
-    }
+    /**
+     * Abstract method, Child class should implement to delete the object by identifier.
+     * @return {[type]} [description]
+     */
+  deleteObjectById () {
+    return new Promise((resolve, reject) => {
+      reject('cannot call abstract method')
+    })
+  }
 }
 
 module.exports = ObjectStore

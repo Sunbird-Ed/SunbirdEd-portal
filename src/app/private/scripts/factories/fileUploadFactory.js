@@ -2,18 +2,72 @@
 
 angular.module('playerApp')
   .factory('fileUpload', ['$filter', 'config', '$timeout', 'toasterService', 'uuid4', function ($filter, config, $timeout, toasterService, uuid4) {
+    var controllerOption = {}
+    var fileTypeSize = {}
+    // FineUploader option - you can easily override these option by passing controller specific option
     var options = {
-      endpoint: config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + config.URL.CONTENT.UPLOAD_MEDIA,
-      customHeaders: {
-        Accept: 'application/json',
-        'X-Consumer-ID': 'X-Consumer-ID',
-        'X-Device-ID': 'X-Device-ID',
-        'X-msgid': uuid4.generate(),
-        ts: $filter('date')(new Date(), 'yyyy-MM-dd HH:mm:ss:sssZ'),
-        'X-Source': 'web',
-        'X-Org-code': 'AP'
+      request: {
+        endpoint: config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + config.URL.CONTENT.UPLOAD_MEDIA,
+        inputName: 'file',
+        customHeaders: {
+          Accept: 'application/json',
+          'X-Consumer-ID': 'X-Consumer-ID',
+          'X-Device-ID': 'X-Device-ID',
+          'X-msgid': uuid4.generate(),
+          ts: $filter('date')(new Date(), 'yyyy-MM-dd HH:mm:ss:sssZ'),
+          'X-Source': 'web',
+          'X-Org-code': 'AP'
+        }
+      },
+      failedUploadTextDisplay: {
+        mode: 'default',
+        responseProperty: 'error'
+      },
+      fileValidation: {
+        sizeLimit: config.AnncmntMaxFileSizeToUpload,
+        allowedExtensions: config.AnncmntAllowedFileExtension
       }
     }
+
+    /**
+     * @method onFileUploadSuccess
+     * @desc callback function - will executed onAfterFileUploadSuccess
+     * @param   {int}  id  [selected file number]
+     * @param   {string}  name  [file name]
+     * @param   {object}  responseJSON  [api response]
+     * @param   {object}  xhr  [api response]
+     */
+    var onFileUploadSuccess = function (id, name, responseJSON, xhr) {
+      if (responseJSON.responseCode === 'OK') {
+        var uploadDetails = {
+          'name': name,
+          'mimetype': fileTypeSize.type,
+          'size': fileTypeSize.size,
+          'link': responseJSON.result.url
+        }
+        controllerOption.uploadSuccess(id, name, uploadDetails)
+      }
+    }
+
+    /**
+     * @method onFileUploadCancel
+     * @desc callback function - will executed on after user click on cancel button
+     * @param   {int}  id    [file id]
+     * @param   {string}  name  [file name]
+     */
+    var onFileUploadCancel = function (id, name) {
+      controllerOption.onCancel(id, name)
+    }
+
+    /**
+     * @method showErrorMessage
+     * @desc function to show error message
+     * @param   {string}  message  [message to display]
+     */
+    var showErrorMessage = function (message) {
+      toasterService.error(message)
+    }
+
     return {
       /**
        * @method initializeFineUploader
@@ -22,8 +76,8 @@ angular.module('playerApp')
        * @param {Object}  option - Option object to invoke controller callback function
        * @returns {Callback} Trigger callback function
        */
-      createFineUploadInstance: function (controllerOption) {
-        controllerOption = _.merge({}, controllerOption, options)
+      createFineUploadInstance: function (ctrlOption) {
+        controllerOption = _.merge({}, ctrlOption, options)
         $timeout(function () {
           var objFineUploader = new qq.FineUploader({
             element: document.getElementById('fine-uploader-manual-trigger'),
@@ -31,52 +85,33 @@ angular.module('playerApp')
             autoUpload: true,
             paramsInBody: true,
             debug: false,
-            request: {
-              endpoint: controllerOption.endpoint,
-              inputName: 'file',
-              customHeaders: controllerOption.customHeaders
-            },
-            validation: {
-              sizeLimit: controllerOption.fileSizeLimit,
-              allowedExtensions: controllerOption.allowedExtensions
-            },
+            request: controllerOption.request,
+            validation: controllerOption.fileValidation,
             messages: {
               sizeError: '{file} ' + controllerOption.fileSizeErrorText + ' ' + controllerOption.fileSizeLimit / (1000 * 1024) + ' MB.'
             },
-            failedUploadTextDisplay: {
-              mode: 'default',
-              responseProperty: 'error'
-            },
-            showMessage: function (message) {
-              toasterService.error(message)
-            },
+            failedUploadTextDisplay: controllerOption.failedUploadTextDisplay,
+            showMessage: showErrorMessage,
             callbacks: {
-              onComplete: function (id, name, responseJSON, xhr) {
-                if (responseJSON.responseCode === 'OK') {
-                  var uploadDetails = {
-                    'name': name,
-                    'mimetype': this.getFile(id).type,
-                    'size': this.getSize(id),
-                    'link': responseJSON.result.url
-                  }
-                  controllerOption.uploadSuccess(id, name, uploadDetails)
-                }
-              },
+              onComplete: onFileUploadSuccess,
               onSubmitted: function (id, name) {
                 this.setParams({
                   filename: name,
                   container: controllerOption.containerName
                 })
+
+                fileTypeSize = { 'type': this.getFile(id).type, 'size': this.getSize(id) }
               },
-              onCancel: function (id, name) {
-                controllerOption.onCancel(id, name)
-              }
+              onCancel: onFileUploadCancel
             }
           })
           window.cancelUploadFile = function () {
             document.getElementById('hide-section-with-button').style.display = 'block'
           }
         }, 2000)
-      }
+      },
+      onFileUploadSuccess: onFileUploadSuccess,
+      onFileUploadCancel: onFileUploadCancel,
+      showErrorMessage: showErrorMessage
     }
   }])
