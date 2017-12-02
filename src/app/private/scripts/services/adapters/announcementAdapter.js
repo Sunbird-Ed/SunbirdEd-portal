@@ -102,11 +102,15 @@ angular.module('playerApp')
        * @returns {object} returns response of API
        * @instance
        */
-      this.createAnnouncement = function (annoucement) {
+      this.createAnnouncement = function (annoucementObj) {
+        var annoucement = _.clone(annoucementObj)
         // Convert attachment object to string
         _.forEach(annoucement.attachments, function (attachment, index) {
-          annoucement.attachments[index] = JSON.stringify(attachment)
+          if(_.isPlainObject(attachment)) {
+            annoucement.attachments[index] = JSON.stringify(attachment)
+          }
         })
+
         var data = {
           request: {
             title: annoucement.details.title,
@@ -214,11 +218,15 @@ angular.module('playerApp')
        * @returns {object} returns response of API
        * @instance
        */
-      this.resendAnnouncement = function (annoucement) {
+      this.resendAnnouncement = function (annoucementObj) {
+        var annoucement = _.clone(annoucementObj)
         // Convert attachment object to string
         _.forEach(annoucement.attachments, function (attachment, index) {
-          annoucement.attachments[index] = JSON.stringify(attachment)
+          if(_.isPlainObject(attachment)) {
+            annoucement.attachments[index] = JSON.stringify(attachment)
+          }
         })
+
         var data = {
           request: {
             title: annoucement.details.title,

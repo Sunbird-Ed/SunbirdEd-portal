@@ -23,7 +23,7 @@ angular.module('playerApp')
             // Call received API
             if (announcement.received === false) {
               announcementAdapter.receivedAnnouncement(announcement.id).then(function (response) {
-                console.log('Received success')
+                //console.log('Received success')
               })
             }
 

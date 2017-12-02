@@ -16,6 +16,12 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
     composeAnn.uploadAttchement = false
     composeAnn.editAction = false
     composeAnn.isApprove = false
+    composeAnn.config = {
+      'geo': {
+        'adopter': 'SERVICE',
+        'service': 'geoService'
+      }
+    }
 
     /**
      * @method initializeModal
@@ -146,12 +152,6 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
         }
       })
       composeAnn.confirmRecipients()
-    }
-    composeAnn.config = {
-      'geo': {
-        'adopter': 'SERVICE',
-        'service': 'geoService'
-      }
     }
 
     /**
@@ -288,7 +288,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
      * @desc - create fine uploader instance by passing required params
      * @memberOf Controllers.createAnnouncementCtrl
      */
-    composeAnn.initializeFileUploader = function () {
+    composeAnn.initializeFileUploader = function (resend) {
       var apiUrl = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + config.URL.CONTENT.UPLOAD_MEDIA
       var options = {
         fileSizeLimit: config.AnncmntMaxFileSizeToUpload,
@@ -299,11 +299,12 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
         onCancel: composeAnn.onUploadCancel
       }
       fileUpload.createFineUploadInstance(options,function(data){
-        angular.forEach(composeAnn.announcement.attachments, function (announcement, key) {
-          announcement = JSON.parse(announcement)
-          $('.qq-upload-list').append('<li class="qq-file-id-0 qq-upload-retryable w3-container w3-border w3-round-xlarge qq-upload-success" qq-file-id="'+key+'"><i class="qq-upload-cancel-selector cursor-pointer remove icon qq-hide" id="qq-upload-cancel-manually" onclick="cancelUploadFile()" style="float: right;"></i><span class="qq-upload-file-selector qq-upload-file" title="logo.png" style="margin-top: -30px !important;width: 222px;">'+announcement.name+'</span><input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text"><span role="status" class="qq-upload-status-text-selector qq-upload-status-text"></span></li>');
-
-        })
+        /*angular.forEach(composeAnn.announcement.attachments, function (attachment, key) {
+          if(!(_.isPlainObject(attachment))) {
+            announcement = JSON.parse(announcement)
+          }
+          $('.qq-upload-list').append('<li class="qq-file-id-0 qq-upload-retryable w3-container w3-border w3-round-xlarge qq-upload-success" qq-file-id="'+key+'"><i class="qq-upload-cancel-selector cursor-pointer remove icon qq-hide" id="qq-upload-cancel-manually" onclick="cancelUploadFile()" style="float: right;"></i><span class="qq-upload-file-selector qq-upload-file" title="logo.png" style="margin-top: -30px !important;width: 222px;">'+attachment.name+'</span><input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text"><span role="status" class="qq-upload-status-text-selector qq-upload-status-text"></span></li>');
+        })*/
       })
     }
 

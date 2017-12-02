@@ -84,6 +84,7 @@ angular.module('playerApp')
       announcementOutboxData.deleteAnnouncement = function () {
         announcementAdapter.deleteAnnouncement(announcementOutboxData.announcementId).then(function (apiResponse) {
           if (apiResponse.result.status === 'cancelled') {
+            announcementOutboxData.closeModal('announcementDeleteModal')
             toasterService.success($rootScope.messages.smsg.moo41)
             var evens = _.remove(announcementOutboxData.listData, function (ann) {
               return ann.id == announcementOutboxData.announcementId

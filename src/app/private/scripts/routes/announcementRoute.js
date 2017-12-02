@@ -130,8 +130,8 @@ angular.module('playerApp')
                 url: '/private/index#!/announcement/create/' + stepNumber
               }, userIdHashTag)
             } else {
+              $('#createAnnouncementModal').modal('hide')
               $state.go('announcementOutbox')
-              // $state.go('announcementCreate', {stepNumber: 1, isMetaModifiedSteps: true}, {reload: true})
             }
           } else {
             $rootScope.profileActive = 'active'
@@ -196,8 +196,8 @@ angular.module('playerApp')
                 url: '/private/index#!/announcement/resend/' + announcementId + '/' + stepNumber
               }, userIdHashTag)
             } else {
+              $('#createAnnouncementModal').modal('hide all')
               $state.go('announcementOutbox')
-              // $state.go('announcementResend', {stepNumber: 1, isMetaModifiedSteps: true}, {reload: true})
             }
           } else {
             $rootScope.profileActive = 'active'

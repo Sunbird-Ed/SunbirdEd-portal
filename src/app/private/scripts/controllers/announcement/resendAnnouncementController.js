@@ -37,7 +37,8 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
         announcementAdapter.getResend($stateParams.announcementId).then(function (apiResponse) {
           composeAnn.announcement = new AnnouncementModel.Announcement(apiResponse.result)
           composeAnn.initializeModal()
-
+          composeAnn.enableRecepientBtn()
+          composeAnn.initializeFileUploader(true)
           angular.forEach(composeAnn.announcement.links, function (value, key) {
             composeAnn.addNewLink()
           })
@@ -48,7 +49,14 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
         })
       } else {
         composeAnn.announcement = $stateParams.announcement
+        if(composeAnn.stepNumber === 1 && composeAnn.announcement !== undefined && !(_.isEmpty(composeAnn.announcement.links))){
+          angular.forEach(composeAnn.announcement.links, function (value, key) {
+            composeAnn.addNewLink()
+          })
+        }
       }
+
+
 
       composeAnn.resendAnnouncement()
 
@@ -154,7 +162,10 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
           if (composeAnn.isMetaModified === true && composeAnn.isMetaModifiedSteps !== true) {
             composeAnn.confirmationModal()
             return false
-          } else if (composeAnn.isMetaModified == false && composeAnn.stepNumber === 1) { $state.go('announcementOutbox') }
+          } else if (composeAnn.isMetaModified == false && composeAnn.stepNumber === 1) {
+            $state.go('announcementOutbox')
+            return true
+          }
         }
       }).modal('show')
     }
@@ -205,7 +216,7 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
             composeAnn.enableRecepientBtn()
           }
         })
-      }, 100)
+      }, 10)
       $rootScope.$on('selected:items', function (evet, data) {
         composeAnn.announcement.selTar = _.clone(data.geo)
       })
@@ -320,7 +331,7 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
      * @desc - create fine uploader instance by passing required params
      * @memberOf Controllers.createAnnouncementCtrl
      */
-    composeAnn.initializeFileUploader = function () {
+    composeAnn.initializeFileUploader = function (resend) {
       var apiUrl = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + config.URL.CONTENT.UPLOAD_MEDIA
       var options = {
         fileSizeLimit: config.AnncmntMaxFileSizeToUpload,
@@ -330,13 +341,17 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
         uploadSuccess: composeAnn.onUploadComplete,
         onCancel: composeAnn.onUploadCancel
       }
-      fileUpload.createFineUploadInstance(options,function(data){
-        angular.forEach(composeAnn.announcement.attachments, function (announcement, key) {
-          announcement = JSON.parse(announcement)
-          $('.qq-upload-list').append('<li class="qq-file-id-0 qq-upload-retryable w3-container w3-border w3-round-xlarge qq-upload-success" qq-file-id="'+key+'"><i class="qq-upload-cancel-selector cursor-pointer remove icon qq-hide" id="qq-upload-cancel-manually" onclick="cancelUploadFile()" style="float: right;"></i><span class="qq-upload-file-selector qq-upload-file" title="logo.png" style="margin-top: -30px !important;width: 222px;">'+announcement.name+'</span><input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text"><span role="status" class="qq-upload-status-text-selector qq-upload-status-text"></span></li>');
-
+      var resend = resend || composeAnn.editAction
+      if(resend){
+        fileUpload.createFineUploadInstance(options,function(data){
+          /*angular.forEach(composeAnn.announcement.attachments, function (attachment, key) {
+            if(!(_.isPlainObject(attachment))) {
+              announcement = JSON.parse(announcement)
+            }
+            $('.qq-upload-list').append('<li class="qq-file-id-0 qq-upload-retryable w3-container w3-border w3-round-xlarge qq-upload-success" qq-file-id="'+key+'"><i class="qq-upload-cancel-selector cursor-pointer remove icon qq-hide" id="qq-upload-cancel-manually" onclick="cancelUploadFile()" style="float: right;"></i><span class="qq-upload-file-selector qq-upload-file" title="logo.png" style="margin-top: -30px !important;width: 222px;">'+attachment.name+'</span><input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text"><span role="status" class="qq-upload-status-text-selector qq-upload-status-text"></span></li>');
+          })*/
         })
-      })
+      }
     }
 
     /**
