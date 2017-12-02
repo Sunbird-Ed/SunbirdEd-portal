@@ -104,9 +104,9 @@ describe('Controller:BatchUpdateController', function () {
     spyOn(batchUpdate, 'showUpdateBatchModal').and.callThrough()
     batchUpdate.showUpdateBatchModal()
     setFixtures('<div class="createbatchdropdown ui fluid multiple search selection dropdown " id="mentors">')
+    timeout.flush(10)
     scope.$apply()
     expect(batchUpdate.showUpdateBatchModal).not.toBe(undefined)
-    timeout.flush(10)
   })
 
   it('Should clear form on clearForm call', function () {
@@ -150,6 +150,8 @@ describe('Controller:BatchUpdateController', function () {
     batchUpdate = createContoller()
     spyOn(batchUpdate, 'hideUpdateBatchModal').and.callThrough()
     batchUpdate.hideUpdateBatchModal()
+    setFixtures('<div class="ui modal" id="updateBatchModal"></div>')
+    scope.$apply()
     expect(batchUpdate.hideUpdateBatchModal).not.toBe(undefined)
   })
 

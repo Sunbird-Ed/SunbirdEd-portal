@@ -70,12 +70,23 @@ describe('Controller:BatchController', function () {
     deferred.resolve(batchTestData.createBatchSuccess)
     batch = createContoller()
     scope.createBatch = {$valid: true}
+    var userRequest = {
+      request: {
+        userIds: _.compact('datausers')
+      }
+    }
+    var res = {result: {batchId: '543535'}}
     spyOn(batch, 'addBatch').and.callThrough()
     batch.addBatch(batchTestData.data)
+    spyOn(batchService, 'addUsers').and.returnValue(deferred.promise)
+    batchService.addUsers(userRequest, res.result.batchId)
+    deferred.resolve(batchTestData.userData)
     timeout.flush(100)
     scope.$apply()
     var response = batchService.create().$$state.value
+    var addUserRes = batchService.addUsers().$$state.value
     expect(response).not.toBe(undefined)
+    expect(addUserRes).not.toBe(undefined)
     batch.batchService = response.result
     expect(batch.batchService).not.toBe(undefined)
   })
@@ -267,5 +278,23 @@ describe('Controller:BatchController', function () {
     expect(response).not.toBe(undefined)
     batch.batchService = response.result
     expect(batch.batchService).not.toBe(undefined)
+  })
+
+  it('Should call clearBatchData', function () {
+    batch = createContoller()
+    spyOn(batch, 'clearBatchData').and.callThrough()
+    setFixtures('<form class="ui form" id="createBatch" name="createBatch" validate></form>')
+    batch.clearBatchData()
+    scope.$apply()
+    expect(batch.clearBatchData).not.toBe(undefined)
+  })
+
+  it('Should call showUpdateBatchModal', function () {
+    batch = createContoller()
+    var batchData = {identifier: '23444211'}
+    spyOn(batch, 'showUpdateBatchModal').and.callThrough()
+    batch.showUpdateBatchModal(batchData, 'ntpuser')
+    scope.$apply()
+    expect(batch.showUpdateBatchModal).not.toBe(undefined)
   })
 })

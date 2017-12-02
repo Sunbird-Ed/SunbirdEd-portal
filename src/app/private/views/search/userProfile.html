@@ -136,7 +136,7 @@
                         <span class="header cardsHeading">Skill Tags</span>
                     </div>
                     <div class="profileitems profile-des ui relaxed aligned list">
-                        <div class="item " ng-repeat="skill in publicProfile.userSkills |limitTo:publicProfile.limit">
+                        <div class="item " ng-repeat="skill in publicProfile.userSkills | orderBy:'-addedAt' |limitTo:publicProfile.limit">
                             <div class="ui label">
                                 {{skill.skillName}}
                                 <div class="detail">

@@ -7,8 +7,8 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="icon" type="image/ico" ng-href="{{faviconIcon || '/common/images/favicon.ico'}}">
-    <link rel="stylesheet" ng-href="/themes/{{theme}}/assets/styles/main.css">
-    <link rel="stylesheet" ng-href="/themes/{{theme}}/semantic.min.css">
+    <link rel="stylesheet" href="/themes/<%= theme ? theme : 'default' %>/assets/styles/main.css">
+    <link rel="stylesheet" href="/themes/<%= theme ? theme : 'default' %>/semantic.min.css">
     <!-- inject:css -->
     <link rel="stylesheet" href="/thirdparty/bower_components/semantic-ui-calendar/dist/calendar.min.css" />
     <link rel="stylesheet" href="/thirdparty/bower_components/izitoast/dist/css/iziToast.min.css" />
@@ -19,7 +19,6 @@
 
 <body ng-controller="loginCtrl">
     <input type="hidden" id="cdnUrl" value="<%=cdnUrl%>" />
-    <input type="hidden" id="theme" value="<%=theme%>" />
     <input type="hidden" id="defaultPortalLanguage" value="<%=defaultPortalLanguage%>" />
     <div ng-include="'views/header/publicHeader.html'"></div>
     <div class="ui top attached fluid container">
