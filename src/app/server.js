@@ -263,7 +263,8 @@ keycloak.deauthenticated = function (request) {
   delete request.session['orgs']
   if (request.session) {
     request.session.sessionEvents = request.session.sessionEvents || []
-    telemetryHelper.sendTelemetry(request, request.session.sessionEvents, function (status) {
+    telemetryHelper.sendTelemetry(request, request.session.sessionEvents, function (err, status) {
+      if (err) {} // nothing to do
       // remove session data
       delete request.session.sessionEvents
     })

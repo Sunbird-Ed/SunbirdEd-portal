@@ -7,7 +7,7 @@
  */
 
 class User {
-	constructor({
+  constructor ({
 		id,
 		firstName,
 		lastName,
@@ -20,61 +20,60 @@ class User {
 		organisations,
 		roles
 	} = {}) {
-
 		/**
 		 * @property {string} userId - a unqiue id for the user
 		 */
-		this.id = id
+    this.id = id
 
 		/**
 		 * @property {string} firstName - first name of the user
 		 */
-		this.firstName = firstName
+    this.firstName = firstName
 
 		/**
 		 * @property {string} lastName - last name of the user
 		 */
-		this.lastName = lastName
+    this.lastName = lastName
 
 		/**
 		 * @property {string} email - email id of the user
 		 */
-		this.email = email
+    this.email = email
 
 		/**
 		 * @property {string} phone - contact number of the user
 		 */
-		this.phone = phone
+    this.phone = phone
 
 		/**
 		 * @property {date} dob - date of birth of the user
 		 */
-		this.dob = dob
+    this.dob = dob
 
 		/**
 		 * @property {string} location - place or location of the user
 		 */
-		this.location = location
+    this.location = location
 
 		/**
 		 * @property {string} rootOrg - root organisation to which user belongs to
 		 */
-		this.rootOrg = rootOrg
+    this.rootOrg = rootOrg
 
 		/**
 		 * @property {string} regOrgId - organisation id to which user belongs to
 		 */
-		this.regOrgId = regOrgId
+    this.regOrgId = regOrgId
 
 		/**
 		 * @property {array} organisations - list of organisations to which user belongs to
 		 */
-		this.organisations = organisations
+    this.organisations = organisations
 
 		/**
 		 * @property {array} roles - list of roles to which user assigned to
 		 */
-		this.roles = roles
-	}
+    this.roles = roles
+  }
 }
 module.exports = User
