@@ -1,23 +1,25 @@
 /**
- * name: announcementInboxListController.js
+ * name: announcementOutboxListController.js
  * author: Sourav Dey
- * Date: 02-11-2017
+ * Date: 03-11-2017
  */
 
 'use strict'
 
-describe('Controller: announcementInboxListController', function () {
+describe('Controller: announcementOutboxListController', function () {
   // load the controller's module
   beforeEach(module('playerApp'))
 
   var announcementAdapter,
     scope,
     rootScope,
-    announcementInboxListController,
+    announcementOutboxListController,
     $q,
     deferred,
     timeout,
-    annInboxTestData = announcementTestData.getAnnouncementInbox
+    annOutboxTestData = announcementTestData.getAnnouncementOutbox,
+    annDeleteTestData = announcementTestData.deleteAnnouncement,
+    annGetResendTestData = announcementTestData.getResend
 
   beforeEach(inject(function ($rootScope, $controller) {
     $controller('AppCtrl', {
@@ -27,7 +29,7 @@ describe('Controller: announcementInboxListController', function () {
   }))
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($rootScope, $controller, _announcementAdapter_, _$q_, _$timeout_) {
+  beforeEach(inject(function ($rootScope, $controller, _$q_, _$timeout_, _announcementAdapter_) {
     rootScope = $rootScope
     scope = $rootScope.$new()
     announcementAdapter = _announcementAdapter_
@@ -35,70 +37,118 @@ describe('Controller: announcementInboxListController', function () {
     timeout = _$timeout_
     deferred = _$q_.defer()
 
-    announcementInboxListController = $controller('announcementInboxListController', {
+    announcementOutboxListController = $controller('announcementOutboxListController', {
       $rootScope: rootScope,
       $scope: scope,
       announcementAdapter: announcementAdapter
     })
   }))
 
-  describe('Get inbox announcements', function () {
+  describe('Get Outbox announcements', function () {
     it('Should called announcement service', function () {
-      spyOn(announcementAdapter, 'getInboxAnnouncementList').and.callThrough()
-      announcementAdapter.getInboxAnnouncementList()
-      expect(announcementAdapter.getInboxAnnouncementList).toBeDefined()
+      spyOn(announcementAdapter, 'getOutBoxAnnouncementList').and.callThrough()
+      announcementAdapter.getOutBoxAnnouncementList()
+      expect(announcementAdapter.getOutBoxAnnouncementList).toBeDefined()
+
+      spyOn(announcementAdapter, 'deleteAnnouncement').and.callThrough()
+      announcementAdapter.deleteAnnouncement()
+      expect(announcementAdapter.deleteAnnouncement).toBeDefined()
     })
 
-    it('Success', function () {
-      spyOn(announcementAdapter, 'getInboxAnnouncementList').and.returnValue(deferred.promise)
-      deferred.resolve(annInboxTestData.successResponce)
-      var response = announcementAdapter.getInboxAnnouncementList().$$state.value
-      expect(response).toBe(annInboxTestData.successResponce)
+    it('success', function () {
+      announcementOutboxListController.result = undefined
+      // spyOn(announcementAdapter, 'getOutBoxAnnouncementList').and.callThrough()
+      spyOn(announcementAdapter, 'getOutBoxAnnouncementList').and.returnValue(deferred.promise)
+      deferred.resolve(announcementTestData.getAnnouncementOutbox.successResponce)
+      spyOn(announcementOutboxListController, 'renderAnnouncementList').and.callThrough()
+      announcementOutboxListController.renderAnnouncementList()
+      scope.$apply()
+      expect(announcementOutboxListController.result).toBeDefined()
     })
 
     it('Fail', function () {
-      annInboxTestData.successResponce.responseCode = 'fail'
-      spyOn(announcementAdapter, 'getInboxAnnouncementList').and.returnValue(deferred.promise)
-      deferred.resolve(annInboxTestData.successResponce)
-      spyOn(announcementInboxListController, 'renderAnnouncementList').and.callThrough()
-      announcementInboxListController.renderAnnouncementList()
+      annOutboxTestData.successResponce.responseCode = 'fail'
+      spyOn(announcementAdapter, 'getOutBoxAnnouncementList').and.returnValue(deferred.promise)
+      deferred.resolve(annOutboxTestData.successResponce)
+      spyOn(announcementOutboxListController, 'renderAnnouncementList').and.callThrough()
+      announcementOutboxListController.renderAnnouncementList()
       scope.$apply()
-      expect(announcementInboxListController.showLoader).toEqual(false)
+      expect(announcementOutboxListController.showLoader).toEqual(false)
     })
 
     it('Reject', function () {
-      spyOn(announcementAdapter, 'getInboxAnnouncementList').and.returnValue(deferred.promise)
+      spyOn(announcementAdapter, 'getOutBoxAnnouncementList').and.returnValue(deferred.promise)
       deferred.reject({})
-      spyOn(announcementInboxListController, 'renderAnnouncementList').and.callThrough()
-      announcementInboxListController.renderAnnouncementList()
+      spyOn(announcementOutboxListController, 'renderAnnouncementList').and.callThrough()
+      announcementOutboxListController.renderAnnouncementList()
       scope.$apply()
-      expect(announcementInboxListController.showLoader).toEqual(false)
+      expect(announcementOutboxListController.showLoader).toEqual(false)
     })
+  })
 
-    it('get file extension success', function () {
-      spyOn(announcementInboxListController, 'getFileExtension').and.callThrough()
-      var response = announcementInboxListController.getFileExtension('application/pdf')
-      expect(response).toBe('PDF')
-    })
-
-    it('get file extension error', function () {
-      spyOn(announcementInboxListController, 'getFileExtension').and.callThrough()
-      var response = announcementInboxListController.getFileExtension('')
-      expect(response).toBe(undefined)
-    })
-
-    it('Show details', function () {
-      scope.announcementInboxData = {}
-      scope.announcementInboxData.announcementDetails = annInboxTestData.detailsSuccess
-      spyOn(announcementInboxListController, 'showAnnouncementDetails').and.callThrough()
-      var response = announcementInboxListController.showAnnouncementDetails(annInboxTestData.detailsSuccess, 2)
+  describe('Delete announcement', function () {
+    it('success', function () {
+      spyOn(announcementAdapter, 'deleteAnnouncement').and.returnValue(deferred.promise)
+      deferred.resolve(annDeleteTestData.successResponse)
+      annDeleteTestData.successResponse.data = annDeleteTestData.successResponse
+      expect(announcementOutboxListController.deleteAnnouncement).toBeDefined()
+      announcementOutboxListController.deleteAnnouncement(annDeleteTestData.requestBody)
+      expect(announcementAdapter.deleteAnnouncement).toHaveBeenCalled()
       scope.$apply()
-      expect(response).toBeUndefined()
+    })
+
+    it('fail', function () {
+      spyOn(announcementAdapter, 'deleteAnnouncement').and.returnValue(deferred.promise)
+      deferred.resolve(annDeleteTestData.failedResponse)
+      annDeleteTestData.failedResponse.data = annDeleteTestData.failedResponse
+      expect(announcementOutboxListController.deleteAnnouncement).toBeDefined()
+      announcementOutboxListController.deleteAnnouncement(annDeleteTestData.requestBody)
+      expect(announcementAdapter.deleteAnnouncement).toHaveBeenCalled()
+      scope.$apply()
+    })
+
+    it('Reject', function () {
+      spyOn(announcementAdapter, 'deleteAnnouncement').and.returnValue(deferred.promise)
+      deferred.reject({})
+      expect(announcementOutboxListController.deleteAnnouncement).toBeDefined()
+      announcementOutboxListController.deleteAnnouncement(annDeleteTestData.requestBody)
+      expect(announcementAdapter.deleteAnnouncement).toHaveBeenCalled()
+      scope.$apply()
+    })
+  })
+
+  xdescribe('State change create/resend', function () {
+    it('Resend', function () {
+      spyOn(announcementOutboxListController, 'getResend').and.callThrough()
+      announcementOutboxListController.getResend('90ae7cf0-c5e0-11e7-8744-852d6ada097c')
+      scope.$apply()
+    })
+
+    it('Create', function () {
+      spyOn(announcementOutboxListController, 'gotToAnnouncementCreateState').and.callThrough()
+      announcementOutboxListController.gotToAnnouncementCreateState('90ae7cf0-c5e0-11e7-8744-852d6ada097c')
+      scope.$apply()
+    })
+  })
+
+  describe('Modal popup', function () {
+    it('show modal popup', function () {
+      spyOn(announcementOutboxListController, 'showModal').and.callThrough()
+      expect(announcementOutboxListController.showModal).toBeDefined()
+      announcementOutboxListController.showModal('announcementDeleteModal')
+      expect(announcementOutboxListController.showModal).toHaveBeenCalled()
+    })
+
+    it('close modal popup', function () {
+      spyOn(announcementOutboxListController, 'closeModal').and.callThrough()
+      expect(announcementOutboxListController.closeModal).toBeDefined()
+      announcementOutboxListController.closeModal('announcementDeleteModal')
+      expect(announcementOutboxListController.closeModal).toHaveBeenCalled()
     })
 
     it('Show details undefined', function () {
-      spyOn(announcementInboxListController, 'showAnnouncementDetails').and.callThrough()
-      var response = announcementInboxListController.showAnnouncementDetails(annInboxTestData.detailsSuccess, '')
+      spyOn(announcementOutboxListController, 'showAnnouncementDetails').and.callThrough()
+      var response = announcementOutboxListController.showAnnouncementDetails('', {details: {title: 'test'}})
       expect(response).toBe(undefined)
     })
   })

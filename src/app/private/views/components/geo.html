@@ -1,14 +1,15 @@
 <div>
-  <div class='ui fluid left icon input search-location-icon'> <i class='search icon annRecipientsSearchIcon'></i>
-    <input type='text' placeholder='Search for group' ng-model='search'> </div>
-  <div class='ui segment items-area padding-top-none padding-left-none'>
-    <div ng-repeat='item in $ctrl.items | filter : search'>
-      <label class='ui checkbox component_items'>
-        <input ng-model='item.selected' type='checkbox' name='example' class="checkBox-element">
-        <label ng-bind-html="item.location | highlight:search" >{{item.location}}</label>
-      </div>
-      </br>
-    </label>
+    <div class='ui fluid left icon input search-location-icon'> <i class='search icon annRecipientsSearchIcon'></i>
+        <input type='text' placeholder='Search for group' ng-model='search'>
+    </div>
+    <div class='ui segment items-area padding-top-none padding-left-none'>
+        <div ng-repeat='item in $ctrl.items | filter : search'>
+            <label class='ui checkbox component_items'>
+                <input ng-model='item.selected' type='checkbox' name='example' class="checkBox-element">
+                <label ng-bind-html="item.location | highlight:search" >{{item.location}}</label>
+            </label>
+            </br>
+        </div>
     <div ng-show="!($ctrl.items| filter:search).length">No Location Found</div>
   </div>
 </div>

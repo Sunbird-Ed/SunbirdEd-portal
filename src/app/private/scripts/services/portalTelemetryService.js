@@ -27,6 +27,18 @@ angular.module('playerApp').service('portalTelemetryService', ['$http', '$filter
         this.fireImpressions = function (data) {
             org.sunbird.portal.eventManager.dispatchEvent('sunbird:telemetery:portal:impression', data);
         };
+            /**
+             * @method fireAnnouncementImpressions
+             * @desc Dispatch event
+             * @memberOf Services.portalTelemetryService
+             * @param {object}  data - Telemetry data
+             * @instance
+             */
+        this.fireAnnouncementImpressions = function (data, userIdHashTag) {
+            // userIdHashTag to build cData
+            data.userIdHashTag = userIdHashTag
+            org.sunbird.portal.eventManager.dispatchEvent('sunbird:telemetry:announcement:impression', data)
+        }
         /**
              * @method addTelemetryEvent
              * @desc Add new event
