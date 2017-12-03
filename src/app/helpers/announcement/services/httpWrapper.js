@@ -20,7 +20,10 @@ class HttpWrapper {
     return new Promise((resolve, reject) => {
       try {
         if (!options) reject('options required!')
-        options.headers = options.headers || this.getRequestHeader()
+
+        let token = options.token || ''
+        options.headers = options.headers || this.getRequestHeader(token)
+
         webService(options, (error, response, body) => {
           if (error || response.statusCode >= 400) {
             reject(new AppError({message: 'Internal Server Error', status: HttpStatus.INTERNAL_SERVER_ERROR}))

@@ -56,8 +56,11 @@ function sendSuccessResponse(res, id, result, code = HttpStatus.OK) {
     res.end()
 }
 
-function sendErrorResponse(res, id, message, code = HttpStatus.BAD_REQUEST) {
-    res.status(code)
+function sendErrorResponse(res, id, message, httpCode = HttpStatus.BAD_REQUEST) {
+
+    let responseCode = getErrorCode(httpCode)
+
+    res.status(httpCode)
     res.send({
         'id': API_ID_BASE + '.' + id,
         'ver': API_VERSION,
@@ -69,10 +72,28 @@ function sendErrorResponse(res, id, message, code = HttpStatus.BAD_REQUEST) {
             'err': '',
             'errmsg': message
         },
-        'responseCode': code,
+        'responseCode': responseCode,
         'result': {}
     })
     res.end()
+}
+
+function getErrorCode(httpCode) {
+    let responseCode = "UNKNOWN_ERROR"
+
+    if (httpCode >= 500) {
+        responseCode = "SERVER_ERROR"
+    }
+
+    if ((httpCode >= 400) && (httpCode < 500)) {
+        responseCode = "CLIENT_ERROR"
+    }
+
+    if (httpCode == 404) {
+        responseCode = "NOT_FOUND"
+    }
+
+    return responseCode
 }
 
 function isCreateRolePresent(userProfile, sourceid) {

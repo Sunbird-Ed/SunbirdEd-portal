@@ -308,7 +308,8 @@ class AnnouncementController {
         return new Promise((resolve, reject) => {
             let query = {
                 query: {
-                    'rootorgid': _.get(requestObj, 'body.request.rootOrgId')
+                    'rootorgid': _.get(requestObj, 'body.request.rootOrgId'),
+                    'status': statusConstant.ACTIVE
                 }
             }
             this.announcementTypeStore.findObject(query)
@@ -566,7 +567,6 @@ class AnnouncementController {
         })
     }
 
-
     /**
      * Get outbox of announcements for a given user
      *
@@ -575,7 +575,11 @@ class AnnouncementController {
      * @return  {[type]}              [description]
      */
     getUserOutbox(requestObj) {
-        return new Promise((resolve, reject) => {
+        return this.__getUserOutbox()(requestObj)
+    }
+
+    __getUserOutbox() {
+        return async((requestObj) => {
 
             // validate request
             let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
@@ -601,23 +605,107 @@ class AnnouncementController {
             }
 
             // execute query and process response
-            this.announcementStore.findObject(query)
-                .then((data) => {
-                    if (!data) {
-                        throw {
-                            message: 'Unable to fetch!',
-                            status: HttpStatus.INTERNAL_SERVER_ERROR
+            let outboxData = await (new Promise((resolve, reject) => {
+                this.announcementStore.findObject(query)
+                    .then((data) => {
+                        if (!data) {
+                            throw {
+                                message: 'Unable to fetch!',
+                                status: HttpStatus.INTERNAL_SERVER_ERROR
+                            }
+                        } else {
+                            let response = {
+                                count: _.size(data.data.content),
+                                announcements: data.data.content
+                            }
+
+                            resolve(response)
                         }
+                    })
+                    .catch((error) => {
+                        reject(this.customError(error))
+                    })
+
+                }))
+
+
+
+            let announcementIds = _.map(outboxData.announcements, 'id')
+            let announcements = _.map(outboxData.announcements, this.__addMetricsPlaceholder)
+
+            //Get read and received status and append to response
+            
+            let metricsData = await (this.__getOutboxMetrics(announcementIds, authUserToken))
+
+            if (metricsData) {
+                _.forEach(metricsData, (metricsObj, k) => {
+                    let announcementObj = _.find(announcements, {
+                        "id": metricsObj.announcementid
+                    })
+
+                    announcementObj.metrics[metricsActivityConstant.RECEIVED] = 
+                        metricsObj[metricsActivityConstant.RECEIVED] ? 
+                        metricsObj[metricsActivityConstant.RECEIVED] : 0
+
+                    announcementObj.metrics[metricsActivityConstant.READ] = 
+                        metricsObj[metricsActivityConstant.READ] ? 
+                        metricsObj[metricsActivityConstant.READ] : 0
+                    
+                })
+            }
+
+            let response = {
+                            count: _.size(announcements),
+                            announcements: announcements
+                        }
+
+            return response
+        })
+    }
+
+    __addMetricsPlaceholder(announcementObj) {
+        let metrics = {}
+        metrics[metricsActivityConstant.RECEIVED] = 0
+        metrics[metricsActivityConstant.READ] = 0
+
+        announcementObj.metrics = metrics
+
+        return announcementObj
+    }
+
+    __getOutboxMetrics(announcementIds, authUserToken) {
+        return new Promise((resolve, reject) => {
+            let query = {
+                    "aggs": {
+                        "announcementid": {
+                            "terms": {
+                                "field": "announcementid.raw",
+                                "include": announcementIds
+                            },
+                            "aggs": {
+                                "activity": {
+                                    "terms": {
+                                        "field": "activity.raw",
+                                        "include": [
+                                            metricsActivityConstant.READ,
+                                            metricsActivityConstant.RECEIVED
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            this.announcementMetricsStore.getMetrics(query, authUserToken)
+                .then((response) => {
+                    if (!response) {
+                        resolve(false)
                     } else {
-                        let response = {
-                            count: _.size(data.data.content),
-                            announcements: data.data.content
-                        }
                         resolve(response)
                     }
                 })
                 .catch((error) => {
-                    reject(this.customError(error))
+                    resolve(false)
                 })
         })
     }
@@ -933,8 +1021,8 @@ class AnnouncementController {
      */
     customError(error) {
         return new AppError({
-            message: error.message || 'Unable to process the request!',
-            status: error.status || HttpStatus.INTERNAL_SERVER_ERROR
+            message: 'Unable to process the request!',
+            status: HttpStatus.INTERNAL_SERVER_ERROR
         })
     }
 }
