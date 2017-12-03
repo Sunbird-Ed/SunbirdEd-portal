@@ -104,10 +104,11 @@ angular.module('playerApp')
        */
       this.createAnnouncement = function (annoucementObj) {
         var annoucement = _.clone(annoucementObj)
+        var attachmentList = []
         // Convert attachment object to string
         _.forEach(annoucement.attachments, function (attachment, index) {
           if(_.isPlainObject(attachment)) {
-            annoucement.attachments[index] = JSON.stringify(attachment)
+            attachmentList[index] = JSON.stringify(attachment)
           }
         })
 
@@ -120,7 +121,7 @@ angular.module('playerApp')
             links: annoucement.links,
             sourceId: annoucement.sourceId,
             target: annoucement.target,
-            attachments: annoucement.attachments
+            attachments: attachmentList
           }
         }
         return handleHttpRequest(config.URL.ANNOUNCEMENT.CREATE, data, 'POST')

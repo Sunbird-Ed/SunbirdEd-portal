@@ -408,7 +408,7 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
       })
       composeAnn.announcement.target.geo.ids
       _.remove(composeAnn.announcement.selTar, function (arg) {
-        if (arg.location == item.location) {
+        if (arg.location === item.location) {
           item.selected = false
           toasterService.info(item.location + ' ' + $rootScope.messages.imsg.m0020)
           return arg.location

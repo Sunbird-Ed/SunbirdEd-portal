@@ -245,7 +245,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
           $state.go('announcementOutbox')
         }, function (err) {
           composeAnn.isMetaModified = true
-          composeAnn.showError(apiResponse.data)
+          composeAnn.showError(err.data)
         })
     }
 
