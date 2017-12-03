@@ -1,420 +1,306 @@
 'use strict'
-angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$timeout', 'config', 'toasterService', 'fileUpload', 'AnnouncementModel', 'announcementAdapter',
-  function ($rootScope, $scope, $state, $stateParams, $timeout, config, toasterService, fileUpload, AnnouncementModel, announcementAdapter) {
-    var composeAnn = this
-    composeAnn.data = {}
-    composeAnn.attachment = []
-    composeAnn.senderlist = []
-    composeAnn.targetIds = []
-    composeAnn.disableBtn = true
-    composeAnn.showUrlField = false
-    composeAnn.errorFlag = false
-    composeAnn.isMetaModified = false
-    composeAnn.announcementType = []
-    composeAnn.repeatableWebLinks = []
-    composeAnn.hideAnncmntBtn = false
-    composeAnn.uploadAttchement = false
-    composeAnn.editAction = true
-    composeAnn.isApprove = false
-    composeAnn.stepNumber = parseInt($stateParams.stepNumber) || 1
-    composeAnn.config = {
-      'geo': {
-        'adopter': 'SERVICE',
-        'service': 'geoService'
-      }
-    }
-
-    /**
-     * @method getResend
-     * @desc - function to resend announcement
-     * @memberOf Controllers.announcementOutboxListController
-     * @param {int} [announcementId] [to make getResend api call]
-     */
-    composeAnn.init = function () {
-      composeAnn.isMetaModifiedSteps = $stateParams.isMetaModifiedSteps
-      composeAnn.stepNumber = parseInt($stateParams.stepNumber) || 1
-      if ($stateParams.announcement === undefined && composeAnn.stepNumber === 1) {
-        announcementAdapter.getResend($stateParams.announcementId).then(function (apiResponse) {
-          composeAnn.announcement = new AnnouncementModel.Announcement(apiResponse.result)
-          composeAnn.initializeModal()
-          composeAnn.enableRecepientBtn()
-          composeAnn.initializeFileUploader(true)
-          angular.forEach(composeAnn.announcement.links, function (value, key) {
-            composeAnn.addNewLink()
-          })
-
-          _.forEach(composeAnn.announcement.attachments, function (attachment, index) {
-            composeAnn.announcement.attachments[index] = JSON.parse(attachment)
-          })
+describe('Controller: resendAnnouncementCtrl', function() {
+    beforeEach(module('playerApp'))
+    var adminCtl
+    var createAnn
+    var announcementAdapter
+    var timeout
+    var state
+    var config
+    var scope
+    var toasterService
+    var permissionsService
+    var deferred
+    var $state
+    var modal
+    beforeEach(inject(function($rootScope, $controller) {
+        $controller('AppCtrl', {
+            $rootScope: $rootScope,
+            $scope: $rootScope.$new()
         })
-      } else {
-        composeAnn.announcement = $stateParams.announcement
-        if(composeAnn.stepNumber === 1 && composeAnn.announcement !== undefined && !(_.isEmpty(composeAnn.announcement.links))){
-          angular.forEach(composeAnn.announcement.links, function (value, key) {
-            composeAnn.addNewLink()
-          })
+    }))
+    beforeEach(inject(function($rootScope, $controller, _announcementAdapter_, _toasterService_, _permissionsService_, _$timeout_, _$q_, _$state_) {
+        announcementAdapter = _announcementAdapter_
+        toasterService = _toasterService_
+        permissionsService = _permissionsService_
+        scope = $rootScope.$new()
+        timeout = _$timeout_
+        $state = _$state_
+        modal = jasmine.createSpyObj('modal', ['show', 'hide'])
+        deferred = _$q_.defer()
+        spyOn(toasterService, 'success').and.callThrough()
+        spyOn(toasterService, 'error').and.callThrough()
+        //  spyOn(announcementAdapter, 'getDefinitions').and.returnValue(deferred.promise)
+        createAnn = $controller('resendAnnouncementCtrl', {
+            $scope: scope,
+            $rootScope: $rootScope,
+            toasterService: toasterService,
+            permissionsService: permissionsService,
+            $state: $state,
+            $modal: modal
+        })
+    }))
+    it('should initialize resend announcement Modal', function() {
+        spyOn(createAnn, 'initializeModal').and.callThrough()
+        createAnn.resendAnnouncement()
+        expect(createAnn.resendAnnouncement).toBeDefined()
+        createAnn.initializeModal()
+        expect(createAnn.isMetaModified).toEqual(false)
+        scope.$apply()
+    })
+    it('Add one more link', function() {
+        spyOn(createAnn, 'addNewLink').and.callThrough()
+        createAnn.addNewLink()
+        expect(createAnn.repeatableWebLinks.length).toEqual(1)
+        expect(createAnn.showUrlField).toBeDefined()
+    })
+    it('convert file size into KB / MB', function() {
+        spyOn(createAnn, 'getReadableFileSize').and.callThrough()
+        createAnn.getReadableFileSize(1234)
+        expect(createAnn.convertedFileSize).toBeDefined()
+    })
+    it('should not convert file size into KB / MB', function() {
+        spyOn(createAnn, 'getReadableFileSize').and.callThrough()
+        createAnn.getReadableFileSize(0)
+        expect(createAnn.convertedFileSize).toEqual('0 Byte')
+    })
+    it('Hide creation modal', function() {
+        spyOn(createAnn, 'hideModel').and.callThrough()
+        createAnn.hideModel()
+        expect(createAnn.hideModel).toBeDefined()
+    })
+    it('Should enable select recipents button', function() {
+        createAnn.announcement = announcementTestData.createAnncmnt.annObject
+        spyOn(createAnn, 'enableRecepientBtn').and.callThrough()
+        createAnn.data.title = 'Test'
+        createAnn.data.from = 'Test'
+        createAnn.data.type = 'test'
+        createAnn.data.description = 'test test'
+        createAnn.data.links = {
+            '0': 'https;//google.co.in'
         }
-      }
-
-
-
-      composeAnn.resendAnnouncement()
-
-      if (composeAnn.stepNumber === 1) {
-        announcementAdapter.getDefinitions($rootScope.rootOrgId)
-          .then(function (response) {
-            if (response.result.announcementTypes.content) {
-              composeAnn.announcementType = _.map(response.result.announcementTypes.content, 'name')
+        createAnn.enableRecepientBtn()
+        expect(createAnn.disableBtn).toBeDefined()
+        expect(createAnn.disableBtn).toEqual(false)
+    })
+    it('should not be able to enable button', function() {
+        createAnn.announcement = announcementTestData.createAnncmnt.annObject
+        spyOn(createAnn, 'enableRecepientBtn').and.callThrough()
+        createAnn.data.title = 'Test'
+        createAnn.data.from = 'Test'
+        createAnn.data.description = 'test'
+        createAnn.enableRecepientBtn()
+        expect(createAnn.disableBtn).toBeDefined()
+        expect(createAnn.disableBtn).toEqual(false)
+    })
+    it('enableRecepientBtn else part', function() {
+        createAnn.announcement = {
+            'details': {
+                'description': '',
+                'from': '',
+                'title': '',
+                'type': ''
             }
-            if (response.result.senderList) {
-              angular.forEach(response.result.senderList, function (value, key) {
-                composeAnn.senderlist.push(value)
-              })
-            }
-
-            $('#announcementType').dropdown('set text', composeAnn.announcement.details.type)
-          }, function (err) {
-            composeAnn.hideAnncmntBtn = true
-            toasterService.error($rootScope.messages.fmsg.m0069)
-          })
-      }
-
-      if (composeAnn.stepNumber === 2) {
-        $timeout(function () {
-          $rootScope.$broadcast('component:update', composeAnn.announcement.target.geo.ids)
-        }, 100)
-      }
-    }
-
-    /**
-     * @method addNewLink
-     * @desc - add new url input box
-     * @memberOf Controllers.createAnnouncementCtrl
-     */
-    composeAnn.addNewLink = function () {
-      var newItemNo = composeAnn.repeatableWebLinks.length + 1
-      composeAnn.repeatableWebLinks.push({
-        'id': 'choice' + newItemNo
-      })
-      composeAnn.showUrlField = true
-    }
-
-    /**
-     * @method confirmationModal
-     * @desc - display confirmation modal when user click on close icon
-     * @memberOf Controllers.createAnnouncementCtrl
-     */
-    composeAnn.confirmationModal = function () {
-      $timeout(function () {
-        $('#announcementCancelModal').modal({
-          allowMultiple: true,
-          onDeny: function () {
-            return true
-          },
-          onApprove: function () {
-            composeAnn.isApprove = true
-            composeAnn.refreshFormValues()
-            composeAnn.hideModel('announcementCancelModal')
-            $state.go('announcementOutbox')
-            return true
-          }
-        }).modal('show')
-      }, 10)
-    }
-
-    /**
-     * @method refreshFormValues
-     * @desc - reset form values
-     * @memberOf Controllers.createAnnouncementCtrl
-     */
-    composeAnn.refreshFormValues = function () {
-      composeAnn.disableBtn = true
-      composeAnn.stepNumber = 1
-      $('#announcementType').dropdown('restore defaults')
-      $('#createAnnouncementModal').modal('refresh')
-      composeAnn.data = {}
-      composeAnn.isMetaModified = false
-      composeAnn.repeatableWebLinks.length = 0
-      composeAnn.showUrlField = false
-      composeAnn.attachment = []
-      $('.qq-upload-list').children('li').remove()
-    }
-
-    /**
-     * @method resendAnnouncement
-     * @desc - function to initialize create announcement modal
-     * @memberOf Controllers.resendAnnouncementCtrl
-     */
-    composeAnn.resendAnnouncement = function () {
-      $('#createAnnouncementModal').modal({
-        closable: false,
-        onShow: function () {
-          $('.ui.modal.transition.hidden').remove()
-        },
-        onHide: function () {
-          if ($stateParams.announcement === undefined && composeAnn.isMetaModified !== true) {
-            composeAnn.isMetaModified = false
-          } else if (composeAnn.isApprove === true) {
-            composeAnn.isMetaModified = false
-          } else {
-            composeAnn.isMetaModified = true
-          }
-          if (composeAnn.isMetaModified === true && composeAnn.isMetaModifiedSteps !== true) {
-            composeAnn.confirmationModal()
-            return false
-          } else if (composeAnn.isMetaModified == false && composeAnn.stepNumber === 1) {
-            $state.go('announcementOutbox')
-            return true
-          }
         }
-      }).modal('show')
-    }
-
-    /**
-     * @method enableRecepientBtn
-     * @desc - enable select recipients btn if all required fields are selected
-     * @memberOf Controllers.createAnnouncementCtrl
-     */
-    composeAnn.enableRecepientBtn = function (status) {
-      if (status === undefined) {
-        status = true
-      }
-      var links = []
-      if (composeAnn.announcement && composeAnn.announcement.links) {
-        angular.forEach(composeAnn.announcement.links, function (value, key) {
-          if (value.trim().length) {
-            links.push(value)
-          }
+        spyOn(createAnn, 'enableRecepientBtn').and.callThrough()
+        createAnn.enableRecepientBtn()
+        scope.$apply()
+        expect(createAnn.disableBtn).toEqual(true)
+    })
+    it('init with definition successResponse', function() {
+        spyOn(announcementAdapter, 'getResend').and.returnValue(deferred.promise)
+        deferred.resolve(announcementTestData.getResend.successResponse)
+        spyOn(createAnn, 'init').and.callThrough()
+        createAnn.init()
+        var response = announcementAdapter.getResend().$$state.value
+        expect(response).toBe(announcementTestData.getResend.successResponse)
+        scope.$apply()
+    })
+    it('init with definition successResponse', function() {
+        spyOn(announcementAdapter, 'getDefinitions').and.returnValue(deferred.promise)
+        deferred.resolve(announcementTestData.createAnncmnt.getAnncmntTypeRes)
+        spyOn(createAnn, 'init').and.callThrough()
+        createAnn.init()
+        var response = announcementAdapter.getDefinitions().$$state.value
+        expect(response).toBe(announcementTestData.createAnncmnt.getAnncmntTypeRes)
+        scope.$apply()
+    })
+    it('init with definition reject', function() {
+        spyOn(createAnn, 'init').and.callThrough()
+        createAnn.init()
+        createAnn.stepNumber = 2
+        scope.$apply()
+    })
+    it('should refresh form values', function() {
+        spyOn(createAnn, 'refreshFormValues').and.callThrough()
+        createAnn.refreshFormValues()
+        expect(createAnn.refreshFormValues).toBeDefined()
+        expect(createAnn.isMetaModified).toBeDefined()
+        expect(createAnn.isMetaModified).toEqual(false)
+        expect(createAnn.editAction).toEqual(true)
+        expect(createAnn.showUrlField).toEqual(false)
+        expect(createAnn.stepNumber).toEqual(1)
+        expect(createAnn.repeatableWebLinks.length).toEqual(0)
+        expect(createAnn.attachment.length).toEqual(0)
+    })
+    it('Should through error for confirm recipients', function() {
+        createAnn.announcement = {}
+        createAnn.announcement.selTar = {}
+        createAnn.announcement.selTar.length = 0
+        spyOn(createAnn, 'confirmRecipients').and.callThrough()
+        var response = createAnn.confirmRecipients()
+        expect(response).toEqual(false)
+    })
+    it('Should open form step number 3 ', function() {
+        createAnn.announcement = announcementTestData.createAnncmnt.annTarObject
+        spyOn(createAnn, 'confirmRecipients').and.callThrough()
+        createAnn.stepNumber = 3
+        createAnn.selectedRecipients = [{
+            name: 'Bangalore'
+        }]
+        createAnn.confirmRecipients()
+        expect(createAnn.stepNumber).toBeDefined()
+        expect(createAnn.stepNumber).toEqual(3)
+    })
+    it('Should not open form step number 3 ', function() {
+        createAnn.announcement = announcementTestData.createAnncmnt.annTarObject
+        createAnn.stepNumber = 3
+        spyOn(createAnn, 'confirmRecipients').and.callThrough()
+        createAnn.confirmRecipients()
+        expect(createAnn.stepNumber).toBeDefined()
+        expect(createAnn.stepNumber).toEqual(3)
+    })
+    it('Should open confirmation modal ', function() {
+        createAnn.isMetaModified = true
+        spyOn(createAnn, 'confirmationModal').and.callThrough()
+        createAnn.confirmationModal()
+        timeout.flush(100)
+        expect(createAnn.confirmationModal).toBeDefined()
+        expect(createAnn.isMetaModified).toBeDefined()
+        expect(createAnn.isMetaModified).toEqual(true)
+    })
+    it('Should not open confirmation modal ', function() {
+        createAnn.isMetaModified = false
+        spyOn(createAnn, 'confirmationModal').and.callThrough()
+        createAnn.confirmationModal()
+        timeout.flush(100)
+        expect(createAnn.confirmationModal).toBeDefined()
+        expect(createAnn.isMetaModified).toBeDefined()
+        expect(createAnn.isMetaModified).toEqual(false)
+    })
+    it('Should remove recipient', function() {
+        createAnn.announcement = announcementTestData.createAnncmnt.annObject
+        createAnn.stepNumber = 3
+        createAnn.stepNumber = 3
+        spyOn(createAnn, 'removeRecipients').and.callThrough()
+        createAnn.selectedRecipients = [{
+            id: '12345',
+            location: '12345'
+        }, {
+            id: '456',
+            location: '456'
+        }]
+        createAnn.removeRecipients({
+            id: '12345',
+            location: '12345'
         })
-      }
-
-      var selectRecipientBtn = angular.element(document.querySelector('#selectRecipientBtn'))
-      if (composeAnn.announcement && composeAnn.announcement.details.title && composeAnn.announcement.details.from && (true || composeAnn.announcement.details.type) &&
-        (composeAnn.uploadAttchement || composeAnn.announcement.details.description || links.length)) {
-        composeAnn.disableBtn = false
-        selectRecipientBtn.removeClass('disabled')
-      } else {
-        composeAnn.disableBtn = true
-        selectRecipientBtn.addClass('disabled')
-      }
-      if (status === false) {
-        composeAnn.isMetaModified = false
-      } else {
-        composeAnn.isMetaModified = true
-      }
-    }
-
-    /**
-     * @method initializeModal
-     * @desc - function to initialize semantic dropdowns
-     * @memberOf Controllers.createAnnouncementCtrl
-     */
-    composeAnn.initializeModal = function () {
-      $timeout(function () {
-        $('#announcementType').dropdown({
-          onChange: function (value, text, $choice) {
-            composeAnn.enableRecepientBtn()
-          }
+        expect(createAnn.selectedRecipients).toBeDefined()
+        expect(createAnn.selectedRecipients.length).toEqual(2)
+        createAnn.confirmRecipients()
+        expect(createAnn.stepNumber).toBeDefined()
+        expect(createAnn.stepNumber).toEqual(3)
+    })
+    it('on announcement upload complete', function() {
+        createAnn.announcement = announcementTestData.createAnncmnt.annObject
+        spyOn(createAnn, 'onUploadComplete').and.callThrough()
+        createAnn.onUploadComplete(1, 'abc.png', {
+            name: 'abc.png',
+            size: 1027
         })
-      }, 10)
-      $rootScope.$on('selected:items', function (evet, data) {
-        composeAnn.announcement.selTar = _.clone(data.geo)
-      })
-    }
-
-    /**
-     * @method goToNextStep
-     * @desc - Used to swtch to next step of announcement creation
-     * @memberOf Controllers.createAnnouncementCtrl
-     */
-    composeAnn.goToNextStep = function (telemetryPageId, telemetryPageType) {
-      // Current step is confirm recipients
-      if (composeAnn.stepNumber !== 1) {
-        if (composeAnn.confirmRecipients()) {
-          if (_.isEmpty(composeAnn.announcement.sourceId)) {
-            composeAnn.announcement.sourceId = $rootScope.rootOrgId
-          }
-        } else {
-          return false
-        }
-      }
-
-      // composeAnn.announcement.target.geo.ids = _.map(composeAnn.announcement.selTar, 'id')
-      var geoIds = _.map(composeAnn.announcement.selTar, 'id')
-      $timeout(function () {
-        $rootScope.$broadcast('component:update', geoIds)
-      }, 100)
-      composeAnn.isMetaModifiedSteps = true
-      $state.go('announcementResend', { stepNumber: ++composeAnn.stepNumber, announcement: composeAnn.announcement, isMetaModifiedSteps: false }, { reload: true })
-    }
-
-    /**
-     * @method goToBackStep
-     * @desc - Used to switch one step back to announcement creation
-     * @memberOf Controllers.createAnnouncementCtrl
-     */
-    composeAnn.goToBackStep = function () {
-      composeAnn.isMetaModifiedSteps = true
-      $state.go('announcementResend', { stepNumber: --composeAnn.stepNumber, announcement: composeAnn.announcement, isMetaModifiedSteps: false }, { reload: true })
-    }
-
-    composeAnn.confirmRecipients = function () {
-      $rootScope.$emit('get:selected:items')
-      if (composeAnn.announcement.selTar && composeAnn.announcement.selTar.length === 0) {
-        toasterService.error($rootScope.messages.emsg.m0006)
-        $state.go('announcementResend', { stepNumber: 2, announcement: composeAnn.announcement, isMetaModifiedSteps: composeAnn.isMetaModifiedSteps }, { reload: true })
-        return false
-      }
-
-      return true
-    }
-
-    /**
-     * @method hideModel
-     * @desc - hide semantic modal
-     * @memberOf Controllers.createAnnouncementCtrl
-     * @param {string} [modalId] [description]
-     */
-    composeAnn.hideModel = function (modalId) {
-      $('#' + modalId).modal('hide')
-      $('#' + modalId).modal('hide others')
-      $('#' + modalId).modal('hide all')
-      $('#' + modalId).modal('hide dimmer')
-    }
-
-    /**
-     * @method saveAnnouncement
-     * @desc - prepare api request object and make create api call
-     * @memberOf Controllers.createAnnouncementCtrl
-     * @param {object} [data] [form data]
-     */
-    composeAnn.saveAnnouncement = function () {
-      composeAnn.isMetaModifiedSteps = true
-      announcementAdapter.resendAnnouncement(composeAnn.announcement).then(function (apiResponse) {
-        $('#announcementResendModal').modal({
-          closable: false
-        }).modal('show')
-        $state.go('announcementOutbox')
-        composeAnn.hideModel('createAnnouncementModal')
-        portalTelemetryService.fireAnnouncementImpressions({
-          env: 'community.announcements',
-          type: 'view',
-          pageid: 'announcement_form_complete',
-          id: $stateParams.announcementId,
-          name: $stateParams.telemetryAnnTitle,
-          url: '/private/index#!/announcement/create/4'
-        }, $stateParams.userIdHashTag)
-      }, function (err) {
-        toasterService.error(err.data.params.errmsg)
-      })
-    }
-
-    /**
-     * @method getReadableFileSize
-     * @desc - convert byteSize into KB, MB
-     * @memberOf Controllers.createAnnouncementCtrl
-     * @param {int} [byteSize] [file size]
-     * @return {string} [return readable file size]
-     */
-    composeAnn.getReadableFileSize = function (byteSize) {
-      var sizes = ['Bytes', 'KB', 'MB']
-      if (byteSize) {
-        var i = parseInt(Math.floor(Math.log(byteSize) / Math.log(1024)))
-        return composeAnn.convertedFileSize = Math.round(byteSize / Math.pow(1024, i), 2) + ' ' + sizes[i]
-      } else {
-        return composeAnn.convertedFileSize = '0 Byte'
-      }
-    }
-
-    /**
-     * @method initializeFileUploader
-     * @desc - create fine uploader instance by passing required params
-     * @memberOf Controllers.createAnnouncementCtrl
-     */
-    composeAnn.initializeFileUploader = function (resend) {
-      var apiUrl = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + config.URL.CONTENT.UPLOAD_MEDIA
-      var options = {
-        fileSizeLimit: config.AnncmntMaxFileSizeToUpload,
-        allowedExtensions: config.AnncmntAllowedFileExtension,
-        fileSizeErrorText: $rootScope.messages.imsg.m0021,
-        containerName: 'attachments/announcement',
-        uploadSuccess: composeAnn.onUploadComplete,
-        onCancel: composeAnn.onUploadCancel
-      }
-      var resend = resend || composeAnn.editAction
-      if(resend){
-        fileUpload.createFineUploadInstance(options,function(data){
-          /*angular.forEach(composeAnn.announcement.attachments, function (attachment, key) {
-            if(!(_.isPlainObject(attachment))) {
-              announcement = JSON.parse(announcement)
-            }
-            $('.qq-upload-list').append('<li class="qq-file-id-0 qq-upload-retryable w3-container w3-border w3-round-xlarge qq-upload-success" qq-file-id="'+key+'"><i class="qq-upload-cancel-selector cursor-pointer remove icon qq-hide" id="qq-upload-cancel-manually" onclick="cancelUploadFile()" style="float: right;"></i><span class="qq-upload-file-selector qq-upload-file" title="logo.png" style="margin-top: -30px !important;width: 222px;">'+attachment.name+'</span><input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text"><span role="status" class="qq-upload-status-text-selector qq-upload-status-text"></span></li>');
-          })*/
-        })
-      }
-    }
-
-    /**
-     * @method onUploadComplete
-     * @desc - invoked after attachement uploaded
-     * @memberOf Controllers.createAnnouncementCtrl
-     * @param {int} [id] [uploaded file count]
-     * @param {string} [name] [selected fine name]
-     * @param {object} [uploadDetails] [uploaded file details - name,mimeType,downloadUrl,and file size]
-     */
-    composeAnn.onUploadComplete = function (id, name, uploadDetails) {
-      uploadDetails.size = composeAnn.getReadableFileSize(uploadDetails.size)
-      composeAnn.announcement.attachments.push(uploadDetails)
-      composeAnn.uploadAttchement = true
-      composeAnn.enableRecepientBtn()
-    }
-
-    /**
-     * @method onUploadCancel
-     * @desc - invoked when user cancel uploaded attachement
-     * @memberOf Controllers.createAnnouncementCtrl
-     * @param {int} [id] [uploaded file count]
-     * @param {string} [name] [selected fine name]
-     */
-    composeAnn.onUploadCancel = function (id, name) {
-      var deleteFlag = composeAnn.attachment.splice(id, 1)
-      if (deleteFlag.length === 0) {
-        angular.forEach(composeAnn.attachment, function (value, key) {
-          var details = JSON.parse(value)
-          if (details.name === name) {
-            composeAnn.attachment.splice(key, 1)
-          }
-        })
-      }
-
-      if (composeAnn.attachment.length === 0) {
-        composeAnn.uploadAttchement = false
-      }
-      composeAnn.enableRecepientBtn()
-      $('#hide-section-with-button').css('style.display', 'block')
-    }
-
-    /**
-     * @method removeRicipients
-     * @desc - remove selected recipients
-     * @memberOf Controllers.createAnnouncementCtrl
-     * @param {object} [item] [current selected item]
-     */
-    composeAnn.removeRecipients = function (item) {
-      _.remove(composeAnn.announcement.target.geo.ids, function (arg) {
-        if (arg == item.id) {
-          return true
-        }
-      })
-      composeAnn.announcement.target.geo.ids
-      _.remove(composeAnn.announcement.selTar, function (arg) {
-        if (arg.location == item.location) {
-          item.selected = false
-          toasterService.info(item.location + ' ' + $rootScope.messages.imsg.m0020)
-          return arg.location
-        }
-      })
-      composeAnn.confirmRecipients()
-    }
-  }
-])
+        expect(createAnn.onUploadComplete).toBeDefined()
+        expect(createAnn.uploadAttchement).toEqual(true)
+    })
+    it('on announcement cancel', function() {
+        createAnn.announcement = announcementTestData.createAnncmnt.annObject
+        createAnn.attachment = ['{"name":"swing-846077_960_720.jpg","mimetype":"ima…chments/announcement/File-012380339474472960127"}']
+        spyOn(createAnn, 'onUploadCancel').and.callThrough()
+        createAnn.onUploadCancel(1, 'swing-846077_960_720.jpg')
+        expect(createAnn.onUploadCancel).toBeDefined()
+        expect(createAnn.uploadAttchement).toEqual(false)
+        expect(createAnn.attachment.length).toEqual(0)
+    })
+    it('should get announcement type', function() {
+        var mockRes = announcementTestData.createAnncmnt.getAnncmntTypeRes
+        deferred.resolve(mockRes)
+        mockRes = mockRes.data = mockRes
+        scope.$apply()
+        expect(createAnn.errorFlag).toEqual(false)
+    })
+    it('should initialize fine uploader', function() {
+        spyOn(createAnn, 'initializeFileUploader').and.callThrough()
+        createAnn.initializeFileUploader()
+        timeout.flush(100)
+        expect(createAnn.initializeFileUploader).toBeDefined()
+        expect(createAnn.initializeFileUploader).toHaveBeenCalled()
+    })
+    it('Save announcement without title to handle error in catch block', function() {
+        createAnn.linkArray = []
+        createAnn.attachment = ['url']
+        spyOn(announcementAdapter, 'resendAnnouncement').and.returnValue(deferred.promise)
+        deferred.resolve(announcementTestData.createAnncmnt.saveAnncmntSuccessRes)
+        announcementTestData.createAnncmnt.createAnncmntWithoutTitleResponse.data = announcementTestData.createAnncmnt.createAnncmntWithoutTitleResponse
+        spyOn(createAnn, 'saveAnnouncement').and.callThrough()
+        expect(createAnn.saveAnnouncement).toBeDefined()
+        createAnn.saveAnnouncement(announcementTestData.createAnncmnt.createAnncmntWithoutTitleReq)
+        expect(announcementAdapter.resendAnnouncement).toHaveBeenCalled()
+        scope.$apply()
+        spyOn(createAnn, 'refreshFormValues').and.callThrough()
+        expect(createAnn.refreshFormValues).toBeDefined()
+        createAnn.refreshFormValues()
+        expect(createAnn.isMetaModified).toEqual(false)
+    })
+    it('Save announcement', function() {
+        createAnn.linkArray = []
+        spyOn(announcementAdapter, 'resendAnnouncement').and.returnValue(deferred.promise)
+        deferred.resolve(announcementTestData.createAnncmnt.saveAnncmntSuccessRes)
+        announcementTestData.createAnncmnt.saveAnncmntSuccessRes.data = announcementTestData.createAnncmnt.saveAnncmntSuccessRes
+        spyOn(createAnn, 'saveAnnouncement').and.callThrough()
+        expect(createAnn.saveAnnouncement).toBeDefined()
+        createAnn.saveAnnouncement(announcementTestData.createAnncmnt.createAnncmntRequest)
+        expect(announcementAdapter.resendAnnouncement).toHaveBeenCalled()
+        scope.$apply()
+        spyOn(createAnn, 'refreshFormValues').and.callThrough()
+        expect(createAnn.refreshFormValues).toBeDefined()
+        createAnn.refreshFormValues()
+        expect(createAnn.isMetaModified).toEqual(false)
+    })
+    it('Save announcement reject', function() {
+        spyOn(announcementAdapter, 'resendAnnouncement').and.returnValue(deferred.promise)
+        deferred.reject({})
+        spyOn(createAnn, 'resendAnnouncement').and.callThrough()
+        createAnn.saveAnnouncement()
+        scope.$apply()
+        expect(createAnn.isMetaModified).toEqual(false)
+    })
+    it('goToBackStep', function() {
+        spyOn(createAnn, 'goToBackStep').and.callThrough()
+        createAnn.goToBackStep()
+        scope.$apply()
+    })
+    it('goToNextStep', function() {
+        createAnn.stepNumber = 2
+        createAnn.announcement = announcementTestData.createAnncmnt.annTarObject
+        spyOn(createAnn, 'goToNextStep').and.callThrough()
+        createAnn.goToNextStep()
+        scope.$apply()
+    })
+    it('goToNextStep else part', function() {
+        createAnn.stepNumber = 2
+        createAnn.announcement = {}
+        createAnn.announcement.selTar = {}
+        createAnn.announcement.selTar.length = 0
+        spyOn(createAnn, 'goToNextStep').and.callThrough()
+        createAnn.goToNextStep()
+        scope.$apply()
+    })
+})
