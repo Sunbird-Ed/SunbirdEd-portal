@@ -64,7 +64,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
           if (composeAnn.isMetaModified === true && composeAnn.isMetaModifiedSteps !== true) {
             composeAnn.confirmationModal()
             return false
-          } else if (composeAnn.isMetaModified == false && composeAnn.stepNumber === 1) {
+          } else if (composeAnn.isMetaModified === false && composeAnn.stepNumber === 1) {
             composeAnn.refreshFormValues()
             $state.go('announcementOutbox')
             // composeAnn.hideModel('createAnnouncementModal')

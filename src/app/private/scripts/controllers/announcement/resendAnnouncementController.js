@@ -162,7 +162,7 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
           if (composeAnn.isMetaModified === true && composeAnn.isMetaModifiedSteps !== true) {
             composeAnn.confirmationModal()
             return false
-          } else if (composeAnn.isMetaModified == false && composeAnn.stepNumber === 1) {
+          } else if (composeAnn.isMetaModified === false && composeAnn.stepNumber === 1) {
             $state.go('announcementOutbox')
             return true
           }
@@ -402,7 +402,7 @@ angular.module('playerApp').controller('resendAnnouncementCtrl', ['$rootScope', 
      */
     composeAnn.removeRecipients = function (item) {
       _.remove(composeAnn.announcement.target.geo.ids, function (arg) {
-        if (arg == item.id) {
+        if (arg === item.id) {
           return true
         }
       })
