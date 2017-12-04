@@ -43,7 +43,7 @@ class ObjectStoreRest extends ObjectStore {
             try {
                 let validation = await (this.model.validateModel(data.values))
                 if (!validation.isValid) throw {
-                    message: 'Invalid model request!',
+                    message: validation.error,
                     status: HttpStatus.BAD_REQUEST
                 }
                 let options = {

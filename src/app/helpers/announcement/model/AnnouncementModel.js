@@ -14,7 +14,7 @@ let modelSchema = Joi.object().keys({
   createddate: Joi.string().required(), // part of primary key
   details: Joi.object().min(1), // any key/value with string
   links: Joi.array().items(Joi.string()),
-  attachments: Joi.array().items(Joi.string()),
+  attachments: Joi.array().max(20).items(Joi.string()),
   target: Joi.object().min(1).required(), // TODO: add validation for target format
   status: Joi.string(),
   sentcount: Joi.number(),

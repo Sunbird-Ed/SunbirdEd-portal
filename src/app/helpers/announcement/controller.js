@@ -1021,8 +1021,8 @@ class AnnouncementController {
      */
     customError(error) {
         return new AppError({
-            message: 'Unable to process the request!',
-            status: HttpStatus.INTERNAL_SERVER_ERROR
+            message: error ? error.message : 'Unable to process the request!',
+            status: error ? error.status : HttpStatus.INTERNAL_SERVER_ERROR
         })
     }
 }
