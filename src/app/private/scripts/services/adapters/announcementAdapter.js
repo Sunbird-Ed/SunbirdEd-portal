@@ -228,36 +228,6 @@ angular.module('playerApp').service('announcementAdapter', ['$rootScope', '$http
             var URL = config.URL.ANNOUNCEMENT.RESEND
             return handleHttpRequest(URL, data, 'POST')
         }
-        /**
-         * @method verifyAnnouncementData
-         * @desc Verify announcement data is filled before heading to next step
-         * @memberOf Services.announcementService
-         * @param {string}  stepNumber - step number
-         * @param {object}  announcement - announcement
-         * @returns {boolean} returns boolean
-         * @instance
-         */
-        this.verifyAnnouncementData = function(stepNumber, announcement) {
-            var status = true
-            if (announcement === undefined) {
-                if (stepNumber === 1) {
-                    status = true
-                } else {
-                    status = false
-                }
-            } else {
-                if (stepNumber === 2) {
-                    if (!(announcement.details.title && announcement.details.type && announcement.details.from && (announcement.details.description || announcement.links || announcement.attachments))) {
-                        status = false
-                    }
-                } else if (stepNumber === 3 || stepNumber === 4) {
-                    $rootScope.$emit('get:selected:items')
-                    if (announcement.selTar && announcement.selTar.length === 0) {
-                        status = false
-                    }
-                }
-            }
-            return status
-        }
+
     }
 ])

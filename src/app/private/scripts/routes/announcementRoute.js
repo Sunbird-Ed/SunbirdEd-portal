@@ -104,7 +104,7 @@ angular.module('playerApp')
           telemetryPageId: 'annoucement_form_details',
           telemetryPageType: 'form'
         },
-        onEnter: function ($stateParams, $rootScope, $state, routeHelperService, portalTelemetryService, announcementAdapter) {
+        onEnter: function ($stateParams, $rootScope, $state, routeHelperService, portalTelemetryService) {
           var stepNumber = parseInt($stateParams.stepNumber)
           var announcement = $stateParams.announcement
           var userIdHashTag = ''
@@ -115,7 +115,7 @@ angular.module('playerApp')
             userIdHashTag = $stateParams.userIdHashTag
           }
           if (stepNumber !== 1) {
-            var status = announcementAdapter.verifyAnnouncementData(stepNumber, announcement)
+            var status = routeHelperService.verifyAnnouncementData(stepNumber, announcement)
             if (status) {
               $rootScope.profileActive = 'active'
               $rootScope.courseActive = ' '
@@ -168,7 +168,7 @@ angular.module('playerApp')
           telemetryPageType: 'form',
           telemetryAnnTitle: undefined
         },
-        onEnter: function ($stateParams, $rootScope, $state, routeHelperService, portalTelemetryService, announcementAdapter) {
+        onEnter: function ($stateParams, $rootScope, $state, routeHelperService, portalTelemetryService) {
           var stepNumber = parseInt($stateParams.stepNumber)
           var announcement = $stateParams.announcement
           var announcementId = $stateParams.announcementId
@@ -181,7 +181,7 @@ angular.module('playerApp')
           }
 
           if (stepNumber !== 1) {
-            var status = announcementAdapter.verifyAnnouncementData(stepNumber, announcement)
+            var status = routeHelperService.verifyAnnouncementData(stepNumber, announcement)
             if (status) {
               $rootScope.profileActive = 'active'
               $rootScope.courseActive = ' '
