@@ -62,11 +62,15 @@
         <div class="sixteen wide column margin-bottom-20 padding-top-20">
             <div class="ui items">
                 <div class="ui item box" ng-repeat="attachment in announcementDetails.attachments track by $index">
-                    <div class="ui tiny image">
-                        <img src="/common/images/default.png">
-                        </img>
+                    <div class="ui grid">
+                        <div class="column">
+                            <div class="attachmentPlacementBgr" ng-switch="attachment.mimetype">
+                            <i ng-switch-when="application/pdf" class="file pdf announcementAttachmentsIcon big outline icon"></i>
+                            <i ng-switch-default class="file image outline icon big announcementAttachmentsIcon"></i>
+                            </div>
+                        </div>
                     </div>
-                    <div class="middle aligned content">
+                    <div class="middle aligned content padding-left-none">
                         <div class="ui float-ContentRight">
                             <a class="ui primary basic button announcementButton" href="{{attachment.link}}" target="_blank">
                                 <span class="announcementButtonText">
@@ -74,10 +78,11 @@
                                 </span>
                             </a>
                         </div>
-                        <p class="annAttaFilename">
-                            {{attachment.name}}
+                        <p class="annAttaFilename annAttaFileName" title="{{attachment.name}}">
+                             {{attachment.name | limitTo:50}}
+                            <span ng-if="attachment.name.length > 50">...</span>
                         </p>
-                        <p class="annAttaFilesize" ng-if="attachment.size">
+                        <p class="annAttaFilesize annAttaFileSize" ng-if="attachment.size">
                             {{attachment.size}}
                         </p>
                     </div>
@@ -85,7 +90,7 @@
             </div>
         </div>
     </div>
-    <div class="gray-full-width margin-bottom-0" ng-if="announcementDetails.createddate">
+    <div class="gray-full-width announcementSentOnDate" ng-if="announcementDetails.createddate">
         <span class="ng-binding announcement-description">
             {{$root.frmelmnts.lbl.anncmntdtlssenton}} {{announcementDetails.createddate | dateFilterWithDMY}}
         </span>

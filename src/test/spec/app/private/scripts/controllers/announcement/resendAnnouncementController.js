@@ -1,5 +1,5 @@
 'use strict'
-describe('Controller: createAnnouncementCtrl', function() {
+describe('Controller: resendAnnouncementCtrl', function() {
     beforeEach(module('playerApp'))
     var adminCtl
     var createAnn
@@ -31,7 +31,7 @@ describe('Controller: createAnnouncementCtrl', function() {
         spyOn(toasterService, 'success').and.callThrough()
         spyOn(toasterService, 'error').and.callThrough()
         //  spyOn(announcementAdapter, 'getDefinitions').and.returnValue(deferred.promise)
-        createAnn = $controller('createAnnouncementCtrl', {
+        createAnn = $controller('resendAnnouncementCtrl', {
             $scope: scope,
             $rootScope: $rootScope,
             toasterService: toasterService,
@@ -40,36 +40,19 @@ describe('Controller: createAnnouncementCtrl', function() {
             $modal: modal
         })
     }))
-    it('should initialize create announcement Modal', function() {
+    it('should initialize resend announcement Modal', function() {
         spyOn(createAnn, 'initializeModal').and.callThrough()
+        createAnn.resendAnnouncement()
+        expect(createAnn.resendAnnouncement).toBeDefined()
         createAnn.initializeModal()
-        timeout.flush(100)
-        expect(createAnn.initializeModal).toBeDefined()
-    })
-    it('should initialize create announcement Modal', function() {
-        spyOn(createAnn, 'initializeModal').and.callThrough()
-        createAnn.createAnnouncement()
-        expect(createAnn.createAnnouncement).toBeDefined()
+        expect(createAnn.isMetaModified).toEqual(false)
+        scope.$apply()
     })
     it('Add one more link', function() {
         spyOn(createAnn, 'addNewLink').and.callThrough()
         createAnn.addNewLink()
         expect(createAnn.repeatableWebLinks.length).toEqual(1)
         expect(createAnn.showUrlField).toBeDefined()
-    })
-    it('Remove link', function() {
-        createAnn.announcement = announcementTestData.createAnncmnt.annObject
-        spyOn(createAnn, 'removeLink').and.callThrough()
-        var index = 0
-        createAnn.repeatableWebLinks.push({
-            'id': 'choice' + 0
-        })
-        createAnn.data.links = {
-            '0': 'https;//google.co.in'
-        }
-        createAnn.removeLink(index)
-        expect(createAnn.repeatableWebLinks.length).toEqual(0)
-        expect(createAnn.data.links).not.toBe(null)
     })
     it('convert file size into KB / MB', function() {
         spyOn(createAnn, 'getReadableFileSize').and.callThrough()
@@ -125,6 +108,15 @@ describe('Controller: createAnnouncementCtrl', function() {
         expect(createAnn.disableBtn).toEqual(true)
     })
     it('init with definition successResponse', function() {
+        spyOn(announcementAdapter, 'getResend').and.returnValue(deferred.promise)
+        deferred.resolve(announcementTestData.getResend.successResponse)
+        spyOn(createAnn, 'init').and.callThrough()
+        createAnn.init()
+        var response = announcementAdapter.getResend().$$state.value
+        expect(response).toBe(announcementTestData.getResend.successResponse)
+        scope.$apply()
+    })
+    it('init with definition successResponse', function() {
         spyOn(announcementAdapter, 'getDefinitions').and.returnValue(deferred.promise)
         deferred.resolve(announcementTestData.createAnncmnt.getAnncmntTypeRes)
         spyOn(createAnn, 'init').and.callThrough()
@@ -145,7 +137,7 @@ describe('Controller: createAnnouncementCtrl', function() {
         expect(createAnn.refreshFormValues).toBeDefined()
         expect(createAnn.isMetaModified).toBeDefined()
         expect(createAnn.isMetaModified).toEqual(false)
-        expect(createAnn.editAction).toEqual(false)
+        expect(createAnn.editAction).toEqual(true)
         expect(createAnn.showUrlField).toEqual(false)
         expect(createAnn.stepNumber).toEqual(1)
         expect(createAnn.repeatableWebLinks.length).toEqual(0)
@@ -197,7 +189,7 @@ describe('Controller: createAnnouncementCtrl', function() {
         expect(createAnn.isMetaModified).toEqual(false)
     })
     it('Should remove recipient', function() {
-        createAnn.announcement = announcementTestData.createAnncmnt.annTarObject
+        createAnn.announcement = announcementTestData.createAnncmnt.annObject
         createAnn.stepNumber = 3
         createAnn.stepNumber = 3
         spyOn(createAnn, 'removeRecipients').and.callThrough()
@@ -217,22 +209,6 @@ describe('Controller: createAnnouncementCtrl', function() {
         createAnn.confirmRecipients()
         expect(createAnn.stepNumber).toBeDefined()
         expect(createAnn.stepNumber).toEqual(3)
-    })
-    it('Shoud test single error', function() {
-        spyOn(createAnn, 'showError').and.callThrough()
-        createAnn.showError(announcementTestData.createAnncmnt.showSingleError)
-        expect(createAnn.showError).toBeDefined()
-        expect(createAnn.errorFlag).toBeDefined()
-        expect(createAnn.errorFlag).toEqual(true)
-        expect(toasterService.error).toHaveBeenCalled()
-    })
-    it('Shoud display multiple error message', function() {
-        spyOn(createAnn, 'showError').and.callThrough()
-        createAnn.showError(announcementTestData.createAnncmnt.showMultipleErrors)
-        expect(createAnn.showError).toBeDefined()
-        expect(createAnn.errorFlag).toBeDefined()
-        expect(createAnn.errorFlag).toEqual(true)
-        expect(toasterService.error).toHaveBeenCalled()
     })
     it('on announcement upload complete', function() {
         createAnn.announcement = announcementTestData.createAnncmnt.annObject
@@ -267,34 +243,16 @@ describe('Controller: createAnnouncementCtrl', function() {
         expect(createAnn.initializeFileUploader).toBeDefined()
         expect(createAnn.initializeFileUploader).toHaveBeenCalled()
     })
-    it('should not create announcement', function() {
-        createAnn.announcement = announcementTestData.createAnncmnt.annObject
-        spyOn(announcementAdapter, 'createAnnouncement').and.returnValue(deferred.promise)
-        deferred.resolve(announcementTestData.createAnncmnt.failedAnncmntRes)
-        announcementTestData.createAnncmnt.failedAnncmntRes.data = announcementTestData.createAnncmnt.failedAnncmntRes
-        spyOn(createAnn, 'saveAnnouncement').and.callThrough()
-        createAnn.data.from = 'test'
-        createAnn.linkArray = ['https;//google.co.in']
-        createAnn.data.description = 'test'
-        expect(createAnn.saveAnnouncement).toBeDefined()
-        var response = createAnn.saveAnnouncement(createAnn.data)
-        expect(createAnn.saveAnnouncement).toHaveBeenCalled()
-        spyOn(createAnn, 'showError').and.callThrough()
-        createAnn.showError(announcementTestData.createAnncmnt.failedAnncmntRes)
-        expect(createAnn.showError).toHaveBeenCalled()
-        expect(createAnn.errorFlag).toEqual(true)
-    })
     it('Save announcement without title to handle error in catch block', function() {
-        createAnn.announcement = announcementTestData.createAnncmnt.annObject
         createAnn.linkArray = []
         createAnn.attachment = ['url']
-        spyOn(announcementAdapter, 'createAnnouncement').and.returnValue(deferred.promise)
+        spyOn(announcementAdapter, 'resendAnnouncement').and.returnValue(deferred.promise)
         deferred.resolve(announcementTestData.createAnncmnt.saveAnncmntSuccessRes)
         announcementTestData.createAnncmnt.createAnncmntWithoutTitleResponse.data = announcementTestData.createAnncmnt.createAnncmntWithoutTitleResponse
         spyOn(createAnn, 'saveAnnouncement').and.callThrough()
         expect(createAnn.saveAnnouncement).toBeDefined()
         createAnn.saveAnnouncement(announcementTestData.createAnncmnt.createAnncmntWithoutTitleReq)
-        expect(announcementAdapter.createAnnouncement).toHaveBeenCalled()
+        expect(announcementAdapter.resendAnnouncement).toHaveBeenCalled()
         scope.$apply()
         spyOn(createAnn, 'refreshFormValues').and.callThrough()
         expect(createAnn.refreshFormValues).toBeDefined()
@@ -302,15 +260,14 @@ describe('Controller: createAnnouncementCtrl', function() {
         expect(createAnn.isMetaModified).toEqual(false)
     })
     it('Save announcement', function() {
-        createAnn.announcement = announcementTestData.createAnncmnt.annObject
         createAnn.linkArray = []
-        spyOn(announcementAdapter, 'createAnnouncement').and.returnValue(deferred.promise)
+        spyOn(announcementAdapter, 'resendAnnouncement').and.returnValue(deferred.promise)
         deferred.resolve(announcementTestData.createAnncmnt.saveAnncmntSuccessRes)
         announcementTestData.createAnncmnt.saveAnncmntSuccessRes.data = announcementTestData.createAnncmnt.saveAnncmntSuccessRes
         spyOn(createAnn, 'saveAnnouncement').and.callThrough()
         expect(createAnn.saveAnnouncement).toBeDefined()
         createAnn.saveAnnouncement(announcementTestData.createAnncmnt.createAnncmntRequest)
-        expect(announcementAdapter.createAnnouncement).toHaveBeenCalled()
+        expect(announcementAdapter.resendAnnouncement).toHaveBeenCalled()
         scope.$apply()
         spyOn(createAnn, 'refreshFormValues').and.callThrough()
         expect(createAnn.refreshFormValues).toBeDefined()
@@ -318,13 +275,12 @@ describe('Controller: createAnnouncementCtrl', function() {
         expect(createAnn.isMetaModified).toEqual(false)
     })
     it('Save announcement reject', function() {
-        createAnn.announcement = announcementTestData.createAnncmnt.annObject
-        spyOn(announcementAdapter, 'createAnnouncement').and.returnValue(deferred.promise)
+        spyOn(announcementAdapter, 'resendAnnouncement').and.returnValue(deferred.promise)
         deferred.reject({})
-        spyOn(createAnn, 'saveAnnouncement').and.callThrough()
+        spyOn(createAnn, 'resendAnnouncement').and.callThrough()
         createAnn.saveAnnouncement()
         scope.$apply()
-        expect(createAnn.isMetaModified).toEqual(true)
+        expect(createAnn.isMetaModified).toEqual(false)
     })
     it('goToBackStep', function() {
         spyOn(createAnn, 'goToBackStep').and.callThrough()
@@ -332,12 +288,14 @@ describe('Controller: createAnnouncementCtrl', function() {
         scope.$apply()
     })
     it('goToNextStep', function() {
+        createAnn.stepNumber = 2
         createAnn.announcement = announcementTestData.createAnncmnt.annTarObject
         spyOn(createAnn, 'goToNextStep').and.callThrough()
         createAnn.goToNextStep()
         scope.$apply()
     })
     it('goToNextStep else part', function() {
+        createAnn.stepNumber = 2
         createAnn.announcement = {}
         createAnn.announcement.selTar = {}
         createAnn.announcement.selTar.length = 0
