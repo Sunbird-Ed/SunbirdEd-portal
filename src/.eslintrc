@@ -4,4 +4,8 @@
         "angular": true,
         "_": true
     }
+    "rules": {
+        "quotes": ["error", "single"],
+        "max-len": ["error", 120, 4, {"ignoreUrls": true}]
+    }
 }
