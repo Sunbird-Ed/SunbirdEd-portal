@@ -27,7 +27,7 @@ const metricsActivityConstant = {
 }
 
 const LIMIT_DEFAULT = 10
-const LIMIT_MAX = 25
+const LIMIT_MAX = 200
 const OFFSET_DEFAULT = 0
 
 class AnnouncementController {
@@ -712,8 +712,11 @@ class AnnouncementController {
 
     __getLimit(requestedLimit) {
         let limit = requestedLimit || LIMIT_DEFAULT
-        limit = limit > LIMIT_MAX ? LIMIT_MAX : limit
-        return limit
+        if(limit > LIMIT_MAX){
+            throw {message:'Exceed the max_limit 200', status:HttpStatus.BAD_REQUEST}
+        }else{
+            return limit
+        }
     }
 
     __getOffset(requestedOffset) {
@@ -1021,8 +1024,8 @@ class AnnouncementController {
      */
     customError(error) {
         return new AppError({
-            message: 'Unable to process the request!',
-            status: HttpStatus.INTERNAL_SERVER_ERROR
+            message: error ? error.message : 'Unable to process the request!',
+            status: error ? error.status : HttpStatus.INTERNAL_SERVER_ERROR
         })
     }
 }
