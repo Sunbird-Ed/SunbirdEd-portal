@@ -378,7 +378,6 @@
             "cancel":"CANCEL",
             "update":"UPDATE",
             "updateOrg":"Update Org Type"
-<<<<<<< HEAD
         },
         "ANNOUNCEMENT_CREATION":{
             "HEADERS": {
@@ -402,9 +401,5 @@
                 "UPLOAD_ATTACHMENT": "UPLOAD ATTACHEMNT"
             }
         }
-=======
-        }
-
->>>>>>> release-1.2.3
     }
 }
