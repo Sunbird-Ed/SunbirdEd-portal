@@ -1,0 +1,295 @@
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/admin/bulkUploadController.js:151:24: 'FormData' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/admin/bulkUploadController.js:152:28: 'FileReader' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/announcement/announcementDetailsController.js:21:17: 'attachment' is already defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/announcement/announcementDetailsController.js:39:12: Expected error to be handled.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/announcement/announcementInboxListController.js:43:12: Expected error to be handled.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/announcement/announcementOutboxListController.js:26:12: Expected error to be handled.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/announcement/announcementOutboxListController.js:88:17: 'evens' is assigned a value but never used.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/announcement/announcementOutboxListController.js:89:29: Expected '===' and instead saw '=='.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/announcement/announcementOutboxListController.js:96:12: Expected error to be handled.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/announcement/createAnnouncementController.js:76:65: Expected '===' and instead saw '=='.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/announcement/createAnnouncementController.js:182:26: Expected '===' and instead saw '=='.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/announcement/createAnnouncementController.js:183:11: Expected an assignment or function call and instead saw an expression.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/announcement/createAnnouncementController.js:183:32: Unexpected use of comma operator.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/announcement/createAnnouncementController.js:337:9: Return statement should not contain assignment.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/announcement/createAnnouncementController.js:339:9: Return statement should not contain assignment.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/announcement/createAnnouncementController.js:349:11: 'apiUrl' is assigned a value but never used.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/announcement/createAnnouncementController.js:444:11: 'announcementOutboxData' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/appController.js:88:34: Expected '===' and instead saw '=='.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/appController.js:137:37: Expected '===' and instead saw '=='.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/appController.js:139:13: Split initialized 'var' declarations into multiple statements.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/appController.js:234:13: Unexpected literal in error position of callback.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/appController.js:238:16: Expected error to be handled.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/appController.js:239:11: Unexpected literal in error position of callback.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/batch/batchUpdateController.js:57:54: Expected '===' and instead saw '=='.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/batch/batchUpdateController.js:64:13: Split initialized 'var' declarations into multiple statements.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/batch/batchUpdateController.js:115:39: Expected '!==' and instead saw '!='.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/batch/batchUpdateController.js:139:41: Expected '!==' and instead saw '!='.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/batch/batchUpdateController.js:146:71: Expected '!==' and instead saw '!='.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/batch/batchUpdateController.js:181:37: Expected '!==' and instead saw '!='.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/batch/batchUpdateController.js:191:41: Expected '!==' and instead saw '!='.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/contentPlayerController.js:160:53: 'event' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/dashboard/courseCreatorDashboardController.js:48:23: Expected '!==' and instead saw '!='.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/dashboard/courseCreatorDashboardController.js:57:43: Expected '===' and instead saw '=='.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/dashboard/courseCreatorDashboardController.js:69:42: Expected '!==' and instead saw '!='.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/dashboard/courseCreatorDashboardController.js:72:23: 'name' is already defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/dashboard/courseCreatorDashboardController.js:81:50: Expected '===' and instead saw '=='.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/dashboard/courseCreatorDashboardController.js:86:27: Expected '===' and instead saw '=='.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/dashboard/courseCreatorDashboardController.js:87:23: 'd' is assigned a value but never used.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/dashboard/courseCreatorDashboardController.js:176:46: Expected '===' and instead saw '=='.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/dashboard/courseDashboardController.js:102:40: 'apiResponse' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/dashboard/courseDashboardController.js:105:38: 'apiResponse' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/dashboard/courseDashboardController.js:141:45: Expected '===' and instead saw '=='.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/dashboard/orgDashboardController.js:66:25: 'name' is already defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/dashboard/orgDashboardController.js:79:25: 'd' is assigned a value but never used.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/dashboard/orgDashboardController.js:114:25: 'name' is already defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/dashboard/orgDashboardController.js:127:25: 'd' is assigned a value but never used.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/dashboard/orgDashboardController.js:202:36: 'apiMessages' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/genericEditorController.js:98:2: Unexpected tab character.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/genericEditorController.js:98:2: Mixed spaces and tabs.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/genericEditorController.js:99:2: Unexpected tab character.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/genericEditorController.js:99:2: Mixed spaces and tabs.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/genericEditorController.js:100:2: Unexpected tab character.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/genericEditorController.js:100:2: Mixed spaces and tabs.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/genericEditorController.js:101:2: Unexpected tab character.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/genericEditorController.js:101:2: Mixed spaces and tabs.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/genericEditorController.js:102:2: Unexpected tab character.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/genericEditorController.js:102:2: Mixed spaces and tabs.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/homeController.js:9:11: 'uid' is assigned a value but never used.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/homeController.js:70:13: Expected "[" and "]" to be on the same line
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/profileController.js:50:13: 'formElmnt' is assigned a value but never used.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/profileController.js:212:30: 'FormData' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/profileController.js:213:28: 'FileReader' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/profileController.js:636:15: Block is redundant.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/profileController.js:644:15: Block is redundant.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/profileController.js:652:15: Block is redundant.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/profileController.js:660:15: Block is redundant.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/profileController.js:665:15: Block is redundant.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/profileController.js:678:15: Block is redundant.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/profileVisibilityController.js:31:60: Expected error to be handled.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/controllers/profileVisibilityController.js:74:17: Unexpected literal in error position of callback.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/factories/fileUploadFactory.js:82:15: 'objFineUploader' is assigned a value but never used.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/factories/fileUploadFactory.js:82:37: 'qq' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/managers/eventManager.js:19:3: 'EventBus' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/managers/eventManager.js:32:3: 'EventBus' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/managers/eventManager.js:44:3: 'EventBus' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/managers/eventManager.js:55:10: 'EventBus' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/managers/eventManager.js:65:10: 'EventBus' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/services/batchService.js:10:11: 'batchDetails' is assigned a value but never used.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/services/contentStateService.js:12:37: 'localContentState' was used before it was defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/services/dashboardService.js:24:9: Unreachable code.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/services/dashboardService.js:27:9: Unreachable code.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/services/dashboardService.js:129:9: Unreachable code.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/services/dashboardService.js:132:9: Unreachable code.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/services/httpService.js:70:15: 'alert' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/services/httpServiceJava.js:77:13: 'alert' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/services/permissionsService.js:11:13: 'self' is assigned a value but never used.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/services/playerTelemetryUtilsService.js:39:30: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/services/portalTelemetryService.js:9:27: 'telemetryEvents' was used before it was defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/services/routeHelperService.js:120:23: 'courseParams' is already defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/services/routeHelperService.js:137:23: 'courseParams' is already defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/services/routeHelperService.js:224:23: 'courseParams' is already defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/services/workSpaceUtilsService.js:164:14: 'btoa' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/InActiveEvent.js:1:10: 'InActiveEvent' is defined but never used.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryEvent.js:1:10: 'TelemetryEvent' is defined but never used.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryEvent.js:9:15: Expected '!==' and instead saw '!='.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryEvent.js:9:43: Expected '===' and instead saw '=='.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryEvent.js:10:24: 'getCurrentTime' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryEvent.js:51:5: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryEvent.js:51:31: Expected '===' and instead saw '=='.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryEvent.js:51:58: 'getTime' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryEvent.js:51:103: 'getTime' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryEvent.js:52:30: 'CryptoJS' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryEvent.js:56:5: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryEvent.js:60:9: 'telemetry' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryEvent.js:64:13: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryEvent.js:77:14: 'key' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryEvent.js:77:49: 'key' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryEvent.js:77:60: 'key' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryEvent.js:86:22: 'getCurrentTime' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryEvent.js:91:49: 'getCurrentTime' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryEvent.js:97:7: Expected an object to be thrown.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryEvent.js:102:24: 'getCurrentTime' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryEvent.js:145:5: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryEvent.js:145:31: Expected '===' and instead saw '=='.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryEvent.js:145:58: 'getTime' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryEvent.js:145:103: 'getTime' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryEvent.js:146:30: 'CryptoJS' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:1:1: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:60:7: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:61:7: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:61:39: 'TelemetryV2Manager' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:62:7: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:65:11: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:66:11: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:68:11: Expected the Promise rejection reason to be an Error.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:71:7: 'TelemetryServiceUtil' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:72:9: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:73:13: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:73:48: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:73:76: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:79:9: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:82:9: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:85:9: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:92:7: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:94:19: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:103:5: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:104:5: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:104:34: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:104:60: Expected '===' and instead saw '=='.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:104:76: 'TelemetryV1Manager' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:104:103: 'TelemetryV2Manager' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:111:12: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:111:40: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:114:12: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:114:40: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:117:12: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:120:12: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:120:40: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:123:12: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:123:40: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:126:9: 'message' is assigned a value but never used.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:128:5: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:135:10: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:137:18: 'InActiveEvent' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:140:18: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:142:24: 'InActiveEvent' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:142:56: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:142:84: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:142:144: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:146:10: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:147:18: 'InActiveEvent' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:149:28: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:149:73: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:152:10: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:153:18: 'InActiveEvent' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:155:12: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:155:40: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:155:116: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:158:5: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:158:30: 'obj' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:159:5: 'obj' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:159:24: 'obj' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:160:5: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:160:66: 'obj' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:163:10: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:164:18: 'InActiveEvent' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:166:12: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:169:10: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:170:18: 'InActiveEvent' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:172:12: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:172:40: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:172:78: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:175:10: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:176:18: 'InActiveEvent' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:178:12: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:178:40: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:178:98: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:181:9: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:182:11: 'eventName' is assigned a value but never used.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:183:18: 'InActiveEvent' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:187:10: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:188:18: 'InActiveEvent' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:190:12: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:190:40: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:190:95: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:198:10: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:199:18: 'InActiveEvent' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:201:12: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:201:38: Expected '===' and instead saw '=='.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:201:70: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:201:132: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:204:10: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:205:18: 'InActiveEvent' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:207:28: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:207:73: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:210:10: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:211:18: 'InActiveEvent' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:213:12: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:216:29: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:217:26: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:218:27: Expected '!==' and instead saw '!='.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:218:64: Expected '!==' and instead saw '!='.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:219:7: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:220:7: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:220:29: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:220:57: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:221:7: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:225:9: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:226:7: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:227:22: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:228:19: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:229:41: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:231:21: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:232:9: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:240:15: 'getCurrentTime' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:251:9: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:252:20: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:260:10: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:261:14: 'InActiveEvent' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:263:12: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:263:40: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:263:83: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:266:10: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:267:14: 'InActiveEvent' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:269:12: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:269:40: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:269:85: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:272:10: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:273:14: 'InActiveEvent' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:275:12: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:275:40: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:275:83: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:278:10: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:279:14: 'InActiveEvent' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:281:12: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:281:40: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:281:86: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:284:10: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:285:14: 'InActiveEvent' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:287:12: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:287:40: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:287:87: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:291:1: Array prototype is read only, properties should not be added.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryService.js:293:17: Expected '===' and instead saw '=='.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryServiceUtil.js:1:1: 'TelemetryServiceUtil' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryServiceUtil.js:43:15: 'TelemetryServiceUtil' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryServiceUtil.js:51:10: 'getTime' is defined but never used.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryServiceUtil.js:53:7: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryServiceUtil.js:53:33: Expected '===' and instead saw '=='.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryServiceUtil.js:56:9: 'dateFormat' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryServiceUtil.js:64:10: 'getCurrentTime' is defined but never used.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryV2Manager.js:1:1: 'TelemetryV2Manager' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryV2Manager.js:2:15: The array literal notation [] is preferrable.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryV2Manager.js:3:17: The array literal notation [] is preferrable.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryV2Manager.js:8:9: 'message' is assigned a value but never used.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryV2Manager.js:9:9: 'error' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryV2Manager.js:9:55: 'error' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryV2Manager.js:13:21: 'TelemetryEvent' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryV2Manager.js:14:18: Expected '===' and instead saw '=='.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryV2Manager.js:15:35: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryV2Manager.js:15:68: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryV2Manager.js:15:92: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryV2Manager.js:15:127: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryV2Manager.js:18:29: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryV2Manager.js:18:62: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryV2Manager.js:18:86: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryV2Manager.js:18:114: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryV2Manager.js:18:149: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryV2Manager.js:23:5: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryV2Manager.js:43:26: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryV2Manager.js:43:78: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryV2Manager.js:44:14: Expected '!==' and instead saw '!='.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryV2Manager.js:45:11: 'eks' is already defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryV2Manager.js:77:18: 'InActiveEvent' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryV2Manager.js:82:9: 'data' is already defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryV2Manager.js:129:9: 'eventStr' is assigned a value but never used.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryV2Manager.js:129:20: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryV2Manager.js:144:17: Expected '!==' and instead saw '!='.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryV2Manager.js:144:41: Expected '!==' and instead saw '!='.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryV2Manager.js:144:65: Expected '!==' and instead saw '!='.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryV2Manager.js:156:31: Expected '===' and instead saw '=='.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryV2Manager.js:187:9: 'obj' is assigned a value but never used.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/telemetry/TelemetryV2Manager.js:197:9: 'obj' is assigned a value but never used.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/utils/util.js:14:3: 'TelemetryService' is not defined.
+  /Users/harishkumargangula/Documents/Workspace/Sunbird/Portal/src/app/private/scripts/utils/util.js:26:26: 'TelemetryService' is not defined.

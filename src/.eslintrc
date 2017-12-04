@@ -3,7 +3,11 @@
     "globals": {
         "angular": true,
         "_": true,
-        "$": true
+        "$": true,
+        "moment": true,
+        "iziToast": true,
+        "org": true,
+        "alasql": true
     },
     "rules": {
         "quotes": ["error", "single"],

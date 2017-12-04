@@ -16,12 +16,12 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
     $rootScope.frmelmnts = frmelmnts[$rootScope.language]
     $rootScope.searchKey = ''
     $rootScope.enrolledCourseIds = {}
-    /** 
-     * This function contentModelSetBackLink is to store back link value for modal popup close dynamically. 
+    /**
+     * This function contentModelSetBackLink is to store back link value for modal popup close dynamically.
      * **/
-    $rootScope.contentModelSetBackLink = function(){
-		$rootScope.contentModelBackLinkName =  $state.current.name;
-	}
+    $rootScope.contentModelSetBackLink = function () {
+      $rootScope.contentModelBackLinkName = $state.current.name
+    }
 
         /**
          * This condition is for public content to private content after login
@@ -85,7 +85,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
       _.forEach(profileData.organisations, function (org) {
         if (org.roles && _.isArray(org.roles)) {
           userRoles = _.union(userRoles, org.roles)
-          if (org.organisationId == profileData.rootOrgId && _.indexOf(org.roles, 'ORG_ADMIN') > -1) {
+          if (org.organisationId === profileData.rootOrgId && _.indexOf(org.roles, 'ORG_ADMIN') > -1) {
             $rootScope.rootOrgAdmin = true
           }
           orgRoleMap[org.organisationId] = org.roles
@@ -134,7 +134,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
                 // set Page Title
         document.title = (!_.isUndefined(profileData.rootOrg.orgName)) ? profileData.rootOrg.orgName : 'Sunbird'
         $http.get('/v1/tenant/info/' + profileData.rootOrg.slug).then(function (res) {
-          if (res && res.statusText == 'OK') {
+          if (res && res.statusText === 'OK') {
             $rootScope.orgLogo = res.data.result.logo
             var link = document.createElement('link'),
               oldLink = document.getElementById('dynamic-favicon')

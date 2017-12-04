@@ -1,22 +1,22 @@
-'use strict';
+'use strict'
 
 angular.module('playerApp')
     .service('userService', [
-        'config',
-        'httpService',
-        'httpServiceJava',
-        function (config, httpService, httpServiceJava) {
+      'config',
+      'httpService',
+      'httpServiceJava',
+      function (config, httpService, httpServiceJava) {
      /**
      * @class userService
      * @desc Service to manage user profile.
      * @memberOf Services
      */
-            this.currentUserProfile = {};
-            this.resourceBundle = function (language, type) {
-                var url = config.URL.CONFIG_BASE + config.URL.USER.RESOURCE_BUNDLE + '/'
-                    + type + '/' + language;
-                return httpService.get(url);
-            };
+        this.currentUserProfile = {}
+        this.resourceBundle = function (language, type) {
+          var url = config.URL.CONFIG_BASE + config.URL.USER.RESOURCE_BUNDLE + '/' +
+                    type + '/' + language
+          return httpService.get(url)
+        }
             /**
              * @method getUserProfile
              * @desc Get user profile
@@ -27,13 +27,13 @@ angular.module('playerApp')
              * @instance
              */
 
-            this.getUserProfile = function (uId, fields) {
-                var url = config.URL.USER.GET_PROFILE + '/' + uId;
-                if (fields && _.isString(fields)) {
-                    url = url + '?fields=' + fields;
-                }
-                return httpServiceJava.get(url);
-            };
+        this.getUserProfile = function (uId, fields) {
+          var url = config.URL.USER.GET_PROFILE + '/' + uId
+          if (fields && _.isString(fields)) {
+            url = url + '?fields=' + fields
+          }
+          return httpServiceJava.get(url)
+        }
             /**
              * @method updateUserProfile
              * @desc Get user profile
@@ -42,10 +42,10 @@ angular.module('playerApp')
              * @returns {Promise} Promise object represents response message and code.
              * @instance
              */
-            this.updateUserProfile = function (req, name, email) {
-                var url = config.URL.USER.UPDATE_USER_PROFILE;
-                return httpServiceJava.patch(url, req);
-            };
+        this.updateUserProfile = function (req, name, email) {
+          var url = config.URL.USER.UPDATE_USER_PROFILE
+          return httpServiceJava.patch(url, req)
+        }
             /**
              * @method getTenantLogo
              * @desc Get tenant logo
@@ -53,9 +53,9 @@ angular.module('playerApp')
              * @returns {Promise} Promise object represents tenant logo
              * @instance
              */
-            this.getTenantLogo = function () {
-                return httpService.get(config.URL.USER.TENANT_LOGO);
-            };
+        this.getTenantLogo = function () {
+          return httpService.get(config.URL.USER.TENANT_LOGO)
+        }
             /**
              * @method setCurrentUserProfile
              * @desc Set current user profile to local variable
@@ -64,9 +64,9 @@ angular.module('playerApp')
              * @instance
              */
 
-            this.setCurrentUserProfile = function (userProfile) {
-                this.currentUserProfile = userProfile;
-            };
+        this.setCurrentUserProfile = function (userProfile) {
+          this.currentUserProfile = userProfile
+        }
             /**
              * @method getCurrentUserProfile
              * @desc Get current user profile from local variable
@@ -74,9 +74,9 @@ angular.module('playerApp')
              * @returns {Object} Promise object represents current user profile
              * @instance
              */
-            this.getCurrentUserProfile = function () {
-                return this.currentUserProfile;
-            };
+        this.getCurrentUserProfile = function () {
+          return this.currentUserProfile
+        }
             /**
              * @method getSkills
              * @desc Get default skills
@@ -84,10 +84,10 @@ angular.module('playerApp')
              * @returns {Object} Promise object represents list skills
              * @instance
              */
-            this.getSkills = function () {
-                var url = config.URL.USER.SKILLS;
-                return httpServiceJava.get(url);
-            };
+        this.getSkills = function () {
+          var url = config.URL.USER.SKILLS
+          return httpServiceJava.get(url)
+        }
             /**
              * @method getUserSkills
              * @desc Get user's skills
@@ -97,10 +97,10 @@ angular.module('playerApp')
              * @returns {Object} Promise object represents list of user's skills
              * @instance
              */
-            this.getUserSkills = function (req) {
-                var url = config.URL.USER.USER_SKILLS;
-                return httpServiceJava.post(url, req);
-            };
+        this.getUserSkills = function (req) {
+          var url = config.URL.USER.USER_SKILLS
+          return httpServiceJava.post(url, req)
+        }
              /**
              * @method addSkills
              * @desc Add skill to user's skills and add skill to default skills list
@@ -110,14 +110,13 @@ angular.module('playerApp')
              * @returns {Object} Promise object represents response and response code
              * @instance
              */
-            this.addSkills = function (req) {
-                var url = config.URL.USER.ADD_SKILLS;
-                return httpServiceJava.post(url, req);
-            };
-            
-            this.updateProfileFieldVisibility = function(req) {
-              var url =   config.URL.USER.UPDATE_PROF_VIS_FIELDS;
-              return httpServiceJava.post(url, req);
-            };
-            
-        }]);
+        this.addSkills = function (req) {
+          var url = config.URL.USER.ADD_SKILLS
+          return httpServiceJava.post(url, req)
+        }
+
+        this.updateProfileFieldVisibility = function (req) {
+          var url = config.URL.USER.UPDATE_PROF_VIS_FIELDS
+          return httpServiceJava.post(url, req)
+        }
+      }])

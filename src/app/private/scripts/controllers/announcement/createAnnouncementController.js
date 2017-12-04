@@ -73,7 +73,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       $('#createAnnouncementModal').modal({
         closable: false,
         onHide: function () {
-          if (!createAnn.isMetaModified && createAnn.stepNumber == 4) {
+          if (!createAnn.isMetaModified && createAnn.stepNumber === 4) {
             return true
           } else if (createAnn.isMetaModified) {
             createAnn.confirmationModal()
@@ -179,7 +179,7 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
      */
     createAnn.removeRecipients = function (item) {
       _.remove(createAnn.selectedRecipients, function (arg) {
-        if (arg.location == item.location) {
+        if (arg.location === item.location) {
           item.selected = false,
             toasterService.info(item.location + ' ' + $rootScope.messages.imsg.m0020)
           return arg.location

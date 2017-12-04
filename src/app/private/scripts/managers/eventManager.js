@@ -2,11 +2,10 @@
  * @author Manjunath Davanam <manjunathd@ilimi.in>
  */
 
-
 /**
- * EventManger to log or capature any sunbird portal events 
+ * EventManger to log or capature any sunbird portal events
  */
-org.sunbird.portal.eventManager = {};
+org.sunbird.portal.eventManager = {}
 
 /**
  * Register an event listener callback function for the events raised by the framework.
@@ -16,9 +15,9 @@ org.sunbird.portal.eventManager = {};
  * @memberof org.sunbird.portal
  */
 
-org.sunbird.portal.eventManager.addEventListener = function(type, callback, scope) {
-    EventBus.addEventListener(type, callback, scope);
-};
+org.sunbird.portal.eventManager.addEventListener = function (type, callback, scope) {
+  EventBus.addEventListener(type, callback, scope)
+}
 
 /**
  * Fires an event to the framework, allowing other plugins who may have registered to receive the callback notification. All
@@ -29,9 +28,9 @@ org.sunbird.portal.eventManager.addEventListener = function(type, callback, scop
  * @memberof org.sunbird.portal
  */
 
-org.sunbird.portal.eventManager.dispatchEvent = function(type, data, target) {
-    EventBus.dispatch(type, target, data);
-};
+org.sunbird.portal.eventManager.dispatchEvent = function (type, data, target) {
+  EventBus.dispatch(type, target, data)
+}
 
 /**
  * Remove an event listener to an event. Plugins should cleanup when they are removed.
@@ -41,9 +40,9 @@ org.sunbird.portal.eventManager.dispatchEvent = function(type, data, target) {
  * @memberof org.sunbird.portal
  */
 
-org.sunbird.portal.eventManager.removeEventListener = function(type, callback, scope) {
-    EventBus.removeEventListener(type, callback, scope);
-};
+org.sunbird.portal.eventManager.removeEventListener = function (type, callback, scope) {
+  EventBus.removeEventListener(type, callback, scope)
+}
 
 /**
  * @param type {string} name of the event which is being registred
@@ -52,9 +51,9 @@ org.sunbird.portal.eventManager.removeEventListener = function(type, callback, s
  * @memberof org.sunbird.portal
  */
 
-org.sunbird.portal.eventManager.hasEventListener = function(eventName) {
-    return EventBus.hasEventListener(eventName)
-};
+org.sunbird.portal.eventManager.hasEventListener = function (eventName) {
+  return EventBus.hasEventListener(eventName)
+}
 
 /**
  * Returns all event which are being registed on element.
@@ -62,6 +61,6 @@ org.sunbird.portal.eventManager.hasEventListener = function(eventName) {
  * @memberof org.sunbird.portal
  */
 
-org.sunbird.portal.eventManager.getEvents = function() {
-    return EventBus.getEvents();
-};
+org.sunbird.portal.eventManager.getEvents = function () {
+  return EventBus.getEvents()
+}
