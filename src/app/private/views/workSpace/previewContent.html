@@ -1,141 +1,203 @@
 <div class="ui grid">
-    <div class="one wide column"></div>
-    <div class="ten wide column">
-        <div class="row" ng-if="previewContent.loader.showLoader">
-            <app-loader data="{{previewContent.loader}}"></app-loader>
-        </div>
-        <div class="row margin-top-10" ng-show="!previewContent.loader.showLoader">
-            <content-player visibility="previewContent.contentPlayer.isContentPlayerEnabled" body="previewContent.contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="true" height="10" width="100" ispercentage="true" closeurl="previewContent.redirectUrl" isworkspace="true"></content-player>
-        </div>
-        <div class="row margin-top-10" ng-show="!previewContent.loader.showLoader">
-            <div class="videosegment  ui clearing segment" ng-if="previewContent.contentData.status === 'Review' && previewContent.isShowPublishRejectButton">
-                <button sb-permissions permission-only="CONTENT_REVIEWER" ng-if="previewContent.isShowPublishRejectButton" ng-disabled="previewContent.loader.showLoader" class="ui right floated primary button mouse-pointer" ng-click="previewContent.publishContent()">
-                            {{$root.frmelmnts.btn.publish}}
-                </button>
-                <button sb-permissions permission-only="CONTENT_REVIEWER" ng-if="previewContent.isShowPublishRejectButton" ng-disabled="previewContent.loader.showLoader" class="ui right floated primary button mouse-pointer" ng-click="previewContent.rejectContent()">
-                            {{$root.frmelmnts.btn.reject}}
-                </button>
-            </div>
-            <div class="videosegment  ui clearing segment" ng-if="previewContent.contentData.status === 'Flagged' && previewContent.isShowFlagActionButton">
-                <button sb-permissions permission-only="FLAG_REVIEWER" ng-if="previewContent.isShowFlagActionButton" ng-disabled="previewContent.loader.showLoader" class="ui right floated primary button mouse-pointer" ng-click="previewContent.acceptContentFlag(previewContent.contentData)">
-                            {{$root.frmelmnts.btn.accept}}
-                </button>
-                <button sb-permissions permission-only="FLAG_REVIEWER" ng-if="previewContent.isShowFlagActionButton" ng-disabled="previewContent.loader.showLoader" class="ui right floated primary button mouse-pointer" ng-click="previewContent.discardContentFlag(previewContent.contentData)">
-                            {{$root.frmelmnts.btn.discard}}
-                </button>
-            </div>
-        </div>
+  <div class="one wide column"></div>
+  <div class="ten wide column">
+    <div class="row" ng-if="previewContent.loader.showLoader">
+      <app-loader data="{{previewContent.loader}}"></app-loader>
     </div>
+    <div class="row margin-top-10" ng-show="!previewContent.loader.showLoader">
+      <content-player visibility="previewContent.contentPlayer.isContentPlayerEnabled" body="previewContent.contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="true" height="10" width="100" ispercentage="true" closeurl="previewContent.redirectUrl" isworkspace="true"></content-player>
+    </div>
+    <div class="row margin-top-10" ng-show="!previewContent.loader.showLoader">
+      <div class="videosegment  ui clearing segment" ng-if="previewContent.contentData.status === 'Review' && previewContent.isShowPublishRejectButton">
+        <button sb-permissions permission-only="CONTENT_REVIEWER" ng-if="previewContent.isShowPublishRejectButton" ng-disabled="previewContent.loader.showLoader" class="ui right floated primary button mouse-pointer" ng-click="previewContent.publishContent()">
+          {{$root.frmelmnts.btn.publish}}
+        </button>
+        <button sb-permissions permission-only="CONTENT_REVIEWER" ng-if="previewContent.isShowPublishRejectButton" ng-disabled="previewContent.loader.showLoader" class="ui right floated primary button mouse-pointer" ng-click="previewContent.rejectContent()">
+          {{$root.frmelmnts.btn.reject}}
+        </button>
+      </div>
+      <div class="videosegment  ui clearing segment" ng-if="previewContent.contentData.status === 'Flagged' && previewContent.isShowFlagActionButton">
+        <button sb-permissions permission-only="FLAG_REVIEWER" ng-if="previewContent.isShowFlagActionButton" ng-disabled="previewContent.loader.showLoader" class="ui right floated primary button mouse-pointer" ng-click="previewContent.acceptContentFlag(previewContent.contentData)">
+          {{$root.frmelmnts.btn.accept}}
+        </button>
+        <button sb-permissions permission-only="FLAG_REVIEWER" ng-if="previewContent.isShowFlagActionButton" ng-disabled="previewContent.loader.showLoader" class="ui right floated primary button mouse-pointer" ng-click="previewContent.discardContentFlag(previewContent.contentData)">
+          {{$root.frmelmnts.btn.discard}}
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
-
 <div class="ui grid">
-    <div class="one wide column"></div>
-    <div class="six wide column">
-        <div class="row">
-            <div class="twelve wide column" ng-if="previewContent.contentData.description">
-                <div class="ui raised segment">
-                    <div class="header announcementCard-header">
-                        <span class="header cardsHeading ng-binding"> {{$root.frmelmnts.lbl.description}} </span>
+  <div class="one wide column"></div>
+  <div class="seven wide column">
+    <div class="row">
+      <div class="twelve wide column" ng-if="previewContent.contentData.description">
+        <div class="ui raised segment">
+          <div class="header announcementCard-header">
+            <span class="header cardsHeading ng-binding"> {{$root.frmelmnts.lbl.description}} </span>
+          </div>
+          <div class="description padding-top-5" ng-init="previewContent.readMore = false">
+            <div ng-if="!previewContent.readMore">
+              <span class="pre-line-space">{{previewContent.contentData.description | limitTo: 20 }}&nbsp;</span>
+              <span class="ui cardsKnowMore mouse-pointer" ng-if="previewContent.contentData.description.length > 20 && previewContent.readMore === false" ng-click="previewContent.readMore = !previewContent.readMore;">{{$root.frmelmnts.lbl.readmore}} </span>
+            </div>
+            <div class="pre-line-space" ng-if="previewContent.readMore"> {{previewContent.contentData.description}}&nbsp;
+              <span class="ui cardsKnowMore mouse-pointer" ng-click="previewContent.readMore = false;">{{$root.frmelmnts.lbl.readless}}</span>
+            </div>
+          </div>
+          <div class="header announcementCard-header margin-top-20">
+            <span class="header cardsHeading ng-binding">{{$root.frmelmnts.lbl.contentinformation}}</span>
+          </div>
+          <div class="ui middle aligned list margin-top-0">
+            <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.author">
+                <div class= "ui grid">
+                    <div class="three wide column">
+                      <div class="right floated content contentdetail">
+                        <div class="ui ">{{previewContent.contentData.author}}</div>
+                      </div>
                     </div>
-                    <div class="description padding-top-5">
-                        <p ng-bind-html="previewContent.contentData.description"></p>
+                    <div class="nine wide column">
+                      <div class="content">
+                        {{$root.frmelmnts.lbl.author}}
+                      </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="four wide column" ng-if="previewContent.contentData">
-        <div class="row">
-            <div class="twelve wide column">
-                <div class="ui segment">
-                    <div class="header announcementCard-header">
-                        <span class="header cardsHeading ng-binding">{{$root.frmelmnts.lbl.contentinformation}}</span>
+            <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.language">
+                <div class= "ui grid">
+                    <div class="three wide column">
+                        <div class="content">
+                            {{$root.frmelmnts.lbl.medium}}
+                         </div> 
                     </div>
-                    <div class="ui middle aligned list margin-top-0">
-                        <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.author">
-                            <div class="right floated content contentdetail">
-                                <div class="ui ">{{previewContent.contentData.author}}</div>
-                            </div>
-                            <div class="content">
-                                {{$root.frmelmnts.lbl.author}}
-                            </div>
+                     <div class="nine wide column">
+                        <div class="content contentdetail">
+                            <div class="ui ">{{previewContent.contentData.language.toString()}}</div>
                         </div>
-                        <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.language">
-                            <div class="right floated content contentdetail">
-                                <div class="ui ">{{previewContent.contentData.language.toString()}}</div>
-                            </div>
-                            <div class="content">
-                                {{$root.frmelmnts.lbl.medium}}
-                            </div>
+                    </div>
+                </div>
+            </div>
+            <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.gradeLevel">
+                <div class= "ui grid">
+                    <div class="three wide column">
+                        <div class="content ">
+                            {{$root.frmelmnts.lbl.class}}
                         </div>
-                        <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.gradeLevel">
-                            <div class="right floated content contentdetail">
-                                <div class="ui ">{{previewContent.contentData.gradeLevel.toString()}}</div>
-                            </div>
-                            <div class="content ">
-                                {{$root.frmelmnts.lbl.class}}
-                            </div>
-                        </div>
-                        <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.subject">
-                            <div class="right floated content contentdetail">
-                                <div class="ui ">{{previewContent.contentData.subject}}</div>
-                            </div>
-                            <div class="content">
-                                {{$root.frmelmnts.lbl.subject}}
-                            </div>
-                        </div>
-                        <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.createdOn">
-                            <div class="right floated content contentdetail">
-                                <div class="ui ">{{previewContent.contentData.createdOn| dateFilterWithMDY}}</div>
-                            </div>
-                            <div class="content">
-                                {{$root.frmelmnts.lbl.createdon}}
-                            </div>
-                        </div>
-                        <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.lastUpdatedOn">
-                            <div class="right floated content contentdetail">
-                                <div class="ui ">{{previewContent.contentData.lastUpdatedOn| dateFilterWithMDY}}</div>
-                            </div>
-                            <div class="content">
-                                {{$root.frmelmnts.lbl.lastupdate}}
-                            </div>
-                        </div>
-                        <div class="item padding-top-10 padding-bottom-5"  ng-if="previewContent.getConceptsNames(previewContent.contentData.concepts)">
-                            <div class="right floated content contentdetail">
-                                <div class="ui">{{previewContent.getConceptsNames(previewContent.contentData.concepts)}}</div>
-                            </div>
-                            <div class="content">
-                                {{$root.frmelmnts.lbl.concept}}
-                            </div>
-                        </div>
-                        <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.status === 'Flagged' && previewContent.contentData.flagReasons">
-                            <div class="right floated content contentdetail">
-                                <div class="ui">{{previewContent.contentData.flagReasons.toString()}}</div>
-                            </div>
-                            <div class="content">
-                                {{$root.frmelmnts.lbl.flaggedreason}}
-                            </div>
-                        </div>
-                        <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.status === 'Flagged' && previewContent.contentData.flaggedBy">
-                            <div class="right floated content contentdetail">
-                                <div class="ui">{{previewContent.contentData.flaggedBy.toString()}}</div>
-                            </div>
-                            <div class="content">
-                                {{$root.frmelmnts.lbl.flaggedby}}
-                            </div>
-                        </div>
-                        <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.status === 'Flagged' && previewContent.contentData.flags">
-                            <div class="right floated content contentdetail">
-                                <div class="ui">{{previewContent.contentData.flags.toString()}}</div>
-                            </div>
-                            <div class="content">
-                                {{$root.frmelmnts.lbl.flaggeddescription}}
+                    </div>
+                    <div class="nine wide column">
+                        <div class="content contentdetail">
+                            <div class="ui ">{{previewContent.contentData.gradeLevel.toString()}}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.subject">
+                <div class= "ui grid">
+                    <div class="three wide column">
+                        <div class="content ">
+                            {{$root.frmelmnts.lbl.subject}}
+                        </div>
+                    </div>
+                    <div class="nine wide column">
+                        <div class="content contentdetail">
+                            <div class="ui ">{{previewContent.contentData.subject}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.createdOn">
+                <div class= "ui grid">
+                    <div class="three wide column">
+                        <div class="content ">
+                           {{$root.frmelmnts.lbl.createdon}}
+                        </div>
+                    </div>
+                    <div class="nine wide column">
+                        <div class="content contentdetail">
+                            <div class="ui ">{{previewContent.contentData.createdOn| dateFilterWithMDY}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.lastUpdatedOn">
+                <div class= "ui grid">
+                    <div class="three wide column">
+                        <div class="content ">
+                           {{$root.frmelmnts.lbl.lastupdate}}
+                        </div>
+                    </div>
+                    <div class="nine wide column">
+                        <div class="content contentdetail">
+                            <div class="ui ">{{previewContent.contentData.lastUpdatedOn| dateFilterWithMDY}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.getConceptsNames(previewContent.contentData.concepts)">
+                <div class= "ui grid">
+                    <div class="three wide column">
+                        <div class="content ">
+                           {{$root.frmelmnts.lbl.concept}}
+                        </div>
+                    </div>
+                    <div class="nine wide column">
+                        <div class="content contentdetail">
+                            <div class="ui overFlowWordRap">{{previewContent.getConceptsNames(previewContent.contentData.concepts)}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.status === 'Flagged' && previewContent.contentData.flagReasons">
+                <div class= "ui grid">
+                    <div class="three wide column">
+                        <div class="content ">
+                           {{$root.frmelmnts.lbl.flaggedreason}}
+                        </div>
+                    </div>
+                    <div class="nine wide column">
+                        <div class="content contentdetail">
+                            <div class="ui">{{previewContent.contentData.flagReasons.toString()}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.status === 'Flagged' && previewContent.contentData.flaggedBy">
+                <div class= "ui grid">
+                    <div class="three wide column">
+                        <div class="content ">
+                           {{$root.frmelmnts.lbl.flaggedby}}
+                        </div>
+                    </div>
+                    <div class="nine wide column">
+                        <div class="content contentdetail">
+                            <div class="ui">{{previewContent.contentData.flaggedBy.toString()}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.status === 'Flagged' && previewContent.contentData.flags">
+                <div class= "ui grid">
+                    <div class="three wide column">
+                        <div class="content ">
+                          {{$root.frmelmnts.lbl.flaggeddescription}}
+                        </div>
+                    </div>
+                    <div class="nine wide column">
+                        <div class="content contentdetail">
+                             <div class="ui">{{previewContent.contentData.flags.toString()}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-    <div class="one wide column"></div>
+  </div>
+  <div class="three wide column" ng-if="previewContent.contentData">
+  </div>
+  <div class="one wide column"></div>
 </div>
