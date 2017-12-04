@@ -1,3 +1,7 @@
 {
     "extends": "standard"
+    "globals": {
+        "angular": true,
+        "_": true
+    }
 }
