@@ -2,7 +2,9 @@
     "extends": "standard",
     "env": {
         "browser": true,
-        "node": true
+        "node": true,
+        "jasmine": true,
+        "mocha": true
     },
     "globals": {
         "angular": true,
