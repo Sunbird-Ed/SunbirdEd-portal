@@ -6,7 +6,7 @@ angular.module('playerApp')
       var announcementOutboxData = this
       announcementOutboxData.pager = {}
       announcementOutboxData.setPage = setPage
-      announcementOutboxData.pageLimit = 25
+      announcementOutboxData.pageLimit = 500
       announcementOutboxData.showLoader = true
       announcementOutboxData.showDataDiv = false
 
@@ -18,14 +18,14 @@ angular.module('playerApp')
       announcementOutboxData.renderAnnouncementList = function (pageNumber) {
         pageNumber = pageNumber || 1
         announcementAdapter.getOutBoxAnnouncementList(announcementOutboxData.pageLimit, pageNumber).then(function (apiResponse) {
-          if (announcementOutboxData.listData.length > 0) {
-            announcementOutboxData.showLoader = false
-            announcementOutboxData.result = apiResponse.result
-            announcementOutboxData.listData = apiResponse.result.announcements
-            announcementOutboxData.pageNumber = pageNumber
-            announcementOutboxData.items = apiResponse.result.announcements
-            announcementOutboxData.pager = PaginationService.GetPager(apiResponse.result.count,
+          announcementOutboxData.showLoader = false
+          announcementOutboxData.totalCount = apiResponse.result.count
+          announcementOutboxData.result = apiResponse.result
+          announcementOutboxData.listData = apiResponse.result.announcements
+          announcementOutboxData.pageNumber = pageNumber
+          announcementOutboxData.pager = PaginationService.GetPager(apiResponse.result.count,
                 pageNumber, announcementOutboxData.pageLimit)
+          if (announcementOutboxData.listData.length > 0) {
             announcementOutboxData.showDataDiv = true
           }
         }, function (err) {
