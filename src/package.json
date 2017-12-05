@@ -117,6 +117,12 @@
     "uuid": "^3.1.0"
   },
   "standard": {
+    "env": {
+        "browser": true,
+        "node": true,
+        "jasmine": true,
+        "mocha": true
+    },
     "globals": [
     "angular",
     "_",
