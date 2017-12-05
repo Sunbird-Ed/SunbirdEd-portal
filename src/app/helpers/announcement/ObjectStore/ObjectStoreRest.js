@@ -44,7 +44,8 @@ class ObjectStoreRest extends ObjectStore {
                 let validation = await (this.model.validateModel(data.values))
                 if (!validation.isValid) throw {
                     message: validation.error,
-                    status: HttpStatus.BAD_REQUEST
+                    status: HttpStatus.BAD_REQUEST,
+                    isCustom:true
                 }
                 let options = {
                     method: 'POST',
@@ -64,10 +65,7 @@ class ObjectStoreRest extends ObjectStore {
                     data: _.get(result, 'body.result'),
                 }
             } catch (error) {
-                throw new AppError({
-                    message: error.message || 'Unable to create!',
-                    status: error.status || HttpStatus.INTERNAL_SERVER_ERROR
-                })
+                throw error
             }
         })
     }
@@ -109,10 +107,7 @@ class ObjectStoreRest extends ObjectStore {
                         data: []
                     }
                 } catch (error) {
-                    throw new AppError({
-                        message: error.message || 'Unable to fetch!',
-                        status: error.status || HttpStatus.INTERNAL_SERVER_ERROR
-                    })
+                    throw error
                 }
             })
         }
@@ -130,11 +125,13 @@ class ObjectStoreRest extends ObjectStore {
             try {
                 if (!data.values) throw {
                     message: 'Values are required!.',
-                    status: HttpStatus.BAD_REQUEST
+                    status: HttpStatus.BAD_REQUEST,
+                    isCustom:true
                 }
                 if (!data.values.id) throw {
                     message: 'Identifier is required!.',
-                    status: HttpStatus.BAD_REQUEST
+                    status: HttpStatus.BAD_REQUEST,
+                    isCustom:true
                 }
                 let options = {
                     method: 'POST',
@@ -153,10 +150,7 @@ class ObjectStoreRest extends ObjectStore {
                     data: result
                 }
             } catch (error) {
-                throw new AppError({
-                    message: error.message || 'Unable to update!',
-                    status: error.status || HttpStatus.INTERNAL_SERVER_ERROR
-                })
+                throw error
             }
         })
     }
@@ -213,10 +207,7 @@ class ObjectStoreRest extends ObjectStore {
 
                 return metricsData
             } catch (error) {
-                throw new AppError({
-                    message: error.message || 'Unable to fetch!',
-                    status: error.status || HttpStatus.INTERNAL_SERVER_ERROR
-                })
+                throw error
             }
         })
     }
