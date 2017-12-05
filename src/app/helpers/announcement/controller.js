@@ -145,6 +145,8 @@ class AnnouncementController {
                 message: 'Invalid Request, Values are required.',
                 statusCode: HttpStatus.BAD_REQUEST
             }))
+
+            let attachments = data.attachments ? _.map(data.attachments, JSON.stringify) : []
             let query = {
                 values: {
                     'id': announcementId,
@@ -160,7 +162,7 @@ class AnnouncementController {
                     'target': data.target,
                     'links': data.links || [],
                     'status': statusConstant.ACTIVE,
-                    'attachments': data.attachments || []
+                    'attachments': attachments
                 }
             }
 
@@ -183,8 +185,7 @@ class AnnouncementController {
                     reject(this.customError(error))
                 })
         })
-  }
-
+    }
     
     /**
      * Which is used to create a announcements notification
@@ -254,7 +255,7 @@ class AnnouncementController {
                 .then((data) => {
                     if (data) {
                         _.forEach(data.data.content, (announcementObj) => {
-                            if (_.isString(announcementObj.target)) announcementObj.target = JSON.parse(announcementObj.target)
+                            this.__parseAttachments(announcementObj)
                         })
                         resolve(_.get(data.data, 'content[0]'))
                     } else {
@@ -269,6 +270,8 @@ class AnnouncementController {
                 })
         })
     }
+
+
 
     getDefinitions(requestObj) {
         return this.__getDefinitions()(requestObj)
@@ -463,6 +466,9 @@ class AnnouncementController {
                                     status: HttpStatus.INTERNAL_SERVER_ERROR
                                 }
                             } else {
+                                _.forEach(data.data.content, (announcementObj) => {
+                                    this.__parseAttachments(announcementObj)
+                                })
                                 resolve(data.data)
                             }
                         })
@@ -508,6 +514,30 @@ class AnnouncementController {
                 throw this.customError(error)
             }
         })
+    }
+
+    __parseAttachments(announcement) {
+        let parsedAttachments = []
+        _.forEach(announcement.attachments, (attachment, k) => {
+            let parsedAttachment = this.__parseJSON(attachment)
+
+            if (parsedAttachment) {
+                parsedAttachments.push(parsedAttachment)
+            } else {
+                parsedAttachments = []
+                return false
+            }
+        })
+
+        announcement.attachments = parsedAttachments
+    }
+
+    __parseJSON(jsonString) {
+        try {
+            return JSON.parse(jsonString)
+        } catch (error) {
+            return false
+        }
     }
 
     __getGeolocations(orgIds, authUserToken) {
@@ -614,6 +644,10 @@ class AnnouncementController {
                                 status: HttpStatus.INTERNAL_SERVER_ERROR
                             }
                         } else {
+                            _.forEach(data.data.content, (announcementObj) => {
+                                this.__parseAttachments(announcementObj)
+                            })
+
                             let response = {
                                 count: data.data.count,
                                 announcements: data.data.content
