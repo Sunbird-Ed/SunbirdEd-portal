@@ -1,5 +1,9 @@
 {
     "extends": "standard",
+    "env": {
+        "browser": true,
+        "node": true
+    },
     "globals": {
         "angular": true,
         "_": true,
@@ -7,7 +11,8 @@
         "moment": true,
         "iziToast": true,
         "org": true,
-        "alasql": true
+        "alasql": true,
+        "md5": true
     },
     "rules": {
         "quotes": ["error", "single"],
