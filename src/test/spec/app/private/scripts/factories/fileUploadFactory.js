@@ -7,7 +7,7 @@ describe('Factory: fileUpload', function() {
         $q,
         deferred,
         timeout,
-        annTestData = announcementTestData.createAnncmnt.fileUploadSuccessData
+        annTestData = announcementTestData.composeAnncmnt.fileUploadSuccessData
     beforeEach(inject(function($rootScope, $controller) {
         $controller('AppCtrl', {
             $rootScope: $rootScope,
@@ -37,9 +37,9 @@ describe('Factory: fileUpload', function() {
             uploadSuccess: this.onFileUploadSuccess,
             onCancel: this.onFileUploadCancel
         }
-        var createAnncmntInstance = new fileUploadObj.createFineUploadInstance(options)
-        expect(createAnncmntInstance).toBeDefined()
-        var onFileUploadSuccess = new fileUploadObj.onFileUploadSuccess(1, 'swing-846077_960_720.jpg', announcementTestData.createAnncmnt.fileUploadSuccessData, {
+        var composeAnncmntInstance = new fileUploadObj.createFineUploadInstance(options)
+        expect(composeAnncmntInstance).toBeDefined()
+        var onFileUploadSuccess = new fileUploadObj.onFileUploadSuccess(1, 'swing-846077_960_720.jpg', announcementTestData.composeAnncmnt.fileUploadSuccessData, {
             'type': 'AA',
             'size': 123
         })
@@ -50,8 +50,8 @@ describe('Factory: fileUpload', function() {
             uploadSuccess: this.onFileUploadSuccess,
             onCancel: this.onFileUploadCancel
         }
-        var createAnncmntInstance = new fileUploadObj.createFineUploadInstance(options)
-        expect(createAnncmntInstance).toBeDefined()
+        var composeAnncmntInstance = new fileUploadObj.createFineUploadInstance(options)
+        expect(composeAnncmntInstance).toBeDefined()
         var onFileUploadCancel = new fileUploadObj.onFileUploadCancel(1, 'swing-846077_960_720.jpg')
         expect(onFileUploadCancel).toBeDefined()
     })

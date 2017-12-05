@@ -1,5 +1,4 @@
 'use strict'
-
 angular.module('playerApp')
   .config(function ($stateProvider, $urlRouterProvider, $qProvider) {
     $qProvider.errorOnUnhandledRejections(false) // To handle error rejection
@@ -87,26 +86,21 @@ angular.module('playerApp')
         views: {
           mainView: {
             templateUrl: '/views/announcement/composeAnnouncement.html',
-            controller: 'createAnnouncementCtrl as composeAnn'
+            controller: 'composeAnnouncementCtrl as composeAnn'
           }
         },
         params: {
           announcement: null,
           isMetaModifiedSteps: false,
-          userIdHashTag: null,
+          isResend: false,
           telemetryPageId: 'annoucement_form_details',
           telemetryPageType: 'form'
         },
         onEnter: function ($stateParams, $rootScope, $state, routeHelperService, portalTelemetryService, userService) {
           var stepNumber = parseInt($stateParams.stepNumber)
           var announcement = $stateParams.announcement
-          var userIdHashTag = ''
+          $rootScope.userIdHashTag = $rootScope.userIdHashTag || userService.getUserHash($rootScope.userId)
           $rootScope.profileActive = 'active'
-          if ($stateParams.userIdHashTag === null) {
-            userIdHashTag = userService.getUserHash($rootScope.userId)
-          } else {
-            userIdHashTag = $stateParams.userIdHashTag
-          }
           if (stepNumber !== 1) {
             var status = routeHelperService.verifyAnnouncementData(stepNumber, announcement)
             if (status) {
@@ -118,7 +112,7 @@ angular.module('playerApp')
                 id: '',
                 name: '',
                 url: '/private/index#!/announcement/create/' + stepNumber
-              }, userIdHashTag)
+              }, $rootScope.userIdHashTag)
             } else {
               $('#createAnnouncementModal').modal('hide')
               $state.go('announcementOutbox')
@@ -132,7 +126,7 @@ angular.module('playerApp')
               id: '',
               name: '',
               url: '/private/index#!/announcement/create/' + stepNumber
-            }, userIdHashTag)
+            }, $rootScope.userIdHashTag)
           }
         },
         onExit: function ($rootScope) {
@@ -144,13 +138,13 @@ angular.module('playerApp')
         views: {
           mainView: {
             templateUrl: '/views/announcement/composeAnnouncement.html',
-            controller: 'resendAnnouncementCtrl as composeAnn'
+            controller: 'composeAnnouncementCtrl as composeAnn'
           }
         },
         params: {
           announcement: null,
           isMetaModifiedSteps: false,
-          userIdHashTag: null,
+          isResend: true,
           telemetryPageId: 'annoucement_form_details',
           telemetryPageType: 'form',
           telemetryAnnTitle: null
@@ -159,13 +153,8 @@ angular.module('playerApp')
           var stepNumber = parseInt($stateParams.stepNumber)
           var announcement = $stateParams.announcement
           var announcementId = $stateParams.announcementId
-          var userIdHashTag = ''
+          $rootScope.userIdHashTag = $rootScope.userIdHashTag || userService.getUserHash($rootScope.userId)
           $rootScope.profileActive = 'active'
-          if ($stateParams.userIdHashTag === null) {
-            userIdHashTag = userService.getUserHash($rootScope.userId)
-          } else {
-            userIdHashTag = $stateParams.userIdHashTag
-          }
           if (stepNumber !== 1) {
             var status = routeHelperService.verifyAnnouncementData(stepNumber, announcement)
             if (status) {
@@ -177,7 +166,7 @@ angular.module('playerApp')
                 id: announcementId,
                 name: $stateParams.telemetryAnnTitle,
                 url: '/private/index#!/announcement/resend/' + announcementId + '/' + stepNumber
-              }, userIdHashTag)
+              }, $rootScope.userIdHashTag)
             } else {
               $state.go('announcementOutbox')
             }
@@ -190,7 +179,7 @@ angular.module('playerApp')
               id: $stateParams.announcementId,
               name: $stateParams.telemetryAnnTitle || '',
               url: '/private/index#!/announcement/resend/' + announcementId + '/' + stepNumber
-            }, userIdHashTag)
+            }, $rootScope.userIdHashTag)
           }
         },
         onExit: function ($rootScope) {

@@ -24,7 +24,9 @@ angular.module('playerApp')
             announcementOutboxData.showDataDiv = true
           }
         }, function (err) {
-          announcementOutboxData.showLoader = false
+          if (err) {
+            announcementOutboxData.showLoader = false
+          }
         })
       }
 
@@ -86,7 +88,7 @@ angular.module('playerApp')
           if (apiResponse.result.status === 'cancelled') {
             announcementOutboxData.closeModal('announcementDeleteModal')
             toasterService.success($rootScope.messages.smsg.moo41)
-            var evens = _.remove(announcementOutboxData.listData, function (ann) {
+            _.remove(announcementOutboxData.listData, function (ann) {
               return ann.id === announcementOutboxData.announcementId
             })
             announcementOutboxData.setPage(announcementOutboxData.pager.currentPage)
@@ -95,7 +97,9 @@ angular.module('playerApp')
             announcementOutboxData.closeModal('announcementDeleteModal')
           }
         }, function (err) {
-          announcementOutboxData.closeModal('announcementDeleteModal')
+          if (err) {
+            announcementOutboxData.closeModal('announcementDeleteModal')
+          }
         })
       }
 
@@ -106,14 +110,7 @@ angular.module('playerApp')
      * @param {int} [announcementId] [to make getResend api call]
      */
       announcementOutboxData.getResend = function (announcementId, announcementTitle) {
-        var hashTagId = ''
-        if ($stateParams.userIdHashTag === undefined) {
-          hashTagId = (Math.floor(new Date().getTime() / 1000)) + ($rootScope.userId) + (Math.floor(Math.random() * 90000) + 10000)
-          hashTagId = md5(hashTagId)
-        } else {
-          hashTagId = $stateParams.userIdHashTag
-        }
-        $state.go('announcementResend', {announcementId: announcementId, stepNumber: '1', userIdHashTag: hashTagId, telemetryAnnTitle: announcementTitle})
+        $state.go('announcementResend', {announcementId: announcementId, stepNumber: '1', telemetryAnnTitle: announcementTitle})
       }
 
     /**
@@ -133,7 +130,7 @@ angular.module('playerApp')
      */
       announcementOutboxData.gotToAnnouncementCreateState = function () {
         var hashTagId = ''
-        if ($stateParams.userIdHashTag === undefined) {
+        if ($stateParams.userIdHashTag === null) {
           hashTagId = (Math.floor(new Date().getTime() / 1000)) + ($rootScope.userId) + (Math.floor(Math.random() * 90000) + 10000)
           hashTagId = md5(hashTagId)
         } else {
