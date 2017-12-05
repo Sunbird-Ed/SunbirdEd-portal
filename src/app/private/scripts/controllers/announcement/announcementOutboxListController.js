@@ -6,6 +6,7 @@ angular.module('playerApp')
       var announcementOutboxData = this
       announcementOutboxData.pager = {}
       announcementOutboxData.setPage = setPage
+      announcementOutboxData.pageLimit = 25
       announcementOutboxData.showLoader = true
       announcementOutboxData.showDataDiv = false
 
@@ -14,12 +15,17 @@ angular.module('playerApp')
      * @desc - function to get announcement outbox data
      * @memberOf Controllers.announcementOutboxListController
      */
-      announcementOutboxData.renderAnnouncementList = function () {
-        announcementAdapter.getOutBoxAnnouncementList().then(function (apiResponse) {
+      announcementOutboxData.renderAnnouncementList = function (pageNumber) {
+        pageNumber = pageNumber || 1
+        announcementAdapter.getOutBoxAnnouncementList(announcementOutboxData.pageLimit, pageNumber).then(function (apiResponse) {
           announcementOutboxData.showLoader = false
           announcementOutboxData.result = apiResponse.result
           announcementOutboxData.listData = apiResponse.result.announcements
-          initController()
+          announcementOutboxData.pageNumber = pageNumber
+          announcementOutboxData.items = apiResponse.result.announcements
+          announcementOutboxData.pager = PaginationService.GetPager(apiResponse.result.count,
+              pageNumber, announcementOutboxData.pageLimit)
+          console.log(announcementOutboxData.pager)
           if (announcementOutboxData.listData.length > 0) {
             announcementOutboxData.showDataDiv = true
           }
@@ -31,29 +37,26 @@ angular.module('playerApp')
       }
 
     /**
-     * @method initController
-     * @desc - function to set page
-     * @memberOf Controllers.announcementOutboxListController
-     */
-      function initController () {
-        announcementOutboxData.setPage(1)
-      }
-
-    /**
      * @method setPage
      * @desc - function to setPager
      * @memberOf Controllers.announcementOutboxListController
      * @param {int} [page] [page number]
      */
       function setPage (page) {
-        announcementOutboxData.pager = {}
+        // // announcementOutboxData.pager = {}
+        // if (page < 1 || page > announcementOutboxData.pager.totalPages) {
+        //   return
+        // }
+        // // get pager object from service
+        // announcementOutboxData.pager = PaginationService.GetPager(announcementOutboxData.listData.length, page)
+        // // get current page of items
+        // announcementOutboxData.items = announcementOutboxData.listData.slice(announcementOutboxData.pager.startIndex, announcementOutboxData.pager.endIndex + 1)
+
         if (page < 1 || page > announcementOutboxData.pager.totalPages) {
           return
         }
-        // get pager object from service
-        announcementOutboxData.pager = PaginationService.GetPager(announcementOutboxData.listData.length, page)
-        // get current page of items
-        announcementOutboxData.items = announcementOutboxData.listData.slice(announcementOutboxData.pager.startIndex, announcementOutboxData.pager.endIndex + 1)
+
+        announcementOutboxData.renderAnnouncementList(page)
       }
 
     /**
@@ -129,14 +132,7 @@ angular.module('playerApp')
      * @memberOf Controllers.announcementOutboxListController
      */
       announcementOutboxData.gotToAnnouncementCreateState = function () {
-        var hashTagId = ''
-        if ($stateParams.userIdHashTag === null) {
-          hashTagId = (Math.floor(new Date().getTime() / 1000)) + ($rootScope.userId) + (Math.floor(Math.random() * 90000) + 10000)
-          hashTagId = md5(hashTagId)
-        } else {
-          hashTagId = $stateParams.userIdHashTag
-        }
-        $state.go('announcementCreate', {stepNumber: '1', userIdHashTag: hashTagId})
+        $state.go('announcementCreate', {stepNumber: '1'})
       }
     }
   ])
