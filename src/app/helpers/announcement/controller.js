@@ -712,11 +712,8 @@ class AnnouncementController {
 
     __getLimit(requestedLimit) {
         let limit = requestedLimit || LIMIT_DEFAULT
-        if(limit > LIMIT_MAX){
-            throw {message:'Exceed the max_limit 200', status:HttpStatus.BAD_REQUEST}
-        }else{
-            return limit
-        }
+        limit = limit > LIMIT_MAX ? LIMIT_MAX : limit
+        return limit
     }
 
     __getOffset(requestedOffset) {
@@ -1024,8 +1021,8 @@ class AnnouncementController {
      */
     customError(error) {
         return new AppError({
-            message: error ? error.message : 'Unable to process the request!',
-            status: error ? error.status : HttpStatus.INTERNAL_SERVER_ERROR
+            message: 'Unable to process the request!',
+            status: HttpStatus.INTERNAL_SERVER_ERROR
         })
     }
 }
