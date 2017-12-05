@@ -471,13 +471,13 @@ var announcementTestData = {
             }
         }
     },
-    createAnncmnt: {
+    composeAnncmnt: {
         getAnncmntTypeReq: {
             'rootorgid': 'ORG_001',
             'userid': '159e93d1-da0c-4231-be94-e75b0c226d7c',
             'definitions': ['announcementtypes', 'senderlist']
         },
-        createAnncmntRequest: {
+        composeAnncmntRequest: {
             'request': {
                 'title': 'Test 1',
                 'from': 'Pune',
@@ -603,7 +603,7 @@ var announcementTestData = {
             'responseCode': 'CLIENT_ERROR',
             'result': {}
         },
-        createAnncmntWithoutTitleReq: {
+        composeAnncmntWithoutTitleReq: {
             'request': {
                 'from': 'Pune',
                 'type': 'Circular',
@@ -617,7 +617,7 @@ var announcementTestData = {
                 }
             }
         },
-        createAnncmntWithoutTitleResponse: {
+        composeAnncmntWithoutTitleResponse: {
             'id': 'api.plugin.announcement.create',
             'ver': '1.0',
             'ts': '2017-11-20 17:44:57:015+0530',
