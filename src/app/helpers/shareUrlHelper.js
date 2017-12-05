@@ -1,4 +1,5 @@
 let publicUri = '/public/#!'
+let privateUri = '/private/#!'
 
 module.exports = function (app) {
   app.all('/content/:id', function (req, res) {
@@ -10,7 +11,10 @@ module.exports = function (app) {
     let redirectUrl = publicUri + req.path
     res.redirect(redirectUrl)
   })
-
+  app.all('/announcement/:id', function (req, res) {
+    let redirectUrl = privateUri + req.path
+    res.redirect(redirectUrl)
+  })
   app.all('/unlisted/:hash', function (req, res) {
     let hash = req.params.hash
     let uri = Buffer.from(hash, 'base64').toString()
