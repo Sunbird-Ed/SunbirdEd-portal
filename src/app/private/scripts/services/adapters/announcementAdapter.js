@@ -96,24 +96,16 @@ angular.module('playerApp').service('announcementAdapter', ['$rootScope', '$http
      * @instance
      */
     this.createAnnouncement = function (annoucementObj) {
-      var annoucement = _.clone(annoucementObj)
-      var attachmentList = []
-      // Convert attachment object to string
-      _.forEach(annoucement.attachments, function (attachment, index) {
-        if (_.isPlainObject(attachment)) {
-          attachmentList[index] = JSON.stringify(attachment)
-        }
-      })
       var data = {
         request: {
-          title: annoucement.details.title,
-          from: annoucement.details.from,
-          type: annoucement.details.type,
-          description: annoucement.details.description,
-          links: annoucement.links,
-          sourceId: annoucement.sourceId,
-          target: annoucement.target,
-          attachments: attachmentList
+          title: annoucementObj.details.title,
+          from: annoucementObj.details.from,
+          type: annoucementObj.details.type,
+          description: annoucementObj.details.description,
+          links: annoucementObj.links,
+          sourceId: annoucementObj.sourceId,
+          target: annoucementObj.target,
+          attachments: annoucementObj.attachments
         }
       }
       return handleHttpRequest(config.URL.ANNOUNCEMENT.CREATE, data, 'POST')
@@ -207,27 +199,19 @@ angular.module('playerApp').service('announcementAdapter', ['$rootScope', '$http
      * @instance
      */
     this.resendAnnouncement = function (annoucementObj) {
-      var annoucement = _.clone(annoucementObj)
-      // Convert attachment object to string
-      _.forEach(annoucement.attachments, function (attachment, index) {
-        if (_.isPlainObject(attachment)) {
-          annoucement.attachments[index] = JSON.stringify(attachment)
-        }
-      })
       var data = {
         request: {
-          title: annoucement.details.title,
-          from: annoucement.details.from,
-          type: annoucement.details.type,
-          description: annoucement.details.description,
-          links: annoucement.links,
-          sourceId: annoucement.sourceId,
-          target: annoucement.target,
-          attachments: annoucement.attachments
+          title: annoucementObj.details.title,
+          from: annoucementObj.details.from,
+          type: annoucementObj.details.type,
+          description: annoucementObj.details.description,
+          links: annoucementObj.links,
+          sourceId: annoucementObj.sourceId,
+          target: annoucementObj.target,
+          attachments: annoucementObj.attachments
         }
       }
-      var URL = config.URL.ANNOUNCEMENT.RESEND
-      return handleHttpRequest(URL, data, 'POST')
+      return handleHttpRequest(config.URL.ANNOUNCEMENT.RESEND, data, 'POST')
     }
   }
 ])

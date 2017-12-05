@@ -4,7 +4,6 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
   'announcementAdapter', 'portalTelemetryService', function ($rootScope, $scope, $state, $stateParams, $timeout,
         config, toasterService, announcementService, fileUpload, AnnouncementModel, announcementAdapter, portalTelemetryService) {
     var composeAnn = this
-    composeAnn.attachment = []
     composeAnn.senderlist = []
     composeAnn.targetIds = []
     composeAnn.disableBtn = true
@@ -205,7 +204,6 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
       composeAnn.isMetaModified = false
       composeAnn.repeatableWebLinks.length = 0
       composeAnn.showUrlField = false
-      composeAnn.attachment = []
       $('.qq-upload-list').children('li').remove()
     }
         /**
