@@ -284,7 +284,7 @@ var announcementTestData = {
             'responseCode': 'OK',
             'result': {
                 'sourceid': '0123673908687093760',
-                'attachments': ['{"name":"file1.pdf","mimetype":"application/pdf","size":"140kb","link":"https://y535y.cdn.com/fdfgd/sdfs/sfs1111"}', '{"name":"file2.jpeg","mimetype":"image/jpeg","size":"7500kb","link":"https://y535y.cdn.com/fdfgd/3423sd/sdfdst52222"}'],
+                'attachments': [{"name":"file1.pdf","mimetype":"application/pdf","size":"140kb","link":"https://y535y.cdn.com/fdfgd/sdfs/sfs1111"}, {"name":"file2.jpeg","mimetype":"image/jpeg","size":"7500kb","link":"https://y535y.cdn.com/fdfgd/3423sd/sdfdst52222"}],
                 'createddate': '2017-11-15 05:53:44:067+0000',
                 'details': {
                     'description': 'Test description for announcement 90',
@@ -467,16 +467,12 @@ var announcementTestData = {
                         'ids': ['0123668622585610242', '0123668627050987529']
                     }
                 },
+                'attachments': [{'name':'swing-846077_960_720.jpg','mimetype':'image/jpeg','size':'48 KB','link':'https://sunbirddev.blob.core.windows.net/attachments/announcement/File-012379586223849472129'}],
                 'status': 'cancelled'
             }
         }
     },
     composeAnncmnt: {
-        getAnncmntTypeReq: {
-            'rootorgid': 'ORG_001',
-            'userid': '159e93d1-da0c-4231-be94-e75b0c226d7c',
-            'definitions': ['announcementtypes', 'senderlist']
-        },
         composeAnncmntRequest: {
             'request': {
                 'title': 'Test 1',
@@ -491,7 +487,7 @@ var announcementTestData = {
                         'ids': ['01236686178285977611', '0123668625321820163', '01236686673822515210']
                     }
                 },
-                'attachments': ['{"name":"swing-846077_960_720.jpg","mimetype":"image/jpeg","size":"48 KB","link":"https://sunbirddev.blob.core.windows.net/attachments/announcement/File-012379586223849472129"}']
+                'attachments': [{"name":"swing-846077_960_720.jpg","mimetype":"image/jpeg","size":"48 KB","link":"https://sunbirddev.blob.core.windows.net/attachments/announcement/File-012379586223849472129"}]
             }
         },
         getAnncmntTypeRes: {
@@ -507,7 +503,7 @@ var announcementTestData = {
             },
             'responseCode': 'OK',
             'result': {
-                'announcementtypes': {
+                'announcementTypes': {
                     'count': 3,
                     'content': [{
                         'createddate': '2017-11-07 13:10:04:797+0530',
@@ -515,21 +511,9 @@ var announcementTestData = {
                         'id': '9b20d566-c5db-11e7-abc4-cec278b6b50a',
                         'rootorgid': 'ORG_001',
                         'status': 'active'
-                    }, {
-                        'createddate': '2017-11-07 13:10:04:797+0530',
-                        'name': 'Order',
-                        'id': '9b20d8f4-c5db-11e7-abc4-cec278b6b50a',
-                        'rootorgid': 'ORG_001',
-                        'status': 'active'
-                    }, {
-                        'createddate': '2017-11-07 13:10:04:797+0530',
-                        'name': 'News',
-                        'id': '9b20d7f0-c5db-11e7-abc4-cec278b6b50a',
-                        'rootorgid': 'ORG_001',
-                        'status': 'active'
                     }]
                 },
-                'senderlist': {
+                'senderList': {
                     '159e93d1-da0c-4231-be94-e75b0c226d7c': 'Sunil Pandith'
                 }
             }
