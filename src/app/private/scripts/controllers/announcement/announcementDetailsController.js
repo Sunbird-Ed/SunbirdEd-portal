@@ -15,14 +15,12 @@ angular.module('playerApp')
       announcementDetailsData.renderAnnouncement = function () {
         announcementAdapter.getAnnouncementById($stateParams.announcementId).then(function (apiResponse) {
           announcementDetailsData.announcementDetails = apiResponse.result
-
            // Converting attachment to object from string
-          _.forEach(announcementDetailsData.announcementDetails.attachments, function (attachment, index) {
+          /* _.forEach(announcementDetailsData.announcementDetails.attachments, function (attachment, index) {
             var attachment = JSON.parse(attachment)
             announcementDetailsData.announcementDetails.attachments[index] = attachment
             return attachment
-          })
-
+          }) */
           announcementDetailsData.showLoader = false
           if (apiResponse.result.userid === $rootScope.userId) {
             announcementDetailsData.announcementDetails.showActions = true
