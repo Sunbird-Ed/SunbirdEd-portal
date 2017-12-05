@@ -16,8 +16,6 @@ angular.module('playerApp')
         },
         onEnter: function ($stateParams, $rootScope, routeHelperService, portalTelemetryService) {
           $rootScope.profileActive = 'active'
-          $rootScope.courseActive = ' '
-          $rootScope.isPlayerPage = true
           routeHelperService.loadRouteConfig('announcementOutbox', null)
           portalTelemetryService.fireImpressions({
             env: 'community.announcements',
@@ -41,13 +39,11 @@ angular.module('playerApp')
           }
         },
         params: {
-          announcementName: undefined,
-          pageId: undefined
+          announcementName: null,
+          pageId: null
         },
         onEnter: function ($stateParams, $rootScope, routeHelperService, portalTelemetryService) {
           $rootScope.profileActive = 'active'
-          $rootScope.courseActive = ' '
-          $rootScope.isPlayerPage = true
           routeHelperService.loadRouteConfig('announcementDetails', null)
           portalTelemetryService.fireImpressions({
             env: 'community.announcements',
@@ -60,7 +56,6 @@ angular.module('playerApp')
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''
-          $('#annDetailsModal').modal('hide')
         }
       })
       .state('announcementInbox', {
@@ -73,8 +68,6 @@ angular.module('playerApp')
         },
         onEnter: function ($stateParams, $rootScope, routeHelperService, portalTelemetryService) {
           $rootScope.homeActive = 'active'
-          $rootScope.isPlayerPage = true
-          $rootScope.courseActive = ' '
           routeHelperService.loadRouteConfig('announcementInbox', null)
           portalTelemetryService.fireImpressions({
             env: 'community.announcements',
@@ -98,28 +91,25 @@ angular.module('playerApp')
           }
         },
         params: {
-          announcement: undefined,
+          announcement: null,
           isMetaModifiedSteps: false,
-          userIdHashTag: undefined,
+          userIdHashTag: null,
           telemetryPageId: 'annoucement_form_details',
           telemetryPageType: 'form'
         },
-        onEnter: function ($stateParams, $rootScope, $state, routeHelperService, portalTelemetryService) {
+        onEnter: function ($stateParams, $rootScope, $state, routeHelperService, portalTelemetryService, userService) {
           var stepNumber = parseInt($stateParams.stepNumber)
           var announcement = $stateParams.announcement
           var userIdHashTag = ''
-          if ($stateParams.userIdHashTag === undefined) {
-            var str = (Math.floor(new Date().getTime() / 1000)) + ($rootScope.userId) + (Math.floor(Math.random() * 90000) + 10000)
-            userIdHashTag = md5(str)
+          $rootScope.profileActive = 'active'
+          if ($stateParams.userIdHashTag === null) {
+            userIdHashTag = userService.getUserHash($rootScope.userId)
           } else {
             userIdHashTag = $stateParams.userIdHashTag
           }
           if (stepNumber !== 1) {
             var status = routeHelperService.verifyAnnouncementData(stepNumber, announcement)
             if (status) {
-              $rootScope.profileActive = 'active'
-              $rootScope.courseActive = ' '
-              $rootScope.isPlayerPage = true
               routeHelperService.loadRouteConfig('announcementCreate', null)
               portalTelemetryService.fireAnnouncementImpressions({
                 env: 'community.announcements',
@@ -134,9 +124,6 @@ angular.module('playerApp')
               $state.go('announcementOutbox')
             }
           } else {
-            $rootScope.profileActive = 'active'
-            $rootScope.courseActive = ' '
-            $rootScope.isPlayerPage = true
             routeHelperService.loadRouteConfig('announcementCreate', null)
             portalTelemetryService.fireAnnouncementImpressions({
               env: 'community.announcements',
@@ -161,31 +148,27 @@ angular.module('playerApp')
           }
         },
         params: {
-          announcement: undefined,
+          announcement: null,
           isMetaModifiedSteps: false,
-          userIdHashTag: undefined,
+          userIdHashTag: null,
           telemetryPageId: 'annoucement_form_details',
           telemetryPageType: 'form',
-          telemetryAnnTitle: undefined
+          telemetryAnnTitle: null
         },
-        onEnter: function ($stateParams, $rootScope, $state, routeHelperService, portalTelemetryService) {
+        onEnter: function ($stateParams, $rootScope, $state, routeHelperService, portalTelemetryService, userService) {
           var stepNumber = parseInt($stateParams.stepNumber)
           var announcement = $stateParams.announcement
           var announcementId = $stateParams.announcementId
           var userIdHashTag = ''
-          if ($stateParams.userIdHashTag === undefined) {
-            var str = (Math.floor(new Date().getTime() / 1000)) + ($rootScope.userId) + (Math.floor(Math.random() * 90000) + 10000)
-            userIdHashTag = md5(str)
+          $rootScope.profileActive = 'active'
+          if ($stateParams.userIdHashTag === null) {
+            userIdHashTag = userService.getUserHash($rootScope.userId)
           } else {
             userIdHashTag = $stateParams.userIdHashTag
           }
-
           if (stepNumber !== 1) {
             var status = routeHelperService.verifyAnnouncementData(stepNumber, announcement)
             if (status) {
-              $rootScope.profileActive = 'active'
-              $rootScope.courseActive = ' '
-              $rootScope.isPlayerPage = true
               routeHelperService.loadRouteConfig('announcementResend', null)
               portalTelemetryService.fireAnnouncementImpressions({
                 env: 'community.announcements',
@@ -196,13 +179,9 @@ angular.module('playerApp')
                 url: '/private/index#!/announcement/resend/' + announcementId + '/' + stepNumber
               }, userIdHashTag)
             } else {
-              $('#createAnnouncementModal').modal('hide all')
               $state.go('announcementOutbox')
             }
           } else {
-            $rootScope.profileActive = 'active'
-            $rootScope.courseActive = ' '
-            $rootScope.isPlayerPage = true
             routeHelperService.loadRouteConfig('announcementResend', null)
             portalTelemetryService.fireAnnouncementImpressions({
               env: 'community.announcements',
