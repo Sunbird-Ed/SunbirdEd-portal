@@ -1,5 +1,4 @@
 'use strict'
-
 angular.module('playerApp')
   .config(function ($stateProvider, $urlRouterProvider, $qProvider) {
     $qProvider.errorOnUnhandledRejections(false) // To handle error rejection
@@ -16,8 +15,6 @@ angular.module('playerApp')
         },
         onEnter: function ($stateParams, $rootScope, routeHelperService, portalTelemetryService) {
           $rootScope.profileActive = 'active'
-          $rootScope.courseActive = ' '
-          $rootScope.isPlayerPage = true
           routeHelperService.loadRouteConfig('announcementOutbox', null)
           portalTelemetryService.fireImpressions({
             env: 'community.announcements',
@@ -41,13 +38,11 @@ angular.module('playerApp')
           }
         },
         params: {
-          announcementName: undefined,
-          pageId: undefined
+          announcementName: null,
+          pageId: null
         },
         onEnter: function ($stateParams, $rootScope, routeHelperService, portalTelemetryService) {
           $rootScope.profileActive = 'active'
-          $rootScope.courseActive = ' '
-          $rootScope.isPlayerPage = true
           routeHelperService.loadRouteConfig('announcementDetails', null)
           portalTelemetryService.fireImpressions({
             env: 'community.announcements',
@@ -60,7 +55,6 @@ angular.module('playerApp')
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''
-          $('#annDetailsModal').modal('hide')
         }
       })
       .state('announcementInbox', {
@@ -73,8 +67,6 @@ angular.module('playerApp')
         },
         onEnter: function ($stateParams, $rootScope, routeHelperService, portalTelemetryService) {
           $rootScope.homeActive = 'active'
-          $rootScope.isPlayerPage = true
-          $rootScope.courseActive = ' '
           routeHelperService.loadRouteConfig('announcementInbox', null)
           portalTelemetryService.fireImpressions({
             env: 'community.announcements',
@@ -94,32 +86,24 @@ angular.module('playerApp')
         views: {
           mainView: {
             templateUrl: '/views/announcement/composeAnnouncement.html',
-            controller: 'createAnnouncementCtrl as composeAnn'
+            controller: 'composeAnnouncementCtrl as composeAnn'
           }
         },
         params: {
-          announcement: undefined,
+          announcement: null,
           isMetaModifiedSteps: false,
-          userIdHashTag: undefined,
+          isResend: false,
           telemetryPageId: 'annoucement_form_details',
           telemetryPageType: 'form'
         },
-        onEnter: function ($stateParams, $rootScope, $state, routeHelperService, portalTelemetryService) {
+        onEnter: function ($stateParams, $rootScope, $state, routeHelperService, portalTelemetryService, userService) {
           var stepNumber = parseInt($stateParams.stepNumber)
           var announcement = $stateParams.announcement
-          var userIdHashTag = ''
-          if ($stateParams.userIdHashTag === undefined) {
-            var str = (Math.floor(new Date().getTime() / 1000)) + ($rootScope.userId) + (Math.floor(Math.random() * 90000) + 10000)
-            userIdHashTag = md5(str)
-          } else {
-            userIdHashTag = $stateParams.userIdHashTag
-          }
+          $rootScope.userIdHashTag = $rootScope.userIdHashTag || userService.getUserHash($rootScope.userId)
+          $rootScope.profileActive = 'active'
           if (stepNumber !== 1) {
             var status = routeHelperService.verifyAnnouncementData(stepNumber, announcement)
             if (status) {
-              $rootScope.profileActive = 'active'
-              $rootScope.courseActive = ' '
-              $rootScope.isPlayerPage = true
               routeHelperService.loadRouteConfig('announcementCreate', null)
               portalTelemetryService.fireAnnouncementImpressions({
                 env: 'community.announcements',
@@ -128,15 +112,12 @@ angular.module('playerApp')
                 id: '',
                 name: '',
                 url: '/private/index#!/announcement/create/' + stepNumber
-              }, userIdHashTag)
+              }, $rootScope.userIdHashTag)
             } else {
               $('#createAnnouncementModal').modal('hide')
               $state.go('announcementOutbox')
             }
           } else {
-            $rootScope.profileActive = 'active'
-            $rootScope.courseActive = ' '
-            $rootScope.isPlayerPage = true
             routeHelperService.loadRouteConfig('announcementCreate', null)
             portalTelemetryService.fireAnnouncementImpressions({
               env: 'community.announcements',
@@ -145,7 +126,7 @@ angular.module('playerApp')
               id: '',
               name: '',
               url: '/private/index#!/announcement/create/' + stepNumber
-            }, userIdHashTag)
+            }, $rootScope.userIdHashTag)
           }
         },
         onExit: function ($rootScope) {
@@ -157,35 +138,26 @@ angular.module('playerApp')
         views: {
           mainView: {
             templateUrl: '/views/announcement/composeAnnouncement.html',
-            controller: 'resendAnnouncementCtrl as composeAnn'
+            controller: 'composeAnnouncementCtrl as composeAnn'
           }
         },
         params: {
-          announcement: undefined,
+          announcement: null,
           isMetaModifiedSteps: false,
-          userIdHashTag: undefined,
+          isResend: true,
           telemetryPageId: 'annoucement_form_details',
           telemetryPageType: 'form',
-          telemetryAnnTitle: undefined
+          telemetryAnnTitle: null
         },
-        onEnter: function ($stateParams, $rootScope, $state, routeHelperService, portalTelemetryService) {
+        onEnter: function ($stateParams, $rootScope, $state, routeHelperService, portalTelemetryService, userService) {
           var stepNumber = parseInt($stateParams.stepNumber)
           var announcement = $stateParams.announcement
           var announcementId = $stateParams.announcementId
-          var userIdHashTag = ''
-          if ($stateParams.userIdHashTag === undefined) {
-            var str = (Math.floor(new Date().getTime() / 1000)) + ($rootScope.userId) + (Math.floor(Math.random() * 90000) + 10000)
-            userIdHashTag = md5(str)
-          } else {
-            userIdHashTag = $stateParams.userIdHashTag
-          }
-
+          $rootScope.userIdHashTag = $rootScope.userIdHashTag || userService.getUserHash($rootScope.userId)
+          $rootScope.profileActive = 'active'
           if (stepNumber !== 1) {
             var status = routeHelperService.verifyAnnouncementData(stepNumber, announcement)
             if (status) {
-              $rootScope.profileActive = 'active'
-              $rootScope.courseActive = ' '
-              $rootScope.isPlayerPage = true
               routeHelperService.loadRouteConfig('announcementResend', null)
               portalTelemetryService.fireAnnouncementImpressions({
                 env: 'community.announcements',
@@ -194,15 +166,11 @@ angular.module('playerApp')
                 id: announcementId,
                 name: $stateParams.telemetryAnnTitle,
                 url: '/private/index#!/announcement/resend/' + announcementId + '/' + stepNumber
-              }, userIdHashTag)
+              }, $rootScope.userIdHashTag)
             } else {
-              $('#createAnnouncementModal').modal('hide all')
               $state.go('announcementOutbox')
             }
           } else {
-            $rootScope.profileActive = 'active'
-            $rootScope.courseActive = ' '
-            $rootScope.isPlayerPage = true
             routeHelperService.loadRouteConfig('announcementResend', null)
             portalTelemetryService.fireAnnouncementImpressions({
               env: 'community.announcements',
@@ -211,7 +179,7 @@ angular.module('playerApp')
               id: $stateParams.announcementId,
               name: $stateParams.telemetryAnnTitle || '',
               url: '/private/index#!/announcement/resend/' + announcementId + '/' + stepNumber
-            }, userIdHashTag)
+            }, $rootScope.userIdHashTag)
           }
         },
         onExit: function ($rootScope) {

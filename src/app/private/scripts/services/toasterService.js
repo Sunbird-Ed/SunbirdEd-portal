@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 angular.module('playerApp')
     .service('toasterService', [function () {
@@ -7,10 +7,10 @@ angular.module('playerApp')
      * @desc Service to manage izi toaster messages.
      * @memberOf Services
      */
-        iziToast.settings({
-            position: 'topCenter',
-            titleSize: '18'
-        });
+      iziToast.settings({
+        position: 'topCenter',
+        titleSize: '18'
+      })
             /**
              * @method success
              * @desc Format success message
@@ -18,11 +18,11 @@ angular.module('playerApp')
              * @param {string}  message - Success message
              * @instance
              */
-        this.success = function (message) {
-            iziToast.success({
-                title: message
-            });
-        };
+      this.success = function (message) {
+        iziToast.success({
+          title: message
+        })
+      }
 
          /**
              * @method info
@@ -31,11 +31,11 @@ angular.module('playerApp')
              * @param {string}  message - Info message
              * @instance
              */
-        this.info = function (message) {
-            iziToast.info({
-                title: message
-            });
-        };
+      this.info = function (message) {
+        iziToast.info({
+          title: message
+        })
+      }
          /**
              * @method error
              * @desc Format error message
@@ -43,13 +43,13 @@ angular.module('playerApp')
              * @param {string}  message - Error message
              * @instance
              */
-        this.error = function (message) {
-            iziToast.error({
-                progressBar: false,
-                timeout: false,
-                title: message
-            });
-        };
+      this.error = function (message) {
+        iziToast.error({
+          progressBar: false,
+          timeout: false,
+          title: message
+        })
+      }
         /**
              * @method warning
              * @desc Format warning message
@@ -58,11 +58,11 @@ angular.module('playerApp')
              * @instance
              */
 
-        this.warning = function (message) {
-            iziToast.warning({
-                title: message
-            });
-        };
+      this.warning = function (message) {
+        iziToast.warning({
+          title: message
+        })
+      }
 
         /**
              * @method loader
@@ -72,11 +72,11 @@ angular.module('playerApp')
              * @param {string}  loaderMessage - Loader body message
              * @instance
              */
-        this.loader = function (headerMessage, loaderMessage) {
-            var loader = {};
-            loader.showLoader = true;
-            loader.headerMessage = headerMessage;
-            loader.loaderMessage = loaderMessage;
-            return loader;
-        };
-    }]);
+      this.loader = function (headerMessage, loaderMessage) {
+        var loader = {}
+        loader.showLoader = true
+        loader.headerMessage = headerMessage
+        loader.loaderMessage = loaderMessage
+        return loader
+      }
+    }])

@@ -144,8 +144,8 @@ angular.module('playerApp').controller('SearchResultController', [
       $rootScope.search.selectedSearchKey = $rootScope.searchKey || searchParams.type
       $rootScope.search.searchKeyword = $rootScope.search.searchKeyword ||
                 searchParams.query
-      $rootScope.search.filters = JSON.parse(atob(searchParams.filters || btoa('{}')))
-      $rootScope.search.sortBy = JSON.parse(atob(searchParams.sort || btoa('{}')))
+      $rootScope.search.filters = JSON.parse(window.atob(searchParams.filters || window.btoa('{}')))
+      $rootScope.search.sortBy = JSON.parse(window.atob(searchParams.sort || window.btoa('{}')))
       $rootScope.search.selectedLanguage = $rootScope.search.filters.language || []
       $rootScope.search.selectedContentType = $rootScope.search.filters.contentType || []
       $rootScope.search.selectedBoard = $rootScope.search.filters.board || []
@@ -236,8 +236,8 @@ angular.module('playerApp').controller('SearchResultController', [
             var searchParams = {
               type: $rootScope.search.selectedSearchKey,
               query: $rootScope.search.searchKeyword,
-              filters: btoa(JSON.stringify($rootScope.search.filters)),
-              sort: btoa(JSON.stringify($rootScope.search.sortBy)),
+              filters: window.btoa(JSON.stringify($rootScope.search.filters)),
+              sort: window.btoa(JSON.stringify($rootScope.search.sortBy)),
               autoSuggestSearch: $rootScope.search.searchFromSuggestion || false
             }
             $state.go('Search', searchParams, { reload: true })
@@ -255,7 +255,7 @@ angular.module('playerApp').controller('SearchResultController', [
         limit: $rootScope.search.pageLimit
 
       }
-      if (!$scope.search.autoSuggest || $scope.search.autoSuggest == false) {
+      if (!$scope.search.autoSuggest || $scope.search.autoSuggest === false) {
         if (!$rootScope.search.loader) {
           $rootScope.search.loader = toasterService.loader('', $rootScope.messages.stmsg.m0005)
         }
@@ -278,7 +278,7 @@ angular.module('playerApp').controller('SearchResultController', [
         $scope.search.searchFn = searchService.courseSearch(req)
         $scope.search.resultType = 'course'
       } else if ($rootScope.search.selectedSearchKey === 'Library') {
-        if (!req.filters.contentType || (_.isArray(req.filters.contentType) && req.filters.contentType.length == 0)) {
+        if (!req.filters.contentType || (_.isArray(req.filters.contentType) && req.filters.contentType.length === 0)) {
           req.filters.contentType = [
             'Collection',
             'TextBook',
@@ -327,7 +327,7 @@ angular.module('playerApp').controller('SearchResultController', [
         }
 
           /* filter by organisation */
-        if (OrgId != '') {
+        if (OrgId !== '') {
           req.filters['organisations.organisationId'] = OrgId
         }
 
@@ -356,9 +356,7 @@ angular.module('playerApp').controller('SearchResultController', [
               // should appear else load search results
           if ($scope.search.autoSuggest &&
                 $rootScope.search.searchKeyword !== $stateParams.query) {
-            $rootScope.search.autosuggest_data = responseResult[
-                  $scope.search.resultType
-                ] || []
+            $rootScope.search.autosuggest_data = responseResult[$scope.search.resultType] || []
             if ($rootScope.search.autosuggest_data.length > 0) {
               $('#search-suggestions').addClass('visible').removeClass('hidden')
             }

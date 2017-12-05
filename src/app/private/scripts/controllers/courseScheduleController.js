@@ -86,12 +86,12 @@ angular.module('playerApp')
 
             toc.initTocView = function () {
               $timeout(function () {
-                $('.toc-tree-item').fancytree({ 
+                $('.toc-tree-item').fancytree({
                   click: function (event, data) {
-                    if(data.targetType === "title") {
-                      data.targetType = "expander";  
-                      toc.openContent(data.node.key)                    
-                    } 
+                    if (data.targetType === 'title') {
+                      data.targetType = 'expander'
+                      toc.openContent(data.node.key)
+                    }
                   }
                 })
                 $('.ui.accordion').accordion({
@@ -231,7 +231,7 @@ angular.module('playerApp')
                         dataService.setData('isTrackingEnabled', true)
                       }
                                     // if current page is course and lecture view is not enabled then resume course from last-read-content
-                      if ($rootScope.isTocPage && $stateParams.lectureView == 'no') {
+                      if ($rootScope.isTocPage && $stateParams.lectureView === 'no') {
                         toc.resumeCourse()
                       }
                     }
@@ -243,7 +243,7 @@ angular.module('playerApp')
             }
 
             toc.openContent = function (contentId, trigger) {
-              if (toc.playContent == true) {
+              if (toc.playContent === true) {
                         // find index of current content from course contents list
                 toc.itemIndex = _.findIndex(toc.courseContents, {
                   identifier: contentId
