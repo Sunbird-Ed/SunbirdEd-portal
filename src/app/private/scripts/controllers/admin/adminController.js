@@ -134,8 +134,8 @@ angular.module('playerApp')
         admin.downloadUsers = function (key, list) {
           var searchParams = $stateParams
           var query = searchParams.query
-          var filters = JSON.parse(atob(searchParams.filters || btoa('{}')))
-          var sortBy = JSON.parse(atob(searchParams.sort || btoa('{}')))
+          var filters = JSON.parse(window.atob(searchParams.filters || window.btoa('{}')))
+          var sortBy = JSON.parse(window.atob(searchParams.sort || window.btoa('{}')))
 
           var req = {
             query: query,
@@ -262,7 +262,7 @@ angular.module('playerApp')
               toasterService.error($rootScope.messages.fmsg.m0051)
             }
             }).catch(function(err) { // eslint-disable-line
-              profile.isError = true
+              admin.isError = true
               toasterService.error($rootScope.messages.fmsg.m0051)
             })
         }
@@ -330,6 +330,7 @@ angular.module('playerApp')
               admin.disableAsignButton = false
             }
           }).catch(function (err) {
+            console.error(err)
             admin.disableAsignButton = false
             toasterService.error('Some thing went wrong. please try again later..')
           })

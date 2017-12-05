@@ -29,10 +29,10 @@ angular.module('playerApp')
 
               scope.$watch('body', function (newValue, oldValue) {
                 if (oldValue) {
-                  if (newValue.identifier && newValue.identifier != oldValue.identifier) {
+                  if (newValue.identifier && newValue.identifier !== oldValue.identifier) {
                     scope.updateContent(scope)
                   }
-                } else if (oldValue == undefined) {
+                } else if (oldValue === undefined) {
                   scope.updateContent(scope)
                 }
               })
