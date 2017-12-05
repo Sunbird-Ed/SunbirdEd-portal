@@ -24,8 +24,13 @@ angular.module('playerApp')
         responseProperty: 'error'
       },
       fileValidation: {
+        itemLimit: 10,
         sizeLimit: config.AnncmntMaxFileSizeToUpload,
         allowedExtensions: config.AnncmntAllowedFileExtension
+      },
+      validationErrorMessages: {
+        sizeError: '{file} ' + controllerOption.fileSizeErrorText + ' ' + controllerOption.fileSizeLimit / (1000 * 1024) + ' MB.',
+        tooManyItemsError: 'Too many items ({netItems}) would be uploaded. Item limit is {itemLimit}.'
       }
     }
 
@@ -65,7 +70,7 @@ angular.module('playerApp')
      * @param   {string}  message  [message to display]
      */
     var showErrorMessage = function (message) {
-      toasterService.error(message)
+      toasterService.info(message)
     }
 
     return {
@@ -76,7 +81,7 @@ angular.module('playerApp')
        * @param {Object}  option - Option object to invoke controller callback function
        * @returns {Callback} Trigger callback function
        */
-      createFineUploadInstance: function (ctrlOption) {
+      createFineUploadInstance: function (ctrlOption, cb) {
         controllerOption = _.merge({}, ctrlOption, options)
         $timeout(function () {
           var objFineUploader = new qq.FineUploader({
@@ -87,9 +92,7 @@ angular.module('playerApp')
             debug: false,
             request: controllerOption.request,
             validation: controllerOption.fileValidation,
-            messages: {
-              sizeError: '{file} ' + controllerOption.fileSizeErrorText + ' ' + controllerOption.fileSizeLimit / (1000 * 1024) + ' MB.'
-            },
+            messages: controllerOption.validationErrorMessages,
             failedUploadTextDisplay: controllerOption.failedUploadTextDisplay,
             showMessage: showErrorMessage,
             callbacks: {
@@ -105,10 +108,11 @@ angular.module('playerApp')
               onCancel: onFileUploadCancel
             }
           })
+          cb(true)
           window.cancelUploadFile = function () {
             document.getElementById('hide-section-with-button').style.display = 'block'
           }
-        }, 2000)
+        }, 800)
       },
       onFileUploadSuccess: onFileUploadSuccess,
       onFileUploadCancel: onFileUploadCancel,

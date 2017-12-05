@@ -119,4 +119,24 @@ angular.module('playerApp')
           var url = config.URL.USER.UPDATE_PROF_VIS_FIELDS
           return httpServiceJava.post(url, req)
         }
+
+        /**
+        * @method generateRandomNumber
+        * @desc generates  5 digit random number
+        * @returns {number}
+        */
+        function generateRandomNumber (digits) {
+          return Math.floor(Math.random() * parseInt('8' + '9'.repeat(digits - 1)) + parseInt('1' + '0'.repeat(digits - 1)))
+        }
+
+        /**
+        * @method getUserHash
+        * @desc generates md5 hash of userId and salt (timestamp + a 5 digit random number)
+        * @param {string} userId - User Id for whom we need a hash
+        * @returns {string} generated hash string
+        */
+        this.getUserHash = function (userId) {
+          var str = userId + (new Date().getTime()) + generateRandomNumber(5)
+          return md5(str)
+        }
       }])

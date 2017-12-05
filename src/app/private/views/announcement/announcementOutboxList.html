@@ -9,9 +9,8 @@
           </div>
         </div>
         <div class="right floated three wide column padding-right-dropdown padding-right-10">
-          <div class="ui float-ContentRight" ng-controller="createAnnouncementCtrl as createAnn">
-            <button class="ui primary basic button announcementButton" id="openmodal" ng-click="createAnn.createAnnouncement();" ng-hide="createAnn.hideAnncmntBtn"><span class="announcementButtonText">{{$root.frmelmnts.lbl.anncmntcreate}}</span></button>
-            <div ng-include="'views/announcement/createAnnouncement.html'"></div>
+          <div class="ui float-ContentRight" ng-controller="composeAnnouncementCtrl as composeAnn">
+            <button class="ui primary basic button announcementButton" id="openmodal" ng-click="announcementOutboxData.gotToAnnouncementCreateState();" ng-hide="composeAnn.hideAnncmntBtn"><span class="announcementButtonText">{{$root.frmelmnts.lbl.anncmntcreate}}</span></button>
           </div>
         </div>
       </div>
@@ -78,8 +77,8 @@
                 <td>{{item.metrics.received ? item.metrics.received : "N/A"}}</td>
                 <td>{{item.metrics.read ? item.metrics.read : "N/A"}}</td>
                 <td class="cursor-pointer announcementRedText" ng-click="announcementOutboxData.showModal('announcementDeleteModal', item.id)"
-                ng-if="item.status == 'active'"><i class="icon ban"></i>{{$root.frmelmnts.lbl.anncmntoutboxdelete}}</td>
-                <td ng-click="announcementOutboxData.getResend(item.id);" ng-if="item.status == 'cancelled'" class="cursor-pointer announcementBlueText" ><i class="external share icon"></i>{{$root.frmelmnts.lbl.anncmntoutboxresend}}</td>
+                ng-if="item.status == 'active'"><i class="icon trash"></i>{{$root.frmelmnts.lbl.anncmntoutboxdelete}}</td>
+                <td ng-click="announcementOutboxData.getResend(item.id, item.details.title);" ng-if="item.status == 'cancelled'" class="cursor-pointer announcementBlueText" ><i class="external share icon"></i>{{$root.frmelmnts.lbl.anncmntoutboxresend}}</td>
               </tr>
             </tbody>
           </table>
@@ -92,7 +91,7 @@
     <div class="ui grid">
       <div class="twelve wide column">
         <div class="ui">
-          <div class="text announcementDataText" ng-if="announcementOutboxData.result.metricsupdateddate"> <span class="announcementBlueText">*</span> {{$root.frmelmnts.lbl.anncmntlastupdate}} {{announcementOutboxData.result.metrics.updatedat | dateFilterWithDMY}}</div>
+          <div class="text announcementDataText" ng-if="announcementOutboxData.result.metricsupdateddate"> <span class="announcementBlueText">*</span> {{$root.frmelmnts.lbl.anncmntlastupdate}} {{announcementOutboxData.result.metrics.updatedate | dateFilterWithDMY}}</div>
         </div>
       </div>
     </div>

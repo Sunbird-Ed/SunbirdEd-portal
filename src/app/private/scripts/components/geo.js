@@ -26,14 +26,12 @@ angular.module('playerApp').component('geo', {
              */
     this.$onInit = function () {
       var instance = this
-      $rootScope.$on('component:init', function () {
-        var config = instance.getConfig()
-        instance.receipients = $rootScope.receipients
-        if (_.has(config, instance.keyName)) {
-          instance.initialize(config)
-        }
-        $rootScope.$on('component:update', instance.updateItems)
-      })
+      var config = instance.getConfig()
+      instance.receipients = $rootScope.receipients
+      if (_.has(config, instance.keyName)) {
+        instance.initialize(config)
+      }
+      $rootScope.$on('component:update', instance.updateItems)
     }
             /**
              * @desc Validating the adoption from config object during initialization
@@ -145,6 +143,7 @@ angular.module('playerApp').component('geo', {
         console.error('Unable to fetch the locations', error)
       })
     }
+
     /* this.initializeCheckBoxes = function(){
       // Temp solution to initialize the checkboxes
       setTimeout(function(){

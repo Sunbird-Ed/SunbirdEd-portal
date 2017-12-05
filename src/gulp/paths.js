@@ -270,13 +270,11 @@ var paths = {
     'dist/private/scripts/controllers/announcement/announcementInboxListController.js',
     'dist/private/scripts/controllers/announcement/announcementOutboxListController.js',
     'dist/private/scripts/controllers/announcement/announcementDetailsController.js',
-    'dist/private/scripts/services/announcementService.js',
-    'dist/private/scripts/controllers/announcement/createAnnouncementController.js',
+    'dist/private/scripts/controllers/announcement/composeAnnouncementController.js',
     'dist/private/scripts/directives/announcementDetailsDirective.js',
     'dist/private/scripts/controllers/profileVisibilityController.js',
     'dist/private/scripts/directives/profileVisibility.js',
-    'dist/private/scripts/factories/fileUploadFactory.js',
-    'dist/private/scripts/controllers/announcement/announcementDetailsController.js'
+    'dist/private/scripts/factories/fileUploadFactory.js'
   ],
   telemetry_js: [
     'dist/private/scripts/telemetry/TelemetryEvent.js',

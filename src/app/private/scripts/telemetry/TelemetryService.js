@@ -48,6 +48,10 @@ TelemetryService = {
     org.sunbird.portal.eventManager.addEventListener('sunbird:telemetry:portal:sessionEnd', this.sessionEnd, this)
     org.sunbird.portal.eventManager.addEventListener('sunbird:telemetry:portal:profileupdate', this.profileUpdate, this)
     org.sunbird.portal.eventManager.addEventListener('sunbird:telemetry:portal:intreact', this.portalIntreact, this)
+        /**
+         * Announcement events are being registred
+         */
+    org.sunbird.portal.eventManager.addEventListener('sunbird:telemetry:announcement:impression', this.announcementImpression, this)
   },
 
     /**
@@ -257,6 +261,22 @@ TelemetryService = {
     }
   },
   impression: function (eventName, obj) {
+    if (!TelemetryService.isActive) {
+      return InActiveEvent()
+    }
+    return TelemetryService.flushEvent(TelemetryService.instance.impression(obj), TelemetryService.apis.telemetry)
+  },
+    /**
+     * @method announcementImpression
+     * @param   {string}  eventName  [event name]
+     * @param   {object}  obj  [telemetry data]
+     */
+  announcementImpression: function (eventName, obj) {
+    TelemetryService._correlationData = [{
+      id: obj.userIdHashTag,
+      type: 'announcement'
+    }]
+    delete obj.userIdHashTag
     if (!TelemetryService.isActive) {
       return InActiveEvent()
     }

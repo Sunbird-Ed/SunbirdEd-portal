@@ -1,0 +1,221 @@
+<div class="ui modal large announcementDetailsModal" ng-init="composeAnn.init();" id="createAnnouncementModal">
+  <i class="close icon"></i>
+  <div class=" ui segment margin-top-10">
+    <div class=" margin-bottom-15">
+      <div class="ui grid">
+        <div class="ten wide column">
+          <span class="ui header">
+            <span class="ui" ng-if="composeAnn.stepNumber === 1">
+              <span class="text announcementHeadingSection" ng-if="!composeAnn.editAction">{{$root.frmelmnts.lbl.createnewanncmnt}} </span>
+              <span class="text announcementHeadingSection" ng-if="composeAnn.editAction">{{$root.frmelmnts.lbl.anncmntttlresend}} </span>
+          <br/>
+          <span class="createAnnHeaderDesc">{{ composeAnn.editAction? $root.frmelmnts.lbl.resendanncmntdesc : $root.frmelmnts.lbl.createnewanncmntdesc}}</span>
+          <span class="createAnnHeaderDesc">{{$root.frmelmnts.instn.t0054}}</span>
+          </span>
+          <span class="ui" ng-if="composeAnn.stepNumber === 2">
+              <span class="text announcementHeadingSection">{{$root.frmelmnts.lbl.selectrecipient}}</span>
+          <br/>
+          <span class="createAnnHeaderDesc">{{ composeAnn.editAction ? $root.frmelmnts.lbl.editrecipientdesc : $root.frmelmnts.lbl.selectrecipientdesc}}</span>
+          </span>
+          <span ng-if="composeAnn.stepNumber === 3">
+              <span class="text announcementHeadingSection">{{ composeAnn.editAction ? $root.frmelmnts.lbl.selectrecipient: $root.frmelmnts.lbl.confirmrecipient}}</span>
+          <br/>
+          <span class="createAnnHeaderDesc">{{composeAnn.editAction ? $root.frmelmnts.lbl.editrecipientdesc : $root.frmelmnts.lbl.confirmrecipientdesc}}</span>
+          </span>
+          <span ng-if="composeAnn.stepNumber === 4">
+              <span class="text announcementHeadingSection">{{$root.frmelmnts.lbl.previewanncmnt}}</span>
+          <br/>
+          <span class="createAnnHeaderDesc">{{$root.frmelmnts.lbl.previewanncmntdesc}}</span>
+          </span>
+          </span>
+        </div>
+        <div class="two wide column">
+          <div class="createAnnStepsIndicator">
+            <h6 class="createAnnMargin5 createAnnGrayShade">{{$root.frmelmnts.lbl.anncmntstep}}</h6> &nbsp
+            <span id="announcementSteps createAnnMargin4" class="announcementSteps">{{composeAnn.stepNumber}}</span><span class="createAnnGrayShade"> / 4</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="content">
+      <form class="ui form announcementForm" name="announcementForm">
+        <div class="ui grid" ng-if="composeAnn.stepNumber === 1">
+          <div class="eight wide column">
+            <div class="field createAnnFormScroller">
+              <div class="padding-right-25">
+                <div class="field required">
+                  <label>{{$root.frmelmnts.lbl.anncmnttitle}}</label>
+                  <div class="field form-group dropdown-margin-left" ng-required="true">
+                    <input type="text" name="title" id="announcementTitle" placeholder="{{$root.frmelmnts.instn.t0057}}" ng-model="composeAnn.announcement.details.title" ng-maxlength="100" ng-change="composeAnn.enableRecepientBtn()">
+                    <section ng-if="composeAnn.announcement.details.title.length" class="float-ContentRight">{{composeAnn.announcement.details.title.length}} / 100</section>
+                    <p ng-show="announcementForm.title.$error.maxlength" class="createAnnErrorMsg">Title is too long</p>
+                  </div>
+                </div>
+                 <div class="field required dropdown-margin-left">
+                  <label>{{$root.frmelmnts.lbl.anncmntfrom}}</label>
+                  <div class="field">
+                    <input type="text" name="from" placeholder="{{$root.frmelmnts.lbl.anncmntfromDesc}}" ng-model="composeAnn.announcement.details.from" ng-change="composeAnn.enableRecepientBtn()">
+                  </div>
+                </div>
+                <div class="field required dropdown-margin-left">
+                  <label>{{$root.frmelmnts.lbl.anncmnttype}}</label>
+                  <select name="medium" class="ui fluid dropdown" id="announcementType" ng-options=" audience for audience in composeAnn.announcementType" ng-model="composeAnn.announcement.details.type">
+                    <option value="">{{$root.frmelmnts.instn.t0051}}</option>
+                  </select>
+                </div>
+                <div class="field dropdown-margin-left">
+                  <label>{{$root.frmelmnts.lbl.anncmntdesc}}</label>
+                  <div class="field">
+                    <input type="text" name="description" placeholder="{{$root.frmelmnts.instn.t0052}}" ng-model="composeAnn.announcement.details.description" ng-maxlength="1200" ng-change="composeAnn.enableRecepientBtn()">
+                    <section ng-if="composeAnn.announcement.details.description.length" class="float-ContentRight">{{composeAnn.announcement.details.description.length}} / 1200</section>
+                    <p class="createAnnErrorMsg" ng-show='announcementForm.description.$error.maxlength'>Description is too long.
+                    </p>
+                  </div>
+                </div>
+                <div class="field form-group dropdown-margin-left" ng-if="composeAnn.showUrlField">
+                  <label>{{$root.frmelmnts.lbl.anncmntlink}}</label>
+                  <div class="field" data-ng-repeat="weblink in composeAnn.repeatableWebLinks">
+                    <div class="ui action input">
+                      <input type="url" ng-model="composeAnn.announcement.links[$index]" name="link_{{$index}}" placeholder="{{$root.frmelmnts.instn.t0053}}" ng-change="composeAnn.enableRecepientBtn()">
+                      <i class="trash icon createAnnBlueClass margin-top-10 cursor-pointer" ng-click="composeAnn.removeLink($index)"></i>
+                    </div>
+                    <section ng-show="announcementForm['link_' + $index].$error.url" class="createAnnErrorMsg">Not a valid URL</section>
+                  </div>
+                </div>
+                <div class="field">
+                  <span ng-click="composeAnn.addNewLink()">
+                        <i class="plus icon createAnnBlueClass cursor-pointer"></i>
+                        <span ng-if="!composeAnn.showUrlField">
+                          <span class="cursor-pointer createAnnBlueClass">{{$root.frmelmnts.lbl.anncmntaddlink}} </span><span>{{$root.frmelmnts.lbl.anncmntaddlinkdesc}}</span>
+                  </span>
+                  <span ng-if="composeAnn.showUrlField">
+                          <span class="cursor-pointer createAnnBlueClass">{{$root.frmelmnts.lbl.anncmntaddmorelink}}</span>
+                  </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="four wide column createAnnAttchementHolder" ng-init="composeAnn.initializeFileUploader(false)">
+            <div class="field">
+              <label>{{$root.frmelmnts.lbl.anncmntuploadfile}}</label>
+              <div fine-uploader></div>
+            </div>
+          </div>
+        </div>
+        <div ng-if="composeAnn.stepNumber === 2">
+            <parent config="composeAnn.config">
+              <geo></geo>
+            </parent>
+        </div>
+        <div ng-if="composeAnn.stepNumber === 3" class="ui list ui grid">
+          <div class="eight wide column createAnnFormScroller">
+            <div class="ui message padding-10" ng-repeat="item in composeAnn.announcement.selTar">
+              <i class="close icon" ng-click='composeAnn.removeRecipients(item)'></i>
+              <span class="createAnnSelectedRecepient">{{item.location}}</span>
+            </div>
+          </div>
+        </div>
+        <div ng-if="composeAnn.stepNumber === 4" class="ui grid">
+          <div class="box width-100 eight wide column margin-left-17 createAnnFormScroller">
+            <announcement-details-directive announcement-details="composeAnn.announcement"></announcement-details-directive>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="actions">
+    <button class="ui primary basic button announcementButton createAnnBackBtnWidth float-ContentLeft" id="annBackBtn" ng-hide="composeAnn.stepNumber === 1" ng-click="composeAnn.goToBackStep()" data-current-state="{{composeAnn.stepNumber}}">
+      <span class="announcementButtonText">{{$root.frmelmnts.btn.back}}</span>
+    </button>
+    <div class="ui primary button" ng-if="composeAnn.stepNumber === 2" ng-click="composeAnn.goToNextStep('receipients_confirm_view', 'list')">{{$root.frmelmnts.btn.anncmntconfirmrecipients}}</div>
+    <div class="ui primary button" ng-if="composeAnn.stepNumber === 3" ng-click="composeAnn.goToNextStep('announcement_form_preview', 'view')">{{$root.frmelmnts.btn.anncmntpreview}}</div>
+    <div class="ui primary button" ng-if="composeAnn.stepNumber === 4" id="sendAnnouncement" ng-click="composeAnn.saveAnnouncement()">{{$root.frmelmnts.btn.anncmntsendanncmnt}}</div>
+    <div ng-if="composeAnn.stepNumber === 1" id="selectRecipientBtn" class="ui primary button" ng-class="{'disabled': composeAnn.disableBtn === true || announcementForm.$invalid}" ng-click="composeAnn.goToNextStep('community_explorer_view', 'list')" ng-init="composeAnn.enableRecepientBtn(false)">{{ composeAnn.editAction ? $root.frmelmnts.btn.anncmnteditrecipients : $root.frmelmnts.btn.anncmntselectrecipients}}</div>
+  </div>
+</div>
+
+<!-- Announcement resent success modal -->
+<div class="ui modal small" id="announcementResendModal">
+  <i class="close icon"></i>
+  <div class=" ui segment margin-top-10">
+    <div class="content">
+      <div class="ui grid">
+        <div class="ui centered grid">
+          <div class="row">
+            <i class="checkmark icon big circular createAnnGrayShade"></i>
+          </div>
+          <div class="row">
+            <span class="dashBoardSectionHeading">{{$root.frmelmnts.lbl.anncmntresentmsg}}</span>
+          </div>
+          <div class="">
+            <span class="createAnnGrayShade line-height-20">{{$root.frmelmnts.lbl.anncmntresentmsgdesc}}</span>
+          </div>
+        </div>
+        <br/>
+        <div class="row ui two column centered grid margin-top-20 actions">
+          <button class="ui primary basic button announcementButton btn-width-34" ng-click="announcementOutboxData.closeModal('announcementResendModal')">
+            <span class="announcementButtonText approve">{{$root.frmelmnts.btn.anncmntgotit}}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Announcement create success modal -->
+<div class="ui modal small" id="announcementSuccessModal">
+  <i class="close icon"></i>
+  <div class=" ui segment margin-top-10">
+    <div class="content">
+      <div class="ui grid">
+        <div class="ui centered grid">
+          <div class="row">
+            <i class="checkmark icon big circular createAnnGrayShade"></i>
+          </div>
+          <div class="row">
+            <span class="dashBoardSectionHeading">{{$root.frmelmnts.lbl.anncmntsentsuccess}}</span>
+          </div>
+          <div class="">
+            <span class="createAnnGrayShade line-height-20">{{$root.frmelmnts.lbl.anncmntsentdesc}}</span>
+          </div>
+        </div>
+        <br/>
+        <div class="row ui two column centered grid margin-top-20 actions">
+          <button class="ui primary basic button announcementButton btn-width-34 approve">
+            <span class="announcementButtonText">{{$root.frmelmnts.btn.anncmntgotit}}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Announcement cancel confirmation modal -->
+<div class="ui modal small" id="announcementCancelModal">
+  <i class="close icon"></i>
+  <div class=" ui segment margin-top-10">
+    <div class="content">
+      <div class="ui grid">
+        <div class="ui centered grid">
+          <div class="row">
+            <div class="ui basic icon circular button cursor-pointer">
+               <i class="ui huge help outline icon"></i>
+           </div>
+          </div>
+          <div class="row">
+            <span class="dashBoardSectionHeading">{{$root.frmelmnts.lbl.anncmntcancel}}</span>
+          </div>
+          <div class="">
+            <span class="createAnnGrayShade line-height-20">{{$root.frmelmnts.lbl.anncmntcanceldesc}}</span>
+          </div>
+        </div>
+        <br/>
+        <div class="row ui two column centered grid margin-top-20 actions">
+          <div class="ui primary basic button announcementButton btn-width-34 approve">{{$root.frmelmnts.btn.yes}}</div>
+          <div class="ui primary button announcementButton btn-width-34 deny">{{$root.frmelmnts.btn.no}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

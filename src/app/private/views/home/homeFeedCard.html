@@ -1,12 +1,12 @@
 <div ng-init="announcementInboxData.renderAnnouncementList(2)" ng-controller="announcementInboxListController as announcementInboxData">
   <div class="ui grid ng-scope">
-    <div class="tweleve wide column" ng-if="announcementInboxData.showDataDiv">
+    <div class="nine wide column" ng-if="announcementInboxData.showDataDiv">
       <div class="ui">
         <div class="text dashBoardSectionHeading padding-top-10  margin-bottom-10">{{$root.frmelmnts.lbl.anncmntinboxannmsg}}</div>
       </div>
     </div>
-    <div class="right floated three wide column" ng-if="announcementInboxData.showDataDiv">
-      <button class="fluid ui primary basic button announcementButton announcementSeeAllBtn margin-bottom-10" ui-sref="announcementInbox"><span class="announcementButtonText">{{$root.frmelmnts.lbl.anncmntinboxseeall}}</span></button>
+    <div class="three wide column" ng-if="announcementInboxData.showDataDiv">
+      <a class="ui right floated announcementSeeAllLink float-ContentRight" ui-sref="announcementInbox">{{$root.frmelmnts.lbl.anncmntinboxseeall}}</a>
     </div>
     <div class="twelve wide column" ng-if="announcementInboxData.showLoader">
       <app-loader></app-loader>

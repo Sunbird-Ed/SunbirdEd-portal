@@ -15,16 +15,18 @@ angular.module('playerApp')
      * @memberOf Controllers.announcementOutboxListController
      */
       announcementOutboxData.renderAnnouncementList = function () {
-        announcementAdapter.getOutBoxAnnouncementList($rootScope.userId).then(function (apiResponse) {
+        announcementAdapter.getOutBoxAnnouncementList().then(function (apiResponse) {
           announcementOutboxData.showLoader = false
           announcementOutboxData.result = apiResponse.result
-          announcementOutboxData.listData = apiResponse.result.announcements.content
+          announcementOutboxData.listData = apiResponse.result.announcements
           initController()
           if (announcementOutboxData.listData.length > 0) {
             announcementOutboxData.showDataDiv = true
           }
         }, function (err) {
-          announcementOutboxData.showLoader = false
+          if (err) {
+            announcementOutboxData.showLoader = false
+          }
         })
       }
 
@@ -82,10 +84,11 @@ angular.module('playerApp')
      * @memberOf Controllers.announcementOutboxListController
      */
       announcementOutboxData.deleteAnnouncement = function () {
-        announcementAdapter.deleteAnnouncement($rootScope.userId, announcementOutboxData.announcementId).then(function (apiResponse) {
+        announcementAdapter.deleteAnnouncement(announcementOutboxData.announcementId).then(function (apiResponse) {
           if (apiResponse.result.status === 'cancelled') {
+            announcementOutboxData.closeModal('announcementDeleteModal')
             toasterService.success($rootScope.messages.smsg.moo41)
-            var evens = _.remove(announcementOutboxData.listData, function (ann) {
+            _.remove(announcementOutboxData.listData, function (ann) {
               return ann.id === announcementOutboxData.announcementId
             })
             announcementOutboxData.setPage(announcementOutboxData.pager.currentPage)
@@ -94,7 +97,9 @@ angular.module('playerApp')
             announcementOutboxData.closeModal('announcementDeleteModal')
           }
         }, function (err) {
-          announcementOutboxData.closeModal('announcementDeleteModal')
+          if (err) {
+            announcementOutboxData.closeModal('announcementDeleteModal')
+          }
         })
       }
 
@@ -104,12 +109,8 @@ angular.module('playerApp')
      * @memberOf Controllers.announcementOutboxListController
      * @param {int} [announcementId] [to make getResend api call]
      */
-      announcementOutboxData.getResend = function (announcementId) {
-        announcementAdapter.getResend(announcementId).then(function (apiResponse) {
-          if (apiResponse.hasOwnProperty('result')) {
-            $rootScope.$broadcast('editAnnouncementBeforeResend', apiResponse.result)
-          }
-        })
+      announcementOutboxData.getResend = function (announcementId, announcementTitle) {
+        $state.go('announcementResend', {announcementId: announcementId, stepNumber: '1', telemetryAnnTitle: announcementTitle})
       }
 
     /**
@@ -120,6 +121,22 @@ angular.module('playerApp')
      */
       announcementOutboxData.showAnnouncementDetails = function (annId, item) {
         $state.go('announcementDetails', {announcementId: annId, announcementName: item.details.title, pageId: 'announcement_outbox_view'})
+      }
+
+    /**
+     * @method gotToAnnouncementCreateState
+     * @desc - function to change the current state to announcement create
+     * @memberOf Controllers.announcementOutboxListController
+     */
+      announcementOutboxData.gotToAnnouncementCreateState = function () {
+        var hashTagId = ''
+        if ($stateParams.userIdHashTag === null) {
+          hashTagId = (Math.floor(new Date().getTime() / 1000)) + ($rootScope.userId) + (Math.floor(Math.random() * 90000) + 10000)
+          hashTagId = md5(hashTagId)
+        } else {
+          hashTagId = $stateParams.userIdHashTag
+        }
+        $state.go('announcementCreate', {stepNumber: '1', userIdHashTag: hashTagId})
       }
     }
   ])
