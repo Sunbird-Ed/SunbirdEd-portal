@@ -121,19 +121,19 @@ gulp.task('clean:dist', function (cb) {
 //         .pipe(gulp.dest(dist.path + 'public/' + dist.scripts));
 // });
 
-gulp.task('compress', ['injectFiles'], function () {
-  gulp.src(['dist/**'], { base: 'dist/' })
-    .pipe(gzip())
-    .pipe(gulp.dest('dist'))
-})
+// gulp.task('compress', ['injectFiles'], function () {
+//   gulp.src(['dist/**'], { base: 'dist/' })
+//     .pipe(gzip())
+//     .pipe(gulp.dest('dist'))
+// })
 
-gulp.task('inject_staticGzip', ['compress'], function () {
-  return gulp.src('dist/server.js')
-    .pipe(map(function (file, cb) {
-      var fileContents = file.contents.toString()
-      fileContents = fileContents.replace('\/(invalid)\/', '/(\.html|\.js|\.css)$/')
-      file.contents = new Buffer(fileContents)
-      cb(null, file)
-    }))
-    .pipe(gulp.dest('dist'))
-})
+// gulp.task('inject_staticGzip', ['compress'], function () {
+//   return gulp.src('dist/server.js')
+//     .pipe(map(function (file, cb) {
+//       var fileContents = file.contents.toString()
+//       fileContents = fileContents.replace('\/(invalid)\/', '/(\.html|\.js|\.css)$/')
+//       file.contents = new Buffer(fileContents)
+//       cb(null, file)
+//     }))
+//     .pipe(gulp.dest('dist'))
+// })

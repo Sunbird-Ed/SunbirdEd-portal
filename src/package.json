@@ -124,7 +124,8 @@
     "moment",
     "iziToast",
     "org",
-    "alasql"
+    "alasql",
+    "md5"
     ],
     "ignore":[
       "./../Dockerfile"
