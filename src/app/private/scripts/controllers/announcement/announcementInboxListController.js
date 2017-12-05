@@ -23,19 +23,6 @@ angular.module('playerApp').controller('announcementInboxListController', ['$roo
           announcementInboxData.pageNumber = pageNumber
           announcementInboxData.pager = PaginationService.GetPager(apiResponse.result.count,
               pageNumber, announcementInboxData.pageLimit)
-            // Converting attachment to object from string
-          _.forEach(announcementInboxData.listData, function (announcement) {
-              // Call received API
-            if (announcement.received === false) {
-              announcementAdapter.receivedAnnouncement(announcement.id).then(function (response) {})
-            }
-            _.forEach(announcement.attachments, function (attachment, index) {
-              attachment = JSON.parse(attachment)
-              announcement.attachments[index] = attachment
-              return attachment
-            })
-            return announcement
-          })
         }
         announcementInboxData.showLoader = false
       }, function (err) {

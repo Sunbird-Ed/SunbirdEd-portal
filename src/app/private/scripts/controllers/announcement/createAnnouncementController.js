@@ -3,7 +3,6 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
   function ($rootScope, $scope, $state, $stateParams, $timeout, config, toasterService, announcementService, fileUpload, AnnouncementModel, announcementAdapter, portalTelemetryService) {
     var composeAnn = this
     composeAnn.data = {}
-    composeAnn.attachment = []
     composeAnn.senderlist = []
     composeAnn.targetIds = []
     composeAnn.disableBtn = true
@@ -203,7 +202,6 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
       composeAnn.isMetaModified = false
       composeAnn.repeatableWebLinks.length = 0
       composeAnn.showUrlField = false
-      composeAnn.attachment = []
       $('.qq-upload-list').children('li').remove()
     }
         /**
@@ -322,16 +320,15 @@ angular.module('playerApp').controller('createAnnouncementCtrl', ['$rootScope', 
          * @param {string} [name] [selected fine name]
          */
     composeAnn.onUploadCancel = function (id, name) {
-      var deleteFlag = composeAnn.attachment.splice(id, 1)
+      var deleteFlag = composeAnn.announcement.attachments.splice(id, 1)
       if (deleteFlag.length === 0) {
-        angular.forEach(composeAnn.attachment, function (value, key) {
-          var details = JSON.parse(value)
-          if (details.name === name) {
-            composeAnn.attachment.splice(key, 1)
+        angular.forEach(composeAnn.announcement.attachments, function (value, key) {
+          if (value.name === name) {
+            composeAnn.announcement.attachments.splice(key, 1)
           }
         })
       }
-      if (composeAnn.attachment.length === 0) {
+      if (composeAnn.announcement.attachments === 0) {
         composeAnn.uploadAttchement = false
       }
       composeAnn.enableRecepientBtn()
