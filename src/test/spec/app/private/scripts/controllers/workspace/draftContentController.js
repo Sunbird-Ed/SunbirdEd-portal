@@ -21,7 +21,6 @@ describe('Controller:DraftContentController', function () {
     $q,
     deferred,
     timeout,
-    errorMessage,
     createContoller,
     draftcontentSuccess = {id: 'api.v1.search',
       ver: '1.0',
@@ -133,18 +132,16 @@ describe('Controller:DraftContentController', function () {
   }
 
     // Initialize the controller and a mock scope
-  beforeEach(inject(function (_$rootScope_, _$controller_, _searchService_, _contentService_, _PaginationService_, _workSpaceUtilsService_, _$q_, _$timeout_, _errorMessages_) {
+  beforeEach(inject(function (_$rootScope_, _$controller_, _searchService_, _contentService_, _PaginationService_, _workSpaceUtilsService_, _$q_, _$timeout_) {
     rootScope = _$rootScope_
     scope = _$rootScope_.$new()
     PaginationService = _PaginationService_
     workSpaceUtilsService = _workSpaceUtilsService_
     searchService = _searchService_
     contentService = _contentService_
-    errorMessage = _errorMessages_
     $q = _$q_
     timeout = _$timeout_
     deferred = _$q_.defer()
-    rootScope.errorMessages = errorMessage
     createContoller = function () {
       return new _$controller_('DraftContentController', {
         $rootScope: rootScope,

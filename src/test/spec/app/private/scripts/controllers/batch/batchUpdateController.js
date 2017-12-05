@@ -20,20 +20,17 @@ describe('Controller:BatchUpdateController', function () {
     $q,
     deferred,
     timeout,
-    errorMessage,
     createContoller,
     batchTestData = testData.batch
 
     // Initialize the controller and a mock scope
-  beforeEach(inject(function ($rootScope, _$controller_, _batchService_, _$q_, _$timeout_, _errorMessages_) {
+  beforeEach(inject(function ($rootScope, _$controller_, _batchService_, _$q_, _$timeout_) {
     rootScope = $rootScope
     scope = $rootScope.$new()
     batchService = _batchService_
-    errorMessage = _errorMessages_
     $q = _$q_
     timeout = _$timeout_
     deferred = _$q_.defer()
-    rootScope.errorMessages = errorMessage
     createContoller = function () {
       return new _$controller_('BatchUpdateController', {
         $rootScope: rootScope,
