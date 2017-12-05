@@ -20,22 +20,20 @@ describe('Controller:BatchListController', function () {
     $q,
     deferred,
     timeout,
-    errorMessage,
     createContoller,
     batchTestData = testData.batch
 
     // Initialize the controller and a mock scope
-  beforeEach(inject(function ($rootScope, _$controller_, _batchService_, _userService_, _PaginationService_, _$q_, _$timeout_, _errorMessages_) {
+  beforeEach(inject(function ($rootScope, _$controller_, _batchService_, _userService_,
+    _PaginationService_, _$q_, _$timeout_) {
     rootScope = $rootScope
     scope = $rootScope.$new()
     PaginationService = _PaginationService_
     userService = _userService_
     batchService = _batchService_
-    errorMessage = _errorMessages_
     $q = _$q_
     timeout = _$timeout_
     deferred = _$q_.defer()
-    rootScope.errorMessages = errorMessage
     createContoller = function () {
       return new _$controller_('BatchListController', {
         $rootScope: rootScope,
