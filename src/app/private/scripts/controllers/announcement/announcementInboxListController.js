@@ -62,6 +62,7 @@ angular.module('playerApp').controller('announcementInboxListController', ['$roo
         return
       }
       announcementInboxData.showLoader = true
+      announcementInboxData.showDataDiv = false
       announcementInboxData.renderAnnouncementList('', page)
     }
   }

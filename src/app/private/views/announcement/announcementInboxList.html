@@ -18,7 +18,7 @@
     <div class="two wide column"></div>
     <div class="nine wide column padding-top-none">
         <!-- <div class="padding-bottom-15" ng-if="!draftContent.loader.showLoader && draftContent.totalCount > draftContent.pageLimit"> -->
-        <div class="padding-bottom-10">
+        <div class="padding-bottom-10" ng-if="!announcementInboxData.showLoader && announcementInboxData.totalCount > announcementInboxData.pageLimit">
             <div ng-init="pegination = announcementInboxData" ng-include=" 'views/common/pagination.html' "></div>
         </div>
     </div>

@@ -25,6 +25,7 @@ angular.module('playerApp')
           announcementOutboxData.pageNumber = pageNumber
           announcementOutboxData.pager = PaginationService.GetPager(apiResponse.result.count,
                 pageNumber, announcementOutboxData.pageLimit)
+          console.log(announcementOutboxData.pager)
           if (announcementOutboxData.listData.length > 0) {
             announcementOutboxData.showDataDiv = true
           }

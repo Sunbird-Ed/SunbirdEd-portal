@@ -30,7 +30,7 @@
             <div class="text showingAllSentAnn"><span class="margin-right-10">Viewing {{announcementOutboxData.pager.startIndex+1}} - {{announcementOutboxData.pager.endIndex+1}} of  {{announcementOutboxData.totalCount}} </span>
               <div class="ui small basic icon buttons">
                 <button class="ui button" ng-class="{'disabled' : announcementOutboxData.pager.startIndex === 0}" ng-click="announcementOutboxData.setPage(announcementOutboxData.pager.currentPage - 1)"><i class="left chevron icon"></i></button>
-                <button class="ui button" ng-class="{'disabled' : announcementOutboxData.pager.endPage === announcementOutboxData.pager.totalPages}" ng-click="announcementOutboxData.setPage(announcementOutboxData.pager.currentPage + 1)"><i class="right chevron icon"></i></button>
+                <button class="ui button" ng-class="{'disabled' : announcementOutboxData.pager.currentPage === announcementOutboxData.pager.totalPages}" ng-click="announcementOutboxData.setPage(announcementOutboxData.pager.currentPage + 1)"><i class="right chevron icon"></i></button>
               </div>
             </div>
           </div>
