@@ -34,7 +34,7 @@ let apiSchema = Joi.object().keys({
     description: Joi.string(),
     target: Joi.object().min(1).required(),
     links: Joi.array().items(Joi.string()),
-    attachments: Joi.array().items(Joi.object().keys({
+    attachments: Joi.array().max(20).items(Joi.object().keys({
       name: Joi.string().required(),
       mimetype: Joi.string().required(),
       size: Joi.string().required(),
