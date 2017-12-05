@@ -27,7 +27,7 @@ const metricsActivityConstant = {
 }
 
 const LIMIT_DEFAULT = 10
-const LIMIT_MAX = 25
+const LIMIT_MAX = 200
 const OFFSET_DEFAULT = 0
 
 class AnnouncementController {
