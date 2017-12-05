@@ -400,7 +400,7 @@ angular.module('playerApp')
                     }
                 } else {
                     if (stepNumber === 2) {
-                        if (!(announcement.details.title && announcement.details.type && announcement.details.from && (announcement.details.description || announcement.links || announcement.attachments))) {
+                        if (!announcement || !(announcement.details.title && announcement.details.type && announcement.details.from && (announcement.details.description || announcement.links || announcement.attachments))) {
                             status = false
                         }
                     } else if (stepNumber === 3 || stepNumber === 4) {
