@@ -74,6 +74,7 @@ angular.module('playerApp').controller('announcementInboxListController', ['$roo
       if (page < 1 || page > announcementInboxData.pager.totalPages) {
         return
       }
+      announcementInboxData.showLoader = true
       announcementInboxData.renderAnnouncementList('', page)
     }
   }
