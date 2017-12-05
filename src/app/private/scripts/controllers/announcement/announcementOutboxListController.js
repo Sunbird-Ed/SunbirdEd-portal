@@ -18,15 +18,14 @@ angular.module('playerApp')
       announcementOutboxData.renderAnnouncementList = function (pageNumber) {
         pageNumber = pageNumber || 1
         announcementAdapter.getOutBoxAnnouncementList(announcementOutboxData.pageLimit, pageNumber).then(function (apiResponse) {
-          announcementOutboxData.showLoader = false
-          announcementOutboxData.result = apiResponse.result
-          announcementOutboxData.listData = apiResponse.result.announcements
-          announcementOutboxData.pageNumber = pageNumber
-          announcementOutboxData.items = apiResponse.result.announcements
-          announcementOutboxData.pager = PaginationService.GetPager(apiResponse.result.count,
-              pageNumber, announcementOutboxData.pageLimit)
-          console.log(announcementOutboxData.pager)
           if (announcementOutboxData.listData.length > 0) {
+            announcementOutboxData.showLoader = false
+            announcementOutboxData.result = apiResponse.result
+            announcementOutboxData.listData = apiResponse.result.announcements
+            announcementOutboxData.pageNumber = pageNumber
+            announcementOutboxData.items = apiResponse.result.announcements
+            announcementOutboxData.pager = PaginationService.GetPager(apiResponse.result.count,
+                pageNumber, announcementOutboxData.pageLimit)
             announcementOutboxData.showDataDiv = true
           }
         }, function (err) {
@@ -43,19 +42,11 @@ angular.module('playerApp')
      * @param {int} [page] [page number]
      */
       function setPage (page) {
-        // // announcementOutboxData.pager = {}
-        // if (page < 1 || page > announcementOutboxData.pager.totalPages) {
-        //   return
-        // }
-        // // get pager object from service
-        // announcementOutboxData.pager = PaginationService.GetPager(announcementOutboxData.listData.length, page)
-        // // get current page of items
-        // announcementOutboxData.items = announcementOutboxData.listData.slice(announcementOutboxData.pager.startIndex, announcementOutboxData.pager.endIndex + 1)
-
         if (page < 1 || page > announcementOutboxData.pager.totalPages) {
           return
         }
-
+        announcementOutboxData.showDataDiv = false
+        announcementOutboxData.showLoader = true
         announcementOutboxData.renderAnnouncementList(page)
       }
 
