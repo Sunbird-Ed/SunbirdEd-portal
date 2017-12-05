@@ -95,12 +95,12 @@ angular.module('playerApp')
           }
           genericEditor.showModal = false
           if ($stateParams.state) {
-			         $state.go($stateParams.state);
+			         $state.go($stateParams.state)
 		       	 } else if ($rootScope.contentModelBackLinkName) {
-			         $state.go($rootScope.contentModelBackLinkName);
+			         $state.go($rootScope.contentModelBackLinkName)
 			       } else {
 			         $state.go('WorkSpace.AllUploadedContent')
-            }
+        }
         }, 2000)
       }
     }])

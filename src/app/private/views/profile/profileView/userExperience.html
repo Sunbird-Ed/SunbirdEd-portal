@@ -11,10 +11,9 @@
             <img class="ui avatar image" ng-src="/common/images/businessman.png">
             <div class="content ">
                 <a class=" header ">{{experience.jobName}}</a>
-                <div class="description ">{{experience.role}}<span ng-if="experience.role">&nbsp;,&nbsp;</span>{{experience.orgName}}
-                    <p class="margin-bottom-0 " ng-if="experience.subject.length ">{{$root.frmelmnts.lbl.subjectstaught}} : <span><span ng-repeat="sub in experience.subject | orderBy:'toString()'">{{sub}}<span ng-if="!$last ">,</span></span>
-                        </span>
-                    </p>
+                <div class="description ">
+                    <p class="margin-bottom-0">{{experience.role}}<span ng-if="experience.role">&nbsp;,&nbsp;</span>{{experience.orgName}}</p>
+                    <span class="margin-bottom-0" ng-if="experience.subject.length ">{{$root.frmelmnts.lbl.subjectstaught}} : </span><span ng-if="experience.subject.length " ng-repeat="sub in experience.subject | orderBy:'toString()'">{{sub}}<span ng-if="!$last ">,</span></span>
                     <p ng-if="experience.joiningDate ">{{$root.frmelmnts.lbl.tcfrom}} : {{experience.joiningDate}} &nbsp;
                         <span ng-if="experience.endDate && experience.isCurrentJob!==true">, &nbsp;{{$root.frmelmnts.lbl.tcto}} : {{experience.endDate}}</span></p>
                 </div>

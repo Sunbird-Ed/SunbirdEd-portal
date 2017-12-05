@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 angular.module('playerApp')
     .service('dataService', function () {
@@ -7,7 +7,7 @@ angular.module('playerApp')
      * @desc Service to set and get data.
      * @memberOf Services
      */
-        var data = {};
+      var data = {}
             /**
              * @method setData
              * @desc Set data
@@ -16,9 +16,9 @@ angular.module('playerApp')
              * @param {Object}  value - Data
              * @instance
              */
-        this.setData = function (key, value) {
-            data[key] = value;
-        };
+      this.setData = function (key, value) {
+        data[key] = value
+      }
 
         /**
              * @method getData
@@ -28,8 +28,7 @@ angular.module('playerApp')
              * @returns {Object}  Data
              * @instance
              */
-        this.getData = function (key) {
-            return data[key];
-        };
-    });
-
+      this.getData = function (key) {
+        return data[key]
+      }
+    })

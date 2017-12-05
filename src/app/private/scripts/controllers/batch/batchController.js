@@ -53,17 +53,17 @@ angular.module('playerApp')
                       minDate: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1),
                       formatter: {
                         date: function (date, settings) {
-                              return $filter('date')(date, 'yyyy-MM-dd')
-                            }
+                          return $filter('date')(date, 'yyyy-MM-dd')
+                        }
                       },
                       onChange: function (date, text, mode) {
                         if (_.isUndefined(batch)) {
-                              batch = { data: { endDate: text } }
-                            } else if (_.isUndefined(batch.data)) {
-                            batch.data = { endDate: text }
-                          } else {
-                            batch.data.endDate = text
-                          }
+                          batch = { data: { endDate: text } }
+                        } else if (_.isUndefined(batch.data)) {
+                          batch.data = { endDate: text }
+                        } else {
+                          batch.data.endDate = text
+                        }
                       }
                     })
                   }
@@ -97,7 +97,7 @@ angular.module('playerApp')
 
         batch.addBatch = function (data) {
           if ($scope.createBatch.$valid) {
-            if (data.enrollmentType != 'open') {
+            if (data.enrollmentType !== 'open') {
               data.users = $('#users').dropdown('get value').split(',')
               data.mentors = $('#mentors').dropdown('get value').split(',')
             } else {
@@ -227,14 +227,14 @@ angular.module('playerApp')
           batchService.getUserList(request).then(function (response) {
             if (response && response.responseCode === 'OK') {
               _.forEach(response.result.response.content, function (userData) {
-                if (userData.identifier != $rootScope.userId) {
+                if (userData.identifier !== $rootScope.userId) {
                   var user = {
                     id: userData.identifier,
                     name: userData.firstName + ' ' + userData.lastName,
                     avatar: userData.avatar
                   }
                   _.forEach(userData.organisations, function (userOrgData) {
-                    if (_.indexOf(userOrgData.roles, 'COURSE_MENTOR') != -1) {
+                    if (_.indexOf(userOrgData.roles, 'COURSE_MENTOR') !== -1) {
                       batch.menterList.push(user)
                     }
                   })

@@ -1,0 +1,17 @@
+{
+    "extends": "standard",
+    "globals": {
+        "angular": true,
+        "_": true,
+        "$": true,
+        "moment": true,
+        "iziToast": true,
+        "org": true,
+        "alasql": true
+    },
+    "rules": {
+        "quotes": ["error", "single"],
+        "max-len": ["error", 120, 4, {"ignoreUrls": true}],
+        "indent": [2, 2, {"VariableDeclarator": { "var": 2, "let": 2, "const": 3}}]
+    }
+}

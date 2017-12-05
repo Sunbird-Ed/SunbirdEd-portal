@@ -81,7 +81,7 @@
     <div class="required field" ng-init=" profileCtrl.setDropdownValue()">
         <label>{{$root.frmelmnts.lbl.language}}</label>
         <div class="ui input right icon">
-            <select name="language" id=languageSelect class="ui fluid dropdown" ng-value="option.value" ng-options=" language for language in profileCtrl.languages | orderBy:'toString()'" ng-model="profileCtrl.user.language">
+            <select name="language" id=languageSelect class="ui fluid dropdown" multiple=""  ng-value="option.value" ng-options=" language for language in profileCtrl.languages | orderBy:'toString()'" ng-model="profileCtrl.user.language">
                 <option value="">Language</option>
             </select>
             <profile-visibility  top="'true'"   update="'true'" field="'language'"></profile-visibility>

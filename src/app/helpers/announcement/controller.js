@@ -27,7 +27,7 @@ const metricsActivityConstant = {
 }
 
 const LIMIT_DEFAULT = 10
-const LIMIT_MAX = 25
+const LIMIT_MAX = 200
 const OFFSET_DEFAULT = 0
 
 class AnnouncementController {
@@ -73,16 +73,17 @@ class AnnouncementController {
         return async((requestObj) => {
             try {
                 let validation = this.announcementModel.validateApi(requestObj.body)
-                if (!validation.isValid) throw this.customError({
+                if (!validation.isValid) throw {
                     message: validation.error,
-                    status: HttpStatus.BAD_REQUEST
-                })
+                    status: HttpStatus.BAD_REQUEST,
+                    isCustom:true
+                }
                 let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
                 let tokenDetails = await(this.__getTokenDetails(authUserToken))
                 if(tokenDetails){
                     requestObj.body.request.userId = tokenDetails.userId
                 }else{
-                    throw this.customError({message:'Unauthorized', status: HttpStatus.UNAUTHORIZED})
+                    throw this.customError({message:'Unauthorized', status: HttpStatus.UNAUTHORIZED, isCustom:true})
                 }
                 var newAnnouncementObj = await (this.__createAnnouncement(requestObj.body.request))
                 if (newAnnouncementObj.data.id) {
@@ -103,7 +104,7 @@ class AnnouncementController {
             try {
                 let tokenDetails = await(this.__getTokenDetails(authUserToken))
                 if (!tokenDetails) {
-                    throw {message: 'Unauthorized User!', status: HttpStatus.UNAUTHORIZED } 
+                    throw {message: 'Unauthorized User!', status: HttpStatus.UNAUTHORIZED,isCustom:true } 
                 }
                 let options = {
                     method: 'GET',
@@ -118,17 +119,20 @@ class AnnouncementController {
                         if (_.get(error, 'body.params.err') === 'USER_NOT_FOUND') {
                             reject(this.customError({
                                 message: 'User not found!',
-                                status: HttpStatus.NOT_FOUND
+                                status: HttpStatus.NOT_FOUND,
+                                isCustom:true
                             }))
                         } else if (_.get(error, 'body.params.err') === 'UNAUTHORIZE_USER') {
                             reject(this.customError({
                                 message: 'Unauthorized User!',
-                                status: HttpStatus.UNAUTHORIZED
+                                status: HttpStatus.UNAUTHORIZED,
+                                isCustom:true
                             }))
                         } else {
                             reject(this.customError({
                                 message: 'Unknown Error!',
-                                status: HttpStatus.BAD_GATEWAY
+                                status: HttpStatus.BAD_GATEWAY,
+                                isCustom:true
                             }))
                         }
                     })
@@ -143,7 +147,8 @@ class AnnouncementController {
             let announcementId = uuidv1()
             if (!data) reject(this.customError({
                 message: 'Invalid Request, Values are required.',
-                statusCode: HttpStatus.BAD_REQUEST
+                statusCode: HttpStatus.BAD_REQUEST,
+                isCustom:true
             }))
 
             let attachments = data.attachments ? _.map(data.attachments, JSON.stringify) : []
@@ -177,7 +182,8 @@ class AnnouncementController {
                     } else {
                         throw {
                             message: 'Unable to create!',
-                            status: HttpStatus.INTERNAL_SERVER_ERROR
+                            status: HttpStatus.INTERNAL_SERVER_ERROR,
+                            isCustom:true
                         }
                     }
                 })
@@ -229,7 +235,7 @@ class AnnouncementController {
                 notifier.send(target, payload)
             })
         } catch (error) {
-            throw {message:'Internal Server Error', status: HttpStatus.INTERNAL_SERVER_ERROR}
+            throw this.customError(error)
         }
     }
 
@@ -259,10 +265,11 @@ class AnnouncementController {
                         })
                         resolve(_.get(data.data, 'content[0]'))
                     } else {
-                        throw {
+                        throw this.customError({
                             message: 'Unable to find!',
-                            status: HttpStatus.NOT_FOUND
-                        }
+                            status: HttpStatus.NOT_FOUND,
+                            isCustom:true
+                        })
                     }
                 })
                 .catch((error) => {
@@ -293,7 +300,8 @@ class AnnouncementController {
                 } else {
                     throw {
                         message: 'Invalid request!',
-                        status: HttpStatus.BAD_REQUEST
+                        status: HttpStatus.BAD_REQUEST,
+                        isCustom:true
                     }
                 }
             } catch (error) {
@@ -356,7 +364,8 @@ class AnnouncementController {
             } else {
                 throw this.customError({
                     message: 'Unauthorized User!',
-                    status: HttpStatus.UNAUTHORIZED
+                    status: HttpStatus.UNAUTHORIZED,
+                    isCustom:true
                 })
             }
             return new Promise((resolve, reject) => {
@@ -371,7 +380,8 @@ class AnnouncementController {
                             } else {
                                 throw {
                                     message: 'Unable to cancel!',
-                                    status: HttpStatus.INTERNAL_SERVER_ERROR
+                                    status: HttpStatus.INTERNAL_SERVER_ERROR,
+                                    isCustom:true
                                 }
                             }
                         })
@@ -381,7 +391,8 @@ class AnnouncementController {
                 } else {
                     reject(this.customError({
                         message: 'Unauthorized User!',
-                        status: HttpStatus.UNAUTHORIZED
+                        status: HttpStatus.UNAUTHORIZED,
+                        isCustom:true
                     }))
                 }
             })
@@ -463,7 +474,8 @@ class AnnouncementController {
                             if (!data) {
                                 throw {
                                     message: 'Unable to fetch!',
-                                    status: HttpStatus.INTERNAL_SERVER_ERROR
+                                    status: HttpStatus.INTERNAL_SERVER_ERROR,
+                                    isCustom:true
                                 }
                             } else {
                                 _.forEach(data.data.content, (announcementObj) => {
@@ -641,7 +653,8 @@ class AnnouncementController {
                         if (!data) {
                             throw {
                                 message: 'Unable to fetch!',
-                                status: HttpStatus.INTERNAL_SERVER_ERROR
+                                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                                isCustom:true
                             }
                         } else {
                             _.forEach(data.data.content, (announcementObj) => {
@@ -772,7 +785,8 @@ class AnnouncementController {
                         if (!data) {
                             throw {
                                 message: 'Unable to fetch!',
-                                status: HttpStatus.INTERNAL_SERVER_ERROR
+                                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                                isCustom:true
                             }
                         } else {
                             userData[data.id] = data.firstName + " " + data.lastName
@@ -857,12 +871,14 @@ class AnnouncementController {
             } else {
                 throw this.customError({
                     message: 'Unauthorized User!',
-                    status: HttpStatus.UNAUTHORIZED
+                    status: HttpStatus.UNAUTHORIZED,
+                    isCustom:true
                 })
             }
             if (!request.isValid) throw {
-                message: 'Invalid request!',
-                status: HttpStatus.BAD_REQUEST
+                message: request.error,
+                status: HttpStatus.BAD_REQUEST,
+                isCustom:true
             }
 
             let metricsExists = false
@@ -911,7 +927,8 @@ class AnnouncementController {
                     if (!data) {
                         throw {
                             message: 'Unable to create',
-                            status: HttpStatus.INTERNAL_SERVER_ERROR
+                            status: HttpStatus.INTERNAL_SERVER_ERROR,
+                            isCustom:true
                         }
                     } else {
                         resolve({
@@ -975,13 +992,15 @@ class AnnouncementController {
                     } else {
                         throw {
                             message: 'Unauthorized user',
-                            status: HttpStatus.UNAUTHORIZED
+                            status: HttpStatus.UNAUTHORIZED,
+                            isCustom:true
                         }
                     }
                 } else {
                     throw {
                         message: 'Unauthorized user',
-                        status: HttpStatus.UNAUTHORIZED
+                        status: HttpStatus.UNAUTHORIZED,
+                        isCustom:true
                     }
                 }
             } catch (error) {
@@ -1053,10 +1072,17 @@ class AnnouncementController {
      * @return {Object}        - Error object
      */
     customError(error) {
-        return new AppError({
-            message: 'Unable to process the request!',
-            status: HttpStatus.INTERNAL_SERVER_ERROR
-        })
+        if (error.isCustom) {
+            return new AppError({
+                message: error.message || 'Unable to process the request!',
+                status: error.status || HttpStatus.INTERNAL_SERVER_ERROR,
+            })
+        } else {
+            return new AppError({
+                message: 'Unable to process the request!',
+                status: HttpStatus.INTERNAL_SERVER_ERROR
+            })
+        }
     }
 }
 module.exports = AnnouncementController

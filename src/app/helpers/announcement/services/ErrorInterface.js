@@ -29,6 +29,11 @@ class AppError extends Error {
      */
     this.stack = stack
 
+    /**
+     * @property {boolean} - Which defines it's a custom error
+     */
+    this.isCustom = true
+
     Error.captureStackTrace(this, this.constructor)
   }
 }

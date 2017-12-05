@@ -1,7 +1,7 @@
 #Dockerfile for the player setup
 FROM node:6.11.0
 MAINTAINER "Manojvv" "manojv@ilimi.in"
-RUN apt update \
+RUN apt update --no-install-recommends -y \
     && apt-get install -y python \
     && apt-get install -y python-dev \
     && apt-get update \
@@ -10,11 +10,13 @@ RUN apt update \
     && apt-get install autoconf \
     && apt-get install g++ \
     && apt-get install make \
-    && apt-get install nasm
+    && apt-get install nasm 
+RUN rm -rf /var/lib/apt/lists/*
 WORKDIR /opt/player
 COPY * /opt/player/
+RUN apt-get update
 RUN apt-get install -y zip 
-RUN apt-get install -y  bzip2 
+RUN apt-get install -y bzip2 
 RUN npm install -g bower 
 RUN npm install -g gulp 
 RUN npm install gulp --save-dev 
