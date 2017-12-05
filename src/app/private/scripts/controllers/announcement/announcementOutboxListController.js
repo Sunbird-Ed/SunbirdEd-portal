@@ -6,7 +6,7 @@ angular.module('playerApp')
       var announcementOutboxData = this
       announcementOutboxData.pager = {}
       announcementOutboxData.setPage = setPage
-      announcementOutboxData.pageLimit = 500
+      announcementOutboxData.pageLimit = 25
       announcementOutboxData.showLoader = true
       announcementOutboxData.showDataDiv = false
 

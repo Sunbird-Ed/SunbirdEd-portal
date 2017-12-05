@@ -82,14 +82,10 @@ var paths = {
     config: 'config/'
   },
   jsonConfigArr: [
-    { name: 'config', path: 'config/playerAppConfig.json' },
-    { name: 'labels', path: 'config/privateLabels.json' },
-    { name: 'errorMessages', path: 'config/privateErrorMessages.json' }
+    { name: 'config', path: 'config/playerAppConfig.json' }
   ],
   jsonConfigPublic: [
-    { name: 'config', path: 'config/publicAppConfig.json' },
-    { name: 'labels', path: 'config/publicLabels.json' },
-    { name: 'errorMessages', path: 'config/publicErrorMessages.json' }
+    { name: 'config', path: 'config/publicAppConfig.json' }
   ],
   public_bower_js: [
     'dist/thirdparty/libs/eventbus.min.js',
@@ -296,8 +292,6 @@ var paths = {
     'dist/private/scripts/utils/util.js',
     'dist/public/telemetry.min.js',
     'dist/private/scripts/playerAppConfig.js',
-    'dist/private/scripts/privateLabels.js',
-    'dist/private/scripts/privateErrorMessages.js',
     'dist/private/scripts/managers/eventManager.js',
     'dist/private/scripts/app.js',
     'dist/private/scripts/routes/appRoute.js',
@@ -313,8 +307,6 @@ var paths = {
     'dist/public/external.min.js',
     'dist/private/scripts/utils/util.js',
     'dist/private/scripts/managers/eventManager.js',
-    'dist/public/scripts/publicLabels.js',
-    'dist/public/scripts/publicErrorMessages.js',
     'dist/public/scripts/publicAppConfig.js',
     'dist/public/scripts/application.js',
     'dist/public/scripts/routes/publicAppRoute.js',
