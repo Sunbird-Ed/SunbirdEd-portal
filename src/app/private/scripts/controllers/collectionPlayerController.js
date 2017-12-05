@@ -105,6 +105,10 @@
               if (nodeData.key !== -1) {
                 cpvm.expandMe(nodeData.key, nodeData.data)
               }
+              if (data.targetType === 'title') {
+                data.targetType = 'expander'
+                cpvm.expandMe(nodeData.key, nodeData.data)
+              }
             }
           })
           $('.fancytree-container').addClass('fancytree-connectors')

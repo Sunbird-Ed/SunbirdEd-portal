@@ -87,7 +87,7 @@ angular.module('playerApp')
             announcementOutboxData.closeModal('announcementDeleteModal')
             toasterService.success($rootScope.messages.smsg.moo41)
             var evens = _.remove(announcementOutboxData.listData, function (ann) {
-              return ann.id == announcementOutboxData.announcementId
+              return ann.id === announcementOutboxData.announcementId
             })
             announcementOutboxData.setPage(announcementOutboxData.pager.currentPage)
           } else {

@@ -26,13 +26,12 @@ angular.module('playerApp').component('geo', {
              */
     this.$onInit = function () {
       var instance = this
-       var config = instance.getConfig()
-       instance.receipients = $rootScope.receipients
-        if (_.has(config, instance.keyName)) {
-          instance.initialize(config)
-        }
-        $rootScope.$on('component:update', instance.updateItems)
-
+      var config = instance.getConfig()
+      instance.receipients = $rootScope.receipients
+      if (_.has(config, instance.keyName)) {
+        instance.initialize(config)
+      }
+      $rootScope.$on('component:update', instance.updateItems)
     }
             /**
              * @desc Validating the adoption from config object during initialization
@@ -88,7 +87,7 @@ angular.module('playerApp').component('geo', {
          */
     this.renderItems = function (items) {
       this.items = items
-      //this.initializeCheckBoxes();
+      // this.initializeCheckBoxes();
     }
 
         /**
@@ -145,12 +144,12 @@ angular.module('playerApp').component('geo', {
       })
     }
 
-    /*this.initializeCheckBoxes = function(){
+    /* this.initializeCheckBoxes = function(){
       // Temp solution to initialize the checkboxes
       setTimeout(function(){
         $('.ui.checkbox').checkbox()
       },0)
-    }*/
+    } */
   }],
   templateUrl: 'views/components/geo.html'
 })

@@ -458,6 +458,9 @@
   opacity: 0.65;
   cursor: not-allowed;
 }
+.overFlowWordRap {
+  overflow-wrap: break-word !important;
+}
 .header-container {
   margin-left: 1px !important;
   border-bottom: 5px solid #007AFF !important;
@@ -1922,8 +1925,8 @@ div:focus {
   font-size: 0.8em !important;
 }
 .annType {
-  padding-top: 3px !important;
-  padding-bottom: 3px !important;
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
 }
 .announcementHomeCard-header {
   padding: 0 !important;
@@ -2027,7 +2030,7 @@ div:focus {
   border-radius: 0!important;
   padding: 10px !important;
 }
-.margin-bottom-0 {
+.announcementSentOnDate {
   margin-bottom: -25px !important;
 }
 .width-100 {
@@ -2045,6 +2048,33 @@ div:focus {
 }
 .ui.dropdown .menu > .item.AnnDetailsModalDropDwn {
   padding: 3px 5px 1px 5px!important;
+}
+.annAttaFileSize {
+  margin-left: 10px !important;
+  margin-top: -5px !important;
+}
+.annAttaFileName {
+  margin-bottom: 0px !important;
+  margin-left: 10px !important;
+}
+.announcementAttachmentsIcon {
+  width: 44px!important;
+  height: 44px!important;
+  padding-top: 3px!important;
+  padding-left: 4px!important;
+  margin-top: 10px!important;
+}
+.attachmentPlacementBgr {
+  background-color: rgba(86, 61, 124, 0.1);
+}
+.announcementSeeAllLink {
+  font-family: 'sunbirdboldfont' !important;
+  font-size: 1.2em !important;
+  padding-top: 15px !important;
+}
+.ui.grey.label.annType {
+  background-color: #9a9a9a!important;
+  border-color: #9a9a9a!important;
 }
 .search-location-icon {
   margin-top: 2%;

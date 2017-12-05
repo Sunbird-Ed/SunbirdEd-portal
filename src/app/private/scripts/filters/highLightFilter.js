@@ -15,7 +15,7 @@ angular.module('playerApp').filter('highlight', ['$sce', function ($sce) {
             '<span id="highlighted" style = "color:#009fda">$1</span>')
     }
     // Temp solution to initialize the checkboxes
-    //$('.ui.checkbox').checkbox()
+    // $('.ui.checkbox').checkbox()
 
     return $sce.trustAsHtml(text)
   }

@@ -1,8 +1,8 @@
-'use strict';
+'use strict'
 
 angular.module('playerApp')
-  .factory('AnnouncementModel', function() {
-    function Announcement(atts) {
+  .factory('AnnouncementModel', function () {
+    function Announcement (atts) {
       this.sourceId = atts.sourceid || ''
       this.attachments = atts.attachments || []
       this.createdDate = new Date(atts.createddate) || null
@@ -20,6 +20,6 @@ angular.module('playerApp')
       this.status = atts.status || null
     }
     return {
-        Announcement : Announcement
+      Announcement: Announcement
     }
-  });
+  })
