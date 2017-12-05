@@ -1,8 +1,8 @@
 'use strict'
 angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope', '$scope', '$state',
-  '$stateParams', '$timeout', 'config', 'toasterService', 'announcementService', 'fileUpload', 'AnnouncementModel',
+  '$stateParams', '$timeout', 'config', 'toasterService', 'fileUpload', 'AnnouncementModel',
   'announcementAdapter', 'portalTelemetryService', function ($rootScope, $scope, $state, $stateParams, $timeout,
-        config, toasterService, announcementService, fileUpload, AnnouncementModel, announcementAdapter, portalTelemetryService) {
+        config, toasterService, fileUpload, AnnouncementModel, announcementAdapter, portalTelemetryService) {
     var composeAnn = this
     composeAnn.senderlist = []
     composeAnn.targetIds = []

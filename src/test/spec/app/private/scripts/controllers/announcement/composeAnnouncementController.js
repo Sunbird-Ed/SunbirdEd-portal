@@ -149,7 +149,6 @@ describe('Controller: composeAnnouncementCtrl', function() {
         expect(composeAnn.showUrlField).toEqual(false)
         expect(composeAnn.stepNumber).toEqual(1)
         expect(composeAnn.repeatableWebLinks.length).toEqual(0)
-        expect(composeAnn.attachment.length).toEqual(0)
     })
     it('Should through error for confirm recipients', function() {
         composeAnn.announcement = {}
@@ -251,7 +250,6 @@ describe('Controller: composeAnnouncementCtrl', function() {
         composeAnn.onUploadCancel(1, 'swing-846077_960_720.jpg')
         expect(composeAnn.onUploadCancel).toBeDefined()
         expect(composeAnn.uploadAttchement).toEqual(false)
-        expect(composeAnn.attachment.length).toEqual(0)
     })
     it('should get announcement type', function() {
         var mockRes = announcementTestData.composeAnncmnt.getAnncmntTypeRes
@@ -343,15 +341,6 @@ describe('Controller: composeAnnouncementCtrl', function() {
         composeAnn.announcement.selTar.length = 0
         spyOn(composeAnn, 'goToNextStep').and.callThrough()
         composeAnn.goToNextStep()
-        scope.$apply()
-    })
-    it('Definition successResponse', function() {
-        spyOn(announcementAdapter, 'getDefinitions').and.returnValue(deferred.promise)
-        deferred.resolve(announcementTestData.composeAnncmnt.getAnncmntTypeRes)
-        spyOn(composeAnn, 'getDefinitions').and.callThrough()
-        composeAnn.getDefinitions('ORG_001')
-        var response = announcementAdapter.getDefinitions().$$state.value
-        expect(response).toBe(composeAnn.announcementType)
         scope.$apply()
     })
 })
