@@ -24,7 +24,8 @@ describe('Controller:BatchListController', function () {
     batchTestData = testData.batch
 
     // Initialize the controller and a mock scope
-  beforeEach(inject(function ($rootScope, _$controller_, _batchService_, _userService_, _PaginationService_, _$q_, _$timeout_) {
+  beforeEach(inject(function ($rootScope, _$controller_, _batchService_, _userService_,
+    _PaginationService_, _$q_, _$timeout_) {
     rootScope = $rootScope
     scope = $rootScope.$new()
     PaginationService = _PaginationService_

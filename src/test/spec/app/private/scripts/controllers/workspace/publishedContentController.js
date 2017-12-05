@@ -88,7 +88,8 @@ describe('Controller:PublishedContentController', function () {
   }
 
     // Initialize the controller and a mock scope
-  beforeEach(inject(function (_$rootScope_, _$controller_, _searchService_, _contentService_, _PaginationService_, _workSpaceUtilsService_, _$q_, _$timeout_) {
+  beforeEach(inject(function (_$rootScope_, _$controller_, _searchService_, _contentService_,
+    _PaginationService_, _workSpaceUtilsService_, _$q_, _$timeout_) {
     rootScope = _$rootScope_
     scope = _$rootScope_.$new()
     PaginationService = _PaginationService_

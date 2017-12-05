@@ -26,7 +26,8 @@ describe('Controller:BatchController', function () {
     batchTestData = testData.batch
 
     // Initialize the controller and a mock scope
-  beforeEach(inject(function ($rootScope, _$controller_, _batchService_, _courseService_, _permissionsService_, _learnService_, _$q_, _$timeout_, _toasterService_) {
+  beforeEach(inject(function ($rootScope, _$controller_, _batchService_,
+    _courseService_, _permissionsService_, _learnService_, _$q_, _$timeout_, _toasterService_) {
     rootScope = $rootScope
     scope = $rootScope.$new()
     permissionsService = _permissionsService_

@@ -18,22 +18,21 @@ angular.module('playerApp')
       announcementOutboxData.renderAnnouncementList = function (pageNumber) {
         pageNumber = pageNumber || 1
         announcementAdapter.getOutBoxAnnouncementList(announcementOutboxData.pageLimit, pageNumber)
-        .then(function (apiResponse) {
-          announcementOutboxData.showLoader = false
-          announcementOutboxData.totalCount = apiResponse.result.count
-          announcementOutboxData.result = apiResponse.result
-          announcementOutboxData.listData = apiResponse.result.announcements
-          announcementOutboxData.pageNumber = pageNumber
-          announcementOutboxData.pager = PaginationService.GetPager(apiResponse.result.count, pageNumber, announcementOutboxData.pageLimit)
-          console.log(announcementOutboxData.pager)
-          if (announcementOutboxData.listData.length > 0) {
-            announcementOutboxData.showDataDiv = true
-          }
-        }, function (err) {
-          if (err) {
+          .then(function (apiResponse) {
             announcementOutboxData.showLoader = false
-          }
-        })
+            announcementOutboxData.totalCount = apiResponse.result.count
+            announcementOutboxData.result = apiResponse.result
+            announcementOutboxData.listData = apiResponse.result.announcements
+            announcementOutboxData.pageNumber = pageNumber
+            announcementOutboxData.pager = PaginationService.GetPager(apiResponse.result.count, pageNumber, announcementOutboxData.pageLimit)
+            if (announcementOutboxData.listData.length > 0) {
+              announcementOutboxData.showDataDiv = true
+            }
+          }, function (err) {
+            if (err) {
+              announcementOutboxData.showLoader = false
+            }
+          })
       }
 
     /**
