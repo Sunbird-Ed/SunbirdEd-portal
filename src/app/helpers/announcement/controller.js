@@ -500,7 +500,7 @@ class AnnouncementController {
                 }
 
                 return {
-                    count: _.size(announcements),
+                    count: data.count,
                     announcements: announcements
                 }
 
@@ -615,7 +615,7 @@ class AnnouncementController {
                             }
                         } else {
                             let response = {
-                                count: _.size(data.data.content),
+                                count: data.data.count,
                                 announcements: data.data.content
                             }
 
@@ -627,8 +627,6 @@ class AnnouncementController {
                     })
 
                 }))
-
-
 
             let announcementIds = _.map(outboxData.announcements, 'id')
             let announcements = _.map(outboxData.announcements, this.__addMetricsPlaceholder)
@@ -655,7 +653,7 @@ class AnnouncementController {
             }
 
             let response = {
-                            count: _.size(announcements),
+                            count: outboxData.count,
                             announcements: announcements
                         }
 
@@ -1013,6 +1011,7 @@ class AnnouncementController {
             }
         })
     }
+
     /**
      * Which is used to create a custom error object
      * @param  {Object} error  - Error object it should contain message and status attribute 
