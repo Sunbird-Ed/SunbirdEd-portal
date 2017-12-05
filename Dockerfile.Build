@@ -14,8 +14,9 @@ RUN apt update --no-install-recommends -y \
 RUN rm -rf /var/lib/apt/lists/*
 WORKDIR /opt/player
 COPY * /opt/player/
-RUN apt-get install -y zip 
-RUN apt-get install -y  bzip2 
+RUN apt-get update
+RUN apt-get install zip 
+RUN apt-get install  bzip2 
 RUN npm install -g bower 
 RUN npm install -g gulp 
 RUN npm install gulp --save-dev 
