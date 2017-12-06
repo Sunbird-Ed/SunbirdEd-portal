@@ -52,7 +52,7 @@ angular.module('playerApp').controller('announcementInboxListController', ['$roo
       }
       $state.go('announcementDetails', {
         announcementId: announcementDetails.id,
-        announcementName: announcementDetails.details.title,
+        announcementName: announcementDetails.title,
         pageId: 'announcement_inbox_list'
       })
     }
