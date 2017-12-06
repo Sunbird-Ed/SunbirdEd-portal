@@ -14,7 +14,7 @@ let AppError = require('./ErrorInterface.js')
 class DataService {
     /**
      * Caller of the constructor as follows
-     * Eg: let dataServiceInstance = new DataService({endPoint:'data/v1/notification/audience', service:httpServiceInst, token:'someToken'})
+     * Eg: let dataServiceInstance = new DataService({service:httpServiceInst})
      */
   constructor ({service } = {}) {
     /**
