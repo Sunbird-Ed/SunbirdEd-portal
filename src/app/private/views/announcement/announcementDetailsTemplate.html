@@ -77,7 +77,7 @@
       </div>
     </div>
   </div>
-  <div class="gray-full-width announcementSentOnDate" ng-if="announcementDetails.createdDate">
+  <div class="gray-full-width announcementSentOnDate" ng-if="announcementDetails.createdDate && !announcementDetails.hideDate">
     <span class="ng-binding announcement-description">
             {{$root.frmelmnts.lbl.anncmntdtlssenton}} {{announcementDetails.createdDate | dateFilterWithDMY}}
         </span>

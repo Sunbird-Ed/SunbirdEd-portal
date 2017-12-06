@@ -392,6 +392,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
           $rootScope.$broadcast('component:update', geoIds)
         }, 100)
       }
+      composeAnn.announcement.hideDate = true
     }
         /**
          * @method goToNextStep
@@ -444,6 +445,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
     composeAnn.getResend = function (announcementId) {
       announcementAdapter.getResend(announcementId).then(function (apiResponse) {
         composeAnn.announcement = new AnnouncementModel.Announcement(apiResponse.result.announcement)
+        composeAnn.announcement.hideDate = true
         composeAnn.initializeModal()
         composeAnn.enableRecepientBtn()
         composeAnn.initializeFileUploader(true)
