@@ -1174,8 +1174,8 @@ class AnnouncementController {
      * @param  {Object} addonMap
      * @return {Object}           [description]
      */
-    __getTransformationMap(baseMap, addonMap) {
-        let transformations = _.merge(baseMap, addonMap)
+    __getTransformationMap(baseMap, addonMap = {}) {
+        let transformations = _.merge({}, baseMap, addonMap)
         return {item: transformations}
     }
 
