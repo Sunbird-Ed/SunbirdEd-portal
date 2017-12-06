@@ -85,6 +85,7 @@ class AnnouncementController {
                 }else{
                     throw this.customError({message:'Unauthorized', status: HttpStatus.UNAUTHORIZED, isCustom:true})
                 }
+                let sentCount = await(this.__getSentCount(_.get(requestObj, 'body.request.target.geo.ids'), authUserToken))
                 var newAnnouncementObj = await (this.__createAnnouncement(requestObj.body.request))
                 if (newAnnouncementObj.data.id) {
                     requestObj.body.request.announcementId = newAnnouncementObj.data.id
@@ -96,6 +97,29 @@ class AnnouncementController {
             } catch (error) {
                 throw this.customError(error)
             }
+        })
+    }
+    __getSentCount(locationIds, authUserToken){
+        return new Promise((resolve, reject) =>{
+            let options = {
+                method: 'POST',
+                uri: envVariables.DATASERVICE_URL + 'data/v1/notification/audience',
+                headers: this.httpService.getRequestHeader(authUserToken),
+                body: {
+                    "request": {
+                        "locationIds": locationIds,
+                        "userListReq": false,
+                        "estimatedCountReq": false
+                    }
+                },
+                json:true
+            }
+            this.httpService.call(options).then((data) =>{
+                let locations = _.get(data, 'data.response.body.result.locations');
+                 resolve(_.sumBy(locations, 'userCount'))
+            }).catch((error) =>{
+                reject(this.customError({message:'Unable to get the sent count', status:HttpStatus.INTERNAL_SERVER_ERROR}))
+            })
         })
     }
 
@@ -167,10 +191,10 @@ class AnnouncementController {
                     'target': data.target,
                     'links': data.links || [],
                     'status': statusConstant.ACTIVE,
-                    'attachments': attachments
+                    'attachments': attachments,
+                    'sentcount':data.sentCount || 0,
                 }
             }
-
             this.announcementStore.createObject(query)
                 .then((data) => {
                     if (data) {
