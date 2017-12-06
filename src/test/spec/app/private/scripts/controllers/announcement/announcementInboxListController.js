@@ -101,5 +101,19 @@ describe('Controller: announcementInboxListController', function () {
       var response = announcementInboxListController.showAnnouncementDetails(annInboxTestData.detailsSuccess, '')
       expect(response).toBe(undefined)
     })
+
+    it('cover set page if clause', function () {
+      announcementInboxListController.pager = {'totalPages': 1}
+      spyOn(announcementInboxListController, 'setPage').and.callThrough()
+      var response = announcementInboxListController.setPage(2)
+      expect(response).toBe(undefined)
+    })
+
+    it('cover set page', function () {
+      announcementInboxListController.pager = {'totalPages': 2}
+      spyOn(announcementInboxListController, 'setPage').and.callThrough()
+      var response = announcementInboxListController.setPage(1)
+      expect(response).toBe(undefined)
+    })
   })
 })
