@@ -26,7 +26,6 @@ angular.module('playerApp').controller('announcementInboxListController', ['$roo
 
             // Calling received API
           _.forEach(announcementInboxData.listData, function (announcement) {
-             // Call received API
             if (announcement.received === false) {
               announcementAdapter.receivedAnnouncement(announcement.id).then(function (response) {})
             }
