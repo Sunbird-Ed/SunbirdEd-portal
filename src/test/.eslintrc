@@ -2,5 +2,6 @@
     "env": {
         "jasmine": true,
         "mocha": true
-    }
+    },
+    "plugins": ["jasmine"]
 }
