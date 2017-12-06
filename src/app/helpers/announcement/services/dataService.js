@@ -26,6 +26,7 @@ class DataService {
     /**
      * Which is used ge the sentCount details
      * @param  {Array} locationIds  - List of location identifiers ex: ['32432','43423']
+     * @param {String} token 		- Optional, User access token
      * @return {Int}                - Which returns sum of userCount
      */
   getAudience (locationIds, token) {
@@ -59,9 +60,10 @@ class DataService {
   /**
    * Which is used to get the geo location
    * @param  {Array} orgIds  - List of org identifiers
+   * @param {String} token  - Optional, User access token
    * @return {Object}        - Which returns the org details.
    */
-  getGeoLocations (orgIds) {
+  getGeoLocations (orgIds, token) {
     return new Promise((resolve, reject) => {
       try {
         const DEFAULT_ENDPOINT = 'org/v1/search'
