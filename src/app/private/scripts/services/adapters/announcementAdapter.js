@@ -99,10 +99,10 @@ angular.module('playerApp').service('announcementAdapter', ['$rootScope', '$http
     this.createAnnouncement = function (annoucementObj) {
       var data = {
         request: {
-          title: annoucementObj.details.title,
-          from: annoucementObj.details.from,
-          type: annoucementObj.details.type,
-          description: annoucementObj.details.description,
+          title: annoucementObj.title,
+          from: annoucementObj.from,
+          type: annoucementObj.type,
+          description: annoucementObj.description,
           links: annoucementObj.links,
           sourceId: annoucementObj.sourceId,
           target: annoucementObj.target,

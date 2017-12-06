@@ -91,10 +91,10 @@ describe('Controller: composeAnnouncementCtrl', function () {
   it('Should enable select recipents button', function () {
     composeAnn.announcement = announcementTestData.composeAnncmnt.annObject
     spyOn(composeAnn, 'enableRecepientBtn').and.callThrough()
-    composeAnn.announcement.details.title = 'Test'
-    composeAnn.announcement.details.from = 'Test'
-    composeAnn.announcement.details.type = 'test'
-    composeAnn.announcement.details.description = 'test test'
+    composeAnn.announcement.title = 'Test'
+    composeAnn.announcement.from = 'Test'
+    composeAnn.announcement.type = 'test'
+    composeAnn.announcement.description = 'test test'
     composeAnn.announcement.links = {
       '0': 'https;//google.co.in'
     }
@@ -105,9 +105,9 @@ describe('Controller: composeAnnouncementCtrl', function () {
   it('should not be able to enable button', function () {
     composeAnn.announcement = announcementTestData.composeAnncmnt.annObject
     spyOn(composeAnn, 'enableRecepientBtn').and.callThrough()
-    composeAnn.announcement.details.title = 'Test'
-    composeAnn.announcement.details.from = 'Test'
-    composeAnn.announcement.details.description = 'test'
+    composeAnn.announcement.title = 'Test'
+    composeAnn.announcement.from = 'Test'
+    composeAnn.announcement.description = 'test'
     composeAnn.enableRecepientBtn()
     expect(composeAnn.disableBtn).toBeDefined()
     expect(composeAnn.disableBtn).toEqual(false)
@@ -337,9 +337,9 @@ describe('Controller: composeAnnouncementCtrl', function () {
     announcementTestData.composeAnncmnt.failedAnncmntRes.data = announcementTestData.composeAnncmnt
             .failedAnncmntRes
     spyOn(composeAnn, 'saveAnnouncement').and.callThrough()
-    composeAnn.announcement.details.from = 'test'
+    composeAnn.announcement.from = 'test'
     composeAnn.linkArray = ['https;//google.co.in']
-    composeAnn.announcement.details.description = 'test'
+    composeAnn.announcement.description = 'test'
     expect(composeAnn.saveAnnouncement).toBeDefined()
     var response = composeAnn.saveAnnouncement(composeAnn.data)
     expect(composeAnn.saveAnnouncement).toHaveBeenCalled()
@@ -431,11 +431,7 @@ describe('Controller: composeAnnouncementCtrl', function () {
   })
   it('Get definition success', function () {
     composeAnn.announcementType = []
-    composeAnn.announcement = {
-      details: {
-        type: 'Circular'
-      }
-    }
+    composeAnn.announcement = { type: 'Circular' }
     spyOn(announcementAdapter, 'getDefinitions').and.returnValue(deferred.promise)
     deferred.resolve(announcementTestData.composeAnncmnt.getAnncmntTypeRes)
     spyOn(composeAnn, 'getDefinitions').and.callThrough()

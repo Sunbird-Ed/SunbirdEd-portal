@@ -157,9 +157,9 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         }
         var selectRecipientBtn = angular.element(document.querySelector(
                     '#selectRecipientBtn'))
-        if (composeAnn.announcement.details.title && composeAnn.announcement.details.from &&
-                    composeAnn.announcement.details.type && (composeAnn.uploadAttchement ||
-                        composeAnn.announcement.details.description || links.length)) {
+        if (composeAnn.announcement.title && composeAnn.announcement.from &&
+                    composeAnn.announcement.type && (composeAnn.uploadAttchement ||
+                        composeAnn.announcement.description || links.length)) {
           composeAnn.disableBtn = false
           selectRecipientBtn.removeClass('disabled')
         } else {
@@ -473,9 +473,8 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
             composeAnn.senderlist.push(value)
           })
         }
-        if (composeAnn.announcement.details.type !== '') {
-          $('#announcementType').dropdown('set text', composeAnn.announcement.details
-                        .type)
+        if (composeAnn.announcement.type !== '') {
+          $('#announcementType').dropdown('set text', composeAnn.announcement.type)
         }
       }, function (err) {
         if (err) {

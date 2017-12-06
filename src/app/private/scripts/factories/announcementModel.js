@@ -7,11 +7,10 @@ angular.module('playerApp')
       this.attachments = atts.attachments || []
       this.createdDate = new Date(atts.createddate) || null
       this.createdBy = atts.userid || null
-      this.details = atts.details || {}
-      this.details.description = this.details.description || ''
-      this.details.from = this.details.from || ''
-      this.details.title = this.details.title || ''
-      this.details.type = this.details.type || ''
+      this.description = this.description || ''
+      this.from = this.from || ''
+      this.title = this.title || ''
+      this.type = this.type || ''
       this.links = atts.links || []
       this.id = atts.id || ''
       this.target = atts.target || {}

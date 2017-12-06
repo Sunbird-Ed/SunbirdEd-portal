@@ -1,37 +1,24 @@
-<div class="ui warning message tweleve wide column" ng-if="!announcementDetails.details.title">
+<div class="ui warning message tweleve wide column" ng-if="!announcementDetails.title">
     <div class="header">
         {{$root.frmelmnts.instn.t0055}}
     </div>
     {{$root.frmelmnts.instn.t0056}}
 </div>
-<div ng-if="announcementDetails.details.title">
+<div ng-if="announcementDetails.title">
     <div>
-        <p class="ui grey label annType" ng-if="announcementDetails.details.type">
-            {{announcementDetails.details.type | uppercase}}
+        <p class="ui grey label annType" ng-if="announcementDetails.type">
+            {{announcementDetails.type | uppercase}}
         </p>
-
-        <!-- <div ng-if="announcementDetails.showActions" class="float-ContentRight" ng-controller="announcementOutboxListController as annOutboxCtrl">
-            <div class="ui dropdown">
-              <div class="text annOrgName" ng-click="announcementDetailsData.initializeDropdown()" >{{$root.frmelmnts.lbl.anncmnttblactions}} <i class="dropdown icon"></i></div>
-              <div class="menu" ng-if="announcementDetails.status == 'active'" ng-click="annOutboxCtrl.showModal('announcementDeleteModal', announcementDetails.id)">
-                <div class="item AnnDetailsModalDropDwn annOrgName"><i class="ban icon margin-right-none"></i> {{$root.frmelmnts.lbl.anncmntoutboxdelete}}</div>
-              </div>
-              <div class="menu" ng-if="announcementDetails.status == 'cancelled'" ng-click="annOutboxCtrl.getResend(announcementDetails.id)">
-                <div class="item AnnDetailsModalDropDwn annOrgName"><i class="external share icon margin-right-none"></i> {{$root.frmelmnts.lbl.anncmntoutboxresend}}</div>
-              </div>
-            </div>
-        </div> -->
-
     </div>
     <div class="header padding-top-5">
-        <div class="header padding-top-10 announcementHomeCard-header" ng-if="announcementDetails.details.title">
-            {{announcementDetails.details.title}}
+        <div class="header padding-top-10 announcementHomeCard-header" ng-if="announcementDetails.title">
+            {{announcementDetails.title}}
         </div>
-        <div class="ng-binding annOrgName padding-top-10" ng-if="announcementDetails.details.from">
-            {{announcementDetails.details.from}}
+        <div class="ng-binding annOrgName padding-top-10" ng-if="announcementDetails.from">
+            {{announcementDetails.from}}
         </div>
-        <div class="padding-top-20 announcement-description" ng-if="announcementDetails.details.description">
-            {{announcementDetails.details.description}}
+        <div class="padding-top-20 announcement-description" ng-if="announcementDetails.description">
+            {{announcementDetails.description}}
         </div>
     </div>
     <div ng-if="announcementDetails.links.length">
@@ -90,9 +77,9 @@
             </div>
         </div>
     </div>
-    <div class="gray-full-width announcementSentOnDate" ng-if="announcementDetails.createddate">
+    <div class="gray-full-width announcementSentOnDate" ng-if="announcementDetails.createdDate">
         <span class="ng-binding announcement-description">
-            {{$root.frmelmnts.lbl.anncmntdtlssenton}} {{announcementDetails.createddate | dateFilterWithDMY}}
+            {{$root.frmelmnts.lbl.anncmntdtlssenton}} {{announcementDetails.createdDate | dateFilterWithDMY}}
         </span>
     </div>
 </div>
