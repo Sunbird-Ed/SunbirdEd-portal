@@ -1,8 +1,9 @@
 'use strict'
 angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope', '$scope', '$state',
   '$stateParams', '$timeout', 'config', 'toasterService', 'fileUpload', 'AnnouncementModel',
-  'announcementAdapter', 'portalTelemetryService', function ($rootScope, $scope, $state, $stateParams, $timeout,
-    config, toasterService, fileUpload, AnnouncementModel, announcementAdapter, portalTelemetryService) {
+  'announcementAdapter', 'portalTelemetryService',
+  function ($rootScope, $scope, $state, $stateParams, $timeout, config, toasterService, fileUpload,
+        AnnouncementModel, announcementAdapter, portalTelemetryService) {
     var composeAnn = this
     composeAnn.senderlist = []
     composeAnn.targetIds = []
@@ -22,7 +23,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         service: 'geoService'
       }
     }
-    /**
+        /**
          * @method initializeModal
          * @desc - function to initialize semantic dropdowns
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -39,7 +40,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         composeAnn.announcement.selTar = _.clone(data.geo)
       })
     }
-    /**
+        /**
          * @method createAnnouncement
          * @desc - function to initialize create announcement modal
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -53,7 +54,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         onHide: composeAnn.onHideCreateAnnModal
       }).modal('show')
     }
-    /**
+        /**
          * @method confirmationModal
          * @desc - display confirmation modal when user click on close icon
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -69,7 +70,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         }).modal('show')
       }, 10)
     }
-    /**
+        /**
          * @method hideModel
          * @desc - hide semantic modal
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -81,7 +82,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
       $('#' + modalId).modal('hide all')
       $('#' + modalId).modal('hide dimmer')
     }
-    /**
+        /**
          * @method addNewLink
          * @desc - add new url input box
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -93,7 +94,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
       })
       composeAnn.showUrlField = true
     }
-    /**
+        /**
          * @method removeLink
          * @desc - remove / delete url
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -107,7 +108,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
       composeAnn.showUrlField = !!composeAnn.repeatableWebLinks.length
       composeAnn.enableRecepientBtn()
     }
-    /**
+        /**
          * @method removeRicipients
          * @desc - remove selected recipients
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -123,7 +124,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
       })
       composeAnn.confirmRecipients()
     }
-    /**
+        /**
          * @method confirmRecipients
          * @desc - enforce user to select recipients
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -136,7 +137,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
       }
       return true
     }
-    /**
+        /**
          * @method enableRecepientBtn
          * @desc - enable select recipients btn if all required fields are selected
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -154,8 +155,11 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
             }
           })
         }
-        var selectRecipientBtn = angular.element(document.querySelector('#selectRecipientBtn'))
-        if (composeAnn.announcement.details.title && composeAnn.announcement.details.from && composeAnn.announcement.details.type && (composeAnn.uploadAttchement || composeAnn.announcement.details.description || links.length)) {
+        var selectRecipientBtn = angular.element(document.querySelector(
+                    '#selectRecipientBtn'))
+        if (composeAnn.announcement.details.title && composeAnn.announcement.details.from &&
+                    composeAnn.announcement.details.type && (composeAnn.uploadAttchement ||
+                        composeAnn.announcement.details.description || links.length)) {
           composeAnn.disableBtn = false
           selectRecipientBtn.removeClass('disabled')
         } else {
@@ -169,7 +173,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         composeAnn.isMetaModified = true
       }
     }
-    /**
+        /**
          * @method refreshFormValues
          * @desc - reset form values
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -184,7 +188,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
       composeAnn.showUrlField = false
       $('.qq-upload-list').children('li').remove()
     }
-    /**
+        /**
          * @method saveAnnouncement
          * @desc - prepare api request object and make create api call
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -192,13 +196,15 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
     composeAnn.saveAnnouncement = function () {
       var url = ''
       if (composeAnn.editAction) {
-        url = '/private/index#!/announcement/resend/' + $stateParams.announcementId + '/4'
+        url = '/private/index#!/announcement/resend/' + $stateParams.announcementId +
+                    '/4'
       } else {
         url = '/private/index#!/announcement/create/4'
       }
       composeAnn.isMetaModifiedSteps = true
       composeAnn.announcement.target.geo.ids = _.map(composeAnn.announcement.selTar, 'id')
-      announcementAdapter.createAnnouncement(composeAnn.announcement).then(function (apiResponse) {
+      announcementAdapter.createAnnouncement(composeAnn.announcement).then(function (
+                apiResponse) {
         composeAnn.hideModel('createAnnouncementModal')
         portalTelemetryService.fireAnnouncementImpressions({
           env: 'community.announcements',
@@ -224,7 +230,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         composeAnn.showError(err.data)
       })
     }
-    /**
+        /**
          * @method showError
          * @desc - display error message(s) when apis get fails
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -232,7 +238,8 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
          */
     composeAnn.showError = function (apiResponse) {
       composeAnn.errorFlag = true
-      if (apiResponse.responseCode === 'CLIENT_ERROR' && angular.isArray(apiResponse.params.errmsg)) {
+      if (apiResponse.responseCode === 'CLIENT_ERROR' && angular.isArray(apiResponse.params
+                    .errmsg)) {
         angular.forEach(apiResponse.params.errmsg, function (value, key) {
           toasterService.error(value.description)
         })
@@ -240,7 +247,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         toasterService.error(apiResponse.params.errmsg)
       }
     }
-    /**
+        /**
          * @method getReadableFileSize
          * @desc - convert byteSize into KB, MB
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -251,7 +258,8 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
       var sizes = ['Bytes', 'KB', 'MB']
       if (byteSize) {
         var i = parseInt(Math.floor(Math.log(byteSize) / Math.log(1024)))
-        composeAnn.convertedFileSize = Math.round(byteSize / Math.pow(1024, i), 2) + ' ' + sizes[i]
+        composeAnn.convertedFileSize = Math.round(byteSize / Math.pow(1024, i), 2) + ' ' +
+                    sizes[i]
       } else {
         composeAnn.convertedFileSize = '0 Byte'
       }
@@ -261,7 +269,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
       $(item).closest('li').remove()
       composeAnn.announcement.attachments.splice(pos, 1)
     }
-    /**
+        /**
          * @method initializeFileUploader
          * @desc - create fine uploader instance by passing required params
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -290,13 +298,21 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
       }
       var attachments = angular.copy(att)
       if ($('#old-file-list').length <= 0) {
-        $('.qq-upload-list').parent().prepend('<ul id="old-file-list" class="' + ' qq-upload-list"></ul>')
+        $('.qq-upload-list').parent().prepend('<ul id="old-file-list" class="' +
+                    ' qq-upload-list"></ul>')
         _.forEach(attachments, function (attachment, pos) {
-          $('#old-file-list').append('<li class="qq-upload-retryable w3-container' + ' w3-border w3-round-xlarge qq-upload-success"><i id="removeFile" onclick="removeCreateAnnAttachment(this,' + pos + ')" class="remove icon cursor-pointer" style="float:right;"></i><span class="qq-upload-file-selector qq-upload-file"' + ' style="margin-top: -30px !important;width: 222px;">' + attachment.name + '</span></li>')
+          $('#old-file-list').append(
+                        '<li class="qq-upload-retryable w3-container' +
+                        ' w3-border w3-round-xlarge qq-upload-success">' +
+                        ' <i id="removeFile" onclick="removeCreateAnnAttachment ' +
+                        '(this,' + pos + ')" class="remove icon cursor-pointer" ' +
+                        'style="float:right;"></i><span class="qq-upload-file-selector ' +
+                        'qq-upload-file" style="margin-top: -30px !important;width: 222px;">' +
+                        attachment.name + '</span></li>')
         })
       }
     }
-    /**
+        /**
          * @method onUploadComplete
          * @desc - invoked after attachement uploaded
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -310,7 +326,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
       composeAnn.uploadAttchement = true
       composeAnn.enableRecepientBtn()
     }
-    /**
+        /**
          * @method onUploadCancel
          * @desc - invoked when user cancel uploaded attachement
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -332,7 +348,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
       composeAnn.enableRecepientBtn()
       $('#hide-section-with-button').css('style.display', 'block')
     }
-    /**
+        /**
          * @method init
          * @desc - invoked when page is loaded
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -346,7 +362,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         composeAnn.initializeModal()
       }
       composeAnn.createAnnouncement()
-      // Create new data modal only when if its not already present
+            // Create new data modal only when if its not already present
       if (composeAnn.stepNumber === 1 && composeAnn.announcement === null) {
         if (composeAnn.editAction) {
           composeAnn.getResend($stateParams.announcementId)
@@ -354,21 +370,23 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
           composeAnn.announcement = new AnnouncementModel.Announcement({})
         }
       }
-
       if (composeAnn.stepNumber === 1) {
         composeAnn.getDefinitions($rootScope.rootOrgId)
-        if (composeAnn.announcement !== null && composeAnn.announcement.links !== undefined) {
+        if (composeAnn.announcement !== null && composeAnn.announcement.links !==
+                    undefined) {
           angular.forEach(composeAnn.announcement.links, function (value, key) {
             composeAnn.addNewLink()
           })
         }
       }
-      if (composeAnn.stepNumber === 2 && composeAnn.announcement !== null && composeAnn.announcement.target !== undefined) {
+      if (composeAnn.stepNumber === 2 && composeAnn.announcement !== null && composeAnn.announcement
+                .target !== undefined) {
         var geoIds = []
         if (composeAnn.editAction) {
           geoIds = composeAnn.announcement.target.geo.ids
         } else {
-          composeAnn.announcement.target.geo.ids = _.map(composeAnn.announcement.selTar, 'id')
+          composeAnn.announcement.target.geo.ids = _.map(composeAnn.announcement.selTar,
+                        'id')
           geoIds = _.map(composeAnn.announcement.selTar, 'id')
         }
         $timeout(function () {
@@ -376,13 +394,13 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         }, 100)
       }
     }
-    /**
+        /**
          * @method goToNextStep
          * @desc - Used to swtch to next step of announcement creation
          * @memberOf Controllers.composeAnnouncementCtrl
          */
     composeAnn.goToNextStep = function (telemetryPageId, telemetryPageType) {
-      // Current step is confirm recipients
+            // Current step is confirm recipients
       if (composeAnn.stepNumber !== 1) {
         if (composeAnn.confirmRecipients()) {
           if (_.isEmpty(composeAnn.announcement.sourceId)) {
@@ -403,7 +421,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         reload: true
       })
     }
-    /**
+        /**
          * @method goToBackStep
          * @desc - Used to switch one step back to announcement creation
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -418,7 +436,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         reload: true
       })
     }
-    /**
+        /**
          * @method getResend
          * @desc - Used to get the announcement resend data
          * @param {String} [announcementId] [announcement id]
@@ -430,14 +448,15 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         composeAnn.initializeModal()
         composeAnn.enableRecepientBtn()
         composeAnn.initializeFileUploader(true)
-        if (composeAnn.announcement !== null && composeAnn.announcement.links !== undefined) {
+        if (composeAnn.announcement !== null && composeAnn.announcement.links !==
+                    undefined) {
           angular.forEach(composeAnn.announcement.links, function (value, key) {
             composeAnn.addNewLink()
           })
         }
       })
     }
-    /**
+        /**
          * @method getDefinitions
          * @desc - Used to get the definitions data
          * @param {String} [rootOrgId] [organization id]
@@ -446,7 +465,8 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
     composeAnn.getDefinitions = function (rootOrgId) {
       announcementAdapter.getDefinitions(rootOrgId).then(function (response) {
         if (response.result.announcementTypes.content) {
-          composeAnn.announcementType = _.map(response.result.announcementTypes.content, 'name')
+          composeAnn.announcementType = _.map(response.result.announcementTypes
+                        .content, 'name')
         }
         if (response.result.senderList) {
           angular.forEach(response.result.senderList, function (value, key) {
@@ -454,7 +474,8 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
           })
         }
         if (composeAnn.announcement.details.type !== '') {
-          $('#announcementType').dropdown('set text', composeAnn.announcement.details.type)
+          $('#announcementType').dropdown('set text', composeAnn.announcement.details
+                        .type)
         }
       }, function (err) {
         if (err) {

@@ -21,7 +21,7 @@ describe('Controller: composeAnnouncementCtrl', function () {
     })
   }))
   beforeEach(inject(function ($rootScope, $controller, _announcementAdapter_, _toasterService_,
-        _permissionsService_, _$timeout_, _$q_, _$state_, _$stateParams_) {
+    _permissionsService_, _$timeout_, _$q_, _$state_, _$stateParams_) {
     announcementAdapter = _announcementAdapter_
     toasterService = _toasterService_
     permissionsService = _permissionsService_
