@@ -16,12 +16,10 @@ class DataService {
      * Caller of the constructor as follows
      * Eg: let dataServiceInstance = new DataService({endPoint:'data/v1/notification/audience', service:httpServiceInst, token:'someToken'})
      */
-  constructor ({
-        service
-    } = {}) {
-        /**
-         * @param {Class}  - Which is used to invoke a http service call, Default it's making httpService call
-         */
+  constructor ({service } = {}) {
+    /**
+     * @param {Class}  - Which is used to invoke a http service call, Default it's making httpService call
+     */
     this.service = service || httpService
   }
 
