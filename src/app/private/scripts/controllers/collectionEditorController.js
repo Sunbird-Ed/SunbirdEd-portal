@@ -142,18 +142,140 @@ angular.module('playerApp')
       collectionEditor.getTreeNodes = function (type) {
         var editorConfig = []
         switch (type) {
-          case 'Course':
-            editorConfig.push({ type: 'Course', label: 'Course', isRoot: true, editable: true, childrenTypes: ['CourseUnit', 'Collection', 'Resource'], addType: 'Editor', iconClass: 'fa fa-book' }, { type: 'CourseUnit', label: 'Course Unit', isRoot: false, editable: true, childrenTypes: ['CourseUnit', 'Collection', 'Resource'], addType: 'Editor', iconClass: 'fa fa-folder-o' }, { type: 'Collection', label: 'Collection', isRoot: false, editable: false, childrenTypes: [], addType: 'Browser', iconClass: 'fa fa-file-o' }, { type: 'Resource', label: 'Resource', isRoot: false, editable: false, childrenTypes: [], addType: 'Browser', iconClass: 'fa fa-file-o' })
-            return editorConfig
-          case 'Collection':
-            editorConfig.push({ type: 'Collection', label: 'Collection', isRoot: true, editable: true, childrenTypes: ['Collection', 'Resource'], addType: 'Editor', iconClass: 'fa fa-folder-o' }, { type: 'Resource', label: 'Resource', isRoot: false, editable: false, childrenTypes: [], addType: 'Browser', iconClass: 'fa fa-file-o' })
-            return editorConfig
-          case 'LessonPlan':
-            editorConfig.push({ type: 'LessonPlan', label: 'LessonPlan', isRoot: true, editable: true, childrenTypes: ['LessonPlanUnit', 'Collection', 'Resource'], addType: 'Editor', iconClass: 'fa fa-book' }, { type: 'LessonPlanUnit', label: 'LessonPlan Unit', isRoot: false, editable: true, childrenTypes: ['LessonPlanUnit', 'Collection', 'Resource'], addType: 'Editor', iconClass: 'fa fa-folder-o' }, { type: 'Collection', label: 'Collection', isRoot: false, editable: false, childrenTypes: [], addType: 'Browser', iconClass: 'fa fa-file-o' }, { type: 'Resource', label: 'Resource', isRoot: false, editable: false, childrenTypes: [], addType: 'Browser', iconClass: 'fa fa-file-o' })
-            return editorConfig
-          default:
-            editorConfig.push({ type: 'TextBook', label: 'Textbook', isRoot: true, editable: true, childrenTypes: ['TextBookUnit', 'Collection', 'Resource'], addType: 'Editor', iconClass: 'fa fa-book' }, { type: 'TextBookUnit', label: 'Textbook Unit', isRoot: false, editable: true, childrenTypes: ['TextBookUnit', 'Collection', 'Resource'], addType: 'Editor', iconClass: 'fa fa-folder-o' }, { type: 'Collection', label: 'Collection', isRoot: false, editable: false, childrenTypes: [], addType: 'Browser', iconClass: 'fa fa-file-o' }, { type: 'Resource', label: 'Resource', isRoot: false, editable: false, childrenTypes: [], addType: 'Browser', iconClass: 'fa fa-file-o' })
-            return editorConfig
+        case 'Course':
+          editorConfig.push({
+            type: 'Course',
+            label: 'Course',
+            isRoot: true,
+            editable: true,
+            childrenTypes: ['CourseUnit', 'Collection', 'Resource'],
+            addType: 'Editor',
+            iconClass: 'fa fa-book'
+          },
+          {
+            type: 'CourseUnit',
+            label: 'Course Unit',
+            isRoot: false,
+            editable: true,
+            childrenTypes: ['CourseUnit', 'Collection', 'Resource'],
+            addType: 'Editor',
+            iconClass: 'fa fa-folder-o'
+          },
+          {
+            type: 'Collection',
+            label: 'Collection',
+            isRoot: false,
+            editable: false,
+            childrenTypes: [],
+            addType: 'Browser',
+            iconClass: 'fa fa-file-o'
+          },
+          {
+            type: 'Resource',
+            label: 'Resource',
+            isRoot: false,
+            editable: false,
+            childrenTypes: [],
+            addType: 'Browser',
+            iconClass: 'fa fa-file-o'
+          })
+          return editorConfig
+        case 'Collection':
+          editorConfig.push({
+            type: 'Collection',
+            label: 'Collection',
+            isRoot: true,
+            editable: true,
+            childrenTypes: ['Collection', 'Resource'],
+            addType: 'Editor',
+            iconClass: 'fa fa-folder-o'
+          },
+          {
+            type: 'Resource',
+            label: 'Resource',
+            isRoot: false,
+            editable: false,
+            childrenTypes: [],
+            addType: 'Browser',
+            iconClass: 'fa fa-file-o'
+          })
+          return editorConfig
+        case 'LessonPlan':
+          editorConfig.push({
+            type: 'LessonPlan',
+            label: 'LessonPlan',
+            isRoot: true,
+            editable: true,
+            childrenTypes: ['LessonPlanUnit', 'Collection', 'Resource'],
+            addType: 'Editor',
+            iconClass: 'fa fa-book'
+          },
+          {
+            type: 'LessonPlanUnit',
+            label: 'LessonPlan Unit',
+            isRoot: false,
+            editable: true,
+            childrenTypes: ['LessonPlanUnit', 'Collection', 'Resource'],
+            addType: 'Editor',
+            iconClass: 'fa fa-folder-o'
+          },
+          {
+            type: 'Collection',
+            label: 'Collection',
+            isRoot: false,
+            editable: false,
+            childrenTypes: [],
+            addType: 'Browser',
+            iconClass: 'fa fa-file-o'
+          },
+          {
+            type: 'Resource',
+            label: 'Resource',
+            isRoot: false,
+            editable: false,
+            childrenTypes: [],
+            addType: 'Browser',
+            iconClass: 'fa fa-file-o'
+          })
+          return editorConfig
+        default:
+          editorConfig.push({
+            type: 'TextBook',
+            label: 'Textbook',
+            isRoot: true,
+            editable: true,
+            childrenTypes: ['TextBookUnit', 'Collection', 'Resource'],
+            addType: 'Editor',
+            iconClass: 'fa fa-book'
+          },
+          {
+            type: 'TextBookUnit',
+            label: 'Textbook Unit',
+            isRoot: false,
+            editable: true,
+            childrenTypes: ['TextBookUnit', 'Collection', 'Resource'],
+            addType: 'Editor',
+            iconClass: 'fa fa-folder-o'
+          },
+          {
+            type: 'Collection',
+            label: 'Collection',
+            isRoot: false,
+            editable: false,
+            childrenTypes: [],
+            addType: 'Browser',
+            iconClass: 'fa fa-file-o'
+          },
+          {
+            type: 'Resource',
+            label: 'Resource',
+            isRoot: false,
+            editable: false,
+            childrenTypes: [],
+            addType: 'Browser',
+            iconClass: 'fa fa-file-o'
+          })
+          return editorConfig
         }
       }
 

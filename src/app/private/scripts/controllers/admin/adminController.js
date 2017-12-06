@@ -177,20 +177,20 @@ angular.module('playerApp')
           } else if (key === 'Organisations') {
             list.forEach(function (org) {
               switch (org.status) {
-                case 0:
-                  org.status = 'INACTIVE'
-                  break
-                case 1:
-                  org.status = 'ACTIVE'
-                  break
-                case 2:
-                  org.status = 'BLOCKED'
-                  break
-                case 3:
-                  org.status = 'RETIRED'
-                  break
-                default:
-                  break
+              case 0:
+                org.status = 'INACTIVE'
+                break
+              case 1:
+                org.status = 'ACTIVE'
+                break
+              case 2:
+                org.status = 'BLOCKED'
+                break
+              case 3:
+                org.status = 'RETIRED'
+                break
+              default:
+                break
               }
             })
             var orgNullReplacedToEmpty = JSON.stringify(list).replace(/null/g, '""')
