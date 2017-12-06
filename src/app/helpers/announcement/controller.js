@@ -12,6 +12,7 @@ let ApiInterceptor = require('sb_api_interceptor')
 let NotificationService = require('./services/notification/notificationService.js')
 let NotificationPayload = require('./services/notification/notificationPayload.js')
 let NotificationTarget = require('./services/notification/notificationTarget.js')
+let Dataservice = require('./services/dataService.js')
 let httpWrapper = require('./services/httpWrapper.js')
 let AppError = require('./services/ErrorInterface.js')
 let DataTransform = require("node-json-transform").DataTransform
@@ -92,6 +93,7 @@ class AnnouncementController {
         this.announcementStore = new ObjectStoreRest({model: this.announcementModel, service:this.httpService})
         this.announcementMetricsStore = new ObjectStoreRest({model:this.metricsModel, service:this.httpService})
         this.announcementTypeStore = new ObjectStoreRest({model:this.announcementTypeModel, service:this.httpService})
+        this.dataService = new Dataservice({service:this.httpService})
     }
 
     /**
@@ -123,7 +125,8 @@ class AnnouncementController {
                 } else {
                     throw this.customError({message:'Unauthorized', status: HttpStatus.UNAUTHORIZED, isCustom:true})
                 }
-
+                let sentCount = await(this.dataService.getAudience(_.get(requestObj, 'body.request.target.geo.ids')))
+                requestObj.body.request.sentCount = sentCount
                 var newAnnouncementObj = await (this.__saveAnnouncement(requestObj.body.request))
                 if (newAnnouncementObj.data.id) {
                     requestObj.body.request.announcementId = newAnnouncementObj.data.id
@@ -137,7 +140,6 @@ class AnnouncementController {
             }
         })
     }
-
     /**
      * save values in database
      * @param  Object data Data to be stored
@@ -168,10 +170,10 @@ class AnnouncementController {
                     'target': data.target,
                     'links': data.links || [],
                     'status': statusConstant.ACTIVE,
-                    'attachments': attachments
+                    'attachments': attachments,
+                    'sentcount':data.sentCount
                 }
             }
-
             this.announcementStore.createObject(query)
                 .then((data) => {
                     if (data) {
@@ -424,7 +426,7 @@ class AnnouncementController {
             // Parse the list of Geolocations (Orgs > Geolocations) from the response
             let targetGeolocations = []
             try {
-                let geoData = await (this.__getGeolocations(targetOrganisations, authUserToken))
+                let geoData = await (this.dataService.getGeoLocations(targetOrganisations, authUserToken))
                     //handle emty target list
                 _.forEach(geoData.content, function(geo) {
                     if (geo.locationId) {
@@ -520,45 +522,7 @@ class AnnouncementController {
         })
     }
 
-    /**
-     * Get geolocations of the organisations
-     * @param  Array orgIds        
-     * @param  String authUserToken 
-     * @return Array               List of geolocations
-     */
-    __getGeolocations(orgIds, authUserToken) {
-        return new Promise((resolve, reject) => {
-            let requestObj = {
-                "filters": {
-                    "id": orgIds
-                },
-                "fields": ["id", "locationId"]
-            }
-
-            let options = {
-                "method": "POST",
-                "uri": envVariables.DATASERVICE_URL + "org/v1/search",
-                "body": {
-                    "request": requestObj
-                },
-                "json": true
-            }
-            options.headers = this.httpService.getRequestHeader(authUserToken)
-            try {
-                let data = new Promise((resolve, reject) => {
-                    this.httpService.call(options).then((data) => {
-                        resolve(data.body.result.response)
-                    }).catch((error) => {
-                        reject(this.customError(error))
-                    })
-                })
-                resolve(data)
-            } catch (error) {
-                reject(this.customError(error))
-            }
-
-        })
-    }
+    
 
     /**
      * Get received and read status of given announcements 
@@ -915,7 +879,7 @@ class AnnouncementController {
 
             this.announcementMetricsStore.findObject(query)
                 .then((data) => {
-                    if (!data.status) {
+                    if (!data) {
                         resolve(false)
                     } else {
                         if (_.size(data.data)) {
