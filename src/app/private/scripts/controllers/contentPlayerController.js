@@ -4,7 +4,7 @@ angular.module('playerApp')
   .controller('contentPlayerCtrl', ['playerTelemetryUtilsService', '$state', '$scope',
     'contentService', '$timeout', '$stateParams', 'config', '$rootScope', '$location', '$anchorScroll', 'toasterService',
     function (playerTelemetryUtilsService, $state, $scope, contentService,
-        $timeout, $stateParams, config, $rootScope, $location, $anchorScroll, toasterService) {
+      $timeout, $stateParams, config, $rootScope, $location, $anchorScroll, toasterService) {
       $scope.isClose = $scope.isclose
       $scope.isHeader = $scope.isheader
       $scope.showModalInLectureView = true
@@ -157,7 +157,7 @@ angular.module('playerApp')
         if (document.getElementById('contentPlayer')) {
           document.getElementById('contentPlayer').removeEventListener('renderer:telemetry:event', function () {
             org.sunbird.portal.eventManager.dispatchEvent('sunbird:player:telemetry',
-                                                    event.detail.telemetryData)
+              event.detail.telemetryData)
           }, false)
         }
       }
@@ -186,7 +186,7 @@ angular.module('playerApp')
         return conceptNames
       }
 
-        // Restore default values(resume course, view dashboard) onAfterUser leave current state
+      // Restore default values(resume course, view dashboard) onAfterUser leave current state
       $('#courseDropdownValues').dropdown('restore defaults')
 
       $scope.gotoBottom = function () {

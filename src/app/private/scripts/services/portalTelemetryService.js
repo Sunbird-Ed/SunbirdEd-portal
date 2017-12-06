@@ -1,12 +1,12 @@
 angular.module('playerApp').service('portalTelemetryService', ['$http', '$filter', '$rootScope', 'uuid4', 'config', function ($http, $filter, $rootScope, uuid4, config) {
-    /**
+  /**
      * @class portalTelemetryService
      * @desc Service to manages portal telemetry  events.
      * @memberOf Services
      */
   var self = this
   var telemetryEvents = telemetryEvents || []
-    /**
+  /**
      * @method init
      * @desc Initiate the telemetry
      * @memberOf Services.portalTelemetryService
@@ -16,7 +16,7 @@ angular.module('playerApp').service('portalTelemetryService', ['$http', '$filter
     org.sunbird.portal.eventManager.addEventListener('sunbird:window:unload', self.sendTelementrySync)
     org.sunbird.portal.eventManager.addEventListener('sunbird:telemetry:flush', self.addTelemetryEvent)
   }
-    /**
+  /**
      * @method fireImpressions
      * @desc Dispatch event
      * @memberOf Services.portalTelemetryService
@@ -26,7 +26,7 @@ angular.module('playerApp').service('portalTelemetryService', ['$http', '$filter
   this.fireImpressions = function (data) {
     org.sunbird.portal.eventManager.dispatchEvent('sunbird:telemetery:portal:impression', data)
   }
-    /**
+  /**
      * @method fireAnnouncementImpressions
      * @desc Dispatch event
      * @memberOf Services.portalTelemetryService
@@ -34,11 +34,11 @@ angular.module('playerApp').service('portalTelemetryService', ['$http', '$filter
      * @instance
      */
   this.fireAnnouncementImpressions = function (data, userIdHashTag) {
-        // userIdHashTag to build cData
+    // userIdHashTag to build cData
     data.userIdHashTag = userIdHashTag
     org.sunbird.portal.eventManager.dispatchEvent('sunbird:telemetry:announcement:impression', data)
   }
-    /**
+  /**
      * @method addTelemetryEvent
      * @desc Add new event
      * @memberOf Services.portalTelemetryService
@@ -54,7 +54,7 @@ angular.module('playerApp').service('portalTelemetryService', ['$http', '$filter
   this.sendTelementrySync = function () {
     self.sendTelementry(false)
   }
-    /**
+  /**
      * @method sendTelementry
      * @desc Send telemetry records
      * @memberOf Services.portalTelemetryService

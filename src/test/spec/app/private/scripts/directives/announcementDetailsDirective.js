@@ -5,7 +5,7 @@
  */
 'use strict'
 describe('Directive: announcementDetailsDirective', function () {
-    // load the main module
+  // load the main module
   beforeEach(module('playerApp'))
   var element, compile, templateCache, scope, templateHtml
   beforeEach(inject(function ($rootScope, $templateCache, $compile) {
@@ -16,25 +16,25 @@ describe('Directive: announcementDetailsDirective', function () {
     element = compile('<announcement-details-directive announcement-details="announcementDetails"></announcement-details-directive>')(scope)
     templateCache = $templateCache
   }))
-    // Test if directive shows correctly after passing the valid announcement object
+  // Test if directive shows correctly after passing the valid announcement object
   it('Should show announcement details', function () {
     scope.announcementDetails = announcementTestData.announcementDetails.annValidObj
     scope.$digest()
     expect(element.text()).toContain('Title')
   })
-    // Test if directive shows error message after passing the invalid/blank announcement object
+  // Test if directive shows error message after passing the invalid/blank announcement object
   it('Should show error message', function () {
     scope.announcementDetails = announcementTestData.announcementDetails.annBlankObj
     scope.$digest()
     expect(element.text()).toContain('Oops announcement details not found!')
   })
-    // Test if directive do not shows Weblinks label if announcement does not have weblinks
+  // Test if directive do not shows Weblinks label if announcement does not have weblinks
   it('Should not show weblinks', function () {
     scope.announcementDetails = announcementTestData.announcementDetails.annObjWithEmptyWeblinks
     scope.$digest()
     expect(element.text()).not.toContain('Weblinks')
   })
-    // Test if directive do not shows Attachments label if announcement does not have attachments
+  // Test if directive do not shows Attachments label if announcement does not have attachments
   it('Should not show attachments', function () {
     scope.announcementDetails = announcementTestData.announcementDetails.annObjWithEmptyAttachments
     scope.$digest()

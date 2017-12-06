@@ -2,13 +2,13 @@
 
 angular.module('playerApp').controller('ConceptPickerController', ['$scope', '$rootScope', '$timeout',
   'searchService', 'toasterService', function ($scope, $rootScope, $timeout,
-                searchService, toasterService) {
-            /*
+    searchService, toasterService) {
+    /*
              * load concepts section
              */
     $scope.loadConceptTree = function () {
       $scope.conceptLoader = toasterService.loader(''
-                , $rootScope.messages.stmsg.m0049)
+        , $rootScope.messages.stmsg.m0049)
       if ($rootScope.concepts) {
         $scope.loadDomains(false, $rootScope.concepts)
       } else {
@@ -26,7 +26,7 @@ angular.module('playerApp').controller('ConceptPickerController', ['$scope', '$r
             objectType: ['Dimension', 'Domain']
           }
         }
-                        /** Get domains and dimensions data* */
+        /** Get domains and dimensions data* */
         searchService.search(req).then(function (resp) {
           if (resp.result && _.isArray(resp.result.domains)) {
             _.forEach(resp.result.domains, function (value) {
@@ -34,17 +34,17 @@ angular.module('playerApp').controller('ConceptPickerController', ['$scope', '$r
               domain.id = value.identifier
               domain.name = value.name
               var domainChild = []
-                                    /** Get domain child* */
+              /** Get domain child* */
               _.forEach($scope.getChild(value.identifier
-                                        , resp.result.dimensions),
-                                     function (val) {
-                                       var dimension = {}
-                                       dimension.id = val.id
-                                       dimension.name = val.name
-                                        /** Get dimension child* */
-                                       dimension.nodes = $scope.getChild(val.id, $rootScope.concepts)
-                                       domainChild.push(dimension)
-                                     })
+                , resp.result.dimensions),
+              function (val) {
+                var dimension = {}
+                dimension.id = val.id
+                dimension.name = val.name
+                /** Get dimension child* */
+                dimension.nodes = $scope.getChild(val.id, $rootScope.concepts)
+                domainChild.push(dimension)
+              })
               domain.nodes = domainChild
               domains.push(domain)
             })
@@ -89,7 +89,7 @@ angular.module('playerApp').controller('ConceptPickerController', ['$scope', '$r
       }, 500)
     }
 
-            /** Get child recursively* */
+    /** Get child recursively* */
     $scope.getChild = function (id, resp) {
       var childArray = []
       _.forEach(resp, function (value) {
@@ -100,7 +100,7 @@ angular.module('playerApp').controller('ConceptPickerController', ['$scope', '$r
             child.name = value.name
             child.selectable = 'selectable'
 
-                            /** Get concept child recursively* */
+            /** Get concept child recursively* */
             child.nodes = $scope.getChild(value.identifier, resp)
             childArray.push(child)
           }

@@ -33,23 +33,23 @@ describe('Notification Service', () => {
   describe('Send Method', () => {
     it('Should send a notificaton', (done) => {
       service.send(target, payload)
-      .then((data) => {
-        expect(data).to.be.equal(true)
-      })
-      .catch((error) => {
-        expect(error.status).to.be.equal(HttpStatus.INTERNAL_SERVER_ERROR)
-      })
+        .then((data) => {
+          expect(data).to.be.equal(true)
+        })
+        .catch((error) => {
+          expect(error.status).to.be.equal(HttpStatus.INTERNAL_SERVER_ERROR)
+        })
       done()
     })
 
     it('Should throw an error, when there is no instance of payload and target', () => {
       service.send(undefined, undefined)
-       .then((data) => {
-         expect(data).to.be.equal(false)
-       })
-       .catch((error) => {
-         expect(error.status).to.be.equal(HttpStatus.BAD_REQUEST)
-       })
+        .then((data) => {
+          expect(data).to.be.equal(false)
+        })
+        .catch((error) => {
+          expect(error.status).to.be.equal(HttpStatus.BAD_REQUEST)
+        })
     })
   })
 })

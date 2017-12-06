@@ -1,8 +1,9 @@
 'use strict'
 angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope', '$scope', '$state',
   '$stateParams', '$timeout', 'config', 'toasterService', 'fileUpload', 'AnnouncementModel',
-  'announcementAdapter', 'portalTelemetryService', function ($rootScope, $scope, $state, $stateParams, $timeout,
-        config, toasterService, fileUpload, AnnouncementModel, announcementAdapter, portalTelemetryService) {
+  'announcementAdapter', 'portalTelemetryService',
+  function ($rootScope, $scope, $state, $stateParams, $timeout, config, toasterService, fileUpload,
+        AnnouncementModel, announcementAdapter, portalTelemetryService) {
     var composeAnn = this
     composeAnn.senderlist = []
     composeAnn.targetIds = []
@@ -50,22 +51,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         onShow: function () {
           $('.ui.modal.transition.hidden').remove()
         },
-        onHide: function () {
-          if ($stateParams.announcement === null && composeAnn.isMetaModified !== true) {
-            composeAnn.isMetaModified = false
-          } else if (composeAnn.isApprove === true) {
-            composeAnn.isMetaModified = false
-          } else {
-            composeAnn.isMetaModified = true
-          }
-          if (composeAnn.isMetaModified === true && composeAnn.isMetaModifiedSteps !== true) {
-            composeAnn.confirmationModal()
-            return false
-          } else if (composeAnn.isMetaModified === false && composeAnn.stepNumber === 1) {
-            composeAnn.refreshFormValues()
-            $state.go('announcementOutbox')
-          }
-        }
+        onHide: composeAnn.onHideCreateAnnModal
       }).modal('show')
     }
         /**
@@ -80,13 +66,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
           onDeny: function () {
             return true
           },
-          onApprove: function () {
-            composeAnn.isApprove = true
-            composeAnn.refreshFormValues()
-            composeAnn.hideModel('announcementCancelModal')
-            $state.go('announcementOutbox')
-            return true
-          }
+          onApprove: composeAnn.onApproveConfirmationModal
         }).modal('show')
       }, 10)
     }
@@ -175,8 +155,11 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
             }
           })
         }
-        var selectRecipientBtn = angular.element(document.querySelector('#selectRecipientBtn'))
-        if (composeAnn.announcement.details.title && composeAnn.announcement.details.from && composeAnn.announcement.details.type && (composeAnn.uploadAttchement || composeAnn.announcement.details.description || links.length)) {
+        var selectRecipientBtn = angular.element(document.querySelector(
+                    '#selectRecipientBtn'))
+        if (composeAnn.announcement.details.title && composeAnn.announcement.details.from &&
+                    composeAnn.announcement.details.type && (composeAnn.uploadAttchement ||
+                        composeAnn.announcement.details.description || links.length)) {
           composeAnn.disableBtn = false
           selectRecipientBtn.removeClass('disabled')
         } else {
@@ -200,7 +183,6 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
       composeAnn.stepNumber = 1
       $('#announcementType').dropdown('restore defaults')
       $('#createAnnouncementModal').modal('refresh')
-      composeAnn.data = {}
       composeAnn.isMetaModified = false
       composeAnn.repeatableWebLinks.length = 0
       composeAnn.showUrlField = false
@@ -214,13 +196,15 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
     composeAnn.saveAnnouncement = function () {
       var url = ''
       if (composeAnn.editAction) {
-        url = '/private/index#!/announcement/resend/' + $stateParams.announcementId + '/4'
+        url = '/private/index#!/announcement/resend/' + $stateParams.announcementId +
+                    '/4'
       } else {
         url = '/private/index#!/announcement/create/4'
       }
       composeAnn.isMetaModifiedSteps = true
       composeAnn.announcement.target.geo.ids = _.map(composeAnn.announcement.selTar, 'id')
-      announcementAdapter.createAnnouncement(composeAnn.announcement).then(function (apiResponse) {
+      announcementAdapter.createAnnouncement(composeAnn.announcement).then(function (
+                apiResponse) {
         composeAnn.hideModel('createAnnouncementModal')
         portalTelemetryService.fireAnnouncementImpressions({
           env: 'community.announcements',
@@ -254,7 +238,8 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
          */
     composeAnn.showError = function (apiResponse) {
       composeAnn.errorFlag = true
-      if (apiResponse.responseCode === 'CLIENT_ERROR' && angular.isArray(apiResponse.params.errmsg)) {
+      if (apiResponse.responseCode === 'CLIENT_ERROR' && angular.isArray(apiResponse.params
+                    .errmsg)) {
         angular.forEach(apiResponse.params.errmsg, function (value, key) {
           toasterService.error(value.description)
         })
@@ -273,7 +258,8 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
       var sizes = ['Bytes', 'KB', 'MB']
       if (byteSize) {
         var i = parseInt(Math.floor(Math.log(byteSize) / Math.log(1024)))
-        composeAnn.convertedFileSize = Math.round(byteSize / Math.pow(1024, i), 2) + ' ' + sizes[i]
+        composeAnn.convertedFileSize = Math.round(byteSize / Math.pow(1024, i), 2) + ' ' +
+                    sizes[i]
       } else {
         composeAnn.convertedFileSize = '0 Byte'
       }
@@ -289,7 +275,6 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
          * @memberOf Controllers.composeAnnouncementCtrl
          */
     composeAnn.initializeFileUploader = function (resend) {
-      var apiUrl = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + config.URL.CONTENT.UPLOAD_MEDIA
       var options = {
         fileSizeLimit: config.AnncmntMaxFileSizeToUpload,
         allowedExtensions: config.AnncmntAllowedFileExtension,
@@ -298,20 +283,34 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         uploadSuccess: composeAnn.onUploadComplete,
         onCancel: composeAnn.onUploadCancel
       }
-      fileUpload.createFineUploadInstance(options, function (data) {
-        $('.qq-uploader').eq(1).parent().remove()
-        var att = []
-        if (composeAnn.announcement !== null) {
-          att = composeAnn.announcement.attachments
-        }
-        var attachments = angular.copy(att)
-        if ($('#old-file-list').length <= 0) {
-          $('.qq-upload-list').parent().prepend('<ul id="old-file-list" class="' + ' qq-upload-list"></ul>')
-          _.forEach(attachments, function (attachment, pos) {
-            $('#old-file-list').append('<li class="qq-upload-retryable w3-container' + ' w3-border w3-round-xlarge qq-upload-success"><i onclick="removeCreateAnnAttachment(this,' + pos + ')" class="remove icon cursor-pointer" style="float:right;"></i><span class="qq-upload-file-selector qq-upload-file"' + ' style="margin-top: -30px !important;width: 222px;">' + attachment.name + '</span></li>')
-          })
-        }
-      })
+      fileUpload.createFineUploadInstance(options, composeAnn.prepopulateFilesCallback)
+    }
+        /**
+         * @method prepopulateFilesCallback
+         * @desc - callback to prepopulate the files
+         * @memberOf Controllers.composeAnnouncementCtrl
+         */
+    composeAnn.prepopulateFilesCallback = function (data) {
+      $('.qq-uploader').eq(1).parent().remove()
+      var att = []
+      if (composeAnn.announcement !== null) {
+        att = composeAnn.announcement.attachments
+      }
+      var attachments = angular.copy(att)
+      if ($('#old-file-list').length <= 0) {
+        $('.qq-upload-list').parent().prepend('<ul id="old-file-list" class="' +
+                    ' qq-upload-list"></ul>')
+        _.forEach(attachments, function (attachment, pos) {
+          $('#old-file-list').append(
+                        '<li class="qq-upload-retryable w3-container' +
+                        ' w3-border w3-round-xlarge qq-upload-success">' +
+                        ' <i id="removeFile" onclick="removeCreateAnnAttachment ' +
+                        '(this,' + pos + ')" class="remove icon cursor-pointer" ' +
+                        'style="float:right;"></i><span class="qq-upload-file-selector ' +
+                        'qq-upload-file" style="margin-top: -30px !important;width: 222px;">' +
+                        attachment.name + '</span></li>')
+        })
+      }
     }
         /**
          * @method onUploadComplete
@@ -343,7 +342,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
           }
         })
       }
-      if (composeAnn.announcement.attachments === 0) {
+      if (composeAnn.announcement.attachments.length === 0) {
         composeAnn.uploadAttchement = false
       }
       composeAnn.enableRecepientBtn()
@@ -370,23 +369,24 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         } else {
           composeAnn.announcement = new AnnouncementModel.Announcement({})
         }
-      } else {
-        composeAnn.announcement = $stateParams.announcement
       }
       if (composeAnn.stepNumber === 1) {
         composeAnn.getDefinitions($rootScope.rootOrgId)
-        if (composeAnn.announcement !== null && composeAnn.announcement.links !== undefined) {
+        if (composeAnn.announcement !== null && composeAnn.announcement.links !==
+                    undefined) {
           angular.forEach(composeAnn.announcement.links, function (value, key) {
             composeAnn.addNewLink()
           })
         }
       }
-      if (composeAnn.stepNumber === 2 && composeAnn.announcement !== null && composeAnn.announcement.target !== undefined) {
+      if (composeAnn.stepNumber === 2 && composeAnn.announcement !== null && composeAnn.announcement
+                .target !== undefined) {
         var geoIds = []
         if (composeAnn.editAction) {
           geoIds = composeAnn.announcement.target.geo.ids
         } else {
-          composeAnn.announcement.target.geo.ids = _.map(composeAnn.announcement.selTar, 'id')
+          composeAnn.announcement.target.geo.ids = _.map(composeAnn.announcement.selTar,
+                        'id')
           geoIds = _.map(composeAnn.announcement.selTar, 'id')
         }
         $timeout(function () {
@@ -448,14 +448,10 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         composeAnn.initializeModal()
         composeAnn.enableRecepientBtn()
         composeAnn.initializeFileUploader(true)
-        if (composeAnn.announcement !== null && composeAnn.announcement.links !== undefined) {
+        if (composeAnn.announcement !== null && composeAnn.announcement.links !==
+                    undefined) {
           angular.forEach(composeAnn.announcement.links, function (value, key) {
             composeAnn.addNewLink()
-          })
-        }
-        if (composeAnn.announcement !== null && composeAnn.announcement.attachments !== undefined) {
-          _.forEach(composeAnn.announcement.attachments, function (attachment, index) {
-            composeAnn.announcement.attachments[index] = JSON.parse(attachment)
           })
         }
       })
@@ -469,7 +465,8 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
     composeAnn.getDefinitions = function (rootOrgId) {
       announcementAdapter.getDefinitions(rootOrgId).then(function (response) {
         if (response.result.announcementTypes.content) {
-          composeAnn.announcementType = _.map(response.result.announcementTypes.content, 'name')
+          composeAnn.announcementType = _.map(response.result.announcementTypes
+                        .content, 'name')
         }
         if (response.result.senderList) {
           angular.forEach(response.result.senderList, function (value, key) {
@@ -477,12 +474,48 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
           })
         }
         if (composeAnn.announcement.details.type !== '') {
-          $('#announcementType').dropdown('set text', composeAnn.announcement.details.type)
+          $('#announcementType').dropdown('set text', composeAnn.announcement.details
+                        .type)
         }
       }, function (err) {
-        composeAnn.hideAnncmntBtn = true
-        toasterService.error($rootScope.messages.fmsg.m0069)
+        if (err) {
+          composeAnn.hideAnncmntBtn = true
+          toasterService.error($rootScope.messages.fmsg.m0069)
+        }
       })
+    }
+        /**
+         * @method onHideCreateAnnModal
+         * @desc - callback for create announcement modal hide
+         * @memberOf Controllers.composeAnnouncementCtrl
+         */
+    composeAnn.onHideCreateAnnModal = function () {
+      if (composeAnn.announcement === null && composeAnn.isMetaModified !== true) {
+        composeAnn.isMetaModified = false
+      } else if (composeAnn.isApprove === true) {
+        composeAnn.isMetaModified = false
+      } else {
+        composeAnn.isMetaModified = true
+      }
+      if (composeAnn.isMetaModified === true && composeAnn.isMetaModifiedSteps !== true) {
+        composeAnn.confirmationModal()
+        return false
+      } else if (composeAnn.isMetaModified === false && composeAnn.stepNumber === 1) {
+        composeAnn.refreshFormValues()
+        $state.go('announcementOutbox')
+      }
+    }
+        /**
+         * @method onApproveConfirmationModal
+         * @desc - callback for confirmation modal on approve
+         * @memberOf Controllers.composeAnnouncementCtrl
+         */
+    composeAnn.onApproveConfirmationModal = function () {
+      composeAnn.isApprove = true
+      composeAnn.refreshFormValues()
+      composeAnn.hideModel('announcementCancelModal')
+      $state.go('announcementOutbox')
+      return true
     }
   }
 ])

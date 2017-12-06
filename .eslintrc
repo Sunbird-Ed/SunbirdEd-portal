@@ -1,24 +1,18 @@
 {
     "extends": "standard",
-    "env": {
-        "browser": true,
-        "node": true,
-        "jasmine": true,
-        "mocha": true
-    },
     "globals": {
-        "angular": true,
         "_": true,
         "$": true,
-        "moment": true,
-        "iziToast": true,
-        "org": true,
+        "angular": true,
         "alasql": true,
-        "md5": true
+        "iziToast": true,
+        "md5": true,
+        "moment": true,
+        "org": true,
     },
     "rules": {
+        "indent": ["error", 2],
+        "max-len": ["error", 120, 2, {"ignoreUrls": true}],
         "quotes": ["error", "single"],
-        "max-len": ["error", 120, 4, {"ignoreUrls": true}],
-        "indent": ["error", 2]
     }
 }

@@ -22,7 +22,7 @@ angular.module('playerApp').controller('announcementInboxListController', ['$roo
           announcementInboxData.listData = apiResponse.result.announcements
           announcementInboxData.pageNumber = pageNumber
           announcementInboxData.pager = PaginationService.GetPager(apiResponse.result.count,
-              pageNumber, announcementInboxData.pageLimit)
+            pageNumber, announcementInboxData.pageLimit)
         }
         announcementInboxData.showLoader = false
       }, function (err) {

@@ -59,7 +59,7 @@
                 </div>
                 <div class="field required dropdown-margin-left">
                   <label>{{$root.frmelmnts.lbl.anncmnttype}}</label>
-                  <select name="medium" class="ui fluid dropdown" id="announcementType" ng-options=" audience for audience in composeAnn.announcementType" ng-model="composeAnn.announcement.details.type">
+                  <select name="medium" class="ui fluid dropdown" id="announcementType" ng-options=" audience for audience in composeAnn.announcementType" ng-model="composeAnn.announcement.details.type" ng-change="composeAnn.enableRecepientBtn()">
                     <option value="">{{$root.frmelmnts.instn.t0051}}</option>
                   </select>
                 </div>
@@ -116,7 +116,7 @@
             </div>
           </div>
         </div>
-        <div ng-if="composeAnn.stepNumber === 4" class="ui grid">
+        <div ng-if="composeAnn.stepNumber === 4" class="ui grid margin-right-none">
           <div class="box width-100 eight wide column margin-left-17 createAnnFormScroller">
             <announcement-details-directive announcement-details="composeAnn.announcement"></announcement-details-directive>
           </div>

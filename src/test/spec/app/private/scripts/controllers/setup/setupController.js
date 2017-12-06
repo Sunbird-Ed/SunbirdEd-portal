@@ -10,9 +10,9 @@ describe('Controller: setupController', function () {
     toasterService,
     deferred
   beforeEach(inject(function ($controller, $rootScope,
-          _setupService_,
-          _toasterService_,
-          _$q_) {
+    _setupService_,
+    _toasterService_,
+    _$q_) {
     rootScope = $rootScope
     setupService = _setupService_
     toasterService = _toasterService_
@@ -29,14 +29,14 @@ describe('Controller: setupController', function () {
       setupService: setupService
     })
   }
-        ))
+  ))
   beforeEach(inject(function ($rootScope, $controller) {
     $controller('AppCtrl', {
       $rootScope: $rootScope,
       $scope: $rootScope.$new()
     })
   }))
-    // get org types
+  // get org types
   it('should get all org types', function (done) {
     spyOn(setupCtrl, 'getOrgTypes').and.callThrough()
     var mockRes = {
@@ -82,11 +82,11 @@ describe('Controller: setupController', function () {
     spyOn(setupCtrl, 'openUpdateModal').and.callThrough()
     setupCtrl.openUpdateModal('hello')
     setupCtrl.selectedOrg = {}
-        // expect(setupCtrl.selectedOrg.orgType).toEqual('hello');
+    // expect(setupCtrl.selectedOrg.orgType).toEqual('hello');
 
     done()
   })
-    // add org types
+  // add org types
   it('should add new  org type', function (done) {
     spyOn(setupCtrl, 'getOrgTypes').and.callThrough()
     spyOn(setupCtrl, 'addOrgType').and.callThrough()
@@ -125,7 +125,7 @@ describe('Controller: setupController', function () {
     expect(toasterService.error).toHaveBeenCalled()
     done()
   })
-    // update org type
+  // update org type
   it('should update  org type', function (done) {
     spyOn(setupCtrl, 'getOrgTypes').and.callThrough()
     spyOn(setupCtrl, 'updateOrgType').and.callThrough()

@@ -12,8 +12,10 @@ let ApiInterceptor = require('sb_api_interceptor')
 let NotificationService = require('./services/notification/notificationService.js')
 let NotificationPayload = require('./services/notification/notificationPayload.js')
 let NotificationTarget = require('./services/notification/notificationTarget.js')
+let Dataservice = require('./services/dataService.js')
 let httpWrapper = require('./services/httpWrapper.js')
 let AppError = require('./services/ErrorInterface.js')
+let DataTransform = require("node-json-transform").DataTransform
 
 const statusConstant = {
     'ACTIVE': 'active',
@@ -30,66 +32,105 @@ const LIMIT_DEFAULT = 10
 const LIMIT_MAX = 200
 const OFFSET_DEFAULT = 0
 
+const announcementBaseFieldsMap = {
+    id: "id",
+    from: "details.from",
+    type: "details.type",
+    title: "details.title",
+    description: "details.description",
+    links: "links",
+    attachments: "attachments",
+    createdDate: "createddate",
+    status: "status"
+}
+
+const announcementResendFieldsMap = {
+    target: "target"
+}
+
+const announcementInboxFieldsMap = {
+    read: "read",
+    received: "received"
+}
+
+const announcementOutboxFieldsMap = {
+    target: "target",
+    metrics: {sent: "sentcount", read: "metrics.read", received: "metrics.received"}
+}
+
+const announcementTypeMap = {
+    id: "id",
+    name: "name"
+}
+
 class AnnouncementController {
     constructor({metricsModel, announcementModel, announcementTypeModel, service } = {}) {
         /**
          * @property {class}  - Metrics model class to validate the metrics object
          */
-        this.metricsModel = metricsModel;
+        this.metricsModel = metricsModel
 
         /**
          * @property {class} - announcment model class to validate the object
          * @type {[type]}
          */
-        this.announcementModel = announcementModel;
+        this.announcementModel = announcementModel
 
         /**
          * @property {class}  - announcement type class to validate the object
          * @type {[type]}
          */
-        this.announcementTypeModel = announcementTypeModel;
+        this.announcementTypeModel = announcementTypeModel
 
         /**
          * @property {class} - Http Service instance used ot make a http request calls
          */
-        this.httpService = service || httpWrapper;
+        this.httpService = service || httpWrapper
 
         /**
          * Creating a instance of ObjectStoreRest with metrics,announcement,announcementType model classes
          */
-        this.announcementStore = new ObjectStoreRest({model: this.announcementModel, service:this.httpService});
-        this.announcementMetricsStore = new ObjectStoreRest({model:this.metricsModel, service:this.httpService});
+        this.announcementStore = new ObjectStoreRest({model: this.announcementModel, service:this.httpService})
+        this.announcementMetricsStore = new ObjectStoreRest({model:this.metricsModel, service:this.httpService})
         this.announcementTypeStore = new ObjectStoreRest({model:this.announcementTypeModel, service:this.httpService})
+        this.dataService = new Dataservice({service:this.httpService})
     }
 
     /**
-     * Which is used to create a announcment
+     * To create an announcment
      * @param   {object}  requestObj  - Request object
      */
     create(requestObj) {
         return this.__create()(requestObj)
     }
+
+    /**
+     * Initialize the create announcement, validates, manage the create workflow
+     * @return Object Response of create
+     */
     __create() {
         return async((requestObj) => {
             try {
                 let validation = this.announcementModel.validateApi(requestObj.body)
+
                 if (!validation.isValid) throw {
                     message: validation.error,
                     status: HttpStatus.BAD_REQUEST,
                     isCustom:true
                 }
-                let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
-                let tokenDetails = await(this.__getTokenDetails(authUserToken))
-                if(tokenDetails){
-                    requestObj.body.request.userId = tokenDetails.userId
-                }else{
+
+                let userId = await(this.__getLoggedinUserId()(requestObj))
+                if(userId){
+                    requestObj.body.request.userId = userId
+                } else {
                     throw this.customError({message:'Unauthorized', status: HttpStatus.UNAUTHORIZED, isCustom:true})
                 }
-                let sentCount = await(this.__getSentCount(_.get(requestObj, 'body.request.target.geo.ids'), authUserToken))
-                var newAnnouncementObj = await (this.__createAnnouncement(requestObj.body.request))
+                let sentCount = await(this.dataService.getAudience(_.get(requestObj, 'body.request.target.geo.ids')))
+                requestObj.body.request.sentCount = sentCount
+                var newAnnouncementObj = await (this.__saveAnnouncement(requestObj.body.request))
                 if (newAnnouncementObj.data.id) {
                     requestObj.body.request.announcementId = newAnnouncementObj.data.id
-                    this.__createAnnouncementNotification(requestObj)()
+                    this.__notify(requestObj)()
                     return {
                         announcement: newAnnouncementObj.data
                     }
@@ -99,74 +140,12 @@ class AnnouncementController {
             }
         })
     }
-    __getSentCount(locationIds, authUserToken){
-        return new Promise((resolve, reject) =>{
-            let options = {
-                method: 'POST',
-                uri: envVariables.DATASERVICE_URL + 'data/v1/notification/audience',
-                headers: this.httpService.getRequestHeader(authUserToken),
-                body: {
-                    "request": {
-                        "locationIds": locationIds,
-                        "userListReq": false,
-                        "estimatedCountReq": false
-                    }
-                },
-                json:true
-            }
-            this.httpService.call(options).then((data) =>{
-                let locations = _.get(data, 'body.result.locations');
-                resolve(_.sumBy(locations, 'userCount'))
-            }).catch((error) =>{
-                reject(this.customError({message:'Unable to get the sent count', status:HttpStatus.INTERNAL_SERVER_ERROR}))
-            })
-        })
-    }
-
-    __getUserProfile(authUserToken) {
-        return new Promise((resolve, reject) => {
-            try {
-                let tokenDetails = await(this.__getTokenDetails(authUserToken))
-                if (!tokenDetails) {
-                    throw {message: 'Unauthorized User!', status: HttpStatus.UNAUTHORIZED,isCustom:true } 
-                }
-                let options = {
-                    method: 'GET',
-                    uri: envVariables.DATASERVICE_URL + 'user/v1/read/' + tokenDetails.userId,
-                    headers: this.httpService.getRequestHeader(authUserToken)
-                }
-                this.httpService.call(options).then((data) => {
-                        data.body = JSON.parse(data.body)
-                        resolve(_.get(data, 'body.result.response'))
-                    })
-                    .catch((error) => {
-                        if (_.get(error, 'body.params.err') === 'USER_NOT_FOUND') {
-                            reject(this.customError({
-                                message: 'User not found!',
-                                status: HttpStatus.NOT_FOUND,
-                                isCustom:true
-                            }))
-                        } else if (_.get(error, 'body.params.err') === 'UNAUTHORIZE_USER') {
-                            reject(this.customError({
-                                message: 'Unauthorized User!',
-                                status: HttpStatus.UNAUTHORIZED,
-                                isCustom:true
-                            }))
-                        } else {
-                            reject(this.customError({
-                                message: 'Unknown Error!',
-                                status: HttpStatus.BAD_GATEWAY,
-                                isCustom:true
-                            }))
-                        }
-                    })
-            } catch (error) {
-                reject(this.customError(error))
-            }
-        })
-    }
-
-    __createAnnouncement(data) {
+    /**
+     * save values in database
+     * @param  Object data Data to be stored
+     * @return Object      Response
+     */
+    __saveAnnouncement(data) {
         return new Promise((resolve, reject) => {
             let announcementId = uuidv1()
             if (!data) reject(this.customError({
@@ -218,17 +197,18 @@ class AnnouncementController {
     }
     
     /**
-     * Which is used to create a announcements notification
-     * @param  {object} annoucement - Request object 
+     * To send an announcement notification
+     * @param  Object annoucement - Request object 
      */
-    __createAnnouncementNotification(annoucement) {
+    __notify(requestObj) {
         try {
             return async(() => {
-                let authUserToken = _.get(annoucement, 'kauth.grant.access_token.token') || annoucement.headers['x-authenticated-user-token']
+                //TODO check if the below code works
+                let authUserToken = this.__getToken(requestObj)
                 let payload = new NotificationPayload({
-                    "msgid": annoucement.body.request.announcementId,
-                    "title": annoucement.body.request.title,
-                    "msg": annoucement.body.request.description,
+                    "msgid": requestObj.body.request.announcementId,
+                    "title": requestObj.body.request.title,
+                    "msg": requestObj.body.request.description,
                     "icon": "",
                     "validity": "-1",
                     "actionid": "1",
@@ -242,15 +222,15 @@ class AnnouncementController {
                     userAccessToken: authUserToken
                 })
                 let target = new NotificationTarget({
-                    target: _.get(annoucement, 'body.request.target')
+                    target: _.get(requestObj, 'body.request.target')
                 })
-                let targetValidation = target.validate();
+                let targetValidation = target.validate()
                 if (!targetValidation.isValid) {
                     return {
                         msg: targetValidation.error
                     }
                 }
-                let payloadValidation = payload.validate();
+                let payloadValidation = payload.validate()
                 if (!payloadValidation.isValid) {
                     return {
                         msg: payloadValidation.error
@@ -264,63 +244,46 @@ class AnnouncementController {
     }
 
     /**
-     * Get announcement
+     * Get announcement by id
      *
      * @param   {[type]}  requestObj  [description]
      *
-     * @return  {[type]}              [description]
+     * @return  {[type]}              return transformed data
      */
     getAnnouncementById(requestObj) {
-        return this.__getAnnouncementById(requestObj)
-    }
-
-    __getAnnouncementById(requestObj) {
         return new Promise((resolve, reject) => {
-            let query = {
-                query: {
-                    'id': requestObj.params.id
-                }
-            }
-            this.announcementStore.findObject(query)
-                .then((data) => {
-                    if (data) {
-                        _.forEach(data.data.content, (announcementObj) => {
-                            this.__parseAttachments(announcementObj)
-                        })
-                        resolve(_.get(data.data, 'content[0]'))
-                    } else {
-                        throw this.customError({
-                            message: 'Unable to find!',
-                            status: HttpStatus.NOT_FOUND,
-                            isCustom:true
-                        })
-                    }
-                })
-                .catch((error) => {
-                    reject(this.customError(error))
-                })
+            let announcementId = requestObj.params.id
+            let announcement = this.__getAnnouncementById(announcementId).then((data) => {
+                                let transformationMap = this.__getTransformationMap(announcementBaseFieldsMap)
+                                let transformedData = this.__transformResponse(data, transformationMap)
+                                return {announcement: transformedData[0]}
+                            })
+                            .catch((err) => {
+                                reject(this.customError(err))
+                            })
+
+            resolve(announcement) 
         })
     }
 
-
-
+    /**
+     * Get definitions required to populate create announcement screen
+     * @param  Object requestObj [description]
+     * @return Object            [description]
+     */
     getDefinitions(requestObj) {
         return this.__getDefinitions()(requestObj)
     }
     __getDefinitions() {
         return async((requestObj) => {
             try {
-                let responseObj = {};
+                let responseObj = {}
                 if (requestObj.body.request.definitions) {
                     if (requestObj.body.request.definitions.includes('announcementTypes')) {
-                        let announcementTypes = await (this.__getAnnouncementTypes(requestObj));
-                        responseObj["announcementTypes"] = announcementTypes;
+                        let announcementTypes = await (this.__getAnnouncementTypes(requestObj))
+                        responseObj["announcementTypes"] = announcementTypes
                     }
-                    if (requestObj.body.request.definitions.includes('senderList')) {
-                        let senderlist = await (this.__getSenderList()(requestObj));
-                        responseObj["senderList"] = senderlist;
-                    }
-                    return responseObj;
+                    return responseObj
                 } else {
                     throw {
                         message: 'Invalid request!',
@@ -331,7 +294,7 @@ class AnnouncementController {
             } catch (error) {
                 throw this.customError(error)
             }
-        });
+        })
     }
 
     /**
@@ -350,7 +313,11 @@ class AnnouncementController {
             this.announcementTypeStore.findObject(query)
                 .then((data) => {
                     if (data) {
-                        resolve(data.data)
+
+                        let transformationMap = this.__getTransformationMap(announcementTypeMap)
+                        let transformedData = this.__transformResponse(data.data.content, transformationMap)
+                        
+                        resolve(transformedData)
                     } else {
                         resolve()
                     }
@@ -374,26 +341,26 @@ class AnnouncementController {
 
     __cancelAnnouncementById() {
         return async((requestObj) => {
-            let query = {
-                values: {
-                    id: _.get(requestObj, 'body.request.announcenmentId'),
-                    status: statusConstant.CANCELLED
-                }
-            }
-            let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
-            let tokenDetails = await (this.__getTokenDetails(authUserToken));
-            let status;
-            if (tokenDetails) {
-                status = await (this.__checkPermission()(requestObj, tokenDetails.userId, _.get(requestObj, 'body.request.announcenmentId')));
+            let userId = await(this.__getLoggedinUserId()(requestObj))
+            let status
+            if (userId) {
+                status = await (this.__isAuthor()(userId, _.get(requestObj, 'body.request.announcementId')))
             } else {
                 throw this.customError({
-                    message: 'Unauthorized User!',
+                    message: 'Unauthorized User!11',
                     status: HttpStatus.UNAUTHORIZED,
                     isCustom:true
                 })
             }
             return new Promise((resolve, reject) => {
                 if (status) {
+                    let query = {
+                        values: {
+                            id: _.get(requestObj, 'body.request.announcementId'),
+                            status: statusConstant.CANCELLED
+                        }
+                    }
+
                     this.announcementStore.updateObjectById(query)
                         .then((data) => {
                             if (data) {
@@ -414,7 +381,7 @@ class AnnouncementController {
                         })
                 } else {
                     reject(this.customError({
-                        message: 'Unauthorized User!',
+                        message: 'Unauthorized User!22',
                         status: HttpStatus.UNAUTHORIZED,
                         isCustom:true
                     }))
@@ -437,11 +404,11 @@ class AnnouncementController {
 
     __getUserInbox() {
         return async((requestObj) => {
-            let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
+            let authUserToken = this.__getToken(requestObj)
 
-            let tokenDetails = await (this.__getTokenDetails(authUserToken));
-            if (tokenDetails) {
-                requestObj.body.request.userId = tokenDetails.userId
+            let userId = await(this.__getLoggedinUserId()(requestObj))
+            if (userId) {
+                requestObj.body.request.userId = userId
             }
 
             let userProfile = await (this.__getUserProfile(authUserToken))
@@ -459,7 +426,7 @@ class AnnouncementController {
             // Parse the list of Geolocations (Orgs > Geolocations) from the response
             let targetGeolocations = []
             try {
-                let geoData = await (this.__getGeolocations(targetOrganisations, authUserToken))
+                let geoData = await (this.dataService.getGeoLocations(targetOrganisations, authUserToken))
                     //handle emty target list
                 _.forEach(geoData.content, function(geo) {
                     if (geo.locationId) {
@@ -541,9 +508,12 @@ class AnnouncementController {
                     })
                 }
 
+                let transformationMap = this.__getTransformationMap(announcementBaseFieldsMap, announcementInboxFieldsMap)
+                let transformedData = this.__transformResponse(announcements, transformationMap)
+
                 return {
                     count: data.count,
-                    announcements: announcements
+                    announcements: transformedData
                 }
 
             } catch (error) {
@@ -552,63 +522,14 @@ class AnnouncementController {
         })
     }
 
-    __parseAttachments(announcement) {
-        let parsedAttachments = []
-        _.forEach(announcement.attachments, (attachment, k) => {
-            let parsedAttachment = this.__parseJSON(attachment)
+    
 
-            if (parsedAttachment) {
-                parsedAttachments.push(parsedAttachment)
-            } else {
-                parsedAttachments = []
-                return false
-            }
-        })
-
-        announcement.attachments = parsedAttachments
-    }
-
-    __parseJSON(jsonString) {
-        try {
-            return JSON.parse(jsonString)
-        } catch (error) {
-            return false
-        }
-    }
-
-    __getGeolocations(orgIds, authUserToken) {
-        return new Promise((resolve, reject) => {
-            let requestObj = {
-                "filters": {
-                    "id": orgIds
-                },
-                "fields": ["id", "locationId"]
-            }
-
-            let options = {
-                "method": "POST",
-                "uri": envVariables.DATASERVICE_URL + "org/v1/search",
-                "body": {
-                    "request": requestObj
-                },
-                "json": true
-            }
-            options.headers = this.httpService.getRequestHeader(authUserToken)
-            try {
-                let data = new Promise((resolve, reject) => {
-                    this.httpService.call(options).then((data) => {
-                        resolve(data.body.result.response)
-                    }).catch((error) => {
-                        reject(this.customError(error))
-                    })
-                })
-                resolve(data)
-            } catch (error) {
-                reject(this.customError(error))
-            }
-
-        })
-    }
+    /**
+     * Get received and read status of given announcements 
+     * @param  Array announcementIds 
+     * @param  String userId
+     * @return Object
+     */
     __getMetricsForInbox(announcementIds, userId) {
         return new Promise((resolve, reject) => {
             let query = {
@@ -648,10 +569,9 @@ class AnnouncementController {
         return async((requestObj) => {
 
             // validate request
-            let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
-            let tokenDetails = await (this.__getTokenDetails(authUserToken));
-            if (tokenDetails) {
-                requestObj.body.request.userId = tokenDetails.userId
+            let userId = await(this.__getLoggedinUserId()(requestObj))
+            if (userId) {
+                requestObj.body.request.userId = userId
             } else {
                 reject({
                     message: 'Unauthorized User',
@@ -704,7 +624,7 @@ class AnnouncementController {
 
             //Get read and received status and append to response
             
-            let metricsData = await (this.__getOutboxMetrics(announcementIds, authUserToken))
+            let metricsData = await (this.__getOutboxMetrics(announcementIds))
 
             if (metricsData) {
                 _.forEach(metricsData, (metricsObj, k) => {
@@ -723,15 +643,21 @@ class AnnouncementController {
                 })
             }
 
-            let response = {
-                            count: outboxData.count,
-                            announcements: announcements
-                        }
+            let transformationMap = this.__getTransformationMap(announcementBaseFieldsMap, announcementOutboxFieldsMap)
+            let transformedData = this.__transformResponse(announcements, transformationMap)
 
-            return response
+            return {
+                        count: outboxData.count,
+                        announcements: transformedData
+                    }
         })
     }
 
+    /**
+     * Initialize announcement objects with read and received properties
+     * @param  Object announcementObj
+     * @return Object
+     */
     __addMetricsPlaceholder(announcementObj) {
         let metrics = {}
         metrics[metricsActivityConstant.RECEIVED] = 0
@@ -742,7 +668,12 @@ class AnnouncementController {
         return announcementObj
     }
 
-    __getOutboxMetrics(announcementIds, authUserToken) {
+    /**
+     * Get received and read count of given announcements
+     * @param  Array announcementIds
+     * @return Object
+     */
+    __getOutboxMetrics(announcementIds) {
         return new Promise((resolve, reject) => {
             let query = {
                     "aggs": {
@@ -765,7 +696,7 @@ class AnnouncementController {
                         }
                     }
                 }
-            this.announcementMetricsStore.getMetrics(query, authUserToken)
+            this.announcementMetricsStore.getMetrics(query)
                 .then((response) => {
                     if (!response) {
                         resolve(false)
@@ -776,51 +707,6 @@ class AnnouncementController {
                 .catch((error) => {
                     resolve(false)
                 })
-        })
-    }
-
-    __getLimit(requestedLimit) {
-        let limit = requestedLimit || LIMIT_DEFAULT
-        limit = limit > LIMIT_MAX ? LIMIT_MAX : limit
-        return limit
-    }
-
-    __getOffset(requestedOffset) {
-        let offset = requestedOffset || OFFSET_DEFAULT
-        return offset
-    }
-
-    
-    /**
-     * Get a list of senders on whose behalf the user can send announcement
-     *
-     * @param   {[type]}  requestObj  [description]
-     *
-     * @return  {[type]}              [description]
-     */
-
-    __getSenderList() {
-        return async((requestObj) => {
-            let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
-            let userData = {}
-            return await (new Promise((resolve, reject) => {
-                this.__getUserProfile(authUserToken)
-                    .then((data) => {
-                        if (!data) {
-                            throw {
-                                message: 'Unable to fetch!',
-                                status: HttpStatus.INTERNAL_SERVER_ERROR,
-                                isCustom:true
-                            }
-                        } else {
-                            userData[data.id] = data.firstName + " " + data.lastName
-                            resolve(userData)
-                        }
-                    })
-                    .catch((error) => {
-                        reject(this.customError(error))
-                    })
-            }))
         })
     }
 
@@ -838,11 +724,11 @@ class AnnouncementController {
     __received(requestObj) {
         return async((requestObj) => {
             try {
-                let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
-                let tokenDetails = await (this.__getTokenDetails(authUserToken));
                 let request = this.metricsModel.validateApi(requestObj.body)
-                if (tokenDetails) {
-                    requestObj.body.request.userId = tokenDetails.userId
+                let userId = await(this.__getLoggedinUserId()(requestObj))
+
+                if (userId) {
+                    requestObj.body.request.userId = userId
                 } else {
                     throw new AppError({
                         message: 'Unable to fetch!',
@@ -862,10 +748,11 @@ class AnnouncementController {
                         statusCode: HttpStatus.OK
                     }
                 } else {
-                    var metricsData = await (this.__createMetrics(requestObj.body.request, metricsActivityConstant.RECEIVED))
-                    return {
-                        metrics: metricsData.data
-                    }
+                    let metricsData = await (this.__createMetrics(requestObj.body.request, metricsActivityConstant.RECEIVED))
+                    let response = {}
+                    response[metricsActivityConstant.RECEIVED] = metricsData.data
+                    return response
+                    
                 }
             } catch (error) {
                 throw this.customError(error)
@@ -887,11 +774,10 @@ class AnnouncementController {
     __read(requestObj) {
         return async((requestObj) => {
             // validate request
-            let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
-            let tokenDetails = await (this.__getTokenDetails(authUserToken));
             let request = this.metricsModel.validateApi(requestObj.body)
-            if (tokenDetails) {
-                requestObj.body.request.userId = tokenDetails.userId
+            let userId = await(this.__getLoggedinUserId()(requestObj))
+            if (userId) {
+                requestObj.body.request.userId = userId
             } else {
                 throw this.customError({
                     message: 'Unauthorized User!',
@@ -920,10 +806,10 @@ class AnnouncementController {
                 }
             } else {
                 try {
-                    var metricsData = await (this.__createMetrics(requestObj.body.request, metricsActivityConstant.READ))
-                    return {
-                        metrics: metricsData.data
-                    }
+                    let metricsData = await (this.__createMetrics(requestObj.body.request, metricsActivityConstant.READ))
+                    let response = {}
+                    response[metricsActivityConstant.READ] = metricsData.data
+                    return response
                 } catch (error) {
                     throw this.customError(error)
 
@@ -932,6 +818,13 @@ class AnnouncementController {
 
         })
     }
+
+    /**
+     * Save metrics data - received, read status for a user-announcement
+     * @param  {[type]} requestObj      [description]
+     * @param  {[type]} metricsActivity [description]
+     * @return {[type]}                 [description]
+     */
     __createMetrics(requestObj, metricsActivity) {
         return new Promise((resolve, reject) => {
             // build query
@@ -968,6 +861,12 @@ class AnnouncementController {
         })
     }
 
+    /**
+     * Check if the metrics data already exists
+     * @param  {[type]} requestObj      [description]
+     * @param  {[type]} metricsActivity [description]
+     * @return {[type]}                 [description]
+     */
     __isMetricsExist(requestObj, metricsActivity) {
         return new Promise((resolve, reject) => {
             let query = {
@@ -1006,13 +905,26 @@ class AnnouncementController {
     getResend() {
         return async((requestObj) => {
             try {
-                let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
-                let tokenDetails = await (this.__getTokenDetails(authUserToken));
-                let status;
-                if (tokenDetails) {
-                    status = await (this.__checkPermission()(requestObj, tokenDetails.userId, requestObj.params.announcementId));
+                let userId = await(this.__getLoggedinUserId()(requestObj))
+                let status
+
+                if (userId) {
+                    status = await (this.__isAuthor()(userId, requestObj.params.announcementId))
+
                     if (status) {
-                        return this.__getAnnouncementById(requestObj)
+                        return new Promise((resolve, reject) => {
+                            let announcementId = requestObj.params.announcementId
+                            let announcement = this.__getAnnouncementById(announcementId).then((data) => {
+                                                let transformationMap = this.__getTransformationMap(announcementBaseFieldsMap, announcementResendFieldsMap)
+                                                let transformedData = this.__transformResponse(data, transformationMap)
+                                                return {announcement: transformedData[0]}
+                                            })
+                                            .catch((err) => {
+                                                reject(this.customError(err))
+                                            })
+
+                            resolve(announcement) 
+                        })
                     } else {
                         throw {
                             message: 'Unauthorized user',
@@ -1040,27 +952,97 @@ class AnnouncementController {
      * @return {[type]}            [description]
      */
     resend(requestObj) {
-        // TODO: duplicate file data??
-
         return this.__create()(requestObj)
     }
 
-  __checkPermission() {
-      return async((requestObj, userid, announcementId) => {
-          if (requestObj) {
-              requestObj.params = {};
-              requestObj.params.id = announcementId
-              var response = await (this.getAnnouncementById(requestObj));
+    /**
+     * Get announcement by id
+     * @param  String announcementId
+     * @return Object                Announcement object
+     */
+    __getAnnouncementById(announcementId) {
+        return new Promise((resolve, reject) => {
+            let query = {
+                query: {
+                    'id': announcementId
+                }
+            }
+            this.announcementStore.findObject(query)
+                .then((data) => {
+                    if (data) {
+                        _.forEach(data.data.content, (announcementObj) => {
+                            this.__parseAttachments(announcementObj)
+                        })
+
+                        resolve(data.data.content)
+                    } else {
+                        throw this.customError({
+                            message: 'Unable to find!',
+                            status: HttpStatus.NOT_FOUND,
+                            isCustom:true
+                        })
+                    }
+                })
+                .catch((error) => {
+                    reject(this.customError(error))
+                })
+        })
+    }
+
+
+    /**
+     * Verify if the logged in user is the author of the particular announcement
+     * @return Boolean
+     */
+    __isAuthor() {
+      return async((userId, announcementId) => {
+          if (userId && announcementId) {
+              var response = await (this.__getAnnouncementById(announcementId))
               if(response){
-                return response.userid === userid ? true : false
-              }else{
+                 return (response[0].userid === userId) ? true : false
+              } else {
                 return false
               }
           } else {
-              return false;
+              return false
           }
-      });
-  }
+      })
+    }
+
+    /**
+     * Validate and send the allowed limit value
+     * @param  Integer requestedLimit
+     * @return {Integer}
+     */
+    __getLimit(requestedLimit) {
+        let limit = requestedLimit || LIMIT_DEFAULT
+        limit = limit > LIMIT_MAX ? LIMIT_MAX : limit
+        return limit
+    }
+
+    /**
+     * Set the default offset when not available
+     * @param  {Integer} requestedOffset
+     * @return {Integer}
+     */
+    __getOffset(requestedOffset) {
+        let offset = requestedOffset || OFFSET_DEFAULT
+        return offset
+    }
+
+    /**
+     * Get the logged in user's suth token or the token passed in API call
+     * @return String Token
+     */
+    __getToken(requestObj) {
+        return _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
+    }
+
+    /**
+     * Validates the token and fetch the userId
+     * @param  String authUserToken Auth user token
+     * @return Object               For a valid token return token and user id.
+     */
     __getTokenDetails(authUserToken) {
         return new Promise((resolve, reject) => {
             var keyCloak_config = {
@@ -1071,9 +1053,10 @@ class AnnouncementController {
             }
 
             var cache_config = {
-                stroe: envVariables.sunbird_cache_store,
+                store: envVariables.sunbird_cache_store,
                 ttl: envVariables.sunbird_cache_ttl
             }
+
             if (authUserToken) {
                 var apiInterceptor = new ApiInterceptor(keyCloak_config, cache_config)
                 apiInterceptor.validateToken(authUserToken, function(err, token) {
@@ -1087,6 +1070,126 @@ class AnnouncementController {
                 resolve(false)
             }
         })
+    }
+
+    /**
+     * Get logged in user id
+     * @return {[type]} [description]
+     */
+    __getLoggedinUserId() {
+        return async((requestObj) => {
+            let authUserToken = this.__getToken(requestObj)
+            let tokenDetails = await (this.__getTokenDetails(authUserToken))
+
+            if (tokenDetails) {
+                return tokenDetails.userId
+            } 
+
+            return false
+        })
+    }
+                
+    /**
+     * To get a user's profile data
+     * @param  String authUserToken User's access token
+     * @return Object               Profile data
+     */
+    __getUserProfile(authUserToken) {
+        return new Promise((resolve, reject) => {
+            try {
+                let tokenDetails = await(this.__getTokenDetails(authUserToken))
+                if (!tokenDetails) {
+                    throw {message: 'Unauthorized User!', status: HttpStatus.UNAUTHORIZED,isCustom:true } 
+                }
+                let options = {
+                    method: 'GET',
+                    uri: envVariables.DATASERVICE_URL + 'user/v1/read/' + tokenDetails.userId,
+                    headers: this.httpService.getRequestHeader(authUserToken)
+                }
+                this.httpService.call(options).then((data) => {
+                        data.body = JSON.parse(data.body)
+                        resolve(_.get(data, 'body.result.response'))
+                    })
+                    .catch((error) => {
+                        if (_.get(error, 'body.params.err') === 'USER_NOT_FOUND') {
+                            reject(this.customError({
+                                message: 'User not found!',
+                                status: HttpStatus.NOT_FOUND,
+                                isCustom:true
+                            }))
+                        } else if (_.get(error, 'body.params.err') === 'UNAUTHORIZE_USER') {
+                            reject(this.customError({
+                                message: 'Unauthorized User!',
+                                status: HttpStatus.UNAUTHORIZED,
+                                isCustom:true
+                            }))
+                        } else {
+                            reject(this.customError({
+                                message: 'Unknown Error!',
+                                status: HttpStatus.BAD_GATEWAY,
+                                isCustom:true
+                            }))
+                        }
+                    })
+            } catch (error) {
+                reject(this.customError(error))
+            }
+        })
+    }
+
+    /**
+     * Parse attachments string to JSON object
+     * @param  {[type]} announcement [description]
+     * @return {[type]}              [description]
+     */
+    __parseAttachments(announcement) {
+        let parsedAttachments = []
+        _.forEach(announcement.attachments, (attachment, k) => {
+            let parsedAttachment = this.__parseJSON(attachment)
+
+            if (parsedAttachment && _.isObject(parsedAttachment)) {
+                parsedAttachments.push(parsedAttachment)
+            }
+        })
+
+        announcement.attachments = parsedAttachments
+    }
+
+    /**
+     * Parse a json string to object
+     * @param  {[type]} jsonString [description]
+     * @return {[type]}            [description]
+     */
+    __parseJSON(jsonString) {
+        try {
+            return JSON.parse(jsonString)
+        } catch (error) {
+            return false
+        }
+    }
+
+    /**
+     * Get the declarative map for response transformation
+     * @param  {Object}  baseMap
+     * @param  {Object} addonMap
+     * @return {Object}           [description]
+     */
+    __getTransformationMap(baseMap, addonMap) {
+        let transformations = _.merge(baseMap, addonMap)
+        return {item: transformations}
+    }
+
+    /**
+     * [__transformResponse description]
+     * @param  {[type]} data [description]
+     * @param  {[type]} map  [description]
+     * @return {[type]}      [description]
+     */
+    __transformResponse(data, map) {
+        let dataTransform = DataTransform(data, map)
+        let transformedData = dataTransform.transform()
+
+        return transformedData
     }
 
     /**

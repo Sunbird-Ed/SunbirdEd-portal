@@ -59,7 +59,6 @@ class ObjectStoreRest extends ObjectStore {
                     },
                     json: true
                 }
-                
                 let result = await (this.service.call(options))
                 return {
                     data: _.get(result, 'body.result'),
@@ -161,12 +160,12 @@ class ObjectStoreRest extends ObjectStore {
      *
      * @return {Object}             - Response object.
      */
-    getMetrics(query, authUserToken) {
-        return this.__getMetrics()(query, authUserToken)
+    getMetrics(query) {
+        return this.__getMetrics()(query)
     }
 
     __getMetrics() {
-        return async((query, authUserToken) => {
+        return async((query) => {
             try {
                 let options = {
                     method: 'POST',
@@ -178,7 +177,6 @@ class ObjectStoreRest extends ObjectStore {
                         }
                     },
                     json: true,
-                    token: authUserToken
                 }
                 options.body.request = _.pickBy(options.body.request, _.identity); // Removes all falsey values
                 

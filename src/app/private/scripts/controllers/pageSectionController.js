@@ -4,7 +4,7 @@ angular.module('playerApp')
   .controller('pageSectionCtrl', ['pageSectionService', '$scope',
     '$state', 'config', 'sessionService', '$rootScope', 'toasterService',
     function (pageSectionService, $scope,
-    $state, config, sessionService, $rootScope, toasterService) {
+      $state, config, sessionService, $rootScope, toasterService) {
       var section = this
       section.pageTypeUrls = { resource: 'Resource',
         course: 'Course' }
@@ -20,7 +20,7 @@ angular.module('playerApp')
         $rootScope.search.searchKeyword = ''
         var courseId = course.courseId || course.identifier
         var courseType = ($rootScope.enrolledCourseIds[courseId] >= 0)
-           ? 'ENROLLED_COURSE' : 'OTHER_COURSE'
+          ? 'ENROLLED_COURSE' : 'OTHER_COURSE'
         var showLectureView = 'no'
         if ($rootScope.enrolledCourseIds[courseId]) {
           showLectureView = 'no'
@@ -41,7 +41,7 @@ angular.module('playerApp')
       section.sections = function () {
         section.error = {}
         section.loader = toasterService.loader(''
-           , $rootScope.messages.stmsg.m0053)
+          , $rootScope.messages.stmsg.m0053)
         if ($rootScope.search === undefined) {
           $rootScope.search = {}
         }
@@ -61,7 +61,7 @@ angular.module('playerApp')
             if (successResponse && successResponse.responseCode === 'OK') {
               var resourceRes = successResponse.result.response.sections
               section.page = []
-          // first group the data based on group field
+              // first group the data based on group field
               var pageData = {}
               for (var i in resourceRes) {
                 var sectionArr = resourceRes[i]
@@ -73,18 +73,18 @@ angular.module('playerApp')
                            sectionArr
                 }
               }
-          // Now merge all contents of
-          // other indexes in each group to its first index contents
+              // Now merge all contents of
+              // other indexes in each group to its first index contents
               Object.keys(pageData).forEach(function (key) {
                 for (var index = 1;
-                        index <= Object.keys(pageData[key]).length;
-                         index += 1) {
+                  index <= Object.keys(pageData[key]).length;
+                  index += 1) {
                   if (index === 1) {
                     section.page[key - 1] = pageData[key][index]
                   } else {
                     Array.prototype.push.apply(
-                                  section.page[key - 1].contents,
-                                   pageData[key][index].contents)
+                      section.page[key - 1].contents,
+                      pageData[key][index].contents)
                   }
                 }
               })
@@ -92,24 +92,24 @@ angular.module('playerApp')
               section.loader.showLoader = false
               if (section.page.length === 0) {
                 section.error = showErrorMessage(true,
-                                        $rootScope.messages.stmsg.m0006,
-                                        $rootScope.messages.stmsg.m0008, $rootScope.messages.stmsg.m0007)
+                  $rootScope.messages.stmsg.m0006,
+                  $rootScope.messages.stmsg.m0008, $rootScope.messages.stmsg.m0007)
               }
             } else {
               section.loader.showLoader = false
               section.error = showErrorMessage(true,
-                                        $rootScope.messages.fmsg.m0004,
-                                        $rootScope.messages.emsg.m0002)
+                $rootScope.messages.fmsg.m0004,
+                $rootScope.messages.emsg.m0002)
             }
           }).catch(function () {
             section.loader.showLoader = false
             section.error = showErrorMessage(true,
-                                        $rootScope.messages.fmsg.m0004,
-                                        $rootScope.messages.emsg.m0002)
+              $rootScope.messages.fmsg.m0004,
+              $rootScope.messages.emsg.m0002)
           })
       }
 
-                   /**
+      /**
              * This function called when api failed,
              * and its show failed response for 2 sec.
              * @param {String} message

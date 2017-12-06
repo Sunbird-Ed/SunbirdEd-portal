@@ -8,7 +8,7 @@ angular.module('playerApp').directive('courseDiscussions', function () {
       showaskquestion: '='
     },
         link: function (scope, element, attrs) {// eslint-disable-line
-          scope.showAskQuestion = scope.showaskquestion
-        }
+      scope.showAskQuestion = scope.showaskquestion
+    }
   }
 })

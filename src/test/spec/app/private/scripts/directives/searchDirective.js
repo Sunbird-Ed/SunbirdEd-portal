@@ -7,7 +7,7 @@
 'use strict'
 
 describe('Directive: search', function () {
-    // load the main module
+  // load the main module
   beforeEach(module('playerApp'))
 
   beforeEach(inject(function ($rootScope, $controller) {
@@ -26,7 +26,7 @@ describe('Directive: search', function () {
     searchService = _searchService_
     timeout = _$timeout_
     $templateCache.put(fileName, '')
-    element = angular.element("<search type='searchKey'></search>")
+    element = angular.element('<search type=\'searchKey\'></search>')
     template = $compile(element)(scope)
     scope.$digest()
     // ctrl = element.controller

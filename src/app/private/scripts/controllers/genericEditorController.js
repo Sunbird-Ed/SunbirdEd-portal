@@ -4,7 +4,7 @@ angular.module('playerApp')
   .controller('GenericEditorController', ['config', '$stateParams', 'toasterService', '$sce',
     '$state', '$timeout', '$rootScope', 'contentService', 'permissionsService', 'workSpaceUtilsService',
     function (config, $stateParams, toasterService, $sce, $state, $timeout, $rootScope, contentService,
-    permissionsService, workSpaceUtilsService) {
+      permissionsService, workSpaceUtilsService) {
       var genericEditor = this
       genericEditor.contentId = (_.isUndefined($stateParams.contentId) || _.isNull($stateParams.contentId)) ? '' : $stateParams.contentId
       genericEditor.openGenericEditor = function () {
@@ -100,7 +100,7 @@ angular.module('playerApp')
 			         $state.go($rootScope.contentModelBackLinkName)
 			       } else {
 			         $state.go('WorkSpace.AllUploadedContent')
-        }
+          }
         }, 2000)
       }
     }])

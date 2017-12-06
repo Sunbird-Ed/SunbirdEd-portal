@@ -824,128 +824,128 @@ angular.module('playerApp')
           $rootScope.profileActive = ''
         }
       })
-        .state('CreateLessonPlan', {
-          url: '/create/lessonPlan',
-          views: {
-            mainView: {
-              templateUrl: '/views/workSpace/createLessonPlan.html',
-              controller: 'LessonPlanController as lessonPlan'
-            }
-          },
-          onEnter: function ($rootScope, portalTelemetryService) {
-            $rootScope.profileActive = 'active'
-            portalTelemetryService.fireImpressions({
-              env: 'lessonPlan',
-              type: 'creation',
-              pageid: org.sunbird.portal.appid + '_CreateLessonPlan',
-              id: '',
-              name: '',
-              url: '/private/index#!/create/lessonPlan'
-            })
-          },
-          onExit: function ($rootScope) {
-            $rootScope.profileActive = ''
+      .state('CreateLessonPlan', {
+        url: '/create/lessonPlan',
+        views: {
+          mainView: {
+            templateUrl: '/views/workSpace/createLessonPlan.html',
+            controller: 'LessonPlanController as lessonPlan'
           }
-        })
-        .state('GenericEditor', {
-          url: '/generic/editor/:contentId/:state',
-          views: {
-            mainView: {
-              templateUrl: 'views/common/genericEditor.html',
-              controller: 'GenericEditorController as genericEditor'
-            }
-          },
-          params: {
-            contentId: null,
-            state: null
-          },
-          onEnter: function ($rootScope, portalTelemetryService) {
-            $rootScope.profileActive = 'active'
-            portalTelemetryService.fireImpressions({
-              env: 'genericeditor',
-              type: 'edit',
-              pageid: org.sunbird.portal.appid + '_GenericEditor',
-              id: '',
-              name: '',
-              url: '/private/index#!/generic/editor/'
-            })
-          },
-          onExit: function ($rootScope) {
-            $rootScope.profileActive = ''
+        },
+        onEnter: function ($rootScope, portalTelemetryService) {
+          $rootScope.profileActive = 'active'
+          portalTelemetryService.fireImpressions({
+            env: 'lessonPlan',
+            type: 'creation',
+            pageid: org.sunbird.portal.appid + '_CreateLessonPlan',
+            id: '',
+            name: '',
+            url: '/private/index#!/create/lessonPlan'
+          })
+        },
+        onExit: function ($rootScope) {
+          $rootScope.profileActive = ''
+        }
+      })
+      .state('GenericEditor', {
+        url: '/generic/editor/:contentId/:state',
+        views: {
+          mainView: {
+            templateUrl: 'views/common/genericEditor.html',
+            controller: 'GenericEditorController as genericEditor'
           }
-        })
-        .state('PublicProfile', {
-          url: '/profile/:userName/:userId',
-          views: {
-            mainView: {
-              templateUrl: '/views/search/userProfile.html',
-              controller: 'PublicProfileController as publicProfile'
-            }
-          },
-          params: {
-            userId: null,
-            userName: null
-          },
-          onEnter: function ($rootScope, routeHelperService, $stateParams) {
-            $rootScope.profileActive = 'active'
-            routeHelperService.loadRouteConfig('PublicProfile', $stateParams)
-          },
-          onExit: function ($rootScope) {
-            $rootScope.profileActive = ''
+        },
+        params: {
+          contentId: null,
+          state: null
+        },
+        onEnter: function ($rootScope, portalTelemetryService) {
+          $rootScope.profileActive = 'active'
+          portalTelemetryService.fireImpressions({
+            env: 'genericeditor',
+            type: 'edit',
+            pageid: org.sunbird.portal.appid + '_GenericEditor',
+            id: '',
+            name: '',
+            url: '/private/index#!/generic/editor/'
+          })
+        },
+        onExit: function ($rootScope) {
+          $rootScope.profileActive = ''
+        }
+      })
+      .state('PublicProfile', {
+        url: '/profile/:userName/:userId',
+        views: {
+          mainView: {
+            templateUrl: '/views/search/userProfile.html',
+            controller: 'PublicProfileController as publicProfile'
           }
-        })
-        .state('MyActivity', {
-          url: '/course-creator-dashboard',
-          views: {
-            mainView: {
-              templateUrl: '/views/dashboard/course/courseConsumptionDashboard.html',
-              controller: 'courseCreatorDashboardCtrl as courseDashboard'
-            }
-          },
-          onEnter: function ($stateParams, $rootScope, routeHelperService) {
-            $rootScope.profileActive = 'active'
-            $rootScope.isPlayerPage = false
-            routeHelperService.loadRouteConfig('MyActivity', null)
-          },
-          onExit: function ($rootScope) {
-            $rootScope.profileActive = ''
+        },
+        params: {
+          userId: null,
+          userName: null
+        },
+        onEnter: function ($rootScope, routeHelperService, $stateParams) {
+          $rootScope.profileActive = 'active'
+          routeHelperService.loadRouteConfig('PublicProfile', $stateParams)
+        },
+        onExit: function ($rootScope) {
+          $rootScope.profileActive = ''
+        }
+      })
+      .state('MyActivity', {
+        url: '/course-creator-dashboard',
+        views: {
+          mainView: {
+            templateUrl: '/views/dashboard/course/courseConsumptionDashboard.html',
+            controller: 'courseCreatorDashboardCtrl as courseDashboard'
           }
-        })
-        .state('Setup', {
-          url: '/setup',
-          views: {
-            mainView: {
-              templateUrl: '/views/setup/setup.html',
-              controller: 'setupController as setup'
-            }
-          },
-          onEnter: function (routeHelperService) {
-            routeHelperService.loadRouteConfig('Setup', null)
+        },
+        onEnter: function ($stateParams, $rootScope, routeHelperService) {
+          $rootScope.profileActive = 'active'
+          $rootScope.isPlayerPage = false
+          routeHelperService.loadRouteConfig('MyActivity', null)
+        },
+        onExit: function ($rootScope) {
+          $rootScope.profileActive = ''
+        }
+      })
+      .state('Setup', {
+        url: '/setup',
+        views: {
+          mainView: {
+            templateUrl: '/views/setup/setup.html',
+            controller: 'setupController as setup'
           }
+        },
+        onEnter: function (routeHelperService) {
+          routeHelperService.loadRouteConfig('Setup', null)
+        }
 
-        })
-        .state('WorkSpace.LimitedPublishedContent', {
-          url: '/content/limited/publish',
-          views: {
-            contentView: {
-              templateUrl: 'views/workSpace/limitedPublishedContent.html',
-              controller: 'LimitedPublishedContentController as limitedPublishedContent'
-            }
-          },
-          onEnter: function (portalTelemetryService) {
-            portalTelemetryService.fireImpressions({
-              env: 'content',
-              type: 'list',
-              pageid: org.sunbird.portal.appid + '_WorkSpace.LimitedPublishedContent',
-              id: '',
-              name: '',
-              url: '/private/index#!/content/limited/published'
-            })
+      })
+      .state('WorkSpace.LimitedPublishedContent', {
+        url: '/content/limited/publish',
+        views: {
+          contentView: {
+            templateUrl: 'views/workSpace/limitedPublishedContent.html',
+            controller: 'LimitedPublishedContentController as limitedPublishedContent'
           }
-        })
+        },
+        onEnter: function (portalTelemetryService) {
+          portalTelemetryService.fireImpressions({
+            env: 'content',
+            type: 'list',
+            pageid: org.sunbird.portal.appid + '_WorkSpace.LimitedPublishedContent',
+            id: '',
+            name: '',
+            url: '/private/index#!/content/limited/published'
+          })
+        }
+      })
   })
   .run(function ($urlRouter, $http, $state, permissionsService, $rootScope, $location, config,
-      toasterService, routeHelperService, userService) {
+    toasterService, routeHelperService, userService) {
     permissionsService.getPermissionsData('/permissions').then(function (res) {
       var permissions = res.data; //eslint-disable-line
       if (res && res.responseCode === 'OK') {
@@ -969,7 +969,7 @@ angular.module('playerApp')
             permissionsService.setCurrentUserRoles(userRoles)
             $rootScope.initializePermissionDirective = true
           } else {
-                // TODO: allow only public permissions
+            // TODO: allow only public permissions
           }
         }).then(function () {
           $urlRouter.sync()
@@ -987,65 +987,65 @@ angular.module('playerApp')
         window.localStorage.setItem('previousURl', JSON.stringify({ name: fromState.name, params: fromParams }))
       }
       switch (toState.name) {
-        case 'WorkSpace':
-          routeHelperService.checkStateAccess(config.WORKSPACE_ACCESS_ROLES, false, event)
-          break
-        case 'WorkSpace.ContentCreation':
-          routeHelperService.checkStateAccess(config.WORKSPACE_ACCESS_ROLES, false, event)
-          break
-        case 'CreateLesson':
-          routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
-          break
-        case 'ContentEditor':
-          routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
-          break
-        case 'CreateTextbook':
-          routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
-          break
-        case 'CreateCollection':
-          routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
-          break
-        case 'CreateCourse':
-          routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
-          break
-        case 'CollectionEditor':
-          routeHelperService.checkStateAccess(config.WORKSPACE_ACCESS_ROLES, false, event)
-          break
-        case 'PreviewContent':
-          routeHelperService.checkStateAccess(config.WORKSPACE_ACCESS_ROLES, false, event)
-          break
-        case 'WorkSpace.UpForReviewContent':
-          routeHelperService.checkStateAccess(['CONTENT_REVIEWER', 'CONTENT_REVIEW'], false, event)
-          break
-        case 'WorkSpace.FlaggedContent':
-          routeHelperService.checkStateAccess(['FLAG_REVIEWER'], false, event)
-          break
-        case 'orgDashboard':
-          routeHelperService.checkStateAccess(['ORG_ADMIN', 'SYSTEM_ADMINISTRATION'], false, event)
-          break
-        case 'announcementOutbox':
-          routeHelperService.checkStateAccess(['ANNOUNCEMENT_SENDER'], false, event)
-          break
-        case 'WorkSpace.DraftContent':
-          routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
-          break
-        case 'WorkSpace.ReviewContent':
-          routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
-          break
-        case 'WorkSpace.PublishedContent':
-          routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
-          break
-        case 'WorkSpace.AllUploadedContent':
-          routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
-          break
-        case 'WorkSpace.BatchList':
-          routeHelperService.checkStateAccess(['COURSE_MENTOR'], false, event)
-          break
-        case 'MyActivity':
-          routeHelperService.checkStateAccess(['CONTENT_CREATOR'], false, event)
-          break
-        default:
-          break
+      case 'WorkSpace':
+        routeHelperService.checkStateAccess(config.WORKSPACE_ACCESS_ROLES, false, event)
+        break
+      case 'WorkSpace.ContentCreation':
+        routeHelperService.checkStateAccess(config.WORKSPACE_ACCESS_ROLES, false, event)
+        break
+      case 'CreateLesson':
+        routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
+        break
+      case 'ContentEditor':
+        routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
+        break
+      case 'CreateTextbook':
+        routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
+        break
+      case 'CreateCollection':
+        routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
+        break
+      case 'CreateCourse':
+        routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
+        break
+      case 'CollectionEditor':
+        routeHelperService.checkStateAccess(config.WORKSPACE_ACCESS_ROLES, false, event)
+        break
+      case 'PreviewContent':
+        routeHelperService.checkStateAccess(config.WORKSPACE_ACCESS_ROLES, false, event)
+        break
+      case 'WorkSpace.UpForReviewContent':
+        routeHelperService.checkStateAccess(['CONTENT_REVIEWER', 'CONTENT_REVIEW'], false, event)
+        break
+      case 'WorkSpace.FlaggedContent':
+        routeHelperService.checkStateAccess(['FLAG_REVIEWER'], false, event)
+        break
+      case 'orgDashboard':
+        routeHelperService.checkStateAccess(['ORG_ADMIN', 'SYSTEM_ADMINISTRATION'], false, event)
+        break
+      case 'announcementOutbox':
+        routeHelperService.checkStateAccess(['ANNOUNCEMENT_SENDER'], false, event)
+        break
+      case 'WorkSpace.DraftContent':
+        routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
+        break
+      case 'WorkSpace.ReviewContent':
+        routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
+        break
+      case 'WorkSpace.PublishedContent':
+        routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
+        break
+      case 'WorkSpace.AllUploadedContent':
+        routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
+        break
+      case 'WorkSpace.BatchList':
+        routeHelperService.checkStateAccess(['COURSE_MENTOR'], false, event)
+        break
+      case 'MyActivity':
+        routeHelperService.checkStateAccess(['CONTENT_CREATOR'], false, event)
+        break
+      default:
+        break
       }
     })
   })
