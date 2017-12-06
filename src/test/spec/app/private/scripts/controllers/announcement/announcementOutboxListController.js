@@ -23,7 +23,7 @@ describe('Controller: announcementOutboxListController', function () {
       $scope: $rootScope.$new()
     })
   }))
-  // Initialize the controller and a mock scope
+    // Initialize the controller and a mock scope
   beforeEach(inject(function ($rootScope, $controller, _$q_, _$timeout_, _announcementAdapter_) {
     rootScope = $rootScope
     scope = $rootScope.$new()
@@ -42,13 +42,9 @@ describe('Controller: announcementOutboxListController', function () {
       spyOn(announcementAdapter, 'getOutBoxAnnouncementList').and.callThrough()
       announcementAdapter.getOutBoxAnnouncementList()
       expect(announcementAdapter.getOutBoxAnnouncementList).toBeDefined()
-      spyOn(announcementAdapter, 'deleteAnnouncement').and.callThrough()
-      announcementAdapter.deleteAnnouncement()
-      expect(announcementAdapter.deleteAnnouncement).toBeDefined()
     })
     it('success', function () {
       announcementOutboxListController.result = undefined
-      // spyOn(announcementAdapter, 'getOutBoxAnnouncementList').and.callThrough()
       spyOn(announcementAdapter, 'getOutBoxAnnouncementList').and.returnValue(deferred.promise)
       deferred.resolve(announcementTestData.getAnnouncementOutbox.successResponce)
       spyOn(announcementOutboxListController, 'renderAnnouncementList').and.callThrough()
@@ -76,6 +72,7 @@ describe('Controller: announcementOutboxListController', function () {
   })
   describe('Delete announcement', function () {
     it('success', function () {
+      announcementOutboxListController.listData = [{'sourceid': 'ORG_001', 'attachments': [], 'createddate': '2017-12-06 11:38:47:671+0530', 'details': {'description': 'Demo collection', 'from': 'huk', 'title': 'Mollit qui excepteur aut sed quia animi ut aliqua Sequi sit alias consequuntur voluptatem', 'type': 'Circular'}, 'links': [], 'id': 'ec1b3d60-da4b-11e7-9f1b-63dce7cdecb9', 'userid': '159e93d1-da0c-4231-be94-e75b0c226d7c', 'target': {'geo': {'ids': ['0123668622585610242', '0123668627050987529']}}, 'status': 'active', 'metrics': {'received': 0, 'read': 0}}]
       spyOn(announcementAdapter, 'deleteAnnouncement').and.returnValue(deferred.promise)
       deferred.resolve(annDeleteTestData.successResponse)
       annDeleteTestData.successResponse.data = annDeleteTestData.successResponse
@@ -102,23 +99,18 @@ describe('Controller: announcementOutboxListController', function () {
       scope.$apply()
     })
   })
-  xdescribe('Get resend', function () {
-    it('success', function () {
-      spyOn(announcementAdapter, 'getResend').and.returnValue(deferred.promise)
-      deferred.resolve(annGetResendTestData.successResponse)
-      annGetResendTestData.successResponse.data = annGetResendTestData.successResponse
-      expect(announcementOutboxListController.getResend).toBeDefined()
-      var response = announcementOutboxListController.getResend('90ae7cf0-c5e0-11e7-8744-852d6ada097c', 'test')
-      expect(announcementAdapter.getResend).toHaveBeenCalled()
-      scope.$apply()
+  describe('Get resend', function () {
+    it('resend success redirection', function () {
+      spyOn(announcementOutboxListController, 'getResend').and.callThrough()
+      var response = announcementOutboxListController.getResend('40cf62a0-d97a-11e7-9a38-7f931d192536', 'test')
+      expect(response).toBe(undefined)
     })
-    it('failed', function () {
-      spyOn(announcementAdapter, 'getResend').and.returnValue(deferred.promise)
-      deferred.resolve(annGetResendTestData.failedResponse)
-      expect(announcementOutboxListController.getResend).toBeDefined()
-      var response = announcementOutboxListController.getResend('blah-blah', 'test')
-      expect(announcementAdapter.getResend).toHaveBeenCalled()
-      scope.$apply()
+  })
+  describe('create announcement', function () {
+    it('create success redirection', function () {
+      spyOn(announcementOutboxListController, 'gotToAnnouncementCreateState').and.callThrough()
+      var response = announcementOutboxListController.gotToAnnouncementCreateState()
+      expect(response).toBe(undefined)
     })
   })
   describe('Modal popup', function () {
@@ -141,6 +133,12 @@ describe('Controller: announcementOutboxListController', function () {
           title: 'test'
         }
       })
+      expect(response).toBe(undefined)
+    })
+    it('cover set page if clause', function () {
+      announcementOutboxListController.pager = {'totalPages': 1}
+      spyOn(announcementOutboxListController, 'setPage').and.callThrough()
+      var response = announcementOutboxListController.setPage(2)
       expect(response).toBe(undefined)
     })
   })
