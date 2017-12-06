@@ -114,7 +114,11 @@ angular.module('playerApp')
      * @param {string} [annId] [show details based on announcement id]
      */
       announcementOutboxData.showAnnouncementDetails = function (annId, item) {
-        $state.go('announcementDetails', {announcementId: annId, announcementName: item.title, pageId: 'announcement_outbox_view'})
+        $state.go('announcementDetails', {
+          announcementId: annId,
+          announcementName: item.title,
+          pageId: 'announcement_outbox_view'
+        })
       }
 
       /**
