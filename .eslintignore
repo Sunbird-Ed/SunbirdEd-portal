@@ -7,3 +7,7 @@ src/app/private/scripts/telemetry/**
 src/app/public/scripts/publicAppConfig.js
 src/app/thirdparty/**
 src/semantic/**
+src/dist/**
+src/node_modules/**
+src/coverage/**
+src/docs/**
