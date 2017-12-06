@@ -16,17 +16,17 @@ class DataService {
      * Caller of the constructor as follows
      * Eg: let dataServiceInstance = new DataService({service:httpServiceInst})
      */
-  constructor ({service } = {}) {
+  constructor ({service} = {}) {
     /**
      * @param {Class}  - Which is used to invoke a http service call, Default it's making httpService call
      */
-    this.service = service || httpService
+    this.service = service || httpWrapper
   }
 
     /**
      * Which is used ge the sentCount details
      * @param  {Array} locationIds  - List of location identifiers ex: ['32432','43423']
-     * @param {String} token 		- Optional, User access token
+     * @param {String} token        - Optional, User access token
      * @return {Int}                - Which returns sum of userCount
      */
   getAudience (locationIds, token) {
