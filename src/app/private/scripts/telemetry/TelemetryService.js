@@ -272,10 +272,11 @@ TelemetryService = {
      * @param   {object}  obj  [telemetry data]
      */
   announcementImpression: function (eventName, obj) {
-    TelemetryService._correlationData = [{
-      id: obj.userIdHashTag,
-      type: 'announcement'
-    }]
+    if (obj.userIdHashTag !== null) {
+      TelemetryService._correlationData = [{ id: obj.userIdHashTag, type: 'announcement' }]
+    } else {
+      TelemetryService._correlationData = [{ id: '', type: '' }]
+    }
     delete obj.userIdHashTag
     if (!TelemetryService.isActive) {
       return InActiveEvent()

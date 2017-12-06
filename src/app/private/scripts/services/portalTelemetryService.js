@@ -34,7 +34,7 @@ angular.module('playerApp').service('portalTelemetryService', ['$http', '$filter
      * @instance
      */
   this.fireAnnouncementImpressions = function (data, userIdHashTag) {
-        // userIdHashTag to build cData
+    // userIdHashTag to build cData
     data.userIdHashTag = userIdHashTag
     org.sunbird.portal.eventManager.dispatchEvent('sunbird:telemetry:announcement:impression', data)
   }
