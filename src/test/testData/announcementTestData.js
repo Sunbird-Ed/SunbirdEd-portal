@@ -467,7 +467,8 @@ var announcementTestData = {
             'ids': ['0123668622585610242', '0123668627050987529']
           }
         },
-        'status': 'cancelled'
+        'status': 'cancelled',
+        'attachments': [{'name': 'swing-846077_960_720.jpg', 'mimetype': 'image/jpeg', 'size': '48 KB', 'link': 'https://sunbirddev.blob.core.windows.net/attachments/announcement/File-012379586223849472129'}, {'name': 'swing-846077_960_720.jpg', 'mimetype': 'image/jpeg', 'size': '48 KB', 'link': 'https://sunbirddev.blob.core.windows.net/attachments/announcement/File-012379586223849472129'}]
       }
     }
   },
@@ -491,7 +492,7 @@ var announcementTestData = {
             'ids': ['01236686178285977611', '0123668625321820163', '01236686673822515210']
           }
         },
-        'attachments': ['{"name":"swing-846077_960_720.jpg","mimetype":"image/jpeg","size":"48 KB","link":"https://sunbirddev.blob.core.windows.net/attachments/announcement/File-012379586223849472129"}']
+        'attachments': [{'name': 'swing-846077_960_720.jpg', 'mimetype': 'image/jpeg', 'size': '48 KB', 'link': 'https://sunbirddev.blob.core.windows.net/attachments/announcement/File-012379586223849472129'}]
       }
     },
     getAnncmntTypeRes: {
@@ -507,7 +508,7 @@ var announcementTestData = {
       },
       'responseCode': 'OK',
       'result': {
-        'announcementtypes': {
+        'announcementTypes': {
           'count': 3,
           'content': [{
             'createddate': '2017-11-07 13:10:04:797+0530',
@@ -529,7 +530,7 @@ var announcementTestData = {
             'status': 'active'
           }]
         },
-        'senderlist': {
+        'senderList': {
           '159e93d1-da0c-4231-be94-e75b0c226d7c': 'Sunil Pandith'
         }
       }

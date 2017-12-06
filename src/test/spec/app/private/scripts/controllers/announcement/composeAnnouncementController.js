@@ -13,24 +13,26 @@ describe('Controller: composeAnnouncementCtrl', function () {
   var deferred
   var $state
   var modal
+  var $stateParams
   beforeEach(inject(function ($rootScope, $controller) {
     $controller('AppCtrl', {
       $rootScope: $rootScope,
       $scope: $rootScope.$new()
     })
   }))
-  beforeEach(inject(function ($rootScope, $controller, _announcementAdapter_, _toasterService_, _permissionsService_, _$timeout_, _$q_, _$state_) {
+  beforeEach(inject(function ($rootScope, $controller, _announcementAdapter_, _toasterService_,
+    _permissionsService_, _$timeout_, _$q_, _$state_, _$stateParams_) {
     announcementAdapter = _announcementAdapter_
     toasterService = _toasterService_
     permissionsService = _permissionsService_
     scope = $rootScope.$new()
     timeout = _$timeout_
     $state = _$state_
+    $stateParams = _$stateParams_
     modal = jasmine.createSpyObj('modal', ['show', 'hide'])
     deferred = _$q_.defer()
     spyOn(toasterService, 'success').and.callThrough()
     spyOn(toasterService, 'error').and.callThrough()
-    //  spyOn(announcementAdapter, 'getDefinitions').and.returnValue(deferred.promise)
     composeAnn = $controller('composeAnnouncementCtrl', {
       $scope: scope,
       $rootScope: $rootScope,
@@ -112,33 +114,89 @@ describe('Controller: composeAnnouncementCtrl', function () {
   })
   it('enableRecepientBtn else part', function () {
     composeAnn.announcement = {
-      'details': {
-        'description': '',
-        'from': '',
-        'title': '',
-        'type': ''
+      details: {
+        description: '',
+        from: '',
+        title: '',
+        type: ''
       }
     }
     spyOn(composeAnn, 'enableRecepientBtn').and.callThrough()
-    composeAnn.enableRecepientBtn()
+    composeAnn.enableRecepientBtn(false)
     scope.$apply()
     expect(composeAnn.disableBtn).toEqual(true)
   })
-  /* it('init with definition successResponse', function() {
-        spyOn(announcementAdapter, 'getDefinitions').and.returnValue(deferred.promise)
-        deferred.resolve(announcementTestData.composeAnncmnt.getAnncmntTypeRes)
-        spyOn(composeAnn, 'init').and.callThrough()
-        composeAnn.init()
-        var response = announcementAdapter.getDefinitions().$$state.value
-        expect(response).toBe(announcementTestData.composeAnncmnt.getAnncmntTypeRes)
-        scope.$apply()
-    })
-    it('init with definition reject', function() {
-        spyOn(composeAnn, 'init').and.callThrough()
-        composeAnn.init()
-        composeAnn.stepNumber = 2
-        scope.$apply()
-    }) */
+  it('init with create flow', function () {
+    $stateParams.stepNumber = 1
+    $stateParams.announcement = announcementTestData.getResend.successResponse.result
+    spyOn(announcementAdapter, 'getDefinitions').and.returnValue(deferred.promise)
+    deferred.resolve(announcementTestData.composeAnncmnt.getAnncmntTypeRes)
+    spyOn(composeAnn, 'init').and.callThrough()
+    composeAnn.init()
+    scope.$apply()
+    expect(composeAnn.init).toBeDefined()
+    expect(announcementAdapter.getDefinitions).toHaveBeenCalled()
+  })
+  it('init with resend calling getResend', function () {
+    $stateParams.stepNumber = 1
+    $stateParams.announcement = null
+    $stateParams.announcementId = '90ae7cf0-c5e0-11e7-8744-852d6ada097c'
+    $stateParams.isResend = true
+    spyOn(announcementAdapter, 'getDefinitions').and.returnValue(deferred.promise)
+    deferred.resolve(announcementTestData.composeAnncmnt.getAnncmntTypeRes)
+    spyOn(announcementAdapter, 'getResend').and.returnValue(deferred.promise)
+    deferred.resolve(announcementTestData.getResend.successResponse)
+    spyOn(composeAnn, 'init').and.callThrough()
+    composeAnn.init()
+    scope.$apply()
+    expect(composeAnn.init).toBeDefined()
+    expect(announcementAdapter.getDefinitions).toHaveBeenCalled()
+  })
+  it('init with create calling model', function () {
+    $stateParams.stepNumber = 1
+    $stateParams.announcement = null
+    $stateParams.isResend = false
+    spyOn(announcementAdapter, 'getDefinitions').and.returnValue(deferred.promise)
+    deferred.resolve(announcementTestData.composeAnncmnt.getAnncmntTypeRes)
+    spyOn(composeAnn, 'init').and.callThrough()
+    composeAnn.init()
+    scope.$apply()
+    expect(composeAnn.init).toBeDefined()
+    expect(announcementAdapter.getDefinitions).toHaveBeenCalled()
+  })
+  it('init with create flow step 1', function () {
+    $stateParams.stepNumber = 1
+    $stateParams.announcement = announcementTestData.getResend.successResponse.result
+    $stateParams.isResend = false
+    spyOn(announcementAdapter, 'getDefinitions').and.returnValue(deferred.promise)
+    deferred.resolve(announcementTestData.composeAnncmnt.getAnncmntTypeRes)
+    spyOn(composeAnn, 'init').and.callThrough()
+    composeAnn.init()
+    scope.$apply()
+    expect(composeAnn.init).toBeDefined()
+    expect(announcementAdapter.getDefinitions).toHaveBeenCalled()
+  })
+  it('init with create flow step 2', function () {
+    $stateParams.stepNumber = 2
+    $stateParams.announcement = announcementTestData.getResend.successResponse.result
+    $stateParams.isResend = false
+    spyOn(composeAnn, 'init').and.callThrough()
+    composeAnn.init()
+    scope.$apply()
+    expect(composeAnn.init).toBeDefined()
+    expect(composeAnn.init).toHaveBeenCalled()
+  })
+  it('init with resend flow step 2', function () {
+    $stateParams.stepNumber = 2
+    composeAnn.announcement = {}
+    $stateParams.announcement = announcementTestData.getResend.successResponse.result
+    $stateParams.isResend = true
+    spyOn(composeAnn, 'init').and.callThrough()
+    composeAnn.init()
+    scope.$apply()
+    expect(composeAnn.init).toBeDefined()
+    expect(composeAnn.init).toHaveBeenCalled()
+  })
   it('should refresh form values', function () {
     spyOn(composeAnn, 'refreshFormValues').and.callThrough()
     composeAnn.refreshFormValues()
@@ -244,8 +302,15 @@ describe('Controller: composeAnnouncementCtrl', function () {
     expect(composeAnn.uploadAttchement).toEqual(true)
   })
   it('on announcement cancel', function () {
-    composeAnn.announcement = announcementTestData.composeAnncmnt.annObject
-    composeAnn.attachment = ['{"name":"swing-846077_960_720.jpg","mimetype":"ima…chments/announcement/File-012380339474472960127"}']
+    composeAnn.announcement = announcementTestData.getResend.successResponse.result
+    spyOn(composeAnn, 'onUploadCancel').and.callThrough()
+    composeAnn.onUploadCancel(1, 'swing-846077_960_720.jpg')
+    expect(composeAnn.onUploadCancel).toBeDefined()
+    expect(composeAnn.uploadAttchement).toEqual(false)
+  })
+  it('on announcement cancel empty attachments', function () {
+    composeAnn.announcement = announcementTestData.getResend.successResponse.result
+    composeAnn.announcement.attachments = []
     spyOn(composeAnn, 'onUploadCancel').and.callThrough()
     composeAnn.onUploadCancel(1, 'swing-846077_960_720.jpg')
     expect(composeAnn.onUploadCancel).toBeDefined()
@@ -269,7 +334,8 @@ describe('Controller: composeAnnouncementCtrl', function () {
     composeAnn.announcement = announcementTestData.composeAnncmnt.annObject
     spyOn(announcementAdapter, 'createAnnouncement').and.returnValue(deferred.promise)
     deferred.resolve(announcementTestData.composeAnncmnt.failedAnncmntRes)
-    announcementTestData.composeAnncmnt.failedAnncmntRes.data = announcementTestData.composeAnncmnt.failedAnncmntRes
+    announcementTestData.composeAnncmnt.failedAnncmntRes.data = announcementTestData.composeAnncmnt
+            .failedAnncmntRes
     spyOn(composeAnn, 'saveAnnouncement').and.callThrough()
     composeAnn.announcement.details.from = 'test'
     composeAnn.linkArray = ['https;//google.co.in']
@@ -288,7 +354,8 @@ describe('Controller: composeAnnouncementCtrl', function () {
     composeAnn.attachment = ['url']
     spyOn(announcementAdapter, 'createAnnouncement').and.returnValue(deferred.promise)
     deferred.resolve(announcementTestData.composeAnncmnt.saveAnncmntSuccessRes)
-    announcementTestData.composeAnncmnt.composeAnncmntWithoutTitleResponse.data = announcementTestData.composeAnncmnt.composeAnncmntWithoutTitleResponse
+    announcementTestData.composeAnncmnt.composeAnncmntWithoutTitleResponse.data =
+            announcementTestData.composeAnncmnt.composeAnncmntWithoutTitleResponse
     spyOn(composeAnn, 'saveAnnouncement').and.callThrough()
     expect(composeAnn.saveAnnouncement).toBeDefined()
     composeAnn.saveAnnouncement(announcementTestData.composeAnncmnt.composeAnncmntWithoutTitleReq)
@@ -304,7 +371,26 @@ describe('Controller: composeAnnouncementCtrl', function () {
     composeAnn.linkArray = []
     spyOn(announcementAdapter, 'createAnnouncement').and.returnValue(deferred.promise)
     deferred.resolve(announcementTestData.composeAnncmnt.saveAnncmntSuccessRes)
-    announcementTestData.composeAnncmnt.saveAnncmntSuccessRes.data = announcementTestData.composeAnncmnt.saveAnncmntSuccessRes
+    announcementTestData.composeAnncmnt.saveAnncmntSuccessRes.data = announcementTestData
+            .composeAnncmnt.saveAnncmntSuccessRes
+    spyOn(composeAnn, 'saveAnnouncement').and.callThrough()
+    expect(composeAnn.saveAnnouncement).toBeDefined()
+    composeAnn.saveAnnouncement(announcementTestData.composeAnncmnt.composeAnncmntRequest)
+    expect(announcementAdapter.createAnnouncement).toHaveBeenCalled()
+    scope.$apply()
+    spyOn(composeAnn, 'refreshFormValues').and.callThrough()
+    expect(composeAnn.refreshFormValues).toBeDefined()
+    composeAnn.refreshFormValues()
+    expect(composeAnn.isMetaModified).toEqual(false)
+  })
+  it('Resend announcement', function () {
+    composeAnn.editAction = true
+    composeAnn.announcement = announcementTestData.composeAnncmnt.annObject
+    composeAnn.linkArray = []
+    spyOn(announcementAdapter, 'createAnnouncement').and.returnValue(deferred.promise)
+    deferred.resolve(announcementTestData.composeAnncmnt.saveAnncmntSuccessRes)
+    announcementTestData.composeAnncmnt.saveAnncmntSuccessRes.data = announcementTestData
+            .composeAnncmnt.saveAnncmntSuccessRes
     spyOn(composeAnn, 'saveAnnouncement').and.callThrough()
     expect(composeAnn.saveAnnouncement).toBeDefined()
     composeAnn.saveAnnouncement(announcementTestData.composeAnncmnt.composeAnncmntRequest)
@@ -342,5 +428,110 @@ describe('Controller: composeAnnouncementCtrl', function () {
     spyOn(composeAnn, 'goToNextStep').and.callThrough()
     composeAnn.goToNextStep()
     scope.$apply()
+  })
+  it('Get definition success', function () {
+    composeAnn.announcementType = []
+    composeAnn.announcement = {
+      details: {
+        type: 'Circular'
+      }
+    }
+    spyOn(announcementAdapter, 'getDefinitions').and.returnValue(deferred.promise)
+    deferred.resolve(announcementTestData.composeAnncmnt.getAnncmntTypeRes)
+    spyOn(composeAnn, 'getDefinitions').and.callThrough()
+    composeAnn.getDefinitions('ORG_001')
+    scope.$apply()
+    expect(composeAnn.announcementType).not.toBe([])
+  })
+  it('Get definition reject', function () {
+    composeAnn.hideAnncmntBtn = false
+    spyOn(announcementAdapter, 'getDefinitions').and.returnValue(deferred.promise)
+    deferred.reject({})
+    spyOn(composeAnn, 'getDefinitions').and.callThrough()
+    composeAnn.getDefinitions('ORG_001')
+    scope.$apply()
+    expect(composeAnn.hideAnncmntBtn).toBeTruthy()
+  })
+  it('Get Resend success', function () {
+    composeAnn.announcement = {}
+    spyOn(announcementAdapter, 'getResend').and.returnValue(deferred.promise)
+    deferred.resolve(announcementTestData.getResend.successResponse)
+    spyOn(composeAnn, 'getResend').and.callThrough()
+    composeAnn.getResend('90ae7cf0-c5e0-11e7-8744-852d6ada097c')
+    scope.$apply()
+    expect(composeAnn.announcement).not.toBeEmpty()
+  })
+  it('Create announcement metamodified flag false', function () {
+    composeAnn.announcement = null
+    composeAnn.isMetaModified = false
+    spyOn(composeAnn, 'onHideCreateAnnModal').and.callThrough()
+    composeAnn.onHideCreateAnnModal()
+    scope.$apply()
+    expect(composeAnn.isMetaModified).toBeFalsy()
+  })
+  it('Create announcement metamodified flag true', function () {
+    composeAnn.announcement = {}
+    composeAnn.isMetaModified = false
+    spyOn(composeAnn, 'onHideCreateAnnModal').and.callThrough()
+    composeAnn.onHideCreateAnnModal()
+    scope.$apply()
+    expect(composeAnn.isMetaModified).toBeTruthy()
+  })
+  it('Create announcement meta modified flag false agin', function () {
+    composeAnn.isApprove = true
+    composeAnn.isMetaModified = false
+    spyOn(composeAnn, 'onHideCreateAnnModal').and.callThrough()
+    composeAnn.onHideCreateAnnModal()
+    scope.$apply()
+    expect(composeAnn.isMetaModified).toBeFalsy()
+  })
+  it('Create announcement refresh form', function () {
+    composeAnn.stepNumber = 1
+    composeAnn.isApprove = true
+    composeAnn.isMetaModified = false
+    spyOn(composeAnn, 'onHideCreateAnnModal').and.callThrough()
+    spyOn(composeAnn, 'refreshFormValues').and.callThrough()
+    composeAnn.onHideCreateAnnModal()
+    scope.$apply()
+    expect(composeAnn.refreshFormValues).toHaveBeenCalled()
+  })
+  it('Confirmation popup approved', function () {
+    spyOn(composeAnn, 'onApproveConfirmationModal').and.callThrough()
+    spyOn(composeAnn, 'refreshFormValues').and.callThrough()
+    composeAnn.onApproveConfirmationModal()
+    scope.$apply()
+    expect(composeAnn.refreshFormValues).toHaveBeenCalled()
+  })
+  it('Remove recipients', function () {
+    composeAnn.announcement = {
+      selTar: [{
+        location: 'Chikodi'
+      }]
+    }
+    spyOn(composeAnn, 'removeRecipients').and.callThrough()
+    spyOn(composeAnn, 'confirmRecipients').and.callThrough()
+    composeAnn.removeRecipients({
+      location: 'Chikodi'
+    })
+    scope.$apply()
+    expect(composeAnn.confirmRecipients).toHaveBeenCalled()
+  })
+  it('File remove', function () {
+    composeAnn.announcement = announcementTestData.getResend.successResponse.result
+    var item = $('#removeFile')
+    spyOn(window, 'removeCreateAnnAttachment').and.callThrough()
+    window.removeCreateAnnAttachment(item, 1)
+    scope.$apply()
+    expect(window.removeCreateAnnAttachment).toHaveBeenCalled()
+  })
+  it('Prepopulate files', function () {
+    composeAnn.announcement = {
+      attachments: announcementTestData.getResend.successResponse.result.attachments
+    }
+    spyOn(composeAnn, 'prepopulateFilesCallback').and.callThrough()
+    composeAnn.prepopulateFilesCallback()
+    scope.$apply()
+    expect(composeAnn.prepopulateFilesCallback).toBeDefined()
+    expect(composeAnn.prepopulateFilesCallback).toHaveBeenCalled()
   })
 })
