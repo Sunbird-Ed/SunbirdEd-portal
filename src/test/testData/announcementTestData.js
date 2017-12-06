@@ -508,7 +508,7 @@ var announcementTestData = {
       },
       'responseCode': 'OK',
       'result': {
-        'announcementtypes': {
+        'announcementTypes': {
           'count': 3,
           'content': [{
             'createddate': '2017-11-07 13:10:04:797+0530',
@@ -530,7 +530,7 @@ var announcementTestData = {
             'status': 'active'
           }]
         },
-        'senderlist': {
+        'senderList': {
           '159e93d1-da0c-4231-be94-e75b0c226d7c': 'Sunil Pandith'
         }
       }
