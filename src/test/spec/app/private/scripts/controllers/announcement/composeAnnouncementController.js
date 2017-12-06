@@ -127,6 +127,34 @@ describe('Controller: composeAnnouncementCtrl', function() {
         spyOn(composeAnn, 'init').and.callThrough()
         composeAnn.init()
         scope.$apply()
+        expect(composeAnn.init).toBeDefined()
+        expect(announcementAdapter.getDefinitions).toHaveBeenCalled()
+    })
+    it('init with resend calling getResend', function() {
+        $stateParams.stepNumber = 1
+        $stateParams.announcement = null
+        $stateParams.announcementId = '90ae7cf0-c5e0-11e7-8744-852d6ada097c'
+        $stateParams.isResend = true
+        spyOn(announcementAdapter, 'getDefinitions').and.returnValue(deferred.promise)
+        deferred.resolve(announcementTestData.composeAnncmnt.getAnncmntTypeRes)
+        spyOn(announcementAdapter, 'getResend').and.returnValue(deferred.promise)
+        deferred.resolve(announcementTestData.getResend.successResponse)
+        spyOn(composeAnn, 'init').and.callThrough()
+        composeAnn.init()
+        scope.$apply()
+        expect(composeAnn.init).toBeDefined()
+        expect(announcementAdapter.getDefinitions).toHaveBeenCalled()
+    })
+    it('init with create calling model', function() {
+        $stateParams.stepNumber = 1
+        $stateParams.announcement = null
+        $stateParams.isResend = false
+        spyOn(announcementAdapter, 'getDefinitions').and.returnValue(deferred.promise)
+        deferred.resolve(announcementTestData.composeAnncmnt.getAnncmntTypeRes)
+        spyOn(composeAnn, 'init').and.callThrough()
+        composeAnn.init()
+        scope.$apply()
+        expect(composeAnn.init).toBeDefined()
         expect(announcementAdapter.getDefinitions).toHaveBeenCalled()
     })
     it('init with create flow step 1', function() {
@@ -138,15 +166,28 @@ describe('Controller: composeAnnouncementCtrl', function() {
         spyOn(composeAnn, 'init').and.callThrough()
         composeAnn.init()
         scope.$apply()
+        expect(composeAnn.init).toBeDefined()
         expect(announcementAdapter.getDefinitions).toHaveBeenCalled()
     })
     it('init with create flow step 2', function() {
-        $stateParams.stepNumber = 1
+        $stateParams.stepNumber = 2
         $stateParams.announcement = announcementTestData.getResend.successResponse.result
         $stateParams.isResend = false
         spyOn(composeAnn, 'init').and.callThrough()
         composeAnn.init()
         scope.$apply()
+        expect(composeAnn.init).toBeDefined()
+        expect(composeAnn.init).toHaveBeenCalled()
+    })
+    it('init with resend flow step 2', function() {
+        $stateParams.stepNumber = 2
+        composeAnn.announcement = {}
+        $stateParams.announcement = announcementTestData.getResend.successResponse.result
+        $stateParams.isResend = true
+        spyOn(composeAnn, 'init').and.callThrough()
+        composeAnn.init()
+        scope.$apply()
+        expect(composeAnn.init).toBeDefined()
         expect(composeAnn.init).toHaveBeenCalled()
     })
     it('should refresh form values', function() {
@@ -461,5 +502,13 @@ describe('Controller: composeAnnouncementCtrl', function() {
         window.removeCreateAnnAttachment(item, 1)
         scope.$apply()
         expect(window.removeCreateAnnAttachment).toHaveBeenCalled()
+    })
+    it('Prepopulate files', function() {
+        composeAnn.announcement = {attachments:announcementTestData.getResend.successResponse.result.attachments}
+        spyOn(composeAnn, 'prepopulateFilesCallback').and.callThrough()
+        composeAnn.prepopulateFilesCallback()
+        scope.$apply()
+        expect(composeAnn.prepopulateFilesCallback).toBeDefined()
+        expect(composeAnn.prepopulateFilesCallback).toHaveBeenCalled()
     })
 })
