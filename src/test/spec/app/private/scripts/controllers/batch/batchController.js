@@ -21,25 +21,23 @@ describe('Controller:BatchController', function () {
     $q,
     deferred,
     timeout,
-    errorMessage,
     toasterService,
     createContoller,
     batchTestData = testData.batch
 
     // Initialize the controller and a mock scope
-  beforeEach(inject(function ($rootScope, _$controller_, _batchService_, _courseService_, _permissionsService_, _learnService_, _$q_, _$timeout_, _toasterService_, _errorMessages_) {
+  beforeEach(inject(function ($rootScope, _$controller_, _batchService_,
+    _courseService_, _permissionsService_, _learnService_, _$q_, _$timeout_, _toasterService_) {
     rootScope = $rootScope
     scope = $rootScope.$new()
     permissionsService = _permissionsService_
     learnService = _learnService_
     batchService = _batchService_
     courseService = _courseService_
-    errorMessage = _errorMessages_
     toasterService = _toasterService_
     $q = _$q_
     timeout = _$timeout_
     deferred = _$q_.defer()
-    rootScope.errorMessages = errorMessage
     createContoller = function () {
       return new _$controller_('BatchController', {
         $rootScope: rootScope,

@@ -22,10 +22,11 @@ angular.module('playerApp').service('announcementAdapter', ['$rootScope', '$http
      * @returns {Promise} Promise object represents announcement outbox list dashboard data
      * @instance
      */
-    this.getOutBoxAnnouncementList = function () {
+    this.getOutBoxAnnouncementList = function (limit, pageNumber) {
       var data = {
         'request': {
-          'limit': 25
+          'limit': limit,
+          'offset': (pageNumber - 1) * limit
         }
       }
       return handleHttpRequest(config.URL.ANNOUNCEMENT.OUTBOX_LIST, data, 'POST', $rootScope.messages.fmsg.m0070)

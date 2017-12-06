@@ -13,7 +13,6 @@ describe('Controller: ProfileController', function () {
     learnService,
     adminService,
     workSpaceUtilsService,
-    errorMessages,
     deferred,
     deferred1,
     deferred2,
@@ -39,7 +38,6 @@ describe('Controller: ProfileController', function () {
         _workSpaceUtilsService_,
         _$q_,
         _$timeout_,
-        _errorMessages_,
       _formValidation_) {
     rootScope = $rootScope
     toasterService = _toasterService_
@@ -54,11 +52,7 @@ describe('Controller: ProfileController', function () {
     $q = _$q_
     $timeout = _$timeout_
     scope = $rootScope.$new()
-    errorMessages = _errorMessages_
-    rootScope.errorMessages = errorMessages
-
     spyOn(userService, 'getUserProfile').and.returnValue(deferred.promise)
-
     spyOn(toasterService, 'success').and.callThrough()
     spyOn(toasterService, 'error').and.callThrough()
     spyOn(toasterService, 'warning').and.callThrough()
