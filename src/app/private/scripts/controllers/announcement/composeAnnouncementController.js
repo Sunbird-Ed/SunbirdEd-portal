@@ -5,7 +5,6 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
   function ($rootScope, $scope, $state, $stateParams, $timeout, config, toasterService, fileUpload,
         AnnouncementModel, announcementAdapter, portalTelemetryService) {
     var composeAnn = this
-    composeAnn.senderlist = []
     composeAnn.targetIds = []
     composeAnn.disableBtn = true
     composeAnn.showUrlField = false
@@ -467,11 +466,6 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         if (response.result.announcementTypes.content) {
           composeAnn.announcementType = _.map(response.result.announcementTypes
                         .content, 'name')
-        }
-        if (response.result.senderList) {
-          angular.forEach(response.result.senderList, function (value, key) {
-            composeAnn.senderlist.push(value)
-          })
         }
         if (composeAnn.announcement.type !== '') {
           $('#announcementType').dropdown('set text', composeAnn.announcement.type)

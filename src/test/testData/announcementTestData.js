@@ -317,24 +317,39 @@ var announcementTestData = {
       'result': {}
     },
     annValidObj: {
-      'sourceid': '0123673908687093760',
-      'createddate': '2017-11-10 12:04:04:348+0530',
-      'details': {
-        'description': 'Description',
-        'from': 'test user',
-        'title': 'Title',
-        'type': 'Circular'
-      },
-      'links': ['http://yahoo.com'],
-      'id': '256048b0-c5e1-11e7-b854-ff8d6e91227b',
-      'userid': 'd56a1766-e138-45e9-bed2-a0db5eb9696a',
+      'id': '39873400-da6a-11e7-9964-e746dd8d0631',
+      'from': 'test user',
+      'type': 'Circular',
+      'title': 'Test title for announcement 90',
+      'description': 'Test description for announcement 90',
+      'links': [
+        'http://yahoo.com'
+      ],
+      'attachments': [
+        {
+          'name': 'alarm.png',
+          'mimetype': 'image/png',
+          'size': '67kb',
+          'link': 'https://sunbirddev.blob.core.windows.net/attachments/announcement/File-0123900729938247680.png'
+        },
+        {
+          'name': 'clock.jpg',
+          'mimetype': 'image/jpeg',
+          'size': '9.4kb',
+          'link': 'https://sunbirddev.blob.core.windows.net/attachments/announcement/File-0123900700072509443.jpg'
+        }
+      ],
+      'createdDate': '2017-12-06 15:15:42:464+0530',
+      'status': 'cancelled',
+      'read': null,
+      'received': null,
       'target': {
         'geo': {
-          'ids': ['0123668622585610242', '0123668627050987529']
+          'ids': [
+            '0123668627050987529'
+          ]
         }
-      },
-      'status': 'cancelled',
-      '$$hashKey': 'object:48'
+      }
     },
     annBlankObj: {},
     annObjWithEmptyWeblinks: {
@@ -441,9 +456,9 @@ var announcementTestData = {
     successResponse: {
       'id': 'api.plugin.announcement.getresend.id',
       'ver': '1.0',
-      'ts': '2017-11-12 06:45:50:882+0000',
+      'ts': '2017-12-06 16:39:31:160+0530',
       'params': {
-        'resmsgid': '1f547820-c775-11e7-a0fa-0d6c238048d7',
+        'resmsgid': 'eedd7890-da75-11e7-aacc-13af0a638bd6',
         'msgid': null,
         'status': 'successful',
         'err': '',
@@ -451,24 +466,41 @@ var announcementTestData = {
       },
       'responseCode': 'OK',
       'result': {
-        'sourceid': '0123673908687093760',
-        'createddate': '2017-11-10 11:59:54:879+0530',
-        'details': {
-          'description': 'Test description for announcement 87',
+        'announcement': {
+          'id': '39873400-da6a-11e7-9964-e746dd8d0631',
           'from': 'test user',
-          'title': 'Test title for announcement 87',
-          'type': 'Circular'
-        },
-        'links': ['http://yahoo.com'],
-        'id': '90ae7cf0-c5e0-11e7-8744-852d6ada097c',
-        'userid': 'd56a1766-e138-45e9-bed2-a0db5eb9696a',
-        'target': {
-          'geo': {
-            'ids': ['0123668622585610242', '0123668627050987529']
+          'type': 'Circular',
+          'title': 'Test title for announcement 90',
+          'description': 'Test description for announcement 90',
+          'links': [
+            'http://yahoo.com'
+          ],
+          'attachments': [
+            {
+              'name': 'alarm.png',
+              'mimetype': 'image/png',
+              'size': '67kb',
+              'link': 'https://sunbirddev.blob.core.windows.net/attachments/announcement/File-0123900729938247680.png'
+            },
+            {
+              'name': 'clock.jpg',
+              'mimetype': 'image/jpeg',
+              'size': '9.4kb',
+              'link': 'https://sunbirddev.blob.core.windows.net/attachments/announcement/File-0123900700072509443.jpg'
+            }
+          ],
+          'createdDate': '2017-12-06 15:15:42:464+0530',
+          'status': 'cancelled',
+          'read': null,
+          'received': null,
+          'target': {
+            'geo': {
+              'ids': [
+                '0123668627050987529'
+              ]
+            }
           }
-        },
-        'status': 'cancelled',
-        'attachments': [{'name': 'swing-846077_960_720.jpg', 'mimetype': 'image/jpeg', 'size': '48 KB', 'link': 'https://sunbirddev.blob.core.windows.net/attachments/announcement/File-012379586223849472129'}, {'name': 'swing-846077_960_720.jpg', 'mimetype': 'image/jpeg', 'size': '48 KB', 'link': 'https://sunbirddev.blob.core.windows.net/attachments/announcement/File-012379586223849472129'}]
+        }
       }
     }
   },
@@ -498,9 +530,9 @@ var announcementTestData = {
     getAnncmntTypeRes: {
       'id': 'api.plugin.announcement.definitions',
       'ver': '1.0',
-      'ts': '2017-11-15 13:21:20:919+0000',
+      'ts': '2017-12-06 16:45:32:883+0530',
       'params': {
-        'resmsgid': 'dec60270-ca07-11e7-8b5d-b7dcc410578e',
+        'resmsgid': 'c677de30-da76-11e7-aacc-13af0a638bd6',
         'msgid': null,
         'status': 'successful',
         'err': '',
@@ -508,31 +540,20 @@ var announcementTestData = {
       },
       'responseCode': 'OK',
       'result': {
-        'announcementTypes': {
-          'count': 3,
-          'content': [{
-            'createddate': '2017-11-07 13:10:04:797+0530',
-            'name': 'Circular',
-            'id': '9b20d566-c5db-11e7-abc4-cec278b6b50a',
-            'rootorgid': 'ORG_001',
-            'status': 'active'
-          }, {
-            'createddate': '2017-11-07 13:10:04:797+0530',
-            'name': 'Order',
+        'announcementTypes': [
+          {
             'id': '9b20d8f4-c5db-11e7-abc4-cec278b6b50a',
-            'rootorgid': 'ORG_001',
-            'status': 'active'
-          }, {
-            'createddate': '2017-11-07 13:10:04:797+0530',
-            'name': 'News',
+            'name': 'Order'
+          },
+          {
             'id': '9b20d7f0-c5db-11e7-abc4-cec278b6b50a',
-            'rootorgid': 'ORG_001',
-            'status': 'active'
-          }]
-        },
-        'senderList': {
-          '159e93d1-da0c-4231-be94-e75b0c226d7c': 'Sunil Pandith'
-        }
+            'name': 'News'
+          },
+          {
+            'id': '9b20d566-c5db-11e7-abc4-cec278b6b50a',
+            'name': 'Circular'
+          }
+        ]
       }
     },
     showSingleError: {

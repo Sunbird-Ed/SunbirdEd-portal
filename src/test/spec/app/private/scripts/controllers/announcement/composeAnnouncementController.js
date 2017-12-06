@@ -302,7 +302,7 @@ describe('Controller: composeAnnouncementCtrl', function () {
     expect(composeAnn.uploadAttchement).toEqual(true)
   })
   it('on announcement cancel', function () {
-    composeAnn.announcement = announcementTestData.getResend.successResponse.result
+    composeAnn.announcement = announcementTestData.getResend.successResponse.result.announcement
     spyOn(composeAnn, 'onUploadCancel').and.callThrough()
     composeAnn.onUploadCancel(1, 'swing-846077_960_720.jpg')
     expect(composeAnn.onUploadCancel).toBeDefined()

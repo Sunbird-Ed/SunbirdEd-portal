@@ -123,7 +123,7 @@ angular.module('playerApp').service('announcementAdapter', ['$rootScope', '$http
       var data = {
         request: {
           'rootOrgId': rootOrgId,
-          'definitions': ['senderList', 'announcementTypes']
+          'definitions': ['announcementTypes']
         }
       }
       return handleHttpRequest(config.URL.ANNOUNCEMENT.DEFINITIONS, data, 'POST')
