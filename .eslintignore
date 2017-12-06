@@ -1,0 +1,8 @@
+src/app/common/js/frmelmnts.js
+src/app/common/js/messages.js
+src/app/content-plugins/**
+src/app/private/scripts/playerAppConfig.js
+src/app/private/scripts/telemetry/**
+src/app/public/scripts/publicAppConfig.js
+src/app/thirdparty/**
+src/semantic/**

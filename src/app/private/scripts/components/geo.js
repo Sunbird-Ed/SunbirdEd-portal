@@ -104,14 +104,14 @@ angular.module('playerApp').component('geo', {
          */
     this.validateAdopter = function (config) {
       switch (config.adopter.toUpperCase()) {
-        case 'JSON':
-          this.initializeJsonAdopter(config)
-          break
-        case 'SERVICE':
-          this.initializeServiceAdopter(config)
-          break
-        default:
-          console.error('Invalid Adopter, Current supported adopters are only JSON and SERVICE.')
+      case 'JSON':
+        this.initializeJsonAdopter(config)
+        break
+      case 'SERVICE':
+        this.initializeServiceAdopter(config)
+        break
+      default:
+        console.error('Invalid Adopter, Current supported adopters are only JSON and SERVICE.')
       }
     }
 
