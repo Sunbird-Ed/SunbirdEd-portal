@@ -9,7 +9,7 @@ let async = require('async')
 let HttpStatus = require('http-status-codes')
 
 const _ = require('lodash')
-  /**
+/**
    * Class provides service to send a notfication to enduser.
    */
 class NotificationService {
@@ -20,9 +20,9 @@ class NotificationService {
    * let notifier = new NotificationService({userAccessToken: 135-5435-6456, httpService:instance })
    */
   constructor ({
-        userAccessToken,
-        httpService
-    } = {}) {
+    userAccessToken,
+    httpService
+  } = {}) {
     /**
      * @property {string} userAccessToken - A user authenticated user token [ TODO: Remove this property once session service is implemented ]
      */
@@ -49,7 +49,7 @@ class NotificationService {
     this.method = 'POST'
   }
 
-    /**
+  /**
      * Which is used to send a notification.
      * @param  {instance} target - Instance of notificatonTarget.
      * @param  {instance} payload - Instance of notificationPayload.

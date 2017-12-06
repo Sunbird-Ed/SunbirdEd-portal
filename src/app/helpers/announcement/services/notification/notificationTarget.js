@@ -6,15 +6,15 @@ let Joi = require('joi')
 const _ = require('lodash')
 
 class NotificationTarget {
-    /**
+  /**
      * Create a notifcation target object
      * Callers of the constructor can invoke as follows:
      *
      * let target = new NotificationTarget({geo:{ids:['432-5435-6566']}})
      */
   constructor ({
-        target
-    } = {}) {
+    target
+  } = {}) {
     /**
      * @property {object} target - Notification receiver object, Example: {geo:{ids:['432-5435-6566']}}.
      */
@@ -26,7 +26,7 @@ class NotificationTarget {
     this.schema = Joi.object().min(1)
   }
 
-    /**
+  /**
      * Which is used to validate the schema
      * @return {object} - It returns the wheather schema structure is valid or not.
      * Examples:
@@ -57,7 +57,7 @@ class NotificationTarget {
     }
   }
 
-    /**
+  /**
      * Which used to get the target identifiers list.
      * @return {array} - List of target identifiers.
      */

@@ -824,128 +824,128 @@ angular.module('playerApp')
           $rootScope.profileActive = ''
         }
       })
-        .state('CreateLessonPlan', {
-          url: '/create/lessonPlan',
-          views: {
-            mainView: {
-              templateUrl: '/views/workSpace/createLessonPlan.html',
-              controller: 'LessonPlanController as lessonPlan'
-            }
-          },
-          onEnter: function ($rootScope, portalTelemetryService) {
-            $rootScope.profileActive = 'active'
-            portalTelemetryService.fireImpressions({
-              env: 'lessonPlan',
-              type: 'creation',
-              pageid: org.sunbird.portal.appid + '_CreateLessonPlan',
-              id: '',
-              name: '',
-              url: '/private/index#!/create/lessonPlan'
-            })
-          },
-          onExit: function ($rootScope) {
-            $rootScope.profileActive = ''
+      .state('CreateLessonPlan', {
+        url: '/create/lessonPlan',
+        views: {
+          mainView: {
+            templateUrl: '/views/workSpace/createLessonPlan.html',
+            controller: 'LessonPlanController as lessonPlan'
           }
-        })
-        .state('GenericEditor', {
-          url: '/generic/editor/:contentId/:state',
-          views: {
-            mainView: {
-              templateUrl: 'views/common/genericEditor.html',
-              controller: 'GenericEditorController as genericEditor'
-            }
-          },
-          params: {
-            contentId: null,
-            state: null
-          },
-          onEnter: function ($rootScope, portalTelemetryService) {
-            $rootScope.profileActive = 'active'
-            portalTelemetryService.fireImpressions({
-              env: 'genericeditor',
-              type: 'edit',
-              pageid: org.sunbird.portal.appid + '_GenericEditor',
-              id: '',
-              name: '',
-              url: '/private/index#!/generic/editor/'
-            })
-          },
-          onExit: function ($rootScope) {
-            $rootScope.profileActive = ''
+        },
+        onEnter: function ($rootScope, portalTelemetryService) {
+          $rootScope.profileActive = 'active'
+          portalTelemetryService.fireImpressions({
+            env: 'lessonPlan',
+            type: 'creation',
+            pageid: org.sunbird.portal.appid + '_CreateLessonPlan',
+            id: '',
+            name: '',
+            url: '/private/index#!/create/lessonPlan'
+          })
+        },
+        onExit: function ($rootScope) {
+          $rootScope.profileActive = ''
+        }
+      })
+      .state('GenericEditor', {
+        url: '/generic/editor/:contentId/:state',
+        views: {
+          mainView: {
+            templateUrl: 'views/common/genericEditor.html',
+            controller: 'GenericEditorController as genericEditor'
           }
-        })
-        .state('PublicProfile', {
-          url: '/profile/:userName/:userId',
-          views: {
-            mainView: {
-              templateUrl: '/views/search/userProfile.html',
-              controller: 'PublicProfileController as publicProfile'
-            }
-          },
-          params: {
-            userId: null,
-            userName: null
-          },
-          onEnter: function ($rootScope, routeHelperService, $stateParams) {
-            $rootScope.profileActive = 'active'
-            routeHelperService.loadRouteConfig('PublicProfile', $stateParams)
-          },
-          onExit: function ($rootScope) {
-            $rootScope.profileActive = ''
+        },
+        params: {
+          contentId: null,
+          state: null
+        },
+        onEnter: function ($rootScope, portalTelemetryService) {
+          $rootScope.profileActive = 'active'
+          portalTelemetryService.fireImpressions({
+            env: 'genericeditor',
+            type: 'edit',
+            pageid: org.sunbird.portal.appid + '_GenericEditor',
+            id: '',
+            name: '',
+            url: '/private/index#!/generic/editor/'
+          })
+        },
+        onExit: function ($rootScope) {
+          $rootScope.profileActive = ''
+        }
+      })
+      .state('PublicProfile', {
+        url: '/profile/:userName/:userId',
+        views: {
+          mainView: {
+            templateUrl: '/views/search/userProfile.html',
+            controller: 'PublicProfileController as publicProfile'
           }
-        })
-        .state('MyActivity', {
-          url: '/course-creator-dashboard',
-          views: {
-            mainView: {
-              templateUrl: '/views/dashboard/course/courseConsumptionDashboard.html',
-              controller: 'courseCreatorDashboardCtrl as courseDashboard'
-            }
-          },
-          onEnter: function ($stateParams, $rootScope, routeHelperService) {
-            $rootScope.profileActive = 'active'
-            $rootScope.isPlayerPage = false
-            routeHelperService.loadRouteConfig('MyActivity', null)
-          },
-          onExit: function ($rootScope) {
-            $rootScope.profileActive = ''
+        },
+        params: {
+          userId: null,
+          userName: null
+        },
+        onEnter: function ($rootScope, routeHelperService, $stateParams) {
+          $rootScope.profileActive = 'active'
+          routeHelperService.loadRouteConfig('PublicProfile', $stateParams)
+        },
+        onExit: function ($rootScope) {
+          $rootScope.profileActive = ''
+        }
+      })
+      .state('MyActivity', {
+        url: '/course-creator-dashboard',
+        views: {
+          mainView: {
+            templateUrl: '/views/dashboard/course/courseConsumptionDashboard.html',
+            controller: 'courseCreatorDashboardCtrl as courseDashboard'
           }
-        })
-        .state('Setup', {
-          url: '/setup',
-          views: {
-            mainView: {
-              templateUrl: '/views/setup/setup.html',
-              controller: 'setupController as setup'
-            }
-          },
-          onEnter: function (routeHelperService) {
-            routeHelperService.loadRouteConfig('Setup', null)
+        },
+        onEnter: function ($stateParams, $rootScope, routeHelperService) {
+          $rootScope.profileActive = 'active'
+          $rootScope.isPlayerPage = false
+          routeHelperService.loadRouteConfig('MyActivity', null)
+        },
+        onExit: function ($rootScope) {
+          $rootScope.profileActive = ''
+        }
+      })
+      .state('Setup', {
+        url: '/setup',
+        views: {
+          mainView: {
+            templateUrl: '/views/setup/setup.html',
+            controller: 'setupController as setup'
           }
+        },
+        onEnter: function (routeHelperService) {
+          routeHelperService.loadRouteConfig('Setup', null)
+        }
 
-        })
-        .state('WorkSpace.LimitedPublishedContent', {
-          url: '/content/limited/publish',
-          views: {
-            contentView: {
-              templateUrl: 'views/workSpace/limitedPublishedContent.html',
-              controller: 'LimitedPublishedContentController as limitedPublishedContent'
-            }
-          },
-          onEnter: function (portalTelemetryService) {
-            portalTelemetryService.fireImpressions({
-              env: 'content',
-              type: 'list',
-              pageid: org.sunbird.portal.appid + '_WorkSpace.LimitedPublishedContent',
-              id: '',
-              name: '',
-              url: '/private/index#!/content/limited/published'
-            })
+      })
+      .state('WorkSpace.LimitedPublishedContent', {
+        url: '/content/limited/publish',
+        views: {
+          contentView: {
+            templateUrl: 'views/workSpace/limitedPublishedContent.html',
+            controller: 'LimitedPublishedContentController as limitedPublishedContent'
           }
-        })
+        },
+        onEnter: function (portalTelemetryService) {
+          portalTelemetryService.fireImpressions({
+            env: 'content',
+            type: 'list',
+            pageid: org.sunbird.portal.appid + '_WorkSpace.LimitedPublishedContent',
+            id: '',
+            name: '',
+            url: '/private/index#!/content/limited/published'
+          })
+        }
+      })
   })
   .run(function ($urlRouter, $http, $state, permissionsService, $rootScope, $location, config,
-      toasterService, routeHelperService, userService) {
+    toasterService, routeHelperService, userService) {
     permissionsService.getPermissionsData('/permissions').then(function (res) {
       var permissions = res.data; //eslint-disable-line
       if (res && res.responseCode === 'OK') {
@@ -969,7 +969,7 @@ angular.module('playerApp')
             permissionsService.setCurrentUserRoles(userRoles)
             $rootScope.initializePermissionDirective = true
           } else {
-                // TODO: allow only public permissions
+            // TODO: allow only public permissions
           }
         }).then(function () {
           $urlRouter.sync()

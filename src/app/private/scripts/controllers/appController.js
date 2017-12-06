@@ -23,7 +23,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
       $rootScope.contentModelBackLinkName = $state.current.name
     }
 
-        /**
+    /**
          * This condition is for public content to private content after login
          */
     if (window.localStorage.redirectUrl) {
@@ -119,19 +119,19 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
         org.sunbird.portal.appid = res.data.appId
         org.sunbird.portal.ekstep_env = res.data.ekstep_env
       })
-            .catch(function () {
-              org.sunbird.portal.appid = 'sunbird.portal'
-              org.sunbird.portal.ekstep_env = 'qa'
-            })
-            .finally(function () {
-              org.sunbird.portal.init()
-              portalTelemetryService.init()
-            })
+        .catch(function () {
+          org.sunbird.portal.appid = 'sunbird.portal'
+          org.sunbird.portal.ekstep_env = 'qa'
+        })
+        .finally(function () {
+          org.sunbird.portal.init()
+          portalTelemetryService.init()
+        })
     }
 
     $scope.setRootOrgInfo = function (profileData) {
       if (profileData.rootOrg) {
-                // set Page Title
+        // set Page Title
         document.title = (!_.isUndefined(profileData.rootOrg.orgName)) ? profileData.rootOrg.orgName : 'Sunbird'
         $http.get('/v1/tenant/info/' + profileData.rootOrg.slug).then(function (res) {
           if (res && res.statusText === 'OK') {
@@ -165,10 +165,10 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
             userService.setCurrentUserProfile(profileData)
             $scope.userProfile(profileData)
           } else {
-                        // error handler
+            // error handler
           }
         }).catch(function () {
-                // error handler
+          // error handler
         })
       }
     }
@@ -249,7 +249,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
         }
       })
     }
-        // badges
+    // badges
     $scope.getBadges = function () {
       adminService.getBadges().then(function (res) {
         if (res.responseCode === 'OK') {
@@ -257,13 +257,13 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
         }
       })
     }
-        // orgTypes
+    // orgTypes
     $scope.getOrgTypes = function () {
       searchService.getOrgTypes().then(function (res) {
         if (res.responseCode === 'OK') {
           searchService.setOrgTypes(res.result.response)
         }
-                // else throw new Error('');
+        // else throw new Error('');
       })
     }
 

@@ -9,7 +9,7 @@ angular.module('playerApp').directive('pageSection', function () {
     },
         link: function (scope, element, attrs) {// eslint-disable-line
 
-        },
+    },
     controller: 'pageSectionCtrl as section'
   }
 })

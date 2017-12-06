@@ -1,14 +1,14 @@
 'use strict'
 
 angular.module('playerApp')
-    .service('contentService', ['httpService', 'config', '$rootScope', 'httpServiceJava',
-      function (httpService, config, $rootScope, httpServiceJava) {
+  .service('contentService', ['httpService', 'config', '$rootScope', 'httpServiceJava',
+    function (httpService, config, $rootScope, httpServiceJava) {
     /**
      * @class contentService
      * @desc Service to manage content.
      * @memberOf Services
      */
-             /**
+      /**
              * @method create
              * @desc Create a new content
              * @memberOf Services.contentService
@@ -22,13 +22,13 @@ angular.module('playerApp')
              * @returns {Promise} Promise object contains response code and content Id
              * @instance
              */
-        this.create = function (req) {
-          req.content.organization = $rootScope.organisationNames
-          req.content.createdFor = $rootScope.organisationIds
-          req.content.creator = $rootScope.firstName + ' ' + $rootScope.lastName
-          return httpService.post(config.URL.CONTENT.CREATE, req)
-        }
-            /**
+      this.create = function (req) {
+        req.content.organization = $rootScope.organisationNames
+        req.content.createdFor = $rootScope.organisationIds
+        req.content.creator = $rootScope.firstName + ' ' + $rootScope.lastName
+        return httpService.post(config.URL.CONTENT.CREATE, req)
+      }
+      /**
              * @method publish
              * @desc Publish a content
              * @memberOf Services.contentService
@@ -39,11 +39,11 @@ angular.module('playerApp')
              * @returns {Promise} Promise object contains response code and content Id
              * @instance
              */
-        this.publish = function (req, id) {
-          var url = config.URL.CONTENT.PUBLISH + '/' + id
-          return httpService.post(url, req)
-        }
-             /**
+      this.publish = function (req, id) {
+        var url = config.URL.CONTENT.PUBLISH + '/' + id
+        return httpService.post(url, req)
+      }
+      /**
              * @method retire
              * @desc Retire a  content
              * @memberOf Services.contentService
@@ -53,11 +53,11 @@ angular.module('playerApp')
              * @instance
              */
 
-        this.retire = function (req) {
-          var url = config.URL.CONTENT.RETIRE
-          return httpService.remove(url, req)
-        }
-             /**
+      this.retire = function (req) {
+        var url = config.URL.CONTENT.RETIRE
+        return httpService.remove(url, req)
+      }
+      /**
              * @method reject
              * @desc Reject a  content
              * @memberOf Services.contentService
@@ -66,12 +66,12 @@ angular.module('playerApp')
              * @instance
              */
 
-        this.reject = function (data, id) {
-          var url = config.URL.CONTENT.REJECT + '/' + id
-          return httpService.post(url, data)
-        }
+      this.reject = function (data, id) {
+        var url = config.URL.CONTENT.REJECT + '/' + id
+        return httpService.post(url, data)
+      }
 
-              /**
+      /**
              * @method uploadMedia
              * @desc Upload a media
              * @memberOf Services.contentService
@@ -79,15 +79,15 @@ angular.module('playerApp')
              * @returns {Promise} Promise object contains response code and uploaded media url
              * @instance
              */
-        this.uploadMedia = function (req) {
-          return httpServiceJava.upload(config.URL.CONTENT.UPLOAD_MEDIA, req)
-        }
+      this.uploadMedia = function (req) {
+        return httpServiceJava.upload(config.URL.CONTENT.UPLOAD_MEDIA, req)
+      }
 
-        this.getById = function (req, qs) {
-          var url = config.URL.CONTENT.GET + '/' + req.contentId
-          return httpService.get(url, req, null, qs)
-        }
-               /**
+      this.getById = function (req, qs) {
+        var url = config.URL.CONTENT.GET + '/' + req.contentId
+        return httpService.get(url, req, null, qs)
+      }
+      /**
              * @method flag
              * @desc Upload a media
              * @memberOf Services.contentService
@@ -99,18 +99,18 @@ angular.module('playerApp')
              * @instance
              */
 
-        this.flag = function (req, contentId) {
-          var url = config.URL.CONTENT.FLAG + '/' + contentId
-          return httpService.post(url, req)
-        }
+      this.flag = function (req, contentId) {
+        var url = config.URL.CONTENT.FLAG + '/' + contentId
+        return httpService.post(url, req)
+      }
 
-        this.acceptContentFlag = function (req, contentId) {
-          var url = config.URL.CONTENT.ACCEPT_FLAG + '/' + contentId
-          return httpService.post(url, req)
-        }
+      this.acceptContentFlag = function (req, contentId) {
+        var url = config.URL.CONTENT.ACCEPT_FLAG + '/' + contentId
+        return httpService.post(url, req)
+      }
 
-        this.discardContentFlag = function (req, contentId) {
-          var url = config.URL.CONTENT.DISCARD_FLAG + '/' + contentId
-          return httpService.post(url, req)
-        }
-      }])
+      this.discardContentFlag = function (req, contentId) {
+        var url = config.URL.CONTENT.DISCARD_FLAG + '/' + contentId
+        return httpService.post(url, req)
+      }
+    }])

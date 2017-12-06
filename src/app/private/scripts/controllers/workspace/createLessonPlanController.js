@@ -3,7 +3,7 @@
 angular.module('playerApp')
   .controller('LessonPlanController', ['contentService', '$timeout', '$state', 'config',
     '$rootScope', 'toasterService', 'configService', function (contentService, $timeout, $state, config,
-            $rootScope, toasterService, configService) {
+      $rootScope, toasterService, configService) {
       var lessonPlan = this
       lessonPlan.formDropdown = configService.getWorkspaceFormDropdown()
       lessonPlan.boards = lessonPlan.formDropdown.boards
