@@ -15,38 +15,38 @@ let HttpStatus = require('http-status-codes')
  * Class provides services for user related requests */
 
 class UserService {
-	/**
+  /**
 	 *
 	 * Callers of the constructor can invoke as follows:
 	 *
 	 * let userService = new UserService({userAccessToken: 135-5435-6456,userId:5343434-67676-135-5, httpService:instance })
 	 */
   constructor ({
-		userAccessToken,
-		userId,
-		httpService
-	} = {}) {
-		/**
+    userAccessToken,
+    userId,
+    httpService
+  } = {}) {
+    /**
 		 * @property {string} userAccessToken - A user authenticated user token [ TODO: Remove this property once session service is implemented ]
 		 */
     this.userAccessToken = userAccessToken
 
-		/**
+    /**
 		 * @property {instance} httpService - Instance of httpservice which is used to make a http service call
 		 */
     this.httpService = httpService || httpWrapper
 
-		/**
+    /**
 		 * @property {string} userId - An unique id of user
 		 */
     this.userId = userId
 
-		/**
+    /**
 		 * @property {string} profileUri - router path used to store profile path uri
 		 */
     this.profileUri = 'user/v1/read/'
   }
-	/**
+  /**
 	 * Get user profile of given user
 	 */
   getUserProfile () {

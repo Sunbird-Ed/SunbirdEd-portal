@@ -12,7 +12,7 @@ let dateFormat = require('dateformat')
  * It used to invoke http request calls
  */
 class HttpWrapper {
-    /**
+  /**
      * It used to invoke the http request
      * @param  {object} options - Request object it should have header and body.
      */
@@ -37,7 +37,7 @@ class HttpWrapper {
     })
   }
 
-    /**
+  /**
      * Which is used to get the request header object structure
      * @param  {string} token - User authenticated token
      * @return {object}       request header

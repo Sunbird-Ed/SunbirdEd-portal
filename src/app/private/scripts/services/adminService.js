@@ -1,13 +1,13 @@
 'use strict'
 
 angular.module('playerApp')
-    .service('adminService', ['config', 'httpServiceJava', function (config, httpServiceJava) {
-     /**
+  .service('adminService', ['config', 'httpServiceJava', function (config, httpServiceJava) {
+    /**
      * @class adminService
      * @desc Service to manage user settings.
      * @memberOf Services
      */
-        /**
+    /**
              * @method userSearch
              * @desc Search a user
              * @memberOf Services.adminService
@@ -17,11 +17,11 @@ angular.module('playerApp')
              * @returns {Promise} Promise object represents the list of users
              * @instance
              */
-      this.userSearch = function (req) {
-        var url = config.URL.ADMIN.USER_SEARCH
-        return httpServiceJava.post(url, req)
-      }
-        /**
+    this.userSearch = function (req) {
+      var url = config.URL.ADMIN.USER_SEARCH
+      return httpServiceJava.post(url, req)
+    }
+    /**
              * @method orgSearch
              * @desc Search a organization
              * @memberOf Services.adminService
@@ -31,11 +31,11 @@ angular.module('playerApp')
              * @returns {Promise} Promise object represents the list of organizations
              * @instance
              */
-      this.orgSearch = function (req) {
-        var url = config.URL.ADMIN.ORG_SEARCH
-        return httpServiceJava.post(url, req)
-      }
-        /**
+    this.orgSearch = function (req) {
+      var url = config.URL.ADMIN.ORG_SEARCH
+      return httpServiceJava.post(url, req)
+    }
+    /**
              * @method deleteUser
              * @desc delete a user
              * @memberOf Services.adminService
@@ -45,11 +45,11 @@ angular.module('playerApp')
              * @instance
              */
 
-      this.deleteUser = function (req) {
-        var url = config.URL.ADMIN.DELETE_USER
-        return httpServiceJava.post(url, req)
-      }
-        /**
+    this.deleteUser = function (req) {
+      var url = config.URL.ADMIN.DELETE_USER
+      return httpServiceJava.post(url, req)
+    }
+    /**
              * @method updateRoles
              * @desc Update user roles
              * @memberOf Services.adminService
@@ -61,11 +61,11 @@ angular.module('playerApp')
              * @instance
              */
 
-      this.updateRoles = function (req) {
-        var url = config.URL.ADMIN.UPDATE_USER_ORG_ROLES
-        return httpServiceJava.post(url, req)
-      }
-         /**
+    this.updateRoles = function (req) {
+      var url = config.URL.ADMIN.UPDATE_USER_ORG_ROLES
+      return httpServiceJava.post(url, req)
+    }
+    /**
              * @method bulkUserUpload
              * @desc Bulk upload  users .
              * @memberOf Services.adminService
@@ -76,11 +76,11 @@ angular.module('playerApp')
              * @instance
              */
 
-      this.bulkUserUpload = function (req) {
-        var url = config.URL.ADMIN.BULK.USERS_UPLOAD
-        return httpServiceJava.upload(url, req)
-      }
-        /**
+    this.bulkUserUpload = function (req) {
+      var url = config.URL.ADMIN.BULK.USERS_UPLOAD
+      return httpServiceJava.upload(url, req)
+    }
+    /**
              * @method bulkOrgUpload
              * @desc Bulk upload  users .
              * @memberOf Services.adminService
@@ -89,11 +89,11 @@ angular.module('playerApp')
              * @returns {Promise} Promise object containing process Id of bulk upload
              * @instance
              */
-      this.bulkOrgrUpload = function (req) {
-        var url = config.URL.ADMIN.BULK.ORGANIZATIONS_UPLOAD
-        return httpServiceJava.upload(url, req)
-      }
-        /**
+    this.bulkOrgrUpload = function (req) {
+      var url = config.URL.ADMIN.BULK.ORGANIZATIONS_UPLOAD
+      return httpServiceJava.upload(url, req)
+    }
+    /**
              * @method bulkUploadStatus
              * @desc Bulk upload  users .
              * @memberOf Services.adminService
@@ -103,12 +103,12 @@ angular.module('playerApp')
              * @instance
              */
 
-      this.bulkUploadStatus = function (processId) {
-        var url = config.URL.ADMIN.BULK.STATUS + '/' + processId
-        return httpServiceJava.get(url)
-      }
+    this.bulkUploadStatus = function (processId) {
+      var url = config.URL.ADMIN.BULK.STATUS + '/' + processId
+      return httpServiceJava.get(url)
+    }
 
-        /**
+    /**
              * @method addBadges
              * @desc assign badge to  users .
              * @memberOf Services.adminService
@@ -119,42 +119,42 @@ angular.module('playerApp')
              * @instance
              */
 
-      this.addBadges = function (req) {
-        var url = config.URL.BADGE.ASSIGN
-        return httpServiceJava.post(url, req)
-      }
-        /**
+    this.addBadges = function (req) {
+      var url = config.URL.BADGE.ASSIGN
+      return httpServiceJava.post(url, req)
+    }
+    /**
              * @method getBadges
              * @desc Get badges
              * @memberOf Services.adminService
              * @returns {Promise} Promise object containing list of badges.
              * @instance
              */
-      this.getBadges = function () {
-        var url = config.URL.BADGE.GET
-        return httpServiceJava.get(url)
-      }
-        /**
+    this.getBadges = function () {
+      var url = config.URL.BADGE.GET
+      return httpServiceJava.get(url)
+    }
+    /**
              * @method setBadges
              * @desc Set badges to a local variable
              * @memberOf Services.adminService
              * @param {Object}  request - List of badges
              * @instance
              */
-      this.setBadges = function (badges) {
-        this.badges = badges.result.response
-      }
+    this.setBadges = function (badges) {
+      this.badges = badges.result.response
+    }
 
-        /**
+    /**
              * @method getBadgesList
              * @desc Get locally saved badges list or api call
              * @memberOf Services.adminService
              * @returns {Promise} Promise object containing list of badges.
              * @instance
              */
-      this.getBadgesList = function () {
-        return this.badges ? this.badges : this.getBadges().then(function (res) {
-          return res.result.response
-        })
-      }
-    }])
+    this.getBadgesList = function () {
+      return this.badges ? this.badges : this.getBadges().then(function (res) {
+        return res.result.response
+      })
+    }
+  }])

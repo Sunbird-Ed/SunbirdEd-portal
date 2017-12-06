@@ -1,0 +1,18 @@
+{
+    "extends": "standard",
+    "globals": {
+        "_": true,
+        "$": true,
+        "angular": true,
+        "alasql": true,
+        "iziToast": true,
+        "md5": true,
+        "moment": true,
+        "org": true,
+    },
+    "rules": {
+        "indent": ["error", 2],
+        "max-len": ["error", 120, 2, {"ignoreUrls": true}],
+        "quotes": ["error", "single"],
+    }
+}

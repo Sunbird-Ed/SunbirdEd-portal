@@ -1,7 +1,7 @@
 'use strict'
 
 describe('Controller:PublishedContentController', function () {
-    // load the controller's module
+  // load the controller's module
   beforeEach(module('playerApp'))
 
   beforeEach(inject(function ($rootScope, $controller) {
@@ -77,17 +77,17 @@ describe('Controller:PublishedContentController', function () {
       msgid: null,
       status: 'failed',
       err: 'ERR_GRAPH_SEARCH_UNKNOWN_ERROR',
-      errmsg: "Error! Node(s) doesn't Exists. | [Invalid Node Id.]: 1"
+      errmsg: 'Error! Node(s) doesn\'t Exists. | [Invalid Node Id.]: 1'
     },
     responseCode: 'RESOURCE_NOT_FOUND',
     result: [{
       contentId: '1',
       errCode: 'ERR_GRAPH_SEARCH_UNKNOWN_ERROR',
-      errMsg: "Error! Node(s) doesn't Exists. | [Invalid Node Id.]: 1"
+      errMsg: 'Error! Node(s) doesn\'t Exists. | [Invalid Node Id.]: 1'
     }]
   }
 
-    // Initialize the controller and a mock scope
+  // Initialize the controller and a mock scope
   beforeEach(inject(function (_$rootScope_, _$controller_, _searchService_, _contentService_,
     _PaginationService_, _workSpaceUtilsService_, _$q_, _$timeout_) {
     rootScope = _$rootScope_

@@ -11,7 +11,7 @@ class ObjectStore {
     this.service = service
   }
 
-    /**
+  /**
      * Abstract method, Child class should implement.
      */
   createObject () {
@@ -20,7 +20,7 @@ class ObjectStore {
     })
   }
 
-    /**
+  /**
      * Abstract method, Child class should implement.
      * @return {[type]} [description]
      */
@@ -30,7 +30,7 @@ class ObjectStore {
     })
   }
 
-    /**
+  /**
      * Abstract method,Child class should implement to get the object by identifier.
      * @return {[type]} [description]
      */
@@ -40,7 +40,7 @@ class ObjectStore {
     })
   }
 
-    /**
+  /**
      * Abstract method, Child class should implement to update the object by identifier.
      * @return {[type]} [description]
      */
@@ -50,7 +50,7 @@ class ObjectStore {
     })
   }
 
-    /**
+  /**
      * Abstract method, Child class should implement to delete the object by identifier.
      * @return {[type]} [description]
      */

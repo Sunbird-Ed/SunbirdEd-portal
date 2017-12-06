@@ -236,7 +236,7 @@ app.all('*', function (req, res) {
   res.redirect('/')
 })
 
-  /*
+/*
  * Method called after successful authentication and it will log the telemetry for CP_SESSION_START and updates the login time
  */
 keycloak.authenticated = function (request) {

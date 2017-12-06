@@ -7,7 +7,7 @@
 'use strict'
 
 describe('Directive: courseDiscussions', function () {
-    // load the main module
+  // load the main module
   beforeEach(module('playerApp'))
 
   beforeEach(inject(function ($rootScope, $controller) {

@@ -7,7 +7,7 @@
 'use strict'
 
 describe('Controller: contentPlayerCtrl', function () {
-    // load the controller's module
+  // load the controller's module
   beforeEach(module('loginApp'))
   var contentService,
     scope,
@@ -25,7 +25,7 @@ describe('Controller: contentPlayerCtrl', function () {
     })
   }))
 
-    // Initialize the controller and a mock scope
+  // Initialize the controller and a mock scope
   beforeEach(inject(function ($rootScope, $controller, _contentService_, _$q_, _$timeout_, $state, $templateCache, $compile) {
     rootScope = $rootScope
     scope = $rootScope.$new()
@@ -63,7 +63,7 @@ describe('Controller: contentPlayerCtrl', function () {
     scope.$digest()
     var response = contentService.getById().$$state.value
     expect(response.responseCode).toBe('OK')
-        // timeout.flush(2000);
+    // timeout.flush(2000);
   })
 
   it('Update content with id', function () {
@@ -108,7 +108,7 @@ describe('Controller: contentPlayerCtrl', function () {
     scope.init()
     scope.$apply()
     var response = contentService.getById().$$state.value
-        // expect(response.responseCode).toBe('OK');
+    // expect(response.responseCode).toBe('OK');
   })
 
   it('Update content with id', function () {
@@ -119,7 +119,7 @@ describe('Controller: contentPlayerCtrl', function () {
     scope.init()
     scope.$apply()
     var response = contentService.getById().$$state.value
-        // expect(response.responseCode).toBe('OK');
+    // expect(response.responseCode).toBe('OK');
   })
 
   it('Call close function', function () {

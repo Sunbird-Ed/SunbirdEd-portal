@@ -7,7 +7,7 @@
 'use strict'
 
 describe('Controller: contentPlayerCtrl', function () {
-    // load the controller's module
+  // load the controller's module
   beforeEach(module('playerApp'))
   var contentService,
     scope,
@@ -24,7 +24,7 @@ describe('Controller: contentPlayerCtrl', function () {
     })
   }))
 
-    // Initialize the controller and a mock scope
+  // Initialize the controller and a mock scope
   beforeEach(inject(function ($rootScope, $controller, _contentService_, _$q_, _$timeout_, $state, $templateCache) {
     rootScope = $rootScope
     scope = $rootScope.$new()

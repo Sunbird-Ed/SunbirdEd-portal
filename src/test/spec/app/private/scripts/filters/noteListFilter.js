@@ -1,10 +1,10 @@
 'use strict'
 
 describe('Filter: noteListFilter', function () {
-    // load the filter's module
+  // load the filter's module
   beforeEach(module('playerApp'))
 
-    // initialize a new instance of the filter before each test
+  // initialize a new instance of the filter before each test
   var noteListFilter
 
   beforeEach(inject(function ($filter) {

@@ -3,15 +3,15 @@
 angular.module('playerApp')
   .controller('BatchListController', ['$rootScope', 'toasterService', 'batchService', '$state',
     'userService', 'PaginationService', function ($rootScope, toasterService, batchService,
-         $state, userService, PaginationService) {
+      $state, userService, PaginationService) {
       var batch = this
       batch.userId = $rootScope.userId
       batch.list = []
       batch.status = 1
       batch.statusOptions = [
-            { name: 'Ongoing Batches', value: 1 },
-            { name: 'Upcoming Batches', value: 0 },
-            { name: 'Previous Batches', value: 2 }
+        { name: 'Ongoing Batches', value: 1 },
+        { name: 'Upcoming Batches', value: 0 },
+        { name: 'Previous Batches', value: 2 }
       ]
       $('#batchStatusOptions').dropdown()
       batch.pageLimit = 9
@@ -75,11 +75,11 @@ angular.module('playerApp')
             batch.batchList = response.result.response.content || []
             batch.totalCount = response.result.response.count
             batch.pager = PaginationService.GetPager(response.result.response.count,
-                        pageNumber, batch.pageLimit)
+              pageNumber, batch.pageLimit)
             if (batch.batchList.length === 0) {
               batch.error = showErrorMessage(true,
-                                $rootScope.messages.stmsg.m0020,
-                                $rootScope.messages.stmsg.m0008)
+                $rootScope.messages.stmsg.m0020,
+                $rootScope.messages.stmsg.m0008)
             }
           } else {
             toasterService.error($rootScope.messages.fmsg.m0004)

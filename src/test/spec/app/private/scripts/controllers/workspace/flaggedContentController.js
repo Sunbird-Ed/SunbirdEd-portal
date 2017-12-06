@@ -1,7 +1,7 @@
 'use strict'
 
 describe('Controller:FlaggedContentController', function () {
-    // load the controller's module
+  // load the controller's module
   beforeEach(module('playerApp'))
 
   beforeEach(inject(function ($rootScope, $controller) {
@@ -54,7 +54,7 @@ describe('Controller:FlaggedContentController', function () {
     result: {count: 0, content: [{}]}
   }
 
-    // Initialize the controller and a mock scope
+  // Initialize the controller and a mock scope
   beforeEach(inject(function (_$rootScope_, _$controller_, _searchService_, _contentService_,
     _PaginationService_, _workSpaceUtilsService_, _$q_, _$timeout_) {
     rootScope = _$rootScope_

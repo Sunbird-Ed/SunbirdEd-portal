@@ -1,7 +1,7 @@
 'use strict'
 
 describe('Controller:courseCreatorDashboardCtrl', function () {
-    // load the controller's module
+  // load the controller's module
   beforeEach(module('playerApp'))
 
   beforeEach(inject(function ($rootScope, $controller) {
@@ -43,7 +43,7 @@ describe('Controller:courseCreatorDashboardCtrl', function () {
   var failedCourseConsumptionResponse = {'id': 'api.sunbird.dashboard.course.consumption', 'ver': 'v1', 'ts': '2017-10-03 09:56:29:830+0000', 'params': {'resmsgid': null, 'msgid': '7637746d-a948-4c32-93a9-a384fb9608a4', 'err': 'UNAUTHORIZE_USER', 'status': 'SERVER_ERROR', 'errmsg': 'You are not authorized.'}, 'responseCode': 'CLIENT_ERROR', 'result': {}}
   var oneCourseCreatedByMeResponse = {'id': 'api.v1.search', 'ver': '1.0', 'ts': '2017-10-03T12:20:42.847Z', 'params': {'resmsgid': '468d06f0-a835-11e7-9540-dd4c0ac7eb23', 'msgid': '4686c560-a835-11e7-bd6c-9d0ff4b0760f', 'status': 'successful', 'err': null, 'errmsg': null}, 'responseCode': 'OK', 'result': {'count': 11, 'content': [{'code': 'org.sunbird.lsE3WP', 'channel': 'in.ekstep', 'description': 'Prod2', 'language': ['English'], 'mimeType': 'application/vnd.ekstep.content-collection', 'idealScreenSize': 'normal', 'createdOn': '2017-08-30T10:23:53.418+0000', 'objectType': 'Content', 'contentDisposition': 'inline', 'lastUpdatedOn': '2017-08-30T10:26:09.993+0000', 'contentEncoding': 'gzip', 'contentType': 'Course', 'identifier': 'do_2123214940849602561867', 'creator': 'Content Creator For Demo', 'createdFor': ['01231515334617497640'], 'audience': ['Learner'], 'IL_SYS_NODE_TYPE': 'DATA_NODE', 'visibility': 'Default', 'os': ['All'], 'consumerId': 'fa271a76-c15a-4aa1-adff-31dd04682a1f', 'mediaType': 'content', 'osId': 'org.ekstep.quiz.app', 'graph_id': 'domain', 'nodeType': 'DATA_NODE', 'versionKey': '1504088769993', 'idealScreenDensity': 'hdpi', 'createdBy': 'fcc60c6f-578e-4c5e-8257-6eaca81fb62b', 'compatibilityLevel': 4, 'IL_FUNC_OBJECT_TYPE': 'Content', 'name': 'Prod2', 'IL_UNIQUE_ID': 'do_2123214940849602561867', 'status': 'Live', 'node_id': 0, 'children': ['do_2122952599231856641325'], 'lastSubmittedOn': '2017-08-30T10:24:19.668+0000', 'lastUpdatedBy': 'be9e7184-dffd-45af-9e3c-147fdf2c771d', 'lastPublishedBy': 'be9e7184-dffd-45af-9e3c-147fdf2c771d', 'downloadUrl': 'https://ekstep-public-qa.s3-ap-south-1.amazonaws.com/ecar_files/do_2123214940849602561867/prod2_1504088740705_do_2123214940849602561867_1.0.ecar', 'variants': '{"spine":{"ecarUrl":"https://ekstep-public-qa.s3-ap-south-1.amazonaws.com/ecar_files/do_2123214940849602561867/prod2_1504088741507_do_2123214940849602561867_1.0_spine.ecar","size":1430.0}}', 'pkgVersion': 1, 'prevState': 'Review', 's3Key': 'ecar_files/do_2123214940849602561867/prod2_1504088740705_do_2123214940849602561867_1.0.ecar', 'size': 4611516, 'lastPublishedOn': '2017-08-30T10:25:40.151+0000', 'SYS_INTERNAL_LAST_UPDATED_ON': '2017-08-30T10:25:41.642+0000', 'toc_url': 'https://ekstep-public-qa.s3-ap-south-1.amazonaws.com/content/do_2123214940849602561867/artifact/do_2123214940849602561867toc.json', 'contentTypesCount': '{"Story":1}', 'leafNodesCount': 1, 'mimeTypesCount': '{"application/vnd.ekstep.ecml-archive":1}', 'me_averageRating': 0, 'me_totalSideloads': 0, 'me_totalDownloads': 2, 'me_totalComments': 0, 'me_totalRatings': 0, 'es_metadata_id': 'do_2123214940849602561867'}]}}
 
-    // Initialize the controller and a mock scope
+  // Initialize the controller and a mock scope
   beforeEach(inject(function (_$rootScope_, _$controller_, _searchService_, _$q_, _$timeout_, _dashboardService_) {
     rootScope = _$rootScope_
     scope = _$rootScope_.$new()
@@ -80,16 +80,16 @@ describe('Controller:courseCreatorDashboardCtrl', function () {
     expect(courseCreatorDashboard.loadData).not.toBe(undefined)
   })
 
-        // var request = {
-        //   filters: {
-        //     status: ["Live"],
-        //     createdBy: $rootScope.userId,
-        //     contentType: ["Course"]
-        //   },
-        //   sort_by: {
-        //     lastUpdatedOn: "desc"
-        //   }
-        // };
+  // var request = {
+  //   filters: {
+  //     status: ["Live"],
+  //     createdBy: $rootScope.userId,
+  //     contentType: ["Course"]
+  //   },
+  //   sort_by: {
+  //     lastUpdatedOn: "desc"
+  //   }
+  // };
 
   it('Should return only one course createdByMe', function () {
     spyOn(searchService, 'search').and.returnValue(deferred.promise)
@@ -180,7 +180,7 @@ describe('Controller:courseCreatorDashboardCtrl', function () {
     var response = searchService.search().$$state.value
     expect(response).not.toBe(undefined)
     courseCreatorDashboard.courseCreatorDashboard = response.result.content
-        // expect(courseCreatorDashboard.courseCreatorDashboard).toBeDefined();
+    // expect(courseCreatorDashboard.courseCreatorDashboard).toBeDefined();
     expect(courseCreatorDashboard.showErrors).not.toBe(undefined)
   })
 
