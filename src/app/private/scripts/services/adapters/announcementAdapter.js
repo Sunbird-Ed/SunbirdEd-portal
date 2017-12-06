@@ -173,7 +173,7 @@ angular.module('playerApp').service('announcementAdapter', ['$rootScope', '$http
     this.deleteAnnouncement = function (announcementId) {
       var data = {
         'request': {
-          'announcenmentId': announcementId
+          'announcementId': announcementId
         }
       }
       var URL = config.URL.ANNOUNCEMENT.CANCEL
