@@ -23,6 +23,13 @@ angular.module('playerApp').controller('announcementInboxListController', ['$roo
           announcementInboxData.pageNumber = pageNumber
           announcementInboxData.pager = PaginationService.GetPager(apiResponse.result.count,
             pageNumber, announcementInboxData.pageLimit)
+
+            // Calling received API
+          _.forEach(announcementInboxData.listData, function (announcement) {
+            if (announcement.received === false) {
+              announcementAdapter.receivedAnnouncement(announcement.id).then(function (response) {})
+            }
+          })
         }
         announcementInboxData.showLoader = false
       }, function (err) {
@@ -52,7 +59,7 @@ angular.module('playerApp').controller('announcementInboxListController', ['$roo
       }
       $state.go('announcementDetails', {
         announcementId: announcementDetails.id,
-        announcementName: announcementDetails.details.title,
+        announcementName: announcementDetails.title,
         pageId: 'announcement_inbox_list'
       })
     }

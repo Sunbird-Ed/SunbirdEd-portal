@@ -4,23 +4,23 @@
   <div ng-click="announcementInboxData.showAnnouncementDetails(item, $index)" ng-if="announcementInboxData.limit==-1 || announcementInboxData.limit>$index" ng-repeat="item in announcementInboxData.listData">
     <div class="ui raised segment annGridPadding cursor-pointer margin-bottom-10" id="annInboxDiv-{{$index}}" ng-class="{'announcementCardLeftBorder': item.read === false}">
       <div>
-        <p class="ui grey label annType" ng-if="item.details.type">
-          {{item.details.type | uppercase}}
+        <p class="ui grey label annType" ng-if="item.type">
+          {{item.type | uppercase}}
         </p>
       </div>
       <div class="header announcementHomeCard-header">
         <span class="header ng-binding">
-                {{item.details.title}}
+                {{item.title}}
             </span>
       </div>
       <div>
         <p class="ng-binding annOrgName">
-          {{item.details.from}}
+          {{item.from}}
         </p>
       </div>
       <div class="padding-top-5">
         <span class="ng-binding announcement-description">
-                {{item.details.description | limitTo:180}}
+                {{item.description | limitTo:180}}
             </span>
         <span ng-show="item.description.length > 180">
                 ...
@@ -76,7 +76,7 @@
       </div>
       <div>
         <span class="ng-binding annCreatedDate">
-                {{$root.frmelmnts.lbl.anncmntdtlssenton}} {{item.createddate  | dateFilterWithDMY}}
+                {{$root.frmelmnts.lbl.anncmntdtlssenton}} {{item.createdDate  | dateFilterWithDMY}}
             </span>
         <!--<span class="announcement-description float-ContentRight"><i class="large share alternate icon"></i></span>-->
       </div>
