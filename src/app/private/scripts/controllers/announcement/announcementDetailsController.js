@@ -23,9 +23,6 @@ angular.module('playerApp')
             closable: false,
             onHide: function () {
               window.history.back()
-            },
-            onVisible: function () {
-              $('.ui.dropdown').dropdown()
             }
           }).modal('show')
         }, function (err) {
