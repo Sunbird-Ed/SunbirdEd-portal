@@ -96,7 +96,7 @@ angular.module('playerApp').service('announcementAdapter', ['$rootScope', '$http
      * @returns {object} returns response of API
      * @instance
      */
-    this.createAnnouncement = function (annoucementObj) {
+    this.createAnnouncement = function (annoucementObj, isResend) {
       var data = {
         request: {
           title: annoucementObj.details.title,
@@ -109,7 +109,8 @@ angular.module('playerApp').service('announcementAdapter', ['$rootScope', '$http
           attachments: annoucementObj.attachments
         }
       }
-      return handleHttpRequest(config.URL.ANNOUNCEMENT.CREATE, data, 'POST')
+      var url = (isResend) ? config.URL.ANNOUNCEMENT.RESEND : config.URL.ANNOUNCEMENT.CREATE
+      return handleHttpRequest(url, data, 'POST')
     }
     /**
      * @method getDefinitions
@@ -190,29 +191,6 @@ angular.module('playerApp').service('announcementAdapter', ['$rootScope', '$http
     this.getResend = function (announcementId) {
       var URL = config.URL.ANNOUNCEMENT.RESEND + announcementId
       return handleHttpRequest(URL, {}, 'GET')
-    }
-    /**
-     * @method resendAnnouncement
-     * @desc Resend announcement
-     * @memberOf Services.announcementService
-     * @param {object}  requestBody - Announcement object
-     * @returns {object} returns response of API
-     * @instance
-     */
-    this.resendAnnouncement = function (annoucementObj) {
-      var data = {
-        request: {
-          title: annoucementObj.details.title,
-          from: annoucementObj.details.from,
-          type: annoucementObj.details.type,
-          description: annoucementObj.details.description,
-          links: annoucementObj.links,
-          sourceId: annoucementObj.sourceId,
-          target: annoucementObj.target,
-          attachments: annoucementObj.attachments
-        }
-      }
-      return handleHttpRequest(config.URL.ANNOUNCEMENT.RESEND, data, 'POST')
     }
   }
 ])
