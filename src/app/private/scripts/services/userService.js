@@ -6,7 +6,7 @@ angular.module('playerApp')
     'httpService',
     'httpServiceJava',
     function (config, httpService, httpServiceJava) {
-     /**
+      /**
      * @class userService
      * @desc Service to manage user profile.
      * @memberOf Services
@@ -17,7 +17,7 @@ angular.module('playerApp')
                     type + '/' + language
         return httpService.get(url)
       }
-            /**
+      /**
              * @method getUserProfile
              * @desc Get user profile
              * @memberOf Services.userService
@@ -34,7 +34,7 @@ angular.module('playerApp')
         }
         return httpServiceJava.get(url)
       }
-            /**
+      /**
              * @method updateUserProfile
              * @desc Get user profile
              * @memberOf Services.userService
@@ -46,7 +46,7 @@ angular.module('playerApp')
         var url = config.URL.USER.UPDATE_USER_PROFILE
         return httpServiceJava.patch(url, req)
       }
-            /**
+      /**
              * @method getTenantLogo
              * @desc Get tenant logo
              * @memberOf Services.userService
@@ -56,7 +56,7 @@ angular.module('playerApp')
       this.getTenantLogo = function () {
         return httpService.get(config.URL.USER.TENANT_LOGO)
       }
-            /**
+      /**
              * @method setCurrentUserProfile
              * @desc Set current user profile to local variable
              * @memberOf Services.userService
@@ -67,7 +67,7 @@ angular.module('playerApp')
       this.setCurrentUserProfile = function (userProfile) {
         this.currentUserProfile = userProfile
       }
-            /**
+      /**
              * @method getCurrentUserProfile
              * @desc Get current user profile from local variable
              * @memberOf Services.userService
@@ -77,7 +77,7 @@ angular.module('playerApp')
       this.getCurrentUserProfile = function () {
         return this.currentUserProfile
       }
-            /**
+      /**
              * @method getSkills
              * @desc Get default skills
              * @memberOf Services.userService
@@ -88,7 +88,7 @@ angular.module('playerApp')
         var url = config.URL.USER.SKILLS
         return httpServiceJava.get(url)
       }
-            /**
+      /**
              * @method getUserSkills
              * @desc Get user's skills
              * @memberOf Services.userService
@@ -101,7 +101,7 @@ angular.module('playerApp')
         var url = config.URL.USER.USER_SKILLS
         return httpServiceJava.post(url, req)
       }
-             /**
+      /**
              * @method addSkills
              * @desc Add skill to user's skills and add skill to default skills list
              * @memberOf Services.userService
@@ -120,7 +120,7 @@ angular.module('playerApp')
         return httpServiceJava.post(url, req)
       }
 
-        /**
+      /**
         * @method generateRandomNumber
         * @desc generates  5 digit random number
         * @returns {number}
@@ -130,7 +130,7 @@ angular.module('playerApp')
             parseInt('1' + '0'.repeat(digits - 1)))
       }
 
-        /**
+      /**
         * @method getUserHash
         * @desc generates md5 hash of userId and salt (timestamp + a 5 digit random number)
         * @param {string} userId - User Id for whom we need a hash

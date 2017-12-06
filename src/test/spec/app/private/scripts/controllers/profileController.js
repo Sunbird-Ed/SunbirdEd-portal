@@ -27,27 +27,27 @@ describe('Controller: ProfileController', function () {
     })
   }))
   beforeEach(inject(function (
-        $controller,
-        $rootScope,
-        _toasterService_,
-        _contentService_,
-        _userService_,
-        _searchService_,
-        _learnService_,
-        _adminService_,
-        _workSpaceUtilsService_,
-        _$q_,
-        _$timeout_,
-      _formValidation_) {
+    $controller,
+    $rootScope,
+    _toasterService_,
+    _contentService_,
+    _userService_,
+    _searchService_,
+    _learnService_,
+    _adminService_,
+    _workSpaceUtilsService_,
+    _$q_,
+    _$timeout_,
+    _formValidation_) {
     rootScope = $rootScope
     toasterService = _toasterService_
     contentService = _contentService_
     userService = _userService_
     searchService = _searchService_
     learnService = _learnService_,
-        adminService = _adminService_,
-        workSpaceUtilsService = _workSpaceUtilsService_,
-        formValidation = _formValidation_
+    adminService = _adminService_,
+    workSpaceUtilsService = _workSpaceUtilsService_,
+    formValidation = _formValidation_
     deferred = _$q_.defer()
     $q = _$q_
     $timeout = _$timeout_
@@ -100,7 +100,7 @@ describe('Controller: ProfileController', function () {
     }
     spyOn(Array.prototype, 'find').and.callThrough()
   }
-        ))
+  ))
 
   it('should get user profile', function (done) {
     spyOn(profileCtrl, 'getProfile').and.callThrough()
@@ -119,8 +119,8 @@ describe('Controller: ProfileController', function () {
         missingFields: [],
         completeness: {},
         webPages: [{ type: 'fb', url: '' },
-                 { type: 'twitter', url: '' },
-                 { type: 'in', url: '' }]
+          { type: 'twitter', url: '' },
+          { type: 'in', url: '' }]
       } }
     }
 
@@ -196,7 +196,7 @@ describe('Controller: ProfileController', function () {
     expect(toasterService.error).toHaveBeenCalled()
     done()
   })
-    // update profile
+  // update profile
   it('should open browser', function (done) {
     spyOn(profileCtrl, 'openImageBrowser').and.callThrough()
     profileCtrl.openImageBrowser()
@@ -346,7 +346,7 @@ describe('Controller: ProfileController', function () {
     expect(profileCtrl.updateUserInfo).toHaveBeenCalled()
     done()
   })
-    // education
+  // education
   it('should add a new education info ', function (done) {
     spyOn(profileCtrl, 'addEducation').and.callThrough()
     spyOn(formValidation, 'validate').and.returnValue(true)
@@ -405,7 +405,7 @@ describe('Controller: ProfileController', function () {
     done()
   })
 
-    // experience
+  // experience
   it('should add a new experience info ', function (done) {
     spyOn(profileCtrl, 'addExperience').and.callThrough()
     spyOn(formValidation, 'validate').and.returnValue(true)
@@ -464,7 +464,7 @@ describe('Controller: ProfileController', function () {
     expect(profileCtrl.updateUserInfo).toHaveBeenCalled()
     done()
   })
-      // summary
+  // summary
   it('should edit summary ', function (done) {
     spyOn(profileCtrl, 'EditDetails').and.callThrough()
     spyOn(profileCtrl, 'updateUserInfo').and.callThrough()
@@ -475,7 +475,7 @@ describe('Controller: ProfileController', function () {
     expect(profileCtrl.updateUserInfo).toHaveBeenCalled()
     done()
   })
-    // check current job
+  // check current job
   it('should  return current job not exist ', function (done) {
     spyOn(profileCtrl, 'checkCurrentJob').and.callThrough()
     profileCtrl.experience = [{ isCurrentJob: true }, { isCurrentJob: false }]
@@ -591,7 +591,7 @@ describe('Controller: ProfileController', function () {
 
     profileCtrl.updateAction('firstName')
     scope.$apply()
-        // expect(profileCtrl.basicProfileForm).toBe(true);
+    // expect(profileCtrl.basicProfileForm).toBe(true);
     done()
   })
   it('should return  avatar   changes', function (done) {

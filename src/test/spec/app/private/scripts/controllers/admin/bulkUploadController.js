@@ -20,15 +20,15 @@ describe('Controller: bulkUploadController', function () {
     })
   }))
   beforeEach(inject(function ($rootScope,
-       $controller,
-       _adminService_,
-       _contentService_,
-       _toasterService_,
-      _$timeout_,
-      _$q_,
-      _$state_
+    $controller,
+    _adminService_,
+    _contentService_,
+    _toasterService_,
+    _$timeout_,
+    _$q_,
+    _$state_
 
-          ) {
+  ) {
     adminService = _adminService_
     contentService = _contentService_
     toasterService = _toasterService_
@@ -202,7 +202,7 @@ describe('Controller: bulkUploadController', function () {
     bulkUploadCtl.getBulkUloadStatus(12, 'users')
     adminService.bulkUploadStatus()
     scope.$apply()
-        // expect(toasterService.success).toHaveBeenCalled();
+    // expect(toasterService.success).toHaveBeenCalled();
     done()
   })
   it('should return failure status of  bulk upload ', function (done) {

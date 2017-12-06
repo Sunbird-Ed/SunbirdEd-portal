@@ -50,11 +50,11 @@ angular.module('playerApp')
         $('#copyLinkData').select()
         document.execCommand('copy')
         $('#buttonPopUp')
-        .popup({
-          popup: $('#LinkCopiedToClipboard'),
-          on: 'click',
-          position: 'top center',
-          color: '#4183c4'
-        })
+          .popup({
+            popup: $('#LinkCopiedToClipboard'),
+            on: 'click',
+            position: 'top center',
+            color: '#4183c4'
+          })
       }
     }])

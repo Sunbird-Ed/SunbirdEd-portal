@@ -36,7 +36,7 @@ class AnnouncementTypeModel extends BaseModel {
      */
     this.modelSchema = modelSchema
   }
-    /**
+  /**
      * Which is used to validate the api request object structure based on the `this.apiSchema`
      * @param  {object} obj - request object
      * @return {object}

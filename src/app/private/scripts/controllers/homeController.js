@@ -4,26 +4,26 @@ angular.module('playerApp')
   .controller('HomeController', ['$state', 'learnService', '$rootScope',
     'sessionService', 'toasterService',
     function ($state, learnService, $rootScope,
-     sessionService, toasterService) {
+      sessionService, toasterService) {
       var homeCtrl = this
       var uid = $rootScope.userId
 
       homeCtrl.loadCarousel = function () {
         $('.ui .progress .course-progress').progress()
         $('.ui.rating')
-        .rating({
-          maxRating: 5
-        }).rating('disable', true)
+          .rating({
+            maxRating: 5
+          }).rating('disable', true)
       }
       homeCtrl.loadFeaturedCarousel = function () {
         $('.ui.rating')
-        .rating({
-          maxRating: 5
-        }).rating('disable', true)
+          .rating({
+            maxRating: 5
+          }).rating('disable', true)
       }
       homeCtrl.getToDoList = function () {
         $rootScope.toDoList = []
-    // if profile is incomplete append profile update details to ToDo list
+        // if profile is incomplete append profile update details to ToDo list
         if ($rootScope.profileCompleteness < 100) {
           $rootScope.toDoList = [{
             title: $rootScope.messages.stmsg.m0060,
@@ -32,7 +32,7 @@ angular.module('playerApp')
             type: 'profile'
           }]
         }
-           // merge todo list with enrolled courses (both are to be shown in TO-DO section
+        // merge todo list with enrolled courses (both are to be shown in TO-DO section
         Array.prototype.push.apply($rootScope.toDoList, $rootScope.enrolledCourses)
       }
 
@@ -45,31 +45,31 @@ angular.module('playerApp')
         var api = 'pageApi'
         homeCtrl[api] = {}
         homeCtrl[api].loader = toasterService.loader(
-             '', $rootScope.messages.stmsg.m0002)
+          '', $rootScope.messages.stmsg.m0002)
         learnService.recommendedCourses(req)
-           .then(function (successResponse) {
-             if (successResponse && successResponse.responseCode === 'OK') {
-               homeCtrl.recommendedCourse = successResponse.result.response
-               homeCtrl[api].loader.showLoader = false
-             } else {
-               homeCtrl[api].loader.showLoader = false
-               toasterService.error(
-                     $rootScope.messages.fmsg.m0002)
-             }
-           }).catch(function () {
-             homeCtrl[api].loader.showLoader = false
-             toasterService.error(
-                 $rootScope.messages.fmsg.m0002)
-           })
+          .then(function (successResponse) {
+            if (successResponse && successResponse.responseCode === 'OK') {
+              homeCtrl.recommendedCourse = successResponse.result.response
+              homeCtrl[api].loader.showLoader = false
+            } else {
+              homeCtrl[api].loader.showLoader = false
+              toasterService.error(
+                $rootScope.messages.fmsg.m0002)
+            }
+          }).catch(function () {
+            homeCtrl[api].loader.showLoader = false
+            toasterService.error(
+              $rootScope.messages.fmsg.m0002)
+          })
       }
-    // hide recommended temporarily
-    // homeCtrl.otherSection();
+      // hide recommended temporarily
+      // homeCtrl.otherSection();
       homeCtrl.openCourseView = function (course, courseType) {
       // courseId = 'do_112265805439688704113';
         var showLectureView = 'no'
         if ($rootScope.enrolledCourseIds[
-             course.courseId || course.identifier
-            ]) {
+          course.courseId || course.identifier
+        ]) {
           showLectureView = 'no'
         } else {
           showLectureView = 'yes'

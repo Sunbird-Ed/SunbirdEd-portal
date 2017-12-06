@@ -3,7 +3,7 @@
  */
 
 angular.module('playerApp').component('geo', {
-    /**
+  /**
      * @class geocomponent
      * @desc change user settings
      * @memberOf component
@@ -21,7 +21,7 @@ angular.module('playerApp').component('geo', {
       value: {}
     }
 
-            /**
+    /**
              * @desc Intialization of geo component when compounent is loaded.
              */
     this.$onInit = function () {
@@ -33,7 +33,7 @@ angular.module('playerApp').component('geo', {
       }
       $rootScope.$on('component:update', instance.updateItems)
     }
-            /**
+    /**
              * @desc Validating the adoption from config object during initialization
              * @listens 'items:from:child'
              * Parent component will fetch the selected items from the child component.
@@ -69,7 +69,7 @@ angular.module('playerApp').component('geo', {
       })
     }
 
-        /**
+    /**
          * Used to get the configuration from parent comp.
          * @return {object} Config object
          */
@@ -81,7 +81,7 @@ angular.module('playerApp').component('geo', {
       }
     }
 
-        /**
+    /**
          * Items which is need to be render on web page
          * @param  {object} items geo items from api
          */
@@ -90,7 +90,7 @@ angular.module('playerApp').component('geo', {
       // this.initializeCheckBoxes();
     }
 
-        /**
+    /**
          * @desc Returns the selected items
          * @return {object}
          */
@@ -98,7 +98,7 @@ angular.module('playerApp').component('geo', {
       return _.filter(instance.items, ['selected', true])
     }
 
-        /**
+    /**
          * Validates the adopter from config object and initializes the respective adopter based on the config
          * @param  {object} config Object need to be seend to initialize the adopter
          */
@@ -115,7 +115,7 @@ angular.module('playerApp').component('geo', {
       }
     }
 
-        /**
+    /**
          * Initializes the JSON adopter
          * @param {object} config
          */
@@ -123,7 +123,7 @@ angular.module('playerApp').component('geo', {
       this.renderItems(config.json)
     }
 
-        /**
+    /**
          * Initializes the service adopter
          * @param  {object} config Configuration to initialize the service adopter
          */

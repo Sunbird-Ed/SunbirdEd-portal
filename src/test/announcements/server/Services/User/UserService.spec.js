@@ -19,24 +19,24 @@ describe('User Service', () => {
   describe('getUserProfile Method', () => {
     it('Should load the user profile', (done) => {
       service.getUserProfile()
-				.then((data) => {
-  expect(data.id).to.be.equal(service.userId)
-})
-				.catch((error) => {
-  expect(error.status).to.not.equal(undefined)
-})
+        .then((data) => {
+          expect(data.id).to.be.equal(service.userId)
+        })
+        .catch((error) => {
+          expect(error.status).to.not.equal(undefined)
+        })
       done()
     })
 
     it('Should throw an error, when there is invalid user data ', (done) => {
       service = new UserService({})
       service.getUserProfile(undefined, undefined)
-				.then((data) => {
-  expect(data.id).to.be.equal(undefined)
-})
-				.catch((error) => {
-  expect(error.status).to.be.equal(HttpStatus.BAD_REQUEST)
-})
+        .then((data) => {
+          expect(data.id).to.be.equal(undefined)
+        })
+        .catch((error) => {
+          expect(error.status).to.be.equal(HttpStatus.BAD_REQUEST)
+        })
       done()
     })
   })

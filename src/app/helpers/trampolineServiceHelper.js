@@ -73,7 +73,7 @@ module.exports = {
         }
       },
       verifyUser: function (callback) {
-          // check user exist
+        // check user exist
         self.checkUserExists(self.payload, function (err, status) {
           self.errorMsg = 'Failed to create/authenticate user. Please try again with valid user data'
           if (err) {
@@ -84,7 +84,7 @@ module.exports = {
             console.log('user already exists')
             callback(null, status)
           } else {
-              // create User
+            // create User
             console.log('create User Flag', createUserFlag, 'type of', typeof createUserFlag)
             if (createUserFlag === 'true') {
               self.createUser(self.payload, function (error, status) {
@@ -110,38 +110,38 @@ module.exports = {
         var userName = self.payload['sub'] + (self.payload['iss'] ? '@' + self.payload['iss'] : '')
         self.errorMsg = 'Request credentials verification failed. Please try with valid credentials.'
         keycloak.grantManager.obtainDirectly(userName)
-            .then(function (grant) {
-              keycloak.storeGrant(grant, req, res)
-              req.kauth.grant = grant
-              try {
-                keycloak.authenticated(req)
-              } catch (err) {
-                console.log(err)
-                callback(err, null)
-                return
-              };
-              self.errorMsg = undefined
-              callback(null, grant)
-            },
-              function (err) {
-                console.log('grant failed', err)
-                callback(err, null)
-              })
+          .then(function (grant) {
+            keycloak.storeGrant(grant, req, res)
+            req.kauth.grant = grant
+            try {
+              keycloak.authenticated(req)
+            } catch (err) {
+              console.log(err)
+              callback(err, null)
+              return
+            };
+            self.errorMsg = undefined
+            callback(null, grant)
+          },
+          function (err) {
+            console.log('grant failed', err)
+            callback(err, null)
+          })
       }
     },
-      function (err, results) {
-        if (err) {
-          console.log('err', err)
-          res.redirect((req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') + '?error=' + Buffer.from(self.errorMsg).toString('base64'))
+    function (err, results) {
+      if (err) {
+        console.log('err', err)
+        res.redirect((req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') + '?error=' + Buffer.from(self.errorMsg).toString('base64'))
+      } else {
+        console.log('grant successful')
+        if (self.payload['redirect_uri']) {
+          res.redirect(self.payload['redirect_uri'])
         } else {
-          console.log('grant successful')
-          if (self.payload['redirect_uri']) {
-            res.redirect(self.payload['redirect_uri'])
-          } else {
-            res.redirect((req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') + '/private/index')
-          }
+          res.redirect((req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') + '/private/index')
         }
-      })
+      }
+    })
   },
   checkUserExists: function (payload, callback) {
     var loginId = payload['sub'] + (payload['iss'] ? '@' + payload['iss'] : '')

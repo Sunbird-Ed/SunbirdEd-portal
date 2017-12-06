@@ -36,7 +36,7 @@ describe('SignUpCtrl', function () {
       '</form>')
   })
   beforeEach(inject(function ($rootScope, _$stateParams_, _signUpService_, _toasterService_, _$timeout_,
-             _$state_, _$q_, $controller) {
+    _$state_, _$q_, $controller) {
     rootScope = $rootScope
     $stateParams = _$stateParams_
     signUpService = _signUpService_

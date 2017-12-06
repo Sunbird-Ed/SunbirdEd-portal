@@ -1,14 +1,14 @@
 'use strict'
 
 angular.module('playerApp')
-    .service('searchService', ['httpService', 'config', '$q', 'httpServiceJava',
-      function (httpService, config, $q, httpServiceJava) {
-     /**
+  .service('searchService', ['httpService', 'config', '$q', 'httpServiceJava',
+    function (httpService, config, $q, httpServiceJava) {
+      /**
      * @class searchService
      * @desc Service to manage different type of search.
      * @memberOf Services
      */
-            /**
+      /**
              * @method contentSearch
              * @desc Search contents
              * @memberOf Services.searchService
@@ -29,10 +29,10 @@ angular.module('playerApp')
              * @instance
              */
 
-        this.contentSearch = function (req) {
-          return httpService.post(config.URL.CONTENT.SEARCH, req)
-        }
-            /**
+      this.contentSearch = function (req) {
+        return httpService.post(config.URL.CONTENT.SEARCH, req)
+      }
+      /**
              * @method courseSearch
              * @desc Search courses
              * @memberOf Services.searchService
@@ -52,10 +52,10 @@ angular.module('playerApp')
              * @instance
              */
 
-        this.courseSearch = function (req) {
-          return httpService.post(config.URL.COURSE.SEARCH, req)
-        }
-            /**
+      this.courseSearch = function (req) {
+        return httpService.post(config.URL.COURSE.SEARCH, req)
+      }
+      /**
              * @method search
              * @desc Search All possible results of query.
              * @memberOf Services.searchService
@@ -74,24 +74,24 @@ angular.module('playerApp')
              * @instance
              */
 
-        this.search = function (req) {
-          return httpService.post(config.URL.COMPOSITE.SEARCH, req)
-        }
-            /**
+      this.search = function (req) {
+        return httpService.post(config.URL.COMPOSITE.SEARCH, req)
+      }
+      /**
              * @method setPublicUserProfile
              * @desc Set user's public profile to local variable.
              * @memberOf Services.searchService
              * @returns {string} Boolean value
              * @instance
              */
-        this.setPublicUserProfile = function (user) {
-          this.publicUser = { responseCode: 'OK',
-            result: {
-              response: user }
-          }
-          return true
+      this.setPublicUserProfile = function (user) {
+        this.publicUser = { responseCode: 'OK',
+          result: {
+            response: user }
         }
-            /**
+        return true
+      }
+      /**
              * @method getPublicUserProfile
              * @desc Get user's public profile from local variable or api
              * @memberOf Services.searchService
@@ -99,56 +99,56 @@ angular.module('playerApp')
              * @returns {Promise} Promise object represents details of user available locally or api
              * @instance
              */
-        this.getPublicUserProfile = function (identifier, endorsement) {
-          if (endorsement !== undefined) {
-            return httpService.get(config.URL.USER.GET_PROFILE + '/' + identifier)
-          }
-          if (this.publicUser) {
-            var deferred = $q.defer()
-            deferred.resolve(this.publicUser)
-            return deferred.promise
-          }
+      this.getPublicUserProfile = function (identifier, endorsement) {
+        if (endorsement !== undefined) {
           return httpService.get(config.URL.USER.GET_PROFILE + '/' + identifier)
         }
-            /**
+        if (this.publicUser) {
+          var deferred = $q.defer()
+          deferred.resolve(this.publicUser)
+          return deferred.promise
+        }
+        return httpService.get(config.URL.USER.GET_PROFILE + '/' + identifier)
+      }
+      /**
              * @method getOrgTypes
              * @desc Get all org types
              * @memberOf Services.searchService
              * @returns {Promise} Promise object represents list of orgTypes
              * @instance
              */
-        this.getOrgTypes = function () {
-          var url = config.URL.ORG_TYPE.GET
-          return httpServiceJava.get(url)
-        }
-            /**
+      this.getOrgTypes = function () {
+        var url = config.URL.ORG_TYPE.GET
+        return httpServiceJava.get(url)
+      }
+      /**
              * @method setOrgTypes
              * @desc Set orgTypes api result to local variable
              * @memberOf Services.searchService
              * @param {object}  orgTypes - list of OrgTypes.
              * @instance
              */
-        this.setOrgTypes = function (orgTypes) {
-          this.orgTypes = orgTypes
-        }
+      this.setOrgTypes = function (orgTypes) {
+        this.orgTypes = orgTypes
+      }
 
-            /**
+      /**
              * @method getOrgTypeS
              * @desc Get list of orgTypes
              * @memberOf Services.searchService
              * @returns {Promise} Promise object represents list of orgTypes available locally or api
              * @instance
              */
-        this.getOrgTypeS = function () {
-          if (this.orgTypes) {
-            var deferred = $q.defer()
-            deferred.resolve(this.orgTypes)
-            return deferred.promise
-          }
-          return this.getOrgTypes().then(function (res) {
-            if (res.responseCode === 'OK') {
-              return res.result.response
-            }
-          })
+      this.getOrgTypeS = function () {
+        if (this.orgTypes) {
+          var deferred = $q.defer()
+          deferred.resolve(this.orgTypes)
+          return deferred.promise
         }
-      }])
+        return this.getOrgTypes().then(function (res) {
+          if (res.responseCode === 'OK') {
+            return res.result.response
+          }
+        })
+      }
+    }])

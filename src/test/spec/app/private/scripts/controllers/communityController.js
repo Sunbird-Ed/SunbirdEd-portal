@@ -4,20 +4,20 @@
  * Date: 05-10-2017
  */
 
-'use strict';
+'use strict'
 
-describe('Controller: CommunityController', function() {
-    // load the controller's module
-    beforeEach(module('playerApp'));
+describe('Controller: CommunityController', function () {
+  // load the controller's module
+  beforeEach(module('playerApp'))
 
-    var communityController;
+  var communityController
 
-    // Initialize the controller and a mock scope
-    beforeEach(inject(function($controller) {
-        communityController = $controller('CommunityController');
-    }));
+  // Initialize the controller and a mock scope
+  beforeEach(inject(function ($controller) {
+    communityController = $controller('CommunityController')
+  }))
 
-    it("show detail should be false", function() {
-    	expect(communityController.showDetail).toBe(false);
-    });
-});
+  it('show detail should be false', function () {
+    	expect(communityController.showDetail).toBe(false)
+  })
+})

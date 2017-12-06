@@ -7,7 +7,7 @@
 'use strict'
 
 describe('Directive: contentPlayer', function () {
-    // load the directive's module
+  // load the directive's module
   beforeEach(module('playerApp'))
 
   var element, ctrl, compile, templateCache, contentService,

@@ -3,7 +3,7 @@
 angular.module('playerApp')
   .controller('ContentLessonController', ['contentService', '$timeout', '$state', 'config',
     '$rootScope', 'toasterService', '$scope', 'configService', function (contentService, $timeout,
-        $state, config, $rootScope, toasterService, $scope, configService) {
+      $state, config, $rootScope, toasterService, $scope, configService) {
       var contentLesson = this
       contentLesson.formDropdown = configService.getWorkspaceStdMtrlDrpdown()
       // contentLesson.lessonTypes = config.DROPDOWN.COMMON.lessonTypes
@@ -22,20 +22,20 @@ angular.module('playerApp')
 
       contentLesson.hideCreateSlideShowModal = function () {
         $('#createSlideShowModal')
-                .modal('hide')
+          .modal('hide')
         $('#createSlideShowModal')
-                .modal('hide others')
+          .modal('hide others')
         $('#createSlideShowModal')
-                .modal('hide dimmer')
+          .modal('hide dimmer')
       }
 
       contentLesson.initilizeView = function () {
         contentLesson.showCreateSlideShowModal = true
         $timeout(function () {
           $('.multiSelectDropDown')
-                    .dropdown()
+            .dropdown()
           $('.singleSelectDropDown')
-                    .dropdown()
+            .dropdown()
           $('#createSlideShowModal').modal({
             allowMultiple: true,
             onHide: function () {

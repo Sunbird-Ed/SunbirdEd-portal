@@ -37,7 +37,7 @@
           if (res && res.responseCode === 'OK') {
             cpvm.loader.showLoader = false
             res.result.content.children = _.sortBy(res.result.content.children,
-                        ['index'])
+              ['index'])
             cpvm.courseHierachy = res.result.content
             cpvm.collectionMeta.author = cpvm.courseHierachy.owner
             cpvm.collectionMeta.language = cpvm.courseHierachy.language
@@ -84,7 +84,7 @@
           })
           angular.forEach(contentData.children, function (child, item) {
             cpvm.getTreeData(contentData.children[item]
-                        , parent[parent.length - 1].children)
+              , parent[parent.length - 1].children)
           })
         }
         return cpvm.fancyTree

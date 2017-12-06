@@ -1,13 +1,13 @@
 'use strict'
 
 angular.module('playerApp')
-    .service('pageSectionService', ['httpServiceJava', function (httpServiceJava) {
+  .service('pageSectionService', ['httpServiceJava', function (httpServiceJava) {
     /**
      * @class pageSectionService
      * @desc Service to manage sections of page.
      * @memberOf Services
      */
-        /**
+    /**
          * @method getPageData
          * @desc Get page sections
          * @memberOf Services.pageSectionService
@@ -18,7 +18,7 @@ angular.module('playerApp')
          * @returns {Promise} Promise object represents sections of a page
          * @instance
          */
-      this.getPageData = function (path, req) {
-        return httpServiceJava.post(path, req)
-      }
-    }])
+    this.getPageData = function (path, req) {
+      return httpServiceJava.post(path, req)
+    }
+  }])

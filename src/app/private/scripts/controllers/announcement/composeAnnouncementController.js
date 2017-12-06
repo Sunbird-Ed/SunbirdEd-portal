@@ -2,7 +2,7 @@
 angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope', '$scope', '$state',
   '$stateParams', '$timeout', 'config', 'toasterService', 'fileUpload', 'AnnouncementModel',
   'announcementAdapter', 'portalTelemetryService', function ($rootScope, $scope, $state, $stateParams, $timeout,
-        config, toasterService, fileUpload, AnnouncementModel, announcementAdapter, portalTelemetryService) {
+    config, toasterService, fileUpload, AnnouncementModel, announcementAdapter, portalTelemetryService) {
     var composeAnn = this
     composeAnn.senderlist = []
     composeAnn.targetIds = []
@@ -22,7 +22,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         service: 'geoService'
       }
     }
-        /**
+    /**
          * @method initializeModal
          * @desc - function to initialize semantic dropdowns
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -39,7 +39,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         composeAnn.announcement.selTar = _.clone(data.geo)
       })
     }
-        /**
+    /**
          * @method createAnnouncement
          * @desc - function to initialize create announcement modal
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -68,7 +68,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         }
       }).modal('show')
     }
-        /**
+    /**
          * @method confirmationModal
          * @desc - display confirmation modal when user click on close icon
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -90,7 +90,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         }).modal('show')
       }, 10)
     }
-        /**
+    /**
          * @method hideModel
          * @desc - hide semantic modal
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -102,7 +102,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
       $('#' + modalId).modal('hide all')
       $('#' + modalId).modal('hide dimmer')
     }
-        /**
+    /**
          * @method addNewLink
          * @desc - add new url input box
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -114,7 +114,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
       })
       composeAnn.showUrlField = true
     }
-        /**
+    /**
          * @method removeLink
          * @desc - remove / delete url
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -128,7 +128,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
       composeAnn.showUrlField = !!composeAnn.repeatableWebLinks.length
       composeAnn.enableRecepientBtn()
     }
-        /**
+    /**
          * @method removeRicipients
          * @desc - remove selected recipients
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -144,7 +144,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
       })
       composeAnn.confirmRecipients()
     }
-        /**
+    /**
          * @method confirmRecipients
          * @desc - enforce user to select recipients
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -157,7 +157,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
       }
       return true
     }
-        /**
+    /**
          * @method enableRecepientBtn
          * @desc - enable select recipients btn if all required fields are selected
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -190,7 +190,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         composeAnn.isMetaModified = true
       }
     }
-        /**
+    /**
          * @method refreshFormValues
          * @desc - reset form values
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -206,7 +206,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
       composeAnn.showUrlField = false
       $('.qq-upload-list').children('li').remove()
     }
-        /**
+    /**
          * @method saveAnnouncement
          * @desc - prepare api request object and make create api call
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -246,7 +246,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         composeAnn.showError(err.data)
       })
     }
-        /**
+    /**
          * @method showError
          * @desc - display error message(s) when apis get fails
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -262,7 +262,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         toasterService.error(apiResponse.params.errmsg)
       }
     }
-        /**
+    /**
          * @method getReadableFileSize
          * @desc - convert byteSize into KB, MB
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -283,7 +283,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
       $(item).closest('li').remove()
       composeAnn.announcement.attachments.splice(pos, 1)
     }
-        /**
+    /**
          * @method initializeFileUploader
          * @desc - create fine uploader instance by passing required params
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -313,7 +313,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         }
       })
     }
-        /**
+    /**
          * @method onUploadComplete
          * @desc - invoked after attachement uploaded
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -327,7 +327,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
       composeAnn.uploadAttchement = true
       composeAnn.enableRecepientBtn()
     }
-        /**
+    /**
          * @method onUploadCancel
          * @desc - invoked when user cancel uploaded attachement
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -349,7 +349,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
       composeAnn.enableRecepientBtn()
       $('#hide-section-with-button').css('style.display', 'block')
     }
-        /**
+    /**
          * @method init
          * @desc - invoked when page is loaded
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -363,7 +363,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         composeAnn.initializeModal()
       }
       composeAnn.createAnnouncement()
-            // Create new data modal only when if its not already present
+      // Create new data modal only when if its not already present
       if (composeAnn.stepNumber === 1 && composeAnn.announcement === null) {
         if (composeAnn.editAction) {
           composeAnn.getResend($stateParams.announcementId)
@@ -394,13 +394,13 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         }, 100)
       }
     }
-        /**
+    /**
          * @method goToNextStep
          * @desc - Used to swtch to next step of announcement creation
          * @memberOf Controllers.composeAnnouncementCtrl
          */
     composeAnn.goToNextStep = function (telemetryPageId, telemetryPageType) {
-            // Current step is confirm recipients
+      // Current step is confirm recipients
       if (composeAnn.stepNumber !== 1) {
         if (composeAnn.confirmRecipients()) {
           if (_.isEmpty(composeAnn.announcement.sourceId)) {
@@ -421,7 +421,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         reload: true
       })
     }
-        /**
+    /**
          * @method goToBackStep
          * @desc - Used to switch one step back to announcement creation
          * @memberOf Controllers.composeAnnouncementCtrl
@@ -436,7 +436,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         reload: true
       })
     }
-        /**
+    /**
          * @method getResend
          * @desc - Used to get the announcement resend data
          * @param {String} [announcementId] [announcement id]
@@ -460,7 +460,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         }
       })
     }
-        /**
+    /**
          * @method getDefinitions
          * @desc - Used to get the definitions data
          * @param {String} [rootOrgId] [organization id]

@@ -16,21 +16,21 @@ angular.module('playerApp').controller('SearchResultController', [
   'PaginationService',
   'configService',
   function (
-      $scope,
-      $rootScope,
-      config,
-      $timeout,
-      $state,
-      $stateParams,
-      searchService,
-      toasterService,
-      $location,
-      sessionService,
-      adminService,
-      permissionsService,
-      PaginationService,
-      configService
-    ) {
+    $scope,
+    $rootScope,
+    config,
+    $timeout,
+    $state,
+    $stateParams,
+    searchService,
+    toasterService,
+    $location,
+    sessionService,
+    adminService,
+    permissionsService,
+    PaginationService,
+    configService
+  ) {
     $scope.search = {}
     $rootScope.search = {}
     $rootScope.search.searchKeyword = ''
@@ -60,15 +60,15 @@ angular.module('playerApp').controller('SearchResultController', [
     $rootScope.search.selectedOrgType = []
     $rootScope.search.pageLimit = 20
     $rootScope.search.pager = {}
-      // search select dropdown changes
+    // search select dropdown changes
     $rootScope.$watch('searchKey', function () {
       $timeout(function () {
         $rootScope.search.selectedSearchKey = $rootScope.searchKey
         $scope.search.isSearchTypeKey = $scope.search.searchTypeKeys
-                    .includes($rootScope.search.selectedSearchKey)
+          .includes($rootScope.search.selectedSearchKey)
         $('#headerSearch').dropdown('set selected',
-                    $scope.search.isSearchTypeKey === true
-                    ? $rootScope.search.selectedSearchKey : 'All')
+          $scope.search.isSearchTypeKey === true
+            ? $rootScope.search.selectedSearchKey : 'All')
         $rootScope.search.searchKeyword = ''
       }, 0)
     })
@@ -84,7 +84,7 @@ angular.module('playerApp').controller('SearchResultController', [
             function (filterType, value, $event) {
               $timeout(function () {
                 var itemIndex = $rootScope.search[filterType]
-                    .indexOf(value)
+                  .indexOf(value)
                 if (itemIndex === -1) {
                   $rootScope.search[filterType].push(value)
                   $($event.target).addClass('active')
@@ -97,9 +97,9 @@ angular.module('playerApp').controller('SearchResultController', [
     $rootScope.search.removeFilterSelection = function (filterType, value) {
       if (filterType === 'selectedConcepts') {
         $rootScope.search[filterType] = _.filter($rootScope.search[filterType],
-                function (x) {
-                  return x.identifier !== value
-                })
+          function (x) {
+            return x.identifier !== value
+          })
         $rootScope.search.broadCastConcepts()
       } else {
         var itemIndex = $rootScope.search[filterType].indexOf(value)
@@ -109,7 +109,7 @@ angular.module('playerApp').controller('SearchResultController', [
       }
     }
 
-      /**
+    /**
        * This function called when api failed,
        * and its show failed response for 2 sec.
        * @param {String} message
@@ -156,10 +156,10 @@ angular.module('playerApp').controller('SearchResultController', [
       $rootScope.search.selectedRoles = $rootScope.search.filters['organisations.roles'] || []
       $rootScope.search.broadCastConcepts()
       $rootScope.search.sortByOption = Object.keys($rootScope.search.sortBy).length > 0
-          ? Object.keys($rootScope.search.sortBy)[0] : ''
+        ? Object.keys($rootScope.search.sortBy)[0] : ''
       $rootScope.search.searchFromSuggestion = $stateParams.autoSuggestSearch
       $rootScope.search.selectedOrgType = $rootScope.search.filters.orgType || []
-        // $rootScope.search.sortBy=$rootScope.search.sortBy;
+      // $rootScope.search.sortBy=$rootScope.search.sortBy;
       $scope.search.searchRequest()
     }
 
@@ -209,8 +209,8 @@ angular.module('playerApp').controller('SearchResultController', [
     $scope.search.keyUp = function () {
       clearTimeout($rootScope.search.typingTimer)
       $rootScope.search.typingTimer = setTimeout($scope.search.autoSuggestSearch,
-          $rootScope.search.doneTypingInterval)
-        // $scope.search.autoSuggest=true;
+        $rootScope.search.doneTypingInterval)
+      // $scope.search.autoSuggest=true;
     }
 
     $scope.search.keyDown = function () {
@@ -261,12 +261,12 @@ angular.module('playerApp').controller('SearchResultController', [
         }
         $rootScope.search.loader.showLoader = true
       }
-        // if any concept is selected then pass array of ids
+      // if any concept is selected then pass array of ids
       if (req.filters.concepts && req.filters.concepts.length > 0) {
         req.filters.concepts = _.map($rootScope.search.selectedConcepts, 'identifier')
       }
 
-        // if autosuggest option is clicked
+      // if autosuggest option is clicked
       if ($rootScope.search.searchFromSuggestion === 'true') {
         req.filters.name = req.query
         req.query = ''
@@ -320,13 +320,13 @@ angular.module('playerApp').controller('SearchResultController', [
 
         $scope.search.currentUserRoles = permissionsService.getCurrentUserRoles()
         var isSystemAdmin = $scope.search.currentUserRoles
-                    .includes('SYSTEM_ADMINISTRATION')
+          .includes('SYSTEM_ADMINISTRATION')
 
         if (isSystemAdmin === false) {
           req.filters.rootOrgId = $rootScope.rootOrgId
         }
 
-          /* filter by organisation */
+        /* filter by organisation */
         if (OrgId !== '') {
           req.filters['organisations.organisationId'] = OrgId
         }
@@ -334,11 +334,11 @@ angular.module('playerApp').controller('SearchResultController', [
         $scope.search.searchFn = adminService.userSearch({ request: req })
         $scope.search.resultType = 'users'
       } else if ($rootScope.search.selectedSearchKey === 'Organisations') {
-          // req.filters = {};
+        // req.filters = {};
         if (req.sort_by) {
           delete req.sort_by
         }
-          // req.filters.objectType = ['org'];
+        // req.filters.objectType = ['org'];
         $scope.search.searchFn = adminService.orgSearch({ request: req })
         $scope.search.resultType = 'organisations'
       }
@@ -352,8 +352,8 @@ angular.module('playerApp').controller('SearchResultController', [
           } else {
             responseResult = res.result
           }
-              // check if search is happening through autosuggest then autosuggest popup
-              // should appear else load search results
+          // check if search is happening through autosuggest then autosuggest popup
+          // should appear else load search results
           if ($scope.search.autoSuggest &&
                 $rootScope.search.searchKeyword !== $stateParams.query) {
             $rootScope.search.autosuggest_data = responseResult[$scope.search.resultType] || []
@@ -366,13 +366,13 @@ angular.module('playerApp').controller('SearchResultController', [
             $rootScope.search.loader.showLoader = false
             if (responseResult.count === 0) {
               $rootScope.search.error = showErrorMessage(true,
-                    $rootScope.messages.stmsg.m0006,
-                    $rootScope.messages.stmsg.m0008, $rootScope.messages.stmsg.m0007)
+                $rootScope.messages.stmsg.m0006,
+                $rootScope.messages.stmsg.m0008, $rootScope.messages.stmsg.m0007)
             } else {
               $rootScope.search.error = {}
               $rootScope.search.searchResult = responseResult
               $rootScope.search.pager = PaginationService.GetPager(responseResult.count,
-                                     pageNumber, $rootScope.search.pageLimit)
+                pageNumber, $rootScope.search.pageLimit)
             }
           }
           $scope.search.autoSuggest = true
@@ -380,8 +380,8 @@ angular.module('playerApp').controller('SearchResultController', [
         } else {
           $rootScope.search.loader.showLoader = false
           $rootScope.search.error = showErrorMessage(true,
-                        $rootScope.messages.fmsg.m0004,
-                        $rootScope.messages.emsg.m0002)
+            $rootScope.messages.fmsg.m0004,
+            $rootScope.messages.emsg.m0002)
           $scope.search.autoSuggest = true
           clearTimeout($rootScope.search.typingTimer)
           throw new Error('')
@@ -389,8 +389,8 @@ angular.module('playerApp').controller('SearchResultController', [
       }).catch(function (e) {
         $rootScope.search.loader.showLoader = false
         $rootScope.search.error = showErrorMessage(true,
-              $rootScope.messages.fmsg.m0004,
-              $rootScope.messages.emsg.m0002)
+          $rootScope.messages.fmsg.m0004,
+          $rootScope.messages.emsg.m0002)
       })
     }
     var conceptSelHandler = $scope.$on('selectedConcepts', function (event, args) {
@@ -450,13 +450,13 @@ angular.module('playerApp').controller('SearchResultController', [
       $rootScope.search.selectedGrades = []
       $rootScope.search.selectedOrgType = []
       $scope.search.searchRequest()
-        // $state.go($rootScope.search.selectedSearchKey);
+      // $state.go($rootScope.search.selectedSearchKey);
     }
     $rootScope.search.applySorting = function () {
       var sortByField = $rootScope.search.sortByOption
       $rootScope.search.sortBy = {}
       $rootScope.search.sortBy[sortByField] = ($rootScope.search.sortIcon === true)
-                ? 'asc' : 'desc'
+        ? 'asc' : 'desc'
       $scope.search.searchRequest()
     }
     $rootScope.search.close = function () {
@@ -490,9 +490,9 @@ angular.module('playerApp').controller('SearchResultController', [
     }
     $rootScope.search.getOrgTypes = function () {
       searchService.getOrgTypeS()
-                .then(function (res) {
-                  $rootScope.search.orgTypes = res
-                })
+        .then(function (res) {
+          $rootScope.search.orgTypes = res
+        })
     }
     $rootScope.search.getOrgTypes()
 

@@ -7,7 +7,7 @@
 'use strict'
 
 describe('Directive: contentFlag', function () {
-    // load the main module
+  // load the main module
   beforeEach(module('playerApp'))
 
   beforeEach(inject(function ($rootScope, $controller) {

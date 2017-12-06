@@ -5,7 +5,7 @@ angular.module('playerApp')
     '$rootScope', '$state', 'toasterService', '$scope', 'workSpaceUtilsService', '$timeout',
     'PaginationService',
     function (contentService, searchService, config, $rootScope, $state,
-        toasterService, $scope, workSpaceUtilsService, $timeout, PaginationService) {
+      toasterService, $scope, workSpaceUtilsService, $timeout, PaginationService) {
       var draftContent = this
       draftContent.userId = $rootScope.userId
       draftContent.status = ['Draft']
@@ -20,7 +20,7 @@ angular.module('playerApp')
       draftContent.pager = {}
       draftContent.error = {}
 
-            /**
+      /**
              * This function called when api failed,
              * and its show failed response for 2 sec.
              * @param {String} message
@@ -63,11 +63,11 @@ angular.module('playerApp')
             draftContent.pageNumber = pageNumber
             draftContent.draftContentData = res.result.content || []
             draftContent.pager = PaginationService.GetPager(res.result.count,
-                        pageNumber, draftContent.pageLimit)
+              pageNumber, draftContent.pageLimit)
             if (draftContent.draftContentData.length === 0) {
               draftContent.error = showErrorMessage(true,
-                            $rootScope.messages.stmsg.m0012,
-                            $rootScope.messages.stmsg.m0008)
+                $rootScope.messages.stmsg.m0012,
+                $rootScope.messages.stmsg.m0008)
             }
           } else {
             draftContent.loader.showLoader = false

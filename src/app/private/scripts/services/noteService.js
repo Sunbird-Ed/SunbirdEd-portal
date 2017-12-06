@@ -1,13 +1,13 @@
 'use strict'
 
 angular.module('playerApp')
-    .service('noteService', ['httpServiceJava', 'config', function (httpServiceJava, config) {
-     /**
+  .service('noteService', ['httpServiceJava', 'config', function (httpServiceJava, config) {
+    /**
      * @class noteService
      * @desc Service to manage notes.
      * @memberOf Services
      */
-        /**
+    /**
          * @method search
          * @desc Search notes
          * @memberOf Services.noteService
@@ -21,10 +21,10 @@ angular.module('playerApp')
          * @returns {Promise} Promise object represents the list of notes
          * @instance
          */
-      this.search = function (req) {
-        return httpServiceJava.post(config.URL.NOTES.SEARCH, req)
-      }
-        /**
+    this.search = function (req) {
+      return httpServiceJava.post(config.URL.NOTES.SEARCH, req)
+    }
+    /**
          * @method create
          * @desc Create notes
          * @memberOf Services.noteService
@@ -40,10 +40,10 @@ angular.module('playerApp')
          * @instance
          */
 
-      this.create = function (req) {
-        return httpServiceJava.post(config.URL.NOTES.CREATE, req)
-      }
-         /**
+    this.create = function (req) {
+      return httpServiceJava.post(config.URL.NOTES.CREATE, req)
+    }
+    /**
          * @method update
          * @desc Update existing notes
          * @memberOf Services.noteService
@@ -57,11 +57,11 @@ angular.module('playerApp')
          * @instance
          */
 
-      this.update = function (req) {
-        var url = config.URL.NOTES.UPDATE + '/' + req.noteId
-        return httpServiceJava.patch(url, req)
-      }
-        /**
+    this.update = function (req) {
+      var url = config.URL.NOTES.UPDATE + '/' + req.noteId
+      return httpServiceJava.patch(url, req)
+    }
+    /**
          * @method remove
          * @desc Remove existing notes
          * @memberOf Services.noteService
@@ -72,8 +72,8 @@ angular.module('playerApp')
          * @instance
          */
 
-      this.remove = function (req) {
-        var url = config.URL.NOTES.DELETE + '/' + req.noteId
-        return httpServiceJava.remove(url, req)
-      }
-    }])
+    this.remove = function (req) {
+      var url = config.URL.NOTES.DELETE + '/' + req.noteId
+      return httpServiceJava.remove(url, req)
+    }
+  }])

@@ -23,8 +23,8 @@ org.sunbird.portal.addUnloadEvent = function () {
     e = e || window.event
     var y = e.pageY || e.clientY
         !y && org.sunbird.portal.eventManager.dispatchEvent('sunbird:window:unload', {// eslint-disable-line
-          TelemetryData: TelemetryService._data
-        })
+      TelemetryData: TelemetryService._data
+    })
   }
 }
 
