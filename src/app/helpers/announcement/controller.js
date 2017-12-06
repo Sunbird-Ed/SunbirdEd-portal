@@ -115,8 +115,8 @@ class AnnouncementController {
                 json:true
             }
             this.httpService.call(options).then((data) =>{
-                let locations = _.get(data, 'data.response.body.result.locations');
-                 resolve(_.sumBy(locations, 'userCount'))
+                let locations = _.get(data, 'body.result.locations');
+                resolve(_.sumBy(locations, 'userCount'))
             }).catch((error) =>{
                 reject(this.customError({message:'Unable to get the sent count', status:HttpStatus.INTERNAL_SERVER_ERROR}))
             })
@@ -192,7 +192,7 @@ class AnnouncementController {
                     'links': data.links || [],
                     'status': statusConstant.ACTIVE,
                     'attachments': attachments,
-                    'sentcount':data.sentCount || 0,
+                    'sentcount':data.sentCount
                 }
             }
             this.announcementStore.createObject(query)
@@ -980,7 +980,7 @@ class AnnouncementController {
 
             this.announcementMetricsStore.findObject(query)
                 .then((data) => {
-                    if (!data.status) {
+                    if (!data) {
                         resolve(false)
                     } else {
                         if (_.size(data.data)) {
