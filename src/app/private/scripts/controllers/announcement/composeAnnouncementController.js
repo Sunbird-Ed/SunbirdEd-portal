@@ -367,6 +367,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
           composeAnn.getResend($stateParams.announcementId)
         } else {
           composeAnn.announcement = new AnnouncementModel.Announcement({})
+          composeAnn.announcement.hideDate = true
         }
       }
       if (composeAnn.stepNumber === 1) {
@@ -392,7 +393,6 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
           $rootScope.$broadcast('component:update', geoIds)
         }, 100)
       }
-      composeAnn.announcement.hideDate = true
     }
         /**
          * @method goToNextStep
