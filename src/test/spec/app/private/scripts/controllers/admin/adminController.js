@@ -22,17 +22,17 @@ describe('Controller: adminController', function () {
     })
   }))
   beforeEach(inject(function ($rootScope,
-       $controller,
-       _adminService_,
-       _contentService_,
-       _toasterService_,
-      _permissionsService_,
-      _searchService_,
-      _$timeout_,
-      _$q_,
-      _$state_
+    $controller,
+    _adminService_,
+    _contentService_,
+    _toasterService_,
+    _permissionsService_,
+    _searchService_,
+    _$timeout_,
+    _$q_,
+    _$state_
 
-          ) {
+  ) {
     adminService = _adminService_
     contentService = _contentService_
     toasterService = _toasterService_
@@ -85,9 +85,9 @@ describe('Controller: adminController', function () {
 
         for (var i = 0; i < length; i++) {
           value = list[i]
-                    // if (iterator.call(thisArg, value, i, list)) {
-                    //     return value;
-                    // }
+          // if (iterator.call(thisArg, value, i, list)) {
+          //     return value;
+          // }
           return true
         }
         return undefined
@@ -111,7 +111,7 @@ describe('Controller: adminController', function () {
     spyOn(permissionsService, 'getCurrentUserRoleMap').and.callThrough()
     spyOn(adminCtl, 'getOrgName').and.returnValue(deferred.promise)
     var res = [{ orgName: 'ABC ', orgId: '01231148953349324812' },
-        { orgName: 'XYZ Institution', orgId: '01229679766115942443' }]
+      { orgName: 'XYZ Institution', orgId: '01229679766115942443' }]
     deferred.resolve(res)
     adminCtl.addOrgNameToOrganizations()
     adminCtl.getOrgName()
@@ -123,8 +123,8 @@ describe('Controller: adminController', function () {
     spyOn(adminCtl, 'downloadUsers').and.callThrough()
     spyOn(adminService, 'userSearch').and.returnValue(deferred.promise)
     var res = {result: {response: {content: [
-            { organisations: [{ organisationsName: 'organisationsName' }] },
-             { organisations: [{ organisationsName: 'organisationsName' }] }] }}}// {responseCode: 'OK', { result: { response: { content: [{ lastName: 'xyz', identifier: 1213 },{ lastName: 'ABC', identifier: 18913 }] }}}}
+      { organisations: [{ organisationsName: 'organisationsName' }] },
+      { organisations: [{ organisationsName: 'organisationsName' }] }] }}}// {responseCode: 'OK', { result: { response: { content: [{ lastName: 'xyz', identifier: 1213 },{ lastName: 'ABC', identifier: 18913 }] }}}}
     deferred.resolve(res)
     adminCtl.downloadUsers('Users', res.result.response.content)
     adminService.userSearch()
@@ -142,10 +142,10 @@ describe('Controller: adminController', function () {
     var res = {org: {status: ['INACTIVE', 'ACTIVE', 'BLOCKED', 'RETIRED']}}
     deferred.resolve(res)
     adminCtl.downloadUsers('Organisations', [
-            { status: 'INACTIVE' },
-            { status: 'ACTIVE' },
-            { status: 'BLOCKED' },
-            { status: 'RETIRED' }])
+      { status: 'INACTIVE' },
+      { status: 'ACTIVE' },
+      { status: 'BLOCKED' },
+      { status: 'RETIRED' }])
     adminService.orgSearch()
     scope.$apply()
     var response = adminService.orgSearch().$$state.value
@@ -158,8 +158,8 @@ describe('Controller: adminController', function () {
   xit('should add user search result in csv to download', function (done) {
     spyOn(adminCtl, 'addSearchResultInExcel').and.callThrough()
     var res = {result: {response: {content: [
-            { organisations: [{ organisationsName: 'organisationsName' }] },
-             { organisations: [{ organisationsName: 'organisationsName' }] }] }}}
+      { organisations: [{ organisationsName: 'organisationsName' }] },
+      { organisations: [{ organisationsName: 'organisationsName' }] }] }}}
     adminCtl.addSearchResultInExcel('Users', res.result.response.content)
     scope.$apply()
     expect(adminCtl.addSearchResultInExcel).toHaveBeenCalled()

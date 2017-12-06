@@ -12,60 +12,60 @@ describe('ObjectStore', () => {
   describe('createObject', () => {
     it('should throw error when abtract method is called', () => {
       objectStore.createObject()
-      .then((data) => {
+        .then((data) => {
 
-      })
-      .catch((error) => {
-        expect(error).to.eql('cannot call abstract method')
-      })
+        })
+        .catch((error) => {
+          expect(error).to.eql('cannot call abstract method')
+        })
     })
   })
 
   describe('findObject', () => {
     it('should throw error when abtract method is called', () => {
       objectStore.findObject()
-      .then((data) => {
+        .then((data) => {
 
-      })
-      .catch((error) => {
-        expect(error).to.eql('cannot call abstract method')
-      })
+        })
+        .catch((error) => {
+          expect(error).to.eql('cannot call abstract method')
+        })
     })
   })
 
   describe('updateObjectById', () => {
     it('should throw error when abtract method is called', () => {
       objectStore.updateObjectById()
-      .then((data) => {
+        .then((data) => {
 
-      })
-      .catch((error) => {
-        expect(error).to.eql('cannot call abstract method')
-      })
+        })
+        .catch((error) => {
+          expect(error).to.eql('cannot call abstract method')
+        })
     })
   })
 
   describe('deleteObjectById', () => {
     it('should throw error when abtract method is called', () => {
       objectStore.deleteObjectById()
-      .then((data) => {
+        .then((data) => {
 
-      })
-      .catch((error) => {
-        expect(error).to.eql('cannot call abstract method')
-      })
+        })
+        .catch((error) => {
+          expect(error).to.eql('cannot call abstract method')
+        })
     })
   })
 
   describe('getObjectById', () => {
     it('should throw error when abtract method is called', () => {
       objectStore.getObjectById()
-      .then((data) => {
+        .then((data) => {
 
-      })
-      .catch((error) => {
-        expect(error).to.eql('cannot call abstract method')
-      })
+        })
+        .catch((error) => {
+          expect(error).to.eql('cannot call abstract method')
+        })
     })
   })
 })

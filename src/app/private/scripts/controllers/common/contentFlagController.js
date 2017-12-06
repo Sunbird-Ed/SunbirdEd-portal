@@ -4,7 +4,7 @@ angular.module('playerApp')
   .controller('contentFlagController', ['contentService', '$timeout', '$state', 'config',
     '$rootScope', 'toasterService', '$scope',
     function (contentService, $timeout, $state,
-            config, $rootScope, toasterService, $scope) {
+      config, $rootScope, toasterService, $scope) {
       var contentFlag = this
       contentFlag.showContentFlagModal = false
       contentFlag.userId = $rootScope.userId
@@ -29,7 +29,7 @@ angular.module('playerApp')
 
       }
       contentFlag.flagMessage = $scope.type === 'course' ? $rootScope.frmelmnts.instn.t0018
-                : $rootScope.frmelmnts.instn.t0019
+        : $rootScope.frmelmnts.instn.t0019
 
       contentFlag.hideContentFlagModal = function () {
         $('#contentFlagModal').modal('hide')

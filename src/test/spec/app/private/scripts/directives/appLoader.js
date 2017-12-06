@@ -7,7 +7,7 @@
 'use strict'
 
 describe('Directive: appLoader', function () {
-    // load the main module
+  // load the main module
   beforeEach(module('playerApp'))
 
   var element, compile, templateCache, scope,

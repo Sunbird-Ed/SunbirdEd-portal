@@ -78,7 +78,7 @@ class NotificationPayload {
     }).unknown()
   }
 
-    /**
+  /**
      * Used to validate the playload strucutre
      * @return {boolean} If the playload is in valid structure then it will returns the true else false
      */

@@ -7,7 +7,7 @@
 'use strict'
 
 describe('Controller: CollectionEditorController', function () {
-    // load the controller's module
+  // load the controller's module
   beforeEach(module('playerApp'))
   var contentService,
     scope,
@@ -32,7 +32,7 @@ describe('Controller: CollectionEditorController', function () {
     })
   }))
 
-    // Initialize the controller and a mock scope
+  // Initialize the controller and a mock scope
   beforeEach(inject(function ($rootScope, $controller, _contentService_, _$q_, _$timeout_, $state) {
     rootScope = $rootScope
     scope = $rootScope.$new()

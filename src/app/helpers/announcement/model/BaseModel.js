@@ -4,7 +4,7 @@
 
 const _ = require('lodash')
 let Joi = require('joi')
-    /**
+/**
      * Which is used schema validation any child schema can overide.
      */
 class Model {
@@ -19,7 +19,7 @@ class Model {
      */
     this.apiSchema = apiSchema
   }
-    /**
+  /**
      * It validates the object based on the respective schema
      * @param  {Object} object - The object which is need to be validate.
      * @param  {Object} schema - Defined schema which defines the structure or format of object.

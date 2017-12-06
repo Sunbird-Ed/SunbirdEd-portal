@@ -7,8 +7,8 @@ const _ = require('lodash')
 const envHelper = require('./environmentVariablesHelper.js')
 const appName = 'playerApp'
 const resBundlesArr = [
-    { name: 'frmelmnts', path: path.join(__dirname, '/./../resourcebundles/data/formElements/'), dest: path.join(__dirname, '/./../common/js/') },
-    { name: 'messages', path: path.join(__dirname, '/./../resourcebundles/data/messages/'), dest: path.join(__dirname, '/./../common/js/') }
+  { name: 'frmelmnts', path: path.join(__dirname, '/./../resourcebundles/data/formElements/'), dest: path.join(__dirname, '/./../common/js/') },
+  { name: 'messages', path: path.join(__dirname, '/./../resourcebundles/data/messages/'), dest: path.join(__dirname, '/./../common/js/') }
 ]
 
 const readFiles = function (dirname) {

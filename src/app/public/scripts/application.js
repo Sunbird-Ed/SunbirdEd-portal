@@ -26,7 +26,7 @@ angular.module('loginApp', [
         alert(atob(error))
       }
 
-          /**
+      /**
            * Delete redirect url if user direct close the window
            */
       $(window).on('onunload', function () {

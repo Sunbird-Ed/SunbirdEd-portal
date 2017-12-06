@@ -1,5 +1,5 @@
 var openModal = function () {
-    // Get the modal
+  // Get the modal
   var modal = document.getElementById('org-list-model')
   if (!modal) {
     modal = document.createElement('div')
@@ -8,7 +8,7 @@ var openModal = function () {
     var styleNode = document.createElement('style')
     styleNode.type = 'text/css'
     var cssText = '.modal{display:none;position:fixed;z-index:1;padding-top:100px;left:0;top:0;width:100%;height:100%;background-color:#000;background-color:rgba(0,0,0,.4)}.modal-content{position:relative;background-color:#fefefe;margin:auto;padding:0;border:1px solid #888;width:80%;box-shadow:0 4px 8px 0 rgba(0,0,0,.2),0 6px 20px 0 rgba(0,0,0,.19);-webkit-animation-name:animatetop;-webkit-animation-duration:.4s;animation-name:animatetop;animation-duration:.4sborder-radius: 6px}@-webkit-keyframes animatetop{from{top:-300px;opacity:0}to{top:0;opacity:1}}@keyframes animatetop{from{top:-300px;opacity:0}to{top:0;opacity:1}}.close{color:#333;float:right;font-size:28px;font-weight:700}.close:focus,.close:hover{color:#000;text-decoration:none;cursor:pointer}.modal-footer,.modal-header{padding:2px 16px;background-color:#fff;color:#222;border-radius:7px}.modal-body{padding:16px 16px;height:400px;overflow-y:auto}.organizationListDataHome{padding:0px 11px 10px 10px!important;height:350px;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;-ms-flex-wrap:wrap;flex-wrap:wrap;-webkit-box-align:start;-ms-flex-align:start;align-items:flex-start;-ms-flex-line-pack:start;align-content:space-between;white-space:nowrap;overflow-x:auto;overflow-y:hidden}.organizationListViewHome{margin:0 10px 20px 0};'
-        // browser detection (based on prototype.js)
+    // browser detection (based on prototype.js)
     if (window.attachEvent && !window.opera) {
       styleNode.styleSheet.cssText = cssText
     } else {
@@ -23,7 +23,7 @@ var openModal = function () {
   modal.style.display = 'block'
   loadData()
 
-// When the user clicks anywhere outside of the modal, close it
+  // When the user clicks anywhere outside of the modal, close it
   window.onclick = function (event) {
     if (event.target == modal) {
       modal.style.display = 'none'

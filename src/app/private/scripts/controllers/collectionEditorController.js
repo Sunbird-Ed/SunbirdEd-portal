@@ -3,8 +3,8 @@
 angular.module('playerApp')
   .controller('CollectionEditorController', ['config', '$stateParams', 'toasterService', '$sce',
     '$state', '$timeout', '$rootScope', 'contentService', 'permissionsService', 'workSpaceUtilsService', function (config,
-    $stateParams, toasterService, $sce, $state, $timeout, $rootScope, contentService,
-    permissionsService, workSpaceUtilsService) {
+      $stateParams, toasterService, $sce, $state, $timeout, $rootScope, contentService,
+      permissionsService, workSpaceUtilsService) {
       var collectionEditor = this
       collectionEditor.contentId = $stateParams.contentId
       collectionEditor.openCollectionEditor = function (data) {
@@ -78,11 +78,11 @@ angular.module('playerApp')
         window.config.editorConfig.isFalgReviewer = false
         if ($stateParams.state === 'WorkSpace.UpForReviewContent' &&
                             _.intersection(permissionsService.getCurrentUserRoles(),
-                           ['CONTENT_REVIEWER', 'CONTENT_REVIEW']).length > 0) {
+                              ['CONTENT_REVIEWER', 'CONTENT_REVIEW']).length > 0) {
           window.config.editorConfig.publishMode = true
         } else if ($stateParams.state === 'WorkSpace.FlaggedContent' &&
                             _.intersection(permissionsService.getCurrentUserRoles(),
-                           ['FLAG_REVIEWER']).length > 0) {
+                              ['FLAG_REVIEWER']).length > 0) {
           window.config.editorConfig.isFalgReviewer = true
         }
 
