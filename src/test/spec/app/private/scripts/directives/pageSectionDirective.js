@@ -7,7 +7,7 @@
 'use strict'
 
 describe('Directive: pageSectionDirective', function () {
-    // load the main module
+  // load the main module
   beforeEach(module('playerApp'))
 
   beforeEach(inject(function ($rootScope, $controller) {
@@ -28,7 +28,7 @@ describe('Directive: pageSectionDirective', function () {
   }))
 
   it('Initialize page section directiove for course', function () {
-    element = compile(" <page-section type='course'></page-section>")(scope)
+    element = compile(' <page-section type=\'course\'></page-section>')(scope)
     scope.$digest()
     expect(element.text()).toContain('Page Section')
   })

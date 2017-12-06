@@ -1,10 +1,10 @@
 'use strict'
 
 describe('Filter: dateWithMDY', function () {
-    // load the filter's module
+  // load the filter's module
   beforeEach(module('playerApp'))
 
-    // initialize a new instance of the filter before each test
+  // initialize a new instance of the filter before each test
   var dateWithMDY
   beforeEach(inject(function ($filter) {
     dateWithMDY = $filter('dateFilterWithMDY')
@@ -17,10 +17,10 @@ describe('Filter: dateWithMDY', function () {
 })
 
 describe('Filter: dateXTimeAgo', function () {
-    // load the filter's module
+  // load the filter's module
   beforeEach(module('playerApp'))
 
-    // initialize a new instance of the filter before each test
+  // initialize a new instance of the filter before each test
   var dateXTimeAgo
   beforeEach(inject(function ($filter) {
     dateXTimeAgo = $filter('dateFilterXTimeAgo')

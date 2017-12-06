@@ -1,7 +1,7 @@
 'use strict'
 
 describe('Controller:BatchListController', function () {
-    // load the controller's module
+  // load the controller's module
   beforeEach(module('playerApp'))
 
   beforeEach(inject(function ($rootScope, $controller) {

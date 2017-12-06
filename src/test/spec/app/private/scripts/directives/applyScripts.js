@@ -7,7 +7,7 @@
 'use strict'
 
 describe('Directive: applyScript', function () {
-    // load the directive's module
+  // load the directive's module
   beforeEach(module('playerApp'))
 
   var element, ctrl, compile, templateCache, scope, timeout
