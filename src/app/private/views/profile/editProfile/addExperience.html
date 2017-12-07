@@ -27,17 +27,17 @@
         </div>
     </div>
 
-    <div class="inline fields" ng-if="!profileCtrl.currentJobLocation">
+    <div class="inline fields">
         <label for="address">{{$root.frmelmnts.lbl.iscurrentjob}}</label>
         <div class="field">
             <div class="ui radio checkbox ">
-                <input type="radio" name="radio" value='true' ng-model="profileCtrl.newExperience.isCurrentJob">
+                <input type="radio" name="radio" ng-value='true' ng-model="profileCtrl.newExperience.isCurrentJob">
                 <label>{{$root.frmelmnts.lbl.tcyes}}</label>
             </div>
         </div>
         <div class="field">
             <div class="ui radio checkbox ">
-                <input type="radio" name="radio" value='false' ng-model="profileCtrl.newExperience.isCurrentJob">
+                <input type="radio" name="radio" ng-value='false' ng-model="profileCtrl.newExperience.isCurrentJob">
                 <label>{{$root.frmelmnts.lbl.tcno}}</label>
             </div>
         </div>
