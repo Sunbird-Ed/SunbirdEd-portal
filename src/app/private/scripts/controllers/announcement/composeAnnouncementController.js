@@ -5,7 +5,6 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
   function ($rootScope, $scope, $state, $stateParams, $timeout, config, toasterService, fileUpload,
         AnnouncementModel, announcementAdapter, portalTelemetryService) {
     var composeAnn = this
-    composeAnn.senderlist = []
     composeAnn.targetIds = []
     composeAnn.disableBtn = true
     composeAnn.showUrlField = false
@@ -157,9 +156,9 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         }
         var selectRecipientBtn = angular.element(document.querySelector(
                     '#selectRecipientBtn'))
-        if (composeAnn.announcement.details.title && composeAnn.announcement.details.from &&
-                    composeAnn.announcement.details.type && (composeAnn.uploadAttchement ||
-                        composeAnn.announcement.details.description || links.length)) {
+        if (composeAnn.announcement.title && composeAnn.announcement.from &&
+                    composeAnn.announcement.type && (composeAnn.uploadAttchement ||
+                        composeAnn.announcement.description || links.length)) {
           composeAnn.disableBtn = false
           selectRecipientBtn.removeClass('disabled')
         } else {
@@ -368,6 +367,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
           composeAnn.getResend($stateParams.announcementId)
         } else {
           composeAnn.announcement = new AnnouncementModel.Announcement({})
+          composeAnn.announcement.hideDate = true
         }
       }
       if (composeAnn.stepNumber === 1) {
@@ -444,7 +444,8 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
          */
     composeAnn.getResend = function (announcementId) {
       announcementAdapter.getResend(announcementId).then(function (apiResponse) {
-        composeAnn.announcement = new AnnouncementModel.Announcement(apiResponse.result)
+        composeAnn.announcement = new AnnouncementModel.Announcement(apiResponse.result.announcement)
+        composeAnn.announcement.hideDate = true
         composeAnn.initializeModal()
         composeAnn.enableRecepientBtn()
         composeAnn.initializeFileUploader(true)
@@ -464,18 +465,11 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
          */
     composeAnn.getDefinitions = function (rootOrgId) {
       announcementAdapter.getDefinitions(rootOrgId).then(function (response) {
-        if (response.result.announcementTypes.content) {
-          composeAnn.announcementType = _.map(response.result.announcementTypes
-                        .content, 'name')
+        if (response.result.announcementTypes) {
+          composeAnn.announcementType = _.map(response.result.announcementTypes, 'name')
         }
-        if (response.result.senderList) {
-          angular.forEach(response.result.senderList, function (value, key) {
-            composeAnn.senderlist.push(value)
-          })
-        }
-        if (composeAnn.announcement.details.type !== '') {
-          $('#announcementType').dropdown('set text', composeAnn.announcement.details
-                        .type)
+        if (composeAnn.announcement.type !== '') {
+          $('#announcementType').dropdown('set text', composeAnn.announcement.type)
         }
       }, function (err) {
         if (err) {
