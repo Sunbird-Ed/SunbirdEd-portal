@@ -31,8 +31,8 @@ const reqDataLimitOfContentEditor = '50mb'
 const reqDataLimitOfContentUpload = '30mb'
 const ekstepEnv = envHelper.EKSTEP_ENV
 const appId = envHelper.APPID
-const defaultTenant = envHelper.DEFAUULT_TENANT;
-const portal = this;
+const defaultTenant = envHelper.DEFAUULT_TENANT
+const portal = this
 
 let cassandraCP = envHelper.PORTAL_CASSANDRA_URLS
 
