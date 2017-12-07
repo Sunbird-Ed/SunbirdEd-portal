@@ -30,6 +30,7 @@ angular.module('playerApp')
       profile.formElmnt = configService.getProfileAddInfformElmnt()
       profile.languages = profile.formElmnt.languages
       profile.subjects = profile.formElmnt.subjects
+      profile.yearOfPassing = configService.getYearOfPassingValues()
       profile.grades = profile.formElmnt.grades
       profile.experienceForm = false
       profile.isCurrentJobExist = false
@@ -39,6 +40,8 @@ angular.module('playerApp')
       profile.quantityOfContent = 4
       profile.badges = []
       profile.isViewMore = true
+
+      console.log('profile.yearPassing----------', profile.yearOfPassing)
 
       var orgIds = []
       _.forEach($rootScope.organisations, function (org) {
@@ -513,6 +516,14 @@ angular.module('playerApp')
         }, 100)
       }
 
+      profile.setPassingYears = function () {
+        $timeout(function () {
+          $('#passingYears').dropdown()
+          $('#passingYears').dropdown('refresh')
+          $('#passingYears').dropdown('set selected', profile.yearOfPassing)
+        }, 100)
+      }
+
       profile.setEditSubject = function (name, index, subjects) {
         $timeout(function () {
           var id = '#' + name + index
@@ -545,20 +556,20 @@ angular.module('playerApp')
           return content.appIcon
         }
         switch (mimeType) {
-        case config.MIME_TYPE.pdf:
-          return '/common/images/pdf.png'
-        case config.MIME_TYPE.mp4:
-          return '/common/images/mp4.png'
-        case config.MIME_TYPE.webm:
-          return '/common/images/mp4.png'
-        case config.MIME_TYPE.pYoutube:
-          return '/common/images/youtubeFileIcon.jpg'
-        case config.MIME_TYPE.youtube:
-          return '/common/images/youtubeFileIcon.jpg'
-        case config.MIME_TYPE.h5p || config.MIME_TYPE.ePub:
-          return '/common/images/zipFileIcon.png'
-        default:
-          return '/common/images/zipFileIcon.png'
+          case config.MIME_TYPE.pdf:
+            return '/common/images/pdf.png'
+          case config.MIME_TYPE.mp4:
+            return '/common/images/mp4.png'
+          case config.MIME_TYPE.webm:
+            return '/common/images/mp4.png'
+          case config.MIME_TYPE.pYoutube:
+            return '/common/images/youtubeFileIcon.jpg'
+          case config.MIME_TYPE.youtube:
+            return '/common/images/youtubeFileIcon.jpg'
+          case config.MIME_TYPE.h5p || config.MIME_TYPE.ePub:
+            return '/common/images/zipFileIcon.png'
+          default:
+            return '/common/images/zipFileIcon.png'
         }
       }
 
@@ -632,58 +643,58 @@ angular.module('playerApp')
       }
       profile.updateAction = function (field) {
         switch (field) {
-        case 'education':
-          {
-            profile.educationForm = true
-            profile.isNewEducation = true
-            profile.newEducation = {}
-            $timeout(function () { $anchorScroll('educationForm') }, 100)
-          }
-          break
-        case 'jobProfile':
-          {
-            profile.experienceForm = true
-            profile.isNewExperience = true
-            profile.newExperience = {}
-            $timeout(function () { $anchorScroll('jobProfileForm') }, 100)
-          }
-          break
-        case 'address':
-          {
-            profile.addressForm = true
-            profile.isNewAddress = true
-            profile.newAddress = {}
-            $timeout(function () { $anchorScroll('addressForm') }, 100)
-          }
-          break
-        case 'avatar':
-          {
-            profile.openImageBrowser()
-          }
-          break
-        case 'profileSummary':
-          {
-            profile.openDiscriptionEdit = true
-          }
-          break
-        case 'lastName':
-        case 'email':
-        case 'phone':
-        case 'dob':
-        case 'gender':
-        case 'grade':
-        case 'language':
-        case 'location':
-        case 'subject':
-          {
-            profile.basicProfileForm = true
-            $timeout(function () { $anchorScroll('basicInfoForm') }, 100)
-          }
-          break
-        default:
-        {
+          case 'education':
+            {
+              profile.educationForm = true
+              profile.isNewEducation = true
+              profile.newEducation = {}
+              $timeout(function () { $anchorScroll('educationForm') }, 100)
+            }
+            break
+          case 'jobProfile':
+            {
+              profile.experienceForm = true
+              profile.isNewExperience = true
+              profile.newExperience = {}
+              $timeout(function () { $anchorScroll('jobProfileForm') }, 100)
+            }
+            break
+          case 'address':
+            {
+              profile.addressForm = true
+              profile.isNewAddress = true
+              profile.newAddress = {}
+              $timeout(function () { $anchorScroll('addressForm') }, 100)
+            }
+            break
+          case 'avatar':
+            {
+              profile.openImageBrowser()
+            }
+            break
+          case 'profileSummary':
+            {
+              profile.openDiscriptionEdit = true
+            }
+            break
+          case 'lastName':
+          case 'email':
+          case 'phone':
+          case 'dob':
+          case 'gender':
+          case 'grade':
+          case 'language':
+          case 'location':
+          case 'subject':
+            {
+              profile.basicProfileForm = true
+              $timeout(function () { $anchorScroll('basicInfoForm') }, 100)
+            }
+            break
+          default:
+            {
 
-        }
+            }
         }
       }
       profile.getSkills = function () {

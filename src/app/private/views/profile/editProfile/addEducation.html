@@ -7,13 +7,17 @@
         </div>
         <div class="  field">
             <label>{{$root.frmelmnts.lbl.yop}}</label>
-            <input type="text" name="" ng-model="profileCtrl.newEducation.yearOfPassing">
+            <!-- <input type="text" name="yearop" ng-model="profileCtrl.newEducation.yearOfPassing"> -->
+            <div class="field" ng-init="profileCtrl.setPassingYears()">
+                <select id="passingYears" apply-script class="ui fluid dropdown genderSelectionDropDown" ng-model="profileCtrl.newEducation.yearOfPassing" ng-value="option.value" ng-options="years for years in ::profileCtrl.yearOfPassing">
+                </select>
+            </div>
         </div>
     </div>
     <div class="two fields">
         <div class=" field">
             <label>{{$root.frmelmnts.lbl.percentage}}</label>
-            <input type="text" name="" ng-model="profileCtrl.newEducation.percentage">
+            <input type="text" name="prcntg" ng-model="profileCtrl.newEducation.percentage">
         </div>
         <div class="  field">
             <label>{{$root.frmelmnts.lbl.grade}}</label>

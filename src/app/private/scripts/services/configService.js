@@ -85,4 +85,19 @@ angular.module('playerApp')
           'searchSelectionKeys': config.searchSelectionKeys
         }
       }
+
+      /**
+               * @method getYearOfPassingValues
+               * @get year of passing values
+               * @for profile education
+               */
+
+      this.getYearOfPassingValues = function () {
+        var yearOfPassing = []
+        var currentYear = (new Date()).getUTCFullYear()
+        for (var i = 1950; i <= currentYear; i++) {
+          yearOfPassing.push(i)
+        }
+        return yearOfPassing.reverse()
+      }
     }])
