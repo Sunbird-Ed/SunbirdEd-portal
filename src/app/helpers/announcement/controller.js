@@ -159,7 +159,7 @@ class AnnouncementController {
                 values: {
                     'id': announcementId,
                     'sourceid': data.sourceId,
-                    'createddate': dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo"),
+                    'createddate': dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo", true),
                     'userid': data.userId,
                     'details': {
                         'title': data.title,
@@ -836,7 +836,7 @@ class AnnouncementController {
                     'announcementid': requestObj.announcementId,
                     'channel': requestObj.channel,
                     'activity': metricsActivity,
-                    'createddate': dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo"),
+                    'createddate': dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo", true),
                 }
             }
             this.announcementMetricsStore.createObject(query)
@@ -1174,8 +1174,8 @@ class AnnouncementController {
      * @param  {Object} addonMap
      * @return {Object}           [description]
      */
-    __getTransformationMap(baseMap, addonMap) {
-        let transformations = _.merge(baseMap, addonMap)
+    __getTransformationMap(baseMap, addonMap = {}) {
+        let transformations = _.merge({}, baseMap, addonMap)
         return {item: transformations}
     }
 

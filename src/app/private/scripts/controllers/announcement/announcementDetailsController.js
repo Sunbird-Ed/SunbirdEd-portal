@@ -14,7 +14,7 @@ angular.module('playerApp')
        */
       announcementDetailsData.renderAnnouncement = function () {
         announcementAdapter.getAnnouncementById($stateParams.announcementId).then(function (apiResponse) {
-          announcementDetailsData.announcementDetails = apiResponse.result
+          announcementDetailsData.announcementDetails = apiResponse.result.announcement
           announcementDetailsData.showLoader = false
           if (apiResponse.result.userid === $rootScope.userId) {
             announcementDetailsData.announcementDetails.showActions = true

@@ -99,10 +99,10 @@ angular.module('playerApp').service('announcementAdapter', ['$rootScope', '$http
     this.createAnnouncement = function (annoucementObj) {
       var data = {
         request: {
-          title: annoucementObj.details.title,
-          from: annoucementObj.details.from,
-          type: annoucementObj.details.type,
-          description: annoucementObj.details.description,
+          title: annoucementObj.title,
+          from: annoucementObj.from,
+          type: annoucementObj.type,
+          description: annoucementObj.description,
           links: annoucementObj.links,
           sourceId: annoucementObj.sourceId,
           target: annoucementObj.target,
@@ -123,7 +123,7 @@ angular.module('playerApp').service('announcementAdapter', ['$rootScope', '$http
       var data = {
         request: {
           'rootOrgId': rootOrgId,
-          'definitions': ['senderList', 'announcementTypes']
+          'definitions': ['announcementTypes']
         }
       }
       return handleHttpRequest(config.URL.ANNOUNCEMENT.DEFINITIONS, data, 'POST')
@@ -173,7 +173,7 @@ angular.module('playerApp').service('announcementAdapter', ['$rootScope', '$http
     this.deleteAnnouncement = function (announcementId) {
       var data = {
         'request': {
-          'announcenmentId': announcementId
+          'announcementId': announcementId
         }
       }
       var URL = config.URL.ANNOUNCEMENT.CANCEL

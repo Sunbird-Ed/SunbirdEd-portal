@@ -5,13 +5,12 @@ angular.module('playerApp')
     function Announcement (atts) {
       this.sourceId = atts.sourceid || ''
       this.attachments = atts.attachments || []
-      this.createdDate = new Date(atts.createddate) || null
+      this.createdDate = new Date(atts.createdDate) || null
       this.createdBy = atts.userid || null
-      this.details = atts.details || {}
-      this.details.description = this.details.description || ''
-      this.details.from = this.details.from || ''
-      this.details.title = this.details.title || ''
-      this.details.type = this.details.type || ''
+      this.description = this.description || atts.description || ''
+      this.from = this.from || atts.from || ''
+      this.title = this.title || atts.title || ''
+      this.type = this.type || atts.type || ''
       this.links = atts.links || []
       this.id = atts.id || ''
       this.target = atts.target || {}

@@ -42,7 +42,7 @@ function sendSuccessResponse(res, id, result, code = HttpStatus.OK) {
     res.send({
         'id': API_ID_BASE + '.' + id,
         'ver': API_VERSION,
-        'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
+        'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo', true),
         'params': {
             'resmsgid': uuidv1(),
             'msgid': null,
@@ -64,7 +64,7 @@ function sendErrorResponse(res, id, message, httpCode = HttpStatus.BAD_REQUEST) 
     res.send({
         'id': API_ID_BASE + '.' + id,
         'ver': API_VERSION,
-        'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
+        'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo', true),
         'params': {
             'resmsgid': uuidv1(),
             'msgid': null,
