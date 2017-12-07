@@ -46,28 +46,28 @@
                 <div class="field required">
                   <label>{{$root.frmelmnts.lbl.anncmnttitle}}</label>
                   <div class="field form-group dropdown-margin-left" ng-required="true">
-                    <input type="text" name="title" id="announcementTitle" placeholder="{{$root.frmelmnts.instn.t0057}}" ng-model="composeAnn.announcement.details.title" ng-maxlength="100" ng-change="composeAnn.enableRecepientBtn()">
-                    <section ng-if="composeAnn.announcement.details.title.length" class="float-ContentRight">{{composeAnn.announcement.details.title.length}} / 100</section>
+                    <input type="text" name="title" id="announcementTitle" placeholder="{{$root.frmelmnts.instn.t0057}}" ng-model="composeAnn.announcement.title" ng-maxlength="100" ng-change="composeAnn.enableRecepientBtn()">
+                    <section ng-if="composeAnn.announcement.title.length" class="float-ContentRight">{{composeAnn.announcement.title.length}} / 100</section>
                     <p ng-show="announcementForm.title.$error.maxlength" class="createAnnErrorMsg">Title is too long</p>
                   </div>
                 </div>
                  <div class="field required dropdown-margin-left">
                   <label>{{$root.frmelmnts.lbl.anncmntfrom}}</label>
                   <div class="field">
-                    <input type="text" name="from" placeholder="{{$root.frmelmnts.lbl.anncmntfromDesc}}" ng-model="composeAnn.announcement.details.from" ng-change="composeAnn.enableRecepientBtn()">
+                    <input type="text" name="from" placeholder="{{$root.frmelmnts.lbl.anncmntfromDesc}}" ng-model="composeAnn.announcement.from" ng-change="composeAnn.enableRecepientBtn()">
                   </div>
                 </div>
                 <div class="field required dropdown-margin-left">
                   <label>{{$root.frmelmnts.lbl.anncmnttype}}</label>
-                  <select name="medium" class="ui fluid dropdown" id="announcementType" ng-options=" audience for audience in composeAnn.announcementType" ng-model="composeAnn.announcement.details.type">
+                  <select name="medium" class="ui fluid dropdown" id="announcementType" ng-options=" audience for audience in composeAnn.announcementType" ng-model="composeAnn.announcement.type" ng-change="composeAnn.enableRecepientBtn()">
                     <option value="">{{$root.frmelmnts.instn.t0051}}</option>
                   </select>
                 </div>
                 <div class="field dropdown-margin-left">
                   <label>{{$root.frmelmnts.lbl.anncmntdesc}}</label>
                   <div class="field">
-                    <input type="text" name="description" placeholder="{{$root.frmelmnts.instn.t0052}}" ng-model="composeAnn.announcement.details.description" ng-maxlength="1200" ng-change="composeAnn.enableRecepientBtn()">
-                    <section ng-if="composeAnn.announcement.details.description.length" class="float-ContentRight">{{composeAnn.announcement.details.description.length}} / 1200</section>
+                    <input type="text" name="description" placeholder="{{$root.frmelmnts.instn.t0052}}" ng-model="composeAnn.announcement.description" ng-maxlength="1200" ng-change="composeAnn.enableRecepientBtn()">
+                    <section ng-if="composeAnn.announcement.description.length" class="float-ContentRight">{{composeAnn.announcement.description.length}} / 1200</section>
                     <p class="createAnnErrorMsg" ng-show='announcementForm.description.$error.maxlength'>Description is too long.
                     </p>
                   </div>
@@ -116,7 +116,7 @@
             </div>
           </div>
         </div>
-        <div ng-if="composeAnn.stepNumber === 4" class="ui grid">
+        <div ng-if="composeAnn.stepNumber === 4" class="ui grid margin-right-none">
           <div class="box width-100 eight wide column margin-left-17 createAnnFormScroller">
             <announcement-details-directive announcement-details="composeAnn.announcement"></announcement-details-directive>
           </div>

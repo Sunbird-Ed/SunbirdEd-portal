@@ -62,80 +62,166 @@ angular.module('playerApp')
              */
       this.setBreaCrumbs = function (stateName) {
         switch (stateName) {
-        case 'Home':
-          $rootScope.breadCrumbsData = null
-          break
-        case 'Courses':
-          $rootScope.breadCrumbsData = [{
-            name: 'Home',
-            link: 'home'
-          }, {
-            name: 'Courses',
-            link: 'learn'
-          }]
+          case 'Home':
+            $rootScope.breadCrumbsData = null
+            break
+          case 'Courses':
+            $rootScope.breadCrumbsData = [{
+              name: 'Home',
+              link: 'home'
+            }, {
+              name: 'Courses',
+              link: 'learn'
+            }]
 
-          break
-        case 'Resources':
+            break
+          case 'Resources':
 
-          $rootScope.breadCrumbsData = [{
-            name: 'Home',
-            link: 'home'
-          }, {
-            name: 'Library',
-            link: 'resources'
-          }]
+            $rootScope.breadCrumbsData = [{
+              name: 'Home',
+              link: 'home'
+            }, {
+              name: 'Library',
+              link: 'resources'
+            }]
 
-          break
-        case 'CourseNote':
+            break
+          case 'CourseNote':
 
-          var courseParams = sessionService.getSessionData('COURSE_PARAMS')
-          $rootScope.breadCrumbsData = [{
-            name: 'Courses',
-            link: 'learn'
-          }, {
-            name: courseParams.courseName,
-            link: '/course/' + courseParams.courseId + '/' + courseParams.lectureView
-          }, {
-            name: 'Notes',
-            link: ''
-          }]
+            var courseParams = sessionService.getSessionData('COURSE_PARAMS')
+            $rootScope.breadCrumbsData = [{
+              name: 'Courses',
+              link: 'learn'
+            }, {
+              name: courseParams.courseName,
+              link: '/course/' + courseParams.courseId + '/' + courseParams.lectureView
+            }, {
+              name: 'Notes',
+              link: ''
+            }]
 
-          break
-        case 'ContentNote':
+            break
+          case 'ContentNote':
 
-          $rootScope.breadCrumbsData = [{
-            name: 'Library',
-            link: 'resources'
-          }, {
-            name: $stateParams.contentName,
-            link: 'content/' + $stateParams.contentId + '/' + $stateParams.contentName
-          }, {
-            name: 'Notes',
-            link: ''
-          }]
+            $rootScope.breadCrumbsData = [{
+              name: 'Library',
+              link: 'resources'
+            }, {
+              name: $stateParams.contentName,
+              link: 'content/' + $stateParams.contentId + '/' + $stateParams.contentName
+            }, {
+              name: 'Notes',
+              link: ''
+            }]
 
-          break
-        case 'CourseContentNote':
+            break
+          case 'CourseContentNote':
 
-          var courseParams = sessionService.getSessionData('COURSE_PARAMS')
-          var courseLink = '/course/' + courseParams.courseId + '/' + courseParams.lectureView
-          var contentLink = courseLink + '/' + courseParams.contentId + '/' + courseParams.contentIndex
-          $rootScope.breadCrumbsData = [{
-            name: courseParams.courseName,
-            link: courseLink
-          }, {
-            name: courseParams.contentName,
-            link: contentLink
-          }, {
-            name: 'Notes',
-            link: ''
-          }]
+            var courseParams = sessionService.getSessionData('COURSE_PARAMS')
+            var courseLink = '/course/' + courseParams.courseId + '/' + courseParams.lectureView
+            var contentLink = courseLink + '/' + courseParams.contentId + '/' + courseParams.contentIndex
+            $rootScope.breadCrumbsData = [{
+              name: courseParams.courseName,
+              link: courseLink
+            }, {
+              name: courseParams.contentName,
+              link: contentLink
+            }, {
+              name: 'Notes',
+              link: ''
+            }]
 
-          break
-        case 'Toc':
+            break
+          case 'Toc':
 
-          var courseParams = sessionService.getSessionData('COURSE_PARAMS')
-          if (courseParams) {
+            var courseParams = sessionService.getSessionData('COURSE_PARAMS')
+            if (courseParams) {
+              $rootScope.breadCrumbsData = [{
+                name: 'Home',
+                link: 'home'
+              }, {
+                name: 'Courses',
+                link: 'learn'
+              }, {
+                name: courseParams ? courseParams.courseName : '',
+                link: ''
+              }]
+            }
+            break
+          case 'announcementOutbox':
+            $rootScope.breadCrumbsData = [{
+              name: 'Home',
+              link: 'home'
+            }, {
+              name: 'Profile',
+              link: ''
+            }, {
+              name: 'My Announcements',
+              link: ''
+            }]
+
+            break
+          case 'announcementInbox':
+
+            $rootScope.breadCrumbsData = [{
+              name: 'Home',
+              link: 'home'
+            }, {
+              name: 'Announcements',
+              link: ''
+            }]
+
+            break
+          case 'Profile':
+
+            $rootScope.breadCrumbsData = [{
+              name: 'Home',
+              link: 'home'
+            }, {
+              name: 'Profile',
+              link: ''
+            }]
+
+            break
+          case 'Player':
+            if ($stateParams.contentName) {
+              $rootScope.breadCrumbsData = [{
+                name: 'Home',
+                link: 'home'
+              }, {
+                name: 'Library',
+                link: 'resources'
+              }, {
+                name: $stateParams.contentName,
+                link: ''
+              }]
+            }
+            break
+          case 'Search':
+            if ($rootScope.searchKey === 'Users' ||
+                            $rootScope.searchKey === 'Organisations') {
+              $rootScope.breadCrumbsData = [{
+                name: 'Home',
+                link: 'home'
+              }, { name: 'Profile',
+                link: 'profile'
+              }, {
+                name: 'Search',
+                link: ''
+              }]
+            } else {
+              $rootScope.breadCrumbsData = [{
+                name: 'Home',
+                link: 'home'
+              }, {
+                name: 'Search',
+                link: ''
+              }]
+            }
+
+            break
+          case 'TocPlayer':
+            var courseParams = sessionService.getSessionData('COURSE_PARAMS')
             $rootScope.breadCrumbsData = [{
               name: 'Home',
               link: 'home'
@@ -143,199 +229,113 @@ angular.module('playerApp')
               name: 'Courses',
               link: 'learn'
             }, {
-              name: courseParams ? courseParams.courseName : '',
+              name: courseParams.courseName,
               link: ''
             }]
-          }
-          break
-        case 'announcementOutbox':
-          $rootScope.breadCrumbsData = [{
-            name: 'Home',
-            link: 'home'
-          }, {
-            name: 'Profile',
-            link: ''
-          }, {
-            name: 'My Announcements',
-            link: ''
-          }]
 
-          break
-        case 'announcementInbox':
+            break
+          case 'WorkSpace':
 
-          $rootScope.breadCrumbsData = [{
-            name: 'Home',
-            link: 'home'
-          }, {
-            name: 'Announcements',
-            link: ''
-          }]
-
-          break
-        case 'Profile':
-
-          $rootScope.breadCrumbsData = [{
-            name: 'Home',
-            link: 'home'
-          }, {
-            name: 'Profile',
-            link: ''
-          }]
-
-          break
-        case 'Player':
-          if ($stateParams.contentName) {
             $rootScope.breadCrumbsData = [{
               name: 'Home',
               link: 'home'
             }, {
-              name: 'Library',
-              link: 'resources'
-            }, {
-              name: $stateParams.contentName,
-              link: ''
-            }]
-          }
-          break
-        case 'Search':
-          if ($rootScope.searchKey === 'Users' ||
-                            $rootScope.searchKey === 'Organisations') {
-            $rootScope.breadCrumbsData = [{
-              name: 'Home',
-              link: 'home'
-            }, { name: 'Profile',
+              name: 'Profile',
               link: 'profile'
             }, {
-              name: 'Search',
-              link: ''
+              name: $rootScope.frmelmnts.scttl.myworkspace,
+              link: 'workspace/content/create'
             }]
-          } else {
+
+            break
+          case 'EditContent':
+
             $rootScope.breadCrumbsData = [{
               name: 'Home',
               link: 'home'
             }, {
-              name: 'Search',
+              name: 'Profile',
+              link: 'profile'
+            }, {
+              name: $rootScope.frmelmnts.scttl.myworkspace,
+              link: 'workspace/content/create'
+            }, {
+              name: 'Edit Content',
               link: ''
             }]
-          }
 
-          break
-        case 'TocPlayer':
-          var courseParams = sessionService.getSessionData('COURSE_PARAMS')
-          $rootScope.breadCrumbsData = [{
-            name: 'Home',
-            link: 'home'
-          }, {
-            name: 'Courses',
-            link: 'learn'
-          }, {
-            name: courseParams.courseName,
-            link: ''
-          }]
+            break
+          case 'PreviewCollection':
+            if ($stateParams.name) {
+              $rootScope.breadCrumbsData = [{
+                name: 'Home',
+                link: 'home'
+              }, {
+                name: 'Library',
+                link: 'resources'
+              }, {
+                name: $stateParams.name,
+                link: ''
+              }]
+            }
+            break
+          case 'orgDashboard':
 
-          break
-        case 'WorkSpace':
-
-          $rootScope.breadCrumbsData = [{
-            name: 'Home',
-            link: 'home'
-          }, {
-            name: 'Profile',
-            link: 'profile'
-          }, {
-            name: $rootScope.frmelmnts.scttl.myworkspace,
-            link: 'workspace/content/create'
-          }]
-
-          break
-        case 'EditContent':
-
-          $rootScope.breadCrumbsData = [{
-            name: 'Home',
-            link: 'home'
-          }, {
-            name: 'Profile',
-            link: 'profile'
-          }, {
-            name: $rootScope.frmelmnts.scttl.myworkspace,
-            link: 'workspace/content/create'
-          }, {
-            name: 'Edit Content',
-            link: ''
-          }]
-
-          break
-        case 'PreviewCollection':
-          if ($stateParams.name) {
             $rootScope.breadCrumbsData = [{
               name: 'Home',
               link: 'home'
             }, {
-              name: 'Library',
-              link: 'resources'
+              name: 'Profile',
+              link: 'profile'
             }, {
-              name: $stateParams.name,
+              name: 'Organization Admin Dashboard',
               link: ''
             }]
-          }
-          break
-        case 'orgDashboard':
 
-          $rootScope.breadCrumbsData = [{
-            name: 'Home',
-            link: 'home'
-          }, {
-            name: 'Profile',
-            link: 'profile'
-          }, {
-            name: 'Organization Admin Dashboard',
-            link: ''
-          }]
+            break
+          case 'PublicProfile':
 
-          break
-        case 'PublicProfile':
+            $rootScope.breadCrumbsData = [{
+              name: 'Home',
+              link: 'home'
+            }, {
+              name: 'Profile',
+              link: 'profile'
+            }, {
+              name: $stateParams.userName,
+              link: ''
+            }]
 
-          $rootScope.breadCrumbsData = [{
-            name: 'Home',
-            link: 'home'
-          }, {
-            name: 'Profile',
-            link: 'profile'
-          }, {
-            name: $stateParams.userName,
-            link: ''
-          }]
+            break
+          case 'MyActivity':
 
-          break
-        case 'MyActivity':
+            $rootScope.breadCrumbsData = [{
+              name: 'Home',
+              link: 'home'
+            }, {
+              name: 'Profile',
+              link: 'profile'
+            }, {
+              name: 'Course Creator Dashboard',
+              link: ''
+            }]
 
-          $rootScope.breadCrumbsData = [{
-            name: 'Home',
-            link: 'home'
-          }, {
-            name: 'Profile',
-            link: 'profile'
-          }, {
-            name: 'Course Creator Dashboard',
-            link: ''
-          }]
+            break
+          case 'Setup':
 
-          break
-        case 'Setup':
+            $rootScope.breadCrumbsData = [{
+              name: 'Home',
+              link: 'home'
+            }, {
+              name: 'Setup',
+              link: 'setup'
+            }]
 
-          $rootScope.breadCrumbsData = [{
-            name: 'Home',
-            link: 'home'
-          }, {
-            name: 'Setup',
-            link: 'setup'
-          }]
-
-          break
-        default:
-        {
-          $rootScope.breadCrumbsData = null
-        }
+            break
+          default:
+            {
+              $rootScope.breadCrumbsData = null
+            }
         }
       }
       /**
@@ -400,7 +400,7 @@ angular.module('playerApp')
           }
         } else {
           if (stepNumber === 2) {
-            if (!announcement || !(announcement.details.title && announcement.details.type && announcement.details.from && (announcement.details.description || announcement.links || announcement.attachments))) {
+            if (!announcement || !(announcement.title && announcement.type && announcement.from && (announcement.description || announcement.links || announcement.attachments))) {
               status = false
             }
           } else if (stepNumber === 3 || stepNumber === 4) {

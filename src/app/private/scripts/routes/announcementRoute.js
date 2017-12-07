@@ -16,14 +16,14 @@ angular.module('playerApp')
         onEnter: function ($stateParams, $rootScope, routeHelperService, portalTelemetryService) {
           $rootScope.profileActive = 'active'
           routeHelperService.loadRouteConfig('announcementOutbox', null)
-          portalTelemetryService.fireImpressions({
+          portalTelemetryService.fireAnnouncementImpressions({
             env: 'community.announcements',
             type: 'list',
             pageid: 'announcement_outbox_list',
             id: '',
             name: '',
             url: '/private/index#!/announcement/outbox/list'
-          })
+          }, null)
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''
@@ -44,14 +44,14 @@ angular.module('playerApp')
         onEnter: function ($stateParams, $rootScope, routeHelperService, portalTelemetryService) {
           $rootScope.profileActive = 'active'
           routeHelperService.loadRouteConfig('announcementDetails', null)
-          portalTelemetryService.fireImpressions({
+          portalTelemetryService.fireAnnouncementImpressions({
             env: 'community.announcements',
             type: 'view',
             pageid: $stateParams.pageId,
             id: $stateParams.announcementId,
             name: $stateParams.announcementName,
             url: '/private/index#!/announcement/view/' + $stateParams.announcementId
-          })
+          }, null)
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''
@@ -68,14 +68,14 @@ angular.module('playerApp')
         onEnter: function ($stateParams, $rootScope, routeHelperService, portalTelemetryService) {
           $rootScope.homeActive = 'active'
           routeHelperService.loadRouteConfig('announcementInbox', null)
-          portalTelemetryService.fireImpressions({
+          portalTelemetryService.fireAnnouncementImpressions({
             env: 'community.announcements',
             type: 'list',
             pageid: 'announcement_inbox_list',
             id: '',
             name: '',
             url: '/private/index#!/announcement/inbox/list'
-          })
+          }, null)
         },
         onExit: function ($rootScope) {
           $rootScope.homeActive = ''

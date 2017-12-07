@@ -14,7 +14,7 @@ angular.module('playerApp')
        */
       announcementDetailsData.renderAnnouncement = function () {
         announcementAdapter.getAnnouncementById($stateParams.announcementId).then(function (apiResponse) {
-          announcementDetailsData.announcementDetails = apiResponse.result
+          announcementDetailsData.announcementDetails = apiResponse.result.announcement
           announcementDetailsData.showLoader = false
           if (apiResponse.result.userid === $rootScope.userId) {
             announcementDetailsData.announcementDetails.showActions = true
@@ -23,9 +23,6 @@ angular.module('playerApp')
             closable: false,
             onHide: function () {
               window.history.back()
-            },
-            onVisible: function () {
-              $('.ui.dropdown').dropdown()
             }
           }).modal('show')
         }, function (err) {
