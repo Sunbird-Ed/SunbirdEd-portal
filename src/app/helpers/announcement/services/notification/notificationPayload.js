@@ -3,9 +3,9 @@ const _ = require('lodash')
 let dateFormat = require('dateformat')
 
 /**
- * @type {timestamp} DEFAULT_DATE_FORMATE - Date format as follows: `yyyy-mm-dd HH:MM:ss:lo`
+ * @type {timestamp} DEFAULT_DATE_FORMAT - Date format as follows: `yyyy-mm-dd HH:MM:ss:lo`
  */
-const DEFAULT_DATE_FORMATE = dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo')
+const DEFAULT_DATE_FORMAT = dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo', true)
 
 /**
  * Class representes the payload for the notification service
@@ -38,7 +38,7 @@ class NotificationPayload {
     /**
      * @property {timestamp} time - the time when to show the notification, format is: <format>
      */
-    this.time = time || DEFAULT_DATE_FORMATE
+    this.time = time || DEFAULT_DATE_FORMAT
 
     /**
      * @property {timestamp} validity - the time till when the notification is valid. null
