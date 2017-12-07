@@ -38,5 +38,52 @@ describe('controller test', function () {
       goFrom('/').toState('announcementDetails', $stateParams)
       done()
     })
+
+    it('On announcement create enter when status available', function (done) {
+      $stateParams.stepNumber = 2
+      $rootScope.userIdHashTag = 1
+      $stateParams.announcement = {'sourceId': '', 'attachments': [], 'createdDate': null, 'createdBy': null, 'description': 'sds', 'from': 'sdsd', 'title': 'sds', 'type': 'News', 'links': [], 'id': '', 'target': {'geo': {'ids': []}}, 'status': null, 'hideDate': true}
+      goFrom('/').toState('announcementCreate', $stateParams)
+      done()
+    })
+
+    it('On announcement create enter when status not available', function (done) {
+      $stateParams.stepNumber = 2
+      $rootScope.userIdHashTag = 1
+      goFrom('/').toState('announcementCreate', $stateParams)
+      done()
+    })
+
+    it('On announcement create enter when step number is 1', function (done) {
+      $stateParams.stepNumber = 1
+      $rootScope.userIdHashTag = 1
+      goFrom('/').toState('announcementCreate', $stateParams)
+      done()
+    })
+
+    it('On announcement resend enter when status available', function (done) {
+      $stateParams.announcementId = '1714e050-db20-11e7-94e7-2ff540b1e328'
+      $stateParams.stepNumber = 2
+      $rootScope.userIdHashTag = 1
+      $stateParams.announcement = {'sourceId': '', 'attachments': [], 'createdDate': null, 'createdBy': null, 'description': 'sds', 'from': 'sdsd', 'title': 'sds', 'type': 'News', 'links': [], 'id': '', 'target': {'geo': {'ids': []}}, 'status': null, 'hideDate': true}
+      goFrom('/').toState('announcementResend', $stateParams)
+      done()
+    })
+
+    it('On announcement resend enter when status not available', function (done) {
+      $stateParams.announcementId = '1714e050-db20-11e7-94e7-2ff540b1e328'
+      $stateParams.stepNumber = 2
+      $rootScope.userIdHashTag = 1
+      goFrom('/').toState('announcementResend', $stateParams)
+      done()
+    })
+
+    it('On announcement resend enter when step number is 1', function (done) {
+      $stateParams.announcementId = '1714e050-db20-11e7-94e7-2ff540b1e328'
+      $stateParams.stepNumber = 1
+      $rootScope.userIdHashTag = 1
+      goFrom('/').toState('announcementResend', $stateParams)
+      done()
+    })
   })
 })

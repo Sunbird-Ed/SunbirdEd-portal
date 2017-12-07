@@ -1,5 +1,6 @@
 'use strict'
-angular.module('playerApp').service('announcementAdapter', ['$rootScope', '$http', 'httpAdapter', 'config', '$q', 'toasterService',
+angular.module('playerApp').service('announcementAdapter', ['$rootScope', '$http',
+  'httpAdapter', 'config', '$q', 'toasterService',
   function ($rootScope, $http, httpAdapter, config, $q, toasterService) {
     var extensions = {
       'application/png': 'PNG',
@@ -57,7 +58,8 @@ angular.module('playerApp').service('announcementAdapter', ['$rootScope', '$http
      * @instance
      */
     this.getAnnouncementById = function (announcementId) {
-      return handleHttpRequest(config.URL.ANNOUNCEMENT.GET_BY_ID + announcementId, '', 'GET', $rootScope.messages.fmsg.m0074)
+      return handleHttpRequest(config.URL.ANNOUNCEMENT.GET_BY_ID + announcementId, '', 'GET',
+        $rootScope.messages.fmsg.m0074)
     }
     /**
      * @method getInboxAnnouncementList

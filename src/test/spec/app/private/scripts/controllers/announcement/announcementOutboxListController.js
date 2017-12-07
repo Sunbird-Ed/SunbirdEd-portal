@@ -138,8 +138,24 @@ describe('Controller: announcementOutboxListController', function () {
     it('cover set page if clause', function () {
       announcementOutboxListController.pager = {'totalPages': 1}
       spyOn(announcementOutboxListController, 'setPage').and.callThrough()
-      var response = announcementOutboxListController.setPage(2)
-      expect(response).toBe(undefined)
+      announcementOutboxListController.setPage(2)
+      expect(announcementOutboxListController.setPage).toHaveBeenCalled()
+    })
+
+    it('cover set page to cover state.go', function () {
+      announcementOutboxListController.pager = {'totalPages': 12}
+      spyOn(announcementOutboxListController, 'setPage').and.callThrough()
+      announcementOutboxListController.setPage(2)
+      expect(announcementOutboxListController.setPage).toHaveBeenCalled()
+    })
+
+    it('Initialize controller variables', function () {
+      announcementOutboxListController.pageLimit = 25
+      announcementOutboxListController.showLoader = true
+      spyOn(announcementOutboxListController, 'init').and.callThrough()
+      announcementOutboxListController.init()
+      expect(announcementOutboxListController.init).toHaveBeenCalled()
+      expect(announcementOutboxListController.showLoader).toEqual(true)
     })
   })
 })

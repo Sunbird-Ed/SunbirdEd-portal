@@ -4,11 +4,21 @@ angular.module('playerApp')
   .controller('announcementOutboxListController', ['$rootScope', '$scope', '$timeout', '$state', '$stateParams', 'toasterService', 'announcementAdapter', 'PaginationService',
     function ($rootScope, $scope, $timeout, $state, $stateParams, toasterService, announcementAdapter, PaginationService) {
       var announcementOutboxData = this
-      announcementOutboxData.pager = {}
-      announcementOutboxData.setPage = setPage
-      announcementOutboxData.pageLimit = 25
-      announcementOutboxData.showLoader = true
-      announcementOutboxData.showDataDiv = false
+
+      /**
+       * @method init
+       * @desc init variables
+       * @memberOf Controllers.announcementOutboxListController
+       */
+      announcementOutboxData.init = function () {
+        announcementOutboxData.pager = {}
+        // announcementOutboxData.setPage = setPage
+        announcementOutboxData.pageLimit = 25
+        announcementOutboxData.showLoader = true
+        announcementOutboxData.showDataDiv = false
+        var pageNumber = parseInt($stateParams.page) || 1
+        announcementOutboxData.renderAnnouncementList(pageNumber)
+      }
 
       /**
      * @method renderAnnouncementList
@@ -16,7 +26,6 @@ angular.module('playerApp')
      * @memberOf Controllers.announcementOutboxListController
      */
       announcementOutboxData.renderAnnouncementList = function (pageNumber) {
-        pageNumber = pageNumber || 1
         announcementAdapter.getOutBoxAnnouncementList(announcementOutboxData.pageLimit, pageNumber)
           .then(function (apiResponse) {
             announcementOutboxData.showLoader = false
@@ -41,13 +50,11 @@ angular.module('playerApp')
      * @memberOf Controllers.announcementOutboxListController
      * @param {int} [page] [page number]
      */
-      function setPage (page) {
+      announcementOutboxData.setPage = function (page) {
         if (page < 1 || page > announcementOutboxData.pager.totalPages) {
           return
         }
-        announcementOutboxData.showDataDiv = false
-        announcementOutboxData.showLoader = true
-        announcementOutboxData.renderAnnouncementList(page)
+        $state.go('announcementOutbox', {page: page})
       }
 
       /**

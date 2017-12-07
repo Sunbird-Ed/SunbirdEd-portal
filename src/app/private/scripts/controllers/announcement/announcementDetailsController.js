@@ -1,7 +1,8 @@
 'use strict'
 
 angular.module('playerApp')
-  .controller('announcementDetailsController', ['$state', '$stateParams', '$rootScope', 'toasterService', 'announcementAdapter',
+  .controller('announcementDetailsController', ['$state', '$stateParams', '$rootScope',
+    'toasterService', 'announcementAdapter',
     function ($state, $stateParams, $rootScope, toasterService, announcementAdapter) {
       var announcementDetailsData = this
       announcementDetailsData.showLoader = true
@@ -26,7 +27,9 @@ angular.module('playerApp')
             }
           }).modal('show')
         }, function (err) {
-          announcementDetailsData.showLoader = false
+          if (err) {
+            announcementDetailsData.showLoader = false
+          }
         })
       }
     }

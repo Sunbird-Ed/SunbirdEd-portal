@@ -115,5 +115,14 @@ describe('Controller: announcementInboxListController', function () {
       var response = announcementInboxListController.setPage(1)
       expect(response).toBe(undefined)
     })
+
+    it('Initialize controller variables', function () {
+      announcementInboxListController.pageLimit = 25
+      announcementInboxListController.showLoader = true
+      spyOn(announcementInboxListController, 'init').and.callThrough()
+      announcementInboxListController.init('', 12)
+      expect(announcementInboxListController.init).toHaveBeenCalled()
+      expect(announcementInboxListController.showLoader).toEqual(true)
+    })
   })
 })
