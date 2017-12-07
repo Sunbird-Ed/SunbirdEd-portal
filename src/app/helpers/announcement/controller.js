@@ -209,10 +209,11 @@ class AnnouncementController {
                     "msgid": requestObj.body.request.announcementId,
                     "title": requestObj.body.request.title,
                     "msg": requestObj.body.request.description,
-                    "icon": "",
+                    "time": dateFormat(new Date(), "yyyy-mm-dd'T'HH:MM:sso", true),
                     "validity": "-1",
                     "actionid": "1",
-                    "actiondata": "",
+                    "actiondata": {announcementId: requestObj.body.request.announcementId},
+                    "icon": "",
                     "dispbehavior": "stack"
                 })
 
@@ -236,7 +237,7 @@ class AnnouncementController {
                         msg: payloadValidation.error
                     }
                 }
-                notifier.send(target, payload)
+                notifier.send(target, payload.getPayload())
             })
         } catch (error) {
             throw this.customError(error)

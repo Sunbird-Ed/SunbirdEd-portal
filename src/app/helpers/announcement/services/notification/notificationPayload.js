@@ -5,7 +5,7 @@ let dateFormat = require('dateformat')
 /**
  * @type {timestamp} DEFAULT_DATE_FORMAT - Date format as follows: `yyyy-mm-dd HH:MM:ss:lo`
  */
-const DEFAULT_DATE_FORMAT = dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo', true)
+const DEFAULT_DATE_FORMAT = dateFormat(new Date(), "yyyy-mm-dd'T'HH:MM:sso", true)
 
 /**
  * Class representes the payload for the notification service
@@ -14,7 +14,7 @@ const DEFAULT_DATE_FORMAT = dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo', tru
  * let payload = new NotificationPayload({msgid:"324-545-54",title:"Test", msg:"About Notification", icon:"", validity:"600", actionid:"4435",actiondata:"Some info",disbehavior:"opt"})
  */
 class NotificationPayload {
-  constructor ({msgid, title, msg, icon, time, validity, actionid, actiondata, disbehavior } = {}) {
+  constructor ({msgid, title, msg, icon, time, validity, actionid, actiondata, dispbehavior } = {}) {
     /**
      * @property {string} msgid - a unqiue id for the notification message.
      */
@@ -60,7 +60,7 @@ class NotificationPayload {
     /**
      * @property {string} disbehavior - the behaviour when displaying, either "<option>" or "<opt>".
      */
-    this.disbehavior = disbehavior
+    this.dispbehavior = dispbehavior
 
     /**
      *                schema - Schema validation, Which is used to validate the payload object strucutre.
@@ -73,8 +73,10 @@ class NotificationPayload {
       'time': Joi.string().required(),
       'validity': Joi.number(),
       'actionid': Joi.number(),
-      'actiondata': Joi.string().empty(''),
-      'disbehavior': Joi.string().empty('')
+      'actiondata': Joi.object().keys({
+            announcementId: Joi.string().required()
+        }).required(),
+      'dispbehavior': Joi.string().empty('')
     }).unknown()
   }
 
@@ -103,6 +105,20 @@ class NotificationPayload {
     return {
       isValid: true,
       payload: this
+    }
+  }
+
+  getPayload() {
+    return {
+        "msgid": this.msgid,
+        "title": this.title,
+        "msg": this.msg,
+        "time": this.time,
+        "validity": this.validity,
+        "actionid": this.actionid,
+        "actiondata": this.actiondata,
+        "icon": this.icon,
+        "dispbehavior": this.dispbehavior
     }
   }
 }
