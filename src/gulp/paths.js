@@ -7,14 +7,14 @@ var player = {
   common: 'app/common/'
 }
 
-var build_themes = {
+var buildThemes = {
   dist: 'app/themes/',
   themes: 'semantic/src/themes'
 }
 
 var paths = {
   player: player,
-  build_themes: build_themes,
+  build_themes: buildThemes,
   src: {
     scripts: [player.app + '/scripts/*.js', player.app + '/scripts/**/*.js'],
     styles: [player.app + 'app/styles/**/main.less'],
@@ -313,7 +313,8 @@ var paths = {
     'dist/public/script.min.js',
     'dist/public/external.min.css'
   ],
-  cdnDest: 'dist/cdn/'
+  cdnDest: 'dist/cdn/',
+  eslint: ['app/*.js', 'app/**/*.js', 'test/**/*.js', 'gulp/*.js']
 
 }
 

@@ -59,6 +59,7 @@
     "gulp-useref": "^3.0.0",
     "gulp-util": "^3.0.6",
     "gulp-watch": "^4.2.4",
+    "husky": "0.14.3",
     "jasmine-core": "^2.6.1",
     "jshint-stylish": "^1.0.0",
     "karma": "0.12",
@@ -68,6 +69,7 @@
     "karma-mocha-reporter": "2.2.5",
     "karma-phantomjs-launcher": "^1.0.4",
     "lazypipe": "^0.2.4",
+    "lint-staged": "6.0.0",
     "map-stream": "0.0.7",
     "merge-stream": "^1.0.1",
     "mocha": "^4.0.1",
@@ -89,7 +91,9 @@
   "scripts": {
     "test-announcements": "mocha 'test/announcements/server/**/*.js' --reporter mochawesome",
     "lint": "eslint --ignore-path .eslintignore .",
-    "preinstall": "npm install ./app/thirdparty/libs/sb_api_interceptor && npm install ./app/thirdparty/libs/sb_cache_manager"
+    "preinstall": "npm install ./app/thirdparty/libs/sb_api_interceptor && npm install ./app/thirdparty/libs/sb_cache_manager",
+    "validate": "npm ls",
+    "precommit": "lint-staged"
   },
   "dependencies": {
     "async": "^2.5.0",
@@ -138,6 +142,28 @@
     ],
     "ignore": [
       "./../Dockerfile"
-    ]
+    ],
+    "rules": {
+      "indent": [
+        "error",
+        2
+      ],
+      "max-len": [
+        "error",
+        120,
+        2,
+        {
+          "ignoreUrls": true,
+          "ignoreComments": true
+        }
+      ],
+      "quotes": [
+        "error",
+        "single"
+      ]
+    },
+    "lint-staged": {
+     "*.js": ["eslint --fix", "git add"]
+    }
   }
 }

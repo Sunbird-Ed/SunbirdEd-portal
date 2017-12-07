@@ -12,7 +12,7 @@
     },
     "rules": {
         "indent": ["error", 2],
-        "max-len": ["error", 120, 2, {"ignoreUrls": true}],
+        "max-len": ["error", 120, 2, {"ignoreUrls": true, "ignoreComments": true}],
         "quotes": ["error", "single"],
     }
 }
