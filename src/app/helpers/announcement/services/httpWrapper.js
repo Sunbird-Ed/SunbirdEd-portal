@@ -45,7 +45,7 @@ class HttpWrapper {
   static getRequestHeader (token) {
     return {
       'x-device-id': 'x-device-id',
-      'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
+      'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo', true),
       'x-consumer-id': envVariables.PORTAL_API_AUTH_TOKEN,
       'content-type': 'application/json',
       'accept': 'application/json',
