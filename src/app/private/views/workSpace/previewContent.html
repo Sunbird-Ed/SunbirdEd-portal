@@ -8,7 +8,7 @@
       <content-player visibility="previewContent.contentPlayer.isContentPlayerEnabled" body="previewContent.contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="true" height="10" width="100" ispercentage="true" closeurl="previewContent.redirectUrl" isworkspace="true"></content-player>
     </div>
     <div class="row margin-top-10" ng-show="!previewContent.loader.showLoader">
-      <div class="videosegment  ui clearing segment" ng-if="previewContent.contentData.status === 'Review' && previewContent.isShowPublishRejectButton">
+      <div class="margin-top--5 videosegment ui clearing segment" ng-if="previewContent.contentData.status === 'Review' && previewContent.isShowPublishRejectButton">
         <button sb-permissions permission-only="CONTENT_REVIEWER" ng-if="previewContent.isShowPublishRejectButton" ng-disabled="previewContent.loader.showLoader" class="ui right floated primary button mouse-pointer" ng-click="previewContent.publishContent()">
           {{$root.frmelmnts.btn.publish}}
         </button>
