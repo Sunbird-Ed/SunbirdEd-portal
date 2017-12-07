@@ -1,7 +1,9 @@
-const envHelper = require('./../helpers/environmentVariablesHelper.js'),
-  appId = envHelper.APPID,
-  md5 = require('js-md5'),
-  sunbird_api_auth_token = envHelper.PORTAL_API_AUTH_TOKEN
+const envHelper = require('./../helpers/environmentVariablesHelper.js')
+const appId = envHelper.APPID
+const md5 = require('js-md5')
+const sunbirdApiAuthToken = envHelper.PORTAL_API_AUTH_TOKEN
+const dateFormat = require('dateformat')
+const uuidv1 = require('uuid/v1')
 
 const decorateRequestHeaders = function () {
   return function (proxyReqOpts, srcReq) {
@@ -12,10 +14,11 @@ const decorateRequestHeaders = function () {
       proxyReqOpts.headers['X-Channel-Id'] = channel
     }
     proxyReqOpts.headers['X-App-Id'] = appId
-    if (srcReq.kauth && srcReq.kauth.grant && srcReq.kauth.grant.access_token && srcReq.kauth.grant.access_token.token) {
+    if (srcReq.kauth && srcReq.kauth.grant && srcReq.kauth.grant.access_token &&
+    srcReq.kauth.grant.access_token.token) {
       proxyReqOpts.headers['x-authenticated-user-token'] = srcReq.kauth.grant.access_token.token
     }
-    proxyReqOpts.headers.Authorization = 'Bearer ' + sunbird_api_auth_token
+    proxyReqOpts.headers.Authorization = 'Bearer ' + sunbirdApiAuthToken
     proxyReqOpts.rejectUnauthorized = false
     return proxyReqOpts
   }
@@ -24,7 +27,7 @@ const decorateRequestHeaders = function () {
 const decoratePublicRequestHeaders = function () {
   return function (proxyReqOpts, srcReq) {
     proxyReqOpts.headers['X-App-Id'] = appId
-    proxyReqOpts.headers.Authorization = 'Bearer ' + sunbird_api_auth_token
+    proxyReqOpts.headers.Authorization = 'Bearer ' + sunbirdApiAuthToken
     return proxyReqOpts
   }
 }
