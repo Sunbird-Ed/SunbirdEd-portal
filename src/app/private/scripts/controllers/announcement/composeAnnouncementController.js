@@ -202,7 +202,8 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
       }
       composeAnn.isMetaModifiedSteps = true
       composeAnn.announcement.target.geo.ids = _.map(composeAnn.announcement.selTar, 'id')
-      announcementAdapter.createAnnouncement(composeAnn.announcement, composeAnn.editAction).then(function (apiResponse) {
+      announcementAdapter.createAnnouncement(composeAnn.announcement, composeAnn.editAction)
+      .then(function (apiResponse) {
         composeAnn.hideModel('createAnnouncementModal')
         portalTelemetryService.fireAnnouncementImpressions({
           env: 'community.announcements',
