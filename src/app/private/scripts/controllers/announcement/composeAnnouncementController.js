@@ -156,9 +156,9 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         }
         var selectRecipientBtn = angular.element(document.querySelector(
                     '#selectRecipientBtn'))
-        if (composeAnn.announcement.title && composeAnn.announcement.from &&
-                    composeAnn.announcement.type && (composeAnn.uploadAttchement ||
-                        composeAnn.announcement.description || links.length)) {
+        if (composeAnn.announcement.title && composeAnn.announcement.from && composeAnn.announcement
+                    .type && (composeAnn.uploadAttchement || composeAnn.announcement.description ||
+                        links.length)) {
           composeAnn.disableBtn = false
           selectRecipientBtn.removeClass('disabled')
         } else {
@@ -203,31 +203,31 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
       composeAnn.isMetaModifiedSteps = true
       composeAnn.announcement.target.geo.ids = _.map(composeAnn.announcement.selTar, 'id')
       announcementAdapter.createAnnouncement(composeAnn.announcement, composeAnn.editAction)
-      .then(function (apiResponse) {
-        composeAnn.hideModel('createAnnouncementModal')
-        portalTelemetryService.fireAnnouncementImpressions({
-          env: 'community.announcements',
-          type: 'view',
-          pageid: 'announcement_form_complete',
-          id: '',
-          name: '',
-          url: url
-        }, $rootScope.userIdHashTag)
-        if (composeAnn.editAction) {
-          $('#announcementResendModal').modal({
-            closable: false
-          }).modal('show')
-        } else {
-          $('#announcementSuccessModal').modal({
-            closable: false
-          }).modal('show')
-        }
-        $rootScope.userIdHashTag = null
-        $state.go('announcementOutbox')
-      }, function (err) {
-        composeAnn.isMetaModified = true
-        composeAnn.showError(err.data)
-      })
+                .then(function (apiResponse) {
+                  composeAnn.hideModel('createAnnouncementModal')
+                  portalTelemetryService.fireAnnouncementImpressions({
+                    env: 'community.announcements',
+                    type: 'view',
+                    pageid: 'announcement_form_complete',
+                    id: '',
+                    name: '',
+                    url: url
+                  }, $rootScope.userIdHashTag)
+                  if (composeAnn.editAction) {
+                    $('#announcementResendModal').modal({
+                      closable: false
+                    }).modal('show')
+                  } else {
+                    $('#announcementSuccessModal').modal({
+                      closable: false
+                    }).modal('show')
+                  }
+                  $rootScope.userIdHashTag = null
+                  $state.go('announcementOutbox')
+                }, function (err) {
+                  composeAnn.isMetaModified = true
+                  composeAnn.showError(err.data)
+                })
     }
         /**
          * @method showError
@@ -444,7 +444,8 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
          */
     composeAnn.getResend = function (announcementId) {
       announcementAdapter.getResend(announcementId).then(function (apiResponse) {
-        composeAnn.announcement = new AnnouncementModel.Announcement(apiResponse.result.announcement)
+        composeAnn.announcement = new AnnouncementModel.Announcement(apiResponse.result
+                    .announcement)
         composeAnn.announcement.hideDate = true
         composeAnn.initializeModal()
         composeAnn.enableRecepientBtn()
@@ -466,7 +467,8 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
     composeAnn.getDefinitions = function (rootOrgId) {
       announcementAdapter.getDefinitions(rootOrgId).then(function (response) {
         if (response.result.announcementTypes) {
-          composeAnn.announcementType = _.map(response.result.announcementTypes, 'name')
+          composeAnn.announcementType = _.map(response.result.announcementTypes,
+                        'name')
         }
         if (composeAnn.announcement.type !== '') {
           $('#announcementType').dropdown('set text', composeAnn.announcement.type)
