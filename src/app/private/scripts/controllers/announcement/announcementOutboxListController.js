@@ -12,7 +12,7 @@ angular.module('playerApp')
        */
       announcementOutboxData.init = function () {
         announcementOutboxData.pager = {}
-        announcementOutboxData.setPage = setPage
+        // announcementOutboxData.setPage = setPage
         announcementOutboxData.pageLimit = 25
         announcementOutboxData.showLoader = true
         announcementOutboxData.showDataDiv = false
@@ -50,7 +50,7 @@ angular.module('playerApp')
      * @memberOf Controllers.announcementOutboxListController
      * @param {int} [page] [page number]
      */
-      function setPage (page) {
+      announcementOutboxData.setPage = function (page) {
         if (page < 1 || page > announcementOutboxData.pager.totalPages) {
           return
         }
