@@ -104,7 +104,7 @@ function isCreateRolePresent(userProfile, sourceid) {
             organisation = _.find(userProfile.organisations, {
                 organisationId: organisationId[i]
             })
-            if (organisation && _.indexOf(organisation.roles, CREATE_ROLE) == 1) {
+            if (organisation && _.indexOf(organisation.roles, CREATE_ROLE) >= 0) {
                 return true
             }
         } else {
