@@ -26,7 +26,9 @@ angular.module('playerApp')
             }
           }).modal('show')
         }, function (err) {
-          announcementDetailsData.showLoader = false
+          if (err) {
+            announcementDetailsData.showLoader = false
+          }
         })
       }
     }

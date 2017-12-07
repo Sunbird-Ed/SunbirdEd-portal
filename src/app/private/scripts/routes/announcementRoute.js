@@ -6,12 +6,15 @@ angular.module('playerApp')
     $urlRouterProvider.otherwise('/home')
     $stateProvider
       .state('announcementOutbox', {
-        url: '/announcement/outbox',
+        url: '/announcement/outbox/list/:page',
         views: {
           mainView: {
             templateUrl: '/views/announcement/announcementOutboxList.html',
             controller: 'announcementOutboxListController as announcementOutboxData'
           }
+        },
+        params: {
+          page: '1'
         },
         onEnter: function ($stateParams, $rootScope, routeHelperService, portalTelemetryService) {
           $rootScope.profileActive = 'active'
@@ -22,7 +25,7 @@ angular.module('playerApp')
             pageid: 'announcement_outbox_list',
             id: '',
             name: '',
-            url: '/private/index#!/announcement/outbox/list'
+            url: '/private/index#!/announcement/outbox/list/' + parseInt($stateParams.page)
           }, null)
         },
         onExit: function ($rootScope) {
@@ -58,12 +61,15 @@ angular.module('playerApp')
         }
       })
       .state('announcementInbox', {
-        url: '/announcement/inbox',
+        url: '/announcement/inbox/list/:page',
         views: {
           mainView: {
             templateUrl: '/views/announcement/announcementInboxList.html',
             controller: 'announcementInboxListController as announcementInboxData'
           }
+        },
+        params: {
+          page: '1'
         },
         onEnter: function ($stateParams, $rootScope, routeHelperService, portalTelemetryService) {
           $rootScope.homeActive = 'active'
@@ -74,7 +80,7 @@ angular.module('playerApp')
             pageid: 'announcement_inbox_list',
             id: '',
             name: '',
-            url: '/private/index#!/announcement/inbox/list'
+            url: '/private/index#!/announcement/inbox/list/' + parseInt($stateParams.page)
           }, null)
         },
         onExit: function ($rootScope) {
