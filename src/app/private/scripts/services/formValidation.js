@@ -18,7 +18,7 @@ angular.module('playerApp')
       { fieldName: 'degree', type: 'empty', prompt: $rootScope.messages.stmsg.m0062 },
       { fieldName: 'institute', type: 'empty', prompt: $rootScope.messages.stmsg.m0070 },
       { fieldName: 'yearop', type: 'regExp[^[0-9]{4}$]', prompt: $rootScope.messages.stmsg.m0093},
-      { fieldName: 'prcntg', type: 'regExp[^[1-9][0-9]?$|^100$]', prompt: $rootScope.messages.stmsg.m0094}
+      { fieldName: 'prcntg', optional: true, type: 'regExp[^[1-9][0-9]?$|^100$]', prompt: $rootScope.messages.stmsg.m0094}
     ]
     var jobProfileFields = [
       { fieldName: 'jobName', type: 'empty', prompt: $rootScope.messages.stmsg.m0072 },
@@ -77,6 +77,7 @@ angular.module('playerApp')
       var validationRules = rules.reduce(function (validation, field, index) {
         field.fieldName = {
           identifier: field.fieldName,
+          optional: field.optional,
           rules: [{
             type: field.type,
             prompt: field.prompt

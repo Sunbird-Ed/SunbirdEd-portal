@@ -6,7 +6,6 @@ angular.module('playerApp')
     function ($state, learnService, $rootScope,
       sessionService, toasterService) {
       var homeCtrl = this
-      var uid = $rootScope.userId
 
       homeCtrl.loadCarousel = function () {
         $('.ui .progress .course-progress').progress()
@@ -67,9 +66,7 @@ angular.module('playerApp')
       homeCtrl.openCourseView = function (course, courseType) {
       // courseId = 'do_112265805439688704113';
         var showLectureView = 'no'
-        if ($rootScope.enrolledCourseIds[
-          course.courseId || course.identifier
-        ]) {
+        if ($rootScope.enrolledCourseIds[course.courseId || course.identifier]) {
           showLectureView = 'no'
         } else {
           showLectureView = 'yes'

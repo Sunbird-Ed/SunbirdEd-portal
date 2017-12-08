@@ -6,7 +6,8 @@ angular.module('playerApp')
     function (config, $stateParams, toasterService, $sce, $state, $timeout, $rootScope, contentService,
       permissionsService, workSpaceUtilsService) {
       var genericEditor = this
-      genericEditor.contentId = (_.isUndefined($stateParams.contentId) || _.isNull($stateParams.contentId)) ? '' : $stateParams.contentId
+      genericEditor.contentId = (_.isUndefined($stateParams.contentId) ||
+      _.isNull($stateParams.contentId)) ? '' : $stateParams.contentId
       genericEditor.openGenericEditor = function () {
         $('#genericEditor').iziModal({
           title: '',
@@ -95,11 +96,11 @@ angular.module('playerApp')
           }
           genericEditor.showModal = false
           if ($stateParams.state) {
-			         $state.go($stateParams.state)
-		       	 } else if ($rootScope.contentModelBackLinkName) {
-			         $state.go($rootScope.contentModelBackLinkName)
-			       } else {
-			         $state.go('WorkSpace.AllUploadedContent')
+            $state.go($stateParams.state)
+          } else if ($rootScope.contentModelBackLinkName) {
+            $state.go($rootScope.contentModelBackLinkName)
+          } else {
+            $state.go('WorkSpace.AllUploadedContent')
           }
         }, 2000)
       }

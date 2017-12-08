@@ -2,8 +2,9 @@
 
 angular.module('playerApp')
   .controller('ContentEditorController', ['config', '$stateParams', 'toasterService',
-    '$state', 'contentService', '$timeout', '$rootScope', 'workSpaceUtilsService', function (config, $stateParams,
-      toasterService, $state, contentService, $timeout, $rootScope, workSpaceUtilsService) {
+    '$state', 'contentService', '$timeout', '$rootScope', 'workSpaceUtilsService',
+    function (config, $stateParams, toasterService, $state, contentService, $timeout, $rootScope,
+      workSpaceUtilsService) {
       var contentEditor = this
       contentEditor.contentId = $stateParams.contentId
       contentEditor.openContentEditor = function () {
@@ -72,7 +73,8 @@ angular.module('playerApp')
       }
 
       var validateModal = {
-        state: ['WorkSpace.UpForReviewContent', 'WorkSpace.ReviewContent', 'WorkSpace.PublishedContent', 'LimitedPublishedContent'],
+        state: ['WorkSpace.UpForReviewContent', 'WorkSpace.ReviewContent',
+          'WorkSpace.PublishedContent', 'LimitedPublishedContent'],
         status: ['Review', 'Draft', 'Live', 'Unlisted'],
         mimeType: config.CreateLessonMimeType
       }

@@ -136,8 +136,8 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
         $http.get('/v1/tenant/info/' + profileData.rootOrg.slug).then(function (res) {
           if (res && res.statusText === 'OK') {
             $rootScope.orgLogo = res.data.result.logo
-            var link = document.createElement('link'),
-              oldLink = document.getElementById('dynamic-favicon')
+            var link = document.createElement('link')
+            var oldLink = document.getElementById('dynamic-favicon')
             link.id = 'dynamic-favicon'
             link.rel = 'icon'
             link.href = res.data.result.favicon
@@ -231,12 +231,12 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
             limit = res.result.count - limit
             $rootScope.getConcept(offset, limit, callback)
           } else {
-            callback(false, $scope.concepts)
+            callback(null, $scope.concepts)
           }
         }
       })
         .catch(function (err) {
-          callback(true)
+          callback(err, null)
         })
     }
     if (!$rootScope.concepts) {

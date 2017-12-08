@@ -221,7 +221,8 @@ angular.module('playerApp').controller('SearchResultController', [
       clearTimeout($rootScope.search.typingTimer)
       if (!$event || $event.charCode === 13) {
         $scope.search.autoSuggest = false
-        if ((!$rootScope.search.searchKeyword || $rootScope.search.searchKeyword === '') && ($rootScope.isLearnPage || $rootScope.isResourcesPage) && !$event) {
+        if ((!$rootScope.search.searchKeyword || $rootScope.search.searchKeyword === '') &&
+          ($rootScope.isLearnPage || $rootScope.isResourcesPage) && !$event) {
           $rootScope.$broadcast('initPageSearch', {})
         } else if ($rootScope.isSearchPage) {
           if ($rootScope.isSearchResultsPage && $rootScope.search.searchKeyword ===
@@ -278,25 +279,11 @@ angular.module('playerApp').controller('SearchResultController', [
         $scope.search.searchFn = searchService.courseSearch(req)
         $scope.search.resultType = 'course'
       } else if ($rootScope.search.selectedSearchKey === 'Library') {
-        if (!req.filters.contentType || (_.isArray(req.filters.contentType) && req.filters.contentType.length === 0)) {
-          req.filters.contentType = [
-            'Collection',
-            'TextBook',
-            'LessonPlan',
-            'Resource'
-          ]
-        }
-        $scope.search.searchFn = searchService.contentSearch(req)
+        $scope.search.searchFn = searchService.contentSearch(angular.copy(req))
         $scope.search.resultType = 'content'
         req.filters.objectType = ['Content']
       } else if ($rootScope.search.selectedSearchKey === 'All') {
-        req.filters.contentType = [
-          'Collection',
-          'TextBook',
-          'LessonPlan',
-          'Resource'
-        ]
-        $scope.search.searchFn = searchService.search(req)
+        $scope.search.searchFn = searchService.search(angular.copy(req))
         $scope.search.resultType = 'content'
         req.filters.objectType = ['Content']
       } else if ($rootScope.search.selectedSearchKey === 'Users') {
@@ -347,7 +334,8 @@ angular.module('playerApp').controller('SearchResultController', [
         if (res !== null && res.responseCode === 'OK') {
           $rootScope.search.autosuggest_data = []
           var responseResult = {}
-          if ($rootScope.search.selectedSearchKey === 'Organisations' || $rootScope.search.selectedSearchKey === 'Users') {
+          if ($rootScope.search.selectedSearchKey === 'Organisations' ||
+            $rootScope.search.selectedSearchKey === 'Users') {
             responseResult = res.result.response
           } else {
             responseResult = res.result
@@ -420,7 +408,8 @@ angular.module('playerApp').controller('SearchResultController', [
         $rootScope.search.filters.contentType = undefined
         $rootScope.search.filters.orgType = undefined
         $rootScope.search.filters.grade = $rootScope.search.selectedGrades
-        $rootScope.search.filters.location = ($rootScope.search.selectedLocation.trim() !== '') ? $rootScope.search.selectedLocation.trim() : undefined
+        $rootScope.search.filters.location = ($rootScope.search.selectedLocation.trim() !== '')
+          ? $rootScope.search.selectedLocation.trim() : undefined
         $rootScope.search.filters['organisations.roles'] = $rootScope.search.selectedRoles
       } else if ($rootScope.search.selectedSearchKey === 'Organisations') {
         $rootScope.search.filters = {}

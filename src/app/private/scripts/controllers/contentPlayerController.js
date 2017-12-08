@@ -2,8 +2,8 @@
 
 angular.module('playerApp')
   .controller('contentPlayerCtrl', ['playerTelemetryUtilsService', '$state', '$scope',
-    'contentService', '$timeout', '$stateParams', 'config', '$rootScope', '$location', '$anchorScroll', 'toasterService',
-    function (playerTelemetryUtilsService, $state, $scope, contentService,
+    'contentService', '$timeout', '$stateParams', 'config', '$rootScope', '$location', '$anchorScroll',
+    'toasterService', function (playerTelemetryUtilsService, $state, $scope, contentService,
       $timeout, $stateParams, config, $rootScope, $location, $anchorScroll, toasterService) {
       $scope.isClose = $scope.isclose
       $scope.isHeader = $scope.isheader

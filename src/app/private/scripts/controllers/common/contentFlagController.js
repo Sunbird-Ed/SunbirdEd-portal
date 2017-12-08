@@ -20,7 +20,8 @@ angular.module('playerApp')
         description: 'Uses copyrighted work without permission'
       }, {
         name: 'Privacy violation',
-        description: 'Collects sensitive data or personal information about users, such as name, \n address, photo or other personally identifiable information'
+        description: 'Collects sensitive data or personal information about users, such as name' +
+        '\n address, photo or other personally identifiable information'
       }, {
         name: 'Other'
       }]

@@ -12,7 +12,8 @@ angular.module('playerApp')
         toc.loader = toasterService.loader('', $rootScope.messages.stmsg.m0003)
         courseService.courseHierarchy(toc.courseId).then(function (res) {
           if (res && res.responseCode === 'OK') {
-            if (res.result.content.status === 'Live' || res.result.content.status === 'Unlisted' || res.result.content.status === 'Flagged') {
+            if (res.result.content.status === 'Live' || res.result.content.status === 'Unlisted' ||
+              res.result.content.status === 'Flagged') {
               res.result.content.children = _.sortBy(res.result.content.children, ['index'])
               // fetch all avaliable contents from course data
               toc.courseContents = toc.getCourseContents(res.result.content, [])
@@ -219,7 +220,8 @@ angular.module('playerApp')
               toc.batchDetailsShow = true
               toc.selectedBatchInfo = response.result.response
               $rootScope.batchHashTagId = response.result.response.hashtagid
-              toc.selectedParticipants = _.isUndefined(toc.selectedBatchInfo.participant) ? 0 : _.keys(toc.selectedBatchInfo.participant).length
+              toc.selectedParticipants = _.isUndefined(toc.selectedBatchInfo.participant) ? 0
+                : _.keys(toc.selectedBatchInfo.participant).length
               toc.batchStatus = toc.selectedBatchInfo.status
               // if batch status is started(1) then only content can be playable
               if (toc.batchStatus && toc.batchStatus > 0 && toc.courseHierarchy.status !== 'Flagged') {
