@@ -69,6 +69,7 @@ angular.module('playerApp')
         return jobProfileFields
       }
     }
+
     /**
              * @method validate
              * @desc Validate a form
