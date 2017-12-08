@@ -41,8 +41,6 @@ angular.module('playerApp')
       profile.badges = []
       profile.isViewMore = true
 
-      console.log('profile.yearPassing----------', profile.yearOfPassing)
-
       var orgIds = []
       _.forEach($rootScope.organisations, function (org) {
         if (org.organisationId) {
