@@ -197,7 +197,8 @@ angular.module('playerApp')
           var organizations = JSON.parse(orgNullReplacedToEmpty)
           alasql('SELECT orgName AS orgName,orgType AS orgType,' +
                         'noOfMembers AS noOfMembers,channel AS channel, ' +
-                        'status AS Status INTO CSV(\'Organizations.csv\',{headers:true,separator:","}) FROM ?', [organizations])
+                        'status AS Status INTO CSV(\'Organizations.csv\',{headers:true,separator:","}) FROM ?',
+          [organizations])
         }
       }
 
@@ -244,7 +245,6 @@ angular.module('playerApp')
             userId: identifier,
             organisationId: orgId,
             roles: roles
-
           }
         }
 

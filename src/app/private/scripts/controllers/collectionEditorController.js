@@ -2,8 +2,8 @@
 
 angular.module('playerApp')
   .controller('CollectionEditorController', ['config', '$stateParams', 'toasterService', '$sce',
-    '$state', '$timeout', '$rootScope', 'contentService', 'permissionsService', 'workSpaceUtilsService', function (config,
-      $stateParams, toasterService, $sce, $state, $timeout, $rootScope, contentService,
+    '$state', '$timeout', '$rootScope', 'contentService', 'permissionsService', 'workSpaceUtilsService',
+    function (config, $stateParams, toasterService, $sce, $state, $timeout, $rootScope, contentService,
       permissionsService, workSpaceUtilsService) {
       var collectionEditor = this
       collectionEditor.contentId = $stateParams.contentId

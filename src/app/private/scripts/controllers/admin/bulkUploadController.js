@@ -245,7 +245,8 @@ angular.module('playerApp')
       }
       admin.downloadSample = function (key) {
         if (key === 'users') {
-          alasql('SELECT * INTO CSV(\'Sample_Users.csv\', {headers: false,separator:","}) FROM ?', [admin.sampleUserCSV])
+          alasql('SELECT * INTO CSV(\'Sample_Users.csv\', {headers: false,separator:","}) FROM ?',
+            [admin.sampleUserCSV])
         } else if (key === 'organizations') {
           alasql(' SELECT *  INTO CSV(\'Sample_Organizations.csv\',' +
                         ' {headers: false,separator:","}) FROM ?', [admin.sampleOrgCSV])

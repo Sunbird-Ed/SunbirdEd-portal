@@ -91,7 +91,9 @@ angular.module('playerApp') // add those all values
         publicProfile.limit = (lim <= 0) ? publicProfile.userSkills.length : lim
       }
       publicProfile.endorsement = function (skill) {
-        userService.addSkills({ request: { skillName: [skill], endorsedUserId: userIdentifier } }).then(function (response) {
+        userService.addSkills({
+          request: { skillName: [skill], endorsedUserId: userIdentifier }
+        }).then(function (response) {
           if (response && response.responseCode === 'OK') {
             publicProfile.profile('endorsement')
           } else {
