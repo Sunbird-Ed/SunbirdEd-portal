@@ -278,25 +278,11 @@ angular.module('playerApp').controller('SearchResultController', [
         $scope.search.searchFn = searchService.courseSearch(req)
         $scope.search.resultType = 'course'
       } else if ($rootScope.search.selectedSearchKey === 'Library') {
-        if (!req.filters.contentType || (_.isArray(req.filters.contentType) && req.filters.contentType.length === 0)) {
-          req.filters.contentType = [
-            'Collection',
-            'TextBook',
-            'LessonPlan',
-            'Resource'
-          ]
-        }
-        $scope.search.searchFn = searchService.contentSearch(req)
+        $scope.search.searchFn = searchService.contentSearch(angular.copy(req))
         $scope.search.resultType = 'content'
         req.filters.objectType = ['Content']
       } else if ($rootScope.search.selectedSearchKey === 'All') {
-        req.filters.contentType = [
-          'Collection',
-          'TextBook',
-          'LessonPlan',
-          'Resource'
-        ]
-        $scope.search.searchFn = searchService.search(req)
+        $scope.search.searchFn = searchService.search(angular.copy(req))
         $scope.search.resultType = 'content'
         req.filters.objectType = ['Content']
       } else if ($rootScope.search.selectedSearchKey === 'Users') {

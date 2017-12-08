@@ -30,6 +30,14 @@ angular.module('playerApp')
              */
 
       this.contentSearch = function (req) {
+        if (!req.filters.contentType || (_.isArray(req.filters.contentType) && req.filters.contentType.length === 0)) {
+          req.filters.contentType = [
+            'Collection',
+            'TextBook',
+            'LessonPlan',
+            'Resource'
+          ]
+        }
         return httpService.post(config.URL.CONTENT.SEARCH, req)
       }
       /**
@@ -75,6 +83,12 @@ angular.module('playerApp')
              */
 
       this.search = function (req) {
+        req.filters.contentType = [
+          'Collection',
+          'TextBook',
+          'LessonPlan',
+          'Resource'
+        ]
         return httpService.post(config.URL.COMPOSITE.SEARCH, req)
       }
       /**
