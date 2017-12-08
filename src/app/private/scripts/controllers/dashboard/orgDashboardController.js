@@ -1,5 +1,13 @@
 'use strict'
 
+/**
+ * @ngdoc function
+ * @name playerApp.controller:orgDashboardController
+ * @description
+ * # orgDashboardController
+ * Controller of the playerApp
+ */
+
 angular.module('playerApp')
   .controller('orgDashboardController', ['$rootScope', '$scope',
     'dashboardService', '$timeout', '$state', '$stateParams', 'toasterService', 'adminService',
@@ -19,7 +27,8 @@ angular.module('playerApp')
           period: dashboardData.timePeriod
         }
 
-        dashboardService.getAdminDashboardData(requestBody, dashboardData.datasetPreviousValue).then(function (apiResponse) {
+        dashboardService.getAdminDashboardData(requestBody,
+          dashboardData.datasetPreviousValue).then(function (apiResponse) {
           dashboardData.graphShow = 0
           dashboardData.numericStatArray = []
           var allKey = []
@@ -60,10 +69,11 @@ angular.module('playerApp')
                   })
                   data.push(dataArray)
 
+                  var name = ''
                   if (dashboardData.timePeriod === '5w') {
-                    var name = 'Content created per week'
+                    name = 'Content created per week'
                   } else {
-                    var name = 'Content created per day'
+                    name = 'Content created per day'
                   }
                   var options = dashboardService.getChartOptions(name)
                   var colors = dashboardService.getChartColors(dashboardData.datasetPreviousValue)
@@ -76,7 +86,6 @@ angular.module('playerApp')
                     }
                   }
                   if (found === true) {
-                    var d = dashboardData.graphArray[j][2]
                     dashboardData.graphArray[j][2].push(dataArray)
                   } else {
                     dashboardData.graphArray.push([series, labels, data, colors, options, bucketData.group_id])
@@ -85,8 +94,11 @@ angular.module('playerApp')
               })
             } else if (dashboardData.datasetPreviousValue === 'consumption') {
               angular.forEach(apiResponse.result.snapshot, function (numericData, key) {
-                if (key === 'org.consumption.content.session.count' || key === 'org.consumption.content.time_spent.sum' || key === 'org.consumption.content.time_spent.average') {
-                  if (key === 'org.consumption.content.time_spent.sum' || key === 'org.consumption.content.time_spent.average') {
+                if (key === 'org.consumption.content.session.count' ||
+                    key === 'org.consumption.content.time_spent.sum' ||
+                    key === 'org.consumption.content.time_spent.average') {
+                  if (key === 'org.consumption.content.time_spent.sum' ||
+                      key === 'org.consumption.content.time_spent.average') {
                     numericData = dashboardService.secondsToMin(numericData)
                     dashboardData.numericStatArray.push(numericData)
                   } else {
@@ -108,10 +120,11 @@ angular.module('playerApp')
                   })
                   data.push(dataArray)
                   var series = [bucketData.name]
+                  var name = ''
                   if (bucketData.time_unit !== undefined) {
-                    var name = bucketData.name + ' (' + bucketData.time_unit + ')'
+                    name = bucketData.name + ' (' + bucketData.time_unit + ')'
                   } else {
-                    var name = bucketData.name
+                    name = bucketData.name
                   }
                   var options = dashboardService.getChartOptions(name)
                   var colors = dashboardService.getChartColors(dashboardData.datasetPreviousValue)
@@ -124,7 +137,7 @@ angular.module('playerApp')
                     }
                   }
                   if (found === true) {
-                    var d = dashboardData.graphArray[j][2]
+                    // var d = dashboardData.graphArray[j][2]
                     dashboardData.graphArray[j][2].push(dataArray)
                   } else {
                     dashboardData.graphArray.push([series, labels, data, colors, options, bucketData.group_id])
@@ -186,7 +199,7 @@ angular.module('playerApp')
         } else {
           dashboardData.showOrgWarningDiv = true
           // Get Organisation details
-          var req = { 'request': { 'filters': { id: dashboardData.orgIds } } }
+          var req = {'request': {'filters': {'id': dashboardData.orgIds}}}
           adminService.orgSearch(req).then(function (apiResponse) {
             if (apiResponse.responseCode === 'OK') {
               var orgArray = []
@@ -198,8 +211,8 @@ angular.module('playerApp')
               toasterService.error(apiResponse.params.errmsg)
             }
           })
-            .catch(function () {
-              toasterService.error(apiMessages.ERROR.get)
+            .catch(function (apiResponse) {
+              toasterService.error(apiResponse.params.errmsg)
             })
         }
       }
@@ -213,6 +226,36 @@ angular.module('playerApp')
       dashboardData.onAfterOrgChange = function (orgId) {
         dashboardData.orgId = orgId
         dashboardData.getAdminDashboardData()
+      }
+
+      /**
+       * @Function downloadReports
+       * @Description - make dowload csv api call
+       * @Return  void
+       */
+      dashboardData.downloadReport = function () {
+        dashboardData.showDownloadLoader = 'active'
+        // Call service
+        dashboardService.downloadReport(dashboardData.orgId,
+          dashboardData.timePeriod, dashboardData.datasetPreviousValue).then(function (apiResponse) {
+          dashboardData.showDownloadLoader = ''
+          if (apiResponse && apiResponse.responseCode === 'OK') {
+            var str = $rootScope.messages.stmsg.m0095
+            dashboardData.downloadReportText = str.replace('{acknowledgementId}',
+              apiResponse.result.requestId).replace(/(\(.*\))/g, '')
+
+            $('#downloadReportModal').modal({
+              closable: true,
+              observeChanges: true
+            }).modal('show')
+          } else {
+            dashboardData.showDownloadLoader = ''
+            toasterService.error(apiResponse.params.errmsg)
+          }
+        }).catch(function (apiResponse) {
+          dashboardData.showDownloadLoader = ''
+          toasterService.error(apiResponse.params.errmsg)
+        })
       }
     }
   ])
