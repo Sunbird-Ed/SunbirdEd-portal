@@ -220,9 +220,17 @@ describe('controller test', function () {
       done()
     })
 
-    it('PreviewCollection state', function (done) {
-      goFrom('/CollectionEditor').toState('PreviewCollection')
+    it('PreviewCollection state from Profile', function (done) {
+      $stateParams.backState = 'Profile'
+      goFrom('/CollectionEditor').toState('PreviewCollection', $stateParams)
       expect($rootScope.profileActive).toBe('active')
+      done()
+    })
+
+    it('PreviewCollection state from ', function (done) {
+      $stateParams.backState = 'Resource'
+      goFrom('/CollectionEditor').toState('PreviewCollection', $stateParams)
+      expect($rootScope.resourcesActive).toBe('active')
       done()
     })
 
