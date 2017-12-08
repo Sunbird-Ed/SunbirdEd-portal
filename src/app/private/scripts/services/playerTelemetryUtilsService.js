@@ -36,7 +36,7 @@ angular.module('playerApp')
     this.endTelemetry = function (data) {
       org.sunbird.portal.eventManager.dispatchEvent('sunbird:telemetry:end', data)
       org.sunbird.portal.eventManager.dispatchEvent('sunbird:telemetry:sync', {
-        TelemetryData: TelemetryService._data
+        TelemetryData: TelemetryService._data // eslint-disable-line no-undef
       })
     }
     /**

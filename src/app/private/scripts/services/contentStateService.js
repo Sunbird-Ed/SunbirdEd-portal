@@ -9,7 +9,7 @@ angular.module('playerApp')
      * @memberOf Services
      */
 
-      var localContentState = localContentState || {}
+      var localContentState = localContentState || {} // eslint-disable-line no-use-before-define
       var self = this
       this.init = function () {
         org.sunbird.portal.eventManager.addEventListener('sunbird:telemetry:flush', self.updateContentState)
@@ -85,15 +85,21 @@ angular.module('playerApp')
       // Listen to the Events
 
       self.updateContentState = function (e, data) {
-        if (data && (data.eid === 'OE_START' || data.eid === 'OE_END') && dataService.getData('isTrackingEnabled') === true) {
+        if (data && (data.eid === 'OE_START' || data.eid === 'OE_END') &&
+        dataService.getData('isTrackingEnabled') === true) {
           var content = self.prepareContentObject(data)
           var prevContentStatus = -1
           // local updated
           if (localContentState[content.courseId] && localContentState[content.courseId].contents) {
-            var obj = _.find(localContentState[content.courseId].contents, { contentId: content.contentId, courseId: content.courseId })
-            var i = _.findIndex(localContentState[content.courseId].contents, { contentId: content.contentId, courseId: content.courseId })
+            var obj = _.find(localContentState[content.courseId].contents,
+              { contentId: content.contentId, courseId: content.courseId })
+            var i = _.findIndex(localContentState[content.courseId].contents,
+              { contentId: content.contentId, courseId: content.courseId })
             if (obj) {
-              localContentState[content.courseId].contents[i].progress = (content.progress && obj.progress && parseInt(obj.progress) < content.progress) ? content.progress : localContentState[content.courseId].contents[i].progress
+              localContentState[content.courseId].contents[i].progress =
+              (content.progress && obj.progress &&
+              parseInt(obj.progress) < content.progress) ? content.progress
+                : localContentState[content.courseId].contents[i].progress
               localContentState[content.courseId].contents[i].lastAccessTime = content.lastAccessTime
               prevContentStatus = localContentState[content.courseId].contents[i].status
               localContentState[content.courseId].contents[i].status = content.status
