@@ -41,6 +41,8 @@ angular.module('playerApp')
       profile.badges = []
       profile.isViewMore = true
 
+      var today = new Date()
+
       var orgIds = []
       _.forEach($rootScope.organisations, function (org) {
         if (org.organisationId) {
@@ -486,6 +488,9 @@ angular.module('playerApp')
       }
       profile.setDob = function () {
         $('#editDob').calendar('set date', profile.user.dob)
+        $('#editDob').calendar({
+          maxDate: new Date(today.getFullYear(), today.getMonth(), today.getDate())
+        })
         $timeout(function () { $scope.dobVis = true }, 100)
       }
 
