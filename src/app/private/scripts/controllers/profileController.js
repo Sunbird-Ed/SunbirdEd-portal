@@ -493,7 +493,6 @@ angular.module('playerApp')
         })
         $timeout(function () { $scope.dobVis = true }, 100)
       }
-
       $timeout(function () {
         $('.ui.radio.checkbox')
           .checkbox('attach events', '.toggle.button').checkbox({
