@@ -91,20 +91,6 @@ angular.module('playerApp')
                 }
               })
             } else if (dashboardData.datasetPreviousValue === 'consumption') {
-              angular.forEach(apiResponse.result.snapshot, function (numericData, key) {
-                if (key === 'org.consumption.content.session.count' ||
-                      key === 'org.consumption.content.time_spent.sum' ||
-                      key === 'org.consumption.content.time_spent.average') {
-                  if (key === 'org.consumption.content.time_spent.sum' ||
-                      key === 'org.consumption.content.time_spent.average') {
-                    numericData = dashboardService.secondsToMin(numericData)
-                    dashboardData.numericStatArray.push(numericData)
-                  } else {
-                    dashboardData.numericStatArray.push(numericData)
-                  }
-                }
-              })
-
               angular.forEach(apiResponse.result.series, function (bucketData, key) {
                 if (allKey.indexOf(key) === -1) {
                   allKey.push(key)
@@ -137,6 +123,20 @@ angular.module('playerApp')
                     dashboardData.graphArray[j][2].push(dataArray)
                   } else {
                     dashboardData.graphArray.push([series, labels, data, colors, options, bucketData.group_id])
+                  }
+                }
+              })
+
+              angular.forEach(apiResponse.result.snapshot, function (numericData, key) {
+                if (key === 'org.consumption.content.session.count' ||
+                    key === 'org.consumption.content.time_spent.sum' ||
+                    key === 'org.consumption.content.time_spent.average') {
+                  if (key === 'org.consumption.content.time_spent.sum' ||
+                      key === 'org.consumption.content.time_spent.average') {
+                    numericData = dashboardService.secondsToMin(numericData)
+                    dashboardData.numericStatArray.push(numericData)
+                  } else {
+                    dashboardData.numericStatArray.push(numericData)
                   }
                 }
               })
