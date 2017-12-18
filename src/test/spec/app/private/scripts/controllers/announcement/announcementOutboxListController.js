@@ -11,25 +11,20 @@ describe('Controller: announcementOutboxListController', function () {
     scope,
     rootScope,
     announcementOutboxListController,
-    $q,
     deferred,
-    timeout,
     annOutboxTestData = announcementTestData.getAnnouncementOutbox,
-    annDeleteTestData = announcementTestData.deleteAnnouncement,
-    annGetResendTestData = announcementTestData.getResend
+    annDeleteTestData = announcementTestData.deleteAnnouncement
   beforeEach(inject(function ($rootScope, $controller) {
     $controller('AppCtrl', {
       $rootScope: $rootScope,
       $scope: $rootScope.$new()
     })
   }))
-    // Initialize the controller and a mock scope
-  beforeEach(inject(function ($rootScope, $controller, _$q_, _$timeout_, _announcementAdapter_) {
+  // Initialize the controller and a mock scope
+  beforeEach(inject(function ($rootScope, $controller, _$q_, _announcementAdapter_) {
     rootScope = $rootScope
     scope = $rootScope.$new()
     announcementAdapter = _announcementAdapter_
-    $q = _$q_
-    timeout = _$timeout_
     deferred = _$q_.defer()
     announcementOutboxListController = $controller('announcementOutboxListController', {
       $rootScope: rootScope,
@@ -72,7 +67,7 @@ describe('Controller: announcementOutboxListController', function () {
   })
   describe('Delete announcement', function () {
     it('success', function () {
-      announcementOutboxListController.listData = [{'sourceid': 'ORG_001', 'attachments': [], 'createddate': '2017-12-06 11:38:47:671+0530', 'details': {'description': 'Demo collection', 'from': 'huk', 'title': 'Mollit qui excepteur aut sed quia animi ut aliqua Sequi sit alias consequuntur voluptatem', 'type': 'Circular'}, 'links': [], 'id': 'ec1b3d60-da4b-11e7-9f1b-63dce7cdecb9', 'userid': '159e93d1-da0c-4231-be94-e75b0c226d7c', 'target': {'geo': {'ids': ['0123668622585610242', '0123668627050987529']}}, 'status': 'active', 'metrics': {'received': 0, 'read': 0}}]
+      announcementOutboxListController.listData = annDeleteTestData.outboxData
       spyOn(announcementAdapter, 'deleteAnnouncement').and.returnValue(deferred.promise)
       deferred.resolve(annDeleteTestData.successResponse)
       annDeleteTestData.successResponse.data = annDeleteTestData.successResponse
@@ -95,6 +90,17 @@ describe('Controller: announcementOutboxListController', function () {
       deferred.reject({})
       expect(announcementOutboxListController.deleteAnnouncement).toBeDefined()
       announcementOutboxListController.deleteAnnouncement(annDeleteTestData.requestBody)
+      expect(announcementAdapter.deleteAnnouncement).toHaveBeenCalled()
+      scope.$apply()
+    })
+    it('delete success then update list', function () {
+      announcementOutboxListController.listData = annDeleteTestData.outboxData
+      announcementOutboxListController.announcementId = 'f92da4b0-e3c5-11e7-ae69-f19bbefb810c'
+      spyOn(announcementAdapter, 'deleteAnnouncement').and.returnValue(deferred.promise)
+      deferred.resolve(annDeleteTestData.successResponse)
+      announcementOutboxListController.deleteAnnouncement()
+      expect(announcementOutboxListController.listData[0].status).toBe('cancelled')
+      expect(announcementOutboxListController.deleteAnnouncement).toBeDefined()
       expect(announcementAdapter.deleteAnnouncement).toHaveBeenCalled()
       scope.$apply()
     })
