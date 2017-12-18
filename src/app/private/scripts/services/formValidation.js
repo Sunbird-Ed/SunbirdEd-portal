@@ -23,7 +23,7 @@ angular.module('playerApp')
       },
       { fieldName: 'prcntg',
         optional: true,
-        type: 'regExp[^[1-9][0-9]?$|^100$]',
+        type: 'regExp[^(100([\\.][0]{1,})?$|[0-9]{1,2}([\\.][0-9]{1,})?)$]',
         prompt: $rootScope.messages.stmsg.m0094
       }
     ]
