@@ -91,12 +91,12 @@ angular.module('playerApp')
           profile.formateDate(profileData.jobProfile)
           profile.formateDate(profileData.address)
           profile.formateDate(profileData.education)
-          if (profileData.education.length) {
-            profileData.education.forEach(function (education) {
-              education.yearOfPassing = education.yearOfPassing === 0 ? '' : education.yearOfPassing
-              education.percentage = education.percentage === 0 ? '' : education.percentage
-            })
-          }
+          // if (profileData.education.length) {
+          //   profileData.education.forEach(function (education) {
+          //     education.yearOfPassing = education.yearOfPassing === 0 ? '' : education.yearOfPassing
+          //     education.percentage = education.percentage === 0 ? '' : education.percentage
+          //   })
+          // }
           if (profile.isAvatarUpdate) {
             $rootScope.avatar = profileData.avatar
           }
@@ -348,7 +348,8 @@ angular.module('playerApp')
       }
 
       // CURD education
-      profile.addEducation = function (newEducation) {
+      profile.addEducation = function (edu) {
+        var newEducation = angular.copy(edu)
         var isValid = formValidation.validate('.educationForm')
         if (isValid === true) {
           newEducation.percentage = newEducation.percentage
@@ -357,8 +358,14 @@ angular.module('playerApp')
           newEducation.yearOfPassing = newEducation.yearOfPassing
             ? parseInt(newEducation.yearOfPassing)
             : 0
-          profile.education.push(newEducation)
-          var req = { education: profile.education }
+          var education = angular.copy(profile.education)
+          education.push(newEducation)
+          education.forEach(function (edu) {
+            edu.percentage = edu.percentage ? parseFloat(edu.percentage) : 0
+            edu.yearOfPassing = edu.yearOfPassing ? parseInt(edu.yearOfPassing)
+              : 0
+          })
+          var req = { education: education }
           profile.updateUserInfo(
             req,
             'educationForm',
@@ -387,6 +394,12 @@ angular.module('playerApp')
       }
 
       profile.deleteEducation = function (education) {
+        education.forEach(function (edu) {
+          edu.percentage = edu.percentage ? parseFloat(edu.percentage)
+            : 0
+          edu.yearOfPassing = edu.yearOfPassing ? parseInt(edu.yearOfPassing)
+            : 0
+        })
         var req = { education: education }
         req.userId = $rootScope.userId
         profile.updateUserInfo(
