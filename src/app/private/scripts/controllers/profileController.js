@@ -395,10 +395,11 @@ angular.module('playerApp')
 
       profile.deleteEducation = function (education) {
         education.forEach(function (edu) {
-            edu.percentage = edu.percentage ? parseFloat(edu.percentage) : 0
-            edu.yearOfPassing = edu.yearOfPassing ? parseInt(edu.yearOfPassing)
-              : 0
-          })
+          edu.percentage = edu.percentage ? parseFloat(edu.percentage)
+            : 0
+          edu.yearOfPassing = edu.yearOfPassing ? parseInt(edu.yearOfPassing)
+            : 0
+        })
         var req = { education: education }
         req.userId = $rootScope.userId
         profile.updateUserInfo(
