@@ -16,6 +16,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
     composeAnn.uploadAttchement = false
     composeAnn.editAction = false
     composeAnn.isApprove = false
+    composeAnn.hideSendBtn = false
     composeAnn.config = {
       geo: {
         adopter: 'SERVICE',
@@ -202,8 +203,10 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
       }
       composeAnn.isMetaModifiedSteps = true
       composeAnn.announcement.target.geo.ids = _.map(composeAnn.announcement.selTar, 'id')
+      composeAnn.hideSendBtn = true
       announcementAdapter.createAnnouncement(composeAnn.announcement, composeAnn.editAction)
         .then(function (apiResponse) {
+          composeAnn.hideSendBtn = false
           composeAnn.hideModel('createAnnouncementModal')
           portalTelemetryService.fireAnnouncementImpressions({
             env: 'community.announcements',
@@ -226,6 +229,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
           $state.go('announcementOutbox')
         }, function (err) {
           composeAnn.isMetaModified = true
+          composeAnn.hideSendBtn = false
           composeAnn.showError(err.data)
         })
     }
