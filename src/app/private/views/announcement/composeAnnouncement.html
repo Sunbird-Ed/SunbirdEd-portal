@@ -43,7 +43,7 @@
           <div class="eight wide column">
             <div class="field createAnnFormScroller">
               <div class="padding-right-25">
-                <div class="field required">
+                <div class="field required padding-top-5">
                   <label>{{$root.frmelmnts.lbl.anncmnttitle}}</label>
                   <div class="field form-group dropdown-margin-left" ng-required="true">
                     <input type="text" name="title" id="announcementTitle" placeholder="{{$root.frmelmnts.instn.t0057}}" ng-model="composeAnn.announcement.title" ng-maxlength="100" ng-change="composeAnn.enableRecepientBtn()">
@@ -130,7 +130,7 @@
     </button>
     <div class="ui primary button" ng-if="composeAnn.stepNumber === 2" ng-click="composeAnn.goToNextStep('receipients_confirm_view', 'list')">{{$root.frmelmnts.btn.anncmntconfirmrecipients}}</div>
     <div class="ui primary button" ng-if="composeAnn.stepNumber === 3" ng-click="composeAnn.goToNextStep('announcement_form_preview', 'view')">{{$root.frmelmnts.btn.anncmntpreview}}</div>
-    <div class="ui primary button" ng-if="composeAnn.stepNumber === 4" id="sendAnnouncement" ng-click="composeAnn.saveAnnouncement()">{{$root.frmelmnts.btn.anncmntsendanncmnt}}</div>
+    <div class="ui primary button" ng-if="composeAnn.stepNumber === 4" id="sendAnnouncement" ng-click="composeAnn.saveAnnouncement()"  ng-class="{'disabled': composeAnn.hideSendBtn === true}">{{$root.frmelmnts.btn.anncmntsendanncmnt}}</div>
     <div ng-if="composeAnn.stepNumber === 1" id="selectRecipientBtn" class="ui primary button" ng-class="{'disabled': composeAnn.disableBtn === true || announcementForm.$invalid}" ng-click="composeAnn.goToNextStep('community_explorer_view', 'list')" ng-init="composeAnn.enableRecepientBtn(false)">{{ composeAnn.editAction ? $root.frmelmnts.btn.anncmnteditrecipients : $root.frmelmnts.btn.anncmntselectrecipients}}</div>
   </div>
 </div>

@@ -365,7 +365,7 @@ var announcementTestData = {
     requestBody: {
       'request': {
         'userid': '159e93d1-da0c-4231-be94-e75b0c226d7c',
-        'announcenmentid': '430d95d0-c842-11e7-a0fa-0d6c238048d7'
+        'announcenmentId': 'f92da4b0-e3c5-11e7-ae69-f19bbefb810c'
       }
     },
     successResponse: {
@@ -397,7 +397,33 @@ var announcementTestData = {
       },
       'responseCode': 'SERVER_ERROR',
       'result': {}
-    }
+    },
+    outboxData: [{
+      'id': 'f92da4b0-e3c5-11e7-ae69-f19bbefb810c',
+      'from': 'test user',
+      'type': 'Circular',
+      'title': 'Test title for announcement 90',
+      'description': 'Test',
+      'links': ['http://yahoo.com'],
+      'attachments': [{
+        'name': 'alarm.png',
+        'mimetype': 'image/png',
+        'size': '67kb',
+        'link': 'https://sunbirddev.blob.core.windows.net/attachments/announcement/File-0123900729938247680.png'
+      }],
+      'createdDate': '2017-12-18 07:35:08:667+0000',
+      'status': 'cancelled',
+      'target': {
+        'geo': {
+          'ids': ['0123668627050987529']
+        }
+      },
+      'metrics': {
+        'sent': 2,
+        'read': 0,
+        'received': 0
+      }
+    }]
   },
   resendAnnouncement: {
     requestBody: {

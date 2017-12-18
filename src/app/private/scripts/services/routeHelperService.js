@@ -154,7 +154,7 @@ angular.module('playerApp')
             link: 'home'
           }, {
             name: 'Profile',
-            link: ''
+            link: 'profile'
           }, {
             name: 'My Announcements',
             link: ''

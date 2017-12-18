@@ -1,8 +1,9 @@
 'use strict'
 
 angular.module('playerApp')
-  .controller('announcementOutboxListController', ['$rootScope', '$scope', '$timeout', '$state', '$stateParams', 'toasterService', 'announcementAdapter', 'PaginationService',
-    function ($rootScope, $scope, $timeout, $state, $stateParams, toasterService, announcementAdapter, PaginationService) {
+  .controller('announcementOutboxListController', ['$rootScope', '$scope', '$timeout', '$state', '$stateParams',
+    'toasterService', 'announcementAdapter', 'PaginationService', function ($rootScope, $scope, $timeout, $state,
+      $stateParams, toasterService, announcementAdapter, PaginationService) {
       var announcementOutboxData = this
 
       /**
@@ -33,7 +34,8 @@ angular.module('playerApp')
             announcementOutboxData.result = apiResponse.result
             announcementOutboxData.listData = apiResponse.result.announcements
             announcementOutboxData.pageNumber = pageNumber
-            announcementOutboxData.pager = PaginationService.GetPager(apiResponse.result.count, pageNumber, announcementOutboxData.pageLimit)
+            announcementOutboxData.pager = PaginationService.GetPager(
+              apiResponse.result.count, pageNumber, announcementOutboxData.pageLimit)
             if (announcementOutboxData.listData.length > 0) {
               announcementOutboxData.showDataDiv = true
             }
@@ -89,10 +91,12 @@ angular.module('playerApp')
           if (apiResponse.result.status === 'cancelled') {
             announcementOutboxData.closeModal('announcementDeleteModal')
             toasterService.success($rootScope.messages.smsg.moo41)
-            _.remove(announcementOutboxData.listData, function (ann) {
-              return ann.id === announcementOutboxData.announcementId
+            _.forEach(announcementOutboxData.listData, function (key, index) {
+              if (announcementOutboxData.announcementId === key.id) {
+                announcementOutboxData.listData[index].status = 'cancelled'
+                return key
+              }
             })
-            announcementOutboxData.setPage(announcementOutboxData.pager.currentPage)
           } else {
             toasterService.error(apiResponse.params.errmsg)
             announcementOutboxData.closeModal('announcementDeleteModal')
@@ -111,7 +115,9 @@ angular.module('playerApp')
      * @param {int} [announcementId] [to make getResend api call]
      */
       announcementOutboxData.getResend = function (announcementId, announcementTitle) {
-        $state.go('announcementResend', {announcementId: announcementId, stepNumber: '1', telemetryAnnTitle: announcementTitle})
+        $state.go('announcementResend', {announcementId: announcementId,
+          stepNumber: '1',
+          telemetryAnnTitle: announcementTitle})
       }
 
       /**
