@@ -31,7 +31,7 @@ let apiSchema = Joi.object().keys({
     title: Joi.string().required(),
     from: Joi.string().required(),
     type: Joi.string().required(),
-    description: Joi.string().min(10).max(1200).allow('').optional(),
+    description: Joi.string().min(0).max(1200).allow('').optional(),
     target: Joi.object().min(1).required(),
     links: Joi.array().items(Joi.string()),
     attachments: Joi.array().max(20).items(Joi.object().keys({
