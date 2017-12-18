@@ -8,7 +8,6 @@ angular.module('playerApp')
      * @desc Service to manages permissions for user.
      * @memberOf Services
      */
-      var self = this
       var rolesAndPermissions = []
       var currentUserRoleMap = {}
       var currentUserRoles = []

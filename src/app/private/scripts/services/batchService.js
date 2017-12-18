@@ -7,7 +7,7 @@ angular.module('playerApp')
      * @desc Service to manage batches.
      * @memberOf Services
      */
-    var batchDetails = ''
+    this.batchDetails = ''
     /**
              * @method create
              * @desc Create a new batch
