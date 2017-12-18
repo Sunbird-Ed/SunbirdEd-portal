@@ -69,11 +69,9 @@ angular.module('playerApp')
                   })
                   data.push(dataArray)
 
-                  var name = ''
+                  var name = 'Content created per day'
                   if (dashboardData.timePeriod === '5w') {
                     name = 'Content created per week'
-                  } else {
-                    name = 'Content created per day'
                   }
                   var options = dashboardService.getChartOptions(name)
                   var colors = dashboardService.getChartColors(dashboardData.datasetPreviousValue)
@@ -95,8 +93,8 @@ angular.module('playerApp')
             } else if (dashboardData.datasetPreviousValue === 'consumption') {
               angular.forEach(apiResponse.result.snapshot, function (numericData, key) {
                 if (key === 'org.consumption.content.session.count' ||
-                    key === 'org.consumption.content.time_spent.sum' ||
-                    key === 'org.consumption.content.time_spent.average') {
+                      key === 'org.consumption.content.time_spent.sum' ||
+                      key === 'org.consumption.content.time_spent.average') {
                   if (key === 'org.consumption.content.time_spent.sum' ||
                       key === 'org.consumption.content.time_spent.average') {
                     numericData = dashboardService.secondsToMin(numericData)
@@ -120,11 +118,9 @@ angular.module('playerApp')
                   })
                   data.push(dataArray)
                   var series = [bucketData.name]
-                  var name = ''
+                  var name = bucketData.name
                   if (bucketData.time_unit !== undefined) {
                     name = bucketData.name + ' (' + bucketData.time_unit + ')'
-                  } else {
-                    name = bucketData.name
                   }
                   var options = dashboardService.getChartOptions(name)
                   var colors = dashboardService.getChartColors(dashboardData.datasetPreviousValue)
