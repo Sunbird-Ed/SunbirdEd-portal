@@ -456,6 +456,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
             composeAnn.addNewLink()
           })
         }
+        composeAnn.uploadAttchement = composeAnn.announcement.attachments.length > 0
       })
     }
     /**
