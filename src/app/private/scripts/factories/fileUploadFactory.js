@@ -1,40 +1,37 @@
 'use strict'
 
 angular.module('playerApp')
-  .factory('fileUpload', ['$filter', 'config', '$timeout', 'toasterService', 'uuid4', function ($filter, config, $timeout, toasterService, uuid4) {
-    var controllerOption = {}
-    var fileTypeSize = {}
-    // FineUploader option - you can easily override these option by passing controller specific option
-    var options = {
-      request: {
-        endpoint: config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + config.URL.CONTENT.UPLOAD_MEDIA,
-        inputName: 'file',
-        customHeaders: {
-          Accept: 'application/json',
-          'X-Consumer-ID': 'X-Consumer-ID',
-          'X-Device-ID': 'X-Device-ID',
-          'X-msgid': uuid4.generate(),
-          ts: $filter('date')(new Date(), 'yyyy-MM-dd HH:mm:ss:sssZ'),
-          'X-Source': 'web',
-          'X-Org-code': 'AP'
+  .factory('fileUpload', ['$filter', 'config', '$timeout', 'toasterService',
+    'uuid4', function ($filter, config, $timeout, toasterService, uuid4) {
+      var controllerOption = {}
+      var fileTypeSize = {}
+      // FineUploader option - you can easily override these option by passing controller specific option
+      var options = {
+        request: {
+          endpoint: config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + config.URL.CONTENT.UPLOAD_MEDIA,
+          inputName: 'file',
+          customHeaders: {
+            Accept: 'application/json',
+            'X-Consumer-ID': 'X-Consumer-ID',
+            'X-Device-ID': 'X-Device-ID',
+            'X-msgid': uuid4.generate(),
+            ts: $filter('date')(new Date(), 'yyyy-MM-dd HH:mm:ss:sssZ'),
+            'X-Source': 'web',
+            'X-Org-code': 'AP'
+          }
+        },
+        failedUploadTextDisplay: {
+          mode: 'default',
+          responseProperty: 'error'
+        },
+        fileValidation: {
+          itemLimit: 10,
+          sizeLimit: config.AnncmntMaxFileSizeToUpload,
+          allowedExtensions: config.AnncmntAllowedFileExtension
         }
-      },
-      failedUploadTextDisplay: {
-        mode: 'default',
-        responseProperty: 'error'
-      },
-      fileValidation: {
-        itemLimit: 10,
-        sizeLimit: config.AnncmntMaxFileSizeToUpload,
-        allowedExtensions: config.AnncmntAllowedFileExtension
-      },
-      validationErrorMessages: {
-        sizeError: '{file} ' + controllerOption.fileSizeErrorText + ' ' + controllerOption.fileSizeLimit / (1000 * 1024) + ' MB.',
-        tooManyItemsError: 'Too many items ({netItems}) would be uploaded. Item limit is {itemLimit}.'
       }
-    }
 
-    /**
+      /**
      * @method onFileUploadSuccess
      * @desc callback function - will executed onAfterFileUploadSuccess
      * @param   {int}  id  [selected file number]
@@ -42,38 +39,38 @@ angular.module('playerApp')
      * @param   {object}  responseJSON  [api response]
      * @param   {object}  xhr  [api response]
      */
-    var onFileUploadSuccess = function (id, name, responseJSON, xhr) {
-      if (responseJSON.responseCode === 'OK') {
-        var uploadDetails = {
-          'name': name,
-          'mimetype': fileTypeSize.type,
-          'size': fileTypeSize.size,
-          'link': responseJSON.result.url
+      var onFileUploadSuccess = function (id, name, responseJSON, xhr) {
+        if (responseJSON.responseCode === 'OK') {
+          var uploadDetails = {
+            'name': name,
+            'mimetype': fileTypeSize.type,
+            'size': fileTypeSize.size,
+            'link': responseJSON.result.url
+          }
+          controllerOption.uploadSuccess(id, name, uploadDetails)
         }
-        controllerOption.uploadSuccess(id, name, uploadDetails)
       }
-    }
 
-    /**
+      /**
      * @method onFileUploadCancel
      * @desc callback function - will executed on after user click on cancel button
      * @param   {int}  id    [file id]
      * @param   {string}  name  [file name]
      */
-    var onFileUploadCancel = function (id, name) {
-      controllerOption.onCancel(id, name)
-    }
+      var onFileUploadCancel = function (id, name) {
+        controllerOption.onCancel(id, name)
+      }
 
-    /**
+      /**
      * @method showErrorMessage
      * @desc function to show error message
      * @param   {string}  message  [message to display]
      */
-    var showErrorMessage = function (message) {
-      toasterService.info(message)
-    }
+      var showErrorMessage = function (message) {
+        toasterService.info(message)
+      }
 
-    return {
+      return {
       /**
        * @method initializeFineUploader
        * @desc initialize FineUploader third party plugin
@@ -81,41 +78,45 @@ angular.module('playerApp')
        * @param {Object}  option - Option object to invoke controller callback function
        * @returns {Callback} Trigger callback function
        */
-      createFineUploadInstance: function (ctrlOption, cb) {
-        controllerOption = _.merge({}, ctrlOption, options)
-        $timeout(function () {
-          var objFineUploader = new qq.FineUploader({
-            element: document.getElementById('fine-uploader-manual-trigger'),
-            template: 'qq-template-manual-trigger',
-            autoUpload: true,
-            paramsInBody: true,
-            debug: false,
-            request: controllerOption.request,
-            validation: controllerOption.fileValidation,
-            messages: controllerOption.validationErrorMessages,
-            failedUploadTextDisplay: controllerOption.failedUploadTextDisplay,
-            showMessage: showErrorMessage,
-            callbacks: {
-              onComplete: onFileUploadSuccess,
-              onSubmitted: function (id, name) {
-                this.setParams({
-                  filename: name,
-                  container: controllerOption.containerName
-                })
-
-                fileTypeSize = { 'type': this.getFile(id).type, 'size': this.getSize(id) }
+        createFineUploadInstance: function (ctrlOption, cb) {
+          controllerOption = _.merge({}, ctrlOption, options)
+          $timeout(function () {
+            var objFineUploader = new qq.FineUploader({
+              element: document.getElementById('fine-uploader-manual-trigger'),
+              template: 'qq-template-manual-trigger',
+              autoUpload: true,
+              paramsInBody: true,
+              debug: false,
+              request: controllerOption.request,
+              validation: controllerOption.fileValidation,
+              messages: {
+                sizeError: '{file} ' + controllerOption.fileSizeErrorText + ' ' +
+                controllerOption.fileSizeLimit / (1000 * 1024) + ' MB.',
+                tooManyItemsError: 'Too many items ({netItems}) would be uploaded. Item limit is {itemLimit}.'
               },
-              onCancel: onFileUploadCancel
+              failedUploadTextDisplay: controllerOption.failedUploadTextDisplay,
+              showMessage: showErrorMessage,
+              callbacks: {
+                onComplete: onFileUploadSuccess,
+                onSubmitted: function (id, name) {
+                  this.setParams({
+                    filename: name,
+                    container: controllerOption.containerName
+                  })
+
+                  fileTypeSize = { 'type': this.getFile(id).type, 'size': this.getSize(id) }
+                },
+                onCancel: onFileUploadCancel
+              }
+            })
+            cb(true)
+            window.cancelUploadFile = function () {
+              document.getElementById('hide-section-with-button').style.display = 'block'
             }
-          })
-          cb(true)
-          window.cancelUploadFile = function () {
-            document.getElementById('hide-section-with-button').style.display = 'block'
-          }
-        }, 800)
-      },
-      onFileUploadSuccess: onFileUploadSuccess,
-      onFileUploadCancel: onFileUploadCancel,
-      showErrorMessage: showErrorMessage
-    }
-  }])
+          }, 800)
+        },
+        onFileUploadSuccess: onFileUploadSuccess,
+        onFileUploadCancel: onFileUploadCancel,
+        showErrorMessage: showErrorMessage
+      }
+    }])

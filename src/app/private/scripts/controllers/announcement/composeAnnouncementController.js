@@ -281,7 +281,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
       var options = {
         fileSizeLimit: config.AnncmntMaxFileSizeToUpload,
         allowedExtensions: config.AnncmntAllowedFileExtension,
-        fileSizeErrorText: $rootScope.messages.imsg.m0021,
+        fileSizeErrorText: $rootScope.messages.emsg.m0007,
         containerName: 'attachments/announcement',
         uploadSuccess: composeAnn.onUploadComplete,
         onCancel: composeAnn.onUploadCancel

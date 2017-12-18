@@ -9,6 +9,7 @@
         "md5": true,
         "moment": true,
         "org": true,
+        "qq": true,
     },
     "rules": {
         "indent": ["error", 2],
