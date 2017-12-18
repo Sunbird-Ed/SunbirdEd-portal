@@ -10,8 +10,6 @@
         "moment": true,
         "org": true,
         "qq": true,
-        "cb": true,
-        "objFineUploader": true,
     },
     "rules": {
         "indent": ["error", 2],
