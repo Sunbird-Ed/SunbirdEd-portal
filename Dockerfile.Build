@@ -12,6 +12,7 @@ RUN apt update --no-install-recommends -y \
     && apt-get install make \
     && apt-get install nasm 
 RUN rm -rf /var/lib/apt/lists/*
+RUN apt-get update
 WORKDIR /opt/player
 COPY * /opt/player/
 RUN apt-get update
