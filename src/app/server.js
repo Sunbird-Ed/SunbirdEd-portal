@@ -253,11 +253,11 @@ keycloak.authenticated = function (request) {
     getUserData: function (callback) {
       permissionsHelper.getCurrentUserRoles(request, callback)
     },
-    logSession: function (callback) {
-      telemetryHelper.logSessionStart(request, callback)
-    },
     updateLoginTime: function (callback) {
       userHelper.updateLoginTime(request, callback)
+    },
+    logSession: function (callback) {
+      telemetryHelper.logSessionStart(request, callback)
     }
   }, function (err, results) {
     if (err) {
