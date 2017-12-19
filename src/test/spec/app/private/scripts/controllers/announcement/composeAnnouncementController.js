@@ -330,8 +330,7 @@ describe('Controller: composeAnnouncementCtrl', function () {
     composeAnn.announcement = testMockData.composeAnncmnt.annObject
     spyOn(announcementAdapter, 'createAnnouncement').and.returnValue(deferred.promise)
     deferred.resolve(testMockData.composeAnncmnt.failedAnncmntRes)
-    testMockData.composeAnncmnt.failedAnncmntRes.data = testMockData.composeAnncmnt
-            .failedAnncmntRes
+    testMockData.composeAnncmnt.failedAnncmntRes.data = testMockData.composeAnncmnt.failedAnncmntRes
     spyOn(composeAnn, 'saveAnnouncement').and.callThrough()
     composeAnn.announcement.from = 'test'
     composeAnn.linkArray = ['https;//google.co.in']
@@ -367,8 +366,7 @@ describe('Controller: composeAnnouncementCtrl', function () {
     composeAnn.linkArray = []
     spyOn(announcementAdapter, 'createAnnouncement').and.returnValue(deferred.promise)
     deferred.resolve(testMockData.composeAnncmnt.saveAnncmntSuccessRes)
-    testMockData.composeAnncmnt.saveAnncmntSuccessRes.data = testMockData
-            .composeAnncmnt.saveAnncmntSuccessRes
+    testMockData.composeAnncmnt.saveAnncmntSuccessRes.data = testMockData.composeAnncmnt.saveAnncmntSuccessRes
     spyOn(composeAnn, 'saveAnnouncement').and.callThrough()
     expect(composeAnn.saveAnnouncement).toBeDefined()
     composeAnn.saveAnnouncement(testMockData.composeAnncmnt.composeAnncmntRequest)
@@ -385,8 +383,7 @@ describe('Controller: composeAnnouncementCtrl', function () {
     composeAnn.linkArray = []
     spyOn(announcementAdapter, 'createAnnouncement').and.returnValue(deferred.promise)
     deferred.resolve(testMockData.composeAnncmnt.saveAnncmntSuccessRes)
-    testMockData.composeAnncmnt.saveAnncmntSuccessRes.data = testMockData
-            .composeAnncmnt.saveAnncmntSuccessRes
+    testMockData.composeAnncmnt.saveAnncmntSuccessRes.data = testMockData.composeAnncmnt.saveAnncmntSuccessRes
     spyOn(composeAnn, 'saveAnnouncement').and.callThrough()
     expect(composeAnn.saveAnnouncement).toBeDefined()
     composeAnn.saveAnnouncement(testMockData.composeAnncmnt.composeAnncmntRequest)
