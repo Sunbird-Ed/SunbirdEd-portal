@@ -67,7 +67,7 @@ angular.module('playerApp')
      * @param   {string}  message  [message to display]
      */
       var showErrorMessage = function (message) {
-        toasterService.info(message)
+        toasterService.error(message)
       }
 
       return {
