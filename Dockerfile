@@ -3,7 +3,6 @@ MAINTAINER "Manojvv" "manojrpms@gmail.com"
 RUN apt-get update --no-install-recommends -y \
     && apt-get install unzip
 RUN rm -rf /var/lib/apt/lists/*
-RUN apt-get update
 RUN adduser --uid 1001 --home /home/sunbird/ sunbird
 WORKDIR /home/sunbird
 COPY player-dist.zip  /home/sunbird/
