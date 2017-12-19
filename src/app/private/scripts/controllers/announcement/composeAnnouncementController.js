@@ -103,7 +103,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
     composeAnn.removeLink = function (index) {
       composeAnn.repeatableWebLinks.splice(index, 1)
       if (composeAnn.announcement.links) {
-        delete composeAnn.announcement.links[index]
+        composeAnn.announcement.links.splice(index, 1)
       }
       composeAnn.showUrlField = !!composeAnn.repeatableWebLinks.length
       composeAnn.enableRecepientBtn()
