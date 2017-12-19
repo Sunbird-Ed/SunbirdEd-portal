@@ -81,7 +81,7 @@ angular.module('playerApp')
         createFineUploadInstance: function (ctrlOption, cb) {
           controllerOption = _.merge({}, ctrlOption, options)
           $timeout(function () {
-            var objFineUploader = new qq.FineUploader({
+            var objFineUploader = new qq.FineUploader({ // eslint-disable-line
               element: document.getElementById('fine-uploader-manual-trigger'),
               template: 'qq-template-manual-trigger',
               autoUpload: true,
@@ -109,7 +109,7 @@ angular.module('playerApp')
                 onCancel: onFileUploadCancel
               }
             })
-            cb(true)
+            cb(true) // eslint-disable-line
             window.cancelUploadFile = function () {
               document.getElementById('hide-section-with-button').style.display = 'block'
             }
