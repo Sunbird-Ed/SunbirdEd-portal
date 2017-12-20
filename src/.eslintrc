@@ -10,6 +10,7 @@
         "moment": true,
         "org": true,
         "qq": true,
+        "testData": true
     },
     "rules": {
         "indent": ["error", 2],
