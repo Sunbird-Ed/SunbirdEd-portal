@@ -53,12 +53,12 @@
                       <i class="delete icon" ng-click="upForReviewContent.search.removeFilterSelection('selectedGrades',grade)"></i>
                   </a>
               </span>
-              <!-- language -->
-              <span class="padded chip" ng-if='upForReviewContent.search.selectedLanguage.length > 0'>
+              <!-- medium -->
+              <span class="padded chip" ng-if='upForReviewContent.search.selectedMedium.length > 0'>
                   {{$root.frmelmnts.prmpt.medium}}:
-                  <a class="ui label margin-top--5" ng-repeat="language in upForReviewContent.search.selectedLanguage" ng-init="$last && $root.expandFilters()">
-                      {{language}}
-                      <i class="delete icon" ng-click="upForReviewContent.search.removeFilterSelection('selectedLanguage',language)"></i>
+                  <a class="ui label margin-top--5" ng-repeat="medium in upForReviewContent.search.selectedMedium" ng-init="$last && $root.expandFilters()">
+                      {{medium}}
+                      <i class="delete icon" ng-click="upForReviewContent.search.removeFilterSelection('selectedMedium',medium)"></i>
                   </a>
               </span>
               <!-- subject -->
@@ -113,10 +113,10 @@
                   <div  apply-script  id="filterLang" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
                       <input type='hidden' ng-value='{{}}' />
                       <i class="dropdown icon"></i>
-                      <div class="filter-sel-text" ng-if="upForReviewContent.search.selectedLanguage.length > 0 ">{{upForReviewContent.search.selectedLanguage.length+' '+$root.frmelmnts.prmpt.medium}}</div>
-                      <div class="filter-sel-text" ng-if="upForReviewContent.search.selectedLanguage.length == 0 ">{{$root.frmelmnts.prmpt.medium}}</div>
+                      <div class="filter-sel-text" ng-if="upForReviewContent.search.selectedMedium.length > 0 ">{{upForReviewContent.search.selectedMedium.length+' '+$root.frmelmnts.prmpt.medium}}</div>
+                      <div class="filter-sel-text" ng-if="upForReviewContent.search.selectedMedium.length == 0 ">{{$root.frmelmnts.prmpt.medium}}</div>
                       <div class="menu">
-                          <div ng-click="upForReviewContent.search.selectFilter('selectedLanguage',language,$event)" ng-repeat="language in upForReviewContent.search.languages  | orderBy:'toString()'" class="item dropdown-item" ng-class="{'active':(upForReviewContent.search.selectedLanguage.indexOf(language)>=0)}" data-value="{{language}}">{{language}}</div>
+                          <div ng-click="upForReviewContent.search.selectFilter('selectedMedium',medium,$event)" ng-repeat="medium in upForReviewContent.search.mediums  | orderBy:'toString()'" class="item dropdown-item" ng-class="{'active':(upForReviewContent.search.selectedMedium.indexOf(medium)>=0)}" data-value="{{medium}}">{{medium}}</div>
                       </div>
                   </div>
               </div>

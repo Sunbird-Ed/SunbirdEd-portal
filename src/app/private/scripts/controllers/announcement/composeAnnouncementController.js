@@ -310,7 +310,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
                         ' <i id="removeFile" onclick="removeCreateAnnAttachment ' +
                         '(this,' + pos + ')" class="remove icon cursor-pointer" ' +
                         'style="float:right;"></i><span class="qq-upload-file-selector ' +
-                        'qq-upload-file" style="margin-top: -30px !important;width: 222px;">' +
+                        'qq-upload-file" style="width: 222px;">' +
                         attachment.name + '</span></li>')
         })
       }
