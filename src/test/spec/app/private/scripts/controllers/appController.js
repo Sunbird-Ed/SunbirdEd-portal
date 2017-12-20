@@ -42,7 +42,7 @@ describe('App controller', function () {
   // spyOn(Array.prototype, 'find').and.callThrough()
 
   beforeEach(inject(function ($rootScope, _$stateParams_, _contentService_, _$timeout_,
-             _$state_, _$q_, $controller, _searchService_, _adminService_, _userService_, _$httpBackend_) {
+    _$state_, _$q_, $controller, _searchService_, _adminService_, _userService_, _$httpBackend_) {
     rootScope = $rootScope
     $stateParams = _$stateParams_
     contentService = _contentService_
@@ -95,7 +95,7 @@ describe('App controller', function () {
     spyOn(rootScope, 'mergeObjects').and.callThrough()
     var obj1 = {'k1': 1}
     var mergedObj = rootScope.mergeObjects(obj1, {'k2': 2})
-        // expect(mergedObj).toBe(obj1)
+    // expect(mergedObj).toBe(obj1)
   })
 
   it('Should return the empty objects', function () {
@@ -160,9 +160,9 @@ describe('App controller', function () {
 
   it('should get user profile', function (done) {
     $httpBackend.whenRoute('GET', '/v1/tenant/info/adsdsas')
-    .respond(function (method, url, data, headers, params) {
-      return [200, {statusText: 'OK'}]
-    })
+      .respond(function (method, url, data, headers, params) {
+        return [200, {statusText: 'OK'}]
+      })
 
     spyOn(scope, 'setRootOrgInfo').and.callThrough()
     scope.setRootOrgInfo({rootOrg: { orgName: 'Sunbird' }})

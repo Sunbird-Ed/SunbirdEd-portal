@@ -38,176 +38,255 @@ describe('controller test', function () {
     }}
   }
 
-  describe('onExit', function () {
-    it('should close the modal', function (done) {
-      goFrom('/').toState('Courses', {})
-      goFrom('/learn').toState('Home', {})
-      done()
-    })
-  })
-
   describe('OnEnter', function () {
-    it('should close the modal', function () {
-      goFrom('/').toState('UserContent', {})
-      goFrom('/').toState('Courses', {})
-      goFrom('/').toState('Resources', {})
-      goFrom('/course/note/123123').toState('CourseNote', {})
-      goFrom('/').toState('Community', {})
-    })
-
     describe('Search state', function () {
-      it('On enter from course', function (done) {
+      it('from course', function (done) {
         $stateParams.type = 'Courses'
         goFrom('/').toState('Search', $stateParams)
         done()
       })
-      it('On enter from content', function (done) {
+      it('from content', function (done) {
         $stateParams.type = 'Library'
         goFrom('/').toState('Search', $stateParams)
         done()
       })
-      it('On enter from profile', function (done) {
+      it('from profile', function (done) {
         $stateParams.type = 'Users'
         goFrom('/').toState('Search', $stateParams)
         done()
       })
-      it('On enter from profile', function (done) {
+      it('from profile', function (done) {
         $stateParams.type = 'Organisations'
         goFrom('/').toState('Search', $stateParams)
         done()
       })
     })
 
-    it('On TocPlayer enter ', function (done) {
-      $stateParams.type = 'Courses'
-      goFrom('/').toState('TocPlayer', $stateParams)
-
+    it('Community state ', function (done) {
+      goFrom('/').toState('Community')
       done()
     })
 
-    it('On TocPlayer enter ', function (done) {
+    it('UserContent state ', function (done) {
+      goFrom('/').toState('UserContent')
+      done()
+    })
+
+    it('Resources state', function (done) {
+      $stateParams.courseId = 'do_21323332333333332'
+      goFrom('/').toState('Resources', $stateParams)
+      expect($rootScope.isResourcesPage).toBeTruthy()
+      done()
+    })
+
+    it('Courses state', function (done) {
+      goFrom('/').toState('Courses')
+      expect($rootScope.isLearnPage).toBeTruthy()
+      done()
+    })
+
+    it('CourseNote state', function (done) {
+      $stateParams.courseId = 'do_21323332333333332'
+      goFrom('/').toState('CourseNote', $stateParams)
+      expect($rootScope.isNotePage).toBeTruthy()
+      done()
+    })
+
+    it('ContentNote state', function (done) {
+      $stateParams.contentId = 'do_21323332333333332'
+      $stateParams.contentName = 'y6'
+      goFrom('/').toState('ContentNote', $stateParams)
+      expect($rootScope.isNotePage).toBeTruthy()
+      done()
+    })
+
+    it('CourseContentNote state', function (done) {
+      $stateParams.courseId = 'do_21323332333333332'
+      $stateParams.contentId = 'do_21323332333333332'
+      $stateParams.contentName = 'y6'
+      goFrom('/').toState('CourseContentNote', $stateParams)
+      expect($rootScope.isNotePage).toBeTruthy()
+      done()
+    })
+
+    it('TocPlayer state', function (done) {
+      $stateParams.courseId = 'do_21323332333333332'
+      $stateParams.contentId = 'do_21323332333333332'
+      $stateParams.lectureView = 'yes'
+      $stateParams.contentIndex = 1
+      goFrom('/').toState('TocPlayer', $stateParams)
+      expect($rootScope.isTocPage).toBeTruthy()
+      done()
+    })
+
+    it('TocPlayer state', function (done) {
       $stateParams.type = 'Courses'
       goFrom('/').toState('WorkSpace', $stateParams)
       done()
     })
 
-    it('On WorkSpace.ContentCreation enter ', function (done) {
-      goFrom('/').toState('WorkSpace.ContentCreation', $stateParams)
+    it('Profile state', function (done) {
+      goFrom('/').toState('Profile')
+      expect($rootScope.profileActive).toBe('active')
       done()
     })
 
-    it('On WorkSpace.UpForReviewContent enter ', function (done) {
-      goFrom('/').toState('WorkSpace.UpForReviewContent', $stateParams)
+    it('Player state', function (done) {
+      $stateParams.contentId = 'do_21323332333333332'
+      $stateParams.contentName = 'y6'
+      goFrom('/').toState('Player', $stateParams)
+      expect($rootScope.isPlayerPage).toBeTruthy()
       done()
     })
 
-    it('On WorkSpace.FlaggedContent enter ', function (done) {
-      goFrom('/').toState('WorkSpace.FlaggedContent', $stateParams)
+    it('WorkSpace.ContentCreation state', function (done) {
+      goFrom('/profile').toState('WorkSpace.ContentCreation')
       done()
     })
 
-    it('On WorkSpace.ReviewContent enter ', function (done) {
-      goFrom('/').toState('WorkSpace.ReviewContent', $stateParams)
+    it('WorkSpace.UpForReviewContent state', function (done) {
+      goFrom('/').toState('WorkSpace.UpForReviewContent')
       done()
     })
 
-    it('On WorkSpace.AllUploadedContent enter ', function (done) {
-      goFrom('/').toState('WorkSpace.AllUploadedContent', $stateParams)
+    it('WorkSpace.FlaggedContent state', function (done) {
+      goFrom('/').toState('WorkSpace.FlaggedContent')
       done()
     })
 
-    it('On WorkSpace.BatchList enter ', function (done) {
-      goFrom('/').toState('WorkSpace.BatchList', $stateParams)
+    it('WorkSpace.ReviewContent state', function (done) {
+      goFrom('/').toState('WorkSpace.ReviewContent')
       done()
     })
 
-    it('On CreateTextbook enter ', function (done) {
-      goFrom('/').toState('CreateTextbook', $stateParams)
+    it('WorkSpace.AllUploadedContent state', function (done) {
+      goFrom('/').toState('WorkSpace.AllUploadedContent')
       done()
     })
 
-    it('On CreateTextbook enter ', function (done) {
-      goFrom('/').toState('CreateTextbook', $stateParams)
+    it('WorkSpace.BatchList state', function (done) {
+      goFrom('/').toState('WorkSpace.BatchList')
       done()
     })
 
-    it('On CreateTextbook enter ', function (done) {
-      goFrom('/').toState('CreateTextbook', $stateParams)
+    it('CreateTextbook state', function (done) {
+      goFrom('/').toState('CreateTextbook')
       done()
     })
 
-    it('On CreateLesson enter ', function (done) {
-      goFrom('/').toState('CreateLesson', $stateParams)
+    it('CreateTextbook state', function (done) {
+      goFrom('/').toState('CreateTextbook')
       done()
     })
 
-    it('On ContentEditor enter ', function (done) {
-      goFrom('/CreateLesson').toState('ContentEditor', $stateParams)
+    it('CreateTextbook state', function (done) {
+      goFrom('/').toState('CreateTextbook')
       done()
     })
 
-    it('On CreateCollection enter ', function (done) {
-      goFrom('/ContentEditor').toState('CreateCollection', $stateParams)
+    it('CreateLesson state', function (done) {
+      goFrom('/').toState('CreateLesson')
+      expect($rootScope.profileActive).toBe('active')
       done()
     })
 
-    it('On CreateCourse enter ', function (done) {
-      goFrom('/CreateCollection').toState('CreateCourse', $stateParams)
+    it('ContentEditor state', function (done) {
+      goFrom('/CreateLesson').toState('ContentEditor')
+      expect($rootScope.profileActive).toBe('active')
       done()
     })
 
-    it('On CreateCourse enter ', function (done) {
-      goFrom('/CreateCourse').toState('CollectionEditor', $stateParams)
+    it('CreateCollection state', function (done) {
+      goFrom('/ContentEditor').toState('CreateCollection')
+      expect($rootScope.profileActive).toBe('active')
       done()
     })
 
-    it('On PreviewContent enter ', function (done) {
-      goFrom('/CollectionEditor').toState('PreviewContent', $stateParams)
+    it('CreateCourse state', function (done) {
+      goFrom('/CreateCollection').toState('CreateCourse')
+      expect($rootScope.profileActive).toBe('active')
       done()
     })
 
-    it('On PreviewCollection enter ', function (done) {
+    it('CreateCourse state', function (done) {
+      goFrom('/CreateCourse').toState('CollectionEditor')
+      expect($rootScope.profileActive).toBe('active')
+      done()
+    })
+
+    it('PreviewContent state', function (done) {
+      goFrom('/CollectionEditor').toState('PreviewContent')
+      expect($rootScope.profileActive).toBe('active')
+      done()
+    })
+
+    it('PreviewCollection state from Profile', function (done) {
+      $stateParams.backState = 'Profile'
       goFrom('/CollectionEditor').toState('PreviewCollection', $stateParams)
+      expect($rootScope.profileActive).toBe('active')
       done()
     })
 
-    it('On orgDashboard enter ', function (done) {
-      goFrom('/').toState('orgDashboard', $stateParams)
+    it('PreviewCollection state from ', function (done) {
+      $stateParams.backState = 'Resource'
+      goFrom('/CollectionEditor').toState('PreviewCollection', $stateParams)
+      expect($rootScope.resourcesActive).toBe('active')
       done()
     })
 
-    it('On CreateBatch enter ', function (done) {
+    it('orgDashboard state', function (done) {
+      goFrom('/').toState('orgDashboard')
+      done()
+    })
+
+    it('CreateBatch state', function (done) {
+      $stateParams.courseId = 'do_21323332333333332'
       goFrom('/').toState('CreateBatch', $stateParams)
       done()
     })
 
-    it('On updateBatch enter ', function (done) {
-      goFrom('/').toState('updateBatch', $stateParams)
+    it('updateBatch state', function (done) {
+      goFrom('/').toState('updateBatch')
       done()
     })
 
-    it('On CreateLessonPlan enter ', function (done) {
-      goFrom('/').toState('CreateLessonPlan', $stateParams)
+    it('CreateLessonPlan state', function (done) {
+      goFrom('/').toState('CreateLessonPlan')
+      expect($rootScope.profileActive).toBe('active')
       done()
     })
 
-    it('On GenericEditor enter ', function (done) {
-      goFrom('/').toState('GenericEditor', $stateParams)
+    it('GenericEditor state', function (done) {
+      goFrom('/').toState('GenericEditor')
+      expect($rootScope.profileActive).toBe('active')
       done()
     })
 
-    it('On PublicProfile enter ', function (done) {
-      goFrom('/').toState('PublicProfile', $stateParams)
+    it('PublicProfile state', function (done) {
+      goFrom('/').toState('PublicProfile')
+      expect($rootScope.profileActive).toBe('active')
       done()
     })
 
-    it('On MyActivity enter ', function (done) {
-      goFrom('/').toState('MyActivity', $stateParams)
+    it('MyActivity state', function (done) {
+      goFrom('/').toState('MyActivity')
       done()
     })
 
-    it('On Setup enter ', function (done) {
-      goFrom('/').toState('Setup', $stateParams)
+    it('Setup state', function (done) {
+      goFrom('/').toState('Setup')
+      done()
+    })
+  })
+
+  it('WorkSpace.LimitedPublishedContent state', function (done) {
+    goFrom('/').toState('WorkSpace.LimitedPublishedContent')
+    done()
+  })
+
+  describe('onExit', function () {
+    it('Setup state', function (done) {
+      goFrom('/learn').toState('Home', {})
       done()
     })
   })

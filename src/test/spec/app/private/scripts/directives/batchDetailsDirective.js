@@ -7,7 +7,7 @@
 'use strict'
 
 describe('Directive: batchDetails', function () {
-    // load the directive's module
+  // load the directive's module
   beforeEach(module('playerApp'))
 
   beforeEach(inject(function ($rootScope, $controller) {

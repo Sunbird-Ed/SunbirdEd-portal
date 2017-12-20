@@ -7,7 +7,7 @@
 'use strict'
 
 describe('Directive: Permissions', function () {
-    // load the directive's module
+  // load the directive's module
   beforeEach(module('playerApp'))
 
   var element, ctrl, compile, templateCache, permissionsService, scope, timeout

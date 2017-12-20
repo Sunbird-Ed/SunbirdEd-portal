@@ -14,15 +14,15 @@ angular.module('playerApp') // add those all values
     '$state',
     'userService',
     function (
-        $scope,
-        $rootScope,
-        $stateParams,
-        searchService,
-        toasterService,
-        $timeout,
-        $state,
+      $scope,
+      $rootScope,
+      $stateParams,
+      searchService,
+      toasterService,
+      $timeout,
+      $state,
 
-        userService) {
+      userService) {
     /**
      * @class PublicProfileController
      * @desc to display users public profile
@@ -31,7 +31,7 @@ angular.module('playerApp') // add those all values
       var publicProfile = this
       var userIdentifier = window.atob($stateParams.userId)
       var currentUserId = $rootScope.userId
-           /**
+      /**
          * @method profile
          * @desc Get user profile
          * @memberOf Controllers.PublicProfileController
@@ -39,15 +39,15 @@ angular.module('playerApp') // add those all values
          */
       publicProfile.profile = function (endorsement) {
         publicProfile.loader = toasterService
-                                    .loader('', $rootScope.messages.stmsg.m0005)
+          .loader('', $rootScope.messages.stmsg.m0005)
 
         searchService.getPublicUserProfile(userIdentifier, endorsement).then(function (res) {
           publicProfile.loader.showLoader = false
           if (res.responseCode === 'OK') {
             publicProfile.user = res.result.response
             publicProfile.user.dob = publicProfile.user.dob
-                                                ? new Date(publicProfile.user.dob)
-                                                : publicProfile.user.dob
+              ? new Date(publicProfile.user.dob)
+              : publicProfile.user.dob
             var userSkills = publicProfile.user.skills !== undefined ? publicProfile.user.skills : []
             if (userSkills.length) {
               userSkills.forEach(function (skill) {
@@ -61,7 +61,7 @@ angular.module('playerApp') // add those all values
               })
               userSkills.forEach(function (skill) {
                 skill.isEndorsable = !skill.endorsersUserId
-                                                      .includes(currentUserId)
+                  .includes(currentUserId)
               })
             }
 
@@ -91,7 +91,9 @@ angular.module('playerApp') // add those all values
         publicProfile.limit = (lim <= 0) ? publicProfile.userSkills.length : lim
       }
       publicProfile.endorsement = function (skill) {
-        userService.addSkills({ request: { skillName: [skill], endorsedUserId: userIdentifier } }).then(function (response) {
+        userService.addSkills({
+          request: { skillName: [skill], endorsedUserId: userIdentifier }
+        }).then(function (response) {
           if (response && response.responseCode === 'OK') {
             publicProfile.profile('endorsement')
           } else {

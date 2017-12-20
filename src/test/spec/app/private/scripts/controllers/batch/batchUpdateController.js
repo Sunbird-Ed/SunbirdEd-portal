@@ -1,7 +1,7 @@
 'use strict'
 
 describe('Controller:BatchUpdateController', function () {
-    // load the controller's module
+  // load the controller's module
   beforeEach(module('playerApp'))
 
   beforeEach(inject(function ($rootScope, $controller) {
@@ -20,20 +20,17 @@ describe('Controller:BatchUpdateController', function () {
     $q,
     deferred,
     timeout,
-    errorMessage,
     createContoller,
     batchTestData = testData.batch
 
     // Initialize the controller and a mock scope
-  beforeEach(inject(function ($rootScope, _$controller_, _batchService_, _$q_, _$timeout_, _errorMessages_) {
+  beforeEach(inject(function ($rootScope, _$controller_, _batchService_, _$q_, _$timeout_) {
     rootScope = $rootScope
     scope = $rootScope.$new()
     batchService = _batchService_
-    errorMessage = _errorMessages_
     $q = _$q_
     timeout = _$timeout_
     deferred = _$q_.defer()
-    rootScope.errorMessages = errorMessage
     createContoller = function () {
       return new _$controller_('BatchUpdateController', {
         $rootScope: rootScope,
@@ -101,11 +98,21 @@ describe('Controller:BatchUpdateController', function () {
     batchUpdate = createContoller()
     batchUpdate.batchData = batchTestData.batchData
     batchUpdate.userList = batchTestData.userList
-
     spyOn(batchUpdate, 'showUpdateBatchModal').and.callThrough()
     batchUpdate.showUpdateBatchModal()
+    setFixtures('<div class="createbatchdropdown ui fluid multiple search selection dropdown " id="mentors">')
+    timeout.flush(10)
     scope.$apply()
     expect(batchUpdate.showUpdateBatchModal).not.toBe(undefined)
+  })
+
+  it('Should clear form on clearForm call', function () {
+    batchUpdate = createContoller()
+    setFixtures('<form class="ui form batchAddUserForm" id="updateBatch" name="updateBatch" validate></form')
+    spyOn(batchUpdate, 'clearForm').and.callThrough()
+    batchUpdate.clearForm()
+    scope.$apply()
+    expect(batchUpdate.getBatchDetails).not.toBe(undefined)
   })
 
   it('Should load user list', function () {
@@ -140,14 +147,9 @@ describe('Controller:BatchUpdateController', function () {
     batchUpdate = createContoller()
     spyOn(batchUpdate, 'hideUpdateBatchModal').and.callThrough()
     batchUpdate.hideUpdateBatchModal()
+    setFixtures('<div class="ui modal" id="updateBatchModal"></div>')
+    scope.$apply()
     expect(batchUpdate.hideUpdateBatchModal).not.toBe(undefined)
-  })
-
-  it('Should clear batch form data', function () {
-    batchUpdate = createContoller()
-    spyOn(batchUpdate, 'clearForm').and.callThrough()
-//    batchUpdate.clearForm()
-//    expect(batchUpdate.clearForm).toBeDefined()
   })
 
   it('Should update batch details', function () {

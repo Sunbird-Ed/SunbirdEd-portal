@@ -1,164 +1,214 @@
-let webService = require('request')
 let _ = require('lodash')
 let async = require('asyncawait/async')
 let await = require('asyncawait/await')
 let ObjectStore = require('./ObjectStore.js')
 let envVariables = require('../../environmentVariablesHelper.js')
-let dateFormat = require('dateformat')
+let AppError = require('../services/ErrorInterface.js')
+let HttpStatus = require('http-status-codes')
 
 class ObjectStoreRest extends ObjectStore {
-  constructor(modelMapping, modelConstant) {
-    super(modelMapping, modelConstant)
-  }
 
-  createObject(data, indexStore) {
-    return this.__createObject()(data, indexStore)
-  }
+    /**
+     * Create Object store instance.
+     * Call can instantiate the ObjectStore as follows
+     *
+     * let ObjectStore = new ObjectStoreRest({model:MetricsModel, service:httpService})
+     */
 
-  __createObject() {
-    return async((data, indexStore) => {
-      await (this.validateCreateObject(data))
-      let options = {
-        method: 'POST',
-        uri: envVariables.DATASERVICE_URL + 'data/v1/object/create',
-        body: {
-          request: {
-            'tableName': data.table,
-            'documentName': data.table, // keeping tableName and documentName as same
-            'payload': data.values
-          }
-        },
-        json: true
-      }
-      if (indexStore == false) {
-          options.body.request = _.omit(options.body.request, ['documentName']);
-      }
-      try {
-        let result = await (this.httpService(options))
-        return { data: _.get(result, 'body.result'), status: 'created' }
-      } catch (error) {
-        throw { msg: 'unable to create object', status: 'error' }
-      }
-    })
-  }
+    constructor({model, service } = {}) {
+        super({model:model, service: service}) 
+        /**
+         * @property {class} - Defines the model instance ex: MetricsModel, AnnouncementModel
+         */
+        this.model = model;
 
-  findObject(data, indexStore) {
-    return this.__findObject()(data, indexStore)
-  }
+        /**
+         * @property {class} - Defines the service which is used to invoke http calls ex: Httpservice, casandra service.
+         */
+        this.service = service;
+    }
 
-  __findObject() {
-    return async((data, indexStore) => {
-      //await (this.validateFindObject(data))
-      let options = {
-        method: 'POST',
-        uri: envVariables.DATASERVICE_URL + 'data/v1/object/search',
-        body: {
-          request: {
-            'filters': data.query,
-            'documentName':data.table,
-            "facets":data.facets,
-          }
-        },
-        json: true
-      }
-      options.body.request = _.pickBy(options.body.request, _.identity); // Removes all falsey values
-      if (indexStore == false) {
-          options.body.request = _.omit(options.body.request, ['documentName']);
-          options.body.request.tableName = data.table;
-      }
-      try {
-        let result = await (this.httpService(options))
-        if (_.get(result, 'body.result.response.count') > 0) {
-          return { data: _.get(result, 'body.result.response'), status: 'success' }
-        } else {
-          return { data: [], status: 'success' }
-        }
-      } catch (error) {
-        throw { msg: 'unable to find object', status: 'error' }
-      }
-    })
-  }
+    /**
+     * Which is used to create a announcemet.
+     * @param  {object} data        - Query object which is used to interact with casandra/elastic search.
+     *
+     * @return {object}             - Response object.
+     */
+    createObject(data) {
+        return this.__createObject()(data)
+    }
 
-  getObjectById(data) {
-    return this.__getObjectById()(data)
-  }
-
-  __getObjectById() {
-    return async((data) => {
-      await (this.validateGetObjectById(data))
-      return await (this.findObject({ table: data.table, query: { id: data.id } }))
-    })
-  }
-
-  updateObjectById(data) {
-    return this.__updateObjectById()(data)
-  }
-
-    __updateObjectById() {
+    __createObject() {
         return async((data) => {
-            await (this.validateUpdateObjectById(data))
-            let options = {
-                method: 'POST',
-                uri: envVariables.DATASERVICE_URL + 'data/v1/object/update',
-                body: {
-                    request: {
-                        'tableName': data.table,
-                        'documentName': data.table,
-                        'payload': data.values
-                    }
-                },
-                json: true
-            }
             try {
-                let result = await (this.httpService(options))
-                return {data: result, status: 'updated'}
+                let validation = await (this.model.validateModel(data.values))
+                if (!validation.isValid) throw {
+                    message: validation.error,
+                    status: HttpStatus.BAD_REQUEST,
+                    isCustom:true
+                }
+                let options = {
+                    method: 'POST',
+                    uri: envVariables.DATASERVICE_URL + 'data/v1/object/create',
+                    body: {
+                        request: {
+                            'entityName': this.model.table,
+                            'indexed': true,
+                            'payload': data.values
+                        }
+                    },
+                    json: true
+                }
+                let result = await (this.service.call(options))
+                return {
+                    data: _.get(result, 'body.result'),
+                }
             } catch (error) {
-                throw {msg: 'unable to update object', status: 'error', error: error }
+                throw error
             }
         })
     }
 
-  deleteObjectById(data) {
-    return this.__deleteObjectById()(data)
-  }
-
-  __deleteObjectById() {
-    return async((data) => {
-      await (this.validateDeleteObjectById(data))
-
-      try {
-        let result = await (this.httpService({}))
-        return { status: 'deleted' }
-      } catch (error) {
-        throw { msg: 'unable to delete object', status: 'error' }
-      }
-    })
-  }
-  
-  httpService(options) {
-    return new Promise((resolve, reject) => {
-      if (!options) reject('options required!')
-      options.headers = options.headers || this.getRequestHeader()
-      webService(options, (error, response, body) => {
-        if (error || response.statusCode >= 400) {
-          reject(error)
-        } else {
-          resolve({ response, body })
-        }
-      })
-    })
-  }
-
-  getRequestHeader() {
-    return {
-      'x-device-id': 'x-device-id',
-      'ts': dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo"),
-      'x-consumer-id': envVariables.PORTAL_API_AUTH_TOKEN,
-      'content-type': 'application/json',
-      'accept': 'application/json',
-      'Authorization': 'Bearer ' + envVariables.PORTAL_API_AUTH_TOKEN
+    /**
+     * Which is used to find a model from the casandra/elastic search.
+     * @param  {Object} data       - Query object which is need to interact with casandra/elastic search.
+     *
+     * @return {Object}             - Response object.
+     */
+    findObject(data) {
+        return this.__findObject()(data)
     }
-  }
+
+    __findObject() {
+            return async((data) => {
+                try {
+                    let options = {
+                        method: 'POST',
+                        uri: envVariables.DATASERVICE_URL + 'data/v1/object/search',
+                        body: {
+                            request: {
+                                'filters': data.query,
+                                'entityName': this.model.table,
+                                "facets": data.facets,
+                                "limit": data.limit,
+                                "offset": data.offset,
+                                "sort_by": data.sort_by
+                            }
+                        },
+                        json: true
+                    }
+                    options.body.request = _.pickBy(options.body.request, _.identity); // Removes all falsey values
+                    
+                    let result = await (this.service.call(options))
+                    return _.get(result, 'body.result.response.count') > 0 ? {
+                        data: _.get(result, 'body.result.response')
+                    } : {
+                        data: []
+                    }
+                } catch (error) {
+                    throw error
+                }
+            })
+        }
+        /**
+         * Which is used to update the object in casandra/elastic search based on the identifier.
+         * @param  {Object} data  - Query object search.
+         * @return {Object}       - Response object.
+         */
+    updateObjectById(data) {
+        return this.__updateObjectById()(data)
+    }
+
+    __updateObjectById() {
+        return async((data) => {
+            try {
+                if (!data.values) throw {
+                    message: 'Values are required!.',
+                    status: HttpStatus.BAD_REQUEST,
+                    isCustom:true
+                }
+                if (!data.values.id) throw {
+                    message: 'Identifier is required!.',
+                    status: HttpStatus.BAD_REQUEST,
+                    isCustom:true
+                }
+                let options = {
+                    method: 'POST',
+                    uri: envVariables.DATASERVICE_URL + 'data/v1/object/update',
+                    body: {
+                        request: {
+                            'entityName':this.model.table,
+                            'indexed': true,
+                            'payload': data.values
+                        }
+                    },
+                    json: true
+                }
+                let result = await (this.service.call(options))
+                return {
+                    data: result
+                }
+            } catch (error) {
+                throw error
+            }
+        })
+    }
+
+    /**
+     * To fetch metrics data from elastic search.
+     * @param  {Object} query       - Query object which is need to interact with elastic search.
+     *
+     * @return {Object}             - Response object.
+     */
+    getMetrics(query) {
+        return this.__getMetrics()(query)
+    }
+
+    __getMetrics() {
+        return async((query) => {
+            try {
+                let options = {
+                    method: 'POST',
+                    uri: envVariables.DATASERVICE_URL + 'data/v1/object/metrics',
+                    body: {
+                        request: {
+                            "entityName": this.model.table,
+                            "rawQuery": query
+                        }
+                    },
+                    json: true,
+                }
+                options.body.request = _.pickBy(options.body.request, _.identity); // Removes all falsey values
+                
+                let result = await (this.service.call(options))
+                let response = _.get(result, 'body.responseCode') === 'OK' ? {
+                                        data: _.get(result, 'body.result.response')
+                                    } : false
+
+                let metricsData = []
+
+                if (response && response.data.aggregations.announcementid.buckets) {
+                    let responseBuckets = response.data.aggregations.announcementid.buckets
+
+                    _.forEach(responseBuckets, (responseBucket, k) => {
+                        let metricsDataUnit = {}
+                        metricsDataUnit['announcementid'] = responseBucket.key
+
+                        _.forEach(responseBucket.activity.buckets, (activityData, k) => {
+                            metricsDataUnit[activityData.key] = activityData.doc_count
+                        })
+
+                        metricsData.push(metricsDataUnit)
+
+                    })
+                }
+
+                return metricsData
+            } catch (error) {
+                throw error
+            }
+        })
+    }
 }
 
 module.exports = ObjectStoreRest

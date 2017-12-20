@@ -7,7 +7,7 @@
 'use strict'
 
 describe('Directive: search', function () {
-    // load the main module
+  // load the main module
   beforeEach(module('playerApp'))
 
   beforeEach(inject(function ($rootScope, $controller) {
@@ -26,7 +26,7 @@ describe('Directive: search', function () {
     searchService = _searchService_
     timeout = _$timeout_
     $templateCache.put(fileName, '')
-    element = angular.element("<search type='searchKey'></search>")
+    element = angular.element('<search type=\'searchKey\'></search>')
     template = $compile(element)(scope)
     scope.$digest()
     // ctrl = element.controller
@@ -273,6 +273,12 @@ describe('Directive: search', function () {
   it('Should set search result page on setPage call', function () {
     spyOn(rootScope.search, 'setPage').and.callThrough()
     rootScope.search.setPage('0')
+    scope.$apply()
+  })
+
+  it('Should reset all the filters', function () {
+    spyOn(rootScope.search, 'getSelectedContentTypeValue').and.callThrough()
+    rootScope.search.getSelectedContentTypeValue([{key: 'Book', value: 'Book'}], 'Book')
     scope.$apply()
   })
 })

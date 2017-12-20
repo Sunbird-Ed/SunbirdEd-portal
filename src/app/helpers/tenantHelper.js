@@ -21,25 +21,30 @@ module.exports = {
       async.parallel({
         logo: function (callback) {
           fs.stat(path.join(__dirname, '../tenant', tenantId, 'logo.png'), function (err, stat) {
+            if (err) {}
             callback(null, stat)
           })
         },
         poster: function (callback) {
           fs.stat(path.join(__dirname, '../tenant', tenantId, 'poster.png'), function (err, stat) {
+            if (err) {}
             callback(null, stat)
           })
         },
         favicon: function (callback) {
           fs.stat(path.join(__dirname, '../tenant', tenantId, 'favicon.ico'), function (err, stat) {
+            if (err) {}
             callback(null, stat)
           })
         },
         appLogo: function (callback) {
           fs.stat(path.join(__dirname, '../tenant', tenantId, 'appLogo.png'), function (err, stat) {
+            if (err) {}
             callback(null, stat)
           })
         }
       }, function (err, results) {
+        if (err) {}
         responseObj.logo = baseUrl + (results.logo ? '/tenant/' + tenantId + '/logo.png' : '/common/images/sunbird_logo.png')
         responseObj.poster = baseUrl + (results.poster ? '/tenant/' + tenantId + '/poster.png' : '/common/images/sunbird_logo.png')
         responseObj.favicon = baseUrl + (results.favicon ? '/tenant/' + tenantId + '/favicon.ico' : '/common/images/favicon.ico')

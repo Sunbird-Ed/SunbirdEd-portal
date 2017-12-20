@@ -7,14 +7,14 @@ var player = {
   common: 'app/common/'
 }
 
-var build_themes = {
+var buildThemes = {
   dist: 'app/themes/',
   themes: 'semantic/src/themes'
 }
 
 var paths = {
   player: player,
-  build_themes: build_themes,
+  build_themes: buildThemes,
   src: {
     scripts: [player.app + '/scripts/*.js', player.app + '/scripts/**/*.js'],
     styles: [player.app + 'app/styles/**/main.less'],
@@ -82,14 +82,10 @@ var paths = {
     config: 'config/'
   },
   jsonConfigArr: [
-    { name: 'config', path: 'config/playerAppConfig.json' },
-    { name: 'labels', path: 'config/privateLabels.json' },
-    { name: 'errorMessages', path: 'config/privateErrorMessages.json' }
+    { name: 'config', path: 'config/playerAppConfig.json' }
   ],
   jsonConfigPublic: [
-    { name: 'config', path: 'config/publicAppConfig.json' },
-    { name: 'labels', path: 'config/publicLabels.json' },
-    { name: 'errorMessages', path: 'config/publicErrorMessages.json' }
+    { name: 'config', path: 'config/publicAppConfig.json' }
   ],
   public_bower_js: [
     'dist/thirdparty/libs/eventbus.min.js',
@@ -164,10 +160,14 @@ var paths = {
     'dist/thirdparty/libs/semantic-ui-tree-picker/semantic-ui-tree-picker.css',
     'dist/thirdparty/bower_components/izimodal/css/iziModal.min.css',
     'dist/thirdparty/bower_components/semantic-ui-calendar/dist/calendar.min.css',
-    'dist/thirdparty/bower_components/izitoast/dist/css/iziToast.min.css'
+    'dist/thirdparty/bower_components/izitoast/dist/css/iziToast.min.css',
+    'dist/thirdparty/bower_components/file-upload/fine-uploader/fine-uploader-new.min.css'
   ],
   private_scripts: [
     'dist/private/scripts/factories/sessionFactory.js',
+    'dist/private/scripts/factories/announcementModel.js',
+    'dist/private/scripts/services/adapters/httpAdapter.js',
+    'dist/private/scripts/services/adapters/announcementAdapter.js',
     'dist/private/scripts/services/httpService.js',
     'dist/private/scripts/services/httpServiceJava.js',
     'dist/private/scripts/services/contentService.js',
@@ -187,11 +187,13 @@ var paths = {
     'dist/private/scripts/services/adminService.js',
     'dist/private/scripts/services/batchService.js',
     'dist/private/scripts/services/workSpaceUtilsService.js',
+    'dist/private/scripts/services/configService.js',
     'dist/private/scripts/services/dashboardService.js',
     'dist/private/scripts/services/dataService.js',
     'dist/private/scripts/services/paginationService.js',
     'dist/private/scripts/controllers/searchController.js',
     'dist/private/scripts/controllers/searchResultController.js',
+    'dist/private/scripts/controllers/conceptPickerController.js',
     'dist/private/scripts/controllers/appController.js',
     'dist/private/scripts/controllers/note/noteListController.js',
     'dist/private/scripts/controllers/courseScheduleController.js',
@@ -234,6 +236,7 @@ var paths = {
     'dist/private/scripts/controllers/admin/bulkUploadController.js',
     'dist/private/scripts/filters/dateFilter.js',
     'dist/private/scripts/filters/noteListFilter.js',
+    'dist/private/scripts/filters/highLightFilter.js',
     'dist/private/scripts/directives/applyScript.js',
     'dist/private/scripts/directives/appLoader.js',
     'dist/private/scripts/directives/errorMessage.js',
@@ -257,13 +260,17 @@ var paths = {
     'dist/private/scripts/controllers/setup/setupController.js',
     'dist/private/scripts/controllers/workspace/limitedPublishedContentController.js',
     'dist/private/scripts/directives/fileUpload.js',
+    'dist/private/scripts/services/geoService.js',
+    'dist/private/scripts/components/parent.js',
+    'dist/private/scripts/components/geo.js',
     'dist/private/scripts/controllers/announcement/announcementInboxListController.js',
     'dist/private/scripts/controllers/announcement/announcementOutboxListController.js',
-    'dist/private/scripts/services/announcementService.js',
-    'dist/private/scripts/controllers/announcement/createAnnouncementController.js',
+    'dist/private/scripts/controllers/announcement/announcementDetailsController.js',
+    'dist/private/scripts/controllers/announcement/composeAnnouncementController.js',
     'dist/private/scripts/directives/announcementDetailsDirective.js',
-    'dist/private/scripts/controllers/profileVisibilityController.js',    
-    'dist/private/scripts/directives/profileVisibility.js'
+    'dist/private/scripts/controllers/profileVisibilityController.js',
+    'dist/private/scripts/directives/profileVisibility.js',
+    'dist/private/scripts/factories/fileUploadFactory.js'
   ],
   telemetry_js: [
     'dist/private/scripts/telemetry/TelemetryEvent.js',
@@ -285,11 +292,10 @@ var paths = {
     'dist/private/scripts/utils/util.js',
     'dist/public/telemetry.min.js',
     'dist/private/scripts/playerAppConfig.js',
-    'dist/private/scripts/privateLabels.js',
-    'dist/private/scripts/privateErrorMessages.js',
     'dist/private/scripts/managers/eventManager.js',
     'dist/private/scripts/app.js',
     'dist/private/scripts/routes/appRoute.js',
+    'dist/private/scripts/routes/announcementRoute.js',
     'dist/private/script.min.js',
     'dist/common/fonts/**',
     'dist/common/images/**',
@@ -301,15 +307,14 @@ var paths = {
     'dist/public/external.min.js',
     'dist/private/scripts/utils/util.js',
     'dist/private/scripts/managers/eventManager.js',
-    'dist/public/scripts/publicLabels.js',
-    'dist/public/scripts/publicErrorMessages.js',
     'dist/public/scripts/publicAppConfig.js',
     'dist/public/scripts/application.js',
     'dist/public/scripts/routes/publicAppRoute.js',
     'dist/public/script.min.js',
     'dist/public/external.min.css'
   ],
-  cdnDest: 'dist/cdn/'
+  cdnDest: 'dist/cdn/',
+  eslint: ['app/*.js', 'app/**/*.js', 'test/**/*.js', 'gulp/*.js']
 
 }
 

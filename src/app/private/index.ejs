@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="/thirdparty/bower_components/izimodal/css/iziModal.min.css" />
     <link rel="stylesheet" href="/thirdparty/bower_components/semantic-ui-calendar/dist/calendar.min.css" />
     <link rel="stylesheet" href="/thirdparty/bower_components/izitoast/dist/css/iziToast.min.css" />
-    <link rel="stylesheet" href="/thirdparty/bower_components/file-upload/fine-uploader/fine-uploader-new.css">
+    <link rel="stylesheet" href="/thirdparty/bower_components/file-upload/fine-uploader/fine-uploader-new.min.css">
     <!-- endinject -->
     <link rel="stylesheet" href="/thirdparty/bower_components/jquery.fancytree/dist/skin-win8/ui.fancytree.min.css">
     <base href="/private/index">
@@ -85,14 +85,16 @@
     <script src="scripts/telemetry/TelemetryServiceUtil.js"></script>
     <script src="scripts/telemetry/InActiveEvent.js"></script>
     <script src="scripts/playerAppConfig.js"></script>
-    <script src="scripts/privateLabels.js"></script>
-    <script src="scripts/privateErrorMessages.js"></script>
     <script src="scripts/managers/eventManager.js"></script>
     <script src="scripts/app.js"></script>
     <script src="scripts/routes/appRoute.js"></script>
+    <script src="scripts/routes/announcementRoute.js"></script>
     <script src="scripts/factories/sessionFactory.js"></script>
     <script src="scripts/services/httpService.js"></script>
     <script src="scripts/services/httpServiceJava.js"></script>
+    <script src="scripts/factories/announcementModel.js"></script>
+    <script src="scripts/services/adapters/httpAdapter.js"></script>
+    <script src="scripts/services/adapters/announcementAdapter.js"></script>
     <script src="scripts/services/contentService.js"></script>
     <script src="scripts/services/noteService.js"></script>
     <script src="scripts/services/courseService.js"></script>
@@ -110,11 +112,13 @@
     <script src="scripts/services/adminService.js"></script>
     <script src="scripts/services/batchService.js"></script>
     <script src="scripts/services/workSpaceUtilsService.js"></script>
+    <script src="scripts/services/configService.js"></script>
     <script src="scripts/services/dashboardService.js"></script>
     <script src="scripts/services/dataService.js"></script>
     <script src="scripts/services/paginationService.js"></script>
     <script src="scripts/controllers/searchController.js"></script>
     <script src="scripts/controllers/searchResultController.js"></script>
+    <script src="scripts/controllers/conceptPickerController.js"></script>
     <script src="scripts/controllers/appController.js"></script>
     <script src="scripts/controllers/note/noteListController.js"></script>
     <script src="scripts/controllers/courseScheduleController.js"></script>
@@ -189,10 +193,11 @@
     <script src="/thirdparty/bower_components/file-upload/fine-uploader/fine-uploader.js"></script>
     <script src="scripts/controllers/announcement/announcementOutboxListController.js"></script>
     <script src="scripts/controllers/announcement/announcementInboxListController.js"></script>
-    <script src="scripts/controllers/announcement/createAnnouncementController.js"></script>
+    <script src="scripts/controllers/announcement/composeAnnouncementController.js"></script>
+    <script src="scripts/controllers/announcement/announcementDetailsController.js"></script>
     <script src="scripts/directives/announcementDetailsDirective.js"></script>
     <script src="scripts/directives/fileUpload.js"></script>
-    <script src="scripts/services/announcementService.js"></script>
+    <script src="scripts/factories/fileUploadFactory.js"></script>
 
     <!-- endinject -->
     <script src="../common/js/frmelmnts.js"></script>

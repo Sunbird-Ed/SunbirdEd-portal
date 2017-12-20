@@ -43,7 +43,8 @@ gulp.task('injectFiles', ['minifyIMG'], function () {
       'dist/private/scripts/app.js',
       'dist/private/scripts/routes/appRoute.js',
       'dist/private/script.min.js',
-      'dist/private/external.min.css'
+      'dist/private/external.min.css',
+      'dist/private/scripts/routes/announcementRoute.js'
     ], { read: false }), { ignorePath: '/dist', addRootSlash: true }))
     .pipe(gulp.dest('dist/private/'))
   return merge(x, y)
@@ -90,7 +91,8 @@ gulp.task('minifyJS', ['production'], function () {
     'dist/thirdparty/bower_components/pagedown/Markdown.Sanitizer.js',
     'dist/thirdparty/bower_components/pagedown/Markdown.Editor.js',
     '!dist/public/**/publicAppRoute.js',
-    '!dist/private/**/appRoute.js'
+    '!dist/private/**/appRoute.js',
+    '!dist/private/**/announcementRoute.js'
   ], { base: 'dist/' }).pipe(minify({
     minify: true,
     collapseWhitespace: true,
@@ -119,19 +121,19 @@ gulp.task('clean:dist', function (cb) {
 //         .pipe(gulp.dest(dist.path + 'public/' + dist.scripts));
 // });
 
-gulp.task('compress', ['injectFiles'], function () {
-  gulp.src(['dist/**'], { base: 'dist/' })
-    .pipe(gzip())
-    .pipe(gulp.dest('dist'))
-})
+// gulp.task('compress', ['injectFiles'], function () {
+//   gulp.src(['dist/**'], { base: 'dist/' })
+//     .pipe(gzip())
+//     .pipe(gulp.dest('dist'))
+// })
 
-gulp.task('inject_staticGzip', ['compress'], function () {
-  return gulp.src('dist/server.js')
-    .pipe(map(function (file, cb) {
-      var fileContents = file.contents.toString()
-      fileContents = fileContents.replace('\/(invalid)\/', '/(\.html|\.js|\.css)$/')
-      file.contents = new Buffer(fileContents)
-      cb(null, file)
-    }))
-    .pipe(gulp.dest('dist'))
-})
+// gulp.task('inject_staticGzip', ['compress'], function () {
+//   return gulp.src('dist/server.js')
+//     .pipe(map(function (file, cb) {
+//       var fileContents = file.contents.toString()
+//       fileContents = fileContents.replace('\/(invalid)\/', '/(\.html|\.js|\.css)$/')
+//       file.contents = new Buffer(fileContents)
+//       cb(null, file)
+//     }))
+//     .pipe(gulp.dest('dist'))
+// })

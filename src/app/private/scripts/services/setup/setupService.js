@@ -2,17 +2,17 @@
   * @namespace Services
   */
 
-'use strict';
+'use strict'
 
 angular.module('playerApp')
-.service('setupService', ['config', 'httpServiceJava', function (config, httpServiceJava) {
+  .service('setupService', ['config', 'httpServiceJava', function (config, httpServiceJava) {
     /**
      * @class setupService
      * @desc Service to manage org types
      * @memberOf Services
      */
 
-        /**
+    /**
          * @method addOrgType
          * @desc Add new org type
          * @memberOf Services.setupService
@@ -22,10 +22,10 @@ angular.module('playerApp')
          * @instance
          */
     this.addOrgType = function (req) {
-        var url = config.URL.ORG_TYPE.ADD;
-        return httpServiceJava.post(url, req);
-    };
-     /**
+      var url = config.URL.ORG_TYPE.ADD
+      return httpServiceJava.post(url, req)
+    }
+    /**
          * @method updateOrgType
          * @desc Update existing org types
          * @memberOf Services.setupService
@@ -36,10 +36,10 @@ angular.module('playerApp')
          * @instance
          */
     this.updateOrgType = function (req) {
-        var url = config.URL.ORG_TYPE.UPDATE;
-        return httpServiceJava.patch(url, req);
-    };
-     /**
+      var url = config.URL.ORG_TYPE.UPDATE
+      return httpServiceJava.patch(url, req)
+    }
+    /**
          * @method getOrgTypes
          * @desc Get list of existing org types
          * @memberOf Services.setupService
@@ -47,7 +47,7 @@ angular.module('playerApp')
          * @instance
          */
     this.getOrgTypes = function () {
-        var url = config.URL.ORG_TYPE.GET;
-        return httpServiceJava.get(url);
-    };
-}]);
+      var url = config.URL.ORG_TYPE.GET
+      return httpServiceJava.get(url)
+    }
+  }])

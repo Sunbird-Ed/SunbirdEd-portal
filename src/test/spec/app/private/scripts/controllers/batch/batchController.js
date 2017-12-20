@@ -1,7 +1,7 @@
 'use strict'
 
 describe('Controller:BatchController', function () {
-    // load the controller's module
+  // load the controller's module
   beforeEach(module('playerApp'))
 
   beforeEach(inject(function ($rootScope, $controller) {
@@ -21,23 +21,23 @@ describe('Controller:BatchController', function () {
     $q,
     deferred,
     timeout,
-    errorMessage,
+    toasterService,
     createContoller,
     batchTestData = testData.batch
 
     // Initialize the controller and a mock scope
-  beforeEach(inject(function ($rootScope, _$controller_, _batchService_, _courseService_, _permissionsService_, _learnService_, _$q_, _$timeout_, _errorMessages_) {
+  beforeEach(inject(function ($rootScope, _$controller_, _batchService_,
+    _courseService_, _permissionsService_, _learnService_, _$q_, _$timeout_, _toasterService_) {
     rootScope = $rootScope
     scope = $rootScope.$new()
     permissionsService = _permissionsService_
     learnService = _learnService_
     batchService = _batchService_
     courseService = _courseService_
-    errorMessage = _errorMessages_
+    toasterService = _toasterService_
     $q = _$q_
     timeout = _$timeout_
     deferred = _$q_.defer()
-    rootScope.errorMessages = errorMessage
     createContoller = function () {
       return new _$controller_('BatchController', {
         $rootScope: rootScope,
@@ -46,15 +46,15 @@ describe('Controller:BatchController', function () {
     }
   }))
 
-  xit('Should called create batch form', function () {
+  it('Should called create batch form', function () {
     batch = createContoller()
     rootScope.organisationIds = ['0123405017408225280', 'ORG_001']
     spyOn(batch, 'showCreateBatchModal').and.callThrough()
     batch.showCreateBatchModal()
-    spyOn($modal, 'onShow').andReturn(showModal)
+    setFixtures('<div class="ui large modal" id="createBatchModal"></div>')
+    setFixtures('<div class="ui calendar" id="rangestartAdd"></div>')
     timeout.flush(10)
     expect(batch.showCreateBatchModal).toBeDefined()
-    expect(batch.onShow).toHaveBeenCalled()
   })
 
   it('Should add batch on addBatch call', function () {
@@ -68,12 +68,23 @@ describe('Controller:BatchController', function () {
     deferred.resolve(batchTestData.createBatchSuccess)
     batch = createContoller()
     scope.createBatch = {$valid: true}
+    var userRequest = {
+      request: {
+        userIds: _.compact('datausers')
+      }
+    }
+    var res = {result: {batchId: '543535'}}
     spyOn(batch, 'addBatch').and.callThrough()
     batch.addBatch(batchTestData.data)
+    spyOn(batchService, 'addUsers').and.returnValue(deferred.promise)
+    batchService.addUsers(userRequest, res.result.batchId)
+    deferred.resolve(batchTestData.userData)
     timeout.flush(100)
     scope.$apply()
     var response = batchService.create().$$state.value
+    var addUserRes = batchService.addUsers().$$state.value
     expect(response).not.toBe(undefined)
+    expect(addUserRes).not.toBe(undefined)
     batch.batchService = response.result
     expect(batch.batchService).not.toBe(undefined)
   })
@@ -265,5 +276,23 @@ describe('Controller:BatchController', function () {
     expect(response).not.toBe(undefined)
     batch.batchService = response.result
     expect(batch.batchService).not.toBe(undefined)
+  })
+
+  it('Should call clearBatchData', function () {
+    batch = createContoller()
+    spyOn(batch, 'clearBatchData').and.callThrough()
+    setFixtures('<form class="ui form" id="createBatch" name="createBatch" validate></form>')
+    batch.clearBatchData()
+    scope.$apply()
+    expect(batch.clearBatchData).not.toBe(undefined)
+  })
+
+  it('Should call showUpdateBatchModal', function () {
+    batch = createContoller()
+    var batchData = {identifier: '23444211'}
+    spyOn(batch, 'showUpdateBatchModal').and.callThrough()
+    batch.showUpdateBatchModal(batchData, 'ntpuser')
+    scope.$apply()
+    expect(batch.showUpdateBatchModal).not.toBe(undefined)
   })
 })

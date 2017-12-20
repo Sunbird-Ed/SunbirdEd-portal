@@ -38,7 +38,7 @@
             cpvm.loader.showLoader = false
             if (res.result.content.status === 'Live' || res.result.content.status === 'Unlisted') {
               res.result.content.children = _.sortBy(res.result.content.children,
-                        ['index'])
+                ['index'])
               cpvm.courseHierachy = res.result.content
               cpvm.name = cpvm.courseHierachy.name
               cpvm.collectionMeta.author = cpvm.courseHierachy.author
@@ -90,7 +90,7 @@
           })
           angular.forEach(contentData.children, function (child, item) {
             cpvm.getTreeData(contentData.children[item]
-                        , parent[parent.length - 1].children)
+              , parent[parent.length - 1].children)
           })
         }
         return cpvm.fancyTree
@@ -103,6 +103,10 @@
             click: function (event, data) {
               var nodeData = data.node
               if (nodeData.key !== -1) {
+                cpvm.expandMe(nodeData.key, nodeData.data)
+              }
+              if (data.targetType === 'title') {
+                data.targetType = 'expander'
                 cpvm.expandMe(nodeData.key, nodeData.data)
               }
             }

@@ -1,12 +1,10 @@
-'use strict'
-
-const proxy = require('express-http-proxy'),
-  envHelper = require('./../helpers/environmentVariablesHelper.js'),
-  learnerBaseUrl = envHelper.LEARNER_SERVICE_UPSTREAM_URL,
-  contentBaseUrl = envHelper.CONTENT_SERVICE_UPSTREAM_URL,
-  csLocalProxyURI = '/localproxy/content/',
-  lsLocalProxyURI = '/localproxy/learner/',
-  reqDataLimitOfContentUpload = '30mb'
+const proxy = require('express-http-proxy')
+const envHelper = require('./../helpers/environmentVariablesHelper.js')
+const learnerBaseUrl = envHelper.LEARNER_SERVICE_UPSTREAM_URL
+const contentBaseUrl = envHelper.CONTENT_SERVICE_UPSTREAM_URL
+const csLocalProxyURI = '/localproxy/content/'
+const lsLocalProxyURI = '/localproxy/learner/'
+const reqDataLimitOfContentUpload = '30mb'
 
 /**
  * [contentServiceApi these are the content service api map]
@@ -82,18 +80,19 @@ var learnerServiceApi = {
  * @return {[Function]}            [description]
  */
 var getRedirectUrl = function (requestUrl, urlMap, cb) {
+  var uriArray = ''
   if (urlMap[requestUrl]) {
     cb(requestUrl, urlMap[requestUrl])
   } else {
-    var uriArray = requestUrl.split('/')
+    uriArray = requestUrl.split('/')
     uriArray.pop()
-    var requestUrl = uriArray.join('/')
+    requestUrl = uriArray.join('/')
     if (urlMap[requestUrl]) {
       cb(requestUrl, urlMap[requestUrl])
     } else {
-      var uriArray = requestUrl.split('/')
+      uriArray = requestUrl.split('/')
       uriArray.pop()
-      var requestUrl = uriArray.join('/')
+      requestUrl = uriArray.join('/')
       if (urlMap[requestUrl]) {
         cb(requestUrl, urlMap[requestUrl])
       } else {

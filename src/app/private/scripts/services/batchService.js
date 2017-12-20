@@ -1,14 +1,14 @@
-'use strict';
+'use strict'
 
 angular.module('playerApp')
-    .service('batchService', ['httpServiceJava', 'config', function (httpServiceJava, config) {
-         /**
+  .service('batchService', ['httpServiceJava', 'config', function (httpServiceJava, config) {
+    /**
      * @class batchService
      * @desc Service to manage batches.
      * @memberOf Services
      */
-        var batchDetails = '';
-        /**
+    this.batchDetails = ''
+    /**
              * @method create
              * @desc Create a new batch
              * @memberOf Services.batchService
@@ -24,10 +24,10 @@ angular.module('playerApp')
              * @returns {Promise} Promise object containing response code and batch id.
              * @instance
              */
-        this.create = function (req) {
-            return httpServiceJava.post(config.URL.BATCH.CREATE, req);
-        };
-         /**
+    this.create = function (req) {
+      return httpServiceJava.post(config.URL.BATCH.CREATE, req)
+    }
+    /**
              * @method update
              * @desc Update a existing batch
              * @memberOf Services.batchService
@@ -45,10 +45,10 @@ angular.module('playerApp')
              * @instance
              */
 
-        this.update = function (req) {
-            return httpServiceJava.patch(config.URL.BATCH.UPDATE, req);
-        };
-         /**
+    this.update = function (req) {
+      return httpServiceJava.patch(config.URL.BATCH.UPDATE, req)
+    }
+    /**
              * @method addUsers
              * @desc Add mentee to existing batch
              * @memberOf Services.batchService
@@ -59,14 +59,14 @@ angular.module('playerApp')
              * @instance
              */
 
-        this.addUsers = function (req, batchId) {
-            return httpServiceJava.post(config.URL.BATCH.ADD_USERS + '/' + batchId, req);
-        };
+    this.addUsers = function (req, batchId) {
+      return httpServiceJava.post(config.URL.BATCH.ADD_USERS + '/' + batchId, req)
+    }
 
-        this.removeUsers = function (req) {
-            return httpServiceJava.remove(config.URL.BATCH.DELETE + '/' + req.batchId, req);
-        };
-        /**
+    this.removeUsers = function (req) {
+      return httpServiceJava.remove(config.URL.BATCH.DELETE + '/' + req.batchId, req)
+    }
+    /**
              * @method getBatchDetails
              * @desc Get batch details
              * @memberOf Services.batchService
@@ -76,10 +76,10 @@ angular.module('playerApp')
              * @instance
              */
 
-        this.getBatchDetails = function (req) {
-            return httpServiceJava.get(config.URL.BATCH.GET_DETAILS + '/' + req.batchId, req);
-        };
-        /**
+    this.getBatchDetails = function (req) {
+      return httpServiceJava.get(config.URL.BATCH.GET_DETAILS + '/' + req.batchId, req)
+    }
+    /**
              * @method getAllBatches
              * @desc Get list of all batches
              * @memberOf Services.batchService
@@ -92,10 +92,10 @@ angular.module('playerApp')
              * @instance
              */
 
-        this.getAllBatchs = function (req) {
-            return httpServiceJava.post(config.URL.BATCH.GET_BATCHS, req);
-        };
-        /**
+    this.getAllBatchs = function (req) {
+      return httpServiceJava.post(config.URL.BATCH.GET_BATCHS, req)
+    }
+    /**
              * @method getAllBatches
              * @desc Get list of all batches
              * @memberOf Services.batchService
@@ -109,10 +109,10 @@ angular.module('playerApp')
              * @instance
              */
 
-        this.getUserList = function (req) {
-            return httpServiceJava.post(config.URL.ADMIN.USER_SEARCH, req);
-        };
-         /**
+    this.getUserList = function (req) {
+      return httpServiceJava.post(config.URL.ADMIN.USER_SEARCH, req)
+    }
+    /**
              * @method setBatchData
              * @desc Set batch data locally
              * @memberOf Services.batchService
@@ -120,10 +120,10 @@ angular.module('playerApp')
              * @instance
              */
 
-        this.setBatchData = function (batchData) {
-            this.batchDetails = batchData;
-        };
-        /**
+    this.setBatchData = function (batchData) {
+      this.batchDetails = batchData
+    }
+    /**
              * @method getBatchData
              * @desc Set batch data
              * @memberOf Services.batchService
@@ -131,7 +131,7 @@ angular.module('playerApp')
              * @instance
              */
 
-        this.getBatchData = function () {
-            return this.batchDetails;
-        };
-    }]);
+    this.getBatchData = function () {
+      return this.batchDetails
+    }
+  }])

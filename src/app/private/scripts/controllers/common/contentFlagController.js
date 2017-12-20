@@ -4,7 +4,7 @@ angular.module('playerApp')
   .controller('contentFlagController', ['contentService', '$timeout', '$state', 'config',
     '$rootScope', 'toasterService', '$scope',
     function (contentService, $timeout, $state,
-            config, $rootScope, toasterService, $scope) {
+      config, $rootScope, toasterService, $scope) {
       var contentFlag = this
       contentFlag.showContentFlagModal = false
       contentFlag.userId = $rootScope.userId
@@ -20,7 +20,8 @@ angular.module('playerApp')
         description: 'Uses copyrighted work without permission'
       }, {
         name: 'Privacy violation',
-        description: 'Collects sensitive data or personal information about users, such as name, \n address, photo or other personally identifiable information'
+        description: 'Collects sensitive data or personal information about users, such as name' +
+        '\n address, photo or other personally identifiable information'
       }, {
         name: 'Other'
       }]
@@ -29,7 +30,7 @@ angular.module('playerApp')
 
       }
       contentFlag.flagMessage = $scope.type === 'course' ? $rootScope.frmelmnts.instn.t0018
-                : $rootScope.frmelmnts.instn.t0019
+        : $rootScope.frmelmnts.instn.t0019
 
       contentFlag.hideContentFlagModal = function () {
         $('#contentFlagModal').modal('hide')

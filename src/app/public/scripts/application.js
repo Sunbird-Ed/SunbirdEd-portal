@@ -3,16 +3,14 @@
 angular.module('loginApp', [
   'ngRoute',
   'ui.router',
-  'loginApp.labels',
   'playerApp.messages',
   'playerApp.frmelmnts',
   'loginApp.config',
-  'loginApp.errorMessages',
   'uuid4',
   'ngSanitize'
 ])
-  .controller('loginCtrl', ['labels', '$rootScope', 'messages','frmelmnts',
-    function (labels, $rootScope, messages,frmelmnts) {
+  .controller('loginCtrl', ['$rootScope', 'messages', 'frmelmnts',
+    function ($rootScope, messages, frmelmnts) {
       $rootScope.language = window.localStorage.language || $('#defaultPortalLanguage').attr('value') || 'en'
       $rootScope.messages = messages[$rootScope.language]
       $rootScope.frmelmnts = frmelmnts[$rootScope.language]
@@ -28,7 +26,7 @@ angular.module('loginApp', [
         alert(atob(error))
       }
 
-          /**
+      /**
            * Delete redirect url if user direct close the window
            */
       $(window).on('onunload', function () {

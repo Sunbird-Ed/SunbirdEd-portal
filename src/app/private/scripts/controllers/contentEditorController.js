@@ -2,8 +2,9 @@
 
 angular.module('playerApp')
   .controller('ContentEditorController', ['config', '$stateParams', 'toasterService',
-    '$state', 'contentService', '$timeout', '$rootScope', 'workSpaceUtilsService', function (config, $stateParams,
-         toasterService, $state, contentService, $timeout, $rootScope, workSpaceUtilsService) {
+    '$state', 'contentService', '$timeout', '$rootScope', 'workSpaceUtilsService',
+    function (config, $stateParams, toasterService, $state, contentService, $timeout, $rootScope,
+      workSpaceUtilsService) {
       var contentEditor = this
       contentEditor.contentId = $stateParams.contentId
       contentEditor.openContentEditor = function () {
@@ -72,7 +73,8 @@ angular.module('playerApp')
       }
 
       var validateModal = {
-        state: ['WorkSpace.UpForReviewContent', 'WorkSpace.ReviewContent', 'WorkSpace.PublishedContent', 'LimitedPublishedContent'],
+        state: ['WorkSpace.UpForReviewContent', 'WorkSpace.ReviewContent',
+          'WorkSpace.PublishedContent', 'LimitedPublishedContent'],
         status: ['Review', 'Draft', 'Live', 'Unlisted'],
         mimeType: config.CreateLessonMimeType
       }
@@ -123,22 +125,22 @@ angular.module('playerApp')
 
       contentEditor.init = function () {
         org.sunbird.portal.eventManager.addEventListener('sunbird:portal:editor:close',
-                function () {
-                  if ($stateParams.state) {
-                    $state.go($stateParams.state)
-                  } else {
-                    $state.go('WorkSpace.DraftContent')
-                  }
-                })
+          function () {
+            if ($stateParams.state) {
+              $state.go($stateParams.state)
+            } else {
+              $state.go('WorkSpace.DraftContent')
+            }
+          })
 
         org.sunbird.portal.eventManager.addEventListener('sunbird:portal:content:review',
                 function (event, data) { //eslint-disable-line
-                  if ($stateParams.state) {
-                    $state.go($stateParams.state)
-                  } else {
-                    $state.go('WorkSpace.DraftContent')
-                  }
-                })
+            if ($stateParams.state) {
+              $state.go($stateParams.state)
+            } else {
+              $state.go('WorkSpace.DraftContent')
+            }
+          })
 
         window.addEventListener('editor:metadata:edit', function (event, data) {
           org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:editor:editmeta')
@@ -150,7 +152,7 @@ angular.module('playerApp')
 
         window.addEventListener('editor:content:review', function (event, data) {
           org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:content:review',
-                                                                    event.detail.contentId)
+            event.detail.contentId)
         })
       }
 

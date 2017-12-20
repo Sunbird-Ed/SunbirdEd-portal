@@ -7,7 +7,7 @@
 'use strict'
 
 describe('Controller: AllUploadedContentController', function () {
-    // load the controller's module
+  // load the controller's module
   beforeEach(module('playerApp'))
 
   var failedResponce = {'id': 'api.v1.search', 'ver': '1.0', 'ts': '2017-09-27T04:44:47.209Z', 'params': {'resmsgid': '96d76d90-a33e-11e7-b050-d9109721da9d', 'msgid': null, 'status': 'failed', 'err': 'ERR_CONTENT_SEARCH_FIELDS_MISSING', 'errmsg': 'Required fields for search content are missing'}, 'responseCode': 'CLIENT_ERROR', 'result': {}}
@@ -34,7 +34,7 @@ describe('Controller: AllUploadedContentController', function () {
     })
   }))
 
-    // Initialize the controller and a mock scope
+  // Initialize the controller and a mock scope
   beforeEach(inject(function ($rootScope, $controller, _contentService_, _searchService_, _$q_, _$timeout_) {
     rootScope = $rootScope
     scope = $rootScope.$new()

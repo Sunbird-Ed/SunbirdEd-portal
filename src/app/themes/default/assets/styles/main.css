@@ -314,6 +314,9 @@
 .margin-auto {
   margin: auto !important;
 }
+.margin-right-none {
+  margin-right: 0px !important;
+}
 .margin-right-10 {
   margin-right: 10px !important;
 }
@@ -450,6 +453,13 @@
   background: 0 0!important;
   color: #006cff !important;
   text-shadow: none !important;
+}
+.disabledButton {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+.overFlowWordRap {
+  overflow-wrap: break-word !important;
 }
 .header-container {
   margin-left: 1px !important;
@@ -1915,10 +1925,10 @@ div:focus {
   font-size: 0.8em !important;
 }
 .annType {
-  padding-top: 3px !important;
-  padding-bottom: 3px !important;
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
 }
-.announcementCard-header {
+.announcementHomeCard-header {
   padding: 0 !important;
   font-family: 'sunbirdboldfont' !important;
   font-size: 1.25em !important;
@@ -2020,7 +2030,7 @@ div:focus {
   border-radius: 0!important;
   padding: 10px !important;
 }
-.margin-bottom-0 {
+.announcementSentOnDate {
   margin-bottom: -25px !important;
 }
 .width-100 {
@@ -2036,6 +2046,36 @@ div:focus {
 .btn-width-26 {
   width: 26% !important;
 }
+.ui.dropdown .menu > .item.AnnDetailsModalDropDwn {
+  padding: 3px 5px 1px 5px!important;
+}
+.annAttaFileSize {
+  margin-left: 10px !important;
+  margin-top: -5px !important;
+}
+.annAttaFileName {
+  margin-bottom: 0px !important;
+  margin-left: 10px !important;
+}
+.announcementAttachmentsIcon {
+  width: 44px!important;
+  height: 44px!important;
+  padding-top: 3px!important;
+  padding-left: 4px!important;
+  margin-top: 10px!important;
+}
+.attachmentPlacementBgr {
+  background-color: rgba(86, 61, 124, 0.1);
+}
+.announcementSeeAllLink {
+  font-family: 'sunbirdboldfont' !important;
+  font-size: 1.2em !important;
+  padding-top: 15px !important;
+}
+.ui.grey.label.annType {
+  background-color: #9a9a9a!important;
+  border-color: #9a9a9a!important;
+}
 .search-location-icon {
   margin-top: 2%;
 }
@@ -2049,6 +2089,121 @@ div:focus {
 .checkBox-element {
   margin-top: 10px;
   margin-left: 10px;
+}
+.UpReviewTableHeader {
+  font-size: 1em !important;
+  font-family: 'sunbirdmediumfont' !important;
+}
+.UpReviewSubHeader {
+  font-size: 0.7em !important;
+  opacity: 0.7 !important;
+  font-family: 'sunbirdregularfont' !important;
+}
+.UpReviewHeader {
+  font-size: 1em !important;
+  font-family: 'sunbirdregularfont' !important;
+}
+.UpReviewTinyImage {
+  height: 40px !important;
+  width: 40px !important;
+  max-height: 40px !important;
+  max-width: 40px !important;
+}
+.UpForReviewListHover td {
+  border-top-width: 3px !important;
+}
+.UpForReviewListHover:hover {
+  background-color: #f9f9f9;
+}
+.UpForReviewStatusOrange {
+  color: #ffb300;
+  font-size: 1.1em !important;
+  font-family: 'sunbirdregularfont' !important;
+}
+.UpForReviewStatusGreen {
+  color: #47cf73;
+  font-size: 1.1em !important;
+  font-family: 'sunbirdregularfont' !important;
+}
+.ui.upForReviewTable.table {
+  border: none !important;
+}
+h5.ui.header {
+  font-size: 1rem !important;
+}
+.upForReviewSearchBox {
+  width: 400px !important;
+  background: #fdfdfd !important;
+  border-right: none !important;
+  border-top: none !important;
+  border-left: none!important;
+  border-bottom: 1px solid rgba(51, 51, 51, 0.33) !important;
+}
+.anncmnt-fileupload-list {
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+.anncmnt-drop-file-info {
+  padding-top: 50px;
+}
+.anncmnt-drop-file-info-size {
+  font-size: 1.2em;
+}
+.anncmnt-drop-file-info-style {
+  font-style: italic;
+}
+.anncmnt-fileupload-or-text {
+  margin-top: -3.5em;
+}
+.anncmnt-fileupload-negative-margin {
+  margin-bottom: -3em;
+}
+.anncmnt-upload-file-btn {
+  position: relative;
+  overflow: hidden;
+  direction: ltr;
+}
+.anncmnt-fileupload-input-field {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  font-family: Arial;
+  font-size: 118px;
+  margin: 0px;
+  padding: 0px;
+  cursor: pointer;
+  opacity: 0;
+  height: 100%;
+}
+.w3-border {
+  border: 1px solid #ccc!important;
+}
+.w3-round-xlarge {
+  border-radius: 5px !important;
+}
+.qq-upload-success {
+  background-color: #ffffff !important;
+  padding: 15px;
+}
+.anncmnt-upload-file-are {
+  margin-top: -2.5em;
+  padding-bottom: 75px;
+}
+.qq-uploader {
+  border: 2px dashed #CCCCCC !important;
+  max-height: 330px !important;
+  overflow-y: auto !important;
+  min-height: 300px !important;
+}
+body ::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 6px !important;
+}
+.qq-upload-file {
+  width: 200px !important;
+}
+.qq-upload-list {
+  overflow-y: hidden !important;
 }
 .down-arrow-accordion {
   float: right !important;
@@ -2597,9 +2752,9 @@ ul.fancytree-container li {
   position: static;
   padding: 0;
   max-width: 100%;
-  margin: .45238095em 0 .45238095em .64285714em;
+  margin: .55238095em 0 .45238095em .64285714em;
   line-height: 1.21428571em;
-  color: #908e90;
+  color: #c7c7c7;
 }
 .dropdown-items.ui.selection.dropdown .menu > .item {
   border-top: none;
@@ -2628,6 +2783,11 @@ ul.fancytree-container li {
   z-index: 11;
 }
 .conceptSelector.ui.form .treepicker-parent input {
+  color: #c7c7c7;
+  font-family: Roboto;
+  font-size: 13px;
+}
+.profileLocationFilter input {
   color: #908e90;
   font-family: Roboto;
   font-size: 13px;
@@ -2951,8 +3111,8 @@ ul.fancytree-container li {
 .workspacecontent {
   line-height: 45px;
 }
-.workspacecontent.ui.card {
-  border: 1px solid #333333;
+ui.link.card.workspacecontent {
+  border: 1px solid #000000 !important;
   box-shadow: 0 1px 0px 0 #d4d4d5, 0 0 0 1px #d4d4d5 !important;
 }
 .workspacetitle.title {
@@ -3032,7 +3192,6 @@ ul.fancytree-container li {
   line-height: 22px;
 }
 .workspacecontentProfile.ui.card {
-  border: 1px solid #333333;
   box-shadow: 0 1px 0px 0 #d4d4d5, 0 0 0 1px #d4d4d5 !important;
 }
 .WorkSpaceTextContent {
@@ -3052,11 +3211,6 @@ ul.fancytree-container li {
 .WorkSpaceTextContent .my-text {
   font-size: 1.3em;
   font-family: 'sunbirdboldfont';
-}
-/* file upload border */
-.qq-uploader {
-  border: 2px dashed #CCCCCC !important;
-  min-height: 130px !important;
 }
 .selectuploadfile .ui.button {
   margin: 32px 0 0 0;
@@ -3387,6 +3541,20 @@ span.dashBoardMenuItem.active {
 .ui.ordered.list .list > .item:before,
 ol.ui.list ol li:before {
   margin-left: -2.5em !important;
+}
+@media only screen and (max-width: 1290px) and (min-width: 992px) {
+  .modals.dimmer .ui.tree-picker.scrolling.modal {
+    top: -580px !important;
+    position: relative !important;
+    margin: 0 0 0 -350px !important;
+  }
+}
+@media only screen and (min-width: 1300px) {
+  .modals.dimmer .ui.tree-picker.scrolling.modal {
+    top: 60px !important;
+    position: relative !important;
+    margin: 0 0 0 -373px !important;
+  }
 }
 .createAnnHeaderDesc {
   font-size: small;

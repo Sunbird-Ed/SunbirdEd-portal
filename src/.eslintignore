@@ -1,0 +1,13 @@
+app/common/js/frmelmnts.js
+app/common/js/messages.js
+app/content-plugins/**
+app/metadata.sh
+app/private/scripts/playerAppConfig.js
+app/private/scripts/telemetry/**
+app/public/scripts/publicAppConfig.js
+app/thirdparty/**
+semantic/**
+dist/**
+node_modules/**
+coverage/**
+docs/**
