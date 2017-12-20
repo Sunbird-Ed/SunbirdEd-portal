@@ -21,10 +21,8 @@ angular.module('playerApp')
       switch (datasetType) {
       case 'creation':
         return httpServiceJava.get(config.URL.DASHBOARD.ORG_CREATION + '/' + req.org_id + '?period=' + req.period)
-        break
       case 'consumption':
         return httpServiceJava.get(config.URL.DASHBOARD.ORG_CONSUMPTION + '/' + req.org_id + '?period=' + req.period)
-        break
       default:
         return httpServiceJava.get(config.URL.DASHBOARD.ORG_CREATION + '/' + req.org_id + '?period=' + req.period)
       }
@@ -125,13 +123,35 @@ angular.module('playerApp')
     this.getCourseDashboardData = function (req, datasetType) {
       switch (datasetType) {
       case 'progress':
-        return httpServiceJava.get(config.URL.DASHBOARD.COURSE_PROGRESS + '/' + req.courseId + '?period=' + req.timePeriod)
-        break
+        return httpServiceJava.get(config.URL.DASHBOARD.COURSE_PROGRESS +
+           '/' + req.courseId + '?period=' + req.timePeriod)
       case 'consumption':
-        return httpServiceJava.get(config.URL.DASHBOARD.COURSE_CONSUMPTION + '/' + req.courseId + '?period=' + req.timePeriod)
-        break
+        return httpServiceJava.get(config.URL.DASHBOARD.COURSE_CONSUMPTION +
+           '/' + req.courseId + '?period=' + req.timePeriod)
       default:
-        return httpServiceJava.get(config.URL.DASHBOARD.COURSE_PROGRESS + '/' + req.courseId + '?period=' + req.timePeriod)
+        return httpServiceJava.get(config.URL.DASHBOARD.COURSE_PROGRESS +
+           '/' + req.courseId + '?period=' + req.timePeriod)
+      }
+    }
+
+    /**
+     * @function downloadReport
+     * @description make export csv api call
+     * @param object req - api request params
+     * @param datasetType
+     * @return array
+     */
+    this.downloadReport = function (id, timePeriod, datasetType) {
+      switch (datasetType) {
+      case 'creation':
+        return httpServiceJava.get(config.URL.DASHBOARD.ORG_CREATION +
+          '/' + id + '/export?period=' + timePeriod + '&format=csv')
+      case 'consumption':
+        return httpServiceJava.get(config.URL.DASHBOARD.ORG_CONSUMPTION +
+          '/' + id + '/export?period=' + timePeriod + '&format=csv')
+      default:
+        return httpServiceJava.get(config.URL.DASHBOARD.COURSE_PROGRESS +
+          '/' + id + '/export?period=' + timePeriod + '&format=csv')
       }
     }
   }])

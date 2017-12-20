@@ -1,7 +1,8 @@
 'use strict'
 
 angular.module('playerApp')
-  .controller('courseDashboardCtrl', ['$rootScope', '$scope', 'dashboardService', '$timeout', '$state', '$stateParams', 'toasterService',
+  .controller('courseDashboardCtrl', ['$rootScope', '$scope',
+    'dashboardService', '$timeout', '$state', '$stateParams', 'toasterService',
     'batchService',
     function ($rootScope, $scope, dashboardService, $timeout, $state, $stateParams, toasterService, batchService) {
       var courseDashboard = this
@@ -99,10 +100,10 @@ angular.module('playerApp')
             }
           } else {
             // Show error div
-            courseDashboard.showErrors(apiResponse)
+            courseDashboard.showErrors(response)
           }
-        }).catch(function () {
-          courseDashboard.showErrors(apiResponse)
+        }).catch(function (response) {
+          courseDashboard.showErrors(response)
         })
       }
 
@@ -138,8 +139,7 @@ angular.module('playerApp')
       }
 
       courseDashboard.onAfterBatchChange = function (batchId, batchName) {
-        if (courseDashboard.batchIdentifier == batchId) {
-          console.log('avoid same apis call twice')
+        if (courseDashboard.batchIdentifier === batchId) {
           return false
         }
         courseDashboard.showLoader = true
@@ -147,6 +147,34 @@ angular.module('playerApp')
         courseDashboard.courseName = batchName
         courseDashboard.isMultipleCourses = false
         getCourseDashboardData()
+      }
+
+      /**
+       * @Function downloadReports
+       * @Description - make dowload csv api call
+       * @Return  void
+       */
+      courseDashboard.downloadReport = function () {
+        courseDashboard.showDownloadLoader = 'active'
+        // Call service
+        dashboardService.downloadReport(courseDashboard.batchIdentifier,
+          courseDashboard.filterTimePeriod, '').then(function (apiResponse) {
+          courseDashboard.showDownloadLoader = ''
+          if (apiResponse && apiResponse.responseCode === 'OK') {
+            var str = $rootScope.messages.stmsg.m0095
+            courseDashboard.downloadReportText = str.replace('{acknowledgementId}',
+              apiResponse.result.requestId).replace(/(\(.*\))/g, '')
+            $('#downloadReportModal').modal({
+              closable: true
+            }).modal('show')
+          } else {
+            courseDashboard.showDownloadLoader = ''
+            toasterService.error(apiResponse.params.errmsg)
+          }
+        }).catch(function (apiResponse) {
+          courseDashboard.showDownloadLoader = ''
+          courseDashboard.showErrors(apiResponse)
+        })
       }
     }
   ])
