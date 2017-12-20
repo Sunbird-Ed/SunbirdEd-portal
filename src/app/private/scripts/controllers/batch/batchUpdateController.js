@@ -129,7 +129,7 @@ angular.module('playerApp')
         var request = {
           request: {
             filters: {
-              'organisations.organisationId': [$rootScope.organisationIds.toString()]
+              'organisations.organisationId': $rootScope.organisationIds
             }
           }
         }
