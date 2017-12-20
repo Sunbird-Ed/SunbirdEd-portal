@@ -70,7 +70,7 @@
               <span ng-if="attachment.name.length > 50">...</span>
             </p>
             <p class="annAttaFilesize annAttaFileSize" ng-if="attachment.size">
-              {{attachment.size}}
+              {{attachment.size | uppercase}}
             </p>
           </div>
         </div>
