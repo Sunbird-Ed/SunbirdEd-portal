@@ -1,15 +1,10 @@
 <script type="text/template" id="qq-template-manual-trigger">
   <div class="qq-uploader-selector qq-uploader padding-bottom-5 sb-createAnnFineUploaderHolder" qq-drop-area-text="">
     <div id="hide-section-with-button">
-      <ul class="qq-upload-list-selector qq-upload-list" aria-live="polite" aria-relevant="additions removals" style="overflow-x: hidden;overflow-y: hidden;">
+      <ul class="qq-upload-list-selector qq-upload-list anncmnt-fileupload-list" aria-live="polite" aria-relevant="additions removals">
         <li class="qq-file-id-0 qq-upload-retryable w3-container w3-border w3-round-xlarge" qq-file-id="0">
-        <i class="qq-upload-cancel-selector cursor-pointer remove icon" id="qq-upload-cancel-manually" onclick=cancelUploadFile() style="float: right;"></i>
-          <div class="qq-progress-bar-container-selector qq-hide" id="hide-progress-bar-on-reject" style="overflow: unset;">
-            <div role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" class="qq-progress-bar-selector qq-progress-bar" style="width: 100%;">
-            </div>
-          </div>
-          <span class="qq-upload-file-selector qq-upload-file" title="" style="margin-top: -30px !important;width: 222px;"></span>
-          <input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text">
+        <i class="qq-upload-cancel-selector cursor-pointer remove icon float-ContentRight" id="qq-upload-cancel-manually" onclick=cancelUploadFile()></i>
+          <span class="qq-upload-file-selector qq-upload-file anncmnt-upload-file" title=""></span>
           <span role="status" class="qq-upload-status-text-selector qq-upload-status-text">Upload failed</span>
         </li>
       </ul>
@@ -18,18 +13,18 @@
       </div>
       <div class="ui grid">
         <div class="uploadicon twelve wide column text-align-center">
-          <p class="dropfile" style="padding-top: 50px;">
-            <span style="font-size: 1.2em;">Drop relevant attachment here </span>
+          <p class="dropfile anncmnt-drop-file-info">
+            <span class="anncmnt-drop-file-info-size">Drop relevant attachment here </span>
             <br>
-            <span style="font-style: italic;"> (Format: .pdf, .png, .jpg. File Limit: 1MB)</span>
+            <span class="anncmnt-drop-file-info-style"> (Format: .pdf, .png, .jpg. File Limit: 1MB)</span>
           </p>
         </div>
       </div>
-      <p class="orinstuction" style="margin-top: -3.5em;">or</p>
-      <div class="ui grid" style=" margin-bottom: -3em;">
-        <div class="twelve wide column text-align-center selectuploadfile" style="margin-top: -2.5em; padding-bottom: 75px;">
-          <label class="qq-upload-button-selector ui primary basic button text-align-center padding-left-25 announcementButton" style="position: relative; overflow: hidden; direction: ltr;"><span class="announcementButtonText">UPLOAD ATTACHMENT</span>
-            <input qq-button-id="abe6b3ad-947a-4bae-bd34-f51ab331a6bc" title="UPLOAD ATTACHMENT" multiple="" type="file" name="qqfile" style="position: absolute; right: 0px; top: 0px; font-family: Arial; font-size: 118px; margin: 0px; padding: 0px; cursor: pointer; opacity: 0; height: 100%;">
+      <p class="orinstuction anncmnt-fileupload-or-text">or</p>
+      <div class="ui grid anncmnt-fileupload-negative-margin">
+        <div class="twelve wide column text-align-center selectuploadfile anncmnt-upload-file-are">
+          <label class="qq-upload-button-selector anncmnt-upload-file-btn ui primary basic button text-align-center padding-left-25 announcementButton"><span class="announcementButtonText">UPLOAD ATTACHMENT</span>
+            <input qq-button-id="abe6b3ad-947a-4bae-bd34-f51ab331a6bc" title="UPLOAD ATTACHMENT" multiple="" type="file" name="qqfile" class="anncmnt-fileupload-input-field">
           </label>
         </div>
         <div class="one wide column"></div>
@@ -59,15 +54,3 @@
   </div>
 </script>
 <div id="fine-uploader-manual-trigger"></div>
-<style type="text/css">
-  .w3-border {
-    border: 1px solid #ccc!important;
-}
-.w3-round-xlarge {
-    border-radius: 5px !important;
-}
-.qq-upload-success {
-    background-color: #ffffff !important;
-    padding: 15px;
-}
-</style>

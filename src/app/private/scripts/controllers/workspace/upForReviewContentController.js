@@ -17,7 +17,7 @@ angular.module('playerApp')
       upForReviewContent.typingTimer = -1 // timer identifier
       upForReviewContent.doneTypingInterval = 1000
       upForReviewContent.search = {}
-      upForReviewContent.search.languages = upForReviewContent.filterDropDown.languages
+      upForReviewContent.search.mediums = upForReviewContent.filterDropDown.languages
       upForReviewContent.search.contentTypes = upForReviewContent.filterDropDown.contentTypes
       upForReviewContent.search.subjects = upForReviewContent.filterDropDown.subjects
       upForReviewContent.search.grades = upForReviewContent.filterDropDown.grades
@@ -26,7 +26,7 @@ angular.module('playerApp')
       upForReviewContent.search.sortingOptions = config.upForReviewSortingOptions
       upForReviewContent.search.sortIcon = true
 
-      upForReviewContent.search.selectedLanguage = []
+      upForReviewContent.search.selectedMedium = []
       upForReviewContent.search.selectedContentType = []
       upForReviewContent.search.selectedBoard = []
       upForReviewContent.search.selectedSubject = []
@@ -84,7 +84,7 @@ angular.module('playerApp')
       }
 
       upForReviewContent.search.resetFilter = function () {
-        upForReviewContent.search.selectedLanguage = []
+        upForReviewContent.search.selectedMedium = []
         upForReviewContent.search.selectedContentType = []
         upForReviewContent.search.selectedBoard = []
         upForReviewContent.search.selectedSubject = []
@@ -112,8 +112,8 @@ angular.module('playerApp')
           req.query = upForReviewContent.searchText
         }
 
-        if (upForReviewContent.search.selectedLanguage && upForReviewContent.search.selectedLanguage.length > 0) {
-          req.filters.language = upForReviewContent.search.selectedLanguage
+        if (upForReviewContent.search.selectedMedium && upForReviewContent.search.selectedMedium.length > 0) {
+          req.filters.medium = upForReviewContent.search.selectedMedium
         }
 
         if (upForReviewContent.search.selectedContentType && upForReviewContent.search.selectedContentType.length > 0) {
