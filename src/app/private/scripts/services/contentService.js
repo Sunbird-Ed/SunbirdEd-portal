@@ -1,8 +1,8 @@
 'use strict'
 
 angular.module('playerApp')
-  .service('contentService', ['httpService', 'config', '$rootScope', 'httpServiceJava',
-    function (httpService, config, $rootScope, httpServiceJava) {
+  .service('contentService', ['httpService', 'config', '$rootScope', 'restfulLearnerService',
+    function (httpService, config, $rootScope, restfulLearnerService) {
     /**
      * @class contentService
      * @desc Service to manage content.
@@ -80,7 +80,7 @@ angular.module('playerApp')
              * @instance
              */
       this.uploadMedia = function (req) {
-        return httpServiceJava.upload(config.URL.CONTENT.UPLOAD_MEDIA, req)
+        return restfulLearnerService.upload(config.URL.CONTENT.UPLOAD_MEDIA, req)
       }
 
       this.getById = function (req, qs) {

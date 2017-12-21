@@ -1,8 +1,8 @@
 'use strict'
 
 angular.module('playerApp')
-  .service('contentStateService', ['$filter', '$rootScope', 'httpServiceJava', 'config',
-    'uuid4', 'dataService', function ($filter, $rootScope, httpServiceJava, config, uuid4, dataService) {
+  .service('contentStateService', ['$filter', '$rootScope', 'restfulLearnerService', 'config',
+    'uuid4', 'dataService', function ($filter, $rootScope, restfulLearnerService, config, uuid4, dataService) {
     /**
      * @class contentStateService
      * @desc Service to manage state of content.
@@ -17,7 +17,7 @@ angular.module('playerApp')
       }
 
       this.getContentsStateFromAPI = function (req) {
-        return httpServiceJava.post(config.URL.COURSE.USER_CONTENT_STATE_READ, req)
+        return restfulLearnerService.post(config.URL.COURSE.USER_CONTENT_STATE_READ, req)
       }
       /**
          * @method updateContentStateInServer
@@ -29,7 +29,7 @@ angular.module('playerApp')
          * @instance
          */
       this.updateContentStateInServer = function (req) {
-        return httpServiceJava.patch(config.URL.COURSE.USER_CONTENT_STATE_UPDATE, req)
+        return restfulLearnerService.patch(config.URL.COURSE.USER_CONTENT_STATE_UPDATE, req)
       }
 
       this.prepareContentObject = function (data) {

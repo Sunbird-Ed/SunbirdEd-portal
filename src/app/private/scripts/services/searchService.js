@@ -1,8 +1,8 @@
 'use strict'
 
 angular.module('playerApp')
-  .service('searchService', ['httpService', 'config', '$q', 'httpServiceJava',
-    function (httpService, config, $q, httpServiceJava) {
+  .service('searchService', ['httpService', 'config', '$q', 'restfulLearnerService',
+    function (httpService, config, $q, restfulLearnerService) {
       /**
      * @class searchService
      * @desc Service to manage different type of search.
@@ -135,7 +135,7 @@ angular.module('playerApp')
              */
       this.getOrgTypes = function () {
         var url = config.URL.ORG_TYPE.GET
-        return httpServiceJava.get(url)
+        return restfulLearnerService.get(url)
       }
       /**
              * @method setOrgTypes

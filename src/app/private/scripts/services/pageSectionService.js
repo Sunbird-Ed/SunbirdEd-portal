@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('playerApp')
-  .service('pageSectionService', ['httpServiceJava', function (httpServiceJava) {
+  .service('pageSectionService', ['restfulLearnerService', function (restfulLearnerService) {
     /**
      * @class pageSectionService
      * @desc Service to manage sections of page.
@@ -19,6 +19,6 @@ angular.module('playerApp')
          * @instance
          */
     this.getPageData = function (path, req) {
-      return httpServiceJava.post(path, req)
+      return restfulLearnerService.post(path, req)
     }
   }])

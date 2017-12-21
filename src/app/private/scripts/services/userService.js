@@ -4,8 +4,8 @@ angular.module('playerApp')
   .service('userService', [
     'config',
     'httpService',
-    'httpServiceJava',
-    function (config, httpService, httpServiceJava) {
+    'restfulLearnerService',
+    function (config, httpService, restfulLearnerService) {
       /**
      * @class userService
      * @desc Service to manage user profile.
@@ -32,7 +32,7 @@ angular.module('playerApp')
         if (fields && _.isString(fields)) {
           url = url + '?fields=' + fields
         }
-        return httpServiceJava.get(url)
+        return restfulLearnerService.get(url)
       }
       /**
              * @method updateUserProfile
@@ -44,7 +44,7 @@ angular.module('playerApp')
              */
       this.updateUserProfile = function (req, name, email) {
         var url = config.URL.USER.UPDATE_USER_PROFILE
-        return httpServiceJava.patch(url, req)
+        return restfulLearnerService.patch(url, req)
       }
       /**
              * @method getTenantLogo
@@ -86,7 +86,7 @@ angular.module('playerApp')
              */
       this.getSkills = function () {
         var url = config.URL.USER.SKILLS
-        return httpServiceJava.get(url)
+        return restfulLearnerService.get(url)
       }
       /**
              * @method getUserSkills
@@ -99,7 +99,7 @@ angular.module('playerApp')
              */
       this.getUserSkills = function (req) {
         var url = config.URL.USER.USER_SKILLS
-        return httpServiceJava.post(url, req)
+        return restfulLearnerService.post(url, req)
       }
       /**
              * @method addSkills
@@ -112,12 +112,12 @@ angular.module('playerApp')
              */
       this.addSkills = function (req) {
         var url = config.URL.USER.ADD_SKILLS
-        return httpServiceJava.post(url, req)
+        return restfulLearnerService.post(url, req)
       }
 
       this.updateProfileFieldVisibility = function (req) {
         var url = config.URL.USER.UPDATE_PROF_VIS_FIELDS
-        return httpServiceJava.post(url, req)
+        return restfulLearnerService.post(url, req)
       }
 
       /**

@@ -1,8 +1,8 @@
 'use strict'
 
 angular.module('playerApp')
-  .service('permissionsService', ['httpServiceJava', 'config', '$rootScope',
-    function (httpServiceJava, config, $rootScope) {
+  .service('permissionsService', ['restfulLearnerService', 'config', '$rootScope',
+    function (restfulLearnerService, config, $rootScope) {
       /**
      * @class permissionsService
      * @desc Service to manages permissions for user.
@@ -121,7 +121,7 @@ angular.module('playerApp')
              * @instance
              */
       this.getPermissionsData = function () {
-        return httpServiceJava.get(config.URL.ROLES.READ)
+        return restfulLearnerService.get(config.URL.ROLES.READ)
       }
       /**
              * @method allRoles
@@ -163,7 +163,7 @@ angular.module('playerApp')
              */
       this.getCurrentUserProfile = function () {
         var url = config.URL.USER.GET_PROFILE + '/' + $rootScope.userId
-        return httpServiceJava.get(url)
+        return restfulLearnerService.get(url)
       }
 
       this.getMainRoles = function () {
