@@ -3,9 +3,9 @@
 angular.module('playerApp')
   .service('userService', [
     'config',
-    'httpService',
+    'restfulContentService',
     'restfulLearnerService',
-    function (config, httpService, restfulLearnerService) {
+    function (config, restfulContentService, restfulLearnerService) {
       /**
      * @class userService
      * @desc Service to manage user profile.
@@ -15,7 +15,7 @@ angular.module('playerApp')
       this.resourceBundle = function (language, type) {
         var url = config.URL.CONFIG_BASE + config.URL.USER.RESOURCE_BUNDLE + '/' +
                     type + '/' + language
-        return httpService.get(url)
+        return restfulContentService.get(url)
       }
       /**
              * @method getUserProfile
@@ -54,7 +54,7 @@ angular.module('playerApp')
              * @instance
              */
       this.getTenantLogo = function () {
-        return httpService.get(config.URL.USER.TENANT_LOGO)
+        return restfulContentService.get(config.URL.USER.TENANT_LOGO)
       }
       /**
              * @method setCurrentUserProfile

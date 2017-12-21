@@ -1,8 +1,8 @@
 'use strict'
 
 angular.module('playerApp')
-  .service('courseService', ['restfulLearnerService', 'config', '$sessionStorage', 'httpService',
-    function (restfulLearnerService, config, $sessionStorage, httpService) {
+  .service('courseService', ['restfulLearnerService', 'config', '$sessionStorage', 'restfulContentService',
+    function (restfulLearnerService, config, $sessionStorage, restfulContentService) {
     /**
      * @class courseService
      * @desc Service to manage courses
@@ -17,7 +17,7 @@ angular.module('playerApp')
              * @instance
              */
       this.search = function (req) {
-        return httpService.post(config.URL.COURSE.SEARCH, req)
+        return restfulContentService.post(config.URL.COURSE.SEARCH, req)
       }
       /**
              * @method courseSchedule
@@ -52,7 +52,7 @@ angular.module('playerApp')
              */
       this.courseHierarchy = function (courseId) {
         var url = config.URL.COURSE.HIERARCHY + '/' + courseId
-        return httpService.get(url)
+        return restfulContentService.get(url)
       }
       /**
              * @method enrollUserToCourse
