@@ -5,22 +5,6 @@
 // Style guide: Modules.Header
 
 
-
-.header-container {
-    margin-left: 1px !important;
-    border-bottom: 5px solid @blue !important;
-}
-
-.header-user-icon {
-    margin-right: 0px !important;
-}
-
-.content-card-meta { 
-    background: rgba(0, 0, 0, 0.5) !important;
-    color: @white !important;
-    padding: 5px !important;
-}
-
 // Ui Menu
 //
 // .ui.menu - override css values of menu insemantic ui, it is added to the div tag as a class.
@@ -109,10 +93,13 @@
 }
 
 .ui.secondary.pointing.menu .active.item{
-    border-color:@blue !important;
+    border-color:@primary-color;
 }
-.ui.secondary.pointing.menu{
-    background: @websiteBody-color !important;
+
+.ui.secondary.pointing.menu {
+    background: @secondary-color;
+    margin: 0rem;
+    justify-content: center;
 }
 
 .breadcrumppadding.ui.breadcrumb, .breadcrumppadding.ui.breadcrumb:last-child, .breadcrumppadding.ui.breadcrumb:first-child{
@@ -122,7 +109,7 @@
 
 
 .ui.breadcrumb .divider {
-    color: @light-skyblue !important;
+    color: @primary-color !important;
 }
 
 .headerSearchDropdown:hover{
