@@ -1,17 +1,17 @@
 'use strict'
 
 angular.module('playerApp')
-  .service('httpServiceJava', ['$http', '$rootScope', '$filter', 'config', 'uuid4',
+  .service('restfulLearnerService', ['$http', '$rootScope', '$filter', 'config', 'uuid4',
     function ($http, $rootScope, $filter, config, uuid4) {
       /**
-     * @class httpServiceJava
+     * @class restfulLearnerService
      * @desc Service to manages learner API calls.
      * @memberOf Services
      */
       /**
              * @method getHeader
              * @desc Headers for api calls
-             * @memberOf Services.httpServiceJava
+             * @memberOf Services.restfulLearnerService
              * @returns {Object} headers - Headers
              * @instance
              */
@@ -34,7 +34,7 @@ angular.module('playerApp')
       /**
              * @method httpCall
              * @desc Http call
-             * @memberOf Services.httpServiceJava
+             * @memberOf Services.restfulLearnerService
              * @param {string}  url - Url
              * @param {Object}  data - Request
              * @param {string}  method - Methods (CURD)
@@ -55,7 +55,7 @@ angular.module('playerApp')
       /**
              * @method handleSuccess
              * @desc Http call
-             * @memberOf Services.httpServiceJava
+             * @memberOf Services.restfulLearnerService
              * @param {object}  response - HTTP call response
              * @returns {Object} response.data - Success Response data
              * @instance
@@ -66,7 +66,7 @@ angular.module('playerApp')
       /**
              * @method handleError
              * @desc Handle error response - session expire Or error message
-             * @memberOf Services.httpServiceJava
+             * @memberOf Services.restfulLearnerService
              * @param {object}  response - HTTP call response
              * @returns {Object} response.data - Error Response data
              * @instance
@@ -83,7 +83,7 @@ angular.module('playerApp')
       /**
              * @method post
              * @desc HTTP POST method
-             * @memberOf Services.httpServiceJava
+             * @memberOf Services.restfulLearnerService
              * @param {string}  url - API url
              * @param {object}  data - Requested data
              * @param {object}  headers - API headers
@@ -97,7 +97,7 @@ angular.module('playerApp')
       /**
              * @method get
              * @desc HTTP GET method
-             * @memberOf Services.httpServiceJava
+             * @memberOf Services.restfulLearnerService
              * @param {string}  url - API url
              * @param {object}  data - Requested data
              * @param {object}  headers - API headers
@@ -111,7 +111,7 @@ angular.module('playerApp')
       /**
              * @method remove
              * @desc HTTP DELETE method
-             * @memberOf Services.httpServiceJava
+             * @memberOf Services.restfulLearnerService
              * @param {string}  url - API url
              * @param {object}  data - Requested data
              * @param {object}  headers - API headers
@@ -125,7 +125,7 @@ angular.module('playerApp')
       /**
              * @method patch
              * @desc HTTP PATCH method
-             * @memberOf Services.httpServiceJava
+             * @memberOf Services.restfulLearnerService
              * @param {string}  url - API url
              * @param {object}  data - Requested data
              * @param {object}  headers - API headers

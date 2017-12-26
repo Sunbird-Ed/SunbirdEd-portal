@@ -5,7 +5,7 @@
 'use strict'
 
 angular.module('playerApp')
-  .service('setupService', ['config', 'httpServiceJava', function (config, httpServiceJava) {
+  .service('setupService', ['config', 'restfulLearnerService', function (config, restfulLearnerService) {
     /**
      * @class setupService
      * @desc Service to manage org types
@@ -23,7 +23,7 @@ angular.module('playerApp')
          */
     this.addOrgType = function (req) {
       var url = config.URL.ORG_TYPE.ADD
-      return httpServiceJava.post(url, req)
+      return restfulLearnerService.post(url, req)
     }
     /**
          * @method updateOrgType
@@ -37,7 +37,7 @@ angular.module('playerApp')
          */
     this.updateOrgType = function (req) {
       var url = config.URL.ORG_TYPE.UPDATE
-      return httpServiceJava.patch(url, req)
+      return restfulLearnerService.patch(url, req)
     }
     /**
          * @method getOrgTypes
@@ -48,6 +48,6 @@ angular.module('playerApp')
          */
     this.getOrgTypes = function () {
       var url = config.URL.ORG_TYPE.GET
-      return httpServiceJava.get(url)
+      return restfulLearnerService.get(url)
     }
   }])

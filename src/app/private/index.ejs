@@ -7,7 +7,6 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link id="dynamic-favicon" rel="icon" type="image/ico" href="/common/images/favicon.ico">
-    <link rel="stylesheet" href="/themes/<%= theme ? theme : 'default' %>/assets/styles/main.css">
     <link rel="stylesheet" href="/themes/<%= theme ? theme : 'default' %>/semantic.min.css">
     <link rel="stylesheet" href="/thirdparty/bower_components/angular-pagedown/angular-pagedown.min.css">
     <link rel="stylesheet" href="/thirdparty/bower_components/slick-carousel/slick/slick.css" />
@@ -21,6 +20,7 @@
     <link rel="stylesheet" href="/thirdparty/bower_components/file-upload/fine-uploader/fine-uploader-new.min.css">
     <!-- endinject -->
     <link rel="stylesheet" href="/thirdparty/bower_components/jquery.fancytree/dist/skin-win8/ui.fancytree.min.css">
+    <link rel="stylesheet" href="/themes/<%= theme ? theme : 'default' %>/assets/styles/main.css">
     <base href="/private/index">
 </head>
 
@@ -90,8 +90,8 @@
     <script src="scripts/routes/appRoute.js"></script>
     <script src="scripts/routes/announcementRoute.js"></script>
     <script src="scripts/factories/sessionFactory.js"></script>
-    <script src="scripts/services/httpService.js"></script>
-    <script src="scripts/services/httpServiceJava.js"></script>
+    <script src="scripts/services/restfulContentService.js"></script>
+    <script src="scripts/services/restfulLearnerService.js"></script>
     <script src="scripts/factories/announcementModel.js"></script>
     <script src="scripts/services/adapters/httpAdapter.js"></script>
     <script src="scripts/services/adapters/announcementAdapter.js"></script>

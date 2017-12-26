@@ -1,8 +1,8 @@
 'use strict'
 
 angular.module('playerApp')
-  .service('configService', ['httpService', 'config', '$q',
-    function (httpService, config, $q) {
+  .service('configService', ['restfulContentService', 'config', '$q',
+    function (restfulContentService, config, $q) {
       /**
      * @class configService
      */

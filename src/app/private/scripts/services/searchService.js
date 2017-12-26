@@ -1,8 +1,8 @@
 'use strict'
 
 angular.module('playerApp')
-  .service('searchService', ['httpService', 'config', '$q', 'httpServiceJava',
-    function (httpService, config, $q, httpServiceJava) {
+  .service('searchService', ['restfulContentService', 'config', '$q', 'restfulLearnerService',
+    function (restfulContentService, config, $q, restfulLearnerService) {
       /**
      * @class searchService
      * @desc Service to manage different type of search.
@@ -38,7 +38,7 @@ angular.module('playerApp')
             'Resource'
           ]
         }
-        return httpService.post(config.URL.CONTENT.SEARCH, req)
+        return restfulContentService.post(config.URL.CONTENT.SEARCH, req)
       }
       /**
              * @method courseSearch
@@ -61,7 +61,7 @@ angular.module('playerApp')
              */
 
       this.courseSearch = function (req) {
-        return httpService.post(config.URL.COURSE.SEARCH, req)
+        return restfulContentService.post(config.URL.COURSE.SEARCH, req)
       }
       /**
              * @method search
@@ -91,7 +91,7 @@ angular.module('playerApp')
             'Resource'
           ]
         }
-        return httpService.post(config.URL.COMPOSITE.SEARCH, req)
+        return restfulContentService.post(config.URL.COMPOSITE.SEARCH, req)
       }
       /**
              * @method setPublicUserProfile
@@ -117,14 +117,14 @@ angular.module('playerApp')
              */
       this.getPublicUserProfile = function (identifier, endorsement) {
         if (endorsement !== undefined) {
-          return httpService.get(config.URL.USER.GET_PROFILE + '/' + identifier)
+          return restfulContentService.get(config.URL.USER.GET_PROFILE + '/' + identifier)
         }
         if (this.publicUser) {
           var deferred = $q.defer()
           deferred.resolve(this.publicUser)
           return deferred.promise
         }
-        return httpService.get(config.URL.USER.GET_PROFILE + '/' + identifier)
+        return restfulContentService.get(config.URL.USER.GET_PROFILE + '/' + identifier)
       }
       /**
              * @method getOrgTypes
@@ -135,7 +135,7 @@ angular.module('playerApp')
              */
       this.getOrgTypes = function () {
         var url = config.URL.ORG_TYPE.GET
-        return httpServiceJava.get(url)
+        return restfulLearnerService.get(url)
       }
       /**
              * @method setOrgTypes
