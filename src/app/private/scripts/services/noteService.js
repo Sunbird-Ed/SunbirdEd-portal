@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('playerApp')
-  .service('noteService', ['httpServiceJava', 'config', function (httpServiceJava, config) {
+  .service('noteService', ['restfulLearnerService', 'config', function (restfulLearnerService, config) {
     /**
      * @class noteService
      * @desc Service to manage notes.
@@ -22,7 +22,7 @@ angular.module('playerApp')
          * @instance
          */
     this.search = function (req) {
-      return httpServiceJava.post(config.URL.NOTES.SEARCH, req)
+      return restfulLearnerService.post(config.URL.NOTES.SEARCH, req)
     }
     /**
          * @method create
@@ -41,7 +41,7 @@ angular.module('playerApp')
          */
 
     this.create = function (req) {
-      return httpServiceJava.post(config.URL.NOTES.CREATE, req)
+      return restfulLearnerService.post(config.URL.NOTES.CREATE, req)
     }
     /**
          * @method update
@@ -59,7 +59,7 @@ angular.module('playerApp')
 
     this.update = function (req) {
       var url = config.URL.NOTES.UPDATE + '/' + req.noteId
-      return httpServiceJava.patch(url, req)
+      return restfulLearnerService.patch(url, req)
     }
     /**
          * @method remove
@@ -74,6 +74,6 @@ angular.module('playerApp')
 
     this.remove = function (req) {
       var url = config.URL.NOTES.DELETE + '/' + req.noteId
-      return httpServiceJava.remove(url, req)
+      return restfulLearnerService.remove(url, req)
     }
   }])

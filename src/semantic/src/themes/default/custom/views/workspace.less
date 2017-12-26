@@ -9,15 +9,20 @@
   padding: 15px 0 0 4px;
 }
 .publicmenusection.ui.secondary.vertical.menu>.item {
-  color: #979797;
+  color: @secondary-textColor;
+  text-transform: uppercase;
+   font-family: 'sunbirdboldfont';
 }
 .publicmenusection.ui.secondary.menu .active.item {
-  background: linear-gradient(270deg, rgba(218, 218, 218, 0) 0%, #F1F1F1 100%);
+  background: linear-gradient(270deg, rgba(218, 218, 218, 0) 0%, @white 100%);
   border-radius: 0!important;
   color: rgba(0, 0, 0, .95);
+  text-transform: uppercase;
+  font-family: 'sunbirdboldfont';
+
 }
 .publicmenusection.ui.secondary.menu a.item:hover {
-  background: linear-gradient(270deg, rgba(218, 218, 218, 0) 0%, #F1F1F1 100%);
+  background: linear-gradient(270deg, rgba(218, 218, 218, 0) 0%, @white 100%);
   border-radius: 0!important;
   color: rgba(0, 0, 0, .95);
 }
@@ -28,11 +33,11 @@
   line-height: 45px;
 }
 ui.link.card.workspacecontent {
-  border: 1px solid #000000 !important;
-  box-shadow: 0 1px 0px 0 #d4d4d5, 0 0 0 1px #d4d4d5 !important;
+  border: 1px solid @black !important;
+  box-shadow: 0 1px 0px 0 @card-box-shadowColor, 0 0 0 1px @card-box-shadowColor !important;
 }
 .workspacetitle.title {
-  color: #333333;
+  color: @primary-textColor;
   font-family: "Open Sans";
   font-size: 14px;
   line-height: 17px;
@@ -40,32 +45,32 @@ ui.link.card.workspacecontent {
 }
 .workspaceinstuction {
   text-align: center;
-  color: #979797;
+  color: @secondary-textColor;
   font-size: 12px;
 }
 .dropfile {
   text-align: center;
-  color: #979797;
+  color: @secondary-textColor;
   font-size: 12px;
 }
 .workspacedownload.ui.segment {
   box-sizing: border-box;
-  border: 2px solid #979797;
+  border: 2px solid @secondary-color;
   border-radius: 4px;
   border-style: dashed;
   text-align: center;
 }
 .uploadicon i.icon {
   font-size: 3em;
-  color: #979797;
+  color: @secondary-color;
 }
 .uploadicon p {
-  color: #979797;
+  color: @secondary-textColor;;
   font-family: "Open Sans";
   font-size: 13px;
 }
 .uploador p {
-  color: #979797;
+  color: @secondary-textColor;
   font-family: "Open Sans";
   font-size: 10px;
 }
@@ -92,7 +97,7 @@ ui.link.card.workspacecontent {
 .my-text {
   font-size: 1.063em;
   font-family: 'sunbirdregularfont';
-  color: @dark-grey;
+  color: @primary-textColor;
   vertical-align: middle;
 }
 .my-icon {
@@ -106,7 +111,7 @@ ui.link.card.workspacecontent {
   line-height: 22px;
 }
 .workspacecontentProfile.ui.card {
-  box-shadow: 0 1px 0px 0 #d4d4d5, 0 0 0 1px #d4d4d5 !important;
+  box-shadow: 0 1px 0px 0 @card-box-shadowColor, 0 0 0 1px @card-box-shadowColor !important;
 }
 .WorkSpaceTextContent {
   display: inline-block;
@@ -135,7 +140,7 @@ ui.link.card.workspacecontent {
 }
 .youtubeupload.ui.form .inline.fields .field>label {
   text-align: center;
-  color: #979797;
+  color: @secondary-color;
   font-size: 13px;
   font-weight: 400;
   white-space: nowrap;
@@ -143,13 +148,13 @@ ui.link.card.workspacecontent {
 }
 .orinstuction {
   text-align: center;
-  color: #979797;
+  color: @secondary-textColor;
   font-size: 12px;
   padding-top: 40px;
 }
 .fileUploadDivider {
   padding: 35px 0px 10px 0px !important;
-  border: 2px dashed #CCCCCC !important;
+  border: 2px dashed @file-uploaderColor !important;
   margin-left: 0rem !important;
   margin-right: 0rem !important;
 }

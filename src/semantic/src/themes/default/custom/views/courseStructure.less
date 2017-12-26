@@ -18,26 +18,18 @@ ul{
 ul li span.text {
   margin-right: 43%;
 }
-.verticalLine{
-  position:absolute;
-  height:100%;
-  width:1px;
-  border-left:2px solid #d4d4d5;
-  left:15px;
-  top:23px;
-}
 
 /* fancytree-container border remove */
 ul.fancytree-container {  
    border: none !important;
         li {
-            padding-bottom: 1em !important;
+            padding-bottom: 0.8em;
         }
 }
 .fancytree-lastsib {
     ul{
         li {            
-            padding-bottom: 1em !important;
+            padding-bottom: 0.8em !important;
         }
     }
 }
@@ -50,16 +42,6 @@ ul.fancytree-container {
 
 ul.courseStr {
    -webkit-padding-start: 0px !important;
-}
-
-.green-color-course-str {
-	color:#8cff8c
-}
-.orange-color-course-str {
-	color:#ffa500
-}
-.grey-color-course-str {
-	color:#d6d4d4
 }
 
 li.subStr {
@@ -76,7 +58,7 @@ li.subStr::before{
   left: -0.1em;
   width: .1em;
   height: 4em;
-  background: #d4d4d5;
+  background: @card-box-shadowColor;
   z-index: 1;
 }
 li.subStr::after{
@@ -86,7 +68,7 @@ li.subStr::after{
   left: -0.1em;
   width: 3em;
   height: .1em;
-  background: #d4d4d5;
+  background: @card-box-shadowColor;
 
 }
 ul.subList-padding {
@@ -95,7 +77,7 @@ ul.subList-padding {
 }
 
 .courseStructureHeader {   
-  background-color: #fff !important;
+  background-color: @white !important;
   border-bottom: 2px solid rgba(34,36,38,.15) !important;
 }
 .courseStructureHeaderText{
@@ -134,7 +116,7 @@ ul.subList-padding {
 }
 
 span.fancytree-title {
-  margin: 0px 0px 10px 0px!important;
+  margin: 0px 0px 10px 0px;
 }
 .noselect {
  -webkit-touch-callout: none; /* iOS Safari */

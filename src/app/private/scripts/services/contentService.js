@@ -1,8 +1,8 @@
 'use strict'
 
 angular.module('playerApp')
-  .service('contentService', ['httpService', 'config', '$rootScope', 'httpServiceJava',
-    function (httpService, config, $rootScope, httpServiceJava) {
+  .service('contentService', ['restfulContentService', 'config', '$rootScope', 'restfulLearnerService',
+    function (restfulContentService, config, $rootScope, restfulLearnerService) {
     /**
      * @class contentService
      * @desc Service to manage content.
@@ -26,7 +26,7 @@ angular.module('playerApp')
         req.content.organization = $rootScope.organisationNames
         req.content.createdFor = $rootScope.organisationIds
         req.content.creator = $rootScope.firstName + ' ' + $rootScope.lastName
-        return httpService.post(config.URL.CONTENT.CREATE, req)
+        return restfulContentService.post(config.URL.CONTENT.CREATE, req)
       }
       /**
              * @method publish
@@ -41,7 +41,7 @@ angular.module('playerApp')
              */
       this.publish = function (req, id) {
         var url = config.URL.CONTENT.PUBLISH + '/' + id
-        return httpService.post(url, req)
+        return restfulContentService.post(url, req)
       }
       /**
              * @method retire
@@ -55,7 +55,7 @@ angular.module('playerApp')
 
       this.retire = function (req) {
         var url = config.URL.CONTENT.RETIRE
-        return httpService.remove(url, req)
+        return restfulContentService.remove(url, req)
       }
       /**
              * @method reject
@@ -68,7 +68,7 @@ angular.module('playerApp')
 
       this.reject = function (data, id) {
         var url = config.URL.CONTENT.REJECT + '/' + id
-        return httpService.post(url, data)
+        return restfulContentService.post(url, data)
       }
 
       /**
@@ -80,12 +80,12 @@ angular.module('playerApp')
              * @instance
              */
       this.uploadMedia = function (req) {
-        return httpServiceJava.upload(config.URL.CONTENT.UPLOAD_MEDIA, req)
+        return restfulLearnerService.upload(config.URL.CONTENT.UPLOAD_MEDIA, req)
       }
 
       this.getById = function (req, qs) {
         var url = config.URL.CONTENT.GET + '/' + req.contentId
-        return httpService.get(url, req, null, qs)
+        return restfulContentService.get(url, req, null, qs)
       }
       /**
              * @method flag
@@ -101,16 +101,16 @@ angular.module('playerApp')
 
       this.flag = function (req, contentId) {
         var url = config.URL.CONTENT.FLAG + '/' + contentId
-        return httpService.post(url, req)
+        return restfulContentService.post(url, req)
       }
 
       this.acceptContentFlag = function (req, contentId) {
         var url = config.URL.CONTENT.ACCEPT_FLAG + '/' + contentId
-        return httpService.post(url, req)
+        return restfulContentService.post(url, req)
       }
 
       this.discardContentFlag = function (req, contentId) {
         var url = config.URL.CONTENT.DISCARD_FLAG + '/' + contentId
-        return httpService.post(url, req)
+        return restfulContentService.post(url, req)
       }
     }])

@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('playerApp')
-  .service('adminService', ['config', 'httpServiceJava', function (config, httpServiceJava) {
+  .service('adminService', ['config', 'restfulLearnerService', function (config, restfulLearnerService) {
     /**
      * @class adminService
      * @desc Service to manage user settings.
@@ -19,7 +19,7 @@ angular.module('playerApp')
              */
     this.userSearch = function (req) {
       var url = config.URL.ADMIN.USER_SEARCH
-      return httpServiceJava.post(url, req)
+      return restfulLearnerService.post(url, req)
     }
     /**
              * @method orgSearch
@@ -33,7 +33,7 @@ angular.module('playerApp')
              */
     this.orgSearch = function (req) {
       var url = config.URL.ADMIN.ORG_SEARCH
-      return httpServiceJava.post(url, req)
+      return restfulLearnerService.post(url, req)
     }
     /**
              * @method deleteUser
@@ -47,7 +47,7 @@ angular.module('playerApp')
 
     this.deleteUser = function (req) {
       var url = config.URL.ADMIN.DELETE_USER
-      return httpServiceJava.post(url, req)
+      return restfulLearnerService.post(url, req)
     }
     /**
              * @method updateRoles
@@ -63,7 +63,7 @@ angular.module('playerApp')
 
     this.updateRoles = function (req) {
       var url = config.URL.ADMIN.UPDATE_USER_ORG_ROLES
-      return httpServiceJava.post(url, req)
+      return restfulLearnerService.post(url, req)
     }
     /**
              * @method bulkUserUpload
@@ -78,7 +78,7 @@ angular.module('playerApp')
 
     this.bulkUserUpload = function (req) {
       var url = config.URL.ADMIN.BULK.USERS_UPLOAD
-      return httpServiceJava.upload(url, req)
+      return restfulLearnerService.upload(url, req)
     }
     /**
              * @method bulkOrgUpload
@@ -91,7 +91,7 @@ angular.module('playerApp')
              */
     this.bulkOrgrUpload = function (req) {
       var url = config.URL.ADMIN.BULK.ORGANIZATIONS_UPLOAD
-      return httpServiceJava.upload(url, req)
+      return restfulLearnerService.upload(url, req)
     }
     /**
              * @method bulkUploadStatus
@@ -105,7 +105,7 @@ angular.module('playerApp')
 
     this.bulkUploadStatus = function (processId) {
       var url = config.URL.ADMIN.BULK.STATUS + '/' + processId
-      return httpServiceJava.get(url)
+      return restfulLearnerService.get(url)
     }
 
     /**
@@ -121,7 +121,7 @@ angular.module('playerApp')
 
     this.addBadges = function (req) {
       var url = config.URL.BADGE.ASSIGN
-      return httpServiceJava.post(url, req)
+      return restfulLearnerService.post(url, req)
     }
     /**
              * @method getBadges
@@ -132,7 +132,7 @@ angular.module('playerApp')
              */
     this.getBadges = function () {
       var url = config.URL.BADGE.GET
-      return httpServiceJava.get(url)
+      return restfulLearnerService.get(url)
     }
     /**
              * @method setBadges
