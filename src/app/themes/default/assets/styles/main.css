@@ -166,7 +166,7 @@
 .ui.cards > .card > .content > .description.dashboardCardSubText {
   font-family: 'sunbirdregularfont';
   font-size: 1.6em;
-  color: #232425;
+  color: #333333;
 }
 /*note card font*/
 .batch-card-desc {
@@ -410,7 +410,7 @@
 }
 .blur-content {
   opacity: 0.2;
-  background: #f7f7f7;
+  background: #F5F5F5;
   cursor: text;
 }
 .searchdropdown.ui.disabled.button {
@@ -419,7 +419,7 @@
 #custom-scroll::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   border-radius: 10px;
-  background-color: #F5F5F5;
+  background-color: #D8D8D8;
 }
 #custom-scroll::-webkit-scrollbar {
   width: 8px;
@@ -545,9 +545,6 @@ h4.ui.header.sectionHeading {
 }
 .ui.breadcrumb .divider {
   color: #007AFF !important;
-}
-.headerSearchDropdown:hover {
-  background: #f9fafb !important;
 }
 .headerDropdownProfile {
   cursor: text !important;
@@ -814,7 +811,7 @@ th {
 }
 .sliderCards.ui.card > .content > .description {
   clear: both;
-  color: #b5b5b5 !important;
+  color: #7c7b7b !important;
 }
 /*blue rating star in card */
 .sliderCards .ui.mini.rating {
@@ -1327,7 +1324,7 @@ div:focus {
 .ui.modal .ui.input input.gray-background {
   background-color: #F5F5F5 !important;
   box-shadow: 1 1px 2px 0 rgba(34, 36, 38, 0.15) !important;
-  border: 1px solid #EEE!important;
+  border: 1px solid #F5F5F5 !important;
   border-radius: 0!important;
   padding: 10px !important;
 }
@@ -1374,8 +1371,8 @@ div:focus {
   padding-top: 15px !important;
 }
 .ui.grey.label.annType {
-  background-color: #9a9a9a!important;
-  border-color: #9a9a9a!important;
+  background-color: #9a9a9a !important;
+  border-color: #9a9a9a !important;
 }
 .search-location-icon {
   margin-top: 2%;
@@ -1392,53 +1389,50 @@ div:focus {
   margin-left: 10px;
 }
 .UpReviewTableHeader {
-  font-size: 1em !important;
-  font-family: 'sunbirdmediumfont' !important;
+  font-size: 1em;
+  font-family: 'sunbirdmediumfont';
 }
 .UpReviewSubHeader {
-  font-size: 0.7em !important;
-  opacity: 0.7 !important;
-  font-family: 'sunbirdregularfont' !important;
+  font-size: 0.7em;
+  opacity: 0.7;
+  font-family: 'sunbirdregularfont';
 }
 .UpReviewHeader {
-  font-size: 1em !important;
-  font-family: 'sunbirdregularfont' !important;
+  font-size: 1em;
+  font-family: 'sunbirdregularfont';
 }
-.UpReviewTinyImage {
-  height: 40px !important;
-  width: 40px !important;
-  max-height: 40px !important;
-  max-width: 40px !important;
-}
-.UpForReviewListHover td {
-  border-top-width: 3px !important;
+.ui.tiny.image.UpReviewTinyImage {
+  height: 40px;
+  width: 40px;
+  max-height: 40px;
+  max-width: 40px;
 }
 .UpForReviewListHover:hover {
-  background-color: #f9f9f9;
+  background-color: #F5F5F5;
 }
 .UpForReviewStatusOrange {
   color: #ffb300;
-  font-size: 1.1em !important;
-  font-family: 'sunbirdregularfont' !important;
+  font-size: 1.1em;
+  font-family: 'sunbirdregularfont';
 }
 .UpForReviewStatusGreen {
   color: #47cf73;
-  font-size: 1.1em !important;
-  font-family: 'sunbirdregularfont' !important;
+  font-size: 1.1em;
+  font-family: 'sunbirdregularfont';
 }
 .ui.upForReviewTable.table {
-  border: none !important;
+  border: none;
 }
 h5.ui.header {
-  font-size: 1rem !important;
+  font-size: 1rem;
 }
-.upForReviewSearchBox {
-  width: 400px !important;
-  background: #fdfdfd !important;
-  border-right: none !important;
-  border-top: none !important;
-  border-left: none!important;
-  border-bottom: 1px solid rgba(51, 51, 51, 0.33) !important;
+.searchicon.ui.icon.input input.upForReviewSearchBox {
+  width: 400px;
+  background: #F5F5F5;
+  border-right: none;
+  border-top: none;
+  border-left: none;
+  border-bottom: 1px solid rgba(51, 51, 51, 0.33);
 }
 .anncmnt-fileupload-list {
   overflow-x: hidden;
@@ -1520,14 +1514,6 @@ ul li {
 ul li span.text {
   margin-right: 43%;
 }
-.verticalLine {
-  position: absolute;
-  height: 100%;
-  width: 1px;
-  border-left: 2px solid #d4d4d5;
-  left: 15px;
-  top: 23px;
-}
 /* fancytree-container border remove */
 ul.fancytree-container {
   border: none !important;
@@ -1546,15 +1532,6 @@ ul.fancytree-container li {
 }
 ul.courseStr {
   -webkit-padding-start: 0px !important;
-}
-.green-color-course-str {
-  color: #8cff8c;
-}
-.orange-color-course-str {
-  color: #ffa500;
-}
-.grey-color-course-str {
-  color: #d6d4d4;
 }
 li.subStr {
   height: 2em;
@@ -1701,22 +1678,19 @@ span.fancytree-title {
 }
 .tocplayer.ui.grid {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 8px 6px -8px #d9d4d4;
+  box-shadow: 0 8px 6px -8px #F5F5F5;
   padding-top: 0;
   margin-bottom: 1em;
   padding-bottom: 20px;
 }
 .courseupdate {
-  color: #a5a5ad;
+  color: #7c7b7b;
   line-height: 1.6;
   font-size: 1em;
   padding-left: 12px;
 }
 .courseupdate b {
   font-weight: 400;
-}
-.verticalLine {
-  border-left: thin solid #ddd;
 }
 .container-with-button {
   width: 100% !important;
@@ -1856,7 +1830,7 @@ ul.fancytree-container li {
   line-height: 14px;
 }
 .sunblogin {
-  color: #212121!important;
+  color: #333333;
   z-index: 11;
 }
 .ui[class*="right ribbon"].label:after {
@@ -1879,15 +1853,7 @@ ul.fancytree-container li {
   background: gray;
 }
 .opacity-cardContent {
-  opacity: 0.2 !important;
-}
-.card-Content-Heading {
-  padding-bottom: 10% !important;
-  padding-left: 4% !important;
-  font-size: 16px;
-  margin: 11px;
-  font-weight: 600;
-  color: rgba(0, 0, 0, 0.7);
+  opacity: 0.2;
 }
 .card-Content-HeadingFont {
   padding: 0em 0em 1em 1em;
@@ -1896,7 +1862,7 @@ ul.fancytree-container li {
   border-radius: 0.65em;
 }
 .landing-text {
-  padding-top: 4em !important;
+  padding-top: 3em;
 }
 .landing-text p {
   margin: 0;
@@ -1924,7 +1890,7 @@ ul.fancytree-container li {
   margin: 1rem 0;
   padding: 20px 20px;
   border-radius: 4px;
-  border: 1px solid #d8dee2;
+  border: 1px solid #F5F5F5;
 }
 .annannouncement-description {
   margin-top: 11px;
@@ -2055,7 +2021,7 @@ ul.fancytree-container li {
   max-width: 100%;
   margin: .55238095em 0 .45238095em .64285714em;
   line-height: 1.21428571em;
-  color: #c7c7c7;
+  color: #F5F5F5;
 }
 .dropdown-items.ui.selection.dropdown .menu > .item {
   border-top: none;
@@ -2072,7 +2038,7 @@ ul.fancytree-container li {
   text-align: left;
   border-top: none;
   line-height: 1em;
-  color: #212121;
+  color: #333333;
   padding: 1em 1.5em!important;
   font-size: 1rem;
   text-transform: none;
@@ -2084,12 +2050,12 @@ ul.fancytree-container li {
   z-index: 11;
 }
 .conceptSelector.ui.form .treepicker-parent input {
-  color: #c7c7c7;
+  color: #F5F5F5;
   font-family: Roboto;
   font-size: 13px;
 }
 .profileLocationFilter input {
-  color: #908e90;
+  color: #7c7b7b;
   font-family: Roboto;
   font-size: 13px;
 }
@@ -2115,30 +2081,10 @@ ul.fancytree-container li {
   border-bottom: 1px dashed #333333;
   overflow: auto;
 }
-.block-border-bottom {
-  border-bottom: 1px solid #ddd;
-  padding: 0px 0px 10px 0px;
-}
 .currentcourse-block-desc {
   line-height: 22px;
   padding-top: 10px;
   padding-left: 20px;
-}
-.course-intro-big {
-  margin-top: 0px;
-  line-height: 1;
-  display: block;
-  padding-bottom: 5px;
-}
-.course-intro-big span,
-.course-intro-small span {
-  font-family: 'FrutigerNeueW01-Regular';
-  font-size: 1.25em;
-}
-.course-intro-small {
-  font-size: 0.9325em;
-  cursor: pointer;
-  color: #428bca;
 }
 .dashboardBadgeText,
 .dashboardBadgeText span {
@@ -2535,7 +2481,7 @@ ui.link.card.workspacecontent {
 }
 .fileUploadDivider {
   padding: 35px 0px 10px 0px !important;
-  border: 2px dashed #CCCCCC !important;
+  border: 2px dashed #cccccc !important;
   margin-left: 0rem !important;
   margin-right: 0rem !important;
 }
@@ -2578,12 +2524,12 @@ ui.link.card.workspacecontent {
   border-top: 0!important;
 }
 .notelistborder {
-  border: 2px solid #d9d9d9!important;
+  border: 2px solid #d9d9d9 !important;
   padding: 10px!important;
 }
-.contentnotelist:hover {
-  background-color: #d8d7d7!important;
-  box-shadow: 0px 2px 3px #888888!important;
+.ui.items > .item > .content.contentnotelist:hover {
+  background-color: #d9d9d9;
+  box-shadow: 0px 2px 3px #d9d9d9;
 }
 .noteellipsis {
   overflow: hidden;
@@ -2707,7 +2653,7 @@ ui.link.card.workspacecontent {
 #batchcardList::-webkit-scrollbar-thumb {
   border-radius: 10px;
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  background-color: #b9b9b9;
+  background-color: #D8D8D8;
 }
 .batchHeader-logo {
   top: 14% !important;
@@ -2722,7 +2668,7 @@ ui.link.card.workspacecontent {
   line-height: 14px;
 }
 .des-content {
-  color: #434343;
+  color: #333333;
   font-family: "Open Sans";
   font-size: 13px;
   line-height: 18px;
@@ -2774,7 +2720,7 @@ ui.link.card.workspacecontent {
   padding: 5px 10px !important;
 }
 .batchSelectedDetails.ui.list > .item {
-  color: #333;
+  color: #333333;
 }
 .selectedBatchMeta.meta {
   color: rgba(0, 0, 0, 0.7) !important;
@@ -2904,9 +2850,6 @@ ol.ui.list ol li:before {
 .createAnnBackBtnWidth {
   width: 15%;
 }
-.createAnnColorGray {
-  color: #f2f2f2;
-}
 .createAnnBlueClass {
   color: #007AFF;
 }
@@ -2917,7 +2860,7 @@ ol.ui.list ol li:before {
   margin: 4px;
 }
 .createAnnGrayShade {
-  color: #9b9b9b;
+  color: #7c7b7b;
 }
 .line-height-20 {
   line-height: 20px;
