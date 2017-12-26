@@ -2,8 +2,9 @@
 
 angular.module('playerApp')
   .controller('orgDashboardController', ['$rootScope', '$scope',
-    'dashboardService', '$timeout', '$state', '$stateParams', 'toasterService', 'adminService',
-    function ($rootScope, $scope, dashboardService, $timeout, $state, $stateParams, toasterService, adminService) {
+    'dashboardService', '$timeout', '$state', '$stateParams', 'toasterService', 'adminService', 'QueryService',
+    function ($rootScope, $scope, dashboardService, $timeout, $state, $stateParams, toasterService,
+      adminService, QueryService) {
       var dashboardData = this
       dashboardData.height = 110
       dashboardData.datasetPreviousValue = 'creation'
@@ -16,8 +17,21 @@ angular.module('playerApp')
 
         var requestBody = {
           org_id: dashboardData.orgId,
+          orgId: dashboardData.orgId,
+          timePeriod: dashboardData.timePeriod,
           period: dashboardData.timePeriod
         }
+
+        var client = new QueryService({key: 'orgDataSource'})
+        client.query({
+          eid: 'orgDataSource',
+          request: requestBody,
+          dataset: dashboardData.datasetPreviousValue
+        }).then(function (apiResponse) {
+          console.log('Org datasource result', apiResponse)
+        }).catch(function (apiResponse) {
+          toasterService.error('errorMsg')
+        })
 
         dashboardService.getAdminDashboardData(requestBody, dashboardData.datasetPreviousValue).then(function (apiResponse) {
           dashboardData.graphShow = 0

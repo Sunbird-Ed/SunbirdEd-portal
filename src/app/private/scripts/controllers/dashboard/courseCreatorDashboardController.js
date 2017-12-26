@@ -39,9 +39,9 @@ angular.module('playerApp')
           timePeriod: courseDashboard.filterTimePeriod
         }
 
-        var client = new QueryService({key: 'dashboardService'})
+        var client = new QueryService({key: 'courseDataSource'})
         client.query({
-          eid: 'dashboardService',
+          eid: 'courseDataSource',
           request: request,
           dataset: courseDashboard.dataset
         }).then(function (apiResponse) {

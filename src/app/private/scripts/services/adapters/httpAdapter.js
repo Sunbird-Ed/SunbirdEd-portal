@@ -12,10 +12,7 @@ angular.module('playerApp')
      * @param {object}  header - Header
      * @instance
      */
-    this.httpCall = function (url, data, method) {
-      var headers = {
-        'Content-Type': 'application/json'
-      }
+    this.httpCall = function (url, data, method, headers) {
       var deferred = $q.defer()
       $http({
         method: method,

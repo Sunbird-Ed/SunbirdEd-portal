@@ -1,16 +1,17 @@
 'use strict'
 
 angular.module('playerApp')
-  .service('courseDataSource', ['$q', '$rootScope', 'config', 'httpAdapter', 'toasterService', function ($q, $rootScope, config, httpAdapter, toasterService) {
+  .service('orgDataSource', ['$q', 'config', '$rootScope', 'httpAdapter', 'toasterService', function ($q, config, $rootScope, httpAdapter, toasterService) {
     /**
      * @class dashboardService
      * @desc Service to manage dashboard.
      * @memberOf Services
      */
     var datasets = {
-      'progress': config.URL.DASHBOARD.COURSE_PROGRESS,
-      'consumption': config.URL.DASHBOARD.COURSE_CONSUMPTION
+      'creation': config.URL.DASHBOARD.ORG_CREATION,
+      'consumption': config.URL.DASHBOARD.ORG_CONSUMPTION
     }
+
     /**
      * @method getCourseDashboardData
      * @desc Convert seconds to min
@@ -21,7 +22,7 @@ angular.module('playerApp')
      * @instance
      */
     this.getData = function (req, datasetType, headers) {
-      var url = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + datasets[datasetType] + '/' + req.courseId + '?period=' + req.timePeriod
+      var url = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + datasets[datasetType] + '/' + req.orgId + '?period=' + req.timePeriod
       var deferred = $q.defer()
       var response = httpAdapter.httpCall(url, '', 'GET', headers)
       response.then(function (res) {
