@@ -1,9 +1,11 @@
 'use strict'
 
 angular.module('playerApp')
-  .controller('courseCreatorDashboardCtrl', ['$rootScope', '$scope', 'dashboardService', '$timeout', '$state', '$stateParams', 'toasterService',
-    'permissionsService', 'searchService',
-    function ($rootScope, $scope, dashboardService, $timeout, $state, $stateParams, toasterService, permissionsService, searchService) {
+  .controller('courseCreatorDashboardCtrl', ['$rootScope', '$scope', 'dashboardService', '$timeout',
+    '$state', '$stateParams', 'toasterService',
+    'permissionsService', 'searchService', 'QueryService',
+    function ($rootScope, $scope, dashboardService, $timeout, $state, $stateParams, toasterService,
+      permissionsService, searchService, QueryService) {
       // Initialize variables
       var courseDashboard = this
       courseDashboard.chartHeight = 110
@@ -37,6 +39,17 @@ angular.module('playerApp')
           timePeriod: courseDashboard.filterTimePeriod
         }
 
+        var client = new QueryService({key: 'dashboardService'})
+        client.query({
+          eid: 'dashboardService',
+          request: request,
+          dataset: courseDashboard.dataset
+        }).then(function (apiResponse) {
+          console.log('apiResponse9999999999', apiResponse)
+        }).catch(function (apiResponse) {
+          toasterService.error('errorMsg')
+        })
+
         // Call dashboard service
         dashboardService.getCourseDashboardData(request, courseDashboard.dataset).then(function (apiResponse) {
           if (apiResponse && apiResponse.responseCode === 'OK') {
@@ -45,7 +58,7 @@ angular.module('playerApp')
 
             // To print block data
             angular.forEach(apiResponse.result.snapshot, function (numericData, key) {
-              if (key != 'course.consumption.users_completed') {
+              if (key !== 'course.consumption.users_completed') {
                 dashboardService.secondsToMin(numericData)
               }
               courseDashboard.consumptionNumericData.push(numericData)
@@ -54,7 +67,7 @@ angular.module('playerApp')
             // To print line chart
             var bucketkeys = []
             angular.forEach(apiResponse.result.series, function (bucketData, key) {
-              if (bucketkeys.indexOf(key) == -1) {
+              if (bucketkeys.indexOf(key) === -1) {
                 bucketkeys.push(key)
                 var dataArray = []
                 var labels = []
@@ -66,10 +79,11 @@ angular.module('playerApp')
                 })
 
                 data.push(dataArray)
-                if (bucketData.time_unit != undefined) {
-                  var name = bucketData.name + ' (' + bucketData.time_unit + ')'
+                var name = ''
+                if (bucketData.time_unit !== undefined) {
+                  name = bucketData.name + ' (' + bucketData.time_unit + ')'
                 } else {
-                  var name = bucketData.name
+                  name = bucketData.name
                 }
 
                 var options = dashboardService.getChartOptions(name)
@@ -78,13 +92,13 @@ angular.module('playerApp')
 
                 var found = false
                 for (var j = 0; j < courseDashboard.data.length; j++) {
-                  if (courseDashboard.data[j][5] == bucketData.group_id) {
+                  if (courseDashboard.data[j][5] === bucketData.group_id) {
                     found = true
                     break
                   }
                 }
-                if (found == true) {
-                  var d = courseDashboard.data[j][2]
+                if (found === true) {
+                  // var d = courseDashboard.data[j][2]
                   courseDashboard.data[j][2].push(dataArray)
                   // courseDashboard.data.push
                 } else {
@@ -173,7 +187,7 @@ angular.module('playerApp')
       }
 
       courseDashboard.onAfterCourseChange = function (courseId, courseName) {
-        if (courseDashboard.courseIdentifier == courseId) {
+        if (courseDashboard.courseIdentifier === courseId) {
           console.log('avoid same apis call twice')
           return false
         }
