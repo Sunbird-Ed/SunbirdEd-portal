@@ -20,171 +20,177 @@
 }
 /*cards fonts*/
 .cardsHeading {
-  font-family: 'sunbirdboldfont' !important;
+  font-family: 'sunbirdboldfont';
   font-size: 1.25em;
 }
 .cardsSubHeading {
-  font-family: 'sunbirdregularfont' !important;
+  font-family: 'sunbirdregularfont';
   font-size: 1.125em;
-  color: #007AFF !important;
+  color: #007AFF;
 }
 .cardsDescription {
-  font-family: 'sunbirdregularfont' !important;
+  font-family: 'sunbirdregularfont';
   font-size: 1.0625em;
   font-weight: 400;
   line-height: 1.4;
-  color: black !important;
+  color: black;
 }
 /* font used for view all and read more*/
 .cardsKnowMore {
-  font-family: 'sunbirdboldfont' !important;
+  font-family: 'sunbirdboldfont';
   font-size: 1em;
   color: #007AFF;
 }
 /* cards used in slider fonts*/
 .sliderCardHeading {
-  font-family: 'sunbirdboldfont' !important;
-  font-size: 1.1875em !important;
+  font-family: 'sunbirdboldfont';
+  font-size: 1.1875em;
   float: left;
   padding-left: 10px;
 }
 .sliderCardDesc {
-  font-family: 'sunbirdregularfont' !important;
-  font-size: 1em !important;
-  color: #7c7b7b !important;
+  font-family: 'sunbirdregularfont';
+  font-size: 1em;
+  color: #7c7b7b;
 }
 .sliderCardSubDesc {
-  font-family: 'sunbirdregularfont' !important;
-  font-size: 0.875em !important;
-  color: grey !important;
+  font-family: 'sunbirdregularfont';
+  font-size: 0.875em;
+  color: grey;
 }
 /* segment card fonts*/
 .segmentCardHeading {
-  font-family: 'sunbirdboldfont' !important;
-  font-size: 1.313em !important;
+  font-family: 'sunbirdboldfont';
+  font-size: 1.313em;
 }
 .segmentAvatarDesc {
-  font-family: 'sunbirdregularfont' !important;
-  font-size: 1.0625em !important;
-  color: rgba(0, 0, 0, 0.85) !important;
+  font-family: 'sunbirdregularfont';
+  font-size: 1.0625em;
+  color: rgba(0, 0, 0, 0.85);
 }
 .segmentAvatarSubDesc {
-  font-family: 'sunbirdregularfont' !important;
-  font-size: 0.9375em !important;
-  color: #7c7b7b !important;
+  font-family: 'sunbirdregularfont';
+  font-size: 0.9375em;
+  color: #7c7b7b;
 }
 .segmentCardSubDesc {
-  font-family: 'sunbirdregularfont' !important;
-  font-size: 1.0625em !important;
+  font-family: 'sunbirdregularfont';
+  font-size: 1.0625em;
 }
 /*course structure page fonts*/
 .courseStructureSectionHeading {
-  font-family: 'sunbirdboldfont' !important;
-  font-size: 1.67em !important;
+  font-family: 'sunbirdboldfont';
+  font-size: 1.67em;
 }
 .courseStructureHeading {
-  font-family: 'sunbirdboldfont' !important;
-  font-size: 0.85em !important;
+  font-family: 'sunbirdboldfont';
+  font-size: 0.85em;
 }
 .courseStructureDesc {
-  font-family: 'sunbirdregularfont' !important;
-  font-size: 0.7em !important;
+  font-family: 'sunbirdregularfont';
+  font-size: 0.7em;
 }
 /*course structure accordian fonts*/
 .courseAccordianHeading {
-  font-family: 'sunbirdboldfont' !important;
-  font-size: 1.1875 !important;
+  font-family: 'sunbirdboldfont';
+  font-size: 1.1875;
 }
 .courseAccordianDesc {
-  font-family: 'sunbirdregularfont' !important;
-  font-size: 1.125em !important;
+  font-family: 'sunbirdregularfont';
+  font-size: 1.125em;
 }
 .courseAccordianSubDesc {
-  font-family: 'sunbirdboldfont' !important;
-  font-size: 0.9375em !important;
+  font-family: 'sunbirdboldfont';
+  font-size: 0.9375em;
 }
 .segmentCardHeading {
-  font-family: 'sunbirdboldfont' !important;
-  font-size: 1.438em !important;
+  font-family: 'sunbirdboldfont';
+  font-size: 1.438em;
 }
 /*home page fonts*/
-.HomeAccordianHeading {
-  font-family: 'sunbirdboldfont' !important;
-  font-size: 1.375em !important;
+.ui.header.HomeAccordianHeading {
+  font-family: 'sunbirdboldfont';
+  font-size: 1.375em;
 }
 /*section heading fonts*/
 .sectionHeading {
-  font-family: 'sunbirdboldfont' !important;
-  font-size: 1.375em !important;
+  font-family: 'sunbirdboldfont';
+  font-size: 1.375em;
 }
 /*show filter fonts*/
 .ShowFilterTitle {
-  font-family: 'sunbirdboldfont' !important;
-  font-size: 0.9375em !important;
+  font-family: 'sunbirdboldfont';
+  font-size: 0.9375em;
 }
 .ShowFilterSubTitle {
-  font-family: 'sunbirdregularfont' !important;
-  font-size: 0.9375em !important;
-  color: #7c7b7b !important;
+  font-family: 'sunbirdregularfont';
+  font-size: 0.9375em;
+  color: #7c7b7b;
 }
 /*note card font*/
 .note-card-timeStamp {
-  font-family: 'sunbirdregularfont' !important;
-  font-size: 0.625em !important;
+  font-family: 'sunbirdregularfont';
+  font-size: 0.625em;
 }
 /* breadcrumb font*/
-.breadcrumb-fontColor {
-  color: #007AFF !important;
-  font-family: 'sunbirdboldfont' !important;
-  font-size: 0.9375em !important;
+.ui.breadcrumb a.breadcrumb-fontColor {
+  color: #007AFF;
+  font-family: 'sunbirdboldfont';
+  font-size: 0.9375em;
+  line-height: 17px;
+}
+.ui.breadcrumb .active.section {
+  color: #007AFF;
+  font-family: 'sunbirdboldfont';
+  font-size: 0.9375em;
   line-height: 17px;
 }
 .medium-font-text {
-  font-size: medium !important;
+  font-size: medium;
 }
 /* dashboard fonts*/
 .dashBoardSectionHeading {
-  font-family: 'sunbirdboldfont' !important;
-  font-size: 1.4em !important;
+  font-family: 'sunbirdboldfont';
+  font-size: 1.4em;
 }
 .dashBoardMenuItem {
-  font-family: 'sunbirdregularfont' !important;
-  font-size: 0.9375em !important;
-  color: #007AFF !important;
+  font-family: 'sunbirdregularfont';
+  font-size: 0.9375em;
+  color: #007AFF;
 }
-.dashBoardCardText {
-  font-family: 'sunbirdregularfont' !important;
-  font-size: 1.1em !important;
-  color: #7d7d80 !important;
+.ui.cards > .card .meta.dashBoardCardText {
+  font-family: 'sunbirdregularfont';
+  font-size: 1.1em;
+  color: #7c7b7b;
 }
-.dashboardCardSubText {
-  font-family: 'sunbirdregularfont' !important;
-  font-size: 1.6em !important;
-  color: #232425 !important;
+.ui.cards > .card > .content > .description.dashboardCardSubText {
+  font-family: 'sunbirdregularfont';
+  font-size: 1.6em;
+  color: #232425;
 }
 /*note card font*/
 .batch-card-desc {
-  font-family: 'sunbirdregularfont' !important;
-  font-size: 0.8em !important;
+  font-family: 'sunbirdregularfont';
+  font-size: 0.8em;
 }
 /*terms and condition fonts*/
 .termsConSubHeading {
   color: #333333;
   font-size: 14px;
   font-style: italic;
-  font-family: 'sunbirdmediumfont' !important;
+  font-family: 'sunbirdmediumfont';
 }
 .termsConDescrption {
   color: #333333;
   font-family: "Open Sans";
   font-size: 14px;
-  font-family: 'sunbirdregularfont' !important;
+  font-family: 'sunbirdregularfont';
 }
 .termsConAccept {
   opacity: 0.67;
   color: #333333;
-  font-size: 13px !important;
-  font-family: 'sunbirdregularfont' !important;
+  font-size: 13px;
+  font-family: 'sunbirdregularfont';
 }
 .padding-none {
   padding: 0px !important;
@@ -456,6 +462,10 @@
 }
 .overFlowWordRap {
   overflow-wrap: break-word !important;
+}
+h4.ui.header.sectionHeading {
+  font-family: 'sunbirdboldfont';
+  font-size: 1.375em;
 }
 .ui.menu {
   display: -webkit-box;
@@ -772,7 +782,7 @@ th {
   border-top: 1px solid rgba(34, 36, 38, 0.1);
   background: 0 0;
   margin: 0;
-  padding: 1em 0em !important;
+  padding: 1em 0em;
   box-shadow: none;
   font-size: 1em;
   border-radius: 0;
@@ -793,14 +803,14 @@ th {
   padding: 0;
   border: none;
   border-radius: .28571429rem;
-  box-shadow: 0 0px 0px 0 #d4d4d5, 0 0 0 0px #d4d4d5 !important;
+  box-shadow: 0 0px 0px 0 #d4d4d5, 0 0 0 0px #d4d4d5;
   transition: box-shadow 0.1s ease, -webkit-transform 0.1s ease;
   transition: box-shadow 0.1s ease, transform 0.1s ease;
   z-index: '';
 }
 .sliderCards.ui.card:hover {
   transition: all .3s ease 0s;
-  box-shadow: none !important;
+  box-shadow: none;
 }
 .sliderCards.ui.card > .content > .description {
   clear: both;
@@ -867,7 +877,7 @@ div:focus {
 }
 /*card font size for curriculum*/
 .rightSideSectionCards.ui.card > .content > .header {
-  font-size: 1.18em !important;
+  font-size: 1.18em;
 }
 /*text description height fixed in card*/
 .limitedPublishingLinkIcon {
@@ -976,7 +986,7 @@ div:focus {
 .profileImageSizeText {
   font-size: 10px;
   color: #000000;
-  margin-top: -10px !important;
+  margin-top: -10px;
 }
 .flagheader {
   color: #333333 !important;
@@ -1114,21 +1124,21 @@ div:focus {
 }
 .profileUpdateCardSubDesc {
   font-family: 'sunbirdregularfont';
-  font-size: 0.875em !important;
-  color: grey !important;
+  font-size: 0.875em;
+  color: grey;
 }
 .profileUpdateCardHeading {
   margin-top: -10px;
   font-family: 'sunbirdboldfont';
-  font-size: 1.3em !important;
+  font-size: 1.3em;
   line-height: 1.2;
 }
 .profileUpdateCardPadding {
   padding: 25px 15px 17px 10px;
-  border: 0.5px solid rgba(151, 151, 151, 0.54) !important;
+  border: 0.5px solid rgba(151, 151, 151, 0.54);
 }
 .ui.card > .sliderCards.content.CardcontentTopPadding {
-  padding-top: 50px !important;
+  padding-top: 50px;
 }
 .profileUpdateCardContentHeight {
   height: 100px;
@@ -1138,21 +1148,21 @@ div:focus {
   .profileUpdateCardHeading {
     margin-top: -10px;
     font-family: 'sunbirdboldfont';
-    font-size: 1em !important;
+    font-size: 1em;
     line-height: 1.2;
   }
   .profileUpdateCardPadding {
     padding: 0px 0px 40px 0px;
   }
   .ui.card > .sliderCards.content.CardcontentTopPadding {
-    padding-top: 40px !important;
+    padding-top: 40px;
   }
 }
 @media screen and (max-width: 1280px) and (min-width: 1200px) {
   .profileUpdateCardHeading {
     margin-top: -10px;
     font-family: 'sunbirdboldfont';
-    font-size: 1.2em !important;
+    font-size: 1.2em;
     line-height: 1.2;
   }
   .profileUpdateCardPadding {
@@ -1467,7 +1477,7 @@ h5.ui.header {
   height: 100%;
 }
 .w3-border {
-  border: 1px solid #ccc!important;
+  border: 1px solid #cccccc !important;
 }
 .w3-round-xlarge {
   border-radius: 5px !important;
@@ -1481,7 +1491,7 @@ h5.ui.header {
   padding-bottom: 75px;
 }
 .qq-uploader {
-  border: 2px dashed #CCCCCC !important;
+  border: 2px dashed #cccccc !important;
   max-height: 330px !important;
   overflow-y: auto !important;
   min-height: 300px !important;
@@ -1523,10 +1533,10 @@ ul.fancytree-container {
   border: none !important;
 }
 ul.fancytree-container li {
-  padding-bottom: 1em !important;
+  padding-bottom: 0.8em;
 }
 .fancytree-lastsib ul li {
-  padding-bottom: 1em !important;
+  padding-bottom: 0.8em !important;
 }
 .fancytree-treefocus {
   outline: none !important;
@@ -1609,7 +1619,7 @@ ul.subList-padding {
   margin: 0px !important;
 }
 span.fancytree-title {
-  margin: 0px 0px 10px 0px!important;
+  margin: 0px 0px 10px 0px;
 }
 .noselect {
   -webkit-touch-callout: none;
@@ -1736,7 +1746,7 @@ span.fancytree-node {
   width: 98%!important;
 }
 ul.fancytree-container li {
-  padding-bottom: 0.8em !important;
+  padding-bottom: 0.8em;
 }
 .rightSideSectionCards .content .header a {
   color: #007AFF !important;
@@ -2798,12 +2808,12 @@ span.dashBoardMenuItem.active {
   width: 330px !important;
 }
 .table-headerDashboard {
-  color: #007AFF !important;
-  font-family: 'sunbirdboldfont' !important;
+  color: #007AFF;
+  font-family: 'sunbirdboldfont';
 }
 .dashboard-label {
-  font-family: 'sunbirdboldfont' !important;
-  font-size: 1.4rem !important;
+  font-family: 'sunbirdboldfont';
+  font-size: 1.4rem ;
 }
 .CloseButtonFont {
   font-size: 1.5rem !important;
@@ -2852,7 +2862,7 @@ ol.ui.list ol li:before {
 }
 .createAnnStepsIndicator {
   margin-left: 75px;
-  background-color: #f2f2f2;
+  background-color: #F5F5F5;
   margin-bottom: auto;
   padding: 10px 20px;
 }
@@ -2867,16 +2877,16 @@ ol.ui.list ol li:before {
   overflow-y: auto;
 }
 .createAnnErrorMsg {
-  border-color: red !important;
+  border-color: red;
   color: red;
   margin-top: 5px;
 }
 .createAnnErrorDiv {
-  border-color: red !important;
+  border-color: red ;
   color: red;
 }
 .announcementHeadingSection {
-  font-family: 'sunbirdboldfont' !important;
+  font-family: 'sunbirdboldfont';
   font-size: smaller;
 }
 .ui.modal .announcementForm input.ng-invalid {
@@ -2898,7 +2908,7 @@ ol.ui.list ol li:before {
   color: #f2f2f2;
 }
 .createAnnBlueClass {
-  color: #007AFF !important;
+  color: #007AFF;
 }
 .createAnnMargin5 {
   margin: 5px;
@@ -2907,7 +2917,7 @@ ol.ui.list ol li:before {
   margin: 4px;
 }
 .createAnnGrayShade {
-  color: #9b9b9b !important;
+  color: #9b9b9b;
 }
 .line-height-20 {
   line-height: 20px;
@@ -2924,15 +2934,8 @@ ol.ui.list ol li:before {
 .margin-left-17 {
   margin-left: 17px;
 }
-.sb-createAnnFineUploaderHolder {
-  padding: 10px;
-  overflow: hidden;
-  background-color: #7c7b7b;
-}
 body {
   position: relative;
-  min-height: 100%;
-  min-width: 100%;
   background: #f2f2f2;
 }
 html {
