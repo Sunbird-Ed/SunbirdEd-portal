@@ -33,7 +33,8 @@ angular.module('playerApp')
           toasterService.error('errorMsg')
         })
 
-        dashboardService.getAdminDashboardData(requestBody, dashboardData.datasetPreviousValue).then(function (apiResponse) {
+        dashboardService.getAdminDashboardData(requestBody,
+          dashboardData.datasetPreviousValue).then(function (apiResponse) {
           dashboardData.graphShow = 0
           dashboardData.numericStatArray = []
           var allKey = []
@@ -74,10 +75,11 @@ angular.module('playerApp')
                   })
                   data.push(dataArray)
 
+                  var name = ''
                   if (dashboardData.timePeriod === '5w') {
-                    var name = 'Content created per week'
+                    name = 'Content created per week'
                   } else {
-                    var name = 'Content created per day'
+                    name = 'Content created per day'
                   }
                   var options = dashboardService.getChartOptions(name)
                   var colors = dashboardService.getChartColors(dashboardData.datasetPreviousValue)
@@ -90,7 +92,7 @@ angular.module('playerApp')
                     }
                   }
                   if (found === true) {
-                    var d = dashboardData.graphArray[j][2]
+                    // var d = dashboardData.graphArray[j][2]
                     dashboardData.graphArray[j][2].push(dataArray)
                   } else {
                     dashboardData.graphArray.push([series, labels, data, colors, options, bucketData.group_id])
@@ -99,8 +101,8 @@ angular.module('playerApp')
               })
             } else if (dashboardData.datasetPreviousValue === 'consumption') {
               angular.forEach(apiResponse.result.snapshot, function (numericData, key) {
-                if (key === 'org.consumption.content.session.count' || key === 'org.consumption.content.time_spent.sum' || key === 'org.consumption.content.time_spent.average') {
-                  if (key === 'org.consumption.content.time_spent.sum' || key === 'org.consumption.content.time_spent.average') {
+                if (key === 'org.consumption.content.session.count' || key === 'org.consumption.content.time_spent.sum' || key === 'org.consumption.content.time_spent.average') { // eslint-disable-line
+                  if (key === 'org.consumption.content.time_spent.sum' || key === 'org.consumption.content.time_spent.average') { // eslint-disable-line
                     numericData = dashboardService.secondsToMin(numericData)
                     dashboardData.numericStatArray.push(numericData)
                   } else {
@@ -122,10 +124,11 @@ angular.module('playerApp')
                   })
                   data.push(dataArray)
                   var series = [bucketData.name]
+                  var name = ''
                   if (bucketData.time_unit !== undefined) {
-                    var name = bucketData.name + ' (' + bucketData.time_unit + ')'
+                    name = bucketData.name + ' (' + bucketData.time_unit + ')'
                   } else {
-                    var name = bucketData.name
+                    name = bucketData.name
                   }
                   var options = dashboardService.getChartOptions(name)
                   var colors = dashboardService.getChartColors(dashboardData.datasetPreviousValue)
@@ -138,7 +141,7 @@ angular.module('playerApp')
                     }
                   }
                   if (found === true) {
-                    var d = dashboardData.graphArray[j][2]
+                    // var d = dashboardData.graphArray[j][2]
                     dashboardData.graphArray[j][2].push(dataArray)
                   } else {
                     dashboardData.graphArray.push([series, labels, data, colors, options, bucketData.group_id])
@@ -213,7 +216,7 @@ angular.module('playerApp')
             }
           })
             .catch(function () {
-              toasterService.error(apiMessages.ERROR.get)
+              toasterService.error('error')
             })
         }
       }
