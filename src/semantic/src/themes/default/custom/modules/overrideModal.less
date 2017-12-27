@@ -16,11 +16,12 @@
 //
 // Style guide: Modules.OverRideModal.UiFormInput
 
-.ui.form input {
-    border: 0!important;
-    border-bottom: 1px solid @secondary-color!important;
-    border-radius: 0!important;
-    padding: 0.8em 0 !important;
+
+.ui.form input[type=text], .ui.form input[type=text]:focus, .ui.form input[type=email], .ui.form input[type=number], .ui.form input[type=password], .ui.form input[type=url], .ui.form input:not([type]) {
+    border: 0;
+    border-bottom: 1px solid @form-element-border;
+    border-radius: 0;
+    padding: 0.8em 0;
 }
 
 
@@ -33,25 +34,25 @@
 // Style guide: Modules.OverRideModal.UiSelectionDropdown
 
 .ui.selection.dropdown {
-    border: 0!important;
-    border-bottom: 1px solid @secondary-color!important;
-    border-radius: 0!important;    
+    border: 0;
+    border-bottom: 1px solid @form-element-border;
+    border-radius: 0;    
 }
 
-.genderSelectionDropDown {
-    border: 0!important;
-    border-bottom: 1px solid @secondary-color!important;
-    border-radius: 0!important;  
+.ui.dropdown.genderSelectionDropDown {
+    border: 0;
+    border-bottom: 1px solid @form-element-border;
+    border-radius: 0;  
     
 }
 
 .ui.modal.ui.dropdown>.text {
-    margin-left: -1.1em !important;
+    margin-left: -1.1em ;
 }
 
 .ui.modal.ui.multiple.dropdown>.text {
-    margin:0 !important; 
-    line-height: 0 !important; 
+    margin:0 ; 
+    line-height: 0 ; 
 }
 
 
@@ -91,28 +92,21 @@
 /*concept selector pop up */
 
 .ui.tree-picker.modal .header .menu {
-    margin-top: -12px !important;
+    margin-top: -12px ;
 }
 
 /*removing border and box-shadow for popup modal in workspace*/
 
 .modal {
     .ui.segment {
-        box-shadow:none !important;
-        border:none!important;
+        box-shadow:none ;
+        border:none;
     }
 }
 
-
 .dropDownLockIcon {
-    z-index: 10 !important;
-    margin-right: 10px !important;
-    font-size: 1.3em !important;
+    z-index: 10 ;
+    margin-right: 10px ;
+    font-size: 1.3em ;
 }
 
-.filterLocationInput {
-   padding-top: 12px !important;
-    border: 0!important;
-    border-bottom: 1px solid @secondary-color!important;
-    border-radius: 0!important;
-}
