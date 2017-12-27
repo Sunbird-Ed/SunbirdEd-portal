@@ -17,7 +17,7 @@ angular.module('playerApp')
         dashboardData.showOrgWarningDiv = false
         dashboardData.timePeriod = timePeriod || '7d'
         dashboardData.objQueryClient.query({
-          eid: 'orgCreationDataSource',
+          eid: dashboardData.datasetPreviousValue === 'creation' ? 'orgCreationDataSource' : 'orgConsumptionDataSource',
           request: {
             orgId: dashboardData.orgId,
             timePeriod: dashboardData.timePeriod

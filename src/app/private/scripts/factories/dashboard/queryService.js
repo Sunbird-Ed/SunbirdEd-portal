@@ -6,7 +6,7 @@
 
 angular.module('playerApp')
   .factory('QueryService', ['config', '$q', 'dashboardService', 'courseConsumptionService', 'courseProgressService',
-    'orgCreationService', function (config, $q, dashboardService, courseConsumptionService,
+    'orgCreationService', 'orgConsumptionService', function (config, $q, dashboardService, courseConsumptionService,
       courseProgressService, orgCreationService, orgConsumptionService) {
       // Datasets - api urls
       var datasets = {
