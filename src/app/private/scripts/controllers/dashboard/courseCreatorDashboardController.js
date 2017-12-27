@@ -5,6 +5,7 @@ angular.module('playerApp')
     '$state', '$stateParams', 'toasterService', 'searchService', 'QueryService',
     function ($rootScope, $scope, $state, $stateParams, toasterService, searchService, QueryService) {
       var courseDashboard = this
+      courseDashboard.dataset = 'consumption'
       courseDashboard.objQueryClient = new QueryService({key: 'courseDataSource'})
 
       /**
@@ -29,7 +30,6 @@ angular.module('playerApp')
       }
 
       courseDashboard.onAfterFilterChange = function (item) {
-        // Check old filter value. If old value and new filter value are same
         if (courseDashboard.filterTimePeriod === angular.element(item).data('timeperiod')) {
           console.log('avoid same apis call twice')
           return false
@@ -82,9 +82,6 @@ angular.module('playerApp')
       }
 
       courseDashboard.showErrors = function (apiResponse) {
-        courseDashboard.showError = true
-        courseDashboard.showLoader = false
-        courseDashboard.errorMsg = apiResponse.params.errmsg
         toasterService.error(apiResponse.params.errmsg)
       }
 

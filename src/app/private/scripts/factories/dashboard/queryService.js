@@ -7,7 +7,19 @@
 angular.module('playerApp')
   .factory('QueryService', ['config', '$q', 'dashboardService', 'courseDataSource',
     'orgDataSource', function (config, $q, dashboardService, courseDataSource, orgDataSource) {
-    /**
+      // Datasets - api urls
+      var datasets = {
+        org: {
+          'creation': config.URL.DASHBOARD.ORG_CREATION,
+          'consumption': config.URL.DASHBOARD.ORG_CONSUMPTION
+        },
+        course: {
+          'progress': config.URL.DASHBOARD.COURSE_PROGRESS,
+          'consumption': config.URL.DASHBOARD.COURSE_CONSUMPTION
+        }
+      }
+
+      /**
      * @method query
      * @desc function to call required data source.
      * @memberOf Factory.dashboardQueryFactory
@@ -26,15 +38,14 @@ angular.module('playerApp')
       // Build header
         var headers = {
           'Content-Type': 'application/json',
-          cid: 'sunbird',
-          Accept: 'text/html,application/xhtml+xml,application/xml,application/json;q=0.9,image/webp,*/*;q=0.8'
+          cid: 'sunbird'
         }
 
         switch (params.eid) {
         case 'courseDataSource':
-          return courseDataSource.getData(params.request, params.dataset, headers)
+          return courseDataSource.getData(params.request, datasets.course[params.dataset], headers)
         case 'orgDataSource':
-          return orgDataSource.getData(params.request, params.dataset, headers)
+          return orgDataSource.getData(params.request, datasets.org[params.dataset], headers)
         default:
           return courseDataSource.getData(params.request, params.dataset, headers)
         }

@@ -8,15 +8,6 @@ angular.module('playerApp')
   .service('courseDataSource', ['$q', '$rootScope', 'config', 'httpAdapter', 'toasterService', function ($q,
     $rootScope, config, httpAdapter, toasterService) {
     /**
-     * @class dashboardService
-     * @desc Service to manage dashboard.
-     * @memberOf Services
-     */
-    var datasets = {
-      'progress': config.URL.DASHBOARD.COURSE_PROGRESS,
-      'consumption': config.URL.DASHBOARD.COURSE_CONSUMPTION
-    }
-    /**
      * @method getData
      * @desc get course dashboard data based on datasetTye
      * @memberOf Services.orgDataSource
@@ -26,14 +17,14 @@ angular.module('playerApp')
      * @returns promise
      * @instance
      */
-    this.getData = function (req, datasetType, headers) {
-      var url = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + datasets[datasetType] + '/' +
+    this.getData = function (req, url, headers) {
+      var URL = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + url + '/' +
       req.courseId + '?period=' + req.timePeriod
       var deferred = $q.defer()
-      var response = httpAdapter.httpCall(url, '', 'GET', headers)
+      var response = httpAdapter.httpCall(URL, '', 'GET', headers)
       response.then(function (res) {
         if (res && res.responseCode === 'OK') {
-          deferred.resolve(res)
+          deferred.resolve(res.result)
         } else {
           toasterService.error($rootScope.messages.fmsg.m0075)
           deferred.reject(res)
