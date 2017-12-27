@@ -7,7 +7,7 @@
 angular.module('playerApp')
   .factory('QueryService', ['config', '$q', 'dashboardService', 'courseConsumptionService', 'courseProgressService',
     'orgCreationService', function (config, $q, dashboardService, courseConsumptionService,
-      courseProgressService, orgCreationService) {
+      courseProgressService, orgCreationService, orgConsumptionService) {
       // Datasets - api urls
       var datasets = {
         org: {
@@ -49,6 +49,8 @@ angular.module('playerApp')
           return courseProgressService.getData(params.request, datasets.course[params.dataset], headers)
         case 'orgCreationDataSource':
           return orgCreationService.getData(params.request, datasets.org[params.dataset], headers)
+        case 'orgConsumptionDataSource':
+          return orgConsumptionService.getData(params.request, datasets.org[params.dataset], headers)
         default:
           return courseConsumptionService.getData(params.request, datasets.course[params.dataset], headers)
         }
