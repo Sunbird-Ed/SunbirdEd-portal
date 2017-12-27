@@ -2,50 +2,19 @@
 
 angular.module('playerApp')
   .factory('renderChart', ['$filter', 'config', '$timeout', 'toasterService',
-    'uuid4', 'dashboardService', function ($filter, config, $timeout, toasterService, uuid4, dashboardService) {
+    'uuid4',
+    function ($filter, config, $timeout, toasterService, uuid4) {
       /**
-     * @method Render
-     * @desc callback function - will executed onAfterFileUploadSuccess
-     * @param   {int}  id  [selected file number]
-     * @param   {string}  name  [file name]
-     * @param   {object}  responseJSON  [api response]
-     * @param   {object}  xhr  [api response]
-     */
+       * @method Render
+       * @desc callback function - will executed onAfterFileUploadSuccess
+       * @param   {object}  data  api response
+       * @param   {object}  series  series data
+       * @param   {string}  dashboardType  dashboard type
+       */
       function Render (data, series, dashboardType) {
-        switch (dashboardType) {
-        case 'creation':
-          break
-        case 'consumption':
-          break
-        case 'course':
-          break
-        case 'progress':
-          break
-        default:
-        }
-
         var allKey = []
         var graphArray = []
         var timePeriod = data.period
-
-        // angular.forEach(data.snapshot, function (numericData, key) {
-        //   if (key === 'org.creation.authors.count' ||
-        //             key === 'org.creation.reviewers.count' ||
-        //             key === 'org.creation.content.count') {
-        //     numericStatArray.push(numericData)
-        //   }
-        //   if (key === 'org.creation.content[@status=published].count') {
-        //     series.push(numericData.value + ' LIVE')
-        //   }
-
-        //   if (key === 'org.creation.content[@status=draft].count') {
-        //     series.push(numericData.value + ' CREATED')
-        //   }
-
-        //   if (key === 'org.creation.content[@status=review].count') {
-        //     series.push(numericData.value + ' IN REVIEW')
-        //   }
-        // })
 
         angular.forEach(data.series, function (bucketData, key) {
           if (allKey.indexOf(key) === -1) {
@@ -65,8 +34,8 @@ angular.module('playerApp')
               name = 'Content created per week'
             }
 
-            var options = dashboardService.getChartOptions(name)
-            var colors = dashboardService.getChartColors(dashboardType)
+            var options = getChartOptions(name)
+            var colors = getChartColors(dashboardType)
 
             var found = false
             for (var j = 0; j < graphArray.length; j++) {
@@ -88,4 +57,64 @@ angular.module('playerApp')
       return {
         Render: Render
       }
-    }])
+
+      /**
+       * @method getChartColors
+       * @desc Get chart colors
+       * @memberOf Services.dashboardService
+       * @param {string}  datasetType - Data type
+       * @returns {Object[]} List of colors
+       * @instance
+       */
+
+      function getChartColors (datasetType) {
+        if (datasetType === 'creation') {
+          return [{
+            backgroundColor: '#f93131',
+            borderColor: '#f93131',
+            fill: false
+          },
+          {
+            backgroundColor: '#0062ff',
+            borderColor: '#0062ff',
+            fill: false
+          },
+          {
+            backgroundColor: '#006400',
+            borderColor: '#006400',
+            fill: false
+          }
+          ]
+        } else if (datasetType === 'consumption') {
+          return [{
+            backgroundColor: '#0062ff',
+            borderColor: '#0062ff',
+            fill: false
+          }]
+        }
+      }
+
+      /**
+       * @method getChartOptions
+       * @desc Get chart options
+       * @memberOf Services.dashboardService
+       * @param {string}  labelString - Labels
+       * @returns {Object} Object contains chart options .
+       * @instance
+       */
+      function getChartOptions (labelString) {
+        return {
+          legend: { display: true },
+          scales: {
+            xAxes: [{
+              gridLines: { display: false }
+            }],
+            yAxes: [{
+              scaleLabel: { display: true, labelString: labelString },
+              ticks: { beginAtZero: true }
+            }]
+          }
+        }
+      }
+    }
+  ])

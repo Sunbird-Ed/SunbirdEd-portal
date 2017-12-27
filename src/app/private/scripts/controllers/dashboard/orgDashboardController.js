@@ -12,6 +12,9 @@ angular.module('playerApp')
       dashboardData.objQueryClient = new QueryService({key: 'orgCreationDataSource'})
 
       dashboardData.getAdminDashboardData = function (timePeriod) {
+        dashboardData.showLoader = true
+        dashboardData.showDataDiv = false
+        dashboardData.showOrgWarningDiv = false
         dashboardData.timePeriod = timePeriod || '7d'
         dashboardData.objQueryClient.query({
           eid: 'orgCreationDataSource',
@@ -25,6 +28,8 @@ angular.module('playerApp')
           var rendererData = new renderChart.Render(data.apiResponse, data.series, dashboardData.datasetPreviousValue)
           dashboardData.graphArray = rendererData.graphArray
           dashboardData.numericStatArray = data.numericData
+          dashboardData.showDataDiv = true
+          dashboardData.showLoader = false
         }).catch(function (apiResponse) {
           toasterService.error(apiResponse.params.errmsg)
         })
