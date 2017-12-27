@@ -5,7 +5,7 @@
 'use strict'
 
 angular.module('playerApp')
-  .service('courseDataSource', ['$q', '$rootScope', 'config', 'httpAdapter', 'toasterService', function ($q,
+  .service('courseProgressService', ['$q', '$rootScope', 'config', 'httpAdapter', 'toasterService', function ($q,
     $rootScope, config, httpAdapter, toasterService) {
     /**
      * @method getData

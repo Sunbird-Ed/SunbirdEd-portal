@@ -5,8 +5,9 @@
 'use strict'
 
 angular.module('playerApp')
-  .factory('QueryService', ['config', '$q', 'dashboardService', 'courseDataSource',
-    'orgDataSource', function (config, $q, dashboardService, courseDataSource, orgDataSource) {
+  .factory('QueryService', ['config', '$q', 'dashboardService', 'courseConsumptionService', 'courseProgressService',
+    'orgCreationService', function (config, $q, dashboardService, courseConsumptionService,
+      courseProgressService, orgCreationService) {
       // Datasets - api urls
       var datasets = {
         org: {
@@ -42,12 +43,14 @@ angular.module('playerApp')
         }
 
         switch (params.eid) {
-        case 'courseDataSource':
-          return courseDataSource.getData(params.request, datasets.course[params.dataset], headers)
-        case 'orgDataSource':
-          return orgDataSource.getData(params.request, datasets.org[params.dataset], headers)
+        case 'courseConsumptionDataSource':
+          return courseConsumptionService.getData(params.request, datasets.course[params.dataset], headers)
+        case 'courseProgressDataSource':
+          return courseProgressService.getData(params.request, datasets.course[params.dataset], headers)
+        case 'orgCreationDataSource':
+          return orgCreationService.getData(params.request, datasets.org[params.dataset], headers)
         default:
-          return courseDataSource.getData(params.request, params.dataset, headers)
+          return courseConsumptionService.getData(params.request, datasets.course[params.dataset], headers)
         }
       }
 

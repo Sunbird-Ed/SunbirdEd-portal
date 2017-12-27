@@ -5,7 +5,7 @@
 'use strict'
 
 angular.module('playerApp')
-  .service('orgDataSource', ['$q', 'config', '$rootScope', 'httpAdapter', 'toasterService', function ($q, config,
+  .service('orgCreationService', ['$q', 'config', '$rootScope', 'httpAdapter', 'toasterService', function ($q, config,
     $rootScope, httpAdapter, toasterService) {
     /**
      * @method getData
@@ -24,7 +24,29 @@ angular.module('playerApp')
       var response = httpAdapter.httpCall(URL, '', 'GET', headers)
       response.then(function (res) {
         if (res && res.responseCode === 'OK') {
-          deferred.resolve(res.result)
+          var numericStatArray = []
+          var series = []
+          angular.forEach(res.result.snapshot, function (numericData, key) {
+            if (key === 'org.creation.authors.count' ||
+                    key === 'org.creation.reviewers.count' ||
+                    key === 'org.creation.content.count') {
+              numericStatArray.push(numericData)
+            }
+            if (key === 'org.creation.content[@status=published].count') {
+              series.push(numericData.value + ' LIVE')
+            }
+
+            if (key === 'org.creation.content[@status=draft].count') {
+              series.push(numericData.value + ' CREATED')
+            }
+
+            if (key === 'org.creation.content[@status=review].count') {
+              series.push(numericData.value + ' IN REVIEW')
+            }
+          })
+
+          var returnData = {apiResponse: res.result, numericData: numericStatArray, series: series}
+          deferred.resolve(returnData)
         } else {
           toasterService.error($rootScope.messages.fmsg.m0075)
           deferred.reject(res)

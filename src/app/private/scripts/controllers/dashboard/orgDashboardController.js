@@ -9,18 +9,16 @@ angular.module('playerApp')
       dashboardData.height = 110
       dashboardData.datasetPreviousValue = 'creation'
       // Create object
-      dashboardData.objQueryClient = new QueryService({key: 'orgDataSource'})
+      dashboardData.objQueryClient = new QueryService({key: 'orgCreationDataSource'})
 
       dashboardData.getAdminDashboardData = function (timePeriod) {
         dashboardData.timePeriod = timePeriod || '7d'
-        var requestBody = {
-          orgId: dashboardData.orgId,
-          timePeriod: dashboardData.timePeriod
-        }
-
         dashboardData.objQueryClient.query({
-          eid: 'orgDataSource',
-          request: requestBody,
+          eid: 'orgCreationDataSource',
+          request: {
+            orgId: dashboardData.orgId,
+            timePeriod: dashboardData.timePeriod
+          },
           dataset: dashboardData.datasetPreviousValue
         }).then(function (apiResponse) {
           console.log('Response received===', apiResponse)
