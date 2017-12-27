@@ -75,7 +75,7 @@
 }
 
 .ui.modal .ui.radio.checkbox .box, .ui.radio.checkbox label {
-    color:@secondary-color;
+    color:@primary-textColor;
 }
 
 .ui.modal .ui.header {
@@ -108,5 +108,9 @@
     z-index: 10 ;
     margin-right: 10px ;
     font-size: 1.3em ;
+}
+
+.ui.form input:not([type]):focus {
+    border-color:@form-element-border;
 }
 
