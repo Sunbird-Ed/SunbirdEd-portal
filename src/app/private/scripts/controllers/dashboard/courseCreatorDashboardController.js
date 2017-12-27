@@ -6,7 +6,7 @@ angular.module('playerApp')
     function ($rootScope, $scope, $state, $stateParams, toasterService, searchService, QueryService) {
       var courseDashboard = this
       courseDashboard.dataset = 'consumption'
-      courseDashboard.objQueryClient = new QueryService({key: 'courseDataSource'})
+      courseDashboard.objQueryClient = new QueryService({key: 'courseConsumptionDataSource'})
 
       /**
        * @Function to load dashboard
@@ -16,7 +16,7 @@ angular.module('playerApp')
       courseDashboard.getCourseDashboardData = function () {
         courseDashboard.filterTimePeriod = courseDashboard.filterTimePeriod ? courseDashboard.filterTimePeriod : '7d'
         courseDashboard.objQueryClient.query({
-          eid: 'courseDataSource',
+          eid: 'courseConsumptionDataSource',
           request: {
             courseId: courseDashboard.courseIdentifier,
             timePeriod: courseDashboard.filterTimePeriod

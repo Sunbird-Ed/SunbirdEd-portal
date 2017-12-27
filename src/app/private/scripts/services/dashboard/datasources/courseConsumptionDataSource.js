@@ -5,13 +5,13 @@
 'use strict'
 
 angular.module('playerApp')
-  .service('courseConsumptionService', ['$q', '$rootScope', 'config', 'httpAdapter', 'toasterService',
+  .service('courseConsumptionDataSource', ['$q', '$rootScope', 'config', 'httpAdapter', 'toasterService',
     'dashboardService', function ($q,
       $rootScope, config, httpAdapter, toasterService, dashboardService) {
     /**
      * @method getData
      * @desc get course consumption dashboard data
-     * @memberOf Services.courseConsumptionService
+     * @memberOf Services.courseConsumptionDataSource
      * @param {Object}  req - Request object
      * @param {string}  datasetType - Data set type
      * @param {object} headers headers

@@ -5,9 +5,11 @@
 'use strict'
 
 angular.module('playerApp')
-  .factory('QueryService', ['config', '$q', 'dashboardService', 'courseConsumptionService', 'courseProgressService',
-    'orgCreationService', 'orgConsumptionService', function (config, $q, dashboardService, courseConsumptionService,
-      courseProgressService, orgCreationService, orgConsumptionService) {
+  .factory('QueryService', ['config', '$q', 'dashboardService',
+    'courseConsumptionDataSource', 'courseProgressDataSource',
+    'orgCreationDataSource', 'orgConsumptionDataSource',
+    function (config, $q, dashboardService, courseConsumptionDataSource,
+      courseProgressDataSource, orgCreationDataSource, orgConsumptionDataSource) {
       // Datasets - api urls
       var datasets = {
         org: {
@@ -21,22 +23,22 @@ angular.module('playerApp')
       }
 
       /**
-     * @method query
-     * @desc function to call required data source.
-     * @memberOf Factory.dashboardQueryFactory
-     */
+       * @method query
+       * @desc function to call required data source.
+       * @memberOf Factory.dashboardQueryFactory
+       */
       function QueryService (data) {
         this.clientName = data.key
       }
 
       /**
-     * @method query
-     * @desc function to call required data source.
-     * @memberOf Factory.dashboardQueryFactory
-     * @param {object} [varname] [description]
-     */
+       * @method query
+       * @desc function to call required data source.
+       * @memberOf Factory.dashboardQueryFactory
+       * @param {object} [varname] [description]
+       */
       QueryService.prototype.query = function (params) {
-      // Build header
+        // Build header
         var headers = {
           'Content-Type': 'application/json',
           cid: 'sunbird'
@@ -44,17 +46,18 @@ angular.module('playerApp')
 
         switch (params.eid) {
         case 'courseConsumptionDataSource':
-          return courseConsumptionService.getData(params.request, datasets.course[params.dataset], headers)
+          return courseConsumptionDataSource.getData(params.request, datasets.course[params.dataset], headers)
         case 'courseProgressDataSource':
-          return courseProgressService.getData(params.request, datasets.course[params.dataset], headers)
+          return courseProgressDataSource.getData(params.request, datasets.course[params.dataset], headers)
         case 'orgCreationDataSource':
-          return orgCreationService.getData(params.request, datasets.org[params.dataset], headers)
+          return orgCreationDataSource.getData(params.request, datasets.org[params.dataset], headers)
         case 'orgConsumptionDataSource':
-          return orgConsumptionService.getData(params.request, datasets.org[params.dataset], headers)
+          return orgConsumptionDataSource.getData(params.request, datasets.org[params.dataset], headers)
         default:
-          return courseConsumptionService.getData(params.request, datasets.course[params.dataset], headers)
+          return courseConsumptionDataSource.getData(params.request, datasets.course[params.dataset], headers)
         }
       }
 
       return QueryService
-    }])
+    }
+  ])

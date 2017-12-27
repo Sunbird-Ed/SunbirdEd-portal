@@ -5,8 +5,9 @@
 'use strict'
 
 angular.module('playerApp')
-  .service('orgCreationService', ['$q', 'config', '$rootScope', 'httpAdapter', 'toasterService', function ($q, config,
-    $rootScope, httpAdapter, toasterService) {
+  .service('orgCreationDataSource', ['$q', 'config', '$rootScope', 'httpAdapter',
+    'toasterService', function ($q, config,
+      $rootScope, httpAdapter, toasterService) {
     /**
      * @method getData
      * @desc get ord dashboard data based on datasetTye
@@ -17,44 +18,44 @@ angular.module('playerApp')
      * @returns promise
      * @instance
      */
-    this.getData = function (req, url, headers) {
-      var URL = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + url + '/' +
+      this.getData = function (req, url, headers) {
+        var URL = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + url + '/' +
       req.orgId + '?period=' + req.timePeriod
-      var deferred = $q.defer()
-      var response = httpAdapter.httpCall(URL, '', 'GET', headers)
-      response.then(function (res) {
-        if (res && res.responseCode === 'OK') {
-          var numericStatArray = []
-          var series = []
-          angular.forEach(res.result.snapshot, function (numericData, key) {
-            if (key === 'org.creation.authors.count' ||
+        var deferred = $q.defer()
+        var response = httpAdapter.httpCall(URL, '', 'GET', headers)
+        response.then(function (res) {
+          if (res && res.responseCode === 'OK') {
+            var numericStatArray = []
+            var series = []
+            angular.forEach(res.result.snapshot, function (numericData, key) {
+              if (key === 'org.creation.authors.count' ||
                     key === 'org.creation.reviewers.count' ||
                     key === 'org.creation.content.count') {
-              numericStatArray.push(numericData)
-            }
-            if (key === 'org.creation.content[@status=published].count') {
-              series.push(numericData.value + ' LIVE')
-            }
+                numericStatArray.push(numericData)
+              }
+              if (key === 'org.creation.content[@status=published].count') {
+                series.push(numericData.value + ' LIVE')
+              }
 
-            if (key === 'org.creation.content[@status=draft].count') {
-              series.push(numericData.value + ' CREATED')
-            }
+              if (key === 'org.creation.content[@status=draft].count') {
+                series.push(numericData.value + ' CREATED')
+              }
 
-            if (key === 'org.creation.content[@status=review].count') {
-              series.push(numericData.value + ' IN REVIEW')
-            }
-          })
+              if (key === 'org.creation.content[@status=review].count') {
+                series.push(numericData.value + ' IN REVIEW')
+              }
+            })
 
-          var returnData = {apiResponse: res.result, numericData: numericStatArray, series: series}
-          deferred.resolve(returnData)
-        } else {
-          toasterService.error($rootScope.messages.fmsg.m0075)
-          deferred.reject(res)
-        }
-      }, function (err) {
-        toasterService.error($rootScope.messages.emsg.m0005)
-        deferred.reject(err)
-      })
-      return deferred.promise
-    }
-  }])
+            var returnData = {apiResponse: res.result, numericData: numericStatArray, series: series}
+            deferred.resolve(returnData)
+          } else {
+            toasterService.error($rootScope.messages.fmsg.m0075)
+            deferred.reject(res)
+          }
+        }, function (err) {
+          toasterService.error($rootScope.messages.emsg.m0005)
+          deferred.reject(err)
+        })
+        return deferred.promise
+      }
+    }])
