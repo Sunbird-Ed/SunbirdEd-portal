@@ -5,7 +5,7 @@
 'use strict'
 
 angular.module('playerApp')
-  .service('orgConsumptionService', ['$q', 'config', '$rootScope', 'httpAdapter', 'toasterService',
+  .service('orgConsumptionDataSource', ['$q', 'config', '$rootScope', 'httpAdapter', 'toasterService',
     'dashboardService', function ($q, config,
       $rootScope, httpAdapter, toasterService, dashboardService) {
     /**

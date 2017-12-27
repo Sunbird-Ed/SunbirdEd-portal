@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('playerApp')
-  .factory('renderChart', ['$filter', 'config', '$timeout', 'toasterService',
+  .factory('rendererService', ['$filter', 'config', '$timeout', 'toasterService',
     'uuid4',
     function ($filter, config, $timeout, toasterService, uuid4) {
       /**
