@@ -1,3 +1,7 @@
+/**
+ * @author Nilesh More <nilesh_m@tekditechnologies.com>
+ */
+
 'use strict'
 
 angular.module('playerApp')
@@ -14,12 +18,13 @@ angular.module('playerApp')
     }
 
     /**
-     * @method getCourseDashboardData
-     * @desc Convert seconds to min
-     * @memberOf Services.dashboardService
+     * @method getData
+     * @desc get ord dashboard data based on datasetTye
+     * @memberOf Services.orgDataSource
      * @param {Object}  req - Request object
      * @param {string}  datasetType - Data set type
-     * @returns {Promise} Promise object represents course dashboard data
+     * @param {object} headers headers
+     * @returns promise
      * @instance
      */
     this.getData = function (req, datasetType, headers) {

@@ -2,167 +2,31 @@
 
 angular.module('playerApp')
   .controller('orgDashboardController', ['$rootScope', '$scope',
-    'dashboardService', '$timeout', '$state', '$stateParams', 'toasterService', 'adminService', 'QueryService',
-    function ($rootScope, $scope, dashboardService, $timeout, $state, $stateParams, toasterService,
+    '$timeout', '$state', '$stateParams', 'toasterService', 'adminService', 'QueryService',
+    function ($rootScope, $scope, $timeout, $state, $stateParams, toasterService,
       adminService, QueryService) {
       var dashboardData = this
       dashboardData.height = 110
       dashboardData.datasetPreviousValue = 'creation'
+      // Create object
+      dashboardData.objQueryClient = new QueryService({key: 'orgDataSource'})
 
       dashboardData.getAdminDashboardData = function (timePeriod) {
-        dashboardData.showLoader = true
-        dashboardData.showDataDiv = false
-        dashboardData.showOrgWarningDiv = false
         dashboardData.timePeriod = timePeriod || '7d'
-
         var requestBody = {
-          org_id: dashboardData.orgId,
           orgId: dashboardData.orgId,
-          timePeriod: dashboardData.timePeriod,
-          period: dashboardData.timePeriod
+          timePeriod: dashboardData.timePeriod
         }
 
-        var client = new QueryService({key: 'orgDataSource'})
-        client.query({
+        dashboardData.objQueryClient.query({
           eid: 'orgDataSource',
           request: requestBody,
           dataset: dashboardData.datasetPreviousValue
         }).then(function (apiResponse) {
-          console.log('Org datasource result', apiResponse)
+          console.log('Response received===', apiResponse)
         }).catch(function (apiResponse) {
-          toasterService.error('errorMsg')
+          toasterService.error(apiResponse.params.errmsg)
         })
-
-        dashboardService.getAdminDashboardData(requestBody,
-          dashboardData.datasetPreviousValue).then(function (apiResponse) {
-          dashboardData.graphShow = 0
-          dashboardData.numericStatArray = []
-          var allKey = []
-          dashboardData.graphArray = []
-
-          if (apiResponse && apiResponse.responseCode === 'OK') {
-            if (dashboardData.datasetPreviousValue === 'creation') {
-              var series = []
-              angular.forEach(apiResponse.result.snapshot, function (numericData, key) {
-                if (key === 'org.creation.authors.count' ||
-                    key === 'org.creation.reviewers.count' ||
-                    key === 'org.creation.content.count') {
-                  dashboardData.numericStatArray.push(numericData)
-                }
-                if (key === 'org.creation.content[@status=published].count') {
-                  series.push(numericData.value + ' LIVE')
-                }
-
-                if (key === 'org.creation.content[@status=draft].count') {
-                  series.push(numericData.value + ' CREATED')
-                }
-
-                if (key === 'org.creation.content[@status=review].count') {
-                  series.push(numericData.value + ' IN REVIEW')
-                }
-              })
-
-              angular.forEach(apiResponse.result.series, function (bucketData, key) {
-                if (allKey.indexOf(key) === -1) {
-                  allKey.push(key)
-                  var dataArray = []
-                  var labels = []
-                  var data = []
-
-                  angular.forEach(bucketData.buckets, function (bucketValue, bucketKey) {
-                    dataArray.push(bucketValue.value)
-                    labels.push(bucketValue.key_name)
-                  })
-                  data.push(dataArray)
-
-                  var name = ''
-                  if (dashboardData.timePeriod === '5w') {
-                    name = 'Content created per week'
-                  } else {
-                    name = 'Content created per day'
-                  }
-                  var options = dashboardService.getChartOptions(name)
-                  var colors = dashboardService.getChartColors(dashboardData.datasetPreviousValue)
-
-                  var found = false
-                  for (var j = 0; j < dashboardData.graphArray.length; j++) {
-                    if (dashboardData.graphArray[j][5] === bucketData.group_id) {
-                      found = true
-                      break
-                    }
-                  }
-                  if (found === true) {
-                    // var d = dashboardData.graphArray[j][2]
-                    dashboardData.graphArray[j][2].push(dataArray)
-                  } else {
-                    dashboardData.graphArray.push([series, labels, data, colors, options, bucketData.group_id])
-                  }
-                }
-              })
-            } else if (dashboardData.datasetPreviousValue === 'consumption') {
-              angular.forEach(apiResponse.result.snapshot, function (numericData, key) {
-                if (key === 'org.consumption.content.session.count' || key === 'org.consumption.content.time_spent.sum' || key === 'org.consumption.content.time_spent.average') { // eslint-disable-line
-                  if (key === 'org.consumption.content.time_spent.sum' || key === 'org.consumption.content.time_spent.average') { // eslint-disable-line
-                    numericData = dashboardService.secondsToMin(numericData)
-                    dashboardData.numericStatArray.push(numericData)
-                  } else {
-                    dashboardData.numericStatArray.push(numericData)
-                  }
-                }
-              })
-
-              angular.forEach(apiResponse.result.series, function (bucketData, key) {
-                if (allKey.indexOf(key) === -1) {
-                  allKey.push(key)
-                  var dataArray = []
-                  var labels = []
-                  var data = []
-
-                  angular.forEach(bucketData.buckets, function (bucketValue, bucketKey) {
-                    dataArray.push(bucketValue.value)
-                    labels.push(bucketValue.key_name)
-                  })
-                  data.push(dataArray)
-                  var series = [bucketData.name]
-                  var name = ''
-                  if (bucketData.time_unit !== undefined) {
-                    name = bucketData.name + ' (' + bucketData.time_unit + ')'
-                  } else {
-                    name = bucketData.name
-                  }
-                  var options = dashboardService.getChartOptions(name)
-                  var colors = dashboardService.getChartColors(dashboardData.datasetPreviousValue)
-
-                  var found = false
-                  for (var j = 0; j < dashboardData.graphArray.length; j++) {
-                    if (dashboardData.graphArray[j][5] === bucketData.group_id) {
-                      found = true
-                      break
-                    }
-                  }
-                  if (found === true) {
-                    // var d = dashboardData.graphArray[j][2]
-                    dashboardData.graphArray[j][2].push(dataArray)
-                  } else {
-                    dashboardData.graphArray.push([series, labels, data, colors, options, bucketData.group_id])
-                  }
-                }
-              })
-            }
-            dashboardData.orgName = apiResponse.result.org.orgName
-            dashboardData.showDataDiv = true
-          } else {
-            toasterService.error(apiResponse.params.errmsg)
-            dashboardData.showDataDiv = false
-          }
-        })
-          .catch(function (err) {
-            console.log(err)
-          })
-          .finally(function () {
-            // Hide loading spinner whether our call succeeded or failed.
-            dashboardData.showLoader = false
-          })
       }
       $('#dropdownMenu').dropdown()
 
@@ -171,8 +35,6 @@ angular.module('playerApp')
         if (dashboardData.timePeriod === timePeriod) {
           return false
         }
-        dashboardData.showLoader = true
-        dashboardData.showDataDiv = false
         dashboardData.getAdminDashboardData(timePeriod)
       }
 
@@ -181,8 +43,6 @@ angular.module('playerApp')
         if (dashboardData.datasetPreviousValue === dataset) {
           return false
         }
-        dashboardData.showLoader = true
-        dashboardData.showDataDiv = false
         dashboardData.datasetPreviousValue = dataset
         dashboardData.getAdminDashboardData()
       }

@@ -1,3 +1,7 @@
+/**
+ * @author Nilesh More <nilesh_m@tekditechnologies.com>
+ */
+
 'use strict'
 
 angular.module('playerApp')
