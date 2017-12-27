@@ -2,14 +2,15 @@
 
 angular.module('playerApp')
   .factory('renderChart', ['$filter', 'config', '$timeout', 'toasterService',
-    'uuid4', function ($filter, config, $timeout, toasterService, uuid4) {
+    'uuid4',
+    function ($filter, config, $timeout, toasterService, uuid4) {
       /**
-     * @method Render
-     * @desc callback function - will executed onAfterFileUploadSuccess
-     * @param   {object}  data  api response
-     * @param   {object}  series  series data
-     * @param   {string}  dashboardType  dashboard type
-     */
+       * @method Render
+       * @desc callback function - will executed onAfterFileUploadSuccess
+       * @param   {object}  data  api response
+       * @param   {object}  series  series data
+       * @param   {string}  dashboardType  dashboard type
+       */
       function Render (data, series, dashboardType) {
         var allKey = []
         var graphArray = []
@@ -57,14 +58,14 @@ angular.module('playerApp')
         Render: Render
       }
 
-          /**
-             * @method getChartColors
-             * @desc Get chart colors
-             * @memberOf Services.dashboardService
-             * @param {string}  datasetType - Data type
-             * @returns {Object[]} List of colors
-             * @instance
-             */
+      /**
+       * @method getChartColors
+       * @desc Get chart colors
+       * @memberOf Services.dashboardService
+       * @param {string}  datasetType - Data type
+       * @returns {Object[]} List of colors
+       * @instance
+       */
 
       function getChartColors (datasetType) {
         if (datasetType === 'creation') {
@@ -93,14 +94,14 @@ angular.module('playerApp')
         }
       }
 
-    /**
-             * @method getChartOptions
-             * @desc Get chart options
-             * @memberOf Services.dashboardService
-             * @param {string}  labelString - Labels
-             * @returns {Object} Object contains chart options .
-             * @instance
-             */
+      /**
+       * @method getChartOptions
+       * @desc Get chart options
+       * @memberOf Services.dashboardService
+       * @param {string}  labelString - Labels
+       * @returns {Object} Object contains chart options .
+       * @instance
+       */
       function getChartOptions (labelString) {
         return {
           legend: { display: true },
@@ -109,36 +110,11 @@ angular.module('playerApp')
               gridLines: { display: false }
             }],
             yAxes: [{
-              scaleLabel: { display: true, labelString: labelString }, ticks: { beginAtZero: true }
+              scaleLabel: { display: true, labelString: labelString },
+              ticks: { beginAtZero: true }
             }]
           }
         }
       }
-    /**
-             * @method secondsToMin
-             * @desc Convert seconds to min
-             * @memberOf Services.dashboardService
-             * @param {string}  numericData - Numeric data
-             * @returns {string} Seconds converted to min numeric value.
-             * @instance
-             */
-      this.secondsToMin = function (numericData) {
-        var iNum = ''
-        var result = ''
-        if (numericData.value < 60) {
-          numericData.value += ' second(s)'
-        } else if (numericData.value >= 60 && numericData.value <= 3600) {
-          iNum = numericData.value / 60
-          result = iNum.toFixed(2)
-          numericData.value = result + ' min(s)'
-        } else if (numericData.value >= 3600) {
-          iNum = numericData.value / 3600
-          result = iNum.toFixed(2)
-          numericData.value = result + ' hour(s)'
-        } else {
-          return numericData
-        }
-
-        return numericData
-      }
-    }])
+    }
+  ])
