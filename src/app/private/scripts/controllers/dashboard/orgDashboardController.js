@@ -2,9 +2,9 @@
 
 angular.module('playerApp')
   .controller('orgDashboardController', ['$rootScope', '$scope',
-    '$timeout', '$state', '$stateParams', 'toasterService', 'adminService', 'QueryService',
+    '$timeout', '$state', '$stateParams', 'toasterService', 'adminService', 'QueryService', 'renderChart',
     function ($rootScope, $scope, $timeout, $state, $stateParams, toasterService,
-      adminService, QueryService) {
+      adminService, QueryService, renderChart) {
       var dashboardData = this
       dashboardData.height = 110
       dashboardData.datasetPreviousValue = 'creation'
@@ -20,8 +20,11 @@ angular.module('playerApp')
             timePeriod: dashboardData.timePeriod
           },
           dataset: dashboardData.datasetPreviousValue
-        }).then(function (apiResponse) {
-          console.log('Response received===', apiResponse)
+        }).then(function (data) {
+          console.log('Response received===', data)
+          var rendererData = new renderChart.Render(data.apiResponse, data.series, dashboardData.datasetPreviousValue)
+          dashboardData.graphArray = rendererData.graphArray
+          dashboardData.numericStatArray = data.numericData
         }).catch(function (apiResponse) {
           toasterService.error(apiResponse.params.errmsg)
         })
