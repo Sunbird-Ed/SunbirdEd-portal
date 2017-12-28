@@ -24,6 +24,7 @@ angular.module('playerApp')
           },
           dataset: dashboardData.datasetPreviousValue
         }).then(function (data) {
+          dashboardData.graphShow = 0
           var rendererData = new rendererService.Render(data, dashboardData.datasetPreviousValue)
           dashboardData.graphArray = rendererData.chartList
           dashboardData.numericStatArray = data.numericData
