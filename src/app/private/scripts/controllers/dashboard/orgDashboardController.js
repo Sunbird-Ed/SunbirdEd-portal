@@ -24,9 +24,8 @@ angular.module('playerApp')
           },
           dataset: dashboardData.datasetPreviousValue
         }).then(function (data) {
-          console.log('Response received===', data)
           var rendererData = new rendererService.Render(data, dashboardData.datasetPreviousValue)
-          dashboardData.graphArray = rendererData.graphArray
+          dashboardData.graphArray = rendererData.chartList
           dashboardData.numericStatArray = data.numericData
           dashboardData.showDataDiv = true
           dashboardData.showLoader = false
