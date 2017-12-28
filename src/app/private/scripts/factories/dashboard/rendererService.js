@@ -6,51 +6,72 @@ angular.module('playerApp')
     function ($filter, config, $timeout, toasterService, uuid4) {
       /**
        * @method Render
-       * @desc callback function - will executed onAfterFileUploadSuccess
-       * @param   {object}  data  api response
-       * @param   {object}  series  series data
-       * @param   {string}  dashboardType  dashboard type
+       * @desc - render line chart
+       * @param   {object}  data
+       * @param   {string}  dashboardType
        */
       function Render (data, dashboardType) {
-        var allKey = []
-        var graphArray = []
-        var series = data.series
+        var chartList = []
+        var groupList = {}
 
-        angular.forEach(data.bucketData, function (bucketData, key) {
-          if (allKey.indexOf(key) === -1) {
-            allKey.push(key)
-            var dataArray = []
-            var labels = []
-            var chartData = []
+        _.forEach(data.bucketData, function (bucketData, key) {
+          var groupData = {}
 
-            angular.forEach(bucketData.buckets, function (bucketValue, bucketKey) {
-              dataArray.push(bucketValue.value)
-              labels.push(bucketValue.key_name)
-            })
-            chartData.push(dataArray)
+          var yAxesLabel = data.name
+          if (data.series === '') {
+            groupData['legend'] = [bucketData.name]
 
-            var options = getChartOptions(data.name)
-            var colors = getChartColors(dashboardType)
-
-            var found = false
-            for (var j = 0; j < graphArray.length; j++) {
-              if (graphArray[j][5] === bucketData.group_id) {
-                found = true
-                break
-              }
-            }
-            if (found === true) {
-              graphArray[j][2].push(dataArray)
+            if (bucketData.time_unit !== undefined) {
+              yAxesLabel = bucketData.name + ' (' + bucketData.time_unit + ')'
             } else {
-              graphArray.push([series, labels, chartData, colors, options, bucketData.group_id])
+              yAxesLabel = bucketData.name
             }
+          } else {
+            groupData['legend'] = data.series
+          }
+
+          var chartData = angular.copy(getChartData(bucketData))
+
+          // Graph values
+          groupData['yaxes'] = [chartData.values]
+
+          // X-axes Labels
+          groupData['xaxes'] = chartData.labels
+
+          // Colors
+          groupData['colors'] = getChartColors(dashboardType)
+
+          // Options
+          groupData['options'] = getChartOptions(yAxesLabel)
+
+          if (groupList[bucketData.group_id]) {
+            Array.prototype.push.apply(groupList[bucketData.group_id].yaxes, groupData['yaxes'])
+          } else {
+            groupList[bucketData.group_id] = groupData
           }
         })
-        this.graphArray = graphArray
+
+        // Preparing array to render graph
+        _.forOwn(groupList, function (group, groupId) {
+          chartList.push([group.legend, group.xaxes, group.yaxes, group.colors, group.options, groupId])
+        })
+
+        this.chartList = chartList
       }
 
       return {
         Render: Render
+      }
+
+      function getChartData (bucketData) {
+        var values = []
+        var labels = []
+        _.forEach(bucketData.buckets, function (bucketValue, bucketKey) {
+          values.push(bucketValue.value)
+          labels.push(bucketValue.key_name)
+        })
+
+        return { labels: labels, values: values }
       }
 
       /**

@@ -45,30 +45,17 @@ angular.module('playerApp')
         response.then(function (res) {
           if (res && res.responseCode === 'OK') {
             orgConsDataSource.numericBlockData = []
-            var graphSeries = []
-            var seriesUnit = []
 
             // Get graph block data
             angular.forEach(res.result.snapshot, function (numericData, key) {
               orgConsDataSource.buildNumericData(numericData, key)
             })
 
-            // Get graph series data
-            angular.forEach(res.result.series, function (bucketData, key) {
-              graphSeries.push(bucketData.name)
-              if (bucketData.time_unit !== undefined) {
-                seriesUnit.push(bucketData.name + ' (' + bucketData.time_unit + ')')
-              } else {
-                seriesUnit.push(bucketData.name)
-              }
-            })
-
             // DataSource return data
             var returnData = {
               bucketData: res.result.series, // Graph bucket data
-              name: seriesUnit,
               numericData: orgConsDataSource.numericBlockData,
-              series: graphSeries
+              series: ''
             }
 
             // Resolve promise
