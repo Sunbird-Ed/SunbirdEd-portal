@@ -10,6 +10,7 @@ angular.module('playerApp')
       textbook.mediums = textbook.formDropdown.medium
       textbook.subjects = textbook.formDropdown.subjects
       textbook.grades = textbook.formDropdown.grades
+      textbook.years = textbook.formDropdown.years
       textbook.showCreateTextBookModal = false
       textbook.isTextBookCreated = false
       textbook.userId = $rootScope.userId
@@ -30,6 +31,7 @@ angular.module('playerApp')
           $('#mediumDropDown').dropdown()
           $('#subjectDropDown').dropdown()
           $('#gradeDropDown').dropdown()
+          $('#yearDropDown').dropdown()
           $('#createTextBookModal').modal({
             onHide: function () {
               textbook.data = {}
