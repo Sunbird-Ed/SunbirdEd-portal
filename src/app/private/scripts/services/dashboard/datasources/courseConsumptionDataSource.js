@@ -26,20 +26,16 @@ angular.module('playerApp')
         response.then(function (res) {
           if (res && res.responseCode === 'OK') {
             var graphBlockData = []
-            var series = []
             angular.forEach(res.result.snapshot, function (numericData, key) {
               if (key !== 'course.consumption.users_completed') {
                 dashboardService.secondsToMin(numericData)
               }
               graphBlockData.push(numericData)
             })
-            angular.forEach(res.result.series, function (bucketData, key) {
-              series.push(bucketData.name)
-            })
             var returnData = {
               bucketData: res.result.series,
               numericData: graphBlockData,
-              series: series
+              series: ''
             }
             deferred.resolve(returnData)
           } else {
