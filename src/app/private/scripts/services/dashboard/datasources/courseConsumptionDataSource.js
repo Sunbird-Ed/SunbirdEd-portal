@@ -25,18 +25,18 @@ angular.module('playerApp')
         var response = httpAdapter.httpCall(URL, '', 'GET', headers)
         response.then(function (res) {
           if (res && res.responseCode === 'OK') {
-            var numericData = []
-            var series = []
+            var graphBlockData = []
             angular.forEach(res.result.snapshot, function (numericData, key) {
               if (key !== 'course.consumption.users_completed') {
                 dashboardService.secondsToMin(numericData)
               }
-              numericData.push(numericData)
+              graphBlockData.push(numericData)
             })
-            angular.forEach(res.result.series, function (bucketData, key) {
-              series.push(bucketData.name)
-            })
-            var returnData = {apiResponse: res.result, numericData: numericData, series: series}
+            var returnData = {
+              bucketData: res.result.series,
+              numericData: graphBlockData,
+              series: ''
+            }
             deferred.resolve(returnData)
           } else {
             toasterService.error($rootScope.messages.fmsg.m0075)

@@ -24,8 +24,7 @@
                         <div class="field">
                             <input type="text" name="title" placeholder={{$root.frmelmnts.lbl.name}} ng-model="textbook.data.name">
                         </div>
-                    </div>
-                    <div class="two fields">
+                    <div class="three fields">
                         <div class="field">
                             <label>
                                 {{$root.frmelmnts.lbl.curriculum}}
@@ -42,8 +41,16 @@
                                 <option value="">{{$root.frmelmnts.lbl.medium}}</option>
                             </select>
                         </div>
+                        <div class="field">
+                            <label>
+                                {{$root.frmelmnts.lbl.publisher}}
+                            </label>
+                            <div class="field">
+                                <input type="text" name="title" placeholder={{$root.frmelmnts.lbl.publisher}} ng-model="textbook.data.publisher">
+                            </div>
+                        </div>
                     </div>
-                    <div class="two fields">
+                    <div class="three fields">
                         <div class="field">
                             <label>
                                 {{$root.frmelmnts.lbl.subject}}
@@ -58,6 +65,14 @@
                             </label>
                             <select name="grades" multiple="" class="ui fluid dropdown" id="gradeDropDown" ng-options=" grade for grade in textbook.grades" ng-model="textbook.data.gradeLevel" s>
                                 <option value="">{{$root.frmelmnts.lbl.class}}</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>
+                                {{$root.frmelmnts.lbl.year}}
+                            </label>
+                            <select name="year" class="ui fluid dropdown" id="yearDropDown" ng-options=" year for year in textbook.years" ng-model="textbook.data.year">
+                                <option value="">{{$root.frmelmnts.lbl.year}}</option>
                             </select>
                         </div>
                     </div>

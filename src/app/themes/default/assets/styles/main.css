@@ -797,17 +797,12 @@ th {
 }
 .sliderCards.ui.card > .content > .description {
   clear: both;
-  color: #7c7b7b !important;
+  color: #7c7b7b;
 }
 /*blue rating star in card */
 .sliderCards .ui.mini.rating {
   font-size: 0.78571429em;
   padding-top: 12px;
-}
-.sliderCards > .description {
-  clear: both;
-  color: rgba(16, 16, 16, 0.88) !important;
-  line-height: 1.5;
 }
 /*for the text on image in card */
 .cardImageText {
@@ -824,27 +819,27 @@ th {
   text-align: center;
 }
 .rightSideSectionCards.ui.card {
-  width: 100% !important;
+  width: 100%;
 }
 .imageInCardsResponsive {
-  overflow: hidden !important;
-  height: 150px !important;
+  overflow: hidden;
+  height: 150px;
 }
 div:focus {
   outline: none;
 }
 .ui.cards > .card > .content {
-  padding-right: 3px !important;
+  padding-right: 3px;
 }
 /*three stackable cards width reduced to match design*/
 /*using ~ in calc because of Less issue with clac function */
 .ui.three.cards > .card {
-  width: calc(33.33333333% - 3.3em) !important;
-  margin-right: 0.2em !important;
+  width: calc(33.33333333% - 3.3em);
+  margin-right: 0.2em;
 }
 .ui.three.cards > .card:hover {
   transition: all .3s ease 0s;
-  box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.5) !important;
+  box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.5);
 }
 /*text description height fixed in card*/
 .fixedRatingCard {
@@ -855,7 +850,7 @@ div:focus {
 /*rating responsive in card*/
 @media screen and (max-width: 1100px) and (min-width: 1024px) {
   .ui.rating {
-    font-size: 0.8em !important;
+    font-size: 0.8em;
   }
 }
 /*card font size for curriculum*/
@@ -863,11 +858,11 @@ div:focus {
   font-size: 1.18em;
 }
 /*text description height fixed in card*/
-.limitedPublishingLinkIcon {
-  margin-left: -4px !important;
-  -webkit-transform: rotate(-43deg) !important;
-          transform: rotate(-43deg) !important;
-  font-size: 1.8em !important;
+i.large.icon.limitedPublishingLinkIcon {
+  margin-left: -4px;
+  -webkit-transform: rotate(-43deg);
+          transform: rotate(-43deg);
+  font-size: 1.8em;
 }
 .content-input {
   display: none;
@@ -1275,8 +1270,8 @@ ui.primary.basic.button.announcementButton {
 .width-100 {
   width: 100%;
 }
-ui.modal.announcementDetailsModal {
-  margin-top: -260px;
+.modals.dimmer .ui.modal.announcementDetailsModal {
+  margin-top: -260px !important;
 }
 .annDetailsFormScroller {
   max-height: 80vh;
@@ -1415,14 +1410,14 @@ h5.ui.header {
   opacity: 0;
   height: 100%;
 }
-.w3-border {
-  border: 1px solid #cccccc !important;
+.qq-upload-list li.qq-upload-success.w3-border {
+  border: 1px solid #cccccc;
 }
-.w3-round-xlarge {
-  border-radius: 5px !important;
+.qq-upload-list li.qq-upload-success.w3-round-xlarge {
+  border-radius: 5px;
 }
-.qq-upload-success {
-  background-color: #ffffff !important;
+.qq-upload-list li.qq-upload-success.qq-upload-success {
+  background-color: #ffffff;
   padding: 15px;
 }
 .anncmnt-upload-file-are {
@@ -1430,20 +1425,20 @@ h5.ui.header {
   padding-bottom: 75px;
 }
 .qq-uploader {
-  border: 2px dashed #cccccc !important;
-  max-height: 330px !important;
-  overflow-y: auto !important;
-  min-height: 300px !important;
+  border: 2px dashed #cccccc;
+  max-height: 330px;
+  overflow-y: auto;
+  min-height: 300px;
 }
 body ::-webkit-scrollbar {
   -webkit-appearance: none;
   width: 6px;
 }
 .qq-upload-file {
-  width: 200px !important;
+  width: 200px;
 }
 .qq-upload-list {
-  overflow-y: hidden !important;
+  overflow-y: hidden;
 }
 .down-arrow-accordion {
   float: right !important;
@@ -2013,11 +2008,11 @@ ul.fancytree-container li {
 }
 /*share content modal ui*/
 .ui.modal .ui.input.shareContent input {
-  border: 1px solid #fdfdfd !important;
-  padding: 1em 0em 1em 1em !important;
+  border: 1px solid #333333;
+  padding: 1em 0em 1em 1em;
 }
 .ui.top.center.popup.contentSharing {
-  color: white;
+  color: #ffffff;
 }
 .ui.popup.contentSharing {
   background: #007AFF;
@@ -2292,14 +2287,14 @@ ul.fancytree-container li {
 }
 .publicmenusection.ui.secondary.menu .active.item {
   background: linear-gradient(270deg, rgba(218, 218, 218, 0) 0%, #ffffff 100%);
-  border-radius: 0!important;
+  border-radius: 0;
   color: rgba(0, 0, 0, 0.95);
   text-transform: uppercase;
   font-family: 'sunbirdboldfont';
 }
 .publicmenusection.ui.secondary.menu a.item:hover {
   background: linear-gradient(270deg, rgba(218, 218, 218, 0) 0%, #ffffff 100%);
-  border-radius: 0!important;
+  border-radius: 0;
   color: rgba(0, 0, 0, 0.95);
 }
 .workspacesegment {
@@ -2307,10 +2302,6 @@ ul.fancytree-container li {
 }
 .workspacecontent {
   line-height: 45px;
-}
-ui.link.card.workspacecontent {
-  border: 1px solid #000000 !important;
-  box-shadow: 0 1px 0px 0 #d4d4d5, 0 0 0 1px #d4d4d5 !important;
 }
 .workspacetitle.title {
   color: #333333;
@@ -2389,7 +2380,7 @@ ui.link.card.workspacecontent {
   line-height: 22px;
 }
 .workspacecontentProfile.ui.card {
-  box-shadow: 0 1px 0px 0 #d4d4d5, 0 0 0 1px #d4d4d5 !important;
+  box-shadow: 0 1px 0px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
 }
 .WorkSpaceTextContent {
   display: inline-block;
@@ -2413,7 +2404,7 @@ ui.link.card.workspacecontent {
   margin: 32px 0 0 0;
 }
 /*trashIcon in address css*/
-.trashIcon-fontSize {
+i.trash.outline.icon.trashIcon-fontSize {
   font-size: 1.5em !important;
 }
 .youtubeupload.ui.form .inline.fields .field > label {
@@ -2429,22 +2420,6 @@ ui.link.card.workspacecontent {
   color: #7c7b7b;
   font-size: 12px;
   padding-top: 40px;
-}
-.fileUploadDivider {
-  padding: 35px 0px 10px 0px !important;
-  border: 2px dashed #cccccc !important;
-  margin-left: 0rem !important;
-  margin-right: 0rem !important;
-}
-.dividerInFileUploader {
-  padding-top: 0rem !important;
-  padding-bottom: 0.3rem !important;
-}
-.textIndentForUploadFile {
-  text-indent: -25px !important;
-}
-.youTubeFileUploadForm {
-  max-width: 90% !important;
 }
 /*draft content pagination positioning */
 .paginationAlignment {
@@ -2506,16 +2481,15 @@ ui.link.card.workspacecontent {
 .wmd-input {
   height: 150px !important;
 }
-.userSearchImage > img {
-  min-height: 80px !important;
+.ui.items > .item > .image.userSearchImage > img {
+  min-height: 80px;
+  max-width: 80px;
+  max-height: 80px;
 }
-.userSearchButton {
-  margin-top: -5px !important;
+.ui.items > .item.userSearchCardHover {
+  padding: 10px;
 }
-.userSearchCardHover {
-  padding: 10px !important;
-}
-.ui.items > .userSearchCardHover.item:hover {
+.ui.items > .item.userSearchCardHover:hover {
   -webkit-box-shadow: 1px 6px 15px 2px rgba(0, 0, 0, 0.15);
   moz-box-shadow: 1px 6px 15px 2px rgba(0, 0, 0, 0.15);
   -o-box-shadow: 1px 6px 15px 2px rgba(0, 0, 0, 0.15);
@@ -2526,17 +2500,17 @@ ui.link.card.workspacecontent {
   background-color: #ffffff;
   border-radius: 5px;
 }
-.ui.divided.items > .userSearchCardHover.item:first-child {
+.ui.divided.items > .item:first-child {
   padding-top: 10px !important;
 }
-.ui.divided.items > .userSearchCardHover.item:last-child {
+.ui.divided.items > .item:last-child {
   padding-bottom: 10px !important;
 }
 .trashIconAlign {
   margin: -0.2em -0.2em 0em 0em;
 }
-.selectOrgRoles {
-  padding: 20px 11px 10px 10px !important;
+.ui.form ui.selectOrgRoles {
+  padding: 20px 11px 10px 10px;
   height: 200px;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -2559,9 +2533,9 @@ ui.link.card.workspacecontent {
 .orgRolesListView {
   margin: 0 10px 20px 0;
 }
-.badgeIconAlignment {
-  height: 20px !important;
-  width: 20px !important;
+.ui.mini.image.badgeIconAlignment {
+  height: 20px;
+  width: 20px;
   padding-top: 3px;
   margin-right: 15px;
 }
@@ -2682,18 +2656,15 @@ ui.link.card.workspacecontent {
   color: rgba(0, 0, 0, 0.7) !important;
 }
 span.dashBoardMenuItem.active {
-  color: #007AFF !important;
-  font-family: 'sunbirdboldfont' !important;
-}
-.dashBoard-dropdownPadding {
-  padding-right: 8px !important;
+  color: #007AFF;
+  font-family: 'sunbirdboldfont';
 }
 .adminCanvasPadding {
-  padding: 20px !important;
+  padding: 20px;
 }
 .adminCanvasBorder {
   background-color: #ffffff;
-  border: 1px solid #D4D4D5 ;
+  border: 1px solid #d4d4d5;
   border-radius: 5px;
 }
 .chart-slider {
@@ -2701,8 +2672,8 @@ span.dashBoardMenuItem.active {
   float: right;
   top: 40px;
 }
-.adminDashboardCard {
-  width: 330px !important;
+.ui.card.adminDashboardCard {
+  width: 330px;
 }
 .table-headerDashboard {
   color: #007AFF;

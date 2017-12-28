@@ -23,9 +23,10 @@ angular.module('playerApp')
       }
 
       /**
-       * @method query
-       * @desc function to call required data source.
+       * @method QueryService
+       * @desc function to regiester data source.
        * @memberOf Factory.dashboardQueryFactory
+       * @param {object} data data source
        */
       function QueryService (data) {
         this.clientName = data.key
