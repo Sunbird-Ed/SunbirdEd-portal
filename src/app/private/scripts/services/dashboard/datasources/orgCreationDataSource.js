@@ -8,7 +8,26 @@ angular.module('playerApp')
   .service('orgCreationDataSource', ['$q', 'config', '$rootScope', 'httpAdapter',
     'toasterService', function ($q, config,
       $rootScope, httpAdapter, toasterService) {
-    /**
+      var numericBlockData = []
+      var graphSeries = []
+      var contentStatus = {
+        'org.creation.content[@status=published].count': ' LIVE',
+        'org.creation.content[@status=draft].count': ' Created',
+        'org.creation.content[@status=review].count': ' IN REVIEW'
+      }
+
+      function buildNumericAndSeriesData (numericData, key) {
+        switch (key) {
+        case 'org.creation.authors.count':
+        case 'org.creation.reviewers.count':
+        case 'org.creation.content.count':
+          numericBlockData.push(numericData)
+          break
+        default:
+          graphSeries.push(numericData.value + contentStatus[key])
+        }
+      }
+      /**
      * @method getData
      * @desc get ord dashboard data based on datasetTye
      * @memberOf Services.orgDataSource
@@ -25,33 +44,16 @@ angular.module('playerApp')
         var response = httpAdapter.httpCall(URL, '', 'GET', headers)
         response.then(function (res) {
           if (res && res.responseCode === 'OK') {
-            var numericStatArray = []
-            var series = []
             angular.forEach(res.result.snapshot, function (numericData, key) {
-              if (key === 'org.creation.authors.count' ||
-                    key === 'org.creation.reviewers.count' ||
-                    key === 'org.creation.content.count') {
-                numericStatArray.push(numericData)
-              }
-              if (key === 'org.creation.content[@status=published].count') {
-                series.push(numericData.value + ' LIVE')
-              }
-
-              if (key === 'org.creation.content[@status=draft].count') {
-                series.push(numericData.value + ' CREATED')
-              }
-
-              if (key === 'org.creation.content[@status=review].count') {
-                series.push(numericData.value + ' IN REVIEW')
-              }
+              buildNumericAndSeriesData(numericData, key)
             })
-
-            var name = 'Content created per day'
-            if (res.result.period === '5w') {
-              name = 'Content created per week'
+            var name = res.result.period === '5w' ? 'Content created per week' : 'Content created per day'
+            var returnData = {
+              bucketData: res.result.series,
+              name: name,
+              numericData: numericBlockData,
+              series: graphSeries
             }
-
-            var returnData = {bucketData: res.result.series, name: name, numericData: numericStatArray, series: series}
             deferred.resolve(returnData)
           } else {
             toasterService.error($rootScope.messages.fmsg.m0075)
