@@ -34,6 +34,7 @@ angular.module('playerApp')
           toasterService.error(apiResponse.params.errmsg)
         })
       }
+
       $('#dropdownMenu').dropdown()
 
       dashboardData.onAfterFilterChange = function (timePeriod) {
