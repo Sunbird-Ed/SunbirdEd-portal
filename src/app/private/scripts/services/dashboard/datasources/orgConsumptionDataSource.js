@@ -8,10 +8,31 @@ angular.module('playerApp')
   .service('orgConsumptionDataSource', ['$q', 'config', '$rootScope', 'httpAdapter', 'toasterService',
     'dashboardService', function ($q, config,
       $rootScope, httpAdapter, toasterService, dashboardService) {
+      var orgConsDataSource = this
+      orgConsDataSource.numericBlockData = []
+
+    /**
+     * @method buildNumericData
+     * @desc convert time from seconds to min
+     * @memberOf Services.orgConsumptionDataSource
+     * @param {Object}  numericData - snapshot data
+     * @param {string}  key - array key
+     */
+      orgConsDataSource.buildNumericData = function (numericData, key) {
+        switch (key) {
+        case 'org.consumption.content.session.count':
+        case 'org.consumption.content.time_spent.sum':
+        case 'org.consumption.content.time_spent.average':
+          orgConsDataSource.numericBlockData.push(dashboardService.secondsToMin(numericData))
+          break
+        default:
+          orgConsDataSource.numericBlockData.push(numericData)
+        }
+      }
     /**
      * @method getData
      * @desc get ord dashboard data based on datasetTye
-     * @memberOf Services.orgDataSource
+     * @memberOf Services.orgConsumptionDataSource
      * @param {Object}  req - Request object
      * @param {string}  datasetType - Data set type
      * @param {object} headers headers
@@ -25,31 +46,33 @@ angular.module('playerApp')
         var response = httpAdapter.httpCall(URL, '', 'GET', headers)
         response.then(function (res) {
           if (res && res.responseCode === 'OK') {
-            var numericStatArray = []
-            var series = []
+            var graphSeries = []
+            var seriesUnit = []
+
+            // Get graph block data
             angular.forEach(res.result.snapshot, function (numericData, key) {
-              if (key === 'org.consumption.content.session.count' ||
-              key === 'org.consumption.content.time_spent.sum' || key === 'org.consumption.content.time_spent.average') { // eslint-disable-line
-                if (key === 'org.consumption.content.time_spent.sum' || key === 'org.consumption.content.time_spent.average') { // eslint-disable-line
-                  numericData = dashboardService.secondsToMin(numericData)
-                  numericStatArray.push(numericData)
-                } else {
-                  numericStatArray.push(numericData)
-                }
-              }
+              orgConsDataSource.buildNumericData(numericData, key)
             })
 
-            var name = []
+            // Get graph series data
             angular.forEach(res.result.series, function (bucketData, key) {
-              series.push(bucketData.name)
+              graphSeries.push(bucketData.name)
               if (bucketData.time_unit !== undefined) {
-                name.push(bucketData.name + ' (' + bucketData.time_unit + ')')
+                seriesUnit.push(bucketData.name + ' (' + bucketData.time_unit + ')')
               } else {
-                name.push(bucketData.name)
+                seriesUnit.push(bucketData.name)
               }
             })
 
-            var returnData = {bucketData: res.result.series, name: name, numericData: numericStatArray, series: series}
+            // DataSource return data
+            var returnData = {
+              bucketData: res.result.series, // Graph bucket data
+              name: seriesUnit,
+              numericData: orgConsDataSource.numericBlockData,
+              series: graphSeries
+            }
+
+            // Resolve promise
             deferred.resolve(returnData)
           } else {
             toasterService.error($rootScope.messages.fmsg.m0075)
