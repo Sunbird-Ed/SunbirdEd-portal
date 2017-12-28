@@ -63,6 +63,11 @@ angular.module('playerApp')
         Render: Render
       }
 
+      /**
+       * @method getChartData
+       * @desc - push graph values
+       * @param   {object}  bucketData
+       */
       function getChartData (bucketData) {
         var values = []
         var labels = []
