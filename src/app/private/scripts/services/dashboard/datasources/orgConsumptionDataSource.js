@@ -38,11 +38,18 @@ angular.module('playerApp')
                 }
               }
             })
+
+            var name = []
             angular.forEach(res.result.series, function (bucketData, key) {
               series.push(bucketData.name)
+              if (bucketData.time_unit !== undefined) {
+                name.push(bucketData.name + ' (' + bucketData.time_unit + ')')
+              } else {
+                name.push(bucketData.name)
+              }
             })
 
-            var returnData = {apiResponse: res.result, numericData: numericStatArray, series: series}
+            var returnData = {bucketData: res.result.series, name: name, numericData: numericStatArray, series: series}
             deferred.resolve(returnData)
           } else {
             toasterService.error($rootScope.messages.fmsg.m0075)

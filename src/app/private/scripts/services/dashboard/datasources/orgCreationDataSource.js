@@ -46,7 +46,12 @@ angular.module('playerApp')
               }
             })
 
-            var returnData = {apiResponse: res.result, numericData: numericStatArray, series: series}
+            var name = 'Content created per day'
+            if (res.result.period === '5w') {
+              name = 'Content created per week'
+            }
+
+            var returnData = {bucketData: res.result.series, name: name, numericData: numericStatArray, series: series}
             deferred.resolve(returnData)
           } else {
             toasterService.error($rootScope.messages.fmsg.m0075)
