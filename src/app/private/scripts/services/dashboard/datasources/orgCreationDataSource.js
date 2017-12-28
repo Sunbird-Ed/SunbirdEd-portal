@@ -9,15 +9,13 @@ angular.module('playerApp')
     'toasterService', function ($q, config,
       $rootScope, httpAdapter, toasterService) {
       var orgCreateDataSource = this
-      orgCreateDataSource.numericBlockData = []
-      orgCreateDataSource.graphSeries = []
       var contentStatus = {
         'org.creation.content[@status=published].count': ' LIVE',
         'org.creation.content[@status=draft].count': ' Created',
         'org.creation.content[@status=review].count': ' IN REVIEW'
       }
 
-    /**
+      /**
      * @method buildNumericData
      * @desc convert time from seconds to min
      * @memberOf Services.orgConsumptionDataSource
@@ -52,6 +50,8 @@ angular.module('playerApp')
         var response = httpAdapter.httpCall(URL, '', 'GET', headers)
         response.then(function (res) {
           if (res && res.responseCode === 'OK') {
+            orgCreateDataSource.numericBlockData = []
+            orgCreateDataSource.graphSeries = []
             // Build graph block data
             angular.forEach(res.result.snapshot, function (numericData, key) {
               orgCreateDataSource.buildNumericAndSeriesData(numericData, key)

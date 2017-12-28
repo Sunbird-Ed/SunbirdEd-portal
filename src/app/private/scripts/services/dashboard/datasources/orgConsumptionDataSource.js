@@ -9,9 +9,7 @@ angular.module('playerApp')
     'dashboardService', function ($q, config,
       $rootScope, httpAdapter, toasterService, dashboardService) {
       var orgConsDataSource = this
-      orgConsDataSource.numericBlockData = []
-
-    /**
+      /**
      * @method buildNumericData
      * @desc convert time from seconds to min
      * @memberOf Services.orgConsumptionDataSource
@@ -29,7 +27,7 @@ angular.module('playerApp')
           orgConsDataSource.numericBlockData.push(numericData)
         }
       }
-    /**
+      /**
      * @method getData
      * @desc get ord dashboard data based on datasetTye
      * @memberOf Services.orgConsumptionDataSource
@@ -46,6 +44,7 @@ angular.module('playerApp')
         var response = httpAdapter.httpCall(URL, '', 'GET', headers)
         response.then(function (res) {
           if (res && res.responseCode === 'OK') {
+            orgConsDataSource.numericBlockData = []
             var graphSeries = []
             var seriesUnit = []
 
