@@ -63,7 +63,7 @@
     max-width: 100%; 
     margin: .55238095em 0 .45238095em .64285714em;
     line-height: 1.21428571em;
-    color:@tertiary-color;
+    color: @filter-placeholderTxt;
 }
 
 .dropdown-items.ui.selection.dropdown .menu>.item {
@@ -101,8 +101,11 @@
     font-size: 13px;
 }
 
-.profileLocationFilter input{
+.ui.input input.filterLocationInput {
+    padding-top: 12px;
+    border: 0;
+    border-bottom: 1px solid @form-element-border;
+    border-radius: 0;
     color:@secondary-textColor;
-    font-family: Roboto;
     font-size: 13px;
 }
