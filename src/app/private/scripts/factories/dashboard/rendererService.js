@@ -11,30 +11,25 @@ angular.module('playerApp')
        * @param   {object}  series  series data
        * @param   {string}  dashboardType  dashboard type
        */
-      function Render (data, series, dashboardType) {
+      function Render (data, dashboardType) {
         var allKey = []
         var graphArray = []
-        var timePeriod = data.period
+        var series = data.series
 
-        angular.forEach(data.series, function (bucketData, key) {
+        angular.forEach(data.bucketData, function (bucketData, key) {
           if (allKey.indexOf(key) === -1) {
             allKey.push(key)
             var dataArray = []
             var labels = []
-            var data = []
+            var chartData = []
 
             angular.forEach(bucketData.buckets, function (bucketValue, bucketKey) {
               dataArray.push(bucketValue.value)
               labels.push(bucketValue.key_name)
             })
-            data.push(dataArray)
+            chartData.push(dataArray)
 
-            var name = 'Content created per day'
-            if (timePeriod === '5w') {
-              name = 'Content created per week'
-            }
-
-            var options = getChartOptions(name)
+            var options = getChartOptions(data.name)
             var colors = getChartColors(dashboardType)
 
             var found = false
@@ -47,7 +42,7 @@ angular.module('playerApp')
             if (found === true) {
               graphArray[j][2].push(dataArray)
             } else {
-              graphArray.push([series, labels, data, colors, options, bucketData.group_id])
+              graphArray.push([series, labels, chartData, colors, options, bucketData.group_id])
             }
           }
         })
