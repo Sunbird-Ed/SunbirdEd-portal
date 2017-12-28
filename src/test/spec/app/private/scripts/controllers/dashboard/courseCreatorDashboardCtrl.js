@@ -121,16 +121,6 @@ describe('Controller:courseCreatorDashboardCtrl', function () {
     courseCreatorDashboard.initDropdwon()
   })
 
-  it('Should display number of users by day', function () {
-    spyOn(courseCreatorDashboard, 'nextGraph').and.callThrough()
-    courseCreatorDashboard.nextGraph()
-  })
-
-  it('Should display timespent for content consumption', function () {
-    spyOn(courseCreatorDashboard, 'previousGraph').and.callThrough()
-    courseCreatorDashboard.previousGraph()
-  })
-
   it('Should return course consumption dashboard data', function () {
     spyOn(dashboardService, 'getCourseDashboardData').and.returnValue(deferred.promise)
     deferred.resolve(courseConsumptionData)
