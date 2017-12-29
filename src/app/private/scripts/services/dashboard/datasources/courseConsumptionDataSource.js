@@ -22,8 +22,8 @@ angular.module('playerApp')
         var URL = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + url + '/' +
       req.courseId + '?period=' + req.timePeriod
         var deferred = $q.defer()
-        var response = httpAdapter.httpCall(URL, '', 'GET', headers)
-        response.then(function (res) {
+        httpAdapter.httpCall(URL, '', 'GET', headers).then(function (res) {
+          console.log('resss', res)
           if (res && res.responseCode === 'OK') {
             var graphBlockData = []
             angular.forEach(res.result.snapshot, function (numericData, key) {
@@ -42,7 +42,7 @@ angular.module('playerApp')
             toasterService.error($rootScope.messages.fmsg.m0075)
             deferred.reject(res)
           }
-        }, function (err) {
+        }).catch(function (err) {
           toasterService.error($rootScope.messages.emsg.m0005)
           deferred.reject(err)
         })
