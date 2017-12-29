@@ -3,14 +3,8 @@
 describe('Service: courseProgressDataSource', function () {
   beforeEach(module('playerApp'))
 
-  var courseProgressDataSource // eslint-disable-line
-  var scope // eslint-disable-line
-  var $q // eslint-disable-line
-  var deferred // eslint-disable-line
-  var toasterService // eslint-disable-line
+  var courseProgressDataSource, scope, $q, deferred, toasterService, httpAdapter   // eslint-disable-line
   var testData = dashboardDataSourceTestData.courseProgressData // eslint-disable-line
-  var httpAdapter // eslint-disable-line
-
   beforeEach(inject(function ($rootScope, $controller) {   // eslint-disable-line
     $controller('AppCtrl', {
       $rootScope: $rootScope,
