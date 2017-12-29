@@ -311,7 +311,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
                         ' <i id="removeFile" onclick="removeCreateAnnAttachment ' +
                         '(this,' + pos + ', ' + name + ')" class="remove icon cursor-pointer" ' +
                         'style="float:right;"></i><span class="qq-upload-file-selector ' +
-                        'qq-upload-file" style="width: 222px;">' +
+                        'qq-upload-file" style="width: 200px;">' +
                         attachment.name + '</span></li>')
           composeAnn.uploadAttchement = true
         })
