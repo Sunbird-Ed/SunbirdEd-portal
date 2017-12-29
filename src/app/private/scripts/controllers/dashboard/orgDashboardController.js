@@ -9,8 +9,13 @@ angular.module('playerApp')
       dashboardData.height = 110
       dashboardData.datasetPreviousValue = 'creation'
       // Create object
-      dashboardData.objQueryClient = new QueryService({key: 'orgCreationDataSource'})
+      dashboardData.objQueryClient = new QueryService({ key: 'orgCreationDataSource' })
 
+      /**
+       * @method getAdminDashboardData
+       * @desc Render graph
+       * @param {string}  timePeriod
+       */
       dashboardData.getAdminDashboardData = function (timePeriod) {
         dashboardData.showLoader = true
         dashboardData.showDataDiv = false
@@ -37,6 +42,11 @@ angular.module('playerApp')
 
       $('#dropdownMenu').dropdown()
 
+      /**
+       * @method onAfterFilterChange
+       * @desc call getAdminDashboardData with specific time period
+       * @param {string}  timePeriod
+       */
       dashboardData.onAfterFilterChange = function (timePeriod) {
         // To avoid same
         if (dashboardData.timePeriod === timePeriod) {
@@ -45,6 +55,11 @@ angular.module('playerApp')
         dashboardData.getAdminDashboardData(timePeriod)
       }
 
+      /**
+       * @method onAfterDatasetChange
+       * @desc call getAdminDashboardData with specific chart type
+       * @param {string}  dataset
+       */
       dashboardData.onAfterDatasetChange = function (dataset) {
         // To avoid same
         if (dashboardData.datasetPreviousValue === dataset) {
@@ -54,14 +69,27 @@ angular.module('playerApp')
         dashboardData.getAdminDashboardData()
       }
 
+      /**
+       * @method nextGraph
+       * @desc show next graph when slider is available
+       */
       dashboardData.graphShow = 0
       dashboardData.nextGraph = function () {
         dashboardData.graphShow++
       }
+
+      /**
+       * @method previousGraph
+       * @desc show previous graph when slider is available
+       */
       dashboardData.previousGraph = function () {
         dashboardData.graphShow--
       }
 
+      /**
+       * @method showData
+       * @desc manipulate html when with multiple org and single org
+       */
       dashboardData.showData = function () {
         dashboardData.orgIds = $rootScope.organisationIds
         if (dashboardData.orgIds.length === 1) {
@@ -88,12 +116,21 @@ angular.module('playerApp')
         }
       }
 
+      /**
+       * @method initDropdwon
+       * @desc Initialise dashboard dropdown menu
+       */
       dashboardData.initDropdwon = function () {
         $('#dashboardMenu').dropdown({
           onChange: function () {}
         })
       }
 
+      /**
+       * @method onAfterOrgChange
+       * @desc On changing organisation dropdown calling getAdminDashboardData
+       * @param {string}  orgId Organisation Id
+       */
       dashboardData.onAfterOrgChange = function (orgId) {
         dashboardData.orgId = orgId
         dashboardData.getAdminDashboardData()
