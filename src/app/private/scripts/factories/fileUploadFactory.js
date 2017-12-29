@@ -97,6 +97,9 @@ angular.module('playerApp')
               },
               failedUploadTextDisplay: controllerOption.failedUploadTextDisplay,
               showMessage: showErrorMessage,
+              text: {
+                fileInputTitle: 'UPLOAD ATTACHMENT'
+              },
               callbacks: {
                 onComplete: onFileUploadSuccess,
                 onSubmitted: function (id, name) {

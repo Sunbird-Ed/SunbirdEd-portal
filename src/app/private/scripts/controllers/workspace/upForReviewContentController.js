@@ -193,5 +193,22 @@ angular.module('playerApp')
         })
         return ct ? ct[0].value : ''
       }
+
+      upForReviewContent.showFilterPopup = function () {
+        upForReviewContent.hideFilterPopup = true
+        $timeout(function () {
+          $('#buttonPopUp1')
+            .popup({
+              popup: $('#LinkCopiedToClipboard1'),
+              on: 'click',
+              position: 'bottom center',
+              color: '#4183c4'
+            })
+        }, 0)
+      }
+
+      upForReviewContent.hideFilter = function () {
+        upForReviewContent.hideFilterPopup = false
+      }
     }
   ])

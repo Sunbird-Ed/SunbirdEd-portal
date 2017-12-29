@@ -103,7 +103,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
     composeAnn.removeLink = function (index) {
       composeAnn.repeatableWebLinks.splice(index, 1)
       if (composeAnn.announcement.links) {
-        delete composeAnn.announcement.links[index]
+        composeAnn.announcement.links.splice(index, 1)
       }
       composeAnn.showUrlField = !!composeAnn.repeatableWebLinks.length
       composeAnn.enableRecepientBtn()
@@ -268,9 +268,9 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
       }
       return composeAnn.convertedFileSize
     }
-    window.removeCreateAnnAttachment = function (item, pos) {
+    window.removeCreateAnnAttachment = function (item, pos, name) {
       $(item).closest('li').remove()
-      composeAnn.announcement.attachments.splice(pos, 1)
+      composeAnn.onUploadCancel(pos, name)
     }
     /**
          * @method initializeFileUploader
@@ -304,16 +304,19 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         $('.qq-upload-list').parent().prepend('<ul id="old-file-list" class="' +
                     ' qq-upload-list"></ul>')
         _.forEach(attachments, function (attachment, pos) {
+          var name = "'" + attachment.name + "'" // eslint-disable-line
           $('#old-file-list').append(
             '<li class="qq-upload-retryable w3-container' +
                         ' w3-border w3-round-xlarge qq-upload-success">' +
                         ' <i id="removeFile" onclick="removeCreateAnnAttachment ' +
-                        '(this,' + pos + ')" class="remove icon cursor-pointer" ' +
+                        '(this,' + pos + ', ' + name + ')" class="remove icon cursor-pointer" ' +
                         'style="float:right;"></i><span class="qq-upload-file-selector ' +
                         'qq-upload-file" style="width: 222px;">' +
                         attachment.name + '</span></li>')
+          composeAnn.uploadAttchement = true
         })
       }
+      composeAnn.enableRecepientBtn()
     }
     /**
          * @method onUploadComplete

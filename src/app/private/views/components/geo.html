@@ -8,8 +8,8 @@
                 <input ng-model='item.selected' type='checkbox' name='example' class="checkBox-element">
                 <label ng-bind-html="item.location | highlight:search" >{{item.location}}</label>
             </label>
-            <span ng-show="item.userCount === null">(0  users)</span>
-            <span ng-show="item.userCount !== null">({{item.userCount}}  users)</span>
+            <span ng-if="item.userCount && item.userCount === null">(0  users)</span>
+            <span ng-if="item.userCount && item.userCount !== null">({{item.userCount}}  users)</span>
             </br>
         </div>
     <div ng-show="!($ctrl.items| filter:search).length">No Location Found</div>
