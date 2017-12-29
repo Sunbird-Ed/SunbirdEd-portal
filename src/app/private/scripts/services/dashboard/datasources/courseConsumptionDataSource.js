@@ -8,7 +8,8 @@ angular.module('playerApp')
   .service('courseConsumptionDataSource', ['$q', '$rootScope', 'config', 'httpAdapter', 'toasterService',
     'dashboardService', function ($q,
       $rootScope, config, httpAdapter, toasterService, dashboardService) {
-    /**
+      var courseConsDataSource = this
+      /**
      * @method getData
      * @desc get course consumption dashboard data
      * @memberOf Services.courseConsumptionDataSource
@@ -23,18 +24,17 @@ angular.module('playerApp')
       req.courseId + '?period=' + req.timePeriod
         var deferred = $q.defer()
         httpAdapter.httpCall(URL, '', 'GET', headers).then(function (res) {
-          console.log('resss', res)
           if (res && res.responseCode === 'OK') {
-            var graphBlockData = []
+            courseConsDataSource.graphBlockData = []
             angular.forEach(res.result.snapshot, function (numericData, key) {
               if (key !== 'course.consumption.users_completed') {
                 dashboardService.secondsToMin(numericData)
               }
-              graphBlockData.push(numericData)
+              courseConsDataSource.graphBlockData.push(numericData)
             })
             var returnData = {
               bucketData: res.result.series,
-              numericData: graphBlockData,
+              numericData: courseConsDataSource.graphBlockData,
               series: ''
             }
             deferred.resolve(returnData)

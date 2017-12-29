@@ -7,6 +7,7 @@
 angular.module('playerApp')
   .service('courseProgressDataSource', ['$q', '$rootScope', 'config', 'httpAdapter', 'toasterService', function ($q,
     $rootScope, config, httpAdapter, toasterService) {
+    var courseProgressDataSource = this
     /**
      * @method getData
      * @desc get course dashboard data based on datasetTye
@@ -21,15 +22,24 @@ angular.module('playerApp')
       var URL = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + url + '/' +
       req.courseId + '?period=' + req.timePeriod
       var deferred = $q.defer()
-      var response = httpAdapter.httpCall(URL, '', 'GET', headers)
-      response.then(function (res) {
+      httpAdapter.httpCall(URL, '', 'GET', headers).then(function (res) {
+        courseProgressDataSource.tableData = []
         if (res && res.responseCode === 'OK') {
-          deferred.resolve(res.result)
+          angular.forEach(res.result.series, function (seriesData, key) {
+            if (key === 'course.progress.course_progress_per_user.count') {
+              angular.forEach(seriesData, function (bucketData, key) {
+                if (key === 'buckets') {
+                  courseProgressDataSource.tableData = bucketData
+                }
+              })
+            }
+          })
+          deferred.resolve(courseProgressDataSource.tableData)
         } else {
           toasterService.error($rootScope.messages.fmsg.m0075)
           deferred.reject(res)
         }
-      }, function (err) {
+      }).catch(function (err) {
         toasterService.error($rootScope.messages.emsg.m0005)
         deferred.reject(err)
       })

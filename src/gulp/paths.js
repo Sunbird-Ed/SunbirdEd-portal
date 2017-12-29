@@ -20,6 +20,7 @@ var paths = {
     styles: [player.app + 'app/styles/**/main.less'],
     images: player.common + '/images/*.*',
     test: ['test/testData/testData.js', 'test/testData/announcementTestData.js',
+      'test/testData/dashboardDataSourceTestData.js',
       'test/spec/app/private/**/**/*.js', 'test/spec/app/public/**/**/*.js'],
     thirdparty: [player.app + '/thirdparty/**/*.js',
       player.app + '/thirdparty/**/**/**/*.css',
