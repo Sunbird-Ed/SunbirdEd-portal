@@ -30,7 +30,7 @@
                             <label>
                                 {{$root.frmelmnts.lbl.curriculum}}
                             </label>
-                            <select name="board" class="ui fluid dropdown" id="boardDropDown" ng-options=" board for board in lessonPlan.boards" ng-model="lessonPlan.data.board">
+                            <select name="board" class="ui fluid search selection dropdown" id="boardDropDown" ng-options=" board for board in lessonPlan.boards" ng-model="lessonPlan.data.board">
                                 <option value="">{{$root.frmelmnts.lbl.curriculum}}</option>
                             </select>
                         </div>
@@ -38,7 +38,7 @@
                             <label>
                                 {{$root.frmelmnts.lbl.medium}}
                             </label>
-                            <select name="medium" class="ui fluid dropdown" id="mediumDropDown" ng-options=" medium for medium in lessonPlan.mediums" ng-model="lessonPlan.data.language">
+                            <select name="medium" class="ui fluid search selection dropdown" id="mediumDropDown" ng-options=" medium for medium in lessonPlan.mediums" ng-model="lessonPlan.data.language">
                                 <option value="">{{$root.frmelmnts.lbl.medium}}</option>
                             </select>
                         </div>
@@ -48,7 +48,7 @@
                             <label>
                                 {{$root.frmelmnts.lbl.subject}}
                             </label>
-                            <select name="subject" class="ui fluid dropdown" id="subjectDropDown" ng-options=" subject for subject in lessonPlan.subjects" ng-model="lessonPlan.data.subject">
+                            <select name="subject" class="ui fluid search selection dropdown" id="subjectDropDown" ng-options=" subject for subject in lessonPlan.subjects" ng-model="lessonPlan.data.subject">
                                 <option value="">{{$root.frmelmnts.lbl.subject}}</option>
                             </select>
                         </div>
@@ -56,7 +56,7 @@
                             <label>
                                 {{$root.frmelmnts.lbl.class}}
                             </label>
-                            <select name="grades" multiple="" class="ui fluid dropdown" id="gradeDropDown" ng-options=" grade for grade in lessonPlan.grades" ng-model="lessonPlan.data.gradeLevel" s>
+                            <select name="grades" multiple="" class="ui fluid search selection dropdown" id="gradeDropDown" ng-options=" grade for grade in lessonPlan.grades" ng-model="lessonPlan.data.gradeLevel" s>
                                 <option value="">{{$root.frmelmnts.lbl.class}}</option>
                             </select>
                         </div>
