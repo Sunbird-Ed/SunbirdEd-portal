@@ -6,8 +6,8 @@
 
 angular.module('playerApp')
   .service('orgConsumptionDataSource', ['$q', 'config', '$rootScope', 'httpAdapter', 'toasterService',
-    'dashboardService', function ($q, config,
-      $rootScope, httpAdapter, toasterService, dashboardService) {
+    'dataUtils', function ($q, config,
+      $rootScope, httpAdapter, toasterService, dataUtils) {
       var orgConsDataSource = this
       /**
      * @method buildNumericData
@@ -21,7 +21,7 @@ angular.module('playerApp')
         case 'org.consumption.content.session.count':
         case 'org.consumption.content.time_spent.sum':
         case 'org.consumption.content.time_spent.average':
-          orgConsDataSource.numericBlockData.push(dashboardService.secondsToMin(numericData))
+          orgConsDataSource.numericBlockData.push(dataUtils.secondsToMin(numericData))
           break
         default:
           orgConsDataSource.numericBlockData.push(numericData)

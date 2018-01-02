@@ -6,8 +6,7 @@
 
 angular.module('playerApp')
   .service('courseConsumptionDataSource', ['$q', '$rootScope', 'config', 'httpAdapter', 'toasterService',
-    'dashboardService', function ($q,
-      $rootScope, config, httpAdapter, toasterService, dashboardService) {
+    'dataUtils', function ($q, $rootScope, config, httpAdapter, toasterService, dataUtils) {
       var courseConsDataSource = this
       /**
      * @method getData
@@ -28,7 +27,7 @@ angular.module('playerApp')
             courseConsDataSource.graphBlockData = []
             angular.forEach(res.result.snapshot, function (numericData, key) {
               if (key !== 'course.consumption.users_completed') {
-                dashboardService.secondsToMin(numericData)
+                dataUtils.secondsToMin(numericData)
               }
               courseConsDataSource.graphBlockData.push(numericData)
             })

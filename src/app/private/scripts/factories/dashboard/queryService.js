@@ -5,10 +5,10 @@
 'use strict'
 
 angular.module('playerApp')
-  .factory('QueryService', ['config', '$q', 'dashboardService',
+  .factory('QueryService', ['config', '$q',
     'courseConsumptionDataSource', 'courseProgressDataSource',
     'orgCreationDataSource', 'orgConsumptionDataSource',
-    function (config, $q, dashboardService, courseConsumptionDataSource,
+    function (config, $q, courseConsumptionDataSource,
       courseProgressDataSource, orgCreationDataSource, orgConsumptionDataSource) {
       // Datasets - api urls
       var datasets = {
