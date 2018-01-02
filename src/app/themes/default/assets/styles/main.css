@@ -1745,8 +1745,8 @@ ul.fancytree-container li {
 .ui.styled.accordion .active.title .angle.down.icon {
   background: 0 0;
   color: rgba(0, 0, 0, 0.95);
-  -webkit-transform: rotate(270deg);
-  transform: rotate(270deg);
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
 }
 .homePage .slick-slider {
   margin-bottom: 0px !important;
