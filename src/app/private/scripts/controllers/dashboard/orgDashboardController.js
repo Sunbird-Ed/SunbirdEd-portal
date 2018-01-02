@@ -111,7 +111,7 @@ angular.module('playerApp')
             }
           })
             .catch(function () {
-              toasterService.error('error')
+              toasterService.error($rootScope.messages.emsg.m0005)
             })
         }
       }
