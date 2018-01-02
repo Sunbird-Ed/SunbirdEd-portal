@@ -31,6 +31,7 @@ angular.module('playerApp')
       upForReviewContent.search.selectedBoard = []
       upForReviewContent.search.selectedSubject = []
       upForReviewContent.search.selectedGrades = []
+      $('#sortByDropDown').dropdown()
 
       upForReviewContent.showErrorMessage = function (isClose, message, messageType, messageText) {
         var error = {}
@@ -72,6 +73,7 @@ angular.module('playerApp')
         var itemIndex = upForReviewContent.search[filterType].indexOf(value)
         if (itemIndex !== -1) {
           upForReviewContent.search[filterType].splice(itemIndex, 1)
+          upForReviewContent.getUpForReviewContent(1)
         }
       }
 
@@ -92,7 +94,7 @@ angular.module('playerApp')
         upForReviewContent.getUpForReviewContent(1)
       }
 
-      upForReviewContent.getRequestObject = function (pageNumber) {
+      upForReviewContent.getRequestObject = function (pageNumber, isApplyFilter) {
         var req = {
           filters: {
             status: upForReviewContent.contentStatus,
@@ -112,24 +114,27 @@ angular.module('playerApp')
           req.query = upForReviewContent.searchText
         }
 
-        if (upForReviewContent.search.selectedMedium && upForReviewContent.search.selectedMedium.length > 0) {
-          req.filters.medium = upForReviewContent.search.selectedMedium
-        }
+        if (isApplyFilter) {
+          if (upForReviewContent.search.selectedMedium && upForReviewContent.search.selectedMedium.length > 0) {
+            req.filters.medium = upForReviewContent.search.selectedMedium
+          }
 
-        if (upForReviewContent.search.selectedContentType && upForReviewContent.search.selectedContentType.length > 0) {
-          req.filters.contentType = upForReviewContent.search.selectedContentType
-        }
+          if (upForReviewContent.search.selectedContentType &&
+              upForReviewContent.search.selectedContentType.length > 0) {
+            req.filters.contentType = upForReviewContent.search.selectedContentType
+          }
 
-        if (upForReviewContent.search.selectedBoard && upForReviewContent.search.selectedBoard.length > 0) {
-          req.filters.board = upForReviewContent.search.selectedBoard
-        }
+          if (upForReviewContent.search.selectedBoard && upForReviewContent.search.selectedBoard.length > 0) {
+            req.filters.board = upForReviewContent.search.selectedBoard
+          }
 
-        if (upForReviewContent.search.selectedSubject && upForReviewContent.search.selectedSubject.length > 0) {
-          req.filters.subject = upForReviewContent.search.selectedSubject
-        }
+          if (upForReviewContent.search.selectedSubject && upForReviewContent.search.selectedSubject.length > 0) {
+            req.filters.subject = upForReviewContent.search.selectedSubject
+          }
 
-        if (upForReviewContent.search.selectedGrades && upForReviewContent.search.selectedGrades.length > 0) {
-          req.filters.gradeLevel = upForReviewContent.search.selectedGrades
+          if (upForReviewContent.search.selectedGrades && upForReviewContent.search.selectedGrades.length > 0) {
+            req.filters.gradeLevel = upForReviewContent.search.selectedGrades
+          }
         }
 
         if (upForReviewContent.search.sortBy) {
@@ -139,11 +144,11 @@ angular.module('playerApp')
         return req
       }
 
-      upForReviewContent.getUpForReviewContent = function (pageNumber) {
+      upForReviewContent.getUpForReviewContent = function (pageNumber, isApplyFilter) {
         pageNumber = pageNumber || 1
         upForReviewContent.loader = toasterService.loader('', $rootScope.messages.stmsg.m0032)
         upForReviewContent.error = {}
-        var request = upForReviewContent.getRequestObject(pageNumber)
+        var request = upForReviewContent.getRequestObject(pageNumber, isApplyFilter)
         searchService.search(request).then(function (res) {
           if (res && res.responseCode === 'OK') {
             upForReviewContent.loader.showLoader = false
