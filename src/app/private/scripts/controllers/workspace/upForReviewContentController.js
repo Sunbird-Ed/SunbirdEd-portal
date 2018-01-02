@@ -201,7 +201,7 @@ angular.module('playerApp')
             .popup({
               popup: $('#LinkCopiedToClipboard1'),
               on: 'click',
-              position: 'bottom center',
+              position: 'bottom right',
               color: '#4183c4'
             })
         }, 0)
