@@ -190,5 +190,114 @@ var dashboardDataSourceTestData = { // eslint-disable-line
       'responseCode': 'CLIENT_ERROR',
       'result': {}
     }
+  },
+  orgConsumptionData: {
+    getSuccessData: {
+      'id': 'api.sunbird.dashboard.org.consumption',
+      'ver': 'v1',
+      'ts': '2018-01-02 06:36:17:343+0000',
+      'params': {
+        'resmsgid': null,
+        'msgid': '6d6d77a6-00d4-44cd-bfa7-56fe7ac5f888',
+        'err': null,
+        'status': 'success',
+        'errmsg': null
+      },
+      'responseCode': 'OK',
+      'result': {
+        'period': '7d',
+        'org': {
+          'orgName': 'Sunbird',
+          'orgId': 'ORG_001'
+        },
+        'snapshot': {
+          'org.consumption.content.session.count': {
+            'name': 'Number of visits by users',
+            'value': 0
+          },
+          'org.consumption.content.time_spent.sum': {
+            'name': 'Content consumption time',
+            'value': 0.0,
+            'time_unit': 'seconds'
+          },
+          'org.consumption.content.time_spent.average': {
+            'name': 'Average time spent by user per visit',
+            'value': 0.0,
+            'time_unit': 'seconds'
+          }
+        },
+        'series': {
+          'org.consumption.content.users.count': {
+            'name': 'Number of users per day',
+            'split': 'content.users.count',
+            'group_id': 'org.users.count',
+            'buckets': [{
+              'key': 1514270177342,
+              'key_name': '2017-12-26',
+              'value': 0
+            }, {
+              'key': 1514356577342,
+              'key_name': '2017-12-27',
+              'value': 0
+            }, {
+              'key': 1514442977342,
+              'key_name': '2017-12-28',
+              'value': 0
+            }, {
+              'key': 1514529377342,
+              'key_name': '2017-12-29',
+              'value': 0
+            }, {
+              'key': 1514615777342,
+              'key_name': '2017-12-30',
+              'value': 0
+            }, {
+              'key': 1514702177342,
+              'key_name': '2017-12-31',
+              'value': 0
+            }, {
+              'key': 1514788577342,
+              'key_name': '2018-01-01',
+              'value': 0
+            }]
+          },
+          'org.consumption.content.time_spent.sum': {
+            'name': 'Time spent by day',
+            'split': 'content.time_spent.user.count',
+            'time_unit': 'seconds',
+            'group_id': 'org.timespent.sum',
+            'buckets': [{
+              'key': 1514270177342,
+              'key_name': '2017-12-26',
+              'value': 0.0
+            }, {
+              'key': 1514356577342,
+              'key_name': '2017-12-27',
+              'value': 0.0
+            }, {
+              'key': 1514442977342,
+              'key_name': '2017-12-28',
+              'value': 0.0
+            }, {
+              'key': 1514529377342,
+              'key_name': '2017-12-29',
+              'value': 0.0
+            }, {
+              'key': 1514615777342,
+              'key_name': '2017-12-30',
+              'value': 0.0
+            }, {
+              'key': 1514702177342,
+              'key_name': '2017-12-31',
+              'value': 0.0
+            }, {
+              'key': 1514788577342,
+              'key_name': '2018-01-01',
+              'value': 0.0
+            }]
+          }
+        }
+      }
+    }
   }
 }
