@@ -8,16 +8,15 @@ angular.module('playerApp')
        * @method Render
        * @desc - render line chart
        * @param   {object}  data
-       * @param   {string}  dashboardType
        */
-      function Render (data, dashboardType) {
+      function Render (data) {
         var chartList = []
         var groupList = {}
 
         _.forEach(data.bucketData, function (bucketData, key) {
           var groupData = {}
-
           var yAxesLabel = data.name
+
           if (data.series === '') {
             groupData['legend'] = [bucketData.name]
 
@@ -75,7 +74,6 @@ angular.module('playerApp')
           values.push(bucketValue.value)
           labels.push(bucketValue.key_name)
         })
-
         return { labels: labels, values: values }
       }
 
@@ -96,7 +94,6 @@ angular.module('playerApp')
             fill: false
           })
         }
-
         return colorArray
       }
 
