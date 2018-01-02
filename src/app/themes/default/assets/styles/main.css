@@ -791,7 +791,8 @@ th {
   transition: box-shadow 0.1s ease, transform 0.1s ease;
   z-index: '';
 }
-.sliderCards.ui.card:hover {
+.sliderCards.ui.link.card:hover,
+.ui.link.cards .card:hover {
   transition: all .3s ease 0s;
   box-shadow: none;
 }
@@ -1367,8 +1368,8 @@ h5.ui.header {
   font-size: 1rem;
 }
 .searchicon.ui.icon.input input.upForReviewSearchBox {
-  width: 400px;
-  background: #F5F5F5;
+  width: 450px;
+  background: #fdfdfd;
   border-right: none;
   border-top: none;
   border-left: none;
@@ -1559,12 +1560,9 @@ span.fancytree-title {
 .text-cencapitalize {
   text-transform: capitalize;
 }
-.card-content-description {
-  padding-top: 10px !important;
-}
 .popular-section {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  /* box-shadow: 0 8px 6px -8px #d9d4d4;*/
+  /* box-shadow: 0 8px 6px -8px @tertiary-color;*/
   padding-top: 1em;
   padding-bottom: 1em;
   padding-left: 0.3em;
@@ -1830,7 +1828,7 @@ ul.fancytree-container li {
   margin: 1rem 0;
   padding: 20px 20px;
   border-radius: 4px;
-  border: 1px solid #F5F5F5;
+  border: 1px solid #d8dee2;
 }
 .annannouncement-description {
   margin-top: 11px;
@@ -2441,13 +2439,13 @@ i.trash.outline.icon.trashIcon-fontSize {
   height: 600px;
   overflow-y: scroll;
   cursor: pointer;
-  border-top: 0!important;
+  border-top: 0;
 }
 .notelistrightscroll {
   max-height: 600px;
   overflow-y: auto;
   cursor: pointer;
-  border-top: 0!important;
+  border-top: 0;
 }
 .notelistborder {
   border: 2px solid #d9d9d9 !important;
@@ -2464,12 +2462,12 @@ i.trash.outline.icon.trashIcon-fontSize {
   white-space: nowrap;
 }
 .notedecheader {
-  font-weight: 600!important;
+  font-weight: 600;
   word-wrap: break-word;
 }
 .noteListSegment.ui.segment {
   padding: 14px 0px;
-  background: #ffffff !important;
+  background: #ffffff;
 }
 .notedec p {
   word-break: break-all;
