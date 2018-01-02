@@ -5,7 +5,7 @@
       <app-loader data="{{previewContent.loader}}"></app-loader>
     </div>
     <div class="row margin-top-10" ng-show="!previewContent.loader.showLoader">
-      <content-player visibility="previewContent.contentPlayer.isContentPlayerEnabled" body="previewContent.contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="true" height="10" width="100" ispercentage="true" closeurl="previewContent.redirectUrl" isworkspace="true"></content-player>
+      <content-player visibility="previewContent.contentPlayer.isContentPlayerEnabled" body="previewContent.contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="true" height="10" width="80" ispercentage="true" closeurl="previewContent.redirectUrl" isworkspace="true"></content-player>
     </div>
     <div class="row margin-top-10" ng-show="!previewContent.loader.showLoader">
       <div class="margin-top--5 videosegment ui clearing segment" ng-if="previewContent.contentData.status === 'Review' && previewContent.isShowPublishRejectButton">
@@ -38,8 +38,8 @@
           </div>
           <div class="description padding-top-5" ng-init="previewContent.readMore = false">
             <div ng-if="!previewContent.readMore">
-              <span class="pre-line-space">{{previewContent.contentData.description | limitTo: 20 }}&nbsp;</span>
-              <span class="ui cardsKnowMore mouse-pointer" ng-if="previewContent.contentData.description.length > 20 && previewContent.readMore === false" ng-click="previewContent.readMore = !previewContent.readMore;">{{$root.frmelmnts.lbl.readmore}} </span>
+              <span class="pre-line-space">{{previewContent.contentData.description | limitTo: 80 }}&nbsp;</span>
+              <span class="ui cardsKnowMore mouse-pointer" ng-if="previewContent.contentData.description.length > 80 && previewContent.readMore === false" ng-click="previewContent.readMore = !previewContent.readMore;">{{$root.frmelmnts.lbl.readmore}} </span>
             </div>
             <div class="pre-line-space" ng-if="previewContent.readMore"> {{previewContent.contentData.description}}&nbsp;
               <span class="ui cardsKnowMore mouse-pointer" ng-click="previewContent.readMore = false;">{{$root.frmelmnts.lbl.readless}}</span>

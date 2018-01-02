@@ -24,13 +24,13 @@
                     <div class="two fields">
                         <div class="field">
                             <label>{{$root.frmelmnts.lbl.curriculum}}</label>
-                            <select name="board" class="ui fluid dropdown singleSelectDropDown" ng-options=" board for board in contentLesson.boards" ng-model="contentLesson.data.board">
+                            <select name="board" class="ui fluid search selection dropdown singleSelectDropDown" ng-options=" board for board in contentLesson.boards" ng-model="contentLesson.data.board">
                                 <option value="">{{$root.frmelmnts.lbl.curriculum}}</option>
                             </select>
                         </div>
                         <div class="field">
                             <label>{{$root.frmelmnts.lbl.medium}}</label>
-                            <select name="medium" class="ui fluid dropdown singleSelectDropDown" ng-options=" medium for medium in contentLesson.mediums" ng-model="contentLesson.data.language">
+                            <select name="medium" class="ui fluid search selection dropdown singleSelectDropDown" ng-options=" medium for medium in contentLesson.mediums" ng-model="contentLesson.data.language">
                                 <option value="">{{$root.frmelmnts.lbl.medium}}</option>
                             </select>
                         </div>
@@ -38,13 +38,13 @@
                     <div class="two fields">
                         <div class="field">
                             <label>{{$root.frmelmnts.lbl.subject}}</label>
-                            <select name="subject" class="ui fluid dropdown singleSelectDropDown" ng-options=" subject for subject in contentLesson.subjects" ng-model="contentLesson.data.subject">
+                            <select name="subject" class="ui fluid search selection dropdown singleSelectDropDown" ng-options=" subject for subject in contentLesson.subjects" ng-model="contentLesson.data.subject">
                                 <option value="">{{$root.frmelmnts.lbl.subject}}</option>
                             </select>
                         </div>
                         <div class="field">
                             <label>{{$root.frmelmnts.lbl.class}}</label>
-                            <select name="grades" multiple="" class="ui fluid dropdown multiSelectDropDown" ng-options=" grade for grade in contentLesson.grades" ng-model="contentLesson.data.gradeLevel" s>
+                            <select name="grades" multiple="" class="ui fluid search selection dropdown multiSelectDropDown" ng-options=" grade for grade in contentLesson.grades" ng-model="contentLesson.data.gradeLevel" s>
                                 <option value="">{{$root.frmelmnts.lbl.class}}</option>
                             </select>
                         </div>
@@ -56,7 +56,7 @@
                         </div>
                         <div class="field">
                             <label>{{$root.frmelmnts.lbl.resourcetype}}</label>
-                            <select name="resourceType" class="ui fluid dropdown singleSelectDropDown" ng-options=" resourceType for resourceType in contentLesson.resourceType" ng-model="contentLesson.data.resourceType">
+                            <select name="resourceType" class="ui fluid search selection dropdown singleSelectDropDown" ng-options=" resourceType for resourceType in contentLesson.resourceType" ng-model="contentLesson.data.resourceType">
                                 <option value="">{{$root.frmelmnts.lbl.resourcetype}}</option>
                             </select>
                         </div>
