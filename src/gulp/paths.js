@@ -271,7 +271,8 @@ var paths = {
     'dist/private/scripts/directives/announcementDetailsDirective.js',
     'dist/private/scripts/controllers/profileVisibilityController.js',
     'dist/private/scripts/directives/profileVisibility.js',
-    'dist/private/scripts/factories/fileUploadFactory.js'
+    'dist/private/scripts/factories/fileUploadFactory.js',
+    'dist/private/scripts/factories/dashboard/queryService.js'
   ],
   telemetry_js: [
     'dist/private/scripts/telemetry/TelemetryEvent.js',
