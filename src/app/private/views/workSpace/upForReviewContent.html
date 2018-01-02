@@ -1,5 +1,5 @@
 <div class="ui grid">
-    <div class="seven wide column">
+    <div class="seven wide column padding-top-none">
         <div class="ui fluid icon input left action" id="search-input-container">
             <div class="searchfilterinput ui search">
                 <div class="searchicon ui icon input ">
@@ -11,13 +11,13 @@
         </div>
     </div>
     <div class="one wide column"></div>
-    <div class="two wide column padding-top-20" id="buttonPopUp1">        
+    <div class="two wide column padding-top-10" id="buttonPopUp1">        
         <span class="browse item cursor-pointer" ng-click="upForReviewContent.showFilterPopup()">
             {{$root.frmelmnts.lbl.showFilters}}
             <i class="dropdown icon"></i>
         </span>        
     </div>
-    <div class="two wide column">
+    <div class="two wide column padding-top-5">
         <div class="twelve wide column">
           <div class="field">
             <div class="content dropdown-content">
@@ -68,10 +68,11 @@
 </div>
 
 <div class="ui grid" ng-if="upForReviewContent.hideFilterPopup">
+  <div class="ten wide column">
     <div class="ui fluid popup" id="LinkCopiedToClipboard1">
         <div class="filtercolmntext ui grid">
             <!-- Curriculum -->
-            <div class="two wide column">
+            <div class="three wide column">
                 <div id="filterBoard" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
                     <i class="dropdown icon"></i>
                     <div class="filter-sel-text" ng-if="upForReviewContent.search.selectedBoard.length > 0 ">{{upForReviewContent.search.selectedBoard.length+' '+$root.frmelmnts.prmpt.curriculum}}</div>
@@ -83,7 +84,7 @@
                 </div>
             </div>
             <!-- subjects -->
-            <div class="two wide column" ng-if="upForReviewContent.search.selectedSearchKey !== 'Organisations'">
+            <div class="three wide column" ng-if="upForReviewContent.search.selectedSearchKey !== 'Organisations'">
                 <div apply-script id="filterSub" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
                     <i class="dropdown icon"></i>
                     <div class="filter-sel-text" ng-if="upForReviewContent.search.selectedSubject.length > 0 ">{{upForReviewContent.search.selectedSubject.length+' '+$root.frmelmnts.prmpt.subject}}</div>
@@ -95,7 +96,7 @@
                 </div>
             </div>
             <!-- grades-->
-            <div class="two wide column">
+            <div class="three wide column">
                 <div id="" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
                     <i class="dropdown icon"></i>
                     <div class="filter-sel-text" ng-if="upForReviewContent.search.selectedGrades.length > 0 ">{{upForReviewContent.search.selectedGrades.length+' '+$root.frmelmnts.prmpt.grades}}</div>
@@ -106,8 +107,13 @@
                     </div>
                 </div>
             </div>
+            <!-- buttons -->
+        </div>
+        <div class="filtercolmntext ui grid">
+            <!-- Curriculum -->
+
             <!-- Language -->
-            <div class="two wide column">
+            <div class="three wide column">
                 <div apply-script id="filterLang" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
                     <input type='hidden' ng-value='{{}}' />
                     <i class="dropdown icon"></i>
@@ -133,10 +139,13 @@
                 </div>
             </div>
             <!-- buttons -->
+            <div class="three wide column filter-button float-ContentRight padding-top-10">
+              <a class="searchfilterbutton ui blue tiny  button" ng-click="upForReviewContent.getUpForReviewContent()">{{$root.frmelmnts.btn.apply}}</a>
+              <a class="searchfilterbutton ui primary tiny basic button" ng-click="upForReviewContent.search.resetFilter()">{{$root.frmelmnts.btn.reset}}</a>
+            </div>
         </div>
-        <div class="three wide column filter-button float-ContentRight padding-top-10">
-            <a class="searchfilterbutton ui blue tiny  button" ng-click="upForReviewContent.getUpForReviewContent()">{{$root.frmelmnts.btn.apply}}</a>
-            <a class="searchfilterbutton ui primary tiny basic button" ng-click="upForReviewContent.search.resetFilter()">{{$root.frmelmnts.btn.reset}}</a>
-        </div>
+
+   </div>
     </div>
+
 </div>
