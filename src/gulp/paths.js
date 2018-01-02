@@ -20,7 +20,8 @@ var paths = {
     styles: [player.app + 'app/styles/**/main.less'],
     images: player.common + '/images/*.*',
     test: ['test/testData/testData.js', 'test/testData/announcementTestData.js',
-      'test/spec/app/private/**/**/*.js', 'test/spec/app/public/**/**/*.js'],
+      'test/testData/dashboardDataSourceTestData.js', 'test/spec/app/private/**/**/*.js',
+      'test/spec/app/public/**/**/*.js'],
     thirdparty: [player.app + '/thirdparty/**/*.js',
       player.app + '/thirdparty/**/**/**/*.css',
       player.app + '/thirdparty/**/**/**/**/*.*'
@@ -271,7 +272,12 @@ var paths = {
     'dist/private/scripts/directives/announcementDetailsDirective.js',
     'dist/private/scripts/controllers/profileVisibilityController.js',
     'dist/private/scripts/directives/profileVisibility.js',
-    'dist/private/scripts/factories/fileUploadFactory.js'
+    'dist/private/scripts/factories/fileUploadFactory.js',
+    'dist/private/scripts/services/dashboard/datasources/courseConsumptionDataSource.js',
+    'dist/private/scripts/services/dashboard/datasources/courseProgressDataSource.js',
+    'dist/private/scripts/services/dashboard/datasources/orgCreationDataSource.js',
+    'dist/private/scripts/services/dashboard/datasources/orgConsumptionDataSource.js',
+    'dist/private/scripts/services/dashboard/datasources/dataUtils.js'
   ],
   telemetry_js: [
     'dist/private/scripts/telemetry/TelemetryEvent.js',
