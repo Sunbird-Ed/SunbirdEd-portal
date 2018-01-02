@@ -38,9 +38,6 @@ angular.module('playerApp')
           // X-axes Labels
           groupData['xaxes'] = chartData.labels
 
-          // Colors
-          groupData['colors'] = getChartColors(dashboardType)
-
           // Options
           groupData['options'] = getChartOptions(yAxesLabel)
 
@@ -49,6 +46,9 @@ angular.module('playerApp')
           } else {
             groupList[bucketData.group_id] = groupData
           }
+
+          // Colors
+          groupData['colors'] = getChartColors(groupList[bucketData.group_id].legend.length)
         })
 
         // Preparing array to render graph
@@ -82,43 +82,42 @@ angular.module('playerApp')
       /**
        * @method getChartColors
        * @desc Get chart colors
-       * @memberOf Services.dashboardService
-       * @param {string}  datasetType - Data type
+       * @param {int}  legendCount
        * @returns {Object[]} List of colors
        * @instance
        */
-
-      function getChartColors (datasetType) {
-        if (datasetType === 'creation') {
-          return [{
-            backgroundColor: '#f93131',
-            borderColor: '#f93131',
+      function getChartColors (legendCount) {
+        var colorArray = []
+        for (var i = 0; i < legendCount; i++) {
+          var randColor = getRandomColor()
+          colorArray.push({
+            backgroundColor: randColor,
+            borderColor: randColor,
             fill: false
-          },
-          {
-            backgroundColor: '#0062ff',
-            borderColor: '#0062ff',
-            fill: false
-          },
-          {
-            backgroundColor: '#006400',
-            borderColor: '#006400',
-            fill: false
-          }
-          ]
-        } else if (datasetType === 'consumption') {
-          return [{
-            backgroundColor: '#0062ff',
-            borderColor: '#0062ff',
-            fill: false
-          }]
+          })
         }
+
+        return colorArray
+      }
+
+      /**
+       * @method getRandomColor
+       * @desc Get random colors
+       * @returns {string} Colors
+       * @instance
+       */
+      function getRandomColor () {
+        var letters = '0123456789ABCDEF'
+        var color = '#'
+        for (var i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)]
+        }
+        return color
       }
 
       /**
        * @method getChartOptions
        * @desc Get chart options
-       * @memberOf Services.dashboardService
        * @param {string}  labelString - Labels
        * @returns {Object} Object contains chart options .
        * @instance
