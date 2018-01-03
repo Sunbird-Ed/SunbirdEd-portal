@@ -16,8 +16,8 @@ angular.module('playerApp')
      */
     dataSourceUtils.secondsToMin = function (numericData) {
       var num = ''
-      if (numericData.value > 0 && numericData.value < 60) {
-        numericData.value = '0 second(s)'
+      if (numericData.value < 60) {
+        numericData.value += ' second(s)'
       } else if (numericData.value >= 60 && numericData.value <= 3600) {
         num = numericData.value / 60
         numericData.value = num.toFixed(2) + ' min(s)'
@@ -25,8 +25,9 @@ angular.module('playerApp')
         num = numericData.value / 3600
         numericData.value = num.toFixed(2) + ' hour(s)'
       } else {
-        numericData.value += '0 second(s)'
+        return numericData
       }
+
       return numericData
     }
 
