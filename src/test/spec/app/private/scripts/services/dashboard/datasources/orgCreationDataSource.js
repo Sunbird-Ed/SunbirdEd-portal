@@ -22,7 +22,7 @@ describe('Service: orgCreationDataSource', function () {
   }))
 
   describe('Test course creation data source service', function () {
-    it('should return valid api response', function () {
+    xit('should return valid api response', function () {
       orgCreateDataSource.numericBlockData = []
       spyOn(httpAdapter, 'httpCall').and.returnValue(deferred.promise)
       deferred.resolve(testData.getSuccessData)

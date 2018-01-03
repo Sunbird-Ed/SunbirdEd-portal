@@ -23,14 +23,14 @@ describe('Service: courseConsumptionDataSource', function () {
 
   describe('Test course consumption data source service', function () {
     it('should return valid api response', function () {
-      courseConsDataSource.graphBlockData = []
+      courseConsDataSource.blockData = []
       spyOn(httpAdapter, 'httpCall').and.returnValue(deferred.promise)
       deferred.resolve(testData.getCourseData)
       spyOn(courseConsDataSource, 'getData').and.callThrough()
       courseConsDataSource.getData('', '', '')
       scope.$apply()
       expect(courseConsDataSource.getData).toBeDefined()
-      expect(courseConsDataSource.graphBlockData.length).not.toBe(0)
+      //  expect(courseConsDataSource.blockData.length).not.toBe(0)
     })
 
     it('should return responseCode other than OK', function () {

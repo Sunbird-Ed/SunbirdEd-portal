@@ -17,22 +17,14 @@ angular.module('playerApp')
      * @returns promise
      * @instance
      */
-      this.getData = function (req, url) {
-        var URL = dataSourceUtils.constructApiUrl(req, url)
-        var deferred = $q.defer()
-        httpAdapter.httpCall(URL, '', 'GET').then(function (res) {
-          courseProgressDataSource.tableData = []
+      this.getData = function (req) {
+        var URL, deferred, header
+        URL = dataSourceUtils.constructApiUrl(req, 'COURSE_PROGRESS')
+        deferred = $q.defer()
+        header = dataSourceUtils.getHeader()
+        httpAdapter.httpCall(URL, '', 'GET', header).then(function (res) {
           if (res && res.responseCode === 'OK') {
-            angular.forEach(res.result.series, function (seriesData, key) {
-              if (key === 'course.progress.course_progress_per_user.count') {
-                angular.forEach(seriesData, function (bucketData, key) {
-                  if (key === 'buckets') {
-                    courseProgressDataSource.tableData = bucketData
-                  }
-                })
-              }
-            })
-            deferred.resolve(courseProgressDataSource.tableData)
+            deferred.resolve(courseProgressDataSource.parseResponse(res.result))
           } else {
             toasterService.error($rootScope.messages.fmsg.m0075)
             deferred.reject(res)
@@ -42,5 +34,26 @@ angular.module('playerApp')
           deferred.reject(err)
         })
         return deferred.promise
+      }
+
+      /**
+     * @method parseResponse
+     * @desc parse api response
+     * @memberOf Services.orgCreationDataSource
+     * @param {Object}  data - api response
+     * @return {object} [description]
+     */
+      courseProgressDataSource.parseResponse = function (data) {
+        courseProgressDataSource.tableData = []
+        angular.forEach(data.series, function (seriesData, key) {
+          if (key === 'course.progress.course_progress_per_user.count') {
+            angular.forEach(seriesData, function (bucketData, key) {
+              if (key === 'buckets') {
+                courseProgressDataSource.tableData = bucketData
+              }
+            })
+          }
+        })
+        return courseProgressDataSource.tableData
       }
     }])

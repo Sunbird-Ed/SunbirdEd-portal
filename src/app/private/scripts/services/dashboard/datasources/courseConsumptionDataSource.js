@@ -5,8 +5,8 @@
 'use strict'
 
 angular.module('playerApp')
-  .service('courseConsumptionDataSource', ['$q', '$rootScope', 'httpAdapter', 'toasterService',
-    'dataSourceUtils', function ($q, $rootScope, httpAdapter, toasterService, dataSourceUtils) {
+  .service('courseConsumptionDataSource', ['$rootScope', '$q', 'httpAdapter', 'toasterService',
+    'dataSourceUtils', function ($rootScope, $q, httpAdapter, toasterService, dataSourceUtils) {
       var courseConsDataSource = this
       /**
      * @method getData
@@ -17,24 +17,14 @@ angular.module('playerApp')
      * @returns promise
      * @instance
      */
-      this.getData = function (req, url) {
-        var URL = dataSourceUtils.constructApiUrl(req, url)
-        var deferred = $q.defer()
-        httpAdapter.httpCall(URL, '', 'GET').then(function (res) {
+      this.getData = function (req) {
+        var URL, deferred, header
+        URL = dataSourceUtils.constructApiUrl(req, 'COURSE_CONSUMPTION')
+        header = dataSourceUtils.getHeader()
+        deferred = $q.defer()
+        httpAdapter.httpCall(URL, '', 'GET', header).then(function (res) {
           if (res && res.responseCode === 'OK') {
-            courseConsDataSource.graphBlockData = []
-            angular.forEach(res.result.snapshot, function (numericData, key) {
-              if (key !== 'course.consumption.users_completed') {
-                dataSourceUtils.secondsToMin(numericData)
-              }
-              courseConsDataSource.graphBlockData.push(numericData)
-            })
-            var returnData = {
-              bucketData: res.result.series,
-              numericData: courseConsDataSource.graphBlockData,
-              series: ''
-            }
-            deferred.resolve(returnData)
+            deferred.resolve(courseConsDataSource.parseResponse(res.result))
           } else {
             toasterService.error($rootScope.messages.fmsg.m0075)
             deferred.reject(res)
@@ -44,5 +34,28 @@ angular.module('playerApp')
           deferred.reject(err)
         })
         return deferred.promise
+      }
+
+      /**
+     * @method extractSnapshotData
+     * @desc convert time from seconds to min
+     * @memberOf Services.orgConsumptionDataSource
+     * @param {Object}  numericData - snapshot data
+     * @param {string}  key - array key
+     */
+      courseConsDataSource.parseResponse = function (data) {
+        var blockData = []
+        angular.forEach(data.snapshot, function (numericData, key) {
+          if (key !== 'course.consumption.users_completed') {
+            dataSourceUtils.secondsToMin(numericData)
+          }
+          blockData.push(numericData)
+        })
+
+        return {
+          bucketData: data.series,
+          numericData: blockData,
+          series: ''
+        }
       }
     }])

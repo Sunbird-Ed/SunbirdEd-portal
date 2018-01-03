@@ -7,6 +7,12 @@
 angular.module('playerApp')
   .service('dataSourceUtils', ['config', function (config) {
     var dataSourceUtils = this
+    var datasetType = {
+      'ORG_CREATION': config.URL.DASHBOARD.ORG_CREATION,
+      'ORG_CONSUMPTION': config.URL.DASHBOARD.ORG_CONSUMPTION,
+      'COURSE_PROGRESS': config.URL.DASHBOARD.COURSE_PROGRESS,
+      'COURSE_CONSUMPTION': config.URL.DASHBOARD.COURSE_CONSUMPTION
+    }
     /**
      * @method getData
      * @desc get course consumption dashboard data
@@ -53,9 +59,23 @@ angular.module('playerApp')
      * @param {string}  url - url
      * @return {string} api url
      */
-    dataSourceUtils.constructApiUrl = function (req, url) {
-      var apiUrl = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + url + '/' +
+    dataSourceUtils.constructApiUrl = function (req, dataset) {
+      var apiUrl = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + datasetType[dataset] + '/' +
       req.identifier + '?period=' + req.timePeriod
       return apiUrl
+    }
+
+    /**
+     * @method getHeaders
+     * @desc getHeaders - common headers for org and course dashboard
+     * @memberOf Services.dataSourceUtils
+     * @return object
+     */
+    dataSourceUtils.getHeader = function () {
+      var headers = {
+        'Content-Type': 'application/json',
+        cid: 'sunbird'
+      }
+      return headers
     }
   }])
