@@ -5,7 +5,7 @@
 'use strict'
 
 angular.module('playerApp')
-  .service('dataSourceUtils', [function () {
+  .service('dataSourceUtils', ['config', function (config) {
     var dataSourceUtils = this
     /**
      * @method getData
@@ -28,5 +28,19 @@ angular.module('playerApp')
         numericData.value += '0 second(s)'
       }
       return numericData
+    }
+
+    /**
+     * @method constructDownloadReportUrl
+     * @desc construct download report api url
+     * @memberOf Services.constructDownloadReportUrl
+     * @param {Object}  req - identifier and time period
+     * @param {string}  url - url
+     * @return {string} api url
+     */
+    dataSourceUtils.constructDownloadReportUrl = function (req, url) {
+      var apiUrl = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + url + '/' + req.identifier
+      apiUrl += '/export?period=' + req.timePeriod + '&format=csv'
+      return apiUrl
     }
   }])

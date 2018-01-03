@@ -277,7 +277,8 @@ var paths = {
     'dist/private/scripts/services/dashboard/datasources/courseProgressDataSource.js',
     'dist/private/scripts/services/dashboard/datasources/orgCreationDataSource.js',
     'dist/private/scripts/services/dashboard/datasources/orgConsumptionDataSource.js',
-    'dist/private/scripts/services/dashboard/datasources/dataSourceUtils.js'
+    'dist/private/scripts/services/dashboard/datasources/dataSourceUtils.js',
+    'dist/private/scripts/services/dashboard/datasources/downloadReportDataSource.js'
   ],
   telemetry_js: [
     'dist/private/scripts/telemetry/TelemetryEvent.js',
