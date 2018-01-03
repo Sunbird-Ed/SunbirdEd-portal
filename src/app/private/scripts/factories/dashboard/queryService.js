@@ -5,11 +5,11 @@
 'use strict'
 
 angular.module('playerApp')
-  .factory('QueryService', ['config', '$q', 'dashboardService',
+  .factory('QueryService', ['config', '$q',
     'courseConsumptionDataSource', 'courseProgressDataSource',
-    'orgCreationDataSource', 'orgConsumptionDataSource',
-    function (config, $q, dashboardService, courseConsumptionDataSource,
-      courseProgressDataSource, orgCreationDataSource, orgConsumptionDataSource) {
+    'orgCreationDataSource', 'orgConsumptionDataSource', 'downloadReportDataSource',
+    function (config, $q, courseConsumptionDataSource,
+      courseProgressDataSource, orgCreationDataSource, orgConsumptionDataSource, downloadReportDataSource) {
       // Datasets - api urls
       var datasets = {
         org: {
@@ -39,23 +39,19 @@ angular.module('playerApp')
        * @param {object} [varname] [description]
        */
       QueryService.prototype.query = function (params) {
-        // Build header
-        var headers = {
-          'Content-Type': 'application/json',
-          cid: 'sunbird'
-        }
-
         switch (params.eid) {
         case 'courseConsumptionDataSource':
-          return courseConsumptionDataSource.getData(params.request, datasets.course[params.dataset], headers)
+          return courseConsumptionDataSource.getData(params.request, datasets.course[params.dataset])
         case 'courseProgressDataSource':
-          return courseProgressDataSource.getData(params.request, datasets.course[params.dataset], headers)
+          return courseProgressDataSource.getData(params.request, datasets.course[params.dataset])
         case 'orgCreationDataSource':
-          return orgCreationDataSource.getData(params.request, datasets.org[params.dataset], headers)
+          return orgCreationDataSource.getData(params.request, datasets.org[params.dataset])
         case 'orgConsumptionDataSource':
-          return orgConsumptionDataSource.getData(params.request, datasets.org[params.dataset], headers)
+          return orgConsumptionDataSource.getData(params.request, datasets.org[params.dataset])
+        case 'downloadOrgReport':
+          return downloadReportDataSource.download(params.request, datasets.org[params.dataset])
         default:
-          return courseConsumptionDataSource.getData(params.request, datasets.course[params.dataset], headers)
+          return downloadReportDataSource.download(params.request, datasets.org[params.dataset])
         }
       }
 

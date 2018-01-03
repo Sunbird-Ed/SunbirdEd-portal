@@ -24,7 +24,7 @@ angular.module('playerApp')
         dashboardData.objQueryClient.query({
           eid: dashboardData.datasetPreviousValue === 'creation' ? 'orgCreationDataSource' : 'orgConsumptionDataSource',
           request: {
-            orgId: dashboardData.orgId,
+            identifier: dashboardData.orgId,
             timePeriod: dashboardData.timePeriod
           },
           dataset: dashboardData.datasetPreviousValue
