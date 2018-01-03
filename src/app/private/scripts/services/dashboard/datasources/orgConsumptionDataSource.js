@@ -5,8 +5,8 @@
 'use strict'
 
 angular.module('playerApp')
-  .service('orgConsumptionDataSource', ['$q', 'config', '$rootScope', 'httpAdapter', 'toasterService',
-    'dataSourceUtils', function ($q, config,
+  .service('orgConsumptionDataSource', ['$q', '$rootScope', 'httpAdapter', 'toasterService',
+    'dataSourceUtils', function ($q,
       $rootScope, httpAdapter, toasterService, dataSourceUtils) {
       var orgConsDataSource = this
       /**
@@ -37,8 +37,7 @@ angular.module('playerApp')
      * @instance
      */
       this.getData = function (req, url) {
-        var URL = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + url + '/' +
-      req.orgId + '?period=' + req.timePeriod
+        var URL = dataSourceUtils.constructApiUrl(req, url)
         var deferred = $q.defer()
         var response = httpAdapter.httpCall(URL, '', 'GET')
         response.then(function (res) {
