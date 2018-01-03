@@ -6,8 +6,7 @@
 
 angular.module('playerApp')
   .service('courseConsumptionDataSource', ['$q', '$rootScope', 'config', 'httpAdapter', 'toasterService',
-    'dashboardService', function ($q,
-      $rootScope, config, httpAdapter, toasterService, dashboardService) {
+    'dataSourceUtils', function ($q, $rootScope, config, httpAdapter, toasterService, dataSourceUtils) {
       var courseConsDataSource = this
       /**
      * @method getData
@@ -15,20 +14,19 @@ angular.module('playerApp')
      * @memberOf Services.courseConsumptionDataSource
      * @param {Object}  req - Request object
      * @param {string}  datasetType - Data set type
-     * @param {object} headers headers
      * @returns promise
      * @instance
      */
-      this.getData = function (req, url, headers) {
+      this.getData = function (req, url) {
         var URL = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + url + '/' +
       req.courseId + '?period=' + req.timePeriod
         var deferred = $q.defer()
-        httpAdapter.httpCall(URL, '', 'GET', headers).then(function (res) {
+        httpAdapter.httpCall(URL, '', 'GET').then(function (res) {
           if (res && res.responseCode === 'OK') {
             courseConsDataSource.graphBlockData = []
             angular.forEach(res.result.snapshot, function (numericData, key) {
               if (key !== 'course.consumption.users_completed') {
-                dashboardService.secondsToMin(numericData)
+                dataSourceUtils.secondsToMin(numericData)
               }
               courseConsDataSource.graphBlockData.push(numericData)
             })

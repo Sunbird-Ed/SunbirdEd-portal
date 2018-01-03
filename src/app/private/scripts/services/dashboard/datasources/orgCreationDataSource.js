@@ -39,15 +39,14 @@ angular.module('playerApp')
      * @memberOf Services.orgCreationDataSource
      * @param {Object}  req - Request object
      * @param {string}  datasetType - Data set type
-     * @param {object} headers headers
      * @returns promise
      * @instance
      */
-      this.getData = function (req, url, headers) {
+      this.getData = function (req, url) {
         var URL = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + url + '/' +
       req.orgId + '?period=' + req.timePeriod
         var deferred = $q.defer()
-        var response = httpAdapter.httpCall(URL, '', 'GET', headers)
+        var response = httpAdapter.httpCall(URL, '', 'GET')
         response.then(function (res) {
           if (res && res.responseCode === 'OK') {
             orgCreateDataSource.numericBlockData = []

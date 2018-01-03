@@ -33,7 +33,7 @@ describe('Service: courseConsumptionDataSource', function () {
       expect(courseConsDataSource.graphBlockData.length).not.toBe(0)
     })
 
-    it('should return client error', function () {
+    it('should return responseCode other than OK', function () {
       courseConsDataSource.graphBlockData = []
       spyOn(httpAdapter, 'httpCall').and.returnValue(deferred.promise)
       deferred.resolve(testData.errorResponse)

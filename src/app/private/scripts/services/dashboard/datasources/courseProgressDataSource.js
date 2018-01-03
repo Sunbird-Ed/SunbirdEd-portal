@@ -14,15 +14,14 @@ angular.module('playerApp')
      * @memberOf Services.orgDataSource
      * @param {Object}  req - Request object
      * @param {string}  datasetType - Data set type
-     * @param {object} headers headers
      * @returns promise
      * @instance
      */
-    this.getData = function (req, url, headers) {
+    this.getData = function (req, url) {
       var URL = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + url + '/' +
       req.courseId + '?period=' + req.timePeriod
       var deferred = $q.defer()
-      httpAdapter.httpCall(URL, '', 'GET', headers).then(function (res) {
+      httpAdapter.httpCall(URL, '', 'GET').then(function (res) {
         courseProgressDataSource.tableData = []
         if (res && res.responseCode === 'OK') {
           angular.forEach(res.result.series, function (seriesData, key) {
