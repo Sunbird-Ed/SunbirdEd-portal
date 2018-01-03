@@ -114,7 +114,7 @@
 </div>
 
 <div class="ui grid" ng-show="upForReviewContent.hideFilterPopup">
-    <div class="ui fluid popup" id="LinkCopiedToClipboard1">
+    <div class="ui fluid popup upForReviewPopUp" id="LinkCopiedToClipboard1">
         <div class="filtercolmntext ui grid">
             <!-- Curriculum -->
             <div class="three wide column">
@@ -152,12 +152,7 @@
                     </div>
                 </div>
             </div>
-            <!-- buttons -->
-        </div>
-        <div class="filtercolmntext ui grid">
-            <!-- Curriculum -->
-
-            <!-- Language -->
+                        <!-- Language -->
             <div class="three wide column">
                 <div apply-script id="filterLang" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
                     <input type='hidden' ng-value='{{}}' />
@@ -170,6 +165,12 @@
                     </div>
                 </div>
             </div>
+            <!-- buttons -->
+        </div>
+        <div class="filtercolmntext ui grid">
+            <!-- Curriculum -->
+
+
             <!-- Content Type -->
             <div class='three wide column'>
                 <div apply-script id="filterContent" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
