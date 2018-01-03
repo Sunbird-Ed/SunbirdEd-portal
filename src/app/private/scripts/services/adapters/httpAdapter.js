@@ -5,8 +5,9 @@ angular.module('playerApp')
     var httpAdapter = this
     /**
      * @method httpHeader
-     * @desc Http header
+     * @desc default Http header
      * @memberOf adapters.httpHeader
+     * @return {object} return default header
      * @instance
      */
     httpAdapter.httpHeader = function () {

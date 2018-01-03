@@ -41,7 +41,7 @@ angular.module('playerApp')
      * @desc parse api response
      * @memberOf Services.orgCreationDataSource
      * @param {Object}  data - api response
-     * @return {object} [description]
+     * @return {object} graph data
      */
       courseProgressDataSource.parseResponse = function (data) {
         courseProgressDataSource.tableData = []

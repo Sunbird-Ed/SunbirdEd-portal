@@ -37,11 +37,11 @@ angular.module('playerApp')
       }
 
       /**
-     * @method extractSnapshotData
-     * @desc convert time from seconds to min
-     * @memberOf Services.orgConsumptionDataSource
-     * @param {Object}  numericData - snapshot data
-     * @param {string}  key - array key
+     * @method parseResponse
+     * @desc parse api response
+     * @memberOf Services.courseConsumptionDataSource
+     * @param {Object}  data - api response
+     * @return {Object} graph data
      */
       courseConsDataSource.parseResponse = function (data) {
         var blockData = []
