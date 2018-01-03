@@ -43,4 +43,18 @@ angular.module('playerApp')
       apiUrl += '/export?period=' + req.timePeriod + '&format=csv'
       return apiUrl
     }
+
+    /**
+     * @method constructApiUrl
+     * @desc construct download report api url
+     * @memberOf Services.constructDownloadReportUrl
+     * @param {Object}  req - identifier and time period
+     * @param {string}  url - url
+     * @return {string} api url
+     */
+    dataSourceUtils.constructApiUrl = function (req, url) {
+      var apiUrl = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + url + '/' +
+      req.identifier + '?period=' + req.timePeriod
+      return apiUrl
+    }
   }])

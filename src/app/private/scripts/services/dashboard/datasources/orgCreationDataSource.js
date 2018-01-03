@@ -5,9 +5,9 @@
 'use strict'
 
 angular.module('playerApp')
-  .service('orgCreationDataSource', ['$q', 'config', '$rootScope', 'httpAdapter',
-    'toasterService', function ($q, config,
-      $rootScope, httpAdapter, toasterService) {
+  .service('orgCreationDataSource', ['$q', '$rootScope', 'httpAdapter',
+    'toasterService', 'dataSourceUtils', function ($q,
+      $rootScope, httpAdapter, toasterService, dataSourceUtils) {
       var orgCreateDataSource = this
       var contentStatus = {
         'org.creation.content[@status=published].count': ' LIVE',
@@ -43,8 +43,7 @@ angular.module('playerApp')
      * @instance
      */
       this.getData = function (req, url) {
-        var URL = config.URL.BASE_PREFIX + config.URL.LEARNER_PREFIX + url + '/' +
-      req.orgId + '?period=' + req.timePeriod
+        var URL = dataSourceUtils.constructApiUrl(req, url)
         var deferred = $q.defer()
         var response = httpAdapter.httpCall(URL, '', 'GET')
         response.then(function (res) {
