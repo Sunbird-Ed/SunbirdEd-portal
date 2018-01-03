@@ -10,52 +10,56 @@ angular.module('playerApp')
        * @param   {object}  data
        */
       function Render (data) {
-        var chartList = []
-        var groupList = {}
+        if (data) {
+          var chartList = []
+          var groupList = {}
 
-        _.forEach(data.bucketData, function (bucketData, key) {
-          var groupData = {}
-          var yAxesLabel = data.name
+          _.forEach(data.bucketData, function (bucketData, key) {
+            var groupData = {}
+            var yAxesLabel = data.name
 
-          if (data.series === '') {
-            groupData['legend'] = [bucketData.name]
+            if (data.series === '') {
+              groupData['legend'] = [bucketData.name]
 
-            if (bucketData.time_unit !== undefined) {
-              yAxesLabel = bucketData.name + ' (' + bucketData.time_unit + ')'
+              if (bucketData.time_unit !== undefined) {
+                yAxesLabel = bucketData.name + ' (' + bucketData.time_unit + ')'
+              } else {
+                yAxesLabel = bucketData.name
+              }
             } else {
-              yAxesLabel = bucketData.name
+              groupData['legend'] = data.series
             }
-          } else {
-            groupData['legend'] = data.series
-          }
 
-          var chartData = angular.copy(getChartData(bucketData))
+            var chartData = angular.copy(getChartData(bucketData))
 
-          // Graph values
-          groupData['yaxes'] = [chartData.values]
+            // Graph values
+            groupData['yaxes'] = [chartData.values]
 
-          // X-axes Labels
-          groupData['xaxes'] = chartData.labels
+            // X-axes Labels
+            groupData['xaxes'] = chartData.labels
 
-          // Options
-          groupData['options'] = getChartOptions(yAxesLabel)
+            // Options
+            groupData['options'] = getChartOptions(yAxesLabel)
 
-          if (groupList[bucketData.group_id]) {
-            Array.prototype.push.apply(groupList[bucketData.group_id].yaxes, groupData['yaxes'])
-          } else {
-            groupList[bucketData.group_id] = groupData
-          }
+            if (groupList[bucketData.group_id]) {
+              Array.prototype.push.apply(groupList[bucketData.group_id].yaxes, groupData['yaxes'])
+            } else {
+              groupList[bucketData.group_id] = groupData
+            }
 
-          // Colors
-          groupData['colors'] = getChartColors(groupList[bucketData.group_id].legend.length)
-        })
+            // Colors
+            groupData['colors'] = getChartColors(groupList[bucketData.group_id].legend.length)
+          })
 
-        // Preparing array to render graph
-        _.forOwn(groupList, function (group, groupId) {
-          chartList.push([group.legend, group.xaxes, group.yaxes, group.colors, group.options, groupId])
-        })
+          // Preparing array to render graph
+          _.forOwn(groupList, function (group, groupId) {
+            chartList.push([group.legend, group.xaxes, group.yaxes, group.colors, group.options, groupId])
+          })
 
-        this.chartList = chartList
+          this.chartList = chartList
+        } else {
+          this.chartList = undefined
+        }
       }
 
       return {
