@@ -24,7 +24,8 @@ angular.module('playerApp')
         var response = httpAdapter.httpCall(URL, '', 'GET')
         response.then(function (res) {
           if (res && res.responseCode === 'OK') {
-            deferred.resolve(res)
+            downloadReport.returnData = { requestId: res.result.requestId }
+            deferred.resolve(downloadReport.returnData)
           } else {
             toasterService.error($rootScope.messages.fmsg.m0075)
             deferred.reject(res)
