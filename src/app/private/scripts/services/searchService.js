@@ -83,7 +83,7 @@ angular.module('playerApp')
              */
 
       this.search = function (req) {
-        if (!req.filters.contentType) {
+        if (req && req.filters && !req.filters.contentType) {
           req.filters.contentType = [
             'Collection',
             'TextBook',
