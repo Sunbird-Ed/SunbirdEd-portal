@@ -9,6 +9,8 @@ angular.module('playerApp')
       dashboardData.height = 110
       dashboardData.datasetPreviousValue = 'creation'
       var chart = new Visualizer({ type: 'line' })
+      $('#dropdownMenu').dropdown()
+      var downloadInstanceObj = new QueryService.GetInstance({ eid: 'downloadReport' })
 
       /**
        * @method getAdminDashboardData
@@ -16,15 +18,15 @@ angular.module('playerApp')
        * @param {string}  timePeriod
        */
       dashboardData.getAdminDashboardData = function (timePeriod) {
+        spinner(true)
         // Create object
         var getInstanceObj = ''
         if (dashboardData.datasetPreviousValue === 'creation') {
-          getInstanceObj = new QueryService.GetInstance({ eid: 'orgCreationData' })
+          getInstanceObj = new QueryService.GetInstance({ eid: 'orgCreation' })
         } else {
-          getInstanceObj = new QueryService.GetInstance({ eid: 'orgConsumptionData' })
+          getInstanceObj = new QueryService.GetInstance({ eid: 'orgConsumption' })
         }
 
-        dashboardData.showLoader = true
         dashboardData.showDataDiv = false
         dashboardData.showOrgWarningDiv = false
         dashboardData.timePeriod = timePeriod || '7d'
@@ -35,13 +37,21 @@ angular.module('playerApp')
           dashboardData.graphArray = chart.render(data)
           dashboardData.numericStatArray = data.numericData
           dashboardData.showDataDiv = true
-          dashboardData.showLoader = false
+          spinner(false)
         }).catch(function (apiResponse) {
+          spinner(false)
           toasterService.error(apiResponse.params.errmsg)
         })
       }
 
-      $('#dropdownMenu').dropdown()
+      /**
+       * @method spinner
+       * @change value of spinner
+       * @param {string}  data
+       */
+      function spinner (data) {
+        dashboardData.showLoader = data
+      }
 
       /**
        * @method onAfterFilterChange
@@ -118,6 +128,35 @@ angular.module('playerApp')
       dashboardData.onAfterOrgChange = function (orgId) {
         dashboardData.orgId = orgId
         dashboardData.getAdminDashboardData()
+      }
+
+      /**
+       * @Function downloadReports
+       * @Description - make dowload csv api call
+       * @Return  void
+       */
+      dashboardData.downloadReport = function () {
+        var dataset = 'ORG_CREATION'
+        if (dashboardData.datasetPreviousValue === 'consumption') {
+          dataset = 'ORG_CONSUMPTION'
+        }
+        dashboardData.showDownloadLoader = 'active'
+        downloadInstanceObj.download({
+          identifier: dashboardData.orgId,
+          timePeriod: dashboardData.timePeriod
+        }, dataset).then(function (data) {
+          var str = $rootScope.messages.stmsg.m0095
+          dashboardData.downloadReportText = str.replace('{acknowledgementId}',
+            data.requestId).replace(/(\(.*\))/g, '')
+          $('#downloadReportModal').modal({
+            closable: true,
+            observeChanges: true
+          }).modal('show')
+          dashboardData.showDownloadLoader = ''
+        }).catch(function (apiResponse) {
+          toasterService.error(apiResponse.params.errmsg)
+          dashboardData.showDownloadLoader = ''
+        })
       }
     }
   ])

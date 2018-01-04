@@ -1,9 +1,8 @@
 'use strict'
 
 angular.module('playerApp')
-  .factory('Visualizer', ['$filter', 'config', '$timeout', 'toasterService',
-    'uuid4', 'LineChart',
-    function ($filter, config, $timeout, toasterService, uuid4, LineChart) {
+  .factory('Visualizer', ['LineChart',
+    function (LineChart) {
       /**
        * @method Visualizer
        * @desc - declare config variables
