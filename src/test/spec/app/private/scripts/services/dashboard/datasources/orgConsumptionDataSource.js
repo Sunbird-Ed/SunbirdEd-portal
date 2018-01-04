@@ -25,7 +25,8 @@ describe('Service: orgConsumptionDataSource', function () {
     // Extract snapshot data
     it('should extract snapshot data', function () {
       orgConsDataSource.blockData = []
-      testData.getSuccessData.result.snapshot[0] = { 'name': 'testData' }
+      // To cover switch case
+      testData.getSuccessData.result.snapshot[3] = { 'dummy_index': {'count': 0} }
       spyOn(orgConsDataSource, 'extractSnapshotData').and.callThrough()
       orgConsDataSource.extractSnapshotData(testData.getSuccessData.result.snapshot)
       scope.$apply()
@@ -42,6 +43,7 @@ describe('Service: orgConsumptionDataSource', function () {
       expect(orgConsDataSource.parseResponse).toBeDefined()
       expect(orgConsDataSource.parseResponse).toHaveBeenCalled()
       expect(response.bucketData).toBeDefined()
+      expect(response.series).not.toBe(null)
     })
 
     it('should return valid api response', function () {
@@ -49,7 +51,7 @@ describe('Service: orgConsumptionDataSource', function () {
       spyOn(httpAdapter, 'httpCall').and.returnValue(deferred.promise)
       deferred.resolve(testData.getSuccessData)
       spyOn(orgConsDataSource, 'getData').and.callThrough()
-      orgConsDataSource.getData('', '')
+      orgConsDataSource.getData({identifier: '1234567', timePeriod: '7d'})
       spyOn(orgConsDataSource, 'parseResponse').and.callThrough()
       scope.$apply()
       expect(orgConsDataSource.getData).toBeDefined()
@@ -57,14 +59,13 @@ describe('Service: orgConsumptionDataSource', function () {
     })
 
     it('should return client error', function () {
-      orgConsDataSource.graphBlockData = []
       spyOn(httpAdapter, 'httpCall').and.returnValue(deferred.promise)
       deferred.resolve(testData.clientError)
       spyOn(orgConsDataSource, 'getData').and.callThrough()
-      orgConsDataSource.getData('', '')
+      orgConsDataSource.getData({identifier: '1234567', timePeriod: '7d'})
       scope.$apply()
       expect(orgConsDataSource.getData).toBeDefined()
-      // expect(orgConsDataSource.graphBlockData.length).toBe(0)
+      expect(orgConsDataSource.blockData).not.toBeDefined()
     })
 
     // Catch block
@@ -72,10 +73,10 @@ describe('Service: orgConsumptionDataSource', function () {
       spyOn(httpAdapter, 'httpCall').and.returnValue(deferred.promise)
       deferred.reject(testData.clientError)
       spyOn(orgConsDataSource, 'getData').and.callThrough()
-      orgConsDataSource.getData('', '', '')
+      orgConsDataSource.getData({identifier: '1234567', timePeriod: '7d'})
       scope.$apply()
       expect(orgConsDataSource.getData).toBeDefined()
-      expect(orgConsDataSource.graphBlockData).not.toBeDefined()
+      expect(orgConsDataSource.blockData).not.toBeDefined()
     })
   })
 })

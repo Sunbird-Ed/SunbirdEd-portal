@@ -17,7 +17,7 @@ angular.module('playerApp')
      * @returns promise
      * @instance
      */
-      this.getData = function (req, url) {
+      this.getData = function (req) {
         var URL, deferred, header, response
         URL = dataSourceUtils.constructApiUrl(req, 'ORG_CONSUMPTION')
         deferred = $q.defer()
