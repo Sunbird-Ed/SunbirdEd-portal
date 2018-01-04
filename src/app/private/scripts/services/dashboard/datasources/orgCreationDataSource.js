@@ -5,9 +5,9 @@
 'use strict'
 
 angular.module('playerApp')
-  .service('orgCreationDataSource', ['$q', '$rootScope', 'httpAdapter',
-    'toasterService', 'dataSourceUtils', function ($q,
-      $rootScope, httpAdapter, toasterService, dataSourceUtils) {
+  .service('orgCreationDataSource', ['$q', '$rootScope', 'httpAdapter', 'toasterService',
+    'dataSourceUtils', function ($q, $rootScope, httpAdapter, toasterService,
+      dataSourceUtils) {
       var orgCreateDataSource = this
       var contentStatus = {
         'org.creation.content[@status=published].count': ' LIVE',
@@ -15,24 +15,6 @@ angular.module('playerApp')
         'org.creation.content[@status=review].count': ' IN REVIEW'
       }
 
-      /**
-     * @method buildNumericData
-     * @desc convert time from seconds to min
-     * @memberOf Services.orgConsumptionDataSource
-     * @param {Object}  numericData - snapshot data
-     * @param {string}  key - array key
-     */
-      orgCreateDataSource.buildNumericAndSeriesData = function (numericData, key) {
-        switch (key) {
-        case 'org.creation.authors.count':
-        case 'org.creation.reviewers.count':
-        case 'org.creation.content.count':
-          orgCreateDataSource.numericBlockData.push(numericData)
-          break
-        default:
-          orgCreateDataSource.graphSeries.push(numericData.value + contentStatus[key])
-        }
-      }
       /**
      * @method getData
      * @desc get ord dashboard data based on datasetTye
@@ -42,30 +24,15 @@ angular.module('playerApp')
      * @returns promise
      * @instance
      */
-      this.getData = function (req, url) {
-        var URL = dataSourceUtils.constructApiUrl(req, url)
-        var deferred = $q.defer()
-        var response = httpAdapter.httpCall(URL, '', 'GET')
+      this.getData = function (req) {
+        var URL, deferred, response, header
+        URL = dataSourceUtils.constructApiUrl(req, 'ORG_CREATION')
+        header = dataSourceUtils.getHeader()
+        deferred = $q.defer()
+        response = httpAdapter.httpCall(URL, '', 'GET', header)
         response.then(function (res) {
           if (res && res.responseCode === 'OK') {
-            orgCreateDataSource.numericBlockData = []
-            orgCreateDataSource.graphSeries = []
-            // Build graph block data
-            angular.forEach(res.result.snapshot, function (numericData, key) {
-              orgCreateDataSource.buildNumericAndSeriesData(numericData, key)
-            })
-            var name = res.result.period === '5w' ? 'Content created per week' : 'Content created per day'
-
-            // Return data
-            var returnData = {
-              bucketData: res.result.series,
-              name: name,
-              numericData: orgCreateDataSource.numericBlockData,
-              series: orgCreateDataSource.graphSeries
-            }
-
-            // Resolve promise
-            deferred.resolve(returnData)
+            deferred.resolve(orgCreateDataSource.parseResponse(res.result))
           } else {
             toasterService.error($rootScope.messages.fmsg.m0075)
             deferred.reject(res)
@@ -75,5 +42,44 @@ angular.module('playerApp')
           deferred.reject(err)
         })
         return deferred.promise
+      }
+
+      /**
+     * @method parseResponse
+     * @desc parse api response
+     * @memberOf Services.orgCreationDataSource
+     * @param {Object}  data - api response
+     * @return {object} [description]
+     */
+      orgCreateDataSource.parseResponse = function (data) {
+        orgCreateDataSource.blockData = []
+        orgCreateDataSource.graphSeries = []
+        orgCreateDataSource.extractSnapshotData(data.snapshot)
+        return {
+          bucketData: data.series,
+          name: data.period === '5w' ? 'Content created per week' : 'Content created per day',
+          numericData: orgCreateDataSource.blockData,
+          series: orgCreateDataSource.graphSeries
+        }
+      }
+
+      /**
+     * @method extractSnapshotData
+     * @desc convert time from seconds to min
+     * @memberOf Services.orgCreationDataSource
+     * @param {Object}  snapshot - snapshot data
+     */
+      orgCreateDataSource.extractSnapshotData = function (snapshot) {
+        angular.forEach(snapshot, function (numericData, key) {
+          switch (key) {
+          case 'org.creation.authors.count':
+          case 'org.creation.reviewers.count':
+          case 'org.creation.content.count':
+            orgCreateDataSource.blockData.push(numericData)
+            break
+          default:
+            orgCreateDataSource.graphSeries.push(numericData.value + contentStatus[key])
+          }
+        })
       }
     }])

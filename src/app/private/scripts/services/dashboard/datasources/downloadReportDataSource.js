@@ -18,13 +18,13 @@ angular.module('playerApp')
      * @returns promise
      * @instance
      */
-      downloadReport.download = function (req, url) {
-        var URL = dataSourceUtils.constructDownloadReportUrl(req, url)
+      downloadReport.download = function (req, dataset) {
+        var URL = dataSourceUtils.constructDownloadReportUrl(req, dataset)
         var deferred = $q.defer()
         var response = httpAdapter.httpCall(URL, '', 'GET')
         response.then(function (res) {
           if (res && res.responseCode === 'OK') {
-            deferred.resolve(res)
+            deferred.resolve({ requestId: res.result.requestId })
           } else {
             toasterService.error($rootScope.messages.fmsg.m0075)
             deferred.reject(res)

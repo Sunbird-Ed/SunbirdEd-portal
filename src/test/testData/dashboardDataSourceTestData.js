@@ -550,16 +550,18 @@ var dashboardDataSourceTestData = { // eslint-disable-line
       }
     },
     clientError: {
-      'id': 'api.sunbird.dashboard.course.admin',
-      'ver': 'v1',
-      'ts': '2017-12-29 11:04:44:879+0000',
-      'params': {
-        'resmsgid': null,
-        'msgid': '71dde962-6d3b-4971-81af-eb0df754ee7a',
-        'err': 'INVALID_PERIOD',
-        'status': 'INVALID_PERIOD',
-        'errmsg': 'Time Period is invalid'
-      },
+      'responseCode': 'CLIENT_ERROR',
+      'result': {}
+    }
+  },
+  downloadDashboardReport: {
+    getSuccessData: {
+      'responseCode': 'OK',
+      'result': {
+        'requestId': '01241050605165772817'
+      }
+    },
+    clientError: {
       'responseCode': 'CLIENT_ERROR',
       'result': {}
     }
