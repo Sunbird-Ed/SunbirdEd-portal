@@ -47,7 +47,6 @@ describe('Service: orgConsumptionDataSource', function () {
     })
 
     it('should return valid api response', function () {
-      orgConsDataSource.numericBlockData = []
       spyOn(httpAdapter, 'httpCall').and.returnValue(deferred.promise)
       deferred.resolve(testData.getSuccessData)
       spyOn(orgConsDataSource, 'getData').and.callThrough()
@@ -56,6 +55,8 @@ describe('Service: orgConsumptionDataSource', function () {
       scope.$apply()
       expect(orgConsDataSource.getData).toBeDefined()
       expect(orgConsDataSource.parseResponse).toHaveBeenCalled()
+      expect(orgConsDataSource.blockData).not.toBe(null)
+      expect(orgConsDataSource.blockData.length).toBeGreaterThan(2)
     })
 
     it('should return client error', function () {

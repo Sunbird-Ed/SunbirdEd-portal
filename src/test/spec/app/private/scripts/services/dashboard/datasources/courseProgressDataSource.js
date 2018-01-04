@@ -5,6 +5,7 @@ describe('Service: courseProgressDataSource', function () {
 
   var courseProgressDataSource, scope, $q, deferred, toasterService, httpAdapter   // eslint-disable-line
   var testData = dashboardDataSourceTestData.courseProgressData // eslint-disable-line
+  var requestBody = {identifier: 'do_2124000017636802561576', timePeriod: '7d'}
   beforeEach(inject(function ($rootScope, $controller) {   // eslint-disable-line
     $controller('AppCtrl', {
       $rootScope: $rootScope,
@@ -27,7 +28,7 @@ describe('Service: courseProgressDataSource', function () {
       spyOn(httpAdapter, 'httpCall').and.returnValue(deferred.promise)
       deferred.resolve(testData.getBatchDetails)
       spyOn(courseProgressDataSource, 'getData').and.callThrough()
-      courseProgressDataSource.getData('', '', '')
+      courseProgressDataSource.getData(requestBody)
       scope.$apply()
       expect(courseProgressDataSource.getData).toBeDefined()
       expect(courseProgressDataSource.tableData.length).not.toBe(0)
@@ -38,7 +39,7 @@ describe('Service: courseProgressDataSource', function () {
       spyOn(httpAdapter, 'httpCall').and.returnValue(deferred.promise)
       deferred.resolve(testData.errorResponse)
       spyOn(courseProgressDataSource, 'getData').and.callThrough()
-      courseProgressDataSource.getData('', '', '')
+      courseProgressDataSource.getData(requestBody)
       scope.$apply()
       expect(courseProgressDataSource.getData).toBeDefined()
       expect(courseProgressDataSource.tableData.length).toBe(0)

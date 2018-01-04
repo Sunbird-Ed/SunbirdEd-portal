@@ -40,7 +40,7 @@ angular.module('playerApp')
     /**
      * @method constructDownloadReportUrl
      * @desc construct download report api url
-     * @memberOf Services.constructDownloadReportUrl
+     * @memberOf Services.dataSourceUtils
      * @param {Object}  req - identifier and time period
      * @param {string}  url - url
      * @return {string} api url
@@ -54,7 +54,7 @@ angular.module('playerApp')
     /**
      * @method constructApiUrl
      * @desc construct download report api url
-     * @memberOf Services.constructDownloadReportUrl
+     * @memberOf Services.dataSourceUtils
      * @param {Object}  req - identifier and time period
      * @param {string}  url - url
      * @return {string} api url

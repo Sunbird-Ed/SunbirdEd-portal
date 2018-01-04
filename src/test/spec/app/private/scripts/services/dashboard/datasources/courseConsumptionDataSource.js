@@ -5,6 +5,7 @@ describe('Service: courseConsumptionDataSource', function () {
 
   var courseConsDataSource, scope, $q, deferred, toasterService, httpAdapter // eslint-disable-line
   var testData = dashboardDataSourceTestData.courseConsumptionData // eslint-disable-line
+  var requestBody = {identifier: 'do_2124000017636802561576', timePeriod: '7d'}
   beforeEach(inject(function ($rootScope, $controller) {   // eslint-disable-line
     $controller('AppCtrl', {
       $rootScope: $rootScope,
@@ -23,25 +24,37 @@ describe('Service: courseConsumptionDataSource', function () {
 
   describe('Test course consumption data source service', function () {
     it('should return valid api response', function () {
-      courseConsDataSource.blockData = []
       spyOn(httpAdapter, 'httpCall').and.returnValue(deferred.promise)
       deferred.resolve(testData.getCourseData)
       spyOn(courseConsDataSource, 'getData').and.callThrough()
-      courseConsDataSource.getData('', '', '')
+      courseConsDataSource.getData(requestBody)
+      spyOn(courseConsDataSource, 'parseResponse').and.callThrough()
       scope.$apply()
       expect(courseConsDataSource.getData).toBeDefined()
-      //  expect(courseConsDataSource.blockData.length).not.toBe(0)
+      expect(courseConsDataSource.parseResponse).toHaveBeenCalled()
+      expect(courseConsDataSource.blockData).toBeDefined()
+      expect(courseConsDataSource.blockData.length).toBeGreaterThan(2)
     })
 
-    it('should return responseCode other than OK', function () {
-      courseConsDataSource.graphBlockData = []
+    it('should return valid api response', function () {
+      spyOn(courseConsDataSource, 'parseResponse').and.callThrough()
+      var result = courseConsDataSource.parseResponse(testData.getCourseData.result)
+      scope.$apply()
+      expect(courseConsDataSource.parseResponse).toBeDefined()
+      expect(result.bucketData).toEqual(testData.getCourseData.result.series)
+      expect(result).not.toBe(null)
+      expect(result.series).toEqual('') // series should be empty
+    })
+
+    it('should check responseCode other than OK', function () {
+      courseConsDataSource.blockData = []
       spyOn(httpAdapter, 'httpCall').and.returnValue(deferred.promise)
       deferred.resolve(testData.errorResponse)
       spyOn(courseConsDataSource, 'getData').and.callThrough()
-      courseConsDataSource.getData('', '', '')
+      courseConsDataSource.getData(requestBody)
       scope.$apply()
       expect(courseConsDataSource.getData).toBeDefined()
-      expect(courseConsDataSource.graphBlockData.length).toBe(0)
+      expect(courseConsDataSource.blockData.length).toBe(0)
     })
 
     // Catch block
@@ -49,10 +62,10 @@ describe('Service: courseConsumptionDataSource', function () {
       spyOn(httpAdapter, 'httpCall').and.returnValue(deferred.promise)
       deferred.reject(testData.errorResponse)
       spyOn(courseConsDataSource, 'getData').and.callThrough()
-      courseConsDataSource.getData('', '', '')
+      courseConsDataSource.getData(requestBody)
       scope.$apply()
       expect(courseConsDataSource.getData).toBeDefined()
-      expect(courseConsDataSource.graphBlockData).not.toBeDefined()
+      expect(courseConsDataSource.blockData).not.toBeDefined()
     })
   })
 })
