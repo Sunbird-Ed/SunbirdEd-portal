@@ -8,8 +8,6 @@ angular.module('playerApp')
       var dashboardData = this
       dashboardData.height = 110
       dashboardData.datasetPreviousValue = 'creation'
-      // Create object
-      dashboardData.objQueryClient = new QueryService({ key: 'orgCreationDataSource' })
       var chart = new Visualizer({ type: 'line' })
 
       /**
@@ -18,20 +16,23 @@ angular.module('playerApp')
        * @param {string}  timePeriod
        */
       dashboardData.getAdminDashboardData = function (timePeriod) {
+        // Create object
+        var getInstanceObj = ''
+        if (dashboardData.datasetPreviousValue === 'creation') {
+          getInstanceObj = new QueryService.GetInstance({ eid: 'orgCreationData' })
+        } else {
+          getInstanceObj = new QueryService.GetInstance({ eid: 'orgConsumptionData' })
+        }
+
         dashboardData.showLoader = true
         dashboardData.showDataDiv = false
         dashboardData.showOrgWarningDiv = false
         dashboardData.timePeriod = timePeriod || '7d'
-        dashboardData.objQueryClient.query({
-          eid: dashboardData.datasetPreviousValue === 'creation' ? 'orgCreationDataSource' : 'orgConsumptionDataSource',
-          request: {
-            identifier: dashboardData.orgId,
-            timePeriod: dashboardData.timePeriod
-          },
-          dataset: dashboardData.datasetPreviousValue
+        getInstanceObj.getData({
+          identifier: dashboardData.orgId,
+          timePeriod: dashboardData.timePeriod
         }).then(function (data) {
           dashboardData.graphArray = chart.render(data)
-
           dashboardData.numericStatArray = data.numericData
           dashboardData.showDataDiv = true
           dashboardData.showLoader = false
