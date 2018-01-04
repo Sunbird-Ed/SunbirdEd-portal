@@ -34,8 +34,11 @@ angular.module('playerApp').service('announcementAdapter', ['$rootScope', '$http
     }
 
     function handleHttpRequest (url, data, type, errMsg) {
+      var headers = {
+        'Content-Type': 'application/json'
+      }
       var deferred = $q.defer()
-      var response = httpAdapter.httpCall(url, data, type)
+      var response = httpAdapter.httpCall(url, data, type, headers)
       response.then(function (res) {
         if (res && res.responseCode === 'OK') {
           deferred.resolve(res)
