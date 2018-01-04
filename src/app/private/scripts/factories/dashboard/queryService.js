@@ -10,18 +10,18 @@ angular.module('playerApp')
     function (courseConsumptionDataSource, courseProgressDataSource,
       orgCreationDataSource, orgConsumptionDataSource, downloadReportDataSource) {
       return {
-        getInstance: function (params) {
+        GetInstance: function (params) {
           switch (params.eid) {
-          case 'courseConsumptionData':
+          case 'courseConsumption':
             return courseConsumptionDataSource
-          case 'courseProgressData':
+          case 'courseProgress':
             return courseProgressDataSource
-          case 'orgCreationData':
+          case 'orgCreation':
             return orgCreationDataSource
-          case 'orgConsumptionData':
+          case 'orgConsumption':
             return orgConsumptionDataSource
-          case 'downloadReportDataSource':
-            return
+          case 'downloadReport':
+            return downloadReportDataSource
           default:
             return courseConsumptionDataSource
           }
