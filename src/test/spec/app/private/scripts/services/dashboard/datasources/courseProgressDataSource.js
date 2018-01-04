@@ -24,25 +24,27 @@ describe('Service: courseProgressDataSource', function () {
 
   describe('Test course consumption data source service', function () {
     it('should return valid api response', function () {
-      courseProgressDataSource.tableData = []
       spyOn(httpAdapter, 'httpCall').and.returnValue(deferred.promise)
       deferred.resolve(testData.getBatchDetails)
       spyOn(courseProgressDataSource, 'getData').and.callThrough()
+      spyOn(courseProgressDataSource, 'parseResponse').and.callThrough()
       courseProgressDataSource.getData(requestBody)
       scope.$apply()
       expect(courseProgressDataSource.getData).toBeDefined()
+      expect(courseProgressDataSource.parseResponse).toHaveBeenCalled()
+      expect(courseProgressDataSource.tableData).toBeDefined()
+      expect(courseProgressDataSource.parseResponse).toBeDefined()
       expect(courseProgressDataSource.tableData.length).not.toBe(0)
     })
 
-    it('should return client error', function () {
-      courseProgressDataSource.tableData = []
+    it('should check response code other than OK', function () {
       spyOn(httpAdapter, 'httpCall').and.returnValue(deferred.promise)
       deferred.resolve(testData.errorResponse)
       spyOn(courseProgressDataSource, 'getData').and.callThrough()
       courseProgressDataSource.getData(requestBody)
       scope.$apply()
       expect(courseProgressDataSource.getData).toBeDefined()
-      expect(courseProgressDataSource.tableData.length).toBe(0)
+      expect(courseProgressDataSource.tableData).not.toBeDefined()
     })
 
     // Catch block
@@ -50,7 +52,7 @@ describe('Service: courseProgressDataSource', function () {
       spyOn(httpAdapter, 'httpCall').and.returnValue(deferred.promise)
       deferred.reject(testData.errorResponse)
       spyOn(courseProgressDataSource, 'getData').and.callThrough()
-      courseProgressDataSource.getData('', '', '')
+      courseProgressDataSource.getData(requestBody)
       scope.$apply()
       expect(courseProgressDataSource.getData).toBeDefined()
       expect(courseProgressDataSource.tableData).not.toBeDefined()
