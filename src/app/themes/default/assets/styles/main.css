@@ -2421,6 +2421,30 @@ i.trash.outline.icon.trashIcon-fontSize {
 .paginationAlignment {
   padding-right: 6.3em !important;
 }
+.ui.fluid.bottom.right.popup.upForReviewPopUp {
+  top: 25px !important;
+  right: 0px !important;
+  left: auto;
+  bottom: auto;
+  width: 850px !important;
+}
+@media only screen and (max-width: 1200px) {
+  .ui.fluid.bottom.right.popup.upForReviewPopUp {
+    top: 25px !important;
+    right: 0px !important;
+    width: 600px !important;
+  }
+}
+@media only screen and (max-width: 1300px) {
+  .ui.fluid.bottom.right.popup.upForReviewPopUp {
+    top: 25px !important;
+    right: 0px !important;
+    width: 750px !important;
+  }
+}
+.ui.fluid.bottom.right.popup.upForReviewPopUp:before {
+  right: 14em;
+}
 .addnotes i.circular.icon {
   padding: .6em .6em!important;
   position: absolute;
