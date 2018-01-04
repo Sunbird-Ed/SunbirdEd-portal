@@ -2,14 +2,15 @@
 
 angular.module('playerApp')
   .controller('orgDashboardController', ['$rootScope', '$scope',
-    '$timeout', '$state', '$stateParams', 'toasterService', 'adminService', 'QueryService', 'rendererService',
+    '$timeout', '$state', '$stateParams', 'toasterService', 'adminService', 'QueryService', 'Visualizer',
     function ($rootScope, $scope, $timeout, $state, $stateParams, toasterService,
-      adminService, QueryService, rendererService) {
+      adminService, QueryService, Visualizer) {
       var dashboardData = this
       dashboardData.height = 110
       dashboardData.datasetPreviousValue = 'creation'
       // Create object
       dashboardData.objQueryClient = new QueryService({ key: 'orgCreationDataSource' })
+      var chart = new Visualizer({ type: 'line' })
 
       /**
        * @method getAdminDashboardData
@@ -29,9 +30,8 @@ angular.module('playerApp')
           },
           dataset: dashboardData.datasetPreviousValue
         }).then(function (data) {
-          dashboardData.graphShow = 0
-          var rendererData = new rendererService.Render(data)
-          dashboardData.graphArray = rendererData.chartList
+          dashboardData.graphArray = chart.render(data)
+
           dashboardData.numericStatArray = data.numericData
           dashboardData.showDataDiv = true
           dashboardData.showLoader = false
@@ -67,23 +67,6 @@ angular.module('playerApp')
         }
         dashboardData.datasetPreviousValue = dataset
         dashboardData.getAdminDashboardData()
-      }
-
-      /**
-       * @method nextGraph
-       * @desc show next graph when slider is available
-       */
-      dashboardData.graphShow = 0
-      dashboardData.nextGraph = function () {
-        dashboardData.graphShow++
-      }
-
-      /**
-       * @method previousGraph
-       * @desc show previous graph when slider is available
-       */
-      dashboardData.previousGraph = function () {
-        dashboardData.graphShow--
       }
 
       /**
