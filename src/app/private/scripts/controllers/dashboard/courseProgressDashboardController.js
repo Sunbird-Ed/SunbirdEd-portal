@@ -1,17 +1,17 @@
 'use strict'
 
 angular.module('playerApp')
-  .controller('courseDashboardCtrl', ['$rootScope', '$scope', 'dashboardService', '$timeout', '$state', '$stateParams', 'toasterService',
+  .controller('courseProgressDashboardCtrl', ['$rootScope', '$scope', 'QueryService',
+    '$timeout', '$state', '$stateParams', 'toasterService',
     'batchService',
-    function ($rootScope, $scope, dashboardService, $timeout, $state, $stateParams, toasterService, batchService) {
+    function ($rootScope, $scope, QueryService, $timeout, $state, $stateParams, toasterService, batchService) {
       var courseDashboard = this
       courseDashboard.chartHeight = 120
-      courseDashboard.courseProgressArray = []
       courseDashboard.filterQueryTextMsg = '7 days' // Default value
       courseDashboard.filterTimePeriod = '7d' // Default value
+      var downloadInstanceObj = new QueryService.GetInstance({ eid: 'downloadReport' })
 
       // Dataset - progress / consumption
-      courseDashboard.dataset = 'progress'
       courseDashboard.courseName = 'Progress'
 
       // Search and sort table data
@@ -20,7 +20,7 @@ angular.module('playerApp')
       courseDashboard.searchUser = '' // Dafault value for free text search
 
       // Variables to show loader/errorMsg
-      courseDashboard.showLoader = true
+      spinner(true)
       courseDashboard.showError = false
       courseDashboard.showLabelFlag = false
       courseDashboard.errorMsg = ''
@@ -28,36 +28,16 @@ angular.module('playerApp')
       function getCourseDashboardData (filterTimePeriod) {
         // Build request body
         courseDashboard.filterTimePeriod = courseDashboard.filterTimePeriod ? courseDashboard.filterTimePeriod : '7d'
-
-        var request = {
-          courseId: courseDashboard.batchIdentifier,
+        courseDashboard.courseProgressArray = []
+        var getInstanceObj = new QueryService.GetInstance({ eid: 'courseProgress' })
+        getInstanceObj.getData({
+          identifier: courseDashboard.batchIdentifier,
           timePeriod: courseDashboard.filterTimePeriod
-        }
-
-        dashboardService.getCourseDashboardData(request, courseDashboard.dataset).then(function (apiResponse) {
-          courseDashboard.consumptionNumericData = []
-          if (apiResponse && apiResponse.responseCode === 'OK') {
-            if (courseDashboard.dataset === 'progress') {
-              angular.forEach(apiResponse.result.series, function (seriesData, key) {
-                if (key === 'course.progress.course_progress_per_user.count') {
-                  angular.forEach(seriesData, function (bucketData, key) {
-                    if (key === 'buckets') {
-                      courseDashboard.courseProgressArray = bucketData
-                    }
-                  })
-                }
-              })
-            }
-
-            courseDashboard.showLoader = false
-            courseDashboard.showError = false
-          } else {
-            // Show error div
-            courseDashboard.showErrors(apiResponse)
-          }
+        }).then(function (data) {
+          courseDashboard.courseProgressArray = data
+          spinner(false)
         }).catch(function (apiResponse) {
-          // Show error div
-          courseDashboard.showErrors(apiResponse)
+          toasterService.error(apiResponse.params.errmsg)
         })
       }
 
@@ -68,7 +48,7 @@ angular.module('playerApp')
           return false
         }
 
-        courseDashboard.showLoader = true
+        spinner(true)
         courseDashboard.orderByField = ''
         courseDashboard.filterTimePeriod = angular.element(item).data('timeperiod')
         courseDashboard.filterQueryTextMsg = angular.element(item).data('timeperiod-text')
@@ -94,15 +74,15 @@ angular.module('playerApp')
               courseDashboard.myBatches = response.result.response.content
               courseDashboard.buildMyBatchesDropdown()
             } else {
-              courseDashboard.showLoader = false
+              spinner(false)
               courseDashboard.showWarningMsg = true
             }
           } else {
             // Show error div
-            courseDashboard.showErrors(apiResponse)
+            courseDashboard.showErrors(response)
           }
-        }).catch(function () {
-          courseDashboard.showErrors(apiResponse)
+        }).catch(function (response) {
+          courseDashboard.showErrors(response)
         })
       }
 
@@ -114,10 +94,18 @@ angular.module('playerApp')
           courseDashboard.courseName = firstChild.name
           getCourseDashboardData('7d')
         } else {
-          courseDashboard.showLoader = false
-          // courseDashboard.showError = true;
+          spinner(false)
           courseDashboard.isMultipleCourses = courseDashboard.myBatches.length > 1
         }
+      }
+
+      /**
+       * @method spinner
+       * @change value of spinner
+       * @param {string}  data
+       */
+      function spinner (data) {
+        courseDashboard.showLoader = data
       }
 
       courseDashboard.resetDropdown = function () {
@@ -126,7 +114,7 @@ angular.module('playerApp')
 
       courseDashboard.showErrors = function (apiResponse) {
         courseDashboard.showError = true
-        courseDashboard.showLoader = false
+        spinner(false)
         courseDashboard.errorMsg = apiResponse.params.errmsg
         toasterService.error(apiResponse.params.errmsg)
       }
@@ -138,15 +126,40 @@ angular.module('playerApp')
       }
 
       courseDashboard.onAfterBatchChange = function (batchId, batchName) {
-        if (courseDashboard.batchIdentifier == batchId) {
+        if (courseDashboard.batchIdentifier === batchId) {
           console.log('avoid same apis call twice')
           return false
         }
-        courseDashboard.showLoader = true
+        spinner(true)
         courseDashboard.batchIdentifier = batchId
         courseDashboard.courseName = batchName
         courseDashboard.isMultipleCourses = false
         getCourseDashboardData()
+      }
+
+      /**
+       * @Function downloadReports
+       * @Description - make dowload csv api call
+       * @Return  void
+       */
+      courseDashboard.downloadReport = function () {
+        courseDashboard.disabledClass = true
+        downloadInstanceObj.download({
+          identifier: courseDashboard.batchIdentifier,
+          timePeriod: courseDashboard.filterTimePeriod
+        }, 'COURSE_PROGRESS').then(function (data) {
+          var str = $rootScope.messages.stmsg.m0095
+          courseDashboard.downloadReportText = str.replace('{acknowledgementId}',
+            data.requestId).replace(/(\(.*\))/g, '')
+          $('#downloadReportModal').modal({
+            closable: true,
+            observeChanges: true
+          }).modal('show')
+          courseDashboard.disabledClass = false
+        }).catch(function (apiResponse) {
+          courseDashboard.disabledClass = false
+          toasterService.error(apiResponse.params.errmsg)
+        })
       }
     }
   ])

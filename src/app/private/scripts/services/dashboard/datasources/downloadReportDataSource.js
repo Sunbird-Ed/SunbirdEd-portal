@@ -21,7 +21,7 @@ angular.module('playerApp')
       downloadReport.download = function (req, dataset) {
         var URL = dataSourceUtils.constructDownloadReportUrl(req, dataset)
         var deferred = $q.defer()
-        var response = httpAdapter.httpCall(URL, '', 'GET')
+        var response = httpAdapter.httpCall(URL, '', 'GET', '')
         response.then(function (res) {
           if (res && res.responseCode === 'OK') {
             deferred.resolve({ requestId: res.result.requestId })

@@ -68,8 +68,7 @@
         </div>
         <div class="twelve wide column margin-top-20" ng-show="dashboardData.showDataDiv">
           <p class="text-align-right dashBoardCardText">{{$root.frmelmnts.instn.t0058}}
-            <a href="javascript:void(0);" class="item text-decoration-underline padding-left-10 cursor-pointer" ng-click="dashboardData.downloadReport();">{{$root.frmelmnts.instn.t0059}}</a>
-            <span class="ui mini {{dashboardData.showDownloadLoader}} inline loader" id="reportDownloadLoader"></span>
+            <a href="javascript:void(0);" ng-class="{'disabledButton' : dashboardData.disabledClass}" class="item text-decoration-underline padding-left-10" ng-click="dashboardData.downloadReport();">{{$root.frmelmnts.instn.t0059}}</a>
           </p>
         </div>
         <!-- Download report popup-->

@@ -20,12 +20,9 @@ angular.module('playerApp')
       dashboardData.getAdminDashboardData = function (timePeriod) {
         spinner(true)
         // Create object
-        var getInstanceObj = ''
-        if (dashboardData.datasetPreviousValue === 'creation') {
-          getInstanceObj = new QueryService.GetInstance({ eid: 'orgCreation' })
-        } else {
-          getInstanceObj = new QueryService.GetInstance({ eid: 'orgConsumption' })
-        }
+        var getInstanceObj = dashboardData.datasetPreviousValue === 'creation'
+          ? new QueryService.GetInstance({ eid: 'orgCreation' })
+          : new QueryService.GetInstance({ eid: 'orgConsumption' })
 
         dashboardData.showDataDiv = false
         dashboardData.showOrgWarningDiv = false
@@ -136,11 +133,8 @@ angular.module('playerApp')
        * @Return  void
        */
       dashboardData.downloadReport = function () {
-        var dataset = 'ORG_CREATION'
-        if (dashboardData.datasetPreviousValue === 'consumption') {
-          dataset = 'ORG_CONSUMPTION'
-        }
-        dashboardData.showDownloadLoader = 'active'
+        dashboardData.disabledClass = true
+        var dataset = dashboardData.datasetPreviousValue === 'creation' ? 'ORG_CREATION' : 'ORG_CONSUMPTION'
         downloadInstanceObj.download({
           identifier: dashboardData.orgId,
           timePeriod: dashboardData.timePeriod
@@ -152,10 +146,10 @@ angular.module('playerApp')
             closable: true,
             observeChanges: true
           }).modal('show')
-          dashboardData.showDownloadLoader = ''
+          dashboardData.disabledClass = false
         }).catch(function (apiResponse) {
+          dashboardData.disabledClass = false
           toasterService.error(apiResponse.params.errmsg)
-          dashboardData.showDownloadLoader = ''
         })
       }
     }

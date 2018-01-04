@@ -331,7 +331,9 @@ angular.module('playerApp')
             pageid: org.sunbird.portal.appid + '_SearchCourse',
             id: '',
             name: '',
-            url: '/private/index#!/' + $stateParams.type + '/search/' + $stateParams.query + '/' + $stateParams.filters + '/' + $stateParams.sort + '/' + $stateParams.autoSuggestSearch
+            url: '/private/index#!/' + $stateParams.type + '/search/' +
+            $stateParams.query + '/' + $stateParams.filters + '/' +
+            $stateParams.sort + '/' + $stateParams.autoSuggestSearch
           })
         },
         onExit: function ($rootScope) {
@@ -359,7 +361,9 @@ angular.module('playerApp')
             pageid: org.sunbird.portal.appid + '_TocPlayer',
             id: '',
             name: '',
-            url: '/private/index#!/course/' + $stateParams.courseId + '/' + $stateParams.lectureView + '/' + $stateParams.contentId + '/' + $stateParams.contentIndex
+            url: '/private/index#!/course/' + $stateParams.courseId + '/' +
+            $stateParams.lectureView + '/' + $stateParams.contentId + '/' +
+            $stateParams.contentIndex
           })
         },
         onExit: function ($rootScope, dataService) {
@@ -899,7 +903,7 @@ angular.module('playerApp')
         views: {
           mainView: {
             templateUrl: '/views/dashboard/course/courseConsumptionDashboard.html',
-            controller: 'courseCreatorDashboardCtrl as courseDashboard'
+            controller: 'courseConsumptionDashboardCtrl as courseDashboard'
           }
         },
         onEnter: function ($stateParams, $rootScope, routeHelperService) {

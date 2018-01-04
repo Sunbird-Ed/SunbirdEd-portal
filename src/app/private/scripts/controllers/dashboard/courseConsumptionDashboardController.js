@@ -1,9 +1,9 @@
 'use strict'
 
 angular.module('playerApp')
-  .controller('courseCreatorDashboardCtrl', ['$rootScope', '$scope',
-    '$state', '$stateParams', 'toasterService', 'searchService', 'QueryService', 'rendererService',
-    function ($rootScope, $scope, $state, $stateParams, toasterService, searchService, QueryService, rendererService) {
+  .controller('courseConsumptionDashboardCtrl', ['$rootScope', '$scope',
+    '$state', '$stateParams', 'toasterService', 'searchService', 'QueryService', 'Visualizer',
+    function ($rootScope, $scope, $state, $stateParams, toasterService, searchService, QueryService, Visualizer) {
       // Initialize variables
       var courseDashboard = this
       courseDashboard.chartHeight = 110
@@ -16,10 +16,12 @@ angular.module('playerApp')
       // Dataset - consumption
       courseDashboard.dataset = 'consumption'
       courseDashboard.graphShow = 0
-      courseDashboard.objQueryClient = new QueryService({key: 'courseConsumptionDataSource'})
+
+      var getInstanceObj = new QueryService.GetInstance({ eid: 'courseConsumption' })
+      var chart = new Visualizer({ type: 'line' })
 
       // Variables to show loader/errorMsg/warningMsg
-      courseDashboard.showLoader = true
+      spinner(true)
       courseDashboard.showError = false
       courseDashboard.showLabelFlag = false
       courseDashboard.errorMsg = ''
@@ -32,18 +34,14 @@ angular.module('playerApp')
        */
       courseDashboard.getCourseDashboardData = function () {
         courseDashboard.filterTimePeriod = courseDashboard.filterTimePeriod ? courseDashboard.filterTimePeriod : '7d'
-        courseDashboard.objQueryClient.query({
-          eid: 'courseConsumptionDataSource',
-          request: {
-            courseId: courseDashboard.courseIdentifier,
-            timePeriod: courseDashboard.filterTimePeriod
-          },
-          dataset: 'consumption'
+        getInstanceObj.getData({
+          identifier: courseDashboard.courseIdentifier,
+          timePeriod: courseDashboard.filterTimePeriod
         }).then(function (data) {
-          var rendererData = new rendererService.Render(data)
-          courseDashboard.data = rendererData.chartList
+          courseDashboard.data = chart.render(data)
+          courseDashboard.consumptionNumericData = data.numericData
           courseDashboard.graphShow = 0
-          courseDashboard.showLoader = false
+          spinner(false)
           courseDashboard.showError = false
         }).catch(function (apiResponse) {
           toasterService.error(apiResponse.params.errmsg)
@@ -55,7 +53,7 @@ angular.module('playerApp')
         if (courseDashboard.filterTimePeriod === angular.element(item).data('timeperiod')) {
           return false
         }
-        courseDashboard.showLoader = true
+        spinner(true)
         courseDashboard.filterTimePeriod = angular.element(item).data('timeperiod')
         courseDashboard.filterQueryTextMsg = angular.element(item).data('timeperiod-text')
         courseDashboard.isMultipleCourses = false
@@ -65,9 +63,9 @@ angular.module('playerApp')
       courseDashboard.loadData = function () {
         var request = {
           filters: {
-            status: ['Live'],
+            status: ['Live', 'Draft'],
             createdBy: $rootScope.userId,
-            contentType: ['Course']
+            contentType: ['Course', 'Textbook']
           },
           sort_by: {
             lastUpdatedOn: 'desc'
@@ -79,9 +77,11 @@ angular.module('playerApp')
           if (apiResponse && apiResponse.responseCode === 'OK') {
             if (apiResponse.result.content && apiResponse.result.content.length > 0) {
               courseDashboard.myCoursesList = apiResponse.result.content
+
+              console.log(' courseDashboard.myCoursesList ', courseDashboard.myCoursesList)
               courseDashboard.buildMyCoursesDropdown()
             } else {
-              courseDashboard.showLoader = false
+              spinner(false)
               courseDashboard.showWarningMsg = true
             }
           } else {
@@ -102,15 +102,23 @@ angular.module('playerApp')
           courseDashboard.courseName = firstChild.name
           courseDashboard.getCourseDashboardData('7d')
         } else {
-          courseDashboard.showLoader = false
-          // courseDashboard.showError = true;
+          spinner(false)
           courseDashboard.isMultipleCourses = courseDashboard.myCoursesList.length > 1
         }
       }
 
+      /**
+       * @method spinner
+       * @change value of spinner
+       * @param {string}  data
+       */
+      function spinner (data) {
+        courseDashboard.showLoader = data
+      }
+
       courseDashboard.showErrors = function (apiResponse) {
         courseDashboard.showError = true
-        courseDashboard.showLoader = false
+        spinner(false)
         courseDashboard.errorMsg = apiResponse.params.errmsg
         toasterService.error(apiResponse.params.errmsg)
       }
@@ -119,7 +127,7 @@ angular.module('playerApp')
         if (courseDashboard.courseIdentifier === courseId) {
           return false
         }
-        courseDashboard.showLoader = true
+        spinner(true)
         courseDashboard.courseIdentifier = courseId
         courseDashboard.courseName = courseName
         courseDashboard.isMultipleCourses = false
@@ -130,14 +138,6 @@ angular.module('playerApp')
         $('#myCoursesListFilter').dropdown({
           onChange: function () {}
         })
-      }
-
-      courseDashboard.nextGraph = function () {
-        courseDashboard.graphShow++
-      }
-
-      courseDashboard.previousGraph = function () {
-        courseDashboard.graphShow--
       }
     }
   ])
