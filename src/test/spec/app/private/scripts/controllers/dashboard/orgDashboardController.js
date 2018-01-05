@@ -45,7 +45,7 @@ describe('Controller: orgDashboardController', function () {
 
   describe('Get Organisation dashboard', function () {
     it('getAdminDashboardData', function (done) {
-      var getInstanceObj = new QueryService.GetInstance({ eid: 'orgCreation' })
+      var getInstanceObj = new QueryService.CreateNewInstance({ eid: 'orgCreation' })
       spyOn(getInstanceObj, 'getData').and.returnValue(deferred.promise)
       deferred.resolve(testData.creationResponse)
       orgDashboardController.timePeriod = '5w'
