@@ -273,6 +273,7 @@ var paths = {
     'dist/private/scripts/controllers/profileVisibilityController.js',
     'dist/private/scripts/directives/profileVisibility.js',
     'dist/private/scripts/factories/fileUploadFactory.js',
+    'dist/private/scripts/factories/dashboard/queryService.js',
     'dist/private/scripts/services/dashboard/datasources/courseConsumptionDataSource.js',
     'dist/private/scripts/services/dashboard/datasources/courseProgressDataSource.js',
     'dist/private/scripts/services/dashboard/datasources/orgCreationDataSource.js',
