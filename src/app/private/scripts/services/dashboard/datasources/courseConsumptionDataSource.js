@@ -44,17 +44,17 @@ angular.module('playerApp')
      * @return {Object} graph data
      */
       courseConsDataSource.parseResponse = function (data) {
-        var blockData = []
+        courseConsDataSource.blockData = []
         angular.forEach(data.snapshot, function (numericData, key) {
           if (key !== 'course.consumption.users_completed') {
             dataSourceUtils.secondsToMin(numericData)
           }
-          blockData.push(numericData)
+          courseConsDataSource.blockData.push(numericData)
         })
 
         return {
           bucketData: data.series,
-          numericData: blockData,
+          numericData: courseConsDataSource.blockData,
           series: ''
         }
       }

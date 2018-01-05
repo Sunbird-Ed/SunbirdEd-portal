@@ -12,16 +12,18 @@ angular.module('playerApp')
       /**
      * @method getData
      * @desc get ord dashboard data based on datasetTye
-     * @memberOf Services.orgConsumptionDataSource
+     * @memberOf Services.downloadReportDataSource
      * @param {Object}  req - Request object
      * @param {string}  datasetType - Data set type
      * @returns promise
      * @instance
      */
       downloadReport.download = function (req, dataset) {
-        var URL = dataSourceUtils.constructDownloadReportUrl(req, dataset)
-        var deferred = $q.defer()
-        var response = httpAdapter.httpCall(URL, '', 'GET', '')
+        var URL, deferred, response, header
+        URL = dataSourceUtils.constructDownloadReportUrl(req, dataset)
+        deferred = $q.defer()
+        header = dataSourceUtils.getHeader()
+        response = httpAdapter.httpCall(URL, '', 'GET', header)
         response.then(function (res) {
           if (res && res.responseCode === 'OK') {
             deferred.resolve({ requestId: res.result.requestId })
