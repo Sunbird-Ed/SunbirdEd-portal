@@ -1,6 +1,6 @@
 'use strict'
 
-describe('Controller:courseCreatorDashboardCtrl', function () {
+xdescribe('Controller:courseCreatorDashboardCtrl', function () {
   // load the controller's module
   beforeEach(module('playerApp'))
 

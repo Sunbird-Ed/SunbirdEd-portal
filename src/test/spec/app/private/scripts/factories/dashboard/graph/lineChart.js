@@ -1,9 +1,9 @@
 'use strict'
 
-describe('Factory: rendererService', function () {
+describe('Factory: LineChart', function () {
   beforeEach(module('playerApp'))
 
-  var rendererService
+  var LineChart
   var testData = dashboardsTestData.rendererData   // eslint-disable-line
 
   beforeEach(inject(function ($rootScope, $controller) {  // eslint-disable-line
@@ -13,28 +13,31 @@ describe('Factory: rendererService', function () {
     })
   }))
 
-  beforeEach(inject(function ($rootScope, _rendererService_) {  // eslint-disable-line
-    rendererService = _rendererService_
+  beforeEach(inject(function ($rootScope, _LineChart_) {  // eslint-disable-line
+    LineChart = _LineChart_
   }))
 
   it('Checking renderer with valid data', function () {
     var data = testData.series
-    var rendererData = new rendererService.Render(data)
-    rendererData = JSON.stringify(rendererData.chartList[0][0])
+    var chart = new LineChart()
+    var rendererData = chart.render(data)
+    rendererData = JSON.stringify(rendererData[0][0])
     var responseData = '["21 Created","0 IN REVIEW","7 LIVE"]'
     expect(rendererData).toEqual(responseData)
   })
 
   it('Checking renderer with empty series data', function () {
     var data = testData.noSeries
-    var rendererData = new rendererService.Render(data)
-    rendererData = JSON.stringify(rendererData.chartList[0][0])
+    var chart = new LineChart()
+    var rendererData = chart.render(data)
+    rendererData = JSON.stringify(rendererData[0][0])
     var responseData = '["Number of users per day"]'
     expect(rendererData).toEqual(responseData)
   })
 
   it('Renderer should return undefined', function () {
-    var rendererData = new rendererService.Render()
-    expect(rendererData.chartList).toBe(undefined)
+    var chart = new LineChart()
+    var rendererData = chart.render()
+    expect(rendererData).toBe(undefined)
   })
 })

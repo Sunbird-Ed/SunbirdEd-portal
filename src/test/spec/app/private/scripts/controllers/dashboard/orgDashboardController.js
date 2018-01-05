@@ -45,8 +45,8 @@ describe('Controller: orgDashboardController', function () {
 
   describe('Get Organisation dashboard', function () {
     it('getAdminDashboardData', function (done) {
-      orgDashboardController.objQueryClient = new QueryService({ key: 'orgCreationDataSource' })
-      spyOn(orgDashboardController.objQueryClient, 'query').and.returnValue(deferred.promise)
+      var getInstanceObj = new QueryService.GetInstance({ eid: 'orgCreation' })
+      spyOn(getInstanceObj, 'getData').and.returnValue(deferred.promise)
       deferred.resolve(testData.creationResponse)
       orgDashboardController.timePeriod = '5w'
       spyOn(orgDashboardController, 'getAdminDashboardData').and.callThrough()
@@ -85,16 +85,6 @@ describe('Controller: orgDashboardController', function () {
     it('on After Dataset Change when not creation', function () {
       spyOn(orgDashboardController, 'onAfterDatasetChange').and.callThrough()
       orgDashboardController.onAfterDatasetChange('consumption')
-    })
-
-    it('next Graph', function () {
-      spyOn(orgDashboardController, 'nextGraph').and.callThrough()
-      orgDashboardController.nextGraph()
-    })
-
-    it('previous Graph', function () {
-      spyOn(orgDashboardController, 'previousGraph').and.callThrough()
-      orgDashboardController.previousGraph()
     })
 
     it('show Data', function () {
