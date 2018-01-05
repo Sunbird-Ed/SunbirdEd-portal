@@ -17,7 +17,7 @@ angular.module('playerApp')
       courseDashboard.dataset = 'consumption'
       courseDashboard.graphShow = 0
 
-      var getInstanceObj = new QueryService.GetInstance({ eid: 'courseConsumption' })
+      var getInstanceObj = new QueryService.CreateNewInstance({ eid: 'courseConsumption' })
       var chart = new Visualizer({ type: 'line' })
 
       // Variables to show loader/errorMsg/warningMsg

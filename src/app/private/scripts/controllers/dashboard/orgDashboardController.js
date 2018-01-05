@@ -10,7 +10,7 @@ angular.module('playerApp')
       dashboardData.datasetPreviousValue = 'creation'
       var chart = new Visualizer({ type: 'line' })
       $('#dropdownMenu').dropdown()
-      var downloadInstanceObj = new QueryService.GetInstance({ eid: 'downloadReport' })
+      var downloadInstanceObj = new QueryService.CreateNewInstance({ eid: 'downloadReport' })
 
       /**
        * @method getAdminDashboardData
@@ -21,8 +21,8 @@ angular.module('playerApp')
         spinner(true)
         // Create object
         var getInstanceObj = dashboardData.datasetPreviousValue === 'creation'
-          ? new QueryService.GetInstance({ eid: 'orgCreation' })
-          : new QueryService.GetInstance({ eid: 'orgConsumption' })
+          ? new QueryService.CreateNewInstance({ eid: 'orgCreation' })
+          : new QueryService.CreateNewInstance({ eid: 'orgConsumption' })
 
         dashboardData.showDataDiv = false
         dashboardData.showOrgWarningDiv = false

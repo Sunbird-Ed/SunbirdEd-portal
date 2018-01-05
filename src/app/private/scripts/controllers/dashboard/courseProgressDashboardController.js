@@ -9,7 +9,7 @@ angular.module('playerApp')
       courseDashboard.chartHeight = 120
       courseDashboard.filterQueryTextMsg = '7 days' // Default value
       courseDashboard.filterTimePeriod = '7d' // Default value
-      var downloadInstanceObj = new QueryService.GetInstance({ eid: 'downloadReport' })
+      var downloadInstanceObj = new QueryService.CreateNewInstance({ eid: 'downloadReport' })
 
       // Dataset - progress / consumption
       courseDashboard.courseName = 'Progress'
@@ -29,7 +29,7 @@ angular.module('playerApp')
         // Build request body
         courseDashboard.filterTimePeriod = courseDashboard.filterTimePeriod ? courseDashboard.filterTimePeriod : '7d'
         courseDashboard.courseProgressArray = []
-        var getInstanceObj = new QueryService.GetInstance({ eid: 'courseProgress' })
+        var getInstanceObj = new QueryService.CreateNewInstance({ eid: 'courseProgress' })
         getInstanceObj.getData({
           identifier: courseDashboard.batchIdentifier,
           timePeriod: courseDashboard.filterTimePeriod
