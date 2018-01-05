@@ -120,5 +120,29 @@ describe('Controller: orgDashboardController', function () {
       scope.$apply()
       expect(orgDashboardController.showData).not.toBe(undefined)
     })
+
+    it('Download sucess', function (done) {
+      var downloadInstanceObj = new QueryService.CreateNewInstance({ eid: 'downloadReport' })
+
+      spyOn(downloadInstanceObj, 'download').and.returnValue(deferred.promise)
+      deferred.resolve(testData.creationResponse)
+      spyOn(orgDashboardController, 'downloadReport').and.callThrough()
+      orgDashboardController.downloadReport()
+      scope.$apply()
+      done()
+      // expect(orgDashboardController.showDataDiv).toEqual(true)
+    })
+
+    it('Download reject', function (done) {
+      var downloadInstanceObj = new QueryService.CreateNewInstance({ eid: 'downloadReport' })
+      spyOn(downloadInstanceObj, 'download').and.returnValue(deferred.promise)
+      // deferred.resolve(testData.creationResponse)
+      deferred.reject({})
+      spyOn(orgDashboardController, 'downloadReport').and.callThrough()
+      orgDashboardController.downloadReport()
+      scope.$apply()
+      done()
+      // expect(orgDashboardController.showDataDiv).toEqual(true)
+    })
   })
 })
