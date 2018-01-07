@@ -11,7 +11,7 @@
         </div>
     </div>
     <div class="one wide column"></div>
-    <div class="two wide column padding-top-10" id="buttonPopUp1">        
+    <div class="two wide column padding-top-10" id="showFilterButton">        
         <span class="browse item cursor-pointer" ng-click="upForReviewContent.showFilterPopup()">
             {{$root.frmelmnts.lbl.showFilters}}
             <i class="dropdown icon"></i>
@@ -35,50 +35,50 @@
             </div>
           </div>
         </div>
-    </div>
+    </div>  
 </div>
 
-<div class="ui grid" ng-if="upForReviewContent.appliedFilter">
-    <div class="twelve wide column content"> 
+<div class="ui grid" ng-if="upForReviewContent.isShowAppliedFilter">
+    <div class="ten wide column content"> 
             <!-- curriculum --> 
-            <span class="padded chip margin-top--5" ng-if='upForReviewContent.search.selectedBoard.length > 0'> 
+            <span class="padded chip margin-top--5" ng-if='upForReviewContent.search.appliedBoard.length > 0'> 
             {{$root.frmelmnts.prmpt.curriculum}}: 
-            <a class="ui label margin-top--5" ng-repeat="board in upForReviewContent.search.selectedBoard" 
+            <a class="ui label margin-top--5" ng-repeat="board in upForReviewContent.search.appliedBoard" 
                 ng-init="$last && $root.expandFilters()">{{board}} 
-                <i class="delete icon" ng-click="upForReviewContent.search.removeFilterSelection('selectedBoard',board)"> 
+                <i class="delete icon" ng-click="upForReviewContent.search.removeFilterSelection('appliedBoard', board, 'selectedBoard')"> 
                 </i> 
             </a> 
-            </span> 
+            </span>
             <!-- Content type --> 
-            <span class="padded chip margin-top--5" ng-if='upForReviewContent.search.selectedContentType.length > 0'> 
+            <span class="padded chip margin-top--5" ng-if='upForReviewContent.search.appliedContentType.length > 0'> 
                 {{$root.frmelmnts.prmpt.contenttypes}}: 
-                <a class="ui label margin-top--5" ng-repeat="contenttype in upForReviewContent.search.selectedContentType" ng-init="$last && $root.expandFilters()"> 
+                <a class="ui label margin-top--5" ng-repeat="contenttype in upForReviewContent.search.appliedContentType" ng-init="$last && $root.expandFilters()"> 
                     {{upForReviewContent.search.getSelectedContentTypeValue(upForReviewContent.search.contentTypes, contenttype)}} 
-                    <i class="delete icon" ng-click="upForReviewContent.search.removeFilterSelection('selectedContentType',contenttype)"></i> 
+                    <i class="delete icon" ng-click="upForReviewContent.search.removeFilterSelection('appliedContentType', contenttype, 'selectedContentType')"></i> 
                 </a> 
             </span> 
             <!-- grades --> 
-            <span class="padded chip margin-top--5" ng-if='upForReviewContent.search.selectedGrades.length > 0'> 
+            <span class="padded chip margin-top--5" ng-if='upForReviewContent.search.appliedGrades.length > 0'> 
                 {{$root.frmelmnts.prmpt.grades}}: 
-                <a class="ui label margin-top--5" ng-repeat="grade in upForReviewContent.search.selectedGrades" ng-init="$last && $root.expandFilters()"> 
+                <a class="ui label margin-top--5" ng-repeat="grade in upForReviewContent.search.appliedGrades" ng-init="$last && $root.expandFilters()"> 
                     {{grade}} 
-                    <i class="delete icon" ng-click="upForReviewContent.search.removeFilterSelection('selectedGrades',grade)"></i> 
+                    <i class="delete icon" ng-click="upForReviewContent.search.removeFilterSelection('appliedGrades', grade, 'selectedGrades')"></i> 
                 </a> 
             </span> 
             <!-- medium --> 
-            <span class="padded chip" ng-if='upForReviewContent.search.selectedMedium.length > 0'> 
+            <span class="padded chip" ng-if='upForReviewContent.search.appliedMedium.length > 0'> 
                 {{$root.frmelmnts.prmpt.medium}}: 
-                <a class="ui label margin-top--5" ng-repeat="medium in upForReviewContent.search.selectedMedium" ng-init="$last && $root.expandFilters()"> 
+                <a class="ui label margin-top--5" ng-repeat="medium in upForReviewContent.search.appliedMedium" ng-init="$last && $root.expandFilters()"> 
                     {{medium}} 
-                    <i class="delete icon" ng-click="upForReviewContent.search.removeFilterSelection('selectedMedium',medium)"></i> 
+                    <i class="delete icon" ng-click="upForReviewContent.search.removeFilterSelection('appliedMedium', medium, 'selectedMedium')"></i> 
                 </a> 
             </span> 
             <!-- subject --> 
-            <span class="padded chip margin-top--5" ng-if='upForReviewContent.search.selectedSubject.length > 0'> 
+            <span class="padded chip margin-top--5" ng-if='upForReviewContent.search.appliedSubject.length > 0'> 
                 {{$root.frmelmnts.prmpt.subject}}: 
-                <a class="ui label margin-top--5" ng-repeat="subject in upForReviewContent.search.selectedSubject" ng-init="$last && $root.expandFilters()"> 
+                <a class="ui label margin-top--5" ng-repeat="subject in upForReviewContent.search.appliedSubject" ng-init="$last && $root.expandFilters()"> 
                     {{subject}} 
-                    <i class="delete icon" ng-click="upForReviewContent.search.removeFilterSelection('selectedSubject',subject)"></i> 
+                    <i class="delete icon" ng-click="upForReviewContent.search.removeFilterSelection('appliedSubject', subject, 'selectedSubject')"></i> 
                 </a> 
             </span> 
     </div> 
@@ -114,7 +114,7 @@
 </div>
 
 <div class="ui grid" ng-show="upForReviewContent.hideFilterPopup">
-    <div class="ui fluid popup upForReviewPopUp" id="LinkCopiedToClipboard1">
+    <div class="ui fluid popup upForReviewPopUp" id="showFilterPopup">
         <div class="filtercolmntext ui grid">
             <!-- Curriculum -->
             <div class="three wide column">
@@ -123,7 +123,7 @@
                     <div class="filter-sel-text" ng-if="upForReviewContent.search.selectedBoard.length > 0 ">{{upForReviewContent.search.selectedBoard.length+' '+$root.frmelmnts.prmpt.curriculum}}</div>
                     <div class="filter-sel-text" ng-if="upForReviewContent.search.selectedBoard.length === 0 ">{{$root.frmelmnts.prmpt.curriculum}}</div>
                     <div class="menu">
-                        <div ng-click="upForReviewContent.search.selectFilter('selectedBoard',board,$event)" ng-repeat="board in upForReviewContent.search.boards | orderBy:'toString()'" class="item dropdown-item" ng-class="{'active':($root.search.selectedBoard.indexOf(board)>=0)}"
+                        <div ng-click="upForReviewContent.search.selectFilter('selectedBoard',board,$event)" ng-repeat="board in upForReviewContent.search.boards | orderBy:'toString()'" class="item dropdown-item" ng-class="{'active':(upForReviewContent.search.selectedBoard.indexOf(board)>=0)}"
                             data-value="{{board}}">{{board}}</div>
                     </div>
                 </div>
@@ -186,8 +186,8 @@
             </div>
             <!-- buttons -->
             <div class="three wide column filter-button float-ContentRight padding-top-10">
-                <a class="searchfilterbutton ui blue tiny  button" ng-click="upForReviewContent.getUpForReviewContent(1, true);upForReviewContent.hideFilterPopup = false;upForReviewContent.appliedFilter = true ">{{$root.frmelmnts.btn.apply}}</a>
-                <a class="searchfilterbutton ui primary tiny basic button" ng-click="upForReviewContent.search.resetFilter()">{{$root.frmelmnts.btn.reset}}</a>
+                <a class="searchfilterbutton ui blue tiny  button" ng-click="upForReviewContent.appliedFilter = true;upForReviewContent.getUpForReviewContent(1);upForReviewContent.hideFilterPopup = false; ">{{$root.frmelmnts.btn.apply}}</a>
+                <a class="searchfilterbutton ui primary tiny basic button" ng-click="upForReviewContent.appliedFilter = false;upForReviewContent.search.resetFilter()">{{$root.frmelmnts.btn.reset}}</a>
             </div>
         </div>
     </div>
