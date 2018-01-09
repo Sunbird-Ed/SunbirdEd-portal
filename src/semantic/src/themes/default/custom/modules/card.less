@@ -46,7 +46,6 @@
     box-shadow: 0 0px 0px 0 @card-box-shadowColor, 0 0 0 0px @card-box-shadowColor;
     -webkit-transition: box-shadow .1s ease, -webkit-transform .1s ease;
     transition: box-shadow .1s ease, transform .1s ease;
-    z-index: '';
 }
 
 
@@ -57,7 +56,8 @@
 // Style guide: Modules.Card.Hover
 
 
-.sliderCards.ui.link.card:hover, .ui.link.cards .card:hover {
+.sliderCards.ui.link.card:hover,
+.ui.link.cards .card:hover {
     transition: all .3s ease 0s;
     box-shadow: none;
 }

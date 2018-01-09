@@ -93,7 +93,7 @@
 /*course structure accordian fonts*/
 .courseAccordianHeading {
   font-family: 'sunbirdboldfont';
-  font-size: 1.1875;
+  font-size: 1.1875em;
 }
 .courseAccordianDesc {
   font-family: 'sunbirdregularfont';
@@ -789,7 +789,6 @@ th {
   box-shadow: 0 0px 0px 0 #d4d4d5, 0 0 0 0px #d4d4d5;
   transition: box-shadow 0.1s ease, -webkit-transform 0.1s ease;
   transition: box-shadow 0.1s ease, transform 0.1s ease;
-  z-index: '';
 }
 .sliderCards.ui.link.card:hover,
 .ui.link.cards .card:hover {
@@ -1680,6 +1679,11 @@ ul.fancytree-container li {
   color: #7c7b7b;
   font-size: 13px;
 }
+.contentMetaDetail {
+  color: #7c7b7b;
+  font-size: 13px;
+  width: 50%;
+}
 .cardtakenote {
   color: #007AFF;
   vertical-align: top;
@@ -1721,7 +1725,6 @@ ul.fancytree-container li {
   box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
   transition: box-shadow 0.1s ease, -webkit-transform 0.1s ease;
   transition: box-shadow 0.1s ease, transform 0.1s ease;
-  z-index: '';
 }
 .homeHeaderPadding {
   padding: 14px 16px 16px 16px;
@@ -2052,7 +2055,6 @@ ul.fancytree-container li {
   color: #ffffff;
   width: 100%;
   margin: 0;
-  padding: -30px !important;
   max-height: 70px;
   padding-top: 10px;
   padding-bottom: 10px;
