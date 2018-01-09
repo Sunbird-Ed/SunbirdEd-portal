@@ -6,55 +6,61 @@ angular.module('playerApp')
     'batchService',
     function ($rootScope, $scope, QueryService, $timeout, $state, $stateParams, toasterService, batchService) {
       var courseDashboard = this
-      courseDashboard.chartHeight = 120
-      courseDashboard.filterQueryTextMsg = '7 days' // Default value
-      courseDashboard.filterTimePeriod = '7d' // Default value
-      var downloadInstanceObj = new QueryService.CreateNewInstance({ eid: 'downloadReport' })
-
-      // Dataset - progress / consumption
-      courseDashboard.courseName = 'Progress'
-
-      // Search and sort table data
-      courseDashboard.orderByField = '' // Default value
-      courseDashboard.reverseSort = false
-      courseDashboard.searchUser = '' // Dafault value for free text search
-
-      // Variables to show loader/errorMsg
-      spinner(true)
       courseDashboard.showError = false
-      courseDashboard.showLabelFlag = false
-      courseDashboard.errorMsg = ''
+      spinner(true)
+      var downloadInstanceObj = new QueryService.CreateNewInstance({ eid: 'downloadReport' })
+      var filterDesc = {
+        '7d': $rootScope.messages.imsg.m0022,
+        '14d': $rootScope.messages.imsg.m0023,
+        '5w': $rootScope.messages.imsg.m0024,
+        'fromBegining': $rootScope.messages.imsg.m0025
+      }
 
-      function getCourseDashboardData (filterTimePeriod) {
-        // Build request body
-        courseDashboard.filterTimePeriod = courseDashboard.filterTimePeriod ? courseDashboard.filterTimePeriod : '7d'
-        courseDashboard.courseProgressArray = []
+      /**
+     * @method getCourseDashboardData
+     * @desc get batch details based on time period
+     * @memberOf Services.courseProgressDashboardCtrl
+     * @param {string}  timePeriod - timePeriod
+     */
+      courseDashboard.getCourseDashboardData = function (timePeriod) {
+        spinner(true)
+        courseDashboard.timePeriod = timePeriod || '7d'
+        courseDashboard.dashboarData = []
         var getInstanceObj = new QueryService.CreateNewInstance({ eid: 'courseProgress' })
         getInstanceObj.getData({
           identifier: courseDashboard.batchIdentifier,
-          timePeriod: courseDashboard.filterTimePeriod
+          timePeriod: courseDashboard.timePeriod
         }).then(function (data) {
-          courseDashboard.courseProgressArray = data
+          courseDashboard.showError = false
+          courseDashboard.filterText = filterDesc[courseDashboard.timePeriod]
+          courseDashboard.dashboarData = data
           spinner(false)
         }).catch(function (apiResponse) {
-          toasterService.error(apiResponse.params.errmsg)
+          courseDashboard.showErrors()
         })
       }
 
-      courseDashboard.onAfterFilterChange = function (item) {
+      /**
+     * @method onAfterFilterChange
+     * @desc get time perios
+     * @memberOf Services.courseProgressDashboardCtrl
+     * @param {string}  timeperiod - timeperiod
+     */
+      courseDashboard.onAfterFilterChange = function (timeperiod) {
         // Check old filter value. If old value and new filter value are same
-        if (courseDashboard.filterTimePeriod === angular.element(item).data('timeperiod')) {
+        if (courseDashboard.timePeriod === timeperiod) {
           console.log('avoid same apis call twice')
           return false
         }
-
-        spinner(true)
         courseDashboard.orderByField = ''
-        courseDashboard.filterTimePeriod = angular.element(item).data('timeperiod')
-        courseDashboard.filterQueryTextMsg = angular.element(item).data('timeperiod-text')
-        getCourseDashboardData(courseDashboard.filterTimePeriod)
+        courseDashboard.getCourseDashboardData(timeperiod)
       }
 
+      /**
+     * @method loadData
+     * @desc get my batches list
+     * @memberOf Services.courseProgressDashboardCtrl
+     */
       courseDashboard.loadData = function () {
         var request = {
           request: {
@@ -68,31 +74,33 @@ angular.module('playerApp')
         }
 
         courseDashboard.myBatches = []
+        courseDashboard.searchUser = ''
         batchService.getAllBatchs(request).then(function (response) {
           if (response && response.responseCode === 'OK') {
             if (response.result.response.content.length > 0) {
               courseDashboard.myBatches = response.result.response.content
               courseDashboard.buildMyBatchesDropdown()
-            } else {
-              spinner(false)
-              courseDashboard.showWarningMsg = true
             }
           } else {
-            // Show error div
-            courseDashboard.showErrors(response)
+            courseDashboard.showErrors()
           }
+          spinner(false)
         }).catch(function (response) {
-          courseDashboard.showErrors(response)
+          courseDashboard.showErrors()
         })
       }
 
+      /**
+     * @method buildMyBatchesDropdown
+     * @desc buildMyBatchesDropdown
+     * @memberOf Services.courseProgressDashboardCtrl
+     */
       courseDashboard.buildMyBatchesDropdown = function () {
         if (courseDashboard.myBatches.length === 1) {
-          courseDashboard.showLabelFlag = true
           var firstChild = _.first(_.values(courseDashboard.myBatches), 1)
           courseDashboard.batchIdentifier = firstChild.id
           courseDashboard.courseName = firstChild.name
-          getCourseDashboardData('7d')
+          courseDashboard.getCourseDashboardData('7d')
         } else {
           spinner(false)
           courseDashboard.isMultipleCourses = courseDashboard.myBatches.length > 1
@@ -108,33 +116,52 @@ angular.module('playerApp')
         courseDashboard.showLoader = data
       }
 
+      /**
+     * @method resetDropdown
+     * @desc to reset dropdwon values
+     * @memberOf Services.courseProgressDashboardCtrl
+     * @return void
+     */
       courseDashboard.resetDropdown = function () {
         $('#courseDropdownValues').dropdown('restore defaults')
       }
 
-      courseDashboard.showErrors = function (apiResponse) {
+      /**
+     * @method showErrors
+     * @desc to show error
+     * @memberOf Services.courseProgressDashboardCtrl
+     * @return void
+     */
+      courseDashboard.showErrors = function () {
         courseDashboard.showError = true
         spinner(false)
-        courseDashboard.errorMsg = apiResponse.params.errmsg
-        toasterService.error(apiResponse.params.errmsg)
       }
 
+      /**
+     * @method initDropdwon
+     * @desc init drodwon values
+     * @memberOf Services.courseProgressDashboardCtrl
+     * @return void
+     */
       courseDashboard.initDropdwon = function () {
-        $('#myBatchesListFilter').dropdown({
-          onChange: function () {}
-        })
+        $('#myBatchesListFilter').dropdown({})
       }
 
-      courseDashboard.onAfterBatchChange = function (batchId, batchName) {
+      /**
+     * @method onAfterBatchChange
+     * @desc get batchid and batchname
+     * @memberOf Services.courseProgressDashboardCtrl
+     * @param {string} [batchId] [batch identifier]
+     * @return void
+     */
+      courseDashboard.onAfterBatchChange = function (batchId) {
         if (courseDashboard.batchIdentifier === batchId) {
           console.log('avoid same apis call twice')
           return false
         }
-        spinner(true)
         courseDashboard.batchIdentifier = batchId
-        courseDashboard.courseName = batchName
         courseDashboard.isMultipleCourses = false
-        getCourseDashboardData()
+        courseDashboard.getCourseDashboardData(courseDashboard.timePeriod)
       }
 
       /**
@@ -146,7 +173,7 @@ angular.module('playerApp')
         courseDashboard.disabledClass = true
         downloadInstanceObj.download({
           identifier: courseDashboard.batchIdentifier,
-          timePeriod: courseDashboard.filterTimePeriod
+          timePeriod: courseDashboard.timePeriod
         }, 'COURSE_PROGRESS').then(function (data) {
           var str = $rootScope.messages.stmsg.m0095
           courseDashboard.downloadReportText = str.replace('{acknowledgementId}',
