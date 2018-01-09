@@ -166,16 +166,7 @@
                     "Economics",
                     "Sanskrit"
                 ],
-                "boards": [
-                    "CBSE",
-                    "ICSE",
-                    "MSCERT",
-                    "NCERT",
-                    "UP Board",
-                    "AP Board",
-                    "TN Board",
-                    "NCTE"
-                ]
+                "boards": ["AP Board", "BSER", "CBSE", "ICSE", "MSCERT", "NCERT", "NCTE", "TN Board", "UP Board"]
             }
         },
         "MESSAGES": {
@@ -425,7 +416,7 @@
                 "medium": [
                     "Assamese", "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Malayalam", "Marathi", "Nepali", "Oriya", "Other", "Punjabi", "Tamil", "Telugu", "Urdu"
                 ],
-                "boards": ["AP Board", "CBSE", "ICSE", "MSCERT", "NCERT", "NCTE", "TN Board", "UP Board"],
+                "boards": ["AP Board", "BSER", "CBSE", "ICSE", "MSCERT", "NCERT", "NCTE", "TN Board", "UP Board"],
                 "orgType": ["technical"]
             }
         },
