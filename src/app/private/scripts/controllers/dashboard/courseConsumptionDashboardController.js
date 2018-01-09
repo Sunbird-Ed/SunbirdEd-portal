@@ -15,7 +15,6 @@ angular.module('playerApp')
 
       // Dataset - consumption
       courseDashboard.dataset = 'consumption'
-      courseDashboard.graphShow = 0
 
       var getInstanceObj = new QueryService.CreateNewInstance({ eid: 'courseConsumption' })
       var chart = new Visualizer({ type: 'line' })
@@ -40,7 +39,6 @@ angular.module('playerApp')
         }).then(function (data) {
           courseDashboard.data = chart.render(data)
           courseDashboard.consumptionNumericData = data.numericData
-          courseDashboard.graphShow = 0
           spinner(false)
           courseDashboard.showError = false
         }).catch(function (apiResponse) {
@@ -63,9 +61,9 @@ angular.module('playerApp')
       courseDashboard.loadData = function () {
         var request = {
           filters: {
-            status: ['Live', 'Draft'],
+            status: ['Live'],
             createdBy: $rootScope.userId,
-            contentType: ['Course', 'Textbook']
+            contentType: ['Course']
           },
           sort_by: {
             lastUpdatedOn: 'desc'
