@@ -92,7 +92,7 @@
         "FILTER": {
             "RESOURCES": {
                 "languages": [
-                    "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Marathi", "Punjabi", "Tamil", "Telugu"
+                    "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Marathi", "Punjabi", "Tamil", "Telugu", "Urdu"
                 ],
                 "contentTypes": [
                   {
@@ -386,7 +386,7 @@
         },
         "DROPDOWN": {
             "COMMON": {
-                "languages": ["Bengali", "English", "Gujarati", "Hindi", "Kannada", "Marathi", "Punjabi", "Tamil", "Telugu"],
+                "languages": ["Bengali", "English", "Gujarati", "Hindi", "Kannada", "Marathi", "Punjabi", "Tamil", "Telugu","Urdu"],
                 "lessonTypes": [
                     "Story", "Worksheet"
                 ],
