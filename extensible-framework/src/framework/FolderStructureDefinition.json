@@ -1,0 +1,8 @@
+{
+    "SERVICE":
+    {
+        "CASSANDRA_SCHEMA_PATH": "service/datastore/cassandra/schema.json",
+        "ROUTES_SCRIPT_PATH": "service/routes.ts",
+        "PLUGIN_PATH": "service/plugin.ts"
+    }
+}
