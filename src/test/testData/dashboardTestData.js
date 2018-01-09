@@ -382,7 +382,7 @@ var dashboardsTestData = { // eslint-disable-line
         }
       }
     },
-    batchSuccessData: {
+    getBatchDetailsSuccessData: {
       'id': 'api.sunbird.dashboard.course.admin',
       'ver': 'v1',
       'ts': '2018-01-09 10:38:59:773+0000',
