@@ -192,6 +192,7 @@ angular.module('playerApp')
         upForReviewContent.loader = toasterService.loader('', $rootScope.messages.stmsg.m0032)
         upForReviewContent.error = {}
         var request = upForReviewContent.getRequestObject(pageNumber)
+        upForReviewContent.hideFilter()
         searchService.search(request).then(function (res) {
           if (res && res.responseCode === 'OK') {
             upForReviewContent.loader.showLoader = false
