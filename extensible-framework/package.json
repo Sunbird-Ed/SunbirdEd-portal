@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bodybuilder": "^2.2.6",
     "elasticsearch": "^14.0.0",
     "express": "^4.16.2",
     "express-cassandra": "^2.1.0",

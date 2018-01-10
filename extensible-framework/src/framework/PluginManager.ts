@@ -41,29 +41,30 @@ export class PluginManager {
 	//2. register namespace with registry
 	//3. register data models if any 
 	//4. set the status of plugin to `installed`
-	public installPlugin(pluginInfo: PluginInfo): void {		
+	public installPlugin(plugin: PluginInfo[]): void {		
 		//this.discoverPlugin(pluginInfo)
+		_.forEach(plugin, (pluginInfo) => {
+			const source = fs.readFileSync(path.join(this.pluginRepoPath, pluginInfo.id, FolderStructureDefinition.SERVICE.PLUGIN_PATH), 'utf8')
 
-		const source = fs.readFileSync(path.join(this.pluginRepoPath, pluginInfo.id, FolderStructureDefinition.SERVICE.PLUGIN_PATH), 'utf8')
+			// transpile the plugin code to plain Javascript
+			let result = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, experimentalDecorators: true, emitDecoratorMetadata: true }  });
 
-		// transpile the plugin code to plain Javascript
-		let result = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, experimentalDecorators: true, emitDecoratorMetadata: true }  });
+			//Eval javascript code
+			let pluginCode = nodeEval(result.outputText, path.join(this.pluginRepoPath, pluginInfo.id, FolderStructureDefinition.SERVICE.PLUGIN_PATH));
 
-		//Eval javascript code
-		let pluginCode = nodeEval(result.outputText, path.join(this.pluginRepoPath, pluginInfo.id, FolderStructureDefinition.SERVICE.PLUGIN_PATH));
+			let plugin = new pluginCode.ExtPlugin();
+			this._pluginInstances.push(plugin);
 
-		let plugin = new pluginCode.ExtPlugin();
-		this._pluginInstances.push(plugin);
+			pluginRegistry.register(plugin._manifest)
+			console.log(` plugin is registered? ${pluginRegistry.isRegistered(pluginInfo.id)}`)
 
-		pluginRegistry.register(plugin._manifest)
-		console.log(` plugin is registered? ${pluginRegistry.isRegistered(pluginInfo.id)}`)
+			this.registerDatastoreSchema(pluginInfo)
 
-		this.registerDatastoreSchema(pluginInfo)
+			pluginRegistry.updateStatus(pluginInfo.id, PluginStatusEnum.installed)
+			console.log(`plugin status after install: ${pluginRegistry.getStatus(pluginInfo.id)}`)
 
-		pluginRegistry.updateStatus(pluginInfo.id, PluginStatusEnum.installed)
-		console.log(`plugin status after install: ${pluginRegistry.getStatus(pluginInfo.id)}`)
-
-		if(plugin.onInstall) plugin.onInstall();
+			if(plugin.onInstall) plugin.onInstall();
+		})
 	}
 
 	private discoverPlugin(pluginInfo: PluginInfo): any {		
@@ -72,14 +73,15 @@ export class PluginManager {
 	}
 
 	//1. register routes with app
-	public activatePlugin(pluginInfo: PluginInfo) {
+	public activatePlugin(plugin: PluginInfo) {
+		_.forEach(plugin, (pluginInfo) => {
+			let plugin = _.find(this._pluginInstances, (plugin) => {
+				return plugin._manifest.id === pluginInfo.id
+			})
 
-		let plugin = _.find(this._pluginInstances, (plugin) => {
-			return plugin._manifest.id === pluginInfo.id
+			this.registerRoutes(pluginInfo);
+			if(plugin.onStart) plugin.onStart();
 		})
-
-		this.registerRoutes(pluginInfo);
-		if(plugin.onStart) plugin.onStart();
 	}
 
 	private registerRoutes(pluginInfo: PluginInfo) {

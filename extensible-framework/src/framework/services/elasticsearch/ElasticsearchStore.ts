@@ -2,14 +2,21 @@ import * as elasticsearch from 'elasticsearch'
 import {ElasticsearchConfig} from './ElasticsearchConfig'
 import {DataProviderInterface} from '../../interfaces/DataProviderInterface'
 import * as _ from 'lodash';
-
+import * as bodybuilder from 'bodybuilder';
+			
 interface ESMetadataInterface {
 	_id: string;
 	_type: string;
 	_index: string;
 }
 
-export class ElasticsearchStore implements DataProviderInterface {
+interface ESDocInterface {
+	type: string, 
+	id?: number, 
+	body: object
+}
+
+class ElasticsearchStore implements DataProviderInterface {
 
 	private pluginId: string;
 	private indexName: string;
@@ -34,7 +41,7 @@ export class ElasticsearchStore implements DataProviderInterface {
 
 	//Adds a typed JSON document in a specific index, making it searchable. 
 	//If a document with the same index, type, and id already exists, an error will occur.
-	public create(query: { type: string, id?: number, body: object }, callback = (...args: any[]) => {}) {
+	public create(query: ESDocInterface, callback = (...args: any[]) => {}) {
 		this.sessionObject.create({
 			index: this.indexName,
 			type: query.type,
@@ -46,12 +53,12 @@ export class ElasticsearchStore implements DataProviderInterface {
 	//Stores a typed JSON document in an index, making it searchable. 
 	//When the id param is not set, a unique id will be auto-generated. When you specify an id either a new document 
 	//will be created, or an existing document will be updated.
-	public insertOne(query: { type: string, id?: number, body: object }, callback = (...args: any[]) => {}) {
+	public insertOne(query: ESDocInterface, callback = (...args: any[]) => {}) {
 		this.insert([query], callback)
 	}
 
 	//Bulk insert
-	public insert(query: { type: string, id?: number, body: object}[], callback = (...args: any[]) => {} ) {
+	public insert(query: ESDocInterface[], callback = (...args: any[]) => {} ) {
 		let bulkQuery: any[] = [];
 
 		_.forEach(query, (q) => {
@@ -73,22 +80,57 @@ export class ElasticsearchStore implements DataProviderInterface {
 		this.sessionObject.bulk({ body: bulkObject }, callback)
 	}
 
-	public findOne() {
-		
+	public find(query: { DSL: object}, callback = (...args: any[]) => {}) {
+		this.sessionObject.search({
+		  index: this.indexName,
+		  body: query.DSL
+		}, callback);
 	}
 
+	public update(query: ESDocInterface[], callback = (...args: any[]) => {}) {
+		let bulkQuery: any[] = [];
 
-	public find() {
+		_.forEach(query, (q) => {
+			let metadata = {_id: q.id, _type: q.type, _index: this.indexName }
+			bulkQuery.push({ action: 'update', metadata: metadata, body: { doc: q.body }})
+		})
 		
+		this.doBulkOperation(bulkQuery, callback)
 	}
 
-	
-
-	public update() {
-		
+	public updateOne(query: ESDocInterface, callback = (...args: any[]) => {}) {
+		this.update([query], callback)
 	}
 
-	public delete() {
+	public delete(query: { type: string, id?: number }[], callback = (...args: any[]) => {}) {
+		let bulkQuery: any[] = [];
+
+		_.forEach(query, (q) => {
+			let metadata = {_id: q.id, _type: q.type, _index: this.indexName }
+			bulkQuery.push({ action: 'delete', metadata: metadata })
+		})
 		
+		this.doBulkOperation(bulkQuery, callback)
+	}
+
+	public deleteOne(query: { type: string, id?: number }, callback = (...args: any[]) => {}) {
+		this.delete([query], callback)
+	}
+
+	public deleteByQuery(query: { DSL: object}, callback = (...args: any[]) => {}) {
+		this.sessionObject.deleteByQuery({
+		  index: this.indexName,
+		  body: query.DSL
+		}, callback);
+	}
+
+	public utils() {
+		return {
+			getBodybuilder: () => {
+				return bodybuilder()
+			}	
+		}
 	}
 }
+
+export {ElasticsearchStore}

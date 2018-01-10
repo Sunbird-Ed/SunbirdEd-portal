@@ -1,0 +1,14 @@
+{
+	"cassandra": {
+		"contactPoint": "127.0.0.1",
+		"port": 9042
+	},
+	"elasticsearch": {
+		"host": "localhost:9200"
+	},
+	"plugins": [{
+		"id": "org.ekstep.helloworld", 
+		"ver": "1.0", 
+		"scope": "service"
+	}]
+}

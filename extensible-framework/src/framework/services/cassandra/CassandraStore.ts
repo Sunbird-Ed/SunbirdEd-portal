@@ -4,10 +4,6 @@ import {cassandraStoreValidator} from './CassandraStoreValidator'
 import {CassandraConfig} from './CassandraConfig'
 import {DataProviderInterface} from '../DataProviderInterface'
 
-//import { injectable, inject } from "inversify";
-
-
-//@injectable()
 export class CassandraStore implements DataProviderInterface {
 
 	private pluginId: string;

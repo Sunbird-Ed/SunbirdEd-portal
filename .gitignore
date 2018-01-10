@@ -7,3 +7,4 @@
 /npm-debug.log
 .coverrun
 /src/mochawesome-report
+/extensible-framework/node_modules
