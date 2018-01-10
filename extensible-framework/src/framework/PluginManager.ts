@@ -8,6 +8,7 @@ import * as nodeEval from 'node-eval'
 import Global from '../../global-config'
 import * as ts from 'typescript'
 import * as FolderStructureDefinition from './FolderStructureDefinition.json'
+import * as shell from 'shelljs'
 
 interface PluginInfo {
 	id: string; 
@@ -44,26 +45,22 @@ export class PluginManager {
 	public installPlugin(plugin: PluginInfo[]): void {		
 		//this.discoverPlugin(pluginInfo)
 		_.forEach(plugin, (pluginInfo) => {
-			const source = fs.readFileSync(path.join(this.pluginRepoPath, pluginInfo.id, FolderStructureDefinition.SERVICE.PLUGIN_PATH), 'utf8')
+			const PluginPath = path.join(this.pluginRepoPath, pluginInfo.id)
 
-			// transpile the plugin code to plain Javascript
-			let result = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, experimentalDecorators: true, emitDecoratorMetadata: true }  });
-
-			//Eval javascript code
-			let pluginCode = nodeEval(result.outputText, path.join(this.pluginRepoPath, pluginInfo.id, FolderStructureDefinition.SERVICE.PLUGIN_PATH));
-
-			let plugin = new pluginCode.ExtPlugin();
-			this._pluginInstances.push(plugin);
-
-			pluginRegistry.register(plugin._manifest)
-			console.log(` plugin is registered? ${pluginRegistry.isRegistered(pluginInfo.id)}`)
-
-			this.registerDatastoreSchema(pluginInfo)
-
-			pluginRegistry.updateStatus(pluginInfo.id, PluginStatusEnum.installed)
-			console.log(`plugin status after install: ${pluginRegistry.getStatus(pluginInfo.id)}`)
-
-			if(plugin.onInstall) plugin.onInstall();
+			this.installNodeModules(path.join(PluginPath, FolderStructureDefinition.SERVICE.PACKAGE_JSON_PATH), pluginInfo.id, (err, res) => {
+				if (res) {
+					let pluginCode = this.compilePluginCode(PluginPath, pluginInfo.id)
+					let plugin = new pluginCode.ExtPlugin();
+					this._pluginInstances.push(plugin);
+					pluginRegistry.register(plugin._manifest)
+					this.registerDatastoreSchema(pluginInfo)
+					this.registerRoutes(pluginInfo);
+					pluginRegistry.updateStatus(pluginInfo.id, PluginStatusEnum.installed)
+					if(plugin.onInstall) plugin.onInstall();
+				} else {
+					throw new Error(`unable to download dependencies for plugin: ${pluginInfo.id}`)
+				}
+			})
 		})
 	}
 
@@ -72,16 +69,38 @@ export class PluginManager {
 		
 	}
 
-	//1. register routes with app
-	public activatePlugin(plugin: PluginInfo) {
-		_.forEach(plugin, (pluginInfo) => {
-			let plugin = _.find(this._pluginInstances, (plugin) => {
-				return plugin._manifest.id === pluginInfo.id
+	private compilePluginCode(PluginPath: string, pluginId: string) {
+		try {
+			const source = fs.readFileSync(path.join(PluginPath, FolderStructureDefinition.SERVICE.PLUGIN_PATH), 'utf8')
+
+			// transpile the plugin code to plain Javascript
+			let result = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, experimentalDecorators: true, emitDecoratorMetadata: true }  });
+
+			//Eval javascript code
+			return nodeEval(result.outputText, path.join(PluginPath, FolderStructureDefinition.SERVICE.PLUGIN_PATH));
+		} catch(e) {
+			throw new Error(`Error while compling plugin code: ${pluginId}`)
+		}
+	}
+
+
+	private installNodeModules(rootPath: string, pluginId: string, callback = (...args: any[]) => {}) {
+		let packageJsonExist = fs.readFileSync(path.join(rootPath, 'package.json'))
+		if (packageJsonExist) {
+			shell.cd(rootPath);
+			console.log(`-------Installing NPM modules for plugin: ${pluginId}------`)
+			shell.exec('npm install', (code: number, stdout: string, stderr: string) => {
+	  			console.log('Program output:', stdout);
+	  			console.log('Program stderr:', stderr);
+	  			shell.cd('~')
+	  			if (code !== 0) return callback(new Error(`Error when installing npm modules for plugin: ${pluginId}`))
+	  			callback(undefined, true);
 			})
 
-			this.registerRoutes(pluginInfo);
-			if(plugin.onStart) plugin.onStart();
-		})
+		} else {
+			callback(undefined, true)
+		}
+		
 	}
 
 	private registerRoutes(pluginInfo: PluginInfo) {

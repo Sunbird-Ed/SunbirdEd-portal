@@ -25,7 +25,8 @@ class PluginRegistry {
 		if (pluginFound) {
 			throw new Error(`Plugin ${manifest.id} is already registered!`);
 		} else {
-			this.registeredPlugins.push(manifest)			
+			this.registeredPlugins.push(manifest)
+			console.log(`plugin is registered: ${manifest.id}`)			
 		}		
 	}
 
@@ -57,6 +58,7 @@ class PluginRegistry {
 
 		if (plugin) { 
 			plugin.status = status
+			console.log(`plugin (${pluginId}) status changed to: ${PluginStatusEnum[status]}`)
 			return true
 		}
 

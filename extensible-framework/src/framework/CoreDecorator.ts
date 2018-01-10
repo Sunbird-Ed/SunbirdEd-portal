@@ -73,7 +73,7 @@ function injectProperty(...keys: string[]) {
     };
 }
 
-function inject(...keys: string[]) {
+function Inject(...keys: string[]) {
     return (...args: any[]) => {
         var params = [];
         for(var i=0;i<args.length; i++){
@@ -90,5 +90,5 @@ function inject(...keys: string[]) {
     };
 }
 
-export {Plugin, Injector, inject}
+export {Plugin, Injector, Inject}
 

@@ -8,3 +8,4 @@
 .coverrun
 /src/mochawesome-report
 /extensible-framework/node_modules
+/extensible-framework/plugins/**/node_modules

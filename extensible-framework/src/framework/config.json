@@ -10,5 +10,8 @@
 		"id": "org.ekstep.helloworld", 
 		"ver": "1.0", 
 		"scope": "service"
-	}]
+	}],
+	"nodeApp": {
+		"port": 4000
+	}
 }
