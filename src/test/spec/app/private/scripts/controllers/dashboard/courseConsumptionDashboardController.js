@@ -46,53 +46,79 @@ describe('Controller:courseConsumptionDashboardCtrl', function () {
     scope.$apply()
     var response = searchService.search().$$state.value
     expect(response).not.toBe(undefined)
-    courseDashboard.getUpForReviewContent = response.result.content
     expect(courseDashboard.loadData).not.toBe(undefined)
+    expect(courseDashboard.myCoursesList).toBeDefined()
+    expect(response.responseCode).toEqual('OK')
+    expect(courseDashboard.myCoursesList.length).toBeGreaterThan(1)
   })
 
   it('Should return only one course createdByMe', function () {
     spyOn(searchService, 'search').and.returnValue(deferred.promise)
     deferred.resolve(testData.oneCourseCreatedByMeResponse)
     spyOn(courseDashboard, 'loadData').and.callThrough()
+    spyOn(courseDashboard, 'getCourseDashboardData').and.callThrough()
+    spyOn(courseDashboard, 'buildMyCoursesDropdown').and.callThrough()
     courseDashboard.loadData()
     scope.$apply()
     var response = searchService.search().$$state.value
     expect(response).not.toBe(undefined)
-    courseDashboard.getUpForReviewContent = response.result.content
     expect(courseDashboard.loadData).not.toBe(undefined)
+    expect(courseDashboard.buildMyCoursesDropdown).toHaveBeenCalled()
+    expect(courseDashboard.myCoursesList.length).toEqual(1)
+    expect(courseDashboard.courseIdentifier).toBeDefined()
+    expect(courseDashboard.courseName).toBeDefined()
+    expect(courseDashboard.getCourseDashboardData).toHaveBeenCalled()
+    expect(courseDashboard.timePeriod).toEqual('7d')
   })
 
   it('getCourseDashboardData', function (done) {
     var getInstanceObj = new QueryService.CreateNewInstance({ eid: 'courseConsumption' })
     spyOn(getInstanceObj, 'getData').and.returnValue(deferred.promise)
     deferred.resolve(testData.courseConsumptionSuccess)
-    courseDashboard.filterTimePeriod = '7d'
     spyOn(courseDashboard, 'getCourseDashboardData').and.callThrough()
-    courseDashboard.getCourseDashboardData()
+    courseDashboard.getCourseDashboardData('7d')
     scope.$apply()
     done()
+    expect(courseDashboard.data).not.toBe(undefined)
     expect(courseDashboard.showError).toEqual(false)
+    expect(courseDashboard.showLoader).toEqual(false)
   })
 
   it('onAfterCourseChange if case', function () {
+    courseDashboard.isMultipleCourses = true
     courseDashboard.courseIdentifier = '123'
     spyOn(courseDashboard, 'onAfterCourseChange').and.callThrough()
-    courseDashboard.onAfterCourseChange('123', 'TestCourse')
+    var res = courseDashboard.onAfterCourseChange('123')
+    expect(courseDashboard.isMultipleCourses).toEqual(true)
+    expect(res).toEqual(false)
   })
 
-  it('onAfterCourseChange', function () {
+  it('onAfterCourseChange - else case', function () {
     spyOn(courseDashboard, 'onAfterCourseChange').and.callThrough()
-    courseDashboard.onAfterCourseChange('123', 'TestCourse')
+    courseDashboard.onAfterCourseChange('123')
+    expect(courseDashboard.isMultipleCourses).toEqual(false)
+    expect(courseDashboard.courseIdentifier).toEqual('123')
   })
 
-  it('onAfterFilterChange', function () {
+  it('onAfterFilterChange - if case', function () {
+    courseDashboard.timePeriod = '7d'
     spyOn(courseDashboard, 'onAfterFilterChange').and.callThrough()
+    var res = courseDashboard.onAfterFilterChange('7d')
+    expect(res).toEqual(false)
+  })
+
+  it('onAfterFilterChange - else case', function () {
+    spyOn(courseDashboard, 'onAfterFilterChange').and.callThrough()
+    spyOn(courseDashboard, 'getCourseDashboardData').and.callThrough()
     courseDashboard.onAfterFilterChange('7d')
+    expect(courseDashboard.getCourseDashboardData).toHaveBeenCalled()
+    expect(courseDashboard.timePeriod).toEqual('7d')
   })
 
   it('Should initialize course dropdwon', function () {
     spyOn(courseDashboard, 'initDropdwon').and.callThrough()
     courseDashboard.initDropdwon()
+    expect(courseDashboard.initDropdwon).not.toBe(undefined)
   })
 
   it('Should return zero courses createdByMe', function () {
@@ -103,8 +129,9 @@ describe('Controller:courseConsumptionDashboardCtrl', function () {
     scope.$apply()
     var response = searchService.search().$$state.value
     expect(response).not.toBe(undefined)
-    courseDashboard.getUpForReviewContent = response.result.content
-    expect(courseDashboard.getUpForReviewContent).toBeDefined()
+    expect(response.result.content).toBeDefined()
+    expect(courseDashboard.myCoursesList).toBeDefined()
+    expect(courseDashboard.myCoursesList.length).toEqual(0)
   })
 
   it('Should return errorMessage', function () {
@@ -115,20 +142,16 @@ describe('Controller:courseConsumptionDashboardCtrl', function () {
     scope.$apply()
     var response = searchService.search().$$state.value
     expect(response).not.toBe(undefined)
-    courseDashboard.courseDashboard = response.result.content
     expect(courseDashboard.showErrors).not.toBe(undefined)
+    expect(courseDashboard.showError).toEqual(true)
   })
 
   it('Should return errorMessage', function () {
-    spyOn(searchService, 'search').and.returnValue(deferred.promise)
-    deferred.resolve(testData.invalidResponse)
     spyOn(courseDashboard, 'showErrors').and.callThrough()
-    courseDashboard.showErrors(testData.invalidResponse)
+    courseDashboard.showErrors()
     scope.$apply()
-    var response = searchService.search().$$state.value
-    expect(response).not.toBe(undefined)
-    courseDashboard.courseDashboard = response.result.content
     expect(courseDashboard.showErrors).not.toBe(undefined)
+    expect(courseDashboard.showError).toEqual(true)
   })
 
   it('Search service reject', function () {
@@ -137,5 +160,7 @@ describe('Controller:courseConsumptionDashboardCtrl', function () {
     spyOn(courseDashboard, 'loadData').and.callThrough()
     courseDashboard.loadData()
     scope.$apply()
+    expect(courseDashboard.loadData).not.toBe(undefined)
+    expect(courseDashboard.showError).toEqual(true)
   })
 })
