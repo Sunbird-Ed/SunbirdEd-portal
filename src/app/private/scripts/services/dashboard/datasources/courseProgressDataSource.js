@@ -21,7 +21,7 @@ angular.module('playerApp')
         var URL, deferred, header
         URL = dataSourceUtils.constructApiUrl(req, 'COURSE_PROGRESS')
         deferred = $q.defer()
-        header = dataSourceUtils.getHeader()
+        header = dataSourceUtils.getDefaultHeader()
         httpAdapter.httpCall(URL, '', 'GET', header).then(function (res) {
           if (res && res.responseCode === 'OK') {
             deferred.resolve(courseProgressDataSource.parseResponse(res.result))

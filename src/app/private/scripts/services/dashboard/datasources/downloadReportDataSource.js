@@ -22,7 +22,7 @@ angular.module('playerApp')
         var URL, deferred, response, header
         URL = dataSourceUtils.constructDownloadReportUrl(req, dataset)
         deferred = $q.defer()
-        header = dataSourceUtils.getHeader()
+        header = dataSourceUtils.getDefaultHeader()
         response = httpAdapter.httpCall(URL, '', 'GET', header)
         response.then(function (res) {
           if (res && res.responseCode === 'OK') {

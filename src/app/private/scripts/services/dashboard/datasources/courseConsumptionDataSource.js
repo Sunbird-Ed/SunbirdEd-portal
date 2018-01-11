@@ -20,7 +20,7 @@ angular.module('playerApp')
       this.getData = function (req) {
         var URL, deferred, header
         URL = dataSourceUtils.constructApiUrl(req, 'COURSE_CONSUMPTION')
-        header = dataSourceUtils.getHeader()
+        header = dataSourceUtils.getDefaultHeader()
         deferred = $q.defer()
         httpAdapter.httpCall(URL, '', 'GET', header).then(function (res) {
           if (res && res.responseCode === 'OK') {
