@@ -331,7 +331,8 @@ angular.module('playerApp')
             pageid: org.sunbird.portal.appid + '_SearchCourse',
             id: '',
             name: '',
-            url: '/private/index#!/' + $stateParams.type + '/search/' + $stateParams.query + '/' + $stateParams.filters + '/' + $stateParams.sort + '/' + $stateParams.autoSuggestSearch
+            url: '/private/index#!/' + $stateParams.type + '/search/' + $stateParams.query + '/' +
+            $stateParams.filters + '/' + $stateParams.sort + '/' + $stateParams.autoSuggestSearch
           })
         },
         onExit: function ($rootScope) {
@@ -359,7 +360,8 @@ angular.module('playerApp')
             pageid: org.sunbird.portal.appid + '_TocPlayer',
             id: '',
             name: '',
-            url: '/private/index#!/course/' + $stateParams.courseId + '/' + $stateParams.lectureView + '/' + $stateParams.contentId + '/' + $stateParams.contentIndex
+            url: '/private/index#!/course/' + $stateParams.courseId + '/' + $stateParams.lectureView + '/' +
+            $stateParams.contentId + '/' + $stateParams.contentIndex
           })
         },
         onExit: function ($rootScope, dataService) {
@@ -905,10 +907,12 @@ angular.module('playerApp')
         onEnter: function ($stateParams, $rootScope, routeHelperService) {
           $rootScope.profileActive = 'active'
           $rootScope.isPlayerPage = false
+          $rootScope.myActivityMenu = 'active selected'
           routeHelperService.loadRouteConfig('MyActivity', null)
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''
+          $rootScope.myActivityMenu = ''
         }
       })
       .state('Setup', {
