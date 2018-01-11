@@ -907,12 +907,12 @@ angular.module('playerApp')
         onEnter: function ($stateParams, $rootScope, routeHelperService) {
           $rootScope.profileActive = 'active'
           $rootScope.isPlayerPage = false
-          $rootScope.myActivityMenu = 'active selected'
+          $rootScope.myActivityMenuActive = 'active selected'
           routeHelperService.loadRouteConfig('MyActivity', null)
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''
-          $rootScope.myActivityMenu = ''
+          $rootScope.myActivityMenuActive = ''
         }
       })
       .state('Setup', {
