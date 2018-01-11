@@ -22,14 +22,14 @@ describe('Service: downloadReportDataSource', function () {
   }))
 
   describe('Test course consumption data source service', function () {
-    xit('should return valid api response', function () {
+    it('should return valid api response', function () {
       spyOn(httpAdapter, 'httpCall').and.returnValue(deferred.promise)
       deferred.resolve(testData.getSuccessData)
       spyOn(downloadReportDataSource, 'download').and.callThrough()
       downloadReportDataSource.download('', '')
       scope.$apply()
       expect(downloadReportDataSource.download).toBeDefined()
-      expect(downloadReportDataSource.download).toBeDefined()
+      expect(scope.response).not.toBe(null)
     })
 
     it('should check responseCode is OK or not', function () {
