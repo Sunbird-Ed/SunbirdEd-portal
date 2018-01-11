@@ -71,7 +71,7 @@ angular.module('playerApp')
      * @memberOf Services.dataSourceUtils
      * @return object
      */
-    dataSourceUtils.getHeader = function () {
+    dataSourceUtils.getDefaultHeader = function () {
       var headers = {
         'Content-Type': 'application/json',
         cid: 'sunbird'

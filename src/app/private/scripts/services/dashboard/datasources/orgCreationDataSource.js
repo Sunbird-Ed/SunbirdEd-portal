@@ -27,7 +27,7 @@ angular.module('playerApp')
       this.getData = function (req) {
         var URL, deferred, response, header
         URL = dataSourceUtils.constructApiUrl(req, 'ORG_CREATION')
-        header = dataSourceUtils.getHeader()
+        header = dataSourceUtils.getDefaultHeader()
         deferred = $q.defer()
         response = httpAdapter.httpCall(URL, '', 'GET', header)
         response.then(function (res) {
