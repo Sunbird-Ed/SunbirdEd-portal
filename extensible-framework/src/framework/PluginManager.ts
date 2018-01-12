@@ -79,14 +79,19 @@ export class PluginManager {
 	private compilePluginCode(PluginPath: string, pluginId: string) {
 		try {
 			const source = fs.readFileSync(path.join(PluginPath, FolderStructureDefinition.SERVICE.PLUGIN_PATH), 'utf8')
-
 			// transpile the plugin code to plain Javascript
-			let result = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, experimentalDecorators: true, emitDecoratorMetadata: true }  });
+			let result = ts.transpileModule(source, { 
+				compilerOptions: { 
+					module: ts.ModuleKind.CommonJS, 
+					experimentalDecorators: true, 
+					emitDecoratorMetadata: true 
+				}
+			});
 
 			//Eval javascript code
 			return nodeEval(result.outputText, path.join(PluginPath, FolderStructureDefinition.SERVICE.PLUGIN_PATH));
 		} catch(e) {
-			throw new Error(`Error while compling plugin code: ${pluginId}`)
+			throw `Error while compling plugin code: ${pluginId}: error: ${e}`
 		}
 	}
 

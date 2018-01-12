@@ -17,6 +17,9 @@ export class ExtPlugin implements PluginLifeCycleEvents {
 
 	@Inject('CassandraStore') 
 	private cassandraStore: any;
+
+	onInstall() {
+	}
 	
 	onStart() {
 		let indexStoreSession = this.indexStore.getConnection('org.ekstep.helloworld');
@@ -25,7 +28,7 @@ export class ExtPlugin implements PluginLifeCycleEvents {
 		// })
 		console.log('Hello world plugin is installed!')
 		let cassandraStoreSession = this.cassandraStore.getConnection('org.ekstep.helloworld')
-		let indexStoreSession = this.indexStore.getConnection('org.ekstep.helloworld');
+		//let indexStoreSession = this.indexStore.getConnection('org.ekstep.helloworld');
 		// cassandraStoreSession.findOne({tableName: "cyclist_name", where: { firstname: "sunil"}}, (err, res)=> {
 		// 	console.log(err, res);
 		// })
