@@ -52,10 +52,10 @@
                     </div>
                 </div>
                 <div class="ui fluid icon input">
-                    <input type="text" placeholder={{$root.frmelmnts.lbl.title}} name="title" ng-model="noteCard.update.metaData.title" tabindex="1" />
+                    <input type="text" placeholder={{$root.frmelmnts.lbl.title}} name="title" ng-model="noteCard.update.metaData.title" />
                 </div>
                 <div class="content editor">
-                    <pagedown-editor content="noteCard.update.metaData.note" show-preview="false" insert-image="noteCard.insertImage()" tabindex="2" placeholder={{$root.frmelmnts.lbl.description}}></pagedown-editor>
+                    <pagedown-editor content="noteCard.update.metaData.note" show-preview="false" insert-image="noteCard.insertImage()" placeholder={{$root.frmelmnts.lbl.description}}></pagedown-editor>
                 </div>
                 <div class="actions">
                     <button class="ui primary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="noteCard.updateNote(noteCard.update.metaData)" ng-disabled="!noteCard.update.metaData.title || !noteCard.update.metaData.note" tabindex="4" ng-class="noteCard.denyModalClass">{{$root.frmelmnts.btn.update}}</button>
