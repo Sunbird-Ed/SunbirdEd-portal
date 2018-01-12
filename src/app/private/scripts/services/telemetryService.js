@@ -24,104 +24,114 @@ angular.module('playerApp')
       'host': '',
       'endpoint': 'data/v1/telemetry',
       'apislug': config.URL.BASE_PREFIX + config.URL.CONTENT_PREFIX,
-      'dispatcher': undefined
+      'dispatcher': undefined,
+      'tags': []
     }
     this.context = []
 
+    /**
+     * initialize telemetryLib
+     */
     this.init = function () {
       console.log('Initialize telemetry')
       EkTelemetry.initialize(this.config) // eslint-disable-line no-undef
     }
 
     /**
-    data = ['edata', 'contentId', 'contentVer', 'context', ']
+      * for start event
+      * data object have these properties {'edata', 'contentId', 'contentVer', 'context', 'object', 'tags'}
      */
     this.start = function (data) {
       console.log('Portal Start event', data)
-      this.context.push(data.context)
-      EkTelemetry.start(this.config, data.contentId, data.contentVer, data.edata, {context: data.context}) // eslint-disable-line no-undef
+      if (data.context) { this.context.push(data.context) }
+      EkTelemetry.start(this.config, data.contentId, data.contentVer, data.edata, { // eslint-disable-line no-undef
+        context: data.context,
+        object: data.object,
+        tags: data.tags
+      })
     }
 
-    this.end = function (edata) {
+    /**
+      * for end event
+      * data object have these properties {'edata', context', 'object'}
+     */
+    this.end = function (data) {
       console.log('Portal end event')
       var context = this.context.pop()
-      EkTelemetry.end(edata, {context: context}) // eslint-disable-line no-undef
+      EkTelemetry.end(data.edata, {context: context, object: object}) // eslint-disable-line no-undef
       EkTelemetry.reset(context) // eslint-disable-line no-undef
     }
 
+    /**
+      * for impression event
+      * data object have these properties {'edata', 'context', 'object', 'tags'}
+     */
     this.impression = function (data) {
-      if (!data) {
-        console.error('Impression event data is missing', data)
-        return
-      }
-
-      EkTelemetry.impression(data, {env: data.env}) // eslint-disable-line no-undef
+      EkTelemetry.impression(data.edata, {// eslint-disable-line no-undef
+        context: data.context,
+        object: data.object,
+        tags: data.tags
+      })
     }
 
+    /**
+      * for intract event
+      * data object have these properties {'edata', 'context', 'object', 'tags'}
+     */
     this.intract = function (data) {
-      if (!data) {
-        console.error('Intract event data is missing', data)
-        return
-      }
-      EkTelemetry.intract(data, {env: data.env}) // eslint-disable-line no-undef
+      EkTelemetry.intract(data.edata, {// eslint-disable-line no-undef
+        context: data.context,
+        object: data.object,
+        tags: data.tags
+      })
     }
 
+    /**
+      * for log event
+      * data object have these properties {'edata', 'context', 'object', 'tags'}
+     */
     this.log = function (data) {
-      if (!data) {
-        console.error('Log event data is missing', data)
-        return
-      }
-      EkTelemetry.intract(data, {env: data.env}) // eslint-disable-line no-undef
+      EkTelemetry.log(data.edata, {// eslint-disable-line no-undef
+        context: data.context,
+        object: data.object,
+        tags: data.tags
+      })
     }
 
+    /**
+      * for error event
+      * data object have these properties {'edata', 'context', 'object', 'tags'}
+     */
     this.error = function (data) {
-      if (!data) {
-        console.error('Error event data is missing', data)
-        return
-      }
-      EkTelemetry.intract(data, {env: data.env}) // eslint-disable-line no-undef
+      EkTelemetry.error(data.edata, {// eslint-disable-line no-undef
+        context: data.context,
+        object: data.object,
+        tags: data.tags
+      })
     }
 
-    this.response = function (data) {
-      if (!data) {
-        console.error('Response event data is missing', data)
-        return
-      }
-      EkTelemetry.intract(data, {env: data.env}) // eslint-disable-line no-undef
-    }
-
+    /**
+      * for share event
+      * data object have these properties {'edata', 'context', 'object', 'tags'}
+     */
     this.share = function (data) {
-      if (!data) {
-        console.error('Search event data is missing', data)
-        return
-      }
-      EkTelemetry.intract(data, {env: data.env}) // eslint-disable-line no-undef
+      EkTelemetry.share(data.edata, {// eslint-disable-line no-undef
+        context: data.context,
+        object: data.object,
+        tags: data.tags
+      })
     }
 
-    this.search = function (data) {
-      data = data || {}
-      if (!data) {
-        console.error('Search event data is missing', data)
-        return
-      }
-      EkTelemetry.intract(data, {env: data.env}) // eslint-disable-line no-undef
-    }
-
-    this.userAgentSpecification = function () {
-      return {
-        'agent': 'Chorme', // which user agent (mozilla, chrome, safari, ie)
-        'ver': '5.0', // Agent version number
-        'system': 'iPad; U; CPU OS 3_2_1 like Mac OS X; en-us', // System identification
-        'platform': 'AppleWebKit/531', // client platform,
-        'raw': ''
-      }
-    }
-
-    this.startEventData = function (type, pageid, env, mode, duration, loc) {
-      let startEventData = {
+    /**
+     * this function used to get start event data
+     * perams: {type} <required>
+     * perams: {pageid} <required>
+     * perams: {mode}
+     * perams: {duration}
+     */
+    this.startEventData = function (type, pageid, mode, duration) {
+      const startEventData = {
         type: type,
-        uaspec: this.userAgentSpecification(),
-        loc: loc,
         mode: mode,
         duration: duration,
         pageid: pageid
@@ -129,6 +139,10 @@ angular.module('playerApp')
       return JSON.parse(JSON.stringify(startEventData))
     }
 
+    /**
+     * This function is used to get content data of event envelope
+     * data object have properties: ['channel', 'env', 'cdata', 'rollup']
+     */
     this.getContextData = function (data) {
       data = data || {}
       let contentObj = {}
@@ -141,6 +155,10 @@ angular.module('playerApp')
       return JSON.parse(JSON.stringify(contentObj))
     }
 
+    /**
+     * This function is used to get object data of event envelope
+     * data object have properties: ['id', 'type', 'ver', 'rollup']
+     */
     this.getObjectData = function (data) {
       data = data || {}
       let object = {}
@@ -151,19 +169,20 @@ angular.module('playerApp')
       return JSON.parse(JSON.stringify(object))
     }
 
+    /**
+     * This function is used to get rollup data for context or object
+     * data is array to strings
+     * return rollup object
+     */
     this.getRollUpData = function (data) {
       let rollUp = {}
       let i = 1
-      data = data || {}
+      data = data || []
 
       data.forEach(element => {
         rollUp['l' + i] = element
         i += 1
       })
       return rollUp
-    }
-
-    this.cdata = function () {
-
     }
   }])
