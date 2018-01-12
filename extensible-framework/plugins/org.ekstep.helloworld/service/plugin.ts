@@ -23,16 +23,24 @@ export class ExtPlugin implements PluginLifeCycleEvents {
 		// indexStoreSession.deleteOne({ type: 'tweet', id: 2 }, (err: any, res: any) => {
 		// 	console.log(err, res)
 		// })
-
-		let cassandraStoreSession = this.cassandraStore.getConnection('org.ekstep.helloworld')
-		//cassandraStoreSession.findOne()		
-	}
-
-	onInstall() {
 		console.log('Hello world plugin is installed!')
+		let cassandraStoreSession = this.cassandraStore.getConnection('org.ekstep.helloworld')
+		let indexStoreSession = this.indexStore.getConnection('org.ekstep.helloworld');
+		// cassandraStoreSession.findOne({tableName: "cyclist_name", where: { firstname: "sunil"}}, (err, res)=> {
+		// 	console.log(err, res);
+		// })
+		indexStoreSession.find({ 
+			DSL: indexStoreSession
+			.utils()
+			.getBodybuilder()
+			.query('match', 'body.title', 'first tweet')
+			.build()
+		}, (err, res) => {
+			console.log(err, res);
+		})
 	}
 
 	onStop() {
-		
+
 	}
 }

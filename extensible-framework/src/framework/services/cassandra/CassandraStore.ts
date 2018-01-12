@@ -14,7 +14,7 @@ export class CassandraStore implements DataProviderInterface {
 		this.pluginId = config.pluginId;
 		// keeping keyspace name same as plugin ID
 		// cassandra keyspace name doesnot allow '.'
-		this.keyspaceName = config.pluginId.split('.').join('');;
+		this.keyspaceName = config.pluginId.split('.').join('_');;
 	}
 
 	public connect(): object {

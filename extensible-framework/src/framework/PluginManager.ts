@@ -52,10 +52,17 @@ export class PluginManager {
 					let pluginCode = this.compilePluginCode(PluginPath, pluginInfo.id)
 					let plugin = new pluginCode.ExtPlugin();
 					this._pluginInstances.push(plugin);
+					// register plugin to registry
 					pluginRegistry.register(plugin._manifest)
+					// register datastore schema
 					this.registerDatastoreSchema(pluginInfo)
+					// executes route.ts script of plugin
 					this.registerRoutes(pluginInfo);
+
+					// update the plugin status to installed
 					pluginRegistry.updateStatus(pluginInfo.id, PluginStatusEnum.installed)
+
+					// call plugin lifecycle hook
 					if(plugin.onInstall) plugin.onInstall();
 				} else {
 					throw new Error(`unable to download dependencies for plugin: ${pluginInfo.id}`)
