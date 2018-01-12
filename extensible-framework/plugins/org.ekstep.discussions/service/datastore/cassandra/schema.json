@@ -1,0 +1,59 @@
+{
+	"entities": [{
+			"name": "threads",
+			"fields": {
+				"id": {
+					"type": "uuid",
+					"default": {
+						"$db_function": "uuid()"
+					}
+				},
+				"subject": "text",
+				"object_type": "text",
+				"object_id": "text",
+				"body": "text",
+				"user_id": "text",
+				"created_date": {
+					"type": "timestamp",
+					"default": {
+						"$db_function": "toTimestamp(now())"
+					}
+				},
+				"updated_date": {
+					"type": "timestamp",
+					"default": {
+						"$db_function": "toTimestamp(now())"
+					}
+				}
+			},
+			"key": ["id"]
+		},
+		{
+			"name": "replies",
+			"fields": {
+				"id": {
+					"type": "uuid",
+					"default": {
+						"$db_function": "uuid()"
+					}
+				},
+				"thread_id": "text",
+				"body": "text",
+				"user_id": "text",
+				"created_date": {
+					"type": "timestamp",
+					"default": {
+						"$db_function": "toTimestamp(now())"
+					}
+				},
+				"updated_date": {
+					"type": "timestamp",
+					"default": {
+						"$db_function": "toTimestamp(now())"
+					}
+				}
+			},
+			"key": ["id"]
+		}
+	]
+}

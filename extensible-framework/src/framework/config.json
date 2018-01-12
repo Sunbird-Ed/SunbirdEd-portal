@@ -7,10 +7,16 @@
 		"host": "localhost:9200"
 	},
 	"plugins": [{
-		"id": "org.ekstep.helloworld", 
-		"ver": "1.0", 
+		"id": "org.ekstep.helloworld",
+		"ver": "1.0",
 		"scope": "service"
-	}],
+	},
+	{
+		"id": "org.ekstep.discussions",
+		"ver": "1.0",
+		"scope": "service"
+	}
+],
 	"nodeApp": {
 		"port": 4000
 	}
