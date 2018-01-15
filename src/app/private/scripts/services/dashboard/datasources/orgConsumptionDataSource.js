@@ -21,7 +21,7 @@ angular.module('playerApp')
         var URL, deferred, header, response
         URL = dataSourceUtils.constructApiUrl(req, 'ORG_CONSUMPTION')
         deferred = $q.defer()
-        header = dataSourceUtils.getHeader()
+        header = dataSourceUtils.getDefaultHeader()
         response = httpAdapter.httpCall(URL, '', 'GET', header)
         response.then(function (res) {
           if (res && res.responseCode === 'OK') {

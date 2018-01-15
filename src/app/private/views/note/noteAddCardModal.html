@@ -32,8 +32,8 @@
             </div>
         </div>
         <div class="actions" ng-if="!noteCard.createApi.loader.showLoader">
-            <button class="ui primary right floated button margin-bottom-15 margin-top-10 " type="submit" ng-class="noteCard.denyModalClass" ng-disabled="!noteCard.add.title || !noteCard.add.note" tabindex="4" ng-click="noteCard.createNote(noteCard.add)">{{$root.frmelmnts.btn.save}}</button>
-            <button class="ui secondary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="noteCard.clearAddNoteData()">{{$root.frmelmnts.btn.clear}}</button>
+            <button class="ui primary right floated button margin-bottom-15 margin-top-10 " type="submit" ng-class="noteCard.denyModalClass" ng-disabled="!noteCard.add.title || !noteCard.add.note" tabindex="3" ng-click="noteCard.createNote(noteCard.add)">{{$root.frmelmnts.btn.save}}</button>
+            <button class="ui secondary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="noteCard.clearAddNoteData()" tabindex="4" >{{$root.frmelmnts.btn.clear}}</button>
         </div>
         <div class=" ui segment margin-top-10" ng-if="noteCard.createApi.loader.showLoader">
             <app-loader data="{{noteCard.createApi.loader}}"></app-loader>

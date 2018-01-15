@@ -129,6 +129,7 @@ var paths = {
   private_bower_js: [
     'dist/thirdparty/libs/eventbus.min.js',
     'dist/thirdparty/libs/md5.js',
+    'dist/thirdparty/libs/telemetry.min.js',
     'dist/thirdparty/bower_components/jquery/dist/jquery.min.js',
     'dist/thirdparty/bower_components/jquery-ui/jquery-ui.min.js',
     'dist/thirdparty/bower_components/angular/angular.min.js',
@@ -282,7 +283,9 @@ var paths = {
     'dist/private/scripts/services/dashboard/datasources/orgCreationDataSource.js',
     'dist/private/scripts/services/dashboard/datasources/orgConsumptionDataSource.js',
     'dist/private/scripts/services/dashboard/datasources/dataSourceUtils.js',
-    'dist/private/scripts/services/dashboard/datasources/downloadReportDataSource.js'
+    'dist/private/scripts/services/dashboard/datasources/downloadReportDataSource.js',
+    'dist/private/scripts/services/telemetryService.js'
+
   ],
   telemetry_js: [
     'dist/private/scripts/telemetry/TelemetryEvent.js',
