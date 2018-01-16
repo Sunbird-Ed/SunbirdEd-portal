@@ -3,11 +3,11 @@
  * @author Anuj Gupta
  */
 angular.module('playerApp')
-/**
-     * @class telemetryService
-     * @desc Service to generate telemetry events.
-     * @memberOf Services
-     */
+  /**
+   * @class telemetryService
+   * @desc Service to generate telemetry events.
+   * @memberOf Services
+   */
   .service('telemetryService', ['$rootScope', 'config', function ($rootScope, config) {
     this.config = {
       'pdata': {
@@ -39,8 +39,8 @@ angular.module('playerApp')
     }
 
     /**
-         * initialize telemetryLib
-         */
+     * initialize telemetryLib
+     */
     this.init = function () {
       this.setConfig()
       console.log('Initialize telemetry')
@@ -48,9 +48,9 @@ angular.module('playerApp')
     }
 
     /**
-         * for start event
-         * data object have these properties {'edata', 'contentId', 'contentVer', 'context', 'object', 'tags'}
-         */
+     * for start event
+     * data object have these properties {'edata', 'contentId', 'contentVer', 'context', 'object', 'tags'}
+     */
     this.start = function (data) {
       console.log('Portal Start event', data)
       if (data.context) { this.context.push(data.context) }
@@ -62,9 +62,9 @@ angular.module('playerApp')
     }
 
     /**
-         * for end event
-         * data object have these properties {'edata', context', 'object'}
-         */
+     * for end event
+     * data object have these properties {'edata', context', 'object'}
+     */
     this.end = function (data) {
       console.log('Portal end event')
       var context = this.context.pop()
@@ -73,9 +73,9 @@ angular.module('playerApp')
     }
 
     /**
-         * for impression event
-         * data object have these properties {'edata', 'context', 'object', 'tags'}
-         */
+     * for impression event
+     * data object have these properties {'edata', 'context', 'object', 'tags'}
+     */
     this.impression = function (data) {
       EkTelemetry.impression(data.edata, { // eslint-disable-line no-undef
         context: data.context,
@@ -85,9 +85,9 @@ angular.module('playerApp')
     }
 
     /**
-         * for interact event
-         * data object have these properties {'edata', 'context', 'object', 'tags'}
-         */
+     * for interact event
+     * data object have these properties {'edata', 'context', 'object', 'tags'}
+     */
     this.interact = function (data) {
       EkTelemetry.interact(data.edata, { // eslint-disable-line no-undef
         context: data.context,
@@ -97,9 +97,9 @@ angular.module('playerApp')
     }
 
     /**
-         * for log event
-         * data object have these properties {'edata', 'context', 'object', 'tags'}
-         */
+     * for log event
+     * data object have these properties {'edata', 'context', 'object', 'tags'}
+     */
     this.log = function (data) {
       EkTelemetry.log(data.edata, { // eslint-disable-line no-undef
         context: data.context,
@@ -109,9 +109,9 @@ angular.module('playerApp')
     }
 
     /**
-         * for error event
-         * data object have these properties {'edata', 'context', 'object', 'tags'}
-         */
+     * for error event
+     * data object have these properties {'edata', 'context', 'object', 'tags'}
+     */
     this.error = function (data) {
       EkTelemetry.error(data.edata, { // eslint-disable-line no-undef
         context: data.context,
@@ -121,9 +121,9 @@ angular.module('playerApp')
     }
 
     /**
-         * for share event
-         * data object have these properties {'edata', 'context', 'object', 'tags'}
-         */
+     * for share event
+     * data object have these properties {'edata', 'context', 'object', 'tags'}
+     */
     this.share = function (data) {
       EkTelemetry.share(data.edata, { // eslint-disable-line no-undef
         context: data.context,
@@ -133,14 +133,14 @@ angular.module('playerApp')
     }
 
     /**
-         * this function used to get start event data
-         * perams: {type} <required>
-         * perams: {pageid} <required>
-         * perams: {mode}
-         * perams: {duration}
-         */
+     * this function used to get start event data
+     * params: {type} <required>
+     * params: {pageid} <required>
+     * params: {mode}
+     * params: {duration}
+     */
     this.startEventData = function (type, pageid, mode, duration) {
-      const startEventData = {
+      var startEventData = {
         type: type,
         mode: mode,
         duration: duration,
@@ -150,15 +150,15 @@ angular.module('playerApp')
     }
 
     /**
-         * This function is used to get end event data of event envelope
-         * @param {string} type
-         * @param {string} pageid
-         * @param {string} mode
-         * @param {number} duration
-         * @param {array} summery
-         */
-    this.eventEventData = function (type, pageid, mode, duration, summery) {
-      const endEventData = {
+     * This function is used to get end event data of event envelope
+     * @param {string} type
+     * @param {string} pageid
+     * @param {string} mode
+     * @param {number} duration
+     * @param {array} summery
+     */
+    this.endEventData = function (type, pageid, mode, duration, summery) {
+      var endEventData = {
         type: type,
         mode: mode,
         duration: duration,
@@ -169,15 +169,15 @@ angular.module('playerApp')
     }
 
     /**
-         *
-         * @param {string} type
-         * @param {string} subtype
-         * @param {string} pageid
-         * @param {string} uri
-         * @param {object} visits
-         */
+     *
+     * @param {string} type
+     * @param {string} subtype
+     * @param {string} pageid
+     * @param {string} uri
+     * @param {object} visits
+     */
     this.impressionEventData = function (type, subtype, pageid, uri, visits) {
-      const impressionEventData = {
+      var impressionEventData = {
         type: type,
         subtype: subtype,
         pageid: pageid,
@@ -188,15 +188,15 @@ angular.module('playerApp')
     }
 
     /**
-         *
-         * @param {string} type
-         * @param {subtype} subtype
-         * @param {string} id
-         * @param {string} pageid
-         * @param {object} target
-         */
+     *
+     * @param {string} type
+     * @param {subtype} subtype
+     * @param {string} id
+     * @param {string} pageid
+     * @param {object} target
+     */
     this.interactEventData = function (type, subtype, id, pageid, target) {
-      const interactEventData = {
+      var interactEventData = {
         type: type,
         subtype: subtype,
         id: id,
@@ -207,15 +207,15 @@ angular.module('playerApp')
     }
 
     /**
-         *
-         * @param {string} type
-         * @param {string} level
-         * @param {string} message
-         * @param {string} pageid
-         * @param {object} params
-         */
+     *
+     * @param {string} type
+     * @param {string} level
+     * @param {string} message
+     * @param {string} pageid
+     * @param {object} params
+     */
     this.logEventData = function (type, level, message, pageid, params) {
-      const logEventData = {
+      var logEventData = {
         type: type,
         level: level,
         message: message,
@@ -226,15 +226,15 @@ angular.module('playerApp')
     }
 
     /**
-         *
-         * @param {string} err
-         * @param {string} type
-         * @param {string} stacktrace
-         * @param {string} pageid
-         * @param {object} errObject
-         */
+     *
+     * @param {string} err
+     * @param {string} type
+     * @param {string} stacktrace
+     * @param {string} pageid
+     * @param {object} errObject
+     */
     this.errorEventData = function (err, type, stacktrace, pageid, errObject) {
-      const errorEventData = {
+      var errorEventData = {
         err: err,
         type: type,
         stacktrace: stacktrace,
@@ -245,15 +245,15 @@ angular.module('playerApp')
     }
 
     /**
-         *
-         * @param {string} type
-         * @param {object} items
-         * @param {string} dir
-         * @param {object} origin
-         * @param {object} to
-         */
+     *
+     * @param {string} type
+     * @param {object} items
+     * @param {string} dir
+     * @param {object} origin
+     * @param {object} to
+     */
     this.shareEventData = function (type, items, dir, origin, to) {
-      const shareEventData = {
+      var shareEventData = {
         type: type,
         items: items,
         dir: dir,
@@ -264,12 +264,12 @@ angular.module('playerApp')
     }
 
     /**
-         * This function is used to get content data of event envelope
-         * data object have properties: ['channel', 'env', 'cdata', 'rollup']
-         */
+     * This function is used to get content data of event envelope
+     * data object have properties: ['channel', 'env', 'cdata', 'rollup']
+     */
     this.getContextData = function (data) {
       data = data || {}
-      let contentObj = {}
+      var contentObj = {}
       contentObj.channel = data.channel || this.config.channel
       contentObj.pdata = this.config.pdata
       contentObj.env = data.env || this.config.env
@@ -280,12 +280,12 @@ angular.module('playerApp')
     }
 
     /**
-         * This function is used to get object data of event envelope
-         * data object have properties: ['id', 'type', 'ver', 'rollup']
-         */
+     * This function is used to get object data of event envelope
+     * data object have properties: ['id', 'type', 'ver', 'rollup']
+     */
     this.getObjectData = function (data) {
       data = data || {}
-      let object = {}
+      var object = {}
       object.id = data.id
       object.type = data.type
       object.ver = data.ver
@@ -294,16 +294,16 @@ angular.module('playerApp')
     }
 
     /**
-         * This function is used to get rollup data for context or object
-         * data is array of strings
-         * return rollup object
-         */
+     * This function is used to get rollup data for context or object
+     * data is array of strings
+     * return rollup object
+     */
     this.getRollUpData = function (data) {
-      let rollUp = {}
-      let i = 1
+      var rollUp = {}
+      var i = 1
       data = data || []
 
-      data.forEach(element => {
+      data.forEach(function (element) {
         rollUp['l' + i] = element
         i += 1
       })
