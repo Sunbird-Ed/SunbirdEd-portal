@@ -44,7 +44,7 @@ angular.module('playerApp')
     this.init = function () {
       this.setConfig()
       console.log('Initialize telemetry')
-      EkTelemetry.initialize(this.config) // eslint-disable-line no-undef
+      EkTelemetry.initialize(this.config)
     }
 
     /**
@@ -54,7 +54,7 @@ angular.module('playerApp')
     this.start = function (data) {
       console.log('Portal Start event', data)
       if (data.context) { this.context.push(data.context) }
-      EkTelemetry.start(this.config, data.contentId, data.contentVer, data.edata, { // eslint-disable-line no-undef
+      EkTelemetry.start(this.config, data.contentId, data.contentVer, data.edata, {
         context: data.context,
         object: data.object,
         tags: data.tags
@@ -68,8 +68,8 @@ angular.module('playerApp')
     this.end = function (data) {
       console.log('Portal end event')
       var context = this.context.pop()
-      EkTelemetry.end(data.edata, { context: context, object: object }) // eslint-disable-line no-undef
-      EkTelemetry.reset(context) // eslint-disable-line no-undef
+      EkTelemetry.end(data.edata, { context: context, object: data.object })
+      EkTelemetry.reset(context)
     }
 
     /**
@@ -77,7 +77,7 @@ angular.module('playerApp')
      * data object have these properties {'edata', 'context', 'object', 'tags'}
      */
     this.impression = function (data) {
-      EkTelemetry.impression(data.edata, { // eslint-disable-line no-undef
+      EkTelemetry.impression(data.edata, {
         context: data.context,
         object: data.object,
         tags: data.tags
@@ -89,7 +89,7 @@ angular.module('playerApp')
      * data object have these properties {'edata', 'context', 'object', 'tags'}
      */
     this.interact = function (data) {
-      EkTelemetry.interact(data.edata, { // eslint-disable-line no-undef
+      EkTelemetry.interact(data.edata, {
         context: data.context,
         object: data.object,
         tags: data.tags
@@ -101,7 +101,7 @@ angular.module('playerApp')
      * data object have these properties {'edata', 'context', 'object', 'tags'}
      */
     this.log = function (data) {
-      EkTelemetry.log(data.edata, { // eslint-disable-line no-undef
+      EkTelemetry.log(data.edata, {
         context: data.context,
         object: data.object,
         tags: data.tags
@@ -113,7 +113,7 @@ angular.module('playerApp')
      * data object have these properties {'edata', 'context', 'object', 'tags'}
      */
     this.error = function (data) {
-      EkTelemetry.error(data.edata, { // eslint-disable-line no-undef
+      EkTelemetry.error(data.edata, {
         context: data.context,
         object: data.object,
         tags: data.tags
@@ -125,7 +125,7 @@ angular.module('playerApp')
      * data object have these properties {'edata', 'context', 'object', 'tags'}
      */
     this.share = function (data) {
-      EkTelemetry.share(data.edata, { // eslint-disable-line no-undef
+      EkTelemetry.share(data.edata, {
         context: data.context,
         object: data.object,
         tags: data.tags

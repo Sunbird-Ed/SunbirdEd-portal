@@ -141,7 +141,8 @@
       "iziToast",
       "org",
       "alasql",
-      "md5"
+      "md5",
+      "EkTelemetry"
     ],
     "ignore": [
       "./../Dockerfile"
