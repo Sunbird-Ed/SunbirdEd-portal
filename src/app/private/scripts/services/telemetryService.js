@@ -1,3 +1,4 @@
+'use strict'
 /**
  * @author Anuj Gupta
  */
@@ -20,27 +21,36 @@ angular.module('playerApp')
       'authtoken': undefined,
       'uid': $rootScope.userId,
       'sid': $rootScope.sessionId,
-      'batchsize': 1,
+      'batchsize': config.TELEMETRY.MAX_BATCH_SIZE,
       'host': '',
-      'endpoint': 'data/v1/telemetry',
+      'endpoint': config.TELEMETRY.SYNC,
       'apislug': config.URL.BASE_PREFIX + config.URL.CONTENT_PREFIX,
       'dispatcher': undefined,
+      'runningEnv': 'client',
       'tags': []
     }
     this.context = []
 
+    this.setConfig = function () {
+      this.config.pdata.id = org.sunbird.portal.appid || 'org.sunbird'
+      this.config.channel = org.sunbird.portal.channel || 'sunbird'
+      this.config.uid = $rootScope.userId
+      this.config.sid = $rootScope.sessionId
+    }
+
     /**
-     * initialize telemetryLib
-     */
+         * initialize telemetryLib
+         */
     this.init = function () {
+      this.setConfig()
       console.log('Initialize telemetry')
       EkTelemetry.initialize(this.config) // eslint-disable-line no-undef
     }
 
     /**
-      * for start event
-      * data object have these properties {'edata', 'contentId', 'contentVer', 'context', 'object', 'tags'}
-     */
+         * for start event
+         * data object have these properties {'edata', 'contentId', 'contentVer', 'context', 'object', 'tags'}
+         */
     this.start = function (data) {
       console.log('Portal Start event', data)
       if (data.context) { this.context.push(data.context) }
@@ -52,22 +62,22 @@ angular.module('playerApp')
     }
 
     /**
-      * for end event
-      * data object have these properties {'edata', context', 'object'}
-     */
+         * for end event
+         * data object have these properties {'edata', context', 'object'}
+         */
     this.end = function (data) {
       console.log('Portal end event')
       var context = this.context.pop()
-      EkTelemetry.end(data.edata, {context: context, object: object}) // eslint-disable-line no-undef
+      EkTelemetry.end(data.edata, { context: context, object: object }) // eslint-disable-line no-undef
       EkTelemetry.reset(context) // eslint-disable-line no-undef
     }
 
     /**
-      * for impression event
-      * data object have these properties {'edata', 'context', 'object', 'tags'}
-     */
+         * for impression event
+         * data object have these properties {'edata', 'context', 'object', 'tags'}
+         */
     this.impression = function (data) {
-      EkTelemetry.impression(data.edata, {// eslint-disable-line no-undef
+      EkTelemetry.impression(data.edata, { // eslint-disable-line no-undef
         context: data.context,
         object: data.object,
         tags: data.tags
@@ -75,11 +85,11 @@ angular.module('playerApp')
     }
 
     /**
-      * for intract event
-      * data object have these properties {'edata', 'context', 'object', 'tags'}
-     */
-    this.intract = function (data) {
-      EkTelemetry.intract(data.edata, {// eslint-disable-line no-undef
+         * for interact event
+         * data object have these properties {'edata', 'context', 'object', 'tags'}
+         */
+    this.interact = function (data) {
+      EkTelemetry.interact(data.edata, { // eslint-disable-line no-undef
         context: data.context,
         object: data.object,
         tags: data.tags
@@ -87,11 +97,11 @@ angular.module('playerApp')
     }
 
     /**
-      * for log event
-      * data object have these properties {'edata', 'context', 'object', 'tags'}
-     */
+         * for log event
+         * data object have these properties {'edata', 'context', 'object', 'tags'}
+         */
     this.log = function (data) {
-      EkTelemetry.log(data.edata, {// eslint-disable-line no-undef
+      EkTelemetry.log(data.edata, { // eslint-disable-line no-undef
         context: data.context,
         object: data.object,
         tags: data.tags
@@ -99,11 +109,11 @@ angular.module('playerApp')
     }
 
     /**
-      * for error event
-      * data object have these properties {'edata', 'context', 'object', 'tags'}
-     */
+         * for error event
+         * data object have these properties {'edata', 'context', 'object', 'tags'}
+         */
     this.error = function (data) {
-      EkTelemetry.error(data.edata, {// eslint-disable-line no-undef
+      EkTelemetry.error(data.edata, { // eslint-disable-line no-undef
         context: data.context,
         object: data.object,
         tags: data.tags
@@ -111,11 +121,11 @@ angular.module('playerApp')
     }
 
     /**
-      * for share event
-      * data object have these properties {'edata', 'context', 'object', 'tags'}
-     */
+         * for share event
+         * data object have these properties {'edata', 'context', 'object', 'tags'}
+         */
     this.share = function (data) {
-      EkTelemetry.share(data.edata, {// eslint-disable-line no-undef
+      EkTelemetry.share(data.edata, { // eslint-disable-line no-undef
         context: data.context,
         object: data.object,
         tags: data.tags
@@ -123,12 +133,12 @@ angular.module('playerApp')
     }
 
     /**
-     * this function used to get start event data
-     * perams: {type} <required>
-     * perams: {pageid} <required>
-     * perams: {mode}
-     * perams: {duration}
-     */
+         * this function used to get start event data
+         * perams: {type} <required>
+         * perams: {pageid} <required>
+         * perams: {mode}
+         * perams: {duration}
+         */
     this.startEventData = function (type, pageid, mode, duration) {
       const startEventData = {
         type: type,
@@ -140,9 +150,123 @@ angular.module('playerApp')
     }
 
     /**
-     * This function is used to get content data of event envelope
-     * data object have properties: ['channel', 'env', 'cdata', 'rollup']
-     */
+         * This function is used to get end event data of event envelope
+         * @param {string} type
+         * @param {string} pageid
+         * @param {string} mode
+         * @param {number} duration
+         * @param {array} summery
+         */
+    this.eventEventData = function (type, pageid, mode, duration, summery) {
+      const endEventData = {
+        type: type,
+        mode: mode,
+        duration: duration,
+        pageid: pageid,
+        summary: summery
+      }
+      return JSON.parse(JSON.stringify(endEventData))
+    }
+
+    /**
+         *
+         * @param {string} type
+         * @param {string} subtype
+         * @param {string} pageid
+         * @param {string} uri
+         * @param {object} visits
+         */
+    this.impressionEventData = function (type, subtype, pageid, uri, visits) {
+      const impressionEventData = {
+        type: type,
+        subtype: subtype,
+        pageid: pageid,
+        uri: uri,
+        visits: visits
+      }
+      return JSON.parse(JSON.stringify(impressionEventData))
+    }
+
+    /**
+         *
+         * @param {string} type
+         * @param {subtype} subtype
+         * @param {string} id
+         * @param {string} pageid
+         * @param {object} target
+         */
+    this.interactEventData = function (type, subtype, id, pageid, target) {
+      const interactEventData = {
+        type: type,
+        subtype: subtype,
+        id: id,
+        pageid: pageid,
+        target: target
+      }
+      return JSON.parse(JSON.stringify(interactEventData))
+    }
+
+    /**
+         *
+         * @param {string} type
+         * @param {string} level
+         * @param {string} message
+         * @param {string} pageid
+         * @param {object} params
+         */
+    this.logEventData = function (type, level, message, pageid, params) {
+      const logEventData = {
+        type: type,
+        level: level,
+        message: message,
+        pageid: pageid,
+        params: params
+      }
+      return JSON.parse(JSON.stringify(logEventData))
+    }
+
+    /**
+         *
+         * @param {string} err
+         * @param {string} type
+         * @param {string} stacktrace
+         * @param {string} pageid
+         * @param {object} errObject
+         */
+    this.errorEventData = function (err, type, stacktrace, pageid, errObject) {
+      const errorEventData = {
+        err: err,
+        type: type,
+        stacktrace: stacktrace,
+        pageid: pageid,
+        object: errObject
+      }
+      return JSON.parse(JSON.stringify(errorEventData))
+    }
+
+    /**
+         *
+         * @param {string} type
+         * @param {object} items
+         * @param {string} dir
+         * @param {object} origin
+         * @param {object} to
+         */
+    this.shareEventData = function (type, items, dir, origin, to) {
+      const shareEventData = {
+        type: type,
+        items: items,
+        dir: dir,
+        origin: origin,
+        to: to
+      }
+      return JSON.parse(JSON.stringify(shareEventData))
+    }
+
+    /**
+         * This function is used to get content data of event envelope
+         * data object have properties: ['channel', 'env', 'cdata', 'rollup']
+         */
     this.getContextData = function (data) {
       data = data || {}
       let contentObj = {}
@@ -156,9 +280,9 @@ angular.module('playerApp')
     }
 
     /**
-     * This function is used to get object data of event envelope
-     * data object have properties: ['id', 'type', 'ver', 'rollup']
-     */
+         * This function is used to get object data of event envelope
+         * data object have properties: ['id', 'type', 'ver', 'rollup']
+         */
     this.getObjectData = function (data) {
       data = data || {}
       let object = {}
@@ -170,10 +294,10 @@ angular.module('playerApp')
     }
 
     /**
-     * This function is used to get rollup data for context or object
-     * data is array to strings
-     * return rollup object
-     */
+         * This function is used to get rollup data for context or object
+         * data is array of strings
+         * return rollup object
+         */
     this.getRollUpData = function (data) {
       let rollUp = {}
       let i = 1
