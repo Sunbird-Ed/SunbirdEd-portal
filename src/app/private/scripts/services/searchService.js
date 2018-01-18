@@ -83,14 +83,6 @@ angular.module('playerApp')
              */
 
       this.search = function (req) {
-        if (req && req.filters && !req.filters.contentType) {
-          req.filters.contentType = [
-            'Collection',
-            'TextBook',
-            'LessonPlan',
-            'Resource'
-          ]
-        }
         return restfulContentService.post(config.URL.COMPOSITE.SEARCH, req)
       }
       /**
