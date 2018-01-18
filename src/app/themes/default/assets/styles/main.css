@@ -467,6 +467,13 @@ h4.ui.header.sectionHeading {
   font-family: 'sunbirdboldfont';
   font-size: 1.375em;
 }
+a {
+  outline: none !important;
+}
+a:active,
+a:hover {
+  outline: none !important;
+}
 .ui.menu {
   font-family: 'sunbirdregularfont';
   color: #333333;
@@ -886,6 +893,9 @@ i.large.icon.limitedPublishingLinkIcon {
 .contentMetaSection {
   top: -40px;
   z-index: 10;
+}
+.slick-prev {
+  left: -15px;
 }
 .slick-prev,
 .slick-next {
@@ -1989,7 +1999,7 @@ ul.fancytree-container li {
   z-index: 11;
 }
 .conceptSelector.ui.form .treepicker-parent input {
-  color: #F5F5F5;
+  color: #cdcccc;
   font-family: Roboto;
   font-size: 13px;
 }
