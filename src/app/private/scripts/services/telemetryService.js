@@ -8,7 +8,7 @@ angular.module('playerApp')
    * @desc Service to generate telemetry events.
    * @memberOf Services
    */
-  .service('telemetryService', ['$rootScope', 'config', function ($rootScope, config) {
+  .service('telemetryService', ['$rootScope', 'config', '$window', function ($rootScope, config, $window) {
     this.config = {
       'pdata': {
         'id': org.sunbird.portal.appid || 'org.sunbird',
@@ -133,6 +133,19 @@ angular.module('playerApp')
     }
 
     /**
+     * for get user specification
+     */
+    this.getUserSpec = function () {
+      return {
+        agent: $window.navigator.appCodeName,
+        ver: $window.navigator.appVersion.split(' (')[0],
+        system: '',
+        platform: $window.navigator.platform,
+        raw: $window.navigator.userAgent
+      }
+    }
+
+    /** 
      * this function used to get start event data
      * params: {type} <required>
      * params: {pageid} <required>
@@ -144,7 +157,8 @@ angular.module('playerApp')
         type: type,
         mode: mode,
         duration: duration,
-        pageid: pageid
+        pageid: pageid,
+        uspec: this.getUserSpec()
       }
       return JSON.parse(JSON.stringify(startEventData))
     }
