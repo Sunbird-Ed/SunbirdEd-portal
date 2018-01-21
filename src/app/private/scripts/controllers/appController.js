@@ -84,7 +84,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
       _.forEach(profileData.organisations, function (org) {
         if (org.roles && _.isArray(org.roles)) {
           userRoles = _.union(userRoles, org.roles)
-          if (org.organisationId == profileData.rootOrgId && _.indexOf(org.roles, 'ORG_ADMIN') > -1) {
+          if (org.organisationId === profileData.rootOrgId && (_.indexOf(org.roles, 'ORG_ADMIN') > -1 || _.indexOf(org.roles, 'SYSTEM_ADMINISTRATION') > -1)) {
             $rootScope.rootOrgAdmin = true
           }
           orgRoleMap[org.organisationId] = org.roles

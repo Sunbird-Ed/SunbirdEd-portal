@@ -261,7 +261,6 @@ angular.module('playerApp').controller('SearchResultController', [
         // if any concept is selected then pass array of ids
       if (req.filters.concepts && req.filters.concepts.length > 0) {
         req.filters.concepts = _.map($rootScope.search.selectedConcepts, 'identifier')
-
       }
 
         // if autosuggest option is clicked
@@ -300,7 +299,6 @@ angular.module('playerApp').controller('SearchResultController', [
       } else if ($rootScope.search.selectedSearchKey === 'Users') {
         var emailValidator = /\S+@\S+\.\S+/
         var isEmail = emailValidator.test(req.query)
-        var OrgId = $rootScope.userOrganizationId
         if (isEmail === true) {
           req.filters.email = req.query
         }
@@ -322,11 +320,6 @@ angular.module('playerApp').controller('SearchResultController', [
 
         if (isSystemAdmin === false) {
           req.filters.rootOrgId = $rootScope.rootOrgId
-        }
-
-          /* filter by organisation */
-        if (OrgId != '') {
-          req.filters['organisations.organisationId'] = OrgId
         }
 
         $scope.search.searchFn = adminService.userSearch({ request: req })

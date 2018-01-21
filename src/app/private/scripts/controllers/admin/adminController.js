@@ -75,7 +75,7 @@ angular.module('playerApp')
                   user.organisations.forEach(function (userOrg) {
                     var adminRoles = admin.currentUserRoleMap[userOrg.organisationId]
                                     // if user belongs to an org in which the current logged in user is ORG_ADMIN, set editable to true
-                    if (typeof (user.isEditableProfile) === 'undefined' && _.indexOf(adminRoles, 'ORG_ADMIN') > -1) {
+                    if (typeof (user.isEditableProfile) === 'undefined' && (_.indexOf(adminRoles, 'ORG_ADMIN') > -1 || _.indexOf(adminRoles, 'SYSTEM_ADMINISTRATION') > -1)) {
                       user.isEditableProfile = true
                     }
                     var orgNameAndId = orgIdAndNames.find(function (org) {
@@ -84,8 +84,8 @@ angular.module('playerApp')
                     if (orgNameAndId) { userOrg.orgName = orgNameAndId.orgName }
                   })
                 }
-                            // if current logged in user is ORG_ADMIN of the root org of the user, set editable to true
-                if (typeof (user.isEditableProfile) === 'undefined' && user.rootOrgId === $rootScope.rootOrgId &&
+                            // if current logged in user is ORG_ADMIN, SYSTEM_ADMINISTRATION of the root org of the user, set editable to true
+                if (user.rootOrgId === $rootScope.rootOrgId &&
                                     $rootScope.rootOrgAdmin === true) {
                   user.isEditableProfile = true
                 }
