@@ -3,8 +3,8 @@
 angular.module('playerApp')
 .controller('UpForReviewContentController', ['contentService', 'searchService', 'config',
   '$rootScope', '$scope', '$state', 'toasterService', 'PaginationService',
-  'workSpaceUtilsService', function (contentService, searchService, config, $rootScope,
-    $scope, $state, toasterService, PaginationService, workSpaceUtilsService) {
+  'workSpaceUtilsService', 'permissionsService', function (contentService, searchService, config, $rootScope,
+    $scope, $state, toasterService, PaginationService, workSpaceUtilsService, permissionsService) {
     var upForReviewContent = this
     upForReviewContent.userId = $rootScope.userId
     upForReviewContent.contentStatus = ['Review']
@@ -33,7 +33,7 @@ angular.module('playerApp')
       var request = {
         filters: {
           status: upForReviewContent.contentStatus,
-          createdFor: $rootScope.organisationIds,
+          createdFor: permissionsService.getRoleOrgMap()['CONTENT_REVIEWER'],
           objectType: 'Content',
           contentType: config.contributeContentType,
           createdBy: {'!=': upForReviewContent.userId}

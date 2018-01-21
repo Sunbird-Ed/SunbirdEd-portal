@@ -68,7 +68,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
       $rootScope.avatar = profileData.avatar
       $rootScope.firstName = profileData.firstName
       $rootScope.lastName = profileData.lastName
-      var userRoles = profileData.roles
+      var userRoles = []
       $rootScope.organisations = profileData.organisations
       $rootScope.profileCompleteness = profileData.completeness
       $rootScope.profileMissingFields = profileData.missingFields || []
@@ -99,6 +99,10 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
       if ($rootScope.rootOrgId) {
         organisationIds.push($rootScope.rootOrgId)
       }
+
+      // set role org map
+      permissionsService.setRoleOrgMap(profileData)
+
       organisationIds = _.uniq(organisationIds)
       $rootScope.organisationNames = organisationNames
       $rootScope.organisationIds = angular.copy(organisationIds)
@@ -160,7 +164,6 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
           if (res && res.responseCode === 'OK') {
             var profileData = res.result.response
             // console.log(profileData.organisations[0].organisationId)
-            $rootScope.userOrganizationId = profileData.organisations[0] && profileData.organisations[0].organisationId
             userService.setCurrentUserProfile(profileData)
             $scope.userProfile(profileData)
           } else {
