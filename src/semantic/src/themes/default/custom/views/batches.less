@@ -15,7 +15,7 @@
  }
 
 .ui.attached.batchCard.button {
-    background: #ffffff !important;
+    background: @white !important;
     margin: 0 !important;
     width: 100% !important;
 }
@@ -24,7 +24,7 @@
 {
 	margin-left: 30px;
 	float: left;
-	background: #F5F5F5;
+	background: @tertiary-color;
 	max-height: 250px;
 	overflow-y: auto;
 	border-top: none !important;
@@ -36,20 +36,20 @@
 {
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 	border-radius: 10px;
-	background-color: #F5F5F5;
+	background-color: @tertiary-color;
 }
 
 #batchcardList::-webkit-scrollbar
 {
 	width: 6px;
-	background-color: #F5F5F5;
+	background-color: @tertiary-color;
 }
 
 #batchcardList::-webkit-scrollbar-thumb
 {
 	border-radius: 10px;
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-	background-color: #b9b9b9;
+	background-color: @custom-scroll-thumb;
 }
 
 .batchHeader-logo{
@@ -60,7 +60,7 @@
 }
 
 .batch-des label{
-	color: #979797;
+	color: @secondary-color;
 	//font-family: "Open Sans";	
 	font-size: 13px;	
 	font-weight: bold;	 
@@ -68,14 +68,14 @@
 }
 
 .des-content{
-	color: #434343;	
+	color: @primary-textColor;	
 	font-family: "Open Sans";	
 	font-size: 13px;	
 	line-height: 18px;
 	padding-top: 12px;
 }
 .batch-date label{
-	color: #979797;	
+	color: @secondary-color;	
 	//font-family: "Open Sans";	
 	font-size: 13px;	
 	font-weight: bold;	
@@ -117,7 +117,7 @@
     height: 4em;
 }
 .member label{
-	color: #979797;	
+	color: @secondary-color;	
 	font-size: 13px;	
 	font-weight: bold;	
 	line-height: 14px;
@@ -128,7 +128,7 @@
 }
 
 .batchSelectedDetails.ui.list>.item{
-	color: #333;
+	color: @primary-textColor;
 }
 
 .selectedBatchMeta.meta{

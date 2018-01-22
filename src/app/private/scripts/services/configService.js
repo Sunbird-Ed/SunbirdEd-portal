@@ -1,8 +1,8 @@
 'use strict'
 
 angular.module('playerApp')
-  .service('configService', ['httpService', 'config', '$q',
-    function (httpService, config, $q) {
+  .service('configService', ['restfulContentService', 'config', '$q',
+    function (restfulContentService, config, $q) {
       /**
      * @class configService
      */
@@ -45,7 +45,8 @@ angular.module('playerApp')
           'boards': config.DROPDOWN.COMMON.boards,
           'medium': config.DROPDOWN.COMMON.medium,
           'subjects': config.DROPDOWN.COMMON.subjects,
-          'grades': config.DROPDOWN.COMMON.grades
+          'grades': config.DROPDOWN.COMMON.grades,
+          'years': this.getYearsForCreateTextBook()
         }
       }
 
@@ -99,5 +100,19 @@ angular.module('playerApp')
           yearOfPassing.push(i)
         }
         return yearOfPassing.reverse()
+      }
+
+      /**
+               * @method getYearsForCreateTextBook
+               * @get year of passing values
+               * @for profile education
+               */
+      this.getYearsForCreateTextBook = function () {
+        var years = []
+        var currentYear = (new Date()).getUTCFullYear()
+        for (var i = currentYear - 15; i <= currentYear + 5; i++) {
+          years.push(i)
+        }
+        return years.reverse()
       }
     }])

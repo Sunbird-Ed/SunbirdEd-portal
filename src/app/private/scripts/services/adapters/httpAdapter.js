@@ -2,6 +2,21 @@
 
 angular.module('playerApp')
   .service('httpAdapter', ['$http', '$q', 'toasterService', function ($http, $q, toasterService) {
+    var httpAdapter = this
+    /**
+     * @method httpHeader
+     * @desc default Http header
+     * @memberOf adapters.httpHeader
+     * @return {object} return default header
+     * @instance
+     */
+    httpAdapter.httpHeader = function () {
+      var header = {
+        'Content-Type': 'application/json'
+      }
+      return header
+    }
+
     /**
      * @method httpCall
      * @desc Http call
@@ -12,10 +27,8 @@ angular.module('playerApp')
      * @param {object}  header - Header
      * @instance
      */
-    this.httpCall = function (url, data, method) {
-      var headers = {
-        'Content-Type': 'application/json'
-      }
+    this.httpCall = function (url, data, method, header) {
+      var headers = header || httpAdapter.httpHeader()
       var deferred = $q.defer()
       $http({
         method: method,

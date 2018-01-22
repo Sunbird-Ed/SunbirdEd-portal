@@ -72,14 +72,6 @@
 
 
 // ----------------------------------------------------------------------
-  // reUseable
-// ----------------------------------------------------------------------
-
-@import 'reuseable/reUseable';
-
-
-
-// ----------------------------------------------------------------------
   // Modules
 // ----------------------------------------------------------------------
 
@@ -87,13 +79,11 @@
 @import 'modules/card';
 @import 'modules/contentplayer';
 @import 'modules/slickerSearch';
-@import 'modules/footer';
 @import 'modules/profilePic.less';
 @import 'modules/flagModal.less';
 @import 'modules/overrideModal.less';
 @import 'modules/error.less';
-@import 'modules/circle-progress/circle.less';
-@import 'modules/circle-progress/mixins.less';
+@import 'modules/profileCardImg';
 @import 'modules/profileUpdateCard';
 @import 'modules/logo';
 @import 'modules/announcementCard';
@@ -126,17 +116,24 @@
 @import 'views/semanticClassOverride';
 @import 'views/createAnnouncement';
 
+// ----------------------------------------------------------------------
+  // reUseable
+// ----------------------------------------------------------------------
+
+@import 'reuseable/reUseable';
+
+
 body {
-    position: relative !important;
-    min-height: 100% !important;
-    min-width: 100% !important;
-    background: @websiteBody-color !important;
+    position: relative;    
+    background: @secondary-color; 
+
 }
 
 html {
-    height: 100% !important;
-    box-sizing: border-box !important;
+    height: 100%;
 }
+
+
 
 
 

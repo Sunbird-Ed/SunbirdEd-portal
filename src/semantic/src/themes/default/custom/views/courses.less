@@ -1,36 +1,13 @@
 .dash-heading-border {
-    border-bottom: 1px dashed @dark-grey;
+    border-bottom: 1px dashed @primary-textColor;
     overflow: auto;
 }
 
-.block-border-bottom {
-    border-bottom: 1px solid #ddd;
-    padding: 0px 0px 10px 0px;
-}
 
 .currentcourse-block-desc {
     line-height: 22px;
     padding-top: 10px;
     padding-left: 20px;
-}
-
-.course-intro-big {
-    margin-top: 0px;
-    line-height: 1;
-    display: block;
-    padding-bottom: 5px;
-}
-
-.course-intro-big span,
-.course-intro-small span {
-    font-family: 'FrutigerNeueW01-Regular';
-    font-size: 1.25em;
-}
-
-.course-intro-small {
-    font-size: 0.9325em;
-    cursor: pointer;
-    color: #428bca;
 }
 
 .dashboardBadgeText,
@@ -60,10 +37,9 @@
                     bottom: 0;
                     left: 0;
                     background-color: rgba(0, 0, 0, 0.2);
-                    color: #fff;
+                    color: @white;
                     width: 100%;
                     margin: 0;
-                    padding: -30px !important;
                     max-height: 70px;
                     padding-top: 10px;
                     padding-bottom: 10px;
@@ -77,7 +53,7 @@
                 border-top: transparent !important;
                 .card-rating {
                     .active {
-                        color: @blue !important;
+                        color: @primary-color !important;
                         text-shadow: none !important;
                         padding-top: 0!important;
                     }

@@ -88,7 +88,7 @@ angular.module('playerApp')
         setupService.updateOrgType(req).then(function (res) {
           try {
             if (res.responseCode === 'OK') {
-              toasterService.success(orgType.name + $rootScope.messages.smsg.m0037)
+              toasterService.success(orgType.name + ' ' + $rootScope.messages.smsg.m0037)
               setup.getOrgTypes()
             } else if (res.responseCode === 'CLIENT_ERROR') {
               throw new Error(res.params.errmsg)

@@ -66,7 +66,7 @@
                     <div class="createbatchdropdown ui fluid multiple search selection dropdown " id="users">
                         <input rows="1" type="hidden" name="users" id="userSelList" ng-init="" ng-model="batch.data.users">
                         <i class="dropdown icon"></i>
-                        <div class="default text padding-top-20">Start searching by name</div>
+                        <div class="default text padding-top-20">Select batch members</div>
                         <div class="menu">
                             <div class="item" data-value="{{user.id}}" ng-repeat="user in batch.userList">
                                 <img class="ui mini avatar image" ng-src="/common/images/user_logo.png"> {{user.name}}
@@ -79,7 +79,7 @@
                     <div class="createbatchdropdown ui fluid multiple search selection dropdown " id="mentors">
                         <input rows="1" type="hidden" name="mentors" ng-init="" ng-model="batch.data.mentors" id="mentorSelList">
                         <i class="dropdown icon"></i>
-                        <div class="default text padding-top-20">Start searching by name</div>
+                        <div class="default text padding-top-20">Select batch mentors</div>
                         <div class="menu">
                             <div class="item" data-value="{{mentor.id}}" ng-repeat="mentor in batch.menterList">
                                 <img class="ui mini avatar image" ng-src="/common/images/user_logo.png">{{mentor.name}}

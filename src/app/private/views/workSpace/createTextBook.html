@@ -24,65 +24,80 @@
                         <div class="field">
                             <input type="text" name="title" placeholder={{$root.frmelmnts.lbl.name}} ng-model="textbook.data.name">
                         </div>
-                    </div>
-                    <div class="two fields">
-                        <div class="field">
-                            <label>
+                        <div class="three fields">
+                            <div class="field">
+                                <label>
                                 {{$root.frmelmnts.lbl.curriculum}}
                             </label>
-                            <select name="board" class="ui fluid dropdown" id="boardDropDown" ng-options=" board for board in textbook.boards" ng-model="textbook.data.board">
+                                <select name="board" class="ui fluid search selection dropdown" id="boardDropDown" ng-options=" board for board in textbook.boards" ng-model="textbook.data.board">
                                 <option value="">{{$root.frmelmnts.lbl.curriculum}}</option>
                             </select>
-                        </div>
-                        <div class="field">
-                            <label>
+                            </div>
+                            <div class="field">
+                                <label>
                                 {{$root.frmelmnts.lbl.medium}}
                             </label>
-                            <select name="medium" class="ui fluid dropdown" id="mediumDropDown" ng-options=" medium for medium in textbook.mediums" ng-model="textbook.data.language">
+                                <select name="medium" class="ui fluid search selection  dropdown" id="mediumDropDown" ng-options=" medium for medium in textbook.mediums" ng-model="textbook.data.language">
                                 <option value="">{{$root.frmelmnts.lbl.medium}}</option>
                             </select>
+                            </div>
+                            <div class="field">
+                                <label>
+                                {{$root.frmelmnts.lbl.publisher}}
+                            </label>
+                                <div class="field">
+                                    <input type="text" name="title" placeholder={{$root.frmelmnts.lbl.publisher}} ng-model="textbook.data.publisher">
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="two fields">
-                        <div class="field">
-                            <label>
+                        <div class="three fields">
+                            <div class="field">
+                                <label>
                                 {{$root.frmelmnts.lbl.subject}}
                             </label>
-                            <select name="subject" class="ui fluid dropdown" id="subjectDropDown" ng-options=" subject for subject in textbook.subjects" ng-model="textbook.data.subject">
+                                <select name="subject" class="ui fluid search selection  dropdown" id="subjectDropDown" ng-options=" subject for subject in textbook.subjects" ng-model="textbook.data.subject">
                                 <option value="">{{$root.frmelmnts.lbl.subject}}</option>
                             </select>
-                        </div>
-                        <div class="field">
-                            <label>
+                            </div>
+                            <div class="field">
+                                <label>
                                 {{$root.frmelmnts.lbl.class}}
                             </label>
-                            <select name="grades" multiple="" class="ui fluid dropdown" id="gradeDropDown" ng-options=" grade for grade in textbook.grades" ng-model="textbook.data.gradeLevel" s>
+                                <select name="grades" multiple="" class="ui fluid search selection  dropdown" id="gradeDropDown" ng-options=" grade for grade in textbook.grades" ng-model="textbook.data.gradeLevel" s>
                                 <option value="">{{$root.frmelmnts.lbl.class}}</option>
                             </select>
+                            </div>
+                            <div class="field">
+                                <label>
+                                {{$root.frmelmnts.lbl.year}}
+                            </label>
+                                <select name="year" class="ui fluid search selection  dropdown" id="yearDropDown" ng-options=" year for year in textbook.years" ng-model="textbook.data.year">
+                                <option value="">{{$root.frmelmnts.lbl.year}}</option>
+                            </select>
+                            </div>
                         </div>
-                    </div>
                 </form>
-            </div>
-            <div class="actions">
-                <p class="text-align-center padding-top-20">
-                    <button class="ui primary text-align-center icon button" ng-click="textbook.saveMetaData(textbook.data)" ng-disabled="textbook.loader.showLoader">
+                </div>
+                <div class="actions">
+                    <p class="text-align-center padding-top-20">
+                        <button class="ui primary text-align-center icon button" ng-click="textbook.saveMetaData(textbook.data)" ng-disabled="textbook.loader.showLoader">
                         {{$root.frmelmnts.btn.startcreating}}
                     </button>
-                </p>
-                <h4 class="text-align-center">
-                    {{$root.frmelmnts.lbl.bookfillater}}
-                </h4>
-                <div>
-                    <label>
+                    </p>
+                    <h4 class="text-align-center">
+                        {{$root.frmelmnts.lbl.bookfillater}}
+                    </h4>
+                    <div>
+                        <label>
                         <p class="text-align-center">
                             {{$root.frmelmnts.lbl.agreeandproceedtext}}
                         </p>
                     </label>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class=" ui segment margin-top-10" ng-if="textbook.loader.showLoader">
-            <app-loader data="{{textbook.loader}}"></app-loader>
+            <div class=" ui segment margin-top-10" ng-if="textbook.loader.showLoader">
+                <app-loader data="{{textbook.loader}}"></app-loader>
+            </div>
         </div>
     </div>
-</div>

@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('playerApp')
-  .service('dashboardService', ['httpServiceJava', 'config', function (httpServiceJava, config) {
+  .service('dashboardService', ['restfulLearnerService', 'config', function (restfulLearnerService, config) {
     /**
      * @class dashboardService
      * @desc Service to manage dashboard.
@@ -20,13 +20,14 @@ angular.module('playerApp')
     this.getAdminDashboardData = function (req, datasetType) {
       switch (datasetType) {
       case 'creation':
-        return httpServiceJava.get(config.URL.DASHBOARD.ORG_CREATION + '/' + req.org_id + '?period=' + req.period)
-        break
+        return restfulLearnerService.get(config.URL.DASHBOARD.ORG_CREATION +
+         '/' + req.org_id + '?period=' + req.period)
       case 'consumption':
-        return httpServiceJava.get(config.URL.DASHBOARD.ORG_CONSUMPTION + '/' + req.org_id + '?period=' + req.period)
-        break
+        return restfulLearnerService.get(config.URL.DASHBOARD.ORG_CONSUMPTION +
+         '/' + req.org_id + '?period=' + req.period)
       default:
-        return httpServiceJava.get(config.URL.DASHBOARD.ORG_CREATION + '/' + req.org_id + '?period=' + req.period)
+        return restfulLearnerService.get(config.URL.DASHBOARD.ORG_CREATION +
+         '/' + req.org_id + '?period=' + req.period)
       }
     }
     /**
@@ -125,13 +126,14 @@ angular.module('playerApp')
     this.getCourseDashboardData = function (req, datasetType) {
       switch (datasetType) {
       case 'progress':
-        return httpServiceJava.get(config.URL.DASHBOARD.COURSE_PROGRESS + '/' + req.courseId + '?period=' + req.timePeriod)
-        break
+        return restfulLearnerService.get(config.URL.DASHBOARD.COURSE_PROGRESS +
+         '/' + req.courseId + '?period=' + req.timePeriod)
       case 'consumption':
-        return httpServiceJava.get(config.URL.DASHBOARD.COURSE_CONSUMPTION + '/' + req.courseId + '?period=' + req.timePeriod)
-        break
+        return restfulLearnerService.get(config.URL.DASHBOARD.COURSE_CONSUMPTION +
+         '/' + req.courseId + '?period=' + req.timePeriod)
       default:
-        return httpServiceJava.get(config.URL.DASHBOARD.COURSE_PROGRESS + '/' + req.courseId + '?period=' + req.timePeriod)
+        return restfulLearnerService.get(config.URL.DASHBOARD.COURSE_PROGRESS +
+         '/' + req.courseId + '?period=' + req.timePeriod)
       }
     }
   }])

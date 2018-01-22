@@ -80,6 +80,8 @@ angular.module('playerApp')
               batch.error = showErrorMessage(true,
                 $rootScope.messages.stmsg.m0020,
                 $rootScope.messages.stmsg.m0008)
+            } else {
+              batch.error = {}
             }
           } else {
             toasterService.error($rootScope.messages.fmsg.m0004)

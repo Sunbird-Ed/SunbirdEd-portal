@@ -7,7 +7,6 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link id="dynamic-favicon" rel="icon" type="image/ico" href="/common/images/favicon.ico">
-    <link rel="stylesheet" href="/themes/<%= theme ? theme : 'default' %>/assets/styles/main.css">
     <link rel="stylesheet" href="/themes/<%= theme ? theme : 'default' %>/semantic.min.css">
     <link rel="stylesheet" href="/thirdparty/bower_components/angular-pagedown/angular-pagedown.min.css">
     <link rel="stylesheet" href="/thirdparty/bower_components/slick-carousel/slick/slick.css" />
@@ -21,6 +20,7 @@
     <link rel="stylesheet" href="/thirdparty/bower_components/file-upload/fine-uploader/fine-uploader-new.min.css">
     <!-- endinject -->
     <link rel="stylesheet" href="/thirdparty/bower_components/jquery.fancytree/dist/skin-win8/ui.fancytree.min.css">
+    <link rel="stylesheet" href="/themes/<%= theme ? theme : 'default' %>/assets/styles/main.css">
     <base href="/private/index">
 </head>
 
@@ -79,6 +79,7 @@
     <script src="/thirdparty/semantic/semantic.min.js"></script>
 
     <script src="scripts/utils/util.js"></script>
+    <script src="/thirdparty/libs/telemetry.min.js"></script>
     <script src="scripts/telemetry/TelemetryEvent.js"></script>
     <script src="scripts/telemetry/TelemetryService.js"></script>
     <script src="scripts/telemetry/TelemetryV2Manager.js"></script>
@@ -90,8 +91,8 @@
     <script src="scripts/routes/appRoute.js"></script>
     <script src="scripts/routes/announcementRoute.js"></script>
     <script src="scripts/factories/sessionFactory.js"></script>
-    <script src="scripts/services/httpService.js"></script>
-    <script src="scripts/services/httpServiceJava.js"></script>
+    <script src="scripts/services/restfulContentService.js"></script>
+    <script src="scripts/services/restfulLearnerService.js"></script>
     <script src="scripts/factories/announcementModel.js"></script>
     <script src="scripts/services/adapters/httpAdapter.js"></script>
     <script src="scripts/services/adapters/announcementAdapter.js"></script>
@@ -188,6 +189,7 @@
     <script src="scripts/components/geo.js"></script>
     <script src="scripts/directives/profileVisibility.js"></script>
     <script src="scripts/controllers/profileVisibilityController.js"></script>
+    <script src="scripts/services/telemetryService.js"></script>
 
     <!-- Announcement flow -->
     <script src="/thirdparty/bower_components/file-upload/fine-uploader/fine-uploader.js"></script>
@@ -198,6 +200,15 @@
     <script src="scripts/directives/announcementDetailsDirective.js"></script>
     <script src="scripts/directives/fileUpload.js"></script>
     <script src="scripts/factories/fileUploadFactory.js"></script>
+
+    <!-- Dashboards -->
+    <script src="scripts/factories/dashboard/queryService.js"></script>
+    <script src="scripts/services/dashboard/datasources/dataSourceUtils.js"></script>
+    <script src="scripts/services/dashboard/datasources/courseConsumptionDataSource.js"></script>
+    <script src="scripts/services/dashboard/datasources/courseProgressDataSource.js"></script>
+    <script src="scripts/services/dashboard/datasources/orgCreationDataSource.js"></script>
+    <script src="scripts/services/dashboard/datasources/orgConsumptionDataSource.js"></script>
+    <script src="scripts/services/dashboard/datasources/downloadReportDataSource.js"></script>
 
     <!-- endinject -->
     <script src="../common/js/frmelmnts.js"></script>

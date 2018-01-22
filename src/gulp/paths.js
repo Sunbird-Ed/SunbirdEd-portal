@@ -19,7 +19,9 @@ var paths = {
     scripts: [player.app + '/scripts/*.js', player.app + '/scripts/**/*.js'],
     styles: [player.app + 'app/styles/**/main.less'],
     images: player.common + '/images/*.*',
-    test: ['test/testData/testData.js', 'test/testData/announcementTestData.js', 'test/spec/app/private/**/**/*.js', 'test/spec/app/public/**/**/*.js'],
+    test: ['test/testData/testData.js', 'test/testData/announcementTestData.js',
+      'test/testData/dashboardDataSourceTestData.js', 'test/spec/app/private/**/**/*.js',
+      'test/spec/app/public/**/**/*.js'],
     thirdparty: [player.app + '/thirdparty/**/*.js',
       player.app + '/thirdparty/**/**/**/*.css',
       player.app + '/thirdparty/**/**/**/**/*.*'
@@ -126,6 +128,7 @@ var paths = {
   private_bower_js: [
     'dist/thirdparty/libs/eventbus.min.js',
     'dist/thirdparty/libs/md5.js',
+    'dist/thirdparty/libs/telemetry.min.js',
     'dist/thirdparty/bower_components/jquery/dist/jquery.min.js',
     'dist/thirdparty/bower_components/jquery-ui/jquery-ui.min.js',
     'dist/thirdparty/bower_components/angular/angular.min.js',
@@ -168,8 +171,8 @@ var paths = {
     'dist/private/scripts/factories/announcementModel.js',
     'dist/private/scripts/services/adapters/httpAdapter.js',
     'dist/private/scripts/services/adapters/announcementAdapter.js',
-    'dist/private/scripts/services/httpService.js',
-    'dist/private/scripts/services/httpServiceJava.js',
+    'dist/private/scripts/services/restfulContentService.js',
+    'dist/private/scripts/services/restfulLearnerService.js',
     'dist/private/scripts/services/contentService.js',
     'dist/private/scripts/services/noteService.js',
     'dist/private/scripts/services/courseService.js',
@@ -270,7 +273,16 @@ var paths = {
     'dist/private/scripts/directives/announcementDetailsDirective.js',
     'dist/private/scripts/controllers/profileVisibilityController.js',
     'dist/private/scripts/directives/profileVisibility.js',
-    'dist/private/scripts/factories/fileUploadFactory.js'
+    'dist/private/scripts/factories/fileUploadFactory.js',
+    'dist/private/scripts/factories/dashboard/queryService.js',
+    'dist/private/scripts/services/dashboard/datasources/courseConsumptionDataSource.js',
+    'dist/private/scripts/services/dashboard/datasources/courseProgressDataSource.js',
+    'dist/private/scripts/services/dashboard/datasources/orgCreationDataSource.js',
+    'dist/private/scripts/services/dashboard/datasources/orgConsumptionDataSource.js',
+    'dist/private/scripts/services/dashboard/datasources/dataSourceUtils.js',
+    'dist/private/scripts/services/dashboard/datasources/downloadReportDataSource.js',
+    'dist/private/scripts/services/telemetryService.js'
+
   ],
   telemetry_js: [
     'dist/private/scripts/telemetry/TelemetryEvent.js',

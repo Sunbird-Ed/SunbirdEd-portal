@@ -283,7 +283,16 @@ angular.module('playerApp').controller('SearchResultController', [
         $scope.search.resultType = 'content'
         req.filters.objectType = ['Content']
       } else if ($rootScope.search.selectedSearchKey === 'All') {
-        $scope.search.searchFn = searchService.search(angular.copy(req))
+        var reqObj = angular.copy(req)
+        if (req && req.filters && !req.filters.contentType) {
+          reqObj.filters.contentType = [
+            'Collection',
+            'TextBook',
+            'LessonPlan',
+            'Resource'
+          ]
+        }
+        $scope.search.searchFn = searchService.search(reqObj)
         $scope.search.resultType = 'content'
         req.filters.objectType = ['Content']
       } else if ($rootScope.search.selectedSearchKey === 'Users') {

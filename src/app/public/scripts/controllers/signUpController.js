@@ -36,7 +36,7 @@ angular.module('loginApp')
             },
             email: {
               rules: [{
-                type: 'email',
+                type: 'regExp[/^([a-zA-Z0-9_.+\\-])+\\@(([a-zA-Z0-9-])+\\.)+([a-zA-Z0-9]{2,4})+$/]',
                 prompt: $rootScope.messages.stmsg.m0089
               }]
             },

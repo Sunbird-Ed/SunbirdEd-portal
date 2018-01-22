@@ -1,8 +1,8 @@
 'use strict'
 
 angular.module('playerApp')
-  .service('courseService', ['httpServiceJava', 'config', '$sessionStorage', 'httpService',
-    function (httpServiceJava, config, $sessionStorage, httpService) {
+  .service('courseService', ['restfulLearnerService', 'config', '$sessionStorage', 'restfulContentService',
+    function (restfulLearnerService, config, $sessionStorage, restfulContentService) {
     /**
      * @class courseService
      * @desc Service to manage courses
@@ -17,7 +17,7 @@ angular.module('playerApp')
              * @instance
              */
       this.search = function (req) {
-        return httpService.post(config.URL.COURSE.SEARCH, req)
+        return restfulContentService.post(config.URL.COURSE.SEARCH, req)
       }
       /**
              * @method courseSchedule
@@ -29,7 +29,7 @@ angular.module('playerApp')
              */
       this.courseSchedule = function (req) {
         var url = config.URL.USER_BASE + config.URL.COURSE.USER_COURSE_SCHEDULE + '/' + $sessionStorage.token
-        return httpServiceJava.get(url, req)
+        return restfulLearnerService.get(url, req)
       }
       /**
              * @method courseContentState
@@ -40,7 +40,7 @@ angular.module('playerApp')
              * @instance
              */
       this.courseContentState = function (req) {
-        return httpServiceJava.post(config.URL.COURSE.USER_CONTENT_STATE, req)
+        return restfulLearnerService.post(config.URL.COURSE.USER_CONTENT_STATE, req)
       }
       /**
              * @method courseHierarchy
@@ -52,7 +52,7 @@ angular.module('playerApp')
              */
       this.courseHierarchy = function (courseId) {
         var url = config.URL.COURSE.HIERARCHY + '/' + courseId
-        return httpService.get(url)
+        return restfulContentService.get(url)
       }
       /**
              * @method enrollUserToCourse
@@ -63,6 +63,6 @@ angular.module('playerApp')
              * @instance
              */
       this.enrollUserToCourse = function (req) {
-        return httpServiceJava.post(config.URL.COURSE.ENROLL_USER_COURSE, req)
+        return restfulLearnerService.post(config.URL.COURSE.ENROLL_USER_COURSE, req)
       }
     }])

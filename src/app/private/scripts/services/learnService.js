@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('playerApp')
-  .service('learnService', ['httpServiceJava', 'config', function (httpServiceJava, config) {
+  .service('learnService', ['restfulLearnerService', 'config', function (restfulLearnerService, config) {
     /**
      * @class learnService
      * @desc Service to manage courses.
@@ -18,11 +18,11 @@ angular.module('playerApp')
          */
     this.enrolledCourses = function (uid) {
       var url = config.URL.COURSE.GET_ENROLLED_COURSES + '/' + uid
-      return httpServiceJava.get(url)
+      return restfulLearnerService.get(url)
     }
 
     this.otherSections = function () {
-      return httpServiceJava.get(config.URL.COURSE.GET_LEARN_OTHER_SECTION)
+      return restfulLearnerService.get(config.URL.COURSE.GET_LEARN_OTHER_SECTION)
     }
     /**
          * @method recommendedCourses
@@ -34,6 +34,6 @@ angular.module('playerApp')
          * @instance
          */
     this.recommendedCourses = function () {
-      return httpServiceJava.get(config.URL.COURSE.RECOMMENDED_COURSE)
+      return restfulLearnerService.get(config.URL.COURSE.RECOMMENDED_COURSE)
     }
   }])
