@@ -12,9 +12,8 @@ angular.module('playerApp')
     'toasterService',
     'permissionsService',
     'searchService',
-    '$stateParams',
     function (adminService, $timeout, $state, config, $rootScope, $scope,
-      contentService, toasterService, permissionsService, searchService, $stateParams
+      contentService, toasterService, permissionsService, searchService
     ) {
       /**
      * @class adminController
@@ -76,7 +75,7 @@ angular.module('playerApp')
                 user.organisations.forEach(function (userOrg) {
                   var adminRoles = admin.currentUserRoleMap[userOrg.organisationId]
                   // if user belongs to an org in which the current logged in user is ORG_ADMIN, set editable to true
-                  if (typeof (user.isEditableProfile) === 'undefined' && _.indexOf(adminRoles, 'ORG_ADMIN') > -1) {
+                  if (typeof (user.isEditableProfile) === 'undefined' && (_.indexOf(adminRoles, 'ORG_ADMIN') > -1 || _.indexOf(adminRoles, 'SYSTEM_ADMINISTRATION') > -1)) {
                     user.isEditableProfile = true
                   }
                   var orgNameAndId = orgIdAndNames.find(function (org) {
@@ -85,8 +84,8 @@ angular.module('playerApp')
                   if (orgNameAndId) { userOrg.orgName = orgNameAndId.orgName }
                 })
               }
-              // if current logged in user is ORG_ADMIN of the root org of the user, set editable to true
-              if (typeof (user.isEditableProfile) === 'undefined' && user.rootOrgId === $rootScope.rootOrgId &&
+              // if current logged in user is ORG_ADMIN, SYSTEM_ADMINISTRATION of the root org of the user, set editable to true
+              if (user.rootOrgId === $rootScope.rootOrgId &&
                                     $rootScope.rootOrgAdmin === true) {
                 user.isEditableProfile = true
               }
@@ -132,33 +131,6 @@ angular.module('playerApp')
 
       // download list of user or organization
       admin.downloadUsers = function (key, list) {
-        var searchParams = $stateParams
-        var query = searchParams.query
-        var filters = JSON.parse(window.atob(searchParams.filters || window.btoa('{}')))
-        var sortBy = JSON.parse(window.atob(searchParams.sort || window.btoa('{}')))
-
-        var req = {
-          query: query,
-          filters: filters,
-          sort_by: sortBy
-        }
-
-        if (key === 'Users') {
-          adminService.userSearch({ request: req }).then(function (res) {
-            if (res !== null && res.responseCode === 'OK') {
-              admin.addSearchResultInExcel(key, res.result.response.content)
-            }
-          })
-        } else if (key === 'Organisations') {
-          adminService.orgSearch({ request: req }).then(function (res) {
-            if (res !== null && res.responseCode === 'OK') {
-              admin.addSearchResultInExcel(key, res.result.response.content)
-            }
-          })
-        }
-      }
-
-      admin.addSearchResultInExcel = function (key, list) {
         if (key === 'Users') {
           list.forEach(function (user) {
             user.organisationsName = []
@@ -197,8 +169,7 @@ angular.module('playerApp')
           var organizations = JSON.parse(orgNullReplacedToEmpty)
           alasql('SELECT orgName AS orgName,orgType AS orgType,' +
                         'noOfMembers AS noOfMembers,channel AS channel, ' +
-                        'status AS Status INTO CSV(\'Organizations.csv\',{headers:true,separator:","}) FROM ?',
-          [organizations])
+                        'status AS Status INTO CSV(\'Organizations.csv\',{headers:true,separator:","}) FROM ?', [organizations])
         }
       }
 
@@ -245,6 +216,7 @@ angular.module('playerApp')
             userId: identifier,
             organisationId: orgId,
             roles: roles
+
           }
         }
 
@@ -262,7 +234,7 @@ angular.module('playerApp')
             toasterService.error($rootScope.messages.fmsg.m0051)
           }
             }).catch(function(err) { // eslint-disable-line
-          admin.isError = true
+          profile.isError = true
           toasterService.error($rootScope.messages.fmsg.m0051)
         })
       }
@@ -330,7 +302,6 @@ angular.module('playerApp')
             admin.disableAsignButton = false
           }
         }).catch(function (err) {
-          console.error(err)
           admin.disableAsignButton = false
           toasterService.error('Some thing went wrong. please try again later..')
         })

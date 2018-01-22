@@ -10,7 +10,6 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
     $rootScope.userId = $('#userId').attr('value')
     $rootScope.sessionId = $('#sessionId').attr('value')
     $rootScope.cdnUrl = $('#cdnUrl').attr('value') || ''
-    $rootScope.theme = $('#theme').attr('value') || 'default'
     $rootScope.language = $('#defaultPortalLanguage').attr('value') || 'en'
     $rootScope.messages = messages[$rootScope.language]
     $rootScope.frmelmnts = frmelmnts[$rootScope.language]
@@ -69,14 +68,14 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
       $rootScope.avatar = profileData.avatar
       $rootScope.firstName = profileData.firstName
       $rootScope.lastName = profileData.lastName
-      var userRoles = profileData.roles
+      var userRoles = []
       $rootScope.organisations = profileData.organisations
       $rootScope.profileCompleteness = profileData.completeness
       $rootScope.profileMissingFields = profileData.missingFields || []
       var organisationNames = []
       var orgRoleMap = {}
 
-            var rootOrg = (profileData.rootOrg && !_.isUndefined(profileData.rootOrg.hashTagId)) ? profileData.rootOrg.hashTagId : md5('sunbird'); //eslint-disable-line
+      var rootOrg = (profileData.rootOrg && !_.isUndefined(profileData.rootOrg.hashTagId)) ? profileData.rootOrg.hashTagId : md5('sunbird'); //eslint-disable-line
       org.sunbird.portal.channel = rootOrg
       $rootScope.rootOrgId = profileData.rootOrgId
       $rootScope.rootOrgAdmin = false
@@ -85,7 +84,9 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
       _.forEach(profileData.organisations, function (org) {
         if (org.roles && _.isArray(org.roles)) {
           userRoles = _.union(userRoles, org.roles)
-          if (org.organisationId === profileData.rootOrgId && _.indexOf(org.roles, 'ORG_ADMIN') > -1) {
+          if (org.organisationId === profileData.rootOrgId &&
+           (_.indexOf(org.roles, 'ORG_ADMIN') > -1 ||
+            _.indexOf(org.roles, 'SYSTEM_ADMINISTRATION') > -1)) {
             $rootScope.rootOrgAdmin = true
           }
           orgRoleMap[org.organisationId] = org.roles
@@ -100,6 +101,10 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
       if ($rootScope.rootOrgId) {
         organisationIds.push($rootScope.rootOrgId)
       }
+
+      // set role org map
+      permissionsService.setRoleOrgMap(profileData)
+
       organisationIds = _.uniq(organisationIds)
       $rootScope.organisationNames = organisationNames
       $rootScope.organisationIds = angular.copy(organisationIds)
@@ -161,7 +166,6 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
           if (res && res.responseCode === 'OK') {
             var profileData = res.result.response
             // console.log(profileData.organisations[0].organisationId)
-            $rootScope.userOrganizationId = profileData.organisations[0] && profileData.organisations[0].organisationId
             userService.setCurrentUserProfile(profileData)
             $scope.userProfile(profileData)
           } else {
@@ -231,12 +235,12 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
             limit = res.result.count - limit
             $rootScope.getConcept(offset, limit, callback)
           } else {
-            callback(null, $scope.concepts)
+            callback(false, $scope.concepts)
           }
         }
       })
         .catch(function (err) {
-          callback(err, null)
+          callback(true)
         })
     }
     if (!$rootScope.concepts) {
