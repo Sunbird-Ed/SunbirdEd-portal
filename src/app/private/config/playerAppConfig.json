@@ -103,7 +103,7 @@
         "FILTER": {
             "RESOURCES": {
                 "languages": [
-                    "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Marathi", "Punjabi", "Tamil", "Telugu"
+                    "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Marathi", "Punjabi", "Tamil", "Telugu", "Urdu"
                 ],
                 "contentTypes": [
                   {
@@ -177,16 +177,7 @@
                     "Economics",
                     "Sanskrit"
                 ],
-                "boards": [
-                    "CBSE",
-                    "ICSE",
-                    "MSCERT",
-                    "NCERT",
-                    "UP Board",
-                    "AP Board",
-                    "TN Board",
-                    "NCTE"
-                ]
+                "boards": ["AP Board", "BSER", "CBSE", "ICSE", "MSCERT", "NCERT", "NCTE", "TN Board", "UP Board"]
             }
         },
         "MESSAGES": {
@@ -282,7 +273,7 @@
         },
         "DROPDOWN": {
             "COMMON": {
-                "languages": ["Bengali", "English", "Gujarati", "Hindi", "Kannada", "Marathi", "Punjabi", "Tamil", "Telugu"],
+                "languages": ["Bengali", "English", "Gujarati", "Hindi", "Kannada", "Marathi", "Punjabi", "Tamil", "Telugu","Urdu"],
                 "lessonTypes": [
                     "Story", "Worksheet"
                 ],
@@ -312,7 +303,7 @@
                 "medium": [
                     "Assamese", "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Malayalam", "Marathi", "Nepali", "Oriya", "Other", "Punjabi", "Tamil", "Telugu", "Urdu"
                 ],
-                "boards": ["AP Board", "CBSE", "ICSE", "MSCERT", "NCERT", "NCTE", "TN Board", "UP Board"],
+                "boards": ["AP Board", "BSER", "CBSE", "ICSE", "MSCERT", "NCERT", "NCTE", "TN Board", "UP Board"],
                 "orgType": ["technical"]
             }
         },
