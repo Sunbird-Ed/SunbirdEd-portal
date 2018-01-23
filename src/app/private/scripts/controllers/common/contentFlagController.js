@@ -2,9 +2,9 @@
 
 angular.module('playerApp')
   .controller('contentFlagController', ['contentService', '$timeout', '$state', 'config',
-    '$rootScope', 'toasterService', '$scope',
+    '$rootScope', 'toasterService', '$scope', 'telemetryService',
     function (contentService, $timeout, $state,
-      config, $rootScope, toasterService, $scope) {
+      config, $rootScope, toasterService, $scope, telemetryService) {
       var contentFlag = this
       contentFlag.showContentFlagModal = false
       contentFlag.userId = $rootScope.userId
@@ -40,6 +40,7 @@ angular.module('playerApp')
 
       contentFlag.initializeModal = function () {
         contentFlag.showContentFlagModal = true
+        contentFlag.generateInteractEvent('course-flag', 'course-read', $scope.contentid)
         $timeout(function () {
           $('#contentFlagModal').modal({
             onShow: function () {
@@ -98,6 +99,38 @@ angular.module('playerApp')
         } else {
           $state.go($scope.redirect)
         }
+      }
+
+
+      /**
+             * This function call to generate telemetry
+             * on click of share icon.
+             */
+      contentFlag.generateInteractEvent = function(edataId, pageId, itemId){
+        var contextData = {
+          env : $scope.type,
+          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+        }
+
+        var objRollup = ''
+        if(itemId!=''){
+          objRollup = ['course', itemId]
+        }
+
+        var objectData = {
+          id: itemId,
+          type:edataId,
+          ver:'0.1',
+          rollup:telemetryService.getRollUpData(objRollup)
+        }
+
+        var data = {
+          edata:telemetryService.interactEventData('CLICK', '', edataId, pageId),
+          context: telemetryService.getContextData(contextData),
+          object: telemetryService.getObjectData(objectData),
+          tags: $rootScope.organisationIds
+        }
+        telemetryService.interact(data)
       }
     }
   ])

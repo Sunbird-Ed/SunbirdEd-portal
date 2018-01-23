@@ -18,10 +18,11 @@ angular.module('playerApp')
     'adminService',
     'workSpaceUtilsService',
     'configService',
-    '$q', '$anchorScroll',
+    '$q', '$anchorScroll', 'telemetryService',
     function ($scope, $rootScope, contentService, userService,
       toasterService, config, $timeout, $filter, uuid4, formValidation, searchService,
-      $state, learnService, adminService, workSpaceUtilsService, configService, $q, $anchorScroll) {
+      $state, learnService, adminService, workSpaceUtilsService, configService, $q,
+      $anchorScroll, telemetryService) {
       var profile = this
       profile.defaultLimit = 4
       profile.limit = profile.defaultLimit
@@ -162,6 +163,30 @@ angular.module('playerApp')
           profile.isError = true
           toasterService.error($rootScope.messages.fmsg.m0005)
         })
+        profile.generateImpressionEvent('view', 'scroll', 'profile-read', '/profile')
+      }
+
+
+      //telemetry impression event//
+      profile.generateImpressionEvent = function(type, subtype, pageId, url){
+          var contextData = {
+              env : 'profile',
+              rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+            }
+          var objRollup = ['profile',$rootScope.userId]
+          var objectData = {
+              id: $rootScope.userId,
+              type:'user',
+              ver:'0.1',
+              rollup:telemetryService.getRollUpData(objRollup)
+          }
+          var data = {
+            edata:telemetryService.impressionEventData(type, subtype, pageId, url, ''),
+            context: telemetryService.getContextData(contextData),
+            object: telemetryService.getObjectData(objectData),
+            tags: $rootScope.organisationIds
+          }
+          telemetryService.impression(data)
       }
 
       // update user profile

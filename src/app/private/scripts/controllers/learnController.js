@@ -2,8 +2,8 @@
 
 angular.module('playerApp')
   .controller('LearnCtrl', ['learnService', '$scope', '$state', '$rootScope',
-    'sessionService', 'toasterService', function (learnService, $scope, $state, $rootScope,
-      sessionService, toasterService) {
+    'sessionService', 'toasterService', 'telemetryService', function (learnService, $scope, $state, $rootScope,
+      sessionService, toasterService, telemetryService) {
       var learn = this
       var uid = $rootScope.userId
       //   $rootScope.searchResult = [];
@@ -20,8 +20,7 @@ angular.module('playerApp')
           courseId: course.courseId || course.identifier,
           lectureView: showLectureView,
           progress: course.progress,
-          total:
-                $rootScope.enrolledCourseIds[course.courseId].leafNodesCount,
+          total: $rootScope.enrolledCourseIds[course.courseId].leafNodesCount,
           courseName: course.courseName || course.name,
           lastReadContentId: course.lastReadContentId
         }
@@ -29,6 +28,7 @@ angular.module('playerApp')
         sessionService.setSessionData('COURSE_PARAMS', params)
         $rootScope.isPlayerOpen = true
         $state.go('Toc', params)
+        learn.generateInteractEvent('course', 'course-read', course.courseId)
       }
 
       learn.courses = function () {
@@ -61,4 +61,36 @@ angular.module('playerApp')
       } else {
         learn.courses()
       }
+
+      /**
+             * This function call to generate telemetry
+             * on click of Enroll Course.
+             */
+      learn.generateInteractEvent = function(edataId, pageId, courseId){
+        var contextData = {
+          env : 'course',
+          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+        }
+
+        var objRollup = ''
+        if(courseId!=''){
+          objRollup = ['course', courseId]
+        }
+
+        var objectData = {
+          id: courseId,
+          type:edataId,
+          ver:'0.1',
+          rollup:telemetryService.getRollUpData(objRollup)
+        }
+
+        var data = {
+          edata:telemetryService.interactEventData('CLICK', '', edataId, pageId),
+          context: telemetryService.getContextData(contextData),
+          object: telemetryService.getObjectData(objectData),
+          tags: $rootScope.organisationIds
+        }
+        telemetryService.interact(data)
+      }
+
     }])
