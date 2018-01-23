@@ -1,109 +1,121 @@
-<div ng-controller="courseDashboardCtrl as courseDashboard" ng-init="courseDashboard.loadData()">
-  <div ng-include="'views/dashboard/course/courseDashboardFilters.html'"></div>
-  <div class="table-data-holder" ng-hide="courseDashboard.showLoader || courseDashboard.isMultipleCourses || courseDashboard.showWarningMsg" ng-if="!courseDashboard.showError">
-    <div class="ui raised segment">
-      <div class="eight wide column right floated dashBoardCardText">
-        <h3>Stats for last {{courseDashboard.filterQueryTextMsg}} </h3>
-      </div>
-      <table class="ui very basic courseDashBoardTable table">
-        <thead>
-          <tr>
-            <th class="table-headerDashboard">
-              <a href="Javascript:void(0);" ng-click="courseDashboard.orderByField='progress'; courseDashboard.reverseSort = !courseDashboard.reverseSort">Status
+<div ng-controller="courseProgressDashboardCtrl as courseDashboard" ng-init="courseDashboard.loadData();courseDashboard.orderByField='';courseDashboard.reverseSort = false">
+	<div ng-include="'views/dashboard/course/courseProgressFilter.html'"></div>
+	<div class="table-data-holder" ng-hide="courseDashboard.showError || courseDashboard.myBatches.length === 0 || courseDashboard.showLoader || courseDashboard.isMultipleCourses">
+		<div class="ui raised segment">
+			<div class="eight wide column right floated dashBoardCardText">
+				<h3>{{courseDashboard.filterText}} </h3>
+			</div>
+			<table class="ui very basic courseDashBoardTable table">
+				<thead>
+					<tr>
+						<th class="table-headerDashboard">
+							<a href="Javascript:void(0);" ng-click="courseDashboard.orderByField='progress'; courseDashboard.reverseSort = !courseDashboard.reverseSort">{{$root.frmelmnts.lbl.dashboardsortbystatus}}
 								<span ng-show="courseDashboard.orderByField == 'progress'">
-			        				<span ng-show="!courseDashboard.reverseSort">^</span>
-			        				<span ng-show="courseDashboard.reverseSort">v</span>
+									  <span ng-show="!courseDashboard.reverseSort">^</span>
+									  <span ng-show="courseDashboard.reverseSort">v</span>
 								</span>
 							</a>
-            </th>
-            <th>
-              <a href="Javascript:void(0);" ng-click="courseDashboard.orderByField='user'; courseDashboard.reverseSort = !courseDashboard.reverseSort">User Name
-			        			<span ng-show="courseDashboard.orderByField == 'user'">
-			        				<span ng-show="!courseDashboard.reverseSort">^</span>
-			        				<span ng-show="courseDashboard.reverseSort">v</span>
-			        			</span>
-					  		</a>
-            </th>
-            <th>
-              <a href="Javascript:void(0);" ng-click="courseDashboard.orderByField='batchEndsOn'; courseDashboard.reverseSort = !courseDashboard.reverseSort">Batch End On
-					          	<span ng-show="courseDashboard.orderByField == 'batchEndsOn'">
-					          		<span ng-show="!courseDashboard.reverseSort">^</span>
-					          		<span ng-show="courseDashboard.reverseSort">v</span>
-					          	</span>
+						</th>
+						<th>
+							<a href="Javascript:void(0);" ng-click="courseDashboard.orderByField='user'; courseDashboard.reverseSort = !courseDashboard.reverseSort">{{$root.frmelmnts.lbl.dashboardsortbyusername}}
+								<span ng-show="courseDashboard.orderByField == 'user'">
+								  <span ng-show="!courseDashboard.reverseSort">^</span>
+								  <span ng-show="courseDashboard.reverseSort">v</span>
+								</span>
 							</a>
-            </th>
-            <th>
-              <a href="Javascript:void(0);" ng-click="courseDashboard.orderByField='org'; courseDashboard.reverseSort = !courseDashboard.reverseSort">ORG
-				          		<span ng-show="courseDashboard.orderByField == 'org'">
-				          			<span ng-show="!courseDashboard.reverseSort">^</span>
-				          			<span ng-show="courseDashboard.reverseSort">v</span>
-				          		</span>
+						</th>
+						<th>
+							<a href="Javascript:void(0);" ng-click="courseDashboard.orderByField='batchEndsOn'; courseDashboard.reverseSort = !courseDashboard.reverseSort">{{$root.frmelmnts.lbl.dashboardsortbybatchend}}
+								  <span ng-show="courseDashboard.orderByField == 'batchEndsOn'">
+									<span ng-show="!courseDashboard.reverseSort">^</span>
+									<span ng-show="courseDashboard.reverseSort">v</span>
+								  </span>
 							</a>
-            </th>
-            <th>
-              <a href="Javascript:void(0);" ng-click="courseDashboard.orderByField='enrolledOn'; courseDashboard.reverseSort = !courseDashboard.reverseSort">Enrolled On
-		          				<span ng-show="courseDashboard.orderByField == 'enrolledOn'">
-		          					<span ng-show="!courseDashboard.reverseSort">^</span>
-		          					<span ng-show="courseDashboard.reverseSort">v</span>
-		          				</span>
-					  		</a>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="student in courseDashboard.courseProgressArray|orderBy:courseDashboard.orderByField:courseDashboard.reverseSort | filter:courseDashboard.searchUser">
-            <!-- If course progress is 100%-->
-            <td ng-if="student.progress === 100">Done</td>
-            <td class="ui green header text-font" ng-if="(student.progress !== 100 && student.progress > 90)">{{student.progress}}%</td>
-            <td class="ui orange header text-font" ng-if="(student.progress !== 100 && student.progress > 30)">{{student.progress}}%</td>
-            <td class="ui red header text-font" ng-if="(student.progress !== 100 && student.progress < 30)">{{student.progress}}%</td>
-            <td>{{student.userName}}
-              <br>Last login: {{student.lastAccessTime | dateFilterWithMDY}}
-            </td>
-            <td>{{student.batchEndsOn | dateFilterWithMDY}}</td>
-            <td>{{student.org}}</td>
-            <td>{{student.enrolledOn | dateFilterWithMDY}}</td>
-          </tr>
-          <tr ng-show="courseDashboard.courseProgressArray.length == 0">
-            <td id="noRecordsFound">No data found</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <!--<div class="ui grid margin-top-20" ng-hide="courseDashboard.courseProgressArray.length == 0">
-	    	<div class="twelve wide column right floated">
-		      	<p class="text-align-right dashBoardCardText">Download this view as:
-		        	<a href="Javascript:void(0);" class="item text-decoration-underline padding-left-10 cursor-pointer">CSV</a>
-		      	</p>
-	    	</div>
-		</div>-->
-  </div>
-  <!-- Show loader-->
-  <div class="tweleve wide column" ng-if="courseDashboard.showLoader">
-    <app-loader></app-loader>
-  </div>
-  <div class="ui negative message" ng-hide="courseDashboard.showWarningMsg" ng-if="courseDashboard.showError && !courseDashboard.showLoader">
-    <div class="header">Error while fetching data...</div>
-    <p>{{courseDashboard.errorMsg}}</p>
-  </div>
-  <div class="ui warning message tweleve wide column" ng-show="courseDashboard.isMultipleCourses">
-    <div class="header">No batch selected!</div>
-    Please select a batch from the above list.
-  </div>
-  <div class="ui grid" ng-if="courseDashboard.showWarningMsg">
-    <div class="twelve wide column">
-      <a class="ui item basic icon circular float-ContentRight" href="Javascript:void(0);" data-tooltip="Close the dashboard"><i class="ui remove icon CloseButtonFont" ng-click="toc.showCourseDashboard = false;courseDashboard.resetDropdown();"></i>
-      </a>
-    </div>
-    <div class="twelve wide column">
-      <div class="ui info message">
-        <div class="header">
-          Oops...
-        </div>
-        <ul class="list">
-          <li>You haven't created a batch for this course yet. Create new batch and check the dashboard again.</li>
-        </ul>
-      </div>
-    </div>
-  </div>
+						</th>
+						<th>
+							  <a href="Javascript:void(0);" ng-click="courseDashboard.orderByField='org'; courseDashboard.reverseSort = !courseDashboard.reverseSort">{{$root.frmelmnts.lbl.dashboardsortbyorg}}
+									  <span ng-show="courseDashboard.orderByField == 'org'">
+										<span ng-show="!courseDashboard.reverseSort">^</span>
+										<span ng-show="courseDashboard.reverseSort">v</span>
+									  </span>
+							  </a>
+						</th>
+						<th>
+							  <a href="Javascript:void(0);" ng-click="courseDashboard.orderByField='enrolledOn'; courseDashboard.reverseSort = !courseDashboard.reverseSort">{{$root.frmelmnts.lbl.dashboardsortbyenrolledon}}
+									  <span ng-show="courseDashboard.orderByField == 'enrolledOn'">
+										<span ng-show="!courseDashboard.reverseSort">^</span>
+										<span ng-show="courseDashboard.reverseSort">v</span>
+									  </span>
+								</a>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+				  	<tr ng-repeat="student in courseDashboard.dashboarData | orderBy:courseDashboard.orderByField:courseDashboard.reverseSort | filter:courseDashboard.searchUser">
+						<!-- If course progress is 100%-->
+						<td ng-if="student.progress === 100">Done</td>
+						<td class="ui green header text-font" ng-if="(student.progress !== 100 && student.progress > 90)">{{student.progress}}%</td>
+						<td class="ui orange header text-font" ng-if="(student.progress !== 100 && student.progress > 30)">{{student.progress}}%</td>
+						<td class="ui red header text-font" ng-if="(student.progress !== 100 && student.progress < 30)">{{student.progress}}%</td>
+						<td>{{student.userName}}
+					  		<br>Last login: {{student.lastAccessTime | dateFilterWithMDY}}
+						</td>
+						<td>{{student.batchEndsOn | dateFilterWithMDY}}</td>
+						<td>{{student.org}}</td>
+						<td>{{student.enrolledOn | dateFilterWithMDY}}</td>
+				  	</tr>
+				  	<tr ng-show="courseDashboard.dashboarData.length == 0">
+						<td id="noRecordsFound">No data found</td>
+				  	</tr>
+				</tbody>
+	  		</table>
+		</div>
+		<div class="twelve wide column margin-top-20" ng-hide="courseDashboard.dashboarData.length == 0">
+			<p class="text-align-right dashBoardCardText">{{$root.frmelmnts.instn.t0058}}
+				<a href="javascript:void(0);" ng-class="{'disabledButton' : courseDashboard.disabledClass}" class="item text-decoration-underline padding-left-10" ng-click="courseDashboard.downloadReport();">{{$root.frmelmnts.instn.t0059}}</a>
+		  	</p>
+		</div>
+		<!-- Download report popup-->
+		<div class="ui modal" id="downloadReportModal">
+			<div class="header">
+				<div class="ui grid">
+			  		<div class="eleven wide column">
+			  			<span class="ui header">{{$root.frmelmnts.instn.t0060}}</span>
+			  		</div>
+			  		<div class="one wide column actions">
+						<h5 class="ui basic icon circular button deny"><i class="ui remove icon"></i></h5>
+			  		</div>
+				</div>
+		  	</div>
+		  	<div class="content">
+				<p class="meta">{{courseDashboard.downloadReportText}}</p>
+		  	</div>
+		  	<div class="actions margin-top-20 ">
+				<div></div>
+		  	</div>
+		</div>
+ 	</div>
+	<!-- Show loader-->
+	<div class="tweleve wide column" ng-if="courseDashboard.showLoader">
+		<app-loader></app-loader>
+	</div>
+	<div class="ui warning message tweleve wide column" ng-show="courseDashboard.isMultipleCourses">
+		<div class="header">{{$root.frmelmnts.lbl.dashboardnobatchselected}}</div>
+		{{$root.frmelmnts.lbl.dashboardnobatchselecteddesc}}
+	</div>
+	<div class="ui grid" ng-if="courseDashboard.myBatches.length === 0" ng-hide="courseDashboard.showLoader">
+		<div class="twelve wide column">
+			<a class="ui item basic icon circular float-ContentRight" href="Javascript:void(0);" data-tooltip="Close the dashboard">
+			  	<i class="ui remove icon CloseButtonFont" ng-click="toc.showCourseDashboard = false;courseDashboard.resetDropdown();"></i>
+			</a>
+		</div>
+		<div class="twelve wide column">
+			<div class="ui info message">
+				<div class="header">{{$root.frmelmnts.instn.t0061}}</div>
+				<ul class="list">
+			  		<li>{{$root.frmelmnts.instn.t0062}}</li>
+				</ul>
+		  	</div>
+		</div>
+	 </div>
 </div>

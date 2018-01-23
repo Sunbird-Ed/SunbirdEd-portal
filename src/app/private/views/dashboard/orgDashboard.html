@@ -1,4 +1,4 @@
-<div ng-init="dashboardData.showData()">
+<div ng-init="dashboardData.showData();$root.count = 0">
   <div class="ui grid">
     <div class="one wide column"></div>
     <div class="ten wide column">
@@ -19,8 +19,8 @@
             <div class="text dashBoardSectionHeading">Creation</div>
             <span class="dashBoardSectionHeading"><i class="dropdown icon"></i></span>
             <div class="menu">
-              <div class="active item" ng-click="dashboardData.onAfterDatasetChange('creation')" data-dataset="creation">Creation</div>
-              <div class="item" ng-click="dashboardData.onAfterDatasetChange('consumption')" data-dataset="consumption">Consumption</div>
+              <div class="active item" ng-click="dashboardData.onAfterDatasetChange('creation'); $root.count = 0" data-dataset="creation">Creation</div>
+              <div class="item" ng-click="dashboardData.onAfterDatasetChange('consumption'); $root.count = 0" data-dataset="consumption">Consumption</div>
             </div>
           </div>
         </div>
@@ -57,20 +57,37 @@
           </div>
         </div>
         <div ng-show="dashboardData.showDataDiv" ng-class="{'margin-top-30' : dashboardData.graphArray.length-1 <= 0}">
-          <div class="chart-slider padding-right-10" ng-if="dashboardData.graphArray.length-1 > 0" style="">
-            <button class="ui primary basic compact icon button" ng-click="dashboardData.previousGraph()" ng-class="{'disabled' : dashboardData.graphShow <= 0}"><i class="left arrow icon"></i></button>
-            <button class="ui primary basic compact icon button" ng-click="dashboardData.nextGraph()" ng-class="{'disabled' : dashboardData.graphShow >= (dashboardData.graphArray.length-1)}"><i class="right arrow icon"></i></button>
+          <div class="chart-slider padding-right-10" ng-if="dashboardData.graphArray.length-1 > 0">
+            <button class="ui primary basic compact icon button" ng-click="$root.count = $root.count - 1" ng-class="{'disabled' : $root.count <= 0}"><i class="left arrow icon"></i></button>
+            <button class="ui primary basic compact icon button" ng-click="$root.count = $root.count + 1" ng-class="{'disabled' : $root.count >= (dashboardData.graphArray.length-1)}"><i class="right arrow icon"></i></button>
           </div>
           <div ng-repeat="graph in dashboardData.graphArray">
-            <canvas height="{{dashboardData.height}}" class="chart chart-line adminCanvasPadding adminCanvasBorder" chart-data="graph[2]" chart-labels="graph[1]" chart-series="graph[0]" chart-colors="graph[3]" chart-options="graph[4]" ng-if="$index == dashboardData.graphShow">
+            <canvas height="{{dashboardData.height}}" class="chart chart-line adminCanvasPadding adminCanvasBorder" chart-data="graph[2]" chart-labels="graph[1]" chart-series="graph[0]" chart-colors="graph[3]" chart-options="graph[4]" ng-if="$index === $root.count">
             </canvas>
           </div>
         </div>
-        <!--<div class="twelve wide column margin-top-20" ng-show="dashboardData.showDataDiv">
-          <p class="text-align-right dashBoardCardText">Download this view as:
-            <a href="Javascript:void(0);" class="item text-decoration-underline padding-left-10 cursor-pointer">CSV</a>
+        <div class="twelve wide column margin-top-20" ng-show="dashboardData.showDataDiv">
+          <p class="text-align-right dashBoardCardText">{{$root.frmelmnts.instn.t0058}}
+            <a href="javascript:void(0);" ng-class="{'disabledButton' : dashboardData.disabledClass}" class="item text-decoration-underline padding-left-10" ng-click="dashboardData.downloadReport();">{{$root.frmelmnts.instn.t0059}}</a>
           </p>
-        </div>-->
+        </div>
+        <!-- Download report popup-->
+        <div class="ui modal" id="downloadReportModal">
+          <div class="header">
+            <div class="ui grid">
+              <div class="eleven wide column"><span class="ui header">{{$root.frmelmnts.instn.t0060}}</span></div>
+              <div class="one wide column actions">
+                <h5 class="ui basic icon circular button deny"><i class="ui remove icon"></i></h5>
+              </div>
+            </div>
+          </div>
+          <div class="content">
+            <p class="meta">{{dashboardData.downloadReportText}}</p>
+          </div>
+          <div class="actions margin-top-20 ">
+            <div></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

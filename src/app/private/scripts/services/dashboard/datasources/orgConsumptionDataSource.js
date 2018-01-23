@@ -63,7 +63,7 @@ angular.module('playerApp')
         orgConsDataSource.blockData = []
         angular.forEach(snapshot, function (numericData, key) {
           switch (key) {
-          case 'org.consumption.content.session.count':
+          // case 'org.consumption.content.session.count':
           case 'org.consumption.content.time_spent.sum':
           case 'org.consumption.content.time_spent.average':
             orgConsDataSource.blockData.push(dataSourceUtils.secondsToMin(numericData))

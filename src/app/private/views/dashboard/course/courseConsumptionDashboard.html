@@ -1,65 +1,46 @@
 <div class="ui grid">
-  <div class="one wide column"></div>
-  <div class="ten wide column">
-    <div ng-controller="courseCreatorDashboardCtrl as courseDashboard" ng-init="courseDashboard.loadData()">
-      <div ng-include="'views/dashboard/course/courseDashboardFilters.html'"></div>
-      <div class="consumption-data-holder" ng-hide="courseDashboard.showLoader || courseDashboard.showWarningMsg || courseDashboard.isMultipleCourses" ng-if="courseDashboard.dataset == 'consumption' && !courseDashboard.showError">
-        <div class="ui four cards">
-          <div class="card" ng-repeat="item in courseDashboard.consumptionNumericData">
-            <div class="content center aligned">
-              <div class="meta dashBoardCardText">{{item.name}}</div>
-              <h2 class="description dashboardCardSubText">{{item.value}}</h2>
-            </div>
-          </div>
-        </div>
-        <div class="ui one column grid margin-top-20">
-          <div class="column">
-            <div class="regular slider padding-top-30 course-graph-holder">
-              <div ng-repeat="graph in courseDashboard.data">
-                <canvas height="{{courseDashboard.chartHeight}}" class="chart chart-line adminCanvasPadding adminCanvasBorder" chart-data="graph[2]" chart-labels="graph[1]" chart-series="graph[0]" chart-colors="graph[3]" chart-options="graph[4]" ng-if="$index == courseDashboard.graphShow">
-                </canvas>
-              </div>
-              <div class="corse-graph-navigation-btn" ng-if="courseDashboard.data.length-1 > 0">
-                <button class="ui primary basic compact icon button" ng-click="courseDashboard.previousGraph()" ng-class="{'disabled' : courseDashboard.graphShow <= 0}"><i class="left arrow icon"></i></button>
-                <button class="ui primary basic compact icon button" ng-click="courseDashboard.nextGraph()" ng-class="{'disabled' : courseDashboard.graphShow >= (courseDashboard.data.length-1)}"><i class="right arrow icon"></i></button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!--<div class="margin-top-20" ng-hide="courseDashboard.data.length == 0">
-            <div class="twelve wide column">
-              <p class="text-align-right dashBoardCardText">Download this view as:
-                <a href="Javascript:void(0);" class="item text-decoration-underline padding-left-10 cursor-pointer">CSV</a>
-              </p>
-            </div>
-        </div>-->
-      </div>
-      <!-- Show loader-->
-      <div class="tweleve wide column" ng-if="courseDashboard.showLoader">
-        <app-loader></app-loader>
-      </div>
-      <!-- Show error message-->
-      <div class="ui negative message" ng-hide="courseDashboard.showWarningMsg" ng-if="courseDashboard.showError && !courseDashboard.showLoader">
-        <div class="header">
-          Error while fetching data..
-        </div>
-        <p>{{courseDashboard.errorMsg}}</p>
-      </div>
-      <div class="ui warning message tweleve wide column" ng-show="courseDashboard.isMultipleCourses">
-        <div class="header">
-          No course selected!
-        </div>
-        Please select a course from the above list.
-      </div>
-      <div class="ui info message" ng-if="courseDashboard.showWarningMsg">
-        <i class="close icon"></i>
-        <div class="header">
-          Oops...
-        </div>
-        <ul class="list">
-          <li>You haven't created any course yet. Create new course and check the dashboard again.</li>
-        </ul>
-      </div>
-    </div>
-  </div>
+	<div class="one wide column"></div>
+	<div class="ten wide column">
+		<div ng-init="courseDashboard.loadData();$root.count = 0">
+			<div ng-include="'views/dashboard/course/courseConsumptionFilter.html'"></div>
+	  		<div class="consumption-data-holder" ng-hide="courseDashboard.showLoader || courseDashboard.isMultipleCourses || courseDashboard.showError">
+				<div class="ui four cards">
+		  			<div class="card" ng-repeat="item in courseDashboard.consumptionNumericData">
+						<div class="content center aligned">
+			  				<div class="meta dashBoardCardText">{{item.name}}</div>
+			  				<h2 class="description dashboardCardSubText">{{item.value}}</h2>
+						</div>
+		  			</div>
+				</div>
+				<div class="ui one column grid margin-top-20">
+		  			<div class="column">
+						<div class="regular slider padding-top-30 course-graph-holder">
+			  				<div ng-repeat="graph in courseDashboard.data">
+								<canvas height="{{courseDashboard.chartHeight}}" class="chart chart-line adminCanvasPadding adminCanvasBorder" chart-data="graph[2]" chart-labels="graph[1]" chart-series="graph[0]" chart-colors="graph[3]" chart-options="graph[4]" ng-if="$index == $root.count">
+								</canvas>
+			  				</div>
+			  				<div class="corse-graph-navigation-btn" ng-if="courseDashboard.data.length-1 > 0">
+								<button class="ui primary basic compact icon button" ng-click="$root.count = $root.count - 1" ng-class="{'disabled' : $root.count <= 0}"><i class="left arrow icon"></i></button>
+								<button class="ui primary basic compact icon button" ng-click="$root.count = $root.count + 1" ng-class="{'disabled' : $root.count >= (courseDashboard.data.length-1)}"><i class="right arrow icon"></i></button>
+			  				</div>
+						</div>
+		  			</div>
+				</div>
+	  		</div>
+	  		<!-- Show loader-->
+	  		<div class="tweleve wide column" ng-if="courseDashboard.showLoader">
+				<app-loader></app-loader>
+	  		</div>
+	  		<div class="ui warning message tweleve wide column" ng-show="courseDashboard.isMultipleCourses">
+				<div class="header">{{$root.frmelmnts.lbl.dashboardnocourseselected}}</div>
+				{{$root.frmelmnts.lbl.dashboardnocourseselecteddesc}}
+	  		</div>
+	  		<div class="ui info message" ng-if="!courseDashboard.showLoader && courseDashboard.myCoursesList.length === 0">
+				<div class="header">{{$root.frmelmnts.instn.t0061}}</div>
+				<ul class="list">
+		  			<li>{{$root.frmelmnts.instn.t0063}}</li>
+				</ul>
+	  		</div>
+		</div>
+  	</div>
 </div>

@@ -1,0 +1,34 @@
+<span id="dashoardFiltersHolder" ng-hide="courseDashboard.myCoursesList.length === 0">
+	<div class="ui grid">
+		<div class="five wide column float-ContentLeft" ng-show="courseDashboard.myCoursesList.length === 1">
+			<span class="dashBoardSectionHeading"><i class="large bar chart icon"></i></span>
+			<span class="dashBoardSectionHeading">{{courseDashboard.courseName}}</span>
+		</div>
+
+		<div class="one wide column" ng-hide="courseDashboard.myCoursesList.length <= '1'">
+			<span class="dashBoardSectionHeading"><i class="large bar chart icon padding-top-5"></i></span>
+		</div>
+		<div class="four wide column float-ContentLeft" ng-hide="courseDashboard.myCoursesList.length <= '1'">
+			<div class="ui fluid search selection dropdown" id="myCoursesListFilter">
+				<input type="hidden" name="course">
+				<i class="dropdown icon"></i>
+				<div class="default text" id="selectCourse">Select Course To See Dashboard</div>
+					<div class="menu">
+						<div class="item" ng-repeat="course in courseDashboard.myCoursesList" title="{{course.courseName}}" ng-click="courseDashboard.onAfterCourseChange(course.identifier);$root.count = 0" data-value="{{course.identifier}}" ng-init="$last && courseDashboard.initDropdwon()">
+						<img class="ui circular image mini" ng-src=" {{course.appIcon ? course.appIcon : '/common/images/default.png'}} ">{{course.name}}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="ui grid margin-top-10" ng-hide="courseDashboard.isMultipleCourses">
+		<div class="six wide column">
+			<div class="ui text menu float-ContentLeft padding-top-10">
+				<span class="dashBoardMenuItem cursor-pointer active" ng-class="{active:courseDashboard.timePeriod === '7d'}" ng-click="courseDashboard.onAfterFilterChange('7d')">{{$root.frmelmnts.lbl.dashboardsevendaysfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+				<span class="dashBoardMenuItem cursor-pointer" ng-class="{active:courseDashboard.timePeriod === '14d'}" ng-click="courseDashboard.onAfterFilterChange('14d')">{{$root.frmelmnts.lbl.dashboardfourteendaysfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+				<span class="dashBoardMenuItem cursor-pointer" ng-class="{active:courseDashboard.timePeriod === '5w'}" ng-click="courseDashboard.onAfterFilterChange('5w')">{{$root.frmelmnts.lbl.dashboardfiveweeksfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+			</div>
+		</div>
+		<div class="two wide column"></div>
+	</div>
+</span>

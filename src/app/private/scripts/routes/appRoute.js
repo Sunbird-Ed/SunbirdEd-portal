@@ -901,7 +901,7 @@ angular.module('playerApp')
         views: {
           mainView: {
             templateUrl: '/views/dashboard/course/courseConsumptionDashboard.html',
-            controller: 'courseCreatorDashboardCtrl as courseDashboard'
+            controller: 'courseConsumptionDashboardCtrl as courseDashboard'
           }
         },
         onEnter: function ($stateParams, $rootScope, routeHelperService) {
