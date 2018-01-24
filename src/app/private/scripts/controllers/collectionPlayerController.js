@@ -2,8 +2,9 @@
 
 (function () {
   angular.module('playerApp').controller('CollectionPlayerCtrl', ['$state', '$timeout',
-    'courseService', '$rootScope', '$stateParams', 'toasterService',
-    function ($state, $timeout, courseService, $rootScope, $stateParams, toasterService) {
+    'courseService', '$rootScope', '$stateParams', 'toasterService','telemetryService',
+    function ($state, $timeout, courseService, $rootScope, $stateParams, toasterService,
+      telemetryService) {
       var cpvm = this
       cpvm.treeKey = 0
       cpvm.loader = {
@@ -53,6 +54,9 @@
               toasterService.warning($rootScope.messages.imsg.m0018)
               $state.go('Home')
             }
+
+            /*-----------telemetry start event------------*/
+            cpvm.getTelemetryStartEvent()
           } else {
             cpvm.showError($rootScope.messages.emsg.m0004)
           }
@@ -170,6 +174,28 @@
         } else {
           $state.go('Resources')
         }
+      }
+
+      cpvm.generateStartEvent = function () {
+            var contextData = {
+              env : 'collection',
+              rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+            }
+            var objectData = {
+              id: $state.params.Id,
+              type:'collection',
+              ver:'0.1',
+              rollup:''
+            }
+            var data = {
+              edata:telemetryService.startEventData('collection', 'Library', 'play'),
+              contentId : $state.params.Id,
+              contentVer: '1.0',
+              context: telemetryService.getContextData(contextData),
+              object: telemetryService.getObjectData(objectData),
+              tags: $rootScope.organisationIds
+            }
+            telemetryService.start(data)
       }
       cpvm.loadData()
     }])

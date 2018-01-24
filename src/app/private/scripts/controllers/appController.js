@@ -2,10 +2,10 @@
 
 angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService', '$rootScope',
   'userService', '$q', 'config', '$location', '$timeout',
-  'portalTelemetryService', 'messages', 'frmelmnts', 'sessionService',
+  'telemetryService', 'messages', 'frmelmnts', 'sessionService',
   'learnService', '$http', 'searchService', 'toasterService', 'adminService', '$state', '$window',
   function ($scope, permissionsService, $rootScope, userService, $q, config,
-    $location, $timeout, portalTelemetryService, messages, frmelmnts,
+    $location, $timeout, telemetryService, messages, frmelmnts,
     sessionService, learnService, $http, searchService, toasterService, adminService, $state, $window) {
     $rootScope.userId = $('#userId').attr('value')
     $rootScope.sessionId = $('#sessionId').attr('value')
@@ -15,6 +15,8 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
     $rootScope.frmelmnts = frmelmnts[$rootScope.language]
     $rootScope.searchKey = ''
     $rootScope.enrolledCourseIds = {}
+    telemetryService.setConfigData('env','home');
+    telemetryService.setConfigData('message','User read');
     /**
      * This function contentModelSetBackLink is to store back link value for modal popup close dynamically.
      * **/
@@ -52,6 +54,12 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
       }
       return objMerge
     }
+
+    /**
+      * telemetry v3 event config
+     **/
+
+   //EkTelemetry.start(config, 'sfsd', 'sssdf', {type: 'view', pageid: 'home'})
 
     $('body').click(function (e) {
       if ($(e.target).closest('div.dropdown-menu-list').prop('id') === 'search-suggestions') {
@@ -113,6 +121,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
       permissionsService.setCurrentUserRoles(userRoles)
       $rootScope.initializePermissionDirective = true
       $scope.getTelemetryConfigData(profileData)
+      telemetryService.init()
       $scope.setRootOrgInfo(profileData)
     }
 
@@ -181,6 +190,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
     $rootScope.closeRoleAccessError = function () {
       $rootScope.accessDenied = ''
     }
+
     $scope.getMyCourses = function () {
       sessionService.setSessionData('ENROLLED_COURSES', undefined)
       learnService.enrolledCourses($rootScope.userId).then(function (successResponse) {
@@ -273,6 +283,49 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
 
     $scope.openProfileView = function () {
       $state.go('Profile')
+    }
+
+
+    //telemetry interact event
+    $rootScope.generateInteractEvent = function(id ,pageId, env, objType) {
+      var contextData = {
+          env : env,
+          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+          }
+          var objectData = {
+            id: $rootScope.userId,
+            type:objType,
+            ver:'0.1'
+          }
+
+          var data = {
+            edata:telemetryService.interactEventData('CLICK', '', id, pageId),
+            context: telemetryService.getContextData(contextData),
+            object: telemetryService.getObjectData(objectData),
+            tags: $rootScope.organisationIds
+          }
+          telemetryService.interact(data)
+    }
+
+    //telemetry ERROR event
+    $rootScope.generateErrorEvent = function(errCode, errType, stacktrace, pageId, env){
+      var contextData = {
+          env : env,
+          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+          }
+          var objectData = {
+            id: $rootScope.userId,
+            type:'user',
+            ver:'0.1'
+          }
+
+          var data = {
+            edata:telemetryService.errorEventData(errCode, errType, stacktrace, pageId),
+            context: telemetryService.getContextData(contextData),
+            object: telemetryService.getObjectData(objectData),
+            tags: $rootScope.organisationIds
+          }
+          telemetryService.error(data)
     }
 
     $scope.getBadges()

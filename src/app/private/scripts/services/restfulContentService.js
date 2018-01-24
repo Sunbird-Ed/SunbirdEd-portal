@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('playerApp')
-  .service('restfulContentService', ['$http', 'config', function ($http, config) {
+  .service('restfulContentService', ['$http', 'config','telemetryService','$rootScope', function ($http, config, telemetryService, $rootScope) {
     /**
     * @class restfulContentService
      * @desc Service to manages content API calls.
@@ -35,6 +35,20 @@ angular.module('playerApp')
     function httpCall (url, data, method, header, qs) {
       var headers = header || getHeader()
       var URL = config.URL.BASE_PREFIX + config.URL.CONTENT_PREFIX + url
+
+      var contextData = {
+          env : telemetryService.getConfigData('env'),
+          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+        }
+      var message = telemetryService.getConfigData('message')
+      var edata = {
+        edata:telemetryService.logEventData('api_call','INFO', message, ''),
+        contentId : '',
+        contentVer: '1.0',
+        context: telemetryService.getContextData(contextData),
+        tags: $rootScope.organisationIds
+      }
+      telemetryService.log(edata)
       return $http({
         method: method,
         url: URL,

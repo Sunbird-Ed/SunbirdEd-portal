@@ -18,10 +18,11 @@ angular.module('playerApp')
     'adminService',
     'workSpaceUtilsService',
     'configService',
-    '$q', '$anchorScroll',
+    '$q', '$anchorScroll', 'telemetryService',
     function ($scope, $rootScope, contentService, userService,
       toasterService, config, $timeout, $filter, uuid4, formValidation, searchService,
-      $state, learnService, adminService, workSpaceUtilsService, configService, $q, $anchorScroll) {
+      $state, learnService, adminService, workSpaceUtilsService, configService, $q,
+      $anchorScroll, telemetryService) {
       var profile = this
       profile.defaultLimit = 4
       profile.limit = profile.defaultLimit
@@ -162,6 +163,51 @@ angular.module('playerApp')
           profile.isError = true
           toasterService.error($rootScope.messages.fmsg.m0005)
         })
+        profile.generateImpressionEvent('view', 'scroll', 'profile-read', '/profile')
+      }
+
+
+      //telemetry impression event//
+      profile.generateImpressionEvent = function(type, subtype, pageId, url){
+          var contextData = {
+              env : 'profile',
+              rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+            }
+          var objRollup = ['profile',$rootScope.userId]
+          var objectData = {
+              id: $rootScope.userId,
+              type:'user',
+              ver:'0.1',
+              rollup:telemetryService.getRollUpData(objRollup)
+          }
+          var data = {
+            edata:telemetryService.impressionEventData(type, subtype, pageId, url),
+            context: telemetryService.getContextData(contextData),
+            object: telemetryService.getObjectData(objectData),
+            tags: $rootScope.organisationIds
+          }
+          telemetryService.impression(data)
+      }
+
+      //telemetry ERROR event
+      profile.generateErrorEvent = function(errCode, errType, stacktrace, pageId, env){
+        var contextData = {
+            env : env,
+            rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+            }
+            var objectData = {
+              id: $rootScope.userId,
+              type:'user',
+              ver:'0.1'
+            }
+
+            var data = {
+              edata:telemetryService.errorEventData(errCode, errType, stacktrace, pageId),
+              context: telemetryService.getContextData(contextData),
+              object: telemetryService.getObjectData(objectData),
+              tags: $rootScope.organisationIds
+            }
+            telemetryService.error(data)
       }
 
       // update user profile
@@ -212,6 +258,8 @@ angular.module('playerApp')
         var deferred = $q.defer()
         var formData = new FormData()
         var reader = new FileReader()
+        var err = config.ERROR.PROFILE_IMAGE_UPLOAD.err
+        var errType = config.ERROR.PROFILE_IMAGE_UPLOAD.errorType
         if (files[0] &&
                     files[0].name.match(/.(jpg|jpeg|png)$/i) &&
                     files[0].size < 4000000) {
@@ -223,6 +271,7 @@ angular.module('playerApp')
           return deferred.promise
         }
         toasterService.warning($rootScope.messages.imsg.m0005)
+        profile.generateErrorEvent(err, errType, $rootScope.messages.imsg.m0005, 'profile-read', 'profile')
         throw new Error('')
       }
 

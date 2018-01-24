@@ -3,9 +3,10 @@
 angular.module('playerApp')
   .controller('courseScheduleCtrl', ['$rootScope', '$stateParams', 'courseService', 'toasterService',
     '$timeout', 'contentStateService', '$scope', '$location', 'batchService', 'dataService', 'sessionService',
-    '$anchorScroll', 'permissionsService', '$state',
+    '$anchorScroll', 'permissionsService', '$state', 'telemetryService',
     function ($rootScope, $stateParams, courseService, toasterService, $timeout, contentStateService,
-      $scope, $location, batchService, dataService, sessionService, $anchorScroll, permissionsService, $state) {
+      $scope, $location, batchService, dataService, sessionService, $anchorScroll, permissionsService,
+      $state, telemetryService) {
       var toc = this
 
       toc.getCourseToc = function () {
@@ -28,6 +29,8 @@ angular.module('playerApp')
               } else {
                 toc.courseHierarchy = res.result.content
               }
+              /*-----------telemetry start event------------*/
+              toc.generateStartEvent()
             } else {
               toasterService.warning($rootScope.messages.imsg.m0019)
               $state.go('Home')
@@ -270,6 +273,10 @@ angular.module('playerApp')
             // url hash value which can be used to resume content on page reload
             toc.hashId = ('tocPlayer/' + contentId + '/' + toc.itemIndex)
             // move target focus to player
+
+            //generate telemetry interact event//
+            toc.objRollup = ['course', toc.courseId, contentId]
+
             toc.scrollToPlayer()
             toc.updateBreadCrumbs()
           }
@@ -336,6 +343,8 @@ angular.module('playerApp')
             sessionService.setSessionData('COURSE_PARAMS', params)
             $state.go('Toc', params)
           }
+          //generate telemetry interact event//
+          toc.objRollup = ['course',toc.courseId]
         }
       }
 
@@ -372,5 +381,66 @@ angular.module('playerApp')
 
       // Restore default values onAfterUser leave current state
       $('#courseDropdownValues').dropdown('restore defaults')
+
+      // telemetry start event data
+      toc.generateStartEvent = function () {
+            var contextData = {
+              env : 'course',
+              rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+            }
+            var objRollup = ['course',toc.courseId]
+            var objectData = {
+              id: toc.courseId,
+              type:'course',
+              ver:'0.1',
+              rollup:telemetryService.getRollUpData(objRollup)
+            }
+            var data = {
+              edata:telemetryService.startEventData('course', 'course-read', 'play'),
+              contentId : toc.courseId,
+              contentVer: '1.0',
+              context: telemetryService.getContextData(contextData),
+              object: telemetryService.getObjectData(objectData),
+              tags: $rootScope.organisationIds
+            }
+          telemetryService.start(data)
+      }
+
+      /*--telemetry-end-event--*/
+      toc.generateEndEvent = function(itemId, itemType, pageId){
+        var data = {
+          edata:telemetryService.endEventData(itemType, 'play', pageId),
+          tags: $rootScope.organisationIds
+        }
+        telemetryService.end(data)
+      }
+
+
+      /*---telemetry-interact-event--*/
+      toc.generateInteractEvent = function(itemId, itemType, edataId, pageId, objRollup){
+        var contextData = {
+          env : 'home',
+          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+        }
+
+        var objectData = {
+          id: itemId,
+          type:itemType,
+          ver:'0.1',
+          rollup:telemetryService.getRollUpData(objRollup)
+        }
+
+        var data = {
+          edata:telemetryService.interactEventData('CLICK', '', edataId, pageId, ''),
+          context: telemetryService.getContextData(contextData),
+          object: telemetryService.getObjectData(objectData),
+          tags: $rootScope.organisationIds
+        }
+        telemetryService.interact(data)
+      }
+
+      /*window.addEventListener('unload', function() {
+
+      })*/
     }
   ])
