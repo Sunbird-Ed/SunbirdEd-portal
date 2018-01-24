@@ -17,7 +17,7 @@ The Sunbird portal is the browser-based interface for the Sunbird application st
 To get started with the Sunbird portal, please try out our cloud-based demo site at: https://staging.open-sunbird.org/
 
 ### Local Installation
-You can also install the Sunbird portal locally on your laptop, please follow the instructions at: http://www.sunbird.org/developer-docs/developer_install/
+You can also install the Sunbird portal locally on your laptop, please follow the [installation instructions](http://www.sunbird.org/developer-docs/installation/)
 
 ## Reporting Issues
 We have an open and active [issue tracker](https://github.com/project-sunbird/sunbird-commons/issues). Please report any issues or  you find.

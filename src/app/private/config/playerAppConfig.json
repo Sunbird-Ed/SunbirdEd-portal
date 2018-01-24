@@ -44,6 +44,13 @@
                 "ACCEPT_FLAG": "content/v1/flag/accept",
                 "DISCARD_FLAG": "content/v1/flag/reject"
             },
+            "CHANNEL": {
+                "FrameworkID":"channel/v1/read",
+                "GET_Framework":"framework/v1/read"
+            },
+            "FRAMEWORK": {
+                "GET_Framework":"framework/v1/read"
+            },
             "DASHBOARD": {
                 "ORG_CREATION": "dashboard/v1/creation/org",
                 "ORG_CONSUMPTION": "dashboard/v1/consumption/org",
