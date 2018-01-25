@@ -158,7 +158,7 @@ angular.module('playerApp')
         } else {
           switch (category) {
           case '2':
-            $('#textbookmeta-gradeLevel').dropdown('restore defaults')
+            // $('#textbookmeta-gradeLevel').dropdown('restore defaults')
             $('#textbookmeta-subject').dropdown('restore defaults')
             $('#textbookmeta-medium').dropdown('restore defaults')
             textbook.subjectList = textbook.categoryListofFramework['3'] || []
