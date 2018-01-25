@@ -10,8 +10,8 @@ angular.module('playerApp')
 
       searchService.getChannel().then(function (res) {
         if (res.responseCode === 'OK') {
-          var frameworkID = res.result.channel.frameworks[0].name
-          searchService.getFramework(frameworkID).then(function (res) {
+          textbook.frameworkId = res.result.channel.frameworks[0].name
+          searchService.getFramework(textbook.frameworkId).then(function (res) {
             if (res.responseCode === 'OK') {
               textbook.frameworkData = res.result.framework.categories
               _.forEach(res.result.framework.categories, function (category) {
