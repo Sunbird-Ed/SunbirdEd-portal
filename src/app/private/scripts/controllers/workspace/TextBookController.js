@@ -105,7 +105,6 @@ angular.module('playerApp')
         $state.go('CollectionEditor', params)
       }
       $scope.getAssociations = function (selectedCategory, categoryList) {
-        console.log('selectedCategory, categoryList', selectedCategory, categoryList)
         var associations = []
         if (_.isArray(selectedCategory)) {
           _.forEach(selectedCategory, function (val) {
@@ -128,35 +127,26 @@ angular.module('playerApp')
       }
 
       $scope.updatedDependentCategory = function (category, categoryVal) {
-        console.log('category, categoryVal', category, categoryVal)
         var gradeList = []
         var subjectList = []
         var mediumList = []
         var categoryList = $scope.categoryListofFramework[category]
         var associations = $scope.getAssociations(categoryVal, categoryList)
-        console.log('categoryList', categoryList)
-        console.log('associations', associations)
         if (associations.length > 0) {
           _.forEach(associations, function (data) {
-            console.log('data', data)
-            console.log('data', category)
-            console.log('data.category', data.category)
             switch (category) {
             case 'class':
-              console.log(' if case 2')
               $('#textbookmeta-gradeLevel').dropdown('restore defaults')
               gradeList = _.concat(data, gradeList)
               $scope.gradeList = _.uniqWith(gradeList, _.isEqual)
               break
             case 'subject':
-              console.log('if case 3')
               $('#textbookmeta-subject').dropdown('restore defaults')
               $('#textbookmeta-medium').dropdown('restore defaults')
               subjectList = _.concat(data, subjectList)
               $scope.subjectList = _.uniqWith(subjectList, _.isEqual)
               break
             case 'medium':
-              console.log('if case 4')
               $('#textbookmeta-medium').dropdown('restore defaults')
               mediumList = _.concat(data, mediumList)
               $scope.languageList = _.uniqWith(mediumList, _.isEqual)
@@ -164,10 +154,8 @@ angular.module('playerApp')
             }
           })
         } else {
-          console.log('category', category)
           switch (category) {
           case '2':
-            console.log('el case 2')
             $('#textbookmeta-gradeLevel').dropdown('restore defaults')
             $('#textbookmeta-subject').dropdown('restore defaults')
             $('#textbookmeta-medium').dropdown('restore defaults')
@@ -175,7 +163,6 @@ angular.module('playerApp')
             $scope.languageList = $scope.categoryListofFramework['4'] || []
             break
           case '3':
-            console.log('el case 3')
             $('#textbookmeta-medium').dropdown('restore defaults')
             $scope.languageList = $scope.categoryListofFramework['4'] || []
             break
