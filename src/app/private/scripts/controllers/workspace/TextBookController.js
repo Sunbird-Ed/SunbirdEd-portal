@@ -2,8 +2,8 @@
 
 angular.module('playerApp')
   .controller('TextBookController', ['contentService', '$timeout', '$state', 'config',
-    '$rootScope', 'toasterService', 'configService', function (contentService, $timeout, $state, config,
-      $rootScope, toasterService, configService) {
+    '$rootScope', 'toasterService', 'configService', 'searchService', function (contentService, $timeout,
+      $state, config, $rootScope, toasterService, configService, searchService) {
       var textbook = this
       textbook.formDropdown = configService.getWorkspaceFormDropdown()
       textbook.boards = textbook.formDropdown.boards
@@ -81,4 +81,22 @@ angular.module('playerApp')
         var params = { contentId: contentId, type: 'TextBook' }
         $state.go('CollectionEditor', params)
       }
+
+      textbook.getFormData = function () {
+        textbook.loader.showLoader = true
+        searchService.getChannel().then(function (res) {
+          if (res && res.responseCode === 'OK' && _.get(res, 'result.channel.frameworks') &&
+          _.get(res, 'result.channel.frameworks').length) {
+            var frameWork = _.get(res, 'result.channel.frameworks')[0]
+            searchService.getFramework(frameWork.identifier).then(function (res) {
+              if (res && res.responseCode === 'OK' && _.get(res, 'result.framework')) {
+                console.log(_.get(res, 'result.framework'))
+                textbook.loader.showLoader = false
+              }
+            })
+          }
+        })
+      }
+
+      textbook.getFormData()
     }])
