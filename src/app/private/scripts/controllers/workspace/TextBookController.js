@@ -142,21 +142,20 @@ angular.module('playerApp')
             console.log('data', category)
             console.log('data.category', data.category)
             switch (category) {
-            case '2':
+            case 'class':
               console.log(' if case 2')
               $('#textbookmeta-gradeLevel').dropdown('restore defaults')
               gradeList = _.concat(data, gradeList)
-              subjectList = _.concat(data, subjectList)
-              $scope.subjectList = _.uniqWith(subjectList, _.isEqual)
+              $scope.gradeList = _.uniqWith(gradeList, _.isEqual)
               break
-            case '3':
+            case 'subject':
               console.log('if case 3')
               $('#textbookmeta-subject').dropdown('restore defaults')
               $('#textbookmeta-medium').dropdown('restore defaults')
               subjectList = _.concat(data, subjectList)
               $scope.subjectList = _.uniqWith(subjectList, _.isEqual)
               break
-            case '4':
+            case 'medium':
               console.log('if case 4')
               $('#textbookmeta-medium').dropdown('restore defaults')
               mediumList = _.concat(data, mediumList)
