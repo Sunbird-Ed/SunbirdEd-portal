@@ -2,14 +2,34 @@
 
 angular.module('playerApp')
   .controller('TextBookController', ['contentService', '$timeout', '$state', 'config',
-    '$rootScope', 'toasterService', 'configService', 'searchService', function (contentService, $timeout,
-      $state, config, $rootScope, toasterService, configService, searchService) {
+    '$rootScope', '$scope', 'toasterService', 'searchService', 'configService', function (contentService, $timeout,
+      $state, config, $rootScope, $scope, toasterService, searchService, configService) {
       var textbook = this
+      $scope.categoryListofFramework = {}
       textbook.formDropdown = configService.getWorkspaceFormDropdown()
-      textbook.boards = textbook.formDropdown.boards
-      textbook.mediums = textbook.formDropdown.medium
-      textbook.subjects = textbook.formDropdown.subjects
-      textbook.grades = textbook.formDropdown.grades
+
+      searchService.getChannel().then(function (res) {
+        if (res.responseCode === 'OK') {
+          var frameworkID = res.result.channel.frameworks[0].name
+          searchService.getFramework(frameworkID).then(function (res) {
+            if (res.responseCode === 'OK') {
+              textbook.frameworkData = res.result.framework.categories
+              _.forEach(res.result.framework.categories, function (category) {
+                $scope.categoryListofFramework[category.index] = category.terms
+              })
+
+              $scope.boardList = $scope.categoryListofFramework['1'] || []
+              $scope.gradeList = $scope.categoryListofFramework['2'] || []
+              $scope.subjectList = $scope.categoryListofFramework['3'] || []
+              $scope.languageList = $scope.categoryListofFramework['4'] || []
+            }
+          }).catch(function (error) {
+            console.log('error is ......', error)
+          })
+        }
+      }).catch(function (error) {
+        console.log('error is ......', error)
+      })
       textbook.years = textbook.formDropdown.years
       textbook.showCreateTextBookModal = false
       textbook.isTextBookCreated = false
@@ -27,10 +47,13 @@ angular.module('playerApp')
       textbook.initializeModal = function () {
         textbook.showCreateTextBookModal = true
         $timeout(function () {
+          $('#textbookmeta-board').dropdown()
+          $('#textbookmeta-subject').dropdown()
+          $('#textbookmeta-medium').dropdown()
           $('#boardDropDown').dropdown()
           $('#mediumDropDown').dropdown()
           $('#subjectDropDown').dropdown()
-          $('#gradeDropDown').dropdown()
+          $('#textbookmeta-gradeLevel').dropdown()
           $('#yearDropDown').dropdown()
           $('#createTextBookModal').modal({
             onHide: function () {
@@ -78,25 +101,86 @@ angular.module('playerApp')
       }
 
       textbook.initEKStepCE = function (contentId) {
-        var params = { contentId: contentId, type: 'TextBook' }
+        var params = { contentId: contentId, type: 'TextBook', frameworkId: textbook.frameworkId }
         $state.go('CollectionEditor', params)
       }
-
-      textbook.getFormData = function () {
-        textbook.loader.showLoader = true
-        searchService.getChannel().then(function (res) {
-          if (res && res.responseCode === 'OK' && _.get(res, 'result.channel.frameworks') &&
-          _.get(res, 'result.channel.frameworks').length) {
-            var frameWork = _.get(res, 'result.channel.frameworks')[0]
-            searchService.getFramework(frameWork.identifier).then(function (res) {
-              if (res && res.responseCode === 'OK' && _.get(res, 'result.framework')) {
-                console.log(_.get(res, 'result.framework'))
-                textbook.loader.showLoader = false
-              }
+      $scope.getAssociations = function (selectedCategory, categoryList) {
+        console.log('selectedCategory, categoryList', selectedCategory, categoryList)
+        var associations = []
+        if (_.isArray(selectedCategory)) {
+          _.forEach(selectedCategory, function (val) {
+            var categoryObj = _.find(categoryList, function (o) {
+              return o.name === val
             })
+            if (categoryObj.associations) {
+              associations = _.concat(categoryObj.associations, associations)
+            }
+          })
+        } else {
+          var categoryObj = _.find(categoryList, function (o) {
+            return o.name === selectedCategory
+          })
+          if (categoryObj.associations) {
+            associations = _.concat(categoryObj.associations, associations)
           }
-        })
+        }
+        return associations
       }
 
-      textbook.getFormData()
+      $scope.updatedDependentCategory = function (category, categoryVal) {
+        console.log('category, categoryVal', category, categoryVal)
+        var gradeList = []
+        var subjectList = []
+        var mediumList = []
+        var categoryList = $scope.categoryListofFramework[category]
+        var associations = $scope.getAssociations(categoryVal, categoryList)
+        console.log('categoryList', categoryList)
+        console.log('associations', associations)
+        if (associations.length > 0) {
+          _.forEach(associations, function (data) {
+            console.log('data', data)
+            console.log('data', category)
+            console.log('data.category', data.category)
+            switch (category) {
+            case '2':
+              console.log(' if case 2')
+              $('#textbookmeta-gradeLevel').dropdown('restore defaults')
+              gradeList = _.concat(data, gradeList)
+              subjectList = _.concat(data, subjectList)
+              $scope.subjectList = _.uniqWith(subjectList, _.isEqual)
+              break
+            case '3':
+              console.log('if case 3')
+              $('#textbookmeta-subject').dropdown('restore defaults')
+              $('#textbookmeta-medium').dropdown('restore defaults')
+              subjectList = _.concat(data, subjectList)
+              $scope.subjectList = _.uniqWith(subjectList, _.isEqual)
+              break
+            case '4':
+              console.log('if case 4')
+              $('#textbookmeta-medium').dropdown('restore defaults')
+              mediumList = _.concat(data, mediumList)
+              $scope.languageList = _.uniqWith(mediumList, _.isEqual)
+              break
+            }
+          })
+        } else {
+          console.log('category', category)
+          switch (category) {
+          case '2':
+            console.log('el case 2')
+            $('#textbookmeta-gradeLevel').dropdown('restore defaults')
+            $('#textbookmeta-subject').dropdown('restore defaults')
+            $('#textbookmeta-medium').dropdown('restore defaults')
+            $scope.subjectList = $scope.categoryListofFramework['3'] || []
+            $scope.languageList = $scope.categoryListofFramework['4'] || []
+            break
+          case '3':
+            console.log('el case 3')
+            $('#textbookmeta-medium').dropdown('restore defaults')
+            $scope.languageList = $scope.categoryListofFramework['4'] || []
+            break
+          }
+        }
+      }
     }])
