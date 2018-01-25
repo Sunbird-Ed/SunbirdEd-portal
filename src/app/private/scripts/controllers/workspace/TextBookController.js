@@ -2,10 +2,10 @@
 
 angular.module('playerApp')
   .controller('TextBookController', ['contentService', '$timeout', '$state', 'config',
-    '$rootScope', '$scope', 'toasterService', 'searchService', 'configService', function (contentService, $timeout,
-      $state, config, $rootScope, $scope, toasterService, searchService, configService) {
+    '$rootScope', 'toasterService', 'searchService', 'configService', function (contentService, $timeout,
+      $state, config, $rootScope, toasterService, searchService, configService) {
       var textbook = this
-      $scope.categoryListofFramework = {}
+      textbook.categoryListofFramework = {}
       textbook.formDropdown = configService.getWorkspaceFormDropdown()
 
       searchService.getChannel().then(function (res) {
@@ -15,13 +15,13 @@ angular.module('playerApp')
             if (res.responseCode === 'OK') {
               textbook.frameworkData = res.result.framework.categories
               _.forEach(res.result.framework.categories, function (category) {
-                $scope.categoryListofFramework[category.index] = category.terms
+                textbook.categoryListofFramework[category.index] = category.terms
               })
 
-              $scope.boardList = $scope.categoryListofFramework['1'] || []
-              $scope.gradeList = $scope.categoryListofFramework['2'] || []
-              $scope.subjectList = $scope.categoryListofFramework['3'] || []
-              $scope.languageList = $scope.categoryListofFramework['4'] || []
+              textbook.boardList = textbook.categoryListofFramework['1'] || []
+              textbook.gradeList = textbook.categoryListofFramework['2'] || []
+              textbook.subjectList = textbook.categoryListofFramework['3'] || []
+              textbook.languageList = textbook.categoryListofFramework['4'] || []
             }
           }).catch(function (error) {
             console.log('error is ......', error)
@@ -104,7 +104,7 @@ angular.module('playerApp')
         var params = { contentId: contentId, type: 'TextBook', frameworkId: textbook.frameworkId }
         $state.go('CollectionEditor', params)
       }
-      $scope.getAssociations = function (selectedCategory, categoryList) {
+      textbook.getAssociations = function (selectedCategory, categoryList) {
         var associations = []
         if (_.isArray(selectedCategory)) {
           _.forEach(selectedCategory, function (val) {
@@ -126,30 +126,30 @@ angular.module('playerApp')
         return associations
       }
 
-      $scope.updatedDependentCategory = function (category, categoryVal) {
+      textbook.updatedDependentCategory = function (category, categoryVal) {
         var gradeList = []
         var subjectList = []
         var mediumList = []
-        var categoryList = $scope.categoryListofFramework[category]
-        var associations = $scope.getAssociations(categoryVal, categoryList)
+        var categoryList = textbook.categoryListofFramework[category]
+        var associations = textbook.getAssociations(categoryVal, categoryList)
         if (associations.length > 0) {
           _.forEach(associations, function (data) {
-            switch (category) {
+            switch (data.category) {
             case 'class':
               $('#textbookmeta-gradeLevel').dropdown('restore defaults')
               gradeList = _.concat(data, gradeList)
-              $scope.gradeList = _.uniqWith(gradeList, _.isEqual)
+              textbook.gradeList = _.uniqWith(gradeList, _.isEqual)
               break
             case 'subject':
               $('#textbookmeta-subject').dropdown('restore defaults')
               $('#textbookmeta-medium').dropdown('restore defaults')
               subjectList = _.concat(data, subjectList)
-              $scope.subjectList = _.uniqWith(subjectList, _.isEqual)
+              textbook.subjectList = _.uniqWith(subjectList, _.isEqual)
               break
             case 'medium':
               $('#textbookmeta-medium').dropdown('restore defaults')
               mediumList = _.concat(data, mediumList)
-              $scope.languageList = _.uniqWith(mediumList, _.isEqual)
+              textbook.languageList = _.uniqWith(mediumList, _.isEqual)
               break
             }
           })
@@ -159,12 +159,12 @@ angular.module('playerApp')
             $('#textbookmeta-gradeLevel').dropdown('restore defaults')
             $('#textbookmeta-subject').dropdown('restore defaults')
             $('#textbookmeta-medium').dropdown('restore defaults')
-            $scope.subjectList = $scope.categoryListofFramework['3'] || []
-            $scope.languageList = $scope.categoryListofFramework['4'] || []
+            textbook.subjectList = textbook.categoryListofFramework['3'] || []
+            textbook.languageList = textbook.categoryListofFramework['4'] || []
             break
           case '3':
             $('#textbookmeta-medium').dropdown('restore defaults')
-            $scope.languageList = $scope.categoryListofFramework['4'] || []
+            textbook.languageList = textbook.categoryListofFramework['4'] || []
             break
           }
         }

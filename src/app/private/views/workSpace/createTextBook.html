@@ -27,32 +27,32 @@
                         <div class="three fields">
                                 <div class="field">
                                         <label for="board">Curriculum</label>
-                                        <select id="textbookmeta-board" class="ui search dropdown placeholder-padding" ng-model="textbook.board" ng-change="updateCategoryValuesByFramework(textbook.board); generateTelemetry({type: 'change', subtype: 'select', target: 'board'})">
+                                        <select id="textbookmeta-board" class="ui search dropdown placeholder-padding" ng-model="textbook.board" ng-change="textbook.updateCategoryValuesByFramework(textbook.board); generateTelemetry({type: 'change', subtype: 'select', target: 'board'})">
                                             <option value="">Select</option>
-                                            <option value="{{board.name}}" ng-repeat="board in boardList">{{board.name}}</option>
+                                            <option value="{{board.name}}" ng-repeat="board in textbook.boardList">{{board.name}}</option>
                                         </select>
                                     </div>
                             <div class="field">
                                     <label for="grade">Class</label>
-                                    <select id="textbookmeta-gradeLevel" class="ui search dropdown placeholder-padding" ng-model="textbook.gradeLevel" multiple="" ng-change="updatedDependentCategory('2', textbook.gradeLevel); generateTelemetry({type: 'change', subtype: 'select', target: 'gradeLevel'})">
+                                    <select id="textbookmeta-gradeLevel" class="ui search dropdown placeholder-padding" ng-model="textbook.gradeLevel" multiple="" ng-change="textbook.updatedDependentCategory('2', textbook.gradeLevel); generateTelemetry({type: 'change', subtype: 'select', target: 'gradeLevel'})">
                                         <option value="">Select</option>
-                                        <option value="{{gradeLevel.name}}" ng-repeat="gradeLevel in gradeList">{{gradeLevel.name}}</option>
+                                        <option value="{{gradeLevel.name}}" ng-repeat="gradeLevel in textbook.gradeList">{{gradeLevel.name}}</option>
                                     </select>
                                 </div>
                                 <div class="field">
                                         <label for="subject">Subject</label>
-                                        <select id="textbookmeta-subject" class="ui search dropdown placeholder-padding" ng-model="textbook.subject" ng-change="updatedDependentCategory('3', textbook.subject); generateTelemetry({type: 'change', subtype: 'select', target: 'subject'})">
+                                        <select id="textbookmeta-subject" class="ui search dropdown placeholder-padding" ng-model="textbook.subject" ng-change="textbook.updatedDependentCategory('3', textbook.subject); generateTelemetry({type: 'change', subtype: 'select', target: 'subject'})">
                                             <option value="">Select</option>
-                                            <option value="{{subject.name}}" ng-repeat="subject in subjectList">{{subject.name}}</option>
+                                            <option value="{{subject.name}}" ng-repeat="subject in textbook.subjectList">{{subject.name}}</option>
                                         </select>
                                     </div>
                         </div>
                         <div class="three fields">
                                 <div class="field">
                                         <label for="medium">Medium</label>
-                                        <select id="textbookmeta-medium" class="ui search dropdown placeholder-padding" ng-model="textbook.medium" ng-change="updatedDependentCategory('4', textbook.medium); generateTelemetry({type: 'change', subtype: 'select', target: 'medium'})">
+                                        <select id="textbookmeta-medium" class="ui search dropdown placeholder-padding" ng-model="textbook.medium" ng-change="textbook.updatedDependentCategory('4', textbook.medium); generateTelemetry({type: 'change', subtype: 'select', target: 'medium'})">
                                             <option value="">Select</option>
-                                            <option value="{{medium.name}}" ng-repeat="medium in languageList">{{medium.name}}</option>
+                                            <option value="{{medium.name}}" ng-repeat="medium in textbook.languageList">{{medium.name}}</option>
                                         </select>
                                     </div>
                             <div class="field">
