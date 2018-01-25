@@ -9,10 +9,12 @@ angular.module('playerApp')
       textbook.formDropdown = configService.getWorkspaceFormDropdown()
 
       searchService.getChannel().then(function (res) {
-        if (res.responseCode === 'OK') {
-          textbook.frameworkId = res.result.channel.frameworks[0].name
+        if (res && res.responseCode === 'OK' && _.get(res, 'result.channel.frameworks') &&
+         _.get(res, 'result.channel.frameworks').length) {
+          textbook.frameworkId = res.result.channel.frameworks[0].identifier
           searchService.getFramework(textbook.frameworkId).then(function (res) {
-            if (res.responseCode === 'OK') {
+            if (res && res.responseCode === 'OK' && _.get(res, 'result.framework.categories') &&
+              _.get(res, 'result.framework.categories').length) {
               textbook.frameworkData = res.result.framework.categories
               _.forEach(res.result.framework.categories, function (category) {
                 textbook.categoryListofFramework[category.index] = category.terms
