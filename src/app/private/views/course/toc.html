@@ -2,7 +2,7 @@
     <div ng-include="'views/course/courseHeader.html'"></div>
     <div class="ui grid">
         <div class="one wide column"></div>
-        <div class="ten wide column" ng-show="!toc.showCourseDashboard">
+        <div class="eight wide column" ng-show="!toc.showCourseDashboard">
             <div ng-if="toc.courseHierarchy">
                 <div  ng-if="!contentPlayer.isContentPlayerEnabled && !toc.showAllNoteList">
                     <div class="content">
@@ -117,9 +117,9 @@
                     <div class="two wide column"></div>
                     <div class="ui grid">
                         <div class="row">
-                            <div class="eight wide column">
+                            <!-- <div class="eight wide column">
                                 <course-discussions showaskquestion="false"></course-discussions>
-                            </div>
+                            </div> -->
                             <div class="four wide column toc-note-content">
                                 <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false" courseid="toc.courseId" contentid="contentPlayer.contentData.identifier"></note-card>
                             </div>
@@ -135,6 +135,10 @@
             </div>
             <div class="one wide column"></div>
         </div>
+         <div class="three wide column">
+             <course-questions showaskquestion="true"></course-questions>
+
+         </div>
         <!-- Show course dashboard-->
         <div class="ten wide column" ng-if="toc.showCourseDashboard">
             <div ng-include="'views/dashboard/course/courseProgressDashboard.html'"></div>

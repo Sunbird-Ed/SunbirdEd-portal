@@ -3649,3 +3649,25 @@ html {
   height: 100% !important;
   box-sizing: border-box !important;
 }
+.discussionHeading{
+   min-width: 80%;
+}
+.ui.grid> .discussionHeading{
+  padding-left: 0px;
+}
+.quesHeading{
+  font-size: 1.2em;
+  line-height:  1.2em;
+}
+.quesHeading:hover{
+  text-decoration: underline;
+}
+.questionList{
+  max-height: 400px;
+  overflow-y: scroll;
+}
+.go-back-arrow{
+     margin-left: -2em;
+    position: absolute;
+    margin-top: 5px;
+}
