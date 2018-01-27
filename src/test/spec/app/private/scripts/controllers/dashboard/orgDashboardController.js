@@ -9,18 +9,17 @@ describe('Controller: orgDashboardController', function () {
   // load the controller's module
   beforeEach(module('playerApp'))
 
-  var dashboardService,
-    scope,
-    rootScope,
-    orgDashboardController,
-    adminService,
-    dashboardData,
-    $q,
-    deferred,
-    timeout,
-    orgTestData = testData.orgDashboard
+  var QueryService
+  var scope
+  var rootScope
+  var orgDashboardController
+  var adminService
+  var $q   // eslint-disable-line
+  var deferred  // eslint-disable-line
+  var timeout  // eslint-disable-line
+  var testData = dashboardsTestData.orgData   // eslint-disable-line
 
-  beforeEach(inject(function ($rootScope, $controller) {
+  beforeEach(inject(function ($rootScope, $controller) {  // eslint-disable-line
     $controller('AppCtrl', {
       $rootScope: $rootScope,
       $scope: $rootScope.$new()
@@ -28,10 +27,10 @@ describe('Controller: orgDashboardController', function () {
   }))
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($rootScope, $controller, _dashboardService_, _$q_, _$timeout_, _adminService_) {
+  beforeEach(inject(function ($rootScope, $controller, _QueryService_, _$q_, _$timeout_, _adminService_) {   // eslint-disable-line
     rootScope = $rootScope
     scope = $rootScope.$new()
-    dashboardService = _dashboardService_
+    QueryService = _QueryService_
     adminService = _adminService_
     $q = _$q_
     timeout = _$timeout_
@@ -40,47 +39,21 @@ describe('Controller: orgDashboardController', function () {
     orgDashboardController = $controller('orgDashboardController', {
       $rootScope: rootScope,
       $scope: scope,
-      dashboardService: dashboardService
+      QueryService: QueryService
     })
   }))
 
   describe('Get Organisation dashboard', function () {
-    it('creation success', function (done) {
-      spyOn(dashboardService, 'getAdminDashboardData').and.returnValue(deferred.promise)
-      deferred.resolve(orgTestData.creationResponse)
+    it('getAdminDashboardData', function (done) {
+      var getInstanceObj = new QueryService.CreateNewInstance({ eid: 'orgCreation' })
+      spyOn(getInstanceObj, 'getData').and.returnValue(deferred.promise)
+      deferred.resolve(testData.creationResponse)
       orgDashboardController.timePeriod = '5w'
       spyOn(orgDashboardController, 'getAdminDashboardData').and.callThrough()
       orgDashboardController.getAdminDashboardData()
       scope.$apply()
       done()
-    })
-
-    it('consumption success', function (done) {
-      spyOn(dashboardService, 'getAdminDashboardData').and.returnValue(deferred.promise)
-      deferred.resolve(orgTestData.consumptionResponse)
-      orgDashboardController.datasetPreviousValue = 'consumption'
-      spyOn(orgDashboardController, 'getAdminDashboardData').and.callThrough()
-      orgDashboardController.getAdminDashboardData()
-      scope.$apply()
-      done()
-    })
-
-    it('creation fail', function () {
-      orgTestData.creationResponse.responseCode = 'fail'
-      spyOn(dashboardService, 'getAdminDashboardData').and.returnValue(deferred.promise)
-      deferred.resolve(orgTestData.creationResponse)
-      orgDashboardController.showDataDiv = false
-      spyOn(orgDashboardController, 'getAdminDashboardData').and.callThrough()
-      orgDashboardController.getAdminDashboardData()
-      scope.$apply()
-    })
-
-    it('creation reject', function () {
-      spyOn(dashboardService, 'getAdminDashboardData').and.returnValue(deferred.promise)
-      deferred.reject(orgTestData.creationResponse)
-      spyOn(orgDashboardController, 'getAdminDashboardData').and.callThrough()
-      orgDashboardController.getAdminDashboardData()
-      scope.$apply()
+      expect(orgDashboardController.showDataDiv).toEqual(true)
     })
 
     it('on after change', function () {
@@ -114,23 +87,10 @@ describe('Controller: orgDashboardController', function () {
       orgDashboardController.onAfterDatasetChange('consumption')
     })
 
-    it('next Graph', function () {
-      spyOn(orgDashboardController, 'nextGraph').and.callThrough()
-      orgDashboardController.nextGraph()
-    })
-
-    it('previous Graph', function () {
-      spyOn(orgDashboardController, 'previousGraph').and.callThrough()
-      orgDashboardController.previousGraph()
-    })
-
     it('show Data', function () {
       spyOn(orgDashboardController, 'showData').and.callThrough()
       rootScope.organisationIds = ['3']
-      // orgDashboardController.orgIds.length = 1
       orgDashboardController.showData()
-      spyOn(orgDashboardController, 'getAdminDashboardData').and.callThrough()
-      orgDashboardController.getAdminDashboardData()
       scope.$apply()
       expect(orgDashboardController.showData).not.toBe(undefined)
     })
@@ -138,10 +98,49 @@ describe('Controller: orgDashboardController', function () {
     it('show Data', function () {
       spyOn(orgDashboardController, 'showData').and.callThrough()
       rootScope.organisationIds = []
+
+      var data = testData.orgSearchSuccess
+      spyOn(adminService, 'orgSearch').and.returnValue(deferred.promise)
+      deferred.resolve(data)
       orgDashboardController.showOrgWarningDiv = true
       orgDashboardController.showData()
       scope.$apply()
       expect(orgDashboardController.showData).not.toBe(undefined)
+    })
+
+    it('show Data when org api fails', function () {
+      spyOn(orgDashboardController, 'showData').and.callThrough()
+      rootScope.organisationIds = []
+
+      var data = testData.orgSearchFailure
+      spyOn(adminService, 'orgSearch').and.returnValue(deferred.promise)
+      deferred.resolve(data)
+      orgDashboardController.showOrgWarningDiv = true
+      orgDashboardController.showData()
+      scope.$apply()
+      expect(orgDashboardController.showData).not.toBe(undefined)
+    })
+
+    it('Download sucess', function (done) {
+      var downloadInstanceObj = new QueryService.CreateNewInstance({ eid: 'downloadReport' })
+
+      spyOn(downloadInstanceObj, 'download').and.returnValue(deferred.promise)
+      deferred.resolve(testData.creationResponse)
+      spyOn(orgDashboardController, 'downloadReport').and.callThrough()
+      orgDashboardController.downloadReport()
+      scope.$apply()
+      done()
+      expect(orgDashboardController.disabledClass).toEqual(false)
+    })
+
+    it('Download reject', function (done) {
+      var downloadInstanceObj = new QueryService.CreateNewInstance({ eid: 'downloadReport' })
+      spyOn(downloadInstanceObj, 'download').and.returnValue(deferred.promise)
+      deferred.reject({})
+      spyOn(orgDashboardController, 'downloadReport').and.callThrough()
+      orgDashboardController.downloadReport()
+      scope.$apply()
+      done()
     })
   })
 })

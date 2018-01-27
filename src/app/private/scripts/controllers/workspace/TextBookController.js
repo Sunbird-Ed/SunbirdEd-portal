@@ -2,6 +2,7 @@
 
 angular.module('playerApp')
   .controller('TextBookController', ['contentService', '$timeout', '$state', 'config',
+
     '$rootScope', 'toasterService', 'searchService', 'configService', 'telemetryService', function (contentService, $timeout,
       $state, config, $rootScope, toasterService, searchService, configService, telemetryService) {
       var textbook = this
