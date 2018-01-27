@@ -3,8 +3,8 @@
 angular.module('playerApp')
   .controller('LimitedPublishedContentController', ['contentService', 'searchService', 'config',
     '$rootScope', '$state', 'toasterService', 'workSpaceUtilsService', '$timeout',
-    'PaginationService', function (contentService, searchService, config, $rootScope, $state,
-      toasterService, workSpaceUtilsService, $timeout, PaginationService) {
+    'PaginationService', 'telemetryService', function (contentService, searchService, config, $rootScope, $state,
+      toasterService, workSpaceUtilsService, $timeout, PaginationService, telemetryService) {
       var lpContent = this
       lpContent.userId = $rootScope.userId
       lpContent.status = ['Unlisted']
@@ -101,6 +101,7 @@ angular.module('playerApp')
           if (res && res.responseCode === 'OK') {
             lpContent.loader.showLoader = false
             lpContent.selectedContentItem = []
+            lpContent.version = res.ver
             toasterService.success($rootScope.messages.smsg.m0006)
             lpContent.limitedpublishedContentData = workSpaceUtilsService
               .removeContentLocal(lpContent.limitedpublishedContentData, requestData)
@@ -110,6 +111,7 @@ angular.module('playerApp')
             if (lpContent.limitedpublishedContentData.length === 0) {
               lpContent.error = showErrorMessage(true, $rootScope.messages.stmsg.m0024, $rootScope.messages.stmsg.m0008)
             }
+            lpContent.generateImpressionEvent('view', 'scroll', 'workspace-content-unlisted', '/content/limited/publish')
           } else {
             lpContent.loader.showLoader = false
             toasterService.error($rootScope.messages.fmsg.m0022)
@@ -129,6 +131,59 @@ angular.module('playerApp')
 
       lpContent.initTocPopup = function () {
         $('.cardTitleEllipse').popup({inline: true})
+      }
+
+      /**
+             * This function call to generate telemetry
+             * on click of review content.
+             */
+      lpContent.generateInteractEvent = function(edataId, pageId, contentId, env){
+        var contextData = {
+          env : env,
+          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+        }
+
+        var objRollup = ''
+        if(contentId!=''){
+          objRollup = ['limitedPublished', contentId]
+        }
+
+        var objectData = {
+          id: contentId,
+          type:edataId,
+          ver:lpContent.version,
+          rollup:telemetryService.getRollUpData(objRollup)
+        }
+
+        var data = {
+          edata:telemetryService.interactEventData('CLICK', '', edataId, pageId),
+          context: telemetryService.getContextData(contextData),
+          object: telemetryService.getObjectData(objectData),
+          tags: $rootScope.organisationIds
+        }
+        telemetryService.interact(data)
+      }
+
+      //telemetry impression event//
+      lpContent.generateImpressionEvent = function(type, subtype, pageId, url){
+          var contextData = {
+              env : 'workspace',
+              rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+            }
+          var objRollup = ['unlistedContent',$rootScope.userId]
+          var objectData = {
+              id: $rootScope.userId,
+              type:'unlistedContent',
+              ver:textbook.version,
+              rollup:telemetryService.getRollUpData(objRollup)
+          }
+          var data = {
+            edata:telemetryService.impressionEventData(type, subtype, pageId, url),
+            context: telemetryService.getContextData(contextData),
+            object: telemetryService.getObjectData(objectData),
+            tags: $rootScope.organisationIds
+          }
+          telemetryService.impression(data)
       }
     }
   ])

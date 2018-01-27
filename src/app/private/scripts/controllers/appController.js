@@ -55,12 +55,6 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
       return objMerge
     }
 
-    /**
-      * telemetry v3 event config
-     **/
-
-   //EkTelemetry.start(config, 'sfsd', 'sssdf', {type: 'view', pageid: 'home'})
-
     $('body').click(function (e) {
       if ($(e.target).closest('div.dropdown-menu-list').prop('id') === 'search-suggestions') {
         return false
@@ -295,7 +289,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
           var objectData = {
             id: $rootScope.userId,
             type:objType,
-            ver:'0.1'
+            ver:'1.0'
           }
 
           var data = {
@@ -316,7 +310,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
           var objectData = {
             id: $rootScope.userId,
             type:'user',
-            ver:'0.1'
+            ver:'1.0'
           }
 
           var data = {

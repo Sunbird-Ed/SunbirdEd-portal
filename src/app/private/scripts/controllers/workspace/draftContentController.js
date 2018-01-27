@@ -3,9 +3,9 @@
 angular.module('playerApp')
   .controller('DraftContentController', ['contentService', 'searchService', 'config',
     '$rootScope', '$state', 'toasterService', '$scope', 'workSpaceUtilsService', '$timeout',
-    'PaginationService',
+    'PaginationService', 'telemetryService',
     function (contentService, searchService, config, $rootScope, $state,
-      toasterService, $scope, workSpaceUtilsService, $timeout, PaginationService) {
+      toasterService, $scope, workSpaceUtilsService, $timeout, PaginationService, telemetryService) {
       var draftContent = this
       draftContent.userId = $rootScope.userId
       draftContent.status = ['Draft']
@@ -61,6 +61,7 @@ angular.module('playerApp')
             draftContent.error.showError = false
             draftContent.totalCount = res.result.count
             draftContent.pageNumber = pageNumber
+            draftContent.version = res.ver
             draftContent.draftContentData = res.result.content || []
             draftContent.pager = PaginationService.GetPager(res.result.count,
               pageNumber, draftContent.pageLimit)
@@ -69,6 +70,7 @@ angular.module('playerApp')
                 $rootScope.messages.stmsg.m0012,
                 $rootScope.messages.stmsg.m0008)
             }
+            draftContent.generateImpressionEvent('view', 'scroll', 'workspace-content-draft', '/content/draft')
           } else {
             draftContent.loader.showLoader = false
             draftContent.error.showError = false
@@ -140,6 +142,59 @@ angular.module('playerApp')
 
       draftContent.initTocPopup = function () {
         $('.cardTitleEllipse').popup({inline: true})
+      }
+
+      /**
+             * This function call to generate telemetry
+             * on click of Draft Content.
+             */
+      draftContent.generateInteractEvent = function(edataId, pageId, contentId, env){
+        var contextData = {
+          env : env,
+          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+        }
+
+        var objRollup = ''
+        if(contentId!=''){
+          objRollup = ['draftContent', contentId]
+        }
+
+        var objectData = {
+          id: contentId,
+          type:edataId,
+          ver:draftContent.version,
+          rollup:telemetryService.getRollUpData(objRollup)
+        }
+
+        var data = {
+          edata:telemetryService.interactEventData('CLICK', '', edataId, pageId),
+          context: telemetryService.getContextData(contextData),
+          object: telemetryService.getObjectData(objectData),
+          tags: $rootScope.organisationIds
+        }
+        telemetryService.interact(data)
+      }
+
+      //telemetry impression event//
+      draftContent.generateImpressionEvent = function(type, subtype, pageId, url){
+          var contextData = {
+              env : 'workspace',
+              rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+            }
+          var objRollup = ['draftContent',$rootScope.userId]
+          var objectData = {
+              id: $rootScope.userId,
+              type:'draftContent',
+              ver:textbook.version,
+              rollup:telemetryService.getRollUpData(objRollup)
+          }
+          var data = {
+            edata:telemetryService.impressionEventData(type, subtype, pageId, url),
+            context: telemetryService.getContextData(contextData),
+            object: telemetryService.getObjectData(objectData),
+            tags: $rootScope.organisationIds
+          }
+          telemetryService.impression(data)
       }
     }
   ])

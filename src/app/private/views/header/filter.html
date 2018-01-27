@@ -10,7 +10,7 @@
                         <div class="twelve wide column title">
                             <div class="ui grid">
                                 <div class="ten wide column">
-                                    <i alt="{{$root.frmelmnts.alt.filter}}" class="icon filter"></i> <span class="ShowFilterTitle" >{{$root.frmelmnts.lbl.filters}}</span>
+                                    <i alt="{{$root.frmelmnts.alt.filter}}" class="icon filter"></i> <span class="ShowFilterTitle" ng-click="$root.generateInteractEvent('filter','filter-content','filter','filter-content')">{{$root.frmelmnts.lbl.filters}}</span>
                                     <i id='filterIcon' class="dropdown icon"></i>
                                 </div>
                             </div>
@@ -201,7 +201,7 @@
                                 <div apply-script class="ui inline dropdown search-dropdown" id="multi-select-sort">
                                     <div class="text"></div>
                                     <i  class="dropdown icon"></i>
-                                    <select ng-options="sortingOption.field as sortingOption.name for sortingOption in $root.search.sortingOptions" ng-model="$root.search.sortByOption" ng-change="$root.search.applySorting()">
+                                    <select ng-options="sortingOption.field as sortingOption.name for sortingOption in $root.search.sortingOptions" ng-model="$root.search.sortByOption" ng-change="$root.search.applySorting(); $root.generateInteractEvent('sort', 'sort-content', 'content', $root.search.sortByOption)">
                                         <option value=""></option>
                                     </select>
                                 </div>

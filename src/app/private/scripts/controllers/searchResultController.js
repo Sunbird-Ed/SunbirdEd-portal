@@ -14,6 +14,7 @@ angular.module('playerApp').controller('SearchResultController', [
   'adminService',
   'permissionsService',
   'PaginationService',
+  'telemetryService',
   function (
     $scope,
     $rootScope,
@@ -27,7 +28,8 @@ angular.module('playerApp').controller('SearchResultController', [
     sessionService,
     adminService,
     permissionsService,
-    PaginationService
+    PaginationService,
+    telemetryService
   ) {
     $scope.search = {}
     $rootScope.search = {}
@@ -238,6 +240,8 @@ angular.module('playerApp').controller('SearchResultController', [
               sort: btoa(JSON.stringify($rootScope.search.sortBy)),
               autoSuggestSearch: $rootScope.search.searchFromSuggestion || false
             }
+            $rootScope.searchTelemetryId = 'search-'+$rootScope.search.selectedSearchKey.toLowerCase()
+            $rootScope.searchTelemetryPageid = $rootScope.search.selectedSearchKey.toLowerCase()+'-search'
             $state.go('Search', searchParams, { reload: true })
           }
         }
@@ -424,7 +428,7 @@ angular.module('playerApp').controller('SearchResultController', [
         $rootScope.search.filters.concepts = $rootScope.search.selectedConcepts
         $rootScope.search.filters.contentType = $rootScope.search.selectedContentType
       }
-
+      $rootScope.generateInteractEvent('filter', 'filter-content', 'content', 'filter')
       $rootScope.isSearchResultsPage = false
       $scope.search.searchRequest()
     }
@@ -445,6 +449,7 @@ angular.module('playerApp').controller('SearchResultController', [
       $rootScope.search.selectedOrgType = []
       $scope.search.searchRequest()
       // $state.go($rootScope.search.selectedSearchKey);
+      $rootScope.generateInteractEvent('resetFilter', 'resetfilter-content', 'content', 'resetFilter')
     }
     $rootScope.search.applySorting = function () {
       var sortByField = $rootScope.search.sortByOption

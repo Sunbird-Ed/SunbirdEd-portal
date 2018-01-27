@@ -66,11 +66,13 @@ angular.module('playerApp')
             var itemType = $scope.type
             var visits = ''
             var url = '/learn'
+            var env = 'course'
             telemetryService.setConfigData('env','course');
             telemetryService.setConfigData('message','Content read');
             if($scope.type == 'resource'){
                itemType = 'library'
                url = '/resources'
+               env = 'library'
                telemetryService.setConfigData('env','library');
             }
 
@@ -106,7 +108,7 @@ angular.module('playerApp')
               })
 
               section.loader.showLoader = false
-              section.generateImressionEvent(itemType,itemType+'-read',url)
+              section.generateImressionEvent(itemType, itemType+'-read', url, env)
               if (section.page.length === 0) {
                 section.error = showErrorMessage(true,
                   $rootScope.messages.stmsg.m0006,
@@ -145,7 +147,7 @@ angular.module('playerApp')
         var objectData = {
           id: courseId,
           type:edataId,
-          ver:'0.1',
+          ver:'1.0',
           rollup:telemetryService.getRollUpData(objRollup)
         }
 
@@ -162,16 +164,16 @@ angular.module('playerApp')
              * This function call to generate Imression
              * telemetry event
              */
-      section.generateImressionEvent = function(itemType,pageId,uri){
+      section.generateImressionEvent = function(itemType, pageId, uri, env){
               var contextData = {
-                env : 'course',
+                env : env,
                 rollup: telemetryService.getRollUpData($rootScope.organisationIds)
               }
 
               var objectData = {
                 id: '',
                 type:itemType,
-                ver:'0.1',
+                ver:'1.0',
                 rollup:''
               }
 
@@ -194,7 +196,7 @@ angular.module('playerApp')
             var objectData = {
               id: id,
               type:'library',
-              ver:'0.1',
+              ver:'1.0',
               rollup:telemetryService.getRollUpData(objRollup)
             }
             var data = {

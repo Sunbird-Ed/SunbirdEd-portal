@@ -213,7 +213,7 @@ angular.module('playerApp')
             var objectData = {
               id: $rootScope.courseId,
               type:'course',
-              ver:'0.1',
+              ver:'1.0',
               rollup:telemetryService.getRollUpData(objRollup)
             }
           var data = {
@@ -279,9 +279,27 @@ angular.module('playerApp')
             url: '/private/index#!/content/' + $stateParams.contentId + '/' + $stateParams.contentName
           })
         },
-        onExit: function ($rootScope) {
+        onExit: function ($rootScope, telemetryService) {
           $rootScope.isPlayerPage = false
           $rootScope.resourcesActive = ''
+          var contextData = {
+              env : 'library',
+              rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+            }
+            var objRollup = ['library',$rootScope.courseId]
+            var objectData = {
+              id: $rootScope.courseId,
+              type:'library',
+              ver:'1.0',
+              rollup:telemetryService.getRollUpData(objRollup)
+            }
+          var data = {
+            edata:telemetryService.endEventData('lirary', 'play', 'library-read'),
+            context: telemetryService.getContextData(contextData),
+            object: telemetryService.getObjectData(objectData),
+            tags: $rootScope.organisationIds
+          }
+          telemetryService.end(data)
         }
       })
       .state('Search', {
@@ -299,7 +317,7 @@ angular.module('playerApp')
           sort: null,
           autoSuggestSearch: null
         },
-        onEnter: function ($rootScope, portalTelemetryService, $stateParams, routeHelperService) {
+        onEnter: function ($rootScope, telemetryService, $stateParams, routeHelperService) {
           $rootScope.isSearchResultsPage = true
           routeHelperService.loadRouteConfig('Search', $stateParams)
           if ($stateParams.type === 'Courses') {
@@ -313,15 +331,18 @@ angular.module('playerApp')
           } else {
             $rootScope.homeActive = 'active'
           }
-          portalTelemetryService.fireImpressions({
-            env: 'course',
-            type: 'search',
-            pageid: org.sunbird.portal.appid + '_SearchCourse',
-            id: '',
-            name: '',
-            url: '/private/index#!/' + $stateParams.type + '/search/' + $stateParams.query + '/' +
-            $stateParams.filters + '/' + $stateParams.sort + '/' + $stateParams.autoSuggestSearch
-          })
+          var contextData = {
+            env : 'search',
+            rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+          }
+          var pageId = $stateParams.type.toLowerCase()+'-search'
+          var uri = '/search/'+$stateParams.type
+          var data = {
+            edata:telemetryService.impressionEventData('view', 'scroll', pageId, uri),
+            context: telemetryService.getContextData(contextData),
+            tags: $rootScope.organisationIds
+          }
+          telemetryService.impression(data)
         },
         onExit: function ($rootScope) {
           $rootScope.courseActive = $rootScope.resourcesActive = ''
@@ -371,17 +392,19 @@ angular.module('playerApp')
             }
           }
         },
-        onEnter: function ($rootScope, portalTelemetryService, routeHelperService) {
+        onEnter: function ($rootScope, telemetryService, routeHelperService) {
           $rootScope.profileActive = 'active'
           routeHelperService.loadRouteConfig('WorkSpace')
-          portalTelemetryService.fireImpressions({
-            env: 'workspace',
-            type: 'default',
-            pageid: org.sunbird.portal.appid + '_WorkSpace',
-            id: '',
-            name: '',
-            url: '/private/index#!/workspace'
-          })
+          var contextData = {
+            env : 'workspace',
+            rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+          }
+          var data = {
+            edata:telemetryService.impressionEventData('view', 'scroll', 'workspace', '/workspace'),
+            context: telemetryService.getContextData(contextData),
+            tags: $rootScope.organisationIds
+          }
+          telemetryService.impression(data)
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''
@@ -413,15 +436,17 @@ angular.module('playerApp')
             controller: 'DraftContentController as draftContent'
           }
         },
-        onEnter: function (portalTelemetryService) {
-          portalTelemetryService.fireImpressions({
-            env: 'content',
-            type: 'list',
-            pageid: org.sunbird.portal.appid + '_WorkSpace.DraftContent',
-            id: '',
-            name: '',
-            url: '/private/index#!/content/draft'
-          })
+        onEnter: function ($rootScope, telemetryService) {
+            var contextData = {
+            env : 'workspace',
+            rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+          }
+          var data = {
+            edata:telemetryService.impressionEventData('view', 'scroll', 'workspace-content-draft', '/content/draft'),
+            context: telemetryService.getContextData(contextData),
+            tags: $rootScope.organisationIds
+          }
+          telemetryService.impression(data)
         }
       })
       .state('WorkSpace.ReviewContent', {
@@ -577,16 +602,8 @@ angular.module('playerApp')
             controller: 'TextBookController as textbook'
           }
         },
-        onEnter: function ($rootScope, portalTelemetryService) {
+        onEnter: function ($rootScope, telemetryService) {
           $rootScope.profileActive = 'active'
-          portalTelemetryService.fireImpressions({
-            env: 'textbook',
-            type: 'creation',
-            pageid: org.sunbird.portal.appid + '_CreateTextbook',
-            id: '',
-            name: '',
-            url: '/private/index#!/create/textbook'
-          })
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''

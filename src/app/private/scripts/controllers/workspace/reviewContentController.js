@@ -2,9 +2,9 @@
 
 angular.module('playerApp')
   .controller('ReviewContentController', ['contentService', 'searchService', 'config',
-    '$rootScope', '$scope', '$state', 'toasterService', 'PaginationService',
+    '$rootScope', '$scope', '$state', 'toasterService', 'PaginationService', 'telemetryService',
     'workSpaceUtilsService', function (contentService, searchService, config, $rootScope, $scope,
-      $state, toasterService, PaginationService, workSpaceUtilsService) {
+      $state, toasterService, PaginationService, workSpaceUtilsService, telemetryService) {
       var reviewContent = this
       reviewContent.userId = $rootScope.userId
       $scope.contentPlayer = { isContentPlayerEnabled: false }
@@ -49,6 +49,7 @@ angular.module('playerApp')
             reviewContent.error.showError = false
             reviewContent.reviewContentData = res.result.content || []
             reviewContent.totalCount = res.result.count
+            reviewContent.version = res.ver
             reviewContent.pager = PaginationService.GetPager(res.result.count,
               pageNumber, reviewContent.pageLimit)
             if (reviewContent.reviewContentData.length === 0) {
@@ -56,6 +57,7 @@ angular.module('playerApp')
                 $rootScope.messages.stmsg.m0019,
                 $rootScope.messages.stmsg.m0008)
             }
+            reviewContent.generateImpressionEvent('view', 'scroll', 'workspace-content-inreview', '/content/review')
           } else {
             reviewContent.loader.showLoader = false
             reviewContent.error.showError = false
@@ -81,6 +83,59 @@ angular.module('playerApp')
 
       reviewContent.initTocPopup = function () {
         $('.cardTitleEllipse').popup({inline: true})
+      }
+
+      /**
+             * This function call to generate telemetry
+             * on click of review submissions.
+             */
+      reviewContent.generateInteractEvent = function(edataId, pageId, contentId, env){
+        var contextData = {
+          env : env,
+          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+        }
+
+        var objRollup = ''
+        if(contentId!=''){
+          objRollup = ['reviewSubmissions', contentId]
+        }
+
+        var objectData = {
+          id: contentId,
+          type:edataId,
+          ver:reviewContent.version,
+          rollup:telemetryService.getRollUpData(objRollup)
+        }
+
+        var data = {
+          edata:telemetryService.interactEventData('CLICK', '', edataId, pageId),
+          context: telemetryService.getContextData(contextData),
+          object: telemetryService.getObjectData(objectData),
+          tags: $rootScope.organisationIds
+        }
+        telemetryService.interact(data)
+      }
+
+      //telemetry impression event//
+      reviewContent.generateImpressionEvent = function(type, subtype, pageId, url){
+          var contextData = {
+              env : 'workspace',
+              rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+            }
+          var objRollup = ['reviewContent',$rootScope.userId]
+          var objectData = {
+              id: $rootScope.userId,
+              type:'reviewContent',
+              ver:textbook.version,
+              rollup:telemetryService.getRollUpData(objRollup)
+          }
+          var data = {
+            edata:telemetryService.impressionEventData(type, subtype, pageId, url),
+            context: telemetryService.getContextData(contextData),
+            object: telemetryService.getObjectData(objectData),
+            tags: $rootScope.organisationIds
+          }
+          telemetryService.impression(data)
       }
     }
   ])
