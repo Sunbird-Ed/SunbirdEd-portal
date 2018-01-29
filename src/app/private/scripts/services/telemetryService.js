@@ -30,7 +30,7 @@ angular.module('playerApp')
       'tags': []
     }
     this.context = []
-    this.configData = {};
+    this.configData = {}
 
     this.setConfig = function () {
       this.config.pdata.id = org.sunbird.portal.appid || 'org.sunbird'
@@ -258,10 +258,10 @@ angular.module('playerApp')
       return JSON.parse(JSON.stringify(errorEventData))
     }
 
-    /*for share item*/
+    /* for share item */
     this.getItemData = function (itemId, itemType, itemVer) {
-      const itemData ={
-        id : itemId,
+      const itemData = {
+        id: itemId,
         type: itemType,
         ver: itemVer
       }
@@ -336,16 +336,14 @@ angular.module('playerApp')
         *This function is used to get config data for
         *LOG event
         */
-    this.setConfigData = function(key, value){
-        this.configData[key] = value;
+    this.setConfigData = function (key, value) {
+      this.configData[key] = value
     }
 
-    this.getConfigData = function(key){
-      if(this.configData[key])
-      {
+    this.getConfigData = function (key) {
+      if (this.configData[key]) {
         return this.configData[key]
-      }
-      else {
+      } else {
         return this.config[key]
       }
     }
