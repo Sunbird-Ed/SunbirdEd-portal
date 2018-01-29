@@ -2,9 +2,9 @@
     <div ng-include="'views/course/courseHeader.html'"></div>
     <div class="ui grid">
         <div class="one wide column"></div>
-        <div class="ten wide column" ng-show="!toc.showCourseDashboard">
+        <div class="eight wide column" ng-show="!toc.showCourseDashboard">
             <div ng-if="toc.courseHierarchy">
-                <div  ng-if="!contentPlayer.isContentPlayerEnabled && !toc.showAllNoteList">
+                <div ng-if="!contentPlayer.isContentPlayerEnabled && !toc.showAllNoteList">
                     <div class="content">
                         <div class='ui grid'>
                             <div class="row">
@@ -15,7 +15,8 @@
                                         </span>
                                         <div class="margin-top-10 " ng-init="toc.readMore = false">
                                             <p ng-if="!toc.readMore" class="courseStructureDesc"> {{ toc.courseHierarchy.description | limitTo: 200 }}&nbsp;
-                                                <span class="ui cardsKnowMore mouse-pointer" ng-if="toc.courseHierarchy.description.length > 200 && toc.readMore === false" ng-click="toc.readMore = !toc.readMore;">Read More ...</span>
+                                                <span class="ui cardsKnowMore mouse-pointer" ng-if="toc.courseHierarchy.description.length > 200 && toc.readMore === false"
+                                                    ng-click="toc.readMore = !toc.readMore;">Read More ...</span>
                                             </p>
                                             <p ng-if="toc.readMore" class="courseStructureDesc"> {{ toc.courseHierarchy.description}}&nbsp;
                                                 <span class="ui cardsKnowMore mouse-pointer" ng-click="toc.readMore = false;">Read Less ...</span>
@@ -41,7 +42,8 @@
                                             <div class="content">
                                                 <div class="header">{{toc.selectedBatchInfo.name}}</div>
                                                 <div class="selectedBatchMeta meta">
-                                                    <span class="date">{{toc.selectedBatchInfo.startDate | date: "dd MMM yyyy"}} - {{toc.selectedBatchInfo.endDate | date: "dd MMM yyyy"}}</span>
+                                                    <span class="date">{{toc.selectedBatchInfo.startDate | date: "dd MMM yyyy"}} - {{toc.selectedBatchInfo.endDate
+                                                        | date: "dd MMM yyyy"}}</span>
                                                 </div>
                                             </div>
                                             <div class="selectedBatchContent extra content">
@@ -58,7 +60,8 @@
                                         <add-note shownoteincourse="true" courseid="toc.courseId"></add-note>
                                     </div>
                                     <div>
-                                        <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false" courseid="toc.courseId"></note-card>
+                                        <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false"
+                                            courseid="toc.courseId"></note-card>
                                     </div>
                                     <div>
                                         <div ng-include=" 'views/course/carriculumCard.html'"></div>
@@ -81,7 +84,8 @@
                             <div class="ui grid">
                                 <div class="row">
                                     <div class="twelve wide column">
-                                        <content-player ng-if="true" visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="true" height="10" width="100" ispercentage="true"></content-player>
+                                        <content-player ng-if="true" visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="false"
+                                            isheader="true" isclose="true" height="10" width="100" ispercentage="true"></content-player>
                                         <!--                                        <content-player ng-if="toc.lectureView == 'yes'" visibility="contentPlayer.isContentPlayerEnabled" body="contentPlayer.contentData" isshowmetaview="false" isheader="true" isclose="false" height="10" width="100" ispercentage="true"></content-player>-->
                                     </div>
                                 </div>
@@ -89,8 +93,9 @@
                                     <div class="three wide column ">
                                         <button class="ui blue button left floated  fluid  tocbutton" ng-click="toc.openContent(toc.prevPlaylistItem, 'prev')" ng-disabled="(toc.prevPlaylistItem < 0)">
                                             <div class="toc-left-nav-btn-content">
-                                                <h4 class=" font-white"><< PREVIOUS</h4>
-                                                <p class=" font-white">{{toc.previousPlayListName}}</p>
+                                                <h4 class=" font-white">
+                                                    << PREVIOUS</h4>
+                                                        <p class=" font-white">{{toc.previousPlayListName}}</p>
                                             </div>
                                         </button>
                                     </div>
@@ -121,7 +126,8 @@
                                 <course-discussions showaskquestion="false"></course-discussions>
                             </div>
                             <div class="four wide column toc-note-content">
-                                <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false" courseid="toc.courseId" contentid="contentPlayer.contentData.identifier"></note-card>
+                                <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false"
+                                    courseid="toc.courseId" contentid="contentPlayer.contentData.identifier"></note-card>
                             </div>
                         </div>
                     </div>
@@ -135,6 +141,9 @@
             </div>
             <div class="one wide column"></div>
         </div>
+        <div class="three wide column">
+            <course-questions showaskquestion="true"></course-questions>
+        </div>
         <!-- Show course dashboard-->
         <div class="ten wide column" ng-if="toc.showCourseDashboard">
             <div ng-include="'views/dashboard/course/courseProgressDashboard.html'"></div>
@@ -142,4 +151,3 @@
         </div>
     </div>
 </div>
-
