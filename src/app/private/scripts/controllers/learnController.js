@@ -66,31 +66,30 @@ angular.module('playerApp')
              * This function call to generate telemetry
              * on click of Enroll Course.
              */
-      learn.generateInteractEvent = function(edataId, pageId, courseId){
+      learn.generateInteractEvent = function (edataId, pageId, courseId) {
         var contextData = {
-          env : 'course',
+          env: 'course',
           rollup: telemetryService.getRollUpData($rootScope.organisationIds)
         }
 
         var objRollup = ''
-        if(courseId!=''){
+        if (courseId !== '') {
           objRollup = ['course', courseId]
         }
 
         var objectData = {
           id: courseId,
-          type:edataId,
-          ver:'0.1',
-          rollup:telemetryService.getRollUpData(objRollup)
+          type: edataId,
+          ver: '0.1',
+          rollup: telemetryService.getRollUpData(objRollup)
         }
 
         var data = {
-          edata:telemetryService.interactEventData('CLICK', '', edataId, pageId),
+          edata: telemetryService.interactEventData('CLICK', '', edataId, pageId),
           context: telemetryService.getContextData(contextData),
           object: telemetryService.getObjectData(objectData),
           tags: $rootScope.organisationIds
         }
         telemetryService.interact(data)
       }
-
     }])

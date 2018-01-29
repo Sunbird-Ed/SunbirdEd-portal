@@ -148,26 +148,26 @@ angular.module('playerApp')
              * This function call to generate telemetry
              * on click of Draft Content.
              */
-      draftContent.generateInteractEvent = function(edataId, pageId, contentId, env){
+      draftContent.generateInteractEvent = function (edataId, pageId, contentId, env) {
         var contextData = {
-          env : env,
+          env: env,
           rollup: telemetryService.getRollUpData($rootScope.organisationIds)
         }
 
         var objRollup = ''
-        if(contentId!=''){
+        if (contentId !== '') {
           objRollup = ['draftContent', contentId]
         }
 
         var objectData = {
           id: contentId,
-          type:edataId,
-          ver:draftContent.version,
-          rollup:telemetryService.getRollUpData(objRollup)
+          type: edataId,
+          ver: draftContent.version,
+          rollup: telemetryService.getRollUpData(objRollup)
         }
 
         var data = {
-          edata:telemetryService.interactEventData('CLICK', '', edataId, pageId),
+          edata: telemetryService.interactEventData('CLICK', '', edataId, pageId),
           context: telemetryService.getContextData(contextData),
           object: telemetryService.getObjectData(objectData),
           tags: $rootScope.organisationIds
@@ -175,26 +175,26 @@ angular.module('playerApp')
         telemetryService.interact(data)
       }
 
-      //telemetry impression event//
-      draftContent.generateImpressionEvent = function(type, subtype, pageId, url){
-          var contextData = {
-              env : 'workspace',
-              rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-            }
-          var objRollup = ['draftContent',$rootScope.userId]
-          var objectData = {
-              id: $rootScope.userId,
-              type:'draftContent',
-              ver:textbook.version,
-              rollup:telemetryService.getRollUpData(objRollup)
-          }
-          var data = {
-            edata:telemetryService.impressionEventData(type, subtype, pageId, url),
-            context: telemetryService.getContextData(contextData),
-            object: telemetryService.getObjectData(objectData),
-            tags: $rootScope.organisationIds
-          }
-          telemetryService.impression(data)
+      // telemetry impression event//
+      draftContent.generateImpressionEvent = function (type, subtype, pageId, url) {
+        var contextData = {
+          env: 'workspace',
+          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+        }
+        var objRollup = ['draftContent', $rootScope.userId]
+        var objectData = {
+          id: $rootScope.userId,
+          type: 'draftContent',
+          ver: draftContent.version,
+          rollup: telemetryService.getRollUpData(objRollup)
+        }
+        var data = {
+          edata: telemetryService.impressionEventData(type, subtype, pageId, url),
+          context: telemetryService.getContextData(contextData),
+          object: telemetryService.getObjectData(objectData),
+          tags: $rootScope.organisationIds
+        }
+        telemetryService.impression(data)
       }
     }
   ])

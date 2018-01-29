@@ -240,8 +240,8 @@ angular.module('playerApp').controller('SearchResultController', [
               sort: btoa(JSON.stringify($rootScope.search.sortBy)),
               autoSuggestSearch: $rootScope.search.searchFromSuggestion || false
             }
-            $rootScope.searchTelemetryId = 'search-'+$rootScope.search.selectedSearchKey.toLowerCase()
-            $rootScope.searchTelemetryPageid = $rootScope.search.selectedSearchKey.toLowerCase()+'-search'
+            $rootScope.searchTelemetryId = 'search-' + $rootScope.search.selectedSearchKey.toLowerCase()
+            $rootScope.searchTelemetryPageid = $rootScope.search.selectedSearchKey.toLowerCase() + '-search'
             $state.go('Search', searchParams, { reload: true })
           }
         }

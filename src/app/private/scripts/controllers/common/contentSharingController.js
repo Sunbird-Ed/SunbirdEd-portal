@@ -28,8 +28,8 @@ angular.module('playerApp')
 
       contentShare.initializeModal = function () {
         contentShare.showContentShareModal = true
-        console.log('scope--',$scope)
-        contentShare.generateInteractEvent('share-course','course-read',contentShare.id)
+        console.log('scope--', $scope)
+        contentShare.generateInteractEvent('share-course', 'course-read', contentShare.id)
         $timeout(function () {
           $('#contentShareModal').modal({
             onHide: function () {
@@ -62,24 +62,23 @@ angular.module('playerApp')
           })
       }
 
-
-      //telemetry event  for SHARE event
+      // telemetry event  for SHARE event
       contentShare.generateShareEvent = function (itemId, itemType) {
         var contextData = {
-          env : $scope.type,
+          env: $scope.type,
           rollup: telemetryService.getRollUpData($rootScope.organisationIds)
         }
         var objectData = {
           id: itemId,
-          type:itemType,
-          ver:'0.1',
-          rollup:''
+          type: itemType,
+          ver: '0.1',
+          rollup: ''
         }
 
         var items = [telemetryService.getItemData(itemId, itemType, '0.1')]
 
         var data = {
-          edata:telemetryService.shareEventData('Link', items, 'Out'),
+          edata: telemetryService.shareEventData('Link', items, 'Out'),
           context: telemetryService.getContextData(contextData),
           object: telemetryService.getObjectData(objectData),
           tags: $rootScope.organisationIds
@@ -91,31 +90,30 @@ angular.module('playerApp')
              * This function call to generate telemetry
              * on click of share icon.
              */
-      contentShare.generateInteractEvent = function(edataId, pageId, itemId){
+      contentShare.generateInteractEvent = function (edataId, pageId, itemId) {
         var contextData = {
-          env : $scope.type,
+          env: $scope.type,
           rollup: telemetryService.getRollUpData($rootScope.organisationIds)
         }
 
         var objRollup = ''
-        if(itemId!=''){
+        if (itemId !== '') {
           objRollup = ['course', itemId]
         }
 
         var objectData = {
           id: itemId,
-          type:edataId,
-          ver:'0.1',
-          rollup:telemetryService.getRollUpData(objRollup)
+          type: edataId,
+          ver: '0.1',
+          rollup: telemetryService.getRollUpData(objRollup)
         }
 
         var data = {
-          edata:telemetryService.interactEventData('CLICK', '', edataId, pageId),
+          edata: telemetryService.interactEventData('CLICK', '', edataId, pageId),
           context: telemetryService.getContextData(contextData),
           object: telemetryService.getObjectData(objectData),
           tags: $rootScope.organisationIds
         }
         telemetryService.interact(data)
       }
-
     }])

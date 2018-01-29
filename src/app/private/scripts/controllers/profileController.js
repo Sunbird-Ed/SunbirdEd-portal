@@ -166,48 +166,47 @@ angular.module('playerApp')
         profile.generateImpressionEvent('view', 'scroll', 'profile-read', '/profile')
       }
 
-
-      //telemetry impression event//
-      profile.generateImpressionEvent = function(type, subtype, pageId, url){
-          var contextData = {
-              env : 'profile',
-              rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-            }
-          var objRollup = ['profile',$rootScope.userId]
-          var objectData = {
-              id: $rootScope.userId,
-              type:'user',
-              ver:'0.1',
-              rollup:telemetryService.getRollUpData(objRollup)
-          }
-          var data = {
-            edata:telemetryService.impressionEventData(type, subtype, pageId, url),
-            context: telemetryService.getContextData(contextData),
-            object: telemetryService.getObjectData(objectData),
-            tags: $rootScope.organisationIds
-          }
-          telemetryService.impression(data)
+      // telemetry impression event//
+      profile.generateImpressionEvent = function (type, subtype, pageId, url) {
+        var contextData = {
+          env: 'profile',
+          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+        }
+        var objRollup = ['profile', $rootScope.userId]
+        var objectData = {
+          id: $rootScope.userId,
+          type: 'user',
+          ver: '0.1',
+          rollup: telemetryService.getRollUpData(objRollup)
+        }
+        var data = {
+          edata: telemetryService.impressionEventData(type, subtype, pageId, url),
+          context: telemetryService.getContextData(contextData),
+          object: telemetryService.getObjectData(objectData),
+          tags: $rootScope.organisationIds
+        }
+        telemetryService.impression(data)
       }
 
-      //telemetry ERROR event
-      profile.generateErrorEvent = function(errCode, errType, stacktrace, pageId, env){
+      // telemetry ERROR event
+      profile.generateErrorEvent = function (errCode, errType, stacktrace, pageId, env) {
         var contextData = {
-            env : env,
-            rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-            }
-            var objectData = {
-              id: $rootScope.userId,
-              type:'user',
-              ver:'0.1'
-            }
+          env: env,
+          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+        }
+        var objectData = {
+          id: $rootScope.userId,
+          type: 'user',
+          ver: '0.1'
+        }
 
-            var data = {
-              edata:telemetryService.errorEventData(errCode, errType, stacktrace, pageId),
-              context: telemetryService.getContextData(contextData),
-              object: telemetryService.getObjectData(objectData),
-              tags: $rootScope.organisationIds
-            }
-            telemetryService.error(data)
+        var data = {
+          edata: telemetryService.errorEventData(errCode, errType, stacktrace, pageId),
+          context: telemetryService.getContextData(contextData),
+          object: telemetryService.getObjectData(objectData),
+          tags: $rootScope.organisationIds
+        }
+        telemetryService.error(data)
       }
 
       // update user profile

@@ -2,7 +2,7 @@
 
 angular.module('playerApp')
   .controller('HomeController', ['$state', 'learnService', '$rootScope',
-    'sessionService', 'toasterService','telemetryService',
+    'sessionService', 'toasterService', 'telemetryService',
     function ($state, learnService, $rootScope,
       sessionService, toasterService, telemetryService) {
       var homeCtrl = this
@@ -83,22 +83,22 @@ angular.module('playerApp')
         $state.go('Toc', params)
       }
 
-      /*---telemetry-interact-event--*/
-      homeCtrl.generateInteractEvent = function(itemId, itemType, edataId, pageId){
+      /* ---telemetry-interact-event-- */
+      homeCtrl.generateInteractEvent = function (itemId, itemType, edataId, pageId) {
         var contextData = {
-          env : 'home',
+          env: 'home',
           rollup: telemetryService.getRollUpData($rootScope.organisationIds)
         }
-        var objRollup = ['home',itemId]
+        var objRollup = ['home', itemId]
         var objectData = {
           id: itemId,
-          type:itemType,
-          ver:'0.1',
-          rollup:telemetryService.getRollUpData(objRollup)
+          type: itemType,
+          ver: '0.1',
+          rollup: telemetryService.getRollUpData(objRollup)
         }
 
         var data = {
-          edata:telemetryService.interactEventData('CLICK', '', edataId, pageId),
+          edata: telemetryService.interactEventData('CLICK', '', edataId, pageId),
           context: telemetryService.getContextData(contextData),
           object: telemetryService.getObjectData(objectData),
           tags: $rootScope.organisationIds

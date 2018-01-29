@@ -29,7 +29,7 @@ angular.module('playerApp')
               } else {
                 toc.courseHierarchy = res.result.content
               }
-              /*-----------telemetry start event------------*/
+              /* -----------telemetry start event------------ */
               toc.generateStartEvent()
             } else {
               toasterService.warning($rootScope.messages.imsg.m0019)
@@ -274,7 +274,7 @@ angular.module('playerApp')
             toc.hashId = ('tocPlayer/' + contentId + '/' + toc.itemIndex)
             // move target focus to player
 
-            //generate telemetry interact event//
+            // generate telemetry interact event//
             toc.objRollup = ['course', toc.courseId, contentId]
 
             toc.scrollToPlayer()
@@ -343,8 +343,8 @@ angular.module('playerApp')
             sessionService.setSessionData('COURSE_PARAMS', params)
             $state.go('Toc', params)
           }
-          //generate telemetry interact event//
-          toc.objRollup = ['course',toc.courseId]
+          // generate telemetry interact event//
+          toc.objRollup = ['course', toc.courseId]
         }
       }
 
@@ -384,54 +384,53 @@ angular.module('playerApp')
 
       // telemetry start event data
       toc.generateStartEvent = function () {
-            var contextData = {
-              env : 'course',
-              rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-            }
-            var objRollup = ['course',toc.courseId]
-            var objectData = {
-              id: toc.courseId,
-              type:'course',
-              ver:'0.1',
-              rollup:telemetryService.getRollUpData(objRollup)
-            }
-            var data = {
-              edata:telemetryService.startEventData('course', 'course-read', 'play'),
-              contentId : toc.courseId,
-              contentVer: '1.0',
-              context: telemetryService.getContextData(contextData),
-              object: telemetryService.getObjectData(objectData),
-              tags: $rootScope.organisationIds
-            }
-          telemetryService.start(data)
+        var contextData = {
+          env: 'course',
+          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+        }
+        var objRollup = ['course', toc.courseId]
+        var objectData = {
+          id: toc.courseId,
+          type: 'course',
+          ver: '0.1',
+          rollup: telemetryService.getRollUpData(objRollup)
+        }
+        var data = {
+          edata: telemetryService.startEventData('course', 'course-read', 'play'),
+          contentId: toc.courseId,
+          contentVer: '1.0',
+          context: telemetryService.getContextData(contextData),
+          object: telemetryService.getObjectData(objectData),
+          tags: $rootScope.organisationIds
+        }
+        telemetryService.start(data)
       }
 
-      /*--telemetry-end-event--*/
-      toc.generateEndEvent = function(itemId, itemType, pageId){
+      /* --telemetry-end-event-- */
+      toc.generateEndEvent = function (itemId, itemType, pageId) {
         var data = {
-          edata:telemetryService.endEventData(itemType, 'play', pageId),
+          edata: telemetryService.endEventData(itemType, 'play', pageId),
           tags: $rootScope.organisationIds
         }
         telemetryService.end(data)
       }
 
-
-      /*---telemetry-interact-event--*/
-      toc.generateInteractEvent = function(itemId, itemType, edataId, pageId, objRollup){
+      /* ---telemetry-interact-event-- */
+      toc.generateInteractEvent = function (itemId, itemType, edataId, pageId, objRollup) {
         var contextData = {
-          env : 'home',
+          env: 'home',
           rollup: telemetryService.getRollUpData($rootScope.organisationIds)
         }
 
         var objectData = {
           id: itemId,
-          type:itemType,
-          ver:'0.1',
-          rollup:telemetryService.getRollUpData(objRollup)
+          type: itemType,
+          ver: '0.1',
+          rollup: telemetryService.getRollUpData(objRollup)
         }
 
         var data = {
-          edata:telemetryService.interactEventData('CLICK', '', edataId, pageId, ''),
+          edata: telemetryService.interactEventData('CLICK', '', edataId, pageId, ''),
           context: telemetryService.getContextData(contextData),
           object: telemetryService.getObjectData(objectData),
           tags: $rootScope.organisationIds
@@ -439,8 +438,8 @@ angular.module('playerApp')
         telemetryService.interact(data)
       }
 
-      /*window.addEventListener('unload', function() {
+      /* window.addEventListener('unload', function() {
 
-      })*/
+      }) */
     }
   ])

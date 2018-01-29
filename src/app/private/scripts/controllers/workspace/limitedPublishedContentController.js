@@ -51,6 +51,7 @@ angular.module('playerApp')
             lpContent.limitedpublishedContentData = res.result.content || []
             lpContent.totalCount = res.result.count
             lpContent.pageNumber = pageNumber
+            lpContent.version = res.ver
             if (lpContent.limitedpublishedContentData.length === 0) {
               lpContent.error = showErrorMessage(true,
                 $rootScope.messages.stmsg.m0083,
@@ -111,7 +112,8 @@ angular.module('playerApp')
             if (lpContent.limitedpublishedContentData.length === 0) {
               lpContent.error = showErrorMessage(true, $rootScope.messages.stmsg.m0024, $rootScope.messages.stmsg.m0008)
             }
-            lpContent.generateImpressionEvent('view', 'scroll', 'workspace-content-unlisted', '/content/limited/publish')
+            lpContent.generateImpressionEvent('view', 'scroll', 'workspace-content-unlisted',
+              '/content/limited/publish')
           } else {
             lpContent.loader.showLoader = false
             toasterService.error($rootScope.messages.fmsg.m0022)
@@ -137,26 +139,26 @@ angular.module('playerApp')
              * This function call to generate telemetry
              * on click of review content.
              */
-      lpContent.generateInteractEvent = function(edataId, pageId, contentId, env){
+      lpContent.generateInteractEvent = function (edataId, pageId, contentId, env) {
         var contextData = {
-          env : env,
+          env: env,
           rollup: telemetryService.getRollUpData($rootScope.organisationIds)
         }
 
         var objRollup = ''
-        if(contentId!=''){
+        if (contentId !== '') {
           objRollup = ['limitedPublished', contentId]
         }
 
         var objectData = {
           id: contentId,
-          type:edataId,
-          ver:lpContent.version,
-          rollup:telemetryService.getRollUpData(objRollup)
+          type: edataId,
+          ver: lpContent.version,
+          rollup: telemetryService.getRollUpData(objRollup)
         }
 
         var data = {
-          edata:telemetryService.interactEventData('CLICK', '', edataId, pageId),
+          edata: telemetryService.interactEventData('CLICK', '', edataId, pageId),
           context: telemetryService.getContextData(contextData),
           object: telemetryService.getObjectData(objectData),
           tags: $rootScope.organisationIds
@@ -164,26 +166,26 @@ angular.module('playerApp')
         telemetryService.interact(data)
       }
 
-      //telemetry impression event//
-      lpContent.generateImpressionEvent = function(type, subtype, pageId, url){
-          var contextData = {
-              env : 'workspace',
-              rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-            }
-          var objRollup = ['unlistedContent',$rootScope.userId]
-          var objectData = {
-              id: $rootScope.userId,
-              type:'unlistedContent',
-              ver:textbook.version,
-              rollup:telemetryService.getRollUpData(objRollup)
-          }
-          var data = {
-            edata:telemetryService.impressionEventData(type, subtype, pageId, url),
-            context: telemetryService.getContextData(contextData),
-            object: telemetryService.getObjectData(objectData),
-            tags: $rootScope.organisationIds
-          }
-          telemetryService.impression(data)
+      // telemetry impression event//
+      lpContent.generateImpressionEvent = function (type, subtype, pageId, url) {
+        var contextData = {
+          env: 'workspace',
+          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+        }
+        var objRollup = ['unlistedContent', $rootScope.userId]
+        var objectData = {
+          id: $rootScope.userId,
+          type: 'unlistedContent',
+          ver: lpContent.version,
+          rollup: telemetryService.getRollUpData(objRollup)
+        }
+        var data = {
+          edata: telemetryService.impressionEventData(type, subtype, pageId, url),
+          context: telemetryService.getContextData(contextData),
+          object: telemetryService.getObjectData(objectData),
+          tags: $rootScope.organisationIds
+        }
+        telemetryService.impression(data)
       }
     }
   ])
