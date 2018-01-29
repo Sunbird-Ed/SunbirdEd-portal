@@ -15,8 +15,8 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
     $rootScope.frmelmnts = frmelmnts[$rootScope.language]
     $rootScope.searchKey = ''
     $rootScope.enrolledCourseIds = {}
-    telemetryService.setConfigData('env','home');
-    telemetryService.setConfigData('message','User read');
+    telemetryService.setConfigData('env', 'home')
+    telemetryService.setConfigData('message', 'User read')
     /**
      * This function contentModelSetBackLink is to store back link value for modal popup close dynamically.
      * **/
@@ -119,7 +119,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
       $scope.setRootOrgInfo(profileData)
     }
 
-    $scope.getTelemetryConfigData = function () {
+    /* $scope.getTelemetryConfigData = function () {
       org.sunbird.portal.sid = $rootScope.sessionId
       org.sunbird.portal.uid = $rootScope.userId
 
@@ -135,7 +135,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
           org.sunbird.portal.init()
           portalTelemetryService.init()
         })
-    }
+    } */
 
     $scope.setRootOrgInfo = function (profileData) {
       if (profileData.rootOrg) {
@@ -239,13 +239,12 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
             limit = res.result.count - limit
             $rootScope.getConcept(offset, limit, callback)
           } else {
-            callback(false, $scope.concepts)
+            callback(new Error('Getting concepts failed'), null)
           }
         }
+      }).catch(function (err) {
+        callback(err, null)
       })
-        .catch(function (err) {
-          callback(true)
-        })
     }
     if (!$rootScope.concepts) {
       $scope.concepts = []
@@ -279,47 +278,46 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
       $state.go('Profile')
     }
 
-
-    //telemetry interact event
-    $rootScope.generateInteractEvent = function(id ,pageId, env, objType) {
+    // telemetry interact event
+    $rootScope.generateInteractEvent = function (id, pageId, env, objType) {
       var contextData = {
-          env : env,
-          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-          }
-          var objectData = {
-            id: $rootScope.userId,
-            type:objType,
-            ver:'1.0'
-          }
+        env: env,
+        rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+      }
+      var objectData = {
+        id: $rootScope.userId,
+        type: objType,
+        ver: '1.0'
+      }
 
-          var data = {
-            edata:telemetryService.interactEventData('CLICK', '', id, pageId),
-            context: telemetryService.getContextData(contextData),
-            object: telemetryService.getObjectData(objectData),
-            tags: $rootScope.organisationIds
-          }
-          telemetryService.interact(data)
+      var data = {
+        edata: telemetryService.interactEventData('CLICK', '', id, pageId),
+        context: telemetryService.getContextData(contextData),
+        object: telemetryService.getObjectData(objectData),
+        tags: $rootScope.organisationIds
+      }
+      telemetryService.interact(data)
     }
 
-    //telemetry ERROR event
-    $rootScope.generateErrorEvent = function(errCode, errType, stacktrace, pageId, env){
+    // telemetry ERROR event
+    $rootScope.generateErrorEvent = function (errCode, errType, stacktrace, pageId, env) {
       var contextData = {
-          env : env,
-          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-          }
-          var objectData = {
-            id: $rootScope.userId,
-            type:'user',
-            ver:'1.0'
-          }
+        env: env,
+        rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+      }
+      var objectData = {
+        id: $rootScope.userId,
+        type: 'user',
+        ver: '1.0'
+      }
 
-          var data = {
-            edata:telemetryService.errorEventData(errCode, errType, stacktrace, pageId),
-            context: telemetryService.getContextData(contextData),
-            object: telemetryService.getObjectData(objectData),
-            tags: $rootScope.organisationIds
-          }
-          telemetryService.error(data)
+      var data = {
+        edata: telemetryService.errorEventData(errCode, errType, stacktrace, pageId),
+        context: telemetryService.getContextData(contextData),
+        object: telemetryService.getObjectData(objectData),
+        tags: $rootScope.organisationIds
+      }
+      telemetryService.error(data)
     }
 
     $scope.getBadges()

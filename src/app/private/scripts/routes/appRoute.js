@@ -25,11 +25,11 @@ angular.module('playerApp')
         onEnter: function ($rootScope, telemetryService, routeHelperService) {
           $rootScope.homeActive = 'active'
           var contextData = {
-            env : 'home',
+            env: 'home',
             rollup: telemetryService.getRollUpData($rootScope.organisationIds)
           }
           var data = {
-            edata:telemetryService.impressionEventData('view', 'scroll', 'home', '/home'),
+            edata: telemetryService.impressionEventData('view', 'scroll', 'home', '/home'),
             context: telemetryService.getContextData(contextData),
             tags: $rootScope.organisationIds
           }
@@ -206,18 +206,18 @@ angular.module('playerApp')
           dataService.setData('contentStateInit', false)
           dataService.setData('isTrackingEnabled', false)
           var contextData = {
-              env : 'course',
-              rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-            }
-            var objRollup = ['course',$rootScope.courseId]
-            var objectData = {
-              id: $rootScope.courseId,
-              type:'course',
-              ver:'1.0',
-              rollup:telemetryService.getRollUpData(objRollup)
-            }
+            env: 'course',
+            rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+          }
+          var objRollup = ['course', $rootScope.courseId]
+          var objectData = {
+            id: $rootScope.courseId,
+            type: 'course',
+            ver: '1.0',
+            rollup: telemetryService.getRollUpData(objRollup)
+          }
           var data = {
-            edata:telemetryService.endEventData('course', 'play', 'course-read'),
+            edata: telemetryService.endEventData('course', 'play', 'course-read'),
             context: telemetryService.getContextData(contextData),
             object: telemetryService.getObjectData(objectData),
             tags: $rootScope.organisationIds
@@ -283,18 +283,18 @@ angular.module('playerApp')
           $rootScope.isPlayerPage = false
           $rootScope.resourcesActive = ''
           var contextData = {
-              env : 'library',
-              rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-            }
-            var objRollup = ['library',$rootScope.courseId]
-            var objectData = {
-              id: $rootScope.courseId,
-              type:'library',
-              ver:'1.0',
-              rollup:telemetryService.getRollUpData(objRollup)
-            }
+            env: 'library',
+            rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+          }
+          var objRollup = ['library', $rootScope.courseId]
+          var objectData = {
+            id: $rootScope.courseId,
+            type: 'library',
+            ver: '1.0',
+            rollup: telemetryService.getRollUpData(objRollup)
+          }
           var data = {
-            edata:telemetryService.endEventData('lirary', 'play', 'library-read'),
+            edata: telemetryService.endEventData('lirary', 'play', 'library-read'),
             context: telemetryService.getContextData(contextData),
             object: telemetryService.getObjectData(objectData),
             tags: $rootScope.organisationIds
@@ -332,13 +332,13 @@ angular.module('playerApp')
             $rootScope.homeActive = 'active'
           }
           var contextData = {
-            env : 'search',
+            env: 'search',
             rollup: telemetryService.getRollUpData($rootScope.organisationIds)
           }
-          var pageId = $stateParams.type.toLowerCase()+'-search'
-          var uri = '/search/'+$stateParams.type
+          var pageId = $stateParams.type.toLowerCase() + '-search'
+          var uri = '/search/' + $stateParams.type
           var data = {
-            edata:telemetryService.impressionEventData('view', 'scroll', pageId, uri),
+            edata: telemetryService.impressionEventData('view', 'scroll', pageId, uri),
             context: telemetryService.getContextData(contextData),
             tags: $rootScope.organisationIds
           }
@@ -396,11 +396,11 @@ angular.module('playerApp')
           $rootScope.profileActive = 'active'
           routeHelperService.loadRouteConfig('WorkSpace')
           var contextData = {
-            env : 'workspace',
+            env: 'workspace',
             rollup: telemetryService.getRollUpData($rootScope.organisationIds)
           }
           var data = {
-            edata:telemetryService.impressionEventData('view', 'scroll', 'workspace', '/workspace'),
+            edata: telemetryService.impressionEventData('view', 'scroll', 'workspace', '/workspace'),
             context: telemetryService.getContextData(contextData),
             tags: $rootScope.organisationIds
           }
@@ -437,12 +437,12 @@ angular.module('playerApp')
           }
         },
         onEnter: function ($rootScope, telemetryService) {
-            var contextData = {
-            env : 'workspace',
+          var contextData = {
+            env: 'workspace',
             rollup: telemetryService.getRollUpData($rootScope.organisationIds)
           }
           var data = {
-            edata:telemetryService.impressionEventData('view', 'scroll', 'workspace-content-draft', '/content/draft'),
+            edata: telemetryService.impressionEventData('view', 'scroll', 'workspace-content-draft', '/content/draft'),
             context: telemetryService.getContextData(contextData),
             tags: $rootScope.organisationIds
           }
