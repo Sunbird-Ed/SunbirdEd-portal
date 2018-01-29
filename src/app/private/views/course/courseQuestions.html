@@ -1,123 +1,143 @@
-<div ng-if="widget=='list-thread'" class="ui segment padding-right-5">
-  <div class="ui top padded grid">
-    <div class="cardsHeading discussionHeading">
-      Questions
-    </div>
-    <div class="text-align-right">
-      <a class="cursor-pointer" ng-click="changeWidget('create-thread')">
+<div ng-if="widget=='list-thread' && !loading" class="ui segment padding-right-5">
+	<div class="ui top padded grid">
+		<div class="cardsHeading discussionHeading">
+			Questions
+		</div>
+		<div class="text-align-right">
+			<a class="cursor-pointer" ng-click="changeWidget('create-thread')">
                 <i class="large add circle icon"></i>
             </a>
-    </div>
-  </div>
-  <div class="ui section divider"></div>
-  <div class="ui relaxed divided list questionList">
-    <div class="item" ng-repeat="thread in threads">
-      <div class="content">
-        <a ng-click="gotoThread(thread.title, thread.replies, thread.description)" class="header quesHeading">{{thread.title}}</a>
-      </div>
-    </div>
-  </div>
+		</div>
+	</div>
+	<div class="ui section divider"></div>
+	<div class="ui relaxed divided list questionList">
+		<div class="item" ng-repeat="thread in threads">
+			<div class="content">
+				<a ng-click="gotoThread(thread.id)" class="header quesHeading">{{thread.title}}</a>
+				<div class="ui comments">
+					<div class="right floated column comment">
+						<div class="metadata">
+							<div class="right aligned column date">{{thread.created_at | date : longdate}}&nbsp;</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-<div ng-if="widget=='create-thread'" class="ui segment">
-  <div class="ui top padded grid">
-    <div class="text-align-left">
-      <a class="cursor-pointer" ng-click="changeWidget('list-thread')">
+<div ng-if="widget=='create-thread' && !loading" class="ui segment">
+	<div class="ui top padded grid">
+		<div class="text-align-left">
+			<a class="cursor-pointer" ng-click="changeWidget('list-thread')">
                 <i class="large arrow left icon"></i>
             </a>
-    </div>
-    <div class="cardsHeading">
-      Post a question
-    </div>
-  </div>
-  <div class="ui divider"></div>
-  <form name="createQuestion" class="ui form" ng-submit="formSubmit(createQuestion.$valid)" ng-init="$parent.threadTitle='';$parent.threadDesc=''">
-    <div class="ui form">
-      <div class="field">
-        <label>Title</label>
-        <input autocomplete="off" type="text" name="title" ng-model="$parent.threadTitle" required/>
-        <div class="field padding-top-10" ng-show="createQuestion.title.$touched && createQuestion.title.$invalid">
-          <div class="ui negative message">
-            <div class="header">
-              This is a required field.
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="field">
-        <label>Description</label>
-        <textarea autocomplete="off" name="desc" ng-model="$parent.threadDesc" required></textarea>
-        <div class="field padding-top-10" ng-show="createQuestion.desc.$touched && createQuestion.desc.$invalid">
-          <div class="ui negative message">
-            <div class="header">
-              This is a required field.
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="ui horizontal divider"></div>
-    <div class="">
-      <div class="text-align-right">
-        <button ng-disabled="$parent.threadTitle=='' || $parent.threadDesc==''" type="button" class="ui primary submit button" ng-click="formSubmit()">Submit</button>
-      </div>
-    </div>
-  </form>
+		</div>
+		<div class="cardsHeading">
+			Post a question
+		</div>
+	</div>
+	<div class="ui divider"></div>
+	<form name="createQuestion" class="ui form" ng-submit="formSubmit(createQuestion.$valid)" ng-init="$parent.threadTitle='';$parent.threadDesc=''">
+		<div class="ui form">
+			<div class="field">
+				<label>Title</label>
+				<input autocomplete="off" type="text" name="title" ng-model="$parent.threadTitle" required/>
+				<div class="field padding-top-10" ng-show="createQuestion.title.$touched && createQuestion.title.$invalid">
+					<div class="ui negative message">
+						<div class="header">
+							This is a required field.
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="field">
+				<label>Description</label>
+				<textarea autocomplete="off" name="desc" ng-model="$parent.threadDesc" required></textarea>
+				<div class="field padding-top-10" ng-show="createQuestion.desc.$touched && createQuestion.desc.$invalid">
+					<div class="ui negative message">
+						<div class="header">
+							This is a required field.
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="ui horizontal divider"></div>
+		<div class="">
+			<div class="text-align-right">
+				<button ng-disabled="$parent.threadTitle=='' || $parent.threadDesc==''" type="button" class="ui primary submit button" ng-click="formSubmit()">Submit</button>
+			</div>
+		</div>
+	</form>
 </div>
-<div ng-if="widget=='reply-thread'" class="ui segment">
-  <div class="ui top padded grid">
-    <div class="text-align-left">
-      <a class="cursor-pointer go-back-arrow" ng-click="changeWidget('list-thread')">
+<div ng-if="loading" class="ui segment">
+	Loading ....<br>
+	<div class="ui active centered inline loader"></div>
+</div>
+<div ng-if="!loading && widget=='reply-thread' && thread" class="ui segment">
+	<div class="ui top padded grid">
+		<div class="text-align-left">
+			<a class="cursor-pointer go-back-arrow" ng-click="loadQuestions()">
                 <i class="large arrow left icon"></i>
             </a>
-    </div>
-    <div class="cardsHeading">
-      {{threadTitle}} :
-      <span>
-                <small>{{threadDesc}}</small>
-            </span>
-    </div>
-  </div>
-  <div class="ui divider"></div>
-  <div class="ui comments">
-    <div class="comment">
-      <div class="content" ng-repeat="reply in threadReply">
-        <div class="metadata">
-          <i class="large user icon"></i>
-          <div class="date">{{reply.created_date | date : longdate}}</div>
-        </div>
-        <div class="text">
-          <p> {{reply.description}}</p>
-        </div>
-      </div>
-    </div>
-    <div class="comment">
-      <div class="text">
-        New answer
-      </div>
-    </div>
-    <form class="ui reply form" name="answerForm" ng-submit="submitAnswer()" novalidate="" ng-init="$parent.replyAnswer=''">
-      <div class="field" ng-hide="successMessage">
-        <div class="ui positive message">
-          <div class="header">
-            Your answer has been added successfully.
-          </div>
-        </div>
-      </div>
-      <div class="field">
-        <textarea autocomplete="off" name="replyAnswer" ng-model="$parent.replyAnswer" required></textarea>
-        <div class="padding-top-10" ng-show="answerForm.replyAnswer.$touched && answerForm.replyAnswer.$invalid">
-          <div class="ui negative message">
-            <div class="header">
-              This is a required field.
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="text-align-right">
-        <button type="submit" class="ui primary submit labeled icon button" ng-disabled="answerForm.$invalid">
-          <i class="icon edit"></i> Add Answer
+		</div>
+		<div class="cardsHeading">
+			{{thread.title}}
+		</div>
+		<div class="content description" ng-bind-html="thread.description">
+		</div>
+
+
+		<div class="ui grid" style="width:100%">
+			<div class="right floated right aligned  column">
+				<div class="ui comments">
+
+					<div class="comment">
+						<div class="metadata">
+
+							<div class="right aligned date ng-binding">Posted on: {{thread.created_at | date : longdate}}</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="ui comments">
+			<div class="comment">
+				<div class="content" ng-repeat="reply in thread.replies">
+					<div class="metadata">
+						<i class="large user icon"></i>
+						<div class="date">{{reply.created_at | date : longdate}}</div>
+					</div>
+					<div class="text" ng-bind-html="reply.cooked">
+					</div>
+				</div>
+			</div>
+
+			<form class="ui reply form" name="answerForm" ng-submit="submitAnswer()" novalidate="" ng-init="$parent.replyAnswer=''">
+				<div class="field" ng-hide="successMessage">
+					<div class="ui positive message">
+						<div class="header">
+							Your answer has been added successfully.
+						</div>
+					</div>
+				</div>
+				<div class="field">
+					<textarea autocomplete="off" name="replyAnswer" ng-model="$parent.replyAnswer" required></textarea>
+					<div class="padding-top-10" ng-show="answerForm.replyAnswer.$touched && answerForm.replyAnswer.$invalid">
+						<div class="ui negative message">
+							<div class="header">
+								This is a required field.
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="text-align-right">
+					<button type="submit" class="ui primary submit labeled icon button" ng-disabled="answerForm.$invalid">
+          <i class="icon edit"></i> Reply
         </button>
-      </div>
-    </form>
-  </div>
-</div>
+				</div>
+			</form>
+		</div>
+	</div>
