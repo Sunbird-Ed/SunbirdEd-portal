@@ -68,11 +68,16 @@ angular.module('playerApp')
           env: $scope.type,
           rollup: telemetryService.getRollUpData($rootScope.organisationIds)
         }
+        var objRollup = ''
+        if (itemId !== '') {
+          objRollup = [itemId]
+        }
+
         var objectData = {
           id: itemId,
           type: itemType,
           ver: '0.1',
-          rollup: ''
+          rollup: telemetryService.getRollUpData(objRollup)
         }
 
         var items = [telemetryService.getItemData(itemId, itemType, '0.1')]
@@ -98,7 +103,7 @@ angular.module('playerApp')
 
         var objRollup = ''
         if (itemId !== '') {
-          objRollup = ['course', itemId]
+          objRollup = [itemId]
         }
 
         var objectData = {

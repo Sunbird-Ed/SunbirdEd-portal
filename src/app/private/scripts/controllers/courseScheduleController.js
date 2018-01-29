@@ -19,6 +19,7 @@ angular.module('playerApp')
               // fetch all avaliable contents from course data
               toc.courseContents = toc.getCourseContents(res.result.content, [])
               toc.courseTotal = toc.courseContents.length
+              toc.version = res.ver
               toc.contentCountByType = _.countBy(toc.courseContents, 'mimeType')
               // if enrolled course then load batch details also after content status
               if (toc.courseType === 'ENROLLED_COURSE') {
@@ -275,7 +276,7 @@ angular.module('playerApp')
             // move target focus to player
 
             // generate telemetry interact event//
-            toc.objRollup = ['course', toc.courseId, contentId]
+            toc.objRollup = [toc.courseId, contentId]
 
             toc.scrollToPlayer()
             toc.updateBreadCrumbs()
@@ -344,7 +345,7 @@ angular.module('playerApp')
             $state.go('Toc', params)
           }
           // generate telemetry interact event//
-          toc.objRollup = ['course', toc.courseId]
+          toc.objRollup = [toc.courseId]
         }
       }
 
@@ -388,17 +389,17 @@ angular.module('playerApp')
           env: 'course',
           rollup: telemetryService.getRollUpData($rootScope.organisationIds)
         }
-        var objRollup = ['course', toc.courseId]
+        var objRollup = [toc.courseId]
         var objectData = {
           id: toc.courseId,
           type: 'course',
-          ver: '0.1',
+          ver: toc.version,
           rollup: telemetryService.getRollUpData(objRollup)
         }
         var data = {
           edata: telemetryService.startEventData('course', 'course-read', 'play'),
           contentId: toc.courseId,
-          contentVer: '1.0',
+          contentVer: toc.version,
           context: telemetryService.getContextData(contextData),
           object: telemetryService.getObjectData(objectData),
           tags: $rootScope.organisationIds
@@ -425,7 +426,7 @@ angular.module('playerApp')
         var objectData = {
           id: itemId,
           type: itemType,
-          ver: '0.1',
+          ver: toc.version,
           rollup: telemetryService.getRollUpData(objRollup)
         }
 

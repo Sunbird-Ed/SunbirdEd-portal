@@ -113,7 +113,7 @@ angular.module('playerApp')
 
         var objRollup = ''
         if (itemId !== '') {
-          objRollup = ['course', itemId]
+          objRollup = [itemId]
         }
 
         var objectData = {

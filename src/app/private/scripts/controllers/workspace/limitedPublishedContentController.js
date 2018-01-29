@@ -62,6 +62,8 @@ angular.module('playerApp')
             lpContent.loader.showLoader = false
             toasterService.error($rootScope.messages.fmsg.m0064)
           }
+          lpContent.generateImpressionEvent('view', 'scroll', 'workspace-content-unlisted',
+            '/content/limited/publish')
         }).catch(function () {
           lpContent.error.showError = false
           lpContent.loader.showLoader = false
@@ -112,8 +114,6 @@ angular.module('playerApp')
             if (lpContent.limitedpublishedContentData.length === 0) {
               lpContent.error = showErrorMessage(true, $rootScope.messages.stmsg.m0024, $rootScope.messages.stmsg.m0008)
             }
-            lpContent.generateImpressionEvent('view', 'scroll', 'workspace-content-unlisted',
-              '/content/limited/publish')
           } else {
             lpContent.loader.showLoader = false
             toasterService.error($rootScope.messages.fmsg.m0022)
@@ -147,7 +147,7 @@ angular.module('playerApp')
 
         var objRollup = ''
         if (contentId !== '') {
-          objRollup = ['limitedPublished', contentId]
+          objRollup = [contentId]
         }
 
         var objectData = {
@@ -172,7 +172,7 @@ angular.module('playerApp')
           env: 'workspace',
           rollup: telemetryService.getRollUpData($rootScope.organisationIds)
         }
-        var objRollup = ['unlistedContent', $rootScope.userId]
+        var objRollup = [$rootScope.userId]
         var objectData = {
           id: $rootScope.userId,
           type: 'unlistedContent',

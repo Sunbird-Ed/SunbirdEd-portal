@@ -37,6 +37,7 @@
         courseService.courseHierarchy($state.params.Id).then(function (res) {
           if (res && res.responseCode === 'OK') {
             cpvm.loader.showLoader = false
+            cpvm.version = res.ver
             if (res.result.content.status === 'Live' || res.result.content.status === 'Unlisted') {
               res.result.content.children = _.sortBy(res.result.content.children,
                 ['index'])
@@ -181,16 +182,19 @@
           env: 'collection',
           rollup: telemetryService.getRollUpData($rootScope.organisationIds)
         }
+
+        var objRollup = [$state.params.Id]
         var objectData = {
           id: $state.params.Id,
           type: 'collection',
-          ver: '0.1',
-          rollup: ''
+          ver: cpvm.version,
+          rollup: telemetryService.getRollUpData(objRollup)
         }
+
         var data = {
           edata: telemetryService.startEventData('collection', 'Library', 'play'),
           contentId: $state.params.Id,
-          contentVer: '1.0',
+          contentVer: cpvm.version,
           context: telemetryService.getContextData(contextData),
           object: telemetryService.getObjectData(objectData),
           tags: $rootScope.organisationIds

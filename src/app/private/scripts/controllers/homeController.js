@@ -89,7 +89,7 @@ angular.module('playerApp')
           env: 'home',
           rollup: telemetryService.getRollUpData($rootScope.organisationIds)
         }
-        var objRollup = ['home', itemId]
+        var objRollup = [itemId]
         var objectData = {
           id: itemId,
           type: itemType,

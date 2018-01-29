@@ -76,6 +76,7 @@ angular.module('playerApp')
 
             if (successResponse && successResponse.responseCode === 'OK') {
               var resourceRes = successResponse.result.response.sections
+              $rootScope.version = successResponse.ver
               section.page = []
               // first group the data based on group field
               var pageData = {}
@@ -138,13 +139,13 @@ angular.module('playerApp')
 
         var objRollup = ''
         if (courseId !== '') {
-          objRollup = ['course', courseId]
+          objRollup = [courseId]
         }
 
         var objectData = {
           id: courseId,
           type: edataId,
-          ver: '1.0',
+          ver: $rootScope.version,
           rollup: telemetryService.getRollUpData(objRollup)
         }
 
@@ -170,7 +171,7 @@ angular.module('playerApp')
         var objectData = {
           id: '',
           type: itemType,
-          ver: '1.0',
+          ver: $rootScope.version,
           rollup: ''
         }
 
@@ -189,17 +190,17 @@ angular.module('playerApp')
           env: 'library',
           rollup: telemetryService.getRollUpData($rootScope.organisationIds)
         }
-        var objRollup = ['library', id]
+        var objRollup = [id]
         var objectData = {
           id: id,
           type: 'library',
-          ver: '1.0',
+          ver: $rootScope.version,
           rollup: telemetryService.getRollUpData(objRollup)
         }
         var data = {
           edata: telemetryService.startEventData('library', 'library-read', 'play'),
           contentId: id,
-          contentVer: '1.0',
+          contentVer: $rootScope.version,
           context: telemetryService.getContextData(contextData),
           object: telemetryService.getObjectData(objectData),
           tags: $rootScope.organisationIds

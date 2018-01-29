@@ -209,7 +209,7 @@ angular.module('playerApp')
             env: 'course',
             rollup: telemetryService.getRollUpData($rootScope.organisationIds)
           }
-          var objRollup = ['course', $rootScope.courseId]
+          var objRollup = [$rootScope.courseId]
           var objectData = {
             id: $rootScope.courseId,
             type: 'course',
@@ -286,7 +286,7 @@ angular.module('playerApp')
             env: 'library',
             rollup: telemetryService.getRollUpData($rootScope.organisationIds)
           }
-          var objRollup = ['library', $rootScope.courseId]
+          var objRollup = [$rootScope.courseId]
           var objectData = {
             id: $rootScope.courseId,
             type: 'library',

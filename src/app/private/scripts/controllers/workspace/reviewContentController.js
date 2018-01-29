@@ -57,12 +57,12 @@ angular.module('playerApp')
                 $rootScope.messages.stmsg.m0019,
                 $rootScope.messages.stmsg.m0008)
             }
-            reviewContent.generateImpressionEvent('view', 'scroll', 'workspace-content-inreview', '/content/review')
           } else {
             reviewContent.loader.showLoader = false
             reviewContent.error.showError = false
             toasterService.error($rootScope.messages.fmsg.m0012)
           }
+          reviewContent.generateImpressionEvent('view', 'scroll', 'workspace-content-inreview', '/content/review')
         }).catch(function () {
           reviewContent.loader.showLoader = false
           reviewContent.error.showError = false
@@ -122,7 +122,7 @@ angular.module('playerApp')
           env: 'workspace',
           rollup: telemetryService.getRollUpData($rootScope.organisationIds)
         }
-        var objRollup = ['reviewContent', $rootScope.userId]
+        var objRollup = [$rootScope.userId]
         var objectData = {
           id: $rootScope.userId,
           type: 'reviewContent',

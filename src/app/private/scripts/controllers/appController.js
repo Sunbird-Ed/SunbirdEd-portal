@@ -239,7 +239,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
             limit = res.result.count - limit
             $rootScope.getConcept(offset, limit, callback)
           } else {
-            callback(new Error('Getting concepts failed'), null)
+            callback(null, $scope.concepts)
           }
         }
       }).catch(function (err) {
