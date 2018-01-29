@@ -73,7 +73,8 @@ angular.module('playerApp')
               type: 'plugin'
             }],
             showEndPage: false
-          }
+          },
+          editorType: data.type
         }
 
         window.config.editorConfig.publishMode = false
@@ -145,7 +146,6 @@ angular.module('playerApp')
         var editorConfig = []
         switch (type) {
         case 'Course':
-          window.config.editorType = 'Course'
           editorConfig.push({
             type: 'Course',
             label: 'Course',
@@ -196,7 +196,6 @@ angular.module('playerApp')
           })
           return editorConfig
         case 'Collection':
-          window.config.editorType = 'Collection'
           editorConfig.push({
             type: 'Collection',
             label: 'Collection',
@@ -233,7 +232,6 @@ angular.module('playerApp')
           })
           return editorConfig
         case 'LessonPlan':
-          window.config.editorType = 'LessonPlan'
           editorConfig.push({
             type: 'LessonPlan',
             label: 'LessonPlan',
@@ -284,7 +282,6 @@ angular.module('playerApp')
           })
           return editorConfig
         default:
-          window.config.editorType = 'TextBook'
           editorConfig.push({
             type: 'TextBook',
             label: 'Textbook',
