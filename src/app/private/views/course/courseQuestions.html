@@ -14,13 +14,6 @@
 		<div class="item" ng-repeat="thread in threads">
 			<div class="content">
 				<a ng-click="gotoThread(thread.id)" class="header quesHeading">{{thread.title}}</a>
-				<div class="ui comments">
-					<div class="right floated column comment">
-						<div class="metadata">
-							<div class="right aligned column date">{{thread.created_at | date : longdate}}&nbsp;</div>
-						</div>
-					</div>
-				</div>
 			</div>
 		</div>
 	</div>
@@ -86,58 +79,43 @@
 		</div>
 		<div class="content description" ng-bind-html="thread.description">
 		</div>
-
-
-		<div class="ui grid" style="width:100%">
-			<div class="right floated right aligned  column">
-				<div class="ui comments">
-
-					<div class="comment">
-						<div class="metadata">
-
-							<div class="right aligned date ng-binding">Posted on: {{thread.created_at | date : longdate}}</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-		</div>
-
-		<div class="ui comments">
-			<div class="comment">
-				<div class="content" ng-repeat="reply in thread.replies">
-					<div class="metadata">
-						<i class="large user icon"></i>
-						<div class="date">{{reply.created_at | date : longdate}}</div>
-					</div>
-					<div class="text" ng-bind-html="reply.cooked">
-					</div>
-				</div>
-			</div>
-
-			<form class="ui reply form" name="answerForm" ng-submit="submitAnswer()" novalidate="" ng-init="$parent.replyAnswer=''">
-				<div class="field" ng-hide="successMessage">
-					<div class="ui positive message">
-						<div class="header">
-							Your answer has been added successfully.
-						</div>
-					</div>
-				</div>
-				<div class="field">
-					<textarea autocomplete="off" name="replyAnswer" ng-model="$parent.replyAnswer" required></textarea>
-					<div class="padding-top-10" ng-show="answerForm.replyAnswer.$touched && answerForm.replyAnswer.$invalid">
-						<div class="ui negative message">
-							<div class="header">
-								This is a required field.
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="text-align-right">
-					<button type="submit" class="ui primary submit labeled icon button" ng-disabled="answerForm.$invalid">
-          <i class="icon edit"></i> Reply
-        </button>
-				</div>
-			</form>
-		</div>
 	</div>
+	<div class="ui divider"></div>
+	<div class="ui comments">
+		<div class="comment">
+			<div class="content" ng-repeat="reply in thread.replies">
+				<div class="metadata">
+					<i class="large user icon"></i>
+					<div class="date">{{reply.created_at | date : longdate}}</div>
+				</div>
+				<div class="text" ng-bind-html="reply.cooked">
+				</div>
+			</div>
+		</div>
+
+		<form class="ui reply form" name="answerForm" ng-submit="submitAnswer()" novalidate="" ng-init="$parent.replyAnswer=''">
+			<div class="field" ng-hide="successMessage">
+				<div class="ui positive message">
+					<div class="header">
+						Your answer has been added successfully.
+					</div>
+				</div>
+			</div>
+			<div class="field">
+				<textarea autocomplete="off" name="replyAnswer" ng-model="$parent.replyAnswer" required></textarea>
+				<div class="padding-top-10" ng-show="answerForm.replyAnswer.$touched && answerForm.replyAnswer.$invalid">
+					<div class="ui negative message">
+						<div class="header">
+							This is a required field.
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="text-align-right">
+				<button type="submit" class="ui primary submit labeled icon button" ng-disabled="answerForm.$invalid">
+          <i class="icon edit"></i> Add Answer
+        </button>
+			</div>
+		</form>
+	</div>
+</div>

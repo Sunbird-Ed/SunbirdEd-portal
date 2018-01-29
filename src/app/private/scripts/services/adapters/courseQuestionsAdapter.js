@@ -5,17 +5,25 @@ angular.module('playerApp').service('courseQuestionsAdapter', ['$rootScope', '$h
   function ($rootScope, $http, httpAdapter, $q) {
     this.getQuestions = function () {
       var data = ''
-      return handleHttpRequest('http://www.mocky.io/v2/5a6877c02e00008b0ad5b3f6', data, 'GET',
+      return handleHttpRequest('/discussions/v1/list', data, 'GET',
+        $rootScope.messages.fmsg.m0070)
+    }
+    this.getQuestionById = function (threadId) {
+      var data = ''
+      return handleHttpRequest('/discussions/v1/thread/' + threadId, data, 'GET',
+        $rootScope.messages.fmsg.m0070)
+    }
+    this.composeThread = function (obj) {
+      var data = obj
+      console.log(data)
+      return handleHttpRequest('/discussions/v1/thread', data, 'POST',
         $rootScope.messages.fmsg.m0070)
     }
 
-    this.composeThread = function (obj) {
-      console.log('inside compose', obj)
-      var data = {
-        'request': obj
-      }
+    this.replyThread = function (threadId, obj) {
+      var data = obj
       console.log(data)
-      return handleHttpRequest('http://www.mocky.io/v2/5a6877c02e00008b0ad5b3f6', data, 'POST',
+      return handleHttpRequest('/discussions/v1/thread/reply/' + threadId, data, 'POST',
         $rootScope.messages.fmsg.m0070)
     }
 

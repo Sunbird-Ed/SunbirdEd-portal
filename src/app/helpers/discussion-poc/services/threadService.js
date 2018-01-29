@@ -35,7 +35,7 @@ class ThreadService {
     /**
 		 * @property {string} discourseEndPoint - An endpoint url for discourse api
 		 */
-    this.discourseEndPoint = 'http://localhost:3001'
+    this.discourseEndPoint = 'http://13.127.45.190'
     /**
 		 * @property {object} discourseUriList - List of discourse uri's
 		 */
@@ -47,7 +47,7 @@ class ThreadService {
     }
 
     this.apiAuth = {
-      apiKey: '799a56a3e22eeef0f49640d781e8eebca6637fda4640e96b377d0aadc0c1a512',
+      apiKey: '3afbd4429b6a98e9a3d5b73d29fb7ce5e1e440a88a9bfd7deaf7fa2ff845ba3c',
       apiUserName: 'loganathan'
     }
   }
