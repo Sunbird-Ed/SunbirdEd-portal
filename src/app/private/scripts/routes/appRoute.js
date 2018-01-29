@@ -651,7 +651,7 @@ angular.module('playerApp')
         }
       })
       .state('CollectionEditor', {
-        url: '/collection/editor/:contentId/:type/:state',
+        url: '/collection/editor/:contentId/:type/:state/:frameworkId',
         views: {
           mainView: {
             templateUrl: 'views/common/collectionEditor.html',
@@ -661,7 +661,8 @@ angular.module('playerApp')
         params: {
           contentId: null,
           type: null,
-          state: null
+          state: null,
+          frameworkId: null
         },
         onEnter: function ($rootScope, portalTelemetryService) {
           $rootScope.profileActive = 'active'

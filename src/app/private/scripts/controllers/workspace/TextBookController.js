@@ -101,7 +101,7 @@ angular.module('playerApp')
       }
 
       textbook.initEKStepCE = function (contentId) {
-        var params = { contentId: contentId, type: 'TextBook', frameworkId: textbook.frameworkId }
+        var params = { contentId: contentId, type: 'TextBook', state: '', frameworkId: textbook.frameworkId }
         $state.go('CollectionEditor', params)
       }
       textbook.getAssociations = function (selectedCategory, categoryList) {

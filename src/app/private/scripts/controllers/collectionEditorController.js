@@ -8,6 +8,7 @@ angular.module('playerApp')
       var collectionEditor = this
       collectionEditor.contentId = $stateParams.contentId
       collectionEditor.frameworkId = $stateParams.frameworkId
+      collectionEditor.state = $stateParams.state
       collectionEditor.openCollectionEditor = function (data) {
         $('#collectionEditor').iziModal({
           title: '',
