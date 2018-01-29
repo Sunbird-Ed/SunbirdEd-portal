@@ -96,7 +96,7 @@
     "precommit": "lint-staged"
   },
   "lint-staged": {
-      "*.js": "eslint"
+    "*.js": "eslint"
   },
   "dependencies": {
     "async": "^2.5.0",

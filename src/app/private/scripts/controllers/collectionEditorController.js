@@ -146,189 +146,191 @@ angular.module('playerApp')
         var editorConfig = []
         switch (type) {
         case 'Course':
+          window.config.editorType = 'Course'
           editorConfig.push({
             type: 'Course',
             label: 'Course',
             isRoot: true,
             editable: true,
-            childrenTypes: ['CourseUnit', 'Collection', 'Resource', 'Story', 'Worksheet'],
+            childrenTypes: [
+              'CourseUnit',
+              'Collection',
+              'Resource'
+            ],
             addType: 'Editor',
             iconClass: 'fa fa-book'
-          }, {
+          },
+          {
             type: 'CourseUnit',
             label: 'Course Unit',
             isRoot: false,
             editable: true,
-            childrenTypes: ['CourseUnit', 'Collection', 'Resource', 'Story', 'Worksheet'],
+            childrenTypes: [
+              'CourseUnit',
+              'Collection',
+              'Resource'
+            ],
             addType: 'Editor',
             iconClass: 'fa fa-folder-o'
-          }, {
+          },
+          {
             type: 'Collection',
             label: 'Collection',
             isRoot: false,
             editable: false,
-            childrenTypes: [],
+            childrenTypes: [
+
+            ],
             addType: 'Browser',
             iconClass: 'fa fa-file-o'
-          }, {
+          },
+          {
             type: 'Resource',
             label: 'Resource',
             isRoot: false,
             editable: false,
-            childrenTypes: [],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
-          }, {
-            type: 'Story',
-            label: 'Story',
-            isRoot: false,
-            editable: false,
-            childrenTypes: [],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
-          }, {
-            type: 'Worksheet',
-            label: 'Worksheet',
-            isRoot: false,
-            editable: false,
-            childrenTypes: [],
+            childrenTypes: [
+
+            ],
             addType: 'Browser',
             iconClass: 'fa fa-file-o'
           })
           return editorConfig
         case 'Collection':
+          window.config.editorType = 'Collection'
           editorConfig.push({
             type: 'Collection',
             label: 'Collection',
             isRoot: true,
             editable: true,
-            childrenTypes: ['Collection', 'Resource', 'Story', 'Worksheet'],
+            childrenTypes: [
+              'Collection',
+              'Resource'
+            ],
             addType: 'Editor',
             iconClass: 'fa fa-folder-o'
-          }, {
+          },
+          {
+            type: 'Collection',
+            label: 'Collection',
+            isRoot: false,
+            editable: false,
+            childrenTypes: [
+
+            ],
+            addType: 'Browser',
+            iconClass: 'fa fa-file-o'
+          },
+          {
             type: 'Resource',
             label: 'Resource',
             isRoot: false,
             editable: false,
-            childrenTypes: [],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
-          }, {
-            type: 'Story',
-            label: 'Story',
-            isRoot: false,
-            editable: false,
-            childrenTypes: [],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
-          }, {
-            type: 'Worksheet',
-            label: 'Worksheet',
-            isRoot: false,
-            editable: false,
-            childrenTypes: [],
+            childrenTypes: [
+
+            ],
             addType: 'Browser',
             iconClass: 'fa fa-file-o'
           })
           return editorConfig
         case 'LessonPlan':
+          window.config.editorType = 'LessonPlan'
           editorConfig.push({
             type: 'LessonPlan',
             label: 'LessonPlan',
             isRoot: true,
             editable: true,
-            childrenTypes: ['LessonPlanUnit', 'Collection', 'Resource', 'Story', 'Worksheet'],
+            childrenTypes: [
+              'LessonPlanUnit',
+              'Collection',
+              'Resource'
+            ],
             addType: 'Editor',
             iconClass: 'fa fa-book'
-          }, {
+          },
+          {
             type: 'LessonPlanUnit',
             label: 'LessonPlan Unit',
             isRoot: false,
             editable: true,
-            childrenTypes: ['LessonPlanUnit', 'Collection', 'Resource', 'Story', 'Worksheet'],
+            childrenTypes: [
+              'LessonPlanUnit',
+              'Collection',
+              'Resource'
+            ],
             addType: 'Editor',
             iconClass: 'fa fa-folder-o'
-          }, {
+          },
+          {
             type: 'Collection',
             label: 'Collection',
             isRoot: false,
             editable: false,
-            childrenTypes: [],
+            childrenTypes: [
+
+            ],
             addType: 'Browser',
             iconClass: 'fa fa-file-o'
-          }, {
+          },
+          {
             type: 'Resource',
             label: 'Resource',
             isRoot: false,
             editable: false,
-            childrenTypes: [],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
-          }, {
-            type: 'Story',
-            label: 'Story',
-            isRoot: false,
-            editable: false,
-            childrenTypes: [],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
-          }, {
-            type: 'Worksheet',
-            label: 'Worksheet',
-            isRoot: false,
-            editable: false,
-            childrenTypes: [],
+            childrenTypes: [
+
+            ],
             addType: 'Browser',
             iconClass: 'fa fa-file-o'
           })
           return editorConfig
         default:
+          window.config.editorType = 'TextBook'
           editorConfig.push({
             type: 'TextBook',
             label: 'Textbook',
             isRoot: true,
             editable: true,
-            childrenTypes: ['TextBookUnit', 'Collection', 'Resource', 'Story', 'Worksheet'],
+            childrenTypes: [
+              'TextBookUnit',
+              'Collection',
+              'Resource'
+            ],
             addType: 'Editor',
             iconClass: 'fa fa-book'
-          }, {
+          },
+          {
             type: 'TextBookUnit',
             label: 'Textbook Unit',
             isRoot: false,
             editable: true,
-            childrenTypes: ['TextBookUnit', 'Collection', 'Resource', 'Story', 'Worksheet'],
+            childrenTypes: [
+              'TextBookUnit',
+              'Collection',
+              'Resource'
+            ],
             addType: 'Editor',
             iconClass: 'fa fa-folder-o'
-          }, {
+          },
+          {
             type: 'Collection',
             label: 'Collection',
             isRoot: false,
             editable: false,
-            childrenTypes: [],
+            childrenTypes: [
+
+            ],
             addType: 'Browser',
             iconClass: 'fa fa-file-o'
-          }, {
+          },
+          {
             type: 'Resource',
             label: 'Resource',
             isRoot: false,
             editable: false,
-            childrenTypes: [],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
-          }, {
-            type: 'Story',
-            label: 'Story',
-            isRoot: false,
-            editable: false,
-            childrenTypes: [],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
-          }, {
-            type: 'Worksheet',
-            label: 'Worksheet',
-            isRoot: false,
-            editable: false,
-            childrenTypes: [],
+            childrenTypes: [
+
+            ],
             addType: 'Browser',
             iconClass: 'fa fa-file-o'
           })

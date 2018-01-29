@@ -2,9 +2,9 @@
 
 angular.module('playerApp')
   .controller('FlaggedContentController', ['contentService', 'searchService', 'config',
-    '$rootScope', '$state', 'toasterService', 'PaginationService', 'workSpaceUtilsService',
+    '$rootScope', '$state', 'toasterService', 'PaginationService', 'workSpaceUtilsService', 'permissionsService',
     function (contentService, searchService, config, $rootScope, $state, toasterService,
-      PaginationService, workSpaceUtilsService) {
+      PaginationService, workSpaceUtilsService, permissionsService) {
       var flaggedContent = this
       flaggedContent.userId = $rootScope.userId
       flaggedContent.contentStatus = ['Flagged']
@@ -32,7 +32,7 @@ angular.module('playerApp')
         var request = {
           filters: {
             status: flaggedContent.contentStatus,
-            createdFor: $rootScope.organisationIds,
+            createdFor: permissionsService.getRoleOrgMap()['FLAG_REVIEWER'],
             objectType: 'Content',
             contentType: config.contributeContentType,
             createdBy: {'!=': flaggedContent.userId}

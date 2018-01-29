@@ -8,6 +8,7 @@ angular.module('playerApp')
      * @desc Service to manages permissions for user.
      * @memberOf Services
      */
+      var self = this
       var rolesAndPermissions = []
       var currentUserRoleMap = {}
       var currentUserRoles = []
@@ -168,5 +169,25 @@ angular.module('playerApp')
 
       this.getMainRoles = function () {
         return mainRoles
+      }
+
+      this.setRoleOrgMap = function (profile) {
+        var roles = []
+        _.forEach(profile.organisations, function (org) {
+          roles = roles.concat(org.roles)
+        })
+        roles = _.uniq(roles)
+        this.roleOrgMap = {}
+        _.forEach(roles, function (role) {
+          _.forEach(profile.organisations, function (org) {
+            self.roleOrgMap[role] = self.roleOrgMap[role] || []
+            if (_.indexOf(org.roles, role) > -1) {}
+            self.roleOrgMap[role].push(org.organisationId)
+          })
+        })
+      }
+
+      this.getRoleOrgMap = function () {
+        return this.roleOrgMap
       }
     }])

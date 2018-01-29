@@ -11,11 +11,10 @@ angular.module('loginApp', [
 ])
   .controller('loginCtrl', ['$rootScope', 'messages', 'frmelmnts',
     function ($rootScope, messages, frmelmnts) {
-      $rootScope.language = window.localStorage.language || $('#defaultPortalLanguage').attr('value') || 'en'
+      $rootScope.language = $('#defaultPortalLanguage').attr('value') || 'en'
       $rootScope.messages = messages[$rootScope.language]
       $rootScope.frmelmnts = frmelmnts[$rootScope.language]
       $rootScope.cdnUrl = $('#cdnUrl').attr('value') || ''
-      $rootScope.theme = $('#theme').attr('value') || 'default'
       $rootScope.getQueryStringValue = function (key) {
         return decodeURIComponent(window.location.search.replace(new RegExp('^(?:.*[&\\?]' +
               encodeURIComponent(key).replace(/[\.\+\*]/g, '\\$&') + '(?:\\=([^&]*))?)?.*$', 'i'), '$1')); //eslint-disable-line
